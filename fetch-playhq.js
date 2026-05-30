@@ -66,6 +66,8 @@ async function triggerSelf(mode, tenant, sport) {
   }
   const [owner, repo] = GITHUB_REPO.split('/');
   const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/fetch-playhq.yml/dispatches`;
+  // Pass the final cap as the concurrency for the next run
+  const nextConcurrency = String(CONCURRENCY_CAP);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -76,7 +78,7 @@ async function triggerSelf(mode, tenant, sport) {
       },
       body: JSON.stringify({
         ref: 'main',
-        inputs: { mode, tenant, sport, season: '' },
+        inputs: { mode, tenant, sport, season: '', concurrency: nextConcurrency },
       }),
     });
     if (res.ok || res.status === 204) {
@@ -193,22 +195,54 @@ query publicProfileStatistics($profileID: ID!) {
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 async function gql(operationName, query, variables) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant':       TENANT,
-      'origin':       'https://www.playhq.com',
-    },
-    body: JSON.stringify({ operationName, query, variables }),
-  });
-  if (!res.ok) {
-    const body = await res.text().catch(() => '(could not read body)');
-    throw new Error(`HTTP ${res.status} for ${operationName}\nResponse body: ${body}`);
+  let attempts = 0;
+  while (true) {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant':       TENANT,
+        'origin':       'https://www.playhq.com',
+      },
+      body: JSON.stringify({ operationName, query, variables }),
+    });
+
+    if (res.status === 429) {
+      attempts++;
+      _429_streak++;
+      _429_total++;
+      _clean_batches = 0;
+
+      // Reduce current concurrency immediately
+      const prevC = CONCURRENCY;
+      CONCURRENCY = Math.max(5, Math.floor(CONCURRENCY * 0.6));
+
+      // If we keep hitting 429s, lower the cap permanently by 5 (floor at 15 first, then 10, then 5)
+      if (_429_streak >= 3) {
+        const prevCap = CONCURRENCY_CAP;
+        CONCURRENCY_CAP = Math.max(5, CONCURRENCY_CAP - 5);
+        CONCURRENCY     = Math.min(CONCURRENCY, CONCURRENCY_CAP);
+        _429_streak     = 0;
+        _429_cap_hits++;
+        console.warn(`  ⚠ Repeated 429s — cap lowered ${prevCap} → ${CONCURRENCY_CAP}, concurrency now ${CONCURRENCY}`);
+      } else {
+        console.warn(`  ⚠ Rate limited (429) — concurrency ${prevC} → ${CONCURRENCY}, retrying in ${attempts * 5}s`);
+      }
+
+      await delay(attempts * 5000);
+      continue;  // retry this exact request — player is NOT skipped
+    }
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '(could not read body)');
+      throw new Error(`HTTP ${res.status} for ${operationName}\nResponse body: ${body}`);
+    }
+
+    const json = await res.json();
+    if (json.errors) throw new Error(`GraphQL error in ${operationName}: ${JSON.stringify(json.errors)}`);
+    _429_streak = 0;  // successful response — reset streak
+    return json.data;
   }
-  const json = await res.json();
-  if (json.errors) throw new Error(`GraphQL error in ${operationName}: ${JSON.stringify(json.errors)}`);
-  return json.data;
 }
 
 function delay(ms) {
@@ -550,40 +584,44 @@ function deleteQueues() {
   if (fs.existsSync(QUEUE_BACKLOG_FILE))  fs.unlinkSync(QUEUE_BACKLOG_FILE);
 }
 
-async function buildQueuesFromIndex(data) {
-  // Full index scan — only done once to seed the queues
-  // For each unknown season, do a quick discoverSeason call to get the name/year
+function buildQueuesFromIndex(data) {
+  // Build queues from index using season names already stored in player records.
+  // No API calls needed — we already have season names from publicProfileStatistics.
   console.log('  Building season queues from index (one-time scan)...');
-  const knownIds = new Set(Object.keys(data.index.seasons));
-  const unknown  = [];
+  const knownIds  = new Set(Object.keys(data.index.seasons));
+  const priority  = [];
+  const backlog   = [];
+  const seen      = new Set();
+  // Build a map of sid → best known season name from player records
+  const sidNames  = {};
+
   for (const player of Object.values(data.index.players)) {
     for (const s of (player.seasons || [])) {
       const sid = s.sid || s.seasonId;
-      if (sid && !knownIds.has(sid) && !unknown.includes(sid)) unknown.push(sid);
-    }
-  }
-
-  console.log(`  Found ${unknown.length} unknown seasons — checking years...`);
-  const priority = [], backlog = [];
-
-  for (const sid of unknown) {
-    await delay(DELAY_MS);
-    try {
-      const result = await gql('gradeListDiscoverSeason', Q_SEASON, { id: sid });
-      const name   = result?.discoverSeason?.name || '';
-      if (isPriority(name)) {
-        priority.push(sid);
-        console.log(`  ✓ Priority: ${sid} — ${name}`);
-      } else {
-        backlog.push(sid);
+      const sn  = s.sn  || s.seasonName || '';
+      if (sid && !knownIds.has(sid)) {
+        if (!seen.has(sid)) {
+          seen.add(sid);
+          sidNames[sid] = sn;
+        } else if (!sidNames[sid] && sn) {
+          sidNames[sid] = sn;  // fill in name if we now have one
+        }
       }
-    } catch (e) {
-      // Can't determine year — put in backlog
-      backlog.push(sid);
     }
   }
 
-  console.log(`  Priority queue: ${priority.length} seasons (2023+)`);
+  for (const [sid, sn] of Object.entries(sidNames)) {
+    if (isPriority(sn)) {
+      priority.push(sid);
+    } else if (sn) {
+      backlog.push(sid);
+    } else {
+      // No name available — assume priority so we don't lose recent seasons
+      priority.push(sid);
+    }
+  }
+
+  console.log(`  Priority queue: ${priority.length} seasons (2023+ or unknown year)`);
   console.log(`  Backlog queue:  ${backlog.length} seasons (pre-2023)`);
   return { priority, backlog };
 }
@@ -650,7 +688,13 @@ async function modeCrawl(seasonId) {
 
   const total = progress.pendingUuids.length + progress.doneUuids.length;
   let done = progress.doneUuids.length;
-  const CONCURRENCY = 15;
+  const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '30', 10);
+let CONCURRENCY     = _START_CONCURRENCY;
+let CONCURRENCY_CAP = _START_CONCURRENCY;
+let _clean_batches  = 0;    // consecutive clean batches since last 429
+let _429_streak     = 0;    // consecutive 429s in current request — drives cap down
+let _429_total      = 0;    // total 429s this season — reported in summary
+let _429_cap_hits   = 0;    // number of times cap was lowered this season
 
   while (progress.pendingUuids.length > 0) {
     const batch = progress.pendingUuids.splice(0, CONCURRENCY);
@@ -699,6 +743,14 @@ async function modeCrawl(seasonId) {
       saveSeasonGames(sid, sg);
     }
 
+    // Gradually recover concurrency after clean batches, up to current cap
+    _clean_batches++;
+    if (_clean_batches >= 5 && CONCURRENCY < CONCURRENCY_CAP) {
+      CONCURRENCY = Math.min(CONCURRENCY_CAP, CONCURRENCY + 5);
+      console.log(`  📈 Concurrency recovered to ${CONCURRENCY} (cap: ${CONCURRENCY_CAP})`);
+      _clean_batches = 0;
+    }
+
     // Save index every batch
     saveData(data);
     saveProgress(progress);
@@ -706,6 +758,24 @@ async function modeCrawl(seasonId) {
       console.log(`  💾 ${done}/${total} done, ${progress.pendingUuids.length} remaining`);
     }
   }
+
+  // Print 429 / concurrency summary
+  console.log(`\n📊 Rate limit summary for ${seasonId}:`);
+  console.log(`   Total 429s:       ${_429_total}`);
+  console.log(`   Cap reductions:   ${_429_cap_hits}`);
+  console.log(`   Final cap:        ${CONCURRENCY_CAP}`);
+  console.log(`   Final concurrency:${CONCURRENCY}`);
+  if (_429_total === 0) {
+    console.log(`   ✅ No rate limiting — consider increasing CONCURRENCY above 30 for next run`);
+  } else if (CONCURRENCY_CAP < 30) {
+    console.log(`   ⚠ Recommend starting next run with --concurrency=${CONCURRENCY_CAP}`);
+  } else {
+    console.log(`   ✅ Rate limiting resolved without cap reduction`);
+  }
+
+  // Reset counters for next season
+  _429_total    = 0;
+  _429_cap_hits = 0;
 
   // Mark season done
   if (!progress.seasonsDone.includes(seasonId)) progress.seasonsDone.push(seasonId);
@@ -750,7 +820,13 @@ async function modeUpdate() {
   console.log(`\n📥 Fetching ${allUuids.size} unique players across active seasons...`);
   let i = 0;
   const uuidArray = [...allUuids];
-  const CONCURRENCY = 15;
+  const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '30', 10);
+let CONCURRENCY     = _START_CONCURRENCY;
+let CONCURRENCY_CAP = _START_CONCURRENCY;
+let _clean_batches  = 0;    // consecutive clean batches since last 429
+let _429_streak     = 0;    // consecutive 429s in current request — drives cap down
+let _429_total      = 0;    // total 429s this season — reported in summary
+let _429_cap_hits   = 0;    // number of times cap was lowered this season
   while (i < uuidArray.length) {
     const batch = uuidArray.slice(i, i + CONCURRENCY);
     const batchGames = {};
