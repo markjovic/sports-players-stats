@@ -1022,33 +1022,41 @@ async function modeCrawlAll() {
   const tier         = fromPriority ? 'priority' : 'backlog';
   console.log(`\n▶ [${tier}] Season ${seasonId} (${priority.length} priority + ${backlog.length} backlog remaining)`);
 
+  let seasonSucceeded = false;
   try {
     await modeCrawl(seasonId);
+    seasonSucceeded = true;
   } catch (e) {
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
     console.warn(e.stack);
+    console.warn('  ⚠ Self-trigger suppressed due to error — fix the issue before re-running');
   }
 
+  if (!seasonSucceeded) return;
+
   // Route newly discovered seasons to the right queue
+  // Read from progress file's discoveredSeasons (set during crawl) rather than
+  // scanning all player records — player index is now slim with no season detail
   const updatedData  = loadData();
   const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
   const allQueued    = new Set([...priority, ...backlog]);
 
-  for (const player of Object.values(updatedData.index.players)) {
-    for (const s of (player.seasons || [])) {
-      const sid = s.sid || s.seasonId;
-      if (sid && !updatedKnown.has(sid) && !allQueued.has(sid)) {
-        // Quick year check from the season name we already have in the player record
-        const sn = s.sn || s.seasonName || '';
-        if (isPriority(sn)) {
-          priority.push(sid);
-          console.log(`  ➕ Priority: ${sid} — ${sn}`);
-        } else {
-          backlog.push(sid);
-          console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
-        }
-        allQueued.add(sid);
+  // Load the just-completed progress to get discovered seasons before it was cleared
+  // discoveredSeasons are logged during crawl — re-read from the detail files would be
+  // too expensive. Instead we scan the queue files for any sids we haven't seen.
+  // New seasons discovered during crawl are in updatedKnown (just added to index)
+  // but weren't in the queue — find them and route appropriately.
+  for (const [sid, meta] of Object.entries(updatedData.index.seasons)) {
+    if (!allQueued.has(sid)) {
+      const sn = meta.name || '';
+      if (isPriority(sn)) {
+        priority.push(sid);
+        console.log(`  ➕ Priority: ${sid} — ${sn}`);
+      } else {
+        backlog.push(sid);
+        console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
       }
+      allQueued.add(sid);
     }
   }
 
