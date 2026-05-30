@@ -31,12 +31,7 @@ const path = require('path');
 const API_URL        = 'https://api.playhq.com/graphql';
 const DELAY_MS       = 50;               // ms between API requests (be polite)
 const INDEX_FILE     = path.join(__dirname, 'sports-index.json');
-const PROGRESS_FILE  = path.join(__dirname, `progress-${TENANT}.json`);
-
-function gamesFile(seasonId) {
-  // Namespaced by tenant so afl/bv/ca games files don't collide
-  return path.join(__dirname, `games-${TENANT}-${seasonId}.json`);
-}
+// PROGRESS_FILE and gamesFile() are defined after CLI args so TENANT is available
 const PAGE_SIZE      = 50;               // max players per page from gradePlayerStatistics
 
 /**
@@ -69,6 +64,12 @@ const _RAW_ARGS = Object.fromEntries(
 
 const TENANT = _RAW_ARGS.tenant || 'bv';
 const SPORT  = _RAW_ARGS.sport  || 'basketball';
+
+// These depend on TENANT so must come after CLI arg parsing
+const PROGRESS_FILE = path.join(__dirname, `progress-${TENANT}.json`);
+function gamesFile(seasonId) {
+  return path.join(__dirname, `games-${TENANT}-${seasonId}.json`);
+}
 
 // ─── GraphQL Queries ──────────────────────────────────────────────────────────
 
