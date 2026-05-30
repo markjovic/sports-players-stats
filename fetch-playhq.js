@@ -627,10 +627,14 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
 function parseSeasonYear(seasonName) {
   // Extract year from season names like "Winter 2023", "Summer 2022/23", "Autumn 2024"
   if (!seasonName) return null;
-  const m = seasonName.match(/20(\d\d)/g);
-  if (!m) return null;
-  // Take the latest year mentioned (e.g. "2022/23" → 2023)
-  return Math.max(...m.map(y => parseInt(y)));
+  // Match full years (e.g. 2025) and short split years (e.g. 2025/26 → extract 26 as 2026)
+  const years = [];
+  const full = seasonName.match(/20\d\d/g);
+  if (full) full.forEach(y => years.push(parseInt(y)));
+  const split = seasonName.match(/20\d\d\/(\d\d)/);
+  if (split) years.push(2000 + parseInt(split[1]));
+  if (years.length === 0) return null;
+  return Math.max(...years);
 }
 
 function isPriority(seasonName) {
@@ -857,6 +861,18 @@ async function modeCrawl(seasonId) {
     console.log(`   ⚠ Recommend starting next run with --concurrency=${CONCURRENCY_CAP}`);
   } else {
     console.log(`   ✅ Rate limiting resolved without cap reduction`);
+  }
+
+  // Auto-lock historical seasons (year < current year)
+  const seasonMeta = data.index.seasons[seasonId];
+  if (seasonMeta && !seasonMeta.locked) {
+    const year = parseSeasonYear(seasonMeta.name);
+    const currentYear = new Date().getFullYear();
+    if (year !== null && year < currentYear) {
+      seasonMeta.locked   = true;
+      seasonMeta.lockedAt = new Date().toISOString();
+      console.log(`  🔒 Auto-locked historical season: ${seasonMeta.fullName} (${year} < ${currentYear})`);
+    }
   }
 
   // Mark season done
