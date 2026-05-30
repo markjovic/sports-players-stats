@@ -526,17 +526,26 @@ async function modeCrawl(seasonId) {
       progress.doneUuids.push(uuid);
     }
 
-    // Merge batch games into main games store
-    for (const [uuid, games] of Object.entries(batchGames)) {
-      if (!data.games[uuid]) data.games[uuid] = [];
-      // Merge by gameId to avoid dupes on resume
-      const existing = new Set(data.games[uuid].map(g => g.g));
-      for (const game of games) {
-        if (!existing.has(game.g)) data.games[uuid].push(game);
+    // Merge batch rawGames into per-season game files
+    // batchGames structure: { seasonId: { uuid: [{g,d,o,on},...] } }
+    for (const [sid, playerMap] of Object.entries(batchGames)) {
+      if (!sid) continue;  // skip if seasonId somehow undefined
+      const sg = loadSeasonGames(sid);
+      for (const [uuid, games] of Object.entries(playerMap)) {
+        if (!sg.playerGames[uuid]) sg.playerGames[uuid] = [];
+        const existingGames = new Set(sg.playerGames[uuid]);
+        for (const game of games) {
+          if (!sg.games[game.g]) sg.games[game.g] = { d: game.d, on: game.on, o: game.o };
+          if (!existingGames.has(game.g)) {
+            sg.playerGames[uuid].push(game.g);
+            existingGames.add(game.g);
+          }
+        }
       }
+      saveSeasonGames(sid, sg);
     }
 
-    // Save every batch
+    // Save index every batch
     saveData(data);
     saveProgress(progress);
     if (done % 50 === 0) {
