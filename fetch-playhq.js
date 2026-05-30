@@ -337,7 +337,14 @@ function saveSeasonGames(seasonId, seasonGames) {
 
 function loadProgress() {
   if (fs.existsSync(PROGRESS_FILE)) {
-    try { return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); }
+    try {
+      const p = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
+      // Ensure all required arrays exist
+      p.pendingUuids  = Array.isArray(p.pendingUuids)  ? p.pendingUuids  : [];
+      p.doneUuids     = Array.isArray(p.doneUuids)     ? p.doneUuids     : [];
+      p.seasonsDone   = Array.isArray(p.seasonsDone)   ? p.seasonsDone   : [];
+      return p;
+    }
     catch (e) {}
   }
   return { pendingUuids: [], doneUuids: [], seasonsDone: [] };
@@ -764,6 +771,13 @@ async function modeCrawl(seasonId) {
     console.log(`\n📥 ${pending.length} players to fetch (${uuids.length - pending.length} already done)`);
   } else {
     console.log(`\n▶ Resuming from previous run — ${progress.pendingUuids.length} players remaining`);
+  }
+
+  // Guard against malformed/stale progress file
+  if (!Array.isArray(progress.pendingUuids) || !Array.isArray(progress.doneUuids)) {
+    console.warn('  ⚠ Stale or malformed progress file — restarting season from scratch');
+    clearProgress();
+    return await modeCrawl(seasonId);
   }
 
   const total = progress.pendingUuids.length + progress.doneUuids.length;
