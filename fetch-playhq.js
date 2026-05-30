@@ -54,6 +54,45 @@ const STAT_FIELDS = {
   '3_POINT_SCORE': 'threePt', // 3-pointers (speculative — may appear in older/rep grades)
 };
 
+// ─── Self-trigger support ────────────────────────────────────────────────────
+
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+const GITHUB_REPO  = process.env.GITHUB_REPOSITORY || '';  // e.g. "markjovic/sports-players-stats"
+
+async function triggerSelf(mode, tenant, sport) {
+  if (!GITHUB_TOKEN || !GITHUB_REPO) {
+    console.log('  ⚠ No GITHUB_TOKEN/GITHUB_REPOSITORY — cannot self-trigger');
+    return false;
+  }
+  const [owner, repo] = GITHUB_REPO.split('/');
+  const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/fetch-playhq.yml/dispatches`;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ref: 'main',
+        inputs: { mode, tenant, sport, season: '' },
+      }),
+    });
+    if (res.ok || res.status === 204) {
+      console.log(`  ✅ Triggered new workflow run (${mode} / ${tenant} / ${sport})`);
+      return true;
+    } else {
+      const body = await res.text();
+      console.log(`  ⚠ Self-trigger failed: HTTP ${res.status} — ${body.slice(0, 200)}`);
+      return false;
+    }
+  } catch (e) {
+    console.log(`  ⚠ Self-trigger error: ${e.message}`);
+    return false;
+  }
+}
+
 // ─── CLI args (parsed early so TENANT/SPORT are available as constants) ─────
 
 const _RAW_ARGS = Object.fromEntries(
@@ -280,6 +319,7 @@ async function discoverSeasonPlayers(seasonId, data) {
 
   const metaSeason = data.index.seasons[seasonId];
   const discoveredUuids = new Set();
+  const uuidGenders = {};  // uuid → inferred gender from grade
 
   for (const [gi, grade] of season.grades.entries()) {
     console.log(`\n  Grade [${gi+1}/${season.grades.length}]: ${grade.name}`);
@@ -309,7 +349,17 @@ async function discoverSeasonPlayers(seasonId, data) {
       const records = gps.results.filter(r => r.profile); // skip private players
 
       for (const r of records) {
-        discoveredUuids.add(r.profile.id);
+        const uid = r.profile.id;
+        discoveredUuids.add(uid);
+        // Tag with gender from this grade for player gender inference
+        const g = grade.gender?.name || 'Unknown';
+        if (!uuidGenders[uid]) uuidGenders[uid] = g;
+        else {
+          // Female or Male always wins over Mixed/Unknown
+          const cur = uuidGenders[uid];
+          if (cur === 'Unknown' || cur === 'Mixed') uuidGenders[uid] = g;
+          // If both gendered, keep existing (shouldn't happen but be safe)
+        }
       }
 
       console.log(`    Page ${page}/${totalPages}: ${records.length} players`);
@@ -328,7 +378,7 @@ async function discoverSeasonPlayers(seasonId, data) {
   }
 
   console.log(`\n  ✓ Found ${discoveredUuids.size} unique players in ${seasonId}`);
-  return [...discoveredUuids];
+  return { uuids: [...discoveredUuids], genders: uuidGenders };
 }
 
 // ─── Phase 2: Fetch full profile history for a player ────────────────────────
@@ -441,10 +491,16 @@ async function fetchPlayerProfile(uuid, data, rawGames) {
   const player = {
     uuid,
     name,
+    gender: inferredGender || 'Unknown',
     seasons,
     updatedAt: new Date().toISOString(),
   };
 
+  // Preserve stronger gender signal from previous crawls
+  const existing = data.index.players[uuid];
+  if (existing?.gender === 'Female' || existing?.gender === 'Male') {
+    player.gender = existing.gender;
+  }
   data.index.players[uuid] = player;
   return { player, newSeasonIds: [...newSeasonIds] };
 }
@@ -479,7 +535,22 @@ async function modeCrawl(seasonId) {
 
   // If no pending work, discover this season first
   if (progress.pendingUuids.length === 0 || !progress.currentSeason) {
-    const uuids = await discoverSeasonPlayers(seasonId, data);
+    const { uuids, genders } = await discoverSeasonPlayers(seasonId, data);
+    saveData(data);
+
+    // Apply gender inference to existing player records
+    for (const [uuid, gender] of Object.entries(genders)) {
+      if (data.index.players[uuid]) {
+        const cur = data.index.players[uuid].gender;
+        if (!cur || cur === 'Unknown' || cur === 'Mixed') {
+          if (gender === 'Female' || gender === 'Male') {
+            data.index.players[uuid].gender = gender;
+          } else if (!cur) {
+            data.index.players[uuid].gender = gender;
+          }
+        }
+      }
+    }
     saveData(data);
 
     // Filter to uuids we haven't fetched yet
@@ -503,7 +574,7 @@ async function modeCrawl(seasonId) {
     const batchGames = {};  // rawGames: { seasonId: { uuid: [games] } }
 
     const results = await Promise.all(batch.map(async (uuid) => {
-      const result = await fetchPlayerProfile(uuid, data, batchGames);
+      const result = await fetchPlayerProfile(uuid, data, batchGames, genders[uuid]);
       return { uuid, result };
     }));
 
@@ -628,7 +699,7 @@ async function modeUpdate() {
 async function modeDiscover(seasonId) {
   console.log(`\n🔍 DISCOVER MODE — enumerate grades and players only (no profile fetch)`);
   const data = loadData();
-  const uuids = await discoverSeasonPlayers(seasonId, data);
+  const { uuids } = await discoverSeasonPlayers(seasonId, data);
   saveData(data);
   console.log(`\nDiscovered ${uuids.length} player UUIDs. Run with --mode=crawl to fetch full profiles.`);
   printNewSeasonSuggestions(data);
@@ -669,54 +740,55 @@ function printNewSeasonSuggestions(data) {
 // ─── Crawl-all mode — work through all undiscovered seasons from the index ────
 
 async function modeCrawlAll() {
-  console.log('\n🏀 CRAWL-ALL MODE — processing all pending seasons from index');
+  console.log('\n🏀 CRAWL-ALL MODE — one season per run, self-triggering until complete');
   const data = loadData();
 
   // Collect all season IDs referenced in player histories that aren't yet crawled
-  const knownIds  = new Set(Object.keys(data.index.seasons));
-  const pending   = new Set();
+  const knownIds = new Set(Object.keys(data.index.seasons));
+  const pending  = [];
 
   for (const player of Object.values(data.index.players)) {
     for (const s of (player.seasons || [])) {
       const sid = s.sid || s.seasonId;
-      if (sid && !knownIds.has(sid)) pending.add(sid);
+      if (sid && !knownIds.has(sid) && !pending.includes(sid)) pending.push(sid);
     }
   }
 
   if (pending.size === 0) {
-    console.log('No pending seasons found — all discovered seasons already crawled.');
+    console.log('\n✅ No pending seasons — all done!');
     return;
   }
 
-  const queue = [...pending];
-  console.log(`\n📋 ${queue.length} seasons to crawl`);
+  // Take the first pending season
+  const seasonId = pending[0];
+  console.log(`\n📋 ${pending.length} seasons remaining`);
+  console.log(`\n▶ Processing season ${seasonId}`);
 
-  for (let i = 0; i < queue.length; i++) {
-    const seasonId = queue[i];
-    console.log(`\n[${i + 1}/${queue.length}] Season ${seasonId}`);
-    try {
-      await modeCrawl(seasonId);
+  try {
+    await modeCrawl(seasonId);
+  } catch (e) {
+    console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
+  }
 
-      // After each crawl, check if new seasons were discovered and add to queue
-      const updatedData  = loadData();
-      const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
-      for (const player of Object.values(updatedData.index.players)) {
-        for (const s of (player.seasons || [])) {
-          const sid = s.sid || s.seasonId;
-          if (sid && !updatedKnown.has(sid) && !queue.includes(sid)) {
-            queue.push(sid);
-            console.log(`  ➕ Queued newly discovered season: ${sid}`);
-          }
-        }
-      }
-    } catch (e) {
-      console.warn(`  ⚠ Season ${seasonId} failed: ${e.message} — continuing`);
+  // Check how many are still pending after this crawl
+  const updatedData    = loadData();
+  const updatedKnownIds = new Set(Object.keys(updatedData.index.seasons));
+  const stillPending   = [];
+  for (const player of Object.values(updatedData.index.players)) {
+    for (const s of (player.seasons || [])) {
+      const sid = s.sid || s.seasonId;
+      if (sid && !updatedKnownIds.has(sid) && !stillPending.includes(sid)) stillPending.push(sid);
     }
   }
 
-  console.log(`\n✅ Crawl-all complete`);
-  console.log(`   Players in database: ${Object.keys(loadData().index.players).length}`);
-  console.log(`   Seasons in database: ${Object.keys(loadData().index.seasons).length}`);
+  if (stillPending.length > 0) {
+    console.log(`\n📋 ${stillPending.length} seasons still pending — triggering next run`);
+    await triggerSelf('crawl-all', TENANT, SPORT);
+  } else {
+    console.log(`\n✅ All seasons complete!`);
+    console.log(`   Players in database: ${Object.keys(updatedData.index.players).length}`);
+    console.log(`   Seasons in database: ${Object.keys(updatedData.index.seasons).length}`);
+  }
 }
 
 // ─── Probe mode — diagnose API schema ────────────────────────────────────────
