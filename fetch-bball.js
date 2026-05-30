@@ -141,7 +141,10 @@ async function gql(operationName, query, variables) {
     },
     body: JSON.stringify({ operationName, query, variables }),
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${operationName}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => '(could not read body)');
+    throw new Error(`HTTP ${res.status} for ${operationName}\nResponse body: ${body}`);
+  }
   const json = await res.json();
   if (json.errors) throw new Error(`GraphQL error in ${operationName}: ${JSON.stringify(json.errors)}`);
   return json.data;
@@ -573,6 +576,48 @@ function printNewSeasonSuggestions(data) {
   }
 }
 
+
+// ─── Probe mode — diagnose API schema ────────────────────────────────────────
+
+async function modeProbe() {
+  console.log('\n🔬 PROBE MODE — testing API schema');
+  const queries = [
+    {
+      name: 'discoverSeason (AFL-style, seasonID param)',
+      op: 'gradeListDiscoverSeason',
+      q: `query gradeListDiscoverSeason($id: ID!) { discoverSeason(seasonID: $id) { id name } }`,
+      v: { id: '15908988' },
+    },
+    {
+      name: 'discoverSeason (id param)',
+      op: 'probeSeason2',
+      q: `query probeSeason2($id: ID!) { discoverSeason(id: $id) { id name } }`,
+      v: { id: '15908988' },
+    },
+    {
+      name: '__schema query fields (introspection)',
+      op: 'IntrospectionQuery',
+      q: `{ __schema { queryType { fields { name } } } }`,
+      v: {},
+    },
+  ];
+  for (const probe of queries) {
+    await delay(DELAY_MS);
+    console.log(`\n  Testing: ${probe.name}`);
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'tenant': TENANT, 'origin': 'https://www.playhq.com' },
+        body: JSON.stringify({ operationName: probe.op, query: probe.q, variables: probe.v }),
+      });
+      const text = await res.text();
+      console.log(`  HTTP ${res.status}: ${text.slice(0, 800)}`);
+    } catch (e) {
+      console.log(`  Error: ${e.message}`);
+    }
+  }
+}
+
 // ─── CLI entry point ──────────────────────────────────────────────────────────
 
 async function main() {
@@ -606,6 +651,9 @@ async function main() {
       case 'lock':
         if (!seasonId) { console.error('--season=<id> required for lock mode'); process.exit(1); }
         modeLock(seasonId);
+        break;
+      case 'probe':
+        await modeProbe();
         break;
       default:
         console.error(`Unknown mode: ${mode}`);
