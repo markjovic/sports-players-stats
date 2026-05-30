@@ -1,4 +1,4 @@
-name: Basketball Scraper
+name: PlayHQ Sports Scraper
 
 on:
   workflow_dispatch:
@@ -19,6 +19,14 @@ on:
         description: 'Season ID (required for crawl / discover / lock)'
         required: false
         default: ''
+      tenant:
+        description: 'PlayHQ tenant (bv=basketball, afl=footy, ca=cricket)'
+        required: false
+        default: 'bv'
+      sport:
+        description: 'Sport name for labelling (basketball, australian-rules, cricket)'
+        required: false
+        default: 'basketball'
 
   schedule:
     # Update active seasons every Monday and Thursday at 6am AEST (8pm UTC Sunday/Wednesday)
@@ -44,27 +52,29 @@ jobs:
         run: |
           MODE="${{ github.event.inputs.mode || 'update' }}"
           SEASON="${{ github.event.inputs.season || '' }}"
+          TENANT="${{ github.event.inputs.tenant || 'bv' }}"
+          SPORT="${{ github.event.inputs.sport || 'basketball' }}"
 
+          ARGS="--tenant=$TENANT --sport=$SPORT --mode=$MODE"
           if [ -n "$SEASON" ] && [ "$MODE" != "crawl-all" ] && [ "$MODE" != "update" ] && [ "$MODE" != "probe" ]; then
-            node fetch-bball.js --mode=$MODE --season=$SEASON
-          else
-            node fetch-bball.js --mode=$MODE
+            ARGS="$ARGS --season=$SEASON"
           fi
+          node fetch-playhq.js $ARGS
 
       - name: Commit results
         if: always()
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bball-index.json bball-games.json
+          git add sports-index.json games-*.json
           # If progress file exists, crawl was interrupted — commit it so next run can resume
-          if [ -f bball-progress.json ]; then
-            git add bball-progress.json
+          # Commit any progress files (tenant-namespaced, e.g. progress-bv.json)
+          if ls progress-*.json 1> /dev/null 2>&1; then
+            git add progress-*.json
           else
-            # Crawl completed cleanly — remove progress file from git if it was previously tracked
-            git rm --cached bball-progress.json 2>/dev/null || true
+            git rm --cached progress-*.json 2>/dev/null || true
           fi
           # Only commit if something changed
-          git diff --staged --quiet || git commit -m "chore: update bball-data.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git diff --staged --quiet || git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
           git pull --rebase
           git push
