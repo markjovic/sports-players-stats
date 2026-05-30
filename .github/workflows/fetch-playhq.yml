@@ -89,7 +89,5 @@ jobs:
           fi
           # Only commit if something changed
           git diff --staged --quiet || git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git stash 2>/dev/null || true
-          git pull --rebase
-          git stash pop 2>/dev/null || true
+          git pull --rebase=false --no-edit -X ours
           git push
