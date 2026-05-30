@@ -106,7 +106,8 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 
 // These depend on TENANT so must come after CLI arg parsing
 const PROGRESS_FILE = path.join(__dirname, `progress-${TENANT}.json`);
-const QUEUE_FILE    = path.join(__dirname, `queue-${TENANT}.json`);
+const QUEUE_PRIORITY_FILE = path.join(__dirname, `queue-${TENANT}-priority.json`);
+const QUEUE_BACKLOG_FILE  = path.join(__dirname, `queue-${TENANT}-backlog.json`);
 const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
 
 function gamesFile(seasonId) {
@@ -512,34 +513,79 @@ async function fetchPlayerProfile(uuid, data, rawGames) {
 
 // ─── Season queue helpers ────────────────────────────────────────────────────
 
-function loadQueue() {
-  if (fs.existsSync(QUEUE_FILE)) {
-    try { return JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8')); }
-    catch (e) { console.warn('⚠ Could not parse queue file'); }
+function parseSeasonYear(seasonName) {
+  // Extract year from season names like "Winter 2023", "Summer 2022/23", "Autumn 2024"
+  if (!seasonName) return null;
+  const m = seasonName.match(/20(\d\d)/g);
+  if (!m) return null;
+  // Take the latest year mentioned (e.g. "2022/23" → 2023)
+  return Math.max(...m.map(y => parseInt(y)));
+}
+
+function isPriority(seasonName) {
+  const year = parseSeasonYear(seasonName);
+  return year !== null && year >= 2023;
+}
+
+function loadQueues() {
+  let priority = null, backlog = null;
+  if (fs.existsSync(QUEUE_PRIORITY_FILE)) {
+    try { priority = JSON.parse(fs.readFileSync(QUEUE_PRIORITY_FILE, 'utf8')); }
+    catch (e) { console.warn('⚠ Could not parse priority queue'); }
   }
-  return null;  // null = not initialised yet
+  if (fs.existsSync(QUEUE_BACKLOG_FILE)) {
+    try { backlog = JSON.parse(fs.readFileSync(QUEUE_BACKLOG_FILE, 'utf8')); }
+    catch (e) { console.warn('⚠ Could not parse backlog queue'); }
+  }
+  return { priority, backlog };
 }
 
-function saveQueue(queue) {
-  fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue));
+function saveQueues(priority, backlog) {
+  if (priority !== null) fs.writeFileSync(QUEUE_PRIORITY_FILE, JSON.stringify(priority));
+  if (backlog  !== null) fs.writeFileSync(QUEUE_BACKLOG_FILE,  JSON.stringify(backlog));
 }
 
-function deleteQueue() {
-  if (fs.existsSync(QUEUE_FILE)) fs.unlinkSync(QUEUE_FILE);
+function deleteQueues() {
+  if (fs.existsSync(QUEUE_PRIORITY_FILE)) fs.unlinkSync(QUEUE_PRIORITY_FILE);
+  if (fs.existsSync(QUEUE_BACKLOG_FILE))  fs.unlinkSync(QUEUE_BACKLOG_FILE);
 }
 
-function buildQueueFromIndex(data) {
-  // Full index scan — only done once to seed the queue
-  console.log('  Building season queue from index (one-time scan)...');
+async function buildQueuesFromIndex(data) {
+  // Full index scan — only done once to seed the queues
+  // For each unknown season, do a quick discoverSeason call to get the name/year
+  console.log('  Building season queues from index (one-time scan)...');
   const knownIds = new Set(Object.keys(data.index.seasons));
-  const pending  = [];
+  const unknown  = [];
   for (const player of Object.values(data.index.players)) {
     for (const s of (player.seasons || [])) {
       const sid = s.sid || s.seasonId;
-      if (sid && !knownIds.has(sid) && !pending.includes(sid)) pending.push(sid);
+      if (sid && !knownIds.has(sid) && !unknown.includes(sid)) unknown.push(sid);
     }
   }
-  return pending;
+
+  console.log(`  Found ${unknown.length} unknown seasons — checking years...`);
+  const priority = [], backlog = [];
+
+  for (const sid of unknown) {
+    await delay(DELAY_MS);
+    try {
+      const result = await gql('gradeListDiscoverSeason', Q_SEASON, { id: sid });
+      const name   = result?.discoverSeason?.name || '';
+      if (isPriority(name)) {
+        priority.push(sid);
+        console.log(`  ✓ Priority: ${sid} — ${name}`);
+      } else {
+        backlog.push(sid);
+      }
+    } catch (e) {
+      // Can't determine year — put in backlog
+      backlog.push(sid);
+    }
+  }
+
+  console.log(`  Priority queue: ${priority.length} seasons (2023+)`);
+  console.log(`  Backlog queue:  ${backlog.length} seasons (pre-2023)`);
+  return { priority, backlog };
 }
 
 // ─── Grade name parsing ───────────────────────────────────────────────────────
@@ -780,25 +826,34 @@ async function modeCrawlAll() {
   console.log('\n🏀 CRAWL-ALL MODE — one season per run, self-triggering until complete');
   const data = loadData();
 
-  // Load or build the queue
-  let queue = loadQueue();
-  if (!queue) {
-    queue = buildQueueFromIndex(data);
-    console.log(`  Found ${queue.length} pending seasons`);
-    saveQueue(queue);
+  // Load or build the two-tier queues
+  let { priority, backlog } = loadQueues();
+
+  if (!priority && !backlog) {
+    // First run — build queues from index with year-based routing
+    const queues = await buildQueuesFromIndex(data);
+    priority = queues.priority;
+    backlog  = queues.backlog;
+    saveQueues(priority, backlog);
   } else {
-    console.log(`  Loaded queue: ${queue.length} seasons remaining`);
+    console.log(`  Priority queue: ${(priority||[]).length} seasons remaining`);
+    console.log(`  Backlog queue:  ${(backlog||[]).length} seasons remaining`);
   }
 
-  if (queue.length === 0) {
-    console.log('\n✅ No pending seasons — all done!');
-    deleteQueue();
+  priority = priority || [];
+  backlog  = backlog  || [];
+
+  if (priority.length === 0 && backlog.length === 0) {
+    console.log('\n✅ All seasons complete!');
+    deleteQueues();
     return;
   }
 
-  // Take the first season from the queue
-  const seasonId = queue.shift();
-  console.log(`\n▶ Processing season ${seasonId} (${queue.length} remaining after this)`);
+  // Take from priority first, then backlog
+  const fromPriority = priority.length > 0;
+  const seasonId     = fromPriority ? priority.shift() : backlog.shift();
+  const tier         = fromPriority ? 'priority' : 'backlog';
+  console.log(`\n▶ [${tier}] Season ${seasonId} (${priority.length} priority + ${backlog.length} backlog remaining)`);
 
   try {
     await modeCrawl(seasonId);
@@ -806,27 +861,36 @@ async function modeCrawlAll() {
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
   }
 
-  // Add any newly discovered seasons to the queue
+  // Route newly discovered seasons to the right queue
   const updatedData  = loadData();
   const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
-  const queueSet     = new Set(queue);
+  const allQueued    = new Set([...priority, ...backlog]);
+
   for (const player of Object.values(updatedData.index.players)) {
     for (const s of (player.seasons || [])) {
       const sid = s.sid || s.seasonId;
-      if (sid && !updatedKnown.has(sid) && !queueSet.has(sid)) {
-        queue.push(sid);
-        queueSet.add(sid);
-        console.log(`  ➕ Queued newly discovered season: ${sid}`);
+      if (sid && !updatedKnown.has(sid) && !allQueued.has(sid)) {
+        // Quick year check from the season name we already have in the player record
+        const sn = s.sn || s.seasonName || '';
+        if (isPriority(sn)) {
+          priority.push(sid);
+          console.log(`  ➕ Priority: ${sid} — ${sn}`);
+        } else {
+          backlog.push(sid);
+          console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
+        }
+        allQueued.add(sid);
       }
     }
   }
 
-  if (queue.length > 0) {
-    saveQueue(queue);
-    console.log(`\n📋 ${queue.length} seasons remaining — triggering next run`);
+  const totalRemaining = priority.length + backlog.length;
+  if (totalRemaining > 0) {
+    saveQueues(priority, backlog);
+    console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining — triggering next run`);
     await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
-    deleteQueue();
+    deleteQueues();
     console.log(`\n✅ All seasons complete!`);
     console.log(`   Players in database: ${Object.keys(updatedData.index.players).length}`);
     console.log(`   Seasons in database: ${Object.keys(updatedData.index.seasons).length}`);
