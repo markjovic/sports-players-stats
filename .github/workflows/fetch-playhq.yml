@@ -35,9 +35,9 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 355
     permissions:
       contents: write
+      actions: write
 
     steps:
       - name: Checkout repo
@@ -49,6 +49,9 @@ jobs:
           node-version: '20'
 
       - name: Run scraper
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           MODE="${{ github.event.inputs.mode || 'update' }}"
           SEASON="${{ github.event.inputs.season || '' }}"
