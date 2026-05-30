@@ -108,6 +108,15 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 
 // These depend on TENANT so must come after CLI arg parsing
 const PROGRESS_FILE = path.join(__dirname, `progress-${TENANT}.json`);
+
+// ─── Concurrency / rate-limit state (module-level so gql() can reference) ────
+const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '30', 10);
+let CONCURRENCY     = _START_CONCURRENCY;
+let CONCURRENCY_CAP = _START_CONCURRENCY;
+let _clean_batches  = 0;  // consecutive clean batches since last 429
+let _429_streak     = 0;  // consecutive 429s on current request — drives cap down
+let _429_total      = 0;  // total 429s this season — reported in summary
+let _429_cap_hits   = 0;  // times cap was lowered this season
 const QUEUE_PRIORITY_FILE = path.join(__dirname, `queue-${TENANT}-priority.json`);
 const QUEUE_BACKLOG_FILE  = path.join(__dirname, `queue-${TENANT}-backlog.json`);
 const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
@@ -423,7 +432,7 @@ async function discoverSeasonPlayers(seasonId, data) {
 
 // ─── Phase 2: Fetch full profile history for a player ────────────────────────
 
-async function fetchPlayerProfile(uuid, data, rawGames) {
+async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
   await delay(DELAY_MS);
   if (!rawGames) rawGames = {};
   let result;
@@ -688,14 +697,6 @@ async function modeCrawl(seasonId) {
 
   const total = progress.pendingUuids.length + progress.doneUuids.length;
   let done = progress.doneUuids.length;
-  const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '30', 10);
-let CONCURRENCY     = _START_CONCURRENCY;
-let CONCURRENCY_CAP = _START_CONCURRENCY;
-let _clean_batches  = 0;    // consecutive clean batches since last 429
-let _429_streak     = 0;    // consecutive 429s in current request — drives cap down
-let _429_total      = 0;    // total 429s this season — reported in summary
-let _429_cap_hits   = 0;    // number of times cap was lowered this season
-
   while (progress.pendingUuids.length > 0) {
     const batch = progress.pendingUuids.splice(0, CONCURRENCY);
     const batchGames = {};  // rawGames: { seasonId: { uuid: [games] } }
@@ -773,10 +774,6 @@ let _429_cap_hits   = 0;    // number of times cap was lowered this season
     console.log(`   ✅ Rate limiting resolved without cap reduction`);
   }
 
-  // Reset counters for next season
-  _429_total    = 0;
-  _429_cap_hits = 0;
-
   // Mark season done
   if (!progress.seasonsDone.includes(seasonId)) progress.seasonsDone.push(seasonId);
   data.index.lastFetch = new Date().toISOString();
@@ -802,7 +799,7 @@ async function modeUpdate() {
   console.log(`\n🔄 UPDATE MODE — refreshing active seasons`);
   const data = loadData();
 
-  const activeSeasons = Object.values(data.seasons).filter(s => !s.locked);
+  const activeSeasons = Object.values(data.index.seasons).filter(s => !s.locked);
   if (activeSeasons.length === 0) {
     console.log('No active seasons to update. All seasons are locked.');
     return;
@@ -812,7 +809,7 @@ async function modeUpdate() {
 
   const allUuids = new Set();
   for (const season of activeSeasons) {
-    const uuids = await discoverSeasonPlayers(season.id, data);
+    const { uuids } = await discoverSeasonPlayers(season.id, data);
     uuids.forEach(u => allUuids.add(u));
     saveData(data);
   }
@@ -820,13 +817,6 @@ async function modeUpdate() {
   console.log(`\n📥 Fetching ${allUuids.size} unique players across active seasons...`);
   let i = 0;
   const uuidArray = [...allUuids];
-  const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '30', 10);
-let CONCURRENCY     = _START_CONCURRENCY;
-let CONCURRENCY_CAP = _START_CONCURRENCY;
-let _clean_batches  = 0;    // consecutive clean batches since last 429
-let _429_streak     = 0;    // consecutive 429s in current request — drives cap down
-let _429_total      = 0;    // total 429s this season — reported in summary
-let _429_cap_hits   = 0;    // number of times cap was lowered this season
   while (i < uuidArray.length) {
     const batch = uuidArray.slice(i, i + CONCURRENCY);
     const batchGames = {};
