@@ -108,7 +108,7 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 
 // These depend on TENANT so must come after CLI arg parsing
 const PROGRESS_FILE  = path.join(__dirname, `progress-${TENANT}.json`);
-const PLAYERS_DIR    = path.join(__dirname, 'players', TENANT);
+const PLAYERS_DIR    = path.join(__dirname, 'players');
 
 // Tenant → sport name mapping (avoids unreliable API field)
 const TENANT_SPORT = {
@@ -1026,6 +1026,7 @@ async function modeCrawlAll() {
     await modeCrawl(seasonId);
   } catch (e) {
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
+    console.warn(e.stack);
   }
 
   // Route newly discovered seasons to the right queue
@@ -1054,8 +1055,10 @@ async function modeCrawlAll() {
   const totalRemaining = priority.length + backlog.length;
   if (totalRemaining > 0) {
     saveQueues(priority, backlog);
-    console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining — triggering next run`);
-    await triggerSelf('crawl-all', TENANT, SPORT);
+    console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining`);
+    // Self-trigger disabled for debugging — re-enable once crash is resolved
+    // await triggerSelf('crawl-all', TENANT, SPORT);
+    console.log('  ⚠ Self-trigger disabled — trigger manually after reviewing logs');
   } else {
     deleteQueues();
     console.log(`\n✅ All seasons complete!`);
