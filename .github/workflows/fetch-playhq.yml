@@ -71,6 +71,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add sports-index.json
           git add games/ 2>/dev/null || true
+          if ls queue-*.json 1> /dev/null 2>&1; then
+            git add queue-*.json
+          else
+            git rm --cached queue-*.json 2>/dev/null || true
+          fi
           # If progress file exists, crawl was interrupted — commit it so next run can resume
           # Commit any progress files (tenant-namespaced, e.g. progress-bv.json)
           if ls progress-*.json 1> /dev/null 2>&1; then
