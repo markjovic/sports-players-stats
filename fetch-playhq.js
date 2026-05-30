@@ -798,7 +798,7 @@ async function modeCrawl(seasonId) {
     for (const { uuid, result } of results) {
       done++;
       if (result) {
-        console.log(`  [${done}/${total}] ✓ ${result.player.name} (${result.player.seasons.length} seasons)`);
+        console.log(`  [${done}/${total}] ✓ ${result.player.name}`);
         for (const newSeasonId of result.newSeasonIds) {
           if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
             if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
@@ -1055,10 +1055,8 @@ async function modeCrawlAll() {
   const totalRemaining = priority.length + backlog.length;
   if (totalRemaining > 0) {
     saveQueues(priority, backlog);
-    console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining`);
-    // Self-trigger disabled for debugging — re-enable once crash is resolved
-    // await triggerSelf('crawl-all', TENANT, SPORT);
-    console.log('  ⚠ Self-trigger disabled — trigger manually after reviewing logs');
+    console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining — triggering next run`);
+    await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
     deleteQueues();
     console.log(`\n✅ All seasons complete!`);
