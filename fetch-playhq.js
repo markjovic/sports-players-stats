@@ -742,9 +742,16 @@ async function modeCrawl(seasonId) {
   const data = loadData();
   const progress = loadProgress();
 
-  // If no pending work, discover this season first
+  // If no pending work, or progress is for a different season, discover fresh
   let genders = {};  // uuid → inferred gender; populated during discovery, empty on resume
-  if (progress.pendingUuids.length === 0 || !progress.currentSeason) {
+  if (progress.pendingUuids.length === 0 || !progress.currentSeason || progress.currentSeason !== seasonId) {
+    if (progress.currentSeason && progress.currentSeason !== seasonId) {
+      console.log(`  ⚠ Progress file is for season ${progress.currentSeason}, not ${seasonId} — starting fresh`);
+      clearProgress();
+      progress.pendingUuids = [];
+      progress.doneUuids    = [];
+      progress.seasonsDone  = [];
+    }
     const discovered = await discoverSeasonPlayers(seasonId, data);
     const uuids = discovered.uuids;
     genders = discovered.genders;
