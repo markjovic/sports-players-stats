@@ -1,0 +1,58 @@
+name: Basketball Scraper
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: crawl | update | discover | lock'
+        required: true
+        default: 'update'
+        type: choice
+        options:
+          - crawl
+          - update
+          - discover
+          - lock
+      season:
+        description: 'Season ID (required for crawl / discover / lock)'
+        required: false
+        default: ''
+
+  schedule:
+    # Update active seasons every Monday and Thursday at 6am AEST (8pm UTC Sunday/Wednesday)
+    - cron: '0 20 * * 0,3'
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run scraper
+        run: |
+          MODE="${{ github.event.inputs.mode || 'update' }}"
+          SEASON="${{ github.event.inputs.season || '' }}"
+
+          if [ -n "$SEASON" ]; then
+            node fetch-bball.js --mode=$MODE --season=$SEASON
+          else
+            node fetch-bball.js --mode=$MODE
+          fi
+
+      - name: Commit results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bball-data.json
+          # Only commit if something changed
+          git diff --staged --quiet || git commit -m "chore: update bball-data.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
