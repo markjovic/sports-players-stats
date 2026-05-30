@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 /**
- * fetch-bball.js — Basketball player scraper for PlayHQ GraphQL API
+ * fetch-playhq.js — Basketball player scraper for PlayHQ GraphQL API
  *
  * MODES:
- *   node fetch-bball.js --mode=crawl --season=<id>   # add a new season, discover its players
- *   node fetch-bball.js --mode=update                # re-fetch all active (unlocked) seasons
- *   node fetch-bball.js --mode=lock --season=<id>    # mark a season as historical (no further updates)
- *   node fetch-bball.js --mode=discover              # just enumerate grades/players, no profile fetch
+ *   node fetch-playhq.js --mode=crawl --season=<id>   # add a new season, discover its players
+ *   node fetch-playhq.js --mode=update                # re-fetch all active (unlocked) seasons
+ *   node fetch-playhq.js --mode=lock --season=<id>    # mark a season as historical (no further updates)
+ *   node fetch-playhq.js --mode=discover              # just enumerate grades/players, no profile fetch
  *
  * OUTPUT FILES:
- *   bball-data.json       — main data store (players, seasons, comps)
- *   bball-progress.json   — resume state (survives interruptions)
+ *   sports-index.json    — main data store (players, seasons, comps)
+ *   games-{tenant}-{seasonId}.json — per-season game index
+ *   progress-{tenant}.json  — resume state (survives interruptions)
  *
- * TENANT: bv (Basketball Victoria) — change TENANT constant if targeting another org
+ * TENANT/SPORT: passed as CLI args (--tenant=bv --sport=basketball)
+ * Supported tenants: bv (basketball), afl (footy), ca (cricket)
  *
  * STAT FIELD DISCOVERY:
  *   On first run, unknown stat field names are logged to console with [UNKNOWN STAT].
@@ -24,12 +26,17 @@ const path = require('path');
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 
-const TENANT         = 'bv';               // Basketball Victoria — change if needed
+// Tenant and sport are set from CLI args (--tenant=bv --sport=basketball)
+// Defaults to Basketball Victoria if not specified
 const API_URL        = 'https://api.playhq.com/graphql';
 const DELAY_MS       = 50;               // ms between API requests (be polite)
-const INDEX_FILE     = path.join(__dirname, 'bball-index.json');
-const GAMES_FILE     = path.join(__dirname, 'bball-games.json');
-const PROGRESS_FILE  = path.join(__dirname, 'bball-progress.json');
+const INDEX_FILE     = path.join(__dirname, 'sports-index.json');
+const PROGRESS_FILE  = path.join(__dirname, `progress-${TENANT}.json`);
+
+function gamesFile(seasonId) {
+  // Namespaced by tenant so afl/bv/ca games files don't collide
+  return path.join(__dirname, `games-${TENANT}-${seasonId}.json`);
+}
 const PAGE_SIZE      = 50;               // max players per page from gradePlayerStatistics
 
 /**
@@ -51,6 +58,17 @@ const STAT_FIELDS = {
   '2_POINT_SCORE': 'fg',      // field goals (2 pt each)
   '3_POINT_SCORE': 'threePt', // 3-pointers (speculative — may appear in older/rep grades)
 };
+
+// ─── CLI args (parsed early so TENANT/SPORT are available as constants) ─────
+
+const _RAW_ARGS = Object.fromEntries(
+  process.argv.slice(2)
+    .filter(a => a.startsWith('--'))
+    .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
+);
+
+const TENANT = _RAW_ARGS.tenant || 'bv';
+const SPORT  = _RAW_ARGS.sport  || 'basketball';
 
 // ─── GraphQL Queries ──────────────────────────────────────────────────────────
 
@@ -182,23 +200,29 @@ function parseStats(statisticsArray) {
 
 function loadData() {
   let index = { players: {}, seasons: {}, lastFetch: null };
-  let games  = {};  // uuid → [{g,d,o,on}]
-
   if (fs.existsSync(INDEX_FILE)) {
     try { index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8')); }
-    catch (e) { console.warn('⚠ Could not parse bball-index.json, starting fresh'); }
+    catch (e) { console.warn('⚠ Could not parse sports-index.json, starting fresh'); }
   }
-  if (fs.existsSync(GAMES_FILE)) {
-    try { games = JSON.parse(fs.readFileSync(GAMES_FILE, 'utf8')); }
-    catch (e) { console.warn('⚠ Could not parse bball-games.json, starting fresh'); }
-  }
-  return { index, games };
+  return { index };
 }
 
-function saveData({ index, games }) {
-  // Write index without games (games go to separate file)
+function loadSeasonGames(seasonId) {
+  const f = gamesFile(seasonId);
+  if (fs.existsSync(f)) {
+    try { return JSON.parse(fs.readFileSync(f, 'utf8')); }
+    catch (e) { console.warn(`⚠ Could not parse games file for ${seasonId}`); }
+  }
+  // Empty season games structure
+  return { games: {}, playerGames: {} };
+}
+
+function saveData({ index }) {
   fs.writeFileSync(INDEX_FILE, JSON.stringify(index, null, 2));
-  fs.writeFileSync(GAMES_FILE, JSON.stringify(games, null, 2));
+}
+
+function saveSeasonGames(seasonId, seasonGames) {
+  fs.writeFileSync(gamesFile(seasonId), JSON.stringify(seasonGames));
 }
 
 function loadProgress() {
@@ -246,6 +270,7 @@ async function discoverSeasonPlayers(seasonId, data) {
       compId:   season.competition?.id,
       orgName,
       orgId:    season.competition?.organisation?.id,
+      tenant:   TENANT,
       grades:   [],
       locked:   false,
       addedAt:  new Date().toISOString(),
@@ -255,8 +280,8 @@ async function discoverSeasonPlayers(seasonId, data) {
   const metaSeason = data.index.seasons[seasonId];
   const discoveredUuids = new Set();
 
-  for (const grade of season.grades) {
-    console.log(`\n  Grade: ${grade.name}`);
+  for (const [gi, grade] of season.grades.entries()) {
+    console.log(`\n  Grade [${gi+1}/${season.grades.length}]: ${grade.name}`);
     let page = 1;
     let totalPages = 1;
 
@@ -307,8 +332,9 @@ async function discoverSeasonPlayers(seasonId, data) {
 
 // ─── Phase 2: Fetch full profile history for a player ────────────────────────
 
-async function fetchPlayerProfile(uuid, data, allGames) {
+async function fetchPlayerProfile(uuid, data, rawGames) {
   await delay(DELAY_MS);
+  if (!rawGames) rawGames = {};
   let result;
   try {
     result = await gql('publicProfileStatistics', Q_PROFILE, { profileID: uuid });
@@ -331,7 +357,7 @@ async function fetchPlayerProfile(uuid, data, allGames) {
   // Build structured player record
   const seasons = [];
   for (const sportSeason of (stats?.seasonStatistics || [])) {
-    // sportSeason.name = sport name e.g. "Basketball"
+    const sport = sportSeason.name || null;  // e.g. "Basketball", "Australian Rules Football"
     for (const reg of (sportSeason.statistics || [])) {
       const seasonId   = reg.season?.id;
       const seasonName = reg.season?.name;
@@ -390,12 +416,14 @@ async function fetchPlayerProfile(uuid, data, allGames) {
             age:   ageGroup,
             div:   division,
             stats: totalStats,
-            // games stored separately in bball-games.json
           });
 
-          // Accumulate games for the games file
-          if (!allGames[uuid]) allGames[uuid] = [];
-          allGames[uuid].push(...games);
+          // Accumulate raw games keyed by seasonId for per-season game files
+          if (games.length > 0) {
+            if (!rawGames[seasonId]) rawGames[seasonId] = {};
+            if (!rawGames[seasonId][uuid]) rawGames[seasonId][uuid] = [];
+            rawGames[seasonId][uuid].push(...games);
+          }
         }
       }
 
@@ -403,6 +431,7 @@ async function fetchPlayerProfile(uuid, data, allGames) {
         sid:  seasonId,
         sn:   seasonName,
         club: clubName,
+        sport,
         regs: registrations,
       });
     }
@@ -470,7 +499,7 @@ async function modeCrawl(seasonId) {
 
   while (progress.pendingUuids.length > 0) {
     const batch = progress.pendingUuids.splice(0, CONCURRENCY);
-    const batchGames = {};  // games accumulated for this batch
+    const batchGames = {};  // rawGames: { seasonId: { uuid: [games] } }
 
     const results = await Promise.all(batch.map(async (uuid) => {
       const result = await fetchPlayerProfile(uuid, data, batchGames);
@@ -523,7 +552,7 @@ async function modeCrawl(seasonId) {
   if (progress.discoveredSeasons && progress.discoveredSeasons.length > 0) {
     console.log(`\n💡 ${progress.discoveredSeasons.length} new season(s) discovered in player histories:`);
     for (const id of progress.discoveredSeasons) {
-      console.log(`   node fetch-bball.js --mode=crawl --season=${id}`);
+      console.log(`   node fetch-playhq.js --mode=crawl --season=${id}`);
     }
   }
 
@@ -566,12 +595,17 @@ async function modeUpdate() {
       i++;
       console.log(result ? `  [${i}/${uuidArray.length}] ✓ ${result.player.name}` : `  [${i}/${uuidArray.length}] ⚠ skipped`);
     }
-    for (const [uuid, games] of Object.entries(batchGames)) {
-      if (!data.games[uuid]) data.games[uuid] = [];
-      const existing = new Set(data.games[uuid].map(g => g.g));
-      for (const game of games) {
-        if (!existing.has(game.g)) data.games[uuid].push(game);
+    for (const [sid, playerMap] of Object.entries(batchGames)) {
+      const sg = loadSeasonGames(sid);
+      for (const [uuid, games] of Object.entries(playerMap)) {
+        if (!sg.playerGames[uuid]) sg.playerGames[uuid] = [];
+        const existingGames = new Set(sg.playerGames[uuid]);
+        for (const game of games) {
+          if (!sg.games[game.g]) sg.games[game.g] = { d: game.d, on: game.on, o: game.o };
+          if (!existingGames.has(game.g)) { sg.playerGames[uuid].push(game.g); existingGames.add(game.g); }
+        }
       }
+      saveSeasonGames(sid, sg);
     }
     saveData(data);
   }
@@ -615,7 +649,7 @@ function printNewSeasonSuggestions(data) {
   if (referenced.size > 0) {
     console.log(`\n💡 ${referenced.size} season IDs found in player histories but not yet crawled:`);
     for (const id of referenced) {
-      console.log(`   node fetch-bball.js --mode=crawl --season=${id}`);
+      console.log(`   node fetch-playhq.js --mode=crawl --season=${id}`);
     }
   }
 }
@@ -719,17 +753,13 @@ async function modeProbe() {
 // ─── CLI entry point ──────────────────────────────────────────────────────────
 
 async function main() {
-  const args = Object.fromEntries(
-    process.argv.slice(2)
-      .filter(a => a.startsWith('--'))
-      .map(a => a.slice(2).split('='))
-  );
+  const mode     = _RAW_ARGS.mode   || 'crawl';
+  const seasonId = _RAW_ARGS.season;
 
-  const mode     = args.mode     || 'crawl';
-  const seasonId = args.season;
-
-  console.log('🏀 Basketball Player Scraper');
+  const sportEmoji = { basketball: '🏀', 'australian-rules': '🏈', cricket: '🏏' }[SPORT] || '🏆';
+  console.log(`${sportEmoji} PlayHQ Sports Scraper`);
   console.log(`   Tenant:  ${TENANT}`);
+  console.log(`   Sport:   ${SPORT}`);
   console.log(`   Mode:    ${mode}`);
   if (seasonId) console.log(`   Season:  ${seasonId}`);
 
