@@ -1036,7 +1036,15 @@ async function modeCrawlAll() {
   } catch (e) {
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
     console.warn(e.stack);
-    console.warn('  ⚠ Self-trigger suppressed due to error — fix the issue before re-running');
+    // "not found" = bad season ID, safe to skip and continue
+    const isSkippable = e.message.includes('not found') || e.message.includes('HTTP 4');
+    if (!isSkippable) {
+      console.warn('  ⚠ Self-trigger suppressed — fix the issue before re-running');
+      return;
+    }
+    console.warn('  ⚠ Skipping bad season ID — will not be retried');
+    // Season already popped from queue via .shift() so it won't be retried
+    seasonSucceeded = true;  // treat as success so chain continues
   }
 
   if (!seasonSucceeded) return;
@@ -1070,8 +1078,10 @@ async function modeCrawlAll() {
   }
 
   const totalRemaining = priority.length + backlog.length;
+  // Always save queues so next run sees the updated counts
+  saveQueues(priority, backlog);
+
   if (totalRemaining > 0) {
-    saveQueues(priority, backlog);
     console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining — triggering next run`);
     await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
