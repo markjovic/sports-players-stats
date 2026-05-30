@@ -26,7 +26,7 @@ const path = require('path');
 
 const TENANT         = 'bv';               // Basketball Victoria — change if needed
 const API_URL        = 'https://api.playhq.com/graphql';
-const DELAY_MS       = 400;               // ms between API requests (be polite)
+const DELAY_MS       = 50;               // ms between API requests (be polite)
 const DATA_FILE      = path.join(__dirname, 'bball-data.json');
 const PROGRESS_FILE  = path.join(__dirname, 'bball-progress.json');
 const PAGE_SIZE      = 50;               // max players per page from gradePlayerStatistics
@@ -42,17 +42,13 @@ const PAGE_SIZE      = 50;               // max players per page from gradePlaye
  * FREE_THROW, FREE_THROW_ATTEMPT, etc.
  */
 const STAT_FIELDS = {
-  // Populated from logs after first discovery run.
-  // Format: 'API_VALUE_STRING': 'ourFieldName'
-  // e.g. 'APPEARANCE':          'gp',
-  //      'POINT_COUNT':         'pts',
-  //      'FOUL_COUNT':          'fouls',
-  //      'FIELD_GOAL':          'fg',
-  //      'FIELD_GOAL_ATTEMPT':  'fga',
-  //      'THREE_POINT':         'threePt',
-  //      'THREE_POINT_ATTEMPT': 'threePtA',
-  //      'FREE_THROW':          'ft',
-  //      'FREE_THROW_ATTEMPT':  'ftA',
+  // Confirmed from first crawl run (MEBA Winter 2026)
+  'APPEARANCE':    'gp',
+  'TOTAL_SCORE':   'pts',
+  'TOTAL_FOULS':   'fouls',
+  '1_POINT_SCORE': 'ft',      // free throws (1 pt each)
+  '2_POINT_SCORE': 'fg',      // field goals (2 pt each)
+  '3_POINT_SCORE': 'threePt', // 3-pointers (speculative — may appear in older/rep grades)
 };
 
 // ─── GraphQL Queries ──────────────────────────────────────────────────────────
@@ -459,36 +455,40 @@ async function modeCrawl(seasonId) {
 
   const total = progress.pendingUuids.length + progress.doneUuids.length;
   let done = progress.doneUuids.length;
+  const CONCURRENCY = 15;
 
   while (progress.pendingUuids.length > 0) {
-    const uuid = progress.pendingUuids[0];
-    process.stdout.write(`  [${done + 1}/${total}] ${uuid} ... `);
+    const batch = progress.pendingUuids.splice(0, CONCURRENCY);
 
-    const result = await fetchPlayerProfile(uuid, data);
+    const results = await Promise.all(batch.map(async (uuid) => {
+      const result = await fetchPlayerProfile(uuid, data);
+      return { uuid, result };
+    }));
 
-    if (result) {
-      console.log(`✓ ${result.player.name} (${result.player.seasons.length} seasons)`);
-
-      // Queue any newly discovered seasons we haven't seen
-      for (const newSeasonId of result.newSeasonIds) {
-        if (!data.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
-          console.log(`    🔍 New season discovered: ${newSeasonId} — add with --mode=crawl --season=${newSeasonId}`);
+    for (const { uuid, result } of results) {
+      done++;
+      if (result) {
+        console.log(`  [${done}/${total}] ✓ ${result.player.name} (${result.player.seasons.length} seasons)`);
+        for (const newSeasonId of result.newSeasonIds) {
+          if (!data.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
+            if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
+            if (!progress.discoveredSeasons.includes(newSeasonId)) {
+              progress.discoveredSeasons.push(newSeasonId);
+              console.log(`    🔍 New season discovered: ${newSeasonId}`);
+            }
+          }
         }
+      } else {
+        console.log(`  [${done}/${total}] ⚠ ${uuid} skipped`);
       }
-    } else {
-      console.log(`⚠ skipped (private or failed)`);
+      progress.doneUuids.push(uuid);
     }
 
-    // Advance progress
-    progress.pendingUuids.shift();
-    progress.doneUuids.push(uuid);
-    done++;
-
-    // Save every 10 players
-    if (done % 10 === 0) {
-      saveData(data);
-      saveProgress(progress);
-      console.log(`  💾 Saved progress (${done} done, ${progress.pendingUuids.length} remaining)`);
+    // Save every batch
+    saveData(data);
+    saveProgress(progress);
+    if (done % 50 === 0) {
+      console.log(`  💾 ${done}/${total} done, ${progress.pendingUuids.length} remaining`);
     }
   }
 
@@ -496,6 +496,15 @@ async function modeCrawl(seasonId) {
   if (!progress.seasonsDone.includes(seasonId)) progress.seasonsDone.push(seasonId);
   data.lastFetch = new Date().toISOString();
   saveData(data);
+
+  // Print discovered seasons before clearing progress
+  if (progress.discoveredSeasons && progress.discoveredSeasons.length > 0) {
+    console.log(`\n💡 ${progress.discoveredSeasons.length} new season(s) discovered in player histories:`);
+    for (const id of progress.discoveredSeasons) {
+      console.log(`   node fetch-bball.js --mode=crawl --season=${id}`);
+    }
+  }
+
   clearProgress();
 
   console.log(`\n✅ Crawl complete for season ${seasonId}`);
