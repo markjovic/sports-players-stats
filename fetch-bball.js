@@ -621,6 +621,60 @@ function printNewSeasonSuggestions(data) {
 }
 
 
+
+// ─── Crawl-all mode — work through all undiscovered seasons from the index ────
+
+async function modeCrawlAll() {
+  console.log('\n🏀 CRAWL-ALL MODE — processing all pending seasons from index');
+  const data = loadData();
+
+  // Collect all season IDs referenced in player histories that aren't yet crawled
+  const knownIds  = new Set(Object.keys(data.index.seasons));
+  const pending   = new Set();
+
+  for (const player of Object.values(data.index.players)) {
+    for (const s of (player.seasons || [])) {
+      const sid = s.sid || s.seasonId;
+      if (sid && !knownIds.has(sid)) pending.add(sid);
+    }
+  }
+
+  if (pending.size === 0) {
+    console.log('No pending seasons found — all discovered seasons already crawled.');
+    return;
+  }
+
+  const queue = [...pending];
+  console.log(`\n📋 ${queue.length} seasons to crawl`);
+
+  for (let i = 0; i < queue.length; i++) {
+    const seasonId = queue[i];
+    console.log(`\n[${i + 1}/${queue.length}] Season ${seasonId}`);
+    try {
+      await modeCrawl(seasonId);
+
+      // After each crawl, check if new seasons were discovered and add to queue
+      const updatedData  = loadData();
+      const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
+      for (const player of Object.values(updatedData.index.players)) {
+        for (const s of (player.seasons || [])) {
+          const sid = s.sid || s.seasonId;
+          if (sid && !updatedKnown.has(sid) && !queue.includes(sid)) {
+            queue.push(sid);
+            console.log(`  ➕ Queued newly discovered season: ${sid}`);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`  ⚠ Season ${seasonId} failed: ${e.message} — continuing`);
+    }
+  }
+
+  console.log(`\n✅ Crawl-all complete`);
+  console.log(`   Players in database: ${Object.keys(loadData().index.players).length}`);
+  console.log(`   Seasons in database: ${Object.keys(loadData().index.seasons).length}`);
+}
+
 // ─── Probe mode — diagnose API schema ────────────────────────────────────────
 
 async function modeProbe() {
@@ -698,6 +752,9 @@ async function main() {
         break;
       case 'probe':
         await modeProbe();
+        break;
+      case 'crawl-all':
+        await modeCrawlAll();
         break;
       default:
         console.error(`Unknown mode: ${mode}`);
