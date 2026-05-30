@@ -1039,15 +1039,18 @@ async function modeCrawlAll() {
   // scanning all player records — player index is now slim with no season detail
   const updatedData  = loadData();
   const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
-  const allQueued    = new Set([...priority, ...backlog]);
+  // allQueued = current queue + already crawled seasons — nothing already done gets re-added
+  const allQueued    = new Set([...priority, ...backlog, ...updatedKnown]);
 
-  // Load the just-completed progress to get discovered seasons before it was cleared
-  // discoveredSeasons are logged during crawl — re-read from the detail files would be
-  // too expensive. Instead we scan the queue files for any sids we haven't seen.
-  // New seasons discovered during crawl are in updatedKnown (just added to index)
-  // but weren't in the queue — find them and route appropriately.
+  // Find seasons that appeared in this crawl's discoveries but aren't queued or crawled yet
+  // These come from progress.discoveredSeasons logged during modeCrawl
+  // We detect them by checking which seasons in the index weren't there before the crawl
+  // Since we don't have a before-snapshot, we check: in index but not in allQueued before expansion
+  const preExpansionQueued = new Set([...priority, ...backlog]);
   for (const [sid, meta] of Object.entries(updatedData.index.seasons)) {
-    if (!allQueued.has(sid)) {
+    if (!preExpansionQueued.has(sid) && sid !== seasonId) {
+      // This season is in the index but wasn't in either queue before this run
+      // It was discovered during this crawl — route it
       const sn = meta.name || '';
       if (isPriority(sn)) {
         priority.push(sid);
@@ -1056,7 +1059,6 @@ async function modeCrawlAll() {
         backlog.push(sid);
         console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
       }
-      allQueued.add(sid);
     }
   }
 
