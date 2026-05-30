@@ -74,7 +74,7 @@ jobs:
           if ls queue-*.json 1> /dev/null 2>&1; then
             git add queue-*.json
           else
-            git rm --cached queue-*.json 2>/dev/null || true
+            git rm --cached queue-bv-priority.json queue-bv-backlog.json 2>/dev/null || true
           fi
           # If progress file exists, crawl was interrupted — commit it so next run can resume
           # Commit any progress files (tenant-namespaced, e.g. progress-bv.json)
