@@ -519,7 +519,7 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
           });
 
           // Accumulate raw games keyed by seasonId for per-season game files
-          if (games.length > 0) {
+          if (games.length > 0 && seasonId) {
             if (!rawGames[seasonId]) rawGames[seasonId] = {};
             if (!rawGames[seasonId][uuid]) rawGames[seasonId][uuid] = [];
             rawGames[seasonId][uuid].push(...games);
