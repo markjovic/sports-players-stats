@@ -660,12 +660,22 @@ function stripAge(name) {
 
 async function modeCrawl(seasonId) {
   console.log(`\n🏀 CRAWL MODE — Season: ${seasonId}`);
+  // Reset rate-limit state for this season
+  CONCURRENCY     = _START_CONCURRENCY;
+  CONCURRENCY_CAP = _START_CONCURRENCY;
+  _clean_batches  = 0;
+  _429_streak     = 0;
+  _429_total      = 0;
+  _429_cap_hits   = 0;
   const data = loadData();
   const progress = loadProgress();
 
   // If no pending work, discover this season first
+  let genders = {};  // uuid → inferred gender; populated during discovery, empty on resume
   if (progress.pendingUuids.length === 0 || !progress.currentSeason) {
-    const { uuids, genders } = await discoverSeasonPlayers(seasonId, data);
+    const discovered = await discoverSeasonPlayers(seasonId, data);
+    const uuids = discovered.uuids;
+    genders = discovered.genders;
     saveData(data);
 
     // Apply gender inference to existing player records
