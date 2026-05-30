@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bball-data.json
+          git add bball-index.json bball-games.json
           # If progress file exists, crawl was interrupted — commit it so next run can resume
           if [ -f bball-progress.json ]; then
             git add bball-progress.json
