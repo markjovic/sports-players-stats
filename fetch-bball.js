@@ -58,7 +58,7 @@ const STAT_FIELDS = {
 // ─── GraphQL Queries ──────────────────────────────────────────────────────────
 
 const Q_SEASON = `
-query gradeListDiscoverSeason($id: ID!) {
+query gradeListDiscoverSeason($id: String!) {
   discoverSeason(seasonID: $id) {
     id
     name
@@ -78,7 +78,7 @@ query gradeListDiscoverSeason($id: ID!) {
 }`;
 
 const Q_PLAYERS = `
-query publicGradeStatistics($gradeID: ID!, $filter: GradePlayerStatisticsFilter) {
+query publicGradeStatistics($gradeID: String!, $filter: GradePlayerStatisticsFilter) {
   gradePlayerStatistics(gradeID: $gradeID, filter: $filter) {
     meta { page totalPages totalRecords }
     results {
@@ -93,7 +93,7 @@ query publicGradeStatistics($gradeID: ID!, $filter: GradePlayerStatisticsFilter)
 }`;
 
 const Q_PROFILE = `
-query publicProfileStatistics($profileID: ID!) {
+query publicProfileStatistics($profileID: String!) {
   publicProfileStatistics(profileID: $profileID) {
     seasonStatistics {
       name
@@ -585,13 +585,13 @@ async function modeProbe() {
     {
       name: 'discoverSeason (AFL-style, seasonID param)',
       op: 'gradeListDiscoverSeason',
-      q: `query gradeListDiscoverSeason($id: ID!) { discoverSeason(seasonID: $id) { id name } }`,
+      q: `query gradeListDiscoverSeason($id: String!) { discoverSeason(seasonID: $id) { id name } }`,
       v: { id: '15908988' },
     },
     {
       name: 'discoverSeason (id param)',
       op: 'probeSeason2',
-      q: `query probeSeason2($id: ID!) { discoverSeason(id: $id) { id name } }`,
+      q: `query probeSeason2($id: String!) { discoverSeason(id: $id) { id name } }`,
       v: { id: '15908988' },
     },
     {
