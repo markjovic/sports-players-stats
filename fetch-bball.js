@@ -78,7 +78,7 @@ query gradeListDiscoverSeason($id: String!) {
 }`;
 
 const Q_PLAYERS = `
-query publicGradeStatistics($gradeID: String!, $filter: GradePlayerStatisticsFilter) {
+query publicGradeStatistics($gradeID: ID!, $filter: GradePlayerStatisticsFilter) {
   gradePlayerStatistics(gradeID: $gradeID, filter: $filter) {
     meta { page totalPages totalRecords }
     results {
@@ -93,7 +93,7 @@ query publicGradeStatistics($gradeID: String!, $filter: GradePlayerStatisticsFil
 }`;
 
 const Q_PROFILE = `
-query publicProfileStatistics($profileID: String!) {
+query publicProfileStatistics($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
     seasonStatistics {
       name
