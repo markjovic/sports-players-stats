@@ -106,8 +106,12 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 
 // These depend on TENANT so must come after CLI arg parsing
 const PROGRESS_FILE = path.join(__dirname, `progress-${TENANT}.json`);
+const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
+
 function gamesFile(seasonId) {
-  return path.join(__dirname, `games-${TENANT}-${seasonId}.json`);
+  // Ensure directory exists
+  if (!fs.existsSync(GAMES_DIR)) fs.mkdirSync(GAMES_DIR, { recursive: true });
+  return path.join(GAMES_DIR, `${seasonId}.json`);
 }
 
 // ─── GraphQL Queries ──────────────────────────────────────────────────────────
