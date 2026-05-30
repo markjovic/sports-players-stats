@@ -106,6 +106,7 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 
 // These depend on TENANT so must come after CLI arg parsing
 const PROGRESS_FILE = path.join(__dirname, `progress-${TENANT}.json`);
+const QUEUE_FILE    = path.join(__dirname, `queue-${TENANT}.json`);
 const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
 
 function gamesFile(seasonId) {
@@ -509,6 +510,38 @@ async function fetchPlayerProfile(uuid, data, rawGames) {
   return { player, newSeasonIds: [...newSeasonIds] };
 }
 
+// ─── Season queue helpers ────────────────────────────────────────────────────
+
+function loadQueue() {
+  if (fs.existsSync(QUEUE_FILE)) {
+    try { return JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8')); }
+    catch (e) { console.warn('⚠ Could not parse queue file'); }
+  }
+  return null;  // null = not initialised yet
+}
+
+function saveQueue(queue) {
+  fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue));
+}
+
+function deleteQueue() {
+  if (fs.existsSync(QUEUE_FILE)) fs.unlinkSync(QUEUE_FILE);
+}
+
+function buildQueueFromIndex(data) {
+  // Full index scan — only done once to seed the queue
+  console.log('  Building season queue from index (one-time scan)...');
+  const knownIds = new Set(Object.keys(data.index.seasons));
+  const pending  = [];
+  for (const player of Object.values(data.index.players)) {
+    for (const s of (player.seasons || [])) {
+      const sid = s.sid || s.seasonId;
+      if (sid && !knownIds.has(sid) && !pending.includes(sid)) pending.push(sid);
+    }
+  }
+  return pending;
+}
+
 // ─── Grade name parsing ───────────────────────────────────────────────────────
 
 function parseAgeGroup(gradeName) {
@@ -747,26 +780,25 @@ async function modeCrawlAll() {
   console.log('\n🏀 CRAWL-ALL MODE — one season per run, self-triggering until complete');
   const data = loadData();
 
-  // Collect all season IDs referenced in player histories that aren't yet crawled
-  const knownIds = new Set(Object.keys(data.index.seasons));
-  const pending  = [];
-
-  for (const player of Object.values(data.index.players)) {
-    for (const s of (player.seasons || [])) {
-      const sid = s.sid || s.seasonId;
-      if (sid && !knownIds.has(sid) && !pending.includes(sid)) pending.push(sid);
-    }
+  // Load or build the queue
+  let queue = loadQueue();
+  if (!queue) {
+    queue = buildQueueFromIndex(data);
+    console.log(`  Found ${queue.length} pending seasons`);
+    saveQueue(queue);
+  } else {
+    console.log(`  Loaded queue: ${queue.length} seasons remaining`);
   }
 
-  if (pending.size === 0) {
+  if (queue.length === 0) {
     console.log('\n✅ No pending seasons — all done!');
+    deleteQueue();
     return;
   }
 
-  // Take the first pending season
-  const seasonId = pending[0];
-  console.log(`\n📋 ${pending.length} seasons remaining`);
-  console.log(`\n▶ Processing season ${seasonId}`);
+  // Take the first season from the queue
+  const seasonId = queue.shift();
+  console.log(`\n▶ Processing season ${seasonId} (${queue.length} remaining after this)`);
 
   try {
     await modeCrawl(seasonId);
@@ -774,21 +806,27 @@ async function modeCrawlAll() {
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
   }
 
-  // Check how many are still pending after this crawl
-  const updatedData    = loadData();
-  const updatedKnownIds = new Set(Object.keys(updatedData.index.seasons));
-  const stillPending   = [];
+  // Add any newly discovered seasons to the queue
+  const updatedData  = loadData();
+  const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
+  const queueSet     = new Set(queue);
   for (const player of Object.values(updatedData.index.players)) {
     for (const s of (player.seasons || [])) {
       const sid = s.sid || s.seasonId;
-      if (sid && !updatedKnownIds.has(sid) && !stillPending.includes(sid)) stillPending.push(sid);
+      if (sid && !updatedKnown.has(sid) && !queueSet.has(sid)) {
+        queue.push(sid);
+        queueSet.add(sid);
+        console.log(`  ➕ Queued newly discovered season: ${sid}`);
+      }
     }
   }
 
-  if (stillPending.length > 0) {
-    console.log(`\n📋 ${stillPending.length} seasons still pending — triggering next run`);
+  if (queue.length > 0) {
+    saveQueue(queue);
+    console.log(`\n📋 ${queue.length} seasons remaining — triggering next run`);
     await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
+    deleteQueue();
     console.log(`\n✅ All seasons complete!`);
     console.log(`   Players in database: ${Object.keys(updatedData.index.players).length}`);
     console.log(`   Seasons in database: ${Object.keys(updatedData.index.seasons).length}`);
