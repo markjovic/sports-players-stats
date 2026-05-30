@@ -27,7 +27,8 @@ const path = require('path');
 const TENANT         = 'bv';               // Basketball Victoria — change if needed
 const API_URL        = 'https://api.playhq.com/graphql';
 const DELAY_MS       = 50;               // ms between API requests (be polite)
-const DATA_FILE      = path.join(__dirname, 'bball-data.json');
+const INDEX_FILE     = path.join(__dirname, 'bball-index.json');
+const GAMES_FILE     = path.join(__dirname, 'bball-games.json');
 const PROGRESS_FILE  = path.join(__dirname, 'bball-progress.json');
 const PAGE_SIZE      = 50;               // max players per page from gradePlayerStatistics
 
@@ -180,19 +181,24 @@ function parseStats(statisticsArray) {
 // ─── Data file helpers ────────────────────────────────────────────────────────
 
 function loadData() {
-  if (fs.existsSync(DATA_FILE)) {
-    try { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); }
-    catch (e) { console.warn('⚠ Could not parse bball-data.json, starting fresh'); }
+  let index = { players: {}, seasons: {}, lastFetch: null };
+  let games  = {};  // uuid → [{g,d,o,on}]
+
+  if (fs.existsSync(INDEX_FILE)) {
+    try { index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8')); }
+    catch (e) { console.warn('⚠ Could not parse bball-index.json, starting fresh'); }
   }
-  return {
-    players:  {},  // uuid → player record
-    seasons:  {},  // seasonId → season metadata
-    lastFetch: null,
-  };
+  if (fs.existsSync(GAMES_FILE)) {
+    try { games = JSON.parse(fs.readFileSync(GAMES_FILE, 'utf8')); }
+    catch (e) { console.warn('⚠ Could not parse bball-games.json, starting fresh'); }
+  }
+  return { index, games };
 }
 
-function saveData(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+function saveData({ index, games }) {
+  // Write index without games (games go to separate file)
+  fs.writeFileSync(INDEX_FILE, JSON.stringify(index, null, 2));
+  fs.writeFileSync(GAMES_FILE, JSON.stringify(games, null, 2));
 }
 
 function loadProgress() {
@@ -231,8 +237,8 @@ async function discoverSeasonPlayers(seasonId, data) {
   console.log(`  Grades:       ${season.grades.length}`);
 
   // Store season metadata
-  if (!data.seasons[seasonId]) {
-    data.seasons[seasonId] = {
+  if (!data.index.seasons[seasonId]) {
+    data.index.seasons[seasonId] = {
       id:       seasonId,
       name:     season.name,
       fullName,
@@ -246,7 +252,7 @@ async function discoverSeasonPlayers(seasonId, data) {
     };
   }
 
-  const metaSeason = data.seasons[seasonId];
+  const metaSeason = data.index.seasons[seasonId];
   const discoveredUuids = new Set();
 
   for (const grade of season.grades) {
@@ -301,13 +307,15 @@ async function discoverSeasonPlayers(seasonId, data) {
 
 // ─── Phase 2: Fetch full profile history for a player ────────────────────────
 
-async function fetchPlayerProfile(uuid, data) {
+async function fetchPlayerProfile(uuid, data, allGames) {
   await delay(DELAY_MS);
   let result;
   try {
     result = await gql('publicProfileStatistics', Q_PROFILE, { profileID: uuid });
   } catch (e) {
-    console.warn(`  ⚠ Profile fetch failed for ${uuid}: ${e.message}`);
+    // PlayHQ sometimes returns INTERNAL_SERVER_ERROR for specific bad game records.
+    // Log and skip — don't let one bad record block the whole player.
+    console.warn(`  ⚠ Profile fetch failed for ${uuid}: ${e.message.slice(0, 120)}`);
     return null;
   }
 
@@ -329,9 +337,10 @@ async function fetchPlayerProfile(uuid, data) {
       const seasonName = reg.season?.name;
       const clubName   = reg.club?.name;
 
-      if (seasonId && !data.seasons[seasonId]) {
+      if (seasonId && !data.index.seasons[seasonId]) {
         newSeasonIds.add(seasonId);
       }
+
 
       const registrations = [];
       for (const teamStat of (reg.teamStatistics || [])) {
@@ -361,38 +370,40 @@ async function fetchPlayerProfile(uuid, data) {
             // Determine which side the player was on
             const isHome    = homeId === teamId || (homeName && teamName && stripAge(homeName) === stripAge(teamName));
             const oppTeamId = isHome ? awayId : homeId;
-            const oppName   = isHome ? awayName : homeName;
 
-            games.push({
-              gameId:    game.id,
-              date:      game.date,
-              round:     game.round?.name,
-              home:      { id: homeId,   name: homeName },
-              away:      { id: awayId,   name: awayName },
-              oppTeamId,
-              oppName,
-              stats:     parseStats(gs.statistics),
-            });
+            // Store gameId, date, oppTeamId, oppTeamName — enough for display + PlayHQ link
+            if (game.id && oppTeamId) {
+              games.push({
+                g:  game.id,                          // gameId
+                d:  game.date,                        // date
+                o:  oppTeamId,                        // oppTeamId
+                on: isHome ? awayName : homeName,     // oppTeamName
+              });
+            }
           }
 
           registrations.push({
-            teamId,
-            teamName,
-            gradeId,
-            gradeName,
-            ageGroup,
-            division,
+            tid:   teamId,
+            tn:    teamName,
+            gid:   gradeId,
+            gn:    gradeName,
+            age:   ageGroup,
+            div:   division,
             stats: totalStats,
-            games,
+            // games stored separately in bball-games.json
           });
+
+          // Accumulate games for the games file
+          if (!allGames[uuid]) allGames[uuid] = [];
+          allGames[uuid].push(...games);
         }
       }
 
       seasons.push({
-        seasonId,
-        seasonName,
-        clubName,
-        registrations,
+        sid:  seasonId,
+        sn:   seasonName,
+        club: clubName,
+        regs: registrations,
       });
     }
   }
@@ -404,7 +415,7 @@ async function fetchPlayerProfile(uuid, data) {
     updatedAt: new Date().toISOString(),
   };
 
-  data.players[uuid] = player;
+  data.index.players[uuid] = player;
   return { player, newSeasonIds: [...newSeasonIds] };
 }
 
@@ -459,9 +470,10 @@ async function modeCrawl(seasonId) {
 
   while (progress.pendingUuids.length > 0) {
     const batch = progress.pendingUuids.splice(0, CONCURRENCY);
+    const batchGames = {};  // games accumulated for this batch
 
     const results = await Promise.all(batch.map(async (uuid) => {
-      const result = await fetchPlayerProfile(uuid, data);
+      const result = await fetchPlayerProfile(uuid, data, batchGames);
       return { uuid, result };
     }));
 
@@ -470,7 +482,7 @@ async function modeCrawl(seasonId) {
       if (result) {
         console.log(`  [${done}/${total}] ✓ ${result.player.name} (${result.player.seasons.length} seasons)`);
         for (const newSeasonId of result.newSeasonIds) {
-          if (!data.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
+          if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
             if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
             if (!progress.discoveredSeasons.includes(newSeasonId)) {
               progress.discoveredSeasons.push(newSeasonId);
@@ -484,6 +496,16 @@ async function modeCrawl(seasonId) {
       progress.doneUuids.push(uuid);
     }
 
+    // Merge batch games into main games store
+    for (const [uuid, games] of Object.entries(batchGames)) {
+      if (!data.games[uuid]) data.games[uuid] = [];
+      // Merge by gameId to avoid dupes on resume
+      const existing = new Set(data.games[uuid].map(g => g.g));
+      for (const game of games) {
+        if (!existing.has(game.g)) data.games[uuid].push(game);
+      }
+    }
+
     // Save every batch
     saveData(data);
     saveProgress(progress);
@@ -494,7 +516,7 @@ async function modeCrawl(seasonId) {
 
   // Mark season done
   if (!progress.seasonsDone.includes(seasonId)) progress.seasonsDone.push(seasonId);
-  data.lastFetch = new Date().toISOString();
+  data.index.lastFetch = new Date().toISOString();
   saveData(data);
 
   // Print discovered seasons before clearing progress
@@ -508,8 +530,8 @@ async function modeCrawl(seasonId) {
   clearProgress();
 
   console.log(`\n✅ Crawl complete for season ${seasonId}`);
-  console.log(`   Players in database: ${Object.keys(data.players).length}`);
-  console.log(`   Seasons in database: ${Object.keys(data.seasons).length}`);
+  console.log(`   Players in database: ${Object.keys(data.index.players).length}`);
+  console.log(`   Seasons in database: ${Object.keys(data.index.seasons).length}`);
   printNewSeasonSuggestions(data);
 }
 
@@ -534,17 +556,29 @@ async function modeUpdate() {
 
   console.log(`\n📥 Fetching ${allUuids.size} unique players across active seasons...`);
   let i = 0;
-  for (const uuid of allUuids) {
-    i++;
-    process.stdout.write(`  [${i}/${allUuids.size}] ${uuid} ... `);
-    const result = await fetchPlayerProfile(uuid, data);
-    console.log(result ? `✓ ${result.player.name}` : '⚠ skipped');
-    if (i % 10 === 0) saveData(data);
+  const uuidArray = [...allUuids];
+  const CONCURRENCY = 15;
+  while (i < uuidArray.length) {
+    const batch = uuidArray.slice(i, i + CONCURRENCY);
+    const batchGames = {};
+    const results = await Promise.all(batch.map(uuid => fetchPlayerProfile(uuid, data, batchGames)));
+    for (const [idx, result] of results.entries()) {
+      i++;
+      console.log(result ? `  [${i}/${uuidArray.length}] ✓ ${result.player.name}` : `  [${i}/${uuidArray.length}] ⚠ skipped`);
+    }
+    for (const [uuid, games] of Object.entries(batchGames)) {
+      if (!data.games[uuid]) data.games[uuid] = [];
+      const existing = new Set(data.games[uuid].map(g => g.g));
+      for (const game of games) {
+        if (!existing.has(game.g)) data.games[uuid].push(game);
+      }
+    }
+    saveData(data);
   }
 
-  data.lastFetch = new Date().toISOString();
+  data.index.lastFetch = new Date().toISOString();
   saveData(data);
-  console.log(`\n✅ Update complete — ${Object.keys(data.players).length} players in database`);
+  console.log(`\n✅ Update complete — ${Object.keys(data.index.players).length} players in database`);
 }
 
 async function modeDiscover(seasonId) {
@@ -558,23 +592,24 @@ async function modeDiscover(seasonId) {
 
 function modeLock(seasonId) {
   const data = loadData();
-  if (!data.seasons[seasonId]) {
+  if (!data.index.seasons[seasonId]) {
     console.error(`Season ${seasonId} not found in database`);
     process.exit(1);
   }
-  data.seasons[seasonId].locked = true;
-  data.seasons[seasonId].lockedAt = new Date().toISOString();
+  data.index.seasons[seasonId].locked = true;
+  data.index.seasons[seasonId].lockedAt = new Date().toISOString();
   saveData(data);
-  console.log(`✅ Season ${seasonId} (${data.seasons[seasonId].fullName}) locked as historical`);
+  console.log(`✅ Season ${seasonId} (${data.index.seasons[seasonId].fullName}) locked as historical`);
 }
 
 function printNewSeasonSuggestions(data) {
   // Find season IDs referenced in player histories that we haven't crawled yet
-  const knownIds = new Set(Object.keys(data.seasons));
+  const knownIds = new Set(Object.keys(data.index.seasons));
   const referenced = new Set();
-  for (const player of Object.values(data.players)) {
+  for (const player of Object.values(data.index.players)) {
     for (const s of (player.seasons || [])) {
-      if (s.seasonId && !knownIds.has(s.seasonId)) referenced.add(s.seasonId);
+      const sid = s.sid || s.seasonId;  // handle both old and new key
+      if (sid && !knownIds.has(sid)) referenced.add(sid);
     }
   }
   if (referenced.size > 0) {
