@@ -1,6 +1,8 @@
-# Basketball Players
+# sports-players-stats
 
-A player-centric data scraper for PlayHQ basketball competitions. Collects full match and stat history for every player across all reachable competitions, storing everything in a single JSON database for querying and display.
+A player-centric data scraper for PlayHQ sports competitions. Collects full match and stat history for every player across all reachable competitions, storing everything in a structured JSON database for querying and display.
+
+Currently scraping: **Basketball Victoria (bv)**. Designed to support AFL and Cricket Australia with the same codebase.
 
 ---
 
@@ -11,148 +13,145 @@ A player-centric data scraper for PlayHQ basketball competitions. Collects full 
 The scraper is **player-centric, history-first**. Starting from one or more competition season IDs, it:
 
 1. Enumerates all grades in the season
-2. Collects every player UUID from every grade
+2. Collects every player UUID from every grade (with gender inference)
 3. Fetches each player's **full PlayHQ history** — every season, every comp, every team, every game
-4. Stores it all in `bball-data.json`
+4. Stores stats in a slim searchable index and full detail in per-player files
+5. Stores game opponent data in per-season files for "played against" lookups
 
-Because `publicProfileStatistics` returns a player's entire cross-sport history (not just the seeded comp), the database naturally grows to cover all competitions those players have ever participated in. New season IDs discovered in player histories are flagged for subsequent crawl runs.
+### Crawl graph
 
-### Data model
+The scraper is self-expanding. Each player's full history reveals season IDs from other competitions. Unknown season IDs are queued and crawled automatically. A single seed comp eventually reaches the entire reachable graph of connected competitions.
 
-```
-bball-data.json
-├── players: { [uuid]: PlayerRecord }
-│   └── PlayerRecord
-│       ├── uuid, name, updatedAt
-│       └── seasons: [ SeasonEntry ]
-│           ├── seasonId, seasonName, clubName
-│           └── registrations: [ Registration ]
-│               ├── teamId, teamName, gradeId, gradeName
-│               ├── ageGroup (parsed), division (parsed)
-│               ├── stats: { gp, pts, fg, ... }
-│               └── games: [ GameEntry ]
-│                   ├── gameId, date, round
-│                   ├── home, away (id + name)
-│                   ├── oppTeamId, oppName  ← key for "played against"
-│                   └── stats: { per-game stats }
-└── seasons: { [seasonId]: SeasonMeta }
-    ├── id, name, fullName, compName, orgName
-    ├── grades: [ { id, name, age, gender } ]
-    └── locked: boolean  ← true = historical, never re-fetched
-```
+### Two-tier queue
 
-### Key design decisions
+Seasons are prioritised by year:
+- **Priority queue** (`queue-bv-priority.json`): 2023+ seasons — crawled first
+- **Backlog queue** (`queue-bv-backlog.json`): pre-2023 seasons — crawled after priority is exhausted
 
-- **One player record per UUID** — a player on 3 teams across 2 comps has one record with multiple season/registration entries
-- **Full history stored** — not filtered to the seeded comp; everything PlayHQ knows about the player
-- **`oppTeamId` pre-computed** — each game stores which team the player was *not* on, enabling O(1) "played against" lookups
-- **Locked seasons never re-fetched** — historical data is immutable once locked
-- **Resume-capable** — `bball-progress.json` tracks per-player progress; interrupted runs continue from where they stopped
+Seasons with unknown year default to priority. Historical seasons (year < current year) are auto-locked after crawling — their data never changes and won't be re-fetched.
+
+### Self-triggering chain
+
+`crawl-all` mode processes one season per GitHub Actions run, then triggers the next run automatically via the GitHub API. This avoids timeout issues on large seasons and ensures every season is fully committed before moving to the next.
 
 ---
 
-## Setup
+## Data model
 
-Node.js 18+ required (uses native `fetch`).
+### `sports-index.json` — slim index (~2MB)
 
-```bash
-git clone https://github.com/markjovic/basketball-players
-cd basketball-players
-# No npm install needed — uses Node built-ins only
+```js
+{
+  players: {
+    [uuid]: {
+      uuid, name, gender,
+      sports: {
+        "Basketball": { gp, pts, fouls, fg, ft, threePt }
+      },
+      updatedAt
+    }
+  },
+  seasons: {
+    [seasonId]: {
+      id, name, fullName, compName, compId,
+      orgName, orgId, tenant,
+      grades: [{ id, name, age, gender }],
+      locked: boolean,
+      lockedAt
+    }
+  },
+  lastFetch
+}
+```
+
+### `players/{xx}/{uuid}.json` — full player detail
+
+Sharded by first 2 characters of UUID. One file per player, all sports.
+
+```js
+{
+  uuid, name, gender,
+  sports: { "Basketball": { gp, pts, fouls, fg, ft, threePt } },
+  seasons: [
+    {
+      sid, sn, club, sport,
+      regs: [
+        { tid, tn, gid, gn, age, div, stats: { gp, pts, fouls, fg, ft, threePt } }
+      ]
+    }
+  ],
+  updatedAt
+}
+```
+
+### `games/bv/{seasonId}.json` — game opponent index
+
+```js
+{
+  games: {
+    [gameId]: { d: date, on: oppTeamName, o: oppTeamId }
+  },
+  playerGames: {
+    [uuid]: [gameId, gameId, ...]
+  }
+}
+```
+
+---
+
+## Repo structure
+
+```
+fetch-playhq.js               <- scraper (all modes)
+migrate-games.sh              <- one-off: move games-bv-*.json to games/bv/
+migrate-player-index.js       <- one-off: split sports-index.json into slim + detail files
+sports-index.json             <- slim player index
+queue-bv-priority.json        <- pending priority seasons (2023+)
+queue-bv-backlog.json         <- pending backlog seasons (pre-2023)
+README.md
+.github/
+  workflows/
+    fetch-playhq.yml
+    migrate-games.yml
+    migrate-player-index.yml
+games/
+  bv/
+    {seasonId}.json
+players/
+  {xx}/
+    {uuid}.json
 ```
 
 ---
 
 ## Usage
 
-### First run — crawl a new season
-
 ```bash
-node fetch-bball.js --mode=crawl --season=8ff9f39e
+node fetch-playhq.js --mode=crawl-all --tenant=bv --sport=basketball
+node fetch-playhq.js --mode=crawl    --tenant=bv --sport=basketball --season=8ff9f39e
+node fetch-playhq.js --mode=update   --tenant=bv --sport=basketball
+node fetch-playhq.js --mode=discover --tenant=bv --sport=basketball --season=8ff9f39e
+node fetch-playhq.js --mode=lock     --tenant=bv --sport=basketball --season=8ff9f39e
 ```
 
-This will:
-- Fetch all grades for the season
-- Collect all player UUIDs
-- Fetch full profile history for each player
-- Log any new season IDs discovered in player histories
-- Save to `bball-data.json` with resume support via `bball-progress.json`
-
-### Crawl additional seasons (in order)
-
-```bash
-# Run each season separately — each adds to the existing database
-node fetch-bball.js --mode=crawl --season=68f8c050   # Kilsyth After School Autumn 2026
-node fetch-bball.js --mode=crawl --season=8ff9f39e   # Kilsyth Junior Domestic Winter 2026
-node fetch-bball.js --mode=crawl --season=15908988   # MEBA Saturday Winter 2026
-node fetch-bball.js --mode=crawl --season=43448c02   # MEBA Mon-Fri Winter 2026
-```
-
-After running all four, check the output for `💡 season IDs found in player histories` — these are additional comps discovered through player histories. Run each one to expand the database.
-
-### Update active seasons (routine)
-
-```bash
-node fetch-bball.js --mode=update
-```
-
-Re-fetches all unlocked seasons. Run this after each round of games.
-
-### Lock a completed season (end of year)
-
-```bash
-node fetch-bball.js --mode=lock --season=8ff9f39e
-```
-
-Marks the season as historical. It will never be re-fetched by `--mode=update`.
-
-### Discover only (no profile fetches)
-
-```bash
-node fetch-bball.js --mode=discover --season=8ff9f39e
-```
-
-Enumerates grades and player UUIDs only — fast, no per-player API calls. Useful for checking what a season contains before committing to a full crawl.
+Add `--concurrency=N` to adjust parallel requests (default 30). The scraper self-regulates on 429 responses.
 
 ---
 
-## Stat field discovery
+## Tenant support
 
-On first run, any stat field names returned by the API that aren't in the `STAT_FIELDS` map will be logged:
-
-```
-[UNKNOWN STAT] API returned stat field: "POINT_COUNT" (count: 14)
-  → Add to STAT_FIELDS map: 'POINT_COUNT': 'yourFieldName'
-```
-
-Update the `STAT_FIELDS` map at the top of `fetch-bball.js` based on these logs. Typical basketball fields expected:
-
-| API value | Our field |
-|-----------|-----------|
-| `APPEARANCE` | `gp` |
-| `POINT_COUNT` | `pts` |
-| `FOUL_COUNT` | `fouls` |
-| `FIELD_GOAL` | `fg` |
-| `FIELD_GOAL_ATTEMPT` | `fga` |
-| `THREE_POINT` | `threePt` |
-| `THREE_POINT_ATTEMPT` | `threePtA` |
-| `FREE_THROW` | `ft` |
-| `FREE_THROW_ATTEMPT` | `ftA` |
-
-*(Exact strings TBC from first run logs)*
+| Sport | Tenant | Status |
+|-------|--------|--------|
+| Basketball Victoria | `bv` | Active |
+| AFL | `afl` | Planned |
+| Cricket Australia | `ca` | Planned |
 
 ---
 
-## Tenant header
+## Seed season IDs
 
-The scraper uses `tenant: bv` (Basketball Victoria). If targeting a different basketball organisation, update the `TENANT` constant at the top of `fetch-bball.js`.
-
----
-
-## Season IDs — initial four comps
-
-| Competition | Season | Season ID |
-|-------------|--------|-----------|
+| Competition | Season | ID |
+|-------------|--------|----|
 | Kilsyth Basketball — After School | Autumn 2026 | `68f8c050` |
 | Kilsyth Basketball — Junior Domestic | Winter 2026 | `8ff9f39e` |
 | MEBA — Junior Domestic Saturday (GEBC) | Winter 2026 | `15908988` |
@@ -160,18 +159,20 @@ The scraper uses `tenant: bv` (Basketball Victoria). If targeting a different ba
 
 ---
 
-## Output files
+## Gender inference
 
-| File | Purpose |
-|------|---------|
-| `bball-data.json` | Main database — players, seasons, metadata |
-| `bball-progress.json` | Resume state — deleted on clean completion |
+- Seen in any Girls grade: `Female` (permanent)
+- Seen in any Boys grade: `Male` (permanent)
+- Only Mixed grades: `Mixed`
+- Never gendered: `Unknown`
+
+Female/Male signals are never downgraded.
 
 ---
 
-## Planned: viewer dashboard (`bball-index.html`)
+## Planned: viewer dashboard
 
-- Player search with leaderboards (games, points, fouls, FG, 3PT, FT) filterable by comp / season / age group / grade
+- Player search + leaderboards (GP, pts, fouls, FG, 3PT, FT) filterable by comp/season/age/grade
 - "This is me" — nominate yourself as a player
-- Team fixture view — season schedule and results for your team
-- Fixture drill-down — roster of the opponent team, with highlights showing anyone you've ever played against in any comp or season
+- Team fixture view with season schedule
+- Fixture drill-down — opponent roster highlighting anyone you have ever played against, with PlayHQ game links
