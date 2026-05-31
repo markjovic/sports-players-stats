@@ -95,12 +95,14 @@ async function getAllRuns() {
   const runs = [];
   let page = 1;
   while (true) {
-    const data = await ghFetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${WORKFLOW}/runs?per_page=100&page=${page}&status=completed`
-    );
-    if (!data.runs?.length) break;
-    runs.push(...data.runs);
-    if (data.runs.length < 100) break;
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/${WORKFLOW}/runs?per_page=100&page=${page}`;
+    const data = await ghFetch(url);
+    if (data.message) { console.error(`  API error: ${data.message}`); break; }
+    const batch = data.workflow_runs || data.runs || [];
+    if (!batch.length) break;
+    runs.push(...batch);
+    console.log(`  Page ${page}: ${batch.length} runs (total: ${runs.length})`);
+    if (batch.length < 100) break;
     page++;
   }
   return runs;
