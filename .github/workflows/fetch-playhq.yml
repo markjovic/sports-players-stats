@@ -73,6 +73,9 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Pull first so our local changes win over any remote changes (-X ours)
+          # This ensures updated queue files are not overwritten by a stale remote version
+          git pull --rebase=false --no-edit -X ours
           git add sports-index.json
           git add games/ 2>/dev/null || true
           git add players/ 2>/dev/null || true
@@ -81,7 +84,6 @@ jobs:
           else
             git rm --cached queue-bv-priority.json queue-bv-backlog.json 2>/dev/null || true
           fi
-          # If progress file exists, crawl was interrupted — commit it so next run can resume
           # Commit any progress files (tenant-namespaced, e.g. progress-bv.json)
           if ls progress-*.json 1> /dev/null 2>&1; then
             git add progress-*.json
@@ -90,5 +92,4 @@ jobs:
           fi
           # Only commit if something changed
           git diff --staged --quiet || git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git pull --rebase=false --no-edit -X ours
           git push
