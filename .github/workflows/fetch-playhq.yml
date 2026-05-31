@@ -47,6 +47,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Pull latest
+        run: git pull --rebase=false --no-edit -X ours
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -73,9 +76,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Pull first so our local changes win over any remote changes (-X ours)
-          # This ensures updated queue files are not overwritten by a stale remote version
-          git pull --rebase=false --no-edit -X ours
           git add sports-index.json
           git add games/ 2>/dev/null || true
           git add players/ 2>/dev/null || true
