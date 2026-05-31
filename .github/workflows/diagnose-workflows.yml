@@ -1,0 +1,46 @@
+name: Diagnose Workflows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: List workflows and runs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node << 'EOF'
+          const TOKEN = process.env.GITHUB_TOKEN;
+          const headers = {
+            'Authorization': `Bearer ${TOKEN}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            'User-Agent': 'test',
+          };
+          async function main() {
+            const wfs = await fetch(
+              'https://api.github.com/repos/markjovic/sports-players-stats/actions/workflows',
+              { headers }
+            ).then(r => r.json());
+            console.log('Workflows:');
+            for (const wf of (wfs.workflows || [])) {
+              console.log(`  id=${wf.id} name="${wf.name}" path="${wf.path}" state="${wf.state}"`);
+            }
+            const runs = await fetch(
+              'https://api.github.com/repos/markjovic/sports-players-stats/actions/runs?per_page=5',
+              { headers }
+            ).then(r => r.json());
+            console.log(`\nTotal runs (unfiltered): ${runs.total_count}`);
+            for (const r of (runs.workflow_runs || [])) {
+              console.log(`  #${r.run_number} workflow_id=${r.workflow_id} name="${r.name}" path="${r.path}"`);
+            }
+          }
+          main().catch(e => { console.error(e.message); process.exit(1); });
+          EOF
