@@ -1,4 +1,5 @@
-name: Diagnose Log Zip
+# diagnose-log-zip-v2.yml
+name: Diagnose Log Zip V2
 
 on:
   workflow_dispatch:
@@ -15,13 +16,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Inspect log zip from run 217
+      - name: Inspect log zip using central directory
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node << 'EOF'
           const zlib = require('zlib');
-
           const headers = {
             'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
             'Accept': 'application/vnd.github+json',
@@ -30,72 +30,71 @@ jobs:
           };
 
           async function main() {
-            // Get run ID for run #217 (the first scraper run)
-            const runs = await fetch(
-              'https://api.github.com/repos/markjovic/sports-players-stats/actions/workflows/285907662/runs?per_page=5',
-              { headers }
-            ).then(r => r.json());
-
-            // Use the most recent run that had discovered seasons (a long one)
-            // Pick run #125 which was 21 mins and likely had discoveries
+            // Get a long run
             const allRuns = await fetch(
               'https://api.github.com/repos/markjovic/sports-players-stats/actions/workflows/285907662/runs?per_page=100',
               { headers }
             ).then(r => r.json());
+            const longRun = allRuns.workflow_runs.find(r =>
+              (new Date(r.updated_at) - new Date(r.created_at)) > 5 * 60 * 1000
+            );
+            console.log(`Run #${longRun.run_number} id=${longRun.id}`);
 
-            // Find a long run (>5 mins) which likely has discoveries
-            const longRun = allRuns.workflow_runs.find(r => {
-              const start = new Date(r.created_at);
-              const end   = new Date(r.updated_at);
-              return (end - start) > 5 * 60 * 1000;
-            });
-
-            if (!longRun) { console.log('No long run found'); return; }
-            console.log(`Inspecting run #${longRun.run_number} (id=${longRun.id})`);
-
-            // Fetch log zip
             const logRes = await fetch(
               `https://api.github.com/repos/markjovic/sports-players-stats/actions/runs/${longRun.id}/logs`,
               { headers, redirect: 'follow' }
             );
-            console.log(`Log response status: ${logRes.status}`);
             const buf = Buffer.from(await logRes.arrayBuffer());
             console.log(`Zip size: ${buf.length} bytes`);
 
-            // List files in zip
-            let offset = 0;
-            let fileCount = 0;
-            while (offset < buf.length - 4) {
-              if (buf[offset]===0x50 && buf[offset+1]===0x4b &&
-                  buf[offset+2]===0x03 && buf[offset+3]===0x04) {
-                const compression = buf.readUInt16LE(offset + 8);
-                const compSize    = buf.readUInt32LE(offset + 18);
-                const nameLen     = buf.readUInt16LE(offset + 26);
-                const extraLen    = buf.readUInt16LE(offset + 28);
-                const nameBytes   = buf.slice(offset + 30, offset + 30 + nameLen);
-                const name        = nameBytes.toString('utf8');
-                const dataOffset  = offset + 30 + nameLen + extraLen;
-
-                // Try to read first 500 chars of first few files
-                if (fileCount < 5) {
-                  let text = '';
-                  try {
-                    if (compression === 0) {
-                      text = buf.slice(dataOffset, dataOffset + Math.min(500, compSize)).toString('utf8');
-                    } else if (compression === 8) {
-                      text = zlib.inflateRawSync(buf.slice(dataOffset, dataOffset + compSize)).toString('utf8').slice(0, 500);
-                    }
-                  } catch(e) { text = `[error: ${e.message}]`; }
-                  console.log(`\nFile ${fileCount+1}: "${name}" compression=${compression} size=${compSize}`);
-                  console.log(`Preview: ${text.slice(0, 300).replace(/\n/g, '\\n')}`);
-                }
-                fileCount++;
-                offset = dataOffset + compSize;
-              } else {
-                offset++;
+            // Find End of Central Directory record (PK\x05\x06)
+            let eocd = -1;
+            for (let i = buf.length - 22; i >= 0; i--) {
+              if (buf[i]===0x50 && buf[i+1]===0x4b && buf[i+2]===0x05 && buf[i+3]===0x06) {
+                eocd = i; break;
               }
             }
-            console.log(`\nTotal files in zip: ${fileCount}`);
+            if (eocd < 0) { console.log('No EOCD found'); return; }
+
+            const cdOffset = buf.readUInt32LE(eocd + 16);
+            const cdSize   = buf.readUInt32LE(eocd + 12);
+            console.log(`Central directory at offset ${cdOffset}, size ${cdSize}`);
+
+            // Walk central directory
+            let pos = cdOffset;
+            let count = 0;
+            while (pos < cdOffset + cdSize && count < 15) {
+              if (buf[pos]!==0x50||buf[pos+1]!==0x4b||buf[pos+2]!==0x01||buf[pos+3]!==0x02) break;
+              const compression  = buf.readUInt16LE(pos + 10);
+              const compSize     = buf.readUInt32LE(pos + 20);
+              const uncompSize   = buf.readUInt32LE(pos + 24);
+              const nameLen      = buf.readUInt16LE(pos + 28);
+              const extraLen     = buf.readUInt16LE(pos + 30);
+              const commentLen   = buf.readUInt16LE(pos + 32);
+              const localOffset  = buf.readUInt32LE(pos + 42);
+              const name         = buf.slice(pos + 46, pos + 46 + nameLen).toString('utf8');
+
+              // Read local file header to find data start
+              const lh = localOffset;
+              const lNameLen  = buf.readUInt16LE(lh + 26);
+              const lExtraLen = buf.readUInt16LE(lh + 28);
+              const dataStart = lh + 30 + lNameLen + lExtraLen;
+
+              let preview = '';
+              try {
+                if (compression === 0) {
+                  preview = buf.slice(dataStart, dataStart + Math.min(300, uncompSize)).toString('utf8');
+                } else if (compression === 8) {
+                  preview = zlib.inflateRawSync(buf.slice(dataStart, dataStart + compSize)).toString('utf8').slice(0, 300);
+                }
+              } catch(e) { preview = `[error: ${e.message}]`; }
+
+              console.log(`\nFile: "${name}" comp=${compression} compSize=${compSize} uncompSize=${uncompSize}`);
+              console.log(`Preview: ${preview.replace(/\n/g,'\\n').slice(0,200)}`);
+
+              pos += 46 + nameLen + extraLen + commentLen;
+              count++;
+            }
           }
-          main().catch(e => { console.error(e.message); process.exit(1); });
+          main().catch(e => { console.error(e.stack); process.exit(1); });
           EOF
