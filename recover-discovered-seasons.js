@@ -16,7 +16,7 @@ const zlib = require('zlib');
 
 const REPO_OWNER = 'markjovic';
 const REPO_NAME  = 'sports-players-stats';
-const WORKFLOW   = 'fetch-playhq.yml';
+const WORKFLOW   = '285907662';  // PlayHQ Sports Scraper workflow ID
 const TENANT     = 'bv';
 
 const INDEX_FILE          = path.join(__dirname, 'sports-index.json');
