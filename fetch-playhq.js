@@ -808,6 +808,9 @@ async function modeCrawl(seasonId) {
         console.log(`  [${done}/${total}] ✓ ${result.player.name}`);
         for (const newSeasonId of result.newSeasonIds) {
           if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
+            // Store as a stub in the index so it survives clearProgress()
+            // and can be picked up by modeCrawlAll for queue routing
+            data.index.seasons[newSeasonId] = { id: newSeasonId, name: '', discovered: true };
             if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
             if (!progress.discoveredSeasons.includes(newSeasonId)) {
               progress.discoveredSeasons.push(newSeasonId);
@@ -1050,37 +1053,42 @@ async function modeCrawlAll() {
   if (!seasonSucceeded) return;
 
   // Route newly discovered seasons to the right queue
-  // Read from progress file's discoveredSeasons (set during crawl) rather than
-  // scanning all player records — player index is now slim with no season detail
+  // discoveredSeasons are stored in the progress file during modeCrawl
+  // Read them now before they're cleared, and add any unknown ones to the queue
   const updatedData  = loadData();
   const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
-  // allQueued = current queue + already crawled seasons — nothing already done gets re-added
   const allQueued    = new Set([...priority, ...backlog, ...updatedKnown]);
 
-  // Find seasons that appeared in this crawl's discoveries but aren't queued or crawled yet
-  // These come from progress.discoveredSeasons logged during modeCrawl
-  // We detect them by checking which seasons in the index weren't there before the crawl
-  // Since we don't have a before-snapshot, we check: in index but not in allQueued before expansion
-  // Find genuinely new seasons: in index but not already crawled before this run
-  // and not already in the queue
-  const prevKnown = new Set(Object.keys(loadData().index.seasons));
-  // prevKnown includes everything crawled including this season just completed
-  // We want seasons that were NOT in the queue before this run started
-  for (const sid of updatedKnown) {
+  // Load progress to get discoveredSeasons before clearProgress() deleted it
+  // modeCrawl calls clearProgress() at end — but progress is still on disk
+  // if the season succeeded, progress was cleared inside modeCrawl already.
+  // discoveredSeasons are also stored directly on the index via newSeasonIds — check those.
+  // Actually: newSeasonIds in fetchPlayerProfile add to newSeasonIds Set but never to index.
+  // The only record is progress.discoveredSeasons, which was cleared by modeCrawl.
+  // Fix: we need to read from the index what was added, but discovered seasons aren't added there.
+  // Instead, re-read the saved queue files which saveProgress doesn't touch.
+  // The correct approach: modeCrawl should save discoveredSeasons to a temp file.
+  // For now — read the index seasons and also check the saved progress file if it exists.
+  const savedProgress = loadProgress();
+  const discovered = savedProgress.discoveredSeasons || [];
+
+  let added = 0;
+  // Also check index for stub seasons (discovered:true) not yet in queue
+  for (const [sid, meta] of Object.entries(updatedData.index.seasons)) {
     if (!allQueued.has(sid)) {
-      // New season — was discovered and added to index during this crawl
-      const meta = updatedData.index.seasons[sid];
-      const sn   = meta?.name || '';
-      if (isPriority(sn)) {
+      const sn = meta?.name || '';
+      if (isPriority(sn) || meta?.discovered) {
         priority.push(sid);
-        console.log(`  ➕ Priority: ${sid} — ${sn}`);
+        console.log(`  ➕ Priority: ${sid} — ${sn || 'unknown year'}`);
       } else {
         backlog.push(sid);
         console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
       }
       allQueued.add(sid);
+      added++;
     }
   }
+  if (added > 0) console.log(`  ➕ Added ${added} newly discovered seasons to queue`);
 
   const totalRemaining = priority.length + backlog.length;
   // Always save queues so next run sees the updated counts
