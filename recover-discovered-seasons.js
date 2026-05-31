@@ -64,29 +64,50 @@ async function fetchLogZip(runId) {
 
 function extractFromZip(buf) {
   const discovered = new Set();
-  let offset = 0;
-  while (offset < buf.length - 4) {
-    if (buf[offset]===0x50 && buf[offset+1]===0x4b &&
-        buf[offset+2]===0x03 && buf[offset+3]===0x04) {
-      const compression = buf.readUInt16LE(offset + 8);
-      const compSize    = buf.readUInt32LE(offset + 18);
-      const nameLen     = buf.readUInt16LE(offset + 26);
-      const extraLen    = buf.readUInt16LE(offset + 28);
-      const dataOffset  = offset + 30 + nameLen + extraLen;
-      let text = '';
-      try {
-        if (compression === 0) {
-          text = buf.slice(dataOffset, dataOffset + compSize).toString('utf8');
-        } else if (compression === 8) {
-          text = zlib.inflateRawSync(buf.slice(dataOffset, dataOffset + compSize)).toString('utf8');
-        }
-      } catch (e) {}
+
+  // Find End of Central Directory to get correct file sizes
+  let eocd = -1;
+  for (let i = buf.length - 22; i >= 0; i--) {
+    if (buf[i]===0x50&&buf[i+1]===0x4b&&buf[i+2]===0x05&&buf[i+3]===0x06) { eocd=i; break; }
+  }
+  if (eocd < 0) return discovered;
+
+  const cdOffset = buf.readUInt32LE(eocd + 16);
+  const cdSize   = buf.readUInt32LE(eocd + 12);
+
+  // Walk central directory — extract text from all files
+  let pos = cdOffset;
+  while (pos < cdOffset + cdSize) {
+    if (buf[pos]!==0x50||buf[pos+1]!==0x4b||buf[pos+2]!==0x01||buf[pos+3]!==0x02) break;
+    const compression = buf.readUInt16LE(pos + 10);
+    const compSize    = buf.readUInt32LE(pos + 20);
+    const uncompSize  = buf.readUInt32LE(pos + 24);
+    const nameLen     = buf.readUInt16LE(pos + 28);
+    const extraLen    = buf.readUInt16LE(pos + 30);
+    const commentLen  = buf.readUInt16LE(pos + 32);
+    const localOffset = buf.readUInt32LE(pos + 42);
+    const name        = buf.slice(pos + 46, pos + 46 + nameLen).toString('utf8');
+
+    // Read local file header to find data start
+    const lNameLen  = buf.readUInt16LE(localOffset + 26);
+    const lExtraLen = buf.readUInt16LE(localOffset + 28);
+    const dataStart = localOffset + 30 + lNameLen + lExtraLen;
+
+    let text = '';
+    try {
+      if (compression === 0) {
+        text = buf.slice(dataStart, dataStart + uncompSize).toString('utf8');
+      } else if (compression === 8) {
+        text = zlib.inflateRawSync(buf.slice(dataStart, dataStart + compSize)).toString('utf8');
+      }
+    } catch (e) {}
+
+    if (text) {
       const matches = text.matchAll(/New season discovered:\s*([0-9a-f]{8})/gi);
       for (const m of matches) discovered.add(m[1]);
-      offset = dataOffset + compSize;
-    } else {
-      offset++;
     }
+
+    pos += 46 + nameLen + extraLen + commentLen;
   }
   return discovered;
 }
