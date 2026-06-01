@@ -128,7 +128,7 @@ function playerFile(uuid) {
 }
 
 // ─── Concurrency / rate-limit state (module-level so gql() can reference) ────
-const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '30', 10);
+const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '50', 10);
 let CONCURRENCY     = _START_CONCURRENCY;
 let CONCURRENCY_CAP = _START_CONCURRENCY;
 let _clean_batches  = 0;  // consecutive clean batches since last 429
@@ -1032,12 +1032,12 @@ async function modeCrawlAll() {
   const tier         = fromPriority ? 'priority' : 'backlog';
   console.log(`\n▶ [${tier}] Season ${seasonId} (${priority.length} priority + ${backlog.length} backlog remaining)`);
 
-  let seasonSucceeded = false;
+  let seasonSucceeded    = false;
+  let crawlDiscoveredCount = 0;
   try {
-    const crawlDiscoveredCount = await modeCrawl(seasonId) || 0;
+    crawlDiscoveredCount = await modeCrawl(seasonId) || 0;
     seasonSucceeded = true;
   } catch (e) {
-    const crawlDiscoveredCount = 0;
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
     console.warn(e.stack);
     // "not found" = bad season ID, safe to skip and continue
