@@ -473,7 +473,7 @@ async function discoverSeasonPlayers(seasonId, data) {
   }
 
   console.log(`\n  ✓ Found ${discoveredUuids.size} unique players across ${metaSeason.grades.length} grades (${totalGradePlayers} total incl. duplicates)`);
-  return { uuids: [...discoveredUuids], genders: uuidGenders };
+  return { uuids: [...discoveredUuids], genders: uuidGenders, uniquePlayers: discoveredUuids.size, totalPlayers: totalGradePlayers, gradeCount: metaSeason.grades.length };
 }
 
 // ─── Phase 2: Fetch full profile history for a player ────────────────────────
@@ -770,7 +770,8 @@ async function modeCrawl(seasonId) {
   );
 
   // If no pending work, or progress is for a different season, discover fresh
-  let genders = {};  // uuid → inferred gender; populated during discovery, empty on resume
+  let genders = {};    // uuid → inferred gender; populated during discovery, empty on resume
+  let crawlStats = null;  // stats from discoverSeasonPlayers
   if (progress.pendingUuids.length === 0 || !progress.currentSeason || progress.currentSeason !== seasonId) {
     if (progress.currentSeason && progress.currentSeason !== seasonId) {
       console.log(`  ⚠ Progress file is for season ${progress.currentSeason}, not ${seasonId} — starting fresh`);
@@ -782,6 +783,7 @@ async function modeCrawl(seasonId) {
     const discovered = await discoverSeasonPlayers(seasonId, data);
     const uuids = discovered.uuids;
     genders = discovered.genders;
+    crawlStats = discovered;
     saveData(data);
 
     // Apply gender inference to existing player records
@@ -941,10 +943,10 @@ async function modeCrawl(seasonId) {
   const meta = data.index.seasons[seasonId] || {};
   fs.writeFileSync('run-summary.json', JSON.stringify({
     seasonId,
-    seasonName:   meta.fullName || meta.name || seasonId,
-    grades:       (meta.grades || []).length,
-    uniquePlayers: discoveredUuids ? discoveredUuids.size : 0,
-    totalPlayers:  totalGradePlayers || 0,
+    seasonName:    meta.fullName || meta.name || seasonId,
+    grades:        crawlStats?.gradeCount  || (meta.grades || []).length,
+    uniquePlayers: crawlStats?.uniquePlayers || 0,
+    totalPlayers:  crawlStats?.totalPlayers  || 0,
     discovered:    totalDiscovered,
     lastFetch:     new Date().toISOString(),
   }));
