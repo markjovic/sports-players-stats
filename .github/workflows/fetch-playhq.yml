@@ -28,13 +28,13 @@ on:
         required: false
         default: 'basketball'
       concurrency:
-        description: 'Concurrent API requests (default 100, reduce if seeing 429s)'
+        description: 'Concurrent API requests (default 200, reduce if seeing 429s)'
         required: false
-        default: '100'
+        default: '200'
 
-  schedule:
-    # Update active seasons every Monday and Thursday at 6am AEST (8pm UTC Sunday/Wednesday)
-    - cron: '0 20 * * 0,3'
+  # schedule disabled during initial crawl — re-enable once crawl-all is complete
+  # schedule:
+  #   - cron: '0 20 * * 0,3'
 
 jobs:
   scrape:
@@ -83,7 +83,8 @@ jobs:
           const skipped  = fs.existsSync('seasons-skipped.json')   ? JSON.parse(fs.readFileSync('seasons-skipped.json'))   : [];
           const run      = fs.existsSync('run-summary.json')       ? JSON.parse(fs.readFileSync('run-summary.json'))       : null;
           const seasons  = index.seasons || {};
-          const players  = index.players || {};
+          // Player count: use playerCount from slim index (post-migration) or count from players object (pre-migration)
+          const playerCount = index.playerCount ?? Object.keys(index.players || {}).length;
           const crawled  = Object.values(seasons).filter(s => !s.discovered).length;
           const stubs    = Object.values(seasons).filter(s =>  s.discovered).length;
 
@@ -96,13 +97,13 @@ jobs:
             console.log(`   Unique players:   ${run.uniquePlayers.toLocaleString()}`);
             console.log(`   Total players:    ${run.totalPlayers.toLocaleString()} (incl. duplicates across grades)`);
             console.log(`   New players:      +${(run.newPlayers || 0).toLocaleString()}`);
-            console.log(`   New stubs added:  +${(run.newStubs || 0)}`);
+            console.log(`   New stubs added:  +${(run.newStubs || 0)} net`);
             console.log(`   New seasons disc: ${run.discovered}`);
           }
 
           console.log('');
           console.log('📊 Database summary');
-          console.log(`   Players:          ${Object.keys(players).length.toLocaleString()}`);
+          console.log(`   Players:          ${playerCount.toLocaleString()}`);
           console.log(`   Seasons crawled:  ${crawled}`);
           console.log(`   Seasons (stubs):  ${stubs} — discovered in player histories, not yet crawled`);
           console.log(`   Priority queue:   ${priority.length}`);
