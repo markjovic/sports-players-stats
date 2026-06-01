@@ -129,7 +129,7 @@ function playerFile(uuid) {
 }
 
 // ─── Concurrency / rate-limit state (module-level so gql() can reference) ────
-const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '50', 10);
+const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '100', 10);
 let CONCURRENCY     = _START_CONCURRENCY;
 let CONCURRENCY_CAP = _START_CONCURRENCY;
 let _clean_batches  = 0;  // consecutive clean batches since last 429
@@ -944,10 +944,12 @@ async function modeCrawl(seasonId) {
   fs.writeFileSync('run-summary.json', JSON.stringify({
     seasonId,
     seasonName:    meta.fullName || meta.name || seasonId,
-    grades:        crawlStats?.gradeCount  || (meta.grades || []).length,
+    grades:        crawlStats?.gradeCount   || (meta.grades || []).length,
     uniquePlayers: crawlStats?.uniquePlayers || 0,
     totalPlayers:  crawlStats?.totalPlayers  || 0,
     discovered:    totalDiscovered,
+    newPlayers,
+    newStubs,
     lastFetch:     new Date().toISOString(),
   }));
 
