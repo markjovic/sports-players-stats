@@ -28,9 +28,9 @@ on:
         required: false
         default: 'basketball'
       concurrency:
-        description: 'Concurrent API requests (default 50, reduce if seeing 429s)'
+        description: 'Concurrent API requests (default 100, reduce if seeing 429s)'
         required: false
-        default: '50'
+        default: '100'
 
   schedule:
     # Update active seasons every Monday and Thursday at 6am AEST (8pm UTC Sunday/Wednesday)
@@ -95,6 +95,8 @@ jobs:
             console.log(`   Grades:           ${run.grades}`);
             console.log(`   Unique players:   ${run.uniquePlayers.toLocaleString()}`);
             console.log(`   Total players:    ${run.totalPlayers.toLocaleString()} (incl. duplicates across grades)`);
+            console.log(`   New players:      +${(run.newPlayers || 0).toLocaleString()}`);
+            console.log(`   New stubs added:  +${(run.newStubs || 0)}`);
             console.log(`   New seasons disc: ${run.discovered}`);
           }
 
@@ -131,4 +133,5 @@ jobs:
           fi
           # Only commit if something changed
           git diff --staged --quiet || git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git pull --rebase=false --no-edit -X ours
           git push
