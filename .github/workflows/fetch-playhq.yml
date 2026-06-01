@@ -81,20 +81,33 @@ jobs:
           const backlog  = fs.existsSync('queue-bv-backlog.json')  ? JSON.parse(fs.readFileSync('queue-bv-backlog.json'))  : [];
           const invalid  = fs.existsSync('seasons-invalid.json')   ? JSON.parse(fs.readFileSync('seasons-invalid.json'))   : [];
           const skipped  = fs.existsSync('seasons-skipped.json')   ? JSON.parse(fs.readFileSync('seasons-skipped.json'))   : [];
+          const run      = fs.existsSync('run-summary.json')       ? JSON.parse(fs.readFileSync('run-summary.json'))       : null;
           const seasons  = index.seasons || {};
           const players  = index.players || {};
           const crawled  = Object.values(seasons).filter(s => !s.discovered).length;
           const stubs    = Object.values(seasons).filter(s =>  s.discovered).length;
+
+          if (run) {
+            console.log('');
+            console.log('🏀 Season just processed');
+            console.log(`   Season:           ${run.seasonName}`);
+            console.log(`   Season ID:        ${run.seasonId}`);
+            console.log(`   Grades:           ${run.grades}`);
+            console.log(`   Unique players:   ${run.uniquePlayers.toLocaleString()}`);
+            console.log(`   Total players:    ${run.totalPlayers.toLocaleString()} (incl. duplicates across grades)`);
+            console.log(`   New seasons disc: ${run.discovered}`);
+          }
+
           console.log('');
           console.log('📊 Database summary');
           console.log(`   Players:          ${Object.keys(players).length.toLocaleString()}`);
           console.log(`   Seasons crawled:  ${crawled}`);
-          console.log(`   Seasons (stubs):  ${stubs}`);
+          console.log(`   Seasons (stubs):  ${stubs} — discovered in player histories, not yet crawled`);
           console.log(`   Priority queue:   ${priority.length}`);
           console.log(`   Backlog queue:    ${backlog.length}`);
           console.log(`   Known invalid:    ${invalid.length}`);
           console.log(`   Skipped:          ${skipped.length}`);
-          console.log(`   Last fetch:       ${index.lastFetch || 'never'}`);
+          console.log(`   Last fetch:       ${run ? run.lastFetch : (index.lastFetch || 'never')}`);
           EOF
 
       - name: Commit results
