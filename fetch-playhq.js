@@ -111,6 +111,7 @@ const PROGRESS_FILE  = path.join(__dirname, `progress-${TENANT}.json`);
 const PLAYERS_DIR    = path.join(__dirname, 'players');
 const SKIPPED_FILE   = path.join(__dirname, 'seasons-skipped.json');
 const INVALID_FILE   = path.join(__dirname, 'seasons-invalid.json');
+const SHARDS_DIR     = path.join(__dirname, 'players-index');
 
 // Tenant → sport name mapping (avoids unreliable API field)
 const TENANT_SPORT = {
@@ -129,7 +130,7 @@ function playerFile(uuid) {
 }
 
 // ─── Concurrency / rate-limit state (module-level so gql() can reference) ────
-const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '100', 10);
+const _START_CONCURRENCY = parseInt(_RAW_ARGS.concurrency || '200', 10);
 let CONCURRENCY     = _START_CONCURRENCY;
 let CONCURRENCY_CAP = _START_CONCURRENCY;
 let _clean_batches  = 0;  // consecutive clean batches since last 429
@@ -312,7 +313,18 @@ function loadData() {
     try { index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8')); }
     catch (e) { console.warn('⚠ Could not parse sports-index.json, starting fresh'); }
   }
-  return { index };
+  // Load player shards if players-index/ exists (post-migration)
+  if (fs.existsSync(SHARDS_DIR)) {
+    index.players = {};
+    for (const file of fs.readdirSync(SHARDS_DIR)) {
+      if (!file.endsWith('.json')) continue;
+      try {
+        const shard = JSON.parse(fs.readFileSync(path.join(SHARDS_DIR, file), 'utf8'));
+        Object.assign(index.players, shard);
+      } catch (e) { console.warn(`⚠ Could not parse shard ${file}`); }
+    }
+  }
+  return { index, dirtyShards: new Set() };
 }
 
 function loadSeasonGames(seasonId) {
@@ -325,8 +337,31 @@ function loadSeasonGames(seasonId) {
   return { games: {}, playerGames: {} };
 }
 
-function saveData({ index }) {
-  fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
+function saveData({ index, dirtyShards }) {
+  if (fs.existsSync(SHARDS_DIR)) {
+    // Only write shards that were modified this save
+    if (dirtyShards && dirtyShards.size > 0) {
+      // Group dirty players by prefix
+      const shards = {};
+      for (const [uuid, player] of Object.entries(index.players || {})) {
+        const prefix = uuid.slice(0, 2);
+        if (dirtyShards.has(prefix)) {
+          if (!shards[prefix]) shards[prefix] = {};
+          shards[prefix][uuid] = player;
+        }
+      }
+      for (const [prefix, shard] of Object.entries(shards)) {
+        fs.writeFileSync(path.join(SHARDS_DIR, `${prefix}.json`), JSON.stringify(shard));
+      }
+    }
+    // Always write slim index (seasons may have changed)
+    const { players: _p, ...slimIndex } = index;
+    slimIndex.playerCount = Object.keys(index.players || {}).length;
+    fs.writeFileSync(INDEX_FILE, JSON.stringify(slimIndex));
+  } else {
+    // Pre-migration: write monolithic index
+    fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
+  }
 }
 
 function savePlayerDetail(uuid, detail) {
@@ -416,11 +451,11 @@ async function discoverSeasonPlayers(seasonId, data) {
   const uuidGenders = {};  // uuid → inferred gender from grade
   let totalGradePlayers = 0;
 
-  for (const [gi, grade] of season.grades.entries()) {
-    console.log(`\n  Grade [${gi+1}/${season.grades.length}]: ${grade.name}`);
+  // Fetch all grades in parallel batches using CONCURRENCY cap
+  async function fetchGrade(grade, gi) {
+    const gradeUuids = new Set();
     let page = 1;
     let totalPages = 1;
-
     while (page <= totalPages) {
       await delay(DELAY_MS);
       let result;
@@ -436,39 +471,40 @@ async function discoverSeasonPlayers(seasonId, data) {
         console.warn(`    ⚠ Failed page ${page} of grade ${grade.name}: ${e.message}`);
         break;
       }
-
       const gps = result.gradePlayerStatistics;
       if (!gps || !gps.results) break;
-
       totalPages = gps.meta.totalPages;
-      const records = gps.results.filter(r => r.profile); // skip private players
-      totalGradePlayers += records.length;
-
-      for (const r of records) {
-        const uid = r.profile.id;
-        discoveredUuids.add(uid);
-        // Tag with gender from this grade for player gender inference
-        const g = grade.gender?.name || 'Unknown';
-        if (!uuidGenders[uid]) uuidGenders[uid] = g;
-        else {
-          // Female or Male always wins over Mixed/Unknown
-          const cur = uuidGenders[uid];
-          if (cur === 'Unknown' || cur === 'Mixed') uuidGenders[uid] = g;
-          // If both gendered, keep existing (shouldn't happen but be safe)
-        }
-      }
-
-      console.log(`    Page ${page}/${totalPages}: ${records.length} players`);
+      const records = gps.results.filter(r => r.profile);
+      for (const r of records) gradeUuids.add({ uid: r.profile.id, gender: grade.gender?.name || 'Unknown' });
+      console.log(`  Grade [${gi+1}/${season.grades.length}] ${grade.name} — Page ${page}/${totalPages}: ${records.length} players`);
       page++;
     }
-    // Record grade in season metadata (avoid dupes)
-    if (!metaSeason.grades.find(g => g.id === grade.id)) {
-      metaSeason.grades.push({
-        id:     grade.id,
-        name:   grade.name,
-        age:    grade.age?.name,
-        gender: grade.gender?.name,
-      });
+    return { grade, gradeUuids };
+  }
+
+  // Process grades in parallel batches of CONCURRENCY
+  for (let i = 0; i < season.grades.length; i += CONCURRENCY) {
+    const batch = season.grades.slice(i, i + CONCURRENCY);
+    const results = await Promise.all(batch.map((grade, j) => fetchGrade(grade, i + j)));
+    for (const { grade, gradeUuids } of results) {
+      totalGradePlayers += gradeUuids.size;
+      for (const { uid, gender } of gradeUuids) {
+        discoveredUuids.add(uid);
+        if (!uuidGenders[uid]) uuidGenders[uid] = gender;
+        else {
+          const cur = uuidGenders[uid];
+          if (cur === 'Unknown' || cur === 'Mixed') uuidGenders[uid] = gender;
+        }
+      }
+      // Record grade in season metadata (avoid dupes)
+      if (!metaSeason.grades.find(g => g.id === grade.id)) {
+        metaSeason.grades.push({
+          id:     grade.id,
+          name:   grade.name,
+          age:    grade.age?.name,
+          gender: grade.gender?.name,
+        });
+      }
     }
   }
 
@@ -636,6 +672,7 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
   };
 
   data.index.players[uuid] = indexEntry;
+  if (data.dirtyShards) data.dirtyShards.add(uuid.slice(0, 2));
   savePlayerDetail(uuid, detail);
   return { player: indexEntry, newSeasonIds: [...newSeasonIds] };
 }
@@ -937,7 +974,7 @@ async function modeCrawl(seasonId) {
   console.log(`\n✅ Crawl complete for season ${seasonId}`);
   console.log(`   Players in database:   ${playersAfter.toLocaleString()} (+${newPlayers} new this season)`);
   console.log(`   Seasons crawled:       ${crawledSeasons} (was ${seasonsBefore})`);
-  console.log(`   Stubs pending:         ${stubSeasons} (+${newStubs} added this season)`);
+  console.log(`   Stubs pending:         ${stubSeasons} (${newStubs >= 0 ? '+' : ''}${newStubs} net change this season)`);
 
   // Write run summary for the Summary workflow step
   const meta = data.index.seasons[seasonId] || {};
@@ -1054,11 +1091,9 @@ async function modeCrawlAll() {
   console.log('\n🏀 CRAWL-ALL MODE — one season per run, self-triggering until complete');
   const data = loadData();
 
-  // Load or build the two-tier queues
   let { priority, backlog } = loadQueues();
 
   if (!priority && !backlog) {
-    // First run — build queues from index with year-based routing
     const queues = await buildQueuesFromIndex(data);
     priority = queues.priority;
     backlog  = queues.backlog;
@@ -1077,7 +1112,6 @@ async function modeCrawlAll() {
     return;
   }
 
-  // Take from priority first, then backlog
   const fromPriority = priority.length > 0;
   const seasonId     = fromPriority ? priority.shift() : backlog.shift();
   const tier         = fromPriority ? 'priority' : 'backlog';
@@ -1091,56 +1125,39 @@ async function modeCrawlAll() {
   } catch (e) {
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
     console.warn(e.stack);
-    // "not found" = bad season ID, safe to skip and continue
     const isSkippable = e.message.includes('not found') || e.message.includes('HTTP 4');
     if (!isSkippable) {
       console.error('  ❌ Self-trigger suppressed — fix the issue before re-running');
       process.exit(1);
     }
     console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json');
-    // Record in seasons-skipped.json for future review
     try {
       const skipped = fs.existsSync(SKIPPED_FILE)
         ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8'))
         : [];
-      // Avoid duplicates
       if (!skipped.find(s => s.id === seasonId)) {
-        skipped.push({
-          id:        seasonId,
-          reason:    e.message,
-          skippedAt: new Date().toISOString(),
-        });
+        skipped.push({ id: seasonId, reason: e.message, skippedAt: new Date().toISOString() });
         fs.writeFileSync(SKIPPED_FILE, JSON.stringify(skipped));
       }
     } catch (writeErr) {
       console.warn(`  ⚠ Could not write to seasons-skipped.json: ${writeErr.message}`);
     }
-    // Season already popped from queue via .shift() so it won't be retried
-    seasonSucceeded = true;  // treat as success so chain continues
+    seasonSucceeded = true;
   }
 
   if (!seasonSucceeded) return;
 
-  // Route newly discovered seasons to the right queue
-  // Read from progress file's discoveredSeasons (set during crawl) rather than
-  // scanning all player records — player index is now slim with no season detail
   const updatedData   = loadData();
-  // alreadyQueued = queue files + all seasons in index (crawled or stub)
-  // This prevents re-adding already-crawled seasons to the queue
   const alreadyQueued = new Set([
     ...priority,
     ...backlog,
     ...Object.keys(updatedData.index.seasons).filter(sid => !updatedData.index.seasons[sid]?.discovered),
   ]);
-
-  // Stub seasons = discovered during this crawl, written to index with discovered:true
-  // Only look at stubs written THIS crawl — those with discovered:true that weren't
-  // in the index before (i.e. not already in alreadyQueued which includes pre-existing stubs)
   const newStubEntries = Object.entries(updatedData.index.seasons)
     .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && !alreadyQueued.has(sid));
   const alreadyInQueue = Object.entries(updatedData.index.seasons)
     .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && alreadyQueued.has(sid)).length;
-  const genuinelyNew   = newStubEntries.length;
+  const genuinelyNew = newStubEntries.length;
 
   console.log(`\n🔍 Season discovery summary:`);
   console.log(`   Discovered in player histories: ${crawlDiscoveredCount}`);
@@ -1166,18 +1183,18 @@ async function modeCrawlAll() {
   if (added > 0) console.log(`  ➕ Added ${added} to queue (priority: ${priority.length}, backlog: ${backlog.length})`);
   else console.log(`  No new seasons to queue`);
 
-  const totalRemaining = priority.length + backlog.length;
-  // Always save queues so next run sees the updated counts
   saveQueues(priority, backlog);
 
+  const totalRemaining = priority.length + backlog.length;
   if (totalRemaining > 0) {
     console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining — triggering next run`);
     await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
     deleteQueues();
     console.log(`\n✅ All seasons complete!`);
-    console.log(`   Players in database: ${Object.keys(updatedData.index.players).length}`);
-    console.log(`   Seasons in database: ${Object.keys(updatedData.index.seasons).length}`);
+    const finalData = loadData();
+    console.log(`   Players in database: ${Object.keys(finalData.index.players).length}`);
+    console.log(`   Seasons in database: ${Object.keys(finalData.index.seasons).length}`);
   }
 }
 
