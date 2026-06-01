@@ -889,8 +889,9 @@ async function modeCrawl(seasonId) {
   saveData(data);
 
   // Print discovered seasons before clearing progress
-  if (progress.discoveredSeasons && progress.discoveredSeasons.length > 0) {
-    console.log(`\n💡 ${progress.discoveredSeasons.length} new season(s) discovered in player histories:`);
+  const totalDiscovered = (progress.discoveredSeasons || []).length;
+  if (totalDiscovered > 0) {
+    console.log(`\n💡 ${totalDiscovered} new season(s) discovered in player histories:`);
     for (const id of progress.discoveredSeasons) {
       console.log(`   node fetch-playhq.js --mode=crawl --season=${id}`);
     }
@@ -902,6 +903,7 @@ async function modeCrawl(seasonId) {
   console.log(`   Players in database: ${Object.keys(data.index.players).length}`);
   console.log(`   Seasons in database: ${Object.keys(data.index.seasons).length}`);
   printNewSeasonSuggestions(data);
+  return totalDiscovered;
 }
 
 async function modeUpdate() {
@@ -1032,9 +1034,10 @@ async function modeCrawlAll() {
 
   let seasonSucceeded = false;
   try {
-    await modeCrawl(seasonId);
+    const crawlDiscoveredCount = await modeCrawl(seasonId) || 0;
     seasonSucceeded = true;
   } catch (e) {
+    const crawlDiscoveredCount = 0;
     console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
     console.warn(e.stack);
     // "not found" = bad season ID, safe to skip and continue
@@ -1087,7 +1090,8 @@ async function modeCrawlAll() {
   const genuinelyNew   = stubs.filter(([sid]) => !alreadyQueued.has(sid)).length;
 
   console.log(`\n🔍 Season discovery summary:`);
-  console.log(`   New stubs written this crawl:   ${stubs.length}`);
+  console.log(`   Discovered in player histories: ${crawlDiscoveredCount}`);
+  console.log(`   New stubs in index:             ${stubs.length}`);
   console.log(`   Already in queue (skip):        ${alreadyInQueue}`);
   console.log(`   Genuinely new → queuing:        ${genuinelyNew}`);
 
