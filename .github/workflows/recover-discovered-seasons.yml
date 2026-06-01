@@ -31,6 +31,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add queue-bv-priority.json
+          git add queue-bv-priority.json queue-bv-backlog.json seasons-discovered.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "chore: recover discovered seasons from run logs"
           git push
