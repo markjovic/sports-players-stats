@@ -74,7 +74,10 @@ async function probeSeason(seasonId) {
       // Record any GraphQL errors
       lastReason = json?.errors ? `GraphQL: ${json.errors[0]?.message}` : 'null response';
       // null may be transient — retry
-      if (attempt < RETRIES) { await new Promise(r => setTimeout(r, RETRY_GAP)); continue; }
+      if (attempt < RETRIES) {
+        process.stdout.write(`    ↻ ${seasonId} null on attempt ${attempt}, retrying...\n`);
+        await new Promise(r => setTimeout(r, RETRY_GAP)); continue;
+      }
       return { result: null, attempts: attempt, status: res.status, reason: lastReason };
     } catch (e) {
       lastReason = `exception: ${e.message}`;
