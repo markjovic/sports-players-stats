@@ -110,6 +110,7 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 const PROGRESS_FILE  = path.join(__dirname, `progress-${TENANT}.json`);
 const PLAYERS_DIR    = path.join(__dirname, 'players');
 const SKIPPED_FILE   = path.join(__dirname, 'seasons-skipped.json');
+const INVALID_FILE   = path.join(__dirname, 'seasons-invalid.json');
 
 // Tenant → sport name mapping (avoids unreliable API field)
 const TENANT_SPORT = {
@@ -396,6 +397,21 @@ async function discoverSeasonPlayers(seasonId, data) {
   }
 
   const metaSeason = data.index.seasons[seasonId];
+  // Ensure grades array exists (may be missing if entry was a stub)
+  if (!metaSeason.grades) metaSeason.grades = [];
+  // Update stub with full metadata now that we have it
+  if (metaSeason.discovered) {
+    metaSeason.name     = season.name;
+    metaSeason.fullName = fullName;
+    metaSeason.compName = compName;
+    metaSeason.compId   = season.competition?.id;
+    metaSeason.orgName  = orgName;
+    metaSeason.orgId    = season.competition?.organisation?.id;
+    metaSeason.tenant   = TENANT;
+    metaSeason.locked   = false;
+    metaSeason.addedAt  = metaSeason.addedAt || new Date().toISOString();
+    delete metaSeason.discovered;
+  }
   const discoveredUuids = new Set();
   const uuidGenders = {};  // uuid → inferred gender from grade
 
@@ -808,7 +824,7 @@ async function modeCrawl(seasonId) {
       if (result) {
         console.log(`  [${done}/${total}] ✓ ${result.player.name}`);
         for (const newSeasonId of result.newSeasonIds) {
-          if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
+          if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId) && !invalidIds.has(newSeasonId)) {
             // Write stub to index so it survives clearProgress() and gets queued
             data.index.seasons[newSeasonId] = { id: newSeasonId, name: '', discovered: true };
             if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
