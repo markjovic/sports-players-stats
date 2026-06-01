@@ -1149,7 +1149,7 @@ async function modeCrawlAll() {
   console.log(`   Genuinely new → queuing:        ${genuinelyNew}`);
 
   let added = 0;
-  for (const [sid, meta] of stubs) {
+  for (const [sid, meta] of newStubEntries) {
     if (!alreadyQueued.has(sid)) {
       const sn = meta?.name || '';
       if (isPriority(sn) || meta?.discovered) {
