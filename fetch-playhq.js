@@ -894,7 +894,7 @@ async function modeCrawl(seasonId) {
   console.log(`   Final cap:        ${CONCURRENCY_CAP}`);
   console.log(`   Final concurrency:${CONCURRENCY}`);
   if (_429_total === 0) {
-    console.log(`   ✅ No rate limiting — consider increasing CONCURRENCY above 30 for next run`);
+    console.log(`   ✅ No rate limiting — consider increasing CONCURRENCY above ${CONCURRENCY_CAP} for next run`);
   } else if (CONCURRENCY_CAP < 30) {
     console.log(`   ⚠ Recommend starting next run with --concurrency=${CONCURRENCY_CAP}`);
   } else {
@@ -1134,15 +1134,17 @@ async function modeCrawlAll() {
   ]);
 
   // Stub seasons = discovered during this crawl, written to index with discovered:true
-  const stubs = Object.entries(updatedData.index.seasons)
-    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId);
-
-  const alreadyInQueue = stubs.filter(([sid]) => alreadyQueued.has(sid)).length;
-  const genuinelyNew   = stubs.filter(([sid]) => !alreadyQueued.has(sid)).length;
+  // Only look at stubs written THIS crawl — those with discovered:true that weren't
+  // in the index before (i.e. not already in alreadyQueued which includes pre-existing stubs)
+  const newStubEntries = Object.entries(updatedData.index.seasons)
+    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && !alreadyQueued.has(sid));
+  const alreadyInQueue = Object.entries(updatedData.index.seasons)
+    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && alreadyQueued.has(sid)).length;
+  const genuinelyNew   = newStubEntries.length;
 
   console.log(`\n🔍 Season discovery summary:`);
   console.log(`   Discovered in player histories: ${crawlDiscoveredCount}`);
-  console.log(`   New stubs in index:             ${stubs.length}`);
+  console.log(`   New stubs written this crawl:   ${genuinelyNew}`);
   console.log(`   Already in queue (skip):        ${alreadyInQueue}`);
   console.log(`   Genuinely new → queuing:        ${genuinelyNew}`);
 
