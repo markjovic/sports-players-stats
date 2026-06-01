@@ -144,20 +144,36 @@ function isPriority(name) {
   return year === null || year >= 2023;  // unknown year → priority
 }
 
+async function probeSeason(seasonId) {
+  const RETRIES   = 3;
+  const RETRY_GAP = 2000;  // ms between retries
+  for (let attempt = 1; attempt <= RETRIES; attempt++) {
+    try {
+      const res = await fetch(PLAYHQ_ENDPOINT, {
+        method: 'POST',
+        headers: PLAYHQ_HEADERS,
+        body: JSON.stringify({ query: Q_PROBE, variables: { id: seasonId } }),
+      });
+      if (!res.ok) {
+        if (attempt < RETRIES) { await new Promise(r => setTimeout(r, RETRY_GAP)); continue; }
+        return { result: null, attempts: attempt };
+      }
+      const json = await res.json();
+      const season = json?.data?.discoverSeason || null;
+      if (season) return { result: season, attempts: attempt };
+      // null result = season not found — no point retrying
+      return { result: null, attempts: attempt };
+    } catch (e) {
+      if (attempt < RETRIES) { await new Promise(r => setTimeout(r, RETRY_GAP)); continue; }
+      return { result: null, attempts: attempt };
+    }
+  }
+  return { result: null, attempts: RETRIES };
+}
+
 async function probeSeasonDelay(seasonId, delay) {
   await new Promise(r => setTimeout(r, delay));
-  try {
-    const res = await fetch(PLAYHQ_ENDPOINT, {
-      method: 'POST',
-      headers: PLAYHQ_HEADERS,
-      body: JSON.stringify({ query: Q_PROBE, variables: { id: seasonId } }),
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json?.data?.discoverSeason || null;
-  } catch (e) {
-    return null;
-  }
+  return probeSeason(seasonId);
 }
 
 async function main() {
@@ -202,8 +218,29 @@ async function main() {
   console.log(`  Already known:     ${allDiscovered.size - candidates.length}`);
   console.log(`  Candidates to validate: ${candidates.length}\n`);
 
+  // Also probe queued seasons that have no metadata yet
+  const metaFile = path.join(__dirname, 'seasons-discovered.json');
+  const existingMeta = fs.existsSync(metaFile)
+    ? JSON.parse(fs.readFileSync(metaFile, 'utf8'))
+    : {};
+  const indexSeasons = new Set(Object.keys(updatedData.index.seasons || {}));
+  const allQueuedIds = [
+    ...JSON.parse(fs.readFileSync(QUEUE_PRIORITY_FILE, 'utf8')),
+    ...JSON.parse(fs.readFileSync(QUEUE_BACKLOG_FILE, 'utf8')),
+  ];
+  const missingMeta = allQueuedIds.filter(sid =>
+    !indexSeasons.has(sid) && !existingMeta[sid]
+  );
+  console.log(`  Queue entries missing metadata: ${missingMeta.length}`);
+
+  // Merge into candidates (deduped)
+  const allCandidatesSet = new Set([...candidates, ...missingMeta]);
+  candidates.length = 0;
+  candidates.push(...allCandidatesSet);
+  console.log(`  Total to validate: ${candidates.length}\n`);
+
   if (candidates.length === 0) {
-    console.log('✅ Nothing new to add');
+    console.log('✅ Nothing to validate');
     return;
   }
 
@@ -213,6 +250,7 @@ async function main() {
   const toAddBacklog  = [];
   const invalid       = [];
   const validSeasons  = [];  // { id, season } for metadata file
+  let   retriedSuccess = 0;  // count of seasons that passed only after retry
   const BATCH = 10;
   const DELAY = 300;  // ms between requests
 
@@ -222,20 +260,22 @@ async function main() {
       batch.map((id, j) => probeSeasonDelay(id, j * DELAY))
     );
     for (let j = 0; j < batch.length; j++) {
-      const id     = batch[j];
-      const season = results[j];
+      const id              = batch[j];
+      const { result: season, attempts } = results[j];
+      const retryNote       = attempts > 1 ? ` (attempt ${attempts})` : '';
       if (season) {
         const name     = season.name || '';
         const orgName  = season.competition?.organisation?.name || '';
         const compName = season.competition?.name || '';
         if (isPriority(name)) {
           toAddPriority.push(id);
-          console.log(`  ✓ Priority: ${id} — ${compName} ${name} (${orgName})`);
+          console.log(`  ✓ Priority: ${id} — ${compName} ${name} (${orgName})${retryNote}`);
         } else {
           toAddBacklog.push(id);
-          console.log(`  ✓ Backlog:  ${id} — ${compName} ${name} (${orgName})`);
+          console.log(`  ✓ Backlog:  ${id} — ${compName} ${name} (${orgName})${retryNote}`);
         }
         validSeasons.push({ id, season });
+        if (attempts > 1) retriedSuccess++;
       } else {
         invalid.push(id);
         console.log(`  ✗ Invalid:  ${id}`);
@@ -246,9 +286,10 @@ async function main() {
   }
 
   console.log(`\n📊 Results:`);
-  console.log(`  Valid → priority: ${toAddPriority.length}`);
-  console.log(`  Valid → backlog:  ${toAddBacklog.length}`);
-  console.log(`  Invalid (skip):   ${invalid.length}`);
+  console.log(`  Valid → priority:  ${toAddPriority.length}`);
+  console.log(`  Valid → backlog:   ${toAddBacklog.length}`);
+  console.log(`  Invalid (skip):    ${invalid.length}`);
+  console.log(`  Passed on retry:   ${retriedSuccess} (would have been lost without retry logic)`);
 
   if (toAddPriority.length === 0 && toAddBacklog.length === 0) {
     console.log('\n✅ No valid new seasons found');
@@ -262,12 +303,7 @@ async function main() {
   fs.writeFileSync(QUEUE_PRIORITY_FILE, JSON.stringify(priority));
   fs.writeFileSync(QUEUE_BACKLOG_FILE,  JSON.stringify(backlog));
 
-  // Save metadata for all valid seasons to a review file
-  const metaFile = path.join(__dirname, 'seasons-discovered.json');
-  const existingMeta = fs.existsSync(metaFile)
-    ? JSON.parse(fs.readFileSync(metaFile, 'utf8'))
-    : {};
-
+  // Save metadata for all valid seasons to a review file (reuse existingMeta loaded above)
   for (const { id, season } of validSeasons) {
     existingMeta[id] = {
       id,
