@@ -76,7 +76,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add sports-index.json
+          git add sports-index.json seasons-skipped.json 2>/dev/null || true
           git add games/ 2>/dev/null || true
           git add players/ 2>/dev/null || true
           if ls queue-*.json 1> /dev/null 2>&1; then
