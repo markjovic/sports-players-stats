@@ -441,6 +441,7 @@ async function discoverSeasonPlayers(seasonId, data) {
 
       totalPages = gps.meta.totalPages;
       const records = gps.results.filter(r => r.profile); // skip private players
+      totalGradePlayers += records.length;
 
       for (const r of records) {
         const uid = r.profile.id;
@@ -459,7 +460,6 @@ async function discoverSeasonPlayers(seasonId, data) {
       console.log(`    Page ${page}/${totalPages}: ${records.length} players`);
       page++;
     }
-
     // Record grade in season metadata (avoid dupes)
     if (!metaSeason.grades.find(g => g.id === grade.id)) {
       metaSeason.grades.push({
@@ -471,7 +471,7 @@ async function discoverSeasonPlayers(seasonId, data) {
     }
   }
 
-  console.log(`\n  ✓ Found ${discoveredUuids.size} unique players in ${seasonId}`);
+  console.log(`\n  ✓ Found ${discoveredUuids.size} unique players across ${metaSeason.grades.length} grades (${totalGradePlayers} total incl. duplicates)`);
   return { uuids: [...discoveredUuids], genders: uuidGenders };
 }
 
@@ -749,6 +749,7 @@ function stripAge(name) {
 
 async function modeCrawl(seasonId) {
   console.log(`\n🏀 CRAWL MODE — Season: ${seasonId}`);
+  // Full season name logged after discovery
   // Reset rate-limit state for this season
   CONCURRENCY     = _START_CONCURRENCY;
   CONCURRENCY_CAP = _START_CONCURRENCY;
@@ -758,6 +759,9 @@ async function modeCrawl(seasonId) {
   _429_cap_hits   = 0;
   const data = loadData();
   const progress = loadProgress();
+  const playersBefore  = Object.keys(data.index.players).length;
+  const seasonsBefore  = Object.values(data.index.seasons).filter(s => !s.discovered).length;
+  const stubsBefore    = Object.values(data.index.seasons).filter(s =>  s.discovered).length;
   const invalidIds = new Set(
     fs.existsSync(INVALID_FILE)
       ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
@@ -922,9 +926,28 @@ async function modeCrawl(seasonId) {
 
   clearProgress();
 
+  const playersAfter   = Object.keys(data.index.players).length;
+  const crawledSeasons = Object.values(data.index.seasons).filter(s => !s.discovered).length;
+  const stubSeasons    = Object.values(data.index.seasons).filter(s =>  s.discovered).length;
+  const newPlayers     = playersAfter - playersBefore;
+  const newStubs       = stubSeasons  - stubsBefore;
   console.log(`\n✅ Crawl complete for season ${seasonId}`);
-  console.log(`   Players in database: ${Object.keys(data.index.players).length}`);
-  console.log(`   Seasons in database: ${Object.keys(data.index.seasons).length}`);
+  console.log(`   Players in database:   ${playersAfter.toLocaleString()} (+${newPlayers} new this season)`);
+  console.log(`   Seasons crawled:       ${crawledSeasons} (was ${seasonsBefore})`);
+  console.log(`   Stubs pending:         ${stubSeasons} (+${newStubs} added this season)`);
+
+  // Write run summary for the Summary workflow step
+  const meta = data.index.seasons[seasonId] || {};
+  fs.writeFileSync('run-summary.json', JSON.stringify({
+    seasonId,
+    seasonName:   meta.fullName || meta.name || seasonId,
+    grades:       (meta.grades || []).length,
+    uniquePlayers: discoveredUuids ? discoveredUuids.size : 0,
+    totalPlayers:  totalGradePlayers || 0,
+    discovered:    totalDiscovered,
+    lastFetch:     new Date().toISOString(),
+  }));
+
   printNewSeasonSuggestions(data);
   return totalDiscovered;
 }
