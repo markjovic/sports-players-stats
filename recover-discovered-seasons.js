@@ -212,6 +212,7 @@ async function main() {
   const toAddPriority = [];
   const toAddBacklog  = [];
   const invalid       = [];
+  const validSeasons  = [];  // { id, season } for metadata file
   const BATCH = 10;
   const DELAY = 300;  // ms between requests
 
@@ -224,8 +225,8 @@ async function main() {
       const id     = batch[j];
       const season = results[j];
       if (season) {
-        const name    = season.name || '';
-        const orgName = season.competition?.organisation?.name || '';
+        const name     = season.name || '';
+        const orgName  = season.competition?.organisation?.name || '';
         const compName = season.competition?.name || '';
         if (isPriority(name)) {
           toAddPriority.push(id);
@@ -234,6 +235,7 @@ async function main() {
           toAddBacklog.push(id);
           console.log(`  ✓ Backlog:  ${id} — ${compName} ${name} (${orgName})`);
         }
+        validSeasons.push({ id, season });
       } else {
         invalid.push(id);
         console.log(`  ✗ Invalid:  ${id}`);
@@ -253,16 +255,34 @@ async function main() {
     return;
   }
 
-  // Add to queues — new seasons go to the front of priority so they're processed soon
+  // Add to queues
   priority.push(...toAddPriority);
   backlog.push(...toAddBacklog);
 
   fs.writeFileSync(QUEUE_PRIORITY_FILE, JSON.stringify(priority));
   fs.writeFileSync(QUEUE_BACKLOG_FILE,  JSON.stringify(backlog));
 
+  // Save metadata for all valid seasons to a review file
+  const metaFile = path.join(__dirname, 'seasons-discovered.json');
+  const existingMeta = fs.existsSync(metaFile)
+    ? JSON.parse(fs.readFileSync(metaFile, 'utf8'))
+    : {};
+
+  for (const { id, season } of validSeasons) {
+    existingMeta[id] = {
+      id,
+      name:     season.name || '',
+      compName: season.competition?.name || '',
+      orgName:  season.competition?.organisation?.name || '',
+      queue:    toAddPriority.includes(id) ? 'priority' : 'backlog',
+    };
+  }
+  fs.writeFileSync(metaFile, JSON.stringify(existingMeta));
+
   console.log(`\n✅ Queue files updated`);
   console.log(`   Priority: ${priority.length} seasons`);
   console.log(`   Backlog:  ${backlog.length} seasons`);
+  console.log(`   Metadata saved to seasons-discovered.json`);
 }
 
 main().catch(e => {
