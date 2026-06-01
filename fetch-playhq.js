@@ -809,6 +809,8 @@ async function modeCrawl(seasonId) {
         console.log(`  [${done}/${total}] ✓ ${result.player.name}`);
         for (const newSeasonId of result.newSeasonIds) {
           if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
+            // Write stub to index so it survives clearProgress() and gets queued
+            data.index.seasons[newSeasonId] = { id: newSeasonId, name: '', discovered: true };
             if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
             if (!progress.discoveredSeasons.includes(newSeasonId)) {
               progress.discoveredSeasons.push(newSeasonId);
