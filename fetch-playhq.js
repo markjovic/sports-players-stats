@@ -109,6 +109,7 @@ const SPORT  = _RAW_ARGS.sport  || 'basketball';
 // These depend on TENANT so must come after CLI arg parsing
 const PROGRESS_FILE  = path.join(__dirname, `progress-${TENANT}.json`);
 const PLAYERS_DIR    = path.join(__dirname, 'players');
+const SKIPPED_FILE   = path.join(__dirname, 'seasons-skipped.json');
 
 // Tenant → sport name mapping (avoids unreliable API field)
 const TENANT_SPORT = {
@@ -808,9 +809,6 @@ async function modeCrawl(seasonId) {
         console.log(`  [${done}/${total}] ✓ ${result.player.name}`);
         for (const newSeasonId of result.newSeasonIds) {
           if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId)) {
-            // Store as a stub in the index so it survives clearProgress()
-            // and can be picked up by modeCrawlAll for queue routing
-            data.index.seasons[newSeasonId] = { id: newSeasonId, name: '', discovered: true };
             if (!progress.discoveredSeasons) progress.discoveredSeasons = [];
             if (!progress.discoveredSeasons.includes(newSeasonId)) {
               progress.discoveredSeasons.push(newSeasonId);
@@ -1045,7 +1043,24 @@ async function modeCrawlAll() {
       console.warn('  ⚠ Self-trigger suppressed — fix the issue before re-running');
       return;
     }
-    console.warn('  ⚠ Skipping bad season ID — will not be retried');
+    console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json');
+    // Record in seasons-skipped.json for future review
+    try {
+      const skipped = fs.existsSync(SKIPPED_FILE)
+        ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8'))
+        : [];
+      // Avoid duplicates
+      if (!skipped.find(s => s.id === seasonId)) {
+        skipped.push({
+          id:        seasonId,
+          reason:    e.message,
+          skippedAt: new Date().toISOString(),
+        });
+        fs.writeFileSync(SKIPPED_FILE, JSON.stringify(skipped));
+      }
+    } catch (writeErr) {
+      console.warn(`  ⚠ Could not write to seasons-skipped.json: ${writeErr.message}`);
+    }
     // Season already popped from queue via .shift() so it won't be retried
     seasonSucceeded = true;  // treat as success so chain continues
   }
@@ -1053,42 +1068,37 @@ async function modeCrawlAll() {
   if (!seasonSucceeded) return;
 
   // Route newly discovered seasons to the right queue
-  // discoveredSeasons are stored in the progress file during modeCrawl
-  // Read them now before they're cleared, and add any unknown ones to the queue
+  // Read from progress file's discoveredSeasons (set during crawl) rather than
+  // scanning all player records — player index is now slim with no season detail
   const updatedData  = loadData();
   const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
+  // allQueued = current queue + already crawled seasons — nothing already done gets re-added
   const allQueued    = new Set([...priority, ...backlog, ...updatedKnown]);
 
-  // Load progress to get discoveredSeasons before clearProgress() deleted it
-  // modeCrawl calls clearProgress() at end — but progress is still on disk
-  // if the season succeeded, progress was cleared inside modeCrawl already.
-  // discoveredSeasons are also stored directly on the index via newSeasonIds — check those.
-  // Actually: newSeasonIds in fetchPlayerProfile add to newSeasonIds Set but never to index.
-  // The only record is progress.discoveredSeasons, which was cleared by modeCrawl.
-  // Fix: we need to read from the index what was added, but discovered seasons aren't added there.
-  // Instead, re-read the saved queue files which saveProgress doesn't touch.
-  // The correct approach: modeCrawl should save discoveredSeasons to a temp file.
-  // For now — read the index seasons and also check the saved progress file if it exists.
-  const savedProgress = loadProgress();
-  const discovered = savedProgress.discoveredSeasons || [];
-
-  let added = 0;
-  // Also check index for stub seasons (discovered:true) not yet in queue
-  for (const [sid, meta] of Object.entries(updatedData.index.seasons)) {
+  // Find seasons that appeared in this crawl's discoveries but aren't queued or crawled yet
+  // These come from progress.discoveredSeasons logged during modeCrawl
+  // We detect them by checking which seasons in the index weren't there before the crawl
+  // Since we don't have a before-snapshot, we check: in index but not in allQueued before expansion
+  // Find genuinely new seasons: in index but not already crawled before this run
+  // and not already in the queue
+  const prevKnown = new Set(Object.keys(loadData().index.seasons));
+  // prevKnown includes everything crawled including this season just completed
+  // We want seasons that were NOT in the queue before this run started
+  for (const sid of updatedKnown) {
     if (!allQueued.has(sid)) {
-      const sn = meta?.name || '';
-      if (isPriority(sn) || meta?.discovered) {
+      // New season — was discovered and added to index during this crawl
+      const meta = updatedData.index.seasons[sid];
+      const sn   = meta?.name || '';
+      if (isPriority(sn)) {
         priority.push(sid);
-        console.log(`  ➕ Priority: ${sid} — ${sn || 'unknown year'}`);
+        console.log(`  ➕ Priority: ${sid} — ${sn}`);
       } else {
         backlog.push(sid);
         console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
       }
       allQueued.add(sid);
-      added++;
     }
   }
-  if (added > 0) console.log(`  ➕ Added ${added} newly discovered seasons to queue`);
 
   const totalRemaining = priority.length + backlog.length;
   // Always save queues so next run sees the updated counts
