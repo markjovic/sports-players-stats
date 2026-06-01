@@ -28,9 +28,9 @@ on:
         required: false
         default: 'basketball'
       concurrency:
-        description: 'Concurrent API requests (default 30, reduce if seeing 429s)'
+        description: 'Concurrent API requests (default 50, reduce if seeing 429s)'
         required: false
-        default: '30'
+        default: '50'
 
   schedule:
     # Update active seasons every Monday and Thursday at 6am AEST (8pm UTC Sunday/Wednesday)
