@@ -758,6 +758,11 @@ async function modeCrawl(seasonId) {
   _429_cap_hits   = 0;
   const data = loadData();
   const progress = loadProgress();
+  const invalidIds = new Set(
+    fs.existsSync(INVALID_FILE)
+      ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
+      : []
+  );
 
   // If no pending work, or progress is for a different season, discover fresh
   let genders = {};  // uuid → inferred gender; populated during discovery, empty on resume
