@@ -19,6 +19,7 @@ const INDEX_FILE          = path.join(__dirname, 'sports-index.json');
 const QUEUE_PRIORITY_FILE = path.join(__dirname, 'queue-bv-priority.json');
 const QUEUE_BACKLOG_FILE  = path.join(__dirname, 'queue-bv-backlog.json');
 const META_FILE           = path.join(__dirname, 'seasons-discovered.json');
+const INVALID_FILE        = path.join(__dirname, 'seasons-invalid.json');
 
 const PLAYHQ_HEADERS = {
   'Content-Type': 'application/json',
@@ -52,6 +53,8 @@ function isPriority(name) {
 async function probeSeason(seasonId) {
   const RETRIES   = 3;
   const RETRY_GAP = 2000;
+  let lastStatus  = null;
+  let lastReason  = null;
   for (let attempt = 1; attempt <= RETRIES; attempt++) {
     try {
       const res = await fetch(PLAYHQ_URL, {
@@ -59,27 +62,27 @@ async function probeSeason(seasonId) {
         headers: PLAYHQ_HEADERS,
         body:    JSON.stringify({ query: Q_PROBE, variables: { id: seasonId } }),
       });
+      lastStatus = res.status;
       if (!res.ok) {
+        lastReason = `HTTP ${res.status}`;
         if (attempt < RETRIES) { await new Promise(r => setTimeout(r, RETRY_GAP)); continue; }
-        return { result: null, attempts: attempt };
+        return { result: null, attempts: attempt, status: lastStatus, reason: lastReason };
       }
       const json   = await res.json();
       const season = json?.data?.discoverSeason || null;
-      if (season) return { result: season, attempts: attempt };
-      // Log the actual response on first failure to diagnose
-      if (attempt === 1 && !season) {
-        const preview = JSON.stringify(json).slice(0, 200);
-        process.stderr.write(`  DEBUG null response for ${seasonId}: ${preview}\n`);
-      }
+      if (season) return { result: season, attempts: attempt, status: res.status, reason: null };
+      // Record any GraphQL errors
+      lastReason = json?.errors ? `GraphQL: ${json.errors[0]?.message}` : 'null response';
       // null may be transient — retry
       if (attempt < RETRIES) { await new Promise(r => setTimeout(r, RETRY_GAP)); continue; }
-      return { result: null, attempts: attempt };
+      return { result: null, attempts: attempt, status: res.status, reason: lastReason };
     } catch (e) {
+      lastReason = `exception: ${e.message}`;
       if (attempt < RETRIES) { await new Promise(r => setTimeout(r, RETRY_GAP)); continue; }
-      return { result: null, attempts: attempt };
+      return { result: null, attempts: attempt, status: lastStatus, reason: lastReason };
     }
   }
-  return { result: null, attempts: RETRIES };
+  return { result: null, attempts: RETRIES, status: lastStatus, reason: lastReason };
 }
 
 async function main() {
@@ -103,9 +106,22 @@ async function main() {
     };
   }
 
+  // Load known invalid IDs — skip probing these entirely
+  // Support both old format (array of strings) and new format (array of objects)
+  const knownInvalid = new Set();
+  if (fs.existsSync(INVALID_FILE)) {
+    const arr = JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8'));
+    for (const entry of arr) {
+      knownInvalid.add(typeof entry === 'string' ? entry : entry.id);
+    }
+  }
+
   const indexSeasons = new Set(Object.keys(index.seasons || {}));
   const allQueued    = [...new Set([...priority, ...backlog])];
-  const missing      = allQueued.filter(sid => !indexSeasons.has(sid) && !meta[sid]);
+  const missing      = allQueued.filter(sid =>
+    !indexSeasons.has(sid) && !meta[sid] && !knownInvalid.has(sid)
+  );
+  console.log(`Known invalid (skip):   ${knownInvalid.size}`);
 
   console.log(`Crawled seasons seeded: ${Object.keys(index.seasons || {}).length}`);
   console.log(`Total queued:           ${allQueued.length}`);
@@ -134,8 +150,8 @@ async function main() {
     );
     for (let j = 0; j < batch.length; j++) {
       const id                      = batch[j];
-      const { result: season, attempts } = results[j];
-      const retryNote               = attempts > 1 ? ` (attempt ${attempts})` : '';
+      const { result: season, attempts, status, reason } = results[j];
+      const retryNote = attempts > 1 ? ` (attempt ${attempts})` : '';
       if (season) {
         const name     = season.name || '';
         const orgName  = season.competition?.organisation?.name || '';
@@ -152,8 +168,8 @@ async function main() {
         validSeasons.push({ id, season });
         if (attempts > 1) retriedSuccess++;
       } else {
-        invalid.push(id);
-        console.log(`  ✗ Invalid:  ${id}`);
+        invalid.push({ id, status, reason, attempts });
+        console.log(`  ✗ Invalid:  ${id} [${status ?? 'no response'} — ${reason}]`);
       }
     }
     if (i + BATCH < missing.length) await new Promise(r => setTimeout(r, 500));
@@ -174,9 +190,32 @@ async function main() {
     }
   }
 
+  // Merge newly confirmed invalids with existing — store as objects with reason
+  const existingInvalidArr = fs.existsSync(INVALID_FILE)
+    ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8'))
+    : [];
+  // Support both old format (array of strings) and new format (array of objects)
+  const existingInvalidMap = {};
+  for (const entry of existingInvalidArr) {
+    if (typeof entry === 'string') existingInvalidMap[entry] = { id: entry, reason: 'unknown' };
+    else existingInvalidMap[entry.id] = entry;
+  }
+  for (const entry of invalid) {
+    existingInvalidMap[entry.id] = entry;
+  }
+  const allInvalidIds = new Set(Object.keys(existingInvalidMap));
+  fs.writeFileSync(INVALID_FILE, JSON.stringify(Object.values(existingInvalidMap)));
+  console.log(`  Total known invalid: ${allInvalidIds.size}`);
+
+  // Remove invalid IDs from both queue files
+  const cleanPriority = priority.filter(id => !allInvalidIds.has(id));
+  const cleanBacklog  = backlog.filter(id  => !allInvalidIds.has(id));
+  const removedFromQueues = (priority.length - cleanPriority.length) + (backlog.length - cleanBacklog.length);
+  if (removedFromQueues > 0) console.log(`  Removed ${removedFromQueues} invalid IDs from queues`);
+
   fs.writeFileSync(META_FILE,           JSON.stringify(meta));
-  fs.writeFileSync(QUEUE_PRIORITY_FILE, JSON.stringify(priority));
-  fs.writeFileSync(QUEUE_BACKLOG_FILE,  JSON.stringify(backlog));
+  fs.writeFileSync(QUEUE_PRIORITY_FILE, JSON.stringify(cleanPriority));
+  fs.writeFileSync(QUEUE_BACKLOG_FILE,  JSON.stringify(cleanBacklog));
 
   console.log(`\n📊 Results:`);
   console.log(`  Valid → priority:   ${toAddPriority.length}`);
