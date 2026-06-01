@@ -71,6 +71,32 @@ jobs:
           fi
           node fetch-playhq.js $ARGS
 
+      - name: Summary
+        if: always()
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          const index    = fs.existsSync('sports-index.json') ? JSON.parse(fs.readFileSync('sports-index.json')) : {};
+          const priority = fs.existsSync('queue-bv-priority.json') ? JSON.parse(fs.readFileSync('queue-bv-priority.json')) : [];
+          const backlog  = fs.existsSync('queue-bv-backlog.json')  ? JSON.parse(fs.readFileSync('queue-bv-backlog.json'))  : [];
+          const invalid  = fs.existsSync('seasons-invalid.json')   ? JSON.parse(fs.readFileSync('seasons-invalid.json'))   : [];
+          const skipped  = fs.existsSync('seasons-skipped.json')   ? JSON.parse(fs.readFileSync('seasons-skipped.json'))   : [];
+          const seasons  = index.seasons || {};
+          const players  = index.players || {};
+          const crawled  = Object.values(seasons).filter(s => !s.discovered).length;
+          const stubs    = Object.values(seasons).filter(s =>  s.discovered).length;
+          console.log('');
+          console.log('📊 Database summary');
+          console.log(`   Players:          ${Object.keys(players).length.toLocaleString()}`);
+          console.log(`   Seasons crawled:  ${crawled}`);
+          console.log(`   Seasons (stubs):  ${stubs}`);
+          console.log(`   Priority queue:   ${priority.length}`);
+          console.log(`   Backlog queue:    ${backlog.length}`);
+          console.log(`   Known invalid:    ${invalid.length}`);
+          console.log(`   Skipped:          ${skipped.length}`);
+          console.log(`   Last fetch:       ${index.lastFetch || 'never'}`);
+          EOF
+
       - name: Commit results
         if: always()
         run: |
