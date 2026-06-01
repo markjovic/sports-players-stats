@@ -414,6 +414,7 @@ async function discoverSeasonPlayers(seasonId, data) {
   }
   const discoveredUuids = new Set();
   const uuidGenders = {};  // uuid → inferred gender from grade
+  let totalGradePlayers = 0;
 
   for (const [gi, grade] of season.grades.entries()) {
     console.log(`\n  Grade [${gi+1}/${season.grades.length}]: ${grade.name}`);
