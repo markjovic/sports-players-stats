@@ -1070,35 +1070,41 @@ async function modeCrawlAll() {
   // Route newly discovered seasons to the right queue
   // Read from progress file's discoveredSeasons (set during crawl) rather than
   // scanning all player records — player index is now slim with no season detail
-  const updatedData  = loadData();
-  const updatedKnown = new Set(Object.keys(updatedData.index.seasons));
-  // allQueued = current queue + already crawled seasons — nothing already done gets re-added
-  const allQueued    = new Set([...priority, ...backlog, ...updatedKnown]);
+  const updatedData   = loadData();
+  const updatedKnown  = new Set(Object.keys(updatedData.index.seasons));
+  // alreadyQueued = only the queue files — NOT updatedKnown
+  // so stub seasons written to index during this crawl are detected as new
+  const alreadyQueued = new Set([...priority, ...backlog]);
 
-  // Find seasons that appeared in this crawl's discoveries but aren't queued or crawled yet
-  // These come from progress.discoveredSeasons logged during modeCrawl
-  // We detect them by checking which seasons in the index weren't there before the crawl
-  // Since we don't have a before-snapshot, we check: in index but not in allQueued before expansion
-  // Find genuinely new seasons: in index but not already crawled before this run
-  // and not already in the queue
-  const prevKnown = new Set(Object.keys(loadData().index.seasons));
-  // prevKnown includes everything crawled including this season just completed
-  // We want seasons that were NOT in the queue before this run started
-  for (const sid of updatedKnown) {
-    if (!allQueued.has(sid)) {
-      // New season — was discovered and added to index during this crawl
-      const meta = updatedData.index.seasons[sid];
-      const sn   = meta?.name || '';
-      if (isPriority(sn)) {
+  // Count the discovered stubs from this crawl for reporting
+  const discovered = Object.entries(updatedData.index.seasons)
+    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId);
+  const alreadyInQueue    = discovered.filter(([sid]) => alreadyQueued.has(sid)).length;
+  const alreadyCrawled    = discovered.filter(([sid]) => updatedData.index.seasons[sid] && !updatedData.index.seasons[sid].discovered).length;
+  const genuinelyNew      = discovered.filter(([sid]) => !alreadyQueued.has(sid)).length;
+
+  console.log(`\n🔍 Season discovery summary:`);
+  console.log(`   Discovered in player histories: ${discovered.length + alreadyInQueue + alreadyCrawled}`);
+  console.log(`   Already in queue (skip):        ${alreadyInQueue}`);
+  console.log(`   Already crawled (skip):         ${alreadyCrawled}`);
+  console.log(`   Genuinely new → queuing:        ${genuinelyNew}`);
+
+  let added = 0;
+  for (const [sid, meta] of Object.entries(updatedData.index.seasons)) {
+    if (!alreadyQueued.has(sid) && sid !== seasonId) {
+      const sn = meta?.name || '';
+      if (isPriority(sn) || meta?.discovered) {
         priority.push(sid);
-        console.log(`  ➕ Priority: ${sid} — ${sn}`);
+        console.log(`  ➕ Priority: ${sid} — ${sn || 'unknown year'}`);
       } else {
         backlog.push(sid);
         console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
       }
-      allQueued.add(sid);
+      alreadyQueued.add(sid);
+      added++;
     }
   }
+  if (added > 0) console.log(`  ➕ Added ${added} to queue (priority: ${priority.length}, backlog: ${backlog.length})`);
 
   const totalRemaining = priority.length + backlog.length;
   // Always save queues so next run sees the updated counts
