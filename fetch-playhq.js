@@ -1090,8 +1090,8 @@ async function modeCrawlAll() {
     // "not found" = bad season ID, safe to skip and continue
     const isSkippable = e.message.includes('not found') || e.message.includes('HTTP 4');
     if (!isSkippable) {
-      console.warn('  ⚠ Self-trigger suppressed — fix the issue before re-running');
-      return;
+      console.error('  ❌ Self-trigger suppressed — fix the issue before re-running');
+      process.exit(1);
     }
     console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json');
     // Record in seasons-skipped.json for future review
