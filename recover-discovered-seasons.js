@@ -223,7 +223,23 @@ async function main() {
   const existingMeta = fs.existsSync(metaFile)
     ? JSON.parse(fs.readFileSync(metaFile, 'utf8'))
     : {};
-  const indexSeasons = new Set(Object.keys(updatedData.index.seasons || {}));
+
+  // Seed existingMeta with crawled seasons from the index (full metadata already known)
+  for (const [sid, s] of Object.entries(index.seasons || {})) {
+    if (!existingMeta[sid]) {
+      existingMeta[sid] = {
+        id:       sid,
+        name:     s.name     || '',
+        compName: s.compName || '',
+        orgName:  s.orgName  || '',
+        queue:    'crawled',
+        locked:   s.locked   || false,
+        grades:   (s.grades || []).length,
+      };
+    }
+  }
+
+  const indexSeasons = new Set(Object.keys(index.seasons || {}));
   const allQueuedIds = [
     ...JSON.parse(fs.readFileSync(QUEUE_PRIORITY_FILE, 'utf8')),
     ...JSON.parse(fs.readFileSync(QUEUE_BACKLOG_FILE, 'utf8')),
