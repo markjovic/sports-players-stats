@@ -1,178 +1,97 @@
 # sports-players-stats
 
-A player-centric data scraper for PlayHQ sports competitions. Collects full match and stat history for every player across all reachable competitions, storing everything in a structured JSON database for querying and display.
-
-Currently scraping: **Basketball Victoria (bv)**. Designed to support AFL and Cricket Australia with the same codebase.
+Player-centric scraper for PlayHQ basketball competitions. Builds a database of every player across all Basketball Victoria competitions — player histories, career stats, season-by-season registrations — for use in search, leaderboards, and "played against" lookups.
 
 ---
 
-## Architecture
+## Data files
 
-### Core concept
-
-The scraper is **player-centric, history-first**. Starting from one or more competition season IDs, it:
-
-1. Enumerates all grades in the season
-2. Collects every player UUID from every grade (with gender inference)
-3. Fetches each player's **full PlayHQ history** — every season, every comp, every team, every game
-4. Stores stats in a slim searchable index and full detail in per-player files
-5. Stores game opponent data in per-season files for "played against" lookups
-
-### Crawl graph
-
-The scraper is self-expanding. Each player's full history reveals season IDs from other competitions. Unknown season IDs are queued and crawled automatically. A single seed comp eventually reaches the entire reachable graph of connected competitions.
-
-### Two-tier queue
-
-Seasons are prioritised by year:
-- **Priority queue** (`queue-bv-priority.json`): 2023+ seasons — crawled first
-- **Backlog queue** (`queue-bv-backlog.json`): pre-2023 seasons — crawled after priority is exhausted
-
-Seasons with unknown year default to priority. Historical seasons (year < current year) are auto-locked after crawling — their data never changes and won't be re-fetched.
-
-### Self-triggering chain
-
-`crawl-all` mode processes one season per GitHub Actions run, then triggers the next run automatically via the GitHub API. This avoids timeout issues on large seasons and ensures every season is fully committed before moving to the next.
+| File | Purpose |
+|------|---------|
+| `sports-index.json` | Slim index: seasons metadata + player count. ~1MB post-migration. |
+| `players-index/{xx}.json` | Sharded player slim records (name, gender, career totals) by first 2 UUID chars |
+| `players/{xx}/{uuid}.json` | Full player detail — all seasons and registrations |
+| `queue-bv-priority.json` | Seasons pending crawl (2023+) |
+| `queue-bv-backlog.json` | Seasons pending crawl (pre-2023) |
+| `seasons-discovered.json` | Metadata for all known seasons (crawled + queued) |
+| `seasons-invalid.json` | Confirmed invalid season IDs with reason + HTTP status |
+| `seasons-skipped.json` | Seasons that failed during crawl (recorded for review) |
+| `run-summary.json` | Stats from last crawl run — read by Summary workflow step |
 
 ---
 
-## Data model
+## Workflows
 
-### `sports-index.json` — slim index (~2MB)
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| **PlayHQ Sports Scraper** | Manual / self-triggering | Crawl one season per run, chain continues until queue exhausted |
+| **Recover Discovered Seasons** | Manual | Fill `seasons-discovered.json` metadata, validate unknown IDs, clean queues |
+| **Migrate Player Index** | Manual (one-off) | Split players from `sports-index.json` into `players-index/` shards |
 
-```js
-{
-  players: {
-    [uuid]: {
-      uuid, name, gender,
-      sports: {
-        "Basketball": { gp, pts, fouls, fg, ft, threePt }
-      },
-      updatedAt
-    }
-  },
-  seasons: {
-    [seasonId]: {
-      id, name, fullName, compName, compId,
-      orgName, orgId, tenant,
-      grades: [{ id, name, age, gender }],
-      locked: boolean,
-      lockedAt
-    }
-  },
-  lastFetch
-}
+---
+
+## Crawl architecture
+
+- **One season per run** — GitHub Actions job checks out, scrapes, commits, triggers next run
+- **Self-triggering chain** — `modeCrawlAll` calls GitHub API to dispatch next workflow run
+- **Two-tier queue** — priority (2023+) exhausted first, then backlog (pre-2023)
+- **200 concurrent requests** — grade page fetches and player profile fetches both parallelised
+- **Auto-lock** — historical seasons (year < current) locked after crawl; games files never rewritten
+- **Stub discovery** — new season IDs found in player histories written as stubs to index, queued for crawl
+- **Invalid tracking** — IDs confirmed not found after 3 API retries stored in `seasons-invalid.json`; not re-probed
+- **Error handling** — code errors exit(1) so Actions run shows ❌; skippable errors (not found, HTTP 4xx) recorded in `seasons-skipped.json` and chain continues
+
+## Summary step
+
+Each run shows a Summary step between "Run scraper" and "Commit results":
+
 ```
+🏀 Season just processed
+   Season:           Junior Domestic — Winter 2024
+   Season ID:        ebd7afa4
+   Grades:           24
+   Unique players:   1,278
+   Total players:    1,732 (incl. duplicates across grades)
+   New players:      +56
+   New stubs added:  +3 net
+   New seasons disc: 12
 
-### `players/{xx}/{uuid}.json` — full player detail
-
-Sharded by first 2 characters of UUID. One file per player, all sports.
-
-```js
-{
-  uuid, name, gender,
-  sports: { "Basketball": { gp, pts, fouls, fg, ft, threePt } },
-  seasons: [
-    {
-      sid, sn, club, sport,
-      regs: [
-        { tid, tn, gid, gn, age, div, stats: { gp, pts, fouls, fg, ft, threePt } }
-      ]
-    }
-  ],
-  updatedAt
-}
-```
-
-### `games/bv/{seasonId}.json` — game opponent index
-
-```js
-{
-  games: {
-    [gameId]: { d: date, on: oppTeamName, o: oppTeamId }
-  },
-  playerGames: {
-    [uuid]: [gameId, gameId, ...]
-  }
-}
+📊 Database summary
+   Players:          166,817
+   Seasons crawled:  214
+   Seasons (stubs):  1,673 — discovered in player histories, not yet crawled
+   Priority queue:   1,447
+   Backlog queue:    333
+   Known invalid:    700
+   Skipped:          1
+   Last fetch:       2026-06-01T10:22:44.219Z
 ```
 
 ---
 
-## Repo structure
+## Player index sharding
 
+`sports-index.json` previously stored all player slim records inline (~45MB+). Post-migration, players are split into 256 shard files `players-index/xx.json` by first 2 UUID chars (~200KB each). `sports-index.json` becomes ~1MB (seasons only).
+
+Run **Migrate Player Index** workflow to perform migration. Do not run while crawl-all is active. The scraper is backward-compatible — if `players-index/` doesn't exist it reads the monolithic index.
+
+---
+
+## PlayHQ API
+
+- **Endpoint:** `https://api.playhq.com/graphql` (POST)
+- **Headers:** `tenant: bv`, `origin: https://www.playhq.com`
+- **Season ID type:** `String!` for `discoverSeason` on `bv` tenant (not `ID!`)
+- **No auth required** for public competition data
+- **Rate limits:** not documented; 200 concurrent requests observed clean
+
+---
+
+## Cron schedule
+
+Disabled during initial crawl. Re-enable in `fetch-playhq.yml` once `crawl-all` completes:
+
+```yaml
+schedule:
+  - cron: '0 20 * * 0,3'  # Monday and Thursday 6am AEST
 ```
-fetch-playhq.js               <- scraper (all modes)
-migrate-games.sh              <- one-off: move games-bv-*.json to games/bv/
-migrate-player-index.js       <- one-off: split sports-index.json into slim + detail files
-sports-index.json             <- slim player index
-queue-bv-priority.json        <- pending priority seasons (2023+)
-queue-bv-backlog.json         <- pending backlog seasons (pre-2023)
-README.md
-.github/
-  workflows/
-    fetch-playhq.yml
-    migrate-games.yml
-    migrate-player-index.yml
-games/
-  bv/
-    {seasonId}.json
-players/
-  {xx}/
-    {uuid}.json
-```
-
----
-
-## Usage
-
-```bash
-node fetch-playhq.js --mode=crawl-all --tenant=bv --sport=basketball
-node fetch-playhq.js --mode=crawl    --tenant=bv --sport=basketball --season=8ff9f39e
-node fetch-playhq.js --mode=update   --tenant=bv --sport=basketball
-node fetch-playhq.js --mode=discover --tenant=bv --sport=basketball --season=8ff9f39e
-node fetch-playhq.js --mode=lock     --tenant=bv --sport=basketball --season=8ff9f39e
-```
-
-Add `--concurrency=N` to adjust parallel requests (default 30). The scraper self-regulates on 429 responses.
-
----
-
-## Tenant support
-
-| Sport | Tenant | Status |
-|-------|--------|--------|
-| Basketball Victoria | `bv` | Active |
-| AFL | `afl` | Planned |
-| Cricket Australia | `ca` | Planned |
-
----
-
-## Seed season IDs
-
-| Competition | Season | ID |
-|-------------|--------|----|
-| Kilsyth Basketball — After School | Autumn 2026 | `68f8c050` |
-| Kilsyth Basketball — Junior Domestic | Winter 2026 | `8ff9f39e` |
-| MEBA — Junior Domestic Saturday (GEBC) | Winter 2026 | `15908988` |
-| MEBA — Junior Domestic Mon-Fri | Winter 2026 | `43448c02` |
-
----
-
-## Gender inference
-
-- Seen in any Girls grade: `Female` (permanent)
-- Seen in any Boys grade: `Male` (permanent)
-- Only Mixed grades: `Mixed`
-- Never gendered: `Unknown`
-
-Female/Male signals are never downgraded.
-
----
-
-## Planned: viewer dashboard
-
-- Player search + leaderboards (GP, pts, fouls, FG, 3PT, FT) filterable by comp/season/age/grade
-- "This is me" — nominate yourself as a player
-- Team fixture view with season schedule
-- Fixture drill-down — opponent roster highlighting anyone you have ever played against, with PlayHQ game links
