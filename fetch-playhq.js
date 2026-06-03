@@ -1130,7 +1130,7 @@ async function modeCrawlAll() {
       console.error('  ❌ Self-trigger suppressed — fix the issue before re-running');
       process.exit(1);
     }
-    console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json');
+    console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json and seasons-invalid.json');
     try {
       const skipped = fs.existsSync(SKIPPED_FILE)
         ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8'))
@@ -1141,6 +1141,23 @@ async function modeCrawlAll() {
       }
     } catch (writeErr) {
       console.warn(`  ⚠ Could not write to seasons-skipped.json: ${writeErr.message}`);
+    }
+    // Also add to seasons-invalid.json so stub-writing code won't re-queue it
+    try {
+      const invalidArr = fs.existsSync(INVALID_FILE)
+        ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8'))
+        : [];
+      const invalidMap = {};
+      for (const entry of invalidArr) {
+        const id = typeof entry === 'string' ? entry : entry.id;
+        invalidMap[id] = entry;
+      }
+      if (!invalidMap[seasonId]) {
+        invalidMap[seasonId] = { id: seasonId, reason: e.message, status: null, attempts: 3, skippedAt: new Date().toISOString() };
+        fs.writeFileSync(INVALID_FILE, JSON.stringify(Object.values(invalidMap)));
+      }
+    } catch (writeErr) {
+      console.warn(`  ⚠ Could not write to seasons-invalid.json: ${writeErr.message}`);
     }
     seasonSucceeded = true;
   }
