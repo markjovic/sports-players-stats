@@ -143,19 +143,50 @@ async function fetchGradePlayers(gradeID) {
   return players;
 }
 
-// ─── Load sharded player index ────────────────────────────────────────────────
+// ─── Load player index (sharded or monolithic) ───────────────────────────────
 
-function loadShardForUuid(uuid) {
-  const prefix = uuid.slice(0, 2);
-  const shardFile = path.join(SHARDS_DIR, `${prefix}.json`);
-  if (!fs.existsSync(shardFile)) return null;
-  try {
-    const shard = JSON.parse(fs.readFileSync(shardFile, 'utf8'));
-    return shard[uuid] || null;
-  } catch (e) {
-    console.warn(`  ⚠ Could not read shard ${prefix}.json: ${e.message}`);
-    return null;
+// Loaded once on first lookup, then cached
+let _playerIndex = null;
+
+function loadPlayerIndex() {
+  if (_playerIndex) return _playerIndex;
+
+  if (fs.existsSync(SHARDS_DIR)) {
+    // Post-migration: sharded players-index/
+    console.log('  Loading sharded players-index/...');
+    _playerIndex = {};
+    for (const file of fs.readdirSync(SHARDS_DIR)) {
+      if (!file.endsWith('.json')) continue;
+      try {
+        const shard = JSON.parse(fs.readFileSync(path.join(SHARDS_DIR, file), 'utf8'));
+        Object.assign(_playerIndex, shard);
+      } catch (e) {
+        console.warn(`  ⚠ Could not parse shard ${file}: ${e.message}`);
+      }
+    }
+    console.log(`  Loaded ${Object.keys(_playerIndex).length} players from shards`);
+  } else if (fs.existsSync(INDEX_FILE)) {
+    // Pre-migration: monolithic sports-index.json
+    console.log('  Loading monolithic sports-index.json...');
+    try {
+      const raw = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
+      _playerIndex = raw.players || {};
+      console.log(`  Loaded ${Object.keys(_playerIndex).length} players from sports-index.json`);
+    } catch (e) {
+      console.warn(`  ⚠ Could not parse sports-index.json: ${e.message}`);
+      _playerIndex = {};
+    }
+  } else {
+    console.warn('  ⚠ No player index found (no players-index/ and no sports-index.json)');
+    _playerIndex = {};
   }
+
+  return _playerIndex;
+}
+
+function lookupPlayer(uuid) {
+  const index = loadPlayerIndex();
+  return index[uuid] || null;
 }
 
 // ─── HTML generation ──────────────────────────────────────────────────────────
@@ -181,18 +212,20 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
 
   const matchRows = matches.map(({ gradePlayer, indexEntry }) => {
     const url = profileUrl(gradePlayer.uuid);
-    // Strip age suffix from team name for display (e.g. "Norwood U12 Purple" → "Norwood Purple")
     const teamDisplay = gradePlayer.team.replace(/\s+U\d+(?:\.\d+)?\s*/gi, ' ').trim();
-    // Career totals from index entry
-    const careerGp  = indexEntry?.gp  ?? '–';
-    const careerPts = indexEntry?.pts ?? '–';
+    // Career totals live at sports.Basketball on the full detail record
+    const bball = indexEntry?.sports?.Basketball || {};
+    const d = v => (v != null ? v : '–');
     return `
       <tr>
         <td><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(gradePlayer.firstName)} ${escapeHtml(gradePlayer.lastName)}</a></td>
         <td>${escapeHtml(teamDisplay)}</td>
-        <td class="num">${gradePlayer.gp}</td>
-        <td class="num">${careerGp}</td>
-        <td class="num">${careerPts}</td>
+        <td class="num">${d(bball.gp)}</td>
+        <td class="num">${d(bball.pts)}</td>
+        <td class="num">${d(bball.fg)}</td>
+        <td class="num">${d(bball.ft)}</td>
+        <td class="num">${d(bball.threePt)}</td>
+        <td class="num">${d(bball.fouls)}</td>
       </tr>`;
   }).join('');
 
@@ -203,7 +236,6 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
       <tr>
         <td><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(p.firstName)} ${escapeHtml(p.lastName)}</a></td>
         <td>${escapeHtml(teamDisplay)}</td>
-        <td class="num">${p.gp}</td>
       </tr>`;
   }).join('');
 
@@ -271,10 +303,13 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
     <thead>
       <tr>
         <th>Player</th>
-        <th>Team (this grade)</th>
-        <th class="num">GP (grade)</th>
-        <th class="num">Career GP</th>
-        <th class="num">Career Pts</th>
+        <th>Team</th>
+        <th class="num">GP</th>
+        <th class="num">PTS</th>
+        <th class="num">FG</th>
+        <th class="num">FT</th>
+        <th class="num">3P</th>
+        <th class="num">Fouls</th>
       </tr>
     </thead>
     <tbody>${matchRows}</tbody>
@@ -289,8 +324,7 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
     <thead>
       <tr>
         <th>Player</th>
-        <th>Team (this grade)</th>
-        <th class="num">GP (grade)</th>
+        <th>Team</th>
       </tr>
     </thead>
     <tbody>${notFoundRows}</tbody>
@@ -307,10 +341,10 @@ async function main() {
   console.log('🏀 Grade Player Lookup');
   console.log(`   Grade ID: ${GRADE_ID}`);
   console.log(`   Tenant:   ${TENANT}`);
-  console.log(`   Shards:   ${SHARDS_DIR}`);
+  console.log(`   Index:    ${fs.existsSync(SHARDS_DIR) ? 'players-index/ (sharded)' : 'sports-index.json (monolithic)'}`);
 
-  if (!fs.existsSync(SHARDS_DIR)) {
-    console.error(`❌ players-index/ not found at ${SHARDS_DIR} — has the migration been run?`);
+  if (!fs.existsSync(SHARDS_DIR) && !fs.existsSync(INDEX_FILE)) {
+    console.error(`❌ No player index found — expected players-index/ or sports-index.json in ${__dirname}`);
     process.exit(1);
   }
 
@@ -336,7 +370,7 @@ async function main() {
   const notFound = [];
 
   for (const p of gradePlayers) {
-    const indexEntry = loadShardForUuid(p.uuid);
+    const indexEntry = lookupPlayer(p.uuid);
     if (indexEntry) {
       matches.push({ gradePlayer: p, indexEntry });
     } else {
