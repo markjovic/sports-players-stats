@@ -238,7 +238,7 @@ async function main() {
 
   // 1. Fetch fixture to get all game IDs
   console.log('\n📋 Fetching grade fixture...');
-  const fixtureData = await gql('gradeAllRounds', Q_FIXTURE, { gradeID: GRADE_ID });
+  const fixtureData = await gql('gradeAllRounds', Q_FIXTURE, { gradeID: GRADE_ID }, null);
   const rounds = fixtureData.discoverGradeFixture || [];
   const allGames = rounds.flatMap(r =>
     (r.games || []).map(g => ({ ...g, roundName: r.name }))
