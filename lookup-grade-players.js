@@ -21,6 +21,7 @@ const API_URL          = 'https://api.playhq.com/graphql';
 const PAGE_SIZE        = 50;
 const DELAY_MS         = 100;
 const SHARDS_DIR       = path.join(__dirname, 'players-index');
+const INDEX_FILE       = path.join(__dirname, 'sports-index.json');
 const OUTPUT_FILE      = path.join(__dirname, 'grade-lookup-result.html');
 
 // ─── CLI args ─────────────────────────────────────────────────────────────────
