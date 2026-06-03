@@ -43,8 +43,8 @@ async function gql(operationName, query, variables, auth) {
     headers,
     body: JSON.stringify({ operationName, query, variables }),
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
+  const body = await res.text(); if (!res.ok) throw new Error(`HTTP ${res.status}: ${body.slice(0,300)}`);
+  const json = JSON.parse(body);
   if (json.errors) throw new Error(JSON.stringify(json.errors));
   return json.data;
 }
