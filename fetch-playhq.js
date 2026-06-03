@@ -1088,12 +1088,16 @@ function printNewSeasonSuggestions(data) {
 // ─── Crawl-all mode — work through all undiscovered seasons from the index ────
 
 async function modeCrawlAll() {
-  console.log('\n🏀 CRAWL-ALL MODE — one season per run, self-triggering until complete');
-  const data = loadData();
+  const BUDGET_MS = 30 * 60 * 1000;  // 30 minutes
+  const runStart  = Date.now();
+  let seasonsRun  = 0;
+
+  console.log('\n🏀 CRAWL-ALL MODE — 30 min budget, self-triggering until complete');
 
   let { priority, backlog } = loadQueues();
 
   if (!priority && !backlog) {
+    const data = loadData();
     const queues = await buildQueuesFromIndex(data);
     priority = queues.priority;
     backlog  = queues.backlog;
@@ -1112,106 +1116,118 @@ async function modeCrawlAll() {
     return;
   }
 
-  const fromPriority = priority.length > 0;
-  const seasonId     = fromPriority ? priority.shift() : backlog.shift();
-  const tier         = fromPriority ? 'priority' : 'backlog';
-  console.log(`\n▶ [${tier}] Season ${seasonId} (${priority.length} priority + ${backlog.length} backlog remaining)`);
+  while (priority.length > 0 || backlog.length > 0) {
+    if (Date.now() - runStart >= BUDGET_MS) {
+      console.log(`\n⏱ 30 min budget reached after ${seasonsRun} season(s) — stopping`);
+      break;
+    }
 
-  let seasonSucceeded    = false;
-  let crawlDiscoveredCount = 0;
-  try {
-    crawlDiscoveredCount = await modeCrawl(seasonId) || 0;
-    seasonSucceeded = true;
-  } catch (e) {
-    console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
-    console.warn(e.stack);
-    const isSkippable = e.message.includes('not found') || e.message.includes('HTTP 4');
-    if (!isSkippable) {
-      console.error('  ❌ Self-trigger suppressed — fix the issue before re-running');
-      process.exit(1);
-    }
-    console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json and seasons-invalid.json');
+    const fromPriority = priority.length > 0;
+    const seasonId     = fromPriority ? priority.shift() : backlog.shift();
+    const tier         = fromPriority ? 'priority' : 'backlog';
+    console.log(`\n▶ [${tier}] Season ${seasonId} (${priority.length} priority + ${backlog.length} backlog remaining)`);
+
+    let seasonSucceeded    = false;
+    let crawlDiscoveredCount = 0;
     try {
-      const skipped = fs.existsSync(SKIPPED_FILE)
-        ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8'))
-        : [];
-      if (!skipped.find(s => s.id === seasonId)) {
-        skipped.push({ id: seasonId, reason: e.message, skippedAt: new Date().toISOString() });
-        fs.writeFileSync(SKIPPED_FILE, JSON.stringify(skipped));
+      crawlDiscoveredCount = await modeCrawl(seasonId) || 0;
+      seasonSucceeded = true;
+      seasonsRun++;
+    } catch (e) {
+      console.warn(`  ⚠ Season ${seasonId} failed: ${e.message}`);
+      console.warn(e.stack);
+      const isSkippable = e.message.includes('not found') || e.message.includes('HTTP 4');
+      if (!isSkippable) {
+        console.error('  ❌ Self-trigger suppressed — fix the issue before re-running');
+        saveQueues(priority, backlog);
+        process.exit(1);
       }
-    } catch (writeErr) {
-      console.warn(`  ⚠ Could not write to seasons-skipped.json: ${writeErr.message}`);
+      console.warn('  ⚠ Skipping bad season ID — recording in seasons-skipped.json and seasons-invalid.json');
+      try {
+        const skipped = fs.existsSync(SKIPPED_FILE)
+          ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8'))
+          : [];
+        if (!skipped.find(s => s.id === seasonId)) {
+          skipped.push({ id: seasonId, reason: e.message, skippedAt: new Date().toISOString() });
+          fs.writeFileSync(SKIPPED_FILE, JSON.stringify(skipped));
+        }
+      } catch (writeErr) {
+        console.warn(`  ⚠ Could not write to seasons-skipped.json: ${writeErr.message}`);
+      }
+      try {
+        const invalidArr = fs.existsSync(INVALID_FILE)
+          ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8'))
+          : [];
+        const invalidMap = {};
+        for (const entry of invalidArr) {
+          const id = typeof entry === 'string' ? entry : entry.id;
+          invalidMap[id] = entry;
+        }
+        if (!invalidMap[seasonId]) {
+          invalidMap[seasonId] = { id: seasonId, reason: e.message, status: null, attempts: 3, skippedAt: new Date().toISOString() };
+          fs.writeFileSync(INVALID_FILE, JSON.stringify(Object.values(invalidMap)));
+        }
+      } catch (writeErr) {
+        console.warn(`  ⚠ Could not write to seasons-invalid.json: ${writeErr.message}`);
+      }
+      seasonSucceeded = true;
+      seasonsRun++;
     }
-    // Also add to seasons-invalid.json so stub-writing code won't re-queue it
-    try {
-      const invalidArr = fs.existsSync(INVALID_FILE)
-        ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8'))
-        : [];
-      const invalidMap = {};
-      for (const entry of invalidArr) {
-        const id = typeof entry === 'string' ? entry : entry.id;
-        invalidMap[id] = entry;
-      }
-      if (!invalidMap[seasonId]) {
-        invalidMap[seasonId] = { id: seasonId, reason: e.message, status: null, attempts: 3, skippedAt: new Date().toISOString() };
-        fs.writeFileSync(INVALID_FILE, JSON.stringify(Object.values(invalidMap)));
-      }
-    } catch (writeErr) {
-      console.warn(`  ⚠ Could not write to seasons-invalid.json: ${writeErr.message}`);
+
+    if (!seasonSucceeded) {
+      saveQueues(priority, backlog);
+      return;
     }
-    seasonSucceeded = true;
+
+    const updatedData   = loadData();
+    const alreadyQueued = new Set([
+      ...priority,
+      ...backlog,
+      ...Object.keys(updatedData.index.seasons).filter(sid => !updatedData.index.seasons[sid]?.discovered),
+    ]);
+    const newStubEntries = Object.entries(updatedData.index.seasons)
+      .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && !alreadyQueued.has(sid));
+    const alreadyInQueue = Object.entries(updatedData.index.seasons)
+      .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && alreadyQueued.has(sid)).length;
+    const genuinelyNew = newStubEntries.length;
+
+    console.log(`\n🔍 Season discovery summary:`);
+    console.log(`   Discovered in player histories: ${crawlDiscoveredCount}`);
+    console.log(`   New stubs written this crawl:   ${genuinelyNew}`);
+    console.log(`   Already in queue (skip):        ${alreadyInQueue}`);
+    console.log(`   Genuinely new → queuing:        ${genuinelyNew}`);
+
+    let added = 0;
+    for (const [sid, meta] of newStubEntries) {
+      if (!alreadyQueued.has(sid)) {
+        const sn = meta?.name || '';
+        if (isPriority(sn) || meta?.discovered) {
+          priority.push(sid);
+          console.log(`  ➕ Priority: ${sid} — ${sn || 'unknown year'}`);
+        } else {
+          backlog.push(sid);
+          console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
+        }
+        alreadyQueued.add(sid);
+        added++;
+      }
+    }
+    if (added > 0) console.log(`  ➕ Added ${added} to queue (priority: ${priority.length}, backlog: ${backlog.length})`);
+    else console.log(`  No new seasons to queue`);
+
+    // Save queues after each season so restarts pick up correctly
+    saveQueues(priority, backlog);
   }
 
-  if (!seasonSucceeded) return;
-
-  const updatedData   = loadData();
-  const alreadyQueued = new Set([
-    ...priority,
-    ...backlog,
-    ...Object.keys(updatedData.index.seasons).filter(sid => !updatedData.index.seasons[sid]?.discovered),
-  ]);
-  const newStubEntries = Object.entries(updatedData.index.seasons)
-    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && !alreadyQueued.has(sid));
-  const alreadyInQueue = Object.entries(updatedData.index.seasons)
-    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && alreadyQueued.has(sid)).length;
-  const genuinelyNew = newStubEntries.length;
-
-  console.log(`\n🔍 Season discovery summary:`);
-  console.log(`   Discovered in player histories: ${crawlDiscoveredCount}`);
-  console.log(`   New stubs written this crawl:   ${genuinelyNew}`);
-  console.log(`   Already in queue (skip):        ${alreadyInQueue}`);
-  console.log(`   Genuinely new → queuing:        ${genuinelyNew}`);
-
-  let added = 0;
-  for (const [sid, meta] of newStubEntries) {
-    if (!alreadyQueued.has(sid)) {
-      const sn = meta?.name || '';
-      if (isPriority(sn) || meta?.discovered) {
-        priority.push(sid);
-        console.log(`  ➕ Priority: ${sid} — ${sn || 'unknown year'}`);
-      } else {
-        backlog.push(sid);
-        console.log(`  ➕ Backlog: ${sid} — ${sn || 'unknown year'}`);
-      }
-      alreadyQueued.add(sid);
-      added++;
-    }
-  }
-  if (added > 0) console.log(`  ➕ Added ${added} to queue (priority: ${priority.length}, backlog: ${backlog.length})`);
-  else console.log(`  No new seasons to queue`);
-
-  saveQueues(priority, backlog);
-
+  const elapsed = Math.round((Date.now() - runStart) / 1000);
   const totalRemaining = priority.length + backlog.length;
+  console.log(`\n📋 ${seasonsRun} season(s) in ${elapsed}s — ${priority.length} priority + ${backlog.length} backlog remaining`);
+
   if (totalRemaining > 0) {
-    console.log(`\n📋 ${priority.length} priority + ${backlog.length} backlog remaining — triggering next run`);
     await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
     deleteQueues();
-    console.log(`\n✅ All seasons complete!`);
-    const finalData = loadData();
-    console.log(`   Players in database: ${Object.keys(finalData.index.players).length}`);
-    console.log(`   Seasons in database: ${Object.keys(finalData.index.seasons).length}`);
+    console.log('\n✅ All seasons complete!');
   }
 }
 
