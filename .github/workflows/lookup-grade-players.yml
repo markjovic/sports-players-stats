@@ -1,0 +1,36 @@
+# .github/workflows/lookup-grade-players.yml
+name: Grade Player Lookup
+
+on:
+  workflow_dispatch:
+    inputs:
+      grade_id:
+        description: 'PlayHQ grade ID to look up (leave blank for default: 5afff92b)'
+        required: false
+        default: '5afff92b'
+
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run grade lookup
+        run: node lookup-grade-players.js --grade=${{ github.event.inputs.grade_id }}
+
+      - name: Commit HTML report
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add grade-lookup-result.html
+          git diff --cached --quiet || git commit -m "Grade lookup: ${{ github.event.inputs.grade_id }} [$(date -u '+%Y-%m-%d %H:%M')] [skip ci]"
+          git push
