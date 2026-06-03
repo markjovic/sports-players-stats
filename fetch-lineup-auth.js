@@ -62,7 +62,7 @@ query gradeAllRounds($gradeID: ID!) {
 }`;
 
 const Q_GAME_VIEW = `
-query gameView($gameId: ID!, $gameStatisticsFilter: GameStatisticsFilter!) {
+query gameView($gameId: ID!) {
   discoverGame(gameID: $gameId) {
     id publishLineup
     home { ... on DiscoverTeam { id name } }
@@ -256,7 +256,7 @@ async function main() {
     try {
       const data = await gql('gameView', Q_GAME_VIEW, {
         gameId: game.id,
-        gameStatisticsFilter: { classification: 'TOTAL' },
+        
       }, TOKEN);
 
       const dg = data.discoverGame;
