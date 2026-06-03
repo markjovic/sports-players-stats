@@ -1,13 +1,14 @@
 // lookup-grade-players.js
 /**
- * Fetches all players registered in a specific PlayHQ grade,
- * cross-references them against the local sharded player index,
- * and writes an HTML report to grade-lookup-result.html.
+ * Searches all player detail files for registrations in a specific PlayHQ
+ * season/competition, then fetches grade info for display context.
  *
  * Usage:
- *   node lookup-grade-players.js [--grade=<gradeID>]
+ *   node lookup-grade-players.js [--season=<seasonID>] [--grade=<gradeID>]
  *
- * Defaults to GRADE_ID constant below if --grade not provided.
+ * Defaults to the constants below if args not provided.
+ * --grade is used only for the page title/context (fetched from API).
+ * --season is the competition season ID to search for in player records.
  */
 
 const fs   = require('fs');
@@ -15,14 +16,15 @@ const path = require('path');
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const DEFAULT_GRADE_ID = '5afff92b';
-const TENANT           = 'bv';
-const API_URL          = 'https://api.playhq.com/graphql';
-const PAGE_SIZE        = 50;
-const DELAY_MS         = 100;
-const SHARDS_DIR       = path.join(__dirname, 'players-index');
-const INDEX_FILE       = path.join(__dirname, 'sports-index.json');
-const OUTPUT_FILE      = path.join(__dirname, 'grade-lookup-result.html');
+const DEFAULT_SEASON_ID = '0869ea69';
+const DEFAULT_GRADE_ID  = '5afff92b';   // used for display context only
+const TENANT            = 'bv';
+const API_URL           = 'https://api.playhq.com/graphql';
+const DELAY_MS          = 100;
+const PLAYERS_DIR       = path.join(__dirname, 'players');
+const SHARDS_DIR        = path.join(__dirname, 'players-index');
+const INDEX_FILE        = path.join(__dirname, 'sports-index.json');
+const OUTPUT_FILE       = path.join(__dirname, 'grade-lookup-result.html');
 
 // ─── CLI args ─────────────────────────────────────────────────────────────────
 
@@ -32,7 +34,8 @@ const _ARGS = Object.fromEntries(
     .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
 );
 
-const GRADE_ID = _ARGS.grade || DEFAULT_GRADE_ID;
+const SEASON_ID = _ARGS.season || DEFAULT_SEASON_ID;
+const GRADE_ID  = _ARGS.grade  || DEFAULT_GRADE_ID;
 
 // ─── GraphQL ──────────────────────────────────────────────────────────────────
 
@@ -49,21 +52,6 @@ query gradeInfo($gradeID: ID!) {
       competition {
         name
         organisation { name }
-      }
-    }
-  }
-}`;
-
-const Q_PLAYERS = `
-query publicGradeStatistics($gradeID: ID!, $filter: GradePlayerStatisticsFilter) {
-  gradePlayerStatistics(gradeID: $gradeID, filter: $filter) {
-    meta { page totalPages totalRecords }
-    results {
-      profile { id firstName lastName }
-      team { name }
-      statistics {
-        count
-        details { value }
       }
     }
   }
@@ -94,7 +82,7 @@ async function gql(operationName, query, variables) {
   return json.data;
 }
 
-// ─── Fetch grade info ─────────────────────────────────────────────────────────
+// ─── Fetch grade display info ─────────────────────────────────────────────────
 
 async function fetchGradeInfo(gradeID) {
   try {
@@ -106,88 +94,50 @@ async function fetchGradeInfo(gradeID) {
   }
 }
 
-// ─── Fetch all players in the grade ──────────────────────────────────────────
+// ─── Search player detail files ───────────────────────────────────────────────
 
-async function fetchGradePlayers(gradeID) {
-  const players = [];
-  let page = 1;
-  let totalPages = 1;
-
-  while (page <= totalPages) {
-    await delay(DELAY_MS);
-    console.log(`  Fetching page ${page}${totalPages > 1 ? `/${totalPages}` : ''}...`);
-    const data = await gql('publicGradeStatistics', Q_PLAYERS, {
-      gradeID,
-      filter: {
-        sort: [{ column: 'APPEARANCE', direction: 'DESC' }],
-        pagination: { page, limit: PAGE_SIZE },
-      },
-    });
-    const gps = data.gradePlayerStatistics;
-    if (!gps || !gps.results) break;
-    totalPages = gps.meta.totalPages;
-
-    for (const r of gps.results) {
-      if (!r.profile) continue;  // private profile — skip
-      const gp = (r.statistics || []).find(s => s.details?.value === 'APPEARANCE')?.count ?? 0;
-      players.push({
-        uuid:      r.profile.id,
-        firstName: r.profile.firstName,
-        lastName:  r.profile.lastName,
-        team:      r.team?.name || '',
-        gp,
-      });
+function getAllPlayerDetailPaths() {
+  // players/{xx}/{uuid}.json  — two-level sharding by first 2 chars of UUID
+  const paths = [];
+  if (!fs.existsSync(PLAYERS_DIR)) return paths;
+  for (const shard of fs.readdirSync(PLAYERS_DIR)) {
+    const shardPath = path.join(PLAYERS_DIR, shard);
+    if (!fs.statSync(shardPath).isDirectory()) continue;
+    for (const file of fs.readdirSync(shardPath)) {
+      if (file.endsWith('.json')) paths.push(path.join(shardPath, file));
     }
-    page++;
   }
-
-  return players;
+  return paths;
 }
 
-// ─── Load player index (sharded or monolithic) ───────────────────────────────
+function searchPlayersForSeason(seasonId) {
+  const allPaths = getAllPlayerDetailPaths();
+  console.log(`  Scanning ${allPaths.length} player files...`);
 
-// Loaded once on first lookup, then cached
-let _playerIndex = null;
+  const found = [];
+  let scanned = 0;
 
-function loadPlayerIndex() {
-  if (_playerIndex) return _playerIndex;
+  for (const filePath of allPaths) {
+    scanned++;
+    if (scanned % 10000 === 0) console.log(`  ... ${scanned}/${allPaths.length}`);
 
-  if (fs.existsSync(SHARDS_DIR)) {
-    // Post-migration: sharded players-index/
-    console.log('  Loading sharded players-index/...');
-    _playerIndex = {};
-    for (const file of fs.readdirSync(SHARDS_DIR)) {
-      if (!file.endsWith('.json')) continue;
-      try {
-        const shard = JSON.parse(fs.readFileSync(path.join(SHARDS_DIR, file), 'utf8'));
-        Object.assign(_playerIndex, shard);
-      } catch (e) {
-        console.warn(`  ⚠ Could not parse shard ${file}: ${e.message}`);
-      }
-    }
-    console.log(`  Loaded ${Object.keys(_playerIndex).length} players from shards`);
-  } else if (fs.existsSync(INDEX_FILE)) {
-    // Pre-migration: monolithic sports-index.json
-    console.log('  Loading monolithic sports-index.json...');
+    let player;
     try {
-      const raw = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
-      _playerIndex = raw.players || {};
-      console.log(`  Loaded ${Object.keys(_playerIndex).length} players from sports-index.json`);
+      player = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch (e) {
-      console.warn(`  ⚠ Could not parse sports-index.json: ${e.message}`);
-      _playerIndex = {};
+      continue;  // skip unreadable files
     }
-  } else {
-    console.warn('  ⚠ No player index found (no players-index/ and no sports-index.json)');
-    _playerIndex = {};
+
+    const seasons = player.seasons || [];
+    const match = seasons.find(s => s.sid === seasonId);
+    if (!match) continue;
+
+    // Collect all registrations for this season
+    const regs = match.regs || [];
+    found.push({ player, seasonEntry: match, regs });
   }
 
-  return _playerIndex;
-}
-
-function lookupPlayer(uuid) {
-  const index = loadPlayerIndex();
-  return index[uuid] || null;
+  return found;
 }
 
 // ─── HTML generation ──────────────────────────────────────────────────────────
@@ -204,23 +154,25 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt }) {
-  const gradeName    = gradeInfo?.name    || GRADE_ID;
-  const seasonName   = gradeInfo?.season?.name || '';
-  const compName     = gradeInfo?.season?.competition?.name || '';
-  const orgName      = gradeInfo?.season?.competition?.organisation?.name || '';
-  const subtitle     = [orgName, compName, seasonName].filter(Boolean).join(' — ');
+function generateHtml({ gradeInfo, found, generatedAt }) {
+  const gradeName  = gradeInfo?.name || GRADE_ID;
+  const seasonName = gradeInfo?.season?.name || '';
+  const compName   = gradeInfo?.season?.competition?.name || '';
+  const orgName    = gradeInfo?.season?.competition?.organisation?.name || '';
+  const subtitle   = [orgName, compName, seasonName].filter(Boolean).join(' — ');
 
-  const matchRows = matches.map(({ gradePlayer, indexEntry }) => {
-    const url = profileUrl(gradePlayer.uuid);
-    const teamDisplay = gradePlayer.team.replace(/\s+U\d+(?:\.\d+)?\s*/gi, ' ').trim();
-    // Career totals live at sports.Basketball on the full detail record
-    const bball = indexEntry?.sports?.Basketball || {};
-    const d = v => (v != null ? v : '–');
+  const rows = found.map(({ player, regs }) => {
+    const url   = profileUrl(player.uuid);
+    const bball = player.sports?.Basketball || {};
+    const d     = v => (v != null ? v : '–');
+
+    // Team(s) registered in this season
+    const teams = [...new Set(regs.map(r => r.tn).filter(Boolean))].join(', ');
+
     return `
       <tr>
-        <td><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(gradePlayer.firstName)} ${escapeHtml(gradePlayer.lastName)}</a></td>
-        <td>${escapeHtml(teamDisplay)}</td>
+        <td><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(player.name)}</a></td>
+        <td>${escapeHtml(teams)}</td>
         <td class="num">${d(bball.gp)}</td>
         <td class="num">${d(bball.pts)}</td>
         <td class="num">${d(bball.fg)}</td>
@@ -230,22 +182,12 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
       </tr>`;
   }).join('');
 
-  const notFoundRows = notFound.map(p => {
-    const url = profileUrl(p.uuid);
-    const teamDisplay = p.team.replace(/\s+U\d+(?:\.\d+)?\s*/gi, ' ').trim();
-    return `
-      <tr>
-        <td><a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(p.firstName)} ${escapeHtml(p.lastName)}</a></td>
-        <td>${escapeHtml(teamDisplay)}</td>
-      </tr>`;
-  }).join('');
-
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grade Lookup — ${escapeHtml(gradeName)}</title>
+<title>Season Lookup — ${escapeHtml(gradeName)}</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -258,9 +200,7 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
   h1 { font-size: 1.4rem; margin-bottom: 4px; }
   .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 6px; }
   .meta { color: #888; font-size: 0.8rem; margin-bottom: 24px; }
-  .stats-bar {
-    display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px;
-  }
+  .stats-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
   .stat-card {
     background: #fff; border-radius: 8px; padding: 12px 20px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
@@ -269,9 +209,7 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
   .stat-card .val { font-size: 1.8rem; font-weight: 700; color: #2563eb; }
   .stat-card .lbl { font-size: 0.75rem; color: #888; margin-top: 2px; }
   section { margin-bottom: 32px; }
-  h2 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid #e5e7eb; }
-  h2.found { border-color: #22c55e; }
-  h2.missing { border-color: #f59e0b; }
+  h2 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid #22c55e; }
   table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
   th { background: #1e293b; color: #fff; font-weight: 600; text-align: left; padding: 9px 12px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
   th.num, td.num { text-align: right; }
@@ -280,26 +218,25 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
   tr:hover td { background: #f8fafc; }
   a { color: #2563eb; text-decoration: none; }
   a:hover { text-decoration: underline; }
-  .badge-found  { display:inline-block; background:#dcfce7; color:#166534; border-radius:4px; padding:1px 7px; font-size:0.75rem; margin-left:8px; font-weight:600; }
-  .badge-miss   { display:inline-block; background:#fef9c3; color:#854d0e; border-radius:4px; padding:1px 7px; font-size:0.75rem; margin-left:8px; font-weight:600; }
   .empty { color: #888; font-style: italic; padding: 12px; }
+  .note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 14px; font-size: 0.8rem; color: #92400e; margin-bottom: 20px; }
 </style>
 </head>
 <body>
 <h1>${escapeHtml(gradeName)}</h1>
 <div class="subtitle">${escapeHtml(subtitle)}</div>
-<div class="meta">Grade ID: ${escapeHtml(GRADE_ID)} &nbsp;·&nbsp; Generated: ${escapeHtml(generatedAt)}</div>
+<div class="meta">Season ID: ${escapeHtml(SEASON_ID)} &nbsp;·&nbsp; Grade ID: ${escapeHtml(GRADE_ID)} &nbsp;·&nbsp; Generated: ${escapeHtml(generatedAt)}</div>
 
 <div class="stats-bar">
-  <div class="stat-card"><div class="val">${gradePlayers.length}</div><div class="lbl">Players in grade</div></div>
-  <div class="stat-card"><div class="val">${matches.length}</div><div class="lbl">In your database</div></div>
-  <div class="stat-card"><div class="val">${notFound.length}</div><div class="lbl">Not in database</div></div>
+  <div class="stat-card"><div class="val">${found.length}</div><div class="lbl">Players found</div></div>
 </div>
 
+<p class="note">Stats shown are career totals from your database. This season has not yet commenced.</p>
+
 <section>
-  <h2 class="found">In your database <span class="badge-found">${matches.length}</span></h2>
-  ${matches.length === 0
-    ? '<p class="empty">No players from this grade were found in your database.</p>'
+  <h2>Players registered in this season</h2>
+  ${found.length === 0
+    ? '<p class="empty">No players in your database are registered for this season.</p>'
     : `<table>
     <thead>
       <tr>
@@ -313,22 +250,7 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
         <th class="num">Fouls</th>
       </tr>
     </thead>
-    <tbody>${matchRows}</tbody>
-  </table>`}
-</section>
-
-<section>
-  <h2 class="missing">Not in database <span class="badge-miss">${notFound.length}</span></h2>
-  ${notFound.length === 0
-    ? '<p class="empty">All players in this grade are already in your database.</p>'
-    : `<table>
-    <thead>
-      <tr>
-        <th>Player</th>
-        <th>Team</th>
-      </tr>
-    </thead>
-    <tbody>${notFoundRows}</tbody>
+    <tbody>${rows}</tbody>
   </table>`}
 </section>
 
@@ -339,17 +261,18 @@ function generateHtml({ gradeInfo, gradePlayers, matches, notFound, generatedAt 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('🏀 Grade Player Lookup');
-  console.log(`   Grade ID: ${GRADE_ID}`);
-  console.log(`   Tenant:   ${TENANT}`);
-  console.log(`   Index:    ${fs.existsSync(SHARDS_DIR) ? 'players-index/ (sharded)' : 'sports-index.json (monolithic)'}`);
+  console.log('🏀 Season Player Lookup');
+  console.log(`   Season ID: ${SEASON_ID}`);
+  console.log(`   Grade ID:  ${GRADE_ID}`);
+  console.log(`   Tenant:    ${TENANT}`);
+  console.log(`   Players:   ${PLAYERS_DIR}`);
 
-  if (!fs.existsSync(SHARDS_DIR) && !fs.existsSync(INDEX_FILE)) {
-    console.error(`❌ No player index found — expected players-index/ or sports-index.json in ${__dirname}`);
+  if (!fs.existsSync(PLAYERS_DIR)) {
+    console.error(`❌ players/ directory not found at ${PLAYERS_DIR}`);
     process.exit(1);
   }
 
-  // 1. Fetch grade metadata
+  // 1. Fetch grade display info
   console.log('\n📋 Fetching grade info...');
   const gradeInfo = await fetchGradeInfo(GRADE_ID);
   if (gradeInfo) {
@@ -360,35 +283,16 @@ async function main() {
     console.log('   (Could not fetch grade metadata — continuing anyway)');
   }
 
-  // 2. Fetch all players in the grade
-  console.log('\n👥 Fetching grade players...');
-  const gradePlayers = await fetchGradePlayers(GRADE_ID);
-  console.log(`   Found ${gradePlayers.length} players in grade`);
+  // 2. Search player detail files for this season
+  console.log(`\n🔍 Searching player files for season ${SEASON_ID}...`);
+  const found = searchPlayersForSeason(SEASON_ID);
+  console.log(`   Found ${found.length} players registered in this season`);
 
-  // 3. Cross-reference against sharded index
-  console.log('\n🔍 Cross-referencing with local player index...');
-  const matches  = [];
-  const notFound = [];
-
-  for (const p of gradePlayers) {
-    const indexEntry = lookupPlayer(p.uuid);
-    if (indexEntry) {
-      matches.push({ gradePlayer: p, indexEntry });
-    } else {
-      notFound.push(p);
-    }
-  }
-
-  console.log(`   ✅ In database:     ${matches.length}`);
-  console.log(`   ❓ Not in database: ${notFound.length}`);
-
-  // 4. Generate HTML
+  // 3. Generate HTML
   console.log('\n📄 Generating HTML report...');
   const html = generateHtml({
     gradeInfo,
-    gradePlayers,
-    matches,
-    notFound,
+    found,
     generatedAt: new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC',
   });
 
