@@ -1,0 +1,16 @@
+{
+  "_errors": [
+    {
+      "message": "Cannot query field \"playerStatistics\" on type \"DiscoverGame\". Did you mean \"statistics\"?",
+      "locations": [
+        {
+          "line": 12,
+          "column": 9
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "_errors": [
+    {
+      "message": "searched name should contain first and last names",
+      "path": [
+        "profileSearch"
+      ],
+      "extensions": {
+        "serviceName": "profile-search",
+        "code": "DOWNSTREAM_SERVICE_ERROR"
+      }
+    }
+  ],
+  "_data": {
+    "profileSearch": null
+  }
+}
