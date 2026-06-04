@@ -1,16 +1,329 @@
 {
-  "_errors": [
-    {
-      "message": "String cannot represent a non string value: APPEARANCE",
-      "locations": [
-        {
-          "line": 3,
-          "column": 26
-        }
-      ],
-      "extensions": {
-        "code": "GRAPHQL_VALIDATION_FAILED"
+  "gradePlayerStatistics": {
+    "meta": {
+      "page": 1,
+      "totalPages": 12,
+      "totalRecords": 111
+    },
+    "results": [
+      {
+        "profile": {
+          "id": "128735a9-cbc5-46e0-a5b6-807da5c338ed",
+          "firstName": "Avery",
+          "lastName": "Chang"
+        },
+        "team": {
+          "name": "G08 Vermont Vultures 1"
+        },
+        "statistics": [
+          {
+            "count": 5,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 3,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 8,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          },
+          {
+            "count": 2,
+            "details": {
+              "value": "1_POINT_SCORE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "c11e2276-55c6-49e9-9d3c-0311d7d19209",
+          "firstName": "Georgia",
+          "lastName": "Crosbie"
+        },
+        "team": {
+          "name": "G08 Vermont Vultures 4"
+        },
+        "statistics": [
+          {
+            "count": 13,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 26,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          },
+          {
+            "count": 6,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "2e20124c-2c6a-4461-9973-cdc25dec723c",
+          "firstName": "Maggie",
+          "lastName": "McArdle-Pickburn"
+        },
+        "team": {
+          "name": "G08 Ringwood Celtics 1 (CR)"
+        },
+        "statistics": [
+          {
+            "count": 2,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          },
+          {
+            "count": 4,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 8,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "3a999f3b-99a9-4781-a521-32f6cea71a4f",
+          "firstName": "Katelyn",
+          "lastName": "Elliott"
+        },
+        "team": {
+          "name": "G08 Vermont Vultures 1"
+        },
+        "statistics": [
+          {
+            "count": 4,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 16,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 32,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "5cd707dc-1a9b-42fc-8119-773296feb04e",
+          "firstName": "Alannah",
+          "lastName": "Taylor"
+        },
+        "team": {
+          "name": "G08 Nunawading Kangas 1"
+        },
+        "statistics": [
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "2fcad53c-cdc0-446b-a6c2-a4f11a2a9bcc",
+          "firstName": "Leila",
+          "lastName": "Khoury"
+        },
+        "team": {
+          "name": "G08 Ringwood Celtics 1 (CR)"
+        },
+        "statistics": [
+          {
+            "count": 7,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          },
+          {
+            "count": 11,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 22,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "294ff32c-5636-40dd-978e-b977c430779b",
+          "firstName": "Deveshi Aigiri",
+          "lastName": "Pratheep"
+        },
+        "team": {
+          "name": "G08 Nunawading Kangas 1"
+        },
+        "statistics": [
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "0ab3d0b7-cee7-47d4-b302-16605550a591",
+          "firstName": "Ava",
+          "lastName": "Chapman"
+        },
+        "team": {
+          "name": "G08 Nunawading Kangas 1"
+        },
+        "statistics": [
+          {
+            "count": 11,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 22,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          },
+          {
+            "count": 4,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "91d36cc1-2a03-4c03-bcc6-692d0e1e5975",
+          "firstName": "Taaliah",
+          "lastName": "Agha"
+        },
+        "team": {
+          "name": "G08 Vermont Vultures 4"
+        },
+        "statistics": [
+          {
+            "count": 5,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "bc051eea-4c8e-4d25-8a42-b22c07a6c457",
+          "firstName": "Jenna",
+          "lastName": "Rangparia"
+        },
+        "team": {
+          "name": "G08 Waverley Wildcats 1"
+        },
+        "statistics": [
+          {
+            "count": 4,
+            "details": {
+              "value": "TOTAL_FOULS"
+            }
+          },
+          {
+            "count": 5,
+            "details": {
+              "value": "APPEARANCE"
+            }
+          },
+          {
+            "count": 1,
+            "details": {
+              "value": "2_POINT_SCORE"
+            }
+          },
+          {
+            "count": 2,
+            "details": {
+              "value": "TOTAL_SCORE"
+            }
+          }
+        ]
       }
-    }
-  ]
+    ]
+  }
 }

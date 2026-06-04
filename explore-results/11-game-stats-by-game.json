@@ -1,40 +1,42 @@
 {
-  "_errors": [
-    {
-      "message": "Cannot query field \"profile\" on type \"DiscoverGameStatistics\".",
-      "locations": [
-        {
-          "line": 13,
-          "column": 11
-        }
-      ],
-      "extensions": {
-        "code": "GRAPHQL_VALIDATION_FAILED"
+  "discoverGame": {
+    "id": "5c44eb0f",
+    "round": {
+      "name": "Round 7"
+    },
+    "date": "2026-04-17",
+    "home": {
+      "id": "8bdd15e2",
+      "name": "Kilsyth Ballerz"
+    },
+    "away": {
+      "id": "00553c35",
+      "name": "Willy Wonka and the 3 golden tickets"
+    },
+    "result": {
+      "home": {
+        "statistics": [
+          {
+            "count": 7,
+            "type": {
+              "value": "TOTAL_SCORE"
+            }
+          }
+        ]
+      },
+      "away": {
+        "statistics": [
+          {
+            "count": 5,
+            "type": {
+              "value": "TOTAL_SCORE"
+            }
+          }
+        ]
       }
     },
-    {
-      "message": "Cannot query field \"team\" on type \"DiscoverGameStatistics\".",
-      "locations": [
-        {
-          "line": 14,
-          "column": 11
-        }
-      ],
-      "extensions": {
-        "code": "GRAPHQL_VALIDATION_FAILED"
-      }
-    },
-    {
-      "message": "Cannot query field \"statistics\" on type \"DiscoverGameStatistics\".",
-      "locations": [
-        {
-          "line": 15,
-          "column": 11
-        }
-      ],
-      "extensions": {
-        "code": "GRAPHQL_VALIDATION_FAILED"
-      }
+    "statistics": {
+      "__typename": "DiscoverGameStatistics"
     }
-  ]
+  }
 }
