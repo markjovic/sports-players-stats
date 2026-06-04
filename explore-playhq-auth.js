@@ -394,7 +394,7 @@ const TESTS = [
         }
         statistics {
           __typename
-          entries {
+          results {
             __typename
           }
         }
@@ -414,7 +414,7 @@ const TESTS = [
         ladder {
           pool {
             __typename
-            entries {
+            teams {
               __typename
             }
           }
