@@ -104,7 +104,7 @@ jobs:
 
           if (run) {
             console.log('');
-            console.log('🏀 Season just processed');
+            console.log('🏀 Last successfully crawled season');
             console.log(`   Season:           ${run.seasonName}`);
             console.log(`   Season ID:        ${run.seasonId}`);
             console.log(`   Grades:           ${run.grades}`);
