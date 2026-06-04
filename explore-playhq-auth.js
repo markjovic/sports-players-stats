@@ -42,12 +42,7 @@ const MOBILE_HEADERS = {
   'content-type': 'application/json',
 };
 
-// Public scraper calls use short tenant name (bv works, basketball-victoria also works)
-const PUBLIC_HEADERS = {
-  'Content-Type': 'application/json',
-  'tenant':        TENANT,
-  'origin':        'https://www.playhq.com',
-};
+// All requests use mobile headers — the user-agent is required
 
 // ─── Cookie management ────────────────────────────────────────────────────────
 
@@ -96,9 +91,8 @@ async function getSession() {
 // ─── GraphQL helper ───────────────────────────────────────────────────────────
 
 async function gql(operationName, query, variables, cookie) {
-  const headers = cookie
-    ? { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie }
-    : { ...PUBLIC_HEADERS };
+  const headers = { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() };
+  if (cookie) headers['Cookie'] = cookie;
 
   const res = await fetch(ENDPOINT, {
     method:  'POST',
@@ -296,19 +290,17 @@ const TESTS = [
     auth: true,
     op:   'TeamRoster',
     vars: { gradeID: TEST_GRADE },
-    query: `query TeamRoster($gradeID: ID!) {
-      gradePlayerStatistics(gradeID: $gradeID, filter: {
-        sort: [{ column: APPEARANCE, direction: DESC }]
-        pagination: { page: 1, limit: 50 }
-      }) {
+    query: `query TeamRoster($gradeID: ID!, $filter: GradePlayerStatisticsFilter) {
+      gradePlayerStatistics(gradeID: $gradeID, filter: $filter) {
         meta { page totalPages totalRecords }
         results {
           profile { id firstName lastName }
-          team { id name }
+          team { name }
           statistics { count details { value } }
         }
       }
     }`,
+    vars: { gradeID: TEST_GRADE, filter: { sort: [{ column: 'APPEARANCE', direction: 'DESC' }], pagination: { page: 1, limit: 10 } } },
   },
 
   {
@@ -401,9 +393,7 @@ const TESTS = [
           away { statistics { count type { value } } }
         }
         statistics {
-          profile { id firstName lastName }
-          team { ... on DiscoverTeam { id name } }
-          statistics { count details { value } }
+          __typename
         }
       }
     }`,
@@ -419,7 +409,12 @@ const TESTS = [
       discoverGrade(gradeID: $gradeID) {
         id name
         ladder {
-          __typename
+          pools {
+            __typename
+            entries {
+              __typename
+            }
+          }
         }
       }
     }`,
