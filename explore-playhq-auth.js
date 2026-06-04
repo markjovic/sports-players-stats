@@ -30,7 +30,7 @@ const TEST_PROFILE = process.argv.find(a => a.startsWith('--profile='))?.split('
 
 // Test season/grade IDs for bv
 const TEST_SEASON  = '15908988'; // MEBA Junior Domestic Saturday Winter 2026
-const TEST_GRADE   = 'a5cf799b'; // U14 Boys VJL1 — Kilsyth (has ladder)
+const TEST_GRADE   = '5afff92b'; // Grade with pools in comp c4f7147a season 0869ea69
 
 // ─── Mobile app headers (trigger guest session cookie) ────────────────────────
 
