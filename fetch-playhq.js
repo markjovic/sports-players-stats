@@ -657,11 +657,34 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
   };
 
   // Load existing player detail to preserve other sports' season data
+  // If not on local disk (sparse checkout skips players/), fetch from GitHub
   let existingDetail = {};
+  let detailFetchFailed = false;
   try {
     const pf = playerFile(uuid);
-    if (fs.existsSync(pf)) existingDetail = JSON.parse(fs.readFileSync(pf, 'utf8'));
+    if (fs.existsSync(pf)) {
+      existingDetail = JSON.parse(fs.readFileSync(pf, 'utf8'));
+    } else if (process.env.GITHUB_REPOSITORY) {
+      const rawUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/players/${uuid.slice(0,2)}/${uuid}.json`;
+      let fetched = false;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const res = await fetch(rawUrl);
+          if (res.ok) { existingDetail = await res.json(); fetched = true; break; }
+          if (res.status === 404) { fetched = true; break; }  // new player — expected
+          if (attempt < 3) await new Promise(r => setTimeout(r, 2000));
+        } catch (fetchErr) {
+          if (attempt < 3) await new Promise(r => setTimeout(r, 2000));
+        }
+      }
+      if (!fetched) {
+        console.warn(`    ⚠ Could not fetch existing detail for ${uuid} — skipping to preserve data`);
+        detailFetchFailed = true;
+      }
+    }
   } catch (e) {}
+
+  if (detailFetchFailed) return { player: null, newSeasonIds: [] };
 
   // Merge seasons — keep seasons from other sports, replace current sport's seasons
   const otherSeasons = (existingDetail.seasons || []).filter(s => s.sport && s.sport !== SPORT_NAME);
@@ -877,6 +900,11 @@ async function modeCrawl(seasonId) {
     for (const { uuid, result } of results) {
       done++;
       if (result) {
+        if (!result.player) {
+          console.log(`  [${done}/${total}] ⚠ ${uuid} skipped (detail fetch failed)`);
+          progress.doneUuids.push(uuid);
+          continue;
+        }
         console.log(`  [${done}/${total}] ✓ ${result.player.name}`);
         for (const newSeasonId of result.newSeasonIds) {
           if (!data.index.seasons[newSeasonId] && !progress.seasonsDone.includes(newSeasonId) && !invalidIds.has(newSeasonId)) {
