@@ -394,6 +394,9 @@ const TESTS = [
         }
         statistics {
           __typename
+          players {
+            __typename
+          }
         }
       }
     }`,
@@ -409,11 +412,8 @@ const TESTS = [
       discoverGrade(gradeID: $gradeID) {
         id name
         ladder {
-          pools {
+          pool {
             __typename
-            entries {
-              __typename
-            }
           }
         }
       }
