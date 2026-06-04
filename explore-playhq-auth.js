@@ -12,8 +12,9 @@
  *   node explore-playhq-auth.js --tenant=bv --profile=<uuid>
  */
 
-const fs   = require('fs');
-const path = require('path');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
 
 const ENDPOINT = 'https://api.playhq.com/graphql';
 const OUT_DIR  = path.join(__dirname, 'explore-results');
@@ -37,8 +38,15 @@ const MOBILE_HEADERS = {
   'accept':       '*/*',
   'origin':       'https://www.playhq.com',
   'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant':       TENANT_FULL,
+  'tenant':       TENANT_FULL,  // full name needed for cookie + auth calls
   'content-type': 'application/json',
+};
+
+// Public scraper calls use short tenant name (bv works, basketball-victoria also works)
+const PUBLIC_HEADERS = {
+  'Content-Type': 'application/json',
+  'tenant':        TENANT,
+  'origin':        'https://www.playhq.com',
 };
 
 // ─── Cookie management ────────────────────────────────────────────────────────
@@ -88,11 +96,9 @@ async function getSession() {
 // ─── GraphQL helper ───────────────────────────────────────────────────────────
 
 async function gql(operationName, query, variables, cookie) {
-  const headers = {
-    ...MOBILE_HEADERS,
-    'request-id': crypto.randomUUID(),
-  };
-  if (cookie) headers['Cookie'] = cookie;
+  const headers = cookie
+    ? { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie }
+    : { ...PUBLIC_HEADERS };
 
   const res = await fetch(ENDPOINT, {
     method:  'POST',
