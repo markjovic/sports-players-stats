@@ -264,6 +264,12 @@ async function gql(operationName, query, variables) {
 
     if (!res.ok) {
       const body = await res.text().catch(() => '(could not read body)');
+      // Retry on 5xx (server errors) — transient, not permanent failures
+      if (res.status >= 500 && attempts < MAX_ATTEMPTS) {
+        console.warn(`  ⚠ HTTP ${res.status} for ${operationName} — retrying in 10s (attempt ${attempts}/${MAX_ATTEMPTS})`);
+        await delay(10000);
+        continue;
+      }
       throw new Error(`HTTP ${res.status} for ${operationName}\nResponse body: ${body}`);
     }
 
@@ -1089,11 +1095,11 @@ function printNewSeasonSuggestions(data) {
 
 async function modeCrawlAll() {
   console.log('\n🏀 CRAWL-ALL MODE — one season per run, self-triggering until complete');
-  const data = loadData();
 
   let { priority, backlog } = loadQueues();
 
   if (!priority && !backlog) {
+    const data = loadData();
     const queues = await buildQueuesFromIndex(data);
     priority = queues.priority;
     backlog  = queues.backlog;
@@ -1142,7 +1148,6 @@ async function modeCrawlAll() {
     } catch (writeErr) {
       console.warn(`  ⚠ Could not write to seasons-skipped.json: ${writeErr.message}`);
     }
-    // Also add to seasons-invalid.json so stub-writing code won't re-queue it
     try {
       const invalidArr = fs.existsSync(INVALID_FILE)
         ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8'))
@@ -1208,10 +1213,7 @@ async function modeCrawlAll() {
     await triggerSelf('crawl-all', TENANT, SPORT);
   } else {
     deleteQueues();
-    console.log(`\n✅ All seasons complete!`);
-    const finalData = loadData();
-    console.log(`   Players in database: ${Object.keys(finalData.index.players).length}`);
-    console.log(`   Seasons in database: ${Object.keys(finalData.index.seasons).length}`);
+    console.log('\n✅ All seasons complete!');
   }
 }
 
