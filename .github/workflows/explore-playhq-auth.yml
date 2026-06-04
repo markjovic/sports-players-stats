@@ -45,4 +45,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add explore-results/ explore-cookie.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "chore: explore PlayHQ auth results"
+          git pull --rebase=false --no-edit -X ours
           git push
