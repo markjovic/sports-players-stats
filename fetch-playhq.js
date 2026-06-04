@@ -657,29 +657,10 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
   };
 
   // Load existing player detail to preserve other sports' season data
-  // If not on local disk (sparse checkout skips players/), fetch from GitHub
   let existingDetail = {};
   try {
     const pf = playerFile(uuid);
-    if (fs.existsSync(pf)) {
-      existingDetail = JSON.parse(fs.readFileSync(pf, 'utf8'));
-    } else if (process.env.GITHUB_REPOSITORY) {
-      const rawUrl = `https://raw.githubusercontent.com/${process.env.GITHUB_REPOSITORY}/main/players/${uuid.slice(0,2)}/${uuid}.json`;
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const res = await fetch(rawUrl);
-          if (res.ok) { existingDetail = await res.json(); break; }
-          if (res.status === 404) break;  // new player — expected
-          if (attempt < 3) await new Promise(r => setTimeout(r, 2000));
-        } catch (fetchErr) {
-          if (attempt < 3) await new Promise(r => setTimeout(r, 2000));
-        }
-      }
-      // NOTE: if fetch fails, existingDetail stays {} — SAFE ONLY while basketball is the
-      // only sport. publicProfileStatistics returns full career history so no basketball
-      // data is lost. When AFL/cricket are added, a failed fetch MUST abort the write
-      // to prevent one sport overwriting another's history. See project memory for details.
-    }
+    if (fs.existsSync(pf)) existingDetail = JSON.parse(fs.readFileSync(pf, 'utf8'));
   } catch (e) {}
 
   // Merge seasons — keep seasons from other sports, replace current sport's seasons
