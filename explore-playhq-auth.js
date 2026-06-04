@@ -385,14 +385,14 @@ const TESTS = [
 
   {
     name: '11-game-stats-by-game',
-    desc: 'Try to get per-game stats directly by game ID (need a real game ID)',
+    desc: 'Per-game stats using real game ID — field is statistics not playerStatistics',
     auth: true,
     op:   'GameStats',
-    vars: { gameID: 'test-game-id' }, // will fail — placeholder
+    vars: { gameID: '5c44eb0f' }, // real game ID from Eddie Pels profile
     query: `query GameStats($gameID: ID!) {
       discoverGame(gameID: $gameID) {
         id
-        round { name number }
+        round { name }
         date
         home { ... on DiscoverTeam { id name } }
         away { ... on DiscoverTeam { id name } }
@@ -400,10 +400,67 @@ const TESTS = [
           home { statistics { count type { value } } }
           away { statistics { count type { value } } }
         }
-        playerStatistics {
+        statistics {
           profile { id firstName lastName }
           team { ... on DiscoverTeam { id name } }
           statistics { count details { value } }
+        }
+      }
+    }`,
+  },
+
+  {
+    name: '11b-ladder-pool-introspect',
+    desc: 'Introspect LadderPool type to find correct field names',
+    auth: true,
+    op:   'GradeLadder',
+    vars: { gradeID: TEST_GRADE },
+    query: `query GradeLadder($gradeID: ID!) {
+      discoverGrade(gradeID: $gradeID) {
+        id name
+        ladder {
+          __typename
+        }
+      }
+    }`,
+  },
+
+  {
+    name: '11c-profile-search-fullname',
+    desc: 'Profile search with first and last name',
+    auth: true,
+    op:   'ProfileSearch',
+    vars: { fullName: 'eddie pels' },
+    query: `query ProfileSearch($fullName: String!) {
+      profileSearch(fullName: $fullName) {
+        result { id firstName lastName }
+      }
+    }`,
+  },
+
+  {
+    name: '11d-foul-breakdown',
+    desc: 'Test if personal/technical/unsportsmanlike fouls are in gameStatistics',
+    auth: true,
+    op:   'publicProfileStatistics',
+    vars: { profileID: TEST_PROFILE },
+    query: `query publicProfileStatistics($profileID: ID!) {
+      publicProfileStatistics(profileID: $profileID) {
+        seasonStatistics {
+          name
+          statistics {
+            season { id name }
+            teamStatistics {
+              team { ... on DiscoverTeam { id name } }
+              gradeStatistics {
+                grade { id name }
+                gameStatistics {
+                  game { id date round { name } }
+                  statistics { count details { value } }
+                }
+              }
+            }
+          }
         }
       }
     }`,
