@@ -1,0 +1,40 @@
+{
+  "_errors": [
+    {
+      "message": "Unknown argument \"organisationID\" on field \"Query.discoverOrganisation\".",
+      "locations": [
+        {
+          "line": 2,
+          "column": 28
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"seasons\" on type \"DiscoverOrganisation\".",
+      "locations": [
+        {
+          "line": 4,
+          "column": 9
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Field \"discoverOrganisation\" argument \"code\" of type \"String!\" is required, but it was not provided.",
+      "locations": [
+        {
+          "line": 2,
+          "column": 7
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    }
+  ]
+}

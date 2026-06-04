@@ -1,0 +1,16 @@
+{
+  "_errors": [
+    {
+      "message": "Cannot query field \"teams\" on type \"DiscoverGrade\". Did you mean \"name\"?",
+      "locations": [
+        {
+          "line": 4,
+          "column": 9
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    }
+  ]
+}

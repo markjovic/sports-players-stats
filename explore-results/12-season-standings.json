@@ -1,0 +1,100 @@
+{
+  "_errors": [
+    {
+      "message": "Cannot query field \"position\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 7,
+          "column": 13
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"team\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 8,
+          "column": 13
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"played\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 9,
+          "column": 13
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"won\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 9,
+          "column": 20
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"lost\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 9,
+          "column": 24
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"drawn\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 9,
+          "column": 29
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"points\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 9,
+          "column": 35
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    },
+    {
+      "message": "Cannot query field \"percentage\" on type \"LadderPool\".",
+      "locations": [
+        {
+          "line": 9,
+          "column": 42
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    }
+  ]
+}
