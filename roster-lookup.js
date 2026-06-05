@@ -472,23 +472,403 @@ function matchPlayers(players, gradeTeams) {
 
 // ─── Phase 5: Report ──────────────────────────────────────────────────────────
 
+const PLAYHQ_PROFILE_URL = 'https://www.playhq.com/public/profile';
+
+function fmt(n) { return (n ?? 0).toLocaleString(); }
+
+function generateHtml(allResults, targetId, generatedAt, coverage) {
+  // Derive header info from first result
+  const first     = allResults[0];
+  const isComp    = MODE === 'comp';
+  const isTeam    = MODE === 'team';
+  const title     = isComp
+    ? `Competition Roster — ${first?.gradeTeams?.gradeName?.replace(/\s*\(.*\)/, '') || targetId}`
+    : isTeam
+    ? `Opposition — ${Object.values(first?.roster || {})[0]?.team?.name || targetId}`
+    : first?.gradeTeams?.gradeName || targetId;
+
+  const totalPlayers = allResults.reduce((n, r) => n + r.matchedPlayers, 0);
+  const genDate = new Date(generatedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Build grade/team/player HTML
+  const gradesHtml = allResults.map(({ gradeTeams, roster }) => {
+    const gradeTotal = Object.values(roster).reduce((n, e) => n + e.players.length, 0);
+    if (gradeTotal === 0) return '';
+
+    const teamsHtml = Object.values(roster)
+      .filter(e => e.players.length > 0)
+      .map(({ team, players: tp }) => {
+        const poolBadge = team.pool ? `<span class="pool-badge">${team.pool}</span>` : '';
+        const statusBadge = team.played > 0
+          ? `<span class="status active">${team.played} games played</span>`
+          : `<span class="status upcoming">Pre-season</span>`;
+
+        const playersHtml = tp.map(p => {
+          const bk = p.detail?.sports?.Basketball || {};
+          const profileUrl = `${PLAYHQ_PROFILE_URL}/${p.uuid}/statistics`;
+
+          const regsHtml = (p.currentRegs || []).map(r => {
+            const cls = r.status === 'ACTIVE' ? 'active' : 'upcoming';
+            return `<span class="reg-tag ${cls}">${r.comp} · ${r.grade} · ${r.team}</span>`;
+          }).join('');
+
+          return `
+            <tr>
+              <td class="player-name">
+                <a href="${profileUrl}" target="_blank" rel="noopener">${p.name}</a>
+                ${regsHtml ? `<div class="reg-tags">${regsHtml}</div>` : ''}
+              </td>
+              <td class="stat">${fmt(bk.gp)}</td>
+              <td class="stat">${fmt(bk.pts)}</td>
+              <td class="stat">${bk.gp ? (bk.pts / bk.gp).toFixed(1) : '—'}</td>
+              <td class="stat">${fmt(bk.fg)}</td>
+              <td class="stat">${fmt(bk.threePt)}</td>
+              <td class="stat">${fmt(bk.ft)}</td>
+              <td class="stat">${fmt(bk.fouls)}</td>
+            </tr>`;
+        }).join('');
+
+        return `
+          <div class="team-block">
+            <div class="team-header">
+              <div class="team-title">
+                <h3>${team.name}</h3>
+                ${poolBadge}
+                ${statusBadge}
+              </div>
+              <span class="player-count">${tp.length} player${tp.length !== 1 ? 's' : ''}</span>
+            </div>
+            <table class="roster-table">
+              <thead>
+                <tr>
+                  <th class="player-name">Player</th>
+                  <th class="stat" title="Games Played">GP</th>
+                  <th class="stat" title="Total Points">PTS</th>
+                  <th class="stat" title="Points Per Game">PPG</th>
+                  <th class="stat" title="Field Goals (2pt)">2PT</th>
+                  <th class="stat" title="Three Pointers">3PT</th>
+                  <th class="stat" title="Free Throws">FT</th>
+                  <th class="stat" title="Total Fouls">F</th>
+                </tr>
+              </thead>
+              <tbody>${playersHtml}</tbody>
+            </table>
+          </div>`;
+      }).join('');
+
+    const gradeHeader = allResults.length > 1
+      ? `<div class="grade-header"><h2>${gradeTeams.gradeName}</h2><span class="grade-count">${gradeTotal} players</span></div>`
+      : '';
+
+    return `<section class="grade-section">${gradeHeader}${teamsHtml}</section>`;
+  }).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --surface2:  #1c2128;
+      --border:    #30363d;
+      --accent:    #f7931e;
+      --accent2:   #e05c1a;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --active:    #3fb950;
+      --upcoming:  #f7931e;
+      --radius:    6px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      background: linear-gradient(135deg, #1a2332 0%, #0d1117 60%);
+      border-bottom: 3px solid var(--accent);
+      padding: 32px 40px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '🏀';
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 96px;
+      opacity: 0.06;
+    }
+    .header-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .header-meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .meta-item strong { color: var(--text); }
+
+    /* ── Layout ── */
+    .content { padding: 32px 40px; max-width: 1100px; }
+
+    /* ── Grade section ── */
+    .grade-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .grade-header h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .grade-count {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Team block ── */
+    .team-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .team-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .team-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .team-title h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .player-count {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── Badges ── */
+    .pool-badge {
+      background: #21262d;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status.active   { background: rgba(63,185,80,0.15); color: var(--active); border: 1px solid rgba(63,185,80,0.3); }
+    .status.upcoming { background: rgba(247,147,30,0.15); color: var(--upcoming); border: 1px solid rgba(247,147,30,0.3); }
+
+    /* ── Roster table ── */
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .roster-table thead tr {
+      background: rgba(255,255,255,0.02);
+    }
+    .roster-table th {
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .roster-table th.stat { text-align: center; }
+    .roster-table tbody tr {
+      border-bottom: 1px solid rgba(48,54,61,0.5);
+      transition: background 0.12s;
+    }
+    .roster-table tbody tr:last-child { border-bottom: none; }
+    .roster-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+    .roster-table td { padding: 10px 12px; vertical-align: top; }
+    .roster-table td.stat {
+      text-align: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    /* ── Player name & reg tags ── */
+    td.player-name a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: color 0.12s;
+    }
+    td.player-name a:hover { color: var(--accent); }
+    .reg-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 5px;
+    }
+    .reg-tag {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .reg-tag.active   { background: rgba(63,185,80,0.12);  color: #3fb950; border: 1px solid rgba(63,185,80,0.25); }
+    .reg-tag.upcoming { background: rgba(247,147,30,0.12); color: #f7931e; border: 1px solid rgba(247,147,30,0.25); }
+
+    /* ── Footer ── */
+    .page-footer {
+      padding: 24px 40px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .page-header, .content, .page-footer { padding-left: 16px; padding-right: 16px; }
+      .roster-table th.stat:nth-child(n+5),
+      .roster-table td.stat:nth-child(n+5) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-eyebrow">Basketball Victoria · PlayHQ Roster</div>
+    <h1>${title}</h1>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span>Players found</span>
+        <strong>${totalPlayers}</strong>
+      </div>
+      <div class="meta-item">
+        <span>Teams with data</span>
+        <strong>${allResults.reduce((n, r) => n + Object.values(r.roster).filter(e => e.players.length > 0).length, 0)} of ${allResults.reduce((n, r) => n + Object.values(r.roster).length, 0)}</strong>
+      </div>
+      <div class="meta-item">
+        <span>Generated</span>
+        <strong>${genDate}</strong>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    ${gradesHtml}
+  </main>
+
+  <footer class="page-footer">
+    Career stats sourced from Basketball Victoria / PlayHQ. Data may not reflect the current season.
+    Profile links open the player's public PlayHQ page.
+  </footer>
+</body>
+</html>`;
+}
+
 function writeResults(allResults, players) {
   if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
 
   const totalMatched = allResults.reduce((n, r) => n + r.matchedPlayers, 0);
   const coverage     = players.filter(p => p.hasTeams).length;
+  const targetId     = TARGET_GRADE_ID || TARGET_TEAM_ID || TARGET_COMP_ID;
+  const generatedAt  = new Date().toISOString();
 
-  // Determine output filename
-  const targetId  = TARGET_GRADE_ID || TARGET_TEAM_ID || TARGET_COMP_ID;
-  const outFile   = _ARGS.out || path.join(OUT_DIR, `${targetId}.json`);
-  const output    = {
-    mode: MODE, targetId,
-    generatedAt: new Date().toISOString(),
+  // JSON output
+  const outJson = _ARGS.out || path.join(OUT_DIR, `${targetId}.json`);
+  const output  = {
+    mode: MODE, targetId, generatedAt,
     coverage: { totalPlayers: players.length, withTeamsData: coverage, withoutTeamsData: players.length - coverage },
     grades: allResults.map(r => ({ gradeId: r.gradeTeams.gradeId, gradeName: r.gradeTeams.gradeName, roster: r.roster })),
   };
-  fs.writeFileSync(outFile, JSON.stringify(output, null, 2));
+  fs.writeFileSync(outJson, JSON.stringify(output, null, 2));
 
+  // HTML output — enrich allResults with player detail for stats
+  const enriched = allResults.map(({ gradeTeams, roster, matchedPlayers }) => ({
+    gradeTeams, matchedPlayers,
+    roster: Object.fromEntries(
+      Object.entries(roster).map(([tid, entry]) => [tid, {
+        ...entry,
+        players: entry.players.map(p => ({
+          ...p,
+          detail: players.find(pl => pl.uuid === p.uuid)?.detail || {},
+        })),
+      }])
+    ),
+  }));
+
+  const outHtml = outJson.replace(/\.json$/, '.html');
+  fs.writeFileSync(outHtml, generateHtml(enriched, targetId, generatedAt, coverage));
+
+  // Console output
   console.log(`\n📊 Results:`);
   console.log(`  Mode: ${MODE} | Target: ${targetId}`);
   console.log(`  Total matched players: ${totalMatched}`);
@@ -516,7 +896,8 @@ function writeResults(allResults, players) {
     }
   }
 
-  console.log(`\n💾 Written to: ${outFile}`);
+  console.log(`\n💾 JSON: ${outJson}`);
+  console.log(`🌐 HTML: ${outHtml}`);
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
