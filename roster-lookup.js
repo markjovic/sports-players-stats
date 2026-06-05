@@ -60,6 +60,7 @@ if (!TARGET_GRADE_ID) {
 const FETCH_TEAMS   = !!(_ARGS['fetch-teams'] ?? _ARGS['force-fetch']);
 const FORCE_FETCH   = !!_ARGS['force-fetch'];
 const DRY_RUN       = !!_ARGS['dry-run'];
+const ALL_AGES      = !!_ARGS['all-ages'];
 const CONCURRENCY   = parseInt(_ARGS.concurrency || '20', 10);
 const OUT_DIR       = path.join(__dirname, 'roster-results');
 const OUT_FILE      = _ARGS.out || path.join(OUT_DIR, `${TARGET_GRADE_ID}.json`);
@@ -230,7 +231,7 @@ function hasRecentTargetAgeHistory(detail) {
 }
 
 function scanPlayersDir() {
-  console.log(`\n🔍 Phase 2: Scanning player files for ${TARGET_AGE_GROUPS.join('/')} history (${MIN_SEASON_YEAR}+)...`);
+  console.log(`\n🔍 Phase 2: Scanning player files${ALL_AGES ? ' (all ages)' : ` for ${TARGET_AGE_GROUPS.join('/')} history (${MIN_SEASON_YEAR}+)`}...`);
   if (!fs.existsSync(PLAYERS_DIR)) {
     console.error(`  ERROR: players/ directory not found at ${PLAYERS_DIR}`);
     process.exit(1);
@@ -253,7 +254,7 @@ function scanPlayersDir() {
       } catch (e) {
         continue;
       }
-      if (!hasRecentTargetAgeHistory(detail)) continue;
+      if (!ALL_AGES && !hasRecentTargetAgeHistory(detail)) continue;
       qualified++;
       const hasTeams = Array.isArray(detail.teams);
       if (hasTeams) hasTeamsStored++;
@@ -562,7 +563,7 @@ async function main() {
   console.log(`Fetch teams:   ${FETCH_TEAMS ? (FORCE_FETCH ? 'yes (force)' : 'yes (missing only)') : 'no'}`);
   console.log(`Dry run:       ${DRY_RUN}`);
   console.log(`Concurrency:   ${CONCURRENCY}`);
-  console.log(`Age filter:    ${TARGET_AGE_GROUPS.join(', ')} in ${MIN_SEASON_YEAR}+`);
+  console.log(`Age filter:    ${ALL_AGES ? 'all ages' : `${TARGET_AGE_GROUPS.join(', ')} in ${MIN_SEASON_YEAR}+`}`);
 
   // Get session cookie upfront — needed for Phase 1 and Phase 3
   let cookie = null;
