@@ -1,16 +1,20 @@
 {
-  "_errors": [
-    {
-      "message": "Cannot query field \"teams\" on type \"Pool\". Did you mean \"name\"?",
-      "locations": [
-        {
-          "line": 7,
-          "column": 13
+  "discoverGrade": {
+    "id": "5afff92b",
+    "name": "BOYS UNDER 14 D3",
+    "ladder": [
+      {
+        "__typename": "LadderPool",
+        "pool": {
+          "name": "Pool A"
         }
-      ],
-      "extensions": {
-        "code": "GRAPHQL_VALIDATION_FAILED"
+      },
+      {
+        "__typename": "LadderPool",
+        "pool": {
+          "name": "Pool B"
+        }
       }
-    }
-  ]
+    ]
+  }
 }
