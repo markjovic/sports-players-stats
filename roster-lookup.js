@@ -503,11 +503,25 @@ function matchPlayers(players, gradeTeams) {
       if (reg.grade?.id !== TARGET_GRADE_ID) continue;
 
       roster[reg.id].players.push({
-        uuid:      p.uuid,
-        name:      p.name,
-        seasonId:  reg.season?.id,
-        seasonName: reg.season?.name,
+        uuid:         p.uuid,
+        name:         p.name,
+        seasonId:     reg.season?.id,
+        seasonName:   reg.season?.name,
         seasonStatus: reg.season?.status?.value,
+        // All current registrations for this player (active + upcoming, not completed)
+        currentRegs:  (p.detail.teams || [])
+          .filter(r => r.season?.status?.value !== 'COMPLETED')
+          .map(r => ({
+            team:        r.name,
+            teamId:      r.id,
+            grade:       r.grade?.name,
+            gradeId:     r.grade?.id,
+            comp:        r.season?.competition?.name,
+            compId:      r.season?.competition?.id,
+            season:      r.season?.name,
+            seasonId:    r.season?.id,
+            status:      r.season?.status?.value,
+          })),
       });
       matchedPlayers++;
       break; // one match per player per team is enough
@@ -554,7 +568,15 @@ function writeResults(gradeTeams, roster, players) {
     console.log(`  ${team.name}${poolStr} (${teamId}) — ${tp.length} player(s)`);
     for (const p of tp) {
       const statusStr = p.seasonStatus === 'UPCOMING' ? ' 📅' : p.seasonStatus === 'ACTIVE' ? ' ✅' : '';
-      console.log(`    ${p.uuid}  ${p.name}${statusStr}`);
+      console.log(`    ${p.name}${statusStr}`);
+      if (p.currentRegs?.length) {
+        for (const r of p.currentRegs) {
+          const flag = r.status === 'UPCOMING' ? '📅' : r.status === 'ACTIVE' ? '✅' : '  ';
+          console.log(`      ${flag} ${r.comp || '?'} — ${r.grade || '?'} — ${r.team}`);
+        }
+      } else {
+        console.log(`      (no active/upcoming registrations)`);
+      }
     }
   }
 
