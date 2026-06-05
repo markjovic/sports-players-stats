@@ -275,10 +275,9 @@ const TESTS = [
         ladder {
           pool { name }
           standings {
-            position
             played won lost drawn
             pointsFor pointsAgainst pointsDifference
-            points percentage
+            percentage
             team { id name }
           }
         }
