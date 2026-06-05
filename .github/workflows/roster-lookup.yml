@@ -33,7 +33,7 @@ on:
 jobs:
   roster-lookup:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 360
     permissions:
       contents: write
 
