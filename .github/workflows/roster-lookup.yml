@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       grade_id:
-        description: 'Grade ID from discoverGrade.ladder (required)'
-        required: true
+        description: 'Grade ID from discoverGrade.ladder'
+        required: false
+        default: '5afff92b'
         type: string
       fetch_teams:
         description: 'Fetch publicProfileTeams for players missing that data'
