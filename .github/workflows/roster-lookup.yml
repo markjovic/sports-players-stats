@@ -9,6 +9,11 @@ on:
         required: false
         default: '5afff92b'
         type: string
+      all_ages:
+        description: 'Fetch publicProfileTeams for all players regardless of age group (for full DB population)'
+        required: false
+        default: false
+        type: boolean
       fetch_teams:
         description: 'Fetch publicProfileTeams for players missing that data'
         required: false
@@ -54,6 +59,9 @@ jobs:
           ARGS="--grade=${{ github.event.inputs.grade_id }}"
           ARGS="$ARGS --min-year=${{ github.event.inputs.min_year }}"
           ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
+          if [ "${{ github.event.inputs.all_ages }}" = "true" ]; then
+            ARGS="$ARGS --all-ages"
+          fi
           if [ "${{ github.event.inputs.force_fetch }}" = "true" ]; then
             ARGS="$ARGS --force-fetch"
           elif [ "${{ github.event.inputs.fetch_teams }}" = "true" ]; then
