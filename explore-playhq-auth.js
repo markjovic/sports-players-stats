@@ -51,7 +51,7 @@ function loadCookie() {
     if (fs.existsSync(COOKIE_FILE)) {
       const data = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
       const age  = Date.now() - data.fetchedAt;
-      if (age < 23 * 60 * 60 * 1000) { // use if < 23h old
+      if (age < 5 * 60 * 60 * 1000) { // use if < 5h old
         console.log(`  ✓ Using cached cookie (${Math.round(age/3600000)}h old)`);
         return data.cookie;
       }
