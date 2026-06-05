@@ -1170,13 +1170,34 @@ async function modeCrawlAll() {
   if (!seasonSucceeded) return;
 
   const updatedData   = loadData();
+
+  // Load invalid IDs — stubs for these must never be queued and should be removed from index
+  const routeInvalidIds = new Set(
+    fs.existsSync(INVALID_FILE)
+      ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
+      : []
+  );
+
+  // Remove any stubs for invalid IDs from the index — they keep getting re-queued otherwise
+  let removedStubs = 0;
+  for (const sid of Object.keys(updatedData.index.seasons)) {
+    if (routeInvalidIds.has(sid) && updatedData.index.seasons[sid]?.discovered) {
+      delete updatedData.index.seasons[sid];
+      removedStubs++;
+    }
+  }
+  if (removedStubs > 0) {
+    saveData(updatedData);
+    console.log(`  🧹 Removed ${removedStubs} invalid stubs from index`);
+  }
+
   const alreadyQueued = new Set([
     ...priority,
     ...backlog,
     ...Object.keys(updatedData.index.seasons).filter(sid => !updatedData.index.seasons[sid]?.discovered),
   ]);
   const newStubEntries = Object.entries(updatedData.index.seasons)
-    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && !alreadyQueued.has(sid));
+    .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && !alreadyQueued.has(sid) && !routeInvalidIds.has(sid));
   const alreadyInQueue = Object.entries(updatedData.index.seasons)
     .filter(([sid, meta]) => meta?.discovered && sid !== seasonId && alreadyQueued.has(sid)).length;
   const genuinelyNew = newStubEntries.length;
