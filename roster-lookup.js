@@ -568,17 +568,27 @@ async function main() {
   console.log(`Concurrency:   ${CONCURRENCY}`);
   console.log(`Age filter:    ${ALL_AGES ? 'all ages' : `${TARGET_AGE_GROUPS.join(', ')} in ${MIN_SEASON_YEAR}+`}`);
 
-  // Get session cookie upfront — needed for Phase 1 and Phase 3
-  let cookie = null;
-  if (!DRY_RUN) cookie = await getSession();
+  // Get session cookie — only needed if Phase 1 grade cache is missing or Phase 3 will run
+  const gradeCacheFile = path.join(OUT_DIR, `${TARGET_GRADE_ID}-grade.json`);
+  const gradeFromCache = !DRY_RUN && fs.existsSync(gradeCacheFile)
+    ? JSON.parse(fs.readFileSync(gradeCacheFile, 'utf8'))
+    : null;
 
-  // Phase 1: get teams in target grade
+  let cookie = null;
+  if (!DRY_RUN && (!gradeFromCache || FETCH_TEAMS)) cookie = await getSession();
+
+  // Phase 1: get teams in target grade (use cache if available)
   let gradeTeams;
   if (DRY_RUN) {
     console.log('\n[DRY RUN] Skipping grade API call — use --grade with a real grade ID');
     gradeTeams = { gradeId: TARGET_GRADE_ID, gradeName: '(dry run)', teams: [] };
+  } else if (gradeFromCache) {
+    gradeTeams = gradeFromCache;
+    console.log(`\n📋 Phase 1: Using cached grade data — "${gradeTeams.gradeName}" (${gradeTeams.teams.length} teams)`);
   } else {
     gradeTeams = await fetchGradeTeams(TARGET_GRADE_ID, cookie);
+    if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
+    fs.writeFileSync(gradeCacheFile, JSON.stringify(gradeTeams));
   }
 
   if (gradeTeams.teams.length === 0 && !DRY_RUN) {
