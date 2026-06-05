@@ -1,58 +1,28 @@
 {
-  "discoverGrade": {
-    "id": "5afff92b",
-    "name": "BOYS UNDER 14 D3",
-    "ladder": [
-      {
-        "pool": {
-          "name": "Pool A"
-        },
-        "standings": [
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          }
-        ]
-      },
-      {
-        "pool": {
-          "name": "Pool B"
-        },
-        "standings": [
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          },
-          {
-            "__typename": "LadderStanding"
-          }
-        ]
+  "_errors": [
+    {
+      "message": "Cannot query field \"position\" on type \"LadderStanding\".",
+      "locations": [
+        {
+          "line": 7,
+          "column": 13
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
       }
-    ]
-  }
+    },
+    {
+      "message": "Cannot query field \"points\" on type \"LadderStanding\". Did you mean \"pointsFor\"?",
+      "locations": [
+        {
+          "line": 10,
+          "column": 13
+        }
+      ],
+      "extensions": {
+        "code": "GRAPHQL_VALIDATION_FAILED"
+      }
+    }
+  ]
 }
