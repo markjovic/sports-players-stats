@@ -90,7 +90,9 @@ jobs:
 
       - name: Commit results
         run: |
+          git stash
           git pull --rebase origin main
+          git stash pop
           git add players/ roster-results/
           if git diff --staged --quiet; then
             echo "No changes to commit"
