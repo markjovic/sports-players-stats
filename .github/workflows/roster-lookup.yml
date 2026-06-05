@@ -1,0 +1,79 @@
+name: Roster Lookup
+
+on:
+  workflow_dispatch:
+    inputs:
+      grade_id:
+        description: 'Grade ID from discoverGrade.ladder (required)'
+        required: true
+        type: string
+      fetch_teams:
+        description: 'Fetch publicProfileTeams for players missing that data'
+        required: false
+        default: true
+        type: boolean
+      force_fetch:
+        description: 'Re-fetch publicProfileTeams even if already stored'
+        required: false
+        default: false
+        type: boolean
+      min_year:
+        description: 'Minimum season year to consider (players with U13/U14 history before this are excluded)'
+        required: false
+        default: '2024'
+        type: string
+      concurrency:
+        description: 'Concurrent API requests during teams fetch (lower = safer)'
+        required: false
+        default: '20'
+        type: string
+
+jobs:
+  roster-lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build args
+        id: args
+        run: |
+          ARGS="--grade=${{ github.event.inputs.grade_id }}"
+          ARGS="$ARGS --min-year=${{ github.event.inputs.min_year }}"
+          ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
+          if [ "${{ github.event.inputs.force_fetch }}" = "true" ]; then
+            ARGS="$ARGS --force-fetch"
+          elif [ "${{ github.event.inputs.fetch_teams }}" = "true" ]; then
+            ARGS="$ARGS --fetch-teams"
+          fi
+          echo "args=$ARGS" >> $GITHUB_OUTPUT
+          echo "Running with: $ARGS"
+
+      - name: Run roster lookup
+        run: node roster-lookup.js ${{ steps.args.outputs.args }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Commit results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Commit updated player files (teams data) and roster results
+          git add players/ roster-results/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            GRADE="${{ github.event.inputs.grade_id }}"
+            git commit -m "Roster lookup: grade ${GRADE} ($(date -u +%Y-%m-%d))"
+            git push
+          fi
