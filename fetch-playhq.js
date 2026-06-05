@@ -1212,7 +1212,7 @@ async function modeCrawlAll() {
   for (const [sid, meta] of newStubEntries) {
     if (!alreadyQueued.has(sid)) {
       const sn = meta?.name || '';
-      if (isPriority(sn) || meta?.discovered) {
+      if (isPriority(sn)) {
         priority.push(sid);
         console.log(`  ➕ Priority: ${sid} — ${sn || 'unknown year'}`);
       } else {
