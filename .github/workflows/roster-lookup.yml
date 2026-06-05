@@ -9,21 +9,18 @@ on:
         required: false
         default: '5afff92b'
         type: string
-      all_ages:
-        description: 'Fetch publicProfileTeams for all players regardless of age group (for full DB population)'
+      mode:
+        description: >
+          1 - Full re-fetch: fetch publicProfileTeams for ALL players in DB (ignores existing data, slowest)
+          2 - Fill gaps: fetch only players missing teams data (fastest first run, skips already-fetched)
+          3 - Local lookup only: cross-reference stored data against grade, no API calls (instant)
         required: false
-        default: false
-        type: boolean
-      fetch_teams:
-        description: 'Fetch publicProfileTeams for players missing that data'
-        required: false
-        default: true
-        type: boolean
-      force_fetch:
-        description: 'Re-fetch publicProfileTeams even if already stored'
-        required: false
-        default: false
-        type: boolean
+        default: '3'
+        type: choice
+        options:
+          - '1 - Full re-fetch (all players, slow ~30min)'
+          - '2 - Fill gaps (missing players only, incremental)'
+          - '3 - Local lookup only (instant, no API calls)'
       min_year:
         description: 'Minimum season year to consider (players with U13/U14 history before this are excluded)'
         required: false
@@ -59,14 +56,13 @@ jobs:
           ARGS="--grade=${{ github.event.inputs.grade_id }}"
           ARGS="$ARGS --min-year=${{ github.event.inputs.min_year }}"
           ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
-          if [ "${{ github.event.inputs.all_ages }}" = "true" ]; then
-            ARGS="$ARGS --all-ages"
+          MODE="${{ github.event.inputs.mode }}"
+          if [[ "$MODE" == 1* ]]; then
+            ARGS="$ARGS --all-ages --force-fetch"
+          elif [[ "$MODE" == 2* ]]; then
+            ARGS="$ARGS --all-ages --fetch-teams"
           fi
-          if [ "${{ github.event.inputs.force_fetch }}" = "true" ]; then
-            ARGS="$ARGS --force-fetch"
-          elif [ "${{ github.event.inputs.fetch_teams }}" = "true" ]; then
-            ARGS="$ARGS --fetch-teams"
-          fi
+          # Mode 3 = no fetch flags, local lookup only
           echo "args=$ARGS" >> $GITHUB_OUTPUT
           echo "Running with: $ARGS"
 
