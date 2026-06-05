@@ -325,9 +325,9 @@ function gitCommitPush(message) {
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  (no changes to commit)'); return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
-    execSync('git stash', { stdio: 'pipe' });
+    const stashOut = execSync('git stash', { stdio: 'pipe' }).toString();
     execSync('git pull --rebase origin main', { stdio: 'pipe' });
-    execSync('git stash pop', { stdio: 'pipe' });
+    if (stashOut.includes('Saved')) execSync('git stash pop', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
     console.log('  ✓ Committed and pushed');
   } catch (e) {
