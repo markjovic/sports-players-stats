@@ -378,7 +378,6 @@ async function fetchMissingTeams(players, cookie) {
   const doneList = [...doneSet];
   let updated = 0;
   let errors  = 0;
-  let sinceLastSave = 0;
 
   console.log(`  ${pending.length.toLocaleString()} remaining to fetch`);
 
@@ -414,14 +413,12 @@ async function fetchMissingTeams(players, cookie) {
         // 403 = private/deleted profile — silently skip, still record as done
       }
       doneList.push(p.uuid);
-      sinceLastSave++;
     }));
 
-    // Periodic progress save so a crash/timeout loses at most SAVE_INTERVAL players
-    if (sinceLastSave >= SAVE_INTERVAL) {
-      const remaining = pending.slice(i + _concurrency).map(p => p.uuid);
-      saveProgress(remaining, doneList);
-      sinceLastSave = 0;
+    // Save progress every 1000 completions — player files are already on disk,
+    // this just ensures resume skips re-fetching already-written players
+    if (doneList.length % 1000 < _concurrency) {
+      saveProgress(pending.slice(i + _concurrency).map(p => p.uuid), doneList);
     }
 
     const done = Math.min(i + _concurrency, pending.length) + doneSet.size;
