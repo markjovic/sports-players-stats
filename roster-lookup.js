@@ -303,6 +303,7 @@ function gitCommitPush(message) {
       return;
     }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
+    execSync('git pull --rebase origin main', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
     console.log('  ✓ Committed and pushed');
   } catch (e) {
