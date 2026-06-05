@@ -90,13 +90,11 @@ jobs:
 
       - name: Commit results
         run: |
+          git pull --rebase origin main
           git add players/ roster-results/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Roster lookup: ${{ github.event.inputs.target_type }} ${{ github.event.inputs.target_id }} ($(date -u +%Y-%m-%d))"
-            git stash
-            git pull --rebase origin main
-            git stash pop
             git push
           fi
