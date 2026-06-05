@@ -40,6 +40,7 @@
 const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
 
 // ─── CLI args ─────────────────────────────────────────────────────────────────
 
@@ -288,6 +289,27 @@ query PublicProfileTeams($profileID: ID!) {
   }
 }`;
 
+// ─── Intermediate git commit+push ────────────────────────────────────────────
+// Pushes player files and progress file to the repo mid-run so data survives
+// a timeout or cancel. Requires git to be configured (done by workflow setup step).
+
+function gitCommitPush(message) {
+  try {
+    execSync('git add players/ roster-teams-progress.json', { stdio: 'pipe' });
+    const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
+    if (!diff) {
+      console.log('  (no changes to commit)');
+      return;
+    }
+    execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
+    execSync('git push', { stdio: 'pipe' });
+    console.log('  ✓ Committed and pushed');
+  } catch (e) {
+    // Non-fatal — log and continue. Data is on disk even if push fails.
+    console.warn(`  ⚠ Git commit/push failed: ${e.message}`);
+  }
+}
+
 // ─── Phase 3 internals: progress file, retry, 429 backoff ────────────────────
 
 const PROGRESS_FILE  = path.join(__dirname, 'roster-teams-progress.json');
@@ -419,7 +441,8 @@ async function fetchMissingTeams(players, cookie) {
     if (sinceLastSave >= 1000) {
       saveProgress(pending.slice(i + _concurrency).map(p => p.uuid), doneList);
       sinceLastSave = 0;
-      console.log(`\n  💾 Progress saved (${doneList.length.toLocaleString()} done)`);
+      console.log(`\n  💾 Progress saved (${doneList.length.toLocaleString()} done) — committing to repo...`);
+      await gitCommitPush(`Teams fetch progress: ${doneList.length.toLocaleString()}/${toFetch.length.toLocaleString()} players`);
     }
 
     const done = Math.min(i + _concurrency, pending.length) + doneSet.size;
@@ -432,6 +455,7 @@ async function fetchMissingTeams(players, cookie) {
 
   clearProgress();  // clean up on successful completion
   console.log(`\n  ✓ Done — ${updated} updated, ${errors} errors`);
+  await gitCommitPush(`Teams fetch complete: ${updated.toLocaleString()} players updated`);
 }
 
 // ─── Phase 4: Cross-reference teams against target grade ─────────────────────
