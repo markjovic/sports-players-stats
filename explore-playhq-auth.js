@@ -265,7 +265,7 @@ const TESTS = [
 
   {
     name: '05-grade-ladder',
-    desc: 'Ladder/standings for a grade',
+    desc: 'Ladder — try standings field on LadderPool',
     auth: true,
     op:   'GradeLadder',
     vars: { gradeID: TEST_GRADE },
@@ -273,12 +273,10 @@ const TESTS = [
       discoverGrade(gradeID: $gradeID) {
         id name
         ladder {
-          position
-          team { id name }
-          played won lost drawn
-          pointsFor pointsAgainst pointsDifference
-          points
-          percentage
+          pool { name }
+          standings {
+            __typename
+          }
         }
       }
     }`,
@@ -409,9 +407,9 @@ const TESTS = [
       discoverGrade(gradeID: $gradeID) {
         id name
         ladder {
-          __typename
-          pool {
-            name
+          pool { name }
+          ladderEntries {
+            __typename
           }
         }
       }
