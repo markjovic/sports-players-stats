@@ -288,9 +288,69 @@ query PublicProfileTeams($profileID: ID!) {
   }
 }`;
 
-async function fetchTeamsForPlayer(uuid, cookie) {
-  const data = await gql('PublicProfileTeams', Q_PROFILE_TEAMS, { profileID: uuid }, cookie);
-  return data?.publicProfileTeams || [];
+// ─── Phase 3 internals: progress file, retry, 429 backoff ────────────────────
+
+const PROGRESS_FILE  = path.join(__dirname, 'roster-teams-progress.json');
+const SAVE_INTERVAL  = 100;   // write progress file every N completions
+let   _concurrency   = CONCURRENCY;
+let   _concurrencyCap = CONCURRENCY;
+let   _streak429     = 0;
+
+function loadProgress() {
+  try {
+    if (fs.existsSync(PROGRESS_FILE)) {
+      return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
+    }
+  } catch (e) {}
+  return null;
+}
+
+function saveProgress(pending, done) {
+  fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ pending, done, savedAt: new Date().toISOString() }));
+}
+
+function clearProgress() {
+  try { fs.unlinkSync(PROGRESS_FILE); } catch (e) {}
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function fetchTeamsWithRetry(uuid, cookie) {
+  let attempts = 0;
+  while (true) {
+    try {
+      const data = await gql('PublicProfileTeams', Q_PROFILE_TEAMS, { profileID: uuid }, cookie);
+      _streak429 = 0;
+      return data?.publicProfileTeams || [];
+    } catch (e) {
+      if (e.status === 403) throw e;  // private profile — caller skips silently
+
+      if (e.status === 429) {
+        attempts++;
+        _streak429++;
+        _concurrency = Math.max(5, Math.floor(_concurrency * 0.6));
+        if (_streak429 >= 3) {
+          _concurrencyCap = Math.max(5, _concurrencyCap - 5);
+          _concurrency    = Math.min(_concurrency, _concurrencyCap);
+          _streak429      = 0;
+          console.warn(`\n  ⚠ Repeated 429s — cap lowered to ${_concurrencyCap}, concurrency now ${_concurrency}`);
+        } else {
+          console.warn(`\n  ⚠ 429 rate limit — concurrency → ${_concurrency}, retrying in ${attempts * 5}s`);
+        }
+        await delay(attempts * 5000);
+        continue;  // retry same player — never skip on 429
+      }
+
+      if (e.message?.includes('5') && attempts < 3) {
+        attempts++;
+        console.warn(`\n  ⚠ Server error for ${uuid} — retry ${attempts}/3`);
+        await delay(10000);
+        continue;
+      }
+
+      throw e;  // unrecoverable — caller logs and skips
+    }
+  }
 }
 
 async function fetchMissingTeams(players, cookie) {
@@ -306,55 +366,73 @@ async function fetchMissingTeams(players, cookie) {
   console.log(`\n🌐 Phase 3: Fetching publicProfileTeams for ${toFetch.length.toLocaleString()} players...`);
   if (FORCE_FETCH) console.log('  (--force-fetch: re-fetching even already-stored entries)');
 
-  let done = 0;
-  let errors = 0;
-  let updated = 0;
+  // Resume support — skip UUIDs already done in a previous interrupted run
+  const saved = loadProgress();
+  const doneSet = new Set(saved?.done || []);
+  if (doneSet.size > 0) {
+    console.log(`  ↻ Resuming — ${doneSet.size} already done from previous run`);
+  }
 
-  // Process in batches of CONCURRENCY
-  for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
-    const batch = toFetch.slice(i, i + CONCURRENCY);
+  const pending = toFetch.filter(p => !doneSet.has(p.uuid));
+  const doneList = [...doneSet];
+  let updated = 0;
+  let errors  = 0;
+  let sinceLastSave = 0;
+
+  console.log(`  ${pending.length.toLocaleString()} remaining to fetch`);
+
+  for (let i = 0; i < pending.length; i += _concurrency) {
+    const batch = pending.slice(i, i + _concurrency);
+
     await Promise.all(batch.map(async (p) => {
       try {
-        const teams = await fetchTeamsForPlayer(p.uuid, cookie);
+        const teams = await fetchTeamsWithRetry(p.uuid, cookie);
 
-        // Reload the detail file to avoid stale data
+        // Read file fresh before writing to avoid clobbering concurrent writes
         const pf = playerFile(p.uuid);
         let detail;
         try {
           detail = JSON.parse(fs.readFileSync(pf, 'utf8'));
         } catch (e) {
-          detail = p.detail; // fall back to in-memory copy
+          detail = p.detail;
         }
 
-        detail.teams = teams;
-        detail.teamsUpdatedAt = new Date().toISOString();
+        detail.teams           = teams;
+        detail.teamsUpdatedAt  = new Date().toISOString();
         fs.writeFileSync(pf, JSON.stringify(detail));
 
-        // Update in-memory copy so Phase 4 can use it without re-reading
-        p.detail = detail;
+        // Update in-memory so Phase 4 sees it without re-reading disk
+        p.detail   = detail;
         p.hasTeams = true;
         updated++;
       } catch (e) {
-        // 403 on individual player = profile is private or deleted — not fatal
         if (e.status !== 403) {
           errors++;
-          console.warn(`  ⚠ ${p.uuid} (${p.name}): ${e.message}`);
+          console.warn(`\n  ⚠ ${p.uuid} (${p.name}): ${e.message}`);
         }
+        // 403 = private/deleted profile — silently skip, still record as done
       }
+      doneList.push(p.uuid);
+      sinceLastSave++;
     }));
 
-    done += batch.length;
-    if (done % 500 === 0 || done === toFetch.length) {
-      process.stdout.write(`  ${done}/${toFetch.length} (${updated} updated, ${errors} errors)\r`);
+    // Periodic progress save so a crash/timeout loses at most SAVE_INTERVAL players
+    if (sinceLastSave >= SAVE_INTERVAL) {
+      const remaining = pending.slice(i + _concurrency).map(p => p.uuid);
+      saveProgress(remaining, doneList);
+      sinceLastSave = 0;
     }
 
-    // Small delay between batches to avoid hammering the API
-    if (i + CONCURRENCY < toFetch.length) {
-      await new Promise(r => setTimeout(r, 100));
-    }
+    const done = Math.min(i + _concurrency, pending.length) + doneSet.size;
+    const total = toFetch.length;
+    process.stdout.write(`  ${done}/${total} (${updated} updated, ${errors} errors, concurrency=${_concurrency})\r`);
+
+    // Inter-batch delay — small but prevents wall-to-wall hammering
+    if (i + _concurrency < pending.length) await delay(100);
   }
 
-  console.log(`\n  ✓ Fetched teams for ${updated} players (${errors} errors)`);
+  clearProgress();  // clean up on successful completion
+  console.log(`\n  ✓ Done — ${updated} updated, ${errors} errors`);
 }
 
 // ─── Phase 4: Cross-reference teams against target grade ─────────────────────
