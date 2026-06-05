@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// roster-lookup.js
 /**
  * roster-lookup.js — Find registered players for a target grade before games are played
  *
@@ -45,7 +46,7 @@ const crypto = require('crypto');
 const _ARGS = Object.fromEntries(
   process.argv.slice(2)
     .filter(a => a.startsWith('--'))
-    .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
+    .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.length ? v.join('=') : true]; })
 );
 
 const TARGET_GRADE_ID = _ARGS.grade;
