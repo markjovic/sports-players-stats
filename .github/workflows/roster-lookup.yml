@@ -4,32 +4,33 @@ name: Roster Lookup
 on:
   workflow_dispatch:
     inputs:
-      grade_id:
-        description: 'Grade ID from discoverGrade.ladder'
-        required: false
+      target_id:
+        description: 'Grade ID, Team ID, or Competition (Season) ID to look up'
+        required: true
         default: '5afff92b'
         type: string
-      mode:
-        description: >
-          1 - Full re-fetch: fetch publicProfileTeams for ALL players in DB (ignores existing data, slowest)
-          2 - Fill gaps: fetch only players missing teams data (fastest first run, skips already-fetched)
-          3 - Local lookup only: cross-reference stored data against grade, no API calls (instant)
+      target_type:
+        description: 'What the target ID refers to'
         required: false
-        default: '3'
+        default: 'grade'
         type: choice
         options:
-          - '1 - Full re-fetch (all players, slow ~30min)'
-          - '2 - Fill gaps (missing players only, incremental)'
+          - 'grade - show all teams and registered players in this grade'
+          - 'team  - find this team''s active grade, then show all opposition'
+          - 'comp  - show full roster breakdown for every grade in this competition'
+      mode:
+        description: 'Data fetch mode'
+        required: false
+        default: '3 - Local lookup only (instant, no API calls)'
+        type: choice
+        options:
+          - '1 - Full re-fetch (all players, overwrites existing data, slow ~30min)'
+          - '2 - Fill gaps (fetch only players missing teams data, incremental)'
           - '3 - Local lookup only (instant, no API calls)'
-      min_year:
-        description: 'Minimum season year to consider (players with U13/U14 history before this are excluded)'
-        required: false
-        default: '2024'
-        type: string
       concurrency:
-        description: 'Concurrent API requests during teams fetch (lower = safer)'
+        description: 'Concurrent API requests during teams fetch (modes 1 and 2 only)'
         required: false
-        default: '20'
+        default: '200'
         type: string
 
 jobs:
@@ -53,16 +54,26 @@ jobs:
       - name: Build args
         id: args
         run: |
-          ARGS="--grade=${{ github.event.inputs.grade_id }}"
-          ARGS="$ARGS --min-year=${{ github.event.inputs.min_year }}"
-          ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
+          TARGET_TYPE="${{ github.event.inputs.target_type }}"
+          TARGET_ID="${{ github.event.inputs.target_id }}"
           MODE="${{ github.event.inputs.mode }}"
-          if [[ "$MODE" == 1* ]]; then
-            ARGS="$ARGS --all-ages --force-fetch"
-          elif [[ "$MODE" == 2* ]]; then
-            ARGS="$ARGS --all-ages --fetch-teams"
+
+          if [[ "$TARGET_TYPE" == team* ]]; then
+            ARGS="--team=$TARGET_ID"
+          elif [[ "$TARGET_TYPE" == comp* ]]; then
+            ARGS="--comp=$TARGET_ID"
+          else
+            ARGS="--grade=$TARGET_ID"
           fi
-          # Mode 3 = no fetch flags, local lookup only
+
+          ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
+
+          if [[ "$MODE" == 1* ]]; then
+            ARGS="$ARGS --force-fetch"
+          elif [[ "$MODE" == 2* ]]; then
+            ARGS="$ARGS --fetch-teams"
+          fi
+
           echo "args=$ARGS" >> $GITHUB_OUTPUT
           echo "Running with: $ARGS"
 
@@ -83,7 +94,9 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            GRADE="${{ github.event.inputs.grade_id }}"
-            git commit -m "Roster lookup: grade ${GRADE} ($(date -u +%Y-%m-%d))"
+            git commit -m "Roster lookup: ${{ github.event.inputs.target_type }} ${{ github.event.inputs.target_id }} ($(date -u +%Y-%m-%d))"
+            git stash
+            git pull --rebase origin main
+            git stash pop
             git push
           fi
