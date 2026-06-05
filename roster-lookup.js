@@ -364,14 +364,14 @@ async function fetchTeamsWithRetry(uuid, cookie) {
         continue;  // retry same player — never skip on 429
       }
 
-      if (e.message?.includes('5') && attempts < 3) {
+      if (e.message?.includes('5') && attempts < 1) {
         attempts++;
-        console.warn(`\n  ⚠ Server error for ${uuid} — retry ${attempts}/3`);
+        console.warn(`\n  ⚠ Server error for ${uuid} — retry 1/1`);
         await delay(10000);
         continue;
       }
 
-      throw e;  // unrecoverable — caller logs and skips
+      throw Object.assign(e, { transient: true });  // caller won't add to doneList
     }
   }
 }
@@ -433,13 +433,16 @@ async function fetchMissingTeams(players, cookie) {
           errors++;
           console.warn(`\n  ⚠ ${p.uuid} (${p.name}): ${e.message}`);
         }
-        // 403 = private/deleted profile — silently skip, still record as done
+        // 403 = private/deleted — add to doneList, never retry
+        // transient 5xx — don't add to doneList, will be retried on next run
+        if (!e.transient) doneList.push(p.uuid);
+        return;
       }
       doneList.push(p.uuid);
       sinceLastSave++;
     }));
 
-    if (sinceLastSave >= 1000) {
+    if (sinceLastSave >= Math.max(1000, _concurrency * 25)) {
       saveProgress(pending.slice(i + _concurrency).map(p => p.uuid), doneList);
       sinceLastSave = 0;
       console.log(`\n  💾 Progress saved (${doneList.length.toLocaleString()} done) — committing to repo...`);
