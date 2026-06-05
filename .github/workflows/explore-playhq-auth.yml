@@ -30,6 +30,8 @@ jobs:
 
       - name: Run explorer
         run: |
+          # Remove cached cookie to force fresh session
+          rm -f explore-cookie.json
           ARGS=""
           if [ -n "${{ github.event.inputs.tenant }}" ]; then
             ARGS="$ARGS --tenant=${{ github.event.inputs.tenant }}"
