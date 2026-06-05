@@ -177,10 +177,9 @@ query DiscoverGrade($id: ID!) {
   }
 }`;
 
-async function fetchGradeTeams(gradeId) {
+async function fetchGradeTeams(gradeId, cookie) {
   console.log(`\n📋 Phase 1: Fetching grade teams for grade ${gradeId}...`);
-  // Grade ladder is public — no cookie needed
-  const data = await gql('DiscoverGrade', Q_GRADE_LADDER, { id: gradeId }, null);
+  const data = await gql('DiscoverGrade', Q_GRADE_LADDER, { id: gradeId }, cookie);
   const grade = data?.discoverGrade;
   if (!grade) throw new Error(`Grade ${gradeId} not found`);
 
@@ -539,13 +538,17 @@ async function main() {
   console.log(`Concurrency:   ${CONCURRENCY}`);
   console.log(`Age filter:    ${TARGET_AGE_GROUPS.join(', ')} in ${MIN_SEASON_YEAR}+`);
 
+  // Get session cookie upfront — needed for Phase 1 and Phase 3
+  let cookie = null;
+  if (!DRY_RUN) cookie = await getSession();
+
   // Phase 1: get teams in target grade
   let gradeTeams;
   if (DRY_RUN) {
     console.log('\n[DRY RUN] Skipping grade API call — use --grade with a real grade ID');
     gradeTeams = { gradeId: TARGET_GRADE_ID, gradeName: '(dry run)', teams: [] };
   } else {
-    gradeTeams = await fetchGradeTeams(TARGET_GRADE_ID);
+    gradeTeams = await fetchGradeTeams(TARGET_GRADE_ID, cookie);
   }
 
   if (gradeTeams.teams.length === 0 && !DRY_RUN) {
@@ -563,7 +566,6 @@ async function main() {
 
   // Phase 3: fetch missing teams (if requested)
   if (FETCH_TEAMS && !DRY_RUN) {
-    const cookie = await getSession();
     await fetchMissingTeams(players, cookie);
   } else if (!FETCH_TEAMS) {
     const missing = players.filter(p => !p.hasTeams).length;
