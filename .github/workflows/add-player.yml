@@ -17,10 +17,22 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Get shard prefix
+        id: shard
+        run: echo "prefix=${UUID:0:2}" >> $GITHUB_OUTPUT
+        env:
+          UUID: ${{ github.event.inputs.uuid }}
+
+      - name: Checkout repository (sparse)
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          sparse-checkout: |
+            fetch-playhq.js
+            sports-index.json
+            players-index/${{ steps.shard.outputs.prefix }}.json
+            players/${{ steps.shard.outputs.prefix }}
+          sparse-checkout-cone-mode: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,7 +46,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add players/ players-index/
+          git add players/ players-index/ sports-index.json
           if git diff --staged --quiet; then
             echo "No changes — player may already be up to date"
           else
