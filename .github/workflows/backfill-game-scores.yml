@@ -1,0 +1,55 @@
+# backfill-game-scores.yml
+name: Backfill Game Scores
+
+on:
+  workflow_dispatch:
+    inputs:
+      concurrency:
+        description: 'Concurrent API requests'
+        required: false
+        default: '100'
+      tenant:
+        description: 'Tenant (bv=basketball)'
+        required: false
+        default: 'bv'
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            backfill-game-scores.js
+            games
+            backfill-progress.json
+          sparse-checkout-cone-mode: false
+
+      - name: Pull latest
+        run: git pull --rebase=false --no-edit -X ours
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run backfill
+        run: |
+          node backfill-game-scores.js \
+            --tenant=${{ github.event.inputs.tenant || 'bv' }} \
+            --concurrency=${{ github.event.inputs.concurrency || '100' }}
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add games/ backfill-progress.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore: backfill game scores"
+          git pull --rebase=false --no-edit -X ours
+          git push
