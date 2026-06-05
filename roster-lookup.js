@@ -449,8 +449,8 @@ async function fetchMissingTeams(players, cookie) {
       await gitCommitPush(`Teams fetch progress: ${doneList.length.toLocaleString()}/${toFetch.length.toLocaleString()} players`);
     }
 
-    const done = Math.min(i + _concurrency, pending.length) + doneSet.size;
-    const total = toFetch.length;
+    const done = Math.min(i + _concurrency, pending.length);
+    const total = pending.length;
     process.stdout.write(`  ${done}/${total} (${updated} updated, ${errors} errors, concurrency=${_concurrency})\r`);
 
     // Inter-batch delay — small but prevents wall-to-wall hammering
