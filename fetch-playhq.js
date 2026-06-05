@@ -21,8 +21,9 @@
  *   Update STAT_FIELDS map below once you see what the API actually returns.
  */
 
-const fs   = require('fs');
-const path = require('path');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 
@@ -221,18 +222,79 @@ query publicProfileStatistics($profileID: ID!) {
   }
 }`;
 
+const Q_PROFILE_TEAMS = `
+query PublicProfileTeams($profileID: ID!) {
+  publicProfileTeams(profileID: $profileID) {
+    id name
+    organisation { id name }
+    grade { id name }
+    season {
+      id name startDate endDate
+      status { name value }
+      competition { id name }
+    }
+  }
+}`;
+
 // ─── API helpers ──────────────────────────────────────────────────────────────
+
+const COOKIE_FILE = path.join(__dirname, `cookie-${TENANT}.json`);
+
+const MOBILE_HEADERS = {
+  'accept':       '*/*',
+  'origin':       'https://www.playhq.com',
+  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant':       TENANT === 'bv' ? 'basketball-victoria' : TENANT,
+  'content-type': 'application/json',
+};
+
+function loadCookie() {
+  try {
+    if (fs.existsSync(COOKIE_FILE)) {
+      const data = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
+      if (Date.now() - data.fetchedAt < 5 * 60 * 60 * 1000) return data.cookie;
+    }
+  } catch (e) {}
+  return null;
+}
+
+function saveCookie(cookie) {
+  fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie, fetchedAt: Date.now() }));
+}
+
+let _sessionCookie = null;
+
+async function getSession() {
+  if (_sessionCookie) return _sessionCookie;
+  _sessionCookie = loadCookie();
+  if (_sessionCookie) return _sessionCookie;
+  // Obtain cookie by making any valid API call with mobile headers
+  const res = await fetch(API_URL, {
+    method:  'POST',
+    headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
+    body: JSON.stringify({
+      operationName: 'ProfileSearch',
+      variables:     { fullName: 'test user' },
+      query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
+    }),
+  });
+  const raw = res.headers.get('set-cookie');
+  if (raw) {
+    _sessionCookie = raw.split(';')[0];
+    saveCookie(_sessionCookie);
+    console.log('  ✓ Session cookie obtained');
+  } else {
+    console.warn('  ⚠ Could not obtain session cookie — publicProfileTeams will be skipped');
+  }
+  return _sessionCookie;
+}
 
 async function gql(operationName, query, variables) {
   let attempts = 0;
   while (true) {
     const res = await fetch(API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant':       TENANT,
-        'origin':       'https://www.playhq.com',
-      },
+      headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
       body: JSON.stringify({ operationName, query, variables }),
     });
 
@@ -282,6 +344,24 @@ async function gql(operationName, query, variables) {
 
 function delay(ms) {
   return new Promise(r => setTimeout(r, ms));
+}
+
+async function gqlAuth(operationName, query, variables) {
+  const cookie = await getSession();
+  if (!cookie) return null;
+  let attempts = 0;
+  while (true) {
+    const res = await fetch(API_URL, {
+      method:  'POST',
+      headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+      body:    JSON.stringify({ operationName, query, variables }),
+    });
+    if (res.status === 429) { await delay(5000); continue; }
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (json.errors) return null;
+    return json.data;
+  }
 }
 
 // ─── Stat parsing ─────────────────────────────────────────────────────────────
@@ -676,6 +756,17 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
     seasons: [...otherSeasons, ...thisSeasons],
     updatedAt: new Date().toISOString(),
   };
+
+  // Fetch current team registrations (authenticated) — preserve if fetch fails
+  const teamsData = await gqlAuth('PublicProfileTeams', Q_PROFILE_TEAMS, { profileID: uuid });
+  if (teamsData?.publicProfileTeams) {
+    detail.teams          = teamsData.publicProfileTeams;
+    detail.teamsUpdatedAt = new Date().toISOString();
+  } else if (existingDetail.teams) {
+    // Keep existing teams data if auth fetch fails
+    detail.teams          = existingDetail.teams;
+    detail.teamsUpdatedAt = existingDetail.teamsUpdatedAt;
+  }
 
   data.index.players[uuid] = indexEntry;
   if (data.dirtyShards) data.dirtyShards.add(uuid.slice(0, 2));
@@ -1286,11 +1377,48 @@ async function modeProbe() {
   }
 }
 
-// ─── CLI entry point ──────────────────────────────────────────────────────────
+// ─── Player mode — fetch and store a single player by UUID ───────────────────
+
+async function modePlayer(uuid) {
+  if (!uuid) { console.error('--uuid=<uuid> required for player mode'); process.exit(1); }
+  console.log(`\n👤 Fetching player ${uuid}...`);
+
+  const data = loadData();
+  const result = await fetchPlayerProfile(uuid, data, {});
+  if (!result) {
+    console.error('  Profile not found or private — nothing written.');
+    process.exit(1);
+  }
+
+  saveData(data);
+  console.log(`  ✓ Saved: ${result.player.name}`);
+  const bk = result.player.sports?.[SPORT_NAME] || {};
+  console.log(`  Career: ${bk.gp ?? 0} GP  ${bk.pts ?? 0} PTS  ${bk.fg ?? 0} FG  ${bk.threePt ?? 0} 3PT  ${bk.ft ?? 0} FT  ${bk.fouls ?? 0} F`);
+
+  // Show current team registrations
+  const detail = JSON.parse(fs.readFileSync(playerFile(uuid), 'utf8'));
+  if (detail.teams?.length) {
+    const active = detail.teams.filter(t => t.season?.status?.value !== 'COMPLETED');
+    if (active.length) {
+      console.log(`  Current registrations (${active.length}):`);
+      for (const t of active) {
+        const status = t.season?.status?.value || '?';
+        console.log(`    [${status}] ${t.season?.competition?.name} — ${t.grade?.name} — ${t.name}`);
+      }
+    }
+  }
+
+  if (result.newSeasonIds.length > 0) {
+    console.log(`  New season IDs discovered: ${result.newSeasonIds.join(', ')}`);
+  }
+}
+
+
 
 async function main() {
   const mode     = _RAW_ARGS.mode   || 'crawl';
   const seasonId = _RAW_ARGS.season;
+  const uuid     = _RAW_ARGS.uuid;
 
   const sportEmoji = { basketball: '🏀', 'australian-rules': '🏈', cricket: '🏏' }[SPORT] || '🏆';
   console.log(`${sportEmoji} PlayHQ Sports Scraper`);
@@ -1315,6 +1443,9 @@ async function main() {
       case 'lock':
         if (!seasonId) { console.error('--season=<id> required for lock mode'); process.exit(1); }
         modeLock(seasonId);
+        break;
+      case 'player':
+        await modePlayer(uuid);
         break;
       case 'probe':
         await modeProbe();
