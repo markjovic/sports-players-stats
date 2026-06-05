@@ -806,11 +806,15 @@ async function modeCrawl(seasonId) {
   const playersBefore  = Object.keys(data.index.players).length;
   const seasonsBefore  = Object.values(data.index.seasons).filter(s => !s.discovered).length;
   const stubsBefore    = Object.values(data.index.seasons).filter(s =>  s.discovered).length;
-  const invalidIds = new Set(
-    fs.existsSync(INVALID_FILE)
+  // Combined set of IDs that must never be stubbed or queued
+  const invalidIds = new Set([
+    ...(fs.existsSync(INVALID_FILE)
       ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
-      : []
-  );
+      : []),
+    ...(fs.existsSync(SKIPPED_FILE)
+      ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
+      : []),
+  ]);
 
   // If no pending work, or progress is for a different season, discover fresh
   let genders = {};    // uuid → inferred gender; populated during discovery, empty on resume
@@ -1171,12 +1175,15 @@ async function modeCrawlAll() {
 
   const updatedData   = loadData();
 
-  // Load invalid IDs — stubs for these must never be queued and should be removed from index
-  const routeInvalidIds = new Set(
-    fs.existsSync(INVALID_FILE)
+  // Load invalid + skipped IDs — stubs for these must never be queued and should be removed from index
+  const routeInvalidIds = new Set([
+    ...(fs.existsSync(INVALID_FILE)
       ? JSON.parse(fs.readFileSync(INVALID_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
-      : []
-  );
+      : []),
+    ...(fs.existsSync(SKIPPED_FILE)
+      ? JSON.parse(fs.readFileSync(SKIPPED_FILE, 'utf8')).map(e => typeof e === 'string' ? e : e.id)
+      : []),
+  ]);
 
   // Remove any stubs for invalid IDs from the index — they keep getting re-queued otherwise
   let removedStubs = 0;
