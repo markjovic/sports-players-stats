@@ -391,7 +391,8 @@ async function main() {
       targets = [{ id: TARGET_SEASON, seasonId: TARGET_SEASON }];
     }
   } else if (!ALL_SEASONS) {
-    targets = targets.filter(s => !s.discovered && (s.status === 'ACTIVE' || s.status === 'UPCOMING' || !s.status));
+    // locked: true = completed season, locked: false = active/current
+    targets = targets.filter(s => !s.discovered && s.locked === false);
   }
 
   console.log(`Seasons to process: ${targets.length}`);
