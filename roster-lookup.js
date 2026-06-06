@@ -23,6 +23,7 @@ const fs           = require('fs');
 const path         = require('path');
 const crypto       = require('crypto');
 const { execSync } = require('child_process');
+const { processTeams, flushLookupShards, isSlimFormat } = require('./team-lookup-utils');
 
 // ─── CLI args ─────────────────────────────────────────────────────────────────
 
@@ -149,12 +150,13 @@ const Q_PROFILE_TEAMS = `
 query PublicProfileTeams($profileID: ID!) {
   publicProfileTeams(profileID: $profileID) {
     id name
+    logo { sizes { url dimensions { width height } } }
     organisation { id name }
     grade { id name }
     season {
       id name startDate endDate
       status { name value }
-      competition { id name }
+      competition { id name organisation { id name } }
     }
   }
 }`;
@@ -283,7 +285,7 @@ function scanPlayersDir() {
       total++;
       let detail;
       try { detail = JSON.parse(fs.readFileSync(path.join(shardDir, f), 'utf8')); } catch (e) { continue; }
-      const hasTeams = Array.isArray(detail.teams);
+      const hasTeams = Array.isArray(detail.teams) && detail.teams.length > 0 && isSlimFormat(detail.teams);
       if (hasTeams) hasTeamsStored++;
       players.push({ uuid: detail.uuid, name: detail.name, detail, hasTeams });
     }
@@ -321,12 +323,12 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function gitCommitPush(message) {
   try {
-    execSync('git add players/ roster-teams-progress.json', { stdio: 'pipe' });
+    execSync('git add players/ roster-teams-progress.json team-lookup/', { stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  (no changes to commit)'); return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
     const stashOut = execSync('git stash', { stdio: 'pipe' }).toString();
-    execSync('git pull --rebase origin main', { stdio: 'pipe' });
+    execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
     if (stashOut.includes('Saved')) execSync('git stash pop', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
     console.log('  ✓ Committed and pushed');
@@ -396,7 +398,7 @@ async function fetchMissingTeams(players, cookie) {
         const pf = playerFile(p.uuid);
         let detail;
         try { detail = JSON.parse(fs.readFileSync(pf, 'utf8')); } catch (e) { detail = p.detail; }
-        detail.teams          = teams;
+        detail.teams          = processTeams(teams);  // slim refs + populates lookup shards
         detail.teamsUpdatedAt = new Date().toISOString();
         fs.writeFileSync(pf, JSON.stringify(detail));
         p.detail = detail; p.hasTeams = true;
@@ -412,8 +414,9 @@ async function fetchMissingTeams(players, cookie) {
 
     if (sinceLastSave >= Math.max(1000, _concurrency * 25)) {
       saveProgress(pending.slice(i + _concurrency).map(p => p.uuid), doneList);
+      const flushed = flushLookupShards();
       sinceLastSave = 0;
-      console.log(`\n  💾 Progress saved (${doneList.length.toLocaleString()} done) — committing to repo...`);
+      console.log(`\n  💾 Progress saved (${doneList.length.toLocaleString()} done, ${flushed} lookup shards) — committing to repo...`);
       await gitCommitPush(`Teams fetch progress: ${doneList.length.toLocaleString()}/${toFetch.length.toLocaleString()} players`);
     }
 
@@ -423,6 +426,7 @@ async function fetchMissingTeams(players, cookie) {
   }
 
   clearProgress();
+  flushLookupShards();
   console.log(`\n  ✓ Done — ${updated} updated, ${errors} errors`);
   await gitCommitPush(`Teams fetch complete: ${updated.toLocaleString()} players updated`);
 }
@@ -430,36 +434,45 @@ async function fetchMissingTeams(players, cookie) {
 // ─── Phase 4: Cross-reference players against grade teams ────────────────────
 
 function matchPlayers(players, gradeTeams) {
+  const { lookupTeam } = require('./team-lookup-utils');
   const targetTeamIds = new Set(gradeTeams.teams.map(t => t.id));
   const roster = Object.fromEntries(gradeTeams.teams.map(t => [t.id, { team: t, players: [] }]));
   let matchedPlayers = 0, noTeamsData = 0;
 
   for (const p of players) {
-    if (!Array.isArray(p.detail?.teams)) { noTeamsData++; continue; }
-    for (const reg of p.detail.teams) {
-      if (!reg?.grade?.id) continue;
-      if (!targetTeamIds.has(reg.id)) continue;
-      if (reg.grade?.id !== gradeTeams.gradeId) continue;
+    if (!Array.isArray(p.detail?.teams) || p.detail.teams.length === 0) { noTeamsData++; continue; }
+    for (const ref of p.detail.teams) {
+      if (!ref?.tid) continue;
+      if (!targetTeamIds.has(ref.tid)) continue;
+      // Verify team belongs to this grade via lookup
+      const teamMeta = lookupTeam(ref.tid);
+      if (teamMeta && teamMeta.gid && teamMeta.gid !== gradeTeams.gradeId) continue;
 
-      roster[reg.id].players.push({
+      // Build currentRegs from all slim refs, resolved via lookup
+      const currentRegs = (p.detail.teams || [])
+        .filter(r => r.status !== 'COMPLETED')
+        .map(r => {
+          const meta = lookupTeam(r.tid) || {};
+          return {
+            team:     meta.name    || r.tid,
+            teamId:   r.tid,
+            grade:    meta.gn      || null,
+            gradeId:  meta.gid     || null,
+            comp:     meta.compName || null,
+            compId:   meta.compId  || null,
+            season:   meta.sn      || null,
+            seasonId: r.sid,
+            status:   r.status,
+          };
+        });
+
+      roster[ref.tid].players.push({
         uuid:         p.uuid,
         name:         p.name,
-        seasonId:     reg.season?.id,
-        seasonName:   reg.season?.name,
-        seasonStatus: reg.season?.status?.value,
-        currentRegs:  (p.detail.teams || [])
-          .filter(r => r.season?.status?.value !== 'COMPLETED')
-          .map(r => ({
-            team:    r.name,
-            teamId:  r.id,
-            grade:   r.grade?.name,
-            gradeId: r.grade?.id,
-            comp:    r.season?.competition?.name,
-            compId:  r.season?.competition?.id,
-            season:  r.season?.name,
-            seasonId: r.season?.id,
-            status:  r.season?.status?.value,
-          })),
+        seasonId:     ref.sid,
+        seasonName:   lookupTeam(ref.tid)?.sn || null,
+        seasonStatus: ref.status,
+        currentRegs,
       });
       matchedPlayers++;
       break;
@@ -509,7 +522,7 @@ function generateHtml(allResults, targetId, generatedAt, coverage) {
 
           const regsHtml = (p.currentRegs || []).map(r => {
             const cls = r.status === 'ACTIVE' ? 'active' : 'upcoming';
-            return `<span class="reg-tag ${cls}">${r.comp} · ${r.grade} · ${r.team}</span>`;
+            return `<span class="reg-tag ${cls}"><span class="rt-comp">${r.comp || '?'}</span><span class="rt-sep">·</span><span class="rt-grade">${r.grade || '?'}</span><span class="rt-sep">·</span><span class="rt-team">${r.team || '?'}</span></span>`;
           }).join('');
 
           return `
@@ -538,6 +551,7 @@ function generateHtml(allResults, targetId, generatedAt, coverage) {
               </div>
               <span class="player-count">${tp.length} player${tp.length !== 1 ? 's' : ''}</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -553,6 +567,7 @@ function generateHtml(allResults, targetId, generatedAt, coverage) {
               </thead>
               <tbody>${playersHtml}</tbody>
             </table>
+            </div>
           </div>`;
       }).join('');
 
@@ -795,10 +810,35 @@ function generateHtml(allResults, targetId, generatedAt, coverage) {
       font-size: 12px;
     }
 
+    /* ── Reg tag segments ── */
+    .rt-sep { margin: 0 4px; opacity: 0.4; }
+    .rt-comp {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .rt-grade {
+      font-style: italic;
+      opacity: 0.85;
+    }
+    .rt-team {
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    /* ── Scrollable table on mobile ── */
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-scroll::after {
+      content: '';
+      display: block;
+    }
     @media (max-width: 600px) {
       .page-header, .content, .page-footer { padding-left: 16px; padding-right: 16px; }
-      .roster-table th.stat:nth-child(n+5),
-      .roster-table td.stat:nth-child(n+5) { display: none; }
+      .roster-table { min-width: 480px; }
+      .roster-table th.player-name,
+      .roster-table td.player-name { min-width: 140px; }
     }
   </style>
 </head>
