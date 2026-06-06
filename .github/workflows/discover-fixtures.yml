@@ -1,0 +1,79 @@
+# .github/workflows/discover-fixtures.yml
+name: Discover Fixtures
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Which seasons to process'
+        required: false
+        default: 'active - active and upcoming seasons only'
+        type: choice
+        options:
+          - 'active - active and upcoming seasons only'
+          - 'all - all crawled seasons (slow)'
+          - 'single - one season (enter ID below)'
+      season_id:
+        description: 'Season ID (only used when mode = single)'
+        required: false
+        default: ''
+        type: string
+      concurrency:
+        description: 'Concurrent round fetches per grade'
+        required: false
+        default: '10'
+        type: string
+      tenant:
+        description: 'Tenant'
+        required: false
+        default: 'bv'
+        type: choice
+        options:
+          - bv
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run fixture discovery
+        run: |
+          MODE="${{ github.event.inputs.mode }}"
+          ARGS="--tenant=${{ github.event.inputs.tenant }} --concurrency=${{ github.event.inputs.concurrency }}"
+          if [[ "$MODE" == all* ]]; then
+            ARGS="$ARGS --all-seasons"
+          elif [[ "$MODE" == single* ]]; then
+            ARGS="$ARGS --season=${{ github.event.inputs.season_id }}"
+          fi
+          node discover-fixtures.js $ARGS
+
+      - name: Commit final results
+        run: |
+          STASHED=$(git stash 2>&1)
+          git pull --rebase=false --no-edit -X ours
+          if echo "$STASHED" | grep -q "Saved"; then git stash pop; fi
+          git add games/ venue-lookup/ team-lookup/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Fixture discovery: final flush"
+            git push
+          fi
