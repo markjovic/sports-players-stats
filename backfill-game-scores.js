@@ -20,9 +20,10 @@
  *   node backfill-game-scores.js --concurrency=50 --tenant=bv
  */
 
-const fs   = require('fs');
-const path = require('path');
+const fs     = require('fs');
+const path   = require('path');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
 
 const TENANT      = process.argv.find(a => a.startsWith('--tenant='))?.split('=')[1] || 'bv';
 const TENANT_FULL = { bv: 'basketball-victoria', afl: 'afl', ca: 'cricket-australia' }[TENANT] || TENANT;
@@ -146,6 +147,22 @@ function saveProgress(prog) {
     done:   [...prog.done],
     failed: [...prog.failed],
   }));
+}
+
+function gitCommitPush(message) {
+  try {
+    execSync('git add games/ backfill-progress.json', { stdio: 'pipe' });
+    const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
+    if (!diff) return;
+    execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
+    const stashOut = execSync('git stash', { stdio: 'pipe' }).toString();
+    execSync('git pull --rebase origin main', { stdio: 'pipe' });
+    if (stashOut.includes('Saved')) execSync('git stash pop', { stdio: 'pipe' });
+    execSync('git push', { stdio: 'pipe' });
+    console.log(`\n  ✓ Committed and pushed`);
+  } catch (e) {
+    console.warn(`\n  ⚠ Git commit/push failed: ${e.message}`);
+  }
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -345,6 +362,7 @@ async function main() {
       flushCache(sgCache, GAMES_DIR);
       saveProgress(prog);
       sinceLastSave = 0;
+      gitCommitPush(`Backfill scores: ${fetched.toLocaleString()} scored, ${(i + concurrency).toLocaleString()}/${remaining.length.toLocaleString()} processed`);
     }
   }
 
