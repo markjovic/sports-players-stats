@@ -45,6 +45,9 @@ jobs:
             inspect-failed-games.js
             games
             backfill-progress.json
+            sports-index.json
+            seasons-discovered.json
+            team-lookup
           sparse-checkout-cone-mode: false
 
       - name: Set up Node.js
