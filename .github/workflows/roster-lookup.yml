@@ -1,102 +1,163 @@
-# .github/workflows/roster-lookup.yml
-name: Roster Lookup
+# .github/workflows/fetch-playhq.yml
+name: PlayHQ Sports Scraper
 
 on:
   workflow_dispatch:
     inputs:
-      target_id:
-        description: 'Grade ID, Team ID, or Competition (Season) ID to look up'
-        required: true
-        default: '5afff92b'
-        type: string
-      target_type:
-        description: 'What the target ID refers to'
-        required: false
-        default: 'grade'
-        type: choice
-        options:
-          - 'grade - show all teams and registered players in this grade'
-          - 'team  - find this team''s active grade, then show all opposition'
-          - 'comp  - show full roster breakdown for every grade in this competition'
       mode:
-        description: 'Data fetch mode'
-        required: false
-        default: '3 - Local lookup only (instant, no API calls)'
+        description: 'Mode: crawl | update | discover | lock'
+        required: true
+        default: 'update'
         type: choice
         options:
-          - '1 - Full re-fetch (all players, overwrites existing data, slow ~30min)'
-          - '2 - Fill gaps (fetch only players missing teams data, incremental)'
-          - '3 - Local lookup only (instant, no API calls)'
+          - crawl
+          - update
+          - discover
+          - lock
+          - probe
+          - crawl-all
+      season:
+        description: 'Season ID (required for crawl / discover / lock)'
+        required: false
+        default: ''
+      tenant:
+        description: 'PlayHQ tenant (bv=basketball, afl=footy, ca=cricket)'
+        required: false
+        default: 'bv'
+      sport:
+        description: 'Sport name for labelling (basketball, australian-rules, cricket)'
+        required: false
+        default: 'basketball'
       concurrency:
-        description: 'Concurrent API requests during teams fetch (modes 1 and 2 only)'
+        description: 'Concurrent API requests (default 200, reduce if seeing 429s)'
         required: false
         default: '200'
-        type: string
+
+  # schedule disabled during initial crawl — re-enable once crawl-all is complete
+  # schedule:
+  #   - cron: '0 20 * * 0,3'
 
 jobs:
-  roster-lookup:
+  scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
     permissions:
       contents: write
+      actions: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          sparse-checkout: |
+            fetch-playhq.js
+            team-lookup-utils.js
+            sports-index.json
+            players-index
+            games
+            queue-bv-priority.json
+            queue-bv-backlog.json
+            seasons-invalid.json
+            seasons-skipped.json
+            seasons-discovered.json
+            progress-bv.json
+            run-summary.json
+            team-lookup
+          sparse-checkout-cone-mode: false
 
-      - name: Set up Node.js
+      - name: Pull latest
+        run: git pull --rebase=false --no-edit -X ours
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Build args
-        id: args
-        run: |
-          TARGET_TYPE="${{ github.event.inputs.target_type }}"
-          TARGET_ID="${{ github.event.inputs.target_id }}"
-          MODE="${{ github.event.inputs.mode }}"
-
-          if [[ "$TARGET_TYPE" == team* ]]; then
-            ARGS="--team=$TARGET_ID"
-          elif [[ "$TARGET_TYPE" == comp* ]]; then
-            ARGS="--comp=$TARGET_ID"
-          else
-            ARGS="--grade=$TARGET_ID"
-          fi
-
-          ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
-
-          if [[ "$MODE" == 1* ]]; then
-            ARGS="$ARGS --force-fetch"
-          elif [[ "$MODE" == 2* ]]; then
-            ARGS="$ARGS --fetch-teams"
-          fi
-
-          echo "args=$ARGS" >> $GITHUB_OUTPUT
-          echo "Running with: $ARGS"
-
-      - name: Configure git
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Run roster lookup
-        run: node roster-lookup.js ${{ steps.args.outputs.args }}
+      - name: Run scraper
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'update' }}"
+          SEASON="${{ github.event.inputs.season || '' }}"
+          TENANT="${{ github.event.inputs.tenant || 'bv' }}"
+          SPORT="${{ github.event.inputs.sport || 'basketball' }}"
+
+          ARGS="--tenant=$TENANT --sport=$SPORT --mode=$MODE"
+          if [ -n "$SEASON" ] && [ "$MODE" != "crawl-all" ] && [ "$MODE" != "update" ] && [ "$MODE" != "probe" ]; then
+            ARGS="$ARGS --season=$SEASON"
+          fi
+          node fetch-playhq.js $ARGS
+
+      - name: Summary
+        if: always()
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          const index    = fs.existsSync('sports-index.json') ? JSON.parse(fs.readFileSync('sports-index.json')) : {};
+          const priority = fs.existsSync('queue-bv-priority.json') ? JSON.parse(fs.readFileSync('queue-bv-priority.json')) : [];
+          const backlog  = fs.existsSync('queue-bv-backlog.json')  ? JSON.parse(fs.readFileSync('queue-bv-backlog.json'))  : [];
+          const invalid  = fs.existsSync('seasons-invalid.json')   ? JSON.parse(fs.readFileSync('seasons-invalid.json'))   : [];
+          const skipped  = fs.existsSync('seasons-skipped.json')   ? JSON.parse(fs.readFileSync('seasons-skipped.json'))   : [];
+          const run      = fs.existsSync('run-summary.json')       ? JSON.parse(fs.readFileSync('run-summary.json'))       : null;
+          const seasons  = index.seasons || {};
+          // Player count: use playerCount from slim index (post-migration) or count from players object (pre-migration)
+          const playerCount = index.playerCount ?? Object.keys(index.players || {}).length;
+          const crawled  = Object.values(seasons).filter(s => !s.discovered).length;
+          const stubs    = Object.values(seasons).filter(s =>  s.discovered).length;
+
+          if (run) {
+            console.log('');
+            console.log('🏀 Season just processed');
+            console.log(`   Season:           ${run.seasonName}`);
+            console.log(`   Season ID:        ${run.seasonId}`);
+            console.log(`   Grades:           ${run.grades}`);
+            console.log(`   Unique players:   ${run.uniquePlayers.toLocaleString()}`);
+            console.log(`   Total players:    ${run.totalPlayers.toLocaleString()} (incl. duplicates across grades)`);
+            console.log(`   New players:      +${(run.newPlayers || 0).toLocaleString()}`);
+            console.log(`   New stubs added:  +${(run.newStubs || 0)} net`);
+            console.log(`   New seasons disc: ${run.discovered}`);
+          }
+
+          console.log('');
+          console.log('📊 Database summary');
+          console.log(`   Players:          ${playerCount.toLocaleString()}`);
+          console.log(`   Seasons crawled:  ${crawled}`);
+          console.log(`   Seasons (stubs):  ${stubs} — discovered in player histories, not yet crawled`);
+          console.log(`   Priority queue:   ${priority.length}`);
+          console.log(`   Backlog queue:    ${backlog.length}`);
+          console.log(`   Known invalid:    ${invalid.length}`);
+          console.log(`   Skipped:          ${skipped.length}`);
+          console.log(`   Last fetch:       ${run ? run.lastFetch : (index.lastFetch || 'never')}`);
+          EOF
 
       - name: Commit results
+        if: always()
         run: |
-          git stash
-          git pull --rebase origin main
-          git stash pop
-          git add players/ roster-results/
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sports-index.json seasons-skipped.json seasons-invalid.json seasons-discovered.json run-summary.json 2>/dev/null || true
+          git add players-index/ 2>/dev/null || true
+          git add games/ 2>/dev/null || true
+          git add players/ 2>/dev/null || true
+          git add team-lookup/ 2>/dev/null || true
+          if ls queue-*.json 1> /dev/null 2>&1; then
+            git add queue-*.json
+          else
+            git rm --cached queue-bv-priority.json queue-bv-backlog.json 2>/dev/null || true
+          fi
+          # Commit any progress files (tenant-namespaced, e.g. progress-bv.json)
+          if ls progress-*.json 1> /dev/null 2>&1; then
+            git add progress-*.json
+          else
+            git rm --cached progress-*.json 2>/dev/null || true
+          fi
+          # Only commit if something changed
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Roster lookup: ${{ github.event.inputs.target_type }} ${{ github.event.inputs.target_id }} ($(date -u +%Y-%m-%d))"
+            git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
+            STASHED=$(git stash 2>&1)
+            git pull --rebase=false --no-edit -X ours
+            if echo "$STASHED" | grep -q "Saved"; then git stash pop; fi
             git push
           fi
