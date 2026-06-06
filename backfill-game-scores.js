@@ -106,8 +106,7 @@ async function fetchGame(gameId, cookie, retries = 2) {
       });
       if (res.status === 403 || res.status === 401) return { _authError: true };
       if (res.status === 429) {
-        await delay(10000 * attempt);
-        continue;
+        return { _rateLimit: true };
       }
       if (!res.ok) {
         if (attempt < retries) { await delay(5000); continue; }
@@ -217,7 +216,11 @@ async function main() {
   // Fetch game scores in batches
   let fetched = 0;
   let failed  = 0;
-  let authErrors = 0;
+  let rateLimited = 0;
+  let authErrors  = 0;
+  let concurrency = CONCURRENCY;
+  let concurrencyCap = CONCURRENCY;
+  let streak429 = 0;
 
   // Build a lookup: gameId → which season files contain it
   const gameToFiles = {};
@@ -239,14 +242,36 @@ async function main() {
   const SAVE_INTERVAL = 500; // save every N games
   let sinceLastSave = 0;
 
-  for (let i = 0; i < remaining.length; i += CONCURRENCY) {
-    const batch = remaining.slice(i, i + CONCURRENCY);
+  for (let i = 0; i < remaining.length; i += concurrency) {
+    const batch = remaining.slice(i, i + concurrency);
 
     const results = await Promise.all(batch.map(async (gameId, j) => {
-      await delay(j * 10); // small stagger to avoid thundering herd
+      await delay(j * 10);
       const game = await fetchGame(gameId, cookie);
       return { gameId, game };
     }));
+
+    // Check for rate limiting before processing results
+    const rateLimitHits = results.filter(r => r.game?._rateLimit).length;
+    if (rateLimitHits > 0) {
+      streak429++;
+      concurrency = Math.max(5, Math.floor(concurrency * 0.6));
+      if (streak429 >= 3) {
+        concurrencyCap = Math.max(5, concurrencyCap - 10);
+        concurrency    = Math.min(concurrency, concurrencyCap);
+        streak429      = 0;
+        console.warn(`\n  ⚠ Repeated rate limiting — cap lowered to ${concurrencyCap}, concurrency now ${concurrency}`);
+      } else {
+        console.warn(`\n  ⚠ Rate limited (${rateLimitHits} hits) — concurrency → ${concurrency}, backing off 10s`);
+      }
+      rateLimited += rateLimitHits;
+      await delay(10000);
+      // Re-queue rate-limited games by stepping back
+      i -= concurrency;
+      continue;
+    } else if (streak429 > 0) {
+      streak429 = 0; // clear streak on clean batch
+    }
 
     for (const { gameId, game } of results) {
       if (game?._authError) {
@@ -312,11 +337,11 @@ async function main() {
       sinceLastSave++;
     }
 
-    const pct = Math.round(((i + batch.length) / remaining.length) * 100);
-    process.stdout.write(`  ${i + batch.length}/${remaining.length} (${pct}%) — ✓ ${fetched} scored, ✗ ${failed} no-data\r`);
+    const pct = Math.round(((i + concurrency) / remaining.length) * 100);
+    process.stdout.write(`  ${Math.min(i + concurrency, remaining.length).toLocaleString()}/${remaining.length.toLocaleString()} (${pct}%) — ✓ ${fetched.toLocaleString()} scored, ✗ ${failed} no-data, ⚡ ${rateLimited} rate-limited, concurrency=${concurrency}\r`);
 
     // Periodically flush to disk and clear cache to avoid OOM
-    if (sinceLastSave >= SAVE_INTERVAL) {
+    if (sinceLastSave >= Math.max(500, concurrency * 10)) {
       flushCache(sgCache, GAMES_DIR);
       saveProgress(prog);
       sinceLastSave = 0;
@@ -328,9 +353,10 @@ async function main() {
   saveProgress(prog);
 
   console.log(`\n✅ Backfill complete`);
-  console.log(`   Scored:        ${fetched}`);
-  console.log(`   No score yet:  ${failed} (future games will retry; past/not-found skipped permanently)`);
-  console.log(`   Total:         ${needsBackfill.size}`);
+  console.log(`   Scored:        ${fetched.toLocaleString()}`);
+  console.log(`   No score:      ${failed} (past games with no data — skipped permanently)`);
+  console.log(`   Rate limited:  ${rateLimited} (retried via backoff)`);
+  console.log(`   Total probed:  ${needsBackfill.size.toLocaleString()}`);
 }
 
 function flushCache(cache, dir) {
