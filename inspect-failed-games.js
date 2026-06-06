@@ -26,6 +26,24 @@ const FILTER_SEASON = process.argv.find(a => a.startsWith('--season='))?.split('
 
 const GAMES_DIR      = path.join(__dirname, 'games', TENANT);
 const PROGRESS_FILE  = path.join(__dirname, 'backfill-progress.json');
+const INDEX_FILE     = path.join(__dirname, 'sports-index.json');
+
+// Load season names from sports-index for context
+const seasonNames = {};
+if (fs.existsSync(INDEX_FILE)) {
+  const idx = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
+  for (const [sid, s] of Object.entries(idx.seasons || {})) {
+    seasonNames[sid] = [s.fullName || s.name, s.orgName].filter(Boolean).join(' — ');
+  }
+}
+// Also load seasons-discovered for additional name coverage
+const DISC_FILE = path.join(__dirname, 'seasons-discovered.json');
+if (fs.existsSync(DISC_FILE)) {
+  const disc = JSON.parse(fs.readFileSync(DISC_FILE, 'utf8'));
+  for (const [sid, s] of Object.entries(disc)) {
+    if (!seasonNames[sid]) seasonNames[sid] = [s.name, s.compName, s.orgName].filter(Boolean).join(' — ');
+  }
+}
 
 // ─── Load progress ────────────────────────────────────────────────────────────
 
@@ -87,14 +105,16 @@ if (ALL) {
 const today = new Date().toISOString().slice(0, 10);
 
 if (CSV) {
-  console.log('gameId,seasonId,date,round,homeTeam,awayTeam,opponent,isPast');
+  console.log('gameId,seasonId,seasonName,date,round,opponent,homeTeam,awayTeam,isPast,apiUrl');
   for (const [gameId, { seasonId, game }] of sample) {
-    const isPast = !game.d || game.d <= today;
-    const home   = game.hn || game.h || '';
-    const away   = game.an || game.a || '';
-    const opp    = game.on || '';
-    const round  = (game.rn || '').replace(/,/g, ';');
-    console.log(`${gameId},${seasonId},${game.d || ''},${round},"${home}","${away}","${opp}",${isPast}`);
+    const isPast   = !game.d || game.d <= today;
+    const home     = game.hn || '';
+    const away     = game.an || '';
+    const opp      = game.on || '';
+    const round    = (game.rn || '').replace(/,/g, ';');
+    const sname    = (seasonNames[seasonId] || '').replace(/,/g, ';');
+    const apiUrl   = `https://api.playhq.com/graphql (discoverGame: ${gameId})`;
+    console.log(`${gameId},${seasonId},"${sname}",${game.d || ''},${round},"${opp}","${home}","${away}",${isPast},"${apiUrl}"`);
   }
   process.exit(0);
 }
@@ -151,15 +171,17 @@ console.log(`=== Sample of ${sample.length} failed games ===`);
 console.log();
 
 for (const [seasonId, { file, games }] of Object.entries(bySeason)) {
-  console.log(`Season: ${seasonId} (${file})`);
+  const sname = seasonNames[seasonId] ? ` — ${seasonNames[seasonId]}` : '';
+  console.log(`Season: ${seasonId}${sname}`);
   console.log('─'.repeat(80));
   for (const { gameId, game } of games) {
     const dateStr  = game.d || 'no date';
     const roundStr = game.rn || 'no round';
     const past     = !game.d || game.d <= today ? '(past)' : '(FUTURE)';
-    const home     = game.hn ? `${game.hn} vs ${game.an}` : `opp: ${game.on || '?'}`;
+    const opp      = game.on || (game.hn ? `${game.hn} vs ${game.an}` : '?');
     const hasScore = game.hs !== undefined ? `${game.hs}–${game.as}` : 'no score';
-    console.log(`  ${gameId}  ${dateStr} ${past}  ${roundStr.padEnd(20)}  ${home}  [${hasScore}]`);
+    console.log(`  ${gameId}  ${dateStr} ${past}  ${roundStr.padEnd(20)}  ${opp}`);
+    console.log(`             → use explore-playhq-auth.js or discoverGame query to inspect`);
   }
   console.log();
 }
