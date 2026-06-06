@@ -27,6 +27,48 @@ const FILTER_SEASON = process.argv.find(a => a.startsWith('--season='))?.split('
 const GAMES_DIR      = path.join(__dirname, 'games', TENANT);
 const PROGRESS_FILE  = path.join(__dirname, 'backfill-progress.json');
 const INDEX_FILE     = path.join(__dirname, 'sports-index.json');
+const LOOKUP_DIR     = path.join(__dirname, 'team-lookup');
+
+// Slugify a string to match PlayHQ URL format
+function slugify(str) {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .replace(/[()]/g, '')       // remove parentheses
+    .replace(/[^a-z0-9\s-]/g, '') // remove other special chars
+    .trim()
+    .replace(/[\s-]+/g, '-');   // spaces and hyphens to single hyphen
+}
+
+// Load team-lookup shard for a team ID
+const _lookupCache = {};
+function lookupTeam(teamId) {
+  if (!teamId) return null;
+  const prefix = teamId.slice(0, 2);
+  if (!_lookupCache[prefix]) {
+    const f = path.join(LOOKUP_DIR, `${prefix}.json`);
+    try { _lookupCache[prefix] = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : {}; }
+    catch (e) { _lookupCache[prefix] = {}; }
+  }
+  return _lookupCache[prefix][teamId] || null;
+}
+
+// Construct PlayHQ game URL from available metadata
+function buildGameUrl(gameId, game) {
+  // Try home team first, then away
+  const meta = lookupTeam(game.h) || lookupTeam(game.a);
+  if (!meta) return null;
+
+  const tenant  = 'basketball-victoria';
+  const orgSlug = slugify(meta.compOrgName || meta.orgName);
+  // Competition slug = comp name + season name combined
+  const compSlug = slugify(`${meta.compName || ''} ${meta.sn || ''}`);
+  const gradeSlug = slugify(meta.gn);
+
+  if (!orgSlug || !compSlug || !gradeSlug) return null;
+
+  return `https://www.playhq.com/${tenant}/org/${orgSlug}/${compSlug}/${gradeSlug}/game-centre/${gameId}`;
+}
 
 // Load season names from sports-index for context
 const seasonNames = {};
@@ -113,8 +155,8 @@ if (CSV) {
     const opp      = game.on || '';
     const round    = (game.rn || '').replace(/,/g, ';');
     const sname    = (seasonNames[seasonId] || '').replace(/,/g, ';');
-    const apiUrl   = `https://api.playhq.com/graphql (discoverGame: ${gameId})`;
-    console.log(`${gameId},${seasonId},"${sname}",${game.d || ''},${round},"${opp}","${home}","${away}",${isPast},"${apiUrl}"`);
+    const url      = buildGameUrl(gameId, game) || '';
+    console.log(`${gameId},${seasonId},"${sname}",${game.d || ''},${round},"${opp}","${home}","${away}",${isPast},"${url}"`);
   }
   process.exit(0);
 }
@@ -179,9 +221,9 @@ for (const [seasonId, { file, games }] of Object.entries(bySeason)) {
     const roundStr = game.rn || 'no round';
     const past     = !game.d || game.d <= today ? '(past)' : '(FUTURE)';
     const opp      = game.on || (game.hn ? `${game.hn} vs ${game.an}` : '?');
-    const hasScore = game.hs !== undefined ? `${game.hs}–${game.as}` : 'no score';
+    const url      = buildGameUrl(gameId, game) || '(URL unavailable — no team lookup data)';
     console.log(`  ${gameId}  ${dateStr} ${past}  ${roundStr.padEnd(20)}  ${opp}`);
-    console.log(`             → use explore-playhq-auth.js or discoverGame query to inspect`);
+    console.log(`  ${url}`);
   }
   console.log();
 }
