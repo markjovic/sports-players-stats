@@ -24,6 +24,8 @@
 const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
+const { processTeams, flushLookupShards } = require('./team-lookup-utils');
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 
@@ -226,12 +228,13 @@ const Q_PROFILE_TEAMS = `
 query PublicProfileTeams($profileID: ID!) {
   publicProfileTeams(profileID: $profileID) {
     id name
+    logo { sizes { url dimensions { width height } } }
     organisation { id name }
     grade { id name }
     season {
       id name startDate endDate
       status { name value }
-      competition { id name }
+      competition { id name organisation { id name } }
     }
   }
 }`;
@@ -760,7 +763,7 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
   // Fetch current team registrations (authenticated) — preserve if fetch fails
   const teamsData = await gqlAuth('PublicProfileTeams', Q_PROFILE_TEAMS, { profileID: uuid });
   if (teamsData?.publicProfileTeams) {
-    detail.teams          = teamsData.publicProfileTeams;
+    detail.teams          = processTeams(teamsData.publicProfileTeams);  // slim refs + lookup shards
     detail.teamsUpdatedAt = new Date().toISOString();
   } else if (existingDetail.teams) {
     // Keep existing teams data if auth fetch fails
@@ -1055,6 +1058,7 @@ async function modeCrawl(seasonId) {
   if (!progress.seasonsDone.includes(seasonId)) progress.seasonsDone.push(seasonId);
   data.index.lastFetch = new Date().toISOString();
   saveData(data);
+  flushLookupShards();
 
   // Print discovered seasons before clearing progress
   const totalDiscovered = (progress.discoveredSeasons || []).length;
@@ -1395,18 +1399,23 @@ async function modePlayer(uuid) {
   const bk = result.player.sports?.[SPORT_NAME] || {};
   console.log(`  Career: ${bk.gp ?? 0} GP  ${bk.pts ?? 0} PTS  ${bk.fg ?? 0} FG  ${bk.threePt ?? 0} 3PT  ${bk.ft ?? 0} FT  ${bk.fouls ?? 0} F`);
 
-  // Show current team registrations
+  // Show current team registrations (resolve from lookup shards)
   const detail = JSON.parse(fs.readFileSync(playerFile(uuid), 'utf8'));
   if (detail.teams?.length) {
-    const active = detail.teams.filter(t => t.season?.status?.value !== 'COMPLETED');
+    const { lookupTeam } = require('./team-lookup-utils');
+    const active = detail.teams.filter(t => t.status !== 'COMPLETED');
     if (active.length) {
       console.log(`  Current registrations (${active.length}):`);
-      for (const t of active) {
-        const status = t.season?.status?.value || '?';
-        console.log(`    [${status}] ${t.season?.competition?.name} — ${t.grade?.name} — ${t.name}`);
+      for (const ref of active) {
+        const team = lookupTeam(ref.tid) || {};
+        const status = ref.status || '?';
+        console.log(`    [${status}] ${team.compName || '?'} — ${team.gn || '?'} — ${team.name || ref.tid}`);
       }
     }
   }
+
+  // Flush any new lookup shard entries written during this fetch
+  flushLookupShards();
 
   if (result.newSeasonIds.length > 0) {
     console.log(`  New season IDs discovered: ${result.newSeasonIds.join(', ')}`);
