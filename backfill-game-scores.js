@@ -28,6 +28,7 @@ const { execSync } = require('child_process');
 const TENANT      = process.argv.find(a => a.startsWith('--tenant='))?.split('=')[1] || 'bv';
 const TENANT_FULL = { bv: 'basketball-victoria', afl: 'afl', ca: 'cricket-australia' }[TENANT] || TENANT;
 const CONCURRENCY = parseInt(process.argv.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '100', 10);
+const REVIEW_FAILED = process.argv.includes('--review-failed');
 
 const API_URL    = 'https://api.playhq.com/graphql';
 const GAMES_DIR  = path.join(__dirname, 'games', TENANT);
@@ -156,12 +157,73 @@ function gitCommitPush(message) {
     if (!diff) return;
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
     const stashOut = execSync('git stash', { stdio: 'pipe' }).toString();
-    execSync('git pull --rebase origin main', { stdio: 'pipe' });
+    execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
     if (stashOut.includes('Saved')) execSync('git stash pop', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
     console.log(`\n  ✓ Committed and pushed`);
   } catch (e) {
     console.warn(`\n  ⚠ Git commit/push failed: ${e.message}`);
+  }
+}
+
+// ─── Review failed games ──────────────────────────────────────────────────────
+
+function reviewFailed() {
+  console.log(`\n🔍 Review Failed Games`);
+
+  const prog = loadProgress();
+  prog.done   = new Set(prog.done   || []);
+  prog.failed = new Set(prog.failed || []);
+
+  if (prog.failed.size === 0) {
+    console.log('  No failed games in progress file.');
+    return;
+  }
+
+  console.log(`  Failed games in progress file: ${prog.failed.size.toLocaleString()}`);
+
+  // Build gameId → date map from game files (only need to scan once)
+  console.log('  Building game date index from game files...');
+  const gameDates = {};
+  const seasonFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
+  for (const file of seasonFiles) {
+    const sg = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8'));
+    for (const [gameId, game] of Object.entries(sg.games || {})) {
+      if (game.d) gameDates[gameId] = game.d;
+    }
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  let requeued = 0;
+  let genuineFailed = 0;
+  let noDate = 0;
+
+  for (const gameId of prog.failed) {
+    const date = gameDates[gameId];
+    if (!date) {
+      noDate++;
+      // No date in game file — leave as failed, can't determine
+      continue;
+    }
+    if (date > today) {
+      // Future game — remove from failed so it gets re-queued on next run
+      prog.failed.delete(gameId);
+      requeued++;
+    } else {
+      genuineFailed++;
+    }
+  }
+
+  console.log(`\n  Results:`);
+  console.log(`  Re-queued (future games):  ${requeued.toLocaleString()}`);
+  console.log(`  Genuine failures (past):   ${genuineFailed.toLocaleString()}`);
+  console.log(`  No date available:         ${noDate.toLocaleString()}`);
+
+  if (requeued > 0) {
+    saveProgress(prog);
+    console.log(`\n  ✓ Progress file updated — ${requeued.toLocaleString()} games re-queued for next backfill run`);
+  } else {
+    console.log('\n  No changes needed — all failed games are past-dated or undated');
   }
 }
 
@@ -171,11 +233,17 @@ async function main() {
   console.log(`\n🏀 Game Score Backfill`);
   console.log(`   Tenant:      ${TENANT}`);
   console.log(`   Games dir:   ${GAMES_DIR}`);
-  console.log(`   Concurrency: ${CONCURRENCY}\n`);
+  console.log(`   Concurrency: ${CONCURRENCY}`);
+  console.log(`   Mode:        ${REVIEW_FAILED ? 'review-failed' : 'backfill'}\n`);
 
   if (!fs.existsSync(GAMES_DIR)) {
     console.error(`❌ Games directory not found: ${GAMES_DIR}`);
     process.exit(1);
+  }
+
+  if (REVIEW_FAILED) {
+    reviewFailed();
+    return;
   }
 
   // Load all season game files and collect unique game IDs needing scores
