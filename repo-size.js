@@ -31,38 +31,44 @@ function pad(str, len, right = false) {
   return right ? str.padStart(len) : str.padEnd(len);
 }
 
-// Recursively sum size of all files under a directory
+// Iteratively sum size of all files under a directory
 function dirSize(dirPath) {
-  let total = 0;
-  let count = 0;
+  let total = 0, count = 0;
   if (!fs.existsSync(dirPath)) return { total, count };
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-  for (const entry of entries) {
-    const full = path.join(dirPath, entry.name);
-    if (entry.isDirectory()) {
-      const sub = dirSize(full);
-      total += sub.total;
-      count += sub.count;
-    } else if (entry.isFile()) {
-      total += fs.statSync(full).size;
-      count++;
+  const queue = [dirPath];
+  while (queue.length) {
+    const current = queue.pop();
+    const entries = fs.readdirSync(current, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        queue.push(full);
+      } else if (entry.isFile()) {
+        total += fs.statSync(full).size;
+        count++;
+      }
     }
   }
   return { total, count };
 }
 
-// Walk all files recursively, returning { path, size }[]
-function walkFiles(dirPath, rel = '') {
+// Walk all files iteratively (avoid stack overflow on large trees)
+function walkFiles(dirPath, skipDirs = new Set()) {
   const results = [];
-  if (!fs.existsSync(dirPath)) return results;
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-  for (const entry of entries) {
-    const full = path.join(dirPath, entry.name);
-    const relPath = rel ? `${rel}/${entry.name}` : entry.name;
-    if (entry.isDirectory()) {
-      results.push(...walkFiles(full, relPath));
-    } else if (entry.isFile()) {
-      results.push({ path: relPath, size: fs.statSync(full).size });
+  const queue = [dirPath];
+  while (queue.length) {
+    const current = queue.pop();
+    if (!fs.existsSync(current)) continue;
+    const entries = fs.readdirSync(current, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(current, entry.name);
+      const rel  = path.relative(dirPath, full);
+      if (entry.isDirectory()) {
+        const topLevel = rel.split('/')[0];
+        if (!skipDirs.has(topLevel)) queue.push(full);
+      } else if (entry.isFile()) {
+        results.push({ path: rel, size: fs.statSync(full).size });
+      }
     }
   }
   return results;
@@ -111,13 +117,17 @@ function main() {
   console.log('─'.repeat(62));
   console.log(`  ${pad('TOTAL', 32)} ${pad(fmtBytes(repoTotal), 10, true)}  ${pad(repoCount.toLocaleString(), 8, true)}`);
 
-  // ── Top N largest files ──
-  console.log(`\n🏆 Top ${TOP_N} largest files:`);
+  // ── Top N largest files — skip massive dirs, show their sub-breakdown instead ──
+  const SKIP_DIRS = new Set(
+    rows.filter(r => r.isDir && r.size > 50 * 1024 * 1024).map(r => r.name.replace(/\/$/, ''))
+  );
+
+  console.log(`\n🏆 Top ${TOP_N} largest files (excluding large data dirs):`);
+  if (SKIP_DIRS.size > 0) console.log(`   (skipping: ${[...SKIP_DIRS].join(', ')} — shown by sub-folder below)`);
   console.log('─'.repeat(72));
 
-  // Walk the whole repo to find largest files (skip .git)
-  const allFiles = walkFiles(ROOT_DIR)
-    .filter(f => !f.path.startsWith('.git/') && !f.path.startsWith('node_modules/'))
+  const allFiles = walkFiles(ROOT_DIR, SKIP_DIRS)
+    .filter(f => !f.path.startsWith('.git') && !f.path.startsWith('node_modules'))
     .sort((a, b) => b.size - a.size)
     .slice(0, TOP_N);
 
