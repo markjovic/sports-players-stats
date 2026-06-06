@@ -306,6 +306,8 @@ async function processRound(round, seasonId, gradeName, compName, seasonName, or
   if (!data?.discoverFixtureByRound) return { added: 0, updated: 0, skipped: 0 };
 
   const { games, byes } = data.discoverFixtureByRound;
+  const gameCount = (games || []).length;
+  if (gameCount === 0) return { added: 0, updated: 0, skipped: 1 };
   const sg = sgCache[seasonId] = sgCache[seasonId] || loadGameFile(seasonId);
   let added = 0, updated = 0, skipped = 0;
 
@@ -443,7 +445,7 @@ async function main() {
         if (i + CONCURRENCY < rounds.length) await delay(200);
       }
 
-      console.log(` +${gradeAdded} new, ~${gradeUpdated} updated`);
+      console.log(` +${gradeAdded} new, ~${gradeUpdated} updated (${rounds.length - gradeAdded - gradeUpdated} empty rounds)`);
       totalAdded   += gradeAdded;
       totalUpdated += gradeUpdated;
     }
