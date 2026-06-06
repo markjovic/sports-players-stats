@@ -96,7 +96,7 @@ const Q_GAME = `query DiscoverGame($gameID: ID!) {
   }
 }`;
 
-async function fetchGame(gameId, cookie, retries = 3) {
+async function fetchGame(gameId, cookie, retries = 2) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const res = await fetch(API_URL, {
@@ -105,19 +105,25 @@ async function fetchGame(gameId, cookie, retries = 3) {
         body: JSON.stringify({ operationName: 'DiscoverGame', variables: { gameID: gameId }, query: Q_GAME }),
       });
       if (res.status === 403 || res.status === 401) return { _authError: true };
+      if (res.status === 429) {
+        await delay(10000 * attempt);
+        continue;
+      }
       if (!res.ok) {
         if (attempt < retries) { await delay(5000); continue; }
-        return null;
+        return { _transient: true };
       }
       const json = await res.json();
-      if (json.errors) return null;
-      return json.data?.discoverGame || null;
+      if (json.errors) return { _notFound: true };  // GraphQL error = game ID not in API at all
+      const g = json.data?.discoverGame;
+      if (!g) return { _notFound: true };
+      return g;
     } catch (e) {
       if (attempt < retries) { await delay(3000); continue; }
-      return null;
+      return { _transient: true };
     }
   }
-  return null;
+  return { _transient: true };
 }
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -160,10 +166,12 @@ async function main() {
   const seasonFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
   console.log(`📁 Found ${seasonFiles.length} season game files`);
 
-  // Collect all game IDs that don't yet have home/away scores
+  // Collect all game IDs that don't yet have home/away scores, excluding future games
+  const today        = new Date().toISOString().slice(0, 10);
   const allGameIds   = new Set();
   const needsBackfill = new Set();
-  let totalGames = 0;
+  let totalGames  = 0;
+  let futureGames = 0;
 
   for (const file of seasonFiles) {
     const sg = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8'));
@@ -171,14 +179,18 @@ async function main() {
       allGameIds.add(gameId);
       totalGames++;
       if (game.hs === undefined || game.as === undefined) {
+        // Skip future games — they have no score yet and won't until played
+        if (game.d && game.d > today) { futureGames++; continue; }
         needsBackfill.add(gameId);
       }
     }
   }
 
-  console.log(`📊 Total unique games:    ${totalGames}`);
-  console.log(`📊 Games needing scores:  ${needsBackfill.size}`);
-  console.log(`📊 Already have scores:   ${totalGames - needsBackfill.size}`);
+  console.log(`📁 Found ${seasonFiles.length} season game files`);
+  console.log(`📊 Total unique games:    ${totalGames.toLocaleString()}`);
+  console.log(`📊 Future games skipped:  ${futureGames.toLocaleString()}`);
+  console.log(`📊 Already have scores:   ${(totalGames - needsBackfill.size - futureGames).toLocaleString()}`);
+  console.log(`📊 Games needing scores:  ${needsBackfill.size.toLocaleString()}`);
 
   if (needsBackfill.size === 0) {
     console.log('\n✅ All games already have scores — nothing to do');
@@ -191,7 +203,7 @@ async function main() {
   prog.failed = new Set(prog.failed);
 
   const remaining = [...needsBackfill].filter(id => !prog.done.has(id));
-  console.log(`📋 Remaining after progress: ${remaining.length} games\n`);
+  console.log(`📋 Remaining after progress: ${remaining.length.toLocaleString()} games\n`);
 
   // Get auth cookie
   let cookie;
@@ -250,15 +262,32 @@ async function main() {
         continue;
       }
 
-      if (!game) {
-        prog.failed.add(gameId);
+      if (game?._notFound) {
+        // Game ID not in API at all — skip permanently
+        prog.done.add(gameId);
         failed++;
         continue;
       }
 
-      // Extract scores
+      if (game?._transient) {
+        // Network/server error — don't mark done, will be retried next run
+        failed++;
+        continue;
+      }
+
+      // Game was found — check if it has scores yet
       const homeScore = parseScore(game.result?.home?.statistics);
       const awayScore = parseScore(game.result?.away?.statistics);
+
+      // Game was found but has no scores — past game with no data (bye/cancelled/gap)
+      // Skip permanently since future games were already filtered out before this loop
+      if (homeScore === null && awayScore === null) {
+        prog.done.add(gameId);
+        failed++;
+        continue;
+      }
+
+      // Extract team info and update season files
       const homeId    = game.home?.id;
       const homeName  = game.home?.name;
       const awayId    = game.away?.id;
@@ -284,9 +313,9 @@ async function main() {
     }
 
     const pct = Math.round(((i + batch.length) / remaining.length) * 100);
-    console.log(`  ${i + batch.length}/${remaining.length} (${pct}%) — ✓ ${fetched} fetched, ✗ ${failed} failed`);
+    process.stdout.write(`  ${i + batch.length}/${remaining.length} (${pct}%) — ✓ ${fetched} scored, ✗ ${failed} no-data\r`);
 
-    // Periodically flush to disk
+    // Periodically flush to disk and clear cache to avoid OOM
     if (sinceLastSave >= SAVE_INTERVAL) {
       flushCache(sgCache, GAMES_DIR);
       saveProgress(prog);
@@ -299,16 +328,19 @@ async function main() {
   saveProgress(prog);
 
   console.log(`\n✅ Backfill complete`);
-  console.log(`   Fetched:  ${fetched}`);
-  console.log(`   Failed:   ${failed}`);
-  console.log(`   Total:    ${needsBackfill.size}`);
+  console.log(`   Scored:        ${fetched}`);
+  console.log(`   No score yet:  ${failed} (future games will retry; past/not-found skipped permanently)`);
+  console.log(`   Total:         ${needsBackfill.size}`);
 }
 
 function flushCache(cache, dir) {
+  let count = 0;
   for (const [file, sg] of Object.entries(cache)) {
     fs.writeFileSync(path.join(dir, file), JSON.stringify(sg));
+    delete cache[file];  // free memory after writing
+    count++;
   }
-  console.log(`  💾 Flushed ${Object.keys(cache).length} season files to disk`);
+  console.log(`\n  💾 Flushed ${count} season files to disk`);
 }
 
 main().catch(e => {
