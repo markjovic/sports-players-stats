@@ -1,3 +1,4 @@
+# .github/workflows/fetch-playhq.yml
 name: PlayHQ Sports Scraper
 
 on:
@@ -49,6 +50,7 @@ jobs:
         with:
           sparse-checkout: |
             fetch-playhq.js
+            team-lookup-utils.js
             sports-index.json
             players-index
             games
@@ -59,6 +61,7 @@ jobs:
             seasons-discovered.json
             progress-bv.json
             run-summary.json
+            team-lookup
           sparse-checkout-cone-mode: false
 
       - name: Pull latest
@@ -136,6 +139,7 @@ jobs:
           git add players-index/ 2>/dev/null || true
           git add games/ 2>/dev/null || true
           git add players/ 2>/dev/null || true
+          git add team-lookup/ 2>/dev/null || true
           if ls queue-*.json 1> /dev/null 2>&1; then
             git add queue-*.json
           else
@@ -148,6 +152,12 @@ jobs:
             git rm --cached progress-*.json 2>/dev/null || true
           fi
           # Only commit if something changed
-          git diff --staged --quiet || git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git pull --rebase=false --no-edit -X ours
-          git push
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update sports data [$TENANT $(date -u '+%Y-%m-%d %H:%M UTC')]"
+            STASHED=$(git stash 2>&1)
+            git pull --rebase=false --no-edit -X ours
+            if echo "$STASHED" | grep -q "Saved"; then git stash pop; fi
+            git push
+          fi
