@@ -19,9 +19,9 @@ on:
         default: ''
         type: string
       concurrency:
-        description: 'Concurrent round fetches per grade'
+        description: 'Concurrent team fetches per season'
         required: false
-        default: '10'
+        default: '200'
         type: string
       tenant:
         description: 'Tenant'
