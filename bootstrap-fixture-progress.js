@@ -101,6 +101,37 @@ fs.writeFileSync(PROGRESS_FILE, JSON.stringify({
 zeroTeam.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 fs.writeFileSync(ZERO_FILE, JSON.stringify(zeroTeam, null, 2));
 
+// Also write a separate list of seasons with grades but no h field in games
+// These are seasons where the ladder API returns empty — game data exists from
+// player crawl (on/o fields) but no home/away team IDs were ever populated
+const noLadderFile = path.join(__dirname, 'no-ladder-seasons.json');
+const noLadder = [];
+for (const [seasonId, season] of Object.entries(seasons)) {
+  if ((season.grades || []).length === 0) continue; // no grades, skip
+  const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
+  if (!fs.existsSync(gameFile)) continue;
+  let sg;
+  try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+  const games = Object.values(sg.games || {});
+  if (games.length === 0) continue;
+  // Has games from player crawl (on field) but no home team ID (h field)
+  const withOpponent = games.filter(g => g.on).length;
+  const withHomeId   = games.filter(g => g.h).length;
+  if (withOpponent > 0 && withHomeId === 0) {
+    const discEntry = disc[seasonId] || {};
+    noLadder.push({
+      id:     seasonId,
+      name:   season.fullName || season.name || discEntry.name || '?',
+      org:    discEntry.orgName || '?',
+      comp:   discEntry.compName || '?',
+      grades: (season.grades || []).length,
+      games:  games.length,
+    });
+  }
+}
+noLadder.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+fs.writeFileSync(noLadderFile, JSON.stringify(noLadder, null, 2));
+
 const activeCount = Object.values(seasons).filter(s => s.locked === false).length;
 console.log(`✅ Done`);
 console.log(`  Total seasons in index:    ${Object.keys(seasons).length}`);
@@ -111,9 +142,11 @@ console.log(`  Zero-team seasons:         ${zeroTeam.length}`);
 console.log(`    - No game file:          ${zeroTeam.filter(z => z.reason === 'no game file').length}`);
 console.log(`    - Empty game file:       ${zeroTeam.filter(z => z.reason === 'empty game file').length}`);
 console.log(`    - No team IDs in games:  ${zeroTeam.filter(z => z.reason === 'no home team IDs (ladder not used)').length}`);
+console.log(`  No-ladder seasons:         ${noLadder.length} (grades exist, games have no home team IDs)`);
 console.log();
 console.log(`  Written: ${PROGRESS_FILE}`);
 console.log(`  Written: ${ZERO_FILE}`);
+console.log(`  Written: ${noLadderFile}`);
 console.log();
 console.log(`  Next discover-fixtures --all-seasons run will skip ${done.length} locked seasons`);
 console.log(`  and always re-process ${activeCount} active seasons.`);
