@@ -29,7 +29,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add discover-fixtures-progress.json zero-team-seasons.json no-ladder-seasons.json
+          git add discover-fixtures-progress.json zero-team-seasons.json no-ladder-seasons.json no-venue-seasons.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
