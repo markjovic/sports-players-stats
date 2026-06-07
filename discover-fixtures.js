@@ -142,7 +142,7 @@ query TeamFixture($teamID: ID!) {
     organisation { id name }
   }
   discoverTeamFixture(teamID: $teamID) {
-    id name provisionalDate isFinalsRound
+    id name isFinalsRound
     grade {
       id name
       season {
@@ -157,26 +157,20 @@ query TeamFixture($teamID: ID!) {
         home {
           ... on DiscoverTeam {
             id name
-            logo { sizes { url dimensions { width height } } }
+            logo { sizes { url dimensions { width } } }
             organisation { id name }
           }
         }
         away {
           ... on DiscoverTeam {
             id name
-            logo { sizes { url dimensions { width height } } }
+            logo { sizes { url dimensions { width } } }
             organisation { id name }
           }
         }
         result {
-          home {
-            outcome { value }
-            statistics { count type { value } }
-          }
-          away {
-            outcome { value }
-            statistics { count type { value } }
-          }
+          home { statistics { count type { value } } }
+          away { statistics { count type { value } } }
         }
         allocation {
           dateTimeList { date time }
@@ -189,9 +183,7 @@ query TeamFixture($teamID: ID!) {
             }
           }
         }
-        isStale
       }
-      byes { id name }
     }
   }
 }`;
