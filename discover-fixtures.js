@@ -288,11 +288,28 @@ function flushGameFiles() {
   return count;
 }
 
+const PROGRESS_FILE = path.join(__dirname, 'discover-fixtures-progress.json');
+
+function loadProgress() {
+  try {
+    if (fs.existsSync(PROGRESS_FILE)) return new Set(JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')).done || []);
+  } catch (e) {}
+  return new Set();
+}
+
+function saveProgress(done) {
+  fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ done: [...done], savedAt: new Date().toISOString() }));
+}
+
+function clearProgress() {
+  try { fs.unlinkSync(PROGRESS_FILE); } catch (e) {}
+}
+
 // ─── Git ──────────────────────────────────────────────────────────────────────
 
 function gitCommitPush(message) {
   try {
-    execSync('git add games/ venue-lookup/ team-lookup/ 2>/dev/null || true', { stdio: 'pipe', shell: true });
+    execSync('git add games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  (no changes to commit)'); return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
@@ -422,28 +439,34 @@ async function main() {
 
   await getSession();
 
+  const doneSeasonsSet = TARGET_SEASON ? new Set() : loadProgress();
+  const remaining = targets.filter(s => !doneSeasonsSet.has(s.id));
+  if (doneSeasonsSet.size > 0) console.log(`  ↻ Resuming — ${doneSeasonsSet.size} already done, ${remaining.length} remaining`);
+
   let totalAdded = 0, totalUpdated = 0, totalTeams = 0, seasonsProcessed = 0;
   let sinceLastCommit = 0;
 
-  for (const season of targets) {
+  for (const season of remaining) {
     const seasonId = season.id;
     const grades   = season.grades || [];
 
     if (grades.length === 0) {
-      // Fetch grade list if not in index
       const data = await gql('DiscoverSeason', `query DiscoverSeason($id: String!) { discoverSeason(seasonID: $id) { id name grades { id name } } }`, { id: seasonId });
       if (data?.discoverSeason?.grades) grades.push(...data.discoverSeason.grades);
     }
 
-    console.log(`\n📅 [${seasonsProcessed + 1}/${targets.length}] ${season.fullName || season.name || seasonId} (${grades.length} grades)`);
+    console.log(`\n📅 [${seasonsProcessed + 1}/${remaining.length}] ${season.fullName || season.name || seasonId} (${grades.length} grades)`);
 
-    // Collect all unique team IDs across all grades in this season
+    // Collect all unique team IDs across all grades in this season — parallelised
     const teamIds = new Set();
-    for (const grade of grades) {
-      const data = await gql('DiscoverGrade', Q_GRADE_TEAMS, { id: grade.id });
-      for (const pool of (data?.discoverGrade?.ladder || [])) {
-        for (const s of (pool.standings || [])) {
-          if (s.team?.id) teamIds.add(s.team.id);
+    for (let i = 0; i < grades.length; i += CONCURRENCY) {
+      const batch = grades.slice(i, i + CONCURRENCY);
+      const results = await Promise.all(batch.map(g => gql('DiscoverGrade', Q_GRADE_TEAMS, { id: g.id })));
+      for (const data of results) {
+        for (const pool of (data?.discoverGrade?.ladder || [])) {
+          for (const s of (pool.standings || [])) {
+            if (s.team?.id) teamIds.add(s.team.id);
+          }
         }
       }
     }
@@ -453,7 +476,6 @@ async function main() {
     const teamArr = [...teamIds];
     let seasonAdded = 0, seasonUpdated = 0;
 
-    // Process teams in concurrent batches
     for (let i = 0; i < teamArr.length; i += CONCURRENCY) {
       const batch = teamArr.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(tid => processTeam(tid, seasonId)));
@@ -468,6 +490,8 @@ async function main() {
     totalUpdated += seasonUpdated;
     seasonsProcessed++;
     sinceLastCommit++;
+    doneSeasonsSet.add(seasonId);
+    saveProgress(doneSeasonsSet);
 
     if (sinceLastCommit >= 10) {
       const gf = flushGameFiles();
@@ -490,6 +514,7 @@ async function main() {
   console.log(`  Added:    ${totalAdded.toLocaleString()}`);
   console.log(`  Updated:  ${totalUpdated.toLocaleString()}`);
 
+  clearProgress();
   gitCommitPush(`Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`);
 }
 
