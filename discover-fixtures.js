@@ -303,7 +303,7 @@ function gitCommitPush(message) {
   try {
     // Add and commit all current writes first, then pull, then push
     // Never stash — concurrent writes to same shards cause merge conflicts on pop
-    execSync('git add games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
+    execSync('git add games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json zero-team-seasons.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  (no changes to commit)'); return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
@@ -437,6 +437,7 @@ async function main() {
 
   let totalAdded = 0, totalUpdated = 0, totalTeams = 0, seasonsProcessed = 0;
   let sinceLastCommit = 0;
+  const zeroTeamSeasons = [];
 
   for (const season of remaining) {
     const seasonId = season.id;
@@ -463,7 +464,15 @@ async function main() {
       }
     }
 
-    console.log(`  Teams: ${teamIds.size}${teamIds.size === 0 ? ' ⚠ no ladder data — competition may not use PlayHQ ladder system' : ''}`);
+    if (teamIds.size === 0) {
+      console.log(`  Teams: 0 ⚠ no ladder data — season ID: ${seasonId}`);
+      zeroTeamSeasons.push({ id: seasonId, name: season.fullName || season.name, grades: grades.length });
+      doneSeasonsSet.add(seasonId);
+      saveProgress(doneSeasonsSet);
+      seasonsProcessed++;
+      continue;
+    }
+    console.log(`  Teams: ${teamIds.size}`);
 
     const teamArr = [...teamIds];
     let seasonAdded = 0, seasonUpdated = 0;
@@ -501,10 +510,15 @@ async function main() {
   try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {}
 
   console.log(`\n✅ Done`);
-  console.log(`  Seasons:  ${seasonsProcessed}`);
-  console.log(`  Teams:    ${totalTeams.toLocaleString()}`);
-  console.log(`  Added:    ${totalAdded.toLocaleString()}`);
-  console.log(`  Updated:  ${totalUpdated.toLocaleString()}`);
+  console.log(`  Seasons:       ${seasonsProcessed}`);
+  console.log(`  Teams:         ${totalTeams.toLocaleString()}`);
+  console.log(`  Added:         ${totalAdded.toLocaleString()}`);
+  console.log(`  Updated:       ${totalUpdated.toLocaleString()}`);
+  console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no ladder data — saved to zero-team-seasons.json)`);
+
+  if (zeroTeamSeasons.length > 0) {
+    fs.writeFileSync(path.join(__dirname, 'zero-team-seasons.json'), JSON.stringify(zeroTeamSeasons, null, 2));
+  }
 
   clearProgress();
   gitCommitPush(`Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`);
