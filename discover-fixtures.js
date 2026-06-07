@@ -435,7 +435,7 @@ async function main() {
       if (data?.discoverSeason?.grades) grades.push(...data.discoverSeason.grades);
     }
 
-    console.log(`\n📅 ${season.fullName || season.name || seasonId} (${grades.length} grades)`);
+    console.log(`\n📅 [${seasonsProcessed + 1}/${targets.length}] ${season.fullName || season.name || seasonId} (${grades.length} grades)`);
 
     // Collect all unique team IDs across all grades in this season
     const teamIds = new Set();
