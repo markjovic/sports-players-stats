@@ -5,8 +5,12 @@ on:
   workflow_dispatch:
     inputs:
       season_id:
-        description: 'Season ID to search for'
-        required: true
+        description: 'Season ID to search for (finds players in this season)'
+        required: false
+        type: string
+      game_id:
+        description: 'Game ID to search for (finds players who played in this specific game)'
+        required: false
         type: string
       limit:
         description: 'Max players to return'
@@ -34,4 +38,8 @@ jobs:
           node-version: '20'
 
       - name: Find players
-        run: node find-season-players.js --season=${{ github.event.inputs.season_id }} --limit=${{ github.event.inputs.limit }}
+        run: |
+          ARGS="--limit=${{ github.event.inputs.limit }}"
+          if [ -n "${{ github.event.inputs.season_id }}" ]; then ARGS="$ARGS --season=${{ github.event.inputs.season_id }}"; fi
+          if [ -n "${{ github.event.inputs.game_id }}" ]; then ARGS="$ARGS --game=${{ github.event.inputs.game_id }}"; fi
+          node find-season-players.js $ARGS
