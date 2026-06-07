@@ -1,0 +1,38 @@
+# .github/workflows/probe-games.yml
+name: Probe Games
+
+on:
+  workflow_dispatch:
+    inputs:
+      game_ids:
+        description: 'Comma-separated game IDs to probe'
+        required: true
+        type: string
+      tenant:
+        description: 'Tenant'
+        required: false
+        default: 'bv'
+        type: choice
+        options:
+          - bv
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            probe-games.js
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Probe games
+        run: node probe-games.js --games=${{ github.event.inputs.game_ids }} --tenant=${{ github.event.inputs.tenant }}
