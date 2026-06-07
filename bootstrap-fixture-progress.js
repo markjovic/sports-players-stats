@@ -45,8 +45,11 @@ let   noGameFile    = 0;
 for (const [seasonId, season] of Object.entries(seasons)) {
   const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
 
-  // Mark all as done regardless — we're pre-populating
-  done.push(seasonId);
+  // Only mark locked (completed) seasons as done
+  // Active seasons (locked: false) must always re-run to pick up new scores/fixtures
+  if (season.locked !== false) {
+    done.push(seasonId);
+  }
 
   if (!fs.existsSync(gameFile)) {
     noGameFile++;
@@ -98,16 +101,19 @@ fs.writeFileSync(PROGRESS_FILE, JSON.stringify({
 zeroTeam.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 fs.writeFileSync(ZERO_FILE, JSON.stringify(zeroTeam, null, 2));
 
+const activeCount = Object.values(seasons).filter(s => s.locked === false).length;
 console.log(`✅ Done`);
-console.log(`  Total seasons marked done: ${done.length}`);
+console.log(`  Total seasons in index:    ${Object.keys(seasons).length}`);
+console.log(`  Locked (marked done):      ${done.length}`);
+console.log(`  Active (will always run):  ${activeCount}`);
 console.log(`  Seasons with team data:    ${hasTeams.length}`);
 console.log(`  Zero-team seasons:         ${zeroTeam.length}`);
 console.log(`    - No game file:          ${zeroTeam.filter(z => z.reason === 'no game file').length}`);
 console.log(`    - Empty game file:       ${zeroTeam.filter(z => z.reason === 'empty game file').length}`);
-console.log(`    - No team IDs in games:  ${zeroTeam.filter(z => z.reason === 'games exist but no team IDs').length}`);
+console.log(`    - No team IDs in games:  ${zeroTeam.filter(z => z.reason === 'no home team IDs (ladder not used)').length}`);
 console.log();
 console.log(`  Written: ${PROGRESS_FILE}`);
 console.log(`  Written: ${ZERO_FILE}`);
 console.log();
-console.log(`  Next discover-fixtures --all-seasons run will skip all ${done.length} seasons`);
-console.log(`  unless new seasons have been added to sports-index.json.`);
+console.log(`  Next discover-fixtures --all-seasons run will skip ${done.length} locked seasons`);
+console.log(`  and always re-process ${activeCount} active seasons.`);
