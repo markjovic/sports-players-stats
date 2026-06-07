@@ -447,7 +447,7 @@ async function main() {
       if (data?.discoverSeason?.grades) grades.push(...data.discoverSeason.grades);
     }
 
-    console.log(`\n📅 [${seasonsProcessed + 1}/${remaining.length}] ${season.fullName || season.name || seasonId} (${grades.length} grades)`);
+    console.log(`\n📅 [${seasonsProcessed + 1}/${remaining.length}] ${season.fullName || season.name || seasonId} — ${seasonId} (${grades.length} grades)`);
 
     // Collect all unique team IDs across all grades in this season — parallelised
     const teamIds = new Set();
@@ -463,7 +463,7 @@ async function main() {
       }
     }
 
-    console.log(`  Teams: ${teamIds.size}`);
+    console.log(`  Teams: ${teamIds.size}${teamIds.size === 0 ? ' ⚠ no ladder data — competition may not use PlayHQ ladder system' : ''}`);
 
     const teamArr = [...teamIds];
     let seasonAdded = 0, seasonUpdated = 0;
