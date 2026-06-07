@@ -1,29 +1,26 @@
 #!/usr/bin/env node
 // discover-fixtures.js
 /**
- * Discovers fixtures (past and future) for all active/upcoming seasons using
- * discoverFixtureByRound — the most efficient endpoint for bulk game data.
+ * Discovers fixtures for all teams using discoverTeamFixture — which works for
+ * ALL seasons (including historical), returns all rounds in one call per team,
+ * and includes venue, court, time, scores, and team details.
  *
- * For each active/upcoming season in sports-index.json:
- *   1. Calls discoverSeason to get grade list
- *   2. Calls discoverGrade to get rounds
- *   3. Calls discoverFixtureByRound for each round
- *   4. Writes/updates game entries in games/bv/{seasonId}.json with:
- *      - Scores (hs, as)
- *      - Venue (vid, vn, ct, t)
- *      - Team IDs and names (h, hn, a, an)
- *      - Round name (rn)
- *      - Game status
+ * Strategy:
+ *   1. For each season in sports-index.json, get team IDs from discoverGrade.ladder
+ *   2. For each team, call discoverTeamFixture(teamID)
+ *   3. Write/update game entries in games/bv/{seasonId}.json with:
+ *      - Scores (hs, as), venue (vid, vn, ct, t), round name (rn)
+ *      - Team IDs and names (h, hn, a, an), game status (st)
  *      - Constructed PlayHQ URL (url)
- *   5. Populates venue-lookup/{prefix}.json shards
+ *   4. Populate venue-lookup/{prefix}.json shards
  *
- * Safe to re-run — only updates entries missing venue/time data or unplayed games.
+ * Safe to re-run — deduplicates by game ID, skips already-complete entries.
  *
  * Usage:
- *   node discover-fixtures.js                        # all active/upcoming seasons
- *   node discover-fixtures.js --season=<id>          # single season
- *   node discover-fixtures.js --all-seasons          # include completed seasons too
- *   node discover-fixtures.js --concurrency=10
+ *   node discover-fixtures.js                       # active seasons only (locked: false)
+ *   node discover-fixtures.js --all-seasons         # all seasons including completed
+ *   node discover-fixtures.js --season=<id>         # single season
+ *   node discover-fixtures.js --concurrency=20      # team fetches in parallel
  */
 
 'use strict';
@@ -41,17 +38,17 @@ const ARGS = Object.fromEntries(
     .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.length ? v.join('=') : true]; })
 );
 
-const TENANT       = ARGS.tenant   || 'bv';
-const TENANT_FULL  = { bv: 'basketball-victoria', afl: 'afl' }[TENANT] || TENANT;
-const CONCURRENCY  = parseInt(ARGS.concurrency || '10', 10);
-const TARGET_SEASON = ARGS.season  || null;
-const ALL_SEASONS  = !!ARGS['all-seasons'];
+const TENANT        = ARGS.tenant      || 'bv';
+const TENANT_FULL   = { bv: 'basketball-victoria', afl: 'afl' }[TENANT] || TENANT;
+const CONCURRENCY   = parseInt(ARGS.concurrency || '20', 10);
+const TARGET_SEASON = ARGS.season      || null;
+const ALL_SEASONS   = !!ARGS['all-seasons'];
 
-const API_URL      = 'https://api.playhq.com/graphql';
-const GAMES_DIR    = path.join(__dirname, 'games', TENANT);
-const VENUE_DIR    = path.join(__dirname, 'venue-lookup');
-const INDEX_FILE   = path.join(__dirname, 'sports-index.json');
-const COOKIE_FILE  = path.join(__dirname, `cookie-${TENANT}.json`);
+const API_URL     = 'https://api.playhq.com/graphql';
+const GAMES_DIR   = path.join(__dirname, 'games', TENANT);
+const VENUE_DIR   = path.join(__dirname, 'venue-lookup');
+const INDEX_FILE  = path.join(__dirname, 'sports-index.json');
+const COOKIE_FILE = path.join(__dirname, `cookie-${TENANT}.json`);
 
 // ─── Headers ──────────────────────────────────────────────────────────────────
 
@@ -67,20 +64,14 @@ const MOBILE_HEADERS = {
 
 let _cookie = null;
 
-function loadCookie() {
+async function getSession() {
+  if (_cookie) return _cookie;
   try {
     if (fs.existsSync(COOKIE_FILE)) {
       const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
-      if (Date.now() - d.fetchedAt < 5 * 60 * 60 * 1000) return d.cookie;
+      if (Date.now() - d.fetchedAt < 5 * 60 * 60 * 1000) { _cookie = d.cookie; return _cookie; }
     }
   } catch (e) {}
-  return null;
-}
-
-async function getSession() {
-  if (_cookie) return _cookie;
-  _cookie = loadCookie();
-  if (_cookie) return _cookie;
   console.log('  Fetching session cookie...');
   const res = await fetch(API_URL, {
     method:  'POST',
@@ -92,7 +83,7 @@ async function getSession() {
     }),
   });
   const raw = res.headers.get('set-cookie');
-  if (!raw) throw new Error('No Set-Cookie — mobile headers may have changed');
+  if (!raw) throw new Error('No Set-Cookie');
   _cookie = raw.split(';')[0];
   fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
   console.log('  ✓ Cookie obtained');
@@ -114,10 +105,7 @@ async function gql(operationName, query, variables) {
         body:    JSON.stringify({ operationName, variables, query }),
       });
       if (res.status === 429) { await delay(10000); continue; }
-      if (!res.ok) {
-        if (attempts++ < 2) { await delay(5000); continue; }
-        return null;
-      }
+      if (!res.ok) { if (attempts++ < 2) { await delay(5000); continue; } return null; }
       const json = await res.json();
       if (json.errors) return null;
       return json.data;
@@ -130,58 +118,80 @@ async function gql(operationName, query, variables) {
 
 // ─── Queries ──────────────────────────────────────────────────────────────────
 
-const Q_SEASON = `
-query DiscoverSeason($id: String!) {
-  discoverSeason(seasonID: $id) {
-    id name
-    competition { id name organisation { id name } }
-    grades { id name age { name } gender { name } }
-  }
-}`;
-
-const Q_GRADE = `
+const Q_GRADE_TEAMS = `
 query DiscoverGrade($id: ID!) {
   discoverGrade(gradeID: $id) {
     id name
-    rounds { id name number isFinalsRound }
+    ladder {
+      pool { name }
+      standings { team { id name } }
+    }
   }
 }`;
 
-const Q_FIXTURE = `
-query DiscoverFixtureByRound($roundID: ID!) {
-  discoverFixtureByRound(roundID: $roundID) {
-    byes
-    games {
-      id date
+const Q_TEAM_FIXTURE = `
+query TeamFixture($teamID: ID!) {
+  discoverTeam(teamID: $teamID) {
+    id
+    grade { id name }
+    season {
+      id name
+      competition { id name organisation { id name } }
       status { value }
-      home {
+    }
+    organisation { id name }
+  }
+  discoverTeamFixture(teamID: $teamID) {
+    id name provisionalDate isFinalsRound
+    grade {
+      id name
+      season {
         id name
-        logo { sizes { url dimensions { width height } } }
-        organisation { id name }
-        season { id name competition { id name } }
+        competition { id name organisation { id name } }
       }
-      away {
-        id name
-        logo { sizes { url dimensions { width height } } }
-        organisation { id name }
-        season { id name competition { id name } }
-      }
-      result {
-        home { outcome { value } statistics { count type { value } } }
-        away { outcome { value } statistics { count type { value } } }
-      }
-      allocation {
-        time
-        court {
-          id name abbreviatedName
-          venue {
-            id name abbreviatedName
-            latitude longitude
-            address suburb state postcode country
+    }
+    fixture {
+      games {
+        id dates
+        status { value }
+        home {
+          ... on DiscoverTeam {
+            id name
+            logo { sizes { url dimensions { width height } } }
+            organisation { id name }
           }
         }
+        away {
+          ... on DiscoverTeam {
+            id name
+            logo { sizes { url dimensions { width height } } }
+            organisation { id name }
+          }
+        }
+        result {
+          home {
+            outcome { value }
+            statistics { count type { value } }
+          }
+          away {
+            outcome { value }
+            statistics { count type { value } }
+          }
+        }
+        allocation {
+          dateTimeList { date time }
+          court {
+            id name abbreviatedName
+            venue {
+              id name abbreviatedName
+              latitude longitude
+              address suburb state postcode country
+            }
+          }
+        }
+        isStale
       }
-      isStale
+      byes { id name }
     }
   }
 }`;
@@ -190,12 +200,7 @@ query DiscoverFixtureByRound($roundID: ID!) {
 
 function slugify(str) {
   if (!str) return '';
-  return str
-    .toLowerCase()
-    .replace(/[()]/g, '')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/[\s-]+/g, '-');
+  return str.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-');
 }
 
 function buildGameUrl(gameId, orgName, compName, seasonName, gradeName) {
@@ -217,8 +222,8 @@ function parseScore(statistics) {
 
 // ─── Venue lookup shards ──────────────────────────────────────────────────────
 
-const _venueShards  = {};
-const _dirtyVenues  = new Set();
+const _venueShards = {};
+const _dirtyVenues = new Set();
 
 function loadVenueShard(venueId) {
   const prefix = venueId.slice(0, 2);
@@ -232,28 +237,21 @@ function loadVenueShard(venueId) {
 
 function storeVenue(venue, court) {
   if (!venue?.id) return;
-  const shard = loadVenueShard(venue.id);
+  const prefix = venue.id.slice(0, 2);
+  const shard  = loadVenueShard(venue.id);
   if (!shard[venue.id]) {
     shard[venue.id] = {
-      name:    venue.name,
-      abbr:    venue.abbreviatedName || null,
-      lat:     venue.latitude  || null,
-      lng:     venue.longitude || null,
-      address: venue.address   || null,
-      suburb:  venue.suburb    || null,
-      state:   venue.state     || null,
-      postcode: venue.postcode || null,
-      country: venue.country   || null,
-      courts:  {},
+      name: venue.name, abbr: venue.abbreviatedName || null,
+      lat: venue.latitude || null, lng: venue.longitude || null,
+      address: venue.address || null, suburb: venue.suburb || null,
+      state: venue.state || null, postcode: venue.postcode || null,
+      country: venue.country || null, courts: {},
     };
-    _dirtyVenues.add(venue.id.slice(0, 2));
+    _dirtyVenues.add(prefix);
   }
   if (court?.id && !shard[venue.id].courts[court.id]) {
-    shard[venue.id].courts[court.id] = {
-      name: court.name,
-      abbr: court.abbreviatedName || null,
-    };
-    _dirtyVenues.add(venue.id.slice(0, 2));
+    shard[venue.id].courts[court.id] = { name: court.name, abbr: court.abbreviatedName || null };
+    _dirtyVenues.add(prefix);
   }
 }
 
@@ -270,22 +268,31 @@ function flushVenueShards() {
 
 // ─── Game file helpers ────────────────────────────────────────────────────────
 
+const _gameFileCache = {};
+
 function loadGameFile(seasonId) {
+  if (_gameFileCache[seasonId]) return _gameFileCache[seasonId];
   if (!fs.existsSync(GAMES_DIR)) fs.mkdirSync(GAMES_DIR, { recursive: true });
   const f = path.join(GAMES_DIR, `${seasonId}.json`);
-  try { return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : { games: {} }; }
-  catch (e) { return { games: {} }; }
+  try { _gameFileCache[seasonId] = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : { games: {} }; }
+  catch (e) { _gameFileCache[seasonId] = { games: {} }; }
+  return _gameFileCache[seasonId];
 }
 
-function saveGameFile(seasonId, sg) {
-  fs.writeFileSync(path.join(GAMES_DIR, `${seasonId}.json`), JSON.stringify(sg));
+function flushGameFiles() {
+  let count = 0;
+  for (const [seasonId, sg] of Object.entries(_gameFileCache)) {
+    fs.writeFileSync(path.join(GAMES_DIR, `${seasonId}.json`), JSON.stringify(sg));
+    count++;
+  }
+  return count;
 }
 
 // ─── Git ──────────────────────────────────────────────────────────────────────
 
 function gitCommitPush(message) {
   try {
-    execSync('git add games/ venue-lookup/', { stdio: 'pipe' });
+    execSync('git add games/ venue-lookup/ team-lookup/ 2>/dev/null || true', { stdio: 'pipe', shell: true });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  (no changes to commit)'); return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
@@ -299,71 +306,95 @@ function gitCommitPush(message) {
   }
 }
 
-// ─── Process a single round ───────────────────────────────────────────────────
+// ─── Process a single team's fixtures ────────────────────────────────────────
 
-async function processRound(round, seasonId, gradeName, compName, seasonName, orgName, sgCache) {
-  const data = await gql('DiscoverFixtureByRound', Q_FIXTURE, { roundID: round.id });
-  if (!data?.discoverFixtureByRound) return { added: 0, updated: 0, skipped: 0 };
+async function processTeam(teamId, seasonId) {
+  const data = await gql('TeamFixture', Q_TEAM_FIXTURE, { teamID: teamId });
+  if (!data?.discoverTeamFixture) return { added: 0, updated: 0 };
 
-  const { games, byes } = data.discoverFixtureByRound;
-  const gameCount = (games || []).length;
-  if (gameCount === 0) return { added: 0, updated: 0, skipped: 1 };
-  const sg = sgCache[seasonId] = sgCache[seasonId] || loadGameFile(seasonId);
-  let added = 0, updated = 0, skipped = 0;
+  const team     = data.discoverTeam;
+  const rounds   = data.discoverTeamFixture;
+  const orgName  = team?.season?.competition?.organisation?.name || '';
+  const compName = team?.season?.competition?.name || '';
+  const sName    = team?.season?.name || '';
+  const gradeName = team?.grade?.name || '';
 
-  for (const game of (games || [])) {
-    if (!game?.id) continue;
+  // Use grade's season ID if available (more accurate than passed-in seasonId)
+  const effectiveSeasonId = rounds[0]?.grade?.season?.id || seasonId;
 
-    const existing   = sg.games[game.id];
-    const homeScore  = parseScore(game.result?.home?.statistics);
-    const awayScore  = parseScore(game.result?.away?.statistics);
-    const status     = game.status?.value || null;
-    const court      = game.allocation?.court;
-    const venue      = court?.venue;
-    const time       = game.allocation?.time ? game.allocation.time.slice(0, 5) : null;
-    const url        = buildGameUrl(game.id, orgName, compName, seasonName, gradeName);
+  // Store team in team-lookup if utils available
+  try {
+    const { storeLookupEntry, flushLookupShards } = require('./team-lookup-utils');
+    if (team?.id) {
+      storeLookupEntry({
+        id: team.id, name: team.grade?.name ? `${team.id}` : team.id,
+        logo: null, organisation: team.organisation,
+        grade: team.grade,
+        season: team.season,
+      });
+    }
+  } catch (e) {}
 
-    // Store venue in lookup shard
-    if (venue) storeVenue(venue, court);
+  const sg = loadGameFile(effectiveSeasonId);
+  let added = 0, updated = 0;
 
-    // Build updated entry
-    const entry = {
-      d:   game.date || existing?.d || null,
-      rn:  round.name,
-      h:   game.home?.id   || existing?.h   || null,
-      hn:  game.home?.name || existing?.hn  || null,
-      a:   game.away?.id   || existing?.a   || null,
-      an:  game.away?.name || existing?.an  || null,
-      // Scores — only write if present
-      ...(homeScore !== null ? { hs: homeScore } : existing?.hs !== undefined ? { hs: existing.hs } : {}),
-      ...(awayScore !== null ? { as: awayScore } : existing?.as !== undefined ? { as: existing.as } : {}),
-      // Venue/time
-      ...(venue?.id   ? { vid: venue.id }    : existing?.vid ? { vid: existing.vid } : {}),
-      ...(venue?.name ? { vn:  venue.name }  : existing?.vn  ? { vn:  existing.vn  } : {}),
-      ...(court?.name ? { ct:  court.name }  : existing?.ct  ? { ct:  existing.ct  } : {}),
-      ...(time        ? { t:   time }         : existing?.t   ? { t:   existing.t   } : {}),
-      ...(url         ? { url }               : existing?.url ? { url: existing.url } : {}),
-      ...(status      ? { st: status }        : {}),
-    };
+  for (const round of rounds) {
+    const roundName    = round.name;
+    const isFinalsRound = round.isFinalsRound;
+    const roundOrgName  = round.grade?.season?.competition?.organisation?.name || orgName;
+    const roundCompName = round.grade?.season?.competition?.name || compName;
+    const roundSeasonName = round.grade?.season?.name || sName;
+    const roundGradeName  = round.grade?.name || gradeName;
 
-    // Also store home/away logo in team-lookup via shared util if available
-    // (team-lookup-utils handles dedup, so safe to call repeatedly)
-    try {
-      const { storeLookupEntry } = require('./team-lookup-utils');
-      if (game.home?.id) storeLookupEntry({ ...game.home, season: { id: seasonId, name: seasonName, status: { value: status }, competition: { id: null, name: compName, organisation: { id: null, name: orgName } } }, grade: { id: null, name: gradeName } });
-      if (game.away?.id) storeLookupEntry({ ...game.away, season: { id: seasonId, name: seasonName, status: { value: status }, competition: { id: null, name: compName, organisation: { id: null, name: orgName } } }, grade: { id: null, name: gradeName } });
-    } catch (e) { /* team-lookup-utils optional */ }
+    for (const game of (round.fixture?.games || [])) {
+      if (!game?.id) continue;
 
-    if (!existing) {
-      sg.games[game.id] = entry;
-      added++;
-    } else {
-      sg.games[game.id] = entry;
-      updated++;
+      const existing  = sg.games[game.id];
+      const homeScore = parseScore(game.result?.home?.statistics);
+      const awayScore = parseScore(game.result?.away?.statistics);
+      const status    = game.status?.value || null;
+      const court     = game.allocation?.court;
+      const venue     = court?.venue;
+      const dt        = game.allocation?.dateTimeList?.[0];
+      const time      = dt?.time ? dt.time.slice(0, 5) : null;
+      const date      = dt?.date || game.dates?.[0] || existing?.d || null;
+      const url       = buildGameUrl(game.id, roundOrgName, roundCompName, roundSeasonName, roundGradeName);
+
+      if (venue) storeVenue(venue, court);
+
+      const entry = {
+        d:   date,
+        rn:  isFinalsRound ? `Finals — ${roundName}` : roundName,
+        h:   game.home?.id   || existing?.h   || null,
+        hn:  game.home?.name || existing?.hn  || null,
+        a:   game.away?.id   || existing?.a   || null,
+        an:  game.away?.name || existing?.an  || null,
+        ...(homeScore !== null ? { hs: homeScore } : existing?.hs !== undefined ? { hs: existing.hs } : {}),
+        ...(awayScore !== null ? { as: awayScore } : existing?.as !== undefined ? { as: existing.as } : {}),
+        ...(venue?.id   ? { vid: venue.id }    : existing?.vid ? { vid: existing.vid } : {}),
+        ...(venue?.name ? { vn:  venue.name }  : existing?.vn  ? { vn:  existing.vn  } : {}),
+        ...(court?.name ? { ct:  court.name }  : existing?.ct  ? { ct:  existing.ct  } : {}),
+        ...(time        ? { t:   time }         : existing?.t   ? { t:   existing.t   } : {}),
+        ...(url         ? { url }               : existing?.url ? { url: existing.url } : {}),
+        ...(status      ? { st: status }        : {}),
+      };
+
+      if (!existing) { sg.games[game.id] = entry; added++; }
+      else           { sg.games[game.id] = entry; updated++; }
+
+      // Also store team logo in team-lookup
+      try {
+        const { storeLookupEntry } = require('./team-lookup-utils');
+        const teamSeason = { id: effectiveSeasonId, name: roundSeasonName, status: { value: status },
+          competition: { id: null, name: roundCompName, organisation: { id: null, name: roundOrgName } } };
+        const teamGrade  = { id: round.grade?.id || null, name: roundGradeName };
+        if (game.home?.id) storeLookupEntry({ ...game.home, logo: { sizes: game.home.logo?.sizes }, season: teamSeason, grade: teamGrade });
+        if (game.away?.id) storeLookupEntry({ ...game.away, logo: { sizes: game.away.logo?.sizes }, season: teamSeason, grade: teamGrade });
+      } catch (e) {}
     }
   }
 
-  return { added, updated, skipped };
+  return { added, updated };
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -372,119 +403,94 @@ async function main() {
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
-  console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : ALL_SEASONS ? 'all seasons' : 'active/upcoming only'}\n`);
+  console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}\n`);
 
-  if (!fs.existsSync(INDEX_FILE)) {
-    console.error('sports-index.json not found');
-    process.exit(1);
-  }
+  if (!fs.existsSync(INDEX_FILE)) { console.error('sports-index.json not found'); process.exit(1); }
 
   const index   = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
-  const seasons = index.seasons || {};
+  const seasons = Object.values(index.seasons || {});
 
-  // Select seasons to process
-  let targets = Object.values(seasons);
+  let targets = seasons;
   if (TARGET_SEASON) {
-    targets = targets.filter(s => s.id === TARGET_SEASON || s.seasonId === TARGET_SEASON);
-    if (targets.length === 0) {
-      // Target might not be in index — add it
-      targets = [{ id: TARGET_SEASON, seasonId: TARGET_SEASON }];
-    }
+    targets = seasons.filter(s => s.id === TARGET_SEASON);
+    if (targets.length === 0) targets = [{ id: TARGET_SEASON, grades: [] }];
   } else if (!ALL_SEASONS) {
-    // locked: true = completed season, locked: false = active/current
-    targets = targets.filter(s => !s.discovered && s.locked === false);
+    targets = seasons.filter(s => s.locked === false);
   }
 
   console.log(`Seasons to process: ${targets.length}`);
 
-  let totalAdded = 0, totalUpdated = 0, totalRounds = 0, totalSeasons = 0;
-  const sgCache = {};
-  let sinceLastCommit = 0;
-
-  // Get session upfront
   await getSession();
 
+  let totalAdded = 0, totalUpdated = 0, totalTeams = 0, seasonsProcessed = 0;
+  let sinceLastCommit = 0;
+
   for (const season of targets) {
-    const seasonId = season.id || season.seasonId;
-    if (!seasonId) continue;
+    const seasonId = season.id;
+    const grades   = season.grades || [];
 
-    // Fetch season grade list
-    const seasonData = await gql('DiscoverSeason', Q_SEASON, { id: seasonId });
-    if (!seasonData?.discoverSeason) {
-      console.log(`  ⚠ Season ${seasonId} not found — skipping`);
-      continue;
+    if (grades.length === 0) {
+      // Fetch grade list if not in index
+      const data = await gql('DiscoverSeason', `query DiscoverSeason($id: String!) { discoverSeason(seasonID: $id) { id name grades { id name } } }`, { id: seasonId });
+      if (data?.discoverSeason?.grades) grades.push(...data.discoverSeason.grades);
     }
 
-    const s        = seasonData.discoverSeason;
-    const compName = s.competition?.name || '';
-    const seasonName = s.name || '';
-    const orgName  = s.competition?.organisation?.name || '';
+    console.log(`\n📅 ${season.fullName || season.name || seasonId} (${grades.length} grades)`);
 
-    console.log(`\n📅 ${seasonName} — ${compName} (${s.grades.length} grades)`);
-
-    for (const grade of s.grades) {
-      // Fetch round list
-      const gradeData = await gql('DiscoverGrade', Q_GRADE, { id: grade.id });
-      if (!gradeData?.discoverGrade?.rounds?.length) continue;
-
-      const rounds = gradeData.discoverGrade.rounds;
-      process.stdout.write(`  Grade: ${grade.name} — ${rounds.length} rounds...`);
-
-      let gradeAdded = 0, gradeUpdated = 0;
-
-      // Process rounds in batches
-      for (let i = 0; i < rounds.length; i += CONCURRENCY) {
-        const batch = rounds.slice(i, i + CONCURRENCY);
-        const results = await Promise.all(
-          batch.map(r => processRound(r, seasonId, grade.name, compName, seasonName, orgName, sgCache))
-        );
-        for (const r of results) {
-          gradeAdded   += r.added;
-          gradeUpdated += r.updated;
-          totalRounds++;
+    // Collect all unique team IDs across all grades in this season
+    const teamIds = new Set();
+    for (const grade of grades) {
+      const data = await gql('DiscoverGrade', Q_GRADE_TEAMS, { id: grade.id });
+      for (const pool of (data?.discoverGrade?.ladder || [])) {
+        for (const s of (pool.standings || [])) {
+          if (s.team?.id) teamIds.add(s.team.id);
         }
-        if (i + CONCURRENCY < rounds.length) await delay(200);
       }
-
-      console.log(` +${gradeAdded} new, ~${gradeUpdated} updated (${rounds.length - gradeAdded - gradeUpdated} empty rounds)`);
-      totalAdded   += gradeAdded;
-      totalUpdated += gradeUpdated;
     }
 
-    // Save game files for this season
-    for (const [sid, sg] of Object.entries(sgCache)) {
-      saveGameFile(sid, sg);
-      delete sgCache[sid];
+    console.log(`  Teams: ${teamIds.size}`);
+
+    const teamArr = [...teamIds];
+    let seasonAdded = 0, seasonUpdated = 0;
+
+    // Process teams in concurrent batches
+    for (let i = 0; i < teamArr.length; i += CONCURRENCY) {
+      const batch = teamArr.slice(i, i + CONCURRENCY);
+      const results = await Promise.all(batch.map(tid => processTeam(tid, seasonId)));
+      for (const r of results) { seasonAdded += r.added; seasonUpdated += r.updated; }
+      totalTeams += batch.length;
+      process.stdout.write(`  ${Math.min(i + CONCURRENCY, teamArr.length)}/${teamArr.length} teams (${seasonAdded} new, ${seasonUpdated} updated)\r`);
+      if (i + CONCURRENCY < teamArr.length) await delay(100);
     }
 
-    totalSeasons++;
+    console.log(`  ✓ ${seasonAdded} new games, ${seasonUpdated} updated`);
+    totalAdded   += seasonAdded;
+    totalUpdated += seasonUpdated;
+    seasonsProcessed++;
     sinceLastCommit++;
 
-    if (sinceLastCommit >= 5) {
-      const vFlushed = flushVenueShards();
+    if (sinceLastCommit >= 10) {
+      const gf = flushGameFiles();
+      const vf = flushVenueShards();
       try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {}
-      console.log(`\n  💾 Committing after ${sinceLastCommit} seasons (${vFlushed} venue shards)...`);
-      gitCommitPush(`Fixture discovery: ${totalSeasons} seasons, +${totalAdded} games`);
+      console.log(`\n  💾 Flushed ${gf} game files, ${vf} venue shards — committing...`);
+      gitCommitPush(`Fixture discovery: ${seasonsProcessed} seasons, +${totalAdded} games`);
       sinceLastCommit = 0;
     }
   }
 
-  // Final flush and commit
-  for (const [sid, sg] of Object.entries(sgCache)) saveGameFile(sid, sg);
-  const vFlushed = flushVenueShards();
+  // Final flush
+  const gf = flushGameFiles();
+  const vf = flushVenueShards();
   try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {}
 
   console.log(`\n✅ Done`);
-  console.log(`  Seasons processed: ${totalSeasons}`);
-  console.log(`  Rounds processed:  ${totalRounds}`);
-  console.log(`  Games added:       ${totalAdded.toLocaleString()}`);
-  console.log(`  Games updated:     ${totalUpdated.toLocaleString()}`);
-  console.log(`  Venue shards:      ${vFlushed}`);
+  console.log(`  Seasons:  ${seasonsProcessed}`);
+  console.log(`  Teams:    ${totalTeams.toLocaleString()}`);
+  console.log(`  Added:    ${totalAdded.toLocaleString()}`);
+  console.log(`  Updated:  ${totalUpdated.toLocaleString()}`);
 
-  gitCommitPush(`Fixture discovery complete: ${totalSeasons} seasons, ${totalAdded.toLocaleString()} new games`);
+  gitCommitPush(`Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`);
 }
 
-main().catch(e => {
-  console.error('\nFatal:', e.message);
-  process.exit(1);
-});
+main().catch(e => { console.error('\nFatal:', e.message); process.exit(1); });
