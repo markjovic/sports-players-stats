@@ -1,0 +1,55 @@
+# .github/workflows/backfill-venue.yml
+name: Backfill Venue Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      concurrency:
+        description: 'Concurrent API requests'
+        required: false
+        default: '500'
+        type: string
+      tenant:
+        description: 'Tenant'
+        required: false
+        default: 'bv'
+        type: choice
+        options:
+          - bv
+
+jobs:
+  backfill-venue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run venue backfill
+        run: node backfill-venue.js --concurrency=${{ github.event.inputs.concurrency }} --tenant=${{ github.event.inputs.tenant }}
+
+      - name: Commit final results
+        run: |
+          git add games/ venue-lookup/ backfill-venue-progress.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Venue backfill: final flush"
+            git pull --rebase=false --no-edit -X ours
+            git push
+          fi
