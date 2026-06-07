@@ -230,10 +230,35 @@
       font-size: 12px;
     }
 
+    /* ── Reg tag segments ── */
+    .rt-sep { margin: 0 4px; opacity: 0.4; }
+    .rt-comp {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .rt-grade {
+      font-style: italic;
+      opacity: 0.85;
+    }
+    .rt-team {
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    /* ── Scrollable table on mobile ── */
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-scroll::after {
+      content: '';
+      display: block;
+    }
     @media (max-width: 600px) {
       .page-header, .content, .page-footer { padding-left: 16px; padding-right: 16px; }
-      .roster-table th.stat:nth-child(n+5),
-      .roster-table td.stat:nth-child(n+5) { display: none; }
+      .roster-table { min-width: 480px; }
+      .roster-table th.player-name,
+      .roster-table td.player-name { min-width: 140px; }
     }
   </style>
 </head>
@@ -252,7 +277,7 @@
       </div>
       <div class="meta-item">
         <span>Generated</span>
-        <strong>5 June 2026</strong>
+        <strong>7 June 2026</strong>
       </div>
     </div>
   </header>
@@ -268,6 +293,7 @@
               </div>
               <span class="player-count">9 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -285,7 +311,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/01bce8f8-4dc9-4790-92f0-74301b7031db/statistics" target="_blank" rel="noopener">Tomas Muniz</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 C Grading · Darebin-Giants U13 Boys 02</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Darebin-Giants U13 Boys 02</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">130</td>
               <td class="stat">426</td>
@@ -298,7 +324,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/1c73dfac-bae5-495a-9d84-a1e3744c6529/statistics" target="_blank" rel="noopener">Archie Chighine</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 B Grading · Ivanhoe U13 Boys 06</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 B Grading</span><span class="rt-sep">·</span><span class="rt-team">Ivanhoe U13 Boys 06</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">164</td>
               <td class="stat">782</td>
@@ -311,7 +337,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/1fe1dd17-8294-49d7-ac36-23db1df872f2/statistics" target="_blank" rel="noopener">Jack Ruzzene</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 C Grading · Ivanhoe U13 Boys 14</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Ivanhoe U13 Boys 14</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">174</td>
               <td class="stat">299</td>
@@ -324,7 +350,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/2f59a6ee-f475-4975-bf51-f6f84084ebd0/statistics" target="_blank" rel="noopener">Lachlan Jackson</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 C Grading · Banyule U13 Boys 04</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Banyule U13 Boys 04</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">186</td>
               <td class="stat">939</td>
@@ -337,7 +363,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/4b889b2e-3f56-4b77-98ae-699b8f0acf13/statistics" target="_blank" rel="noopener">Remy Williamson</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 C Grading · Ivanhoe U13 Boys 14</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Ivanhoe U13 Boys 14</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">146</td>
               <td class="stat">535</td>
@@ -350,7 +376,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/5f411010-70cc-4a26-be24-16a56d1253e7/statistics" target="_blank" rel="noopener">Rory Grover</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 C Grading · Darebin-Giants U13 Boys 02</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Darebin-Giants U13 Boys 02</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">141</td>
               <td class="stat">545</td>
@@ -363,7 +389,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/7167419d-6739-4d55-a884-b23b1891cb21/statistics" target="_blank" rel="noopener">Otis Palethorpe</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 B Grading · Ivanhoe U13 Boys 08</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 B Grading</span><span class="rt-sep">·</span><span class="rt-team">Ivanhoe U13 Boys 08</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">112</td>
               <td class="stat">689</td>
@@ -376,7 +402,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/b9c50ea2-a08f-46d3-87b4-475608d2e7d8/statistics" target="_blank" rel="noopener">Maevan T Murugesan</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 B Grading · Darebin-Giants U13 Boys 01</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 B Grading</span><span class="rt-sep">·</span><span class="rt-team">Darebin-Giants U13 Boys 01</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">125</td>
               <td class="stat">751</td>
@@ -389,7 +415,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/e4a4f93e-8273-4078-9f9a-671f1d114ef7/statistics" target="_blank" rel="noopener">Oscar Wiesner</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Darebin 'Future Phoenix' U14 Boys Navy</span><span class="reg-tag active">EDJBA · Boys U13 C Grading · Fairfield-Shooters U13 Boys 03</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Darebin Future Phoenix U14 Boys Navy</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Darebin 'Future Phoenix' U14 Boys Navy</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Fairfield-Shooters U13 Boys 03</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Darebin Future Phoenix U14 Boys Navy</span></span></div>
               </td>
               <td class="stat">132</td>
               <td class="stat">578</td>
@@ -400,6 +426,7 @@
               <td class="stat">230</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -410,6 +437,7 @@
               </div>
               <span class="player-count">3 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -427,7 +455,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/c50922d9-d191-4ee4-8e95-12035ea29f90/statistics" target="_blank" rel="noopener">John Kelly</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · HooperHandlez U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">HooperHandlez U14 Boys Black</span></span></div>
               </td>
               <td class="stat">11</td>
               <td class="stat">14</td>
@@ -440,7 +468,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/cd398ed7-f219-4f0e-9ad8-4ba86c7ec989/statistics" target="_blank" rel="noopener">Ryan Wu</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · HooperHandlez U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">HooperHandlez U14 Boys Black</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">2</td>
@@ -453,7 +481,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/e3c391ad-3916-4ced-a81b-88ab03d79ab9/statistics" target="_blank" rel="noopener">Zavier Joy</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · HooperHandlez U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">HooperHandlez U14 Boys Black</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">11</td>
@@ -464,6 +492,7 @@
               <td class="stat">14</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -474,6 +503,7 @@
               </div>
               <span class="player-count">3 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -491,7 +521,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/3b706e31-25d0-438f-ad1d-b6decf992a2c/statistics" target="_blank" rel="noopener">Zixuan Lin</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Jumpstar U14 Boys Green</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Jumpstar U14 Boys Green</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">4</td>
@@ -504,7 +534,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/7cc9e12f-2f03-4448-842d-327304c09b53/statistics" target="_blank" rel="noopener">Allan Lu</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Jumpstar U14 Boys Green</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Jumpstar U14 Boys Green</span></span></div>
               </td>
               <td class="stat">4</td>
               <td class="stat">4</td>
@@ -517,7 +547,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/d7b50cf1-f95d-43f4-92da-c25ece083d15/statistics" target="_blank" rel="noopener">ruichen Yu</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Jumpstar U14 Boys Green</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Jumpstar U14 Boys Green</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">15</td>
@@ -528,6 +558,7 @@
               <td class="stat">14</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -538,6 +569,7 @@
               </div>
               <span class="player-count">8 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -555,7 +587,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/0b4eff4e-39ca-4d63-ba93-b37b865fe2f5/statistics" target="_blank" rel="noopener">Luke Bennet</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">67</td>
               <td class="stat">504</td>
@@ -568,7 +600,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/3cb0f9b4-c0f8-481a-b3d0-0557a92ea159/statistics" target="_blank" rel="noopener">Sebastian Urria Couret</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">63</td>
               <td class="stat">88</td>
@@ -581,7 +613,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/3defcad7-269c-42ec-beca-3bbc62d709fb/statistics" target="_blank" rel="noopener">Joshua Bagnato</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys C · Epping Storm U12 Boys (MG)</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys C</span><span class="rt-sep">·</span><span class="rt-team">Epping Storm U12 Boys (MG)</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">78</td>
               <td class="stat">229</td>
@@ -594,7 +626,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/5b9cb782-c2b4-4fdb-b147-f81b641597ad/statistics" target="_blank" rel="noopener">Blake Davis</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">95</td>
               <td class="stat">311</td>
@@ -607,7 +639,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/6372e6d9-ac56-463d-9e4a-f6cefb4c4c02/statistics" target="_blank" rel="noopener">Brooklyn Pasquarelli</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">131</td>
               <td class="stat">1,139</td>
@@ -620,7 +652,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/67aa89ea-0d38-4169-90e2-86769f6df3cc/statistics" target="_blank" rel="noopener">Ravin Karthikeyan</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">65</td>
               <td class="stat">209</td>
@@ -633,7 +665,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/a378bf7c-fab5-4571-b6a2-3d1e01dcab39/statistics" target="_blank" rel="noopener">Jordan Chereches</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">127</td>
               <td class="stat">327</td>
@@ -646,7 +678,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/ded66a06-7f0c-4a0e-b44e-12447d898f59/statistics" target="_blank" rel="noopener">Mitchell Hall</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U12 Boys A · Marymede-Flames U12 Boys 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Marymede U14 Boys 1</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys A</span><span class="rt-sep">·</span><span class="rt-team">Marymede-Flames U12 Boys 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Marymede U14 Boys 1</span></span></div>
               </td>
               <td class="stat">115</td>
               <td class="stat">413</td>
@@ -657,6 +689,7 @@
               <td class="stat">170</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -667,6 +700,7 @@
               </div>
               <span class="player-count">4 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -684,7 +718,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/07337d11-d135-41b1-8b1a-168b09d5264c/statistics" target="_blank" rel="noopener">Ryder Barltrop</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · North Adelaide Rockets U14 Boys 7</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">North Adelaide Rockets U14 Boys 7</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">19</td>
@@ -697,7 +731,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/5808845e-a0f8-4906-8126-a5a198d9f30a/statistics" target="_blank" rel="noopener">Jed Burden</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · North Adelaide Rockets U14 Boys 7</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">North Adelaide Rockets U14 Boys 7</span></span></div>
               </td>
               <td class="stat">7</td>
               <td class="stat">8</td>
@@ -710,7 +744,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/9905611e-358a-4f51-9de6-b820c268aed5/statistics" target="_blank" rel="noopener">Kingston Brock</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · North Adelaide Rockets U14 Boys 7</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">North Adelaide Rockets U14 Boys 7</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">6</td>
@@ -723,7 +757,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/fdb4d3df-690e-47fa-a22b-153333c51bd5/statistics" target="_blank" rel="noopener">Peter Carroll</a>
-                <div class="reg-tags"><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · North Adelaide Rockets U14 Boys 7</span></div>
+                <div class="reg-tags"><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">North Adelaide Rockets U14 Boys 7</span></span></div>
               </td>
               <td class="stat">5</td>
               <td class="stat">28</td>
@@ -734,6 +768,7 @@
               <td class="stat">5</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -744,6 +779,7 @@
               </div>
               <span class="player-count">8 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -761,7 +797,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/14376d33-17af-49b2-b8b5-7456c7ece6f1/statistics" target="_blank" rel="noopener">Jesse Chapman</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · WOLFPACK</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B2 · Heat Hornets</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">WOLFPACK</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B2</span><span class="rt-sep">·</span><span class="rt-team">Heat Hornets</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">164</td>
               <td class="stat">997</td>
@@ -774,7 +810,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/1836f526-0b62-4ad8-b2b8-acf72acde1c2/statistics" target="_blank" rel="noopener">Ethan Li</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · GRIZZLIES</span><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U15 Boys ER · B15 SE Venom 1 (PTR)</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys D1 · Berwick U14 Boys Stealers</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">GRIZZLIES</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U15 Boys C</span><span class="rt-sep">·</span><span class="rt-team">B15 SE Venom 1 (PTR)</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys D1</span><span class="rt-sep">·</span><span class="rt-team">Berwick U14 Boys Stealers</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">142</td>
               <td class="stat">868</td>
@@ -787,7 +823,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/419b68eb-8222-4e57-93e7-b0b87d9df203/statistics" target="_blank" rel="noopener">Jackson Winterbach</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · JACKALS</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys D - 2026 Winter · Knox City U14 Boys 5</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">JACKALS</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys CR - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Knox City U14 Boys 5</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">206</td>
               <td class="stat">1,235</td>
@@ -800,7 +836,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/816c4207-881a-4c9f-b9a0-d3dbd70996f5/statistics" target="_blank" rel="noopener">Flynn Handley</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · ROCKETS</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys D - 2026 Winter · BSRD U14 Boys 3</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">ROCKETS</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys CR - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">BSRD U14 Boys 3</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">152</td>
               <td class="stat">408</td>
@@ -813,7 +849,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/89880380-0a01-4395-b7de-f9ce1b3ba8ef/statistics" target="_blank" rel="noopener">Flynn Griffith</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · MAVERICKS</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic · Saturday U12 Boys BR - 2026 Winter · Lakers U12 Boys 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">MAVERICKS</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U12 Boys C - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Lakers U12 Boys 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">153</td>
               <td class="stat">775</td>
@@ -826,7 +862,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/c780c2b8-b005-45af-9850-f7a4c7c94ffa/statistics" target="_blank" rel="noopener">Gibson Carthew-Monos</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · GRIZZLIES</span><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys CR - 2026 Winter · Knox City U14 Boys 4</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">GRIZZLIES</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys C - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Knox City U14 Boys 4</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">172</td>
               <td class="stat">654</td>
@@ -839,7 +875,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/cbeaf777-b4e5-4ea7-886e-44c9f4ea55c6/statistics" target="_blank" rel="noopener">Nicholas Vallas</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Wednesday Junior Mixed D League · INFERNO 14 B</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · PISTONS</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys F - 2026 Winter · Knox City U14 Boys 8</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Wednesday Junior Mixed D League</span><span class="rt-sep">·</span><span class="rt-team">INFERNO 14 B</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">PISTONS</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys ER - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Knox City U14 Boys 8</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">183</td>
               <td class="stat">264</td>
@@ -852,7 +888,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/cf040812-07a5-422f-9432-9395126c3a0b/statistics" target="_blank" rel="noopener">Nathan Yin</a>
-                <div class="reg-tags"><span class="reg-tag active">EDJBA · Boys U13 C Grading · Blackburn U13 Boys 11</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Open · GRIZZLIES</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL3 (CENTRAL) · Sherbrooke U14 Boys 4</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Sherbrooke Suns U14 Boys 4</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 C Grading</span><span class="rt-sep">·</span><span class="rt-team">Blackburn U13 Boys 11</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Open</span><span class="rt-sep">·</span><span class="rt-team">GRIZZLIES</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL3 (CENTRAL)</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke U14 Boys 4</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Sherbrooke Suns U14 Boys 4</span></span></div>
               </td>
               <td class="stat">214</td>
               <td class="stat">465</td>
@@ -863,6 +899,7 @@
               <td class="stat">193</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -873,6 +910,7 @@
               </div>
               <span class="player-count">8 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -890,7 +928,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/19282c08-5cbf-4359-ba8a-19843b766c66/statistics" target="_blank" rel="noopener">Aathy Iyer</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Camberwell U14 Boys Black</span><span class="reg-tag active">Community Basketball League · U14 Boys Grading · SCBC U14 Boys Boomers</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Camberwell U14 Boys Black</span></span><span class="reg-tag active"><span class="rt-comp">Community Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys Grading</span><span class="rt-sep">·</span><span class="rt-team">SCBC U14 Boys Boomers</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">79</td>
               <td class="stat">463</td>
@@ -903,7 +941,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/4b3d302a-491d-4f1e-a8f7-815086bc0210/statistics" target="_blank" rel="noopener">Tom Klein</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Camberwell U14 Boys Black</span><span class="reg-tag active">Community Basketball League · U14 Boys Grading · TITANS U14 Boys Nightmares</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Camberwell U14 Boys Black</span></span><span class="reg-tag active"><span class="rt-comp">Community Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys Grading</span><span class="rt-sep">·</span><span class="rt-team">TITANS U14 Boys Nightmares</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">103</td>
               <td class="stat">463</td>
@@ -916,7 +954,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/955c1d3b-d8b8-45b1-9bfb-2cdc463f71a4/statistics" target="_blank" rel="noopener">Leo Chian</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Camberwell U14 Boys Black</span><span class="reg-tag active">Community Basketball League · U14 Boys Grading · TITANS U14 Boys Rebels</span><span class="reg-tag active">EDJBA · Boys U13 B Grading · Koonung U13 Boys 04</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Camberwell U14 Boys Black</span></span><span class="reg-tag active"><span class="rt-comp">Community Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys Grading</span><span class="rt-sep">·</span><span class="rt-team">TITANS U14 Boys Rebels</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 B Grading</span><span class="rt-sep">·</span><span class="rt-team">Koonung U13 Boys 04</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">190</td>
               <td class="stat">963</td>
@@ -929,7 +967,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/b7d10d6a-4026-47e2-9b68-401f4442b55a/statistics" target="_blank" rel="noopener">Tayshaun Wu</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Camberwell U14 Boys Black</span><span class="reg-tag active">EDJBA · Boys U13 B Grading · Whitehorse U13 Boys 02</span><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U15 Boys A/AR · B15 Nunawading Kangas 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Camberwell U14 Boys Black</span></span><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 B Grading</span><span class="rt-sep">·</span><span class="rt-team">Whitehorse U13 Boys 02</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U15 Boys A/AR</span><span class="rt-sep">·</span><span class="rt-team">B15 Nunawading Kangas 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">98</td>
               <td class="stat">476</td>
@@ -942,7 +980,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/cd217bc5-681c-43c6-bc77-cf77a0b76edc/statistics" target="_blank" rel="noopener">Bryan Chen</a>
-                <div class="reg-tags"><span class="reg-tag active">EDJBA · Boys U13 D Grading · Balwyn U13 Boys 17</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 D Grading</span><span class="rt-sep">·</span><span class="rt-team">Balwyn U13 Boys 17</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">166</td>
               <td class="stat">521</td>
@@ -955,7 +993,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/d99af3d7-5344-4207-9946-9bd77f00bb9d/statistics" target="_blank" rel="noopener">Dylan Brakey</a>
-                <div class="reg-tags"><span class="reg-tag active">Eastern Development League · U14 Boys EDL1 · Camberwell U14 Boys Black</span><span class="reg-tag active">Community Basketball League · U14 Boys Grading · Cougars U14 Boys Exum</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Eastern Development League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys EDL1</span><span class="rt-sep">·</span><span class="rt-team">Camberwell U14 Boys Black</span></span><span class="reg-tag active"><span class="rt-comp">Community Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys Grading</span><span class="rt-sep">·</span><span class="rt-team">Cougars U14 Boys Exum</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">111</td>
               <td class="stat">248</td>
@@ -968,7 +1006,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/e7a6cf24-4d7b-4dcb-aeae-bc7abe2d1976/statistics" target="_blank" rel="noopener">Archer Shaw</a>
-                <div class="reg-tags"><span class="reg-tag active">EDJBA · Boys U13 B Grading · Collingwood U13 Boys 03</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 B Grading</span><span class="rt-sep">·</span><span class="rt-team">Collingwood U13 Boys 03</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">103</td>
               <td class="stat">508</td>
@@ -981,7 +1019,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/f1a66f67-11cc-42ee-ae3d-31961bb1b02f/statistics" target="_blank" rel="noopener">Lachlan Clark</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys C · B13 Wattle Park Saints 1 (CR)</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Camberwell Dragons U14 Boys Black</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys C</span><span class="rt-sep">·</span><span class="rt-team">B13 Wattle Park Saints 1 (CR)</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Camberwell Dragons U14 Boys Black</span></span></div>
               </td>
               <td class="stat">243</td>
               <td class="stat">1,275</td>
@@ -992,6 +1030,7 @@
               <td class="stat">151</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -1002,6 +1041,7 @@
               </div>
               <span class="player-count">9 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -1019,7 +1059,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/19c5f5c9-42de-4297-893a-3d7759ca8d1e/statistics" target="_blank" rel="noopener">Liam Vandenborn</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · MMB42</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B</span><span class="rt-sep">·</span><span class="rt-team">MMB42</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">193</td>
               <td class="stat">607</td>
@@ -1032,7 +1072,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/4afa5482-70e4-4734-945b-24050911dc0f/statistics" target="_blank" rel="noopener">Eli Newland</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · MMB42</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B</span><span class="rt-sep">·</span><span class="rt-team">MMB42</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">302</td>
               <td class="stat">1,503</td>
@@ -1045,7 +1085,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/4b9537ff-ba26-4eb6-9e61-2a621bf6f385/statistics" target="_blank" rel="noopener">Reef Chivers</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · MMB42</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B</span><span class="rt-sep">·</span><span class="rt-team">MMB42</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">190</td>
               <td class="stat">943</td>
@@ -1058,7 +1098,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/80731c8c-a9dc-48a5-af28-78d59306e1e6/statistics" target="_blank" rel="noopener">Flynn Relf</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · MMB42</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B</span><span class="rt-sep">·</span><span class="rt-team">MMB42</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">292</td>
               <td class="stat">1,602</td>
@@ -1071,7 +1111,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/81562b7f-7e85-4aef-a3dc-2fa9b9f9e4b0/statistics" target="_blank" rel="noopener">Kasen Williams</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U15 Boys A/AR · B15 Maroondah Magic 3</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · MMB41</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U15 Boys C</span><span class="rt-sep">·</span><span class="rt-team">B15 Maroondah Magic 3</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B</span><span class="rt-sep">·</span><span class="rt-team">MMB41</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">242</td>
               <td class="stat">1,361</td>
@@ -1084,7 +1124,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/83c818ac-4ae5-4836-a336-31af690fed67/statistics" target="_blank" rel="noopener">Noah Martin</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys A · MMB37</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys A</span><span class="rt-sep">·</span><span class="rt-team">MMB37</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">43</td>
               <td class="stat">161</td>
@@ -1097,7 +1137,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/91c714b3-095e-43ea-af2e-7d13289fa9be/statistics" target="_blank" rel="noopener">Koby Stephens</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · KILSYTH HEAT B07</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys BRES</span><span class="rt-sep">·</span><span class="rt-team">KILSYTH HEAT B07</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">140</td>
               <td class="stat">950</td>
@@ -1110,7 +1150,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/ba1fa297-78e4-454e-8c52-3bc4c9abdb4c/statistics" target="_blank" rel="noopener">Judah Risby</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · MMB42</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B</span><span class="rt-sep">·</span><span class="rt-team">MMB42</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">220</td>
               <td class="stat">971</td>
@@ -1123,7 +1163,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/c2505af3-a8f7-4134-a922-d85d912a0890/statistics" target="_blank" rel="noopener">Hunter Gale</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys B · KILSYTH HEAT B07</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Coyotes U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys BRES</span><span class="rt-sep">·</span><span class="rt-team">KILSYTH HEAT B07</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Coyotes U14 Boys</span></span></div>
               </td>
               <td class="stat">135</td>
               <td class="stat">1,007</td>
@@ -1134,6 +1174,7 @@
               <td class="stat">280</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -1144,6 +1185,7 @@
               </div>
               <span class="player-count">8 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -1161,7 +1203,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/1ab8c085-2c84-48ca-9aac-44a4650acc26/statistics" target="_blank" rel="noopener">Nate McDonald</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Thursday U12 Boys D1 · Devils U12 Boys Bulls</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Thursday U12 Boys D1</span><span class="rt-sep">·</span><span class="rt-team">Devils U12 Boys Bulls</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">203</td>
               <td class="stat">696</td>
@@ -1174,7 +1216,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/2e4cad6d-66bf-416a-8b4c-294d917e1f61/statistics" target="_blank" rel="noopener">Jack Olsen</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">72</td>
               <td class="stat">393</td>
@@ -1187,7 +1229,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/4a05820b-a771-46ce-b25a-c7bcd9c78d79/statistics" target="_blank" rel="noopener">Riley Harmes</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys - VJL8 (P1) · Warragul U14 Boys 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys - VJL8 (P1)</span><span class="rt-sep">·</span><span class="rt-team">Warragul U14 Boys 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">129</td>
               <td class="stat">477</td>
@@ -1200,7 +1242,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/514a8541-48ed-4a94-a35b-dd5def21a60b/statistics" target="_blank" rel="noopener">Isaac Lewis</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys - VJL8 (P1) · Warragul U14 Boys 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys - VJL8 (P1)</span><span class="rt-sep">·</span><span class="rt-team">Warragul U14 Boys 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">115</td>
               <td class="stat">261</td>
@@ -1213,7 +1255,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/97d5412b-d317-4bcd-a3d1-2d01be71e623/statistics" target="_blank" rel="noopener">Spencer Fruend</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">89</td>
               <td class="stat">338</td>
@@ -1226,7 +1268,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/9a3b5cda-cfaf-440e-9f1c-8f0474758216/statistics" target="_blank" rel="noopener">Dion McDonald</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">192</td>
               <td class="stat">735</td>
@@ -1239,7 +1281,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/eb1133be-7d9c-4969-aa2a-e9f6c5c6851a/statistics" target="_blank" rel="noopener">Hayden Nooy</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">170</td>
               <td class="stat">431</td>
@@ -1252,7 +1294,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/f8afc735-3f2b-42af-bd09-cd31288e963d/statistics" target="_blank" rel="noopener">Oliver Young</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Tuesday U14 Boys D2 · Devils U14 Boys Grizzlies</span><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys - VJL8 (P1) · Warragul U14 Boys 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Drouin Devils U14 Boys Grizzlies</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Tuesday U14 Boys D2</span><span class="rt-sep">·</span><span class="rt-team">Devils U14 Boys Grizzlies</span></span><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys - VJL8 (P1)</span><span class="rt-sep">·</span><span class="rt-team">Warragul U14 Boys 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Drouin Devils U14 Boys Grizzlies</span></span></div>
               </td>
               <td class="stat">203</td>
               <td class="stat">287</td>
@@ -1263,6 +1305,7 @@
               <td class="stat">177</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -1273,6 +1316,7 @@
               </div>
               <span class="player-count">8 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -1290,7 +1334,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/0afc7690-c2db-4644-b039-af1c34520af3/statistics" target="_blank" rel="noopener">Toby Jovic</a>
-                <div class="reg-tags"><span class="reg-tag active">After School · Monday Boys Grade 6 · Coyotes</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">After School</span><span class="rt-sep">·</span><span class="rt-grade">Monday Boys Grade 6</span><span class="rt-sep">·</span><span class="rt-team">Coyotes</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">83</td>
               <td class="stat">371</td>
@@ -1303,7 +1347,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/3aba7b44-e408-42f0-aa50-4e2ecdc1c607/statistics" target="_blank" rel="noopener">Louis SQUIRE</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U15 Boys E/ER · B15 Spirit Magic 1</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U15 Boys DR</span><span class="rt-sep">·</span><span class="rt-team">B15 Spirit Magic 1</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">233</td>
               <td class="stat">179</td>
@@ -1316,7 +1360,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/476ebd06-ae51-408b-9c55-28877131e73d/statistics" target="_blank" rel="noopener">Sebastian Horn</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U13 Boys B · B13 Spirit Magic 1</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U13 Boys B</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 1</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">159</td>
               <td class="stat">1,186</td>
@@ -1329,7 +1373,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/7a5dd0ff-f419-41ee-96ad-9fb055735b35/statistics" target="_blank" rel="noopener">Ned Thompson</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U13 Boys B · B13 Spirit Magic 1</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U13 Boys B</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 1</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">94</td>
               <td class="stat">550</td>
@@ -1342,7 +1386,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/8d48b5e4-37bc-4cc5-9142-af33bb4f68fb/statistics" target="_blank" rel="noopener">Angus Henderson</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag active">Junior Domestic · Saturday U13 Boys B · KILSYTH HEAT B09</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys B</span><span class="rt-sep">·</span><span class="rt-team">KILSYTH HEAT B09</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">315</td>
               <td class="stat">1,050</td>
@@ -1355,7 +1399,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/ae607c0e-e628-4aaa-8585-8797f5d59d26/statistics" target="_blank" rel="noopener">Oliver Horn</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U15 Boys E/ER · B15 Spirit Magic 1</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys A/AR · B13 Spirit Magic 1</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U15 Boys DR</span><span class="rt-sep">·</span><span class="rt-team">B15 Spirit Magic 1</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys A/AR</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 1</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">178</td>
               <td class="stat">1,290</td>
@@ -1368,7 +1412,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/d709f2ce-063d-49c9-8a1f-3b9e0dde974f/statistics" target="_blank" rel="noopener">Hayden Bowtell</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U13 Boys B · B13 Spirit Magic 1</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U13 Boys B</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 1</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">143</td>
               <td class="stat">619</td>
@@ -1381,7 +1425,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/e772f113-8979-42e5-a0ba-a881e0ccfe80/statistics" target="_blank" rel="noopener">Hunter Veliades</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Monday - Friday Competition (MEBA) · Friday U15 Boys E/ER · B15 Spirit Magic 1</span><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Spirit Magic 2</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Spirit Magic U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Monday - Friday Competition (MEBA)</span><span class="rt-sep">·</span><span class="rt-grade">Friday U15 Boys DR</span><span class="rt-sep">·</span><span class="rt-team">B15 Spirit Magic 1</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Spirit Magic 2</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Spirit Magic U14 Boys</span></span></div>
               </td>
               <td class="stat">182</td>
               <td class="stat">253</td>
@@ -1392,6 +1436,7 @@
               <td class="stat">150</td>
             </tr></tbody>
             </table>
+            </div>
           </div>
           <div class="team-block">
             <div class="team-header">
@@ -1402,6 +1447,7 @@
               </div>
               <span class="player-count">6 players</span>
             </div>
+            <div class="table-scroll">
             <table class="roster-table">
               <thead>
                 <tr>
@@ -1419,7 +1465,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/19cbd8f9-b294-466e-ac7d-ab61ac2a1025/statistics" target="_blank" rel="noopener">John Chung</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys D - 2026 Winter · Wasps U14 Boys 6</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Waverley Titan U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys D - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Wasps U14 Boys 6</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Waverley Titan U14 Boys</span></span></div>
               </td>
               <td class="stat">132</td>
               <td class="stat">644</td>
@@ -1432,7 +1478,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/22d79c4f-a188-4faf-b4b0-23f3509bffc6/statistics" target="_blank" rel="noopener">Michael Bonfrer</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Section 03 · U14 TIMBERWOLVES CELTICS</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Waverley Titan U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Section 03</span><span class="rt-sep">·</span><span class="rt-team">U14 TIMBERWOLVES CELTICS</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Waverley Titan U14 Boys</span></span></div>
               </td>
               <td class="stat">78</td>
               <td class="stat">293</td>
@@ -1445,7 +1491,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/6c4dc396-2d16-43a9-98d4-3e39b75460b3/statistics" target="_blank" rel="noopener">Nathan Liu</a>
-                <div class="reg-tags"><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys RL1 (SOUTH) · Dandenong U14 Boys 12</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys C2 · Oatlander Outlaws U14 Boys Celtics</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys D - 2026 Winter · Wasps U14 Boys 6</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Waverley Titan U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys RL1 (SOUTH)</span><span class="rt-sep">·</span><span class="rt-team">Dandenong U14 Boys 12</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys C2</span><span class="rt-sep">·</span><span class="rt-team">Oatlander Outlaws U14 Boys Celtics</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys D - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Wasps U14 Boys 6</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Waverley Titan U14 Boys</span></span></div>
               </td>
               <td class="stat">232</td>
               <td class="stat">928</td>
@@ -1458,7 +1504,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/89cbce96-ec30-469a-8ef3-726a6b4059a0/statistics" target="_blank" rel="noopener">Zachariah Wong</a>
-                <div class="reg-tags"><span class="reg-tag active">EDJBA · Boys U13 D Grading · Blackburn U13 Boys 14</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Waverley Titan U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">EDJBA</span><span class="rt-sep">·</span><span class="rt-grade">Boys U13 D Grading</span><span class="rt-sep">·</span><span class="rt-team">Blackburn U13 Boys 14</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Waverley Titan U14 Boys</span></span></div>
               </td>
               <td class="stat">108</td>
               <td class="stat">317</td>
@@ -1471,7 +1517,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/a759c38f-bc36-4aa5-92fb-ec0006df8b8c/statistics" target="_blank" rel="noopener">Nathan Lee</a>
-                <div class="reg-tags"><span class="reg-tag active">Victorian Junior Basketball League · U14 Boys - VJL5 (P2) · Waverley U14 Boys 3</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys Section 01 · Toorak Taipans</span><span class="reg-tag active">Junior Domestic · Saturday U14 Boys BR - 2026 Winter · Wasps U14 Boys 3</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Waverley Titan U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Victorian Junior Basketball League</span><span class="rt-sep">·</span><span class="rt-grade">U14 Boys - VJL5 (P2)</span><span class="rt-sep">·</span><span class="rt-team">Waverley U14 Boys 3</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys Section 01</span><span class="rt-sep">·</span><span class="rt-team">Toorak Taipans</span></span><span class="reg-tag active"><span class="rt-comp">Junior Domestic</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U14 Boys B - 2026 Winter</span><span class="rt-sep">·</span><span class="rt-team">Wasps U14 Boys 3</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Waverley Titan U14 Boys</span></span></div>
               </td>
               <td class="stat">223</td>
               <td class="stat">1,486</td>
@@ -1484,7 +1530,7 @@
             <tr>
               <td class="player-name">
                 <a href="https://www.playhq.com/public/profile/d51ed704-9616-47a2-89ee-d7592c91d11a/statistics" target="_blank" rel="noopener">Ryan Xie</a>
-                <div class="reg-tags"><span class="reg-tag active">Junior Domestic - Saturday Competition (GEBC) · Saturday U13 Boys D · B13 Vermont Vultures 8</span><span class="reg-tag upcoming">Nunawading Spectres Tournament · BOYS UNDER 14 D3 · Waverley Titan U14 Boys</span></div>
+                <div class="reg-tags"><span class="reg-tag active"><span class="rt-comp">Junior Domestic - Saturday Competition (GEBC)</span><span class="rt-sep">·</span><span class="rt-grade">Saturday U13 Boys D</span><span class="rt-sep">·</span><span class="rt-team">B13 Vermont Vultures 8</span></span><span class="reg-tag upcoming"><span class="rt-comp">Nunawading Spectres Tournament</span><span class="rt-sep">·</span><span class="rt-grade">BOYS UNDER 14 D3</span><span class="rt-sep">·</span><span class="rt-team">Waverley Titan U14 Boys</span></span></div>
               </td>
               <td class="stat">166</td>
               <td class="stat">1,255</td>
@@ -1495,6 +1541,7 @@
               <td class="stat">271</td>
             </tr></tbody>
             </table>
+            </div>
           </div></section>
   </main>
 
