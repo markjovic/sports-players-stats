@@ -5,6 +5,7 @@
 'use strict';
 
 const fs     = require('fs');
+const path   = require('path');
 const crypto = require('crypto');
 
 const GAMES     = (process.argv.find(a => a.startsWith('--games='))?.split('=')[1] || '').split(',').filter(Boolean);
@@ -14,8 +15,6 @@ const API_URL   = 'https://api.playhq.com/graphql';
 const COOKIE_FILE = path.join(__dirname, `backfill-venue-cookie.json`);
 
 if (!GAMES.length) { console.error('--games=<id1,id2,...> required'); process.exit(1); }
-
-const path = require('path');
 
 const HEADERS = {
   'accept': '*/*', 'origin': 'https://www.playhq.com',
