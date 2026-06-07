@@ -67,10 +67,12 @@ for (const [seasonId, season] of Object.entries(seasons)) {
   try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); }
   catch (e) { noGameFile++; continue; }
 
-  const games    = Object.values(sg.games || {});
-  const withTeams = games.filter(g => g.h || g.a || g.hn || g.an).length;
+  const games      = Object.values(sg.games || {});
+  // A season is "zero-team" if none of its games have a home team ID (h field)
+  // This matches what discover-fixtures sees when discoverGrade.ladder returns empty
+  const withTeamIds = games.filter(g => g.h).length;
 
-  if (games.length === 0 || withTeams === 0) {
+  if (games.length === 0 || withTeamIds === 0) {
     const discEntry = disc[seasonId] || {};
     zeroTeam.push({
       id:     seasonId,
@@ -79,7 +81,7 @@ for (const [seasonId, season] of Object.entries(seasons)) {
       comp:   discEntry.compName || '?',
       grades: (season.grades || []).length,
       games:  games.length,
-      reason: games.length === 0 ? 'empty game file' : 'games exist but no team IDs',
+      reason: games.length === 0 ? 'empty game file' : 'no home team IDs (ladder not used)',
     });
   } else {
     hasTeams.push(seasonId);
