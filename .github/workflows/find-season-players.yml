@@ -1,0 +1,37 @@
+# .github/workflows/find-season-players.yml
+name: Find Season Players
+
+on:
+  workflow_dispatch:
+    inputs:
+      season_id:
+        description: 'Season ID to search for'
+        required: true
+        type: string
+      limit:
+        description: 'Max players to return'
+        required: false
+        default: '10'
+        type: string
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            find-season-players.js
+            players
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Find players
+        run: node find-season-players.js --season=${{ github.event.inputs.season_id }} --limit=${{ github.event.inputs.limit }}
