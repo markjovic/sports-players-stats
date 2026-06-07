@@ -301,13 +301,13 @@ function clearProgress() {
 
 function gitCommitPush(message) {
   try {
+    // Add and commit all current writes first, then pull, then push
+    // Never stash — concurrent writes to same shards cause merge conflicts on pop
     execSync('git add games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  (no changes to commit)'); return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
-    const stashOut = execSync('git stash', { stdio: 'pipe' }).toString();
     execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
-    if (stashOut.includes('Saved')) execSync('git stash pop', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
     console.log('  ✓ Committed and pushed');
   } catch (e) {
