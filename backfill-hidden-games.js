@@ -63,7 +63,7 @@ async function getSession() {
   try {
     if (fs.existsSync(COOKIE_FILE)) {
       const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
-      if (Date.now() - d.fetchedAt < 5 * 60 * 60 * 1000) return d.cookie;
+      if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) return d.cookie;
     }
   } catch (e) {}
   console.log('  Fetching session cookie...');
@@ -105,10 +105,28 @@ const Q_GAME_ESCORE = `query GameScore($id: ID!) {
   }
 }`;
 
-// discoverGame — to distinguish hidden (null) from legacy (error/absent)
-const Q_DISCOVER_GAME = `query DiscoverGame($gameID: ID!) {
-  discoverGame(gameID: $gameID) {
+// Use exact GameCentre operation from mobile traffic - including gameStatisticsFilter
+// which appears to be required to get data for hidden/grading games
+const Q_GAME_CENTRE = `query GameCentre($gameId: ID!, $gameStatisticsFilter: GameStatisticsFilter!) {
+  discoverGame(gameID: $gameId) {
     id
+    status { name value }
+    grade { id hideScores }
+    home {
+      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
+    }
+    away {
+      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
+    }
+    result {
+      home {
+        statistics { count type { value } }
+        periods { period { value } statistics { count type { value } } }
+      }
+      away {
+        statistics { count type { value } }
+      }
+    }
     allocation {
       dateTimeList { date time }
       court {
@@ -119,10 +137,7 @@ const Q_DISCOVER_GAME = `query DiscoverGame($gameID: ID!) {
         }
       }
     }
-    result {
-      home { statistics { count type { value } } }
-      away { statistics { count type { value } } }
-    }
+    round { id name isFinalsRound }
   }
 }`;
 
@@ -302,8 +317,9 @@ async function main() {
     const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
       await delay(j * 3);
 
-      // Step 1: call discoverGame — if it returns data, game is accessible normally
-      const dg = await gql('DiscoverGame', Q_DISCOVER_GAME, { gameID: gameId }, cookie);
+      // Step 1: call discoverGame via GameCentre operation (exact mobile app operation)
+      const dg = await gql('GameCentre', Q_GAME_CENTRE,
+        { gameId: gameId, gameStatisticsFilter: { classification: 'TOTAL' } }, cookie);
 
       if (dg?._authError) {
         try { cookie = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
@@ -311,22 +327,23 @@ async function main() {
       }
       if (dg?._rateLimit || dg?._transient || dg?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
 
-      // discoverGame returned actual data — game is accessible, get venue from it
+      // GameCentre returned actual data — game is accessible
       if (dg?.data?.discoverGame) {
-        const dgg = dg.data.discoverGame;
+        const dgg   = dg.data.discoverGame;
         const court = dgg.allocation?.court;
         const venue = court?.venue;
         const dt    = dgg.allocation?.dateTimeList?.[0];
         const hs    = parseScore(dgg.result?.home?.statistics);
         const as_   = parseScore(dgg.result?.away?.statistics);
-        return { gameId, seasonId, outcome: 'accessible', hs, as: as_, venue, court, time: dt?.time?.slice(0, 5) || null };
+        const rn    = dgg.round?.name || null;
+        return { gameId, seasonId, outcome: 'accessible', hs, as: as_, venue, court,
+                 time: dt?.time?.slice(0, 5) || null, rn };
       }
 
       // discoverGame returned null → game hidden by admin
-      // Call game(id) to get the score
+      // Try game(id) e-scoring endpoint as fallback
       const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie);
 
-      // Log the very first game(id) result unconditionally
       if (!backfill_hidden_first_ge_logged) {
         backfill_hidden_first_ge_logged = true;
         console.warn(`\n  DIAG first game(id) for ${gameId}:`,
@@ -355,9 +372,9 @@ async function main() {
       const entry = sg.games[r.gameId] || {};
 
       if (r.outcome === 'accessible') {
-        // Normal game — just needed to be retried
         if (r.hs !== null) entry.hs = r.hs;
         if (r.as !== null) entry.as = r.as;
+        if (r.rn && !entry.rn) entry.rn = r.rn;
         if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
         if (r.court?.name) entry.ct = r.court.name;
         if (r.time) entry.t = r.time;
