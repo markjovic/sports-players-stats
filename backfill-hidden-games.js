@@ -655,9 +655,9 @@ async function main() {
         if (game.legacy)  continue;
         if (game.forfeit) continue;
         if (typeof game.hs === 'number') continue;
-        // Skip null-score games that are in a terminal state — confirmed no score available
-        const terminalStatus = ['FINAL', 'PENDING', 'POSTPONED', 'CANCELLED', 'BYE'];
-        if (game.hs === null && terminalStatus.includes(game.st)) continue;
+        // Skip null-score games in any non-playable state — confirmed checked already
+        // UPCOMING games with null score: checked but not yet played, will be scored by discover-fixtures
+        if (game.hs === null) continue;
         todo2.push({ seasonId: season.id, gameId });
       }
     }
