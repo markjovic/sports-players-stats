@@ -98,18 +98,32 @@ async function getSession(force = false) {
 
   _refreshPromise = (async () => {
     console.log('\n  Fetching fresh session cookie...');
-    const res = await fetch(API_URL, {
-      method:  'POST',
-      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
-      body: JSON.stringify({
-        operationName: 'ProfileSearch',
-        variables:     { fullName: 'test' },
-        query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
-      }),
-    });
+
+    // Try multiple queries — the API issues a session cookie on any successful request.
+    // Fall back through options if one returns 403 or no cookie.
+    const cookieQueries = [
+      { operationName: 'TenantConfig', variables: {},
+        query: 'query TenantConfig { tenantConfiguration { label } }' },
+      { operationName: 'ProfileSearch', variables: { fullName: 'a' },
+        query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+    ];
+
+    let res;
+    for (const body of cookieQueries) {
+      res = await fetch(API_URL, {
+        method:  'POST',
+        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
+        body:    JSON.stringify(body),
+      });
+      if (res.headers.get('set-cookie')) {
+        console.log(`  ✓ Got cookie via ${body.operationName}`);
+        break;
+      }
+      console.warn(`  ⚠ No cookie from ${body.operationName} (status ${res.status})`);
+    }
 
     const rawCookie = res.headers.get('set-cookie');
-    if (!rawCookie) throw new Error(`No Set-Cookie header from API (status ${res.status})`);
+    if (!rawCookie) throw new Error(`No Set-Cookie header from API (status ${res.status}) — all cookie queries failed`);
 
     // Extract phq_session=<token> from the cookie string
     const sessionMatch = rawCookie.match(/phq_session=([^;]+)/);
