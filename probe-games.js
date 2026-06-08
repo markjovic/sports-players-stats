@@ -50,11 +50,20 @@ const Q = `query DiscoverGame($gameID: ID!) {
     home { ... on DiscoverTeam { id name } }
     away { ... on DiscoverTeam { id name } }
     result {
-      home { statistics { count type { value } } }
-      away { statistics { count type { value } } }
+      winner { value }
+      outcome { name value }
+      home {
+        outcome { name value }
+        gameOutcomeDescription
+        statistics { count type { value } }
+      }
+      away {
+        outcome { name value }
+        statistics { count type { value } }
+      }
     }
     allocation {
-      time
+      dateTimeList { date time }
       court {
         id name
         venue { id name address suburb state }
