@@ -42,7 +42,8 @@ const TENANT_FULL   = { bv: 'basketball-victoria' }[TENANT] || TENANT;
 const CONCURRENCY   = parseInt(ARGS.concurrency || '300', 10);
 const TARGET_SEASON = ARGS.season      || null;
 
-const API_URL       = 'https://api.playhq.com/graphql';
+const API_URL          = 'https://api.playhq.com/graphql';
+const SPECTATOR_URL    = 'https://spectator.playhq.com/graphql';
 const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
 const COOKIE_FILE   = path.join(__dirname, `backfill-hidden-cookie.json`);
 const PROGRESS_FILE = path.join(__dirname, 'backfill-hidden-progress.json');
@@ -160,11 +161,13 @@ const Q_GAME_CENTRE = `query GameCentre($gameId: ID!) {
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 let _diagCount = 0;
+let _errSample = 0;
 let backfill_hidden_first_ge_logged = false;
 async function gql(operationName, query, variables, cookie, useGameHeaders = false) {
   const headers = useGameHeaders ? HEADERS_GAME : HEADERS;
+  const url     = useGameHeaders ? SPECTATOR_URL : API_URL;
   try {
-    const res = await fetch(API_URL, {
+    const res = await fetch(url, {
       method:  'POST',
       headers: { ...headers, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
       body:    JSON.stringify({ operationName, variables, query }),
