@@ -38,7 +38,8 @@ const TENANT        = ARGS.tenant      || 'bv';
 const TENANT_FULL   = { bv: 'basketball-victoria' }[TENANT] || TENANT;
 const CONCURRENCY   = parseInt(ARGS.concurrency || '100', 10);
 const TARGET_SEASON = ARGS.season      || null;
-const REVIEW_LEGACY = !!ARGS['review-legacy']; // re-probe legacy games via discoverGame for forfeits
+const REVIEW_LEGACY   = !!ARGS['review-legacy'];   // re-probe legacy games via discoverGame for forfeits
+const REVIEW_UNSCORED = !!ARGS['review-unscored']; // probe ALL unscored unflagged games via discoverGame
 
 // Two separate endpoints with different purposes:
 //   API_URL       — main GraphQL API, used to get session cookie
@@ -622,6 +623,138 @@ async function main() {
     console.log(`   ✗  Failed/skipped:        ${legacyFailed.toLocaleString()}`);
 
     gitCommitPush(`Legacy review complete: ${forfeits} forfeits, ${accessible} accessible`);
+    return;
+  }
+
+  // ─── Review-unscored mode ─────────────────────────────────────────────────
+  // Probes ALL games with no score and no flag via discoverGame.
+  // Catches forfeits and other games missed by the legacy review.
+  // These games are accessible via discoverGame but returned no score from
+  // the spectator endpoint (not e-scored).
+  if (REVIEW_UNSCORED) {
+    console.log(`\n🔎 Review-unscored mode — probing all unscored unflagged games via discoverGame\n`);
+
+    const todo2    = [];
+    const sgCache2 = {};
+
+    for (const season of targetSeasons) {
+      const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
+      if (!fs.existsSync(gameFile)) continue;
+      let sg;
+      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+      sgCache2[season.id] = sg;
+      for (const [gameId, game] of Object.entries(sg.games || {})) {
+        if (game.hs !== undefined) continue;   // already has score
+        if (game.hidden)           continue;   // already flagged hidden
+        if (game.legacy)           continue;   // already flagged legacy
+        if (game.forfeit)          continue;   // already flagged forfeit
+        todo2.push({ seasonId: season.id, gameId });
+      }
+    }
+
+    console.log(`📋 Unscored unflagged games to probe: ${todo2.length.toLocaleString()}\n`);
+
+    let forfeits2 = 0, scored2 = 0, nowLegacy2 = 0, failed2 = 0, sinceLastSave2 = 0;
+
+    for (let i = 0; i < todo2.length; i += CONCURRENCY) {
+      const batch = todo2.slice(i, i + CONCURRENCY);
+      const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
+        await delay(j * 3);
+        const resp = await fetchDiscoverGame(gameId, session);
+        if (resp?._authError) { try { session = await getSession(true); } catch (e) {} return { gameId, seasonId, type: 'skip' }; }
+        if (resp?._rateLimit || resp?._transient || resp?._graphqlError) return { gameId, seasonId, type: 'skip' };
+        const dg = resp?.data?.discoverGame;
+        if (!dg) return { gameId, seasonId, type: 'legacy' };
+
+        const outcomeVal = dg.result?.outcome?.value || '';
+        const isForfeit  = outcomeVal.includes('FORFEIT');
+        const hs         = parseScore(dg.result?.home?.statistics);
+        const as_        = parseScore(dg.result?.away?.statistics);
+        const court      = dg.allocation?.court;
+        const venue      = court?.venue;
+
+        return {
+          gameId, seasonId,
+          type:        isForfeit ? 'forfeit' : 'scored',
+          hs, as: as_,
+          outcome:     outcomeVal,
+          fo:          dg.result?.winner?.value || null,
+          desc:        dg.result?.home?.gameOutcomeDescription || null,
+          h:           dg.home?.id   || null, hn: dg.home?.name  || null,
+          a:           dg.away?.id   || null, an: dg.away?.name  || null,
+          rn:          dg.round?.name || null,
+          st:          dg.status?.value || null,
+          venue, court,
+          time:        dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null,
+        };
+      }));
+
+      for (const r of results) {
+        if (r.type === 'skip') { failed2++; continue; }
+        const sg    = sgCache2[r.seasonId];
+        if (!sg) continue;
+        const entry = sg.games[r.gameId] || {};
+
+        if (r.type === 'legacy') {
+          entry.legacy = true;
+          prog.legacy.add(r.gameId);
+          nowLegacy2++;
+        } else {
+          if (r.h)  entry.h  = r.h;
+          if (r.hn) entry.hn = r.hn;
+          if (r.a)  entry.a  = r.a;
+          if (r.an) entry.an = r.an;
+          if (r.rn && !entry.rn) entry.rn = r.rn;
+          if (r.st) entry.st = r.st;
+
+          if (r.type === 'forfeit') {
+            entry.forfeit = true;
+            entry.fo      = r.fo;
+            if (r.desc) entry.desc = r.desc;
+            forfeits2++;
+          } else {
+            if (r.hs !== null) entry.hs = r.hs;
+            if (r.as !== null) entry.as = r.as;
+            if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
+            if (r.court?.name) entry.ct = r.court.name;
+            if (r.time)        entry.t  = r.time;
+            scored2++;
+          }
+          prog.done.add(r.gameId);
+        }
+
+        sg.games[r.gameId] = entry;
+        sinceLastSave2++;
+      }
+
+      if (sinceLastSave2 >= 5000) {
+        for (const [sid, sg] of Object.entries(sgCache2)) {
+          fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+        }
+        flushVenueShards();
+        saveProgress(prog);
+        sinceLastSave2 = 0;
+        gitCommitPush(`Unscored review: ${forfeits2} forfeits, ${scored2} scored, ${nowLegacy2} legacy`);
+      }
+
+      const done = Math.min(i + CONCURRENCY, todo2.length);
+      process.stdout.write(`  ${done.toLocaleString()}/${todo2.length.toLocaleString()} — 🏳 ${forfeits2} forfeits, ✓ ${scored2} scored, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
+      if (i + CONCURRENCY < todo2.length) await delay(50);
+    }
+
+    for (const [sid, sg] of Object.entries(sgCache2)) {
+      fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+    }
+    flushVenueShards();
+    saveProgress(prog);
+
+    console.log(`\n\n✅ Unscored review complete`);
+    console.log(`   🏳 Forfeits:   ${forfeits2.toLocaleString()}`);
+    console.log(`   ✓  Scored:     ${scored2.toLocaleString()}`);
+    console.log(`   📜 Legacy:     ${nowLegacy2.toLocaleString()}`);
+    console.log(`   ✗  Failed:     ${failed2.toLocaleString()}`);
+
+    gitCommitPush(`Unscored review complete: ${forfeits2} forfeits, ${scored2} scored, ${nowLegacy2} legacy`);
     return;
   }
 
