@@ -74,11 +74,10 @@ async function getSession() {
   try {
     if (fs.existsSync(COOKIE_FILE)) {
       const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
-      if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) return d.cookie;
+      if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) return d;
     }
   } catch (e) {}
   console.log('  Fetching session cookie...');
-  // Try with full tenant name first, then short name
   for (const tenant of [TENANT_FULL, TENANT]) {
     const res = await fetch(API_URL, {
       method: 'POST',
@@ -91,21 +90,35 @@ async function getSession() {
     });
     const raw = res.headers.get('set-cookie');
     if (raw) {
-      const cookie = raw.split(';')[0];
-      fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie, fetchedAt: Date.now() }));
-      console.log(`  ✓ Cookie obtained (tenant: ${tenant})`);
-      return cookie;
+      const session = raw.split(';')[0]; // phq_session=...
+      // Decode JWT to extract sub (used as phq_sub)
+      let sub = '';
+      try {
+        const payload = JSON.parse(Buffer.from(session.split('=')[1].split('.')[1], 'base64').toString());
+        sub = payload.sub || payload.jti || '';
+      } catch (e) {}
+      const sessionData = {
+        session,
+        sub,
+        // phq_sub and phq_tier cookies to send to spectator endpoint
+        allCookies: sub
+          ? `${session}; phq_sub=${sub}; phq_tier=cookie-no-jwt`
+          : session,
+        fetchedAt: Date.now(),
+      };
+      fs.writeFileSync(COOKIE_FILE, JSON.stringify(sessionData));
+      console.log(`  ✓ Cookie obtained (sub: ${sub || 'none'})`);
+      return sessionData;
     }
-    console.warn(`  ⚠ No cookie with tenant=${tenant} (status ${res.status}), trying next...`);
+    console.warn(`  ⚠ No cookie with tenant=${tenant} (status ${res.status})`);
   }
   throw new Error('No Set-Cookie header from either tenant format');
 }
 
 // ─── Queries ──────────────────────────────────────────────────────────────────
 
-// game(id) — live e-scoring endpoint, returns data for hidden games
-// discoverGame returns null for hidden games; game(id) returns scores
-const Q_GAME_ESCORE = `query GameScore($id: ID!) {
+// Exact query from mobile app traffic - spectator.playhq.com endpoint
+const Q_GAME_ESCORE = `query Game($id: ID!) {
   game(id: $id) {
     id
     status
@@ -113,10 +126,28 @@ const Q_GAME_ESCORE = `query GameScore($id: ID!) {
     result {
       home {
         statistics { count type { value } }
-        periods { period { value } statistics { count type { value } } }
+        periods(scope: BY_PERIOD) {
+          period { value }
+          overtimeSequenceNo
+          statistics { count type { value } }
+        }
       }
       away {
         statistics { count type { value } }
+      }
+    }
+    statistics {
+      home {
+        players {
+          profileID playerNumber name id
+          statistics { count type { value } }
+        }
+      }
+      away {
+        players {
+          profileID playerNumber name id
+          statistics { count type { value } }
+        }
       }
     }
   }
@@ -163,9 +194,11 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 let _diagCount = 0;
 let _errSample = 0;
 let backfill_hidden_first_ge_logged = false;
-async function gql(operationName, query, variables, cookie, useGameHeaders = false) {
+async function gql(operationName, query, variables, session, useGameHeaders = false) {
   const headers = useGameHeaders ? HEADERS_GAME : HEADERS;
   const url     = useGameHeaders ? SPECTATOR_URL : API_URL;
+  // Spectator endpoint gets all three cookies; main API gets just phq_session
+  const cookie  = useGameHeaders ? session.allCookies : session.session;
   try {
     const res = await fetch(url, {
       method:  'POST',
@@ -305,7 +338,7 @@ async function main() {
     console.log(`  ↻ Resuming — ${prog.done.size.toLocaleString()} already done, ${prog.legacy.size.toLocaleString()} flagged legacy\n`);
   }
 
-  let cookie = await getSession();
+  let session = await getSession();
 
   // Collect all game IDs missing score AND venue, not yet processed
   const todo = [];
@@ -344,10 +377,10 @@ async function main() {
       await delay(j * 3);
 
       // Step 1: call discoverGame via GameCentre operation (exact mobile app operation)
-      const dg = await gql('GameCentre', Q_GAME_CENTRE, { gameId: gameId }, cookie);
+      const dg = await gql('GameCentre', Q_GAME_CENTRE, { gameId: gameId }, session);
 
       if (dg?._authError) {
-        try { cookie = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
+        try { session = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
         return { gameId, seasonId, outcome: 'skip' };
       }
       if (dg?._rateLimit || dg?._transient || dg?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
@@ -367,7 +400,7 @@ async function main() {
 
       // discoverGame returned null → game hidden by admin
       // Try game(id) e-scoring endpoint as fallback
-      const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie, true);
+      const ge = await gql('Game', Q_GAME_ESCORE, { id: gameId }, session, true);
 
       if (!backfill_hidden_first_ge_logged) {
         backfill_hidden_first_ge_logged = true;
