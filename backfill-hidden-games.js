@@ -634,10 +634,17 @@ async function main() {
   if (REVIEW_UNSCORED) {
     console.log(`\n🔎 Review-unscored mode — probing all unscored unflagged games via discoverGame\n`);
 
+    // Use full season index — not just no-venue-seasons — since forfeits can be in any season
+    const INDEX_FILE = path.join(__dirname, 'sports-index.json');
+    const allSeasons = fs.existsSync(INDEX_FILE)
+      ? Object.keys(JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8')).seasons || {}).map(id => ({ id }))
+      : targetSeasons;
+    const reviewSeasons = TARGET_SEASON ? [{ id: TARGET_SEASON }] : allSeasons;
+
     const todo2    = [];
     const sgCache2 = {};
 
-    for (const season of targetSeasons) {
+    for (const season of reviewSeasons) {
       const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
       if (!fs.existsSync(gameFile)) continue;
       let sg;
@@ -647,9 +654,7 @@ async function main() {
         if (game.hidden)  continue;
         if (game.legacy)  continue;
         if (game.forfeit) continue;
-        // Skip only if hs is a real number (scored)
         if (typeof game.hs === 'number') continue;
-        // Include if hs is undefined (never checked) or null (checked, no score — may be forfeit)
         todo2.push({ seasonId: season.id, gameId });
       }
     }
