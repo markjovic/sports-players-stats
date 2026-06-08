@@ -258,6 +258,11 @@ async function fetchGame(gameId, session) {
 
     if (json.errors?.length) {
       if (_diagPrinted < 5) console.warn(`\n  ⚠ GraphQL error for ${gameId}:`, JSON.stringify(json.errors[0]).slice(0, 150));
+      const msg = json.errors[0]?.message || '';
+      // "could not be found or was not electronically scored" = permanently no data
+      if (msg.includes('could not be found') || msg.includes('not electronically scored')) {
+        return { _legacy: true };
+      }
       return { _graphqlError: true };
     }
 
@@ -460,6 +465,9 @@ async function main() {
       await delay(j * 5);
 
       const resp = await fetchGame(gameId, session);
+
+      // Permanently no data — not e-scored
+      if (resp?._legacy) return { gameId, seasonId, outcome: 'legacy' };
 
       // Handle auth failure — force a fresh cookie fetch (not cached) then retry once
       if (resp?._authError) {
