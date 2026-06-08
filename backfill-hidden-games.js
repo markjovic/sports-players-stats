@@ -107,7 +107,7 @@ const Q_GAME_ESCORE = `query GameScore($id: ID!) {
 
 // Use exact GameCentre operation from mobile traffic - including gameStatisticsFilter
 // which appears to be required to get data for hidden/grading games
-const Q_GAME_CENTRE = `query GameCentre($gameId: ID!, $gameStatisticsFilter: GameStatisticsFilter!) {
+const Q_GAME_CENTRE = `query GameCentre($gameId: ID!) {
   discoverGame(gameID: $gameId) {
     id
     status { name value }
@@ -154,7 +154,7 @@ async function gql(operationName, query, variables, cookie) {
     });
     if (_diagCount < 3) {
       _diagCount++;
-      console.warn(`\n  DIAG [${operationName}] status=${res.status} gameID=${variables.gameID || variables.id}`);
+      console.warn(`\n  DIAG [${operationName}] status=${res.status} gameId=${variables.gameId || variables.gameID || variables.id}`);
     }
     if (res.status === 429) return { _rateLimit: true };
     if (res.status === 403 || res.status === 401) return { _authError: true };
@@ -318,8 +318,7 @@ async function main() {
       await delay(j * 3);
 
       // Step 1: call discoverGame via GameCentre operation (exact mobile app operation)
-      const dg = await gql('GameCentre', Q_GAME_CENTRE,
-        { gameId: gameId, gameStatisticsFilter: { classification: 'TOTAL' } }, cookie);
+      const dg = await gql('GameCentre', Q_GAME_CENTRE, { gameId: gameId }, cookie);
 
       if (dg?._authError) {
         try { cookie = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
