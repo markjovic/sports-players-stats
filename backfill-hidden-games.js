@@ -74,56 +74,69 @@ const HEADERS_SPECTATOR = {
 // The cookie is obtained by hitting the main API with any valid query.
 // The Set-Cookie response header gives us phq_session, which we also use
 // for the spectator endpoint (along with phq_sub and phq_tier).
+//
+// getSession(force=false) — pass force=true to bypass the cache and fetch fresh.
+// _refreshPromise ensures only one refresh happens at a time even under
+// high concurrency — other callers wait for the same promise rather than
+// all hitting the API simultaneously.
 
-async function getSession() {
+let _refreshPromise = null;
+
+async function getSession(force = false) {
+  // If a refresh is already in flight, wait for it rather than firing another
+  if (_refreshPromise) return _refreshPromise;
+
   try {
-    if (fs.existsSync(COOKIE_FILE)) {
+    if (!force && fs.existsSync(COOKIE_FILE)) {
       const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
       // Reuse if less than 23 hours old (JWT expires at 24h)
       if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) {
-        console.log(`  ↻ Reusing session cookie (sub: ${d.sub || 'none'})`);
         return d;
       }
     }
   } catch (e) {}
 
-  console.log('  Fetching session cookie...');
-  const res = await fetch(API_URL, {
-    method:  'POST',
-    headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
-    body: JSON.stringify({
-      operationName: 'ProfileSearch',
-      variables:     { fullName: 'test' },
-      query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
-    }),
-  });
+  _refreshPromise = (async () => {
+    console.log('\n  Fetching fresh session cookie...');
+    const res = await fetch(API_URL, {
+      method:  'POST',
+      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
+      body: JSON.stringify({
+        operationName: 'ProfileSearch',
+        variables:     { fullName: 'test' },
+        query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+      }),
+    });
 
-  const rawCookie = res.headers.get('set-cookie');
-  if (!rawCookie) throw new Error(`No Set-Cookie header from API (status ${res.status})`);
+    const rawCookie = res.headers.get('set-cookie');
+    if (!rawCookie) throw new Error(`No Set-Cookie header from API (status ${res.status})`);
 
-  // Extract phq_session=<token> from the cookie string
-  const sessionMatch = rawCookie.match(/phq_session=([^;]+)/);
-  if (!sessionMatch) throw new Error('phq_session not found in Set-Cookie header');
+    // Extract phq_session=<token> from the cookie string
+    const sessionMatch = rawCookie.match(/phq_session=([^;]+)/);
+    if (!sessionMatch) throw new Error('phq_session not found in Set-Cookie header');
 
-  const sessionToken = sessionMatch[1];
-  const sessionCookie = `phq_session=${sessionToken}`;
+    const sessionToken  = sessionMatch[1];
+    const sessionCookie = `phq_session=${sessionToken}`;
 
-  // Decode the JWT payload to get sub (used as phq_sub value)
-  let sub = '';
-  try {
-    const payload = JSON.parse(Buffer.from(sessionToken.split('.')[1], 'base64').toString());
-    sub = payload.sub || payload.jti || '';
-  } catch (e) {}
+    // Decode the JWT payload to get sub (used as phq_sub value)
+    let sub = '';
+    try {
+      const payload = JSON.parse(Buffer.from(sessionToken.split('.')[1], 'base64').toString());
+      sub = payload.sub || payload.jti || '';
+    } catch (e) {}
 
-  // The spectator endpoint needs all three cookies
-  const allCookies = sub
-    ? `${sessionCookie}; phq_sub=${sub}; phq_tier=cookie-no-jwt`
-    : sessionCookie;
+    // The spectator endpoint needs all three cookies
+    const allCookies = sub
+      ? `${sessionCookie}; phq_sub=${sub}; phq_tier=cookie-no-jwt`
+      : sessionCookie;
 
-  const sessionData = { sessionCookie, allCookies, sub, fetchedAt: Date.now() };
-  fs.writeFileSync(COOKIE_FILE, JSON.stringify(sessionData));
-  console.log(`  ✓ Cookie obtained (sub: ${sub || 'none'})`);
-  return sessionData;
+    const sessionData = { sessionCookie, allCookies, sub, fetchedAt: Date.now() };
+    fs.writeFileSync(COOKIE_FILE, JSON.stringify(sessionData));
+    console.log(`  ✓ Cookie obtained (sub: ${sub || 'none'})`);
+    return sessionData;
+  })().finally(() => { _refreshPromise = null; });
+
+  return _refreshPromise;
 }
 
 // ─── GraphQL query for the spectator endpoint ─────────────────────────────────
@@ -418,17 +431,51 @@ async function main() {
   for (let i = 0; i < todo.length; i += CONCURRENCY) {
     const batch = todo.slice(i, i + CONCURRENCY);
 
-    const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
+    function buildResult(gameId, seasonId, game) {
+    const hs  = parseScore(game.result?.home?.statistics);
+    const as_ = parseScore(game.result?.away?.statistics);
+    const hq  = parseQuarterScores(game.result?.home?.periods);
+    const aq  = parseQuarterScores(game.result?.away?.periods);
+    const homePlayers = (game.statistics?.home?.players || []).map(p => ({
+      profileID: p.profileID, name: p.name, number: p.playerNumber,
+      pts:   parseScore(p.statistics),
+      pt1:   p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
+      pt2:   p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
+      pt3:   p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
+      fouls: p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
+    }));
+    const awayPlayers = (game.statistics?.away?.players || []).map(p => ({
+      profileID: p.profileID, name: p.name, number: p.playerNumber,
+      pts:   parseScore(p.statistics),
+      pt1:   p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
+      pt2:   p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
+      pt3:   p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
+      fouls: p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
+    }));
+    return { gameId, seasonId, outcome: 'hidden', hs, as: as_, hq, aq, homePlayers, awayPlayers, status: game.status, updatedAt: game.updatedAt };
+  }
+
+  const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
       // Small stagger to avoid thundering herd
       await delay(j * 5);
 
       const resp = await fetchGame(gameId, session);
 
-      // Handle auth failure — refresh cookie and skip this game (retry next run)
+      // Handle auth failure — force a fresh cookie fetch (not cached) then retry once
       if (resp?._authError) {
-        console.warn(`\n  ⚠ Auth error — refreshing cookie`);
-        try { session = await getSession(); } catch (e) {}
-        return { gameId, seasonId, outcome: 'skip' };
+        try { session = await getSession(true); } catch (e) {
+          return { gameId, seasonId, outcome: 'skip' };
+        }
+        // Retry the request once with the new cookie
+        const retry = await fetchGame(gameId, session);
+        if (retry?._authError || retry?._rateLimit || retry?._transient || retry?._graphqlError) {
+          return { gameId, seasonId, outcome: 'skip' };
+        }
+        const retryGame = retry?.data?.game;
+        if (retryGame) {
+          return buildResult(gameId, seasonId, retryGame);
+        }
+        return { gameId, seasonId, outcome: 'legacy' };
       }
 
       // Rate limit or transient error — skip for retry
@@ -439,41 +486,7 @@ async function main() {
       const game = resp?.data?.game;
 
       if (game) {
-        // Spectator endpoint returned data — game is hidden from public but scores exist
-        const hs  = parseScore(game.result?.home?.statistics);
-        const as_ = parseScore(game.result?.away?.statistics);
-        const hq  = parseQuarterScores(game.result?.home?.periods);
-        const aq  = parseQuarterScores(game.result?.away?.periods);
-
-        // Extract per-player stats for both teams
-        const homePlayers = (game.statistics?.home?.players || []).map(p => ({
-          profileID:    p.profileID,
-          name:         p.name,
-          number:       p.playerNumber,
-          pts:          parseScore(p.statistics),
-          pt1:          p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
-          pt2:          p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
-          pt3:          p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
-          fouls:        p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
-        }));
-        const awayPlayers = (game.statistics?.away?.players || []).map(p => ({
-          profileID:    p.profileID,
-          name:         p.name,
-          number:       p.playerNumber,
-          pts:          parseScore(p.statistics),
-          pt1:          p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
-          pt2:          p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
-          pt3:          p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
-          fouls:        p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
-        }));
-
-        return {
-          gameId, seasonId, outcome: 'hidden',
-          hs, as: as_, hq, aq,
-          homePlayers, awayPlayers,
-          status: game.status,
-          updatedAt: game.updatedAt,
-        };
+        return buildResult(gameId, seasonId, game);
       }
 
       // game(id) returned null — genuinely no data anywhere
