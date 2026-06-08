@@ -40,6 +40,7 @@ jobs:
 
       - name: Run hidden game backfill
         run: |
+          rm -f backfill-hidden-cookie.json
           ARGS="--concurrency=${{ github.event.inputs.concurrency }}"
           if [ -n "${{ github.event.inputs.season }}" ]; then
             ARGS="$ARGS --season=${{ github.event.inputs.season }}"
