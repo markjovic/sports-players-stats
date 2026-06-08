@@ -212,7 +212,7 @@ async function main() {
   if (needsEnrichment.length > 0) {
     console.log(`  Enriching ${needsEnrichment.length} seasons with missing comp/org via player API...`);
     const cookie2 = await getSession();
-    const Q_PROFILE = `query Profile($id: ID!) { publicProfileStatistics(profileID: $id) { statistics { season { id name competition { id name organisation { id name } } } } } }`;
+    const Q_PROFILE = `query Profile($id: ID!) { publicProfileStatistics(profileID: $id) { seasonStatistics { statistics { season { id name competition { id name organisation { id name } } } } } } }`;
 
     for (let i = 0; i < needsEnrichment.length; i += CONCURRENCY) {
       const batch = needsEnrichment.slice(i, i + CONCURRENCY);
@@ -224,12 +224,10 @@ async function main() {
             body:    JSON.stringify({ operationName: 'Profile', variables: { id: meta._playerUuid }, query: Q_PROFILE }),
           });
           const json = await res.json();
-          const ss   = json.data?.publicProfileStatistics?.statistics || [];
+          const seasonStats = json.data?.publicProfileStatistics?.seasonStatistics || [];
+          // Flatten: seasonStatistics[].statistics[].season
+          const ss = seasonStats.flatMap(s => s.statistics || []);
           const match = ss.find(s => s.season?.id === meta._playerSid);
-          if (!match && ss.length > 0 && needsEnrichment.indexOf(meta) === 0) {
-            // Log first failure for diagnosis
-            console.warn(`\n  DIAG: looking for sid=${meta._playerSid}, got season IDs: ${ss.slice(0,5).map(s=>s.season?.id).join(', ')}`);
-          }
           if (match?.season?.competition) {
             const comp = match.season.competition;
             meta.compId   = comp.id;
