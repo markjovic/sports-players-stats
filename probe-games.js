@@ -90,7 +90,9 @@ async function main() {
         console.log(`  Away:   ${g.away?.name || '?'} (${g.away?.id || '?'})`);
         const hs = g.result?.home?.statistics?.find(s => s.type?.value === 'TOTAL_SCORE')?.count;
         const as_ = g.result?.away?.statistics?.find(s => s.type?.value === 'TOTAL_SCORE')?.count;
-        console.log(`  Score:  ${hs ?? 'none'} - ${as_ ?? 'none'}`);
+        console.log(`  Score:   ${hs ?? 'none'} - ${as_ ?? 'none'}`);
+        console.log(`  Outcome: ${g.result?.outcome?.value || 'none'}`);
+        console.log(`  Desc:    ${g.result?.home?.gameOutcomeDescription || 'none'}`);
         const venue = g.allocation?.court?.venue;
         console.log(`  Venue:  ${venue ? `${venue.name}, ${venue.suburb}` : 'none'}`);
         console.log(`  Court:  ${g.allocation?.court?.name || 'none'}`);
