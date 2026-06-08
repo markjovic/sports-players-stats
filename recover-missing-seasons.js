@@ -41,7 +41,83 @@ const HEADERS = {
   'content-type': 'application/json',
 };
 
-console.log(`\n🔍 Recover Missing Seasons`);
+const PLAYERS_DIR = path.join(__dirname, 'players');
+const TEAM_DIR    = path.join(__dirname, 'team-lookup');
+
+// Cache for team-lookup shards
+const _teamShards = {};
+function getTeamData(tid) {
+  if (!tid) return null;
+  const prefix = tid.slice(0, 2);
+  if (!_teamShards[prefix]) {
+    const f = path.join(TEAM_DIR, `${prefix}.json`);
+    try { _teamShards[prefix] = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : {}; }
+    catch (e) { _teamShards[prefix] = {}; }
+  }
+  return _teamShards[prefix][tid] || null;
+}
+
+// Scan player files to find season metadata for missing season IDs
+// Returns a map of seasonId -> { name, compName, orgName, grades[] }
+function reconstructFromPlayerFiles(missingIds) {
+  console.log(`\n  Scanning player files for ${missingIds.length} missing seasons...`);
+  const needed  = new Set(missingIds);
+  const results = {};
+
+  if (!fs.existsSync(PLAYERS_DIR)) {
+    console.log('  ⚠ players/ directory not available in this checkout');
+    return results;
+  }
+
+  const shards = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/i.test(d));
+  let scanned = 0;
+
+  for (const shard of shards) {
+    if (needed.size === 0) break;
+    const dir = path.join(PLAYERS_DIR, shard);
+    let files;
+    try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch (e) { continue; }
+
+    for (const file of files) {
+      if (needed.size === 0) break;
+      let detail;
+      try { detail = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch (e) { continue; }
+      scanned++;
+
+      for (const season of (detail.seasons || [])) {
+        if (!needed.has(season.sid)) continue;
+
+        // Found a player with this season — extract metadata
+        const reg   = season.regs?.[0];
+        const tid   = reg?.tid;
+        const team  = tid ? getTeamData(tid) : null;
+
+        results[season.sid] = {
+          id:       season.sid,
+          name:     season.sn || `Unknown ${season.sid}`,
+          fullName: team
+            ? `${team.compName || '?'} — ${season.sn}`
+            : season.sn || `Unknown ${season.sid}`,
+          locked:   true,
+          grades:   season.regs?.map(r => ({ id: r.gid, name: r.gn })).filter(g => g.id) || [],
+          compId:   team?.compId    || null,
+          compName: team?.compName  || null,
+          orgId:    team?.compOrgId || null,
+          orgName:  team?.compOrgName || null,
+          reconstructed: 'player-history',
+        };
+        needed.delete(season.sid);
+      }
+
+      if (scanned % 10000 === 0) {
+        process.stdout.write(`  Scanned ${scanned.toLocaleString()} player files, ${Object.keys(results).length} seasons found, ${needed.size} still needed...\r`);
+      }
+    }
+  }
+
+  console.log(`\n  Scanned ${scanned.toLocaleString()} player files — found metadata for ${Object.keys(results).length}/${missingIds.length} seasons`);
+  return results;
+}
 console.log(`   Tenant:      ${TENANT}`);
 console.log(`   Concurrency: ${CONCURRENCY}`);
 console.log(`   Mode:        ${DRY_RUN ? 'DRY RUN' : 'LIVE'}\n`);
@@ -112,62 +188,82 @@ async function main() {
   const disc    = fs.existsSync(DISC_FILE) ? JSON.parse(fs.readFileSync(DISC_FILE, 'utf8')) : {};
   const seasons = index.seasons || {};
 
-  // Find game files not in index
-  const gameFiles   = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''));
-  const missingIds  = gameFiles.filter(id => !seasons[id] && !disc[id]);
+  const gameFiles  = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''));
+  const missingIds = gameFiles.filter(id => !seasons[id] && !disc[id]);
 
   console.log(`Season game files on disk:   ${gameFiles.length}`);
   console.log(`In sports-index.json:        ${Object.keys(seasons).length}`);
   console.log(`Missing from both:           ${missingIds.length}\n`);
 
-  if (missingIds.length === 0) {
-    console.log('✅ No missing seasons — index is complete');
-    return;
-  }
+  if (missingIds.length === 0) { console.log('✅ No missing seasons — index is complete'); return; }
 
-  const cookie = await getSession();
-
-  let found = 0, notFound = 0, failed = 0;
+  let found = 0, notFound = 0;
   const recovered = [];
 
-  for (let i = 0; i < missingIds.length; i += CONCURRENCY) {
-    const batch = missingIds.slice(i, i + CONCURRENCY);
-    const results = await Promise.all(batch.map(async id => {
-      await delay(Math.random() * 100);
-      const s = await fetchSeason(id, cookie);
-      return { id, season: s };
-    }));
+  // ── Step 1: Reconstruct from player files (no API calls needed) ──────────────
+  const playerMeta = reconstructFromPlayerFiles(missingIds);
+  const stillMissing = missingIds.filter(id => !playerMeta[id]);
 
-    for (const { id, season } of results) {
-      if (!season) {
-        // Try to reconstruct from team-lookup using game file team IDs
-        const gameFile = path.join(GAMES_DIR, `${id}.json`);
+  console.log(`\n  From player files: ${Object.keys(playerMeta).length} recovered`);
+  console.log(`  Still need API:    ${stillMissing.length}\n`);
+
+  for (const [sid, meta] of Object.entries(playerMeta)) {
+    found++;
+    recovered.push({ id: sid, name: meta.name, comp: meta.compName, org: meta.orgName, source: 'player-history' });
+    if (!DRY_RUN) {
+      disc[sid]    = { id: sid, name: meta.name, compName: meta.compName, orgName: meta.orgName, reconstructed: 'player-history' };
+      seasons[sid] = meta;
+    }
+  }
+
+  // ── Step 2: Try discoverSeason API for remainder ──────────────────────────────
+  if (stillMissing.length > 0) {
+    const cookie = await getSession();
+
+    for (let i = 0; i < stillMissing.length; i += CONCURRENCY) {
+      const batch   = stillMissing.slice(i, i + CONCURRENCY);
+      const results = await Promise.all(batch.map(async id => {
+        await delay(Math.random() * 100);
+        return { id, season: await fetchSeason(id, cookie) };
+      }));
+
+      for (const { id, season } of results) {
+        if (season) {
+          // Found via API
+          found++;
+          recovered.push({ id, name: season.name, comp: season.competition?.name, org: season.competition?.organisation?.name });
+          if (!DRY_RUN) {
+            disc[id] = { id, name: season.name, compName: season.competition?.name, orgName: season.competition?.organisation?.name };
+            const isActive = season.status?.value === 'ACTIVE' || season.status?.value === 'UPCOMING';
+            seasons[id] = {
+              id, name: season.name,
+              fullName:  `${season.competition?.name || '?'} — ${season.name}`,
+              locked:    !isActive,
+              grades:    (season.grades || []).map(g => ({ id: g.id, name: g.name })),
+              compId:    season.competition?.id,    compName: season.competition?.name,
+              orgId:     season.competition?.organisation?.id, orgName: season.competition?.organisation?.name,
+              startDate: season.startDate, endDate: season.endDate,
+            };
+          }
+          continue;
+        }
+
+        // ── Step 3: Try team-lookup reconstruction ────────────────────────────
         let reconstructed = null;
         try {
-          const sg    = JSON.parse(fs.readFileSync(gameFile, 'utf8'));
-          const games = Object.values(sg.games || {});
-          // Find first game with a home team ID
-          const sample = games.find(g => g.h);
-          if (sample?.h) {
-            const prefix = sample.h.slice(0, 2);
-            const shardFile = path.join(__dirname, 'team-lookup', `${prefix}.json`);
-            if (fs.existsSync(shardFile)) {
-              const shard = JSON.parse(fs.readFileSync(shardFile, 'utf8'));
-              const team  = shard[sample.h];
-              if (team) {
-                reconstructed = {
-                  id,
-                  name:      team.sn || id,
-                  fullName:  `${team.compName || '?'} — ${team.sn || id}`,
-                  locked:    true,  // if hidden/missing it's completed
-                  grades:    [],
-                  compId:    team.compId    || null,
-                  compName:  team.compName  || null,
-                  orgId:     team.compOrgId || null,
-                  orgName:   team.compOrgName || null,
-                  reconstructed: true,  // flag: metadata came from team-lookup not API
-                };
-              }
+          const games  = Object.values(JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${id}.json`), 'utf8')).games || {});
+          const teamId = games.find(g => g.h)?.h || games.find(g => g.o)?.o;
+          if (teamId) {
+            const team = getTeamData(teamId);
+            if (team) {
+              reconstructed = {
+                id, name: team.sn || id,
+                fullName: `${team.compName || '?'} — ${team.sn || id}`,
+                locked: true, grades: [],
+                compId: team.compId, compName: team.compName,
+                orgId: team.compOrgId, orgName: team.compOrgName,
+                reconstructed: 'team-lookup',
+              };
             }
           }
         } catch (e) {}
@@ -176,61 +272,44 @@ async function main() {
           found++;
           recovered.push({ id, name: reconstructed.name, comp: reconstructed.compName, org: reconstructed.orgName, source: 'team-lookup' });
           if (!DRY_RUN) {
-            disc[id] = { id, name: reconstructed.name, compName: reconstructed.compName, orgName: reconstructed.orgName, reconstructed: true };
+            disc[id]    = { id, name: reconstructed.name, compName: reconstructed.compName, orgName: reconstructed.orgName, reconstructed: 'team-lookup' };
             seasons[id] = reconstructed;
           }
-        } else {
+          continue;
+        }
+
+        // ── Step 4: Date-based stub ───────────────────────────────────────────
+        try {
+          const games = Object.values(JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${id}.json`), 'utf8')).games || {});
+          const year  = games.map(g => g.d).filter(Boolean).sort()[0]?.slice(0, 4) || '?';
+          const stub  = { id, name: `Unknown Season ${year}`, fullName: `Unknown Competition — ${year}`, locked: true, grades: [], compId: null, compName: null, orgId: null, orgName: null, reconstructed: 'stub' };
+          found++;
+          recovered.push({ id, name: stub.name, comp: null, org: null, source: 'stub' });
+          if (!DRY_RUN) { disc[id] = { id, name: stub.name, reconstructed: 'stub' }; seasons[id] = stub; }
+        } catch (e) {
           notFound++;
           if (!DRY_RUN) disc[id] = { id, invalid: true, checkedAt: new Date().toISOString() };
         }
-        continue;
       }
 
-      found++;
-      recovered.push({ id, name: season.name, comp: season.competition?.name, org: season.competition?.organisation?.name });
-
-      if (!DRY_RUN) {
-        // Add to seasons-discovered
-        disc[id] = {
-          id,
-          name:     season.name,
-          compId:   season.competition?.id,
-          compName: season.competition?.name,
-          orgId:    season.competition?.organisation?.id,
-          orgName:  season.competition?.organisation?.name,
-          status:   season.status?.value,
-        };
-
-        // Add to sports-index.json
-        const isActive = season.status?.value === 'ACTIVE' || season.status?.value === 'UPCOMING';
-        seasons[id] = {
-          id,
-          name:      season.name,
-          fullName:  `${season.competition?.name} — ${season.name}`,
-          locked:    !isActive,
-          grades:    (season.grades || []).map(g => ({ id: g.id, name: g.name })),
-          compId:    season.competition?.id,
-          compName:  season.competition?.name,
-          orgId:     season.competition?.organisation?.id,
-          orgName:   season.competition?.organisation?.name,
-          startDate: season.startDate,
-          endDate:   season.endDate,
-        };
-      }
+      process.stdout.write(`  ${Math.min(i + CONCURRENCY, stillMissing.length)}/${stillMissing.length} API probed — ✓ ${found} total, ✗ ${notFound}\r`);
+      if (i + CONCURRENCY < stillMissing.length) await delay(200);
     }
-
-    process.stdout.write(`  ${Math.min(i + CONCURRENCY, missingIds.length)}/${missingIds.length} — ✓ ${found} found, ✗ ${notFound} not found\r`);
-    if (i + CONCURRENCY < missingIds.length) await delay(200);
   }
 
   console.log(`\n\n✅ Recovery complete`);
-  console.log(`   Found via API:               ${recovered.filter(r => !r.source).length}`);
-  console.log(`   Reconstructed (team-lookup): ${recovered.filter(r => r.source === 'team-lookup').length}`);
-  console.log(`   Not recoverable:             ${notFound} (marked invalid in discovered)`);
+  console.log(`   Player history: ${recovered.filter(r => r.source === 'player-history').length}`);
+  console.log(`   API:            ${recovered.filter(r => !r.source).length}`);
+  console.log(`   Team-lookup:    ${recovered.filter(r => r.source === 'team-lookup').length}`);
+  console.log(`   Stub:           ${recovered.filter(r => r.source === 'stub').length}`);
+  console.log(`   Not recoverable:${notFound}`);
 
   if (recovered.length > 0) {
     console.log(`\n  Sample recovered:`);
-    recovered.slice(0, 10).forEach(r => console.log(`    ${r.id}  ${r.name}  (${r.comp}, ${r.org})${r.source ? ' [reconstructed]' : ''}`));
+    recovered.slice(0, 10).forEach(r => {
+      const tag = r.source ? ` [${r.source}]` : ' [api]';
+      console.log(`    ${r.id}  ${r.name}  (${r.comp || '?'}, ${r.org || '?'})${tag}`);
+    });
   }
 
   if (!DRY_RUN && found > 0) {
@@ -246,9 +325,7 @@ async function main() {
         execSync('git push', { stdio: 'pipe' });
         console.log('  ✓ Committed and pushed');
       }
-    } catch (e) {
-      console.warn(`  ⚠ Git error: ${e.message}`);
-    }
+    } catch (e) { console.warn(`  ⚠ Git error: ${e.message}`); }
   }
 }
 
