@@ -654,10 +654,10 @@ async function main() {
         if (game.hidden)  continue;
         if (game.legacy)  continue;
         if (game.forfeit) continue;
-        // Skip if has a real numeric score
         if (typeof game.hs === 'number') continue;
-        // Skip if null score on a FINAL game — permanently confirmed no score available
-        if (game.hs === null && game.st === 'FINAL') continue;
+        // Skip null-score games that are in a terminal state — confirmed no score available
+        const terminalStatus = ['FINAL', 'PENDING', 'POSTPONED', 'CANCELLED', 'BYE'];
+        if (game.hs === null && terminalStatus.includes(game.st)) continue;
         todo2.push({ seasonId: season.id, gameId });
       }
     }
@@ -731,7 +731,8 @@ async function main() {
           } else {
             // Only write hs/as as null for FINAL games — confirms no score available
             // UPCOMING games keep hs:undefined so they're re-checked when played
-            if (r.st === 'FINAL') {
+            const terminalStatus = ['FINAL', 'PENDING', 'POSTPONED', 'CANCELLED', 'BYE'];
+            if (terminalStatus.includes(r.st)) {
               entry.hs = r.hs !== null ? r.hs : null;
               entry.as = r.as !== null ? r.as : null;
             } else if (r.hs !== null) {
