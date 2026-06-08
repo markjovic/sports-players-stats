@@ -77,21 +77,27 @@ async function getSession() {
     }
   } catch (e) {}
   console.log('  Fetching session cookie...');
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-    body: JSON.stringify({
-      operationName: 'ProfileSearch',
-      variables:     { fullName: 'test player' },
-      query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
-    }),
-  });
-  const raw = res.headers.get('set-cookie');
-  if (!raw) throw new Error('No Set-Cookie header');
-  const cookie = raw.split(';')[0];
-  fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie, fetchedAt: Date.now() }));
-  console.log('  ✓ Cookie obtained');
-  return cookie;
+  // Try with full tenant name first, then short name
+  for (const tenant of [TENANT_FULL, TENANT]) {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { ...HEADERS, 'tenant': tenant, 'request-id': crypto.randomUUID() },
+      body: JSON.stringify({
+        operationName: 'ProfileSearch',
+        variables:     { fullName: 'test player' },
+        query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+      }),
+    });
+    const raw = res.headers.get('set-cookie');
+    if (raw) {
+      const cookie = raw.split(';')[0];
+      fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie, fetchedAt: Date.now() }));
+      console.log(`  ✓ Cookie obtained (tenant: ${tenant})`);
+      return cookie;
+    }
+    console.warn(`  ⚠ No cookie with tenant=${tenant} (status ${res.status}), trying next...`);
+  }
+  throw new Error('No Set-Cookie header from either tenant format');
 }
 
 // ─── Queries ──────────────────────────────────────────────────────────────────
@@ -169,7 +175,13 @@ async function gql(operationName, query, variables, cookie, useGameHeaders = fal
     }
     if (res.status === 429) return { _rateLimit: true };
     if (res.status === 403 || res.status === 401) return { _authError: true };
-    if (!res.ok) return { _transient: true };
+    if (!res.ok) {
+      if (_diagCount < 6) {
+        const body = await res.text().catch(() => '(unreadable)');
+        console.warn(`\n  DIAG ${res.status} body: ${body.slice(0, 300)}`);
+      }
+      return { _transient: true };
+    }
     const json = await res.json();
     if (_diagCount <= 3) console.warn(`  DIAG response keys:`, Object.keys(json.data || {}), 'errors:', json.errors?.[0]?.message?.slice(0,100));
     if (json.errors) {
