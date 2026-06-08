@@ -42,6 +42,7 @@ const index   = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
 const seasons = index.seasons || {};
 
 let totalFixed = 0, totalSkipped = 0, totalFiles = 0;
+let diagUpcomingNull = 0, diagNoStatus = 0;
 let sinceLastCommit = 0;
 
 const files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
@@ -50,9 +51,8 @@ console.log(`Processing ${files.length.toLocaleString()} season game files...\n`
 for (const file of files) {
   const seasonId = file.replace('.json', '');
   const season   = seasons[seasonId];
-  if (!season) continue;
-
-  const isLocked = season.locked !== false;
+  // Seasons not in sports-index.json are treated as locked — they're completed historical seasons
+  const isLocked = !season || season.locked !== false;
   const gameFile = path.join(GAMES_DIR, file);
 
   let sg;
@@ -62,19 +62,26 @@ for (const file of files) {
   let fileFixed = 0;
 
   for (const [gameId, game] of Object.entries(games)) {
-    if (game.st) continue;  // already has status — skip
+    // Clear hs:null from UPCOMING games — null was incorrectly written before
+    // the UPCOMING skip logic was in place. UPCOMING games should have hs:undefined.
+    if (game.hs === null && game.st === 'UPCOMING') {
+      diagUpcomingNull++;
+      if (!DRY_RUN) { delete game.hs; delete game.as; }
+      fileFixed++;
+      continue;
+    }
+
+    if (game.st) continue;
+    diagNoStatus++;  // already has status — skip
 
     if (isLocked) {
-      // Locked season — all games are FINAL
       if (!DRY_RUN) game.st = 'FINAL';
       fileFixed++;
     } else {
-      // Active season — only mark FINAL if has a score
       if (typeof game.hs === 'number') {
         if (!DRY_RUN) game.st = 'FINAL';
         fileFixed++;
       }
-      // Unscored active games: leave st undefined — discover-fixtures will set UPCOMING
     }
   }
 
@@ -111,9 +118,11 @@ for (const file of files) {
 }
 
 console.log(`\n✅ Done`);
-console.log(`   Files modified:   ${totalFiles.toLocaleString()}`);
-console.log(`   Games fixed:      ${totalFixed.toLocaleString()}`);
-console.log(`   Files unchanged:  ${totalSkipped.toLocaleString()}`);
+console.log(`   Files modified:       ${totalFiles.toLocaleString()}`);
+console.log(`   Games fixed:          ${totalFixed.toLocaleString()}`);
+console.log(`   Files unchanged:      ${totalSkipped.toLocaleString()}`);
+console.log(`   DIAG upcoming+null:   ${diagUpcomingNull.toLocaleString()}`);
+console.log(`   DIAG no-status found: ${diagNoStatus.toLocaleString()}`);
 
 if (DRY_RUN) {
   console.log(`\n   (Dry run — no changes written)`);
