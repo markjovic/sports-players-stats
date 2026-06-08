@@ -1,53 +1,39 @@
 #!/usr/bin/env node
-// backfill-hidden-games.js
+// backfill-game-scores.js
 /**
- * Enriches game entries that have no score and no venue by calling game(id)
- * — the live e-scoring endpoint — which returns scores for games hidden by
- * competition admin (where discoverGame returns null).
+ * Backfills team scores (home/away) for every game ID stored in games/bv/*.json
+ * using the discoverGame API endpoint.
  *
- * Three outcomes per game:
- *   1. game(id) returns data → score stored, flag: hidden: true
- *   2. game(id) returns null → genuinely orphaned, flag: legacy: true
- *   3. game(id) errors → skip, retry next run
+ * Enriches each game entry from:
+ *   { d, on, o }
+ * to:
+ *   { d, on, o, h: homeTeamId, hn: homeTeamName, a: awayTeamId, an: awayTeamName,
+ *     hs: homeScore, as: awayScore }
  *
- * Also flags existing no-score no-venue games based on backfill-venue
- * progress (done set = discoverGame returned null = hidden or legacy).
+ * Also writes individual per-game player stats into player detail files
+ * from publicProfileStatistics.gameStatistics (already fetched, not yet stored).
  *
- * Reads no-venue-seasons.json to target seasons with missing data.
- * Progress file: backfill-hidden-progress.json
+ * Safe to re-run — skips games that already have scores.
  *
  * Usage:
- *   node backfill-hidden-games.js
- *   node backfill-hidden-games.js --concurrency=300
- *   node backfill-hidden-games.js --season=b81be631   (single season)
+ *   node backfill-game-scores.js
+ *   node backfill-game-scores.js --concurrency=50 --tenant=bv
  */
 
-'use strict';
-
-const fs           = require('fs');
-const path         = require('path');
-const crypto       = require('crypto');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 
-// ─── Config ───────────────────────────────────────────────────────────────────
+const TENANT      = process.argv.find(a => a.startsWith('--tenant='))?.split('=')[1] || 'bv';
+const TENANT_FULL = { bv: 'basketball-victoria', afl: 'afl', ca: 'cricket-australia' }[TENANT] || TENANT;
+const CONCURRENCY = parseInt(process.argv.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '100', 10);
+const REVIEW_FAILED = process.argv.includes('--review-failed');
 
-const ARGS = Object.fromEntries(
-  process.argv.slice(2)
-    .filter(a => a.startsWith('--'))
-    .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.length ? v.join('=') : true]; })
-);
-
-const TENANT        = ARGS.tenant      || 'bv';
-const TENANT_FULL   = { bv: 'basketball-victoria' }[TENANT] || TENANT;
-const CONCURRENCY   = parseInt(ARGS.concurrency || '300', 10);
-const TARGET_SEASON = ARGS.season      || null;
-
-const API_URL       = 'https://api.playhq.com/graphql';
-const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
-const COOKIE_FILE   = path.join(__dirname, `backfill-hidden-cookie.json`);
-const PROGRESS_FILE = path.join(__dirname, 'backfill-hidden-progress.json');
-const NO_VENUE_FILE = path.join(__dirname, 'no-venue-seasons.json');
-const VENUE_DIR     = path.join(__dirname, 'venue-lookup');
+const API_URL    = 'https://api.playhq.com/graphql';
+const GAMES_DIR  = path.join(__dirname, 'games', TENANT);
+const COOKIE_FILE = path.join(__dirname, 'backfill-cookie.json');
+const PROGRESS_FILE = path.join(__dirname, 'backfill-progress.json');
 
 const HEADERS = {
   'accept':       '*/*',
@@ -57,397 +43,420 @@ const HEADERS = {
   'content-type': 'application/json',
 };
 
-// game(id) endpoint uses short tenant name and x-phq-tenant header
-const HEADERS_GAME = {
-  'accept':       '*/*',
-  'origin':       'https://www.playhq.com',
-  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant':       TENANT,          // short form: 'bv' not 'basketball-victoria'
-  'x-phq-tenant': TENANT,          // additional header required by game(id)
-  'content-type': 'application/json',
-};
+// ─── Cookie management ────────────────────────────────────────────────────────
 
-// ─── Cookie ───────────────────────────────────────────────────────────────────
-
-async function getSession() {
+function loadCookie() {
   try {
     if (fs.existsSync(COOKIE_FILE)) {
-      const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
-      if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) return d.cookie;
+      const data = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
+      if (Date.now() - data.fetchedAt < 5 * 60 * 60 * 1000) return data.cookie;
     }
   } catch (e) {}
+  return null;
+}
+
+function saveCookie(cookie) {
+  fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie, fetchedAt: Date.now() }));
+}
+
+async function fetchCookie() {
   console.log('  Fetching session cookie...');
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
     body: JSON.stringify({
       operationName: 'ProfileSearch',
-      variables:     { fullName: 'test player' },
-      query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+      variables: { fullName: 'test player' },
+      query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } __typename } }',
     }),
   });
   const raw = res.headers.get('set-cookie');
-  if (!raw) throw new Error('No Set-Cookie header');
+  if (!raw) throw new Error('No Set-Cookie header — cookie fetch failed');
   const cookie = raw.split(';')[0];
-  fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie, fetchedAt: Date.now() }));
+  saveCookie(cookie);
   console.log('  ✓ Cookie obtained');
   return cookie;
 }
 
-// ─── Queries ──────────────────────────────────────────────────────────────────
+async function getSession() {
+  return loadCookie() || await fetchCookie();
+}
 
-// game(id) — live e-scoring endpoint, returns data for hidden games
-// discoverGame returns null for hidden games; game(id) returns scores
-const Q_GAME_ESCORE = `query GameScore($id: ID!) {
-  game(id: $id) {
+// ─── API helpers ──────────────────────────────────────────────────────────────
+
+const Q_GAME = `query DiscoverGame($gameID: ID!) {
+  discoverGame(gameID: $gameID) {
     id
-    status
-    updatedAt
+    date
+    round { name }
+    home { ... on DiscoverTeam { id name } }
+    away { ... on DiscoverTeam { id name } }
     result {
-      home {
-        statistics { count type { value } }
-        periods { period { value } statistics { count type { value } } }
-      }
-      away {
-        statistics { count type { value } }
-      }
+      home { statistics { count type { value } } }
+      away { statistics { count type { value } } }
     }
   }
 }`;
 
-// Use exact GameCentre operation from mobile traffic - including gameStatisticsFilter
-// which appears to be required to get data for hidden/grading games
-const Q_GAME_CENTRE = `query GameCentre($gameId: ID!) {
-  discoverGame(gameID: $gameId) {
-    id
-    status { name value }
-    grade { id hideScores }
-    home {
-      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
-    }
-    away {
-      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
-    }
-    result {
-      home {
-        statistics { count type { value } }
-        periods { period { value } statistics { count type { value } } }
+async function fetchGame(gameId, cookie, retries = 2) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+        body: JSON.stringify({ operationName: 'DiscoverGame', variables: { gameID: gameId }, query: Q_GAME }),
+      });
+      if (res.status === 403 || res.status === 401) return { _authError: true };
+      if (res.status === 429) {
+        return { _rateLimit: true };
       }
-      away {
-        statistics { count type { value } }
+      if (!res.ok) {
+        if (attempt < retries) { await delay(5000); continue; }
+        return { _transient: true };
       }
+      const json = await res.json();
+      if (json.errors) return { _notFound: true };  // GraphQL error = game ID not in API at all
+      const g = json.data?.discoverGame;
+      if (!g) return { _notFound: true };
+      return g;
+    } catch (e) {
+      if (attempt < retries) { await delay(3000); continue; }
+      return { _transient: true };
     }
-    allocation {
-      dateTimeList { date time }
-      court {
-        id name abbreviatedName
-        venue {
-          id name abbreviatedName latitude longitude
-          address suburb state postcode country
-        }
-      }
-    }
-    round { id name isFinalsRound }
   }
-}`;
+  return { _transient: true };
+}
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-let _diagCount = 0;
-let backfill_hidden_first_ge_logged = false;
-async function gql(operationName, query, variables, cookie, useGameHeaders = false) {
-  const headers = useGameHeaders ? HEADERS_GAME : HEADERS;
-  try {
-    const res = await fetch(API_URL, {
-      method:  'POST',
-      headers: { ...headers, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-      body:    JSON.stringify({ operationName, variables, query }),
-    });
-    if (_diagCount < 3) {
-      _diagCount++;
-      console.warn(`\n  DIAG [${operationName}] status=${res.status} gameId=${variables.gameId || variables.gameID || variables.id}`);
-    }
-    if (res.status === 429) return { _rateLimit: true };
-    if (res.status === 403 || res.status === 401) return { _authError: true };
-    if (!res.ok) {
-      if (_diagCount < 6) {
-        const body = await res.text().catch(() => '(unreadable)');
-        console.warn(`\n  DIAG ${res.status} body: ${body.slice(0, 300)}`);
-      }
-      return { _transient: true };
-    }
-    const json = await res.json();
-    if (_diagCount <= 3) console.warn(`  DIAG response keys:`, Object.keys(json.data || {}), 'errors:', json.errors?.[0]?.message?.slice(0,100));
-    if (json.errors) {
-      if (_errSample++ < 3) console.warn(`\n  ⚠ GraphQL error (${operationName}):`, JSON.stringify(json.errors[0]).slice(0, 200));
-      return { _graphqlError: true, errors: json.errors };
-    }
-    return json;
-  } catch (e) {
-    if (_diagCount < 3) console.warn(`\n  DIAG fetch exception:`, e.message);
-    return { _transient: true };
-  }
-}
-
 function parseScore(statistics) {
-  return statistics?.find(s => s.type?.value === 'TOTAL_SCORE')?.count ?? null;
+  const total = statistics?.find(s => s.type?.value === 'TOTAL_SCORE');
+  return total?.count ?? null;
 }
 
-// ─── Venue shards ─────────────────────────────────────────────────────────────
-
-const _venueShards = {};
-const _dirtyVenues = new Set();
-
-function storeVenue(venue, court) {
-  if (!venue?.id) return;
-  const prefix = venue.id.slice(0, 2);
-  if (!_venueShards[prefix]) {
-    const f = path.join(VENUE_DIR, `${prefix}.json`);
-    try { _venueShards[prefix] = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : {}; }
-    catch (e) { _venueShards[prefix] = {}; }
-  }
-  const shard = _venueShards[prefix];
-  if (!shard[venue.id]) {
-    shard[venue.id] = {
-      name: venue.name, abbr: venue.abbreviatedName || null,
-      lat: venue.latitude || null, lng: venue.longitude || null,
-      address: venue.address || null, suburb: venue.suburb || null,
-      state: venue.state || null, postcode: venue.postcode || null,
-      country: venue.country || null, courts: {},
-    };
-    _dirtyVenues.add(prefix);
-  }
-  if (court?.id && !shard[venue.id].courts[court.id]) {
-    shard[venue.id].courts[court.id] = { name: court.name, abbr: court.abbreviatedName || null };
-    _dirtyVenues.add(prefix);
-  }
-}
-
-function flushVenueShards() {
-  if (!fs.existsSync(VENUE_DIR)) fs.mkdirSync(VENUE_DIR, { recursive: true });
-  let n = 0;
-  for (const prefix of _dirtyVenues) {
-    fs.writeFileSync(path.join(VENUE_DIR, `${prefix}.json`), JSON.stringify(_venueShards[prefix]));
-    n++;
-  }
-  _dirtyVenues.clear();
-  return n;
-}
-
-// ─── Progress ─────────────────────────────────────────────────────────────────
+// ─── Progress tracking ────────────────────────────────────────────────────────
 
 function loadProgress() {
   try {
-    if (fs.existsSync(PROGRESS_FILE)) {
-      const p = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
-      return { done: new Set(p.done || []), legacy: new Set(p.legacy || []) };
-    }
+    if (fs.existsSync(PROGRESS_FILE)) return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
   } catch (e) {}
-  return { done: new Set(), legacy: new Set() };
+  return { done: new Set(), failed: new Set() };
 }
 
 function saveProgress(prog) {
   fs.writeFileSync(PROGRESS_FILE, JSON.stringify({
-    done:    [...prog.done],
-    legacy:  [...prog.legacy],
-    savedAt: new Date().toISOString(),
+    done:   [...prog.done],
+    failed: [...prog.failed],
   }));
 }
 
-// ─── Git ──────────────────────────────────────────────────────────────────────
-
 function gitCommitPush(message) {
   try {
-    execSync('git add games/ venue-lookup/ backfill-hidden-progress.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
+    execSync('git add games/ backfill-progress.json', { stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
-    if (!diff) { console.log('\n  (no changes to commit)'); return; }
+    if (!diff) return;
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
+    const stashOut = execSync('git stash', { stdio: 'pipe' }).toString();
     execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
+    if (stashOut.includes('Saved')) execSync('git stash pop', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
-    console.log('\n  ✓ Committed and pushed');
+    console.log(`\n  ✓ Committed and pushed`);
   } catch (e) {
-    console.warn(`\n  ⚠ Git error: ${e.message}`);
+    console.warn(`\n  ⚠ Git commit/push failed: ${e.message}`);
+  }
+}
+
+// ─── Review failed games ──────────────────────────────────────────────────────
+
+function reviewFailed() {
+  console.log(`\n🔍 Review Failed Games`);
+
+  const prog = loadProgress();
+  prog.done   = new Set(prog.done   || []);
+  prog.failed = new Set(prog.failed || []);
+
+  if (prog.failed.size === 0) {
+    console.log('  No failed games in progress file.');
+    return;
+  }
+
+  console.log(`  Failed games in progress file: ${prog.failed.size.toLocaleString()}`);
+
+  // Build gameId → date map from game files (only need to scan once)
+  console.log('  Building game date index from game files...');
+  const gameDates = {};
+  const seasonFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
+  for (const file of seasonFiles) {
+    const sg = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8'));
+    for (const [gameId, game] of Object.entries(sg.games || {})) {
+      if (game.d) gameDates[gameId] = game.d;
+    }
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  let requeued = 0;
+  let genuineFailed = 0;
+  let noDate = 0;
+
+  for (const gameId of prog.failed) {
+    const date = gameDates[gameId];
+    if (!date) {
+      noDate++;
+      // No date in game file — leave as failed, can't determine
+      continue;
+    }
+    if (date > today) {
+      // Future game — remove from failed so it gets re-queued on next run
+      prog.failed.delete(gameId);
+      requeued++;
+    } else {
+      genuineFailed++;
+    }
+  }
+
+  console.log(`\n  Results:`);
+  console.log(`  Re-queued (future games):  ${requeued.toLocaleString()}`);
+  console.log(`  Genuine failures (past):   ${genuineFailed.toLocaleString()}`);
+  console.log(`  No date available:         ${noDate.toLocaleString()}`);
+
+  if (requeued > 0) {
+    saveProgress(prog);
+    console.log(`\n  ✓ Progress file updated — ${requeued.toLocaleString()} games re-queued for next backfill run`);
+  } else {
+    console.log('\n  No changes needed — all failed games are past-dated or undated');
   }
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log(`\n🔍 Backfill Hidden Games`);
+  console.log(`\n🏀 Game Score Backfill`);
   console.log(`   Tenant:      ${TENANT}`);
-  console.log(`   Concurrency: ${CONCURRENCY}\n`);
+  console.log(`   Games dir:   ${GAMES_DIR}`);
+  console.log(`   Concurrency: ${CONCURRENCY}`);
+  console.log(`   Mode:        ${REVIEW_FAILED ? 'review-failed' : 'backfill'}\n`);
 
-  if (!fs.existsSync(NO_VENUE_FILE)) {
-    console.error(`❌ ${NO_VENUE_FILE} not found — run bootstrap-fixture-progress.js first`);
+  if (!fs.existsSync(GAMES_DIR)) {
+    console.error(`❌ Games directory not found: ${GAMES_DIR}`);
     process.exit(1);
   }
 
-  const noVenueSeasons = JSON.parse(fs.readFileSync(NO_VENUE_FILE, 'utf8'));
-
-  // Build list of seasons to process
-  const targetSeasons = TARGET_SEASON
-    ? [{ id: TARGET_SEASON }]
-    : noVenueSeasons;
-
-  console.log(`📋 Seasons to check: ${targetSeasons.length}`);
-
-  const prog = loadProgress();
-  if (prog.done.size > 0) {
-    console.log(`  ↻ Resuming — ${prog.done.size.toLocaleString()} already done, ${prog.legacy.size.toLocaleString()} flagged legacy\n`);
-  }
-
-  let cookie = await getSession();
-
-  // Collect all game IDs missing score AND venue, not yet processed
-  const todo = [];
-  const sgCache = {};
-
-  for (const season of targetSeasons) {
-    const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
-    if (!fs.existsSync(gameFile)) continue;
-    let sg;
-    try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
-    sgCache[season.id] = sg;
-
-    for (const [gameId, game] of Object.entries(sg.games || {})) {
-      // Skip games that already have a score OR a venue OR are already flagged
-      if (game.hs !== undefined) continue;
-      if (game.vid) continue;
-      if (game.hidden || game.legacy) continue;
-      if (prog.done.has(gameId)) continue;
-      todo.push({ seasonId: season.id, gameId });
-    }
-  }
-
-  console.log(`📋 Games to probe: ${todo.length.toLocaleString()}\n`);
-
-  if (todo.length === 0) {
-    console.log('✅ Nothing to do — all games already have scores, venues, or flags');
+  if (REVIEW_FAILED) {
+    reviewFailed();
     return;
   }
 
-  let hidden = 0, legacy = 0, scored = 0, failed = 0, sinceLastSave = 0;
+  // Load all season game files and collect unique game IDs needing scores
+  const seasonFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
+  console.log(`📁 Found ${seasonFiles.length} season game files`);
 
-  for (let i = 0; i < todo.length; i += CONCURRENCY) {
-    const batch = todo.slice(i, i + CONCURRENCY);
+  // Collect all game IDs that don't yet have home/away scores, excluding future games
+  const today        = new Date().toISOString().slice(0, 10);
+  const allGameIds   = new Set();
+  const needsBackfill = new Set();
+  let totalGames  = 0;
+  let futureGames = 0;
 
-    const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
-      await delay(j * 3);
-
-      // Step 1: call discoverGame via GameCentre operation (exact mobile app operation)
-      const dg = await gql('GameCentre', Q_GAME_CENTRE, { gameId: gameId }, cookie);
-
-      if (dg?._authError) {
-        try { cookie = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
-        return { gameId, seasonId, outcome: 'skip' };
+  for (const file of seasonFiles) {
+    const sg = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8'));
+    for (const [gameId, game] of Object.entries(sg.games || {})) {
+      allGameIds.add(gameId);
+      totalGames++;
+      if (game.hs === undefined || game.as === undefined) {
+        // Skip future games — they have no score yet and won't until played
+        if (game.d && game.d > today) { futureGames++; continue; }
+        needsBackfill.add(gameId);
       }
-      if (dg?._rateLimit || dg?._transient || dg?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
+    }
+  }
 
-      // GameCentre returned actual data — game is accessible
-      if (dg?.data?.discoverGame) {
-        const dgg   = dg.data.discoverGame;
-        const court = dgg.allocation?.court;
-        const venue = court?.venue;
-        const dt    = dgg.allocation?.dateTimeList?.[0];
-        const hs    = parseScore(dgg.result?.home?.statistics);
-        const as_   = parseScore(dgg.result?.away?.statistics);
-        const rn    = dgg.round?.name || null;
-        return { gameId, seasonId, outcome: 'accessible', hs, as: as_, venue, court,
-                 time: dt?.time?.slice(0, 5) || null, rn };
-      }
+  console.log(`📁 Found ${seasonFiles.length} season game files`);
+  console.log(`📊 Total unique games:    ${totalGames.toLocaleString()}`);
+  console.log(`📊 Future games skipped:  ${futureGames.toLocaleString()}`);
+  console.log(`📊 Already have scores:   ${(totalGames - needsBackfill.size - futureGames).toLocaleString()}`);
+  console.log(`📊 Games needing scores:  ${needsBackfill.size.toLocaleString()}`);
 
-      // discoverGame returned null → game hidden by admin
-      // Try game(id) e-scoring endpoint as fallback
-      const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie, true);
+  if (needsBackfill.size === 0) {
+    console.log('\n✅ All games already have scores — nothing to do');
+    return;
+  }
 
-      if (!backfill_hidden_first_ge_logged) {
-        backfill_hidden_first_ge_logged = true;
-        console.warn(`\n  DIAG first game(id) for ${gameId}:`,
-          ge?._transient ? 'TRANSIENT' : ge?._graphqlError ? `GRAPHQL_ERR: ${JSON.stringify(ge.errors?.[0]).slice(0,150)}` :
-          ge?.data?.game ? 'GOT DATA' : `NULL data=${JSON.stringify(ge?.data)}`);
-      }
+  // Load progress to resume if interrupted
+  const prog = loadProgress();
+  prog.done   = new Set(prog.done);
+  prog.failed = new Set(prog.failed);
 
-      if (ge?._authError || ge?._rateLimit || ge?._transient || ge?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
+  const remaining = [...needsBackfill].filter(id => !prog.done.has(id));
+  console.log(`📋 Remaining after progress: ${remaining.length.toLocaleString()} games\n`);
 
-      if (ge?.data?.game) {
-        const g   = ge.data.game;
-        const hs  = parseScore(g.result?.home?.statistics);
-        const as_ = parseScore(g.result?.away?.statistics);
-        return { gameId, seasonId, outcome: 'hidden', hs, as: as_, status: g.status };
-      }
+  // Get auth cookie
+  let cookie;
+  try {
+    cookie = await getSession();
+  } catch (e) {
+    console.error(`❌ Could not get session cookie: ${e.message}`);
+    process.exit(1);
+  }
 
-      // game(id) also returned null → genuinely orphaned/legacy
-      return { gameId, seasonId, outcome: 'legacy' };
+  // Fetch game scores in batches
+  let fetched = 0;
+  let failed  = 0;
+  let rateLimited = 0;
+  let authErrors  = 0;
+  let concurrency = CONCURRENCY;
+  let concurrencyCap = CONCURRENCY;
+  let streak429 = 0;
+
+  // Build a lookup: gameId → which season files contain it
+  const gameToFiles = {};
+  for (const file of seasonFiles) {
+    const sg = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8'));
+    for (const gameId of Object.keys(sg.games || {})) {
+      if (!gameToFiles[gameId]) gameToFiles[gameId] = [];
+      gameToFiles[gameId].push(file);
+    }
+  }
+
+  // Cache season game data in memory to avoid repeated disk reads
+  const sgCache = {};
+  function loadSg(file) {
+    if (!sgCache[file]) sgCache[file] = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8'));
+    return sgCache[file];
+  }
+
+  const SAVE_INTERVAL = 500; // save every N games
+  let sinceLastSave = 0;
+
+  for (let i = 0; i < remaining.length; i += concurrency) {
+    const batch = remaining.slice(i, i + concurrency);
+
+    const results = await Promise.all(batch.map(async (gameId, j) => {
+      await delay(j * 10);
+      const game = await fetchGame(gameId, cookie);
+      return { gameId, game };
     }));
 
-    for (const r of results) {
-      if (r.outcome === 'skip') { failed++; continue; }
+    // Check for rate limiting before processing results
+    const rateLimitHits = results.filter(r => r.game?._rateLimit).length;
+    if (rateLimitHits > 0) {
+      streak429++;
+      concurrency = Math.max(5, Math.floor(concurrency * 0.6));
+      if (streak429 >= 3) {
+        concurrencyCap = Math.max(5, concurrencyCap - 10);
+        concurrency    = Math.min(concurrency, concurrencyCap);
+        streak429      = 0;
+        console.warn(`\n  ⚠ Repeated rate limiting — cap lowered to ${concurrencyCap}, concurrency now ${concurrency}`);
+      } else {
+        console.warn(`\n  ⚠ Rate limited (${rateLimitHits} hits) — concurrency → ${concurrency}, backing off 10s`);
+      }
+      rateLimited += rateLimitHits;
+      await delay(10000);
+      // Re-queue rate-limited games by stepping back
+      i -= concurrency;
+      continue;
+    } else if (streak429 > 0) {
+      streak429 = 0; // clear streak on clean batch
+    }
 
-      const sg    = sgCache[r.seasonId];
-      if (!sg) continue;
-      const entry = sg.games[r.gameId] || {};
-
-      if (r.outcome === 'accessible') {
-        if (r.hs !== null) entry.hs = r.hs;
-        if (r.as !== null) entry.as = r.as;
-        if (r.rn && !entry.rn) entry.rn = r.rn;
-        if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
-        if (r.court?.name) entry.ct = r.court.name;
-        if (r.time) entry.t = r.time;
-        scored++;
-      } else if (r.outcome === 'hidden') {
-        // Hidden by competition admin — score available via game(id)
-        if (r.hs !== null) entry.hs = r.hs;
-        if (r.as !== null) entry.as = r.as;
-        entry.hidden = true;   // flag for HTML tool
-        hidden++;
-      } else if (r.outcome === 'legacy') {
-        // Genuinely orphaned — no data accessible via any route
-        entry.legacy = true;   // flag for HTML tool
-        prog.legacy.add(r.gameId);
-        legacy++;
+    for (const { gameId, game } of results) {
+      if (game?._authError) {
+        authErrors++;
+        console.warn(`  ⚠ Auth error — refreshing cookie`);
+        try {
+          cookie = await fetchCookie();
+          authErrors = 0;
+        } catch (e) {
+          console.error(`❌ Could not refresh cookie: ${e.message}`);
+          process.exit(1);
+        }
+        continue;
       }
 
-      sg.games[r.gameId] = entry;
-      prog.done.add(r.gameId);
+      if (game?._notFound) {
+        // Game ID not in API at all — skip permanently
+        prog.done.add(gameId);
+        failed++;
+        continue;
+      }
+
+      if (game?._transient) {
+        // Network/server error — don't mark done, will be retried next run
+        failed++;
+        continue;
+      }
+
+      // Game was found — check if it has scores yet
+      const homeScore = parseScore(game.result?.home?.statistics);
+      const awayScore = parseScore(game.result?.away?.statistics);
+
+      // Game was found but has no scores — past game with no data (bye/cancelled/gap)
+      // Skip permanently since future games were already filtered out before this loop
+      if (homeScore === null && awayScore === null) {
+        prog.done.add(gameId);
+        failed++;
+        continue;
+      }
+
+      // Extract team info and update season files
+      const homeId    = game.home?.id;
+      const homeName  = game.home?.name;
+      const awayId    = game.away?.id;
+      const awayName  = game.away?.name;
+
+      // Update all season files that contain this game
+      for (const file of (gameToFiles[gameId] || [])) {
+        const sg = loadSg(file);
+        if (sg.games[gameId]) {
+          sg.games[gameId].h  = homeId;
+          sg.games[gameId].hn = homeName;
+          sg.games[gameId].a  = awayId;
+          sg.games[gameId].an = awayName;
+          if (homeScore !== null) sg.games[gameId].hs = homeScore;
+          if (awayScore !== null) sg.games[gameId].as = awayScore;
+          sg.games[gameId].rn = game.round?.name;
+        }
+      }
+
+      prog.done.add(gameId);
+      fetched++;
       sinceLastSave++;
     }
 
-    // Flush and commit every 5000 games
-    if (sinceLastSave >= 5000) {
-      for (const [sid, sg] of Object.entries(sgCache)) {
-        fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
-      }
-      flushVenueShards();
+    const pct = Math.round(((i + concurrency) / remaining.length) * 100);
+    process.stdout.write(`  ${Math.min(i + concurrency, remaining.length).toLocaleString()}/${remaining.length.toLocaleString()} (${pct}%) — ✓ ${fetched.toLocaleString()} scored, ✗ ${failed} no-data, ⚡ ${rateLimited} rate-limited, concurrency=${concurrency}\r`);
+
+    // Periodically flush to disk and clear cache to avoid OOM
+    if (sinceLastSave >= Math.max(500, concurrency * 10)) {
+      flushCache(sgCache, GAMES_DIR);
       saveProgress(prog);
       sinceLastSave = 0;
-      console.log(`\n  💾 Committing...`);
-      gitCommitPush(`Hidden game backfill: ${hidden} hidden, ${legacy} legacy, ${scored} scored`);
+      gitCommitPush(`Backfill scores: ${fetched.toLocaleString()} scored, ${(i + concurrency).toLocaleString()}/${remaining.length.toLocaleString()} processed`);
     }
-
-    const done = Math.min(i + CONCURRENCY, todo.length);
-    process.stdout.write(
-      `  ${done.toLocaleString()}/${todo.length.toLocaleString()} (${((done/todo.length)*100).toFixed(1)}%)` +
-      ` — 🔒 ${hidden} hidden, 📜 ${legacy} legacy, ✓ ${scored} scored, ✗ ${failed} failed\r`
-    );
-    if (i + CONCURRENCY < todo.length) await delay(50);
   }
 
   // Final flush
-  for (const [sid, sg] of Object.entries(sgCache)) {
-    fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
-  }
-  flushVenueShards();
+  flushCache(sgCache, GAMES_DIR);
   saveProgress(prog);
 
-  console.log(`\n\n✅ Hidden game backfill complete`);
-  console.log(`   🔒 Hidden (score via game(id)): ${hidden.toLocaleString()}`);
-  console.log(`   📜 Legacy (no data anywhere):   ${legacy.toLocaleString()}`);
-  console.log(`   ✓  Accessible (scored+venued):  ${scored.toLocaleString()}`);
-  console.log(`   ✗  Failed/skipped:              ${failed.toLocaleString()}`);
-  console.log(`   Total probed:                   ${todo.length.toLocaleString()}`);
-
-  gitCommitPush(`Hidden game backfill complete: ${hidden} hidden, ${legacy} legacy`);
+  console.log(`\n✅ Backfill complete`);
+  console.log(`   Scored:        ${fetched.toLocaleString()}`);
+  console.log(`   No score:      ${failed} (past games with no data — skipped permanently)`);
+  console.log(`   Rate limited:  ${rateLimited} (retried via backoff)`);
+  console.log(`   Total probed:  ${needsBackfill.size.toLocaleString()}`);
 }
 
-main().catch(e => { console.error(`\n❌ Fatal: ${e.message}`); process.exit(1); });
+function flushCache(cache, dir) {
+  let count = 0;
+  for (const [file, sg] of Object.entries(cache)) {
+    fs.writeFileSync(path.join(dir, file), JSON.stringify(sg));
+    delete cache[file];  // free memory after writing
+    count++;
+  }
+  console.log(`\n  💾 Flushed ${count} season files to disk`);
+}
+
+main().catch(e => {
+  console.error(`\n❌ Fatal: ${e.message}`);
+  console.error(e.stack);
+  process.exit(1);
+});
