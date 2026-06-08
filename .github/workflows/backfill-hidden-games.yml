@@ -7,13 +7,21 @@ on:
       concurrency:
         description: 'Concurrent API requests'
         required: false
-        default: '50'
+        default: '300'
         type: string
       season:
         description: 'Single season ID (leave blank for all)'
         required: false
         default: ''
         type: string
+      review_legacy:
+        description: 'Re-probe legacy games to detect forfeits'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 jobs:
   backfill-hidden:
@@ -45,35 +53,10 @@ jobs:
           if [ -n "${{ github.event.inputs.season }}" ]; then
             ARGS="$ARGS --season=${{ github.event.inputs.season }}"
           fi
+          if [ "${{ github.event.inputs.review_legacy }}" = "true" ]; then
+            ARGS="$ARGS --review-legacy"
+          fi
           node backfill-hidden-games.js $ARGS
-
-      - name: Find unscored games (debug)
-        run: |
-          node -e "
-          const fs = require('fs');
-          const path = require('path');
-          const prog = JSON.parse(fs.readFileSync('backfill-hidden-progress.json', 'utf8'));
-          const done = new Set(prog.done || []);
-          const legacy = new Set(prog.legacy || []);
-          const attempted = new Set([...done, ...legacy]);
-          const gamesDir = path.join('games', 'bv');
-          const unscored = [];
-          for (const file of fs.readdirSync(gamesDir)) {
-            const sg = JSON.parse(fs.readFileSync(path.join(gamesDir, file), 'utf8'));
-            for (const [gameId, game] of Object.entries(sg.games || {})) {
-              if (game.hs !== undefined) continue;   // already has score
-              if (game.hidden || game.legacy) continue; // already flagged
-              if (!attempted.has(gameId)) continue;  // not yet attempted — skip
-              unscored.push({season: file.replace('.json',''), gameId, date: game.d, home: game.hn, away: game.an});
-            }
-          }
-          if (unscored.length === 0) {
-            console.log('No unscored attempted games — all good.');
-          } else {
-            console.log('Attempted but still unscored (' + unscored.length + '):');
-            unscored.forEach(g => console.log(JSON.stringify(g)));
-          }
-          "
 
       - name: Commit final results
         run: |
