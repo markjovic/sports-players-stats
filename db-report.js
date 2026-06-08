@@ -17,8 +17,9 @@ const ARGS    = Object.fromEntries(
   process.argv.slice(2).filter(a => a.startsWith('--'))
     .map(a => { const [k,...v] = a.slice(2).split('='); return [k, v.length ? v.join('=') : true]; })
 );
-const VERBOSE = !!ARGS.verbose;
-const TENANT  = ARGS.tenant || 'bv';
+const VERBOSE         = !!ARGS.verbose;
+const INCLUDE_PLAYERS = !!ARGS['include-players'];
+const TENANT          = ARGS.tenant || 'bv';
 
 const GAMES_DIR   = path.join(__dirname, 'games', TENANT);
 const PLAYERS_DIR = path.join(__dirname, 'players');
@@ -59,7 +60,7 @@ if (fs.existsSync(PLAYERS_IDX)) {
   }
 }
 
-if (fs.existsSync(PLAYERS_DIR)) {
+if (INCLUDE_PLAYERS && fs.existsSync(PLAYERS_DIR)) {
   for (const shard of fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/i.test(d))) {
     try { playerDetailCount += fs.readdirSync(path.join(PLAYERS_DIR, shard)).filter(f => f.endsWith('.json')).length; }
     catch (e) {}
@@ -68,7 +69,7 @@ if (fs.existsSync(PLAYERS_DIR)) {
 
 console.log('\n👤 PLAYERS');
 console.log(`  Index entries (career stats):  ${playerIndexCount.toLocaleString()}`);
-console.log(`  Detail files (full history):   ${playerDetailCount.toLocaleString()}`);
+console.log(`  Detail files (full history):   ${INCLUDE_PLAYERS ? playerDetailCount.toLocaleString() : '(run with include_players=true to count)'}`);
 
 // ─── Teams ────────────────────────────────────────────────────────────────────
 
