@@ -129,6 +129,7 @@ const Q_DISCOVER_GAME = `query DiscoverGame($gameID: ID!) {
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 let _diagCount = 0;
+let backfill_hidden_first_ge_logged = false;
 async function gql(operationName, query, variables, cookie) {
   try {
     const res = await fetch(API_URL, {
@@ -325,7 +326,13 @@ async function main() {
       // Call game(id) to get the score
       const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie);
 
-      if (_diagCount <= 6) console.warn(`  DIAG game(id) for ${gameId}:`, ge?._transient ? 'TRANSIENT' : ge?._graphqlError ? 'GRAPHQL_ERR' : ge?.data?.game ? 'GOT DATA' : 'NULL');
+      // Log the very first game(id) result unconditionally
+      if (!backfill_hidden_first_ge_logged) {
+        backfill_hidden_first_ge_logged = true;
+        console.warn(`\n  DIAG first game(id) for ${gameId}:`,
+          ge?._transient ? 'TRANSIENT' : ge?._graphqlError ? `GRAPHQL_ERR: ${JSON.stringify(ge.errors?.[0]).slice(0,150)}` :
+          ge?.data?.game ? 'GOT DATA' : `NULL data=${JSON.stringify(ge?.data)}`);
+      }
 
       if (ge?._authError || ge?._rateLimit || ge?._transient || ge?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
 
