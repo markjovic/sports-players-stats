@@ -226,6 +226,10 @@ async function main() {
           const json = await res.json();
           const ss   = json.data?.publicProfileStatistics?.statistics || [];
           const match = ss.find(s => s.season?.id === meta._playerSid);
+          if (!match && ss.length > 0 && needsEnrichment.indexOf(meta) === 0) {
+            // Log first failure for diagnosis
+            console.warn(`\n  DIAG: looking for sid=${meta._playerSid}, got season IDs: ${ss.slice(0,5).map(s=>s.season?.id).join(', ')}`);
+          }
           if (match?.season?.competition) {
             const comp = match.season.competition;
             meta.compId   = comp.id;
