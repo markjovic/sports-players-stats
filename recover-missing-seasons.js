@@ -101,8 +101,7 @@ function reconstructFromPlayerFiles(missingIds) {
           compName:      team?.compName   || null,
           orgId:         team?.compOrgId  || null,
           orgName:       team?.compOrgName || null,
-          // Store player UUID for API enrichment if comp/org missing
-          _playerUuid:   (!team?.compName) ? detail.uuid : null,
+          _playerUuid:   detail.uuid,
           _playerSid:    season.sid,
           reconstructed: 'player-history',
         };
@@ -208,7 +207,7 @@ async function main() {
   console.log(`  Still need API:    ${stillMissing.length}\n`);
 
   // ── Step 1b: Enrich missing comp/org via publicProfileStatistics ──────────────
-  const needsEnrichment = Object.values(playerMeta).filter(m => !m.compName && m._playerUuid);
+  const needsEnrichment = Object.values(playerMeta).filter(m => !m.orgName && m._playerUuid);
   if (needsEnrichment.length > 0) {
     console.log(`  Enriching ${needsEnrichment.length} seasons with missing comp/org via player API...`);
     const cookie2 = await getSession();
