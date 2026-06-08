@@ -188,7 +188,12 @@ async function main() {
   const seasons = index.seasons || {};
 
   const gameFiles  = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''));
-  const missingIds = gameFiles.filter(id => !seasons[id] && !disc[id]);
+  const missingIds = gameFiles.filter(id => {
+    if (seasons[id]) return false;
+    if (!disc[id]) return true;
+    if (disc[id].invalid) return true;  // previously marked invalid — retry
+    return false;
+  });
 
   console.log(`Season game files on disk:   ${gameFiles.length}`);
   console.log(`In sports-index.json:        ${Object.keys(seasons).length}`);
