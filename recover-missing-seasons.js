@@ -87,23 +87,23 @@ function reconstructFromPlayerFiles(missingIds) {
       for (const season of (detail.seasons || [])) {
         if (!needed.has(season.sid)) continue;
 
-        // Found a player with this season — extract metadata
-        const reg   = season.regs?.[0];
-        const tid   = reg?.tid;
-        const team  = tid ? getTeamData(tid) : null;
+        const reg     = season.regs?.[0];
+        const tid     = reg?.tid;
+        const team    = tid ? getTeamData(tid) : null;
 
         results[season.sid] = {
-          id:       season.sid,
-          name:     season.sn || `Unknown ${season.sid}`,
-          fullName: team
-            ? `${team.compName || '?'} — ${season.sn}`
-            : season.sn || `Unknown ${season.sid}`,
-          locked:   true,
-          grades:   season.regs?.map(r => ({ id: r.gid, name: r.gn })).filter(g => g.id) || [],
-          compId:   team?.compId    || null,
-          compName: team?.compName  || null,
-          orgId:    team?.compOrgId || null,
-          orgName:  team?.compOrgName || null,
+          id:            season.sid,
+          name:          season.sn || `Unknown ${season.sid}`,
+          fullName:      team ? `${team.compName} — ${season.sn}` : season.sn || `Unknown ${season.sid}`,
+          locked:        true,
+          grades:        season.regs?.map(r => ({ id: r.gid, name: r.gn })).filter(g => g.id) || [],
+          compId:        team?.compId     || null,
+          compName:      team?.compName   || null,
+          orgId:         team?.compOrgId  || null,
+          orgName:       team?.compOrgName || null,
+          // Store player UUID for API enrichment if comp/org missing
+          _playerUuid:   (!team?.compName) ? detail.uuid : null,
+          _playerSid:    season.sid,
           reconstructed: 'player-history',
         };
         needed.delete(season.sid);
@@ -207,7 +207,44 @@ async function main() {
   console.log(`\n  From player files: ${Object.keys(playerMeta).length} recovered`);
   console.log(`  Still need API:    ${stillMissing.length}\n`);
 
+  // ── Step 1b: Enrich missing comp/org via publicProfileStatistics ──────────────
+  const needsEnrichment = Object.values(playerMeta).filter(m => !m.compName && m._playerUuid);
+  if (needsEnrichment.length > 0) {
+    console.log(`  Enriching ${needsEnrichment.length} seasons with missing comp/org via player API...`);
+    const cookie2 = await getSession();
+    const Q_PROFILE = `query Profile($id: ID!) { publicProfileStatistics(profileID: $id) { seasonStatistics { name season { id name competition { id name organisation { id name } } } } } }`;
+
+    for (let i = 0; i < needsEnrichment.length; i += CONCURRENCY) {
+      const batch = needsEnrichment.slice(i, i + CONCURRENCY);
+      await Promise.all(batch.map(async meta => {
+        try {
+          const res  = await fetch(API_URL, {
+            method:  'POST',
+            headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie2 },
+            body:    JSON.stringify({ operationName: 'Profile', variables: { id: meta._playerUuid }, query: Q_PROFILE }),
+          });
+          const json = await res.json();
+          const ss   = json.data?.publicProfileStatistics?.seasonStatistics || [];
+          const match = ss.find(s => s.season?.id === meta._playerSid);
+          if (match?.season?.competition) {
+            const comp = match.season.competition;
+            meta.compId   = comp.id;
+            meta.compName = comp.name;
+            meta.orgId    = comp.organisation?.id;
+            meta.orgName  = comp.organisation?.name;
+            meta.fullName = `${comp.name} — ${meta.name}`;
+          }
+        } catch (e) {}
+      }));
+      if (i + CONCURRENCY < needsEnrichment.length) await delay(100);
+    }
+    console.log(`  Enrichment complete`);
+  }
+
   for (const [sid, meta] of Object.entries(playerMeta)) {
+    // Remove internal fields before storing
+    delete meta._playerUuid;
+    delete meta._playerSid;
     found++;
     recovered.push({ id: sid, name: meta.name, comp: meta.compName, org: meta.orgName, source: 'player-history' });
     if (!DRY_RUN) {
