@@ -644,10 +644,10 @@ async function main() {
       try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
       sgCache2[season.id] = sg;
       for (const [gameId, game] of Object.entries(sg.games || {})) {
-        if (game.hs !== undefined) continue;   // already has score
-        if (game.hidden)           continue;   // already flagged hidden
-        if (game.legacy)           continue;   // already flagged legacy
-        if (game.forfeit)          continue;   // already flagged forfeit
+        if (game.hs !== undefined) continue;   // already has score (including null = checked)
+        if (game.hidden)           continue;
+        if (game.legacy)           continue;
+        if (game.forfeit)          continue;
         todo2.push({ seasonId: season.id, gameId });
       }
     }
@@ -667,11 +667,12 @@ async function main() {
         if (!dg) return { gameId, seasonId, type: 'legacy' };
 
         const outcomeVal = dg.result?.outcome?.value || '';
-        const isForfeit  = outcomeVal.includes('FORFEIT');
         const hs         = parseScore(dg.result?.home?.statistics);
         const as_        = parseScore(dg.result?.away?.statistics);
         const court      = dg.allocation?.court;
         const venue      = court?.venue;
+
+        const isForfeit = outcomeVal.includes('FORFEIT');
 
         return {
           gameId, seasonId,
@@ -713,8 +714,10 @@ async function main() {
             if (r.desc) entry.desc = r.desc;
             forfeits2++;
           } else {
-            if (r.hs !== null) entry.hs = r.hs;
-            if (r.as !== null) entry.as = r.as;
+            // Always write hs/as even if null — null means "checked, no score available"
+            // This prevents re-scanning on next run (undefined = never checked)
+            entry.hs = r.hs !== null ? r.hs : null;
+            entry.as = r.as !== null ? r.as : null;
             if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
             if (r.court?.name) entry.ct = r.court.name;
             if (r.time)        entry.t  = r.time;
