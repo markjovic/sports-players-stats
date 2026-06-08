@@ -672,6 +672,11 @@ async function main() {
         const court      = dg.allocation?.court;
         const venue      = court?.venue;
 
+        if (hs === null && !outcomeVal && !_diagPrinted) {
+          _diagPrinted++;
+          console.warn(`\n  DIAG null-score non-forfeit: gameId=${gameId} status=${dg.status?.value} outcome="${outcomeVal}" homeStats=${JSON.stringify(dg.result?.home?.statistics)}`);
+        }
+
         const isForfeit = outcomeVal.includes('FORFEIT');
 
         return {
