@@ -110,7 +110,6 @@ const Q_DISCOVER_GAME = `query DiscoverGame($gameID: ID!) {
   discoverGame(gameID: $gameID) {
     id
     allocation {
-      time
       dateTimeList { date time }
       court {
         id name abbreviatedName
@@ -129,6 +128,7 @@ const Q_DISCOVER_GAME = `query DiscoverGame($gameID: ID!) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+let _errSample = 0;
 async function gql(operationName, query, variables, cookie) {
   try {
     const res = await fetch(API_URL, {
@@ -139,7 +139,12 @@ async function gql(operationName, query, variables, cookie) {
     if (res.status === 429) return { _rateLimit: true };
     if (res.status === 403 || res.status === 401) return { _authError: true };
     if (!res.ok) return { _transient: true };
-    return await res.json();
+    const json = await res.json();
+    if (json.errors) {
+      if (_errSample++ < 3) console.warn(`\n  ⚠ GraphQL error (${operationName}):`, JSON.stringify(json.errors[0]).slice(0, 200));
+      return { _graphqlError: true, errors: json.errors };
+    }
+    return json;
   } catch (e) {
     return { _transient: true };
   }
@@ -297,7 +302,7 @@ async function main() {
         try { cookie = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
         return { gameId, seasonId, outcome: 'skip' };
       }
-      if (dg?._rateLimit || dg?._transient) return { gameId, seasonId, outcome: 'skip' };
+      if (dg?._rateLimit || dg?._transient || dg?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
 
       // discoverGame returned actual data — game is accessible, get venue from it
       if (dg?.data?.discoverGame) {
@@ -314,7 +319,7 @@ async function main() {
       // Call game(id) to get the score
       const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie);
 
-      if (ge?._authError || ge?._rateLimit || ge?._transient) return { gameId, seasonId, outcome: 'skip' };
+      if (ge?._authError || ge?._rateLimit || ge?._transient || ge?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
 
       if (ge?.data?.game) {
         const g   = ge.data.game;
