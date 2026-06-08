@@ -1,25 +1,22 @@
 #!/usr/bin/env node
 // backfill-hidden-games.js
 /**
- * Enriches game entries that have no score and no venue by calling game(id)
- * — the live e-scoring endpoint — which returns scores for games hidden by
- * competition admin (where discoverGame returns null).
+ * Enriches game entries that have no score by calling the spectator endpoint
+ * game(id) — which returns scores for games hidden by competition admin
+ * (where discoverGame on the main API returns null).
  *
  * Three outcomes per game:
- *   1. game(id) returns data → score stored, flag: hidden: true
- *   2. game(id) returns null → genuinely orphaned, flag: legacy: true
- *   3. game(id) errors → skip, retry next run
- *
- * Also flags existing no-score no-venue games based on backfill-venue
- * progress (done set = discoverGame returned null = hidden or legacy).
+ *   1. game(id) returns data  → score stored, flag: hidden: true
+ *   2. game(id) returns null  → genuinely orphaned, flag: legacy: true
+ *   3. game(id) errors        → skip, retry next run
  *
  * Reads no-venue-seasons.json to target seasons with missing data.
  * Progress file: backfill-hidden-progress.json
  *
  * Usage:
  *   node backfill-hidden-games.js
- *   node backfill-hidden-games.js --concurrency=300
- *   node backfill-hidden-games.js --season=b81be631   (single season)
+ *   node backfill-hidden-games.js --concurrency=100
+ *   node backfill-hidden-games.js --season=b81be631
  */
 
 'use strict';
@@ -39,18 +36,23 @@ const ARGS = Object.fromEntries(
 
 const TENANT        = ARGS.tenant      || 'bv';
 const TENANT_FULL   = { bv: 'basketball-victoria' }[TENANT] || TENANT;
-const CONCURRENCY   = parseInt(ARGS.concurrency || '300', 10);
+const CONCURRENCY   = parseInt(ARGS.concurrency || '100', 10);
 const TARGET_SEASON = ARGS.season      || null;
 
-const API_URL          = 'https://api.playhq.com/graphql';
-const SPECTATOR_URL    = 'https://spectator.playhq.com/graphql';
+// Two separate endpoints with different purposes:
+//   API_URL       — main GraphQL API, used to get session cookie
+//   SPECTATOR_URL — live scoring engine, returns data even for admin-hidden games
+const API_URL       = 'https://api.playhq.com/graphql';
+const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
+
 const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
-const COOKIE_FILE   = path.join(__dirname, `backfill-hidden-cookie.json`);
+const COOKIE_FILE   = path.join(__dirname, 'backfill-hidden-cookie.json');
 const PROGRESS_FILE = path.join(__dirname, 'backfill-hidden-progress.json');
 const NO_VENUE_FILE = path.join(__dirname, 'no-venue-seasons.json');
 const VENUE_DIR     = path.join(__dirname, 'venue-lookup');
 
-const HEADERS = {
+// Headers for the main API (basketball-victoria tenant, long form)
+const HEADERS_API = {
   'accept':       '*/*',
   'origin':       'https://www.playhq.com',
   'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
@@ -58,71 +60,91 @@ const HEADERS = {
   'content-type': 'application/json',
 };
 
-// game(id) endpoint uses short tenant name and x-phq-tenant header
-const HEADERS_GAME = {
+// Headers for the spectator endpoint (short tenant 'bv' + x-phq-tenant)
+const HEADERS_SPECTATOR = {
   'accept':       '*/*',
   'origin':       'https://www.playhq.com',
   'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant':       TENANT,          // short form: 'bv' not 'basketball-victoria'
-  'x-phq-tenant': TENANT,          // additional header required by game(id)
+  'tenant':       TENANT,
+  'x-phq-tenant': TENANT,
   'content-type': 'application/json',
 };
 
-// ─── Cookie ───────────────────────────────────────────────────────────────────
+// ─── Session cookie ───────────────────────────────────────────────────────────
+// The cookie is obtained by hitting the main API with any valid query.
+// The Set-Cookie response header gives us phq_session, which we also use
+// for the spectator endpoint (along with phq_sub and phq_tier).
 
 async function getSession() {
   try {
     if (fs.existsSync(COOKIE_FILE)) {
       const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
-      if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) return d;
+      // Reuse if less than 23 hours old (JWT expires at 24h)
+      if (Date.now() - d.fetchedAt < 23 * 60 * 60 * 1000) {
+        console.log(`  ↻ Reusing session cookie (sub: ${d.sub || 'none'})`);
+        return d;
+      }
     }
   } catch (e) {}
+
   console.log('  Fetching session cookie...');
-  for (const tenant of [TENANT_FULL, TENANT]) {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS, 'tenant': tenant, 'request-id': crypto.randomUUID() },
-      body: JSON.stringify({
-        operationName: 'ProfileSearch',
-        variables:     { fullName: 'test player' },
-        query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
-      }),
-    });
-    const raw = res.headers.get('set-cookie');
-    if (raw) {
-      const session = raw.split(';')[0]; // phq_session=...
-      // Decode JWT to extract sub (used as phq_sub)
-      let sub = '';
-      try {
-        const payload = JSON.parse(Buffer.from(session.split('=')[1].split('.')[1], 'base64').toString());
-        sub = payload.sub || payload.jti || '';
-      } catch (e) {}
-      const sessionData = {
-        session,
-        sub,
-        // phq_sub and phq_tier cookies to send to spectator endpoint
-        allCookies: sub
-          ? `${session}; phq_sub=${sub}; phq_tier=cookie-no-jwt`
-          : session,
-        fetchedAt: Date.now(),
-      };
-      fs.writeFileSync(COOKIE_FILE, JSON.stringify(sessionData));
-      console.log(`  ✓ Cookie obtained (sub: ${sub || 'none'})`);
-      return sessionData;
-    }
-    console.warn(`  ⚠ No cookie with tenant=${tenant} (status ${res.status})`);
-  }
-  throw new Error('No Set-Cookie header from either tenant format');
+  const res = await fetch(API_URL, {
+    method:  'POST',
+    headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
+    body: JSON.stringify({
+      operationName: 'ProfileSearch',
+      variables:     { fullName: 'test' },
+      query:         'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+    }),
+  });
+
+  const rawCookie = res.headers.get('set-cookie');
+  if (!rawCookie) throw new Error(`No Set-Cookie header from API (status ${res.status})`);
+
+  // Extract phq_session=<token> from the cookie string
+  const sessionMatch = rawCookie.match(/phq_session=([^;]+)/);
+  if (!sessionMatch) throw new Error('phq_session not found in Set-Cookie header');
+
+  const sessionToken = sessionMatch[1];
+  const sessionCookie = `phq_session=${sessionToken}`;
+
+  // Decode the JWT payload to get sub (used as phq_sub value)
+  let sub = '';
+  try {
+    const payload = JSON.parse(Buffer.from(sessionToken.split('.')[1], 'base64').toString());
+    sub = payload.sub || payload.jti || '';
+  } catch (e) {}
+
+  // The spectator endpoint needs all three cookies
+  const allCookies = sub
+    ? `${sessionCookie}; phq_sub=${sub}; phq_tier=cookie-no-jwt`
+    : sessionCookie;
+
+  const sessionData = { sessionCookie, allCookies, sub, fetchedAt: Date.now() };
+  fs.writeFileSync(COOKIE_FILE, JSON.stringify(sessionData));
+  console.log(`  ✓ Cookie obtained (sub: ${sub || 'none'})`);
+  return sessionData;
 }
 
-// ─── Queries ──────────────────────────────────────────────────────────────────
+// ─── GraphQL query for the spectator endpoint ─────────────────────────────────
+// This is the exact "Game" query from the mobile app traffic.
+// It uses integer game IDs (not UUIDs) and hits spectator.playhq.com.
+// Crucially this endpoint does NOT respect the admin "hide game" flag —
+// it returns full data even for hidden games.
 
-// Exact query from mobile app traffic - spectator.playhq.com endpoint
-const Q_GAME_ESCORE = `query Game($id: ID!) {
+const Q_GAME = `query Game($id: ID!) {
   game(id: $id) {
     id
     status
     updatedAt
+    break
+    clock {
+      period
+      periodValue
+      time
+      status
+      lastUpdatedAt
+    }
     result {
       home {
         statistics { count type { value } }
@@ -130,115 +152,132 @@ const Q_GAME_ESCORE = `query Game($id: ID!) {
           period { value }
           overtimeSequenceNo
           statistics { count type { value } }
+          role
+          closureStatus
         }
       }
       away {
         statistics { count type { value } }
+        periods(scope: BY_PERIOD) {
+          period { value }
+          overtimeSequenceNo
+          statistics { count type { value } }
+          role
+          closureStatus
+        }
       }
+      currentPeriod { value primarySide }
     }
     statistics {
       home {
+        statisticsV2 { type { value } count }
         players {
-          profileID playerNumber name id
-          statistics { count type { value } }
+          profileID
+          playerNumber
+          name
+          id
+          statistics { count type { value pointValue type } }
+          periodStatistics {
+            period { value }
+            statistics { count type { value } }
+            status
+            displayOrder
+          }
         }
       }
       away {
+        statisticsV2 { type { value } count }
         players {
-          profileID playerNumber name id
-          statistics { count type { value } }
+          profileID
+          playerNumber
+          name
+          id
+          statistics { count type { value pointValue type } }
+          periodStatistics {
+            period { value }
+            statistics { count type { value } }
+            status
+            displayOrder
+          }
         }
       }
     }
+    liveStreamingEnabled
+    liveStream { url provider videoId }
   }
 }`;
 
-// Use exact GameCentre operation from mobile traffic - including gameStatisticsFilter
-// which appears to be required to get data for hidden/grading games
-const Q_GAME_CENTRE = `query GameCentre($gameId: ID!) {
-  discoverGame(gameID: $gameId) {
-    id
-    status { name value }
-    grade { id hideScores }
-    home {
-      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
-    }
-    away {
-      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
-    }
-    result {
-      home {
-        statistics { count type { value } }
-        periods { period { value } statistics { count type { value } } }
-      }
-      away {
-        statistics { count type { value } }
-      }
-    }
-    allocation {
-      dateTimeList { date time }
-      court {
-        id name abbreviatedName
-        venue {
-          id name abbreviatedName latitude longitude
-          address suburb state postcode country
-        }
-      }
-    }
-    round { id name isFinalsRound }
-  }
-}`;
+// ─── Helper: call spectator endpoint ─────────────────────────────────────────
 
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+let _diagPrinted = 0;
 
-let _diagCount = 0;
-let _errSample = 0;
-let backfill_hidden_first_ge_logged = false;
-async function gql(operationName, query, variables, session, useGameHeaders = false) {
-  const headers = useGameHeaders ? HEADERS_GAME : HEADERS;
-  const url     = useGameHeaders ? SPECTATOR_URL : API_URL;
-  // Spectator endpoint gets all three cookies; main API gets just phq_session
-  const cookie  = useGameHeaders ? session.allCookies : session.session;
+async function fetchGame(gameId, session) {
   try {
-    const res = await fetch(url, {
+    const res = await fetch(SPECTATOR_URL, {
       method:  'POST',
-      headers: { ...headers, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-      body:    JSON.stringify({ operationName, variables, query }),
+      headers: {
+        ...HEADERS_SPECTATOR,
+        'request-id': crypto.randomUUID(),
+        'Cookie':     session.allCookies,
+      },
+      body: JSON.stringify({
+        operationName: 'Game',
+        variables:     { id: String(gameId) },
+        query:         Q_GAME,
+      }),
     });
-    if (_diagCount < 3) {
-      _diagCount++;
-      console.warn(`\n  DIAG [${operationName}] status=${res.status} gameId=${variables.gameId || variables.gameID || variables.id}`);
-    }
+
     if (res.status === 429) return { _rateLimit: true };
-    if (res.status === 403 || res.status === 401) return { _authError: true };
+    if (res.status === 401 || res.status === 403) return { _authError: true };
     if (!res.ok) {
-      if (_diagCount < 6) {
-        const body = await res.text().catch(() => '(unreadable)');
-        console.warn(`\n  DIAG ${res.status} body: ${body.slice(0, 300)}`);
+      if (_diagPrinted++ < 3) {
+        const body = await res.text().catch(() => '');
+        console.warn(`\n  ⚠ Spectator HTTP ${res.status} for game ${gameId}: ${body.slice(0, 200)}`);
       }
       return { _transient: true };
     }
+
     const json = await res.json();
-    if (_diagCount <= 3) console.warn(`  DIAG response keys:`, Object.keys(json.data || {}), 'errors:', json.errors?.[0]?.message?.slice(0,100));
-    if (json.errors) {
-      if (_errSample++ < 3) console.warn(`\n  ⚠ GraphQL error (${operationName}):`, JSON.stringify(json.errors[0]).slice(0, 200));
-      return { _graphqlError: true, errors: json.errors };
+
+    if (_diagPrinted++ < 3) {
+      console.log(`\n  DIAG game ${gameId}: data.game=${json?.data?.game ? 'GOT DATA' : 'null'} errors=${JSON.stringify(json?.errors?.[0])?.slice(0,100)}`);
     }
+
+    if (json.errors?.length) {
+      if (_diagPrinted < 5) console.warn(`\n  ⚠ GraphQL error for ${gameId}:`, JSON.stringify(json.errors[0]).slice(0, 150));
+      return { _graphqlError: true };
+    }
+
     return json;
   } catch (e) {
-    if (_diagCount < 3) console.warn(`\n  DIAG fetch exception:`, e.message);
+    if (_diagPrinted++ < 3) console.warn(`\n  ⚠ Fetch exception for ${gameId}:`, e.message);
     return { _transient: true };
   }
 }
+
+// ─── Score parser ─────────────────────────────────────────────────────────────
 
 function parseScore(statistics) {
   return statistics?.find(s => s.type?.value === 'TOTAL_SCORE')?.count ?? null;
 }
 
+// Parse quarter-by-quarter scores into a compact array [q1, q2, q3, q4]
+function parseQuarterScores(periods) {
+  if (!periods?.length) return null;
+  const order = ['FIRST_QTR', 'SECOND_QTR', 'THIRD_QTR', 'FOURTH_QTR'];
+  const map = {};
+  for (const p of periods) {
+    const score = p.statistics?.find(s => s.type?.value === 'TOTAL_SCORE')?.count;
+    if (score !== undefined) map[p.period?.value] = score;
+  }
+  const qtrs = order.map(q => map[q] ?? null);
+  return qtrs.some(q => q !== null) ? qtrs : null;
+}
+
 // ─── Venue shards ─────────────────────────────────────────────────────────────
 
-const _venueShards = {};
-const _dirtyVenues = new Set();
+const _venueShards  = {};
+const _dirtyVenues  = new Set();
 
 function storeVenue(venue, court) {
   if (!venue?.id) return;
@@ -251,29 +290,34 @@ function storeVenue(venue, court) {
   const shard = _venueShards[prefix];
   if (!shard[venue.id]) {
     shard[venue.id] = {
-      name: venue.name, abbr: venue.abbreviatedName || null,
-      lat: venue.latitude || null, lng: venue.longitude || null,
-      address: venue.address || null, suburb: venue.suburb || null,
-      state: venue.state || null, postcode: venue.postcode || null,
-      country: venue.country || null, courts: {},
+      name:    venue.name,
+      abbr:    venue.abbreviatedName || null,
+      lat:     venue.latitude        || null,
+      lng:     venue.longitude       || null,
+      address: venue.address         || null,
+      suburb:  venue.suburb          || null,
+      state:   venue.state           || null,
+      postcode:venue.postcode        || null,
+      country: venue.country         || null,
+      courts:  {},
     };
     _dirtyVenues.add(prefix);
   }
   if (court?.id && !shard[venue.id].courts[court.id]) {
-    shard[venue.id].courts[court.id] = { name: court.name, abbr: court.abbreviatedName || null };
+    shard[venue.id].courts[court.id] = {
+      name: court.name,
+      abbr: court.abbreviatedName || null,
+    };
     _dirtyVenues.add(prefix);
   }
 }
 
 function flushVenueShards() {
   if (!fs.existsSync(VENUE_DIR)) fs.mkdirSync(VENUE_DIR, { recursive: true });
-  let n = 0;
   for (const prefix of _dirtyVenues) {
     fs.writeFileSync(path.join(VENUE_DIR, `${prefix}.json`), JSON.stringify(_venueShards[prefix]));
-    n++;
   }
   _dirtyVenues.clear();
-  return n;
 }
 
 // ─── Progress ─────────────────────────────────────────────────────────────────
@@ -312,24 +356,23 @@ function gitCommitPush(message) {
   }
 }
 
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
   console.log(`\n🔍 Backfill Hidden Games`);
-  console.log(`   Tenant:      ${TENANT}`);
-  console.log(`   Concurrency: ${CONCURRENCY}\n`);
+  console.log(`   Tenant:      ${TENANT} (${TENANT_FULL})`);
+  console.log(`   Concurrency: ${CONCURRENCY}`);
+  console.log(`   Endpoint:    ${SPECTATOR_URL}\n`);
 
   if (!fs.existsSync(NO_VENUE_FILE)) {
-    console.error(`❌ ${NO_VENUE_FILE} not found — run bootstrap-fixture-progress.js first`);
+    console.error(`❌ ${NO_VENUE_FILE} not found`);
     process.exit(1);
   }
 
   const noVenueSeasons = JSON.parse(fs.readFileSync(NO_VENUE_FILE, 'utf8'));
-
-  // Build list of seasons to process
-  const targetSeasons = TARGET_SEASON
-    ? [{ id: TARGET_SEASON }]
-    : noVenueSeasons;
+  const targetSeasons  = TARGET_SEASON ? [{ id: TARGET_SEASON }] : noVenueSeasons;
 
   console.log(`📋 Seasons to check: ${targetSeasons.length}`);
 
@@ -340,8 +383,11 @@ async function main() {
 
   let session = await getSession();
 
-  // Collect all game IDs missing score AND venue, not yet processed
-  const todo = [];
+  // Collect all game IDs that need probing:
+  // - no score (hs undefined)
+  // - not already flagged as hidden or legacy
+  // - not already in progress file
+  const todo    = [];
   const sgCache = {};
 
   for (const season of targetSeasons) {
@@ -352,11 +398,10 @@ async function main() {
     sgCache[season.id] = sg;
 
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      // Skip games that already have a score OR a venue OR are already flagged
-      if (game.hs !== undefined) continue;
-      if (game.vid) continue;
-      if (game.hidden || game.legacy) continue;
-      if (prog.done.has(gameId)) continue;
+      if (game.hs !== undefined)    continue;  // already has score
+      if (game.hidden)              continue;  // already flagged hidden
+      if (game.legacy)              continue;  // already flagged legacy
+      if (prog.done.has(gameId))    continue;  // already processed this run
       todo.push({ seasonId: season.id, gameId });
     }
   }
@@ -364,64 +409,78 @@ async function main() {
   console.log(`📋 Games to probe: ${todo.length.toLocaleString()}\n`);
 
   if (todo.length === 0) {
-    console.log('✅ Nothing to do — all games already have scores, venues, or flags');
+    console.log('✅ Nothing to do — all games already have scores or flags');
     return;
   }
 
-  let hidden = 0, legacy = 0, scored = 0, failed = 0, sinceLastSave = 0;
+  let hidden = 0, legacy = 0, failed = 0, sinceLastSave = 0;
 
   for (let i = 0; i < todo.length; i += CONCURRENCY) {
     const batch = todo.slice(i, i + CONCURRENCY);
 
     const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
-      await delay(j * 3);
+      // Small stagger to avoid thundering herd
+      await delay(j * 5);
 
-      // Step 1: call discoverGame via GameCentre operation (exact mobile app operation)
-      const dg = await gql('GameCentre', Q_GAME_CENTRE, { gameId: gameId }, session);
+      const resp = await fetchGame(gameId, session);
 
-      if (dg?._authError) {
-        try { session = await getSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
+      // Handle auth failure — refresh cookie and skip this game (retry next run)
+      if (resp?._authError) {
+        console.warn(`\n  ⚠ Auth error — refreshing cookie`);
+        try { session = await getSession(); } catch (e) {}
         return { gameId, seasonId, outcome: 'skip' };
       }
-      if (dg?._rateLimit || dg?._transient || dg?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
 
-      // GameCentre returned actual data — game is accessible
-      if (dg?.data?.discoverGame) {
-        const dgg   = dg.data.discoverGame;
-        const court = dgg.allocation?.court;
-        const venue = court?.venue;
-        const dt    = dgg.allocation?.dateTimeList?.[0];
-        const hs    = parseScore(dgg.result?.home?.statistics);
-        const as_   = parseScore(dgg.result?.away?.statistics);
-        const rn    = dgg.round?.name || null;
-        return { gameId, seasonId, outcome: 'accessible', hs, as: as_, venue, court,
-                 time: dt?.time?.slice(0, 5) || null, rn };
+      // Rate limit or transient error — skip for retry
+      if (resp?._rateLimit || resp?._transient || resp?._graphqlError) {
+        return { gameId, seasonId, outcome: 'skip' };
       }
 
-      // discoverGame returned null → game hidden by admin
-      // Try game(id) e-scoring endpoint as fallback
-      const ge = await gql('Game', Q_GAME_ESCORE, { id: gameId }, session, true);
+      const game = resp?.data?.game;
 
-      if (!backfill_hidden_first_ge_logged) {
-        backfill_hidden_first_ge_logged = true;
-        console.warn(`\n  DIAG first game(id) for ${gameId}:`,
-          ge?._transient ? 'TRANSIENT' : ge?._graphqlError ? `GRAPHQL_ERR: ${JSON.stringify(ge.errors?.[0]).slice(0,150)}` :
-          ge?.data?.game ? 'GOT DATA' : `NULL data=${JSON.stringify(ge?.data)}`);
+      if (game) {
+        // Spectator endpoint returned data — game is hidden from public but scores exist
+        const hs  = parseScore(game.result?.home?.statistics);
+        const as_ = parseScore(game.result?.away?.statistics);
+        const hq  = parseQuarterScores(game.result?.home?.periods);
+        const aq  = parseQuarterScores(game.result?.away?.periods);
+
+        // Extract per-player stats for both teams
+        const homePlayers = (game.statistics?.home?.players || []).map(p => ({
+          profileID:    p.profileID,
+          name:         p.name,
+          number:       p.playerNumber,
+          pts:          parseScore(p.statistics),
+          pt1:          p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
+          pt2:          p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
+          pt3:          p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
+          fouls:        p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
+        }));
+        const awayPlayers = (game.statistics?.away?.players || []).map(p => ({
+          profileID:    p.profileID,
+          name:         p.name,
+          number:       p.playerNumber,
+          pts:          parseScore(p.statistics),
+          pt1:          p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
+          pt2:          p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
+          pt3:          p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
+          fouls:        p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
+        }));
+
+        return {
+          gameId, seasonId, outcome: 'hidden',
+          hs, as: as_, hq, aq,
+          homePlayers, awayPlayers,
+          status: game.status,
+          updatedAt: game.updatedAt,
+        };
       }
 
-      if (ge?._authError || ge?._rateLimit || ge?._transient || ge?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
-
-      if (ge?.data?.game) {
-        const g   = ge.data.game;
-        const hs  = parseScore(g.result?.home?.statistics);
-        const as_ = parseScore(g.result?.away?.statistics);
-        return { gameId, seasonId, outcome: 'hidden', hs, as: as_, status: g.status };
-      }
-
-      // game(id) also returned null → genuinely orphaned/legacy
+      // game(id) returned null — genuinely no data anywhere
       return { gameId, seasonId, outcome: 'legacy' };
     }));
 
+    // Apply results to in-memory cache
     for (const r of results) {
       if (r.outcome === 'skip') { failed++; continue; }
 
@@ -429,23 +488,18 @@ async function main() {
       if (!sg) continue;
       const entry = sg.games[r.gameId] || {};
 
-      if (r.outcome === 'accessible') {
+      if (r.outcome === 'hidden') {
         if (r.hs !== null) entry.hs = r.hs;
         if (r.as !== null) entry.as = r.as;
-        if (r.rn && !entry.rn) entry.rn = r.rn;
-        if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
-        if (r.court?.name) entry.ct = r.court.name;
-        if (r.time) entry.t = r.time;
-        scored++;
-      } else if (r.outcome === 'hidden') {
-        // Hidden by competition admin — score available via game(id)
-        if (r.hs !== null) entry.hs = r.hs;
-        if (r.as !== null) entry.as = r.as;
-        entry.hidden = true;   // flag for HTML tool
+        if (r.hq)          entry.hq = r.hq;   // home quarter scores
+        if (r.aq)          entry.aq = r.aq;   // away quarter scores
+        if (r.homePlayers?.length) entry.hp = r.homePlayers;
+        if (r.awayPlayers?.length) entry.ap = r.awayPlayers;
+        if (r.updatedAt)   entry.updatedAt = r.updatedAt;
+        entry.hidden = true;
         hidden++;
       } else if (r.outcome === 'legacy') {
-        // Genuinely orphaned — no data accessible via any route
-        entry.legacy = true;   // flag for HTML tool
+        entry.legacy = true;
         prog.legacy.add(r.gameId);
         legacy++;
       }
@@ -455,7 +509,7 @@ async function main() {
       sinceLastSave++;
     }
 
-    // Flush and commit every 5000 games
+    // Flush to disk every 5000 games processed
     if (sinceLastSave >= 5000) {
       for (const [sid, sg] of Object.entries(sgCache)) {
         fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
@@ -464,15 +518,18 @@ async function main() {
       saveProgress(prog);
       sinceLastSave = 0;
       console.log(`\n  💾 Committing...`);
-      gitCommitPush(`Hidden game backfill: ${hidden} hidden, ${legacy} legacy, ${scored} scored`);
+      gitCommitPush(`Hidden game backfill: ${hidden} hidden, ${legacy} legacy`);
     }
 
     const done = Math.min(i + CONCURRENCY, todo.length);
     process.stdout.write(
-      `  ${done.toLocaleString()}/${todo.length.toLocaleString()} (${((done/todo.length)*100).toFixed(1)}%)` +
-      ` — 🔒 ${hidden} hidden, 📜 ${legacy} legacy, ✓ ${scored} scored, ✗ ${failed} failed\r`
+      `  ${done.toLocaleString()}/${todo.length.toLocaleString()}` +
+      ` (${((done / todo.length) * 100).toFixed(1)}%)` +
+      ` — 🔒 ${hidden} hidden, 📜 ${legacy} legacy, ✗ ${failed} failed\r`
     );
-    if (i + CONCURRENCY < todo.length) await delay(50);
+
+    // Brief pause between batches to be kind to the server
+    if (i + CONCURRENCY < todo.length) await delay(100);
   }
 
   // Final flush
@@ -482,12 +539,11 @@ async function main() {
   flushVenueShards();
   saveProgress(prog);
 
-  console.log(`\n\n✅ Hidden game backfill complete`);
-  console.log(`   🔒 Hidden (score via game(id)): ${hidden.toLocaleString()}`);
-  console.log(`   📜 Legacy (no data anywhere):   ${legacy.toLocaleString()}`);
-  console.log(`   ✓  Accessible (scored+venued):  ${scored.toLocaleString()}`);
-  console.log(`   ✗  Failed/skipped:              ${failed.toLocaleString()}`);
-  console.log(`   Total probed:                   ${todo.length.toLocaleString()}`);
+  console.log(`\n\n✅ Backfill complete`);
+  console.log(`   🔒 Hidden (scored via spectator): ${hidden.toLocaleString()}`);
+  console.log(`   📜 Legacy (no data anywhere):     ${legacy.toLocaleString()}`);
+  console.log(`   ✗  Failed/skipped:               ${failed.toLocaleString()}`);
+  console.log(`   Total probed:                     ${todo.length.toLocaleString()}`);
 
   gitCommitPush(`Hidden game backfill complete: ${hidden} hidden, ${legacy} legacy`);
 }
