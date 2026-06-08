@@ -38,6 +38,7 @@ const TENANT        = ARGS.tenant      || 'bv';
 const TENANT_FULL   = { bv: 'basketball-victoria' }[TENANT] || TENANT;
 const CONCURRENCY   = parseInt(ARGS.concurrency || '100', 10);
 const TARGET_SEASON = ARGS.season      || null;
+const REVIEW_LEGACY = !!ARGS['review-legacy']; // re-probe legacy games via discoverGame for forfeits
 
 // Two separate endpoints with different purposes:
 //   API_URL       — main GraphQL API, used to get session cookie
@@ -234,7 +235,47 @@ const Q_GAME = `query Game($id: ID!) {
   }
 }`;
 
-// ─── Helper: call spectator endpoint ─────────────────────────────────────────
+// ─── discoverGame query — used for review-legacy mode to detect forfeits ─────
+// Forfeited games return null from spectator (no e-scoring) but return
+// full result data from discoverGame including outcome type and description.
+
+const Q_DISCOVER_GAME = `query GameCentre($gameId: ID!) {
+  discoverGame(gameID: $gameId) {
+    id
+    date
+    status { name value }
+    round { id name }
+    home {
+      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
+    }
+    away {
+      ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } }
+    }
+    result {
+      winner { value }
+      outcome { name value }
+      home {
+        outcome { name value }
+        gameOutcomeDescription
+        statistics { count type { value } }
+      }
+      away {
+        outcome { name value }
+        statistics { count type { value } }
+      }
+    }
+    allocation {
+      dateTimeList { date time }
+      court {
+        id name abbreviatedName
+        venue {
+          id name abbreviatedName latitude longitude
+          address suburb state postcode country
+        }
+      }
+    }
+  }
+}`;
 
 let _diagPrinted = 0;
 
@@ -390,6 +431,30 @@ function gitCommitPush(message) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// Helper: call discoverGame on main API (used for review-legacy mode)
+async function fetchDiscoverGame(gameId, session) {
+  try {
+    const res = await fetch(API_URL, {
+      method:  'POST',
+      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': session.sessionCookie },
+      body:    JSON.stringify({ operationName: 'GameCentre', variables: { gameId }, query: Q_DISCOVER_GAME }),
+    });
+    if (res.status === 429) return { _rateLimit: true };
+    if (res.status === 403 || res.status === 401) return { _authError: true };
+    if (!res.ok) return { _transient: true };
+    const json = await res.json();
+    if (json.errors) return { _graphqlError: true };
+    return json;
+  } catch (e) {
+    return { _transient: true };
+  }
+}
+
+function slugify(str) {
+  if (!str) return '';
+  return str.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/[\s-]+/g, '-');
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -414,6 +479,151 @@ async function main() {
   }
 
   let session = await getSession();
+
+  // ─── Review-legacy mode ───────────────────────────────────────────────────
+  // Re-probes games flagged legacy via discoverGame to detect forfeits.
+  // Forfeited games return null from spectator (no e-scoring) but DO return
+  // full result data from discoverGame, including outcome type and description.
+  if (REVIEW_LEGACY) {
+    console.log(`\n🔎 Review-legacy mode — re-probing legacy games via discoverGame\n`);
+
+    // Build list of all legacy-flagged games
+    const legacyTodo = [];
+    const sgCache2 = {};
+    for (const season of targetSeasons) {
+      const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
+      if (!fs.existsSync(gameFile)) continue;
+      let sg;
+      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+      sgCache2[season.id] = sg;
+      for (const [gameId, game] of Object.entries(sg.games || {})) {
+        if (!game.legacy) continue;
+        legacyTodo.push({ seasonId: season.id, gameId });
+      }
+    }
+
+    console.log(`📋 Legacy games to re-probe: ${legacyTodo.length.toLocaleString()}\n`);
+
+    let forfeits = 0, stillLegacy = 0, accessible = 0, legacyFailed = 0, legacySinceLastSave = 0;
+
+    for (let i = 0; i < legacyTodo.length; i += CONCURRENCY) {
+      const batch = legacyTodo.slice(i, i + CONCURRENCY);
+      const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
+        await delay(j * 3);
+        const resp = await fetchDiscoverGame(gameId, session);
+        if (resp?._authError) { try { session = await getSession(true); } catch (e) {} return { gameId, seasonId, type: 'skip' }; }
+        if (resp?._rateLimit || resp?._transient || resp?._graphqlError) return { gameId, seasonId, type: 'skip' };
+        const dg = resp?.data?.discoverGame;
+        if (!dg) return { gameId, seasonId, type: 'stillLegacy' };  // genuinely not found
+
+        const outcomeVal = dg.result?.outcome?.value || '';
+        const isForfeit  = outcomeVal.includes('FORFEIT');
+        const hs         = parseScore(dg.result?.home?.statistics);
+        const as_        = parseScore(dg.result?.away?.statistics);
+
+        // Build game centre URL from available data
+        const season_ = dg.away?.season || dg.home?.season;
+        const comp    = season_?.competition;
+        const org     = comp?.organisation;
+        const round   = dg.round;
+        // URL needs org slug / comp+season slug / grade slug — not available from discoverGame alone
+        // Store what we have and let HTML tool build URL from stored h/hn/a/an
+        const court = dg.allocation?.court;
+        const venue = court?.venue;
+
+        return {
+          gameId, seasonId, type: isForfeit ? 'forfeit' : 'accessible',
+          hs, as: as_,
+          outcome:   outcomeVal,
+          outcomeName: dg.result?.outcome?.name || null,
+          fo: dg.result?.winner?.value?.toLowerCase() || null,  // 'home' or 'away'
+          desc: dg.result?.home?.gameOutcomeDescription || null,
+          h:  dg.home?.id   || null, hn: dg.home?.name  || null,
+          a:  dg.away?.id   || null, an: dg.away?.name  || null,
+          rn: dg.round?.name || null,
+          st: dg.status?.value || null,
+          venue, court,
+          time: dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null,
+        };
+      }));
+
+      for (const r of results) {
+        if (r.type === 'skip') { legacyFailed++; continue; }
+        const sg    = sgCache2[r.seasonId];
+        if (!sg) continue;
+        const entry = sg.games[r.gameId] || {};
+
+        if (r.type === 'stillLegacy') {
+          stillLegacy++;
+          continue;
+        }
+
+        // Clear legacy flag — we found real data
+        delete entry.legacy;
+        prog.legacy.delete(r.gameId);
+
+        if (r.h)  entry.h  = r.h;
+        if (r.hn) entry.hn = r.hn;
+        if (r.a)  entry.a  = r.a;
+        if (r.an) entry.an = r.an;
+        if (r.rn) entry.rn = r.rn;
+        if (r.st) entry.st = r.st;
+
+        if (r.type === 'forfeit') {
+          entry.forfeit = true;
+          entry.fo      = r.fo;       // 'HOME' or 'AWAY' winner
+          if (r.desc) entry.desc = r.desc;  // "Team X won by forfeit"
+          forfeits++;
+        } else {
+          // Accessible normal game — store score and venue
+          if (r.hs !== null) entry.hs = r.hs;
+          if (r.as !== null) entry.as = r.as;
+          if (r.venue) {
+            storeVenue(r.venue, r.court);
+            entry.vid = r.venue.id;
+            entry.vn  = r.venue.name;
+          }
+          if (r.court?.name) entry.ct = r.court.name;
+          if (r.time)        entry.t  = r.time;
+          accessible++;
+        }
+
+        sg.games[r.gameId] = entry;
+        prog.done.add(r.gameId);
+        legacySinceLastSave++;
+      }
+
+      if (legacySinceLastSave >= 5000) {
+        for (const [sid, sg] of Object.entries(sgCache2)) {
+          fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+        }
+        flushVenueShards();
+        saveProgress(prog);
+        legacySinceLastSave = 0;
+        gitCommitPush(`Legacy review: ${forfeits} forfeits, ${accessible} accessible, ${stillLegacy} still legacy`);
+      }
+
+      const done = Math.min(i + CONCURRENCY, legacyTodo.length);
+      process.stdout.write(`  ${done.toLocaleString()}/${legacyTodo.length.toLocaleString()} — 🏳 ${forfeits} forfeits, ✓ ${accessible} accessible, 📜 ${stillLegacy} still legacy, ✗ ${legacyFailed} failed\r`);
+      if (i + CONCURRENCY < legacyTodo.length) await delay(50);
+    }
+
+    // Final flush
+    for (const [sid, sg] of Object.entries(sgCache2)) {
+      fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+    }
+    flushVenueShards();
+    saveProgress(prog);
+
+    console.log(`\n\n✅ Legacy review complete`);
+    console.log(`   🏳 Forfeits identified:  ${forfeits.toLocaleString()}`);
+    console.log(`   ✓  Now accessible:       ${accessible.toLocaleString()}`);
+    console.log(`   📜 Still legacy:          ${stillLegacy.toLocaleString()}`);
+    console.log(`   ✗  Failed/skipped:        ${legacyFailed.toLocaleString()}`);
+
+    gitCommitPush(`Legacy review complete: ${forfeits} forfeits, ${accessible} accessible`);
+    return;
+  }
 
   // Collect all game IDs that need probing:
   // - no score (hs undefined)
