@@ -55,22 +55,22 @@ jobs:
           const prog = JSON.parse(fs.readFileSync('backfill-hidden-progress.json', 'utf8'));
           const done = new Set(prog.done || []);
           const legacy = new Set(prog.legacy || []);
+          const attempted = new Set([...done, ...legacy]);
           const gamesDir = path.join('games', 'bv');
           const unscored = [];
           for (const file of fs.readdirSync(gamesDir)) {
             const sg = JSON.parse(fs.readFileSync(path.join(gamesDir, file), 'utf8'));
             for (const [gameId, game] of Object.entries(sg.games || {})) {
-              if (game.hs !== undefined) continue;
-              if (game.hidden || game.legacy) continue;
-              if (done.has(gameId)) continue;
-              if (legacy.has(gameId)) continue;
+              if (game.hs !== undefined) continue;   // already has score
+              if (game.hidden || game.legacy) continue; // already flagged
+              if (!attempted.has(gameId)) continue;  // not yet attempted — skip
               unscored.push({season: file.replace('.json',''), gameId, date: game.d, home: game.hn, away: game.an});
             }
           }
           if (unscored.length === 0) {
-            console.log('No unscored games remaining.');
+            console.log('No unscored attempted games — all good.');
           } else {
-            console.log('Unscored games (' + unscored.length + '):');
+            console.log('Attempted but still unscored (' + unscored.length + '):');
             unscored.forEach(g => console.log(JSON.stringify(g)));
           }
           "
