@@ -188,12 +188,9 @@ async function main() {
   const seasons = index.seasons || {};
 
   const gameFiles  = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''));
-  const missingIds = gameFiles.filter(id => {
-    if (seasons[id]) return false;
-    if (!disc[id]) return true;
-    if (disc[id].invalid) return true;  // previously marked invalid — retry
-    return false;
-  });
+  // Include any season with a game file that isn't in sports-index.json
+  // Regardless of seasons-discovered.json status — the index is authoritative
+  const missingIds = gameFiles.filter(id => !seasons[id]);
 
   console.log(`Season game files on disk:   ${gameFiles.length}`);
   console.log(`In sports-index.json:        ${Object.keys(seasons).length}`);
