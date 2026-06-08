@@ -92,6 +92,7 @@ let stFinal = 0, stUpcoming = 0, stOther = 0, stNone = 0;
 let stNone_active = 0, stNone_locked = 0;
 let nullScore = 0, nullScore_active = 0, nullScore_locked = 0;
 let nullScore_final = 0, nullScore_upcoming = 0, nullScore_nostatus = 0;
+let finalNoScore = 0; // FINAL status but no score and no flag — unexplained gap
 const seasonBreakdown = [];
 
 if (fs.existsSync(GAMES_DIR)) {
@@ -123,6 +124,11 @@ if (fs.existsSync(GAMES_DIR)) {
         if      (st === 'FINAL')    nullScore_final++;
         else if (st === 'UPCOMING') nullScore_upcoming++;
         else if (st === '')         nullScore_nostatus++;
+      }
+
+      // FINAL with no score and no flag — these are the unexplained gap
+      if (st === 'FINAL' && g.hs === undefined && !g.forfeit && !g.hidden && !g.legacy) {
+        finalNoScore++;
       }
     }
 
@@ -192,8 +198,8 @@ console.log(`    FINAL:                         ${stFinal.toLocaleString()}`);
 console.log(`    UPCOMING:                      ${stUpcoming.toLocaleString()}`);
 console.log(`    Other (postponed etc):         ${stOther.toLocaleString()}`);
 console.log(`    No status:                     ${stNone.toLocaleString()}`);
-console.log(`      - in active seasons:         ${stNone_active.toLocaleString()}`);
-console.log(`      - in locked seasons:         ${stNone_locked.toLocaleString()} ⚠ should be 0 after fix-game-status`);
+console.log(`      - in active seasons:         ${stNone_active.toLocaleString()} (discover-fixtures will set UPCOMING)`);
+console.log(`      - in locked seasons:         ${stNone_locked.toLocaleString()}${stNone_locked > 0 ? ' ⚠ run fix-game-status' : ''}`);
 
 console.log('\n  Scores:');
 console.log(`    With numeric score:            ${scored.toLocaleString()}`);
@@ -207,6 +213,7 @@ console.log(`      - in locked seasons:         ${nullScore_locked.toLocaleStrin
 console.log(`      - status FINAL:              ${nullScore_final.toLocaleString()}`);
 console.log(`      - status UPCOMING:           ${nullScore_upcoming.toLocaleString()}`);
 console.log(`      - no status:                 ${nullScore_nostatus.toLocaleString()}`);
+console.log(`    FINAL no score (no flag):      ${finalNoScore.toLocaleString()} — zero-team/no-ladder seasons`);
 
 console.log('\n  Venues:');
 console.log(`    With venue:                    ${withVenue.toLocaleString()}`);
@@ -219,7 +226,7 @@ console.log('\n📈 COVERAGE (eligible games only)');
 console.log(`  Score coverage: ${scorePct}%`);
 console.log(`    Eligible: ${eligibleForScore.toLocaleString()} (total minus upcoming/forfeit/hidden/legacy)`);
 console.log(`    Scored:   ${scored.toLocaleString()}`);
-console.log(`    Gap:      ${(eligibleForScore - scored).toLocaleString()} — breakdown above (null/no-status)`);
+console.log(`    Gap:      ${(eligibleForScore - scored).toLocaleString()} — null:${nullScore} no-status:${stNone} final-no-score:${finalNoScore}`);
 console.log(`  Venue coverage: ${venuePct}%`);
 console.log(`    Eligible: ${eligibleForVenue.toLocaleString()} (total minus upcoming/permanently-none)`);
 console.log(`    With venue: ${withVenue.toLocaleString()}`);
