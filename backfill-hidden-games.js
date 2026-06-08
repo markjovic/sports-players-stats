@@ -654,7 +654,10 @@ async function main() {
         if (game.hidden)  continue;
         if (game.legacy)  continue;
         if (game.forfeit) continue;
+        // Skip if has a real numeric score
         if (typeof game.hs === 'number') continue;
+        // Skip if null score on a FINAL game — permanently confirmed no score available
+        if (game.hs === null && game.st === 'FINAL') continue;
         todo2.push({ seasonId: season.id, gameId });
       }
     }
@@ -726,10 +729,15 @@ async function main() {
             if (r.desc) entry.desc = r.desc;
             forfeits2++;
           } else {
-            // Always write hs/as even if null — null means "checked, no score available"
-            // This prevents re-scanning on next run (undefined = never checked)
-            entry.hs = r.hs !== null ? r.hs : null;
-            entry.as = r.as !== null ? r.as : null;
+            // Only write hs/as as null for FINAL games — confirms no score available
+            // UPCOMING games keep hs:undefined so they're re-checked when played
+            if (r.st === 'FINAL') {
+              entry.hs = r.hs !== null ? r.hs : null;
+              entry.as = r.as !== null ? r.as : null;
+            } else if (r.hs !== null) {
+              entry.hs = r.hs;
+              entry.as = r.as;
+            }
             if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
             if (r.court?.name) entry.ct = r.court.name;
             if (r.time)        entry.t  = r.time;
