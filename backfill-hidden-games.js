@@ -325,6 +325,8 @@ async function main() {
       // Call game(id) to get the score
       const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie);
 
+      if (_diagCount <= 6) console.warn(`  DIAG game(id) for ${gameId}:`, ge?._transient ? 'TRANSIENT' : ge?._graphqlError ? 'GRAPHQL_ERR' : ge?.data?.game ? 'GOT DATA' : 'NULL');
+
       if (ge?._authError || ge?._rateLimit || ge?._transient || ge?._graphqlError) return { gameId, seasonId, outcome: 'skip' };
 
       if (ge?.data?.game) {
