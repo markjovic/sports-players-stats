@@ -22,6 +22,14 @@ on:
         options:
           - 'false'
           - 'true'
+      review_unscored:
+        description: 'Probe all unscored unflagged games via discoverGame'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 jobs:
   backfill-hidden:
@@ -55,6 +63,9 @@ jobs:
           fi
           if [ "${{ github.event.inputs.review_legacy }}" = "true" ]; then
             ARGS="$ARGS --review-legacy"
+          fi
+          if [ "${{ github.event.inputs.review_unscored }}" = "true" ]; then
+            ARGS="$ARGS --review-unscored"
           fi
           node backfill-hidden-games.js $ARGS
 
