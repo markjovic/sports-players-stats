@@ -161,7 +161,30 @@ const venuePct = eligibleForVenue > 0 ? ((withVenue / eligibleForVenue) * 100).t
 
 // ─── Output ───────────────────────────────────────────────────────────────────
 
-console.log('\n🎮 GAMES');
+// ─── Index sync check ─────────────────────────────────────────────────────────
+
+const DISC_FILE = path.join(__dirname, 'seasons-discovered.json');
+const disc      = fs.existsSync(DISC_FILE) ? JSON.parse(fs.readFileSync(DISC_FILE, 'utf8')) : {};
+
+const gameFiles = fs.existsSync(GAMES_DIR)
+  ? fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
+  : [];
+
+const notInIndex     = gameFiles.filter(id => !seasons[id]);
+const notInDiscovered = notInIndex.filter(id => !disc[id]);
+const inDiscovered   = notInIndex.filter(id => !!disc[id]);
+
+console.log('\n🔍 INDEX SYNC CHECK');
+console.log(`  Season game files on disk:       ${gameFiles.length.toLocaleString()}`);
+console.log(`  Seasons in sports-index.json:    ${seasonList.length.toLocaleString()}`);
+console.log(`  Game files NOT in index:         ${notInIndex.length.toLocaleString()}`);
+console.log(`    - Also in seasons-discovered:  ${inDiscovered.length.toLocaleString()}`);
+console.log(`    - Not in either file:          ${notInDiscovered.length.toLocaleString()}`);
+if (notInIndex.length > 0 && notInIndex.length <= 20) {
+  console.log(`  Missing season IDs: ${notInIndex.join(', ')}`);
+} else if (notInIndex.length > 0) {
+  console.log(`  Sample missing IDs: ${notInIndex.slice(0, 5).join(', ')} ...`);
+}
 console.log(`  Total game entries:              ${total.toLocaleString()}`);
 
 console.log('\n  By status:');
