@@ -664,7 +664,7 @@ async function main() {
 
     console.log(`📋 Unscored unflagged games to probe: ${todo2.length.toLocaleString()}\n`);
 
-    let forfeits2 = 0, scored2 = 0, nowLegacy2 = 0, failed2 = 0, sinceLastSave2 = 0;
+    let forfeits2 = 0, scored2 = 0, hidden2 = 0, nowLegacy2 = 0, failed2 = 0, sinceLastSave2 = 0;
 
     for (let i = 0; i < todo2.length; i += CONCURRENCY) {
       const batch = todo2.slice(i, i + CONCURRENCY);
@@ -674,7 +674,20 @@ async function main() {
         if (resp?._authError) { try { session = await getSession(true); } catch (e) {} return { gameId, seasonId, type: 'skip' }; }
         if (resp?._rateLimit || resp?._transient || resp?._graphqlError) return { gameId, seasonId, type: 'skip' };
         const dg = resp?.data?.discoverGame;
-        if (!dg) return { gameId, seasonId, type: 'legacy' };
+        if (!dg) {
+          // discoverGame returned null — try spectator endpoint before flagging legacy
+          const geResp = await fetchGame(gameId, session);
+          if (geResp?._legacy) return { gameId, seasonId, type: 'legacy' };
+          if (geResp?._authError || geResp?._rateLimit || geResp?._transient || geResp?._graphqlError) return { gameId, seasonId, type: 'skip' };
+          const ge = geResp?.data?.game;
+          if (ge) {
+            // Hidden game — score available via spectator
+            const hs  = parseScore(ge.result?.home?.statistics);
+            const as_ = parseScore(ge.result?.away?.statistics);
+            return { gameId, seasonId, type: 'hidden', hs, as: as_, st: ge.status };
+          }
+          return { gameId, seasonId, type: 'legacy' };
+        }
 
         const outcomeVal = dg.result?.outcome?.value || '';
         const hs         = parseScore(dg.result?.home?.statistics);
@@ -728,6 +741,12 @@ async function main() {
             entry.fo      = r.fo;
             if (r.desc) entry.desc = r.desc;
             forfeits2++;
+          } else if (r.type === 'hidden') {
+            entry.hidden = true;
+            if (r.hs !== null) entry.hs = r.hs;
+            if (r.as !== null) entry.as = r.as;
+            hidden2++;
+            scored2++;
           } else {
             // Only write hs/as as null for FINAL games — confirms no score available
             // UPCOMING games keep hs:undefined so they're re-checked when played
@@ -762,7 +781,7 @@ async function main() {
       }
 
       const done = Math.min(i + CONCURRENCY, todo2.length);
-      process.stdout.write(`  ${done.toLocaleString()}/${todo2.length.toLocaleString()} — 🏳 ${forfeits2} forfeits, ✓ ${scored2} scored, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
+      process.stdout.write(`  ${done.toLocaleString()}/${todo2.length.toLocaleString()} — 🏳 ${forfeits2} forfeits, 🔒 ${hidden2} hidden, ✓ ${scored2 - hidden2} scored, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
       if (i + CONCURRENCY < todo2.length) await delay(50);
     }
 
