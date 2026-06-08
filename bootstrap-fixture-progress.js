@@ -112,23 +112,35 @@ for (const [seasonId, season] of Object.entries(seasons)) {
   try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
   const games       = Object.values(sg.games || {});
   if (games.length === 0) continue;
-  const withVenue   = games.filter(g => g.vid).length;
-  const withScore   = games.filter(g => g.hs !== undefined).length;
-  const total       = games.length;
-  const missingVenue = total - withVenue;
+  const withVenue      = games.filter(g => g.vid).length;
+  const withScore      = games.filter(g => typeof g.hs === 'number').length;
+  const forfeitGames   = games.filter(g => g.forfeit).length;
+  const hiddenGames    = games.filter(g => g.hidden).length;
+  const legacyGames    = games.filter(g => g.legacy).length;
+  const total          = games.length;
+  const missingVenue   = total - withVenue;
+  // Permanently venue-less: forfeits + hidden grading rounds + legacy orphans
+  const permanentlyNoVenue = games.filter(g => !g.vid && (g.forfeit || g.hidden || g.legacy)).length;
+  // Genuinely missing: had no venue allocated in PlayHQ despite being a normal game
+  const genuinelyMissing = missingVenue - permanentlyNoVenue;
   if (missingVenue > 0) {
     const discEntry = disc[seasonId] || {};
     noVenue.push({
-      id:           seasonId,
-      name:         season.fullName || season.name || discEntry.name || '?',
-      org:          discEntry.orgName || '?',
-      comp:         discEntry.compName || '?',
-      grades:       (season.grades || []).length,
-      locked:       season.locked,
-      totalGames:   total,
+      id:                 seasonId,
+      name:               season.fullName || season.name || discEntry.name || '?',
+      org:                discEntry.orgName || '?',
+      comp:               discEntry.compName || '?',
+      grades:             (season.grades || []).length,
+      locked:             season.locked,
+      totalGames:         total,
       withVenue,
       missingVenue,
+      permanentlyNoVenue,
+      genuinelyMissing,
       withScore,
+      forfeitGames,
+      hiddenGames,
+      legacyGames,
     });
   }
 }
@@ -176,7 +188,16 @@ console.log(`    - No game file:          ${zeroTeam.filter(z => z.reason === 'n
 console.log(`    - Empty game file:       ${zeroTeam.filter(z => z.reason === 'empty game file').length}`);
 console.log(`    - No team IDs in games:  ${zeroTeam.filter(z => z.reason === 'no home team IDs (ladder not used)').length}`);
 console.log(`  No-ladder seasons:         ${noLadder.length} (grades exist, games have no home team IDs)`);
-console.log(`  Missing venue data:        ${noVenue.length} seasons, ${noVenue.reduce((n,s) => n + s.missingVenue, 0).toLocaleString()} games without venue`);
+const totalMissing     = noVenue.reduce((n,s) => n + s.missingVenue, 0);
+const totalPermanent   = noVenue.reduce((n,s) => n + s.permanentlyNoVenue, 0);
+const totalGenuine     = noVenue.reduce((n,s) => n + s.genuinelyMissing, 0);
+const totalForfeits    = noVenue.reduce((n,s) => n + s.forfeitGames, 0);
+const totalHidden      = noVenue.reduce((n,s) => n + s.hiddenGames, 0);
+const totalLegacy      = noVenue.reduce((n,s) => n + s.legacyGames, 0);
+
+console.log(`  Missing venue data:        ${noVenue.length} seasons, ${totalMissing.toLocaleString()} games without venue`);
+console.log(`    - Permanently no venue:  ${totalPermanent.toLocaleString()} (forfeit: ${totalForfeits.toLocaleString()}, hidden: ${totalHidden.toLocaleString()}, legacy: ${totalLegacy.toLocaleString()})`);
+console.log(`    - Genuinely missing:     ${totalGenuine.toLocaleString()} (PlayHQ has no venue allocation for these games)`);
 console.log();
 console.log(`  Written: ${PROGRESS_FILE}`);
 console.log(`  Written: ${ZERO_FILE}`);
