@@ -128,7 +128,7 @@ const Q_DISCOVER_GAME = `query DiscoverGame($gameID: ID!) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-let _errSample = 0;
+let _diagCount = 0;
 async function gql(operationName, query, variables, cookie) {
   try {
     const res = await fetch(API_URL, {
@@ -136,16 +136,22 @@ async function gql(operationName, query, variables, cookie) {
       headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
       body:    JSON.stringify({ operationName, variables, query }),
     });
+    if (_diagCount < 3) {
+      _diagCount++;
+      console.warn(`\n  DIAG [${operationName}] status=${res.status} gameID=${variables.gameID || variables.id}`);
+    }
     if (res.status === 429) return { _rateLimit: true };
     if (res.status === 403 || res.status === 401) return { _authError: true };
     if (!res.ok) return { _transient: true };
     const json = await res.json();
+    if (_diagCount <= 3) console.warn(`  DIAG response keys:`, Object.keys(json.data || {}), 'errors:', json.errors?.[0]?.message?.slice(0,100));
     if (json.errors) {
       if (_errSample++ < 3) console.warn(`\n  ⚠ GraphQL error (${operationName}):`, JSON.stringify(json.errors[0]).slice(0, 200));
       return { _graphqlError: true, errors: json.errors };
     }
     return json;
   } catch (e) {
+    if (_diagCount < 3) console.warn(`\n  DIAG fetch exception:`, e.message);
     return { _transient: true };
   }
 }
