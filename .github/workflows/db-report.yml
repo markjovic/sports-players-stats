@@ -12,14 +12,36 @@ on:
         options:
           - 'false'
           - 'true'
+      include_players:
+        description: 'Include player detail files (988MB checkout, slower)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 jobs:
   report:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
-      - name: Checkout repository
+      - name: Checkout (without players)
+        if: ${{ github.event.inputs.include_players != 'true' }}
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            db-report.js
+            sports-index.json
+            players-index
+            team-lookup
+            venue-lookup
+            games
+          sparse-checkout-cone-mode: false
+
+      - name: Checkout (with players)
+        if: ${{ github.event.inputs.include_players == 'true' }}
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
@@ -40,7 +62,6 @@ jobs:
       - name: Run report
         run: |
           ARGS=""
-          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then
-            ARGS="--verbose"
-          fi
+          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then ARGS="$ARGS --verbose"; fi
+          if [ "${{ github.event.inputs.include_players }}" = "true" ]; then ARGS="$ARGS --include-players"; fi
           node db-report.js $ARGS
