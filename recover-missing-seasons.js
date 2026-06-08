@@ -212,7 +212,7 @@ async function main() {
   if (needsEnrichment.length > 0) {
     console.log(`  Enriching ${needsEnrichment.length} seasons with missing comp/org via player API...`);
     const cookie2 = await getSession();
-    const Q_PROFILE = `query Profile($id: ID!) { publicProfileStatistics(profileID: $id) { seasonStatistics { name season { id name competition { id name organisation { id name } } } } } }`;
+    const Q_PROFILE = `query Profile($id: ID!) { publicProfileStatistics(profileID: $id) { statistics { season { id name competition { id name organisation { id name } } } } } }`;
 
     for (let i = 0; i < needsEnrichment.length; i += CONCURRENCY) {
       const batch = needsEnrichment.slice(i, i + CONCURRENCY);
@@ -224,7 +224,7 @@ async function main() {
             body:    JSON.stringify({ operationName: 'Profile', variables: { id: meta._playerUuid }, query: Q_PROFILE }),
           });
           const json = await res.json();
-          const ss   = json.data?.publicProfileStatistics?.seasonStatistics || [];
+          const ss   = json.data?.publicProfileStatistics?.statistics || [];
           const match = ss.find(s => s.season?.id === meta._playerSid);
           if (match?.season?.competition) {
             const comp = match.season.competition;
