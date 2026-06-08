@@ -650,6 +650,17 @@ async function main() {
       let sg;
       try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
       sgCache2[season.id] = sg;
+      const games = Object.values(sg.games || {});
+      const counts = {
+        total: games.length,
+        hasNumericHs: games.filter(g => typeof g.hs === 'number').length,
+        hasNullHs: games.filter(g => g.hs === null).length,
+        noHs: games.filter(g => g.hs === undefined).length,
+        forfeit: games.filter(g => g.forfeit).length,
+        hidden: games.filter(g => g.hidden).length,
+        legacy: games.filter(g => g.legacy).length,
+      };
+      if (TARGET_SEASON) console.log(`  ${season.id} game counts:`, JSON.stringify(counts));
       for (const [gameId, game] of Object.entries(sg.games || {})) {
         if (game.hidden)  continue;
         if (game.legacy)  continue;
