@@ -57,6 +57,16 @@ const HEADERS = {
   'content-type': 'application/json',
 };
 
+// game(id) endpoint uses short tenant name and x-phq-tenant header
+const HEADERS_GAME = {
+  'accept':       '*/*',
+  'origin':       'https://www.playhq.com',
+  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant':       TENANT,          // short form: 'bv' not 'basketball-victoria'
+  'x-phq-tenant': TENANT,          // additional header required by game(id)
+  'content-type': 'application/json',
+};
+
 // ─── Cookie ───────────────────────────────────────────────────────────────────
 
 async function getSession() {
@@ -145,11 +155,12 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 let _diagCount = 0;
 let backfill_hidden_first_ge_logged = false;
-async function gql(operationName, query, variables, cookie) {
+async function gql(operationName, query, variables, cookie, useGameHeaders = false) {
+  const headers = useGameHeaders ? HEADERS_GAME : HEADERS;
   try {
     const res = await fetch(API_URL, {
       method:  'POST',
-      headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+      headers: { ...headers, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
       body:    JSON.stringify({ operationName, variables, query }),
     });
     if (_diagCount < 3) {
@@ -341,7 +352,7 @@ async function main() {
 
       // discoverGame returned null → game hidden by admin
       // Try game(id) e-scoring endpoint as fallback
-      const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie);
+      const ge = await gql('GameScore', Q_GAME_ESCORE, { id: gameId }, cookie, true);
 
       if (!backfill_hidden_first_ge_logged) {
         backfill_hidden_first_ge_logged = true;
