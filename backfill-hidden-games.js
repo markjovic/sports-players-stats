@@ -644,12 +644,12 @@ async function main() {
       try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
       sgCache2[season.id] = sg;
       for (const [gameId, game] of Object.entries(sg.games || {})) {
-        if (game.hidden)           continue;
-        if (game.legacy)           continue;
-        if (game.forfeit)          continue;
-        // Include games with no score (undefined = never checked, null = checked but no score found)
-        // null-score games need re-checking for forfeits since previous runs may have missed them
-        if (game.hs !== undefined && game.hs !== null) continue;
+        if (game.hidden)  continue;
+        if (game.legacy)  continue;
+        if (game.forfeit) continue;
+        // Skip only if hs is a real number (scored)
+        if (typeof game.hs === 'number') continue;
+        // Include if hs is undefined (never checked) or null (checked, no score — may be forfeit)
         todo2.push({ seasonId: season.id, gameId });
       }
     }
