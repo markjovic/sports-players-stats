@@ -627,6 +627,26 @@ async function main() {
     return;
   }
 
+	// ─── ADD THIS HOISTED LOCK VARIABLE AND FUNCTION HERE ───────────────────
+	let currentCookiePromise = null;
+
+	async function safeRefreshSession() {
+	  if (currentCookiePromise) return currentCookiePromise;
+
+	  currentCookiePromise = (async () => {
+		try {
+		  console.log(`\n🔄 [Deduplicated] Fetching a single fresh session cookie for this batch...`);
+		  // Calls your existing getSession logic exactly once for the whole batch
+		  const newSession = await getSession(true); 
+		  return newSession;
+		} finally {
+		  currentCookiePromise = null; 
+		}
+	  })();
+
+	  return currentCookiePromise;
+	}
+
   // ─── Review-unscored mode ─────────────────────────────────────────────────
   // Probes ALL games with no score and no flag via discoverGame.
   // Catches forfeits and other games missed by the legacy review.
@@ -706,7 +726,7 @@ async function main() {
 
             try {
               // Force a fresh cookie fetch bypass
-              session = await getSession(true); 
+              session = await safeRefreshSession();
             } catch (e) {
               console.error(`  ❌ Failed to refresh cookie: ${e.message}`);
             }
