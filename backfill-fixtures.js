@@ -63,7 +63,7 @@ async function runBackfill() {
   }
 
   console.log("\n================================================================");
-  console.log("🚀 STARTING BACKFILL STRATEGY FOR SEASON: " + targetSeasonId);
+  console.log("🚀 STARTING EXTENDED BACKFILL FOR SEASON: " + targetSeasonId);
   console.log("================================================================");
 
   const seasonMeta = reportData.report[targetSeasonId] || {};
@@ -78,32 +78,80 @@ async function runBackfill() {
 
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
   const teamIdsToScan = new Set();
+  const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
 
-  // Pass 1: Parse the Anchor Player
+  // ─── STEP 1: PARSE LOCAL PLAYER MATCH HISTORIES FOR LEGACY DATA ───
   if (seasonMeta.anchorPlayerUuid) {
     const hexFolder = seasonMeta.anchorPlayerUuid.slice(0, 2).toLowerCase();
     const playerFilePath = path.join(PLAYERS_DIR, hexFolder, seasonMeta.anchorPlayerUuid + '.json');
+    
     if (fs.existsSync(playerFilePath)) {
+      console.log("🔍 Extracting legacy data rows from local player document...");
       const playerData = JSON.parse(fs.readFileSync(playerFilePath, 'utf8'));
+      
+      // 1. Gather baseline registration team IDs
       const seasonsArray = playerData.seasons || [];
-      for (const season of seasonsArray) {
-        if (season.sid === targetSeasonId) {
-          const registrations = season.regs || [];
+      for (const s of seasonsArray) {
+        if (s.sid === targetSeasonId) {
+          const registrations = s.regs || [];
           for (const reg of registrations) {
             if (reg.tid) teamIdsToScan.add(reg.tid);
           }
         }
       }
+
+      // 2. Scan player historical game items for matching target IDs
+      const playerGamesBlock = playerData.games || {};
+      for (const [gid, pGame] of Object.entries(playerGamesBlock)) {
+        if (seasonFileContents.games && seasonFileContents.games[gid]) {
+          const localGame = seasonFileContents.games[gid];
+          let localUpdated = false;
+
+          // If local game is unpopulated or 0, salvage metadata details straight from the player log
+          if ((localGame.hs === 0 || localGame.hs === undefined) && typeof pGame.teamScore === 'number') {
+            const isHome = pGame.isHome || pGame.homeAway === 'HOME';
+            localGame.hs = isHome ? pGame.teamScore : (pGame.oppScore || 0);
+            localGame.as = isHome ? (pGame.oppScore || 0) : pGame.teamScore;
+            deltas.scores++;
+            localUpdated = true;
+          }
+
+          if ((localGame.hn === 0 || !localGame.hn) && pGame.teamName) {
+            const isHome = pGame.isHome || pGame.homeAway === 'HOME';
+            localGame.hn = isHome ? pGame.teamName : (pGame.oppName || '');
+            localGame.an = isHome ? (pGame.oppName || '') : pGame.teamName;
+            if (pGame.teamId) {
+              localGame.h = isHome ? pGame.teamId : 0;
+              localGame.a = isHome ? 0 : pGame.teamId;
+            }
+            deltas.teams++;
+            localUpdated = true;
+          }
+
+          if ((localGame.rn === 0 || !localGame.rn) && pGame.round) {
+            localGame.rn = pGame.round;
+            deltas.rounds++;
+            localUpdated = true;
+          }
+
+          if (localUpdated) {
+            deltas.totalGamesImpacted.add(gid);
+          }
+        }
+      }
+      if (deltas.totalGamesImpacted.size > 0) {
+        console.log("   ✓ Recovered " + deltas.totalGamesImpacted.size + " legacy match items directly from local profile files.");
+      }
     }
   }
 
-  // Pass 2: Local Game Check (Safely ignoring the numeric 0 gap flags)
+  // Pass 2: Local Game Check (Harvest any existing non-zero team tokens)
   for (const game of Object.values(seasonFileContents.games || {})) {
     if (game.h && game.h !== 0) teamIdsToScan.add(game.h);
     if (game.a && game.a !== 0) teamIdsToScan.add(game.a);
   }
 
-  // Authenticate session cookie upfront to unblock live extensions
+  // Authenticate session cookie upfront for network fallback tasks
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -114,9 +162,9 @@ async function runBackfill() {
   if (!match) throw new Error("phq_session token pattern missing.");
   const sessionToken = match[1];
 
-  // Pass 3: Live Grade Standings Sweep for Legacy/Orphaned Rows
-  if (teamIdsToScan.size <= 1) {
-    console.log("🔍 Season consists of legacy/unassigned rows. Executing live grade standings sweep...");
+  // Pass 3: Live Grade Standings Fallback (Only fires if we are completely blind)
+  if (teamIdsToScan.size === 0) {
+    console.log("🔍 Still blind. Sweeping competition grade standings for team targets...");
     try {
       const gradeQuery = "query SeasonGrades($seasonID: ID!) { discoverSeason(seasonID: $seasonID) { grades { id ladder { standings { team { ... on DiscoverTeam { id } } } } } } }";
       const gRes = await fetch('https://api.playhq.com/graphql', {
@@ -133,25 +181,16 @@ async function runBackfill() {
           if (row.team?.id) teamIdsToScan.add(row.team.id);
         }
       }
-    } catch (e) {
-      console.log("⚠️ Standings query pass bypassed: " + e.message);
-    }
+    } catch (e) {}
   }
 
   const teamList = Array.from(teamIdsToScan);
-  console.log("📊 Unique Team Targets Isolated for Scraper: " + teamList.length);
+  console.log("📊 Unique Team Targets Isolated for API Scraper: " + teamList.length);
 
-  if (teamList.length === 0) {
-    console.log("❌ No team targets could be extracted. Skipping season.");
-    delete reportData.report[targetSeasonId];
-    fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
-    return;
-  }
-
-  const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
+  // Step 4: Simple, Controlled Linear Queue Workers Loop Block
   const fixtureQuery = "query TeamFixture($teamID: ID!) { discoverTeamFixture(teamID: $teamID) { name fixture { games { id status home { ... on DiscoverTeam { id name organisation { name } } } away { ... on DiscoverTeam { id name } } result { home { score } away { score } } allocation { dateTimeList { date time } court { id name venue { id name } } } grade { name season { name competition { name } } } } } }";
-
   let index = 0;
+
   const workers = Array(CONCURRENCY).fill(null).map(async () => {
     while (index < teamList.length) {
       const currentTeamId = teamList[index++];
