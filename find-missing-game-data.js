@@ -13,11 +13,13 @@ const ARGS = Object.fromEntries(
     .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.length ? v.join('=') : true]; })
 );
 
-const CONCURRENCY = parseInt(ARGS.concurrency || '64', 10);
-const GAMES_DIR   = path.join(__dirname, 'games', 'bv');
-const OUTPUT_FILE = path.join(__dirname, 'missing-game-data.json');
+const CONCURRENCY   = parseInt(ARGS.concurrency || '64', 10);
+const GAMES_DIR     = path.join(__dirname, 'games', 'bv');
+const MAIN_OUT      = path.join(__dirname, 'missing-game-data.json');
+const BOX_OUT       = path.join(__dirname, 'missing-box-scores.json');
+const QUARTER_OUT   = path.join(__dirname, 'missing-quarter-scores.json');
 
-console.log(`\n🔍 Locating Missing Game Attributes (Targeted Audit)`);
+console.log(`\n🔍 Locating Missing Game Attributes (Tri-File Extraction)`);
 
 if (!fs.existsSync(GAMES_DIR)) {
   console.error(`❌ Target path missing: ${GAMES_DIR}`);
@@ -27,22 +29,26 @@ if (!fs.existsSync(GAMES_DIR)) {
 const seasonFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
 console.log(`   Found ${seasonFiles.length.toLocaleString()} season files to process.\n`);
 
-const missingReport = {}; 
-let totalSeasonsWithMissing = 0;
-let totalGamesWithMissing   = 0;
+const mainMissingReport = {};
+const globalMissingBoxScores = [];
+const globalMissingQuarterScores = [];
+
+let totalEligibleGames = 0;
+let totalGamesWithGaps   = 0;
 let processed = 0;
 
-// ─── Global Coverage Counter Tally ───────────────────────────────────────────
-let totalEligibleGames = 0;
+// Segregated Coverage Counters
 const stats = {
-  coreMeta:   0, // d, rn, h, hn, a, an, vid, vn, ct, t, url, st
+  coreMeta:   0, // d, rn, h, hn, a, an, url, st
+  venueInfo:  0, // vid, vn, ct, t
   scores:     0, // hs, as
   quarters:   0, // hq, aq
   boxScores:  0  // hp, ap
 };
 
-// Explicit Mandatory Fields
-const MANDATORY_CORE = ['d', 'rn', 'h', 'hn', 'a', 'an', 'vid', 'vn', 'ct', 't', 'url', 'st'];
+// Explicit Mandatory Rules Layouts
+const MANDATORY_CORE   = ['d', 'rn', 'h', 'hn', 'a', 'an', 'url', 'st'];
+const MANDATORY_VENUE  = ['vid', 'vn', 'ct', 't'];
 
 async function processSeasonFile(file) {
   const seasonId = path.basename(file, '.json');
@@ -55,70 +61,76 @@ async function processSeasonFile(file) {
     const seasonMissingGames = {};
 
     for (const [gameId, game] of Object.entries(games)) {
-      // Exclude future unplayed fixtures cleanly
       if (game.st === 'UPCOMING' || !game.st) continue;
 
       totalEligibleGames++;
-      const missingFields = {};
-      let hasMissing = false;
+      const gapFields = {};
+      let hasMainGap = false;
 
-      // 1. Tally & Check Core Metadata Coverage
+      // 1. Core Metadata Verification
       let coreMetaComplete = true;
       for (const field of MANDATORY_CORE) {
         const val = game[field];
         if (val === undefined || val === null || val === '') {
-          missingFields[field] = null;
-          hasMissing = true;
+          gapFields[field] = null;
+          hasMainGap = true;
           coreMetaComplete = false;
         }
       }
       if (coreMetaComplete) stats.coreMeta++;
 
-      // 2. Tally & Check Numerical Scores
+      // 2. Segregated Venue Information Verification
+      let venueInfoComplete = true;
+      for (const field of MANDATORY_VENUE) {
+        const val = game[field];
+        if (val === undefined || val === null || val === '') {
+          gapFields[field] = null;
+          hasMainGap = true;
+          venueInfoComplete = false;
+        }
+      }
+      if (venueInfoComplete) stats.venueInfo++;
+
+      // 3. Main Numeric Scores Verification
       if (typeof game.hs === 'number' && typeof game.as === 'number') {
         stats.scores++;
       } else {
-        if (game.hs === undefined || game.hs === null || game.hs === '') missingFields['hs'] = null;
-        if (game.as === undefined || game.as === null || game.as === '') missingFields['as'] = null;
-        hasMissing = true;
+        if (game.hs === undefined || game.hs === null || game.hs === '') gapFields['hs'] = null;
+        if (game.as === undefined || game.as === null || game.as === '') gapFields['as'] = null;
+        hasMainGap = true;
       }
 
-      // 3. Tally & Check Quarter Score Arrays
+      // 4. Isolated Extraction: Quarter Scores Check
       const hasHq = Array.isArray(game.hq) && game.hq.length > 0;
       const hasAq = Array.isArray(game.aq) && game.aq.length > 0;
       if (hasHq && hasAq) {
         stats.quarters++;
       } else {
-        if (!hasHq) missingFields['hq'] = null;
-        if (!hasAq) missingFields['aq'] = null;
-        hasMissing = true;
+        globalMissingQuarterScores.push(gameId);
       }
 
-      // 4. Tally & Check Player Box Score Arrays
+      // 5. Isolated Extraction: Player Box Scores Check
       const hasHp = Array.isArray(game.hp) && game.hp.length > 0;
       const hasAp = Array.isArray(game.ap) && game.ap.length > 0;
       if (hasHp && hasAp) {
         stats.boxScores++;
       } else {
-        if (!hasHp) missingFields['hp'] = null;
-        if (!hasAp) missingFields['ap'] = null;
-        hasMissing = true;
+        globalMissingBoxScores.push(gameId);
       }
 
-      // 5. Rule Override: Passively include Administrative Overrides only if they exist
-      if (hasMissing) {
-        if (game.forfeit) missingFields['forfeit'] = game.forfeit;
-        if (game.fo)      missingFields['fo']      = game.fo;
-        if (game.desc)    missingFields['desc']    = game.desc;
-        if (game.hidden)  missingFields['hidden']  = game.hidden;
-        if (game.legacy)  missingFields['legacy']  = game.legacy;
+      // Append administrative data flags to the main report if core/venue/score flaws exist
+      if (hasMainGap) {
+        if (game.forfeit) gapFields['forfeit'] = game.forfeit;
+        if (game.fo)      gapFields['fo']      = game.fo;
+        if (game.desc)    gapFields['desc']    = game.desc;
+        if (game.hidden)  gapFields['hidden']  = game.hidden;
+        if (game.legacy)  gapFields['legacy']  = game.legacy;
 
-        seasonMissingGames[gameId] = missingFields;
-        totalGamesWithMissing++;
+        seasonMissingGames[gameId] = gapFields;
+        totalGamesWithGaps++;
       }
     }
 
-    // If this season contains entries with data gaps, link an anchor player UUID
     if (Object.keys(seasonMissingGames).length > 0) {
       let anchorPlayerUuid = null;
       for (const [playerUuid, associatedGameIds] of Object.entries(playerGames)) {
@@ -128,13 +140,12 @@ async function processSeasonFile(file) {
         }
       }
 
-      missingReport[seasonId] = {
+      mainMissingReport[seasonId] = {
         seasonId,
         anchorPlayerUuid,
         missingGamesCount: Object.keys(seasonMissingGames).length,
         games: seasonMissingGames
       };
-      totalSeasonsWithMissing++;
     }
 
   } catch (e) {}
@@ -146,7 +157,7 @@ async function worker(iterator) {
     processed++;
     if (processed % 100 === 0 || processed === seasonFiles.length) {
       const pct = ((processed / seasonFiles.length) * 100).toFixed(1);
-      process.stdout.write(`   Progress: ${processed.toLocaleString()}/${seasonFiles.length.toLocaleString()} (${pct}%) — ${totalGamesWithMissing.toLocaleString()} matches flagged\r`);
+      process.stdout.write(`   Progress: ${processed.toLocaleString()}/${seasonFiles.length.toLocaleString()} (${pct}%) — ${totalGamesWithGaps.toLocaleString()} core anomalies logged\r`);
     }
   }
 }
@@ -156,7 +167,6 @@ async function runPool() {
   const pool = Array(CONCURRENCY).fill(iterator).map(worker);
   await Promise.all(pool);
 
-  // ─── Calculate Coverage Percentages ────────────────────────────────────────
   const calcPct = (count) => totalEligibleGames ? ((count / totalEligibleGames) * 100).toFixed(2) : '0.00';
 
   console.log(`\n\n✅ Data Coverage Audit Complete!`);
@@ -164,40 +174,48 @@ async function runPool() {
   console.log(`   Total Completed Games Evaluated:  ${totalEligibleGames.toLocaleString()}`);
   console.log(`----------------------------------------------------------------`);
   console.log(`   📦 Core Details Populated:        ${stats.coreMeta.toLocaleString().padStart(9)} matches (${calcPct(stats.coreMeta)}%)`);
+  console.log(`   📍 Venue Info Populated:         ${stats.venueInfo.toLocaleString().padStart(9)} matches (${calcPct(stats.venueInfo)}%)`);
   console.log(`   🔢 Main Scores Populated:        ${stats.scores.toLocaleString().padStart(9)} matches (${calcPct(stats.scores)}%)`);
   console.log(`   ⏱️ Quarter Scores Populated:     ${stats.quarters.toLocaleString().padStart(9)} matches (${calcPct(stats.quarters)}%)`);
   console.log(`   🏀 Player Box Scores Populated:   ${stats.boxScores.toLocaleString().padStart(9)} matches (${calcPct(stats.boxScores)}%)`);
   console.log(`================================================================`);
-  console.log(`   Games with targeted data gaps:   ${totalGamesWithMissing.toLocaleString()}`);
+  console.log(`   Anomalous rows in core report:   ${totalGamesWithGaps.toLocaleString()}`);
 
-  const output = {
+  const mainPayload = {
     generatedAt: new Date().toISOString(),
     totalSeasonsAudited: seasonFiles.length,
-    seasonsWithMissingData: totalSeasonsWithMissing,
-    totalGamesWithMissingData: totalGamesWithMissing,
+    totalGamesWithCoreOrVenueGaps: totalGamesWithGaps,
     globalCompletenessMetrics: {
       totalHistoricalGamesScanned: totalEligibleGames,
       coreMetaPopulatedPercent: calcPct(stats.coreMeta),
+      venueInfoPopulatedPercent: calcPct(stats.venueInfo),
       mainScoresPopulatedPercent: calcPct(stats.scores),
       quarterBreakdownsPopulatedPercent: calcPct(stats.quarters),
       playerBoxScoresPopulatedPercent: calcPct(stats.boxScores)
     },
-    report: missingReport
+    report: mainMissingReport
   };
 
-  // ─── MINIFIED SAFE FILE WRITE ───
-  // Drops formatting indents to save ~45% footprint space, avoiding Git push size ceiling blocks.
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(output));
-  console.log(`\n   ✓ Incomplete data profile map safely minified to: ${OUTPUT_FILE}`);
+  // Write File 1: Isolated Flat Box Score Array
+  fs.writeFileSync(BOX_OUT, JSON.stringify(globalMissingBoxScores));
+  console.log(`\n   ✓ Saved flat box score gap list to: ${BOX_OUT}`);
+
+  // Write File 2: Isolated Flat Quarter Score Array
+  fs.writeFileSync(QUARTER_OUT, JSON.stringify(globalMissingQuarterScores));
+  console.log(`\n   ✓ Saved flat quarter score gap list to: ${QUARTER_OUT}`);
+
+  // Write File 3: Core & Venue Attribute Anomalies (Minified)
+  fs.writeFileSync(MAIN_OUT, JSON.stringify(mainPayload));
+  console.log(`   ✓ Saved minified main gap manifest to: ${MAIN_OUT}`);
 
   try {
-    execSync('git add missing-game-data.json', { stdio: 'pipe' });
+    execSync('git add missing-game-data.json missing-box-scores.json missing-quarter-scores.json', { stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (diff) {
-      execSync(`git commit -m "Audit targeted data loops: ${totalGamesWithMissing} incomplete rows tracked"`, { stdio: 'pipe' });
+      execSync(`git commit -m "Audit split tracking: Core anomalies and flat metric arrays isolated"`, { stdio: 'pipe' });
       execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
-      console.log('   ✓ Metrics updated and pushed directly to GitHub origin repository.');
+      console.log('   ✓ Extraction audit reports pushed successfully to GitHub repository origin.');
     } else {
       console.log('   (No tracking adjustments required to commit)');
     }
