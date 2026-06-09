@@ -30,8 +30,6 @@ const noLadderSeasons  = loadSeasonIds(path.join(__dirname, 'no-ladder-seasons.j
 const targetSeasons = new Map([...zeroTeamSeasons, ...noLadderSeasons]);
 
 console.log(`\n🔍 Find Missing Team Players`);
-console.log(`   Zero-team seasons:     ${zeroTeamSeasons.size.toLocaleString()}`);
-console.log(`   No-ladder seasons:     ${noLadderSeasons.size.toLocaleString()}`);
 console.log(`   Unique target seasons: ${targetSeasons.size.toLocaleString()}\n`);
 
 if (targetSeasons.size === 0) {
@@ -39,7 +37,6 @@ if (targetSeasons.size === 0) {
   process.exit(1);
 }
 
-// ─── Optimized Flat Hex-Shard Scanner ────────────────────────────────────────
 console.log('   Scanning hex shard folders (00 to ff)...');
 
 const allFiles = [];
@@ -47,7 +44,6 @@ if (fs.existsSync(PLAYERS_DIR)) {
   const shards = fs.readdirSync(PLAYERS_DIR);
   for (const shard of shards) {
     const shardPath = path.join(PLAYERS_DIR, shard);
-    // Explicitly target hex folders while completely ignoring root file assets
     if (shard.length === 2 && fs.statSync(shardPath).isDirectory()) {
       const files = fs.readdirSync(shardPath);
       for (const file of files) {
@@ -61,11 +57,15 @@ if (fs.existsSync(PLAYERS_DIR)) {
 
 console.log(`   Found ${allFiles.length.toLocaleString()} total player files across shards\n`);
 
-// ─── Async Worker Queue Pipeline ─────────────────────────────────────────────
-const matches = [];
+// ─── Unique Season Tracking ──────────────────────────────────────────────────
+const matchesBySeason = new Map(); // Key: sid -> Value: player details
 let processed = 0;
 
 async function processFile(filePath) {
+  // Performance optimization: If we have already filled all target seasons, 
+  // we can stop reading the remaining files in the queue entirely.
+  if (matchesBySeason.size >= targetSeasons.size) return;
+
   try {
     const raw = await fs.promises.readFile(filePath, 'utf8');
     const player = JSON.parse(raw);
@@ -78,8 +78,12 @@ async function processFile(filePath) {
       const sid = season.sid;
       if (!targetSeasons.has(sid)) continue;
 
+      // ─── CRITICAL CHANGE: FIRST PLAYER PER SEASON ID ONLY ───
+      // If we already have a sample player for this season, skip it completely
+      if (matchesBySeason.has(sid)) continue;
+
       const meta = targetSeasons.get(sid);
-      matches.push({
+      matchesBySeason.set(sid, {
         uuid,
         name,
         sid,
@@ -93,19 +97,19 @@ async function processFile(filePath) {
         ].filter(Boolean),
       });
     }
-  } catch (e) {
-    // Gracefully bypass structural code blocks if a shard file is corrupted
-  }
+  } catch (e) {}
 }
 
 async function worker(iterator) {
   for (const filePath of iterator) {
+    // Early exit worker loop if all possible seasons are matched
+    if (matchesBySeason.size >= targetSeasons.size) break;
+
     await processFile(filePath);
     processed++;
-    // Status metrics tick compressed to prevent Actions log buffering truncation
     if (processed % 10000 === 0 || processed === allFiles.length) {
       const pct = ((processed / allFiles.length) * 100).toFixed(1);
-      process.stdout.write(`   Progress: ${processed.toLocaleString()}/${allFiles.length.toLocaleString()} (${pct}%) — ${matches.length.toLocaleString()} records matched\r`);
+      process.stdout.write(`   Progress: ${processed.toLocaleString()}/${allFiles.length.toLocaleString()} (${pct}%) — ${matchesBySeason.size} seasons anchored\r`);
     }
   }
 }
@@ -115,59 +119,40 @@ async function runPool() {
   const pool = Array(CONCURRENCY).fill(iterator).map(worker);
   await Promise.all(pool);
   
-  console.log(`\n\n✅ Scan complete. Deduplicating records...`);
+  console.log(`\n\n✅ Scan complete. Finalizing output...`);
 
-  const seen    = new Set();
-  const deduped = [];
-  for (const m of matches) {
-    const key = `${m.uuid}:${m.sid}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    deduped.push(m);
-  }
+  // Convert map values to array list
+  const finalizedMatches = Array.from(matchesBySeason.values());
 
-  deduped.sort((a, b) => {
-    const s = a.sn.localeCompare(b.sn);
-    return s !== 0 ? s : a.name.localeCompare(b.name);
+  // Sort logically by season name then player name
+  finalizedMatches.sort((a, b) => {
+    const s = (a.sn || '').localeCompare(b.sn || '');
+    return s !== 0 ? s : (a.name || '').localeCompare(b.name || '');
   });
-
-  const bySeason = {};
-  for (const m of deduped) {
-    if (!bySeason[m.sid]) bySeason[m.sid] = { sid: m.sid, sn: m.sn, org: m.org, comp: m.comp, source: m.source, count: 0 };
-    bySeason[m.sid].count++;
-  }
-
-  const seasonSummary = Object.values(bySeason).sort((a, b) => b.count - a.count);
-  
-  console.log(`\n   Top target seasons by player density:`);
-  for (const s of seasonSummary.slice(0, 10)) {
-    console.log(`      ${s.count.toString().padStart(5)} players — ${s.sn} (${s.sid}) [${s.source.join('+')}]`);
-  }
 
   const output = {
     generatedAt:   new Date().toISOString(),
     targetSeasons: targetSeasons.size,
-    totalMatches:  deduped.length,
-    seasonSummary,
-    players:       deduped,
+    seasonsFound:  finalizedMatches.length,
+    players:       finalizedMatches,
   };
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2));
-  console.log(`\n   ✓ Compilation written to ${OUTPUT_FILE}`);
+  console.log(`   ✓ Clean summary file saved to ${OUTPUT_FILE}`);
 
   try {
     execSync('git add missing-team-players.json', { stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (diff) {
-      execSync(`git commit -m "Find missing team players: ${deduped.length} matches across ${targetSeasons.size} seasons"`, { stdio: 'pipe' });
+      execSync(`git commit -m "Find missing unique team anchor players: ${finalizedMatches.length} seasons mapped"`, { stdio: 'pipe' });
       execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
-      console.log('   ✓ Changes committed and synced directly to repository origin');
+      console.log('   ✓ Changes committed and cleanly pushed');
     } else {
       console.log('   (no changes to commit)');
     }
   } catch (e) {
-    console.warn(`   ⚠ Git processing warning: ${e.message}`);
+    console.warn(`   Local git warning: ${e.message}`);
   }
 }
 
