@@ -42,14 +42,11 @@ const PROGRESS_FILE = path.join(__dirname, 'backfill-hidden-progress.json');
 const NO_VENUE_FILE = path.join(__dirname, 'no-venue-seasons.json');
 const VENUE_DIR     = path.join(__dirname, 'venue-lookup');
 
-// ─── Reinforced Connection Pooling ───────────────────────────────────────────
-// This forces Node to allocate unique sockets per concurrent thread,
-// preventing Cloudflare from dropping interleaved requests on shared channels.
+// ─── Isolation Connection Pooling ────────────────────────────────────────────
 const agentOptions = {
-  keepAlive: true,
-  maxSockets: 100,
-  maxFreeSockets: 10,
-  timeout: 60000
+  keepAlive: false, // Disables connection sharing to stop Cloudflare interleaving drops
+  maxSockets: 200,
+  timeout: 30000
 };
 const customHttpAgent  = new http.Agent(agentOptions);
 const customHttpsAgent = new https.Agent(agentOptions);
@@ -101,10 +98,7 @@ async function getSession(force = false) {
       res = await fetch(API_URL, {
         method:  'POST',
         headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
-        body:    JSON.stringify(body),
-        agent: function(_parsedURL) {
-          return _parsedURL.protocol === 'http:' ? customHttpAgent : customHttpsAgent;
-        }
+        body:    JSON.stringify(body)
       });
       if (res.headers.get('set-cookie')) {
         console.log(`  ✓ Got cookie via ${body.operationName}`);
@@ -448,4 +442,376 @@ async function main() {
           outcome:   outcomeVal,
           outcomeName: dg.result?.outcome?.name || null,
           fo: dg.result?.winner?.value?.toLowerCase() || null,
-          desc: dg.result?.home?.game
+          desc: dg.result?.home?.gameOutcomeDescription || null,
+          h:  dg.home?.id   || null, hn: dg.home?.name  || null,
+          a:  dg.away?.id   || null, an: dg.away?.name  || null,
+          rn: dg.round?.name || null,
+          st: dg.status?.value || null,
+          venue, court,
+          time: dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null,
+        };
+      }));
+
+      for (const r of results) {
+        if (r.type === 'skip') { legacyFailed++; continue; }
+        const sg    = sgCache2[r.seasonId];
+        if (!sg) continue;
+        const entry = sg.games[r.gameId] || {};
+
+        if (r.type === 'stillLegacy') {
+          stillLegacy++;
+          continue;
+        }
+
+        delete entry.legacy;
+        prog.legacy.delete(r.gameId);
+
+        if (r.h)  entry.h  = r.h;
+        if (r.hn) entry.hn = r.hn;
+        if (r.a)  entry.a  = r.a;
+        if (r.an) entry.an = r.an;
+        if (r.rn) entry.rn = r.rn;
+        if (r.st) entry.st = r.st;
+
+        if (r.type === 'forfeit') {
+          entry.forfeit = true;
+          entry.fo      = r.fo;
+          if (r.desc) entry.desc = r.desc;
+          forfeits++;
+        } else {
+          if (r.hs !== null) entry.hs = r.hs;
+          if (r.as !== null) entry.as = r.as;
+          if (r.venue) {
+            storeVenue(r.venue, r.court);
+            entry.vid = r.venue.id;
+            entry.vn  = r.venue.name;
+          }
+          if (r.court?.name) entry.ct = r.court.name;
+          if (r.time)        entry.t  = r.time;
+          accessible++;
+        }
+
+        sg.games[r.gameId] = entry;
+        prog.done.add(r.gameId);
+        legacySinceLastSave++;
+      }
+
+      if (legacySinceLastSave >= 5000) {
+        for (const [sid, sg] of Object.entries(sgCache2)) {
+          fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+        }
+        flushVenueShards();
+        saveProgress(prog);
+        legacySinceLastSave = 0;
+        gitCommitPush(`Legacy review: ${forfeits} forfeits, ${accessible} accessible, ${stillLegacy} still legacy`);
+      }
+
+      const done = Math.min(i + CONCURRENCY, legacyTodo.length);
+      process.stdout.write(`  ${done.toLocaleString()}/${legacyTodo.length.toLocaleString()} — 🏳 ${forfeits} forfeits, ✓ ${accessible} accessible, 📜 ${stillLegacy} still legacy, ✗ ${legacyFailed} failed\r`);
+      if (i + CONCURRENCY < legacyTodo.length) await delay(50);
+    }
+
+    for (const [sid, sg] of Object.entries(sgCache2)) {
+      fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+    }
+    flushVenueShards();
+    saveProgress(prog);
+
+    console.log(`\n\n✅ Legacy review complete`);
+    gitCommitPush(`Legacy review complete: ${forfeits} forfeits, ${accessible} accessible`);
+    return;
+  }
+
+  // ─── Review-unscored mode ─────────────────────────────────────────────────
+  if (REVIEW_UNSCORED) {
+    console.log(`\n🔎 Review-unscored mode — probing all unscored unflagged games via spectator engine\n`);
+
+    const INDEX_FILE = path.join(__dirname, 'sports-index.json');
+    const allSeasons = fs.existsSync(INDEX_FILE)
+      ? Object.keys(JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8')).seasons || {}).map(id => ({ id }))
+      : targetSeasons;
+    const reviewSeasons = TARGET_SEASON ? [{ id: TARGET_SEASON }] : allSeasons;
+
+    const todo2    = [];
+
+    for (const season of reviewSeasons) {
+      const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
+      if (!fs.existsSync(gameFile)) continue;
+      let sg;
+      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+      for (const [gameId, game] of Object.entries(sg.games || {})) {
+        if (game.hidden || game.legacy || game.forfeit || typeof game.hs === 'number' || game.hs === null || prog.done.has(gameId)) continue;
+        todo2.push({ seasonId: season.id, gameId });
+      }
+    }
+
+    console.log(`📋 Unscored unflagged games to probe: ${todo2.length.toLocaleString()}\n`);
+
+    let forfeits2 = 0, scored2 = 0, hidden2 = 0, nowLegacy2 = 0, failed2 = 0, sinceLastSave2 = 0;
+
+    const bySeason2 = new Map();
+    for (const item of todo2) {
+      if (!bySeason2.has(item.seasonId)) bySeason2.set(item.seasonId, []);
+      bySeason2.get(item.seasonId).push(item.gameId);
+    }
+
+    let totalDone2 = 0;
+    const total2   = todo2.length;
+
+    for (const [seasonId, gameIds] of bySeason2) {
+      const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
+      if (!fs.existsSync(gameFile)) { totalDone2 += gameIds.length; continue; }
+      let sg;
+      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { totalDone2 += gameIds.length; continue; }
+
+      let seasonDirty = false;
+
+      for (let i = 0; i < gameIds.length; i += CONCURRENCY) {
+        const batch = gameIds.slice(i, i + CONCURRENCY).map(gameId => ({ seasonId, gameId }));
+        const activeCookiesString = session.allCookies;
+        let batchWafTriggered = false;
+
+        const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
+          await delay(j * 40);
+
+          let attempts = 0;
+          while (attempts < 3) {
+            const resp = await fetchGame(gameId, activeCookiesString);
+
+            if (resp?._authError) {
+              attempts++;
+              batchWafTriggered = true;
+              await delay(attempts * 2000);
+              try { session = await safeRefreshSession(); } catch (e) {}
+              continue;
+            }
+
+            if (resp?._transient || resp?._graphqlError) {
+              return { gameId, seasonId, type: 'skip' };
+            }
+
+            if (resp?._legacy) return { gameId, seasonId, type: 'legacy' };
+            
+            // FIX: Target the exact root schema layout from the spectator endpoint logs
+            const gameData = resp?.data?.game;
+            if (!gameData) {
+              return { gameId, seasonId, type: 'legacy' };
+            }
+
+            const hs  = parseScore(gameData.result?.home?.statistics);
+            const as_ = parseScore(gameData.result?.away?.statistics);
+            
+            // If it returns score arrays on spectator but was hidden on main API, it's a hidden grading round
+            return {
+              gameId, seasonId,
+              type: 'hidden',
+              hs, as: as_,
+              st: gameData.status || null
+            };
+          }
+
+          return { gameId, seasonId, type: 'skip' };
+        }));
+
+        if (batchWafTriggered) {
+          console.warn(`\n  ⚠️ WAF block wave caught. Deduplicated sockets resetting tokens smoothly...`);
+        }
+
+        for (const r of results) {
+          if (r.type === 'skip') { failed2++; continue; }
+          const entry = sg.games[r.gameId] || {};
+
+          if (r.type === 'legacy') {
+            entry.legacy = true;
+            prog.legacy.add(r.gameId);
+            nowLegacy2++;
+          } else if (r.type === 'hidden') {
+            entry.hidden = true;
+            if (r.hs !== null) entry.hs = r.hs;
+            if (r.as !== null) entry.as = r.as;
+            if (r.st) entry.st = r.st;
+            hidden2++;
+            scored2++;
+            console.log(`🔒 Hidden Game Found: ${r.gameId} | Path: games/bv/${r.seasonId}.json`);
+            prog.done.add(r.gameId);
+          }
+          
+          seasonDirty = true;
+          sinceLastSave2++;
+          totalDone2++;
+        }
+
+        if (sinceLastSave2 >= 1000) {
+          if (seasonDirty) {
+            fs.writeFileSync(gameFile, JSON.stringify(sg));
+            seasonDirty = false;
+          }
+          flushVenueShards();
+          saveProgress(prog);
+          sinceLastSave2 = 0;
+          gitCommitPush(`Unscored review: ${hidden2} hidden, ${nowLegacy2} legacy`);
+        }
+
+        process.stdout.write(`  ${totalDone2.toLocaleString()}/${total2.toLocaleString()} — 🔒 ${hidden2} hidden, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
+        if (i + CONCURRENCY < gameIds.length) await delay(50);
+      }
+
+      if (seasonDirty) {
+        fs.writeFileSync(gameFile, JSON.stringify(sg));
+      }
+      flushVenueShards();
+      saveProgress(prog);
+    }
+
+    console.log(`\n\n✅ Unscored review complete`);
+    gitCommitPush(`Unscored review complete: ${hidden2} hidden, ${nowLegacy2} legacy`);
+    return;
+  }
+
+  // ─── Direct Default Pipeline Mode ─────────────────────────────────────────
+  const todo    = [];
+  const sgCache = {};
+
+  for (const season of targetSeasons) {
+    const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
+    if (!fs.existsSync(gameFile)) continue;
+    let sg;
+    try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+    sgCache[season.id] = sg;
+
+    for (const [gameId, game] of Object.entries(sg.games || {})) {
+      if (game.hs !== undefined || game.hidden || game.legacy || prog.done.has(gameId)) continue;
+      todo.push({ seasonId: season.id, gameId });
+    }
+  }
+
+  console.log(`📋 Games to probe: ${todo.length.toLocaleString()}\n`);
+
+  if (todo.length === 0) {
+    console.log('✅ Nothing to do — all games already have scores or flags');
+    return;
+  }
+
+  let hidden = 0, legacy = 0, failed = 0, sinceLastSave = 0;
+
+  for (let i = 0; i < todo.length; i += CONCURRENCY) {
+    const batch = todo.slice(i, i + CONCURRENCY);
+    const activeCookiesString = session.allCookies;
+    let defaultBatchWafTriggered = false;
+
+    function buildResult(gameId, seasonId, game) {
+      const hs  = parseScore(game.result?.home?.statistics);
+      const as_ = parseScore(game.result?.away?.statistics);
+      const hq  = parseQuarterScores(game.result?.home?.periods);
+      const aq  = parseQuarterScores(game.result?.away?.periods);
+      const homePlayers = (game.statistics?.home?.players || []).map(p => ({
+        profileID: p.profileID, name: p.name, number: p.playerNumber,
+        pts:   parseScore(p.statistics),
+        pt1:   p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
+        pt2:   p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
+        pt3:   p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
+        fouls: p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
+      }));
+      const awayPlayers = (game.statistics?.away?.players || []).map(p => ({
+        profileID: p.profileID, name: p.name, number: p.playerNumber,
+        pts:   parseScore(p.statistics),
+        pt1:   p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
+        pt2:   p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
+        pt3:   p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
+        fouls: p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
+      }));
+      return { gameId, seasonId, outcome: 'hidden', hs, as: as_, hq, aq, homePlayers, awayPlayers, status: game.status, updatedAt: game.updatedAt };
+    }
+
+    const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
+      await delay(j * 5);
+
+      const resp = await fetchGame(gameId, activeCookiesString);
+
+      if (resp?._legacy) return { gameId, seasonId, outcome: 'legacy' };
+
+      if (resp?._authError) {
+        defaultBatchWafTriggered = true;
+        try { session = await safeRefreshSession(); } catch (e) { return { gameId, seasonId, outcome: 'skip' }; }
+        const retry = await fetchGame(gameId, session.allCookies);
+        if (retry?._authError || retry?._rateLimit || retry?._transient || retry?._graphqlError) {
+          return { gameId, seasonId, outcome: 'skip' };
+        }
+        const retryGame = retry?.data?.game;
+        if (retryGame) return buildResult(gameId, seasonId, retryGame);
+        return { gameId, seasonId, outcome: 'legacy' };
+      }
+
+      if (resp?._rateLimit || resp?._transient || resp?._graphqlError) {
+        return { gameId, seasonId, outcome: 'skip' };
+      }
+
+      const game = resp?.data?.game;
+      if (game) return buildResult(gameId, seasonId, game);
+      return { gameId, seasonId, outcome: 'legacy' };
+    }));
+
+    if (defaultBatchWafTriggered) {
+      console.warn(`\n  ⚠️ WAF/Rate limit hit in direct pipeline slice. Refreshing session tokens...`);
+    }
+
+    for (const r of results) {
+      if (r.outcome === 'skip') { failed++; continue; }
+
+      const sg    = sgCache[r.seasonId];
+      if (!sg) continue;
+      const entry = sg.games[r.gameId] || {};
+
+      if (r.outcome === 'hidden') {
+        if (r.hs !== null) entry.hs = r.hs;
+        if (r.as !== null) entry.as = r.as;
+        if (r.hq)          entry.hq = r.hq;
+        if (r.aq)          entry.aq = r.aq;
+        if (r.homePlayers?.length) entry.hp = r.homePlayers;
+        if (r.awayPlayers?.length) entry.ap = r.awayPlayers;
+        if (r.updatedAt)   entry.updatedAt = r.updatedAt;
+        entry.hidden = true;
+        hidden++;
+        console.log(`🔒 Hidden Game Found: ${r.gameId} | Path: games/bv/${r.seasonId}.json`);
+      } else if (r.outcome === 'legacy') {
+        entry.legacy = true;
+        prog.legacy.add(r.gameId);
+        legacy++;
+      }
+
+      sg.games[r.gameId] = entry;
+      prog.done.add(r.gameId);
+      sinceLastSave++;
+    }
+
+    if (sinceLastSave >= 5000) {
+      for (const [sid, sg] of Object.entries(sgCache)) {
+        fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+      }
+      flushVenueShards();
+      saveProgress(prog);
+      sinceLastSave = 0;
+      console.log(`\n  💾 Committing...`);
+      gitCommitPush(`Hidden game backfill: ${hidden} hidden, ${legacy} legacy`);
+    }
+
+    const done = Math.min(i + CONCURRENCY, todo.length);
+    process.stdout.write(
+      `  ${done.toLocaleString()}/${todo.length.toLocaleString()}` +
+      ` (${((done / todo.length) * 100).toFixed(1)}%)` +
+      ` — 🔒 ${hidden} hidden, 📜 ${legacy} legacy, ✗ ${failed} failed\r`
+    );
+
+    if (i + CONCURRENCY < todo.length) await delay(100);
+  }
+
+  for (const [sid, sg] of Object.entries(sgCache)) {
+    fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
+  }
+  flushVenueShards();
+  saveProgress(prog);
+
+  console.log(`\n\n✅ Backfill complete`);
+}
+
+main().catch(e => { console.error(`\n❌ Fatal: ${e.message}`); process.exit(1); });
