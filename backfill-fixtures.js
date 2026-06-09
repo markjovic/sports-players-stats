@@ -22,7 +22,7 @@ const TARGET_SEASON_ID = ARGS.seasonId || null;
 
 const MAIN_REPORT_PATH = path.join(__dirname, 'missing-game-data.json');
 const GAMES_DIR = path.join(__dirname, 'games', 'bv');
-const PLAYER_INDEX_DIR = path.join(__dirname, 'players', 'indexes');
+const PLAYERS_DIR = path.join(__dirname, 'players');
 
 const HEADERS = {
   'accept': '*/*',
@@ -77,193 +77,85 @@ async function makeQuery(sessionToken, query, variables) {
 }
 
 async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, reportData) {
-  console.log("\n🚀 Processing Season Container: " + targetSeasonId);
+  console.log("\n================================================================");
+  console.log("🚀 STARTING VERBOSE DIAGNOSTICS FOR SEASON: " + targetSeasonId);
+  console.log("================================================================");
+  
+  console.log("📂 Meta metadata from manifest queue:");
+  console.log(JSON.stringify(seasonMeta, null, 2));
+
   const seasonFilePath = path.join(GAMES_DIR, targetSeasonId + '.json');
+  console.log("\n📝 Target Season File Path: " + seasonFilePath);
   
   if (!fs.existsSync(seasonFilePath)) {
-    console.log("   ⚠️ Season file missing on disk. Removing from queue.");
+    console.log("❌ CRITICAL: Season file missing on disk. Removing from queue manifest.");
     delete reportData.report[targetSeasonId];
     fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
     return;
   }
 
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
+  const totalGamesInFile = Object.keys(seasonFileContents.games || {}).length;
+  console.log("   ✓ Season file successfully parsed. Total raw game keys present: " + totalGamesInFile);
+
   const teamIdsToScan = new Set();
 
+  // ─── STEP 1: VERBOSE GRANULAR PLAYER LOOKUP ───
   if (seasonMeta?.anchorPlayerUuid) {
-    const hexShard = seasonMeta.anchorPlayerUuid.slice(0, 2).toLowerCase();
-    const shardPath = path.join(PLAYER_INDEX_DIR, hexShard + '.json');
+    const hexFolder = seasonMeta.anchorPlayerUuid.slice(0, 2).toLowerCase();
+    const playerFilePath = path.join(PLAYERS_DIR, hexFolder, seasonMeta.anchorPlayerUuid + '.json');
+    console.log("\n🔍 Step 1: Evaluating Anchor Player Path Target...");
+    console.log("   Calculated path: " + playerFilePath);
 
-    if (fs.existsSync(shardPath)) {
+    if (fs.existsSync(playerFilePath)) {
+      console.log("   ✅ Player file exists on disk. Parsing data content...");
       try {
-        const shardData = JSON.parse(fs.readFileSync(shardPath, 'utf8'));
-        const playerProfile = shardData[seasonMeta.anchorPlayerUuid];
-        const playerGames = playerProfile?.games || {};
+        const playerData = JSON.parse(fs.readFileSync(playerFilePath, 'utf8'));
+        console.log("   Player Name in File: " + (playerData.name || "Unknown"));
         
-        for (const gData of Object.values(playerGames)) {
-          if (gData.seasonId === targetSeasonId || gData.sid === targetSeasonId) {
-            if (gData.h || gData.teamId) teamIdsToScan.add(gData.h || gData.teamId);
-            if (gData.a) teamIdsToScan.add(gData.a);
-          }
-        }
-      } catch (e) {
-        console.log("   ⚠️ Player index shard parse error: " + e.message);
-      }
-    }
-  }
-
-  for (const game of Object.values(seasonFileContents.games || {})) {
-    if (game.h) teamIdsToScan.add(game.h);
-    if (game.a) teamIdsToScan.add(game.a);
-  }
-
-  const teamList = Array.from(teamIdsToScan);
-  console.log("   Found " + teamList.length + " team references to resolve.");
-
-  if (teamList.length === 0) {
-    console.log("   No team targets found. Skipping season execution.");
-    delete reportData.report[targetSeasonId];
-    fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
-    return;
-  }
-
-  // ─── INITIALIZE FIELD RECOVERY COUNTERS ───
-  const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, totalGamesImpacted: new Set() };
-
-  const fixtureQuery = "query TeamFixture($teamID: ID!) { discoverTeamFixture(teamID: $teamID) { name fixture { games { id status home { ... on DiscoverTeam { id name organisation { name } } } away { ... on DiscoverTeam { id name } } result { home { statistics { count type { value } } } away { ... } } allocation { dateTimeList { date time } court { id name venue { id name } } } grade { name season { name competition { name } } } } } } }";
-
-  let index = 0;
-  async function taskWorker() {
-    while (index < teamList.length) {
-      const currentTeamId = teamList[index++];
-      try {
-        const res = await makeQuery(sessionToken, fixtureQuery, { teamID: currentTeamId });
-        const rounds = res.data?.discoverTeamFixture || [];
+        const seasonsArray = playerData.seasons || [];
+        console.log("   Total seasons listed in player profile: " + seasonsArray.length);
         
-        for (const round of rounds) {
-          const roundName = round.name;
-          for (const apiGame of round.fixture?.games || []) {
-            const gid = apiGame.id;
+        for (const season of seasonsArray) {
+          console.log(`     - Checking profile season entry [sid: ${season.sid}] vs target [${targetSeasonId}]`);
+          if (season.sid === targetSeasonId) {
+            console.log("       🎯 MATCH FOUND! Extracting registration sub-records...");
+            const registrations = season.regs || [];
+            console.log("       Total registrations in this season object: " + registrations.length);
             
-            if (seasonFileContents.games && seasonFileContents.games[gid]) {
-              const localGame = seasonFileContents.games[gid];
-              let gameWasUpdated = false;
-              
-              if (!localGame.rn && roundName) { localGame.rn = roundName; deltas.rounds++; gameWasUpdated = true; }
-              if (!localGame.st && apiGame.status?.value) { localGame.st = apiGame.status.value; gameWasUpdated = true; }
-              
-              if (apiGame.home?.id && (!localGame.h || !localGame.hn)) { 
-                localGame.h = apiGame.home.id; localGame.hn = apiGame.home.name; 
-                deltas.teams++; gameWasUpdated = true; 
-              }
-              if (apiGame.away?.id && (!localGame.a || !localGame.an)) { 
-                localGame.a = apiGame.away.id; localGame.an = apiGame.away.name; 
-                deltas.teams++; gameWasUpdated = true; 
-              }
-
-              const alloc = apiGame.allocation;
-              if (alloc) {
-                if (alloc.dateTimeList && alloc.dateTimeList[0]) {
-                  if (!localGame.d) { localGame.d = alloc.dateTimeList[0].date.slice(0, 10); gameWasUpdated = true; }
-                  if (!localGame.t) { localGame.t = alloc.dateTimeList[0].time.slice(0, 5); deltas.venues++; gameWasUpdated = true; }
-                }
-                if (alloc.court) {
-                  if (!localGame.ct) { localGame.ct = alloc.court.name; deltas.venues++; gameWasUpdated = true; }
-                  if (alloc.court.venue) {
-                    if (!localGame.vid) { localGame.vid = alloc.court.venue.id; gameWasUpdated = true; }
-                    if (!localGame.vn) { localGame.vn = alloc.court.venue.name; deltas.venues++; gameWasUpdated = true; }
-                  }
-                }
-              }
-
-              if (!localGame.url && apiGame.home?.organisation?.name && apiGame.grade?.season?.competition?.name) {
-                localGame.url = buildGameUrl(
-                  gid,
-                  apiGame.home.organisation.name,
-                  apiGame.grade.season.competition.name,
-                  apiGame.grade.season.name,
-                  apiGame.grade.name
-                );
-                deltas.urls++;
-                gameWasUpdated = true;
-              }
-
-              if (gameWasUpdated) {
-                deltas.totalGamesImpacted.add(gid);
+            for (const reg of registrations) {
+              console.log(`         * Found reg record: [tid: ${reg.tid}, tn: ${reg.tn}]`);
+              if (reg.tid) {
+                teamIdsToScan.add(reg.tid);
+              } else {
+                console.log("           ⚠️ Warning: entry is missing a 'tid' field.");
               }
             }
           }
         }
-      } catch (err) {}
+      } catch (e) {
+        console.log("   ❌ ERROR parsing player document: " + e.message);
+      }
+    } else {
+      console.log("   ❌ WARNING: Player file does not exist at that path.");
     }
-  }
-
-  const pool = Array(CONCURRENCY).fill(null).map(taskWorker);
-  await Promise.all(pool);
-
-  // ─── PRINT RECOVERY METRICS SUMMARY MATRIX ───
-  console.log("   -------------------------------------------------------------");
-  console.log("   📉 Backfill Delta Metrics Summary:");
-  console.log("   -------------------------------------------------------------");
-  console.log("   Total Matches Restructured: " + deltas.totalGamesImpacted.size.toLocaleString());
-  console.log("   [url] Match URLs Discovered: " + deltas.urls.toLocaleString());
-  console.log("   [rn]  Round Names Patched:   " + deltas.rounds.toLocaleString());
-  console.log("   [h/a] Team Elements Unified: " + deltas.teams.toLocaleString());
-  console.log("   [loc] Venue Gaps Repaired:   " + deltas.venues.toLocaleString());
-  console.log("   -------------------------------------------------------------");
-
-  // Write files out to current state layout immediately
-  fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
-  
-  delete reportData.report[targetSeasonId];
-  reportData.totalGamesWithCoreOrVenueGaps = Object.values(reportData.report).reduce((acc, curr) => acc + curr.missingGamesCount, 0);
-  fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
-  
-  console.log("   ✓ Saved changes. Remaining backlog size: " + Object.keys(reportData.report).length);
-
-  try {
-    execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
-    const diffCheck = execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim();
-    
-    if (diffCheck) {
-      execSync('git commit -m "Backfill Step: Processed season ' + targetSeasonId + '"', { stdio: 'pipe' });
-      execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
-      execSync('git push', { stdio: 'pipe' });
-      console.log("   ✓ Secure push to origin verified.");
-    }
-  } catch (gitErr) {
-    console.log("   ⚠️ Git step variation: " + gitErr.message);
-  }
-}
-
-async function runBackfill() {
-  if (!fs.existsSync(MAIN_REPORT_PATH)) {
-    console.error("❌ Error: missing-game-data.json not found.");
-    process.exit(1);
-  }
-
-  const reportData = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
-  const sessionToken = await getSessionCookie();
-
-  if (TARGET_SEASON_ID) {
-    console.log("🎯 Running isolated test mode for season: " + TARGET_SEASON_ID);
-    const seasonMeta = reportData.report[TARGET_SEASON_ID] || {};
-    await processSingleSeason(TARGET_SEASON_ID, seasonMeta, sessionToken, reportData);
   } else {
-    let seasonsWithGaps = Object.keys(reportData.report || {});
-    console.log("📚 Running full backlog cycle mode. Initial size: " + seasonsWithGaps.length);
-    
-    while (seasonsWithGaps.length > 0) {
-      const nextSeasonId = seasonsWithGaps[0];
-      const seasonMeta = reportData.report[nextSeasonId];
-      
-      await processSingleSeason(nextSeasonId, seasonMeta, sessionToken, reportData);
-      
-      const refreshedReport = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
-      seasonsWithGaps = Object.keys(refreshedReport.report || {});
-    }
-    console.log("🏁 Backlog successfully cleared.");
+    console.log("\n⚠️ No anchorPlayerUuid string found inside the manifest metadata for this season row.");
   }
-}
 
-runBackfill().catch(e => { console.error("\n❌ Fatal Operational Interruption: " + e.message); process.exit(1); });
+  // ─── STEP 2: VERBOSE SEASON FILE BACKUP SCAN ───
+  console.log("\n🔍 Step 2: Scanning current season dictionary file for existing data strings...");
+  let gamesWithH = 0;
+  let gamesWithA = 0;
+  
+  for (const [gid, game] of Object.entries(seasonFileContents.games || {})) {
+    if (game.h) { 
+      teamIdsToScan.add(game.h); 
+      gamesWithH++; 
+    }
+    if (game.a) { 
+      teamIdsToScan.add(game.a); 
+      gamesWithA++; 
+    }
+  }
+  console.log(`   Scan complete. Matches with 'h' populated: ${gamesWithH}. Matches with 'a' populated: ${gamesWithA
