@@ -47,6 +47,28 @@ const fieldTally = {
   hq: 0, aq: 0, hp: 0, ap: 0
 };
 
+// Descriptive label configuration schema map
+const fieldLabels = {
+  d:   "   [d]   Date Populated:            ",
+  rn:  "   [rn]  Round Name Populated:      ",
+  st:  "   [st]  Game Status Populated:     ",
+  url: "   [url] Match URL Populated:        ",
+  h:   "   [h]   Home Team ID Populated:    ",
+  hn:  "   [hn]  Home Team Name Populated:  ",
+  a:   "   [a]   Away Team ID Populated:    ",
+  an:  "   [an]  Away Team Name Populated:  ",
+  vid: "   [vid] Venue ID Populated:        ",
+  vn:  "   [vn]  Venue Name Populated:      ",
+  ct:  "   [ct]  Court Label Populated:     ",
+  t:   "   [t]   Time Label Populated:      ",
+  hs:  "   [hs]  Home Score Populated:      ",
+  as:  "   [as]  Away Score Populated:      ",
+  hq:  "   [hq]  Home Quarters Array:       ",
+  aq:  "   [aq]  Away Quarters Array:       ",
+  hp:  "   [hp]  Home Players Roster Array: ",
+  ap:  "   [ap]  Away Players Roster Array: "
+};
+
 async function processSeasonFile(file) {
   const seasonId = path.basename(file, '.json');
   try {
@@ -64,7 +86,6 @@ async function processSeasonFile(file) {
       const gapFields = {};
       let hasMainGap = false;
 
-      // 1. Core Metadata Key Verifications
       for (const field of MANDATORY_CORE) {
         const val = game[field];
         if (val !== undefined && val !== null && val !== '') {
@@ -75,7 +96,6 @@ async function processSeasonFile(file) {
         }
       }
 
-      // 2. Segregated Venue Key Verifications
       for (const field of MANDATORY_VENUE) {
         const val = game[field];
         if (val !== undefined && val !== null && val !== '') {
@@ -86,7 +106,6 @@ async function processSeasonFile(file) {
         }
       }
 
-      // 3. Main Scores Key Verifications
       if (typeof game.hs === 'number') {
         fieldTally['hs']++;
       } else {
@@ -101,7 +120,6 @@ async function processSeasonFile(file) {
         hasMainGap = true;
       }
 
-      // 4. Quarter Scores Check
       const hasHq = Array.isArray(game.hq) && game.hq.length > 0;
       const hasAq = Array.isArray(game.aq) && game.aq.length > 0;
       if (hasHq) fieldTally['hq']++;
@@ -110,7 +128,6 @@ async function processSeasonFile(file) {
         globalMissingQuarterScores.push(gameId);
       }
 
-      // 5. Player Box Scores Check
       const hasHp = Array.isArray(game.hp) && game.hp.length > 0;
       const hasAp = Array.isArray(game.ap) && game.ap.length > 0;
       if (hasHp) fieldTally['hp']++;
@@ -162,6 +179,11 @@ async function worker(iterator) {
   }
 }
 
+function printRow(key, total) {
+  const pct = totalEligibleGames ? ((total / totalEligibleGames) * 100).toFixed(2) : '0.00';
+  console.log(fieldLabels[key] + total.toLocaleString().padStart(9) + " matches (" + pct + "%)");
+}
+
 async function runPool() {
   const iterator = seasonFiles[Symbol.iterator]();
   const pool = Array(CONCURRENCY).fill(iterator).map(worker);
@@ -174,15 +196,38 @@ async function runPool() {
   console.log("   Total Completed Games Evaluated: " + totalEligibleGames.toLocaleString());
   console.log("================================================================");
   
-  console.log("\n   📊 Field-by-Field Completeness Metrics:");
+  console.log("\n   📦 Core Details Individual Field Breakdown:");
   console.log("   -------------------------------------------------------------");
-  
-  // Clean looping iterator prevents manual quote/parenthesis character matching flaws
-  for (const key of Object.keys(fieldTally)) {
-    const totalCount = fieldTally[key];
-    const percentage = calcPct(totalCount);
-    console.log("   Field [" + key + "]: " + totalCount.toLocaleString() + " matches (" + percentage + "%)");
-  }
+  printRow('d', fieldTally.d);
+  printRow('rn', fieldTally.rn);
+  printRow('st', fieldTally.st);
+  printRow('url', fieldTally.url);
+  printRow('h', fieldTally.h);
+  printRow('hn', fieldTally.hn);
+  printRow('a', fieldTally.a);
+  printRow('an', fieldTally.an);
+
+  console.log("\n   📍 Venue Info Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  printRow('vid', fieldTally.vid);
+  printRow('vn', fieldTally.vn);
+  printRow('ct', fieldTally.ct);
+  printRow('t', fieldTally.t);
+
+  console.log("\n   🔢 Main Scores Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  printRow('hs', fieldTally.hs);
+  printRow('as', fieldTally.as);
+
+  console.log("\n   ⏱️ Quarter Breakdowns Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  printRow('hq', fieldTally.hq);
+  printRow('aq', fieldTally.aq);
+
+  console.log("\n   🏀 Player Box Scores Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  printRow('hp', fieldTally.hp);
+  printRow('ap', fieldTally.ap);
   
   console.log("================================================================");
   console.log("   Anomalous rows in core report:   " + totalGamesWithGaps.toLocaleString() + "\n");
