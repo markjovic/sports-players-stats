@@ -62,7 +62,7 @@ async function runBackfill() {
   }
 
   console.log("\n================================================================");
-  console.log("🚀 INITIALIZING NETWORK BACKFILL FOR SEASON: " + targetSeasonId);
+  console.log("🚀 STARTING DEEP TRACE BACKFILL FOR SEASON: " + targetSeasonId);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, targetSeasonId + '.json');
@@ -75,21 +75,21 @@ async function runBackfill() {
 
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
   
-  // Cleanly isolate the targeted game IDs straight from the manifest queue object layout
-  const targetManifestGames = reportData.report[targetSeasonId]?.games || {};
-  const gameIdsToBackfill = new Set(Object.keys(targetManifestGames));
-  console.log("📋 Manifest Queue isolated. Total games flagged for recovery: " + gameIdsToBackfill.size);
+  // FIXED: Correctly isolate games regardless of optimization layout nesting
+  const seasonManifestBlock = reportData.report[targetSeasonId] || {};
+  const manifestGames = seasonManifestBlock.games || {};
+  const gameIdsToBackfill = new Set(Object.keys(manifestGames));
+  
+  console.log("📋 Manifest entry data keys found: " + Object.keys(seasonManifestBlock).join(', '));
+  console.log("📋 Extracted " + gameIdsToBackfill.size + " Game IDs to backfill. Examples: " + Array.from(gameIdsToBackfill).slice(0, 5).join(', '));
 
   const teamIdsToScan = new Set();
-
-  // Harvest existing team tokens from the season file, accounting for both absolute and relative layouts
   for (const game of Object.values(seasonFileContents.games || {})) {
     if (game.h && game.h !== 0) teamIdsToScan.add(game.h);
     if (game.a && game.a !== 0) teamIdsToScan.add(game.a);
-    if (game.o && game.o !== 0) teamIdsToScan.add(game.o); // Map relative opponent ID flag tokens cleanly
+    if (game.o && game.o !== 0) teamIdsToScan.add(game.o);
   }
 
-  // Authenticate session token cookie
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -97,12 +97,11 @@ async function runBackfill() {
   });
   const rawCookie = sessionRes.headers.get('set-cookie') || '';
   const cookieMatch = rawCookie.match(/phq_session=([^;]+)/);
-  if (!cookieMatch) throw new Error("phq_session authentication challenge token missing.");
+  if (!cookieMatch) throw new Error("phq_session token missing.");
   const sessionToken = cookieMatch[1];
 
-  // Fallback Sweep: If no clear team IDs are populated yet, run a direct grade query to extract the league's team list
   if (teamIdsToScan.size === 0) {
-    console.log("🔍 No team IDs found in local file. Querying live grade standings for season teams...");
+    console.log("🔍 Local team data empty. Triggering active ladder standing query...");
     try {
       const gradeQuery = "query SeasonGrades($seasonID: ID!) { discoverSeason(seasonID: $seasonID) { grades { id ladder { standings { team { ... on DiscoverTeam { id } } } } } } }";
       const gRes = await fetch('https://api.playhq.com/graphql', {
@@ -119,12 +118,12 @@ async function runBackfill() {
         }
       }
     } catch (e) {
-      console.log("   ⚠️ Grade sweep error: " + e.message);
+      console.log("   ⚠️ Standing pass bypassed: " + e.message);
     }
   }
 
   const teamList = Array.from(teamIdsToScan);
-  console.log("📊 Total unique team endpoint paths to scrape: " + teamList.length);
+  console.log("📊 Isolated " + teamList.length + " team endpoints to scrape: " + JSON.stringify(teamList));
 
   const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
   const fixtureQuery = "query TeamFixture($teamID: ID!) { discoverTeamFixture(teamID: $teamID) { name fixture { games { id status home { ... on DiscoverTeam { id name organisation { name } } } away { ... on DiscoverTeam { id name } } result { home { score } away { score } } allocation { dateTimeList { date time } court { id name venue { id name } } } grade { name season { name competition { name } } } } } }";
@@ -133,6 +132,7 @@ async function runBackfill() {
   const workers = Array(CONCURRENCY).fill(null).map(async () => {
     while (index < teamList.length) {
       const currentTeamId = teamList[index++];
+      console.log("   🌐 [Scraper] Querying team schedule endpoint: " + currentTeamId);
       try {
         const res = await fetch('https://api.playhq.com/graphql', {
           method: 'POST',
@@ -144,15 +144,17 @@ async function runBackfill() {
 
         for (const round of rounds) {
           const roundName = round.name;
-          for (const apiGame of round.fixture?.games || []) {
+          const apiGames = round.fixture?.games || [];
+          
+          for (const apiGame of apiGames) {
             const gid = apiGame.id;
 
-            // Target verification intersection check
-            if (gameIdsToBackfill.has(gid) && seasonFileContents.games && seasonFileContents.games[gid]) {
+            // VERBOSE LIVE MATCH LOGGING
+            if (gameIdsToBackfill.has(gid)) {
+              console.log("      🎯 INTERSECTION FOUND: API match " + gid + " matches an open backlog row!");
               const localGame = seasonFileContents.games[gid];
               let updated = false;
 
-              // Check and patch absolute properties over blank layout defaults
               if (!localGame.rn || localGame.rn === 0) { localGame.rn = roundName; deltas.rounds++; updated = true; }
               if (!localGame.st || localGame.st === 0) { localGame.st = apiGame.status?.value || 'FINAL'; updated = true; }
               
@@ -198,7 +200,7 @@ async function runBackfill() {
               }
 
               if (updated) {
-                // If the entry successfully updated, wipe old relative opponent layout fields out cleanly
+                console.log("         ✅ Row fields updated successfully. Restructured absolute layout markers.");
                 delete localGame.o;
                 delete localGame.on;
                 deltas.totalGamesImpacted.add(gid);
@@ -206,7 +208,9 @@ async function runBackfill() {
             }
           }
         }
-      } catch (err) {}
+      } catch (err) {
+        console.log("      ❌ Worker Error querying team " + currentTeamId + ": " + err.message);
+      }
     }
   });
 
