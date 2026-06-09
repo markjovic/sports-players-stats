@@ -90,3 +90,160 @@ async function processSeasonFile(file) {
           gapFields[field] = null;
           hasMainGap = true;
         }
+      }
+
+      // 3. Main Scores Key Verifications
+      if (typeof game.hs === 'number') {
+        fieldTally['hs']++;
+      } else {
+        gapFields['hs'] = null;
+        hasMainGap = true;
+      }
+
+      if (typeof game.as === 'number') {
+        fieldTally['as']++;
+      } else {
+        gapFields['as'] = null;
+        hasMainGap = true;
+      }
+
+      // 4. Quarter Scores Breakdown Key Verification
+      const hasHq = Array.isArray(game.hq) && game.hq.length > 0;
+      const hasAq = Array.isArray(game.aq) && game.aq.length > 0;
+      if (hasHq) fieldTally['hq']++;
+      if (hasAq) fieldTally['aq']++;
+      if (!hasHq || !hasAq) {
+        globalMissingQuarterScores.push(gameId);
+      }
+
+      // 5. Player Box Scores Breakdown Key Verification
+      const hasHp = Array.isArray(game.hp) && game.hp.length > 0;
+      const hasAp = Array.isArray(game.ap) && game.ap.length > 0;
+      if (hasHp) fieldTally['hp']++;
+      if (hasAp) fieldTally['ap']++;
+      if (!hasHp || !hasAp) {
+        globalMissingBoxScores.push(gameId);
+      }
+
+      // Track administrative context keys
+      if (hasMainGap) {
+        if (game.forfeit) gapFields['forfeit'] = game.forfeit;
+        if (game.fo)      gapFields['fo']      = game.fo;
+        if (game.desc)    gapFields['desc']    = game.desc;
+        if (game.hidden)  gapFields['hidden']  = game.hidden;
+        if (game.legacy)  gapFields['legacy']  = game.legacy;
+
+        seasonMissingGames[gameId] = gapFields;
+        totalGamesWithGaps++;
+      }
+    }
+
+    if (Object.keys(seasonMissingGames).length > 0) {
+      let anchorPlayerUuid = null;
+      for (const [playerUuid, associatedGameIds] of Object.entries(playerGames)) {
+        if (Array.isArray(associatedGameIds) && associatedGameIds.length > 0) {
+          anchorPlayerUuid = playerUuid;
+          break;
+        }
+      }
+
+      mainMissingReport[seasonId] = {
+        seasonId,
+        anchorPlayerUuid,
+        missingGamesCount: Object.keys(seasonMissingGames).length,
+        games: seasonMissingGames
+      };
+    }
+
+  } catch (e) {}
+}
+
+async function worker(iterator) {
+  for (const file of iterator) {
+    await processSeasonFile(file);
+    processed++;
+    if (processed % 100 === 0 || processed === seasonFiles.length) {
+      const pct = ((processed / seasonFiles.length) * 100).toFixed(1);
+      process.stdout.write(`   Progress: ${processed.toLocaleString()}/${seasonFiles.length.toLocaleString()} (${pct}%) — ${totalGamesWithGaps.toLocaleString()} anomalies logged\r`);
+    }
+  }
+}
+
+async function runPool() {
+  const iterator = seasonFiles[Symbol.iterator]();
+  const pool = Array(CONCURRENCY).fill(iterator).map(worker);
+  await Promise.all(pool);
+
+  const calcPct = (count) => totalEligibleGames ? ((count / totalEligibleGames) * 100).toFixed(2) : '0.00';
+
+  console.log(`\n\n✅ Data Coverage Audit Complete!`);
+  console.log(`================================================================`);
+  console.log(`   Total Completed Games Evaluated:  ${totalEligibleGames.toLocaleString()}`);
+  console.log(`================================================================`);
+  
+  console.log(`\n   📦 Core Details Individual Field Breakdown:`);
+  console.log(`   -------------------------------------------------------------`);
+  console.log(`   [d]   Date Populated:            ${fieldTally.d.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.d)}%)`);
+  console.log(`   [rn]  Round Name Populated:      ${fieldTally.rn.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.rn)}%)`);
+  console.log(`   [st]  Game Status Populated:     ${fieldTally.st.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.st)}%)`);
+  console.log(`   [url] Match URL Populated:        ${fieldTally.url.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.url)}%)`);
+  console.log(`   [h]   Home Team ID Populated:    ${fieldTally.h.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.h)}%)`);
+  console.log(`   [hn]  Home Team Name Populated:  ${fieldTally.hn.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.hn)}%)`);
+  console.log(`   [a]   Away Team ID Populated:    ${fieldTally.a.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.a)}%)`);
+  console.log(`   [an]  Away Team Name Populated:  ${fieldTally.an.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.an)}%)`);
+
+  console.log(`\n   📍 Venue Info Individual Field Breakdown:`);
+  console.log(`   -------------------------------------------------------------`);
+  console.log(`   [vid] Venue ID Populated:        ${fieldTally.vid.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.vid)}%)`);
+  console.log(`   [vn]  Venue Name Populated:      ${fieldTally.vn.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.vn)}%)`);
+  console.log(`   [ct]  Court Label Populated:     ${fieldTally.ct.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.ct)}%)`);
+  console.log(`   [t]   Time Label Populated:      ${fieldTally.t.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.t)}%)`);
+
+  console.log(`\n   🔢 Main Scores Individual Field Breakdown:`);
+  console.log(`   -------------------------------------------------------------`);
+  console.log(`   [hs]  Home Score Populated:      ${fieldTally.hs.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.hs)}%)`);
+  console.log(`   [as]  Away Score Populated:      ${fieldTally.as.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.as)}%)`);
+
+  console.log(`\n   ⏱️ Quarter Breakdowns Individual Field Breakdown:`);
+  console.log(`   -------------------------------------------------------------`);
+  console.log(`   [hq]  Home Quarters Array:       ${fieldTally.hq.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.hq)}%)`);
+  console.log(`   [aq]  Away Quarters Array:       ${fieldTally.aq.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.aq)}%)`);
+
+  console.log(`\n   🏀 Player Box Scores Individual Field Breakdown:`);
+  console.log(`   -------------------------------------------------------------`);
+  console.log(`   [hp]  Home Players Roster Array: ${fieldTally.hp.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.hp)}%)`);
+  console.log(`   [ap]  Away Players Roster Array: ${fieldTally.ap.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.ap)}%)`);
+  
+  console.log(`================================================================`);
+  console.log(`   Anomalous rows in core report:   ${totalGamesWithGaps.toLocaleString()}\n`);
+
+  const mainPayload = {
+    generatedAt: new Date().toISOString(),
+    totalSeasonsAudited: seasonFiles.length,
+    totalGamesWithCoreOrVenueGaps: totalGamesWithGaps,
+    fieldCompletenessMatrix: {
+      totalGamesScanned: totalEligibleGames,
+      tallies: fieldTally,
+      percentages: {
+        d: calcPct(fieldTally.d), rn: calcPct(fieldTally.rn), st: calcPct(fieldTally.st), url: calcPct(fieldTally.url),
+        h: calcPct(fieldTally.h), hn: calcPct(fieldTally.hn), a: calcPct(fieldTally.a), an: calcPct(fieldTally.an),
+        vid: calcPct(fieldTally.vid), vn: calcPct(fieldTally.vn), ct: calcPct(fieldTally.ct), t: calcPct(fieldTally.t),
+        hs: calcPct(fieldTally.hs), as: calcPct(fieldTally.as),
+        hq: calcPct(fieldTally.hq), aq: calcPct(fieldTally.aq),
+        hp: calcPct(fieldTally.hp), ap: calcPct(fieldTally.ap)
+      }
+    },
+    report: mainMissingReport
+  };
+
+  fs.writeFileSync(BOX_OUT, JSON.stringify(globalMissingBoxScores));
+  fs.writeFileSync(QUARTER_OUT, JSON.stringify(globalMissingQuarterScores));
+  fs.writeFileSync(MAIN_OUT, JSON.stringify(mainPayload));
+
+  try {
+    execSync('git add missing-game-data.json missing-box-scores.json missing-quarter-scores.json', { stdio: 'pipe' });
+    const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
+    if (diff) {
+      execSync(`git commit -m "Audit deep loop pass: Detailed key-by-key data gaps tracked"`, { stdio: 'pipe' });
+      execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
+      execSync('git push',
