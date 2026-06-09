@@ -204,15 +204,67 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
               let gameWasUpdated = false;
               
               if ((localGame.rn === 0 || !localGame.rn) && roundName) { 
-                localGame.rn = roundName; deltas.rounds++; gameWasUpdated = true; 
+                localGame.rn = roundName; 
+                deltas.rounds++; 
+                gameWasUpdated = true; 
               }
               if ((localGame.st === 0 || !localGame.st) && apiGame.status?.value) { 
-                localGame.st = apiGame.status.value; gameWasUpdated = true; 
+                localGame.st = apiGame.status.value; 
+                gameWasUpdated = true; 
               }
               
               if (apiGame.home?.id && (!localGame.h || localGame.h === 0 || !localGame.hn || localGame.hn === 0)) { 
-                localGame.h = apiGame.home.id; localGame.hn = apiGame.home.name; 
-                deltas.teams++; gameWasUpdated = true; 
+                localGame.h = apiGame.home.id; 
+                localGame.hn = apiGame.home.name; 
+                deltas.teams++; 
+                gameWasUpdated = true; 
               }
               if (apiGame.away?.id && (!localGame.a || localGame.a === 0 || !localGame.an || localGame.an === 0)) { 
-                localGame.a = apiGame.away.id; localGame
+                localGame.a = apiGame.away.id; 
+                localGame.an = apiGame.away.name; 
+                deltas.teams++; 
+                gameWasUpdated = true; 
+              }
+
+              const alloc = apiGame.allocation;
+              if (alloc) {
+                if (alloc.dateTimeList && alloc.dateTimeList[0]) {
+                  if (!localGame.d || localGame.d === 0) { 
+                    localGame.d = alloc.dateTimeList[0].date.slice(0, 10); 
+                    gameWasUpdated = true; 
+                  }
+                  if (!localGame.t || localGame.t === 0) { 
+                    localGame.t = alloc.dateTimeList[0].time.slice(0, 5); 
+                    deltas.venues++; 
+                    gameWasUpdated = true; 
+                  }
+                }
+                if (alloc.court) {
+                  if (!localGame.ct || localGame.ct === 0) { 
+                    localGame.ct = alloc.court.name; 
+                    deltas.venues++; 
+                    gameWasUpdated = true; 
+                  }
+                  if (alloc.court.venue) {
+                    if (!localGame.vid || localGame.vid === 0) { 
+                      localGame.vid = alloc.court.venue.id; 
+                      gameWasUpdated = true; 
+                    }
+                    if (!localGame.vn || localGame.vn === 0) { 
+                      localGame.vn = alloc.court.venue.name; 
+                      deltas.venues++; 
+                      gameWasUpdated = true; 
+                    }
+                  }
+                }
+              }
+
+              if ((localGame.url === 0 || !localGame.url) && apiGame.home?.organisation?.name && apiGame.grade?.season?.competition?.name) {
+                localGame.url = buildGameUrl(
+                  gid,
+                  apiGame.home.organisation.name,
+                  apiGame.grade.season.competition.name,
+                  apiGame.grade.season.name,
+                  apiGame.grade.name
+                );
+                deltas.urls++;
