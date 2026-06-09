@@ -19,15 +19,15 @@ const MAIN_OUT      = path.join(__dirname, 'missing-game-data.json');
 const BOX_OUT       = path.join(__dirname, 'missing-box-scores.json');
 const QUARTER_OUT   = path.join(__dirname, 'missing-quarter-scores.json');
 
-console.log(`\n🔍 Locating Missing Game Attributes (Deep Field Breakdown Matrix)`);
+console.log("\n🔍 Locating Missing Game Attributes (Deep Field Breakdown Matrix)");
 
 if (!fs.existsSync(GAMES_DIR)) {
-  console.error(`❌ Target path missing: ${GAMES_DIR}`);
+  console.error("❌ Target path missing: " + GAMES_DIR);
   process.exit(1);
 }
 
 const seasonFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
-console.log(`   Found ${seasonFiles.length.toLocaleString()} season files to process.\n`);
+console.log("   Found " + seasonFiles.length.toLocaleString() + " season files to process.\n");
 
 const mainMissingReport = {};
 const globalMissingBoxScores = [];
@@ -37,19 +37,13 @@ let totalEligibleGames = 0;
 let totalGamesWithGaps   = 0;
 let processed = 0;
 
-// Explicit Mandatory Keys Lists
 const MANDATORY_CORE   = ['d', 'rn', 'h', 'hn', 'a', 'an', 'url', 'st'];
 const MANDATORY_VENUE  = ['vid', 'vn', 'ct', 't'];
 
-// Individual Key Counters
 const fieldTally = {
-  // Core Details
   d: 0, rn: 0, h: 0, hn: 0, a: 0, an: 0, url: 0, st: 0,
-  // Venue Details
   vid: 0, vn: 0, ct: 0, t: 0,
-  // Main Numeric Scores
   hs: 0, as: 0,
-  // Complex Arrays
   hq: 0, aq: 0, hp: 0, ap: 0
 };
 
@@ -70,7 +64,7 @@ async function processSeasonFile(file) {
       const gapFields = {};
       let hasMainGap = false;
 
-      // 1. Core Metadata Individual Key Verifications
+      // 1. Core Metadata Key Verifications
       for (const field of MANDATORY_CORE) {
         const val = game[field];
         if (val !== undefined && val !== null && val !== '') {
@@ -81,7 +75,7 @@ async function processSeasonFile(file) {
         }
       }
 
-      // 2. Segregated Venue Individual Key Verifications
+      // 2. Segregated Venue Key Verifications
       for (const field of MANDATORY_VENUE) {
         const val = game[field];
         if (val !== undefined && val !== null && val !== '') {
@@ -107,7 +101,7 @@ async function processSeasonFile(file) {
         hasMainGap = true;
       }
 
-      // 4. Quarter Scores Breakdown Key Verification
+      // 4. Quarter Scores Check
       const hasHq = Array.isArray(game.hq) && game.hq.length > 0;
       const hasAq = Array.isArray(game.aq) && game.aq.length > 0;
       if (hasHq) fieldTally['hq']++;
@@ -116,7 +110,7 @@ async function processSeasonFile(file) {
         globalMissingQuarterScores.push(gameId);
       }
 
-      // 5. Player Box Scores Breakdown Key Verification
+      // 5. Player Box Scores Check
       const hasHp = Array.isArray(game.hp) && game.hp.length > 0;
       const hasAp = Array.isArray(game.ap) && game.ap.length > 0;
       if (hasHp) fieldTally['hp']++;
@@ -125,7 +119,6 @@ async function processSeasonFile(file) {
         globalMissingBoxScores.push(gameId);
       }
 
-      // Track administrative context keys
       if (hasMainGap) {
         if (game.forfeit) gapFields['forfeit'] = game.forfeit;
         if (game.fo)      gapFields['fo']      = game.fo;
@@ -148,8 +141,8 @@ async function processSeasonFile(file) {
       }
 
       mainMissingReport[seasonId] = {
-        seasonId,
-        anchorPlayerUuid,
+        seasonId: seasonId,
+        anchorPlayerUuid: anchorPlayerUuid,
         missingGamesCount: Object.keys(seasonMissingGames).length,
         games: seasonMissingGames
       };
@@ -164,7 +157,7 @@ async function worker(iterator) {
     processed++;
     if (processed % 100 === 0 || processed === seasonFiles.length) {
       const pct = ((processed / seasonFiles.length) * 100).toFixed(1);
-      process.stdout.write(`   Progress: ${processed.toLocaleString()}/${seasonFiles.length.toLocaleString()} (${pct}%) — ${totalGamesWithGaps.toLocaleString()} anomalies logged\r`);
+      process.stdout.write("   Progress: " + processed.toLocaleString() + "/" + seasonFiles.length.toLocaleString() + " (" + pct + "%) — " + totalGamesWithGaps.toLocaleString() + " anomalies logged\r");
     }
   }
 }
@@ -176,25 +169,29 @@ async function runPool() {
 
   const calcPct = (count) => totalEligibleGames ? ((count / totalEligibleGames) * 100).toFixed(2) : '0.00';
 
-  console.log(`\n\n✅ Data Coverage Audit Complete!`);
-  console.log(`================================================================`);
-  console.log(`   Total Completed Games Evaluated:  ${totalEligibleGames.toLocaleString()}`);
-  console.log(`================================================================`);
+  console.log("\n\n✅ Data Coverage Audit Complete!");
+  console.log("================================================================");
+  console.log("   Total Completed Games Evaluated: " + totalEligibleGames.toLocaleString());
+  console.log("================================================================");
   
-  console.log(`\n   📦 Core Details Individual Field Breakdown:`);
-  console.log(`   -------------------------------------------------------------`);
-  console.log(`   [d]   Date Populated:            ${fieldTally.d.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.d)}%)`);
-  console.log(`   [rn]  Round Name Populated:      ${fieldTally.rn.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.rn)}%)`);
-  console.log(`   [st]  Game Status Populated:     ${fieldTally.st.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.st)}%)`);
-  console.log(`   [url] Match URL Populated:        ${fieldTally.url.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.url)}%)`);
-  console.log(`   [h]   Home Team ID Populated:    ${fieldTally.h.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.h)}%)`);
-  console.log(`   [hn]  Home Team Name Populated:  ${fieldTally.hn.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.hn)}%)`);
-  console.log(`   [a]   Away Team ID Populated:    ${fieldTally.a.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.a)}%)`);
-  console.log(`   [an]  Away Team Name Populated:  ${fieldTally.an.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.an)}%)`);
+  console.log("\n   📦 Core Details Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  console.log("   [d]   Date Populated:            " + fieldTally.d.toLocaleString() + " matches (" + calcPct(fieldTally.d) + "%)");
+  console.log("   [rn]  Round Name Populated:      " + fieldTally.rn.toLocaleString() + " matches (" + calcPct(fieldTally.rn) + "%)");
+  console.log("   [st]  Game Status Populated:     " + fieldTally.st.toLocaleString() + " matches (" + calcPct(fieldTally.st) + "%)");
+  console.log("   [url] Match URL Populated:        " + fieldTally.url.toLocaleString() + " matches (" + calcPct(fieldTally.url) + "%)");
+  console.log("   [h]   Home Team ID Populated:    " + fieldTally.h.toLocaleString() + " matches (" + calcPct(fieldTally.h) + "%)");
+  console.log("   [hn]  Home Team Name Populated:  " + fieldTally.hn.toLocaleString() + " matches (" + calcPct(fieldTally.hn) + "%)");
+  console.log("   [a]   Away Team ID Populated:    " + fieldTally.a.toLocaleString() + " matches (" + calcPct(fieldTally.a) + "%)");
+  console.log("   [an]  Away Team Name Populated:  " + fieldTally.an.toLocaleString() + " matches (" + calcPct(fieldTally.an) + "%)");
 
-  console.log(`\n   📍 Venue Info Individual Field Breakdown:`);
-  console.log(`   -------------------------------------------------------------`);
-  console.log(`   [vid] Venue ID Populated:        ${fieldTally.vid.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.vid)}%)`);
-  console.log(`   [vn]  Venue Name Populated:      ${fieldTally.vn.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.vn)}%)`);
-  console.log(`   [ct]  Court Label Populated:     ${fieldTally.ct.toLocaleString().padStart(9)} matches (${calcPct(fieldTally.ct)}%)`);
-  console.log(`   [t]   Time
+  console.log("\n   📍 Venue Info Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  console.log("   [vid] Venue ID Populated:        " + fieldTally.vid.toLocaleString() + " matches (" + calcPct(fieldTally.vid) + "%)");
+  console.log("   [vn]  Venue Name Populated:      " + fieldTally.vn.toLocaleString() + " matches (" + calcPct(fieldTally.vn) + "%)");
+  console.log("   [ct]  Court Label Populated:     " + fieldTally.ct.toLocaleString() + " matches (" + calcPct(fieldTally.ct) + "%)");
+  console.log("   [t]   Time Label Populated:      " + fieldTally.t.toLocaleString() + " matches (" + calcPct(fieldTally.t) + "%)");
+
+  console.log("\n   🔢 Main Scores Individual Field Breakdown:");
+  console.log("   -------------------------------------------------------------");
+  console.log("   [hs]  Home Score Populated:      " + fieldTally.hs.toLocaleString()
