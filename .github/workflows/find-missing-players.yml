@@ -7,13 +7,13 @@ on:
       concurrency:
         description: 'Parallel Asynchronous Storage Workers'
         required: false
-        default: '128' # Bumped for high throughput execution on 2M+ flat shards
+        default: '128'
         type: string
 
 jobs:
   scan-missing-players:
     runs-on: ubuntu-latest
-    timeout-minutes: 360 # Increased to account for the 2M+ layout indexing threshold
+    timeout-minutes: 360
     permissions:
       contents: write
 
@@ -29,9 +29,7 @@ jobs:
           node-version: '20'
 
       - name: Increase Node.js Memory Allocation Capacity
-        run: |
-          # Prevents the Node.js GC from dropping an OOM crash when holding large file queues
-          echo "NODE_OPTIONS=--max-old-space-size=4096" >> $GITHUB_ENV
+        run: echo "NODE_OPTIONS=--max-old-space-size=4096" >> $GITHUB_ENV
 
       - name: Configure Git Credentials
         run: |
@@ -39,5 +37,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Execute Missing Players Discovery Scan
-        run: |
-          node find-missing-team-players.js --concurrency=${{ github.event.inputs.concurrency }}
+        run: node find-missing-team-players.js --concurrency=${{ github.event.inputs.concurrency }}
