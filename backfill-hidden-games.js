@@ -6,17 +6,17 @@
  * (where discoverGame on the main API returns null).
  *
  * Three outcomes per game:
- *   1. game(id) returns data  → score stored, flag: hidden: true
- *   2. game(id) returns null  → genuinely orphaned, flag: legacy: true
- *   3. game(id) errors        → skip, retry next run
+ * 1. game(id) returns data  → score stored, flag: hidden: true
+ * 2. game(id) returns null  → genuinely orphaned, flag: legacy: true
+ * 3. game(id) errors        → skip, retry next run
  *
  * Reads no-venue-seasons.json to target seasons with missing data.
  * Progress file: backfill-hidden-progress.json
  *
  * Usage:
- *   node backfill-hidden-games.js
- *   node backfill-hidden-games.js --concurrency=100
- *   node backfill-hidden-games.js --season=b81be631
+ * node backfill-hidden-games.js
+ * node backfill-hidden-games.js --concurrency=100
+ * node backfill-hidden-games.js --season=b81be631
  */
 
 'use strict';
@@ -121,7 +121,6 @@ async function getSession(force = false) {
         console.log(`  ✓ Got cookie via ${body.operationName}`);
         break;
       }
-      console.warn(`  ⚠ No cookie from ${body.operationName} (status ${res.status})`);
     }
 
     const rawCookie = res.headers.get('set-cookie');
@@ -155,12 +154,26 @@ async function getSession(force = false) {
   return _refreshPromise;
 }
 
-// ─── GraphQL query for the spectator endpoint ─────────────────────────────────
-// This is the exact "Game" query from the mobile app traffic.
-// It uses integer game IDs (not UUIDs) and hits spectator.playhq.com.
-// Crucially this endpoint does NOT respect the admin "hide game" flag —
-// it returns full data even for hidden games.
+// ─── Deduplicated Session Lock for high-concurrency batches ───────────────────
+let currentCookiePromise = null;
 
+async function safeRefreshSession() {
+  if (currentCookiePromise) return currentCookiePromise;
+
+  currentCookiePromise = (async () => {
+    try {
+      console.log(`\n🔄 [Deduplicated] Fetching a single fresh session cookie for this batch...`);
+      const newSession = await getSession(true); 
+      return newSession;
+    } finally {
+      currentCookiePromise = null; 
+    }
+  })();
+
+  return currentCookiePromise;
+}
+
+// ─── GraphQL query for the spectator endpoint ─────────────────────────────────
 const Q_GAME = `query Game($id: ID!) {
   game(id: $id) {
     id
@@ -237,9 +250,6 @@ const Q_GAME = `query Game($id: ID!) {
 }`;
 
 // ─── discoverGame query — used for review-legacy mode to detect forfeits ─────
-// Forfeited games return null from spectator (no e-scoring) but return
-// full result data from discoverGame including outcome type and description.
-
 const Q_DISCOVER_GAME = `query GameCentre($gameId: ID!) {
   discoverGame(gameID: $gameId) {
     id
@@ -278,16 +288,14 @@ const Q_DISCOVER_GAME = `query GameCentre($gameId: ID!) {
   }
 }`;
 
-let _diagPrinted = 0;
-
-async function fetchGame(gameId, session) {
+async function fetchGame(gameId, cookieString) {
   try {
     const res = await fetch(SPECTATOR_URL, {
       method:  'POST',
       headers: {
         ...HEADERS_SPECTATOR,
         'request-id': crypto.randomUUID(),
-        'Cookie':     session.allCookies,
+        'Cookie':     cookieString,
       },
       body: JSON.stringify({
         operationName: 'Game',
@@ -297,16 +305,12 @@ async function fetchGame(gameId, session) {
     });
 
     if (res.status === 429) {
-      console.error(`\n❌ [429 Rate Limit] Spectator API is throttling. Game ID: ${gameId}`);
       return { _rateLimit: true };
     }
     if (res.status === 401 || res.status === 403) {
-      console.error(`\n❌ [Auth Error ${res.status}] Cloudflare WAF block or expired cookie. Game ID: ${gameId}`);
       return { _authError: true };
     }
     if (!res.ok) {
-      const body = await res.text().catch(() => '');
-      console.warn(`\n⚠ [HTTP ${res.status}] Game ID: ${gameId} | Payload: ${body.slice(0, 150)}`);
       return { _transient: true };
     }
 
@@ -317,15 +321,11 @@ async function fetchGame(gameId, session) {
       if (msg.includes('could not be found') || msg.includes('not electronically scored')) {
         return { _legacy: true };
       }
-      console.warn(`\n⚠ [GraphQL Error] Game ID: ${gameId} | Message: ${msg.slice(0, 150)}`);
       return { _graphqlError: true };
     }
 
     return json;
   } catch (e) {
-    console.warn(`\n❌ [Fetch Exception] Game ID: ${gameId} | Error: ${e.message}`);
-    // Generate a direct public profile game verification fallback URL to look up manually
-    console.warn(`👉 Manual check link: https://www.playhq.com/game/${gameId}`);
     return { _transient: true };
   }
 }
@@ -336,7 +336,6 @@ function parseScore(statistics) {
   return statistics?.find(s => s.type?.value === 'TOTAL_SCORE')?.count ?? null;
 }
 
-// Parse quarter-by-quarter scores into a compact array [q1, q2, q3, q4]
 function parseQuarterScores(periods) {
   if (!periods?.length) return null;
   const order = ['FIRST_QTR', 'SECOND_QTR', 'THIRD_QTR', 'FOURTH_QTR'];
@@ -421,7 +420,7 @@ function gitCommitPush(message) {
   try {
     execSync('git add games/ venue-lookup/ backfill-hidden-progress.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
-    if (!diff) { console.log('\n  (no changes to commit)'); return; }
+    if (!diff) { return; }
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
     execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
     execSync('git push', { stdio: 'pipe' });
@@ -433,7 +432,6 @@ function gitCommitPush(message) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// Helper: call discoverGame on main API (used for review-legacy mode)
 async function fetchDiscoverGame(gameId, session) {
   try {
     const res = await fetch(API_URL, {
@@ -483,13 +481,9 @@ async function main() {
   let session = await getSession();
 
   // ─── Review-legacy mode ───────────────────────────────────────────────────
-  // Re-probes games flagged legacy via discoverGame to detect forfeits.
-  // Forfeited games return null from spectator (no e-scoring) but DO return
-  // full result data from discoverGame, including outcome type and description.
   if (REVIEW_LEGACY) {
     console.log(`\n🔎 Review-legacy mode — re-probing legacy games via discoverGame\n`);
 
-    // Build list of all legacy-flagged games
     const legacyTodo = [];
     const sgCache2 = {};
     for (const season of targetSeasons) {
@@ -516,20 +510,12 @@ async function main() {
         if (resp?._authError) { try { session = await getSession(true); } catch (e) {} return { gameId, seasonId, type: 'skip' }; }
         if (resp?._rateLimit || resp?._transient || resp?._graphqlError) return { gameId, seasonId, type: 'skip' };
         const dg = resp?.data?.discoverGame;
-        if (!dg) return { gameId, seasonId, type: 'stillLegacy' };  // genuinely not found
+        if (!dg) return { gameId, seasonId, type: 'stillLegacy' };
 
         const outcomeVal = dg.result?.outcome?.value || '';
         const isForfeit  = outcomeVal.includes('FORFEIT');
         const hs         = parseScore(dg.result?.home?.statistics);
         const as_        = parseScore(dg.result?.away?.statistics);
-
-        // Build game centre URL from available data
-        const season_ = dg.away?.season || dg.home?.season;
-        const comp    = season_?.competition;
-        const org     = comp?.organisation;
-        const round   = dg.round;
-        // URL needs org slug / comp+season slug / grade slug — not available from discoverGame alone
-        // Store what we have and let HTML tool build URL from stored h/hn/a/an
         const court = dg.allocation?.court;
         const venue = court?.venue;
 
@@ -538,7 +524,7 @@ async function main() {
           hs, as: as_,
           outcome:   outcomeVal,
           outcomeName: dg.result?.outcome?.name || null,
-          fo: dg.result?.winner?.value?.toLowerCase() || null,  // 'home' or 'away'
+          fo: dg.result?.winner?.value?.toLowerCase() || null,
           desc: dg.result?.home?.gameOutcomeDescription || null,
           h:  dg.home?.id   || null, hn: dg.home?.name  || null,
           a:  dg.away?.id   || null, an: dg.away?.name  || null,
@@ -560,7 +546,6 @@ async function main() {
           continue;
         }
 
-        // Clear legacy flag — we found real data
         delete entry.legacy;
         prog.legacy.delete(r.gameId);
 
@@ -573,470 +558,3 @@ async function main() {
 
         if (r.type === 'forfeit') {
           entry.forfeit = true;
-          entry.fo      = r.fo;       // 'HOME' or 'AWAY' winner
-          if (r.desc) entry.desc = r.desc;  // "Team X won by forfeit"
-          forfeits++;
-        } else {
-          // Accessible normal game — store score and venue
-          if (r.hs !== null) entry.hs = r.hs;
-          if (r.as !== null) entry.as = r.as;
-          if (r.venue) {
-            storeVenue(r.venue, r.court);
-            entry.vid = r.venue.id;
-            entry.vn  = r.venue.name;
-          }
-          if (r.court?.name) entry.ct = r.court.name;
-          if (r.time)        entry.t  = r.time;
-          accessible++;
-        }
-
-        sg.games[r.gameId] = entry;
-        prog.done.add(r.gameId);
-        legacySinceLastSave++;
-      }
-
-      if (legacySinceLastSave >= 5000) {
-        for (const [sid, sg] of Object.entries(sgCache2)) {
-          fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
-        }
-        flushVenueShards();
-        saveProgress(prog);
-        legacySinceLastSave = 0;
-        gitCommitPush(`Legacy review: ${forfeits} forfeits, ${accessible} accessible, ${stillLegacy} still legacy`);
-      }
-
-      const done = Math.min(i + CONCURRENCY, legacyTodo.length);
-      process.stdout.write(`  ${done.toLocaleString()}/${legacyTodo.length.toLocaleString()} — 🏳 ${forfeits} forfeits, ✓ ${accessible} accessible, 📜 ${stillLegacy} still legacy, ✗ ${legacyFailed} failed\r`);
-      if (i + CONCURRENCY < legacyTodo.length) await delay(50);
-    }
-
-    // Final flush
-    for (const [sid, sg] of Object.entries(sgCache2)) {
-      fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
-    }
-    flushVenueShards();
-    saveProgress(prog);
-
-    console.log(`\n\n✅ Legacy review complete`);
-    console.log(`   🏳 Forfeits identified:  ${forfeits.toLocaleString()}`);
-    console.log(`   ✓  Now accessible:       ${accessible.toLocaleString()}`);
-    console.log(`   📜 Still legacy:          ${stillLegacy.toLocaleString()}`);
-    console.log(`   ✗  Failed/skipped:        ${legacyFailed.toLocaleString()}`);
-
-    gitCommitPush(`Legacy review complete: ${forfeits} forfeits, ${accessible} accessible`);
-    return;
-  }
-
-	// ─── ADD THIS HOISTED LOCK VARIABLE AND FUNCTION HERE ───────────────────
-	let currentCookiePromise = null;
-
-	async function safeRefreshSession() {
-	  if (currentCookiePromise) return currentCookiePromise;
-
-	  currentCookiePromise = (async () => {
-		try {
-		  console.log(`\n🔄 [Deduplicated] Fetching a single fresh session cookie for this batch...`);
-		  // Calls your existing getSession logic exactly once for the whole batch
-		  const newSession = await getSession(true); 
-		  return newSession;
-		} finally {
-		  currentCookiePromise = null; 
-		}
-	  })();
-
-	  return currentCookiePromise;
-	}
-
-  // ─── Review-unscored mode ─────────────────────────────────────────────────
-  // Probes ALL games with no score and no flag via discoverGame.
-  // Catches forfeits and other games missed by the legacy review.
-  // These games are accessible via discoverGame but returned no score from
-  // the spectator endpoint (not e-scored).
-  if (REVIEW_UNSCORED) {
-    console.log(`\n🔎 Review-unscored mode — probing all unscored unflagged games via discoverGame\n`);
-
-    // Use full season index — not just no-venue-seasons — since forfeits can be in any season
-    const INDEX_FILE = path.join(__dirname, 'sports-index.json');
-    const allSeasons = fs.existsSync(INDEX_FILE)
-      ? Object.keys(JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8')).seasons || {}).map(id => ({ id }))
-      : targetSeasons;
-    const reviewSeasons = TARGET_SEASON ? [{ id: TARGET_SEASON }] : allSeasons;
-
-    // Build todo2 WITHOUT loading game files into memory — just collect IDs.
-    // We load each season file on demand during processing to avoid OOM on 584 seasons.
-    const todo2    = [];
-
-    for (const season of reviewSeasons) {
-      const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
-      if (!fs.existsSync(gameFile)) continue;
-      let sg;
-      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
-      for (const [gameId, game] of Object.entries(sg.games || {})) {
-        if (game.hidden)  continue;
-        if (game.legacy)  continue;
-        if (game.forfeit) continue;
-        if (typeof game.hs === 'number') continue;
-        if (game.hs === null) continue;
-        if (prog.done.has(gameId)) continue;  // already processed — skip on resume
-        todo2.push({ seasonId: season.id, gameId });
-      }
-      // Don't cache sg — free it immediately after scanning
-    }
-
-    console.log(`📋 Unscored unflagged games to probe: ${todo2.length.toLocaleString()}\n`);
-
-    let forfeits2 = 0, scored2 = 0, hidden2 = 0, nowLegacy2 = 0, failed2 = 0, sinceLastSave2 = 0;
-
-    // Process season-by-season to keep memory bounded.
-    // Group todo2 by seasonId so we load each file once per pass.
-    const bySeason2 = new Map();
-    for (const item of todo2) {
-      if (!bySeason2.has(item.seasonId)) bySeason2.set(item.seasonId, []);
-      bySeason2.get(item.seasonId).push(item.gameId);
-    }
-
-    let totalDone2 = 0;
-    const total2   = todo2.length;
-
-    for (const [seasonId, gameIds] of bySeason2) {
-      const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
-      if (!fs.existsSync(gameFile)) { totalDone2 += gameIds.length; continue; }
-      let sg;
-      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { totalDone2 += gameIds.length; continue; }
-
-      let seasonDirty = false;
-
-      for (let i = 0; i < gameIds.length; i += CONCURRENCY) {
-        const batch = gameIds.slice(i, i + CONCURRENCY).map(gameId => ({ seasonId, gameId }));
-      // --- REPLACE FROM HERE ---
-      const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
-        // Safe micro-stagger: delay each request within the batch to mimic human traffic
-        await delay(j * 40);
-
-        let attempts = 0;
-        while (attempts < 3) {
-          const resp = await fetchGame(gameId, session);
-
-          // If we hit an Auth 403 or Rate Limit, back off and refresh session tokens
-          if (resp?._authError || resp?._rateLimit) {
-            attempts++;
-            const backoffTime = attempts * 2000;
-            console.warn(`\n  ⚠️ WAF block/Rate limit on game ${gameId}. Sleeping ${backoffTime}ms (Attempt ${attempts}/3)...`);
-            await delay(backoffTime);
-
-            try {
-              // Force a fresh cookie fetch bypass
-              session = await safeRefreshSession();
-            } catch (e) {
-              console.error(`  ❌ Failed to refresh cookie: ${e.message}`);
-            }
-            continue; // Loop back and try this game ID again
-          }
-
-          // If it's a structural GraphQL error or a transient network drop, skip it
-          if (resp?._transient || resp?._graphqlError) {
-            return { gameId, seasonId, type: 'skip' };
-          }
-
-          // If it's a clean legacy result or successful data, return it immediately
-          if (resp?._legacy) return { gameId, seasonId, type: 'legacy' };
-          
-          const dg = resp?.data?.discoverGame;
-          if (!dg) {
-            // discoverGame returned null — try spectator endpoint before flagging legacy
-            const geResp = await fetchGame(gameId, session);
-            if (geResp?._legacy) return { gameId, seasonId, type: 'legacy' };
-            if (geResp?._authError || geResp?._rateLimit || geResp?._transient || geResp?._graphqlError) {
-              return { gameId, seasonId, type: 'skip' };
-            }
-            const ge = geResp?.data?.game;
-            if (ge) {
-              const hs  = parseScore(ge.result?.home?.statistics);
-              const as_ = parseScore(ge.result?.away?.statistics);
-              return { gameId, seasonId, type: 'hidden', hs, as: as_, st: ge.status };
-            }
-            return { gameId, seasonId, type: 'legacy' };
-          }
-
-          const outcomeVal = dg.result?.outcome?.value || '';
-          const hs         = parseScore(dg.result?.home?.statistics);
-          const as_        = parseScore(dg.result?.away?.statistics);
-          const court      = dg.allocation?.court;
-          const venue      = court?.venue;
-          const isForfeit  = outcomeVal.includes('FORFEIT');
-
-          return {
-            gameId, seasonId,
-            type:        isForfeit ? 'forfeit' : 'scored',
-            hs, as: as_,
-            outcome:     outcomeVal,
-            fo:          dg.result?.winner?.value || null,
-            desc:        dg.result?.home?.gameOutcomeDescription || null,
-            h:           dg.home?.id   || null, hn: dg.home?.name  || null,
-            a:           dg.away?.id   || null, an: dg.away?.name  || null,
-            rn:          dg.round?.name || null,
-            st:          dg.status?.value || null,
-            venue, court,
-            time:        dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null,
-          };
-        }
-
-        // If all 3 retry attempts failed due to persistent blocks
-        return { gameId, seasonId, type: 'skip' };
-      }));
-      // --- END OF REPLACEMENT ---
-
-      for (const r of results) {
-        if (r.type === 'skip') { failed2++; continue; }
-        const entry = sg.games[r.gameId] || {};
-
-        if (r.type === 'legacy') {
-          entry.legacy = true;
-          prog.legacy.add(r.gameId);
-          nowLegacy2++;
-        } else {
-          if (r.h)  entry.h  = r.h;
-          if (r.hn) entry.hn = r.hn;
-          if (r.a)  entry.a  = r.a;
-          if (r.an) entry.an = r.an;
-          if (r.rn && !entry.rn) entry.rn = r.rn;
-          if (r.st) entry.st = r.st;
-
-          if (r.type === 'forfeit') {
-            entry.forfeit = true;
-            entry.fo      = r.fo;
-            if (r.desc) entry.desc = r.desc;
-            forfeits2++;
-          } else if (r.type === 'hidden') {
-            entry.hidden = true;
-            if (r.hs !== null) entry.hs = r.hs;
-            if (r.as !== null) entry.as = r.as;
-            hidden2++;
-            scored2++;
-          } else {
-            const terminalStatus = ['FINAL', 'PENDING', 'POSTPONED', 'CANCELLED', 'BYE'];
-            if (terminalStatus.includes(r.st)) {
-              entry.hs = r.hs !== null ? r.hs : null;
-              entry.as = r.as !== null ? r.as : null;
-            } else if (r.hs !== null) {
-              entry.hs = r.hs;
-              entry.as = r.as;
-            }
-            if (r.venue) { storeVenue(r.venue, r.court); entry.vid = r.venue.id; entry.vn = r.venue.name; }
-            if (r.court?.name) entry.ct = r.court.name;
-            if (r.time)        entry.t  = r.time;
-            scored2++;
-          }
-          prog.done.add(r.gameId);
-        }
-
-        sg.games[r.gameId] = entry;
-        seasonDirty = true;
-        sinceLastSave2++;
-        totalDone2++;
-      }
-
-      // Flush and commit every 1000 games — much more frequent to survive OOM kills
-      if (sinceLastSave2 >= 1000) {
-        if (seasonDirty) {
-          fs.writeFileSync(gameFile, JSON.stringify(sg));
-          seasonDirty = false;
-        }
-        flushVenueShards();
-        saveProgress(prog);
-        sinceLastSave2 = 0;
-        gitCommitPush(`Unscored review: ${forfeits2} forfeits, ${scored2} scored, ${nowLegacy2} legacy`);
-      }
-
-      process.stdout.write(`  ${totalDone2.toLocaleString()}/${total2.toLocaleString()} — 🏳 ${forfeits2} forfeits, 🔒 ${hidden2} hidden, ✓ ${scored2 - hidden2} scored, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
-      if (i + CONCURRENCY < gameIds.length) await delay(50);
-    }
-
-    // Flush this season's file after processing all its games
-    if (seasonDirty) {
-      fs.writeFileSync(gameFile, JSON.stringify(sg));
-    }
-    flushVenueShards();
-    saveProgress(prog);
-    // sg goes out of scope here — GC can reclaim it before the next season loads
-  } // end for season loop
-
-    console.log(`\n\n✅ Unscored review complete`);
-    console.log(`   🏳 Forfeits:   ${forfeits2.toLocaleString()}`);
-    console.log(`   ✓  Scored:     ${scored2.toLocaleString()}`);
-    console.log(`   📜 Legacy:     ${nowLegacy2.toLocaleString()}`);
-    console.log(`   ✗  Failed:     ${failed2.toLocaleString()}`);
-
-    gitCommitPush(`Unscored review complete: ${forfeits2} forfeits, ${scored2} scored, ${nowLegacy2} legacy`);
-    return;
-  }
-
-  // Collect all game IDs that need probing:
-  // - no score (hs undefined)
-  // - not already flagged as hidden or legacy
-  // - not already in progress file
-  const todo    = [];
-  const sgCache = {};
-
-  for (const season of targetSeasons) {
-    const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
-    if (!fs.existsSync(gameFile)) continue;
-    let sg;
-    try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
-    sgCache[season.id] = sg;
-
-    for (const [gameId, game] of Object.entries(sg.games || {})) {
-      if (game.hs !== undefined)    continue;  // already has score
-      if (game.hidden)              continue;  // already flagged hidden
-      if (game.legacy)              continue;  // already flagged legacy
-      if (prog.done.has(gameId))    continue;  // already processed this run
-      todo.push({ seasonId: season.id, gameId });
-    }
-  }
-
-  console.log(`📋 Games to probe: ${todo.length.toLocaleString()}\n`);
-
-  if (todo.length === 0) {
-    console.log('✅ Nothing to do — all games already have scores or flags');
-    return;
-  }
-
-  let hidden = 0, legacy = 0, failed = 0, sinceLastSave = 0;
-
-  for (let i = 0; i < todo.length; i += CONCURRENCY) {
-    const batch = todo.slice(i, i + CONCURRENCY);
-
-    function buildResult(gameId, seasonId, game) {
-    const hs  = parseScore(game.result?.home?.statistics);
-    const as_ = parseScore(game.result?.away?.statistics);
-    const hq  = parseQuarterScores(game.result?.home?.periods);
-    const aq  = parseQuarterScores(game.result?.away?.periods);
-    const homePlayers = (game.statistics?.home?.players || []).map(p => ({
-      profileID: p.profileID, name: p.name, number: p.playerNumber,
-      pts:   parseScore(p.statistics),
-      pt1:   p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
-      pt2:   p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
-      pt3:   p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
-      fouls: p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
-    }));
-    const awayPlayers = (game.statistics?.away?.players || []).map(p => ({
-      profileID: p.profileID, name: p.name, number: p.playerNumber,
-      pts:   parseScore(p.statistics),
-      pt1:   p.statistics?.find(s => s.type?.value === '1_POINT_SCORE')?.count ?? 0,
-      pt2:   p.statistics?.find(s => s.type?.value === '2_POINT_SCORE')?.count ?? 0,
-      pt3:   p.statistics?.find(s => s.type?.value === '3_POINT_SCORE')?.count ?? 0,
-      fouls: p.statistics?.find(s => s.type?.value === 'TOTAL_FOULS')?.count ?? 0,
-    }));
-    return { gameId, seasonId, outcome: 'hidden', hs, as: as_, hq, aq, homePlayers, awayPlayers, status: game.status, updatedAt: game.updatedAt };
-  }
-
-  const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
-      // Small stagger to avoid thundering herd
-      await delay(j * 5);
-
-      const resp = await fetchGame(gameId, session);
-
-      // Permanently no data — not e-scored
-      if (resp?._legacy) return { gameId, seasonId, outcome: 'legacy' };
-
-      // Handle auth failure — force a fresh cookie fetch (not cached) then retry once
-      if (resp?._authError) {
-        try { session = await getSession(true); } catch (e) {
-          return { gameId, seasonId, outcome: 'skip' };
-        }
-        // Retry the request once with the new cookie
-        const retry = await fetchGame(gameId, session);
-        if (retry?._authError || retry?._rateLimit || retry?._transient || retry?._graphqlError) {
-          return { gameId, seasonId, outcome: 'skip' };
-        }
-        const retryGame = retry?.data?.game;
-        if (retryGame) {
-          return buildResult(gameId, seasonId, retryGame);
-        }
-        return { gameId, seasonId, outcome: 'legacy' };
-      }
-
-      // Rate limit or transient error — skip for retry
-      if (resp?._rateLimit || resp?._transient || resp?._graphqlError) {
-        return { gameId, seasonId, outcome: 'skip' };
-      }
-
-      const game = resp?.data?.game;
-
-      if (game) {
-        return buildResult(gameId, seasonId, game);
-      }
-
-      // game(id) returned null — genuinely no data anywhere
-      return { gameId, seasonId, outcome: 'legacy' };
-    }));
-
-    // Apply results to in-memory cache
-    for (const r of results) {
-      if (r.outcome === 'skip') { failed++; continue; }
-
-      const sg    = sgCache[r.seasonId];
-      if (!sg) continue;
-      const entry = sg.games[r.gameId] || {};
-
-      if (r.outcome === 'hidden') {
-        if (r.hs !== null) entry.hs = r.hs;
-        if (r.as !== null) entry.as = r.as;
-        if (r.hq)          entry.hq = r.hq;   // home quarter scores
-        if (r.aq)          entry.aq = r.aq;   // away quarter scores
-        if (r.homePlayers?.length) entry.hp = r.homePlayers;
-        if (r.awayPlayers?.length) entry.ap = r.awayPlayers;
-        if (r.updatedAt)   entry.updatedAt = r.updatedAt;
-        entry.hidden = true;
-        hidden++;
-      } else if (r.outcome === 'legacy') {
-        entry.legacy = true;
-        prog.legacy.add(r.gameId);
-        legacy++;
-      }
-
-      sg.games[r.gameId] = entry;
-      prog.done.add(r.gameId);
-      sinceLastSave++;
-    }
-
-    // Flush to disk every 5000 games processed
-    if (sinceLastSave >= 5000) {
-      for (const [sid, sg] of Object.entries(sgCache)) {
-        fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
-      }
-      flushVenueShards();
-      saveProgress(prog);
-      sinceLastSave = 0;
-      console.log(`\n  💾 Committing...`);
-      gitCommitPush(`Hidden game backfill: ${hidden} hidden, ${legacy} legacy`);
-    }
-
-    const done = Math.min(i + CONCURRENCY, todo.length);
-    process.stdout.write(
-      `  ${done.toLocaleString()}/${todo.length.toLocaleString()}` +
-      ` (${((done / todo.length) * 100).toFixed(1)}%)` +
-      ` — 🔒 ${hidden} hidden, 📜 ${legacy} legacy, ✗ ${failed} failed\r`
-    );
-
-    // Brief pause between batches to be kind to the server
-    if (i + CONCURRENCY < todo.length) await delay(100);
-  }
-
-  // Final flush
-  for (const [sid, sg] of Object.entries(sgCache)) {
-    fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
-  }
-  flushVenueShards();
-  saveProgress(prog);
-
-  console.log(`\n\n✅ Backfill complete`);
-  console.log(`   🔒 Hidden (scored via spectator): ${hidden.toLocaleString()}`);
-  console.log(`   📜 Legacy (no data anywhere):     ${legacy.toLocaleString()}`);
-  console.log(`   ✗  Failed/skipped:               ${failed.toLocaleString()}`);
-  console.log(`   Total probed:                     ${todo.length.toLocaleString()}`);
-
-  gitCommitPush(`Hidden game backfill complete: ${hidden} hidden, ${legacy} legacy`);
-}
-
-main().catch(e => { console.error(`\n❌ Fatal: ${e.message}`); process.exit(1); });
