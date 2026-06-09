@@ -8,7 +8,6 @@ const path = require('path');
 const crypto = require('crypto');
 const { execSync } = require('child_process');
 
-// Parse execution flags cleanly: --concurrency=32 --seasonId=1234abcd
 const ARGS = Object.fromEntries(
   process.argv.slice(2)
     .filter(a => a.startsWith('--'))
@@ -128,6 +127,9 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
     return;
   }
 
+  // ─── INITIALIZE FIELD RECOVERY COUNTERS ───
+  const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, totalGamesImpacted: new Set() };
+
   const fixtureQuery = "query TeamFixture($teamID: ID!) { discoverTeamFixture(teamID: $teamID) { name fixture { games { id status home { ... on DiscoverTeam { id name organisation { name } } } away { ... on DiscoverTeam { id name } } result { home { statistics { count type { value } } } away { ... } } allocation { dateTimeList { date time } court { id name venue { id name } } } grade { name season { name competition { name } } } } } } }";
 
   let index = 0;
@@ -145,24 +147,31 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
             
             if (seasonFileContents.games && seasonFileContents.games[gid]) {
               const localGame = seasonFileContents.games[gid];
+              let gameWasUpdated = false;
               
-              if (!localGame.rn && roundName) localGame.rn = roundName;
-              if (!localGame.st && apiGame.status?.value) localGame.st = apiGame.status.value;
+              if (!localGame.rn && roundName) { localGame.rn = roundName; deltas.rounds++; gameWasUpdated = true; }
+              if (!localGame.st && apiGame.status?.value) { localGame.st = apiGame.status.value; gameWasUpdated = true; }
               
-              if (apiGame.home?.id) { localGame.h = apiGame.home.id; localGame.hn = apiGame.home.name; }
-              if (apiGame.away?.id) { localGame.a = apiGame.away.id; localGame.an = apiGame.away.name; }
+              if (apiGame.home?.id && (!localGame.h || !localGame.hn)) { 
+                localGame.h = apiGame.home.id; localGame.hn = apiGame.home.name; 
+                deltas.teams++; gameWasUpdated = true; 
+              }
+              if (apiGame.away?.id && (!localGame.a || !localGame.an)) { 
+                localGame.a = apiGame.away.id; localGame.an = apiGame.away.name; 
+                deltas.teams++; gameWasUpdated = true; 
+              }
 
               const alloc = apiGame.allocation;
               if (alloc) {
                 if (alloc.dateTimeList && alloc.dateTimeList[0]) {
-                  if (!localGame.d) localGame.d = alloc.dateTimeList[0].date.slice(0, 10);
-                  if (!localGame.t) localGame.t = alloc.dateTimeList[0].time.slice(0, 5);
+                  if (!localGame.d) { localGame.d = alloc.dateTimeList[0].date.slice(0, 10); gameWasUpdated = true; }
+                  if (!localGame.t) { localGame.t = alloc.dateTimeList[0].time.slice(0, 5); deltas.venues++; gameWasUpdated = true; }
                 }
                 if (alloc.court) {
-                  if (!localGame.ct) localGame.ct = alloc.court.name;
+                  if (!localGame.ct) { localGame.ct = alloc.court.name; deltas.venues++; gameWasUpdated = true; }
                   if (alloc.court.venue) {
-                    if (!localGame.vid) localGame.vid = alloc.court.venue.id;
-                    if (!localGame.vn) localGame.vn = alloc.court.venue.name;
+                    if (!localGame.vid) { localGame.vid = alloc.court.venue.id; gameWasUpdated = true; }
+                    if (!localGame.vn) { localGame.vn = alloc.court.venue.name; deltas.venues++; gameWasUpdated = true; }
                   }
                 }
               }
@@ -175,6 +184,12 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
                   apiGame.grade.season.name,
                   apiGame.grade.name
                 );
+                deltas.urls++;
+                gameWasUpdated = true;
+              }
+
+              if (gameWasUpdated) {
+                deltas.totalGamesImpacted.add(gid);
               }
             }
           }
@@ -186,6 +201,17 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
   const pool = Array(CONCURRENCY).fill(null).map(taskWorker);
   await Promise.all(pool);
 
+  // ─── PRINT RECOVERY METRICS SUMMARY MATRIX ───
+  console.log("   -------------------------------------------------------------");
+  console.log("   📉 Backfill Delta Metrics Summary:");
+  console.log("   -------------------------------------------------------------");
+  console.log("   Total Matches Restructured: " + deltas.totalGamesImpacted.size.toLocaleString());
+  console.log("   [url] Match URLs Discovered: " + deltas.urls.toLocaleString());
+  console.log("   [rn]  Round Names Patched:   " + deltas.rounds.toLocaleString());
+  console.log("   [h/a] Team Elements Unified: " + deltas.teams.toLocaleString());
+  console.log("   [loc] Venue Gaps Repaired:   " + deltas.venues.toLocaleString());
+  console.log("   -------------------------------------------------------------");
+
   // Write files out to current state layout immediately
   fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
   
@@ -195,7 +221,6 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
   
   console.log("   ✓ Saved changes. Remaining backlog size: " + Object.keys(reportData.report).length);
 
-  // Git Save-Point Execution Line
   try {
     execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
     const diffCheck = execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim();
@@ -221,12 +246,10 @@ async function runBackfill() {
   const sessionToken = await getSessionCookie();
 
   if (TARGET_SEASON_ID) {
-    // Isolated Test Execution Route
     console.log("🎯 Running isolated test mode for season: " + TARGET_SEASON_ID);
     const seasonMeta = reportData.report[TARGET_SEASON_ID] || {};
     await processSingleSeason(TARGET_SEASON_ID, seasonMeta, sessionToken, reportData);
   } else {
-    // Backlog Backfill Iteration Route
     let seasonsWithGaps = Object.keys(reportData.report || {});
     console.log("📚 Running full backlog cycle mode. Initial size: " + seasonsWithGaps.length);
     
@@ -236,7 +259,6 @@ async function runBackfill() {
       
       await processSingleSeason(nextSeasonId, seasonMeta, sessionToken, reportData);
       
-      // Refresh local array state from file modification context loops
       const refreshedReport = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
       seasonsWithGaps = Object.keys(refreshedReport.report || {});
     }

@@ -47,7 +47,6 @@ const fieldTally = {
   hq: 0, aq: 0, hp: 0, ap: 0
 };
 
-// Descriptive label configuration schema map
 const fieldLabels = {
   d:   "   [d]   Date Populated:            ",
   rn:  "   [rn]  Round Name Populated:      ",
@@ -86,40 +85,45 @@ async function processSeasonFile(file) {
       const gapFields = {};
       let hasMainGap = false;
 
+      // 1. Core Metadata Key Verifications
       for (const field of MANDATORY_CORE) {
         const val = game[field];
         if (val !== undefined && val !== null && val !== '') {
           fieldTally[field]++;
         } else {
-          gapFields[field] = null;
+          // Optimized: Use 0 instead of null to flag the missing key while saving bytes
+          gapFields[field] = 0;
           hasMainGap = true;
         }
       }
 
+      // 2. Segregated Venue Key Verifications
       for (const field of MANDATORY_VENUE) {
         const val = game[field];
         if (val !== undefined && val !== null && val !== '') {
           fieldTally[field]++;
         } else {
-          gapFields[field] = null;
+          gapFields[field] = 0;
           hasMainGap = true;
         }
       }
 
+      // 3. Main Scores Key Verifications
       if (typeof game.hs === 'number') {
         fieldTally['hs']++;
       } else {
-        gapFields['hs'] = null;
+        gapFields['hs'] = 0;
         hasMainGap = true;
       }
 
       if (typeof game.as === 'number') {
         fieldTally['as']++;
       } else {
-        gapFields['as'] = null;
+        gapFields['as'] = 0;
         hasMainGap = true;
       }
 
+      // 4. Quarter Scores Check
       const hasHq = Array.isArray(game.hq) && game.hq.length > 0;
       const hasAq = Array.isArray(game.aq) && game.aq.length > 0;
       if (hasHq) fieldTally['hq']++;
@@ -128,6 +132,7 @@ async function processSeasonFile(file) {
         globalMissingQuarterScores.push(gameId);
       }
 
+      // 5. Player Box Scores Check
       const hasHp = Array.isArray(game.hp) && game.hp.length > 0;
       const hasAp = Array.isArray(game.ap) && game.ap.length > 0;
       if (hasHp) fieldTally['hp']++;
@@ -259,10 +264,10 @@ async function runPool() {
     execSync('git add missing-game-data.json missing-box-scores.json missing-quarter-scores.json', { stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (diff) {
-      execSync('git commit -m "Audit deep loop pass: Detailed key-by-key data gaps tracked"', { stdio: 'pipe' });
+      execSync('git commit -m "Audit pass: Missing keys optimized using short numeric flags"', { stdio: 'pipe' });
       execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
-      console.log('   ✓ Granular field matrix reports updated and pushed.');
+      console.log('   ✓ Optimized tracking manifest successfully pushed.');
     }
   } catch (e) {
     console.warn("   Local git tracking warning: " + e.message);
