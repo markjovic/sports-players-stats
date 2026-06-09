@@ -1,0 +1,43 @@
+# .github/workflows/find-missing-players.yml
+name: Find Missing Team Players
+
+on:
+  workflow_dispatch:
+    inputs:
+      concurrency:
+        description: 'Parallel Asynchronous Storage Workers'
+        required: false
+        default: '128' # Bumped for high throughput execution on 2M+ flat shards
+        type: string
+
+jobs:
+  scan-missing-players:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # Increased to account for the 2M+ layout indexing threshold
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Increase Node.js Memory Allocation Capacity
+        run: |
+          # Prevents the Node.js GC from dropping an OOM crash when holding large file queues
+          echo "NODE_OPTIONS=--max-old-space-size=4096" >> $GITHUB_ENV
+
+      - name: Configure Git Credentials
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Execute Missing Players Discovery Scan
+        run: |
+          node find-missing-team-players.js --concurrency=${{ github.event.inputs.concurrency }}
