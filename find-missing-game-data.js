@@ -174,24 +174,54 @@ async function runPool() {
   console.log("   Total Completed Games Evaluated: " + totalEligibleGames.toLocaleString());
   console.log("================================================================");
   
-  console.log("\n   📦 Core Details Individual Field Breakdown:");
+  console.log("\n   📊 Field-by-Field Completeness Metrics:");
   console.log("   -------------------------------------------------------------");
-  console.log("   [d]   Date Populated:            " + fieldTally.d.toLocaleString() + " matches (" + calcPct(fieldTally.d) + "%)");
-  console.log("   [rn]  Round Name Populated:      " + fieldTally.rn.toLocaleString() + " matches (" + calcPct(fieldTally.rn) + "%)");
-  console.log("   [st]  Game Status Populated:     " + fieldTally.st.toLocaleString() + " matches (" + calcPct(fieldTally.st) + "%)");
-  console.log("   [url] Match URL Populated:        " + fieldTally.url.toLocaleString() + " matches (" + calcPct(fieldTally.url) + "%)");
-  console.log("   [h]   Home Team ID Populated:    " + fieldTally.h.toLocaleString() + " matches (" + calcPct(fieldTally.h) + "%)");
-  console.log("   [hn]  Home Team Name Populated:  " + fieldTally.hn.toLocaleString() + " matches (" + calcPct(fieldTally.hn) + "%)");
-  console.log("   [a]   Away Team ID Populated:    " + fieldTally.a.toLocaleString() + " matches (" + calcPct(fieldTally.a) + "%)");
-  console.log("   [an]  Away Team Name Populated:  " + fieldTally.an.toLocaleString() + " matches (" + calcPct(fieldTally.an) + "%)");
+  
+  // Clean looping iterator prevents manual quote/parenthesis character matching flaws
+  for (const key of Object.keys(fieldTally)) {
+    const totalCount = fieldTally[key];
+    const percentage = calcPct(totalCount);
+    console.log("   Field [" + key + "]: " + totalCount.toLocaleString() + " matches (" + percentage + "%)");
+  }
+  
+  console.log("================================================================");
+  console.log("   Anomalous rows in core report:   " + totalGamesWithGaps.toLocaleString() + "\n");
 
-  console.log("\n   📍 Venue Info Individual Field Breakdown:");
-  console.log("   -------------------------------------------------------------");
-  console.log("   [vid] Venue ID Populated:        " + fieldTally.vid.toLocaleString() + " matches (" + calcPct(fieldTally.vid) + "%)");
-  console.log("   [vn]  Venue Name Populated:      " + fieldTally.vn.toLocaleString() + " matches (" + calcPct(fieldTally.vn) + "%)");
-  console.log("   [ct]  Court Label Populated:     " + fieldTally.ct.toLocaleString() + " matches (" + calcPct(fieldTally.ct) + "%)");
-  console.log("   [t]   Time Label Populated:      " + fieldTally.t.toLocaleString() + " matches (" + calcPct(fieldTally.t) + "%)");
+  const mainPayload = {
+    generatedAt: new Date().toISOString(),
+    totalSeasonsAudited: seasonFiles.length,
+    totalGamesWithCoreOrVenueGaps: totalGamesWithGaps,
+    fieldCompletenessMatrix: {
+      totalGamesScanned: totalEligibleGames,
+      tallies: fieldTally,
+      percentages: {
+        d: calcPct(fieldTally.d), rn: calcPct(fieldTally.rn), st: calcPct(fieldTally.st), url: calcPct(fieldTally.url),
+        h: calcPct(fieldTally.h), hn: calcPct(fieldTally.hn), a: calcPct(fieldTally.a), an: calcPct(fieldTally.an),
+        vid: calcPct(fieldTally.vid), vn: calcPct(fieldTally.vn), ct: calcPct(fieldTally.ct), t: calcPct(fieldTally.t),
+        hs: calcPct(fieldTally.hs), as: calcPct(fieldTally.as),
+        hq: calcPct(fieldTally.hq), aq: calcPct(fieldTally.aq),
+        hp: calcPct(fieldTally.hp), ap: calcPct(fieldTally.ap)
+      }
+    },
+    report: mainMissingReport
+  };
 
-  console.log("\n   🔢 Main Scores Individual Field Breakdown:");
-  console.log("   -------------------------------------------------------------");
-  console.log("   [hs]  Home Score Populated:      " + fieldTally.hs.toLocaleString()
+  fs.writeFileSync(BOX_OUT, JSON.stringify(globalMissingBoxScores));
+  fs.writeFileSync(QUARTER_OUT, JSON.stringify(globalMissingQuarterScores));
+  fs.writeFileSync(MAIN_OUT, JSON.stringify(mainPayload));
+
+  try {
+    execSync('git add missing-game-data.json missing-box-scores.json missing-quarter-scores.json', { stdio: 'pipe' });
+    const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
+    if (diff) {
+      execSync('git commit -m "Audit deep loop pass: Detailed key-by-key data gaps tracked"', { stdio: 'pipe' });
+      execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
+      execSync('git push', { stdio: 'pipe' });
+      console.log('   ✓ Granular field matrix reports updated and pushed.');
+    }
+  } catch (e) {
+    console.warn("   Local git tracking warning: " + e.message);
+  }
+}
+
+runPool().catch(e => { console.error("\n❌ Fatal operational crash: " + e.message); process.exit(1); });
