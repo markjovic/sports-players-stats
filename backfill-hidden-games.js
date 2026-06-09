@@ -688,55 +688,83 @@ async function main() {
 
       for (let i = 0; i < gameIds.length; i += CONCURRENCY) {
         const batch = gameIds.slice(i, i + CONCURRENCY).map(gameId => ({ seasonId, gameId }));
+      // --- REPLACE FROM HERE ---
       const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
-        await delay(j * 3);
-        const resp = await fetchDiscoverGame(gameId, session);
-        if (resp?._authError) { try { session = await getSession(true); } catch (e) {} return { gameId, seasonId, type: 'skip' }; }
-        if (resp?._rateLimit || resp?._transient || resp?._graphqlError) return { gameId, seasonId, type: 'skip' };
-        const dg = resp?.data?.discoverGame;
-        if (!dg) {
-          // discoverGame returned null — try spectator endpoint before flagging legacy
-          const geResp = await fetchGame(gameId, session);
-          if (geResp?._legacy) return { gameId, seasonId, type: 'legacy' };
-          if (geResp?._authError || geResp?._rateLimit || geResp?._transient || geResp?._graphqlError) return { gameId, seasonId, type: 'skip' };
-          const ge = geResp?.data?.game;
-          if (ge) {
-            // Hidden game — score available via spectator
-            const hs  = parseScore(ge.result?.home?.statistics);
-            const as_ = parseScore(ge.result?.away?.statistics);
-            return { gameId, seasonId, type: 'hidden', hs, as: as_, st: ge.status };
+        // Safe micro-stagger: delay each request within the batch to mimic human traffic
+        await delay(j * 40);
+
+        let attempts = 0;
+        while (attempts < 3) {
+          const resp = await fetchGame(gameId, session);
+
+          // If we hit an Auth 403 or Rate Limit, back off and refresh session tokens
+          if (resp?._authError || resp?._rateLimit) {
+            attempts++;
+            const backoffTime = attempts * 2000;
+            console.warn(`\n  ⚠️ WAF block/Rate limit on game ${gameId}. Sleeping ${backoffTime}ms (Attempt ${attempts}/3)...`);
+            await delay(backoffTime);
+
+            try {
+              // Force a fresh cookie fetch bypass
+              session = await getSession(true); 
+            } catch (e) {
+              console.error(`  ❌ Failed to refresh cookie: ${e.message}`);
+            }
+            continue; // Loop back and try this game ID again
           }
-          return { gameId, seasonId, type: 'legacy' };
+
+          // If it's a structural GraphQL error or a transient network drop, skip it
+          if (resp?._transient || resp?._graphqlError) {
+            return { gameId, seasonId, type: 'skip' };
+          }
+
+          // If it's a clean legacy result or successful data, return it immediately
+          if (resp?._legacy) return { gameId, seasonId, type: 'legacy' };
+          
+          const dg = resp?.data?.discoverGame;
+          if (!dg) {
+            // discoverGame returned null — try spectator endpoint before flagging legacy
+            const geResp = await fetchGame(gameId, session);
+            if (geResp?._legacy) return { gameId, seasonId, type: 'legacy' };
+            if (geResp?._authError || geResp?._rateLimit || geResp?._transient || geResp?._graphqlError) {
+              return { gameId, seasonId, type: 'skip' };
+            }
+            const ge = geResp?.data?.game;
+            if (ge) {
+              const hs  = parseScore(ge.result?.home?.statistics);
+              const as_ = parseScore(ge.result?.away?.statistics);
+              return { gameId, seasonId, type: 'hidden', hs, as: as_, st: ge.status };
+            }
+            return { gameId, seasonId, type: 'legacy' };
+          }
+
+          const outcomeVal = dg.result?.outcome?.value || '';
+          const hs         = parseScore(dg.result?.home?.statistics);
+          const as_        = parseScore(dg.result?.away?.statistics);
+          const court      = dg.allocation?.court;
+          const venue      = court?.venue;
+          const isForfeit  = outcomeVal.includes('FORFEIT');
+
+          return {
+            gameId, seasonId,
+            type:        isForfeit ? 'forfeit' : 'scored',
+            hs, as: as_,
+            outcome:     outcomeVal,
+            fo:          dg.result?.winner?.value || null,
+            desc:        dg.result?.home?.gameOutcomeDescription || null,
+            h:           dg.home?.id   || null, hn: dg.home?.name  || null,
+            a:           dg.away?.id   || null, an: dg.away?.name  || null,
+            rn:          dg.round?.name || null,
+            st:          dg.status?.value || null,
+            venue, court,
+            time:        dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null,
+          };
         }
 
-        const outcomeVal = dg.result?.outcome?.value || '';
-        const hs         = parseScore(dg.result?.home?.statistics);
-        const as_        = parseScore(dg.result?.away?.statistics);
-        const court      = dg.allocation?.court;
-        const venue      = court?.venue;
-
-        if (hs === null && !outcomeVal && !_diagPrinted) {
-          _diagPrinted++;
-          console.warn(`\n  DIAG null-score non-forfeit: gameId=${gameId} status=${dg.status?.value} outcome="${outcomeVal}" homeStats=${JSON.stringify(dg.result?.home?.statistics)}`);
-        }
-
-        const isForfeit = outcomeVal.includes('FORFEIT');
-
-        return {
-          gameId, seasonId,
-          type:        isForfeit ? 'forfeit' : 'scored',
-          hs, as: as_,
-          outcome:     outcomeVal,
-          fo:          dg.result?.winner?.value || null,
-          desc:        dg.result?.home?.gameOutcomeDescription || null,
-          h:           dg.home?.id   || null, hn: dg.home?.name  || null,
-          a:           dg.away?.id   || null, an: dg.away?.name  || null,
-          rn:          dg.round?.name || null,
-          st:          dg.status?.value || null,
-          venue, court,
-          time:        dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null,
-        };
+        // If all 3 retry attempts failed due to persistent blocks
+        return { gameId, seasonId, type: 'skip' };
       }));
+      // --- END OF REPLACEMENT ---
 
       for (const r of results) {
         if (r.type === 'skip') { failed2++; continue; }
