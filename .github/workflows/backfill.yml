@@ -1,0 +1,46 @@
+# .github/workflows/backfill.yml
+name: Manual Backfill Fixtures Engine
+
+on:
+  workflow_dispatch: # Triggered exclusively by you via the GitHub UI panel
+    inputs:
+      seasonId:
+        description: 'Optional isolated target Season ID to test. (Leave completely blank to execute against full backlog)'
+        required: false
+        default: ''
+      concurrency:
+        description: 'Network throttling concurrent call thread density rate limit'
+        required: true
+        default: '12'
+
+jobs:
+  run-backfill:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Active Code Canvas Tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node Environment Setup Layout
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Initialize Git Identity Config Configuration Mapping Properties
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Execute Targeted Backfill Pass
+        run: |
+          if [ -n "${{ github.event.inputs.seasonId }}" ]; then
+            echo "Running targeted test execution string parameters..."
+            node backfill-fixtures.js --concurrency=${{ github.event.inputs.concurrency }} --seasonId=${{ github.event.inputs.seasonId }}
+          else
+            echo "Running infinite loop sweep across backlog..."
+            node backfill-fixtures.js --concurrency=${{ github.event.inputs.concurrency }}
+          fi
