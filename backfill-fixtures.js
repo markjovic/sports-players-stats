@@ -117,14 +117,14 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
         console.log("   Total seasons listed in player profile: " + seasonsArray.length);
         
         for (const season of seasonsArray) {
-          console.log(`     - Checking profile season entry [sid: ${season.sid}] vs target [${targetSeasonId}]`);
+          console.log("     - Checking profile season entry [sid: " + season.sid + "] vs target [" + targetSeasonId + "]");
           if (season.sid === targetSeasonId) {
             console.log("       🎯 MATCH FOUND! Extracting registration sub-records...");
             const registrations = season.regs || [];
             console.log("       Total registrations in this season object: " + registrations.length);
             
             for (const reg of registrations) {
-              console.log(`         * Found reg record: [tid: ${reg.tid}, tn: ${reg.tn}]`);
+              console.log("         * Found reg record: [tid: " + reg.tid + ", tn: " + reg.tn + "]");
               if (reg.tid) {
                 teamIdsToScan.add(reg.tid);
               } else {
@@ -158,4 +158,61 @@ async function processSingleSeason(targetSeasonId, seasonMeta, sessionToken, rep
       gamesWithA++; 
     }
   }
-  console.log(`   Scan complete. Matches with 'h' populated: ${gamesWithH}. Matches with 'a' populated: ${gamesWithA
+  console.log("   Scan complete. Matches with 'h' populated: " + gamesWithH + ". Matches with 'a' populated: " + gamesWithA + ".");
+  console.log("   Cumulative unique team IDs accumulated so far: " + teamIdsToScan.size);
+
+  const teamList = Array.from(teamIdsToScan);
+  console.log("\n================================================================");
+  console.log("📊 FINAL DISCOVERED TEAM ARRAY COUNT: " + teamList.length);
+  console.log("   Contents: " + JSON.stringify(teamList));
+  console.log("================================================================");
+
+  if (teamList.length === 0) {
+    console.log("❌ ERROR: No team references could be extracted from local data assets. Skipping season backfill execution loop.");
+    delete reportData.report[targetSeasonId];
+    fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
+    return;
+  }
+
+  // ─── RUNNING THE FIXTURE RECOVERY PASS ───
+  console.log("\n🌐 Step 3: Initializing Network Backfill Threads across GraphQL Endpoints...");
+  const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, totalGamesImpacted: new Set() };
+  const fixtureQuery = "query TeamFixture($teamID: ID!) { discoverTeamFixture(teamID: $teamID) { name fixture { games { id status home { ... on DiscoverTeam { id name organisation { name } } } away { ... on DiscoverTeam { id name } } result { home { statistics { count type { value } } } away { ... } } allocation { dateTimeList { date time } court { id name venue { id name } } } grade { name season { name competition { name } } } } } }";
+
+  let index = 0;
+  async function taskWorker() {
+    while (index < teamList.length) {
+      const currentTeamId = teamList[index++];
+      console.log("   [Worker] Pulling fixture history data from API for team token: " + currentTeamId);
+      try {
+        const res = await makeQuery(sessionToken, fixtureQuery, { teamID: currentTeamId });
+        const rounds = res.data?.discoverTeamFixture || [];
+        
+        if (rounds.length === 0) {
+          console.log("   [Worker] ⚠️ API returned 0 round blocks for team ID: " + currentTeamId);
+        }
+
+        for (const round of rounds) {
+          const roundName = round.name;
+          const apiGames = round.fixture?.games || [];
+          
+          for (const apiGame of apiGames) {
+            const gid = apiGame.id;
+            
+            if (seasonFileContents.games && seasonFileContents.games[gid]) {
+              const localGame = seasonFileContents.games[gid];
+              let gameWasUpdated = false;
+              
+              if ((localGame.rn === 0 || !localGame.rn) && roundName) { 
+                localGame.rn = roundName; deltas.rounds++; gameWasUpdated = true; 
+              }
+              if ((localGame.st === 0 || !localGame.st) && apiGame.status?.value) { 
+                localGame.st = apiGame.status.value; gameWasUpdated = true; 
+              }
+              
+              if (apiGame.home?.id && (!localGame.h || localGame.h === 0 || !localGame.hn || localGame.hn === 0)) { 
+                localGame.h = apiGame.home.id; localGame.hn = apiGame.home.name; 
+                deltas.teams++; gameWasUpdated = true; 
+              }
+              if (apiGame.away?.id && (!localGame.a || localGame.a === 0 || !localGame.an || localGame.an === 0)) { 
+                localGame.a = apiGame.away.id; localGame
