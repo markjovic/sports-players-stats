@@ -1,0 +1,311 @@
+# .github/workflows/generate-spec.yml
+name: Generate StatTrack Specification Document
+
+on:
+  workflow_dispatch: # Allows you to manually trigger this from the GitHub Actions tab
+
+jobs:
+  build-spec:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grants permission to commit the file back to your repo
+
+    steps:
+      - name: Checkout Repository Contents
+        uses: actions/checkout@v4
+
+      - name: Initialize Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Execute Specification Builder Script
+        run: |
+          cat << 'EOF' > generate-spec.js
+          const fs = require('fs');
+          const path = require('path');
+
+          const outputFile = path.join(__dirname, 'stattrack-pwa-spec.md');
+
+          const content = `# StatTrack Architecture, Migration, and PWA Specification
+
+          This document serves as the complete, finalized specification for rebuilding the \`sports-players-stats\` data repository and front-end interface. It optimizes data storage for zero-backend, client-side execution inside an HTML Progressive Web App (PWA) under GitHub file storage constraints.
+
+          ---
+
+          ## Part 1: Repository Architecture Specification
+
+          To drive a zero-latency, client-side PWA, the repository shifts from dynamic relational file crawling to a deterministic structure of Look-Ahead Search Shards and Pre-Aggregated View Shards.
+
+          ### Directory Layout Blueprint
+
+          \`\`\`text
+          ├── sports-index.json             # Global application configuration catalog
+          ├── team-index.json               # Global team search directory (flat array)
+          ├── venue-index.json              # Global venue search directory (flat array)
+          ├── search/                       # Sharded unified search routes
+          │   └── players/
+          │       └── {aa-zz}.json          # 2-letter alpha shards mapping inputs to UUIDs
+          ├── team-stats/                   # Pre-aggregated focus frames
+          │   └── {seasonId}.json           # Contextual roster, ladder, and fixture lookups
+          ├── venue-lookup/                 # Venue grid mapping
+          │   └── {venueId}/
+          │       └── {YYYY-MM-DD}.json     # Consolidated games by court for a single date
+          ├── games/
+          │   └── bv/
+          │       └── {seasonId}.json       # Pure objective match results documents
+          └── players/
+              ├── indexes/
+              │   └── {00-ff}.json          # Hot career stats + historical pointer arrays
+              └── {00-ff}/
+                  └── {uuid}.json           # Granular cold registration detail documents
+          \`\`\`
+
+          ### Detailed File Schemas
+
+          #### 1. team-index.json (Root Level)
+          * **Purpose:** Loaded into memory on app boot to drive instant, local real-time autocomplete for teams.
+          * **Size:** ~150 KB.
+
+          \`\`\`json
+          [
+            { "id": "83e3d989", "n": "Hoppers Tigers 7 (U14G)", "sid": "367cf946", "sn": "Winter 2026" },
+            { "id": "6d9e6954", "n": "Hoppers Tigers 6 (U14G)", "sid": "17120864", "sn": "Summer 2025/26" }
+          ]
+          \`\`\`
+
+          #### 2. venue-index.json (Root Level)
+          * **Purpose:** Loaded into memory on app boot for instant, local real-time venue search.
+          * **Size:** ~20 KB.
+
+          \`\`\`json
+          [
+            { "id": "2358498d-9b80-4f34-b00d-ca82795bdae7", "n": "RB Robson Wallan Indoor Sports Stadium" }
+          ]
+          \`\`\`
+
+          #### 3. search/players/{aa-zz}.json
+          * **Purpose:** Unified look-ahead shard file targeted via the first two characters of whatever the user types. 
+          * **Rule:** A single player will have two distinct entry keys within the ecosystem if their first name and surname begin with different letters (e.g., "Teghroop Virk" writes to \`te.json\` and \`vi.json\`).
+          * **Size:** ~30 KB to 50 KB per shard file.
+
+          \`\`\`json
+          // Example: search/players/te.json (Matched via First Name typing "Te")
+          {
+            "Teghroop Virk": { "id": "00101550-7f0a-4858-8077-285c3f78696c", "c": "Hoppers Crossing", "t": "Hoppers Tigers 7" }
+          }
+
+          // Example: search/players/vi.json (Matched via Surname typing "Vi")
+          {
+            "Virk, Teghroop": { "id": "00101550-7f0a-4858-8077-285c3f78696c", "c": "Hoppers Crossing", "t": "Hoppers Tigers 7" }
+          }
+          \`\`\`
+
+          #### 4. players/indexes/{00-ff}.json
+          * **Purpose:** Decoupled data index. Holds hot career summaries and an explicit matrix linking seasons to participated teams. No game-level string blocks live here.
+
+          \`\`\`json
+          {
+            "00101550-7f0a-4858-8077-285c3f78696c": {
+              "uuid": "00101550-7f0a-4858-8077-285c3f78696c",
+              "name": "Teghroop Virk",
+              "gender": "Girls",
+              "sports": { "Basketball": { "gp": 102, "pts": 18 } },
+              "history": {
+                "367cf946": ["83e3d989"],
+                "17120864": ["6d9e6954"],
+                "09379b42": ["a1ede617"]
+              }
+            }
+          }
+          \`\`\`
+
+          #### 5. games/bv/{seasonId}.json
+          * **Purpose:** Clean, objective game documents. The legacy \`playerGames\` mapping object is removed. To preserve tracing for matches without a box score, a primitive participant key (\`p\`) arrays player UUID strings straight into the match record.
+
+          \`\`\`json
+          {
+            "games": {
+              "191fd878": {
+                "d": "2024-12-12",
+                "rn": "Round 9",
+                "h": "4020f332",
+                "hn": "Trailblazers Orange",
+                "a": "5c18aae2",
+                "an": "Bushrangers Yellow",
+                "hs": 23,
+                "as": 10,
+                "vid": "2358498d-9b80-4f34-b00d-ca82795bdae7",
+                "vn": "RB Robson Wallan Stadium",
+                "ct": "Court 3",
+                "t": "17:15",
+                "url": "https://www.playhq.com/...",
+                "st": "FINAL",
+                "p": [
+                  "00101550-7f0a-4858-8077-285c3f78696c",
+                  "006b2b64-c118-44df-8870-b501e579713e"
+                ]
+              }
+            }
+          }
+          \`\`\`
+
+          #### 6. team-stats/{seasonId}.json
+          * **Purpose:** Holds fully compiled team frames to power rosters, schedules, and cross-comparisons instantly.
+
+          \`\`\`json
+          {
+            "teams": {
+              "83e3d989": {
+                "meta": { "name": "Hoppers Tigers 7 (U14G)", "club": "Hoppers Crossing" },
+                "roster": {
+                  "00101550-7f0a-4858-8077-285c3f78696c": { "name": "Teghroop Virk", "gp": 2, "pts": 2 }
+                },
+                "fixtures": [
+                  { "gameId": "191fd878", "date": "2024-12-12", "oppId": "4020f332", "oppName": "Trailblazers", "result": "W", "score": "23-10" }
+                ]
+              }
+            }
+          }
+          \`\`\`
+
+          #### 7. venue-lookup/{venueId}/{YYYY-MM-DD}.json
+          * **Purpose:** Powers the unique stadium timeline grid canvas.
+
+          \`\`\`json
+          {
+            "Court 1": [],
+            "Court 2": [],
+            "Court 3": [
+              { "id": "191fd878", "t": "17:15", "hn": "Trailblazers Orange", "an": "Bushrangers Yellow", "st": "FINAL" }
+            ]
+          }
+          \`\`\`
+
+          ---
+
+          ## Part 2: Data Migration Specification
+
+          The conversion of the existing data payload into optimized PWA shards is broken into three sequential phases to execute within safe Node.js memory boundaries.
+
+          ### Migration Phase Order
+
+          \`\`\`text
+          [ Phase 1: Clean Seasons ] ──> Generate team-index.json & venue-index.json
+                       │
+                       ▼
+          [ Phase 2: View Aggregation ] ──> Generate team-stats/ & venue-lookup/ shards
+                       │
+                       ▼
+          [ Phase 3: Search Compilation ] ──> Generate sharded alpha search/ directories
+          \`\`\`
+
+          ### Phase 1: Re-structure \`/games/bv/\` and Compile Flat Root Directories
+          1. **Initialize Collections:** Instantiation of a global tracking array for \`teamIndex\` and a unique lookup map for \`venueIndex\`.
+          2. **Stream Season Data:** A script loops through all 2,792 raw season JSON files sequentially.
+          3. **Inject Participant Key (\`p\`):** For every game object, evaluate if \`hp\` and \`ap\` (electronic box score tracking rows) are present.
+             * *If present:* Extract player UUIDs into a flat string array saved under the match node as property \`p\`.
+             * *If missing:* Cross-reference the old legacy \`playerGames\` directory block located inside that same season file. Isolate which player IDs were logged as participating in the target \`gameId\`, group those tokens into the \`p\` array, and completely purge the \`playerGames\` object map.
+          4. **Log Flat Global Index Rows:** Capture text descriptions and unique hash tokens for team groups and physical stadiums. Strip structural duplicates out of the engine stack.
+          5. **Disk Commit:** Save the minimized season files back to \`/games/bv/\`, and output minified \`team-index.json\` and \`venue-index.json\` lists straight to the root folder.
+
+          ### Phase 2: Generate View Shards (\`team-stats\` and \`venue-lookup\`)
+          1. **Team Aggregation Pass:** Loop through the updated season assets. For every season entry, construct an in-memory grouping map mapping every unique \`teamId\` to its full roster stats, calculated schedules, and ladder positions. Save this payload directly as \`team-stats/{seasonId}.json\`.
+          2. **Venue Pivot Pass:** Iterate over every game element across the database timeline. If valid venue data points exist, resolve the specific target path via \`venueId\` and the match day timestamp (\`YYYY-MM-DD\`). 
+          3. **Grid Alignment:** Insert a lightweight game card summary node directly under the designated court description label. Append records continuously without wiping shared dates, and write the output blocks straight to disk inside \`venue-lookup/{venueId}/{date}.json\`.
+
+          ### Phase 3: Compile Unified 2-Letter Alpha Search Shards
+          1. **Read Player Summaries:** Read through the 256 structural index shards (\`players/indexes/*.json\`).
+          2. **Initialize Shard Memory Maps:** Open 676 alpha key containers representing double-letter buckets (\`aa\` to \`zz\`).
+          3. **Parse Dual Entries:** For every player record:
+             * Isolate the **First Name** value. Extract the starting two characters (e.g., "Te"), resolve the target destination (\`search/players/te.json\`), and map \`"FirstName LastName": { "id": "uuid", "c": "club", "t": "team" }\`.
+             * Isolate the **Surname** value. Extract the starting two characters (e.g., "Vi"), resolve the target destination (\`search/players/vi.json\`), and map \`"LastName, FirstName": { "id": "uuid", "c": "club", "t": "team" }\`.
+          4. **Save Alpha Shards:** Run a minified write pass to output the files directly into the \`/search/players/\` subfolders.
+
+          ---
+
+          ## Part 3: Revised PWA Front-End Specification
+
+          ### Application Shell Core Details
+          * **Type:** Single-file HTML Progressive Web App (PWA). Runs entirely client-side without any dynamic server computing backend.
+          * **UI Palette:** Dark theme canvas (\`#121212\`), high-contrast slate surfaces (\`#1e1e1e\`), electric teal accent indicators (\`#00f5d4\`).
+          * **Viewport Adaptability:**
+            * *Desktop View:* Structured split dual-pane layout. Left rail holds sticky search controls and contextual parameter filters; right pane loads active content sheets.
+            * *Mobile View:* Single focus pane fluid layout accompanied by swipeable bottom sheets to manage deep interaction overlays.
+
+          ### Isolated Search Engine Architecture
+
+          The application implements three dedicated search fields, removing cross-entity routing overhead:
+
+          #### 1. The Player Search Input Box
+          * **Behavior:** Captures keyboard entry strings. The moment the length hits 2 or more characters, slice the first two letters to target a single network fetch:
+            \`fetch('./search/players/' + input.slice(0,2).toLowerCase() + '.json')\`
+          * **Filtering:** The browser receives a highly compressed list containing *only* players whose given names or surnames start with those two characters. The PWA searches the keys in local memory via \`.filter()\`.
+          * **Selection:** Clicking an anchor returns the clean UUID string hash. The PWA slices the first two tokens of the UUID to retrieve her complete, granular history profiles directly from \`./players/\${uuid.slice(0,2)}/\${uuid}.json\`.
+
+          #### 2. The Team Search Input Box
+          * **Behavior:** Downloads \`./team-index.json\` (~150KB) once on application boot and places it in local RAM.
+          * **Filtering:** Every single text keystroke filters this local array instantly in the client thread with absolute zero network lag. Selecting a record directs the layout straight to the pre-aggregated frame \`/team-stats/{seasonId}.json\`.
+
+          #### 3. The Venue Search Input Box
+          * **Behavior:** Downloads \`./venue-index.json\` (~20KB) once on application boot and places it in local RAM. 
+          * **Filtering:** Autocomplete results update dynamically with zero network latency.
+
+---
+
+          ## UI Views Execution Architecture
+
+          #### View 1: Player Profile View
+          * **Data Origin:** On-demand network call targeting \`./players/\${uuid.slice(0,2)}/\${uuid}.json\`.
+          * **Features:** Displays overall career metric tallies, multi-sport profile switch cards (Basketball, AFL, Cricket), and structural registration timelines. Links directly out to native public PlayHQ stats pages via a dynamically compiled identity slug.
+
+          #### View 2: Team Focus Page
+          * **Data Origin:** On-demand network call targeting \`./team-stats/{seasonId}.json\`.
+          * **Features:** Instantly displays a unified team focus pane featuring the entire roster list, past game outcomes, future schedules, and ladder status ranks.
+
+          #### View 3: Opposition View & "Played Against" Interactions
+          * **Data Origin:** Handled entirely by fast local memory intersection arrays.
+          * **Mechanics:** When analyzing an opponent, the PWA reads both player \`history\` structures from their index records. It isolates intersections using client-side JavaScript filters:
+            \`\`\`javascript
+            const matchedSeasons = Object.keys(playerA.history).filter(sid => playerB.history[sid]);
+            \`\`\`
+          * **The Popup Outcome:** If shared points match, the PWA targets *only* those explicit season codes to load match histories, rendering head-to-head records inside a fast popup window without any interface stutter.
+
+          #### View 4: The USP Venue Court-Grid Matrix
+          * **Data Origin:** On-demand network call targeting \`./venue-lookup/\${venueId}/\${YYYY-MM-DD}.json\`.
+          * **Features:** Triggered by selecting a stadium facility and selecting a date on the calendar input component. Because the backend pre-aggregated all matches down to single days and venues, the downloaded payload is incredibly light. The PWA reads the court mappings and paints a complete stadium schedule across an organized visual court canvas grid instantly.
+
+          #### View 5: Leaderboards & Team Records
+          * **Data Origin:** Computed during build time or pre-aggregated into your root indexes to support instant filtering for highest scores, top 3PT shooters, and historic team milestones without heavy dynamic file parsing.
+
+          ---
+
+          ## Crawl-Time PlayHQ URL Compilation Rule
+
+          To align PWA outbound links with PlayHQ’s exact production web paths, your background crawlers compute this cleanup string-regex transformation rule during structural build operations:
+
+          \`\`\`javascript
+          function slugifyPlayHQ(str) {
+            if (!str) return '';
+            return str.toLowerCase()
+              .replace(/[()]/g, '')               // Strip parenthesis characters but preserve internal characters
+              .replace(/[^a-z0-9\\s-]/g, '')       // Strip all special punctuation characters completely
+              .trim()
+              .replace(/[\\s-]+/g, '-');           // Compress trailing whitespaces and multiple hyphens into a single dash
+          }
+
+          // Resulting URL Compilation Pattern:
+          // https://www.playhq.com/\${tenant}/org/\${slugifyPlayHQ(orgName)}/\${slugifyPlayHQ(compName)}/\${slugifyPlayHQ(gradeName)}/game-centre/\${gameId}
+          \`\`\`
+          `;
+
+          fs.writeFileSync(outputFile, content, 'utf8');
+          EOF
+          node generate-spec.js
+
+      - name: Commit and Push Document directly to Repo
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add stattrack-pwa-spec.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Generate and bake down StatTrack PWA architecture specification" && git push)
