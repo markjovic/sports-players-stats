@@ -296,35 +296,36 @@ async function fetchGame(gameId, session) {
       }),
     });
 
-    if (res.status === 429) return { _rateLimit: true };
-    if (res.status === 401 || res.status === 403) return { _authError: true };
+    if (res.status === 429) {
+      console.error(`\n❌ [429 Rate Limit] Spectator API is throttling. Game ID: ${gameId}`);
+      return { _rateLimit: true };
+    }
+    if (res.status === 401 || res.status === 403) {
+      console.error(`\n❌ [Auth Error ${res.status}] Cloudflare WAF block or expired cookie. Game ID: ${gameId}`);
+      return { _authError: true };
+    }
     if (!res.ok) {
-      if (_diagPrinted++ < 3) {
-        const body = await res.text().catch(() => '');
-        console.warn(`\n  ⚠ Spectator HTTP ${res.status} for game ${gameId}: ${body.slice(0, 200)}`);
-      }
+      const body = await res.text().catch(() => '');
+      console.warn(`\n⚠ [HTTP ${res.status}] Game ID: ${gameId} | Payload: ${body.slice(0, 150)}`);
       return { _transient: true };
     }
 
     const json = await res.json();
 
-    if (_diagPrinted++ < 3) {
-      console.log(`\n  DIAG game ${gameId}: data.game=${json?.data?.game ? 'GOT DATA' : 'null'} errors=${JSON.stringify(json?.errors?.[0])?.slice(0,100)}`);
-    }
-
     if (json.errors?.length) {
-      if (_diagPrinted < 5) console.warn(`\n  ⚠ GraphQL error for ${gameId}:`, JSON.stringify(json.errors[0]).slice(0, 150));
       const msg = json.errors[0]?.message || '';
-      // "could not be found or was not electronically scored" = permanently no data
       if (msg.includes('could not be found') || msg.includes('not electronically scored')) {
         return { _legacy: true };
       }
+      console.warn(`\n⚠ [GraphQL Error] Game ID: ${gameId} | Message: ${msg.slice(0, 150)}`);
       return { _graphqlError: true };
     }
 
     return json;
   } catch (e) {
-    if (_diagPrinted++ < 3) console.warn(`\n  ⚠ Fetch exception for ${gameId}:`, e.message);
+    console.warn(`\n❌ [Fetch Exception] Game ID: ${gameId} | Error: ${e.message}`);
+    // Generate a direct public profile game verification fallback URL to look up manually
+    console.warn(`👉 Manual check link: https://www.playhq.com/game/${gameId}`);
     return { _transient: true };
   }
 }
@@ -641,52 +642,33 @@ async function main() {
       : targetSeasons;
     const reviewSeasons = TARGET_SEASON ? [{ id: TARGET_SEASON }] : allSeasons;
 
-    // Build todo2 WITHOUT loading game files into memory — just collect IDs.
-    // We load each season file on demand during processing to avoid OOM on 584 seasons.
     const todo2    = [];
+    const sgCache2 = {};
 
     for (const season of reviewSeasons) {
       const gameFile = path.join(GAMES_DIR, `${season.id}.json`);
       if (!fs.existsSync(gameFile)) continue;
       let sg;
       try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+      sgCache2[season.id] = sg;
       for (const [gameId, game] of Object.entries(sg.games || {})) {
         if (game.hidden)  continue;
         if (game.legacy)  continue;
         if (game.forfeit) continue;
         if (typeof game.hs === 'number') continue;
+        // Skip null-score games in any non-playable state — confirmed checked already
+        // UPCOMING games with null score: checked but not yet played, will be scored by discover-fixtures
         if (game.hs === null) continue;
-        if (prog.done.has(gameId)) continue;  // already processed — skip on resume
         todo2.push({ seasonId: season.id, gameId });
       }
-      // Don't cache sg — free it immediately after scanning
     }
 
     console.log(`📋 Unscored unflagged games to probe: ${todo2.length.toLocaleString()}\n`);
 
     let forfeits2 = 0, scored2 = 0, hidden2 = 0, nowLegacy2 = 0, failed2 = 0, sinceLastSave2 = 0;
 
-    // Process season-by-season to keep memory bounded.
-    // Group todo2 by seasonId so we load each file once per pass.
-    const bySeason2 = new Map();
-    for (const item of todo2) {
-      if (!bySeason2.has(item.seasonId)) bySeason2.set(item.seasonId, []);
-      bySeason2.get(item.seasonId).push(item.gameId);
-    }
-
-    let totalDone2 = 0;
-    const total2   = todo2.length;
-
-    for (const [seasonId, gameIds] of bySeason2) {
-      const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
-      if (!fs.existsSync(gameFile)) { totalDone2 += gameIds.length; continue; }
-      let sg;
-      try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { totalDone2 += gameIds.length; continue; }
-
-      let seasonDirty = false;
-
-      for (let i = 0; i < gameIds.length; i += CONCURRENCY) {
-        const batch = gameIds.slice(i, i + CONCURRENCY).map(gameId => ({ seasonId, gameId }));
+    for (let i = 0; i < todo2.length; i += CONCURRENCY) {
+      const batch = todo2.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(async ({ seasonId, gameId }, j) => {
         await delay(j * 3);
         const resp = await fetchDiscoverGame(gameId, session);
@@ -739,6 +721,8 @@ async function main() {
 
       for (const r of results) {
         if (r.type === 'skip') { failed2++; continue; }
+        const sg    = sgCache2[r.seasonId];
+        if (!sg) continue;
         const entry = sg.games[r.gameId] || {};
 
         if (r.type === 'legacy') {
@@ -765,6 +749,8 @@ async function main() {
             hidden2++;
             scored2++;
           } else {
+            // Only write hs/as as null for FINAL games — confirms no score available
+            // UPCOMING games keep hs:undefined so they're re-checked when played
             const terminalStatus = ['FINAL', 'PENDING', 'POSTPONED', 'CANCELLED', 'BYE'];
             if (terminalStatus.includes(r.st)) {
               entry.hs = r.hs !== null ? r.hs : null;
@@ -782,16 +768,12 @@ async function main() {
         }
 
         sg.games[r.gameId] = entry;
-        seasonDirty = true;
         sinceLastSave2++;
-        totalDone2++;
       }
 
-      // Flush and commit every 1000 games — much more frequent to survive OOM kills
-      if (sinceLastSave2 >= 1000) {
-        if (seasonDirty) {
-          fs.writeFileSync(gameFile, JSON.stringify(sg));
-          seasonDirty = false;
+      if (sinceLastSave2 >= 5000) {
+        for (const [sid, sg] of Object.entries(sgCache2)) {
+          fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
         }
         flushVenueShards();
         saveProgress(prog);
@@ -799,18 +781,16 @@ async function main() {
         gitCommitPush(`Unscored review: ${forfeits2} forfeits, ${scored2} scored, ${nowLegacy2} legacy`);
       }
 
-      process.stdout.write(`  ${totalDone2.toLocaleString()}/${total2.toLocaleString()} — 🏳 ${forfeits2} forfeits, 🔒 ${hidden2} hidden, ✓ ${scored2 - hidden2} scored, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
-      if (i + CONCURRENCY < gameIds.length) await delay(50);
+      const done = Math.min(i + CONCURRENCY, todo2.length);
+      process.stdout.write(`  ${done.toLocaleString()}/${todo2.length.toLocaleString()} — 🏳 ${forfeits2} forfeits, 🔒 ${hidden2} hidden, ✓ ${scored2 - hidden2} scored, 📜 ${nowLegacy2} legacy, ✗ ${failed2} failed\r`);
+      if (i + CONCURRENCY < todo2.length) await delay(50);
     }
 
-    // Flush this season's file after processing all its games
-    if (seasonDirty) {
-      fs.writeFileSync(gameFile, JSON.stringify(sg));
+    for (const [sid, sg] of Object.entries(sgCache2)) {
+      fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(sg));
     }
     flushVenueShards();
     saveProgress(prog);
-    // sg goes out of scope here — GC can reclaim it before the next season loads
-  } // end for season loop
 
     console.log(`\n\n✅ Unscored review complete`);
     console.log(`   🏳 Forfeits:   ${forfeits2.toLocaleString()}`);
