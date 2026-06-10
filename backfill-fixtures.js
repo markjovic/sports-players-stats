@@ -33,7 +33,7 @@ const HEADERS = {
 
 async function runPlayerHistoryBackfill() {
   console.log("\n================================================================");
-  console.log("🚀 STARTING LOOSE LOOPS LOOSE EXTRACTION FOR SEASON: " + TARGET_SEASON_ID);
+  console.log("🚀 STARTING DIAGNOSTIC INSPECTION PASS FOR SEASON: " + TARGET_SEASON_ID);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, TARGET_SEASON_ID + '.json');
@@ -45,7 +45,7 @@ async function runPlayerHistoryBackfill() {
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
   const targetGames = seasonFileContents.games || {};
   const playerUuids = Object.keys(seasonFileContents.playerGames || {});
-  console.log("👥 Extracted " + playerUuids.length + " player profiles to query via live API endpoint.");
+  console.log("👥 Extracted " + playerUuids.length + " player profiles to evaluate.");
 
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
@@ -54,15 +54,19 @@ async function runPlayerHistoryBackfill() {
   });
   const rawCookie = sessionRes.headers.get('set-cookie') || '';
   const cookieMatch = rawCookie.match(/phq_session=([^;]+)/);
-  if (!cookieMatch) throw new Error("PHQ authentication token assignment failed.");
+  if (!cookieMatch) throw new Error("PHQ token assignment failed.");
   const sessionToken = cookieMatch[1];
 
+  let diagnosticDumped = false;
   const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
   
   const playerHistoryQuery = `
     query PlayerHistory($playerUUID: ID!) {
       discoverPlayerProfile(playerUUID: $playerUUID) {
         seasons {
+          id
+          name
+          competition { name }
           matches {
             id
             round
@@ -90,6 +94,15 @@ async function runPlayerHistoryBackfill() {
         const json = await res.json();
         const seasons = json.data?.discoverPlayerProfile?.seasons || [];
 
+        // ─── DIAGNOSTIC MATRIX DUMP ───
+        // Capture the very first player response that contains data and dump it completely to the logs
+        if (!diagnosticDumped && seasons.length > 0) {
+          diagnosticDumped = true;
+          console.log("\n🔍 [DIAGNOSTIC INSPECTION] Raw GraphQL Response Payload for Player " + currentUuid + ":");
+          console.log(JSON.stringify(seasons.slice(0, 2), null, 2));
+          console.log("----------------------------------------------------------------\n");
+        }
+
         for (const season of seasons) {
           for (const apiMatch of season.matches || []) {
             const gid = apiMatch.id;
@@ -99,20 +112,14 @@ async function runPlayerHistoryBackfill() {
             const homeName = (isHome ? apiMatch.team?.name : apiMatch.opponent?.name) || '';
             const awayName = (isHome ? apiMatch.opponent?.name : apiMatch.team?.name) || '';
 
-            // ─── LOOSE PATTERN RESILIENT INTERSECTION LOOKUP ───
             let localGid = null;
             if (targetGames[gid]) {
               localGid = gid;
             } else {
               for (const [id, g] of Object.entries(targetGames)) {
-                // Step 1: If local row has a date string, verify it aligns
-                if (g.d && apiDateClean && g.d !== apiDateClean) {
-                  continue; 
-                }
+                if (g.d && apiDateClean && g.d !== apiDateClean) continue; 
 
-                // Step 2: Loose verification of team indicators (matching IDs or partial string pieces)
                 const idMatches = (g.o && (g.o === apiMatch.opponent?.id || g.o === apiMatch.team?.id));
-                
                 const nameMatches = g.on && (
                   homeName.toLowerCase().includes(g.on.toLowerCase()) || 
                   awayName.toLowerCase().includes(g.on.toLowerCase()) ||
@@ -169,7 +176,7 @@ async function runPlayerHistoryBackfill() {
   await Promise.all(workers);
 
   console.log("\n-------------------------------------------------------------");
-  console.log("   📉 Player History API Backfill Delta Metrics Summary:");
+  console.log("   📉 Diagnostic Pass Execution Summary:");
   console.log("-------------------------------------------------------------");
   console.log("   Total Matches Restructured: " + deltas.totalGamesImpacted.size);
   console.log("   [h/a] Absolute Team Layouts Mapped: " + deltas.teams);
@@ -178,25 +185,6 @@ async function runPlayerHistoryBackfill() {
   console.log("-------------------------------------------------------------");
 
   fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
-  
-  if (fs.existsSync(MAIN_REPORT_PATH)) {
-    const reportData = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
-    if (reportData.report && reportData.report[TARGET_SEASON_ID]) {
-      delete reportData.report[TARGET_SEASON_ID];
-      reportData.totalGamesWithCoreOrVenueGaps = Object.values(reportData.report).reduce((acc, curr) => acc + (curr.missingGamesCount || 0), 0);
-      fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
-    }
-  }
-
-  try {
-    execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
-    if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
-      execSync('git commit -m "Backfill Step: Reconstructed season ' + TARGET_SEASON_ID + ' via pattern aligned profiles"', { stdio: 'pipe' });
-      execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
-      execSync('git push', { stdio: 'pipe' });
-      console.log("✓ Secure push to origin verified.");
-    }
-  } catch (gitErr) {}
 }
 
 runPlayerHistoryBackfill().catch(e => { console.error("\n❌ Fatal Error: " + e.message); process.exit(1); });
