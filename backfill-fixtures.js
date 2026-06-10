@@ -91,8 +91,6 @@ async function runCleanBackfill() {
       continue;
     }
 
-    // UPDATED GUARDRAIL: Only skip if explicitly marked legacy true. 
-    // Non-legacy relative 'o' games are allowed through for recovery.
     if (localGameRecord.legacy === true) {
       console.log(`   ℹ️ Game ${gid} skipped: Explicitly marked as an unresolvable legacy record.`);
       continue;
@@ -100,7 +98,6 @@ async function runCleanBackfill() {
 
     gameIdsToRepair.add(gid);
     
-    // Harvest any available absolute tokens
     if (localGameRecord.h && localGameRecord.h !== 0) teamIdsToScan.add(localGameRecord.h);
     if (localGameRecord.a && localGameRecord.a !== 0) teamIdsToScan.add(localGameRecord.a);
     if (localGameRecord.o && localGameRecord.o !== 0) teamIdsToScan.add(localGameRecord.o);
@@ -117,7 +114,6 @@ async function runCleanBackfill() {
   const activePlayerUuids = Object.keys(seasonFileContents.playerGames || {});
   console.log(`👥 Associated player profiles isolated for live history sweep: ${activePlayerUuids.length}`);
 
-  // Authenticate session token cookie
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -181,4 +177,119 @@ async function runCleanBackfill() {
 
     const orgName = apiGame.home?.organisation?.name || apiGame.grade?.season?.competition?.name;
     if ((!localGame.url || localGame.url === 0) && orgName && apiGame.grade?.name) {
-      localGame.url = buildGameUrl(gid, orgName, apiGame.grade.season.competition.name, apiGame.grade.season.name, apiGame
+      // FIXED: Restored complete string map definition layout paths
+      localGame.url = buildGameUrl(gid, orgName, apiGame.grade.season.competition.name, apiGame.grade.season.name, apiGame.grade.name);
+      deltas.urls++;
+      updated = true;
+    }
+
+    if (updated) {
+      delete localGame.o;
+      delete localGame.on;
+      deltas.totalGamesImpacted.add(gid);
+      console.log(`      ✅ Game patched successfully: ID ${gid}`);
+    }
+  }
+
+  // PASS 1: Live Player Profile Query Sweep
+  if (activePlayerUuids.length > 0) {
+    console.log("\n🌐 [PASS 1] Executing Network Player Career History Inspection Loop...");
+    const playerQuery = `query PlayerHistory($playerUUID: ID!) { discoverPlayerProfile(playerUUID: $playerUUID) { seasons { matches { id round homeAway team { id name } opponent { id name } result { teamScore opponentScore } } } } }`;
+    
+    let pIdx = 0;
+    const playerWorkers = Array(CONCURRENCY).fill(null).map(async () => {
+      while (pIdx < activePlayerUuids.length) {
+        const uuid = activePlayerUuids[pIdx++];
+        try {
+          const res = await fetch('https://api.playhq.com/graphql', {
+            method: 'POST',
+            headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID(), 'Cookie': 'phq_session=' + sessionToken }),
+            body: JSON.stringify({ query: playerQuery, variables: { playerUUID: uuid } })
+          });
+          const json = await res.json();
+          const seasons = json.data?.discoverPlayerProfile?.seasons || [];
+
+          for (const s of seasons) {
+            for (const match of s.matches || []) {
+              if (gameIdsToRepair.has(match.id)) {
+                patchLocalRecord(match.id, match, match.round);
+              }
+            }
+          }
+        } catch (e) {}
+      }
+    });
+    await Promise.all(playerWorkers);
+  }
+
+  for (const gid of deltas.totalGamesImpacted) {
+    gameIdsToRepair.delete(gid);
+  }
+
+  // PASS 2: Team Fixture Query Sweep Fallback
+  const teamList = Array.from(teamIdsToScan);
+  if (gameIdsToRepair.size > 0 && teamList.length > 0) {
+    console.log(`\n🌐 [PASS 2] ${gameIdsToRepair.size} games still open. Fallback to Team Fixture Endpoint queries...`);
+    const fixtureQuery = `query TeamFixture($teamID: ID!) { discoverTeamFixture(teamID: $teamID) { name fixture { games { id status home { ... on DiscoverTeam { id name organisation { name } } } away { ... on DiscoverTeam { id name } } result { home { score } away { score } } allocation { dateTimeList { date time } court { id name venue { id name } } } grade { name season { name competition { name } } } } } }`;
+    
+    let tIdx = 0;
+    const teamWorkers = Array(CONCURRENCY).fill(null).map(async () => {
+      while (tIdx < teamList.length) {
+        const tid = teamList[tIdx++];
+        try {
+          const res = await fetch('https://api.playhq.com/graphql', {
+            method: 'POST',
+            headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID(), 'Cookie': 'phq_session=' + sessionToken }),
+            body: JSON.stringify({ query: fixtureQuery, variables: { teamID: tid } })
+          });
+          const json = await res.json();
+          const rounds = json.data?.discoverTeamFixture || [];
+
+          for (const round of rounds) {
+            for (const apiGame of round.fixture?.games || []) {
+              if (gameIdsToRepair.has(apiGame.id)) {
+                patchLocalRecord(apiGame.id, apiGame, round.name);
+              }
+            }
+          }
+        } catch (e) {}
+      }
+    });
+    await Promise.all(teamWorkers);
+  }
+
+  console.log("\n-------------------------------------------------------------");
+  console.log("📉 Clean Backfill Execution Results Summary:");
+  console.log("-------------------------------------------------------------");
+  console.log(`   Total Non-Legacy Matches Modified: ${deltas.totalGamesImpacted.size}`);
+  console.log(`   [url] Match Web Links Saved:      ${deltas.urls}`);
+  console.log(`   [rn]  Round Context Fields Filled:  ${deltas.rounds}`);
+  console.log(`   [h/a] Core Team Elements Unified:  ${deltas.teams}`);
+  console.log(`   [loc] Court & Venue Details Fixed: ${deltas.venues}`);
+  console.log(`   [pts] Match Final Scores Restored: ${deltas.scores}`);
+  console.log("-------------------------------------------------------------");
+
+  fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
+  
+  delete reportQueue[targetSeasonId];
+  reportData.totalGamesWithCoreOrVenueGaps = Object.values(reportQueue).reduce((acc, curr) => acc + (Object.keys(curr.games || {}).length), 0);
+  fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData, null, 2));
+  
+  console.log(`✓ Synchronized files. Remaining backfill backlog length: ${Object.keys(reportQueue).length}`);
+
+  try {
+    execSync(`git add ${seasonFilePath} ${MAIN_REPORT_PATH}`, { stdio: 'pipe' });
+    if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
+      execSync(`git commit -m "Backfill Pass: Updated resolvable rows for season ${targetSeasonId}"`, { stdio: 'pipe' });
+      execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
+      execSync('git push', { stdio: 'pipe' });
+      console.log("✓ Secure sync to origin verified.");
+    } else {
+      console.log("ℹ️ No file changes generated during this execution window.");
+    }
+  } catch (gitErr) {
+    console.log("⚠️ Git sync skipped: " + gitErr.message);
+  }
+}
+
+runCleanBackfill().catch(e => { console.error("\n❌ Fatal Error: " + e.message); process.exit(1); });
