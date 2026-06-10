@@ -18,7 +18,7 @@ const ARGS = Object.fromEntries(
 );
 
 const CONCURRENCY = parseInt(ARGS.concurrency || '10', 10);
-const TARGET_SEASON_ID = ARGS.seasonId || "29536804"; // Fallback to your target season immediately
+const TARGET_SEASON_ID = ARGS.seasonId || "29536804";
 
 const MAIN_REPORT_PATH = path.join(__dirname, 'missing-game-data.json');
 const GAMES_DIR = path.join(__dirname, 'games', 'bv');
@@ -33,7 +33,7 @@ const HEADERS = {
 
 async function runPlayerHistoryBackfill() {
   console.log("\n================================================================");
-  console.log("🚀 INITIALIZING NETWORK PLAYER PROFILE HISTORY SWEEP FOR SEASON: " + TARGET_SEASON_ID);
+  console.log("🚀 STARTING IDENTITY-MATCHED PLAYER SWEEP FOR SEASON: " + TARGET_SEASON_ID);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, TARGET_SEASON_ID + '.json');
@@ -44,12 +44,9 @@ async function runPlayerHistoryBackfill() {
 
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
   const targetGames = seasonFileContents.games || {};
-  
-  // Extract all 57 players explicitly listed inside the raw database file
   const playerUuids = Object.keys(seasonFileContents.playerGames || {});
   console.log("👥 Extracted " + playerUuids.length + " player profiles to query via live API endpoint.");
 
-  // Authenticate network access token cookie upfront
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -62,7 +59,6 @@ async function runPlayerHistoryBackfill() {
 
   const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
   
-  // Explicit Public Player Profile History GraphQL Query Definition
   const playerHistoryQuery = `
     query PlayerHistory($playerUUID: ID!) {
       discoverPlayerProfile(playerUUID: $playerUUID) {
@@ -70,6 +66,7 @@ async function runPlayerHistoryBackfill() {
           matches {
             id
             round
+            date
             homeAway
             team { id name }
             opponent { id name }
@@ -84,8 +81,6 @@ async function runPlayerHistoryBackfill() {
   const workers = Array(CONCURRENCY).fill(null).map(async () => {
     while (index < playerUuids.length) {
       const currentUuid = playerUuids[index++];
-      console.log("   🌐 [API Query] Fetching history log for player token: " + currentUuid);
-      
       try {
         const res = await fetch('https://api.playhq.com/graphql', {
           method: 'POST',
@@ -93,21 +88,35 @@ async function runPlayerHistoryBackfill() {
           body: JSON.stringify({ query: playerHistoryQuery, variables: { playerUUID: currentUuid } })
         });
         const json = await res.json();
-        
-        // Flatten all historical games across their registered seasons
         const seasons = json.data?.discoverPlayerProfile?.seasons || [];
+
         for (const season of seasons) {
           for (const apiMatch of season.matches || []) {
             const gid = apiMatch.id;
+            const isHome = apiMatch.homeAway === 'HOME' || apiMatch.homeAway === 'home';
 
-            // If this player's live history match overlaps with an open row, restructure it
+            // ─── LOOKUP RESOLUTION TO BYPASS SHIFTED PLAYER IDS ───
+            let localGid = null;
             if (targetGames[gid]) {
-              const localGame = targetGames[gid];
+              localGid = gid;
+            } else if (apiMatch.date) {
+              const apiDateClean = apiMatch.date.slice(0, 10);
+              for (const [id, g] of Object.entries(targetGames)) {
+                if (g.d === apiDateClean) {
+                  const hName = isHome ? apiMatch.team?.name : apiMatch.opponent?.name;
+                  const aName = isHome ? apiMatch.opponent?.name : apiMatch.team?.name;
+                  if (g.on === hName || g.on === aName || g.o === apiMatch.opponent?.id || g.o === apiMatch.team?.id) {
+                    localGid = id;
+                    break;
+                  }
+                }
+              }
+            }
+
+            if (localGid) {
+              const localGame = targetGames[localGid];
               let updated = false;
 
-              const isHome = apiMatch.homeAway === 'HOME' || apiMatch.homeAway === 'home';
-
-              // Unify relative viewpoint attributes into definitive absolute parameters
               if (!localGame.hn || localGame.hn === 0 || localGame.legacy) {
                 localGame.hn = isHome ? (apiMatch.team?.name || '') : (apiMatch.opponent?.name || '');
                 localGame.an = isHome ? (apiMatch.opponent?.name || '') : (apiMatch.team?.name || '');
@@ -131,18 +140,15 @@ async function runPlayerHistoryBackfill() {
               }
 
               if (updated) {
-                // Completely drop old temporary layout attributes
                 delete localGame.o;
                 delete localGame.on;
                 delete localGame.legacy;
-                deltas.totalGamesImpacted.add(gid);
+                deltas.totalGamesImpacted.add(localGid);
               }
             }
           }
         }
-      } catch (err) {
-        console.log("      ⚠️ Query execution skipped or interrupted for UUID " + currentUuid + ": " + err.message);
-      }
+      } catch (err) {}
     }
   });
 
@@ -171,7 +177,7 @@ async function runPlayerHistoryBackfill() {
   try {
     execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
     if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
-      execSync('git commit -m "Backfill Step: Reconstructed season ' + TARGET_SEASON_ID + ' via live player histories"', { stdio: 'pipe' });
+      execSync('git commit -m "Backfill Step: Reconstructed season ' + TARGET_SEASON_ID + ' via aligned player histories"', { stdio: 'pipe' });
       execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
       console.log("✓ Secure push to origin verified.");
