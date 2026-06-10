@@ -49,6 +49,7 @@ async function runCleanBackfill() {
     process.exit(1);
   }
 
+  // We only READ the manifest to grab a season ID to work on
   const reportData = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
   const reportQueue = reportData.report || {};
   
@@ -59,18 +60,17 @@ async function runCleanBackfill() {
       console.log("📚 Backlog manifest queue is empty. Task complete!");
       return;
     }
+    // Grabs the next season in line
     targetSeasonId = keys[0];
   }
 
   console.log("\n================================================================");
-  console.log("🚀 STARTING PRODUCTION PASS FOR SEASON: " + targetSeasonId);
+  console.log("🚀 STARTING BACKFILL PASS FOR SEASON: " + targetSeasonId);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, targetSeasonId + '.json');
   if (!fs.existsSync(seasonFilePath)) {
-    console.log("⚠️ Season JSON database file missing on disk. Skipping entry block.");
-    delete reportQueue[targetSeasonId];
-    fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData, null, 2));
+    console.log(`⚠️ Season JSON file missing on disk: ${seasonFilePath}. Moving on.`);
     return;
   }
 
@@ -86,13 +86,10 @@ async function runCleanBackfill() {
   for (const gid of Object.keys(manifestGamesTracking)) {
     const localGameRecord = localGamesDict[gid];
     
-    if (!localGameRecord) {
-      console.log(`   ℹ️ Game ${gid} skipped: Not found in raw database file.`);
-      continue;
-    }
+    if (!localGameRecord) continue;
 
+    // Skip if explicitly marked legacy true
     if (localGameRecord.legacy === true) {
-      console.log(`   ℹ️ Game ${gid} skipped: Explicitly marked as an unresolvable legacy record.`);
       continue;
     }
 
@@ -103,17 +100,16 @@ async function runCleanBackfill() {
     if (localGameRecord.o && localGameRecord.o !== 0) teamIdsToScan.add(localGameRecord.o);
   }
 
-  console.log(`📋 Total clean or restructurable matches targeted for backfill: ${gameIdsToRepair.size}`);
+  console.log(`📋 Targeted restructurable matches in this season file: ${gameIdsToRepair.size}`);
   if (gameIdsToRepair.size === 0) {
-    console.log("ℹ️ No targetable rows left in this season's manifest block. Cleaning queue entry...");
-    delete reportQueue[targetSeasonId];
-    fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData, null, 2));
+    console.log("ℹ️ No targetable clean rows found in this season block.");
     return;
   }
 
   const activePlayerUuids = Object.keys(seasonFileContents.playerGames || {});
-  console.log(`👥 Associated player profiles isolated for live history sweep: ${activePlayerUuids.length}`);
+  console.log(`👥 Isolated player profiles for live history sweep: ${activePlayerUuids.length}`);
 
+  // Authenticate session token
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -177,7 +173,6 @@ async function runCleanBackfill() {
 
     const orgName = apiGame.home?.organisation?.name || apiGame.grade?.season?.competition?.name;
     if ((!localGame.url || localGame.url === 0) && orgName && apiGame.grade?.name) {
-      // FIXED: Restored complete string map definition layout paths
       localGame.url = buildGameUrl(gid, orgName, apiGame.grade.season.competition.name, apiGame.grade.season.name, apiGame.grade.name);
       deltas.urls++;
       updated = true;
@@ -269,18 +264,15 @@ async function runCleanBackfill() {
   console.log(`   [pts] Match Final Scores Restored: ${deltas.scores}`);
   console.log("-------------------------------------------------------------");
 
+  // Save changes ONLY to the targeted season file
   fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
-  
-  delete reportQueue[targetSeasonId];
-  reportData.totalGamesWithCoreOrVenueGaps = Object.values(reportQueue).reduce((acc, curr) => acc + (Object.keys(curr.games || {}).length), 0);
-  fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData, null, 2));
-  
-  console.log(`✓ Synchronized files. Remaining backfill backlog length: ${Object.keys(reportQueue).length}`);
+  console.log(`💾 Saved updates to database file: ${seasonFilePath}`);
 
+  // Git commit and push ONLY the specific season file
   try {
-    execSync(`git add ${seasonFilePath} ${MAIN_REPORT_PATH}`, { stdio: 'pipe' });
+    execSync(`git add ${seasonFilePath}`, { stdio: 'pipe' });
     if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
-      execSync(`git commit -m "Backfill Pass: Updated resolvable rows for season ${targetSeasonId}"`, { stdio: 'pipe' });
+      execSync(`git commit -m "Backfill Pass: Populated metrics for season ${targetSeasonId}"`, { stdio: 'pipe' });
       execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
       console.log("✓ Secure sync to origin verified.");
@@ -288,7 +280,7 @@ async function runCleanBackfill() {
       console.log("ℹ️ No file changes generated during this execution window.");
     }
   } catch (gitErr) {
-    console.log("⚠️ Git sync skipped: " + gitErr.message);
+    console.log("⚠️ Git sync skipped/failed: " + gitErr.message);
   }
 }
 
