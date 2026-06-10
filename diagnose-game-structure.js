@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// scripts/diagnose-game-structure.js
+// diagnose-game-structure.js
 'use strict';
 
 const fs   = require('fs');
