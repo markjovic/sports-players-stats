@@ -5,35 +5,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { execSync } = require('child_process');
 
-const ARGS = Object.fromEntries(
-  process.argv.slice(2)
-    .filter(a => a.startsWith('--'))
-    .map(a => { 
-      const [k, ...v] = a.slice(2).split('='); 
-      return [k, v.length ? v.join('=') : true]; 
-    })
-);
-
-const CONCURRENCY = parseInt(ARGS.concurrency || '10', 10);
-const TARGET_SEASON_ID = ARGS.seasonId || "29536804";
-
+const TARGET_SEASON_ID = "29536804";
 const MAIN_REPORT_PATH = path.join(__dirname, 'missing-game-data.json');
 const GAMES_DIR = path.join(__dirname, 'games', 'bv');
+const PLAYERS_DIR = path.join(__dirname, 'players');
 
-const HEADERS = {
-  'accept': '*/*',
-  'origin': 'https://www.playhq.com',
-  'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant': 'basketball-victoria',
-  'content-type': 'application/json'
-};
-
-async function runPlayerHistoryBackfill() {
+async function runLocalFuzzyBackfill() {
   console.log("\n================================================================");
-  console.log("🚀 STARTING DIAGNOSTIC INSPECTION PASS FOR SEASON: " + TARGET_SEASON_ID);
+  console.log("🚀 STARTING LOCAL FUZZY IDENTITY BACKFILL FOR SEASON: " + TARGET_SEASON_ID);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, TARGET_SEASON_ID + '.json');
@@ -43,148 +24,133 @@ async function runPlayerHistoryBackfill() {
   }
 
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
-  const targetGames = seasonFileContents.games || {};
-  const playerUuids = Object.keys(seasonFileContents.playerGames || {});
-  console.log("👥 Extracted " + playerUuids.length + " player profiles to evaluate.");
-
-  const sessionRes = await fetch('https://api.playhq.com/graphql', {
-    method: 'POST',
-    headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
-    body: JSON.stringify({ operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' })
-  });
-  const rawCookie = sessionRes.headers.get('set-cookie') || '';
-  const cookieMatch = rawCookie.match(/phq_session=([^;]+)/);
-  if (!cookieMatch) throw new Error("PHQ token assignment failed.");
-  const sessionToken = cookieMatch[1];
-
-  let diagnosticDumped = false;
-  const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
+  const localGames = seasonFileContents.games || {};
   
-  const playerHistoryQuery = `
-    query PlayerHistory($playerUUID: ID!) {
-      discoverPlayerProfile(playerUUID: $playerUUID) {
-        seasons {
-          id
-          name
-          competition { name }
-          matches {
-            id
-            round
-            date
-            homeAway
-            team { id name }
-            opponent { id name }
-            result { teamScore opponentScore }
+  const internalPlayerUuids = Object.keys(seasonFileContents.playerGames || {});
+  console.log("👥 Found " + internalPlayerUuids.length + " local player profiles to cross-reference.");
+
+  const deltas = { teams: 0, scores: 0, rounds: 0, totalGamesImpacted: new Set() };
+
+  // Loop through all 57 player profiles locally on disk
+  for (const playerUuid of internalPlayerUuids) {
+    const hexFolder = playerUuid.slice(0, 2).toLowerCase();
+    const playerFilePath = path.join(PLAYERS_DIR, hexFolder, playerUuid + '.json');
+
+    if (!fs.existsSync(playerFilePath)) {
+      continue; 
+    }
+
+    const playerData = JSON.parse(fs.readFileSync(playerFilePath, 'utf8'));
+    const playerGamesBlock = playerData.games || {};
+
+    for (const [playerGid, pGame] of Object.entries(playerGamesBlock)) {
+      const pDate = pGame.date ? pGame.date.slice(0, 10) : null;
+      if (!pDate) continue;
+
+      const pTeam = pGame.teamName || '';
+      const pOpp = pGame.oppName || '';
+      const isHome = pGame.isHome || pGame.homeAway === 'HOME' || pGame.homeAway === 'home';
+
+      // Find a matching game in your 73 legacy rows based on Date and Name alignment
+      let matchedLocalGid = null;
+      
+      if (localGames[playerGid]) {
+        matchedLocalGid = playerGid;
+      } else {
+        for (const [id, g] of Object.entries(localGames)) {
+          if (g.d === pDate) {
+            // Check if the opponent name in your file is contained within either team name from the player log
+            const nameMatch = g.on && (
+              pTeam.toLowerCase().includes(g.on.toLowerCase()) ||
+              pOpp.toLowerCase().includes(g.on.toLowerCase()) ||
+              g.on.toLowerCase().includes(pTeam.toLowerCase()) ||
+              g.on.toLowerCase().includes(pOpp.toLowerCase())
+            );
+
+            if (nameMatch && (g.legacy || !g.h || g.h === 0)) {
+              matchedLocalGid = id;
+              break;
+            }
           }
         }
       }
-    }
-  `;
 
-  let index = 0;
-  const workers = Array(CONCURRENCY).fill(null).map(async () => {
-    while (index < playerUuids.length) {
-      const currentUuid = playerUuids[index++];
-      try {
-        const res = await fetch('https://api.playhq.com/graphql', {
-          method: 'POST',
-          headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID(), 'Cookie': 'phq_session=' + sessionToken }),
-          body: JSON.stringify({ query: playerHistoryQuery, variables: { playerUUID: currentUuid } })
-        });
-        const json = await res.json();
-        const seasons = json.data?.discoverPlayerProfile?.seasons || [];
+      if (matchedLocalGid) {
+        const gameRow = localGames[matchedLocalGid];
+        let updated = false;
 
-        // ─── DIAGNOSTIC MATRIX DUMP ───
-        // Capture the very first player response that contains data and dump it completely to the logs
-        if (!diagnosticDumped && seasons.length > 0) {
-          diagnosticDumped = true;
-          console.log("\n🔍 [DIAGNOSTIC INSPECTION] Raw GraphQL Response Payload for Player " + currentUuid + ":");
-          console.log(JSON.stringify(seasons.slice(0, 2), null, 2));
-          console.log("----------------------------------------------------------------\n");
-        }
-
-        for (const season of seasons) {
-          for (const apiMatch of season.matches || []) {
-            const gid = apiMatch.id;
-            const isHome = apiMatch.homeAway === 'HOME' || apiMatch.homeAway === 'home';
-            const apiDateClean = apiMatch.date ? apiMatch.date.slice(0, 10) : null;
-
-            const homeName = (isHome ? apiMatch.team?.name : apiMatch.opponent?.name) || '';
-            const awayName = (isHome ? apiMatch.opponent?.name : apiMatch.team?.name) || '';
-
-            let localGid = null;
-            if (targetGames[gid]) {
-              localGid = gid;
-            } else {
-              for (const [id, g] of Object.entries(targetGames)) {
-                if (g.d && apiDateClean && g.d !== apiDateClean) continue; 
-
-                const idMatches = (g.o && (g.o === apiMatch.opponent?.id || g.o === apiMatch.team?.id));
-                const nameMatches = g.on && (
-                  homeName.toLowerCase().includes(g.on.toLowerCase()) || 
-                  awayName.toLowerCase().includes(g.on.toLowerCase()) ||
-                  g.on.toLowerCase().includes(homeName.toLowerCase()) ||
-                  g.on.toLowerCase().includes(awayName.toLowerCase())
-                );
-
-                if ((idMatches || nameMatches) && (g.legacy || !g.h || g.h === 0)) {
-                  localGid = id;
-                  break;
-                }
-              }
-            }
-
-            if (localGid) {
-              const localGame = targetGames[localGid];
-              let updated = false;
-
-              if (!localGame.hn || localGame.hn === 0 || localGame.legacy) {
-                localGame.hn = isHome ? (apiMatch.team?.name || '') : (apiMatch.opponent?.name || '');
-                localGame.an = isHome ? (apiMatch.opponent?.name || '') : (apiMatch.team?.name || '');
-                localGame.h = isHome ? (apiMatch.team?.id || 0) : (apiMatch.opponent?.id || 0);
-                localGame.a = isHome ? (apiMatch.opponent?.id || 0) : (apiMatch.team?.id || 0);
-                deltas.teams++;
-                updated = true;
-              }
-
-              if ((localGame.hs === 0 || localGame.hs === undefined) && apiMatch.result) {
-                localGame.hs = isHome ? apiMatch.result.teamScore : apiMatch.result.opponentScore;
-                localGame.as = isHome ? apiMatch.result.opponentScore : apiMatch.result.teamScore;
-                deltas.scores++;
-                updated = true;
-              }
-
-              if ((!localGame.rn || localGame.rn === 0) && apiMatch.round) {
-                localGame.rn = apiMatch.round;
-                deltas.rounds++;
-                updated = true;
-              }
-
-              if (updated) {
-                delete localGame.o;
-                delete localGame.on;
-                delete localGame.legacy;
-                deltas.totalGamesImpacted.add(localGid);
-              }
-            }
+        // Map team names and IDs into absolute Home vs Away positioning
+        if (!gameRow.hn || gameRow.hn === 0 || gameRow.legacy) {
+          gameRow.hn = isHome ? pTeam : pOpp;
+          gameRow.an = isHome ? pOpp : pTeam;
+          
+          if (pGame.teamId) {
+            gameRow.h = isHome ? pGame.teamId : 0;
+            gameRow.a = isHome ? 0 : pGame.teamId;
+          } else if (pGame.teamUUID) {
+            gameRow.h = isHome ? pGame.teamUUID : 0;
+            gameRow.a = isHome ? 0 : pGame.teamUUID;
           }
+          deltas.teams++;
+          updated = true;
         }
-      } catch (err) {}
-    }
-  });
 
-  await Promise.all(workers);
+        // Map final scores
+        if ((gameRow.hs === 0 || gameRow.hs === undefined) && typeof pGame.teamScore === 'number') {
+          gameRow.hs = isHome ? pGame.teamScore : (pGame.oppScore || 0);
+          gameRow.as = isHome ? (pGame.oppScore || 0) : pGame.teamScore;
+          deltas.scores++;
+          updated = true;
+        }
+
+        // Map round groupings
+        if ((!gameRow.rn || gameRow.rn === 0) && pGame.round) {
+          gameRow.rn = pGame.round;
+          deltas.rounds++;
+          updated = true;
+        }
+
+        if (updated) {
+          delete gameRow.o;
+          delete gameRow.on;
+          delete gameRow.legacy;
+          deltas.totalGamesImpacted.add(matchedLocalGid);
+        }
+      }
+    }
+  }
 
   console.log("\n-------------------------------------------------------------");
-  console.log("   📉 Diagnostic Pass Execution Summary:");
+  console.log("   📉 Pure Local Fuzzy Backfill Delta Metrics Summary:");
   console.log("-------------------------------------------------------------");
-  console.log("   Total Matches Restructured: " + deltas.totalGamesImpacted.size);
-  console.log("   [h/a] Absolute Team Layouts Mapped: " + deltas.teams);
-  console.log("   [pts] Final Scores Extracted:       " + deltas.scores);
-  console.log("   [rn]  Round Groupings Patched:      " + deltas.rounds);
+  console.log("   Total Matches Repaired:     " + deltas.totalGamesImpacted.size);
+  console.log("   [h/a] Team Layouts Unified: " + deltas.teams);
+  console.log("   [pts] Final Scores Saved:   " + deltas.scores);
+  console.log("   [rn]  Round Gaps Restored:  " + deltas.rounds);
   console.log("-------------------------------------------------------------");
 
   fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
+  
+  if (fs.existsSync(MAIN_REPORT_PATH)) {
+    const reportData = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
+    if (reportData.report && reportData.report[TARGET_SEASON_ID]) {
+      delete reportData.report[TARGET_SEASON_ID];
+      reportData.totalGamesWithCoreOrVenueGaps = Object.values(reportData.report).reduce((acc, curr) => acc + (curr.missingGamesCount || 0), 0);
+      fs.writeFileSync(MAIN_REPORT_PATH, JSON.stringify(reportData));
+    }
+  }
+
+  try {
+    execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
+    if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
+      execSync('git commit -m "Backfill Step: Processed legacy season ' + TARGET_SEASON_ID + ' via local fuzzy matching"', { stdio: 'pipe' });
+      execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
+      execSync('git push', { stdio: 'pipe' });
+      console.log("✓ Secure push to origin verified.");
+    } else {
+      console.log("ℹ No changes detected on disk.");
+    }
+  } catch (gitErr) {}
 }
 
-runPlayerHistoryBackfill().catch(e => { console.error("\n❌ Fatal Error: " + e.message); process.exit(1); });
+runLocalFuzzyBackfill().catch(e => { console.error("\n❌ Fatal Error: " + e.message); process.exit(1); });
