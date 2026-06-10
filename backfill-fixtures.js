@@ -33,7 +33,7 @@ const HEADERS = {
 
 async function runPlayerHistoryBackfill() {
   console.log("\n================================================================");
-  console.log("🚀 STARTING IDENTITY-MATCHED PLAYER SWEEP FOR SEASON: " + TARGET_SEASON_ID);
+  console.log("🚀 STARTING LOOSE LOOPS LOOSE EXTRACTION FOR SEASON: " + TARGET_SEASON_ID);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, TARGET_SEASON_ID + '.json');
@@ -94,21 +94,35 @@ async function runPlayerHistoryBackfill() {
           for (const apiMatch of season.matches || []) {
             const gid = apiMatch.id;
             const isHome = apiMatch.homeAway === 'HOME' || apiMatch.homeAway === 'home';
+            const apiDateClean = apiMatch.date ? apiMatch.date.slice(0, 10) : null;
 
-            // ─── LOOKUP RESOLUTION TO BYPASS SHIFTED PLAYER IDS ───
+            const homeName = (isHome ? apiMatch.team?.name : apiMatch.opponent?.name) || '';
+            const awayName = (isHome ? apiMatch.opponent?.name : apiMatch.team?.name) || '';
+
+            // ─── LOOSE PATTERN RESILIENT INTERSECTION LOOKUP ───
             let localGid = null;
             if (targetGames[gid]) {
               localGid = gid;
-            } else if (apiMatch.date) {
-              const apiDateClean = apiMatch.date.slice(0, 10);
+            } else {
               for (const [id, g] of Object.entries(targetGames)) {
-                if (g.d === apiDateClean) {
-                  const hName = isHome ? apiMatch.team?.name : apiMatch.opponent?.name;
-                  const aName = isHome ? apiMatch.opponent?.name : apiMatch.team?.name;
-                  if (g.on === hName || g.on === aName || g.o === apiMatch.opponent?.id || g.o === apiMatch.team?.id) {
-                    localGid = id;
-                    break;
-                  }
+                // Step 1: If local row has a date string, verify it aligns
+                if (g.d && apiDateClean && g.d !== apiDateClean) {
+                  continue; 
+                }
+
+                // Step 2: Loose verification of team indicators (matching IDs or partial string pieces)
+                const idMatches = (g.o && (g.o === apiMatch.opponent?.id || g.o === apiMatch.team?.id));
+                
+                const nameMatches = g.on && (
+                  homeName.toLowerCase().includes(g.on.toLowerCase()) || 
+                  awayName.toLowerCase().includes(g.on.toLowerCase()) ||
+                  g.on.toLowerCase().includes(homeName.toLowerCase()) ||
+                  g.on.toLowerCase().includes(awayName.toLowerCase())
+                );
+
+                if ((idMatches || nameMatches) && (g.legacy || !g.h || g.h === 0)) {
+                  localGid = id;
+                  break;
                 }
               }
             }
@@ -177,7 +191,7 @@ async function runPlayerHistoryBackfill() {
   try {
     execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
     if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
-      execSync('git commit -m "Backfill Step: Reconstructed season ' + TARGET_SEASON_ID + ' via aligned player histories"', { stdio: 'pipe' });
+      execSync('git commit -m "Backfill Step: Reconstructed season ' + TARGET_SEASON_ID + ' via pattern aligned profiles"', { stdio: 'pipe' });
       execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
       console.log("✓ Secure push to origin verified.");
