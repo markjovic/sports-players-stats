@@ -1,0 +1,22 @@
+# .github/workflows/diagnose-game-structure.yml
+name: Diagnose Game Structure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run diagnostic
+        run: node scripts/diagnose-game-structure.js
