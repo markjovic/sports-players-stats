@@ -19,4 +19,4 @@ jobs:
           node-version: '20'
 
       - name: Run diagnostic
-        run: node scripts/diagnose-game-structure.js
+        run: node diagnose-game-structure.js
