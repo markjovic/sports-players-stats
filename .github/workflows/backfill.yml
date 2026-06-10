@@ -1,9 +1,7 @@
-name: Infinite Backfill Sweep
+name: Manual Backfill Sweep
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/30 * * * *' # Runs every 30 minutes
 
 jobs:
   run-sweep:
@@ -19,27 +17,24 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run Infinite Backfill Loop
+      - name: Run Backfill Loop
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Run the script. If exit code is 101, it means 'no changes found', 
-          # so we just continue to the next loop iteration.
+          # Runs 20 seasons per manual trigger
           for i in {1..20}; do
             echo "Starting iteration $i..."
             node backfill-fixtures.js
             EXIT_CODE=$?
             
             if [ $EXIT_CODE -eq 0 ]; then
-              echo "Script finished successfully with changes."
+              echo "Changes committed and pushed."
             elif [ $EXIT_CODE -eq 101 ]; then
-              echo "Script signaled 101: No changes found, skipping season."
+              echo "No changes in this season, moving to next."
             else
-              echo "Script failed with code $EXIT_CODE. Stopping."
+              echo "Failure detected at iteration $i. Stopping."
               exit $EXIT_CODE
             fi
-            
-            # Brief pause to avoid API rate limits
             sleep 5
           done
