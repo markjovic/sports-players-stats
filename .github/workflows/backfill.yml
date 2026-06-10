@@ -1,46 +1,45 @@
-# .github/workflows/backfill.yml
-name: Manual Backfill Fixtures Engine
+name: Infinite Backfill Sweep
 
 on:
-  workflow_dispatch: # Triggered exclusively by you via the GitHub UI panel
-    inputs:
-      seasonId:
-        description: 'Optional isolated target Season ID to test. (Leave completely blank to execute against full backlog)'
-        required: false
-        default: ''
-      concurrency:
-        description: 'Network throttling concurrent call thread density rate limit'
-        required: true
-        default: '12'
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *' # Runs every 30 minutes
 
 jobs:
-  run-backfill:
+  run-sweep:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout Active Code Canvas Tree
+      - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Setup Node Environment Setup Layout
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Initialize Git Identity Config Configuration Mapping Properties
+      - name: Run Infinite Backfill Loop
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Execute Targeted Backfill Pass
-        run: |
-          if [ -n "${{ github.event.inputs.seasonId }}" ]; then
-            echo "Running targeted test execution string parameters..."
-            node backfill-fixtures.js --concurrency=${{ github.event.inputs.concurrency }} --seasonId=${{ github.event.inputs.seasonId }}
-          else
-            echo "Running infinite loop sweep across backlog..."
-            node backfill-fixtures.js --concurrency=${{ github.event.inputs.concurrency }}
-          fi
+          
+          # Run the script. If exit code is 101, it means 'no changes found', 
+          # so we just continue to the next loop iteration.
+          for i in {1..20}; do
+            echo "Starting iteration $i..."
+            node backfill-fixtures.js
+            EXIT_CODE=$?
+            
+            if [ $EXIT_CODE -eq 0 ]; then
+              echo "Script finished successfully with changes."
+            elif [ $EXIT_CODE -eq 101 ]; then
+              echo "Script signaled 101: No changes found, skipping season."
+            else
+              echo "Script failed with code $EXIT_CODE. Stopping."
+              exit $EXIT_CODE
+            fi
+            
+            # Brief pause to avoid API rate limits
+            sleep 5
+          done
