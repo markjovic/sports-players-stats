@@ -20,8 +20,6 @@ const ARGS = Object.fromEntries(
 const TARGET_SEASON_ID = ARGS.seasonId || "29536804";
 const MAIN_REPORT_PATH = path.join(__dirname, 'missing-game-data.json');
 const GAMES_DIR = path.join(__dirname, 'games', 'bv');
-
-// Hard-targeted Grade ID extracted directly from Thomas Old's player profile
 const TARGET_GRADE_ID = "462da517"; 
 
 const HEADERS = {
@@ -46,8 +44,7 @@ function buildGameUrl(gameId, orgName, compName, seasonName, gradeName) {
 
 async function runGradeBackfill() {
   console.log("\n================================================================");
-  console.log("🚀 INITIALIZING MASTER GRADE NETWORK BACKFILL FOR SEASON: " + TARGET_SEASON_ID);
-  console.log("🚀 TARGETING GRADE ID: " + TARGET_GRADE_ID);
+  console.log("🚀 RUNNING FORCE-IDENTITY MATCH PASS FOR SEASON: " + TARGET_SEASON_ID);
   console.log("================================================================");
 
   const seasonFilePath = path.join(GAMES_DIR, TARGET_SEASON_ID + '.json');
@@ -59,7 +56,6 @@ async function runGradeBackfill() {
   const seasonFileContents = JSON.parse(fs.readFileSync(seasonFilePath, 'utf8'));
   const localGames = seasonFileContents.games || {};
 
-  // Authenticate session token cookie upfront
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -72,7 +68,6 @@ async function runGradeBackfill() {
 
   const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
 
-  // PlayHQ Public Grade Master Fixture Query Definition
   const gradeQuery = `
     query GradeFixture($gradeID: ID!) {
       discoverGradeFixture(gradeID: $gradeID) {
@@ -95,8 +90,6 @@ async function runGradeBackfill() {
     }
   `;
 
-  console.log("🌐 Requesting full grade fixture schedule from PlayHQ API gateway...");
-  
   try {
     const res = await fetch('https://api.playhq.com/graphql', {
       method: 'POST',
@@ -106,29 +99,24 @@ async function runGradeBackfill() {
     const json = await res.json();
     const rounds = json.data?.discoverGradeFixture || [];
 
-    console.log("✅ Received schedule payload. Processing rounds...");
-
     for (const round of rounds) {
       const roundName = round.name;
       const apiGames = round.fixture?.games || [];
 
       for (const apiGame of apiGames) {
         const gid = apiGame.id;
-        const apiDate = apiGame.allocation?.dateTimeList?.[0]?.date?.slice(0, 10);
+        const hName = apiGame.home?.name || '';
+        const aName = apiGame.away?.name || '';
 
-        // Multi-tier intersection check: Match by strict ID or by Date + Team Name alignment
         let localGid = null;
         if (localGames[gid]) {
           localGid = gid;
-        } else if (apiDate) {
+        } else {
+          // Force match solely based on matching text indicators in team names
           for (const [id, g] of Object.entries(localGames)) {
-            if (g.d === apiDate) {
-              const hName = apiGame.home?.name || '';
-              const aName = apiGame.away?.name || '';
-              if (g.on && (hName.toLowerCase().includes(g.on.toLowerCase()) || aName.toLowerCase().includes(g.on.toLowerCase()))) {
-                localGid = id;
-                break;
-              }
+            if (g.on && (hName.toLowerCase().includes(g.on.toLowerCase()) || aName.toLowerCase().includes(g.on.toLowerCase()))) {
+              localGid = id;
+              break;
             }
           }
         }
@@ -162,7 +150,7 @@ async function runGradeBackfill() {
           const alloc = apiGame.allocation;
           if (alloc) {
             if (alloc.dateTimeList && alloc.dateTimeList[0]) {
-              localGame.d = alloc.dateTimeList[0].date.slice(0, 10);
+              localGame.d = alloc.dateTimeList[0].date.slice(0, 10); // Updates old dates with true layout values
               localGame.t = alloc.dateTimeList[0].time.slice(0, 5);
               deltas.venues++;
               updated = true;
@@ -194,17 +182,16 @@ async function runGradeBackfill() {
       }
     }
   } catch (err) {
-    console.error("❌ Network Query Error: " + err.message);
+    console.error("❌ Error: " + err.message);
   }
 
   console.log("\n-------------------------------------------------------------");
-  console.log("   📉 Grade Fixture Backfill Delta Metrics Summary:");
+  console.log("   📉 Force Backfill Delta Metrics Summary:");
   console.log("-------------------------------------------------------------");
   console.log("   Total Matches Restructured: " + deltas.totalGamesImpacted.size);
   console.log("   [h/a] Absolute Team Layouts Mapped: " + deltas.teams);
   console.log("   [pts] Final Scores Extracted:       " + deltas.scores);
   console.log("   [rn]  Round Groupings Patched:      " + deltas.rounds);
-  console.log("   [loc] Venue Elements Repaired:      " + deltas.venues);
   console.log("-------------------------------------------------------------");
 
   fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
@@ -221,7 +208,7 @@ async function runGradeBackfill() {
   try {
     execSync('git add ' + seasonFilePath + ' ' + MAIN_REPORT_PATH, { stdio: 'pipe' });
     if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
-      execSync('git commit -m "Backfill Step: Reconstructed season ' + TARGET_SEASON_ID + ' via grade master fixture"', { stdio: 'pipe' });
+      execSync('git commit -m "Backfill Step: Forced team alignment mapping for season ' + TARGET_SEASON_ID + '"', { stdio: 'pipe' });
       execSync('git pull --rebase=false -X ours', { stdio: 'pipe' });
       execSync('git push', { stdio: 'pipe' });
       console.log("✓ Secure push to origin verified.");
