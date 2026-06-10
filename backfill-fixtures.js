@@ -124,7 +124,13 @@ async function runCleanBackfill() {
 
   function patchLocalRecord(gid, apiGame, roundName) {
     const localGame = localGamesDict[gid];
-    if (!localGame) return;
+    if (!localGame) {
+       console.log(`      ⚠️ ID Mismatch: Found ${gid} in API but not in local file.`);
+       return;
+    }
+    
+    // DEBUG: Print the fields we are comparing
+    console.log(`      🔍 Comparing local game ${gid} (Date: ${localGame.d}) with API game (Date: ${apiGame.allocation?.dateTimeList?.[0]?.date})`);
 
     let updated = false;
     const isHome = apiGame.homeAway ? (apiGame.homeAway === 'HOME' || apiGame.homeAway === 'home') : true;
