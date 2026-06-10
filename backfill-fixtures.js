@@ -49,7 +49,6 @@ async function runCleanBackfill() {
     process.exit(1);
   }
 
-  // We only READ the manifest to grab a season ID to work on
   const reportData = JSON.parse(fs.readFileSync(MAIN_REPORT_PATH, 'utf8'));
   const reportQueue = reportData.report || {};
   
@@ -60,7 +59,6 @@ async function runCleanBackfill() {
       console.log("📚 Backlog manifest queue is empty. Task complete!");
       return;
     }
-    // Grabs the next season in line
     targetSeasonId = keys[0];
   }
 
@@ -70,7 +68,7 @@ async function runCleanBackfill() {
 
   const seasonFilePath = path.join(GAMES_DIR, targetSeasonId + '.json');
   if (!fs.existsSync(seasonFilePath)) {
-    console.log(`⚠️ Season JSON file missing on disk: ${seasonFilePath}. Moving on.`);
+    console.log(`⚠️ Season JSON file missing on disk: ${seasonFilePath}. Moving to next index.`);
     return;
   }
 
@@ -85,16 +83,10 @@ async function runCleanBackfill() {
 
   for (const gid of Object.keys(manifestGamesTracking)) {
     const localGameRecord = localGamesDict[gid];
-    
     if (!localGameRecord) continue;
-
-    // Skip if explicitly marked legacy true
-    if (localGameRecord.legacy === true) {
-      continue;
-    }
+    if (localGameRecord.legacy === true) continue;
 
     gameIdsToRepair.add(gid);
-    
     if (localGameRecord.h && localGameRecord.h !== 0) teamIdsToScan.add(localGameRecord.h);
     if (localGameRecord.a && localGameRecord.a !== 0) teamIdsToScan.add(localGameRecord.a);
     if (localGameRecord.o && localGameRecord.o !== 0) teamIdsToScan.add(localGameRecord.o);
@@ -109,7 +101,6 @@ async function runCleanBackfill() {
   const activePlayerUuids = Object.keys(seasonFileContents.playerGames || {});
   console.log(`👥 Isolated player profiles for live history sweep: ${activePlayerUuids.length}`);
 
-  // Authenticate session token
   const sessionRes = await fetch('https://api.playhq.com/graphql', {
     method: 'POST',
     headers: Object.assign({}, HEADERS, { 'request-id': crypto.randomUUID() }),
@@ -121,16 +112,11 @@ async function runCleanBackfill() {
   const sessionToken = cookieMatch[1];
 
   const deltas = { urls: 0, rounds: 0, teams: 0, venues: 0, scores: 0, totalGamesImpacted: new Set() };
+  let totalApiMatchesInspected = 0;
 
   function patchLocalRecord(gid, apiGame, roundName) {
     const localGame = localGamesDict[gid];
-    if (!localGame) {
-       console.log(`      ⚠️ ID Mismatch: Found ${gid} in API but not in local file.`);
-       return;
-    }
-    
-    // DEBUG: Print the fields we are comparing
-    console.log(`      🔍 Comparing local game ${gid} (Date: ${localGame.d}) with API game (Date: ${apiGame.allocation?.dateTimeList?.[0]?.date})`);
+    if (!localGame) return;
 
     let updated = false;
     const isHome = apiGame.homeAway ? (apiGame.homeAway === 'HOME' || apiGame.homeAway === 'home') : true;
@@ -192,7 +178,7 @@ async function runCleanBackfill() {
     }
   }
 
-  // PASS 1: Live Player Profile Query Sweep
+  // PASS 1: Player History Loop
   if (activePlayerUuids.length > 0) {
     console.log("\n🌐 [PASS 1] Executing Network Player Career History Inspection Loop...");
     const playerQuery = `query PlayerHistory($playerUUID: ID!) { discoverPlayerProfile(playerUUID: $playerUUID) { seasons { matches { id round homeAway team { id name } opponent { id name } result { teamScore opponentScore } } } } }`;
@@ -212,6 +198,7 @@ async function runCleanBackfill() {
 
           for (const s of seasons) {
             for (const match of s.matches || []) {
+              totalApiMatchesInspected++;
               if (gameIdsToRepair.has(match.id)) {
                 patchLocalRecord(match.id, match, match.round);
               }
@@ -227,7 +214,7 @@ async function runCleanBackfill() {
     gameIdsToRepair.delete(gid);
   }
 
-  // PASS 2: Team Fixture Query Sweep Fallback
+  // PASS 2: Team Fixture Fallback
   const teamList = Array.from(teamIdsToScan);
   if (gameIdsToRepair.size > 0 && teamList.length > 0) {
     console.log(`\n🌐 [PASS 2] ${gameIdsToRepair.size} games still open. Fallback to Team Fixture Endpoint queries...`);
@@ -248,6 +235,7 @@ async function runCleanBackfill() {
 
           for (const round of rounds) {
             for (const apiGame of round.fixture?.games || []) {
+              totalApiMatchesInspected++;
               if (gameIdsToRepair.has(apiGame.id)) {
                 patchLocalRecord(apiGame.id, apiGame, round.name);
               }
@@ -260,6 +248,7 @@ async function runCleanBackfill() {
   }
 
   console.log("\n-------------------------------------------------------------");
+  console.log(`🔍 Total Raw API Match Objects Scanned and Checked: ${totalApiMatchesInspected}`);
   console.log("📉 Clean Backfill Execution Results Summary:");
   console.log("-------------------------------------------------------------");
   console.log(`   Total Non-Legacy Matches Modified: ${deltas.totalGamesImpacted.size}`);
@@ -270,11 +259,12 @@ async function runCleanBackfill() {
   console.log(`   [pts] Match Final Scores Restored: ${deltas.scores}`);
   console.log("-------------------------------------------------------------");
 
-  // Save changes ONLY to the targeted season file
+  // Save changes back to the individual database layout file
   fs.writeFileSync(seasonFilePath, JSON.stringify(seasonFileContents, null, 2));
-  console.log(`💾 Saved updates to database file: ${seasonFilePath}`);
+  console.log(`💾 Saved normalized updates to database file: ${seasonFilePath}`);
 
-  // Git commit and push ONLY the specific season file
+  // CORE ADVANCEMENT GATE: If zero elements modified, throw a targeted failure status or 
+  // explicitly print an unpatchable token warning so your runner loop steps forward.
   try {
     execSync(`git add ${seasonFilePath}`, { stdio: 'pipe' });
     if (execSync('git diff --staged --name-only', { stdio: 'pipe' }).toString().trim()) {
@@ -283,9 +273,12 @@ async function runCleanBackfill() {
       execSync('git push', { stdio: 'pipe' });
       console.log("✓ Secure sync to origin verified.");
     } else {
-      console.log("ℹ️ No file changes generated during this execution window.");
+      console.log("ℹ️ No operational file changes generated. Exiting with a shift indicator flag.");
+      // CRITICAL OVERRIDE: Force exit code 101 to tell your shell wrapper to advance past this season id
+      process.exit(101);
     }
   } catch (gitErr) {
+    if (process.exitCode === 101) process.exit(101);
     console.log("⚠️ Git sync skipped/failed: " + gitErr.message);
   }
 }
