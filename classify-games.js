@@ -74,17 +74,32 @@ async function getSession(force = false) {
       { operationName: 'ProfileSearch', variables: { fullName: 'a' },
         query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
     ];
-    let res;
-    for (const body of cookieQueries) {
-      res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
-        body: JSON.stringify(body),
-      });
-      if (res.headers.get('set-cookie')) { console.log(`  ✓ Cookie via ${body.operationName}`); break; }
+    // Retry the entire cookie fetch up to 5 times with backoff.
+    // PlayHQ occasionally returns no Set-Cookie on cold requests.
+    let raw = null;
+    for (let attempt = 1; attempt <= 5 && !raw; attempt++) {
+      if (attempt > 1) {
+        console.log(`  ↻ Cookie attempt ${attempt}/5 (waiting ${attempt * 3}s)...`);
+        await new Promise(r => setTimeout(r, attempt * 3000));
+      }
+      for (const body of cookieQueries) {
+        let res;
+        try {
+          res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
+            body: JSON.stringify(body),
+          });
+        } catch (e) { continue; }
+        const candidate = res.headers.get('set-cookie');
+        if (candidate) {
+          console.log(`  ✓ Cookie via ${body.operationName} (attempt ${attempt})`);
+          raw = candidate;
+          break;
+        }
+      }
     }
-    const raw = res.headers.get('set-cookie');
-    if (!raw) throw new Error('No Set-Cookie from API');
+    if (!raw) throw new Error('No Set-Cookie from API after 5 attempts');
     const sessionMatch = raw.match(/phq_session=([^;]+)/);
     if (!sessionMatch) throw new Error('phq_session not found');
     const token  = sessionMatch[1];
