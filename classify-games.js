@@ -785,7 +785,13 @@ async function main() {
     const playerGames = sg.playerGames || {};
 
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      const isHiddenGap = game.hidden && (!game.h || !game.rn);
+      // isHiddenGap: hidden game missing structural metadata AND not yet exhausted.
+      // noProfile means all candidates were tried — exclude from gap handling.
+      const noProfileFresh = game.noProfile && (
+        game.noProfile === true ||
+        (Date.now() - new Date(game.noProfile).getTime()) < 30 * 24 * 60 * 60 * 1000
+      );
+      const isHiddenGap = game.hidden && (!game.h || !game.rn) && !noProfileFresh;
 
       // Legacy and hidden-gap games bypass the done-set.
       if (prog.done.has(gameId) && !game.legacy && !isHiddenGap) continue;
