@@ -99,6 +99,7 @@ let nullScore = 0, nullScore_active = 0, nullScore_locked = 0;
 let nullScore_final = 0, nullScore_upcoming = 0, nullScore_nostatus = 0;
 // Team field structure counters
 let teamHA = 0, teamOOnly = 0, teamBoth = 0, teamNeither = 0;
+let teamT1Only = 0, teamT1T2 = 0;
 // Has s/sn (source team — post-normalise)
 let hasSField = 0;
 const otherStatuses = {};
@@ -146,12 +147,15 @@ if (fs.existsSync(GAMES_DIR)) {
       if (g.s)           hasSField++;
 
       // Team field structure
-      const hasH = !!g.h;
-      const hasO = !!g.o;
-      if      (hasH && hasO)  teamBoth++;
-      else if (hasH)          teamHA++;
-      else if (hasO)          teamOOnly++;
-      else                    teamNeither++;
+      const hasH  = !!g.h;
+      const hasO  = !!g.o;
+      const hasT1 = !!g.t1;
+      if      (hasH && hasO)      teamBoth++;
+      else if (hasH)              teamHA++;
+      else if (hasO)              teamOOnly++;
+      else if (hasT1 && !!g.t2)  teamT1T2++;
+      else if (hasT1)             teamT1Only++;
+      else                        teamNeither++;
 
       const st = g.st || '';
       if      (st === 'FINAL')     stFinal++;
