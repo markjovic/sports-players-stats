@@ -729,6 +729,9 @@ function needsProbe(game, isLocked) {
   // noVenue is a timestamp set when discoverGame returned null for venue.
   // Retry after 30 days in case the grade becomes un-hidden.
   if (game.hidden && !game.vid) {
+    // If noProfile is set, we've already exhausted all routes — venue is also unrecoverable.
+    // Treat noProfile as implicit noVenue for hidden games (they never have venue anyway).
+    if (game.noProfile) return false;
     if (!game.noVenue) return true;
     if (game.noVenue === true) return false;
     const venueAge = Date.now() - new Date(game.noVenue).getTime();
