@@ -191,14 +191,16 @@ if (fs.existsSync(GAMES_DIR)) {
 
 // Subtract collisions from legacy to avoid double-counting in coverage calculations
 const legacyForCalc      = legacy - flagCollisions;
-const noScoreByNature    = forfeit + legacyForCalc + profileOnly + noProfile + bye + postponed;
+// noProfile games are hidden games WITH scores — do not exclude from score eligible
+const noScoreByNature    = forfeit + legacyForCalc + profileOnly + bye + postponed;
 const eligibleForScore   = total - stUpcoming - noScoreByNature;
 const scored_pct         = eligibleForScore > 0 ? ((scored / eligibleForScore) * 100).toFixed(1) : 'N/A';
 const scoreGap           = eligibleForScore - scored;
 
 // For venue: hidden games never have venue, so they're out of eligible pool
 // Forfeits may have a venue so they stay in — gap will reflect forfeits without venue
-const noVenueByNature    = hidden + legacyForCalc + profileOnly + noProfile + bye + postponed;
+// noProfile and noVenue are subsets of hidden — hidden already excludes them from venue eligible
+const noVenueByNature    = hidden + legacyForCalc + profileOnly + bye + postponed;
 // noVenue games are hidden games where venue was attempted but not found — already in hidden count
 const eligibleForVenue   = total - stUpcoming - noVenueByNature;
 const missingVenue       = eligibleForVenue - withVenue;
