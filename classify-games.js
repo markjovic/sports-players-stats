@@ -722,8 +722,9 @@ function needsProbe(game, isLocked) {
   // Legacy — may have been flagged before three-step rule; re-probe for profileOnly
   if (game.legacy) return true;
 
-  // Hidden games without venue in locked seasons — try discoverGame for venue recovery
-  if (game.hidden && isLocked && !game.vid) return true;
+  // Hidden games without venue in locked seasons — try discoverGame for venue recovery.
+  // Respect noProfile — if structural data is unresolvable, don't re-probe for venue either.
+  if (game.hidden && isLocked && !game.vid && !game.noProfile) return true;
 
   // profileOnly — already has best available data, do not re-probe
   // (re-probing would just call publicProfileStatistics again and get same result)
