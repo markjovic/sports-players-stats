@@ -16,7 +16,7 @@ const ARGS = Object.fromEntries(
 
 const TENANT        = ARGS.tenant      || 'bv';
 const TENANT_FULL   = { bv: 'basketball-victoria' }[TENANT] || TENANT;
-const CONCURRENCY   = parseInt(ARGS.concurrency || '80', 10);
+const CONCURRENCY   = parseInt(ARGS.concurrency  || '80',  10);
 const TARGET_SEASON = ARGS.season      || null;
 const SAVE_EVERY    = parseInt(ARGS['save-every'] || '500', 10);
 
@@ -25,6 +25,7 @@ const SAVE_EVERY    = parseInt(ARGS['save-every'] || '500', 10);
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
 const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
+const PLAYERS_DIR   = path.join(__dirname, 'players');
 const VENUE_DIR     = path.join(__dirname, 'venue-lookup');
 const INDEX_FILE    = path.join(__dirname, 'sports-index.json');
 const COOKIE_FILE   = path.join(__dirname, 'classify-games-cookie.json');
@@ -49,9 +50,8 @@ const HEADERS_SPECTATOR = {
   'content-type': 'application/json',
 };
 
-// ─── Statuses that require re-probe even in locked seasons ────────────────────
+// ─── Non-terminal statuses — re-probe regardless of lock state ────────────────
 
-// These are non-terminal — game was in-flight when season was locked
 const NONTERMINAL_STATUSES = new Set(['LIVE', 'IN_PROGRESS', 'PRE_GAME', 'PENDING']);
 
 // ─── Session ──────────────────────────────────────────────────────────────────
@@ -113,7 +113,7 @@ const Q_DISCOVER = `query DiscoverGame($gameId: ID!) {
   discoverGame(gameID: $gameId) {
     id date
     status { name value }
-    round { id name }
+    round { id name isFinalsRound }
     home { ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } } }
     away { ... on DiscoverTeam { id name logo { sizes { url dimensions { width } } } } }
     result {
@@ -152,14 +152,42 @@ const Q_SPECTATOR = `query Game($id: ID!) {
   }
 }`;
 
+// publicProfileStatistics — full game-level breakdown including home/away/round
+// Used as Step 3 when both discoverGame and spectator return null.
+// Returns per-game home/away IDs, round name, isFinalsRound, and this player's stats.
+const Q_PROFILE_STATS = `query ProfileSeasonStatistics($profileID: ID!) {
+  publicProfileStatistics(profileID: $profileID) {
+    seasonStatistics {
+      statistics {
+        season { id }
+        teamStatistics {
+          team { ... on DiscoverTeam { id name } }
+          gradeStatistics {
+            grade { id name }
+            gameStatistics {
+              game {
+                id
+                round { name isFinalsRound }
+                home { ... on DiscoverTeam { id name } }
+                away { ... on DiscoverTeam { id name } }
+              }
+              statistics { count details { value } }
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
 // ─── Fetch helpers ────────────────────────────────────────────────────────────
 
 async function fetchDiscover(gameId, session) {
   try {
     const res = await fetch(API_URL, {
-      method: 'POST',
+      method:  'POST',
       headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': session.sessionCookie },
-      body: JSON.stringify({ operationName: 'DiscoverGame', variables: { gameId }, query: Q_DISCOVER }),
+      body:    JSON.stringify({ operationName: 'DiscoverGame', variables: { gameId }, query: Q_DISCOVER }),
     });
     if (res.status === 401 || res.status === 403 || res.status === 429) return { _auth: true };
     if (!res.ok) return { _transient: true };
@@ -169,14 +197,20 @@ async function fetchDiscover(gameId, session) {
   } catch (e) { return { _transient: true }; }
 }
 
+// Spectator 403 handling:
+// A 403 from spectator means the cookie is not accepted by that endpoint —
+// either the allCookies string is missing phq_sub/phq_tier, or the session
+// has been invalidated. On 403 we attempt ONE refresh then return _notfound
+// (skip this game) rather than retrying indefinitely. Spectator 403s should
+// NOT loop — hammering a 403 risks IP block. Rate 429s get the same treatment.
 async function fetchSpectator(gameId, session) {
   try {
     const res = await fetch(SPECTATOR_URL, {
-      method: 'POST',
+      method:  'POST',
       headers: { ...HEADERS_SPECTATOR, 'request-id': crypto.randomUUID(), 'Cookie': session.allCookies },
-      body: JSON.stringify({ operationName: 'Game', variables: { id: String(gameId) }, query: Q_SPECTATOR }),
+      body:    JSON.stringify({ operationName: 'Game', variables: { id: String(gameId) }, query: Q_SPECTATOR }),
     });
-    if (res.status === 401 || res.status === 403 || res.status === 429) return { _auth: true };
+    if (res.status === 401 || res.status === 403 || res.status === 429) return { _spectatorAuth: true };
     if (!res.ok) return { _transient: true };
     const json = await res.json();
     if (json.errors) {
@@ -184,6 +218,21 @@ async function fetchSpectator(gameId, session) {
       if (msg.includes('could not be found') || msg.includes('not electronically scored')) return { _notfound: true };
       return { _graphql: true };
     }
+    return json;
+  } catch (e) { return { _transient: true }; }
+}
+
+async function fetchProfileStats(profileId, session) {
+  try {
+    const res = await fetch(API_URL, {
+      method:  'POST',
+      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': session.sessionCookie },
+      body:    JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: profileId }, query: Q_PROFILE_STATS }),
+    });
+    if (res.status === 401 || res.status === 403 || res.status === 429) return { _auth: true };
+    if (!res.ok) return { _transient: true };
+    const json = await res.json();
+    if (json.errors) return { _graphql: true };
     return json;
   } catch (e) { return { _transient: true }; }
 }
@@ -226,10 +275,37 @@ function parsePlayers(players) {
   }));
 }
 
+// Parse a player's publicProfileStatistics response to find a specific game.
+// Returns { h, hn, a, an, rn, isFinalsRound } or null.
+function findGameInProfile(profileStats, gameId, seasonId) {
+  const seasons = profileStats?.data?.publicProfileStatistics?.seasonStatistics || [];
+  for (const season of seasons) {
+    for (const reg of (season.statistics || [])) {
+      if (reg.season?.id !== seasonId) continue;
+      for (const team of (reg.teamStatistics || [])) {
+        for (const grade of (team.gradeStatistics || [])) {
+          for (const gs of (grade.gameStatistics || [])) {
+            if (gs.game?.id !== gameId) continue;
+            return {
+              h:            gs.game.home?.id   || null,
+              hn:           gs.game.home?.name || null,
+              a:            gs.game.away?.id   || null,
+              an:           gs.game.away?.name || null,
+              rn:           gs.game.round?.name || null,
+              isFinalsRound: gs.game.round?.isFinalsRound || false,
+            };
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
 // ─── Venue shard cache ────────────────────────────────────────────────────────
 
-const _venueShards  = {};
-const _dirtyVenues  = new Set();
+const _venueShards = {};
+const _dirtyVenues = new Set();
 
 function storeVenue(venue, court) {
   if (!venue?.id) return;
@@ -242,7 +318,7 @@ function storeVenue(venue, court) {
   if (!shard[venue.id]) {
     shard[venue.id] = {
       name: venue.name, abbr: venue.abbreviatedName || null,
-      lat: venue.latitude || null, lng: venue.longitude || null,
+      lat:  venue.latitude || null, lng: venue.longitude || null,
       address: venue.address || null, suburb: venue.suburb || null,
       state: venue.state || null, postcode: venue.postcode || null,
       country: venue.country || null, courts: {},
@@ -263,6 +339,17 @@ function flushVenues() {
   _dirtyVenues.clear();
 }
 
+// ─── Player file lookup ───────────────────────────────────────────────────────
+
+// Load a player detail file. Returns null on any failure.
+function loadPlayerFile(uuid) {
+  try {
+    const prefix = uuid.slice(0, 2);
+    const file   = path.join(PLAYERS_DIR, prefix, `${uuid}.json`);
+    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
+  } catch (e) { return null; }
+}
+
 // ─── Progress ─────────────────────────────────────────────────────────────────
 
 function loadProgress() {
@@ -277,7 +364,7 @@ function loadProgress() {
 
 function saveProgress(prog) {
   fs.writeFileSync(PROGRESS_FILE, JSON.stringify({
-    done: [...prog.done],
+    done:    [...prog.done],
     savedAt: new Date().toISOString(),
   }));
 }
@@ -286,7 +373,7 @@ function saveProgress(prog) {
 
 function gitCommit(msg) {
   try {
-    execSync(`git add games/ venue-lookup/ classify-games-progress.json`, { stdio: 'pipe', shell: true });
+    execSync('git add games/ venue-lookup/ classify-games-progress.json', { stdio: 'pipe', shell: true });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) return;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe' });
@@ -298,25 +385,29 @@ function gitCommit(msg) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ─── Classify one game via two-step probe ─────────────────────────────────────
+// ─── Classify one game — three-step probe ─────────────────────────────────────
 //
-// Returns one of these result types:
-//   scored      — discoverGame returned score data
+// Result types:
+//   scored      — discoverGame returned score
 //   forfeit     — discoverGame returned FORFEIT outcome
 //   cancelled   — discoverGame returned CANCELLED status
 //   abandoned   — discoverGame returned ABANDONED status
 //   bye         — discoverGame returned BYE status
-//   hidden      — discoverGame null, spectator returned data
-//   legacy      — both null
+//   hidden      — discoverGame null, spectator returned score data
+//   profileOnly — both null, publicProfileStatistics has structural data
+//   legacy      — all three routes exhausted, no data accessible
 //   skip        — transient error, retry next run
 //
-// CRITICAL: discoverGame → null MUST be followed by spectator probe.
-// Never write legacy without completing both steps.
+// MANDATORY: discoverGame null → spectator probe → profile probe.
+// Never write legacy without exhausting all three steps.
+//
+// playerGameUUIDs: array of player UUIDs from playerGames[gameId] in the game file.
+// seasonId: used to filter the profile stats response to the right season.
 
-async function classifyGame(gameId, session) {
-  let attempts = 0;
+async function classifyGame(gameId, seasonId, playerGameUUIDs, session) {
 
   // ── Step 1: discoverGame ───────────────────────────────────────────────────
+  let attempts = 0;
   let dgResp;
   while (attempts < 3) {
     dgResp = await fetchDiscover(gameId, session);
@@ -331,14 +422,13 @@ async function classifyGame(gameId, session) {
   const dg = dgResp?.data?.discoverGame;
 
   if (dg) {
-    // discoverGame returned data — determine outcome
     const statusVal  = dg.status?.value || '';
     const outcomeVal = dg.result?.outcome?.value || '';
-    const hs  = parseScore(dg.result?.home?.statistics);
-    const as_ = parseScore(dg.result?.away?.statistics);
-    const court = dg.allocation?.court;
-    const venue = court?.venue;
-    const time  = dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null;
+    const hs         = parseScore(dg.result?.home?.statistics);
+    const as_        = parseScore(dg.result?.away?.statistics);
+    const court      = dg.allocation?.court;
+    const venue      = court?.venue;
+    const time       = dg.allocation?.dateTimeList?.[0]?.time?.slice(0, 5) || null;
 
     const base = {
       session,
@@ -346,6 +436,7 @@ async function classifyGame(gameId, session) {
       a:  dg.away?.id   || null, an: dg.away?.name    || null,
       hl: parseLogo(dg.home?.logo), al: parseLogo(dg.away?.logo),
       rn: dg.round?.name || null,
+      isFinalsRound: dg.round?.isFinalsRound || false,
       st: statusVal,
       venue, court, time,
     };
@@ -356,52 +447,80 @@ async function classifyGame(gameId, session) {
         desc: dg.result?.home?.gameOutcomeDescription || null,
       };
     }
-    if (statusVal === 'CANCELLED')  return { ...base, type: 'cancelled' };
-    if (statusVal === 'ABANDONED')  return { ...base, type: 'abandoned' };
-    if (statusVal === 'BYE')        return { ...base, type: 'bye' };
-
-    // Normal scored game
+    if (statusVal === 'CANCELLED') return { ...base, type: 'cancelled' };
+    if (statusVal === 'ABANDONED') return { ...base, type: 'abandoned' };
+    if (statusVal === 'BYE')       return { ...base, type: 'bye' };
     return { ...base, type: 'scored', hs, as: as_ };
   }
 
-  // ── Step 2: discoverGame returned null — MUST probe spectator ─────────────
-  attempts = 0;
-  let spResp;
-  while (attempts < 3) {
-    spResp = await fetchSpectator(gameId, session);
-    if (!spResp._auth) break;
-    attempts++;
-    await delay(attempts * 2000);
+  // ── Step 2: spectator game(id) ─────────────────────────────────────────────
+  // On 403 from spectator: attempt ONE cookie refresh then skip this game.
+  // Do NOT retry 403 in a loop — spectator 403s can indicate IP-level blocking
+  // and hammering them risks escalating to a full block.
+  let spResp = await fetchSpectator(gameId, session);
+
+  if (spResp._spectatorAuth) {
+    // One refresh attempt
     try { session = await safeRefresh(); } catch (e) {}
+    spResp = await fetchSpectator(gameId, session);
+    // If still auth error after refresh, skip to step 3 — don't retry further
+    if (spResp._spectatorAuth) {
+      // Fall through to step 3 — treat as if spectator returned null
+      spResp = { _notfound: true };
+    }
   }
 
   if (spResp._transient || spResp._graphql) return { type: 'skip', session };
-  if (spResp._notfound) return { type: 'legacy', session };
 
   const sp = spResp?.data?.game;
-  if (!sp) return { type: 'legacy', session };
+  if (sp) {
+    // Spectator returned data — hidden game with score
+    const hs  = parseScore(sp.result?.home?.statistics);
+    const as_ = parseScore(sp.result?.away?.statistics);
+    const hq  = parseQuarters(sp.result?.home?.periods);
+    const aq  = parseQuarters(sp.result?.away?.periods);
+    const hp  = parsePlayers(sp.statistics?.home?.players);
+    const ap  = parsePlayers(sp.statistics?.away?.players);
+    return { type: 'hidden', session, hs, as: as_, hq, aq, hp, ap, updatedAt: sp.updatedAt || null };
+  }
 
-  // Spectator returned data — hidden game with score
-  const hs  = parseScore(sp.result?.home?.statistics);
-  const as_ = parseScore(sp.result?.away?.statistics);
-  const hq  = parseQuarters(sp.result?.home?.periods);
-  const aq  = parseQuarters(sp.result?.away?.periods);
-  const hp  = parsePlayers(sp.statistics?.home?.players);
-  const ap  = parsePlayers(sp.statistics?.away?.players);
+  // ── Step 3: publicProfileStatistics ───────────────────────────────────────
+  // Both discoverGame and spectator returned null (or spectator 403'd after refresh).
+  // Try any player from playerGames to recover structural metadata.
+  // We only need ONE successful response — stop as soon as we find the game.
+  if (playerGameUUIDs?.length) {
+    // Try up to 3 players to handle missing/deleted profiles
+    const candidates = playerGameUUIDs.slice(0, 3);
+    for (const uuid of candidates) {
+      let prResp;
+      attempts = 0;
+      while (attempts < 2) {
+        prResp = await fetchProfileStats(uuid, session);
+        if (!prResp._auth) break;
+        attempts++;
+        await delay(attempts * 2000);
+        try { session = await safeRefresh(); } catch (e) {}
+      }
+      if (prResp._transient || prResp._graphql || prResp._auth) continue;
 
-  return {
-    type: 'hidden', session,
-    hs, as: as_, hq, aq, hp, ap,
-    updatedAt: sp.updatedAt || null,
-  };
+      const found = findGameInProfile(prResp, gameId, seasonId);
+      if (found) {
+        return { type: 'profileOnly', session, ...found };
+      }
+      // Profile returned but game not in it — try next player
+    }
+  }
+
+  // All three steps exhausted
+  return { type: 'legacy', session };
 }
 
 // ─── Apply result to game entry ───────────────────────────────────────────────
 
 function applyResult(entry, result) {
-  // Always clear non-terminal statuses — we are now setting the definitive state
   const clearFlags = () => {
     delete entry.legacy;
+    delete entry.profileOnly;
     delete entry.hidden;
     delete entry.forfeit;
     delete entry.cancelled;
@@ -409,19 +528,20 @@ function applyResult(entry, result) {
     delete entry.bye;
   };
 
-  // Helper: write absolute team fields, remove relative fields if superseded
   const writeTeams = (r) => {
-    if (r.h)  { entry.h  = r.h;  entry.a  = r.a;
-                entry.hn = r.hn; entry.an = r.an;
-                // h/a supersedes o/on — remove relative fields
-                delete entry.o; delete entry.on;
-                delete entry.s; delete entry.sn; }
+    if (r.h) {
+      entry.h  = r.h;  entry.a  = r.a;
+      entry.hn = r.hn; entry.an = r.an;
+      // h/a supersedes relative fields
+      delete entry.o; delete entry.on;
+      delete entry.s; delete entry.sn;
+    }
     if (r.hl) entry.hl = r.hl;
     if (r.al) entry.al = r.al;
     if (r.rn && !entry.rn) entry.rn = r.rn;
+    if (r.isFinalsRound)   entry.finals = true;
   };
 
-  // Helper: write venue — never overwrite an existing venue with nothing
   const writeVenue = (r) => {
     if (r.venue?.id) {
       storeVenue(r.venue, r.court);
@@ -430,7 +550,7 @@ function applyResult(entry, result) {
       if (r.court?.name) entry.ct = r.court.name;
       if (r.time)        entry.t  = r.time;
     }
-    // Do not delete existing vid/vn if r.venue is null — preserve known venue
+    // Never delete existing venue if new result has none
   };
 
   switch (result.type) {
@@ -440,7 +560,6 @@ function applyResult(entry, result) {
       writeTeams(result);
       writeVenue(result);
       if (result.st) entry.st = result.st;
-      // Only write score if terminal status — don't freeze in-progress scores
       if (['FINAL', 'CANCELLED', 'ABANDONED', 'BYE', 'PENDING'].includes(result.st)) {
         entry.hs = result.hs !== null ? result.hs : null;
         entry.as = result.as !== null ? result.as : null;
@@ -484,8 +603,7 @@ function applyResult(entry, result) {
       break;
 
     case 'hidden':
-      // Keep existing h/a if present (scored-then-hidden — we crawled it before hiding)
-      // Only set hidden flag — do not overwrite team data we already have
+      // Preserve any h/a already on the entry (scored-then-hidden case)
       entry.hidden = true;
       if (result.hs !== null && result.hs !== undefined) entry.hs = result.hs;
       if (result.as !== null && result.as !== undefined) entry.as = result.as;
@@ -494,14 +612,25 @@ function applyResult(entry, result) {
       if (result.hp?.length) entry.hp = result.hp;
       if (result.ap?.length) entry.ap = result.ap;
       if (result.updatedAt)  entry.updatedAt = result.updatedAt;
-      // Do NOT delete o/on for hidden games — s/sn will be added by normalise script
-      // Do NOT write st — hidden games don't have a meaningful public status
+      // Do NOT remove o/on — normalise script handles s/sn for hidden games
+      break;
+
+    case 'profileOnly':
+      // discoverGame and spectator both null.
+      // publicProfileStatistics returned structural data.
+      // No score, no venue — but we now have absolute h/a and round name.
+      clearFlags();
+      entry.profileOnly = true;
+      writeTeams(result);
+      // h/a now written — remove old relative fields
+      // (writeTeams already deletes o/on/s/sn when h is present)
+      if (result.st) entry.st = result.st;
       break;
 
     case 'legacy':
+      // All three routes exhausted. Preserve whatever is already on the entry.
       entry.legacy = true;
-      // Do not overwrite any existing fields — preserve what we have
-      // Do not set st — legacy classification is the terminal state
+      delete entry.profileOnly; // can't be both
       break;
   }
 
@@ -513,26 +642,28 @@ function applyResult(entry, result) {
 function needsProbe(game, isLocked) {
   const st = game.st || '';
 
-  // Never re-probe UPCOMING games
+  // Never probe upcoming games
   if (st === 'UPCOMING') return false;
 
-  // Non-terminal statuses always need probe regardless of lock state
+  // Non-terminal statuses always need probe
   if (NONTERMINAL_STATUSES.has(st)) return true;
 
-  // Games with no score and no definitive flag
-  if (game.hs === undefined && !game.forfeit && !game.hidden &&
-      !game.legacy && !game.cancelled && !game.abandoned && !game.bye) return true;
+  // No score, no definitive flag
+  if (game.hs === undefined && !game.forfeit && !game.hidden && !game.legacy &&
+      !game.cancelled && !game.abandoned && !game.bye && !game.profileOnly) return true;
 
-  // Null score (previously checked but may now be recoverable)
-  if (game.hs === null && !game.forfeit && !game.hidden &&
-      !game.legacy && !game.cancelled && !game.abandoned && !game.bye) return true;
+  // Null score — was checked before, re-check
+  if (game.hs === null && !game.forfeit && !game.hidden && !game.legacy &&
+      !game.cancelled && !game.abandoned && !game.bye && !game.profileOnly) return true;
 
-  // Legacy games need re-probe — may have been flagged before two-step rule
+  // Legacy — may have been flagged before three-step rule; re-probe for profileOnly
   if (game.legacy) return true;
 
-  // Hidden games in locked seasons — try discoverGame for venue recovery
-  // (some hidden grades may have been un-hidden, or venue accessible via discoverGame)
+  // Hidden games without venue in locked seasons — try discoverGame for venue recovery
   if (game.hidden && isLocked && !game.vid) return true;
+
+  // profileOnly — already has best available data, do not re-probe
+  // (re-probing would just call publicProfileStatistics again and get same result)
 
   return false;
 }
@@ -540,29 +671,28 @@ function needsProbe(game, isLocked) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('\n🔍 Classify Games — One-and-Done Sweep');
+  console.log('\n🔍 Classify Games — Three-Step Sweep');
   console.log(`   Tenant:      ${TENANT} (${TENANT_FULL})`);
   console.log(`   Concurrency: ${CONCURRENCY}`);
   console.log(`   Save every:  ${SAVE_EVERY} games`);
   if (TARGET_SEASON) console.log(`   Target:      ${TARGET_SEASON}`);
 
-  const index      = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
-  const seasons    = index.seasons || {};
-  const prog       = loadProgress();
-  let   session    = await getSession();
+  const index   = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
+  const seasons = index.seasons || {};
+  const prog    = loadProgress();
+  let   session = await getSession();
 
   if (prog.done.size > 0) console.log(`\n  ↻ Resuming — ${prog.done.size.toLocaleString()} games already done`);
 
   // ── Build work queue ───────────────────────────────────────────────────────
-  // Load game IDs only — do not cache full game files (memory bounds)
 
   console.log('\n  Building work queue...');
 
-  const todo = []; // [{ seasonId, gameId, isLocked }]
+  // todo items carry the playerUUIDs for the game so classifyGame can do step 3
+  // without needing to re-read the game file inside the async batch
+  const todo = []; // [{ seasonId, gameId, isLocked, playerUUIDs }]
 
-  const seasonIds = TARGET_SEASON
-    ? [TARGET_SEASON]
-    : Object.keys(seasons);
+  const seasonIds = TARGET_SEASON ? [TARGET_SEASON] : Object.keys(seasons);
 
   for (const seasonId of seasonIds) {
     const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
@@ -570,19 +700,24 @@ async function main() {
     let sg;
     try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
 
-    const isLocked = seasons[seasonId]?.locked !== false;
+    const isLocked    = seasons[seasonId]?.locked !== false;
+    const playerGames = sg.playerGames || {};
 
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      if (prog.done.has(gameId))   continue;
-      if (!needsProbe(game, isLocked)) continue;
-      todo.push({ seasonId, gameId, isLocked });
+      if (prog.done.has(gameId))        continue;
+      if (!needsProbe(game, isLocked))  continue;
+      // Collect up to 3 player UUIDs for this game (for step 3)
+      const playerUUIDs = Object.keys(playerGames)
+        .filter(uuid => playerGames[uuid].includes(gameId))
+        .slice(0, 3);
+      todo.push({ seasonId, gameId, isLocked, playerUUIDs });
     }
   }
 
   console.log(`  Queue: ${todo.length.toLocaleString()} games to probe\n`);
   if (todo.length === 0) { console.log('✅ Nothing to do'); return; }
 
-  // ── Group by season to bound memory — load one file at a time ─────────────
+  // ── Group by season — load one file at a time to bound memory ─────────────
 
   const bySeason = new Map();
   for (const item of todo) {
@@ -594,9 +729,8 @@ async function main() {
 
   let totalDone = 0, totalSkipped = 0;
   let nScored = 0, nForfeit = 0, nCancelled = 0, nAbandoned = 0,
-      nBye = 0, nHidden = 0, nLegacy = 0, nVenueRecovered = 0;
+      nBye = 0, nHidden = 0, nProfileOnly = 0, nLegacy = 0, nVenueRecovered = 0;
   let sinceLastSave = 0;
-
   const total = todo.length;
 
   // ── Process season by season ───────────────────────────────────────────────
@@ -611,10 +745,9 @@ async function main() {
     for (let i = 0; i < items.length; i += CONCURRENCY) {
       const batch = items.slice(i, i + CONCURRENCY);
 
-      const results = await Promise.all(batch.map(async ({ gameId }, j) => {
+      const results = await Promise.all(batch.map(async ({ gameId, playerUUIDs }, j) => {
         await delay(j * 5);
-        const result = await classifyGame(gameId, session);
-        // Capture updated session (auth refresh may have happened inside)
+        const result = await classifyGame(gameId, seasonId, playerUUIDs, session);
         if (result.session) session = result.session;
         return { gameId, result };
       }));
@@ -633,16 +766,16 @@ async function main() {
         dirty = true;
 
         switch (result.type) {
-          case 'scored':    nScored++;    break;
-          case 'forfeit':   nForfeit++;   break;
-          case 'cancelled': nCancelled++; break;
-          case 'abandoned': nAbandoned++; break;
-          case 'bye':       nBye++;       break;
-          case 'hidden':    nHidden++;    break;
-          case 'legacy':    nLegacy++;    break;
+          case 'scored':      nScored++;      break;
+          case 'forfeit':     nForfeit++;     break;
+          case 'cancelled':   nCancelled++;   break;
+          case 'abandoned':   nAbandoned++;   break;
+          case 'bye':         nBye++;         break;
+          case 'hidden':      nHidden++;      break;
+          case 'profileOnly': nProfileOnly++; break;
+          case 'legacy':      nLegacy++;      break;
         }
 
-        // Track venue recovery for previously-hidden games
         if (wasHidden && !hadVenue && sg.games[gameId].vid) nVenueRecovered++;
       }
 
@@ -651,40 +784,47 @@ async function main() {
         flushVenues();
         saveProgress(prog);
         sinceLastSave = 0;
-        gitCommit(`classify-games: ${nScored} scored, ${nHidden} hidden, ${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`);
+        gitCommit(
+          `classify-games: ${nScored} scored, ${nHidden} hidden, ${nProfileOnly} profileOnly, ` +
+          `${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`
+        );
       }
 
       const pct = ((totalDone / total) * 100).toFixed(1);
       process.stdout.write(
         `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
-        `✓ ${nScored} scored  🔒 ${nHidden} hidden  📜 ${nLegacy} legacy  ` +
-        `🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  💥 ${nAbandoned} abandoned  ` +
-        `☕ ${nBye} bye  ⚠ ${totalSkipped} skipped\r`
+        `✓ ${nScored} scored  🔒 ${nHidden} hidden  👤 ${nProfileOnly} profileOnly  ` +
+        `📜 ${nLegacy} legacy  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
+        `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip\r`
       );
 
       if (i + CONCURRENCY < items.length) await delay(50);
     }
 
     if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
-    // sg goes out of scope here — GC reclaims memory before next season
+    // sg out of scope — GC reclaims before next season
   }
 
   flushVenues();
   saveProgress(prog);
 
   console.log('\n\n✅ Classify complete');
-  console.log(`   ✓  Scored:     ${nScored.toLocaleString()}`);
-  console.log(`   🔒 Hidden:     ${nHidden.toLocaleString()}`);
-  console.log(`   📜 Legacy:     ${nLegacy.toLocaleString()}`);
-  console.log(`   🏳 Forfeit:    ${nForfeit.toLocaleString()}`);
-  console.log(`   ✗  Cancelled:  ${nCancelled.toLocaleString()}`);
-  console.log(`   💥 Abandoned:  ${nAbandoned.toLocaleString()}`);
-  console.log(`   ☕ Bye:        ${nBye.toLocaleString()}`);
+  console.log(`   ✓  Scored:      ${nScored.toLocaleString()}`);
+  console.log(`   🔒 Hidden:      ${nHidden.toLocaleString()}`);
+  console.log(`   👤 ProfileOnly: ${nProfileOnly.toLocaleString()}`);
+  console.log(`   📜 Legacy:      ${nLegacy.toLocaleString()}`);
+  console.log(`   🏳 Forfeit:     ${nForfeit.toLocaleString()}`);
+  console.log(`   ✗  Cancelled:   ${nCancelled.toLocaleString()}`);
+  console.log(`   💥 Abandoned:   ${nAbandoned.toLocaleString()}`);
+  console.log(`   ☕ Bye:         ${nBye.toLocaleString()}`);
   console.log(`   🏟 Venue recovered (hidden): ${nVenueRecovered.toLocaleString()}`);
-  console.log(`   ⚠  Skipped:   ${totalSkipped.toLocaleString()}`);
-  console.log(`   Total probed: ${totalDone.toLocaleString()}`);
+  console.log(`   ⚠  Skipped:    ${totalSkipped.toLocaleString()}`);
+  console.log(`   Total probed:  ${totalDone.toLocaleString()}`);
 
-  gitCommit(`classify-games complete: ${nScored} scored, ${nHidden} hidden, ${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`);
+  gitCommit(
+    `classify-games complete: ${nScored} scored, ${nHidden} hidden, ${nProfileOnly} profileOnly, ` +
+    `${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`
+  );
 }
 
 main().catch(e => { console.error(`\n❌ Fatal: ${e.message}\n${e.stack}`); process.exit(1); });
