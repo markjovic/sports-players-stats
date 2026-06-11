@@ -1,0 +1,49 @@
+# .github/workflows/classify-games.yml
+name: Classify Games
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Single season ID to classify (leave blank for all)'
+        required: false
+        default: ''
+      concurrency:
+        description: 'Concurrent API requests (default: 80)'
+        required: false
+        default: '80'
+      save_every:
+        description: 'Flush and commit every N games (default: 500)'
+        required: false
+        default: '500'
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run classify-games
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.season }}" ]; then
+            ARGS="$ARGS --season=${{ github.event.inputs.season }}"
+          fi
+          ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
+          ARGS="$ARGS --save-every=${{ github.event.inputs.save_every }}"
+          node classify-games.js $ARGS
