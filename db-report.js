@@ -86,7 +86,8 @@ console.log(`  Unique courts: ${courtCount.toLocaleString()}`);
 // ─── Games ────────────────────────────────────────────────────────────────────
 
 let total = 0, scored = 0, withVenue = 0;
-let forfeit = 0, hidden = 0, legacy = 0, bye = 0, postponed = 0;
+let forfeit = 0, hidden = 0, legacy = 0, profileOnly = 0, noProfile = 0, bye = 0, postponed = 0;
+let noProfileOldest = null;
 let stFinal = 0, stUpcoming = 0, stPostponed = 0, stBye = 0, stOther = 0, stNone = 0;
 let stNone_active = 0, stNone_locked = 0;
 let nullScore = 0, nullScore_active = 0, nullScore_locked = 0;
@@ -114,8 +115,13 @@ if (fs.existsSync(GAMES_DIR)) {
       if (g.forfeit) forfeit++;
       if (g.hidden)  hidden++;
       if (g.legacy)  legacy++;
-      if (g.bye)     bye++;
-      if (g.s)       hasSField++;
+      if (g.bye)         bye++;
+      if (g.profileOnly) profileOnly++;
+      if (g.noProfile) {
+        noProfile++;
+        if (!noProfileOldest || g.noProfile < noProfileOldest) noProfileOldest = g.noProfile;
+      }
+      if (g.s)           hasSField++;
 
       // Team field structure
       const hasH = !!g.h;
@@ -152,8 +158,9 @@ if (fs.existsSync(GAMES_DIR)) {
         forfeit:  games.filter(g => g.forfeit).length,
         hidden:   games.filter(g => g.hidden).length,
         legacy:   games.filter(g => g.legacy).length,
-        bye:      games.filter(g => g.bye).length,
-        upcoming: games.filter(g => g.st === 'UPCOMING').length,
+        bye:         games.filter(g => g.bye).length,
+        profileOnly: games.filter(g => g.profileOnly).length,
+        upcoming:    games.filter(g => g.st === 'UPCOMING').length,
         noStatus: games.filter(g => !g.st).length,
       });
     }
@@ -173,14 +180,14 @@ if (fs.existsSync(GAMES_DIR)) {
 //   Legacy, bye, postponed — excluded.
 //   UPCOMING — excluded.
 
-const noScoreByNature    = forfeit + legacy + bye + postponed;
+const noScoreByNature    = forfeit + legacy + profileOnly + noProfile + bye + postponed;
 const eligibleForScore   = total - stUpcoming - noScoreByNature;
 const scored_pct         = eligibleForScore > 0 ? ((scored / eligibleForScore) * 100).toFixed(1) : 'N/A';
 const scoreGap           = eligibleForScore - scored;
 
 // For venue: hidden games never have venue, so they're out of eligible pool
 // Forfeits may have a venue so they stay in — gap will reflect forfeits without venue
-const noVenueByNature    = hidden + legacy + bye + postponed;
+const noVenueByNature    = hidden + legacy + profileOnly + noProfile + bye + postponed;
 const eligibleForVenue   = total - stUpcoming - noVenueByNature;
 const missingVenue       = eligibleForVenue - withVenue;
 const venue_pct          = eligibleForVenue > 0 ? ((withVenue / eligibleForVenue) * 100).toFixed(1) : 'N/A';
@@ -227,10 +234,12 @@ if (Object.keys(otherStatuses).length > 0) {
 }
 
 console.log('\n  Flags:');
-console.log(`    forfeit: true    ${forfeit.toLocaleString()}`);
-console.log(`    hidden:  true    ${hidden.toLocaleString()}`);
-console.log(`    legacy:  true    ${legacy.toLocaleString()}`);
-console.log(`    bye:     true    ${bye.toLocaleString()}`);
+console.log(`    forfeit:     true    ${forfeit.toLocaleString()} — forfeit result, no score`);
+console.log(`    hidden:      true    ${hidden.toLocaleString()} — admin-hidden grade: score+box via spectator, no venue, may lack h/a/rn`);
+console.log(`    profileOnly: true    ${profileOnly.toLocaleString()} — pre-escore era: h/a/rn from player profiles, no score/venue/box`);
+console.log(`    legacy:      true    ${legacy.toLocaleString()} — all routes exhausted, no data accessible`);
+console.log(`    noProfile:   <ts>     ${noProfile.toLocaleString()} — hidden, profiles exhausted; retried after 30d. Oldest: ${noProfileOldest || 'none'}`);
+console.log(`    bye:         true    ${bye.toLocaleString()} — bye round, no game played`);
 
 console.log('\n  Team field structure:');
 console.log(`    h + a only (absolute):         ${teamHA.toLocaleString()}`);
@@ -254,7 +263,7 @@ console.log(`    With venue:                    ${withVenue.toLocaleString()}`);
 console.log('\n📈 COVERAGE (eligible games only)');
 console.log(`  Score coverage: ${scored_pct}%`);
 console.log(`    Eligible: ${eligibleForScore.toLocaleString()}`);
-console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − forfeit(${forfeit.toLocaleString()}) − legacy(${legacy.toLocaleString()}) − bye(${bye.toLocaleString()}) − postponed(${postponed.toLocaleString()})`);
+console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − forfeit(${forfeit.toLocaleString()}) − legacy(${legacy.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − bye(${bye.toLocaleString()}) − postponed(${postponed.toLocaleString()})`);
 console.log(`      note: hidden games ARE eligible — they have scores via spectator`);
 console.log(`    Scored:   ${scored.toLocaleString()}`);
 console.log(`    Gap:      ${scoreGap.toLocaleString()}${scoreGap < 0 ? '  ⚠ gap is negative — hidden scores are being double-counted' : ''}`);
@@ -265,7 +274,7 @@ if (scoreGap > 0) {
 }
 console.log(`  Venue coverage: ${venue_pct}%`);
 console.log(`    Eligible: ${eligibleForVenue.toLocaleString()}`);
-console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − hidden(${hidden.toLocaleString()}) − legacy(${legacy.toLocaleString()}) − bye(${bye.toLocaleString()}) − postponed(${postponed.toLocaleString()})`);
+console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − hidden(${hidden.toLocaleString()}) − legacy(${legacy.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − bye(${bye.toLocaleString()}) − postponed(${postponed.toLocaleString()})`);
 console.log(`      note: forfeits stay eligible — may have venue if scraped before forfeit`);
 console.log(`    With venue: ${withVenue.toLocaleString()}`);
 console.log(`    Gap:        ${missingVenue.toLocaleString()}${missingVenue < 0 ? '  ⚠ negative — check logic' : ''}`);
@@ -274,7 +283,7 @@ if (VERBOSE && seasonBreakdown.length > 0) {
   console.log('\n📋 PER-SEASON BREAKDOWN (top 20 by game count)');
   seasonBreakdown.sort((a, b) => b.total - a.total).slice(0, 20).forEach(s => {
     const flag = s.active ? '🟢' : '🔒';
-    console.log(`  ${flag} ${s.id}  ${(s.name||'').padEnd(40)} ${String(s.total).padStart(6)} total  score:${s.scored} venue:${s.venue} up:${s.upcoming} noSt:${s.noStatus} forfeit:${s.forfeit} hidden:${s.hidden} legacy:${s.legacy} bye:${s.bye}`);
+    console.log(`  ${flag} ${s.id}  ${(s.name||'').padEnd(40)} ${String(s.total).padStart(6)} total  score:${s.scored} venue:${s.venue} up:${s.upcoming} noSt:${s.noStatus} forfeit:${s.forfeit} hidden:${s.hidden} profileOnly:${s.profileOnly} legacy:${s.legacy} bye:${s.bye}`);
   });
 }
 

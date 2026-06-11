@@ -427,7 +427,8 @@ async function classifyGame(gameId, seasonId, playerGameUUIDs, session, structur
         if (found) return { type: 'hiddenStructural', session, ...found };
       }
     }
-    return { type: 'skip', session };
+    // All candidate players tried, none had this game — permanently unresolvable
+    return { type: 'noProfile', session };
   }
 
   // ── Step 1: discoverGame ───────────────────────────────────────────────────
@@ -668,6 +669,12 @@ function applyResult(entry, result) {
       entry.legacy = true;
       delete entry.profileOnly; // can't be both
       break;
+
+    case 'noProfile':
+      // Hidden game — all player profile candidates exhausted with current candidates.
+      // Store timestamp so needsProbe retries after 30 days (privacy may change).
+      entry.noProfile = new Date().toISOString();
+      break;
   }
 
   return entry;
@@ -701,8 +708,14 @@ function needsProbe(game, isLocked) {
   // profileOnly — already has best available data, do not re-probe
   // (re-probing would just call publicProfileStatistics again and get same result)
 
-  // Hidden games missing structural metadata (h/a or rn) — fast-path step 3 only
-  if (game.hidden && (!game.h || !game.rn)) return true;
+  // Hidden games missing structural metadata (h/a or rn) — fast-path step 3 only.
+  // noProfile is a timestamp — skip if attempted within the last 30 days.
+  // After 30 days, retry (player privacy may have changed, or more candidates available).
+  if (game.hidden && (!game.h || !game.rn)) {
+    if (!game.noProfile) return true;
+    const age = Date.now() - new Date(game.noProfile).getTime();
+    if (age > 30 * 24 * 60 * 60 * 1000) return true; // retry after 30 days
+  }
 
   return false;
 }
@@ -796,7 +809,7 @@ async function main() {
 
   let totalDone = 0, totalSkipped = 0;
   let nScored = 0, nForfeit = 0, nCancelled = 0, nAbandoned = 0,
-      nBye = 0, nHidden = 0, nHiddenStructural = 0, nProfileOnly = 0, nLegacy = 0, nVenueRecovered = 0;
+      nBye = 0, nHidden = 0, nHiddenStructural = 0, nProfileOnly = 0, nLegacy = 0, nNoProfile = 0, nVenueRecovered = 0;
   let sinceLastSave = 0;
   const total = todo.length + gapGameCount;
 
@@ -843,6 +856,7 @@ async function main() {
           case 'hiddenStructural': nHiddenStructural++; break;
           case 'profileOnly':      nProfileOnly++;      break;
           case 'legacy':           nLegacy++;           break;
+          case 'noProfile':        nNoProfile++;        break;
         }
 
         if (wasHidden && !hadVenue && sg.games[gameId].vid) nVenueRecovered++;
@@ -965,7 +979,8 @@ async function main() {
         `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
         `📜 ${nLegacy} legacy  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
         `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip  ` +
-        `⬜ ${remaining.size} gap-remain`
+        `⬜ ${remaining.size} gap-remain
+`
       );
 
       if (i + CONCURRENCY < players.length) await delay(50);
@@ -974,9 +989,18 @@ async function main() {
     if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
 
     // Any games still in remaining after all players exhausted — no player profile had them.
-    // They stay as hidden with missing structural data. Not marked done so next run retries.
+    // Write noProfile: true so needsProbe never re-queues them, and mark done in progress.
     if (remaining.size > 0) {
-      process.stdout.write(`\n  ⚠ ${remaining.size} games in ${seasonId} had no player profile coverage\n`);
+      process.stdout.write(`\n  ⚠ ${remaining.size} games in ${seasonId} had no player profile coverage — marking noProfile\n`);
+      for (const gameId of remaining) {
+        if (sg.games[gameId]) {
+          sg.games[gameId].noProfile = new Date().toISOString();
+          prog.done.add(gameId);
+          dirty = true;
+          sinceLastSave++;
+        }
+      }
+      nNoProfile += remaining.size;
     }
   }
 
@@ -989,6 +1013,7 @@ async function main() {
   console.log(`   🔧 HiddenStruct:${nHiddenStructural.toLocaleString()} — structural gap filled via player profiles`);
   console.log(`   👤 ProfileOnly: ${nProfileOnly.toLocaleString()}`);
   console.log(`   📜 Legacy:      ${nLegacy.toLocaleString()}`);
+  console.log(`   🚫 NoProfile:   ${nNoProfile.toLocaleString()} — hidden games with no player profile coverage`);
   console.log(`   🏳 Forfeit:     ${nForfeit.toLocaleString()}`);
   console.log(`   ✗  Cancelled:   ${nCancelled.toLocaleString()}`);
   console.log(`   💥 Abandoned:   ${nAbandoned.toLocaleString()}`);
