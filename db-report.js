@@ -87,7 +87,9 @@ console.log(`  Unique courts: ${courtCount.toLocaleString()}`);
 
 let total = 0, scored = 0, withVenue = 0;
 let forfeit = 0, hidden = 0, legacy = 0, profileOnly = 0, noProfile = 0, noVenue = 0, bye = 0, postponed = 0;
-let hiddenWithVenue = 0; // hidden games that have venue data (crawled before grade was hidden)
+let hiddenWithVenue = 0;    // hidden games that have venue data (crawled before grade was hidden)
+let venueEligibleCount = 0; // games in venue eligible pool
+let venueEligibleWithVenue = 0; // eligible games that have venue
 let noProfileOldest = null, noVenueOldest = null;
 let flagCollisions = 0; // games with legacy + another definitive flag
 let inProgress = 0;    // LIVE + PRE_GAME + IN_PROGRESS + PENDING — not yet finished
@@ -122,6 +124,13 @@ if (fs.existsSync(GAMES_DIR)) {
       if (g.profileOnly) profileOnly++;
       if (['LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(g.st || '')) inProgress++;
       if (g.hidden && g.vid) hiddenWithVenue++;
+      // Track venue coverage on eligible games only
+      const isVenueEligible = g.st !== 'UPCOMING' && !g.hidden && !g.legacy && !g.profileOnly && !g.bye &&
+        !['LIVE','PRE_GAME','IN_PROGRESS','PENDING','POSTPONED','CANCELLED','ABANDONED'].includes(g.st || '');
+      if (isVenueEligible) {
+        venueEligibleCount++;
+        if (g.vid) venueEligibleWithVenue++;
+      }
       if (g.noProfile) {
         noProfile++;
         if (!noProfileOldest || g.noProfile < noProfileOldest) noProfileOldest = g.noProfile;
@@ -208,9 +217,8 @@ const scoreGap           = eligibleForScore - scored;
 const noVenueByNature    = hidden + legacyForCalc + profileOnly + bye + postponed + inProgress;
 // noVenue games are hidden games where venue was attempted but not found — already in hidden count
 const eligibleForVenue   = total - stUpcoming - noVenueByNature;
-const venueOnEligible    = withVenue - hiddenWithVenue; // venue on non-hidden eligible games only
-const missingVenue       = eligibleForVenue - venueOnEligible;
-const venue_pct          = eligibleForVenue > 0 ? ((venueOnEligible / eligibleForVenue) * 100).toFixed(1) : 'N/A';
+const missingVenue       = venueEligibleCount - venueEligibleWithVenue;
+const venue_pct          = venueEligibleCount > 0 ? ((venueEligibleWithVenue / venueEligibleCount) * 100).toFixed(1) : 'N/A';
 
 // ─── Index sync check ─────────────────────────────────────────────────────────
 
@@ -300,10 +308,10 @@ if (scoreGap > 0) {
   console.log(`      unexplained (FINAL no score no flag): ${Math.max(0, total - scored - stUpcoming - noScoreByNature - nullScore - stNone)}`);
 }
 console.log(`  Venue coverage: ${venue_pct}%`);
-console.log(`    Eligible: ${eligibleForVenue.toLocaleString()}`);
-console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − hidden(${hidden.toLocaleString()}) − legacy(${legacyForCalc.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − inProgress(${inProgress.toLocaleString()}) − bye(${bye.toLocaleString()})`);
+console.log(`    Eligible: ${venueEligibleCount.toLocaleString()}`);
+console.log(`      (FINAL/normal status, not hidden/legacy/profileOnly/inProgress/bye/upcoming)`);
 console.log(`      note: forfeits stay eligible — may have venue if scraped before forfeit`);
-console.log(`    With venue (eligible only): ${venueOnEligible.toLocaleString()}`);
+console.log(`    With venue (eligible only): ${venueEligibleWithVenue.toLocaleString()}`);
 console.log(`    Gap:        ${missingVenue.toLocaleString()}`);
 console.log(`    Hidden games with venue: ${hiddenWithVenue.toLocaleString()} — crawled before grade was hidden, data preserved`);;
 
