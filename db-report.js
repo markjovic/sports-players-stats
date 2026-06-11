@@ -86,8 +86,8 @@ console.log(`  Unique courts: ${courtCount.toLocaleString()}`);
 // ─── Games ────────────────────────────────────────────────────────────────────
 
 let total = 0, scored = 0, withVenue = 0;
-let forfeit = 0, hidden = 0, legacy = 0, profileOnly = 0, noProfile = 0, bye = 0, postponed = 0;
-let noProfileOldest = null;
+let forfeit = 0, hidden = 0, legacy = 0, profileOnly = 0, noProfile = 0, noVenue = 0, bye = 0, postponed = 0;
+let noProfileOldest = null, noVenueOldest = null;
 let stFinal = 0, stUpcoming = 0, stPostponed = 0, stBye = 0, stOther = 0, stNone = 0;
 let stNone_active = 0, stNone_locked = 0;
 let nullScore = 0, nullScore_active = 0, nullScore_locked = 0;
@@ -120,6 +120,10 @@ if (fs.existsSync(GAMES_DIR)) {
       if (g.noProfile) {
         noProfile++;
         if (!noProfileOldest || g.noProfile < noProfileOldest) noProfileOldest = g.noProfile;
+      }
+      if (g.noVenue) {
+        noVenue++;
+        if (!noVenueOldest || g.noVenue < noVenueOldest) noVenueOldest = g.noVenue;
       }
       if (g.s)           hasSField++;
 
@@ -188,6 +192,7 @@ const scoreGap           = eligibleForScore - scored;
 // For venue: hidden games never have venue, so they're out of eligible pool
 // Forfeits may have a venue so they stay in — gap will reflect forfeits without venue
 const noVenueByNature    = hidden + legacy + profileOnly + noProfile + bye + postponed;
+// noVenue games are hidden games where venue was attempted but not found — already in hidden count
 const eligibleForVenue   = total - stUpcoming - noVenueByNature;
 const missingVenue       = eligibleForVenue - withVenue;
 const venue_pct          = eligibleForVenue > 0 ? ((withVenue / eligibleForVenue) * 100).toFixed(1) : 'N/A';
@@ -239,6 +244,7 @@ console.log(`    hidden:      true    ${hidden.toLocaleString()} — admin-hidde
 console.log(`    profileOnly: true    ${profileOnly.toLocaleString()} — pre-escore era: h/a/rn from player profiles, no score/venue/box`);
 console.log(`    legacy:      true    ${legacy.toLocaleString()} — all routes exhausted, no data accessible`);
 console.log(`    noProfile:   <ts>     ${noProfile.toLocaleString()} — hidden, profiles exhausted; retried after 30d. Oldest: ${noProfileOldest || 'none'}`);
+console.log(`    noVenue:     <ts>     ${noVenue.toLocaleString()} — hidden, venue not recoverable via discoverGame; retried after 30d. Oldest: ${noVenueOldest || 'none'}`);
 console.log(`    bye:         true    ${bye.toLocaleString()} — bye round, no game played`);
 
 console.log('\n  Team field structure:');

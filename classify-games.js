@@ -653,10 +653,13 @@ function applyResult(entry, result) {
       if (result.ap?.length) entry.ap = result.ap;
       if (result.updatedAt)  entry.updatedAt = result.updatedAt;
       // Do NOT remove o/on — normalise script handles t1/t2 for hidden games
-      // If still no h/a or rn after full three-step probe, stamp noProfile so
-      // needsProbe stops re-queuing this game on every run.
+      // Stamp noProfile if structural metadata still missing after full probe.
       if (!entry.h && !entry.rn && !entry.noProfile) {
         entry.noProfile = new Date().toISOString();
+      }
+      // Stamp noVenue if venue still missing after full probe.
+      if (!entry.vid && !entry.noVenue) {
+        entry.noVenue = new Date().toISOString();
       }
       break;
 
@@ -722,9 +725,16 @@ function needsProbe(game, isLocked) {
   // Legacy — may have been flagged before three-step rule; re-probe for profileOnly
   if (game.legacy) return true;
 
-  // Hidden games without venue in locked seasons — try discoverGame for venue recovery.
-  // Respect noProfile — if structural data is unresolvable, don't re-probe for venue either.
-  if (game.hidden && isLocked && !game.vid && !game.noProfile) return true;
+  // Hidden games without venue — try discoverGame for venue recovery.
+  // noVenue is a timestamp set when discoverGame returned null for venue.
+  // Retry after 30 days in case the grade becomes un-hidden.
+  if (game.hidden && !game.vid) {
+    if (!game.noVenue) return true;
+    if (game.noVenue === true) return false;
+    const venueAge = Date.now() - new Date(game.noVenue).getTime();
+    if (isNaN(venueAge) || venueAge > 30 * 24 * 60 * 60 * 1000) return true;
+    return false; // noVenue is fresh — don't fall through to structural check
+  }
 
   // profileOnly — already has best available data, do not re-probe
   // (re-probing would just call publicProfileStatistics again and get same result)
@@ -791,16 +801,18 @@ async function main() {
         game.noProfile === true ||
         (Date.now() - new Date(game.noProfile).getTime()) < 30 * 24 * 60 * 60 * 1000
       );
+      const noVenueFresh = game.noVenue && (
+        game.noVenue === true ||
+        (Date.now() - new Date(game.noVenue).getTime()) < 30 * 24 * 60 * 60 * 1000
+      );
+      // isHiddenGap: hidden game still needs structural metadata from player profiles.
       const isHiddenGap = game.hidden && (!game.h || !game.rn) && !noProfileFresh;
+      // isHiddenVenueGap: hidden game still needs venue probe via discoverGame.
+      const isHiddenVenueGap = game.hidden && !game.vid && !noVenueFresh;
 
-      // Debug first 3 games that would be added to todo
-      if (todo.length < 3 && game.hidden && (!game.h || !game.rn)) {
-        console.log(`  DEBUG ${gameId}: noProfile=${JSON.stringify(game.noProfile)} noProfileFresh=${noProfileFresh} isHiddenGap=${isHiddenGap} inDone=${prog.done.has(gameId)} needsProbe=${needsProbe(game, isLocked)}`);
-      }
-
-      // Legacy and hidden-gap games bypass the done-set.
-      if (prog.done.has(gameId) && !game.legacy && !isHiddenGap) continue;
-      if (!needsProbe(game, isLocked))                            continue;
+      // Legacy, hidden structural gap, and hidden venue gap games bypass the done-set.
+      if (prog.done.has(gameId) && !game.legacy && !isHiddenGap && !isHiddenVenueGap) continue;
+      if (!needsProbe(game, isLocked)) continue;
 
       if (isHiddenGap && !game.legacy) {
         // Structural gap — batch by player rather than by game.
@@ -856,7 +868,7 @@ async function main() {
 
   let totalDone = 0, totalSkipped = 0;
   let nScored = 0, nForfeit = 0, nCancelled = 0, nAbandoned = 0,
-      nBye = 0, nHidden = 0, nHiddenStructural = 0, nProfileOnly = 0, nLegacy = 0, nNoProfile = 0, nVenueRecovered = 0;
+      nBye = 0, nHidden = 0, nHiddenStructural = 0, nProfileOnly = 0, nLegacy = 0, nNoProfile = 0, nNoVenue = 0, nVenueRecovered = 0;
   let sinceLastSave = 0;
   const total = todo.length + gapGameCount;
 
@@ -889,6 +901,7 @@ async function main() {
         const wasHidden    = !!sg.games[gameId]?.hidden;
         const hadVenue     = !!sg.games[gameId]?.vid;
         const hadNoProfile = !!sg.games[gameId]?.noProfile;
+        const hadNoVenue   = !!sg.games[gameId]?.noVenue;
 
         sg.games[gameId] = applyResult(sg.games[gameId] || {}, result);
         prog.done.add(gameId);
@@ -909,6 +922,7 @@ async function main() {
 
         if (wasHidden && !hadVenue && sg.games[gameId].vid) nVenueRecovered++;
         if (!hadNoProfile && sg.games[gameId].noProfile) nNoProfile++;
+        if (!hadNoVenue   && sg.games[gameId].noVenue)   nNoVenue++;
       }
 
       if (sinceLastSave >= SAVE_EVERY) {
@@ -926,7 +940,7 @@ async function main() {
       process.stdout.write(
         `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
         `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
-        `📜 ${nLegacy} legacy  🚫 ${nNoProfile} noProfile  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
+        `📜 ${nLegacy} legacy  🚫 ${nNoProfile} noProfile  🏠 ${nNoVenue} noVenue  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
         `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip\r`
       );
 
@@ -1035,7 +1049,7 @@ async function main() {
       process.stdout.write(
         `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
         `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
-        `📜 ${nLegacy} legacy  🚫 ${nNoProfile} noProfile  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
+        `📜 ${nLegacy} legacy  🚫 ${nNoProfile} noProfile  🏠 ${nNoVenue} noVenue  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
         `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip  ` +
         `⬜ ${remaining.size} gap-remain
 `
@@ -1072,6 +1086,7 @@ async function main() {
   console.log(`   👤 ProfileOnly: ${nProfileOnly.toLocaleString()}`);
   console.log(`   📜 Legacy:      ${nLegacy.toLocaleString()}`);
   console.log(`   🚫 NoProfile:   ${nNoProfile.toLocaleString()} — hidden games with no player profile coverage`);
+  console.log(`   🏠 NoVenue:     ${nNoVenue.toLocaleString()} — hidden games where discoverGame found no venue`);
   console.log(`   🏳 Forfeit:     ${nForfeit.toLocaleString()}`);
   console.log(`   ✗  Cancelled:   ${nCancelled.toLocaleString()}`);
   console.log(`   💥 Abandoned:   ${nAbandoned.toLocaleString()}`);
