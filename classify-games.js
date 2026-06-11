@@ -817,7 +817,8 @@ async function main() {
         (Date.now() - new Date(game.noVenue).getTime()) < 30 * 24 * 60 * 60 * 1000
       );
       const isHiddenGap      = game.hidden && (!game.h || !game.rn) && !noProfileFresh;
-      const isHiddenVenueGap = game.hidden && !game.vid && !noVenueFresh;
+      // noProfile implies venue also exhausted — treat as not a venue gap.
+      const isHiddenVenueGap = game.hidden && !game.vid && !noVenueFresh && !game.noProfile;
 
       if (prog.done.has(gameId) && !game.legacy && !isHiddenGap && !isHiddenVenueGap) continue;
       if (!needsProbe(game, isLocked)) continue;
