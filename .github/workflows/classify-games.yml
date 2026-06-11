@@ -17,6 +17,9 @@ on:
         required: false
         default: '500'
 
+permissions:
+  contents: write
+
 jobs:
   classify:
     runs-on: ubuntu-latest
