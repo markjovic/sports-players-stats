@@ -733,8 +733,13 @@ function needsProbe(game, isLocked) {
   // After 30 days, retry (player privacy may have changed, or more candidates available).
   if (game.hidden && (!game.h || !game.rn)) {
     if (!game.noProfile) return true;
+    // noProfile may be a boolean (set by older version) or an ISO timestamp string.
+    // Boolean true = permanently attempted, treat as recent stamp (don't retry).
+    // Timestamp string = check age, retry after 30 days.
+    if (game.noProfile === true) return false; // boolean — skip permanently until next monthly sweep clears it
     const age = Date.now() - new Date(game.noProfile).getTime();
-    if (age > 30 * 24 * 60 * 60 * 1000) return true; // retry after 30 days
+    if (isNaN(age) || age > 30 * 24 * 60 * 60 * 1000) return true; // retry if unparseable or old
+    return false;
   }
 
   return false;
