@@ -793,6 +793,11 @@ async function main() {
       );
       const isHiddenGap = game.hidden && (!game.h || !game.rn) && !noProfileFresh;
 
+      // Debug first 3 games that would be added to todo
+      if (todo.length < 3 && game.hidden && (!game.h || !game.rn)) {
+        console.log(`  DEBUG ${gameId}: noProfile=${JSON.stringify(game.noProfile)} noProfileFresh=${noProfileFresh} isHiddenGap=${isHiddenGap} inDone=${prog.done.has(gameId)} needsProbe=${needsProbe(game, isLocked)}`);
+      }
+
       // Legacy and hidden-gap games bypass the done-set.
       if (prog.done.has(gameId) && !game.legacy && !isHiddenGap) continue;
       if (!needsProbe(game, isLocked))                            continue;
