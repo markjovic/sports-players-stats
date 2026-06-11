@@ -812,6 +812,17 @@ async function main() {
   const gapPlayerCount  = [...gapBySeason.values()].reduce((s, e) => s + e.playerToGames.size, 0);
   const gapGameCount    = [...gapBySeason.values()].reduce((s, e) => s + e.gapGameIds.size, 0);
 
+  // Diagnostic: count how many hidden-gap games have noProfile already set
+  let noProfileAlreadySet = 0;
+  for (const sid of seasonIds) {
+    const gf = path.join(GAMES_DIR, `${sid}.json`);
+    if (!fs.existsSync(gf)) continue;
+    let sg2; try { sg2 = JSON.parse(fs.readFileSync(gf, 'utf8')); } catch (e) { continue; }
+    for (const g of Object.values(sg2.games || {})) {
+      if (g.hidden && (!g.h || !g.rn) && g.noProfile) noProfileAlreadySet++;
+    }
+  }
+  console.log(`  Hidden-gap games with noProfile already set: ${noProfileAlreadySet.toLocaleString()}`);
   console.log(`  Queue: ${todo.length.toLocaleString()} normal games to probe`);
   console.log(`  Queue: ${gapGameCount.toLocaleString()} hidden structural gap games`);
   console.log(`         across ${gapSeasonCount.toLocaleString()} seasons, ~${gapPlayerCount.toLocaleString()} player calls\n`);
@@ -859,8 +870,9 @@ async function main() {
 
         if (result.type === 'skip') { totalSkipped++; continue; }
 
-        const wasHidden = !!sg.games[gameId]?.hidden;
-        const hadVenue  = !!sg.games[gameId]?.vid;
+        const wasHidden    = !!sg.games[gameId]?.hidden;
+        const hadVenue     = !!sg.games[gameId]?.vid;
+        const hadNoProfile = !!sg.games[gameId]?.noProfile;
 
         sg.games[gameId] = applyResult(sg.games[gameId] || {}, result);
         prog.done.add(gameId);
@@ -880,6 +892,7 @@ async function main() {
         }
 
         if (wasHidden && !hadVenue && sg.games[gameId].vid) nVenueRecovered++;
+        if (!hadNoProfile && sg.games[gameId].noProfile) nNoProfile++;
       }
 
       if (sinceLastSave >= SAVE_EVERY) {
