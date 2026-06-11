@@ -1089,8 +1089,6 @@ async function main() {
       if (i + CONCURRENCY < players.length) await delay(50);
     }
 
-    if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
-
     // Any games still in remaining after all players exhausted — no player profile had them.
     // Write noProfile: true so needsProbe never re-queues them, and mark done in progress.
     if (remaining.size > 0) {
@@ -1105,6 +1103,9 @@ async function main() {
       }
       nNoProfile += remaining.size;
     }
+
+    // Save AFTER remaining block — ensures noProfile stamps are written to disk
+    if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
   }
 
   flushVenues();
