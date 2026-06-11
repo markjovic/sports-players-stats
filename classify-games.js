@@ -824,20 +824,19 @@ async function main() {
   const gapPlayerCount  = [...gapBySeason.values()].reduce((s, e) => s + e.playerToGames.size, 0);
   const gapGameCount    = [...gapBySeason.values()].reduce((s, e) => s + e.gapGameIds.size, 0);
 
-  // Diagnostic: count how many hidden-gap games have noProfile already set
-  let noProfileAlreadySet = 0;
-  for (const sid of seasonIds) {
-    const gf = path.join(GAMES_DIR, `${sid}.json`);
-    if (!fs.existsSync(gf)) continue;
-    let sg2; try { sg2 = JSON.parse(fs.readFileSync(gf, 'utf8')); } catch (e) { continue; }
-    for (const g of Object.values(sg2.games || {})) {
-      if (g.hidden && (!g.h || !g.rn) && g.noProfile) noProfileAlreadySet++;
-    }
-  }
-  console.log(`  Hidden-gap games with noProfile already set: ${noProfileAlreadySet.toLocaleString()}`);
+  // Diagnostic — sample first 5 todo games and show their full state
   console.log(`  Queue: ${todo.length.toLocaleString()} normal games to probe`);
   console.log(`  Queue: ${gapGameCount.toLocaleString()} hidden structural gap games`);
-  console.log(`         across ${gapSeasonCount.toLocaleString()} seasons, ~${gapPlayerCount.toLocaleString()} player calls\n`);
+  console.log(`         across ${gapSeasonCount.toLocaleString()} seasons, ~${gapPlayerCount.toLocaleString()} player calls`);
+  console.log(`\n  Sample of first 5 queued normal games:`);
+  for (const item of todo.slice(0, 5)) {
+    const gf = path.join(GAMES_DIR, `${item.seasonId}.json`);
+    let sg2; try { sg2 = JSON.parse(fs.readFileSync(gf, 'utf8')); } catch (e) { continue; }
+    const g = sg2.games[item.gameId] || {};
+    const inDone = prog.done.has(item.gameId);
+    console.log(`  ${item.gameId} season:${item.seasonId} inDone:${inDone} hidden:${!!g.hidden} h:${!!g.h} rn:${!!g.rn} noProfile:${JSON.stringify(g.noProfile)} vid:${!!g.vid} hs:${g.hs} st:${g.st}`);
+  }
+  console.log();
   if (todo.length === 0 && gapBySeason.size === 0) { console.log('✅ Nothing to do'); return; }
 
   // ── Group normal todo by season ────────────────────────────────────────────
