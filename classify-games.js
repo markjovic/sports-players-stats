@@ -836,6 +836,9 @@ async function main() {
           entry.playerToGames.get(uuid).push(gameId);
         }
       } else {
+        if (gameId === '53968080') {
+          console.log(`  PUSH TRACE ${gameId}: inDone=${prog.done.has(gameId)} isHG=${isHiddenGap} isHVG=${isHiddenVenueGap} npFresh=${noProfileFresh} nvFresh=${noVenueFresh} noProfile=${JSON.stringify(game.noProfile)} noVenue=${JSON.stringify(game.noVenue)} needsProbe=${needsProbe(game, isLocked)}`);
+        }
         todo.push({ seasonId, gameId, isLocked, playerUUIDs: players.slice(0, 3), structuralGapOnly: false });
       }
     }
