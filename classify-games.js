@@ -643,7 +643,10 @@ function applyResult(entry, result) {
       break;
 
     case 'hidden':
-      // Preserve any h/a already on the entry (scored-then-hidden case)
+      // Spectator returned data — game is definitively hidden, not legacy.
+      // Clear legacy flag if previously set (can't be both hidden and legacy).
+      delete entry.legacy;
+      delete entry.profileOnly;
       entry.hidden = true;
       if (result.hs !== null && result.hs !== undefined) entry.hs = result.hs;
       if (result.as !== null && result.as !== undefined) entry.as = result.as;
@@ -723,7 +726,8 @@ function needsProbe(game, isLocked) {
       !game.cancelled && !game.abandoned && !game.bye && !game.profileOnly) return true;
 
   // Legacy — may have been flagged before three-step rule; re-probe for profileOnly
-  if (game.legacy) return true;
+  // Only re-probe legacy if not already confirmed hidden (hidden+legacy = data corruption — hidden wins)
+  if (game.legacy && !game.hidden) return true;
 
   // Hidden games without venue — try discoverGame for venue recovery.
   // noVenue is a timestamp set when discoverGame returned null for venue.
