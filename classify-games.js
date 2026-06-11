@@ -845,6 +845,26 @@ async function main() {
   const gapPlayerCount  = [...gapBySeason.values()].reduce((s, e) => s + e.playerToGames.size, 0);
   const gapGameCount    = [...gapBySeason.values()].reduce((s, e) => s + e.gapGameIds.size, 0);
 
+  // Diagnostic — check specific game ID directly in progress file and game file
+  const WATCH_ID = '53968080';
+  const watchInDone = prog.done.has(WATCH_ID);
+  let watchGame = null;
+  try {
+    const wf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, '15105141.json'), 'utf8'));
+    watchGame = wf.games?.[WATCH_ID];
+  } catch (e) {}
+  console.log(`  WATCH ${WATCH_ID}: inDone=${watchInDone} inTodo=${todo.some(t => t.gameId === WATCH_ID)}`);
+  if (watchGame) {
+    const np = watchGame.noProfile; const nv = watchGame.noVenue;
+    const npFresh = np && (np === true || Date.now() - new Date(np).getTime() < 30*24*60*60*1000);
+    const nvFresh = nv && (nv === true || Date.now() - new Date(nv).getTime() < 30*24*60*60*1000);
+    const isLocked15 = seasons['15105141']?.locked !== false;
+    const isHG = watchGame.hidden && (!watchGame.h || !watchGame.rn) && !npFresh;
+    const isHVG = watchGame.hidden && !watchGame.vid && !nvFresh && !watchGame.noProfile;
+    const doneSetFires = watchInDone && !watchGame.legacy && !isHG && !isHVG;
+    console.log(`  WATCH game fields: hidden:${watchGame.hidden} h:${watchGame.h} rn:${watchGame.rn} noProfile:${JSON.stringify(np)} noVenue:${JSON.stringify(nv)} vid:${watchGame.vid}`);
+    console.log(`  WATCH computed: npFresh:${npFresh} nvFresh:${nvFresh} isHiddenGap:${isHG} isHiddenVenueGap:${isHVG} doneSetFires:${doneSetFires}`);
+  }
   // Diagnostic — sample first 5 todo games and show their full state
   console.log(`  Queue: ${todo.length.toLocaleString()} normal games to probe`);
   console.log(`  Queue: ${gapGameCount.toLocaleString()} hidden structural gap games`);
