@@ -243,7 +243,7 @@ for (let i = 0; i < 5; i++) {
   const freq    = segFreq[i];
   const unique  = freq.size;
   const repeated = [...freq.values()].filter(v => v > 1).length;
-  const maxFreq  = Math.max(...freq.values());
+  let maxFreq = 0; for (const v of freq.values()) if (v > maxFreq) maxFreq = v;
   const isRandom = unique / uuidsSampled > 0.99;
   console.log(
     `  ${segNames[i].padEnd(12)}${String(uuidsSampled).padStart(8)} ` +
