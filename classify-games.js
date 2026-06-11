@@ -404,7 +404,31 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 // playerGameUUIDs: array of player UUIDs from playerGames[gameId] in the game file.
 // seasonId: used to filter the profile stats response to the right season.
 
-async function classifyGame(gameId, seasonId, playerGameUUIDs, session) {
+async function classifyGame(gameId, seasonId, playerGameUUIDs, session, structuralGapOnly = false) {
+
+  // ── Fast-path: structural gap fill for hidden games ──────────────────────
+  // Game is already hidden with score. Only need step 3 for h/a/rn.
+  // Skip steps 1 and 2 entirely.
+  if (structuralGapOnly) {
+    if (playerGameUUIDs?.length) {
+      const candidates = playerGameUUIDs.slice(0, 3);
+      for (const uuid of candidates) {
+        let prResp;
+        let fpAttempts = 0;
+        while (fpAttempts < 2) {
+          prResp = await fetchProfileStats(uuid, session);
+          if (!prResp._auth) break;
+          fpAttempts++;
+          await delay(fpAttempts * 2000);
+          try { session = await safeRefresh(); } catch (e) {}
+        }
+        if (prResp._transient || prResp._graphql || prResp._auth) continue;
+        const found = findGameInProfile(prResp, gameId, seasonId);
+        if (found) return { type: 'hiddenStructural', session, ...found };
+      }
+    }
+    return { type: 'skip', session };
+  }
 
   // ── Step 1: discoverGame ───────────────────────────────────────────────────
   let attempts = 0;
@@ -615,6 +639,18 @@ function applyResult(entry, result) {
       // Do NOT remove o/on — normalise script handles s/sn for hidden games
       break;
 
+    case 'hiddenStructural':
+      // Structural gap fill — only write metadata, never touch score/box/quarters.
+      if (result.h) {
+        entry.h  = result.h;  entry.a  = result.a;
+        entry.hn = result.hn; entry.an = result.an;
+        delete entry.o; delete entry.on;
+        delete entry.s; delete entry.sn;
+      }
+      if (result.rn && !entry.rn) entry.rn = result.rn;
+      if (result.isFinalsRound)   entry.finals = true;
+      break;
+
     case 'profileOnly':
       // discoverGame and spectator both null.
       // publicProfileStatistics returned structural data.
@@ -665,6 +701,9 @@ function needsProbe(game, isLocked) {
   // profileOnly — already has best available data, do not re-probe
   // (re-probing would just call publicProfileStatistics again and get same result)
 
+  // Hidden games missing structural metadata (h/a or rn) — fast-path step 3 only
+  if (game.hidden && (!game.h || !game.rn)) return true;
+
   return false;
 }
 
@@ -704,15 +743,18 @@ async function main() {
     const playerGames = sg.playerGames || {};
 
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      // Legacy games bypass the done-set — may need upgrading to profileOnly.
+      // Legacy and hidden-with-structural-gaps bypass the done-set.
       // All other done games are skipped as normal.
-      if (prog.done.has(gameId) && !game.legacy) continue;
-      if (!needsProbe(game, isLocked))           continue;
+      const isHiddenGap = game.hidden && (!game.h || !game.rn);
+      if (prog.done.has(gameId) && !game.legacy && !isHiddenGap) continue;
+      if (!needsProbe(game, isLocked))                            continue;
       // Collect up to 3 player UUIDs for this game (for step 3)
       const playerUUIDs = Object.keys(playerGames)
         .filter(uuid => playerGames[uuid].includes(gameId))
         .slice(0, 3);
-      todo.push({ seasonId, gameId, isLocked, playerUUIDs });
+      // structuralGapOnly: already hidden with score — only need step 3 for h/a/rn.
+      const structuralGapOnly = isHiddenGap && !game.legacy;
+      todo.push({ seasonId, gameId, isLocked, playerUUIDs, structuralGapOnly });
     }
   }
 
@@ -731,7 +773,7 @@ async function main() {
 
   let totalDone = 0, totalSkipped = 0;
   let nScored = 0, nForfeit = 0, nCancelled = 0, nAbandoned = 0,
-      nBye = 0, nHidden = 0, nProfileOnly = 0, nLegacy = 0, nVenueRecovered = 0;
+      nBye = 0, nHidden = 0, nHiddenStructural = 0, nProfileOnly = 0, nLegacy = 0, nVenueRecovered = 0;
   let sinceLastSave = 0;
   const total = todo.length;
 
@@ -747,9 +789,10 @@ async function main() {
     for (let i = 0; i < items.length; i += CONCURRENCY) {
       const batch = items.slice(i, i + CONCURRENCY);
 
-      const results = await Promise.all(batch.map(async ({ gameId, playerUUIDs }, j) => {
+      const results = await Promise.all(batch.map(async (item, j) => {
+        const { gameId, playerUUIDs } = item;
         await delay(j * 5);
-        const result = await classifyGame(gameId, seasonId, playerUUIDs, session);
+        const result = await classifyGame(gameId, seasonId, playerUUIDs, session, item.structuralGapOnly);
         if (result.session) session = result.session;
         return { gameId, result };
       }));
@@ -768,14 +811,15 @@ async function main() {
         dirty = true;
 
         switch (result.type) {
-          case 'scored':      nScored++;      break;
-          case 'forfeit':     nForfeit++;     break;
-          case 'cancelled':   nCancelled++;   break;
-          case 'abandoned':   nAbandoned++;   break;
-          case 'bye':         nBye++;         break;
-          case 'hidden':      nHidden++;      break;
-          case 'profileOnly': nProfileOnly++; break;
-          case 'legacy':      nLegacy++;      break;
+          case 'scored':           nScored++;           break;
+          case 'forfeit':          nForfeit++;          break;
+          case 'cancelled':        nCancelled++;        break;
+          case 'abandoned':        nAbandoned++;        break;
+          case 'bye':              nBye++;              break;
+          case 'hidden':           nHidden++;           break;
+          case 'hiddenStructural': nHiddenStructural++; break;
+          case 'profileOnly':      nProfileOnly++;      break;
+          case 'legacy':           nLegacy++;           break;
         }
 
         if (wasHidden && !hadVenue && sg.games[gameId].vid) nVenueRecovered++;
@@ -787,7 +831,7 @@ async function main() {
         saveProgress(prog);
         sinceLastSave = 0;
         gitCommit(
-          `classify-games: ${nScored} scored, ${nHidden} hidden, ${nProfileOnly} profileOnly, ` +
+          `classify-games: ${nScored} scored, ${nHidden} hidden, ${nHiddenStructural} hiddenStruct, ${nProfileOnly} profileOnly, ` +
           `${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`
         );
       }
@@ -795,7 +839,7 @@ async function main() {
       const pct = ((totalDone / total) * 100).toFixed(1);
       process.stdout.write(
         `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
-        `✓ ${nScored} scored  🔒 ${nHidden} hidden  👤 ${nProfileOnly} profileOnly  ` +
+        `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
         `📜 ${nLegacy} legacy  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
         `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip\r`
       );
@@ -813,6 +857,7 @@ async function main() {
   console.log('\n\n✅ Classify complete');
   console.log(`   ✓  Scored:      ${nScored.toLocaleString()}`);
   console.log(`   🔒 Hidden:      ${nHidden.toLocaleString()}`);
+  console.log(`   🔧 HiddenStruct:${nHiddenStructural.toLocaleString()} — structural gap filled via player profiles`);
   console.log(`   👤 ProfileOnly: ${nProfileOnly.toLocaleString()}`);
   console.log(`   📜 Legacy:      ${nLegacy.toLocaleString()}`);
   console.log(`   🏳 Forfeit:     ${nForfeit.toLocaleString()}`);
@@ -824,7 +869,7 @@ async function main() {
   console.log(`   Total probed:  ${totalDone.toLocaleString()}`);
 
   gitCommit(
-    `classify-games complete: ${nScored} scored, ${nHidden} hidden, ${nProfileOnly} profileOnly, ` +
+    `classify-games complete: ${nScored} scored, ${nHidden} hidden, ${nHiddenStructural} hiddenStruct, ${nProfileOnly} profileOnly, ` +
     `${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`
   );
 }
