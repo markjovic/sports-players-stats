@@ -897,7 +897,7 @@ async function main() {
       process.stdout.write(
         `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
         `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
-        `📜 ${nLegacy} legacy  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
+        `📜 ${nLegacy} legacy  🚫 ${nNoProfile} noProfile  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
         `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip\r`
       );
 
@@ -907,6 +907,15 @@ async function main() {
     if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
     // sg out of scope — GC reclaims before next season
   }
+
+  // Commit after normal queue completes — ensures noProfile timestamps and all
+  // other per-season writes are pushed before the gap queue starts.
+  flushVenues();
+  saveProgress(prog);
+  gitCommit(
+    `classify-games (normal queue done): ${nScored} scored, ${nHidden} hidden, ${nHiddenStructural} hiddenStruct, ` +
+    `${nProfileOnly} profileOnly, ${nLegacy} legacy, ${nNoProfile} noProfile`
+  );
 
   // ── Structural gap fill — per-player batching ────────────────────────────
   // For each season with hidden games missing h/a/rn:
@@ -997,7 +1006,7 @@ async function main() {
       process.stdout.write(
         `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
         `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
-        `📜 ${nLegacy} legacy  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
+        `📜 ${nLegacy} legacy  🚫 ${nNoProfile} noProfile  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
         `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip  ` +
         `⬜ ${remaining.size} gap-remain
 `
