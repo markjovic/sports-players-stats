@@ -704,8 +704,10 @@ async function main() {
     const playerGames = sg.playerGames || {};
 
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      if (prog.done.has(gameId))        continue;
-      if (!needsProbe(game, isLocked))  continue;
+      // Legacy games bypass the done-set — may need upgrading to profileOnly.
+      // All other done games are skipped as normal.
+      if (prog.done.has(gameId) && !game.legacy) continue;
+      if (!needsProbe(game, isLocked))           continue;
       // Collect up to 3 player UUIDs for this game (for step 3)
       const playerUUIDs = Object.keys(playerGames)
         .filter(uuid => playerGames[uuid].includes(gameId))
