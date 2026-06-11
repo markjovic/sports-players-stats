@@ -637,7 +637,12 @@ function applyResult(entry, result) {
       if (result.hp?.length) entry.hp = result.hp;
       if (result.ap?.length) entry.ap = result.ap;
       if (result.updatedAt)  entry.updatedAt = result.updatedAt;
-      // Do NOT remove o/on — normalise script handles s/sn for hidden games
+      // Do NOT remove o/on — normalise script handles t1/t2 for hidden games
+      // If still no h/a or rn after full three-step probe, stamp noProfile so
+      // needsProbe stops re-queuing this game on every run.
+      if (!entry.h && !entry.rn && !entry.noProfile) {
+        entry.noProfile = new Date().toISOString();
+      }
       break;
 
     case 'hiddenStructural':
