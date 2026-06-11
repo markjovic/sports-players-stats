@@ -88,6 +88,7 @@ console.log(`  Unique courts: ${courtCount.toLocaleString()}`);
 let total = 0, scored = 0, withVenue = 0;
 let forfeit = 0, hidden = 0, legacy = 0, profileOnly = 0, noProfile = 0, noVenue = 0, bye = 0, postponed = 0;
 let noProfileOldest = null, noVenueOldest = null;
+let flagCollisions = 0; // games with legacy + another definitive flag
 let stFinal = 0, stUpcoming = 0, stPostponed = 0, stBye = 0, stOther = 0, stNone = 0;
 let stNone_active = 0, stNone_locked = 0;
 let nullScore = 0, nullScore_active = 0, nullScore_locked = 0;
@@ -124,6 +125,10 @@ if (fs.existsSync(GAMES_DIR)) {
       if (g.noVenue) {
         noVenue++;
         if (!noVenueOldest || g.noVenue < noVenueOldest) noVenueOldest = g.noVenue;
+      }
+      // Flag collision detection — legacy should not coexist with definitive classification
+      if (g.legacy && (g.hidden || g.profileOnly || g.cancelled || g.abandoned || g.forfeit || g.bye)) {
+        flagCollisions++;
       }
       if (g.s)           hasSField++;
 
@@ -184,14 +189,16 @@ if (fs.existsSync(GAMES_DIR)) {
 //   Legacy, bye, postponed — excluded.
 //   UPCOMING — excluded.
 
-const noScoreByNature    = forfeit + legacy + profileOnly + noProfile + bye + postponed;
+// Subtract collisions from legacy to avoid double-counting in coverage calculations
+const legacyForCalc      = legacy - flagCollisions;
+const noScoreByNature    = forfeit + legacyForCalc + profileOnly + noProfile + bye + postponed;
 const eligibleForScore   = total - stUpcoming - noScoreByNature;
 const scored_pct         = eligibleForScore > 0 ? ((scored / eligibleForScore) * 100).toFixed(1) : 'N/A';
 const scoreGap           = eligibleForScore - scored;
 
 // For venue: hidden games never have venue, so they're out of eligible pool
 // Forfeits may have a venue so they stay in — gap will reflect forfeits without venue
-const noVenueByNature    = hidden + legacy + profileOnly + noProfile + bye + postponed;
+const noVenueByNature    = hidden + legacyForCalc + profileOnly + noProfile + bye + postponed;
 // noVenue games are hidden games where venue was attempted but not found — already in hidden count
 const eligibleForVenue   = total - stUpcoming - noVenueByNature;
 const missingVenue       = eligibleForVenue - withVenue;
@@ -245,6 +252,12 @@ console.log(`    profileOnly: true    ${profileOnly.toLocaleString()} — pre-es
 console.log(`    legacy:      true    ${legacy.toLocaleString()} — all routes exhausted, no data accessible`);
 console.log(`    noProfile:   <ts>     ${noProfile.toLocaleString()} — hidden, profiles exhausted; retried after 30d. Oldest: ${noProfileOldest || 'none'}`);
 console.log(`    noVenue:     <ts>     ${noVenue.toLocaleString()} — hidden, venue not recoverable via discoverGame; retried after 30d. Oldest: ${noVenueOldest || 'none'}`);
+if (flagCollisions > 0) {
+  console.log(`\n  ⚠ FLAG COLLISIONS: ${flagCollisions.toLocaleString()} games have legacy:true alongside a definitive flag.`);
+  console.log(`    Run cleanup-flag-collisions.js to fix. These games are double-counted in legacy and their primary flag.`);
+} else {
+  console.log(`\n  ✓ No flag collisions detected`);
+}
 console.log(`    bye:         true    ${bye.toLocaleString()} — bye round, no game played`);
 
 console.log('\n  Team field structure:');
