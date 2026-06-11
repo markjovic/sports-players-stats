@@ -87,8 +87,10 @@ console.log(`  Unique courts: ${courtCount.toLocaleString()}`);
 
 let total = 0, scored = 0, withVenue = 0;
 let forfeit = 0, hidden = 0, legacy = 0, profileOnly = 0, noProfile = 0, noVenue = 0, bye = 0, postponed = 0;
+let hiddenWithVenue = 0; // hidden games that have venue data (crawled before grade was hidden)
 let noProfileOldest = null, noVenueOldest = null;
 let flagCollisions = 0; // games with legacy + another definitive flag
+let inProgress = 0;    // LIVE + PRE_GAME + IN_PROGRESS + PENDING — not yet finished
 let stFinal = 0, stUpcoming = 0, stPostponed = 0, stBye = 0, stOther = 0, stNone = 0;
 let stNone_active = 0, stNone_locked = 0;
 let nullScore = 0, nullScore_active = 0, nullScore_locked = 0;
@@ -118,6 +120,8 @@ if (fs.existsSync(GAMES_DIR)) {
       if (g.legacy)  legacy++;
       if (g.bye)         bye++;
       if (g.profileOnly) profileOnly++;
+      if (['LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(g.st || '')) inProgress++;
+      if (g.hidden && g.vid) hiddenWithVenue++;
       if (g.noProfile) {
         noProfile++;
         if (!noProfileOldest || g.noProfile < noProfileOldest) noProfileOldest = g.noProfile;
@@ -192,7 +196,8 @@ if (fs.existsSync(GAMES_DIR)) {
 // Subtract collisions from legacy to avoid double-counting in coverage calculations
 const legacyForCalc      = legacy - flagCollisions;
 // noProfile games are hidden games WITH scores — do not exclude from score eligible
-const noScoreByNature    = forfeit + legacyForCalc + profileOnly + bye + postponed;
+// inProgress (LIVE/PRE_GAME/IN_PROGRESS/PENDING) haven't finished — exclude from eligible
+const noScoreByNature    = forfeit + legacyForCalc + profileOnly + bye + postponed + inProgress;
 const eligibleForScore   = total - stUpcoming - noScoreByNature;
 const scored_pct         = eligibleForScore > 0 ? ((scored / eligibleForScore) * 100).toFixed(1) : 'N/A';
 const scoreGap           = eligibleForScore - scored;
@@ -200,11 +205,12 @@ const scoreGap           = eligibleForScore - scored;
 // For venue: hidden games never have venue, so they're out of eligible pool
 // Forfeits may have a venue so they stay in — gap will reflect forfeits without venue
 // noProfile and noVenue are subsets of hidden — hidden already excludes them from venue eligible
-const noVenueByNature    = hidden + legacyForCalc + profileOnly + bye + postponed;
+const noVenueByNature    = hidden + legacyForCalc + profileOnly + bye + postponed + inProgress;
 // noVenue games are hidden games where venue was attempted but not found — already in hidden count
 const eligibleForVenue   = total - stUpcoming - noVenueByNature;
-const missingVenue       = eligibleForVenue - withVenue;
-const venue_pct          = eligibleForVenue > 0 ? ((withVenue / eligibleForVenue) * 100).toFixed(1) : 'N/A';
+const venueOnEligible    = withVenue - hiddenWithVenue; // venue on non-hidden eligible games only
+const missingVenue       = eligibleForVenue - venueOnEligible;
+const venue_pct          = eligibleForVenue > 0 ? ((venueOnEligible / eligibleForVenue) * 100).toFixed(1) : 'N/A';
 
 // ─── Index sync check ─────────────────────────────────────────────────────────
 
@@ -284,21 +290,22 @@ console.log(`    With venue:                    ${withVenue.toLocaleString()}`);
 console.log('\n📈 COVERAGE (eligible games only)');
 console.log(`  Score coverage: ${scored_pct}%`);
 console.log(`    Eligible: ${eligibleForScore.toLocaleString()}`);
-console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − forfeit(${forfeit.toLocaleString()}) − legacy(${legacy.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − bye(${bye.toLocaleString()}) − postponed(${postponed.toLocaleString()})`);
+console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − forfeit(${forfeit.toLocaleString()}) − legacy(${legacyForCalc.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − inProgress(${inProgress.toLocaleString()}) − bye(${bye.toLocaleString()})`);
 console.log(`      note: hidden games ARE eligible — they have scores via spectator`);
 console.log(`    Scored:   ${scored.toLocaleString()}`);
 console.log(`    Gap:      ${scoreGap.toLocaleString()}${scoreGap < 0 ? '  ⚠ gap is negative — hidden scores are being double-counted' : ''}`);
 if (scoreGap > 0) {
   console.log(`      null score (checked):        ${nullScore.toLocaleString()}`);
   console.log(`      no status:                   ${stNone.toLocaleString()}`);
-  console.log(`      unexplained (FINAL no score no flag): ${total - scored - stUpcoming - noScoreByNature - nullScore - stNone}`);
+  console.log(`      unexplained (FINAL no score no flag): ${Math.max(0, total - scored - stUpcoming - noScoreByNature - nullScore - stNone)}`);
 }
 console.log(`  Venue coverage: ${venue_pct}%`);
 console.log(`    Eligible: ${eligibleForVenue.toLocaleString()}`);
-console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − hidden(${hidden.toLocaleString()}) − legacy(${legacy.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − bye(${bye.toLocaleString()}) − postponed(${postponed.toLocaleString()})`);
+console.log(`      = total(${total.toLocaleString()}) − upcoming(${stUpcoming.toLocaleString()}) − hidden(${hidden.toLocaleString()}) − legacy(${legacyForCalc.toLocaleString()}) − profileOnly(${profileOnly.toLocaleString()}) − inProgress(${inProgress.toLocaleString()}) − bye(${bye.toLocaleString()})`);
 console.log(`      note: forfeits stay eligible — may have venue if scraped before forfeit`);
-console.log(`    With venue: ${withVenue.toLocaleString()}`);
-console.log(`    Gap:        ${missingVenue.toLocaleString()}${missingVenue < 0 ? '  ⚠ negative — check logic' : ''}`);
+console.log(`    With venue (eligible only): ${venueOnEligible.toLocaleString()}`);
+console.log(`    Gap:        ${missingVenue.toLocaleString()}`);
+console.log(`    Hidden games with venue: ${hiddenWithVenue.toLocaleString()} — crawled before grade was hidden, data preserved`);;
 
 if (VERBOSE && seasonBreakdown.length > 0) {
   console.log('\n📋 PER-SEASON BREAKDOWN (top 20 by game count)');
