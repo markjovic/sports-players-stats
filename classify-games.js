@@ -794,9 +794,17 @@ async function main() {
     const isLocked    = seasons[seasonId]?.locked !== false;
     const playerGames = sg.playerGames || {};
 
+    // Build inverted index once per season: gameId → [playerUUIDs]
+    // Avoids O(players × games) scan — now O(players) per season.
+    const gameToPlayers = new Map();
+    for (const [uuid, gids] of Object.entries(playerGames)) {
+      for (const gid of gids) {
+        if (!gameToPlayers.has(gid)) gameToPlayers.set(gid, []);
+        gameToPlayers.get(gid).push(uuid);
+      }
+    }
+
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      // isHiddenGap: hidden game missing structural metadata AND not yet exhausted.
-      // noProfile means all candidates were tried — exclude from gap handling.
       const noProfileFresh = game.noProfile && (
         game.noProfile === true ||
         (Date.now() - new Date(game.noProfile).getTime()) < 30 * 24 * 60 * 60 * 1000
@@ -805,34 +813,26 @@ async function main() {
         game.noVenue === true ||
         (Date.now() - new Date(game.noVenue).getTime()) < 30 * 24 * 60 * 60 * 1000
       );
-      // isHiddenGap: hidden game still needs structural metadata from player profiles.
-      const isHiddenGap = game.hidden && (!game.h || !game.rn) && !noProfileFresh;
-      // isHiddenVenueGap: hidden game still needs venue probe via discoverGame.
+      const isHiddenGap      = game.hidden && (!game.h || !game.rn) && !noProfileFresh;
       const isHiddenVenueGap = game.hidden && !game.vid && !noVenueFresh;
 
-      // Legacy, hidden structural gap, and hidden venue gap games bypass the done-set.
       if (prog.done.has(gameId) && !game.legacy && !isHiddenGap && !isHiddenVenueGap) continue;
       if (!needsProbe(game, isLocked)) continue;
 
+      const players = gameToPlayers.get(gameId) || [];
+
       if (isHiddenGap && !game.legacy) {
-        // Structural gap — batch by player rather than by game.
-        // Build a map: playerUUID → [gameIds they appear in that need filling].
         if (!gapBySeason.has(seasonId)) {
           gapBySeason.set(seasonId, { isLocked, gapGameIds: new Set(), playerToGames: new Map() });
         }
         const entry = gapBySeason.get(seasonId);
         entry.gapGameIds.add(gameId);
-        for (const [uuid, gids] of Object.entries(playerGames)) {
-          if (!gids.includes(gameId)) continue;
+        for (const uuid of players) {
           if (!entry.playerToGames.has(uuid)) entry.playerToGames.set(uuid, []);
           entry.playerToGames.get(uuid).push(gameId);
         }
       } else {
-        // Normal per-game probe — discoverGame + spectator + profile as needed.
-        const playerUUIDs = Object.keys(playerGames)
-          .filter(uuid => playerGames[uuid].includes(gameId))
-          .slice(0, 3);
-        todo.push({ seasonId, gameId, isLocked, playerUUIDs, structuralGapOnly: false });
+        todo.push({ seasonId, gameId, isLocked, playerUUIDs: players.slice(0, 3), structuralGapOnly: false });
       }
     }
   }
