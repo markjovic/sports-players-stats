@@ -278,10 +278,12 @@ console.log(`    bye:         true    ${bye.toLocaleString()} — bye round, no 
 
 console.log('\n  Team field structure:');
 console.log(`    h + a only (absolute):         ${teamHA.toLocaleString()}`);
-console.log(`    h + a + o/on (redundant):      ${teamBoth.toLocaleString()}${teamBoth > 0 ? '  ⚠ run normalise-game-structure' : ''}`);
-console.log(`    o/on only (relative):          ${teamOOnly.toLocaleString()}`);
-console.log(`    neither (bare):                ${teamNeither.toLocaleString()}`);
-console.log(`    has s/sn (source team):        ${hasSField.toLocaleString()}`);
+console.log(`    h + a + o/on (redundant):        ${teamBoth.toLocaleString()}${teamBoth > 0 ? '  ⚠ run normalise-game-structure' : ''}`);
+console.log(`    o/on only (relative):            ${teamOOnly.toLocaleString()}${teamOOnly > 0 ? '  ⚠ run normalise-game-structure' : ''}`);
+console.log(`    t1/t1n + t2/t2n (both sides):    ${teamT1T2.toLocaleString()}`);
+console.log(`    t1/t1n only (one side known):    ${teamT1Only.toLocaleString()}`);
+console.log(`    neither (bare):                  ${teamNeither.toLocaleString()}`);
+console.log(`    has s/sn (legacy field):         ${hasSField.toLocaleString()}${hasSField > 0 ? '  ⚠ run normalise-game-structure' : ''}`);
 
 console.log('\n  Scores:');
 console.log(`    With numeric score:            ${scored.toLocaleString()}`);
