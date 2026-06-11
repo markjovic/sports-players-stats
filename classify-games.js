@@ -727,9 +727,12 @@ async function main() {
 
   console.log('\n  Building work queue...');
 
-  // todo items carry the playerUUIDs for the game so classifyGame can do step 3
-  // without needing to re-read the game file inside the async batch
-  const todo = []; // [{ seasonId, gameId, isLocked, playerUUIDs }]
+  // Two queues:
+  //   todo        — normal per-game items (discoverGame + spectator + profile)
+  //   gapBySeason — per-player-per-season items for hidden structural gap fill
+  //                 One publicProfileStatistics call covers all gap games for that player.
+  const todo        = []; // [{ seasonId, gameId, isLocked, playerUUIDs }]
+  const gapBySeason = new Map(); // seasonId → { isLocked, gapGameIds: Set, playerToGames: Map }
 
   const seasonIds = TARGET_SEASON ? [TARGET_SEASON] : Object.keys(seasons);
 
@@ -743,25 +746,45 @@ async function main() {
     const playerGames = sg.playerGames || {};
 
     for (const [gameId, game] of Object.entries(sg.games || {})) {
-      // Legacy and hidden-with-structural-gaps bypass the done-set.
-      // All other done games are skipped as normal.
       const isHiddenGap = game.hidden && (!game.h || !game.rn);
+
+      // Legacy and hidden-gap games bypass the done-set.
       if (prog.done.has(gameId) && !game.legacy && !isHiddenGap) continue;
       if (!needsProbe(game, isLocked))                            continue;
-      // Collect up to 3 player UUIDs for this game (for step 3)
-      const playerUUIDs = Object.keys(playerGames)
-        .filter(uuid => playerGames[uuid].includes(gameId))
-        .slice(0, 3);
-      // structuralGapOnly: already hidden with score — only need step 3 for h/a/rn.
-      const structuralGapOnly = isHiddenGap && !game.legacy;
-      todo.push({ seasonId, gameId, isLocked, playerUUIDs, structuralGapOnly });
+
+      if (isHiddenGap && !game.legacy) {
+        // Structural gap — batch by player rather than by game.
+        // Build a map: playerUUID → [gameIds they appear in that need filling].
+        if (!gapBySeason.has(seasonId)) {
+          gapBySeason.set(seasonId, { isLocked, gapGameIds: new Set(), playerToGames: new Map() });
+        }
+        const entry = gapBySeason.get(seasonId);
+        entry.gapGameIds.add(gameId);
+        for (const [uuid, gids] of Object.entries(playerGames)) {
+          if (!gids.includes(gameId)) continue;
+          if (!entry.playerToGames.has(uuid)) entry.playerToGames.set(uuid, []);
+          entry.playerToGames.get(uuid).push(gameId);
+        }
+      } else {
+        // Normal per-game probe — discoverGame + spectator + profile as needed.
+        const playerUUIDs = Object.keys(playerGames)
+          .filter(uuid => playerGames[uuid].includes(gameId))
+          .slice(0, 3);
+        todo.push({ seasonId, gameId, isLocked, playerUUIDs, structuralGapOnly: false });
+      }
     }
   }
 
-  console.log(`  Queue: ${todo.length.toLocaleString()} games to probe\n`);
-  if (todo.length === 0) { console.log('✅ Nothing to do'); return; }
+  const gapSeasonCount  = gapBySeason.size;
+  const gapPlayerCount  = [...gapBySeason.values()].reduce((s, e) => s + e.playerToGames.size, 0);
+  const gapGameCount    = [...gapBySeason.values()].reduce((s, e) => s + e.gapGameIds.size, 0);
 
-  // ── Group by season — load one file at a time to bound memory ─────────────
+  console.log(`  Queue: ${todo.length.toLocaleString()} normal games to probe`);
+  console.log(`  Queue: ${gapGameCount.toLocaleString()} hidden structural gap games`);
+  console.log(`         across ${gapSeasonCount.toLocaleString()} seasons, ~${gapPlayerCount.toLocaleString()} player calls\n`);
+  if (todo.length === 0 && gapBySeason.size === 0) { console.log('✅ Nothing to do'); return; }
+
+  // ── Group normal todo by season ────────────────────────────────────────────
 
   const bySeason = new Map();
   for (const item of todo) {
@@ -775,7 +798,7 @@ async function main() {
   let nScored = 0, nForfeit = 0, nCancelled = 0, nAbandoned = 0,
       nBye = 0, nHidden = 0, nHiddenStructural = 0, nProfileOnly = 0, nLegacy = 0, nVenueRecovered = 0;
   let sinceLastSave = 0;
-  const total = todo.length;
+  const total = todo.length + gapGameCount;
 
   // ── Process season by season ───────────────────────────────────────────────
 
@@ -849,6 +872,112 @@ async function main() {
 
     if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
     // sg out of scope — GC reclaims before next season
+  }
+
+  // ── Structural gap fill — per-player batching ────────────────────────────
+  // For each season with hidden games missing h/a/rn:
+  //   Process players in batches of CONCURRENCY.
+  //   One publicProfileStatistics call per player covers all their gap games.
+  //   Skip players whose games are already filled by prior players in this season.
+
+  if (gapBySeason.size > 0) {
+    console.log(`\n  Processing ${gapGameCount.toLocaleString()} structural gap games via per-player batching...`);
+  }
+
+  for (const [seasonId, { isLocked, gapGameIds, playerToGames }] of gapBySeason) {
+    const gameFile = path.join(GAMES_DIR, `${seasonId}.json`);
+    if (!fs.existsSync(gameFile)) continue;
+    let sg;
+    try { sg = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (e) { continue; }
+    let dirty = false;
+
+    // Track which gap games are still unfilled for this season
+    const remaining = new Set(gapGameIds);
+
+    const players = [...playerToGames.entries()]; // [[uuid, [gameId, ...]]]
+
+    for (let i = 0; i < players.length; i += CONCURRENCY) {
+      // Skip players whose games are already all filled
+      const batch = players.slice(i, i + CONCURRENCY)
+        .filter(([, gids]) => gids.some(gid => remaining.has(gid)));
+
+      if (!batch.length) {
+        // All games in this slice already covered — advance totalDone
+        const skippedGames = players.slice(i, i + CONCURRENCY)
+          .reduce((s, [, gids]) => s + gids.filter(gid => gapGameIds.has(gid)).length, 0);
+        totalDone += skippedGames; // already counted via remaining removal
+        continue;
+      }
+
+      const results = await Promise.all(batch.map(async ([uuid, gameIds], j) => {
+        await delay(j * 5);
+        let prResp;
+        let attempts = 0;
+        while (attempts < 2) {
+          prResp = await fetchProfileStats(uuid, session);
+          if (!prResp._auth) break;
+          attempts++;
+          await delay(attempts * 2000);
+          try { session = await safeRefresh(); } catch (e) {}
+        }
+        if (prResp._transient || prResp._graphql || prResp._auth) return { uuid, fills: [] };
+
+        // Extract structural data for every gap game this player appears in
+        const fills = [];
+        for (const gameId of gameIds) {
+          if (!remaining.has(gameId)) continue; // already filled by another player
+          const found = findGameInProfile(prResp, gameId, seasonId);
+          if (found) fills.push({ gameId, found });
+        }
+        return { uuid, fills };
+      }));
+
+      for (const { fills } of results) {
+        for (const { gameId, found } of fills) {
+          if (!remaining.has(gameId)) continue; // race: another player in batch also found it
+          sg.games[gameId] = applyResult(sg.games[gameId] || {}, { type: 'hiddenStructural', ...found });
+          prog.done.add(gameId);
+          remaining.delete(gameId);
+          nHiddenStructural++;
+          totalDone++;
+          sinceLastSave++;
+          dirty = true;
+        }
+      }
+
+      // Any remaining games from this batch that weren't filled: advance totalDone
+      // (they'll be retried if they appear in another player's list, or stay as-is)
+
+      if (sinceLastSave >= SAVE_EVERY) {
+        if (dirty) { fs.writeFileSync(gameFile, JSON.stringify(sg)); dirty = false; }
+        flushVenues();
+        saveProgress(prog);
+        sinceLastSave = 0;
+        gitCommit(
+          `classify-games: ${nScored} scored, ${nHidden} hidden, ${nHiddenStructural} hiddenStruct, ${nProfileOnly} profileOnly, ` +
+          `${nLegacy} legacy, ${nForfeit} forfeit, ${nCancelled} cancelled, ${nAbandoned} abandoned, ${nBye} bye`
+        );
+      }
+
+      const pct = total > 0 ? ((totalDone / total) * 100).toFixed(1) : '100.0';
+      process.stdout.write(
+        `  ${totalDone.toLocaleString()}/${total.toLocaleString()} (${pct}%) — ` +
+        `✓ ${nScored} scored  🔒 ${nHidden} hidden  🔧 ${nHiddenStructural} hiddenStruct  👤 ${nProfileOnly} profileOnly  ` +
+        `📜 ${nLegacy} legacy  🏳 ${nForfeit} forfeit  ✗ ${nCancelled} cancelled  ` +
+        `💥 ${nAbandoned} abandoned  ☕ ${nBye} bye  ⚠ ${totalSkipped} skip  ` +
+        `⬜ ${remaining.size} gap-remain`
+      );
+
+      if (i + CONCURRENCY < players.length) await delay(50);
+    }
+
+    if (dirty) fs.writeFileSync(gameFile, JSON.stringify(sg));
+
+    // Any games still in remaining after all players exhausted — no player profile had them.
+    // They stay as hidden with missing structural data. Not marked done so next run retries.
+    if (remaining.size > 0) {
+      process.stdout.write(`\n  ⚠ ${remaining.size} games in ${seasonId} had no player profile coverage\n`);
+    }
   }
 
   flushVenues();
