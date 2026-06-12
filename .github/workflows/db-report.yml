@@ -7,50 +7,39 @@ on:
       verbose:
         description: 'Show per-season breakdown (top 20)'
         required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
+        default: false
+        type: boolean
       include_players:
-        description: 'Include player detail files (988MB checkout, slower)'
+        description: 'Include player detail file count (slower checkout)'
         required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
+        default: false
+        type: boolean
+      verify_migration:
+        description: 'Verify Migration Phase 1 output vs source data'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   report:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: read
 
     steps:
-      - name: Checkout (without players)
-        if: ${{ github.event.inputs.include_players != 'true' }}
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
             db-report.js
             sports-index.json
             players-index
+            players/indexes
             team-lookup
             venue-lookup
-            games
-          sparse-checkout-cone-mode: false
-
-      - name: Checkout (with players)
-        if: ${{ github.event.inputs.include_players == 'true' }}
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            db-report.js
-            sports-index.json
-            players
-            players-index
-            team-lookup
-            venue-lookup
+            team-index.json
+            venue-index.json
             games
           sparse-checkout-cone-mode: false
 
@@ -64,4 +53,5 @@ jobs:
           ARGS=""
           if [ "${{ github.event.inputs.verbose }}" = "true" ]; then ARGS="$ARGS --verbose"; fi
           if [ "${{ github.event.inputs.include_players }}" = "true" ]; then ARGS="$ARGS --include-players"; fi
+          if [ "${{ github.event.inputs.verify_migration }}" = "true" ]; then ARGS="$ARGS --verify-migration"; fi
           node db-report.js $ARGS
