@@ -42,9 +42,25 @@ function writeJSON(p, data) {
   fs.writeFileSync(p, JSON.stringify(data));
 }
 
-function gitCommit(message) {
+function gitCommitGames(message) {
+  // Phase 1A: only games/bv and progress file exist at this point
   try {
-    execSync(`git add ${GAMES_DIR} ${INDEX_OUT_DIR} ${PROGRESS_FILE}`, { stdio: 'pipe' });
+    execSync(`git add ${GAMES_DIR} ${PROGRESS_FILE}`, { stdio: 'pipe' });
+    const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
+    if (!diff) return;
+    execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
+    execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
+    execSync('git push', { stdio: 'pipe' });
+    console.log(`  committed: ${message}`);
+  } catch (e) {
+    console.error('  git commit failed:', e.message);
+  }
+}
+
+function gitCommitIndexes(message) {
+  // Phase 1C: players/indexes now exists
+  try {
+    execSync(`git add ${INDEX_OUT_DIR} ${PROGRESS_FILE}`, { stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
     if (!diff) return;
     execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
@@ -188,14 +204,14 @@ function processGameFiles(nameMap, progress, sportsIndex) {
 
     if (sinceLastCommit >= COMMIT_EVERY) {
       writeJSON(PROGRESS_FILE, progress);
-      gitCommit(`migrate-phase1: p arrays ${processed}/${total} seasons`);
+      gitCommitGames(`migrate-phase1: p arrays ${processed}/${total} seasons`);
       sinceLastCommit = 0;
     }
   }
 
   // Final commit for game files
   writeJSON(PROGRESS_FILE, progress);
-  gitCommit(`migrate-phase1: p arrays complete (${total} seasons)`);
+  gitCommitGames(`migrate-phase1: p arrays complete (${total} seasons)`);
 
   // Convert teamIndex maps to arrays
   const teamIndexOut = {};
@@ -259,12 +275,12 @@ function enrichPlayerIndexes(progress) {
     if (enriched % 32 === 0) {
       console.log(`  ${enriched}/${shards.length} index shards enriched`);
       writeJSON(PROGRESS_FILE, progress);
-      gitCommit(`migrate-phase1: index shards ${enriched}/${shards.length}`);
+      gitCommitIndexes(`migrate-phase1: index shards ${enriched}/${shards.length}`);
     }
   }
 
   writeJSON(PROGRESS_FILE, progress);
-  gitCommit(`migrate-phase1: index shards complete`);
+  gitCommitIndexes(`migrate-phase1: index shards complete`);
   console.log(`  done: ${enriched} shards written to ${INDEX_OUT_DIR}/`);
 }
 
