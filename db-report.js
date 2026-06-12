@@ -513,8 +513,8 @@ if (VERIFY_MIGRATION) {
       : `${newWithHistory.toLocaleString()} entries verified`
   );
 
-  console.log(`    players-index/     shards: ${oldShardCount}  players: ${oldPlayerCount.toLocaleString()}`);
-  console.log(`    players/indexes/   shards: ${newShardCount}  players: ${newPlayerCount.toLocaleString()}${newPlayerCount !== oldPlayerCount ? '  ⚠ COUNT MISMATCH' : '  ✓'}`);
+  console.log(`    players-index/     ${oldDeleted ? '(deleted ✓)' : `shards: ${oldShardCount}  players: ${oldPlayerCount.toLocaleString()}`}`);
+  console.log(`    players/indexes/   shards: ${newShardCount}  players: ${newPlayerCount.toLocaleString()}${!oldDeleted && newPlayerCount !== oldPlayerCount ? '  ⚠ COUNT MISMATCH' : '  ✓'}`);
   console.log(`    UUIDs only in old index:   ${onlyInOld.length.toLocaleString()}${onlyInOld.length > 0 ? '  ⚠' : '  ✓'}`);
   console.log(`    UUIDs only in new index:   ${onlyInNew.length.toLocaleString()}${onlyInNew.length > 0 ? '  ⚠' : '  ✓'}`);
   console.log(`    Entries with history:      ${newWithHistory.toLocaleString()}${newMissingHistory > 0 ? `  ⚠ (${newMissingHistory} missing)` : '  ✓'}`);
@@ -640,7 +640,7 @@ if (VERIFY_MIGRATION) {
       : `${tsWithFixtures.toLocaleString()} entries verified`
   );
 
-  console.log(`    team-stats/bv/ files:          ${tsFileCount.toLocaleString()}  (seasons: ${total.toLocaleString()})${tsFileCount !== total ? '  ⚠ MISMATCH' : '  ✓'}`);
+  console.log(`    team-stats/bv/ files:          ${tsFileCount.toLocaleString()}  (seasons: ${seasonList.length.toLocaleString()})${tsFileCount !== seasonList.length ? '  ⚠ MISMATCH' : '  ✓'}`);
   console.log(`    Sampled team entries:          ${tsTeamTotal.toLocaleString()}`);
   console.log(`    With roster:                   ${tsWithRoster.toLocaleString()}${tsMissingRosterSamples.length > 0 ? '  ⚠' : '  ✓'}`);
   console.log(`    With fixtures:                 ${tsWithFixtures.toLocaleString()}${tsMissingFixtureSamples.length > 0 ? '  ⚠' : '  ✓'}`);
