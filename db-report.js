@@ -9,16 +9,20 @@ const ARGS = Object.fromEntries(
   process.argv.slice(2).filter(a => a.startsWith('--'))
     .map(a => { const [k,...v] = a.slice(2).split('='); return [k, v.length ? v.join('=') : true]; })
 );
-const VERBOSE         = !!ARGS.verbose;
-const INCLUDE_PLAYERS = !!ARGS['include-players'];
-const TENANT          = ARGS.tenant || 'bv';
+const VERBOSE           = !!ARGS.verbose;
+const INCLUDE_PLAYERS   = !!ARGS['include-players'];
+const VERIFY_MIGRATION  = !!ARGS['verify-migration'];
+const TENANT            = ARGS.tenant || 'bv';
 
-const GAMES_DIR   = path.join(__dirname, 'games', TENANT);
-const PLAYERS_DIR = path.join(__dirname, 'players');
-const PLAYERS_IDX = path.join(__dirname, 'players-index');
-const VENUE_DIR   = path.join(__dirname, 'venue-lookup');
-const TEAM_DIR    = path.join(__dirname, 'team-lookup');
-const INDEX_FILE  = path.join(__dirname, 'sports-index.json');
+const GAMES_DIR        = path.join(__dirname, 'games', TENANT);
+const PLAYERS_DIR      = path.join(__dirname, 'players');
+const PLAYERS_IDX      = path.join(__dirname, 'players-index');
+const PLAYERS_IDX_NEW  = path.join(__dirname, 'players', 'indexes');
+const VENUE_DIR        = path.join(__dirname, 'venue-lookup');
+const TEAM_DIR         = path.join(__dirname, 'team-lookup');
+const TEAM_INDEX_FILE  = path.join(__dirname, 'team-index.json');
+const VENUE_INDEX_FILE = path.join(__dirname, 'venue-index.json');
+const INDEX_FILE       = path.join(__dirname, 'sports-index.json');
 
 console.log('\n📊 Sports Player Stats — Database Report');
 console.log('═'.repeat(60));
@@ -327,6 +331,256 @@ if (VERBOSE && seasonBreakdown.length > 0) {
     const flag = s.active ? '🟢' : '🔒';
     console.log(`  ${flag} ${s.id}  ${(s.name||'').padEnd(40)} ${String(s.total).padStart(6)} total  score:${s.scored} venue:${s.venue} up:${s.upcoming} noSt:${s.noStatus} forfeit:${s.forfeit} hidden:${s.hidden} profileOnly:${s.profileOnly} legacy:${s.legacy} bye:${s.bye}`);
   });
+}
+
+// ─── Migration Phase 1 Verification ──────────────────────────────────────────
+
+if (VERIFY_MIGRATION) {
+  console.log('\n🔬 MIGRATION PHASE 1 VERIFICATION');
+  console.log('─'.repeat(60));
+
+  const checks = [];   // { label, pass, detail }
+  const errors = [];   // strings — shown in summary
+
+  function check(label, pass, detail) {
+    checks.push({ label, pass, detail });
+    if (!pass) errors.push(`FAIL: ${label}${detail ? ' — ' + detail : ''}`);
+  }
+
+  // ── 1. Game files: p array present, playerGames absent ─────────────────────
+
+  console.log('\n  [1] Scanning game files for p array / playerGames...');
+  let gamesTotal = 0, gamesWithP = 0, gamesWithoutP = 0;
+  let gamesWithPlayerGames = 0, seasonFilesWithPlayerGames = 0;
+  let pEntriesTotal = 0, gamesWithEmptyP = 0;
+  const missingPSamples = [];
+
+  if (fs.existsSync(GAMES_DIR)) {
+    for (const file of fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'))) {
+      let sg;
+      try { sg = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, file), 'utf8')); } catch (e) { continue; }
+
+      if (sg.playerGames) seasonFilesWithPlayerGames++;
+
+      for (const [gid, g] of Object.entries(sg.games || {})) {
+        gamesTotal++;
+        if (Array.isArray(g.p)) {
+          gamesWithP++;
+          pEntriesTotal += g.p.length;
+          if (g.p.length === 0) gamesWithEmptyP++;
+        } else {
+          gamesWithoutP++;
+          if (missingPSamples.length < 5) missingPSamples.push(`${file.replace('.json','')}/${gid}`);
+        }
+        // playerGames should never be on a game entry (it's a season-level key)
+        // flag any games that somehow have it as a per-game field
+        if (g.playerGames !== undefined) gamesWithPlayerGames++;
+      }
+    }
+  }
+
+  check(
+    'All game files have p array',
+    gamesWithoutP === 0,
+    gamesWithoutP > 0
+      ? `${gamesWithoutP.toLocaleString()} games missing p. Samples: ${missingPSamples.join(', ')}`
+      : `${gamesWithP.toLocaleString()} games verified`
+  );
+  check(
+    'No season files retain playerGames',
+    seasonFilesWithPlayerGames === 0,
+    seasonFilesWithPlayerGames > 0
+      ? `${seasonFilesWithPlayerGames} season files still have playerGames key — migration incomplete`
+      : 'playerGames deleted from all season files'
+  );
+  check(
+    'Game total unchanged from report',
+    gamesTotal === total,
+    gamesTotal !== total
+      ? `verify scan found ${gamesTotal.toLocaleString()} vs report total ${total.toLocaleString()}`
+      : `${gamesTotal.toLocaleString()} games consistent`
+  );
+
+  console.log(`    Total games scanned:           ${gamesTotal.toLocaleString()}`);
+  console.log(`    Games with p array:            ${gamesWithP.toLocaleString()}`);
+  console.log(`    Games missing p array:         ${gamesWithoutP.toLocaleString()}${gamesWithoutP > 0 ? '  ⚠' : '  ✓'}`);
+  console.log(`    Games with empty p (no players): ${gamesWithEmptyP.toLocaleString()}`);
+  console.log(`    Total p entries across all games: ${pEntriesTotal.toLocaleString()}`);
+  console.log(`    Season files still with playerGames: ${seasonFilesWithPlayerGames.toLocaleString()}${seasonFilesWithPlayerGames > 0 ? '  ⚠' : '  ✓'}`);
+
+  // ── 2. Player index shards: players/indexes/ vs players-index/ ──────────────
+
+  console.log('\n  [2] Comparing player index shards...');
+
+  let oldShardCount = 0, oldPlayerCount = 0;
+  const oldUUIDs = new Set();
+  if (fs.existsSync(PLAYERS_IDX)) {
+    for (const f of fs.readdirSync(PLAYERS_IDX).filter(f => f.endsWith('.json'))) {
+      oldShardCount++;
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(PLAYERS_IDX, f), 'utf8'));
+        for (const uuid of Object.keys(data)) { oldUUIDs.add(uuid); oldPlayerCount++; }
+      } catch (e) {}
+    }
+  }
+
+  let newShardCount = 0, newPlayerCount = 0, newWithHistory = 0, newMissingHistory = 0;
+  const newUUIDs = new Set();
+  const missingHistorySamples = [];
+  if (fs.existsSync(PLAYERS_IDX_NEW)) {
+    for (const f of fs.readdirSync(PLAYERS_IDX_NEW).filter(f => f.endsWith('.json'))) {
+      newShardCount++;
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(PLAYERS_IDX_NEW, f), 'utf8'));
+        for (const [uuid, entry] of Object.entries(data)) {
+          newUUIDs.add(uuid);
+          newPlayerCount++;
+          if (entry.history && typeof entry.history === 'object') {
+            newWithHistory++;
+          } else {
+            newMissingHistory++;
+            if (missingHistorySamples.length < 5) missingHistorySamples.push(uuid);
+          }
+        }
+      } catch (e) {}
+    }
+  }
+
+  // UUIDs in old but not in new
+  const onlyInOld = [...oldUUIDs].filter(u => !newUUIDs.has(u));
+  // UUIDs in new but not in old (unexpected)
+  const onlyInNew = [...newUUIDs].filter(u => !oldUUIDs.has(u));
+
+  const oldExists = oldShardCount > 0;
+  const newExists = newShardCount > 0;
+
+  check(
+    'players/indexes/ exists and is populated',
+    newExists,
+    newExists ? `${newShardCount} shards, ${newPlayerCount.toLocaleString()} players` : 'directory missing or empty'
+  );
+  check(
+    'Shard count matches',
+    oldShardCount === newShardCount,
+    `old: ${oldShardCount}, new: ${newShardCount}`
+  );
+  check(
+    'Player count matches',
+    oldPlayerCount === newPlayerCount,
+    `old: ${oldPlayerCount.toLocaleString()}, new: ${newPlayerCount.toLocaleString()}`
+  );
+  check(
+    'No UUIDs missing from new index',
+    onlyInOld.length === 0,
+    onlyInOld.length > 0
+      ? `${onlyInOld.length} UUIDs in players-index/ but not in players/indexes/. Samples: ${onlyInOld.slice(0,3).join(', ')}`
+      : 'all UUIDs accounted for'
+  );
+  check(
+    'No unexpected UUIDs added to new index',
+    onlyInNew.length === 0,
+    onlyInNew.length > 0
+      ? `${onlyInNew.length} UUIDs in players/indexes/ but not in players-index/`
+      : 'no unexpected additions'
+  );
+  check(
+    'All index entries have history field',
+    newMissingHistory === 0,
+    newMissingHistory > 0
+      ? `${newMissingHistory.toLocaleString()} entries missing history. Samples: ${missingHistorySamples.join(', ')}`
+      : `${newWithHistory.toLocaleString()} entries verified`
+  );
+
+  console.log(`    players-index/     shards: ${oldShardCount}  players: ${oldPlayerCount.toLocaleString()}`);
+  console.log(`    players/indexes/   shards: ${newShardCount}  players: ${newPlayerCount.toLocaleString()}${newPlayerCount !== oldPlayerCount ? '  ⚠ COUNT MISMATCH' : '  ✓'}`);
+  console.log(`    UUIDs only in old index:   ${onlyInOld.length.toLocaleString()}${onlyInOld.length > 0 ? '  ⚠' : '  ✓'}`);
+  console.log(`    UUIDs only in new index:   ${onlyInNew.length.toLocaleString()}${onlyInNew.length > 0 ? '  ⚠' : '  ✓'}`);
+  console.log(`    Entries with history:      ${newWithHistory.toLocaleString()}${newMissingHistory > 0 ? `  ⚠ (${newMissingHistory} missing)` : '  ✓'}`);
+
+  // ── 3. team-index.json ──────────────────────────────────────────────────────
+
+  console.log('\n  [3] Checking team-index.json...');
+
+  const distinctSnInIndex = new Set(seasonList.map(s => s.sn || s.seasonName).filter(Boolean));
+  let teamIndexSeasonNames = 0, teamIndexTotalTeams = 0;
+  let teamIndexExists = false;
+
+  if (fs.existsSync(TEAM_INDEX_FILE)) {
+    teamIndexExists = true;
+    try {
+      const ti = JSON.parse(fs.readFileSync(TEAM_INDEX_FILE, 'utf8'));
+      teamIndexSeasonNames = Object.keys(ti).length;
+      for (const arr of Object.values(ti)) teamIndexTotalTeams += arr.length;
+    } catch (e) { teamIndexExists = false; }
+  }
+
+  check(
+    'team-index.json exists',
+    teamIndexExists,
+    teamIndexExists ? `${teamIndexSeasonNames} season names, ${teamIndexTotalTeams.toLocaleString()} team entries` : 'file missing'
+  );
+  check(
+    'team-index.json has entries',
+    teamIndexTotalTeams > 0,
+    `${teamIndexTotalTeams.toLocaleString()} entries`
+  );
+  check(
+    'team-index.json season names ≤ distinct sn values in sports-index',
+    teamIndexSeasonNames <= distinctSnInIndex.size,
+    `team-index: ${teamIndexSeasonNames}, sports-index distinct sn: ${distinctSnInIndex.size}`
+  );
+
+  console.log(`    team-index.json season names:  ${teamIndexSeasonNames.toLocaleString()}`);
+  console.log(`    Distinct sn in sports-index:   ${distinctSnInIndex.size.toLocaleString()}`);
+  console.log(`    Total team entries:            ${teamIndexTotalTeams.toLocaleString()}`);
+
+  // ── 4. venue-index.json ─────────────────────────────────────────────────────
+
+  console.log('\n  [4] Checking venue-index.json...');
+
+  let venueIndexExists = false, venueIndexCount = 0;
+  if (fs.existsSync(VENUE_INDEX_FILE)) {
+    venueIndexExists = true;
+    try {
+      const vi = JSON.parse(fs.readFileSync(VENUE_INDEX_FILE, 'utf8'));
+      venueIndexCount = Array.isArray(vi) ? vi.length : Object.keys(vi).length;
+    } catch (e) { venueIndexExists = false; }
+  }
+
+  check(
+    'venue-index.json exists',
+    venueIndexExists,
+    venueIndexExists ? `${venueIndexCount} venues` : 'file missing'
+  );
+  check(
+    'venue-index.json count matches venue-lookup shard count',
+    venueIndexCount === venueCount,
+    `venue-index: ${venueIndexCount}, venue-lookup shards: ${venueCount}`
+  );
+
+  console.log(`    venue-index.json entries:      ${venueIndexCount.toLocaleString()}`);
+  console.log(`    venue-lookup shard entries:    ${venueCount.toLocaleString()}${venueIndexCount !== venueCount ? '  ⚠ MISMATCH' : '  ✓'}`);
+
+  // ── Summary ─────────────────────────────────────────────────────────────────
+
+  const passed = checks.filter(c => c.pass).length;
+  const failed = checks.filter(c => !c.pass).length;
+
+  console.log('\n' + '─'.repeat(60));
+  console.log(`  RESULTS: ${passed} passed, ${failed} failed`);
+  console.log('─'.repeat(60));
+
+  for (const c of checks) {
+    const icon = c.pass ? '✅' : '❌';
+    console.log(`  ${icon} ${c.label}`);
+    if (!c.pass && c.detail) console.log(`       ${c.detail}`);
+  }
+
+  if (failed === 0) {
+    console.log('\n  ✅ ALL CHECKS PASSED — safe to delete players-index/');
+  } else {
+    console.log(`\n  ❌ ${failed} CHECK(S) FAILED — do NOT delete players-index/ until resolved`);
+  }
 }
 
 console.log('\n' + '═'.repeat(60));
