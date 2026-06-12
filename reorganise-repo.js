@@ -31,23 +31,31 @@ function transformScript(content) {
   if (content.includes(ROOT_DECL)) return content;
   if (!content.includes('path.join(__dirname,')) return content;
 
-  // Replace data path usages first, then insert ROOT_DECL (preserves __dirname in decl)
+  // Replace data path usages first — ROOT_DECL insertion below is not affected
   content = content.replaceAll('path.join(__dirname,', 'path.join(ROOT,');
 
-  if (content.includes("require('path')")) {
-    content = content.replace(
-      /(const path = require\('path'\);)/,
-      `$1\n${ROOT_DECL}`
-    );
-  } else if (content.includes("'use strict'")) {
-    content = content.replace("'use strict';", `'use strict';\n\n${ROOT_DECL}`);
-  } else {
-    const lines = content.split('\n');
-    lines.splice(1, 0, ROOT_DECL);
-    content = lines.join('\n');
+  // Insert ROOT_DECL after the last require() in the opening require block.
+  // Walk lines until the require block ends (first non-blank, non-comment,
+  // non-require line), track the last require line seen.
+  const lines = content.split('\n');
+  let lastRequireIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed === '' || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) continue;
+    if (trimmed.startsWith("'use strict'") || trimmed.startsWith('"use strict"')) continue;
+    if (trimmed.includes('require(')) { lastRequireIdx = i; continue; }
+    // First substantive non-require line — stop scanning
+    if (lastRequireIdx !== -1) break;
   }
 
-  return content;
+  if (lastRequireIdx !== -1) {
+    lines.splice(lastRequireIdx + 1, 0, ROOT_DECL);
+  } else {
+    // No require block found — insert after first line (filename comment)
+    lines.splice(1, 0, ROOT_DECL);
+  }
+
+  return lines.join('\n');
 }
 
 function transformYml(content, scriptNames) {
