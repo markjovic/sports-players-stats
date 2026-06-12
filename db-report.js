@@ -561,25 +561,163 @@ if (VERIFY_MIGRATION) {
   console.log(`    venue-index.json entries:      ${venueIndexCount.toLocaleString()}`);
   console.log(`    venue-lookup shard entries:    ${venueCount.toLocaleString()}${venueIndexCount !== venueCount ? '  ⚠ MISMATCH' : '  ✓'}`);
 
+  // ── 5. team-stats/bv/ ───────────────────────────────────────────────────────
+
+  console.log('\n  [5] Checking team-stats/bv/...');
+
+  const TEAM_STATS_DIR = path.join(__dirname, 'team-stats', TENANT);
+  let tsFileCount = 0, tsTeamTotal = 0, tsWithRoster = 0, tsWithFixtures = 0;
+  let tsExists = false;
+  const tsMissingFixtureSamples = [];
+  const tsMissingRosterSamples  = [];
+
+  if (fs.existsSync(TEAM_STATS_DIR)) {
+    tsExists = true;
+    const tsFiles = fs.readdirSync(TEAM_STATS_DIR).filter(f => f.endsWith('.json'));
+    tsFileCount = tsFiles.length;
+
+    // Spot-check up to 200 files evenly spread
+    const step = Math.max(1, Math.floor(tsFiles.length / 200));
+    for (let i = 0; i < tsFiles.length; i += step) {
+      let ts;
+      try { ts = JSON.parse(fs.readFileSync(path.join(TEAM_STATS_DIR, tsFiles[i]), 'utf8')); } catch (e) { continue; }
+      for (const [tid, entry] of Object.entries(ts)) {
+        tsTeamTotal++;
+        const hasRoster   = entry.roster   && typeof entry.roster   === 'object';
+        const hasFixtures = entry.fixtures && Array.isArray(entry.fixtures);
+        if (hasRoster)   tsWithRoster++;
+        else if (tsMissingRosterSamples.length < 3) tsMissingRosterSamples.push(`${tsFiles[i]}/${tid}`);
+        if (hasFixtures) tsWithFixtures++;
+        else if (tsMissingFixtureSamples.length < 3) tsMissingFixtureSamples.push(`${tsFiles[i]}/${tid}`);
+      }
+    }
+  }
+
+  check(
+    'team-stats/bv/ exists',
+    tsExists,
+    tsExists ? `${tsFileCount} files` : 'directory missing'
+  );
+  check(
+    'team-stats file count matches season count',
+    tsFileCount === total,
+    `team-stats: ${tsFileCount.toLocaleString()}, seasons: ${total.toLocaleString()}`
+  );
+  check(
+    'Sampled team entries have roster field',
+    tsMissingRosterSamples.length === 0,
+    tsMissingRosterSamples.length > 0
+      ? `Missing roster on: ${tsMissingRosterSamples.join(', ')}`
+      : `${tsWithRoster.toLocaleString()} entries verified`
+  );
+  check(
+    'Sampled team entries have fixtures array',
+    tsMissingFixtureSamples.length === 0,
+    tsMissingFixtureSamples.length > 0
+      ? `Missing fixtures on: ${tsMissingFixtureSamples.join(', ')}`
+      : `${tsWithFixtures.toLocaleString()} entries verified`
+  );
+
+  console.log(`    team-stats/bv/ files:          ${tsFileCount.toLocaleString()}  (seasons: ${total.toLocaleString()})${tsFileCount !== total ? '  ⚠ MISMATCH' : '  ✓'}`);
+  console.log(`    Sampled team entries:          ${tsTeamTotal.toLocaleString()}`);
+  console.log(`    With roster:                   ${tsWithRoster.toLocaleString()}${tsMissingRosterSamples.length > 0 ? '  ⚠' : '  ✓'}`);
+  console.log(`    With fixtures:                 ${tsWithFixtures.toLocaleString()}${tsMissingFixtureSamples.length > 0 ? '  ⚠' : '  ✓'}`);
+
+  // ── 6. venue-lookup (new structure) ──────────────────────────────────────────
+
+  console.log('\n  [6] Checking venue-lookup new structure...');
+
+  let newVenueDirs = 0, newVenueDateFiles = 0, newVenueStructureOk = true;
+  const newVenueStructureSamples = [];
+
+  if (fs.existsSync(VENUE_DIR)) {
+    // New structure: UUID-named subdirectories containing {date}.json files
+    // Old structure: {xx}.json flat shards — skip those (2-char names)
+    const entries = fs.readdirSync(VENUE_DIR, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      // UUID dirs are 36 chars with hyphens; skip anything that isn't
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(entry.name)) continue;
+      newVenueDirs++;
+      const dateFiles = fs.readdirSync(path.join(VENUE_DIR, entry.name)).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f));
+      newVenueDateFiles += dateFiles.length;
+
+      // Spot-check first file in this dir
+      if (newVenueStructureSamples.length < 3 && dateFiles.length > 0) {
+        try {
+          const sample = JSON.parse(fs.readFileSync(path.join(VENUE_DIR, entry.name, dateFiles[0]), 'utf8'));
+          // Should be { "Court X": [{id, t, hn, an, st}, ...] }
+          const courts = Object.values(sample);
+          if (courts.length === 0 || !Array.isArray(courts[0]) || !courts[0][0]?.id) {
+            newVenueStructureOk = false;
+            newVenueStructureSamples.push(`${entry.name}/${dateFiles[0]}`);
+          }
+        } catch (e) {
+          newVenueStructureOk = false;
+          newVenueStructureSamples.push(`${entry.name}/${dateFiles[0]} (parse error)`);
+        }
+      }
+    }
+  }
+
+  check(
+    'venue-lookup UUID subdirs exist',
+    newVenueDirs > 0,
+    newVenueDirs > 0 ? `${newVenueDirs} venue dirs` : 'no UUID subdirs found'
+  );
+  check(
+    'venue-lookup dir count matches venue-index',
+    newVenueDirs === venueIndexCount,
+    `venue-lookup dirs: ${newVenueDirs}, venue-index entries: ${venueIndexCount}`
+  );
+  check(
+    'venue-lookup file structure valid (spot-check)',
+    newVenueStructureOk,
+    newVenueStructureOk
+      ? `structure OK in sampled files`
+      : `invalid structure in: ${newVenueStructureSamples.join(', ')}`
+  );
+
+  console.log(`    New venue dirs (UUID):          ${newVenueDirs.toLocaleString()}${newVenueDirs !== venueIndexCount ? '  ⚠ MISMATCH' : '  ✓'}`);
+  console.log(`    venue-index entries:            ${venueIndexCount.toLocaleString()}`);
+  console.log(`    Total date files:               ${newVenueDateFiles.toLocaleString()}`);
+  console.log(`    File structure:                 ${newVenueStructureOk ? '✓ valid' : '⚠ invalid — check samples'}`);
+
   // ── Summary ─────────────────────────────────────────────────────────────────
 
+  const phase1Checks = checks.slice(0, 14);
+  const phase2Checks = checks.slice(14);
   const passed = checks.filter(c => c.pass).length;
   const failed = checks.filter(c => !c.pass).length;
+  const p1fail = phase1Checks.filter(c => !c.pass).length;
+  const p2fail = phase2Checks.filter(c => !c.pass).length;
 
   console.log('\n' + '─'.repeat(60));
   console.log(`  RESULTS: ${passed} passed, ${failed} failed`);
   console.log('─'.repeat(60));
 
-  for (const c of checks) {
-    const icon = c.pass ? '✅' : '❌';
-    console.log(`  ${icon} ${c.label}`);
-    if (!c.pass && c.detail) console.log(`       ${c.detail}`);
+  if (phase1Checks.length) {
+    console.log(`\n  Phase 1 checks (${phase1Checks.length}):`);
+    for (const c of phase1Checks) {
+      console.log(`  ${c.pass ? '✅' : '❌'} ${c.label}`);
+      if (!c.pass && c.detail) console.log(`       ${c.detail}`);
+    }
+  }
+  if (phase2Checks.length) {
+    console.log(`\n  Phase 2 checks (${phase2Checks.length}):`);
+    for (const c of phase2Checks) {
+      console.log(`  ${c.pass ? '✅' : '❌'} ${c.label}`);
+      if (!c.pass && c.detail) console.log(`       ${c.detail}`);
+    }
   }
 
+  const p1verdict = p1fail === 0 ? '✅ Phase 1 PASSED' : `❌ Phase 1 FAILED (${p1fail})`;
+  const p2verdict = p2fail === 0 ? '✅ Phase 2 PASSED' : `❌ Phase 2 FAILED (${p2fail})`;
+  console.log(`\n  ${p1verdict} — ${p2verdict}`);
   if (failed === 0) {
-    console.log('\n  ✅ ALL CHECKS PASSED — safe to delete players-index/');
+    console.log('  ✅ ALL CHECKS PASSED — safe to proceed to Phase 3');
   } else {
-    console.log(`\n  ❌ ${failed} CHECK(S) FAILED — do NOT delete players-index/ until resolved`);
+    console.log(`  ❌ ${failed} CHECK(S) FAILED — resolve before proceeding`);
   }
 }
 
