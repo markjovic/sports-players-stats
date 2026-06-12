@@ -281,7 +281,8 @@ async function main() {
     console.log(`Resuming: ${progress.completedSeasons.length} seasons done, ${progress.completedIndexShards.length} index shards done`);
   }
 
-  const sportsIndex = readJSON(SPORTS_INDEX);
+  const sportsIndexRaw = readJSON(SPORTS_INDEX);
+  const sportsIndex = Object.values(sportsIndexRaw.seasons || sportsIndexRaw);
   const nameMap = loadNameMap();
 
   // Phase 1A: game files → p arrays + team-index accumulation
