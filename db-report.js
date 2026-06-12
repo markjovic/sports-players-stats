@@ -501,7 +501,7 @@ if (VERIFY_MIGRATION) {
 
   console.log('\n  [3] Checking team-index.json...');
 
-  const distinctSnInIndex = new Set(seasonList.map(s => s.sn || s.seasonName).filter(Boolean));
+  const distinctSnInIndex = new Set(seasonList.map(s => s.name).filter(Boolean));
   let teamIndexSeasonNames = 0, teamIndexTotalTeams = 0;
   let teamIndexExists = false;
 
