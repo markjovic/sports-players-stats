@@ -10,6 +10,7 @@ Player-centric scraper and database for PlayHQ basketball competitions. Builds a
 |--------|-------|
 | Seasons | 2,792 (418 active, 2,374 completed) |
 | Players (index) | 369,428 |
+| Players (detail files) | 369,437 (fully consistent) |
 | Unique teams | 357,284 |
 | Unique venues | 532 |
 | Total games | 2,247,971 |
@@ -22,16 +23,16 @@ Player-centric scraper and database for PlayHQ basketball competitions. Builds a
 
 | Flag | Count | Meaning |
 |------|-------|---------|
-| *(none — normal)* | ~1.9M | Full data, score + venue |
-| `hidden: true` | ~340k | Admin-hidden grade — score via spectator, no venue |
-| `profileOnly: true` | ~118k | Pre-e-score era — structure from player profiles, no score |
-| `legacy: true` | ~4 | All three classification routes exhausted |
-| `forfeit: true` | ~2k | Won by forfeit |
-| `cancelled: true` | ~4k | Cancelled |
-| `abandoned: true` | ~1.2k | Abandoned |
-| `bye: true` | 0 (pending) | Bye rounds |
-| `noProfile: <ts>` | ~84k | Hidden, player profiles couldn't supply h/a/rn — retry after 30d |
-| `noVenue: <ts>` | ~424k | Hidden, venue not recoverable — retry after 30d |
+| *(none — normal)* | ~1.74M | Full data, score + venue |
+| `hidden: true` | 424,350 | Admin-hidden grade — score via spectator, no venue |
+| `profileOnly: true` | 131,633 | Pre-e-score era — structure from player profiles, no score |
+| `legacy: true` | 141 | All three classification routes exhausted |
+| `forfeit: true` | 1,984 | Won by forfeit |
+| `cancelled: true` | 3,893 | Cancelled |
+| `abandoned: true` | 1,209 | Abandoned |
+| `bye: true` | 0 | Bye rounds |
+| `noProfile: <ts>` | 84,050 | Hidden, player profiles couldn't supply h/a/rn — retry after 30d |
+| `noVenue: <ts>` | 424,153 | Hidden, venue not recoverable — retry after 30d |
 
 ---
 
@@ -110,8 +111,9 @@ sports-players-stats/
 
 **Team fields — mutual exclusion:**
 - `h`/`hn` + `a`/`an` = absolute (orientation known) — takes priority
-- `t1`/`t1n` + `t2`/`t2n` = relative (orientation unknown) — used when h/a absent
-- `o`/`on` = legacy relative field being deprecated
+- `t1`/`t1n` + `t2`/`t2n` = two participants, orientation unknown — used when h/a absent
+- `o`/`on` = deprecated, fully removed by normalise-game-structure.js
+- `h` supersedes `t1`/`t2` — never both simultaneously
 
 **Flags:**
 
@@ -161,19 +163,35 @@ sports-players-stats/
 
 ---
 
+## Post-backfill database statistics (June 2026)
+
+| Metric | Value |
+|--------|-------|
+| Score coverage | 99.8% |
+| Venue coverage | 96.1% (62,499 genuinely missing from PlayHQ) |
+| Player coverage | 100% across all 2,161,388 analysed games |
+| Hidden games with venue preserved | 186 |
+| Team field structure | 2,163,915 absolute h/a; 84,042 t1/t2; 10 t1-only; 4 bare |
+| Flag collisions | 0 |
+
+---
+
 ## Scripts
 
 | Script | Purpose | Trigger |
 |--------|---------|---------|
 | `classify-games.js` | Three-step game classification sweep | Manual — run to zero queue |
-| `normalise-game-structure.js` | Strip o/on, write t1/t2 | Once after classify |
+| `normalise-game-structure.js` | Strip o/on, write t1/t2 | Complete ✅ |
+| `cleanup-flag-collisions.js` | Remove legacy from hidden/profileOnly/etc games | As needed |
+| `backfill-missing-players.js` | Crawl missing player detail files | Complete ✅ |
 | `db-report.js` | Full database state report | Anytime |
-| `fetch-playhq.js` | Full player crawl | New seasons |
+| `fetch-playhq.js` | Full player crawl | New seasons / annual |
 | `discover-fixtures.js` | Fixture/venue via discoverTeamFixture | Nightly (active seasons) |
-| `diagnose-coverage-and-uuids.js` | Player coverage + UUID analysis | Once |
+| `diagnose-coverage-and-uuids.js` | Player coverage + UUID analysis | Complete ✅ |
 | `diagnose-game-structure.js` | Structural diagnostic | On demand |
 | `diagnose-season-games.js` | Per-season game detail | On demand |
 | `diagnose-hidden-gaps.js` | Hidden game gap count | On demand |
+| `find-game-id.js` | Find a game ID across all season files | On demand |
 
 ---
 
