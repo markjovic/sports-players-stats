@@ -15,7 +15,7 @@ on:
         default: false
         type: boolean
       verify_migration:
-        description: 'Verify Migration Phase 1 output vs source data'
+        description: 'Run full migration verification (Phases 1–3)'
         required: false
         default: false
         type: boolean
@@ -34,13 +34,13 @@ jobs:
           sparse-checkout: |
             db-report.js
             sports-index.json
-            players-index
             players/indexes
             team-lookup
             venue-lookup
             team-index.json
             venue-index.json
             team-stats
+            search
             games
           sparse-checkout-cone-mode: false
 
