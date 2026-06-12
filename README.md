@@ -65,7 +65,7 @@ sports-players-stats/
 ```
 sports-players-stats/
 ├── sports-index.json
-├── team-index.json                # Boot-time team search (TBD: sharded or flat)
+├── team-index.json                # Grouped by season name {"Summer 2024/25": [{id,n,sid}]}
 ├── venue-index.json               # Boot-time venue search (~20KB flat)
 ├── search/players/{aa-zz}.json   # 2-letter alpha player search shards
 ├── team-stats/bv/{seasonId}.json  # Pre-aggregated team rosters + fixtures
@@ -79,6 +79,31 @@ sports-players-stats/
 ---
 
 ## Game file structure
+
+### Current structure (pre-migration)
+
+Each season file has two top-level keys:
+
+```json
+{
+  "games": {
+    "a613abfa": { ... game entry ... }
+  },
+  "playerGames": {
+    "player-uuid-1": ["a613abfa", "b7d2e991", ...],
+    "player-uuid-2": ["a613abfa", "c3f1a882", ...]
+  }
+}
+```
+
+**`playerGames` is at the season file level — NOT on individual game entries.**
+It maps playerUUID → list of game IDs that player appeared in. It is a participation index only — it contains no stats. It has never been modified by classify, normalise, or backfill scripts. It is deleted during Migration Phase 1 after the `p` array is built from it.
+
+**`p` array (post-migration):** built by inverting `playerGames` — for each game ID, collect all player UUIDs that list it. For hidden games with `hp`/`ap`, use `profileID` from those arrays instead. Format: `[{id: "uuid", n: "Player Name"}]`.
+
+**Per-game individual stats** are NOT stored in player detail files (which contain only registration-level aggregates) or in `playerGames` (participation only). For hidden games, `hp`/`ap` on the game entry contain full box scores. For normal games, box scores are fetched on demand via the Cloudflare Worker → spectator `game(id)`.
+
+### Post-migration game entry
 
 ```json
 {
@@ -103,11 +128,13 @@ sports-players-stats/
       "t":    "10:15",
       "url":  "https://www.playhq.com/...",
       "finals": true,
-      "p":    ["uuid1", "uuid2"]
+      "p":    [{"id": "uuid1", "n": "Sam Burdan"}, {"id": "uuid2", "n": "Player #3253b50e81"}]
     }
   }
 }
 ```
+
+Note: `hp`/`ap` only present on hidden games (written by spectator probe). Normal games use spectator Worker on demand for box scores.
 
 **Team fields — mutual exclusion:**
 - `h`/`hn` + `a`/`an` = absolute (orientation known) — takes priority
@@ -163,6 +190,17 @@ sports-players-stats/
 
 ---
 
+## Cloudflare Worker
+
+Game box scores are served on-demand via Cloudflare Worker proxy at:
+`solitary-snowflake-cb3e.insanoflash.workers.dev`
+
+The Worker proxies requests to `spectator.playhq.com/graphql` which returns full player box scores for any game ID — both normal and hidden games. This bypasses the CORS restriction that prevents the HTML from calling spectator directly from GitHub Pages.
+
+A spectator proxy route must be added to the Worker before the StatTrack HTML is built.
+
+---
+
 ## Post-backfill database statistics (June 2026)
 
 | Metric | Value |
@@ -188,6 +226,8 @@ sports-players-stats/
 | `fetch-playhq.js` | Full player crawl | New seasons / annual |
 | `discover-fixtures.js` | Fixture/venue via discoverTeamFixture | Nightly (active seasons) |
 | `diagnose-coverage-and-uuids.js` | Player coverage + UUID analysis | Complete ✅ |
+| `inspect-game-sizes.js` | Game file size analysis | On demand |
+| `inspect-player-file.js` | Player file structure inspection | On demand |
 | `diagnose-game-structure.js` | Structural diagnostic | On demand |
 | `diagnose-season-games.js` | Per-season game detail | On demand |
 | `diagnose-hidden-gaps.js` | Hidden game gap count | On demand |
