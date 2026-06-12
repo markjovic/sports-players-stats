@@ -157,7 +157,7 @@ function processGameFiles(nameMap, progress, sportsIndex) {
   // Build a seasonId → sn lookup from sports-index
   const snLookup = {};
   for (const season of sportsIndex) {
-    snLookup[season.id] = season.sn || season.seasonName || null;
+    snLookup[season.id] = season.name || null;
   }
 
   for (const file of seasonFiles) {
