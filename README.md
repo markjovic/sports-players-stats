@@ -1,266 +1,301 @@
 # sports-players-stats
 
-Player-centric scraper and database for PlayHQ basketball competitions. Builds a searchable database of every player across all Basketball Victoria competitions — player histories, career stats, season registrations, game results, venue data, and team registrations — for use in the StatTrack HTML viewer.
+Player-centric scraper and database for PlayHQ basketball competitions. Builds a searchable database of every player across all Basketball Victoria competitions — player histories, career stats, season registrations, game results, venue data, and team registrations — served via the StatTrack HTML PWA.
 
 ---
 
-## Current state (June 2026)
+## Current state (June 2026 — post-migration)
 
 | Metric | Value |
 |--------|-------|
-| Seasons | 2,792 (418 active, 2,374 completed) |
-| Players (index) | 369,428 |
-| Players (detail files) | 369,437 (fully consistent) |
+| Seasons | 2,792 (418 active, 2,374 locked) |
+| Player index entries | 369,428 |
+| Player detail files | 369,437 |
 | Unique teams | 357,284 |
 | Unique venues | 532 |
 | Total games | 2,247,971 |
-| FINAL | 2,126,894 |
-| UPCOMING | 64,788 |
-| POSTPONED | 48,430 |
-| BYE | 7,746 |
+| Score coverage | 99.8% |
+| Venue coverage | 96.1% |
+| Search shards | 595 files / 595,879 unique keys |
+| Migration | ✅ Complete (Phases 1–3 verified 25/25) |
+| Next | Cloudflare Worker spectator route → StatTrack HTML |
 
-**Game classification (post classify-games.js sweep):**
+**Game classification:**
 
 | Flag | Count | Meaning |
 |------|-------|---------|
-| *(none — normal)* | ~1.74M | Full data, score + venue |
-| `hidden: true` | 424,350 | Admin-hidden grade — score via spectator, no venue |
-| `profileOnly: true` | 131,633 | Pre-e-score era — structure from player profiles, no score |
-| `legacy: true` | 141 | All three classification routes exhausted |
+| *(none — normal)* | ~1.74M | Full data |
+| `hidden: true` | 424,350 | Admin-hidden grade |
+| `profileOnly: true` | 131,633 | Pre-e-score era |
+| `legacy: true` | 141 | All routes exhausted |
 | `forfeit: true` | 1,984 | Won by forfeit |
-| `cancelled: true` | 3,893 | Cancelled |
-| `abandoned: true` | 1,209 | Abandoned |
-| `bye: true` | 0 | Bye rounds |
-| `noProfile: <ts>` | 84,050 | Hidden, player profiles couldn't supply h/a/rn — retry after 30d |
-| `noVenue: <ts>` | 424,153 | Hidden, venue not recoverable — retry after 30d |
+| `noProfile: <ts>` | 84,050 | Retry after 30d |
+| `noVenue: <ts>` | 424,153 | Retry after 30d |
 
 ---
 
 ## Repository structure
 
-### Current (pre-migration)
-
 ```
 sports-players-stats/
-├── sports-index.json              # Season metadata
-├── seasons-discovered.json        # All known seasons with comp/org metadata
-├── seasons-skipped.json           # Failed crawl seasons
-├── seasons-invalid.json           # Confirmed invalid season IDs
-├── classify-games-progress.json   # Classification sweep resume state
-├── classify-games-cookie.json     # Session cookie cache (24h TTL)
-├── players/                       # Full player detail files
-│   └── {xx}/{uuid}.json
-├── players-index/                 # Career stats shards (→ players/indexes/ post-migration)
-│   └── {xx}.json
-├── games/bv/                      # Per-season game files
-│   └── {seasonId}.json
-├── team-lookup/                   # Team/comp/org metadata
-│   └── {xx}.json
-└── venue-lookup/                  # Venue address/courts
-    └── {xx}.json
-```
-
-### Post-migration target
-
-```
-sports-players-stats/
-├── sports-index.json
-├── team-index.json                # Grouped by season name {"Summer 2024/25": [{id,n,sid}]}
-├── venue-index.json               # Boot-time venue search (~20KB flat)
-├── search/players/{aa-zz}.json   # 2-letter alpha player search shards
-├── team-stats/bv/{seasonId}.json  # Pre-aggregated team rosters + fixtures
-├── venue-lookup/{venueId}/{YYYY-MM-DD}.json
-├── games/bv/{seasonId}.json       # p array replaces playerGames
+├── sports-index.json              # Season metadata (2,792 seasons)
+├── team-index.json                # Team search by season name
+├── venue-index.json               # Venue search list
+├── scripts/                       # All pipeline and utility scripts
+│   ├── db-report.js               # Database state report
+│   ├── fetch-playhq.js            # Full player crawl
+│   ├── classify-games.js          # Three-step classification sweep
+│   ├── discover-fixtures.js       # Fixture/venue via discoverTeamFixture
+│   ├── normalise-game-structure.js
+│   ├── cleanup-flag-collisions.js
+│   ├── backfill-missing-players.js
+│   ├── backfill-hidden-games.js
+│   ├── migrate-phase1.js          ✅ complete
+│   ├── migrate-phase2.js          ✅ complete
+│   ├── migrate-phase3.js          ✅ complete
+│   └── ...
+├── search/players/{aa-zz}.json    # 595 player search shards
+├── team-stats/bv/{seasonId}.json  # Team rosters + fixtures (2,792 files)
+├── venue-lookup/
+│   └── {venueId}/{YYYY-MM-DD}.json  # Court schedule grids (100,173 files)
+├── games/bv/{seasonId}.json       # Game data (2,792 files)
 └── players/
-    ├── indexes/{00-ff}.json       # Career stats + history map
-    └── {00-ff}/{uuid}.json
+    ├── indexes/{00-ff}.json       # Career stats + history map (256 shards)
+    └── {00-ff}/{uuid}.json        # Full player detail (369,437 files)
 ```
 
 ---
 
-## Game file structure
+## JSON schemas
 
-### Current structure (pre-migration)
-
-Each season file has two top-level keys:
-
+### sports-index.json
 ```json
 {
-  "games": {
-    "a613abfa": { ... game entry ... }
-  },
-  "playerGames": {
-    "player-uuid-1": ["a613abfa", "b7d2e991", ...],
-    "player-uuid-2": ["a613abfa", "c3f1a882", ...]
-  }
-}
-```
-
-**`playerGames` is at the season file level — NOT on individual game entries.**
-It maps playerUUID → list of game IDs that player appeared in. It is a participation index only — it contains no stats. It has never been modified by classify, normalise, or backfill scripts. It is deleted during Migration Phase 1 after the `p` array is built from it.
-
-**`p` array (post-migration):** built by inverting `playerGames` — for each game ID, collect all player UUIDs that list it. For hidden games with `hp`/`ap`, use `profileID` from those arrays instead. Format: `[{id: "uuid", n: "Player Name"}]`.
-
-**Per-game individual stats** are NOT stored in player detail files (which contain only registration-level aggregates) or in `playerGames` (participation only). For hidden games, `hp`/`ap` on the game entry contain full box scores. For normal games, box scores are fetched on demand via the Cloudflare Worker → spectator `game(id)`.
-
-### Post-migration game entry
-
-```json
-{
-  "games": {
-    "a613abfa": {
-      "d":    "2026-05-30",
-      "rn":   "Round 5",
-      "h":    "89eed543",
-      "hn":   "Vermont Vultures U14 Boys 8",
-      "a":    "502c83d9",
-      "an":   "Spirit Magic U14 Boys 2",
-      "hs":   37,
-      "as":   36,
-      "hq":   [10, 8, 11, 8],
-      "aq":   [9, 10, 7, 10],
-      "hp":   [{ "profileID": "uuid", "name": "Sam B", "number": 7, "pts": 12, "pt1": 0, "pt2": 4, "pt3": 1, "fouls": 2 }],
-      "ap":   [...],
-      "st":   "FINAL",
-      "vid":  "e5970e55-...",
-      "vn":   "The Rings (Ringwood)",
-      "ct":   "Court 2",
-      "t":    "10:15",
-      "url":  "https://www.playhq.com/...",
-      "finals": true,
-      "p":    [{"id": "uuid1", "n": "Sam Burdan"}, {"id": "uuid2", "n": "Player #3253b50e81"}]
+  "seasons": {
+    "10107609": {
+      "id": "10107609",
+      "name": "Summer 2021/22",
+      "fullName": "Domestic — Summer 2021/22",
+      "compName": "Domestic",
+      "compId": "9bc0c89d",
+      "orgName": "Moe Basketball Association",
+      "orgId": "7d61a534",
+      "tenant": "bv",
+      "locked": true,
+      "grades": [{"id": "fbbebc4a", "name": "Men's A Grade", "age": "Senior", "gender": "Men"}],
+      "addedAt": "2026-06-03T12:33:12.854Z",
+      "lockedAt": "2026-06-02T04:55:56.123Z"
     }
   }
 }
 ```
 
-Note: `hp`/`ap` only present on hidden games (written by spectator probe). Normal games use spectator Worker on demand for box scores.
+### games/bv/{seasonId}.json
+Post-migration structure — `playerGames` deleted, `p` array added to every game entry.
 
-**Team fields — mutual exclusion:**
-- `h`/`hn` + `a`/`an` = absolute (orientation known) — takes priority
-- `t1`/`t1n` + `t2`/`t2n` = two participants, orientation unknown — used when h/a absent
-- `o`/`on` = deprecated, fully removed by normalise-game-structure.js
-- `h` supersedes `t1`/`t2` — never both simultaneously
-
-**Flags:**
-
-| Flag | Score | Venue | h/a | Display |
-|------|-------|-------|-----|---------|
-| *(none)* | ✅ | ✅ | ✅ | Normal |
-| `hidden: true` | ✅ | ❌ | maybe | Score + "Hidden grade" |
-| `profileOnly: true` | ❌ | ❌ | ✅ | Teams/round + "Historical record" |
-| `forfeit: true` | ❌ | maybe | ✅ | "Forfeit — [desc]" |
-| `legacy: true` | ❌ | ❌ | maybe t1/t2 | Minimal |
-| `cancelled: true` | ❌ | maybe | ✅ | "Cancelled" |
-| `abandoned: true` | maybe | maybe | ✅ | "Abandoned" |
-| `bye: true` | ❌ | ❌ | ❌ | "Bye" |
-| `noProfile: <ts>` | ✅ score | ❌ | ❌ | Score only, retry after 30d |
-| `noVenue: <ts>` | ✅ | ❌ | ✅ | Normal except no venue |
-
----
-
-## Player detail file structure
-
+**Normal game:**
 ```json
 {
-  "uuid": "94b31aeb-...",
-  "name": "Player Name",
-  "gender": "Male",
-  "sports": { "Basketball": { "gp": 123, "pts": 804, "fouls": 200, "fg": 345, "ft": 105, "threePt": 3 } },
-  "seasons": [{
-    "sid": "635c2c74",
-    "sn": "Autumn 2026",
-    "club": "Spirit Magic",
-    "sport": "Basketball",
-    "regs": [{
-      "tid": "9977add9",
-      "tn": "Spirit Magic U14 Boys",
-      "gid": "5afff92b",
-      "gn": "Boys Under 14 D3",
-      "age": "U14",
-      "div": null,
-      "stats": { "gp": 6, "pts": 42, "fouls": 8, "fg": 18, "ft": 4, "threePt": 2 }
-    }]
-  }],
-  "teams": [{ "tid": "9977add9", "sid": "0869ea69", "status": "UPCOMING" }],
-  "teamsUpdatedAt": "2026-06-06T...",
-  "updatedAt": "2026-06-06T..."
+  "games": {
+    "a613abfa": {
+      "d": "2026-05-30", "rn": "Round 5",
+      "h": "89eed543", "hn": "Vermont Vultures U14 Boys 8",
+      "a": "502c83d9", "an": "Spirit Magic U14 Boys 2",
+      "hs": 37, "as": 36,
+      "hq": [10, 8, 11, 8], "aq": [9, 10, 7, 10],
+      "st": "FINAL",
+      "vid": "e5970e55-...", "vn": "The Rings (Ringwood)", "ct": "Court 2", "t": "10:15",
+      "url": "https://www.playhq.com/...",
+      "p": [{"id": "uuid1", "n": "Sam Burdan"}, {"id": "uuid2", "n": "Player #3253b50e81"}]
+    }
+  }
 }
 ```
 
----
+**Hidden game (box score stored):**
+```json
+{
+  "hidden": true,
+  "hs": 45, "as": 38,
+  "hq": [12, 14, 11, 8], "aq": [10, 9, 12, 7],
+  "t1": "teamId1", "t1n": "Team Name 1",
+  "t2": "teamId2", "t2n": "Team Name 2",
+  "hp": [{"profileID": "prof-uuid", "name": "Sam B", "number": 7, "pts": 12, "pt1": 0, "pt2": 4, "pt3": 1, "fouls": 2}],
+  "ap": [...],
+  "p": [{"id": "prof-uuid", "n": "Sam B"}]
+}
+```
 
-## Cloudflare Worker
+**Team field rules:**
+- `h`/`hn` + `a`/`an` = absolute orientation (supersedes t1/t2, never both)
+- `t1`/`t1n` + `t2`/`t2n` = orientation unknown
+- `hs`/`as` are always the score fields regardless of h/a vs t1/t2
 
-Game box scores are served on-demand via Cloudflare Worker proxy at:
-`solitary-snowflake-cb3e.insanoflash.workers.dev`
+### players/{xx}/{uuid}.json
+```json
+{
+  "uuid": "94b31aeb-c3f1-4a82-9de2-7f5e8a1b0c23",
+  "name": "Player Name",
+  "gender": "Male",
+  "sports": {
+    "Basketball": {"gp": 123, "pts": 804, "fouls": 200, "fg": 345, "ft": 105, "threePt": 3}
+  },
+  "seasons": [{
+    "sid": "635c2c74", "sn": "Autumn 2026", "club": "Spirit Magic", "sport": "Basketball",
+    "regs": [{
+      "tid": "9977add9", "tn": "Spirit Magic U14 Boys",
+      "gid": "5afff92b", "gn": "Boys Under 14 D3", "age": "U14", "div": null,
+      "stats": {"gp": 6, "pts": 42, "fouls": 8, "fg": 18, "ft": 4, "threePt": 2}
+    }]
+  }],
+  "teams": [{"tid": "9977add9", "sid": "0869ea69", "status": "UPCOMING"}],
+  "teamsUpdatedAt": "2026-06-06T12:00:00.000Z",
+  "updatedAt": "2026-06-06T12:00:00.000Z"
+}
+```
 
-The Worker proxies requests to `spectator.playhq.com/graphql` which returns full player box scores for any game ID — both normal and hidden games. This bypasses the CORS restriction that prevents the HTML from calling spectator directly from GitHub Pages.
+### players/indexes/{xx}.json
+```json
+{
+  "94b31aeb-c3f1-4a82-9de2-7f5e8a1b0c23": {
+    "name": "Player Name",
+    "history": {
+      "635c2c74": ["9977add9"],
+      "a1b2c3d4": ["teamId2"]
+    }
+  }
+}
+```
+`history` map: `{ seasonId: [teamId, ...] }` — built from `seasons[].regs[].tid`.
 
-A spectator proxy route must be added to the Worker before the StatTrack HTML is built.
+### team-stats/bv/{seasonId}.json
+One file per season. All teams across all grades in that season.
+```json
+{
+  "9977add9": {
+    "meta": {"name": "Spirit Magic U14 Boys", "club": "Spirit Magic"},
+    "roster": {
+      "94b31aeb-...": {"name": "Sam B", "gp": 6, "pts": 42, "fg": 18, "ft": 4, "threePt": 2, "fouls": 8}
+    },
+    "fixtures": [
+      {"gameId": "a613abfa", "date": "2026-05-30", "rn": "Round 5",
+       "oppId": "89eed543", "oppName": "Vermont Vultures", "result": "W", "score": "37-36", "st": "FINAL"}
+    ]
+  }
+}
+```
+- `roster`: per-player registration stats for this season/team. Empty `{}` if no players indexed.
+- `fixtures`: sorted by date ascending. `result`: W/L/D or null. `score`: from this team's perspective.
+- Teams with registrations but no games have `fixtures: []`.
 
----
+### venue-lookup/{venueId}/{YYYY-MM-DD}.json
+```json
+{
+  "Court 1": [
+    {"id": "gameId1", "t": "09:00", "hn": "Home Team", "an": "Away Team", "st": "FINAL"},
+    {"id": "gameId2", "t": "10:00", "hn": "Team A", "an": "Team B", "st": "UPCOMING"}
+  ],
+  "Court 2": [{"id": "gameId3", "t": "09:00", "hn": "X", "an": "Y", "st": "FINAL"}]
+}
+```
+Games sorted by time within each court. `t` = "HH:MM" string. Old flat `venue-lookup/{xx}.json` shards deleted.
 
-## Post-backfill database statistics (June 2026)
+### team-index.json
+```json
+{
+  "Summer 2024/25": [{"id": "83e3d989", "n": "Hoppers Tigers 7 (U14G)", "sid": "367cf946"}],
+  "Winter 2025": [...]
+}
+```
+60 distinct season names. Loaded per-slice by StatTrack when user selects a season name.
 
-| Metric | Value |
-|--------|-------|
-| Score coverage | 99.8% |
-| Venue coverage | 96.1% (62,499 genuinely missing from PlayHQ) |
-| Player coverage | 100% across all 2,161,388 analysed games |
-| Hidden games with venue preserved | 186 |
-| Team field structure | 2,163,915 absolute h/a; 84,042 t1/t2; 10 t1-only; 4 bare |
-| Flag collisions | 0 |
+### venue-index.json
+```json
+[{"id": "e5970e55-...", "n": "The Rings (Ringwood)"}]
+```
+532 entries, sorted alphabetically. Loaded at boot (~20KB).
+
+### search/players/{xx}.json
+```json
+{
+  "John Smith": [
+    {"id": "uuid1", "c": "Spirit Magic", "t": "Spirit Magic U14 Boys"},
+    {"id": "uuid2", "c": "Ringwood", "t": "Ringwood U16 Boys"}
+  ],
+  "Smith, John": [{"id": "uuid1", "c": "Spirit Magic", "t": "Spirit Magic U14 Boys"}],
+  "Player #94b31aeb-c": [{"id": "94b31aeb-...", "c": null, "t": null}]
+}
+```
+- Keys: first-name format and surname-first format. Values: always arrays.
+- `c` = most recent club. `t` = most recent team name.
+- Private players: `Player #${uuid.slice(0,10)}`, shard `pl`, c/t null.
+- Shard key = first 2 chars of search key lowercased. 595 files produced.
 
 ---
 
 ## Scripts
 
-| Script | Purpose | Trigger |
-|--------|---------|---------|
-| `classify-games.js` | Three-step game classification sweep | Manual — run to zero queue |
-| `normalise-game-structure.js` | Strip o/on, write t1/t2 | Complete ✅ |
-| `cleanup-flag-collisions.js` | Remove legacy from hidden/profileOnly/etc games | As needed |
-| `backfill-missing-players.js` | Crawl missing player detail files | Complete ✅ |
-| `db-report.js` | Full database state report | Anytime |
-| `fetch-playhq.js` | Full player crawl | New seasons / annual |
+All scripts live in `scripts/`. Use `const ROOT = path.join(__dirname, '..');` for data paths.
+Workflows reference scripts as `node scripts/scriptname.js`.
+
+| Script | Purpose | Status |
+|--------|---------|--------|
+| `db-report.js` | Full database + migration verification | Active |
+| `fetch-playhq.js` | Full player crawl | Annual |
+| `classify-games.js` | Three-step classification sweep | Run as needed |
 | `discover-fixtures.js` | Fixture/venue via discoverTeamFixture | Nightly (active seasons) |
-| `diagnose-coverage-and-uuids.js` | Player coverage + UUID analysis | Complete ✅ |
-| `inspect-game-sizes.js` | Game file size analysis | On demand |
-| `inspect-player-file.js` | Player file structure inspection | On demand |
-| `diagnose-game-structure.js` | Structural diagnostic | On demand |
-| `diagnose-season-games.js` | Per-season game detail | On demand |
-| `diagnose-hidden-gaps.js` | Hidden game gap count | On demand |
-| `find-game-id.js` | Find a game ID across all season files | On demand |
+| `normalise-game-structure.js` | Strip o/on, write t1/t2 | Complete ✅ |
+| `cleanup-flag-collisions.js` | Remove erroneous legacy flags | Monthly |
+| `backfill-missing-players.js` | Crawl missing player detail files | Complete ✅ |
+| `backfill-hidden-games.js` | Three-mode hidden game backfill | Complete ✅ |
+| `migrate-phase1.js` | p arrays, team-index, venue-index, player indexes | Complete ✅ |
+| `migrate-phase2.js` | team-stats, venue-lookup restructure | Complete ✅ |
+| `migrate-phase3.js` | search/players shards | Complete ✅ |
+| `diagnose-*.js` | Various diagnostic tools | On demand |
+| `find-game-id.js` | Locate a game ID across all season files | On demand |
 
 ---
 
-## Nightly crawl design (pending build)
+## Cloudflare Worker
 
-For active seasons (`locked: false`):
-1. `discover-fixtures` — `discoverTeamFixture` for all active teams → scores, venues, upcoming
-2. Three-step classify probe for newly scored/status-changed games
-3. `publicProfileTeams` for active players — mid-season changes + UPCOMING registrations
-4. New season discovery — probe known comp IDs via `discoverSeason`
-5. Lock completed seasons
+Game box scores served on-demand via `solitary-snowflake-cb3e.insanoflash.workers.dev`.
 
-Monthly:
-- Re-probe games where `noProfile` or `noVenue` timestamp is >30 days old
+**Pending (Step 3.5):** Add `GET /spectator/{gameId}` route. Worker calls `spectator.playhq.com/graphql`, handles cookies, returns parsed box score. Must set CORS to allow `markjovic.github.io`.
 
-Annual:
-- Full re-crawl of `publicProfileStatistics` for all players — catches missed registrations
+**StatTrack flow:**
+1. Game entry (score, teams, venue) renders from static data immediately
+2. If `hp`/`ap` on game entry → render directly, no API call
+3. Otherwise → call Worker → spectator `game(id)` → render box score
+4. Cache per gameId in memory for session
 
 ---
 
 ## PlayHQ API summary
 
-See `playhq_api_reference.md` for full documentation.
+See `playhq_api_reference.md` for full query reference.
 
-Two endpoints:
-- `api.playhq.com/graphql` — tenant: `basketball-victoria` (full name)
-- `spectator.playhq.com/graphql` — tenant: `bv` + `x-phq-tenant: bv` + 3 cookies
+- Main API: `api.playhq.com/graphql` — tenant: `basketball-victoria` (full name, never `bv`)
+- Spectator: `spectator.playhq.com/graphql` — tenant: `bv` + `x-phq-tenant: bv` + 3 cookies
+- Mandatory three-step probe for all game classification
+- Never `new Date()` for date parsing — split strings directly
+- Cookie TTL: 24 hours
 
-**Mandatory three-step probe for all game classification.** See api reference.
+---
+
+## Maintenance schedule
+
+### Nightly (active seasons — `locked: false`)
+1. `discover-fixtures` — `discoverTeamFixture` for all active teams
+2. Three-step classify probe for newly scored/status-changed games
+3. `publicProfileTeams` for active players — UPCOMING registrations
+4. New season discovery
+
+### Monthly
+- Re-probe games where `noProfile`/`noVenue` timestamp > 30 days old
+- Run `cleanup-flag-collisions` to catch new collisions
+
+### Annual
+- Full `publicProfileStatistics` re-crawl for all players
 
 ---
 
@@ -268,24 +303,10 @@ Two endpoints:
 
 1. Never allow one sport's crawl to overwrite another sport's player data
 2. Never re-stub IDs in `seasons-invalid.json` or `seasons-skipped.json`
-3. `teams[]` on player files = slim refs only `{ tid, sid, status }` — full metadata in team-lookup
-4. Never store more than the 32px logo URL
-5. Never parse dates/times via `new Date()` — split strings directly
-6. `hs: null` = confirmed unavailable. `hs: undefined` = never checked. Never write null for UPCOMING.
+3. `teams[]` on player files = slim refs only `{tid, sid, status}`
+4. Never store more than 32px logo URL
+5. Never `new Date()` for date parsing — split strings directly
+6. `hs: null` = confirmed unavailable. `hs: undefined` = never checked
 7. `noProfile` and `noVenue` are timestamps, not booleans — retry after 30 days
-8. Progress files must be committed at every save interval, not just at run end
-
----
-
-## Mid-run git commit pattern
-
-```javascript
-execSync('git add <dirs>', { stdio: 'pipe' });
-const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
-if (!diff) return;
-execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
-execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
-execSync('git push', { stdio: 'pipe' });
-```
-
-Never stash in scripts that flush data incrementally. Never `git pull --rebase`.
+8. Progress files must be committed at every save interval
+9. Never `git pull --rebase` — always `--rebase=false -X ours`
