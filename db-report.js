@@ -45,9 +45,10 @@ console.log(`  Locked:   ${lockedSids.size.toLocaleString()} (completed)`);
 // ─── Players ──────────────────────────────────────────────────────────────────
 
 let playerIndexCount = 0, playerDetailCount = 0;
-if (fs.existsSync(PLAYERS_IDX)) {
-  for (const f of fs.readdirSync(PLAYERS_IDX).filter(f => f.endsWith('.json'))) {
-    try { playerIndexCount += Object.keys(JSON.parse(fs.readFileSync(path.join(PLAYERS_IDX, f), 'utf8'))).length; } catch (e) {}
+const idxDir = fs.existsSync(PLAYERS_IDX_NEW) ? PLAYERS_IDX_NEW : PLAYERS_IDX;
+if (fs.existsSync(idxDir)) {
+  for (const f of fs.readdirSync(idxDir).filter(f => f.endsWith('.json'))) {
+    try { playerIndexCount += Object.keys(JSON.parse(fs.readFileSync(path.join(idxDir, f), 'utf8'))).length; } catch (e) {}
   }
 }
 if (INCLUDE_PLAYERS && fs.existsSync(PLAYERS_DIR)) {
@@ -59,7 +60,25 @@ console.log('\n👤 PLAYERS');
 console.log(`  Index entries (career stats):  ${playerIndexCount.toLocaleString()}`);
 console.log(`  Detail files (full history):   ${INCLUDE_PLAYERS ? playerDetailCount.toLocaleString() : '(run with --include-players to count)'}`);
 
-// ─── Teams ────────────────────────────────────────────────────────────────────
+// ─── Search shards ────────────────────────────────────────────────────────────
+
+const SEARCH_DIR = path.join(__dirname, 'search', 'players');
+let searchShardCount = 0, searchKeyCount = 0;
+if (fs.existsSync(SEARCH_DIR)) {
+  const shardFiles = fs.readdirSync(SEARCH_DIR).filter(f => f.endsWith('.json'));
+  searchShardCount = shardFiles.length;
+  // Count keys across all shards (fast — just key count, no deep parse needed)
+  for (const f of shardFiles) {
+    try { searchKeyCount += Object.keys(JSON.parse(fs.readFileSync(path.join(SEARCH_DIR, f), 'utf8'))).length; } catch (e) {}
+  }
+}
+console.log('\n🔎 SEARCH SHARDS');
+if (searchShardCount > 0) {
+  console.log(`  Shard files:      ${searchShardCount.toLocaleString()}`);
+  console.log(`  Unique keys:      ${searchKeyCount.toLocaleString()}`);
+} else {
+  console.log('  (not yet built — run migrate-phase3.js)');
+}
 
 let teamCount = 0;
 if (fs.existsSync(TEAM_DIR)) {
@@ -688,12 +707,80 @@ if (VERIFY_MIGRATION) {
 
   // ── Summary ─────────────────────────────────────────────────────────────────
 
+  // ── 7. search/players/ ───────────────────────────────────────────────────────
+
+  console.log('\n  [7] Checking search/players/ shards...');
+
+  let srchShardCount = 0, srchKeyCount = 0;
+  let srchExists = false, srchValuesAreArrays = true, srchHasBothFormats = false;
+  const srchBadValueSamples = [];
+
+  if (fs.existsSync(SEARCH_DIR)) {
+    srchExists = true;
+    const srchFiles = fs.readdirSync(SEARCH_DIR).filter(f => f.endsWith('.json'));
+    srchShardCount = srchFiles.length;
+
+    let fnFormatSeen = false, snFormatSeen = false;
+
+    // Spot-check up to 20 shards
+    const step = Math.max(1, Math.floor(srchFiles.length / 20));
+    for (let i = 0; i < srchFiles.length; i += step) {
+      let shard;
+      try { shard = JSON.parse(fs.readFileSync(path.join(SEARCH_DIR, srchFiles[i]), 'utf8')); } catch (e) { continue; }
+
+      for (const [key, val] of Object.entries(shard)) {
+        srchKeyCount++;
+        if (!Array.isArray(val)) {
+          srchValuesAreArrays = false;
+          if (srchBadValueSamples.length < 3) srchBadValueSamples.push(`${srchFiles[i]}/${key}`);
+        }
+        // First-name format: "Firstname Lastname" (no comma)
+        if (!key.includes(',')) fnFormatSeen = true;
+        // Surname format: "Lastname, Firstname" (has comma)
+        if (key.includes(','))  snFormatSeen = true;
+      }
+    }
+    srchHasBothFormats = fnFormatSeen && snFormatSeen;
+  }
+
+  check(
+    'search/players/ exists and is populated',
+    srchExists && srchShardCount > 0,
+    srchExists ? `${srchShardCount} shard files` : 'directory missing or empty'
+  );
+  check(
+    'Search shard count is plausible (>500)',
+    srchShardCount > 500,
+    `${srchShardCount} shards`
+  );
+  check(
+    'Search values are arrays (duplicate-safe)',
+    srchValuesAreArrays,
+    srchValuesAreArrays
+      ? 'all sampled values are arrays'
+      : `non-array values: ${srchBadValueSamples.join(', ')}`
+  );
+  check(
+    'Both first-name and surname formats present',
+    srchHasBothFormats,
+    srchHasBothFormats ? 'both formats verified in sample' : 'missing one or both formats'
+  );
+
+  console.log(`    search/players/ shards:        ${srchShardCount.toLocaleString()}`);
+  console.log(`    Sampled unique keys:           ${srchKeyCount.toLocaleString()}`);
+  console.log(`    Values are arrays:             ${srchValuesAreArrays ? '✓' : '⚠ non-array values found'}`);
+  console.log(`    Both name formats in sample:   ${srchHasBothFormats ? '✓' : '⚠ missing'}`);
+
+  // ── Summary ─────────────────────────────────────────────────────────────────
+
   const phase1Checks = checks.slice(0, 14);
-  const phase2Checks = checks.slice(14);
+  const phase2Checks = checks.slice(14, 21);
+  const phase3Checks = checks.slice(21);
   const passed = checks.filter(c => c.pass).length;
   const failed = checks.filter(c => !c.pass).length;
   const p1fail = phase1Checks.filter(c => !c.pass).length;
   const p2fail = phase2Checks.filter(c => !c.pass).length;
+  const p3fail = phase3Checks.filter(c => !c.pass).length;
 
   console.log('\n' + '─'.repeat(60));
   console.log(`  RESULTS: ${passed} passed, ${failed} failed`);
@@ -713,12 +800,20 @@ if (VERIFY_MIGRATION) {
       if (!c.pass && c.detail) console.log(`       ${c.detail}`);
     }
   }
+  if (phase3Checks.length) {
+    console.log(`\n  Phase 3 checks (${phase3Checks.length}):`);
+    for (const c of phase3Checks) {
+      console.log(`  ${c.pass ? '✅' : '❌'} ${c.label}`);
+      if (!c.pass && c.detail) console.log(`       ${c.detail}`);
+    }
+  }
 
-  const p1verdict = p1fail === 0 ? '✅ Phase 1 PASSED' : `❌ Phase 1 FAILED (${p1fail})`;
-  const p2verdict = p2fail === 0 ? '✅ Phase 2 PASSED' : `❌ Phase 2 FAILED (${p2fail})`;
-  console.log(`\n  ${p1verdict} — ${p2verdict}`);
+  const p1v = p1fail === 0 ? '✅ P1' : `❌ P1(${p1fail})`;
+  const p2v = p2fail === 0 ? '✅ P2' : `❌ P2(${p2fail})`;
+  const p3v = p3fail === 0 ? '✅ P3' : `❌ P3(${p3fail})`;
+  console.log(`\n  ${p1v} — ${p2v} — ${p3v}`);
   if (failed === 0) {
-    console.log('  ✅ ALL CHECKS PASSED — safe to proceed to Phase 3');
+    console.log('  ✅ ALL CHECKS PASSED — migration complete, safe to build StatTrack HTML');
   } else {
     console.log(`  ❌ ${failed} CHECK(S) FAILED — resolve before proceeding`);
   }
