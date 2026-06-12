@@ -1,0 +1,92 @@
+# .github/workflows/db-report.yml
+name: Database Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Show per-season breakdown (top 20)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      include_players:
+        description: 'Include player detail file count (slower checkout)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      verify_migration:
+        description: 'Verify Migration Phase 1 output vs source data'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout (standard)
+        if: ${{ github.event.inputs.include_players != 'true' && github.event.inputs.verify_migration != 'true' }}
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            db-report.js
+            sports-index.json
+            players-index
+            team-lookup
+            venue-lookup
+            games
+          sparse-checkout-cone-mode: false
+
+      - name: Checkout (with players)
+        if: ${{ github.event.inputs.include_players == 'true' && github.event.inputs.verify_migration != 'true' }}
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            db-report.js
+            sports-index.json
+            players
+            players-index
+            team-lookup
+            venue-lookup
+            games
+          sparse-checkout-cone-mode: false
+
+      - name: Checkout (verify-migration — needs both old and new structures)
+        if: ${{ github.event.inputs.verify_migration == 'true' }}
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            db-report.js
+            sports-index.json
+            players-index
+            players/indexes
+            team-lookup
+            venue-lookup
+            team-index.json
+            venue-index.json
+            games
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run report
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.verbose }}" = "true" ]; then ARGS="$ARGS --verbose"; fi
+          if [ "${{ github.event.inputs.include_players }}" = "true" ]; then ARGS="$ARGS --include-players"; fi
+          if [ "${{ github.event.inputs.verify_migration }}" = "true" ]; then ARGS="$ARGS --verify-migration"; fi
+          node db-report.js $ARGS
