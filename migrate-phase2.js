@@ -125,7 +125,7 @@ function accumulateRoster(teamStats, playerDetail) {
       const tid = reg.tid;
       if (!tid) continue;
       if (!teamStats[sid])      teamStats[sid] = {};
-      if (!teamStats[sid][tid]) teamStats[sid][tid] = { meta: { name: null, club: null }, roster: {} };
+      if (!teamStats[sid][tid]) teamStats[sid][tid] = { meta: { name: null, club: null }, roster: {}, fixtures: [] };
       const entry = teamStats[sid][tid];
       if (!entry.meta.name  && reg.tn)      entry.meta.name  = reg.tn;
       if (!entry.meta.club  && season.club) entry.meta.club  = season.club;

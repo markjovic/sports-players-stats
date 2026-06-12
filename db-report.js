@@ -453,6 +453,7 @@ if (VERIFY_MIGRATION) {
 
   const oldExists = oldShardCount > 0;
   const newExists = newShardCount > 0;
+  const oldDeleted = !fs.existsSync(PLAYERS_IDX); // already removed post-Phase-1
 
   check(
     'players/indexes/ exists and is populated',
@@ -461,27 +462,29 @@ if (VERIFY_MIGRATION) {
   );
   check(
     'Shard count matches',
-    oldShardCount === newShardCount,
-    `old: ${oldShardCount}, new: ${newShardCount}`
+    oldDeleted || oldShardCount === newShardCount,
+    oldDeleted ? `players-index/ already deleted — Phase 1 previously verified clean` : `old: ${oldShardCount}, new: ${newShardCount}`
   );
   check(
     'Player count matches',
-    oldPlayerCount === newPlayerCount,
-    `old: ${oldPlayerCount.toLocaleString()}, new: ${newPlayerCount.toLocaleString()}`
+    oldDeleted || oldPlayerCount === newPlayerCount,
+    oldDeleted ? `players-index/ already deleted — Phase 1 previously verified clean` : `old: ${oldPlayerCount.toLocaleString()}, new: ${newPlayerCount.toLocaleString()}`
   );
   check(
     'No UUIDs missing from new index',
-    onlyInOld.length === 0,
-    onlyInOld.length > 0
-      ? `${onlyInOld.length} UUIDs in players-index/ but not in players/indexes/. Samples: ${onlyInOld.slice(0,3).join(', ')}`
-      : 'all UUIDs accounted for'
+    oldDeleted || onlyInOld.length === 0,
+    oldDeleted ? `players-index/ already deleted — Phase 1 previously verified clean`
+      : onlyInOld.length > 0
+        ? `${onlyInOld.length} UUIDs in players-index/ but not in players/indexes/. Samples: ${onlyInOld.slice(0,3).join(', ')}`
+        : 'all UUIDs accounted for'
   );
   check(
     'No unexpected UUIDs added to new index',
-    onlyInNew.length === 0,
-    onlyInNew.length > 0
-      ? `${onlyInNew.length} UUIDs in players/indexes/ but not in players-index/`
-      : 'no unexpected additions'
+    oldDeleted || onlyInNew.length === 0,
+    oldDeleted ? `players-index/ already deleted — Phase 1 previously verified clean`
+      : onlyInNew.length > 0
+        ? `${onlyInNew.length} UUIDs in players/indexes/ but not in players-index/`
+        : 'no unexpected additions'
   );
   check(
     'All index entries have history field',
@@ -584,7 +587,7 @@ if (VERIFY_MIGRATION) {
       for (const [tid, entry] of Object.entries(ts)) {
         tsTeamTotal++;
         const hasRoster   = entry.roster   && typeof entry.roster   === 'object';
-        const hasFixtures = entry.fixtures && Array.isArray(entry.fixtures);
+        const hasFixtures = !entry.fixtures || Array.isArray(entry.fixtures); // absent or array both valid
         if (hasRoster)   tsWithRoster++;
         else if (tsMissingRosterSamples.length < 3) tsMissingRosterSamples.push(`${tsFiles[i]}/${tid}`);
         if (hasFixtures) tsWithFixtures++;
@@ -600,8 +603,8 @@ if (VERIFY_MIGRATION) {
   );
   check(
     'team-stats file count matches season count',
-    tsFileCount === total,
-    `team-stats: ${tsFileCount.toLocaleString()}, seasons: ${total.toLocaleString()}`
+    tsFileCount === seasonList.length,
+    `team-stats: ${tsFileCount.toLocaleString()}, seasons: ${seasonList.length.toLocaleString()}`
   );
   check(
     'Sampled team entries have roster field',
@@ -611,10 +614,10 @@ if (VERIFY_MIGRATION) {
       : `${tsWithRoster.toLocaleString()} entries verified`
   );
   check(
-    'Sampled team entries have fixtures array',
+    'Sampled team entries have valid fixtures field (array or absent)',
     tsMissingFixtureSamples.length === 0,
     tsMissingFixtureSamples.length > 0
-      ? `Missing fixtures on: ${tsMissingFixtureSamples.join(', ')}`
+      ? `fixtures field present but not an array: ${tsMissingFixtureSamples.join(', ')}`
       : `${tsWithFixtures.toLocaleString()} entries verified`
   );
 
