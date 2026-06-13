@@ -6,6 +6,7 @@ const fs           = require('fs');
 const path         = require('path');
 const crypto       = require('crypto');
 const { execSync } = require('child_process');
+const ROOT = path.join(__dirname, '..');
 
 // ─── Args ─────────────────────────────────────────────────────────────────────
 
@@ -24,12 +25,12 @@ const SAVE_EVERY    = parseInt(ARGS['save-every'] || '500', 10);
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
-const GAMES_DIR     = path.join(__dirname, 'games', TENANT);
-const PLAYERS_DIR   = path.join(__dirname, 'players');
-const VENUE_DIR     = path.join(__dirname, 'venue-lookup');
-const INDEX_FILE    = path.join(__dirname, 'sports-index.json');
-const COOKIE_FILE   = path.join(__dirname, 'classify-games-cookie.json');
-const PROGRESS_FILE = path.join(__dirname, 'classify-games-progress.json');
+const GAMES_DIR     = path.join(ROOT, 'games', TENANT);
+const PLAYERS_DIR   = path.join(ROOT, 'players');
+const VENUE_DIR     = path.join(ROOT, 'venue-lookup');
+const INDEX_FILE    = path.join(ROOT, 'sports-index.json');
+const COOKIE_FILE   = path.join(ROOT, 'classify-games-cookie.json');
+const PROGRESS_FILE = path.join(ROOT, 'classify-games-progress.json');
 
 // ─── Headers ──────────────────────────────────────────────────────────────────
 

@@ -49,4 +49,4 @@ jobs:
           fi
           ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
           ARGS="$ARGS --save-every=${{ github.event.inputs.save_every }}"
-          node classify-games.js $ARGS
+          node scripts/classify-games.js $ARGS
