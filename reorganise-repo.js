@@ -4,7 +4,9 @@
 // .github/workflows/*.yml files to reference the new paths.
 //
 // Run from repo root: node reorganise-repo.js
-// Dry run (no changes): node reorganise-repo.js --dry-run
+// Dry run (no changes):  node reorganise-repo.js --dry-run
+// Single-file test:      node reorganise-repo.js --only repo-size.js
+// Single-file dry run:   node reorganise-repo.js --only repo-size.js --dry-run
 
 'use strict';
 
@@ -12,7 +14,9 @@ const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const DRY_RUN     = process.argv.includes('--dry-run');
+const DRY_RUN   = process.argv.includes('--dry-run');
+const ONLY_IDX  = process.argv.indexOf('--only');
+const ONLY_FILE = ONLY_IDX !== -1 ? process.argv[ONLY_IDX + 1] : null;
 const ROOT_DECL   = "const ROOT = path.join(__dirname, '..');";
 const SCRIPTS_DIR = 'scripts';
 const WORKFLOWS   = '.github/workflows';
@@ -75,25 +79,33 @@ const rootFiles = fs.readdirSync('.')
   .filter(f => {
     if (KEEP_IN_ROOT.has(f)) return false;
     const ext = path.extname(f);
-    return MOVE_EXTS.has(ext);
+    if (!MOVE_EXTS.has(ext)) return false;
+    if (ONLY_FILE && f !== ONLY_FILE) return false;
+    return true;
   })
   .sort();
 
 if (rootFiles.length === 0) {
-  console.log('No files to move. Already reorganised?');
+  console.log(ONLY_FILE ? `File not found in root: ${ONLY_FILE}` : 'No files to move. Already reorganised?');
   process.exit(0);
 }
 
-console.log(`reorganise-repo.js${DRY_RUN ? ' [DRY RUN]' : ''}`);
+const mode = ONLY_FILE ? ` [SINGLE FILE: ${ONLY_FILE}]` : '';
+console.log(`reorganise-repo.js${DRY_RUN ? ' [DRY RUN]' : ''}${mode}`);
 console.log('═'.repeat(50));
 console.log(`\nFiles to move to scripts/ (${rootFiles.length}):`);
 rootFiles.forEach(f => console.log(`  ${f}`));
 
 // ── collect yml files ─────────────────────────────────────────────────────────
+// In --only mode, only update the single matching workflow (basename without .js → .yml)
 
-const ymlFiles = fs.existsSync(WORKFLOWS)
+const allYmlFiles = fs.existsSync(WORKFLOWS)
   ? fs.readdirSync(WORKFLOWS).filter(f => f.endsWith('.yml')).map(f => path.join(WORKFLOWS, f))
   : [];
+
+const ymlFiles = ONLY_FILE
+  ? allYmlFiles.filter(f => path.basename(f) === ONLY_FILE.replace(/\.[^.]+$/, '.yml'))
+  : allYmlFiles;
 
 console.log(`\nWorkflow files to update (${ymlFiles.length}):`);
 ymlFiles.forEach(f => console.log(`  ${f}`));
