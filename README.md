@@ -282,7 +282,23 @@ See `playhq_api_reference.md` for full query reference.
 
 ---
 
-## Maintenance schedule
+## Future: multi-sport expansion
+
+### Architecture (resolved — Option B)
+Player identity is shared across sports; game data is per-sport.
+
+- This repo (`sports-players-stats`) becomes the **shared player layer** — `players/`, `search/`, `players/indexes/` serve all sports
+- Each new sport gets its own repo (`afl-players-data`, etc.) with sport-namespaced game/team/venue data
+- UUIDs are PlayHQ profile-level (sport-agnostic) — the same UUID appears in basketball and AFL datasets for the same person
+- StatTrack fans out fetches across sport repos in parallel; no HTML routing changes needed
+
+### Cross-sport opposition index
+To support "has this player faced any of these players before, in any sport?" efficiently, player detail files will carry an `opponents` array — every UUID they've shared a `p[]` array with, across all sports. This turns an O(games) scan into an O(1) set intersection. Not built yet — planned after AFL is added.
+
+### Repo size
+- History squash before adding AFL — reduces repo size ~60-70% with zero data impact
+- Per-sport repos keep each dataset independently manageable
+- See `stattrack_html_design.md` Multi-sport architecture section for full design
 
 ### Nightly (active seasons — `locked: false`)
 1. `discover-fixtures` — `discoverTeamFixture` for all active teams
