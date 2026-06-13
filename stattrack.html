@@ -101,6 +101,10 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .grow{padding:7px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;display:grid;grid-template-columns:1fr auto auto auto;grid-template-rows:auto auto;gap:1px 6px;align-items:center;border-left:3px solid transparent}
 .grow:hover{background:var(--elevated)}
 .grow:last-child{border-bottom:none}
+.sc-srow{display:flex;border-top:1px solid var(--border)}
+.sc-sm{flex:1;text-align:center;padding:6px 4px;min-width:0}
+.sc-smv{font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text)}
+.sc-sml{font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px}
 .grow.gf{border-left-color:gold}
 .grow.sf{border-left-color:silver}
 .g-rn{font-size:0.67rem;color:var(--text3);grid-column:1;grid-row:1}
@@ -250,7 +254,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.2</span>
+      <span class="rail-ver">Beta 0.4</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -315,6 +319,18 @@ async function gj(url){
 const el = id => document.getElementById(id);
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function fmtDow(d){
+  if(!d)return'';
+  const[ys,ms,dys]=d.split('-');
+  const y=parseInt(ys),m=parseInt(ms),dy=parseInt(dys);
+  const t=[0,3,2,5,0,3,5,1,4,6,2,4];
+  const yr=m<3?y-1:y;
+  const dow=(yr+Math.floor(yr/4)-Math.floor(yr/100)+Math.floor(yr/400)+t[m-1]+dy)%7;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return`${days[dow]} ${dy} ${months[m-1]}`;
+}
 function fmtD(d){
   if(!d)return'';
   const[,m,dy]=d.split('-');
@@ -349,6 +365,17 @@ function resLetter(a,b){
 }
 function storedPts(g,uuid){
   return[...(g.hp||[]),...(g.ap||[])].find(p=>p.profileID===uuid)?.pts??null;
+}
+function storedStats(g,uuid){
+  return[...(g.hp||[]),...(g.ap||[])].find(p=>p.profileID===uuid)||null;
+}
+function renderMiniStats(p){
+  if(!p)return'';
+  return`<div class="g-sm"><div class="g-smv">${p.pts??0}</div><div class="g-sml">PTS</div></div>
+    <div class="g-sm"><div class="g-smv">${p.pt2??0}</div><div class="g-sml">2PT</div></div>
+    <div class="g-sm"><div class="g-smv">${p.pt3??0}</div><div class="g-sml">3PT</div></div>
+    <div class="g-sm"><div class="g-smv">${p.pt1??0}</div><div class="g-sml">FT</div></div>
+    <div class="g-sm"><div class="g-smv">${p.fouls??0}</div><div class="g-sml">FL</div></div>`;
 }
 function finalClass(rn){
   if(!rn)return'';
@@ -500,17 +527,34 @@ function renderPlayer(p){
   }
   h+='<div class="slist"><div class="sec-lbl">Season history</div>';
   groups.forEach(({sn,tid,regs},gi)=>{
-    const primary=regs[regs.length-1];
-    const st=primary.stats||{};
-    const earlier=regs.slice(0,-1);
+    const primary=regs[0];
+    const earlier=regs.slice(1);
+    // Sum stats across ALL regs in group
+    const st=regs.reduce((a,r)=>{const s=r.stats||{};return{
+      gp:(a.gp||0)+(s.gp||0),pts:(a.pts||0)+(s.pts||0),
+      fg:(a.fg||0)+(s.fg||0),ft:(a.ft||0)+(s.ft||0),
+      threePt:(a.threePt||0)+(s.threePt||0),fouls:(a.fouls||0)+(s.fouls||0)
+    };},{});
     const regradeNote=earlier.length?`<span class="sc-regrade">(prev: ${earlier.map(r=>esc(r.gn||r.tn||'?')).join(', ')})</span>`:'';
     const cid=`sc-${gi}`;
     const teamLink=`<span class="sc-grade" onclick="event.stopPropagation();loadTeam('${esc(tid)}','${esc(sn.sid)}')">${esc(primary.gn||primary.tn||'Team')} \u2192</span>${regradeNote}`;
-    h+=`<div class="sc"><div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
-      <div class="sc-info"><div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(sn.club)}</div><div>${teamLink}</div></div>
-      <div class="sc-stats">GP ${st.gp||0} \u00b7 ${st.pts||0} pts</div>
-      <div class="chev">\u25b6</div>
-    </div><div class="sc-games" id="${esc(cid)}-g"></div></div>`;
+    const ppg=st.gp?(st.pts/st.gp).toFixed(1):'\u2014';
+    h+=`<div class="sc">
+      <div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
+        <div class="sc-info"><div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(sn.club)}</div><div>${teamLink}</div></div>
+        <div class="chev">\u25b6</div>
+      </div>
+      <div class="sc-srow">
+        <div class="sc-sm"><div class="sc-smv">${st.gp||0}</div><div class="sc-sml">GP</div></div>
+        <div class="sc-sm"><div class="sc-smv">${st.pts||0}</div><div class="sc-sml">PTS</div></div>
+        <div class="sc-sm"><div class="sc-smv">${ppg}</div><div class="sc-sml">PPG</div></div>
+        <div class="sc-sm"><div class="sc-smv">${st.fg||0}</div><div class="sc-sml">FG</div></div>
+        <div class="sc-sm"><div class="sc-smv">${st.ft||0}</div><div class="sc-sml">FT</div></div>
+        <div class="sc-sm"><div class="sc-smv">${st.threePt||0}</div><div class="sc-sml">3PT</div></div>
+        <div class="sc-sm"><div class="sc-smv">${st.fouls||0}</div><div class="sc-sml">FL</div></div>
+      </div>
+      <div class="sc-games" id="${esc(cid)}-g"></div>
+    </div>`;
   });
   h+='</div>';
   h+=`<a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener">View on PlayHQ \u2197</a>`;
@@ -543,23 +587,40 @@ async function toggleGames(hdr){
     const ctx=gameCtx(g,tid);
     const res=resLetter(ctx.myS,ctx.oppS);
     const sc=(ctx.myS!=null&&ctx.oppS!=null)?`${ctx.myS}\u2013${ctx.oppS}`:'';
-    const pts=storedPts(g,uuid);
+    const stored=storedStats(g,uuid);
     const mode=renderMode(g);
     const oppN=(ctx.oppN||'\u2014').slice(0,30);
     const fc=finalClass(g.rn);
     const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
     const resH=res?`<div class="g-res r${res}">${res}</div>`:`<div class="g-res rU">?</div>`;
+    const statsH=stored
+      ?`<div class="g-stats" id="gstats-${esc(gid)}">${renderMiniStats(stored)}</div>`
+      :`<div class="g-stats empty" id="gstats-${esc(gid)}"></div>`;
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
-      <div class="g-rn">${esc(g.rn||'')} ${g.d?esc(fmtD(g.d)):''}</div>
-      <div class="g-opp">${badgeH}${esc(oppN)}</div>
-      ${sc?`<div class="g-score">${esc(sc)}</div>`:'<div class="g-score"></div>'}
-      ${resH}
-      <div class="g-pts" id="gpts-${esc(gid)}">${pts!=null?pts:'\u2014'}</div>
+      <div class="g-main">
+        <div class="g-rn">${esc(g.rn||'')} ${g.d?esc(fmtD(g.d)):''}</div>
+        <div class="g-opp">${badgeH}${esc(oppN)}</div>
+        ${sc?`<div class="g-score">${esc(sc)}</div>`:'<div class="g-score"></div>'}
+        ${resH}
+      </div>
+      ${statsH}
     </div>`;
   }).join('');
   ge.innerHTML=rows;
   ge.addEventListener('click',e=>{const r=e.target.closest('.grow');if(r)openSheet(r.dataset.gid,r.dataset.sid);});
   ge.dataset.loaded='1';
+  // Fetch box scores in parallel for normal games to populate pts column
+  pg.filter(([,g])=>renderMode(g)==='normal').forEach(([gid])=>{
+    fetchBox(gid).then(bs=>{
+      if(!bs)return;
+      const allP=[...(bs.h||[]),...(bs.a||[])];
+      const mine=allP.find(p=>p.profileID===uuid);
+      if(mine!=null){
+        const ptsEl=document.getElementById('gpts-'+gid);
+        if(ptsEl)ptsEl.textContent=mine.pts??'—';
+      }
+    });
+  });
 }
 
 /* ── Team search ── */
@@ -724,7 +785,7 @@ function renderKnownDates(dates,vid,today){
     h+=`<div style="width:100%;font-size:0.67rem;color:var(--text3);padding:4px 0 2px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em">${mn} ${y}</div>`;
     for(const d of ds){
       const[,mm,dy]=d.split('-');
-      const lbl=`${parseInt(dy)} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(mm)-1]}`;
+      const lbl=fmtDow(d);
       h+=`<button class="vcdt${d===today?' on':''}" data-date="${d}" onclick="loadVenueDay('${esc(vid)}','${d}',this)">${esc(lbl)}</button>`;
     }
   }
@@ -744,8 +805,7 @@ function renderCalRange(vid,today,offsetWeeks){
     <button onclick="shiftCal('${esc(vid)}','${esc(todayStr)}',1)">Later \u2192</button>
   </div><div class="vcal">`;
   for(const d of dates){
-    const[,m,dy]=d.split('-');
-    const lbl=`${parseInt(dy)} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1]}`;
+    const lbl=fmtDow(d);
     h+=`<button class="vcdt${d===todayStr?' on':''}" data-date="${d}" onclick="loadVenueDay('${esc(vid)}','${d}',this)">${esc(lbl)}</button>`;
   }
   return h+'</div>';
@@ -967,8 +1027,8 @@ function applyBox(bs,g,gid,con){
     const allP=[...(bs.h||[]),...(bs.a||[])];
     const mine=allP.find(p=>p.profileID===uuid);
     if(mine){
-      const ptsEl=document.getElementById('gpts-'+gid);
-      if(ptsEl)ptsEl.textContent=mine.pts??'\u2014';
+      const statsEl=document.getElementById('gstats-'+gid);
+      if(statsEl){statsEl.classList.remove('empty');statsEl.innerHTML=renderMiniStats(mine);}
     }
   }
 }
