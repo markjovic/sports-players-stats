@@ -9,6 +9,11 @@ on:
         required: false
         default: true
         type: boolean
+      only_file:
+        description: 'Test with a single file only, e.g. repo-size.js (leave blank for all)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   reorganise:
@@ -36,8 +41,7 @@ jobs:
 
       - name: Run reorganise
         run: |
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            node reorganise-repo.js --dry-run
-          else
-            node reorganise-repo.js
-          fi
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ github.event.inputs.only_file }}" ]; then ARGS="$ARGS --only ${{ github.event.inputs.only_file }}"; fi
+          node reorganise-repo.js $ARGS
