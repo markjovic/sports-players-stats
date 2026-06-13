@@ -32,34 +32,57 @@ const KEEP_IN_ROOT = new Set([
 // ── transform helpers ─────────────────────────────────────────────────────────
 
 function transformScript(content) {
-  if (content.includes(ROOT_DECL)) return content;
-  if (!content.includes('path.join(__dirname,')) return content;
+  const PLACEHOLDER = '\x00ROOT_DECL\x00';
 
-  // Replace data path usages first — ROOT_DECL insertion below is not affected
-  content = content.replaceAll('path.join(__dirname,', 'path.join(ROOT,');
+  // Protect any existing ROOT_DECL from being clobbered by replacements
+  const working = content.includes(ROOT_DECL)
+    ? content.replace(ROOT_DECL, PLACEHOLDER)
+    : content;
 
-  // Insert ROOT_DECL after the last require() in the opening require block.
-  // Walk lines until the require block ends (first non-blank, non-comment,
-  // non-require line), track the last require line seen.
-  const lines = content.split('\n');
-  let lastRequireIdx = -1;
-  for (let i = 0; i < lines.length; i++) {
-    const trimmed = lines[i].trim();
-    if (trimmed === '' || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) continue;
-    if (trimmed.startsWith("'use strict'") || trimmed.startsWith('"use strict"')) continue;
-    if (trimmed.includes('require(')) { lastRequireIdx = i; continue; }
-    // First substantive non-require line — stop scanning
-    if (lastRequireIdx !== -1) break;
+  const needsResolveBare = working.includes('path.resolve(__dirname)');
+  const needsRoot        = working.includes('path.join(__dirname,')
+                        || working.includes('path.resolve(__dirname,');
+
+  if (!needsResolveBare && !needsRoot) {
+    return working.replace(PLACEHOLDER, ROOT_DECL);
   }
 
-  if (lastRequireIdx !== -1) {
-    lines.splice(lastRequireIdx + 1, 0, ROOT_DECL);
-  } else {
-    // No require block found — insert after first line (filename comment)
-    lines.splice(1, 0, ROOT_DECL);
+  let result = working;
+
+  // path.resolve(__dirname) with no extra args → process.cwd()
+  result = result.replace(/path\.resolve\(__dirname\)(?![\s,])/g, 'process.cwd()');
+
+  // path.join(__dirname, ...) and path.resolve(__dirname, ...) → ROOT variants
+  if (needsRoot) {
+    result = result.replaceAll('path.join(__dirname,', 'path.join(ROOT,');
+    result = result.replaceAll('path.resolve(__dirname,', 'path.resolve(ROOT,');
   }
 
-  return lines.join('\n');
+  // Restore any pre-existing ROOT_DECL
+  if (result.includes(PLACEHOLDER)) {
+    return result.replace(PLACEHOLDER, ROOT_DECL);
+  }
+
+  // Insert ROOT_DECL only when ROOT is used (process.cwd() needs no declaration)
+  if (needsRoot) {
+    const lines = result.split('\n');
+    let lastRequireIdx = -1;
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed === '' || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) continue;
+      if (trimmed.startsWith("'use strict'") || trimmed.startsWith('"use strict"')) continue;
+      if (trimmed.includes('require(')) { lastRequireIdx = i; continue; }
+      if (lastRequireIdx !== -1) break;
+    }
+    if (lastRequireIdx !== -1) {
+      lines.splice(lastRequireIdx + 1, 0, ROOT_DECL);
+    } else {
+      lines.splice(1, 0, ROOT_DECL);
+    }
+    result = lines.join('\n');
+  }
+
+  return result;
 }
 
 function transformYml(content, scriptNames) {
