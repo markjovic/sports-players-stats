@@ -4,6 +4,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const ROOT = path.join(__dirname, '..');
 
 const ARGS = Object.fromEntries(
   process.argv.slice(2).filter(a => a.startsWith('--'))
@@ -14,15 +15,15 @@ const INCLUDE_PLAYERS   = !!ARGS['include-players'];
 const VERIFY_MIGRATION  = !!ARGS['verify-migration'];
 const TENANT            = ARGS.tenant || 'bv';
 
-const GAMES_DIR        = path.join(__dirname, 'games', TENANT);
-const PLAYERS_DIR      = path.join(__dirname, 'players');
-const PLAYERS_IDX      = path.join(__dirname, 'players-index');
-const PLAYERS_IDX_NEW  = path.join(__dirname, 'players', 'indexes');
-const VENUE_DIR        = path.join(__dirname, 'venue-lookup');
-const TEAM_DIR         = path.join(__dirname, 'team-lookup');
-const TEAM_INDEX_FILE  = path.join(__dirname, 'team-index.json');
-const VENUE_INDEX_FILE = path.join(__dirname, 'venue-index.json');
-const INDEX_FILE       = path.join(__dirname, 'sports-index.json');
+const GAMES_DIR        = path.join(ROOT, 'games', TENANT);
+const PLAYERS_DIR      = path.join(ROOT, 'players');
+const PLAYERS_IDX      = path.join(ROOT, 'players-index');
+const PLAYERS_IDX_NEW  = path.join(ROOT, 'players', 'indexes');
+const VENUE_DIR        = path.join(ROOT, 'venue-lookup');
+const TEAM_DIR         = path.join(ROOT, 'team-lookup');
+const TEAM_INDEX_FILE  = path.join(ROOT, 'team-index.json');
+const VENUE_INDEX_FILE = path.join(ROOT, 'venue-index.json');
+const INDEX_FILE       = path.join(ROOT, 'sports-index.json');
 
 console.log('\n📊 Sports Player Stats — Database Report');
 console.log('═'.repeat(60));
@@ -62,7 +63,7 @@ console.log(`  Detail files (full history):   ${INCLUDE_PLAYERS ? playerDetailCo
 
 // ─── Search shards ────────────────────────────────────────────────────────────
 
-const SEARCH_DIR = path.join(__dirname, 'search', 'players');
+const SEARCH_DIR = path.join(ROOT, 'search', 'players');
 let searchShardCount = 0, searchKeyCount = 0;
 if (fs.existsSync(SEARCH_DIR)) {
   const shardFiles = fs.readdirSync(SEARCH_DIR).filter(f => f.endsWith('.json'));
@@ -249,7 +250,7 @@ const venue_pct          = venueEligibleCount > 0 ? ((venueEligibleWithVenue / v
 
 // ─── Index sync check ─────────────────────────────────────────────────────────
 
-const DISC_FILE = path.join(__dirname, 'seasons-discovered.json');
+const DISC_FILE = path.join(ROOT, 'seasons-discovered.json');
 const disc      = fs.existsSync(DISC_FILE) ? JSON.parse(fs.readFileSync(DISC_FILE, 'utf8')) : {};
 
 const gameFiles = fs.existsSync(GAMES_DIR)
@@ -587,7 +588,7 @@ if (VERIFY_MIGRATION) {
 
   console.log('\n  [5] Checking team-stats/bv/...');
 
-  const TEAM_STATS_DIR = path.join(__dirname, 'team-stats', TENANT);
+  const TEAM_STATS_DIR = path.join(ROOT, 'team-stats', TENANT);
   let tsFileCount = 0, tsTeamTotal = 0, tsWithRoster = 0, tsWithFixtures = 0;
   let tsExists = false;
   const tsMissingFixtureSamples = [];

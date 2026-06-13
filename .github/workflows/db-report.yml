@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            db-report.js
+            scripts/db-report.js
             sports-index.json
             players/indexes
             team-lookup
@@ -55,4 +55,4 @@ jobs:
           if [ "${{ github.event.inputs.verbose }}" = "true" ]; then ARGS="$ARGS --verbose"; fi
           if [ "${{ github.event.inputs.include_players }}" = "true" ]; then ARGS="$ARGS --include-players"; fi
           if [ "${{ github.event.inputs.verify_migration }}" = "true" ]; then ARGS="$ARGS --verify-migration"; fi
-          node db-report.js $ARGS
+          node scripts/db-report.js $ARGS
