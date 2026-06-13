@@ -111,14 +111,13 @@ console.log(`\nWorkflow files to update (${ymlFiles.length}):`);
 ymlFiles.forEach(f => console.log(`  ${f}`));
 
 if (DRY_RUN) {
-  console.log('\n── DRY RUN: showing first transform of each file ──');
+  console.log('\n── DRY RUN: script transforms ──');
   for (const file of rootFiles.slice(0, 3)) {
     const content = fs.readFileSync(file, 'utf8');
     const transformed = transformScript(content);
     const changed = content !== transformed;
     console.log(`\n  ${file}: ${changed ? 'WILL be transformed' : 'no __dirname changes needed'}`);
     if (changed) {
-      // Show just the first few lines that changed
       const origLines = content.split('\n');
       const newLines  = transformed.split('\n');
       for (let i = 0; i < Math.min(origLines.length, newLines.length, 10); i++) {
@@ -129,6 +128,30 @@ if (DRY_RUN) {
       }
     }
   }
+
+  console.log('\n── DRY RUN: yml changes ──');
+  let ymlChangedCount = 0;
+  for (const ymlPath of ymlFiles) {
+    const content    = fs.readFileSync(ymlPath, 'utf8');
+    const newContent = transformYml(content, rootFiles);
+    if (content === newContent) {
+      console.log(`\n  ${ymlPath}: no script references found`);
+      continue;
+    }
+    ymlChangedCount++;
+    console.log(`\n  ${ymlPath}: WILL be updated`);
+    // Show every changed line with context
+    const origLines = content.split('\n');
+    const newLines  = newContent.split('\n');
+    for (let i = 0; i < Math.max(origLines.length, newLines.length); i++) {
+      if (origLines[i] !== newLines[i]) {
+        if (origLines[i] !== undefined) console.log(`    - ${origLines[i]}`);
+        if (newLines[i]  !== undefined) console.log(`    + ${newLines[i]}`);
+      }
+    }
+  }
+  if (ymlChangedCount === 0) console.log('  (no yml files reference these scripts)');
+
   console.log('\nRe-run without --dry-run to apply changes.');
   process.exit(0);
 }
