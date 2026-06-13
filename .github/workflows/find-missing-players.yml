@@ -37,4 +37,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Execute Missing Players Discovery Scan
-        run: node find-missing-team-players.js --concurrency=${{ github.event.inputs.concurrency }}
+        run: node scripts/find-missing-team-players.js --concurrency=${{ github.event.inputs.concurrency }}

@@ -19,4 +19,4 @@ jobs:
           node-version: '20'
 
       - name: Execute Database Schema Inspection
-        run: node inspect-game-schema.js
+        run: node scripts/inspect-game-schema.js

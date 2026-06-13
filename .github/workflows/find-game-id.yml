@@ -21,4 +21,4 @@ jobs:
         with:
           node-version: '20'
       - name: Find game
-        run: node find-game-id.js ${{ github.event.inputs.game_id }}
+        run: node scripts/find-game-id.js ${{ github.event.inputs.game_id }}

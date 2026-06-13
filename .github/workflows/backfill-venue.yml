@@ -41,7 +41,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run venue backfill
-        run: node backfill-venue.js --concurrency=${{ github.event.inputs.concurrency }} --tenant=${{ github.event.inputs.tenant }}
+        run: node scripts/backfill-venue.js --concurrency=${{ github.event.inputs.concurrency }} --tenant=${{ github.event.inputs.tenant }}
 
       - name: Commit final results
         run: |

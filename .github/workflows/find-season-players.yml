@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            find-season-players.js
+            scripts/find-season-players.js
             players
           sparse-checkout-cone-mode: false
 
@@ -42,4 +42,4 @@ jobs:
           ARGS="--limit=${{ github.event.inputs.limit }}"
           if [ -n "${{ github.event.inputs.season_id }}" ]; then ARGS="$ARGS --season=${{ github.event.inputs.season_id }}"; fi
           if [ -n "${{ github.event.inputs.game_id }}" ]; then ARGS="$ARGS --game=${{ github.event.inputs.game_id }}"; fi
-          node find-season-players.js $ARGS
+          node scripts/find-season-players.js $ARGS

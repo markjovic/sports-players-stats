@@ -34,7 +34,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run migration
-        run: node migrate-team-lookup.js ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+        run: node scripts/migrate-team-lookup.js ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
 
       - name: Commit final results
         run: |

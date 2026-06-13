@@ -33,7 +33,7 @@ jobs:
           node-version: '20'
 
       - name: Run REST API probe
-        run: node probe-rest-api.js --tenant=${{ github.event.inputs.tenant }} --season=${{ github.event.inputs.season_id }} --grade=${{ github.event.inputs.grade_id }}
+        run: node scripts/probe-rest-api.js --tenant=${{ github.event.inputs.tenant }} --season=${{ github.event.inputs.season_id }} --grade=${{ github.event.inputs.grade_id }}
 
       - name: Commit HTML report
         run: |

@@ -21,4 +21,4 @@ jobs:
           node-version: '20'
 
       - name: Run diagnostic
-        run: node diagnose-hidden-gaps.js
+        run: node scripts/diagnose-hidden-gaps.js

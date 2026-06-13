@@ -21,4 +21,4 @@ jobs:
         with:
           node-version: '20'
       - name: Inspect player file
-        run: node inspect-player-file.js ${{ github.event.inputs.uuid }}
+        run: node scripts/inspect-player-file.js ${{ github.event.inputs.uuid }}

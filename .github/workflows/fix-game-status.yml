@@ -42,7 +42,7 @@ jobs:
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="--dry-run"
           fi
-          node fix-game-status.js $ARGS
+          node scripts/fix-game-status.js $ARGS
 
       - name: Final commit
         if: ${{ github.event.inputs.dry_run == 'false' }}

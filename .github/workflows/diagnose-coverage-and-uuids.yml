@@ -36,4 +36,4 @@ jobs:
             ARGS="$ARGS --season=${{ github.event.inputs.season }}"
           fi
           ARGS="$ARGS --uuid-sample=${{ github.event.inputs.uuid_sample }}"
-          node diagnose-coverage-and-uuids.js $ARGS
+          node scripts/diagnose-coverage-and-uuids.js $ARGS

@@ -28,8 +28,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run migrate-phase1.js
-        run: node migrate-phase1.js
+      - name: Run scripts/migrate-phase1.js
+        run: node scripts/migrate-phase1.js
 
       - name: Final commit (safety net)
         run: |

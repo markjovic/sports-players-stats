@@ -28,7 +28,7 @@ jobs:
           node-version: '20'
 
       - name: Run team members probe
-        run: node probe-team-members.js --tenant=${{ github.event.inputs.tenant }} --token="${{ github.event.inputs.token }}"
+        run: node scripts/probe-team-members.js --tenant=${{ github.event.inputs.tenant }} --token="${{ github.event.inputs.token }}"
 
       - name: Commit HTML report
         run: |

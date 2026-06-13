@@ -23,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Run migration
-        run: node migrate-player-index.js
+        run: node scripts/migrate-player-index.js
 
       - name: Commit results
         run: |

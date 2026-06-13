@@ -34,4 +34,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run normalise
-        run: node normalise-game-structure.js ${{ github.event.inputs.tenant }}
+        run: node scripts/normalise-game-structure.js ${{ github.event.inputs.tenant }}

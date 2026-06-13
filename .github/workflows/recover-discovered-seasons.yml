@@ -23,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Fill season metadata
-        run: node recover-discovered-seasons.js
+        run: node scripts/recover-discovered-seasons.js
 
       - name: Commit results
         run: |

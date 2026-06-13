@@ -28,7 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sparse-checkout: |
-            fetch-playhq.js
+            scripts/fetch-playhq.js
             sports-index.json
             players-index/${{ steps.shard.outputs.prefix }}.json
             players/${{ steps.shard.outputs.prefix }}
@@ -40,7 +40,7 @@ jobs:
           node-version: '20'
 
       - name: Fetch player
-        run: node fetch-playhq.js --mode=player --uuid=${{ github.event.inputs.uuid }}
+        run: node scripts/fetch-playhq.js --mode=player --uuid=${{ github.event.inputs.uuid }}
 
       - name: Commit result
         run: |

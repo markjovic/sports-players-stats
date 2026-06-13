@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            probe-games.js
+            scripts/probe-games.js
           sparse-checkout-cone-mode: false
 
       - name: Set up Node.js
@@ -35,4 +35,4 @@ jobs:
           node-version: '20'
 
       - name: Probe games
-        run: node probe-games.js --games=${{ github.event.inputs.game_ids }} --tenant=${{ github.event.inputs.tenant }}
+        run: node scripts/probe-games.js --games=${{ github.event.inputs.game_ids }} --tenant=${{ github.event.inputs.tenant }}

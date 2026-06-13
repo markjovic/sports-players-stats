@@ -39,6 +39,6 @@ jobs:
 
       - name: Run backfill
         run: |
-          node backfill-missing-players.js \
+          node scripts/backfill-missing-players.js \
             --concurrency=${{ github.event.inputs.concurrency }} \
             --save-every=${{ github.event.inputs.save_every }}

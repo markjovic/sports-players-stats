@@ -29,7 +29,7 @@ jobs:
           node-version: '20'
 
       - name: Run patch
-        run: node patch-team-stats-fixtures.js
+        run: node scripts/patch-team-stats-fixtures.js
 
       - name: Final commit (safety net)
         run: |

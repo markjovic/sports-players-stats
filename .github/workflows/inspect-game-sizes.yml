@@ -16,4 +16,4 @@ jobs:
         with:
           node-version: '20'
       - name: Run inspection
-        run: node inspect-game-sizes.js
+        run: node scripts/inspect-game-sizes.js

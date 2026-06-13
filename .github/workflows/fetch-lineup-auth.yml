@@ -32,7 +32,7 @@ jobs:
           node-version: '20'
 
       - name: Fetch authenticated lineups
-        run: node fetch-lineup-auth.js --grade=${{ github.event.inputs.grade_id }} --tenant=${{ github.event.inputs.tenant }} --token="${{ github.event.inputs.token }}"
+        run: node scripts/fetch-lineup-auth.js --grade=${{ github.event.inputs.grade_id }} --tenant=${{ github.event.inputs.tenant }} --token="${{ github.event.inputs.token }}"
 
       - name: Commit HTML report
         run: |

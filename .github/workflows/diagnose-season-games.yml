@@ -31,6 +31,6 @@ jobs:
 
       - name: Run diagnostic
         run: |
-          node diagnose-season-games.js \
+          node scripts/diagnose-season-games.js \
             --season=${{ github.event.inputs.season }} \
             --sample=${{ github.event.inputs.sample }}

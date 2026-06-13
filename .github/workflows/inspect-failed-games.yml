@@ -42,7 +42,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sparse-checkout: |
-            inspect-failed-games.js
+            scripts/inspect-failed-games.js
             games
             backfill-progress.json
             sports-index.json
@@ -66,4 +66,4 @@ jobs:
           fi
           SEASON="${{ github.event.inputs.season }}"
           if [ -n "$SEASON" ]; then ARGS="$ARGS --season=$SEASON"; fi
-          node inspect-failed-games.js $ARGS
+          node scripts/inspect-failed-games.js $ARGS

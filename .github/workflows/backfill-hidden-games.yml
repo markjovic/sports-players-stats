@@ -67,7 +67,7 @@ jobs:
           if [ "${{ github.event.inputs.review_unscored }}" = "true" ]; then
             ARGS="$ARGS --review-unscored"
           fi
-          node backfill-hidden-games.js $ARGS
+          node scripts/backfill-hidden-games.js $ARGS
 
       - name: Commit final results
         run: |

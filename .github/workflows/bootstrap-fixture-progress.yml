@@ -23,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Run bootstrap
-        run: node bootstrap-fixture-progress.js
+        run: node scripts/bootstrap-fixture-progress.js
 
       - name: Commit results
         run: |

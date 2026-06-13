@@ -46,8 +46,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sparse-checkout: |
-            roster-lookup.js
-            team-lookup-utils.js
+            scripts/roster-lookup.js
+            scripts/team-lookup-utils.js
             players
             players-index
             roster-results
@@ -93,7 +93,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run roster lookup
-        run: node roster-lookup.js ${{ steps.args.outputs.args }}
+        run: node scripts/roster-lookup.js ${{ steps.args.outputs.args }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}

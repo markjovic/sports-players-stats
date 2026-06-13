@@ -31,7 +31,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           sparse-checkout: |
-            recover-missing-seasons.js
+            scripts/recover-missing-seasons.js
             sports-index.json
             seasons-discovered.json
             players
@@ -55,4 +55,4 @@ jobs:
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          node recover-missing-seasons.js $ARGS
+          node scripts/recover-missing-seasons.js $ARGS

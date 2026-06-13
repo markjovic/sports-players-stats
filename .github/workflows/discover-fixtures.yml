@@ -63,7 +63,7 @@ jobs:
           elif [[ "$MODE" == single* ]]; then
             ARGS="$ARGS --season=${{ github.event.inputs.season_id }}"
           fi
-          node discover-fixtures.js $ARGS
+          node scripts/discover-fixtures.js $ARGS
 
       - name: Commit final results
         run: |

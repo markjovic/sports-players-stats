@@ -39,7 +39,7 @@ jobs:
           if [ -n "${{ github.event.inputs.profile }}" ]; then
             ARGS="$ARGS --profile=${{ github.event.inputs.profile }}"
           fi
-          node explore-playhq-auth.js $ARGS
+          node scripts/explore-playhq-auth.js $ARGS
 
       - name: Commit results
         run: |

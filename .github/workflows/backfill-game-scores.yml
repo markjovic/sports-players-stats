@@ -57,7 +57,7 @@ jobs:
           else
             ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
           fi
-          node backfill-game-scores.js $ARGS
+          node scripts/backfill-game-scores.js $ARGS
 
       - name: Commit final results
         run: |
