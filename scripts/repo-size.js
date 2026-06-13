@@ -11,7 +11,7 @@ const fs   = require('fs');
 const path = require('path');
 
 const TOP_N    = parseInt(process.argv.find(a => a.startsWith('--top='))?.split('=')[1] || '20', 10);
-const ROOT_DIR = path.resolve(__dirname);
+const ROOT_DIR = process.cwd();
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
