@@ -87,7 +87,6 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .sc{background:var(--elevated);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .sc-hdr{padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.1s;user-select:none;background:var(--elevated)}
 .sc-hdr:hover,.sc-hdr.open{background:#333}
-.sc-srow{background:var(--surface)}
 .sc-info{flex:1;min-width:0}
 .sc-name{font-size:0.83rem;font-weight:600}
 .sc-grade{font-size:0.73rem;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:3px}
@@ -99,17 +98,25 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .sc-games{display:none;border-top:1px solid var(--border)}
 .sc-games.open{display:block}
 
-.grow{padding:7px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;display:grid;grid-template-columns:1fr auto auto auto;grid-template-rows:auto auto;gap:1px 6px;align-items:center;border-left:3px solid transparent}
+.grow{display:flex;flex-direction:column;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;border-left:3px solid transparent}
 .grow:hover{background:var(--elevated)}
 .grow:last-child{border-bottom:none}
-.sc-srow{display:flex;flex-direction:row;border-top:1px solid var(--border)}
 .grow.gf{border-left-color:gold}
 .grow.sf{border-left-color:silver}
+.sc-games .grow{background:#111}
+.sc-games .grow:hover{background:#1d1d1d}
+.g-main{display:grid;grid-template-columns:1fr auto auto;grid-template-rows:auto auto;gap:2px 8px;align-items:center;padding:7px 12px 6px}
 .g-rn{font-size:0.67rem;color:var(--text3);grid-column:1;grid-row:1}
+.g-score{font-size:0.83rem;font-weight:700;font-variant-numeric:tabular-nums;grid-column:2;grid-row:1;align-self:center;text-align:right;white-space:nowrap}
+.g-res{width:20px;height:20px;border-radius:3px;font-size:0.67rem;font-weight:700;display:flex;align-items:center;justify-content:center;grid-column:3;grid-row:1;align-self:center}
 .g-opp{font-size:0.85rem;font-weight:500;grid-column:1/4;grid-row:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
-.g-score{font-size:0.83rem;font-weight:700;font-variant-numeric:tabular-nums;grid-column:2;grid-row:1/3;align-self:center;text-align:right;white-space:nowrap}
-.g-res{width:20px;height:20px;border-radius:3px;font-size:0.67rem;font-weight:700;display:flex;align-items:center;justify-content:center;grid-column:3;grid-row:1/3;align-self:center}
-.g-pts{font-size:0.78rem;font-variant-numeric:tabular-nums;color:var(--text2);grid-column:4;grid-row:1/3;align-self:center;min-width:22px;text-align:right}
+.sc-srow{display:flex;flex-direction:row;border-top:1px solid var(--border)}
+.g-stats{display:flex;flex-direction:row;border-top:1px solid var(--border)}
+.g-stats.empty{display:none}
+.sc-sm,.g-sm{flex:1;text-align:center;padding:6px 4px;border-right:1px solid var(--border);min-width:0}
+.sc-sm:last-child,.g-sm:last-child{border-right:none}
+.sc-smv,.g-smv{font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);display:block}
+.sc-sml,.g-sml{font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px}
 .rW{background:rgba(76,175,80,0.18);color:var(--win)}
 .rL{background:rgba(244,67,54,0.18);color:var(--loss)}
 .rD{background:rgba(255,152,0,0.18);color:var(--draw)}
@@ -254,7 +261,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.6</span>
+      <span class="rail-ver">Beta 0.7</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -369,14 +376,16 @@ function storedPts(g,uuid){
 function storedStats(g,uuid){
   return[...(g.hp||[]),...(g.ap||[])].find(p=>p.profileID===uuid)||null;
 }
+function statCell(v,l,last){
+  return`<div style="flex:1;text-align:center;padding:6px 4px;${last?'':'border-right:1px solid #2e2e2e;'}min-width:0"><div style="font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:#fff;display:block">${v}</div><div style="font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px">${l}</div></div>`;
+}
+function statRow(items){
+  return`<div style="display:flex;flex-direction:row;border-top:1px solid #2e2e2e">${items.map(([v,l],i)=>statCell(v,l,i===items.length-1)).join('')}</div>`;
+}
 function renderMiniStats(p){
   if(!p)return'';
-  // 7 columns matching season stats: GP | PTS | PPG | FG | FT | 3PT | FL
   const fg=(p.pt2??0)+(p.pt3??0);
-  return[
-    [1,'GP'],[p.pts??0,'PTS'],[p.pts??0,'PPG'],
-    [fg,'FG'],[p.pt1??0,'FT'],[p.pt3??0,'3PT'],[p.fouls??0,'FL']
-  ].map(([v,l])=>`<div class="g-sm"><div class="g-smv">${v}</div><div class="g-sml">${l}</div></div>`).join('');
+  return statRow([[1,'GP'],[p.pts??0,'PTS'],[p.pts??0,'PPG'],[fg,'FG'],[p.pt1??0,'FT'],[p.pt3??0,'3PT'],[p.fouls??0,'FL']]);
 }
 function finalClass(rn){
   if(!rn)return'';
@@ -549,15 +558,7 @@ function renderPlayer(p){
         <div class="sc-info"><div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(sn.club)}</div><div>${teamLink}</div></div>
         <div class="chev">\u25b6</div>
       </div>
-      <div class="sc-srow">
-        <div class="sc-sm"><div class="sc-smv">${st.gp||0}</div><div class="sc-sml">GP</div></div>
-        <div class="sc-sm"><div class="sc-smv">${st.pts||0}</div><div class="sc-sml">PTS</div></div>
-        <div class="sc-sm"><div class="sc-smv">${ppg}</div><div class="sc-sml">PPG</div></div>
-        <div class="sc-sm"><div class="sc-smv">${st.fg||0}</div><div class="sc-sml">FG</div></div>
-        <div class="sc-sm"><div class="sc-smv">${st.ft||0}</div><div class="sc-sml">FT</div></div>
-        <div class="sc-sm"><div class="sc-smv">${st.threePt||0}</div><div class="sc-sml">3PT</div></div>
-        <div class="sc-sm"><div class="sc-smv">${st.fouls||0}</div><div class="sc-sml">FL</div></div>
-      </div>
+      ${statRow([[st.gp||0,'GP'],[st.pts||0,'PTS'],[ppg,'PPG'],[st.fg||0,'FG'],[st.ft||0,'FT'],[st.threePt||0,'3PT'],[st.fouls||0,'FL']])}
       <div class="sc-games" id="${esc(cid)}-g"></div>
     </div>`;
   });
@@ -599,8 +600,8 @@ async function toggleGames(hdr){
     const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
     const resH=res?`<div class="g-res r${res}">${res}</div>`:`<div class="g-res rU">?</div>`;
     const statsH=stored
-      ?`<div class="g-stats" id="gstats-${esc(gid)}">${renderMiniStats(stored)}</div>`
-      :`<div class="g-stats empty" id="gstats-${esc(gid)}"></div>`;
+      ?`<div id="gstats-${esc(gid)}">${renderMiniStats(stored)}</div>`
+      :`<div id="gstats-${esc(gid)}" style="display:none"></div>`;
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-main">
         <div class="g-rn">${esc(g.rn||'')} ${g.d?esc(fmtD(g.d)):''}</div>
@@ -624,8 +625,8 @@ async function toggleGames(hdr){
       if(!bs){el2.innerHTML='';el2.classList.add('empty');return;}
       const allP=[...(bs.h||[]),...(bs.a||[])];
       const mine=allP.find(p=>p.profileID===uuid);
-      if(mine){el2.classList.remove('empty');el2.innerHTML=renderMiniStats(mine);}
-      else{el2.innerHTML='';el2.classList.add('empty');}
+      if(mine){el2.style.display='';el2.innerHTML=renderMiniStats(mine);}
+      else{el2.innerHTML='';el2.style.display='none';}
     });
   });
 }
