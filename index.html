@@ -85,9 +85,9 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .slist{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
 .sec-lbl{font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:2px}
 .sc{background:var(--elevated);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.sc-hdr{padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.1s;user-select:none;background:var(--elevated)}
+.sc-hdr{padding:0 0 0 3px;cursor:pointer;display:flex;align-items:center;gap:0;transition:background 0.1s;user-select:none;background:var(--elevated)}
 .sc-hdr:hover,.sc-hdr.open{background:#333}
-.sc-info{flex:1;min-width:0}
+.sc-info{flex:1;min-width:0;padding:9px 0 9px 9px}
 .sc-name{font-size:0.83rem;font-weight:600}
 .sc-grade{font-size:0.73rem;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:3px}
 .sc-grade:hover{opacity:0.8}
@@ -264,7 +264,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.12</span>
+      <span class="rail-ver">Beta 0.13</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
