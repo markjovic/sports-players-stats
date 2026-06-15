@@ -85,9 +85,9 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .slist{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
 .sec-lbl{font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:2px}
 .sc{background:var(--elevated);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.sc-hdr{padding:0 0 0 3px;cursor:pointer;display:flex;align-items:center;gap:0;transition:background 0.1s;user-select:none;background:var(--elevated)}
+.sc-hdr{border-left:3px solid transparent;padding:0;cursor:pointer;display:flex;align-items:center;gap:0;transition:background 0.1s;user-select:none;background:var(--elevated)}
 .sc-hdr:hover,.sc-hdr.open{background:#333}
-.sc-info{flex:1;min-width:0;padding:9px 0 9px 9px}
+.sc-info{flex:1;min-width:0;padding:7px 12px 6px}
 .sc-name{font-size:0.83rem;font-weight:600}
 .sc-grade{font-size:0.73rem;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:3px}
 .sc-grade:hover{opacity:0.8}
@@ -264,7 +264,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.13</span>
+      <span class="rail-ver">Beta 0.16</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -329,6 +329,15 @@ async function gj(url){
 const el = id => document.getElementById(id);
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+// Recent searches (localStorage)
+function getRecent(k){try{return JSON.parse(localStorage.getItem('st_'+k)||'[]');}catch{return[];}}
+function addRecent(k,v){if(!v||v.length<2)return;let r=getRecent(k).filter(x=>x!==v);r.unshift(v);localStorage.setItem('st_'+k,JSON.stringify(r.slice(0,8)));}
+function showRecent(k,re,onSelect){
+  const r=getRecent(k);if(!r.length)return;
+  re.innerHTML=`<div class="ri-empty" style="font-size:0.7rem;color:var(--text3);padding:8px 14px 4px">Recent</div>`+
+    r.map(v=>`<div class="ri recent-item" data-v="${esc(v)}"><div class="ri-name" style="display:flex;align-items:center;gap:6px"><span style="color:var(--text3)">↩</span>${esc(v)}</div></div>`).join('');
+  re.querySelectorAll('.recent-item').forEach(item=>item.addEventListener('click',()=>onSelect(item.dataset.v)));
+}
 
 function dayOfWeek(y,m,d){
   // 0=Sun,1=Mon,...,6=Sat
@@ -514,7 +523,7 @@ async function searchPlayers(q){
   }
   if(!hits.length){re.innerHTML='<div class="ri-empty">No players found</div>';return;}
   re.innerHTML=hits.slice(0,40).map(h=>`<div class="ri" data-u="${esc(h.id)}"><div class="ri-name">${esc(h.k)}</div><div class="ri-sub">${esc(h.c||'\u2014')} \u00b7 ${esc(h.t||'')}</div></div>`).join('');
-  re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{loadPlayer(r.dataset.u);if(window.innerWidth<=768)el('rail').classList.add('mob-hide');}));
+  re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{addRecent('players',q);loadPlayer(r.dataset.u);if(window.innerWidth<=768)el('rail').classList.add('mob-hide');}));
 }
 
 /* ── Player profile ── */
@@ -679,7 +688,7 @@ async function searchTeams(q){
     const sub=si?.name||sn;
     return`<div class="ri" data-tid="${esc(t.id)}" data-sid="${esc(t.sid)}"><div class="ri-name">${esc(t.n)}</div><div class="ri-sub">${esc(sub)}</div></div>`;
   }).join('');
-  re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{loadTeam(r.dataset.tid,r.dataset.sid);if(window.innerWidth<=768)el('rail').classList.add('mob-hide');}));
+  re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{addRecent('teams',q||sn);loadTeam(r.dataset.tid,r.dataset.sid);if(window.innerWidth<=768)el('rail').classList.add('mob-hide');}));
 }
 
 /* ── Team focus ── */
@@ -767,6 +776,7 @@ function renderVenues(list,q){
   if(!list.length){re.innerHTML='<div class="ri-empty">No venues found</div>';return;}
   re.innerHTML=list.slice(0,60).map(v=>`<div class="ri" data-vid="${esc(v.id)}" data-vn="${esc(v.n)}"><div class="ri-name">${esc(v.n)}</div></div>`).join('');
   re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{
+    addRecent('venues',r.dataset.vn);
     const preDate=el('q-vdate').value||null;
     loadVenue(r.dataset.vid,r.dataset.vn,preDate);
     if(window.innerWidth<=768)el('rail').classList.add('mob-hide');
@@ -1083,9 +1093,12 @@ async function openOpp(tid,sid,fromUuid){
 /* ── Events ── */
 document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 el('q-pl').addEventListener('input',debounce(e=>searchPlayers(e.target.value.trim()),250));
+el('q-pl').addEventListener('focus',()=>{if(!el('q-pl').value.trim())showRecent('players',el('res-pl'),v=>{el('q-pl').value=v;searchPlayers(v);});});
 el('q-sn').addEventListener('change',()=>searchTeams(el('q-tm').value.trim()));
 el('q-tm').addEventListener('input',debounce(e=>searchTeams(e.target.value.trim()),250));
+el('q-tm').addEventListener('focus',()=>{if(!el('q-tm').value.trim()&&el('q-sn').value)showRecent('teams',el('res-tm'),v=>{el('q-tm').value=v;searchTeams(v);});});
 el('q-vn').addEventListener('input',debounce(()=>searchVenues(),200));
+el('q-vn').addEventListener('focus',()=>{if(!el('q-vn').value.trim())showRecent('venues',el('res-vn'),v=>{el('q-vn').value=v;searchVenues();});});
 el('q-vdate').addEventListener('change',()=>onVenueDateChange());
 el('sh-close').addEventListener('click',closeSheet);
 el('sbk').addEventListener('click',closeSheet);
