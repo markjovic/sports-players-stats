@@ -105,8 +105,9 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .grow.sf{border-left-color:silver}
 .sc-games .grow{background:#111}
 .sc-games .grow:hover{background:#1d1d1d}
-.g-main{padding:7px 12px 5px}
-.g-rn{font-size:0.67rem;color:var(--text3);margin-bottom:2px}
+.g-row{display:flex;align-items:center}
+.g-info{flex:1;padding:7px 12px 6px;min-width:0}
+.g-rn{font-size:0.67rem;color:var(--text3);margin-top:1px}
 .g-opp{font-size:0.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
 .sc-srow{display:flex;flex-direction:row;border-top:1px solid var(--border)}
 .g-stats{display:flex;flex-direction:row;border-top:1px solid var(--border)}
@@ -206,6 +207,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .phq-lnk:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
 
 .vcm{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);padding:10px 14px 4px}
+#cal-section{max-width:440px}
 .vcg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:2px 10px 8px}
 .vcd{text-align:center;font-size:0.6rem;color:var(--text3);padding:3px;font-weight:700}
 .vday{text-align:center;padding:7px 2px;border-radius:4px;font-size:0.82rem;cursor:pointer;font-variant-numeric:tabular-nums;background:none;border:none;color:var(--text);transition:background 0.1s}
@@ -262,7 +264,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.8</span>
+      <span class="rail-ver">Beta 0.9</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -384,8 +386,12 @@ function storedStats(g,uuid){
 function statCell(v,l,last,color){
   return`<div style="flex:1;text-align:center;padding:6px 4px;${last?'':'border-right:1px solid #2e2e2e;'}min-width:0"><div style="font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:${color||'#fff'};display:block">${v}</div><div style="font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px">${l}</div></div>`;
 }
-function statRow(items){
-  return`<div style="display:flex;flex-direction:row;border-top:1px solid #2e2e2e">${items.map(([v,l,c],i)=>statCell(v,l,i===items.length-1,c)).join('')}</div>`;
+function expandSeason(el){const sc=el.closest('.sc');if(sc)toggleGames(sc.querySelector('.sc-hdr'));}
+function statRow(items,expandable,spacer){
+  const oc=expandable?'onclick="expandSeason(this)" ':'';
+  const cs=expandable?'cursor:pointer;':'';
+  const sp=spacer?'<div style="flex:1;min-width:0"></div>':'';
+  return`<div ${oc}style="${cs}display:flex;flex-direction:row;border-top:1px solid #2e2e2e">${sp}${items.map(([v,l,c],i)=>statCell(v,l,i===items.length-1,c)).join('')}</div>`;
 }
 function buildGameStatRow(g,ctx,ps){
   const sc=(ctx.myS!=null&&ctx.oppS!=null)?`${ctx.myS}\u2013${ctx.oppS}`:'\u2014';
@@ -393,12 +399,12 @@ function buildGameStatRow(g,ctx,ps){
   const rc=res==='W'?'#4caf50':res==='L'?'#f44336':res==='D'?'#ff9800':'#555';
   const dot='\u00b7';
   const fg=ps?((ps.pt2??0)+(ps.pt3??0)):dot;
-  return statRow([
-    [sc,'SCR',null],[res||'?','RES',rc],
+  const cells=[
+    [sc,'',null],[res||'?','',rc],
     [ps!=null?(ps.pts??0):dot,'PTS',null],[fg,'FG',null],
     [ps!=null?(ps.pt1??0):dot,'FT',null],[ps!=null?(ps.pt3??0):dot,'3PT',null],
-    [ps!=null?(ps.fouls??0):dot,'FL',null],
-  ]);
+    [ps!=null?(ps.fouls??0):dot,'F',null]];
+  return`<div style="display:flex;flex-direction:row">${cells.map(([v,l,c],i)=>statCell(v,l,i===cells.length-1,c)).join('')}</div>`;
 }
 function renderMiniStats(p){
   if(!p)return'';
@@ -576,7 +582,7 @@ function renderPlayer(p){
         <div class="sc-info"><div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}</div><div>${teamLink}</div></div>
         <div class="chev">\u25b6</div>
       </div>
-      ${statRow([[st.gp||0,'GP'],[st.pts||0,'PTS'],[ppg,'PPG'],[st.fg||0,'FG'],[st.ft||0,'FT'],[st.threePt||0,'3PT'],[st.fouls||0,'FL']])}
+      ${statRow([[st.gp||0,'GP'],[ppg,'PPG'],[st.pts||0,'PTS'],[st.fg||0,'FG'],[st.ft||0,'FT'],[st.threePt||0,'3PT'],[st.fouls||0,'F']],true,true)}
       <div class="sc-games" id="${esc(cid)}-g"></div>
     </div>`;
   });
@@ -617,11 +623,13 @@ async function toggleGames(hdr){
     const fc=finalClass(g.rn);
     const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
-      <div class="g-main">
-        <div class="g-rn">${esc(g.rn||'')} ${g.d?esc(fmtD(g.d)):''}</div>
-        <div class="g-opp">${badgeH}${esc(oppN)}</div>
+      <div class="g-row">
+        <div class="g-info">
+          <div class="g-opp">${badgeH}${esc(oppN)}</div>
+          <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}</div>
+        </div>
+        <div id="gstats-${esc(gid)}">${buildGameStatRow(g,ctx,stored)}</div>
       </div>
-      <div id="gstats-${esc(gid)}">${buildGameStatRow(g,ctx,stored)}</div>
     </div>`;
   }).join('');
   ge.innerHTML=rows;
