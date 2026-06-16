@@ -1,0 +1,49 @@
+# .github/workflows/build-leaderboards.yml
+#
+# Full leaderboard rebuild — all 369k players, all seasons.
+# Run manually after major crawls or schema changes.
+#
+# For nightly active-season updates, the nightly crawl workflow calls:
+#   node scripts/build-leaderboards.js --active-only
+# as its final step (not this workflow).
+
+name: Build Leaderboards (Full)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run build-leaderboards (full)
+        run: node scripts/build-leaderboards.js
+
+      - name: Final push (safety net)
+        if: always()
+        run: |
+          git add leaderboard/ || true
+          git diff --staged --quiet || git commit -m "build-leaderboards: safety-net final commit"
+          git pull --rebase=false --no-edit -X ours || true
+          git push || true
