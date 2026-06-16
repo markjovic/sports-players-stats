@@ -26,6 +26,9 @@
 //   2. Read team-stats/bv/{sid}.json for each active season → collect player UUIDs
 //   3. Scan only those player files → update per-season leaderboards for active seasons
 //   4. Rebuild all-time.json by merging updated player career totals into existing all-time data
+//
+// Memory strategy: fixed-size TopN heap per category — discards entries below the Nth value
+// immediately. Memory is O(N × categories) not O(players) — safe for 369k players.
 
 'use strict';
 
@@ -61,12 +64,47 @@ function gitCommit(message, dirs) {
   }
 }
 
-function topN(arr, n) {
-  return arr.sort((a, b) => b.v - a.v).slice(0, n);
+// ─── TopN: fixed-size leaderboard — O(N) memory, O(N) insert ────────────────
+// Keeps at most `n` entries sorted descending by `v`.
+// Once full, new entries with v <= min are discarded without allocation.
+
+class TopN {
+  constructor(n) {
+    this.n    = n;
+    this.arr  = [];  // sorted descending by v, max length n
+    this.min  = -Infinity;
+  }
+
+  push(entry) {
+    if (this.arr.length >= this.n && entry.v <= this.min) return;
+    this.arr.push(entry);
+    // insertion sort: move new entry into position
+    let i = this.arr.length - 1;
+    while (i > 0 && this.arr[i].v > this.arr[i - 1].v) {
+      const tmp = this.arr[i]; this.arr[i] = this.arr[i - 1]; this.arr[i - 1] = tmp;
+      i--;
+    }
+    if (this.arr.length > this.n) this.arr.length = this.n;
+    this.min = this.arr.length === this.n ? this.arr[this.n - 1].v : -Infinity;
+  }
+
+  result() { return this.arr; }
 }
 
 function emptyBuckets() {
-  return { pts: [], ppg: [], gp: [], threePt: [], fouls: [] };
+  return {
+    pts:     new TopN(TOP_N),
+    ppg:     new TopN(TOP_N),
+    gp:      new TopN(TOP_N),
+    threePt: new TopN(TOP_N),
+    fouls:   new TopN(TOP_N),
+  };
+}
+
+function serialiseBuckets(buckets) {
+  const out = {};
+  for (const [cat, heap] of Object.entries(buckets)) out[cat] = heap.result();
+  return out;
 }
 
 // ─── load sports-index ───────────────────────────────────────────────────────
@@ -75,7 +113,6 @@ console.log(`Mode: ${ACTIVE_ONLY ? 'ACTIVE ONLY' : 'FULL'}`);
 console.log('Loading sports-index.json...');
 const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
 
-// active season IDs (locked: false)
 const activeSids = new Set(
   Object.values(sportsIndex.seasons)
     .filter(s => !s.locked)
@@ -91,15 +128,11 @@ if (ACTIVE_ONLY) {
   console.log('\nCollecting player UUIDs from active season rosters...');
   uuidsToScan = new Set();
   const teamStatsDir = path.join(ROOT, 'team-stats', 'bv');
-
   for (const sid of activeSids) {
-    const tsPath = path.join(teamStatsDir, `${sid}.json`);
     let tsData;
-    try { tsData = readJson(tsPath); } catch { continue; }
+    try { tsData = readJson(path.join(teamStatsDir, `${sid}.json`)); } catch { continue; }
     for (const team of Object.values(tsData)) {
-      for (const uuid of Object.keys(team.roster || {})) {
-        uuidsToScan.add(uuid);
-      }
+      for (const uuid of Object.keys(team.roster || {})) uuidsToScan.add(uuid);
     }
   }
   console.log(`  ${uuidsToScan.size} player UUIDs to scan`);
@@ -107,8 +140,8 @@ if (ACTIVE_ONLY) {
 
 // ─── accumulators ────────────────────────────────────────────────────────────
 
-const allTime  = emptyBuckets();       // career totals — all players (full) or active subset
-const perSeason = new Map();           // sid → buckets
+const allTime   = emptyBuckets();
+const perSeason = new Map(); // sid → buckets
 
 function getOrCreateSeason(sid) {
   if (!perSeason.has(sid)) perSeason.set(sid, emptyBuckets());
@@ -132,8 +165,6 @@ for (const prefix of prefixDirs) {
 
   for (const fname of files) {
     const uuid = fname.replace('.json', '');
-
-    // in active-only mode, skip players not in active rosters
     if (uuidsToScan && !uuidsToScan.has(uuid)) continue;
 
     let player;
@@ -141,8 +172,7 @@ for (const prefix of prefixDirs) {
 
     const name  = player.name || `Player #${uuid.slice(0, 10)}`;
     const bball = player.sports?.Basketball;
-    const lastSeason = (player.seasons || []).at(-1);
-    const club  = lastSeason?.club || null;
+    const club  = (player.seasons || []).at(-1)?.club || null;
 
     // ── all-time ─────────────────────────────────────────────────────────────
     if (bball && typeof bball.gp === 'number' && bball.gp > 0) {
@@ -157,7 +187,6 @@ for (const prefix of prefixDirs) {
     }
 
     // ── per-season: one entry per reg ─────────────────────────────────────────
-    // In active-only mode, only process regs belonging to active seasons.
     for (const season of (player.seasons || [])) {
       const sid = season.sid;
       if (ACTIVE_ONLY && !activeSids.has(sid)) continue;
@@ -192,19 +221,13 @@ for (const prefix of prefixDirs) {
     }
 
     playerCount++;
-    if (playerCount % 50000 === 0) {
-      console.log(`  ${playerCount} players scanned...`);
-    }
+    if (playerCount % 50000 === 0) console.log(`  ${playerCount} players scanned...`);
   }
 }
 
 console.log(`  ${playerCount} players scanned, ${skipped} skipped`);
 
-// ─── active-only: merge all-time with existing all-time.json ─────────────────
-//
-// We only scanned active-season players, so we can't rebuild all-time from scratch.
-// Strategy: load existing all-time.json, remove entries for UUIDs we just re-scanned
-// (their career totals may have changed), then merge in the fresh entries and re-rank.
+// ─── active-only: merge all-time with existing data ──────────────────────────
 
 let allTimeOut;
 
@@ -215,26 +238,26 @@ if (ACTIVE_ONLY) {
   try { existing = readJson(allTimePath); } catch { /* first run */ }
 
   allTimeOut = {};
-  for (const cat of Object.keys(allTime)) {
-    const freshUuids = new Set(allTime[cat].map(e => e.uuid));
-    const retained   = existing
-      ? (existing[cat] || []).filter(e => !freshUuids.has(e.uuid))
-      : [];
-    allTimeOut[cat] = topN([...retained, ...allTime[cat]], TOP_N);
+  const fresh = serialiseBuckets(allTime);
+  for (const cat of Object.keys(fresh)) {
+    const freshUuids = new Set(fresh[cat].map(e => e.uuid));
+    const retained   = existing ? (existing[cat] || []).filter(e => !freshUuids.has(e.uuid)) : [];
+    // merge and re-rank using a fresh TopN
+    const merged = new TopN(TOP_N);
+    for (const e of [...retained, ...fresh[cat]]) merged.push(e);
+    allTimeOut[cat] = merged.result();
   }
 } else {
-  console.log('\nSorting all-time leaderboards...');
-  allTimeOut = {};
-  for (const cat of Object.keys(allTime)) {
-    allTimeOut[cat] = topN(allTime[cat], TOP_N);
-    console.log(`  ${cat}: ${allTimeOut[cat].length} entries`);
+  console.log('\nFinalising all-time leaderboards...');
+  allTimeOut = serialiseBuckets(allTime);
+  for (const [cat, entries] of Object.entries(allTimeOut)) {
+    console.log(`  ${cat}: ${entries.length} entries`);
   }
 }
 
 // ─── write all-time ──────────────────────────────────────────────────────────
 
-const allTimePath = path.join(ROOT, 'leaderboard', 'all-time.json');
-if (!DRY_RUN) writeJson(allTimePath, allTimeOut);
+if (!DRY_RUN) writeJson(path.join(ROOT, 'leaderboard', 'all-time.json'), allTimeOut);
 console.log('\nWrote leaderboard/all-time.json');
 
 // ─── write per-season ────────────────────────────────────────────────────────
@@ -242,13 +265,9 @@ console.log('\nWrote leaderboard/all-time.json');
 console.log(`\nWriting ${perSeason.size} per-season leaderboard files...`);
 let seasonFilesWritten = 0;
 
-for (const [sid, cats] of perSeason) {
-  const out = {};
-  for (const cat of Object.keys(cats)) {
-    out[cat] = topN(cats[cat], TOP_N);
-  }
+for (const [sid, buckets] of perSeason) {
   const p = path.join(ROOT, 'leaderboard', 'season', `${sid}.json`);
-  if (!DRY_RUN) writeJson(p, out);
+  if (!DRY_RUN) writeJson(p, serialiseBuckets(buckets));
   seasonFilesWritten++;
 }
 
