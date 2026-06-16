@@ -57,7 +57,7 @@ query publicProfileStatistics($profileID: ID!) {
       statistics {
         season { id }
         teamStatistics {
-          team { ... on DiscoverTeam { id } }
+          team { ... on DiscoverTeam { id name } }
           gradeStatistics {
             grade { id name }
             gameStatistics {
@@ -126,51 +126,66 @@ async function main() {
 
   if (!gradeMap) {
 
-    // ─── Phase 1: collect UUIDs with multi-reg seasons ───────────────────────
+    // ─── Phase 1: collect one UUID per team in multi-grade seasons ────────────
+    //
+    // Strategy: multi-grade seasons are the only ones where regrading can happen.
+    // For each team in those seasons, collect one representative UUID from the
+    // team-stats roster. One profile fetch per team gives all game→grade mappings
+    // for that team regardless of whether the player themselves was regraded.
 
-    console.log('Phase 1: scanning player files for multi-reg seasons...');
+    console.log('Phase 1: collecting team representatives for multi-grade seasons...');
 
     let phase2Done = new Set();
     if (fs.existsSync(PHASE2_PROGRESS)) {
       phase2Done = new Set((readJson(PHASE2_PROGRESS).done || []));
     }
 
-    const playersDir = path.join(ROOT, 'players');
-    const prefixDirs = fs.readdirSync(playersDir)
-      .filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+    // Load sports-index to find multi-grade seasons
+    const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
+    const multiGradeSids = new Set(
+      Object.values(sportsIndex.seasons)
+        .filter(s => (s.grades || []).length > 1)
+        .map(s => s.id)
+    );
+    console.log(`  ${multiGradeSids.size} multi-grade seasons`);
 
-    // Collect one UUID per (sid, tid) pair that has multiple grades in the same season
-    const teamRepresentatives = new Map(); // "sid::tid" → uuid
-    let playersScanned = 0;
+    // For each multi-grade season, collect one public player UUID per (sid, tid) pair.
+    // MUST use players/indexes/ not team-stats rosters — team-stats includes private players
+    // (99.6% of roster UUIDs return null from publicProfileStatistics).
+    // players/indexes/ only contains confirmed public profiles.
+    //
+    // Strategy: scan all 256 player index shards, for each player check if any sid in
+    // their history is a multi-grade season. Collect one UUID per (sid, tid) pair.
 
-    for (const prefix of prefixDirs) {
-      const prefixDir = path.join(playersDir, prefix);
-      const files = fs.readdirSync(prefixDir).filter(f => f.endsWith('.json'));
-      for (const fname of files) {
-        let player;
-        try { player = readJson(path.join(prefixDir, fname)); } catch { continue; }
+    const indexDir = path.join(ROOT, 'players', 'indexes');
+    const indexFiles = fs.readdirSync(indexDir).filter(f => f.endsWith('.json')).sort();
 
-        for (const season of (player.seasons || [])) {
-          if ((season.regs || []).length < 2) continue;
-          for (const reg of season.regs) {
-            const key = `${season.sid}::${reg.tid}`;
-            if (!teamRepresentatives.has(key)) {
-              teamRepresentatives.set(key, player.uuid);
-            }
+    // sid::tid → uuid (first public player found on this team in this multi-grade season)
+    const teamReps = new Map();
+    let indexPlayersScanned = 0;
+
+    for (const fname of indexFiles) {
+      let shard;
+      try { shard = readJson(path.join(indexDir, fname)); } catch { continue; }
+      for (const [uuid, entry] of Object.entries(shard)) {
+        const history = entry.history || {};
+        for (const [sid, tids] of Object.entries(history)) {
+          if (!multiGradeSids.has(sid)) continue;
+          for (const tid of (tids || [])) {
+            const key = `${sid}::${tid}`;
+            if (!teamReps.has(key)) teamReps.set(key, uuid);
           }
         }
-        playersScanned++;
-        if (playersScanned % 50000 === 0) console.log(`  ${playersScanned} players scanned...`);
+        indexPlayersScanned++;
       }
     }
 
-    // Deduplicate — fetch each UUID once; one profile gives all their seasons
-    const uuidsToFetch = [...new Set(teamRepresentatives.values())]
+    const uuidsToFetch = [...new Set(teamReps.values())]
       .filter(uuid => !phase2Done.has(uuid));
 
-    console.log(`  ${playersScanned} players scanned`);
-    console.log(`  ${teamRepresentatives.size} (season, team) pairs with multiple grades`);
-    console.log(`  ${uuidsToFetch.length + phase2Done.size} unique UUIDs needed (${phase2Done.size} already done)`);
+    console.log(`  ${indexPlayersScanned} public players scanned from indexes`);
+    console.log(`  ${teamReps.size} (season, team) pairs in multi-grade seasons`);
+    console.log(`  ${uuidsToFetch.length + phase2Done.size} unique public UUIDs (${phase2Done.size} already done)`);
     console.log(`  ${uuidsToFetch.length} remaining to fetch`);
 
     // ─── Phase 2: re-fetch profiles, build gameId→grade map ──────────────────
