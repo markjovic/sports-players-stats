@@ -668,13 +668,15 @@ async function fetchPlayerProfile(uuid, data, rawGames, inferredGender) {
             const isHome    = homeId === teamId || (homeName && teamName && stripAge(homeName) === stripAge(teamName));
             const oppTeamId = isHome ? awayId : homeId;
 
-            // Store gameId, date, oppTeamId, oppTeamName — enough for display + PlayHQ link
+            // Store gameId, date, oppTeamId, oppTeamName, grade — enough for display + PlayHQ link
             if (game.id && oppTeamId) {
               games.push({
                 g:  game.id,                          // gameId
                 d:  game.date,                        // date
                 o:  oppTeamId,                        // oppTeamId
                 on: isHome ? awayName : homeName,     // oppTeamName
+                gn: gradeName,                        // grade name — authoritative per-game grade
+                gid: gradeId,                         // grade id
               });
             }
           }
@@ -1003,7 +1005,12 @@ async function modeCrawl(seasonId) {
         if (!sg.playerGames[uuid]) sg.playerGames[uuid] = [];
         const existingGames = new Set(sg.playerGames[uuid]);
         for (const game of games) {
-          if (!sg.games[game.g]) sg.games[game.g] = { d: game.d, on: game.on, o: game.o };
+          if (!sg.games[game.g]) {
+            sg.games[game.g] = { d: game.d, on: game.on, o: game.o };
+          }
+          // Write/update grade if we have it — authoritative per-game grade from gradeStatistics
+          if (game.gn  && sg.games[game.g] && !sg.games[game.g].gn)  sg.games[game.g].gn  = game.gn;
+          if (game.gid && sg.games[game.g] && !sg.games[game.g].gid) sg.games[game.g].gid = game.gid;
           if (!existingGames.has(game.g)) {
             sg.playerGames[uuid].push(game.g);
             existingGames.add(game.g);
@@ -1136,7 +1143,12 @@ async function modeUpdate() {
         if (!sg.playerGames[uuid]) sg.playerGames[uuid] = [];
         const existingGames = new Set(sg.playerGames[uuid]);
         for (const game of games) {
-          if (!sg.games[game.g]) sg.games[game.g] = { d: game.d, on: game.on, o: game.o };
+          if (!sg.games[game.g]) {
+            sg.games[game.g] = { d: game.d, on: game.on, o: game.o };
+          }
+          // Write/update grade if we have it — authoritative per-game grade from gradeStatistics
+          if (game.gn  && sg.games[game.g] && !sg.games[game.g].gn)  sg.games[game.g].gn  = game.gn;
+          if (game.gid && sg.games[game.g] && !sg.games[game.g].gid) sg.games[game.g].gid = game.gid;
           if (!existingGames.has(game.g)) { sg.playerGames[uuid].push(game.g); existingGames.add(game.g); }
         }
       }
