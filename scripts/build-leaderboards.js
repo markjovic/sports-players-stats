@@ -36,6 +36,8 @@ const DRY_RUN         = process.argv.includes('--dry-run');
 const ACTIVE_ONLY     = process.argv.includes('--active-only');
 const ALL_TIME_LIMIT  = 2000;
 const SEASON_LIMIT    = 5000; // never trims; bounds memory to one season at a time
+const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
+const COMMIT_INTERVAL = 100;
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -230,26 +232,33 @@ const tsFiles = fs.readdirSync(teamStatsDir)
 
 console.log(`  ${tsFiles.length} season files to process`);
 
+// Load pass 2 progress — resume from last committed point
+let doneSids = new Set();
+if (fs.existsSync(PASS2_PROGRESS)) {
+  try { doneSids = new Set((readJson(PASS2_PROGRESS).done || [])); } catch {}
+  if (doneSids.size > 0) console.log(`  Resuming — ${doneSids.size} season files already done`);
+}
+
 let seasonFilesWritten = 0;
 let seasonFilesSkipped = 0;
+let sinceLastCommit    = 0;
 
 for (const fname of tsFiles) {
   const sid = fname.replace('.json', '');
 
-  // Collect player UUIDs for this season from team-stats roster
+  if (doneSids.has(sid)) { seasonFilesSkipped++; continue; }
+
   let tsData;
-  try { tsData = readJson(path.join(teamStatsDir, fname)); } catch { seasonFilesSkipped++; continue; }
+  try { tsData = readJson(path.join(teamStatsDir, fname)); } catch { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
   const uuids = new Set();
   for (const team of Object.values(tsData)) {
     for (const uuid of Object.keys(team.roster || {})) uuids.add(uuid);
   }
 
-  if (uuids.size === 0) { seasonFilesSkipped++; continue; }
+  if (uuids.size === 0) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
-  // Build season heaps — only this season's data in memory
   const buckets = makeBuckets(SEASON_LIMIT);
-
   for (const uuid of uuids) {
     const player = readPlayer(uuid);
     if (!player) continue;
@@ -258,14 +267,28 @@ for (const fname of tsFiles) {
 
   const out = serialise(buckets);
   const hasData = CATS.some(cat => out[cat].length > 0);
-  if (!hasData) { seasonFilesSkipped++; continue; }
+  if (!hasData) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
   if (!DRY_RUN) writeJson(path.join(ROOT, 'leaderboard', 'season', `${sid}.json`), out);
+  doneSids.add(sid);
   seasonFilesWritten++;
+  sinceLastCommit++;
 
-  if (seasonFilesWritten % 100 === 0) {
-    console.log(`  ${seasonFilesWritten} season files written...`);
+  if (sinceLastCommit >= COMMIT_INTERVAL) {
+    if (!DRY_RUN) {
+      writeJson(PASS2_PROGRESS, { done: [...doneSids] });
+      gitCommit(
+        `build-leaderboards: pass 2 — ${seasonFilesWritten} season files written`,
+        ['leaderboard/season/', 'scripts/.build-leaderboards-progress.json']
+      );
+    }
+    sinceLastCommit = 0;
+    console.log(`  ${seasonFilesWritten + seasonFilesSkipped} of ${tsFiles.length} seasons done (${seasonFilesWritten} written)...`);
   }
+}
+
+if (!DRY_RUN && sinceLastCommit > 0) {
+  writeJson(PASS2_PROGRESS, { done: [...doneSids] });
 }
 
 // ─── commit ──────────────────────────────────────────────────────────────────
@@ -274,7 +297,7 @@ if (!DRY_RUN) {
   const label = ACTIVE_ONLY ? 'active seasons' : 'full rebuild';
   gitCommit(
     `build-leaderboards: ${label} — ${seasonFilesWritten} season files`,
-    ['leaderboard/']
+    ['leaderboard/', 'scripts/.build-leaderboards-progress.json']
   );
 }
 
