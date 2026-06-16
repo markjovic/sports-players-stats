@@ -207,8 +207,12 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .phq-lnk:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
 
 .vcm{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);padding:10px 14px 4px}
-#cal-section{max-width:440px}
-.vcg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:2px 10px 8px}
+.vcal-wrap{display:flex;flex-wrap:wrap;gap:20px 24px;padding:10px 14px}
+.vcal-col{min-width:180px;flex:1}
+.vcg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:2px 0 8px}
+.vcal-jump{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--border)}
+.vcal-jump label{font-size:0.75rem;color:var(--text2);white-space:nowrap}
+.vcal-jump input{flex:1;max-width:160px}
 .vcd{text-align:center;font-size:0.6rem;color:var(--text3);padding:3px;font-weight:700}
 .vday{text-align:center;padding:7px 2px;border-radius:4px;font-size:0.82rem;cursor:pointer;font-variant-numeric:tabular-nums;background:none;border:none;color:var(--text);transition:background 0.1s}
 .vday:hover{background:var(--elevated)}
@@ -274,7 +278,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.18</span>
+      <span class="rail-ver">Beta 0.19</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -364,6 +368,10 @@ async function gj(url){
 const el = id => document.getElementById(id);
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function resetPlayer(){const q=document.getElementById('q-pl');if(q)q.value='';const r=document.getElementById('res-pl');if(r){r.innerHTML='';r.style.display='none';}}
+function resetTeam(){const q=document.getElementById('q-tm');if(q)q.value='';const sn=document.getElementById('q-sn');if(sn)sn.selectedIndex=0;const r=document.getElementById('res-tm');if(r)r.innerHTML='';}
+function resetVenue(){const q=document.getElementById('q-vn');if(q)q.value='';const vd=document.getElementById('q-vdate');if(vd)vd.value='';const vs=document.getElementById('q-vsn');if(vs)vs.selectedIndex=0;const r=document.getElementById('res-vn');if(r)r.innerHTML='';const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';const cs=document.getElementById('cal-section');if(cs)cs.innerHTML='';}
+function resetLB(){const g=document.getElementById('lb-grade');if(g)g.value='';const a=document.getElementById('lb-age');if(a)a.value='';const gn=document.getElementById('lb-gender');if(gn)gn.value='';const mg=document.getElementById('lb-mingp');if(mg)mg.value='10';renderLB();}
 // Recent searches (localStorage)
 function getRecent(k){try{return JSON.parse(localStorage.getItem('st_'+k)||'[]');}catch{return[];}}
 function addRecent(k,v){if(!v||v.length<2)return;let r=getRecent(k).filter(x=>x!==v);r.unshift(v);localStorage.setItem('st_'+k,JSON.stringify(r.slice(0,8)));}
@@ -491,6 +499,19 @@ function abbreviateGrades(grades){
   const suf=sp.map(s=>s.slice(pLen).join(' ')).filter(Boolean);
   if(!pre)return grades.join(' / ');
   return(pre+(suf.length?' '+suf.join(' / '):'')).trim();
+}
+function gradeAbbrev(gn, allRegGrades){
+  // Show only the suffix of gn after stripping common prefix of all reg grades
+  if(!gn||allRegGrades.length<=1)return gn||'';
+  const sp=allRegGrades.map(g=>g.split(' '));
+  let pLen=0;
+  outer:for(let i=0;i<sp[0].length;i++){
+    for(let j=1;j<sp.length;j++){if(!sp[j][i]||sp[j][i]!==sp[0][i])break outer;}
+    pLen=i+1;
+  }
+  const prefix=sp[0].slice(0,pLen).join(' ');
+  const suffix=gn.startsWith(prefix)?gn.slice(prefix.length).trim():gn;
+  return suffix||gn;
 }
 function groupRegs(seasons){
   const result=[];
@@ -680,6 +701,7 @@ async function toggleGames(hdr){
     .filter(([,g])=>(g.p||[]).some(p=>p.id===uuid))
     .sort(([,a],[,b])=>(b.d||'').localeCompare(a.d||''));
   if(!pg.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
+  const allRegGradeNames=regs.map(r=>r.gn||r.tn||'').filter(Boolean);
   const rows=pg.map(([gid,g])=>{
     const ctx=gameCtx(g,tid);
     const res=resLetter(ctx.myS,ctx.oppS);
@@ -689,7 +711,7 @@ async function toggleGames(hdr){
     const oppN=(ctx.oppN||'\u2014').slice(0,30);
     const fc=finalClass(g.rn);
     const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
-    const gradeTag=regs.length>1&&g.gn?`<span style="font-size:0.62rem;color:var(--text3);margin-right:4px;flex-shrink:0;white-space:nowrap">${esc(g.gn)}</span>`:'';    
+    const gradeTag=regs.length>1&&g.gn?`<span style="font-size:0.62rem;color:var(--accent);font-weight:600;margin-right:6px;flex-shrink:0;white-space:nowrap">${esc(gradeAbbrev(g.gn,allRegGradeNames))}</span>`:'';    
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-row">
         <div class="g-info">
@@ -776,7 +798,36 @@ function renderTeam(td,tid,sid){
   <div id="r${tesc}" class="tpane on">`;
   if(!roster.length){h+='<div class="empty">No roster data</div>';}
   else{
-    h+=`<table class="rtbl"><thead><tr><th>Player</th><th>GP</th><th>PTS</th><th>PPG</th><th>FG</th><th>FT</th><th>3PT</th></tr></thead><tbody>`;
+    const sortBy=(col)=>{
+      const ve2=el('view-team');
+      const cur=ve2.dataset.sortCol||'pts'; const dir=parseInt(ve2.dataset.sortDir||'-1');
+      const newDir=(col===cur)?-dir:-1;
+      ve2.dataset.sortCol=col; ve2.dataset.sortDir=newDir;
+      const sorted2=Object.entries(td.roster||{}).sort(([,a],[,b])=>{
+        const av=col==='ppg'?((a.pts||0)/(a.gp||1)):(a[col]||0);
+        const bv=col==='ppg'?((b.pts||0)/(b.gp||1)):(b[col]||0);
+        return(bv-av)*newDir;
+      });
+      const tbody=ve2.querySelector('#rtbl-body');
+      if(!tbody)return;
+      tbody.innerHTML=sorted2.map(([uuid,pr])=>{const ppg=avg(pr.pts||0,pr.gp||0);return`<tr onclick="loadPlayer('${esc(uuid)}')"><td>${esc(pr.name||'#'+uuid.slice(0,8))}</td><td>${pr.gp||0}</td><td>${pr.pts||0}</td><td>${ppg}</td><td>${pr.fg||0}</td><td>${pr.ft||0}</td><td>${pr.threePt||0}</td></tr>`;}).join('');
+      ve2.querySelectorAll('.rtbl th[data-col]').forEach(th=>{
+        th.style.color=th.dataset.col===col?'var(--accent)':'';
+        th.textContent=th.dataset.col===col?(newDir===-1?th.dataset.label+' ↓':th.dataset.label+' ↑'):th.dataset.label;
+      });
+    };
+    const thStyle='cursor:pointer;user-select:none';
+    h+=`<table class="rtbl"><thead><tr>
+      <th>Player</th>
+      <th data-col="gp" data-label="GP" style="${thStyle}" onclick="el('view-team')._sort('gp')">GP</th>
+      <th data-col="pts" data-label="PTS" style="${thStyle};color:var(--accent)" onclick="el('view-team')._sort('pts')">PTS ↓</th>
+      <th data-col="ppg" data-label="PPG" style="${thStyle}" onclick="el('view-team')._sort('ppg')">PPG</th>
+      <th data-col="fg" data-label="FG" style="${thStyle}" onclick="el('view-team')._sort('fg')">FG</th>
+      <th data-col="ft" data-label="FT" style="${thStyle}" onclick="el('view-team')._sort('ft')">FT</th>
+      <th data-col="3pt" data-label="3PT" style="${thStyle}" onclick="el('view-team')._sort('threePt')">3PT</th>
+    </tr></thead><tbody id="rtbl-body">`;
+    el('view-team').dataset.sortCol='pts'; el('view-team').dataset.sortDir='-1';
+    el('view-team')._sort=sortBy;
     for(const[uuid,pr]of roster){
       h+=`<tr onclick="loadPlayer('${esc(uuid)}')"><td>${esc(pr.name||'#'+uuid.slice(0,8))}</td><td>${pr.gp||0}</td><td>${pr.pts||0}</td><td>${avg(pr.pts||0,pr.gp||0)}</td><td>${pr.fg||0}</td><td>${pr.ft||0}</td><td>${pr.threePt||0}</td></tr>`;
     }
@@ -891,11 +942,11 @@ function dayOfWeekN(y,m,d){const t=[0,3,2,5,0,3,5,1,4,6,2,4];const yr=m<3?y-1:y;
 function groupByMonth(dates){const m=new Map();for(const d of dates){const ym=d.slice(0,7);if(!m.has(ym))m.set(ym,[]);m.get(ym).push(d);}return m;}
 function calGrid(byMonth,vid,todayStr){
   const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const DOW='<div class="vcg"><div class="vcd">M</div><div class="vcd">T</div><div class="vcd">W</div><div class="vcd">T</div><div class="vcd">F</div><div class="vcd">S</div><div class="vcd">S</div>';
-  let h='';
+  const DOW='<div class="vcd">M</div><div class="vcd">T</div><div class="vcd">W</div><div class="vcd">T</div><div class="vcd">F</div><div class="vcd">S</div><div class="vcd">S</div>';
+  let h='<div class="vcal-wrap">';
   for(const[ym,ds]of byMonth){
     const[y,m]=ym.split('-').map(Number);
-    h+=`<div class="vcm">${MN[m-1]} ${y}</div>${DOW}`;
+    h+=`<div class="vcal-col" id="vcal-m-${y}-${String(m).padStart(2,'0')}"><div class="vcm">${MN[m-1]} ${y}</div><div class="vcg">${DOW}`;
     const[,,fd]=ds[0].split('-').map(Number);
     const pad=(dayOfWeekN(y,m,fd)+6)%7;
     for(let i=0;i<pad;i++)h+='<div></div>';
@@ -904,17 +955,40 @@ function calGrid(byMonth,vid,todayStr){
       const isSel=d===S.venueSelDate,isToday=d===todayStr;
       h+=`<button class="vday${isToday?' vtoday':''}${isSel?' vsel':''}" data-date="${d}" onclick="selectVenueDate('${esc(vid)}','${d}',this)">${parseInt(dy)}</button>`;
     }
-    h+='</div>';
+    h+='</div></div>';
   }
-  return h;
+  return h+'</div>';
 }
-function renderKnownDates(dates,vid,todayStr){return calGrid(groupByMonth(dates),vid,todayStr);}
+function renderKnownDates(dates,vid,todayStr){
+  const dateRange=dates.length?`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','',this.value,true)"></div>`:'';
+  return dateRange+calGrid(groupByMonth(dates),vid,todayStr);
+}
+function jumpToMonth(vid,todayStr,monthVal,isKnown){
+  if(!monthVal)return;
+  const[y,m]=monthVal.split('-');
+  const targetId=`vcal-m-${y}-${m}`;
+  // Try to scroll to existing month
+  const existing=document.getElementById(targetId);
+  if(existing){existing.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
+  if(isKnown)return; // known dates: can't add missing months
+  // Range calendar: shift to include this month
+  const today=mkDate(new Date());
+  const target=new Date(parseInt(y),parseInt(m)-1,1);
+  const now=new Date();
+  const weeksOff=Math.round((target-now)/(7*24*3600*1000));
+  S.calOffset=weeksOff;
+  const cs=el('cal-section');
+  if(cs)cs.innerHTML=renderCalRange(vid,todayStr||today,S.calOffset);
+  const ga=el('vgrid-area');if(ga)ga.innerHTML='';
+}
 function renderCalRange(vid,todayStr,offsetWeeks){
   S.calOffset=offsetWeeks;
   const base=new Date();base.setDate(base.getDate()+offsetWeeks*7-14);
   const dates=[];for(let i=0;i<30;i++){const d=new Date(base);d.setDate(d.getDate()+i);dates.push(mkDate(d));}
   const from=fmtDow(dates[0]),to=fmtDow(dates[dates.length-1]);
-  return`<div class="vcal-nav"><button onclick="shiftCal('${esc(vid)}','${esc(todayStr)}',-1)">\u2190 Earlier</button><span>${esc(from)} \u2013 ${esc(to)}</span><button onclick="shiftCal('${esc(vid)}','${esc(todayStr)}',1)">Later \u2192</button></div>${calGrid(groupByMonth(dates),vid,todayStr)}`;
+  return`<div class="vcal-nav"><button onclick="shiftCal('${esc(vid)}','${esc(todayStr)}',-1)">\u2190 Earlier</button><span>${esc(from)} \u2013 ${esc(to)}</span><button onclick="shiftCal('${esc(vid)}','${esc(todayStr)}',1)">Later \u2192</button></div>
+<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','${esc(todayStr)}',this.value)"></div>
+${calGrid(groupByMonth(dates),vid,todayStr)}`;
 }
 function selectVenueDate(vid,date,btn){
   S.venueSelDate=date;
@@ -1289,11 +1363,11 @@ boot();
 function groupByMonth(dates){const m=new Map();for(const d of dates){const ym=d.slice(0,7);if(!m.has(ym))m.set(ym,[]);m.get(ym).push(d);}return m;}
 function calGrid(byMonth,vid,todayStr){
   const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const DOW='<div class="vcg"><div class="vcd">M</div><div class="vcd">T</div><div class="vcd">W</div><div class="vcd">T</div><div class="vcd">F</div><div class="vcd">S</div><div class="vcd">S</div>';
-  let h='';
+  const DOW='<div class="vcd">M</div><div class="vcd">T</div><div class="vcd">W</div><div class="vcd">T</div><div class="vcd">F</div><div class="vcd">S</div><div class="vcd">S</div>';
+  let h='<div class="vcal-wrap">';
   for(const[ym,ds]of byMonth){
     const[y,m]=ym.split('-').map(Number);
-    h+=`<div class="vcm">${MN[m-1]} ${y}</div>${DOW}`;
+    h+=`<div class="vcal-col" id="vcal-m-${y}-${String(m).padStart(2,'0')}"><div class="vcm">${MN[m-1]} ${y}</div><div class="vcg">${DOW}`;
     const[,,fd]=ds[0].split('-').map(Number);
     const pad=(dayOfWeekN(y,m,fd)+6)%7;
     for(let i=0;i<pad;i++)h+='<div></div>';
@@ -1302,9 +1376,30 @@ function calGrid(byMonth,vid,todayStr){
       const isSel=d===S.venueSelDate,isToday=d===todayStr;
       h+=`<button class="vday${isToday?' vtoday':''}${isSel?' vsel':''}" data-date="${d}" onclick="selectVenueDate('${esc(vid)}','${d}',this)">${parseInt(dy)}</button>`;
     }
-    h+='</div>';
+    h+='</div></div>';
   }
-  return h;
+  return h+'</div>';
 }
-function renderKnownDates(dates,vid,todayStr){return calGrid(groupByMonth(dates),vid,todayStr);}
+function renderKnownDates(dates,vid,todayStr){
+  const dateRange=dates.length?`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','',this.value,true)"></div>`:'';
+  return dateRange+calGrid(groupByMonth(dates),vid,todayStr);
+}
+function jumpToMonth(vid,todayStr,monthVal,isKnown){
+  if(!monthVal)return;
+  const[y,m]=monthVal.split('-');
+  const targetId=`vcal-m-${y}-${m}`;
+  // Try to scroll to existing month
+  const existing=document.getElementById(targetId);
+  if(existing){existing.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
+  if(isKnown)return; // known dates: can't add missing months
+  // Range calendar: shift to include this month
+  const today=mkDate(new Date());
+  const target=new Date(parseInt(y),parseInt(m)-1,1);
+  const now=new Date();
+  const weeksOff=Math.round((target-now)/(7*24*3600*1000));
+  S.calOffset=weeksOff;
+  const cs=el('cal-section');
+  if(cs)cs.innerHTML=renderCalRange(vid,todayStr||today,S.calOffset);
+  const ga=el('vgrid-area');if(ga)ga.innerHTML='';
+}
 >
