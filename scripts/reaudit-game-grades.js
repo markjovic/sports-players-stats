@@ -89,29 +89,109 @@ function gitCommit(message, dirs) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// Session cookie — captured from first API response and reused for all subsequent requests.
+// PlayHQ silently returns null for publicProfileStatistics without a valid session.
+let _sessionCookie = null;
+
+async function getSession() {
+  if (_sessionCookie) return _sessionCookie;
+  console.log('  Fetching session cookie...');
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    const res = await fetch(PLAYHQ_API, {
+      method:  'POST',
+      headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
+      body: JSON.stringify({
+        operationName: 'TenantConfig',
+        variables:     {},
+        query:         'query TenantConfig { tenantConfiguration { label } }',
+      }),
+    });
+    const raw = res.headers.get('set-cookie');
+    console.log(`  Cookie attempt ${attempt}: HTTP ${res.status}, Set-Cookie: ${raw ? raw.slice(0, 80) : 'null'}`);
+    if (raw) {
+      _sessionCookie = raw.split(';')[0];
+      console.log(`  ✓ Session cookie: ${_sessionCookie.slice(0, 40)}...`);
+      return _sessionCookie;
+    }
+    await delay(attempt * 2000);
+  }
+  console.warn('  ⚠ Could not obtain session cookie after 5 attempts');
+  return null;
+}
+
 async function fetchProfile(uuid) {
+  const cookie = await getSession();
   for (let attempt = 1; attempt <= 3; attempt++) {
+    let res;
     try {
-      const res = await fetch(PLAYHQ_API, {
+      const headers = { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() };
+      if (cookie) headers['cookie'] = cookie;
+      res = await fetch(PLAYHQ_API, {
         method:  'POST',
-        headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
+        headers,
         body:    JSON.stringify({
           operationName: 'publicProfileStatistics',
           variables:     { profileID: uuid },
           query:         Q_PROFILE,
         }),
       });
-      if (res.status === 429) { await delay(attempt * 5000); continue; }
-      if (!res.ok) return null;
-      const json = await res.json();
-      return json?.data?.publicProfileStatistics || null;
-    } catch {
+    } catch (e) {
+      console.warn(`  fetch error for ${uuid}: ${e.message}`);
       if (attempt === 3) return null;
       await delay(2000);
+      continue;
     }
+
+    // Log first 5 responses and any unexpected statuses in detail
+    if (fetchProfile._logCount < 5 || res.status !== 200) {
+      console.log(`  [${uuid.slice(0,8)}] HTTP ${res.status} Set-Cookie: ${res.headers.get('set-cookie') ? 'yes' : 'no'}`);
+      fetchProfile._logCount++;
+    }
+
+    if (res.status === 429) { await delay(attempt * 5000); continue; }
+    if (!res.ok) {
+      console.warn(`  HTTP ${res.status} for ${uuid}`);
+      return null;
+    }
+
+    let json;
+    try { json = await res.json(); }
+    catch (e) {
+      // Non-JSON response (Cloudflare challenge etc) — log first occurrence
+      if (!fetchProfile._nonJsonLogged) {
+        const text = await res.text().catch(() => '(unreadable)');
+        console.warn(`  Non-JSON response for ${uuid}: ${text.slice(0, 200)}`);
+        fetchProfile._nonJsonLogged = true;
+      }
+      if (attempt === 3) return null;
+      await delay(2000);
+      continue;
+    }
+
+    // Log GraphQL errors and null responses (first 3 of each)
+    if (json.errors) {
+      if ((fetchProfile._errorCount || 0) < 3) {
+        console.warn(`  GraphQL errors for ${uuid}: ${JSON.stringify(json.errors).slice(0, 200)}`);
+        fetchProfile._errorCount = (fetchProfile._errorCount || 0) + 1;
+      }
+      return null;
+    }
+    if (!json?.data?.publicProfileStatistics) {
+      if ((fetchProfile._nullCount || 0) < 3) {
+        console.warn(`  null publicProfileStatistics for ${uuid} — data: ${JSON.stringify(json?.data).slice(0, 200)}`);
+        fetchProfile._nullCount = (fetchProfile._nullCount || 0) + 1;
+      }
+      return null;
+    }
+
+    return json.data.publicProfileStatistics;
   }
   return null;
 }
+fetchProfile._logCount      = 0;
+fetchProfile._nonJsonLogged = false;
+fetchProfile._errorCount    = 0;
+fetchProfile._nullCount     = 0;
 
 async function main() {
 
