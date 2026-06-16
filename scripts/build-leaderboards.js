@@ -3,8 +3,8 @@
 // Generates leaderboard index files for StatTrack.
 //
 // Output files:
-//   leaderboard/all-time.json          — top 200 per stat category, all seasons, career totals
-//   leaderboard/season/{sid}.json      — top 200 per stat category, one season, per-reg stats
+//   leaderboard/all-time.json          — top 2000 per stat category, all seasons, career totals
+//   leaderboard/season/{sid}.json      — ALL registrations (no cap), one season, per-reg stats
 //
 // All-time entry:
 //   { uuid, name, club, sport, gp, v }        (ppg entries include gp for min-GP filter)
@@ -15,6 +15,10 @@
 // Categories: pts, ppg, gp, threePt, fouls
 // PPG computed as pts/gp — only included when gp >= 1
 // One entry per registration (reg) for per-season files — no cross-reg aggregation.
+//
+// Caps:
+//   ALL_TIME_LIMIT = 2000  — deep enough for grade/age/gender filters to surface every age group
+//   Per-season: no cap — full season ~500-1500 regs, ~100-180 KB, acceptable for a single fetch
 //
 // Modes:
 //   node scripts/build-leaderboards.js                 — full rebuild (all players, all seasons)
@@ -27,8 +31,9 @@
 //   3. Scan only those player files → update per-season leaderboards for active seasons
 //   4. Rebuild all-time.json by merging updated player career totals into existing all-time data
 //
-// Memory strategy: fixed-size TopN heap per category — discards entries below the Nth value
-// immediately. Memory is O(N × categories) not O(players) — safe for 369k players.
+// Memory strategy:
+//   All-time: fixed-size TopN heap (ALL_TIME_LIMIT) — O(N) memory, safe for 369k players
+//   Per-season: plain arrays accumulated then sorted at write time — safe given typical season size
 
 'use strict';
 
@@ -36,10 +41,10 @@ const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const ROOT        = path.join(__dirname, '..');
-const DRY_RUN     = process.argv.includes('--dry-run');
-const ACTIVE_ONLY = process.argv.includes('--active-only');
-const TOP_N       = 200;
+const ROOT            = path.join(__dirname, '..');
+const DRY_RUN         = process.argv.includes('--dry-run');
+const ACTIVE_ONLY     = process.argv.includes('--active-only');
+const ALL_TIME_LIMIT  = 2000; // per-season has no cap — all regs included
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -91,19 +96,32 @@ class TopN {
   result() { return this.arr; }
 }
 
-function emptyBuckets() {
-  return {
-    pts:     new TopN(TOP_N),
-    ppg:     new TopN(TOP_N),
-    gp:      new TopN(TOP_N),
-    threePt: new TopN(TOP_N),
-    fouls:   new TopN(TOP_N),
-  };
+const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls'];
+
+function allTimeBuckets() {
+  const b = {};
+  for (const cat of CATS) b[cat] = new TopN(ALL_TIME_LIMIT);
+  return b;
 }
 
-function serialiseBuckets(buckets) {
+// Per-season uses plain arrays — no cap, sort at write time
+function seasonBuckets() {
+  const b = {};
+  for (const cat of CATS) b[cat] = [];
+  return b;
+}
+
+function serialiseAllTime(buckets) {
   const out = {};
   for (const [cat, heap] of Object.entries(buckets)) out[cat] = heap.result();
+  return out;
+}
+
+function serialiseSeason(buckets) {
+  const out = {};
+  for (const [cat, arr] of Object.entries(buckets)) {
+    out[cat] = arr.sort((a, b) => b.v - a.v);
+  }
   return out;
 }
 
@@ -140,11 +158,11 @@ if (ACTIVE_ONLY) {
 
 // ─── accumulators ────────────────────────────────────────────────────────────
 
-const allTime   = emptyBuckets();
+const allTime   = allTimeBuckets();
 const perSeason = new Map(); // sid → buckets
 
 function getOrCreateSeason(sid) {
-  if (!perSeason.has(sid)) perSeason.set(sid, emptyBuckets());
+  if (!perSeason.has(sid)) perSeason.set(sid, seasonBuckets());
   return perSeason.get(sid);
 }
 
@@ -238,18 +256,18 @@ if (ACTIVE_ONLY) {
   try { existing = readJson(allTimePath); } catch { /* first run */ }
 
   allTimeOut = {};
-  const fresh = serialiseBuckets(allTime);
+  const fresh = serialiseAllTime(allTime);
   for (const cat of Object.keys(fresh)) {
     const freshUuids = new Set(fresh[cat].map(e => e.uuid));
     const retained   = existing ? (existing[cat] || []).filter(e => !freshUuids.has(e.uuid)) : [];
-    // merge and re-rank using a fresh TopN
-    const merged = new TopN(TOP_N);
+    // merge and re-rank using a fresh TopN at ALL_TIME_LIMIT
+    const merged = new TopN(ALL_TIME_LIMIT);
     for (const e of [...retained, ...fresh[cat]]) merged.push(e);
     allTimeOut[cat] = merged.result();
   }
 } else {
   console.log('\nFinalising all-time leaderboards...');
-  allTimeOut = serialiseBuckets(allTime);
+  allTimeOut = serialiseAllTime(allTime);
   for (const [cat, entries] of Object.entries(allTimeOut)) {
     console.log(`  ${cat}: ${entries.length} entries`);
   }
@@ -267,7 +285,7 @@ let seasonFilesWritten = 0;
 
 for (const [sid, buckets] of perSeason) {
   const p = path.join(ROOT, 'leaderboard', 'season', `${sid}.json`);
-  if (!DRY_RUN) writeJson(p, serialiseBuckets(buckets));
+  if (!DRY_RUN) writeJson(p, serialiseSeason(buckets));
   seasonFilesWritten++;
 }
 
