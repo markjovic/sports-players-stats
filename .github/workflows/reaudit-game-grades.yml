@@ -1,0 +1,61 @@
+# .github/workflows/reaudit-game-grades.yml
+#
+# Re-fetches authoritative grade names from PlayHQ discoverGame API.
+# Fixes gn values set by augment-game-grades.js that reflect a team's final
+# registration grade rather than the grade the specific game was played in
+# (affects teams that were regraded mid-season).
+#
+# Default (no input): active seasons only (~418 seasons, hours not days)
+# --all flag: all 2,792 seasons — long crawl, use only for full correctness sweep
+
+name: Reaudit Game Grades
+
+on:
+  workflow_dispatch:
+    inputs:
+      all_seasons:
+        description: 'Process all seasons (not just active). Default: active only.'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  reaudit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run reaudit-game-grades
+        run: |
+          if [ "${{ inputs.all_seasons }}" = "true" ]; then
+            node scripts/reaudit-game-grades.js --all
+          else
+            node scripts/reaudit-game-grades.js
+          fi
+
+      - name: Final push (safety net)
+        if: always()
+        run: |
+          git add games/bv/ scripts/.reaudit-game-grades-progress.json || true
+          git diff --staged --quiet || git commit -m "reaudit-game-grades: safety-net final commit"
+          git pull --rebase=false --no-edit -X ours || true
+          git push || true
