@@ -54,19 +54,33 @@ const Q_PROFILE = `
 query publicProfileStatistics($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
     seasonStatistics {
+      name
       statistics {
-        season { id }
+        season { id name }
+        club { id name }
+        totalStatistics { count details { value } }
         teamStatistics {
           team { ... on DiscoverTeam { id name } }
           gradeStatistics {
             grade { id name }
+            totalStatistics { count details { value } }
             gameStatistics {
-              game { id }
+              game {
+                id
+                round { name }
+                date
+                home { ... on DiscoverTeam { id name } }
+                away { ... on DiscoverTeam { id name } }
+              }
+              statistics { count details { value } }
             }
           }
         }
       }
     }
+  }
+  publicProfile(profileID: $profileID) {
+    id firstName lastName
   }
 }`;
 
@@ -89,34 +103,38 @@ function gitCommit(message, dirs) {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// Session cookie — captured from first API response and reused for all subsequent requests.
-// PlayHQ silently returns null for publicProfileStatistics without a valid session.
-let _sessionCookie = null;
+// Session cookie — promise-based lock ensures only one fetch happens even with
+// 20 concurrent callers. All concurrent getSession() calls await the same promise.
+let _sessionPromise = null;
 
 async function getSession() {
-  if (_sessionCookie) return _sessionCookie;
-  console.log('  Fetching session cookie...');
-  for (let attempt = 1; attempt <= 5; attempt++) {
-    const res = await fetch(PLAYHQ_API, {
-      method:  'POST',
-      headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
-      body: JSON.stringify({
-        operationName: 'TenantConfig',
-        variables:     {},
-        query:         'query TenantConfig { tenantConfiguration { label } }',
-      }),
-    });
-    const raw = res.headers.get('set-cookie');
-    console.log(`  Cookie attempt ${attempt}: HTTP ${res.status}, Set-Cookie: ${raw ? raw.slice(0, 80) : 'null'}`);
-    if (raw) {
-      _sessionCookie = raw.split(';')[0];
-      console.log(`  ✓ Session cookie: ${_sessionCookie.slice(0, 40)}...`);
-      return _sessionCookie;
-    }
-    await delay(attempt * 2000);
+  if (!_sessionPromise) {
+    _sessionPromise = (async () => {
+      console.log('  Fetching session cookie...');
+      for (let attempt = 1; attempt <= 5; attempt++) {
+        const res = await fetch(PLAYHQ_API, {
+          method:  'POST',
+          headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
+          body: JSON.stringify({
+            operationName: 'TenantConfig',
+            variables:     {},
+            query:         'query TenantConfig { tenantConfiguration { label } }',
+          }),
+        });
+        const raw = res.headers.get('set-cookie');
+        console.log(`  Cookie attempt ${attempt}: HTTP ${res.status}, Set-Cookie: ${raw ? raw.slice(0, 80) : 'null'}`);
+        if (raw) {
+          const cookie = raw.split(';')[0];
+          console.log(`  ✓ Session cookie obtained`);
+          return cookie;
+        }
+        await delay(attempt * 2000);
+      }
+      console.warn('  ⚠ Could not obtain session cookie after 5 attempts');
+      return null;
+    })();
   }
-  console.warn('  ⚠ Could not obtain session cookie after 5 attempts');
-  return null;
+  return _sessionPromise;
 }
 
 async function fetchProfile(uuid) {
@@ -168,12 +186,18 @@ async function fetchProfile(uuid) {
       continue;
     }
 
-    // Log GraphQL errors and null responses (first 3 of each)
+    // GraphQL errors — NOT_FOUND is permanent (deleted profile), others may be transient
     if (json.errors) {
+      const isNotFound = json.errors.some(e => e.message?.includes('NOT_FOUND') || e.message?.includes('failed to find profile'));
+      if (isNotFound) {
+        fetchProfile._notFoundCount = (fetchProfile._notFoundCount || 0) + 1;
+        return null; // permanent — don't retry
+      }
       if ((fetchProfile._errorCount || 0) < 3) {
         console.warn(`  GraphQL errors for ${uuid}: ${JSON.stringify(json.errors).slice(0, 200)}`);
         fetchProfile._errorCount = (fetchProfile._errorCount || 0) + 1;
       }
+      if (attempt < 3) { await delay(2000); continue; }
       return null;
     }
     if (!json?.data?.publicProfileStatistics) {
@@ -184,6 +208,8 @@ async function fetchProfile(uuid) {
       return null;
     }
 
+    // If publicProfile is null the profile is private — stats will also be null
+    if (!json.data.publicProfile) return null;
     return json.data.publicProfileStatistics;
   }
   return null;
@@ -336,7 +362,8 @@ async function main() {
       }
 
       if (fetched % 500 === 0 || i + CONCURRENCY >= uuidsToFetch.length) {
-        console.log(`  ${fetched}/${uuidsToFetch.length} fetched — ${mapped} game→grade mappings, ${nulls} nulls`);
+        const notFound = fetchProfile._notFoundCount || 0;
+        console.log(`  ${fetched}/${uuidsToFetch.length} fetched — ${mapped} game→grade mappings, ${nulls} nulls (${notFound} not found)`);
       }
 
       // Inter-batch delay — prevents PlayHQ silent rate limiting
