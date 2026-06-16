@@ -18,7 +18,7 @@ Player-centric scraper and database for PlayHQ basketball competitions. Builds a
 | Venue coverage | 96.1% |
 | Search shards | 595 files / 595,879 unique keys |
 | Migration | ✅ Complete (Phases 1–3 verified 25/25) |
-| Next | Cloudflare Worker spectator route → StatTrack HTML |
+| Next | Nightly crawl workflow → StatTrack HTML PWA |
 
 **Game classification:**
 
@@ -39,13 +39,19 @@ Player-centric scraper and database for PlayHQ basketball competitions. Builds a
 ```
 sports-players-stats/
 ├── sports-index.json              # Season metadata (2,792 seasons)
-├── team-index.json                # Team search by season name
-├── venue-index.json               # Venue search list
+├── team-index.json                # Team search by season name (comp + grade per entry)
+├── venue-index.json               # Venue search list (532 venues)
+├── season-venue-index.json        # { seasonId: [venueId, ...] } (1,919 seasons)
 ├── scripts/                       # All pipeline and utility scripts
 │   ├── db-report.js               # Database state report
 │   ├── fetch-playhq.js            # Full player crawl
 │   ├── classify-games.js          # Three-step classification sweep
 │   ├── discover-fixtures.js       # Fixture/venue via discoverTeamFixture
+│   ├── augment-venue-lookup.js    # Add sid/hid/aid/comp/grade to venue game entries ✅
+│   ├── build-venue-indexes.js     # dates.json, date-venue-index, season-venue-index ✅
+│   ├── augment-team-index.js      # Add comp/grade to team-index.json ✅
+│   ├── augment-game-grades.js     # Add gid/gn to games/bv/{sid}.json ✅
+│   ├── build-leaderboards.js      # Leaderboard files (full + --active-only) ✅
 │   ├── normalise-game-structure.js
 │   ├── cleanup-flag-collisions.js
 │   ├── backfill-missing-players.js
@@ -56,9 +62,15 @@ sports-players-stats/
 │   └── ...
 ├── search/players/{aa-zz}.json    # 595 player search shards
 ├── team-stats/bv/{seasonId}.json  # Team rosters + fixtures (2,792 files)
+├── leaderboard/
+│   ├── all-time.json              # Top 200 per stat category, career totals
+│   └── season/{seasonId}.json    # Top 200 per stat category, per season (2,793 files)
 ├── venue-lookup/
+│   ├── {venueId}/dates.json       # Sorted date array for this venue (532 files)
 │   └── {venueId}/{YYYY-MM-DD}.json  # Court schedule grids (100,173 files)
-├── games/bv/{seasonId}.json       # Game data (2,792 files)
+├── date-venue-index/
+│   └── {YYYY-MM-DD}.json          # Venue IDs active on this date (2,016 files)
+├── games/bv/{seasonId}.json       # Game data with gid/gn (2,792 files)
 └── players/
     ├── indexes/{00-ff}.json       # Career stats + history map (256 shards)
     └── {00-ff}/{uuid}.json        # Full player detail (369,437 files)
@@ -91,7 +103,7 @@ sports-players-stats/
 ```
 
 ### games/bv/{seasonId}.json
-Post-migration structure — `playerGames` deleted, `p` array added to every game entry.
+Post-migration structure — `playerGames` deleted, `p` array and `gid`/`gn` added to every game entry.
 
 **Normal game:**
 ```json
@@ -106,6 +118,7 @@ Post-migration structure — `playerGames` deleted, `p` array added to every gam
       "st": "FINAL",
       "vid": "e5970e55-...", "vn": "The Rings (Ringwood)", "ct": "Court 2", "t": "10:15",
       "url": "https://www.playhq.com/...",
+      "gid": "5afff92b", "gn": "Boys Under 14 D3",
       "p": [{"id": "uuid1", "n": "Sam Burdan"}, {"id": "uuid2", "n": "Player #3253b50e81"}]
     }
   }
@@ -120,6 +133,7 @@ Post-migration structure — `playerGames` deleted, `p` array added to every gam
   "hq": [12, 14, 11, 8], "aq": [10, 9, 12, 7],
   "t1": "teamId1", "t1n": "Team Name 1",
   "t2": "teamId2", "t2n": "Team Name 2",
+  "gid": "5afff92b", "gn": "Boys Under 14 D3",
   "hp": [{"profileID": "prof-uuid", "name": "Sam B", "number": 7, "pts": 12, "pt1": 0, "pt2": 4, "pt3": 1, "fouls": 2}],
   "ap": [...],
   "p": [{"id": "prof-uuid", "n": "Sam B"}]
@@ -130,6 +144,7 @@ Post-migration structure — `playerGames` deleted, `p` array added to every gam
 - `h`/`hn` + `a`/`an` = absolute orientation (supersedes t1/t2, never both)
 - `t1`/`t1n` + `t2`/`t2n` = orientation unknown
 - `hs`/`as` are always the score fields regardless of h/a vs t1/t2
+- `gid`/`gn` present on all games; empty string on the 4,422 where grade could not be resolved
 
 ### players/{xx}/{uuid}.json
 ```json
@@ -192,22 +207,47 @@ One file per season. All teams across all grades in that season.
 ```json
 {
   "Court 1": [
-    {"id": "gameId1", "t": "09:00", "hn": "Home Team", "an": "Away Team", "st": "FINAL"},
-    {"id": "gameId2", "t": "10:00", "hn": "Team A", "an": "Team B", "st": "UPCOMING"}
+    {
+      "id": "gameId1", "t": "09:00",
+      "hn": "Home Team", "an": "Away Team",
+      "hid": "homeTeamUuid", "aid": "awayTeamUuid",
+      "sid": "seasonUuid",
+      "comp": "VJBL Junior", "grade": "Boys Under 14 D3",
+      "st": "FINAL"
+    }
   ],
-  "Court 2": [{"id": "gameId3", "t": "09:00", "hn": "X", "an": "Y", "st": "FINAL"}]
+  "Court 2": [...]
 }
 ```
-Games sorted by time within each court. `t` = "HH:MM" string. Old flat `venue-lookup/{xx}.json` shards deleted.
+Games sorted by time within each court. `t` = "HH:MM" string.
+
+### venue-lookup/{venueId}/dates.json
+```json
+["2026-02-01", "2026-02-08", "2026-02-15"]
+```
+Sorted ascending. One file per venue (532 files). Used by StatTrack calendar to show only dates with real games.
+
+### date-venue-index/{YYYY-MM-DD}.json
+```json
+["venueUuid1", "venueUuid2", "venueUuid3"]
+```
+Array of venue IDs active on this date. 2,016 files. Used by StatTrack venue search date filter.
+
+### season-venue-index.json
+```json
+{ "seasonUuid1": ["venueUuid1", "venueUuid2"] }
+```
+1,919 seasons with venue data. Used by StatTrack venue season filter.
 
 ### team-index.json
 ```json
 {
-  "Summer 2024/25": [{"id": "83e3d989", "n": "Hoppers Tigers 7 (U14G)", "sid": "367cf946"}],
-  "Winter 2025": [...]
+  "Summer 2024/25": [
+    {"id": "83e3d989", "n": "Hoppers Tigers 7 (U14G)", "sid": "367cf946", "comp": "VJBL Junior", "grade": "Girls Under 14 D3"}
+  ]
 }
 ```
-60 distinct season names. Loaded per-slice by StatTrack when user selects a season name.
+60 distinct season names. `comp` and `grade` allow disambiguation when two teams share the same name in the same season.
 
 ### venue-index.json
 ```json
@@ -231,12 +271,31 @@ Games sorted by time within each court. `t` = "HH:MM" string. Old flat `venue-lo
 - Private players: `Player #${uuid.slice(0,10)}`, shard `pl`, c/t null.
 - Shard key = first 2 chars of search key lowercased. 595 files produced.
 
+### leaderboard/all-time.json
+```json
+{
+  "pts":     [{"uuid": "...", "name": "...", "club": "...", "sport": "Basketball", "gp": 120, "v": 1842}],
+  "ppg":     [{"uuid": "...", "name": "...", "club": "...", "sport": "Basketball", "gp": 120, "v": 28.4}],
+  "gp":      [...],
+  "threePt": [...],
+  "fouls":   [...]
+}
+```
+Top 200 per category. All entries include `gp` — required for client-side min-GP filtering on PPG tab. Rebuilt by `build-leaderboards.js` (full) or updated by `--active-only` after nightly crawl.
+
+### leaderboard/season/{seasonId}.json
+Same structure as all-time. Per-season entries:
+```json
+{"uuid": "...", "name": "...", "club": "...", "grade": "Boys Under 14 D3", "age": "U14", "gender": "Male", "gp": 6, "v": 42}
+```
+One entry **per registration** — a player in two grades in the same season has two entries, each with their own stats. Stats are never aggregated across regs.
+
 ---
 
 ## Scripts
 
 All scripts live in `scripts/`. Use `const ROOT = path.join(__dirname, '..');` for data paths.
-Workflows reference scripts as `node scripts/scriptname.js`.
+Workflows reference scripts as `node scripts/filename.js`.
 
 | Script | Purpose | Status |
 |--------|---------|--------|
@@ -244,6 +303,11 @@ Workflows reference scripts as `node scripts/scriptname.js`.
 | `fetch-playhq.js` | Full player crawl | Annual |
 | `classify-games.js` | Three-step classification sweep | Run as needed |
 | `discover-fixtures.js` | Fixture/venue via discoverTeamFixture | Nightly (active seasons) |
+| `augment-venue-lookup.js` | Add sid/hid/aid/comp/grade to venue game entries | Complete ✅ |
+| `build-venue-indexes.js` | Generate dates.json, date-venue-index, season-venue-index | Complete ✅ |
+| `augment-team-index.js` | Add comp/grade to team-index.json | Complete ✅ |
+| `augment-game-grades.js` | Add gid/gn to all game entries | Complete ✅ |
+| `build-leaderboards.js` | Leaderboard files — full or --active-only | Active |
 | `normalise-game-structure.js` | Strip o/on, write t1/t2 | Complete ✅ |
 | `cleanup-flag-collisions.js` | Remove erroneous legacy flags | Monthly |
 | `backfill-missing-players.js` | Crawl missing player detail files | Complete ✅ |
@@ -260,13 +324,26 @@ Workflows reference scripts as `node scripts/scriptname.js`.
 
 Game box scores served on-demand via `solitary-snowflake-cb3e.insanoflash.workers.dev`.
 
-**Pending (Step 3.5):** Add `GET /spectator/{gameId}` route. Worker calls `spectator.playhq.com/graphql`, handles cookies, returns parsed box score. Must set CORS to allow `markjovic.github.io`.
+**Route:** `GET /spectator/{gameId}[?tenant=bv]`
+
+**Response:**
+```json
+{
+  "h": [{"profileID": "...", "name": "...", "number": 7, "pts": 12, "pt1": 0, "pt2": 4, "pt3": 1, "fouls": 2}],
+  "a": [...],
+  "hq": [22, 18, 24, 21],
+  "aq": [18, 20, 19, 25]
+}
+```
+- `hq`/`aq` are omitted (not null) when period data is unavailable
+- OT supported — arrays can have 5+ elements (Q1→Q2→Q3→Q4→OT1→OT2...)
+- CORS allows `https://markjovic.github.io`
 
 **StatTrack flow:**
 1. Game entry (score, teams, venue) renders from static data immediately
-2. If `hp`/`ap` on game entry → render directly, no API call
-3. Otherwise → call Worker → spectator `game(id)` → render box score
-4. Cache per gameId in memory for session
+2. If `hp`/`ap` stored on game entry → render directly, no API call
+3. Otherwise → call Worker → spectator `game(id)` → render box score + quarter scores
+4. Cache per gameId in session memory
 
 ---
 
@@ -279,6 +356,25 @@ See `playhq_api_reference.md` for full query reference.
 - Mandatory three-step probe for all game classification
 - Never `new Date()` for date parsing — split strings directly
 - Cookie TTL: 24 hours
+
+---
+
+## Maintenance schedule
+
+### Nightly (active seasons — `locked: false`)
+1. `discover-fixtures` — `discoverTeamFixture` for all active teams
+2. Three-step classify probe for newly scored/status-changed games
+3. `publicProfileTeams` for active players — UPCOMING registrations
+4. New season discovery
+5. `node scripts/build-leaderboards.js --active-only` — refresh active season leaderboards
+
+### Monthly
+- Re-probe games where `noProfile`/`noVenue` timestamp > 30 days old
+- Run `cleanup-flag-collisions` to catch new collisions
+
+### Annual
+- Full `publicProfileStatistics` re-crawl for all players
+- Full `build-leaderboards.js` rebuild (no `--active-only`)
 
 ---
 
@@ -299,19 +395,6 @@ To support "has this player faced any of these players before, in any sport?" ef
 - History squash before adding AFL — reduces repo size ~60-70% with zero data impact
 - Per-sport repos keep each dataset independently manageable
 - See `stattrack_html_design.md` Multi-sport architecture section for full design
-
-### Nightly (active seasons — `locked: false`)
-1. `discover-fixtures` — `discoverTeamFixture` for all active teams
-2. Three-step classify probe for newly scored/status-changed games
-3. `publicProfileTeams` for active players — UPCOMING registrations
-4. New season discovery
-
-### Monthly
-- Re-probe games where `noProfile`/`noVenue` timestamp > 30 days old
-- Run `cleanup-flag-collisions` to catch new collisions
-
-### Annual
-- Full `publicProfileStatistics` re-crawl for all players
 
 ---
 
