@@ -282,7 +282,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.20</span>
+      <span class="rail-ver">Beta 0.21</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -586,7 +586,7 @@ async function boot(){
 function switchTab(tab){
   document.querySelectorAll('.stab').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
   ['players','teams','venues','leaders'].forEach(t=>el('pnl-'+t).classList.toggle('hidden',t!==tab));
-  if(tab==='leaders')loadLB();
+  if(tab==='leaders'){showV('view-leaders');loadLB();}
 }
 
 /* ── Player search ── */
@@ -967,32 +967,44 @@ function calGrid(byMonth,vid,todayStr){
   }
   return h+'</div>';
 }
-function renderKnownDates(dates,vid,todayStr,showAll){
-  // Default: last 12 months + any future dates
-  const cutoff=todayStr?todayStr.slice(0,7):'';
-  const cutoffMinus12=cutoff?`${String(parseInt(cutoff.slice(0,4))-(cutoff.slice(5,7)<='12'?1:0))}-${String(((parseInt(cutoff.slice(5,7))-1+12)%12)+1).padStart(2,'0')}`:'';
-  const recentCutoff=cutoff?`${String(parseInt(cutoff.slice(0,4))-1)}-${cutoff.slice(5,7)}`:'';
-  const recent=showAll?dates:dates.filter(d=>d.slice(0,7)>=recentCutoff);
-  const hidden=showAll?0:dates.length-recent.length;
-  const dateRange=dates.length?`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','',this.value,true)"></div>`:'';
-  const showMoreBtn=(!showAll&&hidden>0)?`<div style="padding:8px 14px"><button class="lb-stat" style="width:100%" onclick="renderVenueCalAll('${esc(vid)}','${esc(todayStr)}')">Show ${hidden} earlier dates ↑</button></div>`:'';
-  return showMoreBtn+dateRange+calGrid(groupByMonth(recent),vid,todayStr);
+function renderKnownDates(dates,vid,todayStr,pageIdx){
+  const byMonth=groupByMonth(dates);
+  const months=[...byMonth.keys()];
+  if(!months.length)return'<div class="empty">No dates on record.</div>';
+  const total=months.length;
+  if(pageIdx==null)pageIdx=Math.max(0,total-3); // start at most recent 3
+  pageIdx=Math.max(0,Math.min(pageIdx,total-1));
+  const visible=months.slice(pageIdx,pageIdx+3);
+  const pageMap=new Map(visible.map(m=>[m,byMonth.get(m)]));
+  const hasPrev=pageIdx>0;
+  const hasNext=pageIdx+3<total;
+  // Jump input: find page containing selected month
+  const jumpHtml=`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="vCalJump('${esc(vid)}','${esc(todayStr||'')}',this.value)"></div>`;
+  const nav=`<div class="vcal-nav"><button ${hasPrev?'':'disabled'} onclick="vCalPage('${esc(vid)}','${esc(todayStr||'')}',${Math.max(0,pageIdx-3)})">← Earlier</button><span style="font-size:0.78rem;color:var(--text2)">${visible[0].replace('-',' / ')} – ${visible[visible.length-1].replace('-',' / ')}</span><button ${hasNext?'':'disabled'} onclick="vCalPage('${esc(vid)}','${esc(todayStr||'')}',${Math.min(total-3,pageIdx+3)})">Later →</button></div>`;
+  return jumpHtml+nav+calGrid(pageMap,vid,todayStr);
 }
-function renderVenueCalAll(vid,todayStr){
+function vCalPage(vid,todayStr,pageIdx){
   const dates=S.venueDates[vid]||[];
   const cs=document.getElementById('cal-section');
-  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,true);
+  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,pageIdx);
+  const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';
+}
+function vCalJump(vid,todayStr,monthVal){
+  if(!monthVal)return;
+  const byMonth=groupByMonth(S.venueDates[vid]||[]);
+  const months=[...byMonth.keys()];
+  // Find the first page that includes this month (or nearest)
+  const target=monthVal.slice(0,7);
+  let best=Math.max(0,months.length-3);
+  for(let i=0;i<months.length;i++){if(months[i]>=target){best=Math.max(0,i-1);break;}}
+  vCalPage(vid,todayStr,best);
 }
 function jumpToMonth(vid,todayStr,monthVal,isKnown){
   if(!monthVal)return;
-  const[y,m]=monthVal.split('-');
-  const targetId=`vcal-m-${y}-${m}`;
-  // Try to scroll to existing month
-  const existing=document.getElementById(targetId);
-  if(existing){existing.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
-  if(isKnown)return; // known dates: can't add missing months
-  // Range calendar: shift to include this month
+  if(isKnown){vCalJump(vid,todayStr,monthVal);return;}
+  // Range calendar
   const today=mkDate(new Date());
+  const[y,m]=monthVal.split('-');
   const target=new Date(parseInt(y),parseInt(m)-1,1);
   const now=new Date();
   const weeksOff=Math.round((target-now)/(7*24*3600*1000));
@@ -1353,7 +1365,7 @@ function renderLB(allEntries,data){
         <div>${gpInfo}<div class="lb-val">${typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v}</div></div>
       </div>`;
     }).join('');
-  ve.querySelectorAll('.lb-row[data-uuid]').forEach(r=>r.addEventListener('click',()=>{switchTab('players');loadPlayer(r.dataset.uuid);}));
+  ve.querySelectorAll('.lb-row[data-uuid]').forEach(r=>r.addEventListener('click',()=>loadPlayer(r.dataset.uuid)));
 }
 /* ── Events ── */
 document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
@@ -1400,32 +1412,44 @@ function calGrid(byMonth,vid,todayStr){
   }
   return h+'</div>';
 }
-function renderKnownDates(dates,vid,todayStr,showAll){
-  // Default: last 12 months + any future dates
-  const cutoff=todayStr?todayStr.slice(0,7):'';
-  const cutoffMinus12=cutoff?`${String(parseInt(cutoff.slice(0,4))-(cutoff.slice(5,7)<='12'?1:0))}-${String(((parseInt(cutoff.slice(5,7))-1+12)%12)+1).padStart(2,'0')}`:'';
-  const recentCutoff=cutoff?`${String(parseInt(cutoff.slice(0,4))-1)}-${cutoff.slice(5,7)}`:'';
-  const recent=showAll?dates:dates.filter(d=>d.slice(0,7)>=recentCutoff);
-  const hidden=showAll?0:dates.length-recent.length;
-  const dateRange=dates.length?`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','',this.value,true)"></div>`:'';
-  const showMoreBtn=(!showAll&&hidden>0)?`<div style="padding:8px 14px"><button class="lb-stat" style="width:100%" onclick="renderVenueCalAll('${esc(vid)}','${esc(todayStr)}')">Show ${hidden} earlier dates ↑</button></div>`:'';
-  return showMoreBtn+dateRange+calGrid(groupByMonth(recent),vid,todayStr);
+function renderKnownDates(dates,vid,todayStr,pageIdx){
+  const byMonth=groupByMonth(dates);
+  const months=[...byMonth.keys()];
+  if(!months.length)return'<div class="empty">No dates on record.</div>';
+  const total=months.length;
+  if(pageIdx==null)pageIdx=Math.max(0,total-3); // start at most recent 3
+  pageIdx=Math.max(0,Math.min(pageIdx,total-1));
+  const visible=months.slice(pageIdx,pageIdx+3);
+  const pageMap=new Map(visible.map(m=>[m,byMonth.get(m)]));
+  const hasPrev=pageIdx>0;
+  const hasNext=pageIdx+3<total;
+  // Jump input: find page containing selected month
+  const jumpHtml=`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="vCalJump('${esc(vid)}','${esc(todayStr||'')}',this.value)"></div>`;
+  const nav=`<div class="vcal-nav"><button ${hasPrev?'':'disabled'} onclick="vCalPage('${esc(vid)}','${esc(todayStr||'')}',${Math.max(0,pageIdx-3)})">← Earlier</button><span style="font-size:0.78rem;color:var(--text2)">${visible[0].replace('-',' / ')} – ${visible[visible.length-1].replace('-',' / ')}</span><button ${hasNext?'':'disabled'} onclick="vCalPage('${esc(vid)}','${esc(todayStr||'')}',${Math.min(total-3,pageIdx+3)})">Later →</button></div>`;
+  return jumpHtml+nav+calGrid(pageMap,vid,todayStr);
 }
-function renderVenueCalAll(vid,todayStr){
+function vCalPage(vid,todayStr,pageIdx){
   const dates=S.venueDates[vid]||[];
   const cs=document.getElementById('cal-section');
-  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,true);
+  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,pageIdx);
+  const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';
+}
+function vCalJump(vid,todayStr,monthVal){
+  if(!monthVal)return;
+  const byMonth=groupByMonth(S.venueDates[vid]||[]);
+  const months=[...byMonth.keys()];
+  // Find the first page that includes this month (or nearest)
+  const target=monthVal.slice(0,7);
+  let best=Math.max(0,months.length-3);
+  for(let i=0;i<months.length;i++){if(months[i]>=target){best=Math.max(0,i-1);break;}}
+  vCalPage(vid,todayStr,best);
 }
 function jumpToMonth(vid,todayStr,monthVal,isKnown){
   if(!monthVal)return;
-  const[y,m]=monthVal.split('-');
-  const targetId=`vcal-m-${y}-${m}`;
-  // Try to scroll to existing month
-  const existing=document.getElementById(targetId);
-  if(existing){existing.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
-  if(isKnown)return; // known dates: can't add missing months
-  // Range calendar: shift to include this month
+  if(isKnown){vCalJump(vid,todayStr,monthVal);return;}
+  // Range calendar
   const today=mkDate(new Date());
+  const[y,m]=monthVal.split('-');
   const target=new Date(parseInt(y),parseInt(m)-1,1);
   const now=new Date();
   const weeksOff=Math.round((target-now)/(7*24*3600*1000));
