@@ -34,7 +34,7 @@ const _args = Object.fromEntries(
     .filter(a => a.startsWith('--'))
     .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
 );
-const CONCURRENCY = parseInt(_args.concurrency || '20', 10);
+const CONCURRENCY = parseInt(_args.concurrency || '10', 10);
 
 const PHASE2_PROGRESS = path.join(ROOT, 'scripts', '.reaudit-phase2-progress.json');
 const PHASE3_PROGRESS = path.join(ROOT, 'scripts', '.reaudit-phase3-progress.json');
@@ -201,16 +201,20 @@ async function main() {
     let nulls   = 0;
     let mapped  = 0;
 
+    let consecutiveNullBatches = 0;
+    const BATCH_DELAY_MS = 500; // ms between batches — prevents silent rate limiting
+
     for (let i = 0; i < uuidsToFetch.length; i += CONCURRENCY) {
       const batch   = uuidsToFetch.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(uuid => fetchProfile(uuid)));
 
+      let batchNulls = 0;
       for (let j = 0; j < batch.length; j++) {
         const uuid   = batch[j];
         const result = results[j];
         fetched++;
 
-        if (!result) { nulls++; phase2Done.add(uuid); continue; }
+        if (!result) { nulls++; batchNulls++; phase2Done.add(uuid); continue; }
 
         for (const sportSeason of (result.seasonStatistics || [])) {
           for (const reg of (sportSeason.statistics || [])) {
@@ -234,6 +238,18 @@ async function main() {
         phase2Done.add(uuid);
       }
 
+      // Detect silent rate limiting — all nulls in a batch despite prior successes
+      if (batchNulls === batch.length) {
+        consecutiveNullBatches++;
+        if (consecutiveNullBatches >= 3 && mapped > 0) {
+          console.warn(`  ⚠ ${consecutiveNullBatches} consecutive all-null batches — backing off 10s`);
+          await delay(10000);
+          consecutiveNullBatches = 0;
+        }
+      } else {
+        consecutiveNullBatches = 0;
+      }
+
       if (!DRY_RUN) {
         writeJson(PHASE2_PROGRESS, { done: [...phase2Done] });
         writeJson(GRADE_MAP_FILE, gradeMap);
@@ -242,6 +258,9 @@ async function main() {
       if (fetched % 500 === 0 || i + CONCURRENCY >= uuidsToFetch.length) {
         console.log(`  ${fetched}/${uuidsToFetch.length} fetched — ${mapped} game→grade mappings, ${nulls} nulls`);
       }
+
+      // Inter-batch delay — prevents PlayHQ silent rate limiting
+      if (i + CONCURRENCY < uuidsToFetch.length) await delay(BATCH_DELAY_MS);
     }
 
     if (!DRY_RUN) writeJson(GRADE_MAP_FILE, gradeMap);
