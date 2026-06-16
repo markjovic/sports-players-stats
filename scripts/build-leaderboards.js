@@ -18,7 +18,7 @@
 //
 // Caps:
 //   ALL_TIME_LIMIT = 2000  — deep enough for grade/age/gender filters to surface every age group
-//   Per-season: no cap — full season ~500-1500 regs, ~100-180 KB, acceptable for a single fetch
+//   Per-season: TopN(5000) — high enough to never trim a real season, avoids OOM across 2792 seasons
 //
 // Modes:
 //   node scripts/build-leaderboards.js                 — full rebuild (all players, all seasons)
@@ -33,7 +33,7 @@
 //
 // Memory strategy:
 //   All-time: fixed-size TopN heap (ALL_TIME_LIMIT) — O(N) memory, safe for 369k players
-//   Per-season: plain arrays accumulated then sorted at write time — safe given typical season size
+//   Per-season: TopN(SEASON_LIMIT=5000) heap — memory-safe across all 2792 seasons simultaneously
 
 'use strict';
 
@@ -104,10 +104,13 @@ function allTimeBuckets() {
   return b;
 }
 
-// Per-season uses plain arrays — no cap, sort at write time
+// Per-season: TopN at SEASON_LIMIT — high enough to never trim a real season
+// (typical season 500-1500 regs) but avoids unbounded plain arrays across 2792 seasons
+const SEASON_LIMIT = 5000;
+
 function seasonBuckets() {
   const b = {};
-  for (const cat of CATS) b[cat] = [];
+  for (const cat of CATS) b[cat] = new TopN(SEASON_LIMIT);
   return b;
 }
 
@@ -119,9 +122,7 @@ function serialiseAllTime(buckets) {
 
 function serialiseSeason(buckets) {
   const out = {};
-  for (const [cat, arr] of Object.entries(buckets)) {
-    out[cat] = arr.sort((a, b) => b.v - a.v);
-  }
+  for (const [cat, heap] of Object.entries(buckets)) out[cat] = heap.result();
   return out;
 }
 
