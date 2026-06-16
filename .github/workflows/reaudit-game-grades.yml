@@ -1,23 +1,23 @@
 # .github/workflows/reaudit-game-grades.yml
 #
-# Re-fetches authoritative grade names from PlayHQ discoverGame API.
-# Fixes gn values set by augment-game-grades.js that reflect a team's final
-# registration grade rather than the grade the specific game was played in
-# (affects teams that were regraded mid-season).
+# Fixes per-game grade names (gn/gid) for regraded teams.
+# Runs in three phases — all resumable via progress files.
 #
-# Default (no input): active seasons only (~418 seasons, hours not days)
-# --all flag: all 2,792 seasons — long crawl, use only for full correctness sweep
+# Phase 1: scan player files for multi-reg seasons (~2 min)
+# Phase 2: re-fetch player profiles with concurrency to build game→grade map
+# Phase 3: rewrite game entries with correct gn/gid
+#
+# If the job times out, re-run — it resumes from where it left off.
 
 name: Reaudit Game Grades
 
 on:
   workflow_dispatch:
     inputs:
-      all_seasons:
-        description: 'Process all seasons (not just active). Default: active only.'
+      concurrency:
+        description: 'Concurrent API requests for phase 2 (default: 20)'
         required: false
-        default: 'false'
-        type: boolean
+        default: '20'
 
 permissions:
   contents: write
@@ -45,17 +45,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run reaudit-game-grades
-        run: |
-          if [ "${{ inputs.all_seasons }}" = "true" ]; then
-            node scripts/reaudit-game-grades.js --all
-          else
-            node scripts/reaudit-game-grades.js
-          fi
+        run: node scripts/reaudit-game-grades.js --concurrency=${{ inputs.concurrency || '20' }}
 
       - name: Final push (safety net)
         if: always()
         run: |
-          git add games/bv/ scripts/.reaudit-game-grades-progress.json || true
+          git add games/bv/ scripts/.reaudit-phase2-progress.json scripts/.reaudit-phase3-progress.json scripts/.reaudit-grade-map.json || true
           git diff --staged --quiet || git commit -m "reaudit-game-grades: safety-net final commit"
           git pull --rebase=false --no-edit -X ours || true
           git push || true
