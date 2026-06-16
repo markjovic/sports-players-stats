@@ -42,6 +42,10 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 
 .panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .swrap{padding:8px;border-bottom:1px solid var(--border)}
+.swrap-hdr{display:flex;align-items:center;padding:5px 8px 0;gap:4px}
+.swrap-hdr span{font-size:0.72rem;color:var(--text2)}
+.rbtn{margin-left:auto;background:none;border:none;color:var(--text3);font-size:0.78rem;cursor:pointer;padding:2px 6px;border-radius:4px;line-height:1.2}
+.rbtn:hover{background:var(--elevated);color:var(--text1)}
 .sinput{width:100%;background:var(--elevated);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:0.88rem;outline:none;transition:border-color 0.15s}
 .sinput:focus{border-color:var(--accent)}
 .sinput::placeholder{color:var(--text3)}
@@ -278,7 +282,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.19</span>
+      <span class="rail-ver">Beta 0.20</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -287,16 +291,19 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
       <button class="stab" data-tab="leaders">Top</button>
     </div>
     <div id="pnl-players" class="panel">
+      <div class="swrap-hdr"><span>Player name</span><button class="rbtn" onclick="resetPlayer()">✕ Clear</button></div>
       <div class="swrap"><input id="q-pl" class="sinput" placeholder="Search players…" autocomplete="off" autocorrect="off" spellcheck="false"></div>
       <div id="res-pl" class="sresults"></div>
     </div>
     <div id="pnl-teams" class="panel hidden">
+      <div class="swrap-hdr"><span>Team</span><button class="rbtn" onclick="resetTeam()">✕ Clear</button></div>
       <div class="sseason"><select id="q-sn" class="sselect"><option value="">Select season…</option></select></div>
       <div class="swrap"><input id="q-tm" class="sinput" placeholder="Search teams… (e.g. spirit magic u14)" autocomplete="off" spellcheck="false"></div>
       <div id="res-tm" class="sresults"></div>
     </div>
     <div id="pnl-venues" class="panel hidden">
       <div class="sseason"><select id="q-vsn" class="sselect"><option value="">All seasons</option></select></div>
+      <div class="swrap-hdr"><span>Venue</span><button class="rbtn" onclick="resetVenue()">✕ Clear</button></div>
       <div class="vfilters">
         <input id="q-vdate" type="date" class="sinput vfilter-date" title="Filter by date">
         <input id="q-vn" class="sinput" placeholder="Search venues…" autocomplete="off" spellcheck="false">
@@ -317,6 +324,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
         <span style="font-size:0.75rem;color:var(--text2)">Min GP</span>
         <input id="lb-mingp" type="number" min="1" max="999" value="10" class="sinput" style="width:60px;padding:4px 8px;font-size:0.82rem">
       </div>
+      <div class="swrap-hdr"><span>Filters</span><button class="rbtn" onclick="resetLB()">✕ Reset</button></div>
       <div id="lb-season-filters" class="hidden" style="padding:6px 8px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px">
         <select id="lb-grade" class="sselect" style="font-size:0.75rem"><option value="">All grades</option></select>
         <div style="display:flex;gap:4px">
@@ -959,9 +967,21 @@ function calGrid(byMonth,vid,todayStr){
   }
   return h+'</div>';
 }
-function renderKnownDates(dates,vid,todayStr){
+function renderKnownDates(dates,vid,todayStr,showAll){
+  // Default: last 12 months + any future dates
+  const cutoff=todayStr?todayStr.slice(0,7):'';
+  const cutoffMinus12=cutoff?`${String(parseInt(cutoff.slice(0,4))-(cutoff.slice(5,7)<='12'?1:0))}-${String(((parseInt(cutoff.slice(5,7))-1+12)%12)+1).padStart(2,'0')}`:'';
+  const recentCutoff=cutoff?`${String(parseInt(cutoff.slice(0,4))-1)}-${cutoff.slice(5,7)}`:'';
+  const recent=showAll?dates:dates.filter(d=>d.slice(0,7)>=recentCutoff);
+  const hidden=showAll?0:dates.length-recent.length;
   const dateRange=dates.length?`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','',this.value,true)"></div>`:'';
-  return dateRange+calGrid(groupByMonth(dates),vid,todayStr);
+  const showMoreBtn=(!showAll&&hidden>0)?`<div style="padding:8px 14px"><button class="lb-stat" style="width:100%" onclick="renderVenueCalAll('${esc(vid)}','${esc(todayStr)}')">Show ${hidden} earlier dates ↑</button></div>`:'';
+  return showMoreBtn+dateRange+calGrid(groupByMonth(recent),vid,todayStr);
+}
+function renderVenueCalAll(vid,todayStr){
+  const dates=S.venueDates[vid]||[];
+  const cs=document.getElementById('cal-section');
+  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,true);
 }
 function jumpToMonth(vid,todayStr,monthVal,isKnown){
   if(!monthVal)return;
@@ -1333,7 +1353,7 @@ function renderLB(allEntries,data){
         <div>${gpInfo}<div class="lb-val">${typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v}</div></div>
       </div>`;
     }).join('');
-  ve.querySelectorAll('.lb-row[data-uuid]').forEach(r=>r.addEventListener('click',()=>loadPlayer(r.dataset.uuid)));
+  ve.querySelectorAll('.lb-row[data-uuid]').forEach(r=>r.addEventListener('click',()=>{switchTab('players');loadPlayer(r.dataset.uuid);}));
 }
 /* ── Events ── */
 document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
@@ -1380,9 +1400,21 @@ function calGrid(byMonth,vid,todayStr){
   }
   return h+'</div>';
 }
-function renderKnownDates(dates,vid,todayStr){
+function renderKnownDates(dates,vid,todayStr,showAll){
+  // Default: last 12 months + any future dates
+  const cutoff=todayStr?todayStr.slice(0,7):'';
+  const cutoffMinus12=cutoff?`${String(parseInt(cutoff.slice(0,4))-(cutoff.slice(5,7)<='12'?1:0))}-${String(((parseInt(cutoff.slice(5,7))-1+12)%12)+1).padStart(2,'0')}`:'';
+  const recentCutoff=cutoff?`${String(parseInt(cutoff.slice(0,4))-1)}-${cutoff.slice(5,7)}`:'';
+  const recent=showAll?dates:dates.filter(d=>d.slice(0,7)>=recentCutoff);
+  const hidden=showAll?0:dates.length-recent.length;
   const dateRange=dates.length?`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="jumpToMonth('${esc(vid)}','',this.value,true)"></div>`:'';
-  return dateRange+calGrid(groupByMonth(dates),vid,todayStr);
+  const showMoreBtn=(!showAll&&hidden>0)?`<div style="padding:8px 14px"><button class="lb-stat" style="width:100%" onclick="renderVenueCalAll('${esc(vid)}','${esc(todayStr)}')">Show ${hidden} earlier dates ↑</button></div>`:'';
+  return showMoreBtn+dateRange+calGrid(groupByMonth(recent),vid,todayStr);
+}
+function renderVenueCalAll(vid,todayStr){
+  const dates=S.venueDates[vid]||[];
+  const cs=document.getElementById('cal-section');
+  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,true);
 }
 function jumpToMonth(vid,todayStr,monthVal,isKnown){
   if(!monthVal)return;
