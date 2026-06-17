@@ -36,5 +36,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: diagnose-${{ inputs.uuid }}
-          path: diagnose-${{ inputs.uuid }}.json
+          path: diagnose-${{ inputs.uuid == '' && 'none' || inputs.uuid[:8] }}.json
           retention-days: 7
