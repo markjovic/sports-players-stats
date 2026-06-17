@@ -154,7 +154,11 @@ function pushAllTime(buckets, player) {
   const team     = lastReg?.tn  || null;
   const org      = sidToOrg.get(lastSeason?.sid) || null;
   if (!bball || typeof bball.gp !== 'number' || bball.gp < 1) return;
-  const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp };
+  const careerFoulOuts   = bball.foulOuts ?? 0;
+  const careerFoulOutsPG = bball.gp > 0 ? Math.round((careerFoulOuts / bball.gp) * 1000) / 1000 : 0;
+  const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
+    foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
+    threePtPG: bball.threePtPG ?? 0, foulsPG: bball.foulsPG ?? 0 };
   if (typeof bball.pts     === 'number') buckets.pts    .push({ ...base, v: bball.pts });
   if (typeof bball.gp      === 'number') buckets.gp     .push({ ...base, v: bball.gp });
   if (typeof bball.threePt === 'number') buckets.threePt.push({ ...base, v: bball.threePt });
@@ -177,6 +181,10 @@ function pushSeason(buckets, player, sid) {
       if (typeof gp !== 'number' || gp < 1) continue;
       const comp = tidToComp.get(reg.tid) || '';
       const org  = sidToOrg.get(sid) || '';
+      const foulOuts   = reg.stats?.foulOuts  ?? 0;
+      const foulOutsPG = gp > 0 ? Math.round((foulOuts / gp) * 1000) / 1000 : 0;
+      const threePtPG  = reg.stats?.threePtPG ?? 0;
+      const foulsPG    = reg.stats?.foulsPG   ?? 0;
       const base = {
         uuid, name,
         club:   sClub,
@@ -187,6 +195,10 @@ function pushSeason(buckets, player, sid) {
         age:    reg.age || '',
         gender: gender  || '',
         gp,
+        foulOuts,
+        foulOutsPG,
+        threePtPG,
+        foulsPG,
       };
       if (typeof stats.pts     === 'number') buckets.pts    .push({ ...base, v: stats.pts });
       if (typeof stats.gp      === 'number') buckets.gp     .push({ ...base, v: stats.gp });
