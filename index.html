@@ -264,6 +264,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .lb-stat{padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;border:1px solid var(--border);color:var(--text2);transition:all 0.12s}
 .lb-stat.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
 .lb-stat:hover:not(.on){background:var(--elevated);color:var(--text)}
+#lb-header{position:sticky;top:0;background:var(--surface);z-index:5}
 .lb-row{display:grid;grid-template-columns:2rem 1fr auto;gap:6px;padding:9px 14px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s}
 .lb-row:hover{background:var(--elevated)}
 .lb-rank{font-size:0.72rem;color:var(--text3);font-variant-numeric:tabular-nums}
@@ -282,7 +283,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.21</span>
+      <span class="rail-ver">Beta 0.23</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -311,28 +312,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
       <div id="res-vn" class="sresults"></div>
     </div>
   </div>
-    <div id="pnl-leaders" class="panel hidden">
-      <div class="sseason"><select id="lb-season" class="sselect"><option value="all">All-time</option></select></div>
-      <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px;border-bottom:1px solid var(--border)">
-        <button class="lb-stat on" data-stat="pts">PTS</button>
-        <button class="lb-stat" data-stat="ppg">PPG</button>
-        <button class="lb-stat" data-stat="gp">GP</button>
-        <button class="lb-stat" data-stat="threePt">3PT</button>
-        <button class="lb-stat" data-stat="fouls">F</button>
-      </div>
-      <div id="lb-mingp-wrap" class="hidden" style="padding:6px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
-        <span style="font-size:0.75rem;color:var(--text2)">Min GP</span>
-        <input id="lb-mingp" type="number" min="1" max="999" value="10" class="sinput" style="width:60px;padding:4px 8px;font-size:0.82rem">
-      </div>
-      <div class="swrap-hdr"><span>Filters</span><button class="rbtn" onclick="resetLB()">✕ Reset</button></div>
-      <div id="lb-season-filters" class="hidden" style="padding:6px 8px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px">
-        <select id="lb-grade" class="sselect" style="font-size:0.75rem"><option value="">All grades</option></select>
-        <div style="display:flex;gap:4px">
-          <select id="lb-age" class="sselect" style="font-size:0.75rem;flex:1"><option value="">All ages</option></select>
-          <select id="lb-gender" class="sselect" style="font-size:0.75rem;flex:1"><option value="">All</option><option value="Male">M</option><option value="Female">F</option></select>
-        </div>
-      </div>
-    </div>
+    <div id="pnl-leaders" class="panel hidden"></div>
 
   <div id="main">
     <div id="view-home"><div class="home-mark">ST</div><div class="home-hint">Search for players, teams or venues</div></div>
@@ -340,7 +320,34 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div id="view-team" class="hidden"></div>
     <div id="view-venue" class="hidden"></div>
     <div id="view-opp" class="hidden"></div>
-    <div id="view-leaders" class="hidden"></div>
+    <div id="view-leaders" class="hidden">
+      <div id="lb-header" style="border-bottom:1px solid var(--border)">
+        <div class="sseason"><select id="lb-season" class="sselect"><option value="all">All-time</option></select></div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px;border-bottom:1px solid var(--border)">
+          <button class="lb-stat on" data-stat="pts">PTS</button>
+          <button class="lb-stat" data-stat="ppg">PPG</button>
+          <button class="lb-stat" data-stat="gp">GP</button>
+          <button class="lb-stat" data-stat="threePt">3PT</button>
+          <button class="lb-stat" data-stat="fouls">F</button>
+        </div>
+        <div id="lb-mingp-wrap" class="hidden" style="padding:6px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+          <span style="font-size:0.75rem;color:var(--text2)">Min GP</span>
+          <input id="lb-mingp" type="number" min="1" max="999" value="10" class="sinput" style="width:60px;padding:4px 8px;font-size:0.82rem">
+        </div>
+        <div id="lb-season-filters" class="hidden" style="padding:6px 8px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px">
+          <select id="lb-comp" class="sselect" style="font-size:0.75rem"><option value="">All competitions</option></select>
+          <div style="display:flex;gap:4px">
+            <select id="lb-grade" class="sselect" style="font-size:0.75rem;flex:2"><option value="">All grades</option></select>
+            <select id="lb-age" class="sselect" style="font-size:0.75rem;flex:1"><option value="">All ages</option></select>
+            <select id="lb-gender" class="sselect" style="font-size:0.75rem;flex:1"><option value="">All</option></select>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <button class="rbtn" style="margin-left:0;opacity:1;font-size:0.72rem" onclick="resetLB()">✕ Reset</button>
+          </div>
+        </div>
+      </div>
+      <div id="lb-results"></div>
+    </div>
   </div>
 
   <div id="sov">
@@ -379,7 +386,7 @@ function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function resetPlayer(){const q=document.getElementById('q-pl');if(q)q.value='';const r=document.getElementById('res-pl');if(r){r.innerHTML='';r.style.display='none';}}
 function resetTeam(){const q=document.getElementById('q-tm');if(q)q.value='';const sn=document.getElementById('q-sn');if(sn)sn.selectedIndex=0;const r=document.getElementById('res-tm');if(r)r.innerHTML='';}
 function resetVenue(){const q=document.getElementById('q-vn');if(q)q.value='';const vd=document.getElementById('q-vdate');if(vd)vd.value='';const vs=document.getElementById('q-vsn');if(vs)vs.selectedIndex=0;const r=document.getElementById('res-vn');if(r)r.innerHTML='';const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';const cs=document.getElementById('cal-section');if(cs)cs.innerHTML='';}
-function resetLB(){const g=document.getElementById('lb-grade');if(g)g.value='';const a=document.getElementById('lb-age');if(a)a.value='';const gn=document.getElementById('lb-gender');if(gn)gn.value='';const mg=document.getElementById('lb-mingp');if(mg)mg.value='10';renderLB();}
+function resetLB(){const c=document.getElementById('lb-comp');if(c)c.value='';const g=document.getElementById('lb-grade');if(g)g.value='';const a=document.getElementById('lb-age');if(a)a.value='';const gn=document.getElementById('lb-gender');if(gn)gn.value='';const mg=document.getElementById('lb-mingp');if(mg)mg.value='10';renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{});}
 // Recent searches (localStorage)
 function getRecent(k){try{return JSON.parse(localStorage.getItem('st_'+k)||'[]');}catch{return[];}}
 function addRecent(k,v){if(!v||v.length<2)return;let r=getRecent(k).filter(x=>x!==v);r.unshift(v);localStorage.setItem('st_'+k,JSON.stringify(r.slice(0,8)));}
@@ -972,7 +979,13 @@ function renderKnownDates(dates,vid,todayStr,pageIdx){
   const months=[...byMonth.keys()];
   if(!months.length)return'<div class="empty">No dates on record.</div>';
   const total=months.length;
-  if(pageIdx==null)pageIdx=Math.max(0,total-3); // start at most recent 3
+  if(pageIdx==null){
+    // Find month nearest to today, put it in the middle of the 3-month window
+    const todayYM=todayStr?todayStr.slice(0,7):'';
+    let nearest=total-1;
+    for(let i=0;i<months.length;i++){if(months[i]>=todayYM){nearest=i;break;}}
+    pageIdx=Math.max(0,Math.min(nearest-1,total-3)); // nearest as middle
+  }
   pageIdx=Math.max(0,Math.min(pageIdx,total-1));
   const visible=months.slice(pageIdx,pageIdx+3);
   const pageMap=new Map(visible.map(m=>[m,byMonth.get(m)]));
@@ -1309,7 +1322,7 @@ function switchLBStat(stat){
 async function loadLB(){
   showV('view-leaders');
   const ve=el('view-leaders');
-  ve.innerHTML='<div class="load-row">Loading leaderboard\u2026</div>';
+  if(el('lb-results'))el('lb-results').innerHTML='<div class="load-row">Loading…</div>';else ve.innerHTML='<div class="load-row">Loading…</div>';
   const scope=el('lb-season').value;
   S.lbScope=scope;
   const key=scope==='all'?'all':scope;
@@ -1321,16 +1334,22 @@ async function loadLB(){
   if(!data){ve.innerHTML='<div class="empty">No leaderboard data available.</div>';return;}
   // Show/hide season filters
   const isAll=scope==='all';
-  el('lb-season-filters').classList.toggle('hidden',isAll);
+  el('lb-season-filters').classList.remove('hidden');
   const entries=(data[S.lbStat]||[]);
   // Populate grade/age filters for season scope
-  if(!isAll){
-    const grades=[...new Set(entries.map(e=>e.grade).filter(Boolean))].sort();
-    const ages=[...new Set(entries.map(e=>e.age).filter(Boolean))].sort();
-    const gSel=el('lb-grade'),aSel=el('lb-age');
-    const gVal=gSel.value,aVal=aSel.value;
+  {
+    const allEntries4filter=entries;
+    const comps=[...new Set(allEntries4filter.map(e=>e.comp).filter(Boolean))].sort();
+    const grades=[...new Set(allEntries4filter.map(e=>e.grade).filter(Boolean))].sort();
+    const ages=[...new Set(allEntries4filter.map(e=>e.age).filter(Boolean))].sort();
+    const genders=[...new Set(allEntries4filter.map(e=>e.gender).filter(Boolean))].sort();
+    const cSel=el('lb-comp'),gSel=el('lb-grade'),aSel=el('lb-age'),gnSel=el('lb-gender');
+    const cVal=cSel.value,gVal=gSel.value,aVal=aSel.value,gnVal=gnSel.value;
+    cSel.innerHTML='<option value="">All competitions</option>'+comps.map(c=>`<option value="${esc(c)}"${c===cVal?' selected':''}>${esc(c)}</option>`).join('');
     gSel.innerHTML='<option value="">All grades</option>'+grades.map(g=>`<option${g===gVal?' selected':''}>${esc(g)}</option>`).join('');
     aSel.innerHTML='<option value="">All ages</option>'+ages.map(a=>`<option${a===aVal?' selected':''}>${esc(a)}</option>`).join('');
+    const genderLabel=g=>g==='Male'?'M':g==='Female'?'F':g==='Boys'?'Boys':g==='Girls'?'Girls':esc(g);
+    gnSel.innerHTML='<option value="">All</option>'+genders.map(g=>`<option value="${esc(g)}"${g===gnVal?' selected':''}>${genderLabel(g)}</option>`).join('');
   }
   renderLB(entries,data);
 }
@@ -1339,7 +1358,8 @@ function renderLB(allEntries,data){
   let entries=[...allEntries];
   // Apply filters
   if(scope!=='all'){
-    const grade=el('lb-grade')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
+    const comp=el('lb-comp')?.value,grade=el('lb-grade')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
+    if(comp)entries=entries.filter(e=>e.comp===comp);
     if(grade)entries=entries.filter(e=>e.grade===grade);
     if(age)entries=entries.filter(e=>e.age===age);
     if(gender)entries=entries.filter(e=>e.gender===gender);
@@ -1351,11 +1371,11 @@ function renderLB(allEntries,data){
   }
   // Sort by v descending (data already sorted but re-sort after filter)
   entries.sort((a,b)=>b.v-a.v);
-  const ve=el('view-leaders');
+  const ve=el('lb-results');
   const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','fouls':'F'}[S.lbStat]||S.lbStat;
   const scopeName=scope==='all'?'All-time':el('lb-season')?.querySelector(`option[value="${scope}"]`)?.textContent||scope;
-  if(!entries.length){ve.innerHTML=`<div class="empty">No entries match the current filters.</div>`;return;}
-  ve.innerHTML=`<div style="padding:12px 14px;border-bottom:1px solid var(--border);font-size:0.78rem;color:var(--text2);display:flex;justify-content:space-between"><span>${esc(scopeName)}</span><span>${esc(statLbl)} \u2014 Top ${entries.length}</span></div>`+
+  if(!entries.length){(el('lb-results')||el('view-leaders')).innerHTML=`<div class="empty">No entries match the current filters.</div>`;return;}
+  ve.innerHTML=`<div style="padding:8px 14px;font-size:0.75rem;color:var(--text2)">${esc(statLbl)} — ${entries.length} player${entries.length!==1?'s':''}</div>`+
     entries.slice(0,200).map((e,i)=>{
       const sub=[e.club,e.grade].filter(Boolean).join(' \u00b7 ');
       const gpInfo=S.lbStat==='ppg'?`<div class="lb-gp">${e.gp} GP</div>`:'';
@@ -1384,6 +1404,7 @@ document.querySelectorAll('.lb-stat').forEach(b=>b.addEventListener('click',()=>
 el('lb-mingp').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
 el('lb-grade').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
 el('lb-age').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
+el('lb-comp').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
 el('lb-gender').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
 el('q-vsn').addEventListener('change',()=>onVenueSeasonChange());
 
@@ -1417,7 +1438,13 @@ function renderKnownDates(dates,vid,todayStr,pageIdx){
   const months=[...byMonth.keys()];
   if(!months.length)return'<div class="empty">No dates on record.</div>';
   const total=months.length;
-  if(pageIdx==null)pageIdx=Math.max(0,total-3); // start at most recent 3
+  if(pageIdx==null){
+    // Find month nearest to today, put it in the middle of the 3-month window
+    const todayYM=todayStr?todayStr.slice(0,7):'';
+    let nearest=total-1;
+    for(let i=0;i<months.length;i++){if(months[i]>=todayYM){nearest=i;break;}}
+    pageIdx=Math.max(0,Math.min(nearest-1,total-3)); // nearest as middle
+  }
   pageIdx=Math.max(0,Math.min(pageIdx,total-1));
   const visible=months.slice(pageIdx,pageIdx+3);
   const pageMap=new Map(visible.map(m=>[m,byMonth.get(m)]));
