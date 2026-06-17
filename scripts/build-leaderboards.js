@@ -85,7 +85,7 @@ class TopN {
   result() { return this.arr; }
 }
 
-const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls'];
+const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls', 'threePtPG', 'foulsPG', 'foulOuts', 'foulOutsPG'];
 
 function makeBuckets(limit) {
   const b = {};
@@ -156,13 +156,19 @@ function pushAllTime(buckets, player) {
   if (!bball || typeof bball.gp !== 'number' || bball.gp < 1) return;
   const careerFoulOuts   = bball.foulOuts ?? 0;
   const careerFoulOutsPG = bball.gp > 0 ? Math.round((careerFoulOuts / bball.gp) * 1000) / 1000 : 0;
+  const careerThreePtPG  = bball.gp > 0 ? Math.round(((bball.threePt ?? 0) / bball.gp) * 100) / 100 : 0;
+  const careerFoulsPG    = bball.gp > 0 ? Math.round(((bball.fouls   ?? 0) / bball.gp) * 100) / 100 : 0;
   const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
-    threePtPG: bball.threePtPG ?? 0, foulsPG: bball.foulsPG ?? 0 };
+    threePtPG: careerThreePtPG, foulsPG: careerFoulsPG };
   if (typeof bball.pts     === 'number') buckets.pts    .push({ ...base, v: bball.pts });
   if (typeof bball.gp      === 'number') buckets.gp     .push({ ...base, v: bball.gp });
   if (typeof bball.threePt === 'number') buckets.threePt.push({ ...base, v: bball.threePt });
   if (typeof bball.fouls   === 'number') buckets.fouls  .push({ ...base, v: bball.fouls });
+  if (careerThreePtPG > 0)  buckets.threePtPG .push({ ...base, v: careerThreePtPG });
+  if (careerFoulsPG   > 0)  buckets.foulsPG   .push({ ...base, v: careerFoulsPG });
+  if (careerFoulOuts  > 0)  buckets.foulOuts  .push({ ...base, v: careerFoulOuts });
+  if (careerFoulOutsPG > 0) buckets.foulOutsPG.push({ ...base, v: careerFoulOutsPG });
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
@@ -181,10 +187,10 @@ function pushSeason(buckets, player, sid) {
       if (typeof gp !== 'number' || gp < 1) continue;
       const comp = tidToComp.get(reg.tid) || '';
       const org  = sidToOrg.get(sid) || '';
-      const foulOuts   = reg.stats?.foulOuts  ?? 0;
+      const foulOuts   = reg.stats?.foulOuts ?? 0;
       const foulOutsPG = gp > 0 ? Math.round((foulOuts / gp) * 1000) / 1000 : 0;
-      const threePtPG  = reg.stats?.threePtPG ?? 0;
-      const foulsPG    = reg.stats?.foulsPG   ?? 0;
+      const threePtPG  = gp > 0 ? Math.round(((reg.stats?.threePt ?? 0) / gp) * 100) / 100 : 0;
+      const foulsPG    = gp > 0 ? Math.round(((reg.stats?.fouls   ?? 0) / gp) * 100) / 100 : 0;
       const base = {
         uuid, name,
         club:   sClub,
@@ -204,6 +210,10 @@ function pushSeason(buckets, player, sid) {
       if (typeof stats.gp      === 'number') buckets.gp     .push({ ...base, v: stats.gp });
       if (typeof stats.threePt === 'number') buckets.threePt.push({ ...base, v: stats.threePt });
       if (typeof stats.fouls   === 'number') buckets.fouls  .push({ ...base, v: stats.fouls });
+      if (threePtPG  > 0) buckets.threePtPG .push({ ...base, v: threePtPG });
+      if (foulsPG    > 0) buckets.foulsPG   .push({ ...base, v: foulsPG });
+      if (foulOuts   > 0) buckets.foulOuts  .push({ ...base, v: foulOuts });
+      if (foulOutsPG > 0) buckets.foulOutsPG.push({ ...base, v: foulOutsPG });
       if (typeof stats.pts     === 'number') {
         buckets.ppg.push({ ...base, v: Math.round((stats.pts / gp) * 10) / 10 });
       }
