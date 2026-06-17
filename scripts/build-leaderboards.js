@@ -123,6 +123,10 @@ const activeSids = new Set(
     .filter(s => !s.locked)
     .map(s => s.id)
 );
+// sid → orgName for org field on leaderboard entries
+const sidToOrg = new Map(
+  Object.values(sportsIndex.seasons).map(s => [s.id, s.orgName || ''])
+);
 console.log(`  ${Object.keys(sportsIndex.seasons).length} total seasons, ${activeSids.size} active`);
 
 const targetSids = ACTIVE_ONLY ? activeSids : null; // null = all seasons
@@ -140,12 +144,17 @@ function readPlayer(uuid) {
 }
 
 function pushAllTime(buckets, player) {
-  const uuid  = player.uuid;
-  const name  = player.name || `Player #${uuid.slice(0, 10)}`;
-  const bball = player.sports?.Basketball;
-  const club  = (player.seasons || []).at(-1)?.club || null;
+  const uuid     = player.uuid;
+  const name     = player.name || `Player #${uuid.slice(0, 10)}`;
+  const bball    = player.sports?.Basketball;
+  const lastSeason = (player.seasons || []).at(-1);
+  const club     = lastSeason?.club || null;
+  // Most recently seen team: last reg of last season
+  const lastReg  = (lastSeason?.regs || []).at(-1);
+  const team     = lastReg?.tn  || null;
+  const org      = sidToOrg.get(lastSeason?.sid) || null;
   if (!bball || typeof bball.gp !== 'number' || bball.gp < 1) return;
-  const base = { uuid, name, club, sport: 'Basketball', gp: bball.gp };
+  const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp };
   if (typeof bball.pts     === 'number') buckets.pts    .push({ ...base, v: bball.pts });
   if (typeof bball.gp      === 'number') buckets.gp     .push({ ...base, v: bball.gp });
   if (typeof bball.threePt === 'number') buckets.threePt.push({ ...base, v: bball.threePt });
@@ -167,9 +176,12 @@ function pushSeason(buckets, player, sid) {
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
       const comp = tidToComp.get(reg.tid) || '';
+      const org  = sidToOrg.get(sid) || '';
       const base = {
         uuid, name,
         club:   sClub,
+        team:   reg.tn  || '',
+        org,
         comp,
         grade:  reg.gn  || '',
         age:    reg.age || '',
