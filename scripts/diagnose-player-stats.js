@@ -231,6 +231,6 @@ if (careerDiffs.length) {
 
 // ─── 4. Write JSON report ─────────────────────────────────────────────────────
 
-const outPath = path.join(ROOT, `diagnose-${uuid.slice(0, 8)}.json`);
+const outPath = path.join(ROOT, `diagnose-${uuid}.json`);
 fs.writeFileSync(outPath, JSON.stringify(report, null, 2), 'utf8');
-console.log(`\nFull report written to: diagnose-${uuid.slice(0, 8)}.json`);
+console.log(`\nFull report written to: diagnose-${uuid}.json`);
