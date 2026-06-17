@@ -34,6 +34,7 @@ const { execSync } = require('child_process');
 const ROOT            = path.join(__dirname, '..');
 const DRY_RUN         = process.argv.includes('--dry-run');
 const ACTIVE_ONLY     = process.argv.includes('--active-only');
+const FORCE_FULL      = process.argv.includes('--force'); // ignore progress file, full rebuild
 const ALL_TIME_LIMIT  = 2000;
 const SEASON_LIMIT    = 5000; // never trims; bounds memory to one season at a time
 const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
@@ -249,7 +250,10 @@ console.log(`  ${tsFiles.length} season files to process`);
 
 // Load pass 2 progress — resume from last committed point
 let doneSids = new Set();
-if (fs.existsSync(PASS2_PROGRESS)) {
+if (FORCE_FULL && fs.existsSync(PASS2_PROGRESS)) {
+  if (!DRY_RUN) fs.unlinkSync(PASS2_PROGRESS);
+  console.log('  --force: progress file cleared, full rebuild');
+} else if (fs.existsSync(PASS2_PROGRESS)) {
   try { doneSids = new Set((readJson(PASS2_PROGRESS).done || [])); } catch {}
   if (doneSids.size > 0) console.log(`  Resuming — ${doneSids.size} season files already done`);
 }
