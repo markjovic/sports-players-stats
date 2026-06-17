@@ -286,7 +286,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.27</span>
+      <span class="rail-ver">Beta 0.32</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -341,7 +341,9 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
             <button class="lb-stat" data-stat="ppg">PPG</button>
             <button class="lb-stat" data-stat="gp">GP</button>
             <button class="lb-stat" data-stat="threePt">3PT</button>
+            <button class="lb-stat" data-stat="threesg">3PT/G</button>
             <button class="lb-stat" data-stat="fouls">F</button>
+            <button class="lb-stat" data-stat="fpg">F/G</button>
           </div>
           <div id="lb-mingp-wrap" class="hidden" style="display:flex;align-items:center;gap:6px">
             <span style="font-size:0.75rem;color:var(--text2);white-space:nowrap">Min GP</span>
@@ -351,8 +353,8 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
         <div id="lb-season-filters" class="lb-ctrl-row">
           <select id="lb-org" class="sselect" style="flex:1;min-width:120px;font-size:0.75rem"><option value="">All orgs</option></select>
           <select id="lb-comp" class="sselect" style="flex:1;min-width:120px;font-size:0.75rem"><option value="">All comps</option></select>
-          <select id="lb-grade" class="sselect" style="flex:1;min-width:100px;font-size:0.75rem"><option value="">All grades</option></select>
           <select id="lb-age" class="sselect" style="flex:0 0 auto;font-size:0.75rem"><option value="">All ages</option></select>
+          <select id="lb-grade" class="sselect" style="flex:1;min-width:100px;font-size:0.75rem"><option value="">All grades</option></select>
           <select id="lb-gender" class="sselect" style="flex:0 0 auto;font-size:0.75rem"><option value="">All</option></select>
           <button class="rbtn" style="margin-left:0;opacity:1;font-size:0.72rem" onclick="resetLB()">✕ Reset</button>
         </div>
@@ -619,6 +621,7 @@ function switchFromTop(tab){
 /* ── Player search ── */
 async function searchPlayers(q){
   const re=el('res-pl');
+  re.style.display='';
   if(q.length<2){re.innerHTML='';return;}
   re.innerHTML='<div class="ri-empty">Searching\u2026</div>';
   const sh=q.slice(0,2).toLowerCase();
@@ -733,7 +736,7 @@ async function toggleGames(hdr){
   if(!S.games[sid]){const d=await gj(BASE+'/games/bv/'+sid+'.json');S.games[sid]=d||{games:{}};}
   const all=S.games[sid]?.games||{};
   const pg=Object.entries(all)
-    .filter(([,g])=>(g.p||[]).some(p=>p.id===uuid))
+    .filter(([,g])=>(g.h===tid||g.a===tid)&&(g.p||[]).some(p=>p.id===uuid))
     .sort(([,a],[,b])=>(b.d||'').localeCompare(a.d||''));
   if(!pg.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
   const allRegGradeNames=regs.map(r=>r.gn||r.tn||'').filter(Boolean);
@@ -750,7 +753,7 @@ async function toggleGames(hdr){
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-row">
         <div class="g-info">
-          <div class="g-opp">${gradeTag}${badgeH}${esc(oppN)}</div>
+          <div class="g-opp">${gradeTag}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
           <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}</div>
         </div>
         <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored)}</div>
@@ -1320,23 +1323,30 @@ async function openOpp(tid,sid,fromUuid){
 /* ── Leaderboard ── */
 async function buildLBSeasonPicker(){
   if(!S.idx)return;
-  const nm=new Map();
+  const nm=new Map(); // name → {name,active,sids:[]}
+  S.lbSeasonMap={};  // name → [sid,...]
   for(const s of Object.values(S.idx.seasons)){
-    if(!nm.has(s.name))nm.set(s.name,{name:s.name,active:false,sid:s.id});
-    if(!s.locked)nm.get(s.name).active=true;
+    if(!nm.has(s.name))nm.set(s.name,{name:s.name,active:false,sids:[]});
+    const entry=nm.get(s.name);
+    entry.sids.push(s.id);
+    if(!s.locked)entry.active=true;
+    S.lbSeasonMap[s.name]=entry.sids;
   }
   const sorted=[...nm.values()].sort((a,b)=>{
     if(a.active!==b.active)return a.active?-1:1;
     const ya=a.name.match(/\d{4}/)?.[0]||'0',yb=b.name.match(/\d{4}/)?.[0]||'0';
-    return parseInt(yb)-parseInt(ya);
+    if(ya!==yb)return yb-ya;
+    return a.name.localeCompare(b.name);
   });
   const sel=el('lb-season');
-  sel.innerHTML='<option value="all">All-time</option>'+sorted.map(s=>`<option value="${esc(s.sid)}">${esc(s.name)}${s.active?' \u25cf':''}</option>`).join('');
+  sel.innerHTML='<option value="all">All-time</option>'+
+    sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' •':''}</option>`).join('');
 }
+
 function switchLBStat(stat){
   S.lbStat=stat;
   document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat===stat));
-  el('lb-mingp-wrap').classList.toggle('hidden',stat!=='ppg');
+  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','fpg','threesg'].includes(stat));
   loadLB();
 }
 async function loadLB(){
@@ -1344,18 +1354,34 @@ async function loadLB(){
   if(el('lb-results'))el('lb-results').innerHTML='<div class="load-row">Loading…</div>';else ve.innerHTML='<div class="load-row">Loading…</div>';
   const scope=el('lb-season').value;
   S.lbScope=scope;
-  const key=scope==='all'?'all':scope;
-  if(!S.lbData[key]){
-    const url=scope==='all'?BASE+'/leaderboard/all-time.json':BASE+'/leaderboard/season/'+scope+'.json';
-    S.lbData[key]=await gj(url);
+  let data;
+  if(scope==='all'){
+    if(!S.lbData['all'])S.lbData['all']=await gj(BASE+'/leaderboard/all-time.json');
+    data=S.lbData['all'];
+  }else{
+    // scope is a season name — fetch ALL sids with that name and merge
+    const sids=(S.lbSeasonMap||{})[scope]||[];
+    const parts=await Promise.all(sids.map(async sid=>{
+      if(!S.lbData[sid])S.lbData[sid]=await gj(BASE+'/leaderboard/season/'+sid+'.json');
+      return S.lbData[sid];
+    }));
+    const merged={};
+    for(const part of parts){
+      if(!part)continue;
+      for(const [stat,arr] of Object.entries(part)){
+        merged[stat]=[...(merged[stat]||[]),...arr];
+      }
+    }
+    data=merged;
+    S.lbData[scope]=data;
   }
-  const data=S.lbData[key];
-  if(!data){ve.innerHTML='<div class="empty">No leaderboard data available.</div>';return;}
+  if(!data||!Object.keys(data).length){(el('lb-results')||ve).innerHTML='<div class="empty">No leaderboard data available.</div>';return;}
   // Show/hide season filters
   const isAll=scope==='all';
+  el('lb-season-filters').classList.toggle('hidden',isAll);
 
-  const entries=(data[S.lbStat]||[]);
-  // Populate grade/age filters for season scope
+  const entries=(data[S.lbStat]||[]).slice();
+  // Populate filters
   {
     const allEntries4filter=entries;
     const orgs=[...new Set(allEntries4filter.map(e=>e.org).filter(Boolean))].sort();
@@ -1379,11 +1405,20 @@ function renderLB(allEntries,data){
   let entries=[...allEntries];
   // Apply filters
   if(scope!=='all'){
-    const org=el('lb-org')?.value,comp=el('lb-comp')?.value,grade=el('lb-grade')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
+    const org=el('lb-org')?.value,comp=el('lb-comp')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
     if(org)entries=entries.filter(e=>e.org===org);
     if(comp)entries=entries.filter(e=>e.comp===comp);
-    if(grade)entries=entries.filter(e=>e.grade===grade);
+    // Cascade: filter by age first, then rebuild grade options from result
     if(age)entries=entries.filter(e=>e.age===age);
+    const gradeSel=el('lb-grade');
+    if(gradeSel){
+      const availGrades=[...new Set(entries.map(e=>e.grade).filter(Boolean))].sort();
+      const curGrade=gradeSel.value;
+      gradeSel.innerHTML='<option value="">All grades</option>'+availGrades.map(g=>`<option value="${esc(g)}"${g===curGrade?' selected':''}>${esc(g)}</option>`).join('');
+      if(curGrade&&!availGrades.includes(curGrade))gradeSel.value='';
+    }
+    const grade=gradeSel?.value;
+    if(grade)entries=entries.filter(e=>e.grade===grade);
     if(gender)entries=entries.filter(e=>e.gender===gender);
   }
   // Min GP for PPG
@@ -1394,17 +1429,18 @@ function renderLB(allEntries,data){
   // Sort by v descending (data already sorted but re-sort after filter)
   entries.sort((a,b)=>b.v-a.v);
   const ve=el('lb-results');
-  const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','fouls':'F'}[S.lbStat]||S.lbStat;
+  const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','threesg':'3PT/G','fouls':'F','fpg':'F/G'}[S.lbStat]||S.lbStat;
   const scopeName=scope==='all'?'All-time':el('lb-season')?.querySelector(`option[value="${scope}"]`)?.textContent||scope;
   if(!entries.length){(el('lb-results')||el('view-leaders')).innerHTML=`<div class="empty">No entries match the current filters.</div>`;return;}
   ve.innerHTML=`<div style="padding:8px 14px;font-size:0.75rem;color:var(--text2)">${esc(statLbl)} — ${entries.length} player${entries.length!==1?'s':''}</div>`+
     entries.slice(0,200).map((e,i)=>{
       const sub=[e.club,e.grade].filter(Boolean).join(' \u00b7 ');
       const gpInfo=S.lbStat==='ppg'?`<div class="lb-gp">${e.gp} GP</div>`:'';
+      const dispVal=typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v;
       return`<div class="lb-row" data-uuid="${esc(e.uuid)}">
         <div class="lb-rank">${i+1}</div>
         <div><div class="lb-name">${esc(e.name||'Player #'+e.uuid.slice(0,10))}</div><div class="lb-club">${esc(sub)}</div></div>
-        <div>${gpInfo}<div class="lb-val">${typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v}</div></div>
+        <div>${gpInfo}<div class="lb-val">${dispVal}</div></div>
       </div>`;
     }).join('');
   ve.querySelectorAll('.lb-row[data-uuid]').forEach(r=>r.addEventListener('click',()=>loadPlayer(r.dataset.uuid)));
@@ -1433,9 +1469,7 @@ el('q-vsn').addEventListener('change',()=>onVenueSeasonChange());
 
 boot();
 
-</script>
-</body>
-</htmlfunction dayOfWeekN(y,m,d){const t=[0,3,2,5,0,3,5,1,4,6,2,4];const yr=m<3?y-1:y;return(yr+Math.floor(yr/4)-Math.floor(yr/100)+Math.floor(yr/400)+t[m-1]+d)%7;}
+function dayOfWeekN(y,m,d){const t=[0,3,2,5,0,3,5,1,4,6,2,4];const yr=m<3?y-1:y;return(yr+Math.floor(yr/4)-Math.floor(yr/100)+Math.floor(yr/400)+t[m-1]+d)%7;}
 function groupByMonth(dates){const m=new Map();for(const d of dates){const ym=d.slice(0,7);if(!m.has(ym))m.set(ym,[]);m.get(ym).push(d);}return m;}
 function calGrid(byMonth,vid,todayStr){
   const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -1508,4 +1542,7 @@ function jumpToMonth(vid,todayStr,monthVal,isKnown){
   if(cs)cs.innerHTML=renderCalRange(vid,todayStr||today,S.calOffset);
   const ga=el('vgrid-area');if(ga)ga.innerHTML='';
 }
->
+
+</script>
+</body>
+</html>
