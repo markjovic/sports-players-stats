@@ -101,6 +101,19 @@ function serialise(buckets) {
 // ─── load sports-index ───────────────────────────────────────────────────────
 
 console.log(`Mode: ${ACTIVE_ONLY ? 'ACTIVE ONLY' : 'FULL'}${DRY_RUN ? ' + DRY RUN' : ''}`);
+
+// Load team-index to resolve tid → comp
+console.log('Loading team-index.json...');
+const rawTeamIndex = readJson(path.join(ROOT, 'team-index.json'));
+// Flatten to tid → comp map
+const tidToComp = new Map();
+for (const entries of Object.values(rawTeamIndex)) {
+  for (const entry of entries) {
+    if (entry.id && entry.comp) tidToComp.set(entry.id, entry.comp);
+  }
+}
+console.log(`  ${tidToComp.size} team→comp mappings loaded`);
+
 console.log('Loading sports-index.json...');
 const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
 
@@ -152,9 +165,11 @@ function pushSeason(buckets, player, sid) {
       const stats = reg.stats || {};
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
+      const comp = tidToComp.get(reg.tid) || '';
       const base = {
         uuid, name,
         club:   sClub,
+        comp,
         grade:  reg.gn  || '',
         age:    reg.age || '',
         gender: gender  || '',
