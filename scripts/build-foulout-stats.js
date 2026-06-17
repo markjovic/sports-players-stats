@@ -51,7 +51,7 @@ function gitCommit(message, dirs) {
 }
 
 // ─── Step 1: scan game files ──────────────────────────────────────────────────
-// Build: foulOutMap  = Map<uuid, Map<sid, int>>   foul-outs per player per season
+// Build: statsMap  = Map<uuid, Map<sid, {foulOuts,threePt,fouls,games}>>  per player per season
 //        techFoulsFound = boolean                 whether tech fouls field exists
 
 console.log('── Step 1: Scanning game files for box score foul data ─────────────');
@@ -149,7 +149,7 @@ for (const sid of sidsToScan) {
       );
     }
     sinceLastCommit = 0;
-    console.log(`  ${scannedSids.size}/${sids.length} seasons scanned — ${foulOutMap.size} players, ${totalFoulOuts} foul-outs`);
+    console.log(`  ${scannedSids.size}/${sids.length} seasons scanned — ${statsMap.size} players, ${totalFoulOuts} foul-outs`);
   }
 }
 
