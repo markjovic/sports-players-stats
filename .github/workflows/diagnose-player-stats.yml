@@ -1,4 +1,4 @@
-# .github/workflows/diagnose-player-stats.yml
+.github/workflows/diagnose-player-stats.yml
 
 name: Diagnose Player Stats
 
@@ -36,5 +36,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: diagnose-${{ inputs.uuid }}
-          path: diagnose-${{ inputs.uuid == '' && 'none' || inputs.uuid[:8] }}.json
+          path: diagnose-${{ inputs.uuid }}.json
           retention-days: 7
