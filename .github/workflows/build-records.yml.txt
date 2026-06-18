@@ -1,0 +1,42 @@
+# .github/workflows/build-records.yml
+
+name: Build Single-Game Records
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run build-records
+        run: node scripts/build-records.js
+
+      - name: Final push (safety net)
+        if: always()
+        run: |
+          git add records/ scripts/.records-progress.json || true
+          git diff --staged --quiet || git commit -m "build-records: safety-net final commit"
+          git pull --rebase=false --no-edit -X ours || true
+          git push || true
