@@ -14,6 +14,15 @@ on:
           - both
           - stats-only
           - scores-only
+      active_only:
+        description: 'Only process players in active (unlocked) seasons'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'Starting concurrency (default: 200, backs off automatically on 429s)'
+        required: false
+        default: '200'
       force:
         description: 'Ignore progress file and start fresh'
         required: false
@@ -56,6 +65,8 @@ jobs:
           ARGS=""
           if [ "${{ inputs.mode }}" = "stats-only" ]; then ARGS="$ARGS --stats-only"; fi
           if [ "${{ inputs.mode }}" = "scores-only" ]; then ARGS="$ARGS --scores-only"; fi
+          if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
+          if [ -n "${{ inputs.concurrency }}" ]; then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT

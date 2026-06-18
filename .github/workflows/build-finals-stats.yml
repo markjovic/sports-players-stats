@@ -4,6 +4,12 @@ name: Build Finals Stats
 
 on:
   workflow_dispatch:
+    inputs:
+      active_only:
+        description: 'Only process active (unlocked) seasons'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -31,7 +37,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run build-finals-stats
-        run: node scripts/build-finals-stats.js
+        run: |
+          ARGS=""
+          if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
+          node scripts/build-finals-stats.js $ARGS
 
       - name: Final push (safety net)
         if: always()
