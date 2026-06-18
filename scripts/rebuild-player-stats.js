@@ -239,14 +239,17 @@ async function fetchProfile(uuid) {
 }
 
 // ─── Parse publicProfileStatistics response ──────────────────────────────────
-// Returns { regStats, gameCorrections }
-// regStats:  Map<'sid:tid:gid', {personalFouls, technicalFouls, ..., foulOuts}>
-// gameCorrections: Map<gameId, {pt1,pt2,pt3,pts,fouls}> — for hp/ap updates
+// Returns { regStats, gameCorrections, playerBests }
+// regStats:    Map<'sid:tid:gid', {personalFouls, ..., foulOuts}>
+// gameCorrections: Map<gameId, {pt1,pt2,pt3,pts,fouls}>
+// playerBests: { maxGamePTS, maxGameThreePt } — { v, gameKey, sid }
 function parseProfile(profile, hiddenGameIds) {
-  if (!profile?.seasonStatistics) return { regStats: new Map(), gameCorrections: new Map() };
+  if (!profile?.seasonStatistics) return { regStats: new Map(), gameCorrections: new Map(), playerBests: {} };
 
-  const regStats       = new Map(); // 'sid:tid:gid' → partial reg.stats update
-  const gameCorrections = new Map(); // gameId → {pts,pt1,pt2,pt3,fouls}
+  const regStats        = new Map();
+  const gameCorrections = new Map();
+  let maxGamePTS     = null; // { v, gameKey, sid }
+  let maxGameThreePt = null;
 
   for (const sEntry of profile.seasonStatistics) {
     for (const tEntry of (sEntry.statistics ?? [])) {
@@ -271,7 +274,7 @@ function parseProfile(profile, hiddenGameIds) {
             }
           }
 
-          // ── gameStatistics → foulOuts + hp/ap corrections ──────────────────
+          // ── gameStatistics → foulOuts + player bests + hp/ap corrections ───
           let foulOuts = 0;
           for (const gameStat of (grade.gameStatistics ?? [])) {
             const gameId = gameStat.game?.id;
@@ -290,9 +293,17 @@ function parseProfile(profile, hiddenGameIds) {
             }
             if (gameFouls >= FOUL_THRESHOLD) foulOuts++;
 
+            // Track personal best single-game records
+            const gamePTS = gameScoring.pts ??
+              ((gameScoring.pt1 ?? 0) + (gameScoring.pt2 ?? 0) * 2 + (gameScoring.pt3 ?? 0) * 3);
+            const gamePT3 = gameScoring.pt3 ?? 0;
+            if (gamePTS > 0 && (!maxGamePTS || gamePTS > maxGamePTS.v))
+              maxGamePTS = { v: gamePTS, gameKey: gameId, sid };
+            if (gamePT3 > 0 && (!maxGameThreePt || gamePT3 > maxGameThreePt.v))
+              maxGameThreePt = { v: gamePT3, gameKey: gameId, sid };
+
             // Collect hp/ap correction for hidden games
             if (DO_SCORES && hiddenGameIds.has(gameId)) {
-              // pts computed from components if TOTAL_SCORE not returned
               const pts = gameScoring.pts ??
                 ((gameScoring.pt1 ?? 0) + (gameScoring.pt2 ?? 0) * 2 + (gameScoring.pt3 ?? 0) * 3);
               gameCorrections.set(gameId, {
@@ -311,7 +322,7 @@ function parseProfile(profile, hiddenGameIds) {
       }
     }
   }
-  return { regStats, gameCorrections };
+  return { regStats, gameCorrections, playerBests: { maxGamePTS, maxGameThreePt } };
 }
 
 // Extract value string from details (object or array)
