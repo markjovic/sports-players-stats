@@ -85,7 +85,7 @@ class TopN {
   result() { return this.arr; }
 }
 
-const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls', 'threePtPG', 'foulsPG', 'foulOuts', 'foulOutsPG', 'finals', 'gfApps', 'gfWins', 'finalsPerSeason'];
+const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls', 'threePtPG', 'foulsPG', 'foulOuts', 'foulOutsPG', 'finals', 'gfApps', 'gfWins', 'finalsPerSeason', 'bestPlayer', 'personalFouls', 'technicalFouls', 'unsFouls', 'disFouls', 'benchFouls'];
 
 function makeBuckets(limit) {
   const b = {};
@@ -158,14 +158,24 @@ function pushAllTime(buckets, player) {
   const careerFoulOutsPG = bball.gp > 0 ? Math.round((careerFoulOuts / bball.gp) * 1000) / 1000 : 0;
   const careerThreePtPG  = bball.gp > 0 ? Math.round(((bball.threePt ?? 0) / bball.gp) * 100) / 100 : 0;
   const careerFoulsPG    = bball.gp > 0 ? Math.round(((bball.fouls   ?? 0) / bball.gp) * 100) / 100 : 0;
-  const careerFinals         = bball.finals          ?? 0;
-  const careerGfApps         = bball.gfApps          ?? 0;
-  const careerGfWins         = bball.gfWins          ?? 0;
-  const careerFinalsPerSeason = bball.finalsPerSeason ?? 0;
+  const careerFinals          = bball.finals          ?? 0;
+  const careerGfApps          = bball.gfApps          ?? 0;
+  const careerGfWins          = bball.gfWins          ?? 0;
+  const careerFinalsPerSeason = bball.finalsPerSeason  ?? 0;
+  const careerBestPlayer      = bball.bestPlayer       ?? 0;
+  const careerPersonalFouls   = bball.personalFouls    ?? 0;
+  const careerTechFouls       = bball.technicalFouls   ?? 0;
+  const careerUnsFouls        = bball.unsFouls         ?? 0;
+  const careerDisFouls        = bball.disFouls         ?? 0;
+  const careerBenchFouls      = bball.benchFouls       ?? 0;
   const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
-    finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins, finalsPerSeason: careerFinalsPerSeason };
+    finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins,
+    finalsPerSeason: careerFinalsPerSeason,
+    bestPlayer: careerBestPlayer, personalFouls: careerPersonalFouls,
+    technicalFouls: careerTechFouls, unsFouls: careerUnsFouls,
+    disFouls: careerDisFouls, benchFouls: careerBenchFouls };
   if (typeof bball.pts     === 'number') buckets.pts    .push({ ...base, v: bball.pts });
   if (typeof bball.gp      === 'number') buckets.gp     .push({ ...base, v: bball.gp });
   if (typeof bball.threePt === 'number') buckets.threePt.push({ ...base, v: bball.threePt });
@@ -177,7 +187,13 @@ function pushAllTime(buckets, player) {
   if (careerFinals        > 0) buckets.finals        .push({ ...base, v: careerFinals });
   if (careerGfApps        > 0) buckets.gfApps        .push({ ...base, v: careerGfApps });
   if (careerGfWins        > 0) buckets.gfWins        .push({ ...base, v: careerGfWins });
-  if (careerFinalsPerSeason > 0) buckets.finalsPerSeason.push({ ...base, v: careerFinalsPerSeason });
+  if (careerFinalsPerSeason  > 0) buckets.finalsPerSeason .push({ ...base, v: careerFinalsPerSeason });
+  if (careerBestPlayer      > 0) buckets.bestPlayer     .push({ ...base, v: careerBestPlayer });
+  if (careerPersonalFouls   > 0) buckets.personalFouls  .push({ ...base, v: careerPersonalFouls });
+  if (careerTechFouls       > 0) buckets.technicalFouls .push({ ...base, v: careerTechFouls });
+  if (careerUnsFouls        > 0) buckets.unsFouls       .push({ ...base, v: careerUnsFouls });
+  if (careerDisFouls        > 0) buckets.disFouls       .push({ ...base, v: careerDisFouls });
+  if (careerBenchFouls      > 0) buckets.benchFouls     .push({ ...base, v: careerBenchFouls });
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
@@ -200,9 +216,15 @@ function pushSeason(buckets, player, sid) {
       const foulOutsPG = gp > 0 ? Math.round((foulOuts / gp) * 1000) / 1000 : 0;
       const threePtPG  = gp > 0 ? Math.round(((reg.stats?.threePt ?? 0) / gp) * 100) / 100 : 0;
       const foulsPG    = gp > 0 ? Math.round(((reg.stats?.fouls   ?? 0) / gp) * 100) / 100 : 0;
-      const finals     = reg.stats?.finals  ?? 0;
-      const gfApps     = reg.stats?.gfApps  ?? 0;
-      const gfWins     = reg.stats?.gfWins  ?? 0;
+      const finals          = reg.stats?.finals         ?? 0;
+      const gfApps          = reg.stats?.gfApps         ?? 0;
+      const gfWins          = reg.stats?.gfWins         ?? 0;
+      const bestPlayer      = reg.stats?.bestPlayer     ?? 0;
+      const personalFouls   = reg.stats?.personalFouls  ?? 0;
+      const technicalFouls  = reg.stats?.technicalFouls ?? 0;
+      const unsFouls        = reg.stats?.unsFouls       ?? 0;
+      const disFouls        = reg.stats?.disFouls       ?? 0;
+      const benchFouls      = reg.stats?.benchFouls     ?? 0;
       const base = {
         uuid, name,
         club:   sClub,
@@ -220,6 +242,12 @@ function pushSeason(buckets, player, sid) {
         finals,
         gfApps,
         gfWins,
+        bestPlayer,
+        personalFouls,
+        technicalFouls,
+        unsFouls,
+        disFouls,
+        benchFouls,
       };
       if (typeof stats.pts     === 'number') buckets.pts    .push({ ...base, v: stats.pts });
       if (typeof stats.gp      === 'number') buckets.gp     .push({ ...base, v: stats.gp });
@@ -231,7 +259,13 @@ function pushSeason(buckets, player, sid) {
       if (foulOutsPG > 0) buckets.foulOutsPG.push({ ...base, v: foulOutsPG });
       if (finals     > 0) buckets.finals    .push({ ...base, v: finals });
       if (gfApps     > 0) buckets.gfApps    .push({ ...base, v: gfApps });
-      if (gfWins     > 0) buckets.gfWins    .push({ ...base, v: gfWins });
+      if (gfWins        > 0) buckets.gfWins       .push({ ...base, v: gfWins });
+      if (bestPlayer    > 0) buckets.bestPlayer  .push({ ...base, v: bestPlayer });
+      if (personalFouls > 0) buckets.personalFouls.push({ ...base, v: personalFouls });
+      if (technicalFouls > 0) buckets.technicalFouls.push({ ...base, v: technicalFouls });
+      if (unsFouls      > 0) buckets.unsFouls    .push({ ...base, v: unsFouls });
+      if (disFouls      > 0) buckets.disFouls    .push({ ...base, v: disFouls });
+      if (benchFouls    > 0) buckets.benchFouls  .push({ ...base, v: benchFouls });
       if (typeof stats.pts     === 'number') {
         buckets.ppg.push({ ...base, v: Math.round((stats.pts / gp) * 10) / 10 });
       }
