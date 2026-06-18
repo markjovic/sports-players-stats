@@ -42,6 +42,8 @@ const BATCH_DELAY_MS    = 100;
 const PLAYER_COMMIT_N   = 5000;   // commit player files every N players processed
 const GAME_COMMIT_N     = 200;    // commit game files every N season files corrected
 const PROGRESS_FILE     = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
+const CORRECTIONS_FILE  = path.join(ROOT, 'scripts', '.rebuild-player-stats-corrections.json');
+const P2_PROGRESS_FILE  = path.join(ROOT, 'scripts', '.rebuild-player-stats-p2-progress.json');
 
 const args        = process.argv.slice(2);
 const DRY_RUN     = args.includes('--dry-run');
@@ -249,6 +251,74 @@ function toStr(details) {
   return details.value ?? '';
 }
 
+// ─── Phase 2 resume check ────────────────────────────────────────────────────
+// If corrections file exists from a previous run, skip straight to phase 2
+if (DO_SCORES && !FORCE && fs.existsSync(CORRECTIONS_FILE)) {
+  console.log('── Resuming Phase 2 from persisted corrections file ─────────────────────');
+  const flat = readJson(CORRECTIONS_FILE);
+  const p2Progress = fs.existsSync(P2_PROGRESS_FILE) ? readJson(P2_PROGRESS_FILE) : { doneSids: [] };
+  const p2AlreadyDone = new Set(p2Progress.doneSids ?? []);
+
+  let gamesFixed = 0, entriesFixed = 0, sinceCommit2 = 0;
+  const p2Done2 = new Set(p2AlreadyDone);
+
+  for (const [sid, gameMap] of Object.entries(flat)) {
+    if (p2AlreadyDone.has(sid)) continue;
+    const gamePath = path.join(gamesDir, `${sid}.json`);
+    let gf; try { gf = readJson(gamePath); } catch { continue; }
+    let fileModified = false;
+
+    for (const [gameId, uuidMap] of Object.entries(gameMap)) {
+      const game = gf.games?.[gameId];
+      if (!game) continue;
+      for (const side of ['hp', 'ap']) {
+        const box = game[side];
+        if (!Array.isArray(box)) continue;
+        for (const entry of box) {
+          const uuid = entry.profileID;
+          if (!uuid) continue;
+          const correction = uuidMap[uuid];
+          if (!correction) continue;
+          const differs = entry.pts !== correction.pts || entry.pt1 !== correction.pt1 ||
+            entry.pt2 !== correction.pt2 || entry.pt3 !== correction.pt3 || entry.fouls !== correction.fouls;
+          if (differs) {
+            Object.assign(entry, correction);
+            entriesFixed++; fileModified = true;
+          }
+        }
+      }
+      if (fileModified) gamesFixed++;
+    }
+
+    if (fileModified) {
+      if (!DRY_RUN) writeJson(gamePath, gf);
+      p2Done2.add(sid); sinceCommit2++;
+      if (sinceCommit2 >= GAME_COMMIT_N) {
+        if (!DRY_RUN) writeJson(P2_PROGRESS_FILE, { doneSids: [...p2Done2] });
+        gitCommit(`rebuild-player-stats: hp/ap resume — ${gamesFixed} games fixed`,
+          ['games/bv/', 'scripts/.rebuild-player-stats-p2-progress.json']);
+        sinceCommit2 = 0;
+      }
+    }
+  }
+
+  if (!DRY_RUN && sinceCommit2 > 0) {
+    gitCommit(`rebuild-player-stats: hp/ap complete — ${gamesFixed} games, ${entriesFixed} entries`,
+      ['games/bv/']);
+  }
+
+  if (!DRY_RUN) {
+    for (const f of [CORRECTIONS_FILE, P2_PROGRESS_FILE]) {
+      if (fs.existsSync(f)) fs.unlinkSync(f);
+    }
+    gitCommit('rebuild-player-stats: remove phase 2 progress files',
+      ['scripts/.rebuild-player-stats-corrections.json', 'scripts/.rebuild-player-stats-p2-progress.json']);
+  }
+
+  console.log(`  ${gamesFixed} games corrected, ${entriesFixed} entries updated`);
+  process.exit(0);
+}
+
 // ─── Phase 0: scan game files for hidden games with hp/ap ────────────────────
 console.log('── Phase 0: Scanning game files for hidden game IDs ─────────────────');
 const gamesDir = path.join(ROOT, 'games', 'bv');
@@ -416,8 +486,23 @@ if (DO_SCORES && allCorrections.size > 0) {
   console.log(`\n── Phase 2: Applying hp/ap corrections to game files ──────────────────`);
   console.log(`  ${allCorrections.size} season files to update`);
 
+  // Persist corrections map so phase 2 can resume if workflow times out
+  if (!DRY_RUN) {
+    const flat = {};
+    for (const [sid, gameMap] of allCorrections) {
+      flat[sid] = {};
+      for (const [gameId, uuidMap] of gameMap) {
+        flat[sid][gameId] = Object.fromEntries(uuidMap);
+      }
+    }
+    writeJson(CORRECTIONS_FILE, flat);
+    writeJson(P2_PROGRESS_FILE, { doneSids: [] });
+    gitCommit('rebuild-player-stats: persist phase 2 corrections', ['scripts/.rebuild-player-stats-corrections.json', 'scripts/.rebuild-player-stats-p2-progress.json']);
+  }
+
   let gamesFixed = 0, entriesFixed = 0, sidesFixed = 0;
   sinceCommit = 0;
+  const p2Done = new Set();
 
   for (const [sid, gameMap] of allCorrections) {
     const gamePath = path.join(gamesDir, `${sid}.json`);
@@ -466,10 +551,12 @@ if (DO_SCORES && allCorrections.size > 0) {
       sidesFixed++;
       sinceCommit++;
 
+      p2Done.add(sid);
       if (sinceCommit >= GAME_COMMIT_N) {
+        if (!DRY_RUN) writeJson(P2_PROGRESS_FILE, { doneSids: [...p2Done] });
         gitCommit(
           `rebuild-player-stats: hp/ap corrected — ${gamesFixed} games, ${entriesFixed} entries`,
-          ['games/bv/']
+          ['games/bv/', 'scripts/.rebuild-player-stats-p2-progress.json']
         );
         sinceCommit = 0;
       }
@@ -487,9 +574,14 @@ if (DO_SCORES && allCorrections.size > 0) {
 }
 
 // ─── Cleanup ──────────────────────────────────────────────────────────────────
-if (!DRY_RUN && fs.existsSync(PROGRESS_FILE)) {
-  fs.unlinkSync(PROGRESS_FILE);
-  gitCommit('rebuild-player-stats: remove progress file', ['scripts/.rebuild-player-stats-progress.json']);
+if (!DRY_RUN) {
+  for (const f of [PROGRESS_FILE, CORRECTIONS_FILE, P2_PROGRESS_FILE]) {
+    if (fs.existsSync(f)) fs.unlinkSync(f);
+  }
+  gitCommit('rebuild-player-stats: remove progress files',
+    ['scripts/.rebuild-player-stats-progress.json',
+     'scripts/.rebuild-player-stats-corrections.json',
+     'scripts/.rebuild-player-stats-p2-progress.json']);
 }
 
 console.log('\n─── Summary ─────────────────────────────────────────────────────────');
