@@ -37,9 +37,9 @@ const ROOT = path.join(__dirname, '..');
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 const FOUL_THRESHOLD    = 5;
-const CONCURRENCY       = 20;
-const BATCH_DELAY_MS    = 300;
-const PLAYER_COMMIT_N   = 2500;   // commit player files every N players processed
+const CONCURRENCY       = 50;
+const BATCH_DELAY_MS    = 100;
+const PLAYER_COMMIT_N   = 5000;   // commit player files every N players processed
 const GAME_COMMIT_N     = 200;    // commit game files every N season files corrected
 const PROGRESS_FILE     = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
 
