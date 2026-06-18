@@ -4,6 +4,12 @@ name: Build Single-Game Records
 
 on:
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force full re-scan (ignore resume progress)'
+        required: false
+        default: 'false'
+        type: boolean
 
 permissions:
   contents: write
@@ -31,7 +37,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run build-records
-        run: node scripts/build-records.js
+        run: |
+          if [ "${{ inputs.force }}" = "true" ]; then
+            node scripts/build-records.js --force
+          else
+            node scripts/build-records.js
+          fi
 
       - name: Final push (safety net)
         if: always()
