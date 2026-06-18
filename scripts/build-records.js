@@ -161,27 +161,27 @@ for (const sid of sidsToScan) {
       const scoreStr = `${hs}–${as_}`;
 
       if (combined > (records.highestCombined.at(-1)?.v ?? 0) || records.highestCombined.length < TOP_N)
-        insertTop(records.highestCombined, { v: combined, gid: gameId, sid, date,
+        insertTop(records.highestCombined, { v: combined, gameKey: gameId, sid, date,
           home: `${hn} ${hs}`, away: `${an} ${as_}` });
 
       if (margin > (records.largestMargin.at(-1)?.v ?? 0) || records.largestMargin.length < TOP_N) {
         const winnerName = hs > as_ ? hn : an;
         const loserName  = hs > as_ ? an : hn;
-        insertTop(records.largestMargin, { v: margin, gid: gameId, sid, date,
+        insertTop(records.largestMargin, { v: margin, gameKey: gameId, sid, date,
           winner: winnerName, loser: loserName, score: scoreStr });
       }
 
       if (hs !== as_ && (ratio > (records.closestGame.at(-1)?.ratio ?? 0) || records.closestGame.length < TOP_N))
         insertTop(records.closestGame, { ratio: Math.round(ratio * 100000) / 100000,
-          gid: gameId, sid, date, score: scoreStr, home: hn, away: an }, 'ratio');
+          gameKey: gameId, sid, date, score: scoreStr, home: hn, away: an }, 'ratio');
     }
 
     if (hs != null && (hs > (records.teamPTS.at(-1)?.v ?? 0) || records.teamPTS.length < TOP_N))
-      insertTop(records.teamPTS, { v: hs, gid: gameId, sid, date,
+      insertTop(records.teamPTS, { v: hs, gameKey: gameId, sid, date,
         name: hn, tid: g.h || g.t1 || null, vs: an, score: `${hs}–${as_ ?? '?'}` });
 
     if (as_ != null && (as_ > (records.teamPTS.at(-1)?.v ?? 0) || records.teamPTS.length < TOP_N))
-      insertTop(records.teamPTS, { v: as_, gid: gameId, sid, date,
+      insertTop(records.teamPTS, { v: as_, gameKey: gameId, sid, date,
         name: an, tid: g.a || g.t2 || null, vs: hn, score: `${hs ?? '?'}–${as_}` });
 
     // teamThreePt — box scores only
@@ -195,7 +195,7 @@ for (const sid of sidsToScan) {
       const teamThreePt = box.reduce((s, e) => s + (e.pt3 ?? 0), 0);
       const scoreStr = `${hs ?? '?'}–${as_ ?? '?'}`;
       if (teamThreePt > 0 && (teamThreePt > (records.teamThreePt.at(-1)?.v ?? 0) || records.teamThreePt.length < TOP_N))
-        insertTop(records.teamThreePt, { v: teamThreePt, gid: gameId, sid, date,
+        insertTop(records.teamThreePt, { v: teamThreePt, gameKey: gameId, sid, date,
           name: teamName, tid, vs: vsName, score: scoreStr });
     }
   }
