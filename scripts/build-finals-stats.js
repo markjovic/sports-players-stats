@@ -36,6 +36,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ROOT             = path.join(__dirname, '..');
 const DRY_RUN          = process.argv.includes('--dry-run');
+const ACTIVE_ONLY      = process.argv.includes('--active-only');
 const GAME_COMMIT_INTERVAL   = 200;
 const PLAYER_COMMIT_INTERVAL = 2000;
 const PROGRESS_FILE = path.join(ROOT, 'scripts', '.finals-progress.json');
@@ -101,8 +102,21 @@ let totalFinalsGames = progress.totalFinalsGames || 0;
 let totalGFGames     = progress.totalGFGames     || 0;
 let sinceLastCommit  = 0;
 
-const sidsToScan = sids.filter(s => !scannedSids.has(s));
-console.log(`  ${sids.length} season files total, ${scannedSids.size} already scanned, ${sidsToScan.length} remaining`);
+// In active-only mode restrict to unlocked seasons
+let candidateSids = sids;
+if (ACTIVE_ONLY) {
+  const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
+  const activeSids  = new Set(
+    Object.values(sportsIndex.seasons ?? {})
+      .filter(s => !s.locked)
+      .map(s => s.id)
+  );
+  candidateSids = sids.filter(s => activeSids.has(s));
+  console.log(`  Active-only: ${activeSids.size} active seasons`);
+}
+
+const sidsToScan = candidateSids.filter(s => !scannedSids.has(s));
+console.log(`  ${sids.length} total seasons, ${candidateSids.length} in scope, ${scannedSids.size} already scanned, ${sidsToScan.length} remaining`);
 
 for (const sid of sidsToScan) {
   // Load game file

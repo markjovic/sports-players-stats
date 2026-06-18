@@ -36,12 +36,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 
 // ─── Configuration ────────────────────────────────────────────────────────────
-const FOUL_THRESHOLD    = 5;
-const CONCURRENCY       = 50;
-const BATCH_DELAY_MS    = 100;
-const PLAYER_COMMIT_N   = 5000;   // commit player files every N players processed
-const GAME_COMMIT_N     = 200;    // commit game files every N season files corrected
-const PROGRESS_FILE     = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
+const FOUL_THRESHOLD  = 5;
+const PLAYER_COMMIT_N = 5000;
+const GAME_COMMIT_N   = 200;
+const PROGRESS_FILE   = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
+
+// Adaptive concurrency — starts at configurable value, backs off on 429s,
+// recovers aggressively. No artificial API ceiling — 429s discover the real one.
+// Practical Node.js upper bound of 1000 prevents socket exhaustion.
+const MAX_CONCURRENCY   = 1000;
+const START_CONCURRENCY = Math.min(MAX_CONCURRENCY, parseInt(
+  process.argv.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '500'
+));
+let CONCURRENCY     = START_CONCURRENCY;
+let CONCURRENCY_CAP = MAX_CONCURRENCY; // cap = system limit, not assumed API limit
+let _cleanBatches        = 0;
+let _429total            = 0;
+let _429streak           = 0;
+let _maxSafeConcurrency  = CONCURRENCY; // highest level with no 429s
 const CORRECTIONS_FILE  = path.join(ROOT, 'scripts', '.rebuild-player-stats-corrections.json');
 const P2_PROGRESS_FILE  = path.join(ROOT, 'scripts', '.rebuild-player-stats-p2-progress.json');
 
@@ -50,10 +62,11 @@ const DRY_RUN     = args.includes('--dry-run');
 const FORCE       = args.includes('--force');
 const STATS_ONLY  = args.includes('--stats-only');
 const SCORES_ONLY = args.includes('--scores-only');
+const ACTIVE_ONLY = args.includes('--active-only');
 const DO_STATS    = !SCORES_ONLY;
-const DO_SCORES   = !STATS_ONLY;
+const DO_SCORES   = !STATS_ONLY && !ACTIVE_ONLY; // box score corrections only on full runs
 
-console.log(`\nrebuild-player-stats | stats=${DO_STATS} scores=${DO_SCORES} dry=${DRY_RUN} force=${FORCE}\n`);
+console.log(`\nrebuild-player-stats | stats=${DO_STATS} scores=${DO_SCORES} active=${ACTIVE_ONLY} dry=${DRY_RUN} force=${FORCE}\n`);
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
@@ -115,8 +128,17 @@ const HEADERS_API = {
 };
 
 let _cookie = null;
+let _sessionPromise = null; // promise lock — prevents concurrent session fetches
+
 async function getSession() {
   if (_cookie) return _cookie;
+  // If a re-auth is already in flight, wait for it rather than firing another
+  if (_sessionPromise) return _sessionPromise;
+  _sessionPromise = _doGetSession().finally(() => { _sessionPromise = null; });
+  return _sessionPromise;
+}
+
+async function _doGetSession() {
   console.log('  Fetching session cookie...');
   const probes = [
     { operationName: 'TenantConfig',   variables: {},              query: 'query TenantConfig { tenantConfiguration { label } }' },
@@ -154,18 +176,66 @@ const Q = `query S($id:ID!){publicProfileStatistics(profileID:$id){seasonStatist
   }
 }}}}`;
 
-async function fetchProfile(uuid, cookie) {
-  try {
-    const res = await fetch('https://api.playhq.com/graphql', {
-      method: 'POST',
-      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-      body: JSON.stringify({ operationName: 'S', variables: { id: uuid }, query: Q }),
-    });
-    if (!res.ok) return null;
+async function fetchProfile(uuid) {
+  // Uses _cookie directly so re-auth updates are reflected immediately
+  let attempts = 0;
+  while (true) {
+    const cookie = _cookie; // read current value each attempt
+    let res;
+    try {
+      res = await fetch('https://api.playhq.com/graphql', {
+        method: 'POST',
+        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+        body: JSON.stringify({ operationName: 'S', variables: { id: uuid }, query: Q }),
+      });
+    } catch { return null; }
+
+    if (res.status === 429) {
+      attempts++;
+      _429total++;
+      _429streak++;
+      _cleanBatches = 0;
+      const prev = CONCURRENCY;
+      CONCURRENCY = Math.max(5, Math.floor(CONCURRENCY * 0.6));
+      if (_429streak >= 3) {
+        CONCURRENCY_CAP = Math.max(5, CONCURRENCY_CAP - 5);
+        CONCURRENCY     = Math.min(CONCURRENCY, CONCURRENCY_CAP);
+        _429streak      = 0;
+        console.warn(`  ⚠ Repeated 429s — cap lowered to ${CONCURRENCY_CAP}, concurrency ${CONCURRENCY}`);
+      } else {
+        console.warn(`  ⚠ 429 — concurrency ${prev} → ${CONCURRENCY}, retry in ${attempts * 5}s`);
+      }
+      await delay(attempts * 5000);
+      continue;
+    }
+
+    if (res.status === 403) {
+      // Session cookie expired — re-auth and retry
+      console.warn(`  ⚠ 403 for ${uuid.slice(0,8)} — session expired, re-authing...`);
+      try { _cookie = null; await getSession(); } catch { return null; }
+      attempts++;
+      if (attempts > 3) return null;
+      continue;
+    }
+
+    if (res.status === 404) return null; // player UUID not in system — skip
+
+    if (res.status >= 500 && attempts < 3) {
+      attempts++;
+      await delay(10000);
+      continue;
+    }
+
+    if (!res.ok) {
+      console.warn(`  ⚠ HTTP ${res.status} for ${uuid.slice(0,8)} — skipping`);
+      return null;
+    }
+
     const data = await res.json();
     if (data.errors) return null;
+    _429streak = 0;
     return data?.data?.publicProfileStatistics ?? null;
-  } catch { return null; }
+  }
 }
 
 // ─── Parse publicProfileStatistics response ──────────────────────────────────
@@ -361,7 +431,31 @@ for (const fname of fs.readdirSync(indexDir).filter(f => f.endsWith('.json'))) {
   } catch {}
 }
 console.log(`  ${allUUIDs.length.toLocaleString()} players in index`);
-const toFetch = allUUIDs.filter(u => !done.has(u));
+// In active-only mode, restrict to players in active seasons
+let fetchTargets = allUUIDs;
+if (ACTIVE_ONLY) {
+  const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
+  const activeSids  = new Set(
+    Object.values(sportsIndex.seasons ?? {})
+      .filter(s => !s.locked)
+      .map(s => s.id)
+  );
+  const activeUUIDs = new Set();
+  for (const sid of activeSids) {
+    const tsPath = path.join(ROOT, 'team-stats', 'bv', `${sid}.json`);
+    if (!fs.existsSync(tsPath)) continue;
+    try {
+      const tsData = readJson(tsPath);
+      for (const team of Object.values(tsData)) {
+        for (const uuid of Object.keys(team.roster ?? {})) activeUUIDs.add(uuid);
+      }
+    } catch {}
+  }
+  fetchTargets = [...activeUUIDs];
+  console.log(`  Active-only: ${activeSids.size} active seasons → ${activeUUIDs.size.toLocaleString()} players`);
+}
+
+const toFetch = fetchTargets.filter(u => !done.has(u));
 console.log(`  ${done.size.toLocaleString()} already done, ${toFetch.length.toLocaleString()} remaining\n`);
 
 // ─── Phase 1: fetch + update player files ────────────────────────────────────
@@ -377,11 +471,13 @@ let sinceCommit = 0;
 
 const cookie = await getSession();
 
-for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
-  const batch = toFetch.slice(i, i + CONCURRENCY);
+let _batchStart = 0;
+for (let i = 0; i < toFetch.length; i += _batchStart) {
+  _batchStart = CONCURRENCY; // capture current value before async ops may change it
+  const batch = toFetch.slice(i, i + _batchStart);
 
   await Promise.all(batch.map(async uuid => {
-    const profile = await fetchProfile(uuid, cookie);
+    const profile = await fetchProfile(uuid);
     done.add(uuid);
 
     if (!profile) { nulls++; return; }
@@ -447,6 +543,24 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
       }
     }
 
+    // Write personal best single-game records
+    if (DO_STATS) {
+      if (playerBests.maxGamePTS?.v > 0) {
+        if (!player.records) player.records = {};
+        if (!player.records.maxGamePTS || playerBests.maxGamePTS.v > (player.records.maxGamePTS?.v ?? 0)) {
+          player.records.maxGamePTS = playerBests.maxGamePTS;
+          modified = true;
+        }
+      }
+      if (playerBests.maxGameThreePt?.v > 0) {
+        if (!player.records) player.records = {};
+        if (!player.records.maxGameThreePt || playerBests.maxGameThreePt.v > (player.records.maxGameThreePt?.v ?? 0)) {
+          player.records.maxGameThreePt = playerBests.maxGameThreePt;
+          modified = true;
+        }
+      }
+    }
+
     if (modified) {
       if (!DRY_RUN) writeJson(playerPath, player);
       updated++;
@@ -456,8 +570,18 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
 
   sinceCommit += batch.length;
 
-  if (fetched % 5000 === 0 || i + CONCURRENCY >= toFetch.length) {
-    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} fetched | updated: ${updated} | null: ${nulls}`);
+  // Recover concurrency aggressively after clean batches
+  _cleanBatches++;
+  if (_maxSafeConcurrency < CONCURRENCY) _maxSafeConcurrency = CONCURRENCY;
+  if (_cleanBatches >= 2 && CONCURRENCY < CONCURRENCY_CAP) {
+    CONCURRENCY = Math.min(CONCURRENCY_CAP, CONCURRENCY + 10);
+    _cleanBatches = 0;
+    if (CONCURRENCY % 50 === 0)
+      console.log(`  📈 Concurrency at ${CONCURRENCY} (max safe so far: ${_maxSafeConcurrency})`);
+  }
+
+  if (fetched % 5000 === 0 || i + _batchStart >= toFetch.length) {
+    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} fetched | updated: ${updated} | null: ${nulls} | concurrency: ${CONCURRENCY}`);
   }
 
   if (sinceCommit >= PLAYER_COMMIT_N) {
@@ -475,7 +599,6 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
     sinceCommit = 0;
   }
 
-  if (i + CONCURRENCY < toFetch.length) await delay(BATCH_DELAY_MS);
 }
 
 // Save final progress
@@ -585,6 +708,10 @@ if (!DRY_RUN) {
 }
 
 console.log('\n─── Summary ─────────────────────────────────────────────────────────');
+console.log(`  Starting concurrency : ${START_CONCURRENCY}`);
+console.log(`  Max safe concurrency : ${_maxSafeConcurrency}`);
+console.log(`  Final concurrency    : ${CONCURRENCY}`);
+console.log(`  Total 429s           : ${_429total}`);
 console.log(`  Players fetched      : ${fetched.toLocaleString()}`);
 console.log(`  Null/no profile      : ${nulls.toLocaleString()}`);
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
