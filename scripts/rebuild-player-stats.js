@@ -482,7 +482,7 @@ for (let i = 0; i < toFetch.length; i += _batchStart) {
 
     if (!profile) { nulls++; return; }
 
-    const { regStats, gameCorrections } = parseProfile(profile, hiddenGameIds);
+    const { regStats, gameCorrections, playerBests } = parseProfile(profile, hiddenGameIds);
 
     // ── Accumulate game corrections ──────────────────────────────────────────
     if (DO_SCORES && gameCorrections.size > 0) {
