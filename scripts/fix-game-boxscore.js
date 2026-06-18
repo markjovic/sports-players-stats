@@ -106,15 +106,24 @@ async function getSession() {
 function statTypeToField(typeValue) {
   switch (typeValue) {
     case 'FREE_THROW':
-    case 'ONE_POINT_FIELD_GOAL': return 'pt1';
+    case 'ONE_POINT_FIELD_GOAL':
+    case '1_POINT_SCORE': return 'pt1';
     case 'FIELD_GOAL':
-    case 'TWO_POINT_FIELD_GOAL': return 'pt2';
-    case 'THREE_POINT_FIELD_GOAL': return 'pt3';
+    case 'TWO_POINT_FIELD_GOAL':
+    case '2_POINT_SCORE': return 'pt2';
+    case 'THREE_POINT_FIELD_GOAL':
+    case '3_POINT_SCORE': return 'pt3';
     case 'PERSONAL_FOUL': return 'fouls';
     case 'TOTAL_SCORE':
     case 'POINTS': return 'pts_direct';
     default: return null;
   }
+}
+
+// details may be a single object or array depending on API response shape
+function toArray(v) {
+  if (!v) return [];
+  return Array.isArray(v) ? v : [v];
 }
 
 // ─── publicProfileStatistics query ───────────────────────────────────────────
@@ -201,7 +210,7 @@ function extractGameStats(profileData, targetGameId) {
             const out = { pt1: 0, pt2: 0, pt3: 0, fouls: 0, pts: 0, rawTypes: {} };
             for (const stat of (gameStat.statistics || [])) {
               const count = stat.count ?? 0;
-              for (const detail of (stat.details || [])) {
+              for (const detail of toArray(stat.details)) {
                 const field = statTypeToField(detail.value);
                 out.rawTypes[detail.value] = (out.rawTypes[detail.value] || 0) + count;
                 if (field && field !== 'pts_direct') out[field] = (out[field] || 0) + count;

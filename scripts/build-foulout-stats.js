@@ -1,40 +1,41 @@
 // scripts/build-foulout-stats.js
 //
-// Single-pass scan of all games/bv/{sid}.json box score data (hp/ap arrays).
-// Computes all derived per-game stats in one pass — no separate scripts needed:
+// Fetches publicProfileStatistics for all public players and counts foul-outs
+// (games where PERSONAL_FOUL >= 5) from the per-game statistics returned by
+// the PlayHQ API. This covers ALL games for ALL public players — not limited
+// to games with stored box scores.
 //
-//   foulOuts    — games where player accumulated >= 5 fouls
-//   foulOutsPG  — foulOuts / gp
-//   threePtPG   — total 3-pointers / gp  (pt3 field in box scores)
-//   foulsPG     — total personal fouls / gp
+// Writes to each player file:
+//   reg.stats.foulOuts          — foul-outs in that season (all regs in season get same total)
+//   player.sports.Basketball.foulOuts — career foul-outs
 //
-// Also checks for technicalFouls/tech fields and reports if found.
+// threePtPG and foulsPG are computed on the fly in build-leaderboards.js
+// from reg.stats.threePt and reg.stats.fouls — no separate fetch needed.
 //
-// Writes computed stats into each player file's reg.stats and career totals.
-// build-leaderboards.js --force then picks them up automatically.
+// After this runs: node scripts/build-leaderboards.js --force
 //
 // Run:     node scripts/build-foulout-stats.js
 // Dry run: node scripts/build-foulout-stats.js --dry-run
-// Resume:  node scripts/build-foulout-stats.js   (progress saved every interval)
-//
-// Progress file: scripts/.foulout-progress.json
+// Resume:  node scripts/build-foulout-stats.js  (progress saved every interval)
 
 'use strict';
 
-const fs   = require('fs');
-const path = require('path');
+const fs     = require('fs');
+const path   = require('path');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 
-const ROOT             = path.join(__dirname, '..');
-const DRY_RUN          = process.argv.includes('--dry-run');
-const FOUL_THRESHOLD   = 5;
-const GAME_COMMIT_INTERVAL   = 200;  // commit every N season game files scanned
-const PLAYER_COMMIT_INTERVAL = 2000; // commit every N player files written
-
-const PROGRESS_FILE = path.join(ROOT, 'scripts', '.foulout-progress.json');
+const ROOT               = path.join(__dirname, '..');
+const DRY_RUN            = process.argv.includes('--dry-run');
+const FOUL_THRESHOLD     = 5;
+const CONCURRENCY        = 20;
+const BATCH_DELAY_MS     = 300;
+const COMMIT_INTERVAL    = 2000;
+const PROGRESS_FILE      = path.join(ROOT, 'scripts', '.foulout-progress.json');
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function gitCommit(message, dirs) {
   try {
@@ -50,142 +51,203 @@ function gitCommit(message, dirs) {
   }
 }
 
-// ─── Step 1: scan game files ──────────────────────────────────────────────────
-// Build: statsMap  = Map<uuid, Map<sid, {foulOuts,threePt,fouls,games}>>  per player per season
-//        techFoulsFound = boolean                 whether tech fouls field exists
+const HEADERS_API = {
+  'accept':       '*/*',
+  'origin':       'https://www.playhq.com',
+  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant':       'basketball-victoria',
+  'content-type': 'application/json',
+};
 
-console.log('── Step 1: Scanning game files for box score foul data ─────────────');
+// ─── Session ──────────────────────────────────────────────────────────────────
 
-const gamesDir = path.join(ROOT, 'games', 'bv');
-const sids     = fs.readdirSync(gamesDir)
-  .filter(f => f.endsWith('.json'))
-  .map(f => f.replace('.json', ''))
-  .sort();
-
-// Load scan progress
-let progress = { scannedSids: [] };
-if (fs.existsSync(PROGRESS_FILE)) {
-  try { progress = readJson(PROGRESS_FILE); } catch {}
+let _sessionCookie = null;
+async function getSession() {
+  if (_sessionCookie) return _sessionCookie;
+  console.log('  Fetching session cookie...');
+  const cookieQueries = [
+    { operationName: 'TenantConfig', variables: {},
+      query: 'query TenantConfig { tenantConfiguration { label } }' },
+    { operationName: 'ProfileSearch', variables: { fullName: 'a' },
+      query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+  ];
+  let raw = null;
+  for (let attempt = 1; attempt <= 5 && !raw; attempt++) {
+    if (attempt > 1) await delay(attempt * 3000);
+    for (const body of cookieQueries) {
+      const res = await fetch('https://api.playhq.com/graphql', {
+        method: 'POST',
+        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
+        body: JSON.stringify(body),
+      });
+      raw = res.headers.get('set-cookie');
+      if (raw) break;
+    }
+  }
+  if (!raw) throw new Error('No Set-Cookie after 5 attempts');
+  const session = raw.match(/phq_session=([^;]+)/)[1];
+  _sessionCookie = `phq_session=${session}`;
+  console.log('  ✓ Session cookie obtained');
+  return _sessionCookie;
 }
-const scannedSids = new Set(progress.scannedSids || []);
 
-// Load existing stats map from progress if available
-// Map structure: { uuid: { sid: { foulOuts, threePt, fouls, games } } }
-const statsFlat = progress.statsMap || {};
-const statsMap  = new Map(); // uuid → Map<sid, {foulOuts, threePt, fouls, games}>
-for (const [uuid, smap] of Object.entries(statsFlat)) {
-  const inner = new Map();
-  for (const [sid, v] of Object.entries(smap)) inner.set(sid, v);
-  statsMap.set(uuid, inner);
-}
+// ─── Query ────────────────────────────────────────────────────────────────────
 
-let techFoulsFound    = progress.techFoulsFound || false;
-let gamesWithBoxScore = progress.gamesWithBoxScore || 0;
-let totalFoulOuts     = progress.totalFoulOuts || 0;
-let sinceLastCommit   = 0;
-
-const sidsToScan = sids.filter(sid => !scannedSids.has(sid));
-console.log(`  ${sids.length} season files total, ${scannedSids.size} already scanned, ${sidsToScan.length} remaining`);
-
-for (const sid of sidsToScan) {
-  let gf;
-  try { gf = readJson(path.join(gamesDir, `${sid}.json`)); } catch { scannedSids.add(sid); continue; }
-
-  for (const g of Object.values(gf.games || {})) {
-    // Check both sides of the box score
-    for (const [side, tid] of [['hp', g.h || g.t1], ['ap', g.a || g.t2]]) {
-      const boxScores = g[side];
-      if (!Array.isArray(boxScores) || boxScores.length === 0) continue;
-
-      gamesWithBoxScore++;
-
-      for (const entry of boxScores) {
-        const uuid = entry.profileID;
-        if (!uuid) continue;
-
-        // Check for tech fouls field
-        if (!techFoulsFound && (entry.technicalFouls != null || entry.tech != null)) {
-          techFoulsFound = true;
-          console.log(`  ✓ Tech fouls field found: technicalFouls=${entry.technicalFouls} tech=${entry.tech}`);
+const Q_PROFILE = `
+query ProfileSeasonStatistics($profileID: ID!) {
+  publicProfileStatistics(profileID: $profileID) {
+    seasonStatistics {
+      statistics {
+        season { id }
+        teamStatistics {
+          gradeStatistics {
+            gameStatistics {
+              statistics { count details { value } }
+            }
+          }
         }
+      }
+    }
+  }
+}`;
 
-        // Accumulate per-game stats for this player
-        const fouls   = entry.fouls ?? 0;
-        const threePt = entry.pt3   ?? 0;
+async function fetchFoulOuts(uuid, cookie) {
+  const res = await fetch('https://api.playhq.com/graphql', {
+    method: 'POST',
+    headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+    body: JSON.stringify({
+      operationName: 'ProfileSeasonStatistics',
+      variables: { profileID: uuid },
+      query: Q_PROFILE,
+    }),
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  if (data.errors) return null;
 
-        if (!statsMap.has(uuid)) statsMap.set(uuid, new Map());
-        const sidMap = statsMap.get(uuid);
-        if (!sidMap.has(sid)) sidMap.set(sid, { foulOuts: 0, threePt: 0, fouls: 0, games: 0 });
-        const acc = sidMap.get(sid);
-        acc.games++;
-        acc.threePt += threePt;
-        acc.fouls   += fouls;
-        if (fouls >= FOUL_THRESHOLD) { acc.foulOuts++; totalFoulOuts++; }
+  const profile = data?.data?.publicProfileStatistics;
+  if (!profile) return null;
+
+  // Count foul-outs per season ID
+  const foulOutsBySid = {}; // sid → foulOut count
+
+  for (const sEntry of (profile.seasonStatistics || [])) {
+    for (const tEntry of (sEntry.statistics || [])) {
+      const sid = tEntry.season?.id;
+      if (!sid) continue;
+
+      for (const team of (tEntry.teamStatistics || [])) {
+        for (const grade of (team.gradeStatistics || [])) {
+          for (const gameStat of (grade.gameStatistics || [])) {
+            // Sum PERSONAL_FOUL across all stat entries for this game
+            let gameFouls = 0;
+            for (const stat of (gameStat.statistics || [])) {
+              for (const detail of (stat.details || [])) {
+                if (detail.value === 'PERSONAL_FOUL') gameFouls += stat.count ?? 0;
+              }
+            }
+            if (gameFouls >= FOUL_THRESHOLD) {
+              foulOutsBySid[sid] = (foulOutsBySid[sid] || 0) + 1;
+            }
+          }
+        }
       }
     }
   }
 
-  scannedSids.add(sid);
-  sinceLastCommit++;
+  return foulOutsBySid;
+}
 
-  if (sinceLastCommit >= GAME_COMMIT_INTERVAL) {
-    // Save progress (convert Maps to plain objects for JSON)
-    const statsFlat2 = {};
-    for (const [uuid, smap] of statsMap) {
-      statsFlat2[uuid] = Object.fromEntries(smap);
+// ─── Step 1: collect public UUIDs ─────────────────────────────────────────────
+
+console.log('── Step 1: Collecting public player UUIDs ──────────────────────────');
+const indexDir = path.join(ROOT, 'players', 'indexes');
+const allUUIDs = new Set();
+
+for (const fname of fs.readdirSync(indexDir).filter(f => f.endsWith('.json'))) {
+  try {
+    const shard = readJson(path.join(indexDir, fname));
+    for (const uuid of Object.keys(shard)) allUUIDs.add(uuid);
+  } catch {}
+}
+console.log(`  ${allUUIDs.size} public players found`);
+
+// Load progress
+let progress = { done: [], foulOutMap: {} };
+if (fs.existsSync(PROGRESS_FILE)) {
+  try { progress = readJson(PROGRESS_FILE); } catch {}
+}
+const done = new Set(progress.done || []);
+const foulOutMap = progress.foulOutMap || {}; // uuid → {sid → count}
+
+const toFetch = [...allUUIDs].filter(u => !done.has(u));
+console.log(`  ${done.size} already done, ${toFetch.length} remaining`);
+
+// ─── Step 2: fetch profiles ───────────────────────────────────────────────────
+
+console.log('\n── Step 2: Fetching per-game foul data from PlayHQ ─────────────────');
+
+let fetched = 0;
+let withFoulOuts = 0;
+let nulls = 0;
+let sinceLastCommit = 0;
+
+const cookie = await getSession();
+
+for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
+  const batch = toFetch.slice(i, i + CONCURRENCY);
+
+  await Promise.all(batch.map(async uuid => {
+    const result = await fetchFoulOuts(uuid, cookie);
+    if (result === null) {
+      nulls++;
+    } else {
+      const hasFoulOuts = Object.values(result).some(v => v > 0);
+      if (hasFoulOuts) {
+        foulOutMap[uuid] = result;
+        withFoulOuts++;
+      }
     }
-    const prog = {
-      scannedSids: [...scannedSids],
-      statsMap: statsFlat2,
-      techFoulsFound,
-      gamesWithBoxScore,
-      totalFoulOuts,
-    };
-    if (!DRY_RUN) {
-      writeJson(PROGRESS_FILE, prog);
-      gitCommit(
-        `build-foulout-stats: ${scannedSids.size}/${sids.length} seasons scanned, ${statsMap.size} players with box score data`,
-        ['scripts/.foulout-progress.json']
-      );
-    }
+    done.add(uuid);
+  }));
+
+  fetched += batch.length;
+  sinceLastCommit += batch.length;
+
+  if (fetched % 2500 === 0 || i + CONCURRENCY >= toFetch.length) {
+    console.log(`  ${fetched}/${toFetch.length} fetched — ${withFoulOuts} players with foul-outs, ${nulls} nulls`);
+  }
+
+  if (sinceLastCommit >= 2500 && !DRY_RUN) {
+    writeJson(PROGRESS_FILE, { done: [...done], foulOutMap });
+    gitCommit(
+      `build-foulout-stats: ${fetched}/${toFetch.length} fetched, ${withFoulOuts} players with foul-outs`,
+      ['scripts/.foulout-progress.json']
+    );
     sinceLastCommit = 0;
-    console.log(`  ${scannedSids.size}/${sids.length} seasons scanned — ${statsMap.size} players, ${totalFoulOuts} foul-outs`);
   }
+
+  if (i + CONCURRENCY < toFetch.length) await delay(BATCH_DELAY_MS);
 }
 
-// Save final scan progress
+// Save final fetch progress
 if (!DRY_RUN) {
-  const statsFlat2 = {};
-  for (const [uuid, smap] of statsMap) {
-    statsFlat2[uuid] = Object.fromEntries(smap);
-  }
-  writeJson(PROGRESS_FILE, {
-    scannedSids: [...scannedSids],
-    statsMap: statsFlat2,
-    techFoulsFound,
-    gamesWithBoxScore,
-    totalFoulOuts,
-    scanComplete: true,
-  });
+  writeJson(PROGRESS_FILE, { done: [...done], foulOutMap, fetchComplete: true });
 }
 
-console.log(`\n  Scan complete:`);
-console.log(`  ${gamesWithBoxScore} games had box score data`);
-console.log(`  ${statsMap.size} players have box score data`);
-console.log(`  ${totalFoulOuts} total foul-out instances`);
-console.log(`  Tech fouls field present: ${techFoulsFound}`);
+console.log(`\n  Fetch complete: ${withFoulOuts} players have at least one foul-out`);
 
-// ─── Step 2: write foulOuts into player files ─────────────────────────────────
+// ─── Step 3: write foulOuts to player files ───────────────────────────────────
 
-console.log('\n── Step 2: Writing foulOuts to player files ────────────────────────');
-console.log(`  ${statsMap.size} player files to update`);
+console.log('\n── Step 3: Writing foulOuts to player files ────────────────────────');
+console.log(`  ${Object.keys(foulOutMap).length} player files to update`);
 
 const playersDir = path.join(ROOT, 'players');
 let playersUpdated = 0;
 let playersSkipped = 0;
-sinceLastCommit    = 0;
+sinceLastCommit = 0;
 
-for (const [uuid, sidMap] of statsMap) {
+for (const [uuid, sidMap] of Object.entries(foulOutMap)) {
   const prefix     = uuid.slice(0, 2);
   const playerPath = path.join(playersDir, prefix, `${uuid}.json`);
 
@@ -194,39 +256,21 @@ for (const [uuid, sidMap] of statsMap) {
 
   let modified = false;
 
-  // Career totals from all seasons
-  let careerFoulOuts = 0, careerThreePt = 0, careerFouls = 0;
-  for (const acc of sidMap.values()) {
-    careerFoulOuts += acc.foulOuts;
-    careerThreePt  += acc.threePt;
-    careerFouls    += acc.fouls;
-  }
-
+  const careerFoulOuts = Object.values(sidMap).reduce((a, b) => a + b, 0);
   const bball = player.sports?.Basketball;
-  if (bball) {
-    const gp = bball.gp || 1;
-    if ((bball.foulOuts  ?? -1) !== careerFoulOuts)  { bball.foulOuts  = careerFoulOuts;  modified = true; }
-    if ((bball.threePtPG ?? -1) !== Math.round(careerThreePt / gp * 100) / 100) {
-      bball.threePtPG = Math.round(careerThreePt / gp * 100) / 100; modified = true;
-    }
-    if ((bball.foulsPG   ?? -1) !== Math.round(careerFouls / gp * 100) / 100) {
-      bball.foulsPG = Math.round(careerFouls / gp * 100) / 100; modified = true;
-    }
+  if (bball && (bball.foulOuts ?? -1) !== careerFoulOuts) {
+    bball.foulOuts = careerFoulOuts;
+    modified = true;
   }
 
-  // Per-reg: write season-level accumulated stats to every reg in that season
   for (const season of (player.seasons || [])) {
-    const sid = season.sid;
-    const acc = sidMap.get(sid) ?? { foulOuts: 0, threePt: 0, fouls: 0, games: 0 };
-    const sgp = acc.games || 1;
+    const sid     = season.sid;
+    const foCount = sidMap[sid] ?? 0;
     for (const reg of (season.regs || [])) {
       if (!reg.stats) reg.stats = {};
-      if ((reg.stats.foulOuts  ?? -1) !== acc.foulOuts)  { reg.stats.foulOuts  = acc.foulOuts;  modified = true; }
-      if ((reg.stats.threePtPG ?? -1) !== Math.round(acc.threePt / sgp * 100) / 100) {
-        reg.stats.threePtPG = Math.round(acc.threePt / sgp * 100) / 100; modified = true;
-      }
-      if ((reg.stats.foulsPG   ?? -1) !== Math.round(acc.fouls / sgp * 100) / 100) {
-        reg.stats.foulsPG = Math.round(acc.fouls / sgp * 100) / 100; modified = true;
+      if ((reg.stats.foulOuts ?? -1) !== foCount) {
+        reg.stats.foulOuts = foCount;
+        modified = true;
       }
     }
   }
@@ -237,41 +281,29 @@ for (const [uuid, sidMap] of statsMap) {
   playersUpdated++;
   sinceLastCommit++;
 
-  if (sinceLastCommit >= PLAYER_COMMIT_INTERVAL) {
+  if (sinceLastCommit >= COMMIT_INTERVAL) {
     if (!DRY_RUN) {
-      gitCommit(
-        `build-foulout-stats: ${playersUpdated} player files updated`,
-        ['players/']
-      );
+      gitCommit(`build-foulout-stats: ${playersUpdated} player files updated`, ['players/']);
     }
     sinceLastCommit = 0;
     console.log(`  ${playersUpdated} players updated...`);
   }
 }
 
-// Also zero-out foulOuts on players who have NO foul-outs but previously had the field
-// (not strictly necessary on first run, but makes re-runs safe)
-
 if (!DRY_RUN && sinceLastCommit > 0) {
-  gitCommit(
-    `build-foulout-stats: complete — ${playersUpdated} player files updated`,
-    ['players/']
-  );
+  gitCommit(`build-foulout-stats: complete — ${playersUpdated} player files updated`, ['players/']);
 }
 
-// Clean up progress file now that we're done
 if (!DRY_RUN && fs.existsSync(PROGRESS_FILE)) {
   fs.unlinkSync(PROGRESS_FILE);
   gitCommit('build-foulout-stats: remove progress file', ['scripts/.foulout-progress.json']);
 }
 
 console.log('\n─── Summary ─────────────────────────────────────────────────────────');
-console.log(`  Games with box score data   : ${gamesWithBoxScore}`);
-console.log(`  Players with box score data : ${statsMap.size}`);
-console.log(`  Total foul-out instances    : ${totalFoulOuts}`);
-console.log(`  Tech fouls field found      : ${techFoulsFound}`);
-console.log(`  Player files updated        : ${playersUpdated}`);
-console.log(`  Player files skipped        : ${playersSkipped}`);
-console.log(`  Mode                        : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+console.log(`  Public players fetched       : ${fetched}`);
+console.log(`  Players with foul-outs       : ${withFoulOuts}`);
+console.log(`  Null/private profiles        : ${nulls}`);
+console.log(`  Player files updated         : ${playersUpdated}`);
+console.log(`  Player files skipped         : ${playersSkipped}`);
+console.log(`  Mode                         : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
 console.log('\nNext step: node scripts/build-leaderboards.js --force');
-console.log('(After updating pushSeason/pushAllTime to include foulOuts field)');
