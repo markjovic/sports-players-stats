@@ -32,6 +32,7 @@ const { execSync } = require('child_process');
 
 const ROOT     = path.join(__dirname, '..');
 const DRY_RUN  = process.argv.includes('--dry-run');
+const FORCE    = process.argv.includes('--force');
 const COMMIT_INTERVAL = 200;
 const PROGRESS_FILE   = path.join(ROOT, 'scripts', '.records-progress.json');
 const OUT_FILE        = path.join(ROOT, 'records', 'all-time.json');
@@ -72,8 +73,10 @@ const EMPTY_RECORDS = {
 // ─── Load progress ────────────────────────────────────────────────────────────
 
 let progress = { scannedSids: [], records: EMPTY_RECORDS };
-if (fs.existsSync(PROGRESS_FILE)) {
+if (!FORCE && fs.existsSync(PROGRESS_FILE)) {
   try { progress = readJson(PROGRESS_FILE); } catch {}
+} else if (FORCE) {
+  console.log('  --force: clearing progress, full re-scan');
 }
 const scannedSids = new Set(progress.scannedSids || []);
 const records     = { ...EMPTY_RECORDS, ...progress.records };
@@ -99,9 +102,8 @@ for (const sid of sidsToScan) {
   try { gf = readJson(path.join(gamesDir, `${sid}.json`)); } catch { scannedSids.add(sid); continue; }
 
   for (const [gameId, g] of Object.entries(gf.games || {})) {
-    // Skip non-completed, forfeit, cancelled, abandoned, bye games
-    if (g.forfeit || g.cancelled || g.abandoned || g.bye) continue;
-    if (g.st && g.st !== 'COMPLETED') continue;
+    // Skip forfeit games and games without scores
+    if (g.forfeit) continue;
 
     const hs = g.hs ?? null;
     const as = g.as ?? null;
