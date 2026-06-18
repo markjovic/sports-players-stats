@@ -304,7 +304,7 @@ async function fetchPlayerGameRecords(uuid, cookie) {
 
             let pts = 0, pt3 = 0;
             for (const stat of (gameStat.statistics || [])) {
-              for (const detail of (stat.details || [])) {
+              for (const detail of (Array.isArray(stat.details) ? stat.details : (stat.details ? [stat.details] : []))) {
                 if (detail.value === 'POINTS' || detail.value === 'TOTAL_SCORE') pts = stat.count ?? 0;
                 else if (detail.value === 'THREE_POINT_FIELD_GOAL') pt3 = (pt3 || 0) + (stat.count ?? 0);
                 else if (detail.value === 'TWO_POINT_FIELD_GOAL') {}
