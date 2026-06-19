@@ -211,7 +211,15 @@ async function fetchProfile(uuid, cookie) {
     const data = await res.json();
     if (data.errors) return null;
     _429streak = 0;
-    return data?.data?.publicProfileStatistics ?? null;
+    const pps = data?.data?.publicProfileStatistics ?? null;
+    // Debug: print first 3 null responses in detail
+    if (!pps && _nullDebugCount < 3) {
+      _nullDebugCount++;
+      console.log(`  [NULL DEBUG #${_nullDebugCount}] uuid=${uuid}`);
+      console.log(`  [NULL DEBUG] data keys: ${Object.keys(data?.data ?? {}).join(', ')}`);
+      console.log(`  [NULL DEBUG] raw: ${JSON.stringify(data).slice(0, 300)}`);
+    }
+    return pps;
   } catch { connErrors++; return null; }
 }
 
@@ -455,6 +463,7 @@ const playersDir = path.join(ROOT, 'players');
 const allCorrections = new Map();
 
 let fetched = 0, nulls = 0, connErrors = 0, updated = 0, skipped = 0;
+let _nullDebugCount = 0;
 const nullSample = []; // sample of null-returning UUIDs that have significant stored stats
 let sinceCommit = 0;
 
