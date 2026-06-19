@@ -1,0 +1,27 @@
+# .github/workflows/test-profile-query.yml
+
+name: Test Profile Query
+
+on:
+  workflow_dispatch:
+    inputs:
+      uuid:
+        description: 'Player UUID to test'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run test
+        run: node scripts/test-profile-query.js ${{ inputs.uuid }}
