@@ -59,9 +59,10 @@ jobs:
               headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
               body: JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
             });
-            const json = await res.json();
+            let json; try { json = await res.json(); } catch(e) { errors++; console.log(`  #${i}: HTML/parse error HTTP ${res.status}`); continue; }
             const pps = json?.data?.publicProfileStatistics;
-            if (json.errors)    { errors++;   if (i <= 5 || i % 20 === 0) console.log(`  #${i}: ERROR — ${json.errors[0]?.message}`); }
+            const status = res.status;
+            if (json.errors)    { errors++;   if (i <= 5 || i % 20 === 0) console.log(`  #${i}: ERROR HTTP ${res.status} — ${json.errors[0]?.message}`); }
             else if (pps)       { present++;  if (i <= 5 || i % 20 === 0) console.log(`  #${i}: PRESENT (${pps.seasonStatistics?.length} seasons)`); }
             else                { nullCount++; if (i <= 5 || i % 20 === 0) console.log(`  #${i}: NULL`); }
           }
