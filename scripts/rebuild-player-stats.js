@@ -597,7 +597,8 @@ for (let i = 0; i < toFetch.length; i += _batchStart) {
   }
 
   if (fetched % 5000 === 0 || i + _batchStart >= toFetch.length) {
-    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} fetched | updated: ${updated} | null: ${nulls} | concurrency: ${CONCURRENCY}`);
+    const pct = ((fetched / toFetch.length) * 100).toFixed(1);
+    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | updated: ${updated} | null: ${nulls} | conn-err: ${connErrors} | concurrency: ${CONCURRENCY}`);
   }
 
   if (sinceCommit >= PLAYER_COMMIT_N) {
