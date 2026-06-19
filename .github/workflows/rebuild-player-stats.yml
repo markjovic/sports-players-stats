@@ -77,7 +77,10 @@ jobs:
       - name: Final push (safety net)
         if: always()
         run: |
-          git add players/ games/bv/ scripts/.rebuild-player-stats-progress.json || true
+          git add players/ games/bv/ || true
+          for f in scripts/.rebuild-player-stats-progress.json scripts/.rebuild-player-stats-corrections.json scripts/.rebuild-player-stats-p2-progress.json; do
+            [ -f "$f" ] && git add "$f" || true
+          done
           git diff --staged --quiet || git commit -m "rebuild-player-stats: safety-net final commit"
           git pull --rebase=false --no-edit -X ours || true
           git push || true
