@@ -215,10 +215,17 @@ async function fetchProfile(uuid) {
     }
 
     if (res.status === 403) {
-      // Session cookie expired — re-auth and retry
-      console.warn(`  ⚠ 403 for ${uuid.slice(0,8)} — session expired, re-authing...`);
-      try { _cookie = null; await getSession(); } catch { return null; }
       attempts++;
+      if (attempts === 1) {
+        // First 403 — try re-authing the session cookie once
+        console.warn(`  ⚠ 403 for ${uuid.slice(0,8)} — trying re-auth`);
+        try { _cookie = null; await getSession(); } catch { return null; }
+      } else {
+        // Subsequent 403s — API rate limiting, not a session issue; back off
+        _cleanBatches = 0;
+        CONCURRENCY = Math.max(5, Math.floor(CONCURRENCY * 0.6));
+        await delay(attempts * 5000);
+      }
       if (attempts > 3) return null;
       continue;
     }
