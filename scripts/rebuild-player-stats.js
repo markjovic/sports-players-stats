@@ -106,8 +106,14 @@ async function fetchProfile(uuid, cookie) {
     body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
   });
   if (res.status === 429) { await new Promise(r => setTimeout(r, 5000)); return fetchProfile(uuid, cookie); }
+  if (res.status >= 500) {
+    // Server error (502/503/504) — retry after backoff, not a null profile
+    await new Promise(r => setTimeout(r, 3000));
+    return fetchProfile(uuid, cookie);
+  }
   if (!res.ok) return null;
-  const json = await res.json();
+  let json;
+  try { json = await res.json(); } catch { return null; } // guard against HTML error pages
   if (json.errors) return null;
   return json?.data?.publicProfileStatistics ?? null;
 }
