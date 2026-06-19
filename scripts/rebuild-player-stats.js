@@ -127,7 +127,8 @@ const HEADERS_API = {
   'content-type': 'application/json',
 };
 
-let _cookie = null;
+let _cookie        = null;
+let _reAuthPromise  = null; // prevents concurrent re-auth attempts
 let _sessionPromise = null; // promise lock — prevents concurrent session fetches
 
 async function getSession() {
@@ -214,21 +215,7 @@ async function fetchProfile(uuid) {
       continue;
     }
 
-    if (res.status === 403) {
-      attempts++;
-      if (attempts === 1) {
-        // First 403 — try re-authing the session cookie once
-        console.warn(`  ⚠ 403 for ${uuid.slice(0,8)} — trying re-auth`);
-        try { _cookie = null; await getSession(); } catch { return null; }
-      } else {
-        // Subsequent 403s — API rate limiting, not a session issue; back off
-        _cleanBatches = 0;
-        CONCURRENCY = Math.max(5, Math.floor(CONCURRENCY * 0.6));
-        await delay(attempts * 5000);
-      }
-      if (attempts > 3) return null;
-      continue;
-    }
+    if (res.status === 403) return null; // profile not accessible — skip
 
     if (res.status === 404) return null; // player UUID not in system — skip
 
