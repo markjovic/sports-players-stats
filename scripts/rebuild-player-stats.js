@@ -34,23 +34,36 @@ const API_URL = 'https://api.playhq.com/graphql';
 
 // ─── Session — copied from pull_player_data.ps1 pattern ──────────────────────
 let _sessionCookie = null;
+let _sessionPromise = null; // lock prevents concurrent re-auths
+
 async function getSession() {
   if (_sessionCookie) return _sessionCookie;
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-    body: JSON.stringify({
-      operationName: 'ProfileSearch',
-      variables: { fullName: 'test user' },
-      query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
-    }),
-  });
-  const raw = res.headers.get('set-cookie');
-  if (!raw) throw new Error('No Set-Cookie');
-  _sessionCookie = raw.split(';')[0];
-  console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
-  return _sessionCookie;
+  if (_sessionPromise) return _sessionPromise;
+  _sessionPromise = (async () => {
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      if (attempt > 1) await new Promise(r => setTimeout(r, attempt * 2000));
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
+        body: JSON.stringify({
+          operationName: 'ProfileSearch',
+          variables: { fullName: 'test user' },
+          query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
+        }),
+      });
+      const raw = res.headers.get('set-cookie');
+      if (raw) {
+        _sessionCookie = raw.split(';')[0];
+        console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
+        return _sessionCookie;
+      }
+    }
+    throw new Error('No Set-Cookie after 5 attempts');
+  })().finally(() => { _sessionPromise = null; });
+  return _sessionPromise;
 }
+
+function invalidateSession() { _sessionCookie = null; }
 
 // ─── Query — exact operationName and structure from pull_player_data.ps1 ──────
 const Q_PROFILE = `query Profile($profileID: ID!) {
@@ -100,17 +113,21 @@ const Q_PROFILE = `query Profile($profileID: ID!) {
 }`;
 
 async function fetchProfile(uuid, cookie) {
+  if (!cookie) cookie = await getSession();
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
     body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
   });
   if (res.status === 429) { await new Promise(r => setTimeout(r, 5000)); return fetchProfile(uuid, cookie); }
-  if (res.status >= 500) {
-    // Server error (502/503/504) — retry after backoff, not a null profile
-    await new Promise(r => setTimeout(r, 3000));
-    return fetchProfile(uuid, cookie);
+  if (res.status === 403) {
+    // WAF blocked this session — get a new cookie and retry once
+    invalidateSession();
+    const newCookie = await getSession();
+    if (newCookie === cookie) return null; // re-auth gave same cookie, give up
+    return fetchProfile(uuid, newCookie);
   }
+  if (res.status >= 500) { await new Promise(r => setTimeout(r, 3000)); return fetchProfile(uuid, cookie); }
   if (!res.ok) return null;
   let json;
   try { json = await res.json(); } catch { return null; } // guard against HTML error pages
