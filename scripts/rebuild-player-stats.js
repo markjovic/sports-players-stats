@@ -44,9 +44,9 @@ const PROGRESS_FILE   = path.join(ROOT, 'scripts', '.rebuild-player-stats-progre
 // Adaptive concurrency — starts at configurable value, backs off on 429s,
 // recovers aggressively. No artificial API ceiling — 429s discover the real one.
 // Practical Node.js upper bound of 1000 prevents socket exhaustion.
-const MAX_CONCURRENCY   = 1000;
+const MAX_CONCURRENCY   = 200;
 const START_CONCURRENCY = Math.min(MAX_CONCURRENCY, parseInt(
-  process.argv.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '500'
+  process.argv.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '100'
 ));
 let CONCURRENCY     = START_CONCURRENCY;
 let CONCURRENCY_CAP = MAX_CONCURRENCY; // cap = system limit, not assumed API limit
@@ -463,6 +463,7 @@ const playersDir = path.join(ROOT, 'players');
 const allCorrections = new Map();
 
 let fetched = 0, nulls = 0, connErrors = 0, updated = 0, skipped = 0;
+const nullSample = []; // sample of null-returning UUIDs that have significant stored stats
 let sinceCommit = 0;
 
 let _batchStart = 0;
@@ -474,9 +475,22 @@ for (let i = 0; i < toFetch.length; i += _batchStart) {
     const profile = await fetchProfile(uuid);
     done.add(uuid);
 
-    if (!profile) { nulls++; fetched++; return; }
+    if (!profile) {
+      nulls++; fetched++;
+      // Collect a sample of significant players returning null for diagnosis
+      if (DO_STATS && nullSample.length < 10) {
+        try {
+          const pp = readJson(path.join(playersDir, uuid.slice(0,2), `${uuid}.json`));
+          const gp = pp.sports?.Basketball?.gp ?? 0;
+          if (gp >= 10) nullSample.push({ uuid, name: `${pp.firstName ?? ''} ${pp.lastName ?? ''}`.trim(), gp });
+        } catch {}
+      }
+      return;
+    }
 
     const { regStats, gameCorrections, playerBests } = parseProfile(profile, hiddenGameIds);
+
+
 
     // ── Accumulate game corrections ──────────────────────────────────────────
     if (DO_SCORES && gameCorrections.size > 0) {
@@ -498,6 +512,10 @@ for (let i = 0; i < toFetch.length; i += _batchStart) {
     try { player = readJson(playerPath); } catch { fetched++; skipped++; return; }
 
     let modified = false;
+
+    // Stamp successful fetch date — distinguishes "null from API" vs "processed, no scoring data"
+    const today = new Date().toISOString().slice(0, 10);
+    if (player.statsChecked !== today) { player.statsChecked = today; modified = true; }
 
     // Per-reg updates
     for (const season of (player.seasons ?? [])) {
@@ -728,4 +746,9 @@ console.log(`  Connection failures  : ${connErrors.toLocaleString()} (retried 5x
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
 console.log(`  Hidden games scanned : ${hiddenGameIds.size.toLocaleString()}`);
 console.log(`  Mode                 : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+if (nullSample.length > 0) {
+  console.log('\n── Sample null-returning UUIDs with ≥10 stored games (test these manually) ──');
+  for (const p of nullSample)
+    console.log(`  ${p.uuid}  (${p.name || 'no name'}, ${p.gp} gp)`);
+}
 console.log('\nNext: node scripts/build-leaderboards.js --force');
