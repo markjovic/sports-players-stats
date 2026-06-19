@@ -40,14 +40,18 @@ jobs:
             const res = await fetch('https://api.playhq.com/graphql', {
               method: 'POST',
               headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-              body: JSON.stringify({ operationName: 'ProfileSearch', variables: { fullName: 'a' },
-                query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' }),
+              body: JSON.stringify({
+                operationName: 'ProfileSearch',
+                variables: { fullName: 'a' },
+                query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }'
+              }),
             });
             const raw = res.headers.get('set-cookie');
             if (!raw) throw new Error('No cookie');
             return raw.split(';')[0];
           }
 
+          // Query A: exact API reference query — operation name matches query definition
           const Q_REF = `query ProfileSeasonStatistics($profileID: ID!) {
             publicProfileStatistics(profileID: $profileID) {
               seasonStatistics { statistics {
@@ -66,6 +70,7 @@ jobs:
             }
           }`;
 
+          // Query B: current rebuild script — adds totalStatistics + __typename
           const Q_CURRENT = `query S($id:ID!){publicProfileStatistics(profileID:$id){seasonStatistics{statistics{
             season{id}
             teamStatistics{
@@ -78,11 +83,11 @@ jobs:
             }
           }}}}`;
 
-          async function test(label, query, variables, cookie) {
+          async function test(label, operationName, query, variables, cookie) {
             const res = await fetch('https://api.playhq.com/graphql', {
               method: 'POST',
               headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-              body: JSON.stringify({ operationName: label, variables, query }),
+              body: JSON.stringify({ operationName, variables, query }),
             });
             const json = await res.json();
             const pps = json?.data?.publicProfileStatistics;
@@ -95,6 +100,10 @@ jobs:
                 const first = pps.seasonStatistics[0].statistics?.[0];
                 console.log(`  First season id: ${first?.season?.id}`);
                 console.log(`  Teams: ${first?.teamStatistics?.length ?? 0}`);
+                const grades = first?.teamStatistics?.[0]?.gradeStatistics ?? [];
+                console.log(`  Grades: ${grades.length}`);
+                const games = grades[0]?.gameStatistics?.length ?? 0;
+                console.log(`  Games in first grade: ${games}`);
               }
             }
             if (json.errors) console.log(`  Errors: ${JSON.stringify(json.errors)}`);
@@ -102,8 +111,8 @@ jobs:
 
           console.log(`\nTesting UUID: ${uuid}\n`);
           const cookie = await getSession();
-          console.log('Session obtained: ' + cookie.slice(0, 20) + '...');
+          console.log('Session obtained: ' + cookie.slice(0, 20) + '...\n');
 
-          await test('REF_QUERY',     Q_REF,     { profileID: uuid }, cookie);
-          await test('CURRENT_QUERY', Q_CURRENT, { id: uuid },        cookie);
+          await test('API reference query', 'ProfileSeasonStatistics', Q_REF, { profileID: uuid }, cookie);
+          await test('Current rebuild query', 'S', Q_CURRENT, { id: uuid }, cookie);
           NODEOF
