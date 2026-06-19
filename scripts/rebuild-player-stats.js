@@ -177,20 +177,15 @@ const Q = `query S($id:ID!){publicProfileStatistics(profileID:$id){seasonStatist
   }
 }}}}`;
 
-async function fetchProfile(uuid) {
-  // Matches gqlAuth from fetch-playhq.js exactly — cookie fetched once at entry
-  const cookie = await getSession();
-  if (!cookie) return null;
-  let attempts = 0;
-  while (true) {
+async function fetchProfile(uuid, cookie) {
+  try {
     const res = await fetch('https://api.playhq.com/graphql', {
-      method:  'POST',
+      method: 'POST',
       headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
       body:    JSON.stringify({ operationName: 'S', variables: { id: uuid }, query: Q }),
     });
 
     if (res.status === 429) {
-      attempts++;
       _429total++;
       _429streak++;
       _cleanBatches = 0;
@@ -202,22 +197,22 @@ async function fetchProfile(uuid) {
         _429streak      = 0;
         console.warn(`  ⚠ Repeated 429s — cap lowered to ${CONCURRENCY_CAP}, concurrency ${CONCURRENCY}`);
       } else {
-        console.warn(`  ⚠ 429 — concurrency ${prev} → ${CONCURRENCY}, retry in ${attempts * 5}s`);
+        console.warn(`  ⚠ 429 — concurrency ${prev} → ${CONCURRENCY}`);
       }
-      await delay(attempts * 5000);
-      continue;
+      await delay(5000);
+      return fetchProfile(uuid, cookie); // retry same request
     }
 
     if (!res.ok) {
-      if (res.status === 403) { _403total++; }
+      if (res.status === 403) _403total++;
       return null;
     }
 
-    const json = await res.json();
-    if (json.errors) return null;
+    const data = await res.json();
+    if (data.errors) return null;
     _429streak = 0;
-    return json.data?.publicProfileStatistics ?? null;
-  }
+    return data?.data?.publicProfileStatistics ?? null;
+  } catch { connErrors++; return null; }
 }
 
 // ─── Parse publicProfileStatistics response ──────────────────────────────────
@@ -463,13 +458,16 @@ let fetched = 0, nulls = 0, connErrors = 0, updated = 0, skipped = 0;
 const nullSample = []; // sample of null-returning UUIDs that have significant stored stats
 let sinceCommit = 0;
 
+const cookie = await getSession();
+console.log(`  Cookie: ${cookie.slice(0, 24)}...\n`);
+
 let _batchStart = 0;
 for (let i = 0; i < toFetch.length; i += _batchStart) {
   _batchStart = CONCURRENCY; // capture current value before async ops may change it
   const batch = toFetch.slice(i, i + _batchStart);
 
   await Promise.all(batch.map(async uuid => {
-    const profile = await fetchProfile(uuid);
+    const profile = await fetchProfile(uuid, cookie);
     done.add(uuid);
 
     if (!profile) {
