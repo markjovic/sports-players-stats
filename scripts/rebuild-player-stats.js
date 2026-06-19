@@ -63,7 +63,6 @@ async function getSession() {
   return _sessionPromise;
 }
 
-function invalidateSession() { _sessionCookie = null; }
 
 // ─── Query — exact operationName and structure from pull_player_data.ps1 ──────
 const Q_PROFILE = `query Profile($profileID: ID!) {
@@ -121,11 +120,9 @@ async function fetchProfile(uuid, cookie) {
   });
   if (res.status === 429) { await new Promise(r => setTimeout(r, 5000)); return fetchProfile(uuid, cookie); }
   if (res.status === 403) {
-    // WAF blocked this session — get a new cookie and retry once
-    invalidateSession();
-    const newCookie = await getSession();
-    if (newCookie === cookie) return null; // re-auth gave same cookie, give up
-    return fetchProfile(uuid, newCookie);
+    // WAF IP block — wait for rate limit window to clear then retry once
+    await new Promise(r => setTimeout(r, 60000));
+    return fetchProfile(uuid, cookie);
   }
   if (res.status >= 500) { await new Promise(r => setTimeout(r, 3000)); return fetchProfile(uuid, cookie); }
   if (!res.ok) return null;
