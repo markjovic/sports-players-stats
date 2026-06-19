@@ -208,16 +208,21 @@ async function fetchProfile(uuid, cookie) {
       return null;
     }
 
-    const data = await res.json();
+    const rawText = await res.text();
+    // Debug: always print first response, then first 3 nulls
+    if (_nullDebugCount === 0) {
+      console.log(`  [DEBUG FIRST] uuid=${uuid} status=${res.status}`);
+      console.log(`  [DEBUG FIRST] body: ${rawText.slice(0, 400)}`);
+    }
+    let data;
+    try { data = JSON.parse(rawText); } catch { connErrors++; return null; }
     if (data.errors) return null;
     _429streak = 0;
     const pps = data?.data?.publicProfileStatistics ?? null;
-    // Debug: print first 3 null responses in detail
-    if (!pps && _nullDebugCount < 3) {
+    if (!pps && _nullDebugCount < 4) {
       _nullDebugCount++;
-      console.log(`  [NULL DEBUG #${_nullDebugCount}] uuid=${uuid}`);
-      console.log(`  [NULL DEBUG] data keys: ${Object.keys(data?.data ?? {}).join(', ')}`);
-      console.log(`  [NULL DEBUG] raw: ${JSON.stringify(data).slice(0, 300)}`);
+      console.log(`  [NULL #${_nullDebugCount}] uuid=${uuid} keys=${Object.keys(data?.data ?? {}).join(',')}`);
+      console.log(`  [NULL #${_nullDebugCount}] raw: ${rawText.slice(0, 300)}`);
     }
     return pps;
   } catch { connErrors++; return null; }
