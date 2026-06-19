@@ -53,6 +53,9 @@ let CONCURRENCY_CAP = MAX_CONCURRENCY; // cap = system limit, not assumed API li
 let _cleanBatches        = 0;
 let _429total            = 0;
 let _429streak           = 0;
+let _403count            = 0; // 403s this batch window — high rate = rate limiting
+let _403total            = 0; // total 403s across entire run
+let _403window           = 0; // batch window counter for 403 detection
 let _maxSafeConcurrency  = CONCURRENCY; // highest level with no 429s
 const CORRECTIONS_FILE  = path.join(ROOT, 'scripts', '.rebuild-player-stats-corrections.json');
 const P2_PROGRESS_FILE  = path.join(ROOT, 'scripts', '.rebuild-player-stats-p2-progress.json');
@@ -215,7 +218,11 @@ async function fetchProfile(uuid) {
       continue;
     }
 
-    if (res.status === 403) return null; // profile not accessible — skip
+    if (res.status === 403) {
+      _403count++;
+      _403total++;
+      return null; // profile not accessible or rate limited — counted separately
+    }
 
     if (res.status === 404) return null; // player UUID not in system — skip
 
@@ -579,6 +586,21 @@ for (let i = 0; i < toFetch.length; i += _batchStart) {
   }));
 
   sinceCommit += batch.length;
+
+  // Detect 403 rate limiting: if >30% of batch returned 403, back off
+  _403window += batch.length;
+  if (_403window >= 500) {
+    const rate403 = _403count / _403window;
+    if (rate403 > 0.30) {
+      const prev = CONCURRENCY;
+      CONCURRENCY = Math.max(5, Math.floor(CONCURRENCY * 0.6));
+      _cleanBatches = 0;
+      console.warn(`  ⚠ High 403 rate (${(rate403*100).toFixed(0)}%) — likely rate limiting, concurrency ${prev} → ${CONCURRENCY}, backing off 30s`);
+      await delay(30000);
+    }
+    _403count = 0;
+    _403window = 0;
+  }
 
   // Recover concurrency aggressively after clean batches
   _cleanBatches++;
