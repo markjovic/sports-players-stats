@@ -40,9 +40,9 @@ for (const prefix of prefixes) {
     const pts  = bball.pts ?? 0;
     const seasons = (p.seasons ?? []).length;
 
-    if (p.records?.maxGamePTS || p.records?.maxGameThreePt) {
+    if (p.statsChecked) {
       withRecords++;
-      continue; // has records = publicProfileStatistics returned data for this player
+      continue; // statsChecked = publicProfileStatistics returned data for this player
     }
 
     if (gp < MIN_GP) continue; // skip players with too few games
@@ -62,7 +62,7 @@ for (const prefix of prefixes) {
 }
 
 console.log(`Scanned           : ${scanned.toLocaleString()} players`);
-console.log(`With records      : ${withRecords.toLocaleString()} (publicProfileStatistics returned data)`);
+console.log(`  statsChecked (API returned data) : ${withRecords.toLocaleString()}`);
 console.log(`Null + stats≥${MIN_GP}gp: ${nullWithStats.length.toLocaleString()} players`);
 console.log(`Null rate (est.)  : ${((scanned - withRecords) / scanned * 100).toFixed(1)}%\n`);
 
@@ -85,8 +85,8 @@ for (const p of sample) {
   );
 }
 
-console.log('\n── UUIDs for manual API testing ────────────────────────────────────────\n');
-sample.forEach(p => console.log(p.uuid));
+console.log('\n── 10 UUIDs to manually test against publicProfileStatistics ────────────\n');
+nullWithStats.slice(0, 10).forEach(p => console.log(`${p.uuid}  (${p.name}, ${p.gp} games, ${p.seasons} seasons)`));
 
 console.log(`\n── Breakdown by games played ────────────────────────────────────────────\n`);
 const buckets = { '1-4': 0, '5-9': 0, '10-19': 0, '20-49': 0, '50-99': 0, '100+': 0 };
