@@ -1,4 +1,6 @@
 # .github/workflows/test-profile-query.yml
+# Tests a UUID both inline (no checkout) AND from the checked-out repo
+# to isolate whether the repo environment affects the result.
 
 name: Test Profile Query
 
@@ -13,106 +15,91 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  test-inline:
+    name: Test inline (no checkout)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Run test
+      - name: Run inline
         run: |
           node --input-type=module << 'NODEOF'
           import crypto from 'crypto';
-
           const uuid = '${{ inputs.uuid }}';
-
           const HEADERS = {
-            'accept':       '*/*',
-            'origin':       'https://www.playhq.com',
-            'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-            'tenant':       'basketball-victoria',
-            'content-type': 'application/json',
+            'accept': '*/*', 'origin': 'https://www.playhq.com',
+            'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+            'tenant': 'basketball-victoria', 'content-type': 'application/json',
           };
-
-          async function getSession() {
-            const res = await fetch('https://api.playhq.com/graphql', {
-              method: 'POST',
-              headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-              body: JSON.stringify({
-                operationName: 'ProfileSearch',
-                variables: { fullName: 'a' },
-                query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }'
-              }),
-            });
-            const raw = res.headers.get('set-cookie');
-            if (!raw) throw new Error('No cookie');
-            return raw.split(';')[0];
-          }
-
-          // Query A: exact API reference query — operation name matches query definition
-          const Q_REF = `query ProfileSeasonStatistics($profileID: ID!) {
+          const authRes = await fetch('https://api.playhq.com/graphql', {
+            method: 'POST',
+            headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
+            body: JSON.stringify({ operationName: 'ProfileSearch', variables: { fullName: 'a' },
+              query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' }),
+          });
+          const cookie = authRes.headers.get('set-cookie').split(';')[0];
+          console.log('Cookie:', cookie.slice(0, 30) + '...');
+          const Q = `query ProfileSeasonStatistics($profileID: ID!) {
             publicProfileStatistics(profileID: $profileID) {
-              seasonStatistics { statistics {
-                season { id }
-                teamStatistics {
-                  team { ... on DiscoverTeam { id name } }
-                  gradeStatistics {
-                    grade { id name }
-                    gameStatistics {
-                      game { id round { name } }
-                      statistics { count details { value } }
-                    }
-                  }
-                }
-              }}
+              seasonStatistics { statistics { season { id } } }
             }
           }`;
+          const res = await fetch('https://api.playhq.com/graphql', {
+            method: 'POST',
+            headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+            body: JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
+          });
+          const json = await res.json();
+          const pps = json?.data?.publicProfileStatistics;
+          console.log('HTTP:', res.status);
+          console.log('Result:', pps === null ? 'NULL' : pps === undefined ? 'UNDEFINED' : `PRESENT (${pps.seasonStatistics?.length} seasons)`);
+          if (json.errors) console.log('Errors:', JSON.stringify(json.errors[0]?.message));
+          NODEOF
 
-          // Query B: current rebuild script — adds totalStatistics + __typename
-          const Q_CURRENT = `query S($id:ID!){publicProfileStatistics(profileID:$id){seasonStatistics{statistics{
-            season{id}
-            teamStatistics{
-              team{...on DiscoverTeam{id}}
-              gradeStatistics{
-                grade{id}
-                totalStatistics{count details{value __typename}}
-                gameStatistics{game{id}statistics{count details{value __typename}}}
-              }
+  test-from-repo:
+    name: Test from checked-out repo
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run from repo
+        run: |
+          node --input-type=module << 'NODEOF'
+          import crypto from 'crypto';
+          const uuid = '${{ inputs.uuid }}';
+          const HEADERS = {
+            'accept': '*/*', 'origin': 'https://www.playhq.com',
+            'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+            'tenant': 'basketball-victoria', 'content-type': 'application/json',
+          };
+          const authRes = await fetch('https://api.playhq.com/graphql', {
+            method: 'POST',
+            headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
+            body: JSON.stringify({ operationName: 'ProfileSearch', variables: { fullName: 'a' },
+              query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' }),
+          });
+          const cookie = authRes.headers.get('set-cookie').split(';')[0];
+          console.log('Cookie:', cookie.slice(0, 30) + '...');
+          const Q = `query ProfileSeasonStatistics($profileID: ID!) {
+            publicProfileStatistics(profileID: $profileID) {
+              seasonStatistics { statistics { season { id } } }
             }
-          }}}}`;
-
-          async function test(label, operationName, query, variables, cookie) {
-            const res = await fetch('https://api.playhq.com/graphql', {
-              method: 'POST',
-              headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-              body: JSON.stringify({ operationName, variables, query }),
-            });
-            const json = await res.json();
-            const pps = json?.data?.publicProfileStatistics;
-            console.log(`\n[${label}] HTTP ${res.status}`);
-            console.log(`  publicProfileStatistics: ${pps === null ? 'NULL' : pps === undefined ? 'UNDEFINED' : 'PRESENT'}`);
-            if (pps) {
-              const seasons = pps.seasonStatistics?.length ?? 0;
-              console.log(`  seasonStatistics entries: ${seasons}`);
-              if (seasons > 0) {
-                const first = pps.seasonStatistics[0].statistics?.[0];
-                console.log(`  First season id: ${first?.season?.id}`);
-                console.log(`  Teams: ${first?.teamStatistics?.length ?? 0}`);
-                const grades = first?.teamStatistics?.[0]?.gradeStatistics ?? [];
-                console.log(`  Grades: ${grades.length}`);
-                const games = grades[0]?.gameStatistics?.length ?? 0;
-                console.log(`  Games in first grade: ${games}`);
-              }
-            }
-            if (json.errors) console.log(`  Errors: ${JSON.stringify(json.errors)}`);
-          }
-
-          console.log(`\nTesting UUID: ${uuid}\n`);
-          const cookie = await getSession();
-          console.log('Session obtained: ' + cookie.slice(0, 20) + '...\n');
-
-          await test('API reference query', 'ProfileSeasonStatistics', Q_REF, { profileID: uuid }, cookie);
-          await test('Current rebuild query', 'S', Q_CURRENT, { id: uuid }, cookie);
+          }`;
+          const res = await fetch('https://api.playhq.com/graphql', {
+            method: 'POST',
+            headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+            body: JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
+          });
+          const json = await res.json();
+          const pps = json?.data?.publicProfileStatistics;
+          console.log('HTTP:', res.status);
+          console.log('Result:', pps === null ? 'NULL' : pps === undefined ? 'UNDEFINED' : `PRESENT (${pps.seasonStatistics?.length} seasons)`);
+          if (json.errors) console.log('Errors:', JSON.stringify(json.errors[0]?.message));
           NODEOF
