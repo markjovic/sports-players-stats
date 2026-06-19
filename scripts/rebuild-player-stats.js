@@ -188,7 +188,12 @@ async function fetchProfile(uuid) {
         headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
         body: JSON.stringify({ operationName: 'S', variables: { id: uuid }, query: Q }),
       });
-    } catch { return null; }
+    } catch (err) {
+      // Network error (ECONNRESET, ETIMEDOUT etc) — retry with backoff, not null
+      attempts++;
+      if (attempts <= 5) { await delay(attempts * 2000); continue; }
+      connErrors++; return null; // give up after 5 network failures
+    }
 
     if (res.status === 429) {
       attempts++;
@@ -477,7 +482,7 @@ const playersDir = path.join(ROOT, 'players');
 // Map<sid, Map<gameId, Map<uuid, {pts,pt1,pt2,pt3,fouls}>>>
 const allCorrections = new Map();
 
-let fetched = 0, nulls = 0, updated = 0, skipped = 0;
+let fetched = 0, nulls = 0, connErrors = 0, updated = 0, skipped = 0;
 let sinceCommit = 0;
 
 const cookie = await getSession();
@@ -725,6 +730,7 @@ console.log(`  Final concurrency    : ${CONCURRENCY}`);
 console.log(`  Total 429s           : ${_429total}`);
 console.log(`  Players fetched      : ${fetched.toLocaleString()}`);
 console.log(`  Null/no profile      : ${nulls.toLocaleString()}`);
+console.log(`  Connection failures  : ${connErrors.toLocaleString()} (retried 5x)`);
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
 console.log(`  Hidden games scanned : ${hiddenGameIds.size.toLocaleString()}`);
 console.log(`  Mode                 : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
