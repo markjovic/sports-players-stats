@@ -144,26 +144,23 @@ async function getSession() {
 
 async function _doGetSession() {
   console.log('  Fetching session cookie...');
-  const probes = [
-    { operationName: 'TenantConfig',   variables: {},              query: 'query TenantConfig { tenantConfiguration { label } }' },
-    { operationName: 'ProfileSearch',  variables: { fullName:'a'},  query: 'query ProfileSearch($fullName:String!){profileSearch(fullName:$fullName){result{id}}}' },
-  ];
   let raw = null;
   for (let attempt = 1; attempt <= 5 && !raw; attempt++) {
     if (attempt > 1) await delay(attempt * 3000);
-    for (const body of probes) {
-      const res = await fetch('https://api.playhq.com/graphql', {
-        method: 'POST',
-        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
-        body: JSON.stringify(body),
-      });
-      raw = res.headers.get('set-cookie');
-      if (raw) break;
-    }
+    const res = await fetch('https://api.playhq.com/graphql', {
+      method: 'POST',
+      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
+      body: JSON.stringify({
+        operationName: 'ProfileSearch',
+        variables: { fullName: 'a' },
+        query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+      }),
+    });
+    raw = res.headers.get('set-cookie');
   }
   if (!raw) throw new Error('No Set-Cookie after 5 attempts');
-  _cookie = `phq_session=${raw.match(/phq_session=([^;]+)/)[1]}`;
-  console.log('  ✓ Session obtained\n');
+  _cookie = raw.split(';')[0];
+  console.log(`  ✓ Session obtained (${_cookie.slice(0, 24)}...)\n`);
   return _cookie;
 }
 
