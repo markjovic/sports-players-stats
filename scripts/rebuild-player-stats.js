@@ -211,7 +211,10 @@ async function fetchProfile(uuid) {
       continue;
     }
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      if (res.status === 403) { _403total++; }
+      return null;
+    }
 
     const json = await res.json();
     if (json.errors) return null;
@@ -471,7 +474,7 @@ for (let i = 0; i < toFetch.length; i += _batchStart) {
     const profile = await fetchProfile(uuid);
     done.add(uuid);
 
-    if (!profile) { nulls++; return; }
+    if (!profile) { nulls++; fetched++; return; }
 
     const { regStats, gameCorrections, playerBests } = parseProfile(profile, hiddenGameIds);
 
