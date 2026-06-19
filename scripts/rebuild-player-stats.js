@@ -181,23 +181,16 @@ const Q = `query S($id:ID!){publicProfileStatistics(profileID:$id){seasonStatist
 }}}}`;
 
 async function fetchProfile(uuid) {
-  // Uses _cookie directly so re-auth updates are reflected immediately
+  // Matches gqlAuth from fetch-playhq.js exactly — cookie fetched once at entry
+  const cookie = await getSession();
+  if (!cookie) return null;
   let attempts = 0;
   while (true) {
-    const cookie = _cookie; // read current value each attempt
-    let res;
-    try {
-      res = await fetch('https://api.playhq.com/graphql', {
-        method: 'POST',
-        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-        body: JSON.stringify({ operationName: 'S', variables: { id: uuid }, query: Q }),
-      });
-    } catch (err) {
-      // Network error (ECONNRESET, ETIMEDOUT etc) — retry with backoff, not null
-      attempts++;
-      if (attempts <= 5) { await delay(attempts * 2000); continue; }
-      connErrors++; return null; // give up after 5 network failures
-    }
+    const res = await fetch('https://api.playhq.com/graphql', {
+      method:  'POST',
+      headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+      body:    JSON.stringify({ operationName: 'S', variables: { id: uuid }, query: Q }),
+    });
 
     if (res.status === 429) {
       attempts++;
@@ -218,29 +211,12 @@ async function fetchProfile(uuid) {
       continue;
     }
 
-    if (res.status === 403) {
-      _403count++;
-      _403total++;
-      return null; // profile not accessible or rate limited — counted separately
-    }
+    if (!res.ok) return null;
 
-    if (res.status === 404) return null; // player UUID not in system — skip
-
-    if (res.status >= 500 && attempts < 3) {
-      attempts++;
-      await delay(10000);
-      continue;
-    }
-
-    if (!res.ok) {
-      console.warn(`  ⚠ HTTP ${res.status} for ${uuid.slice(0,8)} — skipping`);
-      return null;
-    }
-
-    const data = await res.json();
-    if (data.errors) return null;
+    const json = await res.json();
+    if (json.errors) return null;
     _429streak = 0;
-    return data?.data?.publicProfileStatistics ?? null;
+    return json.data?.publicProfileStatistics ?? null;
   }
 }
 
@@ -485,8 +461,6 @@ const allCorrections = new Map();
 
 let fetched = 0, nulls = 0, connErrors = 0, updated = 0, skipped = 0;
 let sinceCommit = 0;
-
-const cookie = await getSession();
 
 let _batchStart = 0;
 for (let i = 0; i < toFetch.length; i += _batchStart) {
