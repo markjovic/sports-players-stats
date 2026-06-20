@@ -113,10 +113,9 @@ async function fetchProfile(uuid, attempt = 0) {
     return fetchProfile(uuid, attempt + 1);
   }
   if (res.status === 403) {
-    // Session invalidated by WAF — clear cache, force re-auth, exponential backoff
-    _sessionCookie = null;
+    // WAF frequency block — session is fine, just back off and let window reset
     if (attempt < 3) {
-      await new Promise(r => setTimeout(r, 2 ** (attempt + 1) * 1000));
+      await new Promise(r => setTimeout(r, 30000 * (attempt + 1)));
       return fetchProfile(uuid, attempt + 1);
     }
     return null;
