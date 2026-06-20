@@ -1,22 +1,28 @@
 # .github/workflows/test-proxy.yml
+# Runs the EXACT same fetchProfile code as fetch-player-profiles.js
+# with hardcoded UUIDs — no checkout needed.
+
 name: Test Profile Proxy
+
 on:
   workflow_dispatch:
     inputs:
-      batch_size:
+      concurrency:
         description: 'Concurrent requests per batch'
         required: false
         default: '10'
       num_batches:
         description: 'Number of sequential batches'
         required: false
-        default: '3'
-      delay_ms:
-        description: 'Delay between batches in ms (0 = none)'
+        default: '5'
+      batch_delay:
+        description: 'Delay between batches in ms'
         required: false
         default: '0'
+
 permissions:
   contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -31,25 +37,142 @@ jobs:
         run: |
           node --input-type=module << 'NODEOF'
           import crypto from 'crypto';
-          const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
-          const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
-          const BATCH_SIZE   = parseInt('${{ inputs.batch_size }}');
-          const NUM_BATCHES  = parseInt('${{ inputs.num_batches }}');
-          const DELAY_MS     = parseInt('${{ inputs.delay_ms }}');
+
+          // ── Config ────────────────────────────────────────────────────
+          const CONCURRENCY = parseInt('${{ inputs.concurrency }}');
+          const NUM_BATCHES = parseInt('${{ inputs.num_batches }}');
+          const BATCH_DELAY = parseInt('${{ inputs.batch_delay }}');
+
           const HEADERS = {
             'accept': '*/*', 'origin': 'https://www.playhq.com',
             'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
             'tenant': 'basketball-victoria', 'content-type': 'application/json',
           };
-          const API_URL = 'https://api.playhq.com/graphql';
+          const API_URL      = 'https://api.playhq.com/graphql';
+          const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
+          const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET ?? null;
+          const USE_PROXY    = !!(PROXY_URL && PROXY_SECRET);
+
+          // ── EXACT session code from fetch-player-profiles.js ──────────
+          let _sessionCookie = null;
+          let _sessionPromise = null;
+          async function getSession(forceRefresh = false) {
+            if (forceRefresh) _sessionCookie = null;
+            if (_sessionCookie) return _sessionCookie;
+            if (_sessionPromise) return _sessionPromise;
+            _sessionPromise = (async () => {
+              for (let attempt = 1; attempt <= 5; attempt++) {
+                if (attempt > 1) await new Promise(r => setTimeout(r, 2 ** attempt * 1000));
+                try {
+                  const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
+                    body: JSON.stringify({
+                      operationName: 'ProfileSearch', variables: { fullName: 'a' },
+                      query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+                    }),
+                  });
+                  const raw = res.headers.get('set-cookie');
+                  if (raw) {
+                    _sessionCookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
+                    console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 48)}...)`);
+                    console.log(`  Cookie parts: ${_sessionCookie.split(';').map(p => p.trim().split('=')[0]).join(', ')}`);
+                    return _sessionCookie;
+                  }
+                } catch {}
+              }
+              throw new Error('Could not obtain session after 5 attempts');
+            })().finally(() => { _sessionPromise = null; });
+            return _sessionPromise;
+          }
+
+          // ── EXACT query from fetch-player-profiles.js ─────────────────
           const Q = `query ProfileSeasonStatistics($profileID: ID!) {
             publicProfileStatistics(profileID: $profileID) {
-              seasonStatistics { statistics { season { id } } }
+              seasonStatistics { statistics {
+                season { id }
+                teamStatistics {
+                  team { ... on DiscoverTeam { id name } }
+                  gradeStatistics {
+                    grade { id name }
+                    gameStatistics {
+                      game { id round { name isFinalsRound } }
+                      statistics { count details { value } }
+                    }
+                  }
+                }
+              }}
             }
           }`;
 
-          // Mix of known PRESENT, NOT_FOUND, and the exact UUIDs that returned 403 in the fetch script
-          const UUIDS = [
+          // ── EXACT fetchProfile from fetch-player-profiles.js ──────────
+          async function fetchProfile(uuid, attempt = 0) {
+            await new Promise(r => setTimeout(r, Math.random() * 200));
+            const cookie = await getSession();
+            const via = USE_PROXY ? 'proxy' : 'direct';
+            const t0 = Date.now();
+            let res;
+            try {
+              const ac = new AbortController();
+              const timer = setTimeout(() => ac.abort(), 15000);
+              try {
+                if (USE_PROXY) {
+                  res = await fetch(PROXY_URL, {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
+                    body: JSON.stringify({ cookie, graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q } }),
+                    signal: ac.signal,
+                  });
+                } else {
+                  res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+                    body: JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
+                    signal: ac.signal,
+                  });
+                }
+              } finally { clearTimeout(timer); }
+            } catch(e) {
+              const ms = Date.now() - t0;
+              console.log(`  [${uuid.slice(0,8)}] ${e.name === 'AbortError' ? 'TIMEOUT' : 'NET ERROR'} via ${via} — ${ms}ms (attempt ${attempt+1})`);
+              if (attempt < 3) return fetchProfile(uuid, attempt + 1);
+              return null;
+            }
+            if (res.status === 429) {
+              await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+              return fetchProfile(uuid, attempt + 1);
+            }
+            if (res.status === 403) {
+              console.log(`  [${uuid.slice(0,8)}] 403 FORBIDDEN via ${via}`);
+              return null;
+            }
+            if (!res.ok) {
+              console.log(`  [${uuid.slice(0,8)}] HTTP ${res.status} via ${via} — ${Date.now()-t0}ms`);
+              return null;
+            }
+            let json;
+            try { json = await res.json(); } catch(e) {
+              console.log(`  [${uuid.slice(0,8)}] PARSE ERROR via ${via} — ${e.message}`);
+              return null;
+            }
+            if (json.errors) {
+              const errMsg = json.errors[0]?.message?.toLowerCase() ?? '';
+              console.log(`  [${uuid.slice(0,8)}] GQL ERROR: ${json.errors[0]?.message}`);
+              if (errMsg.includes('unauthori') || errMsg.includes('forbidden') || errMsg.includes('expired')) {
+                _sessionCookie = null;
+                if (attempt < 3) return fetchProfile(uuid, attempt + 1);
+              }
+              return null;
+            }
+            const pps = json?.data?.publicProfileStatistics ?? null;
+            const ms = Date.now() - t0;
+            const seasons = pps?.seasonStatistics?.length ?? 0;
+            console.log(`  [${uuid.slice(0,8)}] ${pps ? `PRESENT (${seasons}s)` : 'NULL'} via ${via} — ${ms}ms`);
+            return pps;
+          }
+
+          // ── UUIDs — same mix as seen in fetch script logs ─────────────
+          const ALL_UUIDS = [
             '00aad449-07ad-43c2-ba28-e03f112d1d87',
             '00ffd8c9-77bd-4d96-934d-98dbeabb4df9',
             '0026fcee-f2b4-464a-821b-d78b55ff1022',
@@ -63,92 +186,57 @@ jobs:
             '00672d6f-833d-41b7-a065-6e39329bc555',
             '009c78f7-73d4-41d0-ae52-5786e9fbdc88',
             '002ed89f-3351-4a61-ae69-48c12ea094b1',
-            '000e88f5-0000-0000-0000-000000000000',
+            '00c91868-89e2-4acc-8a7a-d45c6771043f',
             '00938cda-9a91-4317-b7ce-8631d94cd59a',
             '00e81d7d-0000-0000-0000-000000000000',
-            '00c91868-89e2-4acc-8a7a-d45c6771043f',
-            '00ddc2df-0000-0000-0000-000000000000',
             '004dbb06-8f5c-48af-a66c-23fb962eee54',
-            '0098673d-0000-0000-0000-000000000000',
+            '00ddc2df-0000-0000-0000-000000000000',
             '008fce13-f340-4aef-8b34-114ee255d0fc',
-            '00be9518-0000-0000-0000-000000000000',
+            '0098673d-0000-0000-0000-000000000000',
             '00ee26bf-f6fe-4678-85fa-40a1bc6c4e0c',
-            '00c17138-0000-0000-0000-000000000000',
+            '00be9518-0000-0000-0000-000000000000',
             '004fcd0e-3ca4-437f-b56b-fc197a0d3db8',
-            '0053b338-0000-0000-0000-000000000000',
+            '00c17138-0000-0000-0000-000000000000',
             '00a99c99-a589-4378-9591-33ca83a819ea',
-            '00685a99-0000-0000-0000-000000000000',
+            '0053b338-0000-0000-0000-000000000000',
             '00cff609-0e55-4948-9e0e-ef906c201ec6',
+            '00685a99-0000-0000-0000-000000000000',
+            '00250c0a-1550-4410-a9ed-0403546229e1',
             '00c78eb8-0000-0000-0000-000000000000',
           ];
 
-          const authRes = await fetch(API_URL, {
-            method: 'POST',
-            headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-            body: JSON.stringify({ operationName: 'ProfileSearch', variables: { fullName: 'a' },
-              query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' }),
-          });
-          const raw = authRes.headers.get('set-cookie');
-          const cookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
-          console.log(`Cookie: ${cookie.split(';').map(p=>p.trim().split('=')[0]).join(', ')}`);
-          console.log(`${NUM_BATCHES} batches × ${BATCH_SIZE} concurrent | delay between batches: ${DELAY_MS}ms\n`);
+          // ── Main loop — identical structure to fetch-player-profiles.js ─
+          console.log(`\nfetch-player-profiles TEST | concurrency=${CONCURRENCY} batch-delay=${BATCH_DELAY}ms batches=${NUM_BATCHES}\n`);
+          await getSession();
 
-          async function callUUID(uuid, n) {
-            const start = Date.now();
-            const res = await fetch(PROXY_URL, {
-              method: 'POST',
-              headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
-              body: JSON.stringify({ cookie, graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q } }),
-            });
-            const ms = Date.now() - start;
-            let result;
-            if (res.status === 403) { result = '403'; }
-            else {
-              try {
-                const json = await res.json();
-                if (json.errors) result = 'NOT_FOUND';
-                else result = json?.data?.publicProfileStatistics ? `PRESENT(${json.data.publicProfileStatistics.seasonStatistics?.length}s)` : 'NULL';
-              } catch { result = 'PARSE_ERR'; }
-            }
-            const icon = result.startsWith('PRESENT') ? '✓' : result === 'NOT_FOUND' ? '○' : result === '403' ? '🔒' : '✗';
-            console.log(`    ${icon} #${String(n).padStart(2)} [${uuid.slice(0,8)}] ${result.padEnd(12)} HTTP ${res.status} ${ms}ms`);
-            return result;
-          }
-
-          let totals = { present: 0, notFound: 0, f403: 0, other: 0 };
+          const toFetch = Array.from({ length: NUM_BATCHES * CONCURRENCY }, (_, i) => ALL_UUIDS[i % ALL_UUIDS.length]);
+          let present = 0, nulls = 0, f403 = 0;
           const summary = [];
 
-          for (let b = 0; b < NUM_BATCHES; b++) {
-            const batch = UUIDS.slice(b * BATCH_SIZE % UUIDS.length)
-              .concat(UUIDS)
-              .slice(0, BATCH_SIZE)
-              .map((_, i) => UUIDS[(b * BATCH_SIZE + i) % UUIDS.length]);
-
-            console.log(`── Batch ${b+1}/${NUM_BATCHES} ──────────────────────────────────────────`);
+          for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
+            const batch = toFetch.slice(i, i + CONCURRENCY);
+            const batchNum = i / CONCURRENCY + 1;
+            console.log(`\n── Batch ${batchNum}/${NUM_BATCHES} ───────────────────────────────────────────`);
             const t0 = Date.now();
-            const results = await Promise.all(batch.map((uuid, i) => callUUID(uuid, b * BATCH_SIZE + i + 1)));
+            const results = await Promise.all(batch.map(uuid => fetchProfile(uuid)));
             const bms = Date.now() - t0;
-            const bp  = results.filter(r => r.startsWith('PRESENT')).length;
-            const bnf = results.filter(r => r === 'NOT_FOUND').length;
-            const bf  = results.filter(r => r === '403').length;
-            const bo  = results.length - bp - bnf - bf;
-            totals.present += bp; totals.notFound += bnf; totals.f403 += bf; totals.other += bo;
-            summary.push({ b: b+1, bp, bnf, bf, bo, bms });
-            console.log(`  → PRESENT:${bp} NOT_FOUND:${bnf} 403:${bf} OTHER:${bo} — ${bms}ms\n`);
+            const bp  = results.filter(r => r !== null).length;
+            const bnull = results.filter(r => r === null).length;
+            summary.push({ b: batchNum, present: bp, null: bnull, ms: bms });
+            present += bp; nulls += bnull;
+            console.log(`  → PRESENT:${bp} NULL/403/ERR:${bnull} — ${bms}ms`);
 
-            if (DELAY_MS > 0 && b < NUM_BATCHES - 1) {
-              console.log(`  [waiting ${DELAY_MS}ms before next batch...]\n`);
-              await new Promise(r => setTimeout(r, DELAY_MS));
+            if (BATCH_DELAY > 0 && i + CONCURRENCY < toFetch.length) {
+              console.log(`  [waiting ${BATCH_DELAY}ms...]`);
+              await new Promise(r => setTimeout(r, BATCH_DELAY));
             }
           }
 
-          const total = NUM_BATCHES * BATCH_SIZE;
-          console.log('═══════════════════════════════════════════════════');
-          summary.forEach(s => console.log(`  Batch ${String(s.b).padStart(2)}: PRESENT:${s.bp} NOT_FOUND:${s.bnf} 403:${s.bf} OTHER:${s.bo} — ${s.bms}ms`));
+          const total = NUM_BATCHES * CONCURRENCY;
+          console.log('\n═══════════════════════════════════════════════════');
+          summary.forEach(s => console.log(`  Batch ${String(s.b).padStart(2)}: PRESENT:${s.present} NULL:${s.null} — ${s.ms}ms`));
           console.log('─────────────────────────────────────────────────');
-          console.log(`  PRESENT   : ${totals.present}/${total}`);
-          console.log(`  NOT_FOUND : ${totals.notFound}/${total}`);
-          console.log(`  403       : ${totals.f403}/${total}`);
-          console.log(`  OTHER     : ${totals.other}/${total}`);
+          console.log(`  PRESENT : ${present}/${total}`);
+          console.log(`  NULL    : ${nulls}/${total}`);
           console.log('═══════════════════════════════════════════════════');
           NODEOF
