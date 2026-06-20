@@ -20,9 +20,9 @@ on:
         default: false
         type: boolean
       concurrency:
-        description: 'Concurrent requests (default: 10 — safe for PlayHQ rate limits)'
+        description: 'Concurrent requests (default: 3 — safe for PlayHQ rate limits)'
         required: false
-        default: '10'
+        default: '3'
       force:
         description: 'Ignore progress file and start fresh'
         required: false
