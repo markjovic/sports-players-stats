@@ -115,29 +115,36 @@ const Q_PROFILE = `query Profile($profileID: ID!) {
   }
 }`;
 
-async function fetchProfile(uuid, cookie) {
-  if (!cookie) cookie = await getSession();
+async function fetchProfile(uuid, retryCount = 0) {
+  if (retryCount > 3) return null;
+
+  // This line is key: it ignores the old manual cookie and asks for the latest valid state
+  const cookie = await getSession();
+
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
     body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
   });
-  if (res.status === 429) { await new Promise(r => setTimeout(r, 5000)); return fetchProfile(uuid, cookie); }
+  
+  if (res.status === 429) { await delay(5000); return fetchProfile(uuid, retryCount + 1); }
+  
   if (res.status === 403) {
-    // WAF IP block — wait for rate limit window to clear then retry once
-    await new Promise(r => setTimeout(r, 60000));
-    return fetchProfile(uuid, cookie);
+    console.warn(`  [403] Forbidden. Refreshing session...`);
+    await delay(60000);
+    await getSession(true); // Force refresh
+    return fetchProfile(uuid, retryCount + 1);
   }
-  if (res.status >= 500) { await new Promise(r => setTimeout(r, 3000)); return fetchProfile(uuid, cookie); }
+  
   if (!res.ok) return null;
   
   let json;
-  try { json = await res.json(); } catch { return null; } 
+  try { json = await res.json(); } catch { return null; }
   
   if (json.errors) {
     const errText = JSON.stringify(json.errors).toLowerCase();
-    if (errText.includes('unauthorized') || errText.includes('expired') || errText.includes('forbidden')) {
-      await getSession(true);
+    if (errText.includes('unauthorized') || errText.includes('expired')) {
+      await getSession(true); // Force refresh
       return fetchProfile(uuid, retryCount + 1);
     }
     return null;
@@ -188,7 +195,7 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
   const batch = toFetch.slice(i, i + CONCURRENCY);
 
   await Promise.all(batch.map(async uuid => {
-    const profile = await fetchProfile(uuid, cookie);
+    const profile = await fetchProfile(uuid);
     done.add(uuid); fetched++;
 
     if (!profile) {
