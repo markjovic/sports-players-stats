@@ -1,7 +1,7 @@
 // scripts/rebuild-player-stats.js
 // Uses the exact query captured from PlayHQ app MITM traffic (pull_player_data.ps1)
 // operationName: 'Profile' — same as the real app sends.
-// Options: --force, --dry-run, --concurrency=N (default 5), --stats-only
+// Options: --force, --dry-run, --concurrency=N (default 3), --stats-only
 
 import fs     from 'fs';
 import path   from 'path';
@@ -16,7 +16,7 @@ const args        = process.argv.slice(2);
 const FORCE       = args.includes('--force');
 const DRY_RUN     = args.includes('--dry-run');
 const STATS_ONLY  = args.includes('--stats-only');
-const CONCURRENCY = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '5');
+const CONCURRENCY = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '3');
 const COMMIT_N    = 2000;
 const PROGRESS    = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
 
@@ -32,37 +32,52 @@ const HEADERS = {
 };
 const API_URL = 'https://api.playhq.com/graphql';
 
-// ─── Session — copied from pull_player_data.ps1 pattern ──────────────────────
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// ─── Session ─────────────────────────────────────────────────────────────────
 let _sessionCookie = null;
 let _sessionPromise = null; // lock prevents concurrent re-auths
 
-async function getSession() {
-  if (_sessionCookie) return _sessionCookie;
+async function getSession(forceRefresh = false) {
+  if (forceRefresh) {
+    _sessionCookie = null;
+    _sessionPromise = null;
+  }
+  
+  if (_sessionCookie && !forceRefresh) return _sessionCookie;
   if (_sessionPromise) return _sessionPromise;
+  
   _sessionPromise = (async () => {
     for (let attempt = 1; attempt <= 5; attempt++) {
-      if (attempt > 1) await new Promise(r => setTimeout(r, attempt * 2000));
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-        body: JSON.stringify({
-          operationName: 'ProfileSearch',
-          variables: { fullName: 'test user' },
-          query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
-        }),
-      });
-      const raw = res.headers.get('set-cookie');
-      if (raw) {
-        _sessionCookie = raw.split(';')[0];
-        console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
-        return _sessionCookie;
+      if (attempt > 1) {
+        console.log(`  Retrying session... attempt ${attempt}`);
+        await delay(attempt * 2000);
+      }
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
+          body: JSON.stringify({
+            operationName: 'ProfileSearch',
+            variables: { fullName: 'test user' },
+            query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
+          }),
+        });
+        const raw = res.headers.get('set-cookie');
+        if (raw) {
+          _sessionCookie = raw.split(';')[0];
+          console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
+          return _sessionCookie;
+        }
+      } catch (err) {
+        console.error(`  Session fetch error: ${err.message}`);
       }
     }
     throw new Error('No Set-Cookie after 5 attempts');
   })().finally(() => { _sessionPromise = null; });
+  
   return _sessionPromise;
 }
-
 
 // ─── Query — exact operationName and structure from pull_player_data.ps1 ──────
 const Q_PROFILE = `query Profile($profileID: ID!) {
@@ -111,24 +126,56 @@ const Q_PROFILE = `query Profile($profileID: ID!) {
   }
 }`;
 
-async function fetchProfile(uuid, cookie) {
-  if (!cookie) cookie = await getSession();
+async function fetchProfile(uuid, retryCount = 0) {
+  if (retryCount > 3) {
+    console.error(`  [!] Max retries exceeded for ${uuid}, skipping.`);
+    return null; 
+  }
+  
+  const cookie = await getSession();
+  
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
     body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
   });
-  if (res.status === 429) { await new Promise(r => setTimeout(r, 5000)); return fetchProfile(uuid, cookie); }
-  if (res.status === 403) {
-    // WAF IP block — wait for rate limit window to clear then retry once
-    await new Promise(r => setTimeout(r, 60000));
-    return fetchProfile(uuid, cookie);
+  
+  if (res.status === 429) { 
+    console.warn(`  [429] Rate limit hit for ${uuid}. Waiting 10s...`);
+    await delay(10000); 
+    return fetchProfile(uuid, retryCount + 1); 
   }
-  if (res.status >= 500) { await new Promise(r => setTimeout(r, 3000)); return fetchProfile(uuid, cookie); }
+  
+  if (res.status === 403) {
+    console.warn(`  [403] WAF/Auth block. Session flagged. Forcing re-auth and waiting 60s...`);
+    await delay(60000);
+    await getSession(true); // Force clear and get a fresh cookie
+    return fetchProfile(uuid, retryCount + 1);
+  }
+  
+  if (res.status >= 500) { 
+    await delay(3000 + (Math.random() * 2000)); 
+    return fetchProfile(uuid, retryCount + 1); 
+  }
+  
   if (!res.ok) return null;
+  
   let json;
-  try { json = await res.json(); } catch { return null; } // guard against HTML error pages
-  if (json.errors) return null;
+  try { json = await res.json(); } catch { return null; } 
+  
+  if (json.errors) {
+    console.error(`  GraphQL Error for ${uuid}:`, JSON.stringify(json.errors));
+    
+    // Check if the GraphQL payload indicates our token died
+    const errText = JSON.stringify(json.errors).toLowerCase();
+    if (errText.includes('unauthorized') || errText.includes('expired') || errText.includes('forbidden')) {
+      console.warn(`  Auth token expired mid-session. Forcing refresh...`);
+      await getSession(true);
+      return fetchProfile(uuid, retryCount + 1);
+    }
+    return null;
+  }
+  
   return json?.data?.publicProfileStatistics ?? null;
 }
 
@@ -161,8 +208,6 @@ const toFetch = allUUIDs.filter(u => !done.has(u));
 
 console.log(`${allUUIDs.length.toLocaleString()} total | ${done.size.toLocaleString()} done | ${toFetch.length.toLocaleString()} remaining\n`);
 
-const cookie = await getSession();
-
 // ─── Main loop ────────────────────────────────────────────────────────────────
 const playersDir = path.join(ROOT, 'players');
 const FOUL_LIMIT = 5;
@@ -173,8 +218,12 @@ const nullSample = [];
 for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
   const batch = toFetch.slice(i, i + CONCURRENCY);
 
-  await Promise.all(batch.map(async uuid => {
-    const profile = await fetchProfile(uuid, cookie);
+  await Promise.all(batch.map(async (uuid, index) => {
+    // JITTER: Prevent all promises in batch firing at the identical millisecond
+    const jitter = Math.floor(Math.random() * 500) + (index * 250);
+    await delay(jitter);
+
+    const profile = await fetchProfile(uuid);
     done.add(uuid); fetched++;
 
     if (!profile) {
