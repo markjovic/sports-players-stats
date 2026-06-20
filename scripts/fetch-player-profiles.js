@@ -96,34 +96,44 @@ const Q = `query ProfileSeasonStatistics($profileID: ID!) {
 }`;
 
 // ─── Closed-loop fetcher with JIT auth and differential error handling ────────
+let _fetched = 0, _ok = 0, _null = 0, _err = 0;
+
 async function fetchProfile(uuid, attempt = 0) {
   // Stochastic jitter — randomise dispatch timing to avoid WAF fingerprinting
   await new Promise(r => setTimeout(r, Math.random() * 200));
 
   // JIT: resolve auth state fresh per request
   const cookie = await getSession();
+  const via = USE_PROXY ? 'proxy' : 'direct';
+  const t0 = Date.now();
 
   let res;
   try {
-    if (USE_PROXY) {
-      // Route through Cloudflare Worker — WAF sees Cloudflare IP, not GH Actions
-      res = await fetch(PROXY_URL, {
-        method:  'POST',
-        headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
-        body:    JSON.stringify({
-          cookie,
-          graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q },
-        }),
-      });
-    } else {
-      // Direct — may hit WAF rate limits at sustained volume
-      res = await fetch(API_URL, {
-        method:  'POST',
-        headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-        body:    JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
-      });
-    }
-  } catch {
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), 15000); // 15s timeout
+    try {
+      if (USE_PROXY) {
+        res = await fetch(PROXY_URL, {
+          method:  'POST',
+          headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
+          body:    JSON.stringify({
+            cookie,
+            graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q },
+          }),
+          signal: ac.signal,
+        });
+      } else {
+        res = await fetch(API_URL, {
+          method:  'POST',
+          headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+          body:    JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
+          signal: ac.signal,
+        });
+      }
+    } finally { clearTimeout(timer); }
+  } catch(e) {
+    const ms = Date.now() - t0;
+    console.log(`  [${uuid.slice(0,8)}] ${e.name === 'AbortError' ? 'TIMEOUT' : 'NET ERROR'} via ${via} — ${ms}ms (attempt ${attempt+1})`);
     if (attempt < 3) return fetchProfile(uuid, attempt + 1);
     return null;
   }
@@ -141,23 +151,38 @@ async function fetchProfile(uuid, attempt = 0) {
     }
     return null;
   }
-  if (!res.ok) return null;
+  if (!res.ok) {
+    console.log(`  [${uuid.slice(0,8)}] HTTP ${res.status} via ${via} — ${Date.now()-t0}ms (attempt ${attempt+1})`);
+    return null;
+  }
 
   // Stage 2: GraphQL application layer errors
   let json;
-  try { json = await res.json(); } catch { return null; }
+  try { json = await res.json(); } catch(e) {
+    console.log(`  [${uuid.slice(0,8)}] PARSE ERROR via ${via} — ${e.message}`);
+    return null;
+  }
 
   if (json.errors) {
     const errMsg = json.errors[0]?.message?.toLowerCase() ?? '';
+    console.log(`  [${uuid.slice(0,8)}] GQL ERROR: ${json.errors[0]?.message} via ${via}`);
     if (errMsg.includes('unauthori') || errMsg.includes('forbidden') || errMsg.includes('expired')) {
-      // Auth-level GraphQL error — force session refresh and retry
       _sessionCookie = null;
       if (attempt < 3) return fetchProfile(uuid, attempt + 1);
     }
     return null;
   }
 
-  return json?.data?.publicProfileStatistics ?? null;
+  const pps = json?.data?.publicProfileStatistics ?? null;
+  const ms = Date.now() - t0;
+  if (!pps) {
+    _null++;
+    if (_null <= 5) console.log(`  [${uuid.slice(0,8)}] NULL via ${via} — ${ms}ms`);
+  } else {
+    _ok++;
+    if (_ok <= 10) console.log(`  [${uuid.slice(0,8)}] PRESENT (${pps.seasonStatistics?.length}s) via ${via} — ${ms}ms`);
+  }
+  return pps;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -299,9 +324,9 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
   }));
 
   sinceCommit += batch.length;
-  if (fetched % 5000 === 0 || i + CONCURRENCY >= toFetch.length) {
+  if (fetched % 1000 === 0 || i + CONCURRENCY >= toFetch.length) {
     const pct = (fetched / toFetch.length * 100).toFixed(1);
-    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | updated: ${updated} | null: ${nulls}`);
+    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | present: ${_ok} | null: ${_null} | err: ${_err} | updated: ${updated}`);
   }
   if (sinceCommit >= COMMIT_N) {
     if (!DRY_RUN) {
