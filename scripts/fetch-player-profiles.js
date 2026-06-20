@@ -222,10 +222,9 @@ const today      = new Date().toISOString().slice(0, 10);
 let fetched = 0, nulls = 0, updated = 0, sinceCommit = 0;
 const nullSample = [];
 
-for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
-  const batch = toFetch.slice(i, i + CONCURRENCY);
-
-  await Promise.all(batch.map(async uuid => {
+// Concurrency queue — each slot picks the next UUID immediately on completion.
+// No batch blocking: a slow/retrying request never holds up a fast one.
+async function processUUID(uuid) {
     const profile = await fetchProfile(uuid);
     done.add(uuid); fetched++;
 
@@ -245,14 +244,17 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
           }
         } catch {}
       }
+
+      sinceCommit++;
+      await maybeCommit();
       return;
     }
 
-    if (!STATS_ONLY) return;
+    if (!STATS_ONLY) { sinceCommit++; await maybeCommit(); return; }
 
     const playerPath = path.join(playersDir, uuid.slice(0,2), `${uuid}.json`);
     let player;
-    try { player = readJson(playerPath); } catch { return; }
+    try { player = readJson(playerPath); } catch { sinceCommit++; await maybeCommit(); return; }
 
     let modified = false;
     if (player.statsChecked !== today) { player.statsChecked = today; modified = true; }
@@ -321,21 +323,33 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
     }
 
     if (modified) { if (!DRY_RUN) writeJson(playerPath, player); updated++; }
-  }));
+    sinceCommit++;
+    await maybeCommit();
+}
 
-  sinceCommit += batch.length;
-  if (fetched % 1000 === 0 || i + CONCURRENCY >= toFetch.length) {
+async function maybeCommit() {
+  if (fetched % 1000 === 0 || fetched === toFetch.length) {
     const pct = (fetched / toFetch.length * 100).toFixed(1);
-    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | present: ${_ok} | null: ${_null} | err: ${_err} | updated: ${updated}`);
+    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | present: ${_ok} | null: ${_null} | updated: ${updated}`);
   }
   if (sinceCommit >= COMMIT_N) {
+    sinceCommit = 0;
     if (!DRY_RUN) {
       writeJson(PROGRESS, { done: [...done] });
-      gitCommit(`rebuild-player-stats: ${fetched}/${toFetch.length} fetched, ${updated} updated`, ['players/', 'scripts/.fetch-player-profiles-progress.json']);
+      gitCommit(`fetch-player-profiles: ${fetched}/${toFetch.length} fetched, ${updated} updated`, ['players/', 'scripts/.fetch-player-profiles-progress.json']);
     }
-    sinceCommit = 0;
   }
 }
+
+// Run CONCURRENCY slots in parallel, each self-replenishing
+let idx = 0;
+async function runSlot() {
+  while (idx < toFetch.length) {
+    const uuid = toFetch[idx++];
+    await processUUID(uuid);
+  }
+}
+await Promise.all(Array.from({ length: CONCURRENCY }, runSlot));
 
 if (!DRY_RUN) {
   writeJson(PROGRESS, { done: [...done] });
