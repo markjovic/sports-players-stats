@@ -1,28 +1,20 @@
 # .github/workflows/test-proxy.yml
-# Determines actual WAF quota: batch size, window duration, concurrent vs sequential behaviour.
-# No checkout needed.
+# Stress tests the proxy with many batches of concurrent requests using
+# mixed real UUIDs. Cycles through UUIDs to fill batches. No checkout.
 
 name: Test Profile Proxy
 
 on:
   workflow_dispatch:
     inputs:
-      uuid:
-        description: 'UUID to test with'
+      batch_size:
+        description: 'Concurrent requests per batch'
         required: false
-        default: '00aad449-07ad-43c2-ba28-e03f112d1d87'
-      test:
-        description: 'Which test to run'
-        type: choice
-        options:
-          - sequential-50       # 50 sequential calls — find where it breaks
-          - concurrent-20       # 20 concurrent — does it fail faster than sequential?
-          - batch-delay         # 2 batches of 10 with configurable delay between
-        default: sequential-50
-      delay_ms:
-        description: 'Delay between batches in ms (batch-delay test only)'
+        default: '10'
+      num_batches:
+        description: 'Number of sequential batches'
         required: false
-        default: '5000'
+        default: '10'
 
 permissions:
   contents: read
@@ -30,7 +22,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -44,9 +36,8 @@ jobs:
 
           const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
           const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
-          const UUID         = '${{ inputs.uuid }}';
-          const TEST         = '${{ inputs.test }}';
-          const DELAY_MS     = parseInt('${{ inputs.delay_ms }}');
+          const BATCH_SIZE   = parseInt('${{ inputs.batch_size }}');
+          const NUM_BATCHES  = parseInt('${{ inputs.num_batches }}');
 
           const HEADERS = {
             'accept': '*/*', 'origin': 'https://www.playhq.com',
@@ -60,6 +51,45 @@ jobs:
             }
           }`;
 
+          // Real UUIDs from fetch script logs — mix of PRESENT and NOT_FOUND
+          const UUIDS = [
+            '00aad449-07ad-43c2-ba28-e03f112d1d87',
+            '00c91868-89e2-4acc-8a7a-d45c6771043f',
+            '0026fcee-f2b4-464a-821b-d78b55ff1022',
+            '004dbb06-8f5c-48af-a66c-23fb962eee54',
+            'd5fdad36-60a7-422c-b219-93aaeb438e3c',
+            '008fce13-f340-4aef-8b34-114ee255d0fc',
+            '004d6d92-6c89-4066-9456-6eee0126088d',
+            '0042d002-2c28-4421-b56b-40bef6f7042a',
+            '00672d6f-833d-41b7-a065-6e39329bc555',
+            '006b5d9c-1c2d-3e4f-5a6b-7c8d9e0f1a2b',
+            '00938cda-9a91-4317-b7ce-8631d94cd59a',
+            '005aed89-c839-4351-834a-e7391a68cc51',
+            '00b2bba5-74ca-409c-a1e4-587949f3d31e',
+            '00908980-f828-4be6-98c1-812e07ef7312',
+            '00cc96f1-5fb7-4e60-a334-fbb1ac6abe71',
+            '00974bd3-ceab-47bd-be77-6e135f736743',
+            '00df0c2d-9364-4798-ba4d-3fe962f22f0d',
+            '00ee26bf-f6fe-4678-85fa-40a1bc6c4e0c',
+            '004fcd0e-3ca4-437f-b56b-fc197a0d3db8',
+            '00a99c99-a589-4378-9591-33ca83a819ea',
+            '001b7383-8d8f-4cdd-97da-6cdb3f9a5222',
+            '00cff609-0e55-4948-9e0e-ef906c201ec6',
+            '00250c0a-1550-4410-a9ed-0403546229e1',
+            '0091588d-8dfa-4976-acdd-b686f4c87150',
+            '00510e6b-2fc7-49dc-a6d5-bbaa41833661',
+            '00fd143a-dd88-49c6-8318-bb51ebefeb82',
+            '00b779cc-b42a-4e3a-8e15-424e9ed797ba',
+            '00070140-2275-460f-94d5-d06b7d0d303e',
+            '00feddd1-fd84-46e7-a5af-3852991be4f2',
+            '0032afae-45da-4d25-ac70-78311e675c74',
+            '00e3718a-d4ad-446e-82ac-f3c234762d75',
+            '00b19edc-da7a-4f3b-b8c9-1234567890ab',
+            '008422f2-9b3c-4d5e-af67-890123456789',
+            '00ed25d0-cafe-babe-dead-beef01234567',
+            '00e883f6-1111-2222-3333-444455556666',
+          ];
+
           // Get session
           const authRes = await fetch(API_URL, {
             method: 'POST',
@@ -69,61 +99,63 @@ jobs:
           });
           const raw = authRes.headers.get('set-cookie');
           const cookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
-          console.log(`Cookie parts: ${cookie.split(';').map(p => p.trim().split('=')[0]).join(', ')}`);
-          console.log(`Test: ${TEST} | UUID: ${UUID}\n`);
+          console.log(`Cookie: ${cookie.split(';').map(p => p.trim().split('=')[0]).join(', ')}`);
+          console.log(`Config: ${NUM_BATCHES} batches × ${BATCH_SIZE} concurrent = ${NUM_BATCHES * BATCH_SIZE} total requests`);
+          console.log(`UUIDs: ${UUIDS.length} unique, cycling as needed\n`);
 
-          async function call(n, concurrent = false) {
+          async function callUUID(uuid, n) {
             const start = Date.now();
-            const res = await fetch(PROXY_URL, {
-              method: 'POST',
-              headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
-              body: JSON.stringify({ cookie, graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: UUID }, query: Q } }),
-            });
+            let res;
+            try {
+              res = await fetch(PROXY_URL, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
+                body: JSON.stringify({ cookie, graphql: {
+                  operationName: 'ProfileSeasonStatistics',
+                  variables: { profileID: uuid }, query: Q
+                }}),
+              });
+            } catch(e) {
+              console.log(`    ✗ #${String(n).padStart(3)} [${uuid.slice(0,8)}] NET_ERROR — ${e.message}`);
+              return 'NET_ERROR';
+            }
             const ms = Date.now() - start;
             let result;
             try {
               const json = await res.json();
-              if (json.errors) result = `ERROR: ${json.errors[0]?.message?.slice(0,40)}`;
+              if (json.errors) result = 'NOT_FOUND';
               else result = json?.data?.publicProfileStatistics ? 'PRESENT' : 'NULL';
-            } catch { result = `PARSE_ERROR`; }
-            const icon = result === 'PRESENT' ? '✓' : result.startsWith('ERROR') ? '✗' : '○';
-            console.log(`  #${String(n).padStart(2)}: ${icon} ${result} — HTTP ${res.status} — ${ms}ms${concurrent ? ' [concurrent]' : ''}`);
+            } catch { result = 'PARSE_ERR'; }
+            const icon = result === 'PRESENT' ? '✓' : result === 'NOT_FOUND' ? '○' : '✗';
+            console.log(`    ${icon} #${String(n).padStart(3)} [${uuid.slice(0,8)}] ${result.padEnd(9)} HTTP ${res.status} ${ms}ms`);
             return result;
           }
 
-          if (TEST === 'sequential-50') {
-            console.log('── 50 sequential calls — finding where it breaks ──────');
-            let failures = 0;
-            for (let i = 1; i <= 50; i++) {
-              const r = await call(i);
-              if (!r.startsWith('PRESENT')) failures++;
-              if (failures >= 3) { console.log(`\n  → 3 consecutive failures at call #${i}, stopping`); break; }
-              else if (!r.startsWith('PRESENT')) failures = 0;
-            }
+          let totals = { PRESENT: 0, NOT_FOUND: 0, NULL: 0, other: 0 };
+          const batchSummary = [];
 
-          } else if (TEST === 'concurrent-20') {
-            console.log('── 20 concurrent calls ────────────────────────────────');
-            const results = await Promise.all(
-              Array.from({ length: 20 }, (_, i) => call(i + 1, true))
-            );
-            const present = results.filter(r => r === 'PRESENT').length;
-            const errors  = results.filter(r => !r.startsWith('PRESENT') && r !== 'NULL').length;
-            console.log(`\n  PRESENT: ${present}/20 | ERRORS: ${errors}/20`);
-
-          } else if (TEST === 'batch-delay') {
-            console.log(`── Batch 1 (10 concurrent) ────────────────────────────`);
-            const b1 = await Promise.all(Array.from({ length: 10 }, (_, i) => call(i + 1, true)));
-            const b1ok = b1.filter(r => r === 'PRESENT').length;
-            console.log(`  Batch 1: ${b1ok}/10 PRESENT`);
-
-            console.log(`\n  Waiting ${DELAY_MS}ms...`);
-            await new Promise(r => setTimeout(r, DELAY_MS));
-
-            console.log(`\n── Batch 2 (10 concurrent) ────────────────────────────`);
-            const b2 = await Promise.all(Array.from({ length: 10 }, (_, i) => call(i + 11, true)));
-            const b2ok = b2.filter(r => r === 'PRESENT').length;
-            console.log(`  Batch 2: ${b2ok}/10 PRESENT`);
-
-            console.log(`\n  Delay ${DELAY_MS}ms — Batch 1: ${b1ok}/10, Batch 2: ${b2ok}/10`);
+          for (let b = 0; b < NUM_BATCHES; b++) {
+            const batchUUIDs = Array.from({ length: BATCH_SIZE }, (_, i) => UUIDS[(b * BATCH_SIZE + i) % UUIDS.length]);
+            console.log(`── Batch ${b+1}/${NUM_BATCHES} ──────────────────────────────────────────────`);
+            const t0 = Date.now();
+            const results = await Promise.all(batchUUIDs.map((uuid, i) => callUUID(uuid, b * BATCH_SIZE + i + 1)));
+            const bms = Date.now() - t0;
+            const bp = results.filter(r => r === 'PRESENT').length;
+            const bnf = results.filter(r => r === 'NOT_FOUND').length;
+            const bo = results.length - bp - bnf;
+            totals.PRESENT += bp; totals.NOT_FOUND += bnf; totals.other += bo;
+            batchSummary.push({ b: b+1, present: bp, notFound: bnf, other: bo, ms: bms });
+            console.log(`  → PRESENT:${bp} NOT_FOUND:${bnf} OTHER:${bo} in ${bms}ms\n`);
           }
+
+          console.log('═══════════════════════════════════════════════════');
+          console.log('  Batch summary:');
+          batchSummary.forEach(s =>
+            console.log(`    Batch ${String(s.b).padStart(2)}: ${s.present} PRESENT, ${s.notFound} NOT_FOUND, ${s.other} other — ${s.ms}ms`)
+          );
+          console.log('─────────────────────────────────────────────────');
+          console.log(`  PRESENT   : ${totals.PRESENT}/${NUM_BATCHES * BATCH_SIZE}`);
+          console.log(`  NOT_FOUND : ${totals.NOT_FOUND}/${NUM_BATCHES * BATCH_SIZE}`);
+          console.log(`  OTHER     : ${totals.other}/${NUM_BATCHES * BATCH_SIZE}`);
+          console.log('═══════════════════════════════════════════════════');
           NODEOF
