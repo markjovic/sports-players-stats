@@ -11,12 +11,16 @@ on:
         description: 'Number of sequential batches'
         required: false
         default: '3'
+      delay_ms:
+        description: 'Delay between batches in ms (0 = none)'
+        required: false
+        default: '0'
 permissions:
   contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -31,6 +35,7 @@ jobs:
           const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
           const BATCH_SIZE   = parseInt('${{ inputs.batch_size }}');
           const NUM_BATCHES  = parseInt('${{ inputs.num_batches }}');
+          const DELAY_MS     = parseInt('${{ inputs.delay_ms }}');
           const HEADERS = {
             'accept': '*/*', 'origin': 'https://www.playhq.com',
             'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
@@ -43,27 +48,37 @@ jobs:
             }
           }`;
 
-          // UUIDs that returned 403 in the fetch script log
+          // Mix of known PRESENT, NOT_FOUND, and the exact UUIDs that returned 403 in the fetch script
           const UUIDS = [
+            '00aad449-07ad-43c2-ba28-e03f112d1d87',
             '00ffd8c9-77bd-4d96-934d-98dbeabb4df9',
+            '0026fcee-f2b4-464a-821b-d78b55ff1022',
             '00c416f6-3bb4-4587-b9f5-9295fe531dbb',
+            'd5fdad36-60a7-422c-b219-93aaeb438e3c',
             '008555c4-3878-49fd-b488-6622dd58e385',
+            '004d6d92-6c89-4066-9456-6eee0126088d',
             '00cdc8cb-63d2-42ee-a50e-d9cd76cb7c67',
+            '0042d002-2c28-4421-b56b-40bef6f7042a',
             '00278e1c-9622-43d8-822a-964f68d1a7d6',
+            '00672d6f-833d-41b7-a065-6e39329bc555',
             '009c78f7-73d4-41d0-ae52-5786e9fbdc88',
-            '0071ef3d-0000-0000-0000-000000000000',
-            '0049aa5d-0000-0000-0000-000000000000',
-            '0076a77c-0000-0000-0000-000000000000',
             '002ed89f-3351-4a61-ae69-48c12ea094b1',
             '000e88f5-0000-0000-0000-000000000000',
-            '00e81d7d-0000-0000-0000-000000000000',
-            '00ddc2df-0000-0000-0000-000000000000',
-            '0098673d-0000-0000-0000-000000000000',
             '00938cda-9a91-4317-b7ce-8631d94cd59a',
+            '00e81d7d-0000-0000-0000-000000000000',
+            '00c91868-89e2-4acc-8a7a-d45c6771043f',
+            '00ddc2df-0000-0000-0000-000000000000',
+            '004dbb06-8f5c-48af-a66c-23fb962eee54',
+            '0098673d-0000-0000-0000-000000000000',
+            '008fce13-f340-4aef-8b34-114ee255d0fc',
             '00be9518-0000-0000-0000-000000000000',
+            '00ee26bf-f6fe-4678-85fa-40a1bc6c4e0c',
             '00c17138-0000-0000-0000-000000000000',
+            '004fcd0e-3ca4-437f-b56b-fc197a0d3db8',
             '0053b338-0000-0000-0000-000000000000',
+            '00a99c99-a589-4378-9591-33ca83a819ea',
             '00685a99-0000-0000-0000-000000000000',
+            '00cff609-0e55-4948-9e0e-ef906c201ec6',
             '00c78eb8-0000-0000-0000-000000000000',
           ];
 
@@ -76,7 +91,7 @@ jobs:
           const raw = authRes.headers.get('set-cookie');
           const cookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
           console.log(`Cookie: ${cookie.split(';').map(p=>p.trim().split('=')[0]).join(', ')}`);
-          console.log(`Testing ${UUIDS.length} UUIDs that returned 403 in fetch script\n`);
+          console.log(`${NUM_BATCHES} batches × ${BATCH_SIZE} concurrent | delay between batches: ${DELAY_MS}ms\n`);
 
           async function callUUID(uuid, n) {
             const start = Date.now();
@@ -87,27 +102,53 @@ jobs:
             });
             const ms = Date.now() - start;
             let result;
-            if (res.status === 403) { result = '403_FORBIDDEN'; }
+            if (res.status === 403) { result = '403'; }
             else {
               try {
                 const json = await res.json();
-                if (json.errors) result = `NOT_FOUND`;
+                if (json.errors) result = 'NOT_FOUND';
                 else result = json?.data?.publicProfileStatistics ? `PRESENT(${json.data.publicProfileStatistics.seasonStatistics?.length}s)` : 'NULL';
               } catch { result = 'PARSE_ERR'; }
             }
-            const icon = result.startsWith('PRESENT') ? '✓' : result === 'NOT_FOUND' ? '○' : result === '403_FORBIDDEN' ? '🔒' : '✗';
+            const icon = result.startsWith('PRESENT') ? '✓' : result === 'NOT_FOUND' ? '○' : result === '403' ? '🔒' : '✗';
             console.log(`    ${icon} #${String(n).padStart(2)} [${uuid.slice(0,8)}] ${result.padEnd(12)} HTTP ${res.status} ${ms}ms`);
             return result;
           }
 
+          let totals = { present: 0, notFound: 0, f403: 0, other: 0 };
+          const summary = [];
+
           for (let b = 0; b < NUM_BATCHES; b++) {
-            const batch = UUIDS.slice(b * BATCH_SIZE, (b+1) * BATCH_SIZE);
-            if (!batch.length) break;
-            console.log(`── Batch ${b+1} (${batch.length} concurrent) ──`);
-            const results = await Promise.all(batch.map((uuid,i) => callUUID(uuid, b*BATCH_SIZE+i+1)));
-            const p=results.filter(r=>r.startsWith('PRESENT')).length;
-            const nf=results.filter(r=>r==='NOT_FOUND').length;
-            const f=results.filter(r=>r==='403_FORBIDDEN').length;
-            console.log(`  PRESENT:${p} NOT_FOUND:${nf} 403:${f}\n`);
+            const batch = UUIDS.slice(b * BATCH_SIZE % UUIDS.length)
+              .concat(UUIDS)
+              .slice(0, BATCH_SIZE)
+              .map((_, i) => UUIDS[(b * BATCH_SIZE + i) % UUIDS.length]);
+
+            console.log(`── Batch ${b+1}/${NUM_BATCHES} ──────────────────────────────────────────`);
+            const t0 = Date.now();
+            const results = await Promise.all(batch.map((uuid, i) => callUUID(uuid, b * BATCH_SIZE + i + 1)));
+            const bms = Date.now() - t0;
+            const bp  = results.filter(r => r.startsWith('PRESENT')).length;
+            const bnf = results.filter(r => r === 'NOT_FOUND').length;
+            const bf  = results.filter(r => r === '403').length;
+            const bo  = results.length - bp - bnf - bf;
+            totals.present += bp; totals.notFound += bnf; totals.f403 += bf; totals.other += bo;
+            summary.push({ b: b+1, bp, bnf, bf, bo, bms });
+            console.log(`  → PRESENT:${bp} NOT_FOUND:${bnf} 403:${bf} OTHER:${bo} — ${bms}ms\n`);
+
+            if (DELAY_MS > 0 && b < NUM_BATCHES - 1) {
+              console.log(`  [waiting ${DELAY_MS}ms before next batch...]\n`);
+              await new Promise(r => setTimeout(r, DELAY_MS));
+            }
           }
+
+          const total = NUM_BATCHES * BATCH_SIZE;
+          console.log('═══════════════════════════════════════════════════');
+          summary.forEach(s => console.log(`  Batch ${String(s.b).padStart(2)}: PRESENT:${s.bp} NOT_FOUND:${s.bnf} 403:${s.bf} OTHER:${s.bo} — ${s.bms}ms`));
+          console.log('─────────────────────────────────────────────────');
+          console.log(`  PRESENT   : ${totals.present}/${total}`);
+          console.log(`  NOT_FOUND : ${totals.notFound}/${total}`);
+          console.log(`  403       : ${totals.f403}/${total}`);
+          console.log(`  OTHER     : ${totals.other}/${total}`);
+          console.log('═══════════════════════════════════════════════════');
           NODEOF
