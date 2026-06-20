@@ -98,6 +98,7 @@ const Q = `query ProfileSeasonStatistics($profileID: ID!) {
 
 // ─── Closed-loop fetcher with JIT auth and differential error handling ────────
 let _fetched = 0, _ok = 0, _null = 0, _err = 0;
+const _presentUUIDs = new Set();
 
 async function fetchProfile(uuid, attempt = 0) {
   // Stochastic jitter — randomise dispatch timing to avoid WAF fingerprinting
@@ -177,6 +178,7 @@ async function fetchProfile(uuid, attempt = 0) {
     if (_null <= 5) console.log(`  [${uuid.slice(0,8)}] NULL via ${via} — ${ms}ms`);
   } else {
     _ok++;
+    _presentUUIDs.add(uuid);
     if (_ok <= 10) console.log(`  [${uuid.slice(0,8)}] PRESENT (${pps.seasonStatistics?.length}s) via ${via} — ${ms}ms`);
   }
   return pps;
@@ -344,6 +346,10 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
     await new Promise(r => setTimeout(r, BATCH_DELAY));
   }
 }
+
+const _failedUUIDs = [...done].filter(u => !_presentUUIDs.has(u));
+fs.writeFileSync('/tmp/failed-uuids.txt', _failedUUIDs.slice(0, 50).join('\n'), 'utf8');
+console.log(`\n  Wrote ${Math.min(_failedUUIDs.length,50)} failed UUIDs to /tmp/failed-uuids.txt`);
 
 if (!DRY_RUN) {
   writeJson(PROGRESS, { done: [...done] });
