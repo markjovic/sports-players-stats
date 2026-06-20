@@ -30,7 +30,7 @@ jobs:
 
       - name: Test proxy
         env:
-                    PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
+          PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
         run: |
           node --input-type=module << 'NODEOF'
           import crypto from 'crypto';
