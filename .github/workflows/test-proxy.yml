@@ -1,20 +1,28 @@
 # .github/workflows/test-proxy.yml
-# Tests the Cloudflare proxy for publicProfileStatistics — no checkout needed.
-# Tests session, proxy connectivity, and a sample of UUIDs with full verbose output.
+# Determines actual WAF quota: batch size, window duration, concurrent vs sequential behaviour.
+# No checkout needed.
 
 name: Test Profile Proxy
 
 on:
   workflow_dispatch:
     inputs:
-      uuids:
-        description: 'Comma-separated UUIDs to test (leave blank for built-in samples)'
+      uuid:
+        description: 'UUID to test with'
         required: false
-        default: '00aad449-07ad-43c2-ba28-e03f112d1d87,0026fcee-f2b4-464a-821b-d78b55ff1022,d5fdad36-60a7-422c-b219-93aaeb438e3c'
-      count:
-        description: 'Times to call each UUID (tests rate limiting)'
+        default: '00aad449-07ad-43c2-ba28-e03f112d1d87'
+      test:
+        description: 'Which test to run'
+        type: choice
+        options:
+          - sequential-50       # 50 sequential calls — find where it breaks
+          - concurrent-20       # 20 concurrent — does it fail faster than sequential?
+          - batch-delay         # 2 batches of 10 with configurable delay between
+        default: sequential-50
+      delay_ms:
+        description: 'Delay between batches in ms (batch-delay test only)'
         required: false
-        default: '3'
+        default: '5000'
 
 permissions:
   contents: read
@@ -27,8 +35,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Test proxy
+      - name: Run test
         env:
           PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
         run: |
@@ -37,8 +44,9 @@ jobs:
 
           const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
           const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
-          const UUIDS        = '${{ inputs.uuids }}'.split(',').map(s => s.trim()).filter(Boolean);
-          const COUNT        = parseInt('${{ inputs.count }}');
+          const UUID         = '${{ inputs.uuid }}';
+          const TEST         = '${{ inputs.test }}';
+          const DELAY_MS     = parseInt('${{ inputs.delay_ms }}');
 
           const HEADERS = {
             'accept': '*/*', 'origin': 'https://www.playhq.com',
@@ -46,100 +54,76 @@ jobs:
             'tenant': 'basketball-victoria', 'content-type': 'application/json',
           };
           const API_URL = 'https://api.playhq.com/graphql';
-
           const Q = `query ProfileSeasonStatistics($profileID: ID!) {
             publicProfileStatistics(profileID: $profileID) {
               seasonStatistics { statistics { season { id } } }
             }
           }`;
 
-          console.log('═══════════════════════════════════════════════════');
-          console.log('  PlayHQ Profile Proxy Test');
-          console.log('═══════════════════════════════════════════════════');
-          console.log(`  Proxy URL    : ${PROXY_URL || '(not set — will test direct)'}`);
-          console.log(`  Proxy Secret : ${PROXY_SECRET ? '✓ set' : '✗ NOT SET'}`);
-          console.log(`  UUIDs        : ${UUIDS.length}`);
-          console.log(`  Calls each   : ${COUNT}`);
-          console.log('');
-
-          // ── Step 1: Session ──────────────────────────────────────────
-          console.log('── Step 1: Get session cookie ──────────────────────');
+          // Get session
           const authRes = await fetch(API_URL, {
             method: 'POST',
             headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
-            body: JSON.stringify({
-              operationName: 'ProfileSearch', variables: { fullName: 'a' },
-              query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
-            }),
+            body: JSON.stringify({ operationName: 'ProfileSearch', variables: { fullName: 'a' },
+              query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' }),
           });
           const raw = authRes.headers.get('set-cookie');
-          if (!raw) { console.log('  ✗ FAILED — no Set-Cookie header'); process.exit(1); }
           const cookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
-          console.log(`  ✓ Cookie: ${cookie.slice(0, 48)}...`);
-          console.log(`  Cookie parts: ${cookie.split(';').map(p => p.trim().split('=')[0]).join(', ')}`);
-          console.log('');
+          console.log(`Cookie parts: ${cookie.split(';').map(p => p.trim().split('=')[0]).join(', ')}`);
+          console.log(`Test: ${TEST} | UUID: ${UUID}\n`);
 
-          // ── Step 2: Proxy connectivity ───────────────────────────────
-          if (PROXY_URL && PROXY_SECRET) {
-            console.log('── Step 2: Proxy connectivity check ────────────────');
-            try {
-              const pingRes = await fetch(PROXY_URL, { method: 'GET', headers: { 'X-Proxy-Secret': PROXY_SECRET } });
-              console.log(`  HTTP ${pingRes.status} — ${pingRes.status === 405 ? '✓ Worker is live' : '? unexpected status'}`);
-            } catch(e) {
-              console.log(`  ✗ Could not reach proxy: ${e.message}`);
-              process.exit(1);
-            }
-            console.log('');
-          }
-
-          // ── Step 3: Profile requests ─────────────────────────────────
-          const useProxy = !!(PROXY_URL && PROXY_SECRET);
-          console.log(`── Step 3: Profile requests (via ${useProxy ? 'PROXY' : 'DIRECT'}) ─────────────`);
-
-          async function fetchProfile(uuid, attempt) {
+          async function call(n, concurrent = false) {
             const start = Date.now();
-            let res;
-            if (useProxy) {
-              res = await fetch(PROXY_URL, {
-                method: 'POST',
-                headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
-                body: JSON.stringify({ cookie, graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q } }),
-              });
-            } else {
-              res = await fetch(API_URL, {
-                method: 'POST',
-                headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-                body: JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
-              });
-            }
+            const res = await fetch(PROXY_URL, {
+              method: 'POST',
+              headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
+              body: JSON.stringify({ cookie, graphql: { operationName: 'ProfileSeasonStatistics', variables: { profileID: UUID }, query: Q } }),
+            });
             const ms = Date.now() - start;
-            let body;
-            try { body = await res.json(); } catch(e) {
-              return { status: res.status, result: 'PARSE_ERROR', ms, error: e.message };
-            }
-            if (body.errors) return { status: res.status, result: 'ERROR', ms, error: body.errors[0]?.message };
-            const pps = body?.data?.publicProfileStatistics;
-            return { status: res.status, result: pps ? `PRESENT (${pps.seasonStatistics?.length} seasons)` : 'NULL', ms };
+            let result;
+            try {
+              const json = await res.json();
+              if (json.errors) result = `ERROR: ${json.errors[0]?.message?.slice(0,40)}`;
+              else result = json?.data?.publicProfileStatistics ? 'PRESENT' : 'NULL';
+            } catch { result = `PARSE_ERROR`; }
+            const icon = result === 'PRESENT' ? '✓' : result.startsWith('ERROR') ? '✗' : '○';
+            console.log(`  #${String(n).padStart(2)}: ${icon} ${result} — HTTP ${res.status} — ${ms}ms${concurrent ? ' [concurrent]' : ''}`);
+            return result;
           }
 
-          let totalPresent = 0, totalNull = 0, totalError = 0;
-          for (const uuid of UUIDS) {
-            console.log(`\n  UUID: ${uuid}`);
-            for (let i = 1; i <= COUNT; i++) {
-              const r = await fetchProfile(uuid, i);
-              const icon = r.result.startsWith('PRESENT') ? '✓' : r.result === 'NULL' ? '○' : '✗';
-              console.log(`    #${i}: ${icon} ${r.result} — HTTP ${r.status} — ${r.ms}ms${r.error ? ` — ${r.error}` : ''}`);
-              if (r.result.startsWith('PRESENT')) totalPresent++;
-              else if (r.result === 'NULL') totalNull++;
-              else totalError++;
+          if (TEST === 'sequential-50') {
+            console.log('── 50 sequential calls — finding where it breaks ──────');
+            let failures = 0;
+            for (let i = 1; i <= 50; i++) {
+              const r = await call(i);
+              if (!r.startsWith('PRESENT')) failures++;
+              if (failures >= 3) { console.log(`\n  → 3 consecutive failures at call #${i}, stopping`); break; }
+              else if (!r.startsWith('PRESENT')) failures = 0;
             }
-          }
 
-          console.log('\n═══════════════════════════════════════════════════');
-          console.log('  Results');
-          console.log('═══════════════════════════════════════════════════');
-          console.log(`  PRESENT : ${totalPresent}`);
-          console.log(`  NULL    : ${totalNull}`);
-          console.log(`  ERROR   : ${totalError}`);
-          console.log(`  Via     : ${useProxy ? 'PROXY ✓' : 'DIRECT (proxy not configured)'}`);
+          } else if (TEST === 'concurrent-20') {
+            console.log('── 20 concurrent calls ────────────────────────────────');
+            const results = await Promise.all(
+              Array.from({ length: 20 }, (_, i) => call(i + 1, true))
+            );
+            const present = results.filter(r => r === 'PRESENT').length;
+            const errors  = results.filter(r => !r.startsWith('PRESENT') && r !== 'NULL').length;
+            console.log(`\n  PRESENT: ${present}/20 | ERRORS: ${errors}/20`);
+
+          } else if (TEST === 'batch-delay') {
+            console.log(`── Batch 1 (10 concurrent) ────────────────────────────`);
+            const b1 = await Promise.all(Array.from({ length: 10 }, (_, i) => call(i + 1, true)));
+            const b1ok = b1.filter(r => r === 'PRESENT').length;
+            console.log(`  Batch 1: ${b1ok}/10 PRESENT`);
+
+            console.log(`\n  Waiting ${DELAY_MS}ms...`);
+            await new Promise(r => setTimeout(r, DELAY_MS));
+
+            console.log(`\n── Batch 2 (10 concurrent) ────────────────────────────`);
+            const b2 = await Promise.all(Array.from({ length: 10 }, (_, i) => call(i + 11, true)));
+            const b2ok = b2.filter(r => r === 'PRESENT').length;
+            console.log(`  Batch 2: ${b2ok}/10 PRESENT`);
+
+            console.log(`\n  Delay ${DELAY_MS}ms — Batch 1: ${b1ok}/10, Batch 2: ${b2ok}/10`);
+          }
           NODEOF
