@@ -33,7 +33,7 @@ const API_URL     = 'https://api.playhq.com/graphql';
 // through Cloudflare's distributed IPs instead of the GH Actions runner IP.
 // PROXY_URL = Worker URL e.g. https://playhq-profile-proxy.insanoflash.workers.dev
 // PROXY_SECRET = shared secret set in the Worker's environment variables
-const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
+const PROXY_URL = process.env.PLAYHQ_PROXY_URL ?? 'https://playhq-profile-proxy.insanoflash.workers.dev';
 const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET ?? null;
 const USE_PROXY    = !!(PROXY_URL && PROXY_SECRET);
 if (USE_PROXY) console.log(`Using proxy: ${PROXY_URL}\n`);
@@ -144,11 +144,8 @@ async function fetchProfile(uuid, attempt = 0) {
     return fetchProfile(uuid, attempt + 1);
   }
   if (res.status === 403) {
-    console.log(`  [${uuid.slice(0,8)}] 403 via ${via} — attempt ${attempt+1} — backing off ${(attempt+1)*3}s`);
-    if (attempt < 3) {
-      await new Promise(r => setTimeout(r, 3000 * (attempt + 1)));
-      return fetchProfile(uuid, attempt + 1);
-    }
+    // Profile exists but is private/forbidden — not a WAF block, don't retry
+    console.log(`  [${uuid.slice(0,8)}] 403 FORBIDDEN (private profile) via ${via}`);
     return null;
   }
   if (!res.ok) {
