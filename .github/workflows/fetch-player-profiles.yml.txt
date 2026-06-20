@@ -1,0 +1,85 @@
+# .github/workflows/fetch-player-profiles.yml
+# Routes publicProfileStatistics requests through a Cloudflare Worker proxy
+# to bypass per-IP WAF rate limits on api.playhq.com.
+# Requires secrets: PLAYHQ_PROXY_URL, PLAYHQ_PROXY_SECRET
+
+name: Fetch Player Profiles (Proxy)
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Ignore progress file and reprocess all players'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'Concurrent requests (default: 10)'
+        required: false
+        default: '10'
+      batch_delay:
+        description: 'Delay between batches in ms (default: 5000)'
+        required: false
+        default: '5000'
+      worker:
+        description: 'Cloudflare Worker to use'
+        required: false
+        default: 'https://playhq-profile-proxy.insanoflash.workers.dev'
+        type: choice
+        options:
+          - https://playhq-profile-proxy.insanoflash.workers.dev
+          - https://playhq-profile-proxy-2.insanoflash.workers.dev
+          - https://playhq-profile-proxy-3.insanoflash.workers.dev
+          - https://playhq-profile-proxy-4.insanoflash.workers.dev
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.WORKFLOW_PAT }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build args
+        id: args
+        run: |
+          ARGS="--stats-only --concurrency=${{ inputs.concurrency }} --batch-delay=${{ inputs.batch_delay }}"
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          echo "args=$ARGS" >> $GITHUB_OUTPUT
+
+      - name: Run fetch-player-profiles
+        env:
+          PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
+          PLAYHQ_PROXY_URL: ${{ inputs.worker }}
+        run: node scripts/fetch-player-profiles.js ${{ steps.args.outputs.args }}
+
+      - name: Re-test failed UUIDs immediately
+        if: always()
+        env:
+          PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
+        run: node scripts/test-failed-uuids.js
+
+      - name: Final push (safety net)
+        if: always()
+        run: |
+          for f in scripts/.fetch-player-profiles-progress.json; do
+            [ -f "$f" ] && git add "$f" || true
+          done
+          git add players/ || true
+          git diff --staged --quiet || git commit -m "fetch-player-profiles: safety-net final commit"
+          git pull --rebase=false --no-edit -X ours || true
+          git push || true
