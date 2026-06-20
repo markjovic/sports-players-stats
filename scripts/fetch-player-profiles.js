@@ -145,8 +145,7 @@ async function fetchProfile(uuid, attempt = 0) {
     return fetchProfile(uuid, attempt + 1);
   }
   if (res.status === 403) {
-    // Profile exists but is private/forbidden — not a WAF block, don't retry
-    console.log(`  [${uuid.slice(0,8)}] 403 FORBIDDEN (private profile) via ${via}`);
+    console.log(`  [403] ${uuid} via ${via} — ${Date.now()-t0}ms`);
     return null;
   }
   if (!res.ok) {
