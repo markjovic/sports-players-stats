@@ -30,13 +30,12 @@ jobs:
 
       - name: Test proxy
         env:
-          PLAYHQ_PROXY_URL: ${{ secrets.PLAYHQ_PROXY_URL }}
-          PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
+                    PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
         run: |
           node --input-type=module << 'NODEOF'
           import crypto from 'crypto';
 
-          const PROXY_URL    = process.env.PLAYHQ_PROXY_URL;
+          const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
           const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
           const UUIDS        = '${{ inputs.uuids }}'.split(',').map(s => s.trim()).filter(Boolean);
           const COUNT        = parseInt('${{ inputs.count }}');
