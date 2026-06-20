@@ -1,4 +1,8 @@
 // scripts/rebuild-player-stats.js
+// Uses the exact query captured from PlayHQ app MITM traffic (pull_player_data.ps1)
+// operationName: 'Profile' — same as the real app sends.
+// Options: --force, --dry-run, --concurrency=N (default 5), --stats-only
+
 import fs     from 'fs';
 import path   from 'path';
 import crypto from 'crypto';
@@ -12,12 +16,13 @@ const args        = process.argv.slice(2);
 const FORCE       = args.includes('--force');
 const DRY_RUN     = args.includes('--dry-run');
 const STATS_ONLY  = args.includes('--stats-only');
-const CONCURRENCY = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '3');
+const CONCURRENCY = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '5');
 const COMMIT_N    = 2000;
 const PROGRESS    = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
 
 console.log(`rebuild-player-stats | concurrency=${CONCURRENCY} force=${FORCE} dry=${DRY_RUN}\n`);
 
+// ─── Headers — copied from pull_player_data.ps1 ───────────────────────────────
 const HEADERS = {
   'accept':       '*/*',
   'origin':       'https://www.playhq.com',
@@ -27,10 +32,9 @@ const HEADERS = {
 };
 const API_URL = 'https://api.playhq.com/graphql';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
+// ─── Session — copied from pull_player_data.ps1 pattern ──────────────────────
 let _sessionCookie = null;
-let _sessionPromise = null;
+let _sessionPromise = null; // lock prevents concurrent re-auths
 
 async function getSession(forceRefresh = false) {
   if (forceRefresh) { _sessionCookie = null; _sessionPromise = null; }
@@ -53,6 +57,7 @@ async function getSession(forceRefresh = false) {
         const raw = res.headers.get('set-cookie');
         if (raw) {
           _sessionCookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
+          console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
           return _sessionCookie;
         }
       } catch (err) { console.error(`  Session fetch error: ${err.message}`); }
@@ -62,43 +67,102 @@ async function getSession(forceRefresh = false) {
   return _sessionPromise;
 }
 
+
+// ─── Query — exact operationName and structure from pull_player_data.ps1 ──────
 const Q_PROFILE = `query Profile($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
-    careerStatistics { totalStatistics { count details { value __typename } gameFormat __typename } clubStatistics { id club { id name __typename } statistics { count details { value __typename } gameFormat __typename } __typename } __typename }
-    seasonStatistics { name player { hasGamePermit __typename } statistics { season { id name competition { id name organisation { id name __typename } __typename } __typename } role club { id name __typename } totalStatistics { count details { value __typename } gameFormat __typename } teamStatistics { team { ... on DiscoverTeam { id name __typename } __typename } totalStatistics { count details { value __typename } gameFormat __typename } gradeStatistics { grade { id name __typename } gameStatistics { game { id round { name isFinalsRound __typename } home { ... on DiscoverTeam { id name __typename } __typename } away { ... on DiscoverTeam { id name __typename } __typename } } statistics { count details { value __typename } } } __typename } __typename } __typename } __typename } __typename }
+    careerStatistics {
+      totalStatistics { count details { value __typename } gameFormat __typename }
+      clubStatistics {
+        id
+        club { id name __typename }
+        statistics { count details { value __typename } gameFormat __typename }
+        __typename
+      }
+      __typename
+    }
+    seasonStatistics {
+      name
+      player { hasGamePermit __typename }
+      statistics {
+        season { id name competition { id name organisation { id name __typename } __typename } __typename }
+        role
+        club { id name __typename }
+        totalStatistics { count details { value __typename } gameFormat __typename }
+        teamStatistics {
+          team { ... on DiscoverTeam { id name __typename } __typename }
+          totalStatistics { count details { value __typename } gameFormat __typename }
+          gradeStatistics {
+            grade { id name __typename }
+            gameStatistics {
+              game {
+                id
+                round { name isFinalsRound __typename }
+                home { ... on DiscoverTeam { id name __typename } __typename }
+                away { ... on DiscoverTeam { id name __typename } __typename }
+              }
+              statistics { count details { value __typename } }
+            }
+            __typename
+          }
+          __typename
+        }
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
 }`;
 
-async function fetchProfile(uuid, retryCount = 0) {
-  if (retryCount > 3) return null;
-  const cookie = await getSession();
+async function fetchProfile(uuid, cookie) {
+  if (!cookie) cookie = await getSession();
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
     body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
   });
-  if (res.status === 429) { await delay(10000); return fetchProfile(uuid, retryCount + 1); }
-  if (res.status === 403) { await delay(60000); await getSession(true); return fetchProfile(uuid, retryCount + 1); }
+  if (res.status === 429) { await new Promise(r => setTimeout(r, 5000)); return fetchProfile(uuid, cookie); }
+  if (res.status === 403) {
+    // WAF IP block — wait for rate limit window to clear then retry once
+    await new Promise(r => setTimeout(r, 60000));
+    return fetchProfile(uuid, cookie);
+  }
+  if (res.status >= 500) { await new Promise(r => setTimeout(r, 3000)); return fetchProfile(uuid, cookie); }
   if (!res.ok) return null;
-  let json; try { json = await res.json(); } catch { return null; }
+  
+  let json;
+  try { json = await res.json(); } catch { return null; } 
+  
   if (json.errors) {
-    if (JSON.stringify(json.errors).toLowerCase().includes('unauthorized')) { await getSession(true); return fetchProfile(uuid, retryCount + 1); }
+    const errText = JSON.stringify(json.errors).toLowerCase();
+    if (errText.includes('unauthorized') || errText.includes('expired') || errText.includes('forbidden')) {
+      await getSession(true);
+      return fetchProfile(uuid, retryCount + 1);
+    }
     return null;
   }
+  
   return json?.data?.publicProfileStatistics ?? null;
 }
 
-function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
-function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function readJson(p)    { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+function writeJson(p,d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 
 function gitCommit(msg, dirs) {
   if (DRY_RUN) return;
   try {
     execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    if (!execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim()) return;
     execSync(`git commit -m "${msg}"`, { cwd: ROOT, stdio: 'pipe' });
+    execSync('git pull --rebase=false --no-edit -X ours', { cwd: ROOT, stdio: 'pipe' });
     execSync('git push', { cwd: ROOT, stdio: 'pipe' });
-  } catch(e) { console.error(`  git error: ${e.message}`); }
+    console.log(`  ✔ ${msg}`);
+  } catch(e) { console.error(`  ✗ git: ${e.message.split('\n')[0]}`); }
 }
 
+// ─── Load UUIDs ───────────────────────────────────────────────────────────────
 const indexDir = path.join(ROOT, 'players', 'indexes');
 const allUUIDs = [];
 for (const f of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')))
@@ -106,32 +170,141 @@ for (const f of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')))
 
 let progress = { done: [] };
 if (!FORCE && fs.existsSync(PROGRESS)) try { progress = readJson(PROGRESS); } catch {}
-const done = new Set(progress.done ?? []);
+const done    = new Set(progress.done ?? []);
 const toFetch = allUUIDs.filter(u => !done.has(u));
 
 console.log(`${allUUIDs.length.toLocaleString()} total | ${done.size.toLocaleString()} done | ${toFetch.length.toLocaleString()} remaining\n`);
 
+const cookie = await getSession();
+
+// ─── Main loop ────────────────────────────────────────────────────────────────
 const playersDir = path.join(ROOT, 'players');
-const today = new Date().toISOString().slice(0, 10);
+const FOUL_LIMIT = 5;
+const today      = new Date().toISOString().slice(0, 10);
 let fetched = 0, nulls = 0, updated = 0, sinceCommit = 0;
+const nullSample = [];
 
 for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
   const batch = toFetch.slice(i, i + CONCURRENCY);
-  await Promise.all(batch.map(async (uuid, index) => {
-    await delay(index * 250);
-    const profile = await fetchProfile(uuid);
+
+  await Promise.all(batch.map(async uuid => {
+    const profile = await fetchProfile(uuid, cookie);
     done.add(uuid); fetched++;
-    if (!profile) { nulls++; return; }
+
+    if (!profile) {
+      nulls++;
+      if (nullSample.length < 10) {
+        try {
+          const p = readJson(path.join(playersDir, uuid.slice(0,2), `${uuid}.json`));
+          const gp = p.sports?.Basketball?.gp ?? 0;
+          if (gp >= 10) {
+            nullSample.push(`${uuid} (${p.firstName ?? ''} ${p.lastName ?? ''}, ${gp} gp)`);
+            if (nullSample.length === 10) {
+              console.log('\n── Null sample (≥10 stored games) ──');
+              nullSample.forEach(s => console.log(' ', s));
+              console.log('');
+            }
+          }
+        } catch {}
+      }
+      return;
+    }
+
     if (!STATS_ONLY) return;
+
     const playerPath = path.join(playersDir, uuid.slice(0,2), `${uuid}.json`);
-    let player; try { player = readJson(playerPath); } catch { return; }
-    // ... [Processing Logic remains same] ...
-    if (updated > 0) { if (!DRY_RUN) writeJson(playerPath, player); }
+    let player;
+    try { player = readJson(playerPath); } catch { return; }
+
+    let modified = false;
+    if (player.statsChecked !== today) { player.statsChecked = today; modified = true; }
+
+    for (const sEntry of (profile.seasonStatistics ?? [])) {
+      for (const tEntry of (sEntry.statistics ?? [])) {
+        const sid = tEntry.season?.id;
+        if (!sid) continue;
+        for (const team of (tEntry.teamStatistics ?? [])) {
+          const tid = team.team?.id;
+          if (!tid) continue;
+          for (const grade of (team.gradeStatistics ?? [])) {
+            const gid = grade.grade?.id;
+            if (!gid) continue;
+            let foulOuts = 0, maxPTS = 0, maxPTSgame = null, maxPT3 = 0, maxPT3game = null;
+            for (const gameStat of (grade.gameStatistics ?? [])) {
+              const gameId = gameStat.game?.id;
+              let gameFouls = 0, gamePTS = 0, gamePT3 = 0;
+              for (const stat of (gameStat.statistics ?? [])) {
+                const val = stat.details?.value;
+                const cnt = stat.count ?? 0;
+                if (val === 'TOTAL_FOULS')   gameFouls += cnt;
+                if (val === 'TOTAL_SCORE')   gamePTS    = cnt;
+                if (val === '3_POINT_SCORE') gamePT3    = cnt;
+              }
+              if (gameFouls >= FOUL_LIMIT) foulOuts++;
+              if (gamePTS > maxPTS) { maxPTS = gamePTS; maxPTSgame = { v: gamePTS, gameKey: gameId, sid }; }
+              if (gamePT3 > maxPT3) { maxPT3 = gamePT3; maxPT3game = { v: gamePT3, gameKey: gameId, sid }; }
+            }
+            for (const season of (player.seasons ?? [])) {
+              if (season.sid !== sid) continue;
+              for (const reg of (season.regs ?? [])) {
+                if (reg.tid !== tid || reg.gid !== gid) continue;
+                if (!reg.stats) reg.stats = {};
+                const cur = reg.stats.foulOuts ?? 0;
+                if (cur !== foulOuts) {
+                  if (foulOuts === 0) delete reg.stats.foulOuts; else reg.stats.foulOuts = foulOuts;
+                  modified = true;
+                }
+              }
+            }
+            if (maxPTSgame?.v > 0) {
+              if (!player.records) player.records = {};
+              if (!player.records.maxGamePTS || maxPTSgame.v > (player.records.maxGamePTS?.v ?? 0)) {
+                player.records.maxGamePTS = maxPTSgame; modified = true;
+              }
+            }
+            if (maxPT3game?.v > 0) {
+              if (!player.records) player.records = {};
+              if (!player.records.maxGameThreePt || maxPT3game.v > (player.records.maxGameThreePt?.v ?? 0)) {
+                player.records.maxGameThreePt = maxPT3game; modified = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (player.sports?.Basketball) {
+      let careerFO = 0;
+      for (const s of (player.seasons ?? [])) for (const r of (s.regs ?? [])) careerFO += r.stats?.foulOuts ?? 0;
+      const cur = player.sports.Basketball.foulOuts ?? 0;
+      if (cur !== careerFO) {
+        if (careerFO === 0) delete player.sports.Basketball.foulOuts; else player.sports.Basketball.foulOuts = careerFO;
+        modified = true;
+      }
+    }
+
+    if (modified) { if (!DRY_RUN) writeJson(playerPath, player); updated++; }
   }));
+
+  sinceCommit += batch.length;
+  if (fetched % 5000 === 0 || i + CONCURRENCY >= toFetch.length) {
+    const pct = (fetched / toFetch.length * 100).toFixed(1);
+    console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | updated: ${updated} | null: ${nulls}`);
+  }
   if (sinceCommit >= COMMIT_N) {
-    if (!DRY_RUN) { writeJson(PROGRESS, { done: [...done] }); gitCommit(`rebuild-stats: ${fetched} fetched`, ['players/', 'scripts/.rebuild-player-stats-progress.json']); }
+    if (!DRY_RUN) {
+      writeJson(PROGRESS, { done: [...done] });
+      gitCommit(`rebuild-player-stats: ${fetched}/${toFetch.length} fetched, ${updated} updated`, ['players/', 'scripts/.rebuild-player-stats-progress.json']);
+    }
     sinceCommit = 0;
   }
 }
-if (!DRY_RUN) { writeJson(PROGRESS, { done: [...done] }); gitCommit(`rebuild-stats: complete`, ['players/', 'scripts/.rebuild-player-stats-progress.json']); }
+
+if (!DRY_RUN) {
+  writeJson(PROGRESS, { done: [...done] });
+  gitCommit(`rebuild-player-stats: complete — ${updated} updated`, ['players/', 'scripts/.rebuild-player-stats-progress.json']);
+  try { fs.unlinkSync(PROGRESS); gitCommit('rebuild-player-stats: remove progress', ['scripts/.rebuild-player-stats-progress.json']); } catch {}
+}
+
 console.log(`\nDone | fetched: ${fetched} | null: ${nulls} | updated: ${updated}`);
+if (nullSample.length && nullSample.length < 10) { console.log('\nNull sample:'); nullSample.forEach(s => console.log(' ', s)); }
