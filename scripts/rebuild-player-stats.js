@@ -1,7 +1,6 @@
 // scripts/rebuild-player-stats.js
-// Uses the exact query captured from PlayHQ app MITM traffic (pull_player_data.ps1)
-// operationName: 'Profile' — same as the real app sends.
-// Options: --force, --dry-run, --concurrency=N (default 5), --stats-only
+// Closed-loop JIT auth with stochastic concurrency and differential error handling.
+// Options: --force, --dry-run, --concurrency=N (default 10), --stats-only
 
 import fs     from 'fs';
 import path   from 'path';
@@ -16,13 +15,12 @@ const args        = process.argv.slice(2);
 const FORCE       = args.includes('--force');
 const DRY_RUN     = args.includes('--dry-run');
 const STATS_ONLY  = args.includes('--stats-only');
-const CONCURRENCY = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '5');
+const CONCURRENCY = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '10');
 const COMMIT_N    = 2000;
 const PROGRESS    = path.join(ROOT, 'scripts', '.rebuild-player-stats-progress.json');
 
 console.log(`rebuild-player-stats | concurrency=${CONCURRENCY} force=${FORCE} dry=${DRY_RUN}\n`);
 
-// ─── Headers — copied from pull_player_data.ps1 ───────────────────────────────
 const HEADERS = {
   'accept':       '*/*',
   'origin':       'https://www.playhq.com',
@@ -32,124 +30,113 @@ const HEADERS = {
 };
 const API_URL = 'https://api.playhq.com/graphql';
 
-// ─── Session — copied from pull_player_data.ps1 pattern ──────────────────────
+// ─── JIT Auth Provider ────────────────────────────────────────────────────────
+// _sessionCookie is lazily evaluated. Any 403 or auth error clears it,
+// forcing the next getSession() call to re-authenticate before proceeding.
 let _sessionCookie = null;
-let _sessionPromise = null; // lock prevents concurrent re-auths
+let _sessionPromise = null;
 
 async function getSession(forceRefresh = false) {
-  if (forceRefresh) { _sessionCookie = null; _sessionPromise = null; }
-  if (_sessionCookie && !forceRefresh) return _sessionCookie;
+  if (forceRefresh) _sessionCookie = null;
+  if (_sessionCookie) return _sessionCookie;
   if (_sessionPromise) return _sessionPromise;
-  
+
   _sessionPromise = (async () => {
     for (let attempt = 1; attempt <= 5; attempt++) {
-      if (attempt > 1) await delay(attempt * 2000);
+      if (attempt > 1) await new Promise(r => setTimeout(r, 2 ** attempt * 1000));
       try {
         const res = await fetch(API_URL, {
           method: 'POST',
           headers: { ...HEADERS, 'request-id': crypto.randomUUID() },
           body: JSON.stringify({
             operationName: 'ProfileSearch',
-            variables: { fullName: 'test user' },
-            query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
+            variables: { fullName: 'a' },
+            query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
           }),
         });
         const raw = res.headers.get('set-cookie');
         if (raw) {
           _sessionCookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
-          console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
+          console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 48)}...)`);
           return _sessionCookie;
         }
-      } catch (err) { console.error(`  Session fetch error: ${err.message}`); }
+      } catch {}
     }
-    throw new Error('No Set-Cookie after 5 attempts');
+    throw new Error('Could not obtain session after 5 attempts');
   })().finally(() => { _sessionPromise = null; });
+
   return _sessionPromise;
 }
 
-
-// ─── Query — exact operationName and structure from pull_player_data.ps1 ──────
-const Q_PROFILE = `query Profile($profileID: ID!) {
+// ─── Profile query ────────────────────────────────────────────────────────────
+const Q = `query ProfileSeasonStatistics($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
-    careerStatistics {
-      totalStatistics { count details { value __typename } gameFormat __typename }
-      clubStatistics {
-        id
-        club { id name __typename }
-        statistics { count details { value __typename } gameFormat __typename }
-        __typename
-      }
-      __typename
-    }
-    seasonStatistics {
-      name
-      player { hasGamePermit __typename }
-      statistics {
-        season { id name competition { id name organisation { id name __typename } __typename } __typename }
-        role
-        club { id name __typename }
-        totalStatistics { count details { value __typename } gameFormat __typename }
-        teamStatistics {
-          team { ... on DiscoverTeam { id name __typename } __typename }
-          totalStatistics { count details { value __typename } gameFormat __typename }
-          gradeStatistics {
-            grade { id name __typename }
-            gameStatistics {
-              game {
-                id
-                round { name isFinalsRound __typename }
-                home { ... on DiscoverTeam { id name __typename } __typename }
-                away { ... on DiscoverTeam { id name __typename } __typename }
-              }
-              statistics { count details { value __typename } }
-            }
-            __typename
+    seasonStatistics { statistics {
+      season { id }
+      teamStatistics {
+        team { ... on DiscoverTeam { id name } }
+        gradeStatistics {
+          grade { id name }
+          gameStatistics {
+            game { id round { name isFinalsRound } }
+            statistics { count details { value } }
           }
-          __typename
         }
-        __typename
       }
-      __typename
-    }
-    __typename
+    }}
   }
 }`;
 
-async function fetchProfile(uuid, retryCount = 0) {
-  if (retryCount > 3) return null;
+// ─── Closed-loop fetcher with JIT auth and differential error handling ────────
+async function fetchProfile(uuid, attempt = 0) {
+  // Stochastic jitter — randomise dispatch timing to avoid WAF fingerprinting
+  await new Promise(r => setTimeout(r, Math.random() * 200));
 
-  // This line is key: it ignores the old manual cookie and asks for the latest valid state
+  // JIT: resolve auth state fresh per request
   const cookie = await getSession();
 
-  const res = await fetch(API_URL, {
-    method:  'POST',
-    headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-    body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
-  });
-  
-  if (res.status === 429) { await delay(5000); return fetchProfile(uuid, retryCount + 1); }
-  
-  if (res.status === 403) {
-    console.warn(`  [403] Forbidden. Refreshing session...`);
-    await delay(60000);
-    await getSession(true); // Force refresh
-    return fetchProfile(uuid, retryCount + 1);
+  let res;
+  try {
+    res = await fetch(API_URL, {
+      method:  'POST',
+      headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
+      body:    JSON.stringify({ operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: Q }),
+    });
+  } catch {
+    if (attempt < 3) return fetchProfile(uuid, attempt + 1);
+    return null;
   }
-  
-  if (!res.ok) return null;
-  
-  let json;
-  try { json = await res.json(); } catch { return null; }
-  
-  if (json.errors) {
-    const errText = JSON.stringify(json.errors).toLowerCase();
-    if (errText.includes('unauthorized') || errText.includes('expired')) {
-      await getSession(true); // Force refresh
-      return fetchProfile(uuid, retryCount + 1);
+
+  // Stage 1: HTTP transport errors
+  if (res.status === 429) {
+    await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
+    return fetchProfile(uuid, attempt + 1);
+  }
+  if (res.status === 403) {
+    // Session invalidated by WAF — clear cache, force re-auth, exponential backoff
+    _sessionCookie = null;
+    if (attempt < 3) {
+      await new Promise(r => setTimeout(r, 2 ** (attempt + 1) * 1000));
+      return fetchProfile(uuid, attempt + 1);
     }
     return null;
   }
-  
+  if (!res.ok) return null;
+
+  // Stage 2: GraphQL application layer errors
+  let json;
+  try { json = await res.json(); } catch { return null; }
+
+  if (json.errors) {
+    const errMsg = json.errors[0]?.message?.toLowerCase() ?? '';
+    if (errMsg.includes('unauthori') || errMsg.includes('forbidden') || errMsg.includes('expired')) {
+      // Auth-level GraphQL error — force session refresh and retry
+      _sessionCookie = null;
+      if (attempt < 3) return fetchProfile(uuid, attempt + 1);
+    }
+    return null;
+  }
+
   return json?.data?.publicProfileStatistics ?? null;
 }
 
@@ -179,10 +166,9 @@ let progress = { done: [] };
 if (!FORCE && fs.existsSync(PROGRESS)) try { progress = readJson(PROGRESS); } catch {}
 const done    = new Set(progress.done ?? []);
 const toFetch = allUUIDs.filter(u => !done.has(u));
-
 console.log(`${allUUIDs.length.toLocaleString()} total | ${done.size.toLocaleString()} done | ${toFetch.length.toLocaleString()} remaining\n`);
 
-const cookie = await getSession();
+await getSession();
 
 // ─── Main loop ────────────────────────────────────────────────────────────────
 const playersDir = path.join(ROOT, 'players');
@@ -207,7 +193,7 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
           if (gp >= 10) {
             nullSample.push(`${uuid} (${p.firstName ?? ''} ${p.lastName ?? ''}, ${gp} gp)`);
             if (nullSample.length === 10) {
-              console.log('\n── Null sample (≥10 stored games) ──');
+              console.log('\n── Null sample ──');
               nullSample.forEach(s => console.log(' ', s));
               console.log('');
             }
@@ -256,8 +242,7 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
               for (const reg of (season.regs ?? [])) {
                 if (reg.tid !== tid || reg.gid !== gid) continue;
                 if (!reg.stats) reg.stats = {};
-                const cur = reg.stats.foulOuts ?? 0;
-                if (cur !== foulOuts) {
+                if ((reg.stats.foulOuts ?? 0) !== foulOuts) {
                   if (foulOuts === 0) delete reg.stats.foulOuts; else reg.stats.foulOuts = foulOuts;
                   modified = true;
                 }
@@ -283,9 +268,9 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
     if (player.sports?.Basketball) {
       let careerFO = 0;
       for (const s of (player.seasons ?? [])) for (const r of (s.regs ?? [])) careerFO += r.stats?.foulOuts ?? 0;
-      const cur = player.sports.Basketball.foulOuts ?? 0;
-      if (cur !== careerFO) {
-        if (careerFO === 0) delete player.sports.Basketball.foulOuts; else player.sports.Basketball.foulOuts = careerFO;
+      if ((player.sports.Basketball.foulOuts ?? 0) !== careerFO) {
+        if (careerFO === 0) delete player.sports.Basketball.foulOuts;
+        else player.sports.Basketball.foulOuts = careerFO;
         modified = true;
       }
     }
