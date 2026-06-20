@@ -33,7 +33,7 @@ const API_URL     = 'https://api.playhq.com/graphql';
 // through Cloudflare's distributed IPs instead of the GH Actions runner IP.
 // PROXY_URL = Worker URL e.g. https://playhq-profile-proxy.insanoflash.workers.dev
 // PROXY_SECRET = shared secret set in the Worker's environment variables
-const PROXY_URL    = process.env.PLAYHQ_PROXY_URL    ?? null;
+const PROXY_URL    = 'https://playhq-profile-proxy.insanoflash.workers.dev';
 const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET ?? null;
 const USE_PROXY    = !!(PROXY_URL && PROXY_SECRET);
 if (USE_PROXY) console.log(`Using proxy: ${PROXY_URL}\n`);
