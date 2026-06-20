@@ -222,8 +222,7 @@ const today      = new Date().toISOString().slice(0, 10);
 let fetched = 0, nulls = 0, updated = 0, sinceCommit = 0;
 const nullSample = [];
 
-// Concurrency queue — each slot picks the next UUID immediately on completion.
-// No batch blocking: a slow/retrying request never holds up a fast one.
+// Processes one UUID — updates player file if profile found.
 async function processUUID(uuid) {
     const profile = await fetchProfile(uuid);
     done.add(uuid); fetched++;
@@ -341,15 +340,10 @@ async function maybeCommit() {
   }
 }
 
-// Run CONCURRENCY slots in parallel, each self-replenishing
-let idx = 0;
-async function runSlot() {
-  while (idx < toFetch.length) {
-    const uuid = toFetch[idx++];
-    await processUUID(uuid);
-  }
+for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
+  const batch = toFetch.slice(i, i + CONCURRENCY);
+  await Promise.all(batch.map(uuid => processUUID(uuid)));
 }
-await Promise.all(Array.from({ length: CONCURRENCY }, runSlot));
 
 if (!DRY_RUN) {
   writeJson(PROGRESS, { done: [...done] });
