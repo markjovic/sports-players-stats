@@ -144,9 +144,9 @@ async function fetchProfile(uuid, attempt = 0) {
     return fetchProfile(uuid, attempt + 1);
   }
   if (res.status === 403) {
-    // WAF frequency block — session is fine, just back off and let window reset
+    console.log(`  [${uuid.slice(0,8)}] 403 via ${via} — attempt ${attempt+1} — backing off ${(attempt+1)*3}s`);
     if (attempt < 3) {
-      await new Promise(r => setTimeout(r, 30000 * (attempt + 1)));
+      await new Promise(r => setTimeout(r, 3000 * (attempt + 1)));
       return fetchProfile(uuid, attempt + 1);
     }
     return null;
