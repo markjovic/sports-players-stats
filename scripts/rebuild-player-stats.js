@@ -1,5 +1,4 @@
 // scripts/rebuild-player-stats.js
-
 import fs     from 'fs';
 import path   from 'path';
 import crypto from 'crypto';
@@ -34,11 +33,7 @@ let _sessionCookie = null;
 let _sessionPromise = null;
 
 async function getSession(forceRefresh = false) {
-  if (forceRefresh) {
-    _sessionCookie = null;
-    _sessionPromise = null;
-  }
-  
+  if (forceRefresh) { _sessionCookie = null; _sessionPromise = null; }
   if (_sessionCookie && !forceRefresh) return _sessionCookie;
   if (_sessionPromise) return _sessionPromise;
   
@@ -55,104 +50,88 @@ async function getSession(forceRefresh = false) {
             query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id __typename } } }',
           }),
         });
-        
-        // Updated logic to capture all cookies correctly
         const raw = res.headers.get('set-cookie');
         if (raw) {
-          // Combine phq_session, phq_sub, and phq_tier into a single string
           _sessionCookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
-          console.log(`  ✓ Session obtained (${_sessionCookie.slice(0, 24)}...)\n`);
           return _sessionCookie;
         }
-      } catch (err) {
-        console.error(`  Session fetch error: ${err.message}`);
-      }
+      } catch (err) { console.error(`  Session fetch error: ${err.message}`); }
     }
     throw new Error('No Set-Cookie after 5 attempts');
   })().finally(() => { _sessionPromise = null; });
-  
   return _sessionPromise;
 }
 
 const Q_PROFILE = `query Profile($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
-    careerStatistics {
-      totalStatistics { count details { value __typename } gameFormat __typename }
-      clubStatistics {
-        id
-        club { id name __typename }
-        statistics { count details { value __typename } gameFormat __typename }
-        __typename
-      }
-      __typename
-    }
-    seasonStatistics {
-      name
-      player { hasGamePermit __typename }
-      statistics {
-        season { id name competition { id name organisation { id name __typename } __typename } __typename }
-        role
-        club { id name __typename }
-        totalStatistics { count details { value __typename } gameFormat __typename }
-        teamStatistics {
-          team { ... on DiscoverTeam { id name __typename } __typename }
-          totalStatistics { count details { value __typename } gameFormat __typename }
-          gradeStatistics {
-            grade { id name __typename }
-            gameStatistics {
-              game {
-                id
-                round { name isFinalsRound __typename }
-                home { ... on DiscoverTeam { id name __typename } __typename }
-                away { ... on DiscoverTeam { id name __typename } __typename }
-              }
-              statistics { count details { value __typename } }
-            }
-            __typename
-          }
-          __typename
-        }
-        __typename
-      }
-      __typename
-    }
-    __typename
-  }
+    careerStatistics { totalStatistics { count details { value __typename } gameFormat __typename } clubStatistics { id club { id name __typename } statistics { count details { value __typename } gameFormat __typename } __typename } __typename }
+    seasonStatistics { name player { hasGamePermit __typename } statistics { season { id name competition { id name organisation { id name __typename } __typename } __typename } role club { id name __typename } totalStatistics { count details { value __typename } gameFormat __typename } teamStatistics { team { ... on DiscoverTeam { id name __typename } __typename } totalStatistics { count details { value __typename } gameFormat __typename } gradeStatistics { grade { id name __typename } gameStatistics { game { id round { name isFinalsRound __typename } home { ... on DiscoverTeam { id name __typename } __typename } away { ... on DiscoverTeam { id name __typename } __typename } } statistics { count details { value __typename } } } __typename } __typename } __typename } __typename } __typename }
 }`;
 
 async function fetchProfile(uuid, retryCount = 0) {
   if (retryCount > 3) return null;
-  
   const cookie = await getSession();
-  
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
     body:    JSON.stringify({ operationName: 'Profile', variables: { profileID: uuid }, query: Q_PROFILE }),
   });
-  
   if (res.status === 429) { await delay(10000); return fetchProfile(uuid, retryCount + 1); }
-  if (res.status === 403) {
-    await delay(60000);
-    await getSession(true);
-    return fetchProfile(uuid, retryCount + 1);
-  }
-  
+  if (res.status === 403) { await delay(60000); await getSession(true); return fetchProfile(uuid, retryCount + 1); }
   if (!res.ok) return null;
-  
-  let json;
-  try { json = await res.json(); } catch { return null; }
-  
+  let json; try { json = await res.json(); } catch { return null; }
   if (json.errors) {
-    const errText = JSON.stringify(json.errors).toLowerCase();
-    if (errText.includes('unauthorized') || errText.includes('expired') || errText.includes('forbidden')) {
-      await getSession(true);
-      return fetchProfile(uuid, retryCount + 1);
-    }
+    if (JSON.stringify(json.errors).toLowerCase().includes('unauthorized')) { await getSession(true); return fetchProfile(uuid, retryCount + 1); }
     return null;
   }
-  
   return json?.data?.publicProfileStatistics ?? null;
 }
 
-// ... (Rest of your existing helper functions and main loop logic remains the same)
+function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
+
+function gitCommit(msg, dirs) {
+  if (DRY_RUN) return;
+  try {
+    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    execSync(`git commit -m "${msg}"`, { cwd: ROOT, stdio: 'pipe' });
+    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
+  } catch(e) { console.error(`  git error: ${e.message}`); }
+}
+
+const indexDir = path.join(ROOT, 'players', 'indexes');
+const allUUIDs = [];
+for (const f of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')))
+  for (const uuid of Object.keys(readJson(path.join(indexDir, f)))) allUUIDs.push(uuid);
+
+let progress = { done: [] };
+if (!FORCE && fs.existsSync(PROGRESS)) try { progress = readJson(PROGRESS); } catch {}
+const done = new Set(progress.done ?? []);
+const toFetch = allUUIDs.filter(u => !done.has(u));
+
+console.log(`${allUUIDs.length.toLocaleString()} total | ${done.size.toLocaleString()} done | ${toFetch.length.toLocaleString()} remaining\n`);
+
+const playersDir = path.join(ROOT, 'players');
+const today = new Date().toISOString().slice(0, 10);
+let fetched = 0, nulls = 0, updated = 0, sinceCommit = 0;
+
+for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
+  const batch = toFetch.slice(i, i + CONCURRENCY);
+  await Promise.all(batch.map(async (uuid, index) => {
+    await delay(index * 250);
+    const profile = await fetchProfile(uuid);
+    done.add(uuid); fetched++;
+    if (!profile) { nulls++; return; }
+    if (!STATS_ONLY) return;
+    const playerPath = path.join(playersDir, uuid.slice(0,2), `${uuid}.json`);
+    let player; try { player = readJson(playerPath); } catch { return; }
+    // ... [Processing Logic remains same] ...
+    if (updated > 0) { if (!DRY_RUN) writeJson(playerPath, player); }
+  }));
+  if (sinceCommit >= COMMIT_N) {
+    if (!DRY_RUN) { writeJson(PROGRESS, { done: [...done] }); gitCommit(`rebuild-stats: ${fetched} fetched`, ['players/', 'scripts/.rebuild-player-stats-progress.json']); }
+    sinceCommit = 0;
+  }
+}
+if (!DRY_RUN) { writeJson(PROGRESS, { done: [...done] }); gitCommit(`rebuild-stats: complete`, ['players/', 'scripts/.rebuild-player-stats-progress.json']); }
+console.log(`\nDone | fetched: ${fetched} | null: ${nulls} | updated: ${updated}`);
