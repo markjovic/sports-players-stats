@@ -99,6 +99,8 @@ const Q = `query ProfileSeasonStatistics($profileID: ID!) {
 // ─── Closed-loop fetcher with JIT auth and differential error handling ────────
 let _fetched = 0, _ok = 0, _null = 0, _err = 0;
 const _presentUUIDs = new Set();
+const _failedUUIDs = [];
+const FAILED_PATH = path.join(ROOT, 'scripts', '.failed-uuids.json');
 
 async function fetchProfile(uuid, attempt = 0) {
   // Stochastic jitter — randomise dispatch timing to avoid WAF fingerprinting
@@ -146,7 +148,7 @@ async function fetchProfile(uuid, attempt = 0) {
     return fetchProfile(uuid, attempt + 1);
   }
   if (res.status === 403) {
-    console.log(`  [403] ${uuid} via ${via} — ${Date.now()-t0}ms`);
+    console.log(`  [403] ${uuid} — ${Date.now()-t0}ms`);
     return null;
   }
   if (!res.ok) {
@@ -228,6 +230,7 @@ async function processUUID(uuid) {
 
     if (!profile) {
       nulls++;
+      _failedUUIDs.push(uuid);
       if (nullSample.length < 10) {
         try {
           const p = readJson(path.join(playersDir, uuid.slice(0,2), `${uuid}.json`));
@@ -329,6 +332,14 @@ async function maybeCommit() {
   if (fetched % 1000 === 0 || fetched === toFetch.length) {
     const pct = (fetched / toFetch.length * 100).toFixed(1);
     console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | present: ${_ok} | null: ${_null} | updated: ${updated}`);
+  }
+  // Write failed UUIDs after every batch so test script can use them after cancel
+  if (_failedUUIDs.length > 0) {
+    if (!DRY_RUN) {
+      writeJson(FAILED_PATH, { count: _failedUUIDs.length, uuids: _failedUUIDs });
+      gitCommit(`fetch-player-profiles: ${_failedUUIDs.length} failed UUIDs saved`, ['scripts/.failed-uuids.json']);
+    }
+    console.log(`  [failed] ${_failedUUIDs.length} failed UUIDs saved`);
   }
   if (sinceCommit >= COMMIT_N) {
     sinceCommit = 0;
