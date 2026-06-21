@@ -159,9 +159,10 @@ jobs:
       - name: Trigger next run
         if: steps.next.outputs.status == 'retrigger'
         run: |
+          next_run=$(( ${{ inputs.run_number }} + 1 ))
           gh workflow run fetch-profile-stats-matrix.yml \
             --repo "${{ github.repository }}" \
-            --field "run_number=${{ fromJson(inputs.run_number) + 1 }}" \
+            --field "run_number=${next_run}" \
             --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
             --field "force=${{ inputs.force }}"
         env:
