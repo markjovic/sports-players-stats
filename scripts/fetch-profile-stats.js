@@ -14,8 +14,9 @@
 //   sports.Basketball.maxGameThreePt — number | null
 //   sports.Basketball.statsChecked   — ISO timestamp
 //
-// statsChecked is ONLY written on a real data response (even if all nulls/empty).
-// 403 and null responses leave the player file completely untouched.
+// statsChecked is ONLY written on a real data response.
+// A 403 that persists after a session refresh = truly inaccessible profile.
+// A 403 that resolves after a session refresh = session expiry (retry succeeds).
 //
 // One git commit after all writes for the shard.
 
@@ -41,9 +42,8 @@ if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const API_URL    = 'https://api.playhq.com/graphql';
+const API_URL     = 'https://api.playhq.com/graphql';
 const CONCURRENCY = 5;
-const RETRY_LIMIT = 3;
 const RETRY_BASE  = 2000; // ms, multiplied by attempt number
 
 // ─── Headers — full set, never split, never modified ─────────────────────────
@@ -56,10 +56,11 @@ const HEADERS_BASE = {
   'content-type': 'application/json',
 };
 
-// ─── Session cookie (promise-locked — one fetch at a time) ───────────────────
+// ─── Session cookie ───────────────────────────────────────────────────────────
+// Promise-locked so concurrent workers don't trigger multiple simultaneous refreshes.
 
-let sessionCookie  = null;
-let sessionFetching = null;
+let sessionCookie   = null;
+let sessionPromise  = null;
 
 const COOKIE_QUERIES = [
   {
@@ -75,8 +76,10 @@ const COOKIE_QUERIES = [
 ];
 
 async function refreshSession() {
-  if (sessionFetching) return sessionFetching;
-  sessionFetching = (async () => {
+  // If a refresh is already in flight, wait for it rather than firing another
+  if (sessionPromise) return sessionPromise;
+
+  sessionPromise = (async () => {
     for (let attempt = 1; attempt <= 5; attempt++) {
       if (attempt > 1) await sleep(attempt * 3000);
       for (const body of COOKIE_QUERIES) {
@@ -88,15 +91,17 @@ async function refreshSession() {
         const raw = res.headers.get('set-cookie');
         if (!raw) continue;
         // Documented 3-part cookie extraction
-        sessionCookie = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
-        console.log(`  Session obtained (attempt ${attempt})`);
-        sessionFetching = null;
+        sessionCookie  = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
+        sessionPromise = null;
+        console.log(`  Session refreshed (attempt ${attempt})`);
         return;
       }
     }
+    sessionPromise = null;
     throw new Error('Failed to obtain session cookie after 5 attempts');
   })();
-  return sessionFetching;
+
+  return sessionPromise;
 }
 
 // ─── GraphQL query ────────────────────────────────────────────────────────────
@@ -132,7 +137,6 @@ function statValue(statistics, typeValue) {
   return match ? (match.count || 0) : 0;
 }
 
-// Returns { foulOuts, maxGamePTS, maxGameThreePt } or null if profile inaccessible.
 function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
@@ -144,18 +148,15 @@ function parseProfileStats(data) {
   for (const season of seasonStats) {
     const seasonId = season?.statistics?.[0]?.season?.id;
     if (!seasonId) continue;
-
     let seasonFoulOuts = 0;
-
     for (const stat of (season.statistics || [])) {
       for (const teamStat of (stat.teamStatistics || [])) {
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
           for (const gameStat of (gradeStat.gameStatistics || [])) {
-            const stats  = gameStat.statistics || [];
-            const fo     = statValue(stats, 'FOUL_OUT');
-            const pts    = statValue(stats, 'POINTS');
-            const three  = statValue(stats, 'THREE_POINT_FIELD_GOALS_MADE');
-
+            const stats = gameStat.statistics || [];
+            const fo    = statValue(stats, 'FOUL_OUT');
+            const pts   = statValue(stats, 'POINTS');
+            const three = statValue(stats, 'THREE_POINT_FIELD_GOALS_MADE');
             seasonFoulOuts += fo;
             if (pts   > (maxGamePTS     ?? 0)) maxGamePTS     = pts;
             if (three > (maxGameThreePt ?? 0)) maxGameThreePt = three;
@@ -163,63 +164,75 @@ function parseProfileStats(data) {
         }
       }
     }
-
     if (seasonFoulOuts > 0) foulOuts[seasonId] = seasonFoulOuts;
   }
 
   return { foulOuts, maxGamePTS, maxGameThreePt };
 }
 
-// ─── API fetch ────────────────────────────────────────────────────────────────
-
-// Returns:
-//   { status: 'ok',           data }   — real response, write statsChecked
-//   { status: 'inaccessible' }         — 403 or null body — do NOT touch file
-//   { status: 'error',        err  }   — network/parse failure
+// ─── API fetch — with session-refresh-aware 403 handling ─────────────────────
+//
+// A 403 can mean two different things:
+//   A) Profile is genuinely inaccessible (private/deleted)
+//   B) Session has expired
+//
+// We disambiguate by refreshing the session on the first 403 and retrying once.
+// If the retry also 403s → truly inaccessible (A). Leave file untouched.
+// If the retry succeeds → was a session expiry (B). Write normally.
 
 async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
 
   const body = { ...PROFILE_QUERY, variables: { profileID } };
 
-  for (let attempt = 1; attempt <= RETRY_LIMIT; attempt++) {
-    let res;
-    try {
-      res = await fetch(API_URL, {
-        method:  'POST',
-        headers: {
-          ...HEADERS_BASE,
-          'request-id': crypto.randomUUID(),
-          'Cookie':     sessionCookie,
-        },
-        body: JSON.stringify(body),
-      });
-    } catch (err) {
-      if (attempt === RETRY_LIMIT) return { status: 'error', err };
-      await sleep(RETRY_BASE * attempt);
-      continue;
-    }
+  const attempt = async () => {
+    const res = await fetch(API_URL, {
+      method:  'POST',
+      headers: {
+        ...HEADERS_BASE,
+        'request-id': crypto.randomUUID(),
+        'Cookie':     sessionCookie,
+      },
+      body: JSON.stringify(body),
+    });
+    return res;
+  };
 
-    // 403 = profile inaccessible — leave file untouched
-    if (res.status === 403) return { status: 'inaccessible' };
-
-    if (!res.ok) {
-      if (attempt === RETRY_LIMIT) return { status: 'error', err: new Error(`HTTP ${res.status}`) };
-      await sleep(RETRY_BASE * attempt);
-      continue;
-    }
-
-    let json;
-    try { json = await res.json(); }
-    catch (err) { return { status: 'error', err }; }
-
-    const data = json.data || json;
-
-    // Null body = inaccessible profile — leave file untouched
-    if (!data?.publicProfileStatistics) return { status: 'inaccessible' };
-
-    return { status: 'ok', data };
+  let res;
+  try {
+    res = await attempt();
+  } catch (err) {
+    return { status: 'error', err };
   }
+
+  if (res.status === 403) {
+    // Refresh session and retry once
+    console.log(`  403 on ${profileID} — refreshing session and retrying`);
+    try {
+      await refreshSession();
+      res = await attempt();
+    } catch (err) {
+      return { status: 'error', err };
+    }
+
+    // Still 403 after fresh session → genuinely inaccessible
+    if (res.status === 403) return { status: 'inaccessible' };
+  }
+
+  if (!res.ok) {
+    return { status: 'error', err: new Error(`HTTP ${res.status}`) };
+  }
+
+  let json;
+  try { json = await res.json(); }
+  catch (err) { return { status: 'error', err }; }
+
+  const data = json.data || json;
+
+  // Null publicProfileStatistics = inaccessible profile
+  if (!data?.publicProfileStatistics) return { status: 'inaccessible' };
+
+  return { status: 'ok', data };
 }
 
 // ─── Player file helpers ──────────────────────────────────────────────────────
@@ -242,7 +255,6 @@ async function processUUID(uuid, stats) {
   const result = await fetchProfile(uuid);
 
   if (result.status === 'inaccessible') {
-    // Leave file completely untouched — no statsChecked written
     stats.inaccessible++;
     return;
   }
@@ -253,19 +265,16 @@ async function processUUID(uuid, stats) {
     return;
   }
 
-  // Real data response — parse and write atomically
   const parsed = parseProfileStats(result.data);
   if (!parsed) {
-    // Shouldn't happen given the null check in fetchProfile, but be safe
     stats.inaccessible++;
     return;
   }
 
   const player = readPlayer(uuid);
-  if (!player.sports)             player.sports = {};
-  if (!player.sports.Basketball)  player.sports.Basketball = {};
+  if (!player.sports)            player.sports = {};
+  if (!player.sports.Basketball) player.sports.Basketball = {};
 
-  // All four fields written together — no partial state possible
   player.sports.Basketball.foulOuts       = parsed.foulOuts;
   player.sports.Basketball.maxGamePTS     = parsed.maxGamePTS;
   player.sports.Basketball.maxGameThreePt = parsed.maxGameThreePt;
@@ -315,7 +324,6 @@ async function main() {
   console.log(`\nfetch-profile-stats  shard=${SHARD}  force=${FORCE}`);
   console.log('─'.repeat(50));
 
-  // Load index shard — only this file needed to get UUIDs
   const indexPath = path.join(ROOT, 'players', 'indexes', `${SHARD}.json`);
   if (!fs.existsSync(indexPath)) {
     console.error(`ERROR: index shard not found: ${indexPath}`);
@@ -325,7 +333,6 @@ async function main() {
   const uuids = Object.keys(index);
   console.log(`  UUIDs in shard: ${uuids.length}`);
 
-  // Skip those already fully fetched (unless --force)
   const toFetch = FORCE
     ? uuids
     : uuids.filter(uuid => {
@@ -336,12 +343,12 @@ async function main() {
       });
 
   const stats = {
-    total:       uuids.length,
-    toFetch:     toFetch.length,
-    written:     0,
+    total:        uuids.length,
+    toFetch:      toFetch.length,
+    written:      0,
     inaccessible: 0,
-    skipped:     uuids.length - toFetch.length,
-    errors:      0,
+    skipped:      uuids.length - toFetch.length,
+    errors:       0,
   };
 
   console.log(`  Already done (statsChecked present): ${stats.skipped}`);
@@ -369,7 +376,7 @@ async function main() {
 
   console.log('\n' + '─'.repeat(50));
   console.log(`  Written:       ${stats.written}`);
-  console.log(`  Inaccessible:  ${stats.inaccessible}  (files untouched — will retry next run)`);
+  console.log(`  Inaccessible:  ${stats.inaccessible}  (files untouched)`);
   console.log(`  Skipped:       ${stats.skipped}`);
   console.log(`  Errors:        ${stats.errors}`);
 
