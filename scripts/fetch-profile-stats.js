@@ -34,6 +34,7 @@ const ROOT = path.join(__dirname, '..');
 const args  = process.argv.slice(2);
 const SHARD = (args.find(a => a.startsWith('--shard=')) || '').replace('--shard=', '').toLowerCase().trim();
 const FORCE = args.includes('--force');
+const MAX   = (() => { const a = args.find(a => a.startsWith('--max=')); return a ? parseInt(a.split('=')[1]) : Infinity; })();
 
 if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
   console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force]');
@@ -43,7 +44,8 @@ if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const API_URL     = 'https://api.playhq.com/graphql';
-const CONCURRENCY = 5;
+const CONCURRENCY  = 1;    // ProfileSeasonStatistics is expensive — one at a time
+const REQUEST_DELAY = 800; // ms between requests — avoids overwhelming PlayHQ backend
 const RETRY_BASE  = 2000; // ms, multiplied by attempt number
 
 // ─── Headers — full set, never split, never modified ─────────────────────────
@@ -276,6 +278,18 @@ async function fetchProfile(profileID) {
     return { status: 'inaccessible' };
   }
 
+  // 504 = backend overloaded — wait and retry once
+  if (res.status === 504) {
+    await sleep(15000);
+    try {
+      res = await fetch(API_URL, {
+        method:  'POST',
+        headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
+        body:    JSON.stringify(body),
+      });
+    } catch (err) { return { status: 'error', err }; }
+  }
+
   if (!res.ok) {
     return { status: 'error', err: new Error(`HTTP ${res.status}`) };
   }
@@ -393,7 +407,7 @@ async function main() {
   const uuids = Object.keys(index);
   console.log(`  UUIDs in shard: ${uuids.length}`);
 
-  const toFetch = FORCE
+  const allToFetch = FORCE
     ? uuids
     : uuids.filter(uuid => {
         try {
@@ -401,9 +415,10 @@ async function main() {
           return !p?.sports?.Basketball?.statsChecked;
         } catch { return true; }
       });
+  const toFetch = allToFetch.slice(0, MAX);
 
   const stats = {
-    total:        uuids.length,
+    total:        Math.min(uuids.length, MAX),
     toFetch:      toFetch.length,
     written:      0,
     inaccessible: 0,
@@ -425,6 +440,7 @@ async function main() {
   let done = 0;
   const tasks = toFetch.map(uuid => async () => {
     await processUUID(uuid, stats);
+    await sleep(REQUEST_DELAY);
     done++;
     if (done % 50 === 0 || done === stats.toFetch) {
       console.log(`  ${done}/${stats.toFetch}  written=${stats.written}  inaccessible=${stats.inaccessible}  errors=${stats.errors}`);
