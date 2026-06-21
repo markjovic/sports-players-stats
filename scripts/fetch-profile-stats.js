@@ -26,7 +26,7 @@ const fs           = require('fs');
 const path         = require('path');
 const crypto       = require('crypto');
 const { execSync } = require('child_process');
-const { setGlobalDispatcher, Agent } = require('undici');
+const https = require('https');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -86,7 +86,7 @@ async function refreshSession() {
     for (let attempt = 1; attempt <= 5; attempt++) {
       if (attempt > 1) await sleep(attempt * 3000);
       for (const body of COOKIE_QUERIES) {
-        const res = await fetch(API_URL, {
+        const res = await doFetch(API_URL, {
           method:  'POST',
           headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
           body:    JSON.stringify(body),
@@ -236,21 +236,12 @@ function parseProfileStats(data) {
 // requests to prevent expiry on long runs, but we never refresh on a 403.
 
 const REFRESH_EVERY  = 500; // refresh session proactively every N requests
-const RESET_CONN_EVERY = 25; // reset HTTP/2 connection every N requests to avoid per-connection rate limit
 let requestCount = 0;
 
 async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
 
   requestCount++;
-
-  // Reset HTTP/2 connection pool every RESET_CONN_EVERY requests.
-  // CloudFront rate-limits per connection after ~33 requests on the same connection.
-  // Resetting the undici global dispatcher forces a new TCP/TLS connection.
-  if (requestCount % RESET_CONN_EVERY === 0) {
-    setGlobalDispatcher(new Agent());
-    console.log(`  ↺  Connection reset at request ${requestCount}`);
-  }
 
   // Proactive session refresh every REFRESH_EVERY requests
   if (requestCount % REFRESH_EVERY === 0) {
@@ -262,7 +253,7 @@ async function fetchProfile(profileID) {
 
   let res;
   try {
-    res = await fetch(API_URL, {
+    res = await doFetch(API_URL, {
       method:  'POST',
       headers: {
         ...HEADERS_BASE,
@@ -292,7 +283,7 @@ async function fetchProfile(profileID) {
   if (res.status === 504) {
     await sleep(15000);
     try {
-      res = await fetch(API_URL, {
+      res = await doFetch(API_URL, {
         method:  'POST',
         headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
         body:    JSON.stringify(body),
@@ -411,6 +402,38 @@ function gitCommit(stats) {
 // ─── Sleep ────────────────────────────────────────────────────────────────────
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// doFetch: wraps https.request with keepAlive:false to force a new TCP connection
+// per request. This prevents CloudFront per-connection rate limiting.
+function doFetch(url, options) {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const body   = options.body || '';
+    const req = https.request({
+      hostname: parsed.hostname,
+      path:     parsed.pathname + parsed.search,
+      method:   options.method || 'GET',
+      headers:  { ...options.headers, 'content-length': Buffer.byteLength(body) },
+      agent:    new https.Agent({ keepAlive: false }),
+    }, (res) => {
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => {
+        const rawBody = Buffer.concat(chunks).toString('utf8');
+        resolve({
+          status: res.statusCode,
+          ok:     res.statusCode >= 200 && res.statusCode < 300,
+          text:   () => Promise.resolve(rawBody),
+          json:   () => Promise.resolve(JSON.parse(rawBody)),
+        });
+      });
+      res.on('error', reject);
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
