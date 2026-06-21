@@ -541,7 +541,7 @@ async function main() {
   } catch (err) {
     console.error(`  FATAL: Could not obtain session — ${err.message}`);
     console.log('  Writing empty summary and exiting cleanly.');
-    const summaryPath = path.join(ROOT, 'shard-summary.json');
+    const summaryPath = path.join(ROOT, `shard-summary-${SHARD}.json`);
     fs.writeFileSync(summaryPath, JSON.stringify({
       shard: SHARD, total: 0, already_done: 0, written: 0,
       inaccessible: 0, errors: 1, remaining: 0, blocked: false,
@@ -580,7 +580,7 @@ async function main() {
   }
 
   // Write shard summary for matrix aggregation
-  const summaryPath = path.join(ROOT, 'shard-summary.json');
+  const summaryPath = path.join(ROOT, `shard-summary-${SHARD}.json`);
   const remaining = stats.toFetch - stats.written - stats.inaccessible - stats.errors;
   fs.writeFileSync(summaryPath, JSON.stringify({
     shard:        SHARD,
