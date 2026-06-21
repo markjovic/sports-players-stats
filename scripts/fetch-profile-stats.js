@@ -234,6 +234,7 @@ function parseProfileStats(data) {
 
 const REFRESH_EVERY = 500; // refresh session proactively every N requests
 let requestCount = 0;
+let logged403s   = 0;  // log first 3 unique 403 bodies for diagnosis
 
 async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
@@ -262,8 +263,18 @@ async function fetchProfile(profileID) {
     return { status: 'error', err };
   }
 
-  // 403 = private profile, not a session issue — leave file untouched
-  if (res.status === 403) return { status: 'inaccessible' };
+  // Log first few 403 bodies to diagnose WAF vs app-level rejection
+  if (res.status === 403) {
+    if (logged403s < 3) {
+      logged403s++;
+      try {
+        const body403 = await res.text();
+        console.log(`  403 body (sample ${logged403s}, uuid=${profileID}, req#=${requestCount}):`);
+        console.log('  ' + body403.slice(0, 500));
+      } catch { /* ignore */ }
+    }
+    return { status: 'inaccessible' };
+  }
 
   if (!res.ok) {
     return { status: 'error', err: new Error(`HTTP ${res.status}`) };
