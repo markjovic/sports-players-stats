@@ -83,8 +83,8 @@ async function refreshSession() {
   if (sessionPromise) return sessionPromise;
 
   sessionPromise = (async () => {
-    for (let attempt = 1; attempt <= 5; attempt++) {
-      if (attempt > 1) await sleep(attempt * 3000);
+    for (let attempt = 1; attempt <= 10; attempt++) {
+      if (attempt > 1) await sleep(attempt * 5000);
       for (const body of COOKIE_QUERIES) {
         const res = await doFetch(API_URL, {
           method:  'POST',
@@ -112,7 +112,7 @@ async function refreshSession() {
       }
     }
     sessionPromise = null;
-    throw new Error('Failed to obtain session cookie after 5 attempts');
+    throw new Error('Failed to obtain session cookie after 10 attempts');
   })();
 
   return sessionPromise;
@@ -408,18 +408,34 @@ async function runPool(tasks, concurrency) {
 
 // ─── Git commit ───────────────────────────────────────────────────────────────
 
-function gitCommit(stats) {
-  try {
-    execSync(`git add players/${SHARD}`, { stdio: 'pipe', cwd: ROOT });
-    const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
-    if (!diff) { console.log('  No changes to commit.'); return; }
-    const msg = `fetch-profile-stats: shard ${SHARD} — ${stats.written} written, ${stats.inaccessible} inaccessible, ${stats.skipped} skipped`;
-    execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: ROOT });
-    execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe', cwd: ROOT });
-    execSync('git push', { stdio: 'pipe', cwd: ROOT });
-    console.log(`  Committed: ${msg}`);
-  } catch (err) {
-    console.error(`  Git commit failed: ${err.message}`);
+async function gitCommit(stats) {
+  execSync(`git add players/${SHARD}`, { stdio: 'pipe', cwd: ROOT });
+  const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
+  if (!diff) { console.log('  No changes to commit.'); return; }
+
+  const msg = `fetch-profile-stats: shard ${SHARD} — ${stats.written} written, ${stats.inaccessible} inaccessible, ${stats.skipped} skipped`;
+  execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: ROOT });
+
+  // Push with retry + random jitter to handle concurrent jobs pushing to the same branch.
+  // Each shard writes to a different directory so merges are always conflict-free.
+  const MAX_PUSH_ATTEMPTS = 10;
+  for (let attempt = 1; attempt <= MAX_PUSH_ATTEMPTS; attempt++) {
+    try {
+      execSync('git fetch origin main', { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main', { stdio: 'pipe', cwd: ROOT });
+      console.log(`  Committed and pushed: ${msg}`);
+      return;
+    } catch (err) {
+      if (attempt === MAX_PUSH_ATTEMPTS) {
+        console.error(`  Push failed after ${MAX_PUSH_ATTEMPTS} attempts: ${err.message}`);
+        return;
+      }
+      // Random jitter: 3–30 seconds, increasing with attempt number
+      const jitter = Math.floor(Math.random() * 15000) + (attempt * 3000);
+      console.log(`  Push conflict (attempt ${attempt}/${MAX_PUSH_ATTEMPTS}) — retrying in ${Math.round(jitter / 1000)}s…`);
+      await sleep(jitter);
+    }
   }
 }
 
@@ -513,8 +529,25 @@ async function main() {
     return;
   }
 
+  // Random startup delay (0–60s) to spread 256 concurrent matrix jobs
+  // and avoid hammering the session endpoint simultaneously.
+  const startDelay = Math.floor(Math.random() * 60000);
+  console.log(`  Startup delay: ${Math.round(startDelay / 1000)}s (spreading concurrent jobs)…`);
+  await sleep(startDelay);
+
   console.log('\n  Obtaining session…');
-  await refreshSession();
+  try {
+    await refreshSession();
+  } catch (err) {
+    console.error(`  FATAL: Could not obtain session — ${err.message}`);
+    console.log('  Writing empty summary and exiting cleanly.');
+    const summaryPath = path.join(ROOT, 'shard-summary.json');
+    fs.writeFileSync(summaryPath, JSON.stringify({
+      shard: SHARD, total: 0, already_done: 0, written: 0,
+      inaccessible: 0, errors: 1, remaining: 0, blocked: false,
+    }));
+    process.exit(0);
+  }
 
   console.log(`\n  Running (concurrency=${CONCURRENCY})…\n`);
 
@@ -561,7 +594,7 @@ async function main() {
   }));
 
   console.log('\n  Committing…');
-  gitCommit(stats);
+  await gitCommit(stats);
 }
 
 main().catch(err => {
