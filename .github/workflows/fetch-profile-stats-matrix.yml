@@ -114,7 +114,7 @@ jobs:
 
           print('')
           print('══════════════════════════════════════════════════')
-          print(f'  Run ${{ inputs.run_number }}/50  |  consecutive zero-progress runs: ${{ inputs.consecutive_zeros }}')
+          print(f'  Run ${{ inputs.run_number }}/150  |  consecutive zero-progress runs: ${{ inputs.consecutive_zeros }}')
           print('══════════════════════════════════════════════════')
           print(f'  Shards processed:          {len(files)}/256')
           print(f'  Outstanding at run start:  {outstanding_at_start:,}')
@@ -141,7 +141,7 @@ jobs:
 
           if [ "$remaining" = "0" ]; then
             echo "status=done" >> $GITHUB_OUTPUT
-          elif [ "$run_number" -ge 50 ]; then
+          elif [ "$run_number" -ge 150 ]; then
             echo "status=max_runs" >> $GITHUB_OUTPUT
           elif [ "$written" = "0" ]; then
             new_zeros=$((consecutive_zeros + 1))
@@ -175,7 +175,7 @@ jobs:
       - name: Max runs reached
         if: steps.next.outputs.status == 'max_runs'
         run: |
-          echo "⚠️ Reached 50-run limit. Re-trigger manually if players remain."
+          echo "⚠️ Reached 150-run limit. Re-trigger manually if players remain."
           exit 1
 
       - name: Stuck — zero progress for 3 consecutive runs
