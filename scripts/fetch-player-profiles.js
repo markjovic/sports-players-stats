@@ -184,7 +184,7 @@ async function fetchProfile(uuid, attempt = 0) {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-function readJson(p)    { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+async function readJson(p) { return JSON.parse(await fs.promises.readFile(p, 'utf8')); }
 function writeJson(p,d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 
 function gitCommit(msg, dirs) {
@@ -203,10 +203,10 @@ function gitCommit(msg, dirs) {
 const indexDir = path.join(ROOT, 'players', 'indexes');
 const allUUIDs = [];
 for (const f of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')))
-  for (const uuid of Object.keys(readJson(path.join(indexDir, f)))) allUUIDs.push(uuid);
+  for (const uuid of Object.keys(await readJson(path.join(indexDir, f)))) allUUIDs.push(uuid);
 
 let progress = { done: [] };
-if (!FORCE && fs.existsSync(PROGRESS)) try { progress = readJson(PROGRESS); } catch {}
+if (!FORCE && fs.existsSync(PROGRESS)) try { progress = await readJson(PROGRESS); } catch {}
 const done    = new Set(progress.done ?? []);
 // Pre-mark first N UUIDs as done — used to test whether failure is positional
 if (SKIP_FIRST > 0) {
@@ -235,7 +235,7 @@ async function processUUID(uuid) {
       _failedUUIDs.push(uuid);
       if (nullSample.length < 10) {
         try {
-          const p = readJson(path.join(playersDir, uuid.slice(0,2), `${uuid}.json`));
+          const p = await readJson(path.join(playersDir, uuid.slice(0,2), `${uuid}.json`));
           const gp = p.sports?.Basketball?.gp ?? 0;
           if (gp >= 10) {
             nullSample.push(`${uuid} (${p.firstName ?? ''} ${p.lastName ?? ''}, ${gp} gp)`);
@@ -257,7 +257,7 @@ async function processUUID(uuid) {
 
     const playerPath = path.join(playersDir, uuid.slice(0,2), `${uuid}.json`);
     let player;
-    try { player = readJson(playerPath); } catch { sinceCommit++; await maybeCommit(); return; }
+    try { player = await readJson(playerPath); } catch { sinceCommit++; await maybeCommit(); return; }
 
     let modified = false;
     if (player.statsChecked !== today) { player.statsChecked = today; modified = true; }
