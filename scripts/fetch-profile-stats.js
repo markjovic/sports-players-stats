@@ -275,9 +275,11 @@ async function fetchProfile(profileID) {
       console.log(`  ⛔ CloudFront block (req#${requestCount}, uuid=${profileID}): ${snippet}`);
       return { status: 'cloudfront-block' };
     }
-    // Application-level 403 — profile inaccessible (log briefly)
-    console.log(`  — inaccessible (req#${requestCount}, uuid=${profileID}): ${body403.slice(0, 120)}`);
-    return { status: 'inaccessible' };
+    // Application-level 403 — profile genuinely inaccessible (private/deleted).
+    // Log it but return a distinct status so processUUID writes statsChecked,
+    // preventing infinite retries on future runs.
+    console.log(`  — private profile (req#${requestCount}, uuid=${profileID})`);
+    return { status: 'private' };
   }
 
   // 504 = backend overloaded — wait and retry once
@@ -331,8 +333,29 @@ async function processUUID(uuid, stats, idx) {
   const result = await fetchProfile(uuid);
 
   if (result.status === 'inaccessible') {
+    // Should not normally reach here — kept as safety fallback
     stats.inaccessible++;
     console.log(`${prefix} — ${short} inaccessible`);
+    return;
+  }
+
+  if (result.status === 'private') {
+    // Genuine private/deleted profile — write statsChecked so we never retry
+    stats.inaccessible++;
+    try {
+      const player = readPlayer(uuid);
+      if (!player.sports)            player.sports = {};
+      if (!player.sports.Basketball) player.sports.Basketball = {};
+      player.sports.Basketball.foulOuts       = {};
+      player.sports.Basketball.maxGamePTS     = null;
+      player.sports.Basketball.maxGameThreePt = null;
+      player.sports.Basketball.statsChecked   = new Date().toISOString();
+      writePlayer(uuid, player);
+      stats.written++; // counts toward completion — won't be retried
+    } catch (err) {
+      console.log(`${prefix} ✗ ${short} could not write private marker: ${err.message}`);
+    }
+    console.log(`${prefix} — ${short} private profile (marked done)`);
     return;
   }
 
@@ -522,6 +545,20 @@ async function main() {
     const remaining = stats.toFetch - stats.written - stats.inaccessible - stats.errors;
     console.log(`  Remaining:     ~${remaining} (re-run shard to continue)`);
   }
+
+  // Write shard summary for matrix aggregation
+  const summaryPath = path.join(ROOT, 'shard-summary.json');
+  const remaining = stats.toFetch - stats.written - stats.inaccessible - stats.errors;
+  fs.writeFileSync(summaryPath, JSON.stringify({
+    shard:        SHARD,
+    total:        stats.total,
+    already_done: stats.skipped,
+    written:      stats.written,
+    inaccessible: stats.inaccessible,
+    errors:       stats.errors,
+    remaining:    Math.max(0, remaining),
+    blocked:      stats.blocked || false,
+  }));
 
   console.log('\n  Committing…');
   gitCommit(stats);
