@@ -420,11 +420,23 @@ function doFetch(url, options) {
       res.on('data', c => chunks.push(c));
       res.on('end', () => {
         const rawBody = Buffer.concat(chunks).toString('utf8');
+        // Build a headers.get() shim matching the Fetch API.
+        // Node's https module stores set-cookie as an array; join with ', '
+        // so our existing cookie-parsing code works unchanged.
+        const hdrs = res.headers;
+        const headers = {
+          get(name) {
+            const val = hdrs[name.toLowerCase()];
+            if (val === undefined || val === null) return null;
+            return Array.isArray(val) ? val.join(', ') : val;
+          },
+        };
         resolve({
-          status: res.statusCode,
-          ok:     res.statusCode >= 200 && res.statusCode < 300,
-          text:   () => Promise.resolve(rawBody),
-          json:   () => Promise.resolve(JSON.parse(rawBody)),
+          status:  res.statusCode,
+          ok:      res.statusCode >= 200 && res.statusCode < 300,
+          headers,
+          text:    () => Promise.resolve(rawBody),
+          json:    () => Promise.resolve(JSON.parse(rawBody)),
         });
       });
       res.on('error', reject);
