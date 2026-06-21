@@ -116,38 +116,78 @@ async function refreshSession() {
 }
 
 // ─── GraphQL query ────────────────────────────────────────────────────────────
+// ProfileSeasonStatistics — returns per-game stat lines via gradeStatistics.
+// This is the correct query for deriving foulOuts, maxGamePTS, maxGameThreePt.
+// Confirmed working from mobile traffic (request_7.txt).
 
 const PROFILE_QUERY = {
   operationName: 'ProfileSeasonStatistics',
   query: `query ProfileSeasonStatistics($profileID: ID!) {
-    publicProfileStatistics(profileID: $profileID) {
-      seasonStatistics {
-        statistics {
-          season { id }
-          teamStatistics {
-            team { ... on DiscoverTeam { id name } }
-            gradeStatistics {
-              grade { id name }
-              gameStatistics {
-                game { id }
-                statistics { count details { value } }
+  publicProfileStatistics(profileID: $profileID) {
+    seasonStatistics {
+      name
+      player { hasGamePermit __typename }
+      statistics {
+        season { id name competition { id name organisation { id name __typename } __typename } __typename }
+        club { id name __typename }
+        totalStatistics { ...ProfileSeasonStatistic __typename }
+        teamStatistics {
+          team { ... on DiscoverTeam { id name __typename } __typename }
+          totalStatistics { ...ProfileSeasonStatistic __typename }
+          gradeStatistics {
+            grade { id name __typename }
+            totalStatistics { ...ProfileSeasonStatistic __typename }
+            gameStatistics {
+              game {
+                id
+                round { name number isFinalsRound abbreviatedName __typename }
+                home { ... on DiscoverTeam { id name __typename } __typename }
+                away { ... on DiscoverTeam { id name __typename } __typename }
+                __typename
               }
+              statistics { ...ProfileSeasonStatistic __typename }
+              __typename
             }
+            __typename
           }
+          __typename
         }
+        __typename
       }
+      __typename
     }
-  }`,
+    __typename
+  }
+  tenantConfiguration {
+    statistics {
+      seasonStatisticsMeta { value name shortName isDisplayable __typename }
+      __typename
+    }
+    __typename
+  }
+}
+fragment ProfileSeasonStatistic on Statistic {
+  count
+  details { value __typename }
+  __typename
+}`,
 };
 
 // ─── Stat helpers ─────────────────────────────────────────────────────────────
+// Response stat entries: { count, details: { value } }
 
 function statValue(statistics, typeValue) {
   if (!Array.isArray(statistics)) return 0;
-  const match = statistics.find(s => Array.isArray(s.details) && s.details[0]?.value === typeValue);
+  const match = statistics.find(s => s?.details?.value === typeValue);
   return match ? (match.count || 0) : 0;
 }
 
+// Derive foulOuts, maxGamePTS, maxGameThreePt from per-game stat lines.
+// Returns null if publicProfileStatistics is absent (inaccessible profile).
+//
+// foulOuts: { [seasonId]: count } — number of games with >= 5 fouls
+// maxGamePTS: highest TOTAL_SCORE in any single game across career
+// maxGameThreePt: highest 3_POINT_SCORE in any single game across career
 function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
@@ -157,47 +197,59 @@ function parseProfileStats(data) {
   let maxGameThreePt = null;
 
   for (const season of seasonStats) {
-    const seasonId = season?.statistics?.[0]?.season?.id;
-    if (!seasonId) continue;
-    let seasonFoulOuts = 0;
-    for (const stat of (season.statistics || [])) {
-      for (const teamStat of (stat.teamStatistics || [])) {
+    for (const reg of (season.statistics || [])) {
+      const seasonId = reg?.season?.id;
+      if (!seasonId) continue;
+
+      for (const teamStat of (reg.teamStatistics || [])) {
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
           for (const gameStat of (gradeStat.gameStatistics || [])) {
             const stats = gameStat.statistics || [];
-            const fo    = statValue(stats, 'FOUL_OUT');
-            const pts   = statValue(stats, 'POINTS');
-            const three = statValue(stats, 'THREE_POINT_FIELD_GOALS_MADE');
-            seasonFoulOuts += fo;
+            const fouls = statValue(stats, 'TOTAL_FOULS');
+            const pts   = statValue(stats, 'TOTAL_SCORE');
+            const three = statValue(stats, '3_POINT_SCORE');
+
+            // Foul-out = 5 or more fouls in a single game
+            if (fouls >= 5) {
+              foulOuts[seasonId] = (foulOuts[seasonId] || 0) + 1;
+            }
+
             if (pts   > (maxGamePTS     ?? 0)) maxGamePTS     = pts;
             if (three > (maxGameThreePt ?? 0)) maxGameThreePt = three;
           }
         }
       }
     }
-    if (seasonFoulOuts > 0) foulOuts[seasonId] = seasonFoulOuts;
   }
 
   return { foulOuts, maxGamePTS, maxGameThreePt };
 }
 
-// ─── API fetch — with session-refresh-aware 403 handling ─────────────────────
+// ─── API fetch ────────────────────────────────────────────────────────────────
 //
-// A 403 can mean two different things:
-//   A) Profile is genuinely inaccessible (private/deleted)
-//   B) Session has expired
-//
-// We disambiguate by refreshing the session on the first 403 and retrying once.
-// If the retry also 403s → truly inaccessible (A). Leave file untouched.
-// If the retry succeeds → was a session expiry (B). Write normally.
+// 403 = profile inaccessible to a guest session. Leave file untouched.
+// Session expiry would manifest as all requests failing, not individual 403s.
+// We refresh the session proactively after every REFRESH_EVERY successful
+// requests to prevent expiry on long runs, but we never refresh on a 403.
+
+const REFRESH_EVERY = 500; // refresh session proactively every N requests
+let requestCount = 0;
 
 async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
 
+  // Proactive session refresh every REFRESH_EVERY requests
+  requestCount++;
+  if (requestCount % REFRESH_EVERY === 0) {
+    console.log(`  Proactive session refresh at request ${requestCount}`);
+    await refreshSession();
+  }
+
   const body = { ...PROFILE_QUERY, variables: { profileID } };
 
-  const attempt = async () => {
-    const res = await fetch(API_URL, {
+  let res;
+  try {
+    res = await fetch(API_URL, {
       method:  'POST',
       headers: {
         ...HEADERS_BASE,
@@ -206,29 +258,12 @@ async function fetchProfile(profileID) {
       },
       body: JSON.stringify(body),
     });
-    return res;
-  };
-
-  let res;
-  try {
-    res = await attempt();
   } catch (err) {
     return { status: 'error', err };
   }
 
-  if (res.status === 403) {
-    // Refresh session and retry once
-    console.log(`  403 on ${profileID} — refreshing session and retrying`);
-    try {
-      await refreshSession();
-      res = await attempt();
-    } catch (err) {
-      return { status: 'error', err };
-    }
-
-    // Still 403 after fresh session → genuinely inaccessible
-    if (res.status === 403) return { status: 'inaccessible' };
-  }
+  // 403 = private profile, not a session issue — leave file untouched
+  if (res.status === 403) return { status: 'inaccessible' };
 
   if (!res.ok) {
     return { status: 'error', err: new Error(`HTTP ${res.status}`) };
@@ -286,10 +321,13 @@ async function processUUID(uuid, stats) {
   if (!player.sports)            player.sports = {};
   if (!player.sports.Basketball) player.sports.Basketball = {};
 
-  player.sports.Basketball.foulOuts       = parsed.foulOuts;
-  player.sports.Basketball.maxGamePTS     = parsed.maxGamePTS;
-  player.sports.Basketball.maxGameThreePt = parsed.maxGameThreePt;
-  player.sports.Basketball.statsChecked   = new Date().toISOString();
+  const bk = player.sports.Basketball;
+
+  // Atomic write of all four fields — no partial state possible
+  bk.foulOuts       = parsed.foulOuts;
+  bk.maxGamePTS     = parsed.maxGamePTS;
+  bk.maxGameThreePt = parsed.maxGameThreePt;
+  bk.statsChecked   = new Date().toISOString();
 
   writePlayer(uuid, player);
   stats.written++;
