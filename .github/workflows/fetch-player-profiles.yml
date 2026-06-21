@@ -13,10 +13,16 @@ on:
         required: false
         default: false
         type: boolean
-      concurrency:
-        description: 'Concurrent requests (default: 10)'
+      worker:
+        description: 'Cloudflare Worker to use'
         required: false
-        default: '10'
+        default: 'https://playhq-profile-proxy.insanoflash.workers.dev'
+        type: choice
+        options:
+          - https://playhq-profile-proxy.insanoflash.workers.dev
+          - https://playhq-profile-proxy-2.insanoflash.workers.dev
+          - https://playhq-profile-proxy-3.insanoflash.workers.dev
+          - https://playhq-profile-proxy-4.insanoflash.workers.dev
 
 permissions:
   contents: write
@@ -43,15 +49,21 @@ jobs:
       - name: Build args
         id: args
         run: |
-          ARGS="--stats-only --concurrency=${{ inputs.concurrency }}"
+          ARGS="--stats-only"
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 
       - name: Run fetch-player-profiles
         env:
-          
           PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
+          PLAYHQ_PROXY_URL: ${{ inputs.worker }}
         run: node scripts/fetch-player-profiles.js ${{ steps.args.outputs.args }}
+
+      - name: Re-test failed UUIDs immediately
+        if: always()
+        env:
+          PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
+        run: node scripts/test-failed-uuids.js
 
       - name: Final push (safety net)
         if: always()
