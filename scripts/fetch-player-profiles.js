@@ -15,12 +15,10 @@ const args        = process.argv.slice(2);
 const FORCE       = args.includes('--force');
 const DRY_RUN     = args.includes('--dry-run');
 const STATS_ONLY  = args.includes('--stats-only');
-const CONCURRENCY  = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] ?? '10');
-const BATCH_DELAY  = parseInt(args.find(a => a.startsWith('--batch-delay='))?.split('=')[1] ?? '5000');
-const COMMIT_N    = 2000;
+const COMMIT_N    = 1000;
 const PROGRESS    = path.join(ROOT, 'scripts', '.fetch-player-profiles-progress.json');
 
-console.log(`fetch-player-profiles | concurrency=${CONCURRENCY} batch-delay=${BATCH_DELAY}ms force=${FORCE} dry=${DRY_RUN}\n`);
+console.log(`fetch-player-profiles | force=${FORCE} dry=${DRY_RUN}\n`);
 
 const HEADERS = {
   'accept':       '*/*',
@@ -350,12 +348,8 @@ async function maybeCommit() {
   }
 }
 
-for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
-  const batch = toFetch.slice(i, i + CONCURRENCY);
-  await Promise.all(batch.map(uuid => processUUID(uuid)));
-  if (BATCH_DELAY > 0 && i + CONCURRENCY < toFetch.length) {
-    await new Promise(r => setTimeout(r, BATCH_DELAY));
-  }
+for (const uuid of toFetch) {
+  await processUUID(uuid);
 }
 
 if (!DRY_RUN) {
