@@ -358,10 +358,6 @@ for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
   }
 }
 
-const _failedUUIDs = [...done].filter(u => !_presentUUIDs.has(u));
-fs.writeFileSync('/tmp/failed-uuids.txt', _failedUUIDs.slice(0, 50).join('\n'), 'utf8');
-console.log(`\n  Wrote ${Math.min(_failedUUIDs.length,50)} failed UUIDs to /tmp/failed-uuids.txt`);
-
 if (!DRY_RUN) {
   writeJson(PROGRESS, { done: [...done] });
   gitCommit(`rebuild-player-stats: complete — ${updated} updated`, ['players/', 'scripts/.fetch-player-profiles-progress.json']);
