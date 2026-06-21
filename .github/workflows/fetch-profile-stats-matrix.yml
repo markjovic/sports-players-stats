@@ -4,6 +4,16 @@ name: Fetch Profile Stats (Matrix)
 on:
   workflow_dispatch:
     inputs:
+      run_number:
+        description: 'Auto-incremented — do not set manually'
+        required: false
+        default: '1'
+        type: string
+      consecutive_zeros:
+        description: 'Consecutive runs with zero progress — do not set manually'
+        required: false
+        default: '0'
+        type: string
       force:
         description: 'Re-fetch even if statsChecked already present'
         required: false
@@ -12,6 +22,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   generate-shards:
@@ -23,8 +34,7 @@ jobs:
         run: |
           shards=$(python3 -c "
           import json
-          shards = [format(i, '02x') for i in range(256)]
-          print(json.dumps(shards))
+          print(json.dumps([format(i, '02x') for i in range(256)]))
           ")
           echo "shards=$shards" >> $GITHUB_OUTPUT
 
@@ -32,7 +42,6 @@ jobs:
     needs: generate-shards
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 20
       fail-fast: false
       matrix:
         shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
@@ -57,3 +66,121 @@ jobs:
           ARGS="--shard=${{ matrix.shard }}"
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           node scripts/fetch-profile-stats.js $ARGS
+
+      - name: Upload shard summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-summary-${{ matrix.shard }}
+          path: shard-summary.json
+          retention-days: 1
+
+  summary-and-retrigger:
+    needs: fetch
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Download all shard summaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-summary-*
+          merge-multiple: true
+          path: summaries
+
+      - name: Aggregate and report
+        id: aggregate
+        run: |
+          python3 - << 'PYEOF'
+          import json, os, glob
+
+          files = glob.glob('summaries/*.json')
+          total = already_done = written = inaccessible = errors = remaining = blocked = 0
+
+          for f in files:
+            try:
+              d = json.load(open(f))
+              total        += d.get('total', 0)
+              already_done += d.get('already_done', 0)
+              written      += d.get('written', 0)
+              inaccessible += d.get('inaccessible', 0)
+              errors       += d.get('errors', 0)
+              remaining    += d.get('remaining', 0)
+              if d.get('blocked'): blocked += 1
+            except Exception as e:
+              print(f'  Warning: could not parse {f}: {e}')
+
+          outstanding_at_start = total - already_done
+          checked = total - remaining
+
+          print('')
+          print('══════════════════════════════════════════════════')
+          print(f'  Run ${{ inputs.run_number }}/50  |  consecutive zero-progress runs: ${{ inputs.consecutive_zeros }}')
+          print('══════════════════════════════════════════════════')
+          print(f'  Shards processed:          {len(files)}/256')
+          print(f'  Outstanding at run start:  {outstanding_at_start:,}')
+          print(f'  Written this run:          {written:,}')
+          print(f'  Private profiles marked:   {inaccessible:,}')
+          print(f'  Errors:                    {errors:,}')
+          print(f'  Shards blocked mid-run:    {blocked}')
+          print(f'  Remaining after this run:  {remaining:,}')
+          print(f'  Players with statsChecked: {checked:,} / {total:,}')
+          print('══════════════════════════════════════════════════')
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            fh.write(f'remaining={remaining}\n')
+            fh.write(f'written={written}\n')
+          PYEOF
+
+      - name: Determine next action
+        id: next
+        run: |
+          run_number=${{ inputs.run_number }}
+          consecutive_zeros=${{ inputs.consecutive_zeros }}
+          remaining=${{ steps.aggregate.outputs.remaining }}
+          written=${{ steps.aggregate.outputs.written }}
+
+          if [ "$remaining" = "0" ]; then
+            echo "status=done" >> $GITHUB_OUTPUT
+          elif [ "$run_number" -ge 50 ]; then
+            echo "status=max_runs" >> $GITHUB_OUTPUT
+          elif [ "$written" = "0" ]; then
+            new_zeros=$((consecutive_zeros + 1))
+            echo "new_consecutive_zeros=$new_zeros" >> $GITHUB_OUTPUT
+            if [ "$new_zeros" -ge 3 ]; then
+              echo "status=stuck" >> $GITHUB_OUTPUT
+            else
+              echo "status=retrigger" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "status=retrigger" >> $GITHUB_OUTPUT
+            echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger next run
+        if: steps.next.outputs.status == 'retrigger'
+        run: |
+          gh workflow run fetch-profile-stats-matrix.yml \
+            --repo "${{ github.repository }}" \
+            --field "run_number=${{ fromJson(inputs.run_number) + 1 }}" \
+            --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
+            --field "force=${{ inputs.force }}"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
+      - name: All done
+        if: steps.next.outputs.status == 'done'
+        run: echo "✅ All players fetched — no further runs needed."
+
+      - name: Max runs reached
+        if: steps.next.outputs.status == 'max_runs'
+        run: |
+          echo "⚠️ Reached 50-run limit. Re-trigger manually if players remain."
+          exit 1
+
+      - name: Stuck — zero progress for 3 consecutive runs
+        if: steps.next.outputs.status == 'stuck'
+        run: |
+          echo "🛑 Zero players written in 3 consecutive runs with remaining > 0."
+          echo "This likely means all remaining players are blocked by a persistent issue."
+          echo "Investigate before re-triggering."
+          exit 1
