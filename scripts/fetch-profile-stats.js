@@ -90,8 +90,19 @@ async function refreshSession() {
         });
         const raw = res.headers.get('set-cookie');
         if (!raw) continue;
-        // Documented 3-part cookie extraction
-        sessionCookie  = raw.split(',').map(c => c.trim().split(';')[0]).join('; ');
+        // Extract each named cookie value, then reassemble in the exact order
+        // the mobile client sends them: phq_tier first, phq_session, phq_sub.
+        // (The server returns them in a different order in set-cookie headers.)
+        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
+        const get = (name) => {
+          const p = parts.find(c => c.startsWith(name + '='));
+          return p || null;
+        };
+        const tier    = get('phq_tier');
+        const session = get('phq_session');
+        const sub     = get('phq_sub');
+        if (!tier || !session || !sub) continue;
+        sessionCookie = `${tier}; ${session}; ${sub}`;
         sessionPromise = null;
         console.log(`  Session refreshed (attempt ${attempt})`);
         return;
