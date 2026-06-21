@@ -13,6 +13,7 @@ const ROOT      = path.join(__dirname, '..');
 
 const args        = process.argv.slice(2);
 const FORCE       = args.includes('--force');
+const SKIP_FIRST  = parseInt(args.find(a => a.startsWith('--skip-first='))?.split('=')[1] ?? '0');
 const DRY_RUN     = args.includes('--dry-run');
 const STATS_ONLY  = args.includes('--stats-only');
 const COMMIT_N    = 1000;
@@ -207,6 +208,11 @@ for (const f of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')))
 let progress = { done: [] };
 if (!FORCE && fs.existsSync(PROGRESS)) try { progress = readJson(PROGRESS); } catch {}
 const done    = new Set(progress.done ?? []);
+// Pre-mark first N UUIDs as done — used to test whether failure is positional
+if (SKIP_FIRST > 0) {
+  for (const uuid of allUUIDs.slice(0, SKIP_FIRST)) done.add(uuid);
+  console.log(`Skipping first ${SKIP_FIRST} UUIDs — starting from position ${SKIP_FIRST + 1}\n`);
+}
 const toFetch = allUUIDs.filter(u => !done.has(u));
 console.log(`${allUUIDs.length.toLocaleString()} total | ${done.size.toLocaleString()} done | ${toFetch.length.toLocaleString()} remaining\n`);
 
@@ -329,13 +335,13 @@ async function maybeCommit() {
     const pct = (fetched / toFetch.length * 100).toFixed(1);
     console.log(`  ${fetched.toLocaleString()}/${toFetch.length.toLocaleString()} (${pct}%) | present: ${_ok} | null: ${_null} | updated: ${updated}`);
   }
-  // Write failed UUIDs after every batch so test script can use them after cancel
-  if (_failedUUIDs.length > 0) {
+  // Write failed UUIDs every 1000 players so test script can use them after cancel
+  if (_failedUUIDs.length > 0 && fetched % 1000 === 0) {
     if (!DRY_RUN) {
       writeJson(FAILED_PATH, { count: _failedUUIDs.length, uuids: _failedUUIDs });
       gitCommit(`fetch-player-profiles: ${_failedUUIDs.length} failed UUIDs saved`, ['scripts/.failed-uuids.json']);
+      console.log(`  [failed] ${_failedUUIDs.length} failed UUIDs saved`);
     }
-    console.log(`  [failed] ${_failedUUIDs.length} failed UUIDs saved`);
   }
   if (sinceCommit >= COMMIT_N) {
     sinceCommit = 0;
