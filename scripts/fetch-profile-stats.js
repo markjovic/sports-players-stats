@@ -26,6 +26,7 @@ const fs           = require('fs');
 const path         = require('path');
 const crypto       = require('crypto');
 const { execSync } = require('child_process');
+const { setGlobalDispatcher, Agent } = require('undici');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -234,15 +235,24 @@ function parseProfileStats(data) {
 // We refresh the session proactively after every REFRESH_EVERY successful
 // requests to prevent expiry on long runs, but we never refresh on a 403.
 
-const REFRESH_EVERY = 500; // refresh session proactively every N requests
+const REFRESH_EVERY  = 500; // refresh session proactively every N requests
+const RESET_CONN_EVERY = 25; // reset HTTP/2 connection every N requests to avoid per-connection rate limit
 let requestCount = 0;
-let logged403s   = 0;  // log first 3 unique 403 bodies for diagnosis
 
 async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
 
-  // Proactive session refresh every REFRESH_EVERY requests
   requestCount++;
+
+  // Reset HTTP/2 connection pool every RESET_CONN_EVERY requests.
+  // CloudFront rate-limits per connection after ~33 requests on the same connection.
+  // Resetting the undici global dispatcher forces a new TCP/TLS connection.
+  if (requestCount % RESET_CONN_EVERY === 0) {
+    setGlobalDispatcher(new Agent());
+    console.log(`  ↺  Connection reset at request ${requestCount}`);
+  }
+
+  // Proactive session refresh every REFRESH_EVERY requests
   if (requestCount % REFRESH_EVERY === 0) {
     console.log(`  Proactive session refresh at request ${requestCount}`);
     await refreshSession();
@@ -449,40 +459,33 @@ async function main() {
 
   console.log(`\n  Running (concurrency=${CONCURRENCY})…\n`);
 
-  const BLOCK_WAIT      = 120000; // ms — wait for CloudFront window to reset
-  const MAX_BLOCK_RETRIES = 5;
+  let blocked = false;
 
   for (let i = 0; i < toFetch.length; i++) {
     const uuid = toFetch[i];
-    let blockRetries = 0;
+    const result = await processUUID(uuid, stats, i + 1);
 
-    while (true) {
-      const result = await processUUID(uuid, stats, i + 1);
-
-      if (result && result.status === 'cloudfront-block') {
-        blockRetries++;
-        if (blockRetries > MAX_BLOCK_RETRIES) {
-          console.log(`  [${i+1}] ✗ ${uuid.slice(0,8)} giving up after ${MAX_BLOCK_RETRIES} block retries`);
-          stats.errors++;
-          break;
-        }
-        console.log(`  ⏳ CloudFront block — waiting ${BLOCK_WAIT/1000}s for rate limit to reset (retry ${blockRetries}/${MAX_BLOCK_RETRIES})…`);
-        await sleep(BLOCK_WAIT);
-        await refreshSession();
-        console.log(`  ↩  Retrying ${uuid.slice(0,8)}…`);
-        continue;
-      }
+    if (result && result.status === 'cloudfront-block') {
+      console.log(`\n  ⛔ CloudFront rate limit hit at position ${i + 1}/${toFetch.length}.`);
+      console.log(`  Committing ${stats.written} written so far — re-run this shard to continue.`);
+      blocked = true;
       break;
     }
 
     await sleep(REQUEST_DELAY);
   }
 
+  stats.blocked = blocked;
+
   console.log('\n' + '─'.repeat(50));
   console.log(`  Written:       ${stats.written}`);
   console.log(`  Inaccessible:  ${stats.inaccessible}  (files untouched)`);
   console.log(`  Skipped:       ${stats.skipped}`);
   console.log(`  Errors:        ${stats.errors}`);
+  if (stats.blocked) {
+    const remaining = stats.toFetch - stats.written - stats.inaccessible - stats.errors;
+    console.log(`  Remaining:     ~${remaining} (re-run shard to continue)`);
+  }
 
   console.log('\n  Committing…');
   gitCommit(stats);
