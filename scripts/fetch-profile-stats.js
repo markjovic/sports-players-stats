@@ -83,8 +83,8 @@ async function refreshSession() {
   if (sessionPromise) return sessionPromise;
 
   sessionPromise = (async () => {
-    for (let attempt = 1; attempt <= 5; attempt++) {
-      if (attempt > 1) await sleep(attempt * 3000);
+    for (let attempt = 1; attempt <= 10; attempt++) {
+      if (attempt > 1) await sleep(attempt * 5000);
       for (const body of COOKIE_QUERIES) {
         const res = await doFetch(API_URL, {
           method:  'POST',
@@ -112,7 +112,7 @@ async function refreshSession() {
       }
     }
     sessionPromise = null;
-    throw new Error('Failed to obtain session cookie after 5 attempts');
+    throw new Error('Failed to obtain session cookie after 10 attempts');
   })();
 
   return sessionPromise;
@@ -529,8 +529,25 @@ async function main() {
     return;
   }
 
+  // Random startup delay (0–60s) to spread 256 concurrent matrix jobs
+  // and avoid hammering the session endpoint simultaneously.
+  const startDelay = Math.floor(Math.random() * 60000);
+  console.log(`  Startup delay: ${Math.round(startDelay / 1000)}s (spreading concurrent jobs)…`);
+  await sleep(startDelay);
+
   console.log('\n  Obtaining session…');
-  await refreshSession();
+  try {
+    await refreshSession();
+  } catch (err) {
+    console.error(`  FATAL: Could not obtain session — ${err.message}`);
+    console.log('  Writing empty summary and exiting cleanly.');
+    const summaryPath = path.join(ROOT, 'shard-summary.json');
+    fs.writeFileSync(summaryPath, JSON.stringify({
+      shard: SHARD, total: 0, already_done: 0, written: 0,
+      inaccessible: 0, errors: 1, remaining: 0, blocked: false,
+    }));
+    process.exit(0);
+  }
 
   console.log(`\n  Running (concurrency=${CONCURRENCY})…\n`);
 
