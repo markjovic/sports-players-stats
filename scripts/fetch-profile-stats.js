@@ -235,7 +235,7 @@ function parseProfileStats(data) {
 // We refresh the session proactively after every REFRESH_EVERY successful
 // requests to prevent expiry on long runs, but we never refresh on a 403.
 
-const REFRESH_EVERY  = 500; // refresh session proactively every N requests
+const REFRESH_EVERY  = 30;  // refresh session every 30 requests — PlayHQ enforces a per-session quota on ProfileSeasonStatistics
 let requestCount = 0;
 
 async function fetchProfile(profileID) {
@@ -245,7 +245,7 @@ async function fetchProfile(profileID) {
 
   // Proactive session refresh every REFRESH_EVERY requests
   if (requestCount % REFRESH_EVERY === 0) {
-    console.log(`  Proactive session refresh at request ${requestCount}`);
+    console.log(`  ↺  Session refresh at request ${requestCount} (new JWT quota)`);
     await refreshSession();
   }
 
@@ -267,15 +267,16 @@ async function fetchProfile(profileID) {
   }
 
   if (res.status === 403) {
-    // Read body to distinguish CloudFront rate-limit block (HTML page)
-    // from a genuine app-level profile access denial (JSON)
     let body403 = '';
     try { body403 = await res.text(); } catch { /* ignore */ }
     if (body403.includes('DOCTYPE') || body403.includes('Request blocked')) {
-      // CloudFront WAF block — rate limit hit, not a private profile
+      // CloudFront block — log first 300 chars so we can see what identifier it tracks
+      const snippet = body403.replace(/\s+/g, ' ').trim().slice(0, 300);
+      console.log(`  ⛔ CloudFront block (req#${requestCount}, uuid=${profileID}): ${snippet}`);
       return { status: 'cloudfront-block' };
     }
-    // Application-level 403 — profile genuinely inaccessible
+    // Application-level 403 — profile inaccessible (log briefly)
+    console.log(`  — inaccessible (req#${requestCount}, uuid=${profileID}): ${body403.slice(0, 120)}`);
     return { status: 'inaccessible' };
   }
 
