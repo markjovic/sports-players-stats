@@ -1,0 +1,19 @@
+# .github/workflows/db-audit.yml
+name: DB Audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run audit
+        run: node scripts/db-audit.js
