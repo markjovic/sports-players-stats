@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: shard-summary-${{ matrix.shard }}
-          path: shard-summary.json
+          path: shard-summary-${{ matrix.shard }}.json
           retention-days: 1
 
   summary-and-retrigger:
