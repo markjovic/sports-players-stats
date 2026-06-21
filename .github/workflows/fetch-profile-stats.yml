@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      max:
+        description: 'Max UUIDs to process (leave blank for all)'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -40,4 +45,5 @@ jobs:
         run: |
           ARGS="--shard=${{ inputs.shard }}"
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          if [ -n "${{ inputs.max }}" ]; then ARGS="$ARGS --max=${{ inputs.max }}"; fi
           node scripts/fetch-profile-stats.js $ARGS
