@@ -1,0 +1,43 @@
+# .github/workflows/fetch-profile-stats.yml
+name: Fetch Profile Stats
+
+on:
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: 'Shard to process (00–ff)'
+        required: true
+        type: string
+      force:
+        description: 'Re-fetch even if statsChecked already present'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/fetch-profile-stats.js
+            players/indexes/${{ inputs.shard }}.json
+            players/${{ inputs.shard }}
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run fetch for shard ${{ inputs.shard }}
+        run: |
+          ARGS="--shard=${{ inputs.shard }}"
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          node scripts/fetch-profile-stats.js $ARGS
