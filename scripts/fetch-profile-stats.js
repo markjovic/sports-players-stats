@@ -265,16 +265,16 @@ async function fetchProfile(profileID) {
     return { status: 'error', err };
   }
 
-  // Log first few 403 bodies to diagnose WAF vs app-level rejection
   if (res.status === 403) {
-    if (logged403s < 3) {
-      logged403s++;
-      try {
-        const body403 = await res.text();
-        console.log(`  403 body (sample ${logged403s}, uuid=${profileID}, req#=${requestCount}):`);
-        console.log('  ' + body403.slice(0, 500));
-      } catch { /* ignore */ }
+    // Read body to distinguish CloudFront rate-limit block (HTML page)
+    // from a genuine app-level profile access denial (JSON)
+    let body403 = '';
+    try { body403 = await res.text(); } catch { /* ignore */ }
+    if (body403.includes('DOCTYPE') || body403.includes('Request blocked')) {
+      // CloudFront WAF block — rate limit hit, not a private profile
+      return { status: 'cloudfront-block' };
     }
+    // Application-level 403 — profile genuinely inaccessible
     return { status: 'inaccessible' };
   }
 
@@ -322,23 +322,33 @@ function writePlayer(uuid, player) {
 
 // ─── Process one UUID ─────────────────────────────────────────────────────────
 
-async function processUUID(uuid, stats) {
+async function processUUID(uuid, stats, idx) {
+  const short = uuid.slice(0, 8);
+  const prefix = `  [${String(idx).padStart(4)}/${stats.total}]`;
+
   const result = await fetchProfile(uuid);
 
   if (result.status === 'inaccessible') {
     stats.inaccessible++;
+    console.log(`${prefix} — ${short} inaccessible`);
     return;
+  }
+
+  if (result.status === 'cloudfront-block') {
+    // Caller handles the wait-and-retry loop
+    return result;
   }
 
   if (result.status === 'error') {
     stats.errors++;
-    console.error(`  ERROR ${uuid}: ${result.err?.message}`);
+    console.log(`${prefix} ✗ ${short} ERROR: ${result.err?.message}`);
     return;
   }
 
   const parsed = parseProfileStats(result.data);
   if (!parsed) {
     stats.inaccessible++;
+    console.log(`${prefix} — ${short} no profile data`);
     return;
   }
 
@@ -347,8 +357,6 @@ async function processUUID(uuid, stats) {
   if (!player.sports.Basketball) player.sports.Basketball = {};
 
   const bk = player.sports.Basketball;
-
-  // Atomic write of all four fields — no partial state possible
   bk.foulOuts       = parsed.foulOuts;
   bk.maxGamePTS     = parsed.maxGamePTS;
   bk.maxGameThreePt = parsed.maxGameThreePt;
@@ -356,6 +364,8 @@ async function processUUID(uuid, stats) {
 
   writePlayer(uuid, player);
   stats.written++;
+  const fo = Object.values(parsed.foulOuts).reduce((a, b) => a + b, 0);
+  console.log(`${prefix} ✓ ${short} pts=${parsed.maxGamePTS ?? 0} 3pt=${parsed.maxGameThreePt ?? 0} fo=${fo}`);
 }
 
 // ─── Concurrency pool ─────────────────────────────────────────────────────────
@@ -437,18 +447,36 @@ async function main() {
   console.log('\n  Obtaining session…');
   await refreshSession();
 
-  let done = 0;
-  const tasks = toFetch.map(uuid => async () => {
-    await processUUID(uuid, stats);
-    await sleep(REQUEST_DELAY);
-    done++;
-    if (done % 50 === 0 || done === stats.toFetch) {
-      console.log(`  ${done}/${stats.toFetch}  written=${stats.written}  inaccessible=${stats.inaccessible}  errors=${stats.errors}`);
-    }
-  });
-
   console.log(`\n  Running (concurrency=${CONCURRENCY})…\n`);
-  await runPool(tasks, CONCURRENCY);
+
+  const BLOCK_WAIT      = 120000; // ms — wait for CloudFront window to reset
+  const MAX_BLOCK_RETRIES = 5;
+
+  for (let i = 0; i < toFetch.length; i++) {
+    const uuid = toFetch[i];
+    let blockRetries = 0;
+
+    while (true) {
+      const result = await processUUID(uuid, stats, i + 1);
+
+      if (result && result.status === 'cloudfront-block') {
+        blockRetries++;
+        if (blockRetries > MAX_BLOCK_RETRIES) {
+          console.log(`  [${i+1}] ✗ ${uuid.slice(0,8)} giving up after ${MAX_BLOCK_RETRIES} block retries`);
+          stats.errors++;
+          break;
+        }
+        console.log(`  ⏳ CloudFront block — waiting ${BLOCK_WAIT/1000}s for rate limit to reset (retry ${blockRetries}/${MAX_BLOCK_RETRIES})…`);
+        await sleep(BLOCK_WAIT);
+        await refreshSession();
+        console.log(`  ↩  Retrying ${uuid.slice(0,8)}…`);
+        continue;
+      }
+      break;
+    }
+
+    await sleep(REQUEST_DELAY);
+  }
 
   console.log('\n' + '─'.repeat(50));
   console.log(`  Written:       ${stats.written}`);
