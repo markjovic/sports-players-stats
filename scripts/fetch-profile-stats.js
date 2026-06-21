@@ -408,18 +408,34 @@ async function runPool(tasks, concurrency) {
 
 // ─── Git commit ───────────────────────────────────────────────────────────────
 
-function gitCommit(stats) {
-  try {
-    execSync(`git add players/${SHARD}`, { stdio: 'pipe', cwd: ROOT });
-    const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
-    if (!diff) { console.log('  No changes to commit.'); return; }
-    const msg = `fetch-profile-stats: shard ${SHARD} — ${stats.written} written, ${stats.inaccessible} inaccessible, ${stats.skipped} skipped`;
-    execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: ROOT });
-    execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe', cwd: ROOT });
-    execSync('git push', { stdio: 'pipe', cwd: ROOT });
-    console.log(`  Committed: ${msg}`);
-  } catch (err) {
-    console.error(`  Git commit failed: ${err.message}`);
+async function gitCommit(stats) {
+  execSync(`git add players/${SHARD}`, { stdio: 'pipe', cwd: ROOT });
+  const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
+  if (!diff) { console.log('  No changes to commit.'); return; }
+
+  const msg = `fetch-profile-stats: shard ${SHARD} — ${stats.written} written, ${stats.inaccessible} inaccessible, ${stats.skipped} skipped`;
+  execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: ROOT });
+
+  // Push with retry + random jitter to handle concurrent jobs pushing to the same branch.
+  // Each shard writes to a different directory so merges are always conflict-free.
+  const MAX_PUSH_ATTEMPTS = 10;
+  for (let attempt = 1; attempt <= MAX_PUSH_ATTEMPTS; attempt++) {
+    try {
+      execSync('git fetch origin main', { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main', { stdio: 'pipe', cwd: ROOT });
+      console.log(`  Committed and pushed: ${msg}`);
+      return;
+    } catch (err) {
+      if (attempt === MAX_PUSH_ATTEMPTS) {
+        console.error(`  Push failed after ${MAX_PUSH_ATTEMPTS} attempts: ${err.message}`);
+        return;
+      }
+      // Random jitter: 3–30 seconds, increasing with attempt number
+      const jitter = Math.floor(Math.random() * 15000) + (attempt * 3000);
+      console.log(`  Push conflict (attempt ${attempt}/${MAX_PUSH_ATTEMPTS}) — retrying in ${Math.round(jitter / 1000)}s…`);
+      await sleep(jitter);
+    }
   }
 }
 
@@ -561,7 +577,7 @@ async function main() {
   }));
 
   console.log('\n  Committing…');
-  gitCommit(stats);
+  await gitCommit(stats);
 }
 
 main().catch(err => {
