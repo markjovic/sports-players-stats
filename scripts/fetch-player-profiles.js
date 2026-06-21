@@ -18,7 +18,8 @@ const STATS_ONLY  = args.includes('--stats-only');
 const COMMIT_N    = 1000;
 const PROGRESS    = path.join(ROOT, 'scripts', '.fetch-player-profiles-progress.json');
 
-console.log(`fetch-player-profiles | force=${FORCE} dry=${DRY_RUN}\n`);
+const CONCURRENCY = 10;
+console.log(`fetch-player-profiles | concurrency=${CONCURRENCY} force=${FORCE} dry=${DRY_RUN}\n`);
 
 const HEADERS = {
   'accept':       '*/*',
@@ -101,9 +102,6 @@ const _failedUUIDs = [];
 const FAILED_PATH = path.join(ROOT, 'scripts', '.failed-uuids.json');
 
 async function fetchProfile(uuid, attempt = 0) {
-  // Stochastic jitter — randomise dispatch timing to avoid WAF fingerprinting
-  await new Promise(r => setTimeout(r, Math.random() * 200));
-
   // JIT: resolve auth state fresh per request
   const cookie = await getSession();
   const via = USE_PROXY ? 'proxy' : 'direct';
@@ -348,8 +346,10 @@ async function maybeCommit() {
   }
 }
 
-for (const uuid of toFetch) {
-  await processUUID(uuid);
+// Batched concurrent requests — same structure as the working test script.
+for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
+  const batch = toFetch.slice(i, i + CONCURRENCY);
+  await Promise.all(batch.map(uuid => processUUID(uuid)));
 }
 
 if (!DRY_RUN) {
