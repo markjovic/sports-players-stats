@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      dry_run:
+        description: 'Skip all file reads, writes and git commits — API calls only'
+        required: false
+        default: false
+        type: boolean
       worker:
         description: 'Cloudflare Worker to use'
         required: false
@@ -51,6 +56,7 @@ jobs:
         run: |
           ARGS="--stats-only"
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 
       - name: Run fetch-player-profiles
