@@ -18,6 +18,10 @@ on:
         required: false
         default: false
         type: boolean
+      skip_first:
+        description: 'Pre-mark first N UUIDs as done (tests positional hypothesis)'
+        required: false
+        default: '0'
       worker:
         description: 'Cloudflare Worker to use'
         required: false
@@ -57,6 +61,7 @@ jobs:
           ARGS="--stats-only"
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.skip_first }}" != "0" ]; then ARGS="$ARGS --skip-first=${{ inputs.skip_first }}"; fi
           echo "args=$ARGS" >> $GITHUB_OUTPUT
 
       - name: Run fetch-player-profiles
