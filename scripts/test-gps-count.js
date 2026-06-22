@@ -46,54 +46,50 @@ async function getSession() {
 async function main() {
   const cookie = await getSession();
 
-  // ── Baseline count ────────────────────────────────────────────────────────
-  const res = await doReq({
-    operationName: 'T', variables: { id: GRADE_ID },
-    query: `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) {
-      meta { totalPages totalRecords }
-      results { profile { id firstName lastName } team { id name } }
-    } }`,
-  }, cookie);
+  // ── SearchResultMeta — find all fields ────────────────────────────────────
+  console.log('━━━ SearchResultMeta fields ━━━\n');
+  const metaFields = ['totalPages', 'totalRecords', 'page', 'currentPage',
+                      'cursor', 'nextCursor', 'hasMore', 'count', 'total'];
+  const workingMetaFields = [];
+  for (const f of metaFields) {
+    await new Promise(r => setTimeout(r, 300));
+    const res = await doReq({
+      operationName: 'T', variables: { id: GRADE_ID },
+      query: `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { ${f} } } }`,
+    }, cookie);
+    if (res.errors) {
+      console.log(`  ❌ meta.${f.padEnd(15)} ${res.errors[0]?.message?.slice(0, 60)}`);
+    } else {
+      const val = res.data?.gradePlayerStatistics?.meta?.[f];
+      console.log(`  ✅ meta.${f.padEnd(15)} = ${val}`);
+      workingMetaFields.push(f);
+    }
+  }
 
-  if (res.errors) { console.error('Error:', res.errors[0].message); process.exit(1); }
-  const gps = res.data.gradePlayerStatistics;
-  console.log(`meta.totalRecords : ${gps.meta.totalRecords}`);
-  console.log(`meta.totalPages   : ${gps.meta.totalPages}`);
-  console.log(`results.length    : ${gps.results.length}`);
-  console.log(gps.results.length === gps.meta.totalRecords
-    ? '✅ All results returned in one call'
-    : `❌ Missing ${gps.meta.totalRecords - gps.results.length} — need pagination`);
-
-  // ── Pagination argument search ────────────────────────────────────────────
-  console.log('\n━━━ Pagination argument candidates ━━━\n');
+  // ── Full error messages — no truncation ───────────────────────────────────
+  console.log('\n━━━ Full error messages for pagination candidates ━━━\n');
   const candidates = [
-    // int-based page number
-    ['page: 2',           `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, page: 2) { meta { totalRecords } results { profile { id } } } }`],
-    ['pageNo: 2',         `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, pageNo: 2) { meta { totalRecords } results { profile { id } } } }`],
-    ['pageNum: 2',        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, pageNum: 2) { meta { totalRecords } results { profile { id } } } }`],
-    ['currentPage: 2',   `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, currentPage: 2) { meta { totalRecords } results { profile { id } } } }`],
-    ['pg: 2',             `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, pg: 2) { meta { totalRecords } results { profile { id } } } }`],
-    ['p: 2',              `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, p: 2) { meta { totalRecords } results { profile { id } } } }`],
-    ['offset: 50',        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, offset: 50) { meta { totalRecords } results { profile { id } } } }`],
-    ['skip: 50',          `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, skip: 50) { meta { totalRecords } results { profile { id } } } }`],
-    ['start: 50',         `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, start: 50) { meta { totalRecords } results { profile { id } } } }`],
-    ['first: 50',         `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, first: 50) { meta { totalRecords } results { profile { id } } } }`],
-    // string cursor
-    ['cursor: "2"',       `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, cursor: "2") { meta { totalRecords } results { profile { id } } } }`],
-    ['after: "2"',        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, after: "2") { meta { totalRecords } results { profile { id } } } }`],
-    // input object
-    ['input: {page:2}',   `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, input: {page: 2}) { meta { totalRecords } results { profile { id } } } }`],
+    // the 'f...' suggestion from 'after'
+    ['filter: {}',       `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, filter: {}) { meta { totalRecords } results { profile { id } } } }`],
+    ['filters: {}',      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, filters: {}) { meta { totalRecords } results { profile { id } } } }`],
+    // page as String
+    ['page: "2"',        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, page: "2") { meta { totalRecords } results { profile { id } } } }`],
+    // try 'after' full error
+    ['after: "50"',      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, after: "50") { meta { totalRecords } results { profile { id } } } }`],
+    // try meta.page as the cursor to pass back in
+    ['cursor from meta', `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { ${workingMetaFields.join(' ')} } results { profile { id } } } }`],
   ];
 
   for (const [label, query] of candidates) {
     await new Promise(r => setTimeout(r, 350));
     const r = await doReq({ operationName: 'T', variables: { id: GRADE_ID }, query }, cookie);
     if (r.errors) {
-      const msg = r.errors[0]?.message?.slice(0, 80) || 'error';
-      console.log(`  ❌ ${label.padEnd(20)} ${msg}`);
+      // Print FULL error message — no truncation
+      console.log(`  ❌ ${label}`);
+      r.errors.forEach(e => console.log(`     ${e.message}`));
     } else {
       const g = r.data?.gradePlayerStatistics;
-      console.log(`  ✅ ${label.padEnd(20)} results=${g?.results?.length}  total=${g?.meta?.totalRecords}`);
+      console.log(`  ✅ ${label}  results=${g?.results?.length}  meta=${JSON.stringify(g?.meta)}`);
     }
   }
 }
