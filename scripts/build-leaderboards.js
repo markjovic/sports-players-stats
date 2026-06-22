@@ -89,7 +89,7 @@ class TopN {
   result() { return this.arr; }
 }
 
-const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls', 'threePtPG', 'foulsPG', 'foulOuts', 'foulOutsPG', 'finals', 'gfApps', 'gfWins', 'finalsPerSeason'];
+const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls', 'threePtPG', 'foulsPG', 'foulOuts', 'foulOutsPG', 'finals', 'gfApps', 'gfWins', 'finalsPerSeason', 'maxGamePTS', 'maxGameThreePt'];
 
 function makeBuckets(limit) {
   const b = {};
@@ -158,7 +158,11 @@ function pushAllTime(buckets, player) {
   const team     = lastReg?.tn  || null;
   const org      = sidToOrg.get(lastSeason?.sid) || null;
   if (!bball || typeof bball.gp !== 'number' || bball.gp < 1) return;
-  const careerFoulOuts   = bball.foulOuts ?? 0;
+  // foulOuts may be a number (old format) or { seasonId: count } object (new format)
+  const rawFoulOuts    = bball.foulOuts ?? 0;
+  const careerFoulOuts = typeof rawFoulOuts === 'object' && rawFoulOuts !== null
+    ? Object.values(rawFoulOuts).reduce((a, b) => a + b, 0)
+    : (typeof rawFoulOuts === 'number' ? rawFoulOuts : 0);
   const careerFoulOutsPG = bball.gp > 0 ? Math.round((careerFoulOuts / bball.gp) * 1000) / 1000 : 0;
   const careerThreePtPG  = bball.gp > 0 ? Math.round(((bball.threePt ?? 0) / bball.gp) * 100) / 100 : 0;
   const careerFoulsPG    = bball.gp > 0 ? Math.round(((bball.fouls   ?? 0) / bball.gp) * 100) / 100 : 0;
@@ -188,6 +192,11 @@ function pushAllTime(buckets, player) {
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
+  // Single-game records — sourced from sports.Basketball.maxGamePTS / maxGameThreePt
+  if (typeof bball.maxGamePTS     === 'number' && bball.maxGamePTS     > 0)
+    buckets.maxGamePTS    .push({ ...base, v: bball.maxGamePTS });
+  if (typeof bball.maxGameThreePt === 'number' && bball.maxGameThreePt > 0)
+    buckets.maxGameThreePt.push({ ...base, v: bball.maxGameThreePt });
 }
 
 function pushSeason(buckets, player, sid) {
