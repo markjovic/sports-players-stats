@@ -128,51 +128,26 @@ const PROFILE_QUERY = {
   query: `query ProfileSeasonStatistics($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
     seasonStatistics {
-      name
-      player { hasGamePermit __typename }
       statistics {
-        season { id name competition { id name organisation { id name __typename } __typename } __typename }
-        club { id name __typename }
-        totalStatistics { ...ProfileSeasonStatistic __typename }
+        season { id }
         teamStatistics {
-          team { ... on DiscoverTeam { id name __typename } __typename }
-          totalStatistics { ...ProfileSeasonStatistic __typename }
+          team { ... on DiscoverTeam { id name } }
           gradeStatistics {
-            grade { id name __typename }
-            totalStatistics { ...ProfileSeasonStatistic __typename }
+            grade { id name }
             gameStatistics {
               game {
                 id
-                round { name number isFinalsRound abbreviatedName __typename }
-                home { ... on DiscoverTeam { id name __typename } __typename }
-                away { ... on DiscoverTeam { id name __typename } __typename }
-                __typename
+                round { name number isFinalsRound abbreviatedName }
+                home { ... on DiscoverTeam { id name } }
+                away { ... on DiscoverTeam { id name } }
               }
-              statistics { ...ProfileSeasonStatistic __typename }
-              __typename
+              statistics { count details { value } }
             }
-            __typename
           }
-          __typename
         }
-        __typename
       }
-      __typename
     }
-    __typename
   }
-  tenantConfiguration {
-    statistics {
-      seasonStatisticsMeta { value name shortName isDisplayable __typename }
-      __typename
-    }
-    __typename
-  }
-}
-fragment ProfileSeasonStatistic on Statistic {
-  count
-  details { value __typename }
-  __typename
 }`,
 };
 
@@ -310,6 +285,18 @@ async function fetchProfile(profileID) {
   let json;
   try { json = await res.json(); }
   catch (err) { return { status: 'error', err }; }
+
+  // GraphQL errors — check before inspecting data
+  if (json.errors && json.errors.length > 0) {
+    const msg = json.errors[0]?.message || '';
+    if (msg.includes('NOT_FOUND') || msg.includes('failed to find profile')) {
+      // Profile UUID is known but unresolvable — permanent, treat like private
+      console.log(`  — not-found (req#${requestCount}, uuid=${profileID}): ${msg}`);
+      return { status: 'private' };
+    }
+    // Other GraphQL errors — transient, leave file untouched
+    return { status: 'error', err: new Error(`GraphQL error: ${msg}`) };
+  }
 
   const data = json.data || json;
 
