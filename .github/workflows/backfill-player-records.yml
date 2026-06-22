@@ -1,0 +1,41 @@
+# .github/workflows/backfill-player-records.yml
+name: Backfill Player Records
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force overwrite existing records'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Backfill player records
+        run: |
+          ARGS=""
+          if [ "${{ inputs.force }}"   = "true" ]; then ARGS="$ARGS --force"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/backfill-player-records.js $ARGS
