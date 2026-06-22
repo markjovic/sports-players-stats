@@ -46,42 +46,32 @@ async function getSession() {
 async function main() {
   const cookie = await getSession();
 
-  console.log('━━━ filter object sub-fields for pagination ━━━\n');
-
-  const filterCandidates = [
-    'page: 2',
-    'pageNumber: 2',
-    'pageNum: 2',
-    'pageNo: 2',
-    'pg: 2',
-    'p: 2',
-    'currentPage: 2',
-    'offset: 50',
-    'skip: 50',
-    'cursor: "2"',
-    'after: "50"',
-    'first: 50',
-    'limit: 50, page: 2',
-    'limit: 50, offset: 50',
-  ];
-
-  for (const f of filterCandidates) {
-    await new Promise(r => setTimeout(r, 350));
-    const query = `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, filter: { ${f} }) {
+  const res = await doReq({
+    operationName: 'T', variables: { id: GRADE_ID },
+    query: `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) {
       meta { totalPages totalRecords page }
-      results { profile { id } }
-    } }`;
-    const res = await doReq({ operationName: 'T', variables: { id: GRADE_ID }, query }, cookie);
-    if (res.errors) {
-      console.log(`  ❌ filter { ${f.padEnd(25)} } ${res.errors[0]?.message}`);
-    } else {
-      const g = res.data?.gradePlayerStatistics;
-      const meta = g?.meta;
-      const count = g?.results?.length;
-      const marker = count === 18 ? ' ✅ PAGE 2!' : count === 68 ? ' ✅ ALL!' : '';
-      console.log(`  ✅ filter { ${f.padEnd(25)} } results=${count} page=${meta?.page} total=${meta?.totalRecords}${marker}`);
-    }
-  }
+      results {
+        profile { id firstName lastName }
+        team { id name }
+        statistics { count details { value } }
+      }
+    } }`,
+  }, cookie);
+
+  if (res.errors) { console.error('Error:', res.errors[0].message); process.exit(1); }
+
+  const gps = res.data.gradePlayerStatistics;
+  console.log(`totalRecords: ${gps.meta.totalRecords}  totalPages: ${gps.meta.totalPages}  page: ${gps.meta.page}`);
+  console.log(`returned: ${gps.results.length}\n`);
+
+  // Print all results — full, no truncation
+  gps.results.forEach((r, i) => {
+    const pts  = r.statistics?.find(s => s.details?.value === 'TOTAL_SCORE')?.count ?? 0;
+    const gp   = r.statistics?.find(s => s.details?.value === 'APPEARANCE')?.count ?? 0;
+    const fo   = r.statistics?.find(s => s.details?.value === 'TOTAL_FOULS')?.count ?? 0;
+    const tp   = r.statistics?.find(s => s.details?.value === '3_POINT_SCORE')?.count ?? 0;
+    console.log(`  ${String(i+1).padStart(2)}. ${r.profile.id}  ${(r.profile.firstName + ' ' + r.profile.lastName).padEnd(25)}  team: ${(r.team?.name || '').padEnd(30)}  gp:${gp}  pts:${pts}  3pt:${tp}  fouls:${fo}`);
+  });
 }
 
 main().catch(e => { console.error('FATAL:', e.message); process.exit(1); });
