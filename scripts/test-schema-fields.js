@@ -11,7 +11,6 @@ const args = Object.fromEntries(
 );
 
 const TEAM_ID   = args.teamId   || args.teamid   || args.team;
-const ORG_ID    = args.orgId    || args.orgid    || args.org;
 const GRADE_ID  = args.gradeId  || args.gradeid  || args.grade;
 const SEASON_ID = args.seasonId || args.seasonid || args.season;
 
@@ -68,157 +67,146 @@ async function probe(label, query, variables, cookie) {
     const res = await doFetch({ operationName: 'T', variables, query }, cookie);
     if (res.errors) {
       const msg = res.errors[0]?.message || '';
-      console.log(`  ❌ ${label.padEnd(60)} ${msg.slice(0, 100)}`);
+      console.log(`  ❌ ${label.padEnd(65)} ${msg.slice(0, 100)}`);
       return { ok: false, msg };
     }
-    const preview = JSON.stringify(res.data)?.slice(0, 250);
-    console.log(`  ✅ ${label.padEnd(60)} ${preview}`);
+    const preview = JSON.stringify(res.data)?.slice(0, 300);
+    console.log(`  ✅ ${label.padEnd(65)} ${preview}`);
     return { ok: true, data: res.data };
   } catch (e) {
-    console.log(`  ❌ ${label.padEnd(60)} ${e.message?.slice(0, 80)}`);
+    console.log(`  ❌ ${label.padEnd(65)} ${e.message?.slice(0, 80)}`);
     return { ok: false };
   }
 }
 
 async function main() {
-  console.log('test-schema-fields.js — round 4\n');
+  console.log('test-schema-fields.js — round 5\n');
   console.log('Getting session...');
   let cookie = null;
   try { cookie = await getSession(); console.log('  Session obtained\n'); }
   catch (e) { console.log('  No session\n'); }
 
-  // ── 1. discoverOrganisation(code:) — find the right code value ───────────
-  console.log('━━━ discoverOrganisation(code: String!) ━━━\n');
-  const codesToTry = [
-    'bv',
-    'basketball-victoria',
-    ORG_ID,           // e.g. "5433b0e3"
-    'BV',
-  ].filter(Boolean);
-
-  for (const code of codesToTry) {
-    const r = await probe(
-      `discoverOrganisation(code: "${code}") { id name }`,
-      `query T { discoverOrganisation(code: "${code}") { id name } }`,
-      {}, cookie
-    );
-    if (r.ok) {
-      // Found it — now probe sub-fields
-      console.log('\n  Found! Probing sub-fields...\n');
-      const subFields = [
-        'seasons { id name }',
-        'competitions { id name }',
-        'currentSeasons { id name }',
-        'activeSeasons { id name }',
-        'logo { sizes { url } }',
-        'type',
-        'address { suburb }',
-      ];
-      for (const sub of subFields) {
-        await probe(
-          `discoverOrganisation.${sub.split(' ')[0]}`,
-          `query T { discoverOrganisation(code: "${code}") { id ${sub} } }`,
-          {}, cookie
-        );
-      }
-      break;
-    }
-  }
-
-  // ── 2. socialTeamRegistration (singular) ─────────────────────────────────
-  if (TEAM_ID) {
-    console.log(`\n━━━ socialTeamRegistration (singular)  (teamId: ${TEAM_ID}) ━━━\n`);
-
-    // First find what arguments it takes
-    const argAttempts = [
-      [`teamID: $id`, { id: TEAM_ID }],
-      [`teamId: $id`, { id: TEAM_ID }],
-      [`id: $id`,     { id: TEAM_ID }],
-      [`code: $id`,   { id: TEAM_ID }],
-    ];
-    for (const [argStr, vars] of argAttempts) {
-      await probe(
-        `socialTeamRegistration(${argStr}) { id }`,
-        `query T($id: ID!) { socialTeamRegistration(${argStr}) { id } }`,
-        vars, cookie
-      );
-    }
-
-    // Try with no args
-    await probe(
-      'socialTeamRegistration (no args) { id }',
-      `query T { socialTeamRegistration { id } }`,
-      {}, cookie
-    );
-  }
-
-  // ── 3. seasonRegistrations — find DiscoverRegistration fields ────────────
+  // ── 1. seasonRegistrations — find DiscoverRegistration fields ─────────────
   if (SEASON_ID) {
-    console.log(`\n━━━ seasonRegistrations fields  (seasonId: ${SEASON_ID}) ━━━\n`);
+    console.log(`━━━ seasonRegistrations — DiscoverRegistration fields  (seasonId: ${SEASON_ID}) ━━━\n`);
 
-    // We know seasonID works and returns DiscoverRegistration
-    // Try minimal field probes to find what's on DiscoverRegistration
-    const fieldCandidates = [
-      'id',
-      'id status',
-      'id status { value }',
-      'id player { id firstName lastName }',
-      'id participant { id firstName lastName }',
-      'id profile { id }',
-      'id profileID',
-      'id team { id name }',
-      'id grade { id name }',
-      'id season { id name }',
-      'id role',
-      'id firstName lastName',
-      'id name',
+    // __typename to find concrete type name
+    await probe(
+      'seasonRegistrations { id __typename }',
+      `query T($id: ID!) { seasonRegistrations(seasonID: $id) { id __typename } }`,
+      { id: SEASON_ID }, cookie
+    );
+
+    // gender was suggested
+    await probe(
+      'seasonRegistrations { id gender }',
+      `query T($id: ID!) { seasonRegistrations(seasonID: $id) { id gender } }`,
+      { id: SEASON_ID }, cookie
+    );
+
+    // season as inline fragment (it's a union/interface)
+    await probe(
+      'seasonRegistrations { id season { ... on DiscoverSeason { id name } } }',
+      `query T($id: ID!) { seasonRegistrations(seasonID: $id) { id season { ... on DiscoverSeason { id name } } } }`,
+      { id: SEASON_ID }, cookie
+    );
+
+    // More field candidates
+    const moreFields = [
+      'dateOfBirth',
+      'age',
+      'person { id firstName lastName }',
+      'participant { id }',
+      'publicProfile { id firstName lastName }',
+      'publicProfileID',
+      'registrantID',
+      'registrant { id firstName lastName }',
+      'memberID',
+      'member { id }',
+      'athlete { id firstName lastName }',
+      'playHQProfileID',
+      'profileUUID',
+      'externalID',
+      'teamRegistration { id team { id name } }',
+      'gradeRegistration { id grade { id name } }',
+      'organisation { id name }',
+      'club { id name }',
     ];
-    for (const fields of fieldCandidates) {
+    for (const f of moreFields) {
       await probe(
-        `seasonRegistrations { ${fields} }`,
-        `query T($id: ID!) { seasonRegistrations(seasonID: $id) { ${fields} } }`,
+        `seasonRegistrations { id ${f.split(' ')[0]} }`,
+        `query T($id: ID!) { seasonRegistrations(seasonID: $id) { id ${f} } }`,
         { id: SEASON_ID }, cookie
       );
     }
   }
 
-  // ── 4. gradePlayerStatistics — find actual return structure ──────────────
+  // ── 2. socialTeamRegistration(code: String!) — try routing code ──────────
+  if (TEAM_ID) {
+    console.log(`\n━━━ socialTeamRegistration(code: String!)  (teamId: ${TEAM_ID}) ━━━\n`);
+
+    // TEAM_ID might be "ac09183b" — try as the code string directly
+    const codeAttempts = [TEAM_ID, TEAM_ID.toUpperCase()];
+    for (const code of codeAttempts) {
+      const r = await probe(
+        `socialTeamRegistration(code: "${code}") { id }`,
+        `query T { socialTeamRegistration(code: "${code}") { id } }`,
+        {}, cookie
+      );
+      if (r.ok) {
+        console.log('  Found! Probing fields...');
+        const fields = [
+          '__typename',
+          'id profile { id firstName lastName }',
+          'id participant { id }',
+          'id person { id firstName lastName }',
+          'id gender',
+          'id status { value }',
+          'id team { id name }',
+          'id grade { id name }',
+          'id season { id name }',
+          'id role',
+        ];
+        for (const f of fields) {
+          await probe(
+            `socialTeamRegistration { ${f.split(' ')[0]} }`,
+            `query T { socialTeamRegistration(code: "${code}") { ${f} } }`,
+            {}, cookie
+          );
+        }
+        break;
+      }
+    }
+  }
+
+  // ── 3. gradePlayerStatistics { meta } ────────────────────────────────────
   if (GRADE_ID) {
-    console.log(`\n━━━ gradePlayerStatistics actual structure  (gradeId: ${GRADE_ID}) ━━━\n`);
+    console.log(`\n━━━ gradePlayerStatistics meta field  (gradeId: ${GRADE_ID}) ━━━\n`);
 
-    // Try as direct array (no wrapper object)
     await probe(
-      'gradePlayerStatistics as array { profile { id } }',
-      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { profile { id firstName lastName } team { id name } } }`,
+      'gradePlayerStatistics { meta { totalCount } }',
+      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { totalCount } } }`,
+      { id: GRADE_ID }, cookie
+    );
+    await probe(
+      'gradePlayerStatistics { meta { totalCount hasMore nextCursor } }',
+      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { totalCount hasMore nextCursor } } }`,
+      { id: GRADE_ID }, cookie
+    );
+    await probe(
+      'gradePlayerStatistics { meta { __typename } }',
+      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { __typename } } }`,
       { id: GRADE_ID }, cookie
     );
 
-    await probe(
-      'gradePlayerStatistics as array { id profile { id } }',
-      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { id profile { id firstName lastName } } }`,
-      { id: GRADE_ID }, cookie
-    );
-
-    // Maybe it wraps in a different way
-    await probe(
-      'gradePlayerStatistics { data { profile { id } } }',
-      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { data { profile { id firstName lastName } } } }`,
-      { id: GRADE_ID }, cookie
-    );
-
-    await probe(
-      'gradePlayerStatistics { nodes { profile { id } } }',
-      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { nodes { profile { id firstName lastName } } } }`,
-      { id: GRADE_ID }, cookie
-    );
-
-    // What fields DOES GradePlayerStatistics have?
-    const gpsCandidates = ['profile', 'team', 'statistics', 'totalStatistics', 'id',
-                           'firstName', 'lastName', 'rank', 'position', 'count'];
-    for (const f of gpsCandidates) {
+    // Introspect: what fields does GradePlayerStatistics actually have?
+    // The only confirmed one is 'meta' — are there others?
+    const gpsFields = ['results', 'items', 'entries', 'players', 'registrations',
+                       'statistics', 'ladder', 'standings', 'count', '__typename'];
+    for (const f of gpsFields) {
       await probe(
         `gradePlayerStatistics { ${f}... }`,
-        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { ${f} } }`,
+        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { ${f} { __typename } } }`,
         { id: GRADE_ID }, cookie
       );
     }
