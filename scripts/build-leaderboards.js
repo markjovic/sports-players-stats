@@ -171,6 +171,7 @@ function pushAllTime(buckets, player) {
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
     finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins,
     finalsPerSeason: careerFinalsPerSeason,
+  };
 
   if (typeof bball.pts     === 'number') buckets.pts    .push({ ...base, v: bball.pts });
   if (typeof bball.gp      === 'number') buckets.gp     .push({ ...base, v: bball.gp });
