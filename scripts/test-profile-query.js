@@ -25,7 +25,14 @@ async function getSession() {
   });
   const raw = res.headers.get('set-cookie');
   if (!raw) throw new Error('No cookie');
-  return raw.split(';')[0];
+  // set-cookie comes back as comma-joined string in native fetch.
+  // Split on ', ' to get individual cookie strings, then extract name=value pairs.
+  const parts = raw.split(',').map(c => c.trim().split(';')[0].trim());
+  const get = name => parts.find(p => p.startsWith(name + '=')) || null;
+  const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+  if (!tier || !session || !sub) throw new Error(`Incomplete cookies — got: ${parts.join(' | ')}`);
+  // Cookie order is critical: phq_tier first, then phq_session, then phq_sub
+  return `${tier}; ${session}; ${sub}`;
 }
 
 // Query A: exact API reference query (no totalStatistics, no __typename)
