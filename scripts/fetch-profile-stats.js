@@ -198,6 +198,8 @@ function parseProfileStats(data) {
   const foulOuts     = {};
   let maxGamePTS     = null;
   let maxGameThreePt = null;
+  let maxGamePTSKey  = null;   // { gameKey, sid } for the game where PTS record was set
+  let maxGameThreePtKey = null; // { gameKey, sid } for the game where 3PT record was set
 
   for (const season of seasonStats) {
     for (const reg of (season.statistics || [])) {
@@ -207,25 +209,32 @@ function parseProfileStats(data) {
       for (const teamStat of (reg.teamStatistics || [])) {
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
           for (const gameStat of (gradeStat.gameStatistics || [])) {
-            const stats = gameStat.statistics || [];
-            const fouls = statValue(stats, 'TOTAL_FOULS');
-            const pts   = statValue(stats, 'TOTAL_SCORE');
-            const three = statValue(stats, '3_POINT_SCORE');
+            const stats   = gameStat.statistics || [];
+            const gameKey = gameStat.game?.id || null;
+            const fouls   = statValue(stats, 'TOTAL_FOULS');
+            const pts     = statValue(stats, 'TOTAL_SCORE');
+            const three   = statValue(stats, '3_POINT_SCORE');
 
             // Foul-out = 5 or more fouls in a single game
             if (fouls >= 5) {
               foulOuts[seasonId] = (foulOuts[seasonId] || 0) + 1;
             }
 
-            if (pts   > (maxGamePTS     ?? 0)) maxGamePTS     = pts;
-            if (three > (maxGameThreePt ?? 0)) maxGameThreePt = three;
+            if (pts > (maxGamePTS ?? 0)) {
+              maxGamePTS    = pts;
+              maxGamePTSKey = gameKey ? { gameKey, sid: seasonId } : null;
+            }
+            if (three > (maxGameThreePt ?? 0)) {
+              maxGameThreePt    = three;
+              maxGameThreePtKey = gameKey ? { gameKey, sid: seasonId } : null;
+            }
           }
         }
       }
     }
   }
 
-  return { foulOuts, maxGamePTS, maxGameThreePt };
+  return { foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey };
 }
 
 // ─── API fetch ────────────────────────────────────────────────────────────────
@@ -350,6 +359,9 @@ async function processUUID(uuid, stats, idx) {
       player.sports.Basketball.maxGamePTS     = null;
       player.sports.Basketball.maxGameThreePt = null;
       player.sports.Basketball.statsChecked   = new Date().toISOString();
+      if (!player.records) player.records = {};
+      player.records.maxGamePTS     = { v: null };
+      player.records.maxGameThreePt = { v: null };
       writePlayer(uuid, player);
       stats.written++; // counts toward completion — won't be retried
     } catch (err) {
@@ -385,6 +397,15 @@ async function processUUID(uuid, stats, idx) {
   bk.foulOuts       = parsed.foulOuts;
   bk.maxGamePTS     = parsed.maxGamePTS;
   bk.maxGameThreePt = parsed.maxGameThreePt;
+
+  // Write records with gameKey context for db-report and StatTrack game linking
+  if (!player.records) player.records = {};
+  player.records.maxGamePTS = parsed.maxGamePTSKey
+    ? { v: parsed.maxGamePTS, ...parsed.maxGamePTSKey }
+    : { v: parsed.maxGamePTS ?? null };
+  player.records.maxGameThreePt = parsed.maxGameThreePtKey
+    ? { v: parsed.maxGameThreePt, ...parsed.maxGameThreePtKey }
+    : { v: parsed.maxGameThreePt ?? null };
   bk.statsChecked   = new Date().toISOString();
 
   writePlayer(uuid, player);
