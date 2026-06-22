@@ -80,6 +80,8 @@ let detailCount = 0;
 let withStatsChecked = 0;
 let withFoulOuts = 0;
 let withMaxGamePTS = 0;
+let withMaxGameThreePt = 0;
+let withRecords = 0;
 let noSportsField = 0;
 let withTeams = 0;
 let withTeamsUpdatedAt = 0;
@@ -124,11 +126,13 @@ for (const shard of shardDirs) {
             foulOutsNonZero++;
           }
         }
-        if (bk.maxGamePTS !== undefined) withMaxGamePTS++;
+        if (bk.maxGamePTS     !== undefined) withMaxGamePTS++;
+        if (bk.maxGameThreePt !== undefined) withMaxGameThreePt++;
       }
     } else {
       noSportsField++;
     }
+    if (p.records !== undefined) withRecords++;
     if (p.teams && p.teams.length > 0) withTeams++;
     if (p.teamsUpdatedAt) withTeamsUpdatedAt++;
   }
@@ -153,6 +157,10 @@ row('    foulOuts present but all zero', fmt(withFoulOuts - foulOutsNonZero),
     pct(withFoulOuts - foulOutsNonZero, processed));
 row('  sports.Basketball.maxGamePTS', fmt(withMaxGamePTS),
     pct(withMaxGamePTS, processed));
+row('  sports.Basketball.maxGameThreePt', fmt(withMaxGameThreePt),
+    pct(withMaxGameThreePt, processed));
+row('  records (maxGamePTS + maxGameThreePt)', fmt(withRecords),
+    pct(withRecords, processed));
 row('  No sports field at all', fmt(noSportsField),
     pct(noSportsField, processed));
 row('  Has teams[] (non-empty)', fmt(withTeams),
@@ -391,7 +399,7 @@ for (const f of rootIndexFiles) {
 
 // ─── 11. publicProfileStatistics coverage ───────────────────────────────────
 
-section('11 · publicProfileStatistics coverage (THE missing piece)');
+section('11 · publicProfileStatistics coverage');
 console.log('');
 console.log('  Fields only populated by publicProfileStatistics:');
 console.log('    • foulOuts       — foul-out count per season/team/grade reg');
@@ -406,10 +414,15 @@ row('Partially written (foulOuts, no statsChecked)', fmt(withFoulOuts - withStat
 row('Not fetched at all', fmt(processed - withFoulOuts),
     pct(processed - withFoulOuts, processed));
 console.log('');
-console.log('  Implication: the old script wrote foulOuts but crashed before');
-console.log('  writing statsChecked or maxGamePTS. We cannot rely on foulOuts');
-console.log('  being complete or correct for players that have it — we must');
-console.log('  re-fetch ALL players (or at minimum all without statsChecked).');
+const pctFetched = processed > 0 ? (withStatsChecked / processed * 100).toFixed(1) : '0.0';
+console.log(`  Coverage: ${pctFetched}% of players have been fully fetched.`);
+if (withStatsChecked < processed) {
+  const remaining = processed - withStatsChecked;
+  console.log(`  ${remaining.toLocaleString()} players still need fetching (no statsChecked).`);
+  console.log('  Run fetch-profile-stats-matrix.yml to complete the bootstrap.');
+} else {
+  console.log('  ✅ Bootstrap complete — all players have been fetched.');
+}
 
 // ─── 12. Summary vs baseline ─────────────────────────────────────────────────
 
