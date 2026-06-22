@@ -46,50 +46,40 @@ async function getSession() {
 async function main() {
   const cookie = await getSession();
 
-  // ── SearchResultMeta — find all fields ────────────────────────────────────
-  console.log('━━━ SearchResultMeta fields ━━━\n');
-  const metaFields = ['totalPages', 'totalRecords', 'page', 'currentPage',
-                      'cursor', 'nextCursor', 'hasMore', 'count', 'total'];
-  const workingMetaFields = [];
-  for (const f of metaFields) {
-    await new Promise(r => setTimeout(r, 300));
-    const res = await doReq({
-      operationName: 'T', variables: { id: GRADE_ID },
-      query: `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { ${f} } } }`,
-    }, cookie);
-    if (res.errors) {
-      console.log(`  ❌ meta.${f.padEnd(15)} ${res.errors[0]?.message?.slice(0, 60)}`);
-    } else {
-      const val = res.data?.gradePlayerStatistics?.meta?.[f];
-      console.log(`  ✅ meta.${f.padEnd(15)} = ${val}`);
-      workingMetaFields.push(f);
-    }
-  }
+  console.log('━━━ filter object sub-fields for pagination ━━━\n');
 
-  // ── Full error messages — no truncation ───────────────────────────────────
-  console.log('\n━━━ Full error messages for pagination candidates ━━━\n');
-  const candidates = [
-    // the 'f...' suggestion from 'after'
-    ['filter: {}',       `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, filter: {}) { meta { totalRecords } results { profile { id } } } }`],
-    ['filters: {}',      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, filters: {}) { meta { totalRecords } results { profile { id } } } }`],
-    // page as String
-    ['page: "2"',        `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, page: "2") { meta { totalRecords } results { profile { id } } } }`],
-    // try 'after' full error
-    ['after: "50"',      `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, after: "50") { meta { totalRecords } results { profile { id } } } }`],
-    // try meta.page as the cursor to pass back in
-    ['cursor from meta', `query T($id: ID!) { gradePlayerStatistics(gradeID: $id) { meta { ${workingMetaFields.join(' ')} } results { profile { id } } } }`],
+  const filterCandidates = [
+    'page: 2',
+    'pageNumber: 2',
+    'pageNum: 2',
+    'pageNo: 2',
+    'pg: 2',
+    'p: 2',
+    'currentPage: 2',
+    'offset: 50',
+    'skip: 50',
+    'cursor: "2"',
+    'after: "50"',
+    'first: 50',
+    'limit: 50, page: 2',
+    'limit: 50, offset: 50',
   ];
 
-  for (const [label, query] of candidates) {
+  for (const f of filterCandidates) {
     await new Promise(r => setTimeout(r, 350));
-    const r = await doReq({ operationName: 'T', variables: { id: GRADE_ID }, query }, cookie);
-    if (r.errors) {
-      // Print FULL error message — no truncation
-      console.log(`  ❌ ${label}`);
-      r.errors.forEach(e => console.log(`     ${e.message}`));
+    const query = `query T($id: ID!) { gradePlayerStatistics(gradeID: $id, filter: { ${f} }) {
+      meta { totalPages totalRecords page }
+      results { profile { id } }
+    } }`;
+    const res = await doReq({ operationName: 'T', variables: { id: GRADE_ID }, query }, cookie);
+    if (res.errors) {
+      console.log(`  ❌ filter { ${f.padEnd(25)} } ${res.errors[0]?.message}`);
     } else {
-      const g = r.data?.gradePlayerStatistics;
-      console.log(`  ✅ ${label}  results=${g?.results?.length}  meta=${JSON.stringify(g?.meta)}`);
+      const g = res.data?.gradePlayerStatistics;
+      const meta = g?.meta;
+      const count = g?.results?.length;
+      const marker = count === 18 ? ' ✅ PAGE 2!' : count === 68 ? ' ✅ ALL!' : '';
+      console.log(`  ✅ filter { ${f.padEnd(25)} } results=${count} page=${meta?.page} total=${meta?.totalRecords}${marker}`);
     }
   }
 }
