@@ -1,0 +1,35 @@
+# .github/workflows/test-schema-fields.yml
+name: Test Schema Fields
+
+on:
+  workflow_dispatch:
+    inputs:
+      teamId:
+        description: 'A team ID to test (from any games/bv/ h or a field)'
+        required: false
+        type: string
+      orgId:
+        description: 'An org ID to test (from sports-index.json orgId field)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/test-schema-fields.js
+          sparse-checkout-cone-mode: false
+
+      - name: Test schema fields
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.teamId }}" ]; then ARGS="$ARGS --teamId=${{ inputs.teamId }}"; fi
+          if [ -n "${{ inputs.orgId }}" ]; then ARGS="$ARGS --orgId=${{ inputs.orgId }}"; fi
+          node scripts/test-schema-fields.js $ARGS
