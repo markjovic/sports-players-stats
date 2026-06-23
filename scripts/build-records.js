@@ -26,7 +26,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
 import { execSync } from 'child_process';
 
 import { fileURLToPath } from 'url';
@@ -37,10 +36,7 @@ const ROOT             = path.join(__dirname, '..');
 const DRY_RUN          = process.argv.includes('--dry-run');
 const FORCE            = process.argv.includes('--force');
 const TOP_N            = 50;
-const CONCURRENCY      = 20;
-const BATCH_DELAY_MS   = 300;
 const GAME_COMMIT_INTERVAL   = 200;
-const PLAYER_COMMIT_INTERVAL = 2500;
 const PROGRESS_FILE    = path.join(ROOT, 'scripts', '.records-progress.json');
 const OUT_FILE         = path.join(ROOT, 'records', 'all-time.json');
 
@@ -91,14 +87,13 @@ const recordsDir = path.join(ROOT, 'records');
 if (!fs.existsSync(recordsDir)) fs.mkdirSync(recordsDir, { recursive: true });
 
 // Load progress
-let progress = { scannedSids: [], fetchedUUIDs: [], records: EMPTY_RECORDS() };
+let progress = { scannedSids: [], records: EMPTY_RECORDS() };
 if (!FORCE && fs.existsSync(PROGRESS_FILE)) {
   try { progress = readJson(PROGRESS_FILE); } catch {}
 } else if (FORCE) {
   console.log('  --force: clearing progress\n');
 }
 const scannedSids  = new Set(progress.scannedSids  || []);
-const fetchedUUIDs = new Set(progress.fetchedUUIDs || []);
 const records      = { ...EMPTY_RECORDS(), ...progress.records };
 for (const key of Object.keys(EMPTY_RECORDS())) {
   if (!Array.isArray(records[key])) records[key] = [];
@@ -205,7 +200,7 @@ for (const sid of sidsToScan) {
 
   if (sinceLastCommit >= GAME_COMMIT_INTERVAL) {
     if (!DRY_RUN) {
-      writeJson(PROGRESS_FILE, { scannedSids: [...scannedSids], fetchedUUIDs: [...fetchedUUIDs], records });
+      writeJson(PROGRESS_FILE, { scannedSids: [...scannedSids], records });
       writeJson(OUT_FILE, records);
       gitCommit(`build-records: phase 1 — ${scannedSids.size}/${sids.length} seasons`,
         ['scripts/.records-progress.json', 'records/all-time.json']);
@@ -227,184 +222,67 @@ const HEADERS_API = {
   'tenant': 'basketball-victoria', 'content-type': 'application/json',
 };
 
-let _cookie = null;
-async function getSession() {
-  if (_cookie) return _cookie;
-  console.log('  Fetching session cookie...');
-  const cookieQueries = [
-    { operationName: 'TenantConfig', variables: {},
-      query: 'query TenantConfig { tenantConfiguration { label } }' },
-    { operationName: 'ProfileSearch', variables: { fullName: 'a' },
-      query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
-  ];
-  let raw = null;
-  for (let attempt = 1; attempt <= 5 && !raw; attempt++) {
-    if (attempt > 1) await delay(attempt * 3000);
-    for (const body of cookieQueries) {
-      const res = await fetch('https://api.playhq.com/graphql', {
-        method: 'POST',
-        headers: { ...HEADERS_API, 'request-id': crypto.randomUUID() },
-        body: JSON.stringify(body),
+
+// ─── Phase 2: player single-game records (local — no API calls) ───────────────
+// Sources leaderboard/all-time.json maxGamePTS / maxGameThreePt entries,
+// then reads player.records for the gameKey to look up game context.
+
+console.log(`\n── Phase 2: Player records (from leaderboard + player files) ──────`);
+
+const LB_PATH = path.join(ROOT, 'leaderboard', 'all-time.json');
+let lbData = null;
+try { lbData = readJson(LB_PATH); } catch {}
+
+if (!lbData) {
+  console.log('  leaderboard/all-time.json not found — skipping playerPTS/playerThreePt');
+  console.log('  Run build-leaderboards.js first.');
+} else {
+  for (const [lbCat, recCat] of [['maxGamePTS', 'playerPTS'], ['maxGameThreePt', 'playerThreePt']]) {
+    const entries = (lbData[lbCat] || []).slice(0, TOP_N * 2); // take extra in case some have no gameKey
+    console.log(`  ${lbCat}: ${entries.length} leaderboard entries to process`);
+
+    for (const entry of entries) {
+      if (records[recCat].length >= TOP_N) break;
+
+      const uuid       = entry.uuid;
+      const playerFile = path.join(ROOT, 'players', uuid.slice(0, 2), `${uuid}.json`);
+      let rec = null;
+      try {
+        const p = readJson(playerFile);
+        rec = p.records?.[lbCat] || null;
+      } catch {}
+
+      const v       = rec?.v ?? entry.v;
+      const gameKey = rec?.gameKey || null;
+      const sid     = rec?.sid    || null;
+      const info    = gameKey ? gameLookup.get(gameKey) : null;
+
+      // Determine opponent from gameLookup if we have the gameKey
+      let vs = '', score = '', date = '';
+      if (info) {
+        date  = info.d || '';
+        score = `${info.hs ?? '?'}–${info.as ?? '?'}`;
+        // Work out which side the player is on using entry data
+        // We don't have tid here so use hn/an as best guess
+        vs    = info.an || info.hn || '';
+      }
+
+      insertTop(records[recCat], {
+        v, uuid,
+        name:    entry.name || uuid,
+        gameKey: gameKey || undefined,
+        sid:     sid     || undefined,
+        date,
+        vs,
+        score,
       });
-      raw = res.headers.get('set-cookie');
-      if (raw) break;
     }
+
+    console.log(`  ${recCat}: ${records[recCat].length} entries`);
   }
-  if (!raw) throw new Error('No Set-Cookie after 5 attempts');
-  // Cookie order is critical: phq_tier first, then phq_session, then phq_sub
-  const parts   = raw.split(',').map(c => c.trim().split(';')[0].trim());
-  const get     = name => parts.find(p => p.startsWith(name + '=')) || null;
-  const tier    = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-  if (!tier || !session || !sub) throw new Error(`Incomplete cookies — got: ${parts.join(' | ')}`);
-  _cookie = `${tier}; ${session}; ${sub}`;
-  console.log('  ✓ Session cookie obtained');
-  return _cookie;
 }
 
-const Q_PROFILE = `
-query ProfileSeasonStatistics($profileID: ID!) {
-  publicProfileStatistics(profileID: $profileID) {
-    seasonStatistics {
-      statistics {
-        season { id }
-        teamStatistics {
-          team { ... on DiscoverTeam { id name } }
-          gradeStatistics {
-            gameStatistics {
-              game { id }
-              statistics { count details { value } }
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
 
-async function fetchPlayerGameRecords(uuid, cookie) {
-  const res = await fetch('https://api.playhq.com/graphql', {
-    method: 'POST',
-    headers: { ...HEADERS_API, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-    body: JSON.stringify({ operationName: 'ProfileSeasonStatistics',
-      variables: { profileID: uuid }, query: Q_PROFILE }),
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (data.errors) return null;
-  const profile = data?.data?.publicProfileStatistics;
-  if (!profile) return null;
-
-  // Find max single-game pts and pt3 across all games
-  let bestPTS = null, bestThreePt = null;
-
-  for (const sEntry of (profile.seasonStatistics || [])) {
-    for (const tEntry of (sEntry.statistics || [])) {
-      const teamName = tEntry.teamStatistics?.[0]?.team?.name || '';
-      for (const team of (tEntry.teamStatistics || [])) {
-        for (const grade of (team.gradeStatistics || [])) {
-          for (const gameStat of (grade.gameStatistics || [])) {
-            const gid = gameStat.game?.id;
-            if (!gid) continue;
-
-            // details is a single object {value}, not an array
-            const stats = gameStat.statistics || [];
-            const findStat = key => stats.find(s => s.details?.value === key)?.count ?? 0;
-            const pts = findStat('TOTAL_SCORE');
-            const pt3 = findStat('3_POINT_SCORE');
-
-            const gameInfo = gameLookup.get(gid);
-            if (!gameInfo) continue;
-            const score  = `${gameInfo.hs ?? '?'}–${gameInfo.as ?? '?'}`;
-
-            // Determine opponent name: compare player's team ID against home/away
-            const playerTid  = team.team?.id || null;
-            const opponentName = playerTid && gameInfo.h && playerTid === gameInfo.h
-              ? (gameInfo.an || '')
-              : playerTid && gameInfo.a && playerTid === gameInfo.a
-                ? (gameInfo.hn || '')
-                : (gameInfo.hn || gameInfo.an || '');  // fallback if team ID not matched
-
-            if (pts > 0 && (!bestPTS || pts > bestPTS.v))
-              bestPTS = { v: pts, gid, sid: gameInfo.sid, date: gameInfo.d,
-                vs: opponentName, score };
-
-            if (pt3 > 0 && (!bestThreePt || pt3 > bestThreePt.v))
-              bestThreePt = { v: pt3, gid, sid: gameInfo.sid, date: gameInfo.d,
-                vs: opponentName, score };
-          }
-        }
-      }
-    }
-  }
-  return { bestPTS, bestThreePt };
-}
-
-// Collect public UUIDs
-const indexDir = path.join(ROOT, 'players', 'indexes');
-const allUUIDs = new Set();
-for (const fname of fs.readdirSync(indexDir).filter(f => f.endsWith('.json'))) {
-  try {
-    const shard = readJson(path.join(indexDir, fname));
-    for (const uuid of Object.keys(shard)) allUUIDs.add(uuid);
-  } catch {}
-}
-
-const toFetch = [...allUUIDs].filter(u => !fetchedUUIDs.has(u));
-console.log(`  ${allUUIDs.size} public players, ${fetchedUUIDs.size} already fetched, ${toFetch.length} remaining`);
-
-let fetched = 0;
-let nulls   = 0;
-sinceLastCommit = 0;
-
-const cookie = await getSession();
-
-for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
-  const batch = toFetch.slice(i, i + CONCURRENCY);
-
-  await Promise.all(batch.map(async uuid => {
-    const result = await fetchPlayerGameRecords(uuid, cookie);
-    fetchedUUIDs.add(uuid);
-    if (!result) { nulls++; return; }
-
-    const { bestPTS, bestThreePt } = result;
-
-    if (bestPTS) {
-      const worst = records.playerPTS.at(-1)?.v ?? 0;
-      if (bestPTS.v > worst || records.playerPTS.length < TOP_N) {
-        const playerFile = path.join(ROOT, 'players', uuid.slice(0,2), `${uuid}.json`);
-        let name = uuid;
-        try { name = readJson(playerFile).name || uuid; } catch {}
-        insertTop(records.playerPTS, { ...bestPTS, uuid, name });
-      }
-    }
-
-    if (bestThreePt) {
-      const worst = records.playerThreePt.at(-1)?.v ?? 0;
-      if (bestThreePt.v > worst || records.playerThreePt.length < TOP_N) {
-        const playerFile = path.join(ROOT, 'players', uuid.slice(0,2), `${uuid}.json`);
-        let name = uuid;
-        try { name = readJson(playerFile).name || uuid; } catch {}
-        insertTop(records.playerThreePt, { ...bestThreePt, uuid, name });
-      }
-    }
-  }));
-
-  fetched += batch.length;
-  sinceLastCommit += batch.length;
-
-  if (fetched % 2500 === 0 || i + CONCURRENCY >= toFetch.length)
-    console.log(`  ${fetched}/${toFetch.length} fetched — playerPTS leader: ${records.playerPTS[0]?.v ?? 0} pts by ${records.playerPTS[0]?.name ?? '?'}`);
-
-  if (sinceLastCommit >= PLAYER_COMMIT_INTERVAL && !DRY_RUN) {
-    writeJson(PROGRESS_FILE, { scannedSids: [...scannedSids], fetchedUUIDs: [...fetchedUUIDs], records });
-    writeJson(OUT_FILE, records);
-    gitCommit(`build-records: phase 2 — ${fetched}/${toFetch.length} players fetched`,
-      ['scripts/.records-progress.json', 'records/all-time.json']);
-    sinceLastCommit = 0;
-  }
-
-  if (i + CONCURRENCY < toFetch.length) await delay(BATCH_DELAY_MS);
-}
 
 // Assign ranks and write final output
 for (const key of Object.keys(records)) {
