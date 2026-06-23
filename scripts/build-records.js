@@ -212,10 +212,6 @@ for (const sid of sidsToScan) {
 
 console.log(`  Phase 1 complete: ${gamesChecked} games checked, ${boxScoreGames} with box scores`);
 
-// ─── Phase 2: publicProfileStatistics for player records ─────────────────────
-
-console.log('\n── Phase 2: Player records via API (all public players, all games) ──');
-
 const HEADERS_API = {
   'accept': '*/*', 'origin': 'https://www.playhq.com',
   'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
