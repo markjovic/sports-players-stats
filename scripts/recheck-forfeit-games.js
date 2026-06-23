@@ -39,7 +39,8 @@ function doFetch(bodyObj, extraHeaders) {
                    'content-length': Buffer.byteLength(body) };
     const req  = https.request(
       { hostname: 'api.playhq.com', path: '/graphql', method: 'POST',
-        headers: h, agent: new https.Agent({ keepAlive: false }) },
+        headers: h, agent: new https.Agent({ keepAlive: false }),
+        timeout: 15000 },
       res => {
         const chunks = [];
         res.on('data', c => chunks.push(c));
@@ -51,6 +52,7 @@ function doFetch(bodyObj, extraHeaders) {
         res.on('error', reject);
       }
     );
+    req.on('timeout', () => req.destroy(new Error('request timeout')));
     req.on('error', reject);
     req.write(body);
     req.end();
