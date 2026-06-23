@@ -17,9 +17,9 @@ const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
 
-const ROOT       = path.join(__dirname, '..');
-const DRY_RUN    = process.argv.includes('--dry-run');
-const GAMES_DIR  = path.join(ROOT, 'games', 'bv');
+const ROOT         = path.join(__dirname, '..');
+const DRY_RUN      = process.argv.includes('--dry-run');
+const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
 const FORFEIT_FILE = path.join(ROOT, 'forfeit-games.json');
 const REQUEST_DELAY  = 200;
 const COMMIT_EVERY   = 500;
@@ -106,6 +106,21 @@ async function gitCommit(msg) {
   } catch (e) { console.error(`  git error: ${e.message}`); }
 }
 
+// Read a game file from disk (no caching)
+function readGameFile(sid) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${sid}.json`), 'utf8'));
+  } catch (_) {
+    return null;
+  }
+}
+
+// Write a game file to disk immediately
+function writeGameFile(sid, gf) {
+  if (DRY_RUN) return;
+  fs.writeFileSync(path.join(GAMES_DIR, `${sid}.json`), JSON.stringify(gf));
+}
+
 async function main() {
   console.log('recheck-forfeit-games.js');
   if (DRY_RUN) console.log('  ⚠  DRY RUN');
@@ -121,10 +136,10 @@ async function main() {
     console.log('No existing forfeit-games.json — run build-forfeit-index.js first');
   }
 
-  // Find candidate games: 20-0 or 0-20, not already forfeit-flagged
+  // Find candidate games: 20-0 or 0-20, not already forfeit-flagged.
+  // Only store (gameId, sid) pairs — do NOT cache file contents.
   console.log('\nScanning game files for 20-0 / 0-20 candidates…');
   const candidates = [];  // { gameId, sid }
-  const gameFileCache = new Map();  // sid → gf (for writing back)
 
   const gameFiles = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort();
   let scanned = 0;
@@ -136,14 +151,14 @@ async function main() {
     catch (_) { continue; }
     scanned++;
     for (const [gameId, game] of Object.entries(gf.games || {})) {
-      if (game.forfeit) continue;            // already flagged
-      if (forfeitIds.has(gameId)) continue;  // already in index
+      if (game.forfeit) continue;
+      if (forfeitIds.has(gameId)) continue;
       const hs = game.hs, as_ = game.as;
       if ((hs === 20 && as_ === 0) || (hs === 0 && as_ === 20)) {
         candidates.push({ gameId, sid });
-        if (!gameFileCache.has(sid)) gameFileCache.set(sid, gf);
       }
     }
+    // Release the parsed object immediately — do not hold a reference
     if (scanned % 500 === 0) process.stdout.write(`  ${scanned}/${gameFiles.length}\r`);
   }
 
@@ -159,7 +174,6 @@ async function main() {
 
   let probed = 0, confirmed = 0, notForfeit = 0, nullReturned = 0, errors = 0;
   let sinceCommit = 0;
-  const newlyConfirmed = [];
 
   for (const { gameId, sid } of candidates) {
     if (probed > 0 && probed % 30 === 0) {
@@ -188,10 +202,9 @@ async function main() {
       if (isForfeit) {
         confirmed++;
         forfeitIds.add(gameId);
-        newlyConfirmed.push(gameId);
 
-        // Update game entry in cache
-        const gf = gameFileCache.get(sid);
+        // Read → patch → write immediately; no in-memory cache
+        const gf = readGameFile(sid);
         if (gf?.games?.[gameId]) {
           const winnerValue = result.result?.winner?.value;
           const game = gf.games[gameId];
@@ -199,8 +212,10 @@ async function main() {
           const homeId = game.h || game.t1 || null;
           const awayId = game.a || game.t2 || null;
           game.fo = winnerValue === 'HOME' ? homeId : winnerValue === 'AWAY' ? awayId : null;
-          sinceCommit++;
+          writeGameFile(sid, gf);
         }
+
+        sinceCommit++;
       } else {
         notForfeit++;
       }
@@ -210,17 +225,7 @@ async function main() {
       process.stdout.write(`  ${probed}/${candidates.length}  confirmed: ${confirmed}\r`);
 
     if (sinceCommit >= COMMIT_EVERY) {
-      // Write updated game files
-      const dirtySids = new Set(newlyConfirmed.slice(-COMMIT_EVERY).map(id => {
-        const c = candidates.find(c => c.gameId === id);
-        return c?.sid;
-      }).filter(Boolean));
-
       if (!DRY_RUN) {
-        for (const s of dirtySids) {
-          const gf = gameFileCache.get(s);
-          if (gf) fs.writeFileSync(path.join(GAMES_DIR, `${s}.json`), JSON.stringify(gf));
-        }
         fs.writeFileSync(FORFEIT_FILE, JSON.stringify([...forfeitIds].sort()));
       }
       await gitCommit(`recheck-forfeit-games: ${confirmed} forfeits confirmed (${probed}/${candidates.length} probed)`);
@@ -234,12 +239,6 @@ async function main() {
 
   // Final write
   if (!DRY_RUN) {
-    // Write all dirty game files
-    const processedSids = new Set(newlyConfirmed.map(id => candidates.find(c => c.gameId === id)?.sid).filter(Boolean));
-    for (const s of processedSids) {
-      const gf = gameFileCache.get(s);
-      if (gf) fs.writeFileSync(path.join(GAMES_DIR, `${s}.json`), JSON.stringify(gf));
-    }
     fs.writeFileSync(FORFEIT_FILE, JSON.stringify([...forfeitIds].sort()));
   }
   await gitCommit(`recheck-forfeit-games: complete — ${confirmed} new forfeits confirmed from ${candidates.length} candidates`);
