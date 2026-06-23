@@ -310,5 +310,5 @@ console.log(`  Team 3PT        : ${records.teamThreePt[0]?.v ?? 0} — ${records
 console.log(`  Highest combined: ${records.highestCombined[0]?.v ?? 0} [all games]`);
 console.log(`  Largest margin  : ${records.largestMargin[0]?.v ?? 0} [all games]`);
 console.log(`  Closest game    : ${records.closestGame[0]?.score} ratio ${records.closestGame[0]?.ratio} [all games]`);
-console.log(`  Games checked   : ${gamesChecked} | Box score games: ${boxScoreGames} | Players fetched: ${fetched}`);
+console.log(`  Games checked   : ${gamesChecked} | Box score games: ${boxScoreGames}`);
 console.log(`  Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
