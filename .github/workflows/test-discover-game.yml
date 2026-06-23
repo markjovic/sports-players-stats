@@ -1,0 +1,26 @@
+# .github/workflows/test-discover-game.yml
+name: Test Discover Game
+
+on:
+  workflow_dispatch:
+    inputs:
+      game_id:
+        description: 'Game ID to query (e.g. 10591e07)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Query discoverGame
+        run: node scripts/test-discover-game.js ${{ inputs.game_id }}

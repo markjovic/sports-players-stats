@@ -1,0 +1,44 @@
+# .github/workflows/build-team-stats.yml
+name: Build Team Stats
+
+on:
+  workflow_dispatch:
+    inputs:
+      active_only:
+        description: 'Active seasons only'
+        required: false
+        default: true
+        type: boolean
+      season:
+        description: 'Single season ID (leave blank for all/active)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build team stats
+        run: |
+          ARGS=""
+          if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
+          if [ -n "${{ inputs.season }}" ];             then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ];      then ARGS="$ARGS --dry-run"; fi
+          node scripts/build-team-stats.js $ARGS
