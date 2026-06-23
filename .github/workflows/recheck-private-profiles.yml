@@ -1,0 +1,42 @@
+# .github/workflows/recheck-private-profiles.yml
+name: Recheck Private Profiles
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'   # 12:00 AEST on the 1st of each month
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: 'Single shard to process (e.g. 06)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  recheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Recheck private profiles
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.shard }}"   ]; then ARGS="$ARGS --shard=${{ inputs.shard }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/recheck-private-profiles.js $ARGS
