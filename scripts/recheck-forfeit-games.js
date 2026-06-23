@@ -161,7 +161,7 @@ async function main() {
       }
     }
     // Release the parsed object immediately — do not hold a reference
-    if (scanned % 500 === 0) process.stdout.write(`  ${scanned}/${gameFiles.length}\r`);
+    if (scanned % 500 === 0) console.log(`  ${scanned}/${gameFiles.length}`);
   }
 
   console.log(`\n  Seasons scanned:  ${scanned}`);
@@ -224,7 +224,7 @@ async function main() {
     }
 
     if (probed % 100 === 0)
-      process.stdout.write(`  ${probed}/${candidates.length}  confirmed: ${confirmed}\r`);
+      console.log(`  ${probed}/${candidates.length}  confirmed: ${confirmed}`);
 
     if (sinceCommit >= COMMIT_EVERY) {
       if (!DRY_RUN) {
