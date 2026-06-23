@@ -1,0 +1,206 @@
+# .github/workflows/nightly-crawl.yml
+name: Nightly Crawl
+
+on:
+  schedule:
+    - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
+  workflow_dispatch:
+    inputs:
+      rounds_back:
+        description: 'Rounds to look back (default 2; use 4-6 for backfill)'
+        required: false
+        default: '2'
+        type: string
+      season:
+        description: 'Single season ID (leave blank for all active)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+      consecutive_zeros:
+        description: 'Consecutive zero-progress runs — do not set manually'
+        required: false
+        default: '0'
+        type: string
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    outputs:
+      games_remaining: ${{ steps.status.outputs.games_remaining }}
+      games_processed: ${{ steps.status.outputs.games_processed }}
+      new_players:     ${{ steps.status.outputs.new_players }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run nightly crawl
+        run: |
+          ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/nightly-crawl.js $ARGS
+
+      - name: Read status
+        id: status
+        if: always()
+        run: |
+          if [ -f .nightly-status.json ]; then
+            remaining=$(node -e "console.log(require('./.nightly-status.json').gamesRemaining || 0)")
+            processed=$(node -e "console.log(require('./.nightly-status.json').gamesProcessed || 0)")
+            stubbed=$(node -e "console.log(require('./.nightly-status.json').stubbed || 0)")
+          else
+            remaining=0
+            processed=0
+            stubbed=0
+          fi
+          echo "games_remaining=$remaining" >> $GITHUB_OUTPUT
+          echo "games_processed=$processed" >> $GITHUB_OUTPUT
+          echo "new_players=$stubbed" >> $GITHUB_OUTPUT
+          echo "Remaining: $remaining  Processed: $processed  New players: $stubbed"
+
+  leaderboards:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ inputs.dry_run != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-leaderboards.js --active-only
+
+  search-index:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ inputs.dry_run != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-search-index.js
+
+  team-index:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ inputs.dry_run != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/update-team-index.js
+
+  venue-lookup:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ inputs.dry_run != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: |
+          ARGS=""
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          node scripts/update-venue-lookup.js $ARGS
+
+  venue-indexes:
+    needs: venue-lookup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ inputs.dry_run != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-venue-indexes.js
+
+  profile-stats-new-players:
+    needs: crawl
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      inputs.dry_run != 'true' &&
+      needs.crawl.outputs.new_players != '0'
+    steps:
+      - name: Trigger profile stats matrix for new players
+        run: |
+          echo "New players stubbed: ${{ needs.crawl.outputs.new_players }} — triggering profile stats matrix"
+          gh workflow run fetch-profile-stats-matrix.yml \
+            --repo "${{ github.repository }}" \
+            --field "run_number=1" \
+            --field "consecutive_zeros=0"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
+  retrigger:
+    needs: crawl
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      inputs.dry_run != 'true' &&
+      needs.crawl.outputs.games_remaining != '0'
+    steps:
+      - name: Check consecutive zeros and retrigger
+        run: |
+          remaining=${{ needs.crawl.outputs.games_remaining }}
+          processed=${{ needs.crawl.outputs.games_processed }}
+          zeros=${{ inputs.consecutive_zeros || '0' }}
+          if [ "$processed" = "0" ]; then new_zeros=$((zeros + 1)); else new_zeros=0; fi
+          if [ "$new_zeros" -ge 3 ]; then
+            echo "🛑 Zero progress for 3 consecutive runs with $remaining games remaining."
+            exit 1
+          fi
+          echo "↺ $remaining games remaining — re-triggering (consecutive zeros: $new_zeros)"
+          gh workflow run nightly-crawl.yml \
+            --repo "${{ github.repository }}" \
+            --field "rounds_back=${{ inputs.rounds_back || '2' }}" \
+            --field "consecutive_zeros=${new_zeros}"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}

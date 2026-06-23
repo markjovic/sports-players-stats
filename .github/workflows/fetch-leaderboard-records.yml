@@ -1,0 +1,41 @@
+# .github/workflows/fetch-leaderboard-records.yml
+name: Fetch Leaderboard Records
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Re-fetch all leaderboard players even if gameKey already present'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch leaderboard player records
+        run: |
+          ARGS=""
+          if [ "${{ inputs.force }}"   = "true" ]; then ARGS="$ARGS --force"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/fetch-leaderboard-records.js $ARGS

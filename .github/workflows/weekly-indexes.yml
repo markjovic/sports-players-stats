@@ -1,0 +1,68 @@
+# .github/workflows/weekly-indexes.yml
+name: Weekly Indexes
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'   # 12:00 AEST Sunday (02:00 UTC Sunday)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  team-stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build team stats
+        run: |
+          ARGS="--active-only"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/build-team-stats.js $ARGS
+
+  player-games:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build player games index
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/build-player-games.js $ARGS
+      - name: Final push (safety net)
+        if: always()
+        run: |
+          git add players/ scripts/.build-player-games-progress.json || true
+          git diff --staged --quiet || git commit -m "build-player-games: safety-net final commit"
+          git pull --rebase=false --no-edit -X ours || true
+          git push || true
