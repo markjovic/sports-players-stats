@@ -206,8 +206,17 @@ const Q_FIXTURE_BY_ROUND = `query discoverFixtureByRound($roundID: ID!) {
         ... on ProvisionalTeam { name }
       }
       result {
-        home { statistics { count type { value } } gameOutcomeDescription }
-        away { statistics { count type { value } } }
+        outcome { name value }
+        winner  { name value }
+        home {
+          outcome { name value }
+          statistics { count type { value } }
+          gameOutcomeDescription
+        }
+        away {
+          outcome { name value }
+          statistics { count type { value } }
+        }
       }
       allocation {
         time
@@ -370,14 +379,15 @@ function writePlayerIndex(shard, data) {
 
 // ─── Apply round fixtures to game cache ───────────────────────────────────────
 //
-// Returns: { needsSpectator: [{gameId, seasonId}], totalGames: N }
+// Returns: { needsSpectator: [{gameId, seasonId}], forfeitGameIds: [gameId], totalGames: N }
 // needsSpectator = games that are FINAL and have no spc flag yet.
 // This covers both newly-scored games AND games that went FINAL in a previous
 // run that timed out before spectator processing completed.
 
 function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
   const needsSpectator = [];
-  if (!roundData?.discoverFixtureByRound) return { needsSpectator, totalGames: 0 };
+  const forfeitGameIds  = [];
+  if (!roundData?.discoverFixtureByRound) return { needsSpectator, forfeitGameIds, totalGames: 0 };
   let totalGames = 0;
 
   for (const game of (roundData.discoverFixtureByRound.games || [])) {
@@ -432,21 +442,33 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
       ...(time        ? { t:   time }        : {}),
     };
 
+    // Detect forfeit from API outcome value
+    const outcomeValue = game.result?.outcome?.value || '';
+    const isForfeit    = outcomeValue.includes('FORFEIT');
+    if (isForfeit) {
+      entry.forfeit = true;
+      const winnerSide = game.result?.winner?.value;
+      entry.fo = winnerSide === 'HOME' ? (homeTeam?.id || null)
+               : winnerSide === 'AWAY' ? (awayTeam?.id || null)
+               : null;
+      forfeitGameIds.push(game.id);
+    }
+
     const changed = JSON.stringify(entry) !== JSON.stringify(existing || {});
     if (changed && !DRY_RUN) {
       gf.games[game.id] = entry;
       markGameDirty(seasonId);
     }
 
-    // Queue for spectator if FINAL and not yet processed.
+    // Queue for spectator if FINAL, not yet processed, and not a forfeit.
     // Covers both: games newly scored this run, and games that timed out
     // before spectator processing in a previous run.
-    if (status === 'FINAL' && !existing?.spc) {
+    if (status === 'FINAL' && !existing?.spc && !isForfeit) {
       needsSpectator.push({ gameId: game.id, seasonId });
     }
   }
 
-  return { needsSpectator, totalGames };
+  return { needsSpectator, forfeitGameIds, totalGames };
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -562,13 +584,15 @@ async function main() {
   let seasonsSinceCommit = 0;
   const processedSeasons  = new Set();
   const allNeedsSpectator = [];  // { gameId, seasonId } — deduped after phase
+  const allNewForfeitIds  = [];  // new forfeit game IDs detected this run
 
   const p2Tasks = roundQueue.map(({ roundId, roundName, grade }) => async () => {
     const data = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: roundId });
-    const { needsSpectator, totalGames } = applyRoundFixtures(
+    const { needsSpectator, forfeitGameIds, totalGames } = applyRoundFixtures(
       data, grade.gradeId, grade.gradeName, roundName
     );
     allNeedsSpectator.push(...needsSpectator);
+    allNewForfeitIds.push(...forfeitGameIds);
     p2Done++;
 
     // Count seasons touched for periodic commit — track unique seasons per commit window
@@ -593,6 +617,16 @@ async function main() {
 
   await runPool(p2Tasks, CONCURRENCY_FIXTURES);
   console.log(`  ${roundQueue.length}/${roundQueue.length} rounds done`);
+
+  // Update forfeit-games.json with any newly detected forfeits
+  if (allNewForfeitIds.length > 0 && !DRY_RUN) {
+    const forfeitFile = path.join(ROOT, 'forfeit-games.json');
+    let existing = [];
+    try { existing = JSON.parse(fs.readFileSync(forfeitFile, 'utf8')); } catch (_) {}
+    const merged = [...new Set([...existing, ...allNewForfeitIds])].sort();
+    fs.writeFileSync(forfeitFile, JSON.stringify(merged));
+    console.log(`  Updated forfeit-games.json: +${allNewForfeitIds.length} new (${merged.length} total)`);
+  }
 
   // Deduplicate — same game may appear in current + previous round fetches
   const seenGameIds     = new Set();

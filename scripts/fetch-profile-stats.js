@@ -45,6 +45,15 @@ if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const API_URL     = 'https://api.playhq.com/graphql';
+
+// Load forfeit games index — skip these when computing per-game max stats
+const FORFEIT_FILE   = path.join(ROOT, 'forfeit-games.json');
+const forfeitGameIds = new Set();
+try {
+  const ids = JSON.parse(fs.readFileSync(FORFEIT_FILE, 'utf8'));
+  for (const id of (Array.isArray(ids) ? ids : [])) forfeitGameIds.add(id);
+  console.log(`  Forfeit index loaded: ${forfeitGameIds.size} games`);
+} catch (_) {}
 const CONCURRENCY  = 1;    // ProfileSeasonStatistics is expensive — one at a time
 const REQUEST_DELAY = 800; // ms between requests — avoids overwhelming PlayHQ backend
 const RETRY_BASE  = 2000; // ms, multiplied by attempt number
@@ -186,6 +195,7 @@ function parseProfileStats(data) {
           for (const gameStat of (gradeStat.gameStatistics || [])) {
             const stats   = gameStat.statistics || [];
             const gameKey = gameStat.game?.id || null;
+            if (gameKey && forfeitGameIds.has(gameKey)) continue;  // skip forfeit games
             const fouls   = statValue(stats, 'TOTAL_FOULS');
             const pts     = statValue(stats, 'TOTAL_SCORE');
             const three   = statValue(stats, '3_POINT_SCORE');

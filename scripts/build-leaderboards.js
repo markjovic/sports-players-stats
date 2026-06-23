@@ -133,6 +133,17 @@ const sidToOrg = new Map(
 );
 console.log(`  ${Object.keys(sportsIndex.seasons).length} total seasons, ${activeSids.size} active`);
 
+// Load forfeit games — used to exclude contaminated maxGamePTS/maxGameThreePt entries
+const FORFEIT_FILE   = path.join(ROOT, 'forfeit-games.json');
+const forfeitGameIds = new Set();
+try {
+  const ids = readJson(FORFEIT_FILE);
+  for (const id of (Array.isArray(ids) ? ids : [])) forfeitGameIds.add(id);
+  console.log(`  ${forfeitGameIds.size} forfeit games loaded`);
+} catch (_) {
+  console.log('  forfeit-games.json not found — maxGamePTS/maxGameThreePt unfiltered');
+}
+
 const targetSids = ACTIVE_ONLY ? activeSids : null; // null = all seasons
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -192,11 +203,17 @@ function pushAllTime(buckets, player) {
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
-  // Single-game records — sourced from sports.Basketball.maxGamePTS / maxGameThreePt
-  if (typeof bball.maxGamePTS     === 'number' && bball.maxGamePTS     > 0)
-    buckets.maxGamePTS    .push({ ...base, v: bball.maxGamePTS });
-  if (typeof bball.maxGameThreePt === 'number' && bball.maxGameThreePt > 0)
-    buckets.maxGameThreePt.push({ ...base, v: bball.maxGameThreePt });
+  // Single-game records — skip if gameKey resolves to a known forfeit game
+  if (typeof bball.maxGamePTS === 'number' && bball.maxGamePTS > 0) {
+    const gameKey = player.records?.maxGamePTS?.gameKey;
+    if (!gameKey || !forfeitGameIds.has(gameKey))
+      buckets.maxGamePTS.push({ ...base, v: bball.maxGamePTS });
+  }
+  if (typeof bball.maxGameThreePt === 'number' && bball.maxGameThreePt > 0) {
+    const gameKey = player.records?.maxGameThreePt?.gameKey;
+    if (!gameKey || !forfeitGameIds.has(gameKey))
+      buckets.maxGameThreePt.push({ ...base, v: bball.maxGameThreePt });
+  }
 }
 
 function pushSeason(buckets, player, sid) {
