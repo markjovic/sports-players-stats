@@ -251,8 +251,12 @@ async function getSession() {
     }
   }
   if (!raw) throw new Error('No Set-Cookie after 5 attempts');
-  const session = raw.match(/phq_session=([^;]+)/)[1];
-  _cookie = `phq_session=${session}`;
+  // Cookie order is critical: phq_tier first, then phq_session, then phq_sub
+  const parts   = raw.split(',').map(c => c.trim().split(';')[0].trim());
+  const get     = name => parts.find(p => p.startsWith(name + '=')) || null;
+  const tier    = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+  if (!tier || !session || !sub) throw new Error(`Incomplete cookies — got: ${parts.join(' | ')}`);
+  _cookie = `${tier}; ${session}; ${sub}`;
   console.log('  ✓ Session cookie obtained');
   return _cookie;
 }
@@ -302,27 +306,31 @@ async function fetchPlayerGameRecords(uuid, cookie) {
             const gid = gameStat.game?.id;
             if (!gid) continue;
 
-            let pts = 0, pt3 = 0;
-            for (const stat of (gameStat.statistics || [])) {
-              for (const detail of (Array.isArray(stat.details) ? stat.details : (stat.details ? [stat.details] : []))) {
-                if (detail.value === 'POINTS' || detail.value === 'TOTAL_SCORE') pts = stat.count ?? 0;
-                else if (detail.value === 'THREE_POINT_FIELD_GOAL') pt3 = (pt3 || 0) + (stat.count ?? 0);
-                else if (detail.value === 'TWO_POINT_FIELD_GOAL') {}
-                else if (detail.value === 'FREE_THROW') {}
-              }
-            }
+            // details is a single object {value}, not an array
+            const stats = gameStat.statistics || [];
+            const findStat = key => stats.find(s => s.details?.value === key)?.count ?? 0;
+            const pts = findStat('TOTAL_SCORE');
+            const pt3 = findStat('3_POINT_SCORE');
 
             const gameInfo = gameLookup.get(gid);
             if (!gameInfo) continue;
             const score  = `${gameInfo.hs ?? '?'}–${gameInfo.as ?? '?'}`;
 
+            // Determine opponent name: compare player's team ID against home/away
+            const playerTid  = team.team?.id || null;
+            const opponentName = playerTid && gameInfo.h && playerTid === gameInfo.h
+              ? (gameInfo.an || '')
+              : playerTid && gameInfo.a && playerTid === gameInfo.a
+                ? (gameInfo.hn || '')
+                : (gameInfo.hn || gameInfo.an || '');  // fallback if team ID not matched
+
             if (pts > 0 && (!bestPTS || pts > bestPTS.v))
               bestPTS = { v: pts, gid, sid: gameInfo.sid, date: gameInfo.d,
-                vs: teamName, score };
+                vs: opponentName, score };
 
             if (pt3 > 0 && (!bestThreePt || pt3 > bestThreePt.v))
               bestThreePt = { v: pt3, gid, sid: gameInfo.sid, date: gameInfo.d,
-                vs: teamName, score };
+                vs: opponentName, score };
           }
         }
       }
