@@ -18,7 +18,9 @@ Player-centric scraper and database for PlayHQ basketball competitions. Builds a
 | Venue coverage | 96.1% |
 | Search shards | 595 files / 595,879 unique keys |
 | Migration | ✅ Complete (Phases 1–3 verified 25/25) |
-| Next | Nightly crawl workflow → StatTrack HTML PWA |
+| StatTrack | ✅ Beta 0.33 live at `markjovic.github.io/stattrack` |
+| Forfeit games indexed | 1,984 (in `forfeit-games.json`) |
+| Nightly crawl | ✅ Built and ready to enable |
 
 **Game classification:**
 
@@ -42,6 +44,7 @@ sports-players-stats/
 ├── team-index.json                # Team search by season name (comp + grade per entry)
 ├── venue-index.json               # Venue search list (532 venues)
 ├── season-venue-index.json        # { seasonId: [venueId, ...] } (1,919 seasons)
+├── forfeit-games.json             # sorted array of known forfeit game IDs
 ├── scripts/                       # All pipeline and utility scripts
 │   ├── db-report.js               # Database state report
 │   ├── fetch-playhq.js            # Full player crawl
@@ -60,6 +63,8 @@ sports-players-stats/
 │   ├── migrate-phase2.js          ✅ complete
 │   ├── migrate-phase3.js          ✅ complete
 │   └── ...
+├── records/
+│   └── all-time.json              # single-game records (playerPTS, teamPTS, etc.)
 ├── search/players/{aa-zz}.json    # 595 player search shards
 ├── team-stats/bv/{seasonId}.json  # Team rosters + fixtures (2,792 files)
 ├── leaderboard/
@@ -119,7 +124,8 @@ Post-migration structure — `playerGames` deleted, `p` array and `gid`/`gn` add
       "vid": "e5970e55-...", "vn": "The Rings (Ringwood)", "ct": "Court 2", "t": "10:15",
       "url": "https://www.playhq.com/...",
       "gid": "5afff92b", "gn": "Boys Under 14 D3",
-      "p": [{"id": "uuid1", "n": "Sam Burdan"}, {"id": "uuid2", "n": "Player #3253b50e81"}]
+      "p": [{"id": "uuid1", "n": "Sam Burdan"}, {"id": "uuid2", "n": "Player #3253b50e81"}],
+      "spc": 1
     }
   }
 }
@@ -299,24 +305,35 @@ Workflows reference scripts as `node scripts/filename.js`.
 
 | Script | Purpose | Status |
 |--------|---------|--------|
-| `db-report.js` | Full database + migration verification | Active |
-| `fetch-playhq.js` | Full player crawl | Annual |
-| `classify-games.js` | Three-step classification sweep | Run as needed |
-| `discover-fixtures.js` | Fixture/venue via discoverTeamFixture | Nightly (active seasons) |
-| `augment-venue-lookup.js` | Add sid/hid/aid/comp/grade to venue game entries | Complete ✅ |
-| `build-venue-indexes.js` | Generate dates.json, date-venue-index, season-venue-index | Complete ✅ |
+| **Nightly / Automated** | | |
+| `nightly-crawl.js` | Grade rounds → fixture fetch → spectator → player records → new stubs | Nightly 01:00 AEST |
+| `build-leaderboards.js` | Leaderboard files (full or --active-only) | After nightly crawl |
+| `build-search-index.js` | Rebuild player search shards | After nightly crawl |
+| `update-team-index.js` | Add new teams to team-index.json | After nightly crawl |
+| `update-venue-lookup.js` | Add venue date files for scored games | After nightly crawl |
+| `build-venue-indexes.js` | dates.json, date-venue-index, season-venue-index | After venue lookup |
+| `build-team-stats.js` | Team roster + fixture files (--active-only) | Weekly Sunday |
+| `build-player-games.js` | Player games[] arrays for opposition view | Weekly Sunday |
+| `recheck-private-profiles.js` | Re-probe private/stale active players | Monthly 1st |
+| **Data repair** | | |
+| `fetch-profile-stats.js` | publicProfileStatistics matrix (256 shards) | On demand / new players |
+| `build-forfeit-index.js` | Scan game files, build forfeit-games.json | One-time ✅ |
+| `recheck-forfeit-games.js` | Probe 20-0/0-20 games via discoverGame | One-time |
+| `fix-forfeit-player-records.js` | Clear forfeit-contaminated player records | One-time |
+| `fetch-leaderboard-records.js` | Backfill gameKey for leaderboard players | One-time |
+| `backfill-player-records.js` | Backfill records from hp/ap (between seasons) | Between seasons |
+| `build-records.js` | records/all-time.json single-game records | On demand |
+| **One-time augmentation (complete)** | | |
+| `augment-venue-lookup.js` | Add sid/hid/aid/comp/grade to venue entries | Complete ✅ |
 | `augment-team-index.js` | Add comp/grade to team-index.json | Complete ✅ |
-| `augment-game-grades.js` | Add gid/gn to all game entries | Complete ✅ |
-| `build-leaderboards.js` | Leaderboard files — full or --active-only | Active |
-| `normalise-game-structure.js` | Strip o/on, write t1/t2 | Complete ✅ |
-| `cleanup-flag-collisions.js` | Remove erroneous legacy flags | Monthly |
-| `backfill-missing-players.js` | Crawl missing player detail files | Complete ✅ |
-| `backfill-hidden-games.js` | Three-mode hidden game backfill | Complete ✅ |
-| `migrate-phase1.js` | p arrays, team-index, venue-index, player indexes | Complete ✅ |
+| `augment-game-grades.js` | Add gid/gn to game entries | Complete ✅ |
+| `migrate-phase1.js` | p arrays, indexes, team/venue index | Complete ✅ |
 | `migrate-phase2.js` | team-stats, venue-lookup restructure | Complete ✅ |
 | `migrate-phase3.js` | search/players shards | Complete ✅ |
-| `diagnose-*.js` | Various diagnostic tools | On demand |
-| `find-game-id.js` | Locate a game ID across all season files | On demand |
+| **Diagnostics** | | |
+| `test-discover-game.js` | Test discoverGame for a game ID | On demand |
+| `test-profile-query.js` | Test publicProfileStatistics for a UUID | On demand |
+| `db-report.js` / `db-audit.js` | Database state report | On demand |
 
 ---
 
@@ -361,20 +378,22 @@ See `playhq_api_reference.md` for full query reference.
 
 ## Maintenance schedule
 
-### Nightly (active seasons — `locked: false`)
-1. `discover-fixtures` — `discoverTeamFixture` for all active teams
-2. Three-step classify probe for newly scored/status-changed games
-3. `publicProfileTeams` for active players — UPCOMING registrations
-4. New season discovery
-5. `node scripts/build-leaderboards.js --active-only` — refresh active season leaderboards
+### Nightly (01:00 AEST — `nightly-crawl.yml`)
+1. `nightly-crawl.js` — grade rounds, fixture fetch, spectator box scores, player records, new stubs
+2. Downstream jobs in parallel: leaderboards, search-index, team-index, venue-lookup, venue-indexes
+3. Triggers matrix for new stubs; self-triggers if gamesRemaining > 0
 
-### Monthly
-- Re-probe games where `noProfile`/`noVenue` timestamp > 30 days old
-- Run `cleanup-flag-collisions` to catch new collisions
+### Weekly (Sunday 12:00 AEST — `weekly-indexes.yml`)
+- `build-team-stats.js --active-only`
+- `build-player-games.js`
 
-### Annual
-- Full `publicProfileStatistics` re-crawl for all players
-- Full `build-leaderboards.js` rebuild (no `--active-only`)
+### Monthly (1st of month — `recheck-private-profiles.yml`)
+- Re-probe private-marked players (30-day threshold)
+- Re-probe active-season players whose statsChecked is older than 90 days
+
+### Annual / on demand
+- `build-leaderboards.js` full rebuild (no `--active-only`)
+- `build-records.js --force`
 
 ---
 
