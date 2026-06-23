@@ -212,6 +212,10 @@ for (const sid of sidsToScan) {
 
 console.log(`  Phase 1 complete: ${gamesChecked} games checked, ${boxScoreGames} with box scores`);
 
+// ─── Phase 2: publicProfileStatistics for player records ─────────────────────
+
+console.log('\n── Phase 2: Player records via API (all public players, all games) ──');
+
 const HEADERS_API = {
   'accept': '*/*', 'origin': 'https://www.playhq.com',
   'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
@@ -258,8 +262,6 @@ if (!lbData) {
       if (info) {
         date  = info.d || '';
         score = `${info.hs ?? '?'}–${info.as ?? '?'}`;
-        // Work out which side the player is on using entry data
-        // We don't have tid here so use hn/an as best guess
         vs    = info.an || info.hn || '';
       }
 
@@ -306,5 +308,5 @@ console.log(`  Team 3PT        : ${records.teamThreePt[0]?.v ?? 0} — ${records
 console.log(`  Highest combined: ${records.highestCombined[0]?.v ?? 0} [all games]`);
 console.log(`  Largest margin  : ${records.largestMargin[0]?.v ?? 0} [all games]`);
 console.log(`  Closest game    : ${records.closestGame[0]?.score} ratio ${records.closestGame[0]?.ratio} [all games]`);
-console.log(`  Games checked   : ${gamesChecked} | Box score games: ${boxScoreGames}`);
+console.log(`  Games checked   : ${gamesChecked} | Box score games: ${boxScoreGames} | Players fetched: ${fetched}`);
 console.log(`  Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
