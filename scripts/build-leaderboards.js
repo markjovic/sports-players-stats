@@ -55,12 +55,16 @@ function writeJson(p, data) {
 
 function gitCommit(message, dirs) {
   try {
-    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    // Use git add -A so any locally written files (e.g. all-time.json sitting on disk
+    // before its own commit turn) are staged — prevents "local changes would be
+    // overwritten by merge" error from git pull / git merge
+    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  nothing to commit'); return; }
     execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git pull --rebase=false --no-edit -X ours', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ committed: ${message}`);
   } catch (e) {
     console.error(`  ✗ git error: ${e.message}`);

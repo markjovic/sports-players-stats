@@ -46,12 +46,13 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function gitCommit(message, dirs) {
   try {
-    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) return;
     execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git pull --rebase=false --no-edit -X ours', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ committed: ${message}`);
   } catch (e) {
     console.error(`  ✗ git error: ${e.message}`);
