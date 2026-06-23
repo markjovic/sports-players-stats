@@ -21,7 +21,7 @@ const ROOT         = path.join(__dirname, '..');
 const DRY_RUN      = process.argv.includes('--dry-run');
 const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
 const FORFEIT_FILE = path.join(ROOT, 'forfeit-games.json');
-const REQUEST_DELAY  = 200;
+const REQUEST_DELAY  = 100;
 const COMMIT_EVERY   = 500;
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
