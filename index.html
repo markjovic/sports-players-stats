@@ -266,10 +266,19 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .lb-tab-btn.on{color:var(--accent);font-weight:700}
 .lb-ctrl-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px 12px;border-bottom:1px solid var(--border)}
 .lb-stat{padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;border:1px solid var(--border);color:var(--text2);transition:all 0.12s}
+.lb-alltime-only.hidden{display:none!important}
 .lb-stat.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
 .lb-stat:hover:not(.on){background:var(--elevated);color:var(--text)}
 .lb-row{display:grid;grid-template-columns:2rem 1fr auto;gap:6px;padding:9px 14px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s}
 .lb-row:hover{background:var(--elevated)}
+.rec-card{padding:14px 16px;border-bottom:2px solid var(--border);margin-bottom:8px}
+.rec-title{font-size:0.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.rec-entry{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s}
+.rec-entry:hover{background:var(--elevated)}
+.rec-rank{font-size:0.72rem;color:var(--text3);width:20px;flex-shrink:0;text-align:right}
+.rec-val{font-size:1.1rem;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0;min-width:42px;text-align:right}
+.rec-detail{font-size:0.78rem;color:var(--text2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rec-sub{font-size:0.68rem;color:var(--text3)}
 .lb-rank{font-size:0.72rem;color:var(--text3);font-variant-numeric:tabular-nums}
 .lb-name{font-size:0.88rem;font-weight:500}
 .lb-club{font-size:0.72rem;color:var(--text2);margin-top:1px}
@@ -286,7 +295,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.32</span>
+      <span class="rail-ver">Beta 0.33</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -332,6 +341,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
             <button class="lb-tab-btn" onclick="switchFromTop('teams')">Teams</button>
             <button class="lb-tab-btn" onclick="switchFromTop('venues')">Venues</button>
             <button class="lb-tab-btn on">Top</button>
+            <button class="lb-tab-btn" id="lb-records-btn" onclick="toggleRecords()">Records</button>
           </div>
         </div>
         <div class="lb-ctrl-row">
@@ -341,9 +351,17 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
             <button class="lb-stat" data-stat="ppg">PPG</button>
             <button class="lb-stat" data-stat="gp">GP</button>
             <button class="lb-stat" data-stat="threePt">3PT</button>
-            <button class="lb-stat" data-stat="threesg">3PT/G</button>
+            <button class="lb-stat" data-stat="threePtPG">3PT/G</button>
             <button class="lb-stat" data-stat="fouls">F</button>
-            <button class="lb-stat" data-stat="fpg">F/G</button>
+            <button class="lb-stat" data-stat="foulsPG">F/G</button>
+            <button class="lb-stat" data-stat="foulOuts">FO</button>
+            <button class="lb-stat" data-stat="foulOutsPG">FO/G</button>
+            <button class="lb-stat" data-stat="finals">Finals</button>
+            <button class="lb-stat" data-stat="gfApps">GF Apps</button>
+            <button class="lb-stat" data-stat="gfWins">GF Wins</button>
+            <button class="lb-stat lb-alltime-only" data-stat="finalsPerSeason">Finals/Ssn</button>
+            <button class="lb-stat lb-alltime-only" data-stat="maxGamePTS">Best PTS</button>
+            <button class="lb-stat lb-alltime-only" data-stat="maxGameThreePt">Best 3PT</button>
           </div>
           <div id="lb-mingp-wrap" class="hidden" style="display:flex;align-items:center;gap:6px">
             <span style="font-size:0.75rem;color:var(--text2);white-space:nowrap">Min GP</span>
@@ -352,14 +370,15 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
         </div>
         <div id="lb-season-filters" class="lb-ctrl-row">
           <select id="lb-org" class="sselect" style="flex:1;min-width:120px;font-size:0.75rem"><option value="">All orgs</option></select>
-          <select id="lb-comp" class="sselect" style="flex:1;min-width:120px;font-size:0.75rem"><option value="">All comps</option></select>
+          <select id="lb-comp" class="sselect lb-per-season" style="flex:1;min-width:120px;font-size:0.75rem"><option value="">All comps</option></select>
           <select id="lb-age" class="sselect" style="flex:0 0 auto;font-size:0.75rem"><option value="">All ages</option></select>
-          <select id="lb-grade" class="sselect" style="flex:1;min-width:100px;font-size:0.75rem"><option value="">All grades</option></select>
+          <select id="lb-grade" class="sselect lb-per-season" style="flex:1;min-width:100px;font-size:0.75rem"><option value="">All grades</option></select>
           <select id="lb-gender" class="sselect" style="flex:0 0 auto;font-size:0.75rem"><option value="">All</option></select>
           <button class="rbtn" style="margin-left:0;opacity:1;font-size:0.72rem" onclick="resetLB()">✕ Reset</button>
         </div>
       </div>
       <div id="lb-results"></div>
+      <div id="lb-records-view" class="hidden"></div>
     </div>
   </div>
 
@@ -617,6 +636,70 @@ function switchFromTop(tab){
   switchTab(tab);
   showV('view-home');
 }
+function toggleRecords(){
+  const rv=document.getElementById('lb-records-view');
+  const lr=document.getElementById('lb-results');
+  const hdr=document.getElementById('lb-header');
+  const btn=document.getElementById('lb-records-btn');
+  const showing=!rv.classList.contains('hidden');
+  rv.classList.toggle('hidden',showing);
+  lr.classList.toggle('hidden',!showing);
+  if(hdr)hdr.querySelectorAll('.lb-ctrl-row').forEach(r=>r.classList.toggle('hidden',!showing));
+  btn.classList.toggle('on',!showing);
+  if(!showing&&!S.records)loadRecords();
+}
+async function loadRecords(){
+  const rv=document.getElementById('lb-records-view');
+  rv.innerHTML='<div class="load-row">Loading records…</div>';
+  S.records=await gj(BASE+'/records/all-time.json');
+  if(!S.records){rv.innerHTML='<div class="empty">Records not available yet.</div>';return;}
+  renderRecords();
+}
+function renderRecords(){
+  const rv=document.getElementById('lb-records-view');
+  if(!rv||!S.records)return;
+  const cats=[
+    {key:'playerPTS',   title:'Single-game scoring record',   vLabel:'PTS', type:'player'},
+    {key:'playerThreePt',title:'Single-game 3PT record',      vLabel:'3PT', type:'player'},
+    {key:'teamPTS',     title:'Team single-game record',       vLabel:'PTS', type:'team'},
+    {key:'teamThreePt', title:'Team 3PT record',               vLabel:'3PT', type:'team', note:'Box scores only'},
+    {key:'highestCombined',title:'Highest combined score',     vLabel:'PTS', type:'game'},
+    {key:'largestMargin',  title:'Largest winning margin',     vLabel:'Pts', type:'game'},
+    {key:'closestGame',    title:'Closest game',               vLabel:'%',   type:'closest'},
+  ];
+  let h='<div style="padding:12px 16px;font-size:0.72rem;color:var(--text2);border-bottom:1px solid var(--border)">All-time records across 2,245,987 recorded games</div>';
+  for(const cat of cats){
+    const entries=S.records[cat.key]||[];
+    if(!entries.length)continue;
+    const note=S.records._notes?.[cat.key]?`<span style="font-size:0.65rem;color:var(--text3);margin-left:6px">${esc(S.records._notes[cat.key])}</span>`:'';
+    h+=`<div class="rec-card"><div class="rec-title">${esc(cat.title)}${note}</div>`;
+    const shown=entries.slice(0,5);
+    const rest=entries.slice(5,50);
+    h+=shown.map((e,i)=>recEntry(e,i+1,cat)).join('');
+    if(rest.length){
+      h+=`<div id="rec-more-${esc(cat.key)}" class="hidden">${rest.map((e,i)=>recEntry(e,i+6,cat)).join('')}</div>`;
+      h+=`<button class="lb-stat" style="margin-top:6px;width:100%" onclick="el('rec-more-${esc(cat.key)}').classList.toggle('hidden');this.textContent=this.textContent.includes('Show')?'Hide':'Show all 50'">Show all 50 ↓</button>`;
+    }
+    h+='</div>';
+  }
+  rv.innerHTML=h;
+}
+function recEntry(e,rank,cat){
+  const isClosest=cat.type==='closest';
+  const val=isClosest?((e.ratio??0)*100).toFixed(1)+'%':(e.v??0).toLocaleString('en-AU');
+  let detail='',sub='';
+  if(cat.type==='player'){detail=esc(e.name||'');sub=`${esc(e.date||'')} · vs ${esc(e.vs||'')} · ${esc(e.score||'')}`;
+  }else if(cat.type==='team'){detail=esc(e.name||'');sub=`${esc(e.date||'')} · vs ${esc(e.vs||'')} · ${esc(e.score||'')}`;
+  }else{detail=`${esc(e.home||'')} · ${esc(e.away||'')}`;sub=`${esc(e.date||'')} · ${esc(e.score||'')}`;
+  }
+  const click=e.gameKey&&e.sid?`onclick="openRecordGame('${esc(e.sid)}','${esc(e.gameKey)}')" `:'';
+  return`<div class="rec-entry" ${click}><div class="rec-rank">${rank}</div><div class="rec-val">${val}</div><div><div class="rec-detail">${detail}</div><div class="rec-sub">${sub}</div></div></div>`;
+}
+async function openRecordGame(sid,gameKey){
+  if(!S.games[sid])S.games[sid]=await gj(BASE+'/games/bv/'+sid+'.json');
+  const g=S.games[sid]?.[gameKey];
+  if(g)openGame(gameKey,g,null,sid);
+}
 
 /* ── Player search ── */
 async function searchPlayers(q){
@@ -658,6 +741,7 @@ function renderPlayer(p){
   const sport=Object.keys(p.sports||{})[0]||'Basketball';
   const cs=p.sports?.[sport]||{};
   const gp=cs.gp||0,pts=cs.pts||0,fg=cs.fg||0,ft=cs.ft||0,tp=cs.threePt||0,fouls=cs.fouls||0;
+  const foulOuts=cs.foulOuts||0,finals=cs.finals||0,gfApps=cs.gfApps||0,gfWins=cs.gfWins||0;
   const upcoming=(p.teams||[]).filter(t=>t.status==='UPCOMING');
   const club=(p.seasons||[])[0]?.club||'';
   const groups=groupRegs(p.seasons||[]);
@@ -669,10 +753,12 @@ function renderPlayer(p){
     <div class="cstat"><div class="csv">${gp}</div><div class="csl">GP</div></div>
     <div class="cstat"><div class="csv">${pts}</div><div class="csl">PTS</div></div>
     <div class="cstat"><div class="csv">${avg(pts,gp)}</div><div class="csl">PPG</div></div>
-    <div class="cstat"><div class="csv">${fg}</div><div class="csl">FG</div></div>
-    <div class="cstat"><div class="csv">${ft}</div><div class="csl">FT</div></div>
     <div class="cstat"><div class="csv">${tp}</div><div class="csl">3PT</div></div>
-    <div class="cstat"><div class="csv">${fouls}</div><div class="csl">FL</div></div>
+    <div class="cstat"><div class="csv">${fouls}</div><div class="csl">F</div></div>${foulOuts>0?`
+    <div class="cstat"><div class="csv">${foulOuts}</div><div class="csl">FO</div></div>`:''}${finals>0?`
+    <div class="cstat"><div class="csv">${finals}</div><div class="csl">Finals</div></div>`:''}${gfApps>0?`
+    <div class="cstat"><div class="csv">${gfApps}</div><div class="csl">GF</div></div>`:''}${gfWins>0?`
+    <div class="cstat"><div class="csv">${gfWins}</div><div class="csl">GFW</div></div>`:''}
   </div>`;
   if(upcoming.length){
     h+=`<div class="upsec"><div class="uplbl">\u26a1 Upcoming</div>`;
@@ -689,7 +775,11 @@ function renderPlayer(p){
     const st=regs.reduce((a,r)=>{const s=r.stats||{};return{
       gp:(a.gp||0)+(s.gp||0),pts:(a.pts||0)+(s.pts||0),
       fg:(a.fg||0)+(s.fg||0),ft:(a.ft||0)+(s.ft||0),
-      threePt:(a.threePt||0)+(s.threePt||0),fouls:(a.fouls||0)+(s.fouls||0)
+      threePt:(a.threePt||0)+(s.threePt||0),fouls:(a.fouls||0)+(s.fouls||0),
+      foulOuts:(a.foulOuts||0)+(s.foulOuts??0),
+      finals:(a.finals||0)+(s.finals??0),
+      gfApps:(a.gfApps||0)+(s.gfApps??0),
+      gfWins:(a.gfWins||0)+(s.gfWins??0)
     };},{});
     // All grade names joined — no assumption about order
     const allGrades=abbreviateGrades([...new Set(regs.map(r=>r.gn||r.tn||'?'))]);
@@ -702,7 +792,7 @@ function renderPlayer(p){
           <div style="display:flex;align-items:flex-start;gap:5px">
             <span class="chev" style="flex-shrink:0;margin-top:3px">\u25b6</span>
             <div style="min-width:0">
-              <div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}</div>
+              <div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}${st.gfWins>0?' \ud83e\udd47':st.gfApps>0?' \ud83e\udd48':st.finals>0?' \ud83e\udd49':''}</div>
               <div>${teamLink}</div>
             </div>
           </div>
@@ -878,7 +968,7 @@ function renderTeam(td,tid,sid){
       const res=f.result;
       const fc=finalClass(f.rn);
       const resH=res?`<div class="g-res r${res}">${res}</div>`:`<div class="g-res rU">\u2014</div>`;
-      return`<div class="frow${fc?' '+fc:''}" data-gid="${esc(f.gameId)}" data-sid="${esc(sid)}">
+      return`<div class="frow${fc?' '+fc:''}" data-gid="${esc(f.gameId)}" data-sid="${esc(sid)}"${f.result?' data-result="'+esc(f.result)+'"':''} >
         <div><div class="frn">${esc(f.rn||'')}</div></div>
         <div><div class="fopp">${esc(f.oppName||'\u2014')}</div><div class="fdt">${esc(fmtD(f.date||''))}</div></div>
         <div class="fsc">${esc(f.score||'')}</div>${resH}</div>`;
@@ -886,7 +976,18 @@ function renderTeam(td,tid,sid){
   }
   h+='</div>';
   ve.innerHTML=h;
-  ve.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>openSheet(r.dataset.gid,r.dataset.sid)));
+  ve.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>{
+    const sid2=r.dataset.sid;
+    const gid2=r.dataset.gid;
+    if(r.dataset.result){openSheet(gid2,sid2);return;}
+    // Upcoming — open team opp view; need team IDs from game file
+    (async()=>{
+      if(!S.games[sid2]){const d=await gj(BASE+'/games/bv/'+sid2+'.json');S.games[sid2]=d||{games:{}};}
+      const g2=S.games[sid2]?.games?.[gid2];
+      if(g2&&g2.h&&g2.a){openTeamOpp(g2.h,g2.a,sid2,true);}
+      else if(g2){openSheet(gid2,sid2);}
+    })();
+  }));
 }
 function switchTTab(btn,showId,hideId){
   btn.closest('.vtabs').querySelectorAll('.vtab').forEach(b=>b.classList.toggle('on',b===btn));
@@ -1134,6 +1235,16 @@ async function openSheet(gid,sid){
   if(renderMode(g)==='normal'){
     fetchBox(gid).then(bs=>{if(bs)applyBox(bs,g,gid,sb);});
   }
+  // Add opposition history button if both team IDs are known
+  const[,,,ht,at]=teamNames?teamNames(g):['','','','',''];
+  const htid=g.h||ht,atid=g.a||at;
+  if(htid&&atid){
+    const histBtn=document.createElement('button');
+    histBtn.className='lb-stat';histBtn.style.cssText='margin:8px 14px;font-size:0.72rem';
+    histBtn.textContent='⇔ Opposition history';
+    histBtn.onclick=()=>{closeSheet();openTeamOpp(htid,atid,sid,false);};
+    sb.insertBefore(histBtn,sb.firstChild);
+  }
 }
 function closeSheet(){el('sov').classList.remove('open');}
 
@@ -1289,38 +1400,215 @@ function applyBox(bs,g,gid,con){
 }
 
 /* ── Opposition ── */
-async function openOpp(tid,sid,fromUuid){
-  navigate('opp',{tid,sid,fromUuid});
+async function openOpp(oppTid,sid,fromUuid){
+  navigate('opp',{oppTid,sid,fromUuid});
   showV('view-opp');
-  const ve=el('view-opp');ve.innerHTML='<div class="load-row">Loading\u2026</div>';
+  const ve=el('view-opp');
+  ve.innerHTML='<div class="load-row">Loading…</div>';
+  // Load opposing team roster
   if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
-  const td=S.teamStats[sid]?.[tid];
-  if(!td){ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button><div><div class="vtitle">Team not found</div></div></div>`;return;}
-  if(!S.games[sid]){const d=await gj(BASE+'/games/bv/'+sid+'.json');S.games[sid]=d||{games:{}};}
-  const all=S.games[sid]?.games||{};
-  const roster=Object.entries(td.roster||{});
-  const enc=new Map();
-  for(const[gid,g]of Object.entries(all)){
-    const pids=new Set((g.p||[]).map(p=>p.id));
-    if(!pids.has(fromUuid))continue;
-    for(const[ou]of roster){if(pids.has(ou)){if(!enc.has(ou))enc.set(ou,[]);enc.get(ou).push(gid);}}
+  const td=S.teamStats[sid];
+  const oppTeam=td?.teams?.[oppTid];
+  const oppRoster=Object.keys(oppTeam?.roster||{});
+  const oppTeamName=oppTeam?.meta?.name||'Opposing Team';
+  // Get current player (should be cached)
+  const myPlayer=S.players[fromUuid];
+  const myGames=new Set(myPlayer?.games||[]);
+  // Build season info for header
+  const mySeasonName=(myPlayer?.seasons||[]).find(sn=>sn.sid===sid)?.sn||'';
+  // Render shell immediately
+  const backBtn=`<button class="vback" onclick="history.back()">←</button>`;
+  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myPlayer?.name||'Player')} vs ${esc(oppTeamName)}</div><div class="vsub">${esc(mySeasonName)}</div></div></div><div id="opp-roster"></div>`;
+  // Load all opposing player files in parallel
+  const oppPlayers=await Promise.all(oppRoster.map(uuid=>loadPlayerFile(uuid)));
+  const oppMap={};
+  oppRoster.forEach((uuid,i)=>{if(oppPlayers[i])oppMap[uuid]=oppPlayers[i];});
+  // Find intersections & resolve games for each opponent
+  const rosterEl=document.getElementById('opp-roster');
+  if(!rosterEl)return;
+  let rh='';
+  const resolvers=[];
+  for(let i=0;i<oppRoster.length;i++){
+    const oppUuid=oppRoster[i];
+    const opp=oppMap[oppUuid];
+    const shared=(opp?.games||[]).filter(gid=>myGames.has(gid));
+    const rowId=`opp-row-${i}`;
+    rh+=`<div class="orow" id="${rowId}"><span class="oname">${esc(opp?.name||'#'+oppUuid.slice(0,8))}</span><span class="oenc" id="${rowId}-enc">Checking…</span></div>`;
+    resolvers.push({oppUuid,opp,shared,rowId,fromUuid,oppTid,myPlayer});
   }
-  const meta=td.meta||{};
-  let h=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button>
-    <div><div class="vtitle">${esc(meta.name||'Opposition')}</div>
-    <div class="vsub">Shared court history</div></div></div><div style="padding:10px 14px">`;
-  const sorted=[...roster].sort(([ua],[ub])=>(enc.has(ub)?1:0)-(enc.has(ua)?1:0));
-  for(const[uuid,pr]of sorted){
-    const e=enc.get(uuid);
-    h+=`<div class="orow"><span class="oname" onclick="loadPlayer('${esc(uuid)}')">${esc(pr.name||'#'+uuid.slice(0,8))}</span>
-      ${e?`<span class="oenc">${e.length} game${e.length>1?'s':''}</span>`:`<span class="onone">not met</span>`}</div>`;
+  rosterEl.innerHTML=rh;
+  // Resolve each player's games async, update UI progressively
+  for(const r of resolvers){
+    resolveOppGames(r,myGames).then(games=>{
+      const enc=document.getElementById(r.rowId+'-enc');
+      const row=document.getElementById(r.rowId);
+      if(!row)return;
+      if(!games.length){
+        if(enc)enc.outerHTML='<span class="onone">No previous meetings</span>';
+      }else{
+        if(enc)enc.outerHTML=`<span class="oenc">${games.length} meeting${games.length>1?'s':''}</span>`;
+        row.style.cursor='pointer';
+        row.onclick=()=>toggleOppGames(row,games,r.opp?.name||'');
+      }
+    });
   }
-  h+='</div>';
-  ve.innerHTML=h;
+}
+async function loadPlayerFile(uuid){
+  if(S.players[uuid])return S.players[uuid];
+  const d=await gj(BASE+'/players/'+uuid.slice(0,2)+'/'+uuid+'.json');
+  if(d)S.players[uuid]=d;
+  return d||null;
+}
+function getTidForSeason(player,sid){
+  for(const sn of player?.seasons||[]){
+    if(sn.sid===sid)return sn.regs?.[0]?.tid??null;
+  }
+  return null;
+}
+async function resolveOppGames(r,myGameSet){
+  const{opp,shared,fromUuid,oppTid,myPlayer}=r;
+  if(!shared.length)return[];
+  // Build gid→sid map from already-cached game files
+  const gidSid={};
+  for(const[sid,games]of Object.entries(S.games||{})){
+    for(const gid of Object.keys(games))gidSid[gid]=sid;
+  }
+  // For shared gids not yet mapped, search player's seasons lazily
+  const unmapped=shared.filter(gid=>!gidSid[gid]);
+  if(unmapped.length){
+    const sids=[...new Set((myPlayer?.seasons||[]).map(sn=>sn.sid).filter(Boolean))];
+    for(const sid of sids){
+      if(!unmapped.length)break;
+      if(!S.games[sid])S.games[sid]=await gj(BASE+'/games/bv/'+sid+'.json')||{};
+      for(const gid of Object.keys(S.games[sid]||{})){
+        if(unmapped.includes(gid)){gidSid[gid]=sid;}
+      }
+      unmapped.splice(0,unmapped.length,...unmapped.filter(gid=>!gidSid[gid]));
+    }
+  }
+  // Verify opposing sides and collect game details
+  const verified=[];
+  for(const gid of shared){
+    const sid=gidSid[gid];
+    if(!sid)continue;
+    const g=(S.games[sid]||{})[gid];
+    if(!g)continue;
+    const myTid=getTidForSeason(myPlayer,sid);
+    const oppTidInGame=getTidForSeason(opp,sid);
+    if(!myTid||!oppTidInGame)continue;
+    const valid=(g.h===myTid&&g.a===oppTidInGame)||(g.a===myTid&&g.h===oppTidInGame);
+    if(valid)verified.push({gid,sid,g});
+  }
+  verified.sort((a,b)=>(b.g.d||'').localeCompare(a.g.d||''));
+  return verified;
+}
+function toggleOppGames(row,games,oppName){
+  let detail=row.querySelector('.opp-games');
+  if(detail){detail.classList.toggle('hidden');return;}
+  let gh='<div class="opp-games">';
+  for(const{gid,sid,g}of games){
+    const ctx=gameCtx(g,getTidForSeason(S.players[row.closest('[data-uuid]')?.dataset?.uuid||''],sid)||g.h);
+    const score=ctx.myS!=null?`${ctx.myS}–${ctx.oppS}`:'';
+    const res=resLetter(ctx.myS,ctx.oppS);
+    const fc=finalClass(g.rn);
+    gh+=`<div class="opp-game-row" onclick="openGame('${esc(gid)}',${JSON.stringify(g)},null,'${esc(sid)}')">${esc(g.d?.slice(0,10)||'')} · ${esc(g.gn||'')} · ${esc(score)} <span style="color:${res==='W'?'var(--win)':res==='L'?'var(--loss)':'var(--text2)'}">${res}</span>${fc?` · <span style="color:gold;font-size:0.7rem">${esc(g.rn)}</span>`:''}</div>`;
+  }
+  gh+='</div>';
+  row.insertAdjacentHTML('beforeend',gh);
+}
+async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
+  navigate('opp',{myTid,oppTid,sid});
+  showV('view-opp');
+  const ve=el('view-opp');
+  ve.innerHTML='<div class="load-row">Loading…</div>';
+  if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
+  const td=S.teamStats[sid];
+  const myTeam=td?.teams?.[myTid];const oppTeam=td?.teams?.[oppTid];
+  const myName=myTeam?.meta?.name||'Team A';const oppName=oppTeam?.meta?.name||'Team B';
+  const myRoster=Object.keys(myTeam?.roster||{});
+  const oppRoster=Object.keys(oppTeam?.roster||{});
+  const backBtn=`<button class="vback" onclick="history.back()">←</button>`;
+  const subtitle=isUpcoming?'Upcoming':'Previous meetings';
+  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myName)} vs ${esc(oppName)}</div><div class="vsub">${esc(subtitle)}</div></div></div><div id="opp-roster"></div>`;
+  // Load all player files for both rosters
+  const allUuids=[...new Set([...myRoster,...oppRoster])];
+  await Promise.all(allUuids.map(uuid=>loadPlayerFile(uuid)));
+  // Build opp game sets
+  const oppGameSets={};
+  for(const uuid of oppRoster){
+    oppGameSets[uuid]=new Set(S.players[uuid]?.games||[]);
+  }
+  // Render my roster with progressive encounter resolution
+  const rosterEl=document.getElementById('opp-roster');
+  if(!rosterEl)return;
+  let rh='';
+  const resolvers=[];
+  for(let i=0;i<myRoster.length;i++){
+    const uuid=myRoster[i];
+    const myP=S.players[uuid];
+    const myGames=new Set(myP?.games||[]);
+    const rowId=`opp-row-${i}`;
+    rh+=`<div class="orow" id="${rowId}" data-uuid="${esc(uuid)}"><span class="oname">${esc(myP?.name||'#'+uuid.slice(0,8))}</span><span class="oenc" id="${rowId}-enc">Checking…</span></div>`;
+    // Find which opp players share games
+    const encounters=[];
+    for(const oppUuid of oppRoster){
+      const shared=[...myGames].filter(gid=>oppGameSets[oppUuid].has(gid));
+      if(shared.length)encounters.push({oppUuid,shared});
+    }
+    resolvers.push({uuid,myP,encounters,rowId,myRoster,oppRoster});
+  }
+  rosterEl.innerHTML=rh;
+  for(const r of resolvers){
+    resolveTeamOppGames(r).then(result=>{
+      const enc=document.getElementById(r.rowId+'-enc');
+      const row=document.getElementById(r.rowId);
+      if(!row)return;
+      const total=result.reduce((s,e)=>s+e.games.length,0);
+      if(!total){
+        if(enc)enc.outerHTML='<span class="onone">No previous meetings</span>';
+      }else{
+        const nOpp=result.length;
+        if(enc)enc.outerHTML=`<span class="oenc">${total} meeting${total>1?'s':''} vs ${nOpp} player${nOpp>1?'s':''}</span>`;
+        row.style.cursor='pointer';
+        row.onclick=()=>toggleTeamOppDetail(row,result);
+      }
+    });
+  }
+}
+async function resolveTeamOppGames(r){
+  const{myP,encounters}=r;
+  const results=[];
+  for(const{oppUuid,shared}of encounters){
+    const opp=S.players[oppUuid];
+    const fakeR={opp,shared,fromUuid:r.uuid,myPlayer:myP};
+    const games=await resolveOppGames(fakeR,new Set(myP?.games||[]));
+    if(games.length)results.push({oppUuid,opp,games});
+  }
+  return results;
+}
+function toggleTeamOppDetail(row,result){
+  let detail=row.querySelector('.opp-team-detail');
+  if(detail){detail.classList.toggle('hidden');return;}
+  let dh='<div class="opp-team-detail">';
+  for(let ri=0;ri<result.length;ri++){
+    const{opp,games}=result[ri];
+    const subId='opp-sub-'+row.id+'-'+ri;
+    dh+='<div class="opp-opp-row"><span class="oname">'+esc(opp?.name||'Player')+'</span>';
+    const togFn='document.getElementById("'+subId+'").classList.toggle("hidden")';
+    dh+='<span class="oenc" style="cursor:pointer" onclick="'+togFn+'">'+games.length+' meeting'+(games.length>1?'s':'')+'</span></div>';
+    dh+='<div id="'+subId+'" class="opp-games hidden">';
+    for(const{gid,sid,g}of games){
+      const score=g.hs!=null?g.hs+'–'+g.as:'';
+      const onclick2='openGame(\"'+esc(gid)+'\",null,null,\"'+esc(sid)+'\")';
+      dh+='<div class="opp-game-row" onclick="'+onclick2+'">'+esc(g.d?.slice(0,10)||'')+' · '+esc(g.gn||'')+' · '+score+'</div>';
+    }
+    dh+='</div>';
+  }
+  dh+='</div>';
+  row.insertAdjacentHTML('beforeend',dh);
 }
 
 
-/* ── Leaderboard ── */
 async function buildLBSeasonPicker(){
   if(!S.idx)return;
   const nm=new Map(); // name → {name,active,sids:[]}
@@ -1346,7 +1634,12 @@ async function buildLBSeasonPicker(){
 function switchLBStat(stat){
   S.lbStat=stat;
   document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat===stat));
-  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','fpg','threesg'].includes(stat));
+  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason'].includes(stat));
+  // finalsPerSeason is all-time only — hide button when per-season scope
+  const isSeasonScope=el('lb-season')?.value!=='all';
+  el('view-leaders')?.querySelectorAll('.lb-alltime-only').forEach(b=>b.classList.toggle('hidden',isSeasonScope));
+  // If finalsPerSeason selected but season scope active, fall back to finals
+  if(stat==='finalsPerSeason'&&isSeasonScope){S.lbStat='finals';document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat==='finals'));}
   loadLB();
 }
 async function loadLB(){
@@ -1378,7 +1671,8 @@ async function loadLB(){
   if(!data||!Object.keys(data).length){(el('lb-results')||ve).innerHTML='<div class="empty">No leaderboard data available.</div>';return;}
   // Show/hide season filters
   const isAll=scope==='all';
-  el('lb-season-filters').classList.toggle('hidden',isAll);
+  document.querySelectorAll('.lb-per-season').forEach(e=>e.classList.toggle('hidden',isAll));
+  el('view-leaders')?.querySelectorAll('.lb-alltime-only').forEach(b=>b.classList.toggle('hidden',!isAll));
 
   const entries=(data[S.lbStat]||[]).slice();
   // Populate filters
@@ -1429,7 +1723,7 @@ function renderLB(allEntries,data){
   // Sort by v descending (data already sorted but re-sort after filter)
   entries.sort((a,b)=>b.v-a.v);
   const ve=el('lb-results');
-  const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','threesg':'3PT/G','fouls':'F','fpg':'F/G'}[S.lbStat]||S.lbStat;
+  const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','threePtPG':'3PT/G','fouls':'F','foulsPG':'F/G','foulOuts':'Foul-outs','foulOutsPG':'FO/G','finals':'Finals','gfApps':'GF Apps','gfWins':'GF Wins','finalsPerSeason':'Finals/Ssn','maxGamePTS':'Best Game PTS','maxGameThreePt':'Best Game 3PT'}[S.lbStat]||S.lbStat;
   const scopeName=scope==='all'?'All-time':el('lb-season')?.querySelector(`option[value="${scope}"]`)?.textContent||scope;
   if(!entries.length){(el('lb-results')||el('view-leaders')).innerHTML=`<div class="empty">No entries match the current filters.</div>`;return;}
   ve.innerHTML=`<div style="padding:8px 14px;font-size:0.75rem;color:var(--text2)">${esc(statLbl)} — ${entries.length} player${entries.length!==1?'s':''}</div>`+
@@ -1469,79 +1763,6 @@ el('q-vsn').addEventListener('change',()=>onVenueSeasonChange());
 
 boot();
 
-function dayOfWeekN(y,m,d){const t=[0,3,2,5,0,3,5,1,4,6,2,4];const yr=m<3?y-1:y;return(yr+Math.floor(yr/4)-Math.floor(yr/100)+Math.floor(yr/400)+t[m-1]+d)%7;}
-function groupByMonth(dates){const m=new Map();for(const d of dates){const ym=d.slice(0,7);if(!m.has(ym))m.set(ym,[]);m.get(ym).push(d);}return m;}
-function calGrid(byMonth,vid,todayStr){
-  const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const DOW='<div class="vcd">M</div><div class="vcd">T</div><div class="vcd">W</div><div class="vcd">T</div><div class="vcd">F</div><div class="vcd">S</div><div class="vcd">S</div>';
-  let h='<div class="vcal-wrap">';
-  for(const[ym,ds]of byMonth){
-    const[y,m]=ym.split('-').map(Number);
-    h+=`<div class="vcal-col" id="vcal-m-${y}-${String(m).padStart(2,'0')}"><div class="vcm">${MN[m-1]} ${y}</div><div class="vcg">${DOW}`;
-    const[,,fd]=ds[0].split('-').map(Number);
-    const pad=(dayOfWeekN(y,m,fd)+6)%7;
-    for(let i=0;i<pad;i++)h+='<div></div>';
-    for(const d of ds){
-      const[,,dy]=d.split('-');
-      const isSel=d===S.venueSelDate,isToday=d===todayStr;
-      h+=`<button class="vday${isToday?' vtoday':''}${isSel?' vsel':''}" data-date="${d}" onclick="selectVenueDate('${esc(vid)}','${d}',this)">${parseInt(dy)}</button>`;
-    }
-    h+='</div></div>';
-  }
-  return h+'</div>';
-}
-function renderKnownDates(dates,vid,todayStr,pageIdx){
-  const byMonth=groupByMonth(dates);
-  const months=[...byMonth.keys()];
-  if(!months.length)return'<div class="empty">No dates on record.</div>';
-  const total=months.length;
-  if(pageIdx==null){
-    // Find month nearest to today, put it in the middle of the 3-month window
-    const todayYM=todayStr?todayStr.slice(0,7):'';
-    let nearest=total-1;
-    for(let i=0;i<months.length;i++){if(months[i]>=todayYM){nearest=i;break;}}
-    pageIdx=Math.max(0,Math.min(nearest-1,total-3)); // nearest as middle
-  }
-  pageIdx=Math.max(0,Math.min(pageIdx,total-1));
-  const visible=months.slice(pageIdx,pageIdx+3);
-  const pageMap=new Map(visible.map(m=>[m,byMonth.get(m)]));
-  const hasPrev=pageIdx>0;
-  const hasNext=pageIdx+3<total;
-  // Jump input: find page containing selected month
-  const jumpHtml=`<div class="vcal-jump"><label>Jump to:</label><input type="month" class="sinput" oninput="vCalJump('${esc(vid)}','${esc(todayStr||'')}',this.value)"></div>`;
-  const nav=`<div class="vcal-nav"><button ${hasPrev?'':'disabled'} onclick="vCalPage('${esc(vid)}','${esc(todayStr||'')}',${Math.max(0,pageIdx-3)})">← Earlier</button><span style="font-size:0.78rem;color:var(--text2)">${visible[0].replace('-',' / ')} – ${visible[visible.length-1].replace('-',' / ')}</span><button ${hasNext?'':'disabled'} onclick="vCalPage('${esc(vid)}','${esc(todayStr||'')}',${Math.min(total-3,pageIdx+3)})">Later →</button></div>`;
-  return jumpHtml+nav+calGrid(pageMap,vid,todayStr);
-}
-function vCalPage(vid,todayStr,pageIdx){
-  const dates=S.venueDates[vid]||[];
-  const cs=document.getElementById('cal-section');
-  if(cs)cs.innerHTML=renderKnownDates(dates,vid,todayStr,pageIdx);
-  const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';
-}
-function vCalJump(vid,todayStr,monthVal){
-  if(!monthVal)return;
-  const byMonth=groupByMonth(S.venueDates[vid]||[]);
-  const months=[...byMonth.keys()];
-  // Find the first page that includes this month (or nearest)
-  const target=monthVal.slice(0,7);
-  let best=Math.max(0,months.length-3);
-  for(let i=0;i<months.length;i++){if(months[i]>=target){best=Math.max(0,i-1);break;}}
-  vCalPage(vid,todayStr,best);
-}
-function jumpToMonth(vid,todayStr,monthVal,isKnown){
-  if(!monthVal)return;
-  if(isKnown){vCalJump(vid,todayStr,monthVal);return;}
-  // Range calendar
-  const today=mkDate(new Date());
-  const[y,m]=monthVal.split('-');
-  const target=new Date(parseInt(y),parseInt(m)-1,1);
-  const now=new Date();
-  const weeksOff=Math.round((target-now)/(7*24*3600*1000));
-  S.calOffset=weeksOff;
-  const cs=el('cal-section');
-  if(cs)cs.innerHTML=renderCalRange(vid,todayStr||today,S.calOffset);
-  const ga=el('vgrid-area');if(ga)ga.innerHTML='';
-}
 
 </script>
 </body>
