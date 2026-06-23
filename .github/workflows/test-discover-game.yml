@@ -35,22 +35,32 @@ jobs:
           const get   = n => parts.find(p => p.startsWith(n + '=')) || null;
           const cookie = `${get('phq_tier')}; ${get('phq_session')}; ${get('phq_sub')}`;
           console.log('Session obtained');
+
           const Q = `query discoverGame($gameID: ID!) {
             discoverGame(gameID: $gameID) {
               id
-              status { value }
-              forfeit { isForfeit winnerID notes }
-              abandoned { isAbandoned notes }
+              status { name value }
+              result {
+                outcome { name value }
+                winner { name value }
+                home {
+                  outcome { name value }
+                  gameOutcomeDescription
+                  statistics { count type { value } }
+                }
+                away {
+                  outcome { name value }
+                  gameOutcomeDescription
+                  statistics { count type { value } }
+                }
+              }
               home { ... on DiscoverTeam { id name } }
               away { ... on DiscoverTeam { id name } }
-              result {
-                home { statistics { count type { value } } gameOutcomeDescription }
-                away { statistics { count type { value } } gameOutcomeDescription }
-              }
               round { name number isFinalsRound }
               date
             }
           }`;
+
           const res  = await fetch('https://api.playhq.com/graphql', {
             method: 'POST',
             headers: { ...HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
@@ -62,18 +72,21 @@ jobs:
             console.log('Errors:', JSON.stringify(json.errors, null, 2));
           } else {
             const g = json.data?.discoverGame;
-            if (!g) { console.log('discoverGame returned null'); }
-            else {
+            if (!g) {
+              console.log('discoverGame returned null — game is hidden or inaccessible');
+            } else {
               console.log(JSON.stringify(g, null, 2));
               console.log('\n── Key fields ──');
-              console.log('  status:   ', g.status?.value);
-              console.log('  forfeit:  ', JSON.stringify(g.forfeit));
-              console.log('  abandoned:', JSON.stringify(g.abandoned));
-              const hs = g.result?.home?.statistics?.find(s=>s.type?.value==='TOTAL_SCORE')?.count;
+              console.log('  status:          ', g.status?.value);
+              console.log('  result.outcome:  ', g.result?.outcome?.value);
+              console.log('  result.winner:   ', g.result?.winner?.value);
+              console.log('  home outcome:    ', g.result?.home?.outcome?.value);
+              console.log('  away outcome:    ', g.result?.away?.outcome?.value);
+              console.log('  home desc:       ', g.result?.home?.gameOutcomeDescription);
+              console.log('  away desc:       ', g.result?.away?.gameOutcomeDescription);
+              const hs  = g.result?.home?.statistics?.find(s=>s.type?.value==='TOTAL_SCORE')?.count;
               const as_ = g.result?.away?.statistics?.find(s=>s.type?.value==='TOTAL_SCORE')?.count;
-              console.log('  score:    ', `${hs??'?'} – ${as_??'?'}`);
-              console.log('  home outcome:', g.result?.home?.gameOutcomeDescription);
-              console.log('  away outcome:', g.result?.away?.gameOutcomeDescription);
+              console.log('  score:           ', `${hs??'?'} – ${as_??'?'}`);
             }
           }
           EOF
