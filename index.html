@@ -295,7 +295,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.33</span>
+      <span class="rail-ver">Beta 0.34</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1642,6 +1642,26 @@ function switchLBStat(stat){
   if(stat==='finalsPerSeason'&&isSeasonScope){S.lbStat='finals';document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat==='finals'));}
   loadLB();
 }
+function denormSeason(data){
+  if(!data||!data.players)return data;
+  const pm=data.players;
+  const out={};
+  for(const[cat,arr]of Object.entries(data)){
+    if(cat==='players'||!Array.isArray(arr))continue;
+    out[cat]=arr.map(e=>{
+      const m=pm[e.id]||{};
+      const uuid=e.id.split('|')[0];
+      return{uuid,name:m.n||uuid,club:m.club||null,team:m.team||'',
+             org:m.org||'',comp:m.comp||'',grade:m.grade||'',
+             age:m.age||'',gender:m.gender||'',gp:m.gp||0,
+             foulOuts:m.foulOuts||0,foulOutsPG:m.foulOutsPG||0,
+             threePtPG:m.threePtPG||0,foulsPG:m.foulsPG||0,
+             finals:m.finals||0,gfApps:m.gfApps||0,gfWins:m.gfWins||0,
+             v:e.v};
+    });
+  }
+  return out;
+}
 async function loadLB(){
   const ve=el('view-leaders');
   if(el('lb-results'))el('lb-results').innerHTML='<div class="load-row">Loading…</div>';else ve.innerHTML='<div class="load-row">Loading…</div>';
@@ -1655,7 +1675,10 @@ async function loadLB(){
     // scope is a season name — fetch ALL sids with that name and merge
     const sids=(S.lbSeasonMap||{})[scope]||[];
     const parts=await Promise.all(sids.map(async sid=>{
-      if(!S.lbData[sid])S.lbData[sid]=await gj(BASE+'/leaderboard/season/'+sid+'.json');
+      if(!S.lbData[sid]){
+        const raw=await gj(BASE+'/leaderboard/season/'+sid+'.json');
+        S.lbData[sid]=denormSeason(raw);
+      }
       return S.lbData[sid];
     }));
     const merged={};
