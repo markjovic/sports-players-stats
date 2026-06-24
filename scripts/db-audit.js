@@ -414,14 +414,13 @@ row('Partially written (foulOuts, no statsChecked)', fmt(withFoulOuts - withStat
 row('Not fetched at all', fmt(processed - withFoulOuts),
     pct(processed - withFoulOuts, processed));
 console.log('');
-const pctFetched = processed > 0 ? (withStatsChecked / processed * 100).toFixed(1) : '0.0';
-console.log(`  Coverage: ${pctFetched}% of players have been fully fetched.`);
-if (withStatsChecked < processed) {
-  const remaining = processed - withStatsChecked;
-  console.log(`  ${remaining.toLocaleString()} players still need fetching (no statsChecked).`);
+const remaining = processed - withStatsChecked;
+const pctFetched = processed > 0 ? (withStatsChecked / processed * 100).toFixed(2) : '0.00';
+if (remaining > 0) {
+  console.log(`  Coverage: ${pctFetched}% (${remaining.toLocaleString()} players still need fetching).`);
   console.log('  Run fetch-profile-stats-matrix.yml to complete the bootstrap.');
 } else {
-  console.log('  ✅ Bootstrap complete — all players have been fetched.');
+  console.log(`  Coverage: ${pctFetched}% ✅ Bootstrap complete — all players have been fetched.`);
 }
 
 // ─── 12. Summary vs baseline ─────────────────────────────────────────────────
