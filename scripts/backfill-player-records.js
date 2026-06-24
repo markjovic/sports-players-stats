@@ -124,6 +124,7 @@ console.log();
 
 // ── Phase 2: write player.records ────────────────────────────────────────────
 
+async function main() {
 console.log('Phase 2 — Writing player.records…');
 
 // Load progress
@@ -243,3 +244,6 @@ console.log(`  Player files written:  ${written.toLocaleString()}`);
 console.log(`  Skipped (up to date):  ${skipped.toLocaleString()}`);
 console.log(`  No stats data:         ${noData.toLocaleString()}`);
 if (DRY_RUN) console.log('  ⚠  DRY RUN — nothing written');
+}
+
+main().catch(e => { console.error('\nFATAL:', e.message, '\n', e.stack); process.exit(1); });
