@@ -40,7 +40,11 @@ const DRY_RUN         = process.argv.includes('--dry-run');
 const ACTIVE_ONLY     = process.argv.includes('--active-only');
 const FORCE_FULL      = process.argv.includes('--force'); // ignore progress file, full rebuild
 const ALL_TIME_LIMIT  = 2000;
-const SEASON_LIMIT    = 5000; // never trims; bounds memory to one season at a time
+const SEASON_LIMIT    = 50000; // effectively unlimited — no cap applied (design decision June 2026)
+
+const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt'];
+// Season files exclude career/single-game stats that don't exist at reg level
+const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins'];
 const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
 const COMMIT_INTERVAL = 100;
 
@@ -93,17 +97,26 @@ class TopN {
   result() { return this.arr; }
 }
 
-const CATS = ['pts', 'ppg', 'gp', 'threePt', 'fouls', 'threePtPG', 'foulsPG', 'foulOuts', 'foulOutsPG', 'finals', 'gfApps', 'gfWins', 'finalsPerSeason', 'maxGamePTS', 'maxGameThreePt'];
 
-function makeBuckets(limit) {
+function makeBuckets(cats, limit) {
   const b = {};
-  for (const cat of CATS) b[cat] = new TopN(limit);
+  for (const cat of cats) b[cat] = new TopN(limit);
   return b;
 }
 
 function serialise(buckets) {
   const out = {};
   for (const [cat, heap] of Object.entries(buckets)) out[cat] = heap.result();
+  return out;
+}
+
+// Season serialiser — normalized schema: stat arrays of {id,v} + players map
+function serialiseSeason(buckets, players) {
+  const out = {};
+  for (const [cat, heap] of Object.entries(buckets)) {
+    out[cat] = heap.result().map(e => ({ id: e.id, v: e.v }));
+  }
+  out.players = players;
   return out;
 }
 
@@ -220,7 +233,9 @@ function pushAllTime(buckets, player) {
   }
 }
 
-function pushSeason(buckets, player, sid) {
+// pushSeason — normalized schema: entries are {id, v} only; metadata goes in players map
+// id key is uuid|tid|sid — unique per registration (handles mid-season transfers)
+function pushSeason(buckets, players, player, sid) {
   const uuid   = player.uuid;
   const name   = player.name || `Player #${uuid.slice(0, 10)}`;
   const gender = player.gender || null;
@@ -231,56 +246,51 @@ function pushSeason(buckets, player, sid) {
       const stats = reg.stats || {};
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
-      const comp = tidToComp.get(reg.tid) || '';
-      const org  = sidToOrg.get(sid) || '';
-      const foulOuts   = reg.stats?.foulOuts ?? 0;
+      const id         = `${uuid}|${reg.tid}|${sid}`;
+      const comp       = tidToComp.get(reg.tid) || '';
+      const org        = sidToOrg.get(sid) || '';
+      const foulOuts   = stats.foulOuts   ?? 0;
       const foulOutsPG = gp > 0 ? Math.round((foulOuts / gp) * 1000) / 1000 : 0;
-      const threePtPG  = gp > 0 ? Math.round(((reg.stats?.threePt ?? 0) / gp) * 100) / 100 : 0;
-      const foulsPG    = gp > 0 ? Math.round(((reg.stats?.fouls   ?? 0) / gp) * 100) / 100 : 0;
-      const finals          = reg.stats?.finals         ?? 0;
-      const gfApps          = reg.stats?.gfApps         ?? 0;
-      const gfWins          = reg.stats?.gfWins         ?? 0;
-      const base = {
-        uuid, name,
-        club:   sClub,
-        team:   reg.tn  || '',
-        org,
-        comp,
-        grade:  reg.gn  || '',
-        age:    reg.age || '',
-        gender: gender  || '',
-        gp,
-        foulOuts,
-        foulOutsPG,
-        threePtPG,
-        foulsPG,
-        finals,
-        gfApps,
-        gfWins,
+      const threePtPG  = gp > 0 ? Math.round(((stats.threePt ?? 0) / gp) * 100) / 100 : 0;
+      const foulsPG    = gp > 0 ? Math.round(((stats.fouls   ?? 0) / gp) * 100) / 100 : 0;
+      const finals     = stats.finals ?? 0;
+      const gfApps     = stats.gfApps ?? 0;
+      const gfWins     = stats.gfWins ?? 0;
+
+      // Populate players map — metadata stored once per registration
+      const playerEntry = {
+        n: name, team: reg.tn || '', org, comp,
+        grade: reg.gn || '', age: reg.age || '', gender: gender || '',
+        gp, foulOuts, foulOutsPG, threePtPG, foulsPG,
+        finals, gfApps, gfWins,
       };
-      if (typeof stats.pts     === 'number') buckets.pts    .push({ ...base, v: stats.pts });
-      if (typeof stats.gp      === 'number') buckets.gp     .push({ ...base, v: stats.gp });
-      if (typeof stats.threePt === 'number') buckets.threePt.push({ ...base, v: stats.threePt });
-      if (typeof stats.fouls   === 'number') buckets.fouls  .push({ ...base, v: stats.fouls });
-      if (threePtPG  > 0) buckets.threePtPG .push({ ...base, v: threePtPG });
-      if (foulsPG    > 0) buckets.foulsPG   .push({ ...base, v: foulsPG });
-      if (foulOuts   > 0) buckets.foulOuts  .push({ ...base, v: foulOuts });
-      if (foulOutsPG > 0) buckets.foulOutsPG.push({ ...base, v: foulOutsPG });
-      if (finals     > 0) buckets.finals    .push({ ...base, v: finals });
-      if (gfApps     > 0) buckets.gfApps    .push({ ...base, v: gfApps });
-      if (gfWins        > 0) buckets.gfWins       .push({ ...base, v: gfWins });
-                              if (typeof stats.pts     === 'number') {
-        buckets.ppg.push({ ...base, v: Math.round((stats.pts / gp) * 10) / 10 });
+      if (sClub) playerEntry.club = sClub;  // omit when null to save space
+      players[id] = playerEntry;
+
+      // Push slim {id, v} entries to stat buckets
+      if (typeof stats.pts     === 'number') buckets.pts    .push({ id, v: stats.pts });
+      if (typeof stats.gp      === 'number') buckets.gp     .push({ id, v: stats.gp });
+      if (typeof stats.threePt === 'number') buckets.threePt.push({ id, v: stats.threePt });
+      if (typeof stats.fouls   === 'number') buckets.fouls  .push({ id, v: stats.fouls });
+      if (threePtPG  > 0) buckets.threePtPG .push({ id, v: threePtPG });
+      if (foulsPG    > 0) buckets.foulsPG   .push({ id, v: foulsPG });
+      if (foulOuts   > 0) buckets.foulOuts  .push({ id, v: foulOuts });
+      if (foulOutsPG > 0) buckets.foulOutsPG.push({ id, v: foulOutsPG });
+      if (finals     > 0) buckets.finals    .push({ id, v: finals });
+      if (gfApps     > 0) buckets.gfApps    .push({ id, v: gfApps });
+      if (gfWins     > 0) buckets.gfWins    .push({ id, v: gfWins });
+      if (typeof stats.pts === 'number') {
+        buckets.ppg.push({ id, v: Math.round((stats.pts / gp) * 10) / 10 });
       }
     }
-    break; // found this season — no need to keep scanning
+    break;
   }
 }
 
 // ─── PASS 1: all-time ────────────────────────────────────────────────────────
 
 console.log('\n── Pass 1: all-time leaderboard ────────────────────────────');
-const allTime = makeBuckets(ALL_TIME_LIMIT);
+const allTime = makeBuckets(ALL_TIME_CATS, ALL_TIME_LIMIT);
 let playerCount = 0;
 let skipped     = 0;
 
@@ -309,7 +319,7 @@ if (ACTIVE_ONLY) {
   try { existing = readJson(allTimePath); } catch {}
   allTimeOut = {};
   const fresh = serialise(allTime);
-  for (const cat of CATS) {
+  for (const cat of ALL_TIME_CATS) {
     const freshUuids = new Set(fresh[cat].map(e => e.uuid));
     const retained   = existing ? (existing[cat] || []).filter(e => !freshUuids.has(e.uuid)) : [];
     const merged = new TopN(ALL_TIME_LIMIT);
@@ -366,15 +376,16 @@ for (const fname of tsFiles) {
 
   if (uuids.size === 0) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
-  const buckets = makeBuckets(SEASON_LIMIT);
+  const buckets = makeBuckets(SEASON_CATS, SEASON_LIMIT);
+  const players = {};
   for (const uuid of uuids) {
     const player = readPlayer(uuid);
     if (!player) continue;
-    pushSeason(buckets, player, sid);
+    pushSeason(buckets, players, player, sid);
   }
 
-  const out = serialise(buckets);
-  const hasData = CATS.some(cat => out[cat].length > 0);
+  const out = serialiseSeason(buckets, players);
+  const hasData = SEASON_CATS.some(cat => (out[cat]||[]).length > 0);
   if (!hasData) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
   if (!DRY_RUN) writeJson(path.join(ROOT, 'leaderboard', 'season', `${sid}.json`), out);
