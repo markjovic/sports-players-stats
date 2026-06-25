@@ -451,7 +451,7 @@ async function gitCommit(stats) {
     } catch (err) {
       if (attempt === MAX_PUSH_ATTEMPTS) {
         console.error(`  Push failed after ${MAX_PUSH_ATTEMPTS} attempts: ${err.message}`);
-        return;
+        process.exit(1); // fail the workflow so unpushed shards get retried
       }
       // Pure random jitter 1-90s — linear backoff worsens contention by synchronising retries
       const jitter = Math.floor(Math.random() * 90000) + 1000;
