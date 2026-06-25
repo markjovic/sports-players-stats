@@ -1,0 +1,20 @@
+# .github/workflows/test-grade-concurrency.yml
+name: Test Grade Concurrency
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/test-grade-concurrency.js
+            sports-index.json
+          sparse-checkout-cone-mode: false
+      - name: Run concurrency test
+        run: node scripts/test-grade-concurrency.js
