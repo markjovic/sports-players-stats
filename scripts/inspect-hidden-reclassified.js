@@ -40,7 +40,7 @@ const diff = execSync(
   { cwd: ROOT, stdio: 'pipe' }
 ).toString().trim();
 
-const changedFiles = diff.split('\n').filter(f => f.startsWith('games/bv/'));
+const changedFiles = diff.split('\n').map(f => f.trim()).filter(f => f.startsWith('games/bv/'));
 console.log(`Changed game files: ${changedFiles.length}`);
 console.log();
 
@@ -65,19 +65,23 @@ for (const filePath of changedFiles) {
   try {
     const beforeRaw = execSync(
       `git show ${commitHash}^:${filePath}`,
-      { cwd: ROOT, stdio: 'pipe' }
+      { cwd: ROOT, stdio: 'pipe', maxBuffer: 500 * 1024 * 1024 }
     ).toString();
     before = JSON.parse(beforeRaw);
-  } catch (_) {
+  } catch (e) {
+    console.log(`  [before] read failed: ${e.message.slice(0, 80)}`);
     before = { games: {} };
   }
   try {
     const afterRaw = execSync(
       `git show ${commitHash}:${filePath}`,
-      { cwd: ROOT, stdio: 'pipe' }
+      { cwd: ROOT, stdio: 'pipe', maxBuffer: 500 * 1024 * 1024 }
     ).toString();
     after = JSON.parse(afterRaw);
-  } catch (_) { continue; }
+  } catch (e) {
+    console.log(`  [after] read failed: ${e.message.slice(0, 80)}`);
+    continue;
+  }
 
   // Find games that gained hidden:true
   const reclassified = [];
@@ -103,6 +107,9 @@ for (const filePath of changedFiles) {
   if (reclassified.length === 0) continue;
 
   const seasonName = seasonNames[sid] || sid;
+  console.log(`\nProcessing: ${filePath} (${seasonName})`);
+  console.log(`  Before read: ${Object.keys(before.games || before || {}).length} games`);
+  console.log(`  After read:  ${Object.keys(after.games  || after  || {}).length} games`);
   console.log(`\n── ${seasonName} (${sid}) — ${reclassified.length} games ─────────`);
 
   // Group by grade
@@ -114,15 +121,14 @@ for (const filePath of changedFiles) {
   }
 
   for (const [gid, games] of Object.entries(byGrade)) {
-    const gradeName = gradeNames[gid] || game.gn || gid;
-    console.log(`  Grade: ${gradeName} (${gid})`);
-    for (const { gameId, game } of games) {
-      const date  = game.d  || '?';
-      const rn    = game.rn || '?';
-      const home  = game.hn || game.t1n || '?';
-      const away  = game.an || game.t2n || '?';
-      console.log(`    ${gameId}  ${date}  ${rn}  ${home} vs ${away}`);
-    }
+    console.log(`  Grade: ${gradeName} (gid=${gid})`);
+      for (const { gameId, game } of games) {
+        const date  = game.d  || '?';
+        const rn    = game.rn || '?';
+        const home  = game.hn || game.t1n || '?';
+        const away  = game.an || game.t2n || '?';
+        console.log(`    gameId=${gameId}  date=${date}  rn=${rn}  ${home} vs ${away}`);
+      }
     totalFound += games.length;
   }
 }
