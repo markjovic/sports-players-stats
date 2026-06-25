@@ -30,7 +30,25 @@ permissions:
   actions: write
 
 jobs:
+  clear-stats-checked:
+    runs-on: ubuntu-latest
+    if: inputs.force == true
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Clear statsChecked from all player files
+        run: node scripts/clear-stats-checked.js
+
   generate-shards:
+    needs: [clear-stats-checked]
+    if: always() && !cancelled() && !failure()
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.gen.outputs.shards }}
@@ -74,9 +92,7 @@ jobs:
 
       - name: Fetch shard ${{ matrix.shard }}
         run: |
-          ARGS="--shard=${{ matrix.shard }}"
-          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
-          node scripts/fetch-profile-stats.js $ARGS
+          node scripts/fetch-profile-stats.js --shard=${{ matrix.shard }}
 
       - name: Upload shard summary
         if: always()
@@ -175,7 +191,7 @@ jobs:
             --repo "${{ github.repository }}" \
             --field "run_number=${next_run}" \
             --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
-            --field "force=${{ inputs.force }}" \
+            --field "force=false" \
             --field "shards=${{ inputs.shards }}"
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
