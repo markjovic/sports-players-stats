@@ -54,8 +54,7 @@ try {
   for (const id of (Array.isArray(ids) ? ids : [])) forfeitGameIds.add(id);
   console.log(`  Forfeit index loaded: ${forfeitGameIds.size} games`);
 } catch (_) {}
-const CONCURRENCY  = 1;    // ProfileSeasonStatistics is expensive — one at a time
-const REQUEST_DELAY = 800; // ms between requests — avoids overwhelming PlayHQ backend
+const BATCH_DELAY   = 1000; // ms between batches
 const RETRY_BASE  = 2000; // ms, multiplied by attempt number
 
 // ─── Headers — full set, never split, never modified ─────────────────────────
@@ -571,22 +570,37 @@ async function main() {
     process.exit(0);
   }
 
-  console.log(`\n  Running (concurrency=${CONCURRENCY})…\n`);
+  console.log(`\n  Running (batch_size=30)…\n`);
 
   let blocked = false;
+  let batchNum = 0;
 
-  for (let i = 0; i < toFetch.length; i++) {
-    const uuid = toFetch[i];
-    const result = await processUUID(uuid, stats, i + 1);
+  for (let batchStart = 0; batchStart < toFetch.length && !blocked; batchStart += 30) {
+    // Refresh session before each batch (except first) to reset JWT quota
+    if (batchNum > 0) {
+      console.log(`  ↺ Session refresh before batch ${batchNum + 1}`);
+      await refreshSession();
+    }
+    batchNum++;
 
-    if (result && result.status === 'cloudfront-block') {
-      console.log(`\n  ⛔ CloudFront rate limit hit at position ${i + 1}/${toFetch.length}.`);
-      console.log(`  Committing ${stats.written} written so far — re-run this shard to continue.`);
+    const batch = toFetch.slice(batchStart, Math.min(batchStart + 30, toFetch.length));
+
+    const results = await Promise.allSettled(
+      batch.map((uuid, j) => processUUID(uuid, stats, batchStart + j + 1))
+    );
+
+    const blockIdx = results.findIndex(r =>
+      r.status === 'fulfilled' && r.value?.status === 'cloudfront-block'
+    );
+
+    if (blockIdx !== -1) {
+      console.log(`\n  ⛔ CloudFront block in batch ${batchNum} (position ${batchStart + blockIdx + 1}).`);
+      console.log(`  ${stats.written} written so far — re-run this shard to continue.`);
       blocked = true;
       break;
     }
 
-    await sleep(REQUEST_DELAY);
+    if (batchStart + 30 < toFetch.length) await sleep(1000);
   }
 
   stats.blocked = blocked;
