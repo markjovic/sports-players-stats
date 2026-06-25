@@ -239,12 +239,6 @@ async function fetchProfile(profileID) {
 
   requestCount++;
 
-  // Proactive session refresh every REFRESH_EVERY requests
-  if (requestCount % REFRESH_EVERY === 0) {
-    console.log(`  ↺  Session refresh at request ${requestCount} (new JWT quota)`);
-    await refreshSession();
-  }
-
   const body = { ...PROFILE_QUERY, variables: { profileID } };
 
   let res;
