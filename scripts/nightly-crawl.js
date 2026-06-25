@@ -53,8 +53,8 @@ const INDEX_DIR     = path.join(ROOT, 'players', 'indexes');
 const INDEX_FILE    = path.join(ROOT, 'sports-index.json');
 const STATUS_FILE   = path.join(ROOT, '.nightly-status.json');
 
-const CONCURRENCY_GRADES    = 8;
-const CONCURRENCY_FIXTURES  = 8;
+const CONCURRENCY_GRADES    = 500;
+const CONCURRENCY_FIXTURES  = 500;
 const CONCURRENCY_SPECTATOR = 3;
 const COMMIT_EVERY          = 50;  // commit game files every N seasons
 const COMMIT_EVERY_PLAYERS  = 200; // commit player files every N players updated
