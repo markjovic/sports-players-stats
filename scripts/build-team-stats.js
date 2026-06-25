@@ -30,6 +30,7 @@ const ACTIVE_ONLY = !!ARGS['active-only'];
 const TARGET_SID  = ARGS.season || null;
 
 const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
+const INDEX_DIR      = path.join(ROOT, 'players', 'indexes');
 const PLAYERS_DIR    = path.join(ROOT, 'players');
 const TEAM_STATS_DIR = path.join(ROOT, 'team-stats', 'bv');
 const INDEX_FILE     = path.join(ROOT, 'sports-index.json');
@@ -40,7 +41,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function gitCommit(message) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  try { execSync('git add team-stats/', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
+  try { execSync('git add -A', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
   const staged = (() => {
     try { return execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
     catch (_) { return ''; }
@@ -61,6 +62,27 @@ async function gitCommit(message) {
       await sleep(Math.floor(Math.random() * 15000) + attempt * 3000);
     }
   }
+}
+
+// Build sid|tid → [uuid] map from player index history shards.
+// Covers ALL registrations including normal grade players (not just hp/ap hidden games).
+function buildSidTidPlayerMap() {
+  const map = new Map();
+  for (const fname of fs.readdirSync(INDEX_DIR).filter(f => f.endsWith('.json')).sort()) {
+    let shard;
+    try { shard = JSON.parse(fs.readFileSync(path.join(INDEX_DIR, fname), 'utf8')); }
+    catch (_) { continue; }
+    for (const [uuid, entry] of Object.entries(shard)) {
+      for (const [sid, tids] of Object.entries(entry.history || {})) {
+        for (const tid of tids) {
+          const key = `${sid}|${tid}`;
+          if (!map.has(key)) map.set(key, []);
+          map.get(key).push(uuid);
+        }
+      }
+    }
+  }
+  return map;
 }
 
 // Player file cache — avoid re-reading the same file multiple times per season
@@ -90,7 +112,7 @@ function extractRegStats(player, sid, tid) {
 }
 
 // Build team-stats for a single season
-function buildSeasonTeamStats(sid, seasonMeta) {
+function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
   const gameFile = path.join(GAMES_DIR, `${sid}.json`);
   if (!fs.existsSync(gameFile)) return null;
 
@@ -217,6 +239,14 @@ function buildSeasonTeamStats(sid, seasonMeta) {
     }
   }
 
+  // Populate rosters from player index — covers all normal and hidden grade players
+  for (const [tid, teamData] of Object.entries(teams)) {
+    const uuids = sidTidPlayerMap ? (sidTidPlayerMap.get(`${sid}|${tid}`) || []) : [];
+    for (const uuid of uuids) {
+      addPlayerToRoster(tid, sid, uuid, null);
+    }
+  }
+
   // Sort fixtures by date then round number
   for (const team of Object.values(teams)) {
     team.fixtures.sort((a, b) => {
@@ -252,12 +282,17 @@ async function main() {
   console.log(`Seasons to process: ${seasons.length}`);
   fs.mkdirSync(TEAM_STATS_DIR, { recursive: true });
 
+  // Build player index map once upfront — avoids scanning 256 shards per season
+  console.log('  Building player index map from shards...');
+  const sidTidPlayerMap = buildSidTidPlayerMap();
+  console.log(`  ${sidTidPlayerMap.size} sid|tid combinations indexed`);
+
   let processed = 0, written = 0, sinceCommit = 0;
 
   for (const season of seasons) {
     playerCache.clear();  // clear cache between seasons to avoid unbounded growth
 
-    const stats = buildSeasonTeamStats(season.id, season);
+    const stats = buildSeasonTeamStats(season.id, season, sidTidPlayerMap);
     processed++;
 
     if (stats && Object.keys(stats).length > 0) {
