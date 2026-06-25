@@ -1,0 +1,246 @@
+# .github/workflows/fetch-profile-stats-matrix.yml
+name: Fetch Profile Stats (Matrix)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_number:
+        description: 'Auto-incremented — do not set manually'
+        required: false
+        default: '1'
+        type: string
+      consecutive_zeros:
+        description: 'Consecutive runs with zero progress — do not set manually'
+        required: false
+        default: '0'
+        type: string
+      shards:
+        description: 'JSON array of specific shards to run (e.g. ["00","1a","ff"]). Empty = all 256.'
+        required: false
+        default: '[]'
+        type: string
+      force:
+        description: 'Re-fetch even if statsChecked already present'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  clear-stats-checked:
+    runs-on: ubuntu-latest
+    if: inputs.force == true
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Clear statsChecked from all player files
+        run: node scripts/clear-stats-checked.js
+
+  generate-shards:
+    needs: [clear-stats-checked]
+    if: always() && !cancelled() && !failure()
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.gen.outputs.shards }}
+    steps:
+      - id: gen
+        run: |
+          input_shards='${{ inputs.shards }}'
+          if [ "$input_shards" != "[]" ] && [ -n "$input_shards" ]; then
+            echo "Using targeted shards: $input_shards"
+            echo "shards=$input_shards" >> $GITHUB_OUTPUT
+          else
+            shards=$(python3 -c "
+          import json
+          print(json.dumps([format(i, '02x') for i in range(256)]))
+          ")
+            echo "shards=$shards" >> $GITHUB_OUTPUT
+          fi
+
+  fetch:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/fetch-profile-stats.js
+            players/indexes/${{ matrix.shard }}.json
+            players/${{ matrix.shard }}
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch shard ${{ matrix.shard }}
+        run: |
+          node scripts/fetch-profile-stats.js --shard=${{ matrix.shard }}
+
+      - name: Upload shard summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-summary-${{ matrix.shard }}
+          path: shard-summary-${{ matrix.shard }}.json
+          retention-days: 1
+
+  summary-and-retrigger:
+    needs: fetch
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Download all shard summaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-summary-*
+          merge-multiple: true
+          path: summaries
+
+      - name: Check for force-pending marker
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            matrix-force-pending.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Aggregate and report
+        id: aggregate
+        run: |
+          python3 - << 'PYEOF'
+          import json, os, glob
+
+          files = glob.glob('summaries/*.json')
+          total = already_done = written = inaccessible = errors = remaining = blocked = 0
+
+          for f in files:
+            try:
+              d = json.load(open(f))
+              total        += d.get('total', 0)
+              already_done += d.get('already_done', 0)
+              written      += d.get('written', 0)
+              inaccessible += d.get('inaccessible', 0)
+              errors       += d.get('errors', 0)
+              remaining    += d.get('remaining', 0)
+              if d.get('blocked'): blocked += 1
+            except Exception as e:
+              print(f'  Warning: could not parse {f}: {e}')
+
+          force_pending = os.path.exists('matrix-force-pending.json')
+          outstanding_at_start = total - already_done
+          checked = total - remaining
+
+          print('')
+          print('══════════════════════════════════════════════════')
+          print(f'  Run ${{ inputs.run_number }}/150  |  consecutive zero-progress runs: ${{ inputs.consecutive_zeros }}')
+          print('══════════════════════════════════════════════════')
+          print(f'  Shards processed:          {len(files)}/256')
+          print(f'  Outstanding at run start:  {outstanding_at_start:,}')
+          print(f'  Written this run:          {written:,}')
+          print(f'  Private profiles marked:   {inaccessible:,}')
+          print(f'  Errors:                    {errors:,}')
+          print(f'  Shards blocked mid-run:    {blocked}')
+          print(f'  Remaining after this run:  {remaining:,}')
+          print(f'  Players with statsChecked: {checked:,} / {total:,}')
+          print(f'  Force pending marker:      {"yes" if force_pending else "no"}')
+          print('══════════════════════════════════════════════════')
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            fh.write(f'remaining={remaining}\n')
+            fh.write(f'written={written}\n')
+            fh.write(f'force_pending={"true" if force_pending else "false"}\n')
+          PYEOF
+
+      - name: Determine next action
+        id: next
+        run: |
+          run_number=${{ inputs.run_number }}
+          consecutive_zeros=${{ inputs.consecutive_zeros }}
+          remaining=${{ steps.aggregate.outputs.remaining }}
+          written=${{ steps.aggregate.outputs.written }}
+          force_pending=${{ steps.aggregate.outputs.force_pending }}
+
+          if [ "$remaining" = "0" ]; then
+            echo "status=done" >> $GITHUB_OUTPUT
+          # If force was pending but nothing was written and work remains, shards used stale checkout
+          elif [ "$force_pending" = "true" ] && [ "$written" = "0" ]; then
+            echo "  ⚠ Force pending but nothing written — stale checkout detected, retriggering"
+            echo "status=retrigger" >> $GITHUB_OUTPUT
+            echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
+          elif [ "$run_number" -ge 150 ]; then
+            echo "status=max_runs" >> $GITHUB_OUTPUT
+          elif [ "$written" = "0" ]; then
+            new_zeros=$((consecutive_zeros + 1))
+            echo "new_consecutive_zeros=$new_zeros" >> $GITHUB_OUTPUT
+            if [ "$new_zeros" -ge 3 ]; then
+              echo "status=stuck" >> $GITHUB_OUTPUT
+            else
+              echo "status=retrigger" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "status=retrigger" >> $GITHUB_OUTPUT
+            echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Remove force-pending marker on completion
+        if: steps.next.outputs.status == 'done' && steps.aggregate.outputs.force_pending == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git rm -f matrix-force-pending.json
+          git commit -m "matrix: force run complete — remove pending marker"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git push origin main
+
+      - name: Trigger next run
+        if: steps.next.outputs.status == 'retrigger'
+        run: |
+          next_run=$(( ${{ inputs.run_number }} + 1 ))
+          gh workflow run fetch-profile-stats-matrix.yml \
+            --repo "${{ github.repository }}" \
+            --field "run_number=${next_run}" \
+            --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
+            --field "force=false" \
+            --field "shards=${{ inputs.shards }}"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
+      - name: All done
+        if: steps.next.outputs.status == 'done'
+        run: echo "✅ All players fetched — no further runs needed."
+
+      - name: Max runs reached
+        if: steps.next.outputs.status == 'max_runs'
+        run: |
+          echo "⚠️ Reached 150-run limit. Re-trigger manually if players remain."
+          exit 1
+
+      - name: Stuck — zero progress for 3 consecutive runs
+        if: steps.next.outputs.status == 'stuck'
+        run: |
+          echo "🛑 Zero players written in 3 consecutive runs with remaining > 0."
+          echo "This likely means all remaining players are blocked by a persistent issue."
+          echo "Investigate before re-triggering."
+          exit 1
