@@ -18,13 +18,16 @@ const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 
 function gitCommit(message) {
-  execSync('git add -A',                            { stdio: 'pipe', cwd: ROOT });
-  const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
-  if (!diff) { console.log('  Nothing to commit'); return; }
-  execSync(`git commit -m "${message}"`,            { stdio: 'pipe', cwd: ROOT });
-  execSync('git fetch origin main',                 { stdio: 'pipe', cwd: ROOT });
-  execSync('git merge -X ours FETCH_HEAD --no-edit',{ stdio: 'pipe', cwd: ROOT });
-  execSync('git push origin main',                  { stdio: 'pipe', cwd: ROOT });
+  execSync('git add -A', { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+  // --quiet exits 0 if no staged changes, 1 if there are — produces no output
+  try {
+    execSync('git diff --staged --quiet', { stdio: 'pipe', cwd: ROOT });
+    console.log('  Nothing to commit'); return; // exit 0 = no changes
+  } catch (_) {} // exit 1 = changes exist, proceed
+  execSync(`git commit -m "${message}"`,             { stdio: 'pipe', cwd: ROOT });
+  execSync('git fetch origin main',                  { stdio: 'pipe', cwd: ROOT });
+  execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
+  execSync('git push origin main',                   { stdio: 'pipe', cwd: ROOT });
   console.log(`  ✓ ${message}`);
 }
 
