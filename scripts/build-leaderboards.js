@@ -40,10 +40,9 @@ const DRY_RUN         = process.argv.includes('--dry-run');
 const ACTIVE_ONLY     = process.argv.includes('--active-only');
 const FORCE_FULL      = process.argv.includes('--force'); // ignore progress file, full rebuild
 const ALL_TIME_LIMIT  = 2000;
-const SEASON_LIMIT    = 50000; // effectively unlimited — no cap applied (design decision June 2026)
+const SEASON_LIMIT    = 50000; // effectively unlimited — no cap applied
 
 const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt'];
-// Season files exclude career/single-game stats that don't exist at reg level
 const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins'];
 const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
 const COMMIT_INTERVAL = 100;
@@ -110,7 +109,6 @@ function serialise(buckets) {
   return out;
 }
 
-// Season serialiser — normalized schema: stat arrays of {id,v} + players map
 function serialiseSeason(buckets, players) {
   const out = {};
   for (const [cat, heap] of Object.entries(buckets)) {
@@ -233,8 +231,6 @@ function pushAllTime(buckets, player) {
   }
 }
 
-// pushSeason — normalized schema: entries are {id, v} only; metadata goes in players map
-// id key is uuid|tid|sid — unique per registration (handles mid-season transfers)
 function pushSeason(buckets, players, player, sid) {
   const uuid   = player.uuid;
   const name   = player.name || `Player #${uuid.slice(0, 10)}`;
@@ -256,18 +252,13 @@ function pushSeason(buckets, players, player, sid) {
       const finals     = stats.finals ?? 0;
       const gfApps     = stats.gfApps ?? 0;
       const gfWins     = stats.gfWins ?? 0;
-
-      // Populate players map — metadata stored once per registration
       const playerEntry = {
         n: name, team: reg.tn || '', org, comp,
         grade: reg.gn || '', age: reg.age || '', gender: gender || '',
-        gp, foulOuts, foulOutsPG, threePtPG, foulsPG,
-        finals, gfApps, gfWins,
+        gp, foulOuts, foulOutsPG, threePtPG, foulsPG, finals, gfApps, gfWins,
       };
-      if (sClub) playerEntry.club = sClub;  // omit when null to save space
+      if (sClub) playerEntry.club = sClub;
       players[id] = playerEntry;
-
-      // Push slim {id, v} entries to stat buckets
       if (typeof stats.pts     === 'number') buckets.pts    .push({ id, v: stats.pts });
       if (typeof stats.gp      === 'number') buckets.gp     .push({ id, v: stats.gp });
       if (typeof stats.threePt === 'number') buckets.threePt.push({ id, v: stats.threePt });
@@ -339,13 +330,27 @@ console.log('  Wrote leaderboard/all-time.json');
 // ─── PASS 2: per-season (one season at a time) ───────────────────────────────
 
 console.log('\n── Pass 2: per-season leaderboards ─────────────────────────');
-const teamStatsDir = path.join(ROOT, 'team-stats', 'bv');
-const tsFiles = fs.readdirSync(teamStatsDir)
-  .filter(f => f.endsWith('.json'))
-  .filter(f => !targetSids || targetSids.has(f.replace('.json', '')))
-  .sort();
 
-console.log(`  ${tsFiles.length} season files to process`);
+// Build sid→[uuid] map from player index history — covers ALL 2,792 seasons
+// regardless of whether team-stats files are populated. Same source of truth
+// as team-stats (both derived from player.seasons[].regs[]) but authoritative.
+const indexDir   = path.join(ROOT, 'players', 'indexes');
+const sidToUuids = new Map();
+console.log('  Building season→player map from index shards...');
+for (const fname of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')).sort()) {
+  let shard;
+  try { shard = readJson(path.join(indexDir, fname)); } catch { continue; }
+  for (const [uuid, entry] of Object.entries(shard)) {
+    for (const sid of Object.keys(entry.history || {})) {
+      if (!sidToUuids.has(sid)) sidToUuids.set(sid, []);
+      sidToUuids.get(sid).push(uuid);
+    }
+  }
+}
+console.log(`  ${sidToUuids.size} seasons found across index shards`);
+
+const seasonIds = [...(targetSids || new Set(Object.keys(readJson(path.join(ROOT, 'sports-index.json')).seasons)))];
+console.log(`  ${seasonIds.length} season files to process`);
 
 // Load pass 2 progress — resume from last committed point
 let doneSids = new Set();
@@ -361,20 +366,11 @@ let seasonFilesWritten = 0;
 let seasonFilesSkipped = 0;
 let sinceLastCommit    = 0;
 
-for (const fname of tsFiles) {
-  const sid = fname.replace('.json', '');
-
+for (const sid of seasonIds) {
   if (doneSids.has(sid)) { seasonFilesSkipped++; continue; }
 
-  let tsData;
-  try { tsData = readJson(path.join(teamStatsDir, fname)); } catch { doneSids.add(sid); seasonFilesSkipped++; continue; }
-
-  const uuids = new Set();
-  for (const team of Object.values(tsData)) {
-    for (const uuid of Object.keys(team.roster || {})) uuids.add(uuid);
-  }
-
-  if (uuids.size === 0) { doneSids.add(sid); seasonFilesSkipped++; continue; }
+  const uuids = sidToUuids.get(sid) || [];
+  if (uuids.length === 0) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
   const buckets = makeBuckets(SEASON_CATS, SEASON_LIMIT);
   const players = {};
@@ -384,8 +380,8 @@ for (const fname of tsFiles) {
     pushSeason(buckets, players, player, sid);
   }
 
-  const out = serialiseSeason(buckets, players);
-  const hasData = SEASON_CATS.some(cat => (out[cat]||[]).length > 0);
+  const out     = serialiseSeason(buckets, players);
+  const hasData = SEASON_CATS.some(cat => (out[cat] || []).length > 0);
   if (!hasData) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
   if (!DRY_RUN) writeJson(path.join(ROOT, 'leaderboard', 'season', `${sid}.json`), out);
@@ -402,7 +398,7 @@ for (const fname of tsFiles) {
       );
     }
     sinceLastCommit = 0;
-    console.log(`  ${seasonFilesWritten + seasonFilesSkipped} of ${tsFiles.length} seasons done (${seasonFilesWritten} written)...`);
+    console.log(`  ${seasonFilesWritten + seasonFilesSkipped} of ${seasonIds.length} seasons done (${seasonFilesWritten} written)...`);
   }
 }
 
@@ -426,4 +422,4 @@ console.log('\n─── Summary ───────────────�
 console.log(`  Mode                     : ${ACTIVE_ONLY ? 'ACTIVE ONLY' : 'FULL'}${DRY_RUN ? ' + DRY RUN' : ''}`);
 console.log(`  Players scanned (pass 1) : ${playerCount}`);
 console.log(`  Per-season files written : ${seasonFilesWritten}`);
-console.log(`  Per-season files skipped : ${seasonFilesSkipped} (no roster data)`);
+console.log(`  Per-season files skipped : ${seasonFilesSkipped} (no player history)`);
