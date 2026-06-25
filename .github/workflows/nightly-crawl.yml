@@ -78,6 +78,22 @@ jobs:
           echo "new_players=$stubbed" >> $GITHUB_OUTPUT
           echo "Remaining: $remaining  Processed: $processed  New players: $stubbed"
 
+  team-stats:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build team stats (active seasons)
+        run: node scripts/build-team-stats.js --active-only
+
   leaderboards:
     needs: crawl
     runs-on: ubuntu-latest
