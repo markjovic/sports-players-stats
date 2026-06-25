@@ -1,0 +1,16 @@
+# .github/workflows/inspect-hidden-reclassified.yml
+name: Inspect Hidden Reclassified Games
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+      - name: Inspect reclassified games
+        run: node scripts/inspect-hidden-reclassified.js
