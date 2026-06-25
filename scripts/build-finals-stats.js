@@ -46,12 +46,13 @@ function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 
 function gitCommit(message, dirs) {
   try {
-    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) return;
     execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git pull --rebase=false --no-edit -X ours', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ committed: ${message}`);
   } catch (e) {
     console.error(`  ✗ git error: ${e.message}`);
@@ -127,18 +128,10 @@ for (const sid of sidsToScan) {
   const finalsGames = Object.values(gf.games || {}).filter(g => isFinal(g.rn));
   if (finalsGames.length === 0) { scannedSids.add(sid); continue; }
 
-  // Load team-stats to resolve uuid→tid for this season
-  const uuidToTid = new Map(); // uuid → tid
-  try {
-    const tsData = readJson(path.join(teamStatsDir, `${sid}.json`));
-    for (const [tid, team] of Object.entries(tsData)) {
-      for (const uuid of Object.keys(team.roster || {})) {
-        uuidToTid.set(uuid, tid);
-      }
-    }
-  } catch {
-    // team-stats missing — can still count finals appearances, just not wins
-  }
+  // Resolve uuid→tid from the game entry itself (h/a team IDs)
+  // We determine team from whether player is in homePlayers or awayPlayers below
+  // uuidToTid built per-game for GF win determination
+  const uuidToTid = new Map();
 
   for (const g of finalsGames) {
     const gf_flag = isGrandFinal(g.rn);
@@ -154,7 +147,13 @@ for (const sid of sidsToScan) {
       else if (as > hs) winnerTid = g.a || g.t2 || null;
     }
 
-    // Accumulate for each player in this game
+    // Build uuid→tid from p[] + game h/a for win determination
+    // p[] has all players but no team — use hp/ap if available, else use game.h/game.a heuristic
+    const homeTid = g.h || g.t1 || null;
+    const awayTid = g.a || g.t2 || null;
+    const homeUuids = new Set((g.hp || []).map(p => p.profileID).filter(Boolean));
+    const awayUuids = new Set((g.ap || []).map(p => p.profileID).filter(Boolean));
+
     for (const pEntry of (g.p || [])) {
       const uuid = pEntry.id;
       if (!uuid) continue;
@@ -164,13 +163,15 @@ for (const sid of sidsToScan) {
       if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0 });
       const acc = sidMap.get(sid);
 
-      acc.finals++;
+      acc.finals = 1;
       if (gf_flag) {
-        acc.gfApps++;
-        // Win: player's tid matches winning tid
-        const playerTid = uuidToTid.get(uuid);
+        acc.gfApps = 1;
+        // Determine team: prefer hp/ap attribution, fall back to winnerTid heuristic
+        let playerTid = null;
+        if (homeUuids.has(uuid)) playerTid = homeTid;
+        else if (awayUuids.has(uuid)) playerTid = awayTid;
         if (playerTid && winnerTid && playerTid === winnerTid) {
-          acc.gfWins++;
+          acc.gfWins = 1;
         }
       }
     }
@@ -233,14 +234,16 @@ for (const [uuid, sidMap] of finalsMap) {
     if (totalGp > 0) seasonsWithGames++;
   }
 
+  let seasonsWithFinals = 0;
   for (const acc of sidMap.values()) {
-    careerFinals  += acc.finals;
-    careerGfApps  += acc.gfApps;
-    careerGfWins  += acc.gfWins;
+    if (acc.finals > 0)  { careerFinals++;  seasonsWithFinals++; }
+    if (acc.gfApps > 0)    careerGfApps++;
+    if (acc.gfWins > 0)    careerGfWins++;
   }
 
+  // finalsPerSeason = fraction of seasons where player appeared in finals (max 1 per season)
   const finalsPerSeason = seasonsWithGames > 0
-    ? Math.round((careerFinals / seasonsWithGames) * 10) / 10
+    ? Math.round((seasonsWithFinals / seasonsWithGames) * 100) / 100
     : 0;
 
   const bball = player.sports?.Basketball;

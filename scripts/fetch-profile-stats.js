@@ -54,9 +54,9 @@ try {
   for (const id of (Array.isArray(ids) ? ids : [])) forfeitGameIds.add(id);
   console.log(`  Forfeit index loaded: ${forfeitGameIds.size} games`);
 } catch (_) {}
-const CONCURRENCY  = 1;    // ProfileSeasonStatistics is expensive — one at a time
-const REQUEST_DELAY = 800; // ms between requests — avoids overwhelming PlayHQ backend
-const RETRY_BASE  = 2000; // ms, multiplied by attempt number
+const BATCH_SIZE    = 30;   // concurrent requests per batch — stays under CloudFront JWT quota (~35)
+const BATCH_DELAY   = 1000; // ms between batches
+const RETRY_BASE    = 2000;
 
 // ─── Headers — full set, never split, never modified ─────────────────────────
 
@@ -179,11 +179,17 @@ function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
 
+  const seenGameKeys = new Set();  // deduplicate games across multiple registrations
   const foulOuts     = {};
-  let maxGamePTS     = null;
-  let maxGameThreePt = null;
-  let maxGamePTSKey  = null;   // { gameKey, sid } for the game where PTS record was set
-  let maxGameThreePtKey = null; // { gameKey, sid } for the game where 3PT record was set
+  let maxGamePTS = null, maxGamePTSKey = null;
+  let maxGameThreePt = null, maxGameThreePtKey = null;
+
+  // Career totals — computed from per-game data (authoritative, deduplicated)
+  let careerGP = 0, careerPTS = 0, careerThreePt = 0;
+  let careerFG = 0, careerFT = 0, careerFouls = 0;
+
+  // Per-reg stats: "sid|tid|gid" → { gp, pts, threePt, fg, ft, fouls, foulOuts }
+  const perRegStats = {};
 
   for (const season of seasonStats) {
     for (const reg of (season.statistics || [])) {
@@ -191,20 +197,51 @@ function parseProfileStats(data) {
       if (!seasonId) continue;
 
       for (const teamStat of (reg.teamStatistics || [])) {
+        const tid = teamStat.team?.id || null;
+
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
+          const gid = gradeStat.grade?.id || null;
+          const regKey = `${seasonId}|${tid}|${gid}`;
+          if (!perRegStats[regKey]) perRegStats[regKey] = { gp:0, pts:0, threePt:0, fg:0, ft:0, fouls:0, foulOuts:0 };
+          const rs = perRegStats[regKey];
+
           for (const gameStat of (gradeStat.gameStatistics || [])) {
             const stats   = gameStat.statistics || [];
             const gameKey = gameStat.game?.id || null;
-            if (gameKey && forfeitGameIds.has(gameKey)) continue;  // skip forfeit games
-            const fouls   = statValue(stats, 'TOTAL_FOULS');
-            const pts     = statValue(stats, 'TOTAL_SCORE');
-            const three   = statValue(stats, '3_POINT_SCORE');
+            if (gameKey && forfeitGameIds.has(gameKey)) continue;
+            if (gameKey && seenGameKeys.has(gameKey)) continue;
+            if (gameKey) seenGameKeys.add(gameKey);
 
-            // Foul-out = 5 or more fouls in a single game
+            const fouls = statValue(stats, 'TOTAL_FOULS');
+            const pts   = statValue(stats, 'TOTAL_SCORE');
+            const three = statValue(stats, '3_POINT_SCORE');
+            const ft    = statValue(stats, '1_POINT_SCORE');
+            // fg = total field goals = 2PT made + 3PT made
+            const fg    = statValue(stats, '2_POINT_SCORE') + three;
+
+            // Career totals
+            careerGP++;
+            careerPTS     += pts;
+            careerThreePt += three;
+            careerFG      += fg;
+            careerFT      += ft;
+            careerFouls   += fouls;
+
+            // Per-reg totals
+            rs.gp++;
+            rs.pts     += pts;
+            rs.threePt += three;
+            rs.fg      += fg;
+            rs.ft      += ft;
+            rs.fouls   += fouls;
+
+            // Foul-out tracking
             if (fouls >= 5) {
               foulOuts[seasonId] = (foulOuts[seasonId] || 0) + 1;
+              rs.foulOuts++;
             }
 
+            // Career single-game records
             if (pts > (maxGamePTS ?? 0)) {
               maxGamePTS    = pts;
               maxGamePTSKey = gameKey ? { gameKey, sid: seasonId } : null;
@@ -219,7 +256,11 @@ function parseProfileStats(data) {
     }
   }
 
-  return { foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey };
+  return {
+    foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey,
+    careerGP, careerPTS, careerThreePt, careerFG, careerFT, careerFouls,
+    perRegStats,
+  };
 }
 
 // ─── API fetch ────────────────────────────────────────────────────────────────
@@ -236,13 +277,6 @@ async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
 
   requestCount++;
-
-  // Proactive session refresh every REFRESH_EVERY requests
-  if (requestCount % REFRESH_EVERY === 0) {
-    console.log(`  ↺  Session refresh at request ${requestCount} (new JWT quota)`);
-    await refreshSession();
-  }
-
   const body = { ...PROFILE_QUERY, variables: { profileID } };
 
   let res;
@@ -391,11 +425,44 @@ async function processUUID(uuid, stats, idx) {
   if (!player.sports.Basketball) player.sports.Basketball = {};
 
   const bk = player.sports.Basketball;
-  bk.foulOuts       = parsed.foulOuts;
-  bk.maxGamePTS     = parsed.maxGamePTS;
-  bk.maxGameThreePt = parsed.maxGameThreePt;
 
-  // Write records with gameKey context for db-report and StatTrack game linking
+  // Career stats from per-game data — fully recomputed, authoritative
+  bk.gp         = parsed.careerGP;
+  bk.pts        = parsed.careerPTS;
+  bk.threePt    = parsed.careerThreePt;
+  bk.fg         = parsed.careerFG;
+  bk.ft         = parsed.careerFT;
+  bk.fouls      = parsed.careerFouls;
+  bk.foulOuts   = parsed.foulOuts;
+  bk.maxGamePTS = parsed.maxGamePTS;
+  bk.maxGameThreePt = parsed.maxGameThreePt;
+  // Preserve finals stats — managed by build-finals-stats.js and nightly crawl
+  // bk.finals, bk.gfApps, bk.gfWins, bk.finalsPerSeason left untouched
+
+  // Per-reg stats — matched by sid|tid|gid
+  for (const season of (player.seasons || [])) {
+    for (const reg of (season.regs || [])) {
+      const key = `${season.sid}|${reg.tid}|${reg.gid}`;
+      const rs  = parsed.perRegStats[key];
+      if (rs) {
+        reg.stats = {
+          gp:      rs.gp,
+          pts:     rs.pts,
+          threePt: rs.threePt,
+          fg:      rs.fg,
+          ft:      rs.ft,
+          fouls:   rs.fouls,
+          foulOuts: rs.foulOuts,
+          // Preserve finals stats written by build-finals-stats.js / nightly crawl
+          finals:  reg.stats?.finals  ?? 0,
+          gfApps:  reg.stats?.gfApps  ?? 0,
+          gfWins:  reg.stats?.gfWins  ?? 0,
+        };
+      }
+    }
+  }
+
+  // Write records with gameKey context
   if (!player.records) player.records = {};
   player.records.maxGamePTS = parsed.maxGamePTSKey
     ? { v: parsed.maxGamePTS, ...parsed.maxGamePTSKey }
@@ -403,7 +470,7 @@ async function processUUID(uuid, stats, idx) {
   player.records.maxGameThreePt = parsed.maxGameThreePtKey
     ? { v: parsed.maxGameThreePt, ...parsed.maxGameThreePtKey }
     : { v: parsed.maxGameThreePt ?? null };
-  bk.statsChecked   = new Date().toISOString();
+  bk.statsChecked = new Date().toISOString();
 
   writePlayer(uuid, player);
   stats.written++;
@@ -567,22 +634,41 @@ async function main() {
     process.exit(0);
   }
 
-  console.log(`\n  Running (concurrency=${CONCURRENCY})…\n`);
+  console.log(`\n  Running (batch_size=${BATCH_SIZE})…\n`);
 
   let blocked = false;
+  let batchNum = 0;
 
-  for (let i = 0; i < toFetch.length; i++) {
-    const uuid = toFetch[i];
-    const result = await processUUID(uuid, stats, i + 1);
+  for (let batchStart = 0; batchStart < toFetch.length && !blocked; batchStart += BATCH_SIZE) {
+    // Refresh session before each batch (except first) to reset JWT quota (~35 per JWT)
+    if (batchNum > 0) {
+      console.log(`  ↺ Session refresh before batch ${batchNum + 1}`);
+      await refreshSession();
+    }
+    batchNum++;
 
-    if (result && result.status === 'cloudfront-block') {
-      console.log(`\n  ⛔ CloudFront rate limit hit at position ${i + 1}/${toFetch.length}.`);
-      console.log(`  Committing ${stats.written} written so far — re-run this shard to continue.`);
+    const batch = toFetch.slice(batchStart, Math.min(batchStart + BATCH_SIZE, toFetch.length));
+
+    // Fire all in batch concurrently — each writes independently on success
+    const results = await Promise.allSettled(
+      batch.map((uuid, j) => processUUID(uuid, stats, batchStart + j + 1))
+    );
+
+    // Detect any CloudFront blocks in this batch
+    const blockIdx = results.findIndex(r =>
+      r.status === 'fulfilled' && r.value?.status === 'cloudfront-block'
+    );
+
+    if (blockIdx !== -1) {
+      console.log(`\n  ⛔ CloudFront block in batch ${batchNum} (position ${batchStart + blockIdx + 1}).`);
+      console.log(`  ${stats.written} written so far — re-run this shard to continue.`);
       blocked = true;
       break;
     }
 
-    await sleep(REQUEST_DELAY);
+    if (batchStart + BATCH_SIZE < toFetch.length) {
+      await sleep(BATCH_DELAY);
+    }
   }
 
   stats.blocked = blocked;

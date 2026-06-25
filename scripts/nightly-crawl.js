@@ -16,6 +16,16 @@
 
 'use strict';
 
+function isFinal(rn) {
+  if (!rn) return false;
+  return rn.toLowerCase().includes('final');
+}
+function isGrandFinal(rn) {
+  if (!rn) return false;
+  const r = rn.toLowerCase();
+  return r.includes('grand final') || r === 'gf';
+}
+
 const https        = require('https');
 const crypto       = require('crypto');
 const fs           = require('fs');
@@ -464,7 +474,15 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
     // Covers both: games newly scored this run, and games that timed out
     // before spectator processing in a previous run.
     if (status === 'FINAL' && !existing?.spc && !isForfeit) {
-      needsSpectator.push({ gameId: game.id, seasonId });
+      needsSpectator.push({
+        gameId: game.id,
+        seasonId,
+        rn:     roundName || null,
+        homeTid: homeTeam?.id || null,
+        awayTid: awayTeam?.id || null,
+        homeScore,
+        awayScore,
+      });
     }
   }
 
@@ -654,7 +672,7 @@ async function main() {
   const playerDeltas = new Map();
   let spectatorHits = 0, spectatorMiss = 0, p3Done = 0;
 
-  const p3Tasks = needsSpectator.map(({ gameId, seasonId }) => async () => {
+  const p3Tasks = needsSpectator.map(({ gameId, seasonId, rn, homeTid, awayTid, homeScore, awayScore }) => async () => {
     const game = await gqlSpectator(gameId);
     p3Done++;
     if (p3Done % 50 === 0 || p3Done === needsSpectator.length)
@@ -671,13 +689,21 @@ async function main() {
     const allPlayers  = [...homePlayers, ...awayPlayers];
 
     // Collect player deltas for later batch processing
+    const isFinalsGame = isFinal(rn);
+    const isGF         = isGrandFinal(rn);
+    const homeWon      = (homeScore !== null && awayScore !== null) ? homeScore > awayScore : null;
+
     for (const p of allPlayers) {
       if (!p.profileID) continue;
       if (!playerDeltas.has(p.profileID)) {
         playerDeltas.set(p.profileID, { name: p.name, deltas: [] });
       }
+      const isHomePlayer = homePlayers.some(hp => hp.profileID === p.profileID);
+      const playerTid    = isHomePlayer ? homeTid : awayTid;
+      const playerWon    = homeWon === null ? null : (isHomePlayer ? homeWon : !homeWon);
       playerDeltas.get(p.profileID).deltas.push({
         seasonId, gameKey: gameId, pts: p.pts, pt3: p.pt3, fouls: p.fouls,
+        isFinalsGame, isGF, playerTid, playerWon,
       });
     }
 
@@ -713,7 +739,8 @@ async function main() {
 
   let statsUpdated       = 0;
   let playersSinceCommit = 0;
-  const genuinelyNew     = new Map();  // uuid → name — not yet in the player index
+  const genuinelyNew     = new Map();
+  const affectedShards   = new Set(); // UUID prefixes where statsChecked was cleared
 
   // Group by shard for efficient index reads
   const byShard = new Map();
@@ -747,21 +774,77 @@ async function main() {
 
       let changed = false;
       if (!player.records) player.records = {};
-      for (const { seasonId, gameKey, pts, pt3, fouls } of deltas) {
+
+      // Track which shards need matrix re-fetch
+      let needsMatrixRecheck = false;
+
+      for (const { seasonId, gameKey, pts, pt3, fouls, isFinalsGame, isGF, playerTid, playerWon } of deltas) {
         if (pts > (bk.maxGamePTS ?? 0)) {
           bk.maxGamePTS = pts;
           player.records.maxGamePTS = gameKey ? { v: pts, gameKey, sid: seasonId } : { v: pts };
           changed = true;
+          needsMatrixRecheck = true;
         }
         if (pt3 > (bk.maxGameThreePt ?? 0)) {
           bk.maxGameThreePt = pt3;
           player.records.maxGameThreePt = gameKey ? { v: pt3, gameKey, sid: seasonId } : { v: pt3 };
           changed = true;
+          needsMatrixRecheck = true;
         }
         if (fouls >= 5) {
           bk.foulOuts[seasonId] = (bk.foulOuts[seasonId] || 0) + 1;
           changed = true;
+          needsMatrixRecheck = true;
         }
+
+        // Inline finals tracking — boolean per season, idempotent writes
+        if (isFinalsGame) {
+          // Find the reg for this player in this season by tid
+          for (const season of (player.seasons || [])) {
+            if (season.sid !== seasonId) continue;
+            for (const reg of (season.regs || [])) {
+              if (playerTid && reg.tid !== playerTid) continue;
+              if (!reg.stats) reg.stats = {};
+              if (!reg.stats.finals) {
+                reg.stats.finals = 1;
+                changed = true;
+              }
+              if (isGF && !reg.stats.gfApps) {
+                reg.stats.gfApps = 1;
+                changed = true;
+              }
+              if (isGF && playerWon && !reg.stats.gfWins) {
+                reg.stats.gfWins = 1;
+                changed = true;
+              }
+            }
+          }
+          // Recompute career finals stats from seasons
+          let careerFinals = 0, careerGfApps = 0, careerGfWins = 0, seasonsWithGames = 0, seasonsWithFinals = 0;
+          for (const season of (player.seasons || [])) {
+            const hasGp = (season.regs || []).some(r => (r.stats?.gp ?? 0) > 0 || (r.stats?.finals ?? 0) > 0);
+            if (hasGp) seasonsWithGames++;
+            const madeFinalsThisSeason = (season.regs || []).some(r => (r.stats?.finals ?? 0) > 0);
+            if (madeFinalsThisSeason) {
+              careerFinals++;
+              seasonsWithFinals++;
+              if ((season.regs || []).some(r => (r.stats?.gfApps ?? 0) > 0)) careerGfApps++;
+              if ((season.regs || []).some(r => (r.stats?.gfWins ?? 0) > 0)) careerGfWins++;
+            }
+          }
+          bk.finals          = careerFinals;
+          bk.gfApps          = careerGfApps;
+          bk.gfWins          = careerGfWins;
+          bk.finalsPerSeason = seasonsWithGames > 0
+            ? Math.round((seasonsWithFinals / seasonsWithGames) * 100) / 100 : 0;
+        }
+      }
+
+      // Clear statsChecked so the matrix re-fetches this player to recompute
+      // foulOuts/maxGamePTS/maxGameThreePt cleanly from the API
+      if (needsMatrixRecheck) {
+        delete bk.statsChecked;
+        affectedShards.add(uuid.slice(0, 2));
       }
 
       if (changed) {
@@ -778,6 +861,19 @@ async function main() {
     }
   }
   console.log(`  Updated: ${statsUpdated}`);
+  if (affectedShards.size > 0) {
+    console.log(`  Shards needing matrix re-fetch: ${affectedShards.size} (${[...affectedShards].sort().join(', ')})`);
+    if (!DRY_RUN) {
+      fs.writeFileSync(
+        path.join(ROOT, 'needs-matrix-shards.json'),
+        JSON.stringify([...affectedShards].sort())
+      );
+    }
+  } else {
+    // No players need re-fetch — clear any stale file
+    const shardsFile = path.join(ROOT, 'needs-matrix-shards.json');
+    if (fs.existsSync(shardsFile) && !DRY_RUN) fs.unlinkSync(shardsFile);
+  }
   console.log();
 
   // ── Phase 4: Stub new players ────────────────────────────────────────────────
