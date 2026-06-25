@@ -2,8 +2,8 @@
 name: Nightly Crawl
 
 on:
-  schedule:
-    - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
+#  schedule:
+#    - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
   workflow_dispatch:
     inputs:
       rounds_back:
