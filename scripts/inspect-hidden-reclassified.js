@@ -81,10 +81,22 @@ for (const filePath of changedFiles) {
 
   // Find games that gained hidden:true
   const reclassified = [];
-  for (const [gameId, game] of Object.entries(after.games || {})) {
+  const afterGames  = after.games  || after  || {};  // handle both { games: {} } and flat
+  const beforeGames = before.games || before || {};
+
+  // Debug: sample the structure
+  const afterKeys   = Object.keys(afterGames).slice(0, 2);
+  if (afterKeys.length > 0) {
+    const sample = afterGames[afterKeys[0]];
+    console.log(`  Structure check: hidden=${sample.hidden}, keys=${Object.keys(sample).slice(0,6).join(',')}`);
+  } else {
+    console.log(`  WARNING: afterGames empty — top-level keys: ${Object.keys(after).join(',')}`);
+  }
+
+  for (const [gameId, game] of Object.entries(afterGames)) {
     if (!game.hidden) continue;
-    const wasHidden = before.games?.[gameId]?.hidden;
-    if (wasHidden) continue;  // was already hidden
+    const wasHidden = beforeGames[gameId]?.hidden;
+    if (wasHidden) continue;
     reclassified.push({ gameId, game });
   }
 
