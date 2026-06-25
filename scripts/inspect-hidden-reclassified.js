@@ -121,6 +121,7 @@ for (const filePath of changedFiles) {
   }
 
   for (const [gid, games] of Object.entries(byGrade)) {
+    const gradeName = gradeNames[gid] || games[0]?.game?.gn || gid;
     console.log(`  Grade: ${gradeName} (gid=${gid})`);
       for (const { gameId, game } of games) {
         const date  = game.d  || '?';
