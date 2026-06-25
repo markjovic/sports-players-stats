@@ -71,6 +71,13 @@ async function main() {
   console.log(`  ${skipped} already clear or unreadable`);
   console.log('\n  Committing...');
 
+  // Write marker so retrigger knows a force was pending
+  // Removed by retrigger job once actual writes are confirmed
+  fs.writeFileSync(
+    path.join(ROOT, 'matrix-force-pending.json'),
+    JSON.stringify({ clearedAt: new Date().toISOString(), count: cleared })
+  );
+
   gitCommit(`clear-stats-checked: ${cleared} players cleared for matrix re-fetch`);
 
   console.log(`  Elapsed: ${Math.round((Date.now() - start) / 1000)}s`);
