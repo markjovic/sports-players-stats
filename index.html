@@ -96,6 +96,13 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .sc-grade{font-size:0.73rem;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:3px}
 .sc-grade:hover{opacity:0.8}
 .sc-regrade{font-size:0.68rem;color:var(--text3);margin-left:4px}
+.gs-wrap{padding:6px 14px 2px}
+.gs-org-block{margin-bottom:8px}
+.gs-org-name{font-size:0.68rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:5px}
+.gs-ages{display:flex;flex-wrap:wrap;gap:5px}
+.gs-pill{display:inline-flex;align-items:center;gap:4px;background:var(--card-bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:0.71rem}
+.gs-age{color:var(--text2)}
+.gs-grd{color:var(--text1);font-weight:700}
 .sc-stats{font-size:0.73rem;color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .chev{color:var(--text3);font-size:0.65rem;transition:transform 0.2s;flex-shrink:0}
 .sc-hdr.open .chev{transform:rotate(90deg)}
@@ -295,7 +302,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.34</span>
+      <span class="rail-ver">Beta 0.35</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -734,6 +741,80 @@ async function loadPlayer(uuid){
   renderPlayer(p);
 }
 
+// ── Grade snapshot helpers ──────────────────────────────────────────────────
+
+function extractGradeLevel(gn){
+  if(!gn)return'?';
+  const parts=gn.trim().split(/\s+/);
+  const last=parts[parts.length-1];
+  if(/^[A-E][1-4]?$/.test(last))return last;
+  if(/^[A-E]RES$/i.test(last))return last.toUpperCase();
+  if(parts.length>=2){
+    const s=parts[parts.length-2];
+    if(/^(Grade|Pool|Division|Div)$/i.test(s))return s+' '+last;
+  }
+  return last;
+}
+
+function gradeRank(lv){
+  return({'A':10,'A1':11,'A2':12,'A3':13,'B':20,'B1':21,'B2':22,'B3':23,
+          'C':30,'C1':31,'C2':32,'D':40,'D1':41,'D2':42,'E':50,'E1':51,
+          'ARES':15,'BRES':25,'CRES':35,'DRES':45})[( lv||'').toUpperCase()]??999;
+}
+
+function ageNum(a){return parseInt((a||'').replace(/\D/g,''))||999;}
+
+function baseLetter(lv){
+  // Extract the base grade letter: BRES→B, B1→B, A→A, Pool 2→Pool 2 (unchanged)
+  return(lv||'').replace(/RES$/i,'').replace(/[0-9]+$/,'')[0]||lv||'';
+}
+
+function buildGradeSnapshot(seasons){
+  const map=new Map();
+  for(const sn of seasons){
+    const si=S.idx?.seasons?.[sn.sid];
+    const org=(si?.orgName||'').trim();
+    const comp=(si?.compName||'').trim();
+    // Fall back to season name if org not found — shouldn't happen but handles gracefully
+    const key=org?(org+(comp?' — '+comp:'')):(sn.sn||sn.sid||'Other');
+    if(!map.has(key))map.set(key,new Map());
+    const ageMap=map.get(key);
+    // Within this season: for each age, track grades by base letter
+    // Last reg with a given base letter wins (handles BRES→B or B→BRES correctly)
+    const ageSel={}; // age → { baseLetter → { idx, lv } }
+    for(let i=0;i<(sn.regs||[]).length;i++){
+      const reg=sn.regs[i];
+      const age=reg.age||'Open';
+      const lv=extractGradeLevel(reg.gn);
+      const bl=baseLetter(lv);
+      if(!ageSel[age])ageSel[age]={};
+      // Always overwrite — later index = more recent = wins
+      ageSel[age][bl]={idx:i,lv};
+    }
+    for(const[age,blMap]of Object.entries(ageSel)){
+      if(!ageMap.has(age))ageMap.set(age,new Set());
+      for(const{lv}of Object.values(blMap))ageMap.get(age).add(lv);
+    }
+  }
+  return map;
+}
+
+function renderGradeSnapshot(seasons){
+  const snap=buildGradeSnapshot(seasons);
+  if(!snap.size)return'';
+  let h='<div class="gs-wrap">';
+  for(const[orgKey,ageMap]of snap){
+    h+=`<div class="gs-org-block"><div class="gs-org-name">${esc(orgKey)}</div><div class="gs-ages">`;
+    const ages=[...ageMap.keys()].sort((a,b)=>ageNum(a)-ageNum(b));
+    for(const age of ages){
+      const grades=[...ageMap.get(age)].sort((a,b)=>gradeRank(a)-gradeRank(b));
+      h+=`<span class="gs-pill"><span class="gs-age">${esc(age)}</span><span class="gs-grd">${grades.map(esc).join(' · ')}</span></span>`;
+    }
+    h+='</div></div>';
+  }
+  return h+'</div>';
+}
+
 function renderPlayer(p){
   const ve=el('view-player');
   const uuid=p.uuid;
@@ -768,6 +849,7 @@ function renderPlayer(p){
     }
     h+='</div>';
   }
+  h+=renderGradeSnapshot(p.seasons||[]);
   h+='<div class="slist"><div class="sec-lbl">Season history</div>';
   groups.forEach(({sn,tid,regs},gi)=>{
     // Use last reg as team link target (most stable); sum ALL regs for stats
