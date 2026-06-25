@@ -14,6 +14,11 @@ on:
         required: false
         default: '0'
         type: string
+      shards:
+        description: 'JSON array of specific shards to run (e.g. ["00","1a","ff"]). Empty = all 256.'
+        required: false
+        default: '[]'
+        type: string
       force:
         description: 'Re-fetch even if statsChecked already present'
         required: false
@@ -32,11 +37,17 @@ jobs:
     steps:
       - id: gen
         run: |
-          shards=$(python3 -c "
+          input_shards='${{ inputs.shards }}'
+          if [ "$input_shards" != "[]" ] && [ -n "$input_shards" ]; then
+            echo "Using targeted shards: $input_shards"
+            echo "shards=$input_shards" >> $GITHUB_OUTPUT
+          else
+            shards=$(python3 -c "
           import json
           print(json.dumps([format(i, '02x') for i in range(256)]))
           ")
-          echo "shards=$shards" >> $GITHUB_OUTPUT
+            echo "shards=$shards" >> $GITHUB_OUTPUT
+          fi
 
   fetch:
     needs: generate-shards
@@ -164,7 +175,8 @@ jobs:
             --repo "${{ github.repository }}" \
             --field "run_number=${next_run}" \
             --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
-            --field "force=${{ inputs.force }}"
+            --field "force=${{ inputs.force }}" \
+            --field "shards=${{ inputs.shards }}"
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 

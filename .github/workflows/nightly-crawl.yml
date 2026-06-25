@@ -42,6 +42,7 @@ jobs:
       games_remaining: ${{ steps.status.outputs.games_remaining }}
       games_processed: ${{ steps.status.outputs.games_processed }}
       new_players:     ${{ steps.status.outputs.new_players }}
+      stats_rechecks:  ${{ steps.status.outputs.stats_rechecks }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -76,6 +77,13 @@ jobs:
           echo "games_remaining=$remaining" >> $GITHUB_OUTPUT
           echo "games_processed=$processed" >> $GITHUB_OUTPUT
           echo "new_players=$stubbed" >> $GITHUB_OUTPUT
+          # Count shards needing matrix re-fetch
+          if [ -f "needs-matrix-shards.json" ]; then
+            rechecks=$(node -e "console.log(JSON.parse(require('fs').readFileSync('needs-matrix-shards.json')).length)")
+          else
+            rechecks=0
+          fi
+          echo "stats_rechecks=$rechecks" >> $GITHUB_OUTPUT
           echo "Remaining: $remaining  Processed: $processed  New players: $stubbed"
 
   team-stats:
@@ -177,21 +185,37 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - run: node scripts/build-venue-indexes.js
 
-  profile-stats-new-players:
-    needs: crawl
+  profile-stats-matrix:
+    needs: [crawl, team-stats]
     runs-on: ubuntu-latest
     if: |
       always() &&
       inputs.dry_run != 'true' &&
-      needs.crawl.outputs.new_players != '0'
+      (needs.crawl.outputs.new_players != '0' || needs.crawl.outputs.stats_rechecks != '0')
     steps:
-      - name: Trigger profile stats matrix for new players
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Trigger targeted matrix shards
         run: |
-          echo "New players stubbed: ${{ needs.crawl.outputs.new_players }} — triggering profile stats matrix"
+          new_players="${{ needs.crawl.outputs.new_players }}"
+          rechecks="${{ needs.crawl.outputs.stats_rechecks }}"
+          echo "New players: $new_players  |  Stat rechecks: $rechecks"
+
+          # Read targeted shards if available
+          shards_arg=""
+          if [ -f "needs-matrix-shards.json" ]; then
+            shards=$(cat needs-matrix-shards.json)
+            echo "Targeted shards: $shards"
+            shards_arg="--field shards=$shards"
+          fi
+
           gh workflow run fetch-profile-stats-matrix.yml \
             --repo "${{ github.repository }}" \
             --field "run_number=1" \
-            --field "consecutive_zeros=0"
+            --field "consecutive_zeros=0" \
+            $shards_arg
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
