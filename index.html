@@ -1086,13 +1086,19 @@ function calGrid(byMonth,vid,todayStr){
   for(const[ym,ds]of byMonth){
     const[y,m]=ym.split('-').map(Number);
     h+=`<div class="vcal-col" id="vcal-m-${y}-${String(m).padStart(2,'0')}"><div class="vcm">${MN[m-1]} ${y}</div><div class="vcg">${DOW}`;
-    const[,,fd]=ds[0].split('-').map(Number);
-    const pad=(dayOfWeekN(y,m,fd)+6)%7;
-    for(let i=0;i<pad;i++)h+='<div></div>';
+    let prevDay=null;
     for(const d of ds){
-      const[,,dy]=d.split('-');
+      const[,,dyStr]=d.split('-');
+      const dy=parseInt(dyStr);
+      if(prevDay===null){
+        const dow=(dayOfWeekN(y,m,dy)+6)%7;
+        for(let i=0;i<dow;i++)h+='<div></div>';
+      } else {
+        for(let i=0;i<dy-prevDay-1;i++)h+='<div></div>';
+      }
       const isSel=d===S.venueSelDate,isToday=d===todayStr;
-      h+=`<button class="vday${isToday?' vtoday':''}${isSel?' vsel':''}" data-date="${d}" onclick="selectVenueDate('${esc(vid)}','${d}',this)">${parseInt(dy)}</button>`;
+      h+=`<button class="vday${isToday?' vtoday':''}${isSel?' vsel':''}" data-date="${d}" onclick="selectVenueDate('${esc(vid)}','${d}',this)">${dy}</button>`;
+      prevDay=dy;
     }
     h+='</div></div>';
   }
@@ -1738,8 +1744,8 @@ function renderLB(allEntries,data){
     if(grade)entries=entries.filter(e=>e.grade===grade);
     if(gender)entries=entries.filter(e=>e.gender===gender);
   }
-  // Min GP for PPG
-  if(S.lbStat==='ppg'){
+  // Min GP filter — applies to all per-game rate stats
+  if(['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason'].includes(S.lbStat)){
     const minGP=parseInt(el('lb-mingp')?.value||'10');
     entries=entries.filter(e=>(e.gp||0)>=minGP);
   }
