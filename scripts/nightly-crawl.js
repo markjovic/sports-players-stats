@@ -140,6 +140,14 @@ async function gqlMain(operationName, query, variables) {
         API_URL, { operationName, variables, query },
         { ...HEADERS_MAIN, 'Cookie': sessionCookie }
       );
+      if (status === 403) {
+        // ProfileSeasonStatistics 403 = private profile — not a session issue
+        if (operationName === 'ProfileSeasonStatistics') return null;
+        // All other 403s = session expired — refresh and retry
+        console.log(`  ↺ gqlMain 403 on ${operationName} — refreshing session`);
+        await refreshSession();
+        continue;
+      }
       if (status === 429) { await sleep(15000); continue; }
       if (status !== 200) { if (attempt < 3) { await sleep(3000); continue; } return null; }
       if (body.errors) return null;
