@@ -115,6 +115,16 @@ jobs:
           merge-multiple: true
           path: summaries
 
+      - name: Check for force-pending marker
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            matrix-force-pending.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Aggregate and report
         id: aggregate
         run: |
@@ -137,6 +147,7 @@ jobs:
             except Exception as e:
               print(f'  Warning: could not parse {f}: {e}')
 
+          force_pending = os.path.exists('matrix-force-pending.json')
           outstanding_at_start = total - already_done
           checked = total - remaining
 
@@ -152,11 +163,13 @@ jobs:
           print(f'  Shards blocked mid-run:    {blocked}')
           print(f'  Remaining after this run:  {remaining:,}')
           print(f'  Players with statsChecked: {checked:,} / {total:,}')
+          print(f'  Force pending marker:      {"yes" if force_pending else "no"}')
           print('══════════════════════════════════════════════════')
 
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
             fh.write(f'remaining={remaining}\n')
             fh.write(f'written={written}\n')
+            fh.write(f'force_pending={"true" if force_pending else "false"}\n')
           PYEOF
 
       - name: Determine next action
@@ -166,8 +179,18 @@ jobs:
           consecutive_zeros=${{ inputs.consecutive_zeros }}
           remaining=${{ steps.aggregate.outputs.remaining }}
           written=${{ steps.aggregate.outputs.written }}
+          force_pending=${{ steps.aggregate.outputs.force_pending }}
 
-          if [ "$remaining" = "0" ]; then
+          # If force was pending but nothing was written, shards used stale checkout
+          # Retrigger unconditionally — do not count as stuck or done
+          if [ "$force_pending" = "true" ] && [ "$written" = "0" ]; then
+            echo "  ⚠ Force pending but nothing written — stale checkout detected, retriggering"
+            echo "status=retrigger" >> $GITHUB_OUTPUT
+            echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
+          elif [ "$remaining" = "0" ] && [ "$force_pending" = "false" ]; then
+            echo "status=done" >> $GITHUB_OUTPUT
+          elif [ "$remaining" = "0" ] && [ "$force_pending" = "true" ]; then
+            # Written > 0 and remaining = 0 — force complete, clean up marker
             echo "status=done" >> $GITHUB_OUTPUT
           elif [ "$run_number" -ge 150 ]; then
             echo "status=max_runs" >> $GITHUB_OUTPUT
@@ -183,6 +206,17 @@ jobs:
             echo "status=retrigger" >> $GITHUB_OUTPUT
             echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
           fi
+
+      - name: Remove force-pending marker on completion
+        if: steps.next.outputs.status == 'done' && steps.aggregate.outputs.force_pending == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git rm -f matrix-force-pending.json
+          git commit -m "matrix: force run complete — remove pending marker"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git push origin main
 
       - name: Trigger next run
         if: steps.next.outputs.status == 'retrigger'
