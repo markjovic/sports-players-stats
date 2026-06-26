@@ -95,6 +95,27 @@ jobs:
         run: |
           node scripts/fetch-profile-stats.js --shard=${{ matrix.shard }}
 
+      - name: Package changed player files
+        if: always()
+        run: |
+          git diff --name-only HEAD > /tmp/changed.txt 2>/dev/null || true
+          git ls-files --others --exclude-standard players/${{ matrix.shard }}/ >> /tmp/changed.txt 2>/dev/null || true
+          if [ -s /tmp/changed.txt ]; then
+            tar -czf /tmp/shard-files.tar.gz -T /tmp/changed.txt
+            echo "Packaged $(wc -l < /tmp/changed.txt) changed files"
+          else
+            echo "No changed files"
+          fi
+
+      - name: Upload shard files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-files-${{ matrix.shard }}
+          path: /tmp/shard-files.tar.gz
+          if-no-files-found: ignore
+          retention-days: 1
+
       - name: Upload shard summary
         if: always()
         uses: actions/upload-artifact@v4
@@ -103,8 +124,61 @@ jobs:
           path: shard-summary-${{ matrix.shard }}.json
           retention-days: 1
 
-  summary-and-retrigger:
+  apply-and-commit:
     needs: fetch
+    runs-on: ubuntu-latest
+    if: always()
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Download all shard file artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-files-*
+          path: /tmp/shard-artifacts/
+          merge-multiple: false
+
+      - name: Apply shard changes
+        run: |
+          applied=0
+          skipped=0
+          for dir in /tmp/shard-artifacts/shard-files-*/; do
+            tarfile=$(ls "$dir"*.tar.gz 2>/dev/null | head -1)
+            if [ -n "$tarfile" ] && [ -s "$tarfile" ]; then
+              tar -xzf "$tarfile" --no-overwrite-dir
+              applied=$((applied + 1))
+            else
+              skipped=$((skipped + 1))
+            fi
+          done
+          echo "Applied: $applied shards  |  Skipped (no changes): $skipped"
+
+      - name: Commit and push
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          count=$(git diff --staged --name-only | wc -l)
+          git commit -m "fetch-profile-stats: matrix run ${{ inputs.run_number }} — ${count} files updated"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git push origin main
+          echo "Committed and pushed: ${count} files"
+
+  summary-and-retrigger:
+    needs: apply-and-commit
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -181,17 +255,13 @@ jobs:
           written=${{ steps.aggregate.outputs.written }}
           force_pending=${{ steps.aggregate.outputs.force_pending }}
 
-          # If force was pending but nothing was written, shards used stale checkout
-          # Retrigger unconditionally — do not count as stuck or done
-          if [ "$force_pending" = "true" ] && [ "$written" = "0" ]; then
+          if [ "$remaining" = "0" ]; then
+            echo "status=done" >> $GITHUB_OUTPUT
+          # If force was pending but nothing was written and work remains, shards used stale checkout
+          elif [ "$force_pending" = "true" ] && [ "$written" = "0" ]; then
             echo "  ⚠ Force pending but nothing written — stale checkout detected, retriggering"
             echo "status=retrigger" >> $GITHUB_OUTPUT
             echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
-          elif [ "$remaining" = "0" ] && [ "$force_pending" = "false" ]; then
-            echo "status=done" >> $GITHUB_OUTPUT
-          elif [ "$remaining" = "0" ] && [ "$force_pending" = "true" ]; then
-            # Written > 0 and remaining = 0 — force complete, clean up marker
-            echo "status=done" >> $GITHUB_OUTPUT
           elif [ "$run_number" -ge 150 ]; then
             echo "status=max_runs" >> $GITHUB_OUTPUT
           elif [ "$written" = "0" ]; then
