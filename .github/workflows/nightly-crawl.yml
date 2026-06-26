@@ -2,8 +2,8 @@
 name: Nightly Crawl
 
 on:
-#  schedule:
-#    - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
+  schedule:
+    - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
   workflow_dispatch:
     inputs:
       rounds_back:
@@ -77,14 +77,13 @@ jobs:
           echo "games_remaining=$remaining" >> $GITHUB_OUTPUT
           echo "games_processed=$processed" >> $GITHUB_OUTPUT
           echo "new_players=$stubbed" >> $GITHUB_OUTPUT
-          # Count shards needing matrix re-fetch
           if [ -f "needs-matrix-shards.json" ]; then
             rechecks=$(node -e "console.log(JSON.parse(require('fs').readFileSync('needs-matrix-shards.json')).length)")
           else
             rechecks=0
           fi
           echo "stats_rechecks=$rechecks" >> $GITHUB_OUTPUT
-          echo "Remaining: $remaining  Processed: $processed  New players: $stubbed"
+          echo "Remaining: $remaining  Processed: $processed  New players: $stubbed  Rechecks: $rechecks"
 
   team-stats:
     needs: crawl
@@ -101,38 +100,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Build team stats (active seasons)
         run: node scripts/build-team-stats.js --active-only
-
-  leaderboards:
-    needs: crawl
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    if: ${{ inputs.dry_run != 'true' }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-leaderboards.js --active-only
-
-  search-index:
-    needs: crawl
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: ${{ inputs.dry_run != 'true' }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-search-index.js
 
   team-index:
     needs: crawl
@@ -203,7 +170,6 @@ jobs:
           rechecks="${{ needs.crawl.outputs.stats_rechecks }}"
           echo "New players: $new_players  |  Stat rechecks: $rechecks"
 
-          # Read targeted shards if available
           shards_arg=""
           if [ -f "needs-matrix-shards.json" ]; then
             shards=$(cat needs-matrix-shards.json)
