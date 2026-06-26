@@ -560,25 +560,41 @@ async function main() {
 
   // ── Phase 1b: Reclassify games for grades that became hidden ────────────────
   // When a grade's hideScores flips from false to true, its existing game entries
-  // in the game file still have no hidden flag. Detect and reclassify them so the
-  // nightly spectator queue picks them up for box score fetching.
+  // in the game file still have no hidden flag. Detect and reclassify them.
+  // DO NOT delete scores — spectator can still fetch them. Queue FINAL games for
+  // spectator processing so box scores are fetched and stored.
   const hiddenGrades = gradeRoundResults.filter(g => g.hideScores && g.seasonId);
   let reclassified = 0;
+  const reclassifiedSpectator = []; // FINAL reclassified games to queue for spectator
+
   for (const grade of hiddenGrades) {
     const gf = loadGameFile(grade.seasonId);
     for (const [gameId, game] of Object.entries(gf.games || {})) {
       if (game.gid !== grade.gradeId) continue;
       if (game.hidden) continue;  // already classified
-      // Grade is now hidden but game entry isn't marked — reclassify
+      // Grade is now hidden — mark it but preserve any existing scores
       game.hidden = true;
-      delete game.hs;  // remove scores (hidden games don't expose scores publicly)
-      delete game.as;
       markGameDirty(grade.seasonId);
       reclassified++;
+      // Queue FINAL games without box scores for spectator
+      if (game.st === 'FINAL' && !game.spc && !game.legacy && !game.forfeit) {
+        reclassifiedSpectator.push({
+          gameId,
+          seasonId:  grade.seasonId,
+          rn:        game.rn  || null,
+          gradeId:   grade.gradeId,
+          gradeName: grade.gradeName,
+          homeTid:   game.t1 || null,
+          awayTid:   game.t2 || null,
+          homeScore: game.hs ?? null,
+          awayScore: game.as ?? null,
+        });
+      }
     }
   }
   if (reclassified > 0) {
     console.log(`  Reclassified ${reclassified} games as hidden (grade hideScores flipped)`);
+    console.log(`  Queued ${reclassifiedSpectator.length} reclassified FINAL games for spectator`);
     const n = flushGameFiles();
     if (n > 0) await gitCommit(`nightly-crawl: ${reclassified} games reclassified as hidden`);
   }
@@ -612,6 +628,8 @@ async function main() {
   let seasonsSinceCommit = 0;
   const processedSeasons  = new Set();
   const allNeedsSpectator = [];  // { gameId, seasonId } — deduped after phase
+  // Add any FINAL games reclassified as hidden in Phase 1b
+  if (reclassifiedSpectator.length > 0) allNeedsSpectator.push(...reclassifiedSpectator);
   const allNewForfeitIds  = [];  // new forfeit game IDs detected this run
 
   const p2Tasks = roundQueue.map(({ roundId, roundName, grade }) => async () => {
