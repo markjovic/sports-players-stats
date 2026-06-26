@@ -420,40 +420,6 @@ async function runPool(tasks, concurrency) {
   await Promise.all(Array.from({ length: concurrency }, worker));
 }
 
-// ─── Git commit ───────────────────────────────────────────────────────────────
-
-async function gitCommit(stats) {
-  execSync(`git add players/${SHARD}`, { stdio: 'pipe', cwd: ROOT });
-  const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
-  if (!diff) { console.log('  No changes to commit.'); return; }
-
-  const msg = `fetch-profile-stats: shard ${SHARD} — ${stats.written} written, ${stats.inaccessible} inaccessible, ${stats.skipped} skipped`;
-  execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: ROOT });
-
-  // Push with retry + random jitter to handle concurrent jobs pushing to the same branch.
-  // Each shard writes to a different directory so merges are always conflict-free.
-  // With 40-60 concurrent jobs, needs wide jitter and many retries to spread contention.
-  const MAX_PUSH_ATTEMPTS = 60;
-  for (let attempt = 1; attempt <= MAX_PUSH_ATTEMPTS; attempt++) {
-    try {
-      execSync('git fetch origin main', { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main', { stdio: 'pipe', cwd: ROOT });
-      console.log(`  Committed and pushed: ${msg}`);
-      return;
-    } catch (err) {
-      if (attempt === MAX_PUSH_ATTEMPTS) {
-        console.error(`  Push failed after ${MAX_PUSH_ATTEMPTS} attempts: ${err.message}`);
-        process.exit(1); // fail the workflow so unpushed shards get retried
-      }
-      // Pure random jitter 1-90s — linear backoff worsens contention by synchronising retries
-      const jitter = Math.floor(Math.random() * 90000) + 1000;
-      console.log(`  Push conflict (attempt ${attempt}/${MAX_PUSH_ATTEMPTS}) — retrying in ${Math.round(jitter / 1000)}s…`);
-      await sleep(jitter);
-    }
-  }
-}
-
 // ─── Sleep ────────────────────────────────────────────────────────────────────
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -622,9 +588,7 @@ async function main() {
     remaining:    Math.max(0, remaining),
     blocked:      stats.blocked || false,
   }));
-
-  console.log('\n  Committing…');
-  await gitCommit(stats);
+  // No git operations — changed files are packaged and pushed by the aggregator job
 }
 
 main().catch(err => {
