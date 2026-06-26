@@ -249,16 +249,15 @@ row('    null (no record)',           fmt(maxGameThreePtIsNull),   pct(maxGameTh
 row('  records{}',                   fmt(withRecords),            pct(withRecords, processed));
 
 console.log('\n  ── Per-reg stats (seasons[].regs[].stats) ──');
-console.log('  ⚠️  gp/pts/fouls/threePt/fg/ft were written by fetch-playhq.js (obsolete, retired).');
-console.log('      No current script maintains these fields — values are from original bootstrap only.');
-console.log('      foulOuts/finals/gfApps/gfWins are actively maintained by nightly + build-finals-stats.');
+console.log('  gp/pts/fg/ft/threePt/fouls: written by fetch-profile-stats.js (matrix).');
+console.log('  foulOuts/finals/gfApps/gfWins: maintained by nightly + build-finals-stats.');
 row('  Total regs scanned',               fmt(regsTotal));
-row('  gp      [NOT MAINTAINED]',         fmt(regsWithGp),             pct(regsWithGp, regsTotal));
-row('  pts     [NOT MAINTAINED]',         fmt(regsWithPts),            pct(regsWithPts, regsTotal));
-row('  fouls   [NOT MAINTAINED]',         fmt(regsWithFouls),          pct(regsWithFouls, regsTotal));
-row('  threePt [NOT MAINTAINED]',         fmt(regsWithThreePt),        pct(regsWithThreePt, regsTotal));
-row('  fg      [NOT MAINTAINED]',         fmt(regsWithFg),             pct(regsWithFg, regsTotal));
-row('  ft      [NOT MAINTAINED]',         fmt(regsWithFt),             pct(regsWithFt, regsTotal));
+row('  gp      [matrix]',                 fmt(regsWithGp),             pct(regsWithGp, regsTotal));
+row('  pts     [matrix]',                 fmt(regsWithPts),            pct(regsWithPts, regsTotal));
+row('  fouls   [matrix]',                 fmt(regsWithFouls),          pct(regsWithFouls, regsTotal));
+row('  threePt [matrix]',                 fmt(regsWithThreePt),        pct(regsWithThreePt, regsTotal));
+row('  fg      [matrix]',                 fmt(regsWithFg),             pct(regsWithFg, regsTotal));
+row('  ft      [matrix]',                 fmt(regsWithFt),             pct(regsWithFt, regsTotal));
 row('  foulOuts [nightly+matrix]',        fmt(regsWithFoulOuts),       pct(regsWithFoulOuts, regsTotal));
 row('    foulOuts > 0',                   fmt(regsWithFoulOutsGtZero), pct(regsWithFoulOutsGtZero, regsWithFoulOuts));
 row('  finals  [nightly+build-finals]',   fmt(regsWithFinals),         pct(regsWithFinals, regsTotal));
@@ -566,7 +565,7 @@ for (const f of ['sports-index.json','team-index.json','venue-index.json','seaso
 
 section('11 · Misc files');
 const miscFiles = [
-  ['forfeit-games.json',         23839, true],
+  ['forfeit-games.json',         23868, true],
   ['records/all-time.json',      null,  true],
   ['needs-matrix-shards.json',   null,  false],
   ['matrix-force-pending.json',  null,  false],  // should not exist
@@ -592,11 +591,11 @@ const baseline = [
   ['Seasons in sports-index',   sportsIndex ? Object.values(sportsIndex.seasons||{}).length : 0, 2792],
   ['Player index entries',       indexEntries,    369428],
   ['Player detail files',        detailCount,     369437],
-  ['Total game entries',         totalGames,      2247971],
+  ['Total game entries',         totalGames,      2248309],
   ['Finals round games',         gamesFinalsRound, 119021],
   ['Grand Final games',          gamesGrandFinal,  34846],
   ['Players with finals > 0',    finalsNonZero,    284678],
-  ['Search shard files',         searchFiles,      595],
+  ['Search shard files',         searchFiles,      630],
   ['Venue dirs',                 vlVenues,         532],
   ['Date-venue index files',     dviFiles,         2016],
   ['Leaderboard season files',   lbSeasonFiles,    2793],

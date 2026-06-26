@@ -231,13 +231,23 @@ for (const [uuid, sidMap] of finalsMap) {
   // Count seasons the player has registrations in — every season entry means they played.
   // Do NOT use r.stats.gp here: that field is stale and may be 0 even when the player played,
   // which causes seasonsWithGames < seasonsWithFinals and finalsPerSeason > 1.
-  const seasonsWithGames = (player.seasons || []).filter(s => (s.regs || []).length > 0).length;
+  const playerSeasonSids = new Set(
+    (player.seasons || []).filter(s => (s.regs || []).length > 0).map(s => s.sid)
+  );
+  const seasonsWithGames = playerSeasonSids.size;
 
   let seasonsWithFinals = 0;
-  for (const acc of sidMap.values()) {
-    if (acc.finals > 0)  { careerFinals++;  seasonsWithFinals++; }
-    if (acc.gfApps > 0)    careerGfApps++;
-    if (acc.gfWins > 0)    careerGfWins++;
+  for (const [sid, acc] of sidMap.entries()) {
+    // Only count finals from seasons that are actually in the player's season list.
+    // sidMap may contain seasons from game files that never made it into player.seasons
+    // (e.g. orphaned stubs), which would cause seasonsWithFinals > seasonsWithGames → > 1.
+    const inPlayerSeasons = playerSeasonSids.has(sid);
+    if (acc.finals > 0) {
+      careerFinals++;
+      if (inPlayerSeasons) seasonsWithFinals++;
+    }
+    if (acc.gfApps > 0) careerGfApps++;
+    if (acc.gfWins > 0) careerGfWins++;
   }
 
   // finalsPerSeason = fraction of seasons where player appeared in finals (max 1 per season)
