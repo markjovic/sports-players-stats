@@ -131,17 +131,6 @@ jobs:
     if: always()
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 1
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
       - name: Download all shard file artifacts
         uses: actions/download-artifact@v4
         with:
@@ -149,7 +138,35 @@ jobs:
           path: /tmp/shard-artifacts/
           merge-multiple: false
 
+      - name: Check if anything to apply
+        id: check
+        run: |
+          has_files=false
+          for dir in /tmp/shard-artifacts/shard-files-*/; do
+            tarfile=$(ls "$dir"*.tar.gz 2>/dev/null | head -1)
+            if [ -n "$tarfile" ] && [ -s "$tarfile" ]; then
+              has_files=true
+              break
+            fi
+          done
+          echo "has_files=$has_files" >> $GITHUB_OUTPUT
+          echo "Has files to apply: $has_files"
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.has_files == 'true'
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        if: steps.check.outputs.has_files == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Apply shard changes
+        if: steps.check.outputs.has_files == 'true'
         run: |
           applied=0
           skipped=0
@@ -165,6 +182,7 @@ jobs:
           echo "Applied: $applied shards  |  Skipped (no changes): $skipped"
 
       - name: Commit and push
+        if: steps.check.outputs.has_files == 'true'
         run: |
           git add -A
           if git diff --staged --quiet; then
