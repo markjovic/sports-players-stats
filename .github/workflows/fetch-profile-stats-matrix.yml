@@ -269,7 +269,7 @@ jobs:
             --field "run_number=${next_run}" \
             --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
             --field "force=false" \
-            --field "shards=${{ inputs.shards }}"
+            --field "shards=${{ inputs.force == true && '[]' || inputs.shards }}"
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
