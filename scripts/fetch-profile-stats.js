@@ -9,14 +9,22 @@
 //   node scripts/fetch-profile-stats.js --shard=3a --force
 //
 // Writes to each players/{shard}/{uuid}.json:
+//   sports.Basketball.gp             — career games played
+//   sports.Basketball.pts            — career points
+//   sports.Basketball.fg             — career field goals
+//   sports.Basketball.ft             — career free throws
+//   sports.Basketball.threePt        — career 3-pointers
+//   sports.Basketball.fouls          — career fouls
 //   sports.Basketball.foulOuts       — { [seasonId]: count }
 //   sports.Basketball.maxGamePTS     — number | null
 //   sports.Basketball.maxGameThreePt — number | null
 //   sports.Basketball.statsChecked   — ISO timestamp
+//   seasons[].regs[].stats.gp/pts/fg/ft/threePt/fouls — per-reg totals
 //
 // statsChecked is ONLY written on a real data response.
 // A 403 that persists after a session refresh = truly inaccessible profile.
 // A 403 that resolves after a session refresh = session expiry (retry succeeds).
+// All stats use seenGameKeys dedup — no double-counting across multiple regs.
 //
 // One git commit after all writes for the shard.
 
@@ -185,22 +193,34 @@ function parseProfileStats(data) {
   let maxGamePTSKey  = null;   // { gameKey, sid } for the game where PTS record was set
   let maxGameThreePtKey = null; // { gameKey, sid } for the game where 3PT record was set
 
+  // Per-reg stats keyed by sid:tid:gid — gp, pts, fg, ft, threePt, fouls
+  // These are per-game aggregations, deduped via seenGameKeys
+  const regStats = new Map(); // key → { gp, pts, fg, ft, threePt, fouls }
+
   for (const season of seasonStats) {
     for (const reg of (season.statistics || [])) {
       const seasonId = reg?.season?.id;
       if (!seasonId) continue;
 
       for (const teamStat of (reg.teamStatistics || [])) {
+        const tid = teamStat.team?.id || null;
+
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
+          const gid    = gradeStat.grade?.id || null;
+          const regKey = `${seasonId}:${tid}:${gid}`;
+
           for (const gameStat of (gradeStat.gameStatistics || [])) {
             const stats   = gameStat.statistics || [];
             const gameKey = gameStat.game?.id || null;
             if (gameKey && forfeitGameIds.has(gameKey)) continue;  // skip forfeit games
             if (gameKey && seenGameKeys.has(gameKey)) continue;    // skip duplicate games (multiple regs)
             if (gameKey) seenGameKeys.add(gameKey);
+
             const fouls   = statValue(stats, 'TOTAL_FOULS');
             const pts     = statValue(stats, 'TOTAL_SCORE');
             const three   = statValue(stats, '3_POINT_SCORE');
+            const fg      = statValue(stats, 'FIELD_GOAL') || statValue(stats, '2_POINT_SCORE');
+            const ft      = statValue(stats, 'FREE_THROW') || statValue(stats, '1_POINT_SCORE');
 
             // Foul-out = 5 or more fouls in a single game
             if (fouls >= 5) {
@@ -215,13 +235,23 @@ function parseProfileStats(data) {
               maxGameThreePt    = three;
               maxGameThreePtKey = gameKey ? { gameKey, sid: seasonId } : null;
             }
+
+            // Accumulate per-reg stats
+            if (!regStats.has(regKey)) regStats.set(regKey, { gp: 0, pts: 0, fg: 0, ft: 0, threePt: 0, fouls: 0 });
+            const rs = regStats.get(regKey);
+            rs.gp++;
+            rs.pts    += pts;
+            rs.fg     += fg;
+            rs.ft     += ft;
+            rs.threePt += three;
+            rs.fouls  += fouls;
           }
         }
       }
     }
   }
 
-  return { foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey };
+  return { foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats };
 }
 
 // ─── API fetch ────────────────────────────────────────────────────────────────
@@ -391,6 +421,38 @@ async function processUUID(uuid, stats, idx) {
   bk.maxGamePTS     = parsed.maxGamePTS;
   bk.maxGameThreePt = parsed.maxGameThreePt;
 
+  // Write per-reg stats (gp, pts, fg, ft, threePt, fouls) from per-game data
+  // These replace the stale values written by the now-obsolete fetch-playhq.js
+  const REG_STAT_FIELDS = ['gp', 'pts', 'fg', 'ft', 'threePt', 'fouls'];
+  for (const season of (player.seasons || [])) {
+    const sid = season.sid;
+    for (const reg of (season.regs || [])) {
+      const regKey = `${sid}:${reg.tid}:${reg.gid}`;
+      const rs = parsed.regStats.get(regKey);
+      if (!reg.stats) reg.stats = {};
+      for (const field of REG_STAT_FIELDS) {
+        const val = rs ? (rs[field] || 0) : 0;
+        if (val === 0) delete reg.stats[field];
+        else reg.stats[field] = val;
+      }
+    }
+  }
+
+  // Career totals — sum across all regs (seenGameKeys dedup already applied per-game)
+  const career = { gp: 0, pts: 0, fg: 0, ft: 0, threePt: 0, fouls: 0 };
+  for (const [, rs] of parsed.regStats) {
+    career.gp     += rs.gp;
+    career.pts    += rs.pts;
+    career.fg     += rs.fg;
+    career.ft     += rs.ft;
+    career.threePt += rs.threePt;
+    career.fouls  += rs.fouls;
+  }
+  for (const field of REG_STAT_FIELDS) {
+    if (career[field] === 0) delete bk[field];
+    else bk[field] = career[field];
+  }
+
   // Write records with gameKey context for db-report and StatTrack game linking
   if (!player.records) player.records = {};
   player.records.maxGamePTS = parsed.maxGamePTSKey
@@ -404,7 +466,7 @@ async function processUUID(uuid, stats, idx) {
   writePlayer(uuid, player);
   stats.written++;
   const fo = Object.values(parsed.foulOuts).reduce((a, b) => a + b, 0);
-  console.log(`${prefix} ✓ ${short} pts=${parsed.maxGamePTS ?? 0} 3pt=${parsed.maxGameThreePt ?? 0} fo=${fo}`);
+  console.log(`${prefix} ✓ ${short} gp=${career.gp} pts=${career.pts} 3pt=${parsed.maxGameThreePt ?? 0} fo=${fo}`);
 }
 
 // ─── Concurrency pool ─────────────────────────────────────────────────────────
