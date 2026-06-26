@@ -213,6 +213,9 @@ jobs:
             .github/workflows/test-discover-game.yml
             .github/workflows/test-schema-fields.yml
             .github/workflows/test-gps-count.yml
+
+            # NOTE: add-player.yml is NOT deleted — it was rewritten to use the
+            # current pipeline (matrix trigger) instead of the retired fetch-playhq.js
           )
 
           # ── Root JSON files to delete ─────────────────────────────────────────
