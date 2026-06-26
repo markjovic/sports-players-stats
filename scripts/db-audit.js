@@ -1,15 +1,38 @@
 // scripts/db-audit.js
-const fs = require('fs');
+//
+// Combined database audit, game report, and repo size report.
+// Replaces: db-audit.js, db-report.js, repo-size.js
+//
+// Usage:
+//   node scripts/db-audit.js              — full audit
+//   node scripts/db-audit.js --no-size    — skip repo size (faster)
+//   node scripts/db-audit.js --verbose    — per-season game breakdown (top 20)
+
+'use strict';
+
+const fs   = require('fs');
 const path = require('path');
-const ROOT = path.join(__dirname, '..');
+
+const ROOT    = path.join(__dirname, '..');
+const ARGS    = new Set(process.argv.slice(2));
+const VERBOSE = ARGS.has('--verbose');
+const NO_SIZE = ARGS.has('--no-size');
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function readJSON(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
   catch { return null; }
 }
 
-function fmt(n) { return Number(n).toLocaleString(); }
-function pct(n, d) { return d === 0 ? '0.0%' : (n / d * 100).toFixed(1) + '%'; }
+function fmt(n)      { return Number(n).toLocaleString(); }
+function pct(n, d)   { return d === 0 ? '—' : (n / d * 100).toFixed(1) + '%'; }
+function fmtBytes(b) {
+  if (b >= 1073741824) return (b / 1073741824).toFixed(2) + ' GB';
+  if (b >= 1048576)    return (b / 1048576).toFixed(2)    + ' MB';
+  if (b >= 1024)       return (b / 1024).toFixed(1)       + ' KB';
+  return b + ' B';
+}
 
 function section(title) {
   console.log('\n' + '═'.repeat(60));
@@ -23,31 +46,48 @@ function row(label, value, note) {
   console.log(`  ${lpad} ${vpad}${note ? '  ' + note : ''}`);
 }
 
-// ─── 1. sports-index.json ───────────────────────────────────────────────────
+function dirSize(dirPath) {
+  let total = 0, count = 0;
+  if (!fs.existsSync(dirPath)) return { total, count };
+  const queue = [dirPath];
+  while (queue.length) {
+    const cur = queue.pop();
+    for (const entry of fs.readdirSync(cur, { withFileTypes: true })) {
+      const full = path.join(cur, entry.name);
+      if (entry.isDirectory()) queue.push(full);
+      else { total += fs.statSync(full).size; count++; }
+    }
+  }
+  return { total, count };
+}
+
+console.log('\n📊 Sports Players Stats — DB Audit');
+console.log('═'.repeat(60));
+console.log(`  Generated: ${new Date().toISOString()}`);
+
+// ─── 1. sports-index.json ─────────────────────────────────────────────────────
 
 section('1 · sports-index.json');
 const sportsIndex = readJSON(path.join(ROOT, 'sports-index.json'));
 if (!sportsIndex) {
   console.log('  ❌ MISSING');
 } else {
-  const seasons = Object.values(sportsIndex.seasons || {});
-  const locked = seasons.filter(s => s.locked);
-  const active = seasons.filter(s => !s.locked);
-  const withGrades = seasons.filter(s => s.grades && s.grades.length > 0);
+  const seasons   = Object.values(sportsIndex.seasons || {});
+  const locked    = seasons.filter(s => s.locked);
+  const active    = seasons.filter(s => !s.locked);
+  const activeSids = new Set(active.map(s => s.id));
   const totalGrades = seasons.reduce((a, s) => a + (s.grades ? s.grades.length : 0), 0);
-  row('Total seasons', fmt(seasons.length));
-  row('  Locked', fmt(locked.length));
+  row('Total seasons',         fmt(seasons.length));
+  row('  Locked',              fmt(locked.length));
   row('  Active (not locked)', fmt(active.length));
-  row('  With grades array', fmt(withGrades.length));
-  row('Total grade entries', fmt(totalGrades));
+  row('Total grade entries',   fmt(totalGrades));
 }
 
-// ─── 2. Player index files ──────────────────────────────────────────────────
+// ─── 2. Player index files ────────────────────────────────────────────────────
 
 section('2 · players/indexes/{00-ff}.json  (256 shards)');
 const indexDir = path.join(ROOT, 'players', 'indexes');
-let indexFiles = 0;
-let indexEntries = 0;
+let indexFiles = 0, indexEntries = 0;
 const indexMissing = [];
 
 if (fs.existsSync(indexDir)) {
@@ -65,29 +105,39 @@ if (fs.existsSync(indexDir)) {
   indexMissing.push('DIRECTORY MISSING');
 }
 
-row('Index shard files', fmt(indexFiles), indexFiles === 256 ? '✅' : `❌ expected 256`);
+row('Index shard files',    fmt(indexFiles),   indexFiles === 256 ? '✅' : `❌ expected 256`);
 row('Index entries (UUIDs)', fmt(indexEntries));
-if (indexMissing.length) {
-  row('Missing shards', indexMissing.length,
-      indexMissing.slice(0, 5).join(', ') + (indexMissing.length > 5 ? '…' : ''));
-}
+if (indexMissing.length) row('Missing shards', indexMissing.length, indexMissing.slice(0, 5).join(', ') + (indexMissing.length > 5 ? '…' : ''));
 
-// ─── 3. Player detail files — FULL SCAN ─────────────────────────────────────
+// ─── 3. Player detail files — FULL SCAN ──────────────────────────────────────
 
 section('3 · players/{00-ff}/{uuid}.json  (detail files — full scan)');
 const playersDir = path.join(ROOT, 'players');
-let detailCount = 0;
-let withStatsChecked = 0;
-let withFoulOuts = 0;
-let withMaxGamePTS = 0;
-let withMaxGameThreePt = 0;
-let withRecords = 0;
-let noSportsField = 0;
-let withTeams = 0;
-let withTeamsUpdatedAt = 0;
+let detailCount = 0, processed = 0;
+let withStatsChecked = 0, withFoulOuts = 0, foulOutsNonZero = 0;
+let withMaxGamePTS = 0, withMaxGameThreePt = 0, withRecords = 0;
+let noSportsField = 0, withTeams = 0, withGames = 0;
 
-// foulOuts breakdown: players where foulOuts > 0 vs present but zero
-let foulOutsNonZero = 0;
+// Finals stats
+let withFinals = 0, withGfApps = 0, withGfWins = 0, withFinalsPerSeason = 0;
+let finalsNonZero = 0, gfAppsNonZero = 0, gfWinsNonZero = 0;
+let finalsPerSeasonGtOne = 0; // data integrity check — should never happen
+
+// foulOuts integrity
+let foulOutsIsObject = 0;       // correct — { seasonId: count }
+let foulOutsIsWrongType = 0;    // wrong — number or other
+
+// maxGamePTS / maxGameThreePt breakdown
+let maxGamePTSIsNumber = 0, maxGamePTSIsNull = 0;
+let maxGameThreePtIsNumber = 0, maxGameThreePtIsNull = 0;
+
+// per-reg stats presence (from seasons[].regs[].stats)
+let regsTotal = 0, regsWithGp = 0, regsWithPts = 0;
+let regsWithFouls = 0, regsWithThreePt = 0, regsWithFg = 0, regsWithFt = 0;
+let regsWithFoulOuts = 0, regsWithFoulOutsGtZero = 0;
+let regsWithFinals = 0, regsWithGfApps = 0, regsWithGfWins = 0;
+
+let playersWithSeasons = 0;
 
 const shardDirs = fs.existsSync(playersDir)
   ? fs.readdirSync(playersDir).filter(d => /^[0-9a-f]{2}$/.test(d))
@@ -95,13 +145,11 @@ const shardDirs = fs.existsSync(playersDir)
 
 row('Shard directories', fmt(shardDirs.length), shardDirs.length === 256 ? '✅' : '❌ expected 256');
 
-let processed = 0;
 for (const shard of shardDirs) {
   const shardPath = path.join(playersDir, shard);
   let files;
   try { files = fs.readdirSync(shardPath).filter(f => f.endsWith('.json')); }
   catch { continue; }
-
   detailCount += files.length;
 
   for (const f of files) {
@@ -109,32 +157,71 @@ for (const shard of shardDirs) {
     if (!p) continue;
     processed++;
 
+    if (p.seasons && p.seasons.length > 0) playersWithSeasons++;
+
     if (p.sports) {
       const bk = p.sports.Basketball;
       if (bk) {
         if (bk.statsChecked !== undefined) withStatsChecked++;
         if (bk.foulOuts !== undefined) {
           withFoulOuts++;
-          // foulOuts is an object keyed by seasonId — check if any season has > 0
-          if (bk.foulOuts && typeof bk.foulOuts === 'object') {
-            const hasAny = Object.values(bk.foulOuts).some(v =>
-              typeof v === 'number' ? v > 0
-              : typeof v === 'object' && v !== null && Object.values(v).some(x => x > 0)
-            );
-            if (hasAny) foulOutsNonZero++;
-          } else if (typeof bk.foulOuts === 'number' && bk.foulOuts > 0) {
-            foulOutsNonZero++;
-          }
+          const hasAny = bk.foulOuts && typeof bk.foulOuts === 'object'
+            ? Object.values(bk.foulOuts).some(v => v > 0)
+            : typeof bk.foulOuts === 'number' && bk.foulOuts > 0;
+          if (hasAny) foulOutsNonZero++;
         }
-        if (bk.maxGamePTS     !== undefined) withMaxGamePTS++;
-        if (bk.maxGameThreePt !== undefined) withMaxGameThreePt++;
+        if (bk.maxGamePTS !== undefined) {
+          withMaxGamePTS++;
+          if (typeof bk.maxGamePTS === 'number') maxGamePTSIsNumber++;
+          else maxGamePTSIsNull++;
+        }
+        if (bk.maxGameThreePt !== undefined) {
+          withMaxGameThreePt++;
+          if (typeof bk.maxGameThreePt === 'number') maxGameThreePtIsNumber++;
+          else maxGameThreePtIsNull++;
+        }
+        if (bk.foulOuts !== undefined) {
+          if (bk.foulOuts && typeof bk.foulOuts === 'object' && !Array.isArray(bk.foulOuts)) foulOutsIsObject++;
+          else foulOutsIsWrongType++;
+        }
+
+        // Finals stats
+        if (bk.finals          !== undefined) { withFinals++;         if (bk.finals > 0)          finalsNonZero++; }
+        if (bk.gfApps          !== undefined) { withGfApps++;         if (bk.gfApps > 0)           gfAppsNonZero++; }
+        if (bk.gfWins          !== undefined) { withGfWins++;         if (bk.gfWins > 0)           gfWinsNonZero++; }
+        if (bk.finalsPerSeason !== undefined) {
+          withFinalsPerSeason++;
+          if (bk.finalsPerSeason > 1) finalsPerSeasonGtOne++; // integrity violation
+        }
+
       }
     } else {
       noSportsField++;
     }
     if (p.records !== undefined) withRecords++;
     if (p.teams && p.teams.length > 0) withTeams++;
-    if (p.teamsUpdatedAt) withTeamsUpdatedAt++;
+    if (p.games && p.games.length > 0) withGames++;
+
+    // Per-reg stats scan
+    for (const season of (p.seasons || [])) {
+      for (const reg of (season.regs || [])) {
+        regsTotal++;
+        const s = reg.stats || {};
+        if (s.gp      !== undefined) regsWithGp++;
+        if (s.pts     !== undefined) regsWithPts++;
+        if (s.fouls   !== undefined) regsWithFouls++;
+        if (s.threePt !== undefined) regsWithThreePt++;
+        if (s.fg      !== undefined) regsWithFg++;
+        if (s.ft      !== undefined) regsWithFt++;
+        if (s.foulOuts !== undefined) {
+          regsWithFoulOuts++;
+          if (s.foulOuts > 0) regsWithFoulOutsGtZero++;
+        }
+        if (s.finals  !== undefined) regsWithFinals++;
+        if (s.gfApps  !== undefined) regsWithGfApps++;
+        if (s.gfWins  !== undefined) regsWithGfWins++;
+      }
+    }
   }
 
   if (shardDirs.indexOf(shard) % 32 === 31) {
@@ -143,53 +230,80 @@ for (const shard of shardDirs) {
 }
 process.stderr.write('\n');
 
-row('Detail files (count)', fmt(detailCount));
+row('Detail files (count)',      fmt(detailCount));
 row('Files successfully parsed', fmt(processed));
+row('Players with seasons[]',    fmt(playersWithSeasons), pct(playersWithSeasons, processed));
 
-console.log('\n  ── Field presence (FULL SCAN — all ' + fmt(processed) + ' players) ──');
-row('  sports.Basketball.statsChecked', fmt(withStatsChecked),
-    pct(withStatsChecked, processed));
-row('  sports.Basketball.foulOuts', fmt(withFoulOuts),
-    pct(withFoulOuts, processed));
-row('    foulOuts with at least one > 0', fmt(foulOutsNonZero),
-    pct(foulOutsNonZero, processed));
-row('    foulOuts present but all zero', fmt(withFoulOuts - foulOutsNonZero),
-    pct(withFoulOuts - foulOutsNonZero, processed));
-row('  sports.Basketball.maxGamePTS', fmt(withMaxGamePTS),
-    pct(withMaxGamePTS, processed));
-row('  sports.Basketball.maxGameThreePt', fmt(withMaxGameThreePt),
-    pct(withMaxGameThreePt, processed));
-row('  records (maxGamePTS + maxGameThreePt)', fmt(withRecords),
-    pct(withRecords, processed));
-row('  No sports field at all', fmt(noSportsField),
-    pct(noSportsField, processed));
-row('  Has teams[] (non-empty)', fmt(withTeams),
-    pct(withTeams, processed));
-row('  Has teamsUpdatedAt', fmt(withTeamsUpdatedAt),
-    pct(withTeamsUpdatedAt, processed));
+console.log('\n  ── publicProfileStatistics fields ──');
+row('  statsChecked',                fmt(withStatsChecked),       pct(withStatsChecked, processed));
+row('  foulOuts present',            fmt(withFoulOuts),           pct(withFoulOuts, processed));
+row('    correct type (object)',      fmt(foulOutsIsObject),       pct(foulOutsIsObject, withFoulOuts));
+row('    wrong type',                fmt(foulOutsIsWrongType),    foulOutsIsWrongType > 0 ? '❌' : '✅');
+row('    with at least one > 0',     fmt(foulOutsNonZero),        pct(foulOutsNonZero, processed));
+row('  maxGamePTS present',          fmt(withMaxGamePTS),         pct(withMaxGamePTS, processed));
+row('    numeric (has a record)',     fmt(maxGamePTSIsNumber),     pct(maxGamePTSIsNumber, withMaxGamePTS));
+row('    null (no record)',           fmt(maxGamePTSIsNull),       pct(maxGamePTSIsNull, withMaxGamePTS));
+row('  maxGameThreePt present',      fmt(withMaxGameThreePt),     pct(withMaxGameThreePt, processed));
+row('    numeric (has a record)',     fmt(maxGameThreePtIsNumber), pct(maxGameThreePtIsNumber, withMaxGameThreePt));
+row('    null (no record)',           fmt(maxGameThreePtIsNull),   pct(maxGameThreePtIsNull, withMaxGameThreePt));
+row('  records{}',                   fmt(withRecords),            pct(withRecords, processed));
+
+console.log('\n  ── Per-reg stats (seasons[].regs[].stats) ──');
+console.log('  ⚠️  gp/pts/fouls/threePt/fg/ft were written by fetch-playhq.js (obsolete, retired).');
+console.log('      No current script maintains these fields — values are from original bootstrap only.');
+console.log('      foulOuts/finals/gfApps/gfWins are actively maintained by nightly + build-finals-stats.');
+row('  Total regs scanned',               fmt(regsTotal));
+row('  gp      [NOT MAINTAINED]',         fmt(regsWithGp),             pct(regsWithGp, regsTotal));
+row('  pts     [NOT MAINTAINED]',         fmt(regsWithPts),            pct(regsWithPts, regsTotal));
+row('  fouls   [NOT MAINTAINED]',         fmt(regsWithFouls),          pct(regsWithFouls, regsTotal));
+row('  threePt [NOT MAINTAINED]',         fmt(regsWithThreePt),        pct(regsWithThreePt, regsTotal));
+row('  fg      [NOT MAINTAINED]',         fmt(regsWithFg),             pct(regsWithFg, regsTotal));
+row('  ft      [NOT MAINTAINED]',         fmt(regsWithFt),             pct(regsWithFt, regsTotal));
+row('  foulOuts [nightly+matrix]',        fmt(regsWithFoulOuts),       pct(regsWithFoulOuts, regsTotal));
+row('    foulOuts > 0',                   fmt(regsWithFoulOutsGtZero), pct(regsWithFoulOutsGtZero, regsWithFoulOuts));
+row('  finals  [nightly+build-finals]',   fmt(regsWithFinals),         pct(regsWithFinals, regsTotal));
+row('  gfApps  [nightly+build-finals]',   fmt(regsWithGfApps),         pct(regsWithGfApps, regsTotal));
+row('  gfWins  [nightly+build-finals]',   fmt(regsWithGfWins),         pct(regsWithGfWins, regsTotal));
+
+console.log('\n  ── Finals stats (build-finals-stats.js) ──');
+row('  finals present',            fmt(withFinals),          pct(withFinals, processed));
+row('    with finals > 0',         fmt(finalsNonZero),       pct(finalsNonZero, processed));
+row('  gfApps present',            fmt(withGfApps),          pct(withGfApps, processed));
+row('    with gfApps > 0',         fmt(gfAppsNonZero),       pct(gfAppsNonZero, processed));
+row('  gfWins present',            fmt(withGfWins),          pct(withGfWins, processed));
+row('    with gfWins > 0',         fmt(gfWinsNonZero),       pct(gfWinsNonZero, processed));
+row('  finalsPerSeason present',   fmt(withFinalsPerSeason), pct(withFinalsPerSeason, processed));
+if (finalsPerSeasonGtOne > 0) {
+  row('  ❌ finalsPerSeason > 1', fmt(finalsPerSeasonGtOne), '⚠️  should never exceed 1');
+} else {
+  row('  finalsPerSeason all ≤ 1', '✅', '');
+}
 
 console.log('\n  ── Fetch completeness ──');
-const fullyFetched   = withStatsChecked;           // statsChecked = proof of complete fetch
-const partialFetched = withFoulOuts - withStatsChecked; // has foulOuts but no statsChecked
-const notFetched     = processed - withFoulOuts;   // neither field present
-row('  Fully fetched (has statsChecked)', fmt(fullyFetched),
-    pct(fullyFetched, processed));
-row('  Partially fetched (foulOuts, no statsChecked)', fmt(partialFetched),
-    pct(partialFetched, processed));
-row('  Not fetched at all', fmt(notFetched),
-    pct(notFetched, processed));
+row('  Fully fetched (statsChecked)',      fmt(withStatsChecked),             pct(withStatsChecked, processed));
+row('  No statsChecked',                  fmt(processed - withStatsChecked),  pct(processed - withStatsChecked, processed));
+row('  No sports field at all',           fmt(noSportsField),                 pct(noSportsField, processed));
+row('  Has teams[] (non-empty)',           fmt(withTeams),                     pct(withTeams, processed));
+row('  Has games[] (non-empty)',           fmt(withGames),                     pct(withGames, processed));
 
-// ─── 4. games/bv/{seasonId}.json ───────────────────────────────────────────
+// ─── 4. games/bv/{seasonId}.json ─────────────────────────────────────────────
 
 section('4 · games/bv/{seasonId}.json');
 const gamesDir = path.join(ROOT, 'games', 'bv');
-let gameFiles = 0;
-let totalGames = 0;
+let gameFiles = 0, totalGames = 0;
 let gamesNormal = 0, gamesHidden = 0, gamesProfileOnly = 0, gamesLegacy = 0;
 let gamesForfeit = 0, gamesCancelled = 0, gamesAbandoned = 0, gamesBye = 0;
 let gamesNoProfile = 0, gamesNoVenue = 0;
-let gamesWithScore = 0, gamesWithVenue = 0, gamesWithP = 0, gamesWithGid = 0;
-let gamesEmptyGid = 0;
+let gamesWithScore = 0, gamesWithVenue = 0, gamesWithP = 0;
+let gamesFinalsRound = 0, gamesGrandFinal = 0;
+let stFinal = 0, stUpcoming = 0, stPostponed = 0, stOther = 0, stNone = 0;
+let nullScore = 0, flagCollisions = 0, inProgress = 0;
+const otherStatuses = {};
+const seasonBreakdown = [];
+
+const activeSids = sportsIndex
+  ? new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id))
+  : new Set();
 
 if (fs.existsSync(gamesDir)) {
   const files = fs.readdirSync(gamesDir).filter(f => f.endsWith('.json'));
@@ -197,7 +311,11 @@ if (fs.existsSync(gamesDir)) {
   for (const f of files) {
     const data = readJSON(path.join(gamesDir, f));
     if (!data || !data.games) continue;
-    for (const g of Object.values(data.games)) {
+    const sid = f.replace('.json', '');
+    const isActive = activeSids.has(sid);
+    const games = Object.values(data.games);
+
+    for (const g of games) {
       totalGames++;
       if      (g.legacy)      gamesLegacy++;
       else if (g.profileOnly) gamesProfileOnly++;
@@ -207,57 +325,127 @@ if (fs.existsSync(gamesDir)) {
       else if (g.abandoned)   gamesAbandoned++;
       else if (g.bye)         gamesBye++;
       else                    gamesNormal++;
+
       if (g.noProfile) gamesNoProfile++;
       if (g.noVenue)   gamesNoVenue++;
       if (g.hs !== undefined && g.hs !== null) gamesWithScore++;
-      if (g.vid)                               gamesWithVenue++;
-      if (g.p && g.p.length > 0)              gamesWithP++;
-      if (g.gid !== undefined) {
-        if (g.gid === '') gamesEmptyGid++;
-        else              gamesWithGid++;
+      if (g.vid)  gamesWithVenue++;
+      if (g.p && g.p.length > 0) gamesWithP++;
+      if (g.legacy && (g.hidden || g.profileOnly || g.forfeit || g.bye)) flagCollisions++;
+      if (['LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(g.st || '')) inProgress++;
+      if (g.hs === null) nullScore++;
+
+      // Finals detection from round name
+      const rn = (g.rn || '').toLowerCase();
+      if (rn.includes('final')) {
+        gamesFinalsRound++;
+        if (rn.includes('grand final') || rn === 'gf') gamesGrandFinal++;
       }
+
+      const st = g.st || '';
+      if      (st === 'FINAL')    stFinal++;
+      else if (st === 'UPCOMING') stUpcoming++;
+      else if (st === 'POSTPONED') stPostponed++;
+      else if (st === '')         stNone++;
+      else if (!['BYE','LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(st)) {
+        stOther++;
+        otherStatuses[st] = (otherStatuses[st] || 0) + 1;
+      }
+    }
+
+    if (VERBOSE) {
+      seasonBreakdown.push({
+        id: sid, name: (sportsIndex?.seasons?.[sid]?.name || sid), active: isActive,
+        total: games.length,
+        scored:   games.filter(g => typeof g.hs === 'number').length,
+        hidden:   games.filter(g => g.hidden).length,
+        legacy:   games.filter(g => g.legacy).length,
+        forfeit:  games.filter(g => g.forfeit).length,
+        finals:   games.filter(g => (g.rn||'').toLowerCase().includes('final')).length,
+      });
     }
   }
 }
 
-row('Season game files', fmt(gameFiles));
+row('Season game files',  fmt(gameFiles));
 row('Total game entries', fmt(totalGames));
-console.log('\n  ── Classification (mutually exclusive) ──');
-row('  Normal (no flag)', fmt(gamesNormal),       pct(gamesNormal, totalGames));
-row('  hidden: true', fmt(gamesHidden),           pct(gamesHidden, totalGames));
-row('  profileOnly: true', fmt(gamesProfileOnly), pct(gamesProfileOnly, totalGames));
-row('  legacy: true', fmt(gamesLegacy),           pct(gamesLegacy, totalGames));
-row('  forfeit: true', fmt(gamesForfeit),          pct(gamesForfeit, totalGames));
-row('  cancelled: true', fmt(gamesCancelled),      pct(gamesCancelled, totalGames));
-row('  abandoned: true', fmt(gamesAbandoned),      pct(gamesAbandoned, totalGames));
-row('  bye: true', fmt(gamesBye),                 pct(gamesBye, totalGames));
-console.log('\n  ── Retry flags ──');
-row('  noProfile: <ts>', fmt(gamesNoProfile), pct(gamesNoProfile, totalGames));
-row('  noVenue: <ts>', fmt(gamesNoVenue),     pct(gamesNoVenue, totalGames));
-console.log('\n  ── Field coverage ──');
-row('  Has score (hs not null/undef)', fmt(gamesWithScore), pct(gamesWithScore, totalGames));
-row('  Has venue (vid present)', fmt(gamesWithVenue),       pct(gamesWithVenue, totalGames));
-row('  Has p[] player list', fmt(gamesWithP),               pct(gamesWithP, totalGames));
-row('  Has gid (resolved grade)', fmt(gamesWithGid),        pct(gamesWithGid, totalGames));
-row('  gid is empty string', fmt(gamesEmptyGid),            pct(gamesEmptyGid, totalGames));
 
-// ─── 5. search/players shards ───────────────────────────────────────────────
+console.log('\n  ── Classification ──');
+row('  Normal (no flag)',     fmt(gamesNormal),      pct(gamesNormal, totalGames));
+row('  hidden: true',        fmt(gamesHidden),       pct(gamesHidden, totalGames));
+row('  profileOnly: true',   fmt(gamesProfileOnly),  pct(gamesProfileOnly, totalGames));
+row('  legacy: true',        fmt(gamesLegacy),       pct(gamesLegacy, totalGames));
+row('  forfeit: true',       fmt(gamesForfeit),       pct(gamesForfeit, totalGames));
+row('  cancelled: true',     fmt(gamesCancelled),     pct(gamesCancelled, totalGames));
+row('  abandoned: true',     fmt(gamesAbandoned),     pct(gamesAbandoned, totalGames));
+row('  bye: true',           fmt(gamesBye),           pct(gamesBye, totalGames));
+
+console.log('\n  ── Finals rounds ──');
+row('  Finals round games',  fmt(gamesFinalsRound),  pct(gamesFinalsRound, totalGames));
+row('  Grand Final games',   fmt(gamesGrandFinal),   pct(gamesGrandFinal, totalGames));
+
+console.log('\n  ── Status ──');
+row('  FINAL',    fmt(stFinal));
+row('  UPCOMING', fmt(stUpcoming));
+row('  POSTPONED', fmt(stPostponed));
+row('  No status', fmt(stNone));
+if (Object.keys(otherStatuses).length > 0) {
+  for (const [st, n] of Object.entries(otherStatuses).sort((a,b) => b[1]-a[1])) {
+    row(`  ${st}`, fmt(n));
+  }
+}
+
+console.log('\n  ── Field coverage ──');
+row('  Has score',           fmt(gamesWithScore),  pct(gamesWithScore, totalGames));
+row('  Has venue (vid)',     fmt(gamesWithVenue),  pct(gamesWithVenue, totalGames));
+row('  Has p[] player list', fmt(gamesWithP),      pct(gamesWithP, totalGames));
+row('  noProfile flag',      fmt(gamesNoProfile),  pct(gamesNoProfile, totalGames));
+row('  noVenue flag',        fmt(gamesNoVenue),    pct(gamesNoVenue, totalGames));
+row('  nullScore',           fmt(nullScore),        pct(nullScore, totalGames));
+if (flagCollisions > 0) row('  ⚠️  Flag collisions', fmt(flagCollisions), 'legacy + another flag');
+
+if (VERBOSE && seasonBreakdown.length > 0) {
+  console.log('\n  ── Per-season breakdown (top 20 by game count) ──');
+  for (const s of seasonBreakdown.sort((a,b) => b.total - a.total).slice(0, 20)) {
+    const flag = s.active ? '🟢' : '🔒';
+    console.log(`  ${flag} ${s.id}  ${(s.name).padEnd(36)}  total:${fmt(s.total)}  finals:${s.finals}  hidden:${s.hidden}  legacy:${s.legacy}  forfeit:${s.forfeit}`);
+  }
+}
+
+// ─── 5. search/players shards ─────────────────────────────────────────────────
 
 section('5 · search/players/{xx}.json');
 const searchDir = path.join(ROOT, 'search', 'players');
 let searchFiles = 0, searchKeys = 0;
+let searchValuesAreArrays = true, searchHasBothFormats = false;
+let fnSeen = false, snSeen = false;
+
 if (fs.existsSync(searchDir)) {
   const files = fs.readdirSync(searchDir).filter(f => f.endsWith('.json'));
   searchFiles = files.length;
-  for (const f of files) {
-    const data = readJSON(path.join(searchDir, f));
-    if (data) searchKeys += Object.keys(data).length;
+  const step = Math.max(1, Math.floor(files.length / 20));
+  for (let i = 0; i < files.length; i++) {
+    const data = readJSON(path.join(searchDir, files[i]));
+    if (!data) continue;
+    const keys = Object.keys(data);
+    searchKeys += keys.length;
+    if (i % step === 0) {
+      for (const [k, v] of Object.entries(data)) {
+        if (!Array.isArray(v)) searchValuesAreArrays = false;
+        if (!k.includes(',')) fnSeen = true;
+        if (k.includes(','))  snSeen = true;
+      }
+    }
   }
+  searchHasBothFormats = fnSeen && snSeen;
 }
-row('Search shard files', fmt(searchFiles));
-row('Unique search keys', fmt(searchKeys));
 
-// ─── 6. leaderboard files ───────────────────────────────────────────────────
+row('Search shard files',          fmt(searchFiles), searchFiles > 500 ? '✅' : '⚠️  expected ~630');
+row('Unique search keys',          fmt(searchKeys));
+row('Values are arrays',           searchValuesAreArrays ? '✅' : '❌');
+row('Both name formats present',   searchHasBothFormats  ? '✅' : '❌');
+
+// ─── 6. leaderboard/ ─────────────────────────────────────────────────────────
 
 section('6 · leaderboard/');
 const lbDir     = path.join(ROOT, 'leaderboard');
@@ -265,21 +453,41 @@ const lbAllTime = readJSON(path.join(lbDir, 'all-time.json'));
 row('all-time.json', lbAllTime ? '✅ present' : '❌ MISSING');
 if (lbAllTime) {
   const cats = Object.keys(lbAllTime);
-  row('  Categories', cats.join(', '));
-  for (const cat of cats) row(`  ${cat} entries`, fmt((lbAllTime[cat] || []).length));
+  row('  Categories', cats.length, cats.join(', '));
+  for (const cat of cats) {
+    const entries = (lbAllTime[cat] || []).length;
+    // Integrity check: finalsPerSeason entries should all be ≤ 1
+    if (cat === 'finalsPerSeason') {
+      const badEntries = (lbAllTime[cat] || []).filter(e => e.v > 1);
+      row(`  ${cat}`, fmt(entries), badEntries.length > 0 ? `❌ ${badEntries.length} entries > 1` : '✅ all ≤ 1');
+    } else {
+      row(`  ${cat}`, fmt(entries));
+    }
+  }
 }
 const lbSeasonDir = path.join(lbDir, 'season');
-let lbSeasonFiles = 0;
+let lbSeasonFiles = 0, lbSeasonSample = null;
 if (fs.existsSync(lbSeasonDir)) {
-  lbSeasonFiles = fs.readdirSync(lbSeasonDir).filter(f => f.endsWith('.json')).length;
+  const files = fs.readdirSync(lbSeasonDir).filter(f => f.endsWith('.json'));
+  lbSeasonFiles = files.length;
+  // Spot-check one file for normalized schema
+  if (files.length > 0) {
+    lbSeasonSample = readJSON(path.join(lbSeasonDir, files[0]));
+  }
 }
-row('season/{seasonId}.json files', fmt(lbSeasonFiles));
+row('season/{seasonId}.json files', fmt(lbSeasonFiles), lbSeasonFiles >= 2793 ? '✅' : `⚠️  expected ~2793`);
+if (lbSeasonSample) {
+  const hasPlayersMap = typeof lbSeasonSample.players === 'object' && !Array.isArray(lbSeasonSample.players);
+  const hasIdvArrays  = Object.values(lbSeasonSample).some(v => Array.isArray(v) && v[0]?.id !== undefined);
+  row('  Schema: players map',   hasPlayersMap ? '✅' : '❌');
+  row('  Schema: {id,v} arrays', hasIdvArrays  ? '✅' : '❌');
+}
 
-// ─── 7. team-stats files ────────────────────────────────────────────────────
+// ─── 7. team-stats files ──────────────────────────────────────────────────────
 
 section('7 · team-stats/bv/{seasonId}.json');
 const tsDir = path.join(ROOT, 'team-stats', 'bv');
-let tsFiles = 0, tsTeams = 0, tsWithRoster = 0;
+let tsFiles = 0, tsTeams = 0, tsWithRoster = 0, tsWithFixtures = 0;
 if (fs.existsSync(tsDir)) {
   const files = fs.readdirSync(tsDir).filter(f => f.endsWith('.json'));
   tsFiles = files.length;
@@ -289,170 +497,180 @@ if (fs.existsSync(tsDir)) {
     for (const team of Object.values(data)) {
       tsTeams++;
       if (team.roster && Object.keys(team.roster).length > 0) tsWithRoster++;
+      if (team.fixtures && team.fixtures.length > 0) tsWithFixtures++;
     }
   }
 }
-row('Season files', fmt(tsFiles));
-row('Teams sampled (first 20 files)', fmt(tsTeams));
-if (tsTeams > 0) row('  With non-empty roster', fmt(tsWithRoster), pct(tsWithRoster, tsTeams));
+row('Season files',                      fmt(tsFiles),       tsFiles > 0 ? '✅' : '❌');
+row('Teams sampled (first 20 files)',     fmt(tsTeams));
+if (tsTeams > 0) {
+  row('  With non-empty roster',          fmt(tsWithRoster),   pct(tsWithRoster, tsTeams));
+  row('  With fixtures',                  fmt(tsWithFixtures), pct(tsWithFixtures, tsTeams));
+}
 
-// ─── 8. venue-lookup — FULL INVESTIGATION ───────────────────────────────────
+// ─── 8. venue-lookup ─────────────────────────────────────────────────────────
 
-section('8 · venue-lookup/  (full investigation)');
+section('8 · venue-lookup/');
 const vlDir = path.join(ROOT, 'venue-lookup');
 let vlVenues = 0, vlDateFiles = 0, vlDatesJSON = 0;
-
-// Categories for the extra directories
-const vlWithDatesOnly    = [];  // has dates.json, no date files — shouldn't exist
-const vlExpected         = [];  // has dates.json + date files — legitimate venue
-const vlNoDatesJSON      = [];  // no dates.json — the anomaly
-const vlEmpty            = [];  // completely empty directory
+const vlNoDatesJSON = [], vlEmpty = [], vlWithDatesOnly = [];
 
 if (fs.existsSync(vlDir)) {
-  const vDirs = fs.readdirSync(vlDir);
-  vlVenues = vDirs.length;
-  for (const v of vDirs) {
+  for (const v of fs.readdirSync(vlDir)) {
     const vPath = path.join(vlDir, v);
     if (!fs.statSync(vPath).isDirectory()) continue;
+    vlVenues++;
     const vFiles = fs.readdirSync(vPath);
     const hasDatesJSON = vFiles.includes('dates.json');
     const dateFiles    = vFiles.filter(f => /^\d{4}-\d{2}-\d{2}/.test(f));
-
     if (hasDatesJSON) vlDatesJSON++;
     vlDateFiles += dateFiles.length;
-
-    if (vFiles.length === 0)         vlEmpty.push(v);
-    else if (!hasDatesJSON)          vlNoDatesJSON.push({ id: v, files: vFiles.length, sample: vFiles.slice(0, 3) });
-    else if (dateFiles.length === 0) vlWithDatesOnly.push(v);
-    else                             vlExpected.push(v);
+    if      (vFiles.length === 0)         vlEmpty.push(v);
+    else if (!hasDatesJSON)               vlNoDatesJSON.push(v);
+    else if (dateFiles.length === 0)      vlWithDatesOnly.push(v);
   }
 }
 
-row('Total venue directories', fmt(vlVenues));
-row('  Legitimate (dates.json + date files)', fmt(vlExpected.length),
-    vlExpected.length === 532 ? '✅' : `⚠️  expected 532`);
-row('  dates.json files present', fmt(vlDatesJSON), vlDatesJSON === 532 ? '✅' : '⚠️');
-row('  Date schedule files', fmt(vlDateFiles));
-row('  Empty directories', fmt(vlEmpty.length), vlEmpty.length ? '⚠️' : '✅');
-row('  NO dates.json (anomalous)', fmt(vlNoDatesJSON.length), vlNoDatesJSON.length ? '⚠️  SEE BELOW' : '✅');
-row('  dates.json only (no date files)', fmt(vlWithDatesOnly.length), vlWithDatesOnly.length ? '⚠️' : '✅');
+row('Total venue directories',              fmt(vlVenues));
+row('  Legitimate (dates.json + dates)',    fmt(vlVenues - vlNoDatesJSON.length - vlEmpty.length - vlWithDatesOnly.length), vlNoDatesJSON.length === 0 && vlEmpty.length === 0 ? '✅' : '⚠️');
+row('  dates.json files present',           fmt(vlDatesJSON));
+row('  Date schedule files total',          fmt(vlDateFiles));
+row('  Empty directories',                  fmt(vlEmpty.length),       vlEmpty.length      ? '⚠️' : '✅');
+row('  No dates.json (anomalous)',           fmt(vlNoDatesJSON.length), vlNoDatesJSON.length ? '⚠️' : '✅');
+row('  dates.json only (no date files)',     fmt(vlWithDatesOnly.length), vlWithDatesOnly.length ? '⚠️' : '✅');
 
-if (vlNoDatesJSON.length > 0) {
-  console.log('\n  ── Anomalous directories (no dates.json) ──');
-  console.log(`  Total: ${vlNoDatesJSON.length}`);
-  // Show first 20, with their file counts and sample filenames
-  for (const d of vlNoDatesJSON.slice(0, 20)) {
-    const sampleStr = d.sample.join(', ') + (d.files > 3 ? ` … (+${d.files - 3} more)` : '');
-    console.log(`    ${d.id}  [${d.files} file(s)]  ${sampleStr}`);
-  }
-  if (vlNoDatesJSON.length > 20) {
-    console.log(`    … and ${vlNoDatesJSON.length - 20} more`);
-  }
-
-  // Check if any of the anomalous dir names look like venue IDs vs something else
-  const uuidLike = vlNoDatesJSON.filter(d => /^[0-9a-f]{8}-/.test(d.id));
-  const shortHex = vlNoDatesJSON.filter(d => /^[0-9a-f]{8}$/.test(d.id));
-  const other    = vlNoDatesJSON.filter(d => !/^[0-9a-f]{8}/.test(d.id));
-  console.log(`\n  ── Anomalous dir name patterns ──`);
-  row('  UUID-format (xxxxxxxx-xxxx-…)', fmt(uuidLike.length));
-  row('  Short hex (8 chars)', fmt(shortHex.length));
-  row('  Other format', fmt(other.length));
-  if (other.length > 0) {
-    console.log('  Other format examples: ' + other.slice(0, 5).map(d => d.id).join(', '));
-  }
-}
-
-if (vlEmpty.length > 0) {
-  console.log('\n  ── Empty directories ──');
-  console.log('  ' + vlEmpty.slice(0, 10).join(', ') + (vlEmpty.length > 10 ? '…' : ''));
-}
-
-// ─── 9. date-venue-index ────────────────────────────────────────────────────
+// ─── 9. date-venue-index ─────────────────────────────────────────────────────
 
 section('9 · date-venue-index/{YYYY-MM-DD}.json');
 const dviDir = path.join(ROOT, 'date-venue-index');
 let dviFiles = 0;
 if (fs.existsSync(dviDir)) {
-  dviFiles = fs.readdirSync(dviDir)
-    .filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).length;
+  dviFiles = fs.readdirSync(dviDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).length;
 }
 row('Date-venue index files', fmt(dviFiles));
 
-// ─── 10. Root index files ────────────────────────────────────────────────────
+// ─── 10. Root index files ─────────────────────────────────────────────────────
 
 section('10 · Root index files');
-const rootIndexFiles = [
-  'sports-index.json',
-  'team-index.json',
-  'venue-index.json',
-  'season-venue-index.json',
-];
-for (const f of rootIndexFiles) {
+for (const f of ['sports-index.json','team-index.json','venue-index.json','season-venue-index.json']) {
   const p = path.join(ROOT, f);
   if (!fs.existsSync(p)) { row(f, '❌ MISSING'); continue; }
   const data = readJSON(p);
   if (!data) { row(f, '❌ PARSE ERROR'); continue; }
-  const count = Array.isArray(data) ? data.length : Object.keys(data).length;
+  const count   = Array.isArray(data) ? data.length : Object.keys(data).length;
   const topKeys = Array.isArray(data) ? 'array' : Object.keys(data).slice(0, 3).join(', ') + '…';
-  row(f, fmt(count) + ' entries', `✅  top-level: ${topKeys}`);
+  row(f, fmt(count) + ' entries', `✅  keys: ${topKeys}`);
 }
 
-// ─── 11. publicProfileStatistics coverage ───────────────────────────────────
+// ─── 11. Misc JSON files ──────────────────────────────────────────────────────
 
-section('11 · publicProfileStatistics coverage');
-console.log('');
-console.log('  Fields only populated by publicProfileStatistics:');
-console.log('    • foulOuts       — foul-out count per season/team/grade reg');
-console.log('    • maxGamePTS     — single-game career points record');
-console.log('    • maxGameThreePt — single-game career 3PT record');
-console.log('    • statsChecked   — ISO timestamp of last successful fetch');
-console.log('');
-row('Fully fetched (statsChecked present)', fmt(withStatsChecked),
-    pct(withStatsChecked, processed));
-row('Partially written (foulOuts, no statsChecked)', fmt(withFoulOuts - withStatsChecked),
-    pct(withFoulOuts - withStatsChecked, processed));
-row('Not fetched at all', fmt(processed - withFoulOuts),
-    pct(processed - withFoulOuts, processed));
-console.log('');
-const remaining = processed - withStatsChecked;
-const pctFetched = processed > 0 ? (withStatsChecked / processed * 100).toFixed(2) : '0.00';
-if (remaining > 0) {
-  console.log(`  Coverage: ${pctFetched}% (${remaining.toLocaleString()} players still need fetching).`);
-  console.log('  Run fetch-profile-stats-matrix.yml to complete the bootstrap.');
-} else {
-  console.log(`  Coverage: ${pctFetched}% ✅ Bootstrap complete — all players have been fetched.`);
+section('11 · Misc files');
+const miscFiles = [
+  ['forfeit-games.json',         23839, true],
+  ['records/all-time.json',      null,  true],
+  ['needs-matrix-shards.json',   null,  false],
+  ['matrix-force-pending.json',  null,  false],  // should not exist
+];
+for (const [f, expected, shouldExist] of miscFiles) {
+  const p = path.join(ROOT, f);
+  if (!fs.existsSync(p)) {
+    if (shouldExist === false) row(f, '✅ absent', '');
+    else row(f, '❌ MISSING');
+    continue;
+  }
+  if (shouldExist === false) { row(f, '⚠️  exists', 'should be deleted'); continue; }
+  const data = readJSON(p);
+  const count = Array.isArray(data) ? data.length : (data ? Object.keys(data).length : '?');
+  const note  = expected != null ? (count === expected ? `✅ expected ${fmt(expected)}` : `⚠️  expected ${fmt(expected)}`) : '';
+  row(f, fmt(count) + ' entries', note);
 }
 
-// ─── 12. Summary vs baseline ─────────────────────────────────────────────────
+// ─── 12. Summary vs baseline ──────────────────────────────────────────────────
 
 section('12 · Summary vs documented baseline (June 2026)');
-console.log('');
 const baseline = [
   ['Seasons in sports-index',   sportsIndex ? Object.values(sportsIndex.seasons||{}).length : 0, 2792],
-  ['Player index entries',       indexEntries,   369428],
-  ['Player detail files',        detailCount,    369437],
-  ['Total game entries',         totalGames,     2247971],
-  ['Search shard files',         searchFiles,    595],
-  ['Search unique keys',         searchKeys,     595879],
-  ['Venue dirs (legit)',          vlExpected.length, 532],
-  ['dates.json files',           vlDatesJSON,    532],
-  ['Date-venue index files',     dviFiles,       2016],
-  ['Leaderboard season files',   lbSeasonFiles,  2793],
-  ['game files (bv/)',           gameFiles,      2792],
-  ['team-stats files (bv/)',     tsFiles,        2792],
+  ['Player index entries',       indexEntries,    369428],
+  ['Player detail files',        detailCount,     369437],
+  ['Total game entries',         totalGames,      2247971],
+  ['Finals round games',         gamesFinalsRound, 119021],
+  ['Grand Final games',          gamesGrandFinal,  34846],
+  ['Players with finals > 0',    finalsNonZero,    284678],
+  ['Search shard files',         searchFiles,      595],
+  ['Venue dirs',                 vlVenues,         532],
+  ['Date-venue index files',     dviFiles,         2016],
+  ['Leaderboard season files',   lbSeasonFiles,    2793],
+  ['Game files (bv/)',           gameFiles,        2792],
+  ['Team-stats files (bv/)',     tsFiles,          2792],
 ];
 
 let allGood = true;
 for (const [label, actual, expected] of baseline) {
-  const match  = actual === expected;
-  const icon   = match ? '✅' : (actual > 0 ? '⚠️ ' : '❌');
+  const match   = actual === expected;
+  const icon    = match ? '✅' : (actual > 0 ? '⚠️ ' : '❌');
   if (!match) allGood = false;
   const diff    = actual - expected;
   const diffStr = diff === 0 ? '' : (diff > 0 ? ` (+${fmt(diff)})` : ` (${fmt(diff)})`);
   row(label, fmt(actual), `${icon} expected ${fmt(expected)}${diffStr}`);
 }
 console.log('');
-console.log(allGood
-  ? '  ✅ All counts match baseline.'
-  : '  ⚠️  One or more counts differ from baseline — review above.');
-console.log('');
+console.log(allGood ? '  ✅ All counts match baseline.' : '  ⚠️  One or more counts differ from baseline — review above.');
+
+// ─── 13. Repo size ────────────────────────────────────────────────────────────
+
+if (!NO_SIZE) {
+  section('13 · Repo size');
+  const entries = fs.readdirSync(ROOT, { withFileTypes: true })
+    .filter(e => !e.name.startsWith('.') && e.name !== 'node_modules');
+
+  const rows = [];
+  let repoTotal = 0, repoCount = 0;
+  for (const entry of entries) {
+    const full = path.join(ROOT, entry.name);
+    if (entry.isDirectory()) {
+      const { total, count } = dirSize(full);
+      rows.push({ name: entry.name + '/', size: total, count, isDir: true });
+      repoTotal += total; repoCount += count;
+    } else {
+      const size = fs.statSync(full).size;
+      rows.push({ name: entry.name, size, count: 1, isDir: false });
+      repoTotal += size; repoCount++;
+    }
+  }
+  rows.sort((a, b) => b.size - a.size);
+
+  console.log(`\n  ${'Name'.padEnd(32)} ${'Size'.padStart(10)}  ${'Files'.padStart(8)}  % of repo`);
+  console.log('  ' + '─'.repeat(58));
+  for (const r of rows) {
+    const icon = r.isDir ? '📂' : '📄';
+    console.log(`  ${icon} ${r.name.padEnd(30)} ${fmtBytes(r.size).padStart(10)}  ${r.count.toLocaleString().padStart(8)}  ${pct(r.size, repoTotal)}`);
+  }
+  console.log('  ' + '─'.repeat(58));
+  console.log(`  ${'TOTAL'.padEnd(32)} ${fmtBytes(repoTotal).padStart(10)}  ${repoCount.toLocaleString().padStart(8)}`);
+
+  // Sub-breakdown for large dirs (>100MB)
+  const largeDirs = rows.filter(r => r.isDir && r.size > 100 * 1024 * 1024);
+  for (const dir of largeDirs) {
+    const dirPath = path.join(ROOT, dir.name.replace(/\/$/, ''));
+    const subRows = [];
+    for (const sub of fs.readdirSync(dirPath, { withFileTypes: true })) {
+      const full = path.join(dirPath, sub.name);
+      if (sub.isDirectory()) {
+        const { total, count } = dirSize(full);
+        subRows.push({ name: sub.name + '/', size: total, count });
+      } else {
+        subRows.push({ name: sub.name, size: fs.statSync(full).size, count: 1 });
+      }
+    }
+    subRows.sort((a, b) => b.size - a.size);
+    console.log(`\n  📂 ${dir.name} breakdown (top 10):`);
+    console.log('  ' + '─'.repeat(52));
+    for (const sub of subRows.slice(0, 10)) {
+      console.log(`    ${sub.name.padEnd(30)} ${fmtBytes(sub.size).padStart(10)}  ${pct(sub.size, dir.size)}`);
+    }
+  }
+}
+
+console.log('\n' + '═'.repeat(60));
+console.log('  ✅ Audit complete');
+console.log('═'.repeat(60) + '\n');
