@@ -191,7 +191,8 @@ jobs:
     if: |
       always() &&
       inputs.dry_run != 'true' &&
-      needs.crawl.outputs.games_remaining != '0'
+      needs.crawl.outputs.games_remaining != '0' &&
+      needs.crawl.outputs.games_remaining != ''
     steps:
       - name: Check consecutive zeros and retrigger
         run: |

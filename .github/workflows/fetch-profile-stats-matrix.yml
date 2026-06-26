@@ -303,6 +303,32 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
+      - name: Delete matrix-force-pending.json if present
+        if: |
+          (steps.next.outputs.status == 'retrigger' && steps.next.outputs.new_consecutive_zeros == '0') ||
+          steps.next.outputs.status == 'stuck'
+        run: |
+          if [ ! -f matrix-force-pending.json ]; then
+            echo "matrix-force-pending.json not present — nothing to do."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git stash
+          git fetch origin main
+          git merge -X ours FETCH_HEAD
+          git stash pop 2>/dev/null || true
+          if [ -f matrix-force-pending.json ]; then
+            git rm -f matrix-force-pending.json
+            git commit -m "matrix: delete matrix-force-pending.json (force complete)"
+            git push origin main
+            echo "Deleted matrix-force-pending.json."
+          else
+            echo "matrix-force-pending.json already gone after merge — nothing to commit."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
       - name: All done
         if: steps.next.outputs.status == 'stuck'
         run: echo "✅ Matrix complete — 3 consecutive runs with 0 written. All players processed."
