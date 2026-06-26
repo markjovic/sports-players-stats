@@ -219,8 +219,9 @@ function parseProfileStats(data) {
             const fouls   = statValue(stats, 'TOTAL_FOULS');
             const pts     = statValue(stats, 'TOTAL_SCORE');
             const three   = statValue(stats, '3_POINT_SCORE');
-            const fg      = statValue(stats, 'FIELD_GOAL') || statValue(stats, '2_POINT_SCORE');
-            const ft      = statValue(stats, 'FREE_THROW') || statValue(stats, '1_POINT_SCORE');
+            const fg      = statValue(stats, '2_POINT_SCORE');
+            const ft      = statValue(stats, '1_POINT_SCORE');
+            const gp_val  = statValue(stats, 'APPEARANCE') || 1; // 1 game per gameStat entry
 
             // Foul-out = 5 or more fouls in a single game
             if (fouls >= 5) {
@@ -239,7 +240,7 @@ function parseProfileStats(data) {
             // Accumulate per-reg stats
             if (!regStats.has(regKey)) regStats.set(regKey, { gp: 0, pts: 0, fg: 0, ft: 0, threePt: 0, fouls: 0 });
             const rs = regStats.get(regKey);
-            rs.gp++;
+            rs.gp     += gp_val;
             rs.pts    += pts;
             rs.fg     += fg;
             rs.ft     += ft;

@@ -228,11 +228,10 @@ for (const [uuid, sidMap] of finalsMap) {
 
   // Career totals
   let careerFinals = 0, careerGfApps = 0, careerGfWins = 0;
-  let seasonsWithGames = 0;
-  for (const season of (player.seasons || [])) {
-    const totalGp = (season.regs || []).reduce((sum, r) => sum + (r.stats?.gp ?? 0), 0);
-    if (totalGp > 0) seasonsWithGames++;
-  }
+  // Count seasons the player has registrations in — every season entry means they played.
+  // Do NOT use r.stats.gp here: that field is stale and may be 0 even when the player played,
+  // which causes seasonsWithGames < seasonsWithFinals and finalsPerSeason > 1.
+  const seasonsWithGames = (player.seasons || []).filter(s => (s.regs || []).length > 0).length;
 
   let seasonsWithFinals = 0;
   for (const acc of sidMap.values()) {
@@ -246,13 +245,13 @@ for (const [uuid, sidMap] of finalsMap) {
     ? Math.round((seasonsWithFinals / seasonsWithGames) * 100) / 100
     : 0;
 
-  const bball = player.sports?.Basketball;
-  if (bball) {
-    if ((bball.finals          ?? -1) !== careerFinals)      { bball.finals          = careerFinals;      modified = true; }
-    if ((bball.gfApps          ?? -1) !== careerGfApps)      { bball.gfApps          = careerGfApps;      modified = true; }
-    if ((bball.gfWins          ?? -1) !== careerGfWins)      { bball.gfWins          = careerGfWins;      modified = true; }
-    if ((bball.finalsPerSeason ?? -1) !== finalsPerSeason)   { bball.finalsPerSeason = finalsPerSeason;   modified = true; }
-  }
+  if (!player.sports)            player.sports = {};
+  if (!player.sports.Basketball) player.sports.Basketball = {};
+  const bball = player.sports.Basketball;
+  if ((bball.finals          ?? -1) !== careerFinals)      { bball.finals          = careerFinals;      modified = true; }
+  if ((bball.gfApps          ?? -1) !== careerGfApps)      { bball.gfApps          = careerGfApps;      modified = true; }
+  if ((bball.gfWins          ?? -1) !== careerGfWins)      { bball.gfWins          = careerGfWins;      modified = true; }
+  if ((bball.finalsPerSeason ?? -1) !== finalsPerSeason)   { bball.finalsPerSeason = finalsPerSeason;   modified = true; }
 
   // Per-reg: write season-level counts to every reg in that season
   for (const season of (player.seasons || [])) {

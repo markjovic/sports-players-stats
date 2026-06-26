@@ -485,7 +485,9 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
       needsSpectator.push({
         gameId: game.id,
         seasonId,
-        rn:     roundName || null,
+        rn:      roundName || null,
+        gradeId: gradeId   || null,
+        gradeName: gradeName || null,
         homeTid: homeTeam?.id || null,
         awayTid: awayTeam?.id || null,
         homeScore,
@@ -680,7 +682,7 @@ async function main() {
   const playerDeltas = new Map();
   let spectatorHits = 0, spectatorMiss = 0, p3Done = 0;
 
-  const p3Tasks = needsSpectator.map(({ gameId, seasonId, rn, homeTid, awayTid, homeScore, awayScore }) => async () => {
+  const p3Tasks = needsSpectator.map(({ gameId, seasonId, rn, gradeId, gradeName, homeTid, awayTid, homeScore, awayScore }) => async () => {
     const game = await gqlSpectator(gameId);
     p3Done++;
     if (p3Done % 50 === 0 || p3Done === needsSpectator.length)
@@ -712,6 +714,7 @@ async function main() {
       playerDeltas.get(p.profileID).deltas.push({
         seasonId, gameKey: gameId, pts: p.pts, pt3: p.pt3, fouls: p.fouls,
         isFinalsGame, isGF, playerTid, playerWon,
+        gradeId, gradeName,
       });
     }
 
@@ -741,14 +744,17 @@ async function main() {
   }
   console.log();
 
-  // ── Phase 3 cont.: Apply player stat deltas ────────────────────────────────
+  // ── Phase 3 cont.: Clear statsChecked for all players in tonight's games ───────
+  // All player stat computation is owned by the matrix (fetch-profile-stats.js).
+  // Nightly's only job here is to clear statsChecked for players who appeared in
+  // any completed game tonight, so the matrix knows to re-fetch them.
 
-  console.log('Phase 3/4 (cont.) — Applying player stat updates…');
+  console.log('Phase 3/4 (cont.) — Clearing statsChecked for updated players…');
 
-  let statsUpdated       = 0;
+  let statsCleared       = 0;
   let playersSinceCommit = 0;
   const genuinelyNew     = new Map();
-  const affectedShards   = new Set(); // UUID prefixes where statsChecked was cleared
+  const affectedShards   = new Set();
 
   // Group by shard for efficient index reads
   const byShard = new Map();
@@ -757,6 +763,8 @@ async function main() {
     if (!byShard.has(shard)) byShard.set(shard, []);
     byShard.get(shard).push({ uuid, ...info });
   }
+
+  let newRegsAdded = 0;
 
   for (const [shard, entries] of byShard) {
     const index = readPlayerIndex(shard);
@@ -775,102 +783,86 @@ async function main() {
       if (!player.sports.Basketball) player.sports.Basketball = {};
       const bk = player.sports.Basketball;
 
-      // Initialise fields that may be absent on older player files
-      if (bk.maxGamePTS     === undefined || bk.maxGamePTS     === null) bk.maxGamePTS     = 0;
-      if (bk.maxGameThreePt === undefined || bk.maxGameThreePt === null) bk.maxGameThreePt = 0;
-      if (!bk.foulOuts || typeof bk.foulOuts !== 'object')               bk.foulOuts       = {};
+      // ── Reg discovery: add missing season/reg entries for existing players ──
+      // The matrix writes stats into existing regs but never adds new ones.
+      // If a player appeared in a game for a season/team not in their file,
+      // add the stub reg now so the matrix has somewhere to write stats to.
+      let playerModified = false;
+      for (const { seasonId, playerTid, gradeId, gradeName } of deltas) {
+        if (!seasonId || !playerTid || !gradeId) continue;
 
-      let changed = false;
-      if (!player.records) player.records = {};
-
-      // Track which shards need matrix re-fetch
-      let needsMatrixRecheck = false;
-
-      for (const { seasonId, gameKey, pts, pt3, fouls, isFinalsGame, isGF, playerTid, playerWon } of deltas) {
-        if (pts > (bk.maxGamePTS ?? 0)) {
-          bk.maxGamePTS = pts;
-          player.records.maxGamePTS = gameKey ? { v: pts, gameKey, sid: seasonId } : { v: pts };
-          changed = true;
-          needsMatrixRecheck = true;
-        }
-        if (pt3 > (bk.maxGameThreePt ?? 0)) {
-          bk.maxGameThreePt = pt3;
-          player.records.maxGameThreePt = gameKey ? { v: pt3, gameKey, sid: seasonId } : { v: pt3 };
-          changed = true;
-          needsMatrixRecheck = true;
-        }
-        if (fouls >= 5) {
-          bk.foulOuts[seasonId] = (bk.foulOuts[seasonId] || 0) + 1;
-          changed = true;
-          needsMatrixRecheck = true;
+        // Find or create the season entry
+        let season = (player.seasons || []).find(s => s.sid === seasonId);
+        if (!season) {
+          if (!player.seasons) player.seasons = [];
+          const si = sportIndex.seasons?.[seasonId];
+          season = {
+            sid:   seasonId,
+            sn:    si?.name    || seasonId,
+            club:  si?.orgName || '',
+            sport: 'Basketball',
+            regs:  [],
+          };
+          player.seasons.push(season);
+          playerModified = true;
         }
 
-        // Inline finals tracking — boolean per season, idempotent writes
-        if (isFinalsGame) {
-          // Find the reg for this player in this season by tid
-          for (const season of (player.seasons || [])) {
-            if (season.sid !== seasonId) continue;
-            for (const reg of (season.regs || [])) {
-              if (playerTid && reg.tid !== playerTid) continue;
-              if (!reg.stats) reg.stats = {};
-              if (!reg.stats.finals) {
-                reg.stats.finals = 1;
-                changed = true;
-              }
-              if (isGF && !reg.stats.gfApps) {
-                reg.stats.gfApps = 1;
-                changed = true;
-              }
-              if (isGF && playerWon && !reg.stats.gfWins) {
-                reg.stats.gfWins = 1;
-                changed = true;
-              }
-            }
+        // Find or create the reg entry
+        const hasReg = (season.regs || []).some(r => r.tid === playerTid && r.gid === gradeId);
+        if (!hasReg) {
+          if (!season.regs) season.regs = [];
+          season.regs.push({
+            tid:   playerTid,
+            tn:    '',        // team name — not available from spectator; matrix will fill stats
+            gid:   gradeId,
+            gn:    gradeName || '',
+            age:   '',
+            div:   null,
+            stats: {},
+          });
+          // Update index history
+          if (!index[uuid].history) index[uuid].history = {};
+          if (!index[uuid].history[seasonId]) index[uuid].history[seasonId] = [];
+          if (!index[uuid].history[seasonId].includes(playerTid)) {
+            index[uuid].history[seasonId].push(playerTid);
           }
-          // Recompute career finals stats from seasons
-          let careerFinals = 0, careerGfApps = 0, careerGfWins = 0, seasonsWithGames = 0, seasonsWithFinals = 0;
-          for (const season of (player.seasons || [])) {
-            const hasGp = (season.regs || []).some(r => (r.stats?.gp ?? 0) > 0 || (r.stats?.finals ?? 0) > 0);
-            if (hasGp) seasonsWithGames++;
-            const madeFinalsThisSeason = (season.regs || []).some(r => (r.stats?.finals ?? 0) > 0);
-            if (madeFinalsThisSeason) {
-              careerFinals++;
-              seasonsWithFinals++;
-              if ((season.regs || []).some(r => (r.stats?.gfApps ?? 0) > 0)) careerGfApps++;
-              if ((season.regs || []).some(r => (r.stats?.gfWins ?? 0) > 0)) careerGfWins++;
-            }
-          }
-          bk.finals          = careerFinals;
-          bk.gfApps          = careerGfApps;
-          bk.gfWins          = careerGfWins;
-          bk.finalsPerSeason = seasonsWithGames > 0
-            ? Math.round((seasonsWithFinals / seasonsWithGames) * 100) / 100 : 0;
+          playerModified = true;
+          newRegsAdded++;
         }
       }
 
-      // Clear statsChecked so the matrix re-fetches this player to recompute
-      // foulOuts/maxGamePTS/maxGameThreePt cleanly from the API
-      if (needsMatrixRecheck) {
+      if (playerModified) {
+        if (!DRY_RUN) {
+          writePlayer(uuid, player);
+          writePlayerIndex(shard, index);
+        }
+      }
+
+      // Clear statsChecked — matrix will re-fetch and recompute all stats
+      if (bk.statsChecked !== undefined) {
         delete bk.statsChecked;
-        affectedShards.add(uuid.slice(0, 2));
-      }
-
-      if (changed) {
         player.updatedAt = new Date().toISOString();
-        writePlayer(uuid, player);
-        statsUpdated++;
+        if (!DRY_RUN) writePlayer(uuid, player);
+        statsCleared++;
         playersSinceCommit++;
+        affectedShards.add(uuid.slice(0, 2));
 
         if (playersSinceCommit >= COMMIT_EVERY_PLAYERS) {
-          await gitCommit(`nightly-crawl: player stats (${statsUpdated} updated so far)`);
+          await gitCommit(`nightly-crawl: statsChecked cleared (${statsCleared} so far)`);
           playersSinceCommit = 0;
         }
+      } else {
+        // No statsChecked yet — still needs matrix (new stub or cleared earlier)
+        affectedShards.add(uuid.slice(0, 2));
       }
     }
   }
-  console.log(`  Updated: ${statsUpdated}`);
+  if (newRegsAdded > 0) console.log(`  New regs added to existing players: ${newRegsAdded}`);
+  console.log(`  statsChecked cleared: ${statsCleared}  new regs: ${newRegsAdded}  shards affected: ${affectedShards.size}`);
+
+  // Write needs-matrix-shards.json for the nightly workflow to trigger targeted matrix
   if (affectedShards.size > 0) {
-    console.log(`  Shards needing matrix re-fetch: ${affectedShards.size} (${[...affectedShards].sort().join(', ')})`);
+    console.log(`  Shards needing matrix re-fetch: ${[...affectedShards].sort().join(', ')}`);
     if (!DRY_RUN) {
       fs.writeFileSync(
         path.join(ROOT, 'needs-matrix-shards.json'),
@@ -878,7 +870,6 @@ async function main() {
       );
     }
   } else {
-    // No players need re-fetch — clear any stale file
     const shardsFile = path.join(ROOT, 'needs-matrix-shards.json');
     if (fs.existsSync(shardsFile) && !DRY_RUN) fs.unlinkSync(shardsFile);
   }
@@ -933,7 +924,7 @@ async function main() {
 
   // Final commit — remaining player + stub writes
   await gitCommit(
-    `nightly-crawl: ${statsUpdated} player stats updated, ${stubbed} new players stubbed`
+    `nightly-crawl: ${statsCleared} statsChecked cleared, ${stubbed} new players stubbed`
   );
 
   // ── Status file ───────────────────────────────────────────────────────────────
@@ -945,7 +936,7 @@ async function main() {
     fs.writeFileSync(STATUS_FILE, JSON.stringify({
       gamesRemaining,
       gamesProcessed:  spectatorHits,
-      statsUpdated,
+      statsCleared,
       stubbed,
       completed:       gamesRemaining === 0,
       timestamp:       new Date().toISOString(),
@@ -960,7 +951,7 @@ async function main() {
   console.log(`  Rounds fetched:    ${roundQueue.length}`);
   console.log(`  Spectator queued:  ${needsSpectator.length}`);
   console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
-  console.log(`  Players updated:   ${statsUpdated}`);
+  console.log(`  statsChecked cleared: ${statsCleared}`);
   console.log(`  New players:       ${stubbed}`);
   console.log(`  Games remaining:   ${gamesRemaining}`);
   console.log(`  Elapsed:           ${elapsed}s`);
