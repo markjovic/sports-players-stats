@@ -72,6 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 20
       matrix:
         shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
     steps:
@@ -196,7 +197,7 @@ jobs:
           import json, os, glob
 
           files = glob.glob('summaries/*.json')
-          total = already_done = written = inaccessible = errors = remaining = blocked = 0
+          total = already_done = written = inaccessible = errors = blocked = 0
 
           for f in files:
             try:
@@ -206,13 +207,11 @@ jobs:
               written      += d.get('written', 0)
               inaccessible += d.get('inaccessible', 0)
               errors       += d.get('errors', 0)
-              remaining    += d.get('remaining', 0)
               if d.get('blocked'): blocked += 1
             except Exception as e:
               print(f'  Warning: could not parse {f}: {e}')
 
           outstanding_at_start = total - already_done
-          checked = total - remaining
 
           print('')
           print('══════════════════════════════════════════════════')
@@ -224,12 +223,9 @@ jobs:
           print(f'  Private profiles marked:   {inaccessible:,}')
           print(f'  Errors:                    {errors:,}')
           print(f'  Shards blocked mid-run:    {blocked}')
-          print(f'  Remaining after this run:  {remaining:,}')
-          print(f'  Players with statsChecked: {checked:,} / {total:,}')
           print('══════════════════════════════════════════════════')
 
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-            fh.write(f'remaining={remaining}\n')
             fh.write(f'written={written}\n')
           PYEOF
 
@@ -238,12 +234,9 @@ jobs:
         run: |
           run_number=${{ inputs.run_number }}
           consecutive_zeros=${{ inputs.consecutive_zeros }}
-          remaining=${{ steps.aggregate.outputs.remaining }}
           written=${{ steps.aggregate.outputs.written }}
 
-          if [ "$remaining" = "0" ]; then
-            echo "status=done" >> $GITHUB_OUTPUT
-          elif [ "$run_number" -ge 150 ]; then
+          if [ "$run_number" -ge 150 ]; then
             echo "status=max_runs" >> $GITHUB_OUTPUT
           elif [ "$written" = "0" ]; then
             new_zeros=$((consecutive_zeros + 1))
@@ -257,8 +250,6 @@ jobs:
             echo "status=retrigger" >> $GITHUB_OUTPUT
             echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
           fi
-
-
 
       - name: Trigger next run
         if: steps.next.outputs.status == 'retrigger'
@@ -274,8 +265,8 @@ jobs:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
       - name: All done
-        if: steps.next.outputs.status == 'done'
-        run: echo "✅ All players fetched — no further runs needed."
+        if: steps.next.outputs.status == 'stuck'
+        run: echo "✅ Matrix complete — 3 consecutive runs with 0 written. All players processed."
 
       - name: Max runs reached
         if: steps.next.outputs.status == 'max_runs'
@@ -283,10 +274,3 @@ jobs:
           echo "⚠️ Reached 150-run limit. Re-trigger manually if players remain."
           exit 1
 
-      - name: Stuck — zero progress for 3 consecutive runs
-        if: steps.next.outputs.status == 'stuck'
-        run: |
-          echo "🛑 Zero players written in 3 consecutive runs with remaining > 0."
-          echo "This likely means all remaining players are blocked by a persistent issue."
-          echo "Investigate before re-triggering."
-          exit 1
