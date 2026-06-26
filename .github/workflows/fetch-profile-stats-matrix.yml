@@ -141,22 +141,34 @@ jobs:
         id: check
         run: |
           has_files=false
+          > /tmp/sparse-dirs.txt
           for dir in /tmp/shard-artifacts/shard-files-*/; do
             tarfile=$(ls "$dir"*.tar.gz 2>/dev/null | head -1)
             if [ -n "$tarfile" ] && [ -s "$tarfile" ]; then
               has_files=true
-              break
+              shard=$(basename "$dir" | sed 's/shard-files-//')
+              echo "players/$shard" >> /tmp/sparse-dirs.txt
             fi
           done
           echo "has_files=$has_files" >> $GITHUB_OUTPUT
           echo "Has files to apply: $has_files"
+          if [ "$has_files" = "true" ]; then
+            echo "Sparse checkout: $(wc -l < /tmp/sparse-dirs.txt) shard dirs"
+          fi
 
       - uses: actions/checkout@v4
         if: steps.check.outputs.has_files == 'true'
         with:
           ref: main
           fetch-depth: 1
+          sparse-checkout: scripts
+          sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Expand sparse checkout to active shards
+        if: steps.check.outputs.has_files == 'true'
+        run: |
+          git sparse-checkout set --no-cone scripts $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
 
       - name: Configure git
         if: steps.check.outputs.has_files == 'true'
@@ -290,4 +302,3 @@ jobs:
         run: |
           echo "⚠️ Reached 150-run limit. Re-trigger manually if players remain."
           exit 1
-
