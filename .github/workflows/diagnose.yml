@@ -1,0 +1,49 @@
+# .github/workflows/diagnose.yml
+name: Diagnose
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: player | stats | hidden | game'
+        required: true
+        type: choice
+        options:
+          - player
+          - stats
+          - hidden
+          - game
+      arg:
+        description: 'UUID (player/stats mode) or game ID (game mode). Leave blank for hidden mode.'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run diagnostic
+        run: node scripts/diagnose.js ${{ inputs.mode }} ${{ inputs.arg }}
+
+      - name: Upload report (stats mode only)
+        if: inputs.mode == 'stats' && inputs.arg != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnose-${{ inputs.arg }}
+          path: diagnose-${{ inputs.arg }}.json
+          retention-days: 7

@@ -5,51 +5,134 @@ on:
   workflow_dispatch:
     inputs:
       uuid:
-        description: 'PlayHQ player UUID (from profile URL: /public/profile/<uuid>/statistics)'
+        description: 'PlayHQ player UUID'
         required: true
         type: string
+      name:
+        description: 'Player display name (optional — leave blank if unknown)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+  actions: write
 
 jobs:
   add-player:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    permissions:
-      contents: write
 
     steps:
       - name: Get shard prefix
         id: shard
-        run: echo "prefix=${UUID:0:2}" >> $GITHUB_OUTPUT
-        env:
-          UUID: ${{ github.event.inputs.uuid }}
+        run: |
+          uuid="${{ inputs.uuid }}"
+          prefix="${uuid:0:2}"
+          echo "prefix=$prefix" >> $GITHUB_OUTPUT
+          echo "Shard prefix: $prefix"
 
-      - name: Checkout repository (sparse)
+      - name: Checkout (sparse — player shard only)
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.WORKFLOW_PAT }}
+          fetch-depth: 1
           sparse-checkout: |
-            scripts/fetch-playhq.js
-            sports-index.json
-            players-index/${{ steps.shard.outputs.prefix }}.json
+            scripts/fetch-profile-stats.js
+            forfeit-games.json
+            players/indexes/${{ steps.shard.outputs.prefix }}.json
             players/${{ steps.shard.outputs.prefix }}
           sparse-checkout-cone-mode: false
 
-      - name: Set up Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Fetch player
-        run: node scripts/fetch-playhq.js --mode=player --uuid=${{ github.event.inputs.uuid }}
+      - name: Stub player if not already present
+        id: stub
+        run: |
+          node --input-type=module << 'EOF'
+          import fs   from 'fs';
+          import path from 'path';
 
-      - name: Commit result
+          const uuid   = '${{ inputs.uuid }}';
+          const name   = '${{ inputs.name }}' || undefined;
+          const shard  = uuid.slice(0, 2).toLowerCase();
+          const ROOT   = process.cwd();
+
+          const indexPath  = path.join(ROOT, 'players', 'indexes', `${shard}.json`);
+          const playerPath = path.join(ROOT, 'players', shard, `${uuid}.json`);
+
+          // Load index
+          let index = {};
+          if (fs.existsSync(indexPath)) {
+            index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+          }
+
+          if (index[uuid]) {
+            console.log(`Player already in index — will trigger matrix to re-fetch stats.`);
+            // Clear statsChecked so matrix re-fetches even if already present
+            if (fs.existsSync(playerPath)) {
+              const player = JSON.parse(fs.readFileSync(playerPath, 'utf8'));
+              if (player?.sports?.Basketball?.statsChecked !== undefined) {
+                delete player.sports.Basketball.statsChecked;
+                fs.writeFileSync(playerPath, JSON.stringify(player), 'utf8');
+                console.log('  statsChecked cleared.');
+              }
+            }
+            process.exit(0);
+          }
+
+          // Create stub — mirrors nightly Phase 4 exactly
+          const now  = new Date().toISOString();
+          const stub = {
+            uuid,
+            ...(name ? { name } : {}),
+            sports:    { Basketball: { maxGamePTS: 0, maxGameThreePt: 0, foulOuts: {} } },
+            seasons:   [],
+            teams:     [],
+            updatedAt: now,
+          };
+
+          fs.mkdirSync(path.dirname(playerPath), { recursive: true });
+          fs.writeFileSync(playerPath, JSON.stringify(stub), 'utf8');
+
+          index[uuid] = { ...(name ? { name } : {}), history: {} };
+          fs.writeFileSync(indexPath, JSON.stringify(index), 'utf8');
+
+          console.log(`Stubbed: ${uuid}${name ? ' (' + name + ')' : ''}`);
+          EOF
+
+      - name: Configure git
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add players/ players-index/ sports-index.json
+
+      - name: Commit stub
+        run: |
+          git stash
+          git fetch origin main
+          git merge -X ours FETCH_HEAD
+          git stash pop
+          git add "players/indexes/${{ steps.shard.outputs.prefix }}.json" \
+                  "players/${{ steps.shard.outputs.prefix }}/${{ inputs.uuid }}.json" \
+                  2>/dev/null || true
           if git diff --staged --quiet; then
-            echo "No changes — player may already be up to date"
+            echo "No changes to commit."
           else
-            git commit -m "Add player: ${{ github.event.inputs.uuid }}"
-            git push
+            git commit -m "add-player: stub ${{ inputs.uuid }}"
+            git push origin main
           fi
+
+      - name: Trigger matrix for this shard
+        run: |
+          shard='["${{ steps.shard.outputs.prefix }}"]'
+          echo "Triggering matrix for shard: $shard"
+          gh workflow run fetch-profile-stats-matrix.yml \
+            --repo "${{ github.repository }}" \
+            --field "run_number=1" \
+            --field "consecutive_zeros=0" \
+            --field "shards=$shard"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}

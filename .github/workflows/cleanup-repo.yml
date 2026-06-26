@@ -1,0 +1,319 @@
+# .github/workflows/cleanup-repo.yml
+name: Cleanup Repo
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_PAT }}
+          fetch-depth: 1
+
+      - name: Delete stale files and commit
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          set -e
+
+          # ── Scripts to delete ────────────────────────────────────────────────
+          SCRIPTS=(
+            # migration (complete)
+            scripts/migrate-phase1.js
+            scripts/migrate-phase2.js
+            scripts/migrate-phase3.js
+            scripts/migrate-player-index.js
+            scripts/migrate-team-lookup.js
+            scripts/migrate-games.sh
+
+            # one-time complete
+            scripts/normalise-game-structure.js
+            scripts/augment-game-grades.js
+            scripts/augment-team-index.js
+            scripts/augment-venue-lookup.js
+            scripts/backfill-fixtures.js
+            scripts/backfill-game-scores.js
+            scripts/backfill-hidden-games.js
+            scripts/backfill-jersey-numbers.js
+            scripts/backfill-missing-players.js
+            scripts/backfill-venue.js
+            scripts/backfill-spectator.js
+            scripts/bootstrap-fixture-progress.js
+            scripts/cleanup-empty-cats.js
+            scripts/cleanup-flag-collisions.js
+            scripts/cleanup-player-pgstats.js
+            scripts/recover-discovered-seasons.js
+            scripts/recover-missing-seasons.js
+            scripts/patch-team-stats-fixtures.js
+            scripts/infer-game-grades.js
+            scripts/reaudit-game-grades.js
+            scripts/rebuild-player-stats.js
+            scripts/fix-forfeit-player-records.js
+            scripts/fix-game-boxscore.js
+            scripts/fix-game-status.js
+            scripts/fix-null-records.js
+            scripts/fix-regraded-teamstats.js
+            scripts/build-forfeit-index.js
+            scripts/audit-sample.js
+
+            # superseded by nightly-crawl / fetch-profile-stats
+            scripts/classify-games.js
+            scripts/discover-fixtures.js
+            scripts/fetch-player-profiles.js
+            scripts/build-foulout-stats.js
+            scripts/fetch-playhq.js
+            scripts/fetch-leaderboard-records.js
+
+            # probes (one-time)
+            scripts/probe-api-schema.js
+            scripts/probe-games.js
+            scripts/probe-lineup.js
+            scripts/probe-rest-api.js
+            scripts/probe-team-members.js
+            scripts/explore-playhq-auth.js
+            scripts/fetch-lineup-auth.js
+
+            # superseded by db-audit
+            scripts/db-report.js
+            scripts/repo-size.js
+
+            # one-time diagnostics
+            scripts/find-missing-game-data.js
+            scripts/find-missing-team-players.js
+            scripts/find-season-players.js
+            scripts/lookup-grade-players.js
+            scripts/roster-lookup.js
+            scripts/team-lookup-utils.js
+            scripts/diagnose-coverage-and-uuids.js
+            scripts/diagnose-game-structure.js
+            scripts/diagnose-hidden-gaps.js
+            scripts/diagnose-null-profiles.js
+            scripts/diagnose-season-games.js
+            scripts/inspect-failed-games.js
+            scripts/inspect-game-schema.js
+            scripts/inspect-game-sizes.js
+
+            # test scripts paired with deleted code
+            scripts/test-failed-uuids.js
+
+            # consolidated into diagnose.js
+            scripts/inspect-player-file.js
+            scripts/inspect-hidden-reclassified.js
+            scripts/diagnose-player-stats.js
+            scripts/find-game-id.js
+
+            # consolidated into test-api.js
+            scripts/test-grade-concurrency.js
+            scripts/test-profile-query.js
+            scripts/test-discover-game.js
+            scripts/test-schema-fields.js
+            scripts/test-gps-count.js
+          )
+
+          # ── Workflows to delete ───────────────────────────────────────────────
+          WORKFLOWS=(
+            # superseded by db-audit.yml
+            .github/workflows/db-report.yml
+            .github/workflows/repo-size.yml
+
+            # one-time complete
+            .github/workflows/backfill-spectator.yml
+            .github/workflows/fix-null-records.yml
+            .github/workflows/full-reset.yml
+            .github/workflows/backfill.yml
+            .github/workflows/reorganise-repo.yml
+
+            # paired with deleted scripts
+            .github/workflows/migrate-phase1.yml
+            .github/workflows/migrate-phase2.yml
+            .github/workflows/migrate-phase3.yml
+            .github/workflows/migrate-player-index.yml
+            .github/workflows/migrate-team-lookup.yml
+            .github/workflows/migrate-games.yml
+            .github/workflows/normalise-game-structure.yml
+            .github/workflows/augment-game-grades.yml
+            .github/workflows/augment-team-index.yml
+            .github/workflows/augment-venue-lookup.yml
+            .github/workflows/backfill-fixtures.yml
+            .github/workflows/backfill-game-scores.yml
+            .github/workflows/backfill-hidden-games.yml
+            .github/workflows/backfill-jersey-numbers.yml
+            .github/workflows/backfill-missing-players.yml
+            .github/workflows/backfill-venue.yml
+            .github/workflows/bootstrap-fixture-progress.yml
+            .github/workflows/cleanup-empty-cats.yml
+            .github/workflows/cleanup-flag-collisions.yml
+            .github/workflows/cleanup-player-pgstats.yml
+            .github/workflows/recover-discovered-seasons.yml
+            .github/workflows/recover-missing-seasons.yml
+            .github/workflows/patch-team-stats-fixtures.yml
+            .github/workflows/infer-game-grades.yml
+            .github/workflows/reaudit-game-grades.yml
+            .github/workflows/rebuild-player-stats.yml
+            .github/workflows/fix-forfeit-player-records.yml
+            .github/workflows/fix-game-boxscore.yml
+            .github/workflows/fix-game-status.yml
+            .github/workflows/fix-regraded-teamstats.yml
+            .github/workflows/build-forfeit-index.yml
+            .github/workflows/audit-sample.yml
+            .github/workflows/classify-games.yml
+            .github/workflows/discover-fixtures.yml
+            .github/workflows/fetch-player-profiles.yml
+            .github/workflows/build-foulout-stats.yml
+            .github/workflows/fetch-playhq.yml
+            .github/workflows/fetch-leaderboard-records.yml
+            .github/workflows/probe-api-schema.yml
+            .github/workflows/probe-games.yml
+            .github/workflows/probe-lineup.yml
+            .github/workflows/probe-rest-api.yml
+            .github/workflows/probe-team-members.yml
+            .github/workflows/explore-playhq-auth.yml
+            .github/workflows/fetch-lineup-auth.yml
+            .github/workflows/find-missing-game-data.yml
+            .github/workflows/find-missing-team-players.yml
+            .github/workflows/find-missing-players.yml
+            .github/workflows/find-season-players.yml
+            .github/workflows/lookup-grade-players.yml
+            .github/workflows/roster-lookup.yml
+            .github/workflows/diagnose-coverage-and-uuids.yml
+            .github/workflows/diagnose-game-structure.yml
+            .github/workflows/diagnose-hidden-gaps.yml
+            .github/workflows/diagnose-null-profiles.yml
+            .github/workflows/diagnose-season-games.yml
+            .github/workflows/diagnose-log-zip.yml
+            .github/workflows/diagnose-workflows.yml
+            .github/workflows/inspect-failed-games.yml
+            .github/workflows/inspect-game-schema.yml
+            .github/workflows/inspect-game-sizes.yml
+            .github/workflows/generate-spec2.yml
+            .github/workflows/test-failed-uuids.yml
+            .github/workflows/test-proxy.yml
+
+            # consolidated into diagnose.yml
+            .github/workflows/inspect-player-file.yml
+            .github/workflows/inspect-hidden-reclassified.yml
+            .github/workflows/diagnose-player-stats.yml
+            .github/workflows/find-game-id.yml
+
+            # consolidated into test-api.yml
+            .github/workflows/test-grade-concurrency.yml
+            .github/workflows/test-profile-query.yml
+            .github/workflows/test-discover-game.yml
+            .github/workflows/test-schema-fields.yml
+            .github/workflows/test-gps-count.yml
+          )
+
+          # ── Root JSON files to delete ─────────────────────────────────────────
+          ROOT_FILES=(
+            backfill-progress.json
+            backfill-venue-progress.json
+            backfill-hidden-progress.json
+            backfill-missing-players-progress.json
+            classify-games-progress.json
+            discover-fixtures-progress.json
+            patch-fixtures-progress.json
+            migrate-phase1-progress.json
+            migrate-phase2-progress.json
+            missing-game-data.json
+            missing-quarter-scores.json
+            missing-box-scores.json
+            missing-team-players.json
+            no-ladder-seasons.json
+            no-venue-seasons.json
+            zero-team-seasons.json
+            explore-cookie.json
+            run-summary.json
+            matrix-force-pending.json
+            stattrack-pwa-spec.md
+
+            # dotfile progress files
+            .augment-game-grades-progress.json
+            .augment-venue-progress.json
+            .backfill-jersey-progress.json
+            .build-leaderboards-progress.json
+            .fetch-player-profiles-progress.json
+            .reaudit-grade-map.json
+            .reaudit-phase2-progress.json
+            .reaudit-phase3-progress.json
+            .rebuild-player-stats-progress.json
+            .failed-uuids.json
+          )
+
+          # ── Directories to delete ─────────────────────────────────────────────
+          DIRS=(
+            explore-results
+            roster-results
+          )
+
+          # ── Loose HTML files ──────────────────────────────────────────────────
+          HTML_FILES=(
+            probe-rest-api.html
+            probe-lineup.html
+            lineup-result.html
+          )
+
+          echo "=== Staging deletions ==="
+
+          deleted=0
+          skipped=0
+
+          for f in "${SCRIPTS[@]}" "${WORKFLOWS[@]}" "${ROOT_FILES[@]}" "${HTML_FILES[@]}"; do
+            if [ -f "$f" ]; then
+              git rm -f "$f"
+              echo "  rm: $f"
+              ((deleted++)) || true
+            else
+              echo "  skip (not found): $f"
+              ((skipped++)) || true
+            fi
+          done
+
+          for d in "${DIRS[@]}"; do
+            if [ -d "$d" ]; then
+              git rm -rf "$d"
+              echo "  rm -r: $d"
+              ((deleted++)) || true
+            else
+              echo "  skip (not found): $d"
+              ((skipped++)) || true
+            fi
+          done
+
+          echo ""
+          echo "=== Summary ==="
+          echo "  Deleted: $deleted"
+          echo "  Skipped (already absent): $skipped"
+
+          # Only commit if there's something staged
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — all files already absent."
+          else
+            git stash
+            git fetch origin main
+            git merge -X ours FETCH_HEAD
+            git stash pop
+            git commit -m "chore: delete obsolete scripts, workflows, and stale root files
+
+            Removes ~50 scripts, ~70 workflows, and ~30 root JSON files that are
+            either one-time-complete, superseded, or replaced by consolidated tools.
+
+            Consolidated:
+            - inspect-player-file + inspect-hidden-reclassified + diagnose-player-stats
+              + find-game-id → scripts/diagnose.js + diagnose.yml
+            - test-grade-concurrency + test-profile-query + test-discover-game
+              + test-schema-fields + test-gps-count → scripts/test-api.js + test-api.yml"
+            git push origin main
+            echo "Committed and pushed."
+          fi

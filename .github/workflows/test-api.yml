@@ -1,0 +1,46 @@
+# .github/workflows/test-api.yml
+name: Test API
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: concurrency | profile | game | schema | gps'
+        required: true
+        type: choice
+        options:
+          - concurrency
+          - profile
+          - game
+          - schema
+          - gps
+      arg:
+        description: 'UUID (profile mode), gameId (game mode), gradeId (gps mode), or --grade=ID --season=ID (schema mode). Leave blank for concurrency.'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout (sparse — scripts + sports-index only)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/test-api.js
+            sports-index.json
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run test
+        run: node scripts/test-api.js ${{ inputs.mode }} ${{ inputs.arg }}
