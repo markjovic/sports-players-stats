@@ -47,8 +47,6 @@ jobs:
         run: node scripts/clear-stats-checked.js
 
   generate-shards:
-    needs: [clear-stats-checked]
-    if: always() && !cancelled() && needs.clear-stats-checked.result != 'failure'
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.gen.outputs.shards }}
@@ -68,7 +66,8 @@ jobs:
           fi
 
   fetch:
-    needs: generate-shards
+    needs: [clear-stats-checked, generate-shards]
+    if: always() && !cancelled() && needs.clear-stats-checked.result != 'failure'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
