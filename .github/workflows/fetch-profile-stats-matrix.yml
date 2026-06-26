@@ -48,7 +48,7 @@ jobs:
 
   generate-shards:
     needs: [clear-stats-checked]
-    if: always() && !cancelled() && !failure()
+    if: always() && !cancelled() && needs.clear-stats-checked.result != 'failure'
     runs-on: ubuntu-latest
     outputs:
       shards: ${{ steps.gen.outputs.shards }}
