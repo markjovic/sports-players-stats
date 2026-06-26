@@ -510,12 +510,6 @@ async function main() {
     return;
   }
 
-  // Random startup delay (0–60s) to spread 256 concurrent matrix jobs
-  // and avoid hammering the session endpoint simultaneously.
-  const startDelay = Math.floor(Math.random() * 60000);
-  console.log(`  Startup delay: ${Math.round(startDelay / 1000)}s (spreading concurrent jobs)…`);
-  await sleep(startDelay);
-
   console.log('\n  Obtaining session…');
   try {
     await refreshSession();
