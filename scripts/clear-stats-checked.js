@@ -56,14 +56,22 @@ async function main() {
       catch (_) { skipped++; continue; }
 
       const bk = player.sports?.Basketball;
-      if (!bk?.statsChecked) { skipped++; continue; }
+      if (!bk) { skipped++; continue; }
 
-      // In nameless-only mode, skip players who already have a name
-      if (NAMELESS_ONLY && player.name) { skipped++; continue; }
-
-      delete bk.statsChecked;
-      fs.writeFileSync(fpath, JSON.stringify(player));
-      cleared++;
+      if (NAMELESS_ONLY) {
+        // Clear statsChecked for nameless players regardless of whether it's set —
+        // these players had their name field cleared but statsChecked was untouched
+        if (player.name) { skipped++; continue; }
+        if (!bk.statsChecked) { skipped++; continue; } // already queued, nothing to do
+        delete bk.statsChecked;
+        fs.writeFileSync(fpath, JSON.stringify(player));
+        cleared++;
+      } else {
+        if (!bk.statsChecked) { skipped++; continue; }
+        delete bk.statsChecked;
+        fs.writeFileSync(fpath, JSON.stringify(player));
+        cleared++;
+      }
     }
 
     if ((prefixes.indexOf(prefix) + 1) % 32 === 0) {
