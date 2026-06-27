@@ -12,6 +12,14 @@ on:
         options:
           - 'true'
           - 'false'
+      verbose:
+        description: 'List every corrupt UUID (warning: may truncate in UI)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 permissions:
   contents: write
@@ -41,5 +49,6 @@ jobs:
       - name: Find and fix corrupt player names
         run: |
           ARGS=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.verbose }}" = "true" ]; then ARGS="$ARGS --verbose"; fi
           node scripts/fix-corrupt-player-names.js $ARGS
