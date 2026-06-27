@@ -1,0 +1,37 @@
+# .github/workflows/commit-cleared-names.yml
+name: Commit Cleared Player Names
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_PAT }}
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit cleared player name files
+        run: |
+          git add players/
+          if git diff --staged --quiet; then
+            echo "Nothing to commit — files may already be pushed."
+          else
+            COUNT=$(git diff --staged --name-only | wc -l)
+            git commit -m "fix-corrupt-player-names: cleared season-name field on ${COUNT} player files"
+            git push origin main
+            echo "Committed and pushed ${COUNT} files."
+          fi
