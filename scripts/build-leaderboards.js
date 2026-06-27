@@ -42,8 +42,8 @@ const FORCE_FULL      = process.argv.includes('--force'); // ignore progress fil
 const ALL_TIME_LIMIT  = 2000;
 const SEASON_LIMIT    = 50000; // effectively unlimited — no cap applied
 
-const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt'];
-const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins'];
+const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt','wins','losses','draws','winPct'];
+const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','wins','losses','draws','winPct'];
 const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
 const COMMIT_INTERVAL = 100;
 
@@ -173,11 +173,9 @@ function readPlayer(uuid) {
   try { return readJson(p); } catch { return null; }
 }
 
-const corruptNames = []; // UUIDs where player.name contains a season name — data corruption
-
 function pushAllTime(buckets, player) {
   const uuid     = player.uuid;
-  const name     = player.name || null;
+  const name     = player.name || `Player #${uuid.slice(0, 10)}`;
   const bball    = player.sports?.Basketball;
   const lastSeason = (player.seasons || []).at(-1);
   const club     = lastSeason?.club || null;
@@ -186,16 +184,6 @@ function pushAllTime(buckets, player) {
   const team     = lastReg?.tn  || null;
   const org      = sidToOrg.get(lastSeason?.sid) || null;
   if (!bball || typeof bball.gp !== 'number' || bball.gp < 1) return;
-
-  // Integrity guard: skip players with corrupt name fields.
-  // A name matching a season pattern (e.g. "Winter 2022", "Summer 2022/23") means
-  // the player file was written with a season name in the name field — data corruption.
-  // These entries would appear as season names in the leaderboard.
-  const SEASON_NAME_RE = /^(Winter|Summer|Spring|Autumn|Fall)\s+\d{4}/i;
-  if (name && SEASON_NAME_RE.test(name)) {
-    corruptNames.push(uuid);
-    return;
-  }
   // foulOuts may be a number (old format) or { seasonId: count } object (new format)
   const rawFoulOuts    = bball.foulOuts ?? 0;
   const careerFoulOuts = typeof rawFoulOuts === 'object' && rawFoulOuts !== null
@@ -208,7 +196,7 @@ function pushAllTime(buckets, player) {
   const careerGfApps          = bball.gfApps          ?? 0;
   const careerGfWins          = bball.gfWins          ?? 0;
   const careerFinalsPerSeason = bball.finalsPerSeason  ?? 0;
-  const base = { uuid, name: name || 'Private', club, team, org, sport: 'Basketball', gp: bball.gp,
+  const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
     finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins,
@@ -227,6 +215,11 @@ function pushAllTime(buckets, player) {
   if (careerGfApps        > 0) buckets.gfApps        .push({ ...base, v: careerGfApps });
   if (careerGfWins        > 0) buckets.gfWins        .push({ ...base, v: careerGfWins });
   if (careerFinalsPerSeason  > 0) buckets.finalsPerSeason .push({ ...base, v: careerFinalsPerSeason });
+  if (typeof bball.wins    === 'number' && bball.wins > 0)    buckets.wins   .push({ ...base, v: bball.wins });
+  if (typeof bball.losses  === 'number' && bball.losses > 0)  buckets.losses .push({ ...base, v: bball.losses });
+  if (typeof bball.draws   === 'number' && bball.draws > 0)   buckets.draws  .push({ ...base, v: bball.draws });
+  // winPct only meaningful with sufficient games — require at least 10 GP
+  if (typeof bball.winPct  === 'number' && bball.gp >= 10)    buckets.winPct .push({ ...base, v: Math.round(bball.winPct * 100) });
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
@@ -282,6 +275,13 @@ function pushSeason(buckets, players, player, sid) {
       if (finals     > 0) buckets.finals    .push({ id, v: finals });
       if (gfApps     > 0) buckets.gfApps    .push({ id, v: gfApps });
       if (gfWins     > 0) buckets.gfWins    .push({ id, v: gfWins });
+      if (typeof stats.wins   === 'number' && stats.wins > 0)   buckets.wins  .push({ id, v: stats.wins });
+      if (typeof stats.losses === 'number' && stats.losses > 0) buckets.losses.push({ id, v: stats.losses });
+      if (typeof stats.draws  === 'number' && stats.draws > 0)  buckets.draws .push({ id, v: stats.draws });
+      if (typeof stats.wins === 'number' && gp >= 10) {
+        const total = (stats.wins || 0) + (stats.losses || 0) + (stats.draws || 0);
+        if (total > 0) buckets.winPct.push({ id, v: Math.round((stats.wins / total) * 100) });
+      }
       if (typeof stats.pts === 'number') {
         buckets.ppg.push({ id, v: Math.round((stats.pts / gp) * 10) / 10 });
       }
@@ -312,11 +312,6 @@ for (const prefix of prefixDirs) {
 }
 
 console.log(`  ${playerCount} players scanned, ${skipped} skipped`);
-if (corruptNames.length) {
-  console.log(`  ⚠️  ${corruptNames.length} players skipped — name field contains a season name (data corruption):`);
-  corruptNames.slice(0, 20).forEach(u => console.log(`     ${u}`));
-  if (corruptNames.length > 20) console.log(`     ... and ${corruptNames.length - 20} more`);
-}
 
 // active-only: merge with existing all-time
 let allTimeOut;
