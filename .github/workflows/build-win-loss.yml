@@ -1,0 +1,41 @@
+# .github/workflows/build-win-loss.yml
+name: Build Win-Loss Records
+
+on:
+  workflow_dispatch:
+    inputs:
+      active_only:
+        description: 'Active seasons only (faster)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_PAT }}
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build win-loss records
+        run: |
+          ARGS=""
+          if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="--active-only"; fi
+          node scripts/build-win-loss.js $ARGS
