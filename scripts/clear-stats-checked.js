@@ -43,6 +43,8 @@ async function main() {
     .sort();
 
   let cleared = 0, skipped = 0, total = 0;
+  let namelessWithSC = 0, namelessWithoutSC = 0;
+  const sampleWithSC = [], sampleWithoutSC = [];
 
   for (const prefix of prefixes) {
     const dir   = path.join(PLAYERS_DIR, prefix);
@@ -59,10 +61,16 @@ async function main() {
       if (!bk) { skipped++; continue; }
 
       if (NAMELESS_ONLY) {
-        // Clear statsChecked for nameless players regardless of whether it's set —
-        // these players had their name field cleared but statsChecked was untouched
         if (player.name) { skipped++; continue; }
-        if (!bk.statsChecked) { skipped++; continue; } // already queued, nothing to do
+        // Track state for diagnostic output
+        if (bk.statsChecked) {
+          namelessWithSC++;
+          if (sampleWithSC.length < 3) sampleWithSC.push(player.uuid);
+        } else {
+          namelessWithoutSC++;
+          if (sampleWithoutSC.length < 3) sampleWithoutSC.push(player.uuid);
+        }
+        if (!bk.statsChecked) { skipped++; continue; }
         delete bk.statsChecked;
         fs.writeFileSync(fpath, JSON.stringify(player));
         cleared++;
@@ -80,6 +88,12 @@ async function main() {
   }
 
   console.log(`\n  ${total} files scanned`);
+  if (NAMELESS_ONLY) {
+    console.log(`  Nameless WITH statsChecked:    ${namelessWithSC}  (will be cleared)`);
+    console.log(`  Nameless WITHOUT statsChecked: ${namelessWithoutSC}  (already queued)`);
+    if (sampleWithSC.length)    console.log(`  Sample WITH:    ${sampleWithSC.join(', ')}`);
+    if (sampleWithoutSC.length) console.log(`  Sample WITHOUT: ${sampleWithoutSC.join(', ')}`);
+  }
   console.log(`  ${cleared} statsChecked values cleared`);
   console.log(`  ${skipped} already clear or unreadable`);
   console.log('\n  Committing...');
