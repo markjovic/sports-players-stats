@@ -4,8 +4,8 @@ name: Clear Stats Checked
 on:
   workflow_dispatch:
     inputs:
-      nameless_only:
-        description: 'Only clear players with no name (use after fix-corrupt-player-names)'
+      fix_corrupt_names:
+        description: 'Fix players with corrupt season names (use after fix-corrupt-player-names)'
         required: false
         default: 'false'
         type: choice
@@ -35,5 +35,5 @@ jobs:
       - name: Clear statsChecked
         run: |
           ARGS=""
-          if [ "${{ inputs.nameless_only }}" = "true" ]; then ARGS="--nameless-only"; fi
+          if [ "${{ inputs.fix_corrupt_names }}" = "true" ]; then ARGS="--fix-corrupt-names"; fi
           node scripts/clear-stats-checked.js $ARGS
