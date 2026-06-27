@@ -1,12 +1,13 @@
 // scripts/clear-stats-checked.js
 //
-// Clears statsChecked from every player file in a single pass.
-// Runs as a pre-step before the sharded matrix when --force is used,
-// so each shard sees all players as unprocessed without needing --force itself.
+// Clears statsChecked from player files so the matrix re-fetches them.
 //
-// Single writer — one commit, no contention.
+// Modes:
+//   node scripts/clear-stats-checked.js                — clears ALL players (force run)
+//   node scripts/clear-stats-checked.js --nameless-only — clears only players with no name
 //
-// Run: node scripts/clear-stats-checked.js
+// --nameless-only: used after fix-corrupt-player-names to queue only the
+// affected players for a targeted matrix re-fetch, without forcing a full reset.
 
 'use strict';
 
@@ -14,8 +15,9 @@ const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
 
-const ROOT        = path.join(__dirname, '..');
-const PLAYERS_DIR = path.join(ROOT, 'players');
+const ROOT         = path.join(__dirname, '..');
+const PLAYERS_DIR  = path.join(ROOT, 'players');
+const NAMELESS_ONLY = process.argv.includes('--nameless-only');
 
 function gitCommit(message) {
   execSync('git add -A', { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
@@ -33,7 +35,7 @@ function gitCommit(message) {
 
 async function main() {
   const start = Date.now();
-  console.log('clear-stats-checked.js');
+  console.log('clear-stats-checked.js' + (NAMELESS_ONLY ? ' [nameless-only]' : ''));
   console.log('─'.repeat(50));
 
   const prefixes = fs.readdirSync(PLAYERS_DIR)
@@ -55,6 +57,9 @@ async function main() {
 
       const bk = player.sports?.Basketball;
       if (!bk?.statsChecked) { skipped++; continue; }
+
+      // In nameless-only mode, skip players who already have a name
+      if (NAMELESS_ONLY && player.name) { skipped++; continue; }
 
       delete bk.statsChecked;
       fs.writeFileSync(fpath, JSON.stringify(player));
@@ -78,7 +83,11 @@ async function main() {
     JSON.stringify({ clearedAt: new Date().toISOString(), count: cleared })
   );
 
-  gitCommit(`clear-stats-checked: ${cleared} players cleared for matrix re-fetch`);
+  const commitMsg = NAMELESS_ONLY
+    ? `clear-stats-checked: ${cleared} nameless players cleared for matrix re-fetch`
+    : `clear-stats-checked: ${cleared} players cleared for matrix re-fetch`;
+
+  gitCommit(commitMsg);
 
   console.log(`  Elapsed: ${Math.round((Date.now() - start) / 1000)}s`);
 }
