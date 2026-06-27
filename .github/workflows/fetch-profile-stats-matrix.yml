@@ -264,20 +264,6 @@ jobs:
                   print(f'    shard={shard}  inaccessible={d["inaccessible"]}')
               except: pass
 
-          shards_written = [(json.load(open(f)), f) for f in sorted(files)
-                            if json.load(open(f)).get('written', 0) > 0]
-          if shards_written:
-            print(f'  Shards with written > 0: ({len(shards_written)})')
-            for d, _ in shards_written:
-              print(f'    shard={d.get("shard","??")}  written={d["written"]}')
-
-          shards_blocked = [(json.load(open(f)), f) for f in sorted(files)
-                            if json.load(open(f)).get('blocked', False)]
-          if shards_blocked:
-            print(f'  Shards blocked mid-run: ({len(shards_blocked)})')
-            for d, _ in shards_blocked:
-              print(f'    shard={d.get("shard","??")}  written={d.get("written",0)}')
-
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
             fh.write(f'written={written}\n')
           PYEOF
@@ -314,6 +300,25 @@ jobs:
             --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
             --field "force=false" \
             --field "shards=${{ inputs.force == true && '[]' || inputs.shards }}"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
+      - name: Delete matrix-force-pending.json
+        if: |
+          steps.next.outputs.status == 'stuck' ||
+          (steps.next.outputs.status == 'retrigger' && steps.next.outputs.new_consecutive_zeros == '0')
+        run: |
+          if [ ! -f matrix-force-pending.json ]; then
+            echo "matrix-force-pending.json not present — nothing to do."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git rm -f matrix-force-pending.json
+          git commit -m "matrix: delete matrix-force-pending.json"
+          git push origin main
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
