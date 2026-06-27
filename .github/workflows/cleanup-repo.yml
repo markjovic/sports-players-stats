@@ -315,19 +315,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing to commit — all files already absent."
           else
-            cat > /tmp/cleanup-msg.txt << 'COMMITMSG'
-chore: delete obsolete scripts, workflows, and stale root files
-
-Removes ~50 scripts, ~70 workflows, and ~30 root JSON files that are
-either one-time-complete, superseded, or replaced by consolidated tools.
-
-Consolidated:
-- inspect-player-file + inspect-hidden-reclassified + diagnose-player-stats
-  + find-game-id -> scripts/diagnose.js + diagnose.yml
-- test-grade-concurrency + test-profile-query + test-discover-game
-  + test-schema-fields + test-gps-count -> scripts/test-api.js + test-api.yml
-COMMITMSG
-            git commit -F /tmp/cleanup-msg.txt
+            git commit -m "chore: delete obsolete scripts, workflows, and root files"
             git push origin main
             echo "Committed and pushed."
           fi
