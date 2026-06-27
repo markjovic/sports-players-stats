@@ -173,9 +173,11 @@ function readPlayer(uuid) {
   try { return readJson(p); } catch { return null; }
 }
 
+const corruptNames = []; // UUIDs where player.name contains a season name — data corruption
+
 function pushAllTime(buckets, player) {
   const uuid     = player.uuid;
-  const name     = player.name || `Player #${uuid.slice(0, 10)}`;
+  const name     = player.name || null;
   const bball    = player.sports?.Basketball;
   const lastSeason = (player.seasons || []).at(-1);
   const club     = lastSeason?.club || null;
@@ -184,6 +186,16 @@ function pushAllTime(buckets, player) {
   const team     = lastReg?.tn  || null;
   const org      = sidToOrg.get(lastSeason?.sid) || null;
   if (!bball || typeof bball.gp !== 'number' || bball.gp < 1) return;
+
+  // Integrity guard: skip players with corrupt name fields.
+  // A name matching a season pattern (e.g. "Winter 2022", "Summer 2022/23") means
+  // the player file was written with a season name in the name field — data corruption.
+  // These entries would appear as season names in the leaderboard.
+  const SEASON_NAME_RE = /^(Winter|Summer|Spring|Autumn|Fall)\s+\d{4}/i;
+  if (name && SEASON_NAME_RE.test(name)) {
+    corruptNames.push(uuid);
+    return;
+  }
   // foulOuts may be a number (old format) or { seasonId: count } object (new format)
   const rawFoulOuts    = bball.foulOuts ?? 0;
   const careerFoulOuts = typeof rawFoulOuts === 'object' && rawFoulOuts !== null
@@ -196,7 +208,7 @@ function pushAllTime(buckets, player) {
   const careerGfApps          = bball.gfApps          ?? 0;
   const careerGfWins          = bball.gfWins          ?? 0;
   const careerFinalsPerSeason = bball.finalsPerSeason  ?? 0;
-  const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
+  const base = { uuid, name: name || 'Private', club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
     finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins,
@@ -300,6 +312,11 @@ for (const prefix of prefixDirs) {
 }
 
 console.log(`  ${playerCount} players scanned, ${skipped} skipped`);
+if (corruptNames.length) {
+  console.log(`  ⚠️  ${corruptNames.length} players skipped — name field contains a season name (data corruption):`);
+  corruptNames.slice(0, 20).forEach(u => console.log(`     ${u}`));
+  if (corruptNames.length > 20) console.log(`     ... and ${corruptNames.length - 20} more`);
+}
 
 // active-only: merge with existing all-time
 let allTimeOut;
