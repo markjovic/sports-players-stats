@@ -1,0 +1,25 @@
+# .github/workflows/find-flag-collisions.yml
+name: Find Flag Collisions
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/find-flag-collisions.js
+            games/bv
+          sparse-checkout-cone-mode: false
+
+      - name: Find flag collisions
+        run: node scripts/find-flag-collisions.js
