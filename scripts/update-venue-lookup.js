@@ -154,8 +154,11 @@ async function main() {
     for (const [gameId, game] of Object.entries(gf.games || {})) {
       gamesChecked++;
 
-      // Only process FINAL games with a venue
-      if (game.st !== 'FINAL') continue;
+      // Process FINAL, UPCOMING, and POSTPONED games with a venue.
+      // UPCOMING games need to appear in the calendar so users can see scheduled fixtures.
+      // CANCELLED and ABANDONED are excluded — no value showing them.
+      const st = game.st || null;
+      if (st !== 'FINAL' && st !== 'UPCOMING' && st !== 'POSTPONED') continue;
       if (!game.vid || !game.vn)  continue;
       if (!game.d)                continue;
       if (!game.ct)               continue;  // need court name for the grid key
@@ -164,10 +167,17 @@ async function main() {
       const date = game.d;
       const grid = loadVenueDateFile(vid, date);
 
-      // Check if this game is already in the file
+      // Check if this game is already in the file — update if status changed
       const court = game.ct;
       if (!grid[court]) grid[court] = [];
-      if (grid[court].some(e => e.id === gameId)) continue;
+      const existingIdx = grid[court].findIndex(e => e.id === gameId);
+      if (existingIdx !== -1) {
+        const existing = grid[court][existingIdx];
+        // Only re-process if status has changed (e.g. UPCOMING → FINAL)
+        if (existing.st === st) continue;
+        // Remove old entry so it gets rebuilt below
+        grid[court].splice(existingIdx, 1);
+      }
 
       // Build the venue entry for this game
       const hid = game.h || game.t1 || null;
