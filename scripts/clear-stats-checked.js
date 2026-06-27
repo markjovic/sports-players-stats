@@ -3,11 +3,13 @@
 // Clears statsChecked from player files so the matrix re-fetches them.
 //
 // Modes:
-//   node scripts/clear-stats-checked.js                — clears ALL players (force run)
-//   node scripts/clear-stats-checked.js --nameless-only — clears only players with no name
+//   node scripts/clear-stats-checked.js
+//     Clears ALL players — used before a force matrix run.
 //
-// --nameless-only: used after fix-corrupt-player-names to queue only the
-// affected players for a targeted matrix re-fetch, without forcing a full reset.
+//   node scripts/clear-stats-checked.js --nameless-only
+//     Fixes corrupt player names (season strings like "Winter 2022") and
+//     clears statsChecked for those players so the matrix re-fetches and
+//     writes their real names. Does everything in one pass, one commit.
 
 'use strict';
 
@@ -15,20 +17,20 @@ const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
 
-const ROOT         = path.join(__dirname, '..');
-const PLAYERS_DIR  = path.join(ROOT, 'players');
+const ROOT          = path.join(__dirname, '..');
+const PLAYERS_DIR   = path.join(ROOT, 'players');
 const NAMELESS_ONLY = process.argv.includes('--nameless-only');
+const SEASON_RE     = /^(Winter|Summer|Spring|Autumn|Fall)\s+\d{4}/i;
 
 function gitCommit(message) {
-  execSync('git add -A', { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
-  // --quiet exits 0 if no staged changes, 1 if there are — produces no output
+  execSync('git add players/', { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
   try {
     execSync('git diff --staged --quiet', { stdio: 'pipe', cwd: ROOT });
-    console.log('  Nothing to commit'); return; // exit 0 = no changes
-  } catch (_) {} // exit 1 = changes exist, proceed
-  execSync(`git commit -m "${message}"`,             { stdio: 'pipe', cwd: ROOT });
+    console.log('  Nothing to commit'); return;
+  } catch (_) {}
   execSync('git fetch origin main',                  { stdio: 'pipe', cwd: ROOT });
   execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
+  execSync(`git commit -m "${message}"`,             { stdio: 'pipe', cwd: ROOT });
   execSync('git push origin main',                   { stdio: 'pipe', cwd: ROOT });
   console.log(`  ✓ ${message}`);
 }
@@ -43,8 +45,7 @@ async function main() {
     .sort();
 
   let cleared = 0, skipped = 0, total = 0;
-  let namelessWithSC = 0, namelessWithoutSC = 0;
-  const sampleWithSC = [], sampleWithoutSC = [];
+  let namesFixed = 0;
 
   for (const prefix of prefixes) {
     const dir   = path.join(PLAYERS_DIR, prefix);
@@ -58,24 +59,35 @@ async function main() {
       catch (_) { skipped++; continue; }
 
       const bk = player.sports?.Basketball;
-      if (!bk) { skipped++; continue; }
 
       if (NAMELESS_ONLY) {
-        if (player.name) { skipped++; continue; }
-        // Track state for diagnostic output
-        if (bk.statsChecked) {
-          namelessWithSC++;
-          if (sampleWithSC.length < 3) sampleWithSC.push(player.uuid);
-        } else {
-          namelessWithoutSC++;
-          if (sampleWithoutSC.length < 3) sampleWithoutSC.push(player.uuid);
+        // Target: players with a corrupt season name OR no name at all
+        const corrupt = player.name && SEASON_RE.test(player.name);
+        const missing = !player.name;
+        if (!corrupt && !missing) { skipped++; continue; }
+
+        let modified = false;
+
+        // Clear corrupt name
+        if (corrupt) {
+          delete player.name;
+          namesFixed++;
+          modified = true;
         }
-        if (!bk.statsChecked) { skipped++; continue; }
-        delete bk.statsChecked;
-        fs.writeFileSync(fpath, JSON.stringify(player));
-        cleared++;
+
+        // Clear statsChecked so matrix re-fetches and writes real name
+        if (bk?.statsChecked) {
+          delete bk.statsChecked;
+          cleared++;
+          modified = true;
+        }
+
+        if (modified) fs.writeFileSync(fpath, JSON.stringify(player), 'utf8');
+        else skipped++;
+
       } else {
-        if (!bk.statsChecked) { skipped++; continue; }
+        // Normal mode: clear statsChecked from every player
+        if (!bk?.statsChecked) { skipped++; continue; }
         delete bk.statsChecked;
         fs.writeFileSync(fpath, JSON.stringify(player));
         cleared++;
@@ -89,27 +101,26 @@ async function main() {
 
   console.log(`\n  ${total} files scanned`);
   if (NAMELESS_ONLY) {
-    console.log(`  Nameless WITH statsChecked:    ${namelessWithSC}  (will be cleared)`);
-    console.log(`  Nameless WITHOUT statsChecked: ${namelessWithoutSC}  (already queued)`);
-    if (sampleWithSC.length)    console.log(`  Sample WITH:    ${sampleWithSC.join(', ')}`);
-    if (sampleWithoutSC.length) console.log(`  Sample WITHOUT: ${sampleWithoutSC.join(', ')}`);
+    console.log(`  Corrupt names fixed:       ${namesFixed}`);
+    console.log(`  statsChecked cleared:      ${cleared}`);
+  } else {
+    console.log(`  statsChecked cleared:      ${cleared}`);
   }
-  console.log(`  ${cleared} statsChecked values cleared`);
-  console.log(`  ${skipped} already clear or unreadable`);
+  console.log(`  Skipped:                   ${skipped}`);
   console.log('\n  Committing...');
 
-  // Write marker so retrigger knows a force was pending
-  // Removed by retrigger job once actual writes are confirmed
-  fs.writeFileSync(
-    path.join(ROOT, 'matrix-force-pending.json'),
-    JSON.stringify({ clearedAt: new Date().toISOString(), count: cleared })
-  );
+  if (!NAMELESS_ONLY) {
+    fs.writeFileSync(
+      path.join(ROOT, 'matrix-force-pending.json'),
+      JSON.stringify({ clearedAt: new Date().toISOString(), count: cleared })
+    );
+  }
 
-  const commitMsg = NAMELESS_ONLY
-    ? `clear-stats-checked: ${cleared} nameless players cleared for matrix re-fetch`
+  const msg = NAMELESS_ONLY
+    ? `clear-stats-checked: ${namesFixed} corrupt names cleared, ${cleared} queued for matrix`
     : `clear-stats-checked: ${cleared} players cleared for matrix re-fetch`;
 
-  gitCommit(commitMsg);
+  gitCommit(msg);
 
   console.log(`  Elapsed: ${Math.round((Date.now() - start) / 1000)}s`);
 }
