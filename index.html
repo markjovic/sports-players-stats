@@ -248,11 +248,28 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .ggame.up .gs{color:var(--accent)}
 .vdate-hdr{padding:8px 14px;font-size:0.78rem;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);background:var(--surface)}
 
-.orow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
-.oname{flex:1;font-size:0.86rem;cursor:pointer;color:var(--text)}
-.oname:hover{color:var(--accent)}
-.oenc{font-size:0.73rem;color:var(--accent)}
-.onone{font-size:0.73rem;color:var(--text3)}
+.orow{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:0.5px solid var(--border);cursor:pointer}
+.orow:hover{background:var(--elevated)}
+.orow.expanded{background:var(--elevated)}
+.oname{flex:1;font-size:0.86rem;color:var(--text)}
+.oenc{font-size:0.73rem;color:var(--accent);flex-shrink:0}
+.onone{font-size:0.73rem;color:var(--text3);flex-shrink:0}
+.opp-detail{border-bottom:0.5px solid var(--border);background:var(--surface-1)}
+.opp-opp-row{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 28px;border-bottom:0.5px solid var(--border);cursor:pointer}
+.opp-opp-row:hover{background:var(--elevated)}
+.opp-opp-name{flex:1;font-size:0.82rem;color:var(--text)}
+.opp-opp-enc{font-size:0.72rem;color:var(--accent)}
+.opp-game-detail{background:var(--surface-0)}
+.opp-game-row{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 42px;border-bottom:0.5px solid var(--border);font-size:0.75rem;color:var(--text2);cursor:pointer}
+.opp-game-row:hover{background:var(--elevated)}
+.opp-game-date{color:var(--text2);min-width:80px;flex-shrink:0}
+.opp-game-grade{flex:1;color:var(--text2)}
+.opp-game-score{font-weight:500;min-width:48px;text-align:center;flex-shrink:0}
+.opp-game-res{min-width:18px;text-align:center;flex-shrink:0;font-weight:500}
+.opp-game-stats{font-size:0.7rem;color:var(--text3);flex-shrink:0}
+.sstat{flex:1;text-align:center;padding:6px 4px;border-left:1px solid #2e2e2e;min-width:0;overflow:hidden}
+.ssv{font-size:0.75rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden}
+.ssl{font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
 
 .empty{padding:36px 18px;text-align:center;color:var(--text3);font-size:0.85rem}
 
@@ -302,7 +319,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.35</span>
+      <span class="rail-ver">Beta 0.56</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -369,6 +386,10 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
             <button class="lb-stat lb-alltime-only" data-stat="finalsPerSeason">Finals/Ssn</button>
             <button class="lb-stat lb-alltime-only" data-stat="maxGamePTS">Best PTS</button>
             <button class="lb-stat lb-alltime-only" data-stat="maxGameThreePt">Best 3PT</button>
+            <button class="lb-stat" data-stat="wins">Wins</button>
+            <button class="lb-stat" data-stat="losses">Losses</button>
+            <button class="lb-stat" data-stat="draws">Draws</button>
+            <button class="lb-stat" data-stat="winPct">Win%</button>
           </div>
           <div id="lb-mingp-wrap" class="hidden" style="display:flex;align-items:center;gap:6px">
             <span style="font-size:0.75rem;color:var(--text2);white-space:nowrap">Min GP</span>
@@ -381,7 +402,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
           <select id="lb-age" class="sselect" style="flex:0 0 auto;font-size:0.75rem"><option value="">All ages</option></select>
           <select id="lb-grade" class="sselect lb-per-season" style="flex:1;min-width:100px;font-size:0.75rem"><option value="">All grades</option></select>
           <select id="lb-gender" class="sselect" style="flex:0 0 auto;font-size:0.75rem"><option value="">All</option></select>
-          <button class="rbtn" style="margin-left:0;opacity:1;font-size:0.72rem" onclick="resetLB()">✕ Reset</button>
+          <button class="rbtn" style="margin-left:0;font-size:0.72rem;border:0.5px solid var(--border-strong);padding:3px 10px;border-radius:var(--radius);color:var(--text-primary);opacity:1" onclick="resetLB()">✕ Reset</button>
         </div>
       </div>
       <div id="lb-results"></div>
@@ -586,6 +607,8 @@ function groupRegs(seasons){
 /* ── Navigation / history ── */
 function showV(id){
   ['view-home','view-player','view-team','view-venue','view-opp','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
+  // Scroll main to top on every view change
+  const m=el('main');if(m)m.scrollTop=0;
   // leaders always fullscreen regardless of device; mobile also fullscreen for non-home
   const fullscreen=id==='view-leaders'||window.innerWidth<=768;
   if(fullscreen){
@@ -608,6 +631,7 @@ window.addEventListener('popstate',e=>{
   if(!e.state||e.state.type==='home'){showV('view-home');return;}
   const{type}=e.state;
   if(type==='player'){
+    S.playerUuid=e.state.uuid;
     showV('view-player');
     const p=S.players[e.state.uuid];
     if(p)renderPlayer(p);else loadPlayer(e.state.uuid);
@@ -823,23 +847,31 @@ function renderPlayer(p){
   const cs=p.sports?.[sport]||{};
   const gp=cs.gp||0,pts=cs.pts||0,fg=cs.fg||0,ft=cs.ft||0,tp=cs.threePt||0,fouls=cs.fouls||0;
   const foulOuts=cs.foulOuts||0,finals=cs.finals||0,gfApps=cs.gfApps||0,gfWins=cs.gfWins||0;
+  const finalsPS=cs.finalsPerSeason??null;
+  const careerW=cs.wins||0,careerL=cs.losses||0,careerD=cs.draws||0;
+  const winPct=cs.winPct!=null?Math.round(cs.winPct*100)+'%':null;
   const upcoming=(p.teams||[]).filter(t=>t.status==='UPCOMING');
   const club=(p.seasons||[])[0]?.club||'';
   const groups=groupRegs(p.seasons||[]);
-  let h=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button>
+  let h='';
+  h+=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button>
     <div class="avi">${esc(inits(p.name))}</div>
-    <div><div class="vtitle">${esc(p.name||'Player #'+uuid.slice(0,10))}</div>
-    <div class="vsub">${esc([p.gender,club].filter(Boolean).join(' \u00b7 '))}</div></div></div>`;
+    <div style="flex:1;min-width:0"><div class="vtitle">${esc(p.name||'Player #'+uuid.slice(0,10))}</div>
+    <div class="vsub">${esc([p.gender,club].filter(Boolean).join(' \u00b7 '))}</div>
+    <a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener" style="display:inline-flex;margin:4px 0 0;padding:3px 8px;font-size:0.72rem">View on PlayHQ \u2197</a>
+    </div></div>`;
   h+=`<div class="cstats">
     <div class="cstat"><div class="csv">${gp}</div><div class="csl">GP</div></div>
     <div class="cstat"><div class="csv">${pts}</div><div class="csl">PTS</div></div>
     <div class="cstat"><div class="csv">${avg(pts,gp)}</div><div class="csl">PPG</div></div>
     <div class="cstat"><div class="csv">${tp}</div><div class="csl">3PT</div></div>
     <div class="cstat"><div class="csv">${fouls}</div><div class="csl">F</div></div>${foulOuts>0?`
-    <div class="cstat"><div class="csv">${foulOuts}</div><div class="csl">FO</div></div>`:''}${finals>0?`
+    <div class="cstat"><div class="csv">${foulOuts}</div><div class="csl">FO</div></div>`:''}${careerW||careerL?`
+    <div class="cstat"><div class="csv" style="font-size:0.75rem;display:flex;gap:3px">${careerW?`<span style="color:var(--win)">${careerW}W</span>`:''}${careerL?`<span style="color:var(--loss)">${careerL}L</span>`:''}${careerD?`<span style="color:var(--draw)">${careerD}D</span>`:''}</div><div class="csl">${winPct??''}</div></div>`:''}${finals>0?`
     <div class="cstat"><div class="csv">${finals}</div><div class="csl">Finals</div></div>`:''}${gfApps>0?`
     <div class="cstat"><div class="csv">${gfApps}</div><div class="csl">GF</div></div>`:''}${gfWins>0?`
-    <div class="cstat"><div class="csv">${gfWins}</div><div class="csl">GFW</div></div>`:''}
+    <div class="cstat"><div class="csv">${gfWins}</div><div class="csl">GFW</div></div>`:''}${finalsPS!==null?`
+    <div class="cstat"><div class="csv">${finalsPS.toFixed(2)}</div><div class="csl">F/Ssn</div></div>`:''}
   </div>`;
   if(upcoming.length){
     h+=`<div class="upsec"><div class="uplbl">\u26a1 Upcoming</div>`;
@@ -868,24 +900,33 @@ function renderPlayer(p){
     const cid=`sc-${gi}`;
     const teamLink=`<span class="sc-grade" onclick="event.stopPropagation();loadTeam('${esc(tid)}','${esc(sn.sid)}')">${esc(allGrades)} \u2192</span>`;
     const ppg=st.gp?(st.pts/st.gp).toFixed(1):'\u2014';
+    const regW=regs.reduce((a,r)=>a+(r.stats?.wins||0),0);
+    const regL=regs.reduce((a,r)=>a+(r.stats?.losses||0),0);
+    const regD=regs.reduce((a,r)=>a+(r.stats?.draws||0),0);
+    const regWinPct=(regW+regL+regD)>0?Math.round(regW/(regW+regL+regD)*100)+'%':null;
+    // Medal: use reg-level stats; fall back to career if all regs show zero (data not yet written by matrix)
+    const medalGfWins=st.gfWins>0?st.gfWins:(groups.length===1?gfWins:0);
+    const medalGfApps=st.gfApps>0?st.gfApps:(groups.length===1?gfApps:0);
+    const medalFinals=st.finals>0?st.finals:(groups.length===1?finals:0);
+    const medal=medalGfWins>0?' \ud83e\udd47':medalGfApps>0?' \ud83e\udd48':medalFinals>0?' \ud83e\udd49':'';
     h+=`<div class="sc">
       <div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
         <div class="sc-info" class="sc-info">
           <div style="display:flex;align-items:flex-start;gap:5px">
             <span class="chev" style="flex-shrink:0;margin-top:3px">\u25b6</span>
             <div style="min-width:0">
-              <div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}${st.gfWins>0?' \ud83e\udd47':st.gfApps>0?' \ud83e\udd48':st.finals>0?' \ud83e\udd49':''}</div>
+              <div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}${medal}</div>
               <div>${teamLink}</div>
             </div>
           </div>
         </div>
-        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[st.gp||0,'GP',null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}</div>
+        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[st.gp||0,'GP',null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${regW||regL?`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:2px">${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}</div><div class="ssl">${regWinPct??''}</div></div>`:''}</div>
       </div>
       <div class="sc-games" id="${esc(cid)}-g"></div>
     </div>`;
   });
   h+='</div>';
-  h+=`<a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener">View on PlayHQ \u2197</a>`;
+  h+=`<div class="slist"><div class="sec-lbl" style="display:flex;align-items:center;justify-content:space-between">Opponent stats <button class="rbtn" style="border:0.5px solid var(--border-strong);padding:3px 10px;border-radius:var(--radius);color:var(--text-primary);font-size:0.72rem" onclick="buildOppStats('${esc(uuid)}',this)">Compute ↗</button></div><div id="opp-stats-${esc(uuid)}"><div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Click Compute to analyse head-to-head records.</div></div></div>`;
   ve.innerHTML=h;
   // Store groups on element for toggleGames
   ve._groups=groups;
@@ -1330,7 +1371,16 @@ async function openSheet(gid,sid){
     const histBtn=document.createElement('button');
     histBtn.className='lb-stat';histBtn.style.cssText='margin:8px 14px;font-size:0.72rem';
     histBtn.textContent='⇔ Opposition history';
-    histBtn.onclick=()=>{closeSheet();openTeamOpp(htid,atid,sid,false);};
+    histBtn.onclick=()=>{
+      closeSheet();
+      // Determine which side the current player is on so their team is always "my team"
+      const uuid=S.playerUuid;
+      const player=uuid?S.players[uuid]:null;
+      const playerTid=player?getTidForSeason(player,sid):null;
+      const myTid=playerTid===(atid)?atid:htid;
+      const oppTid=myTid===htid?atid:htid;
+      openTeamOpp(myTid,oppTid,sid,false);
+    };
     sb.insertBefore(histBtn,sb.firstChild);
   }
 }
@@ -1496,7 +1546,7 @@ async function openOpp(oppTid,sid,fromUuid){
   // Load opposing team roster
   if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
   const td=S.teamStats[sid];
-  const oppTeam=td?.teams?.[oppTid];
+  const oppTeam=td?.[oppTid];
   const oppRoster=Object.keys(oppTeam?.roster||{});
   const oppTeamName=oppTeam?.meta?.name||'Opposing Team';
   // Get current player (should be cached)
@@ -1556,20 +1606,20 @@ function getTidForSeason(player,sid){
 async function resolveOppGames(r,myGameSet){
   const{opp,shared,fromUuid,oppTid,myPlayer}=r;
   if(!shared.length)return[];
-  // Build gid→sid map from already-cached game files
+  // Build gid→sid map from already-cached game files (.games subkey)
   const gidSid={};
-  for(const[sid,games]of Object.entries(S.games||{})){
-    for(const gid of Object.keys(games))gidSid[gid]=sid;
+  for(const[sid,gf]of Object.entries(S.games||{})){
+    for(const gid of Object.keys(gf?.games||{}))gidSid[gid]=sid;
   }
-  // For shared gids not yet mapped, search player's seasons lazily
+  // For shared gids not yet mapped, load game files lazily
   const unmapped=shared.filter(gid=>!gidSid[gid]);
   if(unmapped.length){
     const sids=[...new Set((myPlayer?.seasons||[]).map(sn=>sn.sid).filter(Boolean))];
     for(const sid of sids){
       if(!unmapped.length)break;
-      if(!S.games[sid])S.games[sid]=await gj(BASE+'/games/bv/'+sid+'.json')||{};
-      for(const gid of Object.keys(S.games[sid]||{})){
-        if(unmapped.includes(gid)){gidSid[gid]=sid;}
+      if(!S.games[sid])S.games[sid]=await gj(BASE+'/games/bv/'+sid+'.json')||{games:{}};
+      for(const gid of Object.keys(S.games[sid]?.games||{})){
+        if(unmapped.includes(gid))gidSid[gid]=sid;
       }
       unmapped.splice(0,unmapped.length,...unmapped.filter(gid=>!gidSid[gid]));
     }
@@ -1579,7 +1629,7 @@ async function resolveOppGames(r,myGameSet){
   for(const gid of shared){
     const sid=gidSid[gid];
     if(!sid)continue;
-    const g=(S.games[sid]||{})[gid];
+    const g=S.games[sid]?.games?.[gid];
     if(!g)continue;
     const myTid=getTidForSeason(myPlayer,sid);
     const oppTidInGame=getTidForSeason(opp,sid);
@@ -1611,7 +1661,7 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
   ve.innerHTML='<div class="load-row">Loading…</div>';
   if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
   const td=S.teamStats[sid];
-  const myTeam=td?.teams?.[myTid];const oppTeam=td?.teams?.[oppTid];
+  const myTeam=td?.[myTid];const oppTeam=td?.[oppTid];
   const myName=myTeam?.meta?.name||'Team A';const oppName=oppTeam?.meta?.name||'Team B';
   const myRoster=Object.keys(myTeam?.roster||{});
   const oppRoster=Object.keys(oppTeam?.roster||{});
@@ -1656,9 +1706,12 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
         if(enc)enc.outerHTML='<span class="onone">No previous meetings</span>';
       }else{
         const nOpp=result.length;
-        if(enc)enc.outerHTML=`<span class="oenc">${total} meeting${total>1?'s':''} vs ${nOpp} player${nOpp>1?'s':''}</span>`;
+        const allGames=result.flatMap(e=>e.games);
+        const myTidFn=sid=>getTidForSeason(S.players[r.uuid],sid);
+        const wld=wldSummary(allGames,r.uuid,myTidFn);
+        if(enc)enc.outerHTML=`<span style="display:flex;align-items:center;gap:8px;flex-shrink:0">${wld}<span class="oenc">${total}G vs ${nOpp}P</span></span>`;
         row.style.cursor='pointer';
-        row.onclick=()=>toggleTeamOppDetail(row,result);
+        row.onclick=()=>toggleTeamOppDetail(row,result,r.uuid);
       }
     });
   }
@@ -1674,26 +1727,106 @@ async function resolveTeamOppGames(r){
   }
   return results;
 }
-function toggleTeamOppDetail(row,result){
-  let detail=row.querySelector('.opp-team-detail');
-  if(detail){detail.classList.toggle('hidden');return;}
-  let dh='<div class="opp-team-detail">';
-  for(let ri=0;ri<result.length;ri++){
-    const{opp,games}=result[ri];
-    const subId='opp-sub-'+row.id+'-'+ri;
-    dh+='<div class="opp-opp-row"><span class="oname">'+esc(opp?.name||'Player')+'</span>';
-    const togFn='document.getElementById("'+subId+'").classList.toggle("hidden")';
-    dh+='<span class="oenc" style="cursor:pointer" onclick="'+togFn+'">'+games.length+' meeting'+(games.length>1?'s':'')+'</span></div>';
-    dh+='<div id="'+subId+'" class="opp-games hidden">';
-    for(const{gid,sid,g}of games){
-      const score=g.hs!=null?g.hs+'–'+g.as:'';
-      const onclick2='openGame(\"'+esc(gid)+'\",null,null,\"'+esc(sid)+'\")';
-      dh+='<div class="opp-game-row" onclick="'+onclick2+'">'+esc(g.d?.slice(0,10)||'')+' · '+esc(g.gn||'')+' · '+score+'</div>';
-    }
-    dh+='</div>';
+function getPlayerGameStats(g, uuid) {
+  // Returns {pts, fg, ft, tp, fouls} for a player from box score data if available
+  const sides = [g.hp||[], g.ap||[]];
+  for (const side of sides) {
+    const p = side.find(p => p.profileID === uuid);
+    if (p) return { pts: p.pts??'', fouls: p.fouls??'' };
   }
-  dh+='</div>';
-  row.insertAdjacentHTML('beforeend',dh);
+  return null;
+}
+
+function wldSummary(games, myUuid, myTidFn) {
+  let w = 0, l = 0, d = 0;
+  for (const { g, sid } of games) {
+    const myTid = myTidFn ? myTidFn(sid) : g.h;
+    const ctx = gameCtx(g, myTid);
+    const r = resLetter(ctx.myS, ctx.oppS);
+    if (r === 'W') w++;
+    else if (r === 'L') l++;
+    else if (ctx.myS != null) d++;
+  }
+  if (!w && !l && !d) return '';
+  const parts = [];
+  if (w) parts.push(`<span style="color:var(--win)">${w}W</span>`);
+  if (l) parts.push(`<span style="color:var(--loss)">${l}L</span>`);
+  if (d) parts.push(`<span style="color:var(--draw)">${d}D</span>`);
+  return `<span style="font-size:0.7rem;display:flex;gap:4px;flex-shrink:0">${parts.join('')}</span>`;
+}
+
+function toggleTeamOppDetail(row, result, myUuid) {
+  let detail = row.nextElementSibling;
+  if (detail && detail.classList.contains('opp-detail')) {
+    detail.classList.toggle('hidden');
+    row.classList.toggle('expanded');
+    return;
+  }
+  row.classList.add('expanded');
+  const detailEl = document.createElement('div');
+  detailEl.className = 'opp-detail';
+
+  for (let ri = 0; ri < result.length; ri++) {
+    const { opp, games, oppUuid } = result[ri];
+    const oppRow = document.createElement('div');
+    oppRow.className = 'opp-opp-row';
+    const gameDetailId = `opp-games-${row.id}-${ri}`;
+    const myTidFn = sid => getTidForSeason(S.players[myUuid], sid);
+    const wld = wldSummary(games, myUuid, myTidFn);
+    oppRow.innerHTML = `<span class="opp-opp-name">${esc(opp?.name||'#'+oppUuid.slice(0,8))}</span>${wld}<span class="opp-opp-enc">${games.length}G</span>`;
+
+    const gameDetail = document.createElement('div');
+    gameDetail.className = 'opp-game-detail hidden';
+    gameDetail.id = gameDetailId;
+
+    for (const { gid, sid, g } of games) {
+      const myTid = getTidForSeason(S.players[myUuid], sid);
+      const ctx = gameCtx(g, myTid || g.h);
+      const score = ctx.myS != null ? `${ctx.myS}–${ctx.oppS}` : '—';
+      const res = resLetter(ctx.myS, ctx.oppS);
+      const resColor = res === 'W' ? 'var(--win)' : res === 'L' ? 'var(--loss)' : 'var(--text2)';
+      const myStats = getPlayerGameStats(g, myUuid);
+      const oppStats = getPlayerGameStats(g, oppUuid);
+      const myStr = myStats ? `${myStats.pts}pts ${myStats.fouls}f` : '';
+      const oppStr = oppStats ? `${oppStats.pts}pts ${oppStats.fouls}f` : '';
+      const fc = finalClass(g.rn);
+      const statsSpanId = `opp-gstats-${gid}`;
+      const gameRow = document.createElement('div');
+      gameRow.className = 'opp-game-row';
+      gameRow.innerHTML = `
+        <span class="opp-game-date">${esc(g.d?.slice(0,10)||'')}</span>
+        <span class="opp-game-grade">${esc(g.gn||'')}${fc?` <span style="color:gold;font-size:0.65rem">${esc(g.rn)}</span>`:''}</span>
+        <span class="opp-game-score">${esc(score)}</span>
+        <span class="opp-game-res" style="color:${resColor}">${res}</span>
+        <span class="opp-game-stats" id="${statsSpanId}">${myStr?`Me: ${myStr}`:''}${myStr&&oppStr?' · ':''}${oppStr?`Them: ${oppStr}`:''}${!myStr&&!oppStr?'Loading…':''}</span>`;
+      gameRow.onclick = () => openGame(gid, g, null, sid);
+
+      // Fetch box score and update stats span if not already in game file
+      if (!myStr && !oppStr) {
+        fetchBox(gid).then(bs => {
+          if (!bs) {
+            const sp = document.getElementById(statsSpanId);
+            if (sp) sp.textContent = '';
+            return;
+          }
+          const allP = [...(bs.h||[]), ...(bs.a||[])];
+          const myBs  = allP.find(p => p.profileID === myUuid);
+          const oppBs = allP.find(p => p.profileID === oppUuid);
+          const myS2  = myBs  ? `${myBs.pts??''}pts ${myBs.fouls??''}f`  : '';
+          const oppS2 = oppBs ? `${oppBs.pts??''}pts ${oppBs.fouls??''}f` : '';
+          const sp = document.getElementById(statsSpanId);
+          if (sp) sp.textContent = `${myS2?`Me: ${myS2}`:''}${myS2&&oppS2?' · ':''}${oppS2?`Them: ${oppS2}`:''}`;
+        });
+      }
+      gameDetail.appendChild(gameRow);
+    }
+
+    oppRow.onclick = () => { gameDetail.classList.toggle('hidden'); oppRow.classList.toggle('expanded'); };
+    detailEl.appendChild(oppRow);
+    detailEl.appendChild(gameDetail);
+  }
+
+  row.after(detailEl);
 }
 
 
@@ -1722,7 +1855,7 @@ async function buildLBSeasonPicker(){
 function switchLBStat(stat){
   S.lbStat=stat;
   document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat===stat));
-  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason'].includes(stat));
+  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason','winPct'].includes(stat));
   // finalsPerSeason is all-time only — hide button when per-season scope
   const isSeasonScope=el('lb-season')?.value!=='all';
   el('view-leaders')?.querySelectorAll('.lb-alltime-only').forEach(b=>b.classList.toggle('hidden',isSeasonScope));
@@ -1739,14 +1872,16 @@ function denormSeason(data){
     out[cat]=arr.map(e=>{
       const m=pm[e.id]||{};
       const uuid=e.id.split('|')[0];
-      return{uuid,name:m.n||uuid,club:m.club||null,team:m.team||'',
+      // Guard: if uuid doesn't look like a UUID, skip this entry
+      if(!uuid||uuid.length<8)return null;
+      return{uuid,name:m.n||null,club:m.club||null,team:m.team||'',
              org:m.org||'',comp:m.comp||'',grade:m.grade||'',
              age:m.age||'',gender:m.gender||'',gp:m.gp||0,
              foulOuts:m.foulOuts||0,foulOutsPG:m.foulOutsPG||0,
              threePtPG:m.threePtPG||0,foulsPG:m.foulsPG||0,
              finals:m.finals||0,gfApps:m.gfApps||0,gfWins:m.gfWins||0,
              v:e.v};
-    });
+    }).filter(Boolean);
   }
   return out;
 }
@@ -1808,13 +1943,14 @@ async function loadLB(){
 function renderLB(allEntries,data){
   const scope=el('lb-season')?.value||'all';
   let entries=[...allEntries];
-  // Apply filters
+  // Apply filters — org/age/gender work for all scopes; comp/grade are per-season only
+  const org=el('lb-org')?.value,comp=el('lb-comp')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
+  if(org)entries=entries.filter(e=>e.org===org);
+  if(gender)entries=entries.filter(e=>e.gender===gender);
+  if(age)entries=entries.filter(e=>e.age===age);
   if(scope!=='all'){
-    const org=el('lb-org')?.value,comp=el('lb-comp')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
-    if(org)entries=entries.filter(e=>e.org===org);
     if(comp)entries=entries.filter(e=>e.comp===comp);
-    // Cascade: filter by age first, then rebuild grade options from result
-    if(age)entries=entries.filter(e=>e.age===age);
+    // Cascade: rebuild grade options from age-filtered result
     const gradeSel=el('lb-grade');
     if(gradeSel){
       const availGrades=[...new Set(entries.map(e=>e.grade).filter(Boolean))].sort();
@@ -1824,24 +1960,23 @@ function renderLB(allEntries,data){
     }
     const grade=gradeSel?.value;
     if(grade)entries=entries.filter(e=>e.grade===grade);
-    if(gender)entries=entries.filter(e=>e.gender===gender);
   }
   // Min GP filter — applies to all per-game rate stats
   if(['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason'].includes(S.lbStat)){
     const minGP=parseInt(el('lb-mingp')?.value||'10');
     entries=entries.filter(e=>(e.gp||0)>=minGP);
   }
-  // Sort by v descending (data already sorted but re-sort after filter)
+  // Sort by v descending (data already sorted but re-sort after filter) (data already sorted but re-sort after filter)
   entries.sort((a,b)=>b.v-a.v);
   const ve=el('lb-results');
-  const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','threePtPG':'3PT/G','fouls':'F','foulsPG':'F/G','foulOuts':'Foul-outs','foulOutsPG':'FO/G','finals':'Finals','gfApps':'GF Apps','gfWins':'GF Wins','finalsPerSeason':'Finals/Ssn','maxGamePTS':'Best Game PTS','maxGameThreePt':'Best Game 3PT'}[S.lbStat]||S.lbStat;
+  const statLbl={'pts':'PTS','ppg':'PPG','gp':'GP','threePt':'3PT','threePtPG':'3PT/G','fouls':'F','foulsPG':'F/G','foulOuts':'Foul-outs','foulOutsPG':'FO/G','finals':'Finals','gfApps':'GF Apps','gfWins':'GF Wins','finalsPerSeason':'Finals/Ssn','maxGamePTS':'Best Game PTS','maxGameThreePt':'Best Game 3PT','wins':'Wins','losses':'Losses','draws':'Draws','winPct':'Win%'}[S.lbStat]||S.lbStat;
   const scopeName=scope==='all'?'All-time':el('lb-season')?.querySelector(`option[value="${scope}"]`)?.textContent||scope;
   if(!entries.length){(el('lb-results')||el('view-leaders')).innerHTML=`<div class="empty">No entries match the current filters.</div>`;return;}
   ve.innerHTML=`<div style="padding:8px 14px;font-size:0.75rem;color:var(--text2)">${esc(statLbl)} — ${entries.length} player${entries.length!==1?'s':''}</div>`+
     entries.slice(0,200).map((e,i)=>{
       const sub=[e.club,e.grade].filter(Boolean).join(' \u00b7 ');
-      const gpInfo=S.lbStat==='ppg'?`<div class="lb-gp">${e.gp} GP</div>`:'';
-      const dispVal=typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v;
+      const gpInfo=e.gp?`<div class="lb-gp">${e.gp} GP</div>`:'';
+      const dispVal=S.lbStat==='winPct'?e.v+'%':typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v;
       return`<div class="lb-row" data-uuid="${esc(e.uuid)}">
         <div class="lb-rank">${i+1}</div>
         <div><div class="lb-name">${esc(e.name||'Player #'+e.uuid.slice(0,10))}</div><div class="lb-club">${esc(sub)}</div></div>
@@ -1862,7 +1997,11 @@ el('q-vn').addEventListener('focus',()=>{if(!el('q-vn').value.trim())showRecent(
 el('q-vdate').addEventListener('change',()=>onVenueDateChange());
 el('sh-close').addEventListener('click',closeSheet);
 el('sbk').addEventListener('click',closeSheet);
-el('lb-season').addEventListener('change',()=>loadLB());
+el('lb-season').addEventListener('change',()=>{
+  // Clear filter selections on scope change so stale values don't carry over
+  ['lb-org','lb-comp','lb-grade','lb-age','lb-gender'].forEach(id=>{const e=el(id);if(e)e.value='';});
+  loadLB();
+});
 document.querySelectorAll('.lb-stat').forEach(b=>b.addEventListener('click',()=>switchLBStat(b.dataset.stat)));
 el('lb-mingp').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
 el('lb-grade').addEventListener('change',()=>renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{}));
@@ -1874,6 +2013,250 @@ el('q-vsn').addEventListener('change',()=>onVenueSeasonChange());
 
 boot();
 
+
+// Shared game row builder used by both expanded rows and search detail
+function buildGameRow(gid, sid, g, myUuid2, oppUuid2) {
+  const myTid2 = getTidForSeason(S.players[myUuid2], sid);
+  const ctx2 = gameCtx(g, myTid2 || g.h);
+  const score2 = ctx2.myS != null ? `${ctx2.myS}\u2013${ctx2.oppS}` : '\u2014';
+  const res2 = resLetter(ctx2.myS, ctx2.oppS);
+  const resColor2 = res2 === 'W' ? 'var(--win)' : res2 === 'L' ? 'var(--loss)' : 'var(--text2)';
+  const fc2 = finalClass(g.rn);
+  const statsId2 = 'ogsr-' + gid + '-' + myUuid2.slice(0,4);
+  const myTN = myTid2 === g.h ? (g.hn||'') : (g.an||'');
+  const oppTN = myTid2 === g.h ? (g.an||'') : (g.hn||'');
+  const row2 = document.createElement('div');
+  row2.className = 'opp-game-row';
+  row2.style.cssText = 'flex-wrap:nowrap;overflow:hidden;gap:8px';
+  row2.innerHTML = `
+    <span class="opp-game-date" style="flex-shrink:0">${esc(g.d?.slice(0,10)||'')}</span>
+    <span style="flex-shrink:0;font-size:0.72rem;color:var(--text2)">${esc(g.rn||'')}</span>
+    <span class="opp-game-grade" style="flex-shrink:0">${esc(g.gn||'')}${fc2?` <span style="color:gold;font-size:0.65rem">${esc(g.rn)}</span>`:''}</span>
+    ${myTN||oppTN?`<span style="font-size:0.7rem;color:var(--text2);flex-shrink:0;white-space:nowrap">${esc(myTN)} <span style="color:var(--text3)">vs</span> ${esc(oppTN)}</span>`:''}
+    ${g.vn?`<span style="color:var(--text3);font-size:0.68rem;flex-shrink:0;white-space:nowrap">${esc(g.vn)}</span>`:''}
+    <span class="opp-game-score" style="flex-shrink:0">${esc(score2)}</span>
+    <span class="opp-game-res" style="color:${resColor2};flex-shrink:0">${res2}</span>
+    <span class="opp-game-stats" id="${statsId2}" style="flex-shrink:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Loading\u2026</span>`;
+  row2.onclick = () => openGame(gid, g, null, sid);
+  fetchBox(gid).then(bs => {
+    const sp = document.getElementById(statsId2);
+    if (!sp) return;
+    if (!bs) { sp.textContent = ''; return; }
+    const allP2 = [...(bs.h||[]), ...(bs.a||[])];
+    const myBs2  = allP2.find(p => p.profileID === myUuid2);
+    const oppBs2 = allP2.find(p => p.profileID === oppUuid2);
+    const myS3  = myBs2  ? `${myBs2.pts??''}pts ${myBs2.fouls??''}f` : '';
+    const oppS3 = oppBs2 ? `${oppBs2.pts??''}pts ${oppBs2.fouls??''}f` : '';
+    sp.textContent = `${myS3?`Me: ${myS3}`:''}${myS3&&oppS3?' \u00b7 ':''}${oppS3?`Them: ${oppS3}`:''}`;
+  });
+  return row2;
+}
+async function buildOppStats(uuid, btn) {
+  const container = document.getElementById('opp-stats-' + uuid);
+  if (!container) return;
+  btn.disabled = true;
+  btn.textContent = 'Computing…';
+  container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Loading game data…</div>';
+
+  const player = S.players[uuid];
+  if (!player) { container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Player data not available.</div>'; btn.disabled=false; return; }
+
+  // Load all season game files and team-stats (needed to classify g.p[] players by side)
+  const sids = [...new Set((player.seasons || []).map(s => s.sid).filter(Boolean))];
+  for (const sid of sids) {
+    if (!S.games[sid])     S.games[sid]     = await gj(BASE + '/games/bv/' + sid + '.json')     || { games: {} };
+    if (!S.teamStats[sid]) S.teamStats[sid]  = await gj(BASE + '/team-stats/bv/' + sid + '.json') || {};
+  }
+
+  // For each game the player was in, tally opponents and results
+  // g.p[] entries have {id} (UUID string); hp/ap entries have {profileID}
+  const oppRecord = {}; // oppUuid → {w, l, d}
+  const playerGames = new Set(player.games || []);
+
+  for (const sid of sids) {
+    const gamesInSid = S.games[sid]?.games || {};
+    const myTid = getTidForSeason(player, sid);
+
+    for (const [gid, g] of Object.entries(gamesInSid)) {
+      if (!playerGames.has(gid)) continue;
+      if (!myTid) continue;
+
+      const ctx = gameCtx(g, myTid);
+      const res = resLetter(ctx.myS, ctx.oppS);
+      if (ctx.myS == null) continue; // no score
+
+      // Determine which side the player is on — skip game if we can't tell
+      const isHome = g.h === myTid;
+      const isAway = g.a === myTid;
+      if (!isHome && !isAway) continue; // myTid doesn't match either side — skip
+      const oppSide = isHome ? (g.ap || []) : (g.hp || []);
+      const mySide  = isHome ? (g.hp || []) : (g.ap || []);
+      let oppUuids;
+      if (oppSide.length) {
+        // hp/ap present — reliable side information
+        oppUuids = oppSide.map(p => p.profileID).filter(Boolean);
+      } else if (g.p?.length) {
+        // No hp/ap — use g.p with team-stats rosters to determine sides.
+        // Team-stats[sid][tid].roster is a map of uuid→stats for each registered player.
+        const otherTid = isHome ? g.a : g.h;
+        const td = S.teamStats[sid] || {};
+        const myRosterSet  = new Set(Object.keys(td[myTid]?.roster  || {}));
+        const oppRosterSet = new Set(Object.keys(td[otherTid]?.roster || {}));
+        oppUuids = [];
+        for (const entry of g.p) {
+          const pid = typeof entry === 'string' ? entry : entry.id;
+          if (!pid || pid === uuid) continue;
+          if (oppRosterSet.has(pid))  { oppUuids.push(pid); continue; }
+          // If not in either known roster, fall back to cached player file
+          if (myRosterSet.has(pid))   continue; // confirmed teammate
+          const cached = S.players[pid];
+          if (cached) {
+            const pidTid = getTidForSeason(cached, sid);
+            if (pidTid === otherTid) oppUuids.push(pid);
+          }
+          // truly unknown — exclude
+        }
+      } else {
+        continue;
+      }
+
+      for (const oppUuid of oppUuids) {
+        if (!oppUuid || oppUuid === uuid) continue;
+        if (!oppRecord[oppUuid]) oppRecord[oppUuid] = { w: 0, l: 0, d: 0, games: [] };
+        if (res === 'W') oppRecord[oppUuid].w++;
+        else if (res === 'L') oppRecord[oppUuid].l++;
+        else oppRecord[oppUuid].d++;
+        oppRecord[oppUuid].games.push({ gid, sid, g });
+      }
+    }
+  }
+
+  const entries = Object.entries(oppRecord)
+    .map(([oppUuid, rec]) => {
+      const total = rec.w + rec.l + rec.d;
+      const winPct = total > 0 ? rec.w / total : 0;
+      return { oppUuid, ...rec, total, winPct };
+    })
+    .filter(e => e.total >= 2);
+
+  if (!entries.length) {
+    container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Not enough scored games vs same opponent (need ≥2).</div>';
+    btn.textContent = 'Compute ↗'; btn.disabled = false;
+    return;
+  }
+
+  // Store game data keyed by oppUuid for expandable rows
+  const oppGames = {};
+  for (const e of entries) oppGames[e.oppUuid] = e.games || [];
+  S._oppStatGames = S._oppStatGames || {};
+  S._oppStatGames[uuid] = oppGames;
+
+  entries.sort((a, b) => b.winPct - a.winPct || b.total - a.total);
+  const best  = entries.slice(0, 5);
+  const worst = entries.slice(-5).reverse();
+
+  function wldBadge(e) {
+    return `<span style="font-size:0.7rem;display:flex;gap:4px;flex-shrink:0">` +
+      (e.w ? `<span style="color:var(--win)">${e.w}W</span>` : '') +
+      (e.l ? `<span style="color:var(--loss)">${e.l}L</span>` : '') +
+      (e.d ? `<span style="color:var(--draw)">${e.d}D</span>` : '') +
+      `</span>`;
+  }
+
+  function oppRow(e) {
+    const pct = Math.round(e.winPct * 100) + '%';
+    const rowId = 'osr-' + e.oppUuid;
+    const detailId = 'osd-' + e.oppUuid;
+    return `<div class="orow" style="cursor:pointer" id="${rowId}" onclick="toggleOppStatGames('${esc(e.oppUuid)}','${esc(uuid)}')">
+      <span class="oname" id="oppn-${esc(e.oppUuid)}">#${esc(e.oppUuid.slice(0,8))}</span>
+      ${wldBadge(e)}
+      <span style="font-size:0.72rem;color:var(--text2);min-width:36px;text-align:right;flex-shrink:0">${pct}</span>
+    </div><div id="${detailId}" class="opp-game-detail hidden"></div>`;
+  }
+
+
+
+  let h = '<div style="font-size:0.75rem;color:var(--text3);padding:6px 0 2px">Best win % (min 2 games)</div>';
+  for (const e of best)  h += oppRow(e);
+  h += '<div style="font-size:0.75rem;color:var(--text3);padding:10px 0 2px">Worst win % (min 2 games)</div>';
+  for (const e of worst) h += oppRow(e);
+
+  // Search dropdown — populated with all opponents once names load
+  const searchId = 'opp-search-' + uuid;
+  const searchDetailId = 'opp-search-detail-' + uuid;
+  h += `<div style="margin-top:12px;border-top:0.5px solid var(--border);padding-top:10px">
+    <div style="font-size:0.75rem;color:var(--text3);margin-bottom:6px">Look up any opponent</div>
+    <select id="${searchId}" class="sselect">
+      <option value="">Loading names\u2026</option>
+    </select>
+    <div id="${searchDetailId}" class="opp-game-detail hidden" style="margin-top:4px"></div>
+  </div>`;
+
+  container.innerHTML = h;
+  btn.textContent = 'Refresh \u2197'; btn.disabled = false;
+
+  // Wire search dropdown
+  document.getElementById(searchId)?.addEventListener('change', function() {
+    const oppUuid = this.value;
+    const detail = document.getElementById(searchDetailId);
+    if (!detail) return;
+    detail.innerHTML = '';
+    if (!oppUuid) { detail.classList.add('hidden'); return; }
+    detail.classList.remove('hidden');
+    const games = (S._oppStatGames?.[uuid]?.[oppUuid] || []).slice().sort((a,b)=>(b.g.d||'').localeCompare(a.g.d||''));
+    for (const {gid,sid,g} of games) detail.appendChild(buildGameRow(gid, sid, g, uuid, oppUuid));
+  });
+
+  // Load all opponent names progressively then rebuild dropdown
+  const nameMap = {};
+  const allEntries = [...entries];
+  let loaded = 0;
+
+  for (const e of allEntries) {
+    nameMap[e.oppUuid] = null; // placeholder
+    loadPlayerFile(e.oppUuid).then(opp => {
+      const name = opp?.name || null;
+      nameMap[e.oppUuid] = name;
+      // Update inline spans in best/worst rows
+      if (name) document.querySelectorAll('#oppn-' + e.oppUuid).forEach(el => { el.textContent = name; });
+      loaded++;
+      if (loaded === allEntries.length) {
+        // Rebuild dropdown with all names
+        const sel = document.getElementById(searchId);
+        if (!sel) return;
+        const sorted = allEntries
+          .map(e => ({ ...e, name: nameMap[e.oppUuid] || ('#' + e.oppUuid.slice(0,8)) }))
+          .sort((a,b) => a.name.localeCompare(b.name));
+        sel.innerHTML = '<option value="">Select an opponent\u2026</option>' +
+          sorted.map(e => {
+            const pct = e.total > 0 ? Math.round(e.w/e.total*100)+'%' : '';
+            return `<option value="${esc(e.oppUuid)}">${esc(e.name)} \u2014 ${e.w}W ${e.l}L${e.d?` ${e.d}D`:''} ${pct}</option>`;
+          }).join('');
+      }
+    });
+  }
+}
+
+async function toggleOppStatGames(oppUuid, myUuid) {
+  const row = document.getElementById('osr-' + oppUuid);
+  const detail = document.getElementById('osd-' + oppUuid);
+  if (!detail) return;
+  if (detail.children.length) {
+    detail.classList.toggle('hidden');
+    row.classList.toggle('expanded');
+    return;
+  }
+  const games = S._oppStatGames?.[myUuid]?.[oppUuid] || [];
+  if (!games.length) { detail.innerHTML = '<div style="padding:4px 14px 4px 28px;font-size:0.75rem;color:var(--text3)">No game details available.</div>'; detail.classList.remove('hidden'); return; }
+  games.sort((a, b) => (b.g.d || '').localeCompare(a.g.d || ''));
+  for (const { gid, sid, g } of games) {
+    const r = buildGameRow(gid, sid, g, myUuid, oppUuid);
+    r.style.paddingLeft = '28px';
+    detail.appendChild(r);
+  }
+  detail.classList.remove('hidden');
+  row.classList.add('expanded');
+}
 
 </script>
 </body>
