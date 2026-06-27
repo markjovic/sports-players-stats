@@ -7,8 +7,9 @@
 // appears as a private/unnamed profile rather than polluting leaderboards.
 //
 // Usage:
-//   node scripts/fix-corrupt-player-names.js --dry-run   (report only)
-//   node scripts/fix-corrupt-player-names.js             (fix and commit)
+//   node scripts/fix-corrupt-player-names.js --dry-run            (count only)
+//   node scripts/fix-corrupt-player-names.js --dry-run --verbose  (list all UUIDs)
+//   node scripts/fix-corrupt-player-names.js                      (fix and commit)
 
 'use strict';
 
@@ -19,6 +20,7 @@ const { execSync } = require('child_process');
 const ROOT       = path.join(__dirname, '..');
 const PLAYERS    = path.join(ROOT, 'players');
 const DRY_RUN    = process.argv.includes('--dry-run');
+const VERBOSE    = process.argv.includes('--verbose');
 const SEASON_RE  = /^(Winter|Summer|Spring|Autumn|Fall)\s+\d{4}/i;
 
 function gitCommit(msg) {
@@ -39,11 +41,13 @@ function gitCommit(msg) {
 }
 
 async function main() {
-  console.log(`\nfix-corrupt-player-names.js${DRY_RUN ? ' [DRY RUN]' : ''}`);
+  console.log(`\nfix-corrupt-player-names.js${DRY_RUN ? ' [DRY RUN]' : ''}${VERBOSE ? ' [VERBOSE]' : ''}`);
   console.log('─'.repeat(60));
 
   const prefixes = fs.readdirSync(PLAYERS).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
-  let scanned = 0, found = 0, fixed = 0;
+  let scanned = 0, fixed = 0;
+  const corrupt = [];
+  const byName = {};
 
   for (const prefix of prefixes) {
     const dir = path.join(PLAYERS, prefix);
@@ -55,8 +59,8 @@ async function main() {
 
       if (!player.name || !SEASON_RE.test(player.name)) continue;
 
-      found++;
-      console.log(`  CORRUPT: ${player.uuid}  name="${player.name}"`);
+      corrupt.push({ uuid: player.uuid, name: player.name });
+      byName[player.name] = (byName[player.name] || 0) + 1;
 
       if (!DRY_RUN) {
         delete player.name;
@@ -66,15 +70,23 @@ async function main() {
     }
   }
 
-  console.log(`\n  Scanned: ${scanned}`);
-  console.log(`  Corrupt: ${found}`);
-  if (!DRY_RUN) {
-    console.log(`  Fixed:   ${fixed}`);
-    if (fixed > 0) {
-      gitCommit(`fix-corrupt-player-names: cleared name field on ${fixed} players`);
-    }
+  console.log(`\n  Scanned:  ${scanned.toLocaleString()}`);
+  console.log(`  Corrupt:  ${corrupt.length.toLocaleString()}`);
+  console.log(`\n  Breakdown by name:`);
+  for (const [name, count] of Object.entries(byName).sort((a,b) => b[1]-a[1])) {
+    console.log(`    ${String(count).padStart(6)}  "${name}"`);
   }
-  console.log('─'.repeat(60));
+
+  if (VERBOSE) {
+    console.log(`\n  All corrupt UUIDs:`);
+    corrupt.forEach(({uuid, name}) => console.log(`    ${uuid}  "${name}"`));
+  }
+
+  if (!DRY_RUN) {
+    console.log(`\n  Fixed:    ${fixed.toLocaleString()}`);
+    if (fixed > 0) gitCommit(`fix-corrupt-player-names: cleared name field on ${fixed} players`);
+  }
+  console.log('\n' + '─'.repeat(60));
 }
 
 main().catch(e => { console.error('\nFATAL:', e.message); process.exit(1); });
