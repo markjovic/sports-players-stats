@@ -13,11 +13,19 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout
+      - name: Checkout (sparse — scripts and workflows only, no blobs)
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.WORKFLOW_PAT }}
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            .github/workflows
+            /*.json
+            /*.md
+            /*.html
+          sparse-checkout-cone-mode: false
 
       - name: Delete stale files and commit
         env:
@@ -27,6 +35,10 @@ jobs:
           GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
           set -e
+
+          # Pull latest before making any changes
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
 
           # ── Scripts to delete ────────────────────────────────────────────────
           SCRIPTS=(
@@ -274,23 +286,23 @@ jobs:
 
           for f in "${SCRIPTS[@]}" "${WORKFLOWS[@]}" "${ROOT_FILES[@]}" "${HTML_FILES[@]}"; do
             if [ -f "$f" ]; then
-              git rm -f "$f"
+              git rm --ignore-unmatch -f "$f"
               echo "  rm: $f"
-              ((deleted++)) || true
+              deleted=$((deleted+1))
             else
               echo "  skip (not found): $f"
-              ((skipped++)) || true
+              skipped=$((skipped+1))
             fi
           done
 
           for d in "${DIRS[@]}"; do
             if [ -d "$d" ]; then
-              git rm -rf "$d"
+              git rm --ignore-unmatch -rf "$d"
               echo "  rm -r: $d"
-              ((deleted++)) || true
+              deleted=$((deleted+1))
             else
               echo "  skip (not found): $d"
-              ((skipped++)) || true
+              skipped=$((skipped+1))
             fi
           done
 
@@ -303,20 +315,19 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing to commit — all files already absent."
           else
-            git stash
-            git fetch origin main
-            git merge -X ours FETCH_HEAD
-            git stash pop
-            git commit -m "chore: delete obsolete scripts, workflows, and stale root files
+            cat > /tmp/cleanup-msg.txt << 'COMMITMSG'
+chore: delete obsolete scripts, workflows, and stale root files
 
-            Removes ~50 scripts, ~70 workflows, and ~30 root JSON files that are
-            either one-time-complete, superseded, or replaced by consolidated tools.
+Removes ~50 scripts, ~70 workflows, and ~30 root JSON files that are
+either one-time-complete, superseded, or replaced by consolidated tools.
 
-            Consolidated:
-            - inspect-player-file + inspect-hidden-reclassified + diagnose-player-stats
-              + find-game-id → scripts/diagnose.js + diagnose.yml
-            - test-grade-concurrency + test-profile-query + test-discover-game
-              + test-schema-fields + test-gps-count → scripts/test-api.js + test-api.yml"
+Consolidated:
+- inspect-player-file + inspect-hidden-reclassified + diagnose-player-stats
+  + find-game-id -> scripts/diagnose.js + diagnose.yml
+- test-grade-concurrency + test-profile-query + test-discover-game
+  + test-schema-fields + test-gps-count -> scripts/test-api.js + test-api.yml
+COMMITMSG
+            git commit -F /tmp/cleanup-msg.txt
             git push origin main
             echo "Committed and pushed."
           fi
