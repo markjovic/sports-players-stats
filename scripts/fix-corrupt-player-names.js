@@ -23,9 +23,10 @@ const DRY_RUN    = process.argv.includes('--dry-run');
 const VERBOSE    = process.argv.includes('--verbose');
 const SEASON_RE  = /^(Winter|Summer|Spring|Autumn|Fall)\s+\d{4}/i;
 
-function gitCommit(msg) {
+function gitCommit(msg, paths) {
   try {
-    execSync('git add players/', { cwd: ROOT, stdio: 'pipe' });
+    const addPaths = paths || ['players/'];
+    for (const p of addPaths) execSync(`git add ${p}`, { cwd: ROOT, stdio: 'pipe' });
     const staged = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!staged) { console.log('  Nothing staged.'); return; }
     execSync(`git commit -m "${msg}"`, { cwd: ROOT, stdio: 'pipe' });
@@ -64,6 +65,8 @@ async function main() {
 
       if (!DRY_RUN) {
         delete player.name;
+        // Clear statsChecked so the matrix re-fetches this player and writes the real name
+        if (player.sports?.Basketball) delete player.sports.Basketball.statsChecked;
         fs.writeFileSync(fpath, JSON.stringify(player), 'utf8');
         fixed++;
       }
@@ -84,7 +87,16 @@ async function main() {
 
   if (!DRY_RUN) {
     console.log(`\n  Fixed:    ${fixed.toLocaleString()}`);
-    if (fixed > 0) gitCommit(`fix-corrupt-player-names: cleared name field on ${fixed} players`);
+    if (fixed > 0) {
+      // All 256 shards are affected — no point writing needs-matrix-shards.json.
+      // Trigger a full matrix force run after this commits to re-fetch all 37k players.
+      gitCommit(
+        `fix-corrupt-player-names: cleared name + statsChecked on ${fixed} players`,
+        ['players/']
+      );
+      console.log('\n  ⚡ Next step: run fetch-profile-stats-matrix.yml with force=true');
+      console.log('     The matrix will re-fetch all players without statsChecked and write real names.');
+    }
   }
   console.log('\n' + '─'.repeat(60));
 }
