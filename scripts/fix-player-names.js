@@ -56,77 +56,104 @@ function post(body, cookie) {
   });
 }
 
-// ─── Session ──────────────────────────────────────────────────────────────────
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-let sessionCookie = null;
-let sessionLock   = null;
+// ─── Session ──────────────────────────────────────────────────────────────────
+// Single shared session cookie. One lock prevents parallel refresh attempts.
+// Workers track requests against a shared counter; when the counter crosses
+// a REFRESH_EVERY threshold the first worker to notice triggers a refresh and
+// all others wait on the same lock promise.
+
+let sessionCookie   = null;
+let sessionLock     = null;
+let sessionRequests = 0;          // total requests made on current session
+const REFRESH_EVERY = 25;         // refresh session every 25 requests (safely under 30 quota)
 
 async function refreshSession() {
-  if (sessionLock) return sessionLock;
+  // If a refresh is already in progress, wait for it
+  if (sessionLock) { await sessionLock; return; }
+
   sessionLock = (async () => {
-    const body = JSON.stringify({ operationName: 'TenantConfig', variables: {},
-      query: 'query TenantConfig { tenantConfiguration { label } }' });
-    const res  = await post(body, null);
-    const raw  = res.headers['set-cookie'];
-    if (!raw) throw new Error('No session cookie');
-    const parts = (Array.isArray(raw) ? raw.join(', ') : raw)
-      .split(',').map(c => c.trim().split(';')[0]);
-    const get = n => parts.find(p => p.startsWith(n + '=')) || null;
-    const tier = get('phq_tier'), sess = get('phq_session'), sub = get('phq_sub');
-    if (!tier || !sess || !sub) throw new Error('Incomplete session cookies');
-    sessionCookie = `${tier}; ${sess}; ${sub}`;
-    console.log('  Session refreshed');
-  })().finally(() => { sessionLock = null; });
-  return sessionLock;
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      try {
+        const body = JSON.stringify({ operationName: 'TenantConfig', variables: {},
+          query: 'query TenantConfig { tenantConfiguration { label } }' });
+        const res  = await post(body, null);
+        const raw  = res.headers['set-cookie'];
+        if (!raw) throw new Error('No Set-Cookie header');
+        const parts = (Array.isArray(raw) ? raw.join(', ') : raw)
+          .split(',').map(c => c.trim().split(';')[0]);
+        const get = n => parts.find(p => p.startsWith(n + '=')) || null;
+        const tier = get('phq_tier'), sess = get('phq_session'), sub = get('phq_sub');
+        if (!tier || !sess || !sub) throw new Error('Incomplete cookies');
+        sessionCookie   = `${tier}; ${sess}; ${sub}`;
+        sessionRequests = 0;
+        console.log(`  Session refreshed (attempt ${attempt})`);
+        return;
+      } catch (e) {
+        if (attempt === 5) throw e;
+        console.log(`  Session refresh failed (attempt ${attempt}): ${e.message} — retrying in ${attempt * 2}s`);
+        await sleep(attempt * 2000);
+      }
+    }
+  })();
+
+  try { await sessionLock; }
+  finally { sessionLock = null; }
+}
+
+// Called by each worker before making a request.
+// Only one worker triggers a refresh; others wait.
+async function ensureSession() {
+  if (sessionLock) { await sessionLock; return; }
+  if (!sessionCookie || sessionRequests >= REFRESH_EVERY) {
+    await refreshSession();
+  }
 }
 
 // ─── Name fetch ───────────────────────────────────────────────────────────────
 
-const NAME_QUERY = JSON.stringify({
-  operationName: 'ProfileSeasonStatistics',
-  query: `query ProfileSeasonStatistics($profileID: ID!) {
-    publicProfileStatistics(profileID: $profileID) {
-      seasonStatistics { name }
-    }
-  }`,
-});
-
 async function fetchName(uuid) {
-  const body = NAME_QUERY.slice(0, -1) + `,"variables":{"profileID":"${uuid}"}}`;
-  try {
-    const res = await post(body, sessionCookie);
-    if (res.status === 403) return null;
-    if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
-    const json = JSON.parse(res.body);
-    return json?.data?.publicProfileStatistics?.seasonStatistics?.[0]?.name || null;
-  } catch (e) {
-    throw e;
-  }
+  await ensureSession();
+  sessionRequests++;
+
+  const body = JSON.stringify({
+    operationName: 'ProfileSeasonStatistics',
+    variables: { profileID: uuid },
+    query: `query ProfileSeasonStatistics($profileID: ID!) {
+      publicProfileStatistics(profileID: $profileID) {
+        seasonStatistics { name }
+      }
+    }`,
+  });
+
+  const res = await post(body, sessionCookie);
+  if (res.status === 403) return null;       // private profile
+  if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
+  const json = JSON.parse(res.body);
+  return json?.data?.publicProfileStatistics?.seasonStatistics?.[0]?.name || null;
 }
 
 // ─── Git ──────────────────────────────────────────────────────────────────────
+// Merge first, then stage changes, then commit.
+// No stash — stash/pop drops staged changes when other commits land mid-run.
 
 function gitCommit(msg) {
   if (DRY_RUN) return;
-  // Write commit message to a temp file to avoid shell buffer/escaping issues
-  const msgFile = path.join(ROOT, '.git', 'FIX_NAMES_MSG');
-  fs.writeFileSync(msgFile, msg, 'utf8');
   try {
-    execSync('git add players/', { cwd: ROOT, stdio: 'pipe' });
-    // Use --short to avoid ENOBUFS on large diffs
-    const staged = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe', maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+    // Pull latest so our commit applies cleanly on top
+    execSync('git fetch origin main',                   { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    // Stage written player files
+    execSync('git add players/',                        { cwd: ROOT, stdio: 'pipe' });
+    const staged = execSync('git diff --staged --shortstat',
+      { cwd: ROOT, stdio: 'pipe', maxBuffer: 10 * 1024 * 1024 }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
-    execSync('git stash',                                { cwd: ROOT, stdio: 'pipe' });
-    execSync('git fetch origin main',                    { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit',  { cwd: ROOT, stdio: 'pipe' });
-    execSync('git stash pop',                            { cwd: ROOT, stdio: 'pipe' });
-    execSync(`git commit -F "${msgFile}"`,               { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push origin main',                     { cwd: ROOT, stdio: 'pipe' });
+    execSync(`git commit -m "${msg}"`,  { cwd: ROOT, stdio: 'pipe' });
+    execSync('git push origin main',    { cwd: ROOT, stdio: 'pipe' });
     console.log(`  Committed: ${msg}`);
   } catch (e) {
-    console.error('  git error:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
-  } finally {
-    try { fs.unlinkSync(msgFile); } catch {}
+    console.error('  git error:', e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300));
   }
 }
 
@@ -149,7 +176,7 @@ async function main() {
   const done = loadProgress();
   if (done.size) console.log(`  Resuming — ${done.size} already done`);
 
-  // Collect targets
+  // Collect targets: players with no name or a corrupt season-name string
   console.log('  Scanning for missing/corrupt names…');
   const targets = [];
   for (const prefix of fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort()) {
@@ -172,39 +199,28 @@ async function main() {
 
   await refreshSession();
 
-  let written = 0, inaccessible = 0, errors = 0;
-  let sinceCommit = 0;
-  let reqCount = 0;
-  const REFRESH_EVERY = 30;
-
+  let written = 0, inaccessible = 0, errors = 0, sinceCommit = 0;
   let idx = 0;
+  const idxLock = { v: 0 };   // shared index; workers grab next item atomically
 
   async function worker() {
     while (true) {
-      const uuid = targets[idx++];
-      if (!uuid) break;
-
-      reqCount++;
-      if (reqCount % REFRESH_EVERY === 0) {
-        sessionCookie = null;
-        await refreshSession();
-      }
+      const i = idxLock.v++;
+      if (i >= targets.length) break;
+      const uuid = targets[i];
 
       let name = null;
       try {
         name = await fetchName(uuid);
       } catch (e) {
         errors++;
-        console.log(`  ✗ ${uuid.slice(0, 8)} ${e.message.slice(0, 60)}`);
+        console.log(`  ✗ ${uuid.slice(0, 8)} ${e.message.slice(0, 80)}`);
         continue;
       }
 
       done.add(uuid);
 
-      if (!name) {
-        inaccessible++;
-        continue;
-      }
+      if (!name) { inaccessible++; continue; }
 
       if (!DRY_RUN) {
         const fpath = path.join(PLAYERS_DIR, uuid.slice(0, 2), `${uuid}.json`);
@@ -224,16 +240,16 @@ async function main() {
 
       if (!DRY_RUN && sinceCommit >= COMMIT_EVERY) {
         saveProgress(done);
-        gitCommit(`fix-player-names: ${written} names written (${targets.length - idx} remaining)`);
+        const remaining = targets.length - idxLock.v;
+        gitCommit(`fix-player-names: ${written} names written (${remaining} remaining)`);
         sinceCommit = 0;
-        console.log(`  Progress: ${idx}/${targets.length} — written ${written}, inaccessible ${inaccessible}`);
+        console.log(`  Progress: ${idxLock.v}/${targets.length} — written ${written}, inaccessible ${inaccessible}`);
       }
     }
   }
 
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
 
-  // Final commit
   if (!DRY_RUN) {
     saveProgress(done);
     gitCommit(`fix-player-names: complete — ${written} names written, ${inaccessible} inaccessible`);
