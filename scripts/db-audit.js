@@ -594,7 +594,7 @@ const baseline = [
   ['Total game entries',         totalGames,      2248309],
   ['Finals round games',         gamesFinalsRound, 119021],
   ['Grand Final games',          gamesGrandFinal,  34846],
-  ['Players with finals > 0',    finalsNonZero,    284678],
+  ['Players with finals > 0',    finalsNonZero,    258142],
   ['Search shard files',         searchFiles,      630],
   ['Venue dirs',                 vlVenues,         532],
   ['Date-venue index files',     dviFiles,         2016],
