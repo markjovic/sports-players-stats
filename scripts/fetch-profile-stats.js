@@ -144,6 +144,7 @@ const PROFILE_QUERY = {
   query: `query ProfileSeasonStatistics($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
     seasonStatistics {
+      name
       statistics {
         season { id }
         teamStatistics {
@@ -185,6 +186,9 @@ function statValue(statistics, typeValue) {
 function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
+
+  // Player display name from first seasonStatistics entry
+  const playerName = seasonStats[0]?.name || null;
 
   const seenGameKeys = new Set();  // deduplicate games appearing in multiple registrations
   const foulOuts     = {};
@@ -252,7 +256,7 @@ function parseProfileStats(data) {
     }
   }
 
-  return { foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats };
+  return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats };
 }
 
 // ─── API fetch ────────────────────────────────────────────────────────────────
@@ -416,6 +420,11 @@ async function processUUID(uuid, stats, idx) {
   const player = readPlayer(uuid);
   if (!player.sports)            player.sports = {};
   if (!player.sports.Basketball) player.sports.Basketball = {};
+
+  // Write name if missing — permanent maintenance, not just a one-time fix
+  if (parsed.playerName && !player.name) {
+    player.name = parsed.playerName;
+  }
 
   const bk = player.sports.Basketball;
   bk.foulOuts       = parsed.foulOuts;
