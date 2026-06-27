@@ -9,7 +9,7 @@ on:
         required: true
         type: string
       name:
-        description: 'Player display name (optional — leave blank if unknown)'
+        description: 'Player display name (optional — fetched from PlayHQ if blank)'
         required: false
         default: ''
         type: string
@@ -53,18 +53,75 @@ jobs:
         id: stub
         run: |
           node --input-type=module << 'EOF'
-          import fs   from 'fs';
-          import path from 'path';
+          import fs    from 'fs';
+          import path  from 'path';
+          import https from 'https';
+          import crypto from 'crypto';
 
-          const uuid   = '${{ inputs.uuid }}';
-          const name   = '${{ inputs.name }}' || undefined;
-          const shard  = uuid.slice(0, 2).toLowerCase();
-          const ROOT   = process.cwd();
+          const uuid        = '${{ inputs.uuid }}';
+          const inputName   = '${{ inputs.name }}' || null;
+          const shard       = uuid.slice(0, 2).toLowerCase();
+          const ROOT        = process.cwd();
+          const indexPath   = path.join(ROOT, 'players', 'indexes', `${shard}.json`);
+          const playerPath  = path.join(ROOT, 'players', shard, `${uuid}.json`);
 
-          const indexPath  = path.join(ROOT, 'players', 'indexes', `${shard}.json`);
-          const playerPath = path.join(ROOT, 'players', shard, `${uuid}.json`);
+          // ── Fetch name from PlayHQ if not supplied ──────────────────────────
 
-          // Load index
+          async function fetchPlayerName(uuid) {
+            // Step 1: get session cookie
+            const sessionBody = JSON.stringify({
+              operationName: 'TenantConfig', variables: {},
+              query: 'query TenantConfig { tenantConfiguration { label } }'
+            });
+            const HEADERS = {
+              'accept': '*/*', 'origin': 'https://www.playhq.com',
+              'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+              'tenant': 'basketball-victoria', 'content-type': 'application/json',
+            };
+            function post(body, cookie) {
+              return new Promise((resolve, reject) => {
+                const h = { ...HEADERS, 'request-id': crypto.randomUUID(),
+                            'content-length': Buffer.byteLength(body) };
+                if (cookie) h['Cookie'] = cookie;
+                const req = https.request(
+                  { hostname: 'api.playhq.com', path: '/graphql', method: 'POST',
+                    headers: h, agent: new https.Agent({ keepAlive: false }) },
+                  res => {
+                    const c = [];
+                    res.on('data', d => c.push(d));
+                    res.on('end', () => resolve({ status: res.statusCode,
+                      headers: res.headers, body: Buffer.concat(c).toString() }));
+                  }
+                );
+                req.on('error', reject); req.write(body); req.end();
+              });
+            }
+            const sess = await post(sessionBody, null);
+            const raw  = sess.headers['set-cookie'];
+            if (!raw) throw new Error('No session cookie');
+            const parts = (Array.isArray(raw) ? raw.join(', ') : raw)
+              .split(',').map(c => c.trim().split(';')[0]);
+            const get = n => parts.find(p => p.startsWith(n + '=')) || null;
+            const cookie = `${get('phq_tier')}; ${get('phq_session')}; ${get('phq_sub')}`;
+
+            // Step 2: fetch profile name
+            const nameBody = JSON.stringify({
+              operationName: 'ProfileSeasonStatistics',
+              variables: { profileID: uuid },
+              query: `query ProfileSeasonStatistics($profileID: ID!) {
+                publicProfileStatistics(profileID: $profileID) {
+                  seasonStatistics { name }
+                }
+              }`
+            });
+            const res  = await post(nameBody, cookie);
+            if (res.status === 403) return null; // private profile
+            const json = JSON.parse(res.body);
+            return json?.data?.publicProfileStatistics?.seasonStatistics?.[0]?.name || null;
+          }
+
+          // ── Load index ──────────────────────────────────────────────────────
+
           let index = {};
           if (fs.existsSync(indexPath)) {
             index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
@@ -72,7 +129,6 @@ jobs:
 
           if (index[uuid]) {
             console.log(`Player already in index — will trigger matrix to re-fetch stats.`);
-            // Clear statsChecked so matrix re-fetches even if already present
             if (fs.existsSync(playerPath)) {
               const player = JSON.parse(fs.readFileSync(playerPath, 'utf8'));
               if (player?.sports?.Basketball?.statsChecked !== undefined) {
@@ -84,7 +140,22 @@ jobs:
             process.exit(0);
           }
 
-          // Create stub — mirrors nightly Phase 4 exactly
+          // ── Resolve name ────────────────────────────────────────────────────
+
+          let name = inputName;
+          if (!name) {
+            console.log('No name supplied — fetching from PlayHQ...');
+            try {
+              name = await fetchPlayerName(uuid);
+              if (name) console.log(`  Name: ${name}`);
+              else      console.log('  Private profile — no name available.');
+            } catch (e) {
+              console.log(`  Name fetch failed: ${e.message} — continuing without name.`);
+            }
+          }
+
+          // ── Create stub ─────────────────────────────────────────────────────
+
           const now  = new Date().toISOString();
           const stub = {
             uuid,
@@ -101,7 +172,7 @@ jobs:
           index[uuid] = { ...(name ? { name } : {}), history: {} };
           fs.writeFileSync(indexPath, JSON.stringify(index), 'utf8');
 
-          console.log(`Stubbed: ${uuid}${name ? ' (' + name + ')' : ''}`);
+          console.log(`Stubbed: ${uuid}${name ? ' (' + name + ')' : ' (no name — private profile)'}`);
           EOF
 
       - name: Configure git
