@@ -1,0 +1,39 @@
+# .github/workflows/diagnose-nightly-health.yml
+name: Diagnose Nightly Health
+
+on:
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: 'Number of recent nightly runs to inspect (default: 5)'
+        required: false
+        default: '5'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout (script only)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/diagnose-nightly-health.js
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run health check
+        run: node scripts/diagnose-nightly-health.js --runs=${{ inputs.runs }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
