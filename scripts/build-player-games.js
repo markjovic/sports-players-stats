@@ -38,7 +38,8 @@ function gitCommit(message, dirs) {
     const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) return;
     execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git pull --rebase=false --no-edit -X ours', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git fetch origin main',                   { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit',  { cwd: ROOT, stdio: 'pipe' });
     execSync('git push', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ ${message}`);
   } catch (e) {

@@ -218,7 +218,7 @@ async function main() {
 
   const now          = Date.now();
   const PRIVATE_DAYS = 30;   // recheck private-marked players monthly
-  const ACTIVE_DAYS  = 90;   // recheck active-season players quarterly
+  const ACTIVE_DAYS  = 7;    // recheck active-season players weekly — ensures foulOuts currency
 
   // Two categories:
   //   A — private-marked: statsChecked present AND maxGamePTS === null, older than PRIVATE_DAYS
