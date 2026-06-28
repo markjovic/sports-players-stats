@@ -203,25 +203,48 @@ for (const prefix of prefixes) {
 }
 console.log(`  ${candidates.length} candidates with multi-tid seasons.`);
 
-console.log('Step 2: confirming ambiguity from game files (one at a time)…');
-const ambiguous = [];
-for (const candidate of candidates) {
-  const { uuid, name, storedSeasons } = candidate;
-  let isAmbiguous = false;
+// Step 2: scan game files once, check all candidates per game.
+// Build sid → { uuid → Set<tid> } from candidates so lookup is O(1).
+console.log('Step 2: scanning game files once to confirm ambiguity…');
+
+// Build index: sid → Map<uuid, Set<tid>>
+const sidUuidTids = new Map(); // sid → Map<uuid, Set<tid>>
+for (const { uuid, storedSeasons } of candidates) {
   for (const season of storedSeasons) {
     if (!allSids.has(season.sid)) continue;
     const tids = new Set((season.regs||[]).map(r=>r.tid).filter(Boolean));
     if (tids.size <= 1) continue;
-    const gf = loadGf(season.sid); // loaded and discarded — no cache
-    if (!gf) continue;
-    for (const g of Object.values(gf.games||{})) {
-      const inGame = (g.p||[]).some(x=>x.id===uuid)||(g.hp||[]).some(x=>x.profileID===uuid)||(g.ap||[]).some(x=>x.profileID===uuid);
-      if (inGame && tids.has(g.h) && tids.has(g.a)) { isAmbiguous = true; break; }
-    }
-    if (isAmbiguous) break;
+    if (!sidUuidTids.has(season.sid)) sidUuidTids.set(season.sid, new Map());
+    sidUuidTids.get(season.sid).set(uuid, tids);
   }
-  if (isAmbiguous) ambiguous.push({ uuid, name, storedSeasons });
 }
+
+const confirmedAmbiguous = new Set();
+let sidesScanned = 0;
+for (const [sid, uuidTids] of sidUuidTids) {
+  const gf = loadGf(sid);
+  if (!gf) continue;
+  sidesScanned++;
+  if (sidesScanned % 100 === 0) process.stdout.write('  Scanned ' + sidesScanned + '/' + sidUuidTids.size + ' seasons\r');
+  for (const g of Object.values(gf.games||{})) {
+    // For each player in this game, check if they're a candidate for this sid
+    const allInGame = [
+      ...(g.p||[]).map(x=>x.id),
+      ...(g.hp||[]).map(x=>x.profileID),
+      ...(g.ap||[]).map(x=>x.profileID),
+    ].filter(Boolean);
+    for (const uuid of allInGame) {
+      if (confirmedAmbiguous.has(uuid)) continue;
+      const tids = uuidTids.get(uuid);
+      if (!tids) continue;
+      if (tids.has(g.h) && tids.has(g.a)) confirmedAmbiguous.add(uuid);
+    }
+  }
+}
+console.log('  Scanned ' + sidesScanned + ' seasons. ' + confirmedAmbiguous.size + ' confirmed ambiguous.');
+
+const candidateMap = new Map(candidates.map(c => [c.uuid, c]));
+const ambiguous = [...confirmedAmbiguous].map(uuid => candidateMap.get(uuid)).filter(Boolean);
 
 console.log(`Found ${ambiguous.length} ambiguous players. Fetching fresh API data…\n`);
 
