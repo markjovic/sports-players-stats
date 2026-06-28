@@ -6,9 +6,13 @@
 //
 // No API calls — pure game file computation.
 //
-// Strategy: iterate season by season (one game file in memory at a time).
-// Build a UUID→{seasonId→{tid→{w,l,d}}} accumulator, then write player files.
-// This keeps memory constant regardless of how many seasons exist.
+// Strategy:
+//   Pre-pass — scan all player files to build uuid → { sid → Set<tid> } map.
+//              Required to classify g.p[] entries (no side info) by matching
+//              the player's known tid for that season against g.h / g.a.
+//   Pass 1   — iterate season game files one at a time; accumulate W/L/D per
+//              player using hp/ap when present, g.p[] + pre-pass map otherwise.
+//   Pass 2   — write accumulated records back to player files.
 //
 // Usage:
 //   node scripts/build-win-loss.js              -- all seasons
@@ -31,7 +35,7 @@ const COMMIT_EVERY = 5000;
 const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'sports-index.json'), 'utf8'));
 const allSids     = Object.keys(sportsIndex.seasons || {});
 const activeSids  = new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id));
-const targetSids  = ACTIVE_ONLY ? [...activeSids] : allSids;
+const targetSids  = new Set(ACTIVE_ONLY ? [...activeSids] : allSids);
 
 // ─── W/L/D from game ─────────────────────────────────────────────────────────
 
@@ -70,13 +74,58 @@ function gitCommit(msg) {
 function main() {
   console.log(`\nbuild-win-loss.js${ACTIVE_ONLY ? ' [active-only]' : ''}`);
   console.log('─'.repeat(60));
-  console.log(`  Target seasons: ${targetSids.length}`);
+  console.log(`  Target seasons: ${targetSids.size}`);
+
+  // Pre-pass: build uuid → { sid → Set<tid> } from player files.
+  // Used to classify g.p[] entries (which carry no side info) by checking
+  // whether the player's known tid for that season is the home or away team.
+  console.log('\n  Pre-pass: building player→season→team map…');
+  const playerTids = new Map(); // uuid → Map<sid, Set<tid>>
+  const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+  let prePassCount = 0;
+
+  for (const prefix of prefixes) {
+    const dir = path.join(PLAYERS_DIR, prefix);
+    for (const fname of fs.readdirSync(dir).filter(f => f.endsWith('.json') && !f.startsWith('index'))) {
+      const uuid = fname.replace('.json', '');
+      let player;
+      try { player = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch { continue; }
+      if (!player.sports?.Basketball) continue;
+
+      const sidMap = new Map();
+      for (const season of (player.seasons || [])) {
+        if (!targetSids.has(season.sid)) continue;
+        for (const reg of (season.regs || [])) {
+          if (!reg.tid) continue;
+          if (!sidMap.has(season.sid)) sidMap.set(season.sid, new Set());
+          sidMap.get(season.sid).add(reg.tid);
+        }
+      }
+      if (sidMap.size > 0) playerTids.set(uuid, sidMap);
+      prePassCount++;
+      if (prePassCount % 50000 === 0)
+        process.stdout.write(`  Pre-pass: ${prePassCount} players scanned…\r`);
+    }
+  }
+  console.log(`  Pre-pass complete: ${prePassCount} players scanned, ${playerTids.size} with target-season regs`);
 
   // Pass 1: scan all target season game files one at a time.
   // Accumulate per-player, per-season, per-team W/L/D.
   // Structure: records[uuid][sid][tid] = {w, l, d}
+  console.log('\n  Pass 1: scanning game files…');
   const records = {}; // uuid → { [sid]: { [tid]: {w,l,d} } }
   let gamesScanned = 0, seasonsScanned = 0;
+  let hpApGames = 0, pFallbackGames = 0, skippedGames = 0;
+
+  function accumulate(uuid, sid, tid, res) {
+    if (!records[uuid])           records[uuid] = {};
+    if (!records[uuid][sid])      records[uuid][sid] = {};
+    if (!records[uuid][sid][tid]) records[uuid][sid][tid] = { w: 0, l: 0, d: 0 };
+    const r = records[uuid][sid][tid];
+    if (res === 'W') r.w++;
+    else if (res === 'L') r.l++;
+    else r.d++;
+  }
 
   for (const sid of targetSids) {
     const f = path.join(GAMES_DIR, `${sid}.json`);
@@ -88,46 +137,65 @@ function main() {
 
     for (const g of Object.values(games)) {
       gamesScanned++;
-      // Each game has hp/ap arrays — use them to identify participating players and their side
-      const sides = [
-        { players: g.hp || [], tid: g.h },
-        { players: g.ap || [], tid: g.a },
-      ];
-      // Also handle p[] when hp/ap absent — players keyed only by id with no side
-      // In that case we use h/a team IDs with g.p entries but can't distinguish sides —
-      // skip for games without hp/ap since we can't determine which team each player was on
-      for (const { players, tid } of sides) {
-        if (!tid || !players.length) continue;
-        const res = resultForTeam(g, tid);
-        if (!res) continue; // no score or forfeit
-        for (const p of players) {
-          const uuid = p.profileID;
-          if (!uuid) continue;
-          if (!records[uuid])       records[uuid] = {};
-          if (!records[uuid][sid])  records[uuid][sid] = {};
-          if (!records[uuid][sid][tid]) records[uuid][sid][tid] = { w: 0, l: 0, d: 0 };
-          const r = records[uuid][sid][tid];
-          if (res === 'W') r.w++;
-          else if (res === 'L') r.l++;
-          else r.d++;
+      const hasHpAp = (g.hp && g.hp.length > 0) || (g.ap && g.ap.length > 0);
+
+      if (hasHpAp) {
+        // hp/ap present — reliable side info
+        hpApGames++;
+        for (const { players, tid } of [{ players: g.hp || [], tid: g.h }, { players: g.ap || [], tid: g.a }]) {
+          if (!tid || !players.length) continue;
+          const res = resultForTeam(g, tid);
+          if (!res) continue;
+          for (const p of players) {
+            if (p.profileID) accumulate(p.profileID, sid, tid, res);
+          }
         }
+      } else if (g.p && g.p.length > 0) {
+        // Only g.p[] available — determine each player's side from pre-pass map.
+        // A player's tid must match either g.h or g.a for this game.
+        let usedFallback = false;
+        for (const p of g.p) {
+          const uuid = p.id;
+          if (!uuid) continue;
+          const sidMap = playerTids.get(uuid);
+          if (!sidMap) continue;
+          const tids = sidMap.get(sid);
+          if (!tids) continue;
+          // Find which of this player's tids for this season is in this game.
+          // If the player has regs for BOTH teams in this game (transferred mid-season),
+          // we can't determine which side they were on — skip to avoid misattribution.
+          const inHome = tids.has(g.h);
+          const inAway = tids.has(g.a);
+          if (!inHome && !inAway) continue;
+          if (inHome && inAway) continue; // ambiguous — skip
+          const matchedTid = inHome ? g.h : g.a;
+          const res = resultForTeam(g, matchedTid);
+          if (!res) continue;
+          accumulate(uuid, sid, matchedTid, res);
+          usedFallback = true;
+        }
+        if (usedFallback) pFallbackGames++;
+        else skippedGames++;
+      } else {
+        skippedGames++;
       }
     }
 
     if (seasonsScanned % 100 === 0)
-      process.stdout.write(`  Scanned ${seasonsScanned}/${targetSids.length} seasons (${Object.keys(records).length} players seen)\r`);
+      process.stdout.write(`  Scanned ${seasonsScanned}/${targetSids.size} seasons (${Object.keys(records).length} players seen)\r`);
   }
 
-  console.log(`\n  Scanned ${seasonsScanned} seasons, ${gamesScanned} games, ${Object.keys(records).length} players with W/L/D data`);
-  console.log('  Writing player files…');
+  console.log(`\n  Scanned ${seasonsScanned} seasons, ${gamesScanned} games`);
+  console.log(`    hp/ap games: ${hpApGames}, g.p[] fallback: ${pFallbackGames}, skipped (no score/players): ${skippedGames}`);
+  console.log(`  ${Object.keys(records).length} players with W/L/D data`);
+  console.log('\n  Pass 2: writing player files…');
 
   // Pass 2: write W/L/D to player files
-  const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
   let updated = 0, skipped = 0, sinceCommit = 0;
 
   for (const prefix of prefixes) {
     const dir = path.join(PLAYERS_DIR, prefix);
-    for (const fname of fs.readdirSync(dir).filter(f => f.endsWith('.json'))) {
+    for (const fname of fs.readdirSync(dir).filter(f => f.endsWith('.json') && !f.startsWith('index'))) {
       const uuid = fname.replace('.json', '');
       const playerRecords = records[uuid];
 
