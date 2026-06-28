@@ -1400,7 +1400,7 @@ function renderSheet(g,gid,sid,con){
   let mine=null;
   if(uuid&&g.h){if((g.hp||[]).some(p=>p.profileID===uuid)||(S.games[sid]?.games?.[gid]?.h===S.teamId))mine='h';}
   // Simple side detection: check if player's teamId matches
-  const myTeamId=S.playerUuid?getPlayerTeamForGame(g,uuid):null;
+  const myTeamId=S.playerUuid?getPlayerTeamForGame(g,uuid,S.players[uuid]):null;
   const t1mine=myTeamId&&(myTeamId===t1id||mine==='h');
   const t2mine=myTeamId&&(myTeamId===t2id||mine==='a');
   let h='';
@@ -1463,11 +1463,12 @@ function renderSheet(g,gid,sid,con){
   con.innerHTML=h;
 }
 
-function getPlayerTeamForGame(g,uuid){
-  // Check stored box score sides first
+function getPlayerTeamForGame(g,uuid,player){
+  // Check stored box score sides first — most reliable
   if(g.hp?.some(p=>p.profileID===uuid))return g.h||g.t1||null;
   if(g.ap?.some(p=>p.profileID===uuid))return g.a||g.t2||null;
-  // Check p[] for team hint — not possible without side info
+  // Use gameTids map from player file if available (ambiguous players)
+  if(player?.gameTids&&g.id&&player.gameTids[g.id])return player.gameTids[g.id];
   return null;
 }
 
@@ -1603,6 +1604,18 @@ function getTidForSeason(player,sid){
   }
   return null;
 }
+function getTidsForSeason(player,sid){
+  for(const sn of player?.seasons||[]){
+    if(sn.sid===sid)return new Set((sn.regs||[]).map(r=>r.tid).filter(Boolean));
+  }
+  return new Set();
+}
+function getTidForGame(player,sid,gameId){
+  // Use gameTids map (written by fetch-profile-stats from API) when available.
+  // Correctly resolves ambiguous players registered to multiple teams same season.
+  if(player?.gameTids&&gameId&&player.gameTids[gameId])return player.gameTids[gameId];
+  return getTidForSeason(player,sid);
+}
 async function resolveOppGames(r,myGameSet){
   const{opp,shared,fromUuid,oppTid,myPlayer}=r;
   if(!shared.length)return[];
@@ -1707,7 +1720,7 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
       }else{
         const nOpp=result.length;
         const allGames=result.flatMap(e=>e.games);
-        const myTidFn=sid=>getTidForSeason(S.players[r.uuid],sid);
+        const myTidFn=(sid,gid)=>getTidForGame(S.players[r.uuid],sid,gid);
         const wld=wldSummary(allGames,r.uuid,myTidFn);
         if(enc)enc.outerHTML=`<span style="display:flex;align-items:center;gap:8px;flex-shrink:0">${wld}<span class="oenc">${total}G vs ${nOpp}P</span></span>`;
         row.style.cursor='pointer';
@@ -1737,10 +1750,10 @@ function getPlayerGameStats(g, uuid) {
   return null;
 }
 
-function wldSummary(games, myUuid, myTidFn) {
+function wldSummary(games, myUuid, myTidFn) { // myTidFn(sid,gameId)
   let w = 0, l = 0, d = 0;
   for (const { g, sid } of games) {
-    const myTid = myTidFn ? myTidFn(sid) : g.h;
+    const myTid = myTidFn ? myTidFn(sid,g.id) : g.h;
     const ctx = gameCtx(g, myTid);
     const r = resLetter(ctx.myS, ctx.oppS);
     if (r === 'W') w++;
@@ -1771,7 +1784,7 @@ function toggleTeamOppDetail(row, result, myUuid) {
     const oppRow = document.createElement('div');
     oppRow.className = 'opp-opp-row';
     const gameDetailId = `opp-games-${row.id}-${ri}`;
-    const myTidFn = sid => getTidForSeason(S.players[myUuid], sid);
+    const myTidFn = (sid,gid) => getTidForGame(S.players[myUuid],sid,gid);
     const wld = wldSummary(games, myUuid, myTidFn);
     oppRow.innerHTML = `<span class="opp-opp-name">${esc(opp?.name||'#'+oppUuid.slice(0,8))}</span>${wld}<span class="opp-opp-enc">${games.length}G</span>`;
 
@@ -1780,7 +1793,7 @@ function toggleTeamOppDetail(row, result, myUuid) {
     gameDetail.id = gameDetailId;
 
     for (const { gid, sid, g } of games) {
-      const myTid = getTidForSeason(S.players[myUuid], sid);
+      const myTid = getTidForGame(S.players[myUuid],sid,g.id);
       const ctx = gameCtx(g, myTid || g.h);
       const score = ctx.myS != null ? `${ctx.myS}–${ctx.oppS}` : '—';
       const res = resLetter(ctx.myS, ctx.oppS);
@@ -2016,7 +2029,7 @@ boot();
 
 // Shared game row builder used by both expanded rows and search detail
 function buildGameRow(gid, sid, g, myUuid2, oppUuid2) {
-  const myTid2 = getTidForSeason(S.players[myUuid2], sid);
+  const myTid2 = getTidForGame(S.players[myUuid2],sid,g?.id);
   const ctx2 = gameCtx(g, myTid2 || g.h);
   const score2 = ctx2.myS != null ? `${ctx2.myS}\u2013${ctx2.oppS}` : '\u2014';
   const res2 = resLetter(ctx2.myS, ctx2.oppS);
@@ -2075,7 +2088,7 @@ async function buildOppStats(uuid, btn) {
 
   for (const sid of sids) {
     const gamesInSid = S.games[sid]?.games || {};
-    const myTid = getTidForSeason(player, sid);
+    const myTid = getTidForGame(player,sid,g?.id);
 
     for (const [gid, g] of Object.entries(gamesInSid)) {
       if (!playerGames.has(gid)) continue;
