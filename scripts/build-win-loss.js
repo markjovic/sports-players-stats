@@ -101,7 +101,11 @@ function main() {
           sidMap.get(season.sid).add(reg.tid);
         }
       }
-      if (sidMap.size > 0) playerTids.set(uuid, sidMap);
+      if (sidMap.size > 0) {
+        // Also attach gameTids map if present — used to resolve ambiguous games
+        sidMap.gameTids = player.gameTids || null;
+        playerTids.set(uuid, sidMap);
+      }
       prePassCount++;
       if (prePassCount % 50000 === 0)
         process.stdout.write(`  Pre-pass: ${prePassCount} players scanned…\r`);
@@ -162,13 +166,22 @@ function main() {
           const tids = sidMap.get(sid);
           if (!tids) continue;
           // Find which of this player's tids for this season is in this game.
-          // If the player has regs for BOTH teams in this game (transferred mid-season),
-          // we can't determine which side they were on — skip to avoid misattribution.
           const inHome = tids.has(g.h);
           const inAway = tids.has(g.a);
           if (!inHome && !inAway) continue;
-          if (inHome && inAway) continue; // ambiguous — skip
-          const matchedTid = inHome ? g.h : g.a;
+          let matchedTid;
+          if (inHome && inAway) {
+            // Ambiguous — player has regs for both teams. Check gameTids map
+            // written by fetch-profile-stats.js from the API response.
+            // gameKey in gameTids is the game UUID stored in g.id.
+            const gameId = g.id || null;
+            const sidMap2 = playerTids.get(uuid);
+            const resolved = gameId && sidMap2?.gameTids ? (sidMap2.gameTids[gameId] || null) : null;
+            if (!resolved) continue; // truly unresolvable
+            matchedTid = resolved;
+          } else {
+            matchedTid = inHome ? g.h : g.a;
+          }
           const res = resultForTeam(g, matchedTid);
           if (!res) continue;
           accumulate(uuid, sid, matchedTid, res);

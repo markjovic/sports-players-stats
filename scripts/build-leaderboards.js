@@ -42,8 +42,8 @@ const FORCE_FULL      = process.argv.includes('--force'); // ignore progress fil
 const ALL_TIME_LIMIT  = 2000;
 const SEASON_LIMIT    = 50000; // effectively unlimited — no cap applied
 
-const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt','wins','losses','draws','winPct'];
-const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','wins','losses','draws','winPct'];
+const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt','wins','losses','draws','winPct','lossPct'];
+const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','wins','losses','draws','winPct','lossPct'];
 const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
 const COMMIT_INTERVAL = 100;
 
@@ -220,6 +220,11 @@ function pushAllTime(buckets, player) {
   if (typeof bball.draws   === 'number' && bball.draws > 0)   buckets.draws  .push({ ...base, v: bball.draws });
   // winPct only meaningful with sufficient games — require at least 10 GP
   if (typeof bball.winPct  === 'number' && bball.gp >= 10)    buckets.winPct .push({ ...base, v: Math.round(bball.winPct * 100) });
+  // lossPct — same 10 GP minimum
+  if (typeof bball.losses  === 'number' && bball.gp >= 10) {
+    const total = (bball.wins || 0) + (bball.losses || 0) + (bball.draws || 0);
+    if (total > 0) buckets.lossPct.push({ ...base, v: Math.round((bball.losses / total) * 100) });
+  }
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
@@ -281,6 +286,10 @@ function pushSeason(buckets, players, player, sid) {
       if (typeof stats.wins === 'number' && gp >= 10) {
         const total = (stats.wins || 0) + (stats.losses || 0) + (stats.draws || 0);
         if (total > 0) buckets.winPct.push({ id, v: Math.round((stats.wins / total) * 100) });
+      }
+      if (typeof stats.losses === 'number' && gp >= 10) {
+        const total = (stats.wins || 0) + (stats.losses || 0) + (stats.draws || 0);
+        if (total > 0) buckets.lossPct.push({ id, v: Math.round((stats.losses / total) * 100) });
       }
       if (typeof stats.pts === 'number') {
         buckets.ppg.push({ id, v: Math.round((stats.pts / gp) * 10) / 10 });

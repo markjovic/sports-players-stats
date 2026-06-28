@@ -201,6 +201,13 @@ function parseProfileStats(data) {
   // These are per-game aggregations, deduped via seenGameKeys
   const regStats = new Map(); // key → { gp, pts, fg, ft, threePt, fouls }
 
+  // gameTids: gameId → tid — which team the player was on for each game.
+  // Only populated for players with multiple tids in the same season, where
+  // game files alone can't determine side. Used by build-win-loss and StatTrack.
+  const gameTids = {}; // gameId → tid
+  // Track whether any season has multiple tids (to decide whether to write gameTids)
+  const sidTids  = {}; // seasonId → Set<tid>
+
   for (const season of seasonStats) {
     for (const reg of (season.statistics || [])) {
       const seasonId = reg?.season?.id;
@@ -208,15 +215,22 @@ function parseProfileStats(data) {
 
       for (const teamStat of (reg.teamStatistics || [])) {
         const tid = teamStat.team?.id || null;
+        if (tid && seasonId) {
+          if (!sidTids[seasonId]) sidTids[seasonId] = new Set();
+          sidTids[seasonId].add(tid);
+        }
 
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
-          const gid    = gradeStat.grade?.id || null;
-          const regKey = `${seasonId}:${tid}:${gid}`;
+          const gid    = gradeStat.grade?.id || null; // eslint-disable-line no-unused-vars
+          // regKey: sid:tid only — per-grade breakdown not needed, avoids reg.gid mismatch
+          const regKey = `${seasonId}:${tid}`;
 
           for (const gameStat of (gradeStat.gameStatistics || [])) {
             const stats   = gameStat.statistics || [];
             const gameKey = gameStat.game?.id || null;
             if (gameKey && forfeitGameIds.has(gameKey)) continue;  // skip forfeit games
+            // Record game→tid mapping before dedup check — we need it even for dupes
+            if (gameKey && tid) gameTids[gameKey] = tid;
             if (gameKey && seenGameKeys.has(gameKey)) continue;    // skip duplicate games (multiple regs)
             if (gameKey) seenGameKeys.add(gameKey);
 
@@ -256,7 +270,9 @@ function parseProfileStats(data) {
     }
   }
 
-  return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats };
+  // Only include gameTids if any season has multiple tids — otherwise unnecessary
+  const hasAmbiguousSeason = Object.values(sidTids).some(s => s.size > 1);
+  return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats, gameTids: hasAmbiguousSeason ? gameTids : null, sidTids };
 }
 
 // ─── API fetch ────────────────────────────────────────────────────────────────
@@ -437,7 +453,7 @@ async function processUUID(uuid, stats, idx) {
   for (const season of (player.seasons || [])) {
     const sid = season.sid;
     for (const reg of (season.regs || [])) {
-      const regKey = `${sid}:${reg.tid}:${reg.gid}`;
+      const regKey = `${sid}:${reg.tid}`; // sid:tid — matches parseProfileStats regKey
       const rs = parsed.regStats.get(regKey);
       if (!reg.stats) reg.stats = {};
       for (const field of REG_STAT_FIELDS) {
@@ -461,6 +477,38 @@ async function processUUID(uuid, stats, idx) {
   for (const field of REG_STAT_FIELDS) {
     if (career[field] === 0) delete bk[field];
     else bk[field] = career[field];
+  }
+
+  // Write gameTids — only for players with ambiguous seasons (multiple tids same season).
+  // Allows build-win-loss and StatTrack to resolve which team a player was on per game.
+  if (parsed.gameTids && Object.keys(parsed.gameTids).length > 0) {
+    player.gameTids = parsed.gameTids;
+  } else if (player.gameTids) {
+    delete player.gameTids; // clean up if no longer ambiguous
+  }
+
+  // Write missing seasons and regs from API response.
+  // Covers players whose profile stats came from the API but nightly crawl
+  // never saw them in a spectator game (so player.seasons was never written).
+  if (!player.seasons) player.seasons = [];
+  for (const season of (result.data.publicProfileStatistics?.seasonStatistics || [])) {
+    for (const reg of (season.statistics || [])) {
+      const sid = reg?.season?.id;
+      if (!sid) continue;
+      for (const teamStat of (reg.teamStatistics || [])) {
+        const tid = teamStat.team?.id;
+        if (!tid) continue;
+        let existingSeason = player.seasons.find(s => s.sid === sid);
+        if (!existingSeason) {
+          existingSeason = { sid, regs: [] };
+          player.seasons.push(existingSeason);
+        }
+        if (!existingSeason.regs) existingSeason.regs = [];
+        if (!existingSeason.regs.find(r => r.tid === tid)) {
+          existingSeason.regs.push({ tid });
+        }
+      }
+    }
   }
 
   // Write records with gameKey context for db-report and StatTrack game linking
