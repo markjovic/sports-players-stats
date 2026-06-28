@@ -206,41 +206,85 @@ function main() {
       const bk = player.sports?.Basketball;
       if (!bk) { skipped++; continue; }
 
-      let careerW = 0, careerL = 0, careerD = 0;
       let modified = false;
 
-      for (const season of (player.seasons || [])) {
-        const sid = season.sid;
-        if (ACTIVE_ONLY && !activeSids.has(sid)) continue;
+      if (ACTIVE_ONLY) {
+        // Delta mode: start from existing career totals, apply changes from active-season regs only.
+        // Locked seasons are untouched — their contribution to career totals is already baked in.
+        let careerW = bk.wins || 0;
+        let careerL = bk.losses || 0;
+        let careerD = bk.draws || 0;
 
-        for (const reg of (season.regs || [])) {
-          const tid = reg.tid;
-          const rec = playerRecords?.[sid]?.[tid] || { w: 0, l: 0, d: 0 };
-          careerW += rec.w;
-          careerL += rec.l;
-          careerD += rec.d;
-
-          if (!reg.stats) reg.stats = {};
-          if ((reg.stats.wins || 0) !== rec.w || (reg.stats.losses || 0) !== rec.l || (reg.stats.draws || 0) !== rec.d) {
-            if (rec.w) reg.stats.wins = rec.w; else delete reg.stats.wins;
-            if (rec.l) reg.stats.losses = rec.l; else delete reg.stats.losses;
-            if (rec.d) reg.stats.draws = rec.d; else delete reg.stats.draws;
-            modified = true;
+        for (const season of (player.seasons || [])) {
+          if (!activeSids.has(season.sid)) continue;
+          for (const reg of (season.regs || [])) {
+            const rec = playerRecords?.[season.sid]?.[reg.tid] || { w: 0, l: 0, d: 0 };
+            const oldW = reg.stats?.wins  || 0;
+            const oldL = reg.stats?.losses || 0;
+            const oldD = reg.stats?.draws  || 0;
+            // Apply delta to career totals
+            careerW += rec.w - oldW;
+            careerL += rec.l - oldL;
+            careerD += rec.d - oldD;
+            // Clamp to zero (should never go negative, but guard against stale data)
+            careerW = Math.max(0, careerW);
+            careerL = Math.max(0, careerL);
+            careerD = Math.max(0, careerD);
+            // Update per-reg stats
+            if (!reg.stats) reg.stats = {};
+            if (oldW !== rec.w || oldL !== rec.l || oldD !== rec.d) {
+              if (rec.w) reg.stats.wins = rec.w; else delete reg.stats.wins;
+              if (rec.l) reg.stats.losses = rec.l; else delete reg.stats.losses;
+              if (rec.d) reg.stats.draws = rec.d; else delete reg.stats.draws;
+              modified = true;
+            }
           }
         }
-      }
 
-      const winPct = (careerW + careerL + careerD) > 0
-        ? Math.round((careerW / (careerW + careerL + careerD)) * 100) / 100
-        : null;
+        // Write updated career totals
+        const winPct = (careerW + careerL + careerD) > 0
+          ? Math.round((careerW / (careerW + careerL + careerD)) * 100) / 100
+          : null;
+        if ((bk.wins || 0) !== careerW || (bk.losses || 0) !== careerL ||
+            (bk.draws || 0) !== careerD || (bk.winPct ?? null) !== winPct) {
+          if (careerW) bk.wins = careerW; else delete bk.wins;
+          if (careerL) bk.losses = careerL; else delete bk.losses;
+          if (careerD) bk.draws = careerD; else delete bk.draws;
+          if (winPct !== null) bk.winPct = winPct; else delete bk.winPct;
+          modified = true;
+        }
 
-      if ((bk.wins || 0) !== careerW || (bk.losses || 0) !== careerL ||
-          (bk.draws || 0) !== careerD || (bk.winPct ?? null) !== winPct) {
-        if (careerW) bk.wins = careerW; else delete bk.wins;
-        if (careerL) bk.losses = careerL; else delete bk.losses;
-        if (careerD) bk.draws = careerD; else delete bk.draws;
-        if (winPct !== null) bk.winPct = winPct; else delete bk.winPct;
-        modified = true;
+      } else {
+        // Full mode: recompute career totals from scratch across all seasons.
+        let careerW = 0, careerL = 0, careerD = 0;
+
+        for (const season of (player.seasons || [])) {
+          for (const reg of (season.regs || [])) {
+            const rec = playerRecords?.[season.sid]?.[reg.tid] || { w: 0, l: 0, d: 0 };
+            careerW += rec.w;
+            careerL += rec.l;
+            careerD += rec.d;
+            if (!reg.stats) reg.stats = {};
+            if ((reg.stats.wins || 0) !== rec.w || (reg.stats.losses || 0) !== rec.l || (reg.stats.draws || 0) !== rec.d) {
+              if (rec.w) reg.stats.wins = rec.w; else delete reg.stats.wins;
+              if (rec.l) reg.stats.losses = rec.l; else delete reg.stats.losses;
+              if (rec.d) reg.stats.draws = rec.d; else delete reg.stats.draws;
+              modified = true;
+            }
+          }
+        }
+
+        const winPct = (careerW + careerL + careerD) > 0
+          ? Math.round((careerW / (careerW + careerL + careerD)) * 100) / 100
+          : null;
+        if ((bk.wins || 0) !== careerW || (bk.losses || 0) !== careerL ||
+            (bk.draws || 0) !== careerD || (bk.winPct ?? null) !== winPct) {
+          if (careerW) bk.wins = careerW; else delete bk.wins;
+          if (careerL) bk.losses = careerL; else delete bk.losses;
+          if (careerD) bk.draws = careerD; else delete bk.draws;
+          if (winPct !== null) bk.winPct = winPct; else delete bk.winPct;
+          modified = true;
+        }
       }
 
       if (modified) {
