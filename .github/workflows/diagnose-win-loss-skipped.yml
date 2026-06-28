@@ -1,0 +1,23 @@
+# .github/workflows/diagnose-win-loss-skipped.yml
+name: Diagnose Win-Loss Skipped Players
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Diagnose skipped players
+        run: node scripts/diagnose-win-loss-skipped.js
