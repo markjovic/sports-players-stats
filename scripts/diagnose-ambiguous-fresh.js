@@ -170,21 +170,22 @@ function lookupTeam(tid) {
   return _shards[prefix][tid] || null;
 }
 
-// ── Game file cache ───────────────────────────────────────────────────────────
+// ── Game file loader — no cache, discard after use to avoid OOM ──────────────
 
-const gfCache = new Map();
 function loadGf(sid) {
-  if (gfCache.has(sid)) return gfCache.get(sid);
   const f = path.join(GAMES_DIR, sid + '.json');
-  if (!fs.existsSync(f)) { gfCache.set(sid, null); return null; }
-  try { const g = JSON.parse(fs.readFileSync(f, 'utf8')); gfCache.set(sid, g); return g; } catch { gfCache.set(sid, null); return null; }
+  if (!fs.existsSync(f)) return null;
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; }
 }
 
 // ── Find ambiguous players ────────────────────────────────────────────────────
+// Two-step to avoid loading all game files into memory at once:
+// Step 1 — scan player files only for candidates with multiple tids per season.
+// Step 2 — for each candidate, load its game files one at a time to confirm.
 
-console.log('Finding ambiguous players…');
-const ambiguous = [];
-const prefixes  = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+console.log('Step 1: finding candidates with multiple tids per season…');
+const candidates = [];
+const prefixes   = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
 
 for (const prefix of prefixes) {
   const dir = path.join(PLAYERS_DIR, prefix);
@@ -193,22 +194,33 @@ for (const prefix of prefixes) {
     let player;
     try { player = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch { continue; }
     if (!player.sports?.Basketball || !(player.seasons?.length > 0)) continue;
-
-    let isAmbiguous = false;
-    for (const season of player.seasons) {
-      if (!allSids.has(season.sid)) continue;
-      const tids = new Set((season.regs || []).map(r => r.tid).filter(Boolean));
-      if (tids.size <= 1) continue;
-      const gf = loadGf(season.sid);
-      if (!gf) continue;
-      for (const g of Object.values(gf.games || {})) {
-        const inGame = (g.p||[]).some(x=>x.id===uuid)||(g.hp||[]).some(x=>x.profileID===uuid)||(g.ap||[]).some(x=>x.profileID===uuid);
-        if (inGame && tids.has(g.h) && tids.has(g.a)) { isAmbiguous = true; break; }
-      }
-      if (isAmbiguous) break;
-    }
-    if (isAmbiguous) ambiguous.push({ uuid, name: player.name, storedSeasons: player.seasons });
+    const hasMulti = player.seasons.some(s =>
+      allSids.has(s.sid) &&
+      new Set((s.regs||[]).map(r=>r.tid).filter(Boolean)).size > 1
+    );
+    if (hasMulti) candidates.push({ uuid, name: player.name, storedSeasons: player.seasons });
   }
+}
+console.log(`  ${candidates.length} candidates with multi-tid seasons.`);
+
+console.log('Step 2: confirming ambiguity from game files (one at a time)…');
+const ambiguous = [];
+for (const candidate of candidates) {
+  const { uuid, name, storedSeasons } = candidate;
+  let isAmbiguous = false;
+  for (const season of storedSeasons) {
+    if (!allSids.has(season.sid)) continue;
+    const tids = new Set((season.regs||[]).map(r=>r.tid).filter(Boolean));
+    if (tids.size <= 1) continue;
+    const gf = loadGf(season.sid); // loaded and discarded — no cache
+    if (!gf) continue;
+    for (const g of Object.values(gf.games||{})) {
+      const inGame = (g.p||[]).some(x=>x.id===uuid)||(g.hp||[]).some(x=>x.profileID===uuid)||(g.ap||[]).some(x=>x.profileID===uuid);
+      if (inGame && tids.has(g.h) && tids.has(g.a)) { isAmbiguous = true; break; }
+    }
+    if (isAmbiguous) break;
+  }
+  if (isAmbiguous) ambiguous.push({ uuid, name, storedSeasons });
 }
 
 console.log(`Found ${ambiguous.length} ambiguous players. Fetching fresh API data…\n`);
