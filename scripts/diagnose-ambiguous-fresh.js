@@ -150,9 +150,9 @@ async function fetchProfile(uuid) {
     if (text.includes('DOCTYPE') || text.includes('Request blocked')) return { status: 'blocked' };
     return { status: 'private' };
   }
-  if (!res.ok) return { status: 'error', code: res.status };
+  if (res.status < 200 || res.status >= 300) return { status: 'error', code: res.status };
   const json = await res.json();
-  if (json.errors?.length) return { status: 'error', msg: json.errors[0]?.message };
+  if (json.errors?.length) return { status: 'graphql-error', msg: json.errors[0]?.message };
   if (!json.data?.publicProfileStatistics) return { status: 'inaccessible' };
   return { status: 'ok', data: json.data };
 }
