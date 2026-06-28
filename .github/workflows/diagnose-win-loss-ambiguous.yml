@@ -1,0 +1,29 @@
+# .github/workflows/diagnose-win-loss-ambiguous.yml
+name: Diagnose Win-Loss Ambiguous Players
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Number of players to sample (default 10)'
+        required: false
+        default: '10'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Diagnose ambiguous players
+        run: node scripts/diagnose-win-loss-ambiguous.js --sample=${{ inputs.sample || '10' }}
