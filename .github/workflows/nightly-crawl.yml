@@ -185,6 +185,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
+  win-loss:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    if: ${{ inputs.dry_run != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build win-loss records (active seasons)
+        run: node scripts/build-win-loss.js --active-only
+
   retrigger:
     needs: crawl
     runs-on: ubuntu-latest

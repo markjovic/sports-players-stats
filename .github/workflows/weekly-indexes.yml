@@ -66,3 +66,22 @@ jobs:
           git diff --staged --quiet || git commit -m "build-player-games: safety-net final commit"
           git pull --rebase=false --no-edit -X ours || true
           git push || true
+
+  win-loss:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build win-loss records (full)
+        run: node scripts/build-win-loss.js
