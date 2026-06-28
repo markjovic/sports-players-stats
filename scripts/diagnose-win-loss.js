@@ -99,6 +99,10 @@ for (const { uuid, gp, player } of sample) {
   const seasons = player.seasons || [];
   const myTids  = playerTids.get(uuid); // Map<sid, Set<tid>> — may be undefined
 
+  if (seasons.length === 0) {
+    console.log('  No seasons on player file');
+  }
+
   for (const season of seasons) {
     const sid = season.sid;
     const regs = season.regs || [];
@@ -107,7 +111,8 @@ for (const { uuid, gp, player } of sample) {
 
     if (!inIndex) {
       globalCounts.seasonsNotInIndex++;
-      console.log(`  sid=${sid}  NOT IN sports-index — season unknown`);
+      const tidList = regs.map(r => r.tid).filter(Boolean).join(', ') || '(none)';
+      console.log(`  sid=${sid}  tids=[${tidList}]  NOT IN sports-index`);
       continue;
     }
     globalCounts.seasonsInIndex++;
