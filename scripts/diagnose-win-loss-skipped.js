@@ -108,6 +108,15 @@ console.log('\nPass 2: categorising all players…\n');
 const counts = { A: 0, B_noSeasons: 0, B_hasSeasons: 0, C: 0, D: 0, updated: 0 };
 // For B_hasSeasons: breakdown of whether game files exist
 let B_sidsInIndex = 0, B_sidsNotInIndex = 0, B_gameFileExists = 0, B_gameFileMissing = 0;
+let B_appearsInGame = 0, B_notInAnyGame = 0, B_allUnscoreable = 0;
+const gfCache2 = new Map();
+function loadGf2(sid) {
+  if (gfCache2.has(sid)) return gfCache2.get(sid);
+  const f = path.join(GAMES_DIR, sid + '.json');
+  if (!fs.existsSync(f)) { gfCache2.set(sid, null); return null; }
+  try { const g = JSON.parse(fs.readFileSync(f, 'utf8')); gfCache2.set(sid, g); return g; }
+  catch { gfCache2.set(sid, null); return null; }
+}
 
 for (const prefix of prefixes) {
   const dir = path.join(PLAYERS_DIR, prefix);
@@ -142,11 +151,28 @@ for (const prefix of prefixes) {
         counts.B_noSeasons++;
       } else {
         counts.B_hasSeasons++;
+        let playerAppearsAnywhere = false;
+        let playerAllUnscoreable = true;
         for (const season of seasons) {
           if (!allSids.has(season.sid)) { B_sidsNotInIndex++; continue; }
           B_sidsInIndex++;
-          if (fs.existsSync(path.join(GAMES_DIR, `${season.sid}.json`))) B_gameFileExists++;
-          else B_gameFileMissing++;
+          const gf2 = loadGf2(season.sid);
+          if (!gf2) { B_gameFileMissing++; continue; }
+          B_gameFileExists++;
+          for (const g of Object.values(gf2.games || {})) {
+            const inP  = (g.p  || []).some(x => x.id === uuid);
+            const inHp = (g.hp || []).some(x => x.profileID === uuid);
+            const inAp = (g.ap || []).some(x => x.profileID === uuid);
+            if (!inP && !inHp && !inAp) continue;
+            playerAppearsAnywhere = true;
+            if (g.hs != null && g.as != null && !g.forfeit) playerAllUnscoreable = false;
+          }
+        }
+        if (playerAppearsAnywhere) {
+          B_appearsInGame++;
+          if (playerAllUnscoreable) B_allUnscoreable++;
+        } else {
+          B_notInAnyGame++;
         }
       }
     } else if (careerW === 0 && careerL === 0 && careerD === 0) {
@@ -167,6 +193,25 @@ console.log(`      B2 — has seasons, sids in index:      ${B_sidsInIndex} seas
 console.log(`           → game file EXISTS:              ${B_gameFileExists}`);
 console.log(`           → game file MISSING:             ${B_gameFileMissing}`);
 console.log(`      B2 — has seasons, sids NOT in index:  ${B_sidsNotInIndex} season-regs`);
-console.log(`  C — records matched existing values:      ${counts.C}`);
+console.log('  B2 — UUID appears in >= 1 game file:     ' + B_appearsInGame + ' players (all unscoreable: ' + B_allUnscoreable + ')');
+console.log('  B2 — UUID in NO game despite game files: ' + B_notInAnyGame + ' players');
+console.log('  C — records matched existing values:      ' + counts.C + '  ← these already had correct W/L/D from prior run');
 console.log(`  D — records all zero (unscoreable games): ${counts.D}`);
+console.log('═'.repeat(60));
+
+console.log('');
+console.log('ONGOING ASSESSMENT');
+console.log('─'.repeat(60));
+console.log('  C players (368k) already have correct W/L/D — nightly active-only');
+console.log('  delta run keeps them current. Weekly full run corrects any drift.');
+console.log('');
+console.log('  B1 (no seasons): fixed by updating fetch-profile-stats.js to write');
+console.log('  seasons/regs from API response. Needs matrix force rerun after fix.');
+console.log('');
+console.log('  B2 UUID-not-in-game: need to understand why — UUID mismatch or');
+console.log('  all games genuinely unscoreable. See counts above.');
+console.log('');
+console.log('  D (20 players, all unscoreable): forfeits/missing scores — no fix possible.');
+console.log('  Ambiguous (90 players, multi-team same grade): unresolvable from');
+console.log('  game files alone without per-game team data from fetch-profile-stats.');
 console.log('═'.repeat(60));
