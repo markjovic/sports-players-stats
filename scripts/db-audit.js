@@ -68,7 +68,7 @@ console.log(`  Generated: ${new Date().toISOString()}`);
 // ─── 1. sports-index.json ─────────────────────────────────────────────────────
 
 section('1 · sports-index.json');
-const sportsIndex = readJSON(path.join(ROOT, 'sports-index.json'));
+const sportsIndex = readJSON(path.join(ROOT, 'data', 'sports-index.json'));
 if (!sportsIndex) {
   console.log('  ❌ MISSING');
 } else {

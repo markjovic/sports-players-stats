@@ -144,7 +144,7 @@ for (const [sid, vids] of [...seasonVenues].sort(([a], [b]) => a.localeCompare(b
   seasonVenueIndex[sid] = [...vids].sort();
 }
 
-const svPath = path.join(ROOT, 'season-venue-index.json');
+const svPath = path.join(ROOT, 'data', 'season-venue-index.json');
 if (!DRY_RUN) writeJson(svPath, seasonVenueIndex);
 console.log(`  ${Object.keys(seasonVenueIndex).length} seasons in season-venue-index.json`);
 
@@ -153,7 +153,7 @@ console.log(`  ${Object.keys(seasonVenueIndex).length} seasons in season-venue-i
 if (!DRY_RUN) {
   gitCommit(
     `build-venue-indexes: dates.json per venue, date-venue-index, season-venue-index`,
-    ['venue-lookup/', 'date-venue-index/', 'season-venue-index.json']
+    ['venue-lookup/', 'date-venue-index/', 'data/season-venue-index.json']
   );
 }
 

@@ -31,7 +31,7 @@ const TARGET_SID = ARGS.season || null;
 
 const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
 const VENUE_DIR      = path.join(ROOT, 'venue-lookup');
-const INDEX_FILE     = path.join(ROOT, 'sports-index.json');
+const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json');
 const COMMIT_EVERY   = 100;  // venue date files written before commit
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }

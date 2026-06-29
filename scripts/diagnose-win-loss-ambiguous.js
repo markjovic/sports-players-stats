@@ -21,7 +21,7 @@ const LOOKUP_DIR  = path.join(ROOT, 'team-lookup');
 const SAMPLE_SIZE = parseInt(process.argv.find(a => a.startsWith('--sample='))?.split('=')[1] || '10');
 const MIN_GP      = 5;
 
-const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'sports-index.json'), 'utf8'));
+const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8'));
 const allSids     = new Set(Object.keys(sportsIndex.seasons || {}));
 
 // ── Team lookup ───────────────────────────────────────────────────────────────

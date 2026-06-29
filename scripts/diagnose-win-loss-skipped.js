@@ -22,7 +22,7 @@ const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const GAMES_DIR   = path.join(ROOT, 'games', 'bv');
 
-const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'sports-index.json'), 'utf8'));
+const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8'));
 const allSids     = new Set(Object.keys(sportsIndex.seasons || {}));
 
 console.log('Pass 1: scanning game files to rebuild records map…');

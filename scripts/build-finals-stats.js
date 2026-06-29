@@ -106,7 +106,7 @@ let sinceLastCommit  = 0;
 // In active-only mode restrict to unlocked seasons
 let candidateSids = sids;
 if (ACTIVE_ONLY) {
-  const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
+  const sportsIndex = readJson(path.join(ROOT, 'data', 'sports-index.json'));
   const activeSids  = new Set(
     Object.values(sportsIndex.seasons ?? {})
       .filter(s => !s.locked)

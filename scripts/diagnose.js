@@ -262,7 +262,7 @@ function modeHidden() {
   const changedFiles = diff.split('\n').map(f => f.trim()).filter(f => f.startsWith('games/bv/'));
   console.log(`Changed game files: ${changedFiles.length}\n`);
 
-  const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
+  const sportsIndex = readJson(path.join(ROOT, 'data', 'sports-index.json'));
   const seasonNames = {}, gradeNames = {};
   for (const season of Object.values(sportsIndex.seasons || {})) {
     seasonNames[season.id] = season.fullName || season.name;

@@ -48,7 +48,7 @@ const ALL_SEASONS   = !!ARGS['all-seasons'];
 const API_URL     = 'https://api.playhq.com/graphql';
 const GAMES_DIR   = path.join(ROOT, 'games', TENANT);
 const VENUE_DIR   = path.join(ROOT, 'venue-lookup');
-const INDEX_FILE  = path.join(ROOT, 'sports-index.json');
+const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
 const COOKIE_FILE = path.join(ROOT, `cookie-${TENANT}.json`);
 
 // ─── Headers ──────────────────────────────────────────────────────────────────

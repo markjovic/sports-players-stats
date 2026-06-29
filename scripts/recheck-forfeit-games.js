@@ -20,7 +20,7 @@ const { execSync } = require('child_process');
 const ROOT         = path.join(__dirname, '..');
 const DRY_RUN      = process.argv.includes('--dry-run');
 const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
-const FORFEIT_FILE = path.join(ROOT, 'forfeit-games.json');
+const FORFEIT_FILE = path.join(ROOT, 'data', 'forfeit-games.json');
 const REQUEST_DELAY  = 100;
 const COMMIT_EVERY   = 500;
 
@@ -97,7 +97,7 @@ const Q_DISCOVER_GAME = `query discoverGame($gameID: ID!) {
 async function gitCommit(msg) {
   if (DRY_RUN) { console.log(`  [dry-run] ${msg}`); return; }
   try {
-    execSync('git add games/ forfeit-games.json', { stdio: 'pipe', cwd: ROOT });
+    execSync('git add games/ data/forfeit-games.json', { stdio: 'pipe', cwd: ROOT });
     const diff = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
     if (!diff) { return; }
     execSync(`git commit -m "${msg.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT });

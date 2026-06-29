@@ -50,7 +50,7 @@ const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
 const GAMES_DIR     = path.join(ROOT, 'games', 'bv');
 const PLAYERS_DIR   = path.join(ROOT, 'players');
 const INDEX_DIR     = path.join(ROOT, 'players', 'indexes');
-const INDEX_FILE    = path.join(ROOT, 'sports-index.json');
+const INDEX_FILE    = path.join(ROOT, 'data', 'sports-index.json');
 const STATUS_FILE   = path.join(ROOT, '.nightly-status.json');
 
 const CONCURRENCY_GRADES    = 500;
@@ -666,7 +666,7 @@ async function main() {
 
   // Update forfeit-games.json with any newly detected forfeits
   if (allNewForfeitIds.length > 0 && !DRY_RUN) {
-    const forfeitFile = path.join(ROOT, 'forfeit-games.json');
+    const forfeitFile = path.join(ROOT, 'data', 'forfeit-games.json');
     let existing = [];
     try { existing = JSON.parse(fs.readFileSync(forfeitFile, 'utf8')); } catch (_) {}
     const merged = [...new Set([...existing, ...allNewForfeitIds])].sort();

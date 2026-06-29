@@ -118,7 +118,7 @@ async function modeConcurrency() {
   console.log('test-api.js — concurrency mode');
   console.log('─'.repeat(60));
 
-  const index    = JSON.parse(fs.readFileSync(path.join(ROOT, 'sports-index.json'), 'utf8'));
+  const index    = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8'));
   const gradeIds = [];
   for (const season of Object.values(index.seasons || {})) {
     if (season.locked) continue;

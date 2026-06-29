@@ -207,7 +207,7 @@ async function main() {
   console.log('─'.repeat(50));
 
   // Load active season IDs for staleness check
-  const INDEX_FILE  = path.join(ROOT, 'sports-index.json');
+  const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
   const activeSids  = new Set();
   if (fs.existsSync(INDEX_FILE)) {
     const idx = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));

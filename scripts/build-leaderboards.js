@@ -124,7 +124,7 @@ console.log(`Mode: ${ACTIVE_ONLY ? 'ACTIVE ONLY' : 'FULL'}${DRY_RUN ? ' + DRY RU
 
 // Load team-index to resolve tid → comp
 console.log('Loading team-index.json...');
-const rawTeamIndex = readJson(path.join(ROOT, 'team-index.json'));
+const rawTeamIndex = readJson(path.join(ROOT, 'data', 'team-index.json'));
 // Flatten to tid → comp map
 const tidToComp = new Map();
 for (const entries of Object.values(rawTeamIndex)) {
@@ -135,7 +135,7 @@ for (const entries of Object.values(rawTeamIndex)) {
 console.log(`  ${tidToComp.size} team→comp mappings loaded`);
 
 console.log('Loading sports-index.json...');
-const sportsIndex = readJson(path.join(ROOT, 'sports-index.json'));
+const sportsIndex = readJson(path.join(ROOT, 'data', 'sports-index.json'));
 
 const activeSids = new Set(
   Object.values(sportsIndex.seasons)
@@ -149,7 +149,7 @@ const sidToOrg = new Map(
 console.log(`  ${Object.keys(sportsIndex.seasons).length} total seasons, ${activeSids.size} active`);
 
 // Load forfeit games — used to exclude contaminated maxGamePTS/maxGameThreePt entries
-const FORFEIT_FILE   = path.join(ROOT, 'forfeit-games.json');
+const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json');
 const forfeitGameIds = new Set();
 try {
   const ids = readJson(FORFEIT_FILE);
@@ -370,7 +370,7 @@ for (const fname of fs.readdirSync(indexDir).filter(f => f.endsWith('.json')).so
 }
 console.log(`  ${sidToUuids.size} seasons found across index shards`);
 
-const seasonIds = [...(targetSids || new Set(Object.keys(readJson(path.join(ROOT, 'sports-index.json')).seasons)))];
+const seasonIds = [...(targetSids || new Set(Object.keys(readJson(path.join(ROOT, 'data', 'sports-index.json')).seasons)))];
 console.log(`  ${seasonIds.length} season files to process`);
 
 // Load pass 2 progress — resume from last committed point

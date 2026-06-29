@@ -36,8 +36,8 @@ const DAYS     = SCAN_ALL ? Infinity : Math.max(1, parseInt(ARGS.days || '2', 10
 
 const PLAYERS_DIR     = path.join(ROOT, 'players');
 const INDEX_DIR       = path.join(ROOT, 'players', 'indexes');
-const TEAM_INDEX_FILE = path.join(ROOT, 'team-index.json');
-const SPORTS_INDEX    = path.join(ROOT, 'sports-index.json');
+const TEAM_INDEX_FILE = path.join(ROOT, 'data', 'team-index.json');
+const SPORTS_INDEX    = path.join(ROOT, 'data', 'sports-index.json');
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 

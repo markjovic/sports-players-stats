@@ -55,7 +55,7 @@ if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
 const API_URL     = 'https://api.playhq.com/graphql';
 
 // Load forfeit games index — skip these when computing per-game max stats
-const FORFEIT_FILE   = path.join(ROOT, 'forfeit-games.json');
+const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json');
 const forfeitGameIds = new Set();
 try {
   const ids = JSON.parse(fs.readFileSync(FORFEIT_FILE, 'utf8'));

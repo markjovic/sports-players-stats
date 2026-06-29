@@ -33,7 +33,7 @@ const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
 const INDEX_DIR      = path.join(ROOT, 'players', 'indexes');
 const PLAYERS_DIR    = path.join(ROOT, 'players');
 const TEAM_STATS_DIR = path.join(ROOT, 'team-stats', 'bv');
-const INDEX_FILE     = path.join(ROOT, 'sports-index.json');
+const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json');
 
 const COMMIT_EVERY = 50;
 

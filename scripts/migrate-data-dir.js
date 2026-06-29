@@ -42,28 +42,28 @@ const REPLACEMENTS = [
   // Generic pattern: path.join(ROOT, 'x.json') → path.join(DATA, 'x.json')
   // We introduce a DATA constant at the top of each script that needs it.
   // Rather than introduce a new constant, we just replace the path strings directly.
-  [`path.join(ROOT, 'sports-index.json')`,       `path.join(ROOT, 'data', 'sports-index.json')`],
-  [`path.join(ROOT, 'team-index.json')`,          `path.join(ROOT, 'data', 'team-index.json')`],
-  [`path.join(ROOT, 'forfeit-games.json')`,       `path.join(ROOT, 'data', 'forfeit-games.json')`],
-  [`path.join(ROOT, 'venue-index.json')`,         `path.join(ROOT, 'data', 'venue-index.json')`],
-  [`path.join(ROOT, 'season-venue-index.json')`,  `path.join(ROOT, 'data', 'season-venue-index.json')`],
-  [`path.join(ROOT, 'seasons-discovered.json')`,  `path.join(ROOT, 'data', 'seasons-discovered.json')`],
-  [`path.join(ROOT, 'seasons-skipped.json')`,     `path.join(ROOT, 'data', 'seasons-skipped.json')`],
-  [`path.join(ROOT, 'seasons-invalid.json')`,     `path.join(ROOT, 'data', 'seasons-invalid.json')`],
+  [`path.join(ROOT, 'data', 'sports-index.json')`,       `path.join(ROOT, 'data', 'sports-index.json')`],
+  [`path.join(ROOT, 'data', 'team-index.json')`,          `path.join(ROOT, 'data', 'team-index.json')`],
+  [`path.join(ROOT, 'data', 'forfeit-games.json')`,       `path.join(ROOT, 'data', 'forfeit-games.json')`],
+  [`path.join(ROOT, 'data', 'venue-index.json')`,         `path.join(ROOT, 'data', 'venue-index.json')`],
+  [`path.join(ROOT, 'data', 'season-venue-index.json')`,  `path.join(ROOT, 'data', 'season-venue-index.json')`],
+  [`path.join(ROOT, 'data', 'seasons-discovered.json')`,  `path.join(ROOT, 'data', 'seasons-discovered.json')`],
+  [`path.join(ROOT, 'data', 'seasons-skipped.json')`,     `path.join(ROOT, 'data', 'seasons-skipped.json')`],
+  [`path.join(ROOT, 'data', 'seasons-invalid.json')`,     `path.join(ROOT, 'data', 'seasons-invalid.json')`],
   // Also handle INDEX_FILE and FORFEIT_FILE constants that use ROOT directly
-  [`const INDEX_FILE     = path.join(ROOT, 'sports-index.json')`,  `const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json')`],
-  [`const INDEX_FILE  = path.join(ROOT, 'sports-index.json')`,     `const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json')`],
-  [`const FORFEIT_FILE   = path.join(ROOT, 'forfeit-games.json')`, `const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json')`],
-  [`const TEAM_INDEX_FILE = path.join(ROOT, 'team-index.json')`,   `const TEAM_INDEX_FILE = path.join(ROOT, 'data', 'team-index.json')`],
-  [`const SPORTS_INDEX    = path.join(ROOT, 'sports-index.json')`,  `const SPORTS_INDEX    = path.join(ROOT, 'data', 'sports-index.json')`],
-  [`const FORFEIT_FILE = path.join(ROOT, 'forfeit-games.json')`,   `const FORFEIT_FILE = path.join(ROOT, 'data', 'forfeit-games.json')`],
+  [`const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json')`,  `const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json')`],
+  [`const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json')`,     `const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json')`],
+  [`const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json')`, `const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json')`],
+  [`const TEAM_INDEX_FILE = path.join(ROOT, 'data', 'team-index.json')`,   `const TEAM_INDEX_FILE = path.join(ROOT, 'data', 'team-index.json')`],
+  [`const SPORTS_INDEX    = path.join(ROOT, 'data', 'sports-index.json')`,  `const SPORTS_INDEX    = path.join(ROOT, 'data', 'sports-index.json')`],
+  [`const FORFEIT_FILE = path.join(ROOT, 'data', 'forfeit-games.json')`,   `const FORFEIT_FILE = path.join(ROOT, 'data', 'forfeit-games.json')`],
   // build-venue-indexes writes season-venue-index and venue-index directly
-  [`const svPath = path.join(ROOT, 'season-venue-index.json')`,    `const svPath = path.join(ROOT, 'data', 'season-venue-index.json')`],
+  [`const svPath = path.join(ROOT, 'data', 'season-venue-index.json')`,    `const svPath = path.join(ROOT, 'data', 'season-venue-index.json')`],
   // git add references in scripts
-  [`'venue-lookup/', 'date-venue-index/', 'season-venue-index.json'`, `'venue-lookup/', 'date-venue-index/', 'data/season-venue-index.json'`],
-  [`games/ forfeit-games.json`,                                     `games/ data/forfeit-games.json`],
+  [`'venue-lookup/', 'date-venue-index/', 'data/season-venue-index.json'`, `'venue-lookup/', 'date-venue-index/', 'data/season-venue-index.json'`],
+  [`games/ data/forfeit-games.json`,                                     `games/ data/forfeit-games.json`],
   // nightly-crawl forfeit path (string literal)
-  [`path.join(ROOT, 'forfeit-games.json')`,                         `path.join(ROOT, 'data', 'forfeit-games.json')`],
+  [`path.join(ROOT, 'data', 'forfeit-games.json')`,                         `path.join(ROOT, 'data', 'forfeit-games.json')`],
 ];
 
 // ── Step 1: Move files ────────────────────────────────────────────────────────

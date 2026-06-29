@@ -32,7 +32,7 @@ const COMMIT_EVERY = 5000;
 
 // ─── Sports-index ─────────────────────────────────────────────────────────────
 
-const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'sports-index.json'), 'utf8'));
+const sportsIndex = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8'));
 const allSids     = Object.keys(sportsIndex.seasons || {});
 const activeSids  = new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id));
 const targetSids  = new Set(ACTIVE_ONLY ? [...activeSids] : allSids);
