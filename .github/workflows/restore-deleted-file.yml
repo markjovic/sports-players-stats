@@ -1,0 +1,44 @@
+# .github/workflows/restore-deleted-file.yml
+name: Restore Deleted File
+
+on:
+  workflow_dispatch:
+    inputs:
+      filepath:
+        description: 'Path of the deleted file to restore (e.g. team-index.json)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Restore deleted file
+        run: |
+          FILEPATH="${{ inputs.filepath }}"
+          # Find the last commit that had this file
+          LAST_COMMIT=$(git log --all --full-history -- "$FILEPATH" | grep '^commit ' | head -1 | awk '{print $2}')
+          if [ -z "$LAST_COMMIT" ]; then
+            echo "❌ Could not find $FILEPATH in git history"
+            exit 1
+          fi
+          echo "Found $FILEPATH in commit $LAST_COMMIT"
+          # Restore it from that commit
+          git checkout "$LAST_COMMIT" -- "$FILEPATH"
+          git add "$FILEPATH"
+          git diff --staged --quiet && echo "Nothing to commit" && exit 0
+          git commit -m "restore: $FILEPATH from git history"
+          git push origin main
+          echo "✅ Restored $FILEPATH"
