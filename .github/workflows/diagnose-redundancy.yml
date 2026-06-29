@@ -1,0 +1,23 @@
+# .github/workflows/diagnose-redundancy.yml
+name: Diagnose Data Redundancy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Analyse redundancy across player and game files
+        run: node scripts/diagnose-redundancy.js
