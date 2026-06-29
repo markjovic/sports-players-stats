@@ -4,7 +4,6 @@
 //
 // Player files — removes:
 //   season.sport       — always "Basketball", derivable from context
-//   reg.age            — derivable from team-lookup
 //   reg.stats.foulOuts = 0   — zero values add no information
 //   reg.stats.finals   = 0
 //   reg.stats.gfApps   = 0
@@ -54,7 +53,7 @@ console.log('── Player files ───────────────�
 const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
 
 let pScanned = 0, pModified = 0, pSkipped = 0, sinceCommit = 0;
-let sportStripped = 0, ageStripped = 0, zeroStripped = 0;
+let sportStripped = 0, zeroStripped = 0;
 
 for (const prefix of prefixes) {
   const dir = path.join(PLAYERS_DIR, prefix);
@@ -70,8 +69,7 @@ for (const prefix of prefixes) {
       if ('sport' in season) { delete season.sport; modified = true; sportStripped++; }
 
       for (const reg of (season.regs || [])) {
-        // Strip age
-        if ('age' in reg) { delete reg.age; modified = true; ageStripped++; }
+        // age retained — used in StatTrack for grade filter, team-lookup not loaded client-side
 
         // Strip zero stat values
         if (reg.stats) {
