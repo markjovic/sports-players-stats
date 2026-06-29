@@ -742,7 +742,7 @@ async function main() {
       if (allPlayers.length > 0) {
         gf.games[gameId].p = allPlayers.map(p => ({
           id: p.profileID,
-          n:  p.name || `Player #${p.profileID.slice(0, 10)}`,
+          // n omitted — name not needed in p[], profileID is the key
         }));
       }
       gf.games[gameId].spc = 1;
@@ -818,7 +818,7 @@ async function main() {
             sid:   seasonId,
             sn:    si?.name    || seasonId,
             club:  si?.orgName || '',
-            sport: 'Basketball',
+            // sport omitted — always Basketball for this repo
             regs:  [],
           };
           player.seasons.push(season);
@@ -834,7 +834,7 @@ async function main() {
             tn:    '',        // team name — not available from spectator; matrix will fill stats
             gid:   gradeId,
             gn:    gradeName || '',
-            age:   '',
+            // age omitted — derivable from team-lookup
             div:   null,
             stats: {},
           });

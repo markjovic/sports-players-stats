@@ -231,23 +231,13 @@ for (const [uuid, sidMap] of finalsMap) {
   // Count seasons the player has registrations in — every season entry means they played.
   // Do NOT use r.stats.gp here: that field is stale and may be 0 even when the player played,
   // which causes seasonsWithGames < seasonsWithFinals and finalsPerSeason > 1.
-  const playerSeasonSids = new Set(
-    (player.seasons || []).filter(s => (s.regs || []).length > 0).map(s => s.sid)
-  );
-  const seasonsWithGames = playerSeasonSids.size;
+  const seasonsWithGames = (player.seasons || []).filter(s => (s.regs || []).length > 0).length;
 
   let seasonsWithFinals = 0;
-  for (const [sid, acc] of sidMap.entries()) {
-    // Only count finals from seasons that are actually in the player's season list.
-    // sidMap may contain seasons from game files that never made it into player.seasons
-    // (e.g. orphaned stubs), which would cause seasonsWithFinals > seasonsWithGames → > 1.
-    const inPlayerSeasons = playerSeasonSids.has(sid);
-    if (acc.finals > 0) {
-      careerFinals++;
-      if (inPlayerSeasons) seasonsWithFinals++;
-    }
-    if (acc.gfApps > 0) careerGfApps++;
-    if (acc.gfWins > 0) careerGfWins++;
+  for (const acc of sidMap.values()) {
+    if (acc.finals > 0)  { careerFinals++;  seasonsWithFinals++; }
+    if (acc.gfApps > 0)    careerGfApps++;
+    if (acc.gfWins > 0)    careerGfWins++;
   }
 
   // finalsPerSeason = fraction of seasons where player appeared in finals (max 1 per season)
@@ -269,9 +259,13 @@ for (const [uuid, sidMap] of finalsMap) {
     const acc = sidMap.get(sid) ?? { finals: 0, gfApps: 0, gfWins: 0 };
     for (const reg of (season.regs || [])) {
       if (!reg.stats) reg.stats = {};
-      if ((reg.stats.finals  ?? -1) !== acc.finals)  { reg.stats.finals  = acc.finals;  modified = true; }
-      if ((reg.stats.gfApps  ?? -1) !== acc.gfApps)  { reg.stats.gfApps  = acc.gfApps;  modified = true; }
-      if ((reg.stats.gfWins  ?? -1) !== acc.gfWins)  { reg.stats.gfWins  = acc.gfWins;  modified = true; }
+      // Only write non-zero values — omit zeros to save space
+      if (acc.finals > 0)  { if ((reg.stats.finals  ?? 0) !== acc.finals)  { reg.stats.finals  = acc.finals;  modified = true; } }
+      else if (reg.stats.finals  !== undefined) { delete reg.stats.finals;  modified = true; }
+      if (acc.gfApps > 0)  { if ((reg.stats.gfApps  ?? 0) !== acc.gfApps)  { reg.stats.gfApps  = acc.gfApps;  modified = true; } }
+      else if (reg.stats.gfApps  !== undefined) { delete reg.stats.gfApps;  modified = true; }
+      if (acc.gfWins > 0)  { if ((reg.stats.gfWins  ?? 0) !== acc.gfWins)  { reg.stats.gfWins  = acc.gfWins;  modified = true; } }
+      else if (reg.stats.gfWins  !== undefined) { delete reg.stats.gfWins;  modified = true; }
     }
   }
 
