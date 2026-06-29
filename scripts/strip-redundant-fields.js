@@ -107,7 +107,6 @@ console.log(`\n  Player files scanned:  ${pScanned.toLocaleString()}`);
 console.log(`  Modified:              ${pModified.toLocaleString()}`);
 console.log(`  Skipped (clean):       ${pSkipped.toLocaleString()}`);
 console.log(`  sport fields removed:  ${sportStripped.toLocaleString()}`);
-console.log(`  age fields removed:    ${ageStripped.toLocaleString()}`);
 console.log(`  zero stat values removed: ${zeroStripped.toLocaleString()}`);
 
 // ── Game files ────────────────────────────────────────────────────────────────
