@@ -649,7 +649,7 @@ window.addEventListener('popstate',e=>{
 /* ── Boot ── */
 async function boot(){
   history.replaceState({type:'home'},'');
-  const[idx,venues]=await Promise.all([gj(BASE+'/sports-index.json'),gj(BASE+'/venue-index.json')]);
+  const[idx,venues]=await Promise.all([gj(BASE+'/data/sports-index.json'),gj(BASE+'/data/venue-index.json')]);
   S.idx=idx; S.venues=venues||[];
   buildSeasonPicker();
   buildVenueList();
@@ -1004,7 +1004,7 @@ function buildSeasonPicker(){
   const sel=el('q-sn');
   sel.innerHTML='<option value="">Select season\u2026</option>'+sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' \u25cf':''}</option>`).join('');
 }
-async function loadTeamIdx(){if(!S.teamIdx){S.teamIdx=await gj(BASE+'/team-index.json')||{};}}
+async function loadTeamIdx(){if(!S.teamIdx){S.teamIdx=await gj(BASE+'/data/team-index.json')||{};}}
 async function searchTeams(q){
   const sn=el('q-sn').value,re=el('res-tm');
   if(!sn){re.innerHTML='<div class="ri-empty">Select a season first</div>';return;}
@@ -1141,7 +1141,7 @@ async function onVenueSeasonChange(){
   const val=el('q-vsn').value;
   if(!val){S.venueSeasonFilter=null;searchVenues();return;}
   let sids;try{sids=JSON.parse(val);}catch{sids=[];}
-  if(!S.seasonVenueIdx){S.seasonVenueIdx=await gj(BASE+'/season-venue-index.json')||{};}
+  if(!S.seasonVenueIdx){S.seasonVenueIdx=await gj(BASE+'/data/season-venue-index.json')||{};}
   const vids=new Set();
   for(const sid of sids)(S.seasonVenueIdx[sid]||[]).forEach(v=>vids.add(v));
   S.venueSeasonFilter=vids.size?vids:null;
