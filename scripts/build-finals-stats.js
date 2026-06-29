@@ -260,11 +260,11 @@ for (const [uuid, sidMap] of finalsMap) {
     for (const reg of (season.regs || [])) {
       if (!reg.stats) reg.stats = {};
       // Only write non-zero values — omit zeros to save space
-      if (acc.finals > 0)  { if ((reg.stats.finals  ?? 0) !== acc.finals)  { reg.stats.finals  = acc.finals;  modified = true; } }
+      if (acc.finals > 0)  { if ((reg.stats.finals ?? 0) !== acc.finals)  { reg.stats.finals  = acc.finals;  modified = true; } }
       else if (reg.stats.finals  !== undefined) { delete reg.stats.finals;  modified = true; }
-      if (acc.gfApps > 0)  { if ((reg.stats.gfApps  ?? 0) !== acc.gfApps)  { reg.stats.gfApps  = acc.gfApps;  modified = true; } }
+      if (acc.gfApps > 0)  { if ((reg.stats.gfApps ?? 0) !== acc.gfApps)  { reg.stats.gfApps  = acc.gfApps;  modified = true; } }
       else if (reg.stats.gfApps  !== undefined) { delete reg.stats.gfApps;  modified = true; }
-      if (acc.gfWins > 0)  { if ((reg.stats.gfWins  ?? 0) !== acc.gfWins)  { reg.stats.gfWins  = acc.gfWins;  modified = true; } }
+      if (acc.gfWins > 0)  { if ((reg.stats.gfWins ?? 0) !== acc.gfWins)  { reg.stats.gfWins  = acc.gfWins;  modified = true; } }
       else if (reg.stats.gfWins  !== undefined) { delete reg.stats.gfWins;  modified = true; }
     }
   }
