@@ -1,0 +1,31 @@
+# .github/workflows/find-root-json-refs.yml
+name: Find Root JSON References
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            .github/workflows
+          sparse-checkout-cone-mode: false
+      - name: Find all references to root JSON files
+        run: |
+          FILES="team-index|sports-index|forfeit-games|venue-index|season-venue-index|seasons-discovered|seasons-skipped|seasons-invalid"
+          echo "Searching scripts/ and .github/workflows/ for references to root JSON files..."
+          echo ""
+          for f in team-index sports-index forfeit-games venue-index season-venue-index seasons-discovered seasons-skipped seasons-invalid; do
+            echo "── $f.json ─────────────────────────────────────"
+            grep -rn "$f" scripts/ .github/workflows/ 2>/dev/null || echo "  (no references)"
+            echo ""
+          done
