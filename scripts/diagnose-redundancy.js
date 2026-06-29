@@ -261,13 +261,21 @@ for (const fname of tsFiles) {
   for (const team of Object.values(ts)) {
     tsTeams++;
     for (const k of Object.keys(team)) tsTeamFields[k] = (tsTeamFields[k]||0)+1;
-    for (const r of (team.roster||[])) {
-      tsRosters++;
-      for (const k of Object.keys(r)) tsRosterFields[k] = (tsRosterFields[k]||0)+1;
+    const roster = team.roster;
+    if (roster && typeof roster === 'object') {
+      const rosterEntries = Array.isArray(roster) ? roster : Object.values(roster);
+      for (const r of rosterEntries) {
+        tsRosters++;
+        for (const k of Object.keys(r)) tsRosterFields[k] = (tsRosterFields[k]||0)+1;
+      }
     }
-    for (const fx of (team.fixtures||[])) {
-      tsFixtures++;
-      for (const k of Object.keys(fx)) tsFixtureFields[k] = (tsFixtureFields[k]||0)+1;
+    const fixtures = team.fixtures;
+    if (fixtures && typeof fixtures === 'object') {
+      const fixtureEntries = Array.isArray(fixtures) ? fixtures : Object.values(fixtures);
+      for (const fx of fixtureEntries) {
+        tsFixtures++;
+        for (const k of Object.keys(fx)) tsFixtureFields[k] = (tsFixtureFields[k]||0)+1;
+      }
     }
   }
 }
