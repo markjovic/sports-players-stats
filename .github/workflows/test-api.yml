@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 1
           sparse-checkout: |
             scripts/test-api.js
-            sports-index.json
+            data/sports-index.json
           sparse-checkout-cone-mode: false
 
       - name: Setup Node

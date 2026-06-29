@@ -37,7 +37,7 @@ jobs:
           fi
           echo "Restoring $FILEPATH from commit $LAST_COMMIT"
           git show "$LAST_COMMIT:$FILEPATH" > "$FILEPATH"
-          git add --sparse "$FILEPATH"
+          git add "$FILEPATH"
           git diff --staged --quiet && echo "Nothing to commit" && exit 0
           git commit -m "restore: $FILEPATH from git history"
           git fetch origin main

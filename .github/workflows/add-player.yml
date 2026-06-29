@@ -39,7 +39,7 @@ jobs:
           fetch-depth: 1
           sparse-checkout: |
             scripts/fetch-profile-stats.js
-            forfeit-games.json
+            data/forfeit-games.json
             players/indexes/${{ steps.shard.outputs.prefix }}.json
             players/${{ steps.shard.outputs.prefix }}
           sparse-checkout-cone-mode: false

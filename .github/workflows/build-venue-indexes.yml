@@ -36,7 +36,7 @@ jobs:
       - name: Final push (safety net)
         if: always()
         run: |
-          git add venue-lookup/ date-venue-index/ season-venue-index.json || true
+          git add venue-lookup/ date-venue-index/ data/season-venue-index.json || true
           git diff --staged --quiet || git commit -m "build-venue-indexes: safety-net final commit"
           git pull --rebase=false --no-edit -X ours || true
           git push || true

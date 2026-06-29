@@ -41,7 +41,7 @@ jobs:
         with:
           sparse-checkout: |
             db-report.js
-            sports-index.json
+            data/sports-index.json
             players-index
             team-lookup
             venue-lookup
@@ -54,7 +54,7 @@ jobs:
         with:
           sparse-checkout: |
             db-report.js
-            sports-index.json
+            data/sports-index.json
             players
             players-index
             team-lookup
@@ -68,13 +68,13 @@ jobs:
         with:
           sparse-checkout: |
             db-report.js
-            sports-index.json
+            data/sports-index.json
             players-index
             players/indexes
             team-lookup
             venue-lookup
-            team-index.json
-            venue-index.json
+            data/team-index.json
+            data/venue-index.json
             games
           sparse-checkout-cone-mode: false
 

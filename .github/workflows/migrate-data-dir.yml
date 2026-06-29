@@ -1,0 +1,50 @@
+# .github/workflows/migrate-data-dir.yml
+name: Migrate Data Directory
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — preview changes without moving files'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            data
+            sports-index.json
+            team-index.json
+            forfeit-games.json
+            venue-index.json
+            season-venue-index.json
+            seasons-discovered.json
+            seasons-skipped.json
+            seasons-invalid.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Migrate root JSON files to data/
+        run: node scripts/migrate-data-dir.js${{ inputs.dry_run == true && ' --dry-run' || '' }}
