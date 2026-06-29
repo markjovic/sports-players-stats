@@ -252,7 +252,7 @@ function pushSeason(buckets, players, player, sid) {
       const stats = reg.stats || {};
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
-      const id         = `${uuid}|${reg.tid}|${sid}`;
+      const id         = `${uuid}|${reg.tid}`;
       const comp       = tidToComp.get(reg.tid) || '';
       const org        = sidToOrg.get(sid) || '';
       const foulOuts   = stats.foulOuts   ?? 0;
