@@ -30,7 +30,7 @@ jobs:
       - name: Restore deleted file
         run: |
           FILEPATH="${{ inputs.filepath }}"
-          LAST_COMMIT=$(git log --full-history -- "$FILEPATH" | grep '^commit ' | head -1 | awk '{print $2}')
+          LAST_COMMIT=$(git log --full-history -- "$FILEPATH" | grep '^commit ' | sed -n '2p' | awk '{print $2}')
           if [ -z "$LAST_COMMIT" ]; then
             echo "❌ Could not find $FILEPATH in recent history"
             exit 1
