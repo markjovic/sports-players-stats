@@ -568,7 +568,7 @@ for (const f of ['sports-index.json','team-index.json','venue-index.json','seaso
 
 section('11 · Misc files');
 const miscFiles = [
-  ['forfeit-games.json',         23839, true],
+  ['forfeit-games.json',         null,  true],  // count grows over time — not baselined
   ['records/all-time.json',      null,  true],
   ['needs-matrix-shards.json',   null,  false],
   ['matrix-force-pending.json',  null,  false],  // should not exist
