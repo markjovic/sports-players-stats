@@ -196,11 +196,15 @@ function pushAllTime(buckets, player) {
   const careerGfApps          = bball.gfApps          ?? 0;
   const careerGfWins          = bball.gfWins          ?? 0;
   const careerFinalsPerSeason = bball.finalsPerSeason  ?? 0;
+  const gender   = player.gender || '';
+  // Age: most recent reg's age group — best single value for a career-spanning player
+  const age      = lastReg?.age || '';
   const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
     finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins,
     finalsPerSeason: careerFinalsPerSeason,
+    gender, age,
   };
 
   if (typeof bball.pts     === 'number') buckets.pts    .push({ ...base, v: bball.pts });

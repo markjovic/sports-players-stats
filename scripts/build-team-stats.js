@@ -41,9 +41,9 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function gitCommit(message) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  try { execSync('git add -A', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
+  try { execSync('git add team-stats/', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
   const staged = (() => {
-    try { return execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
+    try { return execSync('git diff --staged --shortstat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
     catch (_) { return ''; }
   })();
   if (!staged) { return; }

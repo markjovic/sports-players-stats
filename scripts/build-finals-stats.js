@@ -46,8 +46,8 @@ function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 
 function gitCommit(message, dirs) {
   try {
-    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
-    const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) return;
     execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
     execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
@@ -70,10 +70,39 @@ function isGrandFinal(rn) {
   return r.includes('grand final') || r === 'gf';
 }
 
+// ─── Pre-pass: build uuid→sid→Set<tid> from player files ────────────────────
+// Needed to resolve which team a player was on in g.p[]-only GF games (no hp/ap).
+
+console.log('── Pre-pass: building player→season→team map ───────────────────────');
+const playersDir2 = path.join(ROOT, 'players');
+const playerTids  = new Map(); // uuid → Map<sid, Set<tid>>
+const prefixes2   = fs.readdirSync(playersDir2).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+let preCount = 0;
+for (const prefix of prefixes2) {
+  const dir = path.join(playersDir2, prefix);
+  for (const fname of fs.readdirSync(dir).filter(f => f.endsWith('.json') && !f.startsWith('index'))) {
+    const uuid = fname.replace('.json', '');
+    let player; try { player = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch { continue; }
+    if (!player.sports?.Basketball) continue;
+    const sidMap = new Map();
+    for (const season of (player.seasons || [])) {
+      for (const reg of (season.regs || [])) {
+        if (!reg.tid) continue;
+        if (!sidMap.has(season.sid)) sidMap.set(season.sid, new Set());
+        sidMap.get(season.sid).add(reg.tid);
+      }
+    }
+    if (sidMap.size > 0) playerTids.set(uuid, sidMap);
+    preCount++;
+    if (preCount % 50000 === 0) process.stdout.write(`  Pre-pass: ${preCount} players…`);
+  }
+}
+console.log(`  Pre-pass complete: ${preCount} players, ${playerTids.size} with season data`);
+
 // ─── Phase 1: scan game files ─────────────────────────────────────────────────
 // finalsMap: Map<uuid, Map<sid, {finals, gfApps, gfWins}>>
 
-console.log('── Phase 1: Scanning game files for finals ─────────────────────────');
+console.log('\n── Phase 1: Scanning game files for finals ─────────────────────────');
 
 const gamesDir     = path.join(ROOT, 'games', 'bv');
 const teamStatsDir = path.join(ROOT, 'team-stats', 'bv');
@@ -166,10 +195,22 @@ for (const sid of sidsToScan) {
       acc.finals = 1;
       if (gf_flag) {
         acc.gfApps = 1;
-        // Determine team: prefer hp/ap attribution, fall back to winnerTid heuristic
+        // Determine team: prefer hp/ap, then pre-pass map for g.p[] games
         let playerTid = null;
-        if (homeUuids.has(uuid)) playerTid = homeTid;
-        else if (awayUuids.has(uuid)) playerTid = awayTid;
+        if (homeUuids.has(uuid)) {
+          playerTid = homeTid;
+        } else if (awayUuids.has(uuid)) {
+          playerTid = awayTid;
+        } else {
+          // g.p[] only — use pre-pass uuid→sid→tids map
+          const sidTids = playerTids.get(uuid)?.get(sid);
+          if (sidTids) {
+            const inHome = homeTid && sidTids.has(homeTid);
+            const inAway = awayTid && sidTids.has(awayTid);
+            if (inHome && !inAway) playerTid = homeTid;
+            else if (inAway && !inHome) playerTid = awayTid;
+          }
+        }
         if (playerTid && winnerTid && playerTid === winnerTid) {
           acc.gfWins = 1;
         }
