@@ -104,6 +104,9 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .gs-age{color:var(--text2)}
 .gs-grd{color:var(--text1);font-weight:700}
 .sc-stats{font-size:0.73rem;color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sstat{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 8px;border-left:1px solid var(--border);min-width:60px}
+.ssv{font-size:0.68rem;display:flex;gap:2px;font-weight:700}
+.ssl{font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
 .chev{color:var(--text3);font-size:0.65rem;transition:transform 0.2s;flex-shrink:0}
 .sc-hdr.open .chev{transform:rotate(90deg)}
 .sc-games{display:none;border-top:1px solid var(--border)}
@@ -881,7 +884,6 @@ function renderPlayer(p){
     }
     h+='</div>';
   }
-  h+=renderGradeSnapshot(p.seasons||[]);
   h+='<div class="slist"><div class="sec-lbl">Season history</div>';
   groups.forEach(({sn,tid,regs},gi)=>{
     // Use last reg as team link target (most stable); sum ALL regs for stats
@@ -900,14 +902,18 @@ function renderPlayer(p){
     const cid=`sc-${gi}`;
     const teamLink=`<span class="sc-grade" onclick="event.stopPropagation();loadTeam('${esc(tid)}','${esc(sn.sid)}')">${esc(allGrades)} \u2192</span>`;
     const ppg=st.gp?(st.pts/st.gp).toFixed(1):'\u2014';
-    const regW=regs.reduce((a,r)=>a+(r.stats?.wins||0),0);
-    const regL=regs.reduce((a,r)=>a+(r.stats?.losses||0),0);
-    const regD=regs.reduce((a,r)=>a+(r.stats?.draws||0),0);
+    // W/L/D is per sid:tid — all regs with same tid have the same value.
+    // Take from first reg only to avoid multiplication when regraded (multiple regs, same tid).
+    const _wldReg=regs[0]?.stats;
+    const regW=_wldReg?.wins||0;
+    const regL=_wldReg?.losses||0;
+    const regD=_wldReg?.draws||0;
     const regWinPct=(regW+regL+regD)>0?Math.round(regW/(regW+regL+regD)*100)+'%':null;
     // Medal: use reg-level stats; fall back to career if all regs show zero (data not yet written by matrix)
-    const medalGfWins=st.gfWins>0?st.gfWins:(groups.length===1?gfWins:0);
-    const medalGfApps=st.gfApps>0?st.gfApps:(groups.length===1?gfApps:0);
-    const medalFinals=st.finals>0?st.finals:(groups.length===1?finals:0);
+    // Use reg-level stats; fall back to career totals if no reg data available
+    const medalGfWins=st.gfWins>0?st.gfWins:gfWins;
+    const medalGfApps=st.gfApps>0?st.gfApps:gfApps;
+    const medalFinals=st.finals>0?st.finals:finals;
     const medal=medalGfWins>0?' \ud83e\udd47':medalGfApps>0?' \ud83e\udd48':medalFinals>0?' \ud83e\udd49':'';
     h+=`<div class="sc">
       <div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
@@ -926,6 +932,7 @@ function renderPlayer(p){
     </div>`;
   });
   h+='</div>';
+  h+=renderGradeSnapshot(p.seasons||[]);
   h+=`<div class="slist"><div class="sec-lbl" style="display:flex;align-items:center;justify-content:space-between">Opponent stats <button class="rbtn" style="border:0.5px solid var(--border-strong);padding:3px 10px;border-radius:var(--radius);color:var(--text-primary);font-size:0.72rem" onclick="buildOppStats('${esc(uuid)}',this)">Compute ↗</button></div><div id="opp-stats-${esc(uuid)}"><div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Click Compute to analyse head-to-head records.</div></div></div>`;
   ve.innerHTML=h;
   // Store groups on element for toggleGames
@@ -1644,10 +1651,15 @@ async function resolveOppGames(r,myGameSet){
     if(!sid)continue;
     const g=S.games[sid]?.games?.[gid];
     if(!g)continue;
-    const myTid=getTidForSeason(myPlayer,sid);
-    const oppTidInGame=getTidForSeason(opp,sid);
+    const myTid=getTidForGame(myPlayer,sid,gid);
+    const oppTidInGame=getTidForGame(opp,sid,gid);
     if(!myTid||!oppTidInGame)continue;
-    const valid=(g.h===myTid&&g.a===oppTidInGame)||(g.a===myTid&&g.h===oppTidInGame);
+    // Also accept if teams are on correct sides (handles cases where gameTids not available)
+    const validExact=(g.h===myTid&&g.a===oppTidInGame)||(g.a===myTid&&g.h===oppTidInGame);
+    // Fallback: accept if myTid and oppTidInGame are both in this game on opposite sides
+    const myInGame=(g.h===myTid||g.a===myTid);
+    const oppInGame=(g.h===oppTidInGame||g.a===oppTidInGame);
+    const valid=validExact||(myInGame&&oppInGame&&myTid!==oppTidInGame);
     if(valid)verified.push({gid,sid,g});
   }
   verified.sort((a,b)=>(b.g.d||'').localeCompare(a.g.d||''));
@@ -1755,6 +1767,8 @@ function wldSummary(games, myUuid, myTidFn) { // myTidFn(sid,gameId)
   for (const { g, sid } of games) {
     const myTid = myTidFn ? myTidFn(sid,g.id) : g.h;
     const ctx = gameCtx(g, myTid);
+    // Skip unscored games (0-0 with no stats — typically unscored junior games)
+    if (ctx.myS === 0 && ctx.oppS === 0 && !g.hp?.length && !g.ap?.length) continue;
     const r = resLetter(ctx.myS, ctx.oppS);
     if (r === 'W') w++;
     else if (r === 'L') l++;
@@ -1868,7 +1882,7 @@ async function buildLBSeasonPicker(){
 function switchLBStat(stat){
   S.lbStat=stat;
   document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat===stat));
-  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason','winPct'].includes(stat));
+  el('lb-mingp-wrap').classList.toggle('hidden',!['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason','winPct','lossPct'].includes(stat));
   // finalsPerSeason is all-time only — hide button when per-season scope
   const isSeasonScope=el('lb-season')?.value!=='all';
   el('view-leaders')?.querySelectorAll('.lb-alltime-only').forEach(b=>b.classList.toggle('hidden',isSeasonScope));
@@ -1886,7 +1900,8 @@ function denormSeason(data){
       const m=pm[e.id]||{};
       const uuid=e.id.split('|')[0];
       // Guard: if uuid doesn't look like a UUID, skip this entry
-      if(!uuid||uuid.length<8)return null;
+      // Guard: must look like a UUID (contains hyphens and is correct length)
+      if(!uuid||uuid.length<32||!uuid.includes('-'))return null;
       return{uuid,name:m.n||null,club:m.club||null,team:m.team||'',
              org:m.org||'',comp:m.comp||'',grade:m.grade||'',
              age:m.age||'',gender:m.gender||'',gp:m.gp||0,
@@ -1975,7 +1990,7 @@ function renderLB(allEntries,data){
     if(grade)entries=entries.filter(e=>e.grade===grade);
   }
   // Min GP filter — applies to all per-game rate stats
-  if(['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason'].includes(S.lbStat)){
+  if(['ppg','threePtPG','foulsPG','foulOutsPG','finalsPerSeason','winPct','lossPct'].includes(S.lbStat)){
     const minGP=parseInt(el('lb-mingp')?.value||'10');
     entries=entries.filter(e=>(e.gp||0)>=minGP);
   }
@@ -2088,10 +2103,10 @@ async function buildOppStats(uuid, btn) {
 
   for (const sid of sids) {
     const gamesInSid = S.games[sid]?.games || {};
-    const myTid = getTidForGame(player,sid,g?.id);
 
     for (const [gid, g] of Object.entries(gamesInSid)) {
       if (!playerGames.has(gid)) continue;
+      const myTid = getTidForGame(player,sid,gid);
       if (!myTid) continue;
 
       const ctx = gameCtx(g, myTid);
