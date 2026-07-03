@@ -5,42 +5,29 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Mode: concurrency | profile | game | schema | gps'
+        description: 'Mode: concurrency | profile | game | schema | gps | fixture'
         required: true
-        type: choice
-        options:
-          - concurrency
-          - profile
-          - game
-          - schema
-          - gps
-      arg:
-        description: 'UUID (profile mode), gameId (game mode), gradeId (gps mode), or --grade=ID --season=ID (schema mode). Leave blank for concurrency.'
+        default: 'fixture'
+        type: string
+      args:
+        description: 'Args, e.g. --grade=<gradeId> (or a uuid/gameId for profile/game)'
         required: false
         default: ''
+        type: string
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  test-api:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout (sparse — scripts + sports-index only)
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          sparse-checkout: |
-            scripts/test-api.js
-            data/sports-index.json
-          sparse-checkout-cone-mode: false
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Run test
-        run: node scripts/test-api.js ${{ inputs.mode }} ${{ inputs.arg }}
+      - name: Run test-api
+        run: node scripts/test-api.js ${{ inputs.mode }} ${{ inputs.args }}
