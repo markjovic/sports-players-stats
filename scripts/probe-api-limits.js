@@ -1,23 +1,24 @@
 // scripts/probe-api-limits.js
 //
 // Standalone PlayHQ API concurrency/failure probe. NO repo data, NO writes, NO git.
-// Purpose: find the sustainable concurrency for non-profile operations
-// (discoverGrade / discoverFixtureByRound) by sweeping concurrency levels and
-// measuring the failure rate + latency at each, so we can pick the level that
-// maximises throughput without shedding calls.
+// Characterises the CloudFront rate-limit behaviour so we can size the crawl safely.
 //
-// It seeds real IDs from the API (discoverSeason -> grades), then re-requests
-// them at escalating concurrency. Re-requesting the same IDs is fine for a load
-// test — we are measuring transport behaviour, not collecting data.
+// Seeds real IDs from the API (discoverSeason -> grades) across one or more seasons,
+// then exercises the main API. Implements the typed-result pattern (see
+// playhq_api_reference.md "Failure handling"): every call is classified
+// ok | empty | transient | blocked and NEVER retried, so raw behaviour is visible.
 //
-// Implements the typed-result pattern (see playhq_api_reference.md "Failure
-// handling"): every call is classified ok | empty | transient | blocked and
-// NEVER retried, so the raw failure behaviour is visible.
+// THREE MODES (pick via flags; precedence: duration > cycles > sweep):
+//   sweep      (default)  — step through --levels, measure fail%/latency/firstBlock at each
+//   escalation --cycles=N — repeat [flood until block -> recover], report if recovery GROWS
+//   endurance  --duration=SEC --burst=N --rest=MS — rehearse burst-and-rest to expose a long-term cap
 //
 // Usage:
-//   node scripts/probe-api-limits.js --season=<id> [--op=grade|fixture]
-//       [--levels=25,50,100,200,400] [--calls=400] [--cooldown=10000] [--target=1]
-//   node scripts/probe-api-limits.js --grades=<id,id,...> [...]
+//   node scripts/probe-api-limits.js --season=<id> [--seasons=<id,id,..>] [--op=grade|fixture]
+//       [--levels=25,50,100] [--calls=400] [--cooldown=10000]         (sweep)
+//       [--cycles=6] [--conc=25]                                       (escalation)
+//       [--duration=3600 --burst=1000 --rest=90000 --conc=25]          (endurance)
+//       [--recover --recover-interval=5000 --recover-max=60] [--target=1]
 
 'use strict';
 
@@ -32,22 +33,29 @@ const args = Object.fromEntries(
     .filter(a => a.startsWith('--'))
     .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
 );
-const SEASON   = args.season || null;
+const seasonList = []
+  .concat(args.season ? [args.season] : [])
+  .concat(args.seasons ? args.seasons.split(',').map(s => s.trim()).filter(Boolean) : []);
 const GRADES   = args.grades ? args.grades.split(',').map(s => s.trim()).filter(Boolean) : null;
-const OP       = (args.op || 'grade').toLowerCase();       // grade | fixture
+const OP       = (args.op || 'grade').toLowerCase();
 const LEVELS   = (args.levels || '25,50,100,200,400').split(',').map(n => parseInt(n, 10)).filter(Boolean);
 const CALLS    = parseInt(args.calls || '400', 10);
-const COOLDOWN = parseInt(args.cooldown || '10000', 10);   // ms rest between levels
-const TARGET   = parseFloat(args.target || '1');           // acceptable fail % for the recommendation
-const RECOVER  = 'recover' in args;                         // after a block, poll until the IP recovers
+const COOLDOWN = parseInt(args.cooldown || '10000', 10);
+const TARGET   = parseFloat(args.target || '1');
+const CYCLES   = parseInt(args.cycles || '0', 10);
+const DURATION = parseInt(args.duration || '0', 10);   // seconds
+const BURST    = parseInt(args.burst || '1000', 10);
+const REST     = parseInt(args.rest || '90000', 10);   // ms
+const CONC     = parseInt(args.conc || '25', 10);
+const RECOVER  = 'recover' in args;
 const RECOVER_INTERVAL = parseInt(args['recover-interval'] || '5000', 10);
 const RECOVER_MAX      = parseInt(args['recover-max'] || '60', 10);
 
-if (!SEASON && !GRADES) {
-  console.error('Usage: node scripts/probe-api-limits.js --season=<id> [--op=grade|fixture] [--levels=..] [--calls=..]');
+if (!seasonList.length && !GRADES) {
+  console.error('Usage: node scripts/probe-api-limits.js --season=<id> [--seasons=..] [--op=] [--cycles=|--duration=] ...');
   process.exit(1);
 }
-if (!['grade', 'fixture'].includes(OP)) { console.error(`Bad --op=${OP} (grade|fixture)`); process.exit(1); }
+if (!['grade', 'fixture'].includes(OP)) { console.error(`Bad --op=${OP}`); process.exit(1); }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -66,7 +74,6 @@ const COOKIE_QUERIES = [
 let sessionCookie  = null;
 let sessionPromise = null;
 
-// verbatim from fetch-profile-stats.js
 function doFetch(url, options) {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
@@ -100,7 +107,6 @@ function doFetch(url, options) {
   });
 }
 
-// verbatim shape from fetch-profile-stats.js (promise-locked)
 async function refreshSession() {
   if (sessionPromise) return sessionPromise;
   sessionPromise = (async () => {
@@ -163,7 +169,6 @@ const Q_FIXTURE_BY_ROUND = `query discoverFixtureByRound($roundID: ID!) {
 }`;
 
 // ─── typed call — NEVER retries; classifies the raw outcome ────────────────────
-// kinds: ok | empty | transient | blocked   (see playhq_api_reference.md)
 async function typedCall(operationName, query, variables, dataKey) {
   const t0 = Date.now();
   let res;
@@ -177,7 +182,6 @@ async function typedCall(operationName, query, variables, dataKey) {
     return { kind: 'transient', reason: `network:${e.code || e.message}`, ms: Date.now() - t0 };
   }
   const ms = Date.now() - t0;
-
   if (res.status === 403) {
     let b = ''; try { b = await res.text(); } catch (_) {}
     const cf = b.includes('DOCTYPE') || b.includes('Request blocked');
@@ -186,17 +190,15 @@ async function typedCall(operationName, query, variables, dataKey) {
   if (res.status === 429) return { kind: 'transient', reason: '429', ms };
   if (res.status === 504) return { kind: 'transient', reason: '504', ms };
   if (!res.ok)            return { kind: 'transient', reason: `http-${res.status}`, ms };
-
   let json; try { json = await res.json(); } catch (_) { return { kind: 'transient', reason: 'parse', ms }; }
   if (json.errors && json.errors.length) return { kind: 'transient', reason: 'gql', ms };
-
   const payload = json.data ? json.data[dataKey] : undefined;
   if (payload == null) return { kind: 'empty', reason: 'null-payload', ms };
   return { kind: 'ok', reason: '', ms };
 }
-
 const callGrade   = id => typedCall('gradeRounds', Q_GRADE_ROUNDS, { gradeID: id }, 'discoverGrade');
 const callFixture = id => typedCall('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: id }, 'discoverFixtureByRound');
+const callSeed    = id => (OP === 'fixture' ? callFixture(id) : callGrade(id));
 
 // ─── fixed pool (verbatim from nightly-crawl.js) ───────────────────────────────
 async function runPool(tasks, concurrency) {
@@ -204,44 +206,67 @@ async function runPool(tasks, concurrency) {
   async function worker() { while (i < tasks.length) { await tasks[i++](); } }
   await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, worker));
 }
-
-// ─── percentile helper ─────────────────────────────────────────────────────────
 function pct(sorted, p) {
   if (!sorted.length) return 0;
-  const idx = Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length));
-  return sorted[idx];
+  return sorted[Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length))];
 }
 
-// ─── main ───────────────────────────────────────────────────────────────────────
-(async () => {
-  console.log('probe-api-limits.js');
-  console.log(`  op=${OP}  levels=[${LEVELS.join(', ')}]  calls/level=${CALLS}  cooldown=${COOLDOWN}ms  target<=${TARGET}%\n`);
+let seedIds = [];
 
-  await refreshSession();
+// Fire `count` calls at `conc`. If stopOnBlock, short-circuit remaining once a
+// cloudfront block is seen (so we stop hammering a closed gate).
+async function fireBatch(count, conc, { stopOnBlock = false } = {}) {
+  const c = { ok: 0, empty: 0, blocked: 0, transient: 0 };
+  const reasons = {}; const lat = [];
+  let completed = 0, firstBlockAt = 0, stop = false;
+  const tasks = Array.from({ length: count }, (_, k) => async () => {
+    if (stop) return;
+    const r = await callSeed(seedIds[k % seedIds.length]);
+    completed++;
+    if (!firstBlockAt && (r.kind === 'transient' || r.kind === 'blocked')) firstBlockAt = completed;
+    if (r.kind === 'blocked' && stopOnBlock) stop = true;
+    c[r.kind]++;
+    if (r.reason) reasons[r.reason] = (reasons[r.reason] || 0) + 1;
+    if (r.ms) lat.push(r.ms);
+  });
+  const t0 = Date.now();
+  await runPool(tasks, conc);
+  lat.sort((a, b) => a - b);
+  return { c, reasons, lat, firstBlockAt, completed, secs: (Date.now() - t0) / 1000 };
+}
 
-  // 1) seed grade IDs
+async function recoverPoll(intervalMs, maxAttempts) {
+  const t0 = Date.now();
+  for (let a = 1; a <= maxAttempts; a++) {
+    const r = await callSeed(seedIds[0]);
+    if (r.kind === 'ok' || r.kind === 'empty') return { recovered: true, secs: (Date.now() - t0) / 1000, attempts: a };
+    await sleep(intervalMs);
+  }
+  return { recovered: false, secs: (Date.now() - t0) / 1000, attempts: maxAttempts };
+}
+
+// ─── seeding ────────────────────────────────────────────────────────────────────
+async function seed() {
   let gradeIds = GRADES;
   if (!gradeIds) {
-    const r = await typedCall('DiscoverSeason', Q_DISCOVER_SEASON, { id: SEASON }, 'discoverSeason');
-    if (r.kind !== 'ok') { console.error(`  Could not load season ${SEASON}: ${r.kind}/${r.reason}`); process.exit(1); }
-    // re-fetch to read the payload (typedCall only classifies) — one plain call
-    const res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify({ operationName: 'DiscoverSeason', variables: { id: SEASON }, query: Q_DISCOVER_SEASON }),
-    });
-    const season = (await res.json()).data?.discoverSeason;
-    gradeIds = (season?.grades || []).map(g => g.id);
-    console.log(`  Seeded ${gradeIds.length} grades from season "${season?.name || SEASON}"`);
-  } else {
-    console.log(`  Seeded ${gradeIds.length} grades from --grades`);
+    gradeIds = [];
+    for (const sid of seasonList) {
+      const res = await doFetch(API_URL, {
+        method: 'POST',
+        headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
+        body: JSON.stringify({ operationName: 'DiscoverSeason', variables: { id: sid }, query: Q_DISCOVER_SEASON }),
+      });
+      let season; try { season = (await res.json()).data?.discoverSeason; } catch (_) {}
+      const gs = (season?.grades || []).map(g => g.id);
+      console.log(`  season ${sid} "${season?.name || '?'}": ${gs.length} grades`);
+      gradeIds.push(...gs);
+    }
   }
-  if (!gradeIds.length) { console.error('  No grade IDs to probe.'); process.exit(1); }
+  gradeIds = [...new Set(gradeIds)];
+  console.log(`  Total unique grades: ${gradeIds.length}`);
+  if (!gradeIds.length) { console.error('  No grade IDs.'); process.exit(1); }
 
-  // 2) if op=fixture, resolve one round per grade (current, else highest number)
-  let seedIds = gradeIds;
   if (OP === 'fixture') {
-    console.log('  Resolving one round per grade for fixture probe...');
     const roundIds = [];
     await runPool(gradeIds.map(gid => async () => {
       try {
@@ -258,78 +283,106 @@ function pct(sorted, p) {
     }), 20);
     seedIds = roundIds;
     console.log(`  Resolved ${seedIds.length} round IDs`);
-    if (!seedIds.length) { console.error('  No rounds resolved.'); process.exit(1); }
+  } else {
+    seedIds = gradeIds;
   }
+  if (!seedIds.length) { console.error('  No seed IDs.'); process.exit(1); }
+}
 
-  // 3) sweep
+// ─── MODE: sweep ─────────────────────────────────────────────────────────────
+async function sweep() {
+  console.log(`\nSweep: levels=[${LEVELS.join(', ')}] calls/level=${CALLS} cooldown=${COOLDOWN}ms target<=${TARGET}%\n`);
   const rows = [];
   for (let li = 0; li < LEVELS.length; li++) {
     const L = LEVELS[li];
-    const c = { ok: 0, empty: 0, blocked: 0, transient: 0 };
-    const reasons = {};
-    const lat = [];
-
-    let completed = 0, firstFailAt = 0;
-    const tasks = Array.from({ length: CALLS }, (_, k) => async () => {
-      const id = seedIds[k % seedIds.length];
-      const r  = OP === 'fixture' ? await callFixture(id) : await callGrade(id);
-      completed++;
-      if (!firstFailAt && (r.kind === 'transient' || r.kind === 'blocked')) firstFailAt = completed;
-      c[r.kind]++;
-      if (r.reason) reasons[r.reason] = (reasons[r.reason] || 0) + 1;
-      if (r.ms) lat.push(r.ms);
-    });
-
-    const t0 = Date.now();
-    await runPool(tasks, L);
-    const elapsed = (Date.now() - t0) / 1000;
-
-    lat.sort((a, b) => a - b);
-    const fail = c.transient + c.blocked;
-    const failPct = (fail / CALLS) * 100;
-    const okPct   = (c.ok / CALLS) * 100;
-    const thru    = CALLS / elapsed;
-
-    rows.push({ L, ok: c.ok, okPct, empty: c.empty, fail, failPct, thru, firstFailAt, p50: pct(lat, 50), p95: pct(lat, 95), max: lat[lat.length - 1] || 0, reasons: { ...reasons } });
-
-    const reasonStr = Object.entries(reasons).filter(([k]) => k !== 'null-payload').map(([k, v]) => `${k}:${v}`).join(' ') || '-';
+    const b = await fireBatch(CALLS, L, { stopOnBlock: false });
+    const fail = b.c.transient + b.c.blocked;
+    const failPct = fail / CALLS * 100, okPct = b.c.ok / CALLS * 100, thru = CALLS / b.secs;
+    const reasonStr = Object.entries(b.reasons).filter(([k]) => k !== 'null-payload').map(([k, v]) => `${k}:${v}`).join(' ') || '-';
     console.log(
-      `conc=${String(L).padStart(4)} | ok=${String(c.ok).padStart(4)} (${okPct.toFixed(1)}%) empty=${String(c.empty).padStart(3)} ` +
-      `fail=${String(fail).padStart(4)} (${failPct.toFixed(1)}%) firstBlock@${firstFailAt || '-'} | thru=${thru.toFixed(1)}/s ` +
-      `p50=${String(pct(lat, 50)).padStart(4)}ms p95=${String(pct(lat, 95)).padStart(5)}ms max=${String(lat[lat.length - 1] || 0).padStart(5)}ms | ${reasonStr}`
+      `conc=${String(L).padStart(4)} | ok=${String(b.c.ok).padStart(4)} (${okPct.toFixed(1)}%) empty=${String(b.c.empty).padStart(3)} ` +
+      `fail=${String(fail).padStart(4)} (${failPct.toFixed(1)}%) firstBlock@${b.firstBlockAt || '-'} | thru=${thru.toFixed(1)}/s ` +
+      `p50=${pct(b.lat, 50)}ms p95=${pct(b.lat, 95)}ms max=${b.lat[b.lat.length - 1] || 0}ms | ${reasonStr}`
     );
-
+    rows.push({ L, okPct, failPct, thru });
     if (li < LEVELS.length - 1 && COOLDOWN > 0) await sleep(COOLDOWN);
   }
-
-  // 3b) recovery timing — how long until a blocked IP is allowed again (same run/IP)
-  if (RECOVER && rows.length && rows[rows.length - 1].fail > 0) {
-    console.log(`\nRecovery probe: 1 request every ${RECOVER_INTERVAL}ms until success (max ${RECOVER_MAX} attempts)...`);
-    const rt0 = Date.now();
-    let recovered = false;
-    for (let a = 1; a <= RECOVER_MAX; a++) {
-      const r = OP === 'fixture' ? await callFixture(seedIds[0]) : await callGrade(seedIds[0]);
-      if (r.kind === 'ok' || r.kind === 'empty') {
-        console.log(`  Recovered after ${((Date.now() - rt0) / 1000).toFixed(1)}s (${a} attempt(s))`);
-        recovered = true; break;
-      }
-      await sleep(RECOVER_INTERVAL);
-    }
-    if (!recovered) console.log(`  No recovery within ~${Math.round(RECOVER_MAX * RECOVER_INTERVAL / 1000)}s — window is longer or the block is IP-persistent this run.`);
+  if (RECOVER && rows.some(r => r.failPct > 0)) {
+    console.log(`\nRecovery probe: 1 request every ${RECOVER_INTERVAL}ms until success (max ${RECOVER_MAX})...`);
+    const rec = await recoverPoll(RECOVER_INTERVAL, RECOVER_MAX);
+    console.log(rec.recovered ? `  Recovered after ${rec.secs.toFixed(1)}s (${rec.attempts} attempts)` : `  No recovery within ~${Math.round(RECOVER_MAX * RECOVER_INTERVAL / 1000)}s`);
   }
-
-  // 4) recommendation
   console.log('\n─────────────────────────────────────────────');
   const clean = rows.filter(r => r.failPct <= TARGET);
   if (clean.length) {
     const best = clean.reduce((a, b) => (b.thru > a.thru ? b : a));
-    console.log(`Recommended sustained concurrency: ${best.L}  (fail ${best.failPct.toFixed(1)}% <= ${TARGET}%, ${best.thru.toFixed(1)} calls/s)`);
-    console.log('NOTE: levels were tested with cooldown between them, so the API was rested each time.');
-    console.log('      The nightly runs SUSTAINED load across thousands of calls — pick a level with margin');
-    console.log('      below the first one that shows failures, or shard + self-trigger (see below).');
+    console.log(`Highest clean level: ${best.L} (${best.failPct.toFixed(1)}% fail, ${best.thru.toFixed(1)}/s). Rested between levels — sustained ceiling is lower.`);
   } else {
-    console.log(`No level held fail <= ${TARGET}%. Lowest failure was at conc=${rows.reduce((a, b) => (b.failPct < a.failPct ? b : a)).L}.`);
-    console.log('This points to architecture revision (shard + batch + stop-on-fail + self-trigger), not just a lower constant.');
+    console.log('No clean level — the limit is cumulative (rate-window WAF), not a concurrency ceiling. Use escalation/endurance modes.');
   }
+}
+
+// ─── MODE: escalation ────────────────────────────────────────────────────────
+async function escalation() {
+  console.log(`\nEscalation: ${CYCLES} cycles of [flood until block -> recover] at conc=${CONC}. Watching whether recovery GROWS.\n`);
+  const recs = [];
+  for (let cy = 1; cy <= CYCLES; cy++) {
+    const b = await fireBatch(5000, CONC, { stopOnBlock: true });
+    if (b.c.blocked === 0) {
+      console.log(`  cycle ${cy}: no block within ${b.completed} calls (budget > ${b.completed})`);
+      recs.push({ budget: b.completed, recovery: 0 });
+      continue;
+    }
+    const rec = await recoverPoll(RECOVER_INTERVAL, RECOVER_MAX);
+    console.log(`  cycle ${cy}: budget=${b.firstBlockAt}  recovery=${rec.recovered ? rec.secs.toFixed(1) + 's (' + rec.attempts + ' attempts)' : '>' + rec.secs.toFixed(0) + 's (no recovery)'}`);
+    recs.push({ budget: b.firstBlockAt, recovery: rec.secs });
+  }
+  console.log('\n─────────────────────────────────────────────');
+  console.log('Budget trend:  ', recs.map(r => r.budget).join(' → '));
+  console.log('Recovery trend:', recs.map(r => r.recovery.toFixed(0) + 's').join(' → '));
+  const withBlock = recs.filter(r => r.recovery > 0);
+  if (withBlock.length >= 2 && withBlock[withBlock.length - 1].recovery > withBlock[0].recovery * 1.5) {
+    console.log('⚠ Recovery GROWS with repeated trips — escalating penalty. Burst-and-rest must NEVER trip: size well under budget, or shard + self-trigger.');
+  } else if (withBlock.length) {
+    console.log('✓ Recovery is stable across trips — an occasional trip is safe (rest and resume). Burst-and-rest is viable.');
+  }
+}
+
+// ─── MODE: endurance ─────────────────────────────────────────────────────────
+async function endurance() {
+  console.log(`\nEndurance: burst-and-rest for ${DURATION}s — burst=${BURST} @ conc=${CONC}, rest=${REST}ms. Exposes any long-term/hourly cap.\n`);
+  const start = Date.now();
+  const cum = { ok: 0, empty: 0, blocked: 0, transient: 0 };
+  let n = 0, everBlocked = false, firstBlockBurst = 0;
+  while ((Date.now() - start) / 1000 < DURATION) {
+    n++;
+    const b = await fireBatch(BURST, CONC, { stopOnBlock: true });
+    for (const k of ['ok', 'empty', 'blocked', 'transient']) cum[k] += b.c[k];
+    const tsec = ((Date.now() - start) / 1000).toFixed(0);
+    console.log(`  [t+${String(tsec).padStart(4)}s] burst ${String(n).padStart(3)}: ok=${String(b.c.ok).padStart(4)} blocked=${String(b.c.blocked).padStart(4)} firstBlock@${b.firstBlockAt || '-'} (${b.secs.toFixed(1)}s) | cumOk=${cum.ok}`);
+    if (b.c.blocked > 0) {
+      if (!everBlocked) { everBlocked = true; firstBlockBurst = n; }
+      const rec = await recoverPoll(RECOVER_INTERVAL, RECOVER_MAX);
+      console.log(`      tripped → ${rec.recovered ? 'recovered after ' + rec.secs.toFixed(1) + 's' : 'NOT recovered within ~' + Math.round(RECOVER_MAX * RECOVER_INTERVAL / 1000) + 's'}`);
+    } else {
+      await sleep(REST);
+    }
+  }
+  console.log('\n─────────────────────────────────────────────');
+  console.log(`Endurance done: ${n} bursts, cumOk=${cum.ok}, cumBlocked=${cum.blocked}, everBlocked=${everBlocked}${everBlocked ? ` (first at burst ${firstBlockBurst})` : ''}`);
+  if (!everBlocked) console.log('✓ No blocks across the whole run — this burst/rest pacing is safe at production scale.');
+  else if (firstBlockBurst > 3) console.log('⚠ Blocks appeared only later — points to a longer-term (e.g. hourly) cap. The crawl must self-trigger to continue in a fresh run.');
+  else console.log('⚠ Blocks throughout — burst too large or rest too short; lower burst / raise rest.');
+}
+
+// ─── main ───────────────────────────────────────────────────────────────────────
+(async () => {
+  console.log('probe-api-limits.js');
+  console.log(`  op=${OP}  mode=${DURATION > 0 ? 'endurance' : CYCLES > 0 ? 'escalation' : 'sweep'}`);
+  await refreshSession();
+  await seed();
+  if (DURATION > 0)      await endurance();
+  else if (CYCLES > 0)   await escalation();
+  else                   await sweep();
   console.log('\nDone.');
 })().catch(e => { console.error('\nFATAL:', e.message); process.exit(1); });
