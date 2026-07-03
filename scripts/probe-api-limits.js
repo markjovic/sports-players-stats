@@ -39,6 +39,9 @@ const LEVELS   = (args.levels || '25,50,100,200,400').split(',').map(n => parseI
 const CALLS    = parseInt(args.calls || '400', 10);
 const COOLDOWN = parseInt(args.cooldown || '10000', 10);   // ms rest between levels
 const TARGET   = parseFloat(args.target || '1');           // acceptable fail % for the recommendation
+const RECOVER  = 'recover' in args;                         // after a block, poll until the IP recovers
+const RECOVER_INTERVAL = parseInt(args['recover-interval'] || '5000', 10);
+const RECOVER_MAX      = parseInt(args['recover-max'] || '60', 10);
 
 if (!SEASON && !GRADES) {
   console.error('Usage: node scripts/probe-api-limits.js --season=<id> [--op=grade|fixture] [--levels=..] [--calls=..]');
@@ -266,9 +269,12 @@ function pct(sorted, p) {
     const reasons = {};
     const lat = [];
 
+    let completed = 0, firstFailAt = 0;
     const tasks = Array.from({ length: CALLS }, (_, k) => async () => {
       const id = seedIds[k % seedIds.length];
       const r  = OP === 'fixture' ? await callFixture(id) : await callGrade(id);
+      completed++;
+      if (!firstFailAt && (r.kind === 'transient' || r.kind === 'blocked')) firstFailAt = completed;
       c[r.kind]++;
       if (r.reason) reasons[r.reason] = (reasons[r.reason] || 0) + 1;
       if (r.ms) lat.push(r.ms);
@@ -284,16 +290,32 @@ function pct(sorted, p) {
     const okPct   = (c.ok / CALLS) * 100;
     const thru    = CALLS / elapsed;
 
-    rows.push({ L, ok: c.ok, okPct, empty: c.empty, fail, failPct, thru, p50: pct(lat, 50), p95: pct(lat, 95), max: lat[lat.length - 1] || 0, reasons: { ...reasons } });
+    rows.push({ L, ok: c.ok, okPct, empty: c.empty, fail, failPct, thru, firstFailAt, p50: pct(lat, 50), p95: pct(lat, 95), max: lat[lat.length - 1] || 0, reasons: { ...reasons } });
 
     const reasonStr = Object.entries(reasons).filter(([k]) => k !== 'null-payload').map(([k, v]) => `${k}:${v}`).join(' ') || '-';
     console.log(
       `conc=${String(L).padStart(4)} | ok=${String(c.ok).padStart(4)} (${okPct.toFixed(1)}%) empty=${String(c.empty).padStart(3)} ` +
-      `fail=${String(fail).padStart(4)} (${failPct.toFixed(1)}%) | thru=${thru.toFixed(1)}/s ` +
+      `fail=${String(fail).padStart(4)} (${failPct.toFixed(1)}%) firstBlock@${firstFailAt || '-'} | thru=${thru.toFixed(1)}/s ` +
       `p50=${String(pct(lat, 50)).padStart(4)}ms p95=${String(pct(lat, 95)).padStart(5)}ms max=${String(lat[lat.length - 1] || 0).padStart(5)}ms | ${reasonStr}`
     );
 
     if (li < LEVELS.length - 1 && COOLDOWN > 0) await sleep(COOLDOWN);
+  }
+
+  // 3b) recovery timing — how long until a blocked IP is allowed again (same run/IP)
+  if (RECOVER && rows.length && rows[rows.length - 1].fail > 0) {
+    console.log(`\nRecovery probe: 1 request every ${RECOVER_INTERVAL}ms until success (max ${RECOVER_MAX} attempts)...`);
+    const rt0 = Date.now();
+    let recovered = false;
+    for (let a = 1; a <= RECOVER_MAX; a++) {
+      const r = OP === 'fixture' ? await callFixture(seedIds[0]) : await callGrade(seedIds[0]);
+      if (r.kind === 'ok' || r.kind === 'empty') {
+        console.log(`  Recovered after ${((Date.now() - rt0) / 1000).toFixed(1)}s (${a} attempt(s))`);
+        recovered = true; break;
+      }
+      await sleep(RECOVER_INTERVAL);
+    }
+    if (!recovered) console.log(`  No recovery within ~${Math.round(RECOVER_MAX * RECOVER_INTERVAL / 1000)}s — window is longer or the block is IP-persistent this run.`);
   }
 
   // 4) recommendation
