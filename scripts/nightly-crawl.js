@@ -53,9 +53,15 @@ const INDEX_DIR     = path.join(ROOT, 'players', 'indexes');
 const INDEX_FILE    = path.join(ROOT, 'data', 'sports-index.json');
 const STATUS_FILE   = path.join(ROOT, '.nightly-status.json');
 
-const CONCURRENCY_GRADES    = 500;
-const CONCURRENCY_FIXTURES  = 500;
-const CONCURRENCY_SPECTATOR = 3;
+// CloudFront WAF (per-IP) trips at ~1,250-1,790 requests inside a rolling ~80s
+// window, then hard-blocks for ~80s (measured 2026-07 via probe-api-limits.js).
+// So Phase 1/2 no longer fire a wide pool — they use a paced burst-and-rest pool
+// (see runPaced). Spectator is a different host and keeps its low fixed pool.
+const CONCURRENCY_GRADES    = 25;      // paced-pool worker width, Phase 1
+const CONCURRENCY_FIXTURES  = 25;      // paced-pool worker width, Phase 2
+const CONCURRENCY_SPECTATOR = 3;       // unchanged (spectator.playhq.com)
+const PACE_BURST            = 1000;    // requests per burst — under the ~1,256 min budget
+const PACE_REST             = 90000;   // ms rest between bursts — clears the ~80s WAF window
 const COMMIT_EVERY          = 50;  // commit game files every N seasons
 const COMMIT_EVERY_PLAYERS  = 200; // commit player files every N players updated
 
@@ -76,13 +82,15 @@ function doFetch(url, bodyObj, headers) {
         const chunks = [];
         res.on('data', c => chunks.push(c));
         res.on('end', () => {
-          try {
-            resolve({
-              status:     res.statusCode,
-              rawCookies: res.headers['set-cookie'],
-              body:       JSON.parse(Buffer.concat(chunks).toString('utf8')),
-            });
-          } catch (e) { reject(new Error(`JSON parse failed: ${e.message}`)); }
+          const rawText = Buffer.concat(chunks).toString('utf8');
+          let body = null;
+          try { body = JSON.parse(rawText); } catch (_) { body = null; }
+          resolve({
+            status:     res.statusCode,
+            rawCookies: res.headers['set-cookie'],
+            body,
+            rawText,
+          });
         });
         res.on('error', reject);
       }
@@ -132,31 +140,40 @@ async function refreshSession() {
 
 // ─── GraphQL ──────────────────────────────────────────────────────────────────
 
+// Typed GraphQL call for the MAIN api. Returns { kind, data }:
+//   'ok'        — HTTP 200 with body.data (caller inspects payload for genuine-empty)
+//   'blocked'   — CloudFront WAF 403 (rate limit). Caller MUST rest & requeue, never retry.
+//   'transient' — network / 5xx / 429 / GraphQL errors. Caller requeues.
+//   'empty'     — ProfileSeasonStatistics private 403.
+// Session-expiry 403 (JSON, not WAF HTML) is refreshed and retried inline once —
+// that is not throttling. We never collapse a failure into "no data"
+// (see playhq_api_reference.md "Failure handling").
 async function gqlMain(operationName, query, variables) {
   if (!sessionCookie) await refreshSession();
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    let status, body, rawText;
     try {
-      const { status, body } = await doFetch(
+      ({ status, body, rawText } = await doFetch(
         API_URL, { operationName, variables, query },
         { ...HEADERS_MAIN, 'Cookie': sessionCookie }
-      );
-      if (status === 403) {
-        // ProfileSeasonStatistics 403 = private profile — not a session issue
-        if (operationName === 'ProfileSeasonStatistics') return null;
-        // All other 403s = session expired — refresh and retry
-        console.log(`  ↺ gqlMain 403 on ${operationName} — refreshing session`);
-        await refreshSession();
-        continue;
-      }
-      if (status === 429) { await sleep(15000); continue; }
-      if (status !== 200) { if (attempt < 3) { await sleep(3000); continue; } return null; }
-      if (body.errors) return null;
-      return body.data;
+      ));
     } catch (_) {
-      if (attempt < 3) await sleep(2000);
+      if (attempt < 2) { await sleep(1000); continue; }
+      return { kind: 'transient', data: null };
     }
+    if (status === 403) {
+      const isWaf = rawText && (rawText.includes('DOCTYPE') || rawText.includes('Request blocked'));
+      if (isWaf) return { kind: 'blocked', data: null };                 // WAF — do NOT retry
+      if (operationName === 'ProfileSeasonStatistics') return { kind: 'empty', data: null };
+      await refreshSession();                                            // session expiry — retry once
+      continue;
+    }
+    if (status === 429)   return { kind: 'transient', data: null };
+    if (status !== 200)   { if (attempt < 2) { await sleep(1000); continue; } return { kind: 'transient', data: null }; }
+    if (body && body.errors) return { kind: 'transient', data: null };
+    return { kind: 'ok', data: (body && body.data) || null };
   }
-  return null;
+  return { kind: 'transient', data: null };
 }
 
 async function gqlSpectator(gameId) {
@@ -287,6 +304,50 @@ async function runPool(tasks, concurrency) {
     while (i < tasks.length) { await tasks[i++](); }
   }
   await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, worker));
+}
+
+// Budget-aware paced pool for the MAIN api (Phase 1/2). Fires items in bursts of
+// `burst` at concurrency `conc`, resting `rest` ms between bursts to clear the
+// CloudFront window. worker(item) returns 'ok'|'empty'|'blocked'|'transient'.
+//  - blocked  : WAF trip. The rest of the burst is requeued WITHOUT firing (stop
+//               hammering a closed gate); the 90s rest then clears the window.
+//  - transient: requeued up to MAX_TRANSIENT times, then dropped (poison item).
+//  - blocked is environmental, so it never counts toward the drop cap.
+// Bails after 3 bursts with no progress so the workflow retrigger resumes in a
+// fresh run. Never drops a call silently.
+async function runPaced(items, worker, { conc, burst, rest, label }) {
+  const MAX_TRANSIENT = 4;
+  let queue = items.map(it => ({ it, t: 0 }));
+  const counts = { ok: 0, empty: 0, blocked: 0, transient: 0, dropped: 0 };
+  let round = 0, lastRemaining = Infinity, stall = 0;
+  while (queue.length) {
+    round++;
+    const chunk = queue.slice(0, burst);
+    const rest_ = queue.slice(burst);
+    const requeue = [];
+    let stop = false, i = 0;
+    const w = async () => {
+      while (i < chunk.length) {
+        const entry = chunk[i++];
+        if (stop) { requeue.push(entry); continue; }
+        const kind = await worker(entry.it);
+        counts[kind] = (counts[kind] || 0) + 1;
+        if (kind === 'blocked') { stop = true; requeue.push(entry); }
+        else if (kind === 'transient') {
+          entry.t++;
+          if (entry.t < MAX_TRANSIENT) requeue.push(entry); else counts.dropped++;
+        }
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(conc, chunk.length) }, w));
+    queue = requeue.concat(rest_);
+    console.log(`  [${label}] burst ${round}: ok=${counts.ok} empty=${counts.empty} blocked=${counts.blocked} transient=${counts.transient} dropped=${counts.dropped} | remaining=${queue.length}`);
+    if (queue.length >= lastRemaining) stall++; else stall = 0;
+    lastRemaining = queue.length;
+    if (stall >= 3) { console.log(`  [${label}] no progress for 3 bursts — stopping; ${queue.length} left for next run`); break; }
+    if (queue.length) await sleep(rest);
+  }
+  return { counts, remaining: queue.length };
 }
 
 // ─── Git commit ───────────────────────────────────────────────────────────────
@@ -532,16 +593,13 @@ async function main() {
 
   // ── Phase 1: Grade rounds ────────────────────────────────────────────────────
   console.log('Phase 1/4 — Grade rounds…');
-  let p1Done = 0;
   const gradeRoundResults = [];
 
-  const p1Tasks = gradeEntries.map(({ gradeId }) => async () => {
-    const data = await gqlMain('gradeRounds', Q_GRADE_ROUNDS, { gradeID: gradeId });
-    p1Done++;
-    if (p1Done % 250 === 0 || p1Done === gradeEntries.length)
-      process.stdout.write(`  ${p1Done}/${gradeEntries.length}\r`);
-    if (!data?.discoverGrade) return;
-    const g = data.discoverGrade;
+  const p1 = await runPaced(gradeEntries, async ({ gradeId }) => {
+    const { kind, data } = await gqlMain('gradeRounds', Q_GRADE_ROUNDS, { gradeID: gradeId });
+    if (kind !== 'ok') return kind;                  // blocked/transient -> requeue; empty -> counted
+    const g = data && data.discoverGrade;
+    if (!g) return 'empty';                           // genuine: grade has no data
     gradeRoundResults.push({
       gradeId:    g.id,
       gradeName:  g.name  || '',
@@ -549,10 +607,9 @@ async function main() {
       seasonId:   g.season?.id || null,
       rounds:     g.rounds || [],
     });
-  });
-
-  await runPool(p1Tasks, CONCURRENCY_GRADES);
-  console.log(`  ${gradeEntries.length}/${gradeEntries.length} grades done`);
+    return 'ok';
+  }, { conc: CONCURRENCY_GRADES, burst: PACE_BURST, rest: PACE_REST, label: 'P1 grades' });
+  console.log(`  ${gradeEntries.length} grades done — ok=${p1.counts.ok} empty=${p1.counts.empty} blocked=${p1.counts.blocked} transient=${p1.counts.transient} dropped=${p1.counts.dropped} remaining=${p1.remaining}`);
 
   const normalGrades = gradeRoundResults.filter(g => !g.hideScores);
   const hiddenCount  = gradeRoundResults.filter(g =>  g.hideScores).length;
@@ -624,7 +681,6 @@ async function main() {
   }
   console.log(`  Round fetches queued: ${roundQueue.length}`);
 
-  let p2Done = 0;
   let seasonsSinceCommit = 0;
   const processedSeasons  = new Set();
   const allNeedsSpectator = [];  // { gameId, seasonId } — deduped after phase
@@ -632,14 +688,14 @@ async function main() {
   if (reclassifiedSpectator.length > 0) allNeedsSpectator.push(...reclassifiedSpectator);
   const allNewForfeitIds  = [];  // new forfeit game IDs detected this run
 
-  const p2Tasks = roundQueue.map(({ roundId, roundName, grade }) => async () => {
-    const data = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: roundId });
-    const { needsSpectator, forfeitGameIds, totalGames } = applyRoundFixtures(
+  const p2 = await runPaced(roundQueue, async ({ roundId, roundName, grade }) => {
+    const { kind, data } = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: roundId });
+    if (kind !== 'ok') return kind;                  // blocked/transient -> requeue
+    const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
       data, grade.gradeId, grade.gradeName, roundName
     );
     allNeedsSpectator.push(...needsSpectator);
     allNewForfeitIds.push(...forfeitGameIds);
-    p2Done++;
 
     // Count seasons touched for periodic commit — track unique seasons per commit window
     for (const { seasonId } of needsSpectator) {
@@ -649,9 +705,6 @@ async function main() {
       }
     }
 
-    if (p2Done % 100 === 0 || p2Done === roundQueue.length)
-      process.stdout.write(`  ${p2Done}/${roundQueue.length} rounds  queued-spectator: ${allNeedsSpectator.length}\r`);
-
     // Periodic commit — lock prevents concurrent tasks both committing
     if (seasonsSinceCommit >= COMMIT_EVERY) {
       seasonsSinceCommit = 0;  // reset immediately before await
@@ -659,10 +712,9 @@ async function main() {
         `nightly-crawl: game files (${allNeedsSpectator.length} games queued for spectator so far)`
       );
     }
-  });
-
-  await runPool(p2Tasks, CONCURRENCY_FIXTURES);
-  console.log(`  ${roundQueue.length}/${roundQueue.length} rounds done`);
+    return 'ok';
+  }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2 fixtures' });
+  console.log(`  ${roundQueue.length} rounds done — ok=${p2.counts.ok} empty=${p2.counts.empty} blocked=${p2.counts.blocked} transient=${p2.counts.transient} dropped=${p2.counts.dropped} remaining=${p2.remaining}`);
 
   // Update forfeit-games.json with any newly detected forfeits
   if (allNewForfeitIds.length > 0 && !DRY_RUN) {
@@ -948,7 +1000,7 @@ async function main() {
   // ── Status file ───────────────────────────────────────────────────────────────
   // gamesRemaining = FINAL games in fetched rounds that still lack spc.
   // This is the count the workflow uses to decide whether to self-trigger.
-  const gamesRemaining = spectatorMiss;  // misses = FINAL games we couldn't process
+  const gamesRemaining = spectatorMiss + p1.remaining + p2.remaining;  // spectator misses + any grades/fixtures a blocked run left for the retrigger
 
   if (!DRY_RUN) {
     fs.writeFileSync(STATUS_FILE, JSON.stringify({
@@ -967,6 +1019,8 @@ async function main() {
   console.log(`  Seasons:           ${seasons.length}`);
   console.log(`  Normal grades:     ${normalGrades.length}`);
   console.log(`  Rounds fetched:    ${roundQueue.length}`);
+  console.log(`  P1 grades:         ok=${p1.counts.ok} blocked=${p1.counts.blocked} transient=${p1.counts.transient} dropped=${p1.counts.dropped} left=${p1.remaining}`);
+  console.log(`  P2 fixtures:       ok=${p2.counts.ok} blocked=${p2.counts.blocked} transient=${p2.counts.transient} dropped=${p2.counts.dropped} left=${p2.remaining}`);
   console.log(`  Spectator queued:  ${needsSpectator.length}`);
   console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
   console.log(`  statsChecked cleared: ${statsCleared}`);
