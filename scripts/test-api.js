@@ -10,6 +10,7 @@
 //   node scripts/test-api.js game     <gameId>       — call discoverGame for a game ID
 //   node scripts/test-api.js schema   [--grade=ID] [--season=ID]  — probe schema fields
 //   node scripts/test-api.js gps      <gradeId>      — fetch gradePlayerStatistics for a grade
+//   node scripts/test-api.js fixture  --grade=<id> [--round=<id>]  — reproduce nightly-crawl Phase 2 discoverFixtureByRound path
 
 'use strict';
 
@@ -22,7 +23,7 @@ const ROOT = path.join(__dirname, '..');
 const MODE = process.argv[2];
 const ARG  = process.argv[3];
 
-if (!MODE || !['concurrency', 'profile', 'game', 'schema', 'gps'].includes(MODE)) {
+if (!MODE || !['concurrency', 'profile', 'game', 'schema', 'gps', 'fixture'].includes(MODE)) {
   console.error([
     'Usage:',
     '  node scripts/test-api.js concurrency              — test discoverGrade concurrency ceiling',
@@ -30,6 +31,7 @@ if (!MODE || !['concurrency', 'profile', 'game', 'schema', 'gps'].includes(MODE)
     '  node scripts/test-api.js game     <gameId>        — call discoverGame for a game ID',
     '  node scripts/test-api.js schema   [--grade=ID] [--season=ID]  — probe schema fields',
     '  node scripts/test-api.js gps      <gradeId>       — gradePlayerStatistics for a grade',
+    '  node scripts/test-api.js fixture  --grade=<id> [--round=<id>]  — reproduce nightly-crawl fixture path',
   ].join('\n'));
   process.exit(1);
 }
@@ -424,6 +426,177 @@ async function modeGps(gradeId) {
   });
 }
 
+// ─── MODE: fixture ──────────────────────────────────────────────────────────────
+// Reproduces nightly-crawl.js Phase 2 EXACTLY: discoverGrade -> current round ->
+// discoverFixtureByRound with the VERBATIM crawl query. Surfaces the raw `errors`
+// array (which the crawl's gqlMain discards at `if (body.errors) return null`) and
+// prints the shape of games[0], so we can see whether home/away still resolve to
+// DiscoverTeam with a non-null season.id.
+//
+//   node scripts/test-api.js fixture --grade=<gradeId> [--round=<roundId>]
+
+// Verbatim from scripts/nightly-crawl.js Q_GRADE_ROUNDS
+const Q_GRADE_ROUNDS_PROBE = `query gradeRounds($gradeID: ID!) {
+  discoverGrade(gradeID: $gradeID) {
+    id name hideScores
+    rounds { id name abbreviatedName current number isFinalsRound }
+    season { id competition { id organisation { id name } } }
+  }
+}`;
+
+// Verbatim from scripts/nightly-crawl.js Q_FIXTURE_BY_ROUND
+const Q_FIXTURE_BY_ROUND_PROBE = `query discoverFixtureByRound($roundID: ID!) {
+  discoverFixtureByRound(roundID: $roundID) {
+    byes {
+      id name __typename
+      organisation { id name }
+    }
+    games {
+      id date dates __typename
+      status { value }
+      home {
+        __typename
+        ... on DiscoverTeam { id name organisation { id name } season { id } }
+        ... on ProvisionalTeam { name }
+      }
+      away {
+        __typename
+        ... on DiscoverTeam { id name organisation { id name } season { id } }
+        ... on ProvisionalTeam { name }
+      }
+      result {
+        outcome { name value }
+        winner  { name value }
+        home {
+          outcome { name value }
+          statistics { count type { value } }
+          gameOutcomeDescription
+        }
+        away {
+          outcome { name value }
+          statistics { count type { value } }
+        }
+      }
+      allocation {
+        time
+        dateTimeList { date time }
+        court {
+          id name abbreviatedName
+          venue { id name abbreviatedName latitude longitude
+                  address suburb state postcode country }
+        }
+      }
+    }
+  }
+}`;
+
+// Minimal query — only the fields the crawl needs to write a game and resolve sides.
+// If the full query errors but this succeeds, the break is a specific removed/renamed
+// field inside the full query, NOT the fixture path itself.
+const Q_FIXTURE_MINIMAL = `query discoverFixtureByRound($roundID: ID!) {
+  discoverFixtureByRound(roundID: $roundID) {
+    games {
+      id __typename
+      status { value }
+      home { __typename ... on DiscoverTeam { id name season { id } } ... on ProvisionalTeam { name } }
+      away { __typename ... on DiscoverTeam { id name season { id } } ... on ProvisionalTeam { name } }
+      result { home { statistics { count type { value } } } away { statistics { count type { value } } } }
+    }
+  }
+}`;
+
+function dumpFirstGames(games) {
+  if (!Array.isArray(games) || games.length === 0) { console.log('  (no games to inspect)'); return; }
+  games.slice(0, 2).forEach((g, i) => {
+    const hSeason = g.home?.season?.id ?? '(none)';
+    const aSeason = g.away?.season?.id ?? '(none)';
+    console.log(`  game[${i}] id=${g.id} status=${g.status?.value}`);
+    console.log(`    home.__typename=${g.home?.__typename}  home.season.id=${hSeason}`);
+    console.log(`    away.__typename=${g.away?.__typename}  away.season.id=${aSeason}`);
+    console.log(`    raw home: ${JSON.stringify(g.home)}`);
+    console.log(`    raw away: ${JSON.stringify(g.away)}`);
+  });
+}
+
+async function modeFixture() {
+  const args = Object.fromEntries(
+    process.argv.slice(3)
+      .filter(a => a.startsWith('--'))
+      .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
+  );
+  const GRADE_ID = args.gradeId || args.gradeid || args.grade;
+  let   ROUND_ID = args.roundId || args.roundid || args.round || null;
+
+  if (!GRADE_ID && !ROUND_ID) {
+    console.error('Usage: node scripts/test-api.js fixture --grade=<gradeId> [--round=<roundId>]');
+    process.exit(1);
+  }
+
+  console.log('test-api.js — fixture probe\n');
+  const cookie = await getSessionHttps();
+  console.log('Session obtained\n');
+
+  // Step 1: resolve a round to probe (mirrors nightly-crawl Phase 2 selection)
+  if (!ROUND_ID) {
+    const { status, data } = await gqlHttps(
+      { operationName: 'gradeRounds', variables: { gradeID: GRADE_ID }, query: Q_GRADE_ROUNDS_PROBE },
+      cookie
+    );
+    console.log(`discoverGrade — HTTP ${status}`);
+    if (data.errors) {
+      console.log('  discoverGrade errors:', JSON.stringify(data.errors, null, 2));
+      process.exit(1);
+    }
+    const g = data.data && data.data.discoverGrade;
+    if (!g) { console.log('  discoverGrade returned null — bad grade ID or hidden grade.'); process.exit(1); }
+    console.log(`  grade: ${g.name}  hideScores: ${g.hideScores}  rounds: ${(g.rounds || []).length}`);
+    const rounds = g.rounds || [];
+    const current = rounds.find(r => r.current)
+                 || [...rounds].sort((a, b) => (b.number || 0) - (a.number || 0))[0];
+    if (!current) { console.log('  No rounds on this grade.'); process.exit(1); }
+    ROUND_ID = current.id;
+    console.log(`  chosen round: "${current.name}" (number ${current.number}, current=${!!current.current})  id=${ROUND_ID}\n`);
+  }
+
+  // Step 2: full verbatim crawl query
+  console.log('=== discoverFixtureByRound — FULL crawl query (verbatim) ===');
+  const full = await gqlHttps(
+    { operationName: 'discoverFixtureByRound', variables: { roundID: ROUND_ID }, query: Q_FIXTURE_BY_ROUND_PROBE },
+    cookie
+  );
+  console.log(`HTTP ${full.status}`);
+  if (full.data.errors) {
+    console.log('TOP-LEVEL errors (this is exactly what nightly-crawl gqlMain discards at line 153):');
+    console.log(JSON.stringify(full.data.errors, null, 2));
+  } else {
+    console.log('no errors array');
+  }
+  const fullGames = (full.data.data && full.data.data.discoverFixtureByRound && full.data.data.discoverFixtureByRound.games) || null;
+  console.log(`games returned: ${fullGames ? fullGames.length : 'null (discoverFixtureByRound null)'}`);
+  dumpFirstGames(fullGames);
+
+  // Step 3: minimal query — only if the full query errored or returned null
+  if (full.data.errors || !fullGames) {
+    console.log('\n=== discoverFixtureByRound — MINIMAL query (isolates field-level break) ===');
+    const min = await gqlHttps(
+      { operationName: 'discoverFixtureByRound', variables: { roundID: ROUND_ID }, query: Q_FIXTURE_MINIMAL },
+      cookie
+    );
+    console.log(`HTTP ${min.status}`);
+    if (min.data.errors) {
+      console.log('minimal query ALSO errors:');
+      console.log(JSON.stringify(min.data.errors, null, 2));
+    } else {
+      console.log('minimal query has NO errors — the break is a specific field in the FULL query above');
+    }
+    const minGames = (min.data.data && min.data.data.discoverFixtureByRound && min.data.data.discoverFixtureByRound.games) || null;
+    console.log(`games returned: ${minGames ? minGames.length : 'null'}`);
+    dumpFirstGames(minGames);
+  }
+
+  console.log('\nDone.');
+}
+
 // ─── dispatch ─────────────────────────────────────────────────────────────────
 
 (async () => {
@@ -433,5 +606,6 @@ async function modeGps(gradeId) {
     case 'game':        await modeGame(ARG);      break;
     case 'schema':      await modeSchema();       break;
     case 'gps':         await modeGps(ARG);       break;
+    case 'fixture':     await modeFixture();      break;
   }
 })().catch(e => { console.error('\nFATAL:', e.message); process.exit(1); });
