@@ -29,6 +29,11 @@ on:
         required: false
         default: '10000'
         type: string
+      recover:
+        description: 'After a block, poll until the IP recovers (measures window)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -53,4 +58,5 @@ jobs:
             --op=${{ inputs.op }} \
             --levels=${{ inputs.levels }} \
             --calls=${{ inputs.calls }} \
-            --cooldown=${{ inputs.cooldown }}
+            --cooldown=${{ inputs.cooldown }} \
+            ${{ inputs.recover && '--recover' || '' }}
