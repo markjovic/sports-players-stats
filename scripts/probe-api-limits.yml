@@ -1,0 +1,92 @@
+# .github/workflows/probe-api-limits.yml
+name: Probe API Limits
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Seed season ID'
+        required: false
+        default: '15908988'
+        type: string
+      seasons:
+        description: 'Extra season IDs (CSV) for a bigger grade pool'
+        required: false
+        default: ''
+        type: string
+      op:
+        description: 'grade | fixture'
+        required: false
+        default: 'grade'
+        type: string
+      mode_levels:
+        description: 'SWEEP: concurrency levels (CSV). Leave cycles/duration at 0 to use sweep.'
+        required: false
+        default: '25,50,100,200,400'
+        type: string
+      calls:
+        description: 'SWEEP: calls per level'
+        required: false
+        default: '400'
+        type: string
+      cycles:
+        description: 'ESCALATION: number of trip->recover cycles (0 = off)'
+        required: false
+        default: '0'
+        type: string
+      duration:
+        description: 'ENDURANCE: seconds to run burst-and-rest (0 = off)'
+        required: false
+        default: '0'
+        type: string
+      burst:
+        description: 'ENDURANCE: requests per burst'
+        required: false
+        default: '1000'
+        type: string
+      rest:
+        description: 'ENDURANCE: rest between bursts (ms)'
+        required: false
+        default: '90000'
+        type: string
+      conc:
+        description: 'Concurrency for escalation/endurance'
+        required: false
+        default: '25'
+        type: string
+      recover:
+        description: 'Measure recovery time after a block'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      # Sparse checkout: grab ONLY the probe script, never the ~8.6GB data tree.
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/probe-api-limits.js
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run probe
+        run: |
+          node scripts/probe-api-limits.js \
+            --season=${{ inputs.season }} \
+            ${{ inputs.seasons && format('--seasons={0}', inputs.seasons) || '' }} \
+            --op=${{ inputs.op }} \
+            --levels=${{ inputs.mode_levels }} \
+            --calls=${{ inputs.calls }} \
+            --cycles=${{ inputs.cycles }} \
+            --duration=${{ inputs.duration }} \
+            --burst=${{ inputs.burst }} \
+            --rest=${{ inputs.rest }} \
+            --conc=${{ inputs.conc }} \
+            ${{ inputs.recover && '--recover' || '' }}
