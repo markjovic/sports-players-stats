@@ -52,18 +52,23 @@ jobs:
       shards: ${{ steps.gen.outputs.shards }}
     steps:
       - id: gen
+        env:
+          INPUT_SHARDS: ${{ inputs.shards }}
         run: |
-          input_shards='${{ inputs.shards }}'
-          if [ "$input_shards" != "[]" ] && [ -n "$input_shards" ]; then
-            echo "Using targeted shards: $input_shards"
-            echo "shards=$input_shards" >> $GITHUB_OUTPUT
-          else
-            shards=$(python3 -c "
-          import json
-          print(json.dumps([format(i, '02x') for i in range(256)]))
-          ")
-            echo "shards=$shards" >> $GITHUB_OUTPUT
-          fi
+          shards=$(python3 - << 'PYEOF'
+          import json, os, re
+          raw = (os.environ.get('INPUT_SHARDS') or '').strip()
+          inner = raw[1:-1] if raw.startswith('[') and raw.endswith(']') else raw
+          toks = [t.strip().strip('"').strip("'") for t in inner.split(',')]
+          toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
+          if not toks:
+              toks = [format(i, '02x') for i in range(256)]
+          print(json.dumps(toks))
+          PYEOF
+          )
+          n=$(printf '%s' "$shards" | python3 -c 'import sys,json; print(len(json.load(sys.stdin)))')
+          echo "Shards selected: $n"
+          echo "shards=$shards" >> $GITHUB_OUTPUT
 
   fetch:
     needs: [clear-stats-checked, generate-shards]
@@ -292,16 +297,21 @@ jobs:
 
       - name: Trigger next run
         if: steps.next.outputs.status == 'retrigger'
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          NEXT_RUN: ${{ inputs.run_number }}
+          NEXT_ZEROS: ${{ steps.next.outputs.new_consecutive_zeros }}
+          # Set from the expression so the JSON string keeps its quotes — passing it
+          # inline in the shell line would let the shell strip the embedded quotes.
+          NEXT_SHARDS: ${{ inputs.force == true && '[]' || inputs.shards }}
         run: |
-          next_run=$(( ${{ inputs.run_number }} + 1 ))
+          next_run=$(( NEXT_RUN + 1 ))
           gh workflow run fetch-profile-stats-matrix.yml \
             --repo "${{ github.repository }}" \
             --field "run_number=${next_run}" \
-            --field "consecutive_zeros=${{ steps.next.outputs.new_consecutive_zeros }}" \
+            --field "consecutive_zeros=${NEXT_ZEROS}" \
             --field "force=false" \
-            --field "shards=${{ inputs.force == true && '[]' || inputs.shards }}"
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+            --field "shards=${NEXT_SHARDS}"
 
       - name: Checkout repo for cleanup
         if: steps.next.outputs.status == 'stuck'
