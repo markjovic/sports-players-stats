@@ -49,6 +49,7 @@ const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=
 const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
+const HOLD_CHECK    = (args.find(a => a.startsWith('--hold-check=')) || '').replace('--hold-check=', '').split(',').filter(Boolean);
 
 // ─── Headers — full set, never split, never modified (copied verbatim) ────────
 const HEADERS_BASE = {
@@ -294,6 +295,47 @@ async function main() {
     console.log(`  rounds returned: ${rounds.length}   games: ${totalGames}   by status: ${JSON.stringify(byStatus)}`);
     console.log(totalGames > 0 ? '  → RECOVERABLE via team path (games exist).' : '  → no games via team path (genuinely unfetchable).');
     console.log('\nProbe done.');
+    return;
+  }
+
+  // ── Local hold-check (NO API): what do we already hold for these seasons? ────
+  // A 0-grade season was never in the index, so a game file almost certainly does
+  // NOT exist. The real signal is whether player REGS reference the sid and carry
+  // stats (gp/pts) — i.e. played-game evidence we hold even without a game file.
+  if (HOLD_CHECK.length) {
+    const GAMES_DIR = path.join(ROOT, 'games', 'bv');
+    // tally regs per sid from player files
+    const tally = new Map();  // sid -> { regs, withStats, games:'?', teams:Set }
+    for (const sid of HOLD_CHECK) tally.set(sid, { regs: 0, withStats: 0, teams: new Set() });
+    const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+    for (const prefix of prefixes) {
+      const dir = path.join(PLAYERS_DIR, prefix);
+      for (const fname of fs.readdirSync(dir).filter(f => f.endsWith('.json') && !f.startsWith('index'))) {
+        let pl; try { pl = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch { continue; }
+        for (const sn of (pl.seasons || [])) {
+          const t = tally.get(sn.sid); if (!t) continue;
+          for (const reg of (sn.regs || [])) {
+            t.regs++;
+            if (reg.tid) t.teams.add(reg.tid);
+            const st = reg.stats || {};
+            if ((st.gp || 0) > 0 || (st.pts || 0) > 0) t.withStats++;
+          }
+        }
+      }
+    }
+    console.log('\n  Local hold-check (no API):');
+    console.log('  ' + 'sid'.padEnd(12) + 'gameFile'.padEnd(10) + 'gamesInFile'.padEnd(13) + 'playerRegs'.padEnd(12) + 'regsWithStats'.padEnd(15) + 'teams');
+    for (const sid of HOLD_CHECK) {
+      const f = path.join(GAMES_DIR, `${sid}.json`);
+      let gf = 'no', games = '-';
+      if (fs.existsSync(f)) { gf = 'YES'; try { games = Object.keys(JSON.parse(fs.readFileSync(f,'utf8')).games || {}).length; } catch { games = 'ERR'; } }
+      const t = tally.get(sid);
+      console.log(`  ${sid.padEnd(12)}${gf.padEnd(10)}${String(games).padEnd(13)}${String(t.regs).padEnd(12)}${String(t.withStats).padEnd(15)}${t.teams.size}`);
+    }
+    console.log('\n  Reading: regsWithStats>0 means players have played-game evidence for a season');
+    console.log('  we have no game file for → real recoverable data on disk. 0 across the board');
+    console.log('  → we hold nothing for it either; a stub is genuinely all it can be.');
+    console.log('\nHold-check done.');
     return;
   }
 
