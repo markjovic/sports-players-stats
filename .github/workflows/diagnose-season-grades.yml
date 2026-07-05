@@ -21,6 +21,11 @@ on:
         required: false
         default: ''
         type: string
+      hold_check:
+        description: 'Comma-separated season IDs — local no-API check of what we already hold on disk'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -38,6 +43,10 @@ jobs:
           node-version: '20'
       - name: Run grade-availability check
         run: |
+          if [ -n "${{ inputs.hold_check }}" ]; then
+            node scripts/discover-seasons.js --dry-run --hold-check=${{ inputs.hold_check }}
+            exit 0
+          fi
           if [ -n "${{ inputs.probe_team }}" ]; then
             node scripts/discover-seasons.js --dry-run --probe-team=${{ inputs.probe_team }}
             exit 0
