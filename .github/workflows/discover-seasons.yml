@@ -1,0 +1,65 @@
+# .github/workflows/discover-seasons.yml
+name: Discover Seasons (detection)
+
+on:
+  schedule:
+    - cron: '0 16 * * 6'   # 02:00 AEST Sunday (Sat 16:00 UTC) — offset from weekly-indexes (Sun 02:00 UTC)
+  workflow_dispatch:
+    inputs:
+      uuid:
+        description: 'Manual escape hatch: probe a single player UUID to seed discovery'
+        required: false
+        default: ''
+        type: string
+      full:
+        description: 'Probe every current-season player (no early stop)'
+        required: false
+        default: false
+        type: boolean
+      limit:
+        description: 'Probe at most N players (cheap test run; blank = no cap)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Report only — no writes or commit'
+        required: false
+        default: false
+        type: boolean
+
+# Shares the data-write group so it can never run while nightly-crawl or
+# weekly-indexes are writing player files or the index (avoids -X ours clobber).
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run discovery
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.uuid }}" ]; then ARGS="$ARGS --uuid=${{ inputs.uuid }}"; fi
+          if [ "${{ inputs.full }}" = "true" ]; then ARGS="$ARGS --full"; fi
+          if [ -n "${{ inputs.limit }}" ]; then ARGS="$ARGS --limit=${{ inputs.limit }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/discover-seasons.js $ARGS
