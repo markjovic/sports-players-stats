@@ -41,6 +41,7 @@ const PLAYERS_DIR = path.join(ROOT, 'players');
 // ─── CLI ──────────────────────────────────────────────────────────────────────
 const args      = process.argv.slice(2);
 const DRY_RUN   = args.includes('--dry-run');
+const DEBUG_TEAMS = args.includes('--debug-teams');  // dump raw grade/season per registration
 const FULL      = args.includes('--full');
 const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uuid=', '').trim() || null;
 const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
@@ -279,6 +280,12 @@ async function main() {
     if (r.kind === 'private') { privateN++; }
     else if (r.kind === 'error') { errors++; }
     else if (r.kind === 'ok') {
+      if (DEBUG_TEAMS) {
+        console.log(`  ── raw publicProfileTeams for ${uuid}: ${r.teams.length} registration(s) ──`);
+        for (const reg of r.teams) {
+          console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
+        }
+      }
       let foundNew = false;
       for (const reg of r.teams) {
         const se = reg.season;
