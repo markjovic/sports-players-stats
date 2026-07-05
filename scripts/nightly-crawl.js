@@ -44,6 +44,8 @@ const ARGS = Object.fromEntries(
 const DRY_RUN       = !!ARGS['dry-run'];
 const TARGET_SEASON = ARGS.season || null;
 const ROUNDS_BACK   = Math.max(1, parseInt(ARGS['rounds-back'] || '2', 10));
+const FORCE_RECHECK = !!ARGS['force-recheck'];       // ignore roundsComplete markers, re-fetch every round
+const COMPLETE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;   // trust a round-complete marker only after 7 days (catch late score corrections first)
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -463,11 +465,21 @@ function writePlayerIndex(shard, data) {
 // This covers both newly-scored games AND games that went FINAL in a previous
 // run that timed out before spectator processing completed.
 
-function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
+// A game is terminal (its round can't change on its account) when FINAL, or the comp
+// resolved it without a normal result (cancelled/abandoned/bye), or a forfeit.
+// scan-complete-rounds.js MUST use an identical rule so offline and live agree.
+const TERMINAL_STATUS = new Set(['FINAL', 'CANCELLED', 'ABANDONED', 'BYE']);
+function isGameTerminal(status, isForfeit) {
+  return !!isForfeit || TERMINAL_STATUS.has(status);
+}
+
+function applyRoundFixtures(roundData, gradeId, gradeName, roundName, isCurrent = false) {
   const needsSpectator = [];
   const forfeitGameIds  = [];
   if (!roundData?.discoverFixtureByRound) return { needsSpectator, forfeitGameIds, totalGames: 0 };
   let totalGames = 0;
+  let allTerminal = true;
+  let roundSeasonId = null;
 
   for (const game of (roundData.discoverFixtureByRound.games || [])) {
     if (!game?.id) continue;
@@ -481,6 +493,7 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
     // Season ID comes from team data — without it we can't write to the right file
     const seasonId = homeTeam?.season?.id || awayTeam?.season?.id || null;
     if (!seasonId) continue;
+    roundSeasonId = seasonId;
 
     const homeScore = parseScore(game.result?.home?.statistics);
     const awayScore = parseScore(game.result?.away?.statistics);
@@ -533,6 +546,8 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
       forfeitGameIds.push(game.id);
     }
 
+    if (!isGameTerminal(status, isForfeit)) allTerminal = false;
+
     const changed = JSON.stringify(entry) !== JSON.stringify(existing || {});
     if (changed && !DRY_RUN) {
       gf.games[game.id] = entry;
@@ -554,6 +569,25 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName) {
         homeScore,
         awayScore,
       });
+    }
+  }
+
+  // Round-completion marker (keyed by gradeId + roundName; see queue-build skip).
+  // Never mark the current round (still live) or an empty round.
+  if (!isCurrent && !DRY_RUN && roundSeasonId && totalGames > 0) {
+    const gf = loadGameFile(roundSeasonId);
+    if (!gf.roundsComplete) gf.roundsComplete = {};
+    const byGrade = gf.roundsComplete[gradeId] || (gf.roundsComplete[gradeId] = {});
+    const prior = byGrade[roundName];
+    if (allTerminal) {
+      const at = prior?.at || new Date().toISOString();   // pin first-seen time so grace elapses
+      if (!prior || prior.at !== at || prior.n !== totalGames) {
+        byGrade[roundName] = { at, n: totalGames };
+        markGameDirty(roundSeasonId);
+      }
+    } else if (prior) {
+      delete byGrade[roundName];                           // a reschedule reopened it
+      markGameDirty(roundSeasonId);
     }
   }
 
@@ -661,13 +695,24 @@ async function main() {
   console.log(`Phase 2/4 — Round fixtures (${ROUNDS_BACK} round(s) back)…`);
 
   // Build round queue: each grade contributes current round + up to ROUNDS_BACK-1 previous
+  // A previous round already marked complete (all games terminal) and past the grace
+  // window can never change — skip fetching it. The current round is always fetched.
+  // --force-recheck ignores markers entirely (audit / catch late corrections).
+  const nowMs = Date.now();
+  const isSettled = (seasonId, gid, roundName) => {
+    if (FORCE_RECHECK || !seasonId) return false;
+    const m = loadGameFile(seasonId).roundsComplete?.[gid]?.[roundName];
+    return !!(m && (nowMs - Date.parse(m.at)) > COMPLETE_GRACE_MS);
+  };
+
   const roundQueue = [];
+  let skippedComplete = 0;
   for (const grade of normalGrades) {
     if (!grade.rounds.length) continue;
     const currentRound = grade.rounds.find(r => r.current);
     if (!currentRound) continue;
 
-    roundQueue.push({ roundId: currentRound.id, roundName: currentRound.name, grade });
+    roundQueue.push({ roundId: currentRound.id, roundName: currentRound.name, grade, isCurrent: true });
 
     // Previous rounds by descending round number
     const prevRounds = [...grade.rounds]
@@ -676,10 +721,11 @@ async function main() {
       .slice(0, ROUNDS_BACK - 1);
 
     for (const r of prevRounds) {
-      roundQueue.push({ roundId: r.id, roundName: r.name, grade });
+      if (isSettled(grade.seasonId, grade.gradeId, r.name)) { skippedComplete++; continue; }
+      roundQueue.push({ roundId: r.id, roundName: r.name, grade, isCurrent: false });
     }
   }
-  console.log(`  Round fetches queued: ${roundQueue.length}`);
+  console.log(`  Round fetches queued: ${roundQueue.length}  (skipped ${skippedComplete} settled rounds)`);
 
   let seasonsSinceCommit = 0;
   const processedSeasons  = new Set();
@@ -688,11 +734,11 @@ async function main() {
   if (reclassifiedSpectator.length > 0) allNeedsSpectator.push(...reclassifiedSpectator);
   const allNewForfeitIds  = [];  // new forfeit game IDs detected this run
 
-  const p2 = await runPaced(roundQueue, async ({ roundId, roundName, grade }) => {
+  const p2 = await runPaced(roundQueue, async ({ roundId, roundName, grade, isCurrent }) => {
     const { kind, data } = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: roundId });
     if (kind !== 'ok') return kind;                  // blocked/transient -> requeue
     const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
-      data, grade.gradeId, grade.gradeName, roundName
+      data, grade.gradeId, grade.gradeName, roundName, isCurrent
     );
     allNeedsSpectator.push(...needsSpectator);
     allNewForfeitIds.push(...forfeitGameIds);
@@ -998,9 +1044,12 @@ async function main() {
   );
 
   // ── Status file ───────────────────────────────────────────────────────────────
-  // gamesRemaining = FINAL games in fetched rounds that still lack spc.
-  // This is the count the workflow uses to decide whether to self-trigger.
-  const gamesRemaining = spectatorMiss + p1.remaining + p2.remaining;  // spectator misses + any grades/fixtures a blocked run left for the retrigger
+  // gamesRemaining is the count the workflow uses to decide whether to self-trigger.
+  // Only a genuinely bailed phase is resumable. spectatorMiss = FINAL games the
+  // spectator endpoint has no data for (blocked/private/legacy) — that is 'empty',
+  // NOT 'remaining'. Folding it in here made every run look incomplete and drove an
+  // endless retrigger that re-fetched all rounds just to rediscover the same dead games.
+  const gamesRemaining = p1.remaining + p2.remaining;
 
   if (!DRY_RUN) {
     fs.writeFileSync(STATUS_FILE, JSON.stringify({
