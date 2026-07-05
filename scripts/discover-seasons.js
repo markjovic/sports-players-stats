@@ -48,6 +48,7 @@ const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); r
 const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=')); return a ? parseInt(a.split('=')[1], 10) : 1000; })();
 const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
+const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
 
 // ─── Headers — full set, never split, never modified (copied verbatim) ────────
 const HEADERS_BASE = {
@@ -121,6 +122,23 @@ const Q_DISCOVER_SEASON = {
     id name
     competition { id name type organisation { id name } }
     grades { id name age { name } gender { name } }
+  }
+}`,
+};
+
+const Q_TEAM_FIXTURE = {
+  operationName: 'TeamFixture',
+  query: `query TeamFixture($teamID: ID!) {
+  discoverTeam(teamID: $teamID) {
+    id
+    grade { id name }
+    season { id name competition { id name organisation { id name } } status { value } }
+    organisation { id name }
+  }
+  discoverTeamFixture(teamID: $teamID) {
+    id name isFinalsRound
+    grade { id name season { id name competition { id name organisation { id name } } } }
+    fixture { games { id dates status { value } } }
   }
 }`,
 };
@@ -253,6 +271,31 @@ async function main() {
   const knownSeasonIds = new Set(Object.keys(index.seasons));
   const activeSids = new Set(Object.values(index.seasons).filter(s => !s.locked).map(s => s.id));
   console.log(`  Known seasons: ${knownSeasonIds.size}  (active: ${activeSids.size})`);
+
+  // ── Diagnostic: does a 0-grade season have games via the TEAM path? ─────────
+  // Answers withheld vs legacy vs recoverable: if discoverTeamFixture returns real
+  // games for a team in the season, it's recoverable via the fixture path (not a
+  // dead-end stub). Copies the TeamFixture query verbatim from discover-fixtures.js.
+  if (PROBE_TEAM) {
+    if (!sessionCookie) await refreshSession();
+    const res = await doFetch(API_URL, {
+      method: 'POST',
+      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
+      body: JSON.stringify({ ...Q_TEAM_FIXTURE, variables: { teamID: PROBE_TEAM } }),
+    });
+    console.log(`  probe-team ${PROBE_TEAM}: HTTP ${res.status}`);
+    let json = null; try { json = await res.json(); } catch {}
+    const d = json?.data || json;
+    const team = d?.discoverTeam;
+    const rounds = d?.discoverTeamFixture || [];
+    if (team) console.log(`  team: "${team.name || team.id}"  season=${team.season?.id} "${team.season?.name}" (${team.season?.status?.value})  org=${team.organisation?.name}`);
+    let totalGames = 0; const byStatus = {};
+    for (const r of rounds) for (const g of (r.fixture?.games || [])) { totalGames++; const sv = g.status?.value || '?'; byStatus[sv] = (byStatus[sv] || 0) + 1; }
+    console.log(`  rounds returned: ${rounds.length}   games: ${totalGames}   by status: ${JSON.stringify(byStatus)}`);
+    console.log(totalGames > 0 ? '  → RECOVERABLE via team path (games exist).' : '  → no games via team path (genuinely unfetchable).');
+    console.log('\nProbe done.');
+    return;
+  }
 
   // ── Diagnostic: does discoverSeason return grades for KNOWN seasons? ─────────
   // Samples across competitions so we don't infer a rule from one org (N=1).
