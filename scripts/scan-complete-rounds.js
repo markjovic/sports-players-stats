@@ -156,7 +156,7 @@ if (fs.existsSync(INDEX_FILE)) {
     console.log(`  Locked seasons proven incomplete: ${candidates.length}`);
     for (const se of candidates.slice(0, 20)) console.log(`    ${se.id}  ${se.name || se.fullName || ''}`);
     if (DO_UNLOCK && !DRY_RUN && candidates.length) {
-      for (const se of candidates) se.locked = false;
+      for (const se of candidates) { se.locked = false; delete se.lockedAt; }
       const m = raw.match(/\n( +)"/);                    // preserve existing indentation
       const indent = m ? m[1].length : 0;
       fs.writeFileSync(INDEX_FILE, JSON.stringify(idx, null, indent));
