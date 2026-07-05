@@ -1,0 +1,39 @@
+# .github/workflows/diagnose-season-grades.yml
+# THROWAWAY diagnostic — delete after we've answered whether discoverSeason
+# returns grades for completed seasons. Runs discover-seasons.js in check mode.
+name: Diagnose Season Grades (throwaway)
+
+on:
+  workflow_dispatch:
+    inputs:
+      check_known:
+        description: 'Sample N random known seasons (that have grades in the index)'
+        required: false
+        default: '40'
+        type: string
+      check_seasons:
+        description: 'Comma-separated season IDs to check explicitly'
+        required: false
+        default: '68279835,913d1397,ee5d2724,6c117270'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run grade-availability check
+        run: |
+          ARGS="--dry-run"
+          if [ -n "${{ inputs.check_known }}" ]; then ARGS="$ARGS --check-known=${{ inputs.check_known }}"; fi
+          if [ -n "${{ inputs.check_seasons }}" ]; then ARGS="$ARGS --check-seasons=${{ inputs.check_seasons }}"; fi
+          node scripts/discover-seasons.js $ARGS
