@@ -352,7 +352,10 @@ Values are arrays — multiple players can share the same name key.
 | `build-foulout-stats.js` | CJS | foulOuts from API (TOTAL_FOULS >= 5 per game) | Manual |
 | `build-search-index.js` | CJS | Player name search shards | Manual / matrix downstream |
 | `build-records.js` | CJS | Single-game records (team + player) | Manual / matrix downstream |
-| `discover-fixtures.js` | CJS | Discovers new seasons from PlayHQ | Manual |
+| `discover-fixtures.js` | CJS | Backfills FIXTURES for teams in KNOWN seasons via discoverTeamFixture (reaches historical seasons discoverFixtureByRound can't). Does NOT discover new seasons. | Manual (should be scheduled) |
+| `discover-seasons.js` | CJS | Detects NEW seasons from current players' publicProfileTeams; creates them (live, or `removed:true` stub). Self-terminating. Grade-refresh for grade-less active seasons. | Weekly (Sat) |
+| `scan-complete-rounds.js` | CJS | Offline: writes roundsComplete markers from existing data; reports scale + provably-incomplete locked seasons; `--unlock` reopens them | Manual / as needed |
+| `hold-check.js` | CJS | Local no-API: what we already hold on disk for given season IDs (throwaway diagnostic) | On demand |
 | `clear-stats-checked.js` | CJS | Clears statsChecked (bulk or fix-corrupt-names mode) | Manual |
 | `recheck-private-profiles.js` | CJS | Re-probes private/stale active-season players | Monthly |
 | `recheck-forfeit-games.js` | CJS | Verifies forfeit-games.json | Annual |
@@ -387,7 +390,27 @@ Values are arrays — multiple players can share the same name key.
 
 ## Known issues and outstanding work
 
-### Pending runs (do in order)
+### Session update — July 2026 (WAF, markers, discovery, data protection)
+
+Major work this session. Key learnings now enforced in code:
+
+- **PlayHQ has a rate-based CloudFront WAF** (hard-blocks with 403 + HTML body, distinct from application 403). Per-shard/per-IP, not shared-IP aggregate. Failures must be TYPED (`ok`/`empty`/`blocked`/`transient`) — never collapsed into "no data" (that was the root cause of the nightly writing nothing). See `playhq_api_reference.md`.
+- **Data protection:** `nightly-crawl.js` now aborts on unparseable existing game files and refuses shrinking writes (SHRINK GUARD) — an empty/stripped API response can never delete existing (often unrecoverable, junior-withheld) data.
+- **Round-completion markers** (`gf.roundsComplete[gid][roundName]`) stop the nightly re-fetching all rounds and make high-`rounds_back` sweeps cheap. Offline backfill: `scan-complete-rounds.js` (94.6% of rounds already complete; **489 LOCKED seasons found provably incomplete** — locked while missing data).
+- **Season discovery (detection) built** (`discover-seasons.js`): finds new seasons from current players' `publicProfileTeams`. `COMPLETED` + no fetchable data → `removed:true` stub (recorded, not crawled). Roster-fill (piece 2) and auto-lock/verify still to build. **Nothing currently writes `locked`** (old writer was a deleted script).
+- **`discover-fixtures.js` does NOT discover seasons** — it backfills fixtures for teams in known seasons. Doc corrected; should be scheduled.
+
+**Ordered plan (✅ ready · 🔧 review first · 🚧 build):**
+1. ✅ `fetch-profile-stats-matrix.yml force=true` — heal ~120k stale statsChecked (self-triggers; fires rebuilds).
+2. ✅ `scan-complete-rounds dry_run:false unlock:false` — write ~596k markers.
+3. 🔧 `discover-seasons.yml` dry-run FULL → review → live.
+4. 🚧 Season-lock writer + verify (must precede unlock).
+5. 🚧 Unlock the 489 (`--unlock`, after #4).
+6. 🚧 Roster-fill (piece 2).
+7. 🚧 High-`rounds_back` sweep → deep-sweep the 489.
+8. 🚧 **Storage strategy — repo ~8.6 GB BLOCKS publish; may need to precede the sweep.** Measure split, then separate game repo / LFS / R2+Worker / compression.
+
+### Pending runs (legacy list — superseded by ordered plan above where overlapping)
 1. `build-finals-stats` full (delete `.finals-progress.json` first) — fixes gfWins for 77% of games
 2. `build-win-loss` full — recomputes career W/L/D with regraded duplication fix
 3. `build-leaderboards` full — populates all 20/17 categories including lossPct, age filter
@@ -398,9 +421,12 @@ Values are arrays — multiple players can share the same name key.
 - Add `sport: "Basketball"` to each sports-index.json season entry (pre-AFL task)
 - Fix `build-search-index.js` — shows first-ever team club, not current
 - `backfill-hidden-boxscores.yml` — still needs one run
-- GitHub Pages deploy trigger — currently triggers on every push; move to explicit dispatch
-- History squash before AFL expansion
-- R2 hosting before AFL expansion
+- Resumable Phase 3 spectator in nightly (persist delta-player list before clearing statsChecked; self-trigger before 5h cap)
+- `statsChecked` sharded ledger (`statschecked/{shard}.json`) — cheap invalidation; Claude Code item
+- Tournament-gap fix (round-list-driven detection)
+- 68 no-`rn` seasons (84,515 games) — markers untrustworthy; investigate
+- GitHub Pages deploy trigger — move to explicit dispatch
+- History squash / R2 hosting before AFL expansion
 
 ### Future
 - `build-opposition-index.js` — weekly pre-built per-player opponent W/L/D
@@ -414,6 +440,7 @@ Values are arrays — multiple players can share the same name key.
 | Frequency | What |
 |-----------|------|
 | Nightly 01:00 AEST | nightly-crawl.js → team-stats, venue-lookup, win-loss (active-only), matrix trigger |
+| Weekly Saturday | discover-seasons.js (season detection) |
 | Weekly Sunday | build-player-games.js, build-win-loss.js full |
 | Monthly 1st | recheck-private-profiles.js |
 | After each finals series | build-finals-stats.js, build-leaderboards.js --force |
