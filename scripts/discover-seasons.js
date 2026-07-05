@@ -277,6 +277,12 @@ async function main() {
       r = await probeTeams(uuid);
     }
     probed++;
+    if (ONE_UUID) {
+      console.log(`  ── probe result for ${uuid}: kind=${r.kind} ──`);
+      for (const reg of (r.teams || [])) {
+        console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
+      }
+    }
     if (r.kind === 'private') { privateN++; }
     else if (r.kind === 'error') { errors++; }
     else if (r.kind === 'ok') {
