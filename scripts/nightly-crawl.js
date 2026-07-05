@@ -405,7 +405,13 @@ function loadGameFile(seasonId) {
   const file = path.join(GAMES_DIR, `${seasonId}.json`);
   let data = { games: {} };
   if (fs.existsSync(file)) {
-    try { data = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) {}
+    // If the file EXISTS but can't be read/parsed, do NOT fall back to an empty
+    // object — upserting onto empty and flushing would overwrite the file with
+    // only this run's games, destroying existing (often unrecoverable, e.g.
+    // API-withheld junior) data on disk. Abort loudly instead.
+    const raw = fs.readFileSync(file, 'utf8');   // throws on read error — intended
+    try { data = JSON.parse(raw); }
+    catch (e) { throw new Error(`Refusing to proceed: ${file} exists but failed to parse (${e.message}). Would risk overwriting existing games.`); }
   }
   if (!data.games) data.games = {};
   gameCache.set(seasonId, data);
@@ -419,8 +425,21 @@ function flushGameFiles() {
   for (const seasonId of [...gameDirty]) {
     if (!gameCache.has(seasonId)) continue;
     const file = path.join(GAMES_DIR, `${seasonId}.json`);
+    const next = gameCache.get(seasonId);
+    const nextN = Object.keys(next.games || {}).length;
+    // Shrink guard: never write fewer games than already exist on disk. A stripped/
+    // empty API response must never delete existing (possibly unrecoverable) games.
+    if (fs.existsSync(file)) {
+      let prevN = 0;
+      try { prevN = Object.keys((JSON.parse(fs.readFileSync(file, 'utf8')).games) || {}).length; } catch { prevN = Infinity; }
+      if (nextN < prevN) {
+        console.error(`  ⚠ SHRINK GUARD: ${seasonId} would drop from ${prevN} to ${nextN} games — refusing to write.`);
+        gameDirty.delete(seasonId);
+        continue;
+      }
+    }
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, JSON.stringify(gameCache.get(seasonId)));
+    fs.writeFileSync(file, JSON.stringify(next));
     gameDirty.delete(seasonId);
     count++;
   }

@@ -344,14 +344,14 @@ async function main() {
   }
 
   // Create entries for each new season (discoverSeason for full grade list)
-  let created = 0;
+  let created = 0, withheld = 0;
   for (const [sid, meta] of newSeasonMeta) {
     const ds = await discoverSeason(sid);
     if (ds?.blocked) { console.log(`  ⛔ blocked resolving grades for ${sid} — leaving for next run`); continue; }
     const grades = (ds?.grades || []).map(g => ({ id: g.id, name: g.name, age: g.age?.name, gender: g.gender?.name }));
     const compName = ds?.competition?.name || meta.compName || '';
     const orgName  = ds?.competition?.organisation?.name || meta.orgName || '';
-    index.seasons[sid] = {
+    const base = {
       id: sid,
       name: ds?.name || meta.name,
       fullName: `${compName} — ${ds?.name || meta.name}`,
@@ -360,21 +360,58 @@ async function main() {
       orgName,
       orgId: ds?.competition?.organisation?.id || meta.orgId,
       tenant: 'bv',
-      grades,
-      locked: false,
-      addedAt: new Date().toISOString(),
       // Capture the season-status signal at creation — the future auto-lock wants it.
       status: meta.status || null,
       startDate: meta.startDate || null,
       endDate: meta.endDate || null,
     };
-    created++;
-    console.log(`  + created ${sid}  ${index.seasons[sid].fullName}  (${grades.length} grades)`);
+    if (grades.length > 0) {
+      // Crawlable season — the nightly crawl will fetch these grades.
+      index.seasons[sid] = { ...base, grades, locked: false, addedAt: new Date().toISOString() };
+      created++;
+      console.log(`  + created ${sid}  ${base.fullName}  (${grades.length} grades)`);
+    } else if (meta.status === 'COMPLETED') {
+      // Historical season with 0 grades: PlayHQ is withholding them (junior data).
+      // They will never become crawlable, so retain the fact the season EXISTS but
+      // mark it withheld + locked so the crawl (and all locked-filtering scripts)
+      // skip it. ONLY historical seasons are stubbed this way.
+      index.seasons[sid] = { ...base, grades: [], locked: true, withheld: true, addedAt: new Date().toISOString() };
+      withheld++;
+      console.log(`  ~ withheld ${sid}  ${base.fullName}  (COMPLETED, 0 grades — recorded, not crawlable)`);
+    } else {
+      // UPCOMING/ACTIVE with 0 grades: legitimate pre-allocation state (season
+      // created before grades assigned). Create it LIVE — the grade-refresh step
+      // below will populate grades once PlayHQ allocates them. Err toward live for
+      // any non-COMPLETED status so a real upcoming season is never wrongly locked.
+      index.seasons[sid] = { ...base, grades: [], locked: false, addedAt: new Date().toISOString() };
+      created++;
+      console.log(`  + created ${sid}  ${base.fullName}  (0 grades — pre-allocation, live; awaiting grades)`);
+    }
   }
 
-  if (created > 0 && !DRY_RUN) {
+  // ── Grade-refresh: fill grades for active seasons still at grades:[] ──────────
+  // The crawl reads grades statically from the index, so a grades:[] live season
+  // (pre-allocation, or created grade-less on a prior run) would never be crawled
+  // until its grades appear here. Cheap: only touches grade-less active seasons.
+  let refreshed = 0;
+  const graceless = Object.values(index.seasons).filter(se => se.locked === false && (se.grades || []).length === 0);
+  if (graceless.length) {
+    console.log(`\n  Grade-refresh: ${graceless.length} active grade-less season(s) to re-check`);
+    for (const se of graceless) {
+      const ds = await discoverSeason(se.id);
+      if (ds?.blocked) { console.log(`  ⛔ blocked refreshing ${se.id}`); continue; }
+      const g = (ds?.grades || []).map(x => ({ id: x.id, name: x.name, age: x.age?.name, gender: x.gender?.name }));
+      if (g.length > 0) {
+        se.grades = g;
+        refreshed++;
+        console.log(`  ↻ ${se.id}  ${se.fullName || se.name}  now has ${g.length} grades`);
+      }
+    }
+  }
+
+  if ((created > 0 || withheld > 0 || refreshed > 0) && !DRY_RUN) {
     fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
-    gitCommit(`discover-seasons: ${created} new season(s) added`);
+    gitCommit(`discover-seasons: ${created} new + ${withheld} withheld + ${refreshed} grade-refreshed`);
   }
 
   console.log('\n─── Summary ─────────────────────────────────────────────────────────');
@@ -383,7 +420,9 @@ async function main() {
   console.log(`  Blocked (paced)       : ${blocked}`);
   console.log(`  New seasons found     : ${newSeasonMeta.size}`);
   console.log(`  Seasons created       : ${created}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
-  if (newSeasonMeta.size > created) console.log(`  (${newSeasonMeta.size - created} left for next run — grade resolution blocked)`);
+  console.log(`  Withheld stubs        : ${withheld}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  console.log(`  Grade-refreshed       : ${refreshed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  if (newSeasonMeta.size > created + withheld) console.log(`  (${newSeasonMeta.size - created - withheld} left for next run — grade resolution blocked)`);
   console.log('─'.repeat(60));
   if (created > 0) console.log('\nNext: roster-fill (piece 2) should run for the new season(s) until round 1 completes.');
   console.log('Done.');
