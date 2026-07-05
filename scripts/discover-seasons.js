@@ -274,7 +274,7 @@ async function main() {
   console.log(`  Known seasons: ${knownSeasonIds.size}  (active: ${activeSids.size})`);
 
   // ── Diagnostic: does a 0-grade season have games via the TEAM path? ─────────
-  // Answers withheld vs legacy vs recoverable: if discoverTeamFixture returns real
+  // Answers removed vs legacy vs recoverable: if discoverTeamFixture returns real
   // games for a team in the season, it's recoverable via the fixture path (not a
   // dead-end stub). Copies the TeamFixture query verbatim from discover-fixtures.js.
   if (PROBE_TEAM) {
@@ -429,7 +429,7 @@ async function main() {
   }
 
   // Create entries for each new season (discoverSeason for full grade list)
-  let created = 0, withheld = 0;
+  let created = 0, removed = 0;
   for (const [sid, meta] of newSeasonMeta) {
     const ds = await discoverSeason(sid);
     if (ds?.blocked) { console.log(`  ⛔ blocked resolving grades for ${sid} — leaving for next run`); continue; }
@@ -456,13 +456,13 @@ async function main() {
       created++;
       console.log(`  + created ${sid}  ${base.fullName}  (${grades.length} grades)`);
     } else if (meta.status === 'COMPLETED') {
-      // Historical season with 0 grades: PlayHQ is withholding them (junior data).
-      // They will never become crawlable, so retain the fact the season EXISTS but
-      // mark it withheld + locked so the crawl (and all locked-filtering scripts)
-      // skip it. ONLY historical seasons are stubbed this way.
-      index.seasons[sid] = { ...base, grades: [], locked: true, withheld: true, addedAt: new Date().toISOString() };
-      withheld++;
-      console.log(`  ~ withheld ${sid}  ${base.fullName}  (COMPLETED, 0 grades — recorded, not crawlable)`);
+      // Historical (COMPLETED) season with 0 grades and nothing fetchable via any
+      // route (discoverSeason, team fixtures, or our own files). We can't populate
+      // it — record that it EXISTS as a 'removed' stub, locked so the crawl and all
+      // locked-filtering scripts skip it. ONLY historical seasons are stubbed.
+      index.seasons[sid] = { ...base, grades: [], locked: true, removed: true, addedAt: new Date().toISOString() };
+      removed++;
+      console.log(`  ~ removed ${sid}  ${base.fullName}  (COMPLETED, 0 grades — recorded, not crawlable)`);
     } else {
       // UPCOMING/ACTIVE with 0 grades: legitimate pre-allocation state (season
       // created before grades assigned). Create it LIVE — the grade-refresh step
@@ -494,9 +494,9 @@ async function main() {
     }
   }
 
-  if ((created > 0 || withheld > 0 || refreshed > 0) && !DRY_RUN) {
+  if ((created > 0 || removed > 0 || refreshed > 0) && !DRY_RUN) {
     fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
-    gitCommit(`discover-seasons: ${created} new + ${withheld} withheld + ${refreshed} grade-refreshed`);
+    gitCommit(`discover-seasons: ${created} new + ${removed} removed + ${refreshed} grade-refreshed`);
   }
 
   console.log('\n─── Summary ─────────────────────────────────────────────────────────');
@@ -505,9 +505,9 @@ async function main() {
   console.log(`  Blocked (paced)       : ${blocked}`);
   console.log(`  New seasons found     : ${newSeasonMeta.size}`);
   console.log(`  Seasons created       : ${created}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
-  console.log(`  Withheld stubs        : ${withheld}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  console.log(`  Removed stubs         : ${removed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
   console.log(`  Grade-refreshed       : ${refreshed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
-  if (newSeasonMeta.size > created + withheld) console.log(`  (${newSeasonMeta.size - created - withheld} left for next run — grade resolution blocked)`);
+  if (newSeasonMeta.size > created + removed) console.log(`  (${newSeasonMeta.size - created - removed} left for next run — grade resolution blocked)`);
   console.log('─'.repeat(60));
   if (created > 0) console.log('\nNext: roster-fill (piece 2) should run for the new season(s) until round 1 completes.');
   console.log('Done.');
