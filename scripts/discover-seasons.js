@@ -46,6 +46,8 @@ const FULL      = args.includes('--full');
 const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uuid=', '').trim() || null;
 const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
 const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=')); return a ? parseInt(a.split('=')[1], 10) : 1000; })();
+const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
+const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 
 // ─── Headers — full set, never split, never modified (copied verbatim) ────────
 const HEADERS_BASE = {
@@ -251,6 +253,31 @@ async function main() {
   const knownSeasonIds = new Set(Object.keys(index.seasons));
   const activeSids = new Set(Object.values(index.seasons).filter(s => !s.locked).map(s => s.id));
   console.log(`  Known seasons: ${knownSeasonIds.size}  (active: ${activeSids.size})`);
+
+  // ── Diagnostic: does discoverSeason return grades for KNOWN seasons? ─────────
+  // Samples across competitions so we don't infer a rule from one org (N=1).
+  if (CHECK_SEASONS.length || CHECK_KNOWN > 0) {
+    let ids = [...CHECK_SEASONS];
+    if (CHECK_KNOWN > 0) {
+      const known = Object.values(index.seasons);
+      const completed = known.filter(s => (s.grades || []).length > 0);   // known-good, grades present in index
+      // shuffle and take a spread
+      for (let i = completed.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [completed[i],completed[j]]=[completed[j],completed[i]]; }
+      ids.push(...completed.slice(0, CHECK_KNOWN).map(s => s.id));
+    }
+    console.log(`\n  discoverSeason grade-availability check (${ids.length} seasons):`);
+    console.log('  ' + 'sid'.padEnd(12) + 'idxGrades'.padEnd(11) + 'apiGrades'.padEnd(11) + 'org');
+    for (const sid of ids) {
+      const idxEntry = index.seasons[sid];
+      const idxGrades = (idxEntry?.grades || []).length;
+      const ds = await discoverSeason(sid);
+      const apiGrades = ds?.blocked ? 'BLOCKED' : (ds?.grades?.length ?? 'null');
+      const org = ds?.competition?.organisation?.name || idxEntry?.orgName || '?';
+      console.log(`  ${String(sid).padEnd(12)}${String(idxGrades).padEnd(11)}${String(apiGrades).padEnd(11)}${org}`);
+    }
+    console.log('\nDiagnostic done.');
+    return;
+  }
 
   // Build probe list
   let probeList;
