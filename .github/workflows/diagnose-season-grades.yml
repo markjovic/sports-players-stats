@@ -16,6 +16,11 @@ on:
         required: false
         default: '68279835,913d1397,ee5d2724,6c117270'
         type: string
+      probe_team:
+        description: 'Team ID to probe via discoverTeamFixture (tests if a 0-grade season has recoverable games)'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -33,6 +38,10 @@ jobs:
           node-version: '20'
       - name: Run grade-availability check
         run: |
+          if [ -n "${{ inputs.probe_team }}" ]; then
+            node scripts/discover-seasons.js --dry-run --probe-team=${{ inputs.probe_team }}
+            exit 0
+          fi
           ARGS="--dry-run"
           if [ -n "${{ inputs.check_known }}" ]; then ARGS="$ARGS --check-known=${{ inputs.check_known }}"; fi
           if [ -n "${{ inputs.check_seasons }}" ]; then ARGS="$ARGS --check-seasons=${{ inputs.check_seasons }}"; fi
