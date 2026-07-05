@@ -20,6 +20,11 @@ on:
         required: false
         default: false
         type: boolean
+      force_recheck:
+        description: 'Ignore round-complete markers and re-fetch every round'
+        required: false
+        default: false
+        type: boolean
       consecutive_zeros:
         description: 'Consecutive zero-progress runs — do not set manually'
         required: false
@@ -59,6 +64,7 @@ jobs:
           ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.force_recheck }}" = "true" ]; then ARGS="$ARGS --force-recheck"; fi
           node scripts/nightly-crawl.js $ARGS
 
       - name: Read status
