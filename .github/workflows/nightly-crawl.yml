@@ -212,6 +212,37 @@ jobs:
       - name: Build win-loss records (active seasons)
         run: node scripts/build-win-loss.js --active-only
 
+  discover-seasons:
+    needs: crawl
+    runs-on: ubuntu-latest
+    # Fire the sharded season-discovery matrix AFTER the crawl fully drains
+    # (games_remaining == 0), so it never runs mid-crawl. Discovery's reduce carries
+    # concurrency group data-write, so it also can't write sports-index.json while this
+    # crawl workflow (same group) still holds the lock — it queues until we finish.
+    # Gated to Sundays: a full sweep is ~1.5-2h and ~200k PlayHQ calls for near-zero
+    # ongoing yield, so weekly is plenty. To run it every terminal night instead,
+    # delete the `dow` check below. all_players stays false here — the one-time
+    # historical backlog pass is a manual dispatch with all_players=true.
+    if: |
+      always() &&
+      inputs.dry_run != 'true' &&
+      needs.crawl.outputs.games_remaining == '0'
+    steps:
+      - name: Trigger season discovery matrix (weekly, Sundays)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          dow=$(date -u +%u)   # 1=Mon … 7=Sun
+          if [ "$dow" != "7" ]; then
+            echo "Not Sunday (dow=$dow) — skipping weekly season discovery."
+            exit 0
+          fi
+          echo "Sunday — triggering discover-seasons-matrix."
+          gh workflow run discover-seasons-matrix.yml \
+            --repo "${{ github.repository }}" \
+            --field "all_players=false" \
+            --field "concurrency=25"
+
   retrigger:
     needs: crawl
     runs-on: ubuntu-latest

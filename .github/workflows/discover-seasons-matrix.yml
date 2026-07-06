@@ -1,19 +1,21 @@
 # .github/workflows/discover-seasons-matrix.yml
 name: Discover Seasons (Matrix)
 
-# Sharded season DETECTION. 256 MAP jobs (max-parallel 20) each probe ONE shard's
-# players' publicProfileTeams on a SEPARATE runner IP — the per-IP CloudFront WAF
-# never collectively trips (the standalone single-IP sweep walls; this does not).
-# Each MAP job emits its discovered seasons as an artifact; one REDUCE job merges all
-# artifacts, resolves grades, and writes data/sports-index.json once.
+# Sharded, RESUMABLE season DETECTION. Each MAP job gets a FRESH runner IP and
+# burst-probes its shard's players until the per-IP WAF wall hits, then stops dead
+# (no grind) and saves a cursor. One REDUCE job merges discoveries + cursors, writes
+# sports-index.json + data/discover-progress.json once, then self-triggers the NEXT
+# run — targeting only the shards not yet fully swept — on fresh runners, until every
+# shard is done or the run cap is hit.
 
 on:
-  schedule:
-    - cron: '0 17 * * 6'   # 03:00 AEST Sunday — after the standalone slot, weekly
+  # No own schedule: nightly-crawl.yml triggers this AFTER the crawl drains (weekly,
+  # Sundays) so discovery never overlaps the crawl's writes. Manual dispatch below is
+  # for the one-time historical backlog pass (all_players=true) and ad-hoc re-runs.
   workflow_dispatch:
     inputs:
       shards:
-        description: 'JSON array of specific shards (e.g. ["00","1a","ff"]). Empty = all 256.'
+        description: 'JSON array of specific shards (e.g. ["00","1a","ff"]). Empty = all 256 not already done for this mode.'
         required: false
         default: '[]'
         type: string
@@ -23,54 +25,106 @@ on:
         default: false
         type: boolean
       concurrency:
-        description: 'AIMD concurrency cap per shard (default 25)'
+        description: 'Burst batch size per shard (default 25 — matches the proven clean-run length before a fresh IP walls)'
         required: false
         default: '25'
         type: string
       dry_run:
-        description: 'Report only — reduce writes/commits nothing'
+        description: 'Report only — reduce writes/commits nothing (progress file also not saved, so this cannot self-trigger meaningfully)'
         required: false
         default: false
         type: boolean
+      run_number:
+        description: 'Auto-incremented by self-trigger — do not set manually'
+        required: false
+        default: '1'
+        type: string
 
 permissions:
   contents: write
+  actions: write
+
+env:
+  MAX_RUNS: 40   # safety cap on self-trigger chain length (256 shards / ~sizeable per-run progress)
 
 jobs:
   generate-shards:
     runs-on: ubuntu-latest
     outputs:
-      shards: ${{ steps.gen.outputs.shards }}
+      targets: ${{ steps.gen.outputs.targets }}
     steps:
+      # Need the progress file to (a) auto-skip shards already done for this mode and
+      # (b) seed each shard's starting cursor.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            data/discover-progress.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - id: gen
         env:
           INPUT_SHARDS: ${{ inputs.shards }}
+          ALL_PLAYERS: ${{ inputs.all_players }}
         run: |
-          shards=$(python3 - << 'PYEOF'
+          python3 - << 'PYEOF'
           import json, os, re
+
           raw = (os.environ.get('INPUT_SHARDS') or '').strip()
           inner = raw[1:-1] if raw.startswith('[') and raw.endswith(']') else raw
           toks = [t.strip().strip('"').strip("'") for t in inner.split(',')]
           toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
+          explicit = bool(toks)
           if not toks:
               toks = [format(i, '02x') for i in range(256)]
-          print(json.dumps(toks))
+
+          mode = 'all' if os.environ.get('ALL_PLAYERS') == 'true' else 'current'
+
+          progress = {}
+          try:
+              with open('data/discover-progress.json') as f:
+                  progress = json.load(f)
+          except FileNotFoundError:
+              pass
+          except Exception as e:
+              print(f'  Warning: could not parse progress file: {e}')
+
+          targets = []
+          skipped_done = 0
+          for shard in toks:
+              p = progress.get(shard)
+              cursor = 0
+              if p and p.get('mode') == mode:
+                  if p.get('done'):
+                      # Auto-skip shards already fully swept for this mode — UNLESS the
+                      # caller explicitly named shards (then honour the request as-is).
+                      if not explicit:
+                          skipped_done += 1
+                          continue
+                      cursor = 0   # explicit re-request of a done shard = fresh resweep
+                  else:
+                      cursor = p.get('cursor', 0)
+              targets.append({'shard': shard, 'cursor': cursor})
+
+          print(f'  Targets: {len(targets)}  (skipped {skipped_done} already-done shards for mode={mode})')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write(f'targets={json.dumps(targets)}\n')
           PYEOF
-          )
-          n=$(printf '%s' "$shards" | python3 -c 'import sys,json; print(len(json.load(sys.stdin)))')
-          echo "Shards selected: $n"
-          echo "shards=$shards" >> $GITHUB_OUTPUT
 
   map:
     needs: generate-shards
+    if: needs.generate-shards.outputs.targets != '[]'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 20
       matrix:
-        shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
+        target: ${{ fromJson(needs.generate-shards.outputs.targets) }}
     steps:
-      # Only this shard's players + the index. NOT the other 255 shards.
+      # Only this shard's players + a snapshot of the index (to skip already-known
+      # seasons). NOT the other 255 shards, not the progress file (workflow already
+      # resolved this shard's cursor into the matrix).
       - uses: actions/checkout@v4
         with:
           ref: main
@@ -78,7 +132,7 @@ jobs:
           sparse-checkout: |
             scripts/discover-seasons.js
             data/sports-index.json
-            players/${{ matrix.shard }}
+            players/${{ matrix.target.shard }}
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -86,9 +140,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Probe shard ${{ matrix.shard }}
+      - name: Burst-probe shard ${{ matrix.target.shard }} from cursor ${{ matrix.target.cursor }}
         run: |
-          ARGS="--shard=${{ matrix.shard }} --out=discover-shard-${{ matrix.shard }}.json --concurrency=${{ inputs.concurrency }}"
+          ARGS="--shard=${{ matrix.target.shard }} --cursor=${{ matrix.target.cursor }} --out=discover-shard-${{ matrix.target.shard }}.json --concurrency=${{ inputs.concurrency }}"
           if [ "${{ inputs.all_players }}" = "true" ]; then ARGS="$ARGS --all-players"; fi
           node scripts/discover-seasons.js $ARGS
 
@@ -96,17 +150,20 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: discover-shard-${{ matrix.shard }}
-          path: discover-shard-${{ matrix.shard }}.json
+          name: discover-shard-${{ matrix.target.shard }}
+          path: discover-shard-${{ matrix.target.shard }}.json
           if-no-files-found: ignore
           retention-days: 1
 
   reduce:
-    needs: map
+    needs: [generate-shards, map]
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    # Writes sports-index.json — serialise against nightly-crawl / weekly-indexes.
+    timeout-minutes: 60
+    outputs:
+      undone_shards: ${{ steps.reduce.outputs.undone_shards }}
+    # Writes sports-index.json + discover-progress.json — serialise against
+    # nightly-crawl / weekly-indexes (and any other source-tier writer).
     concurrency:
       group: data-write
       cancel-in-progress: false
@@ -125,6 +182,7 @@ jobs:
           sparse-checkout: |
             scripts/discover-seasons.js
             data/sports-index.json
+            data/discover-progress.json
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -137,8 +195,40 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge, resolve grades, write index
+      - name: Merge, resolve grades, write index + progress
+        id: reduce
         run: |
           ARGS="--reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          node scripts/discover-seasons.js $ARGS
+          node scripts/discover-seasons.js $ARGS | tee /tmp/reduce.log
+
+          undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
+          if [ -z "$undone" ]; then undone='[]'; fi
+          echo "undone_shards=$undone" >> $GITHUB_OUTPUT
+          echo "Undone shards this sweep: $undone"
+
+  retrigger:
+    needs: reduce
+    if: always() && inputs.dry_run != 'true' && needs.reduce.outputs.undone_shards != '[]' && needs.reduce.outputs.undone_shards != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-trigger for remaining shards (fresh runners)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          UNDONE: ${{ needs.reduce.outputs.undone_shards }}
+        run: |
+          run_number=${{ inputs.run_number }}
+          if [ "$run_number" -ge "$MAX_RUNS" ]; then
+            echo "⚠️ Reached $MAX_RUNS-run cap with shards still undone: $UNDONE"
+            echo "Re-trigger manually to continue (progress is saved — nothing lost)."
+            exit 0
+          fi
+          next_run=$(( run_number + 1 ))
+          echo "↺ $(echo "$UNDONE" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))') shard(s) not yet done — re-triggering run $next_run on fresh runners."
+          gh workflow run discover-seasons-matrix.yml \
+            --repo "${{ github.repository }}" \
+            --field "shards=${UNDONE}" \
+            --field "all_players=${{ inputs.all_players }}" \
+            --field "concurrency=${{ inputs.concurrency }}" \
+            --field "dry_run=false" \
+            --field "run_number=${next_run}"
