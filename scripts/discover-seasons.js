@@ -166,14 +166,16 @@ async function ensureSession() {
   await refreshSession();
 }
 
-// Fleet-wide WAF backoff: when any worker sees `blocked` (CloudFront rate WAF,
-// per-IP), pause the WHOLE fleet so the rate window recovers, then resume + retry.
-// (publicProfileTeams is friendly — 200 concurrent tested clean — so at the default
-// concurrency this should never fire; it's a safety net against a stampede.)
-let pauseUntil = 0;
-async function waitIfPaused() {
-  while (Date.now() < pauseUntil) await sleep(Math.min(3000, pauseUntil - Date.now() + 1));
-}
+// CloudFront block handling. fetch-profile-stats.js STOPS on a block, because
+// hammering the quota'd ProfileSeasonStatistics endpoint trips a per-IP WAF *wall*
+// (and it writes each player file as it goes, so stopping loses nothing). The blocks
+// seen on publicProfileTeams are the opposite — isolated and self-clearing — so we
+// back off THIS worker only and retry; the fleet keeps moving. We NEVER refresh the
+// session on a block: a per-IP WAF block is not a bad cookie (matches the "never
+// refresh on a 403" rule in fetch-profile-stats.js) and refreshing only adds load.
+// Backoff uses the house idiom (attempt * 5s) with jitter.
+const BLOCK_RETRIES    = 3;
+const BLOCK_BACKOFF_MS = 5000;
 
 // ─── Typed probe: publicProfileTeams → { kind, teams } ────────────────────────
 async function probeTeams(profileID) {
@@ -418,7 +420,7 @@ async function main() {
 
   // season.id -> season metadata captured from the discovering registration
   const newSeasonMeta = new Map();
-  let probed = 0, blocked = 0, privateN = 0, errors = 0;
+  let probed = 0, blocked = 0, privateN = 0, errors = 0, blockSkipped = 0;
   // Saturation signal (default mode): probes since the last NEW season. Converted
   // from the old consecutive-streak so it's order-independent under concurrency —
   // it's a "have we stopped finding anything" heuristic, not a strict run.
@@ -431,18 +433,15 @@ async function main() {
   if (!ONE_UUID) console.log(`  Probing ${total} player(s) with concurrency ${effConc}…`);
 
   await runPool(probeList, effConc, async (uuid) => {
-    await waitIfPaused();
     let r = await probeTeams(uuid);
-    if (r.kind === 'blocked') {
-      // WAF hit: pause the WHOLE fleet, refresh, wait out the pause, retry once.
-      blocked++;
-      pauseUntil = Date.now() + 90000;
-      sessionCookie = null;
-      await ensureSession();
-      await waitIfPaused();
+    let tries = 0;
+    while (r.kind === 'blocked' && tries < BLOCK_RETRIES) {
+      blocked++;                 // count each block event — the WAF-pressure signal
+      tries++;
+      await sleep(tries * BLOCK_BACKOFF_MS + Math.floor(Math.random() * 1000));  // 5s,10s,15s + jitter, THIS worker only
       r = await probeTeams(uuid);
-      if (r.kind === 'blocked') { probed++; probesSinceNew++; return; }   // give up on this one
     }
+    if (r.kind === 'blocked') { blocked++; blockSkipped++; probed++; probesSinceNew++; return; }  // exhausted — skip, leave for next run
     probed++;
 
     if (ONE_UUID) {
@@ -497,7 +496,7 @@ async function main() {
       const rate = el > 0 ? probed / el : 0;
       const remaining = Math.max(0, total - probed);
       const etaMin = rate > 0 ? remaining / rate / 60 : 0;
-      console.log(`    …probed ${probed}/${total} (${(100 * probed / total).toFixed(1)}%)  new=${newSeasonMeta.size}  private=${privateN}  err=${errors}  blocked=${blocked}  rate=${rate.toFixed(1)}/s  eta≈${etaMin.toFixed(1)}m`);
+      console.log(`    …probed ${probed}/${total} (${(100 * probed / total).toFixed(1)}%)  new=${newSeasonMeta.size}  private=${privateN}  err=${errors}  blocked=${blocked}  skip=${blockSkipped}  rate=${rate.toFixed(1)}/s  eta≈${etaMin.toFixed(1)}m`);
     }
   }, () => stop);
 
@@ -586,7 +585,7 @@ async function main() {
   console.log(`  Players probed        : ${probed}`);
   console.log(`  Elapsed / throughput  : ${((Date.now() - startTime) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - startTime) / 1000)).toFixed(1)}/s  (concurrency ${effConc})`);
   console.log(`  Private / error       : ${privateN} / ${errors}`);
-  console.log(`  Blocked (paced)       : ${blocked}`);
+  console.log(`  Block events / skipped: ${blocked} / ${blockSkipped}`);
   console.log(`  New seasons found     : ${newSeasonMeta.size}`);
   console.log(`  Seasons created       : ${created}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
   console.log(`  Removed stubs         : ${removed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
