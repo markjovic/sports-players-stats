@@ -1,0 +1,144 @@
+# .github/workflows/discover-seasons-matrix.yml
+name: Discover Seasons (Matrix)
+
+# Sharded season DETECTION. 256 MAP jobs (max-parallel 20) each probe ONE shard's
+# players' publicProfileTeams on a SEPARATE runner IP — the per-IP CloudFront WAF
+# never collectively trips (the standalone single-IP sweep walls; this does not).
+# Each MAP job emits its discovered seasons as an artifact; one REDUCE job merges all
+# artifacts, resolves grades, and writes data/sports-index.json once.
+
+on:
+  schedule:
+    - cron: '0 17 * * 6'   # 03:00 AEST Sunday — after the standalone slot, weekly
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: 'JSON array of specific shards (e.g. ["00","1a","ff"]). Empty = all 256.'
+        required: false
+        default: '[]'
+        type: string
+      all_players:
+        description: 'Backlog pass: probe EVERY player (not just current-season). Slower, thorough.'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'AIMD concurrency cap per shard (default 25)'
+        required: false
+        default: '25'
+        type: string
+      dry_run:
+        description: 'Report only — reduce writes/commits nothing'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  generate-shards:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.gen.outputs.shards }}
+    steps:
+      - id: gen
+        env:
+          INPUT_SHARDS: ${{ inputs.shards }}
+        run: |
+          shards=$(python3 - << 'PYEOF'
+          import json, os, re
+          raw = (os.environ.get('INPUT_SHARDS') or '').strip()
+          inner = raw[1:-1] if raw.startswith('[') and raw.endswith(']') else raw
+          toks = [t.strip().strip('"').strip("'") for t in inner.split(',')]
+          toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
+          if not toks:
+              toks = [format(i, '02x') for i in range(256)]
+          print(json.dumps(toks))
+          PYEOF
+          )
+          n=$(printf '%s' "$shards" | python3 -c 'import sys,json; print(len(json.load(sys.stdin)))')
+          echo "Shards selected: $n"
+          echo "shards=$shards" >> $GITHUB_OUTPUT
+
+  map:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
+    steps:
+      # Only this shard's players + the index. NOT the other 255 shards.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/discover-seasons.js
+            data/sports-index.json
+            players/${{ matrix.shard }}
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Probe shard ${{ matrix.shard }}
+        run: |
+          ARGS="--shard=${{ matrix.shard }} --out=discover-shard-${{ matrix.shard }}.json --concurrency=${{ inputs.concurrency }}"
+          if [ "${{ inputs.all_players }}" = "true" ]; then ARGS="$ARGS --all-players"; fi
+          node scripts/discover-seasons.js $ARGS
+
+      - name: Upload shard discoveries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: discover-shard-${{ matrix.shard }}
+          path: discover-shard-${{ matrix.shard }}.json
+          if-no-files-found: ignore
+          retention-days: 1
+
+  reduce:
+    needs: map
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    # Writes sports-index.json — serialise against nightly-crawl / weekly-indexes.
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    steps:
+      - name: Download all shard discoveries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: discover-shard-*
+          path: /tmp/discoveries/
+          merge-multiple: false
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/discover-seasons.js
+            data/sports-index.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge, resolve grades, write index
+        run: |
+          ARGS="--reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/discover-seasons.js $ARGS

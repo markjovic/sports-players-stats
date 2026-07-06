@@ -2,8 +2,9 @@
 name: Discover Seasons (detection)
 
 on:
-  schedule:
-    - cron: '0 16 * * 6'   # 02:00 AEST Sunday (Sat 16:00 UTC) — offset from weekly-indexes (Sun 02:00 UTC)
+  # No schedule: the sharded matrix (discover-seasons-matrix.yml) is the production
+  # path. This standalone remains for manual/adhoc use (--uuid seed, diagnostics) —
+  # its whole-population sweep runs on ONE IP and walls at scale, so don't schedule it.
   workflow_dispatch:
     inputs:
       uuid:
@@ -27,7 +28,7 @@ on:
         default: false
         type: boolean
       concurrency:
-        description: 'Parallel probe workers (default 25; endpoint tested clean to 200)'
+        description: 'AIMD concurrency cap (default 25; self-tunes down on the WAF wall)'
         required: false
         default: '25'
         type: string
