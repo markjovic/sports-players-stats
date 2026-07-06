@@ -10,7 +10,14 @@
 //
 // One player suffices to discover a season (it appears on every re-registered
 // player), so the probe shuffles current-season players and STOPS once it has
-// gone --stop-after consecutive players with no new season — self-terminating.
+// gone --stop-after probes with no new season — self-terminating.
+//
+// Probing is CONCURRENT (bounded worker pool). publicProfileTeams has no per-call
+// quota (only ProfileSeasonStatistics does — see playhq_api_reference.md) and tested
+// clean to 200 concurrent, so the only real constraint is the ~30-40min cookie TTL:
+// the session is refreshed on AGE (concurrency-safe via the promise lock), not on
+// call count. Default --concurrency=25 sweeps ~220k current-season players in well
+// under the workflow's 5h cap (sequential took ~21h). --uuid forces concurrency 1.
 //
 // Session/WAF machinery, headers, cookie handling and doFetch are copied verbatim
 // from fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
@@ -19,6 +26,7 @@
 // Modes:
 //   node scripts/discover-seasons.js                 # scan current-season players, self-terminating
 //   node scripts/discover-seasons.js --full          # probe every current-season player (no early stop)
+//   node scripts/discover-seasons.js --concurrency=N # parallel probe workers (default 25)
 //   node scripts/discover-seasons.js --limit=200     # probe at most N (cheap test run)
 //   node scripts/discover-seasons.js --uuid=<id>     # manual escape hatch: probe one player
 //   node scripts/discover-seasons.js --dry-run       # report only, no writes/commit
@@ -46,6 +54,7 @@ const FULL      = args.includes('--full');
 const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uuid=', '').trim() || null;
 const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
 const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=')); return a ? parseInt(a.split('=')[1], 10) : 1000; })();
+const CONCURRENCY = (() => { const a = args.find(a => a.startsWith('--concurrency=')); const n = a ? parseInt(a.split('=')[1], 10) : 25; return Number.isFinite(n) && n > 0 ? n : 25; })();
 const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
@@ -63,6 +72,7 @@ const HEADERS_BASE = {
 // ─── Session cookie (promise-locked; copied verbatim from fetch-profile-stats) ─
 let sessionCookie  = null;
 let sessionPromise = null;
+let sessionAt      = 0;   // epoch ms of the last successful refresh (for age-based refresh)
 const COOKIE_QUERIES = [
   { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
   { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
@@ -86,6 +96,7 @@ async function refreshSession() {
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
         if (!tier || !session || !sub) continue;
         sessionCookie = `${tier}; ${session}; ${sub}`;
+        sessionAt = Date.now();
         sessionPromise = null;
         console.log(`  Session refreshed (attempt ${attempt})`);
         return;
@@ -144,14 +155,29 @@ const Q_TEAM_FIXTURE = {
 }`,
 };
 
-const REFRESH_EVERY = 30;   // publicProfileTeams shares the profile endpoint's per-session quota
-let requestCount = 0;
+// Session freshness: publicProfileTeams has NO per-call quota (only
+// ProfileSeasonStatistics does — playhq_api_reference.md); the sole constraint is
+// the ~30-40min cookie TTL. So refresh on AGE, not on call count — which is also
+// concurrency-safe, because the promise lock in refreshSession coalesces every
+// simultaneous refresh into a single fetch. 15min keeps us well inside the TTL.
+const SESSION_MAX_AGE_MS = 15 * 60 * 1000;
+async function ensureSession() {
+  if (sessionCookie && (Date.now() - sessionAt) < SESSION_MAX_AGE_MS) return;
+  await refreshSession();
+}
+
+// Fleet-wide WAF backoff: when any worker sees `blocked` (CloudFront rate WAF,
+// per-IP), pause the WHOLE fleet so the rate window recovers, then resume + retry.
+// (publicProfileTeams is friendly — 200 concurrent tested clean — so at the default
+// concurrency this should never fire; it's a safety net against a stampede.)
+let pauseUntil = 0;
+async function waitIfPaused() {
+  while (Date.now() < pauseUntil) await sleep(Math.min(3000, pauseUntil - Date.now() + 1));
+}
 
 // ─── Typed probe: publicProfileTeams → { kind, teams } ────────────────────────
 async function probeTeams(profileID) {
-  if (!sessionCookie) await refreshSession();
-  requestCount++;
-  if (requestCount % REFRESH_EVERY === 0) { sessionCookie = null; await refreshSession(); }
+  await ensureSession();
 
   const body = { ...Q_PROFILE_TEAMS, variables: { profileID } };
   let res;
@@ -178,8 +204,7 @@ async function probeTeams(profileID) {
 
 // ─── discoverSeason → grades + competition (for creating the season entry) ────
 async function discoverSeason(seasonID) {
-  if (!sessionCookie) await refreshSession();
-  requestCount++;
+  await ensureSession();
   const body = { ...Q_DISCOVER_SEASON, variables: { id: seasonID } };
   let res;
   try {
@@ -218,6 +243,22 @@ function currentSeasonPlayers(activeSids) {
 
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Bounded worker pool: `concurrency` workers pull from a shared cursor until the
+// list is drained or shouldStop() returns true (in which case workers finish their
+// in-flight item, then exit — no half-processed state).
+async function runPool(items, concurrency, worker, shouldStop = () => false) {
+  let cursor = 0;
+  const runner = async () => {
+    while (true) {
+      if (shouldStop()) return;
+      const i = cursor++;
+      if (i >= items.length) return;
+      await worker(items[i], i);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.max(1, concurrency) }, runner));
+}
 
 function gitCommit(msg) {
   if (DRY_RUN) return;
@@ -377,24 +418,41 @@ async function main() {
 
   // season.id -> season metadata captured from the discovering registration
   const newSeasonMeta = new Map();
-  let probed = 0, blocked = 0, privateN = 0, errors = 0, noNewStreak = 0;
+  let probed = 0, blocked = 0, privateN = 0, errors = 0;
+  // Saturation signal (default mode): probes since the last NEW season. Converted
+  // from the old consecutive-streak so it's order-independent under concurrency —
+  // it's a "have we stopped finding anything" heuristic, not a strict run.
+  let probesSinceNew = 0, stop = false;
 
-  for (const uuid of probeList) {
+  const total = probeList.length;
+  const effConc = ONE_UUID ? 1 : CONCURRENCY;
+  const startTime = Date.now();
+  let lastLog = startTime;
+  if (!ONE_UUID) console.log(`  Probing ${total} player(s) with concurrency ${effConc}…`);
+
+  await runPool(probeList, effConc, async (uuid) => {
+    await waitIfPaused();
     let r = await probeTeams(uuid);
     if (r.kind === 'blocked') {
-      // Pace like the crawl: wait, refresh, retry once; then skip.
+      // WAF hit: pause the WHOLE fleet, refresh, wait out the pause, retry once.
       blocked++;
-      await sleep(90000);
-      sessionCookie = null; await refreshSession();
+      pauseUntil = Date.now() + 90000;
+      sessionCookie = null;
+      await ensureSession();
+      await waitIfPaused();
       r = await probeTeams(uuid);
+      if (r.kind === 'blocked') { probed++; probesSinceNew++; return; }   // give up on this one
     }
     probed++;
+
     if (ONE_UUID) {
       console.log(`  ── probe result for ${uuid}: kind=${r.kind} ──`);
       for (const reg of (r.teams || [])) {
         console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
       }
     }
+
+    let foundNew = false;
     if (r.kind === 'private') { privateN++; }
     else if (r.kind === 'error') { errors++; }
     else if (r.kind === 'ok') {
@@ -404,7 +462,8 @@ async function main() {
           console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
         }
       }
-      let foundNew = false;
+      // Sync block (no await): the has/set below is atomic per worker, so two
+      // workers can't double-create or double-log the same new season.
       for (const reg of r.teams) {
         const se = reg.season;
         if (!se?.id) continue;
@@ -418,20 +477,42 @@ async function main() {
         foundNew = true;
         console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
       }
-      noNewStreak = foundNew ? 0 : noNewStreak + 1;
+    }
+    probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
+
+    // Self-terminating (default mode only): once STOP_AFTER probes have passed with
+    // no new season, stop dispatching. runPool lets in-flight workers finish, so a
+    // few extra probes may land after this — harmless.
+    if (!FULL && !ONE_UUID && probesSinceNew >= STOP_AFTER && !stop) {
+      stop = true;
+      console.log(`  ⏹ ${STOP_AFTER} probes with no new season — stopping dispatch (probed ${probed}).`);
     }
 
-    if (!FULL && !ONE_UUID && noNewStreak >= STOP_AFTER) {
-      console.log(`  ⏹ ${STOP_AFTER} consecutive players with no new season — stopping (probed ${probed}).`);
-      break;
+    // Verbose progress: rate + ETA heartbeat every 15s (the check-and-set is sync,
+    // so exactly one worker prints per interval).
+    const now = Date.now();
+    if (!ONE_UUID && now - lastLog >= 15000) {
+      lastLog = now;
+      const el = (now - startTime) / 1000;
+      const rate = el > 0 ? probed / el : 0;
+      const remaining = Math.max(0, total - probed);
+      const etaMin = rate > 0 ? remaining / rate / 60 : 0;
+      console.log(`    …probed ${probed}/${total} (${(100 * probed / total).toFixed(1)}%)  new=${newSeasonMeta.size}  private=${privateN}  err=${errors}  blocked=${blocked}  rate=${rate.toFixed(1)}/s  eta≈${etaMin.toFixed(1)}m`);
     }
-    if (probed % 200 === 0) console.log(`    …probed ${probed}  new=${newSeasonMeta.size}  blocked=${blocked}`);
-  }
+  }, () => stop);
 
-  // Create entries for each new season (discoverSeason for full grade list)
+  // Create entries for each new season. Resolve full grade lists (discoverSeason)
+  // CONCURRENTLY into a side map, then apply the index writes sequentially so the
+  // shared mutation order is deterministic.
   let created = 0, removed = 0;
-  for (const [sid, meta] of newSeasonMeta) {
-    const ds = await discoverSeason(sid);
+  const metaEntries = [...newSeasonMeta];
+  const dsById = new Map();
+  if (metaEntries.length) {
+    console.log(`\n  Resolving grades for ${metaEntries.length} new season(s) (concurrency ${CONCURRENCY})…`);
+    await runPool(metaEntries, CONCURRENCY, async ([sid]) => { dsById.set(sid, await discoverSeason(sid)); });
+  }
+  for (const [sid, meta] of metaEntries) {
+    const ds = dsById.get(sid);
     if (ds?.blocked) { console.log(`  ⛔ blocked resolving grades for ${sid} — leaving for next run`); continue; }
     const grades = (ds?.grades || []).map(g => ({ id: g.id, name: g.name, age: g.age?.name, gender: g.gender?.name }));
     const compName = ds?.competition?.name || meta.compName || '';
@@ -481,9 +562,11 @@ async function main() {
   let refreshed = 0;
   const graceless = Object.values(index.seasons).filter(se => se.locked === false && (se.grades || []).length === 0);
   if (graceless.length) {
-    console.log(`\n  Grade-refresh: ${graceless.length} active grade-less season(s) to re-check`);
+    console.log(`\n  Grade-refresh: ${graceless.length} active grade-less season(s) to re-check (concurrency ${CONCURRENCY})`);
+    const refreshDs = new Map();
+    await runPool(graceless, CONCURRENCY, async (se) => { refreshDs.set(se.id, await discoverSeason(se.id)); });
     for (const se of graceless) {
-      const ds = await discoverSeason(se.id);
+      const ds = refreshDs.get(se.id);
       if (ds?.blocked) { console.log(`  ⛔ blocked refreshing ${se.id}`); continue; }
       const g = (ds?.grades || []).map(x => ({ id: x.id, name: x.name, age: x.age?.name, gender: x.gender?.name }));
       if (g.length > 0) {
@@ -501,6 +584,7 @@ async function main() {
 
   console.log('\n─── Summary ─────────────────────────────────────────────────────────');
   console.log(`  Players probed        : ${probed}`);
+  console.log(`  Elapsed / throughput  : ${((Date.now() - startTime) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - startTime) / 1000)).toFixed(1)}/s  (concurrency ${effConc})`);
   console.log(`  Private / error       : ${privateN} / ${errors}`);
   console.log(`  Blocked (paced)       : ${blocked}`);
   console.log(`  New seasons found     : ${newSeasonMeta.size}`);
