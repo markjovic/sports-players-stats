@@ -26,6 +26,11 @@ on:
         required: false
         default: false
         type: boolean
+      concurrency:
+        description: 'Parallel probe workers (default 25; endpoint tested clean to 200)'
+        required: false
+        default: '25'
+        type: string
 
 # Shares the data-write group so it can never run while nightly-crawl or
 # weekly-indexes are writing player files or the index (avoids -X ours clobber).
@@ -62,4 +67,5 @@ jobs:
           if [ "${{ inputs.full }}" = "true" ]; then ARGS="$ARGS --full"; fi
           if [ -n "${{ inputs.limit }}" ]; then ARGS="$ARGS --limit=${{ inputs.limit }}"; fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.concurrency }}" ]; then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           node scripts/discover-seasons.js $ARGS
