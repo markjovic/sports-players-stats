@@ -12,24 +12,34 @@
 // player), so the probe shuffles current-season players and STOPS once it has
 // gone --stop-after probes with no new season — self-terminating.
 //
-// Probing is CONCURRENT (bounded worker pool). publicProfileTeams has no per-call
-// quota (only ProfileSeasonStatistics does — see playhq_api_reference.md) and tested
-// clean to 200 concurrent, so the only real constraint is the ~30-40min cookie TTL:
-// the session is refreshed on AGE (concurrency-safe via the promise lock), not on
-// call count. Default --concurrency=25 sweeps ~220k current-season players in well
-// under the workflow's 5h cap (sequential took ~21h). --uuid forces concurrency 1.
+// Probing uses ADAPTIVE CONCURRENCY (AIMD) — the codebase's main-API rate control.
+// publicProfileTeams runs fast (~54/s) but api.playhq.com enforces a per-IP RATE wall
+// that a fixed high concurrency trips (25 walled it: a block-storm, then recovery). So
+// we run in batches and self-tune: cut concurrency to 60% + back off on any blocked
+// batch, drop the cap after 3 consecutive, recover +10 after 2 clean — and RE-QUEUE
+// blocked players (never dropped). --concurrency sets the CAP (ceiling). The session is
+// refreshed on AGE (~30-40min TTL; concurrency-safe via the promise lock), never on a
+// block (a per-IP WAF block is not a bad cookie — matches fetch-profile-stats.js).
 //
 // Session/WAF machinery, headers, cookie handling and doFetch are copied verbatim
 // from fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
 // playhq_api_reference.md — never write PlayHQ queries from scratch.
 //
 // Modes:
-//   node scripts/discover-seasons.js                 # scan current-season players, self-terminating
-//   node scripts/discover-seasons.js --full          # probe every current-season player (no early stop)
-//   node scripts/discover-seasons.js --concurrency=N # parallel probe workers (default 25)
-//   node scripts/discover-seasons.js --limit=200     # probe at most N (cheap test run)
+//   node scripts/discover-seasons.js --shard=XX --out=discover-shard-XX.json
+//                                                    # MAP: probe one shard, emit artifact
+//   node scripts/discover-seasons.js --reduce --in=<dir>
+//                                                    # REDUCE: merge shard artifacts → index
+//   node scripts/discover-seasons.js --all-players   # (map) probe every player, not just current-season
+//   node scripts/discover-seasons.js                 # legacy standalone (single-IP; walls at scale)
+//   node scripts/discover-seasons.js --concurrency=N # AIMD concurrency cap (default 25)
 //   node scripts/discover-seasons.js --uuid=<id>     # manual escape hatch: probe one player
 //   node scripts/discover-seasons.js --dry-run       # report only, no writes/commit
+//
+// PRODUCTION PATH is the sharded matrix (discover-seasons-matrix.yml): 256 shard MAP
+// jobs run in parallel across separate runner IPs (the per-IP WAF never collectively
+// trips), each emits its discovered seasons; one REDUCE job merges + resolves grades +
+// writes sports-index.json once. The legacy standalone path is kept for --uuid / adhoc.
 //
 // Piece 2 (roster-fill, triggered when new seasons are found) is a separate step.
 
@@ -55,6 +65,14 @@ const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uui
 const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
 const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=')); return a ? parseInt(a.split('=')[1], 10) : 1000; })();
 const CONCURRENCY = (() => { const a = args.find(a => a.startsWith('--concurrency=')); const n = a ? parseInt(a.split('=')[1], 10) : 25; return Number.isFinite(n) && n > 0 ? n : 25; })();
+// Matrix roles: --shard=XX (+ --out=path) is the MAP role (probe one shard's players,
+// emit discovered seasons as a JSON artifact — no index write). --reduce (+ --in=dir)
+// is the REDUCE role (merge all shard artifacts, resolve grades, write sports-index).
+const SHARD       = (args.find(a => a.startsWith('--shard=')) || '').replace('--shard=', '').trim().toLowerCase() || null;
+const OUT_FILE    = (args.find(a => a.startsWith('--out=')) || '').replace('--out=', '').trim() || null;
+const REDUCE      = args.includes('--reduce');
+const IN_DIR      = (args.find(a => a.startsWith('--in=')) || '').replace('--in=', '').trim() || null;
+const ALL_PLAYERS = args.includes('--all-players');   // backlog pass: probe every player, not just current-season
 const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
@@ -166,16 +184,22 @@ async function ensureSession() {
   await refreshSession();
 }
 
-// CloudFront block handling. fetch-profile-stats.js STOPS on a block, because
-// hammering the quota'd ProfileSeasonStatistics endpoint trips a per-IP WAF *wall*
-// (and it writes each player file as it goes, so stopping loses nothing). The blocks
-// seen on publicProfileTeams are the opposite — isolated and self-clearing — so we
-// back off THIS worker only and retry; the fleet keeps moving. We NEVER refresh the
-// session on a block: a per-IP WAF block is not a bad cookie (matches the "never
-// refresh on a 403" rule in fetch-profile-stats.js) and refreshing only adds load.
-// Backoff uses the house idiom (attempt * 5s) with jitter.
-const BLOCK_RETRIES    = 3;
-const BLOCK_BACKOFF_MS = 5000;
+// Adaptive concurrency (AIMD) — the codebase's known main-API rate control. The WAF
+// on api.playhq.com is a per-IP RATE wall: publicProfileTeams runs clean (~54/s) then
+// trips a sustained block-storm, then recovers. Fixed concurrency either wastes
+// throughput (too low) or walls and drops players (too high). AIMD self-tunes: run in
+// batches, and on any block in a batch cut concurrency to 60% + back off (attempts×5s),
+// dropping the cap by 5 after 3 consecutive blocked batches; recover +10 after 2 clean
+// batches. Blocked items are RE-QUEUED, never dropped. --concurrency sets the CAP (the
+// ceiling AIMD tunes under); we start at the cap and let it settle.
+// NB: the documented main-API start of 500 is for a different op; publicProfileTeams
+// walls far lower (25 tripped it), so the operator-supplied cap is the real ceiling.
+const AIMD_MIN         = 3;
+const AIMD_CUT         = 0.6;
+const AIMD_RECOVER     = 10;
+const AIMD_CLEAN_BATCHES_TO_RECOVER = 2;
+const AIMD_BLOCKED_BATCHES_TO_LOWER_CAP = 3;
+const AIMD_BACKOFF_MS  = 5000;   // × consecutive blocked batches
 
 // ─── Typed probe: publicProfileTeams → { kind, teams } ────────────────────────
 async function probeTeams(profileID) {
@@ -196,6 +220,7 @@ async function probeTeams(profileID) {
     if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { kind: 'blocked' };
     return { kind: 'private' };   // application 403 — inaccessible profile
   }
+  if (res.status === 429 || res.status === 503) return { kind: 'blocked' };   // rate signal → AIMD backs off
   if (!res.ok) return { kind: 'error', err: new Error(`HTTP ${res.status}`) };
 
   let json; try { json = await res.json(); } catch (err) { return { kind: 'error', err }; }
@@ -228,13 +253,15 @@ async function discoverSeason(seasonID) {
 }
 
 // ─── Build current-season player list from player files ───────────────────────
-function currentSeasonPlayers(activeSids) {
+function currentSeasonPlayers(activeSids, { shard = null, allPlayers = false } = {}) {
   const uuids = [];
-  const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+  const prefixes = shard ? [shard] : fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
   for (const prefix of prefixes) {
     const dir = path.join(PLAYERS_DIR, prefix);
+    if (!fs.existsSync(dir)) continue;
     for (const fname of fs.readdirSync(dir).filter(f => f.endsWith('.json') && !f.startsWith('index'))) {
       const uuid = fname.replace('.json', '');
+      if (allPlayers) { uuids.push(uuid); continue; }   // backlog pass: every player, incl. historical-only
       let player; try { player = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch { continue; }
       const inActive = (player.seasons || []).some(s => activeSids.has(s.sid) && (s.regs || []).length > 0);
       if (inActive) uuids.push(uuid);
@@ -246,20 +273,57 @@ function currentSeasonPlayers(activeSids) {
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// Bounded worker pool: `concurrency` workers pull from a shared cursor until the
-// list is drained or shouldStop() returns true (in which case workers finish their
-// in-flight item, then exit — no half-processed state).
-async function runPool(items, concurrency, worker, shouldStop = () => false) {
-  let cursor = 0;
-  const runner = async () => {
-    while (true) {
-      if (shouldStop()) return;
-      const i = cursor++;
-      if (i >= items.length) return;
-      await worker(items[i], i);
+// AIMD batch runner. `worker(item)` does its own side-effects/counting and returns
+// { blocked: true } if the call hit the rate wall (→ item is RE-QUEUED, never dropped)
+// or { blocked: false } otherwise. `opts.cap` is the concurrency ceiling; the runner
+// starts there, cuts on blocked batches, recovers on clean ones. `opts.progress()` may
+// return an extra string for the heartbeat; `opts.shouldStop()` ends dispatch early
+// (in-flight batch still completes). Returns { done, blockedEvents }.
+async function aimdRun(items, label, worker, opts = {}) {
+  const cap0 = Math.max(AIMD_MIN, opts.cap || 25);
+  const shouldStop = opts.shouldStop || (() => false);
+  const progress   = opts.progress   || (() => '');
+  const queue = items.slice();          // requeued (blocked) items go to the back
+  let cap = cap0, concurrency = cap0;
+  let consecutiveBlocked = 0, cleanBatches = 0;
+  let done = 0, blockedEvents = 0;
+  const startTime = Date.now();
+  let lastLog = startTime;
+
+  while (queue.length && !shouldStop()) {
+    const batch = queue.splice(0, concurrency);
+    const results = await Promise.allSettled(batch.map(async (item) => {
+      const r = await worker(item);
+      return { item, blocked: !!(r && r.blocked) };
+    }));
+
+    let batchBlocked = 0;
+    for (const res of results) {
+      if (res.status === 'fulfilled' && res.value.blocked) { batchBlocked++; blockedEvents++; queue.push(res.value.item); }
+      else done++;   // fulfilled-clean, or rejected (worker guards its own errors)
     }
-  };
-  await Promise.all(Array.from({ length: Math.max(1, concurrency) }, runner));
+
+    if (batchBlocked > 0) {
+      consecutiveBlocked++; cleanBatches = 0;
+      concurrency = Math.max(AIMD_MIN, Math.floor(concurrency * AIMD_CUT));
+      if (consecutiveBlocked >= AIMD_BLOCKED_BATCHES_TO_LOWER_CAP) { cap = Math.max(AIMD_MIN, cap - 5); concurrency = Math.min(concurrency, cap); }
+      const backoff = Math.min(60000, consecutiveBlocked * AIMD_BACKOFF_MS);
+      console.log(`    ⚠ ${label}: ${batchBlocked} blocked in batch → conc=${concurrency} cap=${cap}, backoff ${backoff / 1000}s (queued ${queue.length})`);
+      await sleep(backoff);
+    } else {
+      consecutiveBlocked = 0; cleanBatches++;
+      if (cleanBatches >= AIMD_CLEAN_BATCHES_TO_RECOVER) { concurrency = Math.min(cap, concurrency + AIMD_RECOVER); cleanBatches = 0; }
+    }
+
+    const now = Date.now();
+    if (now - lastLog >= 15000) {
+      lastLog = now;
+      const el = (now - startTime) / 1000, rate = el > 0 ? done / el : 0;
+      const eta = rate > 0 ? queue.length / rate / 60 : 0;
+      console.log(`    …${label} ${done} done, ${queue.length} queued  conc=${concurrency} cap=${cap}  rate=${rate.toFixed(1)}/s eta≈${eta.toFixed(1)}m${progress()}`);
+    }
+  }
+  return { done, blockedEvents };
 }
 
 function gitCommit(msg) {
@@ -305,9 +369,118 @@ function doFetch(url, options) {
   });
 }
 
+// ─── Apply: resolve grades for discovered seasons, create/stub entries, grade- ──
+//     refresh grade-less active seasons, write sports-index.json. Shared by the
+//     REDUCE role and the legacy standalone path.
+async function applyDiscoveries(index, newSeasonMeta, stats = {}) {
+  const { probed = 0, blockedEvents = 0, privateN = 0, errors = 0, t0 = Date.now() } = stats;
+
+  // Resolve full grade lists (discoverSeason) with AIMD into a side map, then apply
+  // index writes sequentially so the shared mutation order is deterministic.
+  let created = 0, removed = 0;
+  const metaEntries = [...newSeasonMeta];
+  const dsById = new Map();
+  if (metaEntries.length) {
+    console.log(`\n  Resolving grades for ${metaEntries.length} new season(s) (AIMD cap ${CONCURRENCY})…`);
+    await aimdRun(metaEntries, 'grade-resolve', async ([sid]) => {
+      const ds = await discoverSeason(sid);
+      if (ds && ds.blocked) return { blocked: true };   // requeue — don't store a block as the result
+      dsById.set(sid, ds);
+      return { blocked: false };
+    }, { cap: CONCURRENCY });
+  }
+  for (const [sid, meta] of metaEntries) {
+    const ds = dsById.get(sid);
+    if (ds?.blocked) { console.log(`  ⛔ blocked resolving grades for ${sid} — leaving for next run`); continue; }
+    const grades = (ds?.grades || []).map(g => ({ id: g.id, name: g.name, age: g.age?.name, gender: g.gender?.name }));
+    const compName = ds?.competition?.name || meta.compName || '';
+    const orgName  = ds?.competition?.organisation?.name || meta.orgName || '';
+    const base = {
+      id: sid,
+      name: ds?.name || meta.name,
+      fullName: `${compName} — ${ds?.name || meta.name}`,
+      compName,
+      compId: ds?.competition?.id || meta.compId,
+      orgName,
+      orgId: ds?.competition?.organisation?.id || meta.orgId,
+      tenant: 'bv',
+      // Capture the season-status signal at creation — the future auto-lock wants it.
+      status: meta.status || null,
+      startDate: meta.startDate || null,
+      endDate: meta.endDate || null,
+    };
+    if (grades.length > 0) {
+      // Crawlable season — the nightly crawl will fetch these grades.
+      index.seasons[sid] = { ...base, grades, locked: false, addedAt: new Date().toISOString() };
+      created++;
+      console.log(`  + created ${sid}  ${base.fullName}  (${grades.length} grades)`);
+    } else if (meta.status === 'COMPLETED') {
+      // Historical (COMPLETED) season with 0 grades and nothing fetchable via any
+      // route. Record that it EXISTS as a 'removed' stub, locked so the crawl and all
+      // locked-filtering scripts skip it. ONLY historical seasons are stubbed.
+      index.seasons[sid] = { ...base, grades: [], locked: true, removed: true, addedAt: new Date().toISOString() };
+      removed++;
+      console.log(`  ~ removed ${sid}  ${base.fullName}  (COMPLETED, 0 grades — recorded, not crawlable)`);
+    } else {
+      // UPCOMING/ACTIVE with 0 grades: legitimate pre-allocation state. Create it LIVE —
+      // the grade-refresh step below populates grades once PlayHQ allocates them. Err
+      // toward live for any non-COMPLETED status so a real upcoming season is never
+      // wrongly locked.
+      index.seasons[sid] = { ...base, grades: [], locked: false, addedAt: new Date().toISOString() };
+      created++;
+      console.log(`  + created ${sid}  ${base.fullName}  (0 grades — pre-allocation, live; awaiting grades)`);
+    }
+  }
+
+  // ── Grade-refresh: fill grades for active seasons still at grades:[] ──────────
+  let refreshed = 0;
+  const graceless = Object.values(index.seasons).filter(se => se.locked === false && (se.grades || []).length === 0);
+  if (graceless.length) {
+    console.log(`\n  Grade-refresh: ${graceless.length} active grade-less season(s) to re-check (AIMD cap ${CONCURRENCY})`);
+    const refreshDs = new Map();
+    await aimdRun(graceless, 'grade-refresh', async (se) => {
+      const ds = await discoverSeason(se.id);
+      if (ds && ds.blocked) return { blocked: true };   // requeue
+      refreshDs.set(se.id, ds);
+      return { blocked: false };
+    }, { cap: CONCURRENCY });
+    for (const se of graceless) {
+      const ds = refreshDs.get(se.id);
+      if (ds?.blocked) { console.log(`  ⛔ blocked refreshing ${se.id}`); continue; }
+      const g = (ds?.grades || []).map(x => ({ id: x.id, name: x.name, age: x.age?.name, gender: x.gender?.name }));
+      if (g.length > 0) {
+        se.grades = g;
+        refreshed++;
+        console.log(`  ↻ ${se.id}  ${se.fullName || se.name}  now has ${g.length} grades`);
+      }
+    }
+  }
+
+  if ((created > 0 || removed > 0 || refreshed > 0) && !DRY_RUN) {
+    fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
+    gitCommit(`discover-seasons: ${created} new + ${removed} removed + ${refreshed} grade-refreshed`);
+  }
+
+  console.log('\n─── Summary ─────────────────────────────────────────────────────────');
+  if (probed) {
+    console.log(`  Players probed        : ${probed}`);
+    console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
+    console.log(`  Private / error       : ${privateN} / ${errors}`);
+    console.log(`  Block events (requeued): ${blockedEvents}`);
+  }
+  console.log(`  New seasons resolved  : ${newSeasonMeta.size}`);
+  console.log(`  Seasons created       : ${created}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  console.log(`  Removed stubs         : ${removed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  console.log(`  Grade-refreshed       : ${refreshed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  if (newSeasonMeta.size > created + removed) console.log(`  (${newSeasonMeta.size - created - removed} left for next run — grade resolution blocked)`);
+  console.log('─'.repeat(60));
+  if (created > 0) console.log('\nNext: roster-fill (piece 2) should run for the new season(s) until round 1 completes.');
+  console.log('Done.');
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
-  console.log(`\ndiscover-seasons.js${DRY_RUN ? '  [dry-run]' : ''}${FULL ? '  [full]' : ''}${ONE_UUID ? `  [uuid=${ONE_UUID}]` : ''}`);
+  console.log(`\ndiscover-seasons.js${DRY_RUN ? '  [dry-run]' : ''}${FULL ? '  [full]' : ''}${SHARD ? `  [shard=${SHARD}]` : ''}${REDUCE ? '  [reduce]' : ''}${ALL_PLAYERS ? '  [all-players]' : ''}${ONE_UUID ? `  [uuid=${ONE_UUID}]` : ''}`);
   console.log('─'.repeat(60));
 
   const index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
@@ -315,6 +488,34 @@ async function main() {
   const knownSeasonIds = new Set(Object.keys(index.seasons));
   const activeSids = new Set(Object.values(index.seasons).filter(s => !s.locked).map(s => s.id));
   console.log(`  Known seasons: ${knownSeasonIds.size}  (active: ${activeSids.size})`);
+
+  // ── REDUCE role: merge all shard artifacts, resolve grades, write the index ───
+  if (REDUCE) {
+    if (!IN_DIR || !fs.existsSync(IN_DIR)) { console.error(`--reduce needs --in=<dir> (got ${IN_DIR})`); process.exit(1); }
+    const t0 = Date.now();
+    const files = [];
+    // artifacts may be nested one level (download-artifact makes a dir per artifact)
+    const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.startsWith('discover-shard-') && e.name.endsWith('.json')) files.push(p);
+    } };
+    walk(IN_DIR);
+    console.log(`  Reduce: reading ${files.length} shard artifact(s) from ${IN_DIR}`);
+    const merged = new Map();
+    let shardProbed = 0, shardBlocked = 0;
+    for (const f of files) {
+      let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
+      shardProbed += a.probed || 0; shardBlocked += a.blockedEvents || 0;
+      for (const [sid, meta] of Object.entries(a.discovered || {})) {
+        if (knownSeasonIds.has(sid) || merged.has(sid)) continue;   // re-check against current index
+        merged.set(sid, meta);
+      }
+    }
+    console.log(`  Merged ${merged.size} distinct new season(s) across shards (shards probed ${shardProbed}, block events ${shardBlocked}).`);
+    await applyDiscoveries(index, merged, { t0 });
+    return;
+  }
 
   // ── Diagnostic: does a 0-grade season have games via the TEAM path? ─────────
   // Answers removed vs legacy vs recoverable: if discoverTeamFixture returns real
@@ -412,36 +613,30 @@ async function main() {
   if (ONE_UUID) {
     probeList = [ONE_UUID];
   } else {
-    console.log('  Scanning player files for current-season players…');
-    probeList = shuffle(currentSeasonPlayers(activeSids));
+    const scope = SHARD ? `shard ${SHARD}` : 'all shards';
+    console.log(`  Scanning ${scope} for ${ALL_PLAYERS ? 'ALL players' : 'current-season players'}…`);
+    probeList = shuffle(currentSeasonPlayers(activeSids, { shard: SHARD, allPlayers: ALL_PLAYERS }));
     if (Number.isFinite(LIMIT)) probeList = probeList.slice(0, LIMIT);
-    console.log(`  Current-season players to probe: ${probeList.length}${FULL ? '' : `  (stop-after ${STOP_AFTER} with no new season)`}`);
+    // Shard/full sweeps run to completion; stop-after only self-terminates a
+    // whole-population standalone run (no shard, not full).
+    const selfTerminating = !FULL && !SHARD;
+    console.log(`  Players to probe: ${probeList.length}${selfTerminating ? `  (stop-after ${STOP_AFTER} with no new season)` : ''}`);
   }
 
   // season.id -> season metadata captured from the discovering registration
   const newSeasonMeta = new Map();
-  let probed = 0, blocked = 0, privateN = 0, errors = 0, blockSkipped = 0;
-  // Saturation signal (default mode): probes since the last NEW season. Converted
-  // from the old consecutive-streak so it's order-independent under concurrency —
-  // it's a "have we stopped finding anything" heuristic, not a strict run.
+  let probed = 0, privateN = 0, errors = 0;
+  // Saturation signal (default mode): probes since the last NEW season. Order-
+  // independent — a "have we stopped finding anything" heuristic, not a strict run.
   let probesSinceNew = 0, stop = false;
 
   const total = probeList.length;
-  const effConc = ONE_UUID ? 1 : CONCURRENCY;
-  const startTime = Date.now();
-  let lastLog = startTime;
-  if (!ONE_UUID) console.log(`  Probing ${total} player(s) with concurrency ${effConc}…`);
+  const t0 = Date.now();
+  if (!ONE_UUID) console.log(`  Probing ${total} player(s), AIMD cap ${ONE_UUID ? 1 : CONCURRENCY}…`);
 
-  await runPool(probeList, effConc, async (uuid) => {
-    let r = await probeTeams(uuid);
-    let tries = 0;
-    while (r.kind === 'blocked' && tries < BLOCK_RETRIES) {
-      blocked++;                 // count each block event — the WAF-pressure signal
-      tries++;
-      await sleep(tries * BLOCK_BACKOFF_MS + Math.floor(Math.random() * 1000));  // 5s,10s,15s + jitter, THIS worker only
-      r = await probeTeams(uuid);
-    }
-    if (r.kind === 'blocked') { blocked++; blockSkipped++; probed++; probesSinceNew++; return; }  // exhausted — skip, leave for next run
+  const probeStats = await aimdRun(probeList, 'probe', async (uuid) => {
+    const r = await probeTeams(uuid);
+    if (r.kind === 'blocked') return { blocked: true };   // requeued by aimdRun — not counted, not dropped
     probed++;
 
     if (ONE_UUID) {
@@ -461,8 +656,8 @@ async function main() {
           console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
         }
       }
-      // Sync block (no await): the has/set below is atomic per worker, so two
-      // workers can't double-create or double-log the same new season.
+      // Sync block (no await): has/set is atomic per worker, so two workers can't
+      // double-create or double-log the same new season.
       for (const reg of r.teams) {
         const se = reg.season;
         if (!se?.id) continue;
@@ -479,121 +674,41 @@ async function main() {
     }
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
 
-    // Self-terminating (default mode only): once STOP_AFTER probes have passed with
-    // no new season, stop dispatching. runPool lets in-flight workers finish, so a
-    // few extra probes may land after this — harmless.
-    if (!FULL && !ONE_UUID && probesSinceNew >= STOP_AFTER && !stop) {
+    // Self-terminating (whole-population standalone run only): once STOP_AFTER probes
+    // have passed with no new season, stop dispatching. Shard/full sweeps run fully.
+    if (!FULL && !ONE_UUID && !SHARD && probesSinceNew >= STOP_AFTER && !stop) {
       stop = true;
       console.log(`  ⏹ ${STOP_AFTER} probes with no new season — stopping dispatch (probed ${probed}).`);
     }
+    return { blocked: false };
+  }, {
+    cap: ONE_UUID ? 1 : CONCURRENCY,
+    shouldStop: () => stop,
+    progress: () => `  new=${newSeasonMeta.size} priv=${privateN} err=${errors}`,
+  });
+  const blockedEvents = probeStats.blockedEvents;
 
-    // Verbose progress: rate + ETA heartbeat every 15s (the check-and-set is sync,
-    // so exactly one worker prints per interval).
-    const now = Date.now();
-    if (!ONE_UUID && now - lastLog >= 15000) {
-      lastLog = now;
-      const el = (now - startTime) / 1000;
-      const rate = el > 0 ? probed / el : 0;
-      const remaining = Math.max(0, total - probed);
-      const etaMin = rate > 0 ? remaining / rate / 60 : 0;
-      console.log(`    …probed ${probed}/${total} (${(100 * probed / total).toFixed(1)}%)  new=${newSeasonMeta.size}  private=${privateN}  err=${errors}  blocked=${blocked}  skip=${blockSkipped}  rate=${rate.toFixed(1)}/s  eta≈${etaMin.toFixed(1)}m`);
-    }
-  }, () => stop);
-
-  // Create entries for each new season. Resolve full grade lists (discoverSeason)
-  // CONCURRENTLY into a side map, then apply the index writes sequentially so the
-  // shared mutation order is deterministic.
-  let created = 0, removed = 0;
-  const metaEntries = [...newSeasonMeta];
-  const dsById = new Map();
-  if (metaEntries.length) {
-    console.log(`\n  Resolving grades for ${metaEntries.length} new season(s) (concurrency ${CONCURRENCY})…`);
-    await runPool(metaEntries, CONCURRENCY, async ([sid]) => { dsById.set(sid, await discoverSeason(sid)); });
-  }
-  for (const [sid, meta] of metaEntries) {
-    const ds = dsById.get(sid);
-    if (ds?.blocked) { console.log(`  ⛔ blocked resolving grades for ${sid} — leaving for next run`); continue; }
-    const grades = (ds?.grades || []).map(g => ({ id: g.id, name: g.name, age: g.age?.name, gender: g.gender?.name }));
-    const compName = ds?.competition?.name || meta.compName || '';
-    const orgName  = ds?.competition?.organisation?.name || meta.orgName || '';
-    const base = {
-      id: sid,
-      name: ds?.name || meta.name,
-      fullName: `${compName} — ${ds?.name || meta.name}`,
-      compName,
-      compId: ds?.competition?.id || meta.compId,
-      orgName,
-      orgId: ds?.competition?.organisation?.id || meta.orgId,
-      tenant: 'bv',
-      // Capture the season-status signal at creation — the future auto-lock wants it.
-      status: meta.status || null,
-      startDate: meta.startDate || null,
-      endDate: meta.endDate || null,
-    };
-    if (grades.length > 0) {
-      // Crawlable season — the nightly crawl will fetch these grades.
-      index.seasons[sid] = { ...base, grades, locked: false, addedAt: new Date().toISOString() };
-      created++;
-      console.log(`  + created ${sid}  ${base.fullName}  (${grades.length} grades)`);
-    } else if (meta.status === 'COMPLETED') {
-      // Historical (COMPLETED) season with 0 grades and nothing fetchable via any
-      // route (discoverSeason, team fixtures, or our own files). We can't populate
-      // it — record that it EXISTS as a 'removed' stub, locked so the crawl and all
-      // locked-filtering scripts skip it. ONLY historical seasons are stubbed.
-      index.seasons[sid] = { ...base, grades: [], locked: true, removed: true, addedAt: new Date().toISOString() };
-      removed++;
-      console.log(`  ~ removed ${sid}  ${base.fullName}  (COMPLETED, 0 grades — recorded, not crawlable)`);
-    } else {
-      // UPCOMING/ACTIVE with 0 grades: legitimate pre-allocation state (season
-      // created before grades assigned). Create it LIVE — the grade-refresh step
-      // below will populate grades once PlayHQ allocates them. Err toward live for
-      // any non-COMPLETED status so a real upcoming season is never wrongly locked.
-      index.seasons[sid] = { ...base, grades: [], locked: false, addedAt: new Date().toISOString() };
-      created++;
-      console.log(`  + created ${sid}  ${base.fullName}  (0 grades — pre-allocation, live; awaiting grades)`);
-    }
+  // ── MAP role: emit discovered seasons as an artifact; DON'T resolve grades or ──
+  //    write the index (the reduce role does that once, deduped across shards).
+  if (SHARD && OUT_FILE) {
+    const discovered = Object.fromEntries(newSeasonMeta);
+    const artifact = { shard: SHARD, discovered, probed, blockedEvents, private: privateN, errors, at: new Date().toISOString() };
+    fs.writeFileSync(OUT_FILE, JSON.stringify(artifact));
+    console.log('\n─── Shard summary ───────────────────────────────────────────────────');
+    console.log(`  Shard                 : ${SHARD}`);
+    console.log(`  Players probed        : ${probed}`);
+    console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
+    console.log(`  Private / error       : ${privateN} / ${errors}`);
+    console.log(`  Block events (requeued): ${blockedEvents}`);
+    console.log(`  New seasons discovered: ${newSeasonMeta.size}`);
+    console.log(`  Artifact              : ${OUT_FILE}`);
+    console.log('─'.repeat(60));
+    console.log('Done.');
+    return;
   }
 
-  // ── Grade-refresh: fill grades for active seasons still at grades:[] ──────────
-  // The crawl reads grades statically from the index, so a grades:[] live season
-  // (pre-allocation, or created grade-less on a prior run) would never be crawled
-  // until its grades appear here. Cheap: only touches grade-less active seasons.
-  let refreshed = 0;
-  const graceless = Object.values(index.seasons).filter(se => se.locked === false && (se.grades || []).length === 0);
-  if (graceless.length) {
-    console.log(`\n  Grade-refresh: ${graceless.length} active grade-less season(s) to re-check (concurrency ${CONCURRENCY})`);
-    const refreshDs = new Map();
-    await runPool(graceless, CONCURRENCY, async (se) => { refreshDs.set(se.id, await discoverSeason(se.id)); });
-    for (const se of graceless) {
-      const ds = refreshDs.get(se.id);
-      if (ds?.blocked) { console.log(`  ⛔ blocked refreshing ${se.id}`); continue; }
-      const g = (ds?.grades || []).map(x => ({ id: x.id, name: x.name, age: x.age?.name, gender: x.gender?.name }));
-      if (g.length > 0) {
-        se.grades = g;
-        refreshed++;
-        console.log(`  ↻ ${se.id}  ${se.fullName || se.name}  now has ${g.length} grades`);
-      }
-    }
-  }
-
-  if ((created > 0 || removed > 0 || refreshed > 0) && !DRY_RUN) {
-    fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
-    gitCommit(`discover-seasons: ${created} new + ${removed} removed + ${refreshed} grade-refreshed`);
-  }
-
-  console.log('\n─── Summary ─────────────────────────────────────────────────────────');
-  console.log(`  Players probed        : ${probed}`);
-  console.log(`  Elapsed / throughput  : ${((Date.now() - startTime) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - startTime) / 1000)).toFixed(1)}/s  (concurrency ${effConc})`);
-  console.log(`  Private / error       : ${privateN} / ${errors}`);
-  console.log(`  Block events / skipped: ${blocked} / ${blockSkipped}`);
-  console.log(`  New seasons found     : ${newSeasonMeta.size}`);
-  console.log(`  Seasons created       : ${created}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
-  console.log(`  Removed stubs         : ${removed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
-  console.log(`  Grade-refreshed       : ${refreshed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
-  if (newSeasonMeta.size > created + removed) console.log(`  (${newSeasonMeta.size - created - removed} left for next run — grade resolution blocked)`);
-  console.log('─'.repeat(60));
-  if (created > 0) console.log('\nNext: roster-fill (piece 2) should run for the new season(s) until round 1 completes.');
-  console.log('Done.');
+  // Legacy standalone path (no shard/reduce): resolve + write in one process.
+  await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0 });
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
