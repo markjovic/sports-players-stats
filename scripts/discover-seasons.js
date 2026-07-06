@@ -12,34 +12,45 @@
 // player), so the probe shuffles current-season players and STOPS once it has
 // gone --stop-after probes with no new season — self-terminating.
 //
-// Probing uses ADAPTIVE CONCURRENCY (AIMD) — the codebase's main-API rate control.
-// publicProfileTeams runs fast (~54/s) but api.playhq.com enforces a per-IP RATE wall
-// that a fixed high concurrency trips (25 walled it: a block-storm, then recovery). So
-// we run in batches and self-tune: cut concurrency to 60% + back off on any blocked
-// batch, drop the cap after 3 consecutive, recover +10 after 2 clean — and RE-QUEUE
-// blocked players (never dropped). --concurrency sets the CAP (ceiling). The session is
-// refreshed on AGE (~30-40min TTL; concurrency-safe via the promise lock), never on a
-// block (a per-IP WAF block is not a bad cookie — matches fetch-profile-stats.js).
+// Probing uses TWO strategies depending on mode:
+//   SHARD mode (matrix MAP role) — BURST + CURSOR. Proven: a fresh runner IP probes
+//   clean (~17/s) for ~300+ calls, then the per-IP WAF wall drops it to a crawl that
+//   doesn't recover on that IP. So we probe in fixed batches and STOP DEAD at the
+//   first walled batch — no backoff, no grind — saving a cursor (players/total for
+//   this shard) into an artifact. The matrix workflow's control loop re-triggers
+//   with a FRESH runner (fresh IP) to continue from the cursor, until the shard is
+//   fully swept. This is faster and cleaner than grinding a spent IP, and should
+//   eliminate most of the elevated error rate seen when a wall degrades responses.
+//   Whole-population mode (standalone --full / --uuid, single IP, no shard) — ADAPTIVE
+//   CONCURRENCY (AIMD): can't rotate IPs on one runner, so it backs off and grinds
+//   through instead (cuts to 60% + backs off on a blocked batch, recovers on clean
+//   ones, re-queues blocked items — never drops them). Kept for manual/adhoc use.
+// Session is refreshed on AGE (~30-40min TTL; concurrency-safe via the promise lock),
+// never on a block (a per-IP WAF block is not a bad cookie — matches fetch-profile-
+// stats.js). Headers, cookie handling and doFetch are copied verbatim from
+// fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
+// playhq_api_reference.md — never write PlayHQ queries from scratch.
 //
 // Session/WAF machinery, headers, cookie handling and doFetch are copied verbatim
 // from fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
 // playhq_api_reference.md — never write PlayHQ queries from scratch.
 //
 // Modes:
-//   node scripts/discover-seasons.js --shard=XX --out=discover-shard-XX.json
-//                                                    # MAP: probe one shard, emit artifact
+//   node scripts/discover-seasons.js --shard=XX --cursor=N --out=discover-shard-XX.json
+//                                                    # MAP: burst-probe from cursor, stop dead at wall
 //   node scripts/discover-seasons.js --reduce --in=<dir>
-//                                                    # REDUCE: merge shard artifacts → index
+//                                                    # REDUCE: merge artifacts + cursors → index + progress
 //   node scripts/discover-seasons.js --all-players   # (map) probe every player, not just current-season
-//   node scripts/discover-seasons.js                 # legacy standalone (single-IP; walls at scale)
-//   node scripts/discover-seasons.js --concurrency=N # AIMD concurrency cap (default 25)
+//   node scripts/discover-seasons.js                 # legacy standalone (single-IP AIMD; walls at scale)
+//   node scripts/discover-seasons.js --concurrency=N # burst batch size (shard) / AIMD cap (standalone), default 25
 //   node scripts/discover-seasons.js --uuid=<id>     # manual escape hatch: probe one player
 //   node scripts/discover-seasons.js --dry-run       # report only, no writes/commit
 //
-// PRODUCTION PATH is the sharded matrix (discover-seasons-matrix.yml): 256 shard MAP
-// jobs run in parallel across separate runner IPs (the per-IP WAF never collectively
-// trips), each emits its discovered seasons; one REDUCE job merges + resolves grades +
-// writes sports-index.json once. The legacy standalone path is kept for --uuid / adhoc.
+// PRODUCTION PATH is the sharded matrix (discover-seasons-matrix.yml): shard MAP jobs
+// each get a fresh runner IP, burst-probe until walled, save a cursor; a control loop
+// self-triggers remaining (not-yet-done) shards on fresh runners until all 256 are
+// swept; one REDUCE job (per trigger) merges + resolves grades + writes the index and
+// progress file. The legacy standalone path is kept for --uuid / adhoc.
 //
 // Piece 2 (roster-fill, triggered when new seasons are found) is a separate step.
 
@@ -54,6 +65,7 @@ const { execSync } = require('child_process');
 const ROOT        = path.join(__dirname, '..');
 const API_URL     = 'https://api.playhq.com/graphql';
 const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
+const PROGRESS_FILE = path.join(ROOT, 'data', 'discover-progress.json');   // per-shard cursor/done (matrix resume state)
 const PLAYERS_DIR = path.join(ROOT, 'players');
 
 // ─── CLI ──────────────────────────────────────────────────────────────────────
@@ -73,6 +85,7 @@ const OUT_FILE    = (args.find(a => a.startsWith('--out=')) || '').replace('--ou
 const REDUCE      = args.includes('--reduce');
 const IN_DIR      = (args.find(a => a.startsWith('--in=')) || '').replace('--in=', '').trim() || null;
 const ALL_PLAYERS = args.includes('--all-players');   // backlog pass: probe every player, not just current-season
+const CURSOR       = (() => { const a = args.find(a => a.startsWith('--cursor=')); const n = a ? parseInt(a.split('=')[1], 10) : 0; return Number.isFinite(n) && n >= 0 ? n : 0; })();
 const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
@@ -267,6 +280,7 @@ function currentSeasonPlayers(activeSids, { shard = null, allPlayers = false } =
       if (inActive) uuids.push(uuid);
     }
   }
+  uuids.sort();   // deterministic order — required for the shard cursor to mean the same thing across runs
   return uuids;
 }
 
@@ -326,10 +340,43 @@ async function aimdRun(items, label, worker, opts = {}) {
   return { done, blockedEvents };
 }
 
-function gitCommit(msg) {
+// Burst runner for the SHARD/cursor matrix mode. Unlike aimdRun (which backs off and
+// grinds through a wall on the SAME IP), this assumes each matrix run gets a FRESH
+// runner IP — proven clean to ~300+ probes before walling (shard 00: 17/s clean, then
+// flatlined at ~2.5/s for the rest of the run). So instead of waiting out a spent IP's
+// budget, we probe in fixed batches at `concurrency` and STOP DEAD at the first batch
+// containing any block — no retry, no backoff. The whole blocked batch is left
+// unprocessed (simplest safe accounting: cursor only advances past fully-clean
+// batches). The workflow's control loop re-triggers with a fresh runner to continue
+// from the saved cursor. Returns { completed, wallHit }; `worker(item)` does its own
+// side-effects/counting per successful item and is not called for a blocked item.
+async function burstRun(items, concurrency, worker) {
+  let completed = 0;
+  for (let start = 0; start < items.length; start += concurrency) {
+    const batch = items.slice(start, start + concurrency);
+    const results = await Promise.allSettled(batch.map(async (item) => {
+      const r = await probeTeams(item);
+      return { item, r };
+    }));
+    const anyBlocked = results.some(res => res.status === 'fulfilled' && res.value.r.kind === 'blocked');
+    if (anyBlocked) return { completed, wallHit: true };
+    for (const res of results) {
+      if (res.status === 'fulfilled') worker(res.value.item, res.value.r);
+      // probeTeams() catches its own network/parse errors internally (returns
+      // {kind:'error'}), so a REJECTED promise here shouldn't happen in practice.
+      // If it somehow does, that single item is silently missed this sweep (cursor
+      // still advances past the batch) — a future full resweep would catch it.
+      else console.log(`  ⚠ unexpected rejection probing ${res.reason?.item || '?'}`);
+    }
+    completed = start + batch.length;
+  }
+  return { completed, wallHit: false };
+}
+
+function gitCommit(msg, extraPaths = []) {
   if (DRY_RUN) return;
   try {
-    execSync('git add data/sports-index.json', { cwd: ROOT, stdio: 'pipe' });
+    execSync(`git add data/sports-index.json ${extraPaths.join(' ')}`.trim(), { cwd: ROOT, stdio: 'pipe' });
     const staged = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
     execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
@@ -372,7 +419,7 @@ function doFetch(url, options) {
 // ─── Apply: resolve grades for discovered seasons, create/stub entries, grade- ──
 //     refresh grade-less active seasons, write sports-index.json. Shared by the
 //     REDUCE role and the legacy standalone path.
-async function applyDiscoveries(index, newSeasonMeta, stats = {}) {
+async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPaths = []) {
   const { probed = 0, blockedEvents = 0, privateN = 0, errors = 0, t0 = Date.now() } = stats;
 
   // Resolve full grade lists (discoverSeason) with AIMD into a side map, then apply
@@ -456,9 +503,9 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}) {
     }
   }
 
-  if ((created > 0 || removed > 0 || refreshed > 0) && !DRY_RUN) {
-    fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
-    gitCommit(`discover-seasons: ${created} new + ${removed} removed + ${refreshed} grade-refreshed`);
+  if ((created > 0 || removed > 0 || refreshed > 0 || extraCommitPaths.length > 0) && !DRY_RUN) {
+    if (created > 0 || removed > 0 || refreshed > 0) fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
+    gitCommit(`discover-seasons: ${created} new + ${removed} removed + ${refreshed} grade-refreshed`, extraCommitPaths);
   }
 
   console.log('\n─── Summary ─────────────────────────────────────────────────────────');
@@ -502,18 +549,36 @@ async function main() {
     } };
     walk(IN_DIR);
     console.log(`  Reduce: reading ${files.length} shard artifact(s) from ${IN_DIR}`);
+
+    let progress = {};
+    if (fs.existsSync(PROGRESS_FILE)) { try { progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); } catch { progress = {}; } }
+
     const merged = new Map();
-    let shardProbed = 0, shardBlocked = 0;
+    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [];
     for (const f of files) {
       let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
-      shardProbed += a.probed || 0; shardBlocked += a.blockedEvents || 0;
+      shardProbed += a.probed || 0;
+      if (a.wallHit) wallHits++;
       for (const [sid, meta] of Object.entries(a.discovered || {})) {
         if (knownSeasonIds.has(sid) || merged.has(sid)) continue;   // re-check against current index
         merged.set(sid, meta);
       }
+      // Progress uses (shard, mode) — switching current<->all-players resets the cursor
+      // for that mode's own tracking (they're independent sweeps over different lists).
+      if (a.shard) {
+        progress[a.shard] = { mode: a.mode, cursor: a.cursor, total: a.total, done: a.done, updatedAt: a.at };
+        if (a.done) doneCount++; else undoneShards.push(a.shard);
+      }
     }
-    console.log(`  Merged ${merged.size} distinct new season(s) across shards (shards probed ${shardProbed}, block events ${shardBlocked}).`);
-    await applyDiscoveries(index, merged, { t0 });
+    console.log(`  Merged ${merged.size} distinct new season(s) across ${files.length} shard(s) (probed ${shardProbed}, wall hits ${wallHits}).`);
+    console.log(`  Shard progress: ${doneCount} done, ${undoneShards.length} not yet complete this sweep.`);
+
+    if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
+    await applyDiscoveries(index, merged, { t0 }, [PROGRESS_FILE]);
+
+    // Machine-readable line for the workflow's control step to parse without
+    // re-reading progress itself (it still can — this is just a convenience).
+    console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
     return;
   }
 
@@ -608,18 +673,78 @@ async function main() {
     return;
   }
 
-  // Build probe list
+  // ── SHARD/MAP role: cursor-resumable burst probe. Stops DEAD at the first wall (no ──
+  //    grind, no backoff) — the workflow's control loop re-triggers with a fresh
+  //    runner IP to continue from the saved cursor. Emits an artifact; does NOT
+  //    resolve grades or write the index (the reduce role does that once).
+  if (SHARD && OUT_FILE) {
+    console.log(`  Scanning shard ${SHARD} for ${ALL_PLAYERS ? 'ALL players' : 'current-season players'}…`);
+    const full = currentSeasonPlayers(activeSids, { shard: SHARD, allPlayers: ALL_PLAYERS });
+    const total = full.length;
+    const toProbe = full.slice(CURSOR);
+    console.log(`  Shard total: ${total}  cursor: ${CURSOR}  remaining: ${toProbe.length}  burst concurrency: ${CONCURRENCY}`);
+
+    const newSeasonMeta = new Map();
+    let probed = 0, privateN = 0, errors = 0;
+    const t0 = Date.now();
+
+    const { completed, wallHit } = await burstRun(toProbe, CONCURRENCY, (uuid, r) => {
+      probed++;
+      if (r.kind === 'private') { privateN++; return; }
+      if (r.kind === 'error') { errors++; return; }
+      if (r.kind === 'ok') {
+        for (const reg of r.teams) {
+          const se = reg.season;
+          if (!se?.id) continue;
+          if (knownSeasonIds.has(se.id) || newSeasonMeta.has(se.id)) continue;
+          newSeasonMeta.set(se.id, {
+            name: se.name, startDate: se.startDate, endDate: se.endDate,
+            status: se.status?.value || null,
+            compId: se.competition?.id, compName: se.competition?.name,
+            orgId: se.competition?.organisation?.id, orgName: se.competition?.organisation?.name,
+          });
+          console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
+        }
+      }
+    });
+
+    const newCursor = CURSOR + completed;
+    const done = newCursor >= total;
+    if (wallHit) console.log(`  ⛔ wall hit after ${completed} clean this run — stopping dead (cursor ${CURSOR} → ${newCursor}/${total}). Fresh runner will resume.`);
+    else if (done) console.log(`  ✔ shard exhausted (cursor ${newCursor}/${total}).`);
+
+    const discovered = Object.fromEntries(newSeasonMeta);
+    const artifact = {
+      shard: SHARD, mode: ALL_PLAYERS ? 'all' : 'current',
+      discovered, cursor: newCursor, total, done, wallHit,
+      probed, private: privateN, errors, at: new Date().toISOString(),
+    };
+    fs.writeFileSync(OUT_FILE, JSON.stringify(artifact));
+
+    console.log('\n─── Shard summary ───────────────────────────────────────────────────');
+    console.log(`  Shard                 : ${SHARD}`);
+    console.log(`  Cursor                : ${CURSOR} → ${newCursor} / ${total}  (done=${done})`);
+    console.log(`  Players probed        : ${probed}`);
+    console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
+    console.log(`  Private / error       : ${privateN} / ${errors}`);
+    console.log(`  New seasons discovered: ${newSeasonMeta.size}`);
+    console.log(`  Artifact              : ${OUT_FILE}`);
+    console.log('─'.repeat(60));
+    console.log('Done.');
+    return;
+  }
+
+  // ── Whole-population path (standalone: --uuid, --full, adhoc). Single-IP AIMD ──
+  //    grind-through-the-wall — fine for manual/diagnostic use, but NOT how the
+  //    matrix probes shards (see the SHARD branch above for the fresh-IP strategy).
   let probeList;
   if (ONE_UUID) {
     probeList = [ONE_UUID];
   } else {
-    const scope = SHARD ? `shard ${SHARD}` : 'all shards';
-    console.log(`  Scanning ${scope} for ${ALL_PLAYERS ? 'ALL players' : 'current-season players'}…`);
-    probeList = shuffle(currentSeasonPlayers(activeSids, { shard: SHARD, allPlayers: ALL_PLAYERS }));
+    console.log('  Scanning all shards for current-season players…');
+    probeList = shuffle(currentSeasonPlayers(activeSids, { shard: null, allPlayers: ALL_PLAYERS }));
     if (Number.isFinite(LIMIT)) probeList = probeList.slice(0, LIMIT);
-    // Shard/full sweeps run to completion; stop-after only self-terminates a
-    // whole-population standalone run (no shard, not full).
-    const selfTerminating = !FULL && !SHARD;
+    const selfTerminating = !FULL;
     console.log(`  Players to probe: ${probeList.length}${selfTerminating ? `  (stop-after ${STOP_AFTER} with no new season)` : ''}`);
   }
 
@@ -674,9 +799,7 @@ async function main() {
     }
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
 
-    // Self-terminating (whole-population standalone run only): once STOP_AFTER probes
-    // have passed with no new season, stop dispatching. Shard/full sweeps run fully.
-    if (!FULL && !ONE_UUID && !SHARD && probesSinceNew >= STOP_AFTER && !stop) {
+    if (!FULL && !ONE_UUID && probesSinceNew >= STOP_AFTER && !stop) {
       stop = true;
       console.log(`  ⏹ ${STOP_AFTER} probes with no new season — stopping dispatch (probed ${probed}).`);
     }
@@ -687,25 +810,6 @@ async function main() {
     progress: () => `  new=${newSeasonMeta.size} priv=${privateN} err=${errors}`,
   });
   const blockedEvents = probeStats.blockedEvents;
-
-  // ── MAP role: emit discovered seasons as an artifact; DON'T resolve grades or ──
-  //    write the index (the reduce role does that once, deduped across shards).
-  if (SHARD && OUT_FILE) {
-    const discovered = Object.fromEntries(newSeasonMeta);
-    const artifact = { shard: SHARD, discovered, probed, blockedEvents, private: privateN, errors, at: new Date().toISOString() };
-    fs.writeFileSync(OUT_FILE, JSON.stringify(artifact));
-    console.log('\n─── Shard summary ───────────────────────────────────────────────────');
-    console.log(`  Shard                 : ${SHARD}`);
-    console.log(`  Players probed        : ${probed}`);
-    console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
-    console.log(`  Private / error       : ${privateN} / ${errors}`);
-    console.log(`  Block events (requeued): ${blockedEvents}`);
-    console.log(`  New seasons discovered: ${newSeasonMeta.size}`);
-    console.log(`  Artifact              : ${OUT_FILE}`);
-    console.log('─'.repeat(60));
-    console.log('Done.');
-    return;
-  }
 
   // Legacy standalone path (no shard/reduce): resolve + write in one process.
   await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0 });
