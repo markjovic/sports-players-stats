@@ -640,7 +640,7 @@ async function main() {
 
         for (const reg of r.teams || []) {
           const se = reg.season;
-          const tm = reg.team;
+          const tm = reg;
           if (!se?.id) continue;
 
           // 1. Track new seasons for the index
