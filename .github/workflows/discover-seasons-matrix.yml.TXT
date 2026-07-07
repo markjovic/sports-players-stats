@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       shards:
-        description: 'JSON array of shards'
+        description: 'JSON array of shards (e.g. ["00","1a","ff"])'
         required: false
         default: '[]'
         type: string
       all_players:
-        description: 'Probe EVERY player'
+        description: 'Backlog pass: Probe EVERY player'
         required: false
         default: false
         type: boolean
@@ -24,7 +24,7 @@ on:
         default: false
         type: boolean
       run_number:
-        description: 'Auto-incremented'
+        description: 'Auto-incremented by self-trigger — do not set manually'
         required: false
         default: '1'
         type: string
@@ -162,6 +162,8 @@ jobs:
              gh workflow run discover-seasons-matrix.yml \
                --repo "${{ github.repository }}" \
                --field shards="$UNDONE" \
+               --field all_players="${{ inputs.all_players }}" \
+               --field backfill_teams="${{ inputs.backfill_teams }}" \
                --field run_number="$((${{ inputs.run_number }} + 1))"
           else
              echo "All shards complete or max runs reached."
