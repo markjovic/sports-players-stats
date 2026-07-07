@@ -1,0 +1,75 @@
+name: Test Pre-Season Backfill
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Choose your test type'
+        required: true
+        type: choice
+        options:
+          - 'Dry Run (Scan 10 players, no changes saved)'
+          - 'Single Player Write (Update one specific player file)'
+        default: 'Dry Run (Scan 10 players, no changes saved)'
+      player_uuid:
+        description: 'Player UUID (Only required if testing Single Player Write)'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  test-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Execute Dry Run Test
+        if: ${{ github.event.inputs.test_type == 'Dry Run (Scan 10 players, no changes saved)' }}
+        run: |
+          echo "🚀 Running local dry-run simulation..."
+          node scripts/discover-seasons.js --backfill-teams --limit=10 --dry-run
+
+      - name: Execute Single Player Test
+        if: ${{ github.event.inputs.test_type == 'Single Player Write (Update one specific player file)' }}
+        run: |
+          if [ -z "${{ github.event.inputs.player_uuid }}" ]; then
+            echo "❌ Error: You must provide a Player UUID to run a Single Player test."
+            exit 1
+          fi
+          
+          # Target the specific shard folder dynamically to optimize checkout speed
+          SHARD=$(echo "${{ github.event.inputs.player_uuid }}" | cut -c1-2)
+          echo "🚀 Target player falls into shard: $SHARD"
+          
+          echo "Running real backfill write for player ${{ github.event.inputs.player_uuid }}..."
+          node scripts/discover-seasons.js --backfill-teams --uuid=${{ github.event.inputs.player_uuid }}
+          
+          echo "📝 Checking git status for modified files..."
+          git status
+          
+          # Stage and commit the changes if any player or team files were updated
+          git add players/ team-lookup/
+          if git diff --staged --quiet; then
+            echo "ℹ️ No files were modified (Player might already be up to date)."
+          else
+            git commit -m "test: backfill data for player ${{ github.event.inputs.player_uuid }}"
+            git push origin main
+            echo "✅ Successfully updated player file and team-lookup entry on main branch!"
+          fi
