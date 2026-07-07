@@ -17,42 +17,47 @@ jobs:
       - name: Generate Report
         shell: bash
         run: |
-          # 1. We need to identify what the ID is. 
-          # We check the local files for matches.
           TARGET_ID="${{ github.event.inputs.id }}"
-          
           echo "🔍 Searching for ID: $TARGET_ID"
           
-          # This script builds a JSON report by scanning local player files
           node -e "
             const fs = require('fs');
             const path = require('path');
             const target = '$TARGET_ID';
             const playersDir = path.join(process.cwd(), 'players');
-            const report = { type: 'unknown', data: {} };
+            const report = { type: 'report', data: {} };
 
-            // Helper to walk files
             const walk = (dir) => {
                 for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
                     if (entry.isDirectory()) walk(path.join(dir, entry.name));
                     else if (entry.name.endsWith('.json') && !entry.name.startsWith('index')) {
-                        const p = JSON.parse(fs.readFileSync(path.join(dir, entry.name), 'utf8'));
-                        p.seasons.forEach(s => {
-                            s.regs.forEach(r => {
-                                // Match: Season, Grade, or Team
-                                if (s.sid === target || r.gid === target || r.tid === target) {
-                                    if (!report.data[r.tid]) {
-                                        report.data[r.tid] = { 
-                                            teamName: r.tn, 
-                                            gradeName: r.gn, 
-                                            seasonName: s.sn, 
-                                            players: [] 
-                                        };
+                        try {
+                            const raw = fs.readFileSync(path.join(dir, entry.name), 'utf8');
+                            const p = JSON.parse(raw);
+                            
+                            // SAFETY: Only proceed if p.seasons exists and is an array
+                            if (p.seasons && Array.isArray(p.seasons)) {
+                                p.seasons.forEach(s => {
+                                    if (s.regs && Array.isArray(s.regs)) {
+                                        s.regs.forEach(r => {
+                                            if (s.sid === target || r.gid === target || r.tid === target) {
+                                                if (!report.data[r.tid]) {
+                                                    report.data[r.tid] = { 
+                                                        teamName: r.tn, 
+                                                        gradeName: r.gn, 
+                                                        seasonName: s.sn, 
+                                                        players: [] 
+                                                    };
+                                                }
+                                                report.data[r.tid].players.push(p.name);
+                                            }
+                                        });
                                     }
-                                    report.data[r.tid].players.push(p.name);
-                                }
-                            });
-                        });
+                                });
+                            }
+                        } catch (e) {
+                            // Silently skip corrupted files
+                        }
                     }
                 }
             };
