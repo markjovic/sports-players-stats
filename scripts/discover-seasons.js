@@ -672,15 +672,14 @@ async function main() {
               localPlayer.seasons.push(seasonObj);
             }
             const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
-            if (!hasTeam) {
+          if (!hasTeam) {
             seasonObj.regs.push({
               tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
             });
             fileModified = true;
             console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
           } else {
-            // The missing piece: Update the grade if it was previously null, 
-            // or if the association moved the team to a new grade.
+            // Catch late grade allocations or grade changes
             const newGid = reg.grade?.id || null;
             if (newGid && hasTeam.gid !== newGid) {
               hasTeam.gid = newGid;
@@ -822,8 +821,7 @@ async function main() {
             fileModified = true;
             console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
           } else {
-            // The missing piece: Update the grade if it was previously null, 
-            // or if the association moved the team to a new grade.
+            // Catch late grade allocations or grade changes
             const newGid = reg.grade?.id || null;
             if (newGid && hasTeam.gid !== newGid) {
               hasTeam.gid = newGid;
