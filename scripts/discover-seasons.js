@@ -673,12 +673,22 @@ async function main() {
             }
             const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
             if (!hasTeam) {
-              seasonObj.regs.push({
-                tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
-              });
+            seasonObj.regs.push({
+              tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
+            });
+            fileModified = true;
+            console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
+          } else {
+            // The missing piece: Update the grade if it was previously null, 
+            // or if the association moved the team to a new grade.
+            const newGid = reg.grade?.id || null;
+            if (newGid && hasTeam.gid !== newGid) {
+              hasTeam.gid = newGid;
+              hasTeam.gn = reg.grade?.name || null;
               fileModified = true;
-              console.log(`   ➕ Added ${localPlayer.name} to ${tm.name} (${se.name})`);
+              console.log(`   🆙 Updated grade for ${localPlayer.name || uuid} in ${tm.name} to ${reg.grade?.name}`);
             }
+          }
           }
         }
 
@@ -810,7 +820,17 @@ async function main() {
               tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
             });
             fileModified = true;
-            console.log(`   ➕ Added ${localPlayer.name} to ${tm.name} (${se.name})`);
+            console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
+          } else {
+            // The missing piece: Update the grade if it was previously null, 
+            // or if the association moved the team to a new grade.
+            const newGid = reg.grade?.id || null;
+            if (newGid && hasTeam.gid !== newGid) {
+              hasTeam.gid = newGid;
+              hasTeam.gn = reg.grade?.name || null;
+              fileModified = true;
+              console.log(`   🆙 Updated grade for ${localPlayer.name || uuid} in ${tm.name} to ${reg.grade?.name}`);
+            }
           }
         }
       }
