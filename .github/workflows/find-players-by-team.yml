@@ -1,21 +1,28 @@
-name: Find Players by Team
+name: Advanced Player Search
 
 on:
   workflow_dispatch:
     inputs:
       team_ids:
-        description: 'Comma-separated Team IDs (e.g. 91a4404c,abc12345)'
-        required: true
+        description: 'Team IDs (Comma-separated, leave blank to ignore)'
+        required: false
+        type: string
+      season_ids:
+        description: 'Season IDs (Comma-separated, leave blank to ignore)'
+        required: false
+        type: string
+      grades:
+        description: 'Grade Names (Comma-separated, exact match e.g. A Grade, U16 Boys)'
+        required: false
         type: string
 
 jobs:
-  search-teams:
+  search-players:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository (Sparse)
         uses: actions/checkout@v4
         with:
-          # Crucial: Only download players and scripts to skip the 8GB of game data
           sparse-checkout: |
             players
             scripts
@@ -26,4 +33,8 @@ jobs:
           node-version: '20'
 
       - name: Run Search Script
-        run: node scripts/find-players-by-team.js --teams="${{ inputs.team_ids }}"
+        run: |
+          node scripts/find-players-by-team.js \
+            --teams="${{ inputs.team_ids }}" \
+            --seasons="${{ inputs.season_ids }}" \
+            --grades="${{ inputs.grades }}"
