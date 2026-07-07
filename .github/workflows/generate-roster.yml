@@ -1,0 +1,61 @@
+name: Generate Roster Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: 'ID (Season, Grade, or Team)'
+        required: true
+        type: string
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Generate Report
+        shell: bash
+        run: |
+          # 1. We need to identify what the ID is. 
+          # We check the local files for matches.
+          TARGET_ID="${{ github.event.inputs.id }}"
+          
+          echo "🔍 Searching for ID: $TARGET_ID"
+          
+          # This script builds a JSON report by scanning local player files
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const target = '$TARGET_ID';
+            const playersDir = path.join(process.cwd(), 'players');
+            const report = { type: 'unknown', data: {} };
+
+            // Helper to walk files
+            const walk = (dir) => {
+                for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                    if (entry.isDirectory()) walk(path.join(dir, entry.name));
+                    else if (entry.name.endsWith('.json') && !entry.name.startsWith('index')) {
+                        const p = JSON.parse(fs.readFileSync(path.join(dir, entry.name), 'utf8'));
+                        p.seasons.forEach(s => {
+                            s.regs.forEach(r => {
+                                // Match: Season, Grade, or Team
+                                if (s.sid === target || r.gid === target || r.tid === target) {
+                                    if (!report.data[r.tid]) {
+                                        report.data[r.tid] = { 
+                                            teamName: r.tn, 
+                                            gradeName: r.gn, 
+                                            seasonName: s.sn, 
+                                            players: [] 
+                                        };
+                                    }
+                                    report.data[r.tid].players.push(p.name);
+                                }
+                            });
+                        });
+                    }
+                }
+            };
+            walk(playersDir);
+            console.log(JSON.stringify(report, null, 2));
+          "
