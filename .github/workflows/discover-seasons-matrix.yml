@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       shards:
-        description: 'JSON array of specific shards'
+        description: 'JSON array of shards'
         required: false
         default: '[]'
         type: string
       all_players:
-        description: 'Backlog pass: probe EVERY player'
+        description: 'Probe EVERY player'
         required: false
         default: false
         type: boolean
       concurrency:
-        description: 'Burst batch size per shard'
+        description: 'Burst batch size'
         required: false
         default: '25'
         type: string
@@ -50,9 +50,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0 # Get full history to ensure we see the latest pushed progress
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - id: gen
         env:
           INPUT_SHARDS: ${{ inputs.shards }}
@@ -61,28 +60,16 @@ jobs:
           python3 - << 'PYEOF'
           import json, os, re
           raw = (os.environ.get('INPUT_SHARDS') or '').strip()
-          inner = raw[1:-1] if raw.startswith('[') and raw.endswith(']') else raw
-          toks = [t.strip().strip('"').strip("'") for t in inner.split(',')]
+          toks = [t.strip().strip('"').strip("'") for t in (raw[1:-1] if raw.startswith('[') else raw).split(',')]
           toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
-          explicit = bool(toks)
-          if not toks:
-              toks = [format(i, '02x') for i in range(256)]
+          progress = json.load(open('data/discover-progress.json')) if os.path.exists('data/discover-progress.json') else {}
           mode = 'all' if os.environ.get('ALL_PLAYERS') == 'true' else 'current'
-          progress = {}
-          try:
-              with open('data/discover-progress.json') as f:
-                  progress = json.load(f)
-          except: pass
-          
           targets = []
-          for shard in toks:
+          for shard in (toks if toks else [format(i, '02x') for i in range(256)]):
               p = progress.get(shard, {})
-              cursor = p.get('cursor', 0)
-              if p.get('done') == True and not explicit:
-                  continue
-              targets.append({'shard': shard, 'cursor': cursor})
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-              fh.write(f'targets={json.dumps(targets)}\n')
+              if not (p.get('done') == True and p.get('mode') == mode and not toks):
+                  targets.append({'shard': shard, 'cursor': p.get('cursor', 0)})
+          print(f"::set-output name=targets::{json.dumps(targets)}")
           PYEOF
 
   map:
@@ -100,76 +87,82 @@ jobs:
           ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Burst-probe shard ${{ matrix.target.shard }}
+      - name: Burst-probe
         run: |
           ARGS="--shard=${{ matrix.target.shard }} --cursor=${{ matrix.target.cursor }} --out=discover-shard-${{ matrix.target.shard }}.json --concurrency=${{ inputs.concurrency }}"
           [ "${{ inputs.all_players }}" == "true" ] && ARGS="$ARGS --all-players"
-          [ "${{ inputs.dry_run }}" == "true" ] && ARGS="$ARGS --dry-run"
           [ "${{ inputs.backfill_teams }}" == "true" ] && ARGS="$ARGS --backfill-teams"
           node scripts/discover-seasons.js $ARGS
-
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: discover-shard-${{ matrix.target.shard }}
           path: discover-shard-${{ matrix.target.shard }}.json
-          retention-days: 1
 
   reduce:
     needs: [generate-shards, map]
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    concurrency: { group: data-write, cancel-in-progress: false }
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     steps:
       - uses: actions/download-artifact@v4
-        with: { pattern: discover-shard-*, path: /tmp/discoveries/, merge-multiple: false }
+        with:
+          pattern: discover-shard-*
+          path: /tmp/discoveries/
+          merge-multiple: false
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      
+        with:
+          node-version: '20'
       - name: Merge and Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          ARGS="--reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }}"
-          [ "${{ inputs.dry_run }}" = "true" ] && ARGS="$ARGS --dry-run"
-          node scripts/discover-seasons.js $ARGS | tee /tmp/reduce.log
+          node scripts/discover-seasons.js --reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }} | tee /tmp/reduce.log
           
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
-          echo "undone_shards=${undone:-[]}" >> $GITHUB_OUTPUT
+          echo "${undone:-[]}" > undone_shards.json
 
           if [ "${{ inputs.dry_run }}" != "true" ]; then
             git add data/discover-progress.json data/sports-index.json players/ team-lookup/
             if ! git diff --cached --quiet; then
-              git commit -m "update: discover seasons progress + backfilled rosters"
+              git commit -m "update: progress + rosters"
               git push origin main
             fi
           fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: undone-shards
+          path: undone_shards.json
 
   retrigger:
     needs: reduce
-    if: always() && inputs.dry_run != 'true' && needs.reduce.outputs.undone_shards != '[]' && needs.reduce.outputs.undone_shards != ''
+    if: success() && inputs.dry_run != 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Re-trigger chain
-        env: { GH_TOKEN: ${{ secrets.WORKFLOW_PAT }} }
+      - uses: actions/download-artifact@v4
+        with:
+          name: undone-shards
+      - name: Trigger chain
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
         run: |
-          if [ ${{ inputs.run_number }} -lt ${{ env.MAX_RUNS }} ]; then
-            gh workflow run discover-seasons-matrix.yml --repo "${{ github.repository }}" \
-              --field shards='${{ needs.reduce.outputs.undone_shards }}' \
-              --field all_players='${{ inputs.all_players }}' \
-              --field backfill_teams='${{ inputs.backfill_teams }}' \
-              --field concurrency='${{ inputs.concurrency }}' \
-              --field run_number=$(( ${{ inputs.run_number }} + 1 ))
+          UNDONE=$(cat undone_shards.json)
+          if [ "$UNDONE" != '[]' ] && [ -n "$UNDONE" ] && [ "${{ inputs.run_number }}" -lt "${{ env.MAX_RUNS }}" ]; then
+             echo "↺ Re-triggering chain..."
+             gh workflow run discover-seasons-matrix.yml \
+               --repo "${{ github.repository }}" \
+               --field shards="$UNDONE" \
+               --field run_number="$((${{ inputs.run_number }} + 1))"
+          else
+             echo "All shards complete or max runs reached."
           fi
