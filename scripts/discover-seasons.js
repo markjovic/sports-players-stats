@@ -69,8 +69,11 @@ const PROGRESS_FILE = path.join(ROOT, 'data', 'discover-progress.json');   // pe
 const PLAYERS_DIR = path.join(ROOT, 'players');
 
 // ─── CLI ──────────────────────────────────────────────────────────────────────
-const args      = process.argv.slice(2);
-const DRY_RUN   = args.includes('--dry-run');
+const args = process.argv.slice(2);
+const BACKFILL_TEAMS = args.includes('--backfill-teams');
+// If backfill is on, force ALL_PLAYERS to true so it scans everyone
+const ALL_PLAYERS = args.includes('--all-players') || BACKFILL_TEAMS;   
+const DRY_RUN = args.includes('--dry-run');
 const DEBUG_TEAMS = args.includes('--debug-teams');  // dump raw grade/season per registration
 const FULL      = args.includes('--full');
 const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uuid=', '').trim() || null;
@@ -90,6 +93,10 @@ const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').r
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
 const HOLD_CHECK    = (args.find(a => a.startsWith('--hold-check=')) || '').replace('--hold-check=', '').split(',').filter(Boolean);
+
+// Ensure the Layer 1 team lookup directory exists
+const TEAM_LOOKUP_DIR = path.join(process.cwd(), 'team-lookup', 'bv');
+if (!fs.existsSync(TEAM_LOOKUP_DIR)) fs.mkdirSync(TEAM_LOOKUP_DIR, { recursive: true });
 
 // ─── Headers — full set, never split, never modified (copied verbatim) ────────
 const HEADERS_BASE = {
@@ -693,18 +700,77 @@ async function main() {
       if (r.kind === 'private') { privateN++; return; }
       if (r.kind === 'error') { errors++; return; }
       if (r.kind === 'ok') {
-        for (const reg of r.teams) {
-          const se = reg.season;
-          if (!se?.id) continue;
-          if (knownSeasonIds.has(se.id) || newSeasonMeta.has(se.id)) continue;
+        let fileModified = false;
+      const filePath = path.join(process.cwd(), 'players', `${uuid}.json`);
+      let localPlayer = null;
+
+      // Load the player file if we have incoming registrations
+      if (r.teams && r.teams.length > 0) {
+        try {
+          localPlayer = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (!localPlayer.seasons) localPlayer.seasons = [];
+        } catch (e) {
+          // Gracefully ignore if file is unreadable
+        }
+      }
+
+      for (const reg of r.teams || []) {
+        const se = reg.season;
+        const tm = reg.team;
+        if (!se?.id) continue;
+
+        // 1. Track new seasons for the index
+        if (!knownSeasonIds.has(se.id) && !newSeasonMeta.has(se.id)) {
           newSeasonMeta.set(se.id, {
             name: se.name, startDate: se.startDate, endDate: se.endDate,
             status: se.status?.value || null,
             compId: se.competition?.id, compName: se.competition?.name,
             orgId: se.competition?.organisation?.id, orgName: se.competition?.organisation?.name,
           });
+          foundNew = true;
           console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
         }
+
+        // 2. BACKFILL: Update Team Lookup Directory
+        if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
+          const teamLookupPath = path.join(TEAM_LOOKUP_DIR, `${tm.id}.json`);
+          if (!fs.existsSync(teamLookupPath)) {
+            fs.writeFileSync(teamLookupPath, JSON.stringify({
+              id: tm.id,
+              name: tm.name,
+              seasonId: se.id 
+            }, null, 2));
+          }
+        }
+
+        // 3. BACKFILL: Update the local player's registrations
+        if (BACKFILL_TEAMS && localPlayer && tm?.id) {
+          let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
+          
+          if (!seasonObj) {
+            seasonObj = { sid: se.id, sn: se.name, regs: [] };
+            localPlayer.seasons.push(seasonObj);
+          }
+
+          const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
+          if (!hasTeam) {
+            seasonObj.regs.push({
+              tid: tm.id,
+              tn: tm.name,
+              gid: reg.grade?.id || null,
+              gn: reg.grade?.name || null,
+              stats: {} 
+            });
+            fileModified = true;
+            console.log(`   ➕ Added ${localPlayer.name} to ${tm.name} (${se.name})`);
+          }
+        }
+      }
+
+      // Save the modified player file
+      if (fileModified && localPlayer && !DRY_RUN) {
+        fs.writeFileSync(filePath, JSON.stringify(localPlayer, null, 2));
+      }
       }
     });
 
@@ -799,7 +865,8 @@ async function main() {
     }
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
 
-    if (!FULL && !ONE_UUID && probesSinceNew >= STOP_AFTER && !stop) {
+    // Do not stop early if we are explicitly backfilling teams across all players
+    if (!FULL && !ONE_UUID && !BACKFILL_TEAMS && probesSinceNew >= STOP_AFTER && !stop) {
       stop = true;
       console.log(`  ⏹ ${STOP_AFTER} probes with no new season — stopping dispatch (probed ${probed}).`);
     }
