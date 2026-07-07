@@ -39,6 +39,11 @@ on:
         required: false
         default: '1'
         type: string
+      backfill_teams:
+        description: 'Backfill pre-season teams to player files and team-lookup'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
