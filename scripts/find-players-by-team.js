@@ -11,12 +11,12 @@ const parseArg = (prefix) => {
   return val ? val.split(',').map(s => s.trim()).filter(Boolean) : [];
 };
 
-const targetTeams   = parseArg('--teams=');
-const targetSeasons = parseArg('--seasons=');
-const targetGrades  = parseArg('--grades=');
+const targetTeams    = parseArg('--teams=');
+const targetSeasons  = parseArg('--seasons=');
+const targetGradeIds = parseArg('--grade-ids=');
 
-if (targetTeams.length === 0 && targetSeasons.length === 0 && targetGrades.length === 0) {
-  console.error("❌ Error: You must provide at least one filter criterion (Team, Season, or Grade).");
+if (targetTeams.length === 0 && targetSeasons.length === 0 && targetGradeIds.length === 0) {
+  console.error("❌ Error: You must provide at least one filter criterion (Team, Season, or Grade ID).");
   process.exit(1);
 }
 
@@ -47,25 +47,27 @@ function processFile(filePath) {
         // Filter 2: Team ID Intersection
         if (targetTeams.length > 0 && !targetTeams.includes(reg.tid)) continue;
         
-        // Filter 3: Grade Name Intersection (reg.gn maps directly to grade string)
-        if (targetGrades.length > 0 && !targetGrades.includes(reg.gn)) continue;
+        // Filter 3: Grade ID Intersection (reg.gid)
+        if (targetGradeIds.length > 0 && !targetGradeIds.includes(reg.gid)) continue;
 
         // Create a unique composite key for the matching criteria string
-        const matchKey = `${reg.tid || 'unknown'}|${season.sid}|${reg.gn || 'unknown'}`;
+        // We still capture reg.gn here so the output table shows the human-readable name
+        const matchKey = `${reg.tid || 'unknown'}|${season.sid}|${reg.gid || 'unknown'}|${reg.gn || 'unknown'}`;
         uniqueMatches.add(matchKey);
       }
     }
 
     // Process matched registrations back to the output payload
     uniqueMatches.forEach(key => {
-      const [tid, sid, grade] = key.split('|');
+      const [tid, sid, gid, gradeName] = key.split('|');
       if (!results[tid]) results[tid] = [];
       
       results[tid].push({
         uuid: data.uuid,
         name: data.name,
         season: sid,
-        grade: grade
+        gradeId: gid,
+        gradeName: gradeName
       });
     });
 
@@ -93,9 +95,9 @@ function walkDir(dir) {
 
 // 4. Execution Initialization
 console.log('🚀 Running Filter Matrix Scan...');
-if (targetTeams.length > 0)   console.log(`   • Teams   : ${targetTeams.join(', ')}`);
-if (targetSeasons.length > 0) console.log(`   • Seasons : ${targetSeasons.join(', ')}`);
-if (targetGrades.length > 0)  console.log(`   • Grades  : ${targetGrades.join(', ')}`);
+if (targetTeams.length > 0)    console.log(`   • Teams     : ${targetTeams.join(', ')}`);
+if (targetSeasons.length > 0)  console.log(`   • Seasons   : ${targetSeasons.join(', ')}`);
+if (targetGradeIds.length > 0) console.log(`   • Grade IDs : ${targetGradeIds.join(', ')}`);
 console.log('');
 
 walkDir(PLAYERS_DIR);
@@ -107,7 +109,7 @@ if (summaryPath) {
   markdown += `**Active Filters:**\n`;
   markdown += `* **Teams:** ${targetTeams.length ? `\`${targetTeams.join('`, `')}\`` : '_None (All)_'}\n`;
   markdown += `* **Seasons:** ${targetSeasons.length ? `\`${targetSeasons.join('`, `')}\`` : '_None (All)_'}\n`;
-  markdown += `* **Grades:** ${targetGrades.length ? `\`${targetGrades.join('`, `')}\`` : '_None (All)_'}\n\n`;
+  markdown += `* **Grade IDs:** ${targetGradeIds.length ? `\`${targetGradeIds.join('`, `')}\`` : '_None (All)_'}\n\n`;
   markdown += `**Total Records Evaluated:** ${filesScanned}\n\n`;
 
   const keys = Object.keys(results);
@@ -117,10 +119,10 @@ if (summaryPath) {
     for (const tid of keys) {
       if (results[tid].length === 0) continue;
       markdown += `### Team Key: \`${tid}\` (${results[tid].length} Matches)\n`;
-      markdown += `| Player Name | Player UUID | Season | Grade |\n`;
-      markdown += `| :--- | :--- | :--- | :--- |\n`;
+      markdown += `| Player Name | Player UUID | Season | Grade ID | Grade Name |\n`;
+      markdown += `| :--- | :--- | :--- | :--- | :--- |\n`;
       results[tid].forEach(p => {
-        markdown += `| **${p.name}** | \`${p.uuid}\` | \`${p.season}\` | ${p.grade} |\n`;
+        markdown += `| **${p.name}** | \`${p.uuid}\` | \`${p.season}\` | \`${p.gradeId}\` | ${p.gradeName} |\n`;
       });
       markdown += `\n`;
     }
