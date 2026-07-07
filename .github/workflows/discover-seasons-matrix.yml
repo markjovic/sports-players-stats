@@ -210,10 +210,24 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/discover-seasons.js $ARGS | tee /tmp/reduce.log
 
+          # Extract undone shards
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
           if [ -z "$undone" ]; then undone='[]'; fi
           echo "undone_shards=$undone" >> $GITHUB_OUTPUT
-          echo "Undone shards this sweep: $undone"
+
+          # Only proceed with Git if not a dry run
+          if [ "${{ inputs.dry_run }}" != "true" ]; then
+            # We already checked out the necessary files. Now we commit only the files that changed.
+            # Using --sparse ensures we don't accidentally touch anything outside the scope.
+            git add data/discover-progress.json data/sports-index.json players/ team-lookup/
+            
+            if ! git diff --cached --quiet; then
+              git commit -m "update: discover seasons progress + backfilled rosters"
+              git push origin main
+            else
+              echo "No progress or player file changes to commit."
+            fi
+          fi
 
   retrigger:
     needs: reduce
