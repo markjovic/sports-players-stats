@@ -1,0 +1,37 @@
+name: Advanced Player Search (Layer 1)
+
+on:
+  workflow_dispatch:
+    inputs:
+      team_ids:
+        description: 'Team IDs (Comma-separated, leave blank to ignore)'
+        required: false
+        type: string
+      season_ids:
+        description: 'Season IDs (Comma-separated, leave blank to ignore)'
+        required: false
+        type: string
+
+jobs:
+  search-layer1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (Sparse)
+        uses: actions/checkout@v4
+        with:
+          # We only need the Layer 1 team and roster data now
+          sparse-checkout: |
+            team-stats
+            team-lookup
+            scripts
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Layer 1 Search Script
+        run: |
+          node scripts/search-team-stats.js \
+            --teams="${{ inputs.team_ids }}" \
+            --seasons="${{ inputs.season_ids }}"
