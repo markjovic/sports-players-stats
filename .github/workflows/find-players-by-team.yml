@@ -1,0 +1,29 @@
+name: Find Players by Team
+
+on:
+  workflow_dispatch:
+    inputs:
+      team_ids:
+        description: 'Comma-separated Team IDs (e.g. 91a4404c,abc12345)'
+        required: true
+        type: string
+
+jobs:
+  search-teams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (Sparse)
+        uses: actions/checkout@v4
+        with:
+          # Crucial: Only download players and scripts to skip the 8GB of game data
+          sparse-checkout: |
+            players
+            scripts
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Search Script
+        run: node scripts/find-players-by-team.js --teams="${{ inputs.team_ids }}"
