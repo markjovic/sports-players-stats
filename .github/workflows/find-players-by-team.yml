@@ -11,8 +11,8 @@ on:
         description: 'Season IDs (Comma-separated, leave blank to ignore)'
         required: false
         type: string
-      grades:
-        description: 'Grade Names (Comma-separated, exact match e.g. A Grade, U16 Boys)'
+      grade_ids:
+        description: 'Grade IDs (Comma-separated, e.g. 51ec2bbf, leave blank to ignore)'
         required: false
         type: string
 
@@ -37,4 +37,4 @@ jobs:
           node scripts/find-players-by-team.js \
             --teams="${{ inputs.team_ids }}" \
             --seasons="${{ inputs.season_ids }}" \
-            --grades="${{ inputs.grades }}"
+            --grade-ids="${{ inputs.grade_ids }}"
