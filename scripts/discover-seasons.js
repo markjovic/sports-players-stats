@@ -642,15 +642,22 @@ async function main() {
           const se = reg.season;
           const tm = { id: reg.id, name: reg.name };
           // Debug print: This will show you exactly what ID is being processed
-          console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
+          if (DEBUG_TEAMS) {
+            console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
+            console.log(`  DEBUG: Team found in local file: ${!!found}`);
+          }
 
           if (localPlayer) {
             let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
             if (seasonObj) {
               const found = seasonObj.regs.find(r => r.tid === tm.id);
-              console.log(`  DEBUG: Team found in local file: ${!!found}`);
+              if (DEBUG_TEAMS) {
+                console.log(`  DEBUG: Team found in local file: ${!!found}`);
+              }
             } else {
-              console.log(`  DEBUG: Season ${se.id} not found in player file.`);
+              if (DEBUG_TEAMS) {
+                console.log(`  DEBUG: Season ${se.id} not found in player file.`);
+              }
             }
           }
           if (!se?.id) continue;
@@ -794,16 +801,22 @@ async function main() {
       for (const reg of r.teams) {
         const se = reg.season;
         const tm = { id: reg.id, name: reg.name };
-        // Debug print: This will show you exactly what ID is being processed
-          console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
+          if (DEBUG_TEAMS) {
+            console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
+            console.log(`  DEBUG: Team found in local file: ${!!found}`);
+          }
 
           if (localPlayer) {
             let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
             if (seasonObj) {
               const found = seasonObj.regs.find(r => r.tid === tm.id);
-              console.log(`  DEBUG: Team found in local file: ${!!found}`);
+              if (DEBUG_TEAMS) {
+                console.log(`  DEBUG: Team found in local file: ${!!found}`);
+              }
             } else {
-              console.log(`  DEBUG: Season ${se.id} not found in player file.`);
+              if (DEBUG_TEAMS) {
+                console.log(`  DEBUG: Season ${se.id} not found in player file.`);
+              }
             }
           }
         if (!se?.id) continue;
