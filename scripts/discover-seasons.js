@@ -31,20 +31,17 @@
 // fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
 // playhq_api_reference.md — never write PlayHQ queries from scratch.
 //
-// Session/WAF machinery, headers, cookie handling and doFetch are copied verbatim
-// from fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
-// playhq_api_reference.md — never write PlayHQ queries from scratch.
-//
 // Modes:
 //   node scripts/discover-seasons.js --shard=XX --cursor=N --out=discover-shard-XX.json
-//                                                    # MAP: burst-probe from cursor, stop dead at wall
+//                                                      # MAP: burst-probe from cursor, stop dead at wall
 //   node scripts/discover-seasons.js --reduce --in=<dir>
-//                                                    # REDUCE: merge artifacts + cursors → index + progress
+//                                                      # REDUCE: merge artifacts + cursors → index + progress
 //   node scripts/discover-seasons.js --all-players   # (map) probe every player, not just current-season
 //   node scripts/discover-seasons.js                 # legacy standalone (single-IP AIMD; walls at scale)
 //   node scripts/discover-seasons.js --concurrency=N # burst batch size (shard) / AIMD cap (standalone), default 25
 //   node scripts/discover-seasons.js --uuid=<id>     # manual escape hatch: probe one player
 //   node scripts/discover-seasons.js --dry-run       # report only, no writes/commit
+//   node scripts/discover-seasons.js --backfill-teams # extract pre-season rosters into players/ and team-lookup/
 //
 // PRODUCTION PATH is the sharded matrix (discover-seasons-matrix.yml): shard MAP jobs
 // each get a fresh runner IP, burst-probe until walled, save a cursor; a control loop
@@ -68,6 +65,10 @@ const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
 const PROGRESS_FILE = path.join(ROOT, 'data', 'discover-progress.json');   // per-shard cursor/done (matrix resume state)
 const PLAYERS_DIR = path.join(ROOT, 'players');
 
+// Ensure the Layer 1 team lookup directory exists
+const TEAM_LOOKUP_DIR = path.join(process.cwd(), 'team-lookup', 'bv');
+if (!fs.existsSync(TEAM_LOOKUP_DIR)) fs.mkdirSync(TEAM_LOOKUP_DIR, { recursive: true });
+
 // ─── CLI ──────────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const BACKFILL_TEAMS = args.includes('--backfill-teams');
@@ -87,16 +88,11 @@ const SHARD       = (args.find(a => a.startsWith('--shard=')) || '').replace('--
 const OUT_FILE    = (args.find(a => a.startsWith('--out=')) || '').replace('--out=', '').trim() || null;
 const REDUCE      = args.includes('--reduce');
 const IN_DIR      = (args.find(a => a.startsWith('--in=')) || '').replace('--in=', '').trim() || null;
-const ALL_PLAYERS = args.includes('--all-players');   // backlog pass: probe every player, not just current-season
 const CURSOR       = (() => { const a = args.find(a => a.startsWith('--cursor=')); const n = a ? parseInt(a.split('=')[1], 10) : 0; return Number.isFinite(n) && n >= 0 ? n : 0; })();
 const CHECK_SEASONS = (args.find(a => a.startsWith('--check-seasons=')) || '').replace('--check-seasons=', '').split(',').filter(Boolean);
 const CHECK_KNOWN   = (() => { const a = args.find(a => a.startsWith('--check-known=')); return a ? parseInt(a.split('=')[1], 10) : 0; })();
 const PROBE_TEAM    = (args.find(a => a.startsWith('--probe-team=')) || '').replace('--probe-team=', '').trim() || null;
 const HOLD_CHECK    = (args.find(a => a.startsWith('--hold-check=')) || '').replace('--hold-check=', '').split(',').filter(Boolean);
-
-// Ensure the Layer 1 team lookup directory exists
-const TEAM_LOOKUP_DIR = path.join(process.cwd(), 'team-lookup', 'bv');
-if (!fs.existsSync(TEAM_LOOKUP_DIR)) fs.mkdirSync(TEAM_LOOKUP_DIR, { recursive: true });
 
 // ─── Headers — full set, never split, never modified (copied verbatim) ────────
 const HEADERS_BASE = {
@@ -193,27 +189,12 @@ const Q_TEAM_FIXTURE = {
 }`,
 };
 
-// Session freshness: publicProfileTeams has NO per-call quota (only
-// ProfileSeasonStatistics does — playhq_api_reference.md); the sole constraint is
-// the ~30-40min cookie TTL. So refresh on AGE, not on call count — which is also
-// concurrency-safe, because the promise lock in refreshSession coalesces every
-// simultaneous refresh into a single fetch. 15min keeps us well inside the TTL.
 const SESSION_MAX_AGE_MS = 15 * 60 * 1000;
 async function ensureSession() {
   if (sessionCookie && (Date.now() - sessionAt) < SESSION_MAX_AGE_MS) return;
   await refreshSession();
 }
 
-// Adaptive concurrency (AIMD) — the codebase's known main-API rate control. The WAF
-// on api.playhq.com is a per-IP RATE wall: publicProfileTeams runs clean (~54/s) then
-// trips a sustained block-storm, then recovers. Fixed concurrency either wastes
-// throughput (too low) or walls and drops players (too high). AIMD self-tunes: run in
-// batches, and on any block in a batch cut concurrency to 60% + back off (attempts×5s),
-// dropping the cap by 5 after 3 consecutive blocked batches; recover +10 after 2 clean
-// batches. Blocked items are RE-QUEUED, never dropped. --concurrency sets the CAP (the
-// ceiling AIMD tunes under); we start at the cap and let it settle.
-// NB: the documented main-API start of 500 is for a different op; publicProfileTeams
-// walls far lower (25 tripped it), so the operator-supplied cap is the real ceiling.
 const AIMD_MIN         = 3;
 const AIMD_CUT         = 0.6;
 const AIMD_RECOVER     = 10;
@@ -294,12 +275,6 @@ function currentSeasonPlayers(activeSids, { shard = null, allPlayers = false } =
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// AIMD batch runner. `worker(item)` does its own side-effects/counting and returns
-// { blocked: true } if the call hit the rate wall (→ item is RE-QUEUED, never dropped)
-// or { blocked: false } otherwise. `opts.cap` is the concurrency ceiling; the runner
-// starts there, cuts on blocked batches, recovers on clean ones. `opts.progress()` may
-// return an extra string for the heartbeat; `opts.shouldStop()` ends dispatch early
-// (in-flight batch still completes). Returns { done, blockedEvents }.
 async function aimdRun(items, label, worker, opts = {}) {
   const cap0 = Math.max(AIMD_MIN, opts.cap || 25);
   const shouldStop = opts.shouldStop || (() => false);
@@ -347,16 +322,6 @@ async function aimdRun(items, label, worker, opts = {}) {
   return { done, blockedEvents };
 }
 
-// Burst runner for the SHARD/cursor matrix mode. Unlike aimdRun (which backs off and
-// grinds through a wall on the SAME IP), this assumes each matrix run gets a FRESH
-// runner IP — proven clean to ~300+ probes before walling (shard 00: 17/s clean, then
-// flatlined at ~2.5/s for the rest of the run). So instead of waiting out a spent IP's
-// budget, we probe in fixed batches at `concurrency` and STOP DEAD at the first batch
-// containing any block — no retry, no backoff. The whole blocked batch is left
-// unprocessed (simplest safe accounting: cursor only advances past fully-clean
-// batches). The workflow's control loop re-triggers with a fresh runner to continue
-// from the saved cursor. Returns { completed, wallHit }; `worker(item)` does its own
-// side-effects/counting per successful item and is not called for a blocked item.
 async function burstRun(items, concurrency, worker) {
   let completed = 0;
   for (let start = 0; start < items.length; start += concurrency) {
@@ -369,10 +334,6 @@ async function burstRun(items, concurrency, worker) {
     if (anyBlocked) return { completed, wallHit: true };
     for (const res of results) {
       if (res.status === 'fulfilled') worker(res.value.item, res.value.r);
-      // probeTeams() catches its own network/parse errors internally (returns
-      // {kind:'error'}), so a REJECTED promise here shouldn't happen in practice.
-      // If it somehow does, that single item is silently missed this sweep (cursor
-      // still advances past the batch) — a future full resweep would catch it.
       else console.log(`  ⚠ unexpected rejection probing ${res.reason?.item || '?'}`);
     }
     completed = start + batch.length;
@@ -396,7 +357,6 @@ function gitCommit(msg, extraPaths = []) {
   }
 }
 
-// doFetch: https.request with keepAlive:false (copied verbatim) ────────────────
 function doFetch(url, options) {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
@@ -423,14 +383,9 @@ function doFetch(url, options) {
   });
 }
 
-// ─── Apply: resolve grades for discovered seasons, create/stub entries, grade- ──
-//     refresh grade-less active seasons, write sports-index.json. Shared by the
-//     REDUCE role and the legacy standalone path.
 async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPaths = []) {
   const { probed = 0, blockedEvents = 0, privateN = 0, errors = 0, t0 = Date.now() } = stats;
 
-  // Resolve full grade lists (discoverSeason) with AIMD into a side map, then apply
-  // index writes sequentially so the shared mutation order is deterministic.
   let created = 0, removed = 0;
   const metaEntries = [...newSeasonMeta];
   const dsById = new Map();
@@ -458,28 +413,19 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
       orgName,
       orgId: ds?.competition?.organisation?.id || meta.orgId,
       tenant: 'bv',
-      // Capture the season-status signal at creation — the future auto-lock wants it.
       status: meta.status || null,
       startDate: meta.startDate || null,
       endDate: meta.endDate || null,
     };
     if (grades.length > 0) {
-      // Crawlable season — the nightly crawl will fetch these grades.
       index.seasons[sid] = { ...base, grades, locked: false, addedAt: new Date().toISOString() };
       created++;
       console.log(`  + created ${sid}  ${base.fullName}  (${grades.length} grades)`);
     } else if (meta.status === 'COMPLETED') {
-      // Historical (COMPLETED) season with 0 grades and nothing fetchable via any
-      // route. Record that it EXISTS as a 'removed' stub, locked so the crawl and all
-      // locked-filtering scripts skip it. ONLY historical seasons are stubbed.
       index.seasons[sid] = { ...base, grades: [], locked: true, removed: true, addedAt: new Date().toISOString() };
       removed++;
       console.log(`  ~ removed ${sid}  ${base.fullName}  (COMPLETED, 0 grades — recorded, not crawlable)`);
     } else {
-      // UPCOMING/ACTIVE with 0 grades: legitimate pre-allocation state. Create it LIVE —
-      // the grade-refresh step below populates grades once PlayHQ allocates them. Err
-      // toward live for any non-COMPLETED status so a real upcoming season is never
-      // wrongly locked.
       index.seasons[sid] = { ...base, grades: [], locked: false, addedAt: new Date().toISOString() };
       created++;
       console.log(`  + created ${sid}  ${base.fullName}  (0 grades — pre-allocation, live; awaiting grades)`);
@@ -543,12 +489,10 @@ async function main() {
   const activeSids = new Set(Object.values(index.seasons).filter(s => !s.locked).map(s => s.id));
   console.log(`  Known seasons: ${knownSeasonIds.size}  (active: ${activeSids.size})`);
 
-  // ── REDUCE role: merge all shard artifacts, resolve grades, write the index ───
   if (REDUCE) {
     if (!IN_DIR || !fs.existsSync(IN_DIR)) { console.error(`--reduce needs --in=<dir> (got ${IN_DIR})`); process.exit(1); }
     const t0 = Date.now();
     const files = [];
-    // artifacts may be nested one level (download-artifact makes a dir per artifact)
     const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
       const p = path.join(d, e.name);
       if (e.isDirectory()) walk(p);
@@ -567,11 +511,9 @@ async function main() {
       shardProbed += a.probed || 0;
       if (a.wallHit) wallHits++;
       for (const [sid, meta] of Object.entries(a.discovered || {})) {
-        if (knownSeasonIds.has(sid) || merged.has(sid)) continue;   // re-check against current index
+        if (knownSeasonIds.has(sid) || merged.has(sid)) continue;
         merged.set(sid, meta);
       }
-      // Progress uses (shard, mode) — switching current<->all-players resets the cursor
-      // for that mode's own tracking (they're independent sweeps over different lists).
       if (a.shard) {
         progress[a.shard] = { mode: a.mode, cursor: a.cursor, total: a.total, done: a.done, updatedAt: a.at };
         if (a.done) doneCount++; else undoneShards.push(a.shard);
@@ -583,16 +525,10 @@ async function main() {
     if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
     await applyDiscoveries(index, merged, { t0 }, [PROGRESS_FILE]);
 
-    // Machine-readable line for the workflow's control step to parse without
-    // re-reading progress itself (it still can — this is just a convenience).
     console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
     return;
   }
 
-  // ── Diagnostic: does a 0-grade season have games via the TEAM path? ─────────
-  // Answers removed vs legacy vs recoverable: if discoverTeamFixture returns real
-  // games for a team in the season, it's recoverable via the fixture path (not a
-  // dead-end stub). Copies the TeamFixture query verbatim from discover-fixtures.js.
   if (PROBE_TEAM) {
     if (!sessionCookie) await refreshSession();
     const res = await doFetch(API_URL, {
@@ -614,14 +550,9 @@ async function main() {
     return;
   }
 
-  // ── Local hold-check (NO API): what do we already hold for these seasons? ────
-  // A 0-grade season was never in the index, so a game file almost certainly does
-  // NOT exist. The real signal is whether player REGS reference the sid and carry
-  // stats (gp/pts) — i.e. played-game evidence we hold even without a game file.
   if (HOLD_CHECK.length) {
     const GAMES_DIR = path.join(ROOT, 'games', 'bv');
-    // tally regs per sid from player files
-    const tally = new Map();  // sid -> { regs, withStats, games:'?', teams:Set }
+    const tally = new Map();  
     for (const sid of HOLD_CHECK) tally.set(sid, { regs: 0, withStats: 0, teams: new Set() });
     const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
     for (const prefix of prefixes) {
@@ -655,14 +586,11 @@ async function main() {
     return;
   }
 
-  // ── Diagnostic: does discoverSeason return grades for KNOWN seasons? ─────────
-  // Samples across competitions so we don't infer a rule from one org (N=1).
   if (CHECK_SEASONS.length || CHECK_KNOWN > 0) {
     let ids = [...CHECK_SEASONS];
     if (CHECK_KNOWN > 0) {
       const known = Object.values(index.seasons);
-      const completed = known.filter(s => (s.grades || []).length > 0);   // known-good, grades present in index
-      // shuffle and take a spread
+      const completed = known.filter(s => (s.grades || []).length > 0);
       for (let i = completed.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [completed[i],completed[j]]=[completed[j],completed[i]]; }
       ids.push(...completed.slice(0, CHECK_KNOWN).map(s => s.id));
     }
@@ -680,10 +608,7 @@ async function main() {
     return;
   }
 
-  // ── SHARD/MAP role: cursor-resumable burst probe. Stops DEAD at the first wall (no ──
-  //    grind, no backoff) — the workflow's control loop re-triggers with a fresh
-  //    runner IP to continue from the saved cursor. Emits an artifact; does NOT
-  //    resolve grades or write the index (the reduce role does that once).
+  // ── SHARD/MAP role: cursor-resumable burst probe. 
   if (SHARD && OUT_FILE) {
     console.log(`  Scanning shard ${SHARD} for ${ALL_PLAYERS ? 'ALL players' : 'current-season players'}…`);
     const full = currentSeasonPlayers(activeSids, { shard: SHARD, allPlayers: ALL_PLAYERS });
@@ -701,76 +626,65 @@ async function main() {
       if (r.kind === 'error') { errors++; return; }
       if (r.kind === 'ok') {
         let fileModified = false;
-      const filePath = path.join(process.cwd(), 'players', `${uuid}.json`);
-      let localPlayer = null;
+        const filePath = path.join(PLAYERS_DIR, `${uuid.substring(0, 2)}`, `${uuid}.json`);
+        let localPlayer = null;
 
-      // Load the player file if we have incoming registrations
-      if (r.teams && r.teams.length > 0) {
-        try {
-          localPlayer = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-          if (!localPlayer.seasons) localPlayer.seasons = [];
-        } catch (e) {
-          // Gracefully ignore if file is unreadable
-        }
-      }
-
-      for (const reg of r.teams || []) {
-        const se = reg.season;
-        const tm = reg.team;
-        if (!se?.id) continue;
-
-        // 1. Track new seasons for the index
-        if (!knownSeasonIds.has(se.id) && !newSeasonMeta.has(se.id)) {
-          newSeasonMeta.set(se.id, {
-            name: se.name, startDate: se.startDate, endDate: se.endDate,
-            status: se.status?.value || null,
-            compId: se.competition?.id, compName: se.competition?.name,
-            orgId: se.competition?.organisation?.id, orgName: se.competition?.organisation?.name,
-          });
-          foundNew = true;
-          console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
-        }
-
-        // 2. BACKFILL: Update Team Lookup Directory
-        if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
-          const teamLookupPath = path.join(TEAM_LOOKUP_DIR, `${tm.id}.json`);
-          if (!fs.existsSync(teamLookupPath)) {
-            fs.writeFileSync(teamLookupPath, JSON.stringify({
-              id: tm.id,
-              name: tm.name,
-              seasonId: se.id 
-            }, null, 2));
+        if (r.teams && r.teams.length > 0) {
+          try {
+            localPlayer = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            if (!localPlayer.seasons) localPlayer.seasons = [];
+          } catch (e) {
+            // Ignore
           }
         }
 
-        // 3. BACKFILL: Update the local player's registrations
-        if (BACKFILL_TEAMS && localPlayer && tm?.id) {
-          let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
-          
-          if (!seasonObj) {
-            seasonObj = { sid: se.id, sn: se.name, regs: [] };
-            localPlayer.seasons.push(seasonObj);
-          }
+        for (const reg of r.teams || []) {
+          const se = reg.season;
+          const tm = reg.team;
+          if (!se?.id) continue;
 
-          const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
-          if (!hasTeam) {
-            seasonObj.regs.push({
-              tid: tm.id,
-              tn: tm.name,
-              gid: reg.grade?.id || null,
-              gn: reg.grade?.name || null,
-              stats: {} 
+          // 1. Track new seasons for the index
+          if (!knownSeasonIds.has(se.id) && !newSeasonMeta.has(se.id)) {
+            newSeasonMeta.set(se.id, {
+              name: se.name, startDate: se.startDate, endDate: se.endDate,
+              status: se.status?.value || null,
+              compId: se.competition?.id, compName: se.competition?.name,
+              orgId: se.competition?.organisation?.id, orgName: se.competition?.organisation?.name,
             });
-            fileModified = true;
-            console.log(`   ➕ Added ${localPlayer.name} to ${tm.name} (${se.name})`);
+            console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
+          }
+
+          // 2. BACKFILL: Update Team Lookup Directory
+          if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
+            const teamLookupPath = path.join(TEAM_LOOKUP_DIR, `${tm.id}.json`);
+            if (!fs.existsSync(teamLookupPath)) {
+              fs.writeFileSync(teamLookupPath, JSON.stringify({
+                id: tm.id, name: tm.name, seasonId: se.id 
+              }, null, 2));
+            }
+          }
+
+          // 3. BACKFILL: Update the local player's registrations
+          if (BACKFILL_TEAMS && localPlayer && tm?.id) {
+            let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
+            if (!seasonObj) {
+              seasonObj = { sid: se.id, sn: se.name, regs: [] };
+              localPlayer.seasons.push(seasonObj);
+            }
+            const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
+            if (!hasTeam) {
+              seasonObj.regs.push({
+                tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
+              });
+              fileModified = true;
+              console.log(`   ➕ Added ${localPlayer.name} to ${tm.name} (${se.name})`);
+            }
           }
         }
-      }
 
-      // Save the modified player file
-      if (fileModified && localPlayer && !DRY_RUN) {
-        fs.writeFileSync(filePath, JSON.stringify(localPlayer, null, 2));
-      }
+        if (fileModified && localPlayer && !DRY_RUN) {
+          fs.writeFileSync(filePath, JSON.stringify(localPlayer, null, 2));
+        }
       }
     });
 
@@ -800,9 +714,7 @@ async function main() {
     return;
   }
 
-  // ── Whole-population path (standalone: --uuid, --full, adhoc). Single-IP AIMD ──
-  //    grind-through-the-wall — fine for manual/diagnostic use, but NOT how the
-  //    matrix probes shards (see the SHARD branch above for the fresh-IP strategy).
+  // ── Whole-population path (standalone: --uuid, --full, adhoc). 
   let probeList;
   if (ONE_UUID) {
     probeList = [ONE_UUID];
@@ -814,11 +726,8 @@ async function main() {
     console.log(`  Players to probe: ${probeList.length}${selfTerminating ? `  (stop-after ${STOP_AFTER} with no new season)` : ''}`);
   }
 
-  // season.id -> season metadata captured from the discovering registration
   const newSeasonMeta = new Map();
   let probed = 0, privateN = 0, errors = 0;
-  // Saturation signal (default mode): probes since the last NEW season. Order-
-  // independent — a "have we stopped finding anything" heuristic, not a strict run.
   let probesSinceNew = 0, stop = false;
 
   const total = probeList.length;
@@ -827,7 +736,7 @@ async function main() {
 
   const probeStats = await aimdRun(probeList, 'probe', async (uuid) => {
     const r = await probeTeams(uuid);
-    if (r.kind === 'blocked') return { blocked: true };   // requeued by aimdRun — not counted, not dropped
+    if (r.kind === 'blocked') return { blocked: true };
     probed++;
 
     if (ONE_UUID) {
@@ -847,25 +756,72 @@ async function main() {
           console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
         }
       }
-      // Sync block (no await): has/set is atomic per worker, so two workers can't
-      // double-create or double-log the same new season.
+
+      let fileModified = false;
+      const filePath = path.join(PLAYERS_DIR, `${uuid.substring(0, 2)}`, `${uuid}.json`);
+      let localPlayer = null;
+
+      if (r.teams && r.teams.length > 0) {
+        try {
+          localPlayer = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (!localPlayer.seasons) localPlayer.seasons = [];
+        } catch (e) {
+          // Ignore
+        }
+      }
+
       for (const reg of r.teams) {
         const se = reg.season;
+        const tm = reg.team;
         if (!se?.id) continue;
-        if (knownSeasonIds.has(se.id) || newSeasonMeta.has(se.id)) continue;
-        newSeasonMeta.set(se.id, {
-          name: se.name, startDate: se.startDate, endDate: se.endDate,
-          status: se.status?.value || null,
-          compId: se.competition?.id, compName: se.competition?.name,
-          orgId: se.competition?.organisation?.id, orgName: se.competition?.organisation?.name,
-        });
-        foundNew = true;
-        console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
+        
+        // 1. Track new seasons for the index
+        if (!knownSeasonIds.has(se.id) && !newSeasonMeta.has(se.id)) {
+          newSeasonMeta.set(se.id, {
+            name: se.name, startDate: se.startDate, endDate: se.endDate,
+            status: se.status?.value || null,
+            compId: se.competition?.id, compName: se.competition?.name,
+            orgId: se.competition?.organisation?.id, orgName: se.competition?.organisation?.name,
+          });
+          foundNew = true;
+          console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
+        }
+
+        // 2. BACKFILL: Update Team Lookup Directory
+        if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
+          const teamLookupPath = path.join(TEAM_LOOKUP_DIR, `${tm.id}.json`);
+          if (!fs.existsSync(teamLookupPath)) {
+            fs.writeFileSync(teamLookupPath, JSON.stringify({
+              id: tm.id, name: tm.name, seasonId: se.id 
+            }, null, 2));
+          }
+        }
+
+        // 3. BACKFILL: Update the local player's registrations
+        if (BACKFILL_TEAMS && localPlayer && tm?.id) {
+          let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
+          if (!seasonObj) {
+            seasonObj = { sid: se.id, sn: se.name, regs: [] };
+            localPlayer.seasons.push(seasonObj);
+          }
+          const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
+          if (!hasTeam) {
+            seasonObj.regs.push({
+              tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
+            });
+            fileModified = true;
+            console.log(`   ➕ Added ${localPlayer.name} to ${tm.name} (${se.name})`);
+          }
+        }
+      }
+
+      if (fileModified && localPlayer && !DRY_RUN) {
+        fs.writeFileSync(filePath, JSON.stringify(localPlayer, null, 2));
       }
     }
+    
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
 
-    // Do not stop early if we are explicitly backfilling teams across all players
     if (!FULL && !ONE_UUID && !BACKFILL_TEAMS && probesSinceNew >= STOP_AFTER && !stop) {
       stop = true;
       console.log(`  ⏹ ${STOP_AFTER} probes with no new season — stopping dispatch (probed ${probed}).`);
@@ -878,7 +834,6 @@ async function main() {
   });
   const blockedEvents = probeStats.blockedEvents;
 
-  // Legacy standalone path (no shard/reduce): resolve + write in one process.
   await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0 });
 }
 
