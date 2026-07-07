@@ -191,6 +191,8 @@ jobs:
             scripts/discover-seasons.js
             data/sports-index.json
             data/discover-progress.json
+            players/
+            team-lookup/
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
