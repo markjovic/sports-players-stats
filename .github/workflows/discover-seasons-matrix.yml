@@ -148,7 +148,10 @@ jobs:
       - name: Burst-probe shard ${{ matrix.target.shard }} from cursor ${{ matrix.target.cursor }}
         run: |
           ARGS="--shard=${{ matrix.target.shard }} --cursor=${{ matrix.target.cursor }} --out=discover-shard-${{ matrix.target.shard }}.json --concurrency=${{ inputs.concurrency }}"
-          if [ "${{ inputs.all_players }}" = "true" ]; then ARGS="$ARGS --all-players"; fi
+          if [ "${{ inputs.all_players }}" == "true" ]; then ARGS="$ARGS --all-players"; fi
+          if [ "${{ inputs.dry_run }}" == "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.backfill_teams }}" == "true" ]; then ARGS="$ARGS --backfill-teams"; fi
+          
           node scripts/discover-seasons.js $ARGS
 
       - name: Upload shard discoveries
@@ -232,8 +235,8 @@ jobs:
           echo "↺ $(echo "$UNDONE" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))') shard(s) not yet done — re-triggering run $next_run on fresh runners."
           gh workflow run discover-seasons-matrix.yml \
             --repo "${{ github.repository }}" \
-            --field "shards=${UNDONE}" \
+            --field "shards=$UNDONE" \
             --field "all_players=${{ inputs.all_players }}" \
+            --field "backfill_teams=${{ inputs.backfill_teams }}" \
             --field "concurrency=${{ inputs.concurrency }}" \
-            --field "dry_run=false" \
-            --field "run_number=${next_run}"
+            --field "dry_run=${{ inputs.dry_run }}"
