@@ -360,7 +360,7 @@ async function burstRun(items, concurrency, worker) {
 function gitCommit(msg, extraPaths = []) {
   if (DRY_RUN) return;
   try {
-    execSync(`git add data/sports-index.json ${extraPaths.join(' ')}`.trim(), { cwd: ROOT, stdio: 'pipe' });
+    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
     const staged = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
     execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
