@@ -770,7 +770,7 @@ async function main() {
       shard: SHARD, mode: ALL_PLAYERS ? 'all' : 'current',
       discovered, 
       playerUpdates, // Pushing updates to the JSON file
-      teamUpdates,   // Pushing updates to the JSON file
+      teamUpdates: {},   // DISABLED — team-lookup/ not consumed downstream'
       cursor: newCursor, total, done, wallHit,
       probed, private: privateN, errors, at: new Date().toISOString(),
     };
