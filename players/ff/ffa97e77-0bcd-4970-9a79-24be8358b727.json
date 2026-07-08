@@ -1,1 +1,120 @@
-{"uuid":"ffa97e77-0bcd-4970-9a79-24be8358b727","name":"Frazer Green","gender":"Men","sports":{"Basketball":{"gp":7,"pts":36,"fouls":6,"fg":13,"ft":4,"threePt":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":2,"wins":6,"losses":8,"winPct":0.43,"statsChecked":"2026-07-05T16:16:18.602Z"}},"seasons":[{"sid":"b8849070","sn":"Autumn 2026","regs":[{"tid":"a7e1f694","tn":"Dennis Queed","gid":"db81282c","gn":"Monday Open Men Division 4","age":"Senior","div":"Division 4","stats":{"gp":7,"fouls":6,"ft":4,"fg":13,"threePt":2,"pts":36,"finals":1,"wins":3,"losses":4}},{"tid":"a7e1f694","tn":"Dennis Queed","gid":"d5d33c30","gn":"Monday Open Men Division 3","age":"Senior","div":"Division 3","stats":{"gp":7,"ft":4,"pts":36,"finals":1,"wins":3,"losses":4,"fg":13,"threePt":2,"fouls":6}}]}],"updatedAt":"2026-07-04T05:44:24.706Z","teams":[{"tid":"a7e1f694","sid":"b8849070","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:57:34.169Z","games":["196a5b59","1a360e99","31dd2cff","59fd553b","d0ab5b48","ee6f8fff","ef3b887a"],"records":{"maxGamePTS":{"v":18,"gameKey":"ef3b887a","sid":"b8849070"},"maxGameThreePt":{"v":2,"gameKey":"ef3b887a","sid":"b8849070"}}}
+{
+  "uuid": "ffa97e77-0bcd-4970-9a79-24be8358b727",
+  "name": "Frazer Green",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 36,
+      "fouls": 6,
+      "fg": 13,
+      "ft": 4,
+      "threePt": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": 2,
+      "wins": 6,
+      "losses": 8,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T16:16:18.602Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b8849070",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "a7e1f694",
+          "tn": "Dennis Queed",
+          "gid": "db81282c",
+          "gn": "Monday Open Men Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 7,
+            "fouls": 6,
+            "ft": 4,
+            "fg": 13,
+            "threePt": 2,
+            "pts": 36,
+            "finals": 1,
+            "wins": 3,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "a7e1f694",
+          "tn": "Dennis Queed",
+          "gid": "d5d33c30",
+          "gn": "Monday Open Men Division 3",
+          "age": "Senior",
+          "div": "Division 3",
+          "stats": {
+            "gp": 7,
+            "ft": 4,
+            "pts": 36,
+            "finals": 1,
+            "wins": 3,
+            "losses": 4,
+            "fg": 13,
+            "threePt": 2,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec7d3f73",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "8ce72e6e",
+          "tn": "Dennis Queed",
+          "gid": "a6363a34",
+          "gn": "Monday Senior Men Division 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:24.706Z",
+  "teams": [
+    {
+      "tid": "a7e1f694",
+      "sid": "b8849070",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8ce72e6e",
+      "sid": "ec7d3f73",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:28.042Z",
+  "games": [
+    "196a5b59",
+    "1a360e99",
+    "31dd2cff",
+    "59fd553b",
+    "d0ab5b48",
+    "ee6f8fff",
+    "ef3b887a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "ef3b887a",
+      "sid": "b8849070"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "ef3b887a",
+      "sid": "b8849070"
+    }
+  }
+}

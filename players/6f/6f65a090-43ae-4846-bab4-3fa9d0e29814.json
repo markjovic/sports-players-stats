@@ -1,1 +1,114 @@
-{"uuid":"6f65a090-43ae-4846-bab4-3fa9d0e29814","name":"Macy Camphuynder","gender":"Girls","sports":{"Basketball":{"gp":8,"pts":12,"fouls":7,"fg":5,"ft":2,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":2,"losses":5,"winPct":0.29,"statsChecked":"2026-07-05T15:10:07.251Z"}},"seasons":[{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"14b0f811","tn":"West Adelaide Bearcats U12 Girls Mackenzie","gid":"dd5c3e4d","gn":"GIRLS UNDER 12 B2","age":null,"div":"B2","stats":{"gp":5,"fouls":2,"fg":2,"pts":4,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"69cfc6ae","stats":{"losses":2,"gp":3,"pts":8,"fg":3,"ft":2,"fouls":5}}]}],"updatedAt":"2026-05-31T22:37:51.499Z","teams":[{"tid":"69cfc6ae","sid":"0869ea69","status":"UPCOMING"},{"tid":"6a3fa44e","sid":"8630ad4c","status":"COMPLETED"},{"tid":"14b0f811","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:04.196Z","records":{"maxGamePTS":{"v":5,"gameKey":"7007b1c4","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["07e0ad19","2c943ddd","5849aa2b","8f033c0d","949eb328","aa4cd874","cfcf040a"]}
+{
+  "uuid": "6f65a090-43ae-4846-bab4-3fa9d0e29814",
+  "name": "Macy Camphuynder",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 12,
+      "fouls": 7,
+      "fg": 5,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 5,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T15:10:07.251Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "14b0f811",
+          "tn": "West Adelaide Bearcats U12 Girls Mackenzie",
+          "gid": "dd5c3e4d",
+          "gn": "GIRLS UNDER 12 B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 4,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "69cfc6ae",
+          "stats": {
+            "losses": 2,
+            "gp": 3,
+            "pts": 8,
+            "fg": 3,
+            "ft": 2,
+            "fouls": 5
+          },
+          "gid": "69f8d0bf",
+          "gn": "GIRLS UNDER 14 C1"
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "6a3fa44e",
+          "tn": "West Adelaide Bearcats U12 Girls 2",
+          "gid": "61cf0148",
+          "gn": "GIRLS UNDER 12 B2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T22:37:51.499Z",
+  "teams": [
+    {
+      "tid": "14b0f811",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "69cfc6ae",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a3fa44e",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:02.390Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "7007b1c4",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "07e0ad19",
+    "2c943ddd",
+    "5849aa2b",
+    "8f033c0d",
+    "949eb328",
+    "aa4cd874",
+    "cfcf040a"
+  ]
+}

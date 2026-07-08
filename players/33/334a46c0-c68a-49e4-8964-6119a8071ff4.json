@@ -1,1 +1,296 @@
-{"uuid":"334a46c0-c68a-49e4-8964-6119a8071ff4","name":"Brodie Tibballs","gender":"Men","sports":{"Basketball":{"gp":74,"pts":1178,"fouls":132,"fg":200,"ft":88,"threePt":230,"finals":4,"gfApps":1,"gfWins":1,"finalsPerSeason":0.8,"foulOuts":{"59b847c2":1,"9210adb2":1,"ba7f8a1f":1},"maxGamePTS":32,"maxGameThreePt":8,"wins":49,"losses":18,"draws":1,"winPct":0.72,"statsChecked":"2026-07-05T15:59:56.725Z"}},"seasons":[{"sid":"59b847c2","sn":"Winter 2024","regs":[{"tid":"a3c32c17","tn":"broth","gid":"d7e3d425","gn":"Monday Men B2","age":null,"div":"B2","stats":{"gp":14,"pts":258,"threePt":57,"fg":34,"ft":19,"fouls":28,"foulOuts":1,"finals":1,"wins":10,"losses":3,"draws":1}}]},{"sid":"9210adb2","sn":"Summer 2023/24","regs":[{"tid":"67679cb4","tn":"broth","gid":"ec181f26","gn":"Sunday Men A","age":null,"div":null,"stats":{"gp":19,"pts":215,"threePt":44,"fg":30,"ft":23,"fouls":47,"foulOuts":1,"finals":1,"wins":10,"losses":8}}]},{"sid":"41e66962","sn":"Winter 2023","regs":[{"tid":"0f59012a","tn":"broth","gid":"200e604d","gn":"Monday Men D3","age":null,"div":"D3","stats":{"gp":18,"pts":324,"threePt":55,"fg":71,"ft":17,"fouls":21,"finals":1,"gfApps":1,"wins":17,"gfWins":1}}]},{"sid":"ba7f8a1f","sn":"Summer 2022/23","regs":[{"tid":"6c665f41","tn":"Shanghai Sharks","gid":"c10886ae","gn":"Sunday Men A","age":null,"div":null,"stats":{"gp":19,"pts":355,"threePt":71,"fg":58,"ft":26,"fouls":32,"foulOuts":1,"finals":1,"wins":12,"losses":7}}]},{"sid":"307e7a12","sn":"Summer 2020/21","club":"Woodlands Warriors Basketball Club","regs":[{"tid":"360647c2","tn":"Woodlands Warriors DC","gid":"60bc1db0","gn":"Thursday U18/21 Boys A","age":"U18","div":null,"stats":{"gp":4,"pts":26,"threePt":3,"fg":7,"ft":3,"fouls":4}}]}],"updatedAt":"2026-06-02T15:26:43.043Z","teams":[{"tid":"a3c32c17","sid":"59b847c2","status":"COMPLETED"},{"tid":"67679cb4","sid":"9210adb2","status":"COMPLETED"},{"tid":"0f59012a","sid":"41e66962","status":"COMPLETED"},{"tid":"6c665f41","sid":"ba7f8a1f","status":"COMPLETED"},{"tid":"360647c2","sid":"307e7a12","status":"COMPLETED"},{"tid":"f0400d27","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:12:58.956Z","records":{"maxGamePTS":{"v":32,"gameKey":"6a490be3","sid":"59b847c2"},"maxGameThreePt":{"v":8,"gameKey":"6a490be3","sid":"59b847c2"}},"games":["04cf1bd3","075192b3","0ac7f09d","172c1995","17d58907","19dd455c","1ec957a9","21708c0e","2367d5ea","23b7ee7e","26acce7d","2d7f4599","37fc5304","3aa86e2d","3f5ebbce","40a7dcc1","40ad6b5f","42185d59","4cbdd0f7","512cac44","53c85fba","57234945","57264110","5a7868f5","5e50fa8a","661dd427","694ff7d5","6986c09d","6a490be3","6d80e8dc","6e221780","79b47791","7b0642c4","7ba4f36f","7bb60717","8368c733","87804b0c","9013d92a","9416de8b","94edf75e","96130b06","993a7063","9c00c94b","9cef31a4","9dc9cc51","a282129f","a5286ce1","a6146fce","aa9bed3f","aba45069","ac975e95","bc31c272","bf8cfadc","c13ba5ea","c59292c1","c7b2a930","d23953f2","d3ee052b","d7713e64","d8eea7ab","d953b295","e18f3513","e411cf0f","e6c490fa","e8179217","e9bca0ed","ec05326d","eeb7529e","f45dd4f7","f50b1d8e","f842be96","fb8f80e8","fbeecea5","fdff1ab6"]}
+{
+  "uuid": "334a46c0-c68a-49e4-8964-6119a8071ff4",
+  "name": "Brodie Tibballs",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 74,
+      "pts": 1178,
+      "fouls": 132,
+      "fg": 200,
+      "ft": 88,
+      "threePt": 230,
+      "finals": 4,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.8,
+      "foulOuts": {
+        "59b847c2": 1,
+        "9210adb2": 1,
+        "ba7f8a1f": 1
+      },
+      "maxGamePTS": 32,
+      "maxGameThreePt": 8,
+      "wins": 49,
+      "losses": 18,
+      "draws": 1,
+      "winPct": 0.72,
+      "statsChecked": "2026-07-05T15:59:56.725Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "59b847c2",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "a3c32c17",
+          "tn": "broth",
+          "gid": "d7e3d425",
+          "gn": "Monday Men B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 14,
+            "pts": 258,
+            "threePt": 57,
+            "fg": 34,
+            "ft": 19,
+            "fouls": 28,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 10,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9210adb2",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "67679cb4",
+          "tn": "broth",
+          "gid": "ec181f26",
+          "gn": "Sunday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 215,
+            "threePt": 44,
+            "fg": 30,
+            "ft": 23,
+            "fouls": 47,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 10,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "41e66962",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "0f59012a",
+          "tn": "broth",
+          "gid": "200e604d",
+          "gn": "Monday Men D3",
+          "age": null,
+          "div": "D3",
+          "stats": {
+            "gp": 18,
+            "pts": 324,
+            "threePt": 55,
+            "fg": 71,
+            "ft": 17,
+            "fouls": 21,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 17,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ba7f8a1f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "6c665f41",
+          "tn": "Shanghai Sharks",
+          "gid": "c10886ae",
+          "gn": "Sunday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 355,
+            "threePt": 71,
+            "fg": 58,
+            "ft": 26,
+            "fouls": 32,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 12,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "307e7a12",
+      "sn": "Summer 2020/21",
+      "club": "Woodlands Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "360647c2",
+          "tn": "Woodlands Warriors DC",
+          "gid": "60bc1db0",
+          "gn": "Thursday U18/21 Boys A",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 26,
+            "threePt": 3,
+            "fg": 7,
+            "ft": 3,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "f0400d27",
+          "tn": "Frankston U18 Boys 3",
+          "gid": "30904b86",
+          "gn": "U18 Boys VJL 6 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:26:43.043Z",
+  "teams": [
+    {
+      "tid": "a3c32c17",
+      "sid": "59b847c2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67679cb4",
+      "sid": "9210adb2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0f59012a",
+      "sid": "41e66962",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c665f41",
+      "sid": "ba7f8a1f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "360647c2",
+      "sid": "307e7a12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0400d27",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:44:07.847Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 32,
+      "gameKey": "6a490be3",
+      "sid": "59b847c2"
+    },
+    "maxGameThreePt": {
+      "v": 8,
+      "gameKey": "6a490be3",
+      "sid": "59b847c2"
+    }
+  },
+  "games": [
+    "04cf1bd3",
+    "075192b3",
+    "0ac7f09d",
+    "172c1995",
+    "17d58907",
+    "19dd455c",
+    "1ec957a9",
+    "21708c0e",
+    "2367d5ea",
+    "23b7ee7e",
+    "26acce7d",
+    "2d7f4599",
+    "37fc5304",
+    "3aa86e2d",
+    "3f5ebbce",
+    "40a7dcc1",
+    "40ad6b5f",
+    "42185d59",
+    "4cbdd0f7",
+    "512cac44",
+    "53c85fba",
+    "57234945",
+    "57264110",
+    "5a7868f5",
+    "5e50fa8a",
+    "661dd427",
+    "694ff7d5",
+    "6986c09d",
+    "6a490be3",
+    "6d80e8dc",
+    "6e221780",
+    "79b47791",
+    "7b0642c4",
+    "7ba4f36f",
+    "7bb60717",
+    "8368c733",
+    "87804b0c",
+    "9013d92a",
+    "9416de8b",
+    "94edf75e",
+    "96130b06",
+    "993a7063",
+    "9c00c94b",
+    "9cef31a4",
+    "9dc9cc51",
+    "a282129f",
+    "a5286ce1",
+    "a6146fce",
+    "aa9bed3f",
+    "aba45069",
+    "ac975e95",
+    "bc31c272",
+    "bf8cfadc",
+    "c13ba5ea",
+    "c59292c1",
+    "c7b2a930",
+    "d23953f2",
+    "d3ee052b",
+    "d7713e64",
+    "d8eea7ab",
+    "d953b295",
+    "e18f3513",
+    "e411cf0f",
+    "e6c490fa",
+    "e8179217",
+    "e9bca0ed",
+    "ec05326d",
+    "eeb7529e",
+    "f45dd4f7",
+    "f50b1d8e",
+    "f842be96",
+    "fb8f80e8",
+    "fbeecea5",
+    "fdff1ab6"
+  ]
+}

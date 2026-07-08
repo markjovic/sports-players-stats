@@ -1,1 +1,292 @@
-{"uuid":"c6e56569-9754-4717-8033-fdc71bd5e58f","name":"David Williams","gender":"Men","sports":{"Basketball":{"gp":16,"pts":37,"fouls":8,"fg":10,"ft":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":4,"losses":9,"winPct":0.31,"statsChecked":"2026-07-06T19:00:58.542Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"9097291c","tn":"Bengals","gid":"94ebf712","gn":"Thursday Open Men Section 05","age":"Senior","div":null,"stats":{"gp":15,"fouls":8,"fg":9,"pts":35,"ft":1,"wins":4,"losses":9}}]},{"sid":"297562bc","regs":[{"tid":"77c1a2b4","stats":{"gp":1,"pts":2,"fg":1}},{"tid":"77c1a2b4","tn":"","gid":"678de19a","gn":"Thursday Open Men Section 5","div":null,"stats":{"gp":1,"pts":2,"fg":1}}]}],"updatedAt":"2026-07-06T18:34:12.277Z","teams":[{"tid":"9097291c","sid":"5593103d","status":"ACTIVE"},{"tid":"96e7a82c","sid":"fab2be4d","status":"COMPLETED"},{"tid":"f48017ad","sid":"76897951","status":"COMPLETED"},{"tid":"25384872","sid":"5944effa","status":"COMPLETED"},{"tid":"f14941a9","sid":"348dbfb8","status":"COMPLETED"},{"tid":"b444000a","sid":"9358e51a","status":"COMPLETED"},{"tid":"21ce937f","sid":"d3d4e181","status":"COMPLETED"},{"tid":"36e822df","sid":"21cd9648","status":"COMPLETED"},{"tid":"ee2bebb0","sid":"d4cbf787","status":"COMPLETED"},{"tid":"8897a60a","sid":"d64fcfce","status":"COMPLETED"},{"tid":"e9215b55","sid":"afd26581","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:07.740Z","records":{"maxGamePTS":{"v":8,"gameKey":"4155715c","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["154d38a9","39b7d06f","4155715c","4f2328d3","51975b5b","63b84c10","8de99f5f","9acbfd32","a79c6918","b1ad397b","b5447704","da074bd1","f8e4ec29"]}
+{
+  "uuid": "c6e56569-9754-4717-8033-fdc71bd5e58f",
+  "name": "David Williams",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 37,
+      "fouls": 8,
+      "fg": 10,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 9,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-06T19:00:58.542Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "9097291c",
+          "tn": "Bengals",
+          "gid": "94ebf712",
+          "gn": "Thursday Open Men Section 05",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "fg": 9,
+            "pts": 35,
+            "ft": 1,
+            "wins": 4,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "77c1a2b4",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1
+          },
+          "gid": "678de19a",
+          "gn": "Thursday Open Men Section 5"
+        },
+        {
+          "tid": "77c1a2b4",
+          "tn": "",
+          "gid": "678de19a",
+          "gn": "Thursday Open Men Section 5",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "96e7a82c",
+          "tn": "Bengals",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "f48017ad",
+          "tn": "Bengals",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "25384872",
+          "tn": "Bengals",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "f14941a9",
+          "tn": "Bengals",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "b444000a",
+          "tn": "Malvern Tigers Open Men Malvern Tigers Bengals",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "21ce937f",
+          "tn": "Malvern Tigers Senior Men Sabres",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "36e822df",
+          "tn": "Malvern Tigers Senior Men Sabres",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "ee2bebb0",
+          "tn": "Malvern Tigers Senior Men Sabres",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "8897a60a",
+          "tn": "Malvern Tigers Open Men Sabres",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "e9215b55",
+          "tn": "Malvern Tigers Sabres",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:12.277Z",
+  "teams": [
+    {
+      "tid": "9097291c",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "77c1a2b4",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96e7a82c",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f48017ad",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25384872",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f14941a9",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b444000a",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "21ce937f",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36e822df",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee2bebb0",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8897a60a",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e9215b55",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:31.161Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "4155715c",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "154d38a9",
+    "39b7d06f",
+    "4155715c",
+    "4f2328d3",
+    "51975b5b",
+    "63b84c10",
+    "8de99f5f",
+    "9acbfd32",
+    "a79c6918",
+    "b1ad397b",
+    "b5447704",
+    "da074bd1",
+    "f8e4ec29"
+  ]
+}

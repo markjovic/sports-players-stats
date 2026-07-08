@@ -1,1 +1,134 @@
-{"uuid":"bab59568-b408-4a0d-8ba1-5824cb61cbe9","gender":null,"sports":{"Basketball":{"gp":3,"pts":72,"fouls":3,"fg":14,"ft":2,"threePt":14,"foulOuts":{},"maxGamePTS":49,"maxGameThreePt":11,"wins":5,"winPct":1,"statsChecked":"2026-07-05T15:51:18.961Z"}},"seasons":[{"sid":"a751eea7","sn":"Autumn 2020","club":null,"regs":[{"tid":"0c5602ad","tn":"The Librarians","gid":"343c5a2e","gn":"Sunday Open Men A Grade","stats":{"gp":1,"pts":12,"fouls":1,"fg":3,"threePt":2,"wins":1}},{"tid":"1d090b11","stats":{"wins":2,"gp":2,"pts":60,"fg":11,"ft":2,"threePt":12,"fouls":2}}]},{"sid":"a751eea7","sn":"Autumn 2020","club":null,"regs":[{"tid":"1d090b11","tn":"No Subs","gid":"62c99275","gn":"Monday Open Men A. Grade","stats":{"gp":2,"pts":60,"fouls":2,"fg":11,"ft":2,"threePt":12,"wins":2}}]}],"updatedAt":"2026-06-11T23:44:05.039Z","records":{"maxGamePTS":{"v":49,"gameKey":"920dfa54","sid":"a751eea7"},"maxGameThreePt":{"v":11,"gameKey":"920dfa54","sid":"a751eea7"}},"games":["920dfa54","c9ae2533","cf28c4f6"],"name":"Autumn 2020","gameTids":{"cf28c4f6":"0c5602ad","920dfa54":"1d090b11","c9ae2533":"1d090b11"}}
+{
+  "uuid": "bab59568-b408-4a0d-8ba1-5824cb61cbe9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 72,
+      "fouls": 3,
+      "fg": 14,
+      "ft": 2,
+      "threePt": 14,
+      "foulOuts": {},
+      "maxGamePTS": 49,
+      "maxGameThreePt": 11,
+      "wins": 5,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T15:51:18.961Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a751eea7",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "0c5602ad",
+          "tn": "The Librarians",
+          "gid": "343c5a2e",
+          "gn": "Sunday Open Men A Grade",
+          "stats": {
+            "gp": 1,
+            "pts": 12,
+            "fouls": 1,
+            "fg": 3,
+            "threePt": 2,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "1d090b11",
+          "stats": {
+            "wins": 2,
+            "gp": 2,
+            "pts": 60,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 12,
+            "fouls": 2
+          },
+          "gid": "62c99275",
+          "gn": "Monday Open Men A. Grade"
+        }
+      ]
+    },
+    {
+      "sid": "a751eea7",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1d090b11",
+          "tn": "No Subs",
+          "gid": "62c99275",
+          "gn": "Monday Open Men A. Grade",
+          "stats": {
+            "gp": 2,
+            "pts": 60,
+            "fouls": 2,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 12,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ab1bf542",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "c7d376c8",
+          "tn": "Ski team",
+          "gid": "8f4712a2",
+          "gn": "Thursday Open Men A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:05.039Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 49,
+      "gameKey": "920dfa54",
+      "sid": "a751eea7"
+    },
+    "maxGameThreePt": {
+      "v": 11,
+      "gameKey": "920dfa54",
+      "sid": "a751eea7"
+    }
+  },
+  "games": [
+    "920dfa54",
+    "c9ae2533",
+    "cf28c4f6"
+  ],
+  "name": "Autumn 2020",
+  "gameTids": {
+    "cf28c4f6": "0c5602ad",
+    "920dfa54": "1d090b11",
+    "c9ae2533": "1d090b11"
+  },
+  "teams": [
+    {
+      "tid": "0c5602ad",
+      "sid": "a751eea7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d090b11",
+      "sid": "a751eea7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7d376c8",
+      "sid": "ab1bf542",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:00.234Z"
+}

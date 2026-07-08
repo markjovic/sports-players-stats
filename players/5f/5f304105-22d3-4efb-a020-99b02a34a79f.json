@@ -1,1 +1,374 @@
-{"uuid":"5f304105-22d3-4efb-a020-99b02a34a79f","name":"Jed McDermott","gender":"Boys","sports":{"Basketball":{"gp":67,"pts":500,"fouls":78,"fg":223,"ft":33,"threePt":7,"foulOuts":{"944aea0b":1},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.4,"maxGamePTS":18,"maxGameThreePt":1,"wins":64,"losses":61,"winPct":0.5,"draws":4,"statsChecked":"2026-07-05T14:55:46.905Z"}},"seasons":[{"sid":"093830b1","sn":"Winter 2026","club":"Barwon Heads Seagulls Basketball Club","regs":[{"tid":"682b7fac","tn":"Seagulls U14 Boys Mavericks","gid":"c728cfdf","gn":"Wednesday U14 Boys Div 1","age":"U14","div":"Div 1","stats":{"gp":9,"fouls":13,"ft":6,"fg":25,"threePt":2,"pts":62,"losses":3,"wins":2}},{"tid":"682b7fac","tn":"Seagulls U14 Boys Mavericks","gid":"130dec11","gn":"Wednesday U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":9,"fouls":13,"ft":6,"fg":25,"pts":62,"losses":3,"wins":2,"threePt":2}},{"tid":"682b7fac","tn":"Seagulls U14 Boys Mavericks","gid":"bb75e196","gn":"Wednesday U14 Boys Div 2","age":"U14","div":"Div 2","stats":{"gp":9,"fouls":13,"ft":6,"fg":25,"threePt":2,"pts":62,"losses":3,"wins":2}}]},{"sid":"ed318fce","sn":"Winter 2026","club":"Barwon Heads Seagulls Basketball Club","regs":[{"tid":"4399055d","tn":"Seagulls U14 Boys Night Hawks","gid":"b1f1da4a","gn":"Thursday U14 Boys Division 3","age":"U14","div":"Division 3","stats":{"gp":9,"ft":9,"fg":31,"pts":74,"threePt":1,"fouls":9,"wins":2,"losses":6}},{"tid":"4399055d","tn":"Seagulls U14 Boys Night Hawks","gid":"b062ae32","gn":"Thursday U14 Boys Grading","age":"U14","div":null,"stats":{"gp":9,"fouls":9,"ft":9,"fg":31,"pts":74,"wins":2,"losses":6,"threePt":1}}]},{"sid":"648e8b25","sn":"Summer 2025/26","club":"Barwon Heads Seagulls Basketball Club","regs":[{"tid":"528cf4bd","tn":"Seagulls U14 Boys Night Hawks","gid":"e2ec65d7","gn":"Thursday U14 Boys Division 4","age":"U14","div":"Division 4","stats":{"gp":16,"fouls":13,"ft":6,"fg":47,"pts":112,"wins":7,"losses":9,"threePt":4}},{"tid":"528cf4bd","tn":"Seagulls U14 Boys Night Hawks","gid":"f4e9141a","gn":"Thursday U14 Boys Grading","age":"U14","div":null,"stats":{"gp":16,"fouls":13,"ft":6,"fg":47,"threePt":4,"pts":112,"wins":7,"losses":9}}]},{"sid":"944aea0b","sn":"Winter 2025","club":"Barwon Heads Seagulls Basketball Club","regs":[{"tid":"60ae24ed","tn":"Seagulls U12 Boys Heat","gid":"14c2b98b","gn":"Wednesday U12 Boys Division 3","age":"U12","div":"Division 3","stats":{"gp":19,"fouls":24,"ft":6,"fg":73,"pts":152,"foulOuts":1,"finals":1,"losses":6,"wins":12,"draws":1}},{"tid":"60ae24ed","tn":"Seagulls U12 Boys Heat","gid":"99337c50","gn":"Wednesday U12 Boys Grading","age":"U12","div":null,"stats":{"gp":19,"fg":73,"pts":152,"finals":1,"losses":6,"wins":12,"draws":1,"ft":6,"fouls":24}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"Yarrambat Basketball Club","regs":[{"tid":"c1d37aa5","tn":"Yarrambat U12 Boys 14","gid":"b6f501eb","gn":"Saturday U12 Boys D3","age":"U12","div":"D3","stats":{"gp":14,"fouls":19,"ft":6,"fg":47,"pts":100,"finals":1,"wins":8,"losses":5,"draws":1}},{"tid":"c1d37aa5","tn":"Yarrambat U12 Boys 14","gid":"f49aabff","gn":"Saturday U12 Boys D2","age":"U12","div":"D2","stats":{"gp":14,"fouls":19,"fg":47,"pts":100,"finals":1,"wins":8,"losses":5,"draws":1,"ft":6}}]}],"updatedAt":"2026-06-02T02:43:51.335Z","teams":[{"tid":"682b7fac","sid":"093830b1","status":"ACTIVE"},{"tid":"4399055d","sid":"ed318fce","status":"ACTIVE"},{"tid":"528cf4bd","sid":"648e8b25","status":"COMPLETED"},{"tid":"60ae24ed","sid":"944aea0b","status":"COMPLETED"},{"tid":"c1d37aa5","sid":"fb0c8cb5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:34:09.320Z","records":{"maxGamePTS":{"v":18,"gameKey":"64d27a52","sid":"fb0c8cb5"},"maxGameThreePt":{"v":1,"gameKey":"f44b8f92","sid":"093830b1"}},"games":["0354ae3b","0996f20f","0ab92451","0fa4401a","13349564","13e1b7ed","15c98fa2","16c985c5","19316f22","235da1e7","24373f9f","252c9e8e","3187dcd0","3271155f","3487240b","35ee4102","3a258bcf","437895a3","4d3a5c87","50b9bf74","549b7098","56cd215c","5a900e4c","5e6f7343","64b22f70","64d27a52","652fc4ea","691735b0","72a0af87","7867b16c","7c654ba0","848e89e1","85d54ac8","887603f5","88cab4d1","8fe6097f","908ea816","946cdb29","94bc77ed","95a90ff4","a31f141e","aaba7ecc","b3937604","b4be405f","b5178244","b87b6e04","cc446d95","d0cb8200","d2900aa3","d31a2305","d760ff5e","d7619c8d","d9dd5ae1","dc228c7a","dd5ac6af","e155b770","e7549221","e97646ff","edee0620","f077b8fd","f44b8f92","f71f4277"]}
+{
+  "uuid": "5f304105-22d3-4efb-a020-99b02a34a79f",
+  "name": "Jed McDermott",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 67,
+      "pts": 500,
+      "fouls": 78,
+      "fg": 223,
+      "ft": 33,
+      "threePt": 7,
+      "foulOuts": {
+        "944aea0b": 1
+      },
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 18,
+      "maxGameThreePt": 1,
+      "wins": 64,
+      "losses": 61,
+      "winPct": 0.5,
+      "draws": 4,
+      "statsChecked": "2026-07-05T14:55:46.905Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "093830b1",
+      "sn": "Winter 2026",
+      "club": "Barwon Heads Seagulls Basketball Club",
+      "regs": [
+        {
+          "tid": "682b7fac",
+          "tn": "Seagulls U14 Boys Mavericks",
+          "gid": "bb75e196",
+          "gn": "Wednesday U14 Boys Div 2",
+          "age": "U14",
+          "div": "Div 1",
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 25,
+            "threePt": 2,
+            "pts": 62,
+            "losses": 3,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "682b7fac",
+          "tn": "Seagulls U14 Boys Mavericks",
+          "gid": "130dec11",
+          "gn": "Wednesday U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 25,
+            "pts": 62,
+            "losses": 3,
+            "wins": 2,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "682b7fac",
+          "tn": "Seagulls U14 Boys Mavericks",
+          "gid": "bb75e196",
+          "gn": "Wednesday U14 Boys Div 2",
+          "age": "U14",
+          "div": "Div 2",
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 25,
+            "threePt": 2,
+            "pts": 62,
+            "losses": 3,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ed318fce",
+      "sn": "Winter 2026",
+      "club": "Barwon Heads Seagulls Basketball Club",
+      "regs": [
+        {
+          "tid": "4399055d",
+          "tn": "Seagulls U14 Boys Night Hawks",
+          "gid": "b1f1da4a",
+          "gn": "Thursday U14 Boys Division 3",
+          "age": "U14",
+          "div": "Division 3",
+          "stats": {
+            "gp": 9,
+            "ft": 9,
+            "fg": 31,
+            "pts": 74,
+            "threePt": 1,
+            "fouls": 9,
+            "wins": 2,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "4399055d",
+          "tn": "Seagulls U14 Boys Night Hawks",
+          "gid": "b062ae32",
+          "gn": "Thursday U14 Boys Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 9,
+            "fg": 31,
+            "pts": 74,
+            "wins": 2,
+            "losses": 6,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "648e8b25",
+      "sn": "Summer 2025/26",
+      "club": "Barwon Heads Seagulls Basketball Club",
+      "regs": [
+        {
+          "tid": "528cf4bd",
+          "tn": "Seagulls U14 Boys Night Hawks",
+          "gid": "e2ec65d7",
+          "gn": "Thursday U14 Boys Division 4",
+          "age": "U14",
+          "div": "Division 4",
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 47,
+            "pts": 112,
+            "wins": 7,
+            "losses": 9,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "528cf4bd",
+          "tn": "Seagulls U14 Boys Night Hawks",
+          "gid": "f4e9141a",
+          "gn": "Thursday U14 Boys Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 47,
+            "threePt": 4,
+            "pts": 112,
+            "wins": 7,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "944aea0b",
+      "sn": "Winter 2025",
+      "club": "Barwon Heads Seagulls Basketball Club",
+      "regs": [
+        {
+          "tid": "60ae24ed",
+          "tn": "Seagulls U12 Boys Heat",
+          "gid": "14c2b98b",
+          "gn": "Wednesday U12 Boys Division 3",
+          "age": "U12",
+          "div": "Division 3",
+          "stats": {
+            "gp": 19,
+            "fouls": 24,
+            "ft": 6,
+            "fg": 73,
+            "pts": 152,
+            "foulOuts": 1,
+            "finals": 1,
+            "losses": 6,
+            "wins": 12,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "60ae24ed",
+          "tn": "Seagulls U12 Boys Heat",
+          "gid": "99337c50",
+          "gn": "Wednesday U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fg": 73,
+            "pts": 152,
+            "finals": 1,
+            "losses": 6,
+            "wins": 12,
+            "draws": 1,
+            "ft": 6,
+            "fouls": 24
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "Yarrambat Basketball Club",
+      "regs": [
+        {
+          "tid": "c1d37aa5",
+          "tn": "Yarrambat U12 Boys 14",
+          "gid": "b6f501eb",
+          "gn": "Saturday U12 Boys D3",
+          "age": "U12",
+          "div": "D3",
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "ft": 6,
+            "fg": 47,
+            "pts": 100,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c1d37aa5",
+          "tn": "Yarrambat U12 Boys 14",
+          "gid": "f49aabff",
+          "gn": "Saturday U12 Boys D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "fg": 47,
+            "pts": 100,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1,
+            "ft": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T02:43:51.335Z",
+  "teams": [
+    {
+      "tid": "682b7fac",
+      "sid": "093830b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4399055d",
+      "sid": "ed318fce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "528cf4bd",
+      "sid": "648e8b25",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60ae24ed",
+      "sid": "944aea0b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c1d37aa5",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:06.448Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "64d27a52",
+      "sid": "fb0c8cb5"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f44b8f92",
+      "sid": "093830b1"
+    }
+  },
+  "games": [
+    "0354ae3b",
+    "0996f20f",
+    "0ab92451",
+    "0fa4401a",
+    "13349564",
+    "13e1b7ed",
+    "15c98fa2",
+    "16c985c5",
+    "19316f22",
+    "235da1e7",
+    "24373f9f",
+    "252c9e8e",
+    "3187dcd0",
+    "3271155f",
+    "3487240b",
+    "35ee4102",
+    "3a258bcf",
+    "437895a3",
+    "4d3a5c87",
+    "50b9bf74",
+    "549b7098",
+    "56cd215c",
+    "5a900e4c",
+    "5e6f7343",
+    "64b22f70",
+    "64d27a52",
+    "652fc4ea",
+    "691735b0",
+    "72a0af87",
+    "7867b16c",
+    "7c654ba0",
+    "848e89e1",
+    "85d54ac8",
+    "887603f5",
+    "88cab4d1",
+    "8fe6097f",
+    "908ea816",
+    "946cdb29",
+    "94bc77ed",
+    "95a90ff4",
+    "a31f141e",
+    "aaba7ecc",
+    "b3937604",
+    "b4be405f",
+    "b5178244",
+    "b87b6e04",
+    "cc446d95",
+    "d0cb8200",
+    "d2900aa3",
+    "d31a2305",
+    "d760ff5e",
+    "d7619c8d",
+    "d9dd5ae1",
+    "dc228c7a",
+    "dd5ac6af",
+    "e155b770",
+    "e7549221",
+    "e97646ff",
+    "edee0620",
+    "f077b8fd",
+    "f44b8f92",
+    "f71f4277"
+  ]
+}

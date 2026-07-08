@@ -1,1 +1,181 @@
-{"uuid":"7c5af7b6-7ea6-483b-839f-10ea41719a68","name":"Brendan Woodcock","gender":"Mixed","sports":{"Basketball":{"gp":20,"pts":38,"fouls":8,"fg":19,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":6,"maxGameThreePt":null,"wins":11,"losses":19,"draws":2,"winPct":0.34,"statsChecked":"2026-07-05T16:14:03.322Z"}},"seasons":[{"sid":"23270ce4","sn":"Winter 2026","club":"Surfcoasters Basketball Club","regs":[{"tid":"a9dd2d31","tn":"Surfcoasters Addis","gid":"622948bb","gn":"All Abilities 2","age":null,"div":null,"stats":{"gp":6,"fouls":5,"fg":7,"pts":14,"wins":1,"losses":4}}]},{"sid":"85e5f151","sn":"Summer 2025/26","club":"Try Boys Basketball Club","regs":[{"tid":"1bd3f8d8","tn":"Try Boys AA Black Bears Div 1","gid":"84d5bce1","gn":"All Abilities 1","age":null,"div":null,"stats":{"gp":13,"fg":12,"pts":24,"finals":1,"gfApps":1,"wins":5,"losses":7,"draws":1,"fouls":3}},{"tid":"1bd3f8d8","tn":"Try Boys AA Black Bears Div 1","gid":"0977f840","gn":"ZZ__All Abilities 1/2","age":null,"div":null,"stats":{"gp":13,"fouls":3,"fg":12,"pts":24,"finals":1,"gfApps":1,"wins":5,"losses":7,"draws":1}},{"tid":"dbb026a7","tn":"Try Boys AA Red Bears Div 2","gid":"34423bab","gn":"ZZ__All Abilities 3/4","age":null,"div":null,"stats":{"gp":1,"finals":1,"gfApps":1,"losses":1}}]}],"updatedAt":"2026-06-03T03:29:00.320Z","teams":[{"tid":"a9dd2d31","sid":"23270ce4","status":"ACTIVE"},{"tid":"1bd3f8d8","sid":"85e5f151","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:42.888Z","records":{"maxGamePTS":{"v":6,"gameKey":"47cacd30","sid":"85e5f151"},"maxGameThreePt":{"v":null}},"games":["076049a3","0caf3608","0dd8d236","212a310b","25412cff","25615a09","2b511897","2bcd46e9","3a205ef3","47cacd30","48b60044","7ada3d82","9350d49c","b808d5d5","bd88c591","c91f9e9a","e272fa79","e37b3c34","fe62bbe8"],"gameTids":{"c388f806":"a9dd2d31","25615a09":"a9dd2d31","9350d49c":"a9dd2d31","e272fa79":"a9dd2d31","bd88c591":"a9dd2d31","2b511897":"a9dd2d31","7ada3d82":"1bd3f8d8","47cacd30":"1bd3f8d8","48b60044":"1bd3f8d8","0dd8d236":"1bd3f8d8","212a310b":"1bd3f8d8","fe62bbe8":"1bd3f8d8","0caf3608":"1bd3f8d8","e37b3c34":"1bd3f8d8","c91f9e9a":"1bd3f8d8","2bcd46e9":"1bd3f8d8","b808d5d5":"1bd3f8d8","25412cff":"1bd3f8d8","076049a3":"1bd3f8d8","3a205ef3":"dbb026a7"}}
+{
+  "uuid": "7c5af7b6-7ea6-483b-839f-10ea41719a68",
+  "name": "Brendan Woodcock",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 38,
+      "fouls": 8,
+      "fg": 19,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 11,
+      "losses": 19,
+      "draws": 2,
+      "winPct": 0.34,
+      "statsChecked": "2026-07-05T16:14:03.322Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "23270ce4",
+      "sn": "Winter 2026",
+      "club": "Surfcoasters Basketball Club",
+      "regs": [
+        {
+          "tid": "a9dd2d31",
+          "tn": "Surfcoasters Addis",
+          "gid": "5e0f9744",
+          "gn": "All Abilities 2/3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "fg": 7,
+            "pts": 14,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "85e5f151",
+      "sn": "Summer 2025/26",
+      "club": "Try Boys Basketball Club",
+      "regs": [
+        {
+          "tid": "1bd3f8d8",
+          "tn": "Try Boys AA Black Bears Div 1",
+          "gid": "84d5bce1",
+          "gn": "All Abilities 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 12,
+            "pts": 24,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 7,
+            "draws": 1,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "1bd3f8d8",
+          "tn": "Try Boys AA Black Bears Div 1",
+          "gid": "0977f840",
+          "gn": "ZZ__All Abilities 1/2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 3,
+            "fg": 12,
+            "pts": 24,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "dbb026a7",
+          "tn": "Try Boys AA Red Bears Div 2",
+          "gid": "34423bab",
+          "gn": "ZZ__All Abilities 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T03:29:00.320Z",
+  "teams": [
+    {
+      "tid": "a9dd2d31",
+      "sid": "23270ce4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1bd3f8d8",
+      "sid": "85e5f151",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dbb026a7",
+      "sid": "85e5f151",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:55.606Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "47cacd30",
+      "sid": "85e5f151"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "076049a3",
+    "0caf3608",
+    "0dd8d236",
+    "212a310b",
+    "25412cff",
+    "25615a09",
+    "2b511897",
+    "2bcd46e9",
+    "3a205ef3",
+    "47cacd30",
+    "48b60044",
+    "7ada3d82",
+    "9350d49c",
+    "b808d5d5",
+    "bd88c591",
+    "c91f9e9a",
+    "e272fa79",
+    "e37b3c34",
+    "fe62bbe8"
+  ],
+  "gameTids": {
+    "c388f806": "a9dd2d31",
+    "25615a09": "a9dd2d31",
+    "9350d49c": "a9dd2d31",
+    "e272fa79": "a9dd2d31",
+    "bd88c591": "a9dd2d31",
+    "2b511897": "a9dd2d31",
+    "7ada3d82": "1bd3f8d8",
+    "47cacd30": "1bd3f8d8",
+    "48b60044": "1bd3f8d8",
+    "0dd8d236": "1bd3f8d8",
+    "212a310b": "1bd3f8d8",
+    "fe62bbe8": "1bd3f8d8",
+    "0caf3608": "1bd3f8d8",
+    "e37b3c34": "1bd3f8d8",
+    "c91f9e9a": "1bd3f8d8",
+    "2bcd46e9": "1bd3f8d8",
+    "b808d5d5": "1bd3f8d8",
+    "25412cff": "1bd3f8d8",
+    "076049a3": "1bd3f8d8",
+    "3a205ef3": "dbb026a7"
+  }
+}

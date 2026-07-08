@@ -1,1 +1,87 @@
-{"uuid":"89734816-e3df-456f-94cb-d423ad77365a","name":"Stavros Zacharias","gender":"Men","sports":{"Basketball":{"gp":5,"pts":14,"fouls":16,"fg":2,"ft":1,"threePt":3,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"losses":3,"winPct":0,"statsChecked":"2026-07-06T18:59:22.223Z"}},"seasons":[{"sid":"205c1638","sn":"Winter 2026","regs":[{"tid":"c616ac62","tn":"Choncago Balls (Mon)","gid":"c059af6e","gn":"Monday Men B Grading","age":null,"div":null,"stats":{"gp":5,"fouls":16,"ft":1,"threePt":3,"pts":14,"fg":2,"losses":3}},{"tid":"c616ac62","tn":"","gid":"1161268d","gn":"Monday Men C Grade","div":null,"stats":{"gp":5,"pts":14,"fg":2,"ft":1,"threePt":3,"fouls":16}}]}],"updatedAt":"2026-07-06T18:31:54.984Z","teams":[{"tid":"c616ac62","sid":"205c1638","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:25:25.710Z","records":{"maxGamePTS":{"v":7,"gameKey":"4fe47487","sid":"205c1638"},"maxGameThreePt":{"v":1,"gameKey":"6dfb4c49","sid":"205c1638"}},"games":["4fe47487","84b10665","9f13be13"]}
+{
+  "uuid": "89734816-e3df-456f-94cb-d423ad77365a",
+  "name": "Stavros Zacharias",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 14,
+      "fouls": 16,
+      "fg": 2,
+      "ft": 1,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "losses": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-06T18:59:22.223Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "c616ac62",
+          "tn": "Choncago Balls (Mon)",
+          "gid": "1161268d",
+          "gn": "Monday Men C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 16,
+            "ft": 1,
+            "threePt": 3,
+            "pts": 14,
+            "fg": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "c616ac62",
+          "tn": "",
+          "gid": "1161268d",
+          "gn": "Monday Men C Grade",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 14,
+            "fg": 2,
+            "ft": 1,
+            "threePt": 3,
+            "fouls": 16
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:54.984Z",
+  "teams": [
+    {
+      "tid": "c616ac62",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:12.778Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "4fe47487",
+      "sid": "205c1638"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6dfb4c49",
+      "sid": "205c1638"
+    }
+  },
+  "games": [
+    "4fe47487",
+    "84b10665",
+    "9f13be13"
+  ]
+}

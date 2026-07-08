@@ -1,1 +1,132 @@
-{"uuid":"a068d28d-1f1b-4864-8503-4067a1ee74bd","name":"Zechen Jiang","gender":"Men","sports":{"Basketball":{"gp":18,"pts":15,"fouls":32,"fg":3,"ft":1,"threePt":1,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"wins":14,"losses":2,"winPct":0.88,"statsChecked":"2026-07-05T15:24:38.196Z"}},"seasons":[{"sid":"b3025a8e","sn":"Winter 2026","regs":[{"tid":"9b3a6c8b","tn":"Wetball ","gid":"367f11b6","gn":"Tuesday Men D","age":null,"div":null,"stats":{"gp":6,"fouls":8,"fg":1,"threePt":1,"pts":5,"wins":5}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"0948b605","tn":"Hamptons","gid":"1a871883","gn":"Wednesday Open Men Section 5","age":"Senior","div":null,"stats":{"gp":12,"fouls":24,"fg":2,"pts":10,"ft":1,"wins":9,"losses":2}}]}],"updatedAt":"2026-07-04T05:57:34.559Z","teams":[{"tid":"0948b605","sid":"5593103d","status":"ACTIVE"},{"tid":"9b3a6c8b","sid":"b3025a8e","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:31:23.010Z","games":["0fd12765","3b7178d8","54071cab","548fa6e6","5b4c7a4c","718cb96e","79cb5fd2","844cb400","88645d6c","9ac0a8f0","a360e1ec","a433fa85","b1e8ef86","b6a54546","f451ce23","f6dc5f0a","faefde83"],"records":{"maxGamePTS":{"v":5,"gameKey":"b6a54546","sid":"b3025a8e"},"maxGameThreePt":{"v":1,"gameKey":"b6a54546","sid":"b3025a8e"}}}
+{
+  "uuid": "a068d28d-1f1b-4864-8503-4067a1ee74bd",
+  "name": "Zechen Jiang",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 15,
+      "fouls": 32,
+      "fg": 3,
+      "ft": 1,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "wins": 14,
+      "losses": 2,
+      "winPct": 0.88,
+      "statsChecked": "2026-07-05T15:24:38.196Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3025a8e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "9b3a6c8b",
+          "tn": "Wetball ",
+          "gid": "367f11b6",
+          "gn": "Tuesday Men D",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 8,
+            "fg": 1,
+            "threePt": 1,
+            "pts": 5,
+            "wins": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "0948b605",
+          "tn": "Hamptons",
+          "gid": "1a871883",
+          "gn": "Wednesday Open Men Section 5",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "fg": 2,
+            "pts": 10,
+            "ft": 1,
+            "wins": 9,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "9d7a02ad",
+          "tn": "Hamptons",
+          "gid": "6cb8f7dd",
+          "gn": "Wednesday Open Men Section 5",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:34.559Z",
+  "teams": [
+    {
+      "tid": "9b3a6c8b",
+      "sid": "b3025a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0948b605",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d7a02ad",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:50.279Z",
+  "games": [
+    "0fd12765",
+    "3b7178d8",
+    "54071cab",
+    "548fa6e6",
+    "5b4c7a4c",
+    "718cb96e",
+    "79cb5fd2",
+    "844cb400",
+    "88645d6c",
+    "9ac0a8f0",
+    "a360e1ec",
+    "a433fa85",
+    "b1e8ef86",
+    "b6a54546",
+    "f451ce23",
+    "f6dc5f0a",
+    "faefde83"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "b6a54546",
+      "sid": "b3025a8e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b6a54546",
+      "sid": "b3025a8e"
+    }
+  }
+}

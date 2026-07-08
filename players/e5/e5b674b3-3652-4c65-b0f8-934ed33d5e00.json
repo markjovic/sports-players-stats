@@ -1,1 +1,66 @@
-{"uuid":"e5b674b3-3652-4c65-b0f8-934ed33d5e00","name":"Grace Kantanis","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":3,"foulOuts":{},"gp":19,"pts":66,"fg":24,"ft":3,"threePt":5,"fouls":21,"statsChecked":"2026-07-06T19:02:10.305Z"}},"seasons":[{"sid":"6e0c32cd","regs":[{"tid":"de042340"}]},{"sid":"64ab9100","regs":[{"tid":"ff539e5f"}]}],"teams":[],"updatedAt":"2026-07-05T16:57:28.075Z","records":{"maxGamePTS":{"v":15,"gameKey":"0acfc283","sid":"6e0c32cd"},"maxGameThreePt":{"v":3,"gameKey":"5fc4d433","sid":"6e0c32cd"}}}
+{
+  "uuid": "e5b674b3-3652-4c65-b0f8-934ed33d5e00",
+  "name": "Grace Kantanis",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 3,
+      "foulOuts": {},
+      "gp": 19,
+      "pts": 66,
+      "fg": 24,
+      "ft": 3,
+      "threePt": 5,
+      "fouls": 21,
+      "statsChecked": "2026-07-06T19:02:10.305Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6e0c32cd",
+      "regs": [
+        {
+          "tid": "de042340",
+          "gid": "b72f128b",
+          "gn": "Sunday Women A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "64ab9100",
+      "regs": [
+        {
+          "tid": "ff539e5f",
+          "gid": "e4d78379",
+          "gn": "Sunday Women A/B Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "de042340",
+      "sid": "6e0c32cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ff539e5f",
+      "sid": "64ab9100",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-05T16:57:28.075Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "0acfc283",
+      "sid": "6e0c32cd"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "5fc4d433",
+      "sid": "6e0c32cd"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:51:39.780Z"
+}

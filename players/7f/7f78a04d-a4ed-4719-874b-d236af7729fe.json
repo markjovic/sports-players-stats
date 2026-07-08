@@ -1,1 +1,254 @@
-{"uuid":"7f78a04d-a4ed-4719-874b-d236af7729fe","name":"Michaela Gal","gender":"Girls","sports":{"Basketball":{"gp":22,"pts":51,"fouls":29,"fg":24,"ft":3,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":null,"wins":20,"losses":5,"winPct":0.8,"statsChecked":"2026-07-05T15:10:23.510Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"501e39e2","tn":"SKIPPS Shooting Stars","gid":"fd85b71d","gn":"Friday Year 4 Girls B","age":null,"div":null,"stats":{"gp":4,"fouls":10,"pts":4,"fg":2,"wins":3,"losses":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"81ae3885","tn":"SKiPPS Shooting Stars ","gid":"4fc7ed77","gn":"Friday Year 3 Girls B","age":null,"div":null,"stats":{"gp":9,"fouls":13,"ft":1,"fg":7,"pts":15,"wins":6,"losses":3}},{"tid":"79c6a35a","stats":{"wins":3,"gp":3}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"79c6a35a","tn":"SKIPPS Star Wars","gid":"39b097b1","gn":"Wednesday Year 5 Boys C","age":null,"div":null,"stats":{"gp":3,"wins":3}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"b40e66bb","tn":"SKIPPS Rainbow Stars ","gid":"54c6b2bb","gn":"Friday MSAC/Bayside Year 3 Girls C","age":null,"div":null,"stats":{"gp":6,"fouls":6,"ft":2,"fg":15,"pts":32,"wins":5,"losses":1}}]}],"updatedAt":"2026-07-04T05:58:12.309Z","teams":[{"tid":"501e39e2","sid":"ad68db8b","status":"ACTIVE"},{"tid":"79c6a35a","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"81ae3885","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"b40e66bb","sid":"31d05517","status":"COMPLETED"},{"tid":"b04c4311","sid":"0fef30ca","status":"COMPLETED"},{"tid":"11bbe9e9","sid":"09a70808","status":"COMPLETED"},{"tid":"fe1bcc39","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:12.513Z","records":{"maxGamePTS":{"v":13,"gameKey":"8f1f04e4","sid":"31d05517"},"maxGameThreePt":{"v":null}},"games":["032021fe","09b8b960","315de722","3be115c0","44188f13","4578fb73","5ffa0b43","78139996","791cc1f9","8bb0378b","8f1f04e4","92bd3765","95ca0561","ae4e30f1","b49c9aba","c449ba36","d4aaa542","e53f0fc7","e5834f07","f662ed6f","f7710273","fe10c229"],"gameTids":{"78139996":"81ae3885","92bd3765":"501e39e2","fe10c229":"501e39e2","44188f13":"501e39e2","791cc1f9":"501e39e2","ae4e30f1":"81ae3885","4578fb73":"81ae3885","5ffa0b43":"81ae3885","3be115c0":"81ae3885","09b8b960":"81ae3885","f7710273":"81ae3885","95ca0561":"81ae3885","c449ba36":"81ae3885","e5834f07":"79c6a35a","b49c9aba":"79c6a35a","032021fe":"79c6a35a","d4aaa542":"b40e66bb","8bb0378b":"b40e66bb","315de722":"b40e66bb","f662ed6f":"b40e66bb","8f1f04e4":"b40e66bb","e53f0fc7":"b40e66bb"}}
+{
+  "uuid": "7f78a04d-a4ed-4719-874b-d236af7729fe",
+  "name": "Michaela Gal",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 51,
+      "fouls": 29,
+      "fg": 24,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 20,
+      "losses": 5,
+      "winPct": 0.8,
+      "statsChecked": "2026-07-05T15:10:23.510Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "501e39e2",
+          "tn": "SKIPPS Shooting Stars",
+          "gid": "fd85b71d",
+          "gn": "Friday Year 4 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 10,
+            "pts": 4,
+            "fg": 2,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "81ae3885",
+          "tn": "SKiPPS Shooting Stars ",
+          "gid": "4fc7ed77",
+          "gn": "Friday Year 3 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "wins": 6,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "79c6a35a",
+          "stats": {
+            "wins": 3,
+            "gp": 3
+          },
+          "gid": "39b097b1",
+          "gn": "Wednesday Year 5 Boys C"
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "79c6a35a",
+          "tn": "SKIPPS Star Wars",
+          "gid": "39b097b1",
+          "gn": "Wednesday Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "b40e66bb",
+          "tn": "SKIPPS Rainbow Stars ",
+          "gid": "54c6b2bb",
+          "gn": "Friday MSAC/Bayside Year 3 Girls C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "b04c4311",
+          "tn": "SKIPPS Rainbow Stars ",
+          "gid": "2fdc2e92",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "11bbe9e9",
+          "tn": "SKIPPS RAINBOW STARS",
+          "gid": "c2b210e2",
+          "gn": "Friday MSAC/Bayside YR.1 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "fe1bcc39",
+          "tn": "SKIPPS RAINBOW STARS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:58:12.309Z",
+  "teams": [
+    {
+      "tid": "501e39e2",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81ae3885",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79c6a35a",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b40e66bb",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b04c4311",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11bbe9e9",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe1bcc39",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:02.401Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "8f1f04e4",
+      "sid": "31d05517"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "032021fe",
+    "09b8b960",
+    "315de722",
+    "3be115c0",
+    "44188f13",
+    "4578fb73",
+    "5ffa0b43",
+    "78139996",
+    "791cc1f9",
+    "8bb0378b",
+    "8f1f04e4",
+    "92bd3765",
+    "95ca0561",
+    "ae4e30f1",
+    "b49c9aba",
+    "c449ba36",
+    "d4aaa542",
+    "e53f0fc7",
+    "e5834f07",
+    "f662ed6f",
+    "f7710273",
+    "fe10c229"
+  ],
+  "gameTids": {
+    "78139996": "81ae3885",
+    "92bd3765": "501e39e2",
+    "fe10c229": "501e39e2",
+    "44188f13": "501e39e2",
+    "791cc1f9": "501e39e2",
+    "ae4e30f1": "81ae3885",
+    "4578fb73": "81ae3885",
+    "5ffa0b43": "81ae3885",
+    "3be115c0": "81ae3885",
+    "09b8b960": "81ae3885",
+    "f7710273": "81ae3885",
+    "95ca0561": "81ae3885",
+    "c449ba36": "81ae3885",
+    "e5834f07": "79c6a35a",
+    "b49c9aba": "79c6a35a",
+    "032021fe": "79c6a35a",
+    "d4aaa542": "b40e66bb",
+    "8bb0378b": "b40e66bb",
+    "315de722": "b40e66bb",
+    "f662ed6f": "b40e66bb",
+    "8f1f04e4": "b40e66bb",
+    "e53f0fc7": "b40e66bb"
+  }
+}

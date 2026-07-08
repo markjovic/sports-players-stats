@@ -1,1 +1,223 @@
-{"uuid":"dd9132f9-ec42-46ef-a28f-d4ee593f92e8","name":"Billy Maddock","gender":"Mixed","sports":{"Basketball":{"gp":41,"pts":106,"fouls":16,"fg":44,"ft":18,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":14,"maxGameThreePt":null,"wins":23,"losses":49,"winPct":0.32,"statsChecked":"2026-07-05T15:39:09.682Z"}},"seasons":[{"sid":"c36e5626","sn":"Winter 2026","club":"CC Eagles Basketball Club","regs":[{"tid":"0ef0366a","tn":"CC Eagles Basketball Club Junior Mixed 5-6 Rookies Green","gid":"04baf10d","gn":"(SCHOOL) Thursday Grade 5&6 Future Stars","age":null,"div":null,"stats":{"gp":6,"fouls":4,"ft":9,"fg":17,"pts":43,"losses":4,"wins":2}},{"tid":"0ef0366a","tn":"CC Eagles Basketball Club Junior Mixed 5-6 Rookies Green","gid":"c6ff2ca1","gn":"(SCHOOL) Thursday Grade 5&6 All Stars","age":null,"div":null,"stats":{"gp":6,"fouls":4,"ft":9,"fg":17,"pts":43,"losses":4,"wins":2}},{"tid":"0ef0366a","tn":"","gid":"0ed50440","gn":"(SCHOOL) Thursday Grade 5&6 Rookies","div":null,"stats":{"gp":6,"pts":43,"fg":17,"ft":9,"fouls":4,"wins":2,"losses":4}}]},{"sid":"b82479c8","sn":"Summer 2025/26","club":"CC Eagles Basketball Club","regs":[{"tid":"e8fb71f2","tn":"CC Eagles Basketball Club Junior Mixed 5-6 Shooting Stars Green","gid":"1ebce62d","gn":"(SCHOOL) Thursday Grade 5&6 Shooting Stars","age":null,"div":null,"stats":{"gp":19,"fouls":7,"ft":6,"fg":18,"pts":42,"finals":1,"wins":8,"losses":11}},{"tid":"e8fb71f2","tn":"CC Eagles Basketball Club Junior Mixed 5-6 Shooting Stars Green","gid":"b6c6fe27","gn":"(SCHOOL) Thursday Grade 5&6 All Stars","age":null,"div":null,"stats":{"gp":19,"fouls":7,"fg":18,"pts":42,"finals":1,"wins":8,"losses":11,"ft":6}}]},{"sid":"0211d8a5","sn":"Summer 2024/25","club":"CC Eagles Basketball Club","regs":[{"tid":"ef4fc871","tn":"CC Eagles Basketball Club Junior Mixed Grade 5/6 Rookies Red","gid":"e093dc53","gn":"(SCHOOL) Thursday Grade 5&6 Rookies","age":null,"div":null,"stats":{"gp":16,"fouls":5,"ft":3,"fg":9,"pts":21,"wins":1,"losses":15}}]}],"updatedAt":"2026-07-04T05:54:31.486Z","teams":[{"tid":"0ef0366a","sid":"c36e5626","status":"ACTIVE"},{"tid":"e8fb71f2","sid":"b82479c8","status":"COMPLETED"},{"tid":"ef4fc871","sid":"0211d8a5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:19.223Z","records":{"maxGamePTS":{"v":14,"gameKey":"e42e344a","sid":"c36e5626"},"maxGameThreePt":{"v":null}},"games":["0d81bc03","10954108","125598d3","1afa3988","2722128f","27b9bf1a","2aa894a5","38a00a2c","40dfe869","46fb1a42","481fda3f","491bc62d","4c98e7b5","4cad1274","4dc14518","5954aeb0","5c852d9f","72b5a565","7bfa1714","850c9b6a","876e9a26","894c8c76","89b3062b","8bde9889","8d3686db","99ed33dd","9b02baca","9d9bf0f3","a2e5452f","a863c3e9","a942c639","bad00cf0","cd19cc2b","cf2f058d","cfee5e46","dd591455","e42e344a","eb26c109","ec168e9d","ee28bdb2","f45fe100"]}
+{
+  "uuid": "dd9132f9-ec42-46ef-a28f-d4ee593f92e8",
+  "name": "Billy Maddock",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 41,
+      "pts": 106,
+      "fouls": 16,
+      "fg": 44,
+      "ft": 18,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 23,
+      "losses": 49,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-05T15:39:09.682Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c36e5626",
+      "sn": "Winter 2026",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "0ef0366a",
+          "tn": "CC Eagles Basketball Club Junior Mixed 5-6 Rookies Green",
+          "gid": "0ed50440",
+          "gn": "(SCHOOL) Thursday Grade 5&6 Rookies",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 9,
+            "fg": 17,
+            "pts": 43,
+            "losses": 4,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "0ef0366a",
+          "tn": "CC Eagles Basketball Club Junior Mixed 5-6 Rookies Green",
+          "gid": "c6ff2ca1",
+          "gn": "(SCHOOL) Thursday Grade 5&6 All Stars",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 9,
+            "fg": 17,
+            "pts": 43,
+            "losses": 4,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "0ef0366a",
+          "tn": "",
+          "gid": "0ed50440",
+          "gn": "(SCHOOL) Thursday Grade 5&6 Rookies",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 43,
+            "fg": 17,
+            "ft": 9,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b82479c8",
+      "sn": "Summer 2025/26",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "e8fb71f2",
+          "tn": "CC Eagles Basketball Club Junior Mixed 5-6 Shooting Stars Green",
+          "gid": "1ebce62d",
+          "gn": "(SCHOOL) Thursday Grade 5&6 Shooting Stars",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 7,
+            "ft": 6,
+            "fg": 18,
+            "pts": 42,
+            "finals": 1,
+            "wins": 8,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "e8fb71f2",
+          "tn": "CC Eagles Basketball Club Junior Mixed 5-6 Shooting Stars Green",
+          "gid": "b6c6fe27",
+          "gn": "(SCHOOL) Thursday Grade 5&6 All Stars",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 7,
+            "fg": 18,
+            "pts": 42,
+            "finals": 1,
+            "wins": 8,
+            "losses": 11,
+            "ft": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0211d8a5",
+      "sn": "Summer 2024/25",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "ef4fc871",
+          "tn": "CC Eagles Basketball Club Junior Mixed Grade 5/6 Rookies Red",
+          "gid": "e093dc53",
+          "gn": "(SCHOOL) Thursday Grade 5&6 Rookies",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 5,
+            "ft": 3,
+            "fg": 9,
+            "pts": 21,
+            "wins": 1,
+            "losses": 15
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:31.486Z",
+  "teams": [
+    {
+      "tid": "0ef0366a",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8fb71f2",
+      "sid": "b82479c8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef4fc871",
+      "sid": "0211d8a5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:06.225Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "e42e344a",
+      "sid": "c36e5626"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0d81bc03",
+    "10954108",
+    "125598d3",
+    "1afa3988",
+    "2722128f",
+    "27b9bf1a",
+    "2aa894a5",
+    "38a00a2c",
+    "40dfe869",
+    "46fb1a42",
+    "481fda3f",
+    "491bc62d",
+    "4c98e7b5",
+    "4cad1274",
+    "4dc14518",
+    "5954aeb0",
+    "5c852d9f",
+    "72b5a565",
+    "7bfa1714",
+    "850c9b6a",
+    "876e9a26",
+    "894c8c76",
+    "89b3062b",
+    "8bde9889",
+    "8d3686db",
+    "99ed33dd",
+    "9b02baca",
+    "9d9bf0f3",
+    "a2e5452f",
+    "a863c3e9",
+    "a942c639",
+    "bad00cf0",
+    "cd19cc2b",
+    "cf2f058d",
+    "cfee5e46",
+    "dd591455",
+    "e42e344a",
+    "eb26c109",
+    "ec168e9d",
+    "ee28bdb2",
+    "f45fe100"
+  ]
+}

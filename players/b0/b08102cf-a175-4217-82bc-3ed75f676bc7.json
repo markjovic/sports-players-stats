@@ -1,1 +1,94 @@
-{"uuid":"b08102cf-a175-4217-82bc-3ed75f676bc7","name":"Belinda Rush","gender":"Women","sports":{"Basketball":{"gp":7,"pts":15,"fouls":8,"fg":6,"threePt":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":2,"losses":5,"winPct":0.29,"statsChecked":"2026-07-05T15:50:48.666Z"}},"seasons":[{"sid":"3226d779","sn":"Winter 2023","regs":[{"tid":"d429fa47","tn":"Mamasitas","gid":"37c0307f","gn":"Women A/B Grade","age":null,"div":null,"stats":{"gp":7,"fouls":8,"fg":6,"threePt":1,"pts":15,"wins":2,"losses":5}}]}],"updatedAt":"2026-06-03T04:03:36.447Z","teams":[{"tid":"7a85734f","sid":"27efb575","status":"COMPLETED"},{"tid":"d429fa47","sid":"3226d779","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:41.733Z","records":{"maxGamePTS":{"v":6,"gameKey":"49ce00cc","sid":"3226d779"},"maxGameThreePt":{"v":1,"gameKey":"00aa361f","sid":"3226d779"}},"games":["00aa361f","3cff8d2e","410fe6df","49ce00cc","7c5d423c","944329a4","ca7e975e"]}
+{
+  "uuid": "b08102cf-a175-4217-82bc-3ed75f676bc7",
+  "name": "Belinda Rush",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 15,
+      "fouls": 8,
+      "fg": 6,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "losses": 5,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T15:50:48.666Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3226d779",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "d429fa47",
+          "tn": "Mamasitas",
+          "gid": "37c0307f",
+          "gn": "Women A/B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "fg": 6,
+            "threePt": 1,
+            "pts": 15,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "27efb575",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "7a85734f",
+          "tn": "Mamasitas",
+          "gid": "d658e555",
+          "gn": "Women B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T04:03:36.447Z",
+  "teams": [
+    {
+      "tid": "d429fa47",
+      "sid": "3226d779",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a85734f",
+      "sid": "27efb575",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:31.804Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "49ce00cc",
+      "sid": "3226d779"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "00aa361f",
+      "sid": "3226d779"
+    }
+  },
+  "games": [
+    "00aa361f",
+    "3cff8d2e",
+    "410fe6df",
+    "49ce00cc",
+    "7c5d423c",
+    "944329a4",
+    "ca7e975e"
+  ]
+}

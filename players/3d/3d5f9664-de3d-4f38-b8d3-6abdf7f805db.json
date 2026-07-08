@@ -1,1 +1,147 @@
-{"uuid":"3d5f9664-de3d-4f38-b8d3-6abdf7f805db","name":"Joshua Mealmaker","gender":"Men","sports":{"Basketball":{"gp":14,"pts":90,"fouls":19,"fg":24,"ft":3,"threePt":13,"foulOuts":{},"maxGamePTS":17,"maxGameThreePt":3,"wins":8,"losses":12,"winPct":0.4,"statsChecked":"2026-07-05T15:22:09.061Z"}},"seasons":[{"sid":"ffba8120","sn":"Winter 2026","regs":[{"tid":"1ed945ce","tn":"Fumblers","gid":"892d5f79","gn":"Sunday Men Division 7","age":null,"div":"Division 7","stats":{"gp":10,"pts":81,"threePt":12,"fg":21,"ft":3,"fouls":12,"wins":4,"losses":6}},{"tid":"1ed945ce","tn":"Fumblers","gid":"49051b35","gn":"Sunday Men Division 6","age":null,"div":"Division 6","stats":{"gp":10,"pts":81,"threePt":12,"ft":3,"fouls":12,"wins":4,"losses":6,"fg":21}}]},{"sid":"89899a1c","sn":"Autumn 2020","regs":[{"tid":"19d34680","tn":"Benchwarmers","gid":"8c263f68","gn":"Wednesday Men E Grade","age":null,"div":null,"stats":{"gp":4,"pts":9,"threePt":1,"fg":3,"fouls":7}}]}],"updatedAt":"2026-07-04T05:47:50.254Z","teams":[{"tid":"1ed945ce","sid":"ffba8120","status":"ACTIVE"},{"tid":"4630d0c0","sid":"e279b635","status":"COMPLETED"},{"tid":"19d34680","sid":"89899a1c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:18:54.325Z","records":{"maxGamePTS":{"v":17,"gameKey":"12e8c3ca","sid":"ffba8120"},"maxGameThreePt":{"v":3,"gameKey":"2beadbbc","sid":"ffba8120"}},"games":["03756b4a","0ad3f313","12e8c3ca","246398cf","265b72cc","27302621","2beadbbc","303337bd","488ddf15","970ab91b","ac7e0667","b06355ae","b14675ef","b8b6a5e7"]}
+{
+  "uuid": "3d5f9664-de3d-4f38-b8d3-6abdf7f805db",
+  "name": "Joshua Mealmaker",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 90,
+      "fouls": 19,
+      "fg": 24,
+      "ft": 3,
+      "threePt": 13,
+      "foulOuts": {},
+      "maxGamePTS": 17,
+      "maxGameThreePt": 3,
+      "wins": 8,
+      "losses": 12,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:22:09.061Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ffba8120",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "1ed945ce",
+          "tn": "Fumblers",
+          "gid": "892d5f79",
+          "gn": "Sunday Men Division 7",
+          "age": null,
+          "div": "Division 7",
+          "stats": {
+            "gp": 10,
+            "pts": 81,
+            "threePt": 12,
+            "fg": 21,
+            "ft": 3,
+            "fouls": 12,
+            "wins": 4,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "1ed945ce",
+          "tn": "Fumblers",
+          "gid": "49051b35",
+          "gn": "Sunday Men Division 6",
+          "age": null,
+          "div": "Division 6",
+          "stats": {
+            "gp": 10,
+            "pts": 81,
+            "threePt": 12,
+            "ft": 3,
+            "fouls": 12,
+            "wins": 4,
+            "losses": 6,
+            "fg": 21
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89899a1c",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "19d34680",
+          "tn": "Benchwarmers",
+          "gid": "8c263f68",
+          "gn": "Wednesday Men E Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 9,
+            "threePt": 1,
+            "fg": 3,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e279b635",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "4630d0c0",
+          "tn": "Pretty Rave Girls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:50.254Z",
+  "teams": [
+    {
+      "tid": "1ed945ce",
+      "sid": "ffba8120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "19d34680",
+      "sid": "89899a1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4630d0c0",
+      "sid": "e279b635",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:45:15.061Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "12e8c3ca",
+      "sid": "ffba8120"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "2beadbbc",
+      "sid": "ffba8120"
+    }
+  },
+  "games": [
+    "03756b4a",
+    "0ad3f313",
+    "12e8c3ca",
+    "246398cf",
+    "265b72cc",
+    "27302621",
+    "2beadbbc",
+    "303337bd",
+    "488ddf15",
+    "970ab91b",
+    "ac7e0667",
+    "b06355ae",
+    "b14675ef",
+    "b8b6a5e7"
+  ]
+}

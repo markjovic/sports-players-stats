@@ -1,1 +1,340 @@
-{"uuid":"f98fc6b0-c470-4c39-93cc-d5e2e1325229","name":"Jenson Holm","gender":"Boys","sports":{"Basketball":{"gp":27,"pts":112,"fouls":20,"fg":44,"ft":12,"threePt":4,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":13,"maxGameThreePt":1,"wins":29,"losses":18,"draws":2,"winPct":0.59,"statsChecked":"2026-07-05T14:31:56.667Z"}},"seasons":[{"sid":"e2fad5cf","sn":"Summer 2024/25","regs":[{"tid":"c1bd6636","tn":"B13 Hot Shots 1 (P)","gid":"d6206b61","gn":"Saturday U13 Boys BR","age":"U13","div":null,"stats":{"gp":7,"fouls":1,"ft":4,"fg":19,"threePt":4,"pts":54,"wins":5,"losses":2}},{"tid":"c1bd6636","tn":"B13 Hot Shots 1 (P)","gid":"4bd6c7f5","gn":"Saturday U13 Boys B","age":"U13","div":null,"stats":{"gp":7,"ft":4,"fg":19,"pts":54,"wins":5,"losses":2,"threePt":4,"fouls":1}}]},{"sid":"25bd1a76","sn":"Summer 2023/24","regs":[{"tid":"1e13692b","tn":"Hustlers ","gid":"bc6ee2cd","gn":"U13 Boys B","age":"U13","div":null,"stats":{"gp":5,"fouls":1,"ft":4,"pts":4,"wins":1,"losses":2,"draws":2}}]},{"sid":"9f023601","sn":"Summer 2023/24","regs":[{"tid":"06073c17","tn":"B12 Ball Hunters 1","gid":"eb3dc4cb","gn":"Saturday U12 Boys B","age":"U12","div":null,"stats":{"gp":15,"fouls":18,"ft":4,"fg":25,"pts":54,"finals":1,"wins":9,"losses":6}},{"tid":"06073c17","tn":"B12 Ball Hunters 1","gid":"00ae7f6f","gn":"Saturday U12 Boys A3","age":"U12","div":"A3","stats":{"gp":15,"fouls":18,"ft":4,"fg":25,"pts":54,"finals":1,"wins":9,"losses":6}}]}],"updatedAt":"2026-06-01T21:03:02.001Z","teams":[{"tid":"c1bd6636","sid":"e2fad5cf","status":"COMPLETED"},{"tid":"13743b2a","sid":"df876355","status":"COMPLETED"},{"tid":"6fb14cd2","sid":"e54d0c37","status":"COMPLETED"},{"tid":"10635b4e","sid":"ee5d2724","status":"COMPLETED"},{"tid":"06073c17","sid":"9f023601","status":"COMPLETED"},{"tid":"1e13692b","sid":"25bd1a76","status":"COMPLETED"},{"tid":"9edfd92e","sid":"7d20ecad","status":"COMPLETED"},{"tid":"cf83ac3f","sid":"e2637fe8","status":"COMPLETED"},{"tid":"b549e216","sid":"eb0c3879","status":"COMPLETED"},{"tid":"2c2aef46","sid":"11f9ba57","status":"COMPLETED"},{"tid":"8620cb11","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:34:53.843Z","records":{"maxGamePTS":{"v":13,"gameKey":"bc0680c7","sid":"e2fad5cf"},"maxGameThreePt":{"v":1,"gameKey":"6b19b903","sid":"e2fad5cf"}},"games":["0586cb6d","0d34a272","10246b17","15f5731a","18b392ac","1c04d0b7","2b26016b","31e4f8a2","5353402e","58eeb8d0","6b19b903","6e82d448","6f3d836f","6f968b21","718c676f","7618c23a","81477340","8da0bfa9","985c1013","a608a128","abcf78fe","afa39abf","b860fdad","bc0680c7","e160e112","e991adb0","f254808a"]}
+{
+  "uuid": "f98fc6b0-c470-4c39-93cc-d5e2e1325229",
+  "name": "Jenson Holm",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 112,
+      "fouls": 20,
+      "fg": 44,
+      "ft": 12,
+      "threePt": 4,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 29,
+      "losses": 18,
+      "draws": 2,
+      "winPct": 0.59,
+      "statsChecked": "2026-07-05T14:31:56.667Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2fad5cf",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "c1bd6636",
+          "tn": "B13 Hot Shots 1 (P)",
+          "gid": "d6206b61",
+          "gn": "Saturday U13 Boys BR",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 1,
+            "ft": 4,
+            "fg": 19,
+            "threePt": 4,
+            "pts": 54,
+            "wins": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "c1bd6636",
+          "tn": "B13 Hot Shots 1 (P)",
+          "gid": "4bd6c7f5",
+          "gn": "Saturday U13 Boys B",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "ft": 4,
+            "fg": 19,
+            "pts": 54,
+            "wins": 5,
+            "losses": 2,
+            "threePt": 4,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "25bd1a76",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "1e13692b",
+          "tn": "Hustlers ",
+          "gid": "bc6ee2cd",
+          "gn": "U13 Boys B",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "ft": 4,
+            "pts": 4,
+            "wins": 1,
+            "losses": 2,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9f023601",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "06073c17",
+          "tn": "B12 Ball Hunters 1",
+          "gid": "eb3dc4cb",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 18,
+            "ft": 4,
+            "fg": 25,
+            "pts": 54,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "06073c17",
+          "tn": "B12 Ball Hunters 1",
+          "gid": "00ae7f6f",
+          "gn": "Saturday U12 Boys A3",
+          "age": "U12",
+          "div": "A3",
+          "stats": {
+            "gp": 15,
+            "fouls": 18,
+            "ft": 4,
+            "fg": 25,
+            "pts": 54,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "13743b2a",
+          "tn": "U14 Boys Caulfield Park Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "6fb14cd2",
+          "tn": "U14 Boys Caulfield Park Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "10635b4e",
+          "tn": "U14 Boys Caulfield Park Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "9edfd92e",
+          "tn": "U14 Boys Caulfield Park Piranhas",
+          "gid": "2f1f95d6",
+          "gn": "Saturday U14 Boys Grading Pool 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "cf83ac3f",
+          "tn": "U12 Boys Caulfield Park Piranhas",
+          "gid": "a9b101dd",
+          "gn": "U12 Boys (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "b549e216",
+          "tn": "U12 Boys Caulfield Park Piranhas",
+          "gid": "e9cf8afb",
+          "gn": "U12 Boys Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "2c2aef46",
+          "tn": "U12 Boys Caulfield Park Piranhas",
+          "gid": "a498abbd",
+          "gn": "U12 Boys GP5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "8620cb11",
+          "tn": "U10 Boys Caulfield Park Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:03:02.001Z",
+  "teams": [
+    {
+      "tid": "c1bd6636",
+      "sid": "e2fad5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e13692b",
+      "sid": "25bd1a76",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06073c17",
+      "sid": "9f023601",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13743b2a",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6fb14cd2",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "10635b4e",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9edfd92e",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cf83ac3f",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b549e216",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c2aef46",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8620cb11",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:14.707Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "bc0680c7",
+      "sid": "e2fad5cf"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6b19b903",
+      "sid": "e2fad5cf"
+    }
+  },
+  "games": [
+    "0586cb6d",
+    "0d34a272",
+    "10246b17",
+    "15f5731a",
+    "18b392ac",
+    "1c04d0b7",
+    "2b26016b",
+    "31e4f8a2",
+    "5353402e",
+    "58eeb8d0",
+    "6b19b903",
+    "6e82d448",
+    "6f3d836f",
+    "6f968b21",
+    "718c676f",
+    "7618c23a",
+    "81477340",
+    "8da0bfa9",
+    "985c1013",
+    "a608a128",
+    "abcf78fe",
+    "afa39abf",
+    "b860fdad",
+    "bc0680c7",
+    "e160e112",
+    "e991adb0",
+    "f254808a"
+  ]
+}

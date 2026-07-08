@@ -1,1 +1,139 @@
-{"uuid":"a87ae890-29de-44fc-b4c7-2bfdc3e641a4","name":"Oisin Osborne","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":118,"fouls":21,"fg":56,"ft":6,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":null,"wins":11,"losses":4,"winPct":0.73,"statsChecked":"2026-07-05T14:29:34.764Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"b172216c","tn":"Inner West Bulls U14 Boys 2","gid":"b0f45d3c","gn":"BOYS UNDER 14 C1","age":null,"div":"C1","stats":{"gp":4,"fouls":3,"fg":10,"pts":20,"wins":2,"losses":2}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"ceff35ca","tn":"Inner West Bulls U12 Boys Black","gid":"68847a6e","gn":"BOYS UNDER 12 C2","age":null,"div":"C2","stats":{"gp":6,"fouls":9,"ft":4,"fg":33,"pts":70,"finals":1,"gfApps":1,"wins":5,"losses":1}}]},{"sid":"0869ea69","regs":[{"tid":"5b69750b","stats":{"wins":4,"losses":1,"gp":5,"pts":28,"fg":13,"ft":2,"fouls":9}}]}],"updatedAt":"2026-05-31T10:48:45.548Z","teams":[{"tid":"5b69750b","sid":"0869ea69","status":"UPCOMING"},{"tid":"b172216c","sid":"6dd649c0","status":"COMPLETED"},{"tid":"ceff35ca","sid":"8630ad4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:17.934Z","games":["07a5894a","169bfe30","5bd25be6","5d1531ef","71c51279","89dde4fd","92028c78","9343e8a0","a5739008","dac16323","de63593b","df55c703","e21100ad","e879c25b","f380c1a7"],"records":{"maxGamePTS":{"v":18,"gameKey":"de63593b","sid":"8630ad4c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a87ae890-29de-44fc-b4c7-2bfdc3e641a4",
+  "name": "Oisin Osborne",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 118,
+      "fouls": 21,
+      "fg": 56,
+      "ft": 6,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 11,
+      "losses": 4,
+      "winPct": 0.73,
+      "statsChecked": "2026-07-05T14:29:34.764Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "b172216c",
+          "tn": "Inner West Bulls U14 Boys 2",
+          "gid": "b0f45d3c",
+          "gn": "BOYS UNDER 14 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 10,
+            "pts": 20,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "ceff35ca",
+          "tn": "Inner West Bulls U12 Boys Black",
+          "gid": "68847a6e",
+          "gn": "BOYS UNDER 12 C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 33,
+            "pts": 70,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "5b69750b",
+          "stats": {
+            "wins": 4,
+            "losses": 1,
+            "gp": 5,
+            "pts": 28,
+            "fg": 13,
+            "ft": 2,
+            "fouls": 9
+          },
+          "gid": "31c6a4b9",
+          "gn": "BOYS UNDER 14 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T10:48:45.548Z",
+  "teams": [
+    {
+      "tid": "b172216c",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ceff35ca",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b69750b",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:28.989Z",
+  "games": [
+    "07a5894a",
+    "169bfe30",
+    "5bd25be6",
+    "5d1531ef",
+    "71c51279",
+    "89dde4fd",
+    "92028c78",
+    "9343e8a0",
+    "a5739008",
+    "dac16323",
+    "de63593b",
+    "df55c703",
+    "e21100ad",
+    "e879c25b",
+    "f380c1a7"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "de63593b",
+      "sid": "8630ad4c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

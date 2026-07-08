@@ -1,1 +1,424 @@
-{"uuid":"b471f367-2659-4337-acfc-753d8afa177c","gender":null,"sports":{"Basketball":{"gp":61,"pts":391,"fouls":46,"fg":127,"ft":14,"threePt":41,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.11,"foulOuts":{"04b8e479":1},"maxGamePTS":35,"maxGameThreePt":4,"wins":20,"losses":33,"draws":2,"winPct":0.36,"statsChecked":"2026-07-05T16:15:03.035Z"}},"seasons":[{"sid":"04b8e479","sn":"Winter 2022","club":null,"regs":[{"tid":"f27437c6","tn":"Box makers","gid":"b27fd7ea","gn":"Wednesday Men E Grade","stats":{"gp":8,"pts":14,"fouls":5,"fg":4,"ft":3,"threePt":1,"foulOuts":1,"wins":5,"losses":3}}]},{"sid":"4f80334d","sn":"Summer 2021/22","club":null,"regs":[{"tid":"7b1ed5bf","tn":"Box makers","gid":"35853065","gn":"Wednesday Men E Grade","stats":{"gp":16,"pts":85,"fouls":12,"fg":29,"threePt":9,"wins":5,"losses":10,"draws":1}},{"tid":"7b1ed5bf","tn":"Box makers","gid":"d1bd7747","gn":"Wednesday Men D Grade","stats":{"gp":16,"pts":85,"fouls":12,"fg":29,"threePt":9,"wins":5,"losses":10,"draws":1}}]},{"sid":"be0c1e60","sn":"Summer 2021/22","club":null,"regs":[{"tid":"f9ecab19","tn":"Semi Pros","gid":"b83b9c40","gn":"Men's A","stats":{"gp":7,"pts":60,"fouls":5,"fg":11,"ft":2,"threePt":12,"wins":2,"losses":5}}]},{"sid":"7aaca544","sn":"Autumn 2021","club":null,"regs":[{"tid":"d645d282","tn":"Phillip Island U18 Boys","gid":"cb0dd595","gn":"U18 Boys D Grade","stats":{"gp":3,"pts":10,"fouls":2,"fg":2,"threePt":2}}]},{"sid":"4bae2128","sn":"Autumn 2021","club":null,"regs":[{"tid":"01a13b08","tn":"Jazz","gid":"7a9bfa98","gn":"Under 19 Boys","stats":{"gp":8,"pts":49,"fouls":8,"fg":11,"threePt":9,"wins":3,"losses":5}}]},{"sid":"69029016","sn":"Autumn 2021","club":null,"regs":[{"tid":"d3ebcdc7","tn":"Cavaliers","gid":"54e9a6c8","gn":"Monday U20 Boys","stats":{"gp":8,"pts":155,"fouls":11,"fg":63,"ft":8,"threePt":7,"finals":1}}]},{"sid":"08ff3d95","sn":"2021","club":null,"regs":[{"tid":"fc05a931","tn":"Phillip Island U18 Boys","gid":"b5eb590a","gn":"U18 Boys","stats":{"gp":4,"pts":6,"fouls":1,"fg":3}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Korumburra Wildcats Basketball Club","regs":[{"tid":"f33f03d7","tn":"Korumburra U18 Boys 1","gid":"6d5e09b7","gn":"18 Boys - VJL6 (P2)","stats":{"gp":5}},{"tid":"f33f03d7","tn":"Korumburra U18 Boys 1","gid":"4db53c0e","gn":"U18B Grading 2 - EE Pool A","stats":{"gp":5}}]},{"sid":"20c83ee2","sn":"Autumn 2020","club":null,"regs":[{"tid":"7ee47b8a","tn":"Timberwolves","gid":"26076ebd","gn":"Under 19 Boys","stats":{"gp":2,"pts":12,"fouls":2,"fg":4,"ft":1,"threePt":1}}]}],"updatedAt":"2026-06-11T23:43:53.253Z","games":["04ad0f74","04c36a9f","07ef18d8","09abbd87","0ccf41d9","0d86e605","0ef2a5f5","11e680e9","17e67e2f","1925b0b8","218533ee","2c8163dd","2ff93a1a","3084b6af","3591af37","35d08686","364be5cd","3756c1a6","3c6be060","4422fe6e","4477e85d","4e040709","5173e7a8","5510cdc1","56226cf8","574387f8","5e1098b8","618d442c","635ed74c","6598a5e5","6902646f","6d996fcc","6dca68ff","6f59fab4","7652886a","7a4301a3","7e044b02","80aa05e3","84489fb6","86649526","8a125396","8ac284c8","9ce4bd54","a4eea221","a86a2f98","b51a002d","b57afb6b","b80b76a2","bee47b33","cb0d96e3","cdab2999","d1332330","d5148b3a","d61622a1","de26ea3b","e1526a1d","e40f900b","f4c781fa","f54f792b","f6264199","f9e5e78e"],"records":{"maxGamePTS":{"v":35,"gameKey":"3591af37","sid":"69029016"},"maxGameThreePt":{"v":4,"gameKey":"de26ea3b","sid":"be0c1e60"}},"name":"Winter 2022"}
+{
+  "uuid": "b471f367-2659-4337-acfc-753d8afa177c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 61,
+      "pts": 391,
+      "fouls": 46,
+      "fg": 127,
+      "ft": 14,
+      "threePt": 41,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.11,
+      "foulOuts": {
+        "04b8e479": 1
+      },
+      "maxGamePTS": 35,
+      "maxGameThreePt": 4,
+      "wins": 20,
+      "losses": 33,
+      "draws": 2,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T16:15:03.035Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "04b8e479",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f27437c6",
+          "tn": "Box makers",
+          "gid": "b27fd7ea",
+          "gn": "Wednesday Men E Grade",
+          "stats": {
+            "gp": 8,
+            "pts": 14,
+            "fouls": 5,
+            "fg": 4,
+            "ft": 3,
+            "threePt": 1,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4f80334d",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7b1ed5bf",
+          "tn": "Box makers",
+          "gid": "35853065",
+          "gn": "Wednesday Men E Grade",
+          "stats": {
+            "gp": 16,
+            "pts": 85,
+            "fouls": 12,
+            "fg": 29,
+            "threePt": 9,
+            "wins": 5,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "7b1ed5bf",
+          "tn": "Box makers",
+          "gid": "d1bd7747",
+          "gn": "Wednesday Men D Grade",
+          "stats": {
+            "gp": 16,
+            "pts": 85,
+            "fouls": 12,
+            "fg": 29,
+            "threePt": 9,
+            "wins": 5,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "be0c1e60",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f9ecab19",
+          "tn": "Semi Pros",
+          "gid": "b83b9c40",
+          "gn": "Men's A",
+          "stats": {
+            "gp": 7,
+            "pts": 60,
+            "fouls": 5,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 12,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7aaca544",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d645d282",
+          "tn": "Phillip Island U18 Boys",
+          "gid": "cb0dd595",
+          "gn": "U18 Boys D Grade",
+          "stats": {
+            "gp": 3,
+            "pts": 10,
+            "fouls": 2,
+            "fg": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4bae2128",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "01a13b08",
+          "tn": "Jazz",
+          "gid": "7a9bfa98",
+          "gn": "Under 19 Boys",
+          "stats": {
+            "gp": 8,
+            "pts": 49,
+            "fouls": 8,
+            "fg": 11,
+            "threePt": 9,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "69029016",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d3ebcdc7",
+          "tn": "Cavaliers",
+          "gid": "54e9a6c8",
+          "gn": "Monday U20 Boys",
+          "stats": {
+            "gp": 8,
+            "pts": 155,
+            "fouls": 11,
+            "fg": 63,
+            "ft": 8,
+            "threePt": 7,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "08ff3d95",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "fc05a931",
+          "tn": "Phillip Island U18 Boys",
+          "gid": "b5eb590a",
+          "gn": "U18 Boys",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fouls": 1,
+            "fg": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Korumburra Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "f33f03d7",
+          "tn": "Korumburra U18 Boys 1",
+          "gid": "6d5e09b7",
+          "gn": "18 Boys - VJL6 (P2)",
+          "stats": {
+            "gp": 5
+          }
+        },
+        {
+          "tid": "f33f03d7",
+          "tn": "Korumburra U18 Boys 1",
+          "gid": "4db53c0e",
+          "gn": "U18B Grading 2 - EE Pool A",
+          "stats": {
+            "gp": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "20c83ee2",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7ee47b8a",
+          "tn": "Timberwolves",
+          "gid": "26076ebd",
+          "gn": "Under 19 Boys",
+          "stats": {
+            "gp": 2,
+            "pts": 12,
+            "fouls": 2,
+            "fg": 4,
+            "ft": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e0eafb0",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "f8ae9005",
+          "tn": "Phillip Island Rips U18 Boys",
+          "gid": "5d560f5b",
+          "gn": "U18 Boys Division 3 & 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "15356642",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "53818d14",
+          "tn": "Phillip Island U19B Rips",
+          "gid": "744c9e31",
+          "gn": "U19 Boys B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "26e3ca71",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "51f368ad",
+          "tn": "Hurricanes",
+          "gid": "cac621da",
+          "gn": "Monday U20 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:53.253Z",
+  "games": [
+    "04ad0f74",
+    "04c36a9f",
+    "07ef18d8",
+    "09abbd87",
+    "0ccf41d9",
+    "0d86e605",
+    "0ef2a5f5",
+    "11e680e9",
+    "17e67e2f",
+    "1925b0b8",
+    "218533ee",
+    "2c8163dd",
+    "2ff93a1a",
+    "3084b6af",
+    "3591af37",
+    "35d08686",
+    "364be5cd",
+    "3756c1a6",
+    "3c6be060",
+    "4422fe6e",
+    "4477e85d",
+    "4e040709",
+    "5173e7a8",
+    "5510cdc1",
+    "56226cf8",
+    "574387f8",
+    "5e1098b8",
+    "618d442c",
+    "635ed74c",
+    "6598a5e5",
+    "6902646f",
+    "6d996fcc",
+    "6dca68ff",
+    "6f59fab4",
+    "7652886a",
+    "7a4301a3",
+    "7e044b02",
+    "80aa05e3",
+    "84489fb6",
+    "86649526",
+    "8a125396",
+    "8ac284c8",
+    "9ce4bd54",
+    "a4eea221",
+    "a86a2f98",
+    "b51a002d",
+    "b57afb6b",
+    "b80b76a2",
+    "bee47b33",
+    "cb0d96e3",
+    "cdab2999",
+    "d1332330",
+    "d5148b3a",
+    "d61622a1",
+    "de26ea3b",
+    "e1526a1d",
+    "e40f900b",
+    "f4c781fa",
+    "f54f792b",
+    "f6264199",
+    "f9e5e78e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 35,
+      "gameKey": "3591af37",
+      "sid": "69029016"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "de26ea3b",
+      "sid": "be0c1e60"
+    }
+  },
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "f27437c6",
+      "sid": "04b8e479",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7b1ed5bf",
+      "sid": "4f80334d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9ecab19",
+      "sid": "be0c1e60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d645d282",
+      "sid": "7aaca544",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "01a13b08",
+      "sid": "4bae2128",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3ebcdc7",
+      "sid": "69029016",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fc05a931",
+      "sid": "08ff3d95",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f33f03d7",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ee47b8a",
+      "sid": "20c83ee2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f8ae9005",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53818d14",
+      "sid": "15356642",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "51f368ad",
+      "sid": "26e3ca71",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:30.024Z"
+}

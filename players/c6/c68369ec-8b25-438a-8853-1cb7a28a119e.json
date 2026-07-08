@@ -1,1 +1,193 @@
-{"uuid":"c68369ec-8b25-438a-8853-1cb7a28a119e","name":"Selena Gonzalez","gender":"Girls","sports":{"Basketball":{"gp":26,"pts":31,"fouls":4,"fg":15,"ft":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":31,"losses":32,"draws":2,"winPct":0.48,"statsChecked":"2026-07-05T15:26:00.388Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Rebelz Basketball Club","regs":[{"tid":"bd5ebf97","tn":"Rebelz U10 Girls 2","gid":"b2f08c8c","gn":"Saturday U10 Girls C2","age":"U10","div":"C2","stats":{"gp":13,"fouls":2,"wins":2,"losses":10,"draws":1,"pts":4,"fg":2}},{"tid":"bd5ebf97","tn":"Rebelz U10 Girls 2","gid":"fd97319c","gn":"Saturday U10 Girls Grading Group 2","age":"U10","div":null,"stats":{"gp":13,"fg":2,"pts":4,"wins":2,"losses":10,"draws":1,"fouls":2}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Rebelz Basketball Club","regs":[{"tid":"c7e34078","tn":"Rebelz U08 Girls 1","gid":"715ce29e","gn":"Saturday U08 Girls B2","age":"U08","div":"B2","stats":{"gp":13,"fg":13,"pts":27,"wins":9,"losses":4,"ft":1,"fouls":2}},{"tid":"c7e34078","tn":"Rebelz U08 Girls 1","gid":"202d97c0","gn":"Saturday U08 Girls C","age":"U08","div":null,"stats":{"gp":13,"fg":13,"pts":27,"wins":9,"losses":4,"ft":1,"fouls":2}},{"tid":"c7e34078","tn":"Rebelz U08 Girls 1","gid":"1d2dd358","gn":"Saturday U08 Girls Grading Group 2","age":"U08","div":null,"stats":{"gp":13,"fouls":2,"ft":1,"fg":13,"pts":27,"wins":9,"losses":4}}]}],"updatedAt":"2026-06-01T06:21:54.665Z","teams":[{"tid":"bd5ebf97","sid":"d868771d","status":"ACTIVE"},{"tid":"c7e34078","sid":"f57b7901","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:04.469Z","records":{"maxGamePTS":{"v":6,"gameKey":"5a50a331","sid":"f57b7901"},"maxGameThreePt":{"v":null}},"games":["06352bd7","079a6948","195af72f","1d1d5f29","25e297a8","34110fed","3bc39b0c","3e628117","401dfb1d","426467a4","490f11fc","5a50a331","617f3f06","72523219","7354699f","7ca7d030","7eb131d6","88c5754f","92eba8ea","ae45b28a","c9bfd0ac","cbf8d4cb","cd9a2ef3","d7e42a9b","edc9bfa6","ff4aab92"]}
+{
+  "uuid": "c68369ec-8b25-438a-8853-1cb7a28a119e",
+  "name": "Selena Gonzalez",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 31,
+      "fouls": 4,
+      "fg": 15,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 31,
+      "losses": 32,
+      "draws": 2,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T15:26:00.388Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Rebelz Basketball Club",
+      "regs": [
+        {
+          "tid": "bd5ebf97",
+          "tn": "Rebelz U10 Girls 2",
+          "gid": "b2f08c8c",
+          "gn": "Saturday U10 Girls C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 13,
+            "fouls": 2,
+            "wins": 2,
+            "losses": 10,
+            "draws": 1,
+            "pts": 4,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "bd5ebf97",
+          "tn": "Rebelz U10 Girls 2",
+          "gid": "fd97319c",
+          "gn": "Saturday U10 Girls Grading Group 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 2,
+            "pts": 4,
+            "wins": 2,
+            "losses": 10,
+            "draws": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Rebelz Basketball Club",
+      "regs": [
+        {
+          "tid": "c7e34078",
+          "tn": "Rebelz U08 Girls 1",
+          "gid": "715ce29e",
+          "gn": "Saturday U08 Girls B2",
+          "age": "U08",
+          "div": "B2",
+          "stats": {
+            "gp": 13,
+            "fg": 13,
+            "pts": 27,
+            "wins": 9,
+            "losses": 4,
+            "ft": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "c7e34078",
+          "tn": "Rebelz U08 Girls 1",
+          "gid": "202d97c0",
+          "gn": "Saturday U08 Girls C",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 13,
+            "pts": 27,
+            "wins": 9,
+            "losses": 4,
+            "ft": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "c7e34078",
+          "tn": "Rebelz U08 Girls 1",
+          "gid": "1d2dd358",
+          "gn": "Saturday U08 Girls Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "wins": 9,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "5d545250",
+          "tn": "Rebelz U10 Girls 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:21:54.665Z",
+  "teams": [
+    {
+      "tid": "bd5ebf97",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7e34078",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5d545250",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:11.487Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "5a50a331",
+      "sid": "f57b7901"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06352bd7",
+    "079a6948",
+    "195af72f",
+    "1d1d5f29",
+    "25e297a8",
+    "34110fed",
+    "3bc39b0c",
+    "3e628117",
+    "401dfb1d",
+    "426467a4",
+    "490f11fc",
+    "5a50a331",
+    "617f3f06",
+    "72523219",
+    "7354699f",
+    "7ca7d030",
+    "7eb131d6",
+    "88c5754f",
+    "92eba8ea",
+    "ae45b28a",
+    "c9bfd0ac",
+    "cbf8d4cb",
+    "cd9a2ef3",
+    "d7e42a9b",
+    "edc9bfa6",
+    "ff4aab92"
+  ]
+}

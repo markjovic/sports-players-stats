@@ -1,1 +1,86 @@
-{"uuid":"af6e938c-ba83-4df3-8011-1a5533e75b4e","name":"Thomas Hartkopf","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":18,"fouls":12,"fg":9,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":2,"losses":6,"winPct":0.25,"statsChecked":"2026-07-05T15:11:38.192Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Malvern Tigers Basketball Club","regs":[{"tid":"a246bdb2","tn":"Malvern Tigers U8 Boys Red","gid":"82d0f29d","gn":"Saturday U8 Boys Section 02","age":"U8","div":null,"stats":{"gp":6,"fouls":12,"fg":9,"pts":18,"wins":1,"losses":3}},{"tid":"a246bdb2","tn":"Malvern Tigers U8 Boys Red","gid":"26d3cae9","gn":"Saturday U8 Boys Section 01","age":"U8","div":null,"stats":{"gp":6,"fouls":12,"fg":9,"pts":18,"wins":1,"losses":3}}]}],"updatedAt":"2026-05-31T13:58:14.734Z","teams":[{"tid":"a246bdb2","sid":"6c117270","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:35:35.091Z","games":["45aea2ad","6c73dd67","bd016184","f374a0ee"],"records":{"maxGamePTS":{"v":8,"gameKey":"f374a0ee","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "af6e938c-ba83-4df3-8011-1a5533e75b4e",
+  "name": "Thomas Hartkopf",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 18,
+      "fouls": 12,
+      "fg": 9,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 6,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T15:11:38.192Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "a246bdb2",
+          "tn": "Malvern Tigers U8 Boys Red",
+          "gid": "24bea3a4",
+          "gn": "Saturday U8 Boys Section 01/02",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "fg": 9,
+            "pts": 18,
+            "wins": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "a246bdb2",
+          "tn": "Malvern Tigers U8 Boys Red",
+          "gid": "26d3cae9",
+          "gn": "Saturday U8 Boys Section 01",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "fg": 9,
+            "pts": 18,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:58:14.734Z",
+  "teams": [
+    {
+      "tid": "a246bdb2",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:24.417Z",
+  "games": [
+    "45aea2ad",
+    "6c73dd67",
+    "bd016184",
+    "f374a0ee"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "f374a0ee",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

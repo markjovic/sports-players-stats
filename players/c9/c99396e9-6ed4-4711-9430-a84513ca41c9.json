@@ -1,1 +1,363 @@
-{"uuid":"c99396e9-6ed4-4711-9430-a84513ca41c9","name":"Edward Gray","gender":"Unknown","sports":{"Basketball":{"gp":58,"pts":86,"fouls":74,"fg":32,"ft":10,"threePt":4,"foulOuts":{"a272a809":1,"de355b37":1},"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.4,"maxGamePTS":8,"maxGameThreePt":2,"wins":60,"losses":39,"winPct":0.58,"draws":5,"statsChecked":"2026-07-05T14:30:35.309Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Titans Junior Basketball Club","regs":[{"tid":"b268f5d0","tn":"TITANS U16 Boys Skibidi","gid":"da64a425","gn":"U16 Boys Grading","age":"U16","div":null,"stats":{"gp":5,"fouls":5,"fg":1,"threePt":3,"pts":11,"wins":1,"losses":2}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Titans Junior Basketball Club","regs":[{"tid":"f68d1323","tn":"TITANS U16 Boys Disorder","gid":"1c968b35","gn":"U16 Boys B2","age":"U16","div":"B2","stats":{"gp":15,"fouls":14,"ft":2,"fg":10,"pts":22,"finals":1,"gfApps":1,"wins":13,"losses":2,"gfWins":1}},{"tid":"f68d1323","tn":"TITANS U16 Boys Disorder","gid":"bbfc8c77","gn":"U16 Boys Grading","age":"U16","div":null,"stats":{"gp":15,"fouls":14,"fg":10,"pts":22,"finals":1,"gfApps":1,"wins":13,"losses":2,"ft":2,"gfWins":1}}]},{"sid":"a272a809","sn":"Winter 2024","club":"Central City Breakers Basketball Club","regs":[{"tid":"9630eee2","tn":"Breakers U14 Boys Boomers","gid":"11aec08b","gn":"U14 Boys C1","age":"U14","div":"C1","stats":{"gp":14,"fouls":23,"fg":6,"pts":12,"foulOuts":1,"wins":6,"losses":7,"draws":1}},{"tid":"9630eee2","tn":"Breakers U14 Boys Boomers","gid":"070976fa","gn":"U14 Boys Grading","age":"U14","div":null,"stats":{"gp":14,"fouls":23,"fg":6,"pts":12,"wins":6,"losses":7,"draws":1}}]},{"sid":"738a875b","sn":"Summer 2023/24","club":"Central City Breakers Basketball Club","regs":[{"tid":"46227f49","tn":"Breakers U14 Boys Boomers","gid":"4063b9c9","gn":"U14 Boys B3","age":"U14","div":"B3","stats":{"gp":12,"fouls":10,"ft":2,"pts":9,"wins":3,"losses":5,"fg":2,"threePt":1}},{"tid":"46227f49","tn":"Breakers U14 Boys Boomers","gid":"4c3dbfa1","gn":"U14 Boys Grading","age":"U14","div":null,"stats":{"gp":12,"fouls":10,"ft":2,"fg":2,"threePt":1,"pts":9,"wins":3,"losses":5}}]},{"sid":"de355b37","sn":"Winter 2023","club":"Central City Breakers Basketball Club","regs":[{"tid":"e4b04a9c","tn":"Breakers U12 Boys Bandits","gid":"c91a7f49","gn":"U12 Boys B2","age":"U12","div":"B2","stats":{"gp":12,"fouls":22,"ft":6,"fg":13,"pts":32,"foulOuts":1,"finals":1,"wins":5,"losses":3,"draws":1}},{"tid":"e4b04a9c","tn":"Breakers U12 Boys Bandits","gid":"67d46983","gn":"U12 Boys B3","age":"U12","div":"B3","stats":{"gp":12,"ft":6,"fg":13,"pts":32,"finals":1,"wins":5,"losses":3,"draws":1,"fouls":22}},{"tid":"e4b04a9c","tn":"Breakers U12 Boys Bandits","gid":"2a47afb0","gn":"U12 Boys C3","age":"U12","div":"C3","stats":{"gp":12,"fouls":22,"fg":13,"pts":32,"finals":1,"wins":5,"losses":3,"draws":1,"ft":6}}]}],"updatedAt":"2026-07-04T05:39:23.809Z","teams":[{"tid":"b268f5d0","sid":"aacc7335","status":"ACTIVE"},{"tid":"f68d1323","sid":"6fd8e780","status":"COMPLETED"},{"tid":"9630eee2","sid":"a272a809","status":"COMPLETED"},{"tid":"46227f49","sid":"738a875b","status":"COMPLETED"},{"tid":"da401cfd","sid":"7d20ecad","status":"COMPLETED"},{"tid":"e4b04a9c","sid":"de355b37","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:16:58.154Z","games":["03ea1837","0e13e29f","0e757785","27af1f8c","299c7bf5","29c58726","2e6979b9","34d658f2","37f3542e","37fab007","3c810356","3f317206","43ad782c","450d77ed","4dcb8931","4f0ddf0c","52865a24","52d8ea04","5c93fead","63f65597","66876eeb","67b1592e","6ab63f98","78b32e06","79fe7ac6","7a33afd6","7d46c82f","86a1fe19","897d0d1f","8b63bfa7","8b797b6b","8cae010a","983d2375","9995776c","a3dfa7da","a4a1bb6b","ae099cac","b469fdea","c2303c41","d2384190","d265843d","d52e4696","da016363","e4267082","e4f69348","e5d122cd","e73f8171","ee56fd3a","fc96b0a4"],"records":{"maxGamePTS":{"v":8,"gameKey":"8b63bfa7","sid":"aacc7335"},"maxGameThreePt":{"v":2,"gameKey":"8b63bfa7","sid":"aacc7335"}}}
+{
+  "uuid": "c99396e9-6ed4-4711-9430-a84513ca41c9",
+  "name": "Edward Gray",
+  "gender": "Unknown",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 86,
+      "fouls": 74,
+      "fg": 32,
+      "ft": 10,
+      "threePt": 4,
+      "foulOuts": {
+        "a272a809": 1,
+        "de355b37": 1
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 8,
+      "maxGameThreePt": 2,
+      "wins": 60,
+      "losses": 39,
+      "winPct": 0.58,
+      "draws": 5,
+      "statsChecked": "2026-07-05T14:30:35.309Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "b268f5d0",
+          "tn": "TITANS U16 Boys Skibidi",
+          "gid": "476313cc",
+          "gn": "U16 Boys A2",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "fg": 1,
+            "threePt": 3,
+            "pts": 11,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "f68d1323",
+          "tn": "TITANS U16 Boys Disorder",
+          "gid": "1c968b35",
+          "gn": "U16 Boys B2",
+          "age": "U16",
+          "div": "B2",
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "ft": 2,
+            "fg": 10,
+            "pts": 22,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "f68d1323",
+          "tn": "TITANS U16 Boys Disorder",
+          "gid": "bbfc8c77",
+          "gn": "U16 Boys Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "fg": 10,
+            "pts": 22,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 2,
+            "ft": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a272a809",
+      "sn": "Winter 2024",
+      "club": "Central City Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "9630eee2",
+          "tn": "Breakers U14 Boys Boomers",
+          "gid": "11aec08b",
+          "gn": "U14 Boys C1",
+          "age": "U14",
+          "div": "C1",
+          "stats": {
+            "gp": 14,
+            "fouls": 23,
+            "fg": 6,
+            "pts": 12,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "9630eee2",
+          "tn": "Breakers U14 Boys Boomers",
+          "gid": "070976fa",
+          "gn": "U14 Boys Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 23,
+            "fg": 6,
+            "pts": 12,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "738a875b",
+      "sn": "Summer 2023/24",
+      "club": "Central City Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "46227f49",
+          "tn": "Breakers U14 Boys Boomers",
+          "gid": "4063b9c9",
+          "gn": "U14 Boys B3",
+          "age": "U14",
+          "div": "B3",
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "ft": 2,
+            "pts": 9,
+            "wins": 3,
+            "losses": 5,
+            "fg": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "46227f49",
+          "tn": "Breakers U14 Boys Boomers",
+          "gid": "4c3dbfa1",
+          "gn": "U14 Boys Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 2,
+            "threePt": 1,
+            "pts": 9,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "de355b37",
+      "sn": "Winter 2023",
+      "club": "Central City Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "e4b04a9c",
+          "tn": "Breakers U12 Boys Bandits",
+          "gid": "c91a7f49",
+          "gn": "U12 Boys B2",
+          "age": "U12",
+          "div": "B2",
+          "stats": {
+            "gp": 12,
+            "fouls": 22,
+            "ft": 6,
+            "fg": 13,
+            "pts": 32,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 5,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e4b04a9c",
+          "tn": "Breakers U12 Boys Bandits",
+          "gid": "67d46983",
+          "gn": "U12 Boys B3",
+          "age": "U12",
+          "div": "B3",
+          "stats": {
+            "gp": 12,
+            "ft": 6,
+            "fg": 13,
+            "pts": 32,
+            "finals": 1,
+            "wins": 5,
+            "losses": 3,
+            "draws": 1,
+            "fouls": 22
+          }
+        },
+        {
+          "tid": "e4b04a9c",
+          "tn": "Breakers U12 Boys Bandits",
+          "gid": "2a47afb0",
+          "gn": "U12 Boys C3",
+          "age": "U12",
+          "div": "C3",
+          "stats": {
+            "gp": 12,
+            "fouls": 22,
+            "fg": 13,
+            "pts": 32,
+            "finals": 1,
+            "wins": 5,
+            "losses": 3,
+            "draws": 1,
+            "ft": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "da401cfd",
+          "tn": "Malvern Tigers U12 Boys Brown",
+          "gid": "28b17a88",
+          "gn": "Saturday U12 Boys Grading Pool 5",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:23.809Z",
+  "teams": [
+    {
+      "tid": "b268f5d0",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f68d1323",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9630eee2",
+      "sid": "a272a809",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46227f49",
+      "sid": "738a875b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4b04a9c",
+      "sid": "de355b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da401cfd",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:21.603Z",
+  "games": [
+    "03ea1837",
+    "0e13e29f",
+    "0e757785",
+    "27af1f8c",
+    "299c7bf5",
+    "29c58726",
+    "2e6979b9",
+    "34d658f2",
+    "37f3542e",
+    "37fab007",
+    "3c810356",
+    "3f317206",
+    "43ad782c",
+    "450d77ed",
+    "4dcb8931",
+    "4f0ddf0c",
+    "52865a24",
+    "52d8ea04",
+    "5c93fead",
+    "63f65597",
+    "66876eeb",
+    "67b1592e",
+    "6ab63f98",
+    "78b32e06",
+    "79fe7ac6",
+    "7a33afd6",
+    "7d46c82f",
+    "86a1fe19",
+    "897d0d1f",
+    "8b63bfa7",
+    "8b797b6b",
+    "8cae010a",
+    "983d2375",
+    "9995776c",
+    "a3dfa7da",
+    "a4a1bb6b",
+    "ae099cac",
+    "b469fdea",
+    "c2303c41",
+    "d2384190",
+    "d265843d",
+    "d52e4696",
+    "da016363",
+    "e4267082",
+    "e4f69348",
+    "e5d122cd",
+    "e73f8171",
+    "ee56fd3a",
+    "fc96b0a4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "8b63bfa7",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "8b63bfa7",
+      "sid": "aacc7335"
+    }
+  }
+}

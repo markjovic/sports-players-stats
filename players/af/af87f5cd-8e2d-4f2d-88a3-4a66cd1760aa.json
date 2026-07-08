@@ -1,1 +1,95 @@
-{"uuid":"af87f5cd-8e2d-4f2d-88a3-4a66cd1760aa","name":"Archie Allwood","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":null,"foulOuts":{"8ff9f39e":1},"gp":29,"pts":84,"fg":39,"ft":6,"fouls":43,"statsChecked":"2026-07-06T19:00:28.639Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"a5498098"}]},{"sid":"8ff9f39e","regs":[{"tid":"eaead7b5"}]},{"sid":"e26f328b","regs":[{"tid":"1ba70762"}]},{"sid":"8835a9fa","regs":[{"tid":"562ee85c"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":10,"gameKey":"41a9495a","sid":"e26f328b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "af87f5cd-8e2d-4f2d-88a3-4a66cd1760aa",
+  "name": "Archie Allwood",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "8ff9f39e": 1
+      },
+      "gp": 29,
+      "pts": 84,
+      "fg": 39,
+      "ft": 6,
+      "fouls": 43,
+      "statsChecked": "2026-07-06T19:00:28.639Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "a5498098",
+          "gid": "2b7f30cd",
+          "gn": "U10 Boys Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "8ff9f39e",
+      "regs": [
+        {
+          "tid": "eaead7b5",
+          "gid": "9dced653",
+          "gn": "Saturday U9 Boys C"
+        }
+      ]
+    },
+    {
+      "sid": "e26f328b",
+      "regs": [
+        {
+          "tid": "1ba70762",
+          "gid": "2bbed84a",
+          "gn": "Saturday U8 Boys CRES"
+        }
+      ]
+    },
+    {
+      "sid": "8835a9fa",
+      "regs": [
+        {
+          "tid": "562ee85c",
+          "gid": "11083cae",
+          "gn": "Tuesday U7  miniball Orange"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "a5498098",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eaead7b5",
+      "sid": "8ff9f39e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ba70762",
+      "sid": "e26f328b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "562ee85c",
+      "sid": "8835a9fa",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "41a9495a",
+      "sid": "e26f328b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:49:33.341Z"
+}

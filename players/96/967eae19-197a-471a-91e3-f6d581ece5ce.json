@@ -1,1 +1,130 @@
-{"uuid":"967eae19-197a-471a-91e3-f6d581ece5ce","gender":null,"sports":{"Basketball":{"gp":13,"pts":110,"fouls":24,"fg":47,"ft":7,"threePt":3,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":1,"foulOuts":{"a62fadf9":1},"maxGamePTS":20,"maxGameThreePt":2,"wins":18,"losses":8,"winPct":0.69,"statsChecked":"2026-07-05T16:28:08.674Z"}},"seasons":[{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Whitehorse Mustangs","regs":[{"tid":"ca061666","tn":"Whitehorse U20 Boys 03","gid":"bbaecd0b","gn":"Boys U20AR South","stats":{"gp":13,"pts":110,"fouls":24,"fg":47,"ft":7,"threePt":3,"finals":1,"gfApps":1,"foulOuts":1,"wins":9,"losses":4,"gfWins":1}},{"tid":"ca061666","tn":"Whitehorse U20 Boys 03","gid":"af0fc3c0","gn":"U20 Boys A Grading","stats":{"gp":13,"pts":110,"fouls":24,"fg":47,"ft":7,"finals":1,"gfApps":1,"wins":9,"losses":4,"threePt":3,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:42:39.736Z","records":{"maxGamePTS":{"v":20,"gameKey":"df8595aa","sid":"a62fadf9"},"maxGameThreePt":{"v":2,"gameKey":"df8595aa","sid":"a62fadf9"}},"games":["026f1906","0d65c930","1755ef30","197cdf54","56055b60","63b04b9b","6470bc12","6dc2e46a","bb17186e","d5b45353","df8595aa","ee704541","f3b1fca6"],"name":"Summer 2020/21"}
+{
+  "uuid": "967eae19-197a-471a-91e3-f6d581ece5ce",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 110,
+      "fouls": 24,
+      "fg": 47,
+      "ft": 7,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "a62fadf9": 1
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": 2,
+      "wins": 18,
+      "losses": 8,
+      "winPct": 0.69,
+      "statsChecked": "2026-07-05T16:28:08.674Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Whitehorse Mustangs",
+      "regs": [
+        {
+          "tid": "ca061666",
+          "tn": "Whitehorse U20 Boys 03",
+          "gid": "bbaecd0b",
+          "gn": "Boys U20AR South",
+          "stats": {
+            "gp": 13,
+            "pts": 110,
+            "fouls": 24,
+            "fg": 47,
+            "ft": 7,
+            "threePt": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "ca061666",
+          "tn": "Whitehorse U20 Boys 03",
+          "gid": "af0fc3c0",
+          "gn": "U20 Boys A Grading",
+          "stats": {
+            "gp": 13,
+            "pts": 110,
+            "fouls": 24,
+            "fg": 47,
+            "ft": 7,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 4,
+            "threePt": 3,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "41fecab0",
+          "tn": "Camberwell U18 Boys 1",
+          "gid": "d3745db5",
+          "gn": "U18 Boys VC - Ashe",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:39.736Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "df8595aa",
+      "sid": "a62fadf9"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "df8595aa",
+      "sid": "a62fadf9"
+    }
+  },
+  "games": [
+    "026f1906",
+    "0d65c930",
+    "1755ef30",
+    "197cdf54",
+    "56055b60",
+    "63b04b9b",
+    "6470bc12",
+    "6dc2e46a",
+    "bb17186e",
+    "d5b45353",
+    "df8595aa",
+    "ee704541",
+    "f3b1fca6"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "ca061666",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "41fecab0",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:50.178Z"
+}

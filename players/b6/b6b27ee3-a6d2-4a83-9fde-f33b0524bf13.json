@@ -1,1 +1,203 @@
-{"uuid":"b6b27ee3-a6d2-4a83-9fde-f33b0524bf13","name":"Anna Li","gender":"Girls","sports":{"Basketball":{"gp":25,"pts":185,"fouls":20,"fg":65,"ft":19,"threePt":12,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":4,"wins":6,"losses":19,"winPct":0.24,"statsChecked":"2026-07-05T14:30:07.468Z"}},"seasons":[{"sid":"148d96eb","sn":"2026","club":"New South Wales","regs":[{"tid":"ebbd5c6d","tn":"U14 Girls NSW White","gid":"bb0f219e","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":7,"fouls":7,"ft":5,"fg":22,"threePt":4,"pts":61,"wins":2,"losses":5}}]},{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"a3c61f4f","tn":"Sydney Comets U14 Girls Gold ","gid":"dcf6ec12","gn":"GIRLS UNDER 14 A","age":null,"div":null,"stats":{"gp":6,"fouls":1,"ft":2,"fg":9,"pts":20,"wins":3,"losses":3}}]},{"sid":"56bad6ef","sn":"2024","club":"Sydney Comets Basketball Club","regs":[{"tid":"66e4c27d","tn":"Sydney U12 Girls","gid":"996b46f3","gn":"U12 Girls NJC","age":"U12","div":null,"stats":{"gp":6,"fouls":10,"ft":8,"fg":19,"pts":46,"finals":1,"gfApps":1,"wins":1,"losses":5,"gfWins":1}}]},{"sid":"0869ea69","regs":[{"tid":"99d2f4ac","stats":{"losses":6,"gp":6,"pts":58,"fg":15,"ft":4,"threePt":8,"fouls":2}}]}],"updatedAt":"2026-06-01T03:39:50.904Z","teams":[{"tid":"99d2f4ac","sid":"0869ea69","status":"UPCOMING"},{"tid":"ebbd5c6d","sid":"148d96eb","status":"COMPLETED"},{"tid":"a3c61f4f","sid":"6dd649c0","status":"COMPLETED"},{"tid":"66e4c27d","sid":"56bad6ef","status":"COMPLETED"},{"tid":"c78606db","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:07:29.152Z","records":{"maxGamePTS":{"v":21,"gameKey":"6e9530e7","sid":"0869ea69"},"maxGameThreePt":{"v":4,"gameKey":"6e9530e7","sid":"0869ea69"}},"games":["0acd92be","0d7e8f72","22017ee6","232b053e","3cfe48b4","61dba950","67665b15","67c196f7","6c52028d","6dac7f19","6e9530e7","735c7dc8","7e5473e7","942701db","95b5c553","9a240154","9e4d6912","a9b50980","b0eca720","b10ca98a","b61c53e2","d5186b97","d9d75139","f1fd00f9","f8fe44fa"]}
+{
+  "uuid": "b6b27ee3-a6d2-4a83-9fde-f33b0524bf13",
+  "name": "Anna Li",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 25,
+      "pts": 185,
+      "fouls": 20,
+      "fg": 65,
+      "ft": 19,
+      "threePt": 12,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 4,
+      "wins": 6,
+      "losses": 19,
+      "winPct": 0.24,
+      "statsChecked": "2026-07-05T14:30:07.468Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "148d96eb",
+      "sn": "2026",
+      "club": "New South Wales",
+      "regs": [
+        {
+          "tid": "ebbd5c6d",
+          "tn": "U14 Girls NSW White",
+          "gid": "bb0f219e",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 5,
+            "fg": 22,
+            "threePt": 4,
+            "pts": 61,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "a3c61f4f",
+          "tn": "Sydney Comets U14 Girls Gold ",
+          "gid": "dcf6ec12",
+          "gn": "GIRLS UNDER 14 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "56bad6ef",
+      "sn": "2024",
+      "club": "Sydney Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "66e4c27d",
+          "tn": "Sydney U12 Girls",
+          "gid": "996b46f3",
+          "gn": "U12 Girls NJC",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 10,
+            "ft": 8,
+            "fg": 19,
+            "pts": 46,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "99d2f4ac",
+          "stats": {
+            "losses": 6,
+            "gp": 6,
+            "pts": 58,
+            "fg": 15,
+            "ft": 4,
+            "threePt": 8,
+            "fouls": 2
+          },
+          "gid": "15fa2d57",
+          "gn": "GIRLS UNDER 14 A"
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "c78606db",
+          "tn": "Sydney Comets U12 Girls Gold ",
+          "gid": "fb7df6ae",
+          "gn": "GIRLS UNDER 12 AR",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T03:39:50.904Z",
+  "teams": [
+    {
+      "tid": "ebbd5c6d",
+      "sid": "148d96eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a3c61f4f",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "66e4c27d",
+      "sid": "56bad6ef",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99d2f4ac",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c78606db",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:55.509Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "6e9530e7",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "6e9530e7",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "0acd92be",
+    "0d7e8f72",
+    "22017ee6",
+    "232b053e",
+    "3cfe48b4",
+    "61dba950",
+    "67665b15",
+    "67c196f7",
+    "6c52028d",
+    "6dac7f19",
+    "6e9530e7",
+    "735c7dc8",
+    "7e5473e7",
+    "942701db",
+    "95b5c553",
+    "9a240154",
+    "9e4d6912",
+    "a9b50980",
+    "b0eca720",
+    "b10ca98a",
+    "b61c53e2",
+    "d5186b97",
+    "d9d75139",
+    "f1fd00f9",
+    "f8fe44fa"
+  ]
+}

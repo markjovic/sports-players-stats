@@ -1,1 +1,345 @@
-{"uuid":"b8605082-0880-41cd-8b07-9361596bff79","name":"James Bonnici","gender":"Men","sports":{"Basketball":{"gp":56,"pts":1276,"fouls":100,"fg":525,"ft":103,"threePt":41,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":82,"maxGameThreePt":16,"wins":25,"winPct":0.78,"losses":7,"statsChecked":"2026-07-05T15:25:34.080Z"}},"seasons":[{"sid":"205c1638","sn":"Winter 2026","regs":[{"tid":"0fc2e1cd","tn":"Obtuve Proximo","gid":"691baa27","gn":"Wednesday Men A Grading","age":null,"div":null,"stats":{"gp":7,"fouls":11,"ft":11,"fg":34,"pts":79,"wins":5,"losses":2}}]},{"sid":"9dce861b","sn":"Spring 2025","regs":[{"tid":"bffffa7a","tn":"Eastward Crows","gid":"f02656ea","gn":"Tues Men C Grade","age":null,"div":null,"stats":{"gp":15,"fouls":31,"ft":27,"fg":141,"threePt":9,"pts":336,"wins":10,"losses":5}}]},{"sid":"d226bc3f","sn":"Summer 2022/23","regs":[{"tid":"73d8ff07","tn":"Chicken N Cheese","gid":"7e32d27a","gn":"Tuesday Men A","age":null,"div":null,"stats":{"gp":10,"fouls":16,"ft":13,"fg":68,"threePt":5,"pts":164,"wins":10}}]},{"sid":"34c0f333","sn":"Autumn 2021","club":"~[ARCHIVED] Trojans Basketball Club","regs":[{"tid":"3ffa1394","tn":"Trojans U18 Boys A","gid":"ae8f210d","gn":"Saturday U18 Boys A Grade","age":"U18","div":null,"stats":{"gp":9,"fouls":6,"ft":16,"fg":159,"threePt":23,"pts":403,"finals":1,"gfApps":1}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Craigieburn Eagles Basketball Club","regs":[{"tid":"0214ae3c","tn":"Craigieburn U18 Boys 1","gid":"4c14f044","gn":"18 Boys - VJL1","age":null,"div":"L1","stats":{"gp":15,"fouls":36,"ft":36,"fg":123,"threePt":4,"pts":294}},{"tid":"0214ae3c","tn":"Craigieburn U18 Boys 1","gid":"d4ab83b6","gn":"U18B Crossover 2 - VJL","age":null,"div":null,"stats":{"gp":15,"fouls":36,"ft":36,"fg":123,"threePt":4,"pts":294}},{"tid":"0214ae3c","tn":"Craigieburn U18 Boys 1","gid":"280f32df","gn":"U18B Grading 2 - BB Pool B","age":null,"div":null,"stats":{"gp":15,"fouls":36,"ft":36,"fg":123,"threePt":4,"pts":294}},{"tid":"0214ae3c","tn":"Craigieburn U18 Boys 1","gid":"e3b56911","gn":"U18B Crossover 1","age":null,"div":null,"stats":{"gp":15,"fouls":36,"ft":36,"fg":123,"threePt":4,"pts":294}},{"tid":"0214ae3c","tn":"Craigieburn U18 Boys 1","gid":"c373d556","gn":"U18B Grading 1 - Pool 1C","age":null,"div":null,"stats":{"gp":15,"fouls":36,"ft":36,"fg":123,"pts":294,"threePt":4}}]}],"updatedAt":"2026-07-04T05:57:24.243Z","teams":[{"tid":"0fc2e1cd","sid":"205c1638","status":"ACTIVE"},{"tid":"bffffa7a","sid":"9dce861b","status":"COMPLETED"},{"tid":"73d8ff07","sid":"d226bc3f","status":"COMPLETED"},{"tid":"0214ae3c","sid":"a5dfc5c1","status":"COMPLETED"},{"tid":"f775490c","sid":"88108ca6","status":"COMPLETED"},{"tid":"3ffa1394","sid":"34c0f333","status":"COMPLETED"},{"tid":"1082206a","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:38:19.848Z","games":["04afaa25","060578b8","10708357","12bc816b","1db2107c","23021bcb","2a13168d","2a2f795d","2c051635","2da8c0bf","350d7711","35d98ac5","361e0fcb","3a5fdce5","3e4c9ece","3ff6fe3e","49384279","5354ca00","5fd899df","609b8d31","642f9d2f","6e37aefa","70a84f7d","730e272e","75da1c7b","78ac0f90","7c2d6e68","7d073d5f","7ed0001a","84d2f6f9","85f6be23","8675eeb1","8d596905","92deb1ae","948dee99","9700be1a","972d5b30","9881bf50","a19406b2","ad05b523","ae3678dd","b01da87b","b52275ab","bb3504ec","c0882627","c350eca8","c58d28c4","cf0d42d2","d30e86ad","da4d6bb9","e12a51ea","e19699a1","e9e4fce9","eb482531","fa96eea8","fe25608e"],"records":{"maxGamePTS":{"v":82,"gameKey":"2a2f795d","sid":"34c0f333"},"maxGameThreePt":{"v":16,"gameKey":"2a2f795d","sid":"34c0f333"}}}
+{
+  "uuid": "b8605082-0880-41cd-8b07-9361596bff79",
+  "name": "James Bonnici",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 56,
+      "pts": 1276,
+      "fouls": 100,
+      "fg": 525,
+      "ft": 103,
+      "threePt": 41,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 82,
+      "maxGameThreePt": 16,
+      "wins": 25,
+      "winPct": 0.78,
+      "losses": 7,
+      "statsChecked": "2026-07-05T15:25:34.080Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "0fc2e1cd",
+          "tn": "Obtuve Proximo",
+          "gid": "691baa27",
+          "gn": "Wednesday Men A Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 11,
+            "fg": 34,
+            "pts": 79,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9dce861b",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "bffffa7a",
+          "tn": "Eastward Crows",
+          "gid": "f02656ea",
+          "gn": "Tues Men C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 31,
+            "ft": 27,
+            "fg": 141,
+            "threePt": 9,
+            "pts": 336,
+            "wins": 10,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d226bc3f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "73d8ff07",
+          "tn": "Chicken N Cheese",
+          "gid": "7e32d27a",
+          "gn": "Tuesday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 16,
+            "ft": 13,
+            "fg": 68,
+            "threePt": 5,
+            "pts": 164,
+            "wins": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "34c0f333",
+      "sn": "Autumn 2021",
+      "club": "~[ARCHIVED] Trojans Basketball Club",
+      "regs": [
+        {
+          "tid": "3ffa1394",
+          "tn": "Trojans U18 Boys A",
+          "gid": "ae8f210d",
+          "gn": "Saturday U18 Boys A Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "ft": 16,
+            "fg": 159,
+            "threePt": 23,
+            "pts": 403,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Craigieburn Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "0214ae3c",
+          "tn": "Craigieburn U18 Boys 1",
+          "gid": "4c14f044",
+          "gn": "18 Boys - VJL1",
+          "age": null,
+          "div": "L1",
+          "stats": {
+            "gp": 15,
+            "fouls": 36,
+            "ft": 36,
+            "fg": 123,
+            "threePt": 4,
+            "pts": 294
+          }
+        },
+        {
+          "tid": "0214ae3c",
+          "tn": "Craigieburn U18 Boys 1",
+          "gid": "d4ab83b6",
+          "gn": "U18B Crossover 2 - VJL",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 36,
+            "ft": 36,
+            "fg": 123,
+            "threePt": 4,
+            "pts": 294
+          }
+        },
+        {
+          "tid": "0214ae3c",
+          "tn": "Craigieburn U18 Boys 1",
+          "gid": "280f32df",
+          "gn": "U18B Grading 2 - BB Pool B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 36,
+            "ft": 36,
+            "fg": 123,
+            "threePt": 4,
+            "pts": 294
+          }
+        },
+        {
+          "tid": "0214ae3c",
+          "tn": "Craigieburn U18 Boys 1",
+          "gid": "e3b56911",
+          "gn": "U18B Crossover 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 36,
+            "ft": 36,
+            "fg": 123,
+            "threePt": 4,
+            "pts": 294
+          }
+        },
+        {
+          "tid": "0214ae3c",
+          "tn": "Craigieburn U18 Boys 1",
+          "gid": "c373d556",
+          "gn": "U18B Grading 1 - Pool 1C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 36,
+            "ft": 36,
+            "fg": 123,
+            "pts": 294,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88108ca6",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "f775490c",
+          "tn": "Craigieburn U18/1 boys",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "1082206a",
+          "tn": "Craigieburn U18 Boys 1",
+          "gid": "51957575",
+          "gn": "U18 Boys VJL 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:24.243Z",
+  "teams": [
+    {
+      "tid": "0fc2e1cd",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bffffa7a",
+      "sid": "9dce861b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "73d8ff07",
+      "sid": "d226bc3f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ffa1394",
+      "sid": "34c0f333",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0214ae3c",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f775490c",
+      "sid": "88108ca6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1082206a",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:48.603Z",
+  "games": [
+    "04afaa25",
+    "060578b8",
+    "10708357",
+    "12bc816b",
+    "1db2107c",
+    "23021bcb",
+    "2a13168d",
+    "2a2f795d",
+    "2c051635",
+    "2da8c0bf",
+    "350d7711",
+    "35d98ac5",
+    "361e0fcb",
+    "3a5fdce5",
+    "3e4c9ece",
+    "3ff6fe3e",
+    "49384279",
+    "5354ca00",
+    "5fd899df",
+    "609b8d31",
+    "642f9d2f",
+    "6e37aefa",
+    "70a84f7d",
+    "730e272e",
+    "75da1c7b",
+    "78ac0f90",
+    "7c2d6e68",
+    "7d073d5f",
+    "7ed0001a",
+    "84d2f6f9",
+    "85f6be23",
+    "8675eeb1",
+    "8d596905",
+    "92deb1ae",
+    "948dee99",
+    "9700be1a",
+    "972d5b30",
+    "9881bf50",
+    "a19406b2",
+    "ad05b523",
+    "ae3678dd",
+    "b01da87b",
+    "b52275ab",
+    "bb3504ec",
+    "c0882627",
+    "c350eca8",
+    "c58d28c4",
+    "cf0d42d2",
+    "d30e86ad",
+    "da4d6bb9",
+    "e12a51ea",
+    "e19699a1",
+    "e9e4fce9",
+    "eb482531",
+    "fa96eea8",
+    "fe25608e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 82,
+      "gameKey": "2a2f795d",
+      "sid": "34c0f333"
+    },
+    "maxGameThreePt": {
+      "v": 16,
+      "gameKey": "2a2f795d",
+      "sid": "34c0f333"
+    }
+  }
+}

@@ -1,1 +1,65 @@
-{"uuid":"904dd295-86b3-4a26-a392-ee74968a7774","name":"Mike Kelly","sports":{"Basketball":{"maxGamePTS":9,"maxGameThreePt":1,"foulOuts":{},"gp":7,"pts":11,"fg":4,"threePt":1,"fouls":8,"statsChecked":"2026-07-06T19:10:59.187Z"}},"seasons":[{"sid":"c36e5626","regs":[{"tid":"60d7fa42"}]},{"sid":"46b3ce15","regs":[{"tid":"a3e870ac"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":9,"gameKey":"9afa510d","sid":"46b3ce15"},"maxGameThreePt":{"v":1,"gameKey":"9afa510d","sid":"46b3ce15"}}}
+{
+  "uuid": "904dd295-86b3-4a26-a392-ee74968a7774",
+  "name": "Mike Kelly",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 7,
+      "pts": 11,
+      "fg": 4,
+      "threePt": 1,
+      "fouls": 8,
+      "statsChecked": "2026-07-06T19:10:59.187Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c36e5626",
+      "regs": [
+        {
+          "tid": "60d7fa42",
+          "gid": "fa2e80c0",
+          "gn": "(CLUB) Monday Senior Men 3"
+        }
+      ]
+    },
+    {
+      "sid": "46b3ce15",
+      "regs": [
+        {
+          "tid": "a3e870ac",
+          "gid": "2b589a28",
+          "gn": "Sunday Senior Mixed 2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "60d7fa42",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a3e870ac",
+      "sid": "46b3ce15",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "9afa510d",
+      "sid": "46b3ce15"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "9afa510d",
+      "sid": "46b3ce15"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:48:24.101Z"
+}

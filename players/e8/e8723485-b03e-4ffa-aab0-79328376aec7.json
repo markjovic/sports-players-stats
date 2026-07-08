@@ -1,1 +1,330 @@
-{"uuid":"e8723485-b03e-4ffa-aab0-79328376aec7","name":"Mia Noyes","gender":"Girls","sports":{"Basketball":{"gp":44,"pts":229,"fouls":96,"fg":100,"ft":23,"threePt":2,"foulOuts":{"aaf23d85":2,"0e2bae85":2},"maxGamePTS":13,"maxGameThreePt":1,"wins":15,"losses":24,"draws":6,"winPct":0.33,"statsChecked":"2026-07-05T14:45:36.403Z"}},"seasons":[{"sid":"144577c3","sn":"Winter 2024","club":"Cambridge Basketball Club Inc","regs":[{"tid":"8aa872d7","tn":"Cambridge U16 Girls Charms","gid":"27d5b513","gn":"Saturday U16 Girls C1","age":"U16","div":"C1","stats":{"gp":16,"fouls":29,"ft":19,"fg":41,"threePt":2,"pts":107,"wins":6,"losses":7,"draws":2}},{"tid":"8aa872d7","tn":"Cambridge U16 Girls Charms","gid":"d0001d63","gn":"Saturday U16 Girls C2","age":"U16","div":"C2","stats":{"gp":16,"fouls":29,"ft":19,"fg":41,"pts":107,"wins":6,"losses":7,"draws":2,"threePt":2}},{"tid":"9ef72032","tn":"Cambridge U18 Girls Corsairs","gid":"b5e13d23","gn":"Tuesday U18 Girls B","age":"U18","div":null,"stats":{"gp":2,"fouls":3,"ft":2,"fg":4,"pts":10,"wins":1,"losses":1}}]},{"sid":"aaf23d85","sn":"Summer 2023/24","club":"Cambridge Basketball Club Inc","regs":[{"tid":"75b3378c","tn":"Cambridge Charms U16G","gid":"9c750e69","gn":"Saturday U16 Girls C","age":"U16","div":null,"stats":{"gp":13,"fouls":32,"ft":2,"fg":28,"pts":58,"foulOuts":2,"wins":2,"losses":9,"draws":2}}]},{"sid":"0e2bae85","sn":"Winter 2021","club":"Cambridge Basketball Club Inc","regs":[{"tid":"74891329","tn":"U14G Cambridge Charms 2.0","gid":"8adbd7f9","gn":"Saturday U14 Girls D","age":"U14","div":null,"stats":{"gp":6,"fouls":14,"fg":14,"pts":28}},{"tid":"74891329","tn":"U14G Cambridge Charms 2.0","gid":"9ad02a1c","gn":"Saturday U14 Girls C","age":"U14","div":null,"stats":{"gp":6,"fouls":14,"fg":14,"pts":28,"foulOuts":1}},{"tid":"7d090026","stats":{"gp":7,"pts":26,"fg":13,"fouls":18}}]},{"sid":"0e2bae85","sn":"Winter 2021","club":"Cambridge Basketball Club Inc","regs":[{"tid":"7d090026","tn":"U12G Cambridge Charms","gid":"692051b6","gn":"Saturday U12 Girls A/AR","age":"U12","div":null,"stats":{"gp":7,"fouls":18,"fg":13,"pts":26,"foulOuts":1}}]}],"updatedAt":"2026-06-01T10:54:05.971Z","teams":[{"tid":"8aa872d7","sid":"144577c3","status":"COMPLETED"},{"tid":"a9ac9562","sid":"144577c3","status":"COMPLETED"},{"tid":"9ef72032","sid":"144577c3","status":"COMPLETED"},{"tid":"75b3378c","sid":"aaf23d85","status":"COMPLETED"},{"tid":"7d090026","sid":"0e2bae85","status":"COMPLETED"},{"tid":"74891329","sid":"0e2bae85","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:29.142Z","records":{"maxGamePTS":{"v":13,"gameKey":"a0b99e0f","sid":"144577c3"},"maxGameThreePt":{"v":1,"gameKey":"872fa032","sid":"144577c3"}},"games":["05fba18e","074659fd","0b46cac5","0fdd6a02","2419989c","2d50c797","30dc098e","30ea7fc5","32f0fd40","3e4fa2ea","3fe0b3e2","4ddc5892","51e43a54","52f30033","54a1996a","5df3e9d5","6b25f08c","768baa90","7ab6f62f","7f1841c8","8664027c","872fa032","9031f4b9","9226bb81","976597c9","9b635f91","a0b99e0f","a98db9e6","ab6e6a9a","b3b84a70","bc190c7c","bd75f705","bdceda21","cf85799e","d154d102","d956e84f","dcf1f1d0","df7577eb","e286f7e9","e587bfdb","ea838c02","fb6d5e17","fb90d9af","fbc08ca1"],"gameTids":{"6b25f08c":"8aa872d7","2d50c797":"8aa872d7","d154d102":"8aa872d7","0b46cac5":"8aa872d7","bdceda21":"8aa872d7","a98db9e6":"8aa872d7","9b635f91":"8aa872d7","3e4fa2ea":"8aa872d7","872fa032":"8aa872d7","8664027c":"8aa872d7","fbc08ca1":"8aa872d7","7ab6f62f":"8aa872d7","a0b99e0f":"8aa872d7","3fe0b3e2":"8aa872d7","df7577eb":"8aa872d7","5df3e9d5":"8aa872d7","bc190c7c":"9ef72032","51e43a54":"9ef72032","2419989c":"75b3378c","fb90d9af":"75b3378c","7f1841c8":"75b3378c","b3b84a70":"75b3378c","e587bfdb":"75b3378c","4ddc5892":"75b3378c","52f30033":"75b3378c","9226bb81":"75b3378c","30dc098e":"75b3378c","976597c9":"75b3378c","768baa90":"75b3378c","9031f4b9":"75b3378c","ab6e6a9a":"75b3378c","ea838c02":"74891329","d956e84f":"74891329","0fdd6a02":"74891329","dcf1f1d0":"74891329","fb6d5e17":"74891329","cf85799e":"74891329","e286f7e9":"7d090026","05fba18e":"7d090026","30ea7fc5":"7d090026","074659fd":"7d090026","32f0fd40":"7d090026","54a1996a":"7d090026","bd75f705":"7d090026"}}
+{
+  "uuid": "e8723485-b03e-4ffa-aab0-79328376aec7",
+  "name": "Mia Noyes",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 229,
+      "fouls": 96,
+      "fg": 100,
+      "ft": 23,
+      "threePt": 2,
+      "foulOuts": {
+        "aaf23d85": 2,
+        "0e2bae85": 2
+      },
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 15,
+      "losses": 24,
+      "draws": 6,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T14:45:36.403Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "144577c3",
+      "sn": "Winter 2024",
+      "club": "Cambridge Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "8aa872d7",
+          "tn": "Cambridge U16 Girls Charms",
+          "gid": "27d5b513",
+          "gn": "Saturday U16 Girls C1",
+          "age": "U16",
+          "div": "C1",
+          "stats": {
+            "gp": 16,
+            "fouls": 29,
+            "ft": 19,
+            "fg": 41,
+            "threePt": 2,
+            "pts": 107,
+            "wins": 6,
+            "losses": 7,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "8aa872d7",
+          "tn": "Cambridge U16 Girls Charms",
+          "gid": "d0001d63",
+          "gn": "Saturday U16 Girls C2",
+          "age": "U16",
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "fouls": 29,
+            "ft": 19,
+            "fg": 41,
+            "pts": 107,
+            "wins": 6,
+            "losses": 7,
+            "draws": 2,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "9ef72032",
+          "tn": "Cambridge U18 Girls Corsairs",
+          "gid": "b5e13d23",
+          "gn": "Tuesday U18 Girls B",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "a9ac9562",
+          "tn": "Cambridge U18 Girls Clovers",
+          "gid": "33df6ab6",
+          "gn": "Tuesday U18 Girls C",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "aaf23d85",
+      "sn": "Summer 2023/24",
+      "club": "Cambridge Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "75b3378c",
+          "tn": "Cambridge Charms U16G",
+          "gid": "9c750e69",
+          "gn": "Saturday U16 Girls C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 32,
+            "ft": 2,
+            "fg": 28,
+            "pts": 58,
+            "foulOuts": 2,
+            "wins": 2,
+            "losses": 9,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0e2bae85",
+      "sn": "Winter 2021",
+      "club": "Cambridge Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "74891329",
+          "tn": "U14G Cambridge Charms 2.0",
+          "gid": "8adbd7f9",
+          "gn": "Saturday U14 Girls D",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "fg": 14,
+            "pts": 28
+          }
+        },
+        {
+          "tid": "74891329",
+          "tn": "U14G Cambridge Charms 2.0",
+          "gid": "9ad02a1c",
+          "gn": "Saturday U14 Girls C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "fg": 14,
+            "pts": 28,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "7d090026",
+          "stats": {
+            "gp": 7,
+            "pts": 26,
+            "fg": 13,
+            "fouls": 18
+          },
+          "gid": "692051b6",
+          "gn": "Saturday U12 Girls A/AR"
+        }
+      ]
+    },
+    {
+      "sid": "0e2bae85",
+      "sn": "Winter 2021",
+      "club": "Cambridge Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "7d090026",
+          "tn": "U12G Cambridge Charms",
+          "gid": "692051b6",
+          "gn": "Saturday U12 Girls A/AR",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 18,
+            "fg": 13,
+            "pts": 26,
+            "foulOuts": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T10:54:05.971Z",
+  "teams": [
+    {
+      "tid": "8aa872d7",
+      "sid": "144577c3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ef72032",
+      "sid": "144577c3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a9ac9562",
+      "sid": "144577c3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75b3378c",
+      "sid": "aaf23d85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "74891329",
+      "sid": "0e2bae85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d090026",
+      "sid": "0e2bae85",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:24.315Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "a0b99e0f",
+      "sid": "144577c3"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "872fa032",
+      "sid": "144577c3"
+    }
+  },
+  "games": [
+    "05fba18e",
+    "074659fd",
+    "0b46cac5",
+    "0fdd6a02",
+    "2419989c",
+    "2d50c797",
+    "30dc098e",
+    "30ea7fc5",
+    "32f0fd40",
+    "3e4fa2ea",
+    "3fe0b3e2",
+    "4ddc5892",
+    "51e43a54",
+    "52f30033",
+    "54a1996a",
+    "5df3e9d5",
+    "6b25f08c",
+    "768baa90",
+    "7ab6f62f",
+    "7f1841c8",
+    "8664027c",
+    "872fa032",
+    "9031f4b9",
+    "9226bb81",
+    "976597c9",
+    "9b635f91",
+    "a0b99e0f",
+    "a98db9e6",
+    "ab6e6a9a",
+    "b3b84a70",
+    "bc190c7c",
+    "bd75f705",
+    "bdceda21",
+    "cf85799e",
+    "d154d102",
+    "d956e84f",
+    "dcf1f1d0",
+    "df7577eb",
+    "e286f7e9",
+    "e587bfdb",
+    "ea838c02",
+    "fb6d5e17",
+    "fb90d9af",
+    "fbc08ca1"
+  ],
+  "gameTids": {
+    "6b25f08c": "8aa872d7",
+    "2d50c797": "8aa872d7",
+    "d154d102": "8aa872d7",
+    "0b46cac5": "8aa872d7",
+    "bdceda21": "8aa872d7",
+    "a98db9e6": "8aa872d7",
+    "9b635f91": "8aa872d7",
+    "3e4fa2ea": "8aa872d7",
+    "872fa032": "8aa872d7",
+    "8664027c": "8aa872d7",
+    "fbc08ca1": "8aa872d7",
+    "7ab6f62f": "8aa872d7",
+    "a0b99e0f": "8aa872d7",
+    "3fe0b3e2": "8aa872d7",
+    "df7577eb": "8aa872d7",
+    "5df3e9d5": "8aa872d7",
+    "bc190c7c": "9ef72032",
+    "51e43a54": "9ef72032",
+    "2419989c": "75b3378c",
+    "fb90d9af": "75b3378c",
+    "7f1841c8": "75b3378c",
+    "b3b84a70": "75b3378c",
+    "e587bfdb": "75b3378c",
+    "4ddc5892": "75b3378c",
+    "52f30033": "75b3378c",
+    "9226bb81": "75b3378c",
+    "30dc098e": "75b3378c",
+    "976597c9": "75b3378c",
+    "768baa90": "75b3378c",
+    "9031f4b9": "75b3378c",
+    "ab6e6a9a": "75b3378c",
+    "ea838c02": "74891329",
+    "d956e84f": "74891329",
+    "0fdd6a02": "74891329",
+    "dcf1f1d0": "74891329",
+    "fb6d5e17": "74891329",
+    "cf85799e": "74891329",
+    "e286f7e9": "7d090026",
+    "05fba18e": "7d090026",
+    "30ea7fc5": "7d090026",
+    "074659fd": "7d090026",
+    "32f0fd40": "7d090026",
+    "54a1996a": "7d090026",
+    "bd75f705": "7d090026"
+  }
+}

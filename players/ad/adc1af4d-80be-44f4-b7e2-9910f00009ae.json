@@ -1,1 +1,65 @@
-{"uuid":"adc1af4d-80be-44f4-b7e2-9910f00009ae","name":"Alec Freni","sports":{"Basketball":{"maxGamePTS":2,"maxGameThreePt":null,"foulOuts":{},"gp":5,"pts":2,"fg":1,"fouls":1,"statsChecked":"2026-07-06T19:11:16.921Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"c7d8bfe4"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":2,"gameKey":"ff9fc79d","sid":"26df4252"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "adc1af4d-80be-44f4-b7e2-9910f00009ae",
+  "name": "Alec Freni",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 5,
+      "pts": 2,
+      "fg": 1,
+      "fouls": 1,
+      "statsChecked": "2026-07-06T19:11:16.921Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "c7d8bfe4",
+          "gid": "775d02c0",
+          "gn": "U18 Boys Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "2bca72fb",
+      "sn": "Term 4, 2025",
+      "regs": [
+        {
+          "tid": "8909e292",
+          "tn": "Alec and Friends",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "c7d8bfe4",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8909e292",
+      "sid": "2bca72fb",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "ff9fc79d",
+      "sid": "26df4252"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:49:40.497Z"
+}

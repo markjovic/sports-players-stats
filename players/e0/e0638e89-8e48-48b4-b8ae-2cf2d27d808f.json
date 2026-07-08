@@ -1,1 +1,330 @@
-{"uuid":"e0638e89-8e48-48b4-b8ae-2cf2d27d808f","name":"Anthony Joel","gender":"Men","sports":{"Basketball":{"gp":51,"pts":202,"fouls":65,"fg":65,"ft":12,"threePt":20,"finals":3,"gfApps":2,"gfWins":0,"finalsPerSeason":0.6,"foulOuts":{"c70702e8":1},"maxGamePTS":12,"maxGameThreePt":4,"wins":45,"losses":29,"draws":8,"winPct":0.55,"statsChecked":"2026-07-05T16:04:14.596Z"}},"seasons":[{"sid":"c70702e8","sn":"Summer 2024/25","regs":[{"tid":"3244e5a4","tn":"Sonics","gid":"113640fd","gn":"Monday Men C2","age":null,"div":"C2","stats":{"gp":16,"fouls":25,"ft":7,"fg":27,"threePt":8,"pts":85,"finals":1,"gfApps":1,"foulOuts":1,"wins":12,"losses":3,"draws":1}},{"tid":"3244e5a4","tn":"Sonics","gid":"8021bf68","gn":"Monday Men C3","age":null,"div":"C3","stats":{"gp":16,"fouls":25,"ft":7,"fg":27,"threePt":8,"pts":85,"finals":1,"gfApps":1,"wins":12,"losses":3,"draws":1}}]},{"sid":"9210adb2","sn":"Summer 2023/24","regs":[{"tid":"39c6ae50","tn":"Good For Footy","gid":"0d9eb904","gn":"Monday Men D2","age":null,"div":"D2","stats":{"gp":8,"fouls":5,"fg":6,"threePt":1,"pts":15,"finals":1,"wins":2,"losses":4}}]},{"sid":"55008d04","sn":"Summer 2022/23","regs":[{"tid":"3b7ad22f","tn":"GAMtime","gid":"604015b3","gn":"Tuesday Men D1 Grade","age":null,"div":null,"stats":{"gp":10,"fouls":16,"ft":1,"fg":16,"threePt":2,"pts":39,"finals":1,"gfApps":1,"wins":5,"losses":5}}]},{"sid":"f145133f","sn":"Winter 2022","regs":[{"tid":"22a4b496","tn":"GAM ","gid":"57f2bb9a","gn":"Monday Men B2","age":null,"div":"B2","stats":{"gp":6,"fouls":9,"fg":5,"threePt":3,"pts":20,"wins":3,"losses":2,"draws":1,"ft":1}},{"tid":"22a4b496","tn":"GAM ","gid":"a18dec04","gn":"Monday Men C1","age":null,"div":"C1","stats":{"gp":6,"fouls":9,"ft":1,"fg":5,"threePt":3,"pts":20,"wins":3,"losses":2,"draws":1}}]},{"sid":"f9101f33","sn":"Summer 2020/21","regs":[{"tid":"d9e4b881","tn":"GAM ","gid":"9ea8c913","gn":"Monday Men C2","age":null,"div":"C2","stats":{"gp":11,"fouls":10,"ft":3,"fg":11,"threePt":6,"pts":43,"wins":4,"losses":5,"draws":2}},{"tid":"d9e4b881","tn":"GAM ","gid":"006259ce","gn":"Monday Men C1","age":null,"div":"C1","stats":{"gp":11,"fg":11,"threePt":6,"pts":43,"wins":4,"losses":5,"draws":2,"ft":3,"fouls":10}}]}],"updatedAt":"2026-06-02T15:17:59.610Z","teams":[{"tid":"3244e5a4","sid":"c70702e8","status":"COMPLETED"},{"tid":"39c6ae50","sid":"9210adb2","status":"COMPLETED"},{"tid":"4bd22193","sid":"eeb15c70","status":"COMPLETED"},{"tid":"3b7ad22f","sid":"55008d04","status":"COMPLETED"},{"tid":"22a4b496","sid":"f145133f","status":"COMPLETED"},{"tid":"d9e4b881","sid":"f9101f33","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:59.861Z","records":{"maxGamePTS":{"v":12,"gameKey":"6fdffc48","sid":"f9101f33"},"maxGameThreePt":{"v":4,"gameKey":"6fdffc48","sid":"f9101f33"}},"games":["00d28404","03073ba6","0936744c","0aedc028","11bfa881","1253d6bf","130436bd","14f43567","1a98d768","2338914d","2a52b033","378bd9cd","39cb8f37","39d7fcdb","4085a0c6","487f7af5","49c2daa1","4be863f1","5ac35d03","5ba8b2ad","5c1a3999","659b384c","65e16f4d","6f1c7dea","6fdffc48","73173b7d","747975dc","77823d7b","7e84a411","7eb49838","863a8a84","89cf23d5","8b7f3c9b","8d31dc3c","8e9bff47","92d31371","9aeb8177","9d870ad0","b24e8980","b703ca3e","ba744af4","c3f4fd53","c95f03a3","cb0e82b4","cee714a0","dadf4a06","deb2f07a","e861f6d7","ea89c466","ec37df19","ffbd461f"]}
+{
+  "uuid": "e0638e89-8e48-48b4-b8ae-2cf2d27d808f",
+  "name": "Anthony Joel",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 202,
+      "fouls": 65,
+      "fg": 65,
+      "ft": 12,
+      "threePt": 20,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {
+        "c70702e8": 1
+      },
+      "maxGamePTS": 12,
+      "maxGameThreePt": 4,
+      "wins": 45,
+      "losses": 29,
+      "draws": 8,
+      "winPct": 0.55,
+      "statsChecked": "2026-07-05T16:04:14.596Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c70702e8",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "3244e5a4",
+          "tn": "Sonics",
+          "gid": "113640fd",
+          "gn": "Monday Men C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "fouls": 25,
+            "ft": 7,
+            "fg": 27,
+            "threePt": 8,
+            "pts": 85,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 12,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "3244e5a4",
+          "tn": "Sonics",
+          "gid": "8021bf68",
+          "gn": "Monday Men C3",
+          "age": null,
+          "div": "C3",
+          "stats": {
+            "gp": 16,
+            "fouls": 25,
+            "ft": 7,
+            "fg": 27,
+            "threePt": 8,
+            "pts": 85,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9210adb2",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "39c6ae50",
+          "tn": "Good For Footy",
+          "gid": "0d9eb904",
+          "gn": "Monday Men D2",
+          "age": null,
+          "div": "D2",
+          "stats": {
+            "gp": 8,
+            "fouls": 5,
+            "fg": 6,
+            "threePt": 1,
+            "pts": 15,
+            "finals": 1,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "55008d04",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "3b7ad22f",
+          "tn": "GAMtime",
+          "gid": "604015b3",
+          "gn": "Tuesday Men D1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 16,
+            "ft": 1,
+            "fg": 16,
+            "threePt": 2,
+            "pts": 39,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f145133f",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "22a4b496",
+          "tn": "GAM ",
+          "gid": "57f2bb9a",
+          "gn": "Monday Men B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "fg": 5,
+            "threePt": 3,
+            "pts": 20,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "22a4b496",
+          "tn": "GAM ",
+          "gid": "a18dec04",
+          "gn": "Monday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 5,
+            "threePt": 3,
+            "pts": 20,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f9101f33",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "d9e4b881",
+          "tn": "GAM ",
+          "gid": "9ea8c913",
+          "gn": "Monday Men C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 11,
+            "fouls": 10,
+            "ft": 3,
+            "fg": 11,
+            "threePt": 6,
+            "pts": 43,
+            "wins": 4,
+            "losses": 5,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "d9e4b881",
+          "tn": "GAM ",
+          "gid": "006259ce",
+          "gn": "Monday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 11,
+            "fg": 11,
+            "threePt": 6,
+            "pts": 43,
+            "wins": 4,
+            "losses": 5,
+            "draws": 2,
+            "ft": 3,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eeb15c70",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "4bd22193",
+          "tn": "GAMtime",
+          "gid": "6788a51b",
+          "gn": "Tuesday Men C2 Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:17:59.610Z",
+  "teams": [
+    {
+      "tid": "3244e5a4",
+      "sid": "c70702e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39c6ae50",
+      "sid": "9210adb2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b7ad22f",
+      "sid": "55008d04",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22a4b496",
+      "sid": "f145133f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d9e4b881",
+      "sid": "f9101f33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4bd22193",
+      "sid": "eeb15c70",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:14.148Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "6fdffc48",
+      "sid": "f9101f33"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "6fdffc48",
+      "sid": "f9101f33"
+    }
+  },
+  "games": [
+    "00d28404",
+    "03073ba6",
+    "0936744c",
+    "0aedc028",
+    "11bfa881",
+    "1253d6bf",
+    "130436bd",
+    "14f43567",
+    "1a98d768",
+    "2338914d",
+    "2a52b033",
+    "378bd9cd",
+    "39cb8f37",
+    "39d7fcdb",
+    "4085a0c6",
+    "487f7af5",
+    "49c2daa1",
+    "4be863f1",
+    "5ac35d03",
+    "5ba8b2ad",
+    "5c1a3999",
+    "659b384c",
+    "65e16f4d",
+    "6f1c7dea",
+    "6fdffc48",
+    "73173b7d",
+    "747975dc",
+    "77823d7b",
+    "7e84a411",
+    "7eb49838",
+    "863a8a84",
+    "89cf23d5",
+    "8b7f3c9b",
+    "8d31dc3c",
+    "8e9bff47",
+    "92d31371",
+    "9aeb8177",
+    "9d870ad0",
+    "b24e8980",
+    "b703ca3e",
+    "ba744af4",
+    "c3f4fd53",
+    "c95f03a3",
+    "cb0e82b4",
+    "cee714a0",
+    "dadf4a06",
+    "deb2f07a",
+    "e861f6d7",
+    "ea89c466",
+    "ec37df19",
+    "ffbd461f"
+  ]
+}

@@ -1,1 +1,186 @@
-{"uuid":"7185ee48-a337-4a0c-826d-fa72bc9a1f04","name":"Peyton Laney","gender":"Girls","sports":{"Basketball":{"gp":24,"pts":20,"fouls":28,"fg":10,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":7,"losses":17,"winPct":0.29,"statsChecked":"2026-07-05T16:01:47.326Z"}},"seasons":[{"sid":"3cb97b37","sn":"Summer 2023/24","regs":[{"tid":"d8218733","tn":"Olympics","gid":"c3580fbf","gn":"Friday U15 Girls","age":"U15","div":null,"stats":{"gp":8,"fouls":12,"fg":1,"pts":2,"finals":1,"wins":2,"losses":6}}]},{"sid":"bbe40d50","sn":"Summer 2022/23","regs":[{"tid":"ce7bd22d","tn":"Olympics","gid":"47453712","gn":"Friday U15 Girls","age":"U15","div":null,"stats":{"gp":7,"fouls":6,"fg":2,"pts":4,"losses":7}}]},{"sid":"4a995627","sn":"Summer 2021/22","regs":[{"tid":"96dd5d91","tn":"Olympics","gid":"6a5c26f3","gn":"Friday U12 Girls","age":"U12","div":null,"stats":{"gp":9,"fouls":10,"fg":7,"pts":14,"finals":1,"gfApps":1,"wins":5,"losses":4,"gfWins":1}}]}],"updatedAt":"2026-06-03T02:35:24.291Z","teams":[{"tid":"d8218733","sid":"3cb97b37","status":"COMPLETED"},{"tid":"ce7bd22d","sid":"bbe40d50","status":"COMPLETED"},{"tid":"96dd5d91","sid":"4a995627","status":"COMPLETED"},{"tid":"0dd7db47","sid":"638a2fba","status":"COMPLETED"},{"tid":"3c0dbbf6","sid":"ba1d7494","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:57.125Z","records":{"maxGamePTS":{"v":4,"gameKey":"62438e9c","sid":"bbe40d50"},"maxGameThreePt":{"v":null}},"games":["00051fcb","0763de05","11321b74","25eab4c2","26505db8","477c15d8","487f4806","57969754","607aa838","62438e9c","6b89a08d","7217cd9d","8cc73af5","99392f56","b1db8544","baa3ead5","be7b9014","cbea0e18","d3445d78","de1ba0f4","ebac7e18","ec964105","f7379121","f91a52f7"]}
+{
+  "uuid": "7185ee48-a337-4a0c-826d-fa72bc9a1f04",
+  "name": "Peyton Laney",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 24,
+      "pts": 20,
+      "fouls": 28,
+      "fg": 10,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 17,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T16:01:47.326Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3cb97b37",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "d8218733",
+          "tn": "Olympics",
+          "gid": "c3580fbf",
+          "gn": "Friday U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "wins": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bbe40d50",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "ce7bd22d",
+          "tn": "Olympics",
+          "gid": "47453712",
+          "gn": "Friday U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 6,
+            "fg": 2,
+            "pts": 4,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4a995627",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "96dd5d91",
+          "tn": "Olympics",
+          "gid": "6a5c26f3",
+          "gn": "Friday U12 Girls",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 10,
+            "fg": 7,
+            "pts": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "638a2fba",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "0dd7db47",
+          "tn": "Olympics",
+          "gid": "100ee050",
+          "gn": "Friday U12 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ba1d7494",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "3c0dbbf6",
+          "tn": "Cubs (U12 G)",
+          "gid": "d5b2d380",
+          "gn": "Friday U12 Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T02:35:24.291Z",
+  "teams": [
+    {
+      "tid": "d8218733",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ce7bd22d",
+      "sid": "bbe40d50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96dd5d91",
+      "sid": "4a995627",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0dd7db47",
+      "sid": "638a2fba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c0dbbf6",
+      "sid": "ba1d7494",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:20.169Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "62438e9c",
+      "sid": "bbe40d50"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00051fcb",
+    "0763de05",
+    "11321b74",
+    "25eab4c2",
+    "26505db8",
+    "477c15d8",
+    "487f4806",
+    "57969754",
+    "607aa838",
+    "62438e9c",
+    "6b89a08d",
+    "7217cd9d",
+    "8cc73af5",
+    "99392f56",
+    "b1db8544",
+    "baa3ead5",
+    "be7b9014",
+    "cbea0e18",
+    "d3445d78",
+    "de1ba0f4",
+    "ebac7e18",
+    "ec964105",
+    "f7379121",
+    "f91a52f7"
+  ]
+}

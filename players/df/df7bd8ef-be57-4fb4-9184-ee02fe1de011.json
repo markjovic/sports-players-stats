@@ -1,1 +1,344 @@
-{"uuid":"df7bd8ef-be57-4fb4-9184-ee02fe1de011","name":"Bennett Ka Nam Ng","gender":"Boys","sports":{"Basketball":{"gp":77,"pts":165,"fouls":79,"fg":77,"ft":11,"foulOuts":{},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":8,"maxGameThreePt":null,"wins":46,"losses":75,"draws":1,"winPct":0.38,"statsChecked":"2026-07-05T14:31:08.766Z"}},"seasons":[{"sid":"3f8e0029","sn":"Winter 2026","club":"Berwick Panthers Basketball Club Inc.","regs":[{"tid":"c12cbcfb","tn":"BPBC U14 Boys Raiders","gid":"0d6c1212","gn":"Saturday U14 Boys C2 Grade","age":"U14","div":null,"stats":{"gp":9,"fouls":16,"ft":1,"fg":19,"pts":39,"wins":6,"losses":3}},{"tid":"c12cbcfb","tn":"","gid":"6bb64eaf","gn":"Saturday U14 Boys C1 Grade","div":null,"stats":{"gp":9,"pts":39,"fg":19,"ft":1,"fouls":16,"wins":6,"losses":3}}]},{"sid":"cb7b1f18","sn":"Summer 2025/26","club":"Berwick Panthers Basketball Club Inc.","regs":[{"tid":"57b0bf51","tn":"BPBC U12 Boys Raiders","gid":"a0e85210","gn":"Saturday U12 Boys C1 Grade","age":"U12","div":null,"stats":{"gp":14,"fouls":23,"ft":5,"fg":19,"pts":43,"finals":1,"wins":7,"losses":7}}]},{"sid":"98a85c5f","sn":"Winter 2025","club":"Berwick Panthers Basketball Club Inc.","regs":[{"tid":"3570452e","tn":"BPBC U12 Boys Chaos","gid":"d37bb718","gn":"Saturday U12 Boys B Grade","age":"U12","div":null,"stats":{"gp":17,"fouls":12,"ft":2,"fg":9,"pts":20,"wins":7,"losses":10}},{"tid":"3570452e","tn":"BPBC U12 Boys Chaos","gid":"11237a93","gn":"Saturday U12 Boys C1 Grade","age":"U12","div":null,"stats":{"gp":17,"fouls":12,"fg":9,"pts":20,"wins":7,"losses":10,"ft":2}}]},{"sid":"bf3744d0","sn":"Summer 2024/25","club":"Berwick Panthers Basketball Club Inc.","regs":[{"tid":"feccf8ef","tn":"BPBC U12 Boys Spartan","gid":"980ec23d","gn":"Saturday U12 Boys D1 Grade","age":"U12","div":null,"stats":{"gp":15,"fouls":17,"ft":1,"fg":8,"pts":17,"wins":4,"losses":11}}]},{"sid":"e2d6306b","sn":"Term 3, 2024","regs":[{"tid":"4127431c","tn":"U11 Boys Yellow","gid":"0be2d52a","gn":"U11 Boys","age":"U11","div":null,"stats":{"gp":3,"wins":1,"losses":1,"draws":1}}]},{"sid":"ec8a2628","sn":"Winter 2024","club":"Berwick Panthers Basketball Club Inc.","regs":[{"tid":"b939dc34","tn":"BPBC U12 Boys Spartan","gid":"71b75cb2","gn":"Saturday U12 Boys C3 Grade","age":"U12","div":null,"stats":{"gp":19,"fouls":11,"ft":2,"fg":22,"pts":46,"finals":1,"wins":4,"losses":15}},{"tid":"b939dc34","tn":"BPBC U12 Boys Spartan","gid":"9388edd8","gn":"Saturday U12 Boys D1 Grade","age":"U12","div":null,"stats":{"gp":19,"fouls":11,"fg":22,"pts":46,"finals":1,"wins":4,"losses":15,"ft":2}}]}],"updatedAt":"2026-07-04T05:37:11.846Z","teams":[{"tid":"c12cbcfb","sid":"3f8e0029","status":"ACTIVE"},{"tid":"57b0bf51","sid":"cb7b1f18","status":"COMPLETED"},{"tid":"3570452e","sid":"98a85c5f","status":"COMPLETED"},{"tid":"feccf8ef","sid":"bf3744d0","status":"COMPLETED"},{"tid":"b939dc34","sid":"ec8a2628","status":"COMPLETED"},{"tid":"4127431c","sid":"e2d6306b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:26:17.779Z","records":{"maxGamePTS":{"v":8,"gameKey":"4da06cbd","sid":"3f8e0029"},"maxGameThreePt":{"v":null}},"games":["020dbd12","0a1eb35a","0b9e213a","1bd7999f","1f84a392","22569e45","22cc0ab0","2757dfa9","27f28d98","2a580978","2c1f7a16","2fc89470","3317aec8","357282fe","3996a04c","3b54333b","3c5cc8ea","3ce977b4","43a7b8f1","46a0909c","4c442db2","4da06cbd","51689389","54ac1c4f","568c0bde","56a1eb5a","58700f38","5961453c","5df68a7e","5e8d6ab7","606af979","6374faf0","6573891b","6980c98c","6b6eed72","6eb70bea","6ee7f3cc","6fca5240","73beab96","7431dfe9","7c150fb9","80289a39","81e3720e","82501e1c","828e8abf","83b73a92","879e5b7b","889ad423","8d2a36dc","911cfafc","97f1d2c0","9e114ec9","a391d7d0","a6bbff4e","a72b7479","a9e95f2e","aea6ae71","affe51d9","b2b109ec","b2fd35b1","ba9d5c12","bdef6487","bf4b17ca","c046b863","c2fb12f0","c37c44d1","c4360f4c","cb497435","d3207bd3","d5520996","d91b715a","ddd8ca81","f1a2c92c","f4ec6112","f5037eb2","fa9e96db","ffa8fc39"]}
+{
+  "uuid": "df7bd8ef-be57-4fb4-9184-ee02fe1de011",
+  "name": "Bennett Ka Nam Ng",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 77,
+      "pts": 165,
+      "fouls": 79,
+      "fg": 77,
+      "ft": 11,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 46,
+      "losses": 75,
+      "draws": 1,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T14:31:08.766Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f8e0029",
+      "sn": "Winter 2026",
+      "club": "Berwick Panthers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "c12cbcfb",
+          "tn": "BPBC U14 Boys Raiders",
+          "gid": "6bb64eaf",
+          "gn": "Saturday U14 Boys C1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 16,
+            "ft": 1,
+            "fg": 19,
+            "pts": 39,
+            "wins": 6,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "c12cbcfb",
+          "tn": "",
+          "gid": "6bb64eaf",
+          "gn": "Saturday U14 Boys C1 Grade",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 39,
+            "fg": 19,
+            "ft": 1,
+            "fouls": 16,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cb7b1f18",
+      "sn": "Summer 2025/26",
+      "club": "Berwick Panthers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "57b0bf51",
+          "tn": "BPBC U12 Boys Raiders",
+          "gid": "a0e85210",
+          "gn": "Saturday U12 Boys C1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 23,
+            "ft": 5,
+            "fg": 19,
+            "pts": 43,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98a85c5f",
+      "sn": "Winter 2025",
+      "club": "Berwick Panthers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "3570452e",
+          "tn": "BPBC U12 Boys Chaos",
+          "gid": "d37bb718",
+          "gn": "Saturday U12 Boys B Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "wins": 7,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "3570452e",
+          "tn": "BPBC U12 Boys Chaos",
+          "gid": "11237a93",
+          "gn": "Saturday U12 Boys C1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "fg": 9,
+            "pts": 20,
+            "wins": 7,
+            "losses": 10,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf3744d0",
+      "sn": "Summer 2024/25",
+      "club": "Berwick Panthers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "feccf8ef",
+          "tn": "BPBC U12 Boys Spartan",
+          "gid": "980ec23d",
+          "gn": "Saturday U12 Boys D1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "wins": 4,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2d6306b",
+      "sn": "Term 3, 2024",
+      "regs": [
+        {
+          "tid": "4127431c",
+          "tn": "U11 Boys Yellow",
+          "gid": "0be2d52a",
+          "gn": "U11 Boys",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "wins": 1,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec8a2628",
+      "sn": "Winter 2024",
+      "club": "Berwick Panthers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "b939dc34",
+          "tn": "BPBC U12 Boys Spartan",
+          "gid": "71b75cb2",
+          "gn": "Saturday U12 Boys C3 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 22,
+            "pts": 46,
+            "finals": 1,
+            "wins": 4,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "b939dc34",
+          "tn": "BPBC U12 Boys Spartan",
+          "gid": "9388edd8",
+          "gn": "Saturday U12 Boys D1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 11,
+            "fg": 22,
+            "pts": 46,
+            "finals": 1,
+            "wins": 4,
+            "losses": 15,
+            "ft": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:11.846Z",
+  "teams": [
+    {
+      "tid": "c12cbcfb",
+      "sid": "3f8e0029",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57b0bf51",
+      "sid": "cb7b1f18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3570452e",
+      "sid": "98a85c5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "feccf8ef",
+      "sid": "bf3744d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4127431c",
+      "sid": "e2d6306b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b939dc34",
+      "sid": "ec8a2628",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:13.662Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "4da06cbd",
+      "sid": "3f8e0029"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "020dbd12",
+    "0a1eb35a",
+    "0b9e213a",
+    "1bd7999f",
+    "1f84a392",
+    "22569e45",
+    "22cc0ab0",
+    "2757dfa9",
+    "27f28d98",
+    "2a580978",
+    "2c1f7a16",
+    "2fc89470",
+    "3317aec8",
+    "357282fe",
+    "3996a04c",
+    "3b54333b",
+    "3c5cc8ea",
+    "3ce977b4",
+    "43a7b8f1",
+    "46a0909c",
+    "4c442db2",
+    "4da06cbd",
+    "51689389",
+    "54ac1c4f",
+    "568c0bde",
+    "56a1eb5a",
+    "58700f38",
+    "5961453c",
+    "5df68a7e",
+    "5e8d6ab7",
+    "606af979",
+    "6374faf0",
+    "6573891b",
+    "6980c98c",
+    "6b6eed72",
+    "6eb70bea",
+    "6ee7f3cc",
+    "6fca5240",
+    "73beab96",
+    "7431dfe9",
+    "7c150fb9",
+    "80289a39",
+    "81e3720e",
+    "82501e1c",
+    "828e8abf",
+    "83b73a92",
+    "879e5b7b",
+    "889ad423",
+    "8d2a36dc",
+    "911cfafc",
+    "97f1d2c0",
+    "9e114ec9",
+    "a391d7d0",
+    "a6bbff4e",
+    "a72b7479",
+    "a9e95f2e",
+    "aea6ae71",
+    "affe51d9",
+    "b2b109ec",
+    "b2fd35b1",
+    "ba9d5c12",
+    "bdef6487",
+    "bf4b17ca",
+    "c046b863",
+    "c2fb12f0",
+    "c37c44d1",
+    "c4360f4c",
+    "cb497435",
+    "d3207bd3",
+    "d5520996",
+    "d91b715a",
+    "ddd8ca81",
+    "f1a2c92c",
+    "f4ec6112",
+    "f5037eb2",
+    "fa9e96db",
+    "ffa8fc39"
+  ]
+}

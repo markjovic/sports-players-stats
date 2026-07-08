@@ -1,1 +1,77 @@
-{"uuid":"446f082f-e250-446c-8f5f-2e27ac9f2f12","name":"Liam Pelayo","gender":"Boys","sports":{"Basketball":{"gp":7,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"draws":6,"winPct":0.14,"statsChecked":"2026-07-05T15:48:10.477Z"}},"seasons":[{"sid":"2388a0a6","sn":"Winter 2026","club":"Irymple Tigers Basketball Club","regs":[{"tid":"7ec4b78d","tn":"Irymple U8 Boys Blue","gid":"d4e44c3c","gn":"Under 8 Boys","age":null,"div":null,"stats":{"gp":7,"wins":1,"draws":6}}]}],"updatedAt":"2026-06-02T07:49:50.742Z","teams":[{"tid":"7ec4b78d","sid":"2388a0a6","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:24:49.926Z","games":["0f3996d0","42bbd611","4bbf3cfd","5d9611d8","69f5a6e5","78f65c1d","7f2d6a7e"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "446f082f-e250-446c-8f5f-2e27ac9f2f12",
+  "name": "Liam Pelayo",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "draws": 6,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-05T15:48:10.477Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2388a0a6",
+      "sn": "Winter 2026",
+      "club": "Irymple Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "7ec4b78d",
+          "tn": "Irymple U8 Boys Blue",
+          "gid": "d4e44c3c",
+          "gn": "Under 8 Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "wins": 1,
+            "draws": 6
+          }
+        },
+        {
+          "tid": "319a4818",
+          "tn": "Irymple U8 Boys Yellow",
+          "gid": "d4e44c3c",
+          "gn": "Under 8 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T07:49:50.742Z",
+  "teams": [
+    {
+      "tid": "7ec4b78d",
+      "sid": "2388a0a6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "319a4818",
+      "sid": "2388a0a6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:45:27.806Z",
+  "games": [
+    "0f3996d0",
+    "42bbd611",
+    "4bbf3cfd",
+    "5d9611d8",
+    "69f5a6e5",
+    "78f65c1d",
+    "7f2d6a7e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

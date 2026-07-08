@@ -1,1 +1,349 @@
-{"uuid":"fcada083-ab72-4396-9138-e48c8e09d213","name":"2022","gender":null,"sports":{"Basketball":{"gp":48,"pts":219,"fouls":68,"fg":67,"ft":31,"threePt":18,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":3,"wins":27,"losses":36,"winPct":0.42,"draws":1,"statsChecked":"2026-07-05T16:16:11.754Z"}},"seasons":[{"sid":"b387bcd4","sn":"2022","club":"Frankston Blues Basketball Club","regs":[{"tid":"5f421a0c","tn":"Frankston U18 Boys 1","gid":"8422134c","gn":"18 Boys - VC Championship","stats":{"gp":21,"pts":79,"fouls":39,"fg":27,"ft":16,"wins":5,"losses":9,"threePt":3}},{"tid":"5f421a0c","tn":"Frankston U18 Boys 1","gid":"57d43cde","gn":"18 Boys - VC Ashe","stats":{"gp":21,"pts":79,"fouls":39,"fg":27,"ft":16,"threePt":3,"wins":5,"losses":9}},{"tid":"5f421a0c","tn":"Frankston U18 Boys 1","gid":"066453b5","gn":"U18 Boys Grading 2 - XX Pool B","stats":{"gp":21,"pts":79,"fouls":39,"fg":27,"wins":5,"losses":9,"ft":16,"threePt":3}},{"tid":"5f421a0c","tn":"Frankston U18 Boys 1","gid":"f2761a5c","gn":"U18 Boys Grading 1 - Pool 1D","stats":{"gp":21,"pts":79,"fouls":39,"fg":27,"threePt":3,"wins":5,"losses":9,"ft":16}}]},{"sid":"316f425f","sn":"Summer 2021/22","club":"Woodlands Warriors Basketball Club","regs":[{"tid":"832612d2","tn":"Woodlands Warriors DC","gid":"fdaf6e25","gn":"Thursday U21 Boys A","stats":{"gp":5,"pts":43,"fouls":1,"fg":11,"ft":3,"threePt":6,"wins":4,"draws":1}}]},{"sid":"24e148e6","sn":"Winter 2021","club":"Woodlands Warriors Basketball Club","regs":[{"tid":"161b6e2e","tn":"Woodlands Warriors DC","gid":"71d43a7e","gn":"Thursday U21 Boys A","stats":{"gp":3,"pts":30,"fg":10,"ft":1,"threePt":3,"wins":3}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Frankston Blues Basketball Club","regs":[{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"29611eb9","gn":"18 Boys - VJL2","stats":{"gp":13,"pts":37,"fouls":25,"fg":10,"ft":11,"threePt":2}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"d4ab83b6","gn":"U18B Crossover 2 - VJL","stats":{"gp":13,"pts":37,"fouls":25,"fg":10,"ft":11,"threePt":2}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"280f32df","gn":"U18B Grading 2 - BB Pool B","stats":{"gp":13,"pts":37,"fouls":25,"fg":10,"ft":11,"threePt":2}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"f99ca3ba","gn":"U18B Grading 1 - Pool 2C","stats":{"gp":13,"pts":37,"fouls":25,"ft":11,"fg":10,"threePt":2}}]},{"sid":"307e7a12","sn":"Summer 2020/21","club":"Woodlands Warriors Basketball Club","regs":[{"tid":"360647c2","tn":"Woodlands Warriors DC","gid":"60bc1db0","gn":"Thursday U18/21 Boys A","stats":{"gp":6,"pts":30,"fouls":3,"fg":9,"threePt":4}}]}],"updatedAt":"2026-06-11T23:46:36.607Z","games":["02d3366c","04cf1bd3","0ecfa9cf","0ffc23c0","17b0111a","1bf166b8","1d4b4a87","1d4bdaf9","268d1f3e","2d5440e5","2dc396bc","31d327ba","3e95325a","4723c4df","54445aa0","5c8b9a97","60504b57","69428aa1","6bb4ea1e","6c57c267","730e272e","7ebfc038","898aaab5","9b93212f","a61d763c","aac6c7c8","ab7131be","aba45069","ac0e18ea","ac89294d","af8b7f1a","b3b7072f","b9c14c14","bf6866e0","c3cdf925","c818990c","c85e0301","c8e13e20","d056fd83","d79ae6a5","e661734b","e9bca0ed","f14d1232","f1e9cf2e","fa186729","fc215b3a","fd0633e8"],"records":{"maxGamePTS":{"v":16,"gameKey":"54445aa0","sid":"316f425f"},"maxGameThreePt":{"v":3,"gameKey":"268d1f3e","sid":"316f425f"}}}
+{
+  "uuid": "fcada083-ab72-4396-9138-e48c8e09d213",
+  "name": "2022",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 219,
+      "fouls": 68,
+      "fg": 67,
+      "ft": 31,
+      "threePt": 18,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": 3,
+      "wins": 27,
+      "losses": 36,
+      "winPct": 0.42,
+      "draws": 1,
+      "statsChecked": "2026-07-05T16:16:11.754Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Frankston Blues Basketball Club",
+      "regs": [
+        {
+          "tid": "5f421a0c",
+          "tn": "Frankston U18 Boys 1",
+          "gid": "8422134c",
+          "gn": "18 Boys - VC Championship",
+          "stats": {
+            "gp": 21,
+            "pts": 79,
+            "fouls": 39,
+            "fg": 27,
+            "ft": 16,
+            "wins": 5,
+            "losses": 9,
+            "threePt": 3
+          }
+        },
+        {
+          "tid": "5f421a0c",
+          "tn": "Frankston U18 Boys 1",
+          "gid": "57d43cde",
+          "gn": "18 Boys - VC Ashe",
+          "stats": {
+            "gp": 21,
+            "pts": 79,
+            "fouls": 39,
+            "fg": 27,
+            "ft": 16,
+            "threePt": 3,
+            "wins": 5,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "5f421a0c",
+          "tn": "Frankston U18 Boys 1",
+          "gid": "066453b5",
+          "gn": "U18 Boys Grading 2 - XX Pool B",
+          "stats": {
+            "gp": 21,
+            "pts": 79,
+            "fouls": 39,
+            "fg": 27,
+            "wins": 5,
+            "losses": 9,
+            "ft": 16,
+            "threePt": 3
+          }
+        },
+        {
+          "tid": "5f421a0c",
+          "tn": "Frankston U18 Boys 1",
+          "gid": "f2761a5c",
+          "gn": "U18 Boys Grading 1 - Pool 1D",
+          "stats": {
+            "gp": 21,
+            "pts": 79,
+            "fouls": 39,
+            "fg": 27,
+            "threePt": 3,
+            "wins": 5,
+            "losses": 9,
+            "ft": 16
+          }
+        }
+      ]
+    },
+    {
+      "sid": "316f425f",
+      "sn": "Summer 2021/22",
+      "club": "Woodlands Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "832612d2",
+          "tn": "Woodlands Warriors DC",
+          "gid": "fdaf6e25",
+          "gn": "Thursday U21 Boys A",
+          "stats": {
+            "gp": 5,
+            "pts": 43,
+            "fouls": 1,
+            "fg": 11,
+            "ft": 3,
+            "threePt": 6,
+            "wins": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "24e148e6",
+      "sn": "Winter 2021",
+      "club": "Woodlands Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "161b6e2e",
+          "tn": "Woodlands Warriors DC",
+          "gid": "71d43a7e",
+          "gn": "Thursday U21 Boys A",
+          "stats": {
+            "gp": 3,
+            "pts": 30,
+            "fg": 10,
+            "ft": 1,
+            "threePt": 3,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Frankston Blues Basketball Club",
+      "regs": [
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "29611eb9",
+          "gn": "18 Boys - VJL2",
+          "stats": {
+            "gp": 13,
+            "pts": 37,
+            "fouls": 25,
+            "fg": 10,
+            "ft": 11,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "d4ab83b6",
+          "gn": "U18B Crossover 2 - VJL",
+          "stats": {
+            "gp": 13,
+            "pts": 37,
+            "fouls": 25,
+            "fg": 10,
+            "ft": 11,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "280f32df",
+          "gn": "U18B Grading 2 - BB Pool B",
+          "stats": {
+            "gp": 13,
+            "pts": 37,
+            "fouls": 25,
+            "fg": 10,
+            "ft": 11,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "f99ca3ba",
+          "gn": "U18B Grading 1 - Pool 2C",
+          "stats": {
+            "gp": 13,
+            "pts": 37,
+            "fouls": 25,
+            "ft": 11,
+            "fg": 10,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "307e7a12",
+      "sn": "Summer 2020/21",
+      "club": "Woodlands Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "360647c2",
+          "tn": "Woodlands Warriors DC",
+          "gid": "60bc1db0",
+          "gn": "Thursday U18/21 Boys A",
+          "stats": {
+            "gp": 6,
+            "pts": 30,
+            "fouls": 3,
+            "fg": 9,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f7e5b50",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "15f4ed2a",
+          "tn": "Frankston Blues 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "51367689",
+          "tn": "Frankston U16 Boys 1",
+          "gid": "7c9ab47d",
+          "gn": "U16 Boys VC - Ashe",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:36.607Z",
+  "games": [
+    "02d3366c",
+    "04cf1bd3",
+    "0ecfa9cf",
+    "0ffc23c0",
+    "17b0111a",
+    "1bf166b8",
+    "1d4b4a87",
+    "1d4bdaf9",
+    "268d1f3e",
+    "2d5440e5",
+    "2dc396bc",
+    "31d327ba",
+    "3e95325a",
+    "4723c4df",
+    "54445aa0",
+    "5c8b9a97",
+    "60504b57",
+    "69428aa1",
+    "6bb4ea1e",
+    "6c57c267",
+    "730e272e",
+    "7ebfc038",
+    "898aaab5",
+    "9b93212f",
+    "a61d763c",
+    "aac6c7c8",
+    "ab7131be",
+    "aba45069",
+    "ac0e18ea",
+    "ac89294d",
+    "af8b7f1a",
+    "b3b7072f",
+    "b9c14c14",
+    "bf6866e0",
+    "c3cdf925",
+    "c818990c",
+    "c85e0301",
+    "c8e13e20",
+    "d056fd83",
+    "d79ae6a5",
+    "e661734b",
+    "e9bca0ed",
+    "f14d1232",
+    "f1e9cf2e",
+    "fa186729",
+    "fc215b3a",
+    "fd0633e8"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "54445aa0",
+      "sid": "316f425f"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "268d1f3e",
+      "sid": "316f425f"
+    }
+  },
+  "teams": [
+    {
+      "tid": "5f421a0c",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "832612d2",
+      "sid": "316f425f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "161b6e2e",
+      "sid": "24e148e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "86367586",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "360647c2",
+      "sid": "307e7a12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "15f4ed2a",
+      "sid": "5f7e5b50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "51367689",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:17.794Z"
+}

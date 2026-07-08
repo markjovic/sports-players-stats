@@ -1,1 +1,88 @@
-{"uuid":"9892df0e-c1f5-40b7-960f-666e9c1bd36a","gender":null,"sports":{"Basketball":{"gp":6,"pts":14,"fouls":2,"fg":7,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":null,"wins":3,"losses":3,"winPct":0.5,"statsChecked":"2026-07-05T16:31:58.962Z"}},"seasons":[{"sid":"a537e827","sn":"Summer 2021/22","club":null,"regs":[{"tid":"7f59da83","tn":"I Respect","gid":"54445d2d","gn":"Friday Open Mixed 1/2","stats":{"gp":6,"pts":14,"fouls":2,"fg":7,"wins":3,"losses":3}}]}],"updatedAt":"2026-06-11T23:42:50.477Z","games":["23fe9e4c","5dead1a5","61eec8b0","873ffa3d","cae4efda","cf9c17dd"],"records":{"maxGamePTS":{"v":14,"gameKey":"5dead1a5","sid":"a537e827"},"maxGameThreePt":{"v":null}},"name":"Summer 2021/22"}
+{
+  "uuid": "9892df0e-c1f5-40b7-960f-666e9c1bd36a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 14,
+      "fouls": 2,
+      "fg": 7,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 3,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:31:58.962Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a537e827",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7f59da83",
+          "tn": "I Respect",
+          "gid": "54445d2d",
+          "gn": "Friday Open Mixed 1/2",
+          "stats": {
+            "gp": 6,
+            "pts": 14,
+            "fouls": 2,
+            "fg": 7,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b200c0f6",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "fdc5595d",
+          "tn": "I Respect",
+          "gid": "80a72096",
+          "gn": "Friday Open Mixed 1/2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:50.477Z",
+  "games": [
+    "23fe9e4c",
+    "5dead1a5",
+    "61eec8b0",
+    "873ffa3d",
+    "cae4efda",
+    "cf9c17dd"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "5dead1a5",
+      "sid": "a537e827"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "7f59da83",
+      "sid": "a537e827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fdc5595d",
+      "sid": "b200c0f6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:58.422Z"
+}

@@ -1,1 +1,335 @@
-{"uuid":"e9a4008f-9236-4b74-9c0c-66d06b1887a9","name":"James Nichol","gender":"Boys","sports":{"Basketball":{"gp":44,"pts":161,"fouls":95,"fg":69,"ft":17,"threePt":2,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":1,"wins":47,"losses":29,"draws":2,"winPct":0.6,"statsChecked":"2026-07-05T14:31:25.262Z"}},"seasons":[{"sid":"43448c02","sn":"Winter 2026","club":"Wattle Park Saints Basketball Club","regs":[{"tid":"d267833f","tn":"B11 Wattle Park Saints 2","gid":"16d738f9","gn":"Friday U11 Boys B","age":"U11","div":null,"stats":{"gp":10,"fouls":22,"fg":19,"pts":44,"ft":3,"wins":5,"losses":5,"threePt":1}},{"tid":"d267833f","tn":"B11 Wattle Park Saints 2","gid":"997b43c0","gn":"Friday U11 Boys C","age":"U11","div":null,"stats":{"gp":10,"fouls":22,"fg":19,"threePt":1,"pts":44,"wins":5,"losses":5,"ft":3}}]},{"sid":"bf7d2b4c","sn":"Summer 2025/26","club":"Wattle Park Saints Basketball Club","regs":[{"tid":"f21dfeb9","tn":"B11 Wattle Park Saints 6 (CPT)","gid":"357e55f4","gn":"Friday U11 Boys D","age":"U11","div":null,"stats":{"gp":10,"fouls":17,"ft":6,"fg":14,"pts":34,"finals":1,"gfApps":1,"wins":9,"losses":1,"gfWins":1}}]},{"sid":"52d31d16","sn":"Winter 2025","club":"Wattle Park Saints Basketball Club","regs":[{"tid":"d8140a1d","tn":"B11 Wattle Park Saints 7","gid":"0c1ec40e","gn":"Friday U11 Boys D/DR","age":"U11","div":null,"stats":{"gp":10,"fouls":29,"ft":7,"fg":19,"pts":48,"wins":6,"losses":4,"threePt":1}},{"tid":"d8140a1d","tn":"B11 Wattle Park Saints 7","gid":"bf1deea0","gn":"Friday U11 Boys CR","age":"U11","div":null,"stats":{"gp":10,"fouls":29,"ft":7,"fg":19,"threePt":1,"pts":48,"wins":6,"losses":4}}]},{"sid":"2ea45b5f","sn":"Summer 2024/25","club":"Wattle Park Saints Basketball Club","regs":[{"tid":"c91fe5b6","tn":"B09 Wattle Park Saints 2","gid":"e1cb6482","gn":"Friday U9 Boys AR","age":"U9","div":null,"stats":{"gp":14,"fouls":27,"ft":1,"fg":17,"pts":35,"finals":1,"wins":8,"losses":5,"draws":1}},{"tid":"c91fe5b6","tn":"B09 Wattle Park Saints 2","gid":"2581d48c","gn":"Friday U9 Boys B","age":"U9","div":null,"stats":{"gp":14,"fouls":27,"fg":17,"pts":35,"finals":1,"wins":8,"losses":5,"draws":1,"ft":1}}]}],"updatedAt":"2026-06-01T20:57:52.043Z","teams":[{"tid":"d267833f","sid":"43448c02","status":"ACTIVE"},{"tid":"f21dfeb9","sid":"bf7d2b4c","status":"COMPLETED"},{"tid":"d8140a1d","sid":"52d31d16","status":"COMPLETED"},{"tid":"c91fe5b6","sid":"2ea45b5f","status":"COMPLETED"},{"tid":"ae362f5c","sid":"8884de2d","status":"COMPLETED"},{"tid":"6e40d5e9","sid":"0fef30ca","status":"COMPLETED"},{"tid":"9d2d279a","sid":"e5df46b3","status":"COMPLETED"},{"tid":"7ad05f07","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:46.366Z","games":["0919d0fb","107b7838","196c1394","1b4f0386","1c1fcd91","1dd253ca","2df81ad8","34d977f9","3930bb09","3ac00452","3c887302","3ce557bc","3feb0581","4e8b5eab","509dac29","5ae246d4","5fe6b4f5","6478bb1e","709811e6","73768057","7c641366","7fd9e5ca","803a85a1","80863aee","82657af7","84f416b3","912e99d0","95b6cc7b","974eb9e9","99c7451d","b0df49f1","b2d11872","c5b593b3","da5d921c","dcf8a4c3","df9743ca","e008a244","e33ea47c","e7ab8002","e9b43079","ee813c3d","f131654f","f6ad8fd7","f871beba"],"records":{"maxGamePTS":{"v":9,"gameKey":"6478bb1e","sid":"bf7d2b4c"},"maxGameThreePt":{"v":1,"gameKey":"1dd253ca","sid":"43448c02"}}}
+{
+  "uuid": "e9a4008f-9236-4b74-9c0c-66d06b1887a9",
+  "name": "James Nichol",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 161,
+      "fouls": 95,
+      "fg": 69,
+      "ft": 17,
+      "threePt": 2,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 47,
+      "losses": 29,
+      "draws": 2,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T14:31:25.262Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "43448c02",
+      "sn": "Winter 2026",
+      "club": "Wattle Park Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "d267833f",
+          "tn": "B11 Wattle Park Saints 2",
+          "gid": "16d738f9",
+          "gn": "Friday U11 Boys B",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 22,
+            "fg": 19,
+            "pts": 44,
+            "ft": 3,
+            "wins": 5,
+            "losses": 5,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "d267833f",
+          "tn": "B11 Wattle Park Saints 2",
+          "gid": "997b43c0",
+          "gn": "Friday U11 Boys C",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 22,
+            "fg": 19,
+            "threePt": 1,
+            "pts": 44,
+            "wins": 5,
+            "losses": 5,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf7d2b4c",
+      "sn": "Summer 2025/26",
+      "club": "Wattle Park Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "f21dfeb9",
+          "tn": "B11 Wattle Park Saints 6 (CPT)",
+          "gid": "357e55f4",
+          "gn": "Friday U11 Boys D",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 17,
+            "ft": 6,
+            "fg": 14,
+            "pts": 34,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "52d31d16",
+      "sn": "Winter 2025",
+      "club": "Wattle Park Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "d8140a1d",
+          "tn": "B11 Wattle Park Saints 7",
+          "gid": "0c1ec40e",
+          "gn": "Friday U11 Boys D/DR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 29,
+            "ft": 7,
+            "fg": 19,
+            "pts": 48,
+            "wins": 6,
+            "losses": 4,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "d8140a1d",
+          "tn": "B11 Wattle Park Saints 7",
+          "gid": "bf1deea0",
+          "gn": "Friday U11 Boys CR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 29,
+            "ft": 7,
+            "fg": 19,
+            "threePt": 1,
+            "pts": 48,
+            "wins": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ea45b5f",
+      "sn": "Summer 2024/25",
+      "club": "Wattle Park Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "c91fe5b6",
+          "tn": "B09 Wattle Park Saints 2",
+          "gid": "e1cb6482",
+          "gn": "Friday U9 Boys AR",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 27,
+            "ft": 1,
+            "fg": 17,
+            "pts": 35,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c91fe5b6",
+          "tn": "B09 Wattle Park Saints 2",
+          "gid": "2581d48c",
+          "gn": "Friday U9 Boys B",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 27,
+            "fg": 17,
+            "pts": 35,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "ae362f5c",
+          "tn": "Hartwell Ninjas (2780)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "6e40d5e9",
+          "tn": "Hartwell Ninjas",
+          "gid": "3cbd5196",
+          "gn": "Friday Whitehorse YR.1 - YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "9d2d279a",
+          "tn": "Hartwell Ninjas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "7ad05f07",
+          "tn": "Hartwell Raptors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:57:52.043Z",
+  "teams": [
+    {
+      "tid": "d267833f",
+      "sid": "43448c02",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f21dfeb9",
+      "sid": "bf7d2b4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8140a1d",
+      "sid": "52d31d16",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c91fe5b6",
+      "sid": "2ea45b5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ae362f5c",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e40d5e9",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d2d279a",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ad05f07",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:44.770Z",
+  "games": [
+    "0919d0fb",
+    "107b7838",
+    "196c1394",
+    "1b4f0386",
+    "1c1fcd91",
+    "1dd253ca",
+    "2df81ad8",
+    "34d977f9",
+    "3930bb09",
+    "3ac00452",
+    "3c887302",
+    "3ce557bc",
+    "3feb0581",
+    "4e8b5eab",
+    "509dac29",
+    "5ae246d4",
+    "5fe6b4f5",
+    "6478bb1e",
+    "709811e6",
+    "73768057",
+    "7c641366",
+    "7fd9e5ca",
+    "803a85a1",
+    "80863aee",
+    "82657af7",
+    "84f416b3",
+    "912e99d0",
+    "95b6cc7b",
+    "974eb9e9",
+    "99c7451d",
+    "b0df49f1",
+    "b2d11872",
+    "c5b593b3",
+    "da5d921c",
+    "dcf8a4c3",
+    "df9743ca",
+    "e008a244",
+    "e33ea47c",
+    "e7ab8002",
+    "e9b43079",
+    "ee813c3d",
+    "f131654f",
+    "f6ad8fd7",
+    "f871beba"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "6478bb1e",
+      "sid": "bf7d2b4c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1dd253ca",
+      "sid": "43448c02"
+    }
+  }
+}

@@ -1,1 +1,166 @@
-{"uuid":"e38b9abc-ffc7-4fbd-bdb9-fd9cbcc5861a","name":"Sarah Ward","gender":"Girls","sports":{"Basketball":{"gp":15,"pts":12,"fouls":7,"fg":6,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":8,"losses":14,"draws":4,"winPct":0.31,"statsChecked":"2026-07-05T14:45:20.951Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"9a677fda","tn":"Collingwood U17 Girls 05","gid":"db7d5546","gn":"Girls U17 C Grading","age":"U17","div":null,"stats":{"gp":5,"wins":1,"losses":3,"fouls":5}},{"tid":"9a677fda","tn":"Collingwood U17 Girls 05","gid":"d86fe71e","gn":"Girls U17 D Grading","age":"U17","div":null,"stats":{"gp":5,"fouls":5,"wins":1,"losses":3}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"122a3fb1","tn":"Collingwood U16 Girls 07","gid":"b96399e7","gn":"Girls U16 D3","age":"U16","div":"D3","stats":{"gp":2,"fouls":1,"fg":1,"pts":2,"losses":2}}]},{"sid":"532e7f37","sn":"Winter 2021","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"a43a2992","tn":"Collingwood U11 Girls 04","gid":"fbfa03ac","gn":"Girls U11D2","age":null,"div":"D2","stats":{"gp":8,"fg":5,"pts":10,"wins":3,"losses":3,"draws":2,"fouls":1}},{"tid":"a43a2992","tn":"Collingwood U11 Girls 04","gid":"d62b9d7b","gn":"Girls U11 D Grading","age":"U11","div":null,"stats":{"gp":8,"fouls":1,"fg":5,"pts":10,"wins":3,"losses":3,"draws":2}}]}],"updatedAt":"2026-07-04T05:47:16.106Z","teams":[{"tid":"9a677fda","sid":"1ae60211","status":"ACTIVE"},{"tid":"122a3fb1","sid":"88026885","status":"COMPLETED"},{"tid":"a43a2992","sid":"532e7f37","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:38.676Z","games":["01a46710","1120fd40","13a5b12d","3263855e","3bc63078","43e1da26","487e2cd1","8a0f6a80","9dd34556","a833d0d2","b887c449","c8f70e2c","e59a4072","f3a2810f"],"records":{"maxGamePTS":{"v":4,"gameKey":"a833d0d2","sid":"532e7f37"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e38b9abc-ffc7-4fbd-bdb9-fd9cbcc5861a",
+  "name": "Sarah Ward",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 12,
+      "fouls": 7,
+      "fg": 6,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 14,
+      "draws": 4,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T14:45:20.951Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "9a677fda",
+          "tn": "Collingwood U17 Girls 05",
+          "gid": "82bbf083",
+          "gn": "Girls U17 D1",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "wins": 1,
+            "losses": 3,
+            "fouls": 5
+          }
+        },
+        {
+          "tid": "9a677fda",
+          "tn": "Collingwood U17 Girls 05",
+          "gid": "d86fe71e",
+          "gn": "Girls U17 D Grading",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "122a3fb1",
+          "tn": "Collingwood U16 Girls 07",
+          "gid": "b96399e7",
+          "gn": "Girls U16 D3",
+          "age": "U16",
+          "div": "D3",
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "532e7f37",
+      "sn": "Winter 2021",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "a43a2992",
+          "tn": "Collingwood U11 Girls 04",
+          "gid": "fbfa03ac",
+          "gn": "Girls U11D2",
+          "age": null,
+          "div": "D2",
+          "stats": {
+            "gp": 8,
+            "fg": 5,
+            "pts": 10,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "a43a2992",
+          "tn": "Collingwood U11 Girls 04",
+          "gid": "d62b9d7b",
+          "gn": "Girls U11 D Grading",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "fg": 5,
+            "pts": 10,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:16.106Z",
+  "teams": [
+    {
+      "tid": "9a677fda",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "122a3fb1",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a43a2992",
+      "sid": "532e7f37",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:27.008Z",
+  "games": [
+    "01a46710",
+    "1120fd40",
+    "13a5b12d",
+    "3263855e",
+    "3bc63078",
+    "43e1da26",
+    "487e2cd1",
+    "8a0f6a80",
+    "9dd34556",
+    "a833d0d2",
+    "b887c449",
+    "c8f70e2c",
+    "e59a4072",
+    "f3a2810f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "a833d0d2",
+      "sid": "532e7f37"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

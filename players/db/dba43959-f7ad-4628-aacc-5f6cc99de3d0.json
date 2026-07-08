@@ -1,1 +1,138 @@
-{"uuid":"dba43959-f7ad-4628-aacc-5f6cc99de3d0","name":"Oscar Goodman","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":34,"fouls":19,"fg":8,"ft":3,"threePt":5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":6,"losses":9,"winPct":0.4,"statsChecked":"2026-07-05T14:31:10.320Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"fafb5302","tn":"Sutherland Sharks U16 Boys 2","gid":"9ea96a32","gn":"BOYS UNDER 16 B3","age":null,"div":"B3","stats":{"gp":5,"fouls":4,"ft":1,"fg":3,"threePt":2,"pts":13,"wins":2,"losses":3}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"716a02ca","tn":"Sutherland Sharks U14 Boys 1","gid":"16278a1d","gn":"BOYS UNDER 14 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":5,"ft":2,"fg":1,"pts":4,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"39a9c12e","stats":{"wins":2,"losses":3,"gp":5,"pts":17,"fg":4,"threePt":3,"fouls":10}}]}],"updatedAt":"2026-05-31T10:53:24.537Z","teams":[{"tid":"39a9c12e","sid":"0869ea69","status":"UPCOMING"},{"tid":"fafb5302","sid":"6dd649c0","status":"COMPLETED"},{"tid":"716a02ca","sid":"8630ad4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:59.816Z","records":{"maxGamePTS":{"v":6,"gameKey":"d7ab9f77","sid":"6dd649c0"},"maxGameThreePt":{"v":1,"gameKey":"50a8f074","sid":"0869ea69"}},"games":["04219814","0dda08d5","4e3d9621","50a8f074","5d248c89","6da5dde9","8805a153","8bae5933","9ccadcab","c69ebc78","d7ab9f77","e03abe25","e9168ff7","f5737b07","ff6bfd5f"]}
+{
+  "uuid": "dba43959-f7ad-4628-aacc-5f6cc99de3d0",
+  "name": "Oscar Goodman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 34,
+      "fouls": 19,
+      "fg": 8,
+      "ft": 3,
+      "threePt": 5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 9,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:31:10.320Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "fafb5302",
+          "tn": "Sutherland Sharks U16 Boys 2",
+          "gid": "9ea96a32",
+          "gn": "BOYS UNDER 16 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 1,
+            "fg": 3,
+            "threePt": 2,
+            "pts": 13,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "716a02ca",
+          "tn": "Sutherland Sharks U14 Boys 1",
+          "gid": "16278a1d",
+          "gn": "BOYS UNDER 14 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "ft": 2,
+            "fg": 1,
+            "pts": 4,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "39a9c12e",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 17,
+            "fg": 4,
+            "threePt": 3,
+            "fouls": 10
+          },
+          "gid": "d69b8dcc",
+          "gn": "BOYS UNDER 16 B4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T10:53:24.537Z",
+  "teams": [
+    {
+      "tid": "fafb5302",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "716a02ca",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39a9c12e",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:07.100Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "d7ab9f77",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "50a8f074",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "04219814",
+    "0dda08d5",
+    "4e3d9621",
+    "50a8f074",
+    "5d248c89",
+    "6da5dde9",
+    "8805a153",
+    "8bae5933",
+    "9ccadcab",
+    "c69ebc78",
+    "d7ab9f77",
+    "e03abe25",
+    "e9168ff7",
+    "f5737b07",
+    "ff6bfd5f"
+  ]
+}

@@ -1,1 +1,284 @@
-{"uuid":"35587f51-9ed6-4f46-bb13-c15e2f950c29","name":"Nathan Beardsmore","gender":"Men","sports":{"Basketball":{"gp":5,"pts":21,"fouls":6,"fg":10,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":1,"winPct":0.5,"ft":1,"losses":1,"statsChecked":"2026-07-06T19:09:54.933Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"48cf6604","tn":"Wombo Combo","gid":"5402cd44","gn":"Monday Open Men Section 06","age":"Senior","div":null,"stats":{"gp":3,"pts":14,"fg":7,"fouls":5,"wins":1,"losses":1}}]},{"sid":"297562bc","regs":[{"tid":"9e1e5d2b","stats":{"gp":2,"pts":7,"fg":3,"ft":1,"fouls":1}},{"tid":"9e1e5d2b","tn":"","gid":"9e9fdef7","gn":"Monday Open Men Section 6","div":null,"stats":{"gp":2,"pts":7,"fg":3,"ft":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:35:19.448Z","teams":[{"tid":"48cf6604","sid":"5593103d","status":"ACTIVE"},{"tid":"20f94b40","sid":"fab2be4d","status":"COMPLETED"},{"tid":"2b5ed897","sid":"76897951","status":"COMPLETED"},{"tid":"fcf160b9","sid":"348dbfb8","status":"COMPLETED"},{"tid":"5c86b245","sid":"9358e51a","status":"COMPLETED"},{"tid":"839e182f","sid":"d3d4e181","status":"COMPLETED"},{"tid":"33d8c107","sid":"21cd9648","status":"COMPLETED"},{"tid":"8d0bbb2a","sid":"d4cbf787","status":"COMPLETED"},{"tid":"2e9e1a20","sid":"d64fcfce","status":"COMPLETED"},{"tid":"8d5b7a3a","sid":"afd26581","status":"COMPLETED"},{"tid":"e9560e26","sid":"922f0463","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:13:50.648Z","records":{"maxGamePTS":{"v":8,"gameKey":"07608897","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["49bbd707","d7772744"]}
+{
+  "uuid": "35587f51-9ed6-4f46-bb13-c15e2f950c29",
+  "name": "Nathan Beardsmore",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 21,
+      "fouls": 6,
+      "fg": 10,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 0.5,
+      "ft": 1,
+      "losses": 1,
+      "statsChecked": "2026-07-06T19:09:54.933Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "48cf6604",
+          "tn": "Wombo Combo",
+          "gid": "5402cd44",
+          "gn": "Monday Open Men Section 06",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 5,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "9e1e5d2b",
+          "stats": {
+            "gp": 2,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1,
+            "fouls": 1
+          },
+          "gid": "9e9fdef7",
+          "gn": "Monday Open Men Section 6"
+        },
+        {
+          "tid": "9e1e5d2b",
+          "tn": "",
+          "gid": "9e9fdef7",
+          "gn": "Monday Open Men Section 6",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "20f94b40",
+          "tn": "Wombo Combo",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "2b5ed897",
+          "tn": "Wombo Combo",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "fcf160b9",
+          "tn": "Wombo Combo",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "5c86b245",
+          "tn": "Wombo Combo",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "839e182f",
+          "tn": "Wombo Combo",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "33d8c107",
+          "tn": "Wombo Combo",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "8d0bbb2a",
+          "tn": "Wombo Combo",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "2e9e1a20",
+          "tn": "Wombo Combo",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "8d5b7a3a",
+          "tn": "Wombo Combo",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "e9560e26",
+          "tn": "Wombo Combo",
+          "gid": "33f87ae0",
+          "gn": "Monday Open Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:19.448Z",
+  "teams": [
+    {
+      "tid": "48cf6604",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e1e5d2b",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20f94b40",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2b5ed897",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fcf160b9",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c86b245",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "839e182f",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "33d8c107",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d0bbb2a",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2e9e1a20",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d5b7a3a",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e9560e26",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:44:18.465Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "07608897",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "49bbd707",
+    "d7772744"
+  ]
+}

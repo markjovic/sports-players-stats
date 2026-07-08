@@ -1,1 +1,406 @@
-{"uuid":"835e45e8-7218-406a-93ca-61d4c4431a5a","name":"Coby Farrow","gender":"Men","sports":{"Basketball":{"gp":87,"pts":479,"fouls":185,"fg":171,"ft":71,"threePt":22,"foulOuts":{"813135df":1,"c70702e8":4,"6ac35ba2":1},"finals":3,"gfApps":3,"gfWins":0,"finalsPerSeason":0.43,"maxGamePTS":20,"maxGameThreePt":3,"wins":59,"losses":60,"draws":4,"winPct":0.48,"statsChecked":"2026-07-05T15:49:44.463Z"}},"seasons":[{"sid":"7a1c970f","sn":"Summer 2025/26","regs":[{"tid":"2d209632","tn":"Sommie Suns ","gid":"973181bb","gn":"Wednesday Open Men B2","age":"Senior","div":"B2","stats":{"gp":11,"fouls":14,"ft":12,"fg":17,"threePt":5,"pts":61,"wins":5,"losses":4,"draws":1}}]},{"sid":"813135df","sn":"Winter 2025","regs":[{"tid":"ea26d8ed","tn":"Sommie Suns ","gid":"dce963a3","gn":"Wednesday Open Men C1","age":"Senior","div":"C1","stats":{"gp":17,"fouls":34,"ft":17,"fg":35,"threePt":5,"pts":102,"foulOuts":1,"finals":1,"gfApps":1,"wins":13,"losses":4}}]},{"sid":"c70702e8","sn":"Summer 2024/25","regs":[{"tid":"04790a65","tn":"Sommie Suns ","gid":"500e2feb","gn":"Tuesday Men D1","age":null,"div":"D1","stats":{"gp":20,"fouls":63,"ft":14,"fg":39,"threePt":4,"pts":104,"foulOuts":4,"finals":1,"gfApps":1,"wins":14,"losses":5,"draws":1}}]},{"sid":"6ac35ba2","sn":"Winter 2024","regs":[{"tid":"78771f00","tn":"Sommie Suns","gid":"1ba36c3b","gn":"Wednesday Open Men C2","age":"Senior","div":"C2","stats":{"gp":15,"fouls":35,"ft":10,"fg":33,"threePt":4,"pts":88,"foulOuts":1,"wins":8,"losses":7}},{"tid":"78771f00","tn":"Sommie Suns","gid":"63c938bf","gn":"Wednesday Open Men Grading","age":"Senior","div":null,"stats":{"gp":15,"fouls":35,"fg":33,"pts":88,"wins":8,"losses":7,"ft":10,"threePt":4}}]},{"sid":"b331976c","sn":"Summer 2023/24","regs":[{"tid":"48a9e8df","tn":"Sommie Suns ","gid":"a09042f0","gn":"Wednesday Open Men C1","age":"Senior","div":"C1","stats":{"gp":12,"fouls":12,"ft":7,"fg":25,"threePt":2,"pts":63,"wins":2,"losses":10}},{"tid":"48a9e8df","tn":"Sommie Suns ","gid":"687c4df2","gn":"Wednesday Open Men Grading","age":"Senior","div":null,"stats":{"gp":12,"ft":7,"fg":25,"threePt":2,"pts":63,"wins":2,"losses":10,"fouls":12}}]},{"sid":"b220f7b6","sn":"Winter 2023","regs":[{"tid":"544eb1ac","tn":"Sommie Suns ","gid":"470440b7","gn":"Wednesday Open Men B2","age":"Senior","div":"B2","stats":{"gp":10,"fouls":22,"ft":9,"fg":19,"threePt":1,"pts":50,"finals":1,"gfApps":1,"wins":3,"losses":6,"draws":1}},{"tid":"544eb1ac","tn":"Sommie Suns ","gid":"898275c1","gn":"Wednesday Open Men B2 old","age":"Senior","div":null,"stats":{"gp":10,"fouls":22,"fg":19,"pts":50,"finals":1,"gfApps":1,"wins":3,"losses":6,"draws":1,"ft":9,"threePt":1}}]},{"sid":"db9c4e8a","regs":[{"tid":"832d357a","stats":{"gp":2,"pts":11,"fg":3,"ft":2,"threePt":1,"fouls":5,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-02T14:23:19.201Z","teams":[{"tid":"2d209632","sid":"7a1c970f","status":"COMPLETED"},{"tid":"ea26d8ed","sid":"813135df","status":"COMPLETED"},{"tid":"04790a65","sid":"c70702e8","status":"COMPLETED"},{"tid":"78771f00","sid":"6ac35ba2","status":"COMPLETED"},{"tid":"48a9e8df","sid":"b331976c","status":"COMPLETED"},{"tid":"544eb1ac","sid":"b220f7b6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:09:17.152Z","records":{"maxGamePTS":{"v":20,"gameKey":"57cc2951","sid":"813135df"},"maxGameThreePt":{"v":3,"gameKey":"1f14a7d1","sid":"7a1c970f"}},"games":["02ec6c60","05df70ed","07517ce2","0c0fe747","0cc173dd","1194a6c8","144a15f7","1f14a7d1","23612be3","25d7d164","2d981196","3066a692","30a419ec","354e9667","35a46309","35e6e98f","35f19821","367b84e7","367c7148","372c3e8d","3b8e4b31","3cb9ac5d","3da36a29","3e21c643","3f201c13","41a8cf5e","4e4b1a4c","4eb536cd","53dfdb07","57cc2951","5b4606e1","5ea446c3","60b9aeb8","6351350e","6483970d","6671ac9b","6d0607f2","6d9b51ed","718ee8e6","71eb5dd6","77e31fe0","7c7de2ac","7e1afc56","7e29f5c5","7f64508a","820da35f","8405b3ec","85934ccd","861b44ec","86f1b35d","89166148","8b9cded8","92cabf6f","9aaa3f85","9bc88eef","9ca15d64","9ecb35ca","9fb23156","a39ad405","a608e895","a8a7b0f7","aaeda762","ad33f774","ad4d340c","b106817c","b5f76f41","b929e29e","b98e8e6a","bae6753b","bd5fb458","c4379a38","c8d58635","cbee2555","d146e699","d6b3b1e5","e0e6180f","e3697de6","e6343291","e7673316","eac7f2b7","eb606ae1","ed16e827","ee395588","f11949d6","f131fdbf","fe264e7f","fe430ff5"]}
+{
+  "uuid": "835e45e8-7218-406a-93ca-61d4c4431a5a",
+  "name": "Coby Farrow",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 87,
+      "pts": 479,
+      "fouls": 185,
+      "fg": 171,
+      "ft": 71,
+      "threePt": 22,
+      "foulOuts": {
+        "813135df": 1,
+        "c70702e8": 4,
+        "6ac35ba2": 1
+      },
+      "finals": 3,
+      "gfApps": 3,
+      "gfWins": 0,
+      "finalsPerSeason": 0.43,
+      "maxGamePTS": 20,
+      "maxGameThreePt": 3,
+      "wins": 59,
+      "losses": 60,
+      "draws": 4,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T15:49:44.463Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7a1c970f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "2d209632",
+          "tn": "Sommie Suns ",
+          "gid": "973181bb",
+          "gn": "Wednesday Open Men B2",
+          "age": "Senior",
+          "div": "B2",
+          "stats": {
+            "gp": 11,
+            "fouls": 14,
+            "ft": 12,
+            "fg": 17,
+            "threePt": 5,
+            "pts": 61,
+            "wins": 5,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "813135df",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "ea26d8ed",
+          "tn": "Sommie Suns ",
+          "gid": "dce963a3",
+          "gn": "Wednesday Open Men C1",
+          "age": "Senior",
+          "div": "C1",
+          "stats": {
+            "gp": 17,
+            "fouls": 34,
+            "ft": 17,
+            "fg": 35,
+            "threePt": 5,
+            "pts": 102,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c70702e8",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "04790a65",
+          "tn": "Sommie Suns ",
+          "gid": "500e2feb",
+          "gn": "Tuesday Men D1",
+          "age": null,
+          "div": "D1",
+          "stats": {
+            "gp": 20,
+            "fouls": 63,
+            "ft": 14,
+            "fg": 39,
+            "threePt": 4,
+            "pts": 104,
+            "foulOuts": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 14,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6ac35ba2",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "78771f00",
+          "tn": "Sommie Suns",
+          "gid": "1ba36c3b",
+          "gn": "Wednesday Open Men C2",
+          "age": "Senior",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "fouls": 35,
+            "ft": 10,
+            "fg": 33,
+            "threePt": 4,
+            "pts": 88,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "78771f00",
+          "tn": "Sommie Suns",
+          "gid": "63c938bf",
+          "gn": "Wednesday Open Men Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 35,
+            "fg": 33,
+            "pts": 88,
+            "wins": 8,
+            "losses": 7,
+            "ft": 10,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b331976c",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "48a9e8df",
+          "tn": "Sommie Suns ",
+          "gid": "a09042f0",
+          "gn": "Wednesday Open Men C1",
+          "age": "Senior",
+          "div": "C1",
+          "stats": {
+            "gp": 12,
+            "fouls": 12,
+            "ft": 7,
+            "fg": 25,
+            "threePt": 2,
+            "pts": 63,
+            "wins": 2,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "48a9e8df",
+          "tn": "Sommie Suns ",
+          "gid": "687c4df2",
+          "gn": "Wednesday Open Men Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "ft": 7,
+            "fg": 25,
+            "threePt": 2,
+            "pts": 63,
+            "wins": 2,
+            "losses": 10,
+            "fouls": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b220f7b6",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "544eb1ac",
+          "tn": "Sommie Suns ",
+          "gid": "470440b7",
+          "gn": "Wednesday Open Men B2",
+          "age": "Senior",
+          "div": "B2",
+          "stats": {
+            "gp": 10,
+            "fouls": 22,
+            "ft": 9,
+            "fg": 19,
+            "threePt": 1,
+            "pts": 50,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "544eb1ac",
+          "tn": "Sommie Suns ",
+          "gid": "898275c1",
+          "gn": "Wednesday Open Men B2 old",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 22,
+            "fg": 19,
+            "pts": 50,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 6,
+            "draws": 1,
+            "ft": 9,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db9c4e8a",
+      "regs": [
+        {
+          "tid": "832d357a",
+          "stats": {
+            "gp": 2,
+            "pts": 11,
+            "fg": 3,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 5,
+            "wins": 1,
+            "losses": 1
+          },
+          "gid": "77b9974d",
+          "gn": "Wednesday Open Men B1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T14:23:19.201Z",
+  "teams": [
+    {
+      "tid": "2d209632",
+      "sid": "7a1c970f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea26d8ed",
+      "sid": "813135df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "04790a65",
+      "sid": "c70702e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78771f00",
+      "sid": "6ac35ba2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48a9e8df",
+      "sid": "b331976c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "544eb1ac",
+      "sid": "b220f7b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "832d357a",
+      "sid": "db9c4e8a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:01.414Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "57cc2951",
+      "sid": "813135df"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "1f14a7d1",
+      "sid": "7a1c970f"
+    }
+  },
+  "games": [
+    "02ec6c60",
+    "05df70ed",
+    "07517ce2",
+    "0c0fe747",
+    "0cc173dd",
+    "1194a6c8",
+    "144a15f7",
+    "1f14a7d1",
+    "23612be3",
+    "25d7d164",
+    "2d981196",
+    "3066a692",
+    "30a419ec",
+    "354e9667",
+    "35a46309",
+    "35e6e98f",
+    "35f19821",
+    "367b84e7",
+    "367c7148",
+    "372c3e8d",
+    "3b8e4b31",
+    "3cb9ac5d",
+    "3da36a29",
+    "3e21c643",
+    "3f201c13",
+    "41a8cf5e",
+    "4e4b1a4c",
+    "4eb536cd",
+    "53dfdb07",
+    "57cc2951",
+    "5b4606e1",
+    "5ea446c3",
+    "60b9aeb8",
+    "6351350e",
+    "6483970d",
+    "6671ac9b",
+    "6d0607f2",
+    "6d9b51ed",
+    "718ee8e6",
+    "71eb5dd6",
+    "77e31fe0",
+    "7c7de2ac",
+    "7e1afc56",
+    "7e29f5c5",
+    "7f64508a",
+    "820da35f",
+    "8405b3ec",
+    "85934ccd",
+    "861b44ec",
+    "86f1b35d",
+    "89166148",
+    "8b9cded8",
+    "92cabf6f",
+    "9aaa3f85",
+    "9bc88eef",
+    "9ca15d64",
+    "9ecb35ca",
+    "9fb23156",
+    "a39ad405",
+    "a608e895",
+    "a8a7b0f7",
+    "aaeda762",
+    "ad33f774",
+    "ad4d340c",
+    "b106817c",
+    "b5f76f41",
+    "b929e29e",
+    "b98e8e6a",
+    "bae6753b",
+    "bd5fb458",
+    "c4379a38",
+    "c8d58635",
+    "cbee2555",
+    "d146e699",
+    "d6b3b1e5",
+    "e0e6180f",
+    "e3697de6",
+    "e6343291",
+    "e7673316",
+    "eac7f2b7",
+    "eb606ae1",
+    "ed16e827",
+    "ee395588",
+    "f11949d6",
+    "f131fdbf",
+    "fe264e7f",
+    "fe430ff5"
+  ]
+}

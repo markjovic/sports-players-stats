@@ -1,1 +1,151 @@
-{"uuid":"f29e918c-0922-4b2f-b542-9849ecf72bea","gender":null,"sports":{"Basketball":{"gp":5,"pts":17,"fouls":7,"fg":7,"ft":3,"foulOuts":{"0370d9d6":1},"maxGamePTS":7,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T15:52:34.798Z"}},"seasons":[{"sid":"0370d9d6","sn":"Spring 2021","club":null,"regs":[{"tid":"b377281a","tn":"David's Layers","gid":"93dd2241","gn":"Wednesday Men D","stats":{"gp":2,"pts":9,"fouls":5,"fg":4,"ft":1,"foulOuts":1,"losses":2}}]},{"sid":"3b79e539","sn":"Summer 2020/21","club":null,"regs":[{"tid":"a0045f46","tn":"Bay City","gid":"6476235d","gn":"Tuesday Open Men A Res","stats":{"gp":3,"pts":8,"fouls":2,"fg":3,"ft":2}}]}],"updatedAt":"2026-06-11T23:46:12.685Z","records":{"maxGamePTS":{"v":7,"gameKey":"cf275b1e","sid":"0370d9d6"},"maxGameThreePt":{"v":null}},"games":["38a7741c","39ab9c2e","5a7c18c2","cf275b1e","f2d4f17c"],"name":"Spring 2021"}
+{
+  "uuid": "f29e918c-0922-4b2f-b542-9849ecf72bea",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 17,
+      "fouls": 7,
+      "fg": 7,
+      "ft": 3,
+      "foulOuts": {
+        "0370d9d6": 1
+      },
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:52:34.798Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "b377281a",
+          "tn": "David's Layers",
+          "gid": "93dd2241",
+          "gn": "Wednesday Men D",
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fouls": 5,
+            "fg": 4,
+            "ft": 1,
+            "foulOuts": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b79e539",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a0045f46",
+          "tn": "Bay City",
+          "gid": "6476235d",
+          "gn": "Tuesday Open Men A Res",
+          "stats": {
+            "gp": 3,
+            "pts": 8,
+            "fouls": 2,
+            "fg": 3,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a11abfe0",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "7713fda1",
+          "tn": "The Oysters",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "4b691159",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "b7d18edb",
+          "tn": "BAY CITY",
+          "gid": "95ed0228",
+          "gn": "Thursday Open Men B Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "fcc2b344",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "6a65713c",
+          "tn": "BAY CITY",
+          "gid": "12763a79",
+          "gn": "Thursday Open Men B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:12.685Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "cf275b1e",
+      "sid": "0370d9d6"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "38a7741c",
+    "39ab9c2e",
+    "5a7c18c2",
+    "cf275b1e",
+    "f2d4f17c"
+  ],
+  "name": "Spring 2021",
+  "teams": [
+    {
+      "tid": "b377281a",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a0045f46",
+      "sid": "3b79e539",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7713fda1",
+      "sid": "a11abfe0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7d18edb",
+      "sid": "4b691159",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a65713c",
+      "sid": "fcc2b344",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:53.197Z"
+}

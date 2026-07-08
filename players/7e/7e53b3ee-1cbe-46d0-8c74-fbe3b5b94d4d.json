@@ -1,1 +1,91 @@
-{"uuid":"7e53b3ee-1cbe-46d0-8c74-fbe3b5b94d4d","name":"Harley Dewhurst","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":27,"fouls":12,"fg":13,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":2,"losses":10,"winPct":0.17,"ft":1,"statsChecked":"2026-07-05T14:42:35.815Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Banyule Hawks Basketball Club","regs":[{"tid":"6bbe3de1","tn":"Banyule U09 Boys 09","gid":"7c23a893","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":12,"fg":13,"pts":27,"wins":1,"losses":5,"ft":1}},{"tid":"6bbe3de1","tn":"Banyule U09 Boys 09","gid":"79d9e648","gn":"Boys U09 D Grading","age":"U09","div":null,"stats":{"gp":8,"fg":13,"pts":27,"fouls":12,"wins":1,"losses":5,"ft":1}}]}],"updatedAt":"2026-05-31T02:36:16.853Z","teams":[{"tid":"6bbe3de1","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:07:45.021Z","records":{"maxGamePTS":{"v":12,"gameKey":"a0874158","sid":"1ae60211"},"maxGameThreePt":{"v":null}},"games":["142afc99","1587b594","236d02c4","6dcfa2b1","a0874158","b7288da9"]}
+{
+  "uuid": "7e53b3ee-1cbe-46d0-8c74-fbe3b5b94d4d",
+  "name": "Harley Dewhurst",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 27,
+      "fouls": 12,
+      "fg": 13,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 10,
+      "winPct": 0.17,
+      "ft": 1,
+      "statsChecked": "2026-07-05T14:42:35.815Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "6bbe3de1",
+          "tn": "Banyule U09 Boys 09",
+          "gid": "f949850e",
+          "gn": "Boys U09 DC",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "fg": 13,
+            "pts": 27,
+            "wins": 1,
+            "losses": 5,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "6bbe3de1",
+          "tn": "Banyule U09 Boys 09",
+          "gid": "79d9e648",
+          "gn": "Boys U09 D Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 13,
+            "pts": 27,
+            "fouls": 12,
+            "wins": 1,
+            "losses": 5,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T02:36:16.853Z",
+  "teams": [
+    {
+      "tid": "6bbe3de1",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:49.971Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "a0874158",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "142afc99",
+    "1587b594",
+    "236d02c4",
+    "6dcfa2b1",
+    "a0874158",
+    "b7288da9"
+  ]
+}

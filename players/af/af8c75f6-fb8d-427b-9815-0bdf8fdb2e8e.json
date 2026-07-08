@@ -1,1 +1,107 @@
-{"uuid":"af8c75f6-fb8d-427b-9815-0bdf8fdb2e8e","name":"Tavi Lynch","gender":"Girls","sports":{"Basketball":{"gp":7,"pts":14,"fouls":2,"fg":7,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":6,"losses":10,"winPct":0.38,"statsChecked":"2026-07-05T15:11:38.148Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"b36e3637","tn":"U10 TIMBERWOLVES SWIFT","gid":"a2514d21","gn":"Saturday U10 Girls Section 05","age":"U10","div":null,"stats":{"gp":7,"fouls":2,"fg":7,"pts":14,"wins":3,"losses":5}},{"tid":"b36e3637","tn":"","gid":"d07e4e6d","gn":"Saturday U10 Girls Section 04","div":null,"stats":{"gp":7,"pts":14,"fg":7,"fouls":2,"wins":3,"losses":5}}]}],"updatedAt":"2026-07-04T05:52:23.383Z","teams":[{"tid":"b36e3637","sid":"6c117270","status":"ACTIVE"},{"tid":"e56ff379","sid":"68279835","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:36.375Z","games":["056f47b5","0f9ba3d1","28e2f691","2aeee0b0","4ac6108c","5d69b44b","d9bd57ba","fe612606"],"records":{"maxGamePTS":{"v":12,"gameKey":"056f47b5","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "af8c75f6-fb8d-427b-9815-0bdf8fdb2e8e",
+  "name": "Tavi Lynch",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 14,
+      "fouls": 2,
+      "fg": 7,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 10,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:11:38.148Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "b36e3637",
+          "tn": "U10 TIMBERWOLVES SWIFT",
+          "gid": "d07e4e6d",
+          "gn": "Saturday U10 Girls Section 04",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "fg": 7,
+            "pts": 14,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "b36e3637",
+          "tn": "",
+          "gid": "d07e4e6d",
+          "gn": "Saturday U10 Girls Section 04",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 2,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "e56ff379",
+          "tn": "U10 TIMBERWOLVES SWIFT",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:23.383Z",
+  "teams": [
+    {
+      "tid": "b36e3637",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e56ff379",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:34.631Z",
+  "games": [
+    "056f47b5",
+    "0f9ba3d1",
+    "28e2f691",
+    "2aeee0b0",
+    "4ac6108c",
+    "5d69b44b",
+    "d9bd57ba",
+    "fe612606"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "056f47b5",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

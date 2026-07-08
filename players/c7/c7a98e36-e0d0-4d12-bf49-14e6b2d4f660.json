@@ -1,1 +1,75 @@
-{"uuid":"c7a98e36-e0d0-4d12-bf49-14e6b2d4f660","name":"Hudson Sawyer","gender":"Mixed","sports":{"Basketball":{"gp":2,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T15:38:45.234Z"}},"seasons":[{"sid":"0b10ab6e","sn":"Summer 2022/23","regs":[{"tid":"642bf55a","tn":"Red Dogs","gid":"4f9925c5","gn":"Tuesday U9 Mixed Rookie","age":"U9","div":null,"stats":{"gp":2,"losses":2}}]}],"updatedAt":"2026-06-03T01:54:54.022Z","teams":[{"tid":"48f2f89f","sid":"39e5c11c","status":"COMPLETED"},{"tid":"642bf55a","sid":"0b10ab6e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:21.815Z","games":["0af28c66","be32932d"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c7a98e36-e0d0-4d12-bf49-14e6b2d4f660",
+  "name": "Hudson Sawyer",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:38:45.234Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0b10ab6e",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "642bf55a",
+          "tn": "Red Dogs",
+          "gid": "4f9925c5",
+          "gn": "Tuesday U9 Mixed Rookie",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "39e5c11c",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "48f2f89f",
+          "tn": "Red Dogs",
+          "gid": "22af2aa4",
+          "gn": "Tuesday Junior Mixed Rookie 5-9years",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T01:54:54.022Z",
+  "teams": [
+    {
+      "tid": "642bf55a",
+      "sid": "0b10ab6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48f2f89f",
+      "sid": "39e5c11c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:27.444Z",
+  "games": [
+    "0af28c66",
+    "be32932d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

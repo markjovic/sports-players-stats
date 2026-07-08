@@ -1,1 +1,96 @@
-{"uuid":"e6829327-ffdc-4c14-a438-dee07a7bb15a","name":"Jaxon Kesby","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":14,"fouls":4,"fg":1,"threePt":4,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":3,"wins":4,"winPct":0.57,"losses":3,"statsChecked":"2026-07-05T15:13:17.299Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"55b07129","tn":"West Sydney Wolves U16 Boys White","gid":"f557cb78","gn":"BOYS UNDER 16 B4","age":null,"div":"B4","stats":{"gp":2,"fouls":2,"wins":2}}]},{"sid":"0869ea69","regs":[{"tid":"a153204b","stats":{"wins":2,"losses":3,"gp":5,"pts":14,"fg":1,"threePt":4,"fouls":2}}]}],"updatedAt":"2026-05-31T01:14:38.343Z","teams":[{"tid":"a153204b","sid":"0869ea69","status":"UPCOMING"},{"tid":"55b07129","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:09.339Z","records":{"maxGamePTS":{"v":9,"gameKey":"66c8358a","sid":"0869ea69"},"maxGameThreePt":{"v":3,"gameKey":"66c8358a","sid":"0869ea69"}},"games":["1a1d51e4","2491be58","5db254f2","60319eda","66c8358a","933fac83","c86c8a85"]}
+{
+  "uuid": "e6829327-ffdc-4c14-a438-dee07a7bb15a",
+  "name": "Jaxon Kesby",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 14,
+      "fouls": 4,
+      "fg": 1,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 3,
+      "wins": 4,
+      "winPct": 0.57,
+      "losses": 3,
+      "statsChecked": "2026-07-05T15:13:17.299Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "55b07129",
+          "tn": "West Sydney Wolves U16 Boys White",
+          "gid": "f557cb78",
+          "gn": "BOYS UNDER 16 B4",
+          "age": null,
+          "div": "B4",
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "a153204b",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 14,
+            "fg": 1,
+            "threePt": 4,
+            "fouls": 2
+          },
+          "gid": "f6d273a1",
+          "gn": "BOYS UNDER 16 B5"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:14:38.343Z",
+  "teams": [
+    {
+      "tid": "55b07129",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a153204b",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:33.624Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "66c8358a",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "66c8358a",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "1a1d51e4",
+    "2491be58",
+    "5db254f2",
+    "60319eda",
+    "66c8358a",
+    "933fac83",
+    "c86c8a85"
+  ]
+}

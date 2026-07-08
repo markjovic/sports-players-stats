@@ -1,1 +1,81 @@
-{"uuid":"8565f23f-eedb-4dfa-a925-ad224562601d","name":"David Bol","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":3,"foulOuts":{},"gp":38,"pts":143,"fg":46,"ft":12,"threePt":13,"fouls":59,"statsChecked":"2026-07-06T18:58:58.880Z"}},"seasons":[{"sid":"205c1638","regs":[{"tid":"9c91f3fa"}]},{"sid":"c73925a7","regs":[{"tid":"7513748a"}]},{"sid":"e60f95ea","regs":[{"tid":"53b87d0e"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":12,"gameKey":"cf93dc83","sid":"e60f95ea"},"maxGameThreePt":{"v":3,"gameKey":"3f7bf3bf","sid":"c73925a7"}}}
+{
+  "uuid": "8565f23f-eedb-4dfa-a925-ad224562601d",
+  "name": "David Bol",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": 3,
+      "foulOuts": {},
+      "gp": 38,
+      "pts": 143,
+      "fg": 46,
+      "ft": 12,
+      "threePt": 13,
+      "fouls": 59,
+      "statsChecked": "2026-07-06T18:58:58.880Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "9c91f3fa",
+          "gid": "b92b7e38",
+          "gn": "Monday Men E3 E4 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "c73925a7",
+      "regs": [
+        {
+          "tid": "7513748a",
+          "gid": "6ad9b50f",
+          "gn": "Tuesday Mens Division 5"
+        }
+      ]
+    },
+    {
+      "sid": "e60f95ea",
+      "regs": [
+        {
+          "tid": "53b87d0e",
+          "gid": "66ef2b49",
+          "gn": "Tuesday Mens Division 8"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "9c91f3fa",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7513748a",
+      "sid": "c73925a7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53b87d0e",
+      "sid": "e60f95ea",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "cf93dc83",
+      "sid": "e60f95ea"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "3f7bf3bf",
+      "sid": "c73925a7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:48:05.239Z"
+}

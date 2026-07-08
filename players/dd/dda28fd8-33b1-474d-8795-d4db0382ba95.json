@@ -1,1 +1,285 @@
-{"uuid":"dda28fd8-33b1-474d-8795-d4db0382ba95","name":"Theodore Nguyen","gender":"Boys","sports":{"Basketball":{"gp":77,"pts":62,"fouls":45,"fg":30,"ft":2,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":19,"losses":30,"draws":1,"winPct":0.38,"statsChecked":"2026-07-05T16:15:29.277Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"St Fidelis Basketball Club","regs":[{"tid":"8d38174a","tn":"St Fidelis U10 Boys White","gid":"fbb51b94","gn":"Saturday U10 Boys Group 3","age":"U10","div":null,"stats":{"gp":9,"fouls":5,"fg":9,"pts":18,"wins":4,"losses":5}},{"tid":"8d38174a","tn":"St Fidelis U10 Boys White","gid":"4197b79f","gn":"Saturday U10 Boys Group 4","age":"U10","div":null,"stats":{"gp":9,"fouls":5,"fg":9,"pts":18,"wins":4,"losses":5}}]},{"sid":"eeaf6409","sn":"Summer 2025/26","club":"St Fidelis Basketball Club","regs":[{"tid":"266f3a13","tn":"St Fidelis U10 Boys White","gid":"27e5b24d","gn":"Saturday U10 Boys Group 4","age":"U10","div":null,"stats":{"gp":16,"fouls":18,"fg":10,"pts":20}}]},{"sid":"f4ef6102","sn":"Winter 2025","club":"St Fidelis Basketball Club","regs":[{"tid":"fce69ccb","tn":"St Fidelis U8 Mixed White","gid":"67410dc1","gn":"Juniors U8  Group 1","age":"U8","div":null,"stats":{"gp":14,"fouls":5,"ft":1,"fg":2,"pts":5}}]},{"sid":"d15715f7","sn":"Summer 2024/25","club":"St Fidelis Basketball Club","regs":[{"tid":"2ce8841e","tn":"St Fidelis U8 Mixed White","gid":"e33ab4d3","gn":"Juniors U8 Group 3","age":"U8","div":null,"stats":{"gp":15,"fouls":9,"fg":5,"pts":10,"wins":5,"losses":10}}]},{"sid":"3756aba7","sn":"Winter 2024","club":"St Fidelis Basketball Club","regs":[{"tid":"5c113adb","tn":"St Fidelis U8 Mixed Blue","gid":"b229628b","gn":"Juniors U8 Group 3","age":"U8","div":null,"stats":{"gp":17,"fouls":1,"wins":6,"losses":10,"draws":1}}]},{"sid":"8810ce3f","regs":[{"tid":"47200edf","stats":{"gp":6,"pts":9,"fg":4,"ft":1,"fouls":7}}]}],"updatedAt":"2026-07-04T05:54:34.818Z","teams":[{"tid":"8d38174a","sid":"e44fb190","status":"ACTIVE"},{"tid":"266f3a13","sid":"eeaf6409","status":"COMPLETED"},{"tid":"fce69ccb","sid":"f4ef6102","status":"COMPLETED"},{"tid":"2ce8841e","sid":"d15715f7","status":"COMPLETED"},{"tid":"5c113adb","sid":"3756aba7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:19.204Z","games":["02bbe8ce","049e9547","085f8259","16319130","1ad47e70","1b5d7211","20fa0138","22ab4539","2b359803","2c86dfa1","3c683f33","3d76de53","3e662c85","3f0f19dc","42209c78","45064697","493277f2","4b1efd05","4e3b0800","4fd207ff","5cf6fc03","61efd596","652d9004","6537bcd5","67cb570e","68d01ec7","6911bf83","6a36ff7a","6aace303","6addbf78","6dddf29b","7252d022","75e8e040","780dca1d","78fabb35","7e13656d","8fb69d96","943a0caf","94b1bb72","94b75616","9a3522d8","9c988414","9f442096","a0a85c90","a58c1da0","a5ff6564","a7569961","aa118af4","b2fd527d","b7039b1f","b820651a","bb4862c4","be2d9611","c15b3aa2","c8a695e0","caeee689","cce3905a","cd5364b0","d9c984ce","e2bf2c48","e79d0bb6","e9ca9d55","ea4a1866","ea9e2456","eb824af8","efb186c6","f543d2a9","f60e9a66","f773370c","fbae89a0","fe73ff39"],"records":{"maxGamePTS":{"v":8,"gameKey":"7e13656d","sid":"e44fb190"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "dda28fd8-33b1-474d-8795-d4db0382ba95",
+  "name": "Theodore Nguyen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 77,
+      "pts": 62,
+      "fouls": 45,
+      "fg": 30,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 19,
+      "losses": 30,
+      "draws": 1,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T16:15:29.277Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "St Fidelis Basketball Club",
+      "regs": [
+        {
+          "tid": "8d38174a",
+          "tn": "St Fidelis U10 Boys White",
+          "gid": "fbb51b94",
+          "gn": "Saturday U10 Boys Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "fg": 9,
+            "pts": 18,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "8d38174a",
+          "tn": "St Fidelis U10 Boys White",
+          "gid": "4197b79f",
+          "gn": "Saturday U10 Boys Group 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "fg": 9,
+            "pts": 18,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eeaf6409",
+      "sn": "Summer 2025/26",
+      "club": "St Fidelis Basketball Club",
+      "regs": [
+        {
+          "tid": "266f3a13",
+          "tn": "St Fidelis U10 Boys White",
+          "gid": "27e5b24d",
+          "gn": "Saturday U10 Boys Group 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "fg": 10,
+            "pts": 20
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f4ef6102",
+      "sn": "Winter 2025",
+      "club": "St Fidelis Basketball Club",
+      "regs": [
+        {
+          "tid": "fce69ccb",
+          "tn": "St Fidelis U8 Mixed White",
+          "gid": "67410dc1",
+          "gn": "Juniors U8  Group 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 2,
+            "pts": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d15715f7",
+      "sn": "Summer 2024/25",
+      "club": "St Fidelis Basketball Club",
+      "regs": [
+        {
+          "tid": "2ce8841e",
+          "tn": "St Fidelis U8 Mixed White",
+          "gid": "e33ab4d3",
+          "gn": "Juniors U8 Group 3",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 9,
+            "fg": 5,
+            "pts": 10,
+            "wins": 5,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3756aba7",
+      "sn": "Winter 2024",
+      "club": "St Fidelis Basketball Club",
+      "regs": [
+        {
+          "tid": "5c113adb",
+          "tn": "St Fidelis U8 Mixed Blue",
+          "gid": "b229628b",
+          "gn": "Juniors U8 Group 3",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 1,
+            "wins": 6,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "47200edf",
+          "stats": {
+            "gp": 6,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 7
+          },
+          "gid": "2dbb8cf5",
+          "gn": "U10 Boys Division 3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:34.818Z",
+  "teams": [
+    {
+      "tid": "8d38174a",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "266f3a13",
+      "sid": "eeaf6409",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fce69ccb",
+      "sid": "f4ef6102",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2ce8841e",
+      "sid": "d15715f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c113adb",
+      "sid": "3756aba7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47200edf",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:10.571Z",
+  "games": [
+    "02bbe8ce",
+    "049e9547",
+    "085f8259",
+    "16319130",
+    "1ad47e70",
+    "1b5d7211",
+    "20fa0138",
+    "22ab4539",
+    "2b359803",
+    "2c86dfa1",
+    "3c683f33",
+    "3d76de53",
+    "3e662c85",
+    "3f0f19dc",
+    "42209c78",
+    "45064697",
+    "493277f2",
+    "4b1efd05",
+    "4e3b0800",
+    "4fd207ff",
+    "5cf6fc03",
+    "61efd596",
+    "652d9004",
+    "6537bcd5",
+    "67cb570e",
+    "68d01ec7",
+    "6911bf83",
+    "6a36ff7a",
+    "6aace303",
+    "6addbf78",
+    "6dddf29b",
+    "7252d022",
+    "75e8e040",
+    "780dca1d",
+    "78fabb35",
+    "7e13656d",
+    "8fb69d96",
+    "943a0caf",
+    "94b1bb72",
+    "94b75616",
+    "9a3522d8",
+    "9c988414",
+    "9f442096",
+    "a0a85c90",
+    "a58c1da0",
+    "a5ff6564",
+    "a7569961",
+    "aa118af4",
+    "b2fd527d",
+    "b7039b1f",
+    "b820651a",
+    "bb4862c4",
+    "be2d9611",
+    "c15b3aa2",
+    "c8a695e0",
+    "caeee689",
+    "cce3905a",
+    "cd5364b0",
+    "d9c984ce",
+    "e2bf2c48",
+    "e79d0bb6",
+    "e9ca9d55",
+    "ea4a1866",
+    "ea9e2456",
+    "eb824af8",
+    "efb186c6",
+    "f543d2a9",
+    "f60e9a66",
+    "f773370c",
+    "fbae89a0",
+    "fe73ff39"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "7e13656d",
+      "sid": "e44fb190"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

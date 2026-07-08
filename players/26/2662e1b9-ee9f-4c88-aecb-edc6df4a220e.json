@@ -1,1 +1,336 @@
-{"uuid":"2662e1b9-ee9f-4c88-aecb-edc6df4a220e","name":"James Birkett","gender":"Boys","sports":{"Basketball":{"gp":65,"pts":152,"fouls":74,"fg":50,"ft":4,"threePt":16,"finals":4,"gfApps":4,"gfWins":2,"finalsPerSeason":0.8,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":47,"losses":20,"draws":5,"winPct":0.65,"statsChecked":"2026-07-05T15:07:31.123Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","regs":[{"tid":"4038ea45","tn":"Port Hurricanes","gid":"a9c8e54c","gn":"Saturday U16 Boys A","age":"U16","div":null,"stats":{"gp":7,"fg":5,"threePt":2,"pts":16,"fouls":3,"losses":5,"draws":1}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"97450290","tn":"Port Hurricanes","gid":"ec6872b2","gn":"Saturday U16 Boys B","age":"U16","div":null,"stats":{"gp":14,"fouls":15,"fg":11,"threePt":5,"pts":37,"finals":1,"gfApps":1,"wins":6,"losses":3,"draws":2}},{"tid":"97450290","tn":"Port Hurricanes","gid":"45b84fdd","gn":"Saturday U16 Boys A","age":"U16","div":null,"stats":{"gp":14,"fouls":15,"fg":11,"pts":37,"finals":1,"gfApps":1,"wins":6,"losses":3,"draws":2,"threePt":5}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"74e0bd60","tn":"Port Hurricanes","gid":"74c56ad4","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":19,"fouls":21,"ft":2,"fg":19,"threePt":6,"pts":58,"finals":1,"gfApps":1,"wins":14,"losses":5}}]},{"sid":"0261a532","sn":"Summer 2024/25","regs":[{"tid":"5151d0a5","tn":"Port Hurricanes","gid":"e46be63a","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":11,"fouls":16,"ft":1,"fg":5,"threePt":1,"pts":14,"finals":1,"gfApps":1,"wins":7,"losses":4,"gfWins":1}}]},{"sid":"3d243fd6","sn":"Winter 2024","club":"Toorak Basketball Club","regs":[{"tid":"0d9ee8c6","tn":"Toorak Tidalwave","gid":"ae150809","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":14,"fouls":19,"ft":1,"fg":10,"threePt":2,"pts":27,"finals":1,"gfApps":1,"wins":14,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:49:55.670Z","teams":[{"tid":"4038ea45","sid":"e7aed763","status":"ACTIVE"},{"tid":"97450290","sid":"e78cfce1","status":"COMPLETED"},{"tid":"74e0bd60","sid":"0c4ad170","status":"COMPLETED"},{"tid":"5151d0a5","sid":"0261a532","status":"COMPLETED"},{"tid":"0d9ee8c6","sid":"3d243fd6","status":"COMPLETED"},{"tid":"19fb760b","sid":"e5df46b3","status":"COMPLETED"},{"tid":"f05a14be","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"31cff341","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:14:43.750Z","records":{"maxGamePTS":{"v":10,"gameKey":"4dd554c3","sid":"e78cfce1"},"maxGameThreePt":{"v":2,"gameKey":"4dd554c3","sid":"e78cfce1"}},"games":["00845bd5","094c155f","0c5a212e","10a6b21c","1510e9f3","1ab7a085","1c519579","282ed233","28bb6733","2c342f84","311ed77a","3240fd97","32bc6c81","33b7123a","37c01754","3cd823b9","42707d9a","44db26af","45c1fccc","4606e88e","4d247b5b","4dd554c3","4ed26084","57436bb4","5c6be5d2","5e816078","619c3d59","6e608256","71814014","71c954f5","73341f13","745208f2","7dec20ec","7e420201","7ecac62b","8082ab57","89774811","8b3b7b9e","8cd925eb","8d462562","93063fb2","96cdc644","9e73a998","a2838350","a7be7a0d","af9fc43e","b0a0afa2","b3d67def","b626414c","b6ab7157","c93dcce6","cd3f09b2","d052fb2d","dcb0c0c9","ddd45eaa","e93c6bf9","f15de423","f322c313","f565ca73","fad5505a","fd3b1296"]}
+{
+  "uuid": "2662e1b9-ee9f-4c88-aecb-edc6df4a220e",
+  "name": "James Birkett",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 65,
+      "pts": 152,
+      "fouls": 74,
+      "fg": 50,
+      "ft": 4,
+      "threePt": 16,
+      "finals": 4,
+      "gfApps": 4,
+      "gfWins": 2,
+      "finalsPerSeason": 0.8,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 47,
+      "losses": 20,
+      "draws": 5,
+      "winPct": 0.65,
+      "statsChecked": "2026-07-05T15:07:31.123Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "4038ea45",
+          "tn": "Port Hurricanes",
+          "gid": "a9c8e54c",
+          "gn": "Saturday U16 Boys A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 16,
+            "fouls": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "97450290",
+          "tn": "Port Hurricanes",
+          "gid": "ec6872b2",
+          "gn": "Saturday U16 Boys B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 15,
+            "fg": 11,
+            "threePt": 5,
+            "pts": 37,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "97450290",
+          "tn": "Port Hurricanes",
+          "gid": "45b84fdd",
+          "gn": "Saturday U16 Boys A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 15,
+            "fg": 11,
+            "pts": 37,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3,
+            "draws": 2,
+            "threePt": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "74e0bd60",
+          "tn": "Port Hurricanes",
+          "gid": "74c56ad4",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 19,
+            "threePt": 6,
+            "pts": 58,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 14,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0261a532",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "5151d0a5",
+          "tn": "Port Hurricanes",
+          "gid": "e46be63a",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 1,
+            "fg": 5,
+            "threePt": 1,
+            "pts": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3d243fd6",
+      "sn": "Winter 2024",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "0d9ee8c6",
+          "tn": "Toorak Tidalwave",
+          "gid": "ae150809",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "ft": 1,
+            "fg": 10,
+            "threePt": 2,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 14,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "19fb760b",
+          "tn": "Port Hurricanes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "f05a14be",
+          "tn": "Port Hurricanes",
+          "gid": "d336db05",
+          "gn": "Wednesday MSAC YR.5 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "31cff341",
+          "tn": "Port Hurricanes (3667)",
+          "gid": "40dc8f54",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:55.670Z",
+  "teams": [
+    {
+      "tid": "4038ea45",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "97450290",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "74e0bd60",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5151d0a5",
+      "sid": "0261a532",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d9ee8c6",
+      "sid": "3d243fd6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "19fb760b",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f05a14be",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31cff341",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:10.632Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "4dd554c3",
+      "sid": "e78cfce1"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4dd554c3",
+      "sid": "e78cfce1"
+    }
+  },
+  "games": [
+    "00845bd5",
+    "094c155f",
+    "0c5a212e",
+    "10a6b21c",
+    "1510e9f3",
+    "1ab7a085",
+    "1c519579",
+    "282ed233",
+    "28bb6733",
+    "2c342f84",
+    "311ed77a",
+    "3240fd97",
+    "32bc6c81",
+    "33b7123a",
+    "37c01754",
+    "3cd823b9",
+    "42707d9a",
+    "44db26af",
+    "45c1fccc",
+    "4606e88e",
+    "4d247b5b",
+    "4dd554c3",
+    "4ed26084",
+    "57436bb4",
+    "5c6be5d2",
+    "5e816078",
+    "619c3d59",
+    "6e608256",
+    "71814014",
+    "71c954f5",
+    "73341f13",
+    "745208f2",
+    "7dec20ec",
+    "7e420201",
+    "7ecac62b",
+    "8082ab57",
+    "89774811",
+    "8b3b7b9e",
+    "8cd925eb",
+    "8d462562",
+    "93063fb2",
+    "96cdc644",
+    "9e73a998",
+    "a2838350",
+    "a7be7a0d",
+    "af9fc43e",
+    "b0a0afa2",
+    "b3d67def",
+    "b626414c",
+    "b6ab7157",
+    "c93dcce6",
+    "cd3f09b2",
+    "d052fb2d",
+    "dcb0c0c9",
+    "ddd45eaa",
+    "e93c6bf9",
+    "f15de423",
+    "f322c313",
+    "f565ca73",
+    "fad5505a",
+    "fd3b1296"
+  ]
+}

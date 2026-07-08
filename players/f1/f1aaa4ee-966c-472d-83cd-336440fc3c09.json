@@ -1,1 +1,225 @@
-{"uuid":"f1aaa4ee-966c-472d-83cd-336440fc3c09","name":"SKYLAH NORTON","gender":"Girls","sports":{"Basketball":{"gp":32,"pts":31,"fouls":71,"fg":14,"ft":3,"foulOuts":{"60840c69":2},"maxGamePTS":6,"maxGameThreePt":null,"wins":11,"losses":19,"draws":3,"winPct":0.33,"statsChecked":"2026-07-05T14:45:47.144Z"}},"seasons":[{"sid":"60840c69","sn":"Summer 2023/24","regs":[{"tid":"788c9da5","tn":"Bobcats Storm","gid":"6d3b8bba","gn":"Tuesday U12 Girls Division 1","age":"U12","div":"Division 1","stats":{"gp":15,"fouls":40,"ft":2,"fg":6,"pts":14,"foulOuts":2,"wins":7,"losses":8}}]},{"sid":"0ddc7708","sn":"Winter 2023","regs":[{"tid":"6fad2bed","tn":"Bobcats Storm","gid":"95cea04a","gn":"Tuesday U12 Girls 1","age":"U12","div":null,"stats":{"gp":14,"fouls":28,"ft":1,"fg":8,"pts":17,"wins":4,"losses":9,"draws":1}}]},{"sid":"82580827","sn":"Summer 2022/23","club":"~[ARCHIVED] Peninsula Bobcats Basketball Club","regs":[{"tid":"12abcec2","tn":"Bobcats U10G Black","gid":"16713e79","gn":"Saturday U10 Girls B","age":"U10","div":null,"stats":{"gp":1,"fouls":3}},{"tid":"ede959a9","stats":{"losses":1,"draws":1,"gp":2}}]},{"sid":"82580827","sn":"Summer 2022/23","club":"~[ARCHIVED] Peninsula Bobcats Basketball Club","regs":[{"tid":"ede959a9","tn":"Bobcats U10G Coleman","gid":"16713e79","gn":"Saturday U10 Girls B","age":"U10","div":null,"stats":{"gp":2,"losses":1,"draws":1}}]}],"updatedAt":"2026-05-31T14:59:54.098Z","teams":[{"tid":"788c9da5","sid":"60840c69","status":"COMPLETED"},{"tid":"6fad2bed","sid":"0ddc7708","status":"COMPLETED"},{"tid":"12abcec2","sid":"82580827","status":"COMPLETED"},{"tid":"ede959a9","sid":"82580827","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:25.675Z","games":["033fd3cb","19e97009","1d9a0277","2f1797e6","40db1cdc","435c9f6e","59115867","6016a422","60e39c89","6947b5e9","76d12900","7976aefb","7b1b7962","809aa128","963b5474","9b2d063b","a0aeb351","a28065e8","a3cdf5d5","a7177155","aed9e7c4","aeec97fa","afaf3dee","b32ac32c","b5d4d319","b9b0d3d3","bd1a625f","bdf8c40d","c9581813","dce069bb","e7f01315","ef3acb53"],"records":{"maxGamePTS":{"v":6,"gameKey":"59115867","sid":"60840c69"},"maxGameThreePt":{"v":null}},"gameTids":{"59115867":"788c9da5","b5d4d319":"788c9da5","1d9a0277":"788c9da5","60e39c89":"788c9da5","c9581813":"788c9da5","033fd3cb":"788c9da5","40db1cdc":"788c9da5","809aa128":"788c9da5","435c9f6e":"788c9da5","2f1797e6":"788c9da5","a3cdf5d5":"788c9da5","b32ac32c":"788c9da5","afaf3dee":"788c9da5","dce069bb":"788c9da5","9b2d063b":"788c9da5","6947b5e9":"6fad2bed","bd1a625f":"6fad2bed","a0aeb351":"6fad2bed","e7f01315":"6fad2bed","aeec97fa":"6fad2bed","bdf8c40d":"6fad2bed","a7177155":"6fad2bed","b9b0d3d3":"6fad2bed","963b5474":"6fad2bed","ef3acb53":"6fad2bed","76d12900":"6fad2bed","7976aefb":"6fad2bed","a28065e8":"6fad2bed","6016a422":"6fad2bed","19e97009":"12abcec2","7b1b7962":"ede959a9","aed9e7c4":"ede959a9"}}
+{
+  "uuid": "f1aaa4ee-966c-472d-83cd-336440fc3c09",
+  "name": "SKYLAH NORTON",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 32,
+      "pts": 31,
+      "fouls": 71,
+      "fg": 14,
+      "ft": 3,
+      "foulOuts": {
+        "60840c69": 2
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 11,
+      "losses": 19,
+      "draws": 3,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T14:45:47.144Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "60840c69",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "788c9da5",
+          "tn": "Bobcats Storm",
+          "gid": "6d3b8bba",
+          "gn": "Tuesday U12 Girls Division 1",
+          "age": "U12",
+          "div": "Division 1",
+          "stats": {
+            "gp": 15,
+            "fouls": 40,
+            "ft": 2,
+            "fg": 6,
+            "pts": 14,
+            "foulOuts": 2,
+            "wins": 7,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0ddc7708",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "6fad2bed",
+          "tn": "Bobcats Storm",
+          "gid": "95cea04a",
+          "gn": "Tuesday U12 Girls 1",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "wins": 4,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "82580827",
+      "sn": "Summer 2022/23",
+      "club": "~[ARCHIVED] Peninsula Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "12abcec2",
+          "tn": "Bobcats U10G Black",
+          "gid": "16713e79",
+          "gn": "Saturday U10 Girls B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "ede959a9",
+          "stats": {
+            "losses": 1,
+            "draws": 1,
+            "gp": 2
+          },
+          "gid": "16713e79",
+          "gn": "Saturday U10 Girls B"
+        }
+      ]
+    },
+    {
+      "sid": "82580827",
+      "sn": "Summer 2022/23",
+      "club": "~[ARCHIVED] Peninsula Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "ede959a9",
+          "tn": "Bobcats U10G Coleman",
+          "gid": "16713e79",
+          "gn": "Saturday U10 Girls B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T14:59:54.098Z",
+  "teams": [
+    {
+      "tid": "788c9da5",
+      "sid": "60840c69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6fad2bed",
+      "sid": "0ddc7708",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "12abcec2",
+      "sid": "82580827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ede959a9",
+      "sid": "82580827",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:51.637Z",
+  "games": [
+    "033fd3cb",
+    "19e97009",
+    "1d9a0277",
+    "2f1797e6",
+    "40db1cdc",
+    "435c9f6e",
+    "59115867",
+    "6016a422",
+    "60e39c89",
+    "6947b5e9",
+    "76d12900",
+    "7976aefb",
+    "7b1b7962",
+    "809aa128",
+    "963b5474",
+    "9b2d063b",
+    "a0aeb351",
+    "a28065e8",
+    "a3cdf5d5",
+    "a7177155",
+    "aed9e7c4",
+    "aeec97fa",
+    "afaf3dee",
+    "b32ac32c",
+    "b5d4d319",
+    "b9b0d3d3",
+    "bd1a625f",
+    "bdf8c40d",
+    "c9581813",
+    "dce069bb",
+    "e7f01315",
+    "ef3acb53"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "59115867",
+      "sid": "60840c69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "59115867": "788c9da5",
+    "b5d4d319": "788c9da5",
+    "1d9a0277": "788c9da5",
+    "60e39c89": "788c9da5",
+    "c9581813": "788c9da5",
+    "033fd3cb": "788c9da5",
+    "40db1cdc": "788c9da5",
+    "809aa128": "788c9da5",
+    "435c9f6e": "788c9da5",
+    "2f1797e6": "788c9da5",
+    "a3cdf5d5": "788c9da5",
+    "b32ac32c": "788c9da5",
+    "afaf3dee": "788c9da5",
+    "dce069bb": "788c9da5",
+    "9b2d063b": "788c9da5",
+    "6947b5e9": "6fad2bed",
+    "bd1a625f": "6fad2bed",
+    "a0aeb351": "6fad2bed",
+    "e7f01315": "6fad2bed",
+    "aeec97fa": "6fad2bed",
+    "bdf8c40d": "6fad2bed",
+    "a7177155": "6fad2bed",
+    "b9b0d3d3": "6fad2bed",
+    "963b5474": "6fad2bed",
+    "ef3acb53": "6fad2bed",
+    "76d12900": "6fad2bed",
+    "7976aefb": "6fad2bed",
+    "a28065e8": "6fad2bed",
+    "6016a422": "6fad2bed",
+    "19e97009": "12abcec2",
+    "7b1b7962": "ede959a9",
+    "aed9e7c4": "ede959a9"
+  }
+}

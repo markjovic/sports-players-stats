@@ -1,1 +1,135 @@
-{"uuid":"66476668-1518-4b57-9a7b-a741dac8e9c6","gender":null,"sports":{"Basketball":{"gp":17,"pts":84,"fouls":35,"fg":32,"ft":11,"threePt":3,"foulOuts":{"0912c55f":1},"maxGamePTS":11,"maxGameThreePt":1,"wins":3,"losses":4,"draws":4,"winPct":0.27,"statsChecked":"2026-07-05T16:27:36.128Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"c71dbcdb","tn":"CSBD U16 Girls 4","gid":"f1d17405","gn":"Saturday U16 Girls C1 Grade","stats":{"gp":11,"pts":45,"fouls":17,"fg":16,"ft":4,"threePt":3,"wins":3,"losses":4,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"fa877c5e","tn":"CSBD U16 Girls 4","gid":"03e8db13","gn":"Saturday U16 Girls C2 Grade","stats":{"gp":6,"pts":39,"fouls":18,"fg":16,"ft":7,"foulOuts":1}}]}],"updatedAt":"2026-06-11T23:40:30.184Z","records":{"maxGamePTS":{"v":11,"gameKey":"c61df7e5","sid":"8e4e71fc"},"maxGameThreePt":{"v":1,"gameKey":"903d18f0","sid":"8e4e71fc"}},"games":["2ec53330","43f93e5b","636b38c4","648b6c60","68fca9bf","77b75ff5","86d2e1b7","903d18f0","ac6db09a","b846e2fc","bc1a81d8","c61df7e5","cff97bc7","d4978504","d7aa784e","ef6b3d2f","f0da4e85"],"name":"Winter 2021"}
+{
+  "uuid": "66476668-1518-4b57-9a7b-a741dac8e9c6",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 17,
+      "pts": 84,
+      "fouls": 35,
+      "fg": 32,
+      "ft": 11,
+      "threePt": 3,
+      "foulOuts": {
+        "0912c55f": 1
+      },
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 4,
+      "draws": 4,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T16:27:36.128Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "c71dbcdb",
+          "tn": "CSBD U16 Girls 4",
+          "gid": "f1d17405",
+          "gn": "Saturday U16 Girls C1 Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 45,
+            "fouls": 17,
+            "fg": 16,
+            "ft": 4,
+            "threePt": 3,
+            "wins": 3,
+            "losses": 4,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "fa877c5e",
+          "tn": "CSBD U16 Girls 4",
+          "gid": "03e8db13",
+          "gn": "Saturday U16 Girls C2 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 39,
+            "fouls": 18,
+            "fg": 16,
+            "ft": 7,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "068f5453",
+          "tn": "CSBD U16 Girls 6",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:30.184Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "c61df7e5",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "903d18f0",
+      "sid": "8e4e71fc"
+    }
+  },
+  "games": [
+    "2ec53330",
+    "43f93e5b",
+    "636b38c4",
+    "648b6c60",
+    "68fca9bf",
+    "77b75ff5",
+    "86d2e1b7",
+    "903d18f0",
+    "ac6db09a",
+    "b846e2fc",
+    "bc1a81d8",
+    "c61df7e5",
+    "cff97bc7",
+    "d4978504",
+    "d7aa784e",
+    "ef6b3d2f",
+    "f0da4e85"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "c71dbcdb",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa877c5e",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "068f5453",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:41.607Z"
+}

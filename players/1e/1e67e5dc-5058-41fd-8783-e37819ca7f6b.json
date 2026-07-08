@@ -1,1 +1,297 @@
-{"uuid":"1e67e5dc-5058-41fd-8783-e37819ca7f6b","name":"Jason Menche","gender":"Men","sports":{"Basketball":{"gp":12,"pts":57,"fouls":25,"fg":14,"ft":2,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":4,"losses":18,"draws":2,"winPct":0.17,"statsChecked":"2026-07-05T15:20:59.257Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"59c364fa","tn":"Sonics (19)","gid":"8743da62","gn":"Monday Open Men Section 05","age":"Senior","div":null,"stats":{"gp":12,"fouls":25,"ft":2,"fg":14,"pts":57,"wins":2,"losses":9,"draws":1}},{"tid":"59c364fa","tn":"Sonics (19)","gid":"5402cd44","gn":"Monday Open Men Section 06","age":"Senior","div":null,"stats":{"gp":12,"fouls":25,"pts":57,"wins":2,"losses":9,"draws":1,"fg":14,"ft":2}}]}],"updatedAt":"2026-06-01T11:33:03.515Z","teams":[{"tid":"59c364fa","sid":"5593103d","status":"ACTIVE"},{"tid":"c70bb0dc","sid":"fab2be4d","status":"COMPLETED"},{"tid":"06db15d8","sid":"76897951","status":"COMPLETED"},{"tid":"5205a2bd","sid":"5944effa","status":"COMPLETED"},{"tid":"6953b5ff","sid":"348dbfb8","status":"COMPLETED"},{"tid":"58266aae","sid":"9358e51a","status":"COMPLETED"},{"tid":"f49d4ddd","sid":"d3d4e181","status":"COMPLETED"},{"tid":"5911f624","sid":"21cd9648","status":"COMPLETED"},{"tid":"87ac5863","sid":"d4cbf787","status":"COMPLETED"},{"tid":"6b6c05a9","sid":"d64fcfce","status":"COMPLETED"},{"tid":"85a08a5f","sid":"afd26581","status":"COMPLETED"},{"tid":"35861a7a","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:04:47.150Z","records":{"maxGamePTS":{"v":12,"gameKey":"e2a85b72","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["064a0a12","099541ce","1634eb7e","21f8f563","23f3e9c2","7546e83a","7620a812","8af3f3a3","abcad263","d13e73fb","d7b9b9d7","e2a85b72"]}
+{
+  "uuid": "1e67e5dc-5058-41fd-8783-e37819ca7f6b",
+  "name": "Jason Menche",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 57,
+      "fouls": 25,
+      "fg": 14,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 18,
+      "draws": 2,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T15:20:59.257Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "59c364fa",
+          "tn": "Sonics (19)",
+          "gid": "8743da62",
+          "gn": "Monday Open Men Section 05",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 25,
+            "ft": 2,
+            "fg": 14,
+            "pts": 57,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "59c364fa",
+          "tn": "Sonics (19)",
+          "gid": "5402cd44",
+          "gn": "Monday Open Men Section 06",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 25,
+            "pts": 57,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1,
+            "fg": 14,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "c70bb0dc",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "06db15d8",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "5205a2bd",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "6953b5ff",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "58266aae",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "f49d4ddd",
+          "tn": "Sonics 19",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "5911f624",
+          "tn": "Sonics 19",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "87ac5863",
+          "tn": "Sonics 19",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "6b6c05a9",
+          "tn": "Sonics 19",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "85a08a5f",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "35861a7a",
+          "tn": "Sonics (19)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:33:03.515Z",
+  "teams": [
+    {
+      "tid": "59c364fa",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c70bb0dc",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06db15d8",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5205a2bd",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6953b5ff",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58266aae",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f49d4ddd",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5911f624",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87ac5863",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b6c05a9",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85a08a5f",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35861a7a",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:00.324Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "e2a85b72",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "064a0a12",
+    "099541ce",
+    "1634eb7e",
+    "21f8f563",
+    "23f3e9c2",
+    "7546e83a",
+    "7620a812",
+    "8af3f3a3",
+    "abcad263",
+    "d13e73fb",
+    "d7b9b9d7",
+    "e2a85b72"
+  ]
+}

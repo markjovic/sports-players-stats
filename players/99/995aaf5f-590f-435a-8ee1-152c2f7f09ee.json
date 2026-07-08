@@ -1,1 +1,130 @@
-{"uuid":"995aaf5f-590f-435a-8ee1-152c2f7f09ee","name":"James Li","gender":"Boys","sports":{"Basketball":{"gp":22,"pts":84,"fouls":47,"fg":38,"ft":8,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"6fd8e780":2},"maxGamePTS":19,"maxGameThreePt":null,"wins":8,"losses":10,"winPct":0.44,"statsChecked":"2026-07-05T14:29:00.390Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Titans Junior Basketball Club","regs":[{"tid":"0dff7d4e","tn":"TITANS U8 Boys Atomic","gid":"78fc56f2","gn":"U8 Boys Grading","age":"U8","div":null,"stats":{"gp":7,"fouls":17,"ft":3,"fg":17,"pts":37}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Titans Junior Basketball Club","regs":[{"tid":"e2d613ed","tn":"TITANS U8 Boys Atomic","gid":"2f0eac96","gn":"U8 Boys B","age":"U8","div":null,"stats":{"gp":15,"fouls":30,"ft":5,"fg":21,"pts":47,"finals":1,"wins":4,"losses":5}},{"tid":"e2d613ed","tn":"TITANS U8 Boys Atomic","gid":"95b2d40e","gn":"U8 Boys Grading","age":"U8","div":null,"stats":{"gp":15,"fouls":30,"fg":21,"pts":47,"finals":1,"foulOuts":2,"wins":4,"losses":5,"ft":5}}]}],"updatedAt":"2026-05-30T18:13:08.855Z","teams":[{"tid":"0dff7d4e","sid":"aacc7335","status":"ACTIVE"},{"tid":"e2d613ed","sid":"6fd8e780","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:01.933Z","games":["1bac9fad","21e52cba","325e3c57","33f7aa19","78026e7c","9f01dbea","ade9426d","d0df98cf","db12b6c9"],"records":{"maxGamePTS":{"v":19,"gameKey":"5967a492","sid":"aacc7335"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "995aaf5f-590f-435a-8ee1-152c2f7f09ee",
+  "name": "James Li",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 84,
+      "fouls": 47,
+      "fg": 38,
+      "ft": 8,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "6fd8e780": 2
+      },
+      "maxGamePTS": 19,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 10,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T14:29:00.390Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "0dff7d4e",
+          "tn": "TITANS U8 Boys Atomic",
+          "gid": "a241126a",
+          "gn": "U8 Boys C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 3,
+            "fg": 17,
+            "pts": 37
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "e2d613ed",
+          "tn": "TITANS U8 Boys Atomic",
+          "gid": "2f0eac96",
+          "gn": "U8 Boys B",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 30,
+            "ft": 5,
+            "fg": 21,
+            "pts": 47,
+            "finals": 1,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "e2d613ed",
+          "tn": "TITANS U8 Boys Atomic",
+          "gid": "95b2d40e",
+          "gn": "U8 Boys Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 30,
+            "fg": 21,
+            "pts": 47,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 4,
+            "losses": 5,
+            "ft": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-30T18:13:08.855Z",
+  "teams": [
+    {
+      "tid": "0dff7d4e",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e2d613ed",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:45.113Z",
+  "games": [
+    "1bac9fad",
+    "21e52cba",
+    "325e3c57",
+    "33f7aa19",
+    "78026e7c",
+    "9f01dbea",
+    "ade9426d",
+    "d0df98cf",
+    "db12b6c9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "5967a492",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

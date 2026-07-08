@@ -1,1 +1,66 @@
-{"uuid":"785cc0d7-7e00-4309-bd25-97f93d3955fe","name":"Tom Rogers","sports":{"Basketball":{"maxGamePTS":8,"maxGameThreePt":1,"foulOuts":{},"gp":8,"pts":32,"fg":14,"ft":1,"threePt":1,"fouls":11,"statsChecked":"2026-07-06T18:58:36.913Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"90a7a01e"}]},{"sid":"796936f7","regs":[{"tid":"cd4784ca"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":8,"gameKey":"edb626ba","sid":"796936f7"},"maxGameThreePt":{"v":1,"gameKey":"edb626ba","sid":"796936f7"}}}
+{
+  "uuid": "785cc0d7-7e00-4309-bd25-97f93d3955fe",
+  "name": "Tom Rogers",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 8,
+      "pts": 32,
+      "fg": 14,
+      "ft": 1,
+      "threePt": 1,
+      "fouls": 11,
+      "statsChecked": "2026-07-06T18:58:36.913Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "90a7a01e",
+          "gid": "a8ca659b",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "cd4784ca",
+          "gid": "1a1a66ab",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "90a7a01e",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd4784ca",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "edb626ba",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "edb626ba",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:47:28.254Z"
+}

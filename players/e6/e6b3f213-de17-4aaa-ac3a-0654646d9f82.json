@@ -1,1 +1,377 @@
-{"uuid":"e6b3f213-de17-4aaa-ac3a-0654646d9f82","name":"Peleh Lee","gender":"Boys","sports":{"Basketball":{"gp":68,"pts":206,"fouls":29,"fg":92,"ft":16,"threePt":2,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.6,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":1,"wins":78,"losses":54,"draws":2,"winPct":0.58,"statsChecked":"2026-07-05T14:31:06.784Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"ABA Wolverines Basketball Club","regs":[{"tid":"93b17304","tn":"ABA U16 Wolverines Combat","gid":"85754a1c","gn":"Saturday U16 Boys Div 11","age":"U16","div":"Div 11","stats":{"gp":7,"ft":2,"fg":15,"pts":38,"threePt":2,"wins":5,"losses":2,"fouls":2}},{"tid":"93b17304","tn":"ABA U16 Wolverines Combat","gid":"fe49fda0","gn":"Saturday U16 Boys Div 10","age":"U16","div":"Div 10","stats":{"gp":7,"fouls":2,"fg":15,"threePt":2,"pts":38,"wins":5,"losses":2,"ft":2}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"ABA Wolverines Basketball Club","regs":[{"tid":"8c9a516a","tn":"ABA U16 Wolverines Combat","gid":"e23484c4","gn":"Saturday U16 Boys Div 11","age":"U16","div":"Div 11","stats":{"gp":16,"fouls":6,"ft":5,"fg":22,"pts":49,"finals":1,"gfApps":1,"wins":11,"losses":5,"gfWins":1}},{"tid":"8c9a516a","tn":"ABA U16 Wolverines Combat","gid":"6e3cd04a","gn":"Saturday U16 Boys Div 10","age":"U16","div":"Div 10","stats":{"gp":16,"fouls":6,"fg":22,"pts":49,"finals":1,"gfApps":1,"wins":11,"losses":5,"ft":5,"gfWins":1}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"ABA Wolverines Basketball Club","regs":[{"tid":"03de6337","tn":"ABA U14 Wolverines Combat","gid":"fc6a28a6","gn":"Saturday U14 Boys Div  7","age":"U14","div":"Div 7","stats":{"gp":14,"fouls":5,"ft":5,"fg":25,"pts":55,"wins":7,"losses":6}},{"tid":"03de6337","tn":"ABA U14 Wolverines Combat","gid":"dcd9a118","gn":"Saturday U14 Boys Div  8","age":"U14","div":"Div 8","stats":{"gp":14,"fg":25,"pts":55,"wins":7,"losses":6,"ft":5,"fouls":5}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"ABA Wolverines Basketball Club","regs":[{"tid":"6346f64e","tn":"ABA U14 Wolverines Josh","gid":"03d2229f","gn":"Saturday U14 Boys 8","age":"U14","div":null,"stats":{"gp":15,"fouls":10,"ft":2,"fg":16,"pts":34,"finals":1,"wins":10,"losses":5}},{"tid":"6346f64e","tn":"ABA U14 Wolverines Josh","gid":"fd117f8f","gn":"Saturday U14 Boys 9","age":"U14","div":null,"stats":{"gp":15,"fouls":10,"ft":2,"fg":16,"pts":34,"finals":1,"wins":10,"losses":5}}]},{"sid":"475831bc","sn":"Winter 2024","club":"ABA Wolverines Basketball Club","regs":[{"tid":"291e722c","tn":"ABA U14 Wolverines Josh","gid":"42c28bc4","gn":"Saturday U14 Boys Div 12","age":"U14","div":"Div 12","stats":{"gp":16,"fouls":6,"ft":2,"fg":14,"pts":30,"finals":1,"wins":6,"losses":9,"draws":1}},{"tid":"291e722c","tn":"ABA U14 Wolverines Josh","gid":"c9e85829","gn":"Saturday U14 Boys Div 11","age":"U14","div":"Div 11","stats":{"gp":16,"fouls":6,"fg":14,"pts":30,"finals":1,"wins":6,"losses":9,"draws":1,"ft":2}}]}],"updatedAt":"2026-07-04T05:44:41.815Z","teams":[{"tid":"93b17304","sid":"79d2b087","status":"ACTIVE"},{"tid":"8c9a516a","sid":"4b758d19","status":"COMPLETED"},{"tid":"03de6337","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"6346f64e","sid":"c01b75f6","status":"COMPLETED"},{"tid":"0ba19d28","sid":"8884de2d","status":"COMPLETED"},{"tid":"291e722c","sid":"475831bc","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:29:02.789Z","records":{"maxGamePTS":{"v":10,"gameKey":"f30d8daa","sid":"6cb21cfc"},"maxGameThreePt":{"v":1,"gameKey":"5961482c","sid":"79d2b087"}},"games":["0139341b","02959ab3","02ff0626","04751779","0818b69f","132ae493","1629b052","1b4e2ef7","1dd25387","1fd54f64","211d6cb4","2899f460","3196293d","32539bff","37a3e066","38a7bc76","4137e455","420f401a","4310c5b2","44dd6193","4cf4611e","535d1050","561fbea2","579e76ed","5961482c","5a65776b","5ad3feb5","5b755fdb","5c06a3fe","62ba45cc","6a973b8d","6f6a4c49","73cd58a7","77df49b3","7f490358","89594b09","8dcd7e33","907aa1b7","91cf3296","9599438c","9aecc8e0","9d947d4b","a08189ee","a0bf852c","a16d8811","a23ec058","a5e32dde","a7eaff32","a97c7a40","a9970c1b","abbd0fa7","ae218da9","b752388f","bafee789","bda56fd2","c201386a","c4a4d57b","c4ad82ec","d1cb7bd0","d5a0161f","d5b6470c","d8ab07e1","dd9018ad","e5235be6","f30d8daa","f404f019","f48ba607","fde90a8b"]}
+{
+  "uuid": "e6b3f213-de17-4aaa-ac3a-0654646d9f82",
+  "name": "Peleh Lee",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 68,
+      "pts": 206,
+      "fouls": 29,
+      "fg": 92,
+      "ft": 16,
+      "threePt": 2,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 78,
+      "losses": 54,
+      "draws": 2,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T14:31:06.784Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "ABA Wolverines Basketball Club",
+      "regs": [
+        {
+          "tid": "93b17304",
+          "tn": "ABA U16 Wolverines Combat",
+          "gid": "85754a1c",
+          "gn": "Saturday U16 Boys Div 11",
+          "age": "U16",
+          "div": "Div 11",
+          "stats": {
+            "gp": 7,
+            "ft": 2,
+            "fg": 15,
+            "pts": 38,
+            "threePt": 2,
+            "wins": 5,
+            "losses": 2,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "93b17304",
+          "tn": "ABA U16 Wolverines Combat",
+          "gid": "fe49fda0",
+          "gn": "Saturday U16 Boys Div 10",
+          "age": "U16",
+          "div": "Div 10",
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "fg": 15,
+            "threePt": 2,
+            "pts": 38,
+            "wins": 5,
+            "losses": 2,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "ABA Wolverines Basketball Club",
+      "regs": [
+        {
+          "tid": "8c9a516a",
+          "tn": "ABA U16 Wolverines Combat",
+          "gid": "e23484c4",
+          "gn": "Saturday U16 Boys Div 11",
+          "age": "U16",
+          "div": "Div 11",
+          "stats": {
+            "gp": 16,
+            "fouls": 6,
+            "ft": 5,
+            "fg": 22,
+            "pts": 49,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 5,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "8c9a516a",
+          "tn": "ABA U16 Wolverines Combat",
+          "gid": "6e3cd04a",
+          "gn": "Saturday U16 Boys Div 10",
+          "age": "U16",
+          "div": "Div 10",
+          "stats": {
+            "gp": 16,
+            "fouls": 6,
+            "fg": 22,
+            "pts": 49,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 5,
+            "ft": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "ABA Wolverines Basketball Club",
+      "regs": [
+        {
+          "tid": "03de6337",
+          "tn": "ABA U14 Wolverines Combat",
+          "gid": "fc6a28a6",
+          "gn": "Saturday U14 Boys Div  7",
+          "age": "U14",
+          "div": "Div 7",
+          "stats": {
+            "gp": 14,
+            "fouls": 5,
+            "ft": 5,
+            "fg": 25,
+            "pts": 55,
+            "wins": 7,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "03de6337",
+          "tn": "ABA U14 Wolverines Combat",
+          "gid": "dcd9a118",
+          "gn": "Saturday U14 Boys Div  8",
+          "age": "U14",
+          "div": "Div 8",
+          "stats": {
+            "gp": 14,
+            "fg": 25,
+            "pts": 55,
+            "wins": 7,
+            "losses": 6,
+            "ft": 5,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "ABA Wolverines Basketball Club",
+      "regs": [
+        {
+          "tid": "6346f64e",
+          "tn": "ABA U14 Wolverines Josh",
+          "gid": "03d2229f",
+          "gn": "Saturday U14 Boys 8",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 16,
+            "pts": 34,
+            "finals": 1,
+            "wins": 10,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "6346f64e",
+          "tn": "ABA U14 Wolverines Josh",
+          "gid": "fd117f8f",
+          "gn": "Saturday U14 Boys 9",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 16,
+            "pts": 34,
+            "finals": 1,
+            "wins": 10,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "475831bc",
+      "sn": "Winter 2024",
+      "club": "ABA Wolverines Basketball Club",
+      "regs": [
+        {
+          "tid": "291e722c",
+          "tn": "ABA U14 Wolverines Josh",
+          "gid": "42c28bc4",
+          "gn": "Saturday U14 Boys Div 12",
+          "age": "U14",
+          "div": "Div 12",
+          "stats": {
+            "gp": 16,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 14,
+            "pts": 30,
+            "finals": 1,
+            "wins": 6,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "291e722c",
+          "tn": "ABA U14 Wolverines Josh",
+          "gid": "c9e85829",
+          "gn": "Saturday U14 Boys Div 11",
+          "age": "U14",
+          "div": "Div 11",
+          "stats": {
+            "gp": 16,
+            "fouls": 6,
+            "fg": 14,
+            "pts": 30,
+            "finals": 1,
+            "wins": 6,
+            "losses": 9,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "0ba19d28",
+          "tn": "Yr 6 Wolverines RED Boys 4172",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:41.815Z",
+  "teams": [
+    {
+      "tid": "93b17304",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c9a516a",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "03de6337",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6346f64e",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "291e722c",
+      "sid": "475831bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ba19d28",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:43.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "f30d8daa",
+      "sid": "6cb21cfc"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5961482c",
+      "sid": "79d2b087"
+    }
+  },
+  "games": [
+    "0139341b",
+    "02959ab3",
+    "02ff0626",
+    "04751779",
+    "0818b69f",
+    "132ae493",
+    "1629b052",
+    "1b4e2ef7",
+    "1dd25387",
+    "1fd54f64",
+    "211d6cb4",
+    "2899f460",
+    "3196293d",
+    "32539bff",
+    "37a3e066",
+    "38a7bc76",
+    "4137e455",
+    "420f401a",
+    "4310c5b2",
+    "44dd6193",
+    "4cf4611e",
+    "535d1050",
+    "561fbea2",
+    "579e76ed",
+    "5961482c",
+    "5a65776b",
+    "5ad3feb5",
+    "5b755fdb",
+    "5c06a3fe",
+    "62ba45cc",
+    "6a973b8d",
+    "6f6a4c49",
+    "73cd58a7",
+    "77df49b3",
+    "7f490358",
+    "89594b09",
+    "8dcd7e33",
+    "907aa1b7",
+    "91cf3296",
+    "9599438c",
+    "9aecc8e0",
+    "9d947d4b",
+    "a08189ee",
+    "a0bf852c",
+    "a16d8811",
+    "a23ec058",
+    "a5e32dde",
+    "a7eaff32",
+    "a97c7a40",
+    "a9970c1b",
+    "abbd0fa7",
+    "ae218da9",
+    "b752388f",
+    "bafee789",
+    "bda56fd2",
+    "c201386a",
+    "c4a4d57b",
+    "c4ad82ec",
+    "d1cb7bd0",
+    "d5a0161f",
+    "d5b6470c",
+    "d8ab07e1",
+    "dd9018ad",
+    "e5235be6",
+    "f30d8daa",
+    "f404f019",
+    "f48ba607",
+    "fde90a8b"
+  ]
+}

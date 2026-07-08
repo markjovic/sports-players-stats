@@ -1,1 +1,172 @@
-{"uuid":"db9aa9e0-e33f-4b42-8291-f30a37095fe4","gender":null,"sports":{"Basketball":{"gp":7,"pts":13,"fouls":10,"fg":6,"ft":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":4,"losses":3,"winPct":0.57,"statsChecked":"2026-07-05T16:15:39.818Z"}},"seasons":[{"sid":"c08d14fd","sn":"Winter 2021","club":null,"regs":[{"tid":"01c04f8e","tn":"Firelalls","gid":"92f2abda","gn":"Sunday O35 Men DIV 1","stats":{"gp":1,"losses":1}}]},{"sid":"09407bad","sn":"Summer 2020/21","club":null,"regs":[{"tid":"7ab33ff7","tn":"Firelalls","gid":"e3248435","gn":"Sunday O35 Men Div 1","stats":{"gp":6,"pts":13,"fouls":10,"fg":6,"ft":1,"finals":1,"wins":4,"losses":2}}]}],"updatedAt":"2026-06-11T23:45:22.125Z","games":["10294a88","199abcd6","292b8eb2","686895ea","a4920da7","b37ce71a","f48caa63"],"records":{"maxGamePTS":{"v":4,"gameKey":"292b8eb2","sid":"09407bad"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "db9aa9e0-e33f-4b42-8291-f30a37095fe4",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 13,
+      "fouls": 10,
+      "fg": 6,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 3,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-05T16:15:39.818Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c08d14fd",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "01c04f8e",
+          "tn": "Firelalls",
+          "gid": "92f2abda",
+          "gn": "Sunday O35 Men DIV 1",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09407bad",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7ab33ff7",
+          "tn": "Firelalls",
+          "gid": "e3248435",
+          "gn": "Sunday O35 Men Div 1",
+          "stats": {
+            "gp": 6,
+            "pts": 13,
+            "fouls": 10,
+            "fg": 6,
+            "ft": 1,
+            "finals": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "60e430e5",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "e8d46233",
+          "tn": "Firelalls",
+          "gid": "cbb05ed1",
+          "gn": "Wednesday Open Men Over 35's DIV 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0131be56",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "3ebe0ea4",
+          "tn": "Firelalls",
+          "gid": "a4839588",
+          "gn": "Wednesday Open Men Over 35's Div 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0506ff02",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "e1307edb",
+          "tn": "Firelalls",
+          "gid": "95f2c917",
+          "gn": "Sunday Over 35 Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "833d444c",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "f2790023",
+          "tn": "Firelalls",
+          "gid": "79eb3a27",
+          "gn": "Wednesday Over 35 Men Div 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:22.125Z",
+  "games": [
+    "10294a88",
+    "199abcd6",
+    "292b8eb2",
+    "686895ea",
+    "a4920da7",
+    "b37ce71a",
+    "f48caa63"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "292b8eb2",
+      "sid": "09407bad"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "01c04f8e",
+      "sid": "c08d14fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ab33ff7",
+      "sid": "09407bad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8d46233",
+      "sid": "60e430e5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ebe0ea4",
+      "sid": "0131be56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1307edb",
+      "sid": "0506ff02",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f2790023",
+      "sid": "833d444c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:05.320Z"
+}

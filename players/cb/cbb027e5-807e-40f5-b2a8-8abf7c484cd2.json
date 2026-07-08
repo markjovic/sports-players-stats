@@ -1,1 +1,316 @@
-{"uuid":"cbb027e5-807e-40f5-b2a8-8abf7c484cd2","name":"Aria O'Loughlin","gender":"Mixed","sports":{"Basketball":{"gp":50,"pts":56,"fouls":17,"fg":27,"ft":2,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.33,"maxGamePTS":10,"maxGameThreePt":null,"wins":12,"losses":41,"winPct":0.23,"statsChecked":"2026-07-05T15:12:42.236Z"}},"seasons":[{"sid":"ec8a2628","sn":"Winter 2024","club":"Fielders Basketball Club","regs":[{"tid":"75e23fda","tn":"Fielders U10 Girls Galaxy","gid":"e25d2328","gn":"Saturday U10 Girls C1 Grade","age":"U10","div":null,"stats":{"gp":17,"fouls":12,"fg":9,"pts":18,"finals":1,"gfApps":1,"wins":6,"losses":11,"gfWins":1}},{"tid":"75e23fda","tn":"Fielders U10 Girls Galaxy","gid":"47cf0477","gn":"Saturday U10 Girls B Grade","age":"U10","div":null,"stats":{"gp":17,"fouls":12,"fg":9,"pts":18,"finals":1,"gfApps":1,"wins":6,"losses":11,"gfWins":1}}]},{"sid":"6110c4a5","sn":"Summer 2023/24","club":"Fielders Basketball Club","regs":[{"tid":"81bab511","tn":"Fielders U8 Girls Divas","gid":"b7ad74e0","gn":"Saturday U8 Yellow - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":1,"fg":1,"pts":2,"losses":1}},{"tid":"02e4984b","tn":"Fielders U8 Girls Galaxy","gid":"b7ad74e0","gn":"Saturday U8 Yellow - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":12,"fouls":5,"ft":2,"fg":17,"pts":36,"losses":9}},{"tid":"02e4984b","tn":"Fielders U8 Girls Galaxy","gid":"73750fd3","gn":"Saturday U8 White - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":12,"losses":9,"pts":36,"fg":17,"ft":2,"fouls":5}}]},{"sid":"913ee1a8","sn":"Summer 2022/23","club":"Fielders Basketball Club","regs":[{"tid":"9ecee705","tn":"Fielders U8 Mixed The Avengers","gid":"b5721182","gn":"Thursday Afterschool U8 Blue Grade - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":20}},{"tid":"9ecee705","tn":"Fielders U8 Mixed The Avengers","gid":"2ba0d7d7","gn":"Thursday Afterschool U8 Silver Grade - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":20}}]}],"updatedAt":"2026-05-31T21:21:41.284Z","teams":[{"tid":"75e23fda","sid":"ec8a2628","status":"COMPLETED"},{"tid":"a0400989","sid":"ec8a2628","status":"COMPLETED"},{"tid":"81bab511","sid":"6110c4a5","status":"COMPLETED"},{"tid":"02e4984b","sid":"6110c4a5","status":"COMPLETED"},{"tid":"4fa01940","sid":"913ee1a8","status":"COMPLETED"},{"tid":"9ecee705","sid":"913ee1a8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:44:35.900Z","records":{"maxGamePTS":{"v":10,"gameKey":"e303118c","sid":"6110c4a5"},"maxGameThreePt":{"v":null}},"games":["03c91390","0455b3b5","0c640b9f","0f3b23f5","20511725","2902b5a5","36e3db13","3e499a80","47d412e2","4b75513c","4f9df783","51a17740","52839fae","53adc0d2","58c3d896","59d3849a","5aa0c46c","62a9a899","67a546c2","6981f8e5","74a9ddc3","81bcf200","841e3b29","87df5a77","889efbbd","9027680a","924e5266","977d104a","9878d7b7","9b10a872","9e5ceb21","a4e7ea66","a5dd835f","ae06de2e","b0c2f839","b799053c","b8dbcefe","b902c850","c17d94b1","c27a474c","c463998c","c4a39926","c5650cec","d4cd0f93","da341274","e303118c","e78e8b08","efad0bc2","efc331b8","f8ab4f34"],"gameTids":{"20511725":"75e23fda","81bcf200":"75e23fda","9878d7b7":"75e23fda","2902b5a5":"75e23fda","3e499a80":"75e23fda","a4e7ea66":"75e23fda","977d104a":"75e23fda","0455b3b5":"75e23fda","62a9a899":"75e23fda","f8ab4f34":"75e23fda","c463998c":"75e23fda","6981f8e5":"75e23fda","58c3d896":"75e23fda","0f3b23f5":"75e23fda","51a17740":"75e23fda","ae06de2e":"75e23fda","b8dbcefe":"75e23fda","b902c850":"81bab511","74a9ddc3":"02e4984b","5aa0c46c":"02e4984b","841e3b29":"02e4984b","c4a39926":"02e4984b","53adc0d2":"02e4984b","36e3db13":"02e4984b","d4cd0f93":"02e4984b","c17d94b1":"02e4984b","e303118c":"02e4984b","4f9df783":"02e4984b","0c640b9f":"02e4984b","4b75513c":"02e4984b","efc331b8":"9ecee705","52839fae":"9ecee705","da341274":"9ecee705","b799053c":"9ecee705","47d412e2":"9ecee705","efad0bc2":"9ecee705","e78e8b08":"9ecee705","924e5266":"9ecee705","59d3849a":"9ecee705","c5650cec":"9ecee705","9e5ceb21":"9ecee705","c27a474c":"9ecee705","889efbbd":"9ecee705","87df5a77":"9ecee705","b0c2f839":"9ecee705","03c91390":"9ecee705","67a546c2":"9ecee705","9027680a":"9ecee705","9b10a872":"9ecee705","a5dd835f":"9ecee705"}}
+{
+  "uuid": "cbb027e5-807e-40f5-b2a8-8abf7c484cd2",
+  "name": "Aria O'Loughlin",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 56,
+      "fouls": 17,
+      "fg": 27,
+      "ft": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 12,
+      "losses": 41,
+      "winPct": 0.23,
+      "statsChecked": "2026-07-05T15:12:42.236Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ec8a2628",
+      "sn": "Winter 2024",
+      "club": "Fielders Basketball Club",
+      "regs": [
+        {
+          "tid": "75e23fda",
+          "tn": "Fielders U10 Girls Galaxy",
+          "gid": "e25d2328",
+          "gn": "Saturday U10 Girls C1 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "fg": 9,
+            "pts": 18,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 11,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "75e23fda",
+          "tn": "Fielders U10 Girls Galaxy",
+          "gid": "47cf0477",
+          "gn": "Saturday U10 Girls B Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "fg": 9,
+            "pts": 18,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 11,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "a0400989",
+          "tn": "Fielders U12 Girls Jazz",
+          "gid": "97e563b6",
+          "gn": "Saturday U12 Girls C3 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "6110c4a5",
+      "sn": "Summer 2023/24",
+      "club": "Fielders Basketball Club",
+      "regs": [
+        {
+          "tid": "81bab511",
+          "tn": "Fielders U8 Girls Divas",
+          "gid": "b7ad74e0",
+          "gn": "Saturday U8 Yellow - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "02e4984b",
+          "tn": "Fielders U8 Girls Galaxy",
+          "gid": "b7ad74e0",
+          "gn": "Saturday U8 Yellow - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 5,
+            "ft": 2,
+            "fg": 17,
+            "pts": 36,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "02e4984b",
+          "tn": "Fielders U8 Girls Galaxy",
+          "gid": "73750fd3",
+          "gn": "Saturday U8 White - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "losses": 9,
+            "pts": 36,
+            "fg": 17,
+            "ft": 2,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "913ee1a8",
+      "sn": "Summer 2022/23",
+      "club": "Fielders Basketball Club",
+      "regs": [
+        {
+          "tid": "9ecee705",
+          "tn": "Fielders U8 Mixed The Avengers",
+          "gid": "b5721182",
+          "gn": "Thursday Afterschool U8 Blue Grade - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 20
+          }
+        },
+        {
+          "tid": "9ecee705",
+          "tn": "Fielders U8 Mixed The Avengers",
+          "gid": "2ba0d7d7",
+          "gn": "Thursday Afterschool U8 Silver Grade - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 20
+          }
+        },
+        {
+          "tid": "4fa01940",
+          "tn": "Fielders U8 Boys Mustangs",
+          "gid": "f33abd9a",
+          "gn": "Saturday U8 White - Melbourne Orthodontic Group",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T21:21:41.284Z",
+  "teams": [
+    {
+      "tid": "75e23fda",
+      "sid": "ec8a2628",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a0400989",
+      "sid": "ec8a2628",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81bab511",
+      "sid": "6110c4a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "02e4984b",
+      "sid": "6110c4a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ecee705",
+      "sid": "913ee1a8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4fa01940",
+      "sid": "913ee1a8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:37.841Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "e303118c",
+      "sid": "6110c4a5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "03c91390",
+    "0455b3b5",
+    "0c640b9f",
+    "0f3b23f5",
+    "20511725",
+    "2902b5a5",
+    "36e3db13",
+    "3e499a80",
+    "47d412e2",
+    "4b75513c",
+    "4f9df783",
+    "51a17740",
+    "52839fae",
+    "53adc0d2",
+    "58c3d896",
+    "59d3849a",
+    "5aa0c46c",
+    "62a9a899",
+    "67a546c2",
+    "6981f8e5",
+    "74a9ddc3",
+    "81bcf200",
+    "841e3b29",
+    "87df5a77",
+    "889efbbd",
+    "9027680a",
+    "924e5266",
+    "977d104a",
+    "9878d7b7",
+    "9b10a872",
+    "9e5ceb21",
+    "a4e7ea66",
+    "a5dd835f",
+    "ae06de2e",
+    "b0c2f839",
+    "b799053c",
+    "b8dbcefe",
+    "b902c850",
+    "c17d94b1",
+    "c27a474c",
+    "c463998c",
+    "c4a39926",
+    "c5650cec",
+    "d4cd0f93",
+    "da341274",
+    "e303118c",
+    "e78e8b08",
+    "efad0bc2",
+    "efc331b8",
+    "f8ab4f34"
+  ],
+  "gameTids": {
+    "20511725": "75e23fda",
+    "81bcf200": "75e23fda",
+    "9878d7b7": "75e23fda",
+    "2902b5a5": "75e23fda",
+    "3e499a80": "75e23fda",
+    "a4e7ea66": "75e23fda",
+    "977d104a": "75e23fda",
+    "0455b3b5": "75e23fda",
+    "62a9a899": "75e23fda",
+    "f8ab4f34": "75e23fda",
+    "c463998c": "75e23fda",
+    "6981f8e5": "75e23fda",
+    "58c3d896": "75e23fda",
+    "0f3b23f5": "75e23fda",
+    "51a17740": "75e23fda",
+    "ae06de2e": "75e23fda",
+    "b8dbcefe": "75e23fda",
+    "b902c850": "81bab511",
+    "74a9ddc3": "02e4984b",
+    "5aa0c46c": "02e4984b",
+    "841e3b29": "02e4984b",
+    "c4a39926": "02e4984b",
+    "53adc0d2": "02e4984b",
+    "36e3db13": "02e4984b",
+    "d4cd0f93": "02e4984b",
+    "c17d94b1": "02e4984b",
+    "e303118c": "02e4984b",
+    "4f9df783": "02e4984b",
+    "0c640b9f": "02e4984b",
+    "4b75513c": "02e4984b",
+    "efc331b8": "9ecee705",
+    "52839fae": "9ecee705",
+    "da341274": "9ecee705",
+    "b799053c": "9ecee705",
+    "47d412e2": "9ecee705",
+    "efad0bc2": "9ecee705",
+    "e78e8b08": "9ecee705",
+    "924e5266": "9ecee705",
+    "59d3849a": "9ecee705",
+    "c5650cec": "9ecee705",
+    "9e5ceb21": "9ecee705",
+    "c27a474c": "9ecee705",
+    "889efbbd": "9ecee705",
+    "87df5a77": "9ecee705",
+    "b0c2f839": "9ecee705",
+    "03c91390": "9ecee705",
+    "67a546c2": "9ecee705",
+    "9027680a": "9ecee705",
+    "9b10a872": "9ecee705",
+    "a5dd835f": "9ecee705"
+  }
+}

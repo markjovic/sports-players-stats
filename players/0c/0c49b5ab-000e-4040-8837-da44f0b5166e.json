@@ -1,1 +1,356 @@
-{"uuid":"0c49b5ab-000e-4040-8837-da44f0b5166e","name":"2021","gender":null,"sports":{"Basketball":{"gp":39,"pts":159,"fouls":61,"fg":71,"ft":14,"threePt":1,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":1,"wins":13,"losses":39,"draws":12,"winPct":0.2,"statsChecked":"2026-07-05T16:26:40.681Z"}},"seasons":[{"sid":"ceb7a2f2","sn":"2021","club":null,"regs":[{"tid":"8d518067","tn":"Waverley U14 Boys 5","gid":"69cb0fd6","gn":"U14 Boys Division 3","stats":{"gp":4,"pts":16,"fg":7,"ft":2,"fouls":9,"wins":1,"losses":3}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Waverley Falcons Basketball Club","regs":[{"tid":"2a20e64e","tn":"Waverley U14 Boys 5","gid":"52f9b711","gn":"14 Boys - VJL10 (P1)","stats":{"gp":14,"pts":57,"fg":27,"fouls":15,"ft":3}},{"tid":"2a20e64e","tn":"Waverley U14 Boys 5","gid":"2b34dce4","gn":"U14B Crossover 2 - VJL","stats":{"gp":14,"pts":57,"fg":27,"ft":3,"fouls":15}},{"tid":"2a20e64e","tn":"Waverley U14 Boys 5","gid":"08b6aaf1","gn":"U14B Grading 2 - LL Pool C","stats":{"gp":14,"pts":57,"fg":27,"fouls":15,"ft":3}},{"tid":"2a20e64e","tn":"Waverley U14 Boys 5","gid":"be4ef1c0","gn":"U14B Crossover 1","stats":{"gp":14,"pts":57,"fg":27,"ft":3,"fouls":15}},{"tid":"2a20e64e","tn":"Waverley U14 Boys 5","gid":"d65dd315","gn":"U14B Grading 1 - Pool 12C","stats":{"gp":14,"pts":57,"fg":27,"ft":3,"fouls":15}}]},{"sid":"b387bcd4","sn":"2022","club":"Waverley Falcons Basketball Club","regs":[{"tid":"d161557c","tn":"Waverley U14 Boys 5","gid":"01d56ec4","gn":"14 Boys - VJL8 (P3)","stats":{"gp":21,"pts":86,"threePt":1,"fg":37,"ft":9,"fouls":37,"wins":3,"losses":9,"draws":3}},{"tid":"d161557c","tn":"Waverley U14 Boys 5","gid":"a693f403","gn":"U14B Crossover 2 - VJL","stats":{"gp":21,"pts":86,"fg":37,"ft":9,"fouls":37,"wins":3,"losses":9,"draws":3,"threePt":1}},{"tid":"d161557c","tn":"Waverley U14 Boys 5","gid":"7d464023","gn":"U14 Boys Grading 2 - JJ Pool A","stats":{"gp":21,"pts":86,"fg":37,"ft":9,"fouls":37,"wins":3,"losses":9,"draws":3,"threePt":1}},{"tid":"d161557c","tn":"Waverley U14 Boys 5","gid":"5a72e5f2","gn":"U14 Boys Grading 1 - Pool 11A","stats":{"gp":21,"pts":86,"fg":37,"ft":9,"fouls":37,"wins":3,"losses":9,"draws":3,"threePt":1}}]}],"updatedAt":"2026-06-11T23:36:12.470Z","records":{"maxGamePTS":{"v":14,"gameKey":"51798d07","sid":"b387bcd4"},"maxGameThreePt":{"v":1,"gameKey":"dace5630","sid":"b387bcd4"}},"games":["02850068","0374c86e","0b0aa060","1a06a19b","24140cab","28149c96","2e66aaa5","30f27f3e","35a34856","35bdd391","381c7bf9","41ff054f","4840ecfd","493a77c2","4bd1e571","51798d07","52cdf9d0","5bbe2f04","60da7421","6754ac85","6881a1e7","79a1c77c","87724568","88537978","9330a7a1","9e371658","9f3b868a","a7fc7186","abc83ee0","ac7a1ab5","c8088265","dace5630","e082af4b","e17374db","e46063b2","ecb33065","f8aff8e9","ff784c0a","ffb30e44"]}
+{
+  "uuid": "0c49b5ab-000e-4040-8837-da44f0b5166e",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 159,
+      "fouls": 61,
+      "fg": 71,
+      "ft": 14,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "wins": 13,
+      "losses": 39,
+      "draws": 12,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T16:26:40.681Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ceb7a2f2",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "8d518067",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "69cb0fd6",
+          "gn": "U14 Boys Division 3",
+          "stats": {
+            "gp": 4,
+            "pts": 16,
+            "fg": 7,
+            "ft": 2,
+            "fouls": 9,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Waverley Falcons Basketball Club",
+      "regs": [
+        {
+          "tid": "2a20e64e",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "52f9b711",
+          "gn": "14 Boys - VJL10 (P1)",
+          "stats": {
+            "gp": 14,
+            "pts": 57,
+            "fg": 27,
+            "fouls": 15,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "2a20e64e",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "2b34dce4",
+          "gn": "U14B Crossover 2 - VJL",
+          "stats": {
+            "gp": 14,
+            "pts": 57,
+            "fg": 27,
+            "ft": 3,
+            "fouls": 15
+          }
+        },
+        {
+          "tid": "2a20e64e",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "08b6aaf1",
+          "gn": "U14B Grading 2 - LL Pool C",
+          "stats": {
+            "gp": 14,
+            "pts": 57,
+            "fg": 27,
+            "fouls": 15,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "2a20e64e",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "be4ef1c0",
+          "gn": "U14B Crossover 1",
+          "stats": {
+            "gp": 14,
+            "pts": 57,
+            "fg": 27,
+            "ft": 3,
+            "fouls": 15
+          }
+        },
+        {
+          "tid": "2a20e64e",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "d65dd315",
+          "gn": "U14B Grading 1 - Pool 12C",
+          "stats": {
+            "gp": 14,
+            "pts": 57,
+            "fg": 27,
+            "ft": 3,
+            "fouls": 15
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Waverley Falcons Basketball Club",
+      "regs": [
+        {
+          "tid": "d161557c",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "01d56ec4",
+          "gn": "14 Boys - VJL8 (P3)",
+          "stats": {
+            "gp": 21,
+            "pts": 86,
+            "threePt": 1,
+            "fg": 37,
+            "ft": 9,
+            "fouls": 37,
+            "wins": 3,
+            "losses": 9,
+            "draws": 3
+          }
+        },
+        {
+          "tid": "d161557c",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "a693f403",
+          "gn": "U14B Crossover 2 - VJL",
+          "stats": {
+            "gp": 21,
+            "pts": 86,
+            "fg": 37,
+            "ft": 9,
+            "fouls": 37,
+            "wins": 3,
+            "losses": 9,
+            "draws": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "d161557c",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "7d464023",
+          "gn": "U14 Boys Grading 2 - JJ Pool A",
+          "stats": {
+            "gp": 21,
+            "pts": 86,
+            "fg": 37,
+            "ft": 9,
+            "fouls": 37,
+            "wins": 3,
+            "losses": 9,
+            "draws": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "d161557c",
+          "tn": "Waverley U14 Boys 5",
+          "gid": "5a72e5f2",
+          "gn": "U14 Boys Grading 1 - Pool 11A",
+          "stats": {
+            "gp": 21,
+            "pts": 86,
+            "fg": 37,
+            "ft": 9,
+            "fouls": 37,
+            "wins": 3,
+            "losses": 9,
+            "draws": 3,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "0fb0bd88",
+          "tn": "Solway U16 Boys Heat",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "750fe542",
+          "tn": "Solway U16 Boys Slammers",
+          "gid": "cb08fbf8",
+          "gn": "Saturday U16 Boys Grading Pool 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "2fa85498",
+          "tn": "Solway U14 Boys Warriors",
+          "gid": "0c1e178d",
+          "gn": "U14 Boys Division 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "4ee43462",
+          "tn": "Solway U12 Boys Sharks",
+          "gid": "5529f117",
+          "gn": "U12 Boys GP1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "b980efd5",
+          "tn": "Solway U12 Boys Bobcats",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:12.470Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "51798d07",
+      "sid": "b387bcd4"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "dace5630",
+      "sid": "b387bcd4"
+    }
+  },
+  "games": [
+    "02850068",
+    "0374c86e",
+    "0b0aa060",
+    "1a06a19b",
+    "24140cab",
+    "28149c96",
+    "2e66aaa5",
+    "30f27f3e",
+    "35a34856",
+    "35bdd391",
+    "381c7bf9",
+    "41ff054f",
+    "4840ecfd",
+    "493a77c2",
+    "4bd1e571",
+    "51798d07",
+    "52cdf9d0",
+    "5bbe2f04",
+    "60da7421",
+    "6754ac85",
+    "6881a1e7",
+    "79a1c77c",
+    "87724568",
+    "88537978",
+    "9330a7a1",
+    "9e371658",
+    "9f3b868a",
+    "a7fc7186",
+    "abc83ee0",
+    "ac7a1ab5",
+    "c8088265",
+    "dace5630",
+    "e082af4b",
+    "e17374db",
+    "e46063b2",
+    "ecb33065",
+    "f8aff8e9",
+    "ff784c0a",
+    "ffb30e44"
+  ],
+  "teams": [
+    {
+      "tid": "8d518067",
+      "sid": "ceb7a2f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a20e64e",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d161557c",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0fb0bd88",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "750fe542",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2fa85498",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ee43462",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b980efd5",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:42:10.777Z"
+}

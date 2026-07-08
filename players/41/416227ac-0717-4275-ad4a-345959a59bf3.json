@@ -1,1 +1,98 @@
-{"uuid":"416227ac-0717-4275-ad4a-345959a59bf3","name":"Adam Lykopoulos","sports":{"Basketball":{"maxGamePTS":18,"maxGameThreePt":3,"foulOuts":{"5d394863":1},"gp":58,"pts":387,"fg":138,"ft":51,"threePt":20,"fouls":127,"statsChecked":"2026-07-06T18:56:51.513Z"}},"seasons":[{"sid":"205c1638","regs":[{"tid":"f8665428"}]},{"sid":"532a035b","regs":[{"tid":"381a6531"}]},{"sid":"bde346e8","regs":[{"tid":"bf1dd808"}]},{"sid":"5d394863","regs":[{"tid":"a1ae61c5"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":18,"gameKey":"b78f1a3a","sid":"5d394863"},"maxGameThreePt":{"v":3,"gameKey":"cf91906d","sid":"5d394863"}}}
+{
+  "uuid": "416227ac-0717-4275-ad4a-345959a59bf3",
+  "name": "Adam Lykopoulos",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 18,
+      "maxGameThreePt": 3,
+      "foulOuts": {
+        "5d394863": 1
+      },
+      "gp": 58,
+      "pts": 387,
+      "fg": 138,
+      "ft": 51,
+      "threePt": 20,
+      "fouls": 127,
+      "statsChecked": "2026-07-06T18:56:51.513Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "f8665428",
+          "gid": "3eafe5bb",
+          "gn": "Monday Men E2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "532a035b",
+      "regs": [
+        {
+          "tid": "381a6531",
+          "gid": "b1fe135f",
+          "gn": "Monday Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "bde346e8",
+      "regs": [
+        {
+          "tid": "bf1dd808",
+          "gid": "819a3858",
+          "gn": "Monday Division 5"
+        }
+      ]
+    },
+    {
+      "sid": "5d394863",
+      "regs": [
+        {
+          "tid": "a1ae61c5",
+          "gid": "112f0027",
+          "gn": "Wednesday Division 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "f8665428",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "381a6531",
+      "sid": "532a035b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf1dd808",
+      "sid": "bde346e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1ae61c5",
+      "sid": "5d394863",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "b78f1a3a",
+      "sid": "5d394863"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "cf91906d",
+      "sid": "5d394863"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:45:27.922Z"
+}

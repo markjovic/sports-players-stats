@@ -1,1 +1,378 @@
-{"uuid":"33608ae4-e75a-4830-8382-67e19544229d","name":"Brayden Kenny","gender":"Men","sports":{"Basketball":{"gp":48,"pts":129,"fouls":59,"fg":56,"ft":11,"threePt":2,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"wins":36,"losses":50,"draws":3,"winPct":0.4,"statsChecked":"2026-07-06T19:09:53.396Z"}},"seasons":[{"sid":"75ebb237","sn":"Winter 2026","regs":[{"tid":"e0e256f2","tn":"The Anomalies","gid":"52393cd2","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":8,"pts":32,"fg":15,"fouls":9,"wins":7,"ft":2}}]},{"sid":"5bb7c87f","sn":"Summer 2025/26","regs":[{"tid":"56aacee2","tn":"The Anomalies","gid":"f1aba158","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":19,"pts":45,"threePt":1,"fg":20,"ft":2,"fouls":27,"finals":1,"wins":11,"losses":8}}]},{"sid":"d855bcfa","sn":"Winter 2025","regs":[{"tid":"95982f1f","tn":"The Anomalies","gid":"4ffc96f9","gn":"Monday Men A","age":null,"div":null,"stats":{"gp":21,"pts":52,"threePt":1,"fg":21,"ft":7,"fouls":23,"finals":1,"gfApps":1,"wins":6,"losses":14,"draws":1,"gfWins":1}}]},{"sid":"d855bcfa","sn":"Winter 2025","regs":[{"tid":"95982f1f","tn":"The Anomalies","gid":"4ffc96f9","gn":"Monday Men A","age":null,"div":null,"stats":{"gp":21,"pts":52,"threePt":1,"fg":21,"ft":7,"fouls":23,"finals":1,"gfApps":1,"wins":6,"losses":14,"draws":1,"gfWins":1}},{"tid":"95982f1f","tn":"The Anomalies","gid":"d5aa5463","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":21,"pts":52,"fg":21,"ft":7,"fouls":23,"finals":1,"gfApps":1,"wins":6,"losses":14,"draws":1,"threePt":1,"gfWins":1}}]}],"updatedAt":"2026-07-06T18:31:06.812Z","teams":[{"tid":"e0e256f2","sid":"75ebb237","status":"ACTIVE"},{"tid":"56aacee2","sid":"5bb7c87f","status":"COMPLETED"},{"tid":"95982f1f","sid":"d855bcfa","status":"COMPLETED"},{"tid":"95982f1f","sid":"d855bcfa","status":"COMPLETED"},{"tid":"0d44b283","sid":"348dbfb8","status":"COMPLETED"},{"tid":"325b4b94","sid":"9358e51a","status":"COMPLETED"},{"tid":"741f53c3","sid":"d3d4e181","status":"COMPLETED"},{"tid":"aef46d73","sid":"21cd9648","status":"COMPLETED"},{"tid":"a741e243","sid":"d4cbf787","status":"COMPLETED"},{"tid":"30815fca","sid":"d64fcfce","status":"COMPLETED"},{"tid":"9a16efdf","sid":"afd26581","status":"COMPLETED"},{"tid":"f3bb3cfd","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:12:58.605Z","records":{"maxGamePTS":{"v":12,"gameKey":"8113827b","sid":"75ebb237"},"maxGameThreePt":{"v":1,"gameKey":"7be8df3b","sid":"5bb7c87f"}},"games":["0153a582","0df977cd","15cf03ae","178aa2e6","17db94ff","20446334","2b971492","2c4d87b5","31f87383","37919d81","38b9a346","3dde7c35","4168b99f","453ae21a","458ecb4a","4a834461","5190ddbc","521d7aba","586dcf0c","61315611","6af81c5b","6fefaa6b","77bbab54","7b33e398","7be8df3b","8113827b","819d451f","8293b59a","833fc8b5","a7778043","a94ac1fd","a973e57b","ab526841","af765ce1","c42380a9","c90a7457","c9887a7e","d11da1c4","d7bcfdde","eb900608","ede34c36","f30cf549","f62a814a","fb0b611b","fbe5038a","fc87a525","feef75e2"]}
+{
+  "uuid": "33608ae4-e75a-4830-8382-67e19544229d",
+  "name": "Brayden Kenny",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 129,
+      "fouls": 59,
+      "fg": 56,
+      "ft": 11,
+      "threePt": 2,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 36,
+      "losses": 50,
+      "draws": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-06T19:09:53.396Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e0e256f2",
+          "tn": "The Anomalies",
+          "gid": "52393cd2",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 32,
+            "fg": 15,
+            "fouls": 9,
+            "wins": 7,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5bb7c87f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "56aacee2",
+          "tn": "The Anomalies",
+          "gid": "f1aba158",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 45,
+            "threePt": 1,
+            "fg": 20,
+            "ft": 2,
+            "fouls": 27,
+            "finals": 1,
+            "wins": 11,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d855bcfa",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "95982f1f",
+          "tn": "The Anomalies",
+          "gid": "4ffc96f9",
+          "gn": "Monday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "pts": 52,
+            "threePt": 1,
+            "fg": 21,
+            "ft": 7,
+            "fouls": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 14,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d855bcfa",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "95982f1f",
+          "tn": "The Anomalies",
+          "gid": "4ffc96f9",
+          "gn": "Monday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "pts": 52,
+            "threePt": 1,
+            "fg": 21,
+            "ft": 7,
+            "fouls": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 14,
+            "draws": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "95982f1f",
+          "tn": "The Anomalies",
+          "gid": "d5aa5463",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "pts": 52,
+            "fg": 21,
+            "ft": 7,
+            "fouls": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 14,
+            "draws": 1,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "0d44b283",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "325b4b94",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "741f53c3",
+          "tn": "SKOC White",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "aef46d73",
+          "tn": "SKOC WHITE",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "a741e243",
+          "tn": "SKOC WHITE",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "30815fca",
+          "tn": "SKOC White",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "9a16efdf",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "f3bb3cfd",
+          "tn": "SKOC White",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:06.812Z",
+  "teams": [
+    {
+      "tid": "e0e256f2",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56aacee2",
+      "sid": "5bb7c87f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "95982f1f",
+      "sid": "d855bcfa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d44b283",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "325b4b94",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "741f53c3",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aef46d73",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a741e243",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30815fca",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a16efdf",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3bb3cfd",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:44:18.565Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "8113827b",
+      "sid": "75ebb237"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "7be8df3b",
+      "sid": "5bb7c87f"
+    }
+  },
+  "games": [
+    "0153a582",
+    "0df977cd",
+    "15cf03ae",
+    "178aa2e6",
+    "17db94ff",
+    "20446334",
+    "2b971492",
+    "2c4d87b5",
+    "31f87383",
+    "37919d81",
+    "38b9a346",
+    "3dde7c35",
+    "4168b99f",
+    "453ae21a",
+    "458ecb4a",
+    "4a834461",
+    "5190ddbc",
+    "521d7aba",
+    "586dcf0c",
+    "61315611",
+    "6af81c5b",
+    "6fefaa6b",
+    "77bbab54",
+    "7b33e398",
+    "7be8df3b",
+    "8113827b",
+    "819d451f",
+    "8293b59a",
+    "833fc8b5",
+    "a7778043",
+    "a94ac1fd",
+    "a973e57b",
+    "ab526841",
+    "af765ce1",
+    "c42380a9",
+    "c90a7457",
+    "c9887a7e",
+    "d11da1c4",
+    "d7bcfdde",
+    "eb900608",
+    "ede34c36",
+    "f30cf549",
+    "f62a814a",
+    "fb0b611b",
+    "fbe5038a",
+    "fc87a525",
+    "feef75e2"
+  ]
+}

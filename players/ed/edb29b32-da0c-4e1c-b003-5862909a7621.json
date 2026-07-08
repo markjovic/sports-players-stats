@@ -1,1 +1,124 @@
-{"uuid":"edb29b32-da0c-4e1c-b003-5862909a7621","gender":null,"sports":{"Basketball":{"gp":9,"pts":46,"fouls":24,"fg":21,"ft":1,"threePt":1,"foulOuts":{"932d3368":2},"maxGamePTS":12,"maxGameThreePt":1,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:16:00.617Z"}},"seasons":[{"sid":"157d1f5d","sn":"Summer 2021/22","club":"South Camberwell Basketball Club","regs":[{"tid":"3f640450","tn":"SCBC Rattlers","gid":"b271bc55","gn":"Sunday U22 Men","stats":{"gp":4,"pts":22,"fouls":6,"fg":9,"ft":1,"threePt":1,"wins":1,"losses":3}}]},{"sid":"932d3368","sn":"Winter 2021","club":"South Camberwell Basketball Club","regs":[{"tid":"bdc84054","tn":"SCBC Rattlers","gid":"9b9b8735","gn":"Sunday U23 Men C","stats":{"gp":5,"pts":24,"fouls":18,"fg":12,"foulOuts":2}}]}],"updatedAt":"2026-06-11T23:46:01.668Z","records":{"maxGamePTS":{"v":12,"gameKey":"336bc1c3","sid":"932d3368"},"maxGameThreePt":{"v":1,"gameKey":"e7fd6f0e","sid":"157d1f5d"}},"games":["19cd9faf","336bc1c3","491effb8","613a36d1","6d68fc6b","bd99c6b3","e4d3f85d","e7fd6f0e","edff6db9"],"name":"Summer 2021/22"}
+{
+  "uuid": "edb29b32-da0c-4e1c-b003-5862909a7621",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 46,
+      "fouls": 24,
+      "fg": 21,
+      "ft": 1,
+      "threePt": 1,
+      "foulOuts": {
+        "932d3368": 2
+      },
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:16:00.617Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "157d1f5d",
+      "sn": "Summer 2021/22",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "3f640450",
+          "tn": "SCBC Rattlers",
+          "gid": "b271bc55",
+          "gn": "Sunday U22 Men",
+          "stats": {
+            "gp": 4,
+            "pts": 22,
+            "fouls": 6,
+            "fg": 9,
+            "ft": 1,
+            "threePt": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "932d3368",
+      "sn": "Winter 2021",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "bdc84054",
+          "tn": "SCBC Rattlers",
+          "gid": "9b9b8735",
+          "gn": "Sunday U23 Men C",
+          "stats": {
+            "gp": 5,
+            "pts": 24,
+            "fouls": 18,
+            "fg": 12,
+            "foulOuts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b4a34b29",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "ec99ea76",
+          "tn": "SCBC Rattlers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:01.668Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "336bc1c3",
+      "sid": "932d3368"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "e7fd6f0e",
+      "sid": "157d1f5d"
+    }
+  },
+  "games": [
+    "19cd9faf",
+    "336bc1c3",
+    "491effb8",
+    "613a36d1",
+    "6d68fc6b",
+    "bd99c6b3",
+    "e4d3f85d",
+    "e7fd6f0e",
+    "edff6db9"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "3f640450",
+      "sid": "157d1f5d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bdc84054",
+      "sid": "932d3368",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec99ea76",
+      "sid": "b4a34b29",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:52.736Z"
+}

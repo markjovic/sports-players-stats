@@ -1,1 +1,276 @@
-{"uuid":"1d404b03-8634-44e7-9e36-2dd4492d3578","name":"Jack Mutton","gender":"Mixed","sports":{"Basketball":{"gp":42,"pts":98,"fouls":4,"fg":43,"ft":12,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"wins":29,"losses":21,"draws":4,"winPct":0.54,"statsChecked":"2026-07-05T15:34:16.913Z"}},"seasons":[{"sid":"be8759f2","sn":"Winter 2026","club":"Williamstown Magic Basketball Club","regs":[{"tid":"bced29a7","tn":"Williamstown Magic U10B Hoopers","gid":"710698e4","gn":"U10 Boys Div 3","age":"U10","div":"Div 3","stats":{"gp":6,"pts":2,"fg":1,"fouls":3,"losses":3,"draws":2,"wins":1}},{"tid":"bced29a7","tn":"Williamstown Magic U10B Hoopers","gid":"f628aee4","gn":"U10 Boys GRADING","age":"U10","div":null,"stats":{"gp":6,"fouls":3,"losses":3,"draws":2,"pts":2,"fg":1,"wins":1}},{"tid":"019237ee","stats":{"wins":5,"losses":1,"gp":6,"pts":13,"fg":6,"ft":1}}]},{"sid":"be8759f2","sn":"Winter 2026","club":"Wembley Junior Basketball Club","regs":[{"tid":"019237ee","tn":"Wembley U8 Mixed Whirlers","gid":"53a3f40f","gn":"Friday U8 Mixed BLUE","age":"U8","div":null,"stats":{"gp":6,"pts":13,"fg":6,"ft":1,"wins":5,"losses":1}}]},{"sid":"32b88c6e","sn":"Summer 2025/26","club":"Wembley Junior Basketball Club","regs":[{"tid":"b280b00e","tn":"Wembley U8 Mixed Whirlers","gid":"b4efadea","gn":"Friday U8 Mixed","age":"U8","div":null,"stats":{"gp":15,"pts":50,"fg":23,"ft":4,"finals":1,"wins":12,"losses":3}}]},{"sid":"95d474df","sn":"Winter 2025","club":"Wembley Junior Basketball Club","regs":[{"tid":"4c84063c","tn":"Wembley U8 Mixed Whirlers","gid":"bd1c6372","gn":"Friday U8 Mixed","age":"U8","div":null,"stats":{"gp":15,"pts":33,"fg":13,"ft":7,"fouls":1,"finals":1,"wins":5,"losses":10}}]}],"updatedAt":"2026-06-01T22:31:58.583Z","teams":[{"tid":"019237ee","sid":"be8759f2","status":"ACTIVE"},{"tid":"bced29a7","sid":"be8759f2","status":"ACTIVE"},{"tid":"b280b00e","sid":"32b88c6e","status":"COMPLETED"},{"tid":"4c84063c","sid":"95d474df","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:59.393Z","records":{"maxGamePTS":{"v":9,"gameKey":"7bbf1151","sid":"32b88c6e"},"maxGameThreePt":{"v":null}},"games":["01dfb0b6","042337fc","076a15cd","09ee11bc","1491cb76","203e80a9","21c621ad","283579f3","2ab44efd","2dca46e5","43e0be17","55d85fc4","622e90bd","6821e7f0","7bbf1151","7f1aad3d","7f52b902","80556914","8060138e","8633c2d0","896c415c","99cdd78c","9aad7420","a4060e6c","adbba6e9","ade1c561","bb70941c","bcecc7ea","c05f087c","c794627a","c95bf55c","c9605905","c99776bd","c9f16551","d04bd268","d6c6f4ed","d6d928a1","e0b4ebc7","ebeb2cf8","ed2f629d","f38a9939","f77f344d"],"gameTids":{"80556914":"019237ee","2ab44efd":"bced29a7","7f52b902":"bced29a7","c99776bd":"bced29a7","c794627a":"bced29a7","042337fc":"bced29a7","adbba6e9":"bced29a7","01dfb0b6":"019237ee","9aad7420":"019237ee","c9f16551":"019237ee","2dca46e5":"019237ee","e0b4ebc7":"019237ee","c05f087c":"b280b00e","f77f344d":"b280b00e","076a15cd":"b280b00e","a4060e6c":"b280b00e","896c415c":"b280b00e","55d85fc4":"b280b00e","43e0be17":"b280b00e","8633c2d0":"b280b00e","bcecc7ea":"b280b00e","283579f3":"b280b00e","7bbf1151":"b280b00e","7f1aad3d":"b280b00e","6821e7f0":"b280b00e","d6d928a1":"b280b00e","8060138e":"b280b00e","d04bd268":"4c84063c","ebeb2cf8":"4c84063c","d6c6f4ed":"4c84063c","1491cb76":"4c84063c","21c621ad":"4c84063c","bb70941c":"4c84063c","203e80a9":"4c84063c","ed2f629d":"4c84063c","622e90bd":"4c84063c","99cdd78c":"4c84063c","ade1c561":"4c84063c","09ee11bc":"4c84063c","c95bf55c":"4c84063c","c9605905":"4c84063c","f38a9939":"4c84063c"}}
+{
+  "uuid": "1d404b03-8634-44e7-9e36-2dd4492d3578",
+  "name": "Jack Mutton",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 98,
+      "fouls": 4,
+      "fg": 43,
+      "ft": 12,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 29,
+      "losses": 21,
+      "draws": 4,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T15:34:16.913Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be8759f2",
+      "sn": "Winter 2026",
+      "club": "Williamstown Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "bced29a7",
+          "tn": "Williamstown Magic U10B Hoopers",
+          "gid": "710698e4",
+          "gn": "U10 Boys Div 3",
+          "age": "U10",
+          "div": "Div 3",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "losses": 3,
+            "draws": 2,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "bced29a7",
+          "tn": "Williamstown Magic U10B Hoopers",
+          "gid": "f628aee4",
+          "gn": "U10 Boys GRADING",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "losses": 3,
+            "draws": 2,
+            "pts": 2,
+            "fg": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "019237ee",
+          "stats": {
+            "wins": 5,
+            "losses": 1,
+            "gp": 6,
+            "pts": 13,
+            "fg": 6,
+            "ft": 1
+          },
+          "gid": "53a3f40f",
+          "gn": "Friday U8 Mixed BLUE"
+        }
+      ]
+    },
+    {
+      "sid": "be8759f2",
+      "sn": "Winter 2026",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "019237ee",
+          "tn": "Wembley U8 Mixed Whirlers",
+          "gid": "53a3f40f",
+          "gn": "Friday U8 Mixed BLUE",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 13,
+            "fg": 6,
+            "ft": 1,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32b88c6e",
+      "sn": "Summer 2025/26",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "b280b00e",
+          "tn": "Wembley U8 Mixed Whirlers",
+          "gid": "b4efadea",
+          "gn": "Friday U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 50,
+            "fg": 23,
+            "ft": 4,
+            "finals": 1,
+            "wins": 12,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "95d474df",
+      "sn": "Winter 2025",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "4c84063c",
+          "tn": "Wembley U8 Mixed Whirlers",
+          "gid": "bd1c6372",
+          "gn": "Friday U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 33,
+            "fg": 13,
+            "ft": 7,
+            "fouls": 1,
+            "finals": 1,
+            "wins": 5,
+            "losses": 10
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T22:31:58.583Z",
+  "teams": [
+    {
+      "tid": "bced29a7",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "019237ee",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b280b00e",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c84063c",
+      "sid": "95d474df",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:00.516Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "7bbf1151",
+      "sid": "32b88c6e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01dfb0b6",
+    "042337fc",
+    "076a15cd",
+    "09ee11bc",
+    "1491cb76",
+    "203e80a9",
+    "21c621ad",
+    "283579f3",
+    "2ab44efd",
+    "2dca46e5",
+    "43e0be17",
+    "55d85fc4",
+    "622e90bd",
+    "6821e7f0",
+    "7bbf1151",
+    "7f1aad3d",
+    "7f52b902",
+    "80556914",
+    "8060138e",
+    "8633c2d0",
+    "896c415c",
+    "99cdd78c",
+    "9aad7420",
+    "a4060e6c",
+    "adbba6e9",
+    "ade1c561",
+    "bb70941c",
+    "bcecc7ea",
+    "c05f087c",
+    "c794627a",
+    "c95bf55c",
+    "c9605905",
+    "c99776bd",
+    "c9f16551",
+    "d04bd268",
+    "d6c6f4ed",
+    "d6d928a1",
+    "e0b4ebc7",
+    "ebeb2cf8",
+    "ed2f629d",
+    "f38a9939",
+    "f77f344d"
+  ],
+  "gameTids": {
+    "80556914": "019237ee",
+    "2ab44efd": "bced29a7",
+    "7f52b902": "bced29a7",
+    "c99776bd": "bced29a7",
+    "c794627a": "bced29a7",
+    "042337fc": "bced29a7",
+    "adbba6e9": "bced29a7",
+    "01dfb0b6": "019237ee",
+    "9aad7420": "019237ee",
+    "c9f16551": "019237ee",
+    "2dca46e5": "019237ee",
+    "e0b4ebc7": "019237ee",
+    "c05f087c": "b280b00e",
+    "f77f344d": "b280b00e",
+    "076a15cd": "b280b00e",
+    "a4060e6c": "b280b00e",
+    "896c415c": "b280b00e",
+    "55d85fc4": "b280b00e",
+    "43e0be17": "b280b00e",
+    "8633c2d0": "b280b00e",
+    "bcecc7ea": "b280b00e",
+    "283579f3": "b280b00e",
+    "7bbf1151": "b280b00e",
+    "7f1aad3d": "b280b00e",
+    "6821e7f0": "b280b00e",
+    "d6d928a1": "b280b00e",
+    "8060138e": "b280b00e",
+    "d04bd268": "4c84063c",
+    "ebeb2cf8": "4c84063c",
+    "d6c6f4ed": "4c84063c",
+    "1491cb76": "4c84063c",
+    "21c621ad": "4c84063c",
+    "bb70941c": "4c84063c",
+    "203e80a9": "4c84063c",
+    "ed2f629d": "4c84063c",
+    "622e90bd": "4c84063c",
+    "99cdd78c": "4c84063c",
+    "ade1c561": "4c84063c",
+    "09ee11bc": "4c84063c",
+    "c95bf55c": "4c84063c",
+    "c9605905": "4c84063c",
+    "f38a9939": "4c84063c"
+  }
+}

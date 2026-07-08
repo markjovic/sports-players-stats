@@ -1,1 +1,225 @@
-{"uuid":"bd87e2a6-821a-4085-ac00-b83eff8a46cb","name":"Elise Broersen","gender":"Women","sports":{"Basketball":{"gp":31,"pts":130,"fouls":54,"fg":62,"ft":6,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":null,"wins":3,"losses":31,"winPct":0.09,"statsChecked":"2026-07-05T15:12:14.629Z"}},"seasons":[{"sid":"5dfc7567","sn":"Winter 2025","regs":[{"tid":"be1f5e32","tn":"Court Chaos","gid":"13cd9694","gn":"Thursday Open Women E/ERES","age":"Senior","div":null,"stats":{"gp":16,"fouls":28,"ft":3,"fg":25,"pts":53,"wins":1,"losses":15}},{"tid":"efb6b97b","stats":{"losses":3,"gp":3,"pts":14,"fg":7,"fouls":4}}]},{"sid":"5dfc7567","sn":"Winter 2025","regs":[{"tid":"efb6b97b","tn":"BBCrew","gid":"e109b064","gn":"Sunday Mixed Section 8/9","age":null,"div":null,"stats":{"gp":3,"fouls":4,"fg":7,"pts":14,"losses":3}}]},{"sid":"37dc839f","sn":"Winter 2021","club":"Mt Lilydale Lakers Basketball Club (MLBC)","regs":[{"tid":"5011030a","tn":"MLBC G21","gid":"1d90df4b","gn":"Wednesday U21 Girls B","age":"U21","div":null,"stats":{"gp":8,"fouls":12,"ft":3,"fg":22,"pts":47,"wins":2,"losses":6}}]},{"sid":"05f86ef0","sn":"Summer 2020/21","club":"Mt Lilydale Lakers Basketball Club (MLBC)","regs":[{"tid":"32636b91","tn":"MLBC U18 G01","gid":"5b9d5ee1","gn":"Wednesday U18 Girls C Grade","age":"U18","div":null,"stats":{"gp":4,"fouls":10,"fg":8,"pts":16,"losses":4}}]}],"updatedAt":"2026-06-01T11:44:29.173Z","teams":[{"tid":"efb6b97b","sid":"5dfc7567","status":"COMPLETED"},{"tid":"be1f5e32","sid":"5dfc7567","status":"COMPLETED"},{"tid":"5011030a","sid":"37dc839f","status":"COMPLETED"},{"tid":"32636b91","sid":"05f86ef0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:40:20.806Z","games":["0027bcdf","05ec1126","098c0cf7","1488bcdd","232b84c4","3c6fdba6","426ae3ce","43d31f49","51a1bb7e","5d104bf9","66fa7570","91738b96","947dd48e","975c29c0","99013ffc","9a2b431e","9a9075cd","9dc74cf6","a8b89910","ab669392","ad7a1691","b680cf92","be8cd023","c0673f1d","c86ea07c","e0a485de","e24e6c47","e490c1bf","e930a782","f38c79e1","fe238f42"],"records":{"maxGamePTS":{"v":16,"gameKey":"f38c79e1","sid":"5dfc7567"},"maxGameThreePt":{"v":null}},"gameTids":{"e490c1bf":"be1f5e32","a8b89910":"be1f5e32","c0673f1d":"be1f5e32","43d31f49":"be1f5e32","e24e6c47":"be1f5e32","9a9075cd":"be1f5e32","9a2b431e":"be1f5e32","232b84c4":"be1f5e32","ad7a1691":"be1f5e32","098c0cf7":"be1f5e32","b680cf92":"be1f5e32","e0a485de":"be1f5e32","0027bcdf":"be1f5e32","ab669392":"be1f5e32","f38c79e1":"be1f5e32","947dd48e":"be1f5e32","66fa7570":"efb6b97b","e930a782":"efb6b97b","1488bcdd":"efb6b97b","5d104bf9":"5011030a","c86ea07c":"5011030a","be8cd023":"5011030a","fe238f42":"5011030a","51a1bb7e":"5011030a","9dc74cf6":"5011030a","91738b96":"5011030a","975c29c0":"5011030a","426ae3ce":"32636b91","05ec1126":"32636b91","3c6fdba6":"32636b91","99013ffc":"32636b91"}}
+{
+  "uuid": "bd87e2a6-821a-4085-ac00-b83eff8a46cb",
+  "name": "Elise Broersen",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 130,
+      "fouls": 54,
+      "fg": 62,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 31,
+      "winPct": 0.09,
+      "statsChecked": "2026-07-05T15:12:14.629Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5dfc7567",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "be1f5e32",
+          "tn": "Court Chaos",
+          "gid": "13cd9694",
+          "gn": "Thursday Open Women E/ERES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 28,
+            "ft": 3,
+            "fg": 25,
+            "pts": 53,
+            "wins": 1,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "efb6b97b",
+          "stats": {
+            "losses": 3,
+            "gp": 3,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 4
+          },
+          "gid": "e109b064",
+          "gn": "Sunday Mixed Section 8/9"
+        }
+      ]
+    },
+    {
+      "sid": "5dfc7567",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "efb6b97b",
+          "tn": "BBCrew",
+          "gid": "e109b064",
+          "gn": "Sunday Mixed Section 8/9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 4,
+            "fg": 7,
+            "pts": 14,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "37dc839f",
+      "sn": "Winter 2021",
+      "club": "Mt Lilydale Lakers Basketball Club (MLBC)",
+      "regs": [
+        {
+          "tid": "5011030a",
+          "tn": "MLBC G21",
+          "gid": "1d90df4b",
+          "gn": "Wednesday U21 Girls B",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 22,
+            "pts": 47,
+            "wins": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "05f86ef0",
+      "sn": "Summer 2020/21",
+      "club": "Mt Lilydale Lakers Basketball Club (MLBC)",
+      "regs": [
+        {
+          "tid": "32636b91",
+          "tn": "MLBC U18 G01",
+          "gid": "5b9d5ee1",
+          "gn": "Wednesday U18 Girls C Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 10,
+            "fg": 8,
+            "pts": 16,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:44:29.173Z",
+  "teams": [
+    {
+      "tid": "be1f5e32",
+      "sid": "5dfc7567",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "efb6b97b",
+      "sid": "5dfc7567",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5011030a",
+      "sid": "37dc839f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32636b91",
+      "sid": "05f86ef0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:01.791Z",
+  "games": [
+    "0027bcdf",
+    "05ec1126",
+    "098c0cf7",
+    "1488bcdd",
+    "232b84c4",
+    "3c6fdba6",
+    "426ae3ce",
+    "43d31f49",
+    "51a1bb7e",
+    "5d104bf9",
+    "66fa7570",
+    "91738b96",
+    "947dd48e",
+    "975c29c0",
+    "99013ffc",
+    "9a2b431e",
+    "9a9075cd",
+    "9dc74cf6",
+    "a8b89910",
+    "ab669392",
+    "ad7a1691",
+    "b680cf92",
+    "be8cd023",
+    "c0673f1d",
+    "c86ea07c",
+    "e0a485de",
+    "e24e6c47",
+    "e490c1bf",
+    "e930a782",
+    "f38c79e1",
+    "fe238f42"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "f38c79e1",
+      "sid": "5dfc7567"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "e490c1bf": "be1f5e32",
+    "a8b89910": "be1f5e32",
+    "c0673f1d": "be1f5e32",
+    "43d31f49": "be1f5e32",
+    "e24e6c47": "be1f5e32",
+    "9a9075cd": "be1f5e32",
+    "9a2b431e": "be1f5e32",
+    "232b84c4": "be1f5e32",
+    "ad7a1691": "be1f5e32",
+    "098c0cf7": "be1f5e32",
+    "b680cf92": "be1f5e32",
+    "e0a485de": "be1f5e32",
+    "0027bcdf": "be1f5e32",
+    "ab669392": "be1f5e32",
+    "f38c79e1": "be1f5e32",
+    "947dd48e": "be1f5e32",
+    "66fa7570": "efb6b97b",
+    "e930a782": "efb6b97b",
+    "1488bcdd": "efb6b97b",
+    "5d104bf9": "5011030a",
+    "c86ea07c": "5011030a",
+    "be8cd023": "5011030a",
+    "fe238f42": "5011030a",
+    "51a1bb7e": "5011030a",
+    "9dc74cf6": "5011030a",
+    "91738b96": "5011030a",
+    "975c29c0": "5011030a",
+    "426ae3ce": "32636b91",
+    "05ec1126": "32636b91",
+    "3c6fdba6": "32636b91",
+    "99013ffc": "32636b91"
+  }
+}

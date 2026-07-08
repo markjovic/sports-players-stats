@@ -1,1 +1,84 @@
-{"uuid":"c1999bd5-74a3-4b49-afe1-c8de9456b8eb","gender":null,"sports":{"Basketball":{"gp":2,"pts":19,"fouls":6,"fg":9,"ft":1,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T15:51:27.301Z"}},"seasons":[{"sid":"6af581a9","sn":"Winter 2021","club":null,"regs":[{"tid":"a6f75deb","tn":"Legacy Empire","gid":"a0007f21","gn":"Wednesday Senior Men Premier A Grade","stats":{"gp":2,"pts":19,"fouls":6,"fg":9,"ft":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:44:25.472Z","games":["4d01a08c","d31c2345"],"records":{"maxGamePTS":{"v":10,"gameKey":"d31c2345","sid":"6af581a9"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "c1999bd5-74a3-4b49-afe1-c8de9456b8eb",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 19,
+      "fouls": 6,
+      "fg": 9,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:51:27.301Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6af581a9",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a6f75deb",
+          "tn": "Legacy Empire",
+          "gid": "a0007f21",
+          "gn": "Wednesday Senior Men Premier A Grade",
+          "stats": {
+            "gp": 2,
+            "pts": 19,
+            "fouls": 6,
+            "fg": 9,
+            "ft": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "4027481f",
+          "tn": "Hampton Park U21 Boys 1",
+          "gid": "e97c7897",
+          "gn": "U21 Men VJL 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:25.472Z",
+  "games": [
+    "4d01a08c",
+    "d31c2345"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d31c2345",
+      "sid": "6af581a9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "a6f75deb",
+      "sid": "6af581a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4027481f",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:22.094Z"
+}

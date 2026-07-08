@@ -1,1 +1,169 @@
-{"uuid":"3c4b5564-4837-443c-808f-5a6487b1c699","name":"Leonard Morey","gender":"Boys","sports":{"Basketball":{"gp":28,"pts":52,"fouls":14,"fg":23,"ft":6,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":16,"losses":34,"draws":6,"winPct":0.29,"statsChecked":"2026-07-05T15:35:01.807Z"}},"seasons":[{"sid":"43448c02","sn":"Winter 2026","club":"Wattle Park Saints Basketball Club","regs":[{"tid":"1baaf962","tn":"B09 Wattle Park Saints 2","gid":"616c4476","gn":"Friday U9 Boys B/BR","age":"U9","div":null,"stats":{"gp":10,"fouls":5,"fg":15,"pts":32,"wins":4,"losses":5,"draws":1,"ft":2}},{"tid":"1baaf962","tn":"","gid":"60f0e765","gn":"Friday U9 Boys C/CR","div":null,"stats":{"gp":10,"pts":32,"fg":15,"ft":2,"fouls":5,"wins":4,"losses":5,"draws":1}}]},{"sid":"bf7d2b4c","sn":"Summer 2025/26","club":"Wattle Park Saints Basketball Club","regs":[{"tid":"b2d173bd","tn":"B09 Wattle Park Saints 5","gid":"00da7e53","gn":"Friday U9 Boys C/CR","age":"U9","div":null,"stats":{"gp":18,"fouls":9,"ft":4,"fg":8,"pts":20,"finals":1,"wins":4,"losses":12,"draws":2}},{"tid":"b2d173bd","tn":"B09 Wattle Park Saints 5","gid":"dd997931","gn":"Friday U9 Boys B","age":"U9","div":null,"stats":{"gp":18,"ft":4,"fg":8,"pts":20,"finals":1,"wins":4,"losses":12,"draws":2,"fouls":9}}]}],"updatedAt":"2026-07-04T05:50:39.875Z","teams":[{"tid":"1baaf962","sid":"43448c02","status":"ACTIVE"},{"tid":"b2d173bd","sid":"bf7d2b4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:17:39.777Z","records":{"maxGamePTS":{"v":10,"gameKey":"3410b61f","sid":"43448c02"},"maxGameThreePt":{"v":null}},"games":["00ce4ee8","091c12a2","0f34423a","1fe8a004","269cb4f8","2dc008c4","3410b61f","37e49bb7","596882b3","5d8e5098","6049fc2e","6ed7e5ef","8b0e5ca6","8db26741","8ec631fc","9219072c","9c357cde","9edb6b26","a92e2135","b18a9041","c4ed10a1","d46b9766","e20d3c2a","e6acf710","ead3e1bd","ed04291e","edbb9214","fe28262b"]}
+{
+  "uuid": "3c4b5564-4837-443c-808f-5a6487b1c699",
+  "name": "Leonard Morey",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 28,
+      "pts": 52,
+      "fouls": 14,
+      "fg": 23,
+      "ft": 6,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "losses": 34,
+      "draws": 6,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T15:35:01.807Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "43448c02",
+      "sn": "Winter 2026",
+      "club": "Wattle Park Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "1baaf962",
+          "tn": "B09 Wattle Park Saints 2",
+          "gid": "60f0e765",
+          "gn": "Friday U9 Boys C/CR",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 5,
+            "fg": 15,
+            "pts": 32,
+            "wins": 4,
+            "losses": 5,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "1baaf962",
+          "tn": "",
+          "gid": "60f0e765",
+          "gn": "Friday U9 Boys C/CR",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 32,
+            "fg": 15,
+            "ft": 2,
+            "fouls": 5,
+            "wins": 4,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf7d2b4c",
+      "sn": "Summer 2025/26",
+      "club": "Wattle Park Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "b2d173bd",
+          "tn": "B09 Wattle Park Saints 5",
+          "gid": "00da7e53",
+          "gn": "Friday U9 Boys C/CR",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 8,
+            "pts": 20,
+            "finals": 1,
+            "wins": 4,
+            "losses": 12,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "b2d173bd",
+          "tn": "B09 Wattle Park Saints 5",
+          "gid": "dd997931",
+          "gn": "Friday U9 Boys B",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "ft": 4,
+            "fg": 8,
+            "pts": 20,
+            "finals": 1,
+            "wins": 4,
+            "losses": 12,
+            "draws": 2,
+            "fouls": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:39.875Z",
+  "teams": [
+    {
+      "tid": "1baaf962",
+      "sid": "43448c02",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2d173bd",
+      "sid": "bf7d2b4c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:45:07.193Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "3410b61f",
+      "sid": "43448c02"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00ce4ee8",
+    "091c12a2",
+    "0f34423a",
+    "1fe8a004",
+    "269cb4f8",
+    "2dc008c4",
+    "3410b61f",
+    "37e49bb7",
+    "596882b3",
+    "5d8e5098",
+    "6049fc2e",
+    "6ed7e5ef",
+    "8b0e5ca6",
+    "8db26741",
+    "8ec631fc",
+    "9219072c",
+    "9c357cde",
+    "9edb6b26",
+    "a92e2135",
+    "b18a9041",
+    "c4ed10a1",
+    "d46b9766",
+    "e20d3c2a",
+    "e6acf710",
+    "ead3e1bd",
+    "ed04291e",
+    "edbb9214",
+    "fe28262b"
+  ]
+}

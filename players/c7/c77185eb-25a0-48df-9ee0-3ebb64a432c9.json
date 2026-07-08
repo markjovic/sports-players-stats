@@ -1,1 +1,253 @@
-{"uuid":"c77185eb-25a0-48df-9ee0-3ebb64a432c9","name":"Samuel Karamoshos","gender":"Men","sports":{"Basketball":{"gp":66,"pts":637,"fouls":140,"fg":262,"ft":92,"threePt":7,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"6e0c32cd":2,"64ab9100":2,"4e72adeb":2},"maxGamePTS":22,"maxGameThreePt":1,"wins":22,"losses":43,"winPct":0.34,"statsChecked":"2026-07-06T19:01:00.117Z"}},"seasons":[{"sid":"6e0c32cd","sn":"Winter 2026","regs":[{"tid":"92a8e1c1","tn":"Alchemy","gid":"e8fd8a15","gn":"Sunday Men D Grade (2)","age":null,"div":null,"stats":{"gp":10,"fouls":27,"ft":23,"fg":57,"threePt":3,"pts":146,"foulOuts":1,"wins":5,"losses":4}}]},{"sid":"64ab9100","sn":"Summer 2025/26","regs":[{"tid":"82754475","tn":"Alchemy","gid":"5c5b1c95","gn":"Sunday Men D Grade (1)","age":null,"div":null,"stats":{"gp":18,"fouls":40,"ft":42,"fg":81,"threePt":1,"pts":207,"foulOuts":2,"wins":2,"losses":16}}]},{"sid":"4e72adeb","sn":"Winter 2025","regs":[{"tid":"5274a432","tn":"Alchemy","gid":"30c0684c","gn":"Sunday Open Men D Grade (1)","age":"Senior","div":null,"stats":{"gp":19,"fouls":40,"ft":14,"fg":78,"threePt":1,"pts":173,"foulOuts":2,"wins":6,"losses":13}}]},{"sid":"114195d5","sn":"Summer 2024/25","regs":[{"tid":"be754bd3","tn":"Alchemy","gid":"666eeb7a","gn":"Sunday Open Men D Grade (2)","age":"Senior","div":null,"stats":{"gp":19,"fouls":33,"ft":13,"fg":46,"threePt":2,"pts":111,"finals":1,"wins":9,"losses":10}}]}],"updatedAt":"2026-07-06T18:33:28.513Z","teams":[{"tid":"92a8e1c1","sid":"6e0c32cd","status":"ACTIVE"},{"tid":"82754475","sid":"64ab9100","status":"COMPLETED"},{"tid":"5274a432","sid":"4e72adeb","status":"COMPLETED"},{"tid":"be754bd3","sid":"114195d5","status":"COMPLETED"},{"tid":"3e354713","sid":"d3d4e181","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:20.955Z","records":{"maxGamePTS":{"v":22,"gameKey":"de497583","sid":"6e0c32cd"},"maxGameThreePt":{"v":1,"gameKey":"de497583","sid":"6e0c32cd"}},"games":["0075cc94","0bda8abd","1482f3b5","175e2341","19669b05","1fc81e28","2bb5f615","2c747b80","354523eb","3fe198f4","512bfcae","56b1f229","59a5db7c","5d29bbdc","5d6f3638","604c6484","61030157","6a9153be","6c17918f","6cb4abd0","726cb4f9","73849251","7d3498a9","7e8ee464","843fced7","88591715","88e2ecec","8a608370","8bcfdd4e","8c27cd4d","91b44679","96aeeedd","9763a29b","98eb9a89","9c54f1e6","a1c624ce","a2b0a6c6","a8688ce8","aca988ee","b1b8e272","bc86e9c4","be5e9671","c0b5f018","c0bdb013","c6f97973","c969298a","cd0fa320","cf9d98ff","d391570c","d6bbe3a1","dca37b4c","ded71380","e5ca8d72","e7cf2835","ea12759f","eaf96a7b","ed50e436","eece611d","ef5ee002","f277f340","f3fef99d","f861b66d","f8e3428e","fee613c7","ffdc86a7"]}
+{
+  "uuid": "c77185eb-25a0-48df-9ee0-3ebb64a432c9",
+  "name": "Samuel Karamoshos",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 637,
+      "fouls": 140,
+      "fg": 262,
+      "ft": 92,
+      "threePt": 7,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "6e0c32cd": 2,
+        "64ab9100": 2,
+        "4e72adeb": 2
+      },
+      "maxGamePTS": 22,
+      "maxGameThreePt": 1,
+      "wins": 22,
+      "losses": 43,
+      "winPct": 0.34,
+      "statsChecked": "2026-07-06T19:01:00.117Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6e0c32cd",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "92a8e1c1",
+          "tn": "Alchemy",
+          "gid": "e8fd8a15",
+          "gn": "Sunday Men D Grade (2)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 27,
+            "ft": 23,
+            "fg": 57,
+            "threePt": 3,
+            "pts": 146,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "64ab9100",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "82754475",
+          "tn": "Alchemy",
+          "gid": "5c5b1c95",
+          "gn": "Sunday Men D Grade (1)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 40,
+            "ft": 42,
+            "fg": 81,
+            "threePt": 1,
+            "pts": 207,
+            "foulOuts": 2,
+            "wins": 2,
+            "losses": 16
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4e72adeb",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5274a432",
+          "tn": "Alchemy",
+          "gid": "30c0684c",
+          "gn": "Sunday Open Men D Grade (1)",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 40,
+            "ft": 14,
+            "fg": 78,
+            "threePt": 1,
+            "pts": 173,
+            "foulOuts": 2,
+            "wins": 6,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "114195d5",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "be754bd3",
+          "tn": "Alchemy",
+          "gid": "666eeb7a",
+          "gn": "Sunday Open Men D Grade (2)",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 33,
+            "ft": 13,
+            "fg": 46,
+            "threePt": 2,
+            "pts": 111,
+            "finals": 1,
+            "wins": 9,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "3e354713",
+          "tn": "Icebergs",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:33:28.513Z",
+  "teams": [
+    {
+      "tid": "92a8e1c1",
+      "sid": "6e0c32cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82754475",
+      "sid": "64ab9100",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5274a432",
+      "sid": "4e72adeb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be754bd3",
+      "sid": "114195d5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e354713",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:12.999Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "de497583",
+      "sid": "6e0c32cd"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "de497583",
+      "sid": "6e0c32cd"
+    }
+  },
+  "games": [
+    "0075cc94",
+    "0bda8abd",
+    "1482f3b5",
+    "175e2341",
+    "19669b05",
+    "1fc81e28",
+    "2bb5f615",
+    "2c747b80",
+    "354523eb",
+    "3fe198f4",
+    "512bfcae",
+    "56b1f229",
+    "59a5db7c",
+    "5d29bbdc",
+    "5d6f3638",
+    "604c6484",
+    "61030157",
+    "6a9153be",
+    "6c17918f",
+    "6cb4abd0",
+    "726cb4f9",
+    "73849251",
+    "7d3498a9",
+    "7e8ee464",
+    "843fced7",
+    "88591715",
+    "88e2ecec",
+    "8a608370",
+    "8bcfdd4e",
+    "8c27cd4d",
+    "91b44679",
+    "96aeeedd",
+    "9763a29b",
+    "98eb9a89",
+    "9c54f1e6",
+    "a1c624ce",
+    "a2b0a6c6",
+    "a8688ce8",
+    "aca988ee",
+    "b1b8e272",
+    "bc86e9c4",
+    "be5e9671",
+    "c0b5f018",
+    "c0bdb013",
+    "c6f97973",
+    "c969298a",
+    "cd0fa320",
+    "cf9d98ff",
+    "d391570c",
+    "d6bbe3a1",
+    "dca37b4c",
+    "ded71380",
+    "e5ca8d72",
+    "e7cf2835",
+    "ea12759f",
+    "eaf96a7b",
+    "ed50e436",
+    "eece611d",
+    "ef5ee002",
+    "f277f340",
+    "f3fef99d",
+    "f861b66d",
+    "f8e3428e",
+    "fee613c7",
+    "ffdc86a7"
+  ]
+}

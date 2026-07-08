@@ -1,1 +1,89 @@
-{"uuid":"a4618439-77a3-432a-9a32-8f61ad1f1bd4","name":"Willow Milinski","gender":"Girls","sports":{"Basketball":{"gp":10,"fouls":14,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":2,"losses":7,"draws":1,"winPct":0.2,"statsChecked":"2026-07-05T15:38:06.712Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"d3e75ae3","tn":"EPS Rainbow Rockets","gid":"f090540b","gn":"Friday Year 1 Girls STH","age":null,"div":null,"stats":{"gp":10,"fouls":14,"wins":2,"losses":7,"draws":1}}]}],"updatedAt":"2026-07-04T05:51:31.255Z","teams":[{"tid":"d3e75ae3","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:32:19.245Z","games":["12677a31","1e0edb11","26a00b40","66c22b0c","6c3af969","81960f76","83bc48bc","8abb4382","8be1c4dc","b44cbf7a"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a4618439-77a3-432a-9a32-8f61ad1f1bd4",
+  "name": "Willow Milinski",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "fouls": 14,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 7,
+      "draws": 1,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:38:06.712Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "d3e75ae3",
+          "tn": "EPS Rainbow Rockets",
+          "gid": "f090540b",
+          "gn": "Friday Year 1 Girls STH",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 14,
+            "wins": 2,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "be7f82fc",
+          "tn": "EPS Rainbow Rockets",
+          "gid": "e497420a",
+          "gn": "Friday Year 1 Girls C",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:51:31.255Z",
+  "teams": [
+    {
+      "tid": "d3e75ae3",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be7f82fc",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:03.654Z",
+  "games": [
+    "12677a31",
+    "1e0edb11",
+    "26a00b40",
+    "66c22b0c",
+    "6c3af969",
+    "81960f76",
+    "83bc48bc",
+    "8abb4382",
+    "8be1c4dc",
+    "b44cbf7a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

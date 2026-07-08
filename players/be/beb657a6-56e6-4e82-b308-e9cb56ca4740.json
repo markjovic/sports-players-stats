@@ -1,1 +1,96 @@
-{"uuid":"beb657a6-56e6-4e82-b308-e9cb56ca4740","name":"Aida Kucuk","gender":"Girls","sports":{"Basketball":{"gp":9,"pts":3,"fouls":7,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":7,"draws":1,"winPct":0.11,"statsChecked":"2026-07-05T15:38:42.754Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"e7edb3ce","tn":"Wesley Lions","gid":"e456d5aa","gn":"Friday Year 1 Girls AP","age":null,"div":null,"stats":{"gp":9,"fouls":7,"fg":1,"pts":3,"ft":1,"wins":1,"losses":7,"draws":1}}]}],"updatedAt":"2026-07-04T05:40:07.858Z","teams":[{"tid":"e7edb3ce","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:40:37.418Z","records":{"maxGamePTS":{"v":2,"gameKey":"60adbbea","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["3000aa74","3309f208","35b57acc","60adbbea","aa918906","c54447ca","d90473ef","efce6388","fd692527"]}
+{
+  "uuid": "beb657a6-56e6-4e82-b308-e9cb56ca4740",
+  "name": "Aida Kucuk",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 3,
+      "fouls": 7,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 7,
+      "draws": 1,
+      "winPct": 0.11,
+      "statsChecked": "2026-07-05T15:38:42.754Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e7edb3ce",
+          "tn": "Wesley Lions",
+          "gid": "e456d5aa",
+          "gn": "Friday Year 1 Girls AP",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "fg": 1,
+            "pts": 3,
+            "ft": 1,
+            "wins": 1,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "78b83f8a",
+          "tn": "Wesley Lions",
+          "gid": "e497420a",
+          "gn": "Friday Year 1 Girls C",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:40:07.858Z",
+  "teams": [
+    {
+      "tid": "e7edb3ce",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78b83f8a",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:20.460Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "60adbbea",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3000aa74",
+    "3309f208",
+    "35b57acc",
+    "60adbbea",
+    "aa918906",
+    "c54447ca",
+    "d90473ef",
+    "efce6388",
+    "fd692527"
+  ]
+}

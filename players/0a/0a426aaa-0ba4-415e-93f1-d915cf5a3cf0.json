@@ -1,1 +1,255 @@
-{"uuid":"0a426aaa-0ba4-415e-93f1-d915cf5a3cf0","name":"Grace Landy","gender":"Girls","sports":{"Basketball":{"gp":46,"pts":193,"fouls":76,"fg":88,"ft":17,"foulOuts":{"7201e8c1":1,"81ce0e24":2},"maxGamePTS":18,"maxGameThreePt":null,"wins":41,"losses":35,"winPct":0.54,"statsChecked":"2026-07-05T14:53:19.961Z"}},"seasons":[{"sid":"7201e8c1","sn":"Winter 2026","club":"Beachcombers Basketball Club","regs":[{"tid":"17fc1987","tn":"Beachcombers Blazers U10 Girls","gid":"a05ae0e5","gn":"Saturday U10 Girls Division 3","age":"U10","div":"Division 3","stats":{"gp":6,"pts":9,"fg":4,"ft":1,"fouls":21,"foulOuts":1,"losses":6}}]},{"sid":"310d356a","sn":"2026","club":"Southern Peninsula Sharks Basketball Club","regs":[{"tid":"a9ff2568","tn":"Southern Peninsula U10 Girls Tiger Sharks","gid":"bd74b8eb","gn":"U10 Girls B Grade","age":"U10","div":null,"stats":{"gp":4,"fouls":2,"losses":4}}]},{"sid":"81ce0e24","sn":"Summer 2025/26","club":"Beachcombers Basketball Club","regs":[{"tid":"6efd4344","tn":"Beachcombers Blazers U10 Girls","gid":"7da20352","gn":"Saturday U10 Girls Division 3","age":"U10","div":"Division 3","stats":{"gp":15,"pts":78,"fg":36,"ft":6,"fouls":29,"foulOuts":2,"wins":2,"losses":13}}]},{"sid":"db3ad4e5","sn":"Winter 2025","club":"Beachcombers Basketball Club","regs":[{"tid":"99dfa9f7","tn":"Beachcombers Blazers","gid":"7907107b","gn":"Saturday U8 Girls Division 3","age":"U8","div":"Division 3","stats":{"gp":15,"pts":106,"fg":48,"ft":10,"fouls":15,"wins":13,"losses":2}},{"tid":"99dfa9f7","tn":"Beachcombers Blazers","gid":"3c4954bc","gn":"Saturday U8 Girls Division 1/2","age":"U8","div":null,"stats":{"gp":15,"pts":106,"ft":10,"fouls":15,"wins":13,"losses":2,"fg":48}},{"tid":"99dfa9f7","tn":"Beachcombers Blazers","gid":"a0eb5279","gn":"Saturday U8 Girls Division 2","age":"U8","div":"Division 2","stats":{"gp":15,"pts":106,"fg":48,"fouls":15,"wins":13,"losses":2,"ft":10}}]},{"sid":"0869ea69","regs":[{"tid":"e8648d1f","stats":{"losses":6,"gp":6,"fouls":9}}]}],"updatedAt":"2026-06-02T05:10:14.379Z","teams":[{"tid":"17fc1987","sid":"7201e8c1","status":"ACTIVE"},{"tid":"e8648d1f","sid":"0869ea69","status":"UPCOMING"},{"tid":"6efd4344","sid":"81ce0e24","status":"COMPLETED"},{"tid":"a9ff2568","sid":"310d356a","status":"COMPLETED"},{"tid":"99dfa9f7","sid":"db3ad4e5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:54:32.653Z","records":{"maxGamePTS":{"v":18,"gameKey":"098b54a6","sid":"81ce0e24"},"maxGameThreePt":{"v":null}},"games":["02003905","098b54a6","0df8e8ce","0f29cef8","11599833","1ff93c6b","209b6551","2bebd577","33d254d5","3bfabd10","3c540d58","3cdd8a11","41cdc8e1","4593b61b","45cceb58","47517fc3","5566eeba","5fc8cb9d","6025d7eb","66269caa","67e2a6bc","7a5bec45","7afdd32c","7c1424f2","7fd381de","8422dc85","a0afa46a","a6339e26","aab7790f","ba8b8e75","bd67431e","bfd60a4f","c75d4bec","ca6523ab","ce2c7c4b","ce52579b","d3161efe","d5c0f9e8","d5dfbaed","e2863988","e4419d75","e73e65b6","ec0a4e39","f0788946","f82b769f","fa847815"]}
+{
+  "uuid": "0a426aaa-0ba4-415e-93f1-d915cf5a3cf0",
+  "name": "Grace Landy",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 193,
+      "fouls": 76,
+      "fg": 88,
+      "ft": 17,
+      "foulOuts": {
+        "7201e8c1": 1,
+        "81ce0e24": 2
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 41,
+      "losses": 35,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T14:53:19.961Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7201e8c1",
+      "sn": "Winter 2026",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "17fc1987",
+          "tn": "Beachcombers Blazers U10 Girls",
+          "gid": "a05ae0e5",
+          "gn": "Saturday U10 Girls Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 6,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 21,
+            "foulOuts": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "310d356a",
+      "sn": "2026",
+      "club": "Southern Peninsula Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "a9ff2568",
+          "tn": "Southern Peninsula U10 Girls Tiger Sharks",
+          "gid": "bd74b8eb",
+          "gn": "U10 Girls B Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81ce0e24",
+      "sn": "Summer 2025/26",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "6efd4344",
+          "tn": "Beachcombers Blazers U10 Girls",
+          "gid": "7da20352",
+          "gn": "Saturday U10 Girls Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 15,
+            "pts": 78,
+            "fg": 36,
+            "ft": 6,
+            "fouls": 29,
+            "foulOuts": 2,
+            "wins": 2,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db3ad4e5",
+      "sn": "Winter 2025",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "99dfa9f7",
+          "tn": "Beachcombers Blazers",
+          "gid": "7907107b",
+          "gn": "Saturday U8 Girls Division 3",
+          "age": "U8",
+          "div": "Division 3",
+          "stats": {
+            "gp": 15,
+            "pts": 106,
+            "fg": 48,
+            "ft": 10,
+            "fouls": 15,
+            "wins": 13,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "99dfa9f7",
+          "tn": "Beachcombers Blazers",
+          "gid": "3c4954bc",
+          "gn": "Saturday U8 Girls Division 1/2",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 106,
+            "ft": 10,
+            "fouls": 15,
+            "wins": 13,
+            "losses": 2,
+            "fg": 48
+          }
+        },
+        {
+          "tid": "99dfa9f7",
+          "tn": "Beachcombers Blazers",
+          "gid": "a0eb5279",
+          "gn": "Saturday U8 Girls Division 2",
+          "age": "U8",
+          "div": "Division 2",
+          "stats": {
+            "gp": 15,
+            "pts": 106,
+            "fg": 48,
+            "fouls": 15,
+            "wins": 13,
+            "losses": 2,
+            "ft": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "e8648d1f",
+          "stats": {
+            "losses": 6,
+            "gp": 6,
+            "fouls": 9
+          },
+          "gid": "dfe58e8e",
+          "gn": "GIRLS UNDER 10 C"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T05:10:14.379Z",
+  "teams": [
+    {
+      "tid": "17fc1987",
+      "sid": "7201e8c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a9ff2568",
+      "sid": "310d356a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6efd4344",
+      "sid": "81ce0e24",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99dfa9f7",
+      "sid": "db3ad4e5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8648d1f",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:42:08.701Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "098b54a6",
+      "sid": "81ce0e24"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02003905",
+    "098b54a6",
+    "0df8e8ce",
+    "0f29cef8",
+    "11599833",
+    "1ff93c6b",
+    "209b6551",
+    "2bebd577",
+    "33d254d5",
+    "3bfabd10",
+    "3c540d58",
+    "3cdd8a11",
+    "41cdc8e1",
+    "4593b61b",
+    "45cceb58",
+    "47517fc3",
+    "5566eeba",
+    "5fc8cb9d",
+    "6025d7eb",
+    "66269caa",
+    "67e2a6bc",
+    "7a5bec45",
+    "7afdd32c",
+    "7c1424f2",
+    "7fd381de",
+    "8422dc85",
+    "a0afa46a",
+    "a6339e26",
+    "aab7790f",
+    "ba8b8e75",
+    "bd67431e",
+    "bfd60a4f",
+    "c75d4bec",
+    "ca6523ab",
+    "ce2c7c4b",
+    "ce52579b",
+    "d3161efe",
+    "d5c0f9e8",
+    "d5dfbaed",
+    "e2863988",
+    "e4419d75",
+    "e73e65b6",
+    "ec0a4e39",
+    "f0788946",
+    "f82b769f",
+    "fa847815"
+  ]
+}

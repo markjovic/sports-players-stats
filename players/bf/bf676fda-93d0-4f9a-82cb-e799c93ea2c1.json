@@ -1,1 +1,79 @@
-{"uuid":"bf676fda-93d0-4f9a-82cb-e799c93ea2c1","name":"Rorey Austin-Cane","sports":{"Basketball":{"maxGamePTS":3,"maxGameThreePt":1,"foulOuts":{},"gp":4,"pts":6,"threePt":2,"fouls":3,"statsChecked":"2026-07-06T19:11:39.678Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"f97cf164"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":3,"gameKey":"a99601b7","sid":"73551fc8"},"maxGameThreePt":{"v":1,"gameKey":"a99601b7","sid":"73551fc8"}}}
+{
+  "uuid": "bf676fda-93d0-4f9a-82cb-e799c93ea2c1",
+  "name": "Rorey Austin-Cane",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 4,
+      "pts": 6,
+      "threePt": 2,
+      "fouls": 3,
+      "statsChecked": "2026-07-06T19:11:39.678Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "f97cf164",
+          "gid": "eb6af497",
+          "gn": "U16 / U18 Boys"
+        },
+        {
+          "tid": "ae48ca38",
+          "tn": "Gippsland Wrens",
+          "gid": "07f99f42",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b6b9c9b9",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "0bc404b9",
+          "tn": "Gippsland Wrens",
+          "gid": "363ee24e",
+          "gn": "U18 Boys D1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "f97cf164",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ae48ca38",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0bc404b9",
+      "sid": "b6b9c9b9",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "a99601b7",
+      "sid": "73551fc8"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a99601b7",
+      "sid": "73551fc8"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:50:08.113Z"
+}

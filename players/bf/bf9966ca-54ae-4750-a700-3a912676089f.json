@@ -1,1 +1,287 @@
-{"uuid":"bf9966ca-54ae-4750-a700-3a912676089f","name":"caitlin sharp","gender":"Women","sports":{"Basketball":{"gp":37,"pts":328,"fouls":65,"fg":136,"ft":26,"threePt":10,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":22,"maxGameThreePt":3,"wins":29,"losses":16,"draws":2,"winPct":0.62,"statsChecked":"2026-07-07T18:29:41.515Z"}},"seasons":[{"sid":"2ed40819","sn":"Winter 2026","regs":[{"tid":"600ea5dc","tn":"Moth Mums","gid":"0a224ca1","gn":"Tuesday Senior Women Open UPWEY HIGH SCHOOL STADIUM","age":"Senior","div":null,"stats":{"gp":7,"fouls":10,"ft":8,"fg":43,"threePt":1,"pts":97,"wins":4,"losses":2}}]},{"sid":"fb06d69e","sn":"Winter 2026","regs":[{"tid":"49d6878a","tn":"Courtside chaos","gid":"37c5ffec","gn":"Monday Women 3 - 2026 Winter","age":null,"div":null,"stats":{"gp":11,"fouls":16,"ft":8,"fg":50,"threePt":8,"pts":132,"wins":2,"losses":8}},{"tid":"4511fb15","stats":{"gp":1,"pts":12,"fg":5,"ft":2,"fouls":1,"wins":1}}]},{"sid":"559eb7e8","sn":"Summer 2025/26","regs":[{"tid":"22a12d6b","tn":"Kahunas","gid":"04574abe","gn":"Thursday Open Women ERES","age":"Senior","div":null,"stats":{"gp":15,"fouls":37,"ft":8,"fg":33,"threePt":1,"pts":77,"finals":1,"gfApps":1,"wins":11,"losses":3,"draws":1}},{"tid":"22a12d6b","tn":"Kahunas","gid":"74acde76","gn":"Thursday Open Women F","age":"Senior","div":null,"stats":{"gp":15,"fouls":37,"ft":8,"fg":33,"pts":77,"finals":1,"gfApps":1,"wins":11,"losses":3,"draws":1,"threePt":1}}]},{"sid":"2fe68b4a","sn":"Winter 2021","regs":[{"tid":"939c359f","tn":"Mixed Bag","gid":"f6371161","gn":"Tuesday Mixed 4 - 2021 Winter","age":null,"div":null,"stats":{"gp":3,"fouls":1,"fg":5,"pts":10}}]}],"updatedAt":"2026-07-07T18:06:38.042Z","teams":[{"tid":"49d6878a","sid":"fb06d69e","status":"ACTIVE"},{"tid":"600ea5dc","sid":"2ed40819","status":"ACTIVE"},{"tid":"22a12d6b","sid":"559eb7e8","status":"COMPLETED"},{"tid":"939c359f","sid":"2fe68b4a","status":"COMPLETED"},{"tid":"4c48d6fb","sid":"2fe68b4a","status":"COMPLETED"},{"tid":"4c48d6fb","sid":"2fe68b4a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:07.059Z","records":{"maxGamePTS":{"v":22,"gameKey":"44a60ed4","sid":"2ed40819"},"maxGameThreePt":{"v":3,"gameKey":"f7c8c7d6","sid":"fb06d69e"}},"games":["04693ad1","04802283","0fa21627","254c0a9b","2fcfd165","309ab0df","32d48c8b","32d8d387","33982e1d","3c4ad3f1","4184439b","44a60ed4","49392283","54f39a23","57b902c4","5b610873","5de497f7","61f35a46","66dc5c9e","7bbc3b7c","8688712c","9fe6a37d","ae5e83e8","c063190a","c8046732","d075bef8","d5d32b9c","d5e3e9d1","de95531c","deaaa481","ee7bf3ad","f21249dd","f5f715cc","f7b7219a","f7c8c7d6"],"gameTids":{"49392283":"22a12d6b","f7b7219a":"4511fb15","428cda21":"600ea5dc","66dc5c9e":"600ea5dc","de95531c":"600ea5dc","44a60ed4":"600ea5dc","57b902c4":"600ea5dc","7bbc3b7c":"600ea5dc","ae5e83e8":"600ea5dc","706468d1":"49d6878a","d5d32b9c":"49d6878a","f7c8c7d6":"49d6878a","254c0a9b":"49d6878a","5b610873":"49d6878a","f21249dd":"49d6878a","32d8d387":"49d6878a","d5e3e9d1":"49d6878a","33982e1d":"49d6878a","deaaa481":"49d6878a","4184439b":"49d6878a","04693ad1":"22a12d6b","04802283":"22a12d6b","5de497f7":"22a12d6b","32d48c8b":"22a12d6b","2fcfd165":"22a12d6b","0fa21627":"22a12d6b","f5f715cc":"22a12d6b","c063190a":"22a12d6b","ee7bf3ad":"22a12d6b","3c4ad3f1":"22a12d6b","61f35a46":"22a12d6b","54f39a23":"22a12d6b","9fe6a37d":"22a12d6b","8688712c":"22a12d6b","d075bef8":"939c359f","309ab0df":"939c359f","c8046732":"939c359f"}}
+{
+  "uuid": "bf9966ca-54ae-4750-a700-3a912676089f",
+  "name": "caitlin sharp",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "pts": 328,
+      "fouls": 65,
+      "fg": 136,
+      "ft": 26,
+      "threePt": 10,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 22,
+      "maxGameThreePt": 3,
+      "wins": 29,
+      "losses": 16,
+      "draws": 2,
+      "winPct": 0.62,
+      "statsChecked": "2026-07-07T18:29:41.515Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2ed40819",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "600ea5dc",
+          "tn": "Moth Mums",
+          "gid": "0a224ca1",
+          "gn": "Tuesday Senior Women Open UPWEY HIGH SCHOOL STADIUM",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 8,
+            "fg": 43,
+            "threePt": 1,
+            "pts": 97,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb06d69e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "49d6878a",
+          "tn": "Courtside chaos",
+          "gid": "37c5ffec",
+          "gn": "Monday Women 3 - 2026 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 8,
+            "fg": 50,
+            "threePt": 8,
+            "pts": 132,
+            "wins": 2,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "4511fb15",
+          "stats": {
+            "gp": 1,
+            "pts": 12,
+            "fg": 5,
+            "ft": 2,
+            "fouls": 1,
+            "wins": 1
+          },
+          "gid": "c0319d95",
+          "gn": "Sunday Mixed 2 - 2026 Winter"
+        }
+      ]
+    },
+    {
+      "sid": "559eb7e8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "22a12d6b",
+          "tn": "Kahunas",
+          "gid": "04574abe",
+          "gn": "Thursday Open Women ERES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 37,
+            "ft": 8,
+            "fg": 33,
+            "threePt": 1,
+            "pts": 77,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "22a12d6b",
+          "tn": "Kahunas",
+          "gid": "74acde76",
+          "gn": "Thursday Open Women F",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 37,
+            "ft": 8,
+            "fg": 33,
+            "pts": 77,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2fe68b4a",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "939c359f",
+          "tn": "Mixed Bag",
+          "gid": "f6371161",
+          "gn": "Tuesday Mixed 4 - 2021 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 1,
+            "fg": 5,
+            "pts": 10
+          }
+        },
+        {
+          "tid": "4c48d6fb",
+          "tn": "mclovin",
+          "gid": "c43474d1",
+          "gn": "Monday Women 3 - 2021 Winter",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:38.042Z",
+  "teams": [
+    {
+      "tid": "600ea5dc",
+      "sid": "2ed40819",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "49d6878a",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4511fb15",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22a12d6b",
+      "sid": "559eb7e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "939c359f",
+      "sid": "2fe68b4a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c48d6fb",
+      "sid": "2fe68b4a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:23.156Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "44a60ed4",
+      "sid": "2ed40819"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "f7c8c7d6",
+      "sid": "fb06d69e"
+    }
+  },
+  "games": [
+    "04693ad1",
+    "04802283",
+    "0fa21627",
+    "254c0a9b",
+    "2fcfd165",
+    "309ab0df",
+    "32d48c8b",
+    "32d8d387",
+    "33982e1d",
+    "3c4ad3f1",
+    "4184439b",
+    "44a60ed4",
+    "49392283",
+    "54f39a23",
+    "57b902c4",
+    "5b610873",
+    "5de497f7",
+    "61f35a46",
+    "66dc5c9e",
+    "7bbc3b7c",
+    "8688712c",
+    "9fe6a37d",
+    "ae5e83e8",
+    "c063190a",
+    "c8046732",
+    "d075bef8",
+    "d5d32b9c",
+    "d5e3e9d1",
+    "de95531c",
+    "deaaa481",
+    "ee7bf3ad",
+    "f21249dd",
+    "f5f715cc",
+    "f7b7219a",
+    "f7c8c7d6"
+  ],
+  "gameTids": {
+    "49392283": "22a12d6b",
+    "f7b7219a": "4511fb15",
+    "428cda21": "600ea5dc",
+    "66dc5c9e": "600ea5dc",
+    "de95531c": "600ea5dc",
+    "44a60ed4": "600ea5dc",
+    "57b902c4": "600ea5dc",
+    "7bbc3b7c": "600ea5dc",
+    "ae5e83e8": "600ea5dc",
+    "706468d1": "49d6878a",
+    "d5d32b9c": "49d6878a",
+    "f7c8c7d6": "49d6878a",
+    "254c0a9b": "49d6878a",
+    "5b610873": "49d6878a",
+    "f21249dd": "49d6878a",
+    "32d8d387": "49d6878a",
+    "d5e3e9d1": "49d6878a",
+    "33982e1d": "49d6878a",
+    "deaaa481": "49d6878a",
+    "4184439b": "49d6878a",
+    "04693ad1": "22a12d6b",
+    "04802283": "22a12d6b",
+    "5de497f7": "22a12d6b",
+    "32d48c8b": "22a12d6b",
+    "2fcfd165": "22a12d6b",
+    "0fa21627": "22a12d6b",
+    "f5f715cc": "22a12d6b",
+    "c063190a": "22a12d6b",
+    "ee7bf3ad": "22a12d6b",
+    "3c4ad3f1": "22a12d6b",
+    "61f35a46": "22a12d6b",
+    "54f39a23": "22a12d6b",
+    "9fe6a37d": "22a12d6b",
+    "8688712c": "22a12d6b",
+    "d075bef8": "939c359f",
+    "309ab0df": "939c359f",
+    "c8046732": "939c359f"
+  }
+}

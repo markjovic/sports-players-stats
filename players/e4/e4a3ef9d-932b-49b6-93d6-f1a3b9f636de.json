@@ -1,1 +1,80 @@
-{"uuid":"e4a3ef9d-932b-49b6-93d6-f1a3b9f636de","name":"Rostislav Dvorak","sports":{"Basketball":{"maxGamePTS":4,"maxGameThreePt":null,"foulOuts":{},"gp":12,"pts":18,"fg":2,"fouls":3,"statsChecked":"2026-07-06T19:01:54.753Z"}},"seasons":[{"sid":"297562bc","regs":[{"tid":"a0824c84"}]},{"sid":"5593103d","regs":[{"tid":"0173da1d"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":4,"gameKey":"e78d3777","sid":"5593103d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e4a3ef9d-932b-49b6-93d6-f1a3b9f636de",
+  "name": "Rostislav Dvorak",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 12,
+      "pts": 18,
+      "fg": 2,
+      "fouls": 3,
+      "statsChecked": "2026-07-06T19:01:54.753Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "a0824c84",
+          "gid": "b23096cc",
+          "gn": "Sunday Mixed Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "regs": [
+        {
+          "tid": "0173da1d",
+          "gid": "fdf81854",
+          "gn": "Sunday Open Mixed Section 2"
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "14965ebc",
+          "tn": "TIMBERWOLVES CHIEFS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "a0824c84",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0173da1d",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "14965ebc",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "e78d3777",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:51:39.166Z"
+}

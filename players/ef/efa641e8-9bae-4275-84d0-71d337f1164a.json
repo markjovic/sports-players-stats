@@ -1,1 +1,161 @@
-{"uuid":"efa641e8-9bae-4275-84d0-71d337f1164a","name":"Daniel Song","gender":"Boys","sports":{"Basketball":{"gp":16,"pts":51,"fouls":17,"fg":13,"ft":4,"threePt":7,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":2,"losses":20,"winPct":0.09,"wins":2,"statsChecked":"2026-07-05T14:59:24.780Z"}},"seasons":[{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"af34ae59","tn":"Hornsby Ku Ring Gai Spiders U16 Boys Green","gid":"48ddb1e3","gn":"BOYS UNDER 16 A","age":null,"div":null,"stats":{"gp":5,"fouls":7,"fg":4,"threePt":4,"pts":20,"finals":1,"losses":5}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"09dd2168","tn":"Hornsby Ku Ring Gai Spiders U16 Boys Black","gid":"f7dda6e1","gn":"BOYS UNDER 16 C2","age":null,"div":"C2","stats":{"gp":5,"fouls":6,"ft":2,"fg":4,"threePt":1,"pts":13,"losses":5}}]},{"sid":"10ee56a5","regs":[{"tid":"38b5d004","stats":{"wins":1,"losses":5,"finals":1,"gp":6,"pts":18,"fg":5,"ft":2,"threePt":2,"fouls":4}},{"tid":"38b5d004","tn":"","gid":"e008f218","gn":"U18 Boys NJC","div":null,"stats":{"gp":6,"pts":18,"fg":5,"ft":2,"threePt":2,"fouls":4,"wins":1,"losses":5}}]}],"updatedAt":"2026-07-04T05:35:20.857Z","teams":[{"tid":"38b5d004","sid":"10ee56a5","status":"UPCOMING"},{"tid":"af34ae59","sid":"8630ad4c","status":"COMPLETED"},{"tid":"af34ae59","sid":"8630ad4c","status":"COMPLETED"},{"tid":"09dd2168","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:53:53.248Z","games":["0070ffcb","0ecf8a84","153b6856","17f6052f","19dbe057","3da1c740","3e2c551a","514c81e7","52c4c672","5c22b204","691a6544","b0c6c0dd","b3552292","b826b9df","d9f3393a","e392d642"],"records":{"maxGamePTS":{"v":9,"gameKey":"0070ffcb","sid":"1b51c73f"},"maxGameThreePt":{"v":2,"gameKey":"3e2c551a","sid":"8630ad4c"}}}
+{
+  "uuid": "efa641e8-9bae-4275-84d0-71d337f1164a",
+  "name": "Daniel Song",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 51,
+      "fouls": 17,
+      "fg": 13,
+      "ft": 4,
+      "threePt": 7,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 2,
+      "losses": 20,
+      "winPct": 0.09,
+      "wins": 2,
+      "statsChecked": "2026-07-05T14:59:24.780Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "af34ae59",
+          "tn": "Hornsby Ku Ring Gai Spiders U16 Boys Green",
+          "gid": "48ddb1e3",
+          "gn": "BOYS UNDER 16 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "fg": 4,
+            "threePt": 4,
+            "pts": 20,
+            "finals": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "09dd2168",
+          "tn": "Hornsby Ku Ring Gai Spiders U16 Boys Black",
+          "gid": "f7dda6e1",
+          "gn": "BOYS UNDER 16 C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 4,
+            "threePt": 1,
+            "pts": 13,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "38b5d004",
+          "stats": {
+            "wins": 1,
+            "losses": 5,
+            "finals": 1,
+            "gp": 6,
+            "pts": 18,
+            "fg": 5,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 4
+          },
+          "gid": "e008f218",
+          "gn": "U18 Boys NJC"
+        },
+        {
+          "tid": "38b5d004",
+          "tn": "",
+          "gid": "e008f218",
+          "gn": "U18 Boys NJC",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 18,
+            "fg": 5,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:20.857Z",
+  "teams": [
+    {
+      "tid": "af34ae59",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "09dd2168",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "38b5d004",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:50.750Z",
+  "games": [
+    "0070ffcb",
+    "0ecf8a84",
+    "153b6856",
+    "17f6052f",
+    "19dbe057",
+    "3da1c740",
+    "3e2c551a",
+    "514c81e7",
+    "52c4c672",
+    "5c22b204",
+    "691a6544",
+    "b0c6c0dd",
+    "b3552292",
+    "b826b9df",
+    "d9f3393a",
+    "e392d642"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "0070ffcb",
+      "sid": "1b51c73f"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "3e2c551a",
+      "sid": "8630ad4c"
+    }
+  }
+}

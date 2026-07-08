@@ -1,1 +1,144 @@
-{"uuid":"7560dc4b-1bf9-4052-9121-136299db4ef4","name":"2021","gender":null,"sports":{"Basketball":{"gp":18,"pts":25,"fouls":5,"fg":11,"ft":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"losses":4,"winPct":0,"statsChecked":"2026-07-05T15:49:27.285Z"}},"seasons":[{"sid":"259baa34","sn":"2021","club":"Mansfield Eagles Basketball Club","regs":[{"tid":"72148fdd","tn":"Mansfield Eagles U14 Girls 2","gid":"39e9e000","gn":"U14 Girls 1","stats":{"gp":3,"pts":3,"ft":1,"losses":3}}]},{"sid":"71923b80","sn":"2020","club":"Mansfield Eagles Basketball Club","regs":[{"tid":"10202306","tn":"Eagles 14 Girls Konig","gid":"1c11813c","gn":"U14 Girls","stats":{"gp":1,"losses":1}}]},{"sid":"ac7d978e","sn":"Spring 2020","club":null,"regs":[{"tid":"7522e756","tn":"Suns","gid":"1ceaf313","gn":"U14 Girls","stats":{"gp":14,"pts":22,"fouls":5,"fg":11,"finals":1,"gfApps":1}}]}],"updatedAt":"2026-06-11T23:41:19.221Z","records":{"maxGamePTS":{"v":6,"gameKey":"df9ec547","sid":"ac7d978e"},"maxGameThreePt":{"v":null}},"games":["01d0e2f1","07146f6a","1cc823d9","21598a62","27efab53","64b1edbe","668f6329","6da6e812","7afeebdb","808fa363","8c8b8086","a7827ed8","b2c14ecc","c4faf17b","d53b13cd","df9ec547","e3c67cfe","f05176e9"]}
+{
+  "uuid": "7560dc4b-1bf9-4052-9121-136299db4ef4",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 25,
+      "fouls": 5,
+      "fg": 11,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "losses": 4,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:49:27.285Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "259baa34",
+      "sn": "2021",
+      "club": "Mansfield Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "72148fdd",
+          "tn": "Mansfield Eagles U14 Girls 2",
+          "gid": "39e9e000",
+          "gn": "U14 Girls 1",
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "ft": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "71923b80",
+      "sn": "2020",
+      "club": "Mansfield Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "10202306",
+          "tn": "Eagles 14 Girls Konig",
+          "gid": "1c11813c",
+          "gn": "U14 Girls",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "b4b41ca4",
+          "tn": "Eagles 16 Girls Murray",
+          "gid": "f0775e57",
+          "gn": "U16 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ac7d978e",
+      "sn": "Spring 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7522e756",
+          "tn": "Suns",
+          "gid": "1ceaf313",
+          "gn": "U14 Girls",
+          "stats": {
+            "gp": 14,
+            "pts": 22,
+            "fouls": 5,
+            "fg": 11,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:19.221Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "df9ec547",
+      "sid": "ac7d978e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01d0e2f1",
+    "07146f6a",
+    "1cc823d9",
+    "21598a62",
+    "27efab53",
+    "64b1edbe",
+    "668f6329",
+    "6da6e812",
+    "7afeebdb",
+    "808fa363",
+    "8c8b8086",
+    "a7827ed8",
+    "b2c14ecc",
+    "c4faf17b",
+    "d53b13cd",
+    "df9ec547",
+    "e3c67cfe",
+    "f05176e9"
+  ],
+  "teams": [
+    {
+      "tid": "72148fdd",
+      "sid": "259baa34",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "10202306",
+      "sid": "71923b80",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4b41ca4",
+      "sid": "71923b80",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7522e756",
+      "sid": "ac7d978e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:01.067Z"
+}

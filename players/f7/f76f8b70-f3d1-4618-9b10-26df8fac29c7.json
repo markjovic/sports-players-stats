@@ -1,1 +1,195 @@
-{"uuid":"f76f8b70-f3d1-4618-9b10-26df8fac29c7","name":"Mia Courtie","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":1,"foulOuts":{},"gp":57,"pts":270,"fg":124,"ft":19,"threePt":1,"fouls":70,"statsChecked":"2026-07-06T19:02:23.824Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"b48d2ae9"}]},{"sid":"19363f85","regs":[{"tid":"1c993d47"}]},{"sid":"b0112e07","regs":[{"tid":"a600f47d"}]},{"sid":"f0dbb83e","regs":[{"tid":"9f5b5edb"}]},{"sid":"b795df4b","regs":[{"tid":"e21a462e"}]},{"sid":"cb6167fe","regs":[{"tid":"2088bf5c"},{"tid":"9bbc25aa"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","gameTids":{"11398678":"9f5b5edb","2fc9aa0f":"b48d2ae9","faf56de9":"1c993d47","f35ef5e9":"1c993d47","b3e17217":"1c993d47","28d4e5ba":"1c993d47","0ddede29":"1c993d47","5c57d5c1":"1c993d47","02de8bf1":"1c993d47","2a58fcd8":"1c993d47","d3913984":"1c993d47","cceb98dd":"1c993d47","388e8a0a":"1c993d47","0ee89fb0":"1c993d47","1e513dae":"1c993d47","f2c1fb77":"a600f47d","a05758cc":"a600f47d","e11622fd":"a600f47d","de8f71c8":"a600f47d","f5b40991":"a600f47d","eac2a68a":"a600f47d","007aa74a":"a600f47d","fd63033b":"a600f47d","3edc5723":"a600f47d","522eb005":"a600f47d","d860ac66":"9f5b5edb","5ff4d5ce":"9f5b5edb","a99845c9":"9f5b5edb","233b1b62":"9f5b5edb","ee98048b":"9f5b5edb","19be6412":"9f5b5edb","cd5388b8":"9f5b5edb","5b6fea7d":"9f5b5edb","7bda74d8":"9f5b5edb","f16f228e":"9f5b5edb","2df3aaec":"9f5b5edb","45a831ce":"9f5b5edb","8a36a92c":"9f5b5edb","ee7e9fdb":"9f5b5edb","8ba17f93":"e21a462e","68d26492":"e21a462e","fbe8ebf7":"e21a462e","3c8cafee":"e21a462e","b86199cf":"e21a462e","1703c1ae":"e21a462e","4b4ddbab":"2088bf5c","0783cb46":"9bbc25aa","cd6f19fa":"9bbc25aa","198551e5":"9bbc25aa","5c8b9197":"9bbc25aa","e83cea40":"9bbc25aa","cc95e5a5":"9bbc25aa","b785df51":"9bbc25aa","038ae163":"9bbc25aa","123b5259":"9bbc25aa","4ea56ab5":"9bbc25aa","4faeedd6":"9bbc25aa"},"records":{"maxGamePTS":{"v":15,"gameKey":"45a831ce","sid":"f0dbb83e"},"maxGameThreePt":{"v":1,"gameKey":"3c8cafee","sid":"b795df4b"}}}
+{
+  "uuid": "f76f8b70-f3d1-4618-9b10-26df8fac29c7",
+  "name": "Mia Courtie",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 57,
+      "pts": 270,
+      "fg": 124,
+      "ft": 19,
+      "threePt": 1,
+      "fouls": 70,
+      "statsChecked": "2026-07-06T19:02:23.824Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "b48d2ae9",
+          "gid": "a13d004d",
+          "gn": "Monday Open Women A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "19363f85",
+      "regs": [
+        {
+          "tid": "1c993d47",
+          "gid": "8659f199",
+          "gn": "Monday U18 Girls B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b0112e07",
+      "regs": [
+        {
+          "tid": "a600f47d",
+          "gid": "86e49764",
+          "gn": "Monday U18 Girls B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "f0dbb83e",
+      "regs": [
+        {
+          "tid": "9f5b5edb",
+          "gid": "0f884f14",
+          "gn": "Monday U18 Girls C2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b795df4b",
+      "regs": [
+        {
+          "tid": "e21a462e",
+          "gid": "d283d2a0",
+          "gn": "Wednesday U16 Girls D Grade"
+        }
+      ]
+    },
+    {
+      "sid": "cb6167fe",
+      "regs": [
+        {
+          "tid": "2088bf5c",
+          "gid": "9bc6b435",
+          "gn": "Wednesday U16 Girls C1 Grade"
+        },
+        {
+          "tid": "9bbc25aa",
+          "gid": "7e9261df",
+          "gn": "Wednesday U16 Girls D1 Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "b48d2ae9",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1c993d47",
+      "sid": "19363f85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a600f47d",
+      "sid": "b0112e07",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9f5b5edb",
+      "sid": "f0dbb83e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e21a462e",
+      "sid": "b795df4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2088bf5c",
+      "sid": "cb6167fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9bbc25aa",
+      "sid": "cb6167fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "gameTids": {
+    "11398678": "9f5b5edb",
+    "2fc9aa0f": "b48d2ae9",
+    "faf56de9": "1c993d47",
+    "f35ef5e9": "1c993d47",
+    "b3e17217": "1c993d47",
+    "28d4e5ba": "1c993d47",
+    "0ddede29": "1c993d47",
+    "5c57d5c1": "1c993d47",
+    "02de8bf1": "1c993d47",
+    "2a58fcd8": "1c993d47",
+    "d3913984": "1c993d47",
+    "cceb98dd": "1c993d47",
+    "388e8a0a": "1c993d47",
+    "0ee89fb0": "1c993d47",
+    "1e513dae": "1c993d47",
+    "f2c1fb77": "a600f47d",
+    "a05758cc": "a600f47d",
+    "e11622fd": "a600f47d",
+    "de8f71c8": "a600f47d",
+    "f5b40991": "a600f47d",
+    "eac2a68a": "a600f47d",
+    "007aa74a": "a600f47d",
+    "fd63033b": "a600f47d",
+    "3edc5723": "a600f47d",
+    "522eb005": "a600f47d",
+    "d860ac66": "9f5b5edb",
+    "5ff4d5ce": "9f5b5edb",
+    "a99845c9": "9f5b5edb",
+    "233b1b62": "9f5b5edb",
+    "ee98048b": "9f5b5edb",
+    "19be6412": "9f5b5edb",
+    "cd5388b8": "9f5b5edb",
+    "5b6fea7d": "9f5b5edb",
+    "7bda74d8": "9f5b5edb",
+    "f16f228e": "9f5b5edb",
+    "2df3aaec": "9f5b5edb",
+    "45a831ce": "9f5b5edb",
+    "8a36a92c": "9f5b5edb",
+    "ee7e9fdb": "9f5b5edb",
+    "8ba17f93": "e21a462e",
+    "68d26492": "e21a462e",
+    "fbe8ebf7": "e21a462e",
+    "3c8cafee": "e21a462e",
+    "b86199cf": "e21a462e",
+    "1703c1ae": "e21a462e",
+    "4b4ddbab": "2088bf5c",
+    "0783cb46": "9bbc25aa",
+    "cd6f19fa": "9bbc25aa",
+    "198551e5": "9bbc25aa",
+    "5c8b9197": "9bbc25aa",
+    "e83cea40": "9bbc25aa",
+    "cc95e5a5": "9bbc25aa",
+    "b785df51": "9bbc25aa",
+    "038ae163": "9bbc25aa",
+    "123b5259": "9bbc25aa",
+    "4ea56ab5": "9bbc25aa",
+    "4faeedd6": "9bbc25aa"
+  },
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "45a831ce",
+      "sid": "f0dbb83e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3c8cafee",
+      "sid": "b795df4b"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:52:09.324Z"
+}

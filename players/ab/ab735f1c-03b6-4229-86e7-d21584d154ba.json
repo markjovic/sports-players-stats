@@ -1,1 +1,98 @@
-{"uuid":"ab735f1c-03b6-4229-86e7-d21584d154ba","name":"Reagan Tandog","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":17,"fouls":3,"fg":7,"ft":3,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":3,"losses":5,"winPct":0.38,"statsChecked":"2026-07-05T14:43:43.407Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"0f6668ca","tn":"Norths Bears U12 Boys White","gid":"d0b77b54","gn":"BOYS UNDER 12 C2","age":null,"div":"C2","stats":{"gp":5,"fouls":2,"ft":2,"fg":3,"pts":8,"wins":3,"losses":2}}]},{"sid":"0869ea69","regs":[{"tid":"0fd268b0","stats":{"losses":3,"gp":3,"pts":9,"fg":4,"ft":1,"fouls":1}}]}],"updatedAt":"2026-05-31T01:01:57.056Z","teams":[{"tid":"0fd268b0","sid":"0869ea69","status":"UPCOMING"},{"tid":"0f6668ca","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:34:20.401Z","games":["0fc3ff62","517752e2","6fdbaa6f","8e1df570","963ba067","a9207e16","b6c6a6b0","df7ede5c"],"records":{"maxGamePTS":{"v":8,"gameKey":"df7ede5c","sid":"0869ea69"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ab735f1c-03b6-4229-86e7-d21584d154ba",
+  "name": "Reagan Tandog",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 17,
+      "fouls": 3,
+      "fg": 7,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 5,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T14:43:43.407Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "0f6668ca",
+          "tn": "Norths Bears U12 Boys White",
+          "gid": "d0b77b54",
+          "gn": "BOYS UNDER 12 C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 3,
+            "pts": 8,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "0fd268b0",
+          "stats": {
+            "losses": 3,
+            "gp": 3,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 1
+          },
+          "gid": "91b9209a",
+          "gn": "BOYS UNDER 12 B3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:01:57.056Z",
+  "teams": [
+    {
+      "tid": "0f6668ca",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0fd268b0",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:31.960Z",
+  "games": [
+    "0fc3ff62",
+    "517752e2",
+    "6fdbaa6f",
+    "8e1df570",
+    "963ba067",
+    "a9207e16",
+    "b6c6a6b0",
+    "df7ede5c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "df7ede5c",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

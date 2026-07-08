@@ -1,1 +1,353 @@
-{"uuid":"f2ce0619-f805-4384-a6af-04b8c1fca3f5","name":"Cameron James","gender":"Men","sports":{"Basketball":{"gp":23,"pts":199,"fouls":27,"fg":38,"ft":16,"threePt":21,"foulOuts":{"ffd608b6":1},"maxGamePTS":19,"maxGameThreePt":4,"wins":14,"losses":6,"winPct":0.7,"statsChecked":"2026-07-05T14:59:36.458Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"e59cb74a","tn":"Kegs","gid":"9d01aa3e","gn":"Wednesday Open Men Section 3","age":"Senior","div":null,"stats":{"gp":11,"fouls":10,"ft":8,"fg":13,"threePt":4,"pts":90,"wins":7,"losses":3}},{"tid":"e59cb74a","tn":"Kegs","gid":"2d576243","gn":"Wednesday Open Men Section 4","age":"Senior","div":null,"stats":{"gp":11,"fouls":10,"pts":90,"wins":7,"losses":3,"fg":13,"ft":8,"threePt":4}}]},{"sid":"ffd608b6","sn":"Winter 2023","regs":[{"tid":"ccb8ba98","tn":"Annies","gid":"2ff7e761","gn":"Sunday Men Section 3","age":null,"div":null,"stats":{"gp":12,"fouls":17,"ft":8,"fg":25,"threePt":17,"pts":109,"foulOuts":1}},{"tid":"ccb8ba98","tn":"Annies","gid":"b17caaf9","gn":"Sunday Men Section 6","age":null,"div":null,"stats":{"gp":12,"fg":25,"pts":109,"ft":8,"threePt":17,"fouls":17}},{"tid":"ccb8ba98","tn":"Annies","gid":"144badd4","gn":"Sunday Men Section 5","age":null,"div":null,"stats":{"gp":12,"fouls":17,"ft":8,"fg":25,"threePt":17,"pts":109}}]}],"updatedAt":"2026-07-04T05:42:51.699Z","teams":[{"tid":"e59cb74a","sid":"5593103d","status":"ACTIVE"},{"tid":"5c324d14","sid":"fab2be4d","status":"COMPLETED"},{"tid":"70c86184","sid":"5944effa","status":"COMPLETED"},{"tid":"f777efd2","sid":"348dbfb8","status":"COMPLETED"},{"tid":"dd76f9d3","sid":"9358e51a","status":"COMPLETED"},{"tid":"ccb8ba98","sid":"ffd608b6","status":"COMPLETED"},{"tid":"2436bc7e","sid":"d3d4e181","status":"COMPLETED"},{"tid":"6e219bbb","sid":"21cd9648","status":"COMPLETED"},{"tid":"6ef7cdf3","sid":"d4cbf787","status":"COMPLETED"},{"tid":"fffcbc81","sid":"d64fcfce","status":"COMPLETED"},{"tid":"d918fc06","sid":"afd26581","status":"COMPLETED"},{"tid":"053c5ccb","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:32.079Z","records":{"maxGamePTS":{"v":19,"gameKey":"b45bcd95","sid":"ffd608b6"},"maxGameThreePt":{"v":4,"gameKey":"b45bcd95","sid":"ffd608b6"}},"games":["03a8e2e3","08efead3","094b2e20","0b47de8c","150c274f","22e57b3e","474d4512","4ddea81c","595925e8","5d1d6f2a","71133108","825ee945","97d7825d","a45305de","b21a9607","b45bcd95","bf850558","c0792638","cd82ebe3","e54160b2","e9005220","ee65ed8c"]}
+{
+  "uuid": "f2ce0619-f805-4384-a6af-04b8c1fca3f5",
+  "name": "Cameron James",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 199,
+      "fouls": 27,
+      "fg": 38,
+      "ft": 16,
+      "threePt": 21,
+      "foulOuts": {
+        "ffd608b6": 1
+      },
+      "maxGamePTS": 19,
+      "maxGameThreePt": 4,
+      "wins": 14,
+      "losses": 6,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T14:59:36.458Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e59cb74a",
+          "tn": "Kegs",
+          "gid": "9d01aa3e",
+          "gn": "Wednesday Open Men Section 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 10,
+            "ft": 8,
+            "fg": 13,
+            "threePt": 4,
+            "pts": 90,
+            "wins": 7,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "e59cb74a",
+          "tn": "Kegs",
+          "gid": "2d576243",
+          "gn": "Wednesday Open Men Section 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 10,
+            "pts": 90,
+            "wins": 7,
+            "losses": 3,
+            "fg": 13,
+            "ft": 8,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ffd608b6",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "ccb8ba98",
+          "tn": "Annies",
+          "gid": "2ff7e761",
+          "gn": "Sunday Men Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "ft": 8,
+            "fg": 25,
+            "threePt": 17,
+            "pts": 109,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "ccb8ba98",
+          "tn": "Annies",
+          "gid": "b17caaf9",
+          "gn": "Sunday Men Section 6",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fg": 25,
+            "pts": 109,
+            "ft": 8,
+            "threePt": 17,
+            "fouls": 17
+          }
+        },
+        {
+          "tid": "ccb8ba98",
+          "tn": "Annies",
+          "gid": "144badd4",
+          "gn": "Sunday Men Section 5",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "ft": 8,
+            "fg": 25,
+            "threePt": 17,
+            "pts": 109
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "5c324d14",
+          "tn": "Kegs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "70c86184",
+          "tn": "Kegs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "f777efd2",
+          "tn": "Kegs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "dd76f9d3",
+          "tn": "Kegs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "2436bc7e",
+          "tn": "Kegs",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "6e219bbb",
+          "tn": "Kegs",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "6ef7cdf3",
+          "tn": "Kegs",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "fffcbc81",
+          "tn": "Kegs",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "d918fc06",
+          "tn": "Kegs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "053c5ccb",
+          "tn": "Hawthorn U21 Boys 1",
+          "gid": "0bbc2cce",
+          "gn": "U21 Men VC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:42:51.699Z",
+  "teams": [
+    {
+      "tid": "e59cb74a",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ccb8ba98",
+      "sid": "ffd608b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c324d14",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70c86184",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f777efd2",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd76f9d3",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2436bc7e",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e219bbb",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ef7cdf3",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fffcbc81",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d918fc06",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "053c5ccb",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:00.607Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "b45bcd95",
+      "sid": "ffd608b6"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "b45bcd95",
+      "sid": "ffd608b6"
+    }
+  },
+  "games": [
+    "03a8e2e3",
+    "08efead3",
+    "094b2e20",
+    "0b47de8c",
+    "150c274f",
+    "22e57b3e",
+    "474d4512",
+    "4ddea81c",
+    "595925e8",
+    "5d1d6f2a",
+    "71133108",
+    "825ee945",
+    "97d7825d",
+    "a45305de",
+    "b21a9607",
+    "b45bcd95",
+    "bf850558",
+    "c0792638",
+    "cd82ebe3",
+    "e54160b2",
+    "e9005220",
+    "ee65ed8c"
+  ]
+}

@@ -1,1 +1,349 @@
-{"uuid":"b674449d-1510-4041-aded-bd0a48762b30","name":"Nimna Amunugama","gender":"Mixed","sports":{"Basketball":{"gp":56,"pts":72,"fouls":32,"fg":34,"ft":4,"foulOuts":{},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":16,"maxGameThreePt":null,"wins":21,"losses":42,"draws":5,"winPct":0.31,"statsChecked":"2026-07-05T15:50:55.358Z"}},"seasons":[{"sid":"20951a3c","sn":"Winter 2023","regs":[{"tid":"db65e789","tn":"1 UP","gid":"d5f02032","gn":"Sunday Senior Mixed A/B","age":"Senior","div":null,"stats":{"gp":10,"fouls":6,"fg":3,"pts":6,"wins":2,"losses":7,"draws":1}},{"tid":"db65e789","tn":"1 UP","gid":"d4b386de","gn":"Sunday Senior Mixed Grading","age":"Senior","div":null,"stats":{"gp":10,"fouls":6,"fg":3,"pts":6,"wins":2,"losses":7,"draws":1}}]},{"sid":"f55ccf1c","sn":"Summer 2022/23","regs":[{"tid":"f6de7c49","tn":"1 UP","gid":"8eb438b0","gn":"Sunday Senior Mixed A/B","age":"Senior","div":null,"stats":{"gp":7,"fouls":2,"ft":1,"fg":7,"pts":15,"wins":1,"losses":5}},{"tid":"f6de7c49","tn":"1 UP","gid":"81f8d1e9","gn":"Sunday Senior Mixed B","age":"Senior","div":null,"stats":{"gp":7,"fg":7,"pts":15,"wins":1,"losses":5,"ft":1,"fouls":2}}]},{"sid":"6298b730","sn":"Winter 2022","regs":[{"tid":"2f1c9111","tn":"1 UP","gid":"5a81b2f4","gn":"Sunday Senior Mixed A/B","age":"Senior","div":null,"stats":{"gp":13,"fouls":5,"ft":1,"fg":6,"pts":13,"finals":1,"wins":5,"losses":6,"draws":1}},{"tid":"2f1c9111","tn":"1 UP","gid":"025b4523","gn":"Sunday Senior Mixed B","age":"Senior","div":null,"stats":{"gp":13,"fouls":5,"fg":6,"pts":13,"finals":1,"wins":5,"losses":6,"draws":1,"ft":1}},{"tid":"2f1c9111","tn":"1 UP","gid":"887a0a7c","gn":"Sunday Senior Mixed D","age":"Senior","div":null,"stats":{"gp":13,"fg":6,"pts":13,"finals":1,"wins":5,"losses":6,"draws":1,"ft":1,"fouls":5}}]},{"sid":"7f05c882","sn":"Summer 2021/22","regs":[{"tid":"e2da15c0","tn":"1 UP","gid":"b403a7eb","gn":"Sunday Senior Mixed D","age":"Senior","div":null,"stats":{"gp":11,"fouls":9,"ft":1,"fg":15,"pts":31}},{"tid":"e2da15c0","tn":"1 UP","gid":"0d4061f4","gn":"Sunday Senior Mixed C","age":"Senior","div":null,"stats":{"gp":11,"fouls":9,"pts":31,"fg":15,"ft":1}}]},{"sid":"bd81ae06","sn":"Winter 2021","regs":[{"tid":"039d4879","tn":"1 UP","gid":"4b4b1be6","gn":"Sunday Senior Mixed D","age":"Senior","div":null,"stats":{"gp":2,"fouls":3,"ft":1,"pts":1}}]},{"sid":"a163b55e","sn":"Summer 2020/21","regs":[{"tid":"e347cd72","tn":"1 UP","gid":"82d47697","gn":"Sunday Open Mixed E","age":"Senior","div":null,"stats":{"gp":13,"fouls":7,"fg":3,"pts":6,"finals":1,"gfApps":1}}]}],"updatedAt":"2026-06-03T00:03:05.643Z","teams":[{"tid":"db65e789","sid":"20951a3c","status":"COMPLETED"},{"tid":"f6de7c49","sid":"f55ccf1c","status":"COMPLETED"},{"tid":"2f1c9111","sid":"6298b730","status":"COMPLETED"},{"tid":"e2da15c0","sid":"7f05c882","status":"COMPLETED"},{"tid":"039d4879","sid":"bd81ae06","status":"COMPLETED"},{"tid":"e347cd72","sid":"a163b55e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:33.583Z","games":["01ef4bce","0570f21d","0aa212ef","0e721644","1319bcfd","146b321f","1a9bd90e","213db216","25884ae0","30c2536f","3214bf32","3863887f","479125e4","54965ac9","5a9b9c45","6ece3c0c","731d8ec0","863753f2","910b7e3d","957566ef","9a91bc14","a1a29d37","a68b5705","a6b869a0","aa5f8b1b","af77178a","b0846cdf","b392e035","b4aa5d34","b7e5f044","b8aa19ea","ba049087","bccc595b","bd6b1a1e","c3e3d8c1","c8c0e03c","ca7d090d","cc1d55a0","d572b998","d7f39d73","d86bea08","d9c6c017","da5455a2","dc3c5e91","de81470b","e3378c0a","e4ae8991","e9f8629b","edb12703","efca9f3d","f215783b","f3c4c3f9","faf0ad0e","fd186d68"],"records":{"maxGamePTS":{"v":16,"gameKey":"f3c4c3f9","sid":"7f05c882"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "b674449d-1510-4041-aded-bd0a48762b30",
+  "name": "Nimna Amunugama",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 56,
+      "pts": 72,
+      "fouls": 32,
+      "fg": 34,
+      "ft": 4,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 21,
+      "losses": 42,
+      "draws": 5,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T15:50:55.358Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "20951a3c",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "db65e789",
+          "tn": "1 UP",
+          "gid": "d5f02032",
+          "gn": "Sunday Senior Mixed A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "fg": 3,
+            "pts": 6,
+            "wins": 2,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "db65e789",
+          "tn": "1 UP",
+          "gid": "d4b386de",
+          "gn": "Sunday Senior Mixed Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "fg": 3,
+            "pts": 6,
+            "wins": 2,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f55ccf1c",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "f6de7c49",
+          "tn": "1 UP",
+          "gid": "8eb438b0",
+          "gn": "Sunday Senior Mixed A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "wins": 1,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "f6de7c49",
+          "tn": "1 UP",
+          "gid": "81f8d1e9",
+          "gn": "Sunday Senior Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 7,
+            "pts": 15,
+            "wins": 1,
+            "losses": 5,
+            "ft": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6298b730",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "2f1c9111",
+          "tn": "1 UP",
+          "gid": "5a81b2f4",
+          "gn": "Sunday Senior Mixed A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 5,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2f1c9111",
+          "tn": "1 UP",
+          "gid": "025b4523",
+          "gn": "Sunday Senior Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 5,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 5,
+            "losses": 6,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "2f1c9111",
+          "tn": "1 UP",
+          "gid": "887a0a7c",
+          "gn": "Sunday Senior Mixed D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 5,
+            "losses": 6,
+            "draws": 1,
+            "ft": 1,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7f05c882",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "e2da15c0",
+          "tn": "1 UP",
+          "gid": "b403a7eb",
+          "gn": "Sunday Senior Mixed D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 15,
+            "pts": 31
+          }
+        },
+        {
+          "tid": "e2da15c0",
+          "tn": "1 UP",
+          "gid": "0d4061f4",
+          "gn": "Sunday Senior Mixed C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "pts": 31,
+            "fg": 15,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bd81ae06",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "039d4879",
+          "tn": "1 UP",
+          "gid": "9a6688cd",
+          "gn": "Sunday Senior Mixed E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "ft": 1,
+            "pts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a163b55e",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "e347cd72",
+          "tn": "1 UP",
+          "gid": "82d47697",
+          "gn": "Sunday Open Mixed E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "fg": 3,
+            "pts": 6,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T00:03:05.643Z",
+  "teams": [
+    {
+      "tid": "db65e789",
+      "sid": "20951a3c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6de7c49",
+      "sid": "f55ccf1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f1c9111",
+      "sid": "6298b730",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e2da15c0",
+      "sid": "7f05c882",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "039d4879",
+      "sid": "bd81ae06",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e347cd72",
+      "sid": "a163b55e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:44.809Z",
+  "games": [
+    "01ef4bce",
+    "0570f21d",
+    "0aa212ef",
+    "0e721644",
+    "1319bcfd",
+    "146b321f",
+    "1a9bd90e",
+    "213db216",
+    "25884ae0",
+    "30c2536f",
+    "3214bf32",
+    "3863887f",
+    "479125e4",
+    "54965ac9",
+    "5a9b9c45",
+    "6ece3c0c",
+    "731d8ec0",
+    "863753f2",
+    "910b7e3d",
+    "957566ef",
+    "9a91bc14",
+    "a1a29d37",
+    "a68b5705",
+    "a6b869a0",
+    "aa5f8b1b",
+    "af77178a",
+    "b0846cdf",
+    "b392e035",
+    "b4aa5d34",
+    "b7e5f044",
+    "b8aa19ea",
+    "ba049087",
+    "bccc595b",
+    "bd6b1a1e",
+    "c3e3d8c1",
+    "c8c0e03c",
+    "ca7d090d",
+    "cc1d55a0",
+    "d572b998",
+    "d7f39d73",
+    "d86bea08",
+    "d9c6c017",
+    "da5455a2",
+    "dc3c5e91",
+    "de81470b",
+    "e3378c0a",
+    "e4ae8991",
+    "e9f8629b",
+    "edb12703",
+    "efca9f3d",
+    "f215783b",
+    "f3c4c3f9",
+    "faf0ad0e",
+    "fd186d68"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "f3c4c3f9",
+      "sid": "7f05c882"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

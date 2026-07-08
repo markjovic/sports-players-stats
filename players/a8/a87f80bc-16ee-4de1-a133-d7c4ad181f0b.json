@@ -1,1 +1,99 @@
-{"uuid":"a87f80bc-16ee-4de1-a133-d7c4ad181f0b","name":"Aslan Tok","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":9,"fouls":12,"fg":4,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":8,"winPct":0.11,"statsChecked":"2026-07-05T14:29:35.471Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"ea6b73e8","tn":"Hills Hornets U12 Boys White","gid":"cc17d0ce","gn":"BOYS UNDER 12 C3","age":null,"div":"C3","stats":{"gp":5,"fouls":5,"fg":1,"pts":2,"wins":1,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"b356199e","stats":{"losses":5,"gp":5,"pts":7,"fg":3,"ft":1,"fouls":7}}]}],"updatedAt":"2026-05-31T01:02:08.476Z","teams":[{"tid":"b356199e","sid":"0869ea69","status":"UPCOMING"},{"tid":"ea6b73e8","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:17.285Z","records":{"maxGamePTS":{"v":2,"gameKey":"8785d265","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["1512b4a2","4e038ae6","6faae35d","7e088b75","80cc5a00","8785d265","91c0bbed","aa592cf0","b0862d54","b966749f"]}
+{
+  "uuid": "a87f80bc-16ee-4de1-a133-d7c4ad181f0b",
+  "name": "Aslan Tok",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 9,
+      "fouls": 12,
+      "fg": 4,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 8,
+      "winPct": 0.11,
+      "statsChecked": "2026-07-05T14:29:35.471Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "ea6b73e8",
+          "tn": "Hills Hornets U12 Boys White",
+          "gid": "cc17d0ce",
+          "gn": "BOYS UNDER 12 C3",
+          "age": null,
+          "div": "C3",
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "b356199e",
+          "stats": {
+            "losses": 5,
+            "gp": 5,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1,
+            "fouls": 7
+          },
+          "gid": "b54cb229",
+          "gn": "BOYS UNDER 12 A"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:02:08.476Z",
+  "teams": [
+    {
+      "tid": "ea6b73e8",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b356199e",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:28.992Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "8785d265",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1512b4a2",
+    "4e038ae6",
+    "6faae35d",
+    "7e088b75",
+    "80cc5a00",
+    "8785d265",
+    "91c0bbed",
+    "aa592cf0",
+    "b0862d54",
+    "b966749f"
+  ]
+}

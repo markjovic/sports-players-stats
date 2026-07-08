@@ -1,1 +1,437 @@
-{"uuid":"d7a6733c-7a4a-442c-8c25-0c8e192e16fb","name":"2022","gender":null,"sports":{"Basketball":{"gp":28,"pts":18,"fouls":35,"fg":6,"ft":6,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":8,"losses":14,"winPct":0.36,"statsChecked":"2026-07-05T16:23:36.933Z"}},"seasons":[{"sid":"a48d8524","sn":"2022","club":null,"regs":[{"tid":"1be53d58","tn":"Waverley Falcons U16 Boys 4","gid":"9f6a63ed","gn":"BOYS UNDER 16 C2","stats":{"gp":5,"pts":7,"fouls":9,"fg":3,"ft":1}}]},{"sid":"b387bcd4","sn":"2022","club":"Waverley Falcons Basketball Club","regs":[{"tid":"0d10abcb","tn":"Waverley U16 Boys 4","gid":"9a29de84","gn":"16 Boys - VJL7 (P2)","stats":{"gp":12,"pts":3,"fouls":13,"fg":1,"wins":4,"losses":6,"ft":1}},{"tid":"0d10abcb","tn":"Waverley U16 Boys 4","gid":"0b5891a5","gn":"U16 Boys Grading 1 - Pool 7C","stats":{"gp":12,"pts":3,"fouls":13,"ft":1,"wins":4,"losses":6,"fg":1}}]},{"sid":"ceb7a2f2","sn":"2021","club":null,"regs":[{"tid":"760f5b54","tn":"Waverley U16 Boys 4","gid":"ef4d25bb","gn":"U16 Boys Division 2","stats":{"gp":2,"fouls":3,"losses":2}}]},{"sid":"a5dfc5c1","sn":"2021","club":"~[ARCHIVED] Melbourne Tigers Boys","regs":[{"tid":"6a23d82b","tn":"Melbourne U16 Boys 9","gid":"798b0a6a","gn":"16 Boys - VJL10 (P3)","stats":{"gp":9,"pts":8,"fouls":10,"ft":4,"fg":2}},{"tid":"6a23d82b","tn":"Melbourne U16 Boys 9","gid":"905e17bc","gn":"U16B Crossover 2 - VJL","stats":{"gp":9,"pts":8,"fouls":10,"fg":2,"ft":4}},{"tid":"6a23d82b","tn":"Melbourne U16 Boys 9","gid":"45609ae7","gn":"U16B Grading 2 - LL Pool A","stats":{"gp":9,"pts":8,"fouls":10,"fg":2,"ft":4}},{"tid":"6a23d82b","tn":"Melbourne U16 Boys 9","gid":"2e234218","gn":"U16B Crossover 1","stats":{"gp":9,"pts":8,"fg":2,"ft":4,"fouls":10}}]}],"updatedAt":"2026-06-11T23:45:12.138Z","games":["0ab8c8c8","0cb145f0","2247bc35","33a9f849","343cb1f4","3b5bc9c3","3f6803a5","50064976","5f5bbac7","620b7a3c","644f833b","64c17e66","93858760","97cb66ca","9be711c8","a4689e3d","a5dd4dd9","aca9c67e","ada9fa60","b17bea50","c0d640a5","c5f39314","ceacf2b0","d0e975aa","d7296e3b","dd12b4c3","e7d8e5cb","f91ea18d"],"records":{"maxGamePTS":{"v":4,"gameKey":"ceacf2b0","sid":"a5dfc5c1"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d7a6733c-7a4a-442c-8c25-0c8e192e16fb",
+  "name": "2022",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 28,
+      "pts": 18,
+      "fouls": 35,
+      "fg": 6,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 14,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T16:23:36.933Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a48d8524",
+      "sn": "2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1be53d58",
+          "tn": "Waverley Falcons U16 Boys 4",
+          "gid": "9f6a63ed",
+          "gn": "BOYS UNDER 16 C2",
+          "stats": {
+            "gp": 5,
+            "pts": 7,
+            "fouls": 9,
+            "fg": 3,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Waverley Falcons Basketball Club",
+      "regs": [
+        {
+          "tid": "0d10abcb",
+          "tn": "Waverley U16 Boys 4",
+          "gid": "9a29de84",
+          "gn": "16 Boys - VJL7 (P2)",
+          "stats": {
+            "gp": 12,
+            "pts": 3,
+            "fouls": 13,
+            "fg": 1,
+            "wins": 4,
+            "losses": 6,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "0d10abcb",
+          "tn": "Waverley U16 Boys 4",
+          "gid": "0b5891a5",
+          "gn": "U16 Boys Grading 1 - Pool 7C",
+          "stats": {
+            "gp": 12,
+            "pts": 3,
+            "fouls": 13,
+            "ft": 1,
+            "wins": 4,
+            "losses": 6,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ceb7a2f2",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "760f5b54",
+          "tn": "Waverley U16 Boys 4",
+          "gid": "ef4d25bb",
+          "gn": "U16 Boys Division 2",
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "~[ARCHIVED] Melbourne Tigers Boys",
+      "regs": [
+        {
+          "tid": "6a23d82b",
+          "tn": "Melbourne U16 Boys 9",
+          "gid": "798b0a6a",
+          "gn": "16 Boys - VJL10 (P3)",
+          "stats": {
+            "gp": 9,
+            "pts": 8,
+            "fouls": 10,
+            "ft": 4,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "6a23d82b",
+          "tn": "Melbourne U16 Boys 9",
+          "gid": "905e17bc",
+          "gn": "U16B Crossover 2 - VJL",
+          "stats": {
+            "gp": 9,
+            "pts": 8,
+            "fouls": 10,
+            "fg": 2,
+            "ft": 4
+          }
+        },
+        {
+          "tid": "6a23d82b",
+          "tn": "Melbourne U16 Boys 9",
+          "gid": "45609ae7",
+          "gn": "U16B Grading 2 - LL Pool A",
+          "stats": {
+            "gp": 9,
+            "pts": 8,
+            "fouls": 10,
+            "fg": 2,
+            "ft": 4
+          }
+        },
+        {
+          "tid": "6a23d82b",
+          "tn": "Melbourne U16 Boys 9",
+          "gid": "2e234218",
+          "gn": "U16B Crossover 1",
+          "stats": {
+            "gp": 9,
+            "pts": 8,
+            "fg": 2,
+            "ft": 4,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "2e458d90",
+          "tn": "Glen Iris Scorpions U20 Men Sixers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "e7069a8f",
+          "tn": "Glen Iris Scorpions U18 Boys Sixers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "7a681f06",
+          "tn": "Glen Iris Scorpions U18 Boys Sixers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "768f36a0",
+          "tn": "Glen Iris Scorpions U18 Boys Sixers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "ea31dbaa",
+          "tn": "Glen Iris Scorpions U18 Boys Suns",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "f00f3160",
+          "tn": "Glen Iris Scorpions U18 Boys Suns",
+          "gid": "0274e630",
+          "gn": "Sunday U18 Boys Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "4df2c512",
+          "tn": "Glen Iris Scorpions U16 Boys Saints",
+          "gid": "8c779854",
+          "gn": "U16 Boys (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "57002958",
+          "tn": "Glen Iris Scorpions U16 Boys Sixers",
+          "gid": "5fc0ceda",
+          "gn": "U16 Boys Division 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "1a2dfbdb",
+          "tn": "Glen Iris Scorpions U14 Boys Ferndale",
+          "gid": "37bbfb36",
+          "gn": "U14 Boys GP1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "1ace45fd",
+          "tn": "U14 JUNIORS ASHY GOLD",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "1d1c4dfd",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "cba29aad",
+          "tn": "U14 Boys ASHY YELLOW",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "05d88be9",
+          "tn": "Melbourne U14 Boys 8",
+          "gid": "bd2d97c2",
+          "gn": "U14 Boys VJL 9 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:12.138Z",
+  "games": [
+    "0ab8c8c8",
+    "0cb145f0",
+    "2247bc35",
+    "33a9f849",
+    "343cb1f4",
+    "3b5bc9c3",
+    "3f6803a5",
+    "50064976",
+    "5f5bbac7",
+    "620b7a3c",
+    "644f833b",
+    "64c17e66",
+    "93858760",
+    "97cb66ca",
+    "9be711c8",
+    "a4689e3d",
+    "a5dd4dd9",
+    "aca9c67e",
+    "ada9fa60",
+    "b17bea50",
+    "c0d640a5",
+    "c5f39314",
+    "ceacf2b0",
+    "d0e975aa",
+    "d7296e3b",
+    "dd12b4c3",
+    "e7d8e5cb",
+    "f91ea18d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "ceacf2b0",
+      "sid": "a5dfc5c1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teams": [
+    {
+      "tid": "1be53d58",
+      "sid": "a48d8524",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d10abcb",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "760f5b54",
+      "sid": "ceb7a2f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a23d82b",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2e458d90",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7069a8f",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a681f06",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "768f36a0",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea31dbaa",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f00f3160",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4df2c512",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57002958",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1a2dfbdb",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ace45fd",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cba29aad",
+      "sid": "1d1c4dfd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05d88be9",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:57.473Z"
+}

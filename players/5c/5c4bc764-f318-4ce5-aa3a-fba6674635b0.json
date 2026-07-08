@@ -1,1 +1,212 @@
-{"uuid":"5c4bc764-f318-4ce5-aa3a-fba6674635b0","name":"cody gibb","gender":"Men","sports":{"Basketball":{"gp":21,"pts":88,"fouls":22,"fg":38,"ft":9,"threePt":1,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":1,"wins":14,"losses":26,"winPct":0.35,"statsChecked":"2026-07-05T15:48:50.625Z"}},"seasons":[{"sid":"38466a15","sn":"Winter 2026","club":"CC Eagles Basketball Club","regs":[{"tid":"006ad03c","tn":"CC Eagles Basketball Club Senior Men D4 Blue","gid":"f10a6cf7","gn":"Wednesday Senior Men Division 5","age":"Senior","div":"Division 5","stats":{"gp":7,"fg":15,"pts":35,"fouls":5,"wins":3,"losses":3,"ft":2,"threePt":1}},{"tid":"006ad03c","tn":"CC Eagles Basketball Club Senior Men D4 Blue","gid":"eaeec602","gn":"Wednesday Senior Men Grading","age":"Senior","div":null,"stats":{"gp":7,"fouls":5,"ft":2,"fg":15,"threePt":1,"pts":35,"wins":3,"losses":3}},{"tid":"a3a52cf3","stats":{"gp":2,"pts":9,"fg":4,"ft":1,"fouls":2,"losses":2}},{"tid":"a3a52cf3","tn":"","gid":"11a4a456","gn":"Tuesday Senior Men Masters","div":null,"stats":{"gp":2,"pts":9,"fg":4,"ft":1,"fouls":2,"losses":2}}]},{"sid":"fb47e20e","sn":"Summer 2025/26","club":"CC Eagles Basketball Club","regs":[{"tid":"6a7d5505","tn":"CC Eagles Basketball Club Senior Men D4 Blue","gid":"13ff4439","gn":"Wednesday Senior Men Division 4","age":"Senior","div":"Division 4","stats":{"gp":12,"fouls":15,"ft":6,"fg":19,"pts":44,"losses":8,"wins":4}},{"tid":"6a7d5505","tn":"CC Eagles Basketball Club Senior Men D4 Blue","gid":"ec7ba441","gn":"Wednesday Senior Men Grading","age":"Senior","div":null,"stats":{"gp":12,"fouls":15,"ft":6,"fg":19,"pts":44,"losses":8,"wins":4}}]}],"updatedAt":"2026-07-04T06:00:08.341Z","teams":[{"tid":"006ad03c","sid":"38466a15","status":"ACTIVE"},{"tid":"6a7d5505","sid":"fb47e20e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:37:50.561Z","records":{"maxGamePTS":{"v":14,"gameKey":"707e81f8","sid":"38466a15"},"maxGameThreePt":{"v":1,"gameKey":"707e81f8","sid":"38466a15"}},"games":["060af06b","1757ee67","21c32d0e","307027fb","3b527e34","5d0f70a7","65eaf5ba","707e81f8","742b41cc","7a9b9290","7cc5ab7b","88a4abad","9170e2b4","978e2b5d","9c3290ae","c1d69b13","c2ad6bbf","df8af776","f46629fb","fa7f31f5"],"gameTids":{"060af06b":"a3a52cf3","fa7f31f5":"a3a52cf3","883f9b2d":"006ad03c","21c32d0e":"006ad03c","88a4abad":"006ad03c","1757ee67":"006ad03c","707e81f8":"006ad03c","7cc5ab7b":"006ad03c","307027fb":"006ad03c","c2ad6bbf":"6a7d5505","3b527e34":"6a7d5505","7a9b9290":"6a7d5505","9170e2b4":"6a7d5505","978e2b5d":"6a7d5505","f46629fb":"6a7d5505","5d0f70a7":"6a7d5505","65eaf5ba":"6a7d5505","c1d69b13":"6a7d5505","9c3290ae":"6a7d5505","df8af776":"6a7d5505","742b41cc":"6a7d5505"}}
+{
+  "uuid": "5c4bc764-f318-4ce5-aa3a-fba6674635b0",
+  "name": "cody gibb",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 21,
+      "pts": 88,
+      "fouls": 22,
+      "fg": 38,
+      "ft": 9,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "wins": 14,
+      "losses": 26,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:48:50.625Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "38466a15",
+      "sn": "Winter 2026",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "006ad03c",
+          "tn": "CC Eagles Basketball Club Senior Men D4 Blue",
+          "gid": "f10a6cf7",
+          "gn": "Wednesday Senior Men Division 5",
+          "age": "Senior",
+          "div": "Division 5",
+          "stats": {
+            "gp": 7,
+            "fg": 15,
+            "pts": 35,
+            "fouls": 5,
+            "wins": 3,
+            "losses": 3,
+            "ft": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "006ad03c",
+          "tn": "CC Eagles Basketball Club Senior Men D4 Blue",
+          "gid": "eaeec602",
+          "gn": "Wednesday Senior Men Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "ft": 2,
+            "fg": 15,
+            "threePt": 1,
+            "pts": 35,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "a3a52cf3",
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 2,
+            "losses": 2
+          },
+          "gid": "11a4a456",
+          "gn": "Tuesday Senior Men Masters"
+        },
+        {
+          "tid": "a3a52cf3",
+          "tn": "",
+          "gid": "11a4a456",
+          "gn": "Tuesday Senior Men Masters",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb47e20e",
+      "sn": "Summer 2025/26",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "6a7d5505",
+          "tn": "CC Eagles Basketball Club Senior Men D4 Blue",
+          "gid": "13ff4439",
+          "gn": "Wednesday Senior Men Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "ft": 6,
+            "fg": 19,
+            "pts": 44,
+            "losses": 8,
+            "wins": 4
+          }
+        },
+        {
+          "tid": "6a7d5505",
+          "tn": "CC Eagles Basketball Club Senior Men D4 Blue",
+          "gid": "ec7ba441",
+          "gn": "Wednesday Senior Men Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "ft": 6,
+            "fg": 19,
+            "pts": 44,
+            "losses": 8,
+            "wins": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T06:00:08.341Z",
+  "teams": [
+    {
+      "tid": "006ad03c",
+      "sid": "38466a15",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a3a52cf3",
+      "sid": "38466a15",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a7d5505",
+      "sid": "fb47e20e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:16.563Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "707e81f8",
+      "sid": "38466a15"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "707e81f8",
+      "sid": "38466a15"
+    }
+  },
+  "games": [
+    "060af06b",
+    "1757ee67",
+    "21c32d0e",
+    "307027fb",
+    "3b527e34",
+    "5d0f70a7",
+    "65eaf5ba",
+    "707e81f8",
+    "742b41cc",
+    "7a9b9290",
+    "7cc5ab7b",
+    "88a4abad",
+    "9170e2b4",
+    "978e2b5d",
+    "9c3290ae",
+    "c1d69b13",
+    "c2ad6bbf",
+    "df8af776",
+    "f46629fb",
+    "fa7f31f5"
+  ],
+  "gameTids": {
+    "060af06b": "a3a52cf3",
+    "fa7f31f5": "a3a52cf3",
+    "883f9b2d": "006ad03c",
+    "21c32d0e": "006ad03c",
+    "88a4abad": "006ad03c",
+    "1757ee67": "006ad03c",
+    "707e81f8": "006ad03c",
+    "7cc5ab7b": "006ad03c",
+    "307027fb": "006ad03c",
+    "c2ad6bbf": "6a7d5505",
+    "3b527e34": "6a7d5505",
+    "7a9b9290": "6a7d5505",
+    "9170e2b4": "6a7d5505",
+    "978e2b5d": "6a7d5505",
+    "f46629fb": "6a7d5505",
+    "5d0f70a7": "6a7d5505",
+    "65eaf5ba": "6a7d5505",
+    "c1d69b13": "6a7d5505",
+    "9c3290ae": "6a7d5505",
+    "df8af776": "6a7d5505",
+    "742b41cc": "6a7d5505"
+  }
+}

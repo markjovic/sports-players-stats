@@ -1,1 +1,82 @@
-{"uuid":"725ae759-30bb-4a21-9cff-818c221cb29c","name":"Axel Higgins","gender":"Boys","sports":{"Basketball":{"gp":9,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"draws":9,"winPct":0,"statsChecked":"2026-07-05T15:49:13.413Z"}},"seasons":[{"sid":"e1a7f7de","sn":"Summer 2024/25","regs":[{"tid":"e6d21ab1","tn":"FALCONS","gid":"79a6526f","gn":"Junior Boys","age":"Junior","div":null,"stats":{"gp":9,"draws":9}}]}],"updatedAt":"2026-06-03T05:00:10.973Z","teams":[{"tid":"b5db2bc5","sid":"caca55eb","status":"COMPLETED"},{"tid":"e6d21ab1","sid":"e1a7f7de","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:51:06.503Z","games":["05f163ba","122d7ab9","2953ef9b","2dec79bb","57b0fe35","c653687e","e433a0de","eabe8549","f50f4243"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "725ae759-30bb-4a21-9cff-818c221cb29c",
+  "name": "Axel Higgins",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "draws": 9,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:49:13.413Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e1a7f7de",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "e6d21ab1",
+          "tn": "FALCONS",
+          "gid": "79a6526f",
+          "gn": "Junior Boys",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "draws": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "caca55eb",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "b5db2bc5",
+          "tn": "FALCONS",
+          "gid": "29073475",
+          "gn": "Junior Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T05:00:10.973Z",
+  "teams": [
+    {
+      "tid": "e6d21ab1",
+      "sid": "e1a7f7de",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5db2bc5",
+      "sid": "caca55eb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:52.573Z",
+  "games": [
+    "05f163ba",
+    "122d7ab9",
+    "2953ef9b",
+    "2dec79bb",
+    "57b0fe35",
+    "c653687e",
+    "e433a0de",
+    "eabe8549",
+    "f50f4243"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

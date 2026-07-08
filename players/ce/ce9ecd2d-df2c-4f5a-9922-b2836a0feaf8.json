@@ -1,1 +1,125 @@
-{"uuid":"ce9ecd2d-df2c-4f5a-9922-b2836a0feaf8","gender":null,"sports":{"Basketball":{"gp":17,"pts":3,"fouls":2,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":1,"losses":6,"draws":4,"winPct":0.09,"statsChecked":"2026-07-05T16:03:39.648Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"e2b61d80","tn":"STC G12.3","gid":"c732e3ea","gn":"Saturday U12 Girls C 1  2 Grade","stats":{"gp":11,"pts":3,"fouls":1,"fg":1,"ft":1,"wins":1,"losses":6,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"9ee3ca99","tn":"STC G12.4","gid":"1f86cc82","gn":"Saturday U12 Girls C Grade","stats":{"gp":6,"fouls":1}}]}],"updatedAt":"2026-06-11T23:44:47.743Z","records":{"maxGamePTS":{"v":3,"gameKey":"74c29c6f","sid":"8e4e71fc"},"maxGameThreePt":{"v":null}},"games":["05ee5020","1195dd8b","1ee3790b","5f0d8e83","74c29c6f","7503d4ba","8c2c98e4","8ea74b0b","a9ec875a","bd9e151e","bf5b4980","c3957a29","c89ee0e4","e74d11a1","eb57f80c","eb99ef83","f01b45dc"],"name":"Winter 2021"}
+{
+  "uuid": "ce9ecd2d-df2c-4f5a-9922-b2836a0feaf8",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 17,
+      "pts": 3,
+      "fouls": 2,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 6,
+      "draws": 4,
+      "winPct": 0.09,
+      "statsChecked": "2026-07-05T16:03:39.648Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e2b61d80",
+          "tn": "STC G12.3",
+          "gid": "c732e3ea",
+          "gn": "Saturday U12 Girls C 1  2 Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 3,
+            "fouls": 1,
+            "fg": 1,
+            "ft": 1,
+            "wins": 1,
+            "losses": 6,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "9ee3ca99",
+          "tn": "STC G12.4",
+          "gid": "1f86cc82",
+          "gn": "Saturday U12 Girls C Grade",
+          "stats": {
+            "gp": 6,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "fcaa79d3",
+          "tn": "STC G10.2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:47.743Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "74c29c6f",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "05ee5020",
+    "1195dd8b",
+    "1ee3790b",
+    "5f0d8e83",
+    "74c29c6f",
+    "7503d4ba",
+    "8c2c98e4",
+    "8ea74b0b",
+    "a9ec875a",
+    "bd9e151e",
+    "bf5b4980",
+    "c3957a29",
+    "c89ee0e4",
+    "e74d11a1",
+    "eb57f80c",
+    "eb99ef83",
+    "f01b45dc"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "e2b61d80",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ee3ca99",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fcaa79d3",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:45.482Z"
+}

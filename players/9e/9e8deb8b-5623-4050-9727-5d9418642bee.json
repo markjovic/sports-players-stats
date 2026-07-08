@@ -1,1 +1,129 @@
-{"uuid":"9e8deb8b-5623-4050-9727-5d9418642bee","gender":null,"sports":{"Basketball":{"gp":13,"pts":68,"fouls":7,"fg":21,"ft":5,"threePt":7,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":3,"wins":2,"losses":1,"draws":4,"winPct":0.29,"statsChecked":"2026-07-05T16:02:32.150Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"St. Bernards Old Collegians Basketball Club","regs":[{"tid":"ba38797f","tn":"St Bernards  U20 Boys (1)","gid":"eab3fda4","gn":"Sunday U20 Boys A Grade","stats":{"gp":7,"pts":26,"fouls":2,"fg":10,"ft":3,"threePt":1,"wins":2,"losses":1,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"St. Bernards Old Collegians Basketball Club","regs":[{"tid":"db9a9233","tn":"St Bernards  U20 Boys (1)","gid":"3f9c5ab6","gn":"Sunday U20 Boys A Grade","stats":{"gp":6,"pts":42,"fouls":5,"fg":11,"ft":2,"threePt":6}}]}],"updatedAt":"2026-06-11T23:43:04.143Z","records":{"maxGamePTS":{"v":14,"gameKey":"cd01cb62","sid":"8e4e71fc"},"maxGameThreePt":{"v":3,"gameKey":"151c22f1","sid":"0912c55f"}},"games":["070e10aa","1240883c","151c22f1","2b0c94e2","2b7182ee","6fc711a1","728b7113","8148a8bf","93563cc2","9c15d222","cd01cb62","d49ee2e4","ece71630"],"name":"Winter 2021"}
+{
+  "uuid": "9e8deb8b-5623-4050-9727-5d9418642bee",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 68,
+      "fouls": 7,
+      "fg": 21,
+      "ft": 5,
+      "threePt": 7,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 3,
+      "wins": 2,
+      "losses": 1,
+      "draws": 4,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T16:02:32.150Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "St. Bernards Old Collegians Basketball Club",
+      "regs": [
+        {
+          "tid": "ba38797f",
+          "tn": "St Bernards  U20 Boys (1)",
+          "gid": "eab3fda4",
+          "gn": "Sunday U20 Boys A Grade",
+          "stats": {
+            "gp": 7,
+            "pts": 26,
+            "fouls": 2,
+            "fg": 10,
+            "ft": 3,
+            "threePt": 1,
+            "wins": 2,
+            "losses": 1,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "St. Bernards Old Collegians Basketball Club",
+      "regs": [
+        {
+          "tid": "db9a9233",
+          "tn": "St Bernards  U20 Boys (1)",
+          "gid": "3f9c5ab6",
+          "gn": "Sunday U20 Boys A Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 42,
+            "fouls": 5,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "a229109c",
+          "tn": "St Bernards  U19 Boys (1)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:04.143Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "cd01cb62",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "151c22f1",
+      "sid": "0912c55f"
+    }
+  },
+  "games": [
+    "070e10aa",
+    "1240883c",
+    "151c22f1",
+    "2b0c94e2",
+    "2b7182ee",
+    "6fc711a1",
+    "728b7113",
+    "8148a8bf",
+    "93563cc2",
+    "9c15d222",
+    "cd01cb62",
+    "d49ee2e4",
+    "ece71630"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "ba38797f",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db9a9233",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a229109c",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:53.041Z"
+}

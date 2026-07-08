@@ -1,1 +1,331 @@
-{"uuid":"f8bd3565-1ad8-4a70-8009-80546c3e8dcc","name":"Hunter Hopwood","gender":"Boys","sports":{"Basketball":{"gp":60,"pts":276,"fouls":88,"fg":130,"ft":16,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{"e78cfce1":1,"31d05517":2},"maxGamePTS":20,"maxGameThreePt":null,"wins":52,"losses":20,"draws":2,"winPct":0.7,"statsChecked":"2026-07-05T15:13:58.596Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Hoop School Basketball Academy","regs":[{"tid":"cf97b73f","tn":"HS U10 Boys WHITE","gid":"b0a67102","gn":"Saturday U12 Boys B/C","age":"U12","div":null,"stats":{"gp":8,"fouls":7,"fg":11,"pts":25,"ft":3,"wins":5,"losses":3}},{"tid":"cf97b73f","tn":"HS U10 Boys WHITE","gid":"aec6fbe5","gn":"Saturday U12 Boys C","age":"U12","div":null,"stats":{"gp":8,"fouls":7,"fg":11,"pts":25,"wins":5,"losses":3,"ft":3}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"7e12bdfa","tn":"MP Pythons","gid":"f578f36f","gn":"Friday Year 3 Boys C","age":null,"div":null,"stats":{"gp":14,"fouls":17,"ft":7,"fg":44,"pts":95,"wins":12,"losses":1,"draws":1}},{"tid":"7e12bdfa","tn":"MP Pythons","gid":"23812703","gn":"Friday Year 3 Boys B","age":null,"div":null,"stats":{"gp":14,"fg":44,"pts":95,"wins":12,"losses":1,"draws":1,"ft":7,"fouls":17}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"25506956","tn":"Hoop School Boys U10 White","gid":"ab0696ef","gn":"Saturday U12 Boys B/C","age":"U12","div":null,"stats":{"gp":16,"fouls":24,"fg":10,"pts":20,"finals":1,"gfApps":1,"foulOuts":1,"wins":7,"losses":9}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"5c6b6261","tn":"Middle Park Pythons ","gid":"dc3e709c","gn":"Friday Year 2 Boys C","age":null,"div":null,"stats":{"gp":14,"fouls":21,"ft":5,"fg":52,"pts":109,"wins":11,"losses":3}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"f4cd465f","tn":"Middle Park Pythons","gid":"97f4bc31","gn":"Friday MSAC/Bayside Year 2 Boys C","age":null,"div":null,"stats":{"gp":8,"fouls":19,"ft":1,"fg":13,"pts":27,"foulOuts":2}}]}],"updatedAt":"2026-06-02T22:42:55.708Z","teams":[{"tid":"7e12bdfa","sid":"ad68db8b","status":"ACTIVE"},{"tid":"cf97b73f","sid":"e7aed763","status":"ACTIVE"},{"tid":"25506956","sid":"e78cfce1","status":"COMPLETED"},{"tid":"5c6b6261","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"f4cd465f","sid":"31d05517","status":"COMPLETED"},{"tid":"905b8d43","sid":"8884de2d","status":"COMPLETED"},{"tid":"92edcf7b","sid":"0fef30ca","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:56:08.951Z","games":["05ca1e41","0721831b","0b228271","121e1006","12f36d0d","17ad7f36","1b6f3f94","1d7383fd","1dd797d6","1ec73483","222439ee","2d5a441e","33cf2b30","3ef8606b","4309eea7","44234287","4cd1446f","4d048348","50d0a400","539bfd0f","55ac5c87","568fa980","64543aa7","6498d8e8","7248e1cb","7328d92e","7a02bc18","7cd2737c","809d7c73","84fa2fc2","92580125","9e036236","9fb39c54","a98e49b6","aaa8a52b","b41405f2","b9d507bf","bcf2ffe5","cb8df7d5","cc57bb7e","ccff8200","ce8ee3ac","d21e0309","d6a6529d","dc3e6b79","dd3d61b3","e661cb43","e82d343a","ee4334ed","f062eee8","f1cf59e3","f215a64a"],"records":{"maxGamePTS":{"v":20,"gameKey":"84fa2fc2","sid":"1d1b8d1c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "f8bd3565-1ad8-4a70-8009-80546c3e8dcc",
+  "name": "Hunter Hopwood",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 60,
+      "pts": 276,
+      "fouls": 88,
+      "fg": 130,
+      "ft": 16,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {
+        "e78cfce1": 1,
+        "31d05517": 2
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 52,
+      "losses": 20,
+      "draws": 2,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T15:13:58.596Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Hoop School Basketball Academy",
+      "regs": [
+        {
+          "tid": "cf97b73f",
+          "tn": "HS U10 Boys WHITE",
+          "gid": "b0a67102",
+          "gn": "Saturday U12 Boys B/C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 11,
+            "pts": 25,
+            "ft": 3,
+            "wins": 5,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "cf97b73f",
+          "tn": "HS U10 Boys WHITE",
+          "gid": "aec6fbe5",
+          "gn": "Saturday U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 11,
+            "pts": 25,
+            "wins": 5,
+            "losses": 3,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "7e12bdfa",
+          "tn": "MP Pythons",
+          "gid": "f578f36f",
+          "gn": "Friday Year 3 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 17,
+            "ft": 7,
+            "fg": 44,
+            "pts": 95,
+            "wins": 12,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "7e12bdfa",
+          "tn": "MP Pythons",
+          "gid": "23812703",
+          "gn": "Friday Year 3 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 44,
+            "pts": 95,
+            "wins": 12,
+            "losses": 1,
+            "draws": 1,
+            "ft": 7,
+            "fouls": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "25506956",
+          "tn": "Hoop School Boys U10 White",
+          "gid": "ab0696ef",
+          "gn": "Saturday U12 Boys B/C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "5c6b6261",
+          "tn": "Middle Park Pythons ",
+          "gid": "dc3e709c",
+          "gn": "Friday Year 2 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "ft": 5,
+            "fg": 52,
+            "pts": 109,
+            "wins": 11,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "f4cd465f",
+          "tn": "Middle Park Pythons",
+          "gid": "97f4bc31",
+          "gn": "Friday MSAC/Bayside Year 2 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 19,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "foulOuts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "5491da3c",
+          "tn": "Middle Park Pythons",
+          "gid": "80656a8b",
+          "gn": "Friday Year 3 Boys C",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "905b8d43",
+          "tn": "Middle Park Pythons",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "92edcf7b",
+          "tn": "Middle Park Pythons",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:55.708Z",
+  "teams": [
+    {
+      "tid": "cf97b73f",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e12bdfa",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25506956",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c6b6261",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f4cd465f",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5491da3c",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "905b8d43",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92edcf7b",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:26.249Z",
+  "games": [
+    "05ca1e41",
+    "0721831b",
+    "0b228271",
+    "121e1006",
+    "12f36d0d",
+    "17ad7f36",
+    "1b6f3f94",
+    "1d7383fd",
+    "1dd797d6",
+    "1ec73483",
+    "222439ee",
+    "2d5a441e",
+    "33cf2b30",
+    "3ef8606b",
+    "4309eea7",
+    "44234287",
+    "4cd1446f",
+    "4d048348",
+    "50d0a400",
+    "539bfd0f",
+    "55ac5c87",
+    "568fa980",
+    "64543aa7",
+    "6498d8e8",
+    "7248e1cb",
+    "7328d92e",
+    "7a02bc18",
+    "7cd2737c",
+    "809d7c73",
+    "84fa2fc2",
+    "92580125",
+    "9e036236",
+    "9fb39c54",
+    "a98e49b6",
+    "aaa8a52b",
+    "b41405f2",
+    "b9d507bf",
+    "bcf2ffe5",
+    "cb8df7d5",
+    "cc57bb7e",
+    "ccff8200",
+    "ce8ee3ac",
+    "d21e0309",
+    "d6a6529d",
+    "dc3e6b79",
+    "dd3d61b3",
+    "e661cb43",
+    "e82d343a",
+    "ee4334ed",
+    "f062eee8",
+    "f1cf59e3",
+    "f215a64a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "84fa2fc2",
+      "sid": "1d1b8d1c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

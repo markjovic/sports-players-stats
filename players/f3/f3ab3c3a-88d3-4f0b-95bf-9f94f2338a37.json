@@ -1,1 +1,231 @@
-{"uuid":"f3ab3c3a-88d3-4f0b-95bf-9f94f2338a37","name":"Noa Fridman","gender":"Boys","sports":{"Basketball":{"gp":18,"pts":95,"fouls":19,"fg":30,"ft":11,"threePt":8,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":27,"losses":24,"winPct":0.5,"draws":3,"statsChecked":"2026-07-05T14:31:33.316Z"}},"seasons":[{"sid":"c01b75f6","sn":"Summer 2024/25","regs":[{"tid":"698ca288","tn":"Dreidel Dribblers","gid":"74145157","gn":"Saturday U18 Boys 6","age":"U18","div":null,"stats":{"gp":12,"fouls":15,"ft":9,"fg":25,"threePt":5,"pts":74,"wins":6,"losses":6}},{"tid":"698ca288","tn":"Dreidel Dribblers","gid":"eb30a3c9","gn":"Saturday U18 Boys 5","age":"U18","div":null,"stats":{"gp":12,"fouls":15,"fg":25,"pts":74,"wins":6,"losses":6,"ft":9,"threePt":5}},{"tid":"698ca288","tn":"Dreidel Dribblers","gid":"8934a2ab","gn":"Saturday U18 Boys 4","age":"U18","div":null,"stats":{"gp":12,"fouls":15,"fg":25,"threePt":5,"pts":74,"wins":6,"losses":6,"ft":9}}]},{"sid":"ba7f19b2","sn":"Summer 2022/23","club":"Ormond Jets Basketball Club","regs":[{"tid":"b6a643ab","tn":"JETS U16 Boys Olive","gid":"b175983e","gn":"Saturday U16 Boys DIV 3","age":"U16","div":"DIV 3","stats":{"gp":6,"fouls":4,"fg":5,"threePt":3,"pts":21,"wins":3,"losses":2,"draws":1,"ft":2}},{"tid":"b6a643ab","tn":"JETS U16 Boys Olive","gid":"0238a796","gn":"Saturday U16 Boys PH2B","age":"U16","div":null,"stats":{"gp":6,"fouls":4,"fg":5,"threePt":3,"pts":21,"wins":3,"losses":2,"draws":1,"ft":2}},{"tid":"b6a643ab","tn":"JETS U16 Boys Olive","gid":"d816d642","gn":"Saturday U16 Boys PH1 P1B","age":"U16","div":null,"stats":{"gp":6,"fouls":4,"ft":2,"fg":5,"threePt":3,"pts":21,"wins":3,"losses":2,"draws":1}}]}],"updatedAt":"2026-05-30T16:09:42.913Z","teams":[{"tid":"91909776","sid":"913d1397","status":"COMPLETED"},{"tid":"698ca288","sid":"c01b75f6","status":"COMPLETED"},{"tid":"b6a643ab","sid":"ba7f19b2","status":"COMPLETED"},{"tid":"80dc6736","sid":"1d1c4dfd","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:35.742Z","records":{"maxGamePTS":{"v":12,"gameKey":"a52b221b","sid":"c01b75f6"},"maxGameThreePt":{"v":2,"gameKey":"dc6bde15","sid":"c01b75f6"}},"games":["0ddf5d12","2c983f86","43db47bf","4dbd760f","8db4f498","9096665b","9c6c1cb4","a52b221b","ab8101c2","ad2d5cfa","ba38feac","d3d4cef7","dc6bde15","f61b9720","f78d17ba","fb0ac8a6","fe838786","ff5884a4"]}
+{
+  "uuid": "f3ab3c3a-88d3-4f0b-95bf-9f94f2338a37",
+  "name": "Noa Fridman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 95,
+      "fouls": 19,
+      "fg": 30,
+      "ft": 11,
+      "threePt": 8,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 27,
+      "losses": 24,
+      "winPct": 0.5,
+      "draws": 3,
+      "statsChecked": "2026-07-05T14:31:33.316Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "698ca288",
+          "tn": "Dreidel Dribblers",
+          "gid": "74145157",
+          "gn": "Saturday U18 Boys 6",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "ft": 9,
+            "fg": 25,
+            "threePt": 5,
+            "pts": 74,
+            "wins": 6,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "698ca288",
+          "tn": "Dreidel Dribblers",
+          "gid": "eb30a3c9",
+          "gn": "Saturday U18 Boys 5",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "fg": 25,
+            "pts": 74,
+            "wins": 6,
+            "losses": 6,
+            "ft": 9,
+            "threePt": 5
+          }
+        },
+        {
+          "tid": "698ca288",
+          "tn": "Dreidel Dribblers",
+          "gid": "8934a2ab",
+          "gn": "Saturday U18 Boys 4",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "fg": 25,
+            "threePt": 5,
+            "pts": 74,
+            "wins": 6,
+            "losses": 6,
+            "ft": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ba7f19b2",
+      "sn": "Summer 2022/23",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "b6a643ab",
+          "tn": "JETS U16 Boys Olive",
+          "gid": "b175983e",
+          "gn": "Saturday U16 Boys DIV 3",
+          "age": "U16",
+          "div": "DIV 3",
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "fg": 5,
+            "threePt": 3,
+            "pts": 21,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "b6a643ab",
+          "tn": "JETS U16 Boys Olive",
+          "gid": "0238a796",
+          "gn": "Saturday U16 Boys PH2B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "fg": 5,
+            "threePt": 3,
+            "pts": 21,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "b6a643ab",
+          "tn": "JETS U16 Boys Olive",
+          "gid": "d816d642",
+          "gn": "Saturday U16 Boys PH1 P1B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 5,
+            "threePt": 3,
+            "pts": 21,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "91909776",
+          "tn": "Maccabi U18 Boys Vipers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "1d1c4dfd",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "80dc6736",
+          "tn": "Maccabi U12 Boys Warriors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-30T16:09:42.913Z",
+  "teams": [
+    {
+      "tid": "698ca288",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6a643ab",
+      "sid": "ba7f19b2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "91909776",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80dc6736",
+      "sid": "1d1c4dfd",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:01.178Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "a52b221b",
+      "sid": "c01b75f6"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "dc6bde15",
+      "sid": "c01b75f6"
+    }
+  },
+  "games": [
+    "0ddf5d12",
+    "2c983f86",
+    "43db47bf",
+    "4dbd760f",
+    "8db4f498",
+    "9096665b",
+    "9c6c1cb4",
+    "a52b221b",
+    "ab8101c2",
+    "ad2d5cfa",
+    "ba38feac",
+    "d3d4cef7",
+    "dc6bde15",
+    "f61b9720",
+    "f78d17ba",
+    "fb0ac8a6",
+    "fe838786",
+    "ff5884a4"
+  ]
+}

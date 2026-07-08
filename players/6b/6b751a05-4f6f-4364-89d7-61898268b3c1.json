@@ -1,1 +1,82 @@
-{"uuid":"6b751a05-4f6f-4364-89d7-61898268b3c1","gender":null,"sports":{"Basketball":{"gp":2,"pts":4,"fouls":3,"fg":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":2,"winPct":1,"statsChecked":"2026-07-05T16:27:52.468Z"}},"seasons":[{"sid":"8cb1849e","sn":"Autumn 2021","club":null,"regs":[{"tid":"8c1e4698","tn":"BIT Bulls","gid":"e4411da7","gn":"Thursday Men D2","stats":{"gp":2,"pts":4,"fouls":3,"fg":2,"wins":2}}]}],"updatedAt":"2026-06-11T23:40:46.309Z","records":{"maxGamePTS":{"v":4,"gameKey":"3aae5a5e","sid":"8cb1849e"},"maxGameThreePt":{"v":null}},"games":["3aae5a5e","c3112abc"],"name":"Autumn 2021"}
+{
+  "uuid": "6b751a05-4f6f-4364-89d7-61898268b3c1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 4,
+      "fouls": 3,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:27:52.468Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8cb1849e",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "8c1e4698",
+          "tn": "BIT Bulls",
+          "gid": "e4411da7",
+          "gn": "Thursday Men D2",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fouls": 3,
+            "fg": 2,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "4c4ec192",
+          "tn": "BIT Bulls",
+          "gid": "d0e609c0",
+          "gn": "Thursday Men D3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:46.309Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "3aae5a5e",
+      "sid": "8cb1849e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3aae5a5e",
+    "c3112abc"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "8c1e4698",
+      "sid": "8cb1849e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c4ec192",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:53.761Z"
+}

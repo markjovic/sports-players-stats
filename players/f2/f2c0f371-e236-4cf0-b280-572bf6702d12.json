@@ -1,1 +1,110 @@
-{"uuid":"f2c0f371-e236-4cf0-b280-572bf6702d12","gender":null,"sports":{"Basketball":{"gp":8,"pts":7,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":2,"losses":6,"winPct":0.25,"statsChecked":"2026-07-05T15:40:00.665Z"}},"seasons":[{"sid":"3288249c","sn":"Winter 2022","club":null,"regs":[{"tid":"5ae272fa","tn":"Grizzlies","gid":"f2b2570f","gn":"Friday Open Men Championship Men","stats":{"gp":3,"pts":2,"wins":1,"losses":2}}]},{"sid":"0d21f7c1","sn":"Winter 2021","club":null,"regs":[{"tid":"e1e3292d","tn":"Grizzlies","gid":"cd65a690","gn":"Friday Open Men Championship Men","stats":{"gp":5,"pts":5,"wins":1,"losses":4}}]}],"updatedAt":"2026-06-11T23:46:08.851Z","records":{"maxGamePTS":{"v":3,"gameKey":"34d21e11","sid":"0d21f7c1"},"maxGameThreePt":{"v":null}},"games":["024278c0","0d0d3a18","0f2f58bb","30908801","34d21e11","8dff516c","8e94ff3f","b68a0618"],"name":"Winter 2022"}
+{
+  "uuid": "f2c0f371-e236-4cf0-b280-572bf6702d12",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 7,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 6,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T15:40:00.665Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3288249c",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5ae272fa",
+          "tn": "Grizzlies",
+          "gid": "f2b2570f",
+          "gn": "Friday Open Men Championship Men",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0d21f7c1",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "e1e3292d",
+          "tn": "Grizzlies",
+          "gid": "cd65a690",
+          "gn": "Friday Open Men Championship Men",
+          "stats": {
+            "gp": 5,
+            "pts": 5,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98fc6a8b",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "b5272859",
+          "tn": "Grizzlies",
+          "gid": "4a28de69",
+          "gn": "Friday Open Men Championship Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:08.851Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "34d21e11",
+      "sid": "0d21f7c1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "024278c0",
+    "0d0d3a18",
+    "0f2f58bb",
+    "30908801",
+    "34d21e11",
+    "8dff516c",
+    "8e94ff3f",
+    "b68a0618"
+  ],
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "5ae272fa",
+      "sid": "3288249c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1e3292d",
+      "sid": "0d21f7c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5272859",
+      "sid": "98fc6a8b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:58.413Z"
+}

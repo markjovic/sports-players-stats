@@ -1,1 +1,348 @@
-{"uuid":"af7774a9-d11e-48cd-bc9b-8caf81550862","name":"Calvin Tu","gender":"Men","sports":{"Basketball":{"gp":76,"pts":542,"fouls":112,"fg":208,"ft":48,"threePt":26,"foulOuts":{"88fd4210":1},"finals":2,"gfApps":2,"gfWins":1,"finalsPerSeason":0.4,"maxGamePTS":23,"maxGameThreePt":3,"wins":54,"losses":43,"winPct":0.55,"draws":2,"statsChecked":"2026-07-05T15:25:19.637Z"}},"seasons":[{"sid":"1314c52c","sn":"Summer 2025/26","regs":[{"tid":"6f7f99f2","tn":"Moo Deng","gid":"ccc88a0d","gn":"Thursday Men G Grade","age":null,"div":null,"stats":{"gp":19,"fouls":24,"ft":12,"fg":60,"threePt":5,"pts":147,"finals":1,"gfApps":1,"wins":13,"losses":5,"draws":1}}]},{"sid":"e9440fb8","sn":"Winter 2025","regs":[{"tid":"81143f9a","tn":"Moo Deng","gid":"274e46ac","gn":"Thursday Open Men G Grade","age":"Senior","div":null,"stats":{"gp":22,"fouls":31,"ft":19,"fg":64,"threePt":12,"pts":183,"finals":1,"gfApps":1,"wins":13,"losses":8,"draws":1,"gfWins":1}}]},{"sid":"f287739e","sn":"Summer 2024/25","regs":[{"tid":"abe90f11","tn":"Moo Deng","gid":"5606942e","gn":"Thursday Men Section 7","age":null,"div":null,"stats":{"gp":17,"fouls":37,"ft":10,"fg":41,"threePt":4,"pts":104,"wins":8,"losses":9}},{"tid":"abe90f11","tn":"Moo Deng","gid":"62dda0e1","gn":"Thursday Men Section 8","age":null,"div":null,"stats":{"gp":17,"fouls":37,"fg":41,"threePt":4,"pts":104,"wins":8,"losses":9,"ft":10}}]},{"sid":"88fd4210","sn":"Summer 2022/23","regs":[{"tid":"9b147ba5","tn":"Just Play Celtics [P]","gid":"61f52260","gn":"Men SUNDAY Section 8","age":null,"div":null,"stats":{"gp":11,"fouls":12,"ft":2,"fg":26,"threePt":1,"pts":57,"wins":4,"losses":4}},{"tid":"9b147ba5","tn":"Just Play Celtics [P]","gid":"f8405d35","gn":"Sunday Unspecified Men 12","age":null,"div":null,"stats":{"gp":11,"fouls":12,"fg":26,"pts":57,"foulOuts":1,"wins":4,"losses":4,"ft":2,"threePt":1}},{"tid":"9b147ba5","tn":"Just Play Celtics [P]","gid":"c9f9fe88","gn":"Sunday Unspecified Men 13","age":null,"div":null,"stats":{"gp":11,"fouls":12,"ft":2,"fg":26,"pts":57,"wins":4,"losses":4,"threePt":1}}]},{"sid":"1ca322dc","sn":"Summer 2020/21","regs":[{"tid":"87c7d1d0","tn":"Odd Socks (Orange)","gid":"e2be1c64","gn":"Men WEDNESDAY Section 4","age":null,"div":null,"stats":{"gp":7,"fouls":8,"ft":5,"fg":17,"threePt":4,"pts":51}}]}],"updatedAt":"2026-07-04T05:52:26.812Z","teams":[{"tid":"6f7f99f2","sid":"1314c52c","status":"COMPLETED"},{"tid":"81143f9a","sid":"e9440fb8","status":"COMPLETED"},{"tid":"abe90f11","sid":"f287739e","status":"COMPLETED"},{"tid":"9b147ba5","sid":"88fd4210","status":"COMPLETED"},{"tid":"96f9f19b","sid":"d3dee716","status":"COMPLETED"},{"tid":"87c7d1d0","sid":"1ca322dc","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:36.437Z","games":["030503f4","07a431c8","09de7fc9","09fe5a9f","0a60c8b0","0fd5f254","12b89e47","12edb3df","197f82a5","1faa23bf","20890f24","22c1e6b6","24ce8714","36eb3680","3786093a","39380b39","39524508","398219c1","3caca9f5","42295e0c","42ecd96a","43a0ac52","498ae33b","4a46eee5","4be99d52","4f3e8412","4f402847","5271db8d","56db2e93","59b09ad7","5b235d67","60478de1","677df8f8","6a66cd63","735b11a0","73fd9852","7577eb93","76524925","798d56a4","7ca98486","90588d20","93dee6bd","99c17c75","9d41b0df","9d4b8dc2","a5c45813","a6beefe4","a8428df5","a8626a6b","aa63518e","af6b453f","b980b5b9","b9c8038d","bcddac80","c40ffb4f","c4cb3590","c6b116df","c7412e95","c8f319fa","cbb336d2","cbcfbaf5","cd2c1c5f","cf6ff762","d0f44231","d369bd65","d452cf7d","de01eda2","dfc85dfb","e67280b1","eeab3ed3","eedc9b2b","f3ea7bfa","f4af1eb0","f7aac704","fbde86c1","fe95284d"],"records":{"maxGamePTS":{"v":23,"gameKey":"0fd5f254","sid":"e9440fb8"},"maxGameThreePt":{"v":3,"gameKey":"0fd5f254","sid":"e9440fb8"}}}
+{
+  "uuid": "af7774a9-d11e-48cd-bc9b-8caf81550862",
+  "name": "Calvin Tu",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 76,
+      "pts": 542,
+      "fouls": 112,
+      "fg": 208,
+      "ft": 48,
+      "threePt": 26,
+      "foulOuts": {
+        "88fd4210": 1
+      },
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 23,
+      "maxGameThreePt": 3,
+      "wins": 54,
+      "losses": 43,
+      "winPct": 0.55,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:25:19.637Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1314c52c",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "6f7f99f2",
+          "tn": "Moo Deng",
+          "gid": "ccc88a0d",
+          "gn": "Thursday Men G Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 24,
+            "ft": 12,
+            "fg": 60,
+            "threePt": 5,
+            "pts": 147,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e9440fb8",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "81143f9a",
+          "tn": "Moo Deng",
+          "gid": "274e46ac",
+          "gn": "Thursday Open Men G Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 31,
+            "ft": 19,
+            "fg": 64,
+            "threePt": 12,
+            "pts": 183,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 8,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f287739e",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "abe90f11",
+          "tn": "Moo Deng",
+          "gid": "5606942e",
+          "gn": "Thursday Men Section 7",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 37,
+            "ft": 10,
+            "fg": 41,
+            "threePt": 4,
+            "pts": 104,
+            "wins": 8,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "abe90f11",
+          "tn": "Moo Deng",
+          "gid": "62dda0e1",
+          "gn": "Thursday Men Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 37,
+            "fg": 41,
+            "threePt": 4,
+            "pts": 104,
+            "wins": 8,
+            "losses": 9,
+            "ft": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88fd4210",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "9b147ba5",
+          "tn": "Just Play Celtics [P]",
+          "gid": "61f52260",
+          "gn": "Men SUNDAY Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 26,
+            "threePt": 1,
+            "pts": 57,
+            "wins": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "9b147ba5",
+          "tn": "Just Play Celtics [P]",
+          "gid": "f8405d35",
+          "gn": "Sunday Unspecified Men 12",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 12,
+            "fg": 26,
+            "pts": 57,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 4,
+            "ft": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "9b147ba5",
+          "tn": "Just Play Celtics [P]",
+          "gid": "c9f9fe88",
+          "gn": "Sunday Unspecified Men 13",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 26,
+            "pts": 57,
+            "wins": 4,
+            "losses": 4,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1ca322dc",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "87c7d1d0",
+          "tn": "Odd Socks (Orange)",
+          "gid": "e2be1c64",
+          "gn": "Men WEDNESDAY Section 4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "ft": 5,
+            "fg": 17,
+            "threePt": 4,
+            "pts": 51
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "96f9f19b",
+          "tn": "Just Play Celtics (Black/White Reversible)",
+          "gid": "8a7a5fdc",
+          "gn": "Men SUNDAY Section 8",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:26.812Z",
+  "teams": [
+    {
+      "tid": "6f7f99f2",
+      "sid": "1314c52c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81143f9a",
+      "sid": "e9440fb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "abe90f11",
+      "sid": "f287739e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b147ba5",
+      "sid": "88fd4210",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87c7d1d0",
+      "sid": "1ca322dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96f9f19b",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:28.353Z",
+  "games": [
+    "030503f4",
+    "07a431c8",
+    "09de7fc9",
+    "09fe5a9f",
+    "0a60c8b0",
+    "0fd5f254",
+    "12b89e47",
+    "12edb3df",
+    "197f82a5",
+    "1faa23bf",
+    "20890f24",
+    "22c1e6b6",
+    "24ce8714",
+    "36eb3680",
+    "3786093a",
+    "39380b39",
+    "39524508",
+    "398219c1",
+    "3caca9f5",
+    "42295e0c",
+    "42ecd96a",
+    "43a0ac52",
+    "498ae33b",
+    "4a46eee5",
+    "4be99d52",
+    "4f3e8412",
+    "4f402847",
+    "5271db8d",
+    "56db2e93",
+    "59b09ad7",
+    "5b235d67",
+    "60478de1",
+    "677df8f8",
+    "6a66cd63",
+    "735b11a0",
+    "73fd9852",
+    "7577eb93",
+    "76524925",
+    "798d56a4",
+    "7ca98486",
+    "90588d20",
+    "93dee6bd",
+    "99c17c75",
+    "9d41b0df",
+    "9d4b8dc2",
+    "a5c45813",
+    "a6beefe4",
+    "a8428df5",
+    "a8626a6b",
+    "aa63518e",
+    "af6b453f",
+    "b980b5b9",
+    "b9c8038d",
+    "bcddac80",
+    "c40ffb4f",
+    "c4cb3590",
+    "c6b116df",
+    "c7412e95",
+    "c8f319fa",
+    "cbb336d2",
+    "cbcfbaf5",
+    "cd2c1c5f",
+    "cf6ff762",
+    "d0f44231",
+    "d369bd65",
+    "d452cf7d",
+    "de01eda2",
+    "dfc85dfb",
+    "e67280b1",
+    "eeab3ed3",
+    "eedc9b2b",
+    "f3ea7bfa",
+    "f4af1eb0",
+    "f7aac704",
+    "fbde86c1",
+    "fe95284d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "0fd5f254",
+      "sid": "e9440fb8"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "0fd5f254",
+      "sid": "e9440fb8"
+    }
+  }
+}

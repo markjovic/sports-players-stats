@@ -1,1 +1,308 @@
-{"uuid":"9842061e-9a22-401b-a9b2-a5b7177c0809","name":"Jarrod Dalzotto","gender":"Men","sports":{"Basketball":{"gp":35,"pts":163,"fouls":29,"fg":58,"ft":20,"threePt":9,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":2,"wins":5,"losses":26,"draws":1,"winPct":0.16,"statsChecked":"2026-07-05T16:28:08.938Z"}},"seasons":[{"sid":"307cebbc","sn":"Autumn 2026","club":"Melbourne Wolves Basketball Club","regs":[{"tid":"eb79f63f","tn":"Melbourne Wolves United","gid":"f3d720e2","gn":"Thursday Open Men A/B Grade","age":"Senior","div":null,"stats":{"gp":15,"fouls":13,"ft":6,"fg":15,"threePt":2,"pts":42,"losses":12}},{"tid":"f7f7ab2c","tn":"Melbourne Wolves Flames","gid":"8f39abe3","gn":"Tuesday Open Men B Grade","age":"Senior","div":null,"stats":{"gp":13,"fouls":12,"ft":13,"fg":32,"threePt":4,"pts":89,"wins":5,"losses":8}}]},{"sid":"b08df202","sn":"Spring 2025","club":"Melbourne Wolves Basketball Club","regs":[{"tid":"ff0b38af","tn":"Melbourne Wolves Flames","gid":"3970374a","gn":"Tuesday Open Men B Grade","age":"Senior","div":null,"stats":{"gp":7,"fouls":4,"ft":1,"fg":11,"threePt":3,"pts":32,"finals":1,"losses":6,"draws":1}}]}],"updatedAt":"2026-07-04T05:39:40.916Z","teams":[{"tid":"f7f7ab2c","sid":"307cebbc","status":"ACTIVE"},{"tid":"eb79f63f","sid":"307cebbc","status":"ACTIVE"},{"tid":"ff0b38af","sid":"b08df202","status":"COMPLETED"},{"tid":"eddefc32","sid":"21cd9648","status":"COMPLETED"},{"tid":"b4eef777","sid":"d4cbf787","status":"COMPLETED"},{"tid":"474257d5","sid":"d64fcfce","status":"COMPLETED"},{"tid":"c87ed790","sid":"afd26581","status":"COMPLETED"},{"tid":"9c1eded2","sid":"922f0463","status":"COMPLETED"},{"tid":"e37f39e2","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:29:55.891Z","records":{"maxGamePTS":{"v":21,"gameKey":"5a683d5d","sid":"307cebbc"},"maxGameThreePt":{"v":2,"gameKey":"5a683d5d","sid":"307cebbc"}},"games":["0684f14e","092bd4be","0a954d80","1166270a","168704d9","245b11c5","268d08e8","33031c63","38ffbce9","4282c96a","4714e6d8","50e387f8","5a5824ae","5a683d5d","6193c817","740950b5","74e345ea","7aea3c4d","85c6d844","87a59d66","8bce8b1f","98c53764","9cdc161f","b0320df5","b7a98acc","ba75262d","c1ea9db6","c899caa6","d107e6c4","d7f73726","d81e4e62","dce3885e","fa383af0"],"gameTids":{"285e32e7":"eb79f63f","a2d52f88":"eb79f63f","d81e4e62":"eb79f63f","4282c96a":"eb79f63f","98c53764":"eb79f63f","245b11c5":"eb79f63f","b0320df5":"eb79f63f","740950b5":"eb79f63f","38ffbce9":"eb79f63f","74e345ea":"eb79f63f","7aea3c4d":"eb79f63f","1166270a":"eb79f63f","87a59d66":"eb79f63f","092bd4be":"eb79f63f","b7a98acc":"eb79f63f","5a5824ae":"f7f7ab2c","fa383af0":"f7f7ab2c","6193c817":"f7f7ab2c","5a683d5d":"f7f7ab2c","85c6d844":"f7f7ab2c","8bce8b1f":"f7f7ab2c","ba75262d":"f7f7ab2c","c1ea9db6":"f7f7ab2c","dce3885e":"f7f7ab2c","d7f73726":"f7f7ab2c","268d08e8":"f7f7ab2c","50e387f8":"f7f7ab2c","9cdc161f":"f7f7ab2c","0684f14e":"ff0b38af","c899caa6":"ff0b38af","33031c63":"ff0b38af","168704d9":"ff0b38af","4714e6d8":"ff0b38af","0a954d80":"ff0b38af","d107e6c4":"ff0b38af"}}
+{
+  "uuid": "9842061e-9a22-401b-a9b2-a5b7177c0809",
+  "name": "Jarrod Dalzotto",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 163,
+      "fouls": 29,
+      "fg": 58,
+      "ft": 20,
+      "threePt": 9,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 2,
+      "wins": 5,
+      "losses": 26,
+      "draws": 1,
+      "winPct": 0.16,
+      "statsChecked": "2026-07-05T16:28:08.938Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "club": "Melbourne Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "eb79f63f",
+          "tn": "Melbourne Wolves United",
+          "gid": "f3d720e2",
+          "gn": "Thursday Open Men A/B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 15,
+            "threePt": 2,
+            "pts": 42,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "f7f7ab2c",
+          "tn": "Melbourne Wolves Flames",
+          "gid": "8f39abe3",
+          "gn": "Tuesday Open Men B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 13,
+            "fg": 32,
+            "threePt": 4,
+            "pts": 89,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b08df202",
+      "sn": "Spring 2025",
+      "club": "Melbourne Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "ff0b38af",
+          "tn": "Melbourne Wolves Flames",
+          "gid": "3970374a",
+          "gn": "Tuesday Open Men B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 4,
+            "ft": 1,
+            "fg": 11,
+            "threePt": 3,
+            "pts": 32,
+            "finals": 1,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "eddefc32",
+          "tn": "Indigicators",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "b4eef777",
+          "tn": "Indigicators",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "474257d5",
+          "tn": "Indigicators",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "c87ed790",
+          "tn": "Indigicators",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "9c1eded2",
+          "tn": "The Indigicators",
+          "gid": "33f87ae0",
+          "gn": "Monday Open Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "e37f39e2",
+          "tn": "The Indigicators",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:40.916Z",
+  "teams": [
+    {
+      "tid": "eb79f63f",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f7f7ab2c",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ff0b38af",
+      "sid": "b08df202",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eddefc32",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4eef777",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "474257d5",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c87ed790",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c1eded2",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e37f39e2",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:32.697Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "5a683d5d",
+      "sid": "307cebbc"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "5a683d5d",
+      "sid": "307cebbc"
+    }
+  },
+  "games": [
+    "0684f14e",
+    "092bd4be",
+    "0a954d80",
+    "1166270a",
+    "168704d9",
+    "245b11c5",
+    "268d08e8",
+    "33031c63",
+    "38ffbce9",
+    "4282c96a",
+    "4714e6d8",
+    "50e387f8",
+    "5a5824ae",
+    "5a683d5d",
+    "6193c817",
+    "740950b5",
+    "74e345ea",
+    "7aea3c4d",
+    "85c6d844",
+    "87a59d66",
+    "8bce8b1f",
+    "98c53764",
+    "9cdc161f",
+    "b0320df5",
+    "b7a98acc",
+    "ba75262d",
+    "c1ea9db6",
+    "c899caa6",
+    "d107e6c4",
+    "d7f73726",
+    "d81e4e62",
+    "dce3885e",
+    "fa383af0"
+  ],
+  "gameTids": {
+    "285e32e7": "eb79f63f",
+    "a2d52f88": "eb79f63f",
+    "d81e4e62": "eb79f63f",
+    "4282c96a": "eb79f63f",
+    "98c53764": "eb79f63f",
+    "245b11c5": "eb79f63f",
+    "b0320df5": "eb79f63f",
+    "740950b5": "eb79f63f",
+    "38ffbce9": "eb79f63f",
+    "74e345ea": "eb79f63f",
+    "7aea3c4d": "eb79f63f",
+    "1166270a": "eb79f63f",
+    "87a59d66": "eb79f63f",
+    "092bd4be": "eb79f63f",
+    "b7a98acc": "eb79f63f",
+    "5a5824ae": "f7f7ab2c",
+    "fa383af0": "f7f7ab2c",
+    "6193c817": "f7f7ab2c",
+    "5a683d5d": "f7f7ab2c",
+    "85c6d844": "f7f7ab2c",
+    "8bce8b1f": "f7f7ab2c",
+    "ba75262d": "f7f7ab2c",
+    "c1ea9db6": "f7f7ab2c",
+    "dce3885e": "f7f7ab2c",
+    "d7f73726": "f7f7ab2c",
+    "268d08e8": "f7f7ab2c",
+    "50e387f8": "f7f7ab2c",
+    "9cdc161f": "f7f7ab2c",
+    "0684f14e": "ff0b38af",
+    "c899caa6": "ff0b38af",
+    "33031c63": "ff0b38af",
+    "168704d9": "ff0b38af",
+    "4714e6d8": "ff0b38af",
+    "0a954d80": "ff0b38af",
+    "d107e6c4": "ff0b38af"
+  }
+}

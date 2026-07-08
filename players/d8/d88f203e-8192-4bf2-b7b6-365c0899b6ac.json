@@ -1,1 +1,127 @@
-{"uuid":"d88f203e-8192-4bf2-b7b6-365c0899b6ac","name":"Madeline Cooke","gender":"Women","sports":{"Basketball":{"gp":10,"pts":30,"fouls":7,"fg":13,"ft":1,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"losses":6,"winPct":0,"statsChecked":"2026-07-05T15:26:09.210Z"}},"seasons":[{"sid":"7af81013","sn":"Term 1, 2023","regs":[{"tid":"45f0d1ce","tn":"Shooting Stars","gid":"aa6ec6a3","gn":"Monday Open Women","age":"Senior","div":null,"stats":{"gp":6,"fouls":5,"ft":1,"fg":8,"pts":17,"finals":1,"losses":6}}]},{"sid":"62858c4a","sn":"Winter 2021","regs":[{"tid":"e0bb935e","tn":"Bombshells ","gid":"00b74422","gn":"Monday Senior Women Social","age":"Senior","div":null,"stats":{"gp":4,"fouls":2,"fg":5,"threePt":1,"pts":13}}]}],"updatedAt":"2026-06-01T15:55:25.234Z","teams":[{"tid":"45f0d1ce","sid":"7af81013","status":"COMPLETED"},{"tid":"edb6b032","sid":"57b5778e","status":"COMPLETED"},{"tid":"e0bb935e","sid":"62858c4a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:18.713Z","games":["0e3b3c40","25943ff4","39750f7e","6ee82b67","a9d8ef9d","b989b596","d9b9c546","e4638fda","f5243a35","f8dffc81"],"records":{"maxGamePTS":{"v":6,"gameKey":"a9d8ef9d","sid":"7af81013"},"maxGameThreePt":{"v":1,"gameKey":"39750f7e","sid":"62858c4a"}}}
+{
+  "uuid": "d88f203e-8192-4bf2-b7b6-365c0899b6ac",
+  "name": "Madeline Cooke",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 30,
+      "fouls": 7,
+      "fg": 13,
+      "ft": 1,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "losses": 6,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:26:09.210Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7af81013",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "45f0d1ce",
+          "tn": "Shooting Stars",
+          "gid": "aa6ec6a3",
+          "gn": "Monday Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "finals": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "62858c4a",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "e0bb935e",
+          "tn": "Bombshells ",
+          "gid": "00b74422",
+          "gn": "Monday Senior Women Social",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "fg": 5,
+            "threePt": 1,
+            "pts": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "57b5778e",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "edb6b032",
+          "tn": "Bombshells ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:55:25.234Z",
+  "teams": [
+    {
+      "tid": "45f0d1ce",
+      "sid": "7af81013",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0bb935e",
+      "sid": "62858c4a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "edb6b032",
+      "sid": "57b5778e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:02.520Z",
+  "games": [
+    "0e3b3c40",
+    "25943ff4",
+    "39750f7e",
+    "6ee82b67",
+    "a9d8ef9d",
+    "b989b596",
+    "d9b9c546",
+    "e4638fda",
+    "f5243a35",
+    "f8dffc81"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "a9d8ef9d",
+      "sid": "7af81013"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "39750f7e",
+      "sid": "62858c4a"
+    }
+  }
+}

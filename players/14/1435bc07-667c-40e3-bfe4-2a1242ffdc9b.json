@@ -1,1 +1,106 @@
-{"uuid":"1435bc07-667c-40e3-bfe4-2a1242ffdc9b","name":"Pippa Flanagan","gender":"Girls","sports":{"Basketball":{"gp":15,"fouls":12,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":6,"losses":20,"winPct":0.23,"statsChecked":"2026-07-05T15:34:10.340Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Bullits Basketball Club","regs":[]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Bullits Basketball Club","regs":[{"tid":"bbc7049e","tn":"Bullits Little Ballers","gid":"7938ee95","gn":"Tuesday U8 Girls A/A Reserve Grade Modified","age":"U8","div":null,"stats":{"gp":15,"fouls":12,"wins":3,"losses":10}},{"tid":"bbc7049e","tn":"Bullits Little Ballers","gid":"b7b0f710","gn":"Tuesday U8 Girls B Grade Modified","age":"U8","div":null,"stats":{"gp":15,"fouls":12,"wins":3,"losses":10}}]}],"updatedAt":"2026-06-01T23:18:50.547Z","teams":[{"tid":"bbc7049e","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"d9324a50","sid":"e2b609ed","status":"UPCOMING"}],"teamsUpdatedAt":"2026-06-05T11:58:20.638Z","games":["0924d6d7","09a0887f","10f9c151","166a88a6","21743945","4f165d6d","58a97d60","734f2d69","80965bee","9da54d57","c0bdadcb","c7f89c18","ecd9d52f"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "1435bc07-667c-40e3-bfe4-2a1242ffdc9b",
+  "name": "Pippa Flanagan",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "fouls": 12,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 20,
+      "winPct": 0.23,
+      "statsChecked": "2026-07-05T15:34:10.340Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "d9324a50",
+          "tn": "Bullits Little Ballers",
+          "gid": "acd485c1",
+          "gn": "Tuesday U8 Girls B Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "bbc7049e",
+          "tn": "Bullits Little Ballers",
+          "gid": "7938ee95",
+          "gn": "Tuesday U8 Girls A/A Reserve Grade Modified",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 12,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "bbc7049e",
+          "tn": "Bullits Little Ballers",
+          "gid": "b7b0f710",
+          "gn": "Tuesday U8 Girls B Grade Modified",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 12,
+            "wins": 3,
+            "losses": 10
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T23:18:50.547Z",
+  "teams": [
+    {
+      "tid": "d9324a50",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbc7049e",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:42:57.947Z",
+  "games": [
+    "0924d6d7",
+    "09a0887f",
+    "10f9c151",
+    "166a88a6",
+    "21743945",
+    "4f165d6d",
+    "58a97d60",
+    "734f2d69",
+    "80965bee",
+    "9da54d57",
+    "c0bdadcb",
+    "c7f89c18",
+    "ecd9d52f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

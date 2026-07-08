@@ -1,1 +1,311 @@
-{"uuid":"a28e395a-9ba2-47d4-8d54-99e33d15e09e","name":"Adrian Wulff","gender":"Men","sports":{"Basketball":{"gp":56,"pts":616,"fouls":68,"fg":195,"ft":82,"threePt":48,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":25,"maxGameThreePt":4,"wins":50,"losses":34,"winPct":0.6,"statsChecked":"2026-07-05T15:24:44.140Z"}},"seasons":[{"sid":"12acc552","sn":"Summer 2024/25","regs":[{"tid":"1c2752ff","tn":"Ring Chasers","gid":"04583841","gn":"Monday Men 8 - 2025 Summer","age":null,"div":null,"stats":{"gp":18,"fouls":29,"ft":29,"fg":73,"threePt":17,"pts":226,"finals":1,"gfApps":1,"wins":12,"losses":6}}]},{"sid":"84137cb7","sn":"Winter 2024","regs":[{"tid":"e8e97dba","tn":"Ring Chasers","gid":"34d474b3","gn":"Monday Men 8 - 2024 Winter","age":null,"div":null,"stats":{"gp":15,"fouls":21,"ft":20,"fg":49,"threePt":13,"pts":157,"wins":7,"losses":8}}]},{"sid":"f5ece0be","sn":"Summer 2023/24","regs":[{"tid":"f895387f","tn":"JetBLACKS","gid":"b221917b","gn":"Thursday Men 8 - 2024 Summer","age":null,"div":null,"stats":{"gp":9,"fouls":2,"ft":6,"fg":7,"threePt":3,"pts":29,"wins":4,"losses":5}},{"tid":"549a30bf","stats":{"wins":9,"losses":5,"gp":14,"pts":204,"fg":66,"ft":27,"threePt":15,"fouls":16}}]},{"sid":"f5ece0be","sn":"Summer 2023/24","regs":[{"tid":"549a30bf","tn":"Ring Chasers","gid":"56ab15a8","gn":"Monday Men 8 - 2024 Summer","age":null,"div":null,"stats":{"gp":14,"fouls":16,"ft":27,"fg":66,"threePt":15,"pts":204,"wins":9,"losses":5}},{"tid":"549a30bf","tn":"Ring Chasers","gid":"48ce4518","gn":"Monday Men 9 - 2024 Summer","age":null,"div":null,"stats":{"gp":14,"fouls":16,"ft":27,"fg":66,"threePt":15,"pts":204,"wins":9,"losses":5}}]}],"updatedAt":"2026-06-01T17:00:28.996Z","teams":[{"tid":"1c2752ff","sid":"12acc552","status":"COMPLETED"},{"tid":"e8e97dba","sid":"84137cb7","status":"COMPLETED"},{"tid":"f895387f","sid":"f5ece0be","status":"COMPLETED"},{"tid":"549a30bf","sid":"f5ece0be","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:31:56.331Z","games":["063dc117","081ffc57","09ee70ee","113fcfa1","1c94e07d","21bcbce5","2427aac3","291789fc","2c1b5f5b","2e285f57","2e93b79b","334995ee","34888790","3d2ff6ee","3f4bd428","3f551f42","4165a9d6","421030b7","44d61dfc","4734063e","490d1b02","4c3f6e6e","5926f5df","5abb638f","6612b0b4","6ac79579","6f8ba9f6","6fba10ca","744bfc86","790f7e75","7ab7ac01","7e73dc71","86bb330f","94d1a93c","94d46cd7","9e517046","a50474b9","aafa1b8d","ab128b2d","b128d041","b4177568","bfe80bfe","c33a6dc7","c5e64ff7","c78abbdd","ca8faf54","d5cb5d9c","d96aa0bf","df615f1b","e8db48e1","ec142a61","ec45204d","f1703e75","f6a48b9f","fb0776de","fdb45794"],"records":{"maxGamePTS":{"v":25,"gameKey":"44d61dfc","sid":"12acc552"},"maxGameThreePt":{"v":4,"gameKey":"744bfc86","sid":"12acc552"}},"gameTids":{"34888790":"e8e97dba","291789fc":"1c2752ff","7e73dc71":"1c2752ff","86bb330f":"1c2752ff","744bfc86":"1c2752ff","6ac79579":"1c2752ff","6f8ba9f6":"1c2752ff","ca8faf54":"1c2752ff","113fcfa1":"1c2752ff","5926f5df":"1c2752ff","bfe80bfe":"1c2752ff","a50474b9":"1c2752ff","081ffc57":"1c2752ff","94d46cd7":"1c2752ff","7ab7ac01":"1c2752ff","fb0776de":"1c2752ff","f1703e75":"1c2752ff","2c1b5f5b":"1c2752ff","44d61dfc":"1c2752ff","9e517046":"e8e97dba","6612b0b4":"e8e97dba","334995ee":"e8e97dba","1c94e07d":"e8e97dba","df615f1b":"e8e97dba","490d1b02":"e8e97dba","94d1a93c":"e8e97dba","ec142a61":"e8e97dba","ec45204d":"e8e97dba","3d2ff6ee":"e8e97dba","21bcbce5":"e8e97dba","e8db48e1":"e8e97dba","063dc117":"e8e97dba","f6a48b9f":"e8e97dba","b128d041":"f895387f","b4177568":"f895387f","4734063e":"f895387f","421030b7":"f895387f","2e285f57":"f895387f","c5e64ff7":"f895387f","3f4bd428":"f895387f","aafa1b8d":"f895387f","d5cb5d9c":"f895387f","fdb45794":"549a30bf","c78abbdd":"549a30bf","5abb638f":"549a30bf","09ee70ee":"549a30bf","d96aa0bf":"549a30bf","4c3f6e6e":"549a30bf","c33a6dc7":"549a30bf","2e93b79b":"549a30bf","790f7e75":"549a30bf","ab128b2d":"549a30bf","4165a9d6":"549a30bf","6fba10ca":"549a30bf","2427aac3":"549a30bf","3f551f42":"549a30bf"}}
+{
+  "uuid": "a28e395a-9ba2-47d4-8d54-99e33d15e09e",
+  "name": "Adrian Wulff",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 56,
+      "pts": 616,
+      "fouls": 68,
+      "fg": 195,
+      "ft": 82,
+      "threePt": 48,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 25,
+      "maxGameThreePt": 4,
+      "wins": 50,
+      "losses": 34,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T15:24:44.140Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "12acc552",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "1c2752ff",
+          "tn": "Ring Chasers",
+          "gid": "04583841",
+          "gn": "Monday Men 8 - 2025 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 29,
+            "ft": 29,
+            "fg": 73,
+            "threePt": 17,
+            "pts": 226,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "84137cb7",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "e8e97dba",
+          "tn": "Ring Chasers",
+          "gid": "34d474b3",
+          "gn": "Monday Men 8 - 2024 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 21,
+            "ft": 20,
+            "fg": 49,
+            "threePt": 13,
+            "pts": 157,
+            "wins": 7,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5ece0be",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "f895387f",
+          "tn": "JetBLACKS",
+          "gid": "b221917b",
+          "gn": "Thursday Men 8 - 2024 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 2,
+            "ft": 6,
+            "fg": 7,
+            "threePt": 3,
+            "pts": 29,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "549a30bf",
+          "stats": {
+            "wins": 9,
+            "losses": 5,
+            "gp": 14,
+            "pts": 204,
+            "fg": 66,
+            "ft": 27,
+            "threePt": 15,
+            "fouls": 16
+          },
+          "gid": "56ab15a8",
+          "gn": "Monday Men 8 - 2024 Summer"
+        }
+      ]
+    },
+    {
+      "sid": "f5ece0be",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "549a30bf",
+          "tn": "Ring Chasers",
+          "gid": "56ab15a8",
+          "gn": "Monday Men 8 - 2024 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 27,
+            "fg": 66,
+            "threePt": 15,
+            "pts": 204,
+            "wins": 9,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "549a30bf",
+          "tn": "Ring Chasers",
+          "gid": "48ce4518",
+          "gn": "Monday Men 9 - 2024 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 27,
+            "fg": 66,
+            "threePt": 15,
+            "pts": 204,
+            "wins": 9,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T17:00:28.996Z",
+  "teams": [
+    {
+      "tid": "1c2752ff",
+      "sid": "12acc552",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8e97dba",
+      "sid": "84137cb7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f895387f",
+      "sid": "f5ece0be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "549a30bf",
+      "sid": "f5ece0be",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:14.281Z",
+  "games": [
+    "063dc117",
+    "081ffc57",
+    "09ee70ee",
+    "113fcfa1",
+    "1c94e07d",
+    "21bcbce5",
+    "2427aac3",
+    "291789fc",
+    "2c1b5f5b",
+    "2e285f57",
+    "2e93b79b",
+    "334995ee",
+    "34888790",
+    "3d2ff6ee",
+    "3f4bd428",
+    "3f551f42",
+    "4165a9d6",
+    "421030b7",
+    "44d61dfc",
+    "4734063e",
+    "490d1b02",
+    "4c3f6e6e",
+    "5926f5df",
+    "5abb638f",
+    "6612b0b4",
+    "6ac79579",
+    "6f8ba9f6",
+    "6fba10ca",
+    "744bfc86",
+    "790f7e75",
+    "7ab7ac01",
+    "7e73dc71",
+    "86bb330f",
+    "94d1a93c",
+    "94d46cd7",
+    "9e517046",
+    "a50474b9",
+    "aafa1b8d",
+    "ab128b2d",
+    "b128d041",
+    "b4177568",
+    "bfe80bfe",
+    "c33a6dc7",
+    "c5e64ff7",
+    "c78abbdd",
+    "ca8faf54",
+    "d5cb5d9c",
+    "d96aa0bf",
+    "df615f1b",
+    "e8db48e1",
+    "ec142a61",
+    "ec45204d",
+    "f1703e75",
+    "f6a48b9f",
+    "fb0776de",
+    "fdb45794"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "44d61dfc",
+      "sid": "12acc552"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "744bfc86",
+      "sid": "12acc552"
+    }
+  },
+  "gameTids": {
+    "34888790": "e8e97dba",
+    "291789fc": "1c2752ff",
+    "7e73dc71": "1c2752ff",
+    "86bb330f": "1c2752ff",
+    "744bfc86": "1c2752ff",
+    "6ac79579": "1c2752ff",
+    "6f8ba9f6": "1c2752ff",
+    "ca8faf54": "1c2752ff",
+    "113fcfa1": "1c2752ff",
+    "5926f5df": "1c2752ff",
+    "bfe80bfe": "1c2752ff",
+    "a50474b9": "1c2752ff",
+    "081ffc57": "1c2752ff",
+    "94d46cd7": "1c2752ff",
+    "7ab7ac01": "1c2752ff",
+    "fb0776de": "1c2752ff",
+    "f1703e75": "1c2752ff",
+    "2c1b5f5b": "1c2752ff",
+    "44d61dfc": "1c2752ff",
+    "9e517046": "e8e97dba",
+    "6612b0b4": "e8e97dba",
+    "334995ee": "e8e97dba",
+    "1c94e07d": "e8e97dba",
+    "df615f1b": "e8e97dba",
+    "490d1b02": "e8e97dba",
+    "94d1a93c": "e8e97dba",
+    "ec142a61": "e8e97dba",
+    "ec45204d": "e8e97dba",
+    "3d2ff6ee": "e8e97dba",
+    "21bcbce5": "e8e97dba",
+    "e8db48e1": "e8e97dba",
+    "063dc117": "e8e97dba",
+    "f6a48b9f": "e8e97dba",
+    "b128d041": "f895387f",
+    "b4177568": "f895387f",
+    "4734063e": "f895387f",
+    "421030b7": "f895387f",
+    "2e285f57": "f895387f",
+    "c5e64ff7": "f895387f",
+    "3f4bd428": "f895387f",
+    "aafa1b8d": "f895387f",
+    "d5cb5d9c": "f895387f",
+    "fdb45794": "549a30bf",
+    "c78abbdd": "549a30bf",
+    "5abb638f": "549a30bf",
+    "09ee70ee": "549a30bf",
+    "d96aa0bf": "549a30bf",
+    "4c3f6e6e": "549a30bf",
+    "c33a6dc7": "549a30bf",
+    "2e93b79b": "549a30bf",
+    "790f7e75": "549a30bf",
+    "ab128b2d": "549a30bf",
+    "4165a9d6": "549a30bf",
+    "6fba10ca": "549a30bf",
+    "2427aac3": "549a30bf",
+    "3f551f42": "549a30bf"
+  }
+}

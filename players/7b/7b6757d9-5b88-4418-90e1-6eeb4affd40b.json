@@ -1,1 +1,336 @@
-{"uuid":"7b6757d9-5b88-4418-90e1-6eeb4affd40b","gender":null,"sports":{"Basketball":{"gp":50,"pts":454,"fouls":60,"fg":131,"ft":36,"threePt":52,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"d3eca93b":1},"maxGamePTS":26,"maxGameThreePt":4,"wins":46,"losses":48,"draws":5,"winPct":0.46,"statsChecked":"2026-07-05T16:14:07.458Z"}},"seasons":[{"sid":"d3eca93b","sn":"Winter 2022","club":null,"regs":[{"tid":"be996ecc","tn":"Premium Diesel","gid":"2ecb6399","gn":"(SOCIAL) Wednesday Senior Men 4","stats":{"gp":14,"pts":94,"fouls":18,"fg":30,"ft":4,"threePt":10,"finals":1,"gfApps":1,"foulOuts":1,"wins":8,"losses":6}},{"tid":"be996ecc","tn":"Premium Diesel","gid":"4cd80bd5","gn":"(SOCIAL) Wednesday Senior Men 2","stats":{"gp":14,"pts":94,"fg":30,"ft":4,"threePt":10,"finals":1,"gfApps":1,"wins":8,"losses":6,"fouls":18}}]},{"sid":"036d9de9","sn":"Summer 2021/22","club":null,"regs":[{"tid":"198d96fd","tn":"We'll Beat You By 10%","gid":"971a2a89","gn":"(SOCIAL) Thursday Senior Men 3","stats":{"gp":12,"pts":103,"fouls":8,"fg":25,"ft":8,"threePt":15,"wins":2,"losses":9,"draws":1}}]},{"sid":"fb916efa","sn":"Winter 2021","club":null,"regs":[{"tid":"f25e37c9","tn":"Premium Diesel ","gid":"69266476","gn":"(SOCIAL) Wednesday Senior Men 4","stats":{"gp":12,"pts":100,"fouls":19,"fg":28,"ft":8,"threePt":12,"wins":4,"losses":7}},{"tid":"2a93ae0f","stats":{"wins":6,"losses":5,"draws":1,"gp":12,"pts":157,"fg":48,"ft":16,"threePt":15,"fouls":15}}]},{"sid":"fb916efa","sn":"Winter 2021","club":null,"regs":[{"tid":"2a93ae0f","tn":"North G","gid":"153e4e6a","gn":"(SOCIAL) Thursday Senior Men 3","stats":{"gp":12,"pts":157,"fouls":15,"fg":48,"ft":16,"threePt":15,"wins":6,"losses":5,"draws":1}},{"tid":"2a93ae0f","tn":"North G","gid":"f6635f04","gn":"(SOCIAL) Thursday Senior Men 4","stats":{"gp":12,"pts":157,"fouls":15,"fg":48,"ft":16,"threePt":15,"wins":6,"losses":5,"draws":1}},{"tid":"2a93ae0f","tn":"North G","gid":"ad635b77","gn":"(SOCIAL) Thursday Senior Men 5","stats":{"gp":12,"pts":157,"fouls":15,"fg":48,"ft":16,"wins":6,"losses":5,"draws":1,"threePt":15}}]}],"updatedAt":"2026-06-11T23:41:32.488Z","records":{"maxGamePTS":{"v":26,"gameKey":"830abe6c","sid":"fb916efa"},"maxGameThreePt":{"v":4,"gameKey":"ecc5db3e","sid":"036d9de9"}},"games":["02131102","06640608","06f4164a","09c21a9f","0ff0cc5d","132f8b9c","139436f1","1f8708ff","28ceac9c","2e851ce0","31c43a9b","34bf54af","34f5d0cf","36feb02d","388c32b5","473cdf95","54464b21","61ca9584","62ae6166","65d7c5fa","6b926260","6e9f7cc4","6ed0062f","734679ac","75fac994","82c27889","830abe6c","83d6a05b","8e5d81e2","911d4b04","a30c2bb3","a866063a","b693662c","b954786c","b9ce7d4d","bce307a7","bf37c393","c2d214a4","c7c180e2","cb5c5123","d3236042","dc402b43","dd7b4735","de94c71e","e888f31e","ec866dfa","ecc5db3e","f3b029f2","f75b95f7","f8bb4ecc"],"name":"Winter 2022","gameTids":{"62ae6166":"be996ecc","de94c71e":"be996ecc","8e5d81e2":"be996ecc","54464b21":"be996ecc","6e9f7cc4":"be996ecc","dd7b4735":"be996ecc","06f4164a":"be996ecc","a30c2bb3":"be996ecc","09c21a9f":"be996ecc","c2d214a4":"be996ecc","bce307a7":"be996ecc","b954786c":"be996ecc","132f8b9c":"be996ecc","d3236042":"be996ecc","0ff0cc5d":"198d96fd","2e851ce0":"198d96fd","ecc5db3e":"198d96fd","473cdf95":"198d96fd","1f8708ff":"198d96fd","b693662c":"198d96fd","61ca9584":"198d96fd","c7c180e2":"198d96fd","28ceac9c":"198d96fd","34f5d0cf":"198d96fd","6b926260":"198d96fd","734679ac":"198d96fd","a866063a":"f25e37c9","139436f1":"f25e37c9","34bf54af":"f25e37c9","f75b95f7":"f25e37c9","75fac994":"f25e37c9","83d6a05b":"f25e37c9","911d4b04":"f25e37c9","6ed0062f":"f25e37c9","e888f31e":"f25e37c9","f8bb4ecc":"f25e37c9","f3b029f2":"f25e37c9","31c43a9b":"f25e37c9","65d7c5fa":"2a93ae0f","388c32b5":"2a93ae0f","82c27889":"2a93ae0f","36feb02d":"2a93ae0f","02131102":"2a93ae0f","cb5c5123":"2a93ae0f","06640608":"2a93ae0f","dc402b43":"2a93ae0f","b9ce7d4d":"2a93ae0f","830abe6c":"2a93ae0f","bf37c393":"2a93ae0f","ec866dfa":"2a93ae0f"}}
+{
+  "uuid": "7b6757d9-5b88-4418-90e1-6eeb4affd40b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 454,
+      "fouls": 60,
+      "fg": 131,
+      "ft": 36,
+      "threePt": 52,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "d3eca93b": 1
+      },
+      "maxGamePTS": 26,
+      "maxGameThreePt": 4,
+      "wins": 46,
+      "losses": 48,
+      "draws": 5,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T16:14:07.458Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3eca93b",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "be996ecc",
+          "tn": "Premium Diesel",
+          "gid": "2ecb6399",
+          "gn": "(SOCIAL) Wednesday Senior Men 4",
+          "stats": {
+            "gp": 14,
+            "pts": 94,
+            "fouls": 18,
+            "fg": 30,
+            "ft": 4,
+            "threePt": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "be996ecc",
+          "tn": "Premium Diesel",
+          "gid": "4cd80bd5",
+          "gn": "(SOCIAL) Wednesday Senior Men 2",
+          "stats": {
+            "gp": 14,
+            "pts": 94,
+            "fg": 30,
+            "ft": 4,
+            "threePt": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 6,
+            "fouls": 18
+          }
+        }
+      ]
+    },
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "198d96fd",
+          "tn": "We'll Beat You By 10%",
+          "gid": "971a2a89",
+          "gn": "(SOCIAL) Thursday Senior Men 3",
+          "stats": {
+            "gp": 12,
+            "pts": 103,
+            "fouls": 8,
+            "fg": 25,
+            "ft": 8,
+            "threePt": 15,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f25e37c9",
+          "tn": "Premium Diesel ",
+          "gid": "69266476",
+          "gn": "(SOCIAL) Wednesday Senior Men 4",
+          "stats": {
+            "gp": 12,
+            "pts": 100,
+            "fouls": 19,
+            "fg": 28,
+            "ft": 8,
+            "threePt": 12,
+            "wins": 4,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "2a93ae0f",
+          "stats": {
+            "wins": 6,
+            "losses": 5,
+            "draws": 1,
+            "gp": 12,
+            "pts": 157,
+            "fg": 48,
+            "ft": 16,
+            "threePt": 15,
+            "fouls": 15
+          },
+          "gid": "153e4e6a",
+          "gn": "(SOCIAL) Thursday Senior Men 3"
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "2a93ae0f",
+          "tn": "North G",
+          "gid": "153e4e6a",
+          "gn": "(SOCIAL) Thursday Senior Men 3",
+          "stats": {
+            "gp": 12,
+            "pts": 157,
+            "fouls": 15,
+            "fg": 48,
+            "ft": 16,
+            "threePt": 15,
+            "wins": 6,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2a93ae0f",
+          "tn": "North G",
+          "gid": "f6635f04",
+          "gn": "(SOCIAL) Thursday Senior Men 4",
+          "stats": {
+            "gp": 12,
+            "pts": 157,
+            "fouls": 15,
+            "fg": 48,
+            "ft": 16,
+            "threePt": 15,
+            "wins": 6,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2a93ae0f",
+          "tn": "North G",
+          "gid": "ad635b77",
+          "gn": "(SOCIAL) Thursday Senior Men 5",
+          "stats": {
+            "gp": 12,
+            "pts": 157,
+            "fouls": 15,
+            "fg": 48,
+            "ft": 16,
+            "wins": 6,
+            "losses": 5,
+            "draws": 1,
+            "threePt": 15
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:32.488Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "830abe6c",
+      "sid": "fb916efa"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "ecc5db3e",
+      "sid": "036d9de9"
+    }
+  },
+  "games": [
+    "02131102",
+    "06640608",
+    "06f4164a",
+    "09c21a9f",
+    "0ff0cc5d",
+    "132f8b9c",
+    "139436f1",
+    "1f8708ff",
+    "28ceac9c",
+    "2e851ce0",
+    "31c43a9b",
+    "34bf54af",
+    "34f5d0cf",
+    "36feb02d",
+    "388c32b5",
+    "473cdf95",
+    "54464b21",
+    "61ca9584",
+    "62ae6166",
+    "65d7c5fa",
+    "6b926260",
+    "6e9f7cc4",
+    "6ed0062f",
+    "734679ac",
+    "75fac994",
+    "82c27889",
+    "830abe6c",
+    "83d6a05b",
+    "8e5d81e2",
+    "911d4b04",
+    "a30c2bb3",
+    "a866063a",
+    "b693662c",
+    "b954786c",
+    "b9ce7d4d",
+    "bce307a7",
+    "bf37c393",
+    "c2d214a4",
+    "c7c180e2",
+    "cb5c5123",
+    "d3236042",
+    "dc402b43",
+    "dd7b4735",
+    "de94c71e",
+    "e888f31e",
+    "ec866dfa",
+    "ecc5db3e",
+    "f3b029f2",
+    "f75b95f7",
+    "f8bb4ecc"
+  ],
+  "name": "Winter 2022",
+  "gameTids": {
+    "62ae6166": "be996ecc",
+    "de94c71e": "be996ecc",
+    "8e5d81e2": "be996ecc",
+    "54464b21": "be996ecc",
+    "6e9f7cc4": "be996ecc",
+    "dd7b4735": "be996ecc",
+    "06f4164a": "be996ecc",
+    "a30c2bb3": "be996ecc",
+    "09c21a9f": "be996ecc",
+    "c2d214a4": "be996ecc",
+    "bce307a7": "be996ecc",
+    "b954786c": "be996ecc",
+    "132f8b9c": "be996ecc",
+    "d3236042": "be996ecc",
+    "0ff0cc5d": "198d96fd",
+    "2e851ce0": "198d96fd",
+    "ecc5db3e": "198d96fd",
+    "473cdf95": "198d96fd",
+    "1f8708ff": "198d96fd",
+    "b693662c": "198d96fd",
+    "61ca9584": "198d96fd",
+    "c7c180e2": "198d96fd",
+    "28ceac9c": "198d96fd",
+    "34f5d0cf": "198d96fd",
+    "6b926260": "198d96fd",
+    "734679ac": "198d96fd",
+    "a866063a": "f25e37c9",
+    "139436f1": "f25e37c9",
+    "34bf54af": "f25e37c9",
+    "f75b95f7": "f25e37c9",
+    "75fac994": "f25e37c9",
+    "83d6a05b": "f25e37c9",
+    "911d4b04": "f25e37c9",
+    "6ed0062f": "f25e37c9",
+    "e888f31e": "f25e37c9",
+    "f8bb4ecc": "f25e37c9",
+    "f3b029f2": "f25e37c9",
+    "31c43a9b": "f25e37c9",
+    "65d7c5fa": "2a93ae0f",
+    "388c32b5": "2a93ae0f",
+    "82c27889": "2a93ae0f",
+    "36feb02d": "2a93ae0f",
+    "02131102": "2a93ae0f",
+    "cb5c5123": "2a93ae0f",
+    "06640608": "2a93ae0f",
+    "dc402b43": "2a93ae0f",
+    "b9ce7d4d": "2a93ae0f",
+    "830abe6c": "2a93ae0f",
+    "bf37c393": "2a93ae0f",
+    "ec866dfa": "2a93ae0f"
+  },
+  "teams": [
+    {
+      "tid": "be996ecc",
+      "sid": "d3eca93b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "198d96fd",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f25e37c9",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a93ae0f",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:55.705Z"
+}

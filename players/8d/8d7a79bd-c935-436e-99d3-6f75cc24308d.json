@@ -1,1 +1,132 @@
-{"uuid":"8d7a79bd-c935-436e-99d3-6f75cc24308d","name":"Rabin Gautam","gender":"Men","sports":{"Basketball":{"gp":9,"pts":63,"fouls":10,"fg":21,"ft":6,"threePt":5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"losses":6,"winPct":0.4,"wins":4,"statsChecked":"2026-07-06T18:59:16.866Z"}},"seasons":[{"sid":"82f9d173","sn":"Winter 2026","regs":[{"tid":"160b7895","tn":"K-town","gid":"b6a58880","gn":"Monday Division 4","age":null,"div":"Division 4","stats":{"gp":5,"fg":14,"pts":41,"ft":4,"threePt":3,"fouls":7,"losses":3,"wins":2}},{"tid":"160b7895","tn":"K-town","gid":"6b57f368","gn":"Monday Men Grading","age":null,"div":null,"stats":{"gp":5,"fouls":7,"fg":14,"threePt":3,"pts":41,"losses":3,"ft":4,"wins":2}}]},{"sid":"26df4252","regs":[{"tid":"fa7673dc","stats":{"gp":4,"pts":22,"fg":7,"ft":2,"threePt":2,"fouls":3}},{"tid":"fa7673dc","tn":"","gid":"a4e5c059","gn":"Senior Men","div":null,"stats":{"gp":4,"pts":22,"fg":7,"ft":2,"threePt":2,"fouls":3}}]}],"updatedAt":"2026-07-06T18:35:00.699Z","teams":[{"tid":"160b7895","sid":"82f9d173","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:26:55.779Z","records":{"maxGamePTS":{"v":12,"gameKey":"67d81e4a","sid":"82f9d173"},"maxGameThreePt":{"v":1,"gameKey":"cd024abf","sid":"26df4252"}},"games":["106e2654","67d81e4a","74524e02","854b760f","bce9b1d6"]}
+{
+  "uuid": "8d7a79bd-c935-436e-99d3-6f75cc24308d",
+  "name": "Rabin Gautam",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 63,
+      "fouls": 10,
+      "fg": 21,
+      "ft": 6,
+      "threePt": 5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "losses": 6,
+      "winPct": 0.4,
+      "wins": 4,
+      "statsChecked": "2026-07-06T18:59:16.866Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "82f9d173",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "160b7895",
+          "tn": "K-town",
+          "gid": "b6a58880",
+          "gn": "Monday Division 4",
+          "age": null,
+          "div": "Division 4",
+          "stats": {
+            "gp": 5,
+            "fg": 14,
+            "pts": 41,
+            "ft": 4,
+            "threePt": 3,
+            "fouls": 7,
+            "losses": 3,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "160b7895",
+          "tn": "K-town",
+          "gid": "6b57f368",
+          "gn": "Monday Men Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "fg": 14,
+            "threePt": 3,
+            "pts": 41,
+            "losses": 3,
+            "ft": 4,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "fa7673dc",
+          "stats": {
+            "gp": 4,
+            "pts": 22,
+            "fg": 7,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 3
+          },
+          "gid": "a4e5c059",
+          "gn": "Senior Men"
+        },
+        {
+          "tid": "fa7673dc",
+          "tn": "",
+          "gid": "a4e5c059",
+          "gn": "Senior Men",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 22,
+            "fg": 7,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:00.699Z",
+  "teams": [
+    {
+      "tid": "160b7895",
+      "sid": "82f9d173",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa7673dc",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:32.739Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "67d81e4a",
+      "sid": "82f9d173"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "cd024abf",
+      "sid": "26df4252"
+    }
+  },
+  "games": [
+    "106e2654",
+    "67d81e4a",
+    "74524e02",
+    "854b760f",
+    "bce9b1d6"
+  ]
+}

@@ -1,1 +1,200 @@
-{"uuid":"ad9c3df6-9a9e-43f9-a57f-b5a582623446","name":"James Roberts","gender":"Boys","sports":{"Basketball":{"gp":27,"pts":60,"fouls":61,"fg":29,"ft":2,"foulOuts":{"1ee2cc6c":1,"fcfc254b":1},"maxGamePTS":11,"maxGameThreePt":null,"wins":36,"losses":16,"draws":2,"winPct":0.67,"statsChecked":"2026-07-05T14:57:27.001Z"}},"seasons":[{"sid":"1ee2cc6c","sn":"Winter 2026","club":"Frankston Bobcats Basketball Club","regs":[{"tid":"0f4f7714","tn":"Bobcats U10 Boys Quokkas","gid":"4c14d093","gn":"Monday U10 Boys Division 3","age":"U10","div":"Division 3","stats":{"gp":9,"fouls":20,"fg":4,"pts":8,"foulOuts":1,"wins":3,"losses":6}},{"tid":"0f4f7714","tn":"Bobcats U10 Boys Quokkas","gid":"d9c517cc","gn":"Monday U10 Boys Division 2","age":"U10","div":"Division 2","stats":{"gp":9,"fouls":20,"wins":3,"losses":6,"pts":8,"fg":4}}]},{"sid":"fcfc254b","sn":"Summer 2025/26","club":"Frankston Bobcats Basketball Club","regs":[{"tid":"e8e3a8e3","tn":"Bobcats U8 Boys Quokkas","gid":"d5aa2fbe","gn":"Saturday U8 Boys Div 06","age":"U8","div":"Div 06","stats":{"gp":15,"fouls":38,"ft":2,"fg":24,"pts":50,"foulOuts":1,"wins":12,"losses":2,"draws":1}},{"tid":"e8e3a8e3","tn":"Bobcats U8 Boys Quokkas","gid":"a401d94b","gn":"Saturday U8 Boys Div 07","age":"U8","div":"Div 07","stats":{"gp":15,"fouls":38,"fg":24,"pts":50,"wins":12,"losses":2,"draws":1,"ft":2}}]},{"sid":"2e623bd2","regs":[{"tid":"3d08a0f0","stats":{"gp":3,"pts":2,"fg":1,"fouls":3,"wins":3}},{"tid":"3d08a0f0","tn":"","gid":"351b266a","gn":"Saturday U10 Boys D2","div":null,"stats":{"gp":3,"pts":2,"fg":1,"fouls":3,"wins":3}}]}],"updatedAt":"2026-07-04T05:40:46.606Z","teams":[{"tid":"0f4f7714","sid":"1ee2cc6c","status":"ACTIVE"},{"tid":"e8e3a8e3","sid":"fcfc254b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:14.092Z","records":{"maxGamePTS":{"v":11,"gameKey":"373b4077","sid":"fcfc254b"},"maxGameThreePt":{"v":null}},"games":["0b3148a9","1b003020","1b7da19a","1ce714fd","1d1706d5","22fd3c10","23b98369","2d6e7df5","2f78232e","373b4077","374e4104","3cbc71d3","432b73de","49e5c354","4cc8acd4","4fdba0de","65c9ab71","66ea08b0","6f989c1c","71352222","7fdfa845","872d0497","8ec99cf5","a0f3a016","bfe2cc1a","c46da8f7","df62d01b"]}
+{
+  "uuid": "ad9c3df6-9a9e-43f9-a57f-b5a582623446",
+  "name": "James Roberts",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 60,
+      "fouls": 61,
+      "fg": 29,
+      "ft": 2,
+      "foulOuts": {
+        "1ee2cc6c": 1,
+        "fcfc254b": 1
+      },
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 36,
+      "losses": 16,
+      "draws": 2,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T14:57:27.001Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ee2cc6c",
+      "sn": "Winter 2026",
+      "club": "Frankston Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "0f4f7714",
+          "tn": "Bobcats U10 Boys Quokkas",
+          "gid": "4c14d093",
+          "gn": "Monday U10 Boys Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 9,
+            "fouls": 20,
+            "fg": 4,
+            "pts": 8,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "0f4f7714",
+          "tn": "Bobcats U10 Boys Quokkas",
+          "gid": "d9c517cc",
+          "gn": "Monday U10 Boys Division 2",
+          "age": "U10",
+          "div": "Division 2",
+          "stats": {
+            "gp": 9,
+            "fouls": 20,
+            "wins": 3,
+            "losses": 6,
+            "pts": 8,
+            "fg": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fcfc254b",
+      "sn": "Summer 2025/26",
+      "club": "Frankston Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "e8e3a8e3",
+          "tn": "Bobcats U8 Boys Quokkas",
+          "gid": "d5aa2fbe",
+          "gn": "Saturday U8 Boys Div 06",
+          "age": "U8",
+          "div": "Div 06",
+          "stats": {
+            "gp": 15,
+            "fouls": 38,
+            "ft": 2,
+            "fg": 24,
+            "pts": 50,
+            "foulOuts": 1,
+            "wins": 12,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e8e3a8e3",
+          "tn": "Bobcats U8 Boys Quokkas",
+          "gid": "a401d94b",
+          "gn": "Saturday U8 Boys Div 07",
+          "age": "U8",
+          "div": "Div 07",
+          "stats": {
+            "gp": 15,
+            "fouls": 38,
+            "fg": 24,
+            "pts": 50,
+            "wins": 12,
+            "losses": 2,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2e623bd2",
+      "regs": [
+        {
+          "tid": "3d08a0f0",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "wins": 3
+          },
+          "gid": "351b266a",
+          "gn": "Saturday U10 Boys D2"
+        },
+        {
+          "tid": "3d08a0f0",
+          "tn": "",
+          "gid": "351b266a",
+          "gn": "Saturday U10 Boys D2",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "wins": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:40:46.606Z",
+  "teams": [
+    {
+      "tid": "0f4f7714",
+      "sid": "1ee2cc6c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8e3a8e3",
+      "sid": "fcfc254b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3d08a0f0",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:32.770Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "373b4077",
+      "sid": "fcfc254b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b3148a9",
+    "1b003020",
+    "1b7da19a",
+    "1ce714fd",
+    "1d1706d5",
+    "22fd3c10",
+    "23b98369",
+    "2d6e7df5",
+    "2f78232e",
+    "373b4077",
+    "374e4104",
+    "3cbc71d3",
+    "432b73de",
+    "49e5c354",
+    "4cc8acd4",
+    "4fdba0de",
+    "65c9ab71",
+    "66ea08b0",
+    "6f989c1c",
+    "71352222",
+    "7fdfa845",
+    "872d0497",
+    "8ec99cf5",
+    "a0f3a016",
+    "bfe2cc1a",
+    "c46da8f7",
+    "df62d01b"
+  ]
+}

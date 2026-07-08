@@ -1,1 +1,392 @@
-{"uuid":"c4bdf382-c383-492f-b805-8948dccd66d9","name":"Camilla Sazenis","gender":"Girls","sports":{"Basketball":{"gp":86,"pts":410,"fouls":63,"fg":182,"ft":24,"threePt":4,"foulOuts":{"1d1b8d1c":1},"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.43,"maxGamePTS":19,"maxGameThreePt":2,"losses":47,"winPct":0.44,"wins":38,"draws":1,"statsChecked":"2026-07-05T14:58:21.598Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"7e4be021","tn":"APL U14 Girls Blue","gid":"bfc0bbe9","gn":"Saturday U14 Girls","age":"U14","div":null,"stats":{"gp":8,"fouls":12,"ft":5,"fg":22,"threePt":2,"pts":55,"losses":8}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"3cca8bf0","tn":"SMP Cygnets","gid":"5e78efc3","gn":"Tuesday Year 6 Girls B","age":null,"div":null,"stats":{"gp":17,"fouls":13,"ft":7,"fg":58,"threePt":1,"pts":136,"wins":17}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"5a29061c","tn":"APL U14 Girls","gid":"cbec5633","gn":"Saturday U14 Girls A/B","age":"U14","div":null,"stats":{"gp":13,"fouls":6,"ft":3,"fg":16,"pts":35,"finals":1,"losses":13}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"8d101034","tn":"SMP Cygnets","gid":"4dcf9f71","gn":"Tuesday Year 5 Girls B","age":null,"div":null,"stats":{"gp":15,"fouls":18,"ft":3,"fg":53,"pts":109,"foulOuts":1,"wins":6,"losses":8,"draws":1}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"28acc2e6","tn":"SMP Cygnets","gid":"8b63ee43","gn":"Tuesday MSAC/Bayside Year 5 Girls A","age":null,"div":null,"stats":{"gp":5,"fouls":3,"ft":2,"fg":10,"pts":22,"losses":5}}]},{"sid":"0c4ad170","sn":"Winter 2025","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"b78b3af4","tn":"APL U14 Girls","gid":"a2168c69","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":19,"fouls":4,"ft":4,"fg":23,"threePt":1,"pts":53,"finals":1,"gfApps":1,"wins":14,"losses":5,"gfWins":1}}]},{"sid":"6924f649","sn":"Summer 2023/24","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"7be62773","tn":"APL U12 Girls","gid":"a2c5fef3","gn":"Saturday U12 Girls","age":"U12","div":null,"stats":{"gp":9,"fouls":7,"finals":1,"wins":1,"losses":8}}]}],"updatedAt":"2026-07-04T05:38:05.519Z","teams":[{"tid":"3cca8bf0","sid":"ad68db8b","status":"ACTIVE"},{"tid":"7e4be021","sid":"e7aed763","status":"ACTIVE"},{"tid":"5a29061c","sid":"e78cfce1","status":"COMPLETED"},{"tid":"8d101034","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"b78b3af4","sid":"0c4ad170","status":"COMPLETED"},{"tid":"28acc2e6","sid":"31d05517","status":"COMPLETED"},{"tid":"62c2f8c9","sid":"8884de2d","status":"COMPLETED"},{"tid":"da5d0969","sid":"0fef30ca","status":"COMPLETED"},{"tid":"7be62773","sid":"6924f649","status":"COMPLETED"},{"tid":"3dfccaf2","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:14:07.398Z","records":{"maxGamePTS":{"v":19,"gameKey":"0f74495e","sid":"ad68db8b"},"maxGameThreePt":{"v":2,"gameKey":"655942ff","sid":"e7aed763"}},"games":["00521d94","07338862","07882941","0851d7c2","0e464b86","0f74495e","0f97994c","11c4d175","185abc23","1a58fae6","1ba478a5","20f96e4e","23a1629d","24fe8b5c","26041307","268e3e64","2c9cd0db","2cc1f1db","34e2c176","35b50956","3719f2f8","3917f616","391a8972","3a9dcaf9","3cfeb34d","42d7a2bd","448716cd","45cd8cf4","4b8db26b","4c624818","4cd45774","52291cb9","56870ea3","5a3528c5","5c226433","5f6861c4","655942ff","662af194","678ee1de","6902a8db","6c70a122","71c9b721","72c1781c","7388662e","74dbc383","773b7bee","78781dc6","7acdf20b","7b00b6ca","84fd75eb","8ad56156","8cd474a9","90a71de5","95e1230e","9679bdb9","98200d11","9c74a77f","9f1ffad3","a198d364","a1e6ee10","af35ed70","b4a1e0ed","b7ee3eb6","ba51c7f5","ba9d3e53","bb1104d6","befd3978","c1ab2c03","c8e086b2","cafd9037","cb3ef9d1","cfc0be8b","d0681bac","d06d5383","d1273217","d7875850","dcb2522e","dda24692","de8eb144","df4e9275","e1cd099d","e34cb381","f10db271","f9bfe155","fa0ad64c","fc4b3622"]}
+{
+  "uuid": "c4bdf382-c383-492f-b805-8948dccd66d9",
+  "name": "Camilla Sazenis",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 86,
+      "pts": 410,
+      "fouls": 63,
+      "fg": 182,
+      "ft": 24,
+      "threePt": 4,
+      "foulOuts": {
+        "1d1b8d1c": 1
+      },
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.43,
+      "maxGamePTS": 19,
+      "maxGameThreePt": 2,
+      "losses": 47,
+      "winPct": 0.44,
+      "wins": 38,
+      "draws": 1,
+      "statsChecked": "2026-07-05T14:58:21.598Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "7e4be021",
+          "tn": "APL U14 Girls Blue",
+          "gid": "bfc0bbe9",
+          "gn": "Saturday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 22,
+            "threePt": 2,
+            "pts": 55,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "3cca8bf0",
+          "tn": "SMP Cygnets",
+          "gid": "5e78efc3",
+          "gn": "Tuesday Year 6 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 13,
+            "ft": 7,
+            "fg": 58,
+            "threePt": 1,
+            "pts": 136,
+            "wins": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "5a29061c",
+          "tn": "APL U14 Girls",
+          "gid": "cbec5633",
+          "gn": "Saturday U14 Girls A/B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 16,
+            "pts": 35,
+            "finals": 1,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "8d101034",
+          "tn": "SMP Cygnets",
+          "gid": "4dcf9f71",
+          "gn": "Tuesday Year 5 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 18,
+            "ft": 3,
+            "fg": 53,
+            "pts": 109,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "28acc2e6",
+          "tn": "SMP Cygnets",
+          "gid": "8b63ee43",
+          "gn": "Tuesday MSAC/Bayside Year 5 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 10,
+            "pts": 22,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "b78b3af4",
+          "tn": "APL U14 Girls",
+          "gid": "a2168c69",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 4,
+            "ft": 4,
+            "fg": 23,
+            "threePt": 1,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 14,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6924f649",
+      "sn": "Summer 2023/24",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "7be62773",
+          "tn": "APL U12 Girls",
+          "gid": "a2c5fef3",
+          "gn": "Saturday U12 Girls",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "finals": 1,
+            "wins": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "62c2f8c9",
+          "tn": "SMP Cygnets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "da5d0969",
+          "tn": "SMP Cygnets",
+          "gid": "8e81252b",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "3dfccaf2",
+          "tn": "SMP Cygnets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:38:05.519Z",
+  "teams": [
+    {
+      "tid": "7e4be021",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cca8bf0",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a29061c",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d101034",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "28acc2e6",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b78b3af4",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7be62773",
+      "sid": "6924f649",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62c2f8c9",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da5d0969",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3dfccaf2",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:27.335Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "0f74495e",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "655942ff",
+      "sid": "e7aed763"
+    }
+  },
+  "games": [
+    "00521d94",
+    "07338862",
+    "07882941",
+    "0851d7c2",
+    "0e464b86",
+    "0f74495e",
+    "0f97994c",
+    "11c4d175",
+    "185abc23",
+    "1a58fae6",
+    "1ba478a5",
+    "20f96e4e",
+    "23a1629d",
+    "24fe8b5c",
+    "26041307",
+    "268e3e64",
+    "2c9cd0db",
+    "2cc1f1db",
+    "34e2c176",
+    "35b50956",
+    "3719f2f8",
+    "3917f616",
+    "391a8972",
+    "3a9dcaf9",
+    "3cfeb34d",
+    "42d7a2bd",
+    "448716cd",
+    "45cd8cf4",
+    "4b8db26b",
+    "4c624818",
+    "4cd45774",
+    "52291cb9",
+    "56870ea3",
+    "5a3528c5",
+    "5c226433",
+    "5f6861c4",
+    "655942ff",
+    "662af194",
+    "678ee1de",
+    "6902a8db",
+    "6c70a122",
+    "71c9b721",
+    "72c1781c",
+    "7388662e",
+    "74dbc383",
+    "773b7bee",
+    "78781dc6",
+    "7acdf20b",
+    "7b00b6ca",
+    "84fd75eb",
+    "8ad56156",
+    "8cd474a9",
+    "90a71de5",
+    "95e1230e",
+    "9679bdb9",
+    "98200d11",
+    "9c74a77f",
+    "9f1ffad3",
+    "a198d364",
+    "a1e6ee10",
+    "af35ed70",
+    "b4a1e0ed",
+    "b7ee3eb6",
+    "ba51c7f5",
+    "ba9d3e53",
+    "bb1104d6",
+    "befd3978",
+    "c1ab2c03",
+    "c8e086b2",
+    "cafd9037",
+    "cb3ef9d1",
+    "cfc0be8b",
+    "d0681bac",
+    "d06d5383",
+    "d1273217",
+    "d7875850",
+    "dcb2522e",
+    "dda24692",
+    "de8eb144",
+    "df4e9275",
+    "e1cd099d",
+    "e34cb381",
+    "f10db271",
+    "f9bfe155",
+    "fa0ad64c",
+    "fc4b3622"
+  ]
+}

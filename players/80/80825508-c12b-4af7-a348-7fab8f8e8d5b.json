@@ -1,1 +1,87 @@
-{"uuid":"80825508-c12b-4af7-a348-7fab8f8e8d5b","gender":null,"sports":{"Basketball":{"gp":5,"pts":2,"fouls":1,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"losses":1,"winPct":0.8,"statsChecked":"2026-07-05T16:14:19.773Z"}},"seasons":[{"sid":"a751eea7","sn":"Autumn 2020","club":null,"regs":[{"tid":"fb14d5aa","tn":"Flamin Cool Guys","gid":"9b1975e9","gn":"Monday Open Men D4 Grade","stats":{"gp":5,"pts":2,"fouls":1,"fg":1,"wins":4,"losses":1}}]}],"updatedAt":"2026-06-11T23:41:45.206Z","records":{"maxGamePTS":{"v":2,"gameKey":"87ecd555","sid":"a751eea7"},"maxGameThreePt":{"v":null}},"games":["2b2274da","42cb4af3","6d5c87a1","87ecd555","a7505dfb"],"name":"Autumn 2020"}
+{
+  "uuid": "80825508-c12b-4af7-a348-7fab8f8e8d5b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 2,
+      "fouls": 1,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 1,
+      "winPct": 0.8,
+      "statsChecked": "2026-07-05T16:14:19.773Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a751eea7",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "fb14d5aa",
+          "tn": "Flamin Cool Guys",
+          "gid": "9b1975e9",
+          "gn": "Monday Open Men D4 Grade",
+          "stats": {
+            "gp": 5,
+            "pts": 2,
+            "fouls": 1,
+            "fg": 1,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a11abfe0",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "30a09431",
+          "tn": "Flamin’ Cool Guys",
+          "gid": "0836abba",
+          "gn": "Monday Senior Men Div 5",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:45.206Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "87ecd555",
+      "sid": "a751eea7"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2b2274da",
+    "42cb4af3",
+    "6d5c87a1",
+    "87ecd555",
+    "a7505dfb"
+  ],
+  "name": "Autumn 2020",
+  "teams": [
+    {
+      "tid": "fb14d5aa",
+      "sid": "a751eea7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30a09431",
+      "sid": "a11abfe0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:09.911Z"
+}

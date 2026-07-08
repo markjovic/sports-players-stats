@@ -1,1 +1,92 @@
-{"uuid":"c2a41ccd-605c-41bf-92e2-5cad7c6ee901","name":"Tab Jiang","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":55,"fouls":14,"fg":25,"ft":5,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":null,"wins":1,"losses":5,"winPct":0.17,"statsChecked":"2026-07-05T14:44:13.287Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"21b16b50","tn":"Balwyn U15 Boys 16","gid":"0933d196","gn":"Boys U15 D Grading","age":"U15","div":null,"stats":{"gp":8,"fouls":14,"ft":5,"fg":25,"pts":55,"wins":1,"losses":5}}]}],"updatedAt":"2026-07-04T05:35:51.576Z","teams":[{"tid":"21b16b50","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:41:22.210Z","games":["1667a523","5197fb48","9a25de6a","a347276f","b13887d5","b9214b76"],"records":{"maxGamePTS":{"v":14,"gameKey":"a347276f","sid":"1ae60211"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c2a41ccd-605c-41bf-92e2-5cad7c6ee901",
+  "name": "Tab Jiang",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 55,
+      "fouls": 14,
+      "fg": 25,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T14:44:13.287Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "21b16b50",
+          "tn": "Balwyn U15 Boys 16",
+          "gid": "75e92814",
+          "gn": "Boys U15 DC",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "ft": 5,
+            "fg": 25,
+            "pts": 55,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f51ac790",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "9b4bc2ad",
+          "tn": "Camberwell Dragons U16 BOYS Maroon",
+          "gid": "30f02835",
+          "gn": "U16 Boys B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:51.576Z",
+  "teams": [
+    {
+      "tid": "21b16b50",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b4bc2ad",
+      "sid": "f51ac790",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:20.506Z",
+  "games": [
+    "1667a523",
+    "5197fb48",
+    "9a25de6a",
+    "a347276f",
+    "b13887d5",
+    "b9214b76"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "a347276f",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

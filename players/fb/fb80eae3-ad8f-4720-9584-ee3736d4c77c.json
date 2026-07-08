@@ -1,1 +1,119 @@
-{"uuid":"fb80eae3-ad8f-4720-9584-ee3736d4c77c","name":"2021","gender":null,"sports":{"Basketball":{"gp":5,"fouls":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:04:51.594Z"}},"seasons":[{"sid":"1e0eafb0","sn":"2021","club":"Maffra Eagles Basketball Club","regs":[{"tid":"fff3c1f2","tn":"Maffra Eagles U18 Girls","gid":"99c8780f","gn":"U18 Girls Division 1 & 2","stats":{"gp":4,"fouls":2,"finals":1,"wins":1,"losses":3}}]},{"sid":"0eea181d","sn":"Summer 2020/21","club":null,"regs":[{"tid":"5c4c9aae","tn":"Lynx","gid":"a9e8a349","gn":"Women's A Grade","stats":{"gp":1}}]}],"updatedAt":"2026-06-11T23:46:32.880Z","games":["4f0dd048","537a8265","5d988142","8750e20c","9d829ecb"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "fb80eae3-ad8f-4720-9584-ee3736d4c77c",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "fouls": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:04:51.594Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1e0eafb0",
+      "sn": "2021",
+      "club": "Maffra Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "fff3c1f2",
+          "tn": "Maffra Eagles U18 Girls",
+          "gid": "99c8780f",
+          "gn": "U18 Girls Division 1 & 2",
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "finals": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0eea181d",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5c4c9aae",
+          "tn": "Lynx",
+          "gid": "a9e8a349",
+          "gn": "Women's A Grade",
+          "stats": {
+            "gp": 1
+          }
+        },
+        {
+          "tid": "35e40f6d",
+          "tn": "Bottle Green",
+          "gid": "4c47dc54",
+          "gn": "16/18 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "15356642",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "05878a47",
+          "tn": "Maffra ",
+          "gid": "1571bb75",
+          "gn": "U19 Girls A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:32.880Z",
+  "games": [
+    "4f0dd048",
+    "537a8265",
+    "5d988142",
+    "8750e20c",
+    "9d829ecb"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teams": [
+    {
+      "tid": "fff3c1f2",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c4c9aae",
+      "sid": "0eea181d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35e40f6d",
+      "sid": "0eea181d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05878a47",
+      "sid": "15356642",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:17.038Z"
+}

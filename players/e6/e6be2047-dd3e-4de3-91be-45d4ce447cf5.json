@@ -1,1 +1,273 @@
-{"uuid":"e6be2047-dd3e-4de3-91be-45d4ce447cf5","name":"Jeremy Blecher","gender":"Men","sports":{"Basketball":{"gp":65,"pts":283,"fouls":118,"fg":104,"ft":51,"threePt":8,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"b399016f":1,"e9440fb8":1},"maxGamePTS":15,"maxGameThreePt":1,"wins":37,"losses":21,"draws":2,"winPct":0.62,"statsChecked":"2026-07-05T15:52:08.625Z"}},"seasons":[{"sid":"b399016f","sn":"Winter 2026","regs":[{"tid":"31d6672a","tn":"Mongolia","gid":"e06f5380","gn":"Thursday Men D Grade","age":null,"div":null,"stats":{"gp":11,"fouls":22,"ft":11,"fg":13,"threePt":2,"pts":43,"foulOuts":1,"wins":7,"losses":4}}]},{"sid":"1314c52c","sn":"Summer 2025/26","regs":[{"tid":"3e64fbae","tn":"Mongolia","gid":"09eeb25a","gn":"Thursday Men D Grade","age":null,"div":null,"stats":{"gp":18,"fouls":36,"ft":14,"fg":24,"threePt":2,"pts":68,"wins":11,"losses":4,"draws":1}}]},{"sid":"e9440fb8","sn":"Winter 2025","regs":[{"tid":"b76e395f","tn":"Mongolia","gid":"01712bdf","gn":"Thursday Open Men E Grade","age":"Senior","div":null,"stats":{"gp":20,"fouls":39,"ft":8,"fg":39,"threePt":2,"pts":92,"finals":1,"foulOuts":1,"wins":9,"losses":7,"draws":1}}]},{"sid":"b1d83d05","sn":"Summer 2024/25","regs":[{"tid":"eeefd734","tn":"Mongolia","gid":"7af20bc0","gn":"Thursday Open Men E Grade","age":"Senior","div":null,"stats":{"gp":16,"fouls":21,"ft":18,"fg":28,"threePt":2,"pts":80,"finals":1,"wins":10,"losses":6}}]}],"updatedAt":"2026-07-04T05:44:45.038Z","teams":[{"tid":"31d6672a","sid":"b399016f","status":"ACTIVE"},{"tid":"3e64fbae","sid":"1314c52c","status":"COMPLETED"},{"tid":"b76e395f","sid":"e9440fb8","status":"COMPLETED"},{"tid":"eeefd734","sid":"b1d83d05","status":"COMPLETED"},{"tid":"10ac9536","sid":"348dbfb8","status":"COMPLETED"},{"tid":"76417504","sid":"9358e51a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:10.538Z","records":{"maxGamePTS":{"v":15,"gameKey":"281da77f","sid":"e9440fb8"},"maxGameThreePt":{"v":1,"gameKey":"b677aaeb","sid":"b399016f"}},"games":["090f4fa5","0c63b03b","11846a3d","17bb5fd5","1ccb690c","1e95ff4b","1f24c7d9","210a4293","22e05fac","23e7d079","277dc857","27e00326","281da77f","304a2baf","33a40fb5","34b8440b","359f6e23","373bd236","3793f792","39ac01cd","3ae14d78","3e5aab06","4073ff4c","4252eacf","49773858","51a278c1","53bbaad3","5787e73e","5e7c31e6","62f48b6d","635a6f72","65c606ed","6880c89d","6a917730","6b2c03df","75aafcdb","784a7d12","7a449fb8","81866a11","81f22c64","84fc2c2f","87309a4d","89196643","8953f33f","8ab3f24d","8d35a87c","91179fe0","92e6d830","9e1cb551","9e580565","a1d05850","a500a42a","a679201d","ab9d2987","af6a08e2","b677aaeb","baf559d9","bb032401","bbe8de33","c3a946f8","ca89470b","d9585431","deb48b22","e68975af","f4eaddf6"]}
+{
+  "uuid": "e6be2047-dd3e-4de3-91be-45d4ce447cf5",
+  "name": "Jeremy Blecher",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 65,
+      "pts": 283,
+      "fouls": 118,
+      "fg": 104,
+      "ft": 51,
+      "threePt": 8,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "b399016f": 1,
+        "e9440fb8": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "wins": 37,
+      "losses": 21,
+      "draws": 2,
+      "winPct": 0.62,
+      "statsChecked": "2026-07-05T15:52:08.625Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b399016f",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "31d6672a",
+          "tn": "Mongolia",
+          "gid": "e06f5380",
+          "gn": "Thursday Men D Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 22,
+            "ft": 11,
+            "fg": 13,
+            "threePt": 2,
+            "pts": 43,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1314c52c",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "3e64fbae",
+          "tn": "Mongolia",
+          "gid": "09eeb25a",
+          "gn": "Thursday Men D Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 36,
+            "ft": 14,
+            "fg": 24,
+            "threePt": 2,
+            "pts": 68,
+            "wins": 11,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e9440fb8",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "b76e395f",
+          "tn": "Mongolia",
+          "gid": "01712bdf",
+          "gn": "Thursday Open Men E Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 39,
+            "ft": 8,
+            "fg": 39,
+            "threePt": 2,
+            "pts": 92,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b1d83d05",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "eeefd734",
+          "tn": "Mongolia",
+          "gid": "7af20bc0",
+          "gn": "Thursday Open Men E Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 18,
+            "fg": 28,
+            "threePt": 2,
+            "pts": 80,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "10ac9536",
+          "tn": "Mongolia",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "76417504",
+          "tn": "Mongolia",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:45.038Z",
+  "teams": [
+    {
+      "tid": "31d6672a",
+      "sid": "b399016f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e64fbae",
+      "sid": "1314c52c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b76e395f",
+      "sid": "e9440fb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eeefd734",
+      "sid": "b1d83d05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "10ac9536",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76417504",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:47.060Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "281da77f",
+      "sid": "e9440fb8"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b677aaeb",
+      "sid": "b399016f"
+    }
+  },
+  "games": [
+    "090f4fa5",
+    "0c63b03b",
+    "11846a3d",
+    "17bb5fd5",
+    "1ccb690c",
+    "1e95ff4b",
+    "1f24c7d9",
+    "210a4293",
+    "22e05fac",
+    "23e7d079",
+    "277dc857",
+    "27e00326",
+    "281da77f",
+    "304a2baf",
+    "33a40fb5",
+    "34b8440b",
+    "359f6e23",
+    "373bd236",
+    "3793f792",
+    "39ac01cd",
+    "3ae14d78",
+    "3e5aab06",
+    "4073ff4c",
+    "4252eacf",
+    "49773858",
+    "51a278c1",
+    "53bbaad3",
+    "5787e73e",
+    "5e7c31e6",
+    "62f48b6d",
+    "635a6f72",
+    "65c606ed",
+    "6880c89d",
+    "6a917730",
+    "6b2c03df",
+    "75aafcdb",
+    "784a7d12",
+    "7a449fb8",
+    "81866a11",
+    "81f22c64",
+    "84fc2c2f",
+    "87309a4d",
+    "89196643",
+    "8953f33f",
+    "8ab3f24d",
+    "8d35a87c",
+    "91179fe0",
+    "92e6d830",
+    "9e1cb551",
+    "9e580565",
+    "a1d05850",
+    "a500a42a",
+    "a679201d",
+    "ab9d2987",
+    "af6a08e2",
+    "b677aaeb",
+    "baf559d9",
+    "bb032401",
+    "bbe8de33",
+    "c3a946f8",
+    "ca89470b",
+    "d9585431",
+    "deb48b22",
+    "e68975af",
+    "f4eaddf6"
+  ]
+}

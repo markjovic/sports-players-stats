@@ -1,1 +1,212 @@
-{"uuid":"5a47cccf-a09f-4bc2-a6db-ad0b442bf44d","name":"Tom Baring","gender":"Men","sports":{"Basketball":{"gp":27,"pts":44,"fouls":24,"fg":11,"ft":7,"threePt":5,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"wins":22,"losses":13,"draws":1,"winPct":0.61,"statsChecked":"2026-07-05T15:22:49.430Z"}},"seasons":[{"sid":"bece5e56","sn":"2024","regs":[{"tid":"4f8ac093","tn":"Sherman’s Hermits ","gid":"7556a574","gn":"Monday Open Men D GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":5,"fouls":4,"ft":3,"fg":1,"threePt":1,"pts":8,"finals":1,"gfApps":1,"wins":2,"losses":2,"draws":1}},{"tid":"75eabf6e","stats":{"wins":7,"losses":3,"finals":1,"gfApps":1,"gp":10,"pts":18,"fg":5,"ft":2,"threePt":2,"fouls":11}}]},{"sid":"bece5e56","sn":"2024","regs":[{"tid":"75eabf6e","tn":"The Bricklayers","gid":"e99663e2","gn":"Monday Open Men I GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":10,"fouls":11,"ft":2,"fg":5,"threePt":2,"pts":18,"finals":1,"gfApps":1,"wins":7,"losses":3}}]},{"sid":"654894cc","sn":"Winter 2023","regs":[{"tid":"2c09e02e","tn":"Sherman’s Hermits ","gid":"3e52892a","gn":"Monday Open Men D GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":12,"fouls":9,"ft":2,"fg":5,"threePt":2,"pts":18,"wins":6,"losses":5}}]}],"updatedAt":"2026-06-01T14:31:54.943Z","teams":[{"tid":"4f8ac093","sid":"bece5e56","status":"COMPLETED"},{"tid":"75eabf6e","sid":"bece5e56","status":"COMPLETED"},{"tid":"2c09e02e","sid":"654894cc","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:36:57.675Z","records":{"maxGamePTS":{"v":8,"gameKey":"f3cb902c","sid":"bece5e56"},"maxGameThreePt":{"v":1,"gameKey":"f3cb902c","sid":"bece5e56"}},"games":["08ba5729","193ad60c","1f9c6a50","2021d8b4","2265e182","2cea4be0","38615d0a","39b7d2f0","67323c90","67b02e75","720b3b67","77262bf9","85019b43","8ad09113","9d217160","9f2d0733","a4a290df","b1d44c28","b6bfada3","bbc0f8fb","c716fb4e","cb1853bd","d877507e","e5c9ce11","eaf29e63","f3cb902c","fa768a31"],"gameTids":{"f3cb902c":"4f8ac093","38615d0a":"4f8ac093","8ad09113":"4f8ac093","2021d8b4":"4f8ac093","2cea4be0":"4f8ac093","cb1853bd":"75eabf6e","a4a290df":"75eabf6e","39b7d2f0":"75eabf6e","720b3b67":"75eabf6e","9d217160":"75eabf6e","9f2d0733":"75eabf6e","193ad60c":"75eabf6e","bbc0f8fb":"75eabf6e","1f9c6a50":"75eabf6e","2265e182":"75eabf6e","85019b43":"2c09e02e","77262bf9":"2c09e02e","b1d44c28":"2c09e02e","c716fb4e":"2c09e02e","b6bfada3":"2c09e02e","e5c9ce11":"2c09e02e","08ba5729":"2c09e02e","d877507e":"2c09e02e","eaf29e63":"2c09e02e","67323c90":"2c09e02e","fa768a31":"2c09e02e","67b02e75":"2c09e02e"}}
+{
+  "uuid": "5a47cccf-a09f-4bc2-a6db-ad0b442bf44d",
+  "name": "Tom Baring",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 44,
+      "fouls": 24,
+      "fg": 11,
+      "ft": 7,
+      "threePt": 5,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 22,
+      "losses": 13,
+      "draws": 1,
+      "winPct": 0.61,
+      "statsChecked": "2026-07-05T15:22:49.430Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "bece5e56",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "4f8ac093",
+          "tn": "Sherman’s Hermits ",
+          "gid": "7556a574",
+          "gn": "Monday Open Men D GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 3,
+            "fg": 1,
+            "threePt": 1,
+            "pts": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "75eabf6e",
+          "stats": {
+            "wins": 7,
+            "losses": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 10,
+            "pts": 18,
+            "fg": 5,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 11
+          },
+          "gid": "e99663e2",
+          "gn": "Monday Open Men I GRADE - MSAC"
+        }
+      ]
+    },
+    {
+      "sid": "bece5e56",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "75eabf6e",
+          "tn": "The Bricklayers",
+          "gid": "e99663e2",
+          "gn": "Monday Open Men I GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 18,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "654894cc",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "2c09e02e",
+          "tn": "Sherman’s Hermits ",
+          "gid": "3e52892a",
+          "gn": "Monday Open Men D GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 18,
+            "wins": 6,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T14:31:54.943Z",
+  "teams": [
+    {
+      "tid": "4f8ac093",
+      "sid": "bece5e56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75eabf6e",
+      "sid": "bece5e56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c09e02e",
+      "sid": "654894cc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:16.544Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "f3cb902c",
+      "sid": "bece5e56"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f3cb902c",
+      "sid": "bece5e56"
+    }
+  },
+  "games": [
+    "08ba5729",
+    "193ad60c",
+    "1f9c6a50",
+    "2021d8b4",
+    "2265e182",
+    "2cea4be0",
+    "38615d0a",
+    "39b7d2f0",
+    "67323c90",
+    "67b02e75",
+    "720b3b67",
+    "77262bf9",
+    "85019b43",
+    "8ad09113",
+    "9d217160",
+    "9f2d0733",
+    "a4a290df",
+    "b1d44c28",
+    "b6bfada3",
+    "bbc0f8fb",
+    "c716fb4e",
+    "cb1853bd",
+    "d877507e",
+    "e5c9ce11",
+    "eaf29e63",
+    "f3cb902c",
+    "fa768a31"
+  ],
+  "gameTids": {
+    "f3cb902c": "4f8ac093",
+    "38615d0a": "4f8ac093",
+    "8ad09113": "4f8ac093",
+    "2021d8b4": "4f8ac093",
+    "2cea4be0": "4f8ac093",
+    "cb1853bd": "75eabf6e",
+    "a4a290df": "75eabf6e",
+    "39b7d2f0": "75eabf6e",
+    "720b3b67": "75eabf6e",
+    "9d217160": "75eabf6e",
+    "9f2d0733": "75eabf6e",
+    "193ad60c": "75eabf6e",
+    "bbc0f8fb": "75eabf6e",
+    "1f9c6a50": "75eabf6e",
+    "2265e182": "75eabf6e",
+    "85019b43": "2c09e02e",
+    "77262bf9": "2c09e02e",
+    "b1d44c28": "2c09e02e",
+    "c716fb4e": "2c09e02e",
+    "b6bfada3": "2c09e02e",
+    "e5c9ce11": "2c09e02e",
+    "08ba5729": "2c09e02e",
+    "d877507e": "2c09e02e",
+    "eaf29e63": "2c09e02e",
+    "67323c90": "2c09e02e",
+    "fa768a31": "2c09e02e",
+    "67b02e75": "2c09e02e"
+  }
+}

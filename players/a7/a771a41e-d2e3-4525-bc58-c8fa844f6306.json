@@ -1,1 +1,101 @@
-{"uuid":"a771a41e-d2e3-4525-bc58-c8fa844f6306","name":"Henry Bernard","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":31,"fouls":9,"fg":13,"ft":5,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"wins":3,"losses":7,"winPct":0.3,"statsChecked":"2026-07-05T14:43:39.497Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"29ec7e3f","tn":"Forestville Eagles U16 Boys Jon","gid":"f557cb78","gn":"BOYS UNDER 16 B4","age":null,"div":"B4","stats":{"gp":5,"fouls":6,"ft":2,"fg":11,"pts":24,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"7a69de93","stats":{"wins":1,"losses":4,"gp":5,"pts":7,"fg":2,"ft":3,"fouls":3}}]}],"updatedAt":"2026-05-31T01:14:29.406Z","teams":[{"tid":"7a69de93","sid":"0869ea69","status":"UPCOMING"},{"tid":"29ec7e3f","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:01.715Z","games":["12ff412a","1847a21a","1cf2452c","5c8e3ebd","aa2d8dec","af3bec35","d81eabc4","e8e3d544","ef5c76be","f5a7d38e"],"records":{"maxGamePTS":{"v":9,"gameKey":"af3bec35","sid":"6dd649c0"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a771a41e-d2e3-4525-bc58-c8fa844f6306",
+  "name": "Henry Bernard",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 31,
+      "fouls": 9,
+      "fg": 13,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 7,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T14:43:39.497Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "29ec7e3f",
+          "tn": "Forestville Eagles U16 Boys Jon",
+          "gid": "f557cb78",
+          "gn": "BOYS UNDER 16 B4",
+          "age": null,
+          "div": "B4",
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 11,
+            "pts": 24,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "7a69de93",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 7,
+            "fg": 2,
+            "ft": 3,
+            "fouls": 3
+          },
+          "gid": "491f1987",
+          "gn": "BOYS UNDER 18 C1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:14:29.406Z",
+  "teams": [
+    {
+      "tid": "29ec7e3f",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a69de93",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:27.311Z",
+  "games": [
+    "12ff412a",
+    "1847a21a",
+    "1cf2452c",
+    "5c8e3ebd",
+    "aa2d8dec",
+    "af3bec35",
+    "d81eabc4",
+    "e8e3d544",
+    "ef5c76be",
+    "f5a7d38e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "af3bec35",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

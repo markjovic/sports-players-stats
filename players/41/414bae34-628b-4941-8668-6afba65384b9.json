@@ -1,1 +1,365 @@
-{"uuid":"414bae34-628b-4941-8668-6afba65384b9","name":"Henry Coventry","sports":{"Basketball":{"maxGamePTS":14,"maxGameThreePt":null,"foulOuts":{"db9c4e8a":1,"98a85c5f":1},"gp":143,"pts":373,"fg":169,"ft":35,"fouls":92,"statsChecked":"2026-07-07T18:27:06.763Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"010363b4","stats":{"gp":4,"pts":4,"fg":2,"fouls":10}},{"tid":"010363b4","tn":"","gid":"2b7f30cd","gn":"U10 Boys Division 3","div":null,"stats":{"gp":4,"pts":4,"fg":2,"fouls":10}}]},{"sid":"db9c4e8a","regs":[{"tid":"c5273c1e","stats":{"gp":6,"pts":36,"fg":18,"fouls":10}}]},{"sid":"2e623bd2","regs":[{"tid":"183a6770","stats":{"gp":7,"pts":14,"fg":6,"ft":2,"fouls":9}}]},{"sid":"7a1c970f","regs":[{"tid":"aa6ac3ba","stats":{"gp":14,"pts":52,"fg":22,"ft":8,"fouls":15}}]},{"sid":"fcfc254b","regs":[{"tid":"6db66f64","stats":{"gp":12,"pts":6,"fg":2,"ft":2,"fouls":7}}]},{"sid":"813135df","regs":[{"tid":"8e1c048b","stats":{"gp":13,"pts":27,"fg":10,"ft":7,"fouls":14}}]},{"sid":"98a85c5f","regs":[{"tid":"7bc35190","stats":{"gp":14,"pts":5,"fg":2,"ft":1,"fouls":15}}]},{"sid":"12286207","regs":[{"tid":"8478df78","stats":{"gp":11,"pts":68,"fg":32,"ft":4}}]},{"sid":"bf3744d0","regs":[{"tid":"8dee16e2","stats":{"gp":17,"pts":11,"fg":5,"ft":1,"fouls":7}}]},{"sid":"7e04a54a","regs":[{"tid":"0490341b","stats":{"gp":4,"pts":4,"fg":2,"fouls":4}}]},{"sid":"6ac35ba2","regs":[{"tid":"6f4d5fa2","stats":{"gp":16,"pts":63,"fg":29,"ft":5}}]},{"sid":"b331976c","regs":[{"tid":"c3624ef6","stats":{"gp":11,"pts":36,"fg":17,"ft":2,"fouls":1}}]},{"sid":"b220f7b6","regs":[{"tid":"cb80f99f","stats":{"gp":14,"pts":47,"fg":22,"ft":3}}]}],"teams":[],"updatedAt":"2026-07-07T18:05:40.077Z","records":{"maxGamePTS":{"v":14,"gameKey":"99b6858a","sid":"db9c4e8a"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "414bae34-628b-4941-8668-6afba65384b9",
+  "name": "Henry Coventry",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "db9c4e8a": 1,
+        "98a85c5f": 1
+      },
+      "gp": 143,
+      "pts": 373,
+      "fg": 169,
+      "ft": 35,
+      "fouls": 92,
+      "statsChecked": "2026-07-07T18:27:06.763Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "010363b4",
+          "stats": {
+            "gp": 4,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 10
+          },
+          "gid": "2b7f30cd",
+          "gn": "U10 Boys Division 3"
+        },
+        {
+          "tid": "010363b4",
+          "tn": "",
+          "gid": "2b7f30cd",
+          "gn": "U10 Boys Division 3",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db9c4e8a",
+      "regs": [
+        {
+          "tid": "c5273c1e",
+          "stats": {
+            "gp": 6,
+            "pts": 36,
+            "fg": 18,
+            "fouls": 10
+          },
+          "gid": "781e725d",
+          "gn": "Bata Industrials - Saturday U10 Boys A/B"
+        }
+      ]
+    },
+    {
+      "sid": "2e623bd2",
+      "regs": [
+        {
+          "tid": "183a6770",
+          "stats": {
+            "gp": 7,
+            "pts": 14,
+            "fg": 6,
+            "ft": 2,
+            "fouls": 9
+          },
+          "gid": "b3ea973b",
+          "gn": "Saturday U10 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "7a1c970f",
+      "regs": [
+        {
+          "tid": "aa6ac3ba",
+          "stats": {
+            "gp": 14,
+            "pts": 52,
+            "fg": 22,
+            "ft": 8,
+            "fouls": 15
+          },
+          "gid": "bae0853f",
+          "gn": "Bata Industrials - Saturday U10 Boys B"
+        }
+      ]
+    },
+    {
+      "sid": "fcfc254b",
+      "regs": [
+        {
+          "tid": "6db66f64",
+          "stats": {
+            "gp": 12,
+            "pts": 6,
+            "fg": 2,
+            "ft": 2,
+            "fouls": 7
+          },
+          "gid": "255d7430",
+          "gn": "Saturday U10 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "813135df",
+      "regs": [
+        {
+          "tid": "8e1c048b",
+          "stats": {
+            "gp": 13,
+            "pts": 27,
+            "fg": 10,
+            "ft": 7,
+            "fouls": 14
+          },
+          "gid": "2be1150c",
+          "gn": "Bata Industrials - Saturday U10 Boys B"
+        }
+      ]
+    },
+    {
+      "sid": "98a85c5f",
+      "regs": [
+        {
+          "tid": "7bc35190",
+          "stats": {
+            "gp": 14,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 15
+          },
+          "gid": "95644d07",
+          "gn": "Thursday U10 Mixed A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "12286207",
+      "regs": [
+        {
+          "tid": "8478df78",
+          "stats": {
+            "gp": 11,
+            "pts": 68,
+            "fg": 32,
+            "ft": 4
+          },
+          "gid": "bfc64b28",
+          "gn": "Saturday U8 Mixed B"
+        }
+      ]
+    },
+    {
+      "sid": "bf3744d0",
+      "regs": [
+        {
+          "tid": "8dee16e2",
+          "stats": {
+            "gp": 17,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 7
+          },
+          "gid": "12b6db47",
+          "gn": "Thursday U10 Mixed B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "7e04a54a",
+      "regs": [
+        {
+          "tid": "0490341b",
+          "stats": {
+            "gp": 4,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 4
+          },
+          "gid": "aa904e27",
+          "gn": "U8 Boys"
+        }
+      ]
+    },
+    {
+      "sid": "6ac35ba2",
+      "regs": [
+        {
+          "tid": "6f4d5fa2",
+          "stats": {
+            "gp": 16,
+            "pts": 63,
+            "fg": 29,
+            "ft": 5
+          },
+          "gid": "60f889c8",
+          "gn": "Saturday U8 Mixed A"
+        }
+      ]
+    },
+    {
+      "sid": "b331976c",
+      "regs": [
+        {
+          "tid": "c3624ef6",
+          "stats": {
+            "gp": 11,
+            "pts": 36,
+            "fg": 17,
+            "ft": 2,
+            "fouls": 1
+          },
+          "gid": "d2f958db",
+          "gn": "Saturday U8 Boys B"
+        }
+      ]
+    },
+    {
+      "sid": "b220f7b6",
+      "regs": [
+        {
+          "tid": "cb80f99f",
+          "stats": {
+            "gp": 14,
+            "pts": 47,
+            "fg": 22,
+            "ft": 3
+          },
+          "gid": "db13134f",
+          "gn": "Saturday U8 Mixed B"
+        }
+      ]
+    },
+    {
+      "sid": "bf91df5f",
+      "sn": "Term 1, 2026",
+      "regs": [
+        {
+          "tid": "f650ffcf",
+          "tn": "Pink fluffy unicorns ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "2bca72fb",
+      "sn": "Term 4, 2025",
+      "regs": [
+        {
+          "tid": "8cf2cf77",
+          "tn": "Pinkfluffyunicorns",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "010363b4",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5273c1e",
+      "sid": "db9c4e8a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "183a6770",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa6ac3ba",
+      "sid": "7a1c970f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6db66f64",
+      "sid": "fcfc254b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e1c048b",
+      "sid": "813135df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7bc35190",
+      "sid": "98a85c5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8478df78",
+      "sid": "12286207",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8dee16e2",
+      "sid": "bf3744d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0490341b",
+      "sid": "7e04a54a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f4d5fa2",
+      "sid": "6ac35ba2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c3624ef6",
+      "sid": "b331976c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb80f99f",
+      "sid": "b220f7b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f650ffcf",
+      "sid": "bf91df5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8cf2cf77",
+      "sid": "2bca72fb",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:40.077Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "99b6858a",
+      "sid": "db9c4e8a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:45:20.622Z"
+}

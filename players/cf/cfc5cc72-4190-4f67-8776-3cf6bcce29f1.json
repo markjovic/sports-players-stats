@@ -1,1 +1,141 @@
-{"uuid":"cfc5cc72-4190-4f67-8776-3cf6bcce29f1","name":"Carolyn Hennessy","gender":"Girls","sports":{"Basketball":{"gp":16,"pts":93,"fouls":23,"fg":35,"ft":5,"threePt":6,"foulOuts":{"10ee56a5":1},"maxGamePTS":16,"maxGameThreePt":3,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"wins":4,"losses":6,"winPct":0.4,"statsChecked":"2026-07-05T14:44:36.601Z"}},"seasons":[{"sid":"148d96eb","sn":"2026","club":"New South Wales","regs":[{"tid":"ebbd5c6d","tn":"U14 Girls NSW White","gid":"bb0f219e","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":7,"fouls":7,"ft":3,"fg":12,"threePt":2,"pts":33,"losses":1}}]},{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"c61fcc23","tn":"Penrith Panthers U14 Girls JPL","gid":"dcf6ec12","gn":"GIRLS UNDER 14 A","age":null,"div":null,"stats":{"gp":3,"fouls":2,"fg":1,"pts":2,"wins":2,"losses":1}}]},{"sid":"10ee56a5","regs":[{"tid":"3cb4fb67","stats":{"wins":2,"losses":4,"finals":1,"gfApps":1,"gp":6,"pts":58,"fg":22,"ft":2,"threePt":4,"fouls":14}}]}],"updatedAt":"2026-06-01T03:39:41.718Z","teams":[{"tid":"3cb4fb67","sid":"10ee56a5","status":"UPCOMING"},{"tid":"ebbd5c6d","sid":"148d96eb","status":"COMPLETED"},{"tid":"c61fcc23","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:20:19.851Z","games":["233b1914","32d84451","3bca4a5d","3c1df120","67665b15","8d6e0587","8e533817","9266c851","f1f05661","f5f1d441"],"records":{"maxGamePTS":{"v":16,"gameKey":"f1f05661","sid":"10ee56a5"},"maxGameThreePt":{"v":3,"gameKey":"32d84451","sid":"10ee56a5"}}}
+{
+  "uuid": "cfc5cc72-4190-4f67-8776-3cf6bcce29f1",
+  "name": "Carolyn Hennessy",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 93,
+      "fouls": 23,
+      "fg": 35,
+      "ft": 5,
+      "threePt": 6,
+      "foulOuts": {
+        "10ee56a5": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "wins": 4,
+      "losses": 6,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:44:36.601Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "148d96eb",
+      "sn": "2026",
+      "club": "New South Wales",
+      "regs": [
+        {
+          "tid": "ebbd5c6d",
+          "tn": "U14 Girls NSW White",
+          "gid": "bb0f219e",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 3,
+            "fg": 12,
+            "threePt": 2,
+            "pts": 33,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "c61fcc23",
+          "tn": "Penrith Panthers U14 Girls JPL",
+          "gid": "dcf6ec12",
+          "gn": "GIRLS UNDER 14 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "3cb4fb67",
+          "stats": {
+            "wins": 2,
+            "losses": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 6,
+            "pts": 58,
+            "fg": 22,
+            "ft": 2,
+            "threePt": 4,
+            "fouls": 14
+          },
+          "gid": "6d66d28f",
+          "gn": "U14 Girls NJC"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T03:39:41.718Z",
+  "teams": [
+    {
+      "tid": "ebbd5c6d",
+      "sid": "148d96eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c61fcc23",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cb4fb67",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:53.108Z",
+  "games": [
+    "233b1914",
+    "32d84451",
+    "3bca4a5d",
+    "3c1df120",
+    "67665b15",
+    "8d6e0587",
+    "8e533817",
+    "9266c851",
+    "f1f05661",
+    "f5f1d441"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "f1f05661",
+      "sid": "10ee56a5"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "32d84451",
+      "sid": "10ee56a5"
+    }
+  }
+}

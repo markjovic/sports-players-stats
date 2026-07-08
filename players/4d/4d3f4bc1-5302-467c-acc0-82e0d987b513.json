@@ -1,1 +1,281 @@
-{"uuid":"4d3f4bc1-5302-467c-acc0-82e0d987b513","name":"Oscar Sutcliffe","gender":"Men","sports":{"Basketball":{"gp":57,"pts":406,"fouls":111,"fg":154,"ft":65,"threePt":11,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.4,"foulOuts":{"b1c329ad":1,"d0d221ca":2},"maxGamePTS":23,"maxGameThreePt":2,"wins":38,"losses":29,"winPct":0.57,"statsChecked":"2026-07-06T18:56:49.617Z"}},"seasons":[{"sid":"d809d546","sn":"Autumn 2026","regs":[{"tid":"e83012dc","tn":"Collingwood All-Studs","gid":"0767f648","gn":"Sunday Senior Men 4","age":"Senior","div":null,"stats":{"gp":10,"fouls":18,"ft":9,"fg":19,"pts":47,"finals":1,"gfApps":1,"wins":8,"losses":2,"gfWins":1}}]},{"sid":"b1c329ad","sn":"Autumn 2025","regs":[{"tid":"52247dde","tn":"Collingwood All-Studs","gid":"a5299b6e","gn":"Monday Open Men Division 2","age":"Senior","div":"Division 2","stats":{"gp":14,"fouls":32,"ft":10,"fg":39,"threePt":1,"pts":91,"foulOuts":1,"wins":7,"losses":7}}]},{"sid":"d0d221ca","sn":"Spring 2024","regs":[{"tid":"cf37d60f","tn":"Collingwood All-Studs","gid":"310777bd","gn":"Sunday Open Men Division 2","age":"Senior","div":"Division 2","stats":{"gp":13,"fouls":29,"ft":18,"fg":33,"threePt":4,"pts":96,"foulOuts":1,"wins":6,"losses":7}},{"tid":"cf37d60f","tn":"Collingwood All-Studs","gid":"d75cdc28","gn":"Sunday Open Men Division 3","age":"Senior","div":"Division 3","stats":{"gp":13,"fouls":29,"ft":18,"fg":33,"threePt":4,"pts":96,"foulOuts":1,"wins":6,"losses":7}}]},{"sid":"bdcde554","sn":"Autumn 2024","regs":[{"tid":"a5f51dc2","tn":"Collingwood All-Studs","gid":"7fcbc55e","gn":"Sunday Open Men Division 2","age":"Senior","div":"Division 2","stats":{"gp":17,"fouls":30,"ft":25,"fg":53,"threePt":5,"pts":146,"finals":1,"wins":11,"losses":6}}]},{"sid":"5af3234f","regs":[{"tid":"36322243","stats":{"gp":3,"pts":26,"fg":10,"ft":3,"threePt":1,"fouls":2}},{"tid":"36322243","tn":"","gid":"2ae04110","gn":"Sunday Senior Men 3","div":null,"stats":{"gp":3,"pts":26,"fg":10,"ft":3,"threePt":1,"fouls":2}}]}],"updatedAt":"2026-07-06T18:35:36.821Z","teams":[{"tid":"e83012dc","sid":"d809d546","status":"COMPLETED"},{"tid":"52247dde","sid":"b1c329ad","status":"COMPLETED"},{"tid":"cf37d60f","sid":"d0d221ca","status":"COMPLETED"},{"tid":"a5f51dc2","sid":"bdcde554","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:30:01.808Z","records":{"maxGamePTS":{"v":23,"gameKey":"cc3fda0f","sid":"bdcde554"},"maxGameThreePt":{"v":2,"gameKey":"60ae3d95","sid":"d0d221ca"}},"games":["114ba71f","11f65b12","132f1f26","14545db2","1968e3ce","1c3b9fb6","1e7ede31","2135158e","216866dc","2406ef3c","2bead537","36403f35","3e8b8027","406f7394","471a1924","4ab3fb5c","4c3e5043","500beb30","58b175d7","60ae3d95","68ee87dd","6a582ac8","731441bc","73dec6d6","782b23c6","79272fbb","88e515ce","8a695c25","8ad7a132","8b08f5f2","9a56f706","a27b93ac","a2ff9909","a7d0acc3","ad054a96","af41f6ba","b0540f5e","b4719364","b4d39718","b6168faa","b86bd1fb","bbc132e3","c72432da","c95f70bb","c9fe9c32","cc3fda0f","df64967b","df66e00d","e0cbcfc0","e8d8bb6f","ef65d1c9","f60dbb2e","f9ff3628","fcf6b531"]}
+{
+  "uuid": "4d3f4bc1-5302-467c-acc0-82e0d987b513",
+  "name": "Oscar Sutcliffe",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 57,
+      "pts": 406,
+      "fouls": 111,
+      "fg": 154,
+      "ft": 65,
+      "threePt": 11,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {
+        "b1c329ad": 1,
+        "d0d221ca": 2
+      },
+      "maxGamePTS": 23,
+      "maxGameThreePt": 2,
+      "wins": 38,
+      "losses": 29,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-06T18:56:49.617Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d809d546",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e83012dc",
+          "tn": "Collingwood All-Studs",
+          "gid": "0767f648",
+          "gn": "Sunday Senior Men 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 18,
+            "ft": 9,
+            "fg": 19,
+            "pts": 47,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b1c329ad",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "52247dde",
+          "tn": "Collingwood All-Studs",
+          "gid": "a5299b6e",
+          "gn": "Monday Open Men Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 14,
+            "fouls": 32,
+            "ft": 10,
+            "fg": 39,
+            "threePt": 1,
+            "pts": 91,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0d221ca",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "cf37d60f",
+          "tn": "Collingwood All-Studs",
+          "gid": "310777bd",
+          "gn": "Sunday Open Men Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 29,
+            "ft": 18,
+            "fg": 33,
+            "threePt": 4,
+            "pts": 96,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "cf37d60f",
+          "tn": "Collingwood All-Studs",
+          "gid": "d75cdc28",
+          "gn": "Sunday Open Men Division 3",
+          "age": "Senior",
+          "div": "Division 3",
+          "stats": {
+            "gp": 13,
+            "fouls": 29,
+            "ft": 18,
+            "fg": 33,
+            "threePt": 4,
+            "pts": 96,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bdcde554",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "a5f51dc2",
+          "tn": "Collingwood All-Studs",
+          "gid": "7fcbc55e",
+          "gn": "Sunday Open Men Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 17,
+            "fouls": 30,
+            "ft": 25,
+            "fg": 53,
+            "threePt": 5,
+            "pts": 146,
+            "finals": 1,
+            "wins": 11,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5af3234f",
+      "regs": [
+        {
+          "tid": "36322243",
+          "stats": {
+            "gp": 3,
+            "pts": 26,
+            "fg": 10,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 2
+          },
+          "gid": "2ae04110",
+          "gn": "Sunday Senior Men 3"
+        },
+        {
+          "tid": "36322243",
+          "tn": "",
+          "gid": "2ae04110",
+          "gn": "Sunday Senior Men 3",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 26,
+            "fg": 10,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:36.821Z",
+  "teams": [
+    {
+      "tid": "e83012dc",
+      "sid": "d809d546",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52247dde",
+      "sid": "b1c329ad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cf37d60f",
+      "sid": "d0d221ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a5f51dc2",
+      "sid": "bdcde554",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36322243",
+      "sid": "5af3234f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:45:03.544Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "cc3fda0f",
+      "sid": "bdcde554"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "60ae3d95",
+      "sid": "d0d221ca"
+    }
+  },
+  "games": [
+    "114ba71f",
+    "11f65b12",
+    "132f1f26",
+    "14545db2",
+    "1968e3ce",
+    "1c3b9fb6",
+    "1e7ede31",
+    "2135158e",
+    "216866dc",
+    "2406ef3c",
+    "2bead537",
+    "36403f35",
+    "3e8b8027",
+    "406f7394",
+    "471a1924",
+    "4ab3fb5c",
+    "4c3e5043",
+    "500beb30",
+    "58b175d7",
+    "60ae3d95",
+    "68ee87dd",
+    "6a582ac8",
+    "731441bc",
+    "73dec6d6",
+    "782b23c6",
+    "79272fbb",
+    "88e515ce",
+    "8a695c25",
+    "8ad7a132",
+    "8b08f5f2",
+    "9a56f706",
+    "a27b93ac",
+    "a2ff9909",
+    "a7d0acc3",
+    "ad054a96",
+    "af41f6ba",
+    "b0540f5e",
+    "b4719364",
+    "b4d39718",
+    "b6168faa",
+    "b86bd1fb",
+    "bbc132e3",
+    "c72432da",
+    "c95f70bb",
+    "c9fe9c32",
+    "cc3fda0f",
+    "df64967b",
+    "df66e00d",
+    "e0cbcfc0",
+    "e8d8bb6f",
+    "ef65d1c9",
+    "f60dbb2e",
+    "f9ff3628",
+    "fcf6b531"
+  ]
+}

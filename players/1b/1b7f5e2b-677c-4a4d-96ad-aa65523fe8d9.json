@@ -1,1 +1,245 @@
-{"uuid":"1b7f5e2b-677c-4a4d-96ad-aa65523fe8d9","gender":null,"sports":{"Basketball":{"gp":25,"pts":113,"fouls":38,"fg":28,"ft":24,"threePt":11,"foulOuts":{"b7c3491e":2,"532e7f37":1},"maxGamePTS":19,"maxGameThreePt":3,"wins":12,"losses":32,"draws":6,"winPct":0.24,"statsChecked":"2026-07-05T16:12:02.262Z"}},"seasons":[{"sid":"b7c3491e","sn":"Summer 2021/22","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"6570243f","tn":"Balwyn U21 Boys 08","gid":"68fe19cf","gn":"Boys U21DA","stats":{"gp":10,"pts":42,"fouls":17,"fg":8,"ft":11,"threePt":5,"foulOuts":2,"wins":3,"losses":6,"draws":1}},{"tid":"6570243f","tn":"Balwyn U21 Boys 08","gid":"1f0c1791","gn":"Boys U21 D Grading","stats":{"gp":10,"pts":42,"fouls":17,"fg":8,"ft":11,"threePt":5,"wins":3,"losses":6,"draws":1}}]},{"sid":"532e7f37","sn":"Winter 2021","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"3125f286","tn":"Balwyn U21 Boys 12","gid":"48cc131c","gn":"Boys U21DB","stats":{"gp":9,"pts":49,"fouls":10,"fg":15,"ft":7,"wins":2,"losses":5,"draws":2,"threePt":4}},{"tid":"3125f286","tn":"Balwyn U21 Boys 12","gid":"124a5abf","gn":"Boys U21 D Grading","stats":{"gp":9,"pts":49,"fouls":10,"fg":15,"ft":7,"threePt":4,"foulOuts":1,"wins":2,"losses":5,"draws":2}}]},{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"0a91e316","tn":"Bulleen U20 Boys 10","gid":"5749fd5f","gn":"Boys U20DA","stats":{"gp":6,"pts":22,"fouls":11,"fg":5,"ft":6,"threePt":2,"wins":1,"losses":5}},{"tid":"0a91e316","tn":"Bulleen U20 Boys 10","gid":"5a92e5a3","gn":"U20 Boys D Grading","stats":{"gp":6,"pts":22,"fouls":11,"fg":5,"wins":1,"losses":5,"ft":6,"threePt":2}}]}],"updatedAt":"2026-06-11T23:37:02.470Z","records":{"maxGamePTS":{"v":19,"gameKey":"1d2bcc12","sid":"532e7f37"},"maxGameThreePt":{"v":3,"gameKey":"1d2bcc12","sid":"532e7f37"}},"games":["1054778c","17edb0b9","1d2bcc12","55c12127","628cfe69","63c30445","670d0a8e","68bb379c","863614ef","961254fb","97eec1f0","97f48790","9b55448f","a5f1df26","a94990c3","b61c793d","c3f2dcfd","d2339bbe","d63e29ec","e4f8ff35","f1d32f1d","f3462c1f","f759272e","fb57d203","fe2b60f5"],"name":"Summer 2021/22"}
+{
+  "uuid": "1b7f5e2b-677c-4a4d-96ad-aa65523fe8d9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 25,
+      "pts": 113,
+      "fouls": 38,
+      "fg": 28,
+      "ft": 24,
+      "threePt": 11,
+      "foulOuts": {
+        "b7c3491e": 2,
+        "532e7f37": 1
+      },
+      "maxGamePTS": 19,
+      "maxGameThreePt": 3,
+      "wins": 12,
+      "losses": 32,
+      "draws": 6,
+      "winPct": 0.24,
+      "statsChecked": "2026-07-05T16:12:02.262Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b7c3491e",
+      "sn": "Summer 2021/22",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "6570243f",
+          "tn": "Balwyn U21 Boys 08",
+          "gid": "68fe19cf",
+          "gn": "Boys U21DA",
+          "stats": {
+            "gp": 10,
+            "pts": 42,
+            "fouls": 17,
+            "fg": 8,
+            "ft": 11,
+            "threePt": 5,
+            "foulOuts": 2,
+            "wins": 3,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "6570243f",
+          "tn": "Balwyn U21 Boys 08",
+          "gid": "1f0c1791",
+          "gn": "Boys U21 D Grading",
+          "stats": {
+            "gp": 10,
+            "pts": 42,
+            "fouls": 17,
+            "fg": 8,
+            "ft": 11,
+            "threePt": 5,
+            "wins": 3,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "532e7f37",
+      "sn": "Winter 2021",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "3125f286",
+          "tn": "Balwyn U21 Boys 12",
+          "gid": "48cc131c",
+          "gn": "Boys U21DB",
+          "stats": {
+            "gp": 9,
+            "pts": 49,
+            "fouls": 10,
+            "fg": 15,
+            "ft": 7,
+            "wins": 2,
+            "losses": 5,
+            "draws": 2,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "3125f286",
+          "tn": "Balwyn U21 Boys 12",
+          "gid": "124a5abf",
+          "gn": "Boys U21 D Grading",
+          "stats": {
+            "gp": 9,
+            "pts": 49,
+            "fouls": 10,
+            "fg": 15,
+            "ft": 7,
+            "threePt": 4,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 5,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "0a91e316",
+          "tn": "Bulleen U20 Boys 10",
+          "gid": "5749fd5f",
+          "gn": "Boys U20DA",
+          "stats": {
+            "gp": 6,
+            "pts": 22,
+            "fouls": 11,
+            "fg": 5,
+            "ft": 6,
+            "threePt": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "0a91e316",
+          "tn": "Bulleen U20 Boys 10",
+          "gid": "5a92e5a3",
+          "gn": "U20 Boys D Grading",
+          "stats": {
+            "gp": 6,
+            "pts": 22,
+            "fouls": 11,
+            "fg": 5,
+            "wins": 1,
+            "losses": 5,
+            "ft": 6,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "fad9956e",
+          "tn": "Playing for a Visa",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "b4fa9d8c",
+          "tn": "Playing for a Visa",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:02.470Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "1d2bcc12",
+      "sid": "532e7f37"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "1d2bcc12",
+      "sid": "532e7f37"
+    }
+  },
+  "games": [
+    "1054778c",
+    "17edb0b9",
+    "1d2bcc12",
+    "55c12127",
+    "628cfe69",
+    "63c30445",
+    "670d0a8e",
+    "68bb379c",
+    "863614ef",
+    "961254fb",
+    "97eec1f0",
+    "97f48790",
+    "9b55448f",
+    "a5f1df26",
+    "a94990c3",
+    "b61c793d",
+    "c3f2dcfd",
+    "d2339bbe",
+    "d63e29ec",
+    "e4f8ff35",
+    "f1d32f1d",
+    "f3462c1f",
+    "f759272e",
+    "fb57d203",
+    "fe2b60f5"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "6570243f",
+      "sid": "b7c3491e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3125f286",
+      "sid": "532e7f37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a91e316",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fad9956e",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4fa9d8c",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:21.756Z"
+}

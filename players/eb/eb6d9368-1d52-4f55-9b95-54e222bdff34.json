@@ -1,1 +1,289 @@
-{"uuid":"eb6d9368-1d52-4f55-9b95-54e222bdff34","name":"Archer Wells","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":42,"fouls":62,"fg":20,"ft":2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":42,"losses":44,"draws":5,"winPct":0.46,"statsChecked":"2026-07-05T14:45:29.149Z"}},"seasons":[{"sid":"7201e8c1","sn":"Winter 2026","club":"Beachcombers Basketball Club","regs":[{"tid":"853e68fb","tn":"Beachcombers Braves U10 Boys","gid":"d2ed2c71","gn":"Saturday U10 Boys Division 3","age":"U10","div":"Division 3","stats":{"gp":7,"fouls":12,"fg":2,"pts":4,"wins":6,"losses":1}},{"tid":"853e68fb","tn":"","gid":"466687b1","gn":"Saturday U10 Boys Division 2","div":null,"stats":{"gp":7,"pts":4,"fg":2,"fouls":12,"wins":6,"losses":1}}]},{"sid":"81ce0e24","sn":"Summer 2025/26","club":"Beachcombers Basketball Club","regs":[{"tid":"d217d29e","tn":"Beachcombers Braves U10 Boys","gid":"16edbaf1","gn":"Saturday U10 Boys Division 1/2","age":"U10","div":null,"stats":{"gp":13,"fouls":14,"ft":1,"fg":3,"pts":7,"wins":3,"losses":9,"draws":1}},{"tid":"d217d29e","tn":"Beachcombers Braves U10 Boys","gid":"c0e62166","gn":"Saturday U10 Boys Division 3","age":"U10","div":"Division 3","stats":{"gp":13,"fouls":14,"fg":3,"pts":7,"wins":3,"losses":9,"draws":1,"ft":1}}]},{"sid":"23985a8e","sn":"2025","regs":[{"tid":"9ab7c893","tn":"Balcombe Blazers","gid":"00a22369","gn":"U8 Boys","age":"U8","div":null,"stats":{"gp":4,"fouls":9,"ft":1,"fg":1,"pts":3,"wins":1,"losses":3}}]},{"sid":"db3ad4e5","sn":"Winter 2025","club":"Beachcombers Basketball Club","regs":[{"tid":"460c55c7","tn":"Beachcombers Braves","gid":"ea9988db","gn":"Saturday U8 Boys Division 1","age":"U8","div":"Division 1","stats":{"gp":15,"fouls":14,"fg":3,"pts":6,"wins":9,"losses":5,"draws":1}}]},{"sid":"7c0c3874","sn":"Summer 2024/25","club":"Beachcombers Basketball Club","regs":[{"tid":"8e3c7647","tn":"Beachcombers Braves","gid":"f13d6204","gn":"Saturday U8 Boys Division 1","age":"U8","div":"Division 1","stats":{"gp":16,"fouls":13,"fg":11,"pts":22,"wins":7,"losses":8,"draws":1}},{"tid":"8e3c7647","tn":"Beachcombers Braves","gid":"fad9b440","gn":"Saturday U8 Boys Division 2","age":"U8","div":"Division 2","stats":{"gp":16,"fg":11,"pts":22,"wins":7,"losses":8,"draws":1,"fouls":13}}]}],"updatedAt":"2026-07-04T05:49:04.792Z","teams":[{"tid":"853e68fb","sid":"7201e8c1","status":"ACTIVE"},{"tid":"d217d29e","sid":"81ce0e24","status":"COMPLETED"},{"tid":"460c55c7","sid":"db3ad4e5","status":"COMPLETED"},{"tid":"9ab7c893","sid":"23985a8e","status":"COMPLETED"},{"tid":"8e3c7647","sid":"7c0c3874","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:52:43.471Z","records":{"maxGamePTS":{"v":6,"gameKey":"97bf3519","sid":"7c0c3874"},"maxGameThreePt":{"v":null}},"games":["023b3619","04a14043","0d66c4f5","116563ed","13b450b1","16729b5e","1ce84e5f","29b16815","2d299a77","30a3da5a","32debbb1","35049dd5","3bc1b255","3f5121a9","41e55591","42716e3b","43e6dc90","456a20e8","4fa4d3b2","52df4589","55e72de7","5856d1af","63742850","65277740","6ba59755","6cc354cb","6dc21328","71c761ba","7441ba46","76b5010d","7caa3505","7e21a1c7","7e53963f","821dee9e","84346c16","8675c9af","87d45817","89a808cc","90d21d10","97bf3519","9ba95c33","9d85fdc6","aa26fe83","aaccc4b0","b1d2a548","ca3f63e2","cf2005b6","d98fecb2","e2c48952","eb4dec81","ef3ee4e5","f23d9522","f6bfccf6","f7c71d80","fa66b0e5"]}
+{
+  "uuid": "eb6d9368-1d52-4f55-9b95-54e222bdff34",
+  "name": "Archer Wells",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 42,
+      "fouls": 62,
+      "fg": 20,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 42,
+      "losses": 44,
+      "draws": 5,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T14:45:29.149Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7201e8c1",
+      "sn": "Winter 2026",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "853e68fb",
+          "tn": "Beachcombers Braves U10 Boys",
+          "gid": "466687b1",
+          "gn": "Saturday U10 Boys Division 2",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "fg": 2,
+            "pts": 4,
+            "wins": 6,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "853e68fb",
+          "tn": "",
+          "gid": "466687b1",
+          "gn": "Saturday U10 Boys Division 2",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 12,
+            "wins": 6,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81ce0e24",
+      "sn": "Summer 2025/26",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "d217d29e",
+          "tn": "Beachcombers Braves U10 Boys",
+          "gid": "16edbaf1",
+          "gn": "Saturday U10 Boys Division 1/2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "ft": 1,
+            "fg": 3,
+            "pts": 7,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "d217d29e",
+          "tn": "Beachcombers Braves U10 Boys",
+          "gid": "c0e62166",
+          "gn": "Saturday U10 Boys Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "fg": 3,
+            "pts": 7,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "23985a8e",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "9ab7c893",
+          "tn": "Balcombe Blazers",
+          "gid": "00a22369",
+          "gn": "U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db3ad4e5",
+      "sn": "Winter 2025",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "460c55c7",
+          "tn": "Beachcombers Braves",
+          "gid": "ea9988db",
+          "gn": "Saturday U8 Boys Division 1",
+          "age": "U8",
+          "div": "Division 1",
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "fg": 3,
+            "pts": 6,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7c0c3874",
+      "sn": "Summer 2024/25",
+      "club": "Beachcombers Basketball Club",
+      "regs": [
+        {
+          "tid": "8e3c7647",
+          "tn": "Beachcombers Braves",
+          "gid": "f13d6204",
+          "gn": "Saturday U8 Boys Division 1",
+          "age": "U8",
+          "div": "Division 1",
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "fg": 11,
+            "pts": 22,
+            "wins": 7,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "8e3c7647",
+          "tn": "Beachcombers Braves",
+          "gid": "fad9b440",
+          "gn": "Saturday U8 Boys Division 2",
+          "age": "U8",
+          "div": "Division 2",
+          "stats": {
+            "gp": 16,
+            "fg": 11,
+            "pts": 22,
+            "wins": 7,
+            "losses": 8,
+            "draws": 1,
+            "fouls": 13
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:04.792Z",
+  "teams": [
+    {
+      "tid": "853e68fb",
+      "sid": "7201e8c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d217d29e",
+      "sid": "81ce0e24",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ab7c893",
+      "sid": "23985a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "460c55c7",
+      "sid": "db3ad4e5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e3c7647",
+      "sid": "7c0c3874",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:31.774Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "97bf3519",
+      "sid": "7c0c3874"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "023b3619",
+    "04a14043",
+    "0d66c4f5",
+    "116563ed",
+    "13b450b1",
+    "16729b5e",
+    "1ce84e5f",
+    "29b16815",
+    "2d299a77",
+    "30a3da5a",
+    "32debbb1",
+    "35049dd5",
+    "3bc1b255",
+    "3f5121a9",
+    "41e55591",
+    "42716e3b",
+    "43e6dc90",
+    "456a20e8",
+    "4fa4d3b2",
+    "52df4589",
+    "55e72de7",
+    "5856d1af",
+    "63742850",
+    "65277740",
+    "6ba59755",
+    "6cc354cb",
+    "6dc21328",
+    "71c761ba",
+    "7441ba46",
+    "76b5010d",
+    "7caa3505",
+    "7e21a1c7",
+    "7e53963f",
+    "821dee9e",
+    "84346c16",
+    "8675c9af",
+    "87d45817",
+    "89a808cc",
+    "90d21d10",
+    "97bf3519",
+    "9ba95c33",
+    "9d85fdc6",
+    "aa26fe83",
+    "aaccc4b0",
+    "b1d2a548",
+    "ca3f63e2",
+    "cf2005b6",
+    "d98fecb2",
+    "e2c48952",
+    "eb4dec81",
+    "ef3ee4e5",
+    "f23d9522",
+    "f6bfccf6",
+    "f7c71d80",
+    "fa66b0e5"
+  ]
+}

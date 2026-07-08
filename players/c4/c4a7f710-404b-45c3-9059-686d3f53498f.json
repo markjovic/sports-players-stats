@@ -1,1 +1,371 @@
-{"uuid":"c4a7f710-404b-45c3-9059-686d3f53498f","name":"Corey Scott","gender":"Men","sports":{"Basketball":{"gp":18,"pts":71,"fouls":26,"fg":11,"ft":3,"threePt":4,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":6,"losses":21,"draws":2,"winPct":0.21,"statsChecked":"2026-07-06T19:00:44.794Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"6edbff8f","tn":"Real Bricklayers","gid":"4913d86d","gn":"Monday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":15,"fouls":23,"ft":3,"fg":9,"threePt":4,"pts":63,"wins":3,"losses":10,"draws":1}},{"tid":"6edbff8f","tn":"Real Bricklayers","gid":"429a30f0","gn":"Monday Open Men Section 04","age":"Senior","div":null,"stats":{"gp":15,"fouls":23,"pts":63,"wins":3,"losses":10,"draws":1,"fg":9,"ft":3,"threePt":4}},{"tid":"f6f6241e","tn":"BRICKLAYERS","gid":"3254b45d","gn":"Wednesday Open Men Section 1","age":"Senior","div":null,"stats":{"gp":1,"pts":4,"losses":1}}]},{"sid":"297562bc","regs":[{"tid":"6545f6ce","stats":{"gp":2,"pts":4,"fg":2,"fouls":3}},{"tid":"6545f6ce","tn":"","gid":"aae9105b","gn":"Monday Open Men Section 4","div":null,"stats":{"gp":2,"pts":4,"fg":2,"fouls":3}}]}],"updatedAt":"2026-07-06T18:34:02.778Z","teams":[{"tid":"6edbff8f","sid":"5593103d","status":"ACTIVE"},{"tid":"e480ff57","sid":"fab2be4d","status":"COMPLETED"},{"tid":"1aefea1a","sid":"76897951","status":"COMPLETED"},{"tid":"af6f1200","sid":"5944effa","status":"COMPLETED"},{"tid":"1f3c8759","sid":"348dbfb8","status":"COMPLETED"},{"tid":"696d1abc","sid":"9358e51a","status":"COMPLETED"},{"tid":"854da16e","sid":"d3d4e181","status":"COMPLETED"},{"tid":"b1fc2690","sid":"21cd9648","status":"COMPLETED"},{"tid":"2fab3891","sid":"21cd9648","status":"COMPLETED"},{"tid":"c83679a6","sid":"d4cbf787","status":"COMPLETED"},{"tid":"44394712","sid":"d64fcfce","status":"COMPLETED"},{"tid":"e3d56232","sid":"afd26581","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:42:15.641Z","records":{"maxGamePTS":{"v":10,"gameKey":"56d2dba6","sid":"5593103d"},"maxGameThreePt":{"v":2,"gameKey":"b0248c9c","sid":"5593103d"}},"games":["3358344a","3b2627c2","40b6685f","41163b2c","50589b9f","56d2dba6","61dd1928","7a9e752c","81a7ede6","913b0d42","acdc3512","ae536e08","b0248c9c","e70faefe","f8c61d22"],"gameTids":{"929a0907":"6545f6ce","798ad861":"6545f6ce","d3f54894":"6edbff8f","b0248c9c":"6edbff8f","ae536e08":"6edbff8f","e70faefe":"6edbff8f","f8c61d22":"6edbff8f","acdc3512":"6edbff8f","41163b2c":"6edbff8f","61dd1928":"6edbff8f","81a7ede6":"6edbff8f","50589b9f":"6edbff8f","56d2dba6":"6edbff8f","3b2627c2":"6edbff8f","3358344a":"6edbff8f","40b6685f":"6edbff8f","7a9e752c":"6edbff8f","913b0d42":"f6f6241e"}}
+{
+  "uuid": "c4a7f710-404b-45c3-9059-686d3f53498f",
+  "name": "Corey Scott",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 71,
+      "fouls": 26,
+      "fg": 11,
+      "ft": 3,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 6,
+      "losses": 21,
+      "draws": 2,
+      "winPct": 0.21,
+      "statsChecked": "2026-07-06T19:00:44.794Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "6edbff8f",
+          "tn": "Real Bricklayers",
+          "gid": "4913d86d",
+          "gn": "Monday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "ft": 3,
+            "fg": 9,
+            "threePt": 4,
+            "pts": 63,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "6edbff8f",
+          "tn": "Real Bricklayers",
+          "gid": "429a30f0",
+          "gn": "Monday Open Men Section 04",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "pts": 63,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1,
+            "fg": 9,
+            "ft": 3,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "f6f6241e",
+          "tn": "BRICKLAYERS",
+          "gid": "3254b45d",
+          "gn": "Wednesday Open Men Section 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "6545f6ce",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3
+          },
+          "gid": "aae9105b",
+          "gn": "Monday Open Men Section 4"
+        },
+        {
+          "tid": "6545f6ce",
+          "tn": "",
+          "gid": "aae9105b",
+          "gn": "Monday Open Men Section 4",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "e480ff57",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "1aefea1a",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "af6f1200",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "1f3c8759",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "696d1abc",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "854da16e",
+          "tn": "Real Bricklayers",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "b1fc2690",
+          "tn": "Kookies and Kareem",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "2fab3891",
+          "tn": "REAL BRICKLAYERS",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "c83679a6",
+          "tn": "Kookies and Kareem",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "44394712",
+          "tn": "Kookies and Kareem",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "e3d56232",
+          "tn": "Kookies and Kareem",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:02.778Z",
+  "teams": [
+    {
+      "tid": "6edbff8f",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6f6241e",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6545f6ce",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e480ff57",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1aefea1a",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af6f1200",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f3c8759",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "696d1abc",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "854da16e",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1fc2690",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2fab3891",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c83679a6",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44394712",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e3d56232",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:23.197Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "56d2dba6",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "b0248c9c",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "3358344a",
+    "3b2627c2",
+    "40b6685f",
+    "41163b2c",
+    "50589b9f",
+    "56d2dba6",
+    "61dd1928",
+    "7a9e752c",
+    "81a7ede6",
+    "913b0d42",
+    "acdc3512",
+    "ae536e08",
+    "b0248c9c",
+    "e70faefe",
+    "f8c61d22"
+  ],
+  "gameTids": {
+    "929a0907": "6545f6ce",
+    "798ad861": "6545f6ce",
+    "d3f54894": "6edbff8f",
+    "b0248c9c": "6edbff8f",
+    "ae536e08": "6edbff8f",
+    "e70faefe": "6edbff8f",
+    "f8c61d22": "6edbff8f",
+    "acdc3512": "6edbff8f",
+    "41163b2c": "6edbff8f",
+    "61dd1928": "6edbff8f",
+    "81a7ede6": "6edbff8f",
+    "50589b9f": "6edbff8f",
+    "56d2dba6": "6edbff8f",
+    "3b2627c2": "6edbff8f",
+    "3358344a": "6edbff8f",
+    "40b6685f": "6edbff8f",
+    "7a9e752c": "6edbff8f",
+    "913b0d42": "f6f6241e"
+  }
+}

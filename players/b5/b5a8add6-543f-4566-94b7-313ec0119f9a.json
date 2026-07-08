@@ -1,1 +1,320 @@
-{"uuid":"b5a8add6-543f-4566-94b7-313ec0119f9a","name":"Lachie Galbraith","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":123,"fouls":75,"fg":53,"ft":17,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":12,"maxGameThreePt":null,"wins":29,"losses":37,"winPct":0.44,"statsChecked":"2026-07-05T15:11:58.974Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"e16241ea","tn":"Port Thunderbolts","gid":"887f9693","gn":"Wednesday Year 5 Boys A","age":null,"div":null,"stats":{"gp":18,"fouls":26,"ft":4,"fg":20,"pts":44,"wins":6,"losses":12}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"9529e978","tn":"Port Thunderbolts","gid":"b904c918","gn":"Friday Year 4 Boys A","age":null,"div":null,"stats":{"gp":14,"fouls":17,"ft":1,"fg":11,"pts":23,"wins":8,"losses":6}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"b82a6ee7","tn":"Port Thunderbolts","gid":"93466c02","gn":"Friday MSAC/Bayside Year 4 Boys A","age":null,"div":null,"stats":{"gp":8,"fouls":6,"ft":2,"fg":5,"pts":12,"wins":5,"losses":3}}]},{"sid":"8c47a1de","sn":"Winter 2024","club":"CC Eagles Basketball Club","regs":[{"tid":"8fb8f9a9","tn":"CC Eagles Basketball Club Junior Mixed 3-4 Rookies Blue","gid":"75fd4d93","gn":"(SCHOOL) Thursday Grade 3&4 'Rookies'","age":null,"div":null,"stats":{"gp":15,"fouls":26,"ft":10,"fg":17,"pts":44,"finals":1,"wins":5,"losses":8}},{"tid":"8fb8f9a9","tn":"CC Eagles Basketball Club Junior Mixed 3-4 Rookies Blue","gid":"de9e5fea","gn":"(SCHOOL) Thursday Grade 3&4 'All Stars'","age":null,"div":null,"stats":{"gp":15,"fouls":26,"ft":10,"fg":17,"pts":44,"finals":1,"wins":5,"losses":8}}]}],"updatedAt":"2026-06-02T22:42:34.639Z","teams":[{"tid":"e16241ea","sid":"ad68db8b","status":"ACTIVE"},{"tid":"9529e978","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"b82a6ee7","sid":"31d05517","status":"COMPLETED"},{"tid":"8fb8f9a9","sid":"8c47a1de","status":"COMPLETED"},{"tid":"47716063","sid":"09a70808","status":"COMPLETED"},{"tid":"d6218dd9","sid":"e5df46b3","status":"COMPLETED"},{"tid":"ebe1471d","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"fea0b2a4","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:30.748Z","records":{"maxGamePTS":{"v":12,"gameKey":"0a934867","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["0190b6c9","03f2a104","04854f8f","0a934867","11e8f71a","1db7dda4","1e23a2ab","282344bb","2a9a64d4","2cdcdb2c","3a88c3d1","3fb671c5","44be6d8f","44cab823","4b9f305d","4ba5e846","50fcbc0d","51d10dab","5922573a","764a5906","7901ed38","799142db","7c3f4561","7c9bd825","7d1724e7","7e1ba7bf","8262c571","8351ef0a","86f25518","872efb44","9255f54e","92839443","94487f12","98c24fe3","9da63ac9","a564e3ab","a607bea0","a9452275","b389b22a","bc7a33c9","c1662887","c5e9d8a5","d462545f","d59b8739","d7514044","da24d8c9","dc93e493","e1132bd1","e4475a1f","e81b5f9d","f001f71a","f2de8595","f9a33dde","fbaa521e","ff204d3f"]}
+{
+  "uuid": "b5a8add6-543f-4566-94b7-313ec0119f9a",
+  "name": "Lachie Galbraith",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 123,
+      "fouls": 75,
+      "fg": 53,
+      "ft": 17,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 29,
+      "losses": 37,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T15:11:58.974Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e16241ea",
+          "tn": "Port Thunderbolts",
+          "gid": "887f9693",
+          "gn": "Wednesday Year 5 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 26,
+            "ft": 4,
+            "fg": 20,
+            "pts": 44,
+            "wins": 6,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "9529e978",
+          "tn": "Port Thunderbolts",
+          "gid": "b904c918",
+          "gn": "Friday Year 4 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 11,
+            "pts": 23,
+            "wins": 8,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "b82a6ee7",
+          "tn": "Port Thunderbolts",
+          "gid": "93466c02",
+          "gn": "Friday MSAC/Bayside Year 4 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 5,
+            "pts": 12,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8c47a1de",
+      "sn": "Winter 2024",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "8fb8f9a9",
+          "tn": "CC Eagles Basketball Club Junior Mixed 3-4 Rookies Blue",
+          "gid": "75fd4d93",
+          "gn": "(SCHOOL) Thursday Grade 3&4 'Rookies'",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "ft": 10,
+            "fg": 17,
+            "pts": 44,
+            "finals": 1,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "8fb8f9a9",
+          "tn": "CC Eagles Basketball Club Junior Mixed 3-4 Rookies Blue",
+          "gid": "de9e5fea",
+          "gn": "(SCHOOL) Thursday Grade 3&4 'All Stars'",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "ft": 10,
+            "fg": 17,
+            "pts": 44,
+            "finals": 1,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "44242366",
+          "tn": "Port Thunderbolts",
+          "gid": "fbfcdad0",
+          "gn": "Wednesday Year 5 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "47716063",
+          "tn": "Port Thunderbolts",
+          "gid": "897eeacd",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "d6218dd9",
+          "tn": "Port Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "ebe1471d",
+          "tn": "Port Thunderbolts",
+          "gid": "255ee947",
+          "gn": "Friday MSAC/Bayside YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "fea0b2a4",
+          "tn": "Port Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:34.639Z",
+  "teams": [
+    {
+      "tid": "e16241ea",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9529e978",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b82a6ee7",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8fb8f9a9",
+      "sid": "8c47a1de",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44242366",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47716063",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d6218dd9",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ebe1471d",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fea0b2a4",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:43.480Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "0a934867",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0190b6c9",
+    "03f2a104",
+    "04854f8f",
+    "0a934867",
+    "11e8f71a",
+    "1db7dda4",
+    "1e23a2ab",
+    "282344bb",
+    "2a9a64d4",
+    "2cdcdb2c",
+    "3a88c3d1",
+    "3fb671c5",
+    "44be6d8f",
+    "44cab823",
+    "4b9f305d",
+    "4ba5e846",
+    "50fcbc0d",
+    "51d10dab",
+    "5922573a",
+    "764a5906",
+    "7901ed38",
+    "799142db",
+    "7c3f4561",
+    "7c9bd825",
+    "7d1724e7",
+    "7e1ba7bf",
+    "8262c571",
+    "8351ef0a",
+    "86f25518",
+    "872efb44",
+    "9255f54e",
+    "92839443",
+    "94487f12",
+    "98c24fe3",
+    "9da63ac9",
+    "a564e3ab",
+    "a607bea0",
+    "a9452275",
+    "b389b22a",
+    "bc7a33c9",
+    "c1662887",
+    "c5e9d8a5",
+    "d462545f",
+    "d59b8739",
+    "d7514044",
+    "da24d8c9",
+    "dc93e493",
+    "e1132bd1",
+    "e4475a1f",
+    "e81b5f9d",
+    "f001f71a",
+    "f2de8595",
+    "f9a33dde",
+    "fbaa521e",
+    "ff204d3f"
+  ]
+}

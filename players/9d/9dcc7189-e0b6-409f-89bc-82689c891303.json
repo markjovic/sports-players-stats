@@ -1,1 +1,264 @@
-{"uuid":"9dcc7189-e0b6-409f-89bc-82689c891303","name":"Logan Davis","gender":"Boys","sports":{"Basketball":{"gp":39,"pts":160,"fouls":49,"fg":69,"ft":13,"threePt":3,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":2,"wins":24,"losses":20,"winPct":0.55,"statsChecked":"2026-07-05T15:24:36.223Z"}},"seasons":[{"sid":"e4fda0f9","sn":"Winter 2026","club":"Phoenix Basketball Club (Ballarat)","regs":[{"tid":"cea0276e","tn":"Phoenix Nobles","gid":"8df0e3de","gn":"Friday U16 Boys F","age":"U16","div":null,"stats":{"gp":5,"fouls":8,"ft":4,"fg":13,"pts":30,"wins":5}},{"tid":"cea0276e","tn":"Phoenix Nobles","gid":"fc61f70f","gn":"Friday U16 Boys G","age":"U16","div":null,"stats":{"gp":5,"fouls":8,"ft":4,"fg":13,"pts":30,"wins":5}},{"tid":"559ab5cf","stats":{"losses":3,"gp":3,"pts":3,"threePt":1,"fouls":3}},{"tid":"0567e800","stats":{"gp":3,"fouls":2,"wins":2,"losses":1}}]},{"sid":"790feeb5","sn":"Summer 2025/26","club":"Phoenix Basketball Club (Ballarat)","regs":[{"tid":"5a07b6fe","tn":"Phoenix Nobles","gid":"bd6c241e","gn":"Friday U16 Boys G","age":"U16","div":null,"stats":{"gp":14,"fouls":16,"ft":7,"fg":22,"threePt":2,"pts":57,"wins":4,"losses":10}}]},{"sid":"4c590ea3","sn":"Winter 2025","club":"Phoenix Basketball Club (Ballarat)","regs":[{"tid":"5b36aa13","tn":"Phoenix Cannons","gid":"c69c0c83","gn":"Saturday U14 Boys F","age":"U14","div":null,"stats":{"gp":14,"fouls":20,"ft":2,"fg":34,"pts":70,"finals":1,"gfApps":1,"wins":8,"losses":6}}]}],"updatedAt":"2026-06-01T13:59:04.068Z","teams":[{"tid":"0567e800","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"559ab5cf","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"5a07b6fe","sid":"790feeb5","status":"COMPLETED"},{"tid":"5b36aa13","sid":"4c590ea3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:58:17.680Z","records":{"maxGamePTS":{"v":14,"gameKey":"3efe3e77","sid":"790feeb5"},"maxGameThreePt":{"v":2,"gameKey":"3efe3e77","sid":"790feeb5"}},"games":["00144142","03276962","0b877a84","0d1e1082","0e48e1a7","19184a0f","2b353166","3d593ab7","3e596293","3efe3e77","3f2df77d","4e4a6bc2","53e4dc69","55a40c1a","5a428f56","69387f66","6a47ad6a","72d57a74","75199884","782499a9","7ccd4bbd","803d9f59","97b3c105","9b856645","b4f046ab","b9d53972","bd564b7e","bd85c0c3","c1db80c6","c3e94bb4","d378c23a","e20d87bc","e7ea69e2","e9813c95","ee9f14cb","f09a96a9","f1edd653","f2be683f","f61182ed"],"gameTids":{"75199884":"5a07b6fe","0b877a84":"559ab5cf","97b3c105":"559ab5cf","6a47ad6a":"559ab5cf","f09a96a9":"0567e800","3d593ab7":"0567e800","e9813c95":"0567e800","ee9f14cb":"cea0276e","c1db80c6":"cea0276e","5a428f56":"cea0276e","9b856645":"cea0276e","72d57a74":"cea0276e","3efe3e77":"5a07b6fe","2b353166":"5a07b6fe","e20d87bc":"5a07b6fe","55a40c1a":"5a07b6fe","bd564b7e":"5a07b6fe","3f2df77d":"5a07b6fe","3e596293":"5a07b6fe","b4f046ab":"5a07b6fe","f61182ed":"5a07b6fe","f1edd653":"5a07b6fe","782499a9":"5a07b6fe","0e48e1a7":"5a07b6fe","00144142":"5a07b6fe","4e4a6bc2":"5b36aa13","b9d53972":"5b36aa13","e7ea69e2":"5b36aa13","69387f66":"5b36aa13","0d1e1082":"5b36aa13","7ccd4bbd":"5b36aa13","bd85c0c3":"5b36aa13","803d9f59":"5b36aa13","03276962":"5b36aa13","d378c23a":"5b36aa13","c3e94bb4":"5b36aa13","53e4dc69":"5b36aa13","19184a0f":"5b36aa13","f2be683f":"5b36aa13"}}
+{
+  "uuid": "9dcc7189-e0b6-409f-89bc-82689c891303",
+  "name": "Logan Davis",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 160,
+      "fouls": 49,
+      "fg": 69,
+      "ft": 13,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 24,
+      "losses": 20,
+      "winPct": 0.55,
+      "statsChecked": "2026-07-05T15:24:36.223Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Phoenix Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "cea0276e",
+          "tn": "Phoenix Nobles",
+          "gid": "8df0e3de",
+          "gn": "Friday U16 Boys F",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 8,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "cea0276e",
+          "tn": "Phoenix Nobles",
+          "gid": "fc61f70f",
+          "gn": "Friday U16 Boys G",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 8,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "559ab5cf",
+          "stats": {
+            "losses": 3,
+            "gp": 3,
+            "pts": 3,
+            "threePt": 1,
+            "fouls": 3
+          },
+          "gid": "be947b01",
+          "gn": "Friday U19 Boys E"
+        },
+        {
+          "tid": "0567e800",
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "wins": 2,
+            "losses": 1
+          },
+          "gid": "b2cbefef",
+          "gn": "Friday U16 Boys E"
+        }
+      ]
+    },
+    {
+      "sid": "790feeb5",
+      "sn": "Summer 2025/26",
+      "club": "Phoenix Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "5a07b6fe",
+          "tn": "Phoenix Nobles",
+          "gid": "bd6c241e",
+          "gn": "Friday U16 Boys G",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 7,
+            "fg": 22,
+            "threePt": 2,
+            "pts": 57,
+            "wins": 4,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4c590ea3",
+      "sn": "Winter 2025",
+      "club": "Phoenix Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "5b36aa13",
+          "tn": "Phoenix Cannons",
+          "gid": "c69c0c83",
+          "gn": "Saturday U14 Boys F",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 20,
+            "ft": 2,
+            "fg": 34,
+            "pts": 70,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T13:59:04.068Z",
+  "teams": [
+    {
+      "tid": "cea0276e",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "559ab5cf",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0567e800",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a07b6fe",
+      "sid": "790feeb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b36aa13",
+      "sid": "4c590ea3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:56.693Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "3efe3e77",
+      "sid": "790feeb5"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "3efe3e77",
+      "sid": "790feeb5"
+    }
+  },
+  "games": [
+    "00144142",
+    "03276962",
+    "0b877a84",
+    "0d1e1082",
+    "0e48e1a7",
+    "19184a0f",
+    "2b353166",
+    "3d593ab7",
+    "3e596293",
+    "3efe3e77",
+    "3f2df77d",
+    "4e4a6bc2",
+    "53e4dc69",
+    "55a40c1a",
+    "5a428f56",
+    "69387f66",
+    "6a47ad6a",
+    "72d57a74",
+    "75199884",
+    "782499a9",
+    "7ccd4bbd",
+    "803d9f59",
+    "97b3c105",
+    "9b856645",
+    "b4f046ab",
+    "b9d53972",
+    "bd564b7e",
+    "bd85c0c3",
+    "c1db80c6",
+    "c3e94bb4",
+    "d378c23a",
+    "e20d87bc",
+    "e7ea69e2",
+    "e9813c95",
+    "ee9f14cb",
+    "f09a96a9",
+    "f1edd653",
+    "f2be683f",
+    "f61182ed"
+  ],
+  "gameTids": {
+    "75199884": "5a07b6fe",
+    "0b877a84": "559ab5cf",
+    "97b3c105": "559ab5cf",
+    "6a47ad6a": "559ab5cf",
+    "f09a96a9": "0567e800",
+    "3d593ab7": "0567e800",
+    "e9813c95": "0567e800",
+    "ee9f14cb": "cea0276e",
+    "c1db80c6": "cea0276e",
+    "5a428f56": "cea0276e",
+    "9b856645": "cea0276e",
+    "72d57a74": "cea0276e",
+    "3efe3e77": "5a07b6fe",
+    "2b353166": "5a07b6fe",
+    "e20d87bc": "5a07b6fe",
+    "55a40c1a": "5a07b6fe",
+    "bd564b7e": "5a07b6fe",
+    "3f2df77d": "5a07b6fe",
+    "3e596293": "5a07b6fe",
+    "b4f046ab": "5a07b6fe",
+    "f61182ed": "5a07b6fe",
+    "f1edd653": "5a07b6fe",
+    "782499a9": "5a07b6fe",
+    "0e48e1a7": "5a07b6fe",
+    "00144142": "5a07b6fe",
+    "4e4a6bc2": "5b36aa13",
+    "b9d53972": "5b36aa13",
+    "e7ea69e2": "5b36aa13",
+    "69387f66": "5b36aa13",
+    "0d1e1082": "5b36aa13",
+    "7ccd4bbd": "5b36aa13",
+    "bd85c0c3": "5b36aa13",
+    "803d9f59": "5b36aa13",
+    "03276962": "5b36aa13",
+    "d378c23a": "5b36aa13",
+    "c3e94bb4": "5b36aa13",
+    "53e4dc69": "5b36aa13",
+    "19184a0f": "5b36aa13",
+    "f2be683f": "5b36aa13"
+  }
+}

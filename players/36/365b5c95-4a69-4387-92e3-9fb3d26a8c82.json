@@ -1,1 +1,532 @@
-{"uuid":"365b5c95-4a69-4387-92e3-9fb3d26a8c82","name":"James Patrick","gender":"Men","sports":{"Basketball":{"gp":80,"pts":693,"fouls":146,"fg":230,"ft":87,"threePt":27,"foulOuts":{"5593103d":1,"ad1f9276":1,"84137cb7":1,"f5ece0be":1},"maxGamePTS":28,"maxGameThreePt":3,"wins":37,"losses":39,"draws":3,"winPct":0.47,"statsChecked":"2026-07-06T18:56:07.620Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"3795f4a8","tn":"Widzew","gid":"1feaf74c","gn":"Monday Open Men Section 01","age":"Senior","div":null,"stats":{"gp":20,"pts":123,"threePt":2,"fg":20,"ft":12,"fouls":43,"foulOuts":1,"wins":11,"losses":9}}]},{"sid":"ad1f9276","sn":"Summer 2025/26","regs":[{"tid":"082f9f28","tn":"Kookas","gid":"52381592","gn":"Wednesday Men 4 - 2026 Summer","age":null,"div":null,"stats":{"gp":15,"pts":85,"threePt":7,"fg":27,"ft":10,"fouls":34,"foulOuts":1,"wins":6,"losses":7,"draws":2}}]},{"sid":"12acc552","sn":"Summer 2024/25","regs":[{"tid":"2260b900","tn":"Dunkin' Donuts","gid":"ba52383f","gn":"Wednesday Men 6 - 2025 Summer","age":null,"div":null,"stats":{"gp":12,"pts":117,"threePt":4,"fg":43,"ft":19,"fouls":9,"wins":7,"losses":4,"draws":1}}]},{"sid":"84137cb7","sn":"Winter 2024","regs":[{"tid":"b92cf377","tn":"Dunkin' Donuts","gid":"487f3424","gn":"Wednesday Men 4 - 2024 Winter","age":null,"div":null,"stats":{"gp":17,"pts":198,"threePt":7,"fg":76,"ft":25,"fouls":28,"foulOuts":1,"wins":6,"losses":11}}]},{"sid":"f5ece0be","sn":"Summer 2023/24","regs":[{"tid":"39f8a676","tn":"Dunkin' Donuts","gid":"71b641d4","gn":"Wednesday Men 4 - 2024 Summer","age":null,"div":null,"stats":{"gp":15,"pts":164,"threePt":7,"fg":63,"ft":17,"fouls":30,"foulOuts":1,"wins":7,"losses":8}}]},{"sid":"297562bc","sn":"Spring 2026","club":"Waverley Basketball Association","regs":[{"tid":"907578e5","tn":"","gid":"fc78fad5","gn":"Monday Open Men Section 1","div":null,"stats":{"gp":1,"pts":6,"fg":1,"ft":4,"fouls":2}}]}],"updatedAt":"2026-07-06T18:30:57.131Z","teams":[{"tid":"3795f4a8","sid":"5593103d","status":"ACTIVE"},{"tid":"907578e5","sid":"297562bc","status":"UPCOMING"},{"tid":"082f9f28","sid":"ad1f9276","status":"COMPLETED"},{"tid":"af96fb88","sid":"fab2be4d","status":"COMPLETED"},{"tid":"051663cf","sid":"76897951","status":"COMPLETED"},{"tid":"2260b900","sid":"12acc552","status":"COMPLETED"},{"tid":"208ba8bc","sid":"5944effa","status":"COMPLETED"},{"tid":"b92cf377","sid":"84137cb7","status":"COMPLETED"},{"tid":"3d435082","sid":"348dbfb8","status":"COMPLETED"},{"tid":"39f8a676","sid":"f5ece0be","status":"COMPLETED"},{"tid":"2062db13","sid":"9358e51a","status":"COMPLETED"},{"tid":"ada939e8","sid":"d3d4e181","status":"COMPLETED"},{"tid":"3b62d54f","sid":"21cd9648","status":"COMPLETED"},{"tid":"c61e017e","sid":"21cd9648","status":"COMPLETED"},{"tid":"7f0dfbbe","sid":"d4cbf787","status":"COMPLETED"},{"tid":"2c25a738","sid":"d4cbf787","status":"COMPLETED"},{"tid":"0dd3774b","sid":"d64fcfce","status":"COMPLETED"},{"tid":"0141eda6","sid":"d64fcfce","status":"COMPLETED"},{"tid":"02fd90bc","sid":"afd26581","status":"COMPLETED"},{"tid":"e7fe1c64","sid":"afd26581","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:14:32.869Z","records":{"maxGamePTS":{"v":28,"gameKey":"a9255aae","sid":"12acc552"},"maxGameThreePt":{"v":3,"gameKey":"2aca71dc","sid":"12acc552"}},"games":["09d4da32","09e4cba3","0c81f464","0cad9df5","0dc572ff","1089ff07","10adfbe7","17c99142","192f991b","28960cfe","2a09a593","2aca71dc","2c65de79","3306d965","3408253f","378aeeeb","37a0d5c2","38a39335","3a764d65","3e0f1d35","435345ac","468b941d","46bd9b1e","4810214d","540115ba","570f9921","59d118d9","5e02d550","5e301ce9","5fa58e3a","68a44c54","70cead67","755ad2f6","774efb1b","79227c2b","7a84c7ca","7c80a9ca","7ceb2e9c","7e8d34f5","801f112a","82fed65c","861ec9bf","86bdc9f6","8bd58cbe","8ca5ac70","926ca351","9430e4be","96ff59ea","9a6d109f","9b902007","a1c0b52a","a58f492a","a7fd50eb","a9255aae","a998bf94","a9c91d13","ac599edc","b12e0fd6","b422a03b","b65093d9","ba025b6b","bcec3525","c034bc87","c3b32d59","c3d6c88a","cc34541d","ce4e0e3d","ce6f9139","d13bb243","d80c7604","da2a244c","deab3d05","dfaab2a3","e95bbe4b","e9636aa7","e9a04c26","ea5fb5d4","eab9e275","eddcfb2c"]}
+{
+  "uuid": "365b5c95-4a69-4387-92e3-9fb3d26a8c82",
+  "name": "James Patrick",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 80,
+      "pts": 693,
+      "fouls": 146,
+      "fg": 230,
+      "ft": 87,
+      "threePt": 27,
+      "foulOuts": {
+        "5593103d": 1,
+        "ad1f9276": 1,
+        "84137cb7": 1,
+        "f5ece0be": 1
+      },
+      "maxGamePTS": 28,
+      "maxGameThreePt": 3,
+      "wins": 37,
+      "losses": 39,
+      "draws": 3,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-06T18:56:07.620Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "3795f4a8",
+          "tn": "Widzew",
+          "gid": "1feaf74c",
+          "gn": "Monday Open Men Section 01",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "pts": 123,
+            "threePt": 2,
+            "fg": 20,
+            "ft": 12,
+            "fouls": 43,
+            "foulOuts": 1,
+            "wins": 11,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad1f9276",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "082f9f28",
+          "tn": "Kookas",
+          "gid": "52381592",
+          "gn": "Wednesday Men 4 - 2026 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 85,
+            "threePt": 7,
+            "fg": 27,
+            "ft": 10,
+            "fouls": 34,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "12acc552",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "2260b900",
+          "tn": "Dunkin' Donuts",
+          "gid": "ba52383f",
+          "gn": "Wednesday Men 6 - 2025 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 117,
+            "threePt": 4,
+            "fg": 43,
+            "ft": 19,
+            "fouls": 9,
+            "wins": 7,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "84137cb7",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "b92cf377",
+          "tn": "Dunkin' Donuts",
+          "gid": "487f3424",
+          "gn": "Wednesday Men 4 - 2024 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 198,
+            "threePt": 7,
+            "fg": 76,
+            "ft": 25,
+            "fouls": 28,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5ece0be",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "39f8a676",
+          "tn": "Dunkin' Donuts",
+          "gid": "71b641d4",
+          "gn": "Wednesday Men 4 - 2024 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 164,
+            "threePt": 7,
+            "fg": 63,
+            "ft": 17,
+            "fouls": 30,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "club": "Waverley Basketball Association",
+      "regs": [
+        {
+          "tid": "907578e5",
+          "tn": "",
+          "gid": "fc78fad5",
+          "gn": "Monday Open Men Section 1",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 6,
+            "fg": 1,
+            "ft": 4,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "af96fb88",
+          "tn": "Widzew",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "051663cf",
+          "tn": "Widzew",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "208ba8bc",
+          "tn": "Widzew",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "3d435082",
+          "tn": "Widzew",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "2062db13",
+          "tn": "Widzew",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "ada939e8",
+          "tn": "Widzew",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "3b62d54f",
+          "tn": "Lane Invaders",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "c61e017e",
+          "tn": "Widzew",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "7f0dfbbe",
+          "tn": "Lane Invaders",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "2c25a738",
+          "tn": "Widzew",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "0dd3774b",
+          "tn": "Lane Invaders",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "0141eda6",
+          "tn": "Widzew",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "02fd90bc",
+          "tn": "Lane Invaders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "e7fe1c64",
+          "tn": "Widzew",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:57.131Z",
+  "teams": [
+    {
+      "tid": "3795f4a8",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "082f9f28",
+      "sid": "ad1f9276",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2260b900",
+      "sid": "12acc552",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b92cf377",
+      "sid": "84137cb7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39f8a676",
+      "sid": "f5ece0be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "907578e5",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af96fb88",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "051663cf",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "208ba8bc",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3d435082",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2062db13",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ada939e8",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b62d54f",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c61e017e",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f0dfbbe",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c25a738",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0dd3774b",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0141eda6",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "02fd90bc",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7fe1c64",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:44:19.312Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 28,
+      "gameKey": "a9255aae",
+      "sid": "12acc552"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "2aca71dc",
+      "sid": "12acc552"
+    }
+  },
+  "games": [
+    "09d4da32",
+    "09e4cba3",
+    "0c81f464",
+    "0cad9df5",
+    "0dc572ff",
+    "1089ff07",
+    "10adfbe7",
+    "17c99142",
+    "192f991b",
+    "28960cfe",
+    "2a09a593",
+    "2aca71dc",
+    "2c65de79",
+    "3306d965",
+    "3408253f",
+    "378aeeeb",
+    "37a0d5c2",
+    "38a39335",
+    "3a764d65",
+    "3e0f1d35",
+    "435345ac",
+    "468b941d",
+    "46bd9b1e",
+    "4810214d",
+    "540115ba",
+    "570f9921",
+    "59d118d9",
+    "5e02d550",
+    "5e301ce9",
+    "5fa58e3a",
+    "68a44c54",
+    "70cead67",
+    "755ad2f6",
+    "774efb1b",
+    "79227c2b",
+    "7a84c7ca",
+    "7c80a9ca",
+    "7ceb2e9c",
+    "7e8d34f5",
+    "801f112a",
+    "82fed65c",
+    "861ec9bf",
+    "86bdc9f6",
+    "8bd58cbe",
+    "8ca5ac70",
+    "926ca351",
+    "9430e4be",
+    "96ff59ea",
+    "9a6d109f",
+    "9b902007",
+    "a1c0b52a",
+    "a58f492a",
+    "a7fd50eb",
+    "a9255aae",
+    "a998bf94",
+    "a9c91d13",
+    "ac599edc",
+    "b12e0fd6",
+    "b422a03b",
+    "b65093d9",
+    "ba025b6b",
+    "bcec3525",
+    "c034bc87",
+    "c3b32d59",
+    "c3d6c88a",
+    "cc34541d",
+    "ce4e0e3d",
+    "ce6f9139",
+    "d13bb243",
+    "d80c7604",
+    "da2a244c",
+    "deab3d05",
+    "dfaab2a3",
+    "e95bbe4b",
+    "e9636aa7",
+    "e9a04c26",
+    "ea5fb5d4",
+    "eab9e275",
+    "eddcfb2c"
+  ]
+}

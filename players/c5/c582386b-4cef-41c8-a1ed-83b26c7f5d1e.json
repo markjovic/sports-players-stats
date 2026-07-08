@@ -1,1 +1,90 @@
-{"uuid":"c582386b-4cef-41c8-a1ed-83b26c7f5d1e","gender":null,"sports":{"Basketball":{"gp":8,"pts":32,"fouls":7,"fg":5,"ft":4,"threePt":6,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":2,"wins":3,"losses":4,"winPct":0.43,"statsChecked":"2026-07-05T15:51:34.175Z"}},"seasons":[{"sid":"20257744","sn":"Winter 2021","club":null,"regs":[{"tid":"5ef2c837","tn":"Charlie's angles","gid":"6cc15b3b","gn":"Monday Men D4","stats":{"gp":8,"pts":32,"fouls":7,"fg":5,"ft":4,"threePt":6,"wins":3,"losses":4}}]}],"updatedAt":"2026-06-11T23:44:32.202Z","games":["3c6a80d5","58350999","91069463","a322cad2","dac3c78d","e4f60bb1","e52176de","e7531ba1"],"records":{"maxGamePTS":{"v":8,"gameKey":"e7531ba1","sid":"20257744"},"maxGameThreePt":{"v":2,"gameKey":"91069463","sid":"20257744"}},"name":"Winter 2021"}
+{
+  "uuid": "c582386b-4cef-41c8-a1ed-83b26c7f5d1e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 32,
+      "fouls": 7,
+      "fg": 5,
+      "ft": 4,
+      "threePt": 6,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 2,
+      "wins": 3,
+      "losses": 4,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T15:51:34.175Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "20257744",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5ef2c837",
+          "tn": "Charlie's angles",
+          "gid": "6cc15b3b",
+          "gn": "Monday Men D4",
+          "stats": {
+            "gp": 8,
+            "pts": 32,
+            "fouls": 7,
+            "fg": 5,
+            "ft": 4,
+            "threePt": 6,
+            "wins": 3,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "4ac8ceb0",
+          "tn": "Charlie’s angles (PG)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:32.202Z",
+  "games": [
+    "3c6a80d5",
+    "58350999",
+    "91069463",
+    "a322cad2",
+    "dac3c78d",
+    "e4f60bb1",
+    "e52176de",
+    "e7531ba1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "e7531ba1",
+      "sid": "20257744"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "91069463",
+      "sid": "20257744"
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "5ef2c837",
+      "sid": "20257744",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ac8ceb0",
+      "sid": "20257744",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:11.467Z"
+}

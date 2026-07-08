@@ -1,1 +1,97 @@
-{"uuid":"6a5cee0b-d5cf-46a7-b905-e13f62d30370","name":"Lauren Aitchison","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":20,"fouls":8,"fg":8,"ft":4,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"losses":9,"winPct":0.1,"wins":1,"statsChecked":"2026-07-05T14:41:57.398Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"91c8dd89","tn":"North Adelaide Rockets U12 Girls 2","gid":"ee26c446","gn":"GIRLS UNDER 12 B2","age":null,"div":"B2","stats":{"gp":5,"fouls":4,"losses":5}}]},{"sid":"0869ea69","regs":[{"tid":"d0eebe1c","stats":{"wins":1,"losses":4,"gp":5,"pts":20,"fg":8,"ft":4,"fouls":4}}]}],"updatedAt":"2026-05-31T01:04:13.165Z","teams":[{"tid":"d0eebe1c","sid":"0869ea69","status":"UPCOMING"},{"tid":"91c8dd89","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:47:06.499Z","records":{"maxGamePTS":{"v":6,"gameKey":"7cfd17be","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["03882d5d","0bf99900","1c9b48e4","272b82fd","44817717","7cfd17be","88232852","b260cc12","b79823af","c919aecf"]}
+{
+  "uuid": "6a5cee0b-d5cf-46a7-b905-e13f62d30370",
+  "name": "Lauren Aitchison",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 20,
+      "fouls": 8,
+      "fg": 8,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "losses": 9,
+      "winPct": 0.1,
+      "wins": 1,
+      "statsChecked": "2026-07-05T14:41:57.398Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "91c8dd89",
+          "tn": "North Adelaide Rockets U12 Girls 2",
+          "gid": "ee26c446",
+          "gn": "GIRLS UNDER 12 B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "d0eebe1c",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 20,
+            "fg": 8,
+            "ft": 4,
+            "fouls": 4
+          },
+          "gid": "40758cb6",
+          "gn": "GIRLS UNDER 12 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:04:13.165Z",
+  "teams": [
+    {
+      "tid": "91c8dd89",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d0eebe1c",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:59.692Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "7cfd17be",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "03882d5d",
+    "0bf99900",
+    "1c9b48e4",
+    "272b82fd",
+    "44817717",
+    "7cfd17be",
+    "88232852",
+    "b260cc12",
+    "b79823af",
+    "c919aecf"
+  ]
+}

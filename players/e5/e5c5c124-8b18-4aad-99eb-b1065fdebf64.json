@@ -1,1 +1,63 @@
-{"uuid":"e5c5c124-8b18-4aad-99eb-b1065fdebf64","name":"Jarred Ordona","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":null,"foulOuts":{},"gp":13,"pts":24,"fg":11,"ft":2,"fouls":16,"statsChecked":"2026-07-06T19:02:08.886Z"}},"seasons":[{"sid":"0adc7f94","regs":[{"tid":"0acb5770"}]},{"sid":"5dfac2a9","regs":[{"tid":"bbd430ba"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":6,"gameKey":"21bb38df","sid":"5dfac2a9"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e5c5c124-8b18-4aad-99eb-b1065fdebf64",
+  "name": "Jarred Ordona",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 13,
+      "pts": 24,
+      "fg": 11,
+      "ft": 2,
+      "fouls": 16,
+      "statsChecked": "2026-07-06T19:02:08.886Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0adc7f94",
+      "regs": [
+        {
+          "tid": "0acb5770",
+          "gid": "6d7726cb",
+          "gn": "Monday Senior Men G"
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "regs": [
+        {
+          "tid": "bbd430ba",
+          "gid": "e50d9574",
+          "gn": "Wednesday Open Men A Premier Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "0acb5770",
+      "sid": "0adc7f94",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbd430ba",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "21bb38df",
+      "sid": "5dfac2a9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:51:43.442Z"
+}

@@ -1,1 +1,134 @@
-{"uuid":"ef9b11be-33c6-48b9-b8c7-53822c7036c1","gender":null,"sports":{"Basketball":{"gp":14,"pts":12,"fouls":4,"fg":6,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"losses":8,"draws":8,"winPct":0,"statsChecked":"2026-07-05T16:15:47.679Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Keilor Village Junior Basketball Club","regs":[{"tid":"5ea315b5","tn":"Keilor Village U18 Boys KV2","gid":"fbfcf4cf","gn":"Saturday U18 Boys D2 Grade","stats":{"gp":8,"losses":4,"draws":4,"pts":6,"fg":3,"fouls":1}},{"tid":"5ea315b5","tn":"Keilor Village U18 Boys KV2","gid":"22d7b5b8","gn":"Saturday U18 Boys D1 Grade","stats":{"gp":8,"pts":6,"fouls":1,"fg":3,"losses":4,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Keilor Village Junior Basketball Club","regs":[{"tid":"68353e63","tn":"Keilor Village U18 Boys KV2","gid":"5bff89bb","gn":"Saturday U18 Boys D1 Grade","stats":{"gp":6,"pts":6,"fouls":3,"fg":3}}]}],"updatedAt":"2026-06-11T23:46:05.410Z","games":["035c8664","18189e53","49f0b294","4fca19b1","5e0d8688","6ec7db72","6f839776","7e7da956","858897e7","b7553434","c2b48997","ef44f6cf","f309ce95","f7bd24da"],"records":{"maxGamePTS":{"v":6,"gameKey":"49f0b294","sid":"8e4e71fc"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "ef9b11be-33c6-48b9-b8c7-53822c7036c1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 12,
+      "fouls": 4,
+      "fg": 6,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "losses": 8,
+      "draws": 8,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:15:47.679Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Keilor Village Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "5ea315b5",
+          "tn": "Keilor Village U18 Boys KV2",
+          "gid": "fbfcf4cf",
+          "gn": "Saturday U18 Boys D2 Grade",
+          "stats": {
+            "gp": 8,
+            "losses": 4,
+            "draws": 4,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "5ea315b5",
+          "tn": "Keilor Village U18 Boys KV2",
+          "gid": "22d7b5b8",
+          "gn": "Saturday U18 Boys D1 Grade",
+          "stats": {
+            "gp": 8,
+            "pts": 6,
+            "fouls": 1,
+            "fg": 3,
+            "losses": 4,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Keilor Village Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "68353e63",
+          "tn": "Keilor Village U18 Boys KV2",
+          "gid": "5bff89bb",
+          "gn": "Saturday U18 Boys D1 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 6,
+            "fouls": 3,
+            "fg": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "38b33935",
+          "tn": "Keilor Village U16 Boys 4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:05.410Z",
+  "games": [
+    "035c8664",
+    "18189e53",
+    "49f0b294",
+    "4fca19b1",
+    "5e0d8688",
+    "6ec7db72",
+    "6f839776",
+    "7e7da956",
+    "858897e7",
+    "b7553434",
+    "c2b48997",
+    "ef44f6cf",
+    "f309ce95",
+    "f7bd24da"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "49f0b294",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "5ea315b5",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68353e63",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "38b33935",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:47.669Z"
+}

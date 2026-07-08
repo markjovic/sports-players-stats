@@ -1,1 +1,303 @@
-{"uuid":"e7934efb-deb6-49d7-9529-2badf499be93","name":"Annabella Boult","gender":"Women","sports":{"Basketball":{"gp":49,"pts":91,"fouls":41,"fg":40,"ft":11,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":27,"losses":45,"draws":1,"winPct":0.37,"statsChecked":"2026-07-05T14:31:14.269Z"}},"seasons":[{"sid":"6c4355f1","sn":"Winter 2026","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"778545a5","tn":"Saints Open Women - Panthers","gid":"bec5a7ff","gn":"Sunday Open Women Div 2","age":"Senior","div":"Div 2","stats":{"gp":5,"fouls":2,"fg":2,"pts":5,"wins":3,"draws":1,"ft":1,"losses":1}}]},{"sid":"8e7399a6","sn":"Summer 2025/26","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"4beb71e8","tn":"Saints Open Women - Panthers","gid":"05e9d72a","gn":"Sunday Open Women Div 3","age":"Senior","div":"Div 3","stats":{"gp":16,"fouls":12,"ft":3,"fg":10,"pts":23,"finals":1,"wins":8,"losses":6}},{"tid":"4beb71e8","tn":"Saints Open Women - Panthers","gid":"ae6fde69","gn":"Sunday Open Women Div 2","age":"Senior","div":"Div 2","stats":{"gp":16,"fouls":12,"fg":10,"pts":23,"finals":1,"wins":8,"losses":6,"ft":3}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"9c512a48","tn":"U18 Girls Saints - Panthers","gid":"9f2d26e9","gn":"Sunday U18 Girls Div  2","age":"U18","div":"Div 2","stats":{"gp":7,"fouls":6,"fg":3,"pts":6,"finals":1,"wins":2,"losses":5}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"2e1d31dc","tn":"U18 Girls Saints - Panthers","gid":"a5a25c23","gn":"Sunday U18 Girls 2","age":"U18","div":null,"stats":{"gp":5,"fouls":4,"fg":5,"pts":10,"wins":1,"losses":4}}]},{"sid":"475831bc","sn":"Winter 2024","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"33568c43","tn":"U18 Girls Saints - Panthers","gid":"8709435b","gn":"Sunday U18 Girls 2","age":"U18","div":null,"stats":{"gp":4,"fouls":1,"ft":2,"fg":2,"pts":6,"wins":3,"losses":1}}]},{"sid":"6c663d03","sn":"Summer 2023/24","club":"Sunbury Braves Basketball Club","regs":[{"tid":"cd0eaac1","tn":"Braves U19 Girls BD","gid":"e3e0ac7d","gn":"U19 Girls Division 2","age":"U19","div":"Division 2","stats":{"gp":12,"fouls":16,"ft":5,"fg":18,"pts":41,"wins":1,"losses":11}},{"tid":"cd0eaac1","tn":"Braves U19 Girls BD","gid":"866c4623","gn":"U19 Girls GRADING","age":"U19","div":null,"stats":{"gp":12,"fouls":16,"ft":5,"fg":18,"pts":41,"wins":1,"losses":11}}]}],"updatedAt":"2026-06-03T00:11:04.543Z","teams":[{"tid":"778545a5","sid":"6c4355f1","status":"ACTIVE"},{"tid":"4beb71e8","sid":"8e7399a6","status":"COMPLETED"},{"tid":"9c512a48","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"2e1d31dc","sid":"c01b75f6","status":"COMPLETED"},{"tid":"33568c43","sid":"475831bc","status":"COMPLETED"},{"tid":"cd0eaac1","sid":"6c663d03","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:14.310Z","records":{"maxGamePTS":{"v":10,"gameKey":"35f82e1d","sid":"6c663d03"},"maxGameThreePt":{"v":null}},"games":["0023003d","0aa51be5","12624421","16a4c58a","17c7db73","1fa6fe4f","204098e1","211c280b","22334f73","2d1ef4a8","35f82e1d","368b2f4f","369d2941","389908d5","47bc881e","4c31a0db","54f260a1","577d2720","5836de5e","5ddf8a64","5eecd59f","6037bf36","68b30614","71e342a1","725ae445","82668687","82edaf2b","89582663","8a67f4e8","8bd8c71a","8e900cba","8fa06d3b","941a92f2","9982ffdf","af40c07f","b0b53bb2","b3c24da5","b55b6b2c","c6d6f5d9","c71c049f","c72d3f00","c98d22b9","da6c0dda","dfe9cc42","e3b84549","e7373756","ec110716","f2cf0a82","fff5b61f"]}
+{
+  "uuid": "e7934efb-deb6-49d7-9529-2badf499be93",
+  "name": "Annabella Boult",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 49,
+      "pts": 91,
+      "fouls": 41,
+      "fg": 40,
+      "ft": 11,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 27,
+      "losses": 45,
+      "draws": 1,
+      "winPct": 0.37,
+      "statsChecked": "2026-07-05T14:31:14.269Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c4355f1",
+      "sn": "Winter 2026",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "778545a5",
+          "tn": "Saints Open Women - Panthers",
+          "gid": "7cd083fd",
+          "gn": "Sunday Open Women Div 1",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 5,
+            "wins": 3,
+            "draws": 1,
+            "ft": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e7399a6",
+      "sn": "Summer 2025/26",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "4beb71e8",
+          "tn": "Saints Open Women - Panthers",
+          "gid": "05e9d72a",
+          "gn": "Sunday Open Women Div 3",
+          "age": "Senior",
+          "div": "Div 3",
+          "stats": {
+            "gp": 16,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 10,
+            "pts": 23,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "4beb71e8",
+          "tn": "Saints Open Women - Panthers",
+          "gid": "ae6fde69",
+          "gn": "Sunday Open Women Div 2",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 16,
+            "fouls": 12,
+            "fg": 10,
+            "pts": 23,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "9c512a48",
+          "tn": "U18 Girls Saints - Panthers",
+          "gid": "9f2d26e9",
+          "gn": "Sunday U18 Girls Div  2",
+          "age": "U18",
+          "div": "Div 2",
+          "stats": {
+            "gp": 7,
+            "fouls": 6,
+            "fg": 3,
+            "pts": 6,
+            "finals": 1,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "2e1d31dc",
+          "tn": "U18 Girls Saints - Panthers",
+          "gid": "a5a25c23",
+          "gn": "Sunday U18 Girls 2",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "475831bc",
+      "sn": "Winter 2024",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "33568c43",
+          "tn": "U18 Girls Saints - Panthers",
+          "gid": "8709435b",
+          "gn": "Sunday U18 Girls 2",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 2,
+            "pts": 6,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6c663d03",
+      "sn": "Summer 2023/24",
+      "club": "Sunbury Braves Basketball Club",
+      "regs": [
+        {
+          "tid": "cd0eaac1",
+          "tn": "Braves U19 Girls BD",
+          "gid": "e3e0ac7d",
+          "gn": "U19 Girls Division 2",
+          "age": "U19",
+          "div": "Division 2",
+          "stats": {
+            "gp": 12,
+            "fouls": 16,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "wins": 1,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "cd0eaac1",
+          "tn": "Braves U19 Girls BD",
+          "gid": "866c4623",
+          "gn": "U19 Girls GRADING",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 16,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "wins": 1,
+            "losses": 11
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T00:11:04.543Z",
+  "teams": [
+    {
+      "tid": "778545a5",
+      "sid": "6c4355f1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4beb71e8",
+      "sid": "8e7399a6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c512a48",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2e1d31dc",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "33568c43",
+      "sid": "475831bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd0eaac1",
+      "sid": "6c663d03",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:37.959Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "35f82e1d",
+      "sid": "6c663d03"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0023003d",
+    "0aa51be5",
+    "12624421",
+    "16a4c58a",
+    "17c7db73",
+    "1fa6fe4f",
+    "204098e1",
+    "211c280b",
+    "22334f73",
+    "2d1ef4a8",
+    "35f82e1d",
+    "368b2f4f",
+    "369d2941",
+    "389908d5",
+    "47bc881e",
+    "4c31a0db",
+    "54f260a1",
+    "577d2720",
+    "5836de5e",
+    "5ddf8a64",
+    "5eecd59f",
+    "6037bf36",
+    "68b30614",
+    "71e342a1",
+    "725ae445",
+    "82668687",
+    "82edaf2b",
+    "89582663",
+    "8a67f4e8",
+    "8bd8c71a",
+    "8e900cba",
+    "8fa06d3b",
+    "941a92f2",
+    "9982ffdf",
+    "af40c07f",
+    "b0b53bb2",
+    "b3c24da5",
+    "b55b6b2c",
+    "c6d6f5d9",
+    "c71c049f",
+    "c72d3f00",
+    "c98d22b9",
+    "da6c0dda",
+    "dfe9cc42",
+    "e3b84549",
+    "e7373756",
+    "ec110716",
+    "f2cf0a82",
+    "fff5b61f"
+  ]
+}

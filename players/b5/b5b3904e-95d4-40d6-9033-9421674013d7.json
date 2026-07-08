@@ -1,1 +1,278 @@
-{"uuid":"b5b3904e-95d4-40d6-9033-9421674013d7","name":"Juan Londono Rios","gender":"Men","sports":{"Basketball":{"gp":51,"pts":145,"fouls":78,"fg":61,"ft":23,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"a8a607b7":2},"maxGamePTS":20,"maxGameThreePt":null,"wins":32,"losses":30,"draws":1,"winPct":0.51,"statsChecked":"2026-07-05T15:38:06.579Z"}},"seasons":[{"sid":"aeb3379c","sn":"Summer 2024/25","regs":[{"tid":"913aa739","tn":"South East Defenders T3","gid":"42021c34","gn":"Thursday Senior Men H1/H2","age":"Senior","div":"H2","stats":{"gp":2,"ft":3,"fg":2,"pts":7,"wins":1,"draws":1}},{"tid":"c52b32bf","stats":{"wins":7,"losses":7,"gp":16,"pts":33,"fg":14,"ft":5,"fouls":25}}]},{"sid":"aeb3379c","sn":"Summer 2024/25","regs":[{"tid":"c52b32bf","tn":"South East Defenders T2","gid":"cfc2fbfa","gn":"Thursday Senior Men E1/E2","age":"Senior","div":"E2","stats":{"gp":16,"fouls":25,"ft":5,"fg":14,"pts":33,"wins":7,"losses":7}}]},{"sid":"ad52ee1b","sn":"Winter 2024","regs":[{"tid":"5b7635c4","tn":"South East Defenders T3","gid":"cc82df74","gn":"Thursday Senior Men G1/G2","age":"Senior","div":"G2","stats":{"gp":18,"fouls":20,"ft":9,"fg":28,"pts":65,"wins":9,"losses":9}}]},{"sid":"a8a607b7","sn":"Summer 2023/24","regs":[{"tid":"d9ce741e","tn":"South East Defenders T5","gid":"e6d42385","gn":"Thursday Senior Men F1/F2","age":"Senior","div":"F2","stats":{"gp":15,"fouls":33,"ft":6,"fg":17,"pts":40,"finals":1,"gfApps":1,"foulOuts":2,"wins":8,"losses":7}}]}],"updatedAt":"2026-06-01T20:12:16.980Z","teams":[{"tid":"c52b32bf","sid":"aeb3379c","status":"COMPLETED"},{"tid":"913aa739","sid":"aeb3379c","status":"COMPLETED"},{"tid":"5b7635c4","sid":"ad52ee1b","status":"COMPLETED"},{"tid":"d9ce741e","sid":"a8a607b7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:30.751Z","games":["031a6b30","07ccaec5","0afb1c35","0d333757","168d0c24","1bbae58e","29b07598","2e0a90c7","2e3ea8de","2f55cb10","325ebabb","35678823","3a433f4f","3dd0395c","40732a0e","4240df81","45d95fd3","48269c84","4e0f5682","56040733","57f3288a","5c988508","5c9cbc08","5dc69a41","5f68870e","6244f1d7","64e163c9","658b032d","6d521c14","736ba65d","786aa692","8d89de5d","8e6d2a34","9581542e","a3c87910","a84ec460","a9788464","af150a39","b10ee218","b3ee392e","b85126a7","bf4829b4","bfcf0452","c0a749c7","c303e84c","c5795070","c5d7b052","cdb645c3","cf05f1c5","dd38b257","e4b21d31"],"records":{"maxGamePTS":{"v":20,"gameKey":"c0a749c7","sid":"ad52ee1b"},"maxGameThreePt":{"v":null}},"gameTids":{"35678823":"c52b32bf","56040733":"d9ce741e","b10ee218":"913aa739","bfcf0452":"913aa739","c303e84c":"c52b32bf","786aa692":"c52b32bf","3dd0395c":"c52b32bf","658b032d":"c52b32bf","2e0a90c7":"c52b32bf","8e6d2a34":"c52b32bf","031a6b30":"c52b32bf","c5795070":"c52b32bf","325ebabb":"c52b32bf","af150a39":"c52b32bf","4240df81":"c52b32bf","b85126a7":"c52b32bf","2f55cb10":"c52b32bf","48269c84":"c52b32bf","dd38b257":"c52b32bf","2e3ea8de":"5b7635c4","b3ee392e":"5b7635c4","a84ec460":"5b7635c4","168d0c24":"5b7635c4","40732a0e":"5b7635c4","29b07598":"5b7635c4","736ba65d":"5b7635c4","45d95fd3":"5b7635c4","a3c87910":"5b7635c4","6d521c14":"5b7635c4","4e0f5682":"5b7635c4","5f68870e":"5b7635c4","57f3288a":"5b7635c4","bf4829b4":"5b7635c4","3a433f4f":"5b7635c4","e4b21d31":"5b7635c4","8d89de5d":"5b7635c4","c0a749c7":"5b7635c4","c5d7b052":"d9ce741e","0afb1c35":"d9ce741e","0d333757":"d9ce741e","cdb645c3":"d9ce741e","cf05f1c5":"d9ce741e","5c9cbc08":"d9ce741e","5dc69a41":"d9ce741e","1bbae58e":"d9ce741e","5c988508":"d9ce741e","07ccaec5":"d9ce741e","9581542e":"d9ce741e","6244f1d7":"d9ce741e","a9788464":"d9ce741e","64e163c9":"d9ce741e"}}
+{
+  "uuid": "b5b3904e-95d4-40d6-9033-9421674013d7",
+  "name": "Juan Londono Rios",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 145,
+      "fouls": 78,
+      "fg": 61,
+      "ft": 23,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "a8a607b7": 2
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 32,
+      "losses": 30,
+      "draws": 1,
+      "winPct": 0.51,
+      "statsChecked": "2026-07-05T15:38:06.579Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aeb3379c",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "913aa739",
+          "tn": "South East Defenders T3",
+          "gid": "42021c34",
+          "gn": "Thursday Senior Men H1/H2",
+          "age": "Senior",
+          "div": "H2",
+          "stats": {
+            "gp": 2,
+            "ft": 3,
+            "fg": 2,
+            "pts": 7,
+            "wins": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c52b32bf",
+          "stats": {
+            "wins": 7,
+            "losses": 7,
+            "gp": 16,
+            "pts": 33,
+            "fg": 14,
+            "ft": 5,
+            "fouls": 25
+          },
+          "gid": "cfc2fbfa",
+          "gn": "Thursday Senior Men E1/E2"
+        }
+      ]
+    },
+    {
+      "sid": "aeb3379c",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "c52b32bf",
+          "tn": "South East Defenders T2",
+          "gid": "cfc2fbfa",
+          "gn": "Thursday Senior Men E1/E2",
+          "age": "Senior",
+          "div": "E2",
+          "stats": {
+            "gp": 16,
+            "fouls": 25,
+            "ft": 5,
+            "fg": 14,
+            "pts": 33,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad52ee1b",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "5b7635c4",
+          "tn": "South East Defenders T3",
+          "gid": "cc82df74",
+          "gn": "Thursday Senior Men G1/G2",
+          "age": "Senior",
+          "div": "G2",
+          "stats": {
+            "gp": 18,
+            "fouls": 20,
+            "ft": 9,
+            "fg": 28,
+            "pts": 65,
+            "wins": 9,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a8a607b7",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "d9ce741e",
+          "tn": "South East Defenders T5",
+          "gid": "e6d42385",
+          "gn": "Thursday Senior Men F1/F2",
+          "age": "Senior",
+          "div": "F2",
+          "stats": {
+            "gp": 15,
+            "fouls": 33,
+            "ft": 6,
+            "fg": 17,
+            "pts": 40,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 2,
+            "wins": 8,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:12:16.980Z",
+  "teams": [
+    {
+      "tid": "913aa739",
+      "sid": "aeb3379c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c52b32bf",
+      "sid": "aeb3379c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b7635c4",
+      "sid": "ad52ee1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d9ce741e",
+      "sid": "a8a607b7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:44.911Z",
+  "games": [
+    "031a6b30",
+    "07ccaec5",
+    "0afb1c35",
+    "0d333757",
+    "168d0c24",
+    "1bbae58e",
+    "29b07598",
+    "2e0a90c7",
+    "2e3ea8de",
+    "2f55cb10",
+    "325ebabb",
+    "35678823",
+    "3a433f4f",
+    "3dd0395c",
+    "40732a0e",
+    "4240df81",
+    "45d95fd3",
+    "48269c84",
+    "4e0f5682",
+    "56040733",
+    "57f3288a",
+    "5c988508",
+    "5c9cbc08",
+    "5dc69a41",
+    "5f68870e",
+    "6244f1d7",
+    "64e163c9",
+    "658b032d",
+    "6d521c14",
+    "736ba65d",
+    "786aa692",
+    "8d89de5d",
+    "8e6d2a34",
+    "9581542e",
+    "a3c87910",
+    "a84ec460",
+    "a9788464",
+    "af150a39",
+    "b10ee218",
+    "b3ee392e",
+    "b85126a7",
+    "bf4829b4",
+    "bfcf0452",
+    "c0a749c7",
+    "c303e84c",
+    "c5795070",
+    "c5d7b052",
+    "cdb645c3",
+    "cf05f1c5",
+    "dd38b257",
+    "e4b21d31"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "c0a749c7",
+      "sid": "ad52ee1b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "35678823": "c52b32bf",
+    "56040733": "d9ce741e",
+    "b10ee218": "913aa739",
+    "bfcf0452": "913aa739",
+    "c303e84c": "c52b32bf",
+    "786aa692": "c52b32bf",
+    "3dd0395c": "c52b32bf",
+    "658b032d": "c52b32bf",
+    "2e0a90c7": "c52b32bf",
+    "8e6d2a34": "c52b32bf",
+    "031a6b30": "c52b32bf",
+    "c5795070": "c52b32bf",
+    "325ebabb": "c52b32bf",
+    "af150a39": "c52b32bf",
+    "4240df81": "c52b32bf",
+    "b85126a7": "c52b32bf",
+    "2f55cb10": "c52b32bf",
+    "48269c84": "c52b32bf",
+    "dd38b257": "c52b32bf",
+    "2e3ea8de": "5b7635c4",
+    "b3ee392e": "5b7635c4",
+    "a84ec460": "5b7635c4",
+    "168d0c24": "5b7635c4",
+    "40732a0e": "5b7635c4",
+    "29b07598": "5b7635c4",
+    "736ba65d": "5b7635c4",
+    "45d95fd3": "5b7635c4",
+    "a3c87910": "5b7635c4",
+    "6d521c14": "5b7635c4",
+    "4e0f5682": "5b7635c4",
+    "5f68870e": "5b7635c4",
+    "57f3288a": "5b7635c4",
+    "bf4829b4": "5b7635c4",
+    "3a433f4f": "5b7635c4",
+    "e4b21d31": "5b7635c4",
+    "8d89de5d": "5b7635c4",
+    "c0a749c7": "5b7635c4",
+    "c5d7b052": "d9ce741e",
+    "0afb1c35": "d9ce741e",
+    "0d333757": "d9ce741e",
+    "cdb645c3": "d9ce741e",
+    "cf05f1c5": "d9ce741e",
+    "5c9cbc08": "d9ce741e",
+    "5dc69a41": "d9ce741e",
+    "1bbae58e": "d9ce741e",
+    "5c988508": "d9ce741e",
+    "07ccaec5": "d9ce741e",
+    "9581542e": "d9ce741e",
+    "6244f1d7": "d9ce741e",
+    "a9788464": "d9ce741e",
+    "64e163c9": "d9ce741e"
+  }
+}

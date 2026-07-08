@@ -1,1 +1,339 @@
-{"uuid":"183f4442-775d-451a-9eab-f5e06a23ac8c","name":"Sofia Spiliopoulos","gender":"Girls","sports":{"Basketball":{"gp":38,"pts":22,"fouls":52,"fg":11,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":34,"losses":42,"winPct":0.44,"draws":1,"statsChecked":"2026-07-05T15:07:50.231Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"4c32f3dd","tn":"St Kilda Diamonds","gid":"a319fb95","gn":"Tuesday Year 5 Girls B","age":null,"div":null,"stats":{"gp":17,"fouls":24,"fg":6,"pts":12,"wins":4,"losses":12,"draws":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"f7dec360","tn":"St Kilda Diamonds","gid":"bfd07b02","gn":"Friday Year 4 Girls B","age":null,"div":null,"stats":{"gp":13,"fouls":19,"fg":4,"pts":8,"wins":6,"losses":7}},{"tid":"f7dec360","tn":"St Kilda Diamonds","gid":"777fe522","gn":"Friday Year 4 Girls A","age":null,"div":null,"stats":{"gp":13,"fouls":19,"wins":6,"losses":7,"pts":8,"fg":4}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"f7dec360","tn":"St Kilda Diamonds","gid":"bfd07b02","gn":"Friday Year 4 Girls B","age":null,"div":null,"stats":{"gp":13,"fouls":19,"fg":4,"pts":8,"wins":6,"losses":7}},{"tid":"f7dec360","tn":"St Kilda Diamonds","gid":"777fe522","gn":"Friday Year 4 Girls A","age":null,"div":null,"stats":{"gp":13,"fouls":19,"wins":6,"losses":7,"pts":8,"fg":4}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"21768683","tn":"St Kilda Diamonds","gid":"088a56a5","gn":"Friday MSAC/Bayside Year 4 Girls B","age":null,"div":null,"stats":{"gp":8,"fouls":9,"fg":1,"pts":2,"wins":6,"losses":2}}]}],"updatedAt":"2026-06-02T22:42:23.757Z","teams":[{"tid":"4c32f3dd","sid":"ad68db8b","status":"ACTIVE"},{"tid":"f7dec360","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"21768683","sid":"31d05517","status":"COMPLETED"},{"tid":"12edf3a0","sid":"8884de2d","status":"COMPLETED"},{"tid":"300389cd","sid":"0fef30ca","status":"COMPLETED"},{"tid":"f124921b","sid":"09a70808","status":"COMPLETED"},{"tid":"6fd1defa","sid":"e5df46b3","status":"COMPLETED"},{"tid":"7b5e0a63","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"8dc2566f","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:01:02.778Z","records":{"maxGamePTS":{"v":4,"gameKey":"bc364f52","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["01783fd7","05eba7d2","10485e52","196266b4","1cae1dfa","207edb2d","23a70626","30b54aee","3b5f0b33","459ba452","4730ca1c","4ba29ce7","4fc0f87d","5f054f6b","60889085","6626fd9f","7af07827","7cb1efd7","8cc44f1b","8db7126a","96a010a7","a3b2a9db","a4552571","ab277c09","abd8881a","ac3c4529","b8cee2ec","ba3966f3","bc364f52","c616d659","c8329291","dad7fd13","ec1f3d30","f2746602","f42a2bf7","f4d2199e","fb692911","fc335c82"]}
+{
+  "uuid": "183f4442-775d-451a-9eab-f5e06a23ac8c",
+  "name": "Sofia Spiliopoulos",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 22,
+      "fouls": 52,
+      "fg": 11,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 34,
+      "losses": 42,
+      "winPct": 0.44,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:07:50.231Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "4c32f3dd",
+          "tn": "St Kilda Diamonds",
+          "gid": "a319fb95",
+          "gn": "Tuesday Year 5 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 24,
+            "fg": 6,
+            "pts": 12,
+            "wins": 4,
+            "losses": 12,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "f7dec360",
+          "tn": "St Kilda Diamonds",
+          "gid": "bfd07b02",
+          "gn": "Friday Year 4 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "fg": 4,
+            "pts": 8,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "f7dec360",
+          "tn": "St Kilda Diamonds",
+          "gid": "777fe522",
+          "gn": "Friday Year 4 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "wins": 6,
+            "losses": 7,
+            "pts": 8,
+            "fg": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "f7dec360",
+          "tn": "St Kilda Diamonds",
+          "gid": "bfd07b02",
+          "gn": "Friday Year 4 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "fg": 4,
+            "pts": 8,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "f7dec360",
+          "tn": "St Kilda Diamonds",
+          "gid": "777fe522",
+          "gn": "Friday Year 4 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "wins": 6,
+            "losses": 7,
+            "pts": 8,
+            "fg": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "21768683",
+          "tn": "St Kilda Diamonds",
+          "gid": "088a56a5",
+          "gn": "Friday MSAC/Bayside Year 4 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 9,
+            "fg": 1,
+            "pts": 2,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "21d6fe24",
+          "tn": "St Kilda Diamonds",
+          "gid": "898f8022",
+          "gn": "Tuesday Year 5 Girls C",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "12edf3a0",
+          "tn": "St Kilda Diamonds",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "300389cd",
+          "tn": "St Kilda Diamonds",
+          "gid": "8e81252b",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "f124921b",
+          "tn": "St Kilda Diamonds",
+          "gid": "caee07df",
+          "gn": "Friday MSAC/Bayside YR.2 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "6fd1defa",
+          "tn": "St Kilda Diamonds",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "7b5e0a63",
+          "tn": "St Kilda Diamonds",
+          "gid": "9effba5c",
+          "gn": "Friday MSAC/Bayside YR.1 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "8dc2566f",
+          "tn": "St Kilda Diamonds",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:23.757Z",
+  "teams": [
+    {
+      "tid": "4c32f3dd",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f7dec360",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "21768683",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "21d6fe24",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "12edf3a0",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "300389cd",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f124921b",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6fd1defa",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7b5e0a63",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8dc2566f",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:42:58.855Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "bc364f52",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01783fd7",
+    "05eba7d2",
+    "10485e52",
+    "196266b4",
+    "1cae1dfa",
+    "207edb2d",
+    "23a70626",
+    "30b54aee",
+    "3b5f0b33",
+    "459ba452",
+    "4730ca1c",
+    "4ba29ce7",
+    "4fc0f87d",
+    "5f054f6b",
+    "60889085",
+    "6626fd9f",
+    "7af07827",
+    "7cb1efd7",
+    "8cc44f1b",
+    "8db7126a",
+    "96a010a7",
+    "a3b2a9db",
+    "a4552571",
+    "ab277c09",
+    "abd8881a",
+    "ac3c4529",
+    "b8cee2ec",
+    "ba3966f3",
+    "bc364f52",
+    "c616d659",
+    "c8329291",
+    "dad7fd13",
+    "ec1f3d30",
+    "f2746602",
+    "f42a2bf7",
+    "f4d2199e",
+    "fb692911",
+    "fc335c82"
+  ]
+}

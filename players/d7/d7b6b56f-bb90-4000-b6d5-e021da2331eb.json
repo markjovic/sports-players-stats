@@ -1,1 +1,197 @@
-{"uuid":"d7b6b56f-bb90-4000-b6d5-e021da2331eb","name":"Leo Neate","gender":"Boys","sports":{"Basketball":{"gp":38,"pts":41,"fouls":52,"fg":17,"ft":7,"foulOuts":{"2a305f65":2},"maxGamePTS":5,"maxGameThreePt":null,"wins":17,"losses":17,"winPct":0.5,"statsChecked":"2026-07-06T19:01:30.554Z"}},"seasons":[{"sid":"3f1715bc","sn":"Winter 2026","club":"Mt Eliza Storm Basketball Club","regs":[{"tid":"0d6d3bdb","tn":"Storm U8 Boys Giants","gid":"027e1f84","gn":"Saturday \"Schnitz\" U8 Boys Black","age":"U8","div":null,"stats":{"gp":4,"fouls":3,"ft":2,"fg":2,"pts":6,"losses":3,"wins":1}}]},{"sid":"f46c6951","sn":"Summer 2025/26","club":"Mt Eliza Storm Basketball Club","regs":[{"tid":"fd61c26c","tn":"Storm U8 Boys Giants","gid":"3d314698","gn":"Saturday \"Schnitz\" U8 Boys Black","age":"U8","div":null,"stats":{"gp":14,"fouls":18,"ft":1,"fg":3,"pts":7,"wins":5,"losses":9}}]},{"sid":"2a305f65","sn":"Winter 2025","club":"Mt Eliza Storm Basketball Club","regs":[{"tid":"1335d04e","tn":"Storm U8 Boys Giants","gid":"cabc54f8","gn":"Saturday U8 Boys Blue","age":"U8","div":null,"stats":{"gp":16,"fouls":28,"ft":4,"fg":11,"pts":26,"foulOuts":2,"wins":11,"losses":5}}]},{"sid":"26df4252","regs":[{"tid":"f40822d3","stats":{"gp":4,"pts":2,"fg":1,"fouls":3}},{"tid":"f40822d3","tn":"","gid":"5c700a1a","gn":"U8 Boys Division 1","div":null,"stats":{"gp":4,"pts":2,"fg":1,"fouls":3}}]}],"updatedAt":"2026-07-06T18:32:39.266Z","teams":[{"tid":"0d6d3bdb","sid":"3f1715bc","status":"ACTIVE"},{"tid":"f40822d3","sid":"26df4252","status":"UPCOMING"},{"tid":"fd61c26c","sid":"f46c6951","status":"COMPLETED"},{"tid":"1335d04e","sid":"2a305f65","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:53.225Z","games":["00de804f","05ca3410","1403958c","15170004","193dbd33","1d3a127b","1f69ab8a","228cf97e","29142d5a","2ad63fc8","2e74c70b","31a45599","3a099739","49fcbf88","54792d67","584244e7","613fdc89","7048d99f","7ae795fb","864a2eaf","869e74e6","96a796db","c263c5ae","caca6b6f","cb9ebab5","ccc5c2df","cddfbd5c","d109b3d4","d6122034","e2b809bc","ecc1f924","f0cd218b","f38d21a9","fcb63c32"],"records":{"maxGamePTS":{"v":5,"gameKey":"15170004","sid":"3f1715bc"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d7b6b56f-bb90-4000-b6d5-e021da2331eb",
+  "name": "Leo Neate",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 41,
+      "fouls": 52,
+      "fg": 17,
+      "ft": 7,
+      "foulOuts": {
+        "2a305f65": 2
+      },
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 17,
+      "losses": 17,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-06T19:01:30.554Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Mt Eliza Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "0d6d3bdb",
+          "tn": "Storm U8 Boys Giants",
+          "gid": "027e1f84",
+          "gn": "Saturday \"Schnitz\" U8 Boys Black",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 2,
+            "pts": 6,
+            "losses": 3,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f46c6951",
+      "sn": "Summer 2025/26",
+      "club": "Mt Eliza Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "fd61c26c",
+          "tn": "Storm U8 Boys Giants",
+          "gid": "3d314698",
+          "gn": "Saturday \"Schnitz\" U8 Boys Black",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 18,
+            "ft": 1,
+            "fg": 3,
+            "pts": 7,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2a305f65",
+      "sn": "Winter 2025",
+      "club": "Mt Eliza Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "1335d04e",
+          "tn": "Storm U8 Boys Giants",
+          "gid": "cabc54f8",
+          "gn": "Saturday U8 Boys Blue",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 28,
+            "ft": 4,
+            "fg": 11,
+            "pts": 26,
+            "foulOuts": 2,
+            "wins": 11,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "f40822d3",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          },
+          "gid": "5c700a1a",
+          "gn": "U8 Boys Division 1"
+        },
+        {
+          "tid": "f40822d3",
+          "tn": "",
+          "gid": "5c700a1a",
+          "gn": "U8 Boys Division 1",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:39.266Z",
+  "teams": [
+    {
+      "tid": "0d6d3bdb",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd61c26c",
+      "sid": "f46c6951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1335d04e",
+      "sid": "2a305f65",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f40822d3",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:01.007Z",
+  "games": [
+    "00de804f",
+    "05ca3410",
+    "1403958c",
+    "15170004",
+    "193dbd33",
+    "1d3a127b",
+    "1f69ab8a",
+    "228cf97e",
+    "29142d5a",
+    "2ad63fc8",
+    "2e74c70b",
+    "31a45599",
+    "3a099739",
+    "49fcbf88",
+    "54792d67",
+    "584244e7",
+    "613fdc89",
+    "7048d99f",
+    "7ae795fb",
+    "864a2eaf",
+    "869e74e6",
+    "96a796db",
+    "c263c5ae",
+    "caca6b6f",
+    "cb9ebab5",
+    "ccc5c2df",
+    "cddfbd5c",
+    "d109b3d4",
+    "d6122034",
+    "e2b809bc",
+    "ecc1f924",
+    "f0cd218b",
+    "f38d21a9",
+    "fcb63c32"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "15170004",
+      "sid": "3f1715bc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

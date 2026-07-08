@@ -1,1 +1,82 @@
-{"uuid":"a1700f0b-e5f0-4712-8c81-e976d7d0acf8","name":"Term 4, 2025","gender":null,"sports":{"Basketball":{"gp":2,"pts":2,"fouls":5,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T16:02:46.324Z"}},"seasons":[{"sid":"da72848a","sn":"Term 4, 2025","club":null,"regs":[{"tid":"6142de43","tn":"White","gid":"1813f88a","gn":"Tuesday Senior Women","stats":{"gp":2,"pts":2,"fouls":5,"fg":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:43:07.968Z","games":["695944d6","f1d3de56"],"records":{"maxGamePTS":{"v":2,"gameKey":"695944d6","sid":"da72848a"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a1700f0b-e5f0-4712-8c81-e976d7d0acf8",
+  "name": "Term 4, 2025",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 2,
+      "fouls": 5,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:02:46.324Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "da72848a",
+      "sn": "Term 4, 2025",
+      "club": null,
+      "regs": [
+        {
+          "tid": "6142de43",
+          "tn": "White",
+          "gid": "1813f88a",
+          "gn": "Tuesday Senior Women",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fouls": 5,
+            "fg": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9948d3ca",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "3bfc25b6",
+          "tn": "All Stars (Green)",
+          "gid": "3bf4f3e4",
+          "gn": "Monday Open Women",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:07.968Z",
+  "games": [
+    "695944d6",
+    "f1d3de56"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "695944d6",
+      "sid": "da72848a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teams": [
+    {
+      "tid": "6142de43",
+      "sid": "da72848a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3bfc25b6",
+      "sid": "9948d3ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:57.946Z"
+}

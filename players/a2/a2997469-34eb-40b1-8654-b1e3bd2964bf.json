@@ -1,1 +1,398 @@
-{"uuid":"a2997469-34eb-40b1-8654-b1e3bd2964bf","name":"Rhys-Jackson Ford","gender":"Boys","sports":{"Basketball":{"gp":38,"pts":104,"fouls":63,"fg":48,"ft":5,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{"0c4ad170":1},"maxGamePTS":8,"maxGameThreePt":1,"wins":28,"losses":28,"winPct":0.5,"statsChecked":"2026-07-05T15:11:32.521Z"}},"seasons":[{"sid":"e78cfce1","sn":"Summer 2025/26","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"37ab38d7","tn":"APL U14 Boys Black","gid":"97db8de1","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":6,"fouls":2,"fg":4,"pts":8,"losses":6}},{"tid":"c9f8c412","tn":"APL U14 Boys White","gid":"1c3605d3","gn":"Saturday U14 Boys C","age":"U14","div":null,"stats":{"gp":1,"fouls":3,"ft":3,"fg":1,"pts":5,"losses":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"ff5a1508","tn":"South Melbourne Park Ballers.","gid":"c70be2aa","gn":"Tuesday Year 6 Boys C","age":null,"div":null,"stats":{"gp":1,"fg":1,"pts":2,"losses":1}}]},{"sid":"0c4ad170","sn":"Winter 2025","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"5f751dba","tn":"APL U12 Boys Yellow","gid":"edcb5f08","gn":"Saturday U12 Boys C","age":"U12","div":null,"stats":{"gp":13,"fouls":29,"ft":2,"fg":21,"threePt":1,"pts":47,"finals":1,"foulOuts":1,"wins":10,"losses":3}},{"tid":"5f751dba","tn":"APL U12 Boys Yellow","gid":"eb040a31","gn":"Saturday U12 Boys A/B","age":"U12","div":null,"stats":{"gp":13,"finals":1,"wins":10,"losses":3,"pts":47,"fg":21,"ft":2,"threePt":1,"fouls":29}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"14ba22cb","tn":"South Park Ballers","gid":"61bb654f","gn":"Tuesday MSAC/Bayside Year 6 Boys C","age":null,"div":null,"stats":{"gp":5,"fouls":10,"fg":7,"pts":14}}]},{"sid":"0261a532","sn":"Summer 2024/25","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"f9ae856c","tn":"APL U12 Boys Yellow","gid":"be96f7f1","gn":"Saturday U12 Boys B","age":"U12","div":null,"stats":{"gp":12,"fouls":19,"fg":14,"pts":28,"wins":4,"losses":7}},{"tid":"f9ae856c","tn":"APL U12 Boys Yellow","gid":"7003713c","gn":"Saturday U12 Boys A","age":"U12","div":null,"stats":{"gp":12,"fouls":19,"fg":14,"pts":28,"wins":4,"losses":7}}]}],"updatedAt":"2026-06-01T08:31:46.110Z","teams":[{"tid":"37ab38d7","sid":"e78cfce1","status":"COMPLETED"},{"tid":"ff5a1508","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"7674f609","sid":"0c4ad170","status":"COMPLETED"},{"tid":"5f751dba","sid":"0c4ad170","status":"COMPLETED"},{"tid":"14ba22cb","sid":"31d05517","status":"COMPLETED"},{"tid":"f9ae856c","sid":"0261a532","status":"COMPLETED"},{"tid":"42fc71ed","sid":"8884de2d","status":"COMPLETED"},{"tid":"2f137b6e","sid":"0fef30ca","status":"COMPLETED"},{"tid":"d06ff899","sid":"09a70808","status":"COMPLETED"},{"tid":"aa13a09d","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:00:33.087Z","records":{"maxGamePTS":{"v":8,"gameKey":"43030708","sid":"0c4ad170"},"maxGameThreePt":{"v":1,"gameKey":"ef1f4605","sid":"0c4ad170"}},"games":["01a68ed7","05503516","086e3b63","122b08ff","14c3f184","1accf744","328c500d","35f35731","3ede4215","43030708","47a061a0","483b9adf","4cf8c6e2","5b7ce9d9","5fa6da6f","63da09f9","642756a3","765148d0","79b85e67","827626e4","8e1d7757","93ccf569","984aab55","992f6b64","a36b8e0a","b43c2101","b8e60ec1","c100adb4","d8d1116d","e544e0f5","edd072b0","eef1c958","ef1f4605"],"gameTids":{"43030708":"5f751dba","a36b8e0a":"37ab38d7","3ede4215":"37ab38d7","1accf744":"37ab38d7","992f6b64":"37ab38d7","8e1d7757":"37ab38d7","b43c2101":"37ab38d7","93ccf569":"c9f8c412","edd072b0":"ff5a1508","b8e60ec1":"5f751dba","122b08ff":"5f751dba","4cf8c6e2":"5f751dba","c100adb4":"5f751dba","63da09f9":"5f751dba","642756a3":"5f751dba","d8d1116d":"5f751dba","765148d0":"5f751dba","827626e4":"5f751dba","ef1f4605":"5f751dba","14c3f184":"5f751dba","05503516":"5f751dba","80c2e734":"14ba22cb","e7716597":"14ba22cb","1b5b2aeb":"14ba22cb","58412c5d":"14ba22cb","4711a3b5":"14ba22cb","79b85e67":"f9ae856c","5fa6da6f":"f9ae856c","483b9adf":"f9ae856c","eef1c958":"f9ae856c","35f35731":"f9ae856c","984aab55":"f9ae856c","328c500d":"f9ae856c","5b7ce9d9":"f9ae856c","086e3b63":"f9ae856c","e544e0f5":"f9ae856c","47a061a0":"f9ae856c","01a68ed7":"f9ae856c"}}
+{
+  "uuid": "a2997469-34eb-40b1-8654-b1e3bd2964bf",
+  "name": "Rhys-Jackson Ford",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 104,
+      "fouls": 63,
+      "fg": 48,
+      "ft": 5,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {
+        "0c4ad170": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 28,
+      "losses": 28,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:11:32.521Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "37ab38d7",
+          "tn": "APL U14 Boys Black",
+          "gid": "97db8de1",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 2,
+            "fg": 4,
+            "pts": 8,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "c9f8c412",
+          "tn": "APL U14 Boys White",
+          "gid": "1c3605d3",
+          "gn": "Saturday U14 Boys C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "ft": 3,
+            "fg": 1,
+            "pts": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "ff5a1508",
+          "tn": "South Melbourne Park Ballers.",
+          "gid": "c70be2aa",
+          "gn": "Tuesday Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "5f751dba",
+          "tn": "APL U12 Boys Yellow",
+          "gid": "edcb5f08",
+          "gn": "Saturday U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 29,
+            "ft": 2,
+            "fg": 21,
+            "threePt": 1,
+            "pts": 47,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "5f751dba",
+          "tn": "APL U12 Boys Yellow",
+          "gid": "eb040a31",
+          "gn": "Saturday U12 Boys A/B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "finals": 1,
+            "wins": 10,
+            "losses": 3,
+            "pts": 47,
+            "fg": 21,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 29
+          }
+        },
+        {
+          "tid": "7674f609",
+          "tn": "APL U12 Boys Black",
+          "gid": "edcb5f08",
+          "gn": "Saturday U12 Boys C",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "14ba22cb",
+          "tn": "South Park Ballers",
+          "gid": "61bb654f",
+          "gn": "Tuesday MSAC/Bayside Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 10,
+            "fg": 7,
+            "pts": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0261a532",
+      "sn": "Summer 2024/25",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "f9ae856c",
+          "tn": "APL U12 Boys Yellow",
+          "gid": "be96f7f1",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 19,
+            "fg": 14,
+            "pts": 28,
+            "wins": 4,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "f9ae856c",
+          "tn": "APL U12 Boys Yellow",
+          "gid": "7003713c",
+          "gn": "Saturday U12 Boys A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 19,
+            "fg": 14,
+            "pts": 28,
+            "wins": 4,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "42fc71ed",
+          "tn": "South Park Ballers",
+          "gid": "5762f984",
+          "gn": "Wednesday MSAC YR5.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "2f137b6e",
+          "tn": "South Park Ballers",
+          "gid": "b0e75b8a",
+          "gn": "Wednesday MSAC YR5.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "d06ff899",
+          "tn": "South Park Ballers",
+          "gid": "741c81c0",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "aa13a09d",
+          "tn": "South Park Ballers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:31:46.110Z",
+  "teams": [
+    {
+      "tid": "37ab38d7",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c9f8c412",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ff5a1508",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f751dba",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7674f609",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "14ba22cb",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9ae856c",
+      "sid": "0261a532",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42fc71ed",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f137b6e",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d06ff899",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa13a09d",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:16.143Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "43030708",
+      "sid": "0c4ad170"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ef1f4605",
+      "sid": "0c4ad170"
+    }
+  },
+  "games": [
+    "01a68ed7",
+    "05503516",
+    "086e3b63",
+    "122b08ff",
+    "14c3f184",
+    "1accf744",
+    "328c500d",
+    "35f35731",
+    "3ede4215",
+    "43030708",
+    "47a061a0",
+    "483b9adf",
+    "4cf8c6e2",
+    "5b7ce9d9",
+    "5fa6da6f",
+    "63da09f9",
+    "642756a3",
+    "765148d0",
+    "79b85e67",
+    "827626e4",
+    "8e1d7757",
+    "93ccf569",
+    "984aab55",
+    "992f6b64",
+    "a36b8e0a",
+    "b43c2101",
+    "b8e60ec1",
+    "c100adb4",
+    "d8d1116d",
+    "e544e0f5",
+    "edd072b0",
+    "eef1c958",
+    "ef1f4605"
+  ],
+  "gameTids": {
+    "43030708": "5f751dba",
+    "a36b8e0a": "37ab38d7",
+    "3ede4215": "37ab38d7",
+    "1accf744": "37ab38d7",
+    "992f6b64": "37ab38d7",
+    "8e1d7757": "37ab38d7",
+    "b43c2101": "37ab38d7",
+    "93ccf569": "c9f8c412",
+    "edd072b0": "ff5a1508",
+    "b8e60ec1": "5f751dba",
+    "122b08ff": "5f751dba",
+    "4cf8c6e2": "5f751dba",
+    "c100adb4": "5f751dba",
+    "63da09f9": "5f751dba",
+    "642756a3": "5f751dba",
+    "d8d1116d": "5f751dba",
+    "765148d0": "5f751dba",
+    "827626e4": "5f751dba",
+    "ef1f4605": "5f751dba",
+    "14c3f184": "5f751dba",
+    "05503516": "5f751dba",
+    "80c2e734": "14ba22cb",
+    "e7716597": "14ba22cb",
+    "1b5b2aeb": "14ba22cb",
+    "58412c5d": "14ba22cb",
+    "4711a3b5": "14ba22cb",
+    "79b85e67": "f9ae856c",
+    "5fa6da6f": "f9ae856c",
+    "483b9adf": "f9ae856c",
+    "eef1c958": "f9ae856c",
+    "35f35731": "f9ae856c",
+    "984aab55": "f9ae856c",
+    "328c500d": "f9ae856c",
+    "5b7ce9d9": "f9ae856c",
+    "086e3b63": "f9ae856c",
+    "e544e0f5": "f9ae856c",
+    "47a061a0": "f9ae856c",
+    "01a68ed7": "f9ae856c"
+  }
+}

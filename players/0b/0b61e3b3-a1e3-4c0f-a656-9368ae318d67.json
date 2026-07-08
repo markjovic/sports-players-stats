@@ -1,1 +1,251 @@
-{"uuid":"0b61e3b3-a1e3-4c0f-a656-9368ae318d67","name":"Nayt Douglas","gender":"Men","sports":{"Basketball":{"gp":32,"pts":206,"fouls":63,"fg":71,"ft":25,"threePt":13,"foulOuts":{"55008d04":1,"fa8813e6":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":22,"maxGameThreePt":3,"losses":21,"winPct":0.22,"wins":6,"statsChecked":"2026-07-05T16:11:26.872Z"}},"seasons":[{"sid":"55008d04","sn":"Summer 2022/23","regs":[{"tid":"d63d6c02","tn":"Rated R","gid":"2d069c65","gn":"Thursday Men E1 Grade","age":null,"div":null,"stats":{"gp":5,"pts":30,"threePt":5,"fg":6,"ft":3,"fouls":4,"losses":5}},{"tid":"c822bdab","tn":"Sportsbe Supersonics","gid":"413f70cd","gn":"Tuesday Men E1 Grade","age":null,"div":null,"stats":{"gp":10,"pts":62,"threePt":5,"fg":18,"ft":11,"fouls":20,"wins":3,"losses":7}},{"tid":"c822bdab","tn":"Sportsbe Supersonics","gid":"c39b75f5","gn":"Tuesday Men E2 Grade","age":null,"div":null,"stats":{"gp":10,"pts":62,"threePt":5,"fg":18,"ft":11,"fouls":20,"foulOuts":1,"wins":3,"losses":7}}]},{"sid":"fa8813e6","sn":"Summer 2021/22","regs":[{"tid":"8bbfbc79","tn":"Berwick Bulls","gid":"69168585","gn":"Thursday Men E2 Grade","age":null,"div":null,"stats":{"gp":17,"pts":114,"threePt":3,"fg":47,"ft":11,"fouls":39,"foulOuts":1,"finals":1,"losses":1}},{"tid":"8bbfbc79","tn":"Berwick Bulls","gid":"69871b91","gn":"Thursday Men D3 Grade","age":null,"div":null,"stats":{"gp":17,"pts":114,"fg":47,"ft":11,"fouls":39,"finals":1,"losses":1,"threePt":3}}]}],"updatedAt":"2026-06-02T12:24:23.611Z","teams":[{"tid":"c822bdab","sid":"55008d04","status":"COMPLETED"},{"tid":"8bbfbc79","sid":"fa8813e6","status":"COMPLETED"},{"tid":"a6df3cfa","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:15.527Z","records":{"maxGamePTS":{"v":22,"gameKey":"e988e872","sid":"fa8813e6"},"maxGameThreePt":{"v":3,"gameKey":"be942d07","sid":"55008d04"}},"statsChecked":"2026-06-20","games":["08019f29","0e626e0d","15a31967","2fcfc764","3dc67ac3","3edb02a5","43e0b720","4945fae0","4a8638d7","6baa870b","6e5493f8","70d88487","7f968603","92c0ab2c","930e7b7d","a57bddfe","a8772581","ae1dc71c","b39ed24a","b905a262","be942d07","bff7026e","c1bc5b8d","c4ed0813","cb3e04a4","d4833264","d5547671","e3152b48","e46adaf7","e605f2a4","e988e872"],"gameTids":{"c4ed0813":"d63d6c02","b39ed24a":"d63d6c02","6baa870b":"d63d6c02","4a8638d7":"d63d6c02","be942d07":"d63d6c02","a57bddfe":"c822bdab","d4833264":"c822bdab","d5547671":"c822bdab","bff7026e":"c822bdab","c1bc5b8d":"c822bdab","0e626e0d":"c822bdab","e605f2a4":"c822bdab","e3152b48":"c822bdab","6e5493f8":"c822bdab","3edb02a5":"c822bdab","a8772581":"8bbfbc79","c224dd43":"8bbfbc79","ae1dc71c":"8bbfbc79","92c0ab2c":"8bbfbc79","e46adaf7":"8bbfbc79","e988e872":"8bbfbc79","7f968603":"8bbfbc79","cb3e04a4":"8bbfbc79","08019f29":"8bbfbc79","2fcfc764":"8bbfbc79","43e0b720":"8bbfbc79","3dc67ac3":"8bbfbc79","b905a262":"8bbfbc79","930e7b7d":"8bbfbc79","70d88487":"8bbfbc79","15a31967":"8bbfbc79","4945fae0":"8bbfbc79"}}
+{
+  "uuid": "0b61e3b3-a1e3-4c0f-a656-9368ae318d67",
+  "name": "Nayt Douglas",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 32,
+      "pts": 206,
+      "fouls": 63,
+      "fg": 71,
+      "ft": 25,
+      "threePt": 13,
+      "foulOuts": {
+        "55008d04": 1,
+        "fa8813e6": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 22,
+      "maxGameThreePt": 3,
+      "losses": 21,
+      "winPct": 0.22,
+      "wins": 6,
+      "statsChecked": "2026-07-05T16:11:26.872Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "55008d04",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "d63d6c02",
+          "tn": "Rated R",
+          "gid": "2d069c65",
+          "gn": "Thursday Men E1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 30,
+            "threePt": 5,
+            "fg": 6,
+            "ft": 3,
+            "fouls": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "c822bdab",
+          "tn": "Sportsbe Supersonics",
+          "gid": "413f70cd",
+          "gn": "Tuesday Men E1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 62,
+            "threePt": 5,
+            "fg": 18,
+            "ft": 11,
+            "fouls": 20,
+            "wins": 3,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "c822bdab",
+          "tn": "Sportsbe Supersonics",
+          "gid": "c39b75f5",
+          "gn": "Tuesday Men E2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 62,
+            "threePt": 5,
+            "fg": 18,
+            "ft": 11,
+            "fouls": 20,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa8813e6",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "8bbfbc79",
+          "tn": "Berwick Bulls",
+          "gid": "69168585",
+          "gn": "Thursday Men E2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 114,
+            "threePt": 3,
+            "fg": 47,
+            "ft": 11,
+            "fouls": 39,
+            "foulOuts": 1,
+            "finals": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "8bbfbc79",
+          "tn": "Berwick Bulls",
+          "gid": "69871b91",
+          "gn": "Thursday Men D3 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 114,
+            "fg": 47,
+            "ft": 11,
+            "fouls": 39,
+            "finals": 1,
+            "losses": 1,
+            "threePt": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "a6df3cfa",
+          "tn": "Keysborough U16 Boys 3",
+          "gid": "9c52747e",
+          "gn": "U16 Boys VJL 9 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T12:24:23.611Z",
+  "teams": [
+    {
+      "tid": "d63d6c02",
+      "sid": "55008d04",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c822bdab",
+      "sid": "55008d04",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8bbfbc79",
+      "sid": "fa8813e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a6df3cfa",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:42:27.129Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "e988e872",
+      "sid": "fa8813e6"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "be942d07",
+      "sid": "55008d04"
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "08019f29",
+    "0e626e0d",
+    "15a31967",
+    "2fcfc764",
+    "3dc67ac3",
+    "3edb02a5",
+    "43e0b720",
+    "4945fae0",
+    "4a8638d7",
+    "6baa870b",
+    "6e5493f8",
+    "70d88487",
+    "7f968603",
+    "92c0ab2c",
+    "930e7b7d",
+    "a57bddfe",
+    "a8772581",
+    "ae1dc71c",
+    "b39ed24a",
+    "b905a262",
+    "be942d07",
+    "bff7026e",
+    "c1bc5b8d",
+    "c4ed0813",
+    "cb3e04a4",
+    "d4833264",
+    "d5547671",
+    "e3152b48",
+    "e46adaf7",
+    "e605f2a4",
+    "e988e872"
+  ],
+  "gameTids": {
+    "c4ed0813": "d63d6c02",
+    "b39ed24a": "d63d6c02",
+    "6baa870b": "d63d6c02",
+    "4a8638d7": "d63d6c02",
+    "be942d07": "d63d6c02",
+    "a57bddfe": "c822bdab",
+    "d4833264": "c822bdab",
+    "d5547671": "c822bdab",
+    "bff7026e": "c822bdab",
+    "c1bc5b8d": "c822bdab",
+    "0e626e0d": "c822bdab",
+    "e605f2a4": "c822bdab",
+    "e3152b48": "c822bdab",
+    "6e5493f8": "c822bdab",
+    "3edb02a5": "c822bdab",
+    "a8772581": "8bbfbc79",
+    "c224dd43": "8bbfbc79",
+    "ae1dc71c": "8bbfbc79",
+    "92c0ab2c": "8bbfbc79",
+    "e46adaf7": "8bbfbc79",
+    "e988e872": "8bbfbc79",
+    "7f968603": "8bbfbc79",
+    "cb3e04a4": "8bbfbc79",
+    "08019f29": "8bbfbc79",
+    "2fcfc764": "8bbfbc79",
+    "43e0b720": "8bbfbc79",
+    "3dc67ac3": "8bbfbc79",
+    "b905a262": "8bbfbc79",
+    "930e7b7d": "8bbfbc79",
+    "70d88487": "8bbfbc79",
+    "15a31967": "8bbfbc79",
+    "4945fae0": "8bbfbc79"
+  }
+}

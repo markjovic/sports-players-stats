@@ -1,1 +1,318 @@
-{"uuid":"21409d53-7b99-4e54-9d76-9fce124fc109","name":"Paul Marshall","gender":"Men","sports":{"Basketball":{"gp":55,"pts":186,"fouls":95,"fg":76,"ft":31,"threePt":1,"foulOuts":{"3188510e":2,"71ef3670":1,"2b0c52d3":1},"finals":5,"gfApps":1,"gfWins":0,"finalsPerSeason":0.71,"maxGamePTS":15,"maxGameThreePt":1,"losses":30,"winPct":0.38,"wins":19,"draws":1,"statsChecked":"2026-07-05T15:59:30.359Z"}},"seasons":[{"sid":"3188510e","sn":"Summer 2025/26","regs":[{"tid":"c4a257a4","tn":"Blue","gid":"01e30fa6","gn":"Mens C2 Grade","age":null,"div":null,"stats":{"gp":7,"pts":44,"fg":18,"ft":8,"fouls":19,"foulOuts":2,"finals":1,"wins":4,"losses":3}}]},{"sid":"71ef3670","sn":"Summer 2024/25","regs":[{"tid":"aa3f754c","tn":"Blues","gid":"70ebf981","gn":"Mens C Grade","age":null,"div":null,"stats":{"gp":11,"pts":43,"fg":17,"ft":9,"fouls":13,"foulOuts":1,"finals":1,"wins":5,"losses":4}}]},{"sid":"2b0c52d3","sn":"Winter 2024","regs":[{"tid":"2fd7b1d2","tn":"Blues","gid":"e2f7101e","gn":"Mens C Grade","age":null,"div":null,"stats":{"gp":10,"pts":34,"threePt":1,"fg":12,"ft":7,"fouls":22,"foulOuts":1,"wins":6,"losses":3,"draws":1}}]},{"sid":"29e10eea","sn":"Winter 2023","regs":[{"tid":"120d589d","tn":"Awm","gid":"1e5bd76b","gn":"Open Men","age":"Senior","div":null,"stats":{"gp":9,"pts":15,"fg":7,"ft":1,"fouls":17,"losses":9}}]},{"sid":"a988f040","sn":"Winter 2022","regs":[{"tid":"6764ab5f","tn":"Awm","gid":"306d1850","gn":"Open Men","age":"Senior","div":null,"stats":{"gp":8,"pts":32,"fg":14,"ft":4,"fouls":13,"finals":1,"losses":8}}]},{"sid":"5f3516b7","sn":"2021","regs":[{"tid":"50b03911","tn":"Wizards","gid":"632ad0fa","gn":"Open Men","age":"Senior","div":null,"stats":{"gp":3,"fouls":5,"finals":1}}]},{"sid":"f00ef3cc","sn":"Summer 2020/21","regs":[{"tid":"9631ebc9","tn":"AWM","gid":"c0138f23","gn":"Open Men","age":"Senior","div":null,"stats":{"gp":7,"pts":18,"fg":8,"ft":2,"fouls":6,"finals":1,"gfApps":1,"wins":4,"losses":3}}]}],"updatedAt":"2026-07-04T05:52:57.640Z","teams":[{"tid":"c4a257a4","sid":"3188510e","status":"COMPLETED"},{"tid":"edb474fe","sid":"3188510e","status":"COMPLETED"},{"tid":"aa3f754c","sid":"71ef3670","status":"COMPLETED"},{"tid":"2fd7b1d2","sid":"2b0c52d3","status":"COMPLETED"},{"tid":"120d589d","sid":"29e10eea","status":"COMPLETED"},{"tid":"6764ab5f","sid":"a988f040","status":"COMPLETED"},{"tid":"9631ebc9","sid":"f00ef3cc","status":"COMPLETED"},{"tid":"50b03911","sid":"5f3516b7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:05:10.485Z","records":{"maxGamePTS":{"v":15,"gameKey":"f6646004","sid":"3188510e"},"maxGameThreePt":{"v":1,"gameKey":"ac3a2f0c","sid":"2b0c52d3"}},"games":["0136e358","04c7bb16","0a4dccf2","0ac2fdb3","131efac5","197639b0","2110d4f4","257c07bf","3172d62a","3eb84f63","428c5616","433607f4","44610bb2","5460c541","6737c1bd","67a9a84c","67ec6caf","6897b700","6a213839","6a48f4dc","7d8fb4e1","7f9933cf","8221aee6","88251f3f","8aa32daf","8e906f86","a16690fa","a2eda7c7","a79e2716","aa8b2c92","ac3a2f0c","b2f1548f","b30df65c","b4592dd5","ba35857f","c75f9a70","d0f76344","d50673f6","d54a2588","d642efe3","d6b135fb","d7582a69","db205094","ddcd91ce","ddf17dd2","de22facc","dfb16a47","e11ed9c7","e184cefa","e7b40cf2","ea157e67","ee535fa1","f6646004","f9090c7d","ff538036"]}
+{
+  "uuid": "21409d53-7b99-4e54-9d76-9fce124fc109",
+  "name": "Paul Marshall",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 186,
+      "fouls": 95,
+      "fg": 76,
+      "ft": 31,
+      "threePt": 1,
+      "foulOuts": {
+        "3188510e": 2,
+        "71ef3670": 1,
+        "2b0c52d3": 1
+      },
+      "finals": 5,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.71,
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "losses": 30,
+      "winPct": 0.38,
+      "wins": 19,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:59:30.359Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3188510e",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "c4a257a4",
+          "tn": "Blue",
+          "gid": "01e30fa6",
+          "gn": "Mens C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 44,
+            "fg": 18,
+            "ft": 8,
+            "fouls": 19,
+            "foulOuts": 2,
+            "finals": 1,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "edb474fe",
+          "tn": "Blues (now BLUE  - incorrect spelling allocated remainder of fixture to old WA BLUE team)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "71ef3670",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "aa3f754c",
+          "tn": "Blues",
+          "gid": "70ebf981",
+          "gn": "Mens C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 43,
+            "fg": 17,
+            "ft": 9,
+            "fouls": 13,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 5,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2b0c52d3",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "2fd7b1d2",
+          "tn": "Blues",
+          "gid": "e2f7101e",
+          "gn": "Mens C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 34,
+            "threePt": 1,
+            "fg": 12,
+            "ft": 7,
+            "fouls": 22,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "29e10eea",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "120d589d",
+          "tn": "Awm",
+          "gid": "1e5bd76b",
+          "gn": "Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 17,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a988f040",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "6764ab5f",
+          "tn": "Awm",
+          "gid": "306d1850",
+          "gn": "Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 32,
+            "fg": 14,
+            "ft": 4,
+            "fouls": 13,
+            "finals": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f3516b7",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "50b03911",
+          "tn": "Wizards",
+          "gid": "632ad0fa",
+          "gn": "Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 5,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f00ef3cc",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "9631ebc9",
+          "tn": "AWM",
+          "gid": "c0138f23",
+          "gn": "Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 18,
+            "fg": 8,
+            "ft": 2,
+            "fouls": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:57.640Z",
+  "teams": [
+    {
+      "tid": "c4a257a4",
+      "sid": "3188510e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "edb474fe",
+      "sid": "3188510e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa3f754c",
+      "sid": "71ef3670",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2fd7b1d2",
+      "sid": "2b0c52d3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "120d589d",
+      "sid": "29e10eea",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6764ab5f",
+      "sid": "a988f040",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50b03911",
+      "sid": "5f3516b7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9631ebc9",
+      "sid": "f00ef3cc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:03.314Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "f6646004",
+      "sid": "3188510e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ac3a2f0c",
+      "sid": "2b0c52d3"
+    }
+  },
+  "games": [
+    "0136e358",
+    "04c7bb16",
+    "0a4dccf2",
+    "0ac2fdb3",
+    "131efac5",
+    "197639b0",
+    "2110d4f4",
+    "257c07bf",
+    "3172d62a",
+    "3eb84f63",
+    "428c5616",
+    "433607f4",
+    "44610bb2",
+    "5460c541",
+    "6737c1bd",
+    "67a9a84c",
+    "67ec6caf",
+    "6897b700",
+    "6a213839",
+    "6a48f4dc",
+    "7d8fb4e1",
+    "7f9933cf",
+    "8221aee6",
+    "88251f3f",
+    "8aa32daf",
+    "8e906f86",
+    "a16690fa",
+    "a2eda7c7",
+    "a79e2716",
+    "aa8b2c92",
+    "ac3a2f0c",
+    "b2f1548f",
+    "b30df65c",
+    "b4592dd5",
+    "ba35857f",
+    "c75f9a70",
+    "d0f76344",
+    "d50673f6",
+    "d54a2588",
+    "d642efe3",
+    "d6b135fb",
+    "d7582a69",
+    "db205094",
+    "ddcd91ce",
+    "ddf17dd2",
+    "de22facc",
+    "dfb16a47",
+    "e11ed9c7",
+    "e184cefa",
+    "e7b40cf2",
+    "ea157e67",
+    "ee535fa1",
+    "f6646004",
+    "f9090c7d",
+    "ff538036"
+  ]
+}

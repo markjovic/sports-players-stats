@@ -1,1 +1,124 @@
-{"uuid":"6976427e-289c-4bc3-9ac1-05c021aeb8d9","name":"Michael Norrish","gender":"Men","sports":{"Basketball":{"gp":10,"pts":11,"fouls":22,"fg":5,"ft":1,"foulOuts":{"e7426d9d":1},"maxGamePTS":4,"maxGameThreePt":null,"losses":6,"winPct":0.3,"wins":3,"draws":1,"statsChecked":"2026-07-05T15:48:55.492Z"}},"seasons":[{"sid":"e7426d9d","sn":"Winter 2026","regs":[{"tid":"2d7fa813","tn":"Panthers","gid":"37d8a507","gn":"Thursday Over 35s Men C GRADE","age":null,"div":null,"stats":{"gp":9,"fouls":18,"fg":5,"pts":11,"foulOuts":1,"ft":1,"wins":3,"losses":5,"draws":1}}]},{"sid":"796936f7","sn":"Summer 2025/26","regs":[{"tid":"cd4784ca","tn":"Old Men Can’t Jump","gid":"1a1a66ab","gn":"Monday Men -Div 4","age":null,"div":"Div 4","stats":{"gp":1,"fouls":4,"losses":1}}]}],"updatedAt":"2026-07-04T05:35:41.247Z","teams":[{"tid":"5015032f","sid":"80be84c7","status":"ACTIVE"},{"tid":"2d7fa813","sid":"e7426d9d","status":"ACTIVE"},{"tid":"cd4784ca","sid":"796936f7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:56.640Z","records":{"maxGamePTS":{"v":4,"gameKey":"28ee59bc","sid":"e7426d9d"},"maxGameThreePt":{"v":null}},"games":["1ba15bba","28ee59bc","2ede5d2d","50087eda","5979753d","8d39cfc4","970662ca","db9f32fd","de696b95","f6177598"]}
+{
+  "uuid": "6976427e-289c-4bc3-9ac1-05c021aeb8d9",
+  "name": "Michael Norrish",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 11,
+      "fouls": 22,
+      "fg": 5,
+      "ft": 1,
+      "foulOuts": {
+        "e7426d9d": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 6,
+      "winPct": 0.3,
+      "wins": 3,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:48:55.492Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7426d9d",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "2d7fa813",
+          "tn": "Panthers",
+          "gid": "37d8a507",
+          "gn": "Thursday Over 35s Men C GRADE",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 18,
+            "fg": 5,
+            "pts": 11,
+            "foulOuts": 1,
+            "ft": 1,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "cd4784ca",
+          "tn": "Old Men Can’t Jump",
+          "gid": "1a1a66ab",
+          "gn": "Monday Men -Div 4",
+          "age": null,
+          "div": "Div 4",
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "80be84c7",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "5015032f",
+          "tn": "Panthers",
+          "gid": "5ae769cb",
+          "gn": "Masters (Over 35)",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:41.247Z",
+  "teams": [
+    {
+      "tid": "2d7fa813",
+      "sid": "e7426d9d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd4784ca",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5015032f",
+      "sid": "80be84c7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:50.617Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "28ee59bc",
+      "sid": "e7426d9d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1ba15bba",
+    "28ee59bc",
+    "2ede5d2d",
+    "50087eda",
+    "5979753d",
+    "8d39cfc4",
+    "970662ca",
+    "db9f32fd",
+    "de696b95",
+    "f6177598"
+  ]
+}

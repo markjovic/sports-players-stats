@@ -1,1 +1,286 @@
-{"uuid":"bfa24889-c133-4c59-9b36-c5788e51a6c7","name":"Joshua Ramanauskas","gender":"Boys","sports":{"Basketball":{"gp":50,"pts":103,"fouls":100,"fg":47,"ft":9,"foulOuts":{"c5116801":2},"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.75,"maxGamePTS":7,"maxGameThreePt":null,"wins":49,"winPct":0.69,"losses":22,"statsChecked":"2026-07-05T14:44:26.135Z"}},"seasons":[{"sid":"7fde5e5c","sn":"Winter 2026","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"ed9455f0","tn":"SCJB Saints U10 Boys Alexander","gid":"bc6e4675","gn":"Saturday U10 Boys A Grade","age":"U10","div":null,"stats":{"gp":7,"fouls":10,"pts":12,"fg":6,"wins":7}},{"tid":"ed9455f0","tn":"SCJB Saints U10 Boys Alexander","gid":"86555c87","gn":"Saturday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":7,"fouls":10,"fg":6,"pts":12,"wins":7}}]},{"sid":"8e63d65d","sn":"Summer 2025/26","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"80947ea7","tn":"STC Saints U10 Boys Alexander","gid":"bb2ebbb8","gn":"Saturday U10 Boys A Grade","age":"U10","div":null,"stats":{"gp":14,"fouls":22,"ft":4,"fg":13,"pts":30,"finals":1,"gfApps":1,"wins":10,"losses":4,"gfWins":1}},{"tid":"80947ea7","tn":"STC Saints U10 Boys Alexander","gid":"ab85b0a7","gn":"X Saturday U10 Boys Grading Pool A","age":"U10","div":null,"stats":{"gp":14,"fouls":22,"ft":4,"fg":13,"pts":30,"finals":1,"gfApps":1,"wins":10,"losses":4,"gfWins":1}}]},{"sid":"c3dedc60","sn":"Winter 2025","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"0a5a483b","tn":"STC Saints U10 Boys Hartshorne","gid":"1d35e028","gn":"Saturday U10 Boys B Grade","age":"U10","div":null,"stats":{"gp":14,"fouls":27,"ft":1,"fg":11,"pts":23,"finals":1,"wins":9,"losses":5}}]},{"sid":"c5116801","sn":"Summer 2024/25","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"853fb446","tn":"STC Saints U10 Boys Steel","gid":"fc459c9c","gn":"Saturday U10 Boys C Grade","age":"U10","div":null,"stats":{"gp":15,"fouls":41,"ft":4,"fg":17,"pts":38,"foulOuts":2,"finals":1,"wins":6,"losses":9}}]}],"updatedAt":"2026-06-01T21:56:29.842Z","teams":[{"tid":"ed9455f0","sid":"7fde5e5c","status":"ACTIVE"},{"tid":"80947ea7","sid":"8e63d65d","status":"COMPLETED"},{"tid":"0a5a483b","sid":"c3dedc60","status":"COMPLETED"},{"tid":"853fb446","sid":"c5116801","status":"COMPLETED"},{"tid":"addd1b12","sid":"f5d8954a","status":"COMPLETED"},{"tid":"032a37a7","sid":"8e1c87c4","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:07.141Z","records":{"maxGamePTS":{"v":7,"gameKey":"f088421e","sid":"c5116801"},"maxGameThreePt":{"v":null}},"games":["00cd96cf","04501c3e","11a3e8c9","1d87ed04","287ed139","2f0466e1","304bf108","30d317a0","33179f51","33ffea67","3bfb6c12","3fd7b99c","4213f613","426c45d9","42c4afee","50dfb08a","5b7ea7c6","5c943ac3","5e8c2be3","64e93858","7290da92","7464001a","792ba905","7a8ccadb","7f6ff2ed","86b77158","95491c02","a64b9122","a8987bf8","aaf28e12","ace95852","afeac025","bc87179e","c98562f8","d14bdefa","d2e3c529","d43a18be","d72dcd35","df4717ad","e16cdcdb","ebecabfa","ecc62d54","ee4f875f","eed74c22","f088421e","f4bffd6a","f766e8b9","f7ce0318","f91553a9","f983b580"]}
+{
+  "uuid": "bfa24889-c133-4c59-9b36-c5788e51a6c7",
+  "name": "Joshua Ramanauskas",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 103,
+      "fouls": 100,
+      "fg": 47,
+      "ft": 9,
+      "foulOuts": {
+        "c5116801": 2
+      },
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 49,
+      "winPct": 0.69,
+      "losses": 22,
+      "statsChecked": "2026-07-05T14:44:26.135Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7fde5e5c",
+      "sn": "Winter 2026",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "ed9455f0",
+          "tn": "SCJB Saints U10 Boys Alexander",
+          "gid": "bc6e4675",
+          "gn": "Saturday U10 Boys A Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "pts": 12,
+            "fg": 6,
+            "wins": 7
+          }
+        },
+        {
+          "tid": "ed9455f0",
+          "tn": "SCJB Saints U10 Boys Alexander",
+          "gid": "86555c87",
+          "gn": "Saturday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "fg": 6,
+            "pts": 12,
+            "wins": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e63d65d",
+      "sn": "Summer 2025/26",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "80947ea7",
+          "tn": "STC Saints U10 Boys Alexander",
+          "gid": "bb2ebbb8",
+          "gn": "Saturday U10 Boys A Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "80947ea7",
+          "tn": "STC Saints U10 Boys Alexander",
+          "gid": "ab85b0a7",
+          "gn": "X Saturday U10 Boys Grading Pool A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c3dedc60",
+      "sn": "Winter 2025",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "0a5a483b",
+          "tn": "STC Saints U10 Boys Hartshorne",
+          "gid": "1d35e028",
+          "gn": "Saturday U10 Boys B Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 27,
+            "ft": 1,
+            "fg": 11,
+            "pts": 23,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c5116801",
+      "sn": "Summer 2024/25",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "853fb446",
+          "tn": "STC Saints U10 Boys Steel",
+          "gid": "fc459c9c",
+          "gn": "Saturday U10 Boys C Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 41,
+            "ft": 4,
+            "fg": 17,
+            "pts": 38,
+            "foulOuts": 2,
+            "finals": 1,
+            "wins": 6,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5d8954a",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "addd1b12",
+          "tn": "Phoenix",
+          "gid": "cfc97835",
+          "gn": "Friday U8 Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8e1c87c4",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "032a37a7",
+          "tn": "Phoenix",
+          "gid": "0342ca8d",
+          "gn": "Friday U8 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:56:29.842Z",
+  "teams": [
+    {
+      "tid": "ed9455f0",
+      "sid": "7fde5e5c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80947ea7",
+      "sid": "8e63d65d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a5a483b",
+      "sid": "c3dedc60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "853fb446",
+      "sid": "c5116801",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "addd1b12",
+      "sid": "f5d8954a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "032a37a7",
+      "sid": "8e1c87c4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:25.220Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "f088421e",
+      "sid": "c5116801"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00cd96cf",
+    "04501c3e",
+    "11a3e8c9",
+    "1d87ed04",
+    "287ed139",
+    "2f0466e1",
+    "304bf108",
+    "30d317a0",
+    "33179f51",
+    "33ffea67",
+    "3bfb6c12",
+    "3fd7b99c",
+    "4213f613",
+    "426c45d9",
+    "42c4afee",
+    "50dfb08a",
+    "5b7ea7c6",
+    "5c943ac3",
+    "5e8c2be3",
+    "64e93858",
+    "7290da92",
+    "7464001a",
+    "792ba905",
+    "7a8ccadb",
+    "7f6ff2ed",
+    "86b77158",
+    "95491c02",
+    "a64b9122",
+    "a8987bf8",
+    "aaf28e12",
+    "ace95852",
+    "afeac025",
+    "bc87179e",
+    "c98562f8",
+    "d14bdefa",
+    "d2e3c529",
+    "d43a18be",
+    "d72dcd35",
+    "df4717ad",
+    "e16cdcdb",
+    "ebecabfa",
+    "ecc62d54",
+    "ee4f875f",
+    "eed74c22",
+    "f088421e",
+    "f4bffd6a",
+    "f766e8b9",
+    "f7ce0318",
+    "f91553a9",
+    "f983b580"
+  ]
+}

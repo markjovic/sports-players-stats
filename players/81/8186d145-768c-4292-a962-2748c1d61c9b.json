@@ -1,1 +1,111 @@
-{"uuid":"8186d145-768c-4292-a962-2748c1d61c9b","gender":null,"sports":{"Basketball":{"gp":4,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T16:14:02.930Z"}},"seasons":[{"sid":"7802b860","sn":"Summer 2024/25","club":null,"regs":[{"tid":"6c51fdc5","tn":"APEX LEGENDS (Pink)","gid":"b318292d","gn":"Thursday Senior Mixed SOCIAL COMP","stats":{"gp":1,"losses":1}}]},{"sid":"0c2333fb","sn":"Winter 2024","club":null,"regs":[{"tid":"d2c925c7","tn":"Hurricanes (PINK)","gid":"838a8079","gn":"Thursday Senior Mixed SOCIAL COMP","stats":{"gp":1}},{"tid":"6cddd55f","tn":"Tornadoes (GREEN)","gid":"838a8079","gn":"Thursday Senior Mixed SOCIAL COMP","stats":{"gp":2}}]}],"updatedAt":"2026-06-11T23:41:45.206Z","games":["3b9265ec","89071ce6","dbcc08ed","f33dcb59"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Summer 2024/25","gameTids":{"89071ce6":"6c51fdc5","3b9265ec":"d2c925c7","dbcc08ed":"6cddd55f","f33dcb59":"6cddd55f"}}
+{
+  "uuid": "8186d145-768c-4292-a962-2748c1d61c9b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:14:02.930Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7802b860",
+      "sn": "Summer 2024/25",
+      "club": null,
+      "regs": [
+        {
+          "tid": "6c51fdc5",
+          "tn": "APEX LEGENDS (Pink)",
+          "gid": "b318292d",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "286a7d25",
+          "tn": "SHADOW WOLVES (Green)",
+          "gid": "b318292d",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0c2333fb",
+      "sn": "Winter 2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d2c925c7",
+          "tn": "Hurricanes (PINK)",
+          "gid": "838a8079",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {
+            "gp": 1
+          }
+        },
+        {
+          "tid": "6cddd55f",
+          "tn": "Tornadoes (GREEN)",
+          "gid": "838a8079",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {
+            "gp": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:45.206Z",
+  "games": [
+    "3b9265ec",
+    "89071ce6",
+    "dbcc08ed",
+    "f33dcb59"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2024/25",
+  "gameTids": {
+    "89071ce6": "6c51fdc5",
+    "3b9265ec": "d2c925c7",
+    "dbcc08ed": "6cddd55f",
+    "f33dcb59": "6cddd55f"
+  },
+  "teams": [
+    {
+      "tid": "6c51fdc5",
+      "sid": "7802b860",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "286a7d25",
+      "sid": "7802b860",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d2c925c7",
+      "sid": "0c2333fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6cddd55f",
+      "sid": "0c2333fb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:06.468Z"
+}

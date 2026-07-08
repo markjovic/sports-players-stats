@@ -1,1 +1,86 @@
-{"uuid":"ce6c37a4-87f2-4654-9944-50c937df036a","gender":null,"sports":{"Basketball":{"gp":4,"pts":6,"fouls":8,"fg":3,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:03:38.834Z"}},"seasons":[{"sid":"dcc45073","sn":"Summer 2020/21","club":"Westside Warriors Basketball Club Inc.","regs":[{"tid":"94449b8c","tn":"WW U16 Boys WHITE","gid":"db2c8666","gn":"Friday /Saturday U16 Boys Div 3","stats":{"gp":4,"pts":6,"fouls":8,"fg":3,"wins":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:44:47.743Z","records":{"maxGamePTS":{"v":4,"gameKey":"16627500","sid":"dcc45073"},"maxGameThreePt":{"v":null}},"games":["03ab699e","161f1b26","16627500","faa0bcb9"],"name":"Summer 2020/21"}
+{
+  "uuid": "ce6c37a4-87f2-4654-9944-50c937df036a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 6,
+      "fouls": 8,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:03:38.834Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Westside Warriors Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "94449b8c",
+          "tn": "WW U16 Boys WHITE",
+          "gid": "db2c8666",
+          "gn": "Friday /Saturday U16 Boys Div 3",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fouls": 8,
+            "fg": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0543eab",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "8a00a739",
+          "tn": "WW U14 Boys Black",
+          "gid": "f7d0cdda",
+          "gn": "Saturday U14 Boys Div 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:47.743Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "16627500",
+      "sid": "dcc45073"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "03ab699e",
+    "161f1b26",
+    "16627500",
+    "faa0bcb9"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "94449b8c",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8a00a739",
+      "sid": "d0543eab",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:35.030Z"
+}

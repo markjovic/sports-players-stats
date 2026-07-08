@@ -1,1 +1,504 @@
-{"uuid":"feaa75e0-f81e-4f1d-9c49-ebf907d7f516","gender":null,"sports":{"Basketball":{"gp":28,"pts":164,"fg":70,"ft":3,"threePt":7,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":2,"wins":4,"losses":7,"draws":1,"winPct":0.33,"statsChecked":"2026-07-05T15:52:58.701Z"}},"seasons":[{"sid":"39d78245","sn":"Spring 2022","club":null,"regs":[{"tid":"5fa4f71d","tn":"Mixed Team 1","gid":"09ff7614","gn":"Unified Basketball","stats":{"gp":1,"losses":1}}]},{"sid":"08464028","sn":"Winter 2022","club":null,"regs":[{"tid":"01df0a30","tn":"Womens Team 1","gid":"d154b11d","gn":"Wednesday Unified Basketball","stats":{"gp":1}},{"tid":"c216be08","tn":"Womens Team 2","gid":"d154b11d","gn":"Wednesday Unified Basketball","stats":{}},{"tid":"2f545593","tn":"Mixed Team 1","gid":"d154b11d","gn":"Wednesday Unified Basketball","stats":{"gp":3,"pts":3,"threePt":1}},{"tid":"9589da8d","tn":"Mixed Team 2","gid":"d154b11d","gn":"Wednesday Unified Basketball","stats":{"gp":2,"pts":10,"fg":5}}]},{"sid":"ad4cd9fc","sn":"Autumn 2022","club":null,"regs":[{"tid":"00e38781","tn":"Mixed Team 2","gid":"04efa087","gn":"Wednesday Unified Basketball","stats":{"gp":4,"pts":18,"fg":6,"threePt":2,"finals":1}},{"tid":"ddc0c558","tn":"Mixed Team 1","gid":"04efa087","gn":"Wednesday Unified Basketball","stats":{"gp":6,"pts":39,"fg":16,"ft":1,"threePt":2,"finals":1}}]},{"sid":"cb0953c0","sn":"Autumn 2021","club":null,"regs":[{"tid":"545c8c4e","tn":"Lightning Strikes","gid":"af4aeb68","gn":"Wednesday Unified Basketball","stats":{"gp":11,"pts":94,"fg":43,"ft":2,"threePt":2,"finals":1,"wins":4,"losses":6,"draws":1}}]}],"updatedAt":"2026-06-11T23:46:39.225Z","games":["01d9b8b1","0555b699","060c6a4b","3ded92fb","44deae00","4a1ea565","4c2a4686","6a4bb8fc","7647720c","77aae98b","93148b2f","9604908d","9648dad3","99289cd8","9fe95d4c","a3dafeb7","a490440b","b7bd57c4","da7dfc50","db59bd21","dc3f2064","e04cd402","e8364397","ec8958ef","eddfd3d3","eff96c3e","f0cadcaa","f8edfe25"],"records":{"maxGamePTS":{"v":20,"gameKey":"f0cadcaa","sid":"cb0953c0"},"maxGameThreePt":{"v":2,"gameKey":"01d9b8b1","sid":"cb0953c0"}},"name":"Spring 2022","gameTids":{"9648dad3":"5fa4f71d","b7bd57c4":"01df0a30","e8364397":"2f545593","060c6a4b":"2f545593","da7dfc50":"2f545593","6a4bb8fc":"9589da8d","dc3f2064":"9589da8d","44deae00":"00e38781","77aae98b":"00e38781","9604908d":"00e38781","eff96c3e":"00e38781","3ded92fb":"ddc0c558","0555b699":"ddc0c558","a3dafeb7":"ddc0c558","4a1ea565":"ddc0c558","a490440b":"ddc0c558","9fe95d4c":"ddc0c558","ec8958ef":"545c8c4e","f8edfe25":"545c8c4e","7647720c":"545c8c4e","e04cd402":"545c8c4e","93148b2f":"545c8c4e","4c2a4686":"545c8c4e","eddfd3d3":"545c8c4e","99289cd8":"545c8c4e","f0cadcaa":"545c8c4e","db59bd21":"545c8c4e","01d9b8b1":"545c8c4e"}}
+{
+  "uuid": "feaa75e0-f81e-4f1d-9c49-ebf907d7f516",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 28,
+      "pts": 164,
+      "fg": 70,
+      "ft": 3,
+      "threePt": 7,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": 2,
+      "wins": 4,
+      "losses": 7,
+      "draws": 1,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:52:58.701Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "39d78245",
+      "sn": "Spring 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5fa4f71d",
+          "tn": "Mixed Team 1",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "525ac3b3",
+          "tn": "Mixed Team 2",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b375c80f",
+          "tn": "Mixed Team 3",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "7bea24a8",
+          "tn": "Mixed Team 4",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "0a6c9010",
+          "tn": "Womens Team 1",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "14c06918",
+          "tn": "Womens Team 2",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "08464028",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "01df0a30",
+          "tn": "Womens Team 1",
+          "gid": "d154b11d",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {
+            "gp": 1
+          }
+        },
+        {
+          "tid": "c216be08",
+          "tn": "Womens Team 2",
+          "gid": "d154b11d",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "2f545593",
+          "tn": "Mixed Team 1",
+          "gid": "d154b11d",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "9589da8d",
+          "tn": "Mixed Team 2",
+          "gid": "d154b11d",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {
+            "gp": 2,
+            "pts": 10,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad4cd9fc",
+      "sn": "Autumn 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "00e38781",
+          "tn": "Mixed Team 2",
+          "gid": "04efa087",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {
+            "gp": 4,
+            "pts": 18,
+            "fg": 6,
+            "threePt": 2,
+            "finals": 1
+          }
+        },
+        {
+          "tid": "ddc0c558",
+          "tn": "Mixed Team 1",
+          "gid": "04efa087",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {
+            "gp": 6,
+            "pts": 39,
+            "fg": 16,
+            "ft": 1,
+            "threePt": 2,
+            "finals": 1
+          }
+        },
+        {
+          "tid": "c6221fed",
+          "tn": "Womens Team 1",
+          "gid": "04efa087",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "7cc82b31",
+          "tn": "Womens Team 2",
+          "gid": "04efa087",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cb0953c0",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "545c8c4e",
+          "tn": "Lightning Strikes",
+          "gid": "af4aeb68",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {
+            "gp": 11,
+            "pts": 94,
+            "fg": 43,
+            "ft": 2,
+            "threePt": 2,
+            "finals": 1,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0eab54b6",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "b3a4c698",
+          "tn": "Mixed Team 1",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "2c934bb4",
+          "tn": "Mixed Team 2",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b60dfc04",
+          "tn": "Mixed Team 3",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "f0b11923",
+          "tn": "Mixed Team 4",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "7d0d944a",
+          "tn": "Womens Team 1",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "0abea943",
+          "tn": "Womens Team 2",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5fc181f",
+      "sn": "Term 2, 2023",
+      "regs": [
+        {
+          "tid": "bbfaeeca",
+          "tn": "Mixed Team 1",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b7d55c53",
+          "tn": "Mixed Team 2",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b21d495d",
+          "tn": "Mixed Team 3",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "07a562f2",
+          "tn": "Mixed Team 4",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "69225a21",
+          "tn": "Womens Team 1",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "fb4adc0d",
+          "tn": "Womens Team 2",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:39.225Z",
+  "games": [
+    "01d9b8b1",
+    "0555b699",
+    "060c6a4b",
+    "3ded92fb",
+    "44deae00",
+    "4a1ea565",
+    "4c2a4686",
+    "6a4bb8fc",
+    "7647720c",
+    "77aae98b",
+    "93148b2f",
+    "9604908d",
+    "9648dad3",
+    "99289cd8",
+    "9fe95d4c",
+    "a3dafeb7",
+    "a490440b",
+    "b7bd57c4",
+    "da7dfc50",
+    "db59bd21",
+    "dc3f2064",
+    "e04cd402",
+    "e8364397",
+    "ec8958ef",
+    "eddfd3d3",
+    "eff96c3e",
+    "f0cadcaa",
+    "f8edfe25"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "f0cadcaa",
+      "sid": "cb0953c0"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "01d9b8b1",
+      "sid": "cb0953c0"
+    }
+  },
+  "name": "Spring 2022",
+  "gameTids": {
+    "9648dad3": "5fa4f71d",
+    "b7bd57c4": "01df0a30",
+    "e8364397": "2f545593",
+    "060c6a4b": "2f545593",
+    "da7dfc50": "2f545593",
+    "6a4bb8fc": "9589da8d",
+    "dc3f2064": "9589da8d",
+    "44deae00": "00e38781",
+    "77aae98b": "00e38781",
+    "9604908d": "00e38781",
+    "eff96c3e": "00e38781",
+    "3ded92fb": "ddc0c558",
+    "0555b699": "ddc0c558",
+    "a3dafeb7": "ddc0c558",
+    "4a1ea565": "ddc0c558",
+    "a490440b": "ddc0c558",
+    "9fe95d4c": "ddc0c558",
+    "ec8958ef": "545c8c4e",
+    "f8edfe25": "545c8c4e",
+    "7647720c": "545c8c4e",
+    "e04cd402": "545c8c4e",
+    "93148b2f": "545c8c4e",
+    "4c2a4686": "545c8c4e",
+    "eddfd3d3": "545c8c4e",
+    "99289cd8": "545c8c4e",
+    "f0cadcaa": "545c8c4e",
+    "db59bd21": "545c8c4e",
+    "01d9b8b1": "545c8c4e"
+  },
+  "teams": [
+    {
+      "tid": "5fa4f71d",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "525ac3b3",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b375c80f",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7bea24a8",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a6c9010",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "14c06918",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "01df0a30",
+      "sid": "08464028",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c216be08",
+      "sid": "08464028",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f545593",
+      "sid": "08464028",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9589da8d",
+      "sid": "08464028",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "00e38781",
+      "sid": "ad4cd9fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ddc0c558",
+      "sid": "ad4cd9fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6221fed",
+      "sid": "ad4cd9fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7cc82b31",
+      "sid": "ad4cd9fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "545c8c4e",
+      "sid": "cb0953c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b3a4c698",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c934bb4",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b60dfc04",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0b11923",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d0d944a",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0abea943",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbfaeeca",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7d55c53",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b21d495d",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07a562f2",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "69225a21",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb4adc0d",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:18.516Z"
+}

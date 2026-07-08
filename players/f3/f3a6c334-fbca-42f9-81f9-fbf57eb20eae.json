@@ -1,1 +1,85 @@
-{"uuid":"f3a6c334-fbca-42f9-81f9-fbf57eb20eae","gender":null,"sports":{"Basketball":{"gp":3,"pts":4,"fouls":8,"fg":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":1,"losses":2,"winPct":0.33,"statsChecked":"2026-07-05T16:24:05.570Z"}},"seasons":[{"sid":"27dd2c71","sn":"Summer 2020/21","club":null,"regs":[{"tid":"12b6e670","tn":"Vic Maccabi 4","gid":"99ef7331","gn":"Sunday Open Men B Grade (1)","stats":{"gp":3,"pts":4,"fouls":8,"fg":2,"wins":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:46:12.691Z","games":["3ae4e0ab","698bae2f","b6ae44fb"],"records":{"maxGamePTS":{"v":4,"gameKey":"698bae2f","sid":"27dd2c71"},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "f3a6c334-fbca-42f9-81f9-fbf57eb20eae",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 4,
+      "fouls": 8,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 2,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:24:05.570Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "27dd2c71",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "12b6e670",
+          "tn": "Vic Maccabi 4",
+          "gid": "99ef7331",
+          "gn": "Sunday Open Men B Grade (1)",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fouls": 8,
+            "fg": 2,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "61d1fa72",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "b2bf89a5",
+          "tn": "Maccabi Masters",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:12.691Z",
+  "games": [
+    "3ae4e0ab",
+    "698bae2f",
+    "b6ae44fb"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "698bae2f",
+      "sid": "27dd2c71"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "12b6e670",
+      "sid": "27dd2c71",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2bf89a5",
+      "sid": "61d1fa72",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:00.528Z"
+}

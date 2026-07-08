@@ -1,1 +1,69 @@
-{"uuid":"d29845a9-fa64-4b16-a048-f3f4d0c47004","name":"John Souprounovich","gender":"Boys","sports":{"Basketball":{"gp":3,"pts":1,"fouls":5,"ft":1,"foulOuts":{"1ae60211":1},"maxGamePTS":1,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T14:44:50.929Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Darebin Basketball Club (Giants and Phoenix)","regs":[{"tid":"56a23e6b","tn":"Darebin-Giants U13 Boys 06","gid":"b8209025","gn":"Boys U13 C Grading","age":"U13","div":null,"stats":{"gp":3,"ft":1,"pts":1,"foulOuts":1,"fouls":5,"losses":2}}]}],"updatedAt":"2026-07-04T05:41:54.355Z","teams":[{"tid":"56a23e6b","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T11:20:59.197Z","games":["2b4d5f1b","805acf71"],"records":{"maxGamePTS":{"v":1,"gameKey":"805acf71","sid":"1ae60211"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d29845a9-fa64-4b16-a048-f3f4d0c47004",
+  "name": "John Souprounovich",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 1,
+      "fouls": 5,
+      "ft": 1,
+      "foulOuts": {
+        "1ae60211": 1
+      },
+      "maxGamePTS": 1,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:44:50.929Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Darebin Basketball Club (Giants and Phoenix)",
+      "regs": [
+        {
+          "tid": "56a23e6b",
+          "tn": "Darebin-Giants U13 Boys 06",
+          "gid": "84025b99",
+          "gn": "Boys U13 CG",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "ft": 1,
+            "pts": 1,
+            "foulOuts": 1,
+            "fouls": 5,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:41:54.355Z",
+  "teams": [
+    {
+      "tid": "56a23e6b",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:59.818Z",
+  "games": [
+    "2b4d5f1b",
+    "805acf71"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 1,
+      "gameKey": "805acf71",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

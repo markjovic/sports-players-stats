@@ -1,1 +1,107 @@
-{"uuid":"9b86042a-e0c2-46cb-a506-3704a954a217","gender":null,"sports":{"Basketball":{"gp":5,"pts":35,"fouls":8,"fg":15,"ft":5,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":null,"wins":1,"losses":4,"winPct":0.2,"statsChecked":"2026-07-05T15:50:29.108Z"}},"seasons":[{"sid":"171fb8f9","sn":"Autumn 2021","club":null,"regs":[{"tid":"5a3a459a","tn":"Good Shepherd","gid":"c8da42a1","gn":"Thursday Open Men","stats":{"gp":5,"pts":35,"fouls":8,"fg":15,"ft":5,"wins":1,"losses":4}}]}],"updatedAt":"2026-06-11T23:42:55.116Z","records":{"maxGamePTS":{"v":11,"gameKey":"d42a2248","sid":"171fb8f9"},"maxGameThreePt":{"v":null}},"games":["587f3937","608f5216","88bc9b3e","d42a2248","f34260c5"],"name":"Autumn 2021"}
+{
+  "uuid": "9b86042a-e0c2-46cb-a506-3704a954a217",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 35,
+      "fouls": 8,
+      "fg": 15,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 4,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:50:29.108Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "171fb8f9",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5a3a459a",
+          "tn": "Good Shepherd",
+          "gid": "c8da42a1",
+          "gn": "Thursday Open Men",
+          "stats": {
+            "gp": 5,
+            "pts": 35,
+            "fouls": 8,
+            "fg": 15,
+            "ft": 5,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4901cf10",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "bfd030c8",
+          "tn": "Good Shepherd",
+          "gid": "5964abf5",
+          "gn": "Thursday Open Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ae94c677",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "d66a6c94",
+          "tn": "Good Shepherd",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:55.116Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "d42a2248",
+      "sid": "171fb8f9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "587f3937",
+    "608f5216",
+    "88bc9b3e",
+    "d42a2248",
+    "f34260c5"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "5a3a459a",
+      "sid": "171fb8f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bfd030c8",
+      "sid": "4901cf10",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d66a6c94",
+      "sid": "ae94c677",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:52.932Z"
+}

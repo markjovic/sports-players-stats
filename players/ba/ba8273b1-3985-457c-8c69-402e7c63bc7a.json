@@ -1,1 +1,136 @@
-{"uuid":"ba8273b1-3985-457c-8c69-402e7c63bc7a","name":"Rodney Lim","gender":"Men","sports":{"Basketball":{"gp":13,"pts":43,"fouls":16,"fg":10,"ft":2,"threePt":7,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":2,"wins":30,"winPct":0.91,"losses":3,"statsChecked":"2026-07-06T19:00:43.169Z"}},"seasons":[{"sid":"00404092","sn":"Autumn 2026","regs":[{"tid":"b419bd92","tn":"Gens","gid":"2a543e3a","gn":"Division 5 Sunday Mens","age":null,"div":null,"stats":{"gp":13,"fouls":16,"fg":10,"threePt":7,"pts":43,"wins":10,"losses":1,"ft":2}},{"tid":"b419bd92","tn":"Gens","gid":"e2369511","gn":"Division 7 Sunday Mens","age":null,"div":null,"stats":{"gp":13,"fg":10,"pts":43,"wins":10,"losses":1,"ft":2,"threePt":7,"fouls":16}},{"tid":"b419bd92","tn":"Gens","gid":"2541b4c6","gn":"Grading Sunday Mens","age":null,"div":null,"stats":{"gp":13,"fouls":16,"ft":2,"fg":10,"threePt":7,"pts":43,"wins":10,"losses":1}}]}],"updatedAt":"2026-07-05T16:56:37.924Z","teams":[{"tid":"b419bd92","sid":"00404092","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:39:01.043Z","records":{"maxGamePTS":{"v":7,"gameKey":"20d6213b","sid":"00404092"},"maxGameThreePt":{"v":2,"gameKey":"653f51cb","sid":"00404092"}},"games":["0302b683","20d6213b","2e5c06e1","37466cee","3c132554","42c0829c","48b0006a","4e8b48e6","653f51cb","676312c9","c93b1831"]}
+{
+  "uuid": "ba8273b1-3985-457c-8c69-402e7c63bc7a",
+  "name": "Rodney Lim",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 43,
+      "fouls": 16,
+      "fg": 10,
+      "ft": 2,
+      "threePt": 7,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 2,
+      "wins": 30,
+      "winPct": 0.91,
+      "losses": 3,
+      "statsChecked": "2026-07-06T19:00:43.169Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "00404092",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "b419bd92",
+          "tn": "Gens",
+          "gid": "2a543e3a",
+          "gn": "Division 5 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "fg": 10,
+            "threePt": 7,
+            "pts": 43,
+            "wins": 10,
+            "losses": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "b419bd92",
+          "tn": "Gens",
+          "gid": "e2369511",
+          "gn": "Division 7 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 10,
+            "pts": 43,
+            "wins": 10,
+            "losses": 1,
+            "ft": 2,
+            "threePt": 7,
+            "fouls": 16
+          }
+        },
+        {
+          "tid": "b419bd92",
+          "tn": "Gens",
+          "gid": "2541b4c6",
+          "gn": "Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 10,
+            "threePt": 7,
+            "pts": 43,
+            "wins": 10,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "343c5d11",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "43f27081",
+          "tn": "Gens",
+          "gid": "88fd3e14",
+          "gn": "Division 5 Sunday Mens",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-05T16:56:37.924Z",
+  "teams": [
+    {
+      "tid": "b419bd92",
+      "sid": "00404092",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "43f27081",
+      "sid": "343c5d11",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:51.161Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "20d6213b",
+      "sid": "00404092"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "653f51cb",
+      "sid": "00404092"
+    }
+  },
+  "games": [
+    "0302b683",
+    "20d6213b",
+    "2e5c06e1",
+    "37466cee",
+    "3c132554",
+    "42c0829c",
+    "48b0006a",
+    "4e8b48e6",
+    "653f51cb",
+    "676312c9",
+    "c93b1831"
+  ]
+}

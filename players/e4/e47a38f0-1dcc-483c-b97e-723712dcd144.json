@@ -1,1 +1,264 @@
-{"uuid":"e47a38f0-1dcc-483c-b97e-723712dcd144","name":"Greyson Christie-Scott","gender":"Mixed","sports":{"Basketball":{"gp":26,"pts":23,"fouls":31,"fg":7,"ft":9,"foulOuts":{"73075b54":1},"maxGamePTS":8,"maxGameThreePt":null,"wins":50,"losses":30,"winPct":0.63,"statsChecked":"2026-07-05T15:13:27.935Z"}},"seasons":[{"sid":"73075b54","sn":"Winter 2026","club":"Melbourne Stars Basketball Club","regs":[{"tid":"22a6f192","tn":"Melbourne Stars U8 Mixed 1","gid":"08b7c989","gn":"Saturday U8 Mixed Ponies","age":"U8","div":null,"stats":{"gp":7,"fouls":24,"fg":7,"pts":23,"foulOuts":1,"ft":9,"wins":5,"losses":2}},{"tid":"22a6f192","tn":"Melbourne Stars U8 Mixed 1","gid":"f842e719","gn":"Saturday U8 Mixed - Grading","age":"U8","div":null,"stats":{"gp":7,"fouls":24,"ft":9,"fg":7,"pts":23,"wins":5,"losses":2}}]},{"sid":"614a2f6d","sn":"2026","regs":[{"tid":"ee640494","tn":"Manatunga U10","gid":"ea92ca33","gn":"U10 Boys","age":"U10","div":null,"stats":{"gp":2,"fouls":5,"losses":2}},{"tid":"76ee6d10","stats":{"gp":1}}]},{"sid":"614a2f6d","sn":"2026","regs":[{"tid":"76ee6d10","tn":"Manatunga U8 Mixed","gid":"a731729d","gn":"U8 Mixed","age":"U8","div":null,"stats":{"gp":1}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Doreen Cougars Basketball Club","regs":[{"tid":"56b65d9a","tn":"Cougars U08 Boys 2","gid":"9c91bbff","gn":"Saturday U8 Boys C1","age":"U8","div":"C1","stats":{"gp":16,"fouls":2,"wins":10,"losses":6}},{"tid":"56b65d9a","tn":"Cougars U08 Boys 2","gid":"43af154f","gn":"Saturday U8 Boys C2","age":"U8","div":"C2","stats":{"gp":16,"wins":10,"losses":6,"fouls":2}},{"tid":"56b65d9a","tn":"Cougars U08 Boys 2","gid":"17e09247","gn":"Saturday U8 Boys D1","age":"U8","div":"D1","stats":{"gp":16,"wins":10,"losses":6,"fouls":2}},{"tid":"56b65d9a","tn":"Cougars U08 Boys 2","gid":"f9ab3e13","gn":"Saturday U8 Boys D2","age":"U8","div":"D2","stats":{"gp":16,"wins":10,"losses":6,"fouls":2}}]}],"updatedAt":"2026-06-02T05:27:08.557Z","teams":[{"tid":"22a6f192","sid":"73075b54","status":"ACTIVE"},{"tid":"ee640494","sid":"614a2f6d","status":"COMPLETED"},{"tid":"76ee6d10","sid":"614a2f6d","status":"COMPLETED"},{"tid":"56b65d9a","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:43.235Z","games":["0024c920","02872462","0de9a80b","183e21a4","1cb9f002","1d409dc7","339fac4e","3f32ab47","53d6b50b","64222dc0","6cf2257a","7de9ab7f","7f93a345","87379d1d","973e7f40","97ec237a","aa4a87eb","c2429979","c5d53515","c6be4b96","ccb959b1","d8204c5a","ecfae1b4","f141c7f8","fd6cdc36","ff4e80a6"],"records":{"maxGamePTS":{"v":8,"gameKey":"7f93a345","sid":"73075b54"},"maxGameThreePt":{"v":null}},"gameTids":{"7de9ab7f":"22a6f192","aa4a87eb":"22a6f192","fd6cdc36":"22a6f192","97ec237a":"22a6f192","183e21a4":"22a6f192","f141c7f8":"22a6f192","7f93a345":"22a6f192","339fac4e":"ee640494","d8204c5a":"ee640494","c5d53515":"76ee6d10","53d6b50b":"56b65d9a","ccb959b1":"56b65d9a","87379d1d":"56b65d9a","3f32ab47":"56b65d9a","c6be4b96":"56b65d9a","0de9a80b":"56b65d9a","c2429979":"56b65d9a","0024c920":"56b65d9a","ff4e80a6":"56b65d9a","ecfae1b4":"56b65d9a","64222dc0":"56b65d9a","1cb9f002":"56b65d9a","6cf2257a":"56b65d9a","1d409dc7":"56b65d9a","973e7f40":"56b65d9a","02872462":"56b65d9a"}}
+{
+  "uuid": "e47a38f0-1dcc-483c-b97e-723712dcd144",
+  "name": "Greyson Christie-Scott",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 23,
+      "fouls": 31,
+      "fg": 7,
+      "ft": 9,
+      "foulOuts": {
+        "73075b54": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 50,
+      "losses": 30,
+      "winPct": 0.63,
+      "statsChecked": "2026-07-05T15:13:27.935Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73075b54",
+      "sn": "Winter 2026",
+      "club": "Melbourne Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "22a6f192",
+          "tn": "Melbourne Stars U8 Mixed 1",
+          "gid": "08b7c989",
+          "gn": "Saturday U8 Mixed Ponies",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 24,
+            "fg": 7,
+            "pts": 23,
+            "foulOuts": 1,
+            "ft": 9,
+            "wins": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "22a6f192",
+          "tn": "Melbourne Stars U8 Mixed 1",
+          "gid": "f842e719",
+          "gn": "Saturday U8 Mixed - Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 24,
+            "ft": 9,
+            "fg": 7,
+            "pts": 23,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "614a2f6d",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "ee640494",
+          "tn": "Manatunga U10",
+          "gid": "ea92ca33",
+          "gn": "U10 Boys",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "76ee6d10",
+          "stats": {
+            "gp": 1
+          },
+          "gid": "a731729d",
+          "gn": "U8 Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "614a2f6d",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "76ee6d10",
+          "tn": "Manatunga U8 Mixed",
+          "gid": "a731729d",
+          "gn": "U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Doreen Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "56b65d9a",
+          "tn": "Cougars U08 Boys 2",
+          "gid": "9c91bbff",
+          "gn": "Saturday U8 Boys C1",
+          "age": "U8",
+          "div": "C1",
+          "stats": {
+            "gp": 16,
+            "fouls": 2,
+            "wins": 10,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "56b65d9a",
+          "tn": "Cougars U08 Boys 2",
+          "gid": "43af154f",
+          "gn": "Saturday U8 Boys C2",
+          "age": "U8",
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "wins": 10,
+            "losses": 6,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "56b65d9a",
+          "tn": "Cougars U08 Boys 2",
+          "gid": "17e09247",
+          "gn": "Saturday U8 Boys D1",
+          "age": "U8",
+          "div": "D1",
+          "stats": {
+            "gp": 16,
+            "wins": 10,
+            "losses": 6,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "56b65d9a",
+          "tn": "Cougars U08 Boys 2",
+          "gid": "f9ab3e13",
+          "gn": "Saturday U8 Boys D2",
+          "age": "U8",
+          "div": "D2",
+          "stats": {
+            "gp": 16,
+            "wins": 10,
+            "losses": 6,
+            "fouls": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T05:27:08.557Z",
+  "teams": [
+    {
+      "tid": "22a6f192",
+      "sid": "73075b54",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee640494",
+      "sid": "614a2f6d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76ee6d10",
+      "sid": "614a2f6d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56b65d9a",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:30.821Z",
+  "games": [
+    "0024c920",
+    "02872462",
+    "0de9a80b",
+    "183e21a4",
+    "1cb9f002",
+    "1d409dc7",
+    "339fac4e",
+    "3f32ab47",
+    "53d6b50b",
+    "64222dc0",
+    "6cf2257a",
+    "7de9ab7f",
+    "7f93a345",
+    "87379d1d",
+    "973e7f40",
+    "97ec237a",
+    "aa4a87eb",
+    "c2429979",
+    "c5d53515",
+    "c6be4b96",
+    "ccb959b1",
+    "d8204c5a",
+    "ecfae1b4",
+    "f141c7f8",
+    "fd6cdc36",
+    "ff4e80a6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "7f93a345",
+      "sid": "73075b54"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "7de9ab7f": "22a6f192",
+    "aa4a87eb": "22a6f192",
+    "fd6cdc36": "22a6f192",
+    "97ec237a": "22a6f192",
+    "183e21a4": "22a6f192",
+    "f141c7f8": "22a6f192",
+    "7f93a345": "22a6f192",
+    "339fac4e": "ee640494",
+    "d8204c5a": "ee640494",
+    "c5d53515": "76ee6d10",
+    "53d6b50b": "56b65d9a",
+    "ccb959b1": "56b65d9a",
+    "87379d1d": "56b65d9a",
+    "3f32ab47": "56b65d9a",
+    "c6be4b96": "56b65d9a",
+    "0de9a80b": "56b65d9a",
+    "c2429979": "56b65d9a",
+    "0024c920": "56b65d9a",
+    "ff4e80a6": "56b65d9a",
+    "ecfae1b4": "56b65d9a",
+    "64222dc0": "56b65d9a",
+    "1cb9f002": "56b65d9a",
+    "6cf2257a": "56b65d9a",
+    "1d409dc7": "56b65d9a",
+    "973e7f40": "56b65d9a",
+    "02872462": "56b65d9a"
+  }
+}

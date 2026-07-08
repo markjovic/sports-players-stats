@@ -1,1 +1,146 @@
-{"uuid":"da7ab2f1-c444-4ac8-a63e-9e5c8bfa2ee9","gender":null,"sports":{"Basketball":{"gp":7,"pts":16,"fouls":4,"fg":8,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":6,"losses":9,"draws":3,"winPct":0.33,"statsChecked":"2026-07-05T16:15:37.721Z"}},"seasons":[{"sid":"629c8d3b","sn":"Autumn 2022","club":null,"regs":[{"tid":"c5547359","tn":"Black Hawks","gid":"abc6dc38","gn":"Wednesday Open Men","stats":{"gp":7,"pts":16,"fouls":4,"fg":8,"wins":2,"losses":3,"draws":1}}]},{"sid":"629c8d3b","sn":"Autumn 2022","club":null,"regs":[{"tid":"c5547359","tn":"Black Hawks","gid":"abc6dc38","gn":"Wednesday Open Men","stats":{"gp":7,"pts":16,"fouls":4,"fg":8,"wins":2,"losses":3,"draws":1}},{"tid":"c5547359","tn":"Black Hawks","gid":"e0674adb","gn":"Wednesday Open Men (2021)","stats":{"gp":7,"wins":2,"losses":3,"draws":1,"pts":16,"fg":8,"fouls":4}}]}],"updatedAt":"2026-06-11T23:45:18.675Z","games":["091e5639","285503a1","8f67ed45","a29ebe06","de1b940a","e1a5529b","f0c42836"],"records":{"maxGamePTS":{"v":4,"gameKey":"a29ebe06","sid":"629c8d3b"},"maxGameThreePt":{"v":null}},"name":"Autumn 2022"}
+{
+  "uuid": "da7ab2f1-c444-4ac8-a63e-9e5c8bfa2ee9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 16,
+      "fouls": 4,
+      "fg": 8,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 9,
+      "draws": 3,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:15:37.721Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "629c8d3b",
+      "sn": "Autumn 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c5547359",
+          "tn": "Black Hawks",
+          "gid": "abc6dc38",
+          "gn": "Wednesday Open Men",
+          "stats": {
+            "gp": 7,
+            "pts": 16,
+            "fouls": 4,
+            "fg": 8,
+            "wins": 2,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "629c8d3b",
+      "sn": "Autumn 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c5547359",
+          "tn": "Black Hawks",
+          "gid": "abc6dc38",
+          "gn": "Wednesday Open Men",
+          "stats": {
+            "gp": 7,
+            "pts": 16,
+            "fouls": 4,
+            "fg": 8,
+            "wins": 2,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c5547359",
+          "tn": "Black Hawks",
+          "gid": "e0674adb",
+          "gn": "Wednesday Open Men (2021)",
+          "stats": {
+            "gp": 7,
+            "wins": 2,
+            "losses": 3,
+            "draws": 1,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4d6f1eb0",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "3be1f3e3",
+          "tn": "Fireballs (withdrew)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "c2fda449",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "ef15a4a7",
+          "tn": "Black Hawks",
+          "gid": "359b495e",
+          "gn": "Wednesday Open Men - All Teams",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:18.675Z",
+  "games": [
+    "091e5639",
+    "285503a1",
+    "8f67ed45",
+    "a29ebe06",
+    "de1b940a",
+    "e1a5529b",
+    "f0c42836"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "a29ebe06",
+      "sid": "629c8d3b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Autumn 2022",
+  "teams": [
+    {
+      "tid": "c5547359",
+      "sid": "629c8d3b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3be1f3e3",
+      "sid": "4d6f1eb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef15a4a7",
+      "sid": "c2fda449",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:50.731Z"
+}

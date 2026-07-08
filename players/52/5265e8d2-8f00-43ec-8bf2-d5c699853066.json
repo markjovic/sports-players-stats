@@ -1,1 +1,81 @@
-{"uuid":"5265e8d2-8f00-43ec-8bf2-d5c699853066","name":"Logan Lewis","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":1,"foulOuts":{},"gp":28,"pts":148,"fg":67,"ft":8,"threePt":2,"fouls":18,"statsChecked":"2026-07-07T18:27:24.627Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"1d260722"}]},{"sid":"796936f7","regs":[{"tid":"109332a9"}]},{"sid":"880bda3c","regs":[{"tid":"0f53886b"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":15,"gameKey":"65f71237","sid":"880bda3c"},"maxGameThreePt":{"v":1,"gameKey":"0644246f","sid":"880bda3c"}}}
+{
+  "uuid": "5265e8d2-8f00-43ec-8bf2-d5c699853066",
+  "name": "Logan Lewis",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 28,
+      "pts": 148,
+      "fg": 67,
+      "ft": 8,
+      "threePt": 2,
+      "fouls": 18,
+      "statsChecked": "2026-07-07T18:27:24.627Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "1d260722",
+          "gid": "5729abb2",
+          "gn": "Tuesday Women- Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "109332a9",
+          "gid": "eb3fc060",
+          "gn": "Tuesday Women- Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "0f53886b",
+          "gid": "165ae863",
+          "gn": "Tuesday Women -Div 2-3"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "1d260722",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "109332a9",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0f53886b",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "65f71237",
+      "sid": "880bda3c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "0644246f",
+      "sid": "880bda3c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:46:16.951Z"
+}

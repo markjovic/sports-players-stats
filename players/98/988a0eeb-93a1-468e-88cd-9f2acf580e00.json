@@ -1,1 +1,351 @@
-{"uuid":"988a0eeb-93a1-468e-88cd-9f2acf580e00","name":"Fletcher Prideaux","gender":"Boys","sports":{"Basketball":{"gp":49,"pts":72,"fouls":53,"fg":31,"ft":7,"threePt":1,"foulOuts":{},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":9,"maxGameThreePt":1,"wins":49,"losses":40,"winPct":0.54,"draws":2,"statsChecked":"2026-07-05T14:15:09.026Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","regs":[{"tid":"b1f7d530","tn":"East Malvern Hot Shots","gid":"e728263f","gn":"Saturday U16 Boys Div  6","age":"U16","div":"Div 6","stats":{"gp":4,"fouls":5,"wins":3,"losses":1}}]},{"sid":"bfbe9c11","sn":"Summer 2025/26","regs":[{"tid":"718a10eb","tn":"B15 Hot Shots 1","gid":"7589ed77","gn":"Saturday U15 Boys H","age":"U15","div":null,"stats":{"gp":14,"fouls":9,"fg":12,"threePt":1,"pts":28,"wins":7,"losses":7,"ft":1}},{"tid":"718a10eb","tn":"B15 Hot Shots 1","gid":"e9a28299","gn":"Saturday U15 Boys BR","age":"U15","div":null,"stats":{"gp":14,"fouls":9,"fg":12,"pts":28,"wins":7,"losses":7,"ft":1,"threePt":1}},{"tid":"718a10eb","tn":"B15 Hot Shots 1","gid":"7dc7e763","gn":"Saturday U13 Boys B","age":"U13","div":null,"stats":{"gp":14,"fouls":9,"ft":1,"fg":12,"pts":28,"wins":7,"losses":7,"threePt":1}}]},{"sid":"f2d66c1b","sn":"Winter 2025","regs":[{"tid":"de2e8c8b","tn":"B13 Hot Shots 1 (RQ)P","gid":"7453d168","gn":"Saturday U13 Boys BR","age":"U13","div":null,"stats":{"gp":17,"fouls":20,"ft":6,"fg":9,"pts":24,"finals":1,"wins":9,"losses":6,"draws":2}}]},{"sid":"e2fad5cf","sn":"Summer 2024/25","regs":[{"tid":"c1bd6636","tn":"B13 Hot Shots 1 (P)","gid":"d6206b61","gn":"Saturday U13 Boys BR","age":"U13","div":null,"stats":{"gp":14,"fouls":19,"fg":10,"pts":20,"finals":1,"wins":8,"losses":6}},{"tid":"c1bd6636","tn":"B13 Hot Shots 1 (P)","gid":"4bd6c7f5","gn":"Saturday U13 Boys B","age":"U13","div":null,"stats":{"gp":14,"fg":10,"pts":20,"finals":1,"wins":8,"losses":6,"fouls":19}}]}],"updatedAt":"2026-07-04T05:39:37.266Z","teams":[{"tid":"b1f7d530","sid":"79d2b087","status":"ACTIVE"},{"tid":"718a10eb","sid":"bfbe9c11","status":"COMPLETED"},{"tid":"de2e8c8b","sid":"f2d66c1b","status":"COMPLETED"},{"tid":"c1bd6636","sid":"e2fad5cf","status":"COMPLETED"},{"tid":"8772c953","sid":"7d20ecad","status":"COMPLETED"},{"tid":"04d028ca","sid":"e2637fe8","status":"COMPLETED"},{"tid":"25b323b1","sid":"eb0c3879","status":"COMPLETED"},{"tid":"351dcfea","sid":"11f9ba57","status":"COMPLETED"},{"tid":"d8c9d443","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:57:06.506Z","games":["04149f03","074b7e0b","0a3a69df","11f3d433","137d2184","204026a7","25cf6af1","27794bb1","2b26016b","3d759dd1","425e1824","43ac926d","49499011","4ce02aa9","58b0cf6d","5d7ce2d8","60b09d43","6144f2df","66e4668e","6b19b903","6c2980c6","6e82d448","6f3d836f","7618c23a","771cbdea","78e8dcaf","7dc5d7bb","7e00435c","8d1d1fba","909b3d9e","928727bd","94bcae8b","98719e24","9ac1eeb9","9d19dcc4","aa6e0dee","aff9d92a","b3f5b26e","bc0680c7","bc6147ba","beb25e85","cc3e40d2","d8ca3f05","e528b024","e830153e","ea05e173","f10b7df0","f19e0bd4","f324358b"],"records":{"maxGamePTS":{"v":9,"gameKey":"25cf6af1","sid":"bfbe9c11"},"maxGameThreePt":{"v":1,"gameKey":"25cf6af1","sid":"bfbe9c11"}}}
+{
+  "uuid": "988a0eeb-93a1-468e-88cd-9f2acf580e00",
+  "name": "Fletcher Prideaux",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 49,
+      "pts": 72,
+      "fouls": 53,
+      "fg": 31,
+      "ft": 7,
+      "threePt": 1,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 49,
+      "losses": 40,
+      "winPct": 0.54,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:15:09.026Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "b1f7d530",
+          "tn": "East Malvern Hot Shots",
+          "gid": "a6c49863",
+          "gn": "Saturday U16 Boys Div  7",
+          "age": "U16",
+          "div": "Div 6",
+          "stats": {
+            "gp": 4,
+            "fouls": 5,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbe9c11",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "718a10eb",
+          "tn": "B15 Hot Shots 1",
+          "gid": "7589ed77",
+          "gn": "Saturday U15 Boys H",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 28,
+            "wins": 7,
+            "losses": 7,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "718a10eb",
+          "tn": "B15 Hot Shots 1",
+          "gid": "e9a28299",
+          "gn": "Saturday U15 Boys BR",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "fg": 12,
+            "pts": 28,
+            "wins": 7,
+            "losses": 7,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "718a10eb",
+          "tn": "B15 Hot Shots 1",
+          "gid": "7dc7e763",
+          "gn": "Saturday U13 Boys B",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 12,
+            "pts": 28,
+            "wins": 7,
+            "losses": 7,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f2d66c1b",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "de2e8c8b",
+          "tn": "B13 Hot Shots 1 (RQ)P",
+          "gid": "7453d168",
+          "gn": "Saturday U13 Boys BR",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 20,
+            "ft": 6,
+            "fg": 9,
+            "pts": 24,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2fad5cf",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "c1bd6636",
+          "tn": "B13 Hot Shots 1 (P)",
+          "gid": "d6206b61",
+          "gn": "Saturday U13 Boys BR",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "c1bd6636",
+          "tn": "B13 Hot Shots 1 (P)",
+          "gid": "4bd6c7f5",
+          "gn": "Saturday U13 Boys B",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "fouls": 19
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "8772c953",
+          "tn": "Malvern Tigers U12 Boys Blue",
+          "gid": "28b17a88",
+          "gn": "Saturday U12 Boys Grading Pool 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "04d028ca",
+          "tn": "U12 Boys Inkerman Piranhas",
+          "gid": "7acd9206",
+          "gn": "U12 Boys (S22_23) Division 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "25b323b1",
+          "tn": "U10 Boys Inkerman Piranhas",
+          "gid": "97b8a032",
+          "gn": "U10 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "351dcfea",
+          "tn": "U10 Boys Inkerman Piranhas",
+          "gid": "d4ca1fd9",
+          "gn": "U10 Boys GP2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "d8c9d443",
+          "tn": "U10 Boys Inkerman Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:37.266Z",
+  "teams": [
+    {
+      "tid": "b1f7d530",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "718a10eb",
+      "sid": "bfbe9c11",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de2e8c8b",
+      "sid": "f2d66c1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c1bd6636",
+      "sid": "e2fad5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8772c953",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "04d028ca",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25b323b1",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "351dcfea",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8c9d443",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:56.711Z",
+  "games": [
+    "04149f03",
+    "074b7e0b",
+    "0a3a69df",
+    "11f3d433",
+    "137d2184",
+    "204026a7",
+    "25cf6af1",
+    "27794bb1",
+    "2b26016b",
+    "3d759dd1",
+    "425e1824",
+    "43ac926d",
+    "49499011",
+    "4ce02aa9",
+    "58b0cf6d",
+    "5d7ce2d8",
+    "60b09d43",
+    "6144f2df",
+    "66e4668e",
+    "6b19b903",
+    "6c2980c6",
+    "6e82d448",
+    "6f3d836f",
+    "7618c23a",
+    "771cbdea",
+    "78e8dcaf",
+    "7dc5d7bb",
+    "7e00435c",
+    "8d1d1fba",
+    "909b3d9e",
+    "928727bd",
+    "94bcae8b",
+    "98719e24",
+    "9ac1eeb9",
+    "9d19dcc4",
+    "aa6e0dee",
+    "aff9d92a",
+    "b3f5b26e",
+    "bc0680c7",
+    "bc6147ba",
+    "beb25e85",
+    "cc3e40d2",
+    "d8ca3f05",
+    "e528b024",
+    "e830153e",
+    "ea05e173",
+    "f10b7df0",
+    "f19e0bd4",
+    "f324358b"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "25cf6af1",
+      "sid": "bfbe9c11"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "25cf6af1",
+      "sid": "bfbe9c11"
+    }
+  }
+}

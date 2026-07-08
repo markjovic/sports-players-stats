@@ -1,1 +1,142 @@
-{"uuid":"eb90c300-023c-4475-9df3-2b8814fcfc9d","name":"Olivia McCulloch","gender":"Girls","sports":{"Basketball":{"gp":32,"pts":66,"fouls":17,"fg":31,"ft":4,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":5,"losses":2,"draws":2,"winPct":0.56,"statsChecked":"2026-07-05T15:39:34.604Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"Pascoe Vale Panthers Basketball Club","regs":[{"tid":"bcdd0d9e","tn":"Panthers U10 Girls Lime","gid":"cb6dae31","gn":"Saturday U10 Girls Group 3","age":"U10","div":null,"stats":{"gp":9,"fouls":9,"ft":1,"fg":19,"pts":39,"wins":5,"losses":2,"draws":2}}]},{"sid":"eeaf6409","sn":"Summer 2025/26","club":"Pascoe Vale Panthers Basketball Club","regs":[{"tid":"c62d6319","tn":"Panthers U10 Girls Lime","gid":"ada8ea82","gn":"Saturday U10 Girls Group 3","age":"U10","div":null,"stats":{"gp":15,"fouls":5,"ft":3,"fg":11,"pts":25}}]},{"sid":"8810ce3f","regs":[{"tid":"0c01616a","stats":{"gp":8,"pts":2,"fg":1,"fouls":3}}]}],"updatedAt":"2026-07-04T05:49:08.148Z","teams":[{"tid":"bcdd0d9e","sid":"e44fb190","status":"ACTIVE"},{"tid":"c62d6319","sid":"eeaf6409","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:52:44.178Z","games":["01d0ea1d","11657e5c","11733a60","1dcaf22e","22f1a9a8","262ab02d","2a8b4543","2cc89ca3","31e10917","32451d77","51eeb021","5b7997ef","61cbc52a","654f79da","887767a4","8db9375c","945a0eaf","9df82fac","ab39b6e8","c806bcf2","ee78bb46","f35077b7","f37c1c0a","f72d9f2c"],"records":{"maxGamePTS":{"v":12,"gameKey":"f72d9f2c","sid":"e44fb190"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "eb90c300-023c-4475-9df3-2b8814fcfc9d",
+  "name": "Olivia McCulloch",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 32,
+      "pts": 66,
+      "fouls": 17,
+      "fg": 31,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 2,
+      "draws": 2,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T15:39:34.604Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "Pascoe Vale Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "bcdd0d9e",
+          "tn": "Panthers U10 Girls Lime",
+          "gid": "cb6dae31",
+          "gn": "Saturday U10 Girls Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 19,
+            "pts": 39,
+            "wins": 5,
+            "losses": 2,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eeaf6409",
+      "sn": "Summer 2025/26",
+      "club": "Pascoe Vale Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "c62d6319",
+          "tn": "Panthers U10 Girls Lime",
+          "gid": "ada8ea82",
+          "gn": "Saturday U10 Girls Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 5,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "0c01616a",
+          "stats": {
+            "gp": 8,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          },
+          "gid": "3a6cce19",
+          "gn": "U10 Girls Division 1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:08.148Z",
+  "teams": [
+    {
+      "tid": "bcdd0d9e",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c62d6319",
+      "sid": "eeaf6409",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0c01616a",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:40.325Z",
+  "games": [
+    "01d0ea1d",
+    "11657e5c",
+    "11733a60",
+    "1dcaf22e",
+    "22f1a9a8",
+    "262ab02d",
+    "2a8b4543",
+    "2cc89ca3",
+    "31e10917",
+    "32451d77",
+    "51eeb021",
+    "5b7997ef",
+    "61cbc52a",
+    "654f79da",
+    "887767a4",
+    "8db9375c",
+    "945a0eaf",
+    "9df82fac",
+    "ab39b6e8",
+    "c806bcf2",
+    "ee78bb46",
+    "f35077b7",
+    "f37c1c0a",
+    "f72d9f2c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "f72d9f2c",
+      "sid": "e44fb190"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,135 @@
-{"uuid":"daad02fb-8212-4727-b20f-7de120ffe015","name":"Alexander Lentakis","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":84,"fouls":22,"fg":31,"ft":19,"threePt":1,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":1,"wins":3,"losses":7,"winPct":0.3,"statsChecked":"2026-07-05T14:45:05.354Z"}},"seasons":[{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"c5e072b2","tn":"Woodville Warriors U16 Boys 6","gid":"b9883b12","gn":"BOYS UNDER 16 C8","age":null,"div":"C8","stats":{"gp":5,"fouls":9,"ft":7,"fg":13,"threePt":1,"pts":36,"wins":3,"losses":2}}]},{"sid":"a48d8524","sn":"2022","regs":[{"tid":"f6b463f2","tn":"Woodville Warriors U14 Boys Phil","gid":"a83407dd","gn":"BOYS UNDER 14 C3","age":null,"div":"C3","stats":{"gp":5,"fouls":6,"ft":1,"fg":5,"pts":11}}]},{"sid":"0869ea69","regs":[{"tid":"45c03c84","stats":{"losses":5,"gp":5,"pts":37,"fg":13,"ft":11,"fouls":7}}]}],"updatedAt":"2026-05-31T11:04:29.224Z","teams":[{"tid":"45c03c84","sid":"0869ea69","status":"UPCOMING"},{"tid":"c5e072b2","sid":"8630ad4c","status":"COMPLETED"},{"tid":"f6b463f2","sid":"a48d8524","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:43.890Z","games":["05510994","30191424","3ecd7e1f","4eee3d04","4ff45633","5e434ab4","67dd3325","7e28e550","84c36dfc","99dfcb15","9d609831","bd01a01d","e012e96e","f899f296","f9b942ef"],"records":{"maxGamePTS":{"v":10,"gameKey":"7e28e550","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"99dfcb15","sid":"8630ad4c"}}}
+{
+  "uuid": "daad02fb-8212-4727-b20f-7de120ffe015",
+  "name": "Alexander Lentakis",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 84,
+      "fouls": 22,
+      "fg": 31,
+      "ft": 19,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 7,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T14:45:05.354Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "c5e072b2",
+          "tn": "Woodville Warriors U16 Boys 6",
+          "gid": "b9883b12",
+          "gn": "BOYS UNDER 16 C8",
+          "age": null,
+          "div": "C8",
+          "stats": {
+            "gp": 5,
+            "fouls": 9,
+            "ft": 7,
+            "fg": 13,
+            "threePt": 1,
+            "pts": 36,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a48d8524",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "f6b463f2",
+          "tn": "Woodville Warriors U14 Boys Phil",
+          "gid": "a83407dd",
+          "gn": "BOYS UNDER 14 C3",
+          "age": null,
+          "div": "C3",
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 5,
+            "pts": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "45c03c84",
+          "stats": {
+            "losses": 5,
+            "gp": 5,
+            "pts": 37,
+            "fg": 13,
+            "ft": 11,
+            "fouls": 7
+          },
+          "gid": "3f228580",
+          "gn": "BOYS UNDER 18 C3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T11:04:29.224Z",
+  "teams": [
+    {
+      "tid": "c5e072b2",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6b463f2",
+      "sid": "a48d8524",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45c03c84",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:04.216Z",
+  "games": [
+    "05510994",
+    "30191424",
+    "3ecd7e1f",
+    "4eee3d04",
+    "4ff45633",
+    "5e434ab4",
+    "67dd3325",
+    "7e28e550",
+    "84c36dfc",
+    "99dfcb15",
+    "9d609831",
+    "bd01a01d",
+    "e012e96e",
+    "f899f296",
+    "f9b942ef"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "7e28e550",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "99dfcb15",
+      "sid": "8630ad4c"
+    }
+  }
+}

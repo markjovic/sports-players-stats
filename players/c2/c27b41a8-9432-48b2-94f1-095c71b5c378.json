@@ -1,1 +1,98 @@
-{"uuid":"c27b41a8-9432-48b2-94f1-095c71b5c378","gender":null,"sports":{"Basketball":{"gp":2,"pts":6,"fg":3,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"winPct":1,"statsChecked":"2026-07-05T16:03:33.555Z"}},"seasons":[{"sid":"be330458","sn":"Autumn 2021","club":null,"regs":[{"tid":"a3998d98","tn":"The Triffids","gid":"34d100d8","gn":"Sunday Open Mixed","stats":{"gp":2,"pts":6,"fg":3,"wins":2}}]}],"updatedAt":"2026-06-11T23:44:28.879Z","records":{"maxGamePTS":{"v":6,"gameKey":"c54a2cd3","sid":"be330458"},"maxGameThreePt":{"v":null}},"games":["a3b03361","c54a2cd3"],"name":"Autumn 2021"}
+{
+  "uuid": "c27b41a8-9432-48b2-94f1-095c71b5c378",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 6,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:03:33.555Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be330458",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a3998d98",
+          "tn": "The Triffids",
+          "gid": "34d100d8",
+          "gn": "Sunday Open Mixed",
+          "stats": {
+            "gp": 2,
+            "pts": 6,
+            "fg": 3,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a8824800",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "ea936679",
+          "tn": "The Triffids",
+          "gid": "a1878d96",
+          "gn": "Sunday Open Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7612233b",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "46518882",
+          "tn": "The Triffids",
+          "gid": "dc90fcf9",
+          "gn": "Sunday Open Mixed A Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:28.879Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "c54a2cd3",
+      "sid": "be330458"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "a3b03361",
+    "c54a2cd3"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "a3998d98",
+      "sid": "be330458",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea936679",
+      "sid": "a8824800",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46518882",
+      "sid": "7612233b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:07.108Z"
+}

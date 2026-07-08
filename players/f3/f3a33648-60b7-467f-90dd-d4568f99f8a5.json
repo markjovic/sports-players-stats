@@ -1,1 +1,112 @@
-{"uuid":"f3a33648-60b7-467f-90dd-d4568f99f8a5","name":"Natasa Ugrinoski","gender":"Women","sports":{"Basketball":{"gp":16,"pts":150,"fouls":13,"fg":41,"ft":3,"foulOuts":{},"maxGamePTS":24,"maxGameThreePt":null,"wins":5,"losses":8,"winPct":0.38,"statsChecked":"2026-07-06T19:02:12.738Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"be1fc0cd","tn":"HT Heat","gid":"50c9ad5b","gn":"Tuesday Open Women Section 2","age":"Senior","div":null,"stats":{"gp":15,"fouls":13,"ft":3,"fg":34,"pts":136,"wins":5,"losses":8}}]},{"sid":"297562bc","regs":[{"tid":"bd81f3b0","stats":{"gp":1,"pts":14,"fg":7}},{"tid":"bd81f3b0","tn":"","gid":"e7b71ce1","gn":"Tuesday Women Division 2","div":null,"stats":{"gp":1,"pts":14,"fg":7}}]}],"updatedAt":"2026-07-06T18:35:19.807Z","teams":[{"tid":"be1fc0cd","sid":"5593103d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:54:35.735Z","records":{"maxGamePTS":{"v":24,"gameKey":"4d85e764","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["0f6739fe","3afe9073","43e0c251","4835b3e7","68eab82a","76cb791f","779fb0b2","b82fb898","b8788838","d199c28a","dba2924a","ebfbcbb8","f890c593"]}
+{
+  "uuid": "f3a33648-60b7-467f-90dd-d4568f99f8a5",
+  "name": "Natasa Ugrinoski",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 150,
+      "fouls": 13,
+      "fg": 41,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 24,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 8,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-06T19:02:12.738Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "be1fc0cd",
+          "tn": "HT Heat",
+          "gid": "50c9ad5b",
+          "gn": "Tuesday Open Women Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 34,
+            "pts": 136,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "bd81f3b0",
+          "stats": {
+            "gp": 1,
+            "pts": 14,
+            "fg": 7
+          },
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2"
+        },
+        {
+          "tid": "bd81f3b0",
+          "tn": "",
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 14,
+            "fg": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:19.807Z",
+  "teams": [
+    {
+      "tid": "be1fc0cd",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd81f3b0",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:00.009Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "4d85e764",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0f6739fe",
+    "3afe9073",
+    "43e0c251",
+    "4835b3e7",
+    "68eab82a",
+    "76cb791f",
+    "779fb0b2",
+    "b82fb898",
+    "b8788838",
+    "d199c28a",
+    "dba2924a",
+    "ebfbcbb8",
+    "f890c593"
+  ]
+}

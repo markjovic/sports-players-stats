@@ -1,1 +1,66 @@
-{"uuid":"2860d03d-5816-4193-9a8f-6b6652c1f83a","name":"Jamal Hayes","sports":{"Basketball":{"maxGamePTS":4,"maxGameThreePt":1,"foulOuts":{},"gp":16,"pts":17,"fg":5,"ft":1,"threePt":2,"fouls":16,"statsChecked":"2026-07-06T18:55:44.249Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"1eff76aa"}]},{"sid":"2411a36a","regs":[{"tid":"20c03694"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":4,"gameKey":"bc19f3c0","sid":"2411a36a"},"maxGameThreePt":{"v":1,"gameKey":"866b0815","sid":"73551fc8"}}}
+{
+  "uuid": "2860d03d-5816-4193-9a8f-6b6652c1f83a",
+  "name": "Jamal Hayes",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 16,
+      "pts": 17,
+      "fg": 5,
+      "ft": 1,
+      "threePt": 2,
+      "fouls": 16,
+      "statsChecked": "2026-07-06T18:55:44.249Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "1eff76aa",
+          "gid": "eb6af497",
+          "gn": "U16 / U18 Boys"
+        }
+      ]
+    },
+    {
+      "sid": "2411a36a",
+      "regs": [
+        {
+          "tid": "20c03694",
+          "gid": "9191826e",
+          "gn": "Friday U10 Boys Maroon"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "1eff76aa",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20c03694",
+      "sid": "2411a36a",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "bc19f3c0",
+      "sid": "2411a36a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "866b0815",
+      "sid": "73551fc8"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:44:13.165Z"
+}

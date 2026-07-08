@@ -1,1 +1,285 @@
-{"uuid":"4a4c07a1-94c2-457c-84d0-ad1742135bf9","name":"Lilly Mckay","gender":"Girls","sports":{"Basketball":{"gp":52,"pts":7,"fouls":15,"fg":2,"ft":3,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":2,"maxGameThreePt":null,"wins":26,"losses":59,"winPct":0.29,"draws":4,"statsChecked":"2026-07-05T15:22:23.370Z"}},"seasons":[{"sid":"9db4334a","sn":"Winter 2026","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"e7077a03","tn":"HBC U10 Girls GREEN - Coach Jordan","gid":"363f0ab7","gn":"Saturday U10 Girls","age":"U10","div":null,"stats":{"gp":7,"pts":1,"ft":1,"wins":4,"losses":3,"fouls":2}},{"tid":"e7077a03","tn":"HBC U10 Girls GREEN - Coach Jordan","gid":"c9429c5a","gn":"Saturday U10 Girls GRADING","age":"U10","div":null,"stats":{"gp":7,"fouls":2,"wins":4,"losses":3,"pts":1,"ft":1}}]},{"sid":"c279d5cf","sn":"Summer 2025/26","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"822fc9a9","tn":"HBC U10 Girls GREEN - Coach Jordan","gid":"92a2cbf0","gn":"Saturday U10 Girls B Grade","age":"U10","div":null,"stats":{"gp":12,"fouls":2,"fg":1,"pts":2,"finals":1,"wins":4,"losses":7,"draws":1}},{"tid":"822fc9a9","tn":"HBC U10 Girls GREEN - Coach Jordan","gid":"49245f3d","gn":"Saturday U10 Girls A Grade","age":"U10","div":null,"stats":{"gp":12,"finals":1,"wins":4,"losses":7,"draws":1,"pts":2,"fg":1,"fouls":2}},{"tid":"822fc9a9","tn":"HBC U10 Girls GREEN - Coach Jordan","gid":"0da1e53a","gn":"Saturday U10 Girls GRADING","age":"U10","div":null,"stats":{"gp":12,"finals":1,"wins":4,"losses":7,"draws":1,"pts":2,"fg":1,"fouls":2}}]},{"sid":"788813cf","sn":"Winter 2025","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"6531baa4","tn":"HBC U10 Girls BLACK","gid":"5a4a1133","gn":"Saturday U10 Girls B","age":"U10","div":null,"stats":{"gp":15,"fouls":8,"wins":1,"losses":14}},{"tid":"6531baa4","tn":"HBC U10 Girls BLACK","gid":"a82bc750","gn":"Saturday U23 Girls Grading Green","age":"U23","div":null,"stats":{"gp":15,"wins":1,"losses":14,"fouls":8}}]},{"sid":"9af1c292","sn":"Summer 2024/25","club":"Kalkallo Knights Basketball Club","regs":[{"tid":"4f956e2c","tn":"Knights U8 Girls UNBROKEN","gid":"b4fcc367","gn":"Saturday U8 Girls","age":"U8","div":null,"stats":{"gp":9,"ft":2,"fg":1,"pts":4,"wins":4,"losses":4,"draws":1}}]},{"sid":"8810ce3f","regs":[{"tid":"da677c71","stats":{"gp":9,"fouls":3}}]}],"updatedAt":"2026-07-04T05:56:56.827Z","teams":[{"tid":"e7077a03","sid":"9db4334a","status":"ACTIVE"},{"tid":"822fc9a9","sid":"c279d5cf","status":"COMPLETED"},{"tid":"6531baa4","sid":"788813cf","status":"COMPLETED"},{"tid":"4f956e2c","sid":"9af1c292","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:28:28.895Z","records":{"maxGamePTS":{"v":2,"gameKey":"b40ee8af","sid":"c279d5cf"},"maxGameThreePt":{"v":null}},"games":["0370ee14","0ea90a88","2035d11e","208247f3","22aff155","29f0553d","2a3edfff","2f7bb261","3b0a7d7e","3c5db00f","3f0011c1","4d7ee2ce","4f661388","52b00572","559ac442","59dfd25b","5e212adc","676e0bbd","733446b0","74e9c6ca","7617945e","8fb78ffd","90987b42","980ef439","9ac46098","aa42253e","b40ee8af","b52add48","b8577891","c221a9ab","c2b86d15","cd6b9249","d19e7d6c","d695e3f8","db21f243","ddd544ec","df3b9728","e441b64a","e7ce982c","f2f68f70","f62ffd9c","fdb177ef","fdd065be"]}
+{
+  "uuid": "4a4c07a1-94c2-457c-84d0-ad1742135bf9",
+  "name": "Lilly Mckay",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 7,
+      "fouls": 15,
+      "fg": 2,
+      "ft": 3,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 26,
+      "losses": 59,
+      "winPct": 0.29,
+      "draws": 4,
+      "statsChecked": "2026-07-05T15:22:23.370Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9db4334a",
+      "sn": "Winter 2026",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "e7077a03",
+          "tn": "HBC U10 Girls GREEN - Coach Jordan",
+          "gid": "363f0ab7",
+          "gn": "Saturday U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 1,
+            "ft": 1,
+            "wins": 4,
+            "losses": 3,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "e7077a03",
+          "tn": "HBC U10 Girls GREEN - Coach Jordan",
+          "gid": "c9429c5a",
+          "gn": "Saturday U10 Girls GRADING",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "wins": 4,
+            "losses": 3,
+            "pts": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c279d5cf",
+      "sn": "Summer 2025/26",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "822fc9a9",
+          "tn": "HBC U10 Girls GREEN - Coach Jordan",
+          "gid": "92a2cbf0",
+          "gn": "Saturday U10 Girls B Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "822fc9a9",
+          "tn": "HBC U10 Girls GREEN - Coach Jordan",
+          "gid": "49245f3d",
+          "gn": "Saturday U10 Girls A Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "finals": 1,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "822fc9a9",
+          "tn": "HBC U10 Girls GREEN - Coach Jordan",
+          "gid": "0da1e53a",
+          "gn": "Saturday U10 Girls GRADING",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "finals": 1,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "788813cf",
+      "sn": "Winter 2025",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "6531baa4",
+          "tn": "HBC U10 Girls BLACK",
+          "gid": "5a4a1133",
+          "gn": "Saturday U10 Girls B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "wins": 1,
+            "losses": 14
+          }
+        },
+        {
+          "tid": "6531baa4",
+          "tn": "HBC U10 Girls BLACK",
+          "gid": "a82bc750",
+          "gn": "Saturday U23 Girls Grading Green",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "wins": 1,
+            "losses": 14,
+            "fouls": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9af1c292",
+      "sn": "Summer 2024/25",
+      "club": "Kalkallo Knights Basketball Club",
+      "regs": [
+        {
+          "tid": "4f956e2c",
+          "tn": "Knights U8 Girls UNBROKEN",
+          "gid": "b4fcc367",
+          "gn": "Saturday U8 Girls",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "ft": 2,
+            "fg": 1,
+            "pts": 4,
+            "wins": 4,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "da677c71",
+          "stats": {
+            "gp": 9,
+            "fouls": 3
+          },
+          "gid": "2a647118",
+          "gn": "U10 Girls Division 2/3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:56:56.827Z",
+  "teams": [
+    {
+      "tid": "e7077a03",
+      "sid": "9db4334a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "822fc9a9",
+      "sid": "c279d5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6531baa4",
+      "sid": "788813cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4f956e2c",
+      "sid": "9af1c292",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da677c71",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:45:12.422Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "b40ee8af",
+      "sid": "c279d5cf"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0370ee14",
+    "0ea90a88",
+    "2035d11e",
+    "208247f3",
+    "22aff155",
+    "29f0553d",
+    "2a3edfff",
+    "2f7bb261",
+    "3b0a7d7e",
+    "3c5db00f",
+    "3f0011c1",
+    "4d7ee2ce",
+    "4f661388",
+    "52b00572",
+    "559ac442",
+    "59dfd25b",
+    "5e212adc",
+    "676e0bbd",
+    "733446b0",
+    "74e9c6ca",
+    "7617945e",
+    "8fb78ffd",
+    "90987b42",
+    "980ef439",
+    "9ac46098",
+    "aa42253e",
+    "b40ee8af",
+    "b52add48",
+    "b8577891",
+    "c221a9ab",
+    "c2b86d15",
+    "cd6b9249",
+    "d19e7d6c",
+    "d695e3f8",
+    "db21f243",
+    "ddd544ec",
+    "df3b9728",
+    "e441b64a",
+    "e7ce982c",
+    "f2f68f70",
+    "f62ffd9c",
+    "fdb177ef",
+    "fdd065be"
+  ]
+}

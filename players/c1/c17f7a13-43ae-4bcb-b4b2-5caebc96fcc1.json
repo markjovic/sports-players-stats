@@ -1,1 +1,134 @@
-{"uuid":"c17f7a13-43ae-4bcb-b4b2-5caebc96fcc1","gender":null,"sports":{"Basketball":{"gp":17,"pts":2,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"losses":8,"draws":10,"winPct":0.18,"statsChecked":"2026-07-05T15:51:22.568Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"St. Bernards Old Collegians Basketball Club","regs":[{"tid":"1f6ac40a","tn":"St Bernards  U12 Boys (8)","gid":"1727224b","gn":"Saturday U12 Boys E2 Grade","stats":{"gp":11,"pts":2,"fg":1,"wins":2,"losses":4,"draws":5}},{"tid":"1f6ac40a","tn":"St Bernards  U12 Boys (8)","gid":"d3f905f2","gn":"Saturday U12 Boys E1 Grade","stats":{"gp":11,"wins":2,"losses":4,"draws":5,"pts":2,"fg":1}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"St. Bernards Old Collegians Basketball Club","regs":[{"tid":"fe73d7b5","tn":"St Bernards  U12 Boys (9)","gid":"167a2f03","gn":"Saturday U12 Boys D2 Grade","stats":{"gp":6}}]}],"updatedAt":"2026-06-11T23:44:25.470Z","games":["0faa1c2f","27b16f81","2dd8699d","435fd5f5","4ab45e9f","4db7be28","6f59c81b","7b0a7304","82580099","8baa39ab","99969124","9dae2e31","a3e0fb3f","b1523743","cd682db7","d4752ac3","d99df632"],"records":{"maxGamePTS":{"v":2,"gameKey":"27b16f81","sid":"8e4e71fc"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "c17f7a13-43ae-4bcb-b4b2-5caebc96fcc1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 17,
+      "pts": 2,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 8,
+      "draws": 10,
+      "winPct": 0.18,
+      "statsChecked": "2026-07-05T15:51:22.568Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "St. Bernards Old Collegians Basketball Club",
+      "regs": [
+        {
+          "tid": "1f6ac40a",
+          "tn": "St Bernards  U12 Boys (8)",
+          "gid": "1727224b",
+          "gn": "Saturday U12 Boys E2 Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 2,
+            "fg": 1,
+            "wins": 2,
+            "losses": 4,
+            "draws": 5
+          }
+        },
+        {
+          "tid": "1f6ac40a",
+          "tn": "St Bernards  U12 Boys (8)",
+          "gid": "d3f905f2",
+          "gn": "Saturday U12 Boys E1 Grade",
+          "stats": {
+            "gp": 11,
+            "wins": 2,
+            "losses": 4,
+            "draws": 5,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "St. Bernards Old Collegians Basketball Club",
+      "regs": [
+        {
+          "tid": "fe73d7b5",
+          "tn": "St Bernards  U12 Boys (9)",
+          "gid": "167a2f03",
+          "gn": "Saturday U12 Boys D2 Grade",
+          "stats": {
+            "gp": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "3d46bcbb",
+          "tn": "St Bernards  U10 Boys (4)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:25.470Z",
+  "games": [
+    "0faa1c2f",
+    "27b16f81",
+    "2dd8699d",
+    "435fd5f5",
+    "4ab45e9f",
+    "4db7be28",
+    "6f59c81b",
+    "7b0a7304",
+    "82580099",
+    "8baa39ab",
+    "99969124",
+    "9dae2e31",
+    "a3e0fb3f",
+    "b1523743",
+    "cd682db7",
+    "d4752ac3",
+    "d99df632"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "27b16f81",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "1f6ac40a",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe73d7b5",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3d46bcbb",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:14.979Z"
+}

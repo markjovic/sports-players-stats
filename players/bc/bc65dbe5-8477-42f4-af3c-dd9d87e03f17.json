@@ -1,1 +1,117 @@
-{"uuid":"bc65dbe5-8477-42f4-af3c-dd9d87e03f17","name":"Leon Fernandez","gender":"Boys","sports":{"Basketball":{"gp":12,"pts":15,"fouls":17,"fg":7,"ft":1,"foulOuts":{"e1d13302":1},"maxGamePTS":4,"maxGameThreePt":null,"wins":16,"losses":8,"winPct":0.67,"statsChecked":"2026-07-05T14:44:15.782Z"}},"seasons":[{"sid":"e1d13302","sn":"Autumn 2026","regs":[{"tid":"763211b7","tn":"OLOP Sonics","gid":"b889fb58","gn":"Monday 5/6 Boys Division 3","age":null,"div":"Division 3","stats":{"gp":12,"fouls":17,"fg":7,"pts":15,"ft":1,"wins":8,"losses":4}},{"tid":"763211b7","tn":"OLOP Sonics","gid":"999f9043","gn":"Monday 5/6 Boys Grading","age":null,"div":null,"stats":{"gp":12,"fouls":17,"fg":7,"pts":15,"foulOuts":1,"wins":8,"losses":4,"ft":1}}]}],"updatedAt":"2026-07-04T06:00:15.199Z","teams":[{"tid":"763211b7","sid":"e1d13302","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:39:43.927Z","games":["068fb07e","1e796d56","316049e1","62337182","7a1ae581","917db09c","9e2286f5","a4f4dcc5","ac31a2d6","be90434b","f3fb07b6","fd1bf164"],"records":{"maxGamePTS":{"v":4,"gameKey":"9e2286f5","sid":"e1d13302"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "bc65dbe5-8477-42f4-af3c-dd9d87e03f17",
+  "name": "Leon Fernandez",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 15,
+      "fouls": 17,
+      "fg": 7,
+      "ft": 1,
+      "foulOuts": {
+        "e1d13302": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "losses": 8,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T14:44:15.782Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e1d13302",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "763211b7",
+          "tn": "OLOP Sonics",
+          "gid": "b889fb58",
+          "gn": "Monday 5/6 Boys Division 3",
+          "age": null,
+          "div": "Division 3",
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "fg": 7,
+            "pts": 15,
+            "ft": 1,
+            "wins": 8,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "763211b7",
+          "tn": "OLOP Sonics",
+          "gid": "999f9043",
+          "gn": "Monday 5/6 Boys Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "fg": 7,
+            "pts": 15,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 4,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98dc2b10",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "ecbc8ece",
+          "tn": "OLOP Sonics",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T06:00:15.199Z",
+  "teams": [
+    {
+      "tid": "763211b7",
+      "sid": "e1d13302",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ecbc8ece",
+      "sid": "98dc2b10",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:57.797Z",
+  "games": [
+    "068fb07e",
+    "1e796d56",
+    "316049e1",
+    "62337182",
+    "7a1ae581",
+    "917db09c",
+    "9e2286f5",
+    "a4f4dcc5",
+    "ac31a2d6",
+    "be90434b",
+    "f3fb07b6",
+    "fd1bf164"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "9e2286f5",
+      "sid": "e1d13302"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

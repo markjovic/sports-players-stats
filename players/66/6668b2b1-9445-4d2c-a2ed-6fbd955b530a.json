@@ -1,1 +1,289 @@
-{"uuid":"6668b2b1-9445-4d2c-a2ed-6fbd955b530a","name":"Ben Farrugia","gender":"Mixed","sports":{"Basketball":{"gp":33,"pts":450,"fouls":60,"fg":101,"ft":38,"threePt":70,"foulOuts":{"f7072684":1},"finals":2,"gfApps":2,"gfWins":2,"finalsPerSeason":0.33,"maxGamePTS":28,"maxGameThreePt":6,"losses":13,"winPct":0.65,"wins":24,"statsChecked":"2026-07-05T15:36:16.341Z"}},"seasons":[{"sid":"f7072684","sn":"Summer 2025/26","regs":[{"tid":"6a2978d6","tn":"La Marzocco","gid":"246c3c3f","gn":"Tues Men Premier","age":null,"div":null,"stats":{"gp":13,"fouls":27,"ft":23,"fg":52,"threePt":37,"pts":238,"foulOuts":1,"wins":7,"losses":5}}]},{"sid":"05f57afa","sn":"2025","regs":[{"tid":"0fdff909","tn":"Greengate Warriors ","gid":"2b44b07e","gn":"Open Mixed A","age":"Senior","div":null,"stats":{"gp":6,"fouls":9,"ft":3,"fg":10,"threePt":12,"pts":59,"finals":1,"gfApps":1,"wins":6,"gfWins":1}}]},{"sid":"9477ea50","sn":"Spring 2025","regs":[{"tid":"cd1e67f3","tn":"Greengate Warriors","gid":"0690d9b4","gn":"Wednesday Open Mixed B/C Grade","age":"Senior","div":null,"stats":{"gp":6,"fouls":12,"ft":5,"fg":23,"threePt":6,"pts":69,"losses":3,"wins":3}},{"tid":"cd1e67f3","tn":"Greengate Warriors","gid":"8737d815","gn":"Wednesday Open Mixed Grading","age":"Senior","div":null,"stats":{"gp":6,"fouls":12,"ft":5,"fg":23,"threePt":6,"pts":69,"losses":3,"wins":3}}]},{"sid":"0c7bac59","sn":"2024","regs":[{"tid":"2d7bc980","tn":"Greengate Warriors","gid":"43726264","gn":"Open Mixed","age":"Senior","div":null,"stats":{"gp":5,"fouls":4,"ft":4,"fg":9,"threePt":8,"pts":46,"finals":1,"gfApps":1,"wins":4,"losses":1,"gfWins":1}}]},{"sid":"32cd834a","sn":"Autumn 2020","regs":[{"tid":"4a95b73e","tn":"Big Girls Don't Kawhi","gid":"f2add9ef","gn":"Tuesday Open Men A/B","age":"Senior","div":null,"stats":{"gp":1,"fouls":4,"fg":4,"threePt":3,"pts":17}}]},{"sid":"ec012c43","regs":[{"tid":"bd4fb847","stats":{"gp":2,"pts":21,"fg":3,"ft":3,"threePt":4,"fouls":4,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-03T00:44:56.409Z","teams":[{"tid":"6a2978d6","sid":"f7072684","status":"ACTIVE"},{"tid":"cd1e67f3","sid":"9477ea50","status":"COMPLETED"},{"tid":"0fdff909","sid":"05f57afa","status":"COMPLETED"},{"tid":"0fdff909","sid":"05f57afa","status":"COMPLETED"},{"tid":"2d7bc980","sid":"0c7bac59","status":"COMPLETED"},{"tid":"4a95b73e","sid":"32cd834a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:45:22.853Z","records":{"maxGamePTS":{"v":28,"gameKey":"b6c0f2e2","sid":"f7072684"},"maxGameThreePt":{"v":6,"gameKey":"aa4d7a11","sid":"f7072684"}},"games":["0599e17a","1adf0819","26959848","3ff788bc","4b9e1dfb","4db7aecc","5057e29e","568e1aa2","57821462","640afa7e","68863ec6","6e295d6b","78565b01","7bcf019f","7da3636b","853e2713","8deec870","8e1e2235","9153ef24","994a9caf","aa4d7a11","abf6ef2e","b6c0f2e2","be2d4574","be728871","e8ddd9ba","f202c6b5","f5366866","f5fe18e9","f72c21b6","f95bb452","fc8d3826"]}
+{
+  "uuid": "6668b2b1-9445-4d2c-a2ed-6fbd955b530a",
+  "name": "Ben Farrugia",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 450,
+      "fouls": 60,
+      "fg": 101,
+      "ft": 38,
+      "threePt": 70,
+      "foulOuts": {
+        "f7072684": 1
+      },
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 28,
+      "maxGameThreePt": 6,
+      "losses": 13,
+      "winPct": 0.65,
+      "wins": 24,
+      "statsChecked": "2026-07-05T15:36:16.341Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f7072684",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "6a2978d6",
+          "tn": "La Marzocco",
+          "gid": "246c3c3f",
+          "gn": "Tues Men Premier",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 27,
+            "ft": 23,
+            "fg": 52,
+            "threePt": 37,
+            "pts": 238,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "05f57afa",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "0fdff909",
+          "tn": "Greengate Warriors ",
+          "gid": "2b44b07e",
+          "gn": "Open Mixed A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "ft": 3,
+            "fg": 10,
+            "threePt": 12,
+            "pts": 59,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9477ea50",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "cd1e67f3",
+          "tn": "Greengate Warriors",
+          "gid": "0690d9b4",
+          "gn": "Wednesday Open Mixed B/C Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 23,
+            "threePt": 6,
+            "pts": 69,
+            "losses": 3,
+            "wins": 3
+          }
+        },
+        {
+          "tid": "cd1e67f3",
+          "tn": "Greengate Warriors",
+          "gid": "8737d815",
+          "gn": "Wednesday Open Mixed Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 23,
+            "threePt": 6,
+            "pts": 69,
+            "losses": 3,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c7bac59",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "2d7bc980",
+          "tn": "Greengate Warriors",
+          "gid": "43726264",
+          "gn": "Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 4,
+            "fg": 9,
+            "threePt": 8,
+            "pts": 46,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32cd834a",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "4a95b73e",
+          "tn": "Big Girls Don't Kawhi",
+          "gid": "f2add9ef",
+          "gn": "Tuesday Open Men A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "fg": 4,
+            "threePt": 3,
+            "pts": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec012c43",
+      "regs": [
+        {
+          "tid": "bd4fb847",
+          "stats": {
+            "gp": 2,
+            "pts": 21,
+            "fg": 3,
+            "ft": 3,
+            "threePt": 4,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 1
+          },
+          "gid": "6fe97810",
+          "gn": "Wednesday Premier League"
+        }
+      ]
+    },
+    {
+      "sid": "af9ab107",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "1639fce3",
+          "tn": "La Marzocco",
+          "gid": "03104ea5",
+          "gn": "Tues Men Premier",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T00:44:56.409Z",
+  "teams": [
+    {
+      "tid": "6a2978d6",
+      "sid": "f7072684",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0fdff909",
+      "sid": "05f57afa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd1e67f3",
+      "sid": "9477ea50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d7bc980",
+      "sid": "0c7bac59",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4a95b73e",
+      "sid": "32cd834a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd4fb847",
+      "sid": "ec012c43",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1639fce3",
+      "sid": "af9ab107",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:49.900Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 28,
+      "gameKey": "b6c0f2e2",
+      "sid": "f7072684"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "aa4d7a11",
+      "sid": "f7072684"
+    }
+  },
+  "games": [
+    "0599e17a",
+    "1adf0819",
+    "26959848",
+    "3ff788bc",
+    "4b9e1dfb",
+    "4db7aecc",
+    "5057e29e",
+    "568e1aa2",
+    "57821462",
+    "640afa7e",
+    "68863ec6",
+    "6e295d6b",
+    "78565b01",
+    "7bcf019f",
+    "7da3636b",
+    "853e2713",
+    "8deec870",
+    "8e1e2235",
+    "9153ef24",
+    "994a9caf",
+    "aa4d7a11",
+    "abf6ef2e",
+    "b6c0f2e2",
+    "be2d4574",
+    "be728871",
+    "e8ddd9ba",
+    "f202c6b5",
+    "f5366866",
+    "f5fe18e9",
+    "f72c21b6",
+    "f95bb452",
+    "fc8d3826"
+  ]
+}

@@ -1,1 +1,94 @@
-{"uuid":"64765e0f-1909-4c5d-a523-539d8ce62ba8","name":"Luke Burns","gender":"Mixed","sports":{"Basketball":{"gp":11,"pts":4,"fouls":5,"fg":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":2,"losses":9,"winPct":0.18,"statsChecked":"2026-07-05T16:01:28.341Z"}},"seasons":[{"sid":"d10de1ac","sn":"Spring 2025","regs":[{"tid":"1f101d40","tn":"PACERS AA","gid":"7501a08f","gn":"Open Mixed All Abilities Hoopers","age":"Senior","div":null,"stats":{"gp":11,"fouls":5,"fg":2,"pts":4,"wins":2,"losses":9}}]}],"updatedAt":"2026-06-02T12:48:37.374Z","teams":[{"tid":"1f101d40","sid":"d10de1ac","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:44:32.426Z","records":{"maxGamePTS":{"v":4,"gameKey":"9d6f8452","sid":"d10de1ac"},"maxGameThreePt":{"v":null}},"games":["1174e2f7","215ae35e","230ec97a","263f1543","2b265ccb","42a067ee","61a1eb17","6320fe9a","9d6f8452","c76018de","edae9edc"]}
+{
+  "uuid": "64765e0f-1909-4c5d-a523-539d8ce62ba8",
+  "name": "Luke Burns",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 4,
+      "fouls": 5,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 9,
+      "winPct": 0.18,
+      "statsChecked": "2026-07-05T16:01:28.341Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d10de1ac",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "1f101d40",
+          "tn": "PACERS AA",
+          "gid": "7501a08f",
+          "gn": "Open Mixed All Abilities Hoopers",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "fg": 2,
+            "pts": 4,
+            "wins": 2,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbd5087",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "c72e3b9e",
+          "tn": "Raptors",
+          "gid": "a7deb525",
+          "gn": "Monday Open Men 35 and Over",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T12:48:37.374Z",
+  "teams": [
+    {
+      "tid": "1f101d40",
+      "sid": "d10de1ac",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c72e3b9e",
+      "sid": "bfbd5087",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:36.850Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "9d6f8452",
+      "sid": "d10de1ac"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1174e2f7",
+    "215ae35e",
+    "230ec97a",
+    "263f1543",
+    "2b265ccb",
+    "42a067ee",
+    "61a1eb17",
+    "6320fe9a",
+    "9d6f8452",
+    "c76018de",
+    "edae9edc"
+  ]
+}

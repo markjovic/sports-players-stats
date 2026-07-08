@@ -1,1 +1,112 @@
-{"uuid":"f38ec1ed-2ab2-43fa-a07a-5f873f9f8219","gender":null,"sports":{"Basketball":{"gp":10,"pts":14,"fouls":10,"fg":6,"ft":2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"losses":12,"draws":6,"winPct":0.1,"statsChecked":"2026-07-05T16:23:59.222Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"1c33cae6","tn":"CSBD U14 Boys 5","gid":"b33a2530","gn":"Saturday U14 Boys C2 Grade","stats":{"gp":10,"pts":14,"fouls":10,"fg":6,"ft":2,"wins":1,"losses":6,"draws":3}},{"tid":"1c33cae6","tn":"CSBD U14 Boys 5","gid":"4bb86c8d","gn":"Saturday U14 Boys C1 Grade","stats":{"gp":10,"pts":14,"fouls":10,"fg":6,"ft":2,"wins":1,"losses":6,"draws":3}}]}],"updatedAt":"2026-06-11T23:46:12.688Z","games":["1204fe3e","3834b4c1","3c100045","5f223ed8","64b11995","8b1d46a2","c4c5dd5b","c92a3bb8","cf9ad5a9","dfdda564"],"records":{"maxGamePTS":{"v":6,"gameKey":"64b11995","sid":"8e4e71fc"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "f38ec1ed-2ab2-43fa-a07a-5f873f9f8219",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 14,
+      "fouls": 10,
+      "fg": 6,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 12,
+      "draws": 6,
+      "winPct": 0.1,
+      "statsChecked": "2026-07-05T16:23:59.222Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "1c33cae6",
+          "tn": "CSBD U14 Boys 5",
+          "gid": "b33a2530",
+          "gn": "Saturday U14 Boys C2 Grade",
+          "stats": {
+            "gp": 10,
+            "pts": 14,
+            "fouls": 10,
+            "fg": 6,
+            "ft": 2,
+            "wins": 1,
+            "losses": 6,
+            "draws": 3
+          }
+        },
+        {
+          "tid": "1c33cae6",
+          "tn": "CSBD U14 Boys 5",
+          "gid": "4bb86c8d",
+          "gn": "Saturday U14 Boys C1 Grade",
+          "stats": {
+            "gp": 10,
+            "pts": 14,
+            "fouls": 10,
+            "fg": 6,
+            "ft": 2,
+            "wins": 1,
+            "losses": 6,
+            "draws": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "0b19fe92",
+          "tn": "CSBD U14 Boys 11",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:12.688Z",
+  "games": [
+    "1204fe3e",
+    "3834b4c1",
+    "3c100045",
+    "5f223ed8",
+    "64b11995",
+    "8b1d46a2",
+    "c4c5dd5b",
+    "c92a3bb8",
+    "cf9ad5a9",
+    "dfdda564"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "64b11995",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "1c33cae6",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b19fe92",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:56.150Z"
+}

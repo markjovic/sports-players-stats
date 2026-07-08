@@ -1,1 +1,81 @@
-{"uuid":"8e6e4a38-0ebd-43bf-8490-389858d2fbdd","name":"Zoe Hancock","gender":"Girls","sports":{"Basketball":{"gp":4,"fouls":7,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":2,"losses":2,"winPct":0.5,"statsChecked":"2026-07-05T15:49:56.094Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"0f25e6ec","tn":"St Kilda Dolphins","gid":"fd85b71d","gn":"Friday Year 4 Girls B","age":null,"div":null,"stats":{"gp":4,"fouls":7,"wins":2,"losses":2}}]}],"updatedAt":"2026-07-04T05:54:14.370Z","teams":[{"tid":"0f25e6ec","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:26:59.146Z","games":["35a4e303","6207cd94","78b8c3b2","a19d6e06"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "8e6e4a38-0ebd-43bf-8490-389858d2fbdd",
+  "name": "Zoe Hancock",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "fouls": 7,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 2,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:49:56.094Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "0f25e6ec",
+          "tn": "St Kilda Dolphins",
+          "gid": "fd85b71d",
+          "gn": "Friday Year 4 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 7,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "0c90e81f",
+          "tn": "St Kilda Dolphins",
+          "gid": "a6d81fd5",
+          "gn": "Friday Year 4 Girls B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:14.370Z",
+  "teams": [
+    {
+      "tid": "0f25e6ec",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0c90e81f",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:22.774Z",
+  "games": [
+    "35a4e303",
+    "6207cd94",
+    "78b8c3b2",
+    "a19d6e06"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

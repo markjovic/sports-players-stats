@@ -1,1 +1,90 @@
-{"uuid":"16596c3a-23be-4502-a0cc-2c1c5a538d1b","name":"Stevie Smith","gender":"Girls","sports":{"Basketball":{"gp":7,"pts":5,"fouls":3,"fg":2,"ft":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":6,"losses":4,"winPct":0.6,"statsChecked":"2026-07-05T15:47:02.247Z"}},"seasons":[{"sid":"426bbb74","sn":"Winter 2026","club":"Eynesbury Dingoes Basketball Club","regs":[{"tid":"2a3471a6","tn":"Dingoes U12 Girls","gid":"bfb8b468","gn":"U12 Girls C Grade","age":"U12","div":null,"stats":{"gp":7,"pts":5,"fg":2,"ft":1,"fouls":3,"wins":3,"losses":2}},{"tid":"2a3471a6","tn":"Dingoes U12 Girls","gid":"8e8bc632","gn":"U12 Girls B Grade","age":"U12","div":null,"stats":{"gp":7,"fouls":3,"wins":3,"losses":2,"pts":5,"fg":2,"ft":1}}]}],"updatedAt":"2026-07-04T05:42:27.977Z","teams":[{"tid":"2a3471a6","sid":"426bbb74","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:00:48.136Z","records":{"maxGamePTS":{"v":4,"gameKey":"cc8944e7","sid":"426bbb74"},"maxGameThreePt":{"v":null}},"games":["3bccbcd0","533fce49","bb7a75ed","d884e8ee","fe5ba7c9"]}
+{
+  "uuid": "16596c3a-23be-4502-a0cc-2c1c5a538d1b",
+  "name": "Stevie Smith",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 5,
+      "fouls": 3,
+      "fg": 2,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 4,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T15:47:02.247Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "426bbb74",
+      "sn": "Winter 2026",
+      "club": "Eynesbury Dingoes Basketball Club",
+      "regs": [
+        {
+          "tid": "2a3471a6",
+          "tn": "Dingoes U12 Girls",
+          "gid": "8e8bc632",
+          "gn": "U12 Girls B Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 3,
+            "wins": 3,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "2a3471a6",
+          "tn": "Dingoes U12 Girls",
+          "gid": "8e8bc632",
+          "gn": "U12 Girls B Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 3,
+            "wins": 3,
+            "losses": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:42:27.977Z",
+  "teams": [
+    {
+      "tid": "2a3471a6",
+      "sid": "426bbb74",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:13.066Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "cc8944e7",
+      "sid": "426bbb74"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3bccbcd0",
+    "533fce49",
+    "bb7a75ed",
+    "d884e8ee",
+    "fe5ba7c9"
+  ]
+}

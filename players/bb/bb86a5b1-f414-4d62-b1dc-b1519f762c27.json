@@ -1,1 +1,393 @@
-{"uuid":"bb86a5b1-f414-4d62-b1dc-b1519f762c27","name":"Declan Begbie","gender":"Men","sports":{"Basketball":{"gp":63,"pts":432,"fouls":75,"fg":169,"ft":40,"threePt":18,"foulOuts":{"ba7f8a1f":1},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":21,"maxGameThreePt":4,"losses":38,"winPct":0.3,"wins":18,"draws":4,"statsChecked":"2026-07-05T16:03:26.558Z"}},"seasons":[{"sid":"ba7f8a1f","sn":"Summer 2022/23","regs":[{"tid":"caf874f1","tn":"Flint Tropics ","gid":"1685c2ec","gn":"Monday Men C1","age":null,"div":"C1","stats":{"gp":15,"fouls":27,"ft":11,"fg":53,"threePt":7,"pts":138,"foulOuts":1,"wins":6,"losses":8,"draws":1}},{"tid":"caf874f1","tn":"Flint Tropics ","gid":"05302655","gn":"Monday Men C2","age":null,"div":"C2","stats":{"gp":15,"ft":11,"fg":53,"pts":138,"wins":6,"losses":8,"draws":1,"threePt":7,"fouls":27}},{"tid":"caf874f1","tn":"Flint Tropics ","gid":"5dacc216","gn":"Monday Men D3","age":null,"div":"D3","stats":{"gp":15,"fouls":27,"fg":53,"pts":138,"wins":6,"losses":8,"draws":1,"ft":11,"threePt":7}}]},{"sid":"f145133f","sn":"Winter 2022","regs":[{"tid":"b054131c","tn":"Rebel","gid":"02ca6fd1","gn":"Monday Men D1","age":null,"div":"D1","stats":{"gp":13,"fouls":12,"ft":14,"fg":43,"threePt":7,"pts":121,"losses":12,"draws":1}}]},{"sid":"ed4c77aa","sn":"Summer 2021/22","club":"Frankston High Basketball Club","regs":[{"tid":"1f578a67","tn":"FHS U18 Boys Fairies","gid":"053a72ea","gn":"Monday U18 Boys A Grade","age":"U18","div":null,"stats":{"gp":8,"fouls":1,"fg":21,"threePt":2,"pts":49,"finals":1,"gfApps":1,"losses":1,"ft":1}},{"tid":"1f578a67","tn":"FHS U18 Boys Fairies","gid":"d7946d04","gn":"Monday U18 Boys Grading","age":"U18","div":null,"stats":{"gp":8,"ft":1,"fg":21,"threePt":2,"pts":49,"finals":1,"gfApps":1,"losses":1,"fouls":1}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Frankston Blues Basketball Club","regs":[{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"29611eb9","gn":"18 Boys - VJL2","age":null,"div":"L2","stats":{"gp":16,"fouls":30,"fg":26,"pts":63,"ft":11}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"d4ab83b6","gn":"U18B Crossover 2 - VJL","age":null,"div":null,"stats":{"gp":16,"fouls":30,"ft":11,"pts":63,"fg":26}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"280f32df","gn":"U18B Grading 2 - BB Pool B","age":null,"div":null,"stats":{"gp":16,"fouls":30,"ft":11,"fg":26,"pts":63}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"e3b56911","gn":"U18B Crossover 1","age":null,"div":null,"stats":{"gp":16,"fouls":30,"fg":26,"pts":63,"ft":11}},{"tid":"86367586","tn":"Frankston U18 Boys 2","gid":"f99ca3ba","gn":"U18B Grading 1 - Pool 2C","age":null,"div":null,"stats":{"gp":16,"fouls":30,"ft":11,"fg":26,"pts":63}}]},{"sid":"307e7a12","sn":"Summer 2020/21","club":"~[ARCHIVED] Peninsula Bobcats Basketball Club","regs":[{"tid":"99ff3d20","tn":"PBBC U21B Philippe","gid":"60bc1db0","gn":"Thursday U18/21 Boys A","age":"U18","div":null,"stats":{"gp":11,"fouls":5,"ft":3,"fg":26,"threePt":2,"pts":61}}]}],"updatedAt":"2026-06-02T15:25:36.186Z","teams":[{"tid":"caf874f1","sid":"ba7f8a1f","status":"COMPLETED"},{"tid":"b054131c","sid":"f145133f","status":"COMPLETED"},{"tid":"1f578a67","sid":"ed4c77aa","status":"COMPLETED"},{"tid":"86367586","sid":"a5dfc5c1","status":"COMPLETED"},{"tid":"99ff3d20","sid":"307e7a12","status":"COMPLETED"},{"tid":"f0400d27","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:39:17.359Z","records":{"maxGamePTS":{"v":21,"gameKey":"7779160e","sid":"f145133f"},"maxGameThreePt":{"v":4,"gameKey":"89150e63","sid":"ba7f8a1f"}},"games":["02bca2cb","02d3366c","06ac8e0e","0ca516ef","0ffc23c0","11b41bfe","1a0de74d","1bf166b8","1d4b4a87","1dfeaa3c","20b1b4c6","20c1bd81","22f110a1","23e3fcf8","240bbb60","281946e1","28344e99","29a8ffc3","368b48ee","3de64d7a","4783cbea","4e986732","4f3c143c","59389acc","5b253315","5c8b9a97","5dae1ab9","631f754d","730e272e","7779160e","7ebfc038","8577dd65","89150e63","8e6027e3","8f06c1dc","9600a742","9b0d15f9","9de6d9d8","a23cc90f","a38083a6","a61d763c","aac6c7c8","ab7131be","aec1a089","b60ec36b","b69ab127","b72ce91a","bb92686d","bcc7f4a3","be4a8f29","bf6866e0","c818990c","cdb879ee","cf4b2fc8","d0cdc0ac","ddccd545","dfdde17f","e31e7628","f5f45598","f832a902","fc35678e","fc9b175b","fd0633e8"]}
+{
+  "uuid": "bb86a5b1-f414-4d62-b1dc-b1519f762c27",
+  "name": "Declan Begbie",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 63,
+      "pts": 432,
+      "fouls": 75,
+      "fg": 169,
+      "ft": 40,
+      "threePt": 18,
+      "foulOuts": {
+        "ba7f8a1f": 1
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 21,
+      "maxGameThreePt": 4,
+      "losses": 38,
+      "winPct": 0.3,
+      "wins": 18,
+      "draws": 4,
+      "statsChecked": "2026-07-05T16:03:26.558Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ba7f8a1f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "caf874f1",
+          "tn": "Flint Tropics ",
+          "gid": "1685c2ec",
+          "gn": "Monday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 15,
+            "fouls": 27,
+            "ft": 11,
+            "fg": 53,
+            "threePt": 7,
+            "pts": 138,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "caf874f1",
+          "tn": "Flint Tropics ",
+          "gid": "05302655",
+          "gn": "Monday Men C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "ft": 11,
+            "fg": 53,
+            "pts": 138,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "threePt": 7,
+            "fouls": 27
+          }
+        },
+        {
+          "tid": "caf874f1",
+          "tn": "Flint Tropics ",
+          "gid": "5dacc216",
+          "gn": "Monday Men D3",
+          "age": null,
+          "div": "D3",
+          "stats": {
+            "gp": 15,
+            "fouls": 27,
+            "fg": 53,
+            "pts": 138,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "ft": 11,
+            "threePt": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f145133f",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "b054131c",
+          "tn": "Rebel",
+          "gid": "02ca6fd1",
+          "gn": "Monday Men D1",
+          "age": null,
+          "div": "D1",
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 14,
+            "fg": 43,
+            "threePt": 7,
+            "pts": 121,
+            "losses": 12,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ed4c77aa",
+      "sn": "Summer 2021/22",
+      "club": "Frankston High Basketball Club",
+      "regs": [
+        {
+          "tid": "1f578a67",
+          "tn": "FHS U18 Boys Fairies",
+          "gid": "053a72ea",
+          "gn": "Monday U18 Boys A Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "fg": 21,
+            "threePt": 2,
+            "pts": 49,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "1f578a67",
+          "tn": "FHS U18 Boys Fairies",
+          "gid": "d7946d04",
+          "gn": "Monday U18 Boys Grading",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 1,
+            "fg": 21,
+            "threePt": 2,
+            "pts": 49,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Frankston Blues Basketball Club",
+      "regs": [
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "29611eb9",
+          "gn": "18 Boys - VJL2",
+          "age": null,
+          "div": "L2",
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "fg": 26,
+            "pts": 63,
+            "ft": 11
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "d4ab83b6",
+          "gn": "U18B Crossover 2 - VJL",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "ft": 11,
+            "pts": 63,
+            "fg": 26
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "280f32df",
+          "gn": "U18B Grading 2 - BB Pool B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "ft": 11,
+            "fg": 26,
+            "pts": 63
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "e3b56911",
+          "gn": "U18B Crossover 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "fg": 26,
+            "pts": 63,
+            "ft": 11
+          }
+        },
+        {
+          "tid": "86367586",
+          "tn": "Frankston U18 Boys 2",
+          "gid": "f99ca3ba",
+          "gn": "U18B Grading 1 - Pool 2C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "ft": 11,
+            "fg": 26,
+            "pts": 63
+          }
+        }
+      ]
+    },
+    {
+      "sid": "307e7a12",
+      "sn": "Summer 2020/21",
+      "club": "~[ARCHIVED] Peninsula Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "99ff3d20",
+          "tn": "PBBC U21B Philippe",
+          "gid": "60bc1db0",
+          "gn": "Thursday U18/21 Boys A",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "ft": 3,
+            "fg": 26,
+            "threePt": 2,
+            "pts": 61
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "f0400d27",
+          "tn": "Frankston U18 Boys 3",
+          "gid": "30904b86",
+          "gn": "U18 Boys VJL 6 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:25:36.186Z",
+  "teams": [
+    {
+      "tid": "caf874f1",
+      "sid": "ba7f8a1f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b054131c",
+      "sid": "f145133f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f578a67",
+      "sid": "ed4c77aa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "86367586",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99ff3d20",
+      "sid": "307e7a12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0400d27",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:00.610Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "7779160e",
+      "sid": "f145133f"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "89150e63",
+      "sid": "ba7f8a1f"
+    }
+  },
+  "games": [
+    "02bca2cb",
+    "02d3366c",
+    "06ac8e0e",
+    "0ca516ef",
+    "0ffc23c0",
+    "11b41bfe",
+    "1a0de74d",
+    "1bf166b8",
+    "1d4b4a87",
+    "1dfeaa3c",
+    "20b1b4c6",
+    "20c1bd81",
+    "22f110a1",
+    "23e3fcf8",
+    "240bbb60",
+    "281946e1",
+    "28344e99",
+    "29a8ffc3",
+    "368b48ee",
+    "3de64d7a",
+    "4783cbea",
+    "4e986732",
+    "4f3c143c",
+    "59389acc",
+    "5b253315",
+    "5c8b9a97",
+    "5dae1ab9",
+    "631f754d",
+    "730e272e",
+    "7779160e",
+    "7ebfc038",
+    "8577dd65",
+    "89150e63",
+    "8e6027e3",
+    "8f06c1dc",
+    "9600a742",
+    "9b0d15f9",
+    "9de6d9d8",
+    "a23cc90f",
+    "a38083a6",
+    "a61d763c",
+    "aac6c7c8",
+    "ab7131be",
+    "aec1a089",
+    "b60ec36b",
+    "b69ab127",
+    "b72ce91a",
+    "bb92686d",
+    "bcc7f4a3",
+    "be4a8f29",
+    "bf6866e0",
+    "c818990c",
+    "cdb879ee",
+    "cf4b2fc8",
+    "d0cdc0ac",
+    "ddccd545",
+    "dfdde17f",
+    "e31e7628",
+    "f5f45598",
+    "f832a902",
+    "fc35678e",
+    "fc9b175b",
+    "fd0633e8"
+  ]
+}

@@ -1,1 +1,81 @@
-{"uuid":"9757a6cf-5ba5-44ea-83a0-e5cfc54aa88e","gender":null,"sports":{"Basketball":{"gp":1,"pts":8,"fouls":3,"fg":4,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":1,"winPct":1,"statsChecked":"2026-07-05T16:14:45.989Z"}},"seasons":[{"sid":"87ac8b58","sn":"Summer 2019/20","club":null,"regs":[{"tid":"1c51f7d3","tn":"The Knudlers","gid":"a84b66e7","gn":"Thursday Open Men A","stats":{"gp":1,"pts":8,"fouls":3,"fg":4,"wins":1}}]}],"updatedAt":"2026-06-11T23:42:39.741Z","records":{"maxGamePTS":{"v":8,"gameKey":"c6512dae","sid":"87ac8b58"},"maxGameThreePt":{"v":null}},"games":["c6512dae"],"name":"Summer 2019/20"}
+{
+  "uuid": "9757a6cf-5ba5-44ea-83a0-e5cfc54aa88e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 8,
+      "fouls": 3,
+      "fg": 4,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:14:45.989Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "87ac8b58",
+      "sn": "Summer 2019/20",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1c51f7d3",
+          "tn": "The Knudlers",
+          "gid": "a84b66e7",
+          "gn": "Thursday Open Men A",
+          "stats": {
+            "gp": 1,
+            "pts": 8,
+            "fouls": 3,
+            "fg": 4,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "1d8170b0",
+          "tn": "Splash",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:39.741Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "c6512dae",
+      "sid": "87ac8b58"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "c6512dae"
+  ],
+  "name": "Summer 2019/20",
+  "teams": [
+    {
+      "tid": "1c51f7d3",
+      "sid": "87ac8b58",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d8170b0",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:44.741Z"
+}

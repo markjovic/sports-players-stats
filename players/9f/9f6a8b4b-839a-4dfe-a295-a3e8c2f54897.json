@@ -1,1 +1,220 @@
-{"uuid":"9f6a8b4b-839a-4dfe-a295-a3e8c2f54897","name":"Darcy Spencer","gender":"Men","sports":{"Basketball":{"gp":31,"pts":222,"fouls":54,"fg":103,"ft":10,"threePt":2,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.67,"foulOuts":{"0370d9d6":1},"maxGamePTS":24,"maxGameThreePt":1,"wins":32,"losses":15,"winPct":0.68,"statsChecked":"2026-07-06T19:11:07.557Z"}},"seasons":[{"sid":"b8849070","sn":"Autumn 2026","regs":[{"tid":"41021394","tn":"Northside Nuggets","gid":"0fe7af57","gn":"Monday Open Men Division 2","age":"Senior","div":"Division 2","stats":{"gp":7,"fouls":10,"ft":2,"fg":15,"pts":32,"finals":1,"gfApps":1,"wins":6,"losses":1,"gfWins":1}}]},{"sid":"0370d9d6","sn":"Spring 2021","regs":[{"tid":"25f8b7cb","tn":"Woj Bombs","gid":"52e99920","gn":"Wednesday Men A","age":null,"div":null,"stats":{"gp":4,"fouls":12,"ft":1,"fg":15,"pts":31,"foulOuts":1,"wins":2,"losses":2}}]},{"sid":"8cb1849e","sn":"Autumn 2021","regs":[{"tid":"0ff1b438","tn":"Woj Bombs","gid":"8bd409b4","gn":"Wednesday Men A","age":null,"div":null,"stats":{"gp":18,"fouls":32,"ft":6,"fg":71,"threePt":2,"pts":154,"finals":1,"wins":12,"losses":6}},{"tid":"0ff1b438","tn":"Woj Bombs","gid":"7d7832a8","gn":"Wednesday Men B","age":null,"div":null,"stats":{"gp":18,"ft":6,"fg":71,"threePt":2,"pts":154,"finals":1,"wins":12,"losses":6,"fouls":32}}]},{"sid":"ec7d3f73","regs":[{"tid":"a282a8be","stats":{"gp":2,"pts":5,"fg":2,"ft":1}},{"tid":"a282a8be","tn":"","gid":"0c7f76ed","gn":"Monday Senior Men Division 1","div":null,"stats":{"gp":2,"pts":5,"fg":2,"ft":1}}]}],"updatedAt":"2026-07-06T18:30:57.531Z","teams":[{"tid":"41021394","sid":"b8849070","status":"COMPLETED"},{"tid":"25f8b7cb","sid":"0370d9d6","status":"COMPLETED"},{"tid":"0ff1b438","sid":"8cb1849e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:31:16.377Z","records":{"maxGamePTS":{"v":24,"gameKey":"289767c3","sid":"8cb1849e"},"maxGameThreePt":{"v":1,"gameKey":"55061add","sid":"8cb1849e"}},"games":["098cdedb","16eca84b","17deffc2","183a0cd0","289767c3","2a9a606a","33a6c594","398efc25","55061add","683c9b2f","6b49a001","77d41bf0","7aeab0cc","930ccf66","9d80f43c","9f8082d3","9f832ef8","a6049e9a","a82f0a40","a9bf67d9","b117ed25","b765eb88","ca507458","d5be2592","d8cfb23c","e106ae47","e32a1c30","e9c60f43","efab567d"]}
+{
+  "uuid": "9f6a8b4b-839a-4dfe-a295-a3e8c2f54897",
+  "name": "Darcy Spencer",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 222,
+      "fouls": 54,
+      "fg": 103,
+      "ft": 10,
+      "threePt": 2,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "0370d9d6": 1
+      },
+      "maxGamePTS": 24,
+      "maxGameThreePt": 1,
+      "wins": 32,
+      "losses": 15,
+      "winPct": 0.68,
+      "statsChecked": "2026-07-06T19:11:07.557Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b8849070",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "41021394",
+          "tn": "Northside Nuggets",
+          "gid": "0fe7af57",
+          "gn": "Monday Open Men Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "25f8b7cb",
+          "tn": "Woj Bombs",
+          "gid": "52e99920",
+          "gn": "Wednesday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 15,
+            "pts": 31,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8cb1849e",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "0ff1b438",
+          "tn": "Woj Bombs",
+          "gid": "8bd409b4",
+          "gn": "Wednesday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 32,
+            "ft": 6,
+            "fg": 71,
+            "threePt": 2,
+            "pts": 154,
+            "finals": 1,
+            "wins": 12,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "0ff1b438",
+          "tn": "Woj Bombs",
+          "gid": "7d7832a8",
+          "gn": "Wednesday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "ft": 6,
+            "fg": 71,
+            "threePt": 2,
+            "pts": 154,
+            "finals": 1,
+            "wins": 12,
+            "losses": 6,
+            "fouls": 32
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec7d3f73",
+      "regs": [
+        {
+          "tid": "a282a8be",
+          "stats": {
+            "gp": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1
+          },
+          "gid": "0c7f76ed",
+          "gn": "Monday Senior Men Division 1"
+        },
+        {
+          "tid": "a282a8be",
+          "tn": "",
+          "gid": "0c7f76ed",
+          "gn": "Monday Senior Men Division 1",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:57.531Z",
+  "teams": [
+    {
+      "tid": "41021394",
+      "sid": "b8849070",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25f8b7cb",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ff1b438",
+      "sid": "8cb1849e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a282a8be",
+      "sid": "ec7d3f73",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:37.574Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "289767c3",
+      "sid": "8cb1849e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "55061add",
+      "sid": "8cb1849e"
+    }
+  },
+  "games": [
+    "098cdedb",
+    "16eca84b",
+    "17deffc2",
+    "183a0cd0",
+    "289767c3",
+    "2a9a606a",
+    "33a6c594",
+    "398efc25",
+    "55061add",
+    "683c9b2f",
+    "6b49a001",
+    "77d41bf0",
+    "7aeab0cc",
+    "930ccf66",
+    "9d80f43c",
+    "9f8082d3",
+    "9f832ef8",
+    "a6049e9a",
+    "a82f0a40",
+    "a9bf67d9",
+    "b117ed25",
+    "b765eb88",
+    "ca507458",
+    "d5be2592",
+    "d8cfb23c",
+    "e106ae47",
+    "e32a1c30",
+    "e9c60f43",
+    "efab567d"
+  ]
+}

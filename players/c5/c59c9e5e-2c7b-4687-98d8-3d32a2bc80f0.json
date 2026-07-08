@@ -1,1 +1,81 @@
-{"uuid":"c59c9e5e-2c7b-4687-98d8-3d32a2bc80f0","name":"Sebastian Armocida","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":2,"foulOuts":{},"gp":28,"pts":136,"fg":52,"ft":8,"threePt":8,"fouls":31,"statsChecked":"2026-07-06T19:00:56.826Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"ba23d9d9"}]},{"sid":"796936f7","regs":[{"tid":"569062c0"}]},{"sid":"880bda3c","regs":[{"tid":"919b373e"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":12,"gameKey":"b6a05743","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"b6a05743","sid":"796936f7"}}}
+{
+  "uuid": "c59c9e5e-2c7b-4687-98d8-3d32a2bc80f0",
+  "name": "Sebastian Armocida",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 28,
+      "pts": 136,
+      "fg": 52,
+      "ft": 8,
+      "threePt": 8,
+      "fouls": 31,
+      "statsChecked": "2026-07-06T19:00:56.826Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "ba23d9d9",
+          "gid": "db8e1fa8",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "569062c0",
+          "gid": "5bd3d465",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "919b373e",
+          "gid": "39799369",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "ba23d9d9",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "569062c0",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "919b373e",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "b6a05743",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "b6a05743",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:50:17.742Z"
+}

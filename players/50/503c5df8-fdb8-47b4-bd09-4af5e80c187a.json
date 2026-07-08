@@ -1,1 +1,423 @@
-{"uuid":"503c5df8-fdb8-47b4-bd09-4af5e80c187a","gender":null,"sports":{"Basketball":{"gp":64,"pts":267,"fouls":72,"fg":112,"ft":25,"threePt":6,"foulOuts":{"fbc7e3fe":1},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":16,"maxGameThreePt":1,"losses":30,"winPct":0.42,"wins":22,"statsChecked":"2026-07-05T16:00:44.688Z"}},"seasons":[{"sid":"b9b96577","sn":"Summer 2022/23","club":"Westside Suns Basketball Club","regs":[{"tid":"da3cd000","tn":"Westside Suns U18 Boys (Harry M)","gid":"d133d47d","gn":"U18 Boys Div 1","stats":{"gp":15,"pts":33,"fouls":6,"fg":13,"ft":7,"wins":2,"losses":11}},{"tid":"da3cd000","tn":"Westside Suns U18 Boys (Harry M)","gid":"8f327b2b","gn":"U18 Boys GRADING","stats":{"gp":15,"pts":33,"fouls":6,"fg":13,"ft":7,"wins":2,"losses":11}}]},{"sid":"fbc7e3fe","sn":"Winter 2022","club":"Westside Suns Basketball Club","regs":[{"tid":"4f5bfaf9","tn":"Westside Suns U18 Boys (Simon K)","gid":"8b1da831","gn":"U18 Boys Div 3","stats":{"gp":12,"pts":55,"fouls":18,"fg":26,"ft":3,"finals":1,"gfApps":1,"wins":9,"losses":3}},{"tid":"4f5bfaf9","tn":"Westside Suns U18 Boys (Simon K)","gid":"5adf7b3f","gn":"U18 Boys GRADING","stats":{"gp":12,"pts":55,"fouls":18,"fg":26,"ft":3,"foulOuts":1,"finals":1,"gfApps":1,"wins":9,"losses":3}}]},{"sid":"7b35a4da","sn":"Summer 2021/22","club":"Westside Suns Basketball Club","regs":[{"tid":"3656f72a","tn":"U18 Boys Westside Suns (Harry M)","gid":"4a954e8f","gn":"U18 Boys Div 3","stats":{"gp":12,"pts":80,"fouls":12,"fg":32,"ft":10,"threePt":2,"finals":1,"losses":1}},{"tid":"3656f72a","tn":"U18 Boys Westside Suns (Harry M)","gid":"762058ad","gn":"U18 Boys GRADING","stats":{"gp":12,"pts":80,"fouls":12,"fg":32,"ft":10,"threePt":2,"finals":1,"losses":1}}]},{"sid":"e7d885e4","sn":"Winter 2021","club":"Westside Suns Basketball Club","regs":[{"tid":"16d6ee6f","tn":"Westside Suns (Simon K)","gid":"241cf8b4","gn":"Saturday U16 Boys Div 2","stats":{"gp":1}}]},{"sid":"762d9301","sn":"Summer 2020/21","club":"Westside Suns Basketball Club","regs":[{"tid":"c7d1b339","tn":"Westside Suns (Simon K 2)","gid":"9e4287d3","gn":"U16 Boys Div 2","stats":{"gp":10,"pts":66,"fouls":22,"fg":29,"ft":2,"threePt":2}},{"tid":"c7d1b339","tn":"Westside Suns (Simon K 2)","gid":"c09b04bd","gn":"U16 Boys GRADING","stats":{"gp":10,"pts":66,"fouls":22,"fg":29,"ft":2,"threePt":2}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Westgate Imperials Basketball Club","regs":[{"tid":"bb0af5d3","tn":"Westgate U16 Boys 2","gid":"8536ecc4","gn":"16 Boys - VJL6 (P1)","stats":{"gp":14,"pts":33,"fouls":14,"fg":12,"ft":3,"threePt":2}},{"tid":"bb0af5d3","tn":"Westgate U16 Boys 2","gid":"905e17bc","gn":"U16B Crossover 2 - VJL","stats":{"gp":14,"pts":33,"fg":12,"ft":3,"threePt":2,"fouls":14}},{"tid":"bb0af5d3","tn":"Westgate U16 Boys 2","gid":"c728e35c","gn":"U16B Grading 2 - EE Pool D","stats":{"gp":14,"pts":33,"fouls":14,"fg":12,"ft":3,"threePt":2}},{"tid":"bb0af5d3","tn":"Westgate U16 Boys 2","gid":"2e234218","gn":"U16B Crossover 1","stats":{"gp":14,"pts":33,"fg":12,"ft":3,"threePt":2,"fouls":14}},{"tid":"bb0af5d3","tn":"Westgate U16 Boys 2","gid":"d58e36ff","gn":"U16B Grading 1 - Pool 7D","stats":{"gp":14,"pts":33,"fouls":14,"fg":12,"ft":3,"threePt":2}}]}],"updatedAt":"2026-06-11T23:39:30.857Z","records":{"maxGamePTS":{"v":16,"gameKey":"26c3f814","sid":"7b35a4da"},"maxGameThreePt":{"v":1,"gameKey":"ff49303a","sid":"7b35a4da"}},"games":["09cc6279","0a67f6e1","0d7b79f7","1563b1fb","163bb8fd","203532ad","26c3f814","30ffda9d","34fb0e1a","35ae7505","3a5a904d","3a9ec9af","4085b32f","4226e4e4","44dcd8ca","56f229e7","58def9d7","5bafe3d7","609ee4e4","6425ef76","6b9d6f3c","6d8a4f61","6f3af38c","707c5da0","7208fb27","77f116e9","7b19fa14","7bf2671a","92776cf0","93bfbb4c","93d623db","93e34e71","9518c0ee","97cd88d5","9986f764","9ce05d02","a31a3628","aa38bb1f","ac4d90ff","ae665764","af0d6d8a","b3f93c37","b552ca1e","b607f9d7","bc5c608a","bd5cc4c5","c2dbe0b2","c8a03a58","c9b2739f","cc114c3b","cc22e8b7","cdbce29e","d032a9bd","d35daafa","d5e7ab82","d7f76bbf","db00fa39","dc39edae","df05a63c","e6815fe5","f0926b97","f7f9dd3a","fd2f6359"],"name":"Summer 2022/23"}
+{
+  "uuid": "503c5df8-fdb8-47b4-bd09-4af5e80c187a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 64,
+      "pts": 267,
+      "fouls": 72,
+      "fg": 112,
+      "ft": 25,
+      "threePt": 6,
+      "foulOuts": {
+        "fbc7e3fe": 1
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 16,
+      "maxGameThreePt": 1,
+      "losses": 30,
+      "winPct": 0.42,
+      "wins": 22,
+      "statsChecked": "2026-07-05T16:00:44.688Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b9b96577",
+      "sn": "Summer 2022/23",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "da3cd000",
+          "tn": "Westside Suns U18 Boys (Harry M)",
+          "gid": "d133d47d",
+          "gn": "U18 Boys Div 1",
+          "stats": {
+            "gp": 15,
+            "pts": 33,
+            "fouls": 6,
+            "fg": 13,
+            "ft": 7,
+            "wins": 2,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "da3cd000",
+          "tn": "Westside Suns U18 Boys (Harry M)",
+          "gid": "8f327b2b",
+          "gn": "U18 Boys GRADING",
+          "stats": {
+            "gp": 15,
+            "pts": 33,
+            "fouls": 6,
+            "fg": 13,
+            "ft": 7,
+            "wins": 2,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbc7e3fe",
+      "sn": "Winter 2022",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "4f5bfaf9",
+          "tn": "Westside Suns U18 Boys (Simon K)",
+          "gid": "8b1da831",
+          "gn": "U18 Boys Div 3",
+          "stats": {
+            "gp": 12,
+            "pts": 55,
+            "fouls": 18,
+            "fg": 26,
+            "ft": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "4f5bfaf9",
+          "tn": "Westside Suns U18 Boys (Simon K)",
+          "gid": "5adf7b3f",
+          "gn": "U18 Boys GRADING",
+          "stats": {
+            "gp": 12,
+            "pts": 55,
+            "fouls": 18,
+            "fg": 26,
+            "ft": 3,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7b35a4da",
+      "sn": "Summer 2021/22",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "3656f72a",
+          "tn": "U18 Boys Westside Suns (Harry M)",
+          "gid": "4a954e8f",
+          "gn": "U18 Boys Div 3",
+          "stats": {
+            "gp": 12,
+            "pts": 80,
+            "fouls": 12,
+            "fg": 32,
+            "ft": 10,
+            "threePt": 2,
+            "finals": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "3656f72a",
+          "tn": "U18 Boys Westside Suns (Harry M)",
+          "gid": "762058ad",
+          "gn": "U18 Boys GRADING",
+          "stats": {
+            "gp": 12,
+            "pts": 80,
+            "fouls": 12,
+            "fg": 32,
+            "ft": 10,
+            "threePt": 2,
+            "finals": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e7d885e4",
+      "sn": "Winter 2021",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "16d6ee6f",
+          "tn": "Westside Suns (Simon K)",
+          "gid": "241cf8b4",
+          "gn": "Saturday U16 Boys Div 2",
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "762d9301",
+      "sn": "Summer 2020/21",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "c7d1b339",
+          "tn": "Westside Suns (Simon K 2)",
+          "gid": "9e4287d3",
+          "gn": "U16 Boys Div 2",
+          "stats": {
+            "gp": 10,
+            "pts": 66,
+            "fouls": 22,
+            "fg": 29,
+            "ft": 2,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "c7d1b339",
+          "tn": "Westside Suns (Simon K 2)",
+          "gid": "c09b04bd",
+          "gn": "U16 Boys GRADING",
+          "stats": {
+            "gp": 10,
+            "pts": 66,
+            "fouls": 22,
+            "fg": 29,
+            "ft": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Westgate Imperials Basketball Club",
+      "regs": [
+        {
+          "tid": "bb0af5d3",
+          "tn": "Westgate U16 Boys 2",
+          "gid": "8536ecc4",
+          "gn": "16 Boys - VJL6 (P1)",
+          "stats": {
+            "gp": 14,
+            "pts": 33,
+            "fouls": 14,
+            "fg": 12,
+            "ft": 3,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "bb0af5d3",
+          "tn": "Westgate U16 Boys 2",
+          "gid": "905e17bc",
+          "gn": "U16B Crossover 2 - VJL",
+          "stats": {
+            "gp": 14,
+            "pts": 33,
+            "fg": 12,
+            "ft": 3,
+            "threePt": 2,
+            "fouls": 14
+          }
+        },
+        {
+          "tid": "bb0af5d3",
+          "tn": "Westgate U16 Boys 2",
+          "gid": "c728e35c",
+          "gn": "U16B Grading 2 - EE Pool D",
+          "stats": {
+            "gp": 14,
+            "pts": 33,
+            "fouls": 14,
+            "fg": 12,
+            "ft": 3,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "bb0af5d3",
+          "tn": "Westgate U16 Boys 2",
+          "gid": "2e234218",
+          "gn": "U16B Crossover 1",
+          "stats": {
+            "gp": 14,
+            "pts": 33,
+            "fg": 12,
+            "ft": 3,
+            "threePt": 2,
+            "fouls": 14
+          }
+        },
+        {
+          "tid": "bb0af5d3",
+          "tn": "Westgate U16 Boys 2",
+          "gid": "d58e36ff",
+          "gn": "U16B Grading 1 - Pool 7D",
+          "stats": {
+            "gp": 14,
+            "pts": 33,
+            "fouls": 14,
+            "fg": 12,
+            "ft": 3,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88108ca6",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "7eed0f2b",
+          "tn": "Westgate U16 Boys 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "99ccfd04",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "ee0efbca",
+          "tn": "Westside Suns (Simon K)",
+          "gid": "38e51ac3",
+          "gn": "U16 Boys Grading",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:30.857Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "26c3f814",
+      "sid": "7b35a4da"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ff49303a",
+      "sid": "7b35a4da"
+    }
+  },
+  "games": [
+    "09cc6279",
+    "0a67f6e1",
+    "0d7b79f7",
+    "1563b1fb",
+    "163bb8fd",
+    "203532ad",
+    "26c3f814",
+    "30ffda9d",
+    "34fb0e1a",
+    "35ae7505",
+    "3a5a904d",
+    "3a9ec9af",
+    "4085b32f",
+    "4226e4e4",
+    "44dcd8ca",
+    "56f229e7",
+    "58def9d7",
+    "5bafe3d7",
+    "609ee4e4",
+    "6425ef76",
+    "6b9d6f3c",
+    "6d8a4f61",
+    "6f3af38c",
+    "707c5da0",
+    "7208fb27",
+    "77f116e9",
+    "7b19fa14",
+    "7bf2671a",
+    "92776cf0",
+    "93bfbb4c",
+    "93d623db",
+    "93e34e71",
+    "9518c0ee",
+    "97cd88d5",
+    "9986f764",
+    "9ce05d02",
+    "a31a3628",
+    "aa38bb1f",
+    "ac4d90ff",
+    "ae665764",
+    "af0d6d8a",
+    "b3f93c37",
+    "b552ca1e",
+    "b607f9d7",
+    "bc5c608a",
+    "bd5cc4c5",
+    "c2dbe0b2",
+    "c8a03a58",
+    "c9b2739f",
+    "cc114c3b",
+    "cc22e8b7",
+    "cdbce29e",
+    "d032a9bd",
+    "d35daafa",
+    "d5e7ab82",
+    "d7f76bbf",
+    "db00fa39",
+    "dc39edae",
+    "df05a63c",
+    "e6815fe5",
+    "f0926b97",
+    "f7f9dd3a",
+    "fd2f6359"
+  ],
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "da3cd000",
+      "sid": "b9b96577",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4f5bfaf9",
+      "sid": "fbc7e3fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3656f72a",
+      "sid": "7b35a4da",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "16d6ee6f",
+      "sid": "e7d885e4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7d1b339",
+      "sid": "762d9301",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bb0af5d3",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7eed0f2b",
+      "sid": "88108ca6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee0efbca",
+      "sid": "99ccfd04",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:45:41.468Z"
+}

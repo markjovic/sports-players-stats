@@ -1,1 +1,205 @@
-{"uuid":"bf69b777-7679-4a45-a8d6-54530a4b6d52","name":"Ashley Newlands","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":90,"fouls":12,"fg":41,"ft":8,"foulOuts":{},"maxGamePTS":23,"maxGameThreePt":null,"wins":12,"losses":4,"winPct":0.71,"draws":1,"statsChecked":"2026-07-05T14:58:12.012Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"ac223124","tn":"U12 TIMBERWOLVES SUNS","gid":"a6b06b86","gn":"Saturday U12 Boys Section 07","age":"U12","div":null,"stats":{"gp":3,"fouls":2,"fg":10,"pts":20,"losses":2,"draws":1}},{"tid":"7593477f","stats":{"wins":6,"losses":1,"gp":7,"pts":70,"fg":31,"ft":8,"fouls":10}}]},{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"7593477f","tn":"U10 TIMBERWOLVES CUBS","gid":"52fb2596","gn":"Saturday U10 Boys Section 03","age":"U10","div":null,"stats":{"gp":7,"fouls":10,"ft":8,"fg":31,"pts":70,"wins":6,"losses":1}}]}],"updatedAt":"2026-05-31T13:58:28.789Z","teams":[{"tid":"7593477f","sid":"6c117270","status":"ACTIVE"},{"tid":"ac223124","sid":"6c117270","status":"ACTIVE"},{"tid":"ba270371","sid":"8e10d4b9","status":"COMPLETED"},{"tid":"d6a1dac7","sid":"68279835","status":"COMPLETED"},{"tid":"f1dce018","sid":"913d1397","status":"COMPLETED"},{"tid":"6577680f","sid":"df876355","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:05.997Z","records":{"maxGamePTS":{"v":23,"gameKey":"de57262d","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["4abeb27b","5b9c323a","705adb82","74b50fbf","767ec83e","ac01adee","bf246134","de57262d","e914ab08","ef71bea8"],"gameTids":{"5b9c323a":"ac223124","ef71bea8":"ac223124","ac01adee":"ac223124","705adb82":"7593477f","bf246134":"7593477f","e914ab08":"7593477f","767ec83e":"7593477f","74b50fbf":"7593477f","de57262d":"7593477f","4abeb27b":"7593477f"}}
+{
+  "uuid": "bf69b777-7679-4a45-a8d6-54530a4b6d52",
+  "name": "Ashley Newlands",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 90,
+      "fouls": 12,
+      "fg": 41,
+      "ft": 8,
+      "foulOuts": {},
+      "maxGamePTS": 23,
+      "maxGameThreePt": null,
+      "wins": 12,
+      "losses": 4,
+      "winPct": 0.71,
+      "draws": 1,
+      "statsChecked": "2026-07-05T14:58:12.012Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "ac223124",
+          "tn": "U12 TIMBERWOLVES SUNS",
+          "gid": "732f85b3",
+          "gn": "Saturday U12 Boys Section 08",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "fg": 10,
+            "pts": 20,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "7593477f",
+          "stats": {
+            "wins": 6,
+            "losses": 1,
+            "gp": 7,
+            "pts": 70,
+            "fg": 31,
+            "ft": 8,
+            "fouls": 10
+          },
+          "gid": "52fb2596",
+          "gn": "Saturday U10 Boys Section 03"
+        }
+      ]
+    },
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "7593477f",
+          "tn": "U10 TIMBERWOLVES CUBS",
+          "gid": "52fb2596",
+          "gn": "Saturday U10 Boys Section 03",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 8,
+            "fg": 31,
+            "pts": 70,
+            "wins": 6,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e10d4b9",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "ba270371",
+          "tn": "Timber Hawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "d6a1dac7",
+          "tn": "U10 TIMBERWOLVES CUBS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "f1dce018",
+          "tn": "U10 TIMBERWOLVES CUBS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "6577680f",
+          "tn": "U8 TIMBERWOLVES PYTHONS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:58:28.789Z",
+  "teams": [
+    {
+      "tid": "ac223124",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7593477f",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba270371",
+      "sid": "8e10d4b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d6a1dac7",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1dce018",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6577680f",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:50:09.054Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "de57262d",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "4abeb27b",
+    "5b9c323a",
+    "705adb82",
+    "74b50fbf",
+    "767ec83e",
+    "ac01adee",
+    "bf246134",
+    "de57262d",
+    "e914ab08",
+    "ef71bea8"
+  ],
+  "gameTids": {
+    "5b9c323a": "ac223124",
+    "ef71bea8": "ac223124",
+    "ac01adee": "ac223124",
+    "705adb82": "7593477f",
+    "bf246134": "7593477f",
+    "e914ab08": "7593477f",
+    "767ec83e": "7593477f",
+    "74b50fbf": "7593477f",
+    "de57262d": "7593477f",
+    "4abeb27b": "7593477f"
+  }
+}

@@ -1,1 +1,330 @@
-{"uuid":"9a7f250f-ac08-4bd8-bdd8-17030cbab3ff","name":"Michael Phillips","sports":{"Basketball":{"maxGamePTS":30,"maxGameThreePt":3,"foulOuts":{"b0c6ff83":1,"19363f85":2,"f0dbb83e":2,"5d9e1a5b":2},"gp":149,"pts":914,"fg":370,"ft":69,"threePt":35,"fouls":245,"statsChecked":"2026-07-07T18:28:57.494Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"03e8ac11","stats":{"gp":2,"pts":30,"fg":11,"ft":2,"threePt":2,"fouls":4}},{"tid":"03e8ac11","tn":"","gid":"d5287fda","gn":"Tuesday Open Men A/B Grade","div":null,"stats":{"gp":2,"pts":30,"fg":11,"ft":2,"threePt":2,"fouls":4}}]},{"sid":"307cebbc","regs":[{"tid":"f5f23b7e","stats":{"gp":18,"pts":55,"fg":18,"ft":4,"threePt":5,"fouls":7}}]},{"sid":"b08df202","regs":[{"tid":"e7e5e29c","stats":{"gp":16,"pts":74,"fg":23,"ft":4,"threePt":8,"fouls":23}}]},{"sid":"9d4a51b2","regs":[{"tid":"161998df","stats":{"gp":18,"pts":81,"fg":31,"ft":7,"threePt":4,"fouls":17}}]},{"sid":"727ed63a","regs":[{"tid":"907edf00","stats":{"gp":8,"pts":41,"fg":12,"ft":2,"threePt":5,"fouls":9}}]},{"sid":"b0c6ff83","regs":[{"tid":"3cb37c79","stats":{"gp":13,"pts":99,"fg":46,"ft":4,"threePt":1,"fouls":27}}]},{"sid":"19363f85","regs":[{"tid":"84b72d8a","stats":{"gp":15,"pts":84,"fg":36,"ft":6,"threePt":2,"fouls":41}}]},{"sid":"b0112e07","regs":[{"tid":"df186e6f","stats":{"gp":13,"pts":101,"fg":42,"ft":11,"threePt":2,"fouls":25}}]},{"sid":"f0dbb83e","regs":[{"tid":"82e42a7e","stats":{"gp":13,"pts":93,"fg":37,"ft":7,"threePt":4,"fouls":28}}]},{"sid":"5d9e1a5b","regs":[{"tid":"8097dafe","stats":{"gp":14,"pts":125,"fg":57,"ft":11,"fouls":33}}]},{"sid":"b795df4b","regs":[{"tid":"60ed6284","stats":{"gp":7,"pts":45,"fg":21,"ft":3,"fouls":19}}]},{"sid":"cb6167fe","regs":[{"tid":"753bdf04","stats":{"gp":12,"pts":86,"fg":36,"ft":8,"threePt":2,"fouls":12}}]}],"teams":[],"updatedAt":"2026-07-07T18:05:40.053Z","records":{"maxGamePTS":{"v":30,"gameKey":"aa9a371a","sid":"c2468a21"},"maxGameThreePt":{"v":3,"gameKey":"cd77fa47","sid":"b08df202"}}}
+{
+  "uuid": "9a7f250f-ac08-4bd8-bdd8-17030cbab3ff",
+  "name": "Michael Phillips",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 30,
+      "maxGameThreePt": 3,
+      "foulOuts": {
+        "b0c6ff83": 1,
+        "19363f85": 2,
+        "f0dbb83e": 2,
+        "5d9e1a5b": 2
+      },
+      "gp": 149,
+      "pts": 914,
+      "fg": 370,
+      "ft": 69,
+      "threePt": 35,
+      "fouls": 245,
+      "statsChecked": "2026-07-07T18:28:57.494Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "03e8ac11",
+          "stats": {
+            "gp": 2,
+            "pts": 30,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 4
+          },
+          "gid": "d5287fda",
+          "gn": "Tuesday Open Men A/B Grade"
+        },
+        {
+          "tid": "03e8ac11",
+          "tn": "",
+          "gid": "d5287fda",
+          "gn": "Tuesday Open Men A/B Grade",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 30,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "307cebbc",
+      "regs": [
+        {
+          "tid": "f5f23b7e",
+          "stats": {
+            "gp": 18,
+            "pts": 55,
+            "fg": 18,
+            "ft": 4,
+            "threePt": 5,
+            "fouls": 7
+          },
+          "gid": "e3d4f0b4",
+          "gn": "Wednesday Open Men C Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b08df202",
+      "regs": [
+        {
+          "tid": "e7e5e29c",
+          "stats": {
+            "gp": 16,
+            "pts": 74,
+            "fg": 23,
+            "ft": 4,
+            "threePt": 8,
+            "fouls": 23
+          },
+          "gid": "88f22332",
+          "gn": "Wednesday Open Men B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "9d4a51b2",
+      "regs": [
+        {
+          "tid": "161998df",
+          "stats": {
+            "gp": 18,
+            "pts": 81,
+            "fg": 31,
+            "ft": 7,
+            "threePt": 4,
+            "fouls": 17
+          },
+          "gid": "8f1ddfe1",
+          "gn": "Wednesday Open Men B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "727ed63a",
+      "regs": [
+        {
+          "tid": "907edf00",
+          "stats": {
+            "gp": 8,
+            "pts": 41,
+            "fg": 12,
+            "ft": 2,
+            "threePt": 5,
+            "fouls": 9
+          },
+          "gid": "47adbbb7",
+          "gn": "Saturday U18 Boys B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b0c6ff83",
+      "regs": [
+        {
+          "tid": "3cb37c79",
+          "stats": {
+            "gp": 13,
+            "pts": 99,
+            "fg": 46,
+            "ft": 4,
+            "threePt": 1,
+            "fouls": 27
+          },
+          "gid": "b08c66a9",
+          "gn": "Saturday U18 Boys A/A Reserve Grade"
+        }
+      ]
+    },
+    {
+      "sid": "19363f85",
+      "regs": [
+        {
+          "tid": "84b72d8a",
+          "stats": {
+            "gp": 15,
+            "pts": 84,
+            "fg": 36,
+            "ft": 6,
+            "threePt": 2,
+            "fouls": 41
+          },
+          "gid": "3cb9669f",
+          "gn": "Saturday U18 Boys A/A Reserve Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b0112e07",
+      "regs": [
+        {
+          "tid": "df186e6f",
+          "stats": {
+            "gp": 13,
+            "pts": 101,
+            "fg": 42,
+            "ft": 11,
+            "threePt": 2,
+            "fouls": 25
+          },
+          "gid": "30485098",
+          "gn": "Saturday U18 Boys B2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "f0dbb83e",
+      "regs": [
+        {
+          "tid": "82e42a7e",
+          "stats": {
+            "gp": 13,
+            "pts": 93,
+            "fg": 37,
+            "ft": 7,
+            "threePt": 4,
+            "fouls": 28
+          },
+          "gid": "08f26e02",
+          "gn": "Saturday U16 Boys B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "5d9e1a5b",
+      "regs": [
+        {
+          "tid": "8097dafe",
+          "stats": {
+            "gp": 14,
+            "pts": 125,
+            "fg": 57,
+            "ft": 11,
+            "fouls": 33
+          },
+          "gid": "b1b8667a",
+          "gn": "Saturday U16 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "b795df4b",
+      "regs": [
+        {
+          "tid": "60ed6284",
+          "stats": {
+            "gp": 7,
+            "pts": 45,
+            "fg": 21,
+            "ft": 3,
+            "fouls": 19
+          },
+          "gid": "b1014f5d",
+          "gn": "Saturday U16 Boys B3 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "cb6167fe",
+      "regs": [
+        {
+          "tid": "753bdf04",
+          "stats": {
+            "gp": 12,
+            "pts": 86,
+            "fg": 36,
+            "ft": 8,
+            "threePt": 2,
+            "fouls": 12
+          },
+          "gid": "98a01e94",
+          "gn": "Saturday U16 Boys B4 Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "03e8ac11",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f5f23b7e",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7e5e29c",
+      "sid": "b08df202",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "161998df",
+      "sid": "9d4a51b2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "907edf00",
+      "sid": "727ed63a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cb37c79",
+      "sid": "b0c6ff83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "84b72d8a",
+      "sid": "19363f85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df186e6f",
+      "sid": "b0112e07",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82e42a7e",
+      "sid": "f0dbb83e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8097dafe",
+      "sid": "5d9e1a5b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60ed6284",
+      "sid": "b795df4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "753bdf04",
+      "sid": "cb6167fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:40.053Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 30,
+      "gameKey": "aa9a371a",
+      "sid": "c2468a21"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "cd77fa47",
+      "sid": "b08df202"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:48:50.542Z"
+}

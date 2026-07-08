@@ -1,1 +1,116 @@
-{"uuid":"9c63b193-1b9f-40fb-a3ce-424dc2f459ee","gender":null,"sports":{"Basketball":{"gp":11,"pts":2,"fouls":1,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":5,"losses":6,"winPct":0.45,"statsChecked":"2026-07-05T16:14:43.915Z"}},"seasons":[{"sid":"901dabcd","sn":"Summer 2021/22","club":"Carnegie Basketball Club","regs":[{"tid":"f598e89a","tn":"Carnegie Chargers U12 Girls - GU12 Jade","gid":"7691cc66","gn":"Sunday U12 Girls DIV 4","stats":{"gp":8,"wins":4,"losses":4}}]},{"sid":"0f6dd17f","sn":"Winter 2021","club":"Carnegie Basketball Club","regs":[{"tid":"878a27a7","tn":"Carnegie Chargers U10 Girls GU10Josh","gid":"0a649b9b","gn":"Sunday U10 Girls DIV 2","stats":{"gp":3,"pts":2,"fouls":1,"fg":1,"wins":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:42:59.513Z","games":["1cf20354","37b0975f","4a36cbd0","53397194","5f0ae3a0","752c096e","bf2e15de","c0334810","c6901735","cf5b4bd9","ef47bd44"],"records":{"maxGamePTS":{"v":2,"gameKey":"bf2e15de","sid":"0f6dd17f"},"maxGameThreePt":{"v":null}},"name":"Summer 2021/22"}
+{
+  "uuid": "9c63b193-1b9f-40fb-a3ce-424dc2f459ee",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 2,
+      "fouls": 1,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 6,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T16:14:43.915Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "901dabcd",
+      "sn": "Summer 2021/22",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "f598e89a",
+          "tn": "Carnegie Chargers U12 Girls - GU12 Jade",
+          "gid": "7691cc66",
+          "gn": "Sunday U12 Girls DIV 4",
+          "stats": {
+            "gp": 8,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "878a27a7",
+          "tn": "Carnegie Chargers U10 Girls GU10Josh",
+          "gid": "0a649b9b",
+          "gn": "Sunday U10 Girls DIV 2",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fouls": 1,
+            "fg": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "178fd580",
+          "tn": "Carnegie Chargers U9 Mixed Chargers GR2 Gold",
+          "gid": "a7d9810e",
+          "gn": "Wednesday GESAC MIXED",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:59.513Z",
+  "games": [
+    "1cf20354",
+    "37b0975f",
+    "4a36cbd0",
+    "53397194",
+    "5f0ae3a0",
+    "752c096e",
+    "bf2e15de",
+    "c0334810",
+    "c6901735",
+    "cf5b4bd9",
+    "ef47bd44"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "bf2e15de",
+      "sid": "0f6dd17f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "f598e89a",
+      "sid": "901dabcd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "878a27a7",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "178fd580",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:41.526Z"
+}

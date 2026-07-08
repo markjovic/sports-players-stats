@@ -1,1 +1,96 @@
-{"uuid":"b778fc34-1f48-4552-8117-57ab9f27786f","gender":null,"sports":{"Basketball":{"gp":7,"pts":17,"fouls":16,"fg":7,"ft":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":1,"losses":6,"winPct":0.14,"statsChecked":"2026-07-05T16:15:05.675Z"}},"seasons":[{"sid":"0370d9d6","sn":"Spring 2021","club":null,"regs":[{"tid":"965fbbbf","tn":"Wet City","gid":"3bea1640","gn":"Sunday Men","stats":{"gp":7,"pts":17,"fouls":16,"fg":7,"ft":3,"finals":1,"wins":1,"losses":6}}]}],"updatedAt":"2026-06-11T23:44:01.083Z","records":{"maxGamePTS":{"v":5,"gameKey":"0800a9fb","sid":"0370d9d6"},"maxGameThreePt":{"v":null}},"games":["02c3c4c5","0800a9fb","5a81823a","86fccd6c","91cf9689","b48bb0e1","f6aacb5f"],"name":"Spring 2021"}
+{
+  "uuid": "b778fc34-1f48-4552-8117-57ab9f27786f",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 17,
+      "fouls": 16,
+      "fg": 7,
+      "ft": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 6,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-05T16:15:05.675Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "965fbbbf",
+          "tn": "Wet City",
+          "gid": "3bea1640",
+          "gn": "Sunday Men",
+          "stats": {
+            "gp": 7,
+            "pts": 17,
+            "fouls": 16,
+            "fg": 7,
+            "ft": 3,
+            "finals": 1,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "6324725d",
+          "tn": "Rod's Chicken",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:01.083Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "0800a9fb",
+      "sid": "0370d9d6"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02c3c4c5",
+    "0800a9fb",
+    "5a81823a",
+    "86fccd6c",
+    "91cf9689",
+    "b48bb0e1",
+    "f6aacb5f"
+  ],
+  "name": "Spring 2021",
+  "teams": [
+    {
+      "tid": "965fbbbf",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6324725d",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:47.678Z"
+}

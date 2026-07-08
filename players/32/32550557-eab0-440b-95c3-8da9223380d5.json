@@ -1,1 +1,90 @@
-{"uuid":"32550557-eab0-440b-95c3-8da9223380d5","gender":null,"sports":{"Basketball":{"gp":6,"pts":43,"fouls":7,"fg":19,"ft":5,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":null,"wins":2,"losses":4,"winPct":0.33,"statsChecked":"2026-07-05T16:12:42.017Z"}},"seasons":[{"sid":"fb916efa","sn":"Winter 2021","club":"Dolphins Basketball Inc. (Geelong)","regs":[{"tid":"25215d5f","tn":"Dolphins Senior Women D3","gid":"fdaac16e","gn":"(CLUB) Monday Senior Women 3","stats":{"gp":6,"pts":43,"fg":19,"ft":5,"fouls":7,"wins":2,"losses":4}}]}],"updatedAt":"2026-06-11T23:38:04.017Z","records":{"maxGamePTS":{"v":13,"gameKey":"790f602f","sid":"fb916efa"},"maxGameThreePt":{"v":null}},"games":["06027316","13db2973","790f602f","af67c24b","c076374e","f3d29dec"],"name":"Winter 2021"}
+{
+  "uuid": "32550557-eab0-440b-95c3-8da9223380d5",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 43,
+      "fouls": 7,
+      "fg": 19,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 4,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:12:42.017Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": "Dolphins Basketball Inc. (Geelong)",
+      "regs": [
+        {
+          "tid": "25215d5f",
+          "tn": "Dolphins Senior Women D3",
+          "gid": "fdaac16e",
+          "gn": "(CLUB) Monday Senior Women 3",
+          "stats": {
+            "gp": 6,
+            "pts": 43,
+            "fg": 19,
+            "ft": 5,
+            "fouls": 7,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "a320f25c",
+          "tn": "Dolphins Open Women D2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:04.017Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "790f602f",
+      "sid": "fb916efa"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06027316",
+    "13db2973",
+    "790f602f",
+    "af67c24b",
+    "c076374e",
+    "f3d29dec"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "25215d5f",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a320f25c",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:44:11.871Z"
+}

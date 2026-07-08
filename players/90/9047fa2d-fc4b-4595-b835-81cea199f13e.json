@@ -1,1 +1,93 @@
-{"uuid":"9047fa2d-fc4b-4595-b835-81cea199f13e","name":"Hamish Ronalds","gender":"Boys","sports":{"Basketball":{"gp":5,"pts":43,"fouls":2,"fg":20,"ft":3,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":null,"wins":2,"winPct":0.4,"losses":2,"draws":1,"statsChecked":"2026-07-05T15:24:07.750Z"}},"seasons":[{"sid":"8155df70","sn":"Winter 2026","club":"Rebels Junior Basketball Club Inc. (Warragul)","regs":[{"tid":"641d4b1b","tn":"Rebels U10 Boys Hurricanes","gid":"04aa098c","gn":"Saturday U10 Boys D3","age":"U10","div":"D3","stats":{"gp":5,"fouls":2,"ft":3,"fg":20,"pts":43,"wins":2,"losses":2,"draws":1}}]}],"updatedAt":"2026-07-04T05:53:36.562Z","teams":[{"tid":"641d4b1b","sid":"8155df70","status":"ACTIVE"},{"tid":"adffbc1d","sid":"298c8d06","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:27:41.276Z","games":["2faf646e","47e815d8","730f00c4","d85e7498","da2fdf51"],"records":{"maxGamePTS":{"v":16,"gameKey":"da2fdf51","sid":"8155df70"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "9047fa2d-fc4b-4595-b835-81cea199f13e",
+  "name": "Hamish Ronalds",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 43,
+      "fouls": 2,
+      "fg": 20,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "winPct": 0.4,
+      "losses": 2,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:24:07.750Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8155df70",
+      "sn": "Winter 2026",
+      "club": "Rebels Junior Basketball Club Inc. (Warragul)",
+      "regs": [
+        {
+          "tid": "641d4b1b",
+          "tn": "Rebels U10 Boys Hurricanes",
+          "gid": "04aa098c",
+          "gn": "Saturday U10 Boys D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 3,
+            "fg": 20,
+            "pts": 43,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "298c8d06",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "adffbc1d",
+          "tn": "Wallabies",
+          "gid": "a59147ce",
+          "gn": "WLC U8s Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:53:36.562Z",
+  "teams": [
+    {
+      "tid": "641d4b1b",
+      "sid": "8155df70",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "adffbc1d",
+      "sid": "298c8d06",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:23.300Z",
+  "games": [
+    "2faf646e",
+    "47e815d8",
+    "730f00c4",
+    "d85e7498",
+    "da2fdf51"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "da2fdf51",
+      "sid": "8155df70"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

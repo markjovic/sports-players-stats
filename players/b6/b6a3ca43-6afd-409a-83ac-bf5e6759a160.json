@@ -1,1 +1,116 @@
-{"uuid":"b6a3ca43-6afd-409a-83ac-bf5e6759a160","gender":null,"sports":{"Basketball":{"gp":5,"pts":24,"fouls":4,"fg":8,"ft":2,"threePt":2,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"losses":3,"winPct":0,"statsChecked":"2026-07-05T15:51:01.586Z"}},"seasons":[{"sid":"157d1f5d","sn":"Summer 2021/22","club":"Titans Junior Basketball Club","regs":[{"tid":"e8eca265","tn":"TITANS U16 Boys Extreme","gid":"89acab49","gn":"U16 Boys A","stats":{"gp":3,"pts":11,"fouls":2,"fg":3,"ft":2,"threePt":1,"losses":3}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"52a6b874","tn":"STC B16.3","gid":"5f3b653f","gn":"Saturday U16 Boys B Grade","stats":{"gp":2,"pts":13,"fouls":2,"fg":5,"threePt":1}}]}],"updatedAt":"2026-06-11T23:43:58.043Z","games":["130f9dd6","48a68f56","843d306a","a150f243","acda7a9d"],"records":{"maxGamePTS":{"v":13,"gameKey":"843d306a","sid":"0912c55f"},"maxGameThreePt":{"v":1,"gameKey":"130f9dd6","sid":"157d1f5d"}},"name":"Summer 2021/22"}
+{
+  "uuid": "b6a3ca43-6afd-409a-83ac-bf5e6759a160",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 24,
+      "fouls": 4,
+      "fg": 8,
+      "ft": 2,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "losses": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:51:01.586Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "157d1f5d",
+      "sn": "Summer 2021/22",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "e8eca265",
+          "tn": "TITANS U16 Boys Extreme",
+          "gid": "89acab49",
+          "gn": "U16 Boys A",
+          "stats": {
+            "gp": 3,
+            "pts": 11,
+            "fouls": 2,
+            "fg": 3,
+            "ft": 2,
+            "threePt": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "52a6b874",
+          "tn": "STC B16.3",
+          "gid": "5f3b653f",
+          "gn": "Saturday U16 Boys B Grade",
+          "stats": {
+            "gp": 2,
+            "pts": 13,
+            "fouls": 2,
+            "fg": 5,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "699fc401",
+          "tn": "STC B16.3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:58.043Z",
+  "games": [
+    "130f9dd6",
+    "48a68f56",
+    "843d306a",
+    "a150f243",
+    "acda7a9d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "843d306a",
+      "sid": "0912c55f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "130f9dd6",
+      "sid": "157d1f5d"
+    }
+  },
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "e8eca265",
+      "sid": "157d1f5d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52a6b874",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "699fc401",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:52.803Z"
+}

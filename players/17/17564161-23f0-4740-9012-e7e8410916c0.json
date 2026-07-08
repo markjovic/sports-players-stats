@@ -1,1 +1,343 @@
-{"uuid":"17564161-23f0-4740-9012-e7e8410916c0","name":"Henry Crouch","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":286,"fouls":69,"fg":130,"ft":20,"threePt":2,"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.6,"foulOuts":{"60840c69":1,"316f425f":1},"maxGamePTS":28,"maxGameThreePt":1,"wins":46,"losses":39,"draws":2,"winPct":0.53,"statsChecked":"2026-07-05T15:07:40.763Z"}},"seasons":[{"sid":"9fd7e71c","sn":"Winter 2024","regs":[{"tid":"a13dc075","tn":"The McQueens","gid":"16036e6f","gn":"Wednesday U14 Boys Division 2","age":"U14","div":"Division 2","stats":{"gp":10,"fouls":12,"ft":3,"fg":14,"pts":31,"finals":1,"wins":5,"losses":5}}]},{"sid":"60840c69","sn":"Summer 2023/24","regs":[{"tid":"a2167f1b","tn":"The McQueens","gid":"b7f941dd","gn":"Tuesday U12 Boys Division 2","age":"U12","div":"Division 2","stats":{"gp":15,"fouls":17,"fg":13,"threePt":1,"pts":29,"finals":1,"foulOuts":1,"wins":10,"losses":4,"draws":1}},{"tid":"a2167f1b","tn":"The McQueens","gid":"18d840cb","gn":"Tuesday U12 Boys Division 4","age":"U12","div":"Division 4","stats":{"gp":15,"finals":1,"wins":10,"losses":4,"draws":1,"pts":29,"fg":13,"threePt":1,"fouls":17}}]},{"sid":"316f425f","sn":"Summer 2021/22","club":"Derinya Basketball Club","regs":[{"tid":"cf11b619","tn":"Derinya U10 Boys Bulls","gid":"2756a9a6","gn":"Saturday U10 Boys B1","age":"U10","div":"B1","stats":{"gp":13,"fouls":28,"ft":15,"fg":51,"threePt":1,"pts":120,"foulOuts":1,"wins":3,"losses":10}},{"tid":"cf11b619","tn":"Derinya U10 Boys Bulls","gid":"286cdd75","gn":"Saturday U10 Boys B2","age":"U10","div":"B2","stats":{"gp":13,"fouls":28,"ft":15,"fg":51,"pts":120,"wins":3,"losses":10,"threePt":1}}]},{"sid":"24e148e6","sn":"Winter 2021","club":"Derinya Basketball Club","regs":[{"tid":"a2082f9b","tn":"Derinya U10 Boys Bulls","gid":"7ff73371","gn":"Saturday U10 Boys B2","age":"U10","div":"B2","stats":{"gp":7,"fouls":5,"fg":47,"pts":95,"wins":5,"losses":2,"ft":1}},{"tid":"a2082f9b","tn":"Derinya U10 Boys Bulls","gid":"5168c7bc","gn":"Saturday U10 Boys C2","age":"U10","div":"C2","stats":{"gp":7,"fouls":5,"ft":1,"fg":47,"pts":95,"wins":5,"losses":2}},{"tid":"a2082f9b","tn":"Derinya U10 Boys Bulls","gid":"9c286a75","gn":"Saturday U10 Boys D1","age":"U10","div":"D1","stats":{"gp":7,"fg":47,"pts":95,"wins":5,"losses":2,"ft":1,"fouls":5}}]},{"sid":"307e7a12","sn":"Summer 2020/21","club":"Mt Eliza Meteors Basketball Club","regs":[{"tid":"a2c74b09","tn":"Mt Eliza Meteors Worrall","gid":"f0d078e3","gn":"Saturday U10 Boys B1","age":"U10","div":"B1","stats":{"gp":10,"fouls":7,"ft":1,"fg":5,"pts":11,"finals":1,"gfApps":1}}]}],"updatedAt":"2026-05-31T14:54:07.893Z","teams":[{"tid":"a13dc075","sid":"9fd7e71c","status":"COMPLETED"},{"tid":"a2167f1b","sid":"60840c69","status":"COMPLETED"},{"tid":"cf11b619","sid":"316f425f","status":"COMPLETED"},{"tid":"a2082f9b","sid":"24e148e6","status":"COMPLETED"},{"tid":"a2c74b09","sid":"307e7a12","status":"COMPLETED"},{"tid":"0994b597","sid":"7aaca544","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:11:21.089Z","records":{"maxGamePTS":{"v":28,"gameKey":"e5d289df","sid":"24e148e6"},"maxGameThreePt":{"v":1,"gameKey":"013aa719","sid":"60840c69"}},"games":["013aa719","0c9301f4","0dd401ff","10db2cec","11deaef5","1a89eb18","1b045dfb","1c70f148","20810c7d","2296f6ef","292c39c4","30c75837","3d873639","41feee4a","4788bc8c","4c6da994","4e15d398","5342982e","576b3b02","585879b1","59d568cf","5b8897b0","5e707612","60dbff92","683cd0ca","70cad60b","78429c4e","78814afe","80b558db","84180b0f","90e43c54","947be770","9661f0f6","a6b7de95","a7ac2b88","b41ecec9","b5475a1d","bf0fbab0","c2d11369","c55d3ccd","c6ebf8ea","d44cd445","d8500098","deae7df3","df123285","df1f07a8","e11cf3f0","e49f7569","e5d289df","e84376e9","e847b299","f420d36d","f50b2b5b","f8672b66","fcb5b6f3"]}
+{
+  "uuid": "17564161-23f0-4740-9012-e7e8410916c0",
+  "name": "Henry Crouch",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 286,
+      "fouls": 69,
+      "fg": 130,
+      "ft": 20,
+      "threePt": 2,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {
+        "60840c69": 1,
+        "316f425f": 1
+      },
+      "maxGamePTS": 28,
+      "maxGameThreePt": 1,
+      "wins": 46,
+      "losses": 39,
+      "draws": 2,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T15:07:40.763Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9fd7e71c",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "a13dc075",
+          "tn": "The McQueens",
+          "gid": "16036e6f",
+          "gn": "Wednesday U14 Boys Division 2",
+          "age": "U14",
+          "div": "Division 2",
+          "stats": {
+            "gp": 10,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 14,
+            "pts": 31,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "60840c69",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a2167f1b",
+          "tn": "The McQueens",
+          "gid": "b7f941dd",
+          "gn": "Tuesday U12 Boys Division 2",
+          "age": "U12",
+          "div": "Division 2",
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "fg": 13,
+            "threePt": 1,
+            "pts": 29,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a2167f1b",
+          "tn": "The McQueens",
+          "gid": "18d840cb",
+          "gn": "Tuesday U12 Boys Division 4",
+          "age": "U12",
+          "div": "Division 4",
+          "stats": {
+            "gp": 15,
+            "finals": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1,
+            "pts": 29,
+            "fg": 13,
+            "threePt": 1,
+            "fouls": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "316f425f",
+      "sn": "Summer 2021/22",
+      "club": "Derinya Basketball Club",
+      "regs": [
+        {
+          "tid": "cf11b619",
+          "tn": "Derinya U10 Boys Bulls",
+          "gid": "2756a9a6",
+          "gn": "Saturday U10 Boys B1",
+          "age": "U10",
+          "div": "B1",
+          "stats": {
+            "gp": 13,
+            "fouls": 28,
+            "ft": 15,
+            "fg": 51,
+            "threePt": 1,
+            "pts": 120,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "cf11b619",
+          "tn": "Derinya U10 Boys Bulls",
+          "gid": "286cdd75",
+          "gn": "Saturday U10 Boys B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 13,
+            "fouls": 28,
+            "ft": 15,
+            "fg": 51,
+            "pts": 120,
+            "wins": 3,
+            "losses": 10,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "24e148e6",
+      "sn": "Winter 2021",
+      "club": "Derinya Basketball Club",
+      "regs": [
+        {
+          "tid": "a2082f9b",
+          "tn": "Derinya U10 Boys Bulls",
+          "gid": "7ff73371",
+          "gn": "Saturday U10 Boys B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "fg": 47,
+            "pts": 95,
+            "wins": 5,
+            "losses": 2,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "a2082f9b",
+          "tn": "Derinya U10 Boys Bulls",
+          "gid": "5168c7bc",
+          "gn": "Saturday U10 Boys C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 47,
+            "pts": 95,
+            "wins": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "a2082f9b",
+          "tn": "Derinya U10 Boys Bulls",
+          "gid": "9c286a75",
+          "gn": "Saturday U10 Boys D1",
+          "age": "U10",
+          "div": "D1",
+          "stats": {
+            "gp": 7,
+            "fg": 47,
+            "pts": 95,
+            "wins": 5,
+            "losses": 2,
+            "ft": 1,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "307e7a12",
+      "sn": "Summer 2020/21",
+      "club": "Mt Eliza Meteors Basketball Club",
+      "regs": [
+        {
+          "tid": "a2c74b09",
+          "tn": "Mt Eliza Meteors Worrall",
+          "gid": "f0d078e3",
+          "gn": "Saturday U10 Boys B1",
+          "age": "U10",
+          "div": "B1",
+          "stats": {
+            "gp": 10,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 5,
+            "pts": 11,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7aaca544",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "0994b597",
+          "tn": "Mt Eliza Meteors",
+          "gid": "200f12d5",
+          "gn": "U10 Boys A Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T14:54:07.893Z",
+  "teams": [
+    {
+      "tid": "a13dc075",
+      "sid": "9fd7e71c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2167f1b",
+      "sid": "60840c69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cf11b619",
+      "sid": "316f425f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2082f9b",
+      "sid": "24e148e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2c74b09",
+      "sid": "307e7a12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0994b597",
+      "sid": "7aaca544",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:07.323Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 28,
+      "gameKey": "e5d289df",
+      "sid": "24e148e6"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "013aa719",
+      "sid": "60840c69"
+    }
+  },
+  "games": [
+    "013aa719",
+    "0c9301f4",
+    "0dd401ff",
+    "10db2cec",
+    "11deaef5",
+    "1a89eb18",
+    "1b045dfb",
+    "1c70f148",
+    "20810c7d",
+    "2296f6ef",
+    "292c39c4",
+    "30c75837",
+    "3d873639",
+    "41feee4a",
+    "4788bc8c",
+    "4c6da994",
+    "4e15d398",
+    "5342982e",
+    "576b3b02",
+    "585879b1",
+    "59d568cf",
+    "5b8897b0",
+    "5e707612",
+    "60dbff92",
+    "683cd0ca",
+    "70cad60b",
+    "78429c4e",
+    "78814afe",
+    "80b558db",
+    "84180b0f",
+    "90e43c54",
+    "947be770",
+    "9661f0f6",
+    "a6b7de95",
+    "a7ac2b88",
+    "b41ecec9",
+    "b5475a1d",
+    "bf0fbab0",
+    "c2d11369",
+    "c55d3ccd",
+    "c6ebf8ea",
+    "d44cd445",
+    "d8500098",
+    "deae7df3",
+    "df123285",
+    "df1f07a8",
+    "e11cf3f0",
+    "e49f7569",
+    "e5d289df",
+    "e84376e9",
+    "e847b299",
+    "f420d36d",
+    "f50b2b5b",
+    "f8672b66",
+    "fcb5b6f3"
+  ]
+}

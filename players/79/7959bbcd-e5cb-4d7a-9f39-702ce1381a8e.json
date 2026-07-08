@@ -1,1 +1,429 @@
-{"uuid":"7959bbcd-e5cb-4d7a-9f39-702ce1381a8e","name":"Finn Hamilton","gender":"Boys","sports":{"Basketball":{"gp":52,"pts":103,"fouls":60,"fg":46,"ft":11,"finals":2,"gfApps":2,"gfWins":2,"finalsPerSeason":0.5,"foulOuts":{"4b758d19":1,"c01b75f6":1},"maxGamePTS":10,"maxGameThreePt":null,"wins":94,"losses":38,"draws":4,"winPct":0.69,"statsChecked":"2026-07-05T14:14:36.772Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Brighton Wolves Basketball Club","regs":[{"tid":"d0f0351d","tn":"Timberwolves U12 Boys","gid":"0d3455cc","gn":"Saturday U12 Boys Div  5","age":"U12","div":"Div 5","stats":{"gp":6,"fouls":6,"ft":5,"fg":5,"pts":15,"wins":3,"losses":3}},{"tid":"d0f0351d","tn":"Timberwolves U12 Boys","gid":"6296f62e","gn":"Saturday U12 Boys Div  4","age":"U12","div":"Div 4","stats":{"gp":6,"fouls":6,"ft":5,"fg":5,"pts":15,"wins":3,"losses":3}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"Brighton Wolves Basketball Club","regs":[{"tid":"1f098337","tn":"Timberwolves U12 Boys","gid":"246b5c6a","gn":"Saturday U12 Boys Div  4","age":"U12","div":"Div 4","stats":{"gp":16,"fouls":21,"ft":3,"fg":11,"pts":25,"finals":1,"gfApps":1,"foulOuts":1,"wins":7,"losses":7,"draws":2,"gfWins":1}},{"tid":"1f098337","tn":"Timberwolves U12 Boys","gid":"f42e8c81","gn":"Saturday U12 Boys Div  3","age":"U12","div":"Div 3","stats":{"gp":16,"fouls":21,"ft":3,"fg":11,"pts":25,"finals":1,"gfApps":1,"wins":7,"losses":7,"draws":2,"gfWins":1}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Brighton Wolves Basketball Club","regs":[{"tid":"222921e8","tn":"Timberwolves U10 Boys","gid":"c22a36a1","gn":"Saturday U10 Boys Div  1","age":"U10","div":"Div 1","stats":{"gp":14,"fouls":10,"ft":2,"fg":15,"pts":32,"wins":7,"losses":7}},{"tid":"222921e8","tn":"Timberwolves U10 Boys","gid":"e8374348","gn":"Saturday U10 Boys Div  2","age":"U10","div":"Div 2","stats":{"gp":14,"fouls":10,"fg":15,"pts":32,"wins":7,"losses":7,"ft":2}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Brighton Wolves Basketball Club","regs":[{"tid":"1dd83164","tn":"Timberwolves U10 Boys","gid":"81bbf453","gn":"Saturday U10 Boys 2","age":"U10","div":null,"stats":{"gp":16,"fouls":23,"ft":1,"fg":15,"pts":31,"finals":1,"gfApps":1,"foulOuts":1,"wins":15,"losses":1,"gfWins":1}},{"tid":"1dd83164","tn":"Timberwolves U10 Boys","gid":"c84f7869","gn":"Saturday U10 Boys 3","age":"U10","div":null,"stats":{"gp":16,"finals":1,"gfApps":1,"wins":15,"losses":1,"pts":31,"fg":15,"ft":1,"fouls":23,"gfWins":1}},{"tid":"1dd83164","tn":"Timberwolves U10 Boys","gid":"1b68d562","gn":"Saturday U10 Boys 5","age":"U10","div":null,"stats":{"gp":16,"fouls":23,"fg":15,"pts":31,"finals":1,"gfApps":1,"wins":15,"losses":1,"ft":1,"gfWins":1}},{"tid":"1dd83164","tn":"Timberwolves U10 Boys","gid":"0526c2ca","gn":"Saturday U10 Boys 6","age":"U10","div":null,"stats":{"gp":16,"fouls":23,"fg":15,"pts":31,"finals":1,"gfApps":1,"wins":15,"losses":1,"ft":1,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:46:03.806Z","teams":[{"tid":"d0f0351d","sid":"79d2b087","status":"ACTIVE"},{"tid":"1f098337","sid":"4b758d19","status":"COMPLETED"},{"tid":"222921e8","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"e6ef1f19","sid":"31d05517","status":"COMPLETED"},{"tid":"1dd83164","sid":"c01b75f6","status":"COMPLETED"},{"tid":"84f083e4","sid":"8884de2d","status":"COMPLETED"},{"tid":"d3cc29b0","sid":"0fef30ca","status":"COMPLETED"},{"tid":"d8c67922","sid":"09a70808","status":"COMPLETED"},{"tid":"f777843f","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:08.052Z","records":{"maxGamePTS":{"v":10,"gameKey":"429af326","sid":"c01b75f6"},"maxGameThreePt":{"v":null}},"games":["0613d43a","0bbfd87a","0ce4449f","110df148","13783c30","145cce69","192c898f","19bfc294","1d2d06f1","1d712d04","1f1353c3","20e6c2d3","279e1043","2e87e154","2f9759fa","3a98d527","429af326","50c593db","524cca6f","5fb0df40","6683f320","690cb132","6b414caa","6f2b5ea1","7a9f7558","7d7ace1d","811f84dd","81cfa1cb","8266527a","84b5a523","8859fa54","8f4e2f16","a2946309","a541b571","a6aa3c95","a7862255","a94d31d2","a95d4974","b0681a4a","b56ee7d0","c53ff6df","c5440d81","c665aabf","c9e15c13","cddd2868","cfec7462","da3821f0","e729fdc1","e7c5259a","eb605f50","f4e6080e","fd884d0b"]}
+{
+  "uuid": "7959bbcd-e5cb-4d7a-9f39-702ce1381a8e",
+  "name": "Finn Hamilton",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 103,
+      "fouls": 60,
+      "fg": 46,
+      "ft": 11,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "4b758d19": 1,
+        "c01b75f6": 1
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 94,
+      "losses": 38,
+      "draws": 4,
+      "winPct": 0.69,
+      "statsChecked": "2026-07-05T14:14:36.772Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "d0f0351d",
+          "tn": "Timberwolves U12 Boys",
+          "gid": "0d3455cc",
+          "gn": "Saturday U12 Boys Div  5",
+          "age": "U12",
+          "div": "Div 5",
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "ft": 5,
+            "fg": 5,
+            "pts": 15,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "d0f0351d",
+          "tn": "Timberwolves U12 Boys",
+          "gid": "6296f62e",
+          "gn": "Saturday U12 Boys Div  4",
+          "age": "U12",
+          "div": "Div 4",
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "ft": 5,
+            "fg": 5,
+            "pts": 15,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "1f098337",
+          "tn": "Timberwolves U12 Boys",
+          "gid": "246b5c6a",
+          "gn": "Saturday U12 Boys Div  4",
+          "age": "U12",
+          "div": "Div 4",
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "1f098337",
+          "tn": "Timberwolves U12 Boys",
+          "gid": "f42e8c81",
+          "gn": "Saturday U12 Boys Div  3",
+          "age": "U12",
+          "div": "Div 3",
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "222921e8",
+          "tn": "Timberwolves U10 Boys",
+          "gid": "c22a36a1",
+          "gn": "Saturday U10 Boys Div  1",
+          "age": "U10",
+          "div": "Div 1",
+          "stats": {
+            "gp": 14,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "wins": 7,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "222921e8",
+          "tn": "Timberwolves U10 Boys",
+          "gid": "e8374348",
+          "gn": "Saturday U10 Boys Div  2",
+          "age": "U10",
+          "div": "Div 2",
+          "stats": {
+            "gp": 14,
+            "fouls": 10,
+            "fg": 15,
+            "pts": 32,
+            "wins": 7,
+            "losses": 7,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "1dd83164",
+          "tn": "Timberwolves U10 Boys",
+          "gid": "81bbf453",
+          "gn": "Saturday U10 Boys 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "ft": 1,
+            "fg": 15,
+            "pts": 31,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 15,
+            "losses": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "1dd83164",
+          "tn": "Timberwolves U10 Boys",
+          "gid": "c84f7869",
+          "gn": "Saturday U10 Boys 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 15,
+            "losses": 1,
+            "pts": 31,
+            "fg": 15,
+            "ft": 1,
+            "fouls": 23,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "1dd83164",
+          "tn": "Timberwolves U10 Boys",
+          "gid": "1b68d562",
+          "gn": "Saturday U10 Boys 5",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "fg": 15,
+            "pts": 31,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 15,
+            "losses": 1,
+            "ft": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "1dd83164",
+          "tn": "Timberwolves U10 Boys",
+          "gid": "0526c2ca",
+          "gn": "Saturday U10 Boys 6",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "fg": 15,
+            "pts": 31,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 15,
+            "losses": 1,
+            "ft": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "e6ef1f19",
+          "tn": "EPS Thunderbolts",
+          "gid": "d90e801a",
+          "gn": "Friday MSAC/Bayside Year 3 Boys B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "84f083e4",
+          "tn": "EPS Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "d3cc29b0",
+          "tn": "EPS Thunderbolts",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "d8c67922",
+          "tn": "EPS Thunderbolts",
+          "gid": "f2d55266",
+          "gn": "Friday MSAC/Bayside YR.1.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "f777843f",
+          "tn": "EPS Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:03.806Z",
+  "teams": [
+    {
+      "tid": "d0f0351d",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f098337",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "222921e8",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1dd83164",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e6ef1f19",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "84f083e4",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3cc29b0",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8c67922",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f777843f",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:47:34.032Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "429af326",
+      "sid": "c01b75f6"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0613d43a",
+    "0bbfd87a",
+    "0ce4449f",
+    "110df148",
+    "13783c30",
+    "145cce69",
+    "192c898f",
+    "19bfc294",
+    "1d2d06f1",
+    "1d712d04",
+    "1f1353c3",
+    "20e6c2d3",
+    "279e1043",
+    "2e87e154",
+    "2f9759fa",
+    "3a98d527",
+    "429af326",
+    "50c593db",
+    "524cca6f",
+    "5fb0df40",
+    "6683f320",
+    "690cb132",
+    "6b414caa",
+    "6f2b5ea1",
+    "7a9f7558",
+    "7d7ace1d",
+    "811f84dd",
+    "81cfa1cb",
+    "8266527a",
+    "84b5a523",
+    "8859fa54",
+    "8f4e2f16",
+    "a2946309",
+    "a541b571",
+    "a6aa3c95",
+    "a7862255",
+    "a94d31d2",
+    "a95d4974",
+    "b0681a4a",
+    "b56ee7d0",
+    "c53ff6df",
+    "c5440d81",
+    "c665aabf",
+    "c9e15c13",
+    "cddd2868",
+    "cfec7462",
+    "da3821f0",
+    "e729fdc1",
+    "e7c5259a",
+    "eb605f50",
+    "f4e6080e",
+    "fd884d0b"
+  ]
+}

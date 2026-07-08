@@ -1,1 +1,317 @@
-{"uuid":"d8afc1e6-f622-4e5c-8976-3968cf64d0ef","name":"Jessica Stovold","gender":"Women","sports":{"Basketball":{"gp":46,"pts":259,"fouls":66,"fg":108,"ft":16,"threePt":9,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":19,"maxGameThreePt":2,"wins":28,"losses":36,"winPct":0.44,"statsChecked":"2026-07-05T15:12:55.259Z"}},"seasons":[{"sid":"c0f9cc58","sn":"Summer 2025/26","regs":[{"tid":"f36c3705","tn":"Blueberries ","gid":"f1ef5318","gn":"Monday Open Women","age":"Senior","div":null,"stats":{"gp":7,"fouls":13,"ft":2,"fg":23,"threePt":5,"pts":63,"finals":1,"wins":1,"losses":6}},{"tid":"4384d77c","stats":{"wins":6,"losses":3,"finals":1,"gp":9,"pts":24,"fg":12,"fouls":12}}]},{"sid":"c0f9cc58","sn":"Summer 2025/26","regs":[{"tid":"4384d77c","tn":"Bob Ross In The Paint","gid":"b415079c","gn":"Tuesday Open Mixed Div 1","age":"Senior","div":"Div 1","stats":{"gp":9,"fouls":12,"fg":12,"pts":24,"finals":1,"wins":6,"losses":3}}]},{"sid":"89af5c47","sn":"Winter 2025","regs":[{"tid":"a629ba25","tn":"Bob Ross In The Paint","gid":"6b9f53bf","gn":"Tuesday Open Mixed Div 1","age":"Senior","div":"Div 1","stats":{"gp":12,"fouls":15,"ft":4,"fg":23,"threePt":2,"pts":56,"finals":1,"gfApps":1,"wins":11,"losses":1}},{"tid":"211ab354","stats":{"losses":9,"finals":1,"gfApps":1,"gp":9,"pts":68,"fg":28,"ft":6,"threePt":2,"fouls":9}}]},{"sid":"89af5c47","sn":"Winter 2025","regs":[{"tid":"211ab354","tn":"Blueberries ","gid":"62adb151","gn":"Monday Open Women","age":"Senior","div":null,"stats":{"gp":9,"fouls":9,"ft":6,"fg":28,"threePt":2,"pts":68,"finals":1,"gfApps":1,"losses":9}}]},{"sid":"20078b1f","sn":"Summer 2024/25","regs":[{"tid":"40f626d7","tn":"Blueberries ","gid":"c9a9fe13","gn":"Monday Open Women","age":"Senior","div":null,"stats":{"gp":9,"fouls":17,"ft":4,"fg":22,"pts":48,"wins":4,"losses":5}}]}],"updatedAt":"2026-06-01T15:09:27.836Z","teams":[{"tid":"f36c3705","sid":"c0f9cc58","status":"COMPLETED"},{"tid":"4384d77c","sid":"c0f9cc58","status":"COMPLETED"},{"tid":"211ab354","sid":"89af5c47","status":"COMPLETED"},{"tid":"a629ba25","sid":"89af5c47","status":"COMPLETED"},{"tid":"40f626d7","sid":"20078b1f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:19.555Z","games":["09b7b0e0","0bd17915","0d41d024","1465379d","179e95b7","17f1da0a","1a0fc661","2412f637","267a7a80","3107a0d5","3ccd6841","46e45cb4","47d38486","5090ec8d","5282afe2","6090913d","63223679","6727e642","71662bf3","74d0f91a","76c022cb","7957584a","7c439f1c","823cc3ec","8578c070","89373b75","8df1cfab","90cb5d3f","91631c7d","92448372","92a5f4ac","9c1f8ac3","9e39d3f3","a10641c4","b80bf516","c573363c","c8ffead3","cad29f18","cbc5b88f","d40e5796","eb0509d8","ed4129e2","ef5dfd32","eff6fbf9","f29bb77d","fe3520bc"],"records":{"maxGamePTS":{"v":19,"gameKey":"f29bb77d","sid":"89af5c47"},"maxGameThreePt":{"v":2,"gameKey":"6727e642","sid":"c0f9cc58"}},"gameTids":{"63223679":"f36c3705","92448372":"211ab354","7957584a":"f36c3705","91631c7d":"f36c3705","5090ec8d":"f36c3705","6727e642":"f36c3705","17f1da0a":"f36c3705","ef5dfd32":"f36c3705","47d38486":"4384d77c","b80bf516":"4384d77c","5282afe2":"4384d77c","1a0fc661":"4384d77c","3107a0d5":"4384d77c","0d41d024":"4384d77c","46e45cb4":"4384d77c","92a5f4ac":"4384d77c","9e39d3f3":"4384d77c","eff6fbf9":"a629ba25","71662bf3":"a629ba25","c8ffead3":"a629ba25","c573363c":"a629ba25","1465379d":"a629ba25","0bd17915":"a629ba25","7c439f1c":"a629ba25","09b7b0e0":"a629ba25","8df1cfab":"a629ba25","8578c070":"a629ba25","cbc5b88f":"a629ba25","179e95b7":"a629ba25","9c1f8ac3":"211ab354","6090913d":"211ab354","d40e5796":"211ab354","f29bb77d":"211ab354","3ccd6841":"211ab354","89373b75":"211ab354","267a7a80":"211ab354","eb0509d8":"211ab354","74d0f91a":"40f626d7","fe3520bc":"40f626d7","2412f637":"40f626d7","a10641c4":"40f626d7","90cb5d3f":"40f626d7","76c022cb":"40f626d7","823cc3ec":"40f626d7","ed4129e2":"40f626d7","cad29f18":"40f626d7"}}
+{
+  "uuid": "d8afc1e6-f622-4e5c-8976-3968cf64d0ef",
+  "name": "Jessica Stovold",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 259,
+      "fouls": 66,
+      "fg": 108,
+      "ft": 16,
+      "threePt": 9,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 19,
+      "maxGameThreePt": 2,
+      "wins": 28,
+      "losses": 36,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T15:12:55.259Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c0f9cc58",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "f36c3705",
+          "tn": "Blueberries ",
+          "gid": "f1ef5318",
+          "gn": "Monday Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 13,
+            "ft": 2,
+            "fg": 23,
+            "threePt": 5,
+            "pts": 63,
+            "finals": 1,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "4384d77c",
+          "stats": {
+            "wins": 6,
+            "losses": 3,
+            "finals": 1,
+            "gp": 9,
+            "pts": 24,
+            "fg": 12,
+            "fouls": 12
+          },
+          "gid": "b415079c",
+          "gn": "Tuesday Open Mixed Div 1"
+        }
+      ]
+    },
+    {
+      "sid": "c0f9cc58",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "4384d77c",
+          "tn": "Bob Ross In The Paint",
+          "gid": "b415079c",
+          "gn": "Tuesday Open Mixed Div 1",
+          "age": "Senior",
+          "div": "Div 1",
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "fg": 12,
+            "pts": 24,
+            "finals": 1,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89af5c47",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "a629ba25",
+          "tn": "Bob Ross In The Paint",
+          "gid": "6b9f53bf",
+          "gn": "Tuesday Open Mixed Div 1",
+          "age": "Senior",
+          "div": "Div 1",
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "ft": 4,
+            "fg": 23,
+            "threePt": 2,
+            "pts": 56,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "211ab354",
+          "stats": {
+            "losses": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 9,
+            "pts": 68,
+            "fg": 28,
+            "ft": 6,
+            "threePt": 2,
+            "fouls": 9
+          },
+          "gid": "62adb151",
+          "gn": "Monday Open Women"
+        }
+      ]
+    },
+    {
+      "sid": "89af5c47",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "211ab354",
+          "tn": "Blueberries ",
+          "gid": "62adb151",
+          "gn": "Monday Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 6,
+            "fg": 28,
+            "threePt": 2,
+            "pts": 68,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "20078b1f",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "40f626d7",
+          "tn": "Blueberries ",
+          "gid": "c9a9fe13",
+          "gn": "Monday Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 22,
+            "pts": 48,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:09:27.836Z",
+  "teams": [
+    {
+      "tid": "f36c3705",
+      "sid": "c0f9cc58",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4384d77c",
+      "sid": "c0f9cc58",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a629ba25",
+      "sid": "89af5c47",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "211ab354",
+      "sid": "89af5c47",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "40f626d7",
+      "sid": "20078b1f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:07.182Z",
+  "games": [
+    "09b7b0e0",
+    "0bd17915",
+    "0d41d024",
+    "1465379d",
+    "179e95b7",
+    "17f1da0a",
+    "1a0fc661",
+    "2412f637",
+    "267a7a80",
+    "3107a0d5",
+    "3ccd6841",
+    "46e45cb4",
+    "47d38486",
+    "5090ec8d",
+    "5282afe2",
+    "6090913d",
+    "63223679",
+    "6727e642",
+    "71662bf3",
+    "74d0f91a",
+    "76c022cb",
+    "7957584a",
+    "7c439f1c",
+    "823cc3ec",
+    "8578c070",
+    "89373b75",
+    "8df1cfab",
+    "90cb5d3f",
+    "91631c7d",
+    "92448372",
+    "92a5f4ac",
+    "9c1f8ac3",
+    "9e39d3f3",
+    "a10641c4",
+    "b80bf516",
+    "c573363c",
+    "c8ffead3",
+    "cad29f18",
+    "cbc5b88f",
+    "d40e5796",
+    "eb0509d8",
+    "ed4129e2",
+    "ef5dfd32",
+    "eff6fbf9",
+    "f29bb77d",
+    "fe3520bc"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "f29bb77d",
+      "sid": "89af5c47"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "6727e642",
+      "sid": "c0f9cc58"
+    }
+  },
+  "gameTids": {
+    "63223679": "f36c3705",
+    "92448372": "211ab354",
+    "7957584a": "f36c3705",
+    "91631c7d": "f36c3705",
+    "5090ec8d": "f36c3705",
+    "6727e642": "f36c3705",
+    "17f1da0a": "f36c3705",
+    "ef5dfd32": "f36c3705",
+    "47d38486": "4384d77c",
+    "b80bf516": "4384d77c",
+    "5282afe2": "4384d77c",
+    "1a0fc661": "4384d77c",
+    "3107a0d5": "4384d77c",
+    "0d41d024": "4384d77c",
+    "46e45cb4": "4384d77c",
+    "92a5f4ac": "4384d77c",
+    "9e39d3f3": "4384d77c",
+    "eff6fbf9": "a629ba25",
+    "71662bf3": "a629ba25",
+    "c8ffead3": "a629ba25",
+    "c573363c": "a629ba25",
+    "1465379d": "a629ba25",
+    "0bd17915": "a629ba25",
+    "7c439f1c": "a629ba25",
+    "09b7b0e0": "a629ba25",
+    "8df1cfab": "a629ba25",
+    "8578c070": "a629ba25",
+    "cbc5b88f": "a629ba25",
+    "179e95b7": "a629ba25",
+    "9c1f8ac3": "211ab354",
+    "6090913d": "211ab354",
+    "d40e5796": "211ab354",
+    "f29bb77d": "211ab354",
+    "3ccd6841": "211ab354",
+    "89373b75": "211ab354",
+    "267a7a80": "211ab354",
+    "eb0509d8": "211ab354",
+    "74d0f91a": "40f626d7",
+    "fe3520bc": "40f626d7",
+    "2412f637": "40f626d7",
+    "a10641c4": "40f626d7",
+    "90cb5d3f": "40f626d7",
+    "76c022cb": "40f626d7",
+    "823cc3ec": "40f626d7",
+    "ed4129e2": "40f626d7",
+    "cad29f18": "40f626d7"
+  }
+}

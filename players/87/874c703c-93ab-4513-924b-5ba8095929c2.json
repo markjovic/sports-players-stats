@@ -1,1 +1,84 @@
-{"uuid":"874c703c-93ab-4513-924b-5ba8095929c2","name":"Brad Ritchie","sports":{"Basketball":{"maxGamePTS":9,"maxGameThreePt":null,"foulOuts":{},"gp":1,"pts":9,"fg":4,"ft":1,"fouls":1,"statsChecked":"2026-07-06T18:59:16.425Z"}},"seasons":[{"sid":"83a38877","regs":[{"tid":"6773ee66"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":9,"gameKey":"4c698b9b","sid":"83a38877"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "874c703c-93ab-4513-924b-5ba8095929c2",
+  "name": "Brad Ritchie",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 1,
+      "pts": 9,
+      "fg": 4,
+      "ft": 1,
+      "fouls": 1,
+      "statsChecked": "2026-07-06T18:59:16.425Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "83a38877",
+      "regs": [
+        {
+          "tid": "6773ee66",
+          "gid": "ada14a55",
+          "gn": "Monday Over 30 Men Grading"
+        }
+      ]
+    },
+    {
+      "sid": "2bcaa4e3",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "71a20e42",
+          "tn": "Hills",
+          "gid": "551e8f47",
+          "gn": "Monday Over 30 Men C2 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ab1bf542",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "60e1ca09",
+          "tn": "Hills",
+          "gid": "51ac846e",
+          "gn": "Monday Over 30 Men C.2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "6773ee66",
+      "sid": "83a38877",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71a20e42",
+      "sid": "2bcaa4e3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60e1ca09",
+      "sid": "ab1bf542",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "4c698b9b",
+      "sid": "83a38877"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:47:59.234Z"
+}

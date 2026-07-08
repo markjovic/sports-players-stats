@@ -1,1 +1,338 @@
-{"uuid":"53472eac-a042-44ce-a421-f7cbb917b234","name":"Murray Swanston","gender":"Men","sports":{"Basketball":{"gp":45,"pts":145,"fouls":70,"fg":57,"ft":4,"threePt":9,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":3,"wins":30,"losses":57,"draws":9,"winPct":0.31,"statsChecked":"2026-07-05T15:48:29.338Z"}},"seasons":[{"sid":"04854767","sn":"Winter 2026","regs":[{"tid":"d03f462a","tn":"Court Kings ","gid":"eb866cd3","gn":"Thursday Men D1 Grade","age":null,"div":null,"stats":{"gp":9,"fouls":15,"fg":13,"threePt":2,"pts":32,"wins":4,"losses":4,"draws":1}},{"tid":"0a8243e1","stats":{"wins":2,"losses":2,"gp":5,"pts":16,"fg":8,"fouls":10,"draws":1}},{"tid":"0a8243e1","tn":"","gid":"0c864700","gn":"Monday Men C1 Grade","div":null,"stats":{"gp":5,"pts":16,"fg":8,"fouls":10,"wins":2,"losses":2,"draws":1}}]},{"sid":"04854767","sn":"Winter 2026","club":"Casey Dragons Basketball Club","regs":[{"tid":"0a8243e1","tn":"Casey Dragons Back In My Day","gid":"0c864700","gn":"Monday Men C1 Grade","age":null,"div":null,"stats":{"gp":5,"fouls":10,"fg":8,"pts":16,"wins":2,"losses":2,"draws":1}},{"tid":"0a8243e1","tn":"Casey Dragons Back In My Day","gid":"bc3b2692","gn":"Monday Men C2 Grade","age":null,"div":null,"stats":{"gp":5,"fg":8,"pts":16,"wins":2,"losses":2,"fouls":10,"draws":1}}]},{"sid":"c8a300a4","sn":"Summer 2025/26","club":"Casey Dragons Basketball Club","regs":[{"tid":"79712972","tn":"Back in My Day","gid":"cf44e7b8","gn":"Monday Men C3 Grade","age":null,"div":null,"stats":{"gp":13,"fouls":23,"ft":2,"fg":15,"pts":32,"wins":6,"losses":6,"draws":1}}]},{"sid":"97a4667f","sn":"Summer 2022/23","regs":[{"tid":"563ccd59","tn":"HOWLERS","gid":"3bffb00f","gn":"Wednesday Senior Men D","age":"Senior","div":null,"stats":{"gp":18,"fouls":22,"ft":2,"fg":21,"threePt":7,"pts":65,"wins":4,"losses":13,"draws":1}},{"tid":"563ccd59","tn":"HOWLERS","gid":"ae97f2bd","gn":"Wednesday Senior Men C Reserve","age":"Senior","div":null,"stats":{"gp":18,"fouls":22,"fg":21,"threePt":7,"pts":65,"wins":4,"losses":13,"draws":1,"ft":2}},{"tid":"563ccd59","tn":"HOWLERS","gid":"e5680b2b","gn":"Wednesday Senior Men C","age":"Senior","div":null,"stats":{"gp":18,"fouls":22,"fg":21,"pts":65,"wins":4,"losses":13,"draws":1,"ft":2,"threePt":7}}]}],"updatedAt":"2026-07-04T05:53:50.207Z","teams":[{"tid":"0a8243e1","sid":"04854767","status":"ACTIVE"},{"tid":"d03f462a","sid":"04854767","status":"ACTIVE"},{"tid":"79712972","sid":"c8a300a4","status":"COMPLETED"},{"tid":"563ccd59","sid":"97a4667f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:33:09.414Z","records":{"maxGamePTS":{"v":13,"gameKey":"f6f5f299","sid":"97a4667f"},"maxGameThreePt":{"v":3,"gameKey":"f6f5f299","sid":"97a4667f"}},"games":["06455167","0883a682","1640454f","177ec112","1c65a005","21cf9c3c","24de33de","3611f049","3e374ab6","429019cd","445684e4","49ca669c","55eeee90","6256bb4e","6a7a8ca3","6aa6b731","6d318caa","84fdb638","88dbf64d","8e388ab6","8edbaec0","92e0eb47","9aed6c40","9b70b11b","9bd51437","9ec9e0e3","a9b1619a","aae8ba08","bfb779e7","c56643b9","c7576b85","c7cf0858","cd6dbd39","d55889b4","d7a15072","e0bb3d6e","e220bba5","e5f3b4c4","e82a6c41","e96c0ef7","ef959ad7","f3234720","f5febba6","f6f5f299","fd1b432a"],"gameTids":{"e82a6c41":"d03f462a","8e388ab6":"d03f462a","9bd51437":"d03f462a","e5f3b4c4":"d03f462a","6256bb4e":"d03f462a","6a7a8ca3":"d03f462a","e0bb3d6e":"d03f462a","88dbf64d":"d03f462a","d7a15072":"d03f462a","06455167":"0a8243e1","445684e4":"0a8243e1","3611f049":"0a8243e1","84fdb638":"0a8243e1","92e0eb47":"0a8243e1","f5febba6":"79712972","ef959ad7":"79712972","3e374ab6":"79712972","55eeee90":"79712972","6aa6b731":"79712972","177ec112":"79712972","e220bba5":"79712972","6d318caa":"79712972","1640454f":"79712972","9ec9e0e3":"79712972","c56643b9":"79712972","9aed6c40":"79712972","1c65a005":"79712972","9b70b11b":"563ccd59","a9b1619a":"563ccd59","fd1b432a":"563ccd59","21cf9c3c":"563ccd59","24de33de":"563ccd59","e96c0ef7":"563ccd59","49ca669c":"563ccd59","429019cd":"563ccd59","d55889b4":"563ccd59","0883a682":"563ccd59","f3234720":"563ccd59","c7cf0858":"563ccd59","8edbaec0":"563ccd59","f6f5f299":"563ccd59","cd6dbd39":"563ccd59","bfb779e7":"563ccd59","aae8ba08":"563ccd59","c7576b85":"563ccd59"}}
+{
+  "uuid": "53472eac-a042-44ce-a421-f7cbb917b234",
+  "name": "Murray Swanston",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "pts": 145,
+      "fouls": 70,
+      "fg": 57,
+      "ft": 4,
+      "threePt": 9,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 3,
+      "wins": 30,
+      "losses": 57,
+      "draws": 9,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T15:48:29.338Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "04854767",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "d03f462a",
+          "tn": "Court Kings ",
+          "gid": "eb866cd3",
+          "gn": "Thursday Men D1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 15,
+            "fg": 13,
+            "threePt": 2,
+            "pts": 32,
+            "wins": 4,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0a8243e1",
+          "stats": {
+            "wins": 2,
+            "losses": 2,
+            "gp": 5,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 10,
+            "draws": 1
+          },
+          "gid": "0c864700",
+          "gn": "Monday Men C1 Grade"
+        },
+        {
+          "tid": "0a8243e1",
+          "tn": "",
+          "gid": "0c864700",
+          "gn": "Monday Men C1 Grade",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 10,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "04854767",
+      "sn": "Winter 2026",
+      "club": "Casey Dragons Basketball Club",
+      "regs": [
+        {
+          "tid": "0a8243e1",
+          "tn": "Casey Dragons Back In My Day",
+          "gid": "0c864700",
+          "gn": "Monday Men C1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 10,
+            "fg": 8,
+            "pts": 16,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0a8243e1",
+          "tn": "Casey Dragons Back In My Day",
+          "gid": "bc3b2692",
+          "gn": "Monday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fg": 8,
+            "pts": 16,
+            "wins": 2,
+            "losses": 2,
+            "fouls": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c8a300a4",
+      "sn": "Summer 2025/26",
+      "club": "Casey Dragons Basketball Club",
+      "regs": [
+        {
+          "tid": "79712972",
+          "tn": "Back in My Day",
+          "gid": "cf44e7b8",
+          "gn": "Monday Men C3 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 23,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "wins": 6,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "97a4667f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "563ccd59",
+          "tn": "HOWLERS",
+          "gid": "3bffb00f",
+          "gn": "Wednesday Senior Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 22,
+            "ft": 2,
+            "fg": 21,
+            "threePt": 7,
+            "pts": 65,
+            "wins": 4,
+            "losses": 13,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "563ccd59",
+          "tn": "HOWLERS",
+          "gid": "ae97f2bd",
+          "gn": "Wednesday Senior Men C Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 22,
+            "fg": 21,
+            "threePt": 7,
+            "pts": 65,
+            "wins": 4,
+            "losses": 13,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "563ccd59",
+          "tn": "HOWLERS",
+          "gid": "e5680b2b",
+          "gn": "Wednesday Senior Men C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 22,
+            "fg": 21,
+            "pts": 65,
+            "wins": 4,
+            "losses": 13,
+            "draws": 1,
+            "ft": 2,
+            "threePt": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:53:50.207Z",
+  "teams": [
+    {
+      "tid": "d03f462a",
+      "sid": "04854767",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a8243e1",
+      "sid": "04854767",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79712972",
+      "sid": "c8a300a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "563ccd59",
+      "sid": "97a4667f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:06.419Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "f6f5f299",
+      "sid": "97a4667f"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "f6f5f299",
+      "sid": "97a4667f"
+    }
+  },
+  "games": [
+    "06455167",
+    "0883a682",
+    "1640454f",
+    "177ec112",
+    "1c65a005",
+    "21cf9c3c",
+    "24de33de",
+    "3611f049",
+    "3e374ab6",
+    "429019cd",
+    "445684e4",
+    "49ca669c",
+    "55eeee90",
+    "6256bb4e",
+    "6a7a8ca3",
+    "6aa6b731",
+    "6d318caa",
+    "84fdb638",
+    "88dbf64d",
+    "8e388ab6",
+    "8edbaec0",
+    "92e0eb47",
+    "9aed6c40",
+    "9b70b11b",
+    "9bd51437",
+    "9ec9e0e3",
+    "a9b1619a",
+    "aae8ba08",
+    "bfb779e7",
+    "c56643b9",
+    "c7576b85",
+    "c7cf0858",
+    "cd6dbd39",
+    "d55889b4",
+    "d7a15072",
+    "e0bb3d6e",
+    "e220bba5",
+    "e5f3b4c4",
+    "e82a6c41",
+    "e96c0ef7",
+    "ef959ad7",
+    "f3234720",
+    "f5febba6",
+    "f6f5f299",
+    "fd1b432a"
+  ],
+  "gameTids": {
+    "e82a6c41": "d03f462a",
+    "8e388ab6": "d03f462a",
+    "9bd51437": "d03f462a",
+    "e5f3b4c4": "d03f462a",
+    "6256bb4e": "d03f462a",
+    "6a7a8ca3": "d03f462a",
+    "e0bb3d6e": "d03f462a",
+    "88dbf64d": "d03f462a",
+    "d7a15072": "d03f462a",
+    "06455167": "0a8243e1",
+    "445684e4": "0a8243e1",
+    "3611f049": "0a8243e1",
+    "84fdb638": "0a8243e1",
+    "92e0eb47": "0a8243e1",
+    "f5febba6": "79712972",
+    "ef959ad7": "79712972",
+    "3e374ab6": "79712972",
+    "55eeee90": "79712972",
+    "6aa6b731": "79712972",
+    "177ec112": "79712972",
+    "e220bba5": "79712972",
+    "6d318caa": "79712972",
+    "1640454f": "79712972",
+    "9ec9e0e3": "79712972",
+    "c56643b9": "79712972",
+    "9aed6c40": "79712972",
+    "1c65a005": "79712972",
+    "9b70b11b": "563ccd59",
+    "a9b1619a": "563ccd59",
+    "fd1b432a": "563ccd59",
+    "21cf9c3c": "563ccd59",
+    "24de33de": "563ccd59",
+    "e96c0ef7": "563ccd59",
+    "49ca669c": "563ccd59",
+    "429019cd": "563ccd59",
+    "d55889b4": "563ccd59",
+    "0883a682": "563ccd59",
+    "f3234720": "563ccd59",
+    "c7cf0858": "563ccd59",
+    "8edbaec0": "563ccd59",
+    "f6f5f299": "563ccd59",
+    "cd6dbd39": "563ccd59",
+    "bfb779e7": "563ccd59",
+    "aae8ba08": "563ccd59",
+    "c7576b85": "563ccd59"
+  }
+}

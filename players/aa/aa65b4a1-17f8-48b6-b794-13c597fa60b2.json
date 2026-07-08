@@ -1,1 +1,203 @@
-{"uuid":"aa65b4a1-17f8-48b6-b794-13c597fa60b2","name":"Aylah Raquid","gender":"Girls","sports":{"Basketball":{"gp":27,"pts":40,"fouls":38,"fg":20,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"maxGamePTS":8,"maxGameThreePt":null,"wins":32,"losses":29,"winPct":0.48,"draws":5,"statsChecked":"2026-07-05T14:57:40.562Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Diamond Creek Basketball Club Inc.","regs":[{"tid":"90906ab3","tn":"Diamond Creek U12 Girls 7","gid":"9cd92f5a","gn":"Saturday U12 Girls C2","age":"U12","div":"C2","stats":{"gp":12,"fouls":12,"fg":13,"pts":26,"wins":4,"losses":7,"draws":1}},{"tid":"90906ab3","tn":"Diamond Creek U12 Girls 7","gid":"dace81bf","gn":"Saturday U12 Girls Grading Group 2","age":"U12","div":null,"stats":{"gp":12,"fouls":12,"fg":13,"pts":26,"wins":4,"losses":7,"draws":1}},{"tid":"90906ab3","tn":"Diamond Creek U12 Girls 7","gid":"7bfdf93b","gn":"Saturday U12 Girls Grading Group 3","age":"U12","div":null,"stats":{"gp":12,"fouls":12,"fg":13,"pts":26,"wins":4,"losses":7,"draws":1}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Diamond Creek Basketball Club Inc.","regs":[{"tid":"97b02ad8","tn":"Diamond Creek U12 Girls 7","gid":"846bb6b1","gn":"Saturday U12 Girls D2","age":"U12","div":"D2","stats":{"gp":15,"fouls":26,"fg":7,"pts":14,"finals":1,"gfApps":1,"wins":10,"losses":4,"draws":1,"gfWins":1}},{"tid":"97b02ad8","tn":"Diamond Creek U12 Girls 7","gid":"77d6edd4","gn":"Saturday U12 Girls Grading Group 3","age":"U12","div":null,"stats":{"gp":15,"fouls":26,"fg":7,"pts":14,"finals":1,"gfApps":1,"wins":10,"losses":4,"draws":1,"gfWins":1}}]}],"updatedAt":"2026-06-01T06:23:39.820Z","teams":[{"tid":"90906ab3","sid":"d868771d","status":"ACTIVE"},{"tid":"97b02ad8","sid":"f57b7901","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:38.328Z","games":["00ef70b3","105d06cc","1baf5ff3","29a4e764","2a2c9313","2f28b987","3197f6c4","3601a805","5dbeb13d","5dcf512e","662e1404","6889b69a","74690c5a","7c217884","842b8f52","8ae8b711","91365942","9fd1ab13","a85b8384","aaa7f99d","b7f498be","ceb2777b","cfef45ab","d0e70760","d222d995","f3a5bf0d","f7ad84d3"],"records":{"maxGamePTS":{"v":8,"gameKey":"6889b69a","sid":"d868771d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "aa65b4a1-17f8-48b6-b794-13c597fa60b2",
+  "name": "Aylah Raquid",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 40,
+      "fouls": 38,
+      "fg": 20,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 32,
+      "losses": 29,
+      "winPct": 0.48,
+      "draws": 5,
+      "statsChecked": "2026-07-05T14:57:40.562Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Diamond Creek Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "90906ab3",
+          "tn": "Diamond Creek U12 Girls 7",
+          "gid": "9cd92f5a",
+          "gn": "Saturday U12 Girls C2",
+          "age": "U12",
+          "div": "C2",
+          "stats": {
+            "gp": 12,
+            "fouls": 12,
+            "fg": 13,
+            "pts": 26,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "90906ab3",
+          "tn": "Diamond Creek U12 Girls 7",
+          "gid": "dace81bf",
+          "gn": "Saturday U12 Girls Grading Group 2",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 12,
+            "fg": 13,
+            "pts": 26,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "90906ab3",
+          "tn": "Diamond Creek U12 Girls 7",
+          "gid": "7bfdf93b",
+          "gn": "Saturday U12 Girls Grading Group 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 12,
+            "fg": 13,
+            "pts": 26,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Diamond Creek Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "97b02ad8",
+          "tn": "Diamond Creek U12 Girls 7",
+          "gid": "846bb6b1",
+          "gn": "Saturday U12 Girls D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "fg": 7,
+            "pts": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "97b02ad8",
+          "tn": "Diamond Creek U12 Girls 7",
+          "gid": "77d6edd4",
+          "gn": "Saturday U12 Girls Grading Group 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "fg": 7,
+            "pts": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "64c7b17a",
+          "tn": "Diamond Creek U12 Girls 6",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:23:39.820Z",
+  "teams": [
+    {
+      "tid": "90906ab3",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "97b02ad8",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64c7b17a",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:18.942Z",
+  "games": [
+    "00ef70b3",
+    "105d06cc",
+    "1baf5ff3",
+    "29a4e764",
+    "2a2c9313",
+    "2f28b987",
+    "3197f6c4",
+    "3601a805",
+    "5dbeb13d",
+    "5dcf512e",
+    "662e1404",
+    "6889b69a",
+    "74690c5a",
+    "7c217884",
+    "842b8f52",
+    "8ae8b711",
+    "91365942",
+    "9fd1ab13",
+    "a85b8384",
+    "aaa7f99d",
+    "b7f498be",
+    "ceb2777b",
+    "cfef45ab",
+    "d0e70760",
+    "d222d995",
+    "f3a5bf0d",
+    "f7ad84d3"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "6889b69a",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

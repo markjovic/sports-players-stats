@@ -1,1 +1,140 @@
-{"uuid":"ab838e07-03b7-400c-8573-22324a0a1b35","name":"Ayen Meen","gender":"Mixed","sports":{"Basketball":{"gp":23,"pts":35,"fouls":4,"fg":9,"ft":17,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":11,"losses":10,"draws":1,"winPct":0.5,"statsChecked":"2026-07-05T15:25:11.571Z"}},"seasons":[{"sid":"db32aba0","sn":"Summer 2025/26","club":"Nile Warriors Basketball Club","regs":[{"tid":"06bdf824","tn":"Nile Warriors U8s Mixed","gid":"2eafc699","gn":"U8 Mixed","age":"U8","div":null,"stats":{"gp":7,"fouls":1,"ft":1,"fg":9,"pts":19,"losses":7}}]},{"sid":"5f327b4a","sn":"Winter 2025","club":"Nile Warriors Basketball Club","regs":[{"tid":"f7045b8c","tn":"Nile Warriors U8.1 Mixed","gid":"f7a895b4","gn":"U8 Mixed","age":"U8","div":null,"stats":{"gp":15,"fouls":2,"ft":13,"pts":13,"wins":11,"losses":3,"draws":1}}]},{"sid":"426bbb74","regs":[{"tid":"9df2688f","stats":{"gp":1,"pts":3,"ft":3,"fouls":1}}]}],"updatedAt":"2026-06-01T21:35:56.688Z","teams":[{"tid":"06bdf824","sid":"db32aba0","status":"COMPLETED"},{"tid":"f7045b8c","sid":"5f327b4a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:34:20.389Z","games":["03f3ab95","0e8bf0c3","0f50dab3","111e5899","16a71089","1dc06f65","2a521149","2c64a648","2dffe8c4","37668d25","5be5575d","5c81ae4f","617f35dd","7a4f94da","7a5bcb8d","7b1e6db5","92c59575","c6bee7a3","d3044e10","d7dec8f6","d9fcb18e","e4693893"],"records":{"maxGamePTS":{"v":6,"gameKey":"d3044e10","sid":"db32aba0"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ab838e07-03b7-400c-8573-22324a0a1b35",
+  "name": "Ayen Meen",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 35,
+      "fouls": 4,
+      "fg": 9,
+      "ft": 17,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 11,
+      "losses": 10,
+      "draws": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:25:11.571Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "db32aba0",
+      "sn": "Summer 2025/26",
+      "club": "Nile Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "06bdf824",
+          "tn": "Nile Warriors U8s Mixed",
+          "gid": "2eafc699",
+          "gn": "U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 9,
+            "pts": 19,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f327b4a",
+      "sn": "Winter 2025",
+      "club": "Nile Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "f7045b8c",
+          "tn": "Nile Warriors U8.1 Mixed",
+          "gid": "f7a895b4",
+          "gn": "U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 2,
+            "ft": 13,
+            "pts": 13,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "426bbb74",
+      "regs": [
+        {
+          "tid": "9df2688f",
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "ft": 3,
+            "fouls": 1
+          },
+          "gid": "7e9e39a8",
+          "gn": "U8 Mixed Maroon"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:35:56.688Z",
+  "teams": [
+    {
+      "tid": "06bdf824",
+      "sid": "db32aba0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f7045b8c",
+      "sid": "5f327b4a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9df2688f",
+      "sid": "426bbb74",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:49:37.105Z",
+  "games": [
+    "03f3ab95",
+    "0e8bf0c3",
+    "0f50dab3",
+    "111e5899",
+    "16a71089",
+    "1dc06f65",
+    "2a521149",
+    "2c64a648",
+    "2dffe8c4",
+    "37668d25",
+    "5be5575d",
+    "5c81ae4f",
+    "617f35dd",
+    "7a4f94da",
+    "7a5bcb8d",
+    "7b1e6db5",
+    "92c59575",
+    "c6bee7a3",
+    "d3044e10",
+    "d7dec8f6",
+    "d9fcb18e",
+    "e4693893"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "d3044e10",
+      "sid": "db32aba0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

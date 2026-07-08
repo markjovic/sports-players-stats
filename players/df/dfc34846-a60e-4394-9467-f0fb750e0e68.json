@@ -1,1 +1,266 @@
-{"uuid":"dfc34846-a60e-4394-9467-f0fb750e0e68","name":"Mia O'Sullivan","gender":"Girls","sports":{"Basketball":{"gp":36,"pts":133,"fouls":22,"fg":60,"ft":13,"foulOuts":{"32f6f69d":1},"maxGamePTS":18,"maxGameThreePt":null,"wins":56,"losses":56,"winPct":0.5,"statsChecked":"2026-07-05T14:31:05.164Z"}},"seasons":[{"sid":"a6c675bb","sn":"Winter 2026","club":"Rowville Basketball Club Inc.","regs":[{"tid":"daaabbbd","tn":"Rowville Rockets U10 Girls 4","gid":"2499eb6e","gn":"Saturday U10 Girls C - 2026 Winter","age":"U10","div":null,"stats":{"gp":8,"fg":5,"pts":11,"wins":2,"losses":6,"ft":1,"fouls":1}},{"tid":"daaabbbd","tn":"Rowville Rockets U10 Girls 4","gid":"0d658a45","gn":"Saturday U10 Girls BR - 2026 Winter","age":"U10","div":null,"stats":{"gp":8,"wins":2,"losses":6,"pts":11,"fg":5,"ft":1,"fouls":1}},{"tid":"daaabbbd","tn":"","gid":"c1392ba7","gn":"Saturday U10 Girls CR - 2026 Winter","div":null,"stats":{"gp":8,"pts":11,"fg":5,"ft":1,"fouls":1,"wins":2,"losses":6}}]},{"sid":"cc946e47","sn":"Summer 2025/26","club":"Rowville Basketball Club Inc.","regs":[{"tid":"0f607a65","tn":"Rowville Rockets U10 Girls 2","gid":"c2fa8c63","gn":"Saturday U10 Girls B - 2026 Summer","age":"U10","div":null,"stats":{"gp":12,"fouls":3,"ft":1,"fg":5,"pts":11,"wins":5,"losses":7}},{"tid":"0f607a65","tn":"Rowville Rockets U10 Girls 2","gid":"dc5f0b9f","gn":"Saturday U10 Girls BR - 2026 Summer","age":"U10","div":null,"stats":{"gp":12,"fg":5,"pts":11,"wins":5,"losses":7,"ft":1,"fouls":3}}]},{"sid":"32f6f69d","sn":"Winter 2025","club":"Rowville Basketball Club Inc.","regs":[{"tid":"e5caafdd","tn":"Rowville Rockets U8 Girls 2","gid":"8d8b26d0","gn":"Saturday U8 Girls Encouragement Day - 2025 Winter","age":"U8","div":null,"stats":{"gp":16,"fouls":18,"ft":11,"fg":50,"pts":111,"wins":10,"losses":6}},{"tid":"e5caafdd","tn":"Rowville Rockets U8 Girls 2","gid":"9d932a46","gn":"Saturday U8 Girls B - 2025 Winter","age":"U8","div":null,"stats":{"gp":16,"fouls":18,"ft":11,"fg":50,"pts":111,"wins":10,"losses":6}},{"tid":"e5caafdd","tn":"Rowville Rockets U8 Girls 2","gid":"7d9733a4","gn":"Saturday U8 Girls C - 2025 Winter","age":"U8","div":null,"stats":{"gp":16,"fouls":18,"ft":11,"fg":50,"pts":111,"foulOuts":1,"wins":10,"losses":6}},{"tid":"e5caafdd","tn":"Rowville Rockets U8 Girls 2","gid":"9acbeafc","gn":"Saturday U8 Girls D - 2025 Winter","age":"U8","div":null,"stats":{"gp":16,"fouls":18,"ft":11,"fg":50,"pts":111,"wins":10,"losses":6}}]}],"updatedAt":"2026-07-04T05:37:11.926Z","teams":[{"tid":"daaabbbd","sid":"a6c675bb","status":"ACTIVE"},{"tid":"0f607a65","sid":"cc946e47","status":"COMPLETED"},{"tid":"e5caafdd","sid":"32f6f69d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:42.104Z","records":{"maxGamePTS":{"v":18,"gameKey":"99dda39f","sid":"32f6f69d"},"maxGameThreePt":{"v":null}},"games":["0141b933","026c3296","03d5f029","03d8481e","0e95966e","12af625a","23f13a7a","2abc93c1","2e492add","380649a1","40437b2e","44e3f0b6","47c76242","4afd152f","4c440cc6","62b9555b","6746805c","7e44c30b","7e8c9f7b","8613385d","925f7523","99dda39f","a0ffcae2","ab3cb0fb","afabcfb6","aff270ea","b2e6cef3","bdb2125f","c3b02309","c6e73221","d0b4ba94","d3cf0f68","d8a2cd24","e4c636af","eafb647d","f9d390b0"]}
+{
+  "uuid": "dfc34846-a60e-4394-9467-f0fb750e0e68",
+  "name": "Mia O'Sullivan",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 133,
+      "fouls": 22,
+      "fg": 60,
+      "ft": 13,
+      "foulOuts": {
+        "32f6f69d": 1
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 56,
+      "losses": 56,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:31:05.164Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a6c675bb",
+      "sn": "Winter 2026",
+      "club": "Rowville Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "daaabbbd",
+          "tn": "Rowville Rockets U10 Girls 4",
+          "gid": "c1392ba7",
+          "gn": "Saturday U10 Girls CR - 2026 Winter",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 5,
+            "pts": 11,
+            "wins": 2,
+            "losses": 6,
+            "ft": 1,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "daaabbbd",
+          "tn": "Rowville Rockets U10 Girls 4",
+          "gid": "0d658a45",
+          "gn": "Saturday U10 Girls BR - 2026 Winter",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "wins": 2,
+            "losses": 6,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "daaabbbd",
+          "tn": "",
+          "gid": "c1392ba7",
+          "gn": "Saturday U10 Girls CR - 2026 Winter",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 1,
+            "wins": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc946e47",
+      "sn": "Summer 2025/26",
+      "club": "Rowville Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "0f607a65",
+          "tn": "Rowville Rockets U10 Girls 2",
+          "gid": "c2fa8c63",
+          "gn": "Saturday U10 Girls B - 2026 Summer",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 5,
+            "pts": 11,
+            "wins": 5,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "0f607a65",
+          "tn": "Rowville Rockets U10 Girls 2",
+          "gid": "dc5f0b9f",
+          "gn": "Saturday U10 Girls BR - 2026 Summer",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fg": 5,
+            "pts": 11,
+            "wins": 5,
+            "losses": 7,
+            "ft": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32f6f69d",
+      "sn": "Winter 2025",
+      "club": "Rowville Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e5caafdd",
+          "tn": "Rowville Rockets U8 Girls 2",
+          "gid": "8d8b26d0",
+          "gn": "Saturday U8 Girls Encouragement Day - 2025 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 11,
+            "fg": 50,
+            "pts": 111,
+            "wins": 10,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "e5caafdd",
+          "tn": "Rowville Rockets U8 Girls 2",
+          "gid": "9d932a46",
+          "gn": "Saturday U8 Girls B - 2025 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 11,
+            "fg": 50,
+            "pts": 111,
+            "wins": 10,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "e5caafdd",
+          "tn": "Rowville Rockets U8 Girls 2",
+          "gid": "7d9733a4",
+          "gn": "Saturday U8 Girls C - 2025 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 11,
+            "fg": 50,
+            "pts": 111,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "e5caafdd",
+          "tn": "Rowville Rockets U8 Girls 2",
+          "gid": "9acbeafc",
+          "gn": "Saturday U8 Girls D - 2025 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 11,
+            "fg": 50,
+            "pts": 111,
+            "wins": 10,
+            "losses": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:11.926Z",
+  "teams": [
+    {
+      "tid": "daaabbbd",
+      "sid": "a6c675bb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0f607a65",
+      "sid": "cc946e47",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5caafdd",
+      "sid": "32f6f69d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:51:27.955Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "99dda39f",
+      "sid": "32f6f69d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0141b933",
+    "026c3296",
+    "03d5f029",
+    "03d8481e",
+    "0e95966e",
+    "12af625a",
+    "23f13a7a",
+    "2abc93c1",
+    "2e492add",
+    "380649a1",
+    "40437b2e",
+    "44e3f0b6",
+    "47c76242",
+    "4afd152f",
+    "4c440cc6",
+    "62b9555b",
+    "6746805c",
+    "7e44c30b",
+    "7e8c9f7b",
+    "8613385d",
+    "925f7523",
+    "99dda39f",
+    "a0ffcae2",
+    "ab3cb0fb",
+    "afabcfb6",
+    "aff270ea",
+    "b2e6cef3",
+    "bdb2125f",
+    "c3b02309",
+    "c6e73221",
+    "d0b4ba94",
+    "d3cf0f68",
+    "d8a2cd24",
+    "e4c636af",
+    "eafb647d",
+    "f9d390b0"
+  ]
+}

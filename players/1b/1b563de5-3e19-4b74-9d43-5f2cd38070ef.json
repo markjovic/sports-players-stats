@@ -1,1 +1,249 @@
-{"uuid":"1b563de5-3e19-4b74-9d43-5f2cd38070ef","name":"Thomas White","gender":"Boys","sports":{"Basketball":{"gp":51,"pts":46,"fouls":16,"fg":20,"ft":6,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":19,"losses":40,"draws":2,"winPct":0.31,"statsChecked":"2026-07-05T14:39:51.795Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Titans Junior Basketball Club","regs":[{"tid":"a531aa8a","tn":"TITANS U12 Boys Tacos","gid":"f9d7de60","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":7,"fouls":7,"ft":2,"fg":2,"pts":6,"wins":3,"losses":2}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Titans Junior Basketball Club","regs":[{"tid":"e6247b06","tn":"TITANS U12 Boys Giants","gid":"827826f7","gn":"U12 Boys D1","age":"U12","div":"D1","stats":{"gp":14,"fouls":6,"ft":1,"fg":8,"pts":17,"losses":9}},{"tid":"e6247b06","tn":"TITANS U12 Boys Giants","gid":"e753dba4","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":14,"fouls":6,"fg":8,"pts":17,"losses":9,"ft":1}}]},{"sid":"c9bdcd48","sn":"Winter 2025","club":"Titans Junior Basketball Club","regs":[{"tid":"1b85de42","tn":"TITANS U10 Boys Giants","gid":"28888983","gn":"U10 Boys C2","age":"U10","div":"C2","stats":{"gp":16,"ft":2,"fg":6,"pts":14,"finals":1,"wins":6,"losses":4,"draws":1,"fouls":2}},{"tid":"1b85de42","tn":"TITANS U10 Boys Giants","gid":"cf607a2a","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":16,"fouls":2,"fg":6,"pts":14,"finals":1,"wins":6,"losses":4,"draws":1,"ft":2}}]},{"sid":"7a7de984","sn":"Summer 2024/25","club":"Titans Junior Basketball Club","regs":[{"tid":"80dd0749","tn":"TITANS U10 Boys Giants","gid":"162314f6","gn":"U10 Boys D1","age":"U10","div":"D1","stats":{"gp":14,"fouls":1,"ft":1,"fg":4,"pts":9,"finals":1,"wins":2,"losses":6}},{"tid":"80dd0749","tn":"TITANS U10 Boys Giants","gid":"97e7233d","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":14,"fg":4,"pts":9,"finals":1,"wins":2,"losses":6,"ft":1,"fouls":1}}]}],"updatedAt":"2026-05-31T03:30:46.159Z","teams":[{"tid":"a531aa8a","sid":"aacc7335","status":"ACTIVE"},{"tid":"e6247b06","sid":"6fd8e780","status":"COMPLETED"},{"tid":"1b85de42","sid":"c9bdcd48","status":"COMPLETED"},{"tid":"80dd0749","sid":"7a7de984","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:38.818Z","records":{"maxGamePTS":{"v":4,"gameKey":"64095719","sid":"6fd8e780"},"maxGameThreePt":{"v":null}},"games":["00f2f17c","010725b3","09876931","0bd1cf5d","0fb1e1bc","16f332b4","17775645","1b3673b8","25d76e38","25de3b90","30b6ac0c","31e4ed90","3321f970","3a19a6c8","3e11e41d","4bab22c7","6376124c","64095719","7b83962b","7f23d4cf","9cb695b6","9f33fef1","a71a7e42","a8e50317","ae217c7a","b4c7092d","c1c0f7c8","c45d945d","c8ae154e","cc127044","d8999e02","e314862a","f51a0ff4","f7c0f4dd"]}
+{
+  "uuid": "1b563de5-3e19-4b74-9d43-5f2cd38070ef",
+  "name": "Thomas White",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 46,
+      "fouls": 16,
+      "fg": 20,
+      "ft": 6,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 19,
+      "losses": 40,
+      "draws": 2,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T14:39:51.795Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "a531aa8a",
+          "tn": "TITANS U12 Boys Tacos",
+          "gid": "10099b33",
+          "gn": "U12 Boys D1",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 2,
+            "pts": 6,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "e6247b06",
+          "tn": "TITANS U12 Boys Giants",
+          "gid": "827826f7",
+          "gn": "U12 Boys D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "e6247b06",
+          "tn": "TITANS U12 Boys Giants",
+          "gid": "e753dba4",
+          "gn": "U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "fg": 8,
+            "pts": 17,
+            "losses": 9,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c9bdcd48",
+      "sn": "Winter 2025",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "1b85de42",
+          "tn": "TITANS U10 Boys Giants",
+          "gid": "28888983",
+          "gn": "U10 Boys C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "ft": 2,
+            "fg": 6,
+            "pts": 14,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "1b85de42",
+          "tn": "TITANS U10 Boys Giants",
+          "gid": "cf607a2a",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 2,
+            "fg": 6,
+            "pts": 14,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a7de984",
+      "sn": "Summer 2024/25",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "80dd0749",
+          "tn": "TITANS U10 Boys Giants",
+          "gid": "162314f6",
+          "gn": "U10 Boys D1",
+          "age": "U10",
+          "div": "D1",
+          "stats": {
+            "gp": 14,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "wins": 2,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "80dd0749",
+          "tn": "TITANS U10 Boys Giants",
+          "gid": "97e7233d",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "wins": 2,
+            "losses": 6,
+            "ft": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T03:30:46.159Z",
+  "teams": [
+    {
+      "tid": "a531aa8a",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e6247b06",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1b85de42",
+      "sid": "c9bdcd48",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80dd0749",
+      "sid": "7a7de984",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:43:00.292Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "64095719",
+      "sid": "6fd8e780"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00f2f17c",
+    "010725b3",
+    "09876931",
+    "0bd1cf5d",
+    "0fb1e1bc",
+    "16f332b4",
+    "17775645",
+    "1b3673b8",
+    "25d76e38",
+    "25de3b90",
+    "30b6ac0c",
+    "31e4ed90",
+    "3321f970",
+    "3a19a6c8",
+    "3e11e41d",
+    "4bab22c7",
+    "6376124c",
+    "64095719",
+    "7b83962b",
+    "7f23d4cf",
+    "9cb695b6",
+    "9f33fef1",
+    "a71a7e42",
+    "a8e50317",
+    "ae217c7a",
+    "b4c7092d",
+    "c1c0f7c8",
+    "c45d945d",
+    "c8ae154e",
+    "cc127044",
+    "d8999e02",
+    "e314862a",
+    "f51a0ff4",
+    "f7c0f4dd"
+  ]
+}

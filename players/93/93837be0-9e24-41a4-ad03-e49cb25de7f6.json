@@ -1,1 +1,379 @@
-{"uuid":"93837be0-9e24-41a4-ad03-e49cb25de7f6","name":"Archie Eddy","gender":"Boys","sports":{"Basketball":{"gp":50,"pts":173,"fouls":58,"fg":81,"ft":11,"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":33,"losses":66,"draws":4,"winPct":0.32,"statsChecked":"2026-07-05T14:29:09.124Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"20b550f1","tn":"Balwyn U11 Boys 12","gid":"19e854ac","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":8,"fouls":12,"ft":2,"fg":20,"pts":42,"wins":1,"losses":5}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"371195b6","tn":"Balwyn U10 Boys 07","gid":"cb922953","gn":"Boys U10 DC","age":"U10","div":null,"stats":{"gp":14,"fouls":6,"ft":5,"fg":12,"pts":29,"finals":1,"wins":6,"losses":7,"draws":1}},{"tid":"371195b6","tn":"Balwyn U10 Boys 07","gid":"fbefd3b5","gn":"Boys U10 D Grading","age":"U10","div":null,"stats":{"gp":14,"fouls":6,"fg":12,"pts":29,"finals":1,"wins":6,"losses":7,"draws":1,"ft":5}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"d076d266","tn":"Balwyn U09 Boys 04","gid":"dc455f50","gn":"Boys U09 CE","age":"U09","div":null,"stats":{"gp":15,"fouls":19,"ft":1,"fg":26,"pts":53,"finals":1,"gfApps":1,"wins":7,"losses":7,"draws":1}},{"tid":"d076d266","tn":"Balwyn U09 Boys 04","gid":"c074709e","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":15,"fouls":19,"fg":26,"pts":53,"finals":1,"gfApps":1,"wins":7,"losses":7,"draws":1,"ft":1}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"0e3416dd","tn":"Balwyn U08 Boys 02","gid":"cf1ca16d","gn":"Boys U08 BC","age":"U08","div":null,"stats":{"gp":13,"fouls":21,"ft":3,"fg":23,"pts":49,"finals":1,"wins":2,"losses":11}},{"tid":"0e3416dd","tn":"Balwyn U08 Boys 02","gid":"d77f3a00","gn":"Boys U08 B Grading","age":"U08","div":null,"stats":{"gp":13,"fouls":21,"fg":23,"pts":49,"finals":1,"wins":2,"losses":11,"ft":3}},{"tid":"0e3416dd","tn":"Balwyn U08 Boys 02","gid":"c5c9ed85","gn":"Boys U08 C Grading","age":"U08","div":null,"stats":{"gp":13,"fouls":21,"fg":23,"pts":49,"finals":1,"wins":2,"losses":11,"ft":3}}]}],"updatedAt":"2026-07-04T05:34:42.768Z","teams":[{"tid":"20b550f1","sid":"1ae60211","status":"ACTIVE"},{"tid":"371195b6","sid":"88026885","status":"COMPLETED"},{"tid":"d076d266","sid":"f373fc05","status":"COMPLETED"},{"tid":"0e3416dd","sid":"fa446579","status":"COMPLETED"},{"tid":"73cc8bb8","sid":"8884de2d","status":"COMPLETED"},{"tid":"8a7cf21c","sid":"0fef30ca","status":"COMPLETED"},{"tid":"4ca24c48","sid":"09a70808","status":"COMPLETED"},{"tid":"bb58abae","sid":"e5df46b3","status":"COMPLETED"},{"tid":"333c9a83","sid":"cf8ebef7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:44.204Z","records":{"maxGamePTS":{"v":10,"gameKey":"2f4716da","sid":"1ae60211"},"maxGameThreePt":{"v":null}},"games":["153c3725","1af485ae","29bfebc0","2f4716da","32bf5914","39a82456","3fc75616","4897cb35","53a5d9b4","5442c3a7","54587038","54db3c8a","5d2fbbf9","5d5dab16","6b1f32fc","7060a616","739d4e82","757b9032","79299c57","7a5ba3b4","863ef60f","87547d0a","880c4da4","8be335bc","92accd1a","93b09e95","98040c17","a3f2f7fd","aa72d0f4","b110d061","b199878e","b9d045eb","bd971e04","be549393","c6926168","c6a1434e","c7cb7d9f","c9a35756","cf88d938","d495a8be","da9ad5bb","db66e63d","dc1a7a28","dd218fb6","df53dc99","e549f27d","ef42aba9","fb00998c"]}
+{
+  "uuid": "93837be0-9e24-41a4-ad03-e49cb25de7f6",
+  "name": "Archie Eddy",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 173,
+      "fouls": 58,
+      "fg": 81,
+      "ft": 11,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 33,
+      "losses": 66,
+      "draws": 4,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-05T14:29:09.124Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "20b550f1",
+          "tn": "Balwyn U11 Boys 12",
+          "gid": "72df16cb",
+          "gn": "Boys U11 DF",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 20,
+            "pts": 42,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "371195b6",
+          "tn": "Balwyn U10 Boys 07",
+          "gid": "cb922953",
+          "gn": "Boys U10 DC",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "ft": 5,
+            "fg": 12,
+            "pts": 29,
+            "finals": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "371195b6",
+          "tn": "Balwyn U10 Boys 07",
+          "gid": "fbefd3b5",
+          "gn": "Boys U10 D Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "fg": 12,
+            "pts": 29,
+            "finals": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1,
+            "ft": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "d076d266",
+          "tn": "Balwyn U09 Boys 04",
+          "gid": "dc455f50",
+          "gn": "Boys U09 CE",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 19,
+            "ft": 1,
+            "fg": 26,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "d076d266",
+          "tn": "Balwyn U09 Boys 04",
+          "gid": "c074709e",
+          "gn": "Boys U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 19,
+            "fg": 26,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "0e3416dd",
+          "tn": "Balwyn U08 Boys 02",
+          "gid": "cf1ca16d",
+          "gn": "Boys U08 BC",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "ft": 3,
+            "fg": 23,
+            "pts": 49,
+            "finals": 1,
+            "wins": 2,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "0e3416dd",
+          "tn": "Balwyn U08 Boys 02",
+          "gid": "d77f3a00",
+          "gn": "Boys U08 B Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "fg": 23,
+            "pts": 49,
+            "finals": 1,
+            "wins": 2,
+            "losses": 11,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "0e3416dd",
+          "tn": "Balwyn U08 Boys 02",
+          "gid": "c5c9ed85",
+          "gn": "Boys U08 C Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "fg": 23,
+            "pts": 49,
+            "finals": 1,
+            "wins": 2,
+            "losses": 11,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "73cc8bb8",
+          "tn": "Surrey magic ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "8a7cf21c",
+          "tn": "Surrey magic ",
+          "gid": "3cbd5196",
+          "gn": "Friday Whitehorse YR.1 - YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "4ca24c48",
+          "tn": "Surrey Magic",
+          "gid": "12523768",
+          "gn": "Friday Whitehorse YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "bb58abae",
+          "tn": "Surrey Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "333c9a83",
+          "tn": "Surrey Magic",
+          "gid": "943de3b5",
+          "gn": "Friday Whitehorse YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:34:42.768Z",
+  "teams": [
+    {
+      "tid": "20b550f1",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "371195b6",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d076d266",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0e3416dd",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "73cc8bb8",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8a7cf21c",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ca24c48",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bb58abae",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "333c9a83",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:48:51.222Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "2f4716da",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "153c3725",
+    "1af485ae",
+    "29bfebc0",
+    "2f4716da",
+    "32bf5914",
+    "39a82456",
+    "3fc75616",
+    "4897cb35",
+    "53a5d9b4",
+    "5442c3a7",
+    "54587038",
+    "54db3c8a",
+    "5d2fbbf9",
+    "5d5dab16",
+    "6b1f32fc",
+    "7060a616",
+    "739d4e82",
+    "757b9032",
+    "79299c57",
+    "7a5ba3b4",
+    "863ef60f",
+    "87547d0a",
+    "880c4da4",
+    "8be335bc",
+    "92accd1a",
+    "93b09e95",
+    "98040c17",
+    "a3f2f7fd",
+    "aa72d0f4",
+    "b110d061",
+    "b199878e",
+    "b9d045eb",
+    "bd971e04",
+    "be549393",
+    "c6926168",
+    "c6a1434e",
+    "c7cb7d9f",
+    "c9a35756",
+    "cf88d938",
+    "d495a8be",
+    "da9ad5bb",
+    "db66e63d",
+    "dc1a7a28",
+    "dd218fb6",
+    "df53dc99",
+    "e549f27d",
+    "ef42aba9",
+    "fb00998c"
+  ]
+}

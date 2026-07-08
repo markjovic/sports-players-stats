@@ -1,1 +1,245 @@
-{"uuid":"5f4e62b9-6738-49fc-b2b4-a13249d24893","name":"Nadia Hayes","gender":"Girls","sports":{"Basketball":{"gp":46,"pts":6,"fouls":14,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":7,"losses":34,"winPct":0.17,"statsChecked":"2026-07-06T18:57:45.891Z"}},"seasons":[{"sid":"a72500e3","sn":"Winter 2026","club":"St Michael's Basketball Club","regs":[{"tid":"ebaa719e","tn":"SMB Lightning","gid":"38c4b484","gn":"Monday U12 Girls B","age":"U12","div":null,"stats":{"gp":8,"fouls":4,"fg":1,"pts":2,"wins":5,"losses":3}}]},{"sid":"c2bad8dc","sn":"Winter 2025","club":"St Michael's Basketball Club","regs":[{"tid":"a905071d","tn":"SMB Stars","gid":"871039e3","gn":"Monday U12 Girls B","age":"U12","div":null,"stats":{"gp":9,"fouls":2,"losses":9}}]},{"sid":"954f17b9","sn":"Summer 2024/25","club":"St Michael's Basketball Club","regs":[{"tid":"308ddfc8","tn":"SMB Stars","gid":"b9e81380","gn":"Monday U12 Girls B","age":"U12","div":null,"stats":{"gp":13,"fouls":2,"fg":1,"pts":2,"losses":13}}]},{"sid":"9ba921ee","sn":"Winter 2024","club":"St Michael's Basketball Club","regs":[{"tid":"f0acf83f","tn":"SMB Leopards","gid":"73cb9115","gn":"Friday U10 Girls","age":"U10","div":null,"stats":{"gp":11,"fouls":6,"fg":1,"pts":2,"wins":2,"losses":9}}]},{"sid":"73551fc8","regs":[{"tid":"e1740adf","stats":{"gp":5}},{"tid":"e1740adf","tn":"","gid":"e08b31de","gn":"U12 Girls","div":null,"stats":{"gp":5}}]}],"updatedAt":"2026-07-06T18:32:14.269Z","teams":[{"tid":"ebaa719e","sid":"a72500e3","status":"ACTIVE"},{"tid":"c5f18d4b","sid":"b6b9c9b9","status":"COMPLETED"},{"tid":"a905071d","sid":"c2bad8dc","status":"COMPLETED"},{"tid":"308ddfc8","sid":"954f17b9","status":"COMPLETED"},{"tid":"f0acf83f","sid":"9ba921ee","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:40:28.968Z","records":{"maxGamePTS":{"v":2,"gameKey":"26dbd5ec","sid":"a72500e3"},"maxGameThreePt":{"v":null}},"games":["007e9d9a","0455bb52","0ab18e8b","0f3b24d6","195a62a3","19a1b2d3","2016ac03","26dbd5ec","283a0a23","3244389c","3d665596","422a3397","43bdf988","468c5338","48789cec","4b52d312","4b83d117","4f0fa24d","50425533","50bada55","65c2259f","68fcde91","692ddb30","6994aa3b","7842edf7","794c8e6e","82a6e870","8daeff8d","8fb3d37f","9af50ae7","ad9662fc","b5991091","c36a5a47","c8dbf949","d140ae01","d52ecbc3","d944835a","effdb9ff","f1591f4a","f3d41e0f","f5cdf3b2"]}
+{
+  "uuid": "5f4e62b9-6738-49fc-b2b4-a13249d24893",
+  "name": "Nadia Hayes",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 6,
+      "fouls": 14,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 34,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-06T18:57:45.891Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a72500e3",
+      "sn": "Winter 2026",
+      "club": "St Michael's Basketball Club",
+      "regs": [
+        {
+          "tid": "ebaa719e",
+          "tn": "SMB Lightning",
+          "gid": "38c4b484",
+          "gn": "Monday U12 Girls B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c2bad8dc",
+      "sn": "Winter 2025",
+      "club": "St Michael's Basketball Club",
+      "regs": [
+        {
+          "tid": "a905071d",
+          "tn": "SMB Stars",
+          "gid": "871039e3",
+          "gn": "Monday U12 Girls B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 2,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "954f17b9",
+      "sn": "Summer 2024/25",
+      "club": "St Michael's Basketball Club",
+      "regs": [
+        {
+          "tid": "308ddfc8",
+          "tn": "SMB Stars",
+          "gid": "b9e81380",
+          "gn": "Monday U12 Girls B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9ba921ee",
+      "sn": "Winter 2024",
+      "club": "St Michael's Basketball Club",
+      "regs": [
+        {
+          "tid": "f0acf83f",
+          "tn": "SMB Leopards",
+          "gid": "73cb9115",
+          "gn": "Friday U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 6,
+            "fg": 1,
+            "pts": 2,
+            "wins": 2,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "e1740adf",
+          "stats": {
+            "gp": 5
+          },
+          "gid": "e08b31de",
+          "gn": "U12 Girls"
+        },
+        {
+          "tid": "e1740adf",
+          "tn": "",
+          "gid": "e08b31de",
+          "gn": "U12 Girls",
+          "div": null,
+          "stats": {
+            "gp": 5
+          }
+        },
+        {
+          "tid": "79092b09",
+          "tn": "Gippsland Wrens",
+          "gid": "44c0a6c0",
+          "gn": "U14 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b6b9c9b9",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "c5f18d4b",
+          "tn": "Gippsland Wrens",
+          "gid": "840e0bd1",
+          "gn": "U10 Boys D1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:14.269Z",
+  "teams": [
+    {
+      "tid": "ebaa719e",
+      "sid": "a72500e3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a905071d",
+      "sid": "c2bad8dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "308ddfc8",
+      "sid": "954f17b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0acf83f",
+      "sid": "9ba921ee",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1740adf",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79092b09",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5f18d4b",
+      "sid": "b6b9c9b9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:46:24.777Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "26dbd5ec",
+      "sid": "a72500e3"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "007e9d9a",
+    "0455bb52",
+    "0ab18e8b",
+    "0f3b24d6",
+    "195a62a3",
+    "19a1b2d3",
+    "2016ac03",
+    "26dbd5ec",
+    "283a0a23",
+    "3244389c",
+    "3d665596",
+    "422a3397",
+    "43bdf988",
+    "468c5338",
+    "48789cec",
+    "4b52d312",
+    "4b83d117",
+    "4f0fa24d",
+    "50425533",
+    "50bada55",
+    "65c2259f",
+    "68fcde91",
+    "692ddb30",
+    "6994aa3b",
+    "7842edf7",
+    "794c8e6e",
+    "82a6e870",
+    "8daeff8d",
+    "8fb3d37f",
+    "9af50ae7",
+    "ad9662fc",
+    "b5991091",
+    "c36a5a47",
+    "c8dbf949",
+    "d140ae01",
+    "d52ecbc3",
+    "d944835a",
+    "effdb9ff",
+    "f1591f4a",
+    "f3d41e0f",
+    "f5cdf3b2"
+  ]
+}

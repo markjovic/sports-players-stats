@@ -1,1 +1,134 @@
-{"uuid":"fcd35b2d-cb6f-46e5-a166-e5d2faa2819a","name":"Leo Currie","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":42,"fouls":15,"fg":13,"ft":7,"threePt":3,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"losses":13,"winPct":0.07,"wins":1,"statsChecked":"2026-07-05T14:18:13.812Z"}},"seasons":[{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"3bf4479f","tn":"Woodville B14.2 (SA)","gid":"02eafebb","gn":"U14 Boys B4 East (Eltham)","age":"U14","div":null,"stats":{"gp":5,"fouls":10,"ft":3,"pts":3,"losses":5}}]},{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"e4553a95","tn":"Woodville Warriors U12 Boys 2 Green","gid":"4b29a96d","gn":"BOYS UNDER 12 B5","age":null,"div":"B5","stats":{"gp":5,"fouls":3,"ft":2,"fg":7,"pts":16,"losses":5}}]},{"sid":"0869ea69","regs":[{"tid":"ccd5ec04","stats":{"wins":1,"losses":3,"gp":5,"pts":23,"fg":6,"ft":2,"threePt":3,"fouls":2}}]}],"updatedAt":"2026-07-04T05:52:09.517Z","teams":[{"tid":"ccd5ec04","sid":"0869ea69","status":"UPCOMING"},{"tid":"ccd5ec04","sid":"0869ea69","status":"UPCOMING"},{"tid":"3bf4479f","sid":"6b0cab9c","status":"COMPLETED"},{"tid":"e4553a95","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:35:37.620Z","records":{"maxGamePTS":{"v":8,"gameKey":"5f97064a","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"5f97064a","sid":"0869ea69"}},"games":["332cbc84","4955a062","54fac34f","5f97064a","69a44f28","92ef61ad","9a3942ab","bf5003d8","c2c89a38","c3f2b849","c5c07d12","c5c992a7","db40ba73","f87865d9"]}
+{
+  "uuid": "fcd35b2d-cb6f-46e5-a166-e5d2faa2819a",
+  "name": "Leo Currie",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 42,
+      "fouls": 15,
+      "fg": 13,
+      "ft": 7,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "losses": 13,
+      "winPct": 0.07,
+      "wins": 1,
+      "statsChecked": "2026-07-05T14:18:13.812Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "3bf4479f",
+          "tn": "Woodville B14.2 (SA)",
+          "gid": "02eafebb",
+          "gn": "U14 Boys B4 East (Eltham)",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 10,
+            "ft": 3,
+            "pts": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "e4553a95",
+          "tn": "Woodville Warriors U12 Boys 2 Green",
+          "gid": "4b29a96d",
+          "gn": "BOYS UNDER 12 B5",
+          "age": null,
+          "div": "B5",
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 7,
+            "pts": 16,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "ccd5ec04",
+          "stats": {
+            "wins": 1,
+            "losses": 3,
+            "gp": 5,
+            "pts": 23,
+            "fg": 6,
+            "ft": 2,
+            "threePt": 3,
+            "fouls": 2
+          },
+          "gid": "4b838fe5",
+          "gn": "BOYS UNDER 14 C1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:09.517Z",
+  "teams": [
+    {
+      "tid": "3bf4479f",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4553a95",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ccd5ec04",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:52:25.067Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "5f97064a",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5f97064a",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "332cbc84",
+    "4955a062",
+    "54fac34f",
+    "5f97064a",
+    "69a44f28",
+    "92ef61ad",
+    "9a3942ab",
+    "bf5003d8",
+    "c2c89a38",
+    "c3f2b849",
+    "c5c07d12",
+    "c5c992a7",
+    "db40ba73",
+    "f87865d9"
+  ]
+}
