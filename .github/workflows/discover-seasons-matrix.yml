@@ -140,6 +140,7 @@ jobs:
           sparse-checkout: |
             scripts
             data
+          # team-lookup excluded — not consumed downstream
           sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -256,7 +257,8 @@ jobs:
           import json, os
           d = json.load(open('/tmp/manifest/discover-reduce-manifest.json'))
           shards = d.get('affectedShards', [])
-          dirs = ['scripts', 'data', 'team-lookup'] + ['players/' + s for s in shards]
+          # 'team-lookup' removed — team-lookup/ files not consumed downstream
+          dirs = ['scripts', 'data'] + ['players/' + s for s in shards]
           out = os.environ['GITHUB_OUTPUT']
           with open(out, 'a') as fh:
               fh.write('sparse_dirs<<SPARSEEOF\n')
@@ -309,20 +311,21 @@ jobs:
             }
           }
 
-          for (const [tid, team] of Object.entries(manifest.teamUpdates || {})) {
-            const dir  = path.join(process.cwd(), 'team-lookup', 'bv');
-            const file = path.join(dir, `${tid}.json`);
-            try {
-              if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-              if (!fs.existsSync(file)) {
-                fs.writeFileSync(file, JSON.stringify(team, null, 2));
-                teamsWritten++;
-              }
-            } catch (e) {
-              console.error(`  ✗ failed to write team ${tid}: ${e.message}`);
-              errors++;
-            }
-          }
+          // DISABLED — team-lookup/ writes removed; not consumed downstream.
+          // for (const [tid, team] of Object.entries(manifest.teamUpdates || {})) {
+          //   const dir  = path.join(process.cwd(), 'team-lookup', 'bv');
+          //   const file = path.join(dir, `${tid}.json`);
+          //   try {
+          //     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+          //     if (!fs.existsSync(file)) {
+          //       fs.writeFileSync(file, JSON.stringify(team, null, 2));
+          //       teamsWritten++;
+          //     }
+          //   } catch (e) {
+          //     console.error(`  ✗ failed to write team ${tid}: ${e.message}`);
+          //     errors++;
+          //   }
+          // }
 
           console.log(`Players written: ${playersWritten}`);
           console.log(`Teams written:   ${teamsWritten}`);
