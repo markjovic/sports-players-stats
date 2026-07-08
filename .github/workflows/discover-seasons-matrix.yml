@@ -147,7 +147,6 @@ jobs:
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
           echo "${undone:-[]}" > undone_shards.json
 
-          # Instantly count all .json files in the players/ directory using the Git index
           export TOTAL_PLAYERS=$(git ls-files 'players/' | grep -c '\.json$')
 
           python3 - << 'PYEOF'
@@ -169,14 +168,6 @@ jobs:
                   print(f"Could not parse progress: {e}")
           PYEOF
 
-          if [ "${{ inputs.dry_run }}" != "true" ]; then
-            git add -u
-            git add data/discover-progress.json data/sports-index.json players/ team-lookup/
-            if ! git diff --cached --quiet; then
-              git commit -m "update: progress + rosters"
-              git push origin main
-            fi
-          fi
       - uses: actions/upload-artifact@v4
         with:
           name: undone-shards
@@ -197,10 +188,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
         run: |
-          if [ ! -f undone_shards.json ]; then
-            echo "[]" > undone_shards.json
-          fi
-          
+          if [ ! -f undone_shards.json ]; then echo "[]" > undone_shards.json; fi
           UNDONE=$(cat undone_shards.json)
           if [ "$UNDONE" != '[]' ] && [ -n "$UNDONE" ] && [ "${{ inputs.run_number }}" -lt "${{ env.MAX_RUNS }}" ]; then
              echo "↺ Re-triggering chain..."
