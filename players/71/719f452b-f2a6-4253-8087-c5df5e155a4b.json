@@ -1,1 +1,277 @@
-{"uuid":"719f452b-f2a6-4253-8087-c5df5e155a4b","name":"Matt Pollock","gender":"Men","sports":{"Basketball":{"gp":59,"pts":324,"fouls":84,"fg":100,"ft":34,"threePt":30,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":15,"maxGameThreePt":4,"wins":33,"losses":43,"winPct":0.43,"statsChecked":"2026-07-08T18:04:12.650Z"}},"seasons":[{"sid":"75ebb237","sn":"Winter 2026","regs":[{"tid":"27e03e9d","tn":"Ashburn Grovers","gid":"a0a269d8","gn":"Wednesday Men A","age":null,"div":null,"stats":{"gp":6,"fouls":5,"ft":5,"fg":10,"threePt":5,"pts":40,"wins":3,"losses":2}}]},{"sid":"5bb7c87f","sn":"Summer 2025/26","regs":[{"tid":"1fbc40a0","tn":"Ashburn Grovers","gid":"323b3d41","gn":"Wednesday Men A","age":null,"div":null,"stats":{"gp":21,"fouls":41,"ft":6,"fg":39,"threePt":13,"pts":123,"finals":1,"gfApps":1,"wins":10,"losses":11,"gfWins":1}}]},{"sid":"d855bcfa","sn":"Winter 2025","regs":[{"tid":"1fad1dec","tn":"Ashburn Grovers","gid":"29076ec5","gn":"Wednesday Men A","age":null,"div":null,"stats":{"gp":18,"fouls":18,"ft":17,"fg":32,"threePt":5,"pts":96,"wins":4,"losses":14}},{"tid":"1fad1dec","tn":"Ashburn Grovers","gid":"f3d11c40","gn":"Wednesday Men B","age":null,"div":null,"stats":{"gp":18,"fouls":18,"ft":17,"fg":32,"pts":96,"wins":4,"losses":14,"threePt":5}}]},{"sid":"51595f4e","sn":"Summer 2024/25","regs":[{"tid":"4e82571c","tn":"Ashburn Grovers","gid":"da62ba02","gn":"Wednesday Men B","age":null,"div":null,"stats":{"gp":14,"fouls":20,"ft":6,"fg":19,"threePt":7,"pts":65,"wins":12,"losses":2}}]},{"sid":"d4cbf787","sn":"Autumn 2022","regs":[{"tid":"05d90e87","tn":"Combat Wombats","gid":"90dddc1b","gn":"Monday Senior Men","stats":{}}]},{"sid":"d64fcfce","sn":"Spring 2021","regs":[{"tid":"9e4f7e86","tn":"Combat Wombats","gid":"3449a1c8","gn":"Monday Senior Men","stats":{}}]}],"updatedAt":"2026-07-08T17:30:14.316Z","teams":[{"tid":"27e03e9d","sid":"75ebb237","status":"ACTIVE"},{"tid":"1fbc40a0","sid":"5bb7c87f","status":"ACTIVE"},{"tid":"1fad1dec","sid":"d855bcfa","status":"ACTIVE"},{"tid":"4e82571c","sid":"51595f4e","status":"ACTIVE"},{"tid":"05d90e87","sid":"d4cbf787","status":"ACTIVE"},{"tid":"9e4f7e86","sid":"d64fcfce","status":"ACTIVE"}],"teamsUpdatedAt":"2026-07-08T13:34:19.361Z","records":{"maxGamePTS":{"v":15,"gameKey":"420dd9c1","sid":"75ebb237"},"maxGameThreePt":{"v":4,"gameKey":"8f3ab772","sid":"5bb7c87f"}},"games":["0354db3f","0a3a45e1","25d909bb","279a3cbb","369c184a","420dd9c1","45a9889d","469657c5","4a0df2e2","4b1ff178","558236b4","581dae5e","5b21f46b","608fa6c8","6b386b61","6cf57a28","795cf926","7b6b2ca2","7c161456","7dc739f0","83986034","85484c09","889eefe9","891c537d","8b25d194","8b5cb6a1","8ce2b2ec","8e519e3d","8f3ab772","925f10d4","932727e2","9b2c559d","9e7975ae","ae735693","b0537c42","b4479be4","b7d11ca4","b8496505","b8813381","bac2c75c","c057051c","c586afe2","c6cb007e","c6efd656","c9cbf6a5","cd9b02a6","d6bc401f","d91c61e6","df48ef44","e31bc391","e3f671df","edd359c7","ef9c27b0","f3e21f22","f9a95cae","fb4cc7b3","fd054975","fe965b85"]}
+{
+  "uuid": "719f452b-f2a6-4253-8087-c5df5e155a4b",
+  "name": "Matt Pollock",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 320,
+      "fouls": 84,
+      "fg": 100,
+      "ft": 30,
+      "threePt": 30,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 15,
+      "maxGameThreePt": 4,
+      "wins": 33,
+      "losses": 43,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T16:01:37.060Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "27e03e9d",
+          "tn": "Ashburn Grovers",
+          "gid": "a0a269d8",
+          "gn": "Wednesday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 10,
+            "threePt": 5,
+            "pts": 36,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5bb7c87f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "1fbc40a0",
+          "tn": "Ashburn Grovers",
+          "gid": "323b3d41",
+          "gn": "Wednesday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 41,
+            "ft": 6,
+            "fg": 39,
+            "threePt": 13,
+            "pts": 123,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 11,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d855bcfa",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "1fad1dec",
+          "tn": "Ashburn Grovers",
+          "gid": "29076ec5",
+          "gn": "Wednesday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 18,
+            "ft": 17,
+            "fg": 32,
+            "threePt": 5,
+            "pts": 96,
+            "wins": 4,
+            "losses": 14
+          }
+        },
+        {
+          "tid": "1fad1dec",
+          "tn": "Ashburn Grovers",
+          "gid": "f3d11c40",
+          "gn": "Wednesday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 18,
+            "ft": 17,
+            "fg": 32,
+            "pts": 96,
+            "wins": 4,
+            "losses": 14,
+            "threePt": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "51595f4e",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "4e82571c",
+          "tn": "Ashburn Grovers",
+          "gid": "da62ba02",
+          "gn": "Wednesday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 20,
+            "ft": 6,
+            "fg": 19,
+            "threePt": 7,
+            "pts": 65,
+            "wins": 12,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "05d90e87",
+          "tn": "Combat Wombats",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "9e4f7e86",
+          "tn": "Combat Wombats",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T12:18:25.297Z",
+  "teams": [
+    {
+      "tid": "27e03e9d",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1fbc40a0",
+      "sid": "5bb7c87f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1fad1dec",
+      "sid": "d855bcfa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e82571c",
+      "sid": "51595f4e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05d90e87",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e4f7e86",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:19.361Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "420dd9c1",
+      "sid": "75ebb237"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "8f3ab772",
+      "sid": "5bb7c87f"
+    }
+  },
+  "games": [
+    "0354db3f",
+    "0a3a45e1",
+    "25d909bb",
+    "279a3cbb",
+    "369c184a",
+    "420dd9c1",
+    "45a9889d",
+    "469657c5",
+    "4a0df2e2",
+    "4b1ff178",
+    "558236b4",
+    "581dae5e",
+    "5b21f46b",
+    "608fa6c8",
+    "6b386b61",
+    "6cf57a28",
+    "795cf926",
+    "7b6b2ca2",
+    "7c161456",
+    "7dc739f0",
+    "83986034",
+    "85484c09",
+    "889eefe9",
+    "891c537d",
+    "8b25d194",
+    "8b5cb6a1",
+    "8ce2b2ec",
+    "8e519e3d",
+    "8f3ab772",
+    "925f10d4",
+    "932727e2",
+    "9b2c559d",
+    "9e7975ae",
+    "ae735693",
+    "b0537c42",
+    "b4479be4",
+    "b7d11ca4",
+    "b8496505",
+    "b8813381",
+    "bac2c75c",
+    "c057051c",
+    "c586afe2",
+    "c6cb007e",
+    "c6efd656",
+    "c9cbf6a5",
+    "cd9b02a6",
+    "d6bc401f",
+    "d91c61e6",
+    "df48ef44",
+    "e31bc391",
+    "e3f671df",
+    "edd359c7",
+    "ef9c27b0",
+    "f3e21f22",
+    "f9a95cae",
+    "fb4cc7b3",
+    "fd054975",
+    "fe965b85"
+  ]
+}
