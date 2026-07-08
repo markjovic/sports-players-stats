@@ -1,1 +1,299 @@
-{"uuid":"3b117d27-2a0c-4f58-a3b1-76bef0ab8b0d","name":"John Castro","gender":"Men","sports":{"Basketball":{"gp":53,"pts":202,"fouls":49,"fg":60,"ft":16,"threePt":22,"foulOuts":{},"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":0.75,"maxGamePTS":33,"maxGameThreePt":3,"wins":51,"losses":47,"draws":8,"winPct":0.48,"statsChecked":"2026-07-05T15:47:50.054Z"}},"seasons":[{"sid":"02efc987","sn":"Summer 2024/25","regs":[{"tid":"2c8a0a01","tn":"Anne Fadeaways (AFgb) ","gid":"fd2152b0","gn":"Thursday Open Men 1","age":"Senior","div":null,"stats":{"gp":15,"fouls":17,"ft":4,"fg":15,"threePt":5,"pts":49,"finals":1,"losses":9,"draws":2,"wins":5}},{"tid":"2c8a0a01","tn":"Anne Fadeaways (AFgb) ","gid":"22ca4ac7","gn":"Thursday Open Men","age":"Senior","div":null,"stats":{"gp":15,"fouls":17,"fg":15,"threePt":5,"pts":49,"finals":1,"losses":9,"draws":2,"wins":5,"ft":4}}]},{"sid":"490dfba3","sn":"Winter 2024","regs":[{"tid":"d780ca36","tn":"Anne Fadeaways (AFgb)","gid":"b2236c80","gn":"Thursday Open Men 1","age":"Senior","div":null,"stats":{"gp":19,"fouls":16,"ft":5,"fg":30,"threePt":11,"pts":98,"finals":1,"gfApps":1,"wins":12,"losses":7,"gfWins":1}},{"tid":"d780ca36","tn":"Anne Fadeaways (AFgb)","gid":"7426b0b3","gn":"Thursday Open Men","age":"Senior","div":null,"stats":{"gp":19,"fouls":16,"fg":30,"pts":98,"finals":1,"gfApps":1,"wins":12,"losses":7,"ft":5,"threePt":11,"gfWins":1}}]},{"sid":"76a39d69","sn":"Winter 2023","regs":[{"tid":"5a9f53f4","tn":"Anne Fadeaways (AFgb) ","gid":"1646652c","gn":"Thursday Open Men A","age":"Senior","div":null,"stats":{"gp":17,"fouls":13,"ft":4,"fg":14,"threePt":4,"pts":44,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":2}},{"tid":"5a9f53f4","tn":"Anne Fadeaways (AFgb) ","gid":"8e408c89","gn":"Thursday Open Men","age":"Senior","div":null,"stats":{"gp":17,"fouls":13,"ft":4,"fg":14,"threePt":4,"pts":44,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":2}}]},{"sid":"e9f1cf00","sn":"Summer 2022/23","regs":[{"tid":"0b641348","tn":"Anne Fadeaways (AFgb) ","gid":"2134cde3","gn":"Thursday Open Men B","age":"Senior","div":null,"stats":{"gp":2,"fouls":3,"ft":3,"fg":1,"threePt":2,"pts":11,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-03T04:14:56.403Z","teams":[{"tid":"2c8a0a01","sid":"02efc987","status":"COMPLETED"},{"tid":"d780ca36","sid":"490dfba3","status":"COMPLETED"},{"tid":"5a9f53f4","sid":"76a39d69","status":"COMPLETED"},{"tid":"0b641348","sid":"e9f1cf00","status":"COMPLETED"},{"tid":"77b24ced","sid":"e9f1cf00","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:16:57.111Z","records":{"maxGamePTS":{"v":33,"gameKey":"149cbb63","sid":"490dfba3"},"maxGameThreePt":{"v":3,"gameKey":"c4920864","sid":"02efc987"}},"games":["02b41d67","0cd10127","149cbb63","1b77ed21","1f990108","282c5daf","2e3a250c","2fcef84b","432a6b4a","453beb94","4eb6dd34","4f0924f1","4f15484c","50d57c0c","52c61aa1","54c96c81","5547519b","56f2af74","5721ad90","591e1517","61919465","686af8e4","688aea8c","6e59de07","6f473473","77f354da","7c3fde8a","7e1e291c","806d4bce","8756ba1d","8ea1294c","9528a431","97ce168d","97d3b739","9a7d798a","9cee73b7","9d99c558","abf16132","acde4cc7","ad807dd2","aff79016","b50878e6","b65e3281","c0a7b667","c0b656f1","c1aceeb3","c4920864","db433f6e","e07cde17","e304054a","e5902288","ebd80526","ec800af0","fb2c6ecf"]}
+{
+  "uuid": "3b117d27-2a0c-4f58-a3b1-76bef0ab8b0d",
+  "name": "John Castro",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 53,
+      "pts": 202,
+      "fouls": 49,
+      "fg": 60,
+      "ft": 16,
+      "threePt": 22,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 33,
+      "maxGameThreePt": 3,
+      "wins": 51,
+      "losses": 47,
+      "draws": 8,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T15:47:50.054Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "02efc987",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "2c8a0a01",
+          "tn": "Anne Fadeaways (AFgb) ",
+          "gid": "fd2152b0",
+          "gn": "Thursday Open Men 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 15,
+            "threePt": 5,
+            "pts": 49,
+            "finals": 1,
+            "losses": 9,
+            "draws": 2,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "2c8a0a01",
+          "tn": "Anne Fadeaways (AFgb) ",
+          "gid": "22ca4ac7",
+          "gn": "Thursday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "fg": 15,
+            "threePt": 5,
+            "pts": 49,
+            "finals": 1,
+            "losses": 9,
+            "draws": 2,
+            "wins": 5,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "490dfba3",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "d780ca36",
+          "tn": "Anne Fadeaways (AFgb)",
+          "gid": "b2236c80",
+          "gn": "Thursday Open Men 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 16,
+            "ft": 5,
+            "fg": 30,
+            "threePt": 11,
+            "pts": 98,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 7,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "d780ca36",
+          "tn": "Anne Fadeaways (AFgb)",
+          "gid": "7426b0b3",
+          "gn": "Thursday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 16,
+            "fg": 30,
+            "pts": 98,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 7,
+            "ft": 5,
+            "threePt": 11,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76a39d69",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "5a9f53f4",
+          "tn": "Anne Fadeaways (AFgb) ",
+          "gid": "1646652c",
+          "gn": "Thursday Open Men A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 13,
+            "ft": 4,
+            "fg": 14,
+            "threePt": 4,
+            "pts": 44,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "5a9f53f4",
+          "tn": "Anne Fadeaways (AFgb) ",
+          "gid": "8e408c89",
+          "gn": "Thursday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 13,
+            "ft": 4,
+            "fg": 14,
+            "threePt": 4,
+            "pts": 44,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e9f1cf00",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "0b641348",
+          "tn": "Anne Fadeaways (AFgb) ",
+          "gid": "2134cde3",
+          "gn": "Thursday Open Men B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "ft": 3,
+            "fg": 1,
+            "threePt": 2,
+            "pts": 11,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "77b24ced",
+          "tn": "Anne Fadeaways (AFgb) 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T04:14:56.403Z",
+  "teams": [
+    {
+      "tid": "2c8a0a01",
+      "sid": "02efc987",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d780ca36",
+      "sid": "490dfba3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a9f53f4",
+      "sid": "76a39d69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b641348",
+      "sid": "e9f1cf00",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "77b24ced",
+      "sid": "e9f1cf00",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:50.359Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 33,
+      "gameKey": "149cbb63",
+      "sid": "490dfba3"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "c4920864",
+      "sid": "02efc987"
+    }
+  },
+  "games": [
+    "02b41d67",
+    "0cd10127",
+    "149cbb63",
+    "1b77ed21",
+    "1f990108",
+    "282c5daf",
+    "2e3a250c",
+    "2fcef84b",
+    "432a6b4a",
+    "453beb94",
+    "4eb6dd34",
+    "4f0924f1",
+    "4f15484c",
+    "50d57c0c",
+    "52c61aa1",
+    "54c96c81",
+    "5547519b",
+    "56f2af74",
+    "5721ad90",
+    "591e1517",
+    "61919465",
+    "686af8e4",
+    "688aea8c",
+    "6e59de07",
+    "6f473473",
+    "77f354da",
+    "7c3fde8a",
+    "7e1e291c",
+    "806d4bce",
+    "8756ba1d",
+    "8ea1294c",
+    "9528a431",
+    "97ce168d",
+    "97d3b739",
+    "9a7d798a",
+    "9cee73b7",
+    "9d99c558",
+    "abf16132",
+    "acde4cc7",
+    "ad807dd2",
+    "aff79016",
+    "b50878e6",
+    "b65e3281",
+    "c0a7b667",
+    "c0b656f1",
+    "c1aceeb3",
+    "c4920864",
+    "db433f6e",
+    "e07cde17",
+    "e304054a",
+    "e5902288",
+    "ebd80526",
+    "ec800af0",
+    "fb2c6ecf"
+  ]
+}

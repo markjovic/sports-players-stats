@@ -1,1 +1,63 @@
-{"uuid":"ea4a0848-a4d6-42f9-8c17-30c1cfd7c867","name":"Paris O'Rourke","sports":{"Basketball":{"maxGamePTS":8,"maxGameThreePt":null,"foulOuts":{},"gp":15,"pts":57,"fg":25,"ft":7,"fouls":23,"statsChecked":"2026-07-07T18:30:29.664Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"9918d62f"}]},{"sid":"796936f7","regs":[{"tid":"926b473a"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":8,"gameKey":"a1abb7dd","sid":"796936f7"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ea4a0848-a4d6-42f9-8c17-30c1cfd7c867",
+  "name": "Paris O'Rourke",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 15,
+      "pts": 57,
+      "fg": 25,
+      "ft": 7,
+      "fouls": 23,
+      "statsChecked": "2026-07-07T18:30:29.664Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "9918d62f",
+          "gid": "5729abb2",
+          "gn": "Tuesday Women- Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "926b473a",
+          "gid": "df443908",
+          "gn": "Tuesday  Women Div 1-2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "9918d62f",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "926b473a",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "a1abb7dd",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:31:47.658Z"
+}

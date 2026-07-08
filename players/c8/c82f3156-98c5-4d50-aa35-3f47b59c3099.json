@@ -1,1 +1,78 @@
-{"uuid":"c82f3156-98c5-4d50-aa35-3f47b59c3099","name":"Mia Phillips","gender":"Girls","sports":{"Basketball":{"gp":2,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"losses":1,"winPct":0.5,"statsChecked":"2026-07-05T14:58:13.317Z"}},"seasons":[{"sid":"b0c6ff83","sn":"Autumn 2024","club":"St Leonard's College Basketball Club","regs":[{"tid":"2e15bcca","tn":"St Leonard's U16 Girls BRAVES","gid":"5b7fd3f3","gn":"Wednesday U16 Girls C2 Grade","age":"U16","div":null,"stats":{"gp":2,"wins":1,"losses":1}}]}],"updatedAt":"2026-05-31T13:36:03.491Z","teams":[{"tid":"2e15bcca","sid":"b0c6ff83","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:35.825Z","games":["15a3a689","625f88ce"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c82f3156-98c5-4d50-aa35-3f47b59c3099",
+  "name": "Mia Phillips",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:58:13.317Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b0c6ff83",
+      "sn": "Autumn 2024",
+      "club": "St Leonard's College Basketball Club",
+      "regs": [
+        {
+          "tid": "2e15bcca",
+          "tn": "St Leonard's U16 Girls BRAVES",
+          "gid": "5b7fd3f3",
+          "gn": "Wednesday U16 Girls C2 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "f51d93eb",
+          "tn": "Sharks U18 Girls Bull",
+          "gid": "b343ef3e",
+          "gn": "Monday U18 Girls C1 Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:36:03.491Z",
+  "teams": [
+    {
+      "tid": "2e15bcca",
+      "sid": "b0c6ff83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f51d93eb",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:49.961Z",
+  "games": [
+    "15a3a689",
+    "625f88ce"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

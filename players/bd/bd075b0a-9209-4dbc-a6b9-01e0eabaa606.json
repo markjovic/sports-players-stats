@@ -1,1 +1,287 @@
-{"uuid":"bd075b0a-9209-4dbc-a6b9-01e0eabaa606","name":"Abby Smith","gender":"Girls","sports":{"Basketball":{"gp":48,"pts":220,"fouls":86,"fg":106,"ft":8,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"3e7c1a8c":1,"e830df83":2},"maxGamePTS":12,"maxGameThreePt":null,"wins":32,"losses":25,"draws":2,"winPct":0.54,"statsChecked":"2026-07-05T14:44:32.057Z"}},"seasons":[{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Mordy Flyers Basketball Club","regs":[{"tid":"1748eb87","tn":"Mordy Flyers Sparks","gid":"1cd4902e","gn":"Tuesday U14 Girls C2 Grade","age":"U14","div":null,"stats":{"gp":15,"fouls":28,"ft":2,"fg":41,"pts":84,"wins":11,"losses":2}},{"tid":"1748eb87","tn":"Mordy Flyers Sparks","gid":"e6df7e39","gn":"Tuesday U14 Girls D1 Grade","age":"U14","div":null,"stats":{"gp":15,"fouls":28,"ft":2,"fg":41,"pts":84,"wins":11,"losses":2}},{"tid":"4183328d","tn":"Mordy Flyers Thunder","gid":"d83b0d8b","gn":"Tuesday U14 Girls A/A Reserve Grade","age":"U14","div":null,"stats":{"gp":2,"fg":3,"pts":6,"losses":2}}]},{"sid":"e830df83","sn":"Spring 2025","club":"Mordy Flyers Basketball Club","regs":[{"tid":"fa4587d6","tn":"Mordy Flyers Unicorns","gid":"4c287b8c","gn":"Tuesday U14 Girls D1 Grade","age":"U14","div":null,"stats":{"gp":16,"fouls":42,"ft":3,"fg":43,"pts":89,"finals":1,"foulOuts":2,"wins":6,"losses":8,"draws":2}}]},{"sid":"38710f3b","sn":"Autumn 2025","club":"Mordy Flyers Basketball Club","regs":[{"tid":"bbbec9a0","tn":"Mordy Flyers Unicorns","gid":"f1ca71f6","gn":"Tuesday U14 Girls D1 Grade","age":"U14","div":null,"stats":{"gp":15,"fouls":16,"ft":3,"fg":19,"pts":41,"wins":4,"losses":11}}]}],"updatedAt":"2026-06-01T23:18:53.292Z","teams":[{"tid":"1748eb87","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"fa4587d6","sid":"e830df83","status":"COMPLETED"},{"tid":"bbbec9a0","sid":"38710f3b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:11:09.717Z","records":{"maxGamePTS":{"v":12,"gameKey":"d6e14ded","sid":"3e7c1a8c"},"maxGameThreePt":{"v":null}},"games":["15ca8a0b","163d9c5f","1b7249a1","2530b1ec","26687267","3028a867","3687925b","377ad912","387f3b67","3a10d374","3d5b2289","3fe4fb78","40b0992b","4ff00106","52404295","54a0eb6a","5b27b8df","5f82acfc","6ddf56f3","76d48611","78840be9","79a89e8b","7bf1eb04","85a2aa06","8be03e3c","8c3b4f5f","8c9e525a","920459e4","9b33a927","a25fc1a5","acd3da78","b073878e","b3d634d5","bde794fa","c5bdde01","c65b6af2","c772ce5c","c9fed216","cc227168","cdcfdaf7","d34a0c11","d6e14ded","d81b9ba2","d9e09058","dc50aa7d","e988cd9c"],"gameTids":{"26687267":"bbbec9a0","52404295":"fa4587d6","5b27b8df":"1748eb87","cdcfdaf7":"1748eb87","2b06abb2":"1748eb87","a4fb4ed0":"1748eb87","d9e09058":"1748eb87","4ff00106":"1748eb87","3fe4fb78":"1748eb87","54a0eb6a":"1748eb87","d6e14ded":"1748eb87","6ddf56f3":"1748eb87","40b0992b":"1748eb87","163d9c5f":"1748eb87","c5bdde01":"1748eb87","3687925b":"1748eb87","d34a0c11":"1748eb87","c9fed216":"4183328d","acd3da78":"4183328d","76d48611":"fa4587d6","78840be9":"fa4587d6","3028a867":"fa4587d6","b073878e":"fa4587d6","8c9e525a":"fa4587d6","3a10d374":"fa4587d6","8be03e3c":"fa4587d6","bde794fa":"fa4587d6","79a89e8b":"fa4587d6","c772ce5c":"fa4587d6","377ad912":"fa4587d6","cc227168":"fa4587d6","85a2aa06":"fa4587d6","7bf1eb04":"fa4587d6","e988cd9c":"fa4587d6","c65b6af2":"bbbec9a0","8c3b4f5f":"bbbec9a0","3d5b2289":"bbbec9a0","1b7249a1":"bbbec9a0","5f82acfc":"bbbec9a0","a25fc1a5":"bbbec9a0","b3d634d5":"bbbec9a0","2530b1ec":"bbbec9a0","d81b9ba2":"bbbec9a0","dc50aa7d":"bbbec9a0","15ca8a0b":"bbbec9a0","9b33a927":"bbbec9a0","387f3b67":"bbbec9a0","920459e4":"bbbec9a0"}}
+{
+  "uuid": "bd075b0a-9209-4dbc-a6b9-01e0eabaa606",
+  "name": "Abby Smith",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 220,
+      "fouls": 86,
+      "fg": 106,
+      "ft": 8,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "3e7c1a8c": 1,
+        "e830df83": 2
+      },
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 32,
+      "losses": 25,
+      "draws": 2,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T14:44:32.057Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Mordy Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "1748eb87",
+          "tn": "Mordy Flyers Sparks",
+          "gid": "1cd4902e",
+          "gn": "Tuesday U14 Girls C2 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 28,
+            "ft": 2,
+            "fg": 41,
+            "pts": 84,
+            "wins": 11,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "1748eb87",
+          "tn": "Mordy Flyers Sparks",
+          "gid": "e6df7e39",
+          "gn": "Tuesday U14 Girls D1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 28,
+            "ft": 2,
+            "fg": 41,
+            "pts": 84,
+            "wins": 11,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "4183328d",
+          "tn": "Mordy Flyers Thunder",
+          "gid": "d83b0d8b",
+          "gn": "Tuesday U14 Girls A/A Reserve Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fg": 3,
+            "pts": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e830df83",
+      "sn": "Spring 2025",
+      "club": "Mordy Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "fa4587d6",
+          "tn": "Mordy Flyers Unicorns",
+          "gid": "4c287b8c",
+          "gn": "Tuesday U14 Girls D1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 42,
+            "ft": 3,
+            "fg": 43,
+            "pts": 89,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 6,
+            "losses": 8,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38710f3b",
+      "sn": "Autumn 2025",
+      "club": "Mordy Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "bbbec9a0",
+          "tn": "Mordy Flyers Unicorns",
+          "gid": "f1ca71f6",
+          "gn": "Tuesday U14 Girls D1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 16,
+            "ft": 3,
+            "fg": 19,
+            "pts": 41,
+            "wins": 4,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "2d75d3b2",
+          "tn": "Mordy Flyers Sparks",
+          "gid": "a0626258",
+          "gn": "Tuesday U14 Girls C1 Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T23:18:53.292Z",
+  "teams": [
+    {
+      "tid": "1748eb87",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4183328d",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa4587d6",
+      "sid": "e830df83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbbec9a0",
+      "sid": "38710f3b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d75d3b2",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:20.727Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "d6e14ded",
+      "sid": "3e7c1a8c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "15ca8a0b",
+    "163d9c5f",
+    "1b7249a1",
+    "2530b1ec",
+    "26687267",
+    "3028a867",
+    "3687925b",
+    "377ad912",
+    "387f3b67",
+    "3a10d374",
+    "3d5b2289",
+    "3fe4fb78",
+    "40b0992b",
+    "4ff00106",
+    "52404295",
+    "54a0eb6a",
+    "5b27b8df",
+    "5f82acfc",
+    "6ddf56f3",
+    "76d48611",
+    "78840be9",
+    "79a89e8b",
+    "7bf1eb04",
+    "85a2aa06",
+    "8be03e3c",
+    "8c3b4f5f",
+    "8c9e525a",
+    "920459e4",
+    "9b33a927",
+    "a25fc1a5",
+    "acd3da78",
+    "b073878e",
+    "b3d634d5",
+    "bde794fa",
+    "c5bdde01",
+    "c65b6af2",
+    "c772ce5c",
+    "c9fed216",
+    "cc227168",
+    "cdcfdaf7",
+    "d34a0c11",
+    "d6e14ded",
+    "d81b9ba2",
+    "d9e09058",
+    "dc50aa7d",
+    "e988cd9c"
+  ],
+  "gameTids": {
+    "26687267": "bbbec9a0",
+    "52404295": "fa4587d6",
+    "5b27b8df": "1748eb87",
+    "cdcfdaf7": "1748eb87",
+    "2b06abb2": "1748eb87",
+    "a4fb4ed0": "1748eb87",
+    "d9e09058": "1748eb87",
+    "4ff00106": "1748eb87",
+    "3fe4fb78": "1748eb87",
+    "54a0eb6a": "1748eb87",
+    "d6e14ded": "1748eb87",
+    "6ddf56f3": "1748eb87",
+    "40b0992b": "1748eb87",
+    "163d9c5f": "1748eb87",
+    "c5bdde01": "1748eb87",
+    "3687925b": "1748eb87",
+    "d34a0c11": "1748eb87",
+    "c9fed216": "4183328d",
+    "acd3da78": "4183328d",
+    "76d48611": "fa4587d6",
+    "78840be9": "fa4587d6",
+    "3028a867": "fa4587d6",
+    "b073878e": "fa4587d6",
+    "8c9e525a": "fa4587d6",
+    "3a10d374": "fa4587d6",
+    "8be03e3c": "fa4587d6",
+    "bde794fa": "fa4587d6",
+    "79a89e8b": "fa4587d6",
+    "c772ce5c": "fa4587d6",
+    "377ad912": "fa4587d6",
+    "cc227168": "fa4587d6",
+    "85a2aa06": "fa4587d6",
+    "7bf1eb04": "fa4587d6",
+    "e988cd9c": "fa4587d6",
+    "c65b6af2": "bbbec9a0",
+    "8c3b4f5f": "bbbec9a0",
+    "3d5b2289": "bbbec9a0",
+    "1b7249a1": "bbbec9a0",
+    "5f82acfc": "bbbec9a0",
+    "a25fc1a5": "bbbec9a0",
+    "b3d634d5": "bbbec9a0",
+    "2530b1ec": "bbbec9a0",
+    "d81b9ba2": "bbbec9a0",
+    "dc50aa7d": "bbbec9a0",
+    "15ca8a0b": "bbbec9a0",
+    "9b33a927": "bbbec9a0",
+    "387f3b67": "bbbec9a0",
+    "920459e4": "bbbec9a0"
+  }
+}

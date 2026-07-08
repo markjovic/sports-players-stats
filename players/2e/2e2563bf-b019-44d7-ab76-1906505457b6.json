@@ -1,1 +1,101 @@
-{"uuid":"2e2563bf-b019-44d7-ab76-1906505457b6","name":"Harry Fietz","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":57,"fouls":7,"fg":23,"ft":5,"threePt":2,"foulOuts":{},"maxGamePTS":24,"maxGameThreePt":2,"losses":10,"winPct":0,"statsChecked":"2026-07-05T14:40:36.003Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"ce7ec07b","tn":"Forestville Eagles U16 Boys Sam","gid":"7c98fdef","gn":"BOYS UNDER 16 D5","age":null,"div":"D5","stats":{"gp":5,"fouls":3,"fg":3,"pts":6,"losses":5}}]},{"sid":"0869ea69","regs":[{"tid":"c15bcc02","stats":{"losses":5,"gp":5,"pts":51,"fg":20,"ft":5,"threePt":2,"fouls":4}}]}],"updatedAt":"2026-05-31T01:17:42.206Z","teams":[{"tid":"c15bcc02","sid":"0869ea69","status":"UPCOMING"},{"tid":"ce7ec07b","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:10:30.418Z","records":{"maxGamePTS":{"v":24,"gameKey":"ddea18c0","sid":"0869ea69"},"maxGameThreePt":{"v":2,"gameKey":"18496cc4","sid":"0869ea69"}},"games":["0d9ac033","18496cc4","2a691421","33e358ef","61ea3d0e","7e114969","844500a4","b95d96a1","c28895b3","ddea18c0"]}
+{
+  "uuid": "2e2563bf-b019-44d7-ab76-1906505457b6",
+  "name": "Harry Fietz",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 57,
+      "fouls": 7,
+      "fg": 23,
+      "ft": 5,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 24,
+      "maxGameThreePt": 2,
+      "losses": 10,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:40:36.003Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "ce7ec07b",
+          "tn": "Forestville Eagles U16 Boys Sam",
+          "gid": "7c98fdef",
+          "gn": "BOYS UNDER 16 D5",
+          "age": null,
+          "div": "D5",
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "fg": 3,
+            "pts": 6,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "c15bcc02",
+          "stats": {
+            "losses": 5,
+            "gp": 5,
+            "pts": 51,
+            "fg": 20,
+            "ft": 5,
+            "threePt": 2,
+            "fouls": 4
+          },
+          "gid": "be09c778",
+          "gn": "BOYS UNDER 16 D1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:17:42.206Z",
+  "teams": [
+    {
+      "tid": "ce7ec07b",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c15bcc02",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:46.713Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "ddea18c0",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "18496cc4",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "0d9ac033",
+    "18496cc4",
+    "2a691421",
+    "33e358ef",
+    "61ea3d0e",
+    "7e114969",
+    "844500a4",
+    "b95d96a1",
+    "c28895b3",
+    "ddea18c0"
+  ]
+}

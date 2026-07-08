@@ -1,1 +1,329 @@
-{"uuid":"9c434167-d318-411b-9674-361e87a9c2be","name":"Jin Yoshizoe","gender":"Boys","sports":{"Basketball":{"gp":50,"pts":187,"fouls":105,"fg":85,"ft":14,"threePt":1,"finals":2,"gfApps":2,"gfWins":0,"finalsPerSeason":0.4,"foulOuts":{"0869ea69":1,"f373fc05":2,"fb0c8cb5":1},"maxGamePTS":15,"maxGameThreePt":1,"wins":70,"losses":25,"winPct":0.74,"statsChecked":"2026-07-05T14:29:17.683Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Mitcham Thunder Basketball Club","regs":[{"tid":"b244979f","tn":"Mitcham U13 Boys 02","gid":"b8209025","gn":"Boys U13 C Grading","age":"U13","div":null,"stats":{"gp":7,"fouls":22,"ft":6,"fg":22,"pts":53,"wins":2,"losses":4,"threePt":1}},{"tid":"b244979f","tn":"Mitcham U13 Boys 02","gid":"9c62af5a","gn":"Boys U13 D Grading","age":"U13","div":null,"stats":{"gp":7,"fouls":22,"fg":22,"pts":53,"wins":2,"losses":4,"ft":6,"threePt":1}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Mitcham Thunder Basketball Club","regs":[{"tid":"94b1a0ee","tn":"Mitcham U12 Boys 02","gid":"1e591944","gn":"Boys U12 BE","age":"U12","div":null,"stats":{"gp":15,"fouls":23,"fg":11,"pts":23,"finals":1,"gfApps":1,"wins":9,"ft":1}},{"tid":"94b1a0ee","tn":"Mitcham U12 Boys 02","gid":"5439b3d8","gn":"Boys U12 B Grading","age":"U12","div":null,"stats":{"gp":15,"fouls":23,"ft":1,"fg":11,"pts":23,"finals":1,"gfApps":1,"wins":9}},{"tid":"94b1a0ee","tn":"Mitcham U12 Boys 02","gid":"6b82992c","gn":"Boys U12 C Grading","age":"U12","div":null,"stats":{"gp":15,"fouls":23,"fg":11,"pts":23,"finals":1,"gfApps":1,"wins":9,"ft":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Mitcham Thunder Basketball Club","regs":[{"tid":"8c52d755","tn":"Mitcham U11 Boys 02","gid":"7e11e6ec","gn":"Boys U11 BG","age":"U11","div":null,"stats":{"gp":16,"fouls":34,"ft":3,"fg":25,"pts":53,"finals":1,"gfApps":1,"foulOuts":2,"wins":12,"losses":3}},{"tid":"8c52d755","tn":"Mitcham U11 Boys 02","gid":"bc727d28","gn":"Boys U11 C Grading","age":"U11","div":null,"stats":{"gp":16,"fouls":34,"fg":25,"pts":53,"finals":1,"gfApps":1,"wins":12,"losses":3,"ft":3}},{"tid":"8c52d755","tn":"Mitcham U11 Boys 02","gid":"a6bbacc0","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":16,"fouls":34,"fg":25,"pts":53,"finals":1,"gfApps":1,"wins":12,"losses":3,"ft":3}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"St Mary's Basketball Club Inc.","regs":[{"tid":"fe3d58d3","tn":"St Mary's U12 Boys 5","gid":"7de9d5c6","gn":"Saturday U12 Boys B4","age":"U12","div":"B4","stats":{"gp":7,"fouls":17,"ft":3,"fg":20,"pts":43,"foulOuts":1,"wins":3,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"576f55e7","stats":{"losses":4,"gp":5,"pts":15,"fg":7,"ft":1,"fouls":9}}]}],"updatedAt":"2026-07-04T05:39:51.053Z","teams":[{"tid":"b244979f","sid":"1ae60211","status":"ACTIVE"},{"tid":"576f55e7","sid":"0869ea69","status":"UPCOMING"},{"tid":"94b1a0ee","sid":"88026885","status":"COMPLETED"},{"tid":"8c52d755","sid":"f373fc05","status":"COMPLETED"},{"tid":"fe3d58d3","sid":"fb0c8cb5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:57:54.248Z","games":["00b80784","03c79702","054d0b3e","0e675f00","10b0c6be","11f12e28","18150bf8","182beccd","1e7e92c9","244bd658","315a26cf","34c9e2d3","35b71be8","43f2da8c","47d622a1","51cdb002","529d2441","54249603","58782504","697880d3","6e181b12","7d905ca9","83dc925e","9046b45e","916f20eb","9a7c4339","a4a35f06","a5beecc4","a843260a","aa8a0eb2","af2355cc","be1b5a9a","c1d8f763","cb819ae5","deb90632","e43bdeea","e650afb3","e77b859b","eb3f9d8a","ecac0a74","f0c49054","f1f88280"],"records":{"maxGamePTS":{"v":15,"gameKey":"697880d3","sid":"1ae60211"},"maxGameThreePt":{"v":1,"gameKey":"0086cb4a","sid":"1ae60211"}}}
+{
+  "uuid": "9c434167-d318-411b-9674-361e87a9c2be",
+  "name": "Jin Yoshizoe",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 187,
+      "fouls": 105,
+      "fg": 85,
+      "ft": 14,
+      "threePt": 1,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {
+        "0869ea69": 1,
+        "f373fc05": 2,
+        "fb0c8cb5": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "wins": 70,
+      "losses": 25,
+      "winPct": 0.74,
+      "statsChecked": "2026-07-05T14:29:17.683Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Mitcham Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "b244979f",
+          "tn": "Mitcham U13 Boys 02",
+          "gid": "84025b99",
+          "gn": "Boys U13 CG",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 22,
+            "ft": 6,
+            "fg": 22,
+            "pts": 53,
+            "wins": 2,
+            "losses": 4,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "b244979f",
+          "tn": "Mitcham U13 Boys 02",
+          "gid": "9c62af5a",
+          "gn": "Boys U13 D Grading",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 22,
+            "fg": 22,
+            "pts": 53,
+            "wins": 2,
+            "losses": 4,
+            "ft": 6,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Mitcham Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "94b1a0ee",
+          "tn": "Mitcham U12 Boys 02",
+          "gid": "1e591944",
+          "gn": "Boys U12 BE",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 11,
+            "pts": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "94b1a0ee",
+          "tn": "Mitcham U12 Boys 02",
+          "gid": "5439b3d8",
+          "gn": "Boys U12 B Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "ft": 1,
+            "fg": 11,
+            "pts": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9
+          }
+        },
+        {
+          "tid": "94b1a0ee",
+          "tn": "Mitcham U12 Boys 02",
+          "gid": "6b82992c",
+          "gn": "Boys U12 C Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 11,
+            "pts": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Mitcham Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "8c52d755",
+          "tn": "Mitcham U11 Boys 02",
+          "gid": "7e11e6ec",
+          "gn": "Boys U11 BG",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "ft": 3,
+            "fg": 25,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 2,
+            "wins": 12,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "8c52d755",
+          "tn": "Mitcham U11 Boys 02",
+          "gid": "bc727d28",
+          "gn": "Boys U11 C Grading",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "fg": 25,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 3,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "8c52d755",
+          "tn": "Mitcham U11 Boys 02",
+          "gid": "a6bbacc0",
+          "gn": "Boys U11 D Grading",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "fg": 25,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 3,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "St Mary's Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "fe3d58d3",
+          "tn": "St Mary's U12 Boys 5",
+          "gid": "7de9d5c6",
+          "gn": "Saturday U12 Boys B4",
+          "age": "U12",
+          "div": "B4",
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 3,
+            "fg": 20,
+            "pts": 43,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "576f55e7",
+          "stats": {
+            "losses": 4,
+            "gp": 5,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 9
+          },
+          "gid": "01adf3c9",
+          "gn": "BOYS UNDER 14 D4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:51.053Z",
+  "teams": [
+    {
+      "tid": "b244979f",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "94b1a0ee",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c52d755",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe3d58d3",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "576f55e7",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:28.621Z",
+  "games": [
+    "00b80784",
+    "03c79702",
+    "054d0b3e",
+    "0e675f00",
+    "10b0c6be",
+    "11f12e28",
+    "18150bf8",
+    "182beccd",
+    "1e7e92c9",
+    "244bd658",
+    "315a26cf",
+    "34c9e2d3",
+    "35b71be8",
+    "43f2da8c",
+    "47d622a1",
+    "51cdb002",
+    "529d2441",
+    "54249603",
+    "58782504",
+    "697880d3",
+    "6e181b12",
+    "7d905ca9",
+    "83dc925e",
+    "9046b45e",
+    "916f20eb",
+    "9a7c4339",
+    "a4a35f06",
+    "a5beecc4",
+    "a843260a",
+    "aa8a0eb2",
+    "af2355cc",
+    "be1b5a9a",
+    "c1d8f763",
+    "cb819ae5",
+    "deb90632",
+    "e43bdeea",
+    "e650afb3",
+    "e77b859b",
+    "eb3f9d8a",
+    "ecac0a74",
+    "f0c49054",
+    "f1f88280"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "697880d3",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "0086cb4a",
+      "sid": "1ae60211"
+    }
+  }
+}

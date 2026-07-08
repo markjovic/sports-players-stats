@@ -1,1 +1,111 @@
-{"uuid":"3614602f-87b9-48f0-b5ee-912e648b2b1d","name":"Elliot Bremner","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":8,"fouls":6,"fg":3,"ft":2,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":8,"losses":8,"winPct":0.5,"statsChecked":"2026-07-05T14:54:30.106Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Ashy Basketball Club","regs":[{"tid":"313b381b","tn":"Ashy Lightning U16 Boys Yellow","gid":"f51e75cb","gn":"Saturday U16 Boys Section 05","age":"U16","div":null,"stats":{"gp":8,"fouls":6,"wins":4,"losses":4,"pts":8,"fg":3,"ft":2}},{"tid":"313b381b","tn":"Ashy Lightning U16 Boys Yellow","gid":"4e7f10d4","gn":"Saturday U16 Boys Section 06","age":"U16","div":null,"stats":{"gp":8,"pts":8,"fg":3,"ft":2,"fouls":6,"wins":4,"losses":4}}]}],"updatedAt":"2026-07-04T05:41:40.869Z","teams":[{"tid":"313b381b","sid":"6c117270","status":"ACTIVE"},{"tid":"1431a9f1","sid":"e2637fe8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:14:30.406Z","records":{"maxGamePTS":{"v":3,"gameKey":"0dc6bb02","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["0aac5159","0dc6bb02","55a6196f","5ea7a492","6dba653e","c3070c4f","c52039fa","fd71cfae"]}
+{
+  "uuid": "3614602f-87b9-48f0-b5ee-912e648b2b1d",
+  "name": "Elliot Bremner",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 8,
+      "fouls": 6,
+      "fg": 3,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 8,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:54:30.106Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Ashy Basketball Club",
+      "regs": [
+        {
+          "tid": "313b381b",
+          "tn": "Ashy Lightning U16 Boys Yellow",
+          "gid": "f51e75cb",
+          "gn": "Saturday U16 Boys Section 05",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "wins": 4,
+            "losses": 4,
+            "pts": 8,
+            "fg": 3,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "313b381b",
+          "tn": "Ashy Lightning U16 Boys Yellow",
+          "gid": "4e7f10d4",
+          "gn": "Saturday U16 Boys Section 06",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 8,
+            "fg": 3,
+            "ft": 2,
+            "fouls": 6,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "1431a9f1",
+          "tn": "U10 Boys Ashy Yellow",
+          "gid": "a2d53db9",
+          "gn": "U10 Boys (S22_23) Division 7",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:41:40.869Z",
+  "teams": [
+    {
+      "tid": "313b381b",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1431a9f1",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:35.137Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "0dc6bb02",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0aac5159",
+    "0dc6bb02",
+    "55a6196f",
+    "5ea7a492",
+    "6dba653e",
+    "c3070c4f",
+    "c52039fa",
+    "fd71cfae"
+  ]
+}

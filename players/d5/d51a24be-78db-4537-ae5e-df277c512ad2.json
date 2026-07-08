@@ -1,1 +1,156 @@
-{"uuid":"d51a24be-78db-4537-ae5e-df277c512ad2","name":"christopher woodney","gender":"Boys","sports":{"Basketball":{"gp":16,"pts":21,"fouls":16,"fg":6,"threePt":3,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"wins":7,"losses":11,"draws":2,"winPct":0.35,"statsChecked":"2026-07-05T15:13:05.019Z"}},"seasons":[{"sid":"8b3ed26a","sn":"Summer 2023/24","club":"Wembley Junior Basketball Club","regs":[{"tid":"0563df42","tn":"Wembley U18 Boys Waves","gid":"8a07eeb3","gn":"U18 Boys Div 2","age":"U18","div":"Div 2","stats":{"gp":4,"fouls":3,"fg":1,"pts":2,"wins":1,"losses":3}}]},{"sid":"dbdd7287","sn":"Summer 2023/24","club":"Newport Raiders Basketball Club","regs":[{"tid":"0b335580","tn":"Newport Raiders U18 Boys Glenn","gid":"cc5ea2f5","gn":"Monday U18 Boys Grading","age":"U18","div":null,"stats":{"gp":1,"fouls":2,"fg":1,"pts":2}}]},{"sid":"3ab934e1","sn":"Winter 2023","club":"Wembley Junior Basketball Club","regs":[{"tid":"8288a6cb","tn":"Wembley U16 Boys Waves","gid":"14db972a","gn":"U16 Boys Div 2","age":"U16","div":"Div 2","stats":{"gp":11,"fouls":11,"fg":4,"threePt":3,"pts":17,"wins":3,"losses":4,"draws":1}},{"tid":"8288a6cb","tn":"Wembley U16 Boys Waves","gid":"62f81282","gn":"Saturday U16 Boys GRADING","age":"U16","div":null,"stats":{"gp":11,"fouls":11,"fg":4,"threePt":3,"pts":17,"wins":3,"losses":4,"draws":1}}]}],"updatedAt":"2026-06-01T07:23:05.486Z","teams":[{"tid":"0b335580","sid":"dbdd7287","status":"COMPLETED"},{"tid":"0563df42","sid":"8b3ed26a","status":"COMPLETED"},{"tid":"8288a6cb","sid":"3ab934e1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:06.700Z","games":["092aa85a","141dc1a6","1486ece6","34605c27","36d5b732","48354fd7","48a21aba","4e1255ae","5fbdac62","86325285","94a8f102","b2d21e31"],"records":{"maxGamePTS":{"v":5,"gameKey":"86325285","sid":"3ab934e1"},"maxGameThreePt":{"v":1,"gameKey":"86325285","sid":"3ab934e1"}}}
+{
+  "uuid": "d51a24be-78db-4537-ae5e-df277c512ad2",
+  "name": "christopher woodney",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 21,
+      "fouls": 16,
+      "fg": 6,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "wins": 7,
+      "losses": 11,
+      "draws": 2,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:13:05.019Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8b3ed26a",
+      "sn": "Summer 2023/24",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "0563df42",
+          "tn": "Wembley U18 Boys Waves",
+          "gid": "8a07eeb3",
+          "gn": "U18 Boys Div 2",
+          "age": "U18",
+          "div": "Div 2",
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dbdd7287",
+      "sn": "Summer 2023/24",
+      "club": "Newport Raiders Basketball Club",
+      "regs": [
+        {
+          "tid": "0b335580",
+          "tn": "Newport Raiders U18 Boys Glenn",
+          "gid": "a284ee5d",
+          "gn": "Monday U18 Boys Div 2",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3ab934e1",
+      "sn": "Winter 2023",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "8288a6cb",
+          "tn": "Wembley U16 Boys Waves",
+          "gid": "14db972a",
+          "gn": "U16 Boys Div 2",
+          "age": "U16",
+          "div": "Div 2",
+          "stats": {
+            "gp": 11,
+            "fouls": 11,
+            "fg": 4,
+            "threePt": 3,
+            "pts": 17,
+            "wins": 3,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "8288a6cb",
+          "tn": "Wembley U16 Boys Waves",
+          "gid": "62f81282",
+          "gn": "Saturday U16 Boys GRADING",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 11,
+            "fg": 4,
+            "threePt": 3,
+            "pts": 17,
+            "wins": 3,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T07:23:05.486Z",
+  "teams": [
+    {
+      "tid": "0563df42",
+      "sid": "8b3ed26a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b335580",
+      "sid": "dbdd7287",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8288a6cb",
+      "sid": "3ab934e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:37.534Z",
+  "games": [
+    "092aa85a",
+    "141dc1a6",
+    "1486ece6",
+    "34605c27",
+    "36d5b732",
+    "48354fd7",
+    "48a21aba",
+    "4e1255ae",
+    "5fbdac62",
+    "86325285",
+    "94a8f102",
+    "b2d21e31"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "86325285",
+      "sid": "3ab934e1"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "86325285",
+      "sid": "3ab934e1"
+    }
+  }
+}

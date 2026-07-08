@@ -1,1 +1,151 @@
-{"uuid":"f7184ea4-3a94-4728-bcc4-d32c9e896b76","gender":null,"sports":{"Basketball":{"gp":14,"pts":35,"fouls":22,"fg":12,"ft":5,"threePt":2,"foulOuts":{"863ceba6":1},"maxGamePTS":8,"maxGameThreePt":1,"wins":5,"losses":13,"winPct":0.26,"draws":1,"statsChecked":"2026-07-05T16:04:46.885Z"}},"seasons":[{"sid":"863ceba6","sn":"Spring 2022","club":null,"regs":[{"tid":"f3edbb93","tn":"The Last Dance","gid":"5e2cbc28","gn":"Monday Over 30 Men C1 Grade","stats":{"gp":6,"pts":22,"fouls":14,"fg":9,"ft":1,"threePt":1,"foulOuts":1,"losses":4,"wins":2}},{"tid":"f3edbb93","tn":"The Last Dance","gid":"ad343e40","gn":"Monday Over 30 Men Grading","stats":{"gp":6,"pts":22,"fouls":14,"fg":9,"losses":4,"wins":2,"ft":1,"threePt":1}}]},{"sid":"d3dee716","sn":"Winter 2022","club":null,"regs":[{"tid":"7a344e2e","tn":"Rust Buckets {L}","gid":"f2cbf290","gn":"Men TUESDAY Over 35s Section 2","stats":{"gp":8,"pts":13,"fouls":8,"fg":3,"ft":4,"threePt":1,"wins":1,"losses":5,"draws":1}}]}],"updatedAt":"2026-06-11T23:46:19.594Z","records":{"maxGamePTS":{"v":8,"gameKey":"b3f598e6","sid":"863ceba6"},"maxGameThreePt":{"v":1,"gameKey":"285d020f","sid":"863ceba6"}},"games":["02d88b61","1e860c5d","285d020f","2a9ee870","5263f069","5d56762d","8e4e2385","b3f598e6","c2674f67","d32e43b4","d8227b2e","de1ec73b","dff78779","fe5bef52"],"name":"Spring 2022"}
+{
+  "uuid": "f7184ea4-3a94-4728-bcc4-d32c9e896b76",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 35,
+      "fouls": 22,
+      "fg": 12,
+      "ft": 5,
+      "threePt": 2,
+      "foulOuts": {
+        "863ceba6": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 5,
+      "losses": 13,
+      "winPct": 0.26,
+      "draws": 1,
+      "statsChecked": "2026-07-05T16:04:46.885Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "863ceba6",
+      "sn": "Spring 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f3edbb93",
+          "tn": "The Last Dance",
+          "gid": "5e2cbc28",
+          "gn": "Monday Over 30 Men C1 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 22,
+            "fouls": 14,
+            "fg": 9,
+            "ft": 1,
+            "threePt": 1,
+            "foulOuts": 1,
+            "losses": 4,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "f3edbb93",
+          "tn": "The Last Dance",
+          "gid": "ad343e40",
+          "gn": "Monday Over 30 Men Grading",
+          "stats": {
+            "gp": 6,
+            "pts": 22,
+            "fouls": 14,
+            "fg": 9,
+            "losses": 4,
+            "wins": 2,
+            "ft": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7a344e2e",
+          "tn": "Rust Buckets {L}",
+          "gid": "f2cbf290",
+          "gn": "Men TUESDAY Over 35s Section 2",
+          "stats": {
+            "gp": 8,
+            "pts": 13,
+            "fouls": 8,
+            "fg": 3,
+            "ft": 4,
+            "threePt": 1,
+            "wins": 1,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "aed3b9b9",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "45bda1a4",
+          "tn": "BullDog",
+          "gid": "ff10d1b6",
+          "gn": "Monday Open Men AB",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:19.594Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "b3f598e6",
+      "sid": "863ceba6"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "285d020f",
+      "sid": "863ceba6"
+    }
+  },
+  "games": [
+    "02d88b61",
+    "1e860c5d",
+    "285d020f",
+    "2a9ee870",
+    "5263f069",
+    "5d56762d",
+    "8e4e2385",
+    "b3f598e6",
+    "c2674f67",
+    "d32e43b4",
+    "d8227b2e",
+    "de1ec73b",
+    "dff78779",
+    "fe5bef52"
+  ],
+  "name": "Spring 2022",
+  "teams": [
+    {
+      "tid": "f3edbb93",
+      "sid": "863ceba6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a344e2e",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45bda1a4",
+      "sid": "aed3b9b9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:41.208Z"
+}

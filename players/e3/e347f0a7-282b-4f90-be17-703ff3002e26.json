@@ -1,1 +1,192 @@
-{"uuid":"e347f0a7-282b-4f90-be17-703ff3002e26","name":"Mia Micallef","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":55,"fouls":6,"fg":27,"ft":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":4,"winPct":1,"statsChecked":"2026-07-05T14:59:07.730Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Malvern Tigers Basketball Club","regs":[{"tid":"3e0cbd6b","tn":"Malvern Tigers U18 Girls Madgen","gid":"f4073cfa","gn":"Tuesday U18 Girls Section 03","age":"U18","div":null,"stats":{"gp":4,"fouls":3,"fg":13,"pts":26,"wins":4}}]},{"sid":"df876355","sn":"Summer 2024/25","club":"Malvern Tigers Basketball Club","regs":[{"tid":"995260f0","tn":"Malvern Tigers U18 Girls Jackson","gid":"d4c745d9","gn":"Tuesday U18 Girls TEST SEASON","age":"U18","div":null,"stats":{"gp":6,"fouls":3,"ft":1,"fg":14,"pts":29}}]}],"updatedAt":"2026-07-04T05:47:16.131Z","teams":[{"tid":"3e0cbd6b","sid":"6c117270","status":"ACTIVE"},{"tid":"d8a82ec9","sid":"7d20ecad","status":"COMPLETED"},{"tid":"ccb5ecc5","sid":"e2637fe8","status":"COMPLETED"},{"tid":"e8f92b57","sid":"eb0c3879","status":"COMPLETED"},{"tid":"ffcb2c44","sid":"11f9ba57","status":"COMPLETED"},{"tid":"5248af64","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:37.332Z","games":["121d4e35","1b5982d5","2f958981","74f6c9ac","78b00f67","885c68c6","98d175ca","9daa3931","b1bd4ff1","d7c595da"],"records":{"maxGamePTS":{"v":8,"gameKey":"9daa3931","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e347f0a7-282b-4f90-be17-703ff3002e26",
+  "name": "Mia Micallef",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 55,
+      "fouls": 6,
+      "fg": 27,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T14:59:07.730Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "3e0cbd6b",
+          "tn": "Malvern Tigers U18 Girls Madgen",
+          "gid": "f4073cfa",
+          "gn": "Tuesday U18 Girls Section 03",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 13,
+            "pts": 26,
+            "wins": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "995260f0",
+          "tn": "Malvern Tigers U18 Girls Jackson",
+          "gid": "d4c745d9",
+          "gn": "Tuesday U18 Girls TEST SEASON",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 14,
+            "pts": 29
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "d8a82ec9",
+          "tn": "Malvern Tigers U16 Girls Black",
+          "gid": "3c462827",
+          "gn": "Tuesday U16 Girls Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "ccb5ecc5",
+          "tn": "Malvern Tigers U16 Girls Yellow",
+          "gid": "ee8b5731",
+          "gn": "U16 Girls (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "e8f92b57",
+          "tn": "Malvern Tigers U14 Girls Orange",
+          "gid": "9a9e9c31",
+          "gn": "U14 Girls Division 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "ffcb2c44",
+          "tn": "Malvern Tigers U14 Girls Blue",
+          "gid": "8cf453c0",
+          "gn": "U14 Girls GP5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "5248af64",
+          "tn": "Malvern Tigers U14 Girls Orange",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:16.131Z",
+  "teams": [
+    {
+      "tid": "3e0cbd6b",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "995260f0",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8a82ec9",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ccb5ecc5",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8f92b57",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ffcb2c44",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5248af64",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:02.801Z",
+  "games": [
+    "121d4e35",
+    "1b5982d5",
+    "2f958981",
+    "74f6c9ac",
+    "78b00f67",
+    "885c68c6",
+    "98d175ca",
+    "9daa3931",
+    "b1bd4ff1",
+    "d7c595da"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "9daa3931",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,334 @@
-{"uuid":"1325c0d7-8b66-4f3c-b3ac-173dffa5b62a","name":"Justine Hartman","gender":"Women","sports":{"Basketball":{"gp":9,"pts":3,"fouls":3,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":5,"losses":6,"winPct":0.45,"statsChecked":"2026-07-05T16:11:39.181Z"}},"seasons":[{"sid":"75ebb237","sn":"Winter 2026","regs":[{"tid":"bc1e91f9","tn":"Hoops","gid":"fa3cd524","gn":"Tuesday Women C","age":null,"div":null,"stats":{"gp":2,"wins":2,"fouls":1}},{"tid":"bc1e91f9","tn":"Hoops","gid":"bdc36754","gn":"Tuesday Women B","age":null,"div":null,"stats":{"gp":2,"fouls":1,"wins":2}}]},{"sid":"5bb7c87f","sn":"Summer 2025/26","regs":[{"tid":"89a84e22","tn":"Hoops","gid":"6939a78e","gn":"Tuesday Championship Women","age":null,"div":null,"stats":{"gp":6,"pts":3,"fg":1,"ft":1,"fouls":2,"wins":1,"losses":5}}]},{"sid":"d855bcfa","sn":"Winter 2025","regs":[{"tid":"2b119a33","tn":"Hoops","gid":"a16c4dc8","gn":"Tuesday Championship Women","age":null,"div":null,"stats":{"gp":1,"losses":1}}]}],"updatedAt":"2026-06-02T12:15:50.390Z","teams":[{"tid":"bc1e91f9","sid":"75ebb237","status":"ACTIVE"},{"tid":"89a84e22","sid":"5bb7c87f","status":"COMPLETED"},{"tid":"2b119a33","sid":"d855bcfa","status":"COMPLETED"},{"tid":"a06b4976","sid":"5944effa","status":"COMPLETED"},{"tid":"2d1daf4a","sid":"348dbfb8","status":"COMPLETED"},{"tid":"8951c77f","sid":"9358e51a","status":"COMPLETED"},{"tid":"13ea9125","sid":"d3d4e181","status":"COMPLETED"},{"tid":"24d9058c","sid":"21cd9648","status":"COMPLETED"},{"tid":"5ba49242","sid":"2bc7b9c4","status":"COMPLETED"},{"tid":"b43e5237","sid":"d4cbf787","status":"COMPLETED"},{"tid":"52001ec7","sid":"d64fcfce","status":"COMPLETED"},{"tid":"cc0011a4","sid":"25efb80f","status":"COMPLETED"},{"tid":"35aa42bb","sid":"afd26581","status":"COMPLETED"},{"tid":"ae04d786","sid":"339d530f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:58:11.102Z","records":{"maxGamePTS":{"v":2,"gameKey":"42bf7e0c","sid":"5bb7c87f"},"maxGameThreePt":{"v":null}},"games":["025a21dc","0aab73e5","42bf7e0c","4758d114","476c7e01","5743cf97","628f2fb9","63dc5b98","db958504"]}
+{
+  "uuid": "1325c0d7-8b66-4f3c-b3ac-173dffa5b62a",
+  "name": "Justine Hartman",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 3,
+      "fouls": 3,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 6,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T16:11:39.181Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "bc1e91f9",
+          "tn": "Hoops",
+          "gid": "fa3cd524",
+          "gn": "Tuesday Women C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 2,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "bc1e91f9",
+          "tn": "Hoops",
+          "gid": "bdc36754",
+          "gn": "Tuesday Women B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5bb7c87f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "89a84e22",
+          "tn": "Hoops",
+          "gid": "6939a78e",
+          "gn": "Tuesday Championship Women",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d855bcfa",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2b119a33",
+          "tn": "Hoops",
+          "gid": "a16c4dc8",
+          "gn": "Tuesday Championship Women",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "a06b4976",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "2d1daf4a",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "8951c77f",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "13ea9125",
+          "tn": "Whatever",
+          "gid": "c4d93390",
+          "gn": "AUTUMN Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "24d9058c",
+          "tn": "Whatever",
+          "gid": "350cacc9",
+          "gn": "SPRING Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "2bc7b9c4",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "5ba49242",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "b43e5237",
+          "tn": "Whatever",
+          "gid": "548420fd",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "52001ec7",
+          "tn": "Whatever",
+          "gid": "f8f42300",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "25efb80f",
+      "sn": "Term 3, 2021",
+      "regs": [
+        {
+          "tid": "cc0011a4",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "35aa42bb",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "339d530f",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "ae04d786",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T12:15:50.390Z",
+  "teams": [
+    {
+      "tid": "bc1e91f9",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89a84e22",
+      "sid": "5bb7c87f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2b119a33",
+      "sid": "d855bcfa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a06b4976",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d1daf4a",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8951c77f",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13ea9125",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "24d9058c",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ba49242",
+      "sid": "2bc7b9c4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b43e5237",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52001ec7",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc0011a4",
+      "sid": "25efb80f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35aa42bb",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ae04d786",
+      "sid": "339d530f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:16.685Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "42bf7e0c",
+      "sid": "5bb7c87f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "025a21dc",
+    "0aab73e5",
+    "42bf7e0c",
+    "4758d114",
+    "476c7e01",
+    "5743cf97",
+    "628f2fb9",
+    "63dc5b98",
+    "db958504"
+  ]
+}

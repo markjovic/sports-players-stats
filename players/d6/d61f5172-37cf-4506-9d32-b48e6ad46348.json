@@ -1,1 +1,213 @@
-{"uuid":"d61f5172-37cf-4506-9d32-b48e6ad46348","name":"Hamish Lei","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":24,"fouls":49,"fg":10,"ft":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.33,"foulOuts":{"1ae60211":1},"maxGamePTS":4,"maxGameThreePt":1,"wins":26,"losses":35,"draws":3,"winPct":0.41,"threePt":1,"statsChecked":"2026-07-05T14:44:54.205Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"1c415c33","tn":"Balwyn U17 Boys 10","gid":"7bcf7b9b","gn":"Boys U17 C Grading","age":"U17","div":null,"stats":{"gp":8,"fouls":18,"fg":2,"pts":7,"foulOuts":1,"wins":2,"losses":3,"draws":1,"threePt":1}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"23dcadec","tn":"Balwyn U16 Boys 16","gid":"eb4e064a","gn":"Boys U16 DA","age":"U16","div":null,"stats":{"gp":15,"fouls":23,"ft":1,"fg":7,"pts":15,"finals":1,"gfApps":1,"wins":10,"losses":5,"gfWins":1}},{"tid":"23dcadec","tn":"Balwyn U16 Boys 16","gid":"82e93bf0","gn":"Boys U16 C Grading","age":"U16","div":null,"stats":{"gp":15,"fouls":23,"fg":7,"pts":15,"finals":1,"gfApps":1,"wins":10,"losses":5,"ft":1,"gfWins":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"30948684","tn":"Balwyn U17 Boys 07","gid":"b7171c73","gn":"Boys U17 CF","age":"U17","div":null,"stats":{"gp":13,"fouls":8,"wins":2,"losses":11,"draws":1,"pts":2,"fg":1}},{"tid":"30948684","tn":"Balwyn U17 Boys 07","gid":"31cc2ac8","gn":"Boys U17 C Grading","age":"U17","div":null,"stats":{"gp":13,"fouls":8,"fg":1,"pts":2,"wins":2,"losses":11,"draws":1}}]}],"updatedAt":"2026-07-04T05:46:41.641Z","teams":[{"tid":"1c415c33","sid":"1ae60211","status":"ACTIVE"},{"tid":"23dcadec","sid":"88026885","status":"COMPLETED"},{"tid":"30948684","sid":"f373fc05","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:32.974Z","records":{"maxGamePTS":{"v":4,"gameKey":"e14e41aa","sid":"88026885"},"maxGameThreePt":{"v":1,"gameKey":"da7f661e","sid":"1ae60211"}},"games":["138fba81","2161a248","25defeaa","260dbac1","2878aa28","39ec9ede","3c29446e","3f66dc88","423527fe","45e92f27","49a9c53b","4c6145d8","5266fa47","54af2b00","551893fb","6e21e629","71291b7a","826790cc","8a3d702e","8dfcc84b","8e876843","934dad83","9490b79b","a45a9748","a8a810c2","a8a81b0b","bad246dd","bb0c35e7","bdca6ec9","c5641694","c7c3bf74","cf623d6b","d1a3c6de","daf3339c","e14e41aa"]}
+{
+  "uuid": "d61f5172-37cf-4506-9d32-b48e6ad46348",
+  "name": "Hamish Lei",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 24,
+      "fouls": 49,
+      "fg": 10,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "1ae60211": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "wins": 26,
+      "losses": 35,
+      "draws": 3,
+      "winPct": 0.41,
+      "threePt": 1,
+      "statsChecked": "2026-07-05T14:44:54.205Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "1c415c33",
+          "tn": "Balwyn U17 Boys 10",
+          "gid": "ddf6c7c9",
+          "gn": "Boys U17 CC",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 18,
+            "fg": 2,
+            "pts": 7,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 3,
+            "draws": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "23dcadec",
+          "tn": "Balwyn U16 Boys 16",
+          "gid": "eb4e064a",
+          "gn": "Boys U16 DA",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 5,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "23dcadec",
+          "tn": "Balwyn U16 Boys 16",
+          "gid": "82e93bf0",
+          "gn": "Boys U16 C Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 5,
+            "ft": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "30948684",
+          "tn": "Balwyn U17 Boys 07",
+          "gid": "b7171c73",
+          "gn": "Boys U17 CF",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 8,
+            "wins": 2,
+            "losses": 11,
+            "draws": 1,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "30948684",
+          "tn": "Balwyn U17 Boys 07",
+          "gid": "31cc2ac8",
+          "gn": "Boys U17 C Grading",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 8,
+            "fg": 1,
+            "pts": 2,
+            "wins": 2,
+            "losses": 11,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:41.641Z",
+  "teams": [
+    {
+      "tid": "1c415c33",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23dcadec",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30948684",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:29.002Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "e14e41aa",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "da7f661e",
+      "sid": "1ae60211"
+    }
+  },
+  "games": [
+    "138fba81",
+    "2161a248",
+    "25defeaa",
+    "260dbac1",
+    "2878aa28",
+    "39ec9ede",
+    "3c29446e",
+    "3f66dc88",
+    "423527fe",
+    "45e92f27",
+    "49a9c53b",
+    "4c6145d8",
+    "5266fa47",
+    "54af2b00",
+    "551893fb",
+    "6e21e629",
+    "71291b7a",
+    "826790cc",
+    "8a3d702e",
+    "8dfcc84b",
+    "8e876843",
+    "934dad83",
+    "9490b79b",
+    "a45a9748",
+    "a8a810c2",
+    "a8a81b0b",
+    "bad246dd",
+    "bb0c35e7",
+    "bdca6ec9",
+    "c5641694",
+    "c7c3bf74",
+    "cf623d6b",
+    "d1a3c6de",
+    "daf3339c",
+    "e14e41aa"
+  ]
+}

@@ -1,1 +1,225 @@
-{"uuid":"b7241e4b-128a-4c1a-a7c5-87777adbbfd6","name":"Ollie Stonehouse","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":44,"fouls":8,"fg":21,"ft":2,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":6,"maxGameThreePt":null,"wins":9,"losses":17,"draws":2,"winPct":0.32,"statsChecked":"2026-07-05T15:51:04.706Z"}},"seasons":[{"sid":"9a1a1ed3","sn":"Winter 2026","regs":[{"tid":"9631d261","tn":"Kings (T1)","gid":"53af5fab","gn":"Monday U16 Boys Blue","age":"U16","div":null,"stats":{"gp":4,"fouls":1,"fg":2,"pts":5,"ft":1,"wins":2,"losses":2}}]},{"sid":"19f80e01","sn":"Summer 2025/26","regs":[{"tid":"3617f7c4","tn":"Wednesday U14 Boys White: KINGS (T2)","gid":"c2504dd6","gn":"Wednesday U14 Boys White","age":"U14","div":null,"stats":{"gp":13,"fouls":5,"fg":11,"pts":22,"finals":1,"wins":6,"losses":6,"draws":1}}]},{"sid":"bc2ab729","sn":"Winter 2025","regs":[{"tid":"5c9d89a4","tn":"Wednesday U14 Boys Blue: BULLS (T1)","gid":"75c44b37","gn":"Wednesday U14 Boys Blue","age":"U14","div":null,"stats":{"gp":11,"fouls":1,"ft":1,"fg":6,"pts":13,"wins":1,"losses":9,"draws":1}}]},{"sid":"18e3e617","sn":"Summer 2022/23","regs":[{"tid":"5a2ab0b5","tn":"Woolsthorpe Kings","gid":"b5a671b9","gn":"Wednesday Junior Mixed Division 2","age":"Junior","div":"Division 2","stats":{"gp":13,"fouls":1,"fg":1,"pts":2}}]},{"sid":"ccebf583","sn":"Winter 2022","regs":[{"tid":"993d098f","tn":"Commercial Road Cruisers","gid":"8bb88bba","gn":"Friday Junior Mixed Division 2","age":"Junior","div":"Division 2","stats":{"gp":7,"fg":1,"pts":2}}]}],"updatedAt":"2026-06-02T07:47:46.824Z","teams":[{"tid":"9631d261","sid":"9a1a1ed3","status":"ACTIVE"},{"tid":"3617f7c4","sid":"19f80e01","status":"COMPLETED"},{"tid":"5c9d89a4","sid":"bc2ab729","status":"COMPLETED"},{"tid":"5a2ab0b5","sid":"18e3e617","status":"COMPLETED"},{"tid":"993d098f","sid":"ccebf583","status":"COMPLETED"},{"tid":"a72ec717","sid":"99d61213","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:07:34.416Z","games":["0b0ec1df","1051b6e1","1168b9f1","279efd5a","31313017","320c87da","4216fceb","4744a70f","4f997e55","53f35c4e","54f76ef7","79ead198","7bdb5bba","8be37313","9c762a67","b1bd4644","ba5397dc","be8bae47","cae5d23a","cfb3a7eb","d6529b29","d87b5652","d9e0334c","ddbf6d96","e3f2c4d2","f8129a2e","f8a749aa","fbce5491"],"records":{"maxGamePTS":{"v":6,"gameKey":"e3f2c4d2","sid":"19f80e01"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "b7241e4b-128a-4c1a-a7c5-87777adbbfd6",
+  "name": "Ollie Stonehouse",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 44,
+      "fouls": 8,
+      "fg": 21,
+      "ft": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 17,
+      "draws": 2,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-05T15:51:04.706Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9a1a1ed3",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "9631d261",
+          "tn": "Kings (T1)",
+          "gid": "53af5fab",
+          "gn": "Monday U16 Boys Blue",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "fg": 2,
+            "pts": 5,
+            "ft": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "19f80e01",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "3617f7c4",
+          "tn": "Wednesday U14 Boys White: KINGS (T2)",
+          "gid": "c2504dd6",
+          "gn": "Wednesday U14 Boys White",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 5,
+            "fg": 11,
+            "pts": 22,
+            "finals": 1,
+            "wins": 6,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bc2ab729",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5c9d89a4",
+          "tn": "Wednesday U14 Boys Blue: BULLS (T1)",
+          "gid": "75c44b37",
+          "gn": "Wednesday U14 Boys Blue",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "wins": 1,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "18e3e617",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "5a2ab0b5",
+          "tn": "Woolsthorpe Kings",
+          "gid": "b5a671b9",
+          "gn": "Wednesday Junior Mixed Division 2",
+          "age": "Junior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ccebf583",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "993d098f",
+          "tn": "Commercial Road Cruisers",
+          "gid": "8bb88bba",
+          "gn": "Friday Junior Mixed Division 2",
+          "age": "Junior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 7,
+            "fg": 1,
+            "pts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "99d61213",
+      "sn": "Term 2, 2021",
+      "regs": [
+        {
+          "tid": "a72ec717",
+          "tn": "Junior Hoops",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T07:47:46.824Z",
+  "teams": [
+    {
+      "tid": "9631d261",
+      "sid": "9a1a1ed3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3617f7c4",
+      "sid": "19f80e01",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c9d89a4",
+      "sid": "bc2ab729",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a2ab0b5",
+      "sid": "18e3e617",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "993d098f",
+      "sid": "ccebf583",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a72ec717",
+      "sid": "99d61213",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:15.480Z",
+  "games": [
+    "0b0ec1df",
+    "1051b6e1",
+    "1168b9f1",
+    "279efd5a",
+    "31313017",
+    "320c87da",
+    "4216fceb",
+    "4744a70f",
+    "4f997e55",
+    "53f35c4e",
+    "54f76ef7",
+    "79ead198",
+    "7bdb5bba",
+    "8be37313",
+    "9c762a67",
+    "b1bd4644",
+    "ba5397dc",
+    "be8bae47",
+    "cae5d23a",
+    "cfb3a7eb",
+    "d6529b29",
+    "d87b5652",
+    "d9e0334c",
+    "ddbf6d96",
+    "e3f2c4d2",
+    "f8129a2e",
+    "f8a749aa",
+    "fbce5491"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "e3f2c4d2",
+      "sid": "19f80e01"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,112 @@
-{"uuid":"c854420d-cf12-4a0a-96bd-231420b2fbba","name":"Jackson Conroy","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":64,"fouls":9,"fg":23,"ft":9,"threePt":3,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":7,"losses":3,"winPct":0.7,"statsChecked":"2026-07-05T14:30:36.796Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"5e83f310","tn":"Norwood Flames U14 Boys Lomman","gid":"0883ef3c","gn":"BOYS UNDER 14 B4","age":null,"div":"B4","stats":{"gp":6,"fouls":4,"ft":5,"fg":11,"pts":27,"finals":1,"gfApps":1,"wins":5,"losses":1,"gfWins":1}}]},{"sid":"0869ea69","regs":[{"tid":"9e3f1035","stats":{"wins":2,"losses":2,"gp":5,"pts":37,"fg":12,"ft":4,"threePt":3,"fouls":5}}]}],"updatedAt":"2026-05-31T01:07:02.852Z","teams":[{"tid":"9e3f1035","sid":"0869ea69","status":"UPCOMING"},{"tid":"5e83f310","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:35.979Z","records":{"maxGamePTS":{"v":12,"gameKey":"7b14c3f4","sid":"6dd649c0"},"maxGameThreePt":{"v":2,"gameKey":"05e64a81","sid":"0869ea69"}},"games":["05e64a81","1af15793","4fc46a9d","6544659c","677d27ea","6f8eb495","7b14c3f4","8af358e7","b354e218","d54e253d"]}
+{
+  "uuid": "c854420d-cf12-4a0a-96bd-231420b2fbba",
+  "name": "Jackson Conroy",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 64,
+      "fouls": 9,
+      "fg": 23,
+      "ft": 9,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 7,
+      "losses": 3,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T14:30:36.796Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "5e83f310",
+          "tn": "Norwood Flames U14 Boys Lomman",
+          "gid": "0883ef3c",
+          "gn": "BOYS UNDER 14 B4",
+          "age": null,
+          "div": "B4",
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 5,
+            "fg": 11,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "9e3f1035",
+          "stats": {
+            "wins": 2,
+            "losses": 2,
+            "gp": 5,
+            "pts": 37,
+            "fg": 12,
+            "ft": 4,
+            "threePt": 3,
+            "fouls": 5
+          },
+          "gid": "23b0b0d6",
+          "gn": "BOYS UNDER 16 C5"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:07:02.852Z",
+  "teams": [
+    {
+      "tid": "5e83f310",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e3f1035",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:57.185Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "7b14c3f4",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "05e64a81",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "05e64a81",
+    "1af15793",
+    "4fc46a9d",
+    "6544659c",
+    "677d27ea",
+    "6f8eb495",
+    "7b14c3f4",
+    "8af358e7",
+    "b354e218",
+    "d54e253d"
+  ]
+}

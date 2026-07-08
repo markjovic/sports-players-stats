@@ -1,1 +1,401 @@
-{"uuid":"fa3bafe9-1d86-48ad-acfa-154403bba711","name":"Kim Day","gender":"Women","sports":{"Basketball":{"gp":38,"pts":84,"fouls":19,"fg":33,"ft":10,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":20,"losses":22,"draws":4,"winPct":0.43,"statsChecked":"2026-07-06T19:02:29.198Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"04905dc5","tn":"Solmamas","gid":"6b94e35f","gn":"Tuesday Open Women Section 1","age":"Senior","div":null,"stats":{"gp":14,"fouls":9,"ft":2,"fg":4,"pts":18,"wins":3,"losses":10}}]},{"sid":"ceeb2c87","sn":"Spring 2024","regs":[{"tid":"bd8051bf","tn":"Bare Minimum","gid":"6adf4631","gn":"Wednesday Open Women","age":"Senior","div":null,"stats":{"gp":11,"fouls":6,"ft":4,"fg":10,"pts":24,"finals":1,"wins":3,"losses":6,"draws":2}}]},{"sid":"5dfac2a9","sn":"Summer 2020/21","regs":[{"tid":"78fd1317","tn":"LOL Purple","gid":"f57f6af4","gn":"Monday Open Women C","age":"Senior","div":null,"stats":{"gp":12,"fouls":4,"ft":3,"fg":18,"pts":39,"finals":1,"wins":7,"losses":3,"draws":1}},{"tid":"78fd1317","tn":"LOL Purple","gid":"90b6cb56","gn":"Monday Open Women A/B","age":"Senior","div":null,"stats":{"gp":12,"fg":18,"pts":39,"finals":1,"wins":7,"losses":3,"draws":1,"ft":3,"fouls":4}}]},{"sid":"297562bc","regs":[{"tid":"c480db15","stats":{"gp":1,"pts":3,"fg":1,"ft":1}},{"tid":"c480db15","tn":"","gid":"efd3ccf7","gn":"Tuesday Women Division 1","div":null,"stats":{"gp":1,"pts":3,"fg":1,"ft":1}}]}],"updatedAt":"2026-07-06T18:35:09.835Z","teams":[{"tid":"04905dc5","sid":"5593103d","status":"ACTIVE"},{"tid":"4fa82351","sid":"fab2be4d","status":"COMPLETED"},{"tid":"fa7ef6f6","sid":"76897951","status":"COMPLETED"},{"tid":"bd8051bf","sid":"ceeb2c87","status":"COMPLETED"},{"tid":"50edf464","sid":"348dbfb8","status":"COMPLETED"},{"tid":"10ef2637","sid":"9358e51a","status":"COMPLETED"},{"tid":"a53122c3","sid":"d3d4e181","status":"COMPLETED"},{"tid":"2da3959e","sid":"21cd9648","status":"COMPLETED"},{"tid":"0bdde77a","sid":"d4cbf787","status":"COMPLETED"},{"tid":"951b5151","sid":"d64fcfce","status":"COMPLETED"},{"tid":"3ed8867b","sid":"6af581a9","status":"COMPLETED"},{"tid":"78fd1317","sid":"5dfac2a9","status":"COMPLETED"},{"tid":"a84f1c49","sid":"afd26581","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:56:15.819Z","records":{"maxGamePTS":{"v":8,"gameKey":"27441f28","sid":"5dfac2a9"},"maxGameThreePt":{"v":null}},"games":["04480351","05e9bb91","18254419","19d8eb6d","1c19d6f9","262baea9","26d8513a","27441f28","2e66365d","323b983a","3ce265bc","3ef137f6","4e5012c7","52a7b5a9","53b30359","53c4e522","674c5102","69713a6b","71e1d5fa","7847c11a","7e5b41e8","862c2153","8dcab81f","941dae9b","96b89d9a","98bab7ea","9f6c9a04","c3849898","c3fb2633","cb39a324","d9d888af","dd1afc4e","de6478bf","df901726","eb9d4353","ebcf9a72"]}
+{
+  "uuid": "fa3bafe9-1d86-48ad-acfa-154403bba711",
+  "name": "Kim Day",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 84,
+      "fouls": 19,
+      "fg": 33,
+      "ft": 10,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 20,
+      "losses": 22,
+      "draws": 4,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-06T19:02:29.198Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "04905dc5",
+          "tn": "Solmamas",
+          "gid": "6b94e35f",
+          "gn": "Tuesday Open Women Section 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 4,
+            "pts": 18,
+            "wins": 3,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ceeb2c87",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "bd8051bf",
+          "tn": "Bare Minimum",
+          "gid": "6adf4631",
+          "gn": "Wednesday Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 6,
+            "ft": 4,
+            "fg": 10,
+            "pts": 24,
+            "finals": 1,
+            "wins": 3,
+            "losses": 6,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "78fd1317",
+          "tn": "LOL Purple",
+          "gid": "f57f6af4",
+          "gn": "Monday Open Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 4,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39,
+            "finals": 1,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "78fd1317",
+          "tn": "LOL Purple",
+          "gid": "90b6cb56",
+          "gn": "Monday Open Women A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fg": 18,
+            "pts": 39,
+            "finals": 1,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1,
+            "ft": 3,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "c480db15",
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1
+          },
+          "gid": "efd3ccf7",
+          "gn": "Tuesday Women Division 1"
+        },
+        {
+          "tid": "c480db15",
+          "tn": "",
+          "gid": "efd3ccf7",
+          "gn": "Tuesday Women Division 1",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "4fa82351",
+          "tn": "Solmamas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "fa7ef6f6",
+          "tn": "Solmamas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "50edf464",
+          "tn": "Solmamas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "10ef2637",
+          "tn": "Solmamas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "a53122c3",
+          "tn": "Solmamas",
+          "gid": "c4d93390",
+          "gn": "AUTUMN Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "2da3959e",
+          "tn": "Solmamas",
+          "gid": "350cacc9",
+          "gn": "SPRING Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "0bdde77a",
+          "tn": "Solmamas",
+          "gid": "548420fd",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "951b5151",
+          "tn": "Solmamas",
+          "gid": "f8f42300",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "6af581a9",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "3ed8867b",
+          "tn": "LOL Purple",
+          "gid": "06c14d9c",
+          "gn": "Monday Senior Women  C",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "a84f1c49",
+          "tn": "Solmamas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:09.835Z",
+  "teams": [
+    {
+      "tid": "04905dc5",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd8051bf",
+      "sid": "ceeb2c87",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78fd1317",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c480db15",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4fa82351",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa7ef6f6",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50edf464",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "10ef2637",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a53122c3",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2da3959e",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0bdde77a",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "951b5151",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ed8867b",
+      "sid": "6af581a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a84f1c49",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:53.449Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "27441f28",
+      "sid": "5dfac2a9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "04480351",
+    "05e9bb91",
+    "18254419",
+    "19d8eb6d",
+    "1c19d6f9",
+    "262baea9",
+    "26d8513a",
+    "27441f28",
+    "2e66365d",
+    "323b983a",
+    "3ce265bc",
+    "3ef137f6",
+    "4e5012c7",
+    "52a7b5a9",
+    "53b30359",
+    "53c4e522",
+    "674c5102",
+    "69713a6b",
+    "71e1d5fa",
+    "7847c11a",
+    "7e5b41e8",
+    "862c2153",
+    "8dcab81f",
+    "941dae9b",
+    "96b89d9a",
+    "98bab7ea",
+    "9f6c9a04",
+    "c3849898",
+    "c3fb2633",
+    "cb39a324",
+    "d9d888af",
+    "dd1afc4e",
+    "de6478bf",
+    "df901726",
+    "eb9d4353",
+    "ebcf9a72"
+  ]
+}

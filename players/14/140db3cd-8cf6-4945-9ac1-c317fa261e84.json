@@ -1,1 +1,139 @@
-{"uuid":"140db3cd-8cf6-4945-9ac1-c317fa261e84","name":"Sean Nelson","gender":"Men","sports":{"Basketball":{"gp":14,"pts":68,"fouls":14,"fg":21,"ft":5,"threePt":7,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":3,"losses":1,"winPct":0.75,"statsChecked":"2026-07-06T19:09:25.034Z"}},"seasons":[{"sid":"307cebbc","sn":"Autumn 2026","regs":[{"tid":"21a10bf4","tn":"Ligs Ball Club","gid":"e3d4f0b4","gn":"Wednesday Open Men C Grade","age":"Senior","div":null,"stats":{"gp":6,"pts":20,"threePt":2,"fg":6,"ft":2,"fouls":10,"wins":3,"losses":1}}]},{"sid":"984e8382","sn":"Spring 2021","regs":[{"tid":"138cffaa","tn":"Huskies U23's","gid":"01f511dd","gn":"Sunday U23 Boys C Grade","age":"U23","div":null,"stats":{"gp":7,"pts":48,"threePt":5,"fg":15,"ft":3,"fouls":3}}]},{"sid":"c2468a21","regs":[{"tid":"055a1848","stats":{"gp":1,"fouls":1}},{"tid":"055a1848","tn":"","gid":"6e1ae1de","gn":"Wednesday Open Men B Grade","div":null,"stats":{"gp":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:30:57.476Z","teams":[{"tid":"21a10bf4","sid":"307cebbc","status":"ACTIVE"},{"tid":"055a1848","sid":"c2468a21","status":"UPCOMING"},{"tid":"138cffaa","sid":"984e8382","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:58:14.560Z","records":{"maxGamePTS":{"v":12,"gameKey":"ca70cc2b","sid":"984e8382"},"maxGameThreePt":{"v":2,"gameKey":"3f23bda5","sid":"984e8382"}},"games":["20eb68c1","3f23bda5","521e3f00","54744431","79794966","8625e7c0","9d9b6cc2","a396de2c","ca70cc2b","fd08bd5f","ffa15fe3"]}
+{
+  "uuid": "140db3cd-8cf6-4945-9ac1-c317fa261e84",
+  "name": "Sean Nelson",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 68,
+      "fouls": 14,
+      "fg": 21,
+      "ft": 5,
+      "threePt": 7,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 3,
+      "losses": 1,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-06T19:09:25.034Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "21a10bf4",
+          "tn": "Ligs Ball Club",
+          "gid": "e3d4f0b4",
+          "gn": "Wednesday Open Men C Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 20,
+            "threePt": 2,
+            "fg": 6,
+            "ft": 2,
+            "fouls": 10,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "984e8382",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "138cffaa",
+          "tn": "Huskies U23's",
+          "gid": "01f511dd",
+          "gn": "Sunday U23 Boys C Grade",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 48,
+            "threePt": 5,
+            "fg": 15,
+            "ft": 3,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "055a1848",
+          "stats": {
+            "gp": 1,
+            "fouls": 1
+          },
+          "gid": "6e1ae1de",
+          "gn": "Wednesday Open Men B Grade"
+        },
+        {
+          "tid": "055a1848",
+          "tn": "",
+          "gid": "6e1ae1de",
+          "gn": "Wednesday Open Men B Grade",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:57.476Z",
+  "teams": [
+    {
+      "tid": "21a10bf4",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "138cffaa",
+      "sid": "984e8382",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "055a1848",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:40.832Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "ca70cc2b",
+      "sid": "984e8382"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "3f23bda5",
+      "sid": "984e8382"
+    }
+  },
+  "games": [
+    "20eb68c1",
+    "3f23bda5",
+    "521e3f00",
+    "54744431",
+    "79794966",
+    "8625e7c0",
+    "9d9b6cc2",
+    "a396de2c",
+    "ca70cc2b",
+    "fd08bd5f",
+    "ffa15fe3"
+  ]
+}

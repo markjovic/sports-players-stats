@@ -1,1 +1,92 @@
-{"uuid":"971f2256-e26c-4235-83d1-eef48ff10f24","gender":null,"sports":{"Basketball":{"gp":3,"pts":3,"fouls":1,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":1,"wins":1,"losses":2,"winPct":0.33,"statsChecked":"2026-07-05T16:23:02.285Z"}},"seasons":[{"sid":"0370d9d6","sn":"Spring 2021","club":null,"regs":[{"tid":"bd0a1b5e","tn":"Vodka , Lime & Sodas","gid":"cbb45469","gn":"Thursday Men D1","stats":{"gp":3,"pts":3,"fouls":1,"threePt":1,"finals":1,"wins":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:42:50.472Z","games":["170cdc50","337424d9","b62b5782"],"records":{"maxGamePTS":{"v":3,"gameKey":"170cdc50","sid":"0370d9d6"},"maxGameThreePt":{"v":1,"gameKey":"170cdc50","sid":"0370d9d6"}},"name":"Spring 2021"}
+{
+  "uuid": "971f2256-e26c-4235-83d1-eef48ff10f24",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 3,
+      "fouls": 1,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 2,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:23:02.285Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "bd0a1b5e",
+          "tn": "Vodka , Lime & Sodas",
+          "gid": "cbb45469",
+          "gn": "Thursday Men D1",
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "fouls": 1,
+            "threePt": 1,
+            "finals": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "c8768550",
+          "tn": "SKOC BLUE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:50.472Z",
+  "games": [
+    "170cdc50",
+    "337424d9",
+    "b62b5782"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "170cdc50",
+      "sid": "0370d9d6"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "170cdc50",
+      "sid": "0370d9d6"
+    }
+  },
+  "name": "Spring 2021",
+  "teams": [
+    {
+      "tid": "bd0a1b5e",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c8768550",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:09.978Z"
+}

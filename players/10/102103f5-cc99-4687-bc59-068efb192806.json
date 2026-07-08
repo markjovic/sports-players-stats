@@ -1,1 +1,127 @@
-{"uuid":"102103f5-cc99-4687-bc59-068efb192806","name":"Jason Tan","gender":"Men","sports":{"Basketball":{"gp":7,"pts":5,"fouls":7,"fg":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":1,"wins":1,"losses":3,"draws":2,"winPct":0.17,"threePt":1,"statsChecked":"2026-07-07T18:25:44.912Z"}},"seasons":[{"sid":"0adc7f94","sn":"Winter 2026","regs":[{"tid":"6e23ffa1","tn":"WLVS","gid":"8749bbf8","gn":"Monday Senior Men D/E","age":"Senior","div":null,"stats":{"gp":7,"fouls":7,"wins":1,"losses":3,"draws":2,"pts":5,"fg":1,"threePt":1}},{"tid":"6e23ffa1","tn":"","gid":"9a5269ef","gn":"Monday Senior Men F","div":null,"stats":{"gp":7,"pts":5,"fg":1,"threePt":1,"fouls":7}}]}],"updatedAt":"2026-07-07T18:05:54.047Z","teams":[{"tid":"6e23ffa1","sid":"0adc7f94","status":"ACTIVE"},{"tid":"1013bab7","sid":"fab2be4d","status":"COMPLETED"},{"tid":"aa9e30c8","sid":"9358e51a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:57:34.217Z","games":["29b83503","2d9f368f","b47d82ff","ca084039","ebfff15c","f2b5d0b0"],"records":{"maxGamePTS":{"v":3,"gameKey":"157ad833","sid":"0adc7f94"},"maxGameThreePt":{"v":1,"gameKey":"157ad833","sid":"0adc7f94"}}}
+{
+  "uuid": "102103f5-cc99-4687-bc59-068efb192806",
+  "name": "Jason Tan",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 5,
+      "fouls": 7,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 3,
+      "draws": 2,
+      "winPct": 0.17,
+      "threePt": 1,
+      "statsChecked": "2026-07-07T18:25:44.912Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0adc7f94",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "6e23ffa1",
+          "tn": "WLVS",
+          "gid": "9a5269ef",
+          "gn": "Monday Senior Men F",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "wins": 1,
+            "losses": 3,
+            "draws": 2,
+            "pts": 5,
+            "fg": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "6e23ffa1",
+          "tn": "",
+          "gid": "9a5269ef",
+          "gn": "Monday Senior Men F",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 5,
+            "fg": 1,
+            "threePt": 1,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "1013bab7",
+          "tn": "Toorak Tirades",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "aa9e30c8",
+          "tn": "Toorak Tirades",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:54.047Z",
+  "teams": [
+    {
+      "tid": "6e23ffa1",
+      "sid": "0adc7f94",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1013bab7",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa9e30c8",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:11.868Z",
+  "games": [
+    "29b83503",
+    "2d9f368f",
+    "b47d82ff",
+    "ca084039",
+    "ebfff15c",
+    "f2b5d0b0"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "157ad833",
+      "sid": "0adc7f94"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "157ad833",
+      "sid": "0adc7f94"
+    }
+  }
+}

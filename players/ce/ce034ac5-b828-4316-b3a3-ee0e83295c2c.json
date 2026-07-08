@@ -1,1 +1,70 @@
-{"uuid":"ce034ac5-b828-4316-b3a3-ee0e83295c2c","name":"Mehar Deol","gender":"Girls","sports":{"Basketball":{"gp":1,"fouls":3,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T15:12:43.327Z"}},"seasons":[{"sid":"50586f9b","sn":"2026","regs":[{"tid":"97b324b1","tn":"MKA Sports And Cultural Club","gid":"6ede8a32","gn":"U16 Girls","age":"U16","div":null,"stats":{"gp":1,"fouls":3,"losses":1}}]}],"updatedAt":"2026-06-01T06:51:34.553Z","teams":[{"tid":"97b324b1","sid":"50586f9b","status":"COMPLETED"},{"tid":"6f7fcc0c","sid":"50586f9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:45:15.608Z","games":["bb7797be"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ce034ac5-b828-4316-b3a3-ee0e83295c2c",
+  "name": "Mehar Deol",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "fouls": 3,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:12:43.327Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "50586f9b",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "97b324b1",
+          "tn": "MKA Sports And Cultural Club",
+          "gid": "6ede8a32",
+          "gn": "U16 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "6f7fcc0c",
+          "tn": "MKA Sports And Cultural Club White",
+          "gid": "7413eb7e",
+          "gn": "U18 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:51:34.553Z",
+  "teams": [
+    {
+      "tid": "97b324b1",
+      "sid": "50586f9b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f7fcc0c",
+      "sid": "50586f9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:53.053Z",
+  "games": [
+    "bb7797be"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

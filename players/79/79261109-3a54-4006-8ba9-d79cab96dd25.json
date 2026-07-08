@@ -1,1 +1,327 @@
-{"uuid":"79261109-3a54-4006-8ba9-d79cab96dd25","name":"Nora Ransom","gender":"Girls","sports":{"Basketball":{"gp":61,"pts":363,"fouls":58,"fg":175,"ft":13,"foulOuts":{"d868771d":1},"maxGamePTS":24,"maxGameThreePt":null,"wins":77,"losses":55,"winPct":0.57,"draws":4,"statsChecked":"2026-07-05T14:56:06.636Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"06472ea9","tn":"Watsonia Warriors U10 Girls 1","gid":"7be8fb14","gn":"Saturday U10 Girls B1","age":"U10","div":"B1","stats":{"gp":14,"fouls":28,"ft":2,"fg":12,"pts":26,"foulOuts":1,"wins":11,"losses":3}},{"tid":"06472ea9","tn":"Watsonia Warriors U10 Girls 1","gid":"f2e8d78b","gn":"Saturday U10 Girls Grading Group 1","age":"U10","div":null,"stats":{"gp":14,"fouls":28,"ft":2,"fg":12,"pts":26,"wins":11,"losses":3}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"9e1e5e47","tn":"Watsonia Warriors U10 Girls 2","gid":"81f67a72","gn":"Saturday U10 Girls B2","age":"U10","div":"B2","stats":{"gp":14,"fouls":15,"ft":2,"fg":12,"pts":26,"wins":3,"losses":11}},{"tid":"9e1e5e47","tn":"Watsonia Warriors U10 Girls 2","gid":"8602f943","gn":"Saturday U10 Girls Grading Group 1","age":"U10","div":null,"stats":{"gp":14,"fouls":15,"fg":12,"pts":26,"wins":3,"losses":11,"ft":2}},{"tid":"9e1e5e47","tn":"Watsonia Warriors U10 Girls 2","gid":"ed3a8477","gn":"Saturday U10 Girls Grading Group 2","age":"U10","div":null,"stats":{"gp":14,"fouls":15,"ft":2,"fg":12,"pts":26,"wins":3,"losses":11}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"5ef2c239","tn":"Watsonia Warriors U08 Girls 1","gid":"9bfb9de4","gn":"Saturday U8 Girls B1","age":"U8","div":"B1","stats":{"gp":16,"fouls":5,"ft":5,"fg":112,"pts":229,"wins":12,"losses":3,"draws":1}},{"tid":"5ef2c239","tn":"Watsonia Warriors U08 Girls 1","gid":"cc2658e2","gn":"Saturday U8 Girls C","age":"U8","div":null,"stats":{"gp":16,"fg":112,"pts":229,"wins":12,"losses":3,"draws":1,"ft":5,"fouls":5}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"25f9183a","tn":"Watsonia Warriors U8 Girls 1","gid":"db92537a","gn":"Saturday U8 Girls A","age":"U8","div":null,"stats":{"gp":17,"fouls":10,"ft":4,"fg":39,"pts":82,"wins":11,"losses":5,"draws":1}},{"tid":"25f9183a","tn":"Watsonia Warriors U8 Girls 1","gid":"44479848","gn":"Saturday U8 Girls B","age":"U8","div":null,"stats":{"gp":17,"fouls":10,"ft":4,"fg":39,"pts":82,"wins":11,"losses":5,"draws":1}}]}],"updatedAt":"2026-07-04T05:46:07.337Z","teams":[{"tid":"06472ea9","sid":"d868771d","status":"ACTIVE"},{"tid":"9e1e5e47","sid":"f57b7901","status":"COMPLETED"},{"tid":"5ef2c239","sid":"868d6996","status":"COMPLETED"},{"tid":"25f9183a","sid":"fb0c8cb5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:05:56.132Z","records":{"maxGamePTS":{"v":24,"gameKey":"f2801b30","sid":"868d6996"},"maxGameThreePt":{"v":null}},"games":["01263da2","0492be37","0d00489c","0e6fbce2","0fda3499","1087e352","10cc4f1d","118227bb","15ac9661","1becaa87","209a4ac6","23dafd44","266b9434","2be3af79","2fe3ec37","34191bf0","3af4d6c1","469ebe96","48d353a8","4b64661c","4fbcae42","5099dfe0","53064abe","5534a9ba","5826fde8","59d615dd","63d21917","67d89e37","6c94d216","6cc0799b","703355d5","737e5768","755e082f","7662bdda","76637523","7a341cf3","7bbfcc68","8e1f2472","961e21c9","968dd190","99c1718d","9bcef175","9d6ca62c","9e36e237","a50237a9","a62eba07","ae899fdb","afd8c4b9","bdc50259","be4dc6c3","c04cab8f","c1771136","c93dbc06","cc6a3c8e","cef1d828","d1576efb","e021db58","f2801b30","f287cee7","f734681f","f945d0ed"]}
+{
+  "uuid": "79261109-3a54-4006-8ba9-d79cab96dd25",
+  "name": "Nora Ransom",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 61,
+      "pts": 363,
+      "fouls": 58,
+      "fg": 175,
+      "ft": 13,
+      "foulOuts": {
+        "d868771d": 1
+      },
+      "maxGamePTS": 24,
+      "maxGameThreePt": null,
+      "wins": 77,
+      "losses": 55,
+      "winPct": 0.57,
+      "draws": 4,
+      "statsChecked": "2026-07-05T14:56:06.636Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "06472ea9",
+          "tn": "Watsonia Warriors U10 Girls 1",
+          "gid": "7be8fb14",
+          "gn": "Saturday U10 Girls B1",
+          "age": "U10",
+          "div": "B1",
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "foulOuts": 1,
+            "wins": 11,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "06472ea9",
+          "tn": "Watsonia Warriors U10 Girls 1",
+          "gid": "f2e8d78b",
+          "gn": "Saturday U10 Girls Grading Group 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 11,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "9e1e5e47",
+          "tn": "Watsonia Warriors U10 Girls 2",
+          "gid": "81f67a72",
+          "gn": "Saturday U10 Girls B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 14,
+            "fouls": 15,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 3,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "9e1e5e47",
+          "tn": "Watsonia Warriors U10 Girls 2",
+          "gid": "8602f943",
+          "gn": "Saturday U10 Girls Grading Group 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 15,
+            "fg": 12,
+            "pts": 26,
+            "wins": 3,
+            "losses": 11,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "9e1e5e47",
+          "tn": "Watsonia Warriors U10 Girls 2",
+          "gid": "ed3a8477",
+          "gn": "Saturday U10 Girls Grading Group 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 15,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 3,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "5ef2c239",
+          "tn": "Watsonia Warriors U08 Girls 1",
+          "gid": "9bfb9de4",
+          "gn": "Saturday U8 Girls B1",
+          "age": "U8",
+          "div": "B1",
+          "stats": {
+            "gp": 16,
+            "fouls": 5,
+            "ft": 5,
+            "fg": 112,
+            "pts": 229,
+            "wins": 12,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5ef2c239",
+          "tn": "Watsonia Warriors U08 Girls 1",
+          "gid": "cc2658e2",
+          "gn": "Saturday U8 Girls C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fg": 112,
+            "pts": 229,
+            "wins": 12,
+            "losses": 3,
+            "draws": 1,
+            "ft": 5,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "25f9183a",
+          "tn": "Watsonia Warriors U8 Girls 1",
+          "gid": "db92537a",
+          "gn": "Saturday U8 Girls A",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 10,
+            "ft": 4,
+            "fg": 39,
+            "pts": 82,
+            "wins": 11,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "25f9183a",
+          "tn": "Watsonia Warriors U8 Girls 1",
+          "gid": "44479848",
+          "gn": "Saturday U8 Girls B",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 10,
+            "ft": 4,
+            "fg": 39,
+            "pts": 82,
+            "wins": 11,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "b9333679",
+          "tn": "Watsonia Warriors U10 Girls 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:07.337Z",
+  "teams": [
+    {
+      "tid": "06472ea9",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e1e5e47",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ef2c239",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25f9183a",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b9333679",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:14.541Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "f2801b30",
+      "sid": "868d6996"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01263da2",
+    "0492be37",
+    "0d00489c",
+    "0e6fbce2",
+    "0fda3499",
+    "1087e352",
+    "10cc4f1d",
+    "118227bb",
+    "15ac9661",
+    "1becaa87",
+    "209a4ac6",
+    "23dafd44",
+    "266b9434",
+    "2be3af79",
+    "2fe3ec37",
+    "34191bf0",
+    "3af4d6c1",
+    "469ebe96",
+    "48d353a8",
+    "4b64661c",
+    "4fbcae42",
+    "5099dfe0",
+    "53064abe",
+    "5534a9ba",
+    "5826fde8",
+    "59d615dd",
+    "63d21917",
+    "67d89e37",
+    "6c94d216",
+    "6cc0799b",
+    "703355d5",
+    "737e5768",
+    "755e082f",
+    "7662bdda",
+    "76637523",
+    "7a341cf3",
+    "7bbfcc68",
+    "8e1f2472",
+    "961e21c9",
+    "968dd190",
+    "99c1718d",
+    "9bcef175",
+    "9d6ca62c",
+    "9e36e237",
+    "a50237a9",
+    "a62eba07",
+    "ae899fdb",
+    "afd8c4b9",
+    "bdc50259",
+    "be4dc6c3",
+    "c04cab8f",
+    "c1771136",
+    "c93dbc06",
+    "cc6a3c8e",
+    "cef1d828",
+    "d1576efb",
+    "e021db58",
+    "f2801b30",
+    "f287cee7",
+    "f734681f",
+    "f945d0ed"
+  ]
+}

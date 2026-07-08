@@ -1,1 +1,88 @@
-{"uuid":"6b35931a-a902-42a7-9938-18f1bc798d37","name":"Ryder Anderson","gender":"Mixed","sports":{"Basketball":{"gp":5,"pts":17,"fouls":7,"fg":3,"ft":8,"threePt":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T16:14:01.425Z"}},"seasons":[{"sid":"ebd43d14","sn":"Winter 2026","regs":[{"tid":"a07a8dbb","tn":"YELLOW U8","gid":"1671a88f","gn":"Friday U8 Mixed (Term 2)","age":"U8","div":null,"stats":{"gp":5,"fouls":7,"ft":8,"fg":3,"threePt":1,"pts":17,"wins":2,"losses":3}}]}],"updatedAt":"2026-06-02T11:27:08.382Z","teams":[{"tid":"a07a8dbb","sid":"ebd43d14","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:47:46.419Z","records":{"maxGamePTS":{"v":6,"gameKey":"9d36d91b","sid":"ebd43d14"},"maxGameThreePt":{"v":1,"gameKey":"9d36d91b","sid":"ebd43d14"}},"games":["34be2e68","5f6b72ee","879e6aa5","9d36d91b","aae21886"]}
+{
+  "uuid": "6b35931a-a902-42a7-9938-18f1bc798d37",
+  "name": "Ryder Anderson",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 17,
+      "fouls": 7,
+      "fg": 3,
+      "ft": 8,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:14:01.425Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ebd43d14",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "a07a8dbb",
+          "tn": "YELLOW U8",
+          "gid": "1671a88f",
+          "gn": "Friday U8 Mixed (Term 2)",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "ft": 8,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 17,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "cc9887d1",
+          "tn": "U8 Boys Terms 3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T11:27:08.382Z",
+  "teams": [
+    {
+      "tid": "a07a8dbb",
+      "sid": "ebd43d14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc9887d1",
+      "sid": "ebd43d14",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:57.621Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "9d36d91b",
+      "sid": "ebd43d14"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "9d36d91b",
+      "sid": "ebd43d14"
+    }
+  },
+  "games": [
+    "34be2e68",
+    "5f6b72ee",
+    "879e6aa5",
+    "9d36d91b",
+    "aae21886"
+  ]
+}

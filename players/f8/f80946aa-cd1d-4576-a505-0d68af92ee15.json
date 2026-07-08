@@ -1,1 +1,193 @@
-{"uuid":"f80946aa-cd1d-4576-a505-0d68af92ee15","name":"Ted Friend","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":40,"fouls":12,"fg":17,"ft":6,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":null,"wins":3,"losses":3,"winPct":0.5,"statsChecked":"2026-07-06T19:02:20.957Z"}},"seasons":[{"sid":"2c359650","sn":"Winter 2026","regs":[{"tid":"28f54563","tn":"Bulls","gid":"304c699c","gn":"U12 Boys","age":"U12","div":null,"stats":{"gp":7,"fouls":7,"ft":3,"fg":12,"pts":27,"wins":3,"losses":3}}]},{"sid":"26df4252","regs":[{"tid":"03b5645e","stats":{"gp":4,"pts":13,"fg":5,"ft":3,"fouls":5}},{"tid":"03b5645e","tn":"","gid":"8c12f991","gn":"U10 Boys Division 8","div":null,"stats":{"gp":4,"pts":13,"fg":5,"ft":3,"fouls":5}}]}],"updatedAt":"2026-07-06T18:31:55.495Z","teams":[{"tid":"28f54563","sid":"2c359650","status":"ACTIVE"},{"tid":"8fd14047","sid":"2c359650","status":"ACTIVE"},{"tid":"03b5645e","sid":"26df4252","status":"UPCOMING"},{"tid":"3c39c064","sid":"1f0a5929","status":"COMPLETED"},{"tid":"a94de543","sid":"e1816d6d","status":"COMPLETED"},{"tid":"5d7aa1cd","sid":"12f9645c","status":"COMPLETED"},{"tid":"62f36f8b","sid":"5de66c6a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:56:04.963Z","games":["67bf75dd","67e5ef91","89bd1def","8bd11886","9723a26a","b40a4cff"],"records":{"maxGamePTS":{"v":16,"gameKey":"67e5ef91","sid":"2c359650"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "f80946aa-cd1d-4576-a505-0d68af92ee15",
+  "name": "Ted Friend",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 40,
+      "fouls": 12,
+      "fg": 17,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 3,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-06T19:02:20.957Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2c359650",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "28f54563",
+          "tn": "Bulls",
+          "gid": "304c699c",
+          "gn": "U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 3,
+            "fg": 12,
+            "pts": 27,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "8fd14047",
+          "tn": "Sharks",
+          "gid": "3aa6e747",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "03b5645e",
+          "stats": {
+            "gp": 4,
+            "pts": 13,
+            "fg": 5,
+            "ft": 3,
+            "fouls": 5
+          },
+          "gid": "8c12f991",
+          "gn": "U10 Boys Division 8"
+        },
+        {
+          "tid": "03b5645e",
+          "tn": "",
+          "gid": "8c12f991",
+          "gn": "U10 Boys Division 8",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 13,
+            "fg": 5,
+            "ft": 3,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1f0a5929",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "3c39c064",
+          "tn": "Falcons",
+          "gid": "48a28c65",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e1816d6d",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "a94de543",
+          "tn": "Falcons",
+          "gid": "1bc70019",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "12f9645c",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "5d7aa1cd",
+          "tn": "Pistons",
+          "gid": "607b2632",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5de66c6a",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "62f36f8b",
+          "tn": "10 Rockets",
+          "gid": "1c2e871f",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:55.495Z",
+  "teams": [
+    {
+      "tid": "28f54563",
+      "sid": "2c359650",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8fd14047",
+      "sid": "2c359650",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "03b5645e",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c39c064",
+      "sid": "1f0a5929",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a94de543",
+      "sid": "e1816d6d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5d7aa1cd",
+      "sid": "12f9645c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62f36f8b",
+      "sid": "5de66c6a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:38.897Z",
+  "games": [
+    "67bf75dd",
+    "67e5ef91",
+    "89bd1def",
+    "8bd11886",
+    "9723a26a",
+    "b40a4cff"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "67e5ef91",
+      "sid": "2c359650"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

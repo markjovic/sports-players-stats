@@ -1,1 +1,271 @@
-{"uuid":"00109ff1-fda7-4697-ba48-26b0d10a1ade","name":"Grace Singh","gender":"Girls","sports":{"Basketball":{"gp":42,"pts":19,"fouls":18,"fg":9,"ft":1,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":4,"maxGameThreePt":null,"wins":26,"losses":39,"winPct":0.4,"statsChecked":"2026-07-05T15:20:30.202Z"}},"seasons":[{"sid":"367cf946","sn":"Winter 2026","club":"Heathdale Hornets Basketball Club Inc.","regs":[{"tid":"505ffc32","tn":"Heathdale Hornets Gems","gid":"de842348","gn":"Saturday U10 Girls B","age":"U10","div":null,"stats":{"gp":8,"fouls":1,"wins":1,"losses":7,"pts":2,"fg":1}},{"tid":"505ffc32","tn":"Heathdale Hornets Gems","gid":"42cea94d","gn":"Saturday U10 Girls Grading Pool","age":"U10","div":null,"stats":{"gp":8,"fg":1,"pts":2,"wins":1,"losses":7,"fouls":1}}]},{"sid":"17120864","sn":"Summer 2025/26","club":"Heathdale Hornets Basketball Club Inc.","regs":[{"tid":"c0d8392d","tn":"Heathdale Hornets Gems","gid":"1ad00334","gn":"Saturday U10 Girls C","age":"U10","div":null,"stats":{"gp":15,"fouls":9,"fg":8,"pts":16,"finals":1,"gfApps":1,"losses":5,"wins":10}},{"tid":"c0d8392d","tn":"Heathdale Hornets Gems","gid":"8ba5d3c3","gn":"Saturday U10 Girls D","age":"U10","div":null,"stats":{"gp":15,"finals":1,"gfApps":1,"losses":5,"wins":10,"pts":16,"fg":8,"fouls":9}},{"tid":"f0242684","tn":"Heathdale Hornets Spirit","gid":"354668aa","gn":"Saturday U12 Girls D","age":"U12","div":null,"stats":{"gp":9,"fouls":2,"ft":1,"pts":1,"finals":1,"gfApps":1,"wins":3,"losses":6}}]},{"sid":"09379b42","sn":"Winter 2025","club":"Heathdale Hornets Basketball Club Inc.","regs":[{"tid":"271f54fa","tn":"Heathdale Hornets Gems","gid":"05e6f793","gn":"Saturday U10 Girls D","age":"U10","div":null,"stats":{"gp":10,"fouls":6,"wins":1,"losses":9}}]}],"updatedAt":"2026-07-04T05:54:34.911Z","teams":[{"tid":"505ffc32","sid":"367cf946","status":"ACTIVE"},{"tid":"c0d8392d","sid":"17120864","status":"COMPLETED"},{"tid":"f0242684","sid":"17120864","status":"COMPLETED"},{"tid":"271f54fa","sid":"09379b42","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:49:42.401Z","records":{"maxGamePTS":{"v":4,"gameKey":"4cd1a3dc","sid":"17120864"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-21","games":["01ed2710","06aea11f","1b3b8ae4","1f184647","2f23e6f7","38af5c51","3c83f4cf","44083477","4603e847","4b9219dc","4cd1a3dc","4e0a84c3","50869d6b","53619d45","53a63c49","5afed4b2","5e73b266","5eb38f03","669bc168","6ac8034e","74c68c46","75013beb","77869d3d","8ca45923","928045bd","9a00830c","9dd9c07e","a37cbfbf","a8f81386","ad312fce","b6fdef83","bf647175","bf7db319","cf5ee619","d6ed5478","d99ef290","de11d695","e1170d73","e5d03544","e9b79163","f38ab863","f4ac4757"],"gameTids":{"44083477":"c0d8392d","f4ac4757":"505ffc32","ad312fce":"505ffc32","5e73b266":"505ffc32","e1170d73":"505ffc32","53619d45":"505ffc32","d6ed5478":"505ffc32","77869d3d":"505ffc32","d99ef290":"505ffc32","4e0a84c3":"c0d8392d","928045bd":"c0d8392d","01ed2710":"c0d8392d","4cd1a3dc":"c0d8392d","bf647175":"c0d8392d","5afed4b2":"c0d8392d","06aea11f":"c0d8392d","9a00830c":"c0d8392d","50869d6b":"c0d8392d","2f23e6f7":"c0d8392d","bf7db319":"c0d8392d","3c83f4cf":"c0d8392d","74c68c46":"c0d8392d","a8f81386":"c0d8392d","53a63c49":"f0242684","1f184647":"f0242684","e5d03544":"f0242684","4b9219dc":"f0242684","b6fdef83":"f0242684","38af5c51":"f0242684","de11d695":"f0242684","f38ab863":"f0242684","a37cbfbf":"f0242684","9dd9c07e":"271f54fa","75013beb":"271f54fa","cf5ee619":"271f54fa","5eb38f03":"271f54fa","4603e847":"271f54fa","6ac8034e":"271f54fa","1b3b8ae4":"271f54fa","e9b79163":"271f54fa","669bc168":"271f54fa","8ca45923":"271f54fa"}}
+{
+  "uuid": "00109ff1-fda7-4697-ba48-26b0d10a1ade",
+  "name": "Grace Singh",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 19,
+      "fouls": 18,
+      "fg": 9,
+      "ft": 1,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 26,
+      "losses": 39,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:20:30.202Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "367cf946",
+      "sn": "Winter 2026",
+      "club": "Heathdale Hornets Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "505ffc32",
+          "tn": "Heathdale Hornets Gems",
+          "gid": "5ea64415",
+          "gn": "Saturday U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 7,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "505ffc32",
+          "tn": "Heathdale Hornets Gems",
+          "gid": "42cea94d",
+          "gn": "Saturday U10 Girls Grading Pool",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 7,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "17120864",
+      "sn": "Summer 2025/26",
+      "club": "Heathdale Hornets Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "c0d8392d",
+          "tn": "Heathdale Hornets Gems",
+          "gid": "1ad00334",
+          "gn": "Saturday U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 9,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 5,
+            "wins": 10
+          }
+        },
+        {
+          "tid": "c0d8392d",
+          "tn": "Heathdale Hornets Gems",
+          "gid": "8ba5d3c3",
+          "gn": "Saturday U10 Girls D",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 5,
+            "wins": 10,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 9
+          }
+        },
+        {
+          "tid": "f0242684",
+          "tn": "Heathdale Hornets Spirit",
+          "gid": "354668aa",
+          "gn": "Saturday U12 Girls D",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 2,
+            "ft": 1,
+            "pts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09379b42",
+      "sn": "Winter 2025",
+      "club": "Heathdale Hornets Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "271f54fa",
+          "tn": "Heathdale Hornets Gems",
+          "gid": "05e6f793",
+          "gn": "Saturday U10 Girls D",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:34.911Z",
+  "teams": [
+    {
+      "tid": "505ffc32",
+      "sid": "367cf946",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c0d8392d",
+      "sid": "17120864",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0242684",
+      "sid": "17120864",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "271f54fa",
+      "sid": "09379b42",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:04.243Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "4cd1a3dc",
+      "sid": "17120864"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-21",
+  "games": [
+    "01ed2710",
+    "06aea11f",
+    "1b3b8ae4",
+    "1f184647",
+    "2f23e6f7",
+    "38af5c51",
+    "3c83f4cf",
+    "44083477",
+    "4603e847",
+    "4b9219dc",
+    "4cd1a3dc",
+    "4e0a84c3",
+    "50869d6b",
+    "53619d45",
+    "53a63c49",
+    "5afed4b2",
+    "5e73b266",
+    "5eb38f03",
+    "669bc168",
+    "6ac8034e",
+    "74c68c46",
+    "75013beb",
+    "77869d3d",
+    "8ca45923",
+    "928045bd",
+    "9a00830c",
+    "9dd9c07e",
+    "a37cbfbf",
+    "a8f81386",
+    "ad312fce",
+    "b6fdef83",
+    "bf647175",
+    "bf7db319",
+    "cf5ee619",
+    "d6ed5478",
+    "d99ef290",
+    "de11d695",
+    "e1170d73",
+    "e5d03544",
+    "e9b79163",
+    "f38ab863",
+    "f4ac4757"
+  ],
+  "gameTids": {
+    "44083477": "c0d8392d",
+    "f4ac4757": "505ffc32",
+    "ad312fce": "505ffc32",
+    "5e73b266": "505ffc32",
+    "e1170d73": "505ffc32",
+    "53619d45": "505ffc32",
+    "d6ed5478": "505ffc32",
+    "77869d3d": "505ffc32",
+    "d99ef290": "505ffc32",
+    "4e0a84c3": "c0d8392d",
+    "928045bd": "c0d8392d",
+    "01ed2710": "c0d8392d",
+    "4cd1a3dc": "c0d8392d",
+    "bf647175": "c0d8392d",
+    "5afed4b2": "c0d8392d",
+    "06aea11f": "c0d8392d",
+    "9a00830c": "c0d8392d",
+    "50869d6b": "c0d8392d",
+    "2f23e6f7": "c0d8392d",
+    "bf7db319": "c0d8392d",
+    "3c83f4cf": "c0d8392d",
+    "74c68c46": "c0d8392d",
+    "a8f81386": "c0d8392d",
+    "53a63c49": "f0242684",
+    "1f184647": "f0242684",
+    "e5d03544": "f0242684",
+    "4b9219dc": "f0242684",
+    "b6fdef83": "f0242684",
+    "38af5c51": "f0242684",
+    "de11d695": "f0242684",
+    "f38ab863": "f0242684",
+    "a37cbfbf": "f0242684",
+    "9dd9c07e": "271f54fa",
+    "75013beb": "271f54fa",
+    "cf5ee619": "271f54fa",
+    "5eb38f03": "271f54fa",
+    "4603e847": "271f54fa",
+    "6ac8034e": "271f54fa",
+    "1b3b8ae4": "271f54fa",
+    "e9b79163": "271f54fa",
+    "669bc168": "271f54fa",
+    "8ca45923": "271f54fa"
+  }
+}

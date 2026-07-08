@@ -1,1 +1,94 @@
-{"uuid":"bd40c1ce-7c94-4449-a664-2630cce776de","name":"Daniel Critchley","gender":"Men","sports":{"Basketball":{"gp":7,"pts":30,"fouls":18,"fg":7,"threePt":5,"foulOuts":{"fb06d69e":1},"maxGamePTS":18,"maxGameThreePt":3,"wins":2,"losses":4,"winPct":0.33,"ft":1,"statsChecked":"2026-07-06T19:00:48.285Z"}},"seasons":[{"sid":"fb06d69e","sn":"Winter 2026","regs":[{"tid":"b6d16e33","tn":"Phase 3","gid":"15c0e51d","gn":"Monday Men 7 - 2026 Winter","age":null,"div":null,"stats":{"gp":7,"fouls":18,"fg":7,"threePt":5,"pts":30,"wins":2,"losses":4,"ft":1}},{"tid":"b6d16e33","tn":"","gid":"a792c730","gn":"Monday Men 8 - 2026 Winter","div":null,"stats":{"gp":7,"pts":30,"fg":7,"ft":1,"threePt":5,"fouls":18}}]}],"updatedAt":"2026-07-06T18:32:44.135Z","teams":[{"tid":"b6d16e33","sid":"fb06d69e","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:40:08.616Z","games":["1570e979","4ea3fbae","520b2184","535918b6","7f24676a","af1e4bf1"],"records":{"maxGamePTS":{"v":18,"gameKey":"d98dfe06","sid":"fb06d69e"},"maxGameThreePt":{"v":3,"gameKey":"d98dfe06","sid":"fb06d69e"}}}
+{
+  "uuid": "bd40c1ce-7c94-4449-a664-2630cce776de",
+  "name": "Daniel Critchley",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 30,
+      "fouls": 18,
+      "fg": 7,
+      "threePt": 5,
+      "foulOuts": {
+        "fb06d69e": 1
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": 3,
+      "wins": 2,
+      "losses": 4,
+      "winPct": 0.33,
+      "ft": 1,
+      "statsChecked": "2026-07-06T19:00:48.285Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fb06d69e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "b6d16e33",
+          "tn": "Phase 3",
+          "gid": "a792c730",
+          "gn": "Monday Men 8 - 2026 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 18,
+            "fg": 7,
+            "threePt": 5,
+            "pts": 30,
+            "wins": 2,
+            "losses": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "b6d16e33",
+          "tn": "",
+          "gid": "a792c730",
+          "gn": "Monday Men 8 - 2026 Winter",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 30,
+            "fg": 7,
+            "ft": 1,
+            "threePt": 5,
+            "fouls": 18
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:44.135Z",
+  "teams": [
+    {
+      "tid": "b6d16e33",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:35.587Z",
+  "games": [
+    "1570e979",
+    "4ea3fbae",
+    "520b2184",
+    "535918b6",
+    "7f24676a",
+    "af1e4bf1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "d98dfe06",
+      "sid": "fb06d69e"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "d98dfe06",
+      "sid": "fb06d69e"
+    }
+  }
+}

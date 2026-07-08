@@ -1,1 +1,78 @@
-{"uuid":"4d016845-7342-4a6f-ba92-0af008ce3351","name":"Maria Othman","gender":"Girls","sports":{"Basketball":{"gp":2,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T14:54:58.614Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Waverley Comets Basketball Club","regs":[{"tid":"15e24f69","tn":"Comets U14 Girls Rubies","gid":"2a278433","gn":"Saturday U14 Girls Section 02","age":"U14","div":null,"stats":{"gp":2,"fouls":1,"losses":2}}]}],"updatedAt":"2026-05-31T14:00:29.359Z","teams":[{"tid":"15e24f69","sid":"6c117270","status":"ACTIVE"},{"tid":"c8aa6b9c","sid":"68279835","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:27:37.504Z","games":["2792eddc","bd9b277e"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "4d016845-7342-4a6f-ba92-0af008ce3351",
+  "name": "Maria Othman",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:54:58.614Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Waverley Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "15e24f69",
+          "tn": "Comets U14 Girls Rubies",
+          "gid": "c43fd8bc",
+          "gn": "Saturday U14 Girls Section 02/03",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "c8aa6b9c",
+          "tn": "Comets U12 Girls Rubies",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T14:00:29.359Z",
+  "teams": [
+    {
+      "tid": "15e24f69",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c8aa6b9c",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:21.439Z",
+  "games": [
+    "2792eddc",
+    "bd9b277e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,372 @@
-{"uuid":"7e31c00b-49cc-485e-bc3d-29924358bb42","name":"Iggy Crawford","gender":"Boys","sports":{"Basketball":{"gp":29,"pts":72,"fouls":15,"fg":34,"ft":4,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":54,"losses":33,"winPct":0.62,"statsChecked":"2026-07-05T14:42:50.609Z"}},"seasons":[{"sid":"9b064531","sn":"Summer 2024/25","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"f617c099","tn":"Hawthorn U14 Boys McClung","gid":"080d06f2","gn":"EDL U14 Boys","age":"U14","div":null,"stats":{"gp":3,"fg":2,"pts":4,"wins":1,"losses":2}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"39f9c0d1","tn":"Melbourne Tigers U14 Boys 10","gid":"d3315cf7","gn":"BOYS UNDER 14 C8","age":null,"div":"C8","stats":{"gp":4,"fouls":3,"ft":1,"fg":4,"pts":9,"wins":3,"losses":1}}]},{"sid":"e0b8b997","sn":"2024","club":"Melbourne Tigers Basketball Club","regs":[{"tid":"1e5e9c38","tn":"Melbourne U14 Boys 10","gid":"813cd413","gn":"U14 Boys - VJL13 (P2)","age":"U14","div":null,"stats":{"gp":22,"fouls":12,"ft":3,"fg":28,"pts":59,"finals":1,"gfApps":1,"wins":10,"losses":6}},{"tid":"1e5e9c38","tn":"Melbourne U14 Boys 10","gid":"2a787f1b","gn":"U14 Boys - VJL Crossover","age":"U14","div":null,"stats":{"gp":22,"ft":3,"fg":28,"pts":59,"finals":1,"gfApps":1,"wins":10,"losses":6,"fouls":12}},{"tid":"1e5e9c38","tn":"Melbourne U14 Boys 10","gid":"35e7b235","gn":"U14 Boys Grading 2 - OO Pool C","age":"U14","div":null,"stats":{"gp":22,"fouls":12,"finals":1,"gfApps":1,"wins":10,"losses":6,"pts":59,"fg":28,"ft":3}},{"tid":"1e5e9c38","tn":"Melbourne U14 Boys 10","gid":"b385549c","gn":"14 Boys Grading 1 - Crossover","age":null,"div":null,"stats":{"gp":22,"fouls":12,"fg":28,"pts":59,"finals":1,"gfApps":1,"wins":10,"losses":6,"ft":3}},{"tid":"1e5e9c38","tn":"Melbourne U14 Boys 10","gid":"a21117fd","gn":"14 Boys Grading 1 - Pool 16B","age":null,"div":null,"stats":{"gp":22,"fouls":12,"fg":28,"pts":59,"finals":1,"gfApps":1,"wins":10,"losses":6,"ft":3}}]}],"updatedAt":"2026-05-31T15:20:52.722Z","teams":[{"tid":"2f7f97ca","sid":"913d1397","status":"COMPLETED"},{"tid":"f617c099","sid":"9b064531","status":"COMPLETED"},{"tid":"92e97c79","sid":"df876355","status":"COMPLETED"},{"tid":"1e5e9c38","sid":"e0b8b997","status":"COMPLETED"},{"tid":"89a56fa3","sid":"e54d0c37","status":"COMPLETED"},{"tid":"39f9c0d1","sid":"8630ad4c","status":"COMPLETED"},{"tid":"7746e33d","sid":"7d20ecad","status":"COMPLETED"},{"tid":"22af0f6e","sid":"e2637fe8","status":"COMPLETED"},{"tid":"75f67eb4","sid":"eb0c3879","status":"COMPLETED"},{"tid":"93218854","sid":"11f9ba57","status":"COMPLETED"},{"tid":"264fe680","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:46:01.251Z","records":{"maxGamePTS":{"v":10,"gameKey":"08f9bc1a","sid":"e0b8b997"},"maxGameThreePt":{"v":null}},"games":["043a92c5","08f9bc1a","0babaaa7","143c643e","186e6d62","2ee286a7","395148fe","5ccad60b","64b8c510","712a8f31","742dd2c8","834c52d1","87f8b9b6","8b47ff79","8eed9e24","96e086e0","a7de154a","c2e9ebd3","d7ec1752","e51d1d27","ea289747","ece4a106","fa73e53b"]}
+{
+  "uuid": "7e31c00b-49cc-485e-bc3d-29924358bb42",
+  "name": "Iggy Crawford",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 29,
+      "pts": 72,
+      "fouls": 15,
+      "fg": 34,
+      "ft": 4,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 54,
+      "losses": 33,
+      "winPct": 0.62,
+      "statsChecked": "2026-07-05T14:42:50.609Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9b064531",
+      "sn": "Summer 2024/25",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "f617c099",
+          "tn": "Hawthorn U14 Boys McClung",
+          "gid": "080d06f2",
+          "gn": "EDL U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fg": 2,
+            "pts": 4,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "39f9c0d1",
+          "tn": "Melbourne Tigers U14 Boys 10",
+          "gid": "d3315cf7",
+          "gn": "BOYS UNDER 14 C8",
+          "age": null,
+          "div": "C8",
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e0b8b997",
+      "sn": "2024",
+      "club": "Melbourne Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "1e5e9c38",
+          "tn": "Melbourne U14 Boys 10",
+          "gid": "813cd413",
+          "gn": "U14 Boys - VJL13 (P2)",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 28,
+            "pts": 59,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "1e5e9c38",
+          "tn": "Melbourne U14 Boys 10",
+          "gid": "2a787f1b",
+          "gn": "U14 Boys - VJL Crossover",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "ft": 3,
+            "fg": 28,
+            "pts": 59,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 6,
+            "fouls": 12
+          }
+        },
+        {
+          "tid": "1e5e9c38",
+          "tn": "Melbourne U14 Boys 10",
+          "gid": "35e7b235",
+          "gn": "U14 Boys Grading 2 - OO Pool C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 6,
+            "pts": 59,
+            "fg": 28,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "1e5e9c38",
+          "tn": "Melbourne U14 Boys 10",
+          "gid": "b385549c",
+          "gn": "14 Boys Grading 1 - Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 12,
+            "fg": 28,
+            "pts": 59,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 6,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "1e5e9c38",
+          "tn": "Melbourne U14 Boys 10",
+          "gid": "a21117fd",
+          "gn": "14 Boys Grading 1 - Pool 16B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 12,
+            "fg": 28,
+            "pts": 59,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 6,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2f7f97ca",
+          "tn": "U14 Boys Paxton Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "92e97c79",
+          "tn": "U14 Boys Paxton Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "89a56fa3",
+          "tn": "U14 Boys Paxton Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "7746e33d",
+          "tn": "Malvern Tigers U12 Boys White",
+          "gid": "bbab11f3",
+          "gn": "Saturday U12 Boys Grading Pool 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "22af0f6e",
+          "tn": "Malvern Tigers U12 Boys Blue",
+          "gid": "71a662cd",
+          "gn": "U12 Boys (S22_23) Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "75f67eb4",
+          "tn": "Malvern Tigers U10 Boys White",
+          "gid": "dfe5e439",
+          "gn": "U10 Boys Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "93218854",
+          "tn": "Malvern Tigers U10 Boys Orange",
+          "gid": "9b8f2905",
+          "gn": "U10 Boys GP4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "264fe680",
+          "tn": "Malvern Tigers U10 Boys Purple",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T15:20:52.722Z",
+  "teams": [
+    {
+      "tid": "f617c099",
+      "sid": "9b064531",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39f9c0d1",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e5e9c38",
+      "sid": "e0b8b997",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f7f97ca",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92e97c79",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89a56fa3",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7746e33d",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22af0f6e",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75f67eb4",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "93218854",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "264fe680",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:23.557Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "08f9bc1a",
+      "sid": "e0b8b997"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "043a92c5",
+    "08f9bc1a",
+    "0babaaa7",
+    "143c643e",
+    "186e6d62",
+    "2ee286a7",
+    "395148fe",
+    "5ccad60b",
+    "64b8c510",
+    "712a8f31",
+    "742dd2c8",
+    "834c52d1",
+    "87f8b9b6",
+    "8b47ff79",
+    "8eed9e24",
+    "96e086e0",
+    "a7de154a",
+    "c2e9ebd3",
+    "d7ec1752",
+    "e51d1d27",
+    "ea289747",
+    "ece4a106",
+    "fa73e53b"
+  ]
+}

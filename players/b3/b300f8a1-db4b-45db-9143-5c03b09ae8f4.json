@@ -1,1 +1,274 @@
-{"uuid":"b300f8a1-db4b-45db-9143-5c03b09ae8f4","name":"Alessio Pesce","gender":"Boys","sports":{"Basketball":{"gp":40,"pts":262,"fouls":40,"fg":127,"ft":8,"foulOuts":{"d868771d":1},"maxGamePTS":18,"maxGameThreePt":null,"wins":68,"losses":40,"winPct":0.62,"draws":2,"statsChecked":"2026-07-05T15:11:54.821Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"e5072048","tn":"St Martins U10 Boys 4","gid":"a4ab3815","gn":"Saturday U10 Boys D3","age":"U10","div":"D3","stats":{"gp":14,"fouls":12,"ft":2,"fg":47,"pts":96,"wins":12,"losses":2}},{"tid":"e5072048","tn":"St Martins U10 Boys 4","gid":"a92c13f8","gn":"Saturday U10 Boys Grading Group 4","age":"U10","div":null,"stats":{"gp":14,"fouls":12,"ft":2,"fg":47,"pts":96,"wins":12,"losses":2}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"192f9847","tn":"St Martins U08 Boys 1","gid":"ea4b4640","gn":"Saturday U08 Boys C1","age":"U08","div":"C1","stats":{"gp":11,"fouls":8,"ft":1,"fg":25,"pts":51,"wins":8,"losses":2,"draws":1}},{"tid":"192f9847","tn":"St Martins U08 Boys 1","gid":"a19a1f88","gn":"Saturday U08 Boys Grading Group 2","age":"U08","div":null,"stats":{"gp":11,"fouls":8,"fg":25,"pts":51,"wins":8,"losses":2,"draws":1,"ft":1}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"ad1eec36","tn":"St Martins U08 Boys 1","gid":"43af154f","gn":"Saturday U8 Boys C2","age":"U8","div":"C2","stats":{"gp":15,"fouls":20,"ft":5,"fg":55,"pts":115,"wins":7,"losses":8}},{"tid":"ad1eec36","tn":"St Martins U08 Boys 1","gid":"9c91bbff","gn":"Saturday U8 Boys C1","age":"U8","div":"C1","stats":{"gp":15,"fouls":20,"fg":55,"pts":115,"wins":7,"losses":8,"ft":5}},{"tid":"ad1eec36","tn":"St Martins U08 Boys 1","gid":"17e09247","gn":"Saturday U8 Boys D1","age":"U8","div":"D1","stats":{"gp":15,"ft":5,"fg":55,"pts":115,"wins":7,"losses":8,"fouls":20}},{"tid":"ad1eec36","tn":"St Martins U08 Boys 1","gid":"f9ab3e13","gn":"Saturday U8 Boys D2","age":"U8","div":"D2","stats":{"gp":15,"fg":55,"pts":115,"wins":7,"losses":8,"ft":5,"fouls":20}}]}],"updatedAt":"2026-07-04T05:38:48.983Z","teams":[{"tid":"e5072048","sid":"d868771d","status":"ACTIVE"},{"tid":"192f9847","sid":"f57b7901","status":"COMPLETED"},{"tid":"ad1eec36","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:06.430Z","games":["0015408f","02cf5e16","04f6b233","05876eca","0e1019d0","1295c7c8","2cd817b9","329d9f00","39f495cf","3f10b54a","430fa9c5","4d82884e","564f6343","5ae48846","5af73b60","6e5e6242","757b6e07","7fcfea4b","80ffc904","810f715b","8da9f958","8fa2b03c","93007d68","93add7b5","9bd98f53","aa42d561","afdd3261","b29ce71c","b6498296","b9741e64","c1df65c7","cb1a3175","cff029ca","d0cfec0d","d16f55e8","d4e955a7","ed19386e","ee818891","f4b1fac2","f7e922d6"],"records":{"maxGamePTS":{"v":18,"gameKey":"1295c7c8","sid":"868d6996"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "b300f8a1-db4b-45db-9143-5c03b09ae8f4",
+  "name": "Alessio Pesce",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 262,
+      "fouls": 40,
+      "fg": 127,
+      "ft": 8,
+      "foulOuts": {
+        "d868771d": 1
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 68,
+      "losses": 40,
+      "winPct": 0.62,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:11:54.821Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e5072048",
+          "tn": "St Martins U10 Boys 4",
+          "gid": "a4ab3815",
+          "gn": "Saturday U10 Boys D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 14,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 47,
+            "pts": 96,
+            "wins": 12,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "e5072048",
+          "tn": "St Martins U10 Boys 4",
+          "gid": "a92c13f8",
+          "gn": "Saturday U10 Boys Grading Group 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 47,
+            "pts": 96,
+            "wins": 12,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "192f9847",
+          "tn": "St Martins U08 Boys 1",
+          "gid": "ea4b4640",
+          "gn": "Saturday U08 Boys C1",
+          "age": "U08",
+          "div": "C1",
+          "stats": {
+            "gp": 11,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 25,
+            "pts": 51,
+            "wins": 8,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "192f9847",
+          "tn": "St Martins U08 Boys 1",
+          "gid": "a19a1f88",
+          "gn": "Saturday U08 Boys Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 8,
+            "fg": 25,
+            "pts": 51,
+            "wins": 8,
+            "losses": 2,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "ad1eec36",
+          "tn": "St Martins U08 Boys 1",
+          "gid": "43af154f",
+          "gn": "Saturday U8 Boys C2",
+          "age": "U8",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 55,
+            "pts": 115,
+            "wins": 7,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "ad1eec36",
+          "tn": "St Martins U08 Boys 1",
+          "gid": "9c91bbff",
+          "gn": "Saturday U8 Boys C1",
+          "age": "U8",
+          "div": "C1",
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "fg": 55,
+            "pts": 115,
+            "wins": 7,
+            "losses": 8,
+            "ft": 5
+          }
+        },
+        {
+          "tid": "ad1eec36",
+          "tn": "St Martins U08 Boys 1",
+          "gid": "17e09247",
+          "gn": "Saturday U8 Boys D1",
+          "age": "U8",
+          "div": "D1",
+          "stats": {
+            "gp": 15,
+            "ft": 5,
+            "fg": 55,
+            "pts": 115,
+            "wins": 7,
+            "losses": 8,
+            "fouls": 20
+          }
+        },
+        {
+          "tid": "ad1eec36",
+          "tn": "St Martins U08 Boys 1",
+          "gid": "f9ab3e13",
+          "gn": "Saturday U8 Boys D2",
+          "age": "U8",
+          "div": "D2",
+          "stats": {
+            "gp": 15,
+            "fg": 55,
+            "pts": 115,
+            "wins": 7,
+            "losses": 8,
+            "ft": 5,
+            "fouls": 20
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "98014a6b",
+          "tn": "St Martins U10 Boys 3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:38:48.983Z",
+  "teams": [
+    {
+      "tid": "e5072048",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "192f9847",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ad1eec36",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "98014a6b",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:00.265Z",
+  "games": [
+    "0015408f",
+    "02cf5e16",
+    "04f6b233",
+    "05876eca",
+    "0e1019d0",
+    "1295c7c8",
+    "2cd817b9",
+    "329d9f00",
+    "39f495cf",
+    "3f10b54a",
+    "430fa9c5",
+    "4d82884e",
+    "564f6343",
+    "5ae48846",
+    "5af73b60",
+    "6e5e6242",
+    "757b6e07",
+    "7fcfea4b",
+    "80ffc904",
+    "810f715b",
+    "8da9f958",
+    "8fa2b03c",
+    "93007d68",
+    "93add7b5",
+    "9bd98f53",
+    "aa42d561",
+    "afdd3261",
+    "b29ce71c",
+    "b6498296",
+    "b9741e64",
+    "c1df65c7",
+    "cb1a3175",
+    "cff029ca",
+    "d0cfec0d",
+    "d16f55e8",
+    "d4e955a7",
+    "ed19386e",
+    "ee818891",
+    "f4b1fac2",
+    "f7e922d6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "1295c7c8",
+      "sid": "868d6996"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

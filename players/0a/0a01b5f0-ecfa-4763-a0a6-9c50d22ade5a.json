@@ -1,1 +1,93 @@
-{"uuid":"0a01b5f0-ecfa-4763-a0a6-9c50d22ade5a","name":"Hamish Byrne","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":29,"fouls":9,"fg":12,"ft":5,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"wins":3,"losses":4,"winPct":0.43,"statsChecked":"2026-07-05T15:06:57.286Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Ashy Basketball Club","regs":[{"tid":"330edf21","tn":"Ashy Lightning U12 Boys Green","gid":"b34633c3","gn":"Saturday U12 Boys Section 06","age":"U12","div":null,"stats":{"gp":7,"pts":29,"fg":12,"ft":5,"fouls":9,"wins":3,"losses":4}}]}],"updatedAt":"2026-05-31T13:59:09.589Z","teams":[{"tid":"330edf21","sid":"6c117270","status":"ACTIVE"},{"tid":"ad915464","sid":"7d20ecad","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:54:26.302Z","records":{"maxGamePTS":{"v":9,"gameKey":"482e6ea8","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["482e6ea8","5f02b17a","64608ecb","a22827c6","dcbed2ef","e3fcd0f5","f3af029f"]}
+{
+  "uuid": "0a01b5f0-ecfa-4763-a0a6-9c50d22ade5a",
+  "name": "Hamish Byrne",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 29,
+      "fouls": 9,
+      "fg": 12,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 4,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T15:06:57.286Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Ashy Basketball Club",
+      "regs": [
+        {
+          "tid": "330edf21",
+          "tn": "Ashy Lightning U12 Boys Green",
+          "gid": "b34633c3",
+          "gn": "Saturday U12 Boys Section 06",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 29,
+            "fg": 12,
+            "ft": 5,
+            "fouls": 9,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "ad915464",
+          "tn": "Ashy Lightning U8 Boys Ashy Green",
+          "gid": "daaf87f7",
+          "gn": "Saturday U8 Boys Grading Pool 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:09.589Z",
+  "teams": [
+    {
+      "tid": "330edf21",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ad915464",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:22:56.328Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "482e6ea8",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "482e6ea8",
+    "5f02b17a",
+    "64608ecb",
+    "a22827c6",
+    "dcbed2ef",
+    "e3fcd0f5",
+    "f3af029f"
+  ]
+}

@@ -1,1 +1,323 @@
-{"uuid":"d11e2cff-22e9-4a26-b5c7-ade85a582f81","name":"Luke Andrew","gender":"Mixed","sports":{"Basketball":{"gp":71,"pts":533,"fouls":33,"fg":257,"ft":16,"threePt":1,"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":15,"maxGameThreePt":1,"wins":52,"losses":15,"draws":2,"winPct":0.75,"statsChecked":"2026-07-05T15:38:58.115Z"}},"seasons":[{"sid":"358b70d1","sn":"Winter 2026","regs":[{"tid":"97b9ac99","tn":"Warriors BLUE","gid":"4fb2bee5","gn":"Friday Open Mixed B All Abilities","age":"Senior","div":null,"stats":{"gp":9,"fouls":7,"ft":1,"fg":31,"pts":63,"wins":9}}]},{"sid":"a8a281a2","sn":"Summer 2025/26","regs":[{"tid":"d488b70a","tn":"Warriors ","gid":"48a4e31c","gn":"Friday Open Mixed C All Abilities","age":"Senior","div":null,"stats":{"gp":13,"fouls":8,"ft":8,"fg":67,"pts":142,"finals":1,"gfApps":1,"wins":11,"draws":1,"gfWins":1}}]},{"sid":"172dba3e","sn":"Winter 2025","regs":[{"tid":"46db7b4d","tn":"Warriors BLACK","gid":"4d4acd14","gn":"Friday Open Mixed C All Abilities","age":"Senior","div":null,"stats":{"gp":16,"fouls":5,"ft":4,"fg":62,"pts":128,"finals":1,"gfApps":1,"wins":13,"losses":3}}]},{"sid":"9aa6a7d1","sn":"Summer 2024/25","regs":[{"tid":"097381ba","tn":"The Frankston Warriors ","gid":"bcb2f965","gn":"Friday Open Mixed C All Abilities","age":"Senior","div":null,"stats":{"gp":16,"fouls":12,"ft":3,"fg":54,"pts":111,"finals":1,"wins":11,"losses":5}}]},{"sid":"a6d44120","sn":"Winter 2024","regs":[{"tid":"ffc3592e","tn":"The Frankston Warriors","gid":"6ebd4b28","gn":"Friday Open Mixed C All Abilities","age":"Senior","div":null,"stats":{"gp":16,"fouls":1,"fg":43,"threePt":1,"pts":89,"wins":7,"losses":7,"draws":1}}]},{"sid":"b38e3c89","sn":"Winter 2021","regs":[{"tid":"5720ab33","tn":"Mercury","gid":"39c932ab","gn":"Thursday Open Mixed Championship","age":"Senior","div":null,"stats":{"gp":1,"wins":1}}]}],"updatedAt":"2026-07-04T05:39:02.454Z","teams":[{"tid":"97b9ac99","sid":"358b70d1","status":"ACTIVE"},{"tid":"d488b70a","sid":"a8a281a2","status":"COMPLETED"},{"tid":"46db7b4d","sid":"172dba3e","status":"COMPLETED"},{"tid":"097381ba","sid":"9aa6a7d1","status":"COMPLETED"},{"tid":"ffc3592e","sid":"a6d44120","status":"COMPLETED"},{"tid":"c169b2b8","sid":"a6d44120","status":"COMPLETED"},{"tid":"a5a4a95e","sid":"b38e3c89","status":"COMPLETED"},{"tid":"f958733a","sid":"b38e3c89","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:45:52.861Z","games":["02e0916e","064fc402","0b9b928f","0c360656","0c747ca5","0cce4452","16701420","1d72f393","2398e1b3","253eb59e","2598dc0c","362d3165","3d66ff51","3daf8b29","400ad658","440bee93","44ece7bf","4ed9aa4d","515ba3e6","56702ebc","58040737","5c378889","5e0e9bc7","5e54f387","62a9f929","6336d62e","67496e48","6c1227ce","6cf6d5e0","6ee5aac6","75a5acff","75bd20ea","78ccaf66","7a536c58","7c5ea258","7e0d56de","809a6359","82fd1181","88094082","8a2c5b0d","8e341067","9011317e","91d3e1bb","94713ea7","97e6c394","99af6bae","99eca662","9d155e0b","a2514694","a4b01b1d","a9949d97","c22b7106","c2bbb5e5","c7bab1a7","cce81f36","d27e087c","d2a005f5","d3353c86","d74e3e47","db9e0e83","de8df01d","e16235fa","e395ac94","e3f0fe16","e505cd9a","e74ed1ef","e86c8df8","e90d9d41","edba76aa","f120eda9","f81af039"],"records":{"maxGamePTS":{"v":15,"gameKey":"02e0916e","sid":"358b70d1"},"maxGameThreePt":{"v":1,"gameKey":"6ee5aac6","sid":"a6d44120"}}}
+{
+  "uuid": "d11e2cff-22e9-4a26-b5c7-ade85a582f81",
+  "name": "Luke Andrew",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 71,
+      "pts": 533,
+      "fouls": 33,
+      "fg": 257,
+      "ft": 16,
+      "threePt": 1,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "wins": 52,
+      "losses": 15,
+      "draws": 2,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-05T15:38:58.115Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "358b70d1",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "97b9ac99",
+          "tn": "Warriors BLUE",
+          "gid": "4fb2bee5",
+          "gn": "Friday Open Mixed B All Abilities",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 31,
+            "pts": 63,
+            "wins": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a8a281a2",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "d488b70a",
+          "tn": "Warriors ",
+          "gid": "48a4e31c",
+          "gn": "Friday Open Mixed C All Abilities",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 8,
+            "ft": 8,
+            "fg": 67,
+            "pts": 142,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "172dba3e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "46db7b4d",
+          "tn": "Warriors BLACK",
+          "gid": "4d4acd14",
+          "gn": "Friday Open Mixed C All Abilities",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 5,
+            "ft": 4,
+            "fg": 62,
+            "pts": 128,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9aa6a7d1",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "097381ba",
+          "tn": "The Frankston Warriors ",
+          "gid": "bcb2f965",
+          "gn": "Friday Open Mixed C All Abilities",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 54,
+            "pts": 111,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a6d44120",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "ffc3592e",
+          "tn": "The Frankston Warriors",
+          "gid": "6ebd4b28",
+          "gn": "Friday Open Mixed C All Abilities",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 1,
+            "fg": 43,
+            "threePt": 1,
+            "pts": 89,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c169b2b8",
+          "tn": "The Frankston Warriors ",
+          "gid": "6c046c5c",
+          "gn": "Friday Open Mixed A All Abilities",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b38e3c89",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "5720ab33",
+          "tn": "Mercury",
+          "gid": "39c932ab",
+          "gn": "Thursday Open Mixed Championship",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "a5a4a95e",
+          "tn": "Bandits",
+          "gid": "d765be6a",
+          "gn": "Thursday Open Mixed Division 6",
+          "stats": {}
+        },
+        {
+          "tid": "f958733a",
+          "tn": "Bulls",
+          "gid": "d765be6a",
+          "gn": "Thursday Open Mixed Division 6",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:02.454Z",
+  "teams": [
+    {
+      "tid": "97b9ac99",
+      "sid": "358b70d1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d488b70a",
+      "sid": "a8a281a2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46db7b4d",
+      "sid": "172dba3e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "097381ba",
+      "sid": "9aa6a7d1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ffc3592e",
+      "sid": "a6d44120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c169b2b8",
+      "sid": "a6d44120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5720ab33",
+      "sid": "b38e3c89",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a5a4a95e",
+      "sid": "b38e3c89",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f958733a",
+      "sid": "b38e3c89",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:04.506Z",
+  "games": [
+    "02e0916e",
+    "064fc402",
+    "0b9b928f",
+    "0c360656",
+    "0c747ca5",
+    "0cce4452",
+    "16701420",
+    "1d72f393",
+    "2398e1b3",
+    "253eb59e",
+    "2598dc0c",
+    "362d3165",
+    "3d66ff51",
+    "3daf8b29",
+    "400ad658",
+    "440bee93",
+    "44ece7bf",
+    "4ed9aa4d",
+    "515ba3e6",
+    "56702ebc",
+    "58040737",
+    "5c378889",
+    "5e0e9bc7",
+    "5e54f387",
+    "62a9f929",
+    "6336d62e",
+    "67496e48",
+    "6c1227ce",
+    "6cf6d5e0",
+    "6ee5aac6",
+    "75a5acff",
+    "75bd20ea",
+    "78ccaf66",
+    "7a536c58",
+    "7c5ea258",
+    "7e0d56de",
+    "809a6359",
+    "82fd1181",
+    "88094082",
+    "8a2c5b0d",
+    "8e341067",
+    "9011317e",
+    "91d3e1bb",
+    "94713ea7",
+    "97e6c394",
+    "99af6bae",
+    "99eca662",
+    "9d155e0b",
+    "a2514694",
+    "a4b01b1d",
+    "a9949d97",
+    "c22b7106",
+    "c2bbb5e5",
+    "c7bab1a7",
+    "cce81f36",
+    "d27e087c",
+    "d2a005f5",
+    "d3353c86",
+    "d74e3e47",
+    "db9e0e83",
+    "de8df01d",
+    "e16235fa",
+    "e395ac94",
+    "e3f0fe16",
+    "e505cd9a",
+    "e74ed1ef",
+    "e86c8df8",
+    "e90d9d41",
+    "edba76aa",
+    "f120eda9",
+    "f81af039"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "02e0916e",
+      "sid": "358b70d1"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6ee5aac6",
+      "sid": "a6d44120"
+    }
+  }
+}

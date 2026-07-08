@@ -1,1 +1,187 @@
-{"uuid":"cc054eff-33c6-40fd-b818-4ff8b137b1a6","name":"Sam Milne","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":41,"fouls":14,"fg":18,"ft":5,"foulOuts":{"6c117270":1},"maxGamePTS":10,"maxGameThreePt":null,"wins":2,"losses":3,"draws":1,"winPct":0.33,"statsChecked":"2026-07-05T15:12:39.822Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Malvern Tigers Basketball Club","regs":[{"tid":"b2117696","tn":"Malvern Tigers U14 Boys Red","gid":"1ae2ccfc","gn":"Saturday U14 Boys Section 02","age":"U14","div":null,"stats":{"gp":6,"fouls":14,"ft":5,"fg":18,"pts":41,"foulOuts":1,"wins":2,"losses":3,"draws":1}}]}],"updatedAt":"2026-05-31T13:59:48.438Z","teams":[{"tid":"b2117696","sid":"6c117270","status":"ACTIVE"},{"tid":"33b98561","sid":"ee5d2724","status":"COMPLETED"},{"tid":"23f59c7f","sid":"7d20ecad","status":"COMPLETED"},{"tid":"f37ac8fd","sid":"e2637fe8","status":"COMPLETED"},{"tid":"e68aa329","sid":"eb0c3879","status":"COMPLETED"},{"tid":"b4ac64e7","sid":"11f9ba57","status":"COMPLETED"},{"tid":"07a91274","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:19:14.510Z","records":{"maxGamePTS":{"v":10,"gameKey":"e94a67fd","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["235f463d","6b8e888c","855333db","c67ed964","d38c702f","e94a67fd"]}
+{
+  "uuid": "cc054eff-33c6-40fd-b818-4ff8b137b1a6",
+  "name": "Sam Milne",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 41,
+      "fouls": 14,
+      "fg": 18,
+      "ft": 5,
+      "foulOuts": {
+        "6c117270": 1
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "draws": 1,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:12:39.822Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "b2117696",
+          "tn": "Malvern Tigers U14 Boys Red",
+          "gid": "1ae2ccfc",
+          "gn": "Saturday U14 Boys Section 02",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "33b98561",
+          "tn": "U12 Boys Heyington Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "23f59c7f",
+          "tn": "U12 Boys Heyington Piranhas",
+          "gid": "a01a90ad",
+          "gn": "Saturday U12 Boys Grading pool 6",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "f37ac8fd",
+          "tn": "U10 Boys Heyington Piranhas",
+          "gid": "bde37a52",
+          "gn": "U10 Boys (S22_23) Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "e68aa329",
+          "tn": "U10 Boys Heyington Piranhas",
+          "gid": "989ddc30",
+          "gn": "U10 Boys Division 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "b4ac64e7",
+          "tn": "U10 Boys Heyington Piranhas",
+          "gid": "d8b070d5",
+          "gn": "U10 Boys GP5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "07a91274",
+          "tn": "U8 Boys Heyington Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:48.438Z",
+  "teams": [
+    {
+      "tid": "b2117696",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "33b98561",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23f59c7f",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f37ac8fd",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e68aa329",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4ac64e7",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07a91274",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:48.944Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "e94a67fd",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "235f463d",
+    "6b8e888c",
+    "855333db",
+    "c67ed964",
+    "d38c702f",
+    "e94a67fd"
+  ]
+}

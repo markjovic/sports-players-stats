@@ -1,1 +1,347 @@
-{"uuid":"e35e70ab-109b-4631-89ca-8d79710723f3","gender":null,"sports":{"Basketball":{"gp":54,"pts":349,"fouls":121,"fg":120,"ft":40,"threePt":23,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"02f949c6":1},"maxGamePTS":16,"maxGameThreePt":3,"wins":25,"losses":37,"draws":4,"winPct":0.38,"statsChecked":"2026-07-05T15:52:20.124Z"}},"seasons":[{"sid":"6f7bbafe","sn":"Summer 2022/23","club":null,"regs":[{"tid":"5fa6f0c4","tn":"Cabarita Cannons","gid":"5c3c4bdd","gn":"B3 Men","stats":{"gp":12,"pts":87,"fouls":26,"fg":29,"ft":14,"threePt":5,"wins":8,"losses":4}}]},{"sid":"c921a6d3","sn":"Winter 2022","club":null,"regs":[{"tid":"7c73fb3b","tn":"FSE ","gid":"3fa843cf","gn":"B2 Men","stats":{"gp":11,"pts":63,"fouls":26,"fg":17,"ft":11,"threePt":6,"finals":1,"wins":1,"losses":10}},{"tid":"b654e815","stats":{"wins":6,"losses":4,"draws":2,"finals":1,"gp":12,"pts":45,"fg":16,"ft":4,"threePt":3,"fouls":24}}]},{"sid":"c921a6d3","sn":"Winter 2022","club":null,"regs":[{"tid":"b654e815","tn":"Keith's Minions","gid":"4fb5c7f2","gn":"B1 Men","stats":{"gp":12,"pts":45,"fouls":24,"fg":16,"ft":4,"threePt":3,"finals":1,"wins":6,"losses":4,"draws":2}}]},{"sid":"f1fb582d","sn":"Summer 2021/22","club":null,"regs":[{"tid":"48826859","tn":"Cabarita Cannons","gid":"4ed1968d","gn":"B2 Men","stats":{"gp":8,"pts":55,"fouls":20,"fg":17,"ft":6,"threePt":5,"finals":1,"losses":8}}]},{"sid":"dee767b9","sn":"Winter 2021","club":null,"regs":[{"tid":"fe8686ed","tn":"Cabarita Cannons","gid":"26662990","gn":"B2 Men","stats":{"gp":8,"pts":79,"fouls":16,"fg":33,"ft":4,"threePt":3,"wins":4,"losses":4}}]},{"sid":"02f949c6","sn":"Summer 2020/21","club":null,"regs":[{"tid":"2d010c89","tn":"Cabarita Cannons","gid":"27392453","gn":"B2 Men","stats":{"gp":3,"pts":20,"fouls":9,"fg":8,"ft":1,"threePt":1,"foulOuts":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:45:37.501Z","games":["04b6d52f","1b8ba245","1e86a842","21616be2","2454d00a","2983e18c","2b5edb73","2e9b1c4f","2f57ede4","3ca22219","3df62ae5","3ecc05ee","434702eb","446302f0","452e2e30","48df872b","586f7036","6566a18b","66e85eef","7053c63b","72c1d350","75ff5249","796f3c05","7e966c1b","83fcc3df","8576be27","937da580","9c2c8ade","9df9559c","a595dc15","a86ed957","aaaafb23","ac7a86d3","ae08b027","ae8a2506","b0d10138","b2ac9121","c26f6089","c791d114","cdd650f0","d0494c2b","d53ea233","df1b5e6d","e9ec02f5","ebd11a55","ed5013a2","eff3f925","f0029c87","f2147f6f","f2421861","f30c2dd9","fae264d8","fbdec32a","fc1002f1"],"records":{"maxGamePTS":{"v":16,"gameKey":"d53ea233","sid":"6f7bbafe"},"maxGameThreePt":{"v":3,"gameKey":"d53ea233","sid":"6f7bbafe"}},"name":"Summer 2022/23","gameTids":{"ae8a2506":"5fa6f0c4","8576be27":"5fa6f0c4","3df62ae5":"5fa6f0c4","72c1d350":"5fa6f0c4","f0029c87":"5fa6f0c4","a595dc15":"5fa6f0c4","ac7a86d3":"5fa6f0c4","434702eb":"5fa6f0c4","e9ec02f5":"5fa6f0c4","586f7036":"5fa6f0c4","d53ea233":"5fa6f0c4","7053c63b":"5fa6f0c4","6566a18b":"7c73fb3b","2983e18c":"7c73fb3b","2b5edb73":"7c73fb3b","937da580":"7c73fb3b","21616be2":"7c73fb3b","ed5013a2":"7c73fb3b","ae08b027":"7c73fb3b","cdd650f0":"7c73fb3b","f2147f6f":"7c73fb3b","446302f0":"7c73fb3b","04b6d52f":"7c73fb3b","796f3c05":"b654e815","7e966c1b":"b654e815","75ff5249":"b654e815","ebd11a55":"b654e815","3ca22219":"b654e815","fbdec32a":"b654e815","df1b5e6d":"b654e815","2f57ede4":"b654e815","48df872b":"b654e815","fae264d8":"b654e815","83fcc3df":"b654e815","aaaafb23":"b654e815","2454d00a":"48826859","fc1002f1":"48826859","9c2c8ade":"48826859","f30c2dd9":"48826859","f2421861":"48826859","b2ac9121":"48826859","b0d10138":"48826859","c26f6089":"48826859","1e86a842":"fe8686ed","d0494c2b":"fe8686ed","452e2e30":"fe8686ed","3ecc05ee":"fe8686ed","c791d114":"fe8686ed","eff3f925":"fe8686ed","1b8ba245":"fe8686ed","9df9559c":"fe8686ed","2e9b1c4f":"2d010c89","a86ed957":"2d010c89","66e85eef":"2d010c89"}}
+{
+  "uuid": "e35e70ab-109b-4631-89ca-8d79710723f3",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 349,
+      "fouls": 121,
+      "fg": 120,
+      "ft": 40,
+      "threePt": 23,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "02f949c6": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": 3,
+      "wins": 25,
+      "losses": 37,
+      "draws": 4,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:52:20.124Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6f7bbafe",
+      "sn": "Summer 2022/23",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5fa6f0c4",
+          "tn": "Cabarita Cannons",
+          "gid": "5c3c4bdd",
+          "gn": "B3 Men",
+          "stats": {
+            "gp": 12,
+            "pts": 87,
+            "fouls": 26,
+            "fg": 29,
+            "ft": 14,
+            "threePt": 5,
+            "wins": 8,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c921a6d3",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7c73fb3b",
+          "tn": "FSE ",
+          "gid": "3fa843cf",
+          "gn": "B2 Men",
+          "stats": {
+            "gp": 11,
+            "pts": 63,
+            "fouls": 26,
+            "fg": 17,
+            "ft": 11,
+            "threePt": 6,
+            "finals": 1,
+            "wins": 1,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "b654e815",
+          "stats": {
+            "wins": 6,
+            "losses": 4,
+            "draws": 2,
+            "finals": 1,
+            "gp": 12,
+            "pts": 45,
+            "fg": 16,
+            "ft": 4,
+            "threePt": 3,
+            "fouls": 24
+          },
+          "gid": "4fb5c7f2",
+          "gn": "B1 Men"
+        }
+      ]
+    },
+    {
+      "sid": "c921a6d3",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "b654e815",
+          "tn": "Keith's Minions",
+          "gid": "4fb5c7f2",
+          "gn": "B1 Men",
+          "stats": {
+            "gp": 12,
+            "pts": 45,
+            "fouls": 24,
+            "fg": 16,
+            "ft": 4,
+            "threePt": 3,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f1fb582d",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "48826859",
+          "tn": "Cabarita Cannons",
+          "gid": "4ed1968d",
+          "gn": "B2 Men",
+          "stats": {
+            "gp": 8,
+            "pts": 55,
+            "fouls": 20,
+            "fg": 17,
+            "ft": 6,
+            "threePt": 5,
+            "finals": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dee767b9",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "fe8686ed",
+          "tn": "Cabarita Cannons",
+          "gid": "26662990",
+          "gn": "B2 Men",
+          "stats": {
+            "gp": 8,
+            "pts": 79,
+            "fouls": 16,
+            "fg": 33,
+            "ft": 4,
+            "threePt": 3,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "02f949c6",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "2d010c89",
+          "tn": "Cabarita Cannons",
+          "gid": "27392453",
+          "gn": "B2 Men",
+          "stats": {
+            "gp": 3,
+            "pts": 20,
+            "fouls": 9,
+            "fg": 8,
+            "ft": 1,
+            "threePt": 1,
+            "foulOuts": 1,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:37.501Z",
+  "games": [
+    "04b6d52f",
+    "1b8ba245",
+    "1e86a842",
+    "21616be2",
+    "2454d00a",
+    "2983e18c",
+    "2b5edb73",
+    "2e9b1c4f",
+    "2f57ede4",
+    "3ca22219",
+    "3df62ae5",
+    "3ecc05ee",
+    "434702eb",
+    "446302f0",
+    "452e2e30",
+    "48df872b",
+    "586f7036",
+    "6566a18b",
+    "66e85eef",
+    "7053c63b",
+    "72c1d350",
+    "75ff5249",
+    "796f3c05",
+    "7e966c1b",
+    "83fcc3df",
+    "8576be27",
+    "937da580",
+    "9c2c8ade",
+    "9df9559c",
+    "a595dc15",
+    "a86ed957",
+    "aaaafb23",
+    "ac7a86d3",
+    "ae08b027",
+    "ae8a2506",
+    "b0d10138",
+    "b2ac9121",
+    "c26f6089",
+    "c791d114",
+    "cdd650f0",
+    "d0494c2b",
+    "d53ea233",
+    "df1b5e6d",
+    "e9ec02f5",
+    "ebd11a55",
+    "ed5013a2",
+    "eff3f925",
+    "f0029c87",
+    "f2147f6f",
+    "f2421861",
+    "f30c2dd9",
+    "fae264d8",
+    "fbdec32a",
+    "fc1002f1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "d53ea233",
+      "sid": "6f7bbafe"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "d53ea233",
+      "sid": "6f7bbafe"
+    }
+  },
+  "name": "Summer 2022/23",
+  "gameTids": {
+    "ae8a2506": "5fa6f0c4",
+    "8576be27": "5fa6f0c4",
+    "3df62ae5": "5fa6f0c4",
+    "72c1d350": "5fa6f0c4",
+    "f0029c87": "5fa6f0c4",
+    "a595dc15": "5fa6f0c4",
+    "ac7a86d3": "5fa6f0c4",
+    "434702eb": "5fa6f0c4",
+    "e9ec02f5": "5fa6f0c4",
+    "586f7036": "5fa6f0c4",
+    "d53ea233": "5fa6f0c4",
+    "7053c63b": "5fa6f0c4",
+    "6566a18b": "7c73fb3b",
+    "2983e18c": "7c73fb3b",
+    "2b5edb73": "7c73fb3b",
+    "937da580": "7c73fb3b",
+    "21616be2": "7c73fb3b",
+    "ed5013a2": "7c73fb3b",
+    "ae08b027": "7c73fb3b",
+    "cdd650f0": "7c73fb3b",
+    "f2147f6f": "7c73fb3b",
+    "446302f0": "7c73fb3b",
+    "04b6d52f": "7c73fb3b",
+    "796f3c05": "b654e815",
+    "7e966c1b": "b654e815",
+    "75ff5249": "b654e815",
+    "ebd11a55": "b654e815",
+    "3ca22219": "b654e815",
+    "fbdec32a": "b654e815",
+    "df1b5e6d": "b654e815",
+    "2f57ede4": "b654e815",
+    "48df872b": "b654e815",
+    "fae264d8": "b654e815",
+    "83fcc3df": "b654e815",
+    "aaaafb23": "b654e815",
+    "2454d00a": "48826859",
+    "fc1002f1": "48826859",
+    "9c2c8ade": "48826859",
+    "f30c2dd9": "48826859",
+    "f2421861": "48826859",
+    "b2ac9121": "48826859",
+    "b0d10138": "48826859",
+    "c26f6089": "48826859",
+    "1e86a842": "fe8686ed",
+    "d0494c2b": "fe8686ed",
+    "452e2e30": "fe8686ed",
+    "3ecc05ee": "fe8686ed",
+    "c791d114": "fe8686ed",
+    "eff3f925": "fe8686ed",
+    "1b8ba245": "fe8686ed",
+    "9df9559c": "fe8686ed",
+    "2e9b1c4f": "2d010c89",
+    "a86ed957": "2d010c89",
+    "66e85eef": "2d010c89"
+  },
+  "teams": [
+    {
+      "tid": "5fa6f0c4",
+      "sid": "6f7bbafe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7c73fb3b",
+      "sid": "c921a6d3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b654e815",
+      "sid": "c921a6d3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48826859",
+      "sid": "f1fb582d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe8686ed",
+      "sid": "dee767b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d010c89",
+      "sid": "02f949c6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:06.664Z"
+}

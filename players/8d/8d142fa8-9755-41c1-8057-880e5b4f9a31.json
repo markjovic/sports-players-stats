@@ -1,1 +1,318 @@
-{"uuid":"8d142fa8-9755-41c1-8057-880e5b4f9a31","name":"Astor Beurskens","gender":"Girls","sports":{"Basketball":{"gp":43,"pts":451,"fouls":106,"fg":118,"ft":65,"threePt":50,"foulOuts":{"10ee56a5":1,"148d96eb":3,"6dd649c0":1},"finals":3,"gfApps":3,"gfWins":2,"finalsPerSeason":0.43,"maxGamePTS":25,"maxGameThreePt":5,"wins":14,"losses":29,"winPct":0.33,"statsChecked":"2026-07-05T14:29:00.704Z"}},"seasons":[{"sid":"148d96eb","sn":"2026","club":"South Australia","regs":[{"tid":"4ce2e2b9","tn":"U14 Girls SA Country","gid":"bb0f219e","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":7,"fouls":23,"ft":9,"fg":11,"threePt":12,"pts":67,"foulOuts":3,"wins":2,"losses":5}}]},{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"872ac226","tn":"Eastern Mavericks U14 Girls 1","gid":"9d414386","gn":"GIRLS UNDER 14 AR","age":null,"div":null,"stats":{"gp":5,"fouls":11,"ft":2,"fg":8,"threePt":7,"pts":39,"foulOuts":1,"wins":3,"losses":2}}]},{"sid":"ea13a58c","sn":"2025","club":"SA Country","regs":[{"tid":"bca9c454","tn":"U14 Girls SA Wombats","gid":"e318aede","gn":"U14 Girls D1","age":"U14","div":"D1","stats":{"gp":8,"fouls":14,"ft":17,"fg":19,"threePt":13,"pts":94,"finals":1,"gfApps":1,"wins":3,"losses":5,"gfWins":1}}]},{"sid":"56bad6ef","sn":"2024","club":"Eastern Mavericks Basketball Club","regs":[{"tid":"79c0e685","tn":"Eastern Mavericks U12 Girls","gid":"996b46f3","gn":"U12 Girls NJC","age":"U12","div":null,"stats":{"gp":6,"fouls":15,"ft":10,"fg":27,"threePt":1,"pts":67,"finals":1,"gfApps":1,"wins":1,"losses":5}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"7fc99178","tn":"Eastern Mavericks U12 Girls 1","gid":"22687b00","gn":"GIRLS UNDER 12 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":12,"ft":10,"fg":22,"pts":54,"wins":1,"losses":4}}]},{"sid":"a48d8524","sn":"2022","regs":[{"tid":"92bbb462","tn":"Eastern Mavericks U12 Girls 2","gid":"988bab10","gn":"GIRLS UNDER 12 C1","age":null,"div":"C1","stats":{"gp":6,"fouls":9,"ft":4,"fg":15,"pts":34}}]},{"sid":"10ee56a5","regs":[{"tid":"972c7cf2","stats":{"wins":2,"losses":4,"finals":1,"gfApps":1,"gfWins":1,"gp":6,"pts":96,"fg":16,"ft":13,"threePt":17,"fouls":22}},{"tid":"972c7cf2","tn":"","gid":"6d66d28f","gn":"U14 Girls NJC","div":null,"stats":{"gp":6,"pts":96,"fg":16,"ft":13,"threePt":17,"fouls":22,"wins":2,"losses":4}}]}],"updatedAt":"2026-07-04T05:57:58.651Z","teams":[{"tid":"972c7cf2","sid":"10ee56a5","status":"UPCOMING"},{"tid":"4ce2e2b9","sid":"148d96eb","status":"COMPLETED"},{"tid":"872ac226","sid":"6dd649c0","status":"COMPLETED"},{"tid":"bca9c454","sid":"ea13a58c","status":"COMPLETED"},{"tid":"79c0e685","sid":"56bad6ef","status":"COMPLETED"},{"tid":"7fc99178","sid":"1b51c73f","status":"COMPLETED"},{"tid":"92bbb462","sid":"a48d8524","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:54:05.511Z","records":{"maxGamePTS":{"v":25,"gameKey":"c7c9ab9a","sid":"ea13a58c"},"maxGameThreePt":{"v":5,"gameKey":"c7c9ab9a","sid":"ea13a58c"}},"games":["0c9a16bc","0e606d3c","11d478c7","121f87c4","1757cef7","22a25c94","267098e4","34a05e27","35172343","3a9d155e","3bca4a5d","49978927","4fef291a","5a063997","5bd32628","5bf3b44f","5c024f2f","5c76dfce","632845af","85765d71","87ad3655","8ae0b761","8dca31de","8ef098b2","93ceec97","941b16e1","965fac15","9e29bca5","a3845520","a9b50980","aa7e17d8","acfd29df","aeda8afa","b9c7b957","bb7b4e68","c7c9ab9a","ca1a49c6","ca897b00","d3e34430","d6434cbb","eb2f6a75","ebac134e","fe61314d"]}
+{
+  "uuid": "8d142fa8-9755-41c1-8057-880e5b4f9a31",
+  "name": "Astor Beurskens",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 451,
+      "fouls": 106,
+      "fg": 118,
+      "ft": 65,
+      "threePt": 50,
+      "foulOuts": {
+        "10ee56a5": 1,
+        "148d96eb": 3,
+        "6dd649c0": 1
+      },
+      "finals": 3,
+      "gfApps": 3,
+      "gfWins": 2,
+      "finalsPerSeason": 0.43,
+      "maxGamePTS": 25,
+      "maxGameThreePt": 5,
+      "wins": 14,
+      "losses": 29,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T14:29:00.704Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "148d96eb",
+      "sn": "2026",
+      "club": "South Australia",
+      "regs": [
+        {
+          "tid": "4ce2e2b9",
+          "tn": "U14 Girls SA Country",
+          "gid": "bb0f219e",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 23,
+            "ft": 9,
+            "fg": 11,
+            "threePt": 12,
+            "pts": 67,
+            "foulOuts": 3,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "872ac226",
+          "tn": "Eastern Mavericks U14 Girls 1",
+          "gid": "9d414386",
+          "gn": "GIRLS UNDER 14 AR",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 8,
+            "threePt": 7,
+            "pts": 39,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ea13a58c",
+      "sn": "2025",
+      "club": "SA Country",
+      "regs": [
+        {
+          "tid": "bca9c454",
+          "tn": "U14 Girls SA Wombats",
+          "gid": "e318aede",
+          "gn": "U14 Girls D1",
+          "age": "U14",
+          "div": "D1",
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "ft": 17,
+            "fg": 19,
+            "threePt": 13,
+            "pts": 94,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "56bad6ef",
+      "sn": "2024",
+      "club": "Eastern Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "79c0e685",
+          "tn": "Eastern Mavericks U12 Girls",
+          "gid": "996b46f3",
+          "gn": "U12 Girls NJC",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 15,
+            "ft": 10,
+            "fg": 27,
+            "threePt": 1,
+            "pts": 67,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "7fc99178",
+          "tn": "Eastern Mavericks U12 Girls 1",
+          "gid": "22687b00",
+          "gn": "GIRLS UNDER 12 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 12,
+            "ft": 10,
+            "fg": 22,
+            "pts": 54,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a48d8524",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "92bbb462",
+          "tn": "Eastern Mavericks U12 Girls 2",
+          "gid": "988bab10",
+          "gn": "GIRLS UNDER 12 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 15,
+            "pts": 34
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "972c7cf2",
+          "stats": {
+            "wins": 2,
+            "losses": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 6,
+            "pts": 96,
+            "fg": 16,
+            "ft": 13,
+            "threePt": 17,
+            "fouls": 22
+          },
+          "gid": "6d66d28f",
+          "gn": "U14 Girls NJC"
+        },
+        {
+          "tid": "972c7cf2",
+          "tn": "",
+          "gid": "6d66d28f",
+          "gn": "U14 Girls NJC",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 96,
+            "fg": 16,
+            "ft": 13,
+            "threePt": 17,
+            "fouls": 22,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:58.651Z",
+  "teams": [
+    {
+      "tid": "4ce2e2b9",
+      "sid": "148d96eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "872ac226",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bca9c454",
+      "sid": "ea13a58c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79c0e685",
+      "sid": "56bad6ef",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7fc99178",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92bbb462",
+      "sid": "a48d8524",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "972c7cf2",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:51.539Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "c7c9ab9a",
+      "sid": "ea13a58c"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "c7c9ab9a",
+      "sid": "ea13a58c"
+    }
+  },
+  "games": [
+    "0c9a16bc",
+    "0e606d3c",
+    "11d478c7",
+    "121f87c4",
+    "1757cef7",
+    "22a25c94",
+    "267098e4",
+    "34a05e27",
+    "35172343",
+    "3a9d155e",
+    "3bca4a5d",
+    "49978927",
+    "4fef291a",
+    "5a063997",
+    "5bd32628",
+    "5bf3b44f",
+    "5c024f2f",
+    "5c76dfce",
+    "632845af",
+    "85765d71",
+    "87ad3655",
+    "8ae0b761",
+    "8dca31de",
+    "8ef098b2",
+    "93ceec97",
+    "941b16e1",
+    "965fac15",
+    "9e29bca5",
+    "a3845520",
+    "a9b50980",
+    "aa7e17d8",
+    "acfd29df",
+    "aeda8afa",
+    "b9c7b957",
+    "bb7b4e68",
+    "c7c9ab9a",
+    "ca1a49c6",
+    "ca897b00",
+    "d3e34430",
+    "d6434cbb",
+    "eb2f6a75",
+    "ebac134e",
+    "fe61314d"
+  ]
+}

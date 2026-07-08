@@ -1,1 +1,104 @@
-{"uuid":"1207c935-188e-42cd-860a-49ca34d397db","name":"Victoria Wallish","gender":"Women","sports":{"Basketball":{"gp":11,"pts":14,"fouls":14,"fg":7,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":7,"losses":3,"draws":1,"winPct":0.64,"statsChecked":"2026-07-05T16:26:49.197Z"}},"seasons":[{"sid":"d89e57b1","sn":"Summer 2025/26","club":"Hamilton Athletics Basketball Club","regs":[{"tid":"d007f625","tn":"Athletics White Division 4 Women","gid":"77a17c89","gn":"Tuesday Senior Women Division 4","age":"Senior","div":"Division 4","stats":{"gp":11,"pts":14,"fg":7,"fouls":14,"finals":1,"gfApps":1,"wins":7,"losses":3,"draws":1,"gfWins":1}}]}],"updatedAt":"2026-06-03T07:51:02.784Z","teams":[{"tid":"d007f625","sid":"d89e57b1","status":"COMPLETED"},{"tid":"f658812e","sid":"56ce14cb","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:57:54.087Z","records":{"maxGamePTS":{"v":4,"gameKey":"7434e829","sid":"d89e57b1"},"maxGameThreePt":{"v":null}},"games":["20fb3a45","2f3c5e63","3464e1aa","449a716a","48cb5f90","4d2fbbd2","4e9fbcfb","7434e829","9e0cb2ad","a0b58b3a","e82a026a"]}
+{
+  "uuid": "1207c935-188e-42cd-860a-49ca34d397db",
+  "name": "Victoria Wallish",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 14,
+      "fouls": 14,
+      "fg": 7,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 3,
+      "draws": 1,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-05T16:26:49.197Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d89e57b1",
+      "sn": "Summer 2025/26",
+      "club": "Hamilton Athletics Basketball Club",
+      "regs": [
+        {
+          "tid": "d007f625",
+          "tn": "Athletics White Division 4 Women",
+          "gid": "77a17c89",
+          "gn": "Tuesday Senior Women Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 11,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "56ce14cb",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "f658812e",
+          "tn": "Athletics White Div 3 Women",
+          "gid": "3a1d190f",
+          "gn": "Tuesday Senior Women Division 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T07:51:02.784Z",
+  "teams": [
+    {
+      "tid": "d007f625",
+      "sid": "d89e57b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f658812e",
+      "sid": "56ce14cb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:01.292Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "7434e829",
+      "sid": "d89e57b1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "20fb3a45",
+    "2f3c5e63",
+    "3464e1aa",
+    "449a716a",
+    "48cb5f90",
+    "4d2fbbd2",
+    "4e9fbcfb",
+    "7434e829",
+    "9e0cb2ad",
+    "a0b58b3a",
+    "e82a026a"
+  ]
+}

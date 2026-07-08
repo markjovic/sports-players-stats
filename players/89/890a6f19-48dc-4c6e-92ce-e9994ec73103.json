@@ -1,1 +1,85 @@
-{"uuid":"890a6f19-48dc-4c6e-92ce-e9994ec73103","name":"NAOMI XIN","gender":"Girls","sports":{"Basketball":{"gp":8,"fouls":3,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":4,"losses":4,"winPct":0.5,"statsChecked":"2026-07-05T16:14:20.184Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"ab797ddb","tn":"Flames","gid":"f090540b","gn":"Friday Year 1 Girls STH","age":null,"div":null,"stats":{"gp":8,"fouls":3,"wins":4,"losses":4}}]}],"updatedAt":"2026-07-04T05:51:58.650Z","teams":[{"tid":"ab797ddb","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:25:23.349Z","games":["14f09e48","2981dd8a","7f5b4791","84b6186b","a153a736","a60532eb","b04d2e14","ff56e67a"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "890a6f19-48dc-4c6e-92ce-e9994ec73103",
+  "name": "NAOMI XIN",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "fouls": 3,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 4,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:14:20.184Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "ab797ddb",
+          "tn": "Flames",
+          "gid": "f090540b",
+          "gn": "Friday Year 1 Girls STH",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 3,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "4db090cb",
+          "tn": "Flames",
+          "gid": "c786437d",
+          "gn": "Friday Year 1 Girls B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:51:58.650Z",
+  "teams": [
+    {
+      "tid": "ab797ddb",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4db090cb",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:34.274Z",
+  "games": [
+    "14f09e48",
+    "2981dd8a",
+    "7f5b4791",
+    "84b6186b",
+    "a153a736",
+    "a60532eb",
+    "b04d2e14",
+    "ff56e67a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

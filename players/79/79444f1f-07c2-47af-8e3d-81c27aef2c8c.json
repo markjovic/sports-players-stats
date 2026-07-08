@@ -1,1 +1,275 @@
-{"uuid":"79444f1f-07c2-47af-8e3d-81c27aef2c8c","name":"Poundak Poundak","gender":"Boys","sports":{"Basketball":{"gp":50,"pts":271,"fouls":87,"fg":99,"ft":13,"threePt":20,"foulOuts":{"6ffec519":1,"5f327b4a":2},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"maxGamePTS":15,"maxGameThreePt":3,"wins":35,"losses":40,"winPct":0.46,"draws":1,"statsChecked":"2026-07-05T15:10:23.745Z"}},"seasons":[{"sid":"05ae1e3a","sn":"Winter 2026","club":"Panthers Basketball Club (Bacchus Marsh)","regs":[{"tid":"ece05225","tn":"Panthers Boys 21.1","gid":"5ae45f9c","gn":"Thursday U21 Boys","age":"U21","div":null,"stats":{"gp":7,"fouls":11,"ft":2,"fg":22,"threePt":2,"pts":52,"wins":4,"losses":2,"draws":1}}]},{"sid":"00404092","sn":"Autumn 2026","regs":[{"tid":"ea90abf2","tn":"Bus Drivers Jr","gid":"dc956e0f","gn":"Division 8 Sunday Mens","age":null,"div":null,"stats":{"gp":17,"fouls":23,"ft":2,"fg":20,"threePt":6,"pts":60,"wins":7,"losses":8}},{"tid":"ea90abf2","tn":"Bus Drivers Jr","gid":"2541b4c6","gn":"Grading Sunday Mens","age":null,"div":null,"stats":{"gp":17,"fouls":23,"fg":20,"pts":60,"wins":7,"losses":8,"ft":2,"threePt":6}}]},{"sid":"6ffec519","sn":"Spring 2025","regs":[{"tid":"4965418c","tn":"Bus Drivers Jr","gid":"3aee5873","gn":"Division 6 Sunday Mens","age":null,"div":null,"stats":{"gp":13,"fouls":29,"ft":1,"fg":14,"threePt":7,"pts":50,"foulOuts":1,"losses":11,"wins":2}},{"tid":"4965418c","tn":"Bus Drivers Jr","gid":"b2d6cf71","gn":"Grading Sunday Mens","age":null,"div":null,"stats":{"gp":13,"fouls":29,"threePt":7,"pts":50,"losses":11,"wins":2,"fg":14,"ft":1}}]},{"sid":"5f327b4a","sn":"Winter 2025","club":"Hornets Basketball Academy","regs":[{"tid":"9a696faa","tn":"Hornets U18.1 Boys","gid":"90039050","gn":"U18 Boys C Grade","age":"U18","div":null,"stats":{"gp":13,"fouls":24,"ft":8,"fg":43,"threePt":5,"pts":109,"foulOuts":2,"finals":1,"gfApps":1,"wins":13,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:46:10.702Z","teams":[{"tid":"ea90abf2","sid":"00404092","status":"ACTIVE"},{"tid":"ece05225","sid":"05ae1e3a","status":"ACTIVE"},{"tid":"4965418c","sid":"6ffec519","status":"COMPLETED"},{"tid":"9a696faa","sid":"5f327b4a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:05:56.089Z","records":{"maxGamePTS":{"v":15,"gameKey":"a8b7abe3","sid":"00404092"},"maxGameThreePt":{"v":3,"gameKey":"a8b7abe3","sid":"00404092"}},"games":["029b836b","06fe1a65","1a84e366","21399a12","308e1862","38334927","3841d19a","4864c391","51faab74","56ceae97","57c9df72","57e5674a","5fb13620","64cea445","67ccf566","6912dc8a","6a442b96","6c199530","72a5ecd0","76ff571b","7981fb5a","7d9db749","869fb807","86f3f077","8cf3c330","978e31d1","9d56213c","9e3b25ef","a6268c2c","a8b7abe3","b0456d54","b1a5ad3e","b50c1465","b8361882","b9b1b961","badb86e6","bbbb1ed2","c1a4efb5","c3435f7a","c8453621","cb479e24","cdff6107","d40fef8d","d5c85ce0","e69e1824","f3d2b659","f7f96601","fb3bb77e"]}
+{
+  "uuid": "79444f1f-07c2-47af-8e3d-81c27aef2c8c",
+  "name": "Poundak Poundak",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 271,
+      "fouls": 87,
+      "fg": 99,
+      "ft": 13,
+      "threePt": 20,
+      "foulOuts": {
+        "6ffec519": 1,
+        "5f327b4a": 2
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 15,
+      "maxGameThreePt": 3,
+      "wins": 35,
+      "losses": 40,
+      "winPct": 0.46,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:10:23.745Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "05ae1e3a",
+      "sn": "Winter 2026",
+      "club": "Panthers Basketball Club (Bacchus Marsh)",
+      "regs": [
+        {
+          "tid": "ece05225",
+          "tn": "Panthers Boys 21.1",
+          "gid": "5ae45f9c",
+          "gn": "Thursday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 22,
+            "threePt": 2,
+            "pts": 52,
+            "wins": 4,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "00404092",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "ea90abf2",
+          "tn": "Bus Drivers Jr",
+          "gid": "dc956e0f",
+          "gn": "Division 8 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 23,
+            "ft": 2,
+            "fg": 20,
+            "threePt": 6,
+            "pts": 60,
+            "wins": 7,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "ea90abf2",
+          "tn": "Bus Drivers Jr",
+          "gid": "2541b4c6",
+          "gn": "Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 23,
+            "fg": 20,
+            "pts": 60,
+            "wins": 7,
+            "losses": 8,
+            "ft": 2,
+            "threePt": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6ffec519",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "4965418c",
+          "tn": "Bus Drivers Jr",
+          "gid": "3aee5873",
+          "gn": "Division 6 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 29,
+            "ft": 1,
+            "fg": 14,
+            "threePt": 7,
+            "pts": 50,
+            "foulOuts": 1,
+            "losses": 11,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "4965418c",
+          "tn": "Bus Drivers Jr",
+          "gid": "b2d6cf71",
+          "gn": "Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 29,
+            "threePt": 7,
+            "pts": 50,
+            "losses": 11,
+            "wins": 2,
+            "fg": 14,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f327b4a",
+      "sn": "Winter 2025",
+      "club": "Hornets Basketball Academy",
+      "regs": [
+        {
+          "tid": "9a696faa",
+          "tn": "Hornets U18.1 Boys",
+          "gid": "90039050",
+          "gn": "U18 Boys C Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 24,
+            "ft": 8,
+            "fg": 43,
+            "threePt": 5,
+            "pts": 109,
+            "foulOuts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "343c5d11",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "3685bab2",
+          "tn": "PDK WARRIORS",
+          "gid": "0dd1dd7c",
+          "gn": "Division 8 Sunday Mens",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:10.702Z",
+  "teams": [
+    {
+      "tid": "ece05225",
+      "sid": "05ae1e3a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea90abf2",
+      "sid": "00404092",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4965418c",
+      "sid": "6ffec519",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a696faa",
+      "sid": "5f327b4a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3685bab2",
+      "sid": "343c5d11",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:21.314Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "a8b7abe3",
+      "sid": "00404092"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "a8b7abe3",
+      "sid": "00404092"
+    }
+  },
+  "games": [
+    "029b836b",
+    "06fe1a65",
+    "1a84e366",
+    "21399a12",
+    "308e1862",
+    "38334927",
+    "3841d19a",
+    "4864c391",
+    "51faab74",
+    "56ceae97",
+    "57c9df72",
+    "57e5674a",
+    "5fb13620",
+    "64cea445",
+    "67ccf566",
+    "6912dc8a",
+    "6a442b96",
+    "6c199530",
+    "72a5ecd0",
+    "76ff571b",
+    "7981fb5a",
+    "7d9db749",
+    "869fb807",
+    "86f3f077",
+    "8cf3c330",
+    "978e31d1",
+    "9d56213c",
+    "9e3b25ef",
+    "a6268c2c",
+    "a8b7abe3",
+    "b0456d54",
+    "b1a5ad3e",
+    "b50c1465",
+    "b8361882",
+    "b9b1b961",
+    "badb86e6",
+    "bbbb1ed2",
+    "c1a4efb5",
+    "c3435f7a",
+    "c8453621",
+    "cb479e24",
+    "cdff6107",
+    "d40fef8d",
+    "d5c85ce0",
+    "e69e1824",
+    "f3d2b659",
+    "f7f96601",
+    "fb3bb77e"
+  ]
+}

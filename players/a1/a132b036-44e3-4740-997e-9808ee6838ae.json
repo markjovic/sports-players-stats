@@ -1,1 +1,96 @@
-{"uuid":"a132b036-44e3-4740-997e-9808ee6838ae","name":"Jack Taylor","sports":{"Basketball":{"maxGamePTS":14,"maxGameThreePt":1,"foulOuts":{},"gp":18,"pts":78,"fg":37,"ft":1,"threePt":1,"fouls":11,"statsChecked":"2026-07-07T18:29:04.654Z"}},"seasons":[{"sid":"9b3f4951","regs":[{"tid":"d49dd5e6"}]},{"sid":"e27ed761","regs":[{"tid":"7d19d710"}]},{"sid":"208778d7","regs":[{"tid":"db9c0786"}]},{"sid":"92a45b85","regs":[{"tid":"5560eea4"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":14,"gameKey":"e10b11c4","sid":"9b3f4951"},"maxGameThreePt":{"v":1,"gameKey":"de2e253f","sid":"9b3f4951"}}}
+{
+  "uuid": "a132b036-44e3-4740-997e-9808ee6838ae",
+  "name": "Jack Taylor",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 18,
+      "pts": 78,
+      "fg": 37,
+      "ft": 1,
+      "threePt": 1,
+      "fouls": 11,
+      "statsChecked": "2026-07-07T18:29:04.654Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9b3f4951",
+      "regs": [
+        {
+          "tid": "d49dd5e6",
+          "gid": "a424a33f",
+          "gn": "Tuesday B1 Men"
+        }
+      ]
+    },
+    {
+      "sid": "e27ed761",
+      "regs": [
+        {
+          "tid": "7d19d710",
+          "gid": "bf987d03",
+          "gn": "Friday U19 Boys Blue Pool 1"
+        }
+      ]
+    },
+    {
+      "sid": "208778d7",
+      "regs": [
+        {
+          "tid": "db9c0786",
+          "gid": "377d7fbf",
+          "gn": "Friday U19 Boys Blue Pool 1"
+        }
+      ]
+    },
+    {
+      "sid": "92a45b85",
+      "regs": [
+        {
+          "tid": "5560eea4",
+          "gid": "c6db6286",
+          "gn": "Friday U16 Boys Blue 2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "d49dd5e6",
+      "sid": "9b3f4951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d19d710",
+      "sid": "e27ed761",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db9c0786",
+      "sid": "208778d7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5560eea4",
+      "sid": "92a45b85",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "e10b11c4",
+      "sid": "9b3f4951"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "de2e253f",
+      "sid": "9b3f4951"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:28:36.937Z"
+}

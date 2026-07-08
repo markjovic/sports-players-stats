@@ -1,1 +1,317 @@
-{"uuid":"ed51f433-5ffc-4801-85d2-fc3d9bf8003a","name":"Mehtaab Pannu","gender":"Boys","sports":{"Basketball":{"gp":58,"pts":186,"fouls":88,"fg":85,"ft":13,"threePt":1,"foulOuts":{"17120864":1,"87f64c26":2,"367cf946":1},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":14,"maxGameThreePt":1,"wins":22,"losses":44,"winPct":0.31,"draws":4,"statsChecked":"2026-07-05T14:59:27.099Z"}},"seasons":[{"sid":"87f64c26","sn":"2026","club":"Wyndham Basketball Club","regs":[{"tid":"6e8a8751","tn":"Wyndham B12.Red","gid":"28ea4c76","gn":"U12 Boys Domestic 2","age":"U12","div":null,"stats":{"gp":4,"fouls":16,"fg":1,"pts":2,"foulOuts":2,"losses":4}}]},{"sid":"367cf946","sn":"Winter 2026","club":"Good News Power Basketball Club","regs":[{"tid":"f12176af","tn":"GNP Lightning U10 Boys","gid":"4fde2a98","gn":"Saturday U10 Boys A","age":"U10","div":null,"stats":{"gp":8,"fouls":16,"fg":13,"pts":27,"ft":1,"wins":1,"losses":7}},{"tid":"f12176af","tn":"GNP Lightning U10 Boys","gid":"0ad7884e","gn":"Saturday U10 Boys Grading Pool","age":"U10","div":null,"stats":{"gp":8,"fouls":16,"fg":13,"pts":27,"foulOuts":1,"wins":1,"losses":7,"ft":1}}]},{"sid":"17120864","sn":"Summer 2025/26","club":"Good News Power Basketball Club","regs":[{"tid":"278d72a2","tn":"GNP Lightning U10 Boys","gid":"2adc11a9","gn":"Saturday U10 Boys B","age":"U10","div":null,"stats":{"gp":14,"fouls":28,"ft":5,"fg":27,"threePt":1,"pts":62,"foulOuts":1,"finals":1,"gfApps":1,"wins":10,"losses":2,"draws":2}}]},{"sid":"09379b42","sn":"Winter 2025","club":"Good News Power Basketball Club","regs":[{"tid":"c2676eb0","tn":"GNP Thunder U10 Boys","gid":"b66fb334","gn":"Saturday U10 Boys C1","age":"U10","div":"C1","stats":{"gp":14,"fouls":9,"ft":4,"fg":9,"pts":22,"wins":3,"losses":10,"draws":1}}]},{"sid":"6982a47b","sn":"Summer 2024/25","club":"Good News Power Basketball Club","regs":[{"tid":"e7c7de54","tn":"GNP Storm U10 Boys","gid":"fe311ff5","gn":"Saturday U10 Boys D","age":"U10","div":null,"stats":{"gp":14,"fouls":12,"ft":3,"fg":31,"pts":65,"wins":3,"losses":10,"draws":1}}]},{"sid":"21b7d173","regs":[{"tid":"f4f02df8","stats":{"wins":2,"losses":2,"finals":1,"gp":4,"pts":8,"fg":4,"fouls":7}},{"tid":"f4f02df8","tn":"","gid":"dbf95189","gn":"U12 Boys G Grade","div":null,"stats":{"gp":4,"pts":8,"fg":4,"fouls":7,"wins":2,"losses":2}}]}],"updatedAt":"2026-07-04T05:51:38.096Z","teams":[{"tid":"f12176af","sid":"367cf946","status":"ACTIVE"},{"tid":"f4f02df8","sid":"21b7d173","status":"UPCOMING"},{"tid":"6e8a8751","sid":"87f64c26","status":"COMPLETED"},{"tid":"278d72a2","sid":"17120864","status":"COMPLETED"},{"tid":"c2676eb0","sid":"09379b42","status":"COMPLETED"},{"tid":"e7c7de54","sid":"6982a47b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:53:07.672Z","games":["05f3e1e9","090d2bd7","113544cb","14965ee2","21671e11","3b1bc40d","477bbb02","4d986dfa","4f3f0bf5","56bc44ff","5dcc0035","5f18c2a5","6330b79d","6549e608","66a4b52c","6ce73093","6d0e5bbe","6dfa557c","7929eb1f","794885f3","7ec96295","820a25ad","83885de1","8695045e","8ac68217","8b661896","8c2bf2ce","8c804653","90bd788d","9778b5ff","9b65aa01","9e6c635f","9f366519","a0eb3168","a2d0da87","a4d1497a","a6da85f2","aa115439","aa8e0e2c","ae3dfef8","b4981296","bb6ce1f8","bd475c06","bffea21a","c383dbb5","cde9b46a","d2032cef","d599750c","d6507320","d92588fe","dea64acd","e09d47a7","e1c7d4d7","e38894bd","ef478be5","f1ccefe8","f54c0697","fc8f2d52"],"records":{"maxGamePTS":{"v":14,"gameKey":"66a4b52c","sid":"6982a47b"},"maxGameThreePt":{"v":1,"gameKey":"90bd788d","sid":"17120864"}}}
+{
+  "uuid": "ed51f433-5ffc-4801-85d2-fc3d9bf8003a",
+  "name": "Mehtaab Pannu",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 186,
+      "fouls": 88,
+      "fg": 85,
+      "ft": 13,
+      "threePt": 1,
+      "foulOuts": {
+        "17120864": 1,
+        "87f64c26": 2,
+        "367cf946": 1
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "wins": 22,
+      "losses": 44,
+      "winPct": 0.31,
+      "draws": 4,
+      "statsChecked": "2026-07-05T14:59:27.099Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "87f64c26",
+      "sn": "2026",
+      "club": "Wyndham Basketball Club",
+      "regs": [
+        {
+          "tid": "6e8a8751",
+          "tn": "Wyndham B12.Red",
+          "gid": "28ea4c76",
+          "gn": "U12 Boys Domestic 2",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 16,
+            "fg": 1,
+            "pts": 2,
+            "foulOuts": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "367cf946",
+      "sn": "Winter 2026",
+      "club": "Good News Power Basketball Club",
+      "regs": [
+        {
+          "tid": "f12176af",
+          "tn": "GNP Lightning U10 Boys",
+          "gid": "4fde2a98",
+          "gn": "Saturday U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 16,
+            "fg": 13,
+            "pts": 27,
+            "ft": 1,
+            "wins": 1,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "f12176af",
+          "tn": "GNP Lightning U10 Boys",
+          "gid": "0ad7884e",
+          "gn": "Saturday U10 Boys Grading Pool",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 16,
+            "fg": 13,
+            "pts": 27,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 7,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "17120864",
+      "sn": "Summer 2025/26",
+      "club": "Good News Power Basketball Club",
+      "regs": [
+        {
+          "tid": "278d72a2",
+          "tn": "GNP Lightning U10 Boys",
+          "gid": "2adc11a9",
+          "gn": "Saturday U10 Boys B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 5,
+            "fg": 27,
+            "threePt": 1,
+            "pts": 62,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 2,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09379b42",
+      "sn": "Winter 2025",
+      "club": "Good News Power Basketball Club",
+      "regs": [
+        {
+          "tid": "c2676eb0",
+          "tn": "GNP Thunder U10 Boys",
+          "gid": "b66fb334",
+          "gn": "Saturday U10 Boys C1",
+          "age": "U10",
+          "div": "C1",
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 9,
+            "pts": 22,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6982a47b",
+      "sn": "Summer 2024/25",
+      "club": "Good News Power Basketball Club",
+      "regs": [
+        {
+          "tid": "e7c7de54",
+          "tn": "GNP Storm U10 Boys",
+          "gid": "fe311ff5",
+          "gn": "Saturday U10 Boys D",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 31,
+            "pts": 65,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21b7d173",
+      "regs": [
+        {
+          "tid": "f4f02df8",
+          "stats": {
+            "wins": 2,
+            "losses": 2,
+            "finals": 1,
+            "gp": 4,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 7
+          },
+          "gid": "dbf95189",
+          "gn": "U12 Boys G Grade"
+        },
+        {
+          "tid": "f4f02df8",
+          "tn": "",
+          "gid": "dbf95189",
+          "gn": "U12 Boys G Grade",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 7,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:51:38.096Z",
+  "teams": [
+    {
+      "tid": "6e8a8751",
+      "sid": "87f64c26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f12176af",
+      "sid": "367cf946",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "278d72a2",
+      "sid": "17120864",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c2676eb0",
+      "sid": "09379b42",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7c7de54",
+      "sid": "6982a47b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f4f02df8",
+      "sid": "21b7d173",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:50.738Z",
+  "games": [
+    "05f3e1e9",
+    "090d2bd7",
+    "113544cb",
+    "14965ee2",
+    "21671e11",
+    "3b1bc40d",
+    "477bbb02",
+    "4d986dfa",
+    "4f3f0bf5",
+    "56bc44ff",
+    "5dcc0035",
+    "5f18c2a5",
+    "6330b79d",
+    "6549e608",
+    "66a4b52c",
+    "6ce73093",
+    "6d0e5bbe",
+    "6dfa557c",
+    "7929eb1f",
+    "794885f3",
+    "7ec96295",
+    "820a25ad",
+    "83885de1",
+    "8695045e",
+    "8ac68217",
+    "8b661896",
+    "8c2bf2ce",
+    "8c804653",
+    "90bd788d",
+    "9778b5ff",
+    "9b65aa01",
+    "9e6c635f",
+    "9f366519",
+    "a0eb3168",
+    "a2d0da87",
+    "a4d1497a",
+    "a6da85f2",
+    "aa115439",
+    "aa8e0e2c",
+    "ae3dfef8",
+    "b4981296",
+    "bb6ce1f8",
+    "bd475c06",
+    "bffea21a",
+    "c383dbb5",
+    "cde9b46a",
+    "d2032cef",
+    "d599750c",
+    "d6507320",
+    "d92588fe",
+    "dea64acd",
+    "e09d47a7",
+    "e1c7d4d7",
+    "e38894bd",
+    "ef478be5",
+    "f1ccefe8",
+    "f54c0697",
+    "fc8f2d52"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "66a4b52c",
+      "sid": "6982a47b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "90bd788d",
+      "sid": "17120864"
+    }
+  }
+}

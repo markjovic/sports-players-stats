@@ -1,1 +1,99 @@
-{"uuid":"fd6a1372-a81a-4bae-9dec-e22a1262774c","name":"Leo Ewer","gender":"Boys","sports":{"Basketball":{"gp":9,"pts":44,"fouls":16,"fg":17,"ft":10,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"wins":4,"losses":5,"winPct":0.44,"statsChecked":"2026-07-05T14:32:08.855Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"be4218b7","tn":"Forestville Eagles U12 Boys Josh","gid":"fbb4fd1f","gn":"BOYS UNDER 12 B3","age":null,"div":"B3","stats":{"gp":4,"fouls":8,"fg":8,"pts":16,"wins":1,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"132c0414","stats":{"wins":3,"losses":2,"gp":5,"pts":28,"fg":9,"ft":10,"fouls":8}}]}],"updatedAt":"2026-05-31T01:01:01.790Z","teams":[{"tid":"132c0414","sid":"0869ea69","status":"UPCOMING"},{"tid":"be4218b7","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:57:10.856Z","games":["056fdd3c","2388a5a8","4993d67a","5d48d51e","913c352d","b54eccbb","d9da728d","e6d691ad","ed4b3c8c"],"records":{"maxGamePTS":{"v":9,"gameKey":"5d48d51e","sid":"0869ea69"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "fd6a1372-a81a-4bae-9dec-e22a1262774c",
+  "name": "Leo Ewer",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 44,
+      "fouls": 16,
+      "fg": 17,
+      "ft": 10,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 5,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T14:32:08.855Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "be4218b7",
+          "tn": "Forestville Eagles U12 Boys Josh",
+          "gid": "fbb4fd1f",
+          "gn": "BOYS UNDER 12 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 4,
+            "fouls": 8,
+            "fg": 8,
+            "pts": 16,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "132c0414",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 28,
+            "fg": 9,
+            "ft": 10,
+            "fouls": 8
+          },
+          "gid": "b54cb229",
+          "gn": "BOYS UNDER 12 A"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:01:01.790Z",
+  "teams": [
+    {
+      "tid": "be4218b7",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "132c0414",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:32:19.499Z",
+  "games": [
+    "056fdd3c",
+    "2388a5a8",
+    "4993d67a",
+    "5d48d51e",
+    "913c352d",
+    "b54eccbb",
+    "d9da728d",
+    "e6d691ad",
+    "ed4b3c8c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "5d48d51e",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

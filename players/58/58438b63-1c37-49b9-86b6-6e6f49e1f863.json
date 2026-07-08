@@ -1,1 +1,81 @@
-{"uuid":"58438b63-1c37-49b9-86b6-6e6f49e1f863","name":"Georgia Yue","gender":"Girls","sports":{"Basketball":{"gp":4,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":2,"winPct":0.25,"wins":1,"draws":1,"statsChecked":"2026-07-05T16:00:58.989Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"553acccd","tn":"Joey Giants All Stars","gid":"f090540b","gn":"Friday Year 1 Girls STH","age":null,"div":null,"stats":{"gp":4,"losses":2,"wins":1,"draws":1}}]}],"updatedAt":"2026-06-02T22:42:43.975Z","teams":[{"tid":"553acccd","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:36:06.352Z","games":["18ea208e","83bc48bc","e753844f","f6b2c804"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "58438b63-1c37-49b9-86b6-6e6f49e1f863",
+  "name": "Georgia Yue",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0.25,
+      "wins": 1,
+      "draws": 1,
+      "statsChecked": "2026-07-05T16:00:58.989Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "553acccd",
+          "tn": "Joey Giants All Stars",
+          "gid": "f090540b",
+          "gn": "Friday Year 1 Girls STH",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "losses": 2,
+            "wins": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "d728a3a5",
+          "tn": "Joey Giants All Stars",
+          "gid": "410f9246",
+          "gn": "Friday Year 1 Girls A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:43.975Z",
+  "teams": [
+    {
+      "tid": "553acccd",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d728a3a5",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:14.657Z",
+  "games": [
+    "18ea208e",
+    "83bc48bc",
+    "e753844f",
+    "f6b2c804"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

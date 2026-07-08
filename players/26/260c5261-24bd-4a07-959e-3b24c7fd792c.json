@@ -1,1 +1,273 @@
-{"uuid":"260c5261-24bd-4a07-959e-3b24c7fd792c","name":"Grace Slykerman","gender":"Girls","sports":{"Basketball":{"gp":8,"pts":27,"fouls":1,"fg":13,"ft":1,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"losses":10,"winPct":0.38,"wins":6,"statsChecked":"2026-07-05T14:53:51.729Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Solway Basketball Club","regs":[{"tid":"37af33c4","tn":"Solway U18 Girls Stellars","gid":"f4073cfa","gn":"Tuesday U18 Girls Section 03","age":"U18","div":null,"stats":{"gp":8,"fouls":1,"ft":1,"fg":13,"pts":27,"losses":5,"wins":3}},{"tid":"37af33c4","tn":"Solway U18 Girls Stellars","gid":"3c1d9243","gn":"Tuesday U18 Girls Grading Section 02","age":"U18","div":null,"stats":{"gp":8,"fg":13,"pts":27,"losses":5,"wins":3,"ft":1,"fouls":1}}]}],"updatedAt":"2026-07-04T05:49:55.646Z","teams":[{"tid":"37af33c4","sid":"6c117270","status":"ACTIVE"},{"tid":"76e0db61","sid":"68279835","status":"COMPLETED"},{"tid":"87e7f04b","sid":"913d1397","status":"COMPLETED"},{"tid":"e92428e4","sid":"df876355","status":"COMPLETED"},{"tid":"658c54a0","sid":"e54d0c37","status":"COMPLETED"},{"tid":"6a55381a","sid":"ee5d2724","status":"COMPLETED"},{"tid":"304a47b3","sid":"7d20ecad","status":"COMPLETED"},{"tid":"5642d027","sid":"e2637fe8","status":"COMPLETED"},{"tid":"f14b90da","sid":"eb0c3879","status":"COMPLETED"},{"tid":"46a4d1eb","sid":"11f9ba57","status":"COMPLETED"},{"tid":"90d92395","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:03.959Z","records":{"maxGamePTS":{"v":12,"gameKey":"cf802bb5","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["1a4ce54a","233df45e","92f7d73e","c1fe4ce0","cf802bb5","e1640d9f","e276b778","e55df667"]}
+{
+  "uuid": "260c5261-24bd-4a07-959e-3b24c7fd792c",
+  "name": "Grace Slykerman",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 27,
+      "fouls": 1,
+      "fg": 13,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "losses": 10,
+      "winPct": 0.38,
+      "wins": 6,
+      "statsChecked": "2026-07-05T14:53:51.729Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Solway Basketball Club",
+      "regs": [
+        {
+          "tid": "37af33c4",
+          "tn": "Solway U18 Girls Stellars",
+          "gid": "f4073cfa",
+          "gn": "Tuesday U18 Girls Section 03",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "losses": 5,
+            "wins": 3
+          }
+        },
+        {
+          "tid": "37af33c4",
+          "tn": "Solway U18 Girls Stellars",
+          "gid": "3c1d9243",
+          "gn": "Tuesday U18 Girls Grading Section 02",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 13,
+            "pts": 27,
+            "losses": 5,
+            "wins": 3,
+            "ft": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "76e0db61",
+          "tn": "Solway U16 Girls Marvels",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "87e7f04b",
+          "tn": "Solway U16 Girls Marvels",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "e92428e4",
+          "tn": "Solway U16 Girls Marvels",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "658c54a0",
+          "tn": "Solway U14 Girls Pearls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "6a55381a",
+          "tn": "Solway U14 Girls Ambers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "304a47b3",
+          "tn": "Solway U14 Girls Diamonds",
+          "gid": "e6b026b5",
+          "gn": "Saturday U14 Girls Grading Pool 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "5642d027",
+          "tn": "Solway U12 Girls Falcons",
+          "gid": "d2241ddd",
+          "gn": "U12 Girls (S22_23) Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "f14b90da",
+          "tn": "Solway U12 Girls Falcons",
+          "gid": "6cf63d08",
+          "gn": "U12 Girls Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "46a4d1eb",
+          "tn": "Solway U12 Girls Falcons",
+          "gid": "97ddd31c",
+          "gn": "U12 Girls GP3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "90d92395",
+          "tn": "Solway U10 Girls Fever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:55.646Z",
+  "teams": [
+    {
+      "tid": "37af33c4",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76e0db61",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87e7f04b",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e92428e4",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "658c54a0",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a55381a",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "304a47b3",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5642d027",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f14b90da",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46a4d1eb",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "90d92395",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:46.688Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "cf802bb5",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1a4ce54a",
+    "233df45e",
+    "92f7d73e",
+    "c1fe4ce0",
+    "cf802bb5",
+    "e1640d9f",
+    "e276b778",
+    "e55df667"
+  ]
+}

@@ -1,1 +1,288 @@
-{"uuid":"0e1b0135-1952-4add-a558-30bdaadc63a8","name":"Ethan Ellul","gender":"Mixed","sports":{"Basketball":{"gp":35,"pts":124,"fouls":47,"fg":58,"ft":8,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.17,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":7,"losses":1,"winPct":0.88,"statsChecked":"2026-07-05T15:46:39.080Z"}},"seasons":[{"sid":"56bbe16f","sn":"Summer 2025/26","club":"Wildcats Basketball Club (Ballarat)","regs":[{"tid":"3827b06c","tn":"Wildcats Mixed Blue","gid":"b6a78538","gn":"Wednesday Senior Mixed 2","age":"Senior","div":null,"stats":{"gp":8,"fouls":2,"ft":1,"fg":25,"pts":51,"finals":1,"wins":7,"losses":1}}]},{"sid":"61b880e3","sn":"Summer 2021/22","club":"Celtic Tigers Basketball Club","regs":[{"tid":"9c08e350","tn":"U16 Boys Blue CT1","gid":"e78785a6","gn":"Friday U16 Boys Blue Pool 2","age":"U16","div":null,"stats":{"gp":9,"fouls":16,"ft":3,"fg":12,"pts":27}}]},{"sid":"e27ed761","sn":"Winter 2021","club":"Celtic Tigers Basketball Club","regs":[{"tid":"2e12ad2a","tn":"Celtic Tigers","gid":"f9b0d605","gn":"Friday U16 Boys Blue","age":"U16","div":null,"stats":{"gp":8,"fouls":16,"ft":2,"fg":9,"pts":20}}]},{"sid":"208778d7","sn":"Term 1, 2021","regs":[{"tid":"7f071ded","tn":"Celtic Tigers","gid":"4ed30244","gn":"Saturday U12 Boys White","age":"U12","div":null,"stats":{"gp":1}},{"tid":"9d4a8a86","stats":{"gp":6,"pts":13,"fg":6,"ft":1,"fouls":7}}]},{"sid":"208778d7","sn":"Term 1, 2021","club":"Celtic Tigers Basketball Club","regs":[{"tid":"9d4a8a86","tn":"Celtic Tigers","gid":"846eedec","gn":"Friday U16 Boys Blue Pool 2","age":"U16","div":null,"stats":{"gp":6,"fouls":7,"ft":1,"fg":6,"pts":13}}]},{"sid":"92a45b85","sn":"Winter 2020","club":"Celtic Tigers Basketball Club","regs":[{"tid":"78900018","tn":"U14 Boys White","gid":"d4d6b26f","gn":"Saturday U14 Boys White","age":"U14","div":null,"stats":{"gp":3,"fouls":6,"ft":1,"fg":6,"pts":13}}]}],"updatedAt":"2026-06-02T00:39:28.798Z","teams":[{"tid":"3827b06c","sid":"56bbe16f","status":"COMPLETED"},{"tid":"9c08e350","sid":"61b880e3","status":"COMPLETED"},{"tid":"2e12ad2a","sid":"e27ed761","status":"COMPLETED"},{"tid":"9d4a8a86","sid":"208778d7","status":"COMPLETED"},{"tid":"78900018","sid":"92a45b85","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:56:42.624Z","records":{"maxGamePTS":{"v":10,"gameKey":"0458f041","sid":"56bbe16f"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["0458f041","06582e63","0667acee","07362b47","0747326e","08154de0","0c80981c","1de2c7ef","22bfcf90","2de65d0b","3772650c","398ab63d","3cdb7182","426564c3","4275fbb6","4a9de89c","5bd30bdb","5eb5738f","63cbb422","88313c12","96404619","b4eabded","b58a83ba","bcc98b48","c2e2f496","c9021b1d","c9d2044a","cc499c9a","cff2da8a","d45d8e30","dfb4b320","e9e8df32","ee6563c6","f8cd20d6","fa0de929"],"gameTids":{"96404619":"2e12ad2a","0458f041":"3827b06c","e9e8df32":"3827b06c","3cdb7182":"3827b06c","fa0de929":"3827b06c","0c80981c":"3827b06c","08154de0":"3827b06c","bcc98b48":"3827b06c","cc499c9a":"3827b06c","c9d2044a":"9c08e350","dfb4b320":"9c08e350","4a9de89c":"9c08e350","4275fbb6":"9c08e350","c9021b1d":"9c08e350","88313c12":"9c08e350","f8cd20d6":"9c08e350","d45d8e30":"9c08e350","1de2c7ef":"9c08e350","63cbb422":"2e12ad2a","5bd30bdb":"2e12ad2a","426564c3":"2e12ad2a","398ab63d":"2e12ad2a","2de65d0b":"2e12ad2a","ee6563c6":"2e12ad2a","0747326e":"2e12ad2a","cff2da8a":"7f071ded","c2e2f496":"9d4a8a86","22bfcf90":"9d4a8a86","07362b47":"9d4a8a86","3772650c":"9d4a8a86","b4eabded":"9d4a8a86","0667acee":"9d4a8a86","5eb5738f":"78900018","b58a83ba":"78900018","06582e63":"78900018"}}
+{
+  "uuid": "0e1b0135-1952-4add-a558-30bdaadc63a8",
+  "name": "Ethan Ellul",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 124,
+      "fouls": 47,
+      "fg": 58,
+      "ft": 8,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.17,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 1,
+      "winPct": 0.88,
+      "statsChecked": "2026-07-05T15:46:39.080Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "56bbe16f",
+      "sn": "Summer 2025/26",
+      "club": "Wildcats Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "3827b06c",
+          "tn": "Wildcats Mixed Blue",
+          "gid": "b6a78538",
+          "gn": "Wednesday Senior Mixed 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 25,
+            "pts": 51,
+            "finals": 1,
+            "wins": 7,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "61b880e3",
+      "sn": "Summer 2021/22",
+      "club": "Celtic Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "9c08e350",
+          "tn": "U16 Boys Blue CT1",
+          "gid": "e78785a6",
+          "gn": "Friday U16 Boys Blue Pool 2",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 16,
+            "ft": 3,
+            "fg": 12,
+            "pts": 27
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e27ed761",
+      "sn": "Winter 2021",
+      "club": "Celtic Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "2e12ad2a",
+          "tn": "Celtic Tigers",
+          "gid": "f9b0d605",
+          "gn": "Friday U16 Boys Blue",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20
+          }
+        }
+      ]
+    },
+    {
+      "sid": "208778d7",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "7f071ded",
+          "tn": "Celtic Tigers",
+          "gid": "4ed30244",
+          "gn": "Saturday U12 Boys White",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        },
+        {
+          "tid": "9d4a8a86",
+          "stats": {
+            "gp": 6,
+            "pts": 13,
+            "fg": 6,
+            "ft": 1,
+            "fouls": 7
+          },
+          "gid": "846eedec",
+          "gn": "Friday U16 Boys Blue Pool 2"
+        }
+      ]
+    },
+    {
+      "sid": "208778d7",
+      "sn": "Term 1, 2021",
+      "club": "Celtic Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "9d4a8a86",
+          "tn": "Celtic Tigers",
+          "gid": "846eedec",
+          "gn": "Friday U16 Boys Blue Pool 2",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "92a45b85",
+      "sn": "Winter 2020",
+      "club": "Celtic Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "78900018",
+          "tn": "U14 Boys White",
+          "gid": "d4d6b26f",
+          "gn": "Saturday U14 Boys White",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T00:39:28.798Z",
+  "teams": [
+    {
+      "tid": "3827b06c",
+      "sid": "56bbe16f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c08e350",
+      "sid": "61b880e3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2e12ad2a",
+      "sid": "e27ed761",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f071ded",
+      "sid": "208778d7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d4a8a86",
+      "sid": "208778d7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78900018",
+      "sid": "92a45b85",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:06.493Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "0458f041",
+      "sid": "56bbe16f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "0458f041",
+    "06582e63",
+    "0667acee",
+    "07362b47",
+    "0747326e",
+    "08154de0",
+    "0c80981c",
+    "1de2c7ef",
+    "22bfcf90",
+    "2de65d0b",
+    "3772650c",
+    "398ab63d",
+    "3cdb7182",
+    "426564c3",
+    "4275fbb6",
+    "4a9de89c",
+    "5bd30bdb",
+    "5eb5738f",
+    "63cbb422",
+    "88313c12",
+    "96404619",
+    "b4eabded",
+    "b58a83ba",
+    "bcc98b48",
+    "c2e2f496",
+    "c9021b1d",
+    "c9d2044a",
+    "cc499c9a",
+    "cff2da8a",
+    "d45d8e30",
+    "dfb4b320",
+    "e9e8df32",
+    "ee6563c6",
+    "f8cd20d6",
+    "fa0de929"
+  ],
+  "gameTids": {
+    "96404619": "2e12ad2a",
+    "0458f041": "3827b06c",
+    "e9e8df32": "3827b06c",
+    "3cdb7182": "3827b06c",
+    "fa0de929": "3827b06c",
+    "0c80981c": "3827b06c",
+    "08154de0": "3827b06c",
+    "bcc98b48": "3827b06c",
+    "cc499c9a": "3827b06c",
+    "c9d2044a": "9c08e350",
+    "dfb4b320": "9c08e350",
+    "4a9de89c": "9c08e350",
+    "4275fbb6": "9c08e350",
+    "c9021b1d": "9c08e350",
+    "88313c12": "9c08e350",
+    "f8cd20d6": "9c08e350",
+    "d45d8e30": "9c08e350",
+    "1de2c7ef": "9c08e350",
+    "63cbb422": "2e12ad2a",
+    "5bd30bdb": "2e12ad2a",
+    "426564c3": "2e12ad2a",
+    "398ab63d": "2e12ad2a",
+    "2de65d0b": "2e12ad2a",
+    "ee6563c6": "2e12ad2a",
+    "0747326e": "2e12ad2a",
+    "cff2da8a": "7f071ded",
+    "c2e2f496": "9d4a8a86",
+    "22bfcf90": "9d4a8a86",
+    "07362b47": "9d4a8a86",
+    "3772650c": "9d4a8a86",
+    "b4eabded": "9d4a8a86",
+    "0667acee": "9d4a8a86",
+    "5eb5738f": "78900018",
+    "b58a83ba": "78900018",
+    "06582e63": "78900018"
+  }
+}

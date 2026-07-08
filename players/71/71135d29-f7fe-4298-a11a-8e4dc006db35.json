@@ -1,1 +1,273 @@
-{"uuid":"71135d29-f7fe-4298-a11a-8e4dc006db35","name":"Curtis Jenkins","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":129,"fouls":4,"fg":57,"ft":6,"threePt":3,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"wins":14,"losses":18,"winPct":0.44,"statsChecked":"2026-07-05T16:01:33.461Z"}},"seasons":[{"sid":"8c91166a","sn":"Autumn 2026","regs":[{"tid":"910d6c63","tn":"BULLETS - LIGHT BLUE","gid":"7c76e81a","gn":"Monday Junior Boys A Grade","age":"Junior","div":null,"stats":{"gp":7,"fouls":3,"ft":1,"fg":21,"threePt":2,"pts":49,"wins":3,"losses":4}}]},{"sid":"26265e02","sn":"Winter 2025","regs":[{"tid":"965ec2b6","tn":"Kings - GREEN","gid":"d2a7fa76","gn":"Monday Junior Boys A Grade","age":"Junior","div":null,"stats":{"gp":9,"ft":3,"fg":12,"threePt":1,"pts":30,"wins":6,"losses":3}}]},{"sid":"1e5eb7a1","sn":"Autumn 2025","regs":[{"tid":"deb3c7a7","tn":"Spectres - ORANGE","gid":"2ceadbf8","gn":"Monday Junior Boys A Grade","age":"Junior","div":null,"stats":{"gp":8,"fouls":1,"ft":2,"fg":21,"pts":44,"wins":2,"losses":6}}]},{"sid":"33d52465","sn":"Autumn 2023","regs":[{"tid":"a8425431","tn":"Spurs - YELLOW","gid":"b6915bdc","gn":"Monday Junior Boys B Grade","age":"Junior","div":null,"stats":{"gp":8,"fg":2,"pts":4,"finals":1,"gfApps":1,"wins":2,"losses":4}},{"tid":"f39386be","tn":"Phoenix - BLACK","gid":"b6915bdc","gn":"Monday Junior Boys B Grade","age":"Junior","div":null,"stats":{"gp":4,"fg":1,"pts":2,"finals":1,"gfApps":1,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-02T19:38:35.060Z","teams":[{"tid":"910d6c63","sid":"8c91166a","status":"ACTIVE"},{"tid":"965ec2b6","sid":"26265e02","status":"COMPLETED"},{"tid":"deb3c7a7","sid":"1e5eb7a1","status":"COMPLETED"},{"tid":"a8425431","sid":"33d52465","status":"COMPLETED"},{"tid":"42b75fb0","sid":"0a58d2ce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:54.448Z","records":{"maxGamePTS":{"v":13,"gameKey":"3d5b075f","sid":"8c91166a"},"maxGameThreePt":{"v":1,"gameKey":"363e5bb7","sid":"8c91166a"}},"games":["0736879f","0d1b9a08","140c2b7a","1b0f520a","23e25551","29d168c0","31b808ce","363e5bb7","3d5b075f","480f80a2","538647b3","54c4c229","59f35c1a","6901febe","6b577303","7021abef","704571ad","71e1c427","74ae75c0","75fe0103","7782faa6","86aaf337","87dcf68e","8a3aa363","9d2b99ff","a1ac2ecd","a341a8b3","ae0c0b3d","b6cadcbf","dd06730b","e1f805af","f1486715","f6334727","fc47e7fa","fcd3587c","fd2186ef"],"gameTids":{"fcd3587c":"910d6c63","363e5bb7":"910d6c63","7782faa6":"910d6c63","3d5b075f":"910d6c63","71e1c427":"910d6c63","dd06730b":"910d6c63","a1ac2ecd":"910d6c63","704571ad":"965ec2b6","87dcf68e":"965ec2b6","ae0c0b3d":"965ec2b6","1b0f520a":"965ec2b6","fc47e7fa":"965ec2b6","59f35c1a":"965ec2b6","29d168c0":"965ec2b6","7021abef":"965ec2b6","31b808ce":"965ec2b6","75fe0103":"deb3c7a7","e1f805af":"deb3c7a7","9d2b99ff":"deb3c7a7","8a3aa363":"deb3c7a7","6b577303":"deb3c7a7","a341a8b3":"deb3c7a7","54c4c229":"deb3c7a7","86aaf337":"deb3c7a7","140c2b7a":"a8425431","0d1b9a08":"a8425431","f1486715":"a8425431","538647b3":"a8425431","23e25551":"a8425431","0736879f":"a8425431","b6cadcbf":"a8425431","74ae75c0":"a8425431","480f80a2":"f39386be","6901febe":"f39386be","f6334727":"f39386be","fd2186ef":"f39386be"}}
+{
+  "uuid": "71135d29-f7fe-4298-a11a-8e4dc006db35",
+  "name": "Curtis Jenkins",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 129,
+      "fouls": 4,
+      "fg": 57,
+      "ft": 6,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 14,
+      "losses": 18,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T16:01:33.461Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8c91166a",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "910d6c63",
+          "tn": "BULLETS - LIGHT BLUE",
+          "gid": "7c76e81a",
+          "gn": "Monday Junior Boys A Grade",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 21,
+            "threePt": 2,
+            "pts": 49,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26265e02",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "965ec2b6",
+          "tn": "Kings - GREEN",
+          "gid": "d2a7fa76",
+          "gn": "Monday Junior Boys A Grade",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "ft": 3,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 30,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e5eb7a1",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "deb3c7a7",
+          "tn": "Spectres - ORANGE",
+          "gid": "2ceadbf8",
+          "gn": "Monday Junior Boys A Grade",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 21,
+            "pts": 44,
+            "wins": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "33d52465",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "a8425431",
+          "tn": "Spurs - YELLOW",
+          "gid": "b6915bdc",
+          "gn": "Monday Junior Boys B Grade",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 2,
+            "pts": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "f39386be",
+          "tn": "Phoenix - BLACK",
+          "gid": "b6915bdc",
+          "gn": "Monday Junior Boys B Grade",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0a58d2ce",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "42b75fb0",
+          "tn": "Spurs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T19:38:35.060Z",
+  "teams": [
+    {
+      "tid": "910d6c63",
+      "sid": "8c91166a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "965ec2b6",
+      "sid": "26265e02",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "deb3c7a7",
+      "sid": "1e5eb7a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8425431",
+      "sid": "33d52465",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f39386be",
+      "sid": "33d52465",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42b75fb0",
+      "sid": "0a58d2ce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:50.082Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "3d5b075f",
+      "sid": "8c91166a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "363e5bb7",
+      "sid": "8c91166a"
+    }
+  },
+  "games": [
+    "0736879f",
+    "0d1b9a08",
+    "140c2b7a",
+    "1b0f520a",
+    "23e25551",
+    "29d168c0",
+    "31b808ce",
+    "363e5bb7",
+    "3d5b075f",
+    "480f80a2",
+    "538647b3",
+    "54c4c229",
+    "59f35c1a",
+    "6901febe",
+    "6b577303",
+    "7021abef",
+    "704571ad",
+    "71e1c427",
+    "74ae75c0",
+    "75fe0103",
+    "7782faa6",
+    "86aaf337",
+    "87dcf68e",
+    "8a3aa363",
+    "9d2b99ff",
+    "a1ac2ecd",
+    "a341a8b3",
+    "ae0c0b3d",
+    "b6cadcbf",
+    "dd06730b",
+    "e1f805af",
+    "f1486715",
+    "f6334727",
+    "fc47e7fa",
+    "fcd3587c",
+    "fd2186ef"
+  ],
+  "gameTids": {
+    "fcd3587c": "910d6c63",
+    "363e5bb7": "910d6c63",
+    "7782faa6": "910d6c63",
+    "3d5b075f": "910d6c63",
+    "71e1c427": "910d6c63",
+    "dd06730b": "910d6c63",
+    "a1ac2ecd": "910d6c63",
+    "704571ad": "965ec2b6",
+    "87dcf68e": "965ec2b6",
+    "ae0c0b3d": "965ec2b6",
+    "1b0f520a": "965ec2b6",
+    "fc47e7fa": "965ec2b6",
+    "59f35c1a": "965ec2b6",
+    "29d168c0": "965ec2b6",
+    "7021abef": "965ec2b6",
+    "31b808ce": "965ec2b6",
+    "75fe0103": "deb3c7a7",
+    "e1f805af": "deb3c7a7",
+    "9d2b99ff": "deb3c7a7",
+    "8a3aa363": "deb3c7a7",
+    "6b577303": "deb3c7a7",
+    "a341a8b3": "deb3c7a7",
+    "54c4c229": "deb3c7a7",
+    "86aaf337": "deb3c7a7",
+    "140c2b7a": "a8425431",
+    "0d1b9a08": "a8425431",
+    "f1486715": "a8425431",
+    "538647b3": "a8425431",
+    "23e25551": "a8425431",
+    "0736879f": "a8425431",
+    "b6cadcbf": "a8425431",
+    "74ae75c0": "a8425431",
+    "480f80a2": "f39386be",
+    "6901febe": "f39386be",
+    "f6334727": "f39386be",
+    "fd2186ef": "f39386be"
+  }
+}

@@ -1,1 +1,92 @@
-{"uuid":"cf14af41-dabe-4316-b072-34e46140b40e","gender":null,"sports":{"Basketball":{"gp":6,"pts":48,"fouls":2,"fg":21,"threePt":2,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":1,"wins":1,"losses":5,"winPct":0.17,"statsChecked":"2026-07-05T16:03:51.327Z"}},"seasons":[{"sid":"bebdabdf","sn":"Winter 2021","club":null,"regs":[{"tid":"a10d5864","tn":"Average Joes","gid":"d55ede20","gn":"Thursday Family Mixed","stats":{"gp":6,"pts":48,"fouls":2,"fg":21,"threePt":2,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-11T23:44:51.150Z","games":["2277334e","4b8f78d3","4e68f5c7","58a7ff2f","62467904","70bfa768"],"records":{"maxGamePTS":{"v":11,"gameKey":"2277334e","sid":"bebdabdf"},"maxGameThreePt":{"v":1,"gameKey":"58a7ff2f","sid":"bebdabdf"}},"name":"Winter 2021"}
+{
+  "uuid": "cf14af41-dabe-4316-b072-34e46140b40e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 48,
+      "fouls": 2,
+      "fg": 21,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T16:03:51.327Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "bebdabdf",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a10d5864",
+          "tn": "Average Joes",
+          "gid": "d55ede20",
+          "gn": "Thursday Family Mixed",
+          "stats": {
+            "gp": 6,
+            "pts": 48,
+            "fouls": 2,
+            "fg": 21,
+            "threePt": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "83cab996",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "cc3cb126",
+          "tn": "Average Joes",
+          "gid": "bbb5421f",
+          "gn": "Thursday Family Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:51.150Z",
+  "games": [
+    "2277334e",
+    "4b8f78d3",
+    "4e68f5c7",
+    "58a7ff2f",
+    "62467904",
+    "70bfa768"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "2277334e",
+      "sid": "bebdabdf"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "58a7ff2f",
+      "sid": "bebdabdf"
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "a10d5864",
+      "sid": "bebdabdf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc3cb126",
+      "sid": "83cab996",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:00.695Z"
+}

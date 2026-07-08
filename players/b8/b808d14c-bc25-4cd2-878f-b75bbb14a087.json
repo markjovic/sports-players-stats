@@ -1,1 +1,104 @@
-{"uuid":"b808d14c-bc25-4cd2-878f-b75bbb14a087","name":"Leo McCullough","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":23,"fouls":4,"fg":9,"ft":2,"threePt":1,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"wins":5,"losses":5,"winPct":0.5,"statsChecked":"2026-07-05T14:30:09.663Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"acee54b9","tn":"Inner West Bulls U12 Boys 2","gid":"6f4c9aba","gn":"BOYS UNDER 12 C1","age":null,"div":"C1","stats":{"gp":5,"fouls":2,"ft":2,"fg":8,"pts":18,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"4ed10628","stats":{"wins":3,"losses":2,"gp":5,"pts":5,"fg":1,"threePt":1,"fouls":2}}]}],"updatedAt":"2026-05-31T01:01:49.035Z","teams":[{"tid":"4ed10628","sid":"0869ea69","status":"UPCOMING"},{"tid":"acee54b9","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:38:03.714Z","games":["039e9979","05abbcfd","0fa66dd7","53454f1b","5594761c","583d36f9","5bebe662","7f36190b","897bd889","f2a9432f"],"records":{"maxGamePTS":{"v":5,"gameKey":"7f36190b","sid":"6dd649c0"},"maxGameThreePt":{"v":1,"gameKey":"5594761c","sid":"0869ea69"}}}
+{
+  "uuid": "b808d14c-bc25-4cd2-878f-b75bbb14a087",
+  "name": "Leo McCullough",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 23,
+      "fouls": 4,
+      "fg": 9,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "wins": 5,
+      "losses": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:30:09.663Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "acee54b9",
+          "tn": "Inner West Bulls U12 Boys 2",
+          "gid": "6f4c9aba",
+          "gn": "BOYS UNDER 12 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "4ed10628",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 5,
+            "fg": 1,
+            "threePt": 1,
+            "fouls": 2
+          },
+          "gid": "37b48aa5",
+          "gn": "BOYS UNDER 14 B4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:01:49.035Z",
+  "teams": [
+    {
+      "tid": "acee54b9",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ed10628",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:08.094Z",
+  "games": [
+    "039e9979",
+    "05abbcfd",
+    "0fa66dd7",
+    "53454f1b",
+    "5594761c",
+    "583d36f9",
+    "5bebe662",
+    "7f36190b",
+    "897bd889",
+    "f2a9432f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "7f36190b",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5594761c",
+      "sid": "0869ea69"
+    }
+  }
+}

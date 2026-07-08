@@ -1,1 +1,275 @@
-{"uuid":"a5495d6b-b89f-4dd3-af98-602dae16ac4d","name":"Noah Hills","gender":"Men","sports":{"Basketball":{"gp":22,"pts":70,"fouls":16,"fg":27,"ft":7,"threePt":3,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.17,"maxGamePTS":12,"maxGameThreePt":2,"wins":11,"winPct":0.48,"losses":12,"statsChecked":"2026-07-05T15:11:38.664Z"}},"seasons":[{"sid":"614a2f6d","sn":"2026","regs":[{"tid":"dc2a7a0b","tn":"Mallee Ballerz","gid":"86089d1d","gn":"Senior Men B Grade","age":"Senior","div":null,"stats":{"gp":3,"fouls":4,"fg":2,"pts":4,"wins":1,"losses":1}}]},{"sid":"7f5c9c8e","sn":"2025","regs":[{"tid":"5b63533a","tn":"Mildura Eagles ","gid":"acb0a249","gn":"Open Men A Grade","age":"Senior","div":null,"stats":{"gp":4,"fouls":1,"ft":2,"fg":1,"pts":4,"losses":4}}]},{"sid":"632fa886","sn":"2024","regs":[{"tid":"8b99faa0","tn":"Mildura Boomerangs ","gid":"da4dc77f","gn":"Open Men B grade","age":"Senior","div":null,"stats":{"gp":7,"fouls":2,"ft":3,"fg":10,"pts":23,"finals":1,"gfApps":1,"gfWins":1,"wins":7}}]},{"sid":"dee767b9","sn":"Winter 2021","regs":[{"tid":"fc3a93d6","tn":"All Aboard","gid":"98c5490f","gn":"A Men","age":null,"div":null,"stats":{"gp":3,"fouls":3,"fg":5,"pts":10,"wins":1,"losses":2}}]},{"sid":"02f949c6","sn":"Summer 2020/21","club":"Merbein Cobras Basketball Club","regs":[{"tid":"5cc65a28","tn":"Cobras Open Men","gid":"327906bf","gn":"A Men","age":null,"div":null,"stats":{"gp":3,"fouls":4,"fg":6,"threePt":2,"pts":18,"losses":3}},{"tid":"6e7d4abe","stats":{"wins":1,"losses":1,"gp":2,"pts":11,"fg":3,"ft":2,"threePt":1,"fouls":2}}]},{"sid":"02f949c6","sn":"Summer 2020/21","regs":[{"tid":"6e7d4abe","tn":"SuperSaints 2.0","gid":"27392453","gn":"B2 Men","age":null,"div":null,"stats":{"gp":2,"fouls":2,"ft":2,"fg":3,"threePt":1,"pts":11,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-02T03:57:28.566Z","teams":[{"tid":"dc2a7a0b","sid":"614a2f6d","status":"COMPLETED"},{"tid":"5b63533a","sid":"7f5c9c8e","status":"COMPLETED"},{"tid":"8b99faa0","sid":"632fa886","status":"COMPLETED"},{"tid":"fc3a93d6","sid":"dee767b9","status":"COMPLETED"},{"tid":"5cc65a28","sid":"02f949c6","status":"COMPLETED"},{"tid":"6e7d4abe","sid":"02f949c6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:32:38.295Z","games":["0aa11689","0c940660","0d7553e5","18f08c1b","26312d72","3985a983","40c2b357","43be5c25","4ab66e0b","521fba5e","60521551","8841d265","a4129439","a85114a1","a85b08f7","a86ed957","a88825de","dbf5c0d7","e7c48ed7","f1abd715","f2b71c41","f92b0d24"],"records":{"maxGamePTS":{"v":12,"gameKey":"60521551","sid":"02f949c6"},"maxGameThreePt":{"v":2,"gameKey":"60521551","sid":"02f949c6"}},"gameTids":{"60521551":"5cc65a28","0d7553e5":"dc2a7a0b","26312d72":"dc2a7a0b","4ab66e0b":"dc2a7a0b","f2b71c41":"5b63533a","8841d265":"5b63533a","a88825de":"5b63533a","f1abd715":"5b63533a","18f08c1b":"8b99faa0","40c2b357":"8b99faa0","3985a983":"8b99faa0","43be5c25":"8b99faa0","a85b08f7":"8b99faa0","521fba5e":"8b99faa0","0aa11689":"8b99faa0","e7c48ed7":"fc3a93d6","a85114a1":"fc3a93d6","a4129439":"fc3a93d6","dbf5c0d7":"5cc65a28","0c940660":"5cc65a28","a86ed957":"6e7d4abe","f92b0d24":"6e7d4abe"}}
+{
+  "uuid": "a5495d6b-b89f-4dd3-af98-602dae16ac4d",
+  "name": "Noah Hills",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 70,
+      "fouls": 16,
+      "fg": 27,
+      "ft": 7,
+      "threePt": 3,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.17,
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 11,
+      "winPct": 0.48,
+      "losses": 12,
+      "statsChecked": "2026-07-05T15:11:38.664Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "614a2f6d",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "dc2a7a0b",
+          "tn": "Mallee Ballerz",
+          "gid": "86089d1d",
+          "gn": "Senior Men B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 4,
+            "fg": 2,
+            "pts": 4,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7f5c9c8e",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "5b63533a",
+          "tn": "Mildura Eagles ",
+          "gid": "acb0a249",
+          "gn": "Open Men A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 1,
+            "pts": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "632fa886",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "8b99faa0",
+          "tn": "Mildura Boomerangs ",
+          "gid": "da4dc77f",
+          "gn": "Open Men B grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "ft": 3,
+            "fg": 10,
+            "pts": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dee767b9",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "fc3a93d6",
+          "tn": "All Aboard",
+          "gid": "98c5490f",
+          "gn": "A Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 3,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "02f949c6",
+      "sn": "Summer 2020/21",
+      "club": "Merbein Cobras Basketball Club",
+      "regs": [
+        {
+          "tid": "5cc65a28",
+          "tn": "Cobras Open Men",
+          "gid": "327906bf",
+          "gn": "A Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 4,
+            "fg": 6,
+            "threePt": 2,
+            "pts": 18,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "6e7d4abe",
+          "stats": {
+            "wins": 1,
+            "losses": 1,
+            "gp": 2,
+            "pts": 11,
+            "fg": 3,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 2
+          },
+          "gid": "27392453",
+          "gn": "B2 Men"
+        }
+      ]
+    },
+    {
+      "sid": "02f949c6",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "6e7d4abe",
+          "tn": "SuperSaints 2.0",
+          "gid": "27392453",
+          "gn": "B2 Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 11,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T03:57:28.566Z",
+  "teams": [
+    {
+      "tid": "dc2a7a0b",
+      "sid": "614a2f6d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b63533a",
+      "sid": "7f5c9c8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8b99faa0",
+      "sid": "632fa886",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fc3a93d6",
+      "sid": "dee767b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5cc65a28",
+      "sid": "02f949c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e7d4abe",
+      "sid": "02f949c6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:56.979Z",
+  "games": [
+    "0aa11689",
+    "0c940660",
+    "0d7553e5",
+    "18f08c1b",
+    "26312d72",
+    "3985a983",
+    "40c2b357",
+    "43be5c25",
+    "4ab66e0b",
+    "521fba5e",
+    "60521551",
+    "8841d265",
+    "a4129439",
+    "a85114a1",
+    "a85b08f7",
+    "a86ed957",
+    "a88825de",
+    "dbf5c0d7",
+    "e7c48ed7",
+    "f1abd715",
+    "f2b71c41",
+    "f92b0d24"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "60521551",
+      "sid": "02f949c6"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "60521551",
+      "sid": "02f949c6"
+    }
+  },
+  "gameTids": {
+    "60521551": "5cc65a28",
+    "0d7553e5": "dc2a7a0b",
+    "26312d72": "dc2a7a0b",
+    "4ab66e0b": "dc2a7a0b",
+    "f2b71c41": "5b63533a",
+    "8841d265": "5b63533a",
+    "a88825de": "5b63533a",
+    "f1abd715": "5b63533a",
+    "18f08c1b": "8b99faa0",
+    "40c2b357": "8b99faa0",
+    "3985a983": "8b99faa0",
+    "43be5c25": "8b99faa0",
+    "a85b08f7": "8b99faa0",
+    "521fba5e": "8b99faa0",
+    "0aa11689": "8b99faa0",
+    "e7c48ed7": "fc3a93d6",
+    "a85114a1": "fc3a93d6",
+    "a4129439": "fc3a93d6",
+    "dbf5c0d7": "5cc65a28",
+    "0c940660": "5cc65a28",
+    "a86ed957": "6e7d4abe",
+    "f92b0d24": "6e7d4abe"
+  }
+}

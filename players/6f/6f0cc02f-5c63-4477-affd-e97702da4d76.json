@@ -1,1 +1,98 @@
-{"uuid":"6f0cc02f-5c63-4477-affd-e97702da4d76","name":"Isaac Nguyen","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":22,"fouls":9,"fg":10,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":6,"losses":2,"winPct":0.75,"ft":2,"statsChecked":"2026-07-05T15:49:14.319Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"St Fidelis Basketball Club","regs":[{"tid":"26e06a71","tn":"St Fidelis U10 Boys Blue","gid":"fbb51b94","gn":"Saturday U10 Boys Group 3","age":"U10","div":null,"stats":{"gp":9,"fouls":6,"fg":8,"pts":17,"wins":6,"losses":2,"ft":1}}]},{"sid":"8810ce3f","regs":[{"tid":"6b96a2b6","stats":{"gp":6,"pts":5,"fg":2,"ft":1,"fouls":3}}]}],"updatedAt":"2026-07-04T05:37:31.926Z","teams":[{"tid":"26e06a71","sid":"e44fb190","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:50:02.546Z","records":{"maxGamePTS":{"v":7,"gameKey":"2e482180","sid":"e44fb190"},"maxGameThreePt":{"v":null}},"games":["2e482180","3a68fbe8","403c0d51","621dd056","6f76f5c7","a8890358","d8acfa66","f70e89fa"]}
+{
+  "uuid": "6f0cc02f-5c63-4477-affd-e97702da4d76",
+  "name": "Isaac Nguyen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 22,
+      "fouls": 9,
+      "fg": 10,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 2,
+      "winPct": 0.75,
+      "ft": 2,
+      "statsChecked": "2026-07-05T15:49:14.319Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "St Fidelis Basketball Club",
+      "regs": [
+        {
+          "tid": "26e06a71",
+          "tn": "St Fidelis U10 Boys Blue",
+          "gid": "fbb51b94",
+          "gn": "Saturday U10 Boys Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "fg": 8,
+            "pts": 17,
+            "wins": 6,
+            "losses": 2,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "6b96a2b6",
+          "stats": {
+            "gp": 6,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 3
+          },
+          "gid": "782d5cbf",
+          "gn": "U10 Boys Division 2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:31.926Z",
+  "teams": [
+    {
+      "tid": "26e06a71",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b96a2b6",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:49.913Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "2e482180",
+      "sid": "e44fb190"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2e482180",
+    "3a68fbe8",
+    "403c0d51",
+    "621dd056",
+    "6f76f5c7",
+    "a8890358",
+    "d8acfa66",
+    "f70e89fa"
+  ]
+}

@@ -1,1 +1,241 @@
-{"uuid":"cd427bb9-6cad-494f-96ea-806c6cb0d322","name":"Josh Heywood","gender":"Men","sports":{"Basketball":{"gp":30,"pts":268,"fouls":40,"fg":43,"ft":17,"threePt":55,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":25,"maxGameThreePt":6,"wins":14,"losses":5,"draws":1,"winPct":0.7,"statsChecked":"2026-07-05T15:26:04.365Z"}},"seasons":[{"sid":"12acc552","sn":"Summer 2024/25","regs":[{"tid":"6b69f2e2","tn":"Sixers","gid":"ad675281","gn":"Tuesday Men 1 - 2025 Summer","age":null,"div":null,"stats":{"gp":4,"fouls":4,"fg":1,"threePt":4,"pts":14,"wins":4}}]},{"sid":"90a7a885","sn":"Summer 2021/22","regs":[{"tid":"4d9e4d94","tn":"Miami Sixers ","gid":"026b6bb5","gn":"Wednesday Senior Men Premier A Grade","age":"Senior","div":null,"stats":{"gp":15,"fouls":22,"ft":14,"fg":28,"threePt":31,"pts":163,"finals":1,"wins":8,"losses":4,"draws":1}}]},{"sid":"6af581a9","sn":"Winter 2021","regs":[{"tid":"d3812b92","tn":"Miami Sixers ","gid":"a0007f21","gn":"Wednesday Senior Men Premier A Grade","age":"Senior","div":null,"stats":{"gp":3,"fouls":5,"fg":7,"threePt":8,"pts":38,"wins":2,"losses":1}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Diamond Valley Eagles Basketball Club","regs":[{"tid":"85555174","tn":"Diamond Valley U21 Boys 1","gid":"e18bcf92","gn":"21 Boys - VC","age":null,"div":null,"stats":{"gp":8,"fouls":9,"ft":3,"fg":7,"threePt":12,"pts":53}},{"tid":"85555174","tn":"Diamond Valley U21 Boys 1","gid":"c90ebcae","gn":"U21B Crossover 2 - VC","age":null,"div":null,"stats":{"gp":8,"fouls":9,"fg":7,"threePt":12,"pts":53,"ft":3}},{"tid":"85555174","tn":"Diamond Valley U21 Boys 1","gid":"9f374166","gn":"U21B Grading 2 - Pool 1C","age":null,"div":null,"stats":{"gp":8,"fouls":9,"ft":3,"fg":7,"pts":53,"threePt":12}}]}],"updatedAt":"2026-06-01T15:04:06.928Z","teams":[{"tid":"6b69f2e2","sid":"12acc552","status":"COMPLETED"},{"tid":"4d9e4d94","sid":"90a7a885","status":"COMPLETED"},{"tid":"85555174","sid":"a5dfc5c1","status":"COMPLETED"},{"tid":"d3812b92","sid":"6af581a9","status":"COMPLETED"},{"tid":"c04cfcfb","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:45:12.512Z","records":{"maxGamePTS":{"v":25,"gameKey":"d96c43a1","sid":"90a7a885"},"maxGameThreePt":{"v":6,"gameKey":"ef0ce664","sid":"90a7a885"}},"games":["00fa8633","191b2cfc","19d08f23","1c80bfe4","2dc610ff","2e96e6b6","378bfc4a","38ecdd51","47fa57d6","51fe9c83","688c8202","73039094","75288bd1","84d6d2db","87324731","a1f1ac86","a6066877","a6e831df","acc83a68","bc9c25be","c5b75595","d4e448ca","d7d53dac","d96c43a1","d9ba3909","e42e5d17","e82670e5","ea890951","ef0ce664","f255c578"]}
+{
+  "uuid": "cd427bb9-6cad-494f-96ea-806c6cb0d322",
+  "name": "Josh Heywood",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 268,
+      "fouls": 40,
+      "fg": 43,
+      "ft": 17,
+      "threePt": 55,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 25,
+      "maxGameThreePt": 6,
+      "wins": 14,
+      "losses": 5,
+      "draws": 1,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T15:26:04.365Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "12acc552",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "6b69f2e2",
+          "tn": "Sixers",
+          "gid": "ad675281",
+          "gn": "Tuesday Men 1 - 2025 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 4,
+            "fg": 1,
+            "threePt": 4,
+            "pts": 14,
+            "wins": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "90a7a885",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "4d9e4d94",
+          "tn": "Miami Sixers ",
+          "gid": "026b6bb5",
+          "gn": "Wednesday Senior Men Premier A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 22,
+            "ft": 14,
+            "fg": 28,
+            "threePt": 31,
+            "pts": 163,
+            "finals": 1,
+            "wins": 8,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6af581a9",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "d3812b92",
+          "tn": "Miami Sixers ",
+          "gid": "a0007f21",
+          "gn": "Wednesday Senior Men Premier A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 5,
+            "fg": 7,
+            "threePt": 8,
+            "pts": 38,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Diamond Valley Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "85555174",
+          "tn": "Diamond Valley U21 Boys 1",
+          "gid": "e18bcf92",
+          "gn": "21 Boys - VC",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 9,
+            "ft": 3,
+            "fg": 7,
+            "threePt": 12,
+            "pts": 53
+          }
+        },
+        {
+          "tid": "85555174",
+          "tn": "Diamond Valley U21 Boys 1",
+          "gid": "c90ebcae",
+          "gn": "U21B Crossover 2 - VC",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 9,
+            "fg": 7,
+            "threePt": 12,
+            "pts": 53,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "85555174",
+          "tn": "Diamond Valley U21 Boys 1",
+          "gid": "9f374166",
+          "gn": "U21B Grading 2 - Pool 1C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 9,
+            "ft": 3,
+            "fg": 7,
+            "pts": 53,
+            "threePt": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "c04cfcfb",
+          "tn": "Diamond Valley U21 Boys 1",
+          "gid": "e7bd4075",
+          "gn": "U21 Men VJL 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:04:06.928Z",
+  "teams": [
+    {
+      "tid": "6b69f2e2",
+      "sid": "12acc552",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4d9e4d94",
+      "sid": "90a7a885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3812b92",
+      "sid": "6af581a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85555174",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c04cfcfb",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:02.953Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "d96c43a1",
+      "sid": "90a7a885"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "ef0ce664",
+      "sid": "90a7a885"
+    }
+  },
+  "games": [
+    "00fa8633",
+    "191b2cfc",
+    "19d08f23",
+    "1c80bfe4",
+    "2dc610ff",
+    "2e96e6b6",
+    "378bfc4a",
+    "38ecdd51",
+    "47fa57d6",
+    "51fe9c83",
+    "688c8202",
+    "73039094",
+    "75288bd1",
+    "84d6d2db",
+    "87324731",
+    "a1f1ac86",
+    "a6066877",
+    "a6e831df",
+    "acc83a68",
+    "bc9c25be",
+    "c5b75595",
+    "d4e448ca",
+    "d7d53dac",
+    "d96c43a1",
+    "d9ba3909",
+    "e42e5d17",
+    "e82670e5",
+    "ea890951",
+    "ef0ce664",
+    "f255c578"
+  ]
+}

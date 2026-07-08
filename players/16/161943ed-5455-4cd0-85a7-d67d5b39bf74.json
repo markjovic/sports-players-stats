@@ -1,1 +1,275 @@
-{"uuid":"161943ed-5455-4cd0-85a7-d67d5b39bf74","gender":null,"sports":{"Basketball":{"gp":26,"pts":104,"fouls":23,"fg":50,"ft":4,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":5,"losses":13,"winPct":0.28,"statsChecked":"2026-07-05T16:12:07.429Z"}},"seasons":[{"sid":"036d9de9","sn":"Summer 2021/22","club":"Dolphins Basketball Inc. (Geelong)","regs":[{"tid":"c62cb8b6","tn":"Dolphins Senior Women D3","gid":"0b691e0f","gn":"(CLUB) Monday Senior Women 3","stats":{"gp":7,"pts":26,"fg":13,"fouls":4,"wins":1,"losses":5}}]},{"sid":"fb916efa","sn":"Winter 2021","club":"Dolphins Basketball Inc. (Geelong)","regs":[{"tid":"25215d5f","tn":"Dolphins Senior Women D3","gid":"fdaac16e","gn":"(CLUB) Monday Senior Women 3","stats":{"gp":4,"pts":8,"fg":4,"fouls":9,"losses":4}},{"tid":"901019a2","stats":{"wins":2,"losses":2,"gp":4,"pts":24,"fg":12}}]},{"sid":"fb916efa","sn":"Winter 2021","club":null,"regs":[{"tid":"901019a2","tn":"The Sloths","gid":"3601a8d0","gn":"(SOCIAL) Sunday Senior Mixed 1","stats":{"gp":4,"pts":24,"fg":12,"wins":2,"losses":2}}]},{"sid":"46b3ce15","sn":"Summer 2020/21","club":null,"regs":[{"tid":"1daf2b6a","tn":"The Sloths","gid":"2b589a28","gn":"Sunday Senior Mixed 2","stats":{"gp":3,"pts":15,"fg":7,"ft":1,"fouls":1}},{"tid":"1daf2b6a","tn":"The Sloths","gid":"2c64ec6f","gn":"Z_DO NOT USE THIS GAME_Sunday Social Mixed 2","stats":{"gp":3,"pts":15,"fg":7,"fouls":1,"ft":1}}]},{"sid":"0c8a1c35","sn":"Summer 2020/21","club":"Dolphins Basketball Inc. (Geelong)","regs":[{"tid":"ad69501c","tn":"Dolphins Women D2 MONDAY","gid":"e78db603","gn":"Monday Senior Women 2","stats":{"gp":8,"pts":31,"fg":14,"ft":3,"fouls":9}},{"tid":"ad69501c","tn":"Dolphins Women D2 MONDAY","gid":"fe871a3b","gn":"Z_DO NOT USE THIS GAME_Monday Women 2","stats":{"gp":8,"pts":31,"fg":14,"ft":3,"fouls":9}}]}],"updatedAt":"2026-06-11T23:36:44.158Z","records":{"maxGamePTS":{"v":10,"gameKey":"749ae07b","sid":"fb916efa"},"maxGameThreePt":{"v":null}},"games":["06027316","0647c930","08e134a8","10fe802f","13db2973","1782199d","1ed17b01","2ce7b3ca","3654f15a","41067862","4eaedb54","50c1d119","62af0631","656b4e7e","6756ff24","749ae07b","87d54073","8fbb7e8c","a5561289","b69c8d84","c076374e","c99b86d7","dbcd409d","f2569500","f7e7df18","fa10d019"],"name":"Summer 2021/22","gameTids":{"41067862":"c62cb8b6","f2569500":"c62cb8b6","2ce7b3ca":"c62cb8b6","87d54073":"c62cb8b6","656b4e7e":"c62cb8b6","10fe802f":"c62cb8b6","4eaedb54":"c62cb8b6","06027316":"25215d5f","13db2973":"25215d5f","1782199d":"25215d5f","c076374e":"25215d5f","749ae07b":"901019a2","0647c930":"901019a2","08e134a8":"901019a2","fa10d019":"901019a2","8fbb7e8c":"1daf2b6a","50c1d119":"1daf2b6a","62af0631":"1daf2b6a","dbcd409d":"ad69501c","3654f15a":"ad69501c","a5561289":"ad69501c","6756ff24":"ad69501c","c99b86d7":"ad69501c","f7e7df18":"ad69501c","b69c8d84":"ad69501c","1ed17b01":"ad69501c"}}
+{
+  "uuid": "161943ed-5455-4cd0-85a7-d67d5b39bf74",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 104,
+      "fouls": 23,
+      "fg": 50,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 13,
+      "winPct": 0.28,
+      "statsChecked": "2026-07-05T16:12:07.429Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "club": "Dolphins Basketball Inc. (Geelong)",
+      "regs": [
+        {
+          "tid": "c62cb8b6",
+          "tn": "Dolphins Senior Women D3",
+          "gid": "0b691e0f",
+          "gn": "(CLUB) Monday Senior Women 3",
+          "stats": {
+            "gp": 7,
+            "pts": 26,
+            "fg": 13,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": "Dolphins Basketball Inc. (Geelong)",
+      "regs": [
+        {
+          "tid": "25215d5f",
+          "tn": "Dolphins Senior Women D3",
+          "gid": "fdaac16e",
+          "gn": "(CLUB) Monday Senior Women 3",
+          "stats": {
+            "gp": 4,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 9,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "901019a2",
+          "stats": {
+            "wins": 2,
+            "losses": 2,
+            "gp": 4,
+            "pts": 24,
+            "fg": 12
+          },
+          "gid": "3601a8d0",
+          "gn": "(SOCIAL) Sunday Senior Mixed 1"
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "901019a2",
+          "tn": "The Sloths",
+          "gid": "3601a8d0",
+          "gn": "(SOCIAL) Sunday Senior Mixed 1",
+          "stats": {
+            "gp": 4,
+            "pts": 24,
+            "fg": 12,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "46b3ce15",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1daf2b6a",
+          "tn": "The Sloths",
+          "gid": "2b589a28",
+          "gn": "Sunday Senior Mixed 2",
+          "stats": {
+            "gp": 3,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "1daf2b6a",
+          "tn": "The Sloths",
+          "gid": "2c64ec6f",
+          "gn": "Z_DO NOT USE THIS GAME_Sunday Social Mixed 2",
+          "stats": {
+            "gp": 3,
+            "pts": 15,
+            "fg": 7,
+            "fouls": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c8a1c35",
+      "sn": "Summer 2020/21",
+      "club": "Dolphins Basketball Inc. (Geelong)",
+      "regs": [
+        {
+          "tid": "ad69501c",
+          "tn": "Dolphins Women D2 MONDAY",
+          "gid": "e78db603",
+          "gn": "Monday Senior Women 2",
+          "stats": {
+            "gp": 8,
+            "pts": 31,
+            "fg": 14,
+            "ft": 3,
+            "fouls": 9
+          }
+        },
+        {
+          "tid": "ad69501c",
+          "tn": "Dolphins Women D2 MONDAY",
+          "gid": "fe871a3b",
+          "gn": "Z_DO NOT USE THIS GAME_Monday Women 2",
+          "stats": {
+            "gp": 8,
+            "pts": 31,
+            "fg": 14,
+            "ft": 3,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "24703f47",
+          "tn": "Dolphins Open Women D1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:44.158Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "749ae07b",
+      "sid": "fb916efa"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06027316",
+    "0647c930",
+    "08e134a8",
+    "10fe802f",
+    "13db2973",
+    "1782199d",
+    "1ed17b01",
+    "2ce7b3ca",
+    "3654f15a",
+    "41067862",
+    "4eaedb54",
+    "50c1d119",
+    "62af0631",
+    "656b4e7e",
+    "6756ff24",
+    "749ae07b",
+    "87d54073",
+    "8fbb7e8c",
+    "a5561289",
+    "b69c8d84",
+    "c076374e",
+    "c99b86d7",
+    "dbcd409d",
+    "f2569500",
+    "f7e7df18",
+    "fa10d019"
+  ],
+  "name": "Summer 2021/22",
+  "gameTids": {
+    "41067862": "c62cb8b6",
+    "f2569500": "c62cb8b6",
+    "2ce7b3ca": "c62cb8b6",
+    "87d54073": "c62cb8b6",
+    "656b4e7e": "c62cb8b6",
+    "10fe802f": "c62cb8b6",
+    "4eaedb54": "c62cb8b6",
+    "06027316": "25215d5f",
+    "13db2973": "25215d5f",
+    "1782199d": "25215d5f",
+    "c076374e": "25215d5f",
+    "749ae07b": "901019a2",
+    "0647c930": "901019a2",
+    "08e134a8": "901019a2",
+    "fa10d019": "901019a2",
+    "8fbb7e8c": "1daf2b6a",
+    "50c1d119": "1daf2b6a",
+    "62af0631": "1daf2b6a",
+    "dbcd409d": "ad69501c",
+    "3654f15a": "ad69501c",
+    "a5561289": "ad69501c",
+    "6756ff24": "ad69501c",
+    "c99b86d7": "ad69501c",
+    "f7e7df18": "ad69501c",
+    "b69c8d84": "ad69501c",
+    "1ed17b01": "ad69501c"
+  },
+  "teams": [
+    {
+      "tid": "c62cb8b6",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25215d5f",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "901019a2",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1daf2b6a",
+      "sid": "46b3ce15",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ad69501c",
+      "sid": "0c8a1c35",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "24703f47",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:52.206Z"
+}

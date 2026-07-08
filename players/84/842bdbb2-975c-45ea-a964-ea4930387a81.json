@@ -1,1 +1,137 @@
-{"uuid":"842bdbb2-975c-45ea-a964-ea4930387a81","name":"Morgan McGrath","gender":"Mixed","sports":{"Basketball":{"gp":13,"pts":83,"fouls":14,"fg":41,"ft":1,"foulOuts":{},"maxGamePTS":17,"maxGameThreePt":null,"wins":6,"losses":2,"winPct":0.75,"statsChecked":"2026-07-07T18:28:25.684Z"}},"seasons":[{"sid":"19b6541a","sn":"Winter 2026","regs":[{"tid":"e1527ef6","tn":"Coastal crushers ","gid":"8b32b5b4","gn":"Sunday Open Mixed Division 1","age":"Senior","div":"Division 1","stats":{"gp":6,"fouls":4,"ft":1,"fg":26,"pts":53,"wins":4,"losses":1}}]},{"sid":"3f1715bc","sn":"Winter 2026","club":"Osborne United Basketball Club","regs":[{"tid":"09ed0cba","tn":"OsborneUTD Shambles","gid":"817c71fd","gn":"Tuesday \"Loosie's Diner\" Open Women Div 3 (Grading)","age":"Senior","div":null,"stats":{"gp":3,"fouls":3,"fg":8,"pts":16,"wins":2,"losses":1}}]},{"sid":"26df4252","regs":[{"tid":"06e8f9fc","stats":{"gp":4,"pts":14,"fg":7,"fouls":7}},{"tid":"06e8f9fc","tn":"","gid":"38284ad9","gn":"Senior Women","div":null,"stats":{"gp":4,"pts":14,"fg":7,"fouls":7}}]}],"updatedAt":"2026-07-07T18:05:03.226Z","teams":[{"tid":"e1527ef6","sid":"19b6541a","status":"ACTIVE"},{"tid":"09ed0cba","sid":"3f1715bc","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:24:27.600Z","records":{"maxGamePTS":{"v":17,"gameKey":"073514ad","sid":"19b6541a"},"maxGameThreePt":{"v":null}},"games":["073514ad","07d712e2","1e9917fe","2d0f8166","96156428","ad7ac205","b96cc3df","d12563de"]}
+{
+  "uuid": "842bdbb2-975c-45ea-a964-ea4930387a81",
+  "name": "Morgan McGrath",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 83,
+      "fouls": 14,
+      "fg": 41,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 2,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-07T18:28:25.684Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "19b6541a",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e1527ef6",
+          "tn": "Coastal crushers ",
+          "gid": "8b32b5b4",
+          "gn": "Sunday Open Mixed Division 1",
+          "age": "Senior",
+          "div": "Division 1",
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 1,
+            "fg": 26,
+            "pts": 53,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Osborne United Basketball Club",
+      "regs": [
+        {
+          "tid": "09ed0cba",
+          "tn": "OsborneUTD Shambles",
+          "gid": "817c71fd",
+          "gn": "Tuesday \"Loosie's Diner\" Open Women Div 3 (Grading)",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 3,
+            "fg": 8,
+            "pts": 16,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "06e8f9fc",
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 7
+          },
+          "gid": "38284ad9",
+          "gn": "Senior Women"
+        },
+        {
+          "tid": "06e8f9fc",
+          "tn": "",
+          "gid": "38284ad9",
+          "gn": "Senior Women",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:03.226Z",
+  "teams": [
+    {
+      "tid": "e1527ef6",
+      "sid": "19b6541a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "09ed0cba",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06e8f9fc",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:36.421Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "073514ad",
+      "sid": "19b6541a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "073514ad",
+    "07d712e2",
+    "1e9917fe",
+    "2d0f8166",
+    "96156428",
+    "ad7ac205",
+    "b96cc3df",
+    "d12563de"
+  ]
+}

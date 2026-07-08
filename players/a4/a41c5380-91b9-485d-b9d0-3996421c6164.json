@@ -1,1 +1,265 @@
-{"uuid":"a41c5380-91b9-485d-b9d0-3996421c6164","name":"David Casas","gender":"Boys","sports":{"Basketball":{"gp":47,"pts":186,"fouls":90,"fg":63,"ft":3,"threePt":19,"finals":4,"gfApps":2,"gfWins":1,"finalsPerSeason":0.8,"foulOuts":{"34a79f0e":1,"4f9b958f":2},"maxGamePTS":13,"maxGameThreePt":4,"wins":21,"losses":25,"winPct":0.46,"statsChecked":"2026-07-05T15:38:09.470Z"}},"seasons":[{"sid":"34a79f0e","sn":"Summer 2025/26","regs":[{"tid":"407aec65","tn":"Thunder","gid":"23e6fc3c","gn":"Wednesday Senior Boys","age":"Senior","div":null,"stats":{"gp":12,"fouls":19,"fg":21,"threePt":4,"pts":54,"finals":1,"gfApps":1,"foulOuts":1,"wins":10,"losses":1,"gfWins":1}}]},{"sid":"6f5bea83","sn":"Winter 2025","regs":[{"tid":"6283e49f","tn":"Pistons","gid":"a551cfda","gn":"Wednesday Senior Boys","age":"Senior","div":null,"stats":{"gp":10,"fouls":22,"ft":1,"fg":14,"threePt":11,"pts":62,"finals":1,"wins":2,"losses":8}}]},{"sid":"aae23526","sn":"Summer 2024/25","regs":[{"tid":"f6c6718f","tn":"76's","gid":"cf46f9d3","gn":"Wednesday Senior Boys","age":"Senior","div":null,"stats":{"gp":9,"fouls":12,"ft":1,"fg":7,"threePt":3,"pts":24,"finals":1,"gfApps":1,"wins":4,"losses":5}}]},{"sid":"01847561","sn":"Winter 2024","regs":[{"tid":"4de4f873","tn":"Warriors","gid":"d155802f","gn":"Wednesday Intermediate Boys","age":null,"div":null,"stats":{"gp":8,"fouls":16,"fg":10,"threePt":1,"pts":23,"finals":1,"wins":4,"losses":4}}]},{"sid":"4f9b958f","sn":"Summer 2023/24","regs":[{"tid":"53746fa2","tn":"Thunder","gid":"9cbec9ed","gn":"Wednesday Intermediate Boys","age":null,"div":null,"stats":{"gp":8,"fouls":21,"ft":1,"fg":11,"pts":23,"foulOuts":2,"wins":1,"losses":7}}]}],"updatedAt":"2026-07-04T05:51:38.030Z","teams":[{"tid":"407aec65","sid":"34a79f0e","status":"COMPLETED"},{"tid":"6283e49f","sid":"6f5bea83","status":"COMPLETED"},{"tid":"f6c6718f","sid":"aae23526","status":"COMPLETED"},{"tid":"4de4f873","sid":"01847561","status":"COMPLETED"},{"tid":"53746fa2","sid":"4f9b958f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:32:17.760Z","games":["0aaa7388","0c105762","1dfbd428","20b61a1f","24d6f3d9","25c64e76","2a4ccc63","2cb51912","390eb538","39ef72d8","4060eec7","45294a18","4d46a75f","533bde6c","5cbc0a4e","6cf02707","73299bad","804de632","81212a61","832e8a40","8a90eac0","8be0375d","8dd9856d","8eff2fdb","9b2133ae","a2337a63","a7f0d293","a8131ce9","a8ec76cc","ad94fbce","af08e490","b03cc5a2","bc7aa253","bd44298a","c00d10fd","c2d8b121","c78c2ee0","cc0a9210","cceceda0","cedac316","d6780809","e02f89ee","e582f913","e96b7e5e","ee12a8c9","f9e50034","fb655145"],"records":{"maxGamePTS":{"v":13,"gameKey":"f9e50034","sid":"34a79f0e"},"maxGameThreePt":{"v":4,"gameKey":"5cbc0a4e","sid":"6f5bea83"}}}
+{
+  "uuid": "a41c5380-91b9-485d-b9d0-3996421c6164",
+  "name": "David Casas",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 47,
+      "pts": 186,
+      "fouls": 90,
+      "fg": 63,
+      "ft": 3,
+      "threePt": 19,
+      "finals": 4,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.8,
+      "foulOuts": {
+        "34a79f0e": 1,
+        "4f9b958f": 2
+      },
+      "maxGamePTS": 13,
+      "maxGameThreePt": 4,
+      "wins": 21,
+      "losses": 25,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T15:38:09.470Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "34a79f0e",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "407aec65",
+          "tn": "Thunder",
+          "gid": "23e6fc3c",
+          "gn": "Wednesday Senior Boys",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 19,
+            "fg": 21,
+            "threePt": 4,
+            "pts": 54,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6f5bea83",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "6283e49f",
+          "tn": "Pistons",
+          "gid": "a551cfda",
+          "gn": "Wednesday Senior Boys",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 22,
+            "ft": 1,
+            "fg": 14,
+            "threePt": 11,
+            "pts": 62,
+            "finals": 1,
+            "wins": 2,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "aae23526",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "f6c6718f",
+          "tn": "76's",
+          "gid": "cf46f9d3",
+          "gn": "Wednesday Senior Boys",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 7,
+            "threePt": 3,
+            "pts": 24,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "01847561",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "4de4f873",
+          "tn": "Warriors",
+          "gid": "d155802f",
+          "gn": "Wednesday Intermediate Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 16,
+            "fg": 10,
+            "threePt": 1,
+            "pts": 23,
+            "finals": 1,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4f9b958f",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "53746fa2",
+          "tn": "Thunder",
+          "gid": "9cbec9ed",
+          "gn": "Wednesday Intermediate Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 21,
+            "ft": 1,
+            "fg": 11,
+            "pts": 23,
+            "foulOuts": 2,
+            "wins": 1,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "35e29237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "444649fc",
+          "tn": "Pobblebonks",
+          "gid": "7c53a5c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:51:38.030Z",
+  "teams": [
+    {
+      "tid": "407aec65",
+      "sid": "34a79f0e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6283e49f",
+      "sid": "6f5bea83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6c6718f",
+      "sid": "aae23526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4de4f873",
+      "sid": "01847561",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53746fa2",
+      "sid": "4f9b958f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "444649fc",
+      "sid": "35e29237",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:36.721Z",
+  "games": [
+    "0aaa7388",
+    "0c105762",
+    "1dfbd428",
+    "20b61a1f",
+    "24d6f3d9",
+    "25c64e76",
+    "2a4ccc63",
+    "2cb51912",
+    "390eb538",
+    "39ef72d8",
+    "4060eec7",
+    "45294a18",
+    "4d46a75f",
+    "533bde6c",
+    "5cbc0a4e",
+    "6cf02707",
+    "73299bad",
+    "804de632",
+    "81212a61",
+    "832e8a40",
+    "8a90eac0",
+    "8be0375d",
+    "8dd9856d",
+    "8eff2fdb",
+    "9b2133ae",
+    "a2337a63",
+    "a7f0d293",
+    "a8131ce9",
+    "a8ec76cc",
+    "ad94fbce",
+    "af08e490",
+    "b03cc5a2",
+    "bc7aa253",
+    "bd44298a",
+    "c00d10fd",
+    "c2d8b121",
+    "c78c2ee0",
+    "cc0a9210",
+    "cceceda0",
+    "cedac316",
+    "d6780809",
+    "e02f89ee",
+    "e582f913",
+    "e96b7e5e",
+    "ee12a8c9",
+    "f9e50034",
+    "fb655145"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "f9e50034",
+      "sid": "34a79f0e"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "5cbc0a4e",
+      "sid": "6f5bea83"
+    }
+  }
+}

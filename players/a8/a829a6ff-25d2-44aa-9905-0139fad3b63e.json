@@ -1,1 +1,296 @@
-{"uuid":"a829a6ff-25d2-44aa-9905-0139fad3b63e","name":"Anabelle Leighton","gender":"Girls","sports":{"Basketball":{"gp":48,"pts":114,"fouls":48,"fg":53,"ft":8,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"81545684":1,"26df4252":1},"maxGamePTS":14,"maxGameThreePt":null,"wins":33,"losses":38,"draws":2,"winPct":0.45,"statsChecked":"2026-07-06T19:00:04.826Z"}},"seasons":[{"sid":"2e623bd2","sn":"Winter 2026","club":"Frankston Bobcats Basketball Club","regs":[{"tid":"c6a2a508","tn":"Bobcats U12 Girls Royals","gid":"0a11cb30","gn":"Saturday U12 Girls D1","age":"U12","div":"D1","stats":{"gp":7,"fouls":11,"ft":3,"pts":5,"fg":1,"wins":4,"losses":3}},{"tid":"c6a2a508","tn":"Bobcats U12 Girls Royals","gid":"8c73fe2b","gn":"Saturday U12 Girls C2","age":"U12","div":"C2","stats":{"gp":7,"fouls":11,"ft":3,"pts":5,"wins":4,"losses":3,"fg":1}}]},{"sid":"fcfc254b","sn":"Summer 2025/26","club":"Frankston Bobcats Basketball Club","regs":[{"tid":"e4504f8b","tn":"Bobcats U10 Girls Royals","gid":"2d297e89","gn":"Saturday U10 Girls C2","age":"U10","div":"C2","stats":{"gp":13,"fouls":9,"ft":2,"fg":16,"pts":34,"finals":1,"wins":8,"losses":4,"draws":1}},{"tid":"e4504f8b","tn":"Bobcats U10 Girls Royals","gid":"2790d5fe","gn":"Saturday U10 Girls C3","age":"U10","div":"C3","stats":{"gp":13,"fg":16,"pts":34,"finals":1,"wins":8,"losses":4,"draws":1,"ft":2,"fouls":9}}]},{"sid":"a74c91ee","sn":"Winter 2025","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"48c0b89f","tn":"SEM Magic G10.2","gid":"a6487faa","gn":"Saturday U10 Girls C3","age":"U10","div":"C3","stats":{"gp":15,"fouls":6,"ft":3,"fg":21,"pts":45,"finals":1,"wins":5,"losses":10}}]},{"sid":"81545684","sn":"Summer 2024/25","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"18147340","tn":"SEM Magic G10.4","gid":"3f0dfa9e","gn":"Saturday U10 Girls D3","age":"U10","div":"D3","stats":{"gp":9,"fouls":13,"fg":14,"pts":28,"foulOuts":1,"wins":2,"losses":7}},{"tid":"18147340","tn":"SEM Magic G10.4","gid":"fabc7b97","gn":"Saturday U10 Girls D2","age":"U10","div":"D2","stats":{"gp":9,"fouls":13,"fg":14,"pts":28,"wins":2,"losses":7}}]},{"sid":"26df4252","regs":[{"tid":"86e97fea","stats":{"gp":4,"pts":2,"fg":1,"fouls":9}},{"tid":"86e97fea","tn":"","gid":"dd4767c8","gn":"U12 Girls Division 7","div":null,"stats":{"gp":4,"pts":2,"fg":1,"fouls":9}}]}],"updatedAt":"2026-07-06T18:32:49.593Z","teams":[{"tid":"c6a2a508","sid":"2e623bd2","status":"ACTIVE"},{"tid":"86e97fea","sid":"26df4252","status":"UPCOMING"},{"tid":"e4504f8b","sid":"fcfc254b","status":"COMPLETED"},{"tid":"48c0b89f","sid":"a74c91ee","status":"COMPLETED"},{"tid":"18147340","sid":"81545684","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:16.238Z","records":{"maxGamePTS":{"v":14,"gameKey":"2ce4d205","sid":"81545684"},"maxGameThreePt":{"v":null}},"games":["1a29da67","1b081a85","1e9ccb4f","23843ecd","285b49ff","2ce4d205","3072bbf9","32a0ccc4","3400efbb","377962bd","3fe72466","403abee6","4df4ef7d","50dbb6ee","5f4e2d8a","61d95ce2","6202bef3","663b58b7","694211b9","728a231d","7aa398fe","7ad90303","7e2a1d79","7fee18c2","895082cd","97214e39","9c34ff51","9c9cbf42","ad7a6be3","b194dfaa","b39932d4","bcd6e52a","bf0d03d2","d8d39e3a","ddcf4d2c","e31bdd39","e3b1772b","e70abbb4","e78cee43","f4dce750","f537b9d6","f55a4a73","f994a9d3","ff684ba6"]}
+{
+  "uuid": "a829a6ff-25d2-44aa-9905-0139fad3b63e",
+  "name": "Anabelle Leighton",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 114,
+      "fouls": 48,
+      "fg": 53,
+      "ft": 8,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "81545684": 1,
+        "26df4252": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 33,
+      "losses": 38,
+      "draws": 2,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-06T19:00:04.826Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e623bd2",
+      "sn": "Winter 2026",
+      "club": "Frankston Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "c6a2a508",
+          "tn": "Bobcats U12 Girls Royals",
+          "gid": "0a11cb30",
+          "gn": "Saturday U12 Girls D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 3,
+            "pts": 5,
+            "fg": 1,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "c6a2a508",
+          "tn": "Bobcats U12 Girls Royals",
+          "gid": "8c73fe2b",
+          "gn": "Saturday U12 Girls C2",
+          "age": "U12",
+          "div": "C2",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 3,
+            "pts": 5,
+            "wins": 4,
+            "losses": 3,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fcfc254b",
+      "sn": "Summer 2025/26",
+      "club": "Frankston Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "e4504f8b",
+          "tn": "Bobcats U10 Girls Royals",
+          "gid": "2d297e89",
+          "gn": "Saturday U10 Girls C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 16,
+            "pts": 34,
+            "finals": 1,
+            "wins": 8,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e4504f8b",
+          "tn": "Bobcats U10 Girls Royals",
+          "gid": "2790d5fe",
+          "gn": "Saturday U10 Girls C3",
+          "age": "U10",
+          "div": "C3",
+          "stats": {
+            "gp": 13,
+            "fg": 16,
+            "pts": 34,
+            "finals": 1,
+            "wins": 8,
+            "losses": 4,
+            "draws": 1,
+            "ft": 2,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a74c91ee",
+      "sn": "Winter 2025",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "48c0b89f",
+          "tn": "SEM Magic G10.2",
+          "gid": "a6487faa",
+          "gn": "Saturday U10 Girls C3",
+          "age": "U10",
+          "div": "C3",
+          "stats": {
+            "gp": 15,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 21,
+            "pts": 45,
+            "finals": 1,
+            "wins": 5,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81545684",
+      "sn": "Summer 2024/25",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "18147340",
+          "tn": "SEM Magic G10.4",
+          "gid": "3f0dfa9e",
+          "gn": "Saturday U10 Girls D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "fg": 14,
+            "pts": 28,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "18147340",
+          "tn": "SEM Magic G10.4",
+          "gid": "fabc7b97",
+          "gn": "Saturday U10 Girls D2",
+          "age": "U10",
+          "div": "D2",
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "fg": 14,
+            "pts": 28,
+            "wins": 2,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "86e97fea",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 9
+          },
+          "gid": "dd4767c8",
+          "gn": "U12 Girls Division 7"
+        },
+        {
+          "tid": "86e97fea",
+          "tn": "",
+          "gid": "dd4767c8",
+          "gn": "U12 Girls Division 7",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:49.593Z",
+  "teams": [
+    {
+      "tid": "c6a2a508",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4504f8b",
+      "sid": "fcfc254b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48c0b89f",
+      "sid": "a74c91ee",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "18147340",
+      "sid": "81545684",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "86e97fea",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:44.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "2ce4d205",
+      "sid": "81545684"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1a29da67",
+    "1b081a85",
+    "1e9ccb4f",
+    "23843ecd",
+    "285b49ff",
+    "2ce4d205",
+    "3072bbf9",
+    "32a0ccc4",
+    "3400efbb",
+    "377962bd",
+    "3fe72466",
+    "403abee6",
+    "4df4ef7d",
+    "50dbb6ee",
+    "5f4e2d8a",
+    "61d95ce2",
+    "6202bef3",
+    "663b58b7",
+    "694211b9",
+    "728a231d",
+    "7aa398fe",
+    "7ad90303",
+    "7e2a1d79",
+    "7fee18c2",
+    "895082cd",
+    "97214e39",
+    "9c34ff51",
+    "9c9cbf42",
+    "ad7a6be3",
+    "b194dfaa",
+    "b39932d4",
+    "bcd6e52a",
+    "bf0d03d2",
+    "d8d39e3a",
+    "ddcf4d2c",
+    "e31bdd39",
+    "e3b1772b",
+    "e70abbb4",
+    "e78cee43",
+    "f4dce750",
+    "f537b9d6",
+    "f55a4a73",
+    "f994a9d3",
+    "ff684ba6"
+  ]
+}

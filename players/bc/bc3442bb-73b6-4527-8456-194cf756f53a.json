@@ -1,1 +1,264 @@
-{"uuid":"bc3442bb-73b6-4527-8456-194cf756f53a","name":"Roman Pelman","gender":"Boys","sports":{"Basketball":{"gp":32,"pts":66,"fouls":7,"fg":26,"ft":14,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":15,"losses":28,"winPct":0.35,"statsChecked":"2026-07-05T15:25:30.006Z"}},"seasons":[{"sid":"be8759f2","sn":"Winter 2026","club":"Williamstown Magic Basketball Club","regs":[{"tid":"2fa191bb","tn":"Sunshine Magic U8 Mixed Super Stars","gid":"afc4a3af","gn":"Friday U8 Mixed RED","age":"U8","div":null,"stats":{"gp":7,"ft":9,"fg":8,"pts":25,"wins":1,"losses":6}},{"tid":"2fa191bb","tn":"Sunshine Magic U8 Mixed Super Stars","gid":"53a3f40f","gn":"Friday U8 Mixed BLUE","age":"U8","div":null,"stats":{"gp":7,"ft":9,"fg":8,"pts":25,"wins":1,"losses":6}},{"tid":"88d0f55a","tn":"Sunshine Magic U10B Suns","gid":"f628aee4","gn":"U10 Boys GRADING","age":"U10","div":null,"stats":{"gp":1,"fouls":4,"losses":1}}]},{"sid":"32b88c6e","sn":"Summer 2025/26","club":"Williamstown Magic Basketball Club","regs":[{"tid":"a0f25622","tn":"Sunshine Magic U8 Mixed Super Stars","gid":"b4efadea","gn":"Friday U8 Mixed","age":"U8","div":null,"stats":{"gp":15,"ft":5,"fg":15,"pts":35,"finals":1,"wins":9,"losses":6}},{"tid":"75827900","tn":"Sunshine Magic U10B Suns","gid":"7507cfde","gn":"U10 Boys Div 3","age":"U10","div":"Div 3","stats":{"gp":4,"fg":3,"pts":6,"finals":1,"wins":2,"losses":2,"fouls":3}},{"tid":"75827900","tn":"Sunshine Magic U10B Suns","gid":"90e54e12","gn":"U10 Boys GRADING","age":"U10","div":null,"stats":{"gp":4,"fouls":3,"fg":3,"pts":6,"finals":1,"wins":2,"losses":2}}]},{"sid":"95d474df","sn":"Winter 2025","club":"Williamstown Magic Basketball Club","regs":[{"tid":"93296b9e","tn":"Sunshine Magic U8 Suns","gid":"bd1c6372","gn":"Friday U8 Mixed","age":"U8","div":null,"stats":{"gp":5,"finals":1,"losses":5}}]}],"updatedAt":"2026-07-04T06:00:18.724Z","teams":[{"tid":"88d0f55a","sid":"be8759f2","status":"ACTIVE"},{"tid":"2fa191bb","sid":"be8759f2","status":"ACTIVE"},{"tid":"75827900","sid":"32b88c6e","status":"COMPLETED"},{"tid":"a0f25622","sid":"32b88c6e","status":"COMPLETED"},{"tid":"93296b9e","sid":"95d474df","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:39:42.398Z","games":["074d5261","076a15cd","16783f1e","1946eb48","1a837040","26b13ef7","27b5b34c","2d78ef3d","2dca46e5","49aee104","5a31ccf1","6821e7f0","78ce732f","814ff0fd","86d91e61","8c7d6fb9","927e157f","a2cd4a30","a80d9239","aa950272","b8bf0acf","cf2b5499","d150ab95","d80e37aa","e0a6e843","e7a42d91","e9925642","ee395f12","f065140b","f415da01","f77f344d","fc3fed6b"],"records":{"maxGamePTS":{"v":7,"gameKey":"8c7d6fb9","sid":"32b88c6e"},"maxGameThreePt":{"v":null}},"gameTids":{"aa950272":"2fa191bb","ee395f12":"2fa191bb","e0a6e843":"2fa191bb","d80e37aa":"2fa191bb","074d5261":"2fa191bb","2dca46e5":"2fa191bb","1946eb48":"2fa191bb","fc3fed6b":"88d0f55a","cf2b5499":"a0f25622","f77f344d":"a0f25622","e9925642":"a0f25622","076a15cd":"a0f25622","a2cd4a30":"a0f25622","2d78ef3d":"a0f25622","a80d9239":"a0f25622","8c7d6fb9":"a0f25622","26b13ef7":"a0f25622","78ce732f":"a0f25622","1a837040":"a0f25622","e7a42d91":"a0f25622","6821e7f0":"a0f25622","16783f1e":"a0f25622","b8bf0acf":"a0f25622","5a31ccf1":"75827900","27b5b34c":"75827900","49aee104":"75827900","f065140b":"75827900","86d91e61":"93296b9e","927e157f":"93296b9e","f415da01":"93296b9e","d150ab95":"93296b9e","814ff0fd":"93296b9e"}}
+{
+  "uuid": "bc3442bb-73b6-4527-8456-194cf756f53a",
+  "name": "Roman Pelman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 32,
+      "pts": 66,
+      "fouls": 7,
+      "fg": 26,
+      "ft": 14,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 15,
+      "losses": 28,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:25:30.006Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be8759f2",
+      "sn": "Winter 2026",
+      "club": "Williamstown Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "2fa191bb",
+          "tn": "Sunshine Magic U8 Mixed Super Stars",
+          "gid": "afc4a3af",
+          "gn": "Friday U8 Mixed RED",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "ft": 9,
+            "fg": 8,
+            "pts": 25,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "2fa191bb",
+          "tn": "Sunshine Magic U8 Mixed Super Stars",
+          "gid": "53a3f40f",
+          "gn": "Friday U8 Mixed BLUE",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "ft": 9,
+            "fg": 8,
+            "pts": 25,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "88d0f55a",
+          "tn": "Sunshine Magic U10B Suns",
+          "gid": "8d47fbec",
+          "gn": "U10 Boys Div 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32b88c6e",
+      "sn": "Summer 2025/26",
+      "club": "Williamstown Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "a0f25622",
+          "tn": "Sunshine Magic U8 Mixed Super Stars",
+          "gid": "b4efadea",
+          "gn": "Friday U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "ft": 5,
+            "fg": 15,
+            "pts": 35,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "75827900",
+          "tn": "Sunshine Magic U10B Suns",
+          "gid": "7507cfde",
+          "gn": "U10 Boys Div 3",
+          "age": "U10",
+          "div": "Div 3",
+          "stats": {
+            "gp": 4,
+            "fg": 3,
+            "pts": 6,
+            "finals": 1,
+            "wins": 2,
+            "losses": 2,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "75827900",
+          "tn": "Sunshine Magic U10B Suns",
+          "gid": "90e54e12",
+          "gn": "U10 Boys GRADING",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 3,
+            "pts": 6,
+            "finals": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "95d474df",
+      "sn": "Winter 2025",
+      "club": "Williamstown Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "93296b9e",
+          "tn": "Sunshine Magic U8 Suns",
+          "gid": "bd1c6372",
+          "gn": "Friday U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "finals": 1,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T06:00:18.724Z",
+  "teams": [
+    {
+      "tid": "2fa191bb",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88d0f55a",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a0f25622",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75827900",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "93296b9e",
+      "sid": "95d474df",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:33.588Z",
+  "games": [
+    "074d5261",
+    "076a15cd",
+    "16783f1e",
+    "1946eb48",
+    "1a837040",
+    "26b13ef7",
+    "27b5b34c",
+    "2d78ef3d",
+    "2dca46e5",
+    "49aee104",
+    "5a31ccf1",
+    "6821e7f0",
+    "78ce732f",
+    "814ff0fd",
+    "86d91e61",
+    "8c7d6fb9",
+    "927e157f",
+    "a2cd4a30",
+    "a80d9239",
+    "aa950272",
+    "b8bf0acf",
+    "cf2b5499",
+    "d150ab95",
+    "d80e37aa",
+    "e0a6e843",
+    "e7a42d91",
+    "e9925642",
+    "ee395f12",
+    "f065140b",
+    "f415da01",
+    "f77f344d",
+    "fc3fed6b"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "8c7d6fb9",
+      "sid": "32b88c6e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "aa950272": "2fa191bb",
+    "ee395f12": "2fa191bb",
+    "e0a6e843": "2fa191bb",
+    "d80e37aa": "2fa191bb",
+    "074d5261": "2fa191bb",
+    "2dca46e5": "2fa191bb",
+    "1946eb48": "2fa191bb",
+    "fc3fed6b": "88d0f55a",
+    "cf2b5499": "a0f25622",
+    "f77f344d": "a0f25622",
+    "e9925642": "a0f25622",
+    "076a15cd": "a0f25622",
+    "a2cd4a30": "a0f25622",
+    "2d78ef3d": "a0f25622",
+    "a80d9239": "a0f25622",
+    "8c7d6fb9": "a0f25622",
+    "26b13ef7": "a0f25622",
+    "78ce732f": "a0f25622",
+    "1a837040": "a0f25622",
+    "e7a42d91": "a0f25622",
+    "6821e7f0": "a0f25622",
+    "16783f1e": "a0f25622",
+    "b8bf0acf": "a0f25622",
+    "5a31ccf1": "75827900",
+    "27b5b34c": "75827900",
+    "49aee104": "75827900",
+    "f065140b": "75827900",
+    "86d91e61": "93296b9e",
+    "927e157f": "93296b9e",
+    "f415da01": "93296b9e",
+    "d150ab95": "93296b9e",
+    "814ff0fd": "93296b9e"
+  }
+}

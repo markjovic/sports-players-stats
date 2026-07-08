@@ -1,1 +1,481 @@
-{"uuid":"d45741e5-867d-4585-8165-4b2d828cdb5f","name":"Jordan Friede","gender":"Men","sports":{"Basketball":{"gp":22,"pts":246,"fouls":18,"fg":44,"ft":16,"threePt":21,"foulOuts":{},"maxGamePTS":26,"maxGameThreePt":6,"wins":36,"losses":12,"draws":4,"winPct":0.69,"statsChecked":"2026-07-06T19:01:25.406Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"062f7ad2","tn":"Zooper Dooper Sourz","gid":"39248390","gn":"Thursday Open Men Section 04","age":"Senior","div":null,"stats":{"gp":9,"fouls":9,"ft":9,"fg":20,"threePt":13,"pts":119,"wins":8}},{"tid":"a1655414","stats":{"wins":7,"losses":3,"draws":1,"gp":11,"pts":100,"fg":13,"ft":5,"threePt":7,"fouls":8}},{"tid":"a1655414","tn":"","gid":"8743da62","gn":"Monday Open Men Section 05","div":null,"stats":{"gp":11,"pts":100,"fg":13,"ft":5,"threePt":7,"fouls":8,"wins":7,"losses":3,"draws":1}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"a1655414","tn":"Zooper Doopers","gid":"8743da62","gn":"Monday Open Men Section 05","age":"Senior","div":null,"stats":{"gp":11,"fouls":8,"ft":5,"fg":13,"threePt":7,"pts":100,"wins":7,"losses":3,"draws":1}},{"tid":"a1655414","tn":"Zooper Doopers","gid":"a68b2224","gn":"Monday Open Men Section 07","age":"Senior","div":null,"stats":{"gp":11,"pts":100,"wins":7,"losses":3,"draws":1,"fg":13,"ft":5,"threePt":7,"fouls":8}}]},{"sid":"297562bc","regs":[{"tid":"5e3423b5","stats":{"gp":2,"pts":27,"fg":11,"ft":2,"threePt":1,"fouls":1}},{"tid":"5e3423b5","tn":"","gid":"4fa83455","gn":"Monday Open Men Section 5","div":null,"stats":{"gp":2,"pts":27,"fg":11,"ft":2,"threePt":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:30:42.846Z","teams":[{"tid":"062f7ad2","sid":"5593103d","status":"ACTIVE"},{"tid":"a1655414","sid":"5593103d","status":"ACTIVE"},{"tid":"b5a76db9","sid":"297562bc","status":"UPCOMING"},{"tid":"5e3423b5","sid":"297562bc","status":"UPCOMING"},{"tid":"db5d378a","sid":"fab2be4d","status":"COMPLETED"},{"tid":"3b4597a0","sid":"76897951","status":"COMPLETED"},{"tid":"2125a6ca","sid":"5944effa","status":"COMPLETED"},{"tid":"277804af","sid":"348dbfb8","status":"COMPLETED"},{"tid":"6e51e97e","sid":"348dbfb8","status":"COMPLETED"},{"tid":"95200c6b","sid":"9358e51a","status":"COMPLETED"},{"tid":"c5e40ec5","sid":"9358e51a","status":"COMPLETED"},{"tid":"3b07e54a","sid":"d3d4e181","status":"COMPLETED"},{"tid":"57850fec","sid":"21cd9648","status":"COMPLETED"},{"tid":"e24ee91c","sid":"d4cbf787","status":"COMPLETED"},{"tid":"181ce1a8","sid":"d4cbf787","status":"COMPLETED"},{"tid":"ca1906bd","sid":"d64fcfce","status":"COMPLETED"},{"tid":"29a51f63","sid":"afd26581","status":"COMPLETED"},{"tid":"f955005f","sid":"922f0463","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:04.668Z","records":{"maxGamePTS":{"v":26,"gameKey":"fb9d345b","sid":"5593103d"},"maxGameThreePt":{"v":6,"gameKey":"fb9d345b","sid":"5593103d"}},"games":["0566e0ef","0ab57740","11acc058","2cc89ad5","337d19e3","35aa776a","4c38531d","4f6ec73f","73724769","7620a812","7a54b89b","7f6dae7c","92802f9c","9e473e32","9ee61314","bbee6c22","bd0d5799","d617e3d3","e940fd6e"],"gameTids":{"73724769":"a1655414","54988bc5":"5e3423b5","6fe43be8":"5e3423b5","11acc058":"062f7ad2","0ab57740":"062f7ad2","fb9d345b":"062f7ad2","bbee6c22":"062f7ad2","4f6ec73f":"062f7ad2","0566e0ef":"062f7ad2","92802f9c":"062f7ad2","7f6dae7c":"062f7ad2","7a54b89b":"062f7ad2","337d19e3":"a1655414","9ee61314":"a1655414","d617e3d3":"a1655414","bd0d5799":"a1655414","2cc89ad5":"a1655414","9e473e32":"a1655414","35aa776a":"a1655414","7620a812":"a1655414","e940fd6e":"a1655414","4c38531d":"a1655414"}}
+{
+  "uuid": "d45741e5-867d-4585-8165-4b2d828cdb5f",
+  "name": "Jordan Friede",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 246,
+      "fouls": 18,
+      "fg": 44,
+      "ft": 16,
+      "threePt": 21,
+      "foulOuts": {},
+      "maxGamePTS": 26,
+      "maxGameThreePt": 6,
+      "wins": 36,
+      "losses": 12,
+      "draws": 4,
+      "winPct": 0.69,
+      "statsChecked": "2026-07-06T19:01:25.406Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "062f7ad2",
+          "tn": "Zooper Dooper Sourz",
+          "gid": "39248390",
+          "gn": "Thursday Open Men Section 04",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 9,
+            "fg": 20,
+            "threePt": 13,
+            "pts": 119,
+            "wins": 8
+          }
+        },
+        {
+          "tid": "a1655414",
+          "stats": {
+            "wins": 7,
+            "losses": 3,
+            "draws": 1,
+            "gp": 11,
+            "pts": 100,
+            "fg": 13,
+            "ft": 5,
+            "threePt": 7,
+            "fouls": 8
+          },
+          "gid": "8743da62",
+          "gn": "Monday Open Men Section 05"
+        },
+        {
+          "tid": "a1655414",
+          "tn": "",
+          "gid": "8743da62",
+          "gn": "Monday Open Men Section 05",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 100,
+            "fg": 13,
+            "ft": 5,
+            "threePt": 7,
+            "fouls": 8,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "a1655414",
+          "tn": "Zooper Doopers",
+          "gid": "8743da62",
+          "gn": "Monday Open Men Section 05",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 8,
+            "ft": 5,
+            "fg": 13,
+            "threePt": 7,
+            "pts": 100,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a1655414",
+          "tn": "Zooper Doopers",
+          "gid": "a68b2224",
+          "gn": "Monday Open Men Section 07",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 100,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1,
+            "fg": 13,
+            "ft": 5,
+            "threePt": 7,
+            "fouls": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "5e3423b5",
+          "stats": {
+            "gp": 2,
+            "pts": 27,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 1
+          },
+          "gid": "aae9105b",
+          "gn": "Monday Open Men Section 4"
+        },
+        {
+          "tid": "5e3423b5",
+          "tn": "",
+          "gid": "4fa83455",
+          "gn": "Monday Open Men Section 5",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 27,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "b5a76db9",
+          "tn": "Zooper Dooper Sourz",
+          "gid": "5a517af6",
+          "gn": "Wednesday Open Men Section 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "db5d378a",
+          "tn": "Zooper Doopers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "3b4597a0",
+          "tn": "Zooper Doopers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "2125a6ca",
+          "tn": "Zooper Doopers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "277804af",
+          "tn": "Zooper Dooper B's",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "6e51e97e",
+          "tn": "Zooper Doopers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "95200c6b",
+          "tn": "Zooper Dooper B's",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "c5e40ec5",
+          "tn": "Zooper Doopers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "3b07e54a",
+          "tn": "Zooper Doopers",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "57850fec",
+          "tn": "Zooper Doopers",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "e24ee91c",
+          "tn": "ZOOPER DOOPERS 2",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "181ce1a8",
+          "tn": "Zooper Doopers",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "ca1906bd",
+          "tn": "Zooper Doopers",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "29a51f63",
+          "tn": "KDs Burner",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "f955005f",
+          "tn": "KDs Burner",
+          "gid": "33f87ae0",
+          "gn": "Monday Open Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:42.846Z",
+  "teams": [
+    {
+      "tid": "062f7ad2",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1655414",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5e3423b5",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5a76db9",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db5d378a",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b4597a0",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2125a6ca",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "277804af",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e51e97e",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "95200c6b",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5e40ec5",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b07e54a",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57850fec",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e24ee91c",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "181ce1a8",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ca1906bd",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "29a51f63",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f955005f",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:36.996Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "fb9d345b",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "fb9d345b",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "0566e0ef",
+    "0ab57740",
+    "11acc058",
+    "2cc89ad5",
+    "337d19e3",
+    "35aa776a",
+    "4c38531d",
+    "4f6ec73f",
+    "73724769",
+    "7620a812",
+    "7a54b89b",
+    "7f6dae7c",
+    "92802f9c",
+    "9e473e32",
+    "9ee61314",
+    "bbee6c22",
+    "bd0d5799",
+    "d617e3d3",
+    "e940fd6e"
+  ],
+  "gameTids": {
+    "73724769": "a1655414",
+    "54988bc5": "5e3423b5",
+    "6fe43be8": "5e3423b5",
+    "11acc058": "062f7ad2",
+    "0ab57740": "062f7ad2",
+    "fb9d345b": "062f7ad2",
+    "bbee6c22": "062f7ad2",
+    "4f6ec73f": "062f7ad2",
+    "0566e0ef": "062f7ad2",
+    "92802f9c": "062f7ad2",
+    "7f6dae7c": "062f7ad2",
+    "7a54b89b": "062f7ad2",
+    "337d19e3": "a1655414",
+    "9ee61314": "a1655414",
+    "d617e3d3": "a1655414",
+    "bd0d5799": "a1655414",
+    "2cc89ad5": "a1655414",
+    "9e473e32": "a1655414",
+    "35aa776a": "a1655414",
+    "7620a812": "a1655414",
+    "e940fd6e": "a1655414",
+    "4c38531d": "a1655414"
+  }
+}

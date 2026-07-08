@@ -1,1 +1,102 @@
-{"uuid":"070489f9-d317-4d8a-9a5f-74469a69ab7d","name":"Della Marks","gender":"Girls","sports":{"Basketball":{"gp":14,"pts":20,"fouls":19,"fg":9,"ft":2,"foulOuts":{"ad68db8b":1},"maxGamePTS":4,"maxGameThreePt":null,"wins":9,"losses":5,"winPct":0.64,"statsChecked":"2026-07-05T15:59:10.684Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"16ef8487","tn":"Rainbow Dragons","gid":"82bb3e95","gn":"Friday Year 4 Girls C","age":null,"div":null,"stats":{"gp":14,"pts":20,"fg":9,"ft":2,"fouls":19,"foulOuts":1,"wins":9,"losses":5}}]}],"updatedAt":"2026-07-04T05:58:39.714Z","teams":[{"tid":"16ef8487","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T11:53:24.642Z","records":{"maxGamePTS":{"v":4,"gameKey":"b7652349","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["0d15c889","1721d165","2fcc868c","41810394","47ef9d29","763199aa","8b97744e","b3fe134e","b7652349","c0072afa","c460d469","ebae3796","ed719825","fa6695b8"]}
+{
+  "uuid": "070489f9-d317-4d8a-9a5f-74469a69ab7d",
+  "name": "Della Marks",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 20,
+      "fouls": 19,
+      "fg": 9,
+      "ft": 2,
+      "foulOuts": {
+        "ad68db8b": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 5,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-05T15:59:10.684Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "16ef8487",
+          "tn": "Rainbow Dragons",
+          "gid": "82bb3e95",
+          "gn": "Friday Year 4 Girls C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 20,
+            "fg": 9,
+            "ft": 2,
+            "fouls": 19,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "1c7869af",
+          "tn": "EPS GOATS",
+          "gid": "1c948e2b",
+          "gn": "Friday Year 2 Boys B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:58:39.714Z",
+  "teams": [
+    {
+      "tid": "16ef8487",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1c7869af",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:22:57.855Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "b7652349",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0d15c889",
+    "1721d165",
+    "2fcc868c",
+    "41810394",
+    "47ef9d29",
+    "763199aa",
+    "8b97744e",
+    "b3fe134e",
+    "b7652349",
+    "c0072afa",
+    "c460d469",
+    "ebae3796",
+    "ed719825",
+    "fa6695b8"
+  ]
+}

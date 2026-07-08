@@ -1,1 +1,128 @@
-{"uuid":"f31dd612-51ca-4911-a80c-4f99eab82999","name":"Harry Allen","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":48,"fouls":16,"fg":19,"ft":10,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":10,"losses":4,"winPct":0.71,"statsChecked":"2026-07-05T15:13:43.880Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Piranhas Basketball","regs":[{"tid":"d7be472d","tn":"U10 Boys Dendy Park Piranhas","gid":"5489d681","gn":"Saturday U10 Boys Section 01/02","age":"U10","div":null,"stats":{"gp":7,"fouls":16,"ft":10,"fg":19,"pts":48,"wins":5,"losses":2}},{"tid":"d7be472d","tn":"U10 Boys Dendy Park Piranhas","gid":"c59ba4fa","gn":"Saturday U10 Boys Section 02","age":"U10","div":null,"stats":{"gp":7,"fouls":16,"ft":10,"fg":19,"pts":48,"wins":5,"losses":2}}]}],"updatedAt":"2026-05-31T13:58:27.673Z","teams":[{"tid":"d7be472d","sid":"6c117270","status":"ACTIVE"},{"tid":"459ad5da","sid":"68279835","status":"COMPLETED"},{"tid":"c01b81cb","sid":"913d1397","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:33.365Z","games":["1574f260","16a251e0","2f397a49","4371e8be","55ff606c","9766016e","b6a4367c"],"records":{"maxGamePTS":{"v":12,"gameKey":"55ff606c","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "f31dd612-51ca-4911-a80c-4f99eab82999",
+  "name": "Harry Allen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 48,
+      "fouls": 16,
+      "fg": 19,
+      "ft": 10,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 4,
+      "winPct": 0.71,
+      "statsChecked": "2026-07-05T15:13:43.880Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Piranhas Basketball",
+      "regs": [
+        {
+          "tid": "d7be472d",
+          "tn": "U10 Boys Dendy Park Piranhas",
+          "gid": "5489d681",
+          "gn": "Saturday U10 Boys Section 01/02",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 16,
+            "ft": 10,
+            "fg": 19,
+            "pts": 48,
+            "wins": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "d7be472d",
+          "tn": "U10 Boys Dendy Park Piranhas",
+          "gid": "c59ba4fa",
+          "gn": "Saturday U10 Boys Section 02",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 16,
+            "ft": 10,
+            "fg": 19,
+            "pts": 48,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "459ad5da",
+          "tn": "U10 Boys Dendy Park Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "c01b81cb",
+          "tn": "U10 Boys Dendy Park Piranhas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:58:27.673Z",
+  "teams": [
+    {
+      "tid": "d7be472d",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "459ad5da",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c01b81cb",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:42.626Z",
+  "games": [
+    "1574f260",
+    "16a251e0",
+    "2f397a49",
+    "4371e8be",
+    "55ff606c",
+    "9766016e",
+    "b6a4367c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "55ff606c",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

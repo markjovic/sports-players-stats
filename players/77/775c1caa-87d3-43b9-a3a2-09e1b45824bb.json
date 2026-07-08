@@ -1,1 +1,307 @@
-{"uuid":"775c1caa-87d3-43b9-a3a2-09e1b45824bb","name":"Mia Richards","gender":"Girls","sports":{"Basketball":{"gp":31,"pts":89,"fouls":48,"fg":32,"ft":10,"threePt":5,"foulOuts":{},"finals":5,"gfApps":4,"gfWins":2,"finalsPerSeason":0.83,"maxGamePTS":12,"maxGameThreePt":1,"wins":20,"losses":18,"winPct":0.53,"statsChecked":"2026-07-05T15:10:03.886Z"}},"seasons":[{"sid":"ea13a58c","sn":"2025","regs":[{"tid":"09d9d3cc","tn":"U18 Girls SA Magpies (CP)","gid":"a748c4ee","gn":"U18 Girls Cross Pool","age":"U18","div":null,"stats":{"gp":1,"fouls":4,"finals":1,"gfApps":1,"losses":1}},{"tid":"da161044","stats":{"wins":3,"losses":4,"finals":1,"gfApps":1,"gp":7,"pts":14,"fg":7,"fouls":8}}]},{"sid":"ea13a58c","sn":"2025","club":"SA Country","regs":[{"tid":"da161044","tn":"U18 Girls SA Magpies","gid":"a66128b6","gn":"U18 Girls D1","age":"U18","div":"D1","stats":{"gp":7,"fouls":8,"fg":7,"pts":14,"finals":1,"gfApps":1,"wins":3,"losses":4}}]},{"sid":"56bad6ef","sn":"2024","club":"Eastern Mavericks Basketball Club","regs":[{"tid":"de8f26c7","tn":"Eastern Mavericks U16 Girls","gid":"081e28e2","gn":"U16 Girls NJC","age":"U16","div":null,"stats":{"gp":6,"fouls":11,"ft":1,"fg":10,"pts":21,"finals":1,"gfApps":1,"wins":5,"losses":1,"gfWins":1}}]},{"sid":"8d724c0a","sn":"2023","club":"Eastern Mavericks Basketball Club","regs":[{"tid":"f612d479","tn":"Eastern Mavericks U16 Girls","gid":"2b1fc9d3","gn":"U16 Girls NJC","age":"U16","div":null,"stats":{"gp":6,"fouls":13,"ft":1,"fg":6,"pts":13,"finals":1,"gfApps":1,"gfWins":1,"wins":4,"losses":2}}]},{"sid":"c7e7e1b9","sn":"2023","club":"South Australia","regs":[{"tid":"a54ec20f","tn":"SAC Sharks","gid":"d69d497f","gn":"U15 Girls","age":"U15","div":null,"stats":{"gp":5,"fouls":6,"ft":7,"fg":4,"pts":15,"finals":1,"wins":2,"losses":3}}]},{"sid":"89870d33","sn":"2022","club":"Eastern Mavericks Basketball Club","regs":[{"tid":"af198d96","tn":"Eastern Mavericks U14 Girls","gid":"42ae620d","gn":"U14 Girls NJC","age":"U14","div":null,"stats":{"gp":6,"fouls":6,"ft":1,"fg":5,"threePt":5,"pts":26,"finals":1,"gfApps":1,"wins":3,"losses":3}}]}],"updatedAt":"2026-06-01T15:59:59.558Z","teams":[{"tid":"da161044","sid":"ea13a58c","status":"COMPLETED"},{"tid":"09d9d3cc","sid":"ea13a58c","status":"COMPLETED"},{"tid":"de8f26c7","sid":"56bad6ef","status":"COMPLETED"},{"tid":"f612d479","sid":"8d724c0a","status":"COMPLETED"},{"tid":"a54ec20f","sid":"c7e7e1b9","status":"COMPLETED"},{"tid":"af198d96","sid":"89870d33","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:53:02.160Z","records":{"maxGamePTS":{"v":12,"gameKey":"17790374","sid":"56bad6ef"},"maxGameThreePt":{"v":1,"gameKey":"3596ee9a","sid":"89870d33"}},"games":["050e1590","0f42e717","10b81013","170afc70","17790374","1cfd63b0","1ea6c3c5","3596ee9a","3e2c5ccb","42a50e68","4d5c1272","509ad911","5deabe1c","625ddeda","6d4037b9","701e99c9","77ad7984","851fb520","933c7a42","9393200f","9cf56315","a049a834","a816a2db","aa67eec6","af67a319","c1092025","d494ae1a","d921eaa2","e3ff4ad6","e779c2ca","eca19754"],"gameTids":{"17790374":"de8f26c7","4d5c1272":"09d9d3cc","3e2c5ccb":"da161044","509ad911":"da161044","d921eaa2":"da161044","10b81013":"da161044","170afc70":"da161044","9393200f":"da161044","a049a834":"da161044","c1092025":"de8f26c7","6d4037b9":"de8f26c7","9cf56315":"de8f26c7","aa67eec6":"de8f26c7","1ea6c3c5":"de8f26c7","d494ae1a":"f612d479","eca19754":"f612d479","a816a2db":"f612d479","af67a319":"f612d479","933c7a42":"f612d479","625ddeda":"f612d479","5deabe1c":"a54ec20f","0f42e717":"a54ec20f","e779c2ca":"a54ec20f","77ad7984":"a54ec20f","050e1590":"a54ec20f","3596ee9a":"af198d96","1cfd63b0":"af198d96","851fb520":"af198d96","e3ff4ad6":"af198d96","42a50e68":"af198d96","701e99c9":"af198d96"}}
+{
+  "uuid": "775c1caa-87d3-43b9-a3a2-09e1b45824bb",
+  "name": "Mia Richards",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 89,
+      "fouls": 48,
+      "fg": 32,
+      "ft": 10,
+      "threePt": 5,
+      "foulOuts": {},
+      "finals": 5,
+      "gfApps": 4,
+      "gfWins": 2,
+      "finalsPerSeason": 0.83,
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 20,
+      "losses": 18,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T15:10:03.886Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ea13a58c",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "09d9d3cc",
+          "tn": "U18 Girls SA Magpies (CP)",
+          "gid": "a748c4ee",
+          "gn": "U18 Girls Cross Pool",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "da161044",
+          "stats": {
+            "wins": 3,
+            "losses": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 7,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 8
+          },
+          "gid": "a66128b6",
+          "gn": "U18 Girls D1"
+        }
+      ]
+    },
+    {
+      "sid": "ea13a58c",
+      "sn": "2025",
+      "club": "SA Country",
+      "regs": [
+        {
+          "tid": "da161044",
+          "tn": "U18 Girls SA Magpies",
+          "gid": "a66128b6",
+          "gn": "U18 Girls D1",
+          "age": "U18",
+          "div": "D1",
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "fg": 7,
+            "pts": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "56bad6ef",
+      "sn": "2024",
+      "club": "Eastern Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "de8f26c7",
+          "tn": "Eastern Mavericks U16 Girls",
+          "gid": "081e28e2",
+          "gn": "U16 Girls NJC",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 10,
+            "pts": 21,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8d724c0a",
+      "sn": "2023",
+      "club": "Eastern Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "f612d479",
+          "tn": "Eastern Mavericks U16 Girls",
+          "gid": "2b1fc9d3",
+          "gn": "U16 Girls NJC",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 13,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c7e7e1b9",
+      "sn": "2023",
+      "club": "South Australia",
+      "regs": [
+        {
+          "tid": "a54ec20f",
+          "tn": "SAC Sharks",
+          "gid": "d69d497f",
+          "gn": "U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 7,
+            "fg": 4,
+            "pts": 15,
+            "finals": 1,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89870d33",
+      "sn": "2022",
+      "club": "Eastern Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "af198d96",
+          "tn": "Eastern Mavericks U14 Girls",
+          "gid": "42ae620d",
+          "gn": "U14 Girls NJC",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 5,
+            "threePt": 5,
+            "pts": 26,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:59:59.558Z",
+  "teams": [
+    {
+      "tid": "09d9d3cc",
+      "sid": "ea13a58c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da161044",
+      "sid": "ea13a58c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de8f26c7",
+      "sid": "56bad6ef",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f612d479",
+      "sid": "8d724c0a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a54ec20f",
+      "sid": "c7e7e1b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af198d96",
+      "sid": "89870d33",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:17.864Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "17790374",
+      "sid": "56bad6ef"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3596ee9a",
+      "sid": "89870d33"
+    }
+  },
+  "games": [
+    "050e1590",
+    "0f42e717",
+    "10b81013",
+    "170afc70",
+    "17790374",
+    "1cfd63b0",
+    "1ea6c3c5",
+    "3596ee9a",
+    "3e2c5ccb",
+    "42a50e68",
+    "4d5c1272",
+    "509ad911",
+    "5deabe1c",
+    "625ddeda",
+    "6d4037b9",
+    "701e99c9",
+    "77ad7984",
+    "851fb520",
+    "933c7a42",
+    "9393200f",
+    "9cf56315",
+    "a049a834",
+    "a816a2db",
+    "aa67eec6",
+    "af67a319",
+    "c1092025",
+    "d494ae1a",
+    "d921eaa2",
+    "e3ff4ad6",
+    "e779c2ca",
+    "eca19754"
+  ],
+  "gameTids": {
+    "17790374": "de8f26c7",
+    "4d5c1272": "09d9d3cc",
+    "3e2c5ccb": "da161044",
+    "509ad911": "da161044",
+    "d921eaa2": "da161044",
+    "10b81013": "da161044",
+    "170afc70": "da161044",
+    "9393200f": "da161044",
+    "a049a834": "da161044",
+    "c1092025": "de8f26c7",
+    "6d4037b9": "de8f26c7",
+    "9cf56315": "de8f26c7",
+    "aa67eec6": "de8f26c7",
+    "1ea6c3c5": "de8f26c7",
+    "d494ae1a": "f612d479",
+    "eca19754": "f612d479",
+    "a816a2db": "f612d479",
+    "af67a319": "f612d479",
+    "933c7a42": "f612d479",
+    "625ddeda": "f612d479",
+    "5deabe1c": "a54ec20f",
+    "0f42e717": "a54ec20f",
+    "e779c2ca": "a54ec20f",
+    "77ad7984": "a54ec20f",
+    "050e1590": "a54ec20f",
+    "3596ee9a": "af198d96",
+    "1cfd63b0": "af198d96",
+    "851fb520": "af198d96",
+    "e3ff4ad6": "af198d96",
+    "42a50e68": "af198d96",
+    "701e99c9": "af198d96"
+  }
+}

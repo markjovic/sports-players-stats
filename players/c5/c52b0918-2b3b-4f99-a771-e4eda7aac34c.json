@@ -1,1 +1,105 @@
-{"uuid":"c52b0918-2b3b-4f99-a771-e4eda7aac34c","gender":null,"sports":{"Basketball":{"gp":5,"pts":30,"fouls":2,"fg":15,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":null,"wins":3,"losses":1,"winPct":0.75,"statsChecked":"2026-07-05T15:51:24.847Z"}},"seasons":[{"sid":"52b13ac6","sn":"Winter 2026","club":null,"regs":[{"tid":"c8d047ca","tn":"Perry's Footwear","gid":"01dbd733","gn":"Tuesday Senior Women","stats":{"gp":3,"pts":6,"fouls":2,"fg":3,"wins":1,"losses":1}},{"tid":"62f70d25","stats":{"gp":2,"pts":24,"fg":12,"wins":1}},{"tid":"62f70d25","tn":"","gid":"01dbd733","gn":"Tuesday Senior Women","div":null,"stats":{"gp":2,"pts":24,"fg":12,"wins":1}}]}],"updatedAt":"2026-07-04T05:45:15.945Z","games":["3de88515","5566f8ca","7417be65","743214ff","8547c63e"],"records":{"maxGamePTS":{"v":16,"gameKey":"7417be65","sid":"52b13ac6"},"maxGameThreePt":{"v":null}},"name":"Winter 2026","gameTids":{"7417be65":"62f70d25","8547c63e":"62f70d25","743214ff":"c8d047ca","5566f8ca":"c8d047ca","3de88515":"c8d047ca"}}
+{
+  "uuid": "c52b0918-2b3b-4f99-a771-e4eda7aac34c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 30,
+      "fouls": 2,
+      "fg": 15,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 1,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-05T15:51:24.847Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "52b13ac6",
+      "sn": "Winter 2026",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c8d047ca",
+          "tn": "Perry's Footwear",
+          "gid": "01dbd733",
+          "gn": "Tuesday Senior Women",
+          "stats": {
+            "gp": 3,
+            "pts": 6,
+            "fouls": 2,
+            "fg": 3,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "62f70d25",
+          "stats": {
+            "gp": 2,
+            "pts": 24,
+            "fg": 12,
+            "wins": 1
+          },
+          "gid": "01dbd733",
+          "gn": "Tuesday Senior Women"
+        },
+        {
+          "tid": "62f70d25",
+          "tn": "",
+          "gid": "01dbd733",
+          "gn": "Tuesday Senior Women",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 24,
+            "fg": 12,
+            "wins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:45:15.945Z",
+  "games": [
+    "3de88515",
+    "5566f8ca",
+    "7417be65",
+    "743214ff",
+    "8547c63e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "7417be65",
+      "sid": "52b13ac6"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2026",
+  "gameTids": {
+    "7417be65": "62f70d25",
+    "8547c63e": "62f70d25",
+    "743214ff": "c8d047ca",
+    "5566f8ca": "c8d047ca",
+    "3de88515": "c8d047ca"
+  },
+  "teams": [
+    {
+      "tid": "c8d047ca",
+      "sid": "52b13ac6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62f70d25",
+      "sid": "52b13ac6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:44.127Z"
+}

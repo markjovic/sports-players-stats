@@ -1,1 +1,81 @@
-{"uuid":"d41fe0c8-9a68-4aa2-b22c-6447491bf799","name":"Lihao Zhi","sports":{"Basketball":{"maxGamePTS":18,"maxGameThreePt":2,"foulOuts":{},"gp":20,"pts":156,"fg":65,"ft":8,"threePt":6,"fouls":25,"statsChecked":"2026-07-07T18:30:14.051Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"57a32c2e"}]},{"sid":"0adc7f94","regs":[{"tid":"3ef0067e"}]},{"sid":"796936f7","regs":[{"tid":"58d4f9fd"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":18,"gameKey":"daa6e7cc","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"f1602b14","sid":"796936f7"}}}
+{
+  "uuid": "d41fe0c8-9a68-4aa2-b22c-6447491bf799",
+  "name": "Lihao Zhi",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 18,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 20,
+      "pts": 156,
+      "fg": 65,
+      "ft": 8,
+      "threePt": 6,
+      "fouls": 25,
+      "statsChecked": "2026-07-07T18:30:14.051Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "57a32c2e",
+          "gid": "025e656d",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "0adc7f94",
+      "regs": [
+        {
+          "tid": "3ef0067e",
+          "gid": "dc0a2f73",
+          "gn": "Thursday Senior Men H"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "58d4f9fd",
+          "gid": "0ef6df70",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "57a32c2e",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ef0067e",
+      "sid": "0adc7f94",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58d4f9fd",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "daa6e7cc",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "f1602b14",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:30:26.217Z"
+}

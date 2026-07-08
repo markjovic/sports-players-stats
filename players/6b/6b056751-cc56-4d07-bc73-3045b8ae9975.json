@@ -1,1 +1,76 @@
-{"uuid":"6b056751-cc56-4d07-bc73-3045b8ae9975","gender":null,"sports":{"Basketball":{"gp":2,"pts":11,"fg":5,"ft":1,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T16:27:41.563Z"}},"seasons":[{"sid":"a55ccf6f","sn":"Winter 2021","club":null,"regs":[{"tid":"2131f60b","tn":"QSA QUOKKAS 2 NEW","gid":"9600b0ac","gn":"Monday Open Women NEW","stats":{"gp":2,"pts":11,"fg":5,"ft":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:40:46.303Z","records":{"maxGamePTS":{"v":9,"gameKey":"95c32735","sid":"a55ccf6f"},"maxGameThreePt":{"v":null}},"games":["95c32735","cc83aca3"],"name":"Winter 2021"}
+{
+  "uuid": "6b056751-cc56-4d07-bc73-3045b8ae9975",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 11,
+      "fg": 5,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:27:41.563Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a55ccf6f",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "2131f60b",
+          "tn": "QSA QUOKKAS 2 NEW",
+          "gid": "9600b0ac",
+          "gn": "Monday Open Women NEW",
+          "stats": {
+            "gp": 2,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "37f3c4b0",
+          "tn": "QSA QUOKKAS 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:46.303Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "95c32735",
+      "sid": "a55ccf6f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "95c32735",
+    "cc83aca3"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "2131f60b",
+      "sid": "a55ccf6f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "37f3c4b0",
+      "sid": "a55ccf6f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:35.801Z"
+}

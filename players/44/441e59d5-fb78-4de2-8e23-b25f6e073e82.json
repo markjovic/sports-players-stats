@@ -1,1 +1,131 @@
-{"uuid":"441e59d5-fb78-4de2-8e23-b25f6e073e82","gender":null,"sports":{"Basketball":{"gp":12,"pts":63,"fouls":14,"fg":30,"ft":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"0f6dd17f":1},"maxGamePTS":11,"maxGameThreePt":null,"wins":2,"losses":10,"winPct":0.17,"statsChecked":"2026-07-05T16:12:54.281Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Oakleigh Raptors Basketball Club","regs":[{"tid":"8d4de8d7","tn":"RAPTORS U18 Boys Black","gid":"49daa477","gn":"Saturday U18 Boys DIV 7","stats":{"gp":6,"pts":36,"fouls":8,"fg":17,"ft":2,"foulOuts":1,"wins":1,"losses":5}}]},{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Oakleigh Raptors Basketball Club","regs":[{"tid":"1916f246","tn":"RAPTORS U18 Boys Brad","gid":"ef863b7c","gn":"Saturday U18 Boys Div 7","stats":{"gp":6,"pts":27,"fouls":6,"fg":13,"ft":1,"finals":1,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-11T23:38:49.246Z","records":{"maxGamePTS":{"v":11,"gameKey":"912aa4bb","sid":"0f6dd17f"},"maxGameThreePt":{"v":null}},"games":["17dc54ed","25c34d1d","33ee0af7","39b34a5e","4c9f8572","7c6f1c19","8697426a","912aa4bb","99d83c8f","b3bfd31a","bcdb8418","e2c8bd2a"],"name":"Winter 2021"}
+{
+  "uuid": "441e59d5-fb78-4de2-8e23-b25f6e073e82",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 63,
+      "fouls": 14,
+      "fg": 30,
+      "ft": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "0f6dd17f": 1
+      },
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 10,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T16:12:54.281Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Oakleigh Raptors Basketball Club",
+      "regs": [
+        {
+          "tid": "8d4de8d7",
+          "tn": "RAPTORS U18 Boys Black",
+          "gid": "49daa477",
+          "gn": "Saturday U18 Boys DIV 7",
+          "stats": {
+            "gp": 6,
+            "pts": 36,
+            "fouls": 8,
+            "fg": 17,
+            "ft": 2,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Oakleigh Raptors Basketball Club",
+      "regs": [
+        {
+          "tid": "1916f246",
+          "tn": "RAPTORS U18 Boys Brad",
+          "gid": "ef863b7c",
+          "gn": "Saturday U18 Boys Div 7",
+          "stats": {
+            "gp": 6,
+            "pts": 27,
+            "fouls": 6,
+            "fg": 13,
+            "ft": 1,
+            "finals": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6a36400d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "e0d84b5b",
+          "tn": "RAPTORS U16 Boys Brad",
+          "gid": "2d4b25d1",
+          "gn": "Saturday U16 Boys Div 9",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:49.246Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "912aa4bb",
+      "sid": "0f6dd17f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "17dc54ed",
+    "25c34d1d",
+    "33ee0af7",
+    "39b34a5e",
+    "4c9f8572",
+    "7c6f1c19",
+    "8697426a",
+    "912aa4bb",
+    "99d83c8f",
+    "b3bfd31a",
+    "bcdb8418",
+    "e2c8bd2a"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "8d4de8d7",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1916f246",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0d84b5b",
+      "sid": "6a36400d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:27.009Z"
+}

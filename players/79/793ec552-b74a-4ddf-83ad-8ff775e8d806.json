@@ -1,1 +1,344 @@
-{"uuid":"793ec552-b74a-4ddf-83ad-8ff775e8d806","name":"Lucas Unitt","gender":"Boys","sports":{"Basketball":{"gp":45,"fouls":5,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":30,"losses":32,"draws":9,"winPct":0.42,"statsChecked":"2026-07-05T14:14:36.188Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Bentleigh Lakers Basketball Club","regs":[{"tid":"af7fe771","tn":"Lakers U10 Boys Green","gid":"99224ff0","gn":"Saturday U10 Boys Div  3","age":"U10","div":"Div 3","stats":{"gp":3,"wins":1,"losses":2}},{"tid":"df184eeb","tn":"Lakers U10 Boys Gold","gid":"b1889af6","gn":"Saturday U10 Boys Div  1","age":"U10","div":"Div 1","stats":{"gp":4,"fouls":1,"wins":1,"losses":2,"draws":1}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"Bentleigh Lakers Basketball Club","regs":[{"tid":"31e20303","tn":"Lakers U10 Boys Gold","gid":"dd0453a0","gn":"Saturday U10 Boys Div  2","age":"U10","div":"Div 2","stats":{"gp":14,"fouls":1,"finals":1,"wins":7,"losses":5,"draws":2}},{"tid":"31e20303","tn":"Lakers U10 Boys Gold","gid":"108126d3","gn":"Saturday U10 Boys Div  1","age":"U10","div":"Div 1","stats":{"gp":14,"finals":1,"wins":7,"losses":5,"draws":2,"fouls":1}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Bentleigh Lakers Basketball Club","regs":[{"tid":"a4c88f5e","tn":"Lakers U10 Boys Gold","gid":"c7ce8a9d","gn":"Saturday U10 Boys Div  6","age":"U10","div":"Div 6","stats":{"gp":12,"finals":1,"wins":4,"losses":8}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Bentleigh Lakers Basketball Club","regs":[{"tid":"df0688bb","tn":"Lakers U10 Boys Gold","gid":"f00da619","gn":"Saturday U10 Boys 7","age":"U10","div":null,"stats":{"gp":12,"fouls":3,"finals":1,"wins":5,"losses":5,"draws":2}},{"tid":"df0688bb","tn":"Lakers U10 Boys Gold","gid":"4eae32ef","gn":"Saturday U10 Boys Div 8 MODIFIED","age":"U10","div":null,"stats":{"gp":12,"finals":1,"wins":5,"losses":5,"draws":2,"fouls":3}}]}],"updatedAt":"2026-07-04T05:46:03.806Z","teams":[{"tid":"af7fe771","sid":"79d2b087","status":"ACTIVE"},{"tid":"31e20303","sid":"4b758d19","status":"COMPLETED"},{"tid":"a4c88f5e","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"df0688bb","sid":"c01b75f6","status":"COMPLETED"},{"tid":"b6f2d606","sid":"8884de2d","status":"COMPLETED"},{"tid":"720e6f60","sid":"0fef30ca","status":"COMPLETED"},{"tid":"9d652e65","sid":"09a70808","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:05:57.004Z","games":["05390703","17200ca5","1e626e43","231410ce","23aa8fff","3677fc5a","43d95e46","466eb37b","4a1494d7","4a38bfe7","501de914","51939641","5540de2a","5dd05e61","6320d82e","6b84dd9c","6eea042b","6f84b36b","73df6f4f","78945471","7bbb4f2c","840c5d19","853900b9","85cb82c6","86906e5a","88172592","88e52862","8c5776df","90280fac","9a467016","a6d85bfe","a96137f8","aa72d6fe","b5069166","bbda8d25","bd1f02c4","c29d715a","d501a33c","d8095c79","dccd7aa9","e347dd4d","e99d1b3d","ebf45d3c","f001064f","f3c32eeb"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"gameTids":{"51939641":"31e20303","78945471":"31e20303","88172592":"31e20303","05390703":"af7fe771","3677fc5a":"af7fe771","840c5d19":"af7fe771","466eb37b":"df184eeb","6320d82e":"df184eeb","6eea042b":"df184eeb","90280fac":"df184eeb","73df6f4f":"31e20303","86906e5a":"31e20303","c29d715a":"31e20303","8c5776df":"31e20303","d501a33c":"31e20303","d8095c79":"31e20303","e347dd4d":"31e20303","f3c32eeb":"31e20303","17200ca5":"31e20303","4a38bfe7":"31e20303","501de914":"31e20303","5dd05e61":"a4c88f5e","7bbb4f2c":"a4c88f5e","e99d1b3d":"a4c88f5e","aa72d6fe":"a4c88f5e","bbda8d25":"a4c88f5e","ebf45d3c":"a4c88f5e","a96137f8":"a4c88f5e","dccd7aa9":"a4c88f5e","a6d85bfe":"a4c88f5e","853900b9":"a4c88f5e","bd1f02c4":"a4c88f5e","f001064f":"a4c88f5e","6b84dd9c":"df0688bb","43d95e46":"df0688bb","4a1494d7":"df0688bb","231410ce":"df0688bb","88e52862":"df0688bb","85cb82c6":"df0688bb","6f84b36b":"df0688bb","23aa8fff":"df0688bb","1e626e43":"df0688bb","5540de2a":"df0688bb","b5069166":"df0688bb","9a467016":"df0688bb"}}
+{
+  "uuid": "793ec552-b74a-4ddf-83ad-8ff775e8d806",
+  "name": "Lucas Unitt",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "fouls": 5,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 30,
+      "losses": 32,
+      "draws": 9,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-05T14:14:36.188Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Bentleigh Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "af7fe771",
+          "tn": "Lakers U10 Boys Green",
+          "gid": "99224ff0",
+          "gn": "Saturday U10 Boys Div  3",
+          "age": "U10",
+          "div": "Div 3",
+          "stats": {
+            "gp": 3,
+            "wins": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "df184eeb",
+          "tn": "Lakers U10 Boys Gold",
+          "gid": "b1889af6",
+          "gn": "Saturday U10 Boys Div  1",
+          "age": "U10",
+          "div": "Div 1",
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Bentleigh Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "31e20303",
+          "tn": "Lakers U10 Boys Gold",
+          "gid": "dd0453a0",
+          "gn": "Saturday U10 Boys Div  2",
+          "age": "U10",
+          "div": "Div 2",
+          "stats": {
+            "gp": 14,
+            "fouls": 1,
+            "finals": 1,
+            "wins": 7,
+            "losses": 5,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "31e20303",
+          "tn": "Lakers U10 Boys Gold",
+          "gid": "108126d3",
+          "gn": "Saturday U10 Boys Div  1",
+          "age": "U10",
+          "div": "Div 1",
+          "stats": {
+            "gp": 14,
+            "finals": 1,
+            "wins": 7,
+            "losses": 5,
+            "draws": 2,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Bentleigh Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "a4c88f5e",
+          "tn": "Lakers U10 Boys Gold",
+          "gid": "c7ce8a9d",
+          "gn": "Saturday U10 Boys Div  6",
+          "age": "U10",
+          "div": "Div 6",
+          "stats": {
+            "gp": 12,
+            "finals": 1,
+            "wins": 4,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Bentleigh Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "df0688bb",
+          "tn": "Lakers U10 Boys Gold",
+          "gid": "f00da619",
+          "gn": "Saturday U10 Boys 7",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 3,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "df0688bb",
+          "tn": "Lakers U10 Boys Gold",
+          "gid": "4eae32ef",
+          "gn": "Saturday U10 Boys Div 8 MODIFIED",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5,
+            "draws": 2,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "b6f2d606",
+          "tn": "The Crushers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "720e6f60",
+          "tn": "The Crushers",
+          "gid": "5c2709bd",
+          "gn": "Wednesday GESAC YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "9d652e65",
+          "tn": "Carnegie Chargers U9 Boys Carnegie Crushers T4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:03.806Z",
+  "teams": [
+    {
+      "tid": "af7fe771",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df184eeb",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31e20303",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4c88f5e",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df0688bb",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6f2d606",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "720e6f60",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d652e65",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:20.295Z",
+  "games": [
+    "05390703",
+    "17200ca5",
+    "1e626e43",
+    "231410ce",
+    "23aa8fff",
+    "3677fc5a",
+    "43d95e46",
+    "466eb37b",
+    "4a1494d7",
+    "4a38bfe7",
+    "501de914",
+    "51939641",
+    "5540de2a",
+    "5dd05e61",
+    "6320d82e",
+    "6b84dd9c",
+    "6eea042b",
+    "6f84b36b",
+    "73df6f4f",
+    "78945471",
+    "7bbb4f2c",
+    "840c5d19",
+    "853900b9",
+    "85cb82c6",
+    "86906e5a",
+    "88172592",
+    "88e52862",
+    "8c5776df",
+    "90280fac",
+    "9a467016",
+    "a6d85bfe",
+    "a96137f8",
+    "aa72d6fe",
+    "b5069166",
+    "bbda8d25",
+    "bd1f02c4",
+    "c29d715a",
+    "d501a33c",
+    "d8095c79",
+    "dccd7aa9",
+    "e347dd4d",
+    "e99d1b3d",
+    "ebf45d3c",
+    "f001064f",
+    "f3c32eeb"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "51939641": "31e20303",
+    "78945471": "31e20303",
+    "88172592": "31e20303",
+    "05390703": "af7fe771",
+    "3677fc5a": "af7fe771",
+    "840c5d19": "af7fe771",
+    "466eb37b": "df184eeb",
+    "6320d82e": "df184eeb",
+    "6eea042b": "df184eeb",
+    "90280fac": "df184eeb",
+    "73df6f4f": "31e20303",
+    "86906e5a": "31e20303",
+    "c29d715a": "31e20303",
+    "8c5776df": "31e20303",
+    "d501a33c": "31e20303",
+    "d8095c79": "31e20303",
+    "e347dd4d": "31e20303",
+    "f3c32eeb": "31e20303",
+    "17200ca5": "31e20303",
+    "4a38bfe7": "31e20303",
+    "501de914": "31e20303",
+    "5dd05e61": "a4c88f5e",
+    "7bbb4f2c": "a4c88f5e",
+    "e99d1b3d": "a4c88f5e",
+    "aa72d6fe": "a4c88f5e",
+    "bbda8d25": "a4c88f5e",
+    "ebf45d3c": "a4c88f5e",
+    "a96137f8": "a4c88f5e",
+    "dccd7aa9": "a4c88f5e",
+    "a6d85bfe": "a4c88f5e",
+    "853900b9": "a4c88f5e",
+    "bd1f02c4": "a4c88f5e",
+    "f001064f": "a4c88f5e",
+    "6b84dd9c": "df0688bb",
+    "43d95e46": "df0688bb",
+    "4a1494d7": "df0688bb",
+    "231410ce": "df0688bb",
+    "88e52862": "df0688bb",
+    "85cb82c6": "df0688bb",
+    "6f84b36b": "df0688bb",
+    "23aa8fff": "df0688bb",
+    "1e626e43": "df0688bb",
+    "5540de2a": "df0688bb",
+    "b5069166": "df0688bb",
+    "9a467016": "df0688bb"
+  }
+}

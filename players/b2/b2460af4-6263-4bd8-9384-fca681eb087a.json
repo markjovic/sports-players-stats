@@ -1,1 +1,116 @@
-{"uuid":"b2460af4-6263-4bd8-9384-fca681eb087a","name":"Harry Moar","gender":"Men","sports":{"Basketball":{"gp":7,"pts":18,"fouls":14,"fg":2,"ft":2,"threePt":4,"foulOuts":{"75ebb237":1},"maxGamePTS":8,"maxGameThreePt":2,"losses":5,"winPct":0.17,"wins":1,"statsChecked":"2026-07-06T19:00:31.656Z"}},"seasons":[{"sid":"75ebb237","sn":"Winter 2026","regs":[{"tid":"27483ae1","tn":"Glory Boyz","gid":"52393cd2","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":7,"fouls":14,"ft":2,"fg":2,"threePt":4,"pts":18,"foulOuts":1,"losses":5,"wins":1}}]}],"updatedAt":"2026-07-06T18:30:42.666Z","teams":[{"tid":"27483ae1","sid":"75ebb237","status":"ACTIVE"},{"tid":"54035577","sid":"21cd9648","status":"COMPLETED"},{"tid":"fb2e8ea3","sid":"d4cbf787","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:36:50.623Z","games":["3e9041de","3eb9c620","49550c9e","5e33b135","8113827b","bc5e53a1"],"records":{"maxGamePTS":{"v":8,"gameKey":"5e33b135","sid":"75ebb237"},"maxGameThreePt":{"v":2,"gameKey":"5e33b135","sid":"75ebb237"}}}
+{
+  "uuid": "b2460af4-6263-4bd8-9384-fca681eb087a",
+  "name": "Harry Moar",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 18,
+      "fouls": 14,
+      "fg": 2,
+      "ft": 2,
+      "threePt": 4,
+      "foulOuts": {
+        "75ebb237": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": 2,
+      "losses": 5,
+      "winPct": 0.17,
+      "wins": 1,
+      "statsChecked": "2026-07-06T19:00:31.656Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "27483ae1",
+          "tn": "Glory Boyz",
+          "gid": "52393cd2",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "ft": 2,
+            "fg": 2,
+            "threePt": 4,
+            "pts": 18,
+            "foulOuts": 1,
+            "losses": 5,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "54035577",
+          "tn": "Razor Rays",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "fb2e8ea3",
+          "tn": "Razor Rays",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:42.666Z",
+  "teams": [
+    {
+      "tid": "27483ae1",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "54035577",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb2e8ea3",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:16.819Z",
+  "games": [
+    "3e9041de",
+    "3eb9c620",
+    "49550c9e",
+    "5e33b135",
+    "8113827b",
+    "bc5e53a1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "5e33b135",
+      "sid": "75ebb237"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "5e33b135",
+      "sid": "75ebb237"
+    }
+  }
+}

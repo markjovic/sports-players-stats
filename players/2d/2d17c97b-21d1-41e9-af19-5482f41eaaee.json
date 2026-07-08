@@ -1,1 +1,251 @@
-{"uuid":"2d17c97b-21d1-41e9-af19-5482f41eaaee","name":"Deon Kay","gender":"Boys","sports":{"Basketball":{"gp":43,"pts":161,"fouls":63,"fg":76,"ft":9,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"8835a9fa":1},"maxGamePTS":17,"maxGameThreePt":null,"wins":28,"losses":13,"draws":1,"winPct":0.67,"statsChecked":"2026-07-05T14:25:57.453Z"}},"seasons":[{"sid":"8ff9f39e","sn":"Winter 2026","club":"Montrose Vikings Basketball Club","regs":[{"tid":"216f1320","tn":"Vikings B61","gid":"78d512b7","gn":"Saturday U10 Boys ARES","age":"U10","div":null,"stats":{"gp":7,"fouls":11,"pts":4,"fg":2,"wins":4,"losses":3}},{"tid":"216f1320","tn":"Vikings B61","gid":"c62577a0","gn":"Saturday U10 Boys A","age":"U10","div":null,"stats":{"gp":7,"fouls":11,"fg":2,"pts":4,"wins":4,"losses":3}}]},{"sid":"e26f328b","sn":"Summer 2025/26","club":"Montrose Vikings Basketball Club","regs":[{"tid":"2975bc31","tn":"Vikings B71","gid":"9a2784fa","gn":"Saturday U9 Boys A/ARES","age":"U9","div":null,"stats":{"gp":14,"fouls":29,"ft":1,"fg":25,"pts":51,"finals":1,"wins":9,"losses":5}}]},{"sid":"8835a9fa","sn":"Winter 2025","club":"Montrose Vikings Basketball Club","regs":[{"tid":"912137b9","tn":"Vikings B81","gid":"fee8d6a7","gn":"Saturday U8 Boys A/Ares","age":"U8","div":null,"stats":{"gp":14,"fouls":16,"ft":3,"fg":23,"pts":49,"finals":1,"gfApps":1,"foulOuts":1,"wins":11,"losses":2,"draws":1}}]},{"sid":"3756aba7","sn":"Winter 2024","club":"Melbourne Warriors Junior Basketball Club","regs":[{"tid":"23a4356a","tn":"MWJBC U8 Mixed","gid":"b229628b","gn":"Juniors U8 Group 3","age":"U8","div":null,"stats":{"gp":1}}]},{"sid":"8810ce3f","regs":[{"tid":"e1fafaf3","stats":{"gp":7,"pts":57,"fg":26,"ft":5,"fouls":7}}]}],"updatedAt":"2026-05-31T09:12:33.480Z","teams":[{"tid":"216f1320","sid":"8ff9f39e","status":"ACTIVE"},{"tid":"2975bc31","sid":"e26f328b","status":"COMPLETED"},{"tid":"912137b9","sid":"8835a9fa","status":"COMPLETED"},{"tid":"23a4356a","sid":"3756aba7","status":"COMPLETED"},{"tid":"278fd66a","sid":"facf8c4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:09:48.536Z","records":{"maxGamePTS":{"v":17,"gameKey":"9d1ad25a","sid":"8810ce3f"},"maxGameThreePt":{"v":null}},"games":["02485bf4","14148bb1","2bf229e5","2f518014","38278d26","42cbd277","4490f0d1","495f4af2","509f1534","518f8e50","583dde79","606f733d","64457b77","69698a05","6c1bc88e","6f856777","703898c1","7551dfdf","78351a7a","942a7122","a6d803c5","adf3027e","b4bc6fb7","b6c64d14","c6909ffc","caa074e2","cc96043d","d3a7ccb2","e49cb162","e4b759a1","e4cf61d3","e4e24f6f","e9006edf","e9c5949b","fe90368c"]}
+{
+  "uuid": "2d17c97b-21d1-41e9-af19-5482f41eaaee",
+  "name": "Deon Kay",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 161,
+      "fouls": 63,
+      "fg": 76,
+      "ft": 9,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "8835a9fa": 1
+      },
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 28,
+      "losses": 13,
+      "draws": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T14:25:57.453Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8ff9f39e",
+      "sn": "Winter 2026",
+      "club": "Montrose Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "216f1320",
+          "tn": "Vikings B61",
+          "gid": "78d512b7",
+          "gn": "Saturday U10 Boys ARES",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "pts": 4,
+            "fg": 2,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "216f1320",
+          "tn": "Vikings B61",
+          "gid": "c62577a0",
+          "gn": "Saturday U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "fg": 2,
+            "pts": 4,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e26f328b",
+      "sn": "Summer 2025/26",
+      "club": "Montrose Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "2975bc31",
+          "tn": "Vikings B71",
+          "gid": "9a2784fa",
+          "gn": "Saturday U9 Boys A/ARES",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 29,
+            "ft": 1,
+            "fg": 25,
+            "pts": 51,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8835a9fa",
+      "sn": "Winter 2025",
+      "club": "Montrose Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "912137b9",
+          "tn": "Vikings B81",
+          "gid": "fee8d6a7",
+          "gn": "Saturday U8 Boys A/Ares",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 3,
+            "fg": 23,
+            "pts": 49,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 11,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3756aba7",
+      "sn": "Winter 2024",
+      "club": "Melbourne Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "23a4356a",
+          "tn": "MWJBC U8 Mixed",
+          "gid": "b229628b",
+          "gn": "Juniors U8 Group 3",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "e1fafaf3",
+          "stats": {
+            "gp": 7,
+            "pts": 57,
+            "fg": 26,
+            "ft": 5,
+            "fouls": 7
+          },
+          "gid": "c5a0f220",
+          "gn": "U10 Boys Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "facf8c4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "278fd66a",
+          "tn": "Melbourne Warriors ",
+          "gid": "0ef21126",
+          "gn": "U8 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T09:12:33.480Z",
+  "teams": [
+    {
+      "tid": "216f1320",
+      "sid": "8ff9f39e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2975bc31",
+      "sid": "e26f328b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "912137b9",
+      "sid": "8835a9fa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23a4356a",
+      "sid": "3756aba7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1fafaf3",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "278fd66a",
+      "sid": "facf8c4c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:25.707Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "9d1ad25a",
+      "sid": "8810ce3f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02485bf4",
+    "14148bb1",
+    "2bf229e5",
+    "2f518014",
+    "38278d26",
+    "42cbd277",
+    "4490f0d1",
+    "495f4af2",
+    "509f1534",
+    "518f8e50",
+    "583dde79",
+    "606f733d",
+    "64457b77",
+    "69698a05",
+    "6c1bc88e",
+    "6f856777",
+    "703898c1",
+    "7551dfdf",
+    "78351a7a",
+    "942a7122",
+    "a6d803c5",
+    "adf3027e",
+    "b4bc6fb7",
+    "b6c64d14",
+    "c6909ffc",
+    "caa074e2",
+    "cc96043d",
+    "d3a7ccb2",
+    "e49cb162",
+    "e4b759a1",
+    "e4cf61d3",
+    "e4e24f6f",
+    "e9006edf",
+    "e9c5949b",
+    "fe90368c"
+  ]
+}

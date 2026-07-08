@@ -1,1 +1,81 @@
-{"uuid":"f414cf05-09dd-4328-831b-4d9832e2d6b2","name":"Kaylea Rudling","sports":{"Basketball":{"maxGamePTS":18,"maxGameThreePt":null,"foulOuts":{"73551fc8":1},"gp":7,"pts":54,"fg":24,"ft":6,"fouls":15,"statsChecked":"2026-07-06T19:02:19.116Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"f0f6af9b"}]},{"sid":"888a6237","regs":[{"tid":"ebb9b0e4"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":18,"gameKey":"486cf3a0","sid":"73551fc8"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "f414cf05-09dd-4328-831b-4d9832e2d6b2",
+  "name": "Kaylea Rudling",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "73551fc8": 1
+      },
+      "gp": 7,
+      "pts": 54,
+      "fg": 24,
+      "ft": 6,
+      "fouls": 15,
+      "statsChecked": "2026-07-06T19:02:19.116Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "f0f6af9b",
+          "gid": "9f12fb35",
+          "gn": "U16/ U18 Girls"
+        }
+      ]
+    },
+    {
+      "sid": "888a6237",
+      "regs": [
+        {
+          "tid": "ebb9b0e4"
+        }
+      ]
+    },
+    {
+      "sid": "950cd951",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "55bf3199",
+          "tn": "Black",
+          "gid": "d16d961a",
+          "gn": "U13 Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "f0f6af9b",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ebb9b0e4",
+      "sid": "888a6237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "55bf3199",
+      "sid": "950cd951",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "486cf3a0",
+      "sid": "73551fc8"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:31:43.993Z"
+}

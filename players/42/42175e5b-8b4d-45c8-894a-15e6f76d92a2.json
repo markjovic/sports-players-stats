@@ -1,1 +1,143 @@
-{"uuid":"42175e5b-8b4d-45c8-894a-15e6f76d92a2","gender":null,"sports":{"Basketball":{"gp":19,"pts":38,"fouls":15,"fg":18,"ft":2,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":8,"losses":12,"winPct":0.4,"statsChecked":"2026-07-05T16:22:03.446Z"}},"seasons":[{"sid":"d8992df0","sn":"Summer 2021/22","club":"~[ARCHIVED] Hornets Junior Basketball Club (Keilor)","regs":[{"tid":"176e78f2","tn":"Hornets  U18 Boys Grey","gid":"1f124cbc","gn":"Saturday U18 Boys D2 Grade","stats":{"gp":13,"pts":25,"fouls":11,"fg":12,"ft":1,"wins":4,"losses":6}},{"tid":"176e78f2","tn":"Hornets  U18 Boys Grey","gid":"8f145698","gn":"Saturday U18 Boys C2 Grade","stats":{"gp":13,"pts":25,"fouls":11,"fg":12,"wins":4,"losses":6,"ft":1}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"~[ARCHIVED] Hornets Junior Basketball Club (Keilor)","regs":[{"tid":"59ab81ba","tn":"Hornets  U16 Boys 2","gid":"91c0ac15","gn":"Saturday U16 Boys C1 Grade","stats":{"gp":6,"pts":13,"fouls":4,"fg":6,"ft":1}}]}],"updatedAt":"2026-06-11T23:38:44.547Z","records":{"maxGamePTS":{"v":7,"gameKey":"41d102ac","sid":"0912c55f"},"maxGameThreePt":{"v":null}},"games":["1d087129","2d4507aa","354ff0fe","39fe3ff4","3e344f9b","41d102ac","48a51d32","6129c979","695be9ca","6cc61194","719306dd","72bf4646","78bf98a7","7b540d30","8e5604c6","c110e6c7","cdbfaebe","da36fac5","dcd57a8b"],"name":"Summer 2021/22"}
+{
+  "uuid": "42175e5b-8b4d-45c8-894a-15e6f76d92a2",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 19,
+      "pts": 38,
+      "fouls": 15,
+      "fg": 18,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 12,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:22:03.446Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d8992df0",
+      "sn": "Summer 2021/22",
+      "club": "~[ARCHIVED] Hornets Junior Basketball Club (Keilor)",
+      "regs": [
+        {
+          "tid": "176e78f2",
+          "tn": "Hornets  U18 Boys Grey",
+          "gid": "1f124cbc",
+          "gn": "Saturday U18 Boys D2 Grade",
+          "stats": {
+            "gp": 13,
+            "pts": 25,
+            "fouls": 11,
+            "fg": 12,
+            "ft": 1,
+            "wins": 4,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "176e78f2",
+          "tn": "Hornets  U18 Boys Grey",
+          "gid": "8f145698",
+          "gn": "Saturday U18 Boys C2 Grade",
+          "stats": {
+            "gp": 13,
+            "pts": 25,
+            "fouls": 11,
+            "fg": 12,
+            "wins": 4,
+            "losses": 6,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "~[ARCHIVED] Hornets Junior Basketball Club (Keilor)",
+      "regs": [
+        {
+          "tid": "59ab81ba",
+          "tn": "Hornets  U16 Boys 2",
+          "gid": "91c0ac15",
+          "gn": "Saturday U16 Boys C1 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 13,
+            "fouls": 4,
+            "fg": 6,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "514a1e51",
+          "tn": "Hornets  U16 Boys 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:44.547Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "41d102ac",
+      "sid": "0912c55f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1d087129",
+    "2d4507aa",
+    "354ff0fe",
+    "39fe3ff4",
+    "3e344f9b",
+    "41d102ac",
+    "48a51d32",
+    "6129c979",
+    "695be9ca",
+    "6cc61194",
+    "719306dd",
+    "72bf4646",
+    "78bf98a7",
+    "7b540d30",
+    "8e5604c6",
+    "c110e6c7",
+    "cdbfaebe",
+    "da36fac5",
+    "dcd57a8b"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "176e78f2",
+      "sid": "d8992df0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59ab81ba",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "514a1e51",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:13.947Z"
+}

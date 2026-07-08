@@ -1,1 +1,249 @@
-{"uuid":"a34e6348-e3c9-4b8d-8ab2-8a9d79eec10d","gender":null,"sports":{"Basketball":{"gp":45,"pts":75,"fouls":40,"fg":34,"ft":1,"threePt":2,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"wins":18,"losses":29,"draws":2,"winPct":0.37,"statsChecked":"2026-07-05T16:02:57.471Z"}},"seasons":[{"sid":"d3eca93b","sn":"Winter 2022","club":"CC Eagles Basketball Club","regs":[{"tid":"75e56cae","tn":"CC Eagles U18 Boys D5 GREY","gid":"46300ebf","gn":"(CLUB) Wednesday U18 Boys 5","stats":{"gp":12,"pts":15,"fouls":16,"fg":6,"threePt":1,"finals":1,"wins":5,"losses":4,"draws":2}}]},{"sid":"036d9de9","sn":"Summer 2021/22","club":"CC Eagles Basketball Club","regs":[{"tid":"66c67200","tn":"CC Eagles U18 Boys D6 Grey","gid":"777bfd62","gn":"(CLUB) Wednesday U18 Boys 6","stats":{"gp":14,"pts":27,"fouls":15,"fg":13,"finals":1,"wins":6,"losses":8,"ft":1}},{"tid":"66c67200","tn":"CC Eagles U18 Boys D6 Grey","gid":"06e9f976","gn":"(CLUB) Wednesday U18 Boys 5","stats":{"gp":14,"pts":27,"fouls":15,"fg":13,"ft":1,"finals":1,"wins":6,"losses":8}}]},{"sid":"fb916efa","sn":"Winter 2021","club":"CC Eagles Basketball Club","regs":[{"tid":"166277c5","tn":"CC Eagles U18 Boys D6 Grey","gid":"e0baa062","gn":"(CLUB) Wednesday U18 Boys 4/5","stats":{"gp":10,"pts":20,"fouls":3,"fg":10,"wins":1,"losses":9}}]},{"sid":"0c8a1c35","sn":"Summer 2020/21","club":"CC Eagles Basketball Club","regs":[{"tid":"293611c9","tn":"CC Eagles U18 Boys D7 Grey","gid":"5e336a90","gn":"Wednesday U18 Boys 5","stats":{"gp":9,"pts":13,"fouls":6,"fg":5,"threePt":1,"finals":1}},{"tid":"293611c9","tn":"CC Eagles U18 Boys D7 Grey","gid":"6a89364a","gn":"Z_DO NOT USE THIS GAME_Wednesday U18 Boys 4","stats":{"gp":9,"pts":13,"fouls":6,"fg":5,"finals":1,"threePt":1}}]}],"updatedAt":"2026-06-11T23:43:12.404Z","games":["059cd198","0d70de84","0eb2b7ba","135cec93","17cc1e05","1c3bfdd3","26cf2cd0","2e9da43d","338597b0","3452d33e","3f0ded18","3fface2b","44f1cc14","47c224ea","4ad5c8a6","5571a291","654ed074","65b08f6a","692ff484","694b3aa2","6a8b7b2b","703066d8","71e18409","79e56c84","7f3eb470","8a6324f5","8aac8ca6","8d55bc82","8f52620b","90e45e3b","93137daf","993c127d","9a08f4cd","9f9d89d8","a4c75e4b","ae1af76a","b52c7176","c77ccfcb","cb020c36","cc220486","ccdcdbfd","d61aa46c","ddfeba05","f5ad66b5","fd5a737c"],"records":{"maxGamePTS":{"v":7,"gameKey":"8f52620b","sid":"0c8a1c35"},"maxGameThreePt":{"v":1,"gameKey":"93137daf","sid":"d3eca93b"}},"name":"Winter 2022"}
+{
+  "uuid": "a34e6348-e3c9-4b8d-8ab2-8a9d79eec10d",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "pts": 75,
+      "fouls": 40,
+      "fg": 34,
+      "ft": 1,
+      "threePt": 2,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 18,
+      "losses": 29,
+      "draws": 2,
+      "winPct": 0.37,
+      "statsChecked": "2026-07-05T16:02:57.471Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3eca93b",
+      "sn": "Winter 2022",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "75e56cae",
+          "tn": "CC Eagles U18 Boys D5 GREY",
+          "gid": "46300ebf",
+          "gn": "(CLUB) Wednesday U18 Boys 5",
+          "stats": {
+            "gp": 12,
+            "pts": 15,
+            "fouls": 16,
+            "fg": 6,
+            "threePt": 1,
+            "finals": 1,
+            "wins": 5,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "66c67200",
+          "tn": "CC Eagles U18 Boys D6 Grey",
+          "gid": "777bfd62",
+          "gn": "(CLUB) Wednesday U18 Boys 6",
+          "stats": {
+            "gp": 14,
+            "pts": 27,
+            "fouls": 15,
+            "fg": 13,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "66c67200",
+          "tn": "CC Eagles U18 Boys D6 Grey",
+          "gid": "06e9f976",
+          "gn": "(CLUB) Wednesday U18 Boys 5",
+          "stats": {
+            "gp": 14,
+            "pts": 27,
+            "fouls": 15,
+            "fg": 13,
+            "ft": 1,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "166277c5",
+          "tn": "CC Eagles U18 Boys D6 Grey",
+          "gid": "e0baa062",
+          "gn": "(CLUB) Wednesday U18 Boys 4/5",
+          "stats": {
+            "gp": 10,
+            "pts": 20,
+            "fouls": 3,
+            "fg": 10,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c8a1c35",
+      "sn": "Summer 2020/21",
+      "club": "CC Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "293611c9",
+          "tn": "CC Eagles U18 Boys D7 Grey",
+          "gid": "5e336a90",
+          "gn": "Wednesday U18 Boys 5",
+          "stats": {
+            "gp": 9,
+            "pts": 13,
+            "fouls": 6,
+            "fg": 5,
+            "threePt": 1,
+            "finals": 1
+          }
+        },
+        {
+          "tid": "293611c9",
+          "tn": "CC Eagles U18 Boys D7 Grey",
+          "gid": "6a89364a",
+          "gn": "Z_DO NOT USE THIS GAME_Wednesday U18 Boys 4",
+          "stats": {
+            "gp": 9,
+            "pts": 13,
+            "fouls": 6,
+            "fg": 5,
+            "finals": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "62498507",
+          "tn": "Geelong United U16 Boys 7",
+          "gid": "3c399ced",
+          "gn": "U16 Boys VJL 9 - Pool 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:12.404Z",
+  "games": [
+    "059cd198",
+    "0d70de84",
+    "0eb2b7ba",
+    "135cec93",
+    "17cc1e05",
+    "1c3bfdd3",
+    "26cf2cd0",
+    "2e9da43d",
+    "338597b0",
+    "3452d33e",
+    "3f0ded18",
+    "3fface2b",
+    "44f1cc14",
+    "47c224ea",
+    "4ad5c8a6",
+    "5571a291",
+    "654ed074",
+    "65b08f6a",
+    "692ff484",
+    "694b3aa2",
+    "6a8b7b2b",
+    "703066d8",
+    "71e18409",
+    "79e56c84",
+    "7f3eb470",
+    "8a6324f5",
+    "8aac8ca6",
+    "8d55bc82",
+    "8f52620b",
+    "90e45e3b",
+    "93137daf",
+    "993c127d",
+    "9a08f4cd",
+    "9f9d89d8",
+    "a4c75e4b",
+    "ae1af76a",
+    "b52c7176",
+    "c77ccfcb",
+    "cb020c36",
+    "cc220486",
+    "ccdcdbfd",
+    "d61aa46c",
+    "ddfeba05",
+    "f5ad66b5",
+    "fd5a737c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "8f52620b",
+      "sid": "0c8a1c35"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "93137daf",
+      "sid": "d3eca93b"
+    }
+  },
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "75e56cae",
+      "sid": "d3eca93b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "66c67200",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "166277c5",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "293611c9",
+      "sid": "0c8a1c35",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62498507",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:46.934Z"
+}

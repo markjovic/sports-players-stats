@@ -1,1 +1,311 @@
-{"uuid":"722db406-0a40-4a23-b10b-d824ddeac566","name":"2021","gender":null,"sports":{"Basketball":{"gp":37,"pts":74,"fouls":75,"fg":36,"ft":2,"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"259baa34":1},"maxGamePTS":8,"maxGameThreePt":null,"wins":12,"losses":7,"winPct":0.63,"statsChecked":"2026-07-05T15:49:20.727Z"}},"seasons":[{"sid":"1e0eafb0","sn":"2021","club":"Wangaratta Warriors Basketball Club","regs":[{"tid":"01815c6a","tn":"Wangaratta Warriors  U14 Girls (Phase 2)","gid":"ca4147dd","gn":"U14 Girls Premiership","stats":{"gp":7,"pts":12,"fouls":21,"fg":5,"ft":2,"finals":1,"gfApps":1,"wins":5,"losses":2,"gfWins":1}},{"tid":"5b52d1b8","tn":"Wangaratta Warriors U14 Girls (Phase 1)","gid":"44b31f21","gn":"U14 Girls","stats":{"gp":3,"fouls":5,"finals":1,"gfApps":1,"losses":3,"gfWins":1}}]},{"sid":"79c912d0","sn":"2021","club":"Wangaratta Warriors Basketball Club","regs":[{"tid":"ab13a735","tn":"Wangaratta Warriors U14 Girls Div 2","gid":"742ea297","gn":"U14 Girls Division 2","stats":{"gp":3,"pts":4,"fouls":4,"fg":2}}]},{"sid":"259baa34","sn":"2021","club":"Wangaratta Warriors Basketball Club","regs":[{"tid":"259233e1","tn":"Wangaratta Warriors U14 Girls","gid":"39e9e000","gn":"U14 Girls 1","stats":{"gp":2,"pts":2,"fouls":5,"fg":1,"foulOuts":1,"wins":1,"losses":1}}]},{"sid":"483151a7","sn":"2021","club":"Wangaratta Warriors Basketball Club","regs":[{"tid":"32f72f81","tn":"Wangaratta Warriors U14 Girls Div 1","gid":"13fcb459","gn":"U14 Girls Division 2","stats":{"gp":7,"pts":10,"fouls":9,"fg":5,"finals":1,"gfApps":1,"wins":6,"losses":1}}]},{"sid":"0d546f56","sn":"Autumn 2021","club":null,"regs":[{"tid":"a253fbf8","tn":"Oliver","gid":"669bb030","gn":"Monday U14 Girls","stats":{"gp":8,"pts":40,"fouls":23,"fg":20,"finals":1}},{"tid":"7cc5f038","stats":{"finals":1,"gp":7,"pts":6,"fg":3,"fouls":8}}]},{"sid":"0d546f56","sn":"Autumn 2021","club":null,"regs":[{"tid":"7cc5f038","tn":"Warriors U14","gid":"7a399788","gn":"Monday U17 Girls","stats":{"gp":7,"pts":6,"fouls":8,"fg":3,"finals":1}}]}],"updatedAt":"2026-06-11T23:41:13.564Z","records":{"maxGamePTS":{"v":8,"gameKey":"1e1e1426","sid":"0d546f56"},"maxGameThreePt":{"v":null}},"games":["0266e2d8","07a23fa3","12a91df6","1e1e1426","24b2f91e","24dc174e","26f638e0","28f72392","2a5a963a","3b4a2ade","3ecaf652","3f16d2c5","4794c5d6","4cb4cd23","4f1057e5","52be57fd","5782882c","584ddbbc","6a7cb541","6d7cc077","70edf68a","71bd083e","741d4a97","76ab75b3","7af06c15","80dfbf68","87694530","933a48c4","a3f704b2","b8539fcc","bde31536","cdae32a3","d8c79f09","dd23df73","e7fc9f98","eae27ff8","fe106459"],"gameTids":{"87694530":"259233e1","3f16d2c5":"01815c6a","cdae32a3":"01815c6a","dd23df73":"01815c6a","933a48c4":"01815c6a","24dc174e":"01815c6a","3ecaf652":"01815c6a","0266e2d8":"01815c6a","2a5a963a":"5b52d1b8","52be57fd":"5b52d1b8","24b2f91e":"5b52d1b8","80dfbf68":"ab13a735","e7fc9f98":"ab13a735","4794c5d6":"ab13a735","70edf68a":"259233e1","584ddbbc":"32f72f81","7af06c15":"32f72f81","741d4a97":"32f72f81","26f638e0":"32f72f81","4f1057e5":"32f72f81","d8c79f09":"32f72f81","28f72392":"32f72f81","1e1e1426":"a253fbf8","6d7cc077":"a253fbf8","12a91df6":"a253fbf8","71bd083e":"a253fbf8","4cb4cd23":"a253fbf8","6a7cb541":"a253fbf8","bde31536":"a253fbf8","fe106459":"a253fbf8","07a23fa3":"7cc5f038","5782882c":"7cc5f038","76ab75b3":"7cc5f038","a3f704b2":"7cc5f038","3b4a2ade":"7cc5f038","b8539fcc":"7cc5f038","eae27ff8":"7cc5f038"}}
+{
+  "uuid": "722db406-0a40-4a23-b10b-d824ddeac566",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "pts": 74,
+      "fouls": 75,
+      "fg": 36,
+      "ft": 2,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "259baa34": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 12,
+      "losses": 7,
+      "winPct": 0.63,
+      "statsChecked": "2026-07-05T15:49:20.727Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1e0eafb0",
+      "sn": "2021",
+      "club": "Wangaratta Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "01815c6a",
+          "tn": "Wangaratta Warriors  U14 Girls (Phase 2)",
+          "gid": "ca4147dd",
+          "gn": "U14 Girls Premiership",
+          "stats": {
+            "gp": 7,
+            "pts": 12,
+            "fouls": 21,
+            "fg": 5,
+            "ft": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "5b52d1b8",
+          "tn": "Wangaratta Warriors U14 Girls (Phase 1)",
+          "gid": "44b31f21",
+          "gn": "U14 Girls",
+          "stats": {
+            "gp": 3,
+            "fouls": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 3,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "79c912d0",
+      "sn": "2021",
+      "club": "Wangaratta Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "ab13a735",
+          "tn": "Wangaratta Warriors U14 Girls Div 2",
+          "gid": "742ea297",
+          "gn": "U14 Girls Division 2",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fouls": 4,
+            "fg": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "259baa34",
+      "sn": "2021",
+      "club": "Wangaratta Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "259233e1",
+          "tn": "Wangaratta Warriors U14 Girls",
+          "gid": "39e9e000",
+          "gn": "U14 Girls 1",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fouls": 5,
+            "fg": 1,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "483151a7",
+      "sn": "2021",
+      "club": "Wangaratta Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "32f72f81",
+          "tn": "Wangaratta Warriors U14 Girls Div 1",
+          "gid": "13fcb459",
+          "gn": "U14 Girls Division 2",
+          "stats": {
+            "gp": 7,
+            "pts": 10,
+            "fouls": 9,
+            "fg": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0d546f56",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a253fbf8",
+          "tn": "Oliver",
+          "gid": "669bb030",
+          "gn": "Monday U14 Girls",
+          "stats": {
+            "gp": 8,
+            "pts": 40,
+            "fouls": 23,
+            "fg": 20,
+            "finals": 1
+          }
+        },
+        {
+          "tid": "7cc5f038",
+          "stats": {
+            "finals": 1,
+            "gp": 7,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 8
+          },
+          "gid": "7a399788",
+          "gn": "Monday U17 Girls"
+        }
+      ]
+    },
+    {
+      "sid": "0d546f56",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7cc5f038",
+          "tn": "Warriors U14",
+          "gid": "7a399788",
+          "gn": "Monday U17 Girls",
+          "stats": {
+            "gp": 7,
+            "pts": 6,
+            "fouls": 8,
+            "fg": 3,
+            "finals": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:13.564Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "1e1e1426",
+      "sid": "0d546f56"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0266e2d8",
+    "07a23fa3",
+    "12a91df6",
+    "1e1e1426",
+    "24b2f91e",
+    "24dc174e",
+    "26f638e0",
+    "28f72392",
+    "2a5a963a",
+    "3b4a2ade",
+    "3ecaf652",
+    "3f16d2c5",
+    "4794c5d6",
+    "4cb4cd23",
+    "4f1057e5",
+    "52be57fd",
+    "5782882c",
+    "584ddbbc",
+    "6a7cb541",
+    "6d7cc077",
+    "70edf68a",
+    "71bd083e",
+    "741d4a97",
+    "76ab75b3",
+    "7af06c15",
+    "80dfbf68",
+    "87694530",
+    "933a48c4",
+    "a3f704b2",
+    "b8539fcc",
+    "bde31536",
+    "cdae32a3",
+    "d8c79f09",
+    "dd23df73",
+    "e7fc9f98",
+    "eae27ff8",
+    "fe106459"
+  ],
+  "gameTids": {
+    "87694530": "259233e1",
+    "3f16d2c5": "01815c6a",
+    "cdae32a3": "01815c6a",
+    "dd23df73": "01815c6a",
+    "933a48c4": "01815c6a",
+    "24dc174e": "01815c6a",
+    "3ecaf652": "01815c6a",
+    "0266e2d8": "01815c6a",
+    "2a5a963a": "5b52d1b8",
+    "52be57fd": "5b52d1b8",
+    "24b2f91e": "5b52d1b8",
+    "80dfbf68": "ab13a735",
+    "e7fc9f98": "ab13a735",
+    "4794c5d6": "ab13a735",
+    "70edf68a": "259233e1",
+    "584ddbbc": "32f72f81",
+    "7af06c15": "32f72f81",
+    "741d4a97": "32f72f81",
+    "26f638e0": "32f72f81",
+    "4f1057e5": "32f72f81",
+    "d8c79f09": "32f72f81",
+    "28f72392": "32f72f81",
+    "1e1e1426": "a253fbf8",
+    "6d7cc077": "a253fbf8",
+    "12a91df6": "a253fbf8",
+    "71bd083e": "a253fbf8",
+    "4cb4cd23": "a253fbf8",
+    "6a7cb541": "a253fbf8",
+    "bde31536": "a253fbf8",
+    "fe106459": "a253fbf8",
+    "07a23fa3": "7cc5f038",
+    "5782882c": "7cc5f038",
+    "76ab75b3": "7cc5f038",
+    "a3f704b2": "7cc5f038",
+    "3b4a2ade": "7cc5f038",
+    "b8539fcc": "7cc5f038",
+    "eae27ff8": "7cc5f038"
+  },
+  "teams": [
+    {
+      "tid": "01815c6a",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b52d1b8",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab13a735",
+      "sid": "79c912d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "259233e1",
+      "sid": "259baa34",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32f72f81",
+      "sid": "483151a7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a253fbf8",
+      "sid": "0d546f56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7cc5f038",
+      "sid": "0d546f56",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:00.322Z"
+}

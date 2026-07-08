@@ -1,1 +1,378 @@
-{"uuid":"3a2a5604-3b79-454e-bb21-14a0206ab45b","gender":null,"sports":{"Basketball":{"gp":54,"pts":303,"fouls":41,"fg":97,"ft":25,"threePt":28,"foulOuts":{},"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"maxGamePTS":19,"maxGameThreePt":3,"losses":53,"winPct":0.18,"wins":13,"draws":5,"statsChecked":"2026-07-05T16:00:18.507Z"}},"seasons":[{"sid":"1c6cd7c4","sn":"Winter 2022","club":null,"regs":[{"tid":"eb0441e1","tn":"No Idea","gid":"6fa49588","gn":"Wednesday U21 Men Division 1","stats":{"gp":5,"pts":45,"threePt":2,"fg":19,"ft":1,"fouls":2,"wins":2,"losses":3}}]},{"sid":"9dbd9371","sn":"2022","club":"Southern Peninsula Sharks Basketball Club","regs":[{"tid":"793f32b9","tn":"Southern Peninsula U18 Boys","gid":"b850fd4e","gn":"U18 Boys Division 1 & 2","stats":{"gp":4,"pts":36,"threePt":5,"fg":9,"ft":3,"fouls":7,"finals":1,"wins":1,"losses":3}}]},{"sid":"b387bcd4","sn":"2022","club":"Southern Peninsula Sharks Basketball Club","regs":[{"tid":"5c2561c6","tn":"Southern Peninsula U18 Boys 1","gid":"434cc7a4","gn":"18 Boys - VC Reserve","stats":{"gp":20,"pts":170,"threePt":16,"fg":55,"ft":12,"fouls":19,"losses":11,"wins":1,"draws":1}},{"tid":"5c2561c6","tn":"Southern Peninsula U18 Boys 1","gid":"57d43cde","gn":"18 Boys - VC Ashe","stats":{"gp":20,"pts":170,"threePt":16,"fg":55,"ft":12,"fouls":19,"losses":11,"wins":1,"draws":1}},{"tid":"5c2561c6","tn":"Southern Peninsula U18 Boys 1","gid":"8620a3d1","gn":"U18B Crossover 2 - VC","stats":{"gp":20,"pts":170,"threePt":16,"fg":55,"ft":12,"fouls":19,"losses":11,"wins":1,"draws":1}},{"tid":"5c2561c6","tn":"Southern Peninsula U18 Boys 1","gid":"3822b60d","gn":"U18 Boys Grading 2 - AA Pool D","stats":{"gp":20,"pts":170,"threePt":16,"fg":55,"ft":12,"fouls":19,"losses":11,"wins":1,"draws":1}}]},{"sid":"ceb7a2f2","sn":"2021","club":"Southern Peninsula Sharks Basketball Club","regs":[{"tid":"5f02e32e","tn":"Southern Peninsula U18 Boys 1","gid":"981eaba2","gn":"U18 Boys Championship","stats":{"gp":4,"pts":40,"threePt":5,"fg":9,"ft":7,"fouls":4,"finals":1,"gfApps":1,"wins":3,"draws":1,"gfWins":1}}]},{"sid":"1e0eafb0","sn":"2021","club":"Southern Peninsula Sharks Basketball Club","regs":[{"tid":"7d0583de","tn":"Southern Peninsula Sharks U18 Boys","gid":"94920c2f","gn":"U18 Boys Division 1 & 2","stats":{"gp":6,"pts":7,"fg":3,"ft":1,"fouls":5,"finals":1,"wins":3,"losses":3}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Southern Peninsula Sharks Basketball Club","regs":[{"tid":"b7dfde55","tn":"Southern Peninsula U18 Boys 1","gid":"58388000","gn":"18 Boys - VC Ashe","stats":{"gp":15,"pts":5,"fg":2,"fouls":4,"ft":1}},{"tid":"b7dfde55","tn":"Southern Peninsula U18 Boys 1","gid":"c32bbd49","gn":"U18B Grading 2 - AA Pool D","stats":{"gp":15,"pts":5,"fg":2,"fouls":4,"ft":1}},{"tid":"b7dfde55","tn":"Southern Peninsula U18 Boys 1","gid":"e3b56911","gn":"U18B Crossover 1","stats":{"gp":15,"pts":5,"fg":2,"ft":1,"fouls":4}},{"tid":"b7dfde55","tn":"Southern Peninsula U18 Boys 1","gid":"8c9c50e4","gn":"U18B Grading 1 - Pool 1E","stats":{"gp":15,"pts":5,"ft":1,"fg":2,"fouls":4}}]}],"updatedAt":"2026-06-11T23:38:26.846Z","records":{"maxGamePTS":{"v":19,"gameKey":"71d33e6d","sid":"1c6cd7c4"},"maxGameThreePt":{"v":3,"gameKey":"3402158d","sid":"9dbd9371"}},"games":["0ce24721","1102ef73","1427212a","19ca3261","1ee8a6c0","21518b85","2918dd23","2a45a9a8","2d3e6363","3402158d","34ca7f21","360d50f6","36987c57","3778019a","3af56dcf","4411dea3","4562aa26","47b7f42c","47e2f567","49aadbcd","4d75e5b5","605cbe33","6995c910","69b70882","6ac4c89a","6e2c25d9","6f740a73","71d33e6d","7bac717d","8022b233","8168a13b","8489dcf5","953ef771","969b30f1","9bb661c9","9eacf075","a77bf831","ab5b5e38","b5a3c425","b92a76be","bcf00d46","c72da99e","cbce19ae","ce367cb0","d79c74de","db138c86","dd2e1b16","e1c4c7c1","f09014f6","f1e9cf2e","f294fd90","f7fd654e","fecbdc6f"],"name":"Winter 2022"}
+{
+  "uuid": "3a2a5604-3b79-454e-bb21-14a0206ab45b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 303,
+      "fouls": 41,
+      "fg": 97,
+      "ft": 25,
+      "threePt": 28,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 19,
+      "maxGameThreePt": 3,
+      "losses": 53,
+      "winPct": 0.18,
+      "wins": 13,
+      "draws": 5,
+      "statsChecked": "2026-07-05T16:00:18.507Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1c6cd7c4",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "eb0441e1",
+          "tn": "No Idea",
+          "gid": "6fa49588",
+          "gn": "Wednesday U21 Men Division 1",
+          "stats": {
+            "gp": 5,
+            "pts": 45,
+            "threePt": 2,
+            "fg": 19,
+            "ft": 1,
+            "fouls": 2,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9dbd9371",
+      "sn": "2022",
+      "club": "Southern Peninsula Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "793f32b9",
+          "tn": "Southern Peninsula U18 Boys",
+          "gid": "b850fd4e",
+          "gn": "U18 Boys Division 1 & 2",
+          "stats": {
+            "gp": 4,
+            "pts": 36,
+            "threePt": 5,
+            "fg": 9,
+            "ft": 3,
+            "fouls": 7,
+            "finals": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Southern Peninsula Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "5c2561c6",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "434cc7a4",
+          "gn": "18 Boys - VC Reserve",
+          "stats": {
+            "gp": 20,
+            "pts": 170,
+            "threePt": 16,
+            "fg": 55,
+            "ft": 12,
+            "fouls": 19,
+            "losses": 11,
+            "wins": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5c2561c6",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "57d43cde",
+          "gn": "18 Boys - VC Ashe",
+          "stats": {
+            "gp": 20,
+            "pts": 170,
+            "threePt": 16,
+            "fg": 55,
+            "ft": 12,
+            "fouls": 19,
+            "losses": 11,
+            "wins": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5c2561c6",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "8620a3d1",
+          "gn": "U18B Crossover 2 - VC",
+          "stats": {
+            "gp": 20,
+            "pts": 170,
+            "threePt": 16,
+            "fg": 55,
+            "ft": 12,
+            "fouls": 19,
+            "losses": 11,
+            "wins": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5c2561c6",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "3822b60d",
+          "gn": "U18 Boys Grading 2 - AA Pool D",
+          "stats": {
+            "gp": 20,
+            "pts": 170,
+            "threePt": 16,
+            "fg": 55,
+            "ft": 12,
+            "fouls": 19,
+            "losses": 11,
+            "wins": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ceb7a2f2",
+      "sn": "2021",
+      "club": "Southern Peninsula Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "5f02e32e",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "981eaba2",
+          "gn": "U18 Boys Championship",
+          "stats": {
+            "gp": 4,
+            "pts": 40,
+            "threePt": 5,
+            "fg": 9,
+            "ft": 7,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e0eafb0",
+      "sn": "2021",
+      "club": "Southern Peninsula Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "7d0583de",
+          "tn": "Southern Peninsula Sharks U18 Boys",
+          "gid": "94920c2f",
+          "gn": "U18 Boys Division 1 & 2",
+          "stats": {
+            "gp": 6,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1,
+            "fouls": 5,
+            "finals": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Southern Peninsula Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "b7dfde55",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "58388000",
+          "gn": "18 Boys - VC Ashe",
+          "stats": {
+            "gp": 15,
+            "pts": 5,
+            "fg": 2,
+            "fouls": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "b7dfde55",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "c32bbd49",
+          "gn": "U18B Grading 2 - AA Pool D",
+          "stats": {
+            "gp": 15,
+            "pts": 5,
+            "fg": 2,
+            "fouls": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "b7dfde55",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "e3b56911",
+          "gn": "U18B Crossover 1",
+          "stats": {
+            "gp": 15,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "b7dfde55",
+          "tn": "Southern Peninsula U18 Boys 1",
+          "gid": "8c9c50e4",
+          "gn": "U18B Grading 1 - Pool 1E",
+          "stats": {
+            "gp": 15,
+            "pts": 5,
+            "ft": 1,
+            "fg": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "2ea2ce56",
+          "tn": "Southern Peninsula U16 Boys 2",
+          "gid": "c0787202",
+          "gn": "U16 Boys VJL 8 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:26.846Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "71d33e6d",
+      "sid": "1c6cd7c4"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "3402158d",
+      "sid": "9dbd9371"
+    }
+  },
+  "games": [
+    "0ce24721",
+    "1102ef73",
+    "1427212a",
+    "19ca3261",
+    "1ee8a6c0",
+    "21518b85",
+    "2918dd23",
+    "2a45a9a8",
+    "2d3e6363",
+    "3402158d",
+    "34ca7f21",
+    "360d50f6",
+    "36987c57",
+    "3778019a",
+    "3af56dcf",
+    "4411dea3",
+    "4562aa26",
+    "47b7f42c",
+    "47e2f567",
+    "49aadbcd",
+    "4d75e5b5",
+    "605cbe33",
+    "6995c910",
+    "69b70882",
+    "6ac4c89a",
+    "6e2c25d9",
+    "6f740a73",
+    "71d33e6d",
+    "7bac717d",
+    "8022b233",
+    "8168a13b",
+    "8489dcf5",
+    "953ef771",
+    "969b30f1",
+    "9bb661c9",
+    "9eacf075",
+    "a77bf831",
+    "ab5b5e38",
+    "b5a3c425",
+    "b92a76be",
+    "bcf00d46",
+    "c72da99e",
+    "cbce19ae",
+    "ce367cb0",
+    "d79c74de",
+    "db138c86",
+    "dd2e1b16",
+    "e1c4c7c1",
+    "f09014f6",
+    "f1e9cf2e",
+    "f294fd90",
+    "f7fd654e",
+    "fecbdc6f"
+  ],
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "eb0441e1",
+      "sid": "1c6cd7c4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "793f32b9",
+      "sid": "9dbd9371",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c2561c6",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f02e32e",
+      "sid": "ceb7a2f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d0583de",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7dfde55",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2ea2ce56",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:52.619Z"
+}

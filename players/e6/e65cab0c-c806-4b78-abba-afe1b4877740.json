@@ -1,1 +1,82 @@
-{"uuid":"e65cab0c-c806-4b78-abba-afe1b4877740","name":"Nicholas Walsh","gender":"Mixed","sports":{"Basketball":{"gp":5,"pts":24,"fg":12,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":4,"losses":4,"winPct":0.5,"statsChecked":"2026-07-05T16:04:19.421Z"}},"seasons":[{"sid":"23270ce4","sn":"Winter 2026","club":"Pivot City Basketball Inc.","regs":[{"tid":"e3bfb8e4","tn":"Pivot City All Abilities","gid":"622948bb","gn":"All Abilities 2","age":null,"div":null,"stats":{"gp":5,"fg":12,"pts":24,"wins":2,"losses":2}},{"tid":"e3bfb8e4","tn":"","gid":"5e0f9744","gn":"All Abilities 2/3","div":null,"stats":{"gp":5,"pts":24,"fg":12,"wins":2,"losses":2}}]}],"updatedAt":"2026-07-04T05:44:48.477Z","teams":[{"tid":"e3bfb8e4","sid":"23270ce4","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:50:51.902Z","games":["30106ff6","5703e4c1","a205ab6a","e272fa79"],"records":{"maxGamePTS":{"v":10,"gameKey":"5703e4c1","sid":"23270ce4"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e65cab0c-c806-4b78-abba-afe1b4877740",
+  "name": "Nicholas Walsh",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 24,
+      "fg": 12,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 4,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:04:19.421Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "23270ce4",
+      "sn": "Winter 2026",
+      "club": "Pivot City Basketball Inc.",
+      "regs": [
+        {
+          "tid": "e3bfb8e4",
+          "tn": "Pivot City All Abilities",
+          "gid": "5e0f9744",
+          "gn": "All Abilities 2/3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fg": 12,
+            "pts": 24,
+            "wins": 2,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "e3bfb8e4",
+          "tn": "",
+          "gid": "5e0f9744",
+          "gn": "All Abilities 2/3",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 24,
+            "fg": 12,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:48.477Z",
+  "teams": [
+    {
+      "tid": "e3bfb8e4",
+      "sid": "23270ce4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:13.587Z",
+  "games": [
+    "30106ff6",
+    "5703e4c1",
+    "a205ab6a",
+    "e272fa79"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "5703e4c1",
+      "sid": "23270ce4"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

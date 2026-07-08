@@ -1,1 +1,112 @@
-{"uuid":"db5a6bbc-dafa-4f0b-b9e8-f1ab3d618378","gender":null,"sports":{"Basketball":{"gp":6,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":4,"losses":4,"draws":2,"winPct":0.4,"statsChecked":"2026-07-05T16:15:36.150Z"}},"seasons":[{"sid":"ba699eb5","sn":"Summer 2020/21","club":null,"regs":[{"tid":"4525f996","tn":"Bounce","gid":"11099b3e","gn":"Monday U16/U18 Girls","stats":{"gp":6,"wins":2,"losses":2,"draws":1}},{"tid":"4525f996","tn":"Bounce","gid":"0080fd5d","gn":"Monday U16/U18 Girls Grading","stats":{"gp":6,"wins":2,"losses":2,"draws":1}}]}],"updatedAt":"2026-06-11T23:45:22.124Z","games":["499b45ef","4f4d990c","8f0d92a7","a6b96cfc","d1c83f01","fb086f85"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "db5a6bbc-dafa-4f0b-b9e8-f1ab3d618378",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 4,
+      "draws": 2,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:15:36.150Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ba699eb5",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4525f996",
+          "tn": "Bounce",
+          "gid": "11099b3e",
+          "gn": "Monday U16/U18 Girls",
+          "stats": {
+            "gp": 6,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "4525f996",
+          "tn": "Bounce",
+          "gid": "0080fd5d",
+          "gn": "Monday U16/U18 Girls Grading",
+          "stats": {
+            "gp": 6,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f3ac7820",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "e2a37dbc",
+          "tn": "Falcons",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b48f4da6",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "cc97eec9",
+          "tn": "Bounce",
+          "gid": "3e74021a",
+          "gn": "Monday U16 & U18 Girls Division 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:22.124Z",
+  "games": [
+    "499b45ef",
+    "4f4d990c",
+    "8f0d92a7",
+    "a6b96cfc",
+    "d1c83f01",
+    "fb086f85"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "4525f996",
+      "sid": "ba699eb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e2a37dbc",
+      "sid": "f3ac7820",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc97eec9",
+      "sid": "b48f4da6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:03.006Z"
+}

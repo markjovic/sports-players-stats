@@ -1,1 +1,104 @@
-{"uuid":"c7271c53-5b87-4d3e-82c9-37c6b44b53cc","name":"Edward Hunter","gender":"Boys","sports":{"Basketball":{"gp":14,"pts":2,"fouls":7,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":3,"losses":10,"winPct":0.23,"statsChecked":"2026-07-05T14:30:23.657Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Titans Junior Basketball Club","regs":[{"tid":"a531aa8a","tn":"TITANS U12 Boys Tacos","gid":"f9d7de60","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":6,"fouls":4,"wins":3,"losses":2,"pts":2,"fg":1}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Titans Junior Basketball Club","regs":[{"tid":"e6247b06","tn":"TITANS U12 Boys Giants","gid":"827826f7","gn":"U12 Boys D1","age":"U12","div":"D1","stats":{"gp":8,"fouls":3,"losses":8}}]}],"updatedAt":"2026-07-04T05:44:28.177Z","teams":[{"tid":"a531aa8a","sid":"aacc7335","status":"ACTIVE"},{"tid":"e6247b06","sid":"6fd8e780","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:08.747Z","games":["0fb1e1bc","17775645","31e4ed90","3e11e41d","4bab22c7","64095719","7f23d4cf","9cb695b6","a71a7e42","ae217c7a","d8999e02","e314862a","f51a0ff4"],"records":{"maxGamePTS":{"v":2,"gameKey":"244780db","sid":"aacc7335"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c7271c53-5b87-4d3e-82c9-37c6b44b53cc",
+  "name": "Edward Hunter",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 2,
+      "fouls": 7,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 10,
+      "winPct": 0.23,
+      "statsChecked": "2026-07-05T14:30:23.657Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "a531aa8a",
+          "tn": "TITANS U12 Boys Tacos",
+          "gid": "10099b33",
+          "gn": "U12 Boys D1",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 2,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "e6247b06",
+          "tn": "TITANS U12 Boys Giants",
+          "gid": "827826f7",
+          "gn": "U12 Boys D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 8,
+            "fouls": 3,
+            "losses": 8
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:28.177Z",
+  "teams": [
+    {
+      "tid": "a531aa8a",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e6247b06",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:47.366Z",
+  "games": [
+    "0fb1e1bc",
+    "17775645",
+    "31e4ed90",
+    "3e11e41d",
+    "4bab22c7",
+    "64095719",
+    "7f23d4cf",
+    "9cb695b6",
+    "a71a7e42",
+    "ae217c7a",
+    "d8999e02",
+    "e314862a",
+    "f51a0ff4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "244780db",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

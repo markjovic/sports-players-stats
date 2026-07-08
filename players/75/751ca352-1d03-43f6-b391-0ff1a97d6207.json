@@ -1,1 +1,249 @@
-{"uuid":"751ca352-1d03-43f6-b391-0ff1a97d6207","name":"Freddie Young","gender":"Boys","sports":{"Basketball":{"gp":31,"pts":124,"fouls":47,"fg":57,"ft":7,"threePt":1,"foulOuts":{},"maxGamePTS":15,"maxGameThreePt":1,"losses":3,"winPct":0,"statsChecked":"2026-07-05T15:23:36.137Z"}},"seasons":[{"sid":"790feeb5","sn":"Summer 2025/26","club":"Exies Acmy Basketball Club","regs":[{"tid":"c4a48918","tn":"ExiesAcmy U19 Boys 19.3","gid":"e3d9693a","gn":"Friday U19 Boys C","age":"U19","div":null,"stats":{"gp":2,"fouls":1,"fg":3,"pts":6,"losses":2}}]},{"sid":"4c590ea3","sn":"Winter 2025","club":"Exies Acmy Basketball Club","regs":[{"tid":"89ca0824","tn":"ExiesAcmy U16 Boys 16.2","gid":"c9ea212f","gn":"Friday U16 Boys B","age":"U16","div":null,"stats":{"gp":1,"fouls":4,"losses":1}}]},{"sid":"3eb78b60","sn":"Summer 2024/25","club":"Exies Acmy Basketball Club","regs":[{"tid":"1f0113db","tn":"ExiesAcmy U16 Boys 16.1","gid":"819d89de","gn":"Tuesday U16 Boys A","age":"U16","div":null,"stats":{"gp":14,"fouls":25,"ft":4,"fg":33,"threePt":1,"pts":73}},{"tid":"c5ab785a","tn":"ExiesAcmy U19 Boys 19.1","gid":"1382e56c","gn":"Tuesday U19 Boys A","age":"U19","div":null,"stats":{"gp":2,"fouls":1,"fg":1,"pts":2}}]},{"sid":"e446a23f","sn":"Winter 2024","club":"Exies Acmy Basketball Club","regs":[{"tid":"6a735cfb","tn":"ExiesAcmy U16 Boys 16.1","gid":"f29cdd51","gn":"Tuesday U16 Boys A","age":"U16","div":null,"stats":{"gp":12,"fouls":16,"ft":3,"fg":20,"pts":43}}]}],"updatedAt":"2026-06-01T13:58:16.212Z","teams":[{"tid":"c4a48918","sid":"790feeb5","status":"COMPLETED"},{"tid":"89ca0824","sid":"4c590ea3","status":"COMPLETED"},{"tid":"1f0113db","sid":"3eb78b60","status":"COMPLETED"},{"tid":"6a735cfb","sid":"e446a23f","status":"COMPLETED"},{"tid":"4c70b747","sid":"82c4363e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:52:07.864Z","records":{"maxGamePTS":{"v":15,"gameKey":"89df2273","sid":"3eb78b60"},"maxGameThreePt":{"v":1,"gameKey":"89df2273","sid":"3eb78b60"}},"games":["01064e02","074a357c","17f1779e","1b7ecc60","1bc0083a","1de6cae7","1f74c0cc","219c6401","2963e1b6","43114c60","48044ca7","4b1f626d","5e9ec3aa","70d15471","78474385","7aadbf11","83756fd7","89df2273","8ffaaf60","9a3d132f","a8e6e1ff","b1da9d82","b8dd33c5","c49463ac","c7db1974","cc0d590c","d43de516","d651b0bb","f288ca6f","fc80ef50","feca04c5"],"gameTids":{"78474385":"1f0113db","5e9ec3aa":"c4a48918","7aadbf11":"c4a48918","70d15471":"89ca0824","8ffaaf60":"1f0113db","1f74c0cc":"1f0113db","9a3d132f":"1f0113db","fc80ef50":"1f0113db","a8e6e1ff":"1f0113db","89df2273":"1f0113db","01064e02":"1f0113db","c49463ac":"1f0113db","2963e1b6":"1f0113db","4b1f626d":"1f0113db","c7db1974":"1f0113db","17f1779e":"1f0113db","d43de516":"1f0113db","b1da9d82":"c5ab785a","48044ca7":"c5ab785a","83756fd7":"6a735cfb","1bc0083a":"6a735cfb","d651b0bb":"6a735cfb","074a357c":"6a735cfb","f288ca6f":"6a735cfb","b8dd33c5":"6a735cfb","1b7ecc60":"6a735cfb","feca04c5":"6a735cfb","43114c60":"6a735cfb","219c6401":"6a735cfb","cc0d590c":"6a735cfb","1de6cae7":"6a735cfb"}}
+{
+  "uuid": "751ca352-1d03-43f6-b391-0ff1a97d6207",
+  "name": "Freddie Young",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 124,
+      "fouls": 47,
+      "fg": 57,
+      "ft": 7,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "losses": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:23:36.137Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "790feeb5",
+      "sn": "Summer 2025/26",
+      "club": "Exies Acmy Basketball Club",
+      "regs": [
+        {
+          "tid": "c4a48918",
+          "tn": "ExiesAcmy U19 Boys 19.3",
+          "gid": "e3d9693a",
+          "gn": "Friday U19 Boys C",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "fg": 3,
+            "pts": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4c590ea3",
+      "sn": "Winter 2025",
+      "club": "Exies Acmy Basketball Club",
+      "regs": [
+        {
+          "tid": "89ca0824",
+          "tn": "ExiesAcmy U16 Boys 16.2",
+          "gid": "c9ea212f",
+          "gn": "Friday U16 Boys B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3eb78b60",
+      "sn": "Summer 2024/25",
+      "club": "Exies Acmy Basketball Club",
+      "regs": [
+        {
+          "tid": "1f0113db",
+          "tn": "ExiesAcmy U16 Boys 16.1",
+          "gid": "819d89de",
+          "gn": "Tuesday U16 Boys A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 25,
+            "ft": 4,
+            "fg": 33,
+            "threePt": 1,
+            "pts": 73
+          }
+        },
+        {
+          "tid": "c5ab785a",
+          "tn": "ExiesAcmy U19 Boys 19.1",
+          "gid": "1382e56c",
+          "gn": "Tuesday U19 Boys A",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e446a23f",
+      "sn": "Winter 2024",
+      "club": "Exies Acmy Basketball Club",
+      "regs": [
+        {
+          "tid": "6a735cfb",
+          "tn": "ExiesAcmy U16 Boys 16.1",
+          "gid": "f29cdd51",
+          "gn": "Tuesday U16 Boys A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 16,
+            "ft": 3,
+            "fg": 20,
+            "pts": 43
+          }
+        }
+      ]
+    },
+    {
+      "sid": "82c4363e",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "4c70b747",
+          "tn": "ExiesAcmy U16 Boys",
+          "gid": "028fcb27",
+          "gn": "U16 Boys H Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T13:58:16.212Z",
+  "teams": [
+    {
+      "tid": "c4a48918",
+      "sid": "790feeb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89ca0824",
+      "sid": "4c590ea3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f0113db",
+      "sid": "3eb78b60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5ab785a",
+      "sid": "3eb78b60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a735cfb",
+      "sid": "e446a23f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c70b747",
+      "sid": "82c4363e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:55.992Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "89df2273",
+      "sid": "3eb78b60"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "89df2273",
+      "sid": "3eb78b60"
+    }
+  },
+  "games": [
+    "01064e02",
+    "074a357c",
+    "17f1779e",
+    "1b7ecc60",
+    "1bc0083a",
+    "1de6cae7",
+    "1f74c0cc",
+    "219c6401",
+    "2963e1b6",
+    "43114c60",
+    "48044ca7",
+    "4b1f626d",
+    "5e9ec3aa",
+    "70d15471",
+    "78474385",
+    "7aadbf11",
+    "83756fd7",
+    "89df2273",
+    "8ffaaf60",
+    "9a3d132f",
+    "a8e6e1ff",
+    "b1da9d82",
+    "b8dd33c5",
+    "c49463ac",
+    "c7db1974",
+    "cc0d590c",
+    "d43de516",
+    "d651b0bb",
+    "f288ca6f",
+    "fc80ef50",
+    "feca04c5"
+  ],
+  "gameTids": {
+    "78474385": "1f0113db",
+    "5e9ec3aa": "c4a48918",
+    "7aadbf11": "c4a48918",
+    "70d15471": "89ca0824",
+    "8ffaaf60": "1f0113db",
+    "1f74c0cc": "1f0113db",
+    "9a3d132f": "1f0113db",
+    "fc80ef50": "1f0113db",
+    "a8e6e1ff": "1f0113db",
+    "89df2273": "1f0113db",
+    "01064e02": "1f0113db",
+    "c49463ac": "1f0113db",
+    "2963e1b6": "1f0113db",
+    "4b1f626d": "1f0113db",
+    "c7db1974": "1f0113db",
+    "17f1779e": "1f0113db",
+    "d43de516": "1f0113db",
+    "b1da9d82": "c5ab785a",
+    "48044ca7": "c5ab785a",
+    "83756fd7": "6a735cfb",
+    "1bc0083a": "6a735cfb",
+    "d651b0bb": "6a735cfb",
+    "074a357c": "6a735cfb",
+    "f288ca6f": "6a735cfb",
+    "b8dd33c5": "6a735cfb",
+    "1b7ecc60": "6a735cfb",
+    "feca04c5": "6a735cfb",
+    "43114c60": "6a735cfb",
+    "219c6401": "6a735cfb",
+    "cc0d590c": "6a735cfb",
+    "1de6cae7": "6a735cfb"
+  }
+}

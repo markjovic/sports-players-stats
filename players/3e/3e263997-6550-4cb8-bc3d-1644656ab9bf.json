@@ -1,1 +1,328 @@
-{"uuid":"3e263997-6550-4cb8-bc3d-1644656ab9bf","name":"Holly Bond","gender":"Girls","sports":{"Basketball":{"gp":58,"pts":72,"fouls":74,"fg":28,"ft":16,"foulOuts":{"7a7de984":1},"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.4,"maxGamePTS":8,"maxGameThreePt":null,"wins":38,"losses":70,"draws":2,"winPct":0.35,"statsChecked":"2026-07-05T15:08:30.917Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Piranhas Basketball","regs":[{"tid":"7fc14a91","tn":"U12 Girls Creswick Piranhas","gid":"f6d350f4","gn":"Saturday U12 Girls Section 07","age":"U12","div":null,"stats":{"gp":6,"fouls":12,"ft":7,"fg":14,"pts":35,"wins":4,"losses":2}}]},{"sid":"c9bdcd48","sn":"Winter 2025","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"c088c71c","tn":"Cougars U12 Girls Starlights","gid":"13dec153","gn":"U12 Girls D1","age":"U12","div":"D1","stats":{"gp":12,"fouls":6,"fg":2,"pts":5,"wins":3,"losses":9,"ft":1}},{"tid":"c088c71c","tn":"Cougars U12 Girls Starlights","gid":"3d159896","gn":"U12 Girls Grading","age":"U12","div":null,"stats":{"gp":12,"fouls":6,"ft":1,"fg":2,"pts":5,"wins":3,"losses":9}}]},{"sid":"7a7de984","sn":"Summer 2024/25","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"e62c4194","tn":"Cougars U12 Girls Starlights","gid":"a65efaa4","gn":"U12 Girls D1","age":"U12","div":"D1","stats":{"gp":14,"fouls":28,"ft":1,"fg":6,"pts":13,"foulOuts":1,"wins":3,"losses":11}},{"tid":"e62c4194","tn":"Cougars U12 Girls Starlights","gid":"9038da1c","gn":"U12 Girls Grading","age":"U12","div":null,"stats":{"gp":14,"fouls":28,"wins":3,"losses":11,"pts":13,"fg":6,"ft":1}}]},{"sid":"a272a809","sn":"Winter 2024","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"e5981655","tn":"Cougars U10 Girls Starlights","gid":"ad0e2f00","gn":"U10 Girls B","age":"U10","div":null,"stats":{"gp":11,"fouls":11,"ft":4,"fg":2,"pts":8,"finals":1,"gfApps":1,"wins":5,"losses":6,"gfWins":1}},{"tid":"e5981655","tn":"Cougars U10 Girls Starlights","gid":"c58c78ba","gn":"U10 Girls Grading","age":"U10","div":null,"stats":{"gp":11,"fouls":11,"fg":2,"pts":8,"finals":1,"gfApps":1,"wins":5,"losses":6,"ft":4,"gfWins":1}}]},{"sid":"738a875b","sn":"Summer 2023/24","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"b4330b09","tn":"Cougars U10 Girls Gems","gid":"507cc27a","gn":"U10 Girls C","age":"U10","div":null,"stats":{"gp":15,"fouls":17,"ft":3,"fg":4,"pts":11,"finals":1,"wins":6,"losses":8,"draws":1}},{"tid":"b4330b09","tn":"Cougars U10 Girls Gems","gid":"110254b0","gn":"U10 Girls Grading","age":"U10","div":null,"stats":{"gp":15,"fouls":17,"fg":4,"pts":11,"finals":1,"wins":6,"losses":8,"draws":1,"ft":3}}]}],"updatedAt":"2026-06-01T03:19:51.320Z","teams":[{"tid":"7fc14a91","sid":"6c117270","status":"ACTIVE"},{"tid":"c088c71c","sid":"c9bdcd48","status":"COMPLETED"},{"tid":"e62c4194","sid":"7a7de984","status":"COMPLETED"},{"tid":"e5981655","sid":"a272a809","status":"COMPLETED"},{"tid":"b4330b09","sid":"738a875b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:19:35.362Z","records":{"maxGamePTS":{"v":8,"gameKey":"654a85fd","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["01a26a88","03a048cb","095c401a","13affb36","1801974b","1b777a7e","1ca462aa","22cd50a2","25a82b6f","2ad32316","2b865117","2fb8068f","33a52900","388b53e0","3d8fe3bb","3fbf9f73","41cb8f85","45294ae4","461feb2d","48f4dfd1","4cf9bc0a","4f1d13ee","522df20d","5524e44c","646e4092","6514b315","654a85fd","65bd1a09","6670445f","67c80fdb","69db1038","77226e01","7a6e81d3","7ddf79a4","80ffa291","834a2845","8c5f0444","8f56e4f9","97459bf5","a0f6e1da","a2e36f44","b61de92d","b8063263","b9df6397","bccdb84f","bdb939fa","be0be61c","c2bd0a92","c5e84bb1","d041220b","dc46adba","de4c96e5","e32802f0","eb470a8d","eddac123","ef860dcf","f304f81a","f745e0eb"]}
+{
+  "uuid": "3e263997-6550-4cb8-bc3d-1644656ab9bf",
+  "name": "Holly Bond",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 72,
+      "fouls": 74,
+      "fg": 28,
+      "ft": 16,
+      "foulOuts": {
+        "7a7de984": 1
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 38,
+      "losses": 70,
+      "draws": 2,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:08:30.917Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Piranhas Basketball",
+      "regs": [
+        {
+          "tid": "7fc14a91",
+          "tn": "U12 Girls Creswick Piranhas",
+          "gid": "0ff83b89",
+          "gn": "Saturday U12 Girls Section 06",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 7,
+            "fg": 14,
+            "pts": 35,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c9bdcd48",
+      "sn": "Winter 2025",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "c088c71c",
+          "tn": "Cougars U12 Girls Starlights",
+          "gid": "13dec153",
+          "gn": "U12 Girls D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 12,
+            "fouls": 6,
+            "fg": 2,
+            "pts": 5,
+            "wins": 3,
+            "losses": 9,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "c088c71c",
+          "tn": "Cougars U12 Girls Starlights",
+          "gid": "3d159896",
+          "gn": "U12 Girls Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 2,
+            "pts": 5,
+            "wins": 3,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a7de984",
+      "sn": "Summer 2024/25",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "e62c4194",
+          "tn": "Cougars U12 Girls Starlights",
+          "gid": "a65efaa4",
+          "gn": "U12 Girls D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "e62c4194",
+          "tn": "Cougars U12 Girls Starlights",
+          "gid": "9038da1c",
+          "gn": "U12 Girls Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "wins": 3,
+            "losses": 11,
+            "pts": 13,
+            "fg": 6,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a272a809",
+      "sn": "Winter 2024",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "e5981655",
+          "tn": "Cougars U10 Girls Starlights",
+          "gid": "ad0e2f00",
+          "gn": "U10 Girls B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 11,
+            "ft": 4,
+            "fg": 2,
+            "pts": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 6,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "e5981655",
+          "tn": "Cougars U10 Girls Starlights",
+          "gid": "c58c78ba",
+          "gn": "U10 Girls Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 11,
+            "fg": 2,
+            "pts": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 6,
+            "ft": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "738a875b",
+      "sn": "Summer 2023/24",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "b4330b09",
+          "tn": "Cougars U10 Girls Gems",
+          "gid": "507cc27a",
+          "gn": "U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 3,
+            "fg": 4,
+            "pts": 11,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b4330b09",
+          "tn": "Cougars U10 Girls Gems",
+          "gid": "110254b0",
+          "gn": "U10 Girls Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "fg": 4,
+            "pts": 11,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "ft": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T03:19:51.320Z",
+  "teams": [
+    {
+      "tid": "7fc14a91",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c088c71c",
+      "sid": "c9bdcd48",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e62c4194",
+      "sid": "7a7de984",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5981655",
+      "sid": "a272a809",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4330b09",
+      "sid": "738a875b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:22.730Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "654a85fd",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01a26a88",
+    "03a048cb",
+    "095c401a",
+    "13affb36",
+    "1801974b",
+    "1b777a7e",
+    "1ca462aa",
+    "22cd50a2",
+    "25a82b6f",
+    "2ad32316",
+    "2b865117",
+    "2fb8068f",
+    "33a52900",
+    "388b53e0",
+    "3d8fe3bb",
+    "3fbf9f73",
+    "41cb8f85",
+    "45294ae4",
+    "461feb2d",
+    "48f4dfd1",
+    "4cf9bc0a",
+    "4f1d13ee",
+    "522df20d",
+    "5524e44c",
+    "646e4092",
+    "6514b315",
+    "654a85fd",
+    "65bd1a09",
+    "6670445f",
+    "67c80fdb",
+    "69db1038",
+    "77226e01",
+    "7a6e81d3",
+    "7ddf79a4",
+    "80ffa291",
+    "834a2845",
+    "8c5f0444",
+    "8f56e4f9",
+    "97459bf5",
+    "a0f6e1da",
+    "a2e36f44",
+    "b61de92d",
+    "b8063263",
+    "b9df6397",
+    "bccdb84f",
+    "bdb939fa",
+    "be0be61c",
+    "c2bd0a92",
+    "c5e84bb1",
+    "d041220b",
+    "dc46adba",
+    "de4c96e5",
+    "e32802f0",
+    "eb470a8d",
+    "eddac123",
+    "ef860dcf",
+    "f304f81a",
+    "f745e0eb"
+  ]
+}

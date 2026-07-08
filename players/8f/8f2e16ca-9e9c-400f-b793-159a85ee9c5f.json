@@ -1,1 +1,106 @@
-{"uuid":"8f2e16ca-9e9c-400f-b793-159a85ee9c5f","gender":null,"sports":{"Basketball":{"gp":14,"pts":6,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":3,"losses":7,"draws":1,"winPct":0.27,"fouls":1,"statsChecked":"2026-07-06T18:59:18.672Z"}},"seasons":[{"sid":"d7c89ab9","sn":"Autumn 2026","club":null,"regs":[{"tid":"118c98b2","tn":"10 & UNDER Team 3 - Green","gid":"273b373b","gn":"Monday 10 & Under Mixed","stats":{"gp":11,"pts":6,"fg":3,"wins":3,"losses":7,"draws":1}}]},{"sid":"73551fc8","regs":[{"tid":"2cd4cb89","stats":{"gp":3,"fouls":1}},{"tid":"2cd4cb89","tn":"","gid":"07f99f42","gn":"U10 Boys","div":null,"stats":{"gp":3,"fouls":1}}]}],"updatedAt":"2026-07-06T18:30:23.385Z","records":{"maxGamePTS":{"v":2,"gameKey":"746a99ef","sid":"d7c89ab9"},"maxGameThreePt":{"v":null}},"games":["2590c7b3","323507ac","4a81489e","61956d8f","746a99ef","912ad29b","ae908327","b096bb77","b27cc27e","d306687a","dcd788c9"],"name":"Autumn 2026"}
+{
+  "uuid": "8f2e16ca-9e9c-400f-b793-159a85ee9c5f",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 6,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 7,
+      "draws": 1,
+      "winPct": 0.27,
+      "fouls": 1,
+      "statsChecked": "2026-07-06T18:59:18.672Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d7c89ab9",
+      "sn": "Autumn 2026",
+      "club": null,
+      "regs": [
+        {
+          "tid": "118c98b2",
+          "tn": "10 & UNDER Team 3 - Green",
+          "gid": "273b373b",
+          "gn": "Monday 10 & Under Mixed",
+          "stats": {
+            "gp": 11,
+            "pts": 6,
+            "fg": 3,
+            "wins": 3,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "2cd4cb89",
+          "stats": {
+            "gp": 3,
+            "fouls": 1
+          },
+          "gid": "07f99f42",
+          "gn": "U10 Boys"
+        },
+        {
+          "tid": "2cd4cb89",
+          "tn": "",
+          "gid": "07f99f42",
+          "gn": "U10 Boys",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:23.385Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "746a99ef",
+      "sid": "d7c89ab9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2590c7b3",
+    "323507ac",
+    "4a81489e",
+    "61956d8f",
+    "746a99ef",
+    "912ad29b",
+    "ae908327",
+    "b096bb77",
+    "b27cc27e",
+    "d306687a",
+    "dcd788c9"
+  ],
+  "name": "Autumn 2026",
+  "teams": [
+    {
+      "tid": "118c98b2",
+      "sid": "d7c89ab9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2cd4cb89",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:03.741Z"
+}

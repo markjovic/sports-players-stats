@@ -1,1 +1,103 @@
-{"uuid":"590aa8cd-31df-4e73-95cf-57bdaff88815","name":"Keela O’Connor","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":14,"fouls":22,"fg":2,"ft":4,"threePt":2,"foulOuts":{"6dd649c0":1},"maxGamePTS":5,"maxGameThreePt":1,"losses":9,"winPct":0,"statsChecked":"2026-07-05T14:41:43.046Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"9474bba9","tn":"Sutherland Sharks U16 Girls 2","gid":"3f2dc07b","gn":"GIRLS UNDER 16 B2","age":null,"div":"B2","stats":{"gp":5,"fouls":15,"ft":2,"pts":2,"foulOuts":1,"losses":5}}]},{"sid":"0869ea69","regs":[{"tid":"9c5353d9","stats":{"losses":4,"gp":5,"pts":12,"fg":2,"ft":2,"threePt":2,"fouls":7}}]}],"updatedAt":"2026-05-31T01:18:45.708Z","teams":[{"tid":"9c5353d9","sid":"0869ea69","status":"UPCOMING"},{"tid":"9474bba9","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:36:47.551Z","records":{"maxGamePTS":{"v":5,"gameKey":"e668259f","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"e668259f","sid":"0869ea69"}},"games":["276c6dbb","2d432374","68c9fa13","6df874b9","89dac3e3","c9e922a1","e668259f","e9e80f5f","ecbb3945"]}
+{
+  "uuid": "590aa8cd-31df-4e73-95cf-57bdaff88815",
+  "name": "Keela O’Connor",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 14,
+      "fouls": 22,
+      "fg": 2,
+      "ft": 4,
+      "threePt": 2,
+      "foulOuts": {
+        "6dd649c0": 1
+      },
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "losses": 9,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:41:43.046Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "9474bba9",
+          "tn": "Sutherland Sharks U16 Girls 2",
+          "gid": "3f2dc07b",
+          "gn": "GIRLS UNDER 16 B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 5,
+            "fouls": 15,
+            "ft": 2,
+            "pts": 2,
+            "foulOuts": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "9c5353d9",
+          "stats": {
+            "losses": 4,
+            "gp": 5,
+            "pts": 12,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 7
+          },
+          "gid": "e815e4c3",
+          "gn": "GIRLS UNDER 16 B1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:18:45.708Z",
+  "teams": [
+    {
+      "tid": "9474bba9",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c5353d9",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:53.784Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "e668259f",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "e668259f",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "276c6dbb",
+    "2d432374",
+    "68c9fa13",
+    "6df874b9",
+    "89dac3e3",
+    "c9e922a1",
+    "e668259f",
+    "e9e80f5f",
+    "ecbb3945"
+  ]
+}

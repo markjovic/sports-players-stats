@@ -1,1 +1,260 @@
-{"uuid":"b7016075-3095-4e89-b438-59beef472da5","name":"Ivy Turner","gender":"Girls","sports":{"Basketball":{"gp":33,"fouls":4,"foulOuts":{},"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":0.6,"maxGamePTS":null,"maxGameThreePt":null,"wins":8,"losses":9,"draws":3,"winPct":0.4,"statsChecked":"2026-07-05T15:51:04.394Z"}},"seasons":[{"sid":"7e1fcb26","sn":"Autumn 2023","regs":[{"tid":"17c3af2e","tn":"Purple","gid":"06946efa","gn":"Monday U12 Girls","age":"U12","div":null,"stats":{"gp":11,"fouls":2,"finals":1,"gfApps":1,"wins":6,"losses":5,"gfWins":1}}]},{"sid":"355bfa63","sn":"Autumn 2022","regs":[{"tid":"18b09a2a","tn":"SOUTHERN SMILES LIME Under 12 Girls","gid":"36ede3e1","gn":"Under 12 Girls","age":null,"div":null,"stats":{"gp":8,"fouls":2,"finals":1,"wins":2,"losses":4,"draws":1}},{"tid":"550c3626","tn":"U10G PURPLE","gid":"c3524f4e","gn":"Under 10 Girls","age":null,"div":null,"stats":{"gp":2,"finals":1,"draws":2}}]},{"sid":"6e58d887","sn":"Spring 2021","regs":[{"tid":"da277905","tn":"U10 Girls Voyage Fitness","gid":"98fdf67b","gn":"Monday U10 Girls","age":"U10","div":null,"stats":{"gp":1}}]},{"sid":"ea4768cc","sn":"Autumn 2021","regs":[{"tid":"1de40e99","tn":"Purple","gid":"719e9a54","gn":"U10 Girls","age":"U10","div":null,"stats":{"gp":7,"finals":1,"gfApps":1}}]},{"sid":"14f4b8ff","sn":"Autumn 2020","regs":[{"tid":"56911780","tn":"Yellow","gid":"8bd2b56c","gn":"U10 Girls","age":"U10","div":null,"stats":{"gp":4}}]}],"updatedAt":"2026-06-02T08:58:23.326Z","teams":[{"tid":"17c3af2e","sid":"7e1fcb26","status":"COMPLETED"},{"tid":"18b09a2a","sid":"355bfa63","status":"COMPLETED"},{"tid":"550c3626","sid":"355bfa63","status":"COMPLETED"},{"tid":"da277905","sid":"6e58d887","status":"COMPLETED"},{"tid":"1de40e99","sid":"ea4768cc","status":"COMPLETED"},{"tid":"ec0f2031","sid":"ea4768cc","status":"COMPLETED"},{"tid":"56911780","sid":"14f4b8ff","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:36.001Z","games":["004791b4","00bec4b5","0358c18b","0e13937e","10858bdb","15902b05","1d7f3fdf","245d7322","2c62d942","2e77f103","3398f4c3","4c87a427","55da34a6","5602ba71","5bb5ad21","6a121ba3","6c575f44","6cccf944","71416dbf","a183972a","b536bf4f","b746b4f1","ba52886d","c2a7b498","cdd0d93d","d0824ad1","d34bf3b4","db9004fa","e1e469ee","eea8a4a0","f335cd65","f3f338a1","ffada0e5"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"gameTids":{"2c62d942":"17c3af2e","eea8a4a0":"17c3af2e","b746b4f1":"17c3af2e","c2a7b498":"17c3af2e","d0824ad1":"17c3af2e","15902b05":"17c3af2e","6a121ba3":"17c3af2e","d34bf3b4":"17c3af2e","db9004fa":"17c3af2e","3398f4c3":"17c3af2e","2e77f103":"17c3af2e","5602ba71":"18b09a2a","245d7322":"18b09a2a","0e13937e":"18b09a2a","0358c18b":"18b09a2a","ffada0e5":"18b09a2a","f335cd65":"18b09a2a","55da34a6":"18b09a2a","6c575f44":"18b09a2a","ba52886d":"550c3626","5bb5ad21":"550c3626","4c87a427":"da277905","b536bf4f":"1de40e99","004791b4":"1de40e99","10858bdb":"1de40e99","e1e469ee":"1de40e99","00bec4b5":"1de40e99","71416dbf":"1de40e99","1d7f3fdf":"1de40e99","6cccf944":"56911780","f3f338a1":"56911780","cdd0d93d":"56911780","a183972a":"56911780"}}
+{
+  "uuid": "b7016075-3095-4e89-b438-59beef472da5",
+  "name": "Ivy Turner",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "fouls": 4,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.6,
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 9,
+      "draws": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:51:04.394Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7e1fcb26",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "17c3af2e",
+          "tn": "Purple",
+          "gid": "06946efa",
+          "gn": "Monday U12 Girls",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "355bfa63",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "18b09a2a",
+          "tn": "SOUTHERN SMILES LIME Under 12 Girls",
+          "gid": "36ede3e1",
+          "gn": "Under 12 Girls",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 2,
+            "finals": 1,
+            "wins": 2,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "550c3626",
+          "tn": "U10G PURPLE",
+          "gid": "c3524f4e",
+          "gn": "Under 10 Girls",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "finals": 1,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6e58d887",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "da277905",
+          "tn": "U10 Girls Voyage Fitness",
+          "gid": "98fdf67b",
+          "gn": "Monday U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ea4768cc",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "1de40e99",
+          "tn": "Purple",
+          "gid": "719e9a54",
+          "gn": "U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "finals": 1,
+            "gfApps": 1
+          }
+        },
+        {
+          "tid": "ec0f2031",
+          "tn": "U10 Girls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "14f4b8ff",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "56911780",
+          "tn": "Yellow",
+          "gid": "8bd2b56c",
+          "gn": "U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T08:58:23.326Z",
+  "teams": [
+    {
+      "tid": "17c3af2e",
+      "sid": "7e1fcb26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "18b09a2a",
+      "sid": "355bfa63",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "550c3626",
+      "sid": "355bfa63",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da277905",
+      "sid": "6e58d887",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1de40e99",
+      "sid": "ea4768cc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec0f2031",
+      "sid": "ea4768cc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56911780",
+      "sid": "14f4b8ff",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:05.713Z",
+  "games": [
+    "004791b4",
+    "00bec4b5",
+    "0358c18b",
+    "0e13937e",
+    "10858bdb",
+    "15902b05",
+    "1d7f3fdf",
+    "245d7322",
+    "2c62d942",
+    "2e77f103",
+    "3398f4c3",
+    "4c87a427",
+    "55da34a6",
+    "5602ba71",
+    "5bb5ad21",
+    "6a121ba3",
+    "6c575f44",
+    "6cccf944",
+    "71416dbf",
+    "a183972a",
+    "b536bf4f",
+    "b746b4f1",
+    "ba52886d",
+    "c2a7b498",
+    "cdd0d93d",
+    "d0824ad1",
+    "d34bf3b4",
+    "db9004fa",
+    "e1e469ee",
+    "eea8a4a0",
+    "f335cd65",
+    "f3f338a1",
+    "ffada0e5"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "2c62d942": "17c3af2e",
+    "eea8a4a0": "17c3af2e",
+    "b746b4f1": "17c3af2e",
+    "c2a7b498": "17c3af2e",
+    "d0824ad1": "17c3af2e",
+    "15902b05": "17c3af2e",
+    "6a121ba3": "17c3af2e",
+    "d34bf3b4": "17c3af2e",
+    "db9004fa": "17c3af2e",
+    "3398f4c3": "17c3af2e",
+    "2e77f103": "17c3af2e",
+    "5602ba71": "18b09a2a",
+    "245d7322": "18b09a2a",
+    "0e13937e": "18b09a2a",
+    "0358c18b": "18b09a2a",
+    "ffada0e5": "18b09a2a",
+    "f335cd65": "18b09a2a",
+    "55da34a6": "18b09a2a",
+    "6c575f44": "18b09a2a",
+    "ba52886d": "550c3626",
+    "5bb5ad21": "550c3626",
+    "4c87a427": "da277905",
+    "b536bf4f": "1de40e99",
+    "004791b4": "1de40e99",
+    "10858bdb": "1de40e99",
+    "e1e469ee": "1de40e99",
+    "00bec4b5": "1de40e99",
+    "71416dbf": "1de40e99",
+    "1d7f3fdf": "1de40e99",
+    "6cccf944": "56911780",
+    "f3f338a1": "56911780",
+    "cdd0d93d": "56911780",
+    "a183972a": "56911780"
+  }
+}

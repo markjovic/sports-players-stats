@@ -1,1 +1,446 @@
-{"uuid":"d720846d-6db5-4786-9c4f-9c5792f65472","name":"Adam Beattie","gender":"Men","sports":{"Basketball":{"gp":37,"pts":184,"fouls":77,"fg":66,"ft":22,"threePt":10,"foulOuts":{"09fe9a1b":1,"68490f32":1},"maxGamePTS":15,"maxGameThreePt":2,"wins":7,"losses":23,"draws":2,"winPct":0.22,"statsChecked":"2026-07-05T16:15:36.092Z"}},"seasons":[{"sid":"09fe9a1b","sn":"Spring 2023","regs":[{"tid":"ddb6b483","tn":"The Raptors","gid":"9fbc3ee8","gn":"Tuesday Open Men A/B Grade","age":"Senior","div":null,"stats":{"gp":2,"fouls":7,"ft":1,"fg":1,"pts":3,"wins":1,"losses":1}},{"tid":"da35bf9f","stats":{"wins":2,"losses":9,"draws":1,"gp":12,"pts":48,"fg":19,"ft":7,"threePt":1,"fouls":29}}]},{"sid":"09fe9a1b","sn":"Spring 2023","regs":[{"tid":"da35bf9f","tn":"Fused","gid":"53d788d6","gn":"Thursday Open Men A Grade","age":"Senior","div":null,"stats":{"gp":12,"fouls":29,"ft":7,"fg":19,"threePt":1,"pts":48,"foulOuts":1,"wins":2,"losses":9,"draws":1}}]},{"sid":"88491e39","sn":"Autumn 2023","regs":[{"tid":"0518b704","tn":"Blazers","gid":"53e7b1aa","gn":"Wednesday Open Men A Grade","age":"Senior","div":null,"stats":{"gp":6,"fouls":11,"ft":2,"fg":7,"threePt":1,"pts":19,"wins":2,"losses":4}}]},{"sid":"68490f32","sn":"Winter 2021","regs":[{"tid":"6049dc5f","tn":"Force (Blue)","gid":"af57da20","gn":"Men MONDAY Section 2","age":null,"div":null,"stats":{"gp":7,"fouls":17,"ft":8,"fg":13,"threePt":2,"pts":40,"foulOuts":1}}]},{"sid":"1ca322dc","sn":"Summer 2020/21","regs":[{"tid":"c33dfbff","tn":"Force (Blue)","gid":"5b0d4ef6","gn":"Men THURSDAY Section 2","age":null,"div":null,"stats":{"gp":2,"fouls":4,"fg":3,"threePt":1,"pts":9}},{"tid":"40869ee1","stats":{"gp":8,"pts":65,"fg":23,"ft":4,"threePt":5,"fouls":9}}]},{"sid":"1ca322dc","sn":"Summer 2020/21","regs":[{"tid":"40869ee1","tn":"Force (Blue)","gid":"bd8a69ae","gn":"Men MONDAY Section 3","age":null,"div":null,"stats":{"gp":8,"fouls":9,"ft":4,"fg":23,"threePt":5,"pts":65}}]}],"updatedAt":"2026-06-02T21:03:52.375Z","teams":[{"tid":"af7be70e","sid":"5944effa","status":"COMPLETED"},{"tid":"35028ce0","sid":"348dbfb8","status":"COMPLETED"},{"tid":"da35bf9f","sid":"09fe9a1b","status":"COMPLETED"},{"tid":"ddb6b483","sid":"09fe9a1b","status":"COMPLETED"},{"tid":"04258b69","sid":"9358e51a","status":"COMPLETED"},{"tid":"0518b704","sid":"88491e39","status":"COMPLETED"},{"tid":"bab5d779","sid":"d3d4e181","status":"COMPLETED"},{"tid":"a1a5e1d0","sid":"21cd9648","status":"COMPLETED"},{"tid":"653310b9","sid":"d4cbf787","status":"COMPLETED"},{"tid":"6049dc5f","sid":"68490f32","status":"COMPLETED"},{"tid":"525ba69d","sid":"fcc2b344","status":"COMPLETED"},{"tid":"c33dfbff","sid":"1ca322dc","status":"COMPLETED"},{"tid":"c33dfbff","sid":"1ca322dc","status":"COMPLETED"},{"tid":"40869ee1","sid":"1ca322dc","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:50.506Z","records":{"maxGamePTS":{"v":15,"gameKey":"2675792e","sid":"09fe9a1b"},"maxGameThreePt":{"v":2,"gameKey":"73b1d964","sid":"1ca322dc"}},"games":["0293897c","058ad63b","06add8ac","0b74cf14","1afd65d6","243b0350","2675792e","2e6e85af","37030fcf","38335b6e","38f728f6","3db312d8","3dc8ab20","3f241e5b","667c52ab","73b1d964","7a0ab887","7c9de3ba","8dbdb375","924ff37f","a8fee1a3","b1e235cf","b7f792cc","bad4b7d3","bfb75fb0","cb537b87","d1f54838","d9da606a","ddb06941","e36d3505","ee751c26","f1c8d7de","f5c9f4ca","f987ecb9","f9fa7a5c","fca3d4b8","ff75b428"],"gameTids":{"d1f54838":"ddb6b483","7c9de3ba":"ddb6b483","667c52ab":"da35bf9f","37030fcf":"da35bf9f","2675792e":"da35bf9f","924ff37f":"da35bf9f","a8fee1a3":"da35bf9f","1afd65d6":"da35bf9f","06add8ac":"da35bf9f","3db312d8":"da35bf9f","ee751c26":"da35bf9f","bad4b7d3":"da35bf9f","2e6e85af":"da35bf9f","0b74cf14":"da35bf9f","058ad63b":"0518b704","f1c8d7de":"0518b704","3dc8ab20":"0518b704","f5c9f4ca":"0518b704","bfb75fb0":"0518b704","38335b6e":"0518b704","b1e235cf":"6049dc5f","3f241e5b":"6049dc5f","0293897c":"6049dc5f","38f728f6":"6049dc5f","fca3d4b8":"6049dc5f","8dbdb375":"6049dc5f","243b0350":"6049dc5f","f987ecb9":"c33dfbff","ff75b428":"c33dfbff","73b1d964":"40869ee1","b7f792cc":"40869ee1","7a0ab887":"40869ee1","d9da606a":"40869ee1","f9fa7a5c":"40869ee1","ddb06941":"40869ee1","e36d3505":"40869ee1","cb537b87":"40869ee1"}}
+{
+  "uuid": "d720846d-6db5-4786-9c4f-9c5792f65472",
+  "name": "Adam Beattie",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "pts": 184,
+      "fouls": 77,
+      "fg": 66,
+      "ft": 22,
+      "threePt": 10,
+      "foulOuts": {
+        "09fe9a1b": 1,
+        "68490f32": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 2,
+      "wins": 7,
+      "losses": 23,
+      "draws": 2,
+      "winPct": 0.22,
+      "statsChecked": "2026-07-05T16:15:36.092Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "09fe9a1b",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "ddb6b483",
+          "tn": "The Raptors",
+          "gid": "9fbc3ee8",
+          "gn": "Tuesday Open Men A/B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "da35bf9f",
+          "stats": {
+            "wins": 2,
+            "losses": 9,
+            "draws": 1,
+            "gp": 12,
+            "pts": 48,
+            "fg": 19,
+            "ft": 7,
+            "threePt": 1,
+            "fouls": 29
+          },
+          "gid": "53d788d6",
+          "gn": "Thursday Open Men A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "09fe9a1b",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "da35bf9f",
+          "tn": "Fused",
+          "gid": "53d788d6",
+          "gn": "Thursday Open Men A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 29,
+            "ft": 7,
+            "fg": 19,
+            "threePt": 1,
+            "pts": 48,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88491e39",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "0518b704",
+          "tn": "Blazers",
+          "gid": "53e7b1aa",
+          "gn": "Wednesday Open Men A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 7,
+            "threePt": 1,
+            "pts": 19,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68490f32",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "6049dc5f",
+          "tn": "Force (Blue)",
+          "gid": "af57da20",
+          "gn": "Men MONDAY Section 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 8,
+            "fg": 13,
+            "threePt": 2,
+            "pts": 40,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1ca322dc",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "c33dfbff",
+          "tn": "Force (Blue)",
+          "gid": "5b0d4ef6",
+          "gn": "Men THURSDAY Section 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 4,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 9
+          }
+        },
+        {
+          "tid": "40869ee1",
+          "stats": {
+            "gp": 8,
+            "pts": 65,
+            "fg": 23,
+            "ft": 4,
+            "threePt": 5,
+            "fouls": 9
+          },
+          "gid": "bd8a69ae",
+          "gn": "Men MONDAY Section 3"
+        }
+      ]
+    },
+    {
+      "sid": "1ca322dc",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "40869ee1",
+          "tn": "Force (Blue)",
+          "gid": "bd8a69ae",
+          "gn": "Men MONDAY Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 23,
+            "threePt": 5,
+            "pts": 65
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "af7be70e",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "35028ce0",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "04258b69",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "bab5d779",
+          "tn": "VILKAS",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "a1a5e1d0",
+          "tn": "VILKAS",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "653310b9",
+          "tn": "VILKAS",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "fcc2b344",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "525ba69d",
+          "tn": "VILKAS",
+          "gid": "14669b5f",
+          "gn": "Thursday Open Men A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T21:03:52.375Z",
+  "teams": [
+    {
+      "tid": "ddb6b483",
+      "sid": "09fe9a1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da35bf9f",
+      "sid": "09fe9a1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0518b704",
+      "sid": "88491e39",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6049dc5f",
+      "sid": "68490f32",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c33dfbff",
+      "sid": "1ca322dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "40869ee1",
+      "sid": "1ca322dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af7be70e",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35028ce0",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "04258b69",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bab5d779",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1a5e1d0",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "653310b9",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "525ba69d",
+      "sid": "fcc2b344",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:39.426Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "2675792e",
+      "sid": "09fe9a1b"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "73b1d964",
+      "sid": "1ca322dc"
+    }
+  },
+  "games": [
+    "0293897c",
+    "058ad63b",
+    "06add8ac",
+    "0b74cf14",
+    "1afd65d6",
+    "243b0350",
+    "2675792e",
+    "2e6e85af",
+    "37030fcf",
+    "38335b6e",
+    "38f728f6",
+    "3db312d8",
+    "3dc8ab20",
+    "3f241e5b",
+    "667c52ab",
+    "73b1d964",
+    "7a0ab887",
+    "7c9de3ba",
+    "8dbdb375",
+    "924ff37f",
+    "a8fee1a3",
+    "b1e235cf",
+    "b7f792cc",
+    "bad4b7d3",
+    "bfb75fb0",
+    "cb537b87",
+    "d1f54838",
+    "d9da606a",
+    "ddb06941",
+    "e36d3505",
+    "ee751c26",
+    "f1c8d7de",
+    "f5c9f4ca",
+    "f987ecb9",
+    "f9fa7a5c",
+    "fca3d4b8",
+    "ff75b428"
+  ],
+  "gameTids": {
+    "d1f54838": "ddb6b483",
+    "7c9de3ba": "ddb6b483",
+    "667c52ab": "da35bf9f",
+    "37030fcf": "da35bf9f",
+    "2675792e": "da35bf9f",
+    "924ff37f": "da35bf9f",
+    "a8fee1a3": "da35bf9f",
+    "1afd65d6": "da35bf9f",
+    "06add8ac": "da35bf9f",
+    "3db312d8": "da35bf9f",
+    "ee751c26": "da35bf9f",
+    "bad4b7d3": "da35bf9f",
+    "2e6e85af": "da35bf9f",
+    "0b74cf14": "da35bf9f",
+    "058ad63b": "0518b704",
+    "f1c8d7de": "0518b704",
+    "3dc8ab20": "0518b704",
+    "f5c9f4ca": "0518b704",
+    "bfb75fb0": "0518b704",
+    "38335b6e": "0518b704",
+    "b1e235cf": "6049dc5f",
+    "3f241e5b": "6049dc5f",
+    "0293897c": "6049dc5f",
+    "38f728f6": "6049dc5f",
+    "fca3d4b8": "6049dc5f",
+    "8dbdb375": "6049dc5f",
+    "243b0350": "6049dc5f",
+    "f987ecb9": "c33dfbff",
+    "ff75b428": "c33dfbff",
+    "73b1d964": "40869ee1",
+    "b7f792cc": "40869ee1",
+    "7a0ab887": "40869ee1",
+    "d9da606a": "40869ee1",
+    "f9fa7a5c": "40869ee1",
+    "ddb06941": "40869ee1",
+    "e36d3505": "40869ee1",
+    "cb537b87": "40869ee1"
+  }
+}

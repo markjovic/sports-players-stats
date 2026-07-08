@@ -1,1 +1,284 @@
-{"uuid":"e012db4b-2eb3-447b-a5f6-e2e49eca1a6a","gender":null,"sports":{"Basketball":{"gp":26,"pts":88,"fouls":23,"fg":26,"ft":6,"threePt":10,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":4,"wins":18,"losses":23,"draws":3,"winPct":0.41,"statsChecked":"2026-07-05T16:15:28.999Z"}},"seasons":[{"sid":"43299630","sn":"Summer 2022/23","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"589924c3","tn":"Collingwood U21 Boys 05","gid":"b1ef0304","gn":"Boys U21 BA","stats":{"gp":9,"pts":42,"fouls":8,"fg":6,"threePt":10,"wins":4,"losses":3,"draws":1}},{"tid":"589924c3","tn":"Collingwood U21 Boys 05","gid":"2414bd2b","gn":"Boys U21 B Grading","stats":{"gp":9,"pts":42,"fouls":8,"threePt":10,"wins":4,"losses":3,"draws":1,"fg":6}},{"tid":"589924c3","tn":"Collingwood U21 Boys 05","gid":"3413be28","gn":"Boys U21 D Grading","stats":{"gp":9,"wins":4,"losses":3,"draws":1,"pts":42,"fg":6,"threePt":10,"fouls":8}}]},{"sid":"f284a56e","sn":"Summer 2021/22","club":"Melbourne University Basketball Club","regs":[{"tid":"8f2b789b","tn":"Melbourne Uni 6M","gid":"d2ffd5fd","gn":"Sunday Senior Men D Grade(1)","stats":{"gp":5,"pts":28,"fouls":9,"fg":11,"ft":6,"losses":5}}]},{"sid":"1094cb2b","sn":"Summer 2021/22","club":"Melbourne University Basketball Club","regs":[{"tid":"6b2ae923","tn":"Melbourne Uni 3M","gid":"08644b8f","gn":"Tuesday Open Men E","stats":{"gp":1,"pts":4,"fg":2}}]},{"sid":"b7c3491e","sn":"Summer 2021/22","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"6e89d29c","tn":"Collingwood U21 Boys 02","gid":"70047938","gn":"Boys U21BA","stats":{"gp":7,"pts":10,"fouls":2,"fg":5,"wins":2,"losses":4}},{"tid":"6e89d29c","tn":"Collingwood U21 Boys 02","gid":"a1e577f4","gn":"Boys U21 B Grading","stats":{"gp":7,"wins":2,"losses":4,"pts":10,"fg":5,"fouls":2}}]},{"sid":"badcb509","sn":"Winter 2021","club":"Melbourne University Basketball Club","regs":[{"tid":"ed86dc7e","tn":"Melbourne Uni 5M","gid":"981cba4f","gn":"Sunday Senior Men D Grade (1)","stats":{"gp":3,"pts":4,"fouls":3,"fg":2,"wins":2,"losses":1}}]},{"sid":"a5dfc5c1","sn":"2021","club":"~[ARCHIVED] Melbourne Tigers Boys","regs":[{"tid":"6f088e9f","tn":"Melbourne U21 Boys 4","gid":"8f735c27","gn":"U21B Grading 2 - Pool 4A","stats":{"gp":1,"fouls":1}}]}],"updatedAt":"2026-06-11T23:45:30.179Z","records":{"maxGamePTS":{"v":13,"gameKey":"949c9302","sid":"43299630"},"maxGameThreePt":{"v":4,"gameKey":"0ed78e17","sid":"43299630"}},"games":["0679d6e3","0b4b5e2e","0ed78e17","0fc9eccf","1038c149","17b5b867","26a0ecac","297cdf07","3046273d","45edb514","4bd9e994","4c75b232","54888379","6b9be4f1","876235e8","949c9302","9df76ff7","a825e35d","aa77f7a1","abd71b04","be52553a","c2193b59","d14a85d6","d90b9a84","ee8dbebf","f4ffbc51"],"name":"Summer 2022/23"}
+{
+  "uuid": "e012db4b-2eb3-447b-a5f6-e2e49eca1a6a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 88,
+      "fouls": 23,
+      "fg": 26,
+      "ft": 6,
+      "threePt": 10,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 4,
+      "wins": 18,
+      "losses": 23,
+      "draws": 3,
+      "winPct": 0.41,
+      "statsChecked": "2026-07-05T16:15:28.999Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "43299630",
+      "sn": "Summer 2022/23",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "589924c3",
+          "tn": "Collingwood U21 Boys 05",
+          "gid": "b1ef0304",
+          "gn": "Boys U21 BA",
+          "stats": {
+            "gp": 9,
+            "pts": 42,
+            "fouls": 8,
+            "fg": 6,
+            "threePt": 10,
+            "wins": 4,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "589924c3",
+          "tn": "Collingwood U21 Boys 05",
+          "gid": "2414bd2b",
+          "gn": "Boys U21 B Grading",
+          "stats": {
+            "gp": 9,
+            "pts": 42,
+            "fouls": 8,
+            "threePt": 10,
+            "wins": 4,
+            "losses": 3,
+            "draws": 1,
+            "fg": 6
+          }
+        },
+        {
+          "tid": "589924c3",
+          "tn": "Collingwood U21 Boys 05",
+          "gid": "3413be28",
+          "gn": "Boys U21 D Grading",
+          "stats": {
+            "gp": 9,
+            "wins": 4,
+            "losses": 3,
+            "draws": 1,
+            "pts": 42,
+            "fg": 6,
+            "threePt": 10,
+            "fouls": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f284a56e",
+      "sn": "Summer 2021/22",
+      "club": "Melbourne University Basketball Club",
+      "regs": [
+        {
+          "tid": "8f2b789b",
+          "tn": "Melbourne Uni 6M",
+          "gid": "d2ffd5fd",
+          "gn": "Sunday Senior Men D Grade(1)",
+          "stats": {
+            "gp": 5,
+            "pts": 28,
+            "fouls": 9,
+            "fg": 11,
+            "ft": 6,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1094cb2b",
+      "sn": "Summer 2021/22",
+      "club": "Melbourne University Basketball Club",
+      "regs": [
+        {
+          "tid": "6b2ae923",
+          "tn": "Melbourne Uni 3M",
+          "gid": "a5991757",
+          "gn": "Tuesday Open Men F",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b7c3491e",
+      "sn": "Summer 2021/22",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "6e89d29c",
+          "tn": "Collingwood U21 Boys 02",
+          "gid": "70047938",
+          "gn": "Boys U21BA",
+          "stats": {
+            "gp": 7,
+            "pts": 10,
+            "fouls": 2,
+            "fg": 5,
+            "wins": 2,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "6e89d29c",
+          "tn": "Collingwood U21 Boys 02",
+          "gid": "a1e577f4",
+          "gn": "Boys U21 B Grading",
+          "stats": {
+            "gp": 7,
+            "wins": 2,
+            "losses": 4,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "badcb509",
+      "sn": "Winter 2021",
+      "club": "Melbourne University Basketball Club",
+      "regs": [
+        {
+          "tid": "ed86dc7e",
+          "tn": "Melbourne Uni 5M",
+          "gid": "981cba4f",
+          "gn": "Sunday Senior Men D Grade (1)",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fouls": 3,
+            "fg": 2,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "~[ARCHIVED] Melbourne Tigers Boys",
+      "regs": [
+        {
+          "tid": "6f088e9f",
+          "tn": "Melbourne U21 Boys 4",
+          "gid": "8f735c27",
+          "gn": "U21B Grading 2 - Pool 4A",
+          "stats": {
+            "gp": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b691159",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "340094f8",
+          "tn": "Melbourne Uni 2M",
+          "gid": "04ca0ded",
+          "gn": "Thursday Open Men C Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:30.179Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "949c9302",
+      "sid": "43299630"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "0ed78e17",
+      "sid": "43299630"
+    }
+  },
+  "games": [
+    "0679d6e3",
+    "0b4b5e2e",
+    "0ed78e17",
+    "0fc9eccf",
+    "1038c149",
+    "17b5b867",
+    "26a0ecac",
+    "297cdf07",
+    "3046273d",
+    "45edb514",
+    "4bd9e994",
+    "4c75b232",
+    "54888379",
+    "6b9be4f1",
+    "876235e8",
+    "949c9302",
+    "9df76ff7",
+    "a825e35d",
+    "aa77f7a1",
+    "abd71b04",
+    "be52553a",
+    "c2193b59",
+    "d14a85d6",
+    "d90b9a84",
+    "ee8dbebf",
+    "f4ffbc51"
+  ],
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "589924c3",
+      "sid": "43299630",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8f2b789b",
+      "sid": "f284a56e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b2ae923",
+      "sid": "1094cb2b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e89d29c",
+      "sid": "b7c3491e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed86dc7e",
+      "sid": "badcb509",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f088e9f",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "340094f8",
+      "sid": "4b691159",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:52.269Z"
+}

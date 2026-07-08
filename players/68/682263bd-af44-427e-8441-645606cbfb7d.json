@@ -1,1 +1,80 @@
-{"uuid":"682263bd-af44-427e-8441-645606cbfb7d","name":"Rex Papal","gender":"Boys","sports":{"Basketball":{"gp":2,"fouls":3,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"losses":1,"winPct":0.5,"statsChecked":"2026-07-05T15:09:51.161Z"}},"seasons":[{"sid":"e3275323","sn":"Summer 2024/25","club":"Penleigh and Essendon Grammar School","regs":[{"tid":"a39f5790","tn":"PEGS","gid":"1af063f1","gn":"AGSV Boys Firsts","age":null,"div":null,"stats":{"gp":2,"fouls":3,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-01T11:19:04.761Z","teams":[{"tid":"a39f5790","sid":"e3275323","status":"COMPLETED"},{"tid":"efbb6ac8","sid":"426606a2","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:45.786Z","games":["0bf43ff7","cbb43b1c"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "682263bd-af44-427e-8441-645606cbfb7d",
+  "name": "Rex Papal",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "fouls": 3,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:09:51.161Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e3275323",
+      "sn": "Summer 2024/25",
+      "club": "Penleigh and Essendon Grammar School",
+      "regs": [
+        {
+          "tid": "a39f5790",
+          "tn": "PEGS",
+          "gid": "1af063f1",
+          "gn": "AGSV Boys Firsts",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "426606a2",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "efbb6ac8",
+          "tn": "PEGS",
+          "gid": "0be2cb67",
+          "gn": "U17 Boys - Narrandjeri",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:19:04.761Z",
+  "teams": [
+    {
+      "tid": "a39f5790",
+      "sid": "e3275323",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "efbb6ac8",
+      "sid": "426606a2",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:44.393Z",
+  "games": [
+    "0bf43ff7",
+    "cbb43b1c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

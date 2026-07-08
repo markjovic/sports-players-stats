@@ -1,1 +1,105 @@
-{"uuid":"c6469e5d-a564-423f-9a2f-b03d43ae7fc9","name":"clinton thorson","gender":"Men","sports":{"Basketball":{"gp":14,"pts":87,"fouls":39,"fg":33,"ft":6,"threePt":5,"foulOuts":{"50ec3c87":1},"maxGamePTS":13,"maxGameThreePt":1,"wins":1,"losses":8,"draws":2,"winPct":0.09,"statsChecked":"2026-07-05T16:28:50.040Z"}},"seasons":[{"sid":"50ec3c87","sn":"Autumn 2026","regs":[{"tid":"caa16fb8","tn":"Hoop Stars","gid":"56458783","gn":"Wednesday O35 Men","age":null,"div":null,"stats":{"gp":14,"fouls":39,"ft":6,"fg":33,"threePt":5,"pts":87,"foulOuts":1,"wins":1,"losses":8,"draws":2}}]}],"updatedAt":"2026-06-03T07:07:53.756Z","teams":[{"tid":"caa16fb8","sid":"50ec3c87","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:43:03.621Z","records":{"maxGamePTS":{"v":13,"gameKey":"298a000b","sid":"50ec3c87"},"maxGameThreePt":{"v":1,"gameKey":"047d9e44","sid":"50ec3c87"}},"games":["047d9e44","298a000b","41d75403","73b1e45e","af238148","b51edfde","d56d05ff","dd950b2a","e42879db","e9231ab8","ffed8a80"]}
+{
+  "uuid": "c6469e5d-a564-423f-9a2f-b03d43ae7fc9",
+  "name": "clinton thorson",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 87,
+      "fouls": 39,
+      "fg": 33,
+      "ft": 6,
+      "threePt": 5,
+      "foulOuts": {
+        "50ec3c87": 1
+      },
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 8,
+      "draws": 2,
+      "winPct": 0.09,
+      "statsChecked": "2026-07-05T16:28:50.040Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "50ec3c87",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "caa16fb8",
+          "tn": "Hoop Stars",
+          "gid": "56458783",
+          "gn": "Wednesday O35 Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 39,
+            "ft": 6,
+            "fg": 33,
+            "threePt": 5,
+            "pts": 87,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 8,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3ef9490b",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "679ede05",
+          "tn": "Hoop Stars",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T07:07:53.756Z",
+  "teams": [
+    {
+      "tid": "caa16fb8",
+      "sid": "50ec3c87",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "679ede05",
+      "sid": "3ef9490b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:49.962Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "298a000b",
+      "sid": "50ec3c87"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "047d9e44",
+      "sid": "50ec3c87"
+    }
+  },
+  "games": [
+    "047d9e44",
+    "298a000b",
+    "41d75403",
+    "73b1e45e",
+    "af238148",
+    "b51edfde",
+    "d56d05ff",
+    "dd950b2a",
+    "e42879db",
+    "e9231ab8",
+    "ffed8a80"
+  ]
+}

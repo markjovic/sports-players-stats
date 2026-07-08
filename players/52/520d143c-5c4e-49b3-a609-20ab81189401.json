@@ -1,1 +1,62 @@
-{"uuid":"520d143c-5c4e-49b3-a609-20ab81189401","name":"Jannali Atkinson","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":null,"foulOuts":{},"gp":9,"pts":14,"fg":7,"fouls":15,"statsChecked":"2026-07-06T18:57:19.905Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"79092b09"}]},{"sid":"facf8c4c","regs":[{"tid":"088a4c97"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":6,"gameKey":"b536430a","sid":"facf8c4c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "520d143c-5c4e-49b3-a609-20ab81189401",
+  "name": "Jannali Atkinson",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 9,
+      "pts": 14,
+      "fg": 7,
+      "fouls": 15,
+      "statsChecked": "2026-07-06T18:57:19.905Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "79092b09",
+          "gid": "44c0a6c0",
+          "gn": "U14 Girls"
+        }
+      ]
+    },
+    {
+      "sid": "facf8c4c",
+      "regs": [
+        {
+          "tid": "088a4c97",
+          "gid": "c8b82fd2",
+          "gn": "U12 Girls"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "79092b09",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "088a4c97",
+      "sid": "facf8c4c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "b536430a",
+      "sid": "facf8c4c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:25:43.857Z"
+}

@@ -1,1 +1,319 @@
-{"uuid":"7b114d07-4693-446d-9ff9-468940215ac7","name":"Alexander England","gender":"Boys","sports":{"Basketball":{"gp":49,"pts":214,"fouls":49,"fg":99,"ft":16,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":52,"losses":50,"draws":6,"winPct":0.48,"statsChecked":"2026-07-05T15:10:25.562Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"f547cf04","tn":"Saints U14 Boys Clippers","gid":"dc2ff0dc","gn":"Saturday U14 Boys Div 10","age":"U14","div":"Div 10","stats":{"gp":7,"fg":8,"pts":16,"fouls":7,"losses":5,"wins":2}},{"tid":"f547cf04","tn":"Saints U14 Boys Clippers","gid":"11f890e7","gn":"Saturday U14 Boys Div  9","age":"U14","div":"Div 9","stats":{"gp":7,"fouls":7,"losses":5,"pts":16,"fg":8,"wins":2}},{"tid":"f547cf04","tn":"Saints U14 Boys Clippers","gid":"b16369c6","gn":"Saturday U14 Boys Div  8","age":"U14","div":"Div 8","stats":{"gp":7,"fouls":7,"fg":8,"pts":16,"losses":5,"wins":2}}]},{"sid":"475831bc","sn":"Winter 2024","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"202128fb","tn":"Saints U12 Boys Rockets","gid":"38ad11c8","gn":"Saturday U12 Boys 8","age":"U12","div":null,"stats":{"gp":15,"fouls":22,"ft":5,"fg":20,"pts":45,"wins":6,"losses":8,"draws":1}}]},{"sid":"5c7c2fbe","sn":"Summer 2023/24","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"1aaf767c","tn":"Saints U12 Boys Rockets","gid":"f5bd6068","gn":"Saturday U12 Boys 9","age":"U12","div":null,"stats":{"gp":12,"fouls":9,"ft":6,"fg":33,"pts":72,"wins":8,"losses":3,"draws":1}}]},{"sid":"1eae7c99","sn":"Winter 2023","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"a1c60be3","tn":"Saints U10 Boys Rockets","gid":"3b9938c3","gn":"Saturday U10 Boys 4","age":"U10","div":null,"stats":{"gp":15,"fouls":11,"ft":5,"fg":38,"pts":81,"finals":1,"wins":8,"losses":6,"draws":1}},{"tid":"a1c60be3","tn":"Saints U10 Boys Rockets","gid":"6ea1043a","gn":"Saturday U10 Boys 5","age":"U10","div":null,"stats":{"gp":15,"fouls":11,"fg":38,"pts":81,"finals":1,"wins":8,"losses":6,"draws":1,"ft":5}},{"tid":"a1c60be3","tn":"Saints U10 Boys Rockets","gid":"273c78a8","gn":"Saturday U10 Boys 6","age":"U10","div":null,"stats":{"gp":15,"fouls":11,"ft":5,"fg":38,"pts":81,"finals":1,"wins":8,"losses":6,"draws":1}},{"tid":"a1c60be3","tn":"Saints U10 Boys Rockets","gid":"8f32b4c8","gn":"Saturday U10 Boys 7","age":"U10","div":null,"stats":{"gp":15,"fouls":11,"fg":38,"pts":81,"finals":1,"wins":8,"losses":6,"draws":1,"ft":5}}]}],"updatedAt":"2026-07-04T05:43:47.596Z","teams":[{"tid":"f547cf04","sid":"79d2b087","status":"ACTIVE"},{"tid":"202128fb","sid":"475831bc","status":"COMPLETED"},{"tid":"1aaf767c","sid":"5c7c2fbe","status":"COMPLETED"},{"tid":"a1c60be3","sid":"1eae7c99","status":"COMPLETED"},{"tid":"9c74bab3","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:43:41.033Z","records":{"maxGamePTS":{"v":12,"gameKey":"d2a7dfc5","sid":"1eae7c99"},"maxGameThreePt":{"v":null}},"games":["034fd725","0542868b","0d31e8d0","0de9a7ff","12a21d55","15dc025c","19785b25","1c6abbf2","1fc6f58a","28e46bdd","2a1d44f2","2ef9e861","33cbac67","35fabb3e","383dd5d2","3a4b34f1","40acf53a","63b08249","67151a2b","67a3f5fa","80b28f5c","84036025","84edfb29","89071b87","8ebf9f7c","8fdbf97e","90cde5c8","93379999","93ee725a","97fee2b0","99ea8d69","9a3a38ba","a3120e3e","b56476e9","b7606b59","b7b9e630","bce89d0b","c087ab48","cbca528d","ce48a888","d0483195","d2a7dfc5","dae9da86","db34706d","dd305290","dd67b633","f01d19c4","f56ac18b","f78196ac"]}
+{
+  "uuid": "7b114d07-4693-446d-9ff9-468940215ac7",
+  "name": "Alexander England",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 49,
+      "pts": 214,
+      "fouls": 49,
+      "fg": 99,
+      "ft": 16,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 52,
+      "losses": 50,
+      "draws": 6,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T15:10:25.562Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "f547cf04",
+          "tn": "Saints U14 Boys Clippers",
+          "gid": "dc2ff0dc",
+          "gn": "Saturday U14 Boys Div 10",
+          "age": "U14",
+          "div": "Div 10",
+          "stats": {
+            "gp": 7,
+            "fg": 8,
+            "pts": 16,
+            "fouls": 7,
+            "losses": 5,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "f547cf04",
+          "tn": "Saints U14 Boys Clippers",
+          "gid": "11f890e7",
+          "gn": "Saturday U14 Boys Div  9",
+          "age": "U14",
+          "div": "Div 9",
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "losses": 5,
+            "pts": 16,
+            "fg": 8,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "f547cf04",
+          "tn": "Saints U14 Boys Clippers",
+          "gid": "b16369c6",
+          "gn": "Saturday U14 Boys Div  8",
+          "age": "U14",
+          "div": "Div 8",
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "fg": 8,
+            "pts": 16,
+            "losses": 5,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "475831bc",
+      "sn": "Winter 2024",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "202128fb",
+          "tn": "Saints U12 Boys Rockets",
+          "gid": "38ad11c8",
+          "gn": "Saturday U12 Boys 8",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 22,
+            "ft": 5,
+            "fg": 20,
+            "pts": 45,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5c7c2fbe",
+      "sn": "Summer 2023/24",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "1aaf767c",
+          "tn": "Saints U12 Boys Rockets",
+          "gid": "f5bd6068",
+          "gn": "Saturday U12 Boys 9",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "ft": 6,
+            "fg": 33,
+            "pts": 72,
+            "wins": 8,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1eae7c99",
+      "sn": "Winter 2023",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "a1c60be3",
+          "tn": "Saints U10 Boys Rockets",
+          "gid": "3b9938c3",
+          "gn": "Saturday U10 Boys 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "ft": 5,
+            "fg": 38,
+            "pts": 81,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a1c60be3",
+          "tn": "Saints U10 Boys Rockets",
+          "gid": "6ea1043a",
+          "gn": "Saturday U10 Boys 5",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "fg": 38,
+            "pts": 81,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1,
+            "ft": 5
+          }
+        },
+        {
+          "tid": "a1c60be3",
+          "tn": "Saints U10 Boys Rockets",
+          "gid": "273c78a8",
+          "gn": "Saturday U10 Boys 6",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "ft": 5,
+            "fg": 38,
+            "pts": 81,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a1c60be3",
+          "tn": "Saints U10 Boys Rockets",
+          "gid": "8f32b4c8",
+          "gn": "Saturday U10 Boys 7",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "fg": 38,
+            "pts": 81,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1,
+            "ft": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "9c74bab3",
+          "tn": "St Peter's Red Sox",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:47.596Z",
+  "teams": [
+    {
+      "tid": "f547cf04",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "202128fb",
+      "sid": "475831bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1aaf767c",
+      "sid": "5c7c2fbe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1c60be3",
+      "sid": "1eae7c99",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c74bab3",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:12.262Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "d2a7dfc5",
+      "sid": "1eae7c99"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "034fd725",
+    "0542868b",
+    "0d31e8d0",
+    "0de9a7ff",
+    "12a21d55",
+    "15dc025c",
+    "19785b25",
+    "1c6abbf2",
+    "1fc6f58a",
+    "28e46bdd",
+    "2a1d44f2",
+    "2ef9e861",
+    "33cbac67",
+    "35fabb3e",
+    "383dd5d2",
+    "3a4b34f1",
+    "40acf53a",
+    "63b08249",
+    "67151a2b",
+    "67a3f5fa",
+    "80b28f5c",
+    "84036025",
+    "84edfb29",
+    "89071b87",
+    "8ebf9f7c",
+    "8fdbf97e",
+    "90cde5c8",
+    "93379999",
+    "93ee725a",
+    "97fee2b0",
+    "99ea8d69",
+    "9a3a38ba",
+    "a3120e3e",
+    "b56476e9",
+    "b7606b59",
+    "b7b9e630",
+    "bce89d0b",
+    "c087ab48",
+    "cbca528d",
+    "ce48a888",
+    "d0483195",
+    "d2a7dfc5",
+    "dae9da86",
+    "db34706d",
+    "dd305290",
+    "dd67b633",
+    "f01d19c4",
+    "f56ac18b",
+    "f78196ac"
+  ]
+}

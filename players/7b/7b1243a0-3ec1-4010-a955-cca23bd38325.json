@@ -1,1 +1,311 @@
-{"uuid":"7b1243a0-3ec1-4010-a955-cca23bd38325","name":"Adam Oliver-Taylor","gender":"Boys","sports":{"Basketball":{"gp":42,"pts":429,"fouls":111,"fg":156,"ft":69,"threePt":16,"foulOuts":{"3e7c1a8c":2,"e830df83":2},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.67,"maxGamePTS":26,"maxGameThreePt":5,"wins":37,"losses":27,"winPct":0.58,"statsChecked":"2026-07-05T14:42:50.648Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Bullits Basketball Club","regs":[]},{"sid":"2ecfa56c","sn":"2025/26","club":"Sandringham Sabres Basketball Club","regs":[{"tid":"5b574ffa","tn":"Sandringham U20 Boys 1 (VC)","gid":"8b26364c","gn":"U20 Boys - VCR South","age":"U20","div":null,"stats":{"gp":5,"fouls":7,"threePt":1,"pts":3,"finals":1,"wins":2,"losses":3}},{"tid":"609079f7","tn":"Sandringham U20 Boys 1 (VCF)","gid":"cd956b72","gn":"U20 Boys VC - Finals","age":"U20","div":null,"stats":{"gp":7,"fouls":13,"finals":1,"wins":5,"losses":2,"pts":14,"fg":5,"ft":1,"threePt":1}},{"tid":"609079f7","tn":"Sandringham U20 Boys 1 (VCF)","gid":"7842545c","gn":"U20 Boys VC (South)","age":"U20","div":null,"stats":{"gp":7,"fouls":13,"ft":1,"fg":5,"threePt":1,"pts":14,"finals":1,"wins":5,"losses":2}}]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Bullits Basketball Club","regs":[{"tid":"97d1c966","tn":"Bullits Red","gid":"94d2cc26","gn":"Sunday U20 Boys B Grade","age":"U20","div":null,"stats":{"gp":15,"fouls":47,"ft":37,"fg":66,"threePt":8,"pts":193,"foulOuts":2,"wins":7,"losses":8}}]},{"sid":"e830df83","sn":"Spring 2025","club":"Bullits Basketball Club","regs":[{"tid":"9fa0293d","tn":"Bullits Red","gid":"ccf7f2ee","gn":"Saturday U18 Boys B2 Grade","age":"U18","div":null,"stats":{"gp":15,"fouls":44,"ft":31,"fg":85,"threePt":6,"pts":219,"foulOuts":1,"finals":1,"gfApps":1,"wins":9,"losses":6}},{"tid":"9fa0293d","tn":"Bullits Red","gid":"4675e67e","gn":"Saturday U18 Boys B1 Grade","age":"U18","div":null,"stats":{"gp":15,"fouls":44,"ft":31,"fg":85,"pts":219,"foulOuts":1,"finals":1,"gfApps":1,"wins":9,"losses":6,"threePt":6}}]}],"updatedAt":"2026-07-04T05:43:47.524Z","teams":[{"tid":"97d1c966","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"5b574ffa","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"609079f7","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"1ae5eb06","sid":"e2b609ed","status":"UPCOMING"},{"tid":"9fa0293d","sid":"e830df83","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:15.715Z","records":{"maxGamePTS":{"v":26,"gameKey":"9e5c0d5e","sid":"e830df83"},"maxGameThreePt":{"v":5,"gameKey":"80caf954","sid":"3e7c1a8c"}},"games":["0676c549","0c4ea820","154b2f72","1598b963","33101f64","377f650e","3fc4cb50","40fc4339","416fcb9b","426d480f","4a1ed140","4a3cc85e","4bad253e","4fd077aa","53d6346a","5fba468f","607dc6ce","69688f21","6d716be3","75545019","80caf954","82e0003b","8433b0c5","981dcbd7","9e5c0d5e","a1ad7417","a2f5f7d4","a5138374","a80e482e","a8577ff9","ae47f768","c4fb579b","ce922108","d1c352c9","d267b967","d4451824","e88423a2","ec5086bf","f073f284","f09025e4","f0f635c1","fd6bbba5"],"gameTids":{"75545019":"5b574ffa","4fd077aa":"5b574ffa","5fba468f":"5b574ffa","53d6346a":"5b574ffa","3fc4cb50":"5b574ffa","1598b963":"609079f7","f0f635c1":"609079f7","f073f284":"609079f7","377f650e":"609079f7","0c4ea820":"609079f7","fd6bbba5":"609079f7","69688f21":"609079f7","ae47f768":"97d1c966","f09025e4":"97d1c966","33101f64":"97d1c966","607dc6ce":"97d1c966","a2f5f7d4":"97d1c966","ec5086bf":"97d1c966","80caf954":"97d1c966","a80e482e":"97d1c966","4a3cc85e":"97d1c966","0676c549":"97d1c966","8433b0c5":"97d1c966","a8577ff9":"97d1c966","40fc4339":"97d1c966","4a1ed140":"97d1c966","a5138374":"97d1c966","981dcbd7":"9fa0293d","d1c352c9":"9fa0293d","ce922108":"9fa0293d","e88423a2":"9fa0293d","d267b967":"9fa0293d","154b2f72":"9fa0293d","9e5c0d5e":"9fa0293d","6d716be3":"9fa0293d","d4451824":"9fa0293d","4bad253e":"9fa0293d","82e0003b":"9fa0293d","426d480f":"9fa0293d","416fcb9b":"9fa0293d","a1ad7417":"9fa0293d","c4fb579b":"9fa0293d"}}
+{
+  "uuid": "7b1243a0-3ec1-4010-a955-cca23bd38325",
+  "name": "Adam Oliver-Taylor",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 429,
+      "fouls": 111,
+      "fg": 156,
+      "ft": 69,
+      "threePt": 16,
+      "foulOuts": {
+        "3e7c1a8c": 2,
+        "e830df83": 2
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "maxGamePTS": 26,
+      "maxGameThreePt": 5,
+      "wins": 37,
+      "losses": 27,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T14:42:50.648Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "1ae5eb06",
+          "tn": "Bullits Red",
+          "gid": "3a40d46b",
+          "gn": "Sunday U20 Boys B Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "2ecfa56c",
+      "sn": "2025/26",
+      "club": "Sandringham Sabres Basketball Club",
+      "regs": [
+        {
+          "tid": "5b574ffa",
+          "tn": "Sandringham U20 Boys 1 (VC)",
+          "gid": "8b26364c",
+          "gn": "U20 Boys - VCR South",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "threePt": 1,
+            "pts": 3,
+            "finals": 1,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "609079f7",
+          "tn": "Sandringham U20 Boys 1 (VCF)",
+          "gid": "cd956b72",
+          "gn": "U20 Boys VC - Finals",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 13,
+            "finals": 1,
+            "wins": 5,
+            "losses": 2,
+            "pts": 14,
+            "fg": 5,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "609079f7",
+          "tn": "Sandringham U20 Boys 1 (VCF)",
+          "gid": "7842545c",
+          "gn": "U20 Boys VC (South)",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 13,
+            "ft": 1,
+            "fg": 5,
+            "threePt": 1,
+            "pts": 14,
+            "finals": 1,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "97d1c966",
+          "tn": "Bullits Red",
+          "gid": "94d2cc26",
+          "gn": "Sunday U20 Boys B Grade",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 47,
+            "ft": 37,
+            "fg": 66,
+            "threePt": 8,
+            "pts": 193,
+            "foulOuts": 2,
+            "wins": 7,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e830df83",
+      "sn": "Spring 2025",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "9fa0293d",
+          "tn": "Bullits Red",
+          "gid": "ccf7f2ee",
+          "gn": "Saturday U18 Boys B2 Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 44,
+            "ft": 31,
+            "fg": 85,
+            "threePt": 6,
+            "pts": 219,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "9fa0293d",
+          "tn": "Bullits Red",
+          "gid": "4675e67e",
+          "gn": "Saturday U18 Boys B1 Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 44,
+            "ft": 31,
+            "fg": 85,
+            "pts": 219,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 6,
+            "threePt": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:47.524Z",
+  "teams": [
+    {
+      "tid": "1ae5eb06",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b574ffa",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "609079f7",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "97d1c966",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9fa0293d",
+      "sid": "e830df83",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:12.263Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "9e5c0d5e",
+      "sid": "e830df83"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "80caf954",
+      "sid": "3e7c1a8c"
+    }
+  },
+  "games": [
+    "0676c549",
+    "0c4ea820",
+    "154b2f72",
+    "1598b963",
+    "33101f64",
+    "377f650e",
+    "3fc4cb50",
+    "40fc4339",
+    "416fcb9b",
+    "426d480f",
+    "4a1ed140",
+    "4a3cc85e",
+    "4bad253e",
+    "4fd077aa",
+    "53d6346a",
+    "5fba468f",
+    "607dc6ce",
+    "69688f21",
+    "6d716be3",
+    "75545019",
+    "80caf954",
+    "82e0003b",
+    "8433b0c5",
+    "981dcbd7",
+    "9e5c0d5e",
+    "a1ad7417",
+    "a2f5f7d4",
+    "a5138374",
+    "a80e482e",
+    "a8577ff9",
+    "ae47f768",
+    "c4fb579b",
+    "ce922108",
+    "d1c352c9",
+    "d267b967",
+    "d4451824",
+    "e88423a2",
+    "ec5086bf",
+    "f073f284",
+    "f09025e4",
+    "f0f635c1",
+    "fd6bbba5"
+  ],
+  "gameTids": {
+    "75545019": "5b574ffa",
+    "4fd077aa": "5b574ffa",
+    "5fba468f": "5b574ffa",
+    "53d6346a": "5b574ffa",
+    "3fc4cb50": "5b574ffa",
+    "1598b963": "609079f7",
+    "f0f635c1": "609079f7",
+    "f073f284": "609079f7",
+    "377f650e": "609079f7",
+    "0c4ea820": "609079f7",
+    "fd6bbba5": "609079f7",
+    "69688f21": "609079f7",
+    "ae47f768": "97d1c966",
+    "f09025e4": "97d1c966",
+    "33101f64": "97d1c966",
+    "607dc6ce": "97d1c966",
+    "a2f5f7d4": "97d1c966",
+    "ec5086bf": "97d1c966",
+    "80caf954": "97d1c966",
+    "a80e482e": "97d1c966",
+    "4a3cc85e": "97d1c966",
+    "0676c549": "97d1c966",
+    "8433b0c5": "97d1c966",
+    "a8577ff9": "97d1c966",
+    "40fc4339": "97d1c966",
+    "4a1ed140": "97d1c966",
+    "a5138374": "97d1c966",
+    "981dcbd7": "9fa0293d",
+    "d1c352c9": "9fa0293d",
+    "ce922108": "9fa0293d",
+    "e88423a2": "9fa0293d",
+    "d267b967": "9fa0293d",
+    "154b2f72": "9fa0293d",
+    "9e5c0d5e": "9fa0293d",
+    "6d716be3": "9fa0293d",
+    "d4451824": "9fa0293d",
+    "4bad253e": "9fa0293d",
+    "82e0003b": "9fa0293d",
+    "426d480f": "9fa0293d",
+    "416fcb9b": "9fa0293d",
+    "a1ad7417": "9fa0293d",
+    "c4fb579b": "9fa0293d"
+  }
+}

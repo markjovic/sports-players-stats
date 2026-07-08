@@ -1,1 +1,383 @@
-{"uuid":"323da8b5-5615-4fbb-8f9e-31d6ab450477","name":"Chris Cowan","gender":"Men","sports":{"Basketball":{"gp":31,"pts":44,"fouls":51,"fg":16,"ft":6,"threePt":2,"finals":2,"gfApps":2,"gfWins":1,"finalsPerSeason":0.67,"foulOuts":{"5390040a":1},"maxGamePTS":8,"maxGameThreePt":1,"wins":21,"losses":10,"winPct":0.68,"statsChecked":"2026-07-05T15:21:35.385Z"}},"seasons":[{"sid":"8fe1a354","sn":"Winter 2026","regs":[{"tid":"8db3c1ef","tn":"Acees over50","gid":"68e57c38","gn":"THURSDAY O50 MEN","age":null,"div":null,"stats":{"gp":2,"fouls":1,"wins":1,"losses":1}}]},{"sid":"5390040a","sn":"Summer 2025/26","regs":[{"tid":"907661ff","tn":"Acees over50","gid":"2ddc237a","gn":"THURSDAY O50 MEN","age":null,"div":null,"stats":{"gp":13,"pts":13,"threePt":2,"fg":3,"ft":1,"fouls":18,"foulOuts":1,"finals":1,"gfApps":1,"wins":9,"losses":4}}]},{"sid":"e0199b48","sn":"Winter 2025","regs":[{"tid":"9b0482b0","tn":"Acees","gid":"d22ef482","gn":"THURSDAY O50 MEN","age":null,"div":null,"stats":{"gp":16,"pts":31,"fg":13,"ft":5,"fouls":32,"finals":1,"gfApps":1,"wins":11,"losses":5,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:42:11.285Z","teams":[{"tid":"8db3c1ef","sid":"8fe1a354","status":"ACTIVE"},{"tid":"907661ff","sid":"5390040a","status":"COMPLETED"},{"tid":"9b0482b0","sid":"e0199b48","status":"COMPLETED"},{"tid":"c2637a48","sid":"76897951","status":"COMPLETED"},{"tid":"2f8ee531","sid":"f287739e","status":"COMPLETED"},{"tid":"1be30f34","sid":"5944effa","status":"COMPLETED"},{"tid":"da690fc6","sid":"348dbfb8","status":"COMPLETED"},{"tid":"2043b123","sid":"9358e51a","status":"COMPLETED"},{"tid":"275c3244","sid":"d3d4e181","status":"COMPLETED"},{"tid":"7487d5ed","sid":"21cd9648","status":"COMPLETED"},{"tid":"d63564f7","sid":"d4cbf787","status":"COMPLETED"},{"tid":"554c25a9","sid":"d64fcfce","status":"COMPLETED"},{"tid":"57bcb85d","sid":"afd26581","status":"COMPLETED"},{"tid":"e846bfd9","sid":"922f0463","status":"COMPLETED"},{"tid":"bc44c72a","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:11:45.199Z","records":{"maxGamePTS":{"v":8,"gameKey":"3203698c","sid":"e0199b48"},"maxGameThreePt":{"v":1,"gameKey":"35a2f281","sid":"5390040a"}},"games":["002aa523","0c75dcf4","1efd292e","205bd070","25c86de6","3203698c","35a2f281","39e910ea","4da8338e","57659753","654428c3","6cb249ac","6cce16a2","8adb4f87","8ee25257","910e0516","9c18370a","a45c6a67","aa6b90bd","b1d9311d","b9d6094e","c2eaa6f3","d01c9beb","d5ec1f46","e881dbb0","e9c2f048","ef14bcb1","f46918cc","fe79c08c","fe7db5c2","febe8b14"]}
+{
+  "uuid": "323da8b5-5615-4fbb-8f9e-31d6ab450477",
+  "name": "Chris Cowan",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 44,
+      "fouls": 51,
+      "fg": 16,
+      "ft": 6,
+      "threePt": 2,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "5390040a": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 21,
+      "losses": 10,
+      "winPct": 0.68,
+      "statsChecked": "2026-07-05T15:21:35.385Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8fe1a354",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "8db3c1ef",
+          "tn": "Acees over50",
+          "gid": "68e57c38",
+          "gn": "THURSDAY O50 MEN",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5390040a",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "907661ff",
+          "tn": "Acees over50",
+          "gid": "2ddc237a",
+          "gn": "THURSDAY O50 MEN",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 13,
+            "threePt": 2,
+            "fg": 3,
+            "ft": 1,
+            "fouls": 18,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e0199b48",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "9b0482b0",
+          "tn": "Acees",
+          "gid": "d22ef482",
+          "gn": "THURSDAY O50 MEN",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 31,
+            "fg": 13,
+            "ft": 5,
+            "fouls": 32,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "c2637a48",
+          "tn": "Acees",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "f287739e",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "2f8ee531",
+          "tn": "Acees 2.0",
+          "gid": "79e3b43f",
+          "gn": "Thursday Men Section 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "1be30f34",
+          "tn": "Acees- Over 35",
+          "gid": "90c6c254",
+          "gn": "Thursday Senior Men O'35",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "da690fc6",
+          "tn": "Acees- Over 35",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "2043b123",
+          "tn": "Acees- Over 35",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "275c3244",
+          "tn": "Acees- Over 35",
+          "gid": "6223c363",
+          "gn": "AUTUMN Thursday Senior Men Over 35s",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "7487d5ed",
+          "tn": "Acees- Over 35",
+          "gid": "3bb8ccdf",
+          "gn": "SPRING Thursday Senior Men Over 35s",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "d63564f7",
+          "tn": "Acees- Over 35",
+          "gid": "e7b4ac16",
+          "gn": "Thursday Senior Men Over 35s",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "554c25a9",
+          "tn": "Acees- Over 35",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "57bcb85d",
+          "tn": "Acees- Over 35",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "e846bfd9",
+          "tn": "Acees- Over 35",
+          "gid": "3ac7dfd1",
+          "gn": "Thursday Open Men O'35s",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "bc44c72a",
+          "tn": "Acees- Over 35",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:42:11.285Z",
+  "teams": [
+    {
+      "tid": "8db3c1ef",
+      "sid": "8fe1a354",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "907661ff",
+      "sid": "5390040a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b0482b0",
+      "sid": "e0199b48",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c2637a48",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f8ee531",
+      "sid": "f287739e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1be30f34",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da690fc6",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2043b123",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "275c3244",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7487d5ed",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d63564f7",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "554c25a9",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57bcb85d",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e846bfd9",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bc44c72a",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:50.526Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "3203698c",
+      "sid": "e0199b48"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "35a2f281",
+      "sid": "5390040a"
+    }
+  },
+  "games": [
+    "002aa523",
+    "0c75dcf4",
+    "1efd292e",
+    "205bd070",
+    "25c86de6",
+    "3203698c",
+    "35a2f281",
+    "39e910ea",
+    "4da8338e",
+    "57659753",
+    "654428c3",
+    "6cb249ac",
+    "6cce16a2",
+    "8adb4f87",
+    "8ee25257",
+    "910e0516",
+    "9c18370a",
+    "a45c6a67",
+    "aa6b90bd",
+    "b1d9311d",
+    "b9d6094e",
+    "c2eaa6f3",
+    "d01c9beb",
+    "d5ec1f46",
+    "e881dbb0",
+    "e9c2f048",
+    "ef14bcb1",
+    "f46918cc",
+    "fe79c08c",
+    "fe7db5c2",
+    "febe8b14"
+  ]
+}

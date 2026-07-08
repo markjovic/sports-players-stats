@@ -1,1 +1,255 @@
-{"uuid":"a8428a80-3109-4410-bfcd-5ea6ef898498","name":"Campbell Jones","gender":"Unknown","sports":{"Basketball":{"gp":28,"pts":77,"fouls":46,"fg":28,"ft":6,"threePt":5,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":10,"maxGameThreePt":2,"wins":30,"losses":24,"winPct":0.54,"draws":2,"statsChecked":"2026-07-05T14:43:44.805Z"}},"seasons":[{"sid":"b0c6ff83","sn":"Autumn 2024","club":"Bullits Basketball Club","regs":[{"tid":"af949df7","tn":"Bullits Storm","gid":"f8375f5e","gn":"Saturday U16 Boys C1 Grade","age":"U16","div":null,"stats":{"gp":8,"fouls":11,"fg":8,"pts":16,"wins":7,"losses":1}},{"tid":"af949df7","tn":"Bullits Storm","gid":"861975ad","gn":"Saturday U16 Boys C3 Grade","age":"U16","div":null,"stats":{"gp":8,"fouls":11,"fg":8,"pts":16,"wins":7,"losses":1}}]},{"sid":"19363f85","sn":"Spring 2023","club":"Bullits Basketball Club","regs":[{"tid":"e7e93423","tn":"Bullits Storm","gid":"c5c3f6ac","gn":"Sunday U16 Boys C2 Grade","age":"U16","div":null,"stats":{"gp":9,"fouls":16,"ft":4,"fg":9,"threePt":3,"pts":31,"finals":1,"wins":3,"losses":6}},{"tid":"e7e93423","tn":"Bullits Storm","gid":"4af78911","gn":"Sunday U16 Boys C3 Grade","age":"U16","div":null,"stats":{"gp":9,"finals":1,"wins":3,"losses":6,"pts":31,"fg":9,"ft":4,"threePt":3,"fouls":16}}]},{"sid":"b0112e07","sn":"Autumn 2023","club":"Bullits Basketball Club","regs":[{"tid":"6d81dca5","tn":"Bullits Storm","gid":"2d766b0e","gn":"Saturday U16 Boys C3 Grade","age":"U16","div":null,"stats":{"gp":11,"fouls":19,"ft":2,"fg":11,"threePt":2,"pts":30,"wins":5,"losses":5,"draws":1}},{"tid":"6d81dca5","tn":"Bullits Storm","gid":"319272b1","gn":"XXSaturday U16 Boys C3 Do not use","age":"U16","div":null,"stats":{"gp":11,"fouls":19,"fg":11,"pts":30,"wins":5,"losses":5,"draws":1,"ft":2,"threePt":2}}]}],"updatedAt":"2026-06-01T05:48:06.759Z","teams":[{"tid":"af949df7","sid":"b0c6ff83","status":"COMPLETED"},{"tid":"e7e93423","sid":"19363f85","status":"COMPLETED"},{"tid":"6d81dca5","sid":"b0112e07","status":"COMPLETED"},{"tid":"fb4b3698","sid":"977f8526","status":"COMPLETED"},{"tid":"230368c7","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:16.809Z","games":["0d800573","133264e7","22ababc5","25457fdb","39b94fab","3eda627f","54d41459","568c7290","593ed3e0","5b71629a","6665923c","6d33b431","73cb48ce","7e3ea8a2","7f69dbaa","84a64e2f","9249f467","a09547c5","a50be5c9","a631c827","b1d0dfe3","b8a5fc84","c17c3da6","d025d83b","d41a1186","e4ab9de5","ebfb2a6c","ed738f0b"],"records":{"maxGamePTS":{"v":10,"gameKey":"e4ab9de5","sid":"b0112e07"},"maxGameThreePt":{"v":2,"gameKey":"22ababc5","sid":"19363f85"}}}
+{
+  "uuid": "a8428a80-3109-4410-bfcd-5ea6ef898498",
+  "name": "Campbell Jones",
+  "gender": "Unknown",
+  "sports": {
+    "Basketball": {
+      "gp": 28,
+      "pts": 77,
+      "fouls": 46,
+      "fg": 28,
+      "ft": 6,
+      "threePt": 5,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 30,
+      "losses": 24,
+      "winPct": 0.54,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:43:44.805Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b0c6ff83",
+      "sn": "Autumn 2024",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "af949df7",
+          "tn": "Bullits Storm",
+          "gid": "f8375f5e",
+          "gn": "Saturday U16 Boys C1 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 11,
+            "fg": 8,
+            "pts": 16,
+            "wins": 7,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "af949df7",
+          "tn": "Bullits Storm",
+          "gid": "861975ad",
+          "gn": "Saturday U16 Boys C3 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 11,
+            "fg": 8,
+            "pts": 16,
+            "wins": 7,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "19363f85",
+      "sn": "Spring 2023",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "e7e93423",
+          "tn": "Bullits Storm",
+          "gid": "c5c3f6ac",
+          "gn": "Sunday U16 Boys C2 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 16,
+            "ft": 4,
+            "fg": 9,
+            "threePt": 3,
+            "pts": 31,
+            "finals": 1,
+            "wins": 3,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "e7e93423",
+          "tn": "Bullits Storm",
+          "gid": "4af78911",
+          "gn": "Sunday U16 Boys C3 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "finals": 1,
+            "wins": 3,
+            "losses": 6,
+            "pts": 31,
+            "fg": 9,
+            "ft": 4,
+            "threePt": 3,
+            "fouls": 16
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b0112e07",
+      "sn": "Autumn 2023",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "6d81dca5",
+          "tn": "Bullits Storm",
+          "gid": "2d766b0e",
+          "gn": "Saturday U16 Boys C3 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 19,
+            "ft": 2,
+            "fg": 11,
+            "threePt": 2,
+            "pts": 30,
+            "wins": 5,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "6d81dca5",
+          "tn": "Bullits Storm",
+          "gid": "319272b1",
+          "gn": "XXSaturday U16 Boys C3 Do not use",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 19,
+            "fg": 11,
+            "pts": 30,
+            "wins": 5,
+            "losses": 5,
+            "draws": 1,
+            "ft": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "fb4b3698",
+          "tn": "Elwood Sharks (3604)",
+          "gid": "c0e32e60",
+          "gn": "Tuesday MSAC/Bayside YR.6 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "230368c7",
+          "tn": "Elwood Sharks (3604)",
+          "gid": "0335cdd7",
+          "gn": "Tuesday MSAC/Bayside YR.5 BOYS Div. A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T05:48:06.759Z",
+  "teams": [
+    {
+      "tid": "af949df7",
+      "sid": "b0c6ff83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7e93423",
+      "sid": "19363f85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d81dca5",
+      "sid": "b0112e07",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb4b3698",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "230368c7",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:52.962Z",
+  "games": [
+    "0d800573",
+    "133264e7",
+    "22ababc5",
+    "25457fdb",
+    "39b94fab",
+    "3eda627f",
+    "54d41459",
+    "568c7290",
+    "593ed3e0",
+    "5b71629a",
+    "6665923c",
+    "6d33b431",
+    "73cb48ce",
+    "7e3ea8a2",
+    "7f69dbaa",
+    "84a64e2f",
+    "9249f467",
+    "a09547c5",
+    "a50be5c9",
+    "a631c827",
+    "b1d0dfe3",
+    "b8a5fc84",
+    "c17c3da6",
+    "d025d83b",
+    "d41a1186",
+    "e4ab9de5",
+    "ebfb2a6c",
+    "ed738f0b"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "e4ab9de5",
+      "sid": "b0112e07"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "22ababc5",
+      "sid": "19363f85"
+    }
+  }
+}

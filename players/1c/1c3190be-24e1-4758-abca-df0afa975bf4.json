@@ -1,1 +1,248 @@
-{"uuid":"1c3190be-24e1-4758-abca-df0afa975bf4","name":"Zach Cousins","gender":"Boys","sports":{"Basketball":{"gp":46,"pts":40,"fouls":20,"fg":18,"ft":4,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":40,"losses":48,"draws":2,"winPct":0.44,"statsChecked":"2026-07-05T14:53:52.378Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Parkdale Pacers Basketball Club","regs":[]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Parkdale Pacers Basketball Club","regs":[{"tid":"bea7b186","tn":"Pacers U10 Boys Green","gid":"1c8b45de","gn":"Thursday U10 Boys C1 Grade","age":"U10","div":null,"stats":{"gp":16,"fouls":10,"ft":2,"fg":9,"pts":20,"wins":6,"losses":8,"draws":1}},{"tid":"bea7b186","tn":"Pacers U10 Boys Green","gid":"603b7b1b","gn":"Thursday U10 Boys C2 Grade","age":"U10","div":null,"stats":{"gp":16,"fouls":10,"fg":9,"pts":20,"wins":6,"losses":8,"draws":1,"ft":2}}]},{"sid":"e830df83","sn":"Spring 2025","club":"Parkdale Pacers Basketball Club","regs":[{"tid":"d093b155","tn":"Pacers U9 Boys Gaunt","gid":"9169aad5","gn":"Friday U9 Boys Full Height B2","age":"U9","div":"B2","stats":{"gp":13,"fouls":7,"fg":5,"pts":10,"wins":4,"losses":9}},{"tid":"d093b155","tn":"Pacers U9 Boys Gaunt","gid":"637048f4","gn":"Friday U9 Boys Full Height B1","age":"U9","div":"B1","stats":{"gp":13,"fouls":7,"fg":5,"pts":10,"wins":4,"losses":9}}]},{"sid":"38710f3b","sn":"Autumn 2025","club":"Parkdale Pacers Basketball Club","regs":[{"tid":"6aa56342","tn":"Pacers U9 Boys Teal","gid":"425a4cf6","gn":"Friday U9 Boys Modified B Grade","age":"U9","div":null,"stats":{"gp":17,"fouls":3,"ft":2,"fg":4,"pts":10,"finals":1,"wins":10,"losses":7}},{"tid":"6aa56342","tn":"Pacers U9 Boys Teal","gid":"ba522299","gn":"Friday U9 Boys Modified A Grade","age":"U9","div":null,"stats":{"gp":17,"finals":1,"wins":10,"losses":7,"pts":10,"fg":4,"ft":2,"fouls":3}}]}],"updatedAt":"2026-07-04T05:49:28.636Z","teams":[{"tid":"bea7b186","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"d093b155","sid":"e830df83","status":"COMPLETED"},{"tid":"6aa56342","sid":"38710f3b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:48.559Z","records":{"maxGamePTS":{"v":5,"gameKey":"61881d4a","sid":"3e7c1a8c"},"maxGameThreePt":{"v":null}},"games":["0b625ea3","0e97c3cb","0f729530","14b7a38b","203c3c64","2cbe004d","2f836baf","305e2b7c","398f2f2c","3e77b588","49f8cb82","5e668449","609be413","6464beaf","659d448c","6851af76","79583840","79bbd17c","7a830e24","7cb2a32b","8e6a0c26","8f6e8ea1","917c110d","957663b0","ab59d3e2","af0253ec","b1ca11fc","b21f5ee0","b2b1aca4","b82a5930","b9df98bf","beb325d7","c5344588","d63f8744","d8bb7675","d96ab77f","da0da658","e37a78d4","e939ef69","f1e5579d","f2720ba5","f36cf76f","f5b6195b","f889bfb6","ff9838c4"]}
+{
+  "uuid": "1c3190be-24e1-4758-abca-df0afa975bf4",
+  "name": "Zach Cousins",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 40,
+      "fouls": 20,
+      "fg": 18,
+      "ft": 4,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 40,
+      "losses": 48,
+      "draws": 2,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T14:53:52.378Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "b5c7d823",
+          "tn": "Pacers U10 Boys Green",
+          "gid": "bd3d27f4",
+          "gn": "Thursday U10 Boys C1 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "bea7b186",
+          "tn": "Pacers U10 Boys Green",
+          "gid": "1c8b45de",
+          "gn": "Thursday U10 Boys C1 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bea7b186",
+          "tn": "Pacers U10 Boys Green",
+          "gid": "603b7b1b",
+          "gn": "Thursday U10 Boys C2 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 10,
+            "fg": 9,
+            "pts": 20,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e830df83",
+      "sn": "Spring 2025",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "d093b155",
+          "tn": "Pacers U9 Boys Gaunt",
+          "gid": "9169aad5",
+          "gn": "Friday U9 Boys Full Height B2",
+          "age": "U9",
+          "div": "B2",
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "fg": 5,
+            "pts": 10,
+            "wins": 4,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "d093b155",
+          "tn": "Pacers U9 Boys Gaunt",
+          "gid": "637048f4",
+          "gn": "Friday U9 Boys Full Height B1",
+          "age": "U9",
+          "div": "B1",
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "fg": 5,
+            "pts": 10,
+            "wins": 4,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38710f3b",
+      "sn": "Autumn 2025",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "6aa56342",
+          "tn": "Pacers U9 Boys Teal",
+          "gid": "425a4cf6",
+          "gn": "Friday U9 Boys Modified B Grade",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "finals": 1,
+            "wins": 10,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "6aa56342",
+          "tn": "Pacers U9 Boys Teal",
+          "gid": "ba522299",
+          "gn": "Friday U9 Boys Modified A Grade",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "finals": 1,
+            "wins": 10,
+            "losses": 7,
+            "pts": 10,
+            "fg": 4,
+            "ft": 2,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:28.636Z",
+  "teams": [
+    {
+      "tid": "b5c7d823",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bea7b186",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d093b155",
+      "sid": "e830df83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6aa56342",
+      "sid": "38710f3b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:06.324Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "61881d4a",
+      "sid": "3e7c1a8c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b625ea3",
+    "0e97c3cb",
+    "0f729530",
+    "14b7a38b",
+    "203c3c64",
+    "2cbe004d",
+    "2f836baf",
+    "305e2b7c",
+    "398f2f2c",
+    "3e77b588",
+    "49f8cb82",
+    "5e668449",
+    "609be413",
+    "6464beaf",
+    "659d448c",
+    "6851af76",
+    "79583840",
+    "79bbd17c",
+    "7a830e24",
+    "7cb2a32b",
+    "8e6a0c26",
+    "8f6e8ea1",
+    "917c110d",
+    "957663b0",
+    "ab59d3e2",
+    "af0253ec",
+    "b1ca11fc",
+    "b21f5ee0",
+    "b2b1aca4",
+    "b82a5930",
+    "b9df98bf",
+    "beb325d7",
+    "c5344588",
+    "d63f8744",
+    "d8bb7675",
+    "d96ab77f",
+    "da0da658",
+    "e37a78d4",
+    "e939ef69",
+    "f1e5579d",
+    "f2720ba5",
+    "f36cf76f",
+    "f5b6195b",
+    "f889bfb6",
+    "ff9838c4"
+  ]
+}

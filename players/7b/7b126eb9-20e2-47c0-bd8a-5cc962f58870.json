@@ -1,1 +1,152 @@
-{"uuid":"7b126eb9-20e2-47c0-bd8a-5cc962f58870","name":"Douglas Slattery","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":18,"fouls":16,"fg":6,"ft":3,"threePt":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"losses":22,"winPct":0,"statsChecked":"2026-07-05T15:36:45.601Z"}},"seasons":[{"sid":"38ce88ed","sn":"2026","regs":[{"tid":"711100ea","tn":"U18 Boys SA Sharks (CP)","gid":"0ce40ebf","gn":"U18 Boys Cross Pool","age":"U18","div":null,"stats":{"gp":1,"fouls":3,"finals":1,"gfApps":1,"losses":1}},{"tid":"67f649bf","stats":{"losses":7,"finals":1,"gfApps":1,"gp":7,"pts":18,"fg":6,"ft":3,"threePt":1,"fouls":13}},{"tid":"67f649bf","tn":"","gid":"173d059c","gn":"U18 Boys D1","div":null,"stats":{"gp":7,"pts":18,"fg":6,"ft":3,"threePt":1,"fouls":13,"losses":7}}]},{"sid":"38ce88ed","sn":"2026","club":"SA Country","regs":[{"tid":"67f649bf","tn":"U18 Boys SA Sharks","gid":"173d059c","gn":"U18 Boys D1","age":"U18","div":"D1","stats":{"gp":7,"fouls":13,"ft":3,"fg":6,"threePt":1,"pts":18,"finals":1,"gfApps":1,"losses":7}}]}],"updatedAt":"2026-07-04T05:43:54.150Z","teams":[{"tid":"67f649bf","sid":"38ce88ed","status":"COMPLETED"},{"tid":"711100ea","sid":"38ce88ed","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:15.695Z","records":{"maxGamePTS":{"v":5,"gameKey":"50fcb24d","sid":"38ce88ed"},"maxGameThreePt":{"v":1,"gameKey":"50fcb24d","sid":"38ce88ed"}},"games":["1bdbbdb1","3338c84b","50fcb24d","6c66830e","a011fc4c","a8760e4d","dd9f9890","e28fc577"],"gameTids":{"3338c84b":"711100ea","dd9f9890":"67f649bf","1bdbbdb1":"67f649bf","50fcb24d":"67f649bf","a011fc4c":"67f649bf","e28fc577":"67f649bf","a8760e4d":"67f649bf","6c66830e":"67f649bf"}}
+{
+  "uuid": "7b126eb9-20e2-47c0-bd8a-5cc962f58870",
+  "name": "Douglas Slattery",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 18,
+      "fouls": 16,
+      "fg": 6,
+      "ft": 3,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "losses": 22,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:36:45.601Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "711100ea",
+          "tn": "U18 Boys SA Sharks (CP)",
+          "gid": "0ce40ebf",
+          "gn": "U18 Boys Cross Pool",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "67f649bf",
+          "stats": {
+            "losses": 7,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 7,
+            "pts": 18,
+            "fg": 6,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 13
+          },
+          "gid": "173d059c",
+          "gn": "U18 Boys D1"
+        },
+        {
+          "tid": "67f649bf",
+          "tn": "",
+          "gid": "173d059c",
+          "gn": "U18 Boys D1",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 18,
+            "fg": 6,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 13,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "club": "SA Country",
+      "regs": [
+        {
+          "tid": "67f649bf",
+          "tn": "U18 Boys SA Sharks",
+          "gid": "173d059c",
+          "gn": "U18 Boys D1",
+          "age": "U18",
+          "div": "D1",
+          "stats": {
+            "gp": 7,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 6,
+            "threePt": 1,
+            "pts": 18,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:54.150Z",
+  "teams": [
+    {
+      "tid": "711100ea",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67f649bf",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:12.264Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "50fcb24d",
+      "sid": "38ce88ed"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "50fcb24d",
+      "sid": "38ce88ed"
+    }
+  },
+  "games": [
+    "1bdbbdb1",
+    "3338c84b",
+    "50fcb24d",
+    "6c66830e",
+    "a011fc4c",
+    "a8760e4d",
+    "dd9f9890",
+    "e28fc577"
+  ],
+  "gameTids": {
+    "3338c84b": "711100ea",
+    "dd9f9890": "67f649bf",
+    "1bdbbdb1": "67f649bf",
+    "50fcb24d": "67f649bf",
+    "a011fc4c": "67f649bf",
+    "e28fc577": "67f649bf",
+    "a8760e4d": "67f649bf",
+    "6c66830e": "67f649bf"
+  }
+}

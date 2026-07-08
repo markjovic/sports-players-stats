@@ -1,1 +1,135 @@
-{"uuid":"d2115875-426b-4417-a122-dac6830d15d0","name":"Ashmit Achar","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":31,"fouls":28,"fg":5,"ft":9,"threePt":4,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":7,"losses":3,"winPct":0.7,"statsChecked":"2026-07-05T14:58:39.815Z"}},"seasons":[{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"1c0458c1","tn":"Inner West Bulls U16 Boys Red","gid":"bb642186","gn":"BOYS UNDER 16 C4","age":null,"div":"C4","stats":{"gp":5,"fouls":7,"threePt":2,"pts":6,"wins":3,"losses":2}}]},{"sid":"a48d8524","sn":"2022","regs":[{"tid":"eedc35c5","tn":"Inner West Bulls U14 Boys 1Black","gid":"37d2ba5d","gn":"BOYS UNDER 14 C4","age":null,"div":"C4","stats":{"gp":5,"fouls":10,"ft":2,"fg":3,"pts":8}}]},{"sid":"0869ea69","regs":[{"tid":"c32bc2f0","stats":{"wins":4,"losses":1,"gp":5,"pts":17,"fg":2,"ft":7,"threePt":2,"fouls":11}}]}],"updatedAt":"2026-05-31T11:03:40.688Z","teams":[{"tid":"c32bc2f0","sid":"0869ea69","status":"UPCOMING"},{"tid":"1c0458c1","sid":"8630ad4c","status":"COMPLETED"},{"tid":"eedc35c5","sid":"a48d8524","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:46:10.074Z","records":{"maxGamePTS":{"v":12,"gameKey":"48e0adaa","sid":"0869ea69"},"maxGameThreePt":{"v":2,"gameKey":"01d99eab","sid":"8630ad4c"}},"games":["01d99eab","0951e9af","20fd8242","256aea21","393ecc13","48e0adaa","53f42e30","718c5b54","8d438745","90e02512","91ca9d29","94552fc4","b7bafa18","c380b29b","e0a4861e"]}
+{
+  "uuid": "d2115875-426b-4417-a122-dac6830d15d0",
+  "name": "Ashmit Achar",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 31,
+      "fouls": 28,
+      "fg": 5,
+      "ft": 9,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 7,
+      "losses": 3,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T14:58:39.815Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "1c0458c1",
+          "tn": "Inner West Bulls U16 Boys Red",
+          "gid": "bb642186",
+          "gn": "BOYS UNDER 16 C4",
+          "age": null,
+          "div": "C4",
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "threePt": 2,
+            "pts": 6,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a48d8524",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "eedc35c5",
+          "tn": "Inner West Bulls U14 Boys 1Black",
+          "gid": "37d2ba5d",
+          "gn": "BOYS UNDER 14 C4",
+          "age": null,
+          "div": "C4",
+          "stats": {
+            "gp": 5,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 3,
+            "pts": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "c32bc2f0",
+          "stats": {
+            "wins": 4,
+            "losses": 1,
+            "gp": 5,
+            "pts": 17,
+            "fg": 2,
+            "ft": 7,
+            "threePt": 2,
+            "fouls": 11
+          },
+          "gid": "02af1ae3",
+          "gn": "BOYS UNDER 18 C4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T11:03:40.688Z",
+  "teams": [
+    {
+      "tid": "1c0458c1",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eedc35c5",
+      "sid": "a48d8524",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c32bc2f0",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:22.395Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "48e0adaa",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "01d99eab",
+      "sid": "8630ad4c"
+    }
+  },
+  "games": [
+    "01d99eab",
+    "0951e9af",
+    "20fd8242",
+    "256aea21",
+    "393ecc13",
+    "48e0adaa",
+    "53f42e30",
+    "718c5b54",
+    "8d438745",
+    "90e02512",
+    "91ca9d29",
+    "94552fc4",
+    "b7bafa18",
+    "c380b29b",
+    "e0a4861e"
+  ]
+}

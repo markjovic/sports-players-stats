@@ -1,1 +1,335 @@
-{"uuid":"ae2b96fe-890e-4f0a-86f4-0d31ba4a5957","name":"Angela Mcleod","gender":"Women","sports":{"Basketball":{"gp":43,"pts":143,"fouls":34,"fg":46,"ft":18,"threePt":11,"finals":2,"gfApps":2,"gfWins":2,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":2,"wins":35,"losses":28,"draws":2,"winPct":0.54,"statsChecked":"2026-07-06T19:00:10.488Z"}},"seasons":[{"sid":"d3df72f7","sn":"Winter 2026","regs":[{"tid":"8adf494d","tn":"Venom Women’s ","gid":"9b180f65","gn":"Thursday Open Women ERES","age":"Senior","div":null,"stats":{"gp":2,"fouls":2,"ft":1,"fg":2,"pts":8,"threePt":1,"losses":1,"wins":1}},{"tid":"9dfdce82","stats":{"wins":2,"losses":4,"gp":7,"pts":22,"fg":8,"fouls":4,"threePt":2}},{"tid":"9dfdce82","tn":"","gid":"43cdc3fa","gn":"Sunday Mixed Section 8","div":null,"stats":{"gp":7,"pts":22,"fg":8,"threePt":2,"fouls":4}}]},{"sid":"d3df72f7","sn":"Winter 2026","regs":[{"tid":"9dfdce82","tn":"Venom Mixed","gid":"43cdc3fa","gn":"Sunday Mixed Section 8","age":null,"div":null,"stats":{"gp":7,"fouls":4,"fg":8,"pts":22,"wins":2,"losses":4,"threePt":2}}]},{"sid":"559eb7e8","sn":"Summer 2025/26","regs":[{"tid":"50d09b19","tn":"Valley All Stars","gid":"a411a5a5","gn":"Thursday Open Women E","age":"Senior","div":null,"stats":{"gp":8,"fouls":13,"ft":2,"fg":7,"threePt":2,"pts":22,"finals":1,"gfApps":1,"wins":5,"losses":3,"gfWins":1}},{"tid":"b59773f8","stats":{"wins":9,"losses":7,"draws":1,"finals":1,"gfApps":1,"gfWins":1,"gp":17,"pts":57,"fg":19,"ft":13,"threePt":2,"fouls":6}}]},{"sid":"559eb7e8","sn":"Summer 2025/26","regs":[{"tid":"b59773f8","tn":"Venom Mixed","gid":"6c3f7f98","gn":"Sunday Mixed Section 8/9","age":null,"div":null,"stats":{"gp":17,"fouls":6,"ft":13,"fg":19,"threePt":2,"pts":57,"finals":1,"gfApps":1,"wins":9,"losses":7,"draws":1,"gfWins":1}}]},{"sid":"5dfc7567","sn":"Winter 2025","regs":[{"tid":"f435406c","tn":"Valley All Stars","gid":"bd5a44e4","gn":"Thursday Open Women D/DRES","age":"Senior","div":null,"stats":{"gp":9,"fouls":9,"ft":2,"fg":10,"threePt":4,"pts":34,"finals":1,"gfApps":1,"wins":7,"losses":2,"gfWins":1}}]}],"updatedAt":"2026-07-05T16:56:51.660Z","teams":[{"tid":"9dfdce82","sid":"d3df72f7","status":"ACTIVE"},{"tid":"8adf494d","sid":"d3df72f7","status":"ACTIVE"},{"tid":"50d09b19","sid":"559eb7e8","status":"COMPLETED"},{"tid":"b59773f8","sid":"559eb7e8","status":"COMPLETED"},{"tid":"f435406c","sid":"5dfc7567","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:17.141Z","games":["028efb8c","0372b7c6","07230d0f","0a652324","17473ba2","178074fd","1b3c2db9","1c26a620","27649f9c","2dfd520d","3358698a","356573dc","3e3143d7","3f4c1ae0","402fb9d1","4d817aeb","4e4477cf","564fe30b","57f99f81","5ca4e079","65e77878","69c13ff9","6ce6ab42","79889017","7af883d3","7e74f6ae","8bffefa2","8ff173f5","96f17f7c","98a1ed90","a48b5a48","b9ca0e43","be88ade8","c9d1455d","d4442e73","d7ffcdfa","dc62b51d","ddc7fdf7","e1d4908d","e2aaff7f","e3e9e73d","ea711998"],"records":{"maxGamePTS":{"v":9,"gameKey":"3358698a","sid":"559eb7e8"},"maxGameThreePt":{"v":2,"gameKey":"b8fd3590","sid":"d3df72f7"}},"gameTids":{"79889017":"50d09b19","17473ba2":"8adf494d","65e77878":"8adf494d","b8fd3590":"9dfdce82","d7ffcdfa":"9dfdce82","27649f9c":"9dfdce82","3e3143d7":"9dfdce82","0372b7c6":"9dfdce82","b9ca0e43":"9dfdce82","69c13ff9":"9dfdce82","e3e9e73d":"50d09b19","96f17f7c":"50d09b19","3358698a":"50d09b19","e1d4908d":"50d09b19","8ff173f5":"50d09b19","6ce6ab42":"50d09b19","8bffefa2":"50d09b19","c9d1455d":"b59773f8","e2aaff7f":"b59773f8","564fe30b":"b59773f8","5ca4e079":"b59773f8","d4442e73":"b59773f8","98a1ed90":"b59773f8","07230d0f":"b59773f8","028efb8c":"b59773f8","be88ade8":"b59773f8","356573dc":"b59773f8","1c26a620":"b59773f8","dc62b51d":"b59773f8","402fb9d1":"b59773f8","4d817aeb":"b59773f8","7e74f6ae":"b59773f8","ddc7fdf7":"b59773f8","7af883d3":"b59773f8","a48b5a48":"f435406c","2dfd520d":"f435406c","3f4c1ae0":"f435406c","1b3c2db9":"f435406c","57f99f81":"f435406c","4e4477cf":"f435406c","ea711998":"f435406c","178074fd":"f435406c","0a652324":"f435406c"}}
+{
+  "uuid": "ae2b96fe-890e-4f0a-86f4-0d31ba4a5957",
+  "name": "Angela Mcleod",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 143,
+      "fouls": 34,
+      "fg": 46,
+      "ft": 18,
+      "threePt": 11,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 2,
+      "wins": 35,
+      "losses": 28,
+      "draws": 2,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-06T19:00:10.488Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3df72f7",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "8adf494d",
+          "tn": "Venom Women’s ",
+          "gid": "9b180f65",
+          "gn": "Thursday Open Women ERES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 2,
+            "pts": 8,
+            "threePt": 1,
+            "losses": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "9dfdce82",
+          "stats": {
+            "wins": 2,
+            "losses": 4,
+            "gp": 7,
+            "pts": 22,
+            "fg": 8,
+            "fouls": 4,
+            "threePt": 2
+          },
+          "gid": "43cdc3fa",
+          "gn": "Sunday Mixed Section 8"
+        },
+        {
+          "tid": "9dfdce82",
+          "tn": "",
+          "gid": "43cdc3fa",
+          "gn": "Sunday Mixed Section 8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 22,
+            "fg": 8,
+            "threePt": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3df72f7",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "9dfdce82",
+          "tn": "Venom Mixed",
+          "gid": "43cdc3fa",
+          "gn": "Sunday Mixed Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 4,
+            "fg": 8,
+            "pts": 22,
+            "wins": 2,
+            "losses": 4,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "559eb7e8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "50d09b19",
+          "tn": "Valley All Stars",
+          "gid": "a411a5a5",
+          "gn": "Thursday Open Women E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 13,
+            "ft": 2,
+            "fg": 7,
+            "threePt": 2,
+            "pts": 22,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 3,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "b59773f8",
+          "stats": {
+            "wins": 9,
+            "losses": 7,
+            "draws": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 17,
+            "pts": 57,
+            "fg": 19,
+            "ft": 13,
+            "threePt": 2,
+            "fouls": 6
+          },
+          "gid": "6c3f7f98",
+          "gn": "Sunday Mixed Section 8/9"
+        }
+      ]
+    },
+    {
+      "sid": "559eb7e8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "b59773f8",
+          "tn": "Venom Mixed",
+          "gid": "6c3f7f98",
+          "gn": "Sunday Mixed Section 8/9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 6,
+            "ft": 13,
+            "fg": 19,
+            "threePt": 2,
+            "pts": 57,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 7,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfc7567",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "f435406c",
+          "tn": "Valley All Stars",
+          "gid": "bd5a44e4",
+          "gn": "Thursday Open Women D/DRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 10,
+            "threePt": 4,
+            "pts": 34,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-05T16:56:51.660Z",
+  "teams": [
+    {
+      "tid": "8adf494d",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9dfdce82",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50d09b19",
+      "sid": "559eb7e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b59773f8",
+      "sid": "559eb7e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f435406c",
+      "sid": "5dfc7567",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:05.699Z",
+  "games": [
+    "028efb8c",
+    "0372b7c6",
+    "07230d0f",
+    "0a652324",
+    "17473ba2",
+    "178074fd",
+    "1b3c2db9",
+    "1c26a620",
+    "27649f9c",
+    "2dfd520d",
+    "3358698a",
+    "356573dc",
+    "3e3143d7",
+    "3f4c1ae0",
+    "402fb9d1",
+    "4d817aeb",
+    "4e4477cf",
+    "564fe30b",
+    "57f99f81",
+    "5ca4e079",
+    "65e77878",
+    "69c13ff9",
+    "6ce6ab42",
+    "79889017",
+    "7af883d3",
+    "7e74f6ae",
+    "8bffefa2",
+    "8ff173f5",
+    "96f17f7c",
+    "98a1ed90",
+    "a48b5a48",
+    "b9ca0e43",
+    "be88ade8",
+    "c9d1455d",
+    "d4442e73",
+    "d7ffcdfa",
+    "dc62b51d",
+    "ddc7fdf7",
+    "e1d4908d",
+    "e2aaff7f",
+    "e3e9e73d",
+    "ea711998"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "3358698a",
+      "sid": "559eb7e8"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "b8fd3590",
+      "sid": "d3df72f7"
+    }
+  },
+  "gameTids": {
+    "79889017": "50d09b19",
+    "17473ba2": "8adf494d",
+    "65e77878": "8adf494d",
+    "b8fd3590": "9dfdce82",
+    "d7ffcdfa": "9dfdce82",
+    "27649f9c": "9dfdce82",
+    "3e3143d7": "9dfdce82",
+    "0372b7c6": "9dfdce82",
+    "b9ca0e43": "9dfdce82",
+    "69c13ff9": "9dfdce82",
+    "e3e9e73d": "50d09b19",
+    "96f17f7c": "50d09b19",
+    "3358698a": "50d09b19",
+    "e1d4908d": "50d09b19",
+    "8ff173f5": "50d09b19",
+    "6ce6ab42": "50d09b19",
+    "8bffefa2": "50d09b19",
+    "c9d1455d": "b59773f8",
+    "e2aaff7f": "b59773f8",
+    "564fe30b": "b59773f8",
+    "5ca4e079": "b59773f8",
+    "d4442e73": "b59773f8",
+    "98a1ed90": "b59773f8",
+    "07230d0f": "b59773f8",
+    "028efb8c": "b59773f8",
+    "be88ade8": "b59773f8",
+    "356573dc": "b59773f8",
+    "1c26a620": "b59773f8",
+    "dc62b51d": "b59773f8",
+    "402fb9d1": "b59773f8",
+    "4d817aeb": "b59773f8",
+    "7e74f6ae": "b59773f8",
+    "ddc7fdf7": "b59773f8",
+    "7af883d3": "b59773f8",
+    "a48b5a48": "f435406c",
+    "2dfd520d": "f435406c",
+    "3f4c1ae0": "f435406c",
+    "1b3c2db9": "f435406c",
+    "57f99f81": "f435406c",
+    "4e4477cf": "f435406c",
+    "ea711998": "f435406c",
+    "178074fd": "f435406c",
+    "0a652324": "f435406c"
+  }
+}

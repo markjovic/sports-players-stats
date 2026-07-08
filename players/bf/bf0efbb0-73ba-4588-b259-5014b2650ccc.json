@@ -1,1 +1,402 @@
-{"uuid":"bf0efbb0-73ba-4588-b259-5014b2650ccc","name":"Harry Teague","gender":"Boys","sports":{"Basketball":{"gp":67,"pts":174,"fouls":124,"fg":83,"ft":8,"foulOuts":{"21b7d173":1,"2ecfa56c":1},"maxGamePTS":10,"maxGameThreePt":null,"wins":49,"losses":103,"winPct":0.32,"draws":2,"statsChecked":"2026-07-05T14:44:14.700Z"}},"seasons":[{"sid":"ed318fce","sn":"Winter 2026","regs":[{"tid":"f6267018","tn":"OG Raiders ","gid":"debf526c","gn":"Wednesday U12 Boys Division 2","age":"U12","div":"Division 2","stats":{"gp":8,"fouls":19,"fg":23,"pts":47,"wins":5,"losses":3,"ft":1}},{"tid":"f6267018","tn":"OG Raiders ","gid":"99887619","gn":"Wednesday U12 Boys Grading","age":"U12","div":null,"stats":{"gp":8,"fouls":19,"ft":1,"fg":23,"pts":47,"wins":5,"losses":3}}]},{"sid":"94f1fc73","sn":"2026","club":"Bellarine Storm Basketball Club","regs":[{"tid":"2f7dbb59","tn":"Bellarine U12 Boys 3","gid":"d6a33d0f","gn":"U12 Boys 3","age":"U12","div":null,"stats":{"gp":4,"fouls":6,"ft":2,"pts":2,"wins":1,"losses":3}}]},{"sid":"2ecfa56c","sn":"2025/26","club":"Bellarine Storm Basketball Club","regs":[{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"9f570ce4","gn":"U12 Boys RL3 (WEST)","age":"U12","div":null,"stats":{"gp":18,"fouls":27,"ft":1,"fg":17,"pts":35,"foulOuts":1,"wins":5,"losses":13}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"994f1a1e","gn":"12 Boys - VJL Crossover","age":null,"div":null,"stats":{"gp":18,"fouls":27,"wins":5,"losses":13,"pts":35,"fg":17,"ft":1}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"b0b81384","gn":"U12 Boys Grading 2 - LL Pool B","age":"U12","div":null,"stats":{"gp":18,"wins":5,"losses":13,"pts":35,"fg":17,"ft":1,"fouls":27}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"b059de0b","gn":"12 Boys Grading 1 - Pool 11A","age":null,"div":null,"stats":{"gp":18,"fouls":27,"fg":17,"pts":35,"wins":5,"losses":13,"ft":1}}]},{"sid":"37aa55de","sn":"2025","club":"Bellarine Storm Basketball Club","regs":[{"tid":"53485dd4","tn":"Bellarine U12 Boys 3","gid":"113c9986","gn":"U12 Boys C","age":"U12","div":null,"stats":{"gp":4,"fouls":7,"ft":2,"fg":4,"pts":10,"losses":4}}]},{"sid":"648e8b25","sn":"Summer 2025/26","regs":[{"tid":"4d7a1eef","tn":"OG Raiders ","gid":"069d37e5","gn":"Wednesday U12 Boys Division 3","age":"U12","div":"Division 3","stats":{"gp":13,"fouls":28,"fg":20,"pts":40,"wins":3,"losses":10}},{"tid":"4d7a1eef","tn":"OG Raiders ","gid":"c9accbfc","gn":"Wednesday U12 Boys Grading","age":"U12","div":null,"stats":{"gp":13,"fouls":28,"fg":20,"pts":40,"wins":3,"losses":10}}]},{"sid":"944aea0b","sn":"Winter 2025","regs":[{"tid":"2973d87a","tn":"OG Raiders ","gid":"afb54ea3","gn":"Wednesday U10 Boys Boomers (Div 1)","age":"U10","div":null,"stats":{"gp":14,"fouls":24,"ft":2,"fg":13,"pts":28,"losses":9,"wins":4,"draws":1}},{"tid":"2973d87a","tn":"OG Raiders ","gid":"54871150","gn":"Wednesday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":14,"fouls":24,"fg":13,"pts":28,"losses":9,"wins":4,"draws":1,"ft":2}}]},{"sid":"21b7d173","regs":[{"tid":"9361387c","stats":{"wins":4,"gp":6,"pts":12,"fg":6,"fouls":13}}]}],"updatedAt":"2026-06-02T02:43:46.722Z","teams":[{"tid":"f6267018","sid":"ed318fce","status":"ACTIVE"},{"tid":"85b4d56e","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"9361387c","sid":"21b7d173","status":"UPCOMING"},{"tid":"4d7a1eef","sid":"648e8b25","status":"COMPLETED"},{"tid":"2f7dbb59","sid":"94f1fc73","status":"COMPLETED"},{"tid":"53485dd4","sid":"37aa55de","status":"COMPLETED"},{"tid":"2973d87a","sid":"944aea0b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:05.139Z","records":{"maxGamePTS":{"v":10,"gameKey":"37f5416d","sid":"ed318fce"},"maxGameThreePt":{"v":null}},"games":["020b5c16","026b8eec","02cfa75a","037609eb","0414ae4c","07ad3e7e","0970f6d5","1543145f","156a5c60","3014fe86","31068af0","37f5416d","398cabef","48b7cefa","4b4a3fd0","57e03f07","5b8188a4","5ccb8744","5e7ca2dd","5f48966f","61d5e548","65385ea3","6a3d8bb3","72ee9873","730106ae","733d9a5e","78d3b7f3","7bd821b2","7c49062e","7dd36fd8","7e869e1a","828dacda","848c9e04","857ade5d","8904fe20","8d586dde","8dde6c6d","90a83f94","91b405d3","960fee07","962853e2","9ca0fbc7","a1691f7a","a23ef4a3","a32c41cb","a67aa042","a6fcd935","a7aa41b7","abaab773","b57517c7","b7be781f","b8ac7cbf","c4b33fb4","c9d3738f","cb2c2331","d579caf5","d72283f6","d8352239","da968e08","eaf3a058","eb4cda15","ed0541b7","efae5944","f83b4e9d","fb3b698d"]}
+{
+  "uuid": "bf0efbb0-73ba-4588-b259-5014b2650ccc",
+  "name": "Harry Teague",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 67,
+      "pts": 174,
+      "fouls": 124,
+      "fg": 83,
+      "ft": 8,
+      "foulOuts": {
+        "21b7d173": 1,
+        "2ecfa56c": 1
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 49,
+      "losses": 103,
+      "winPct": 0.32,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:44:14.700Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ed318fce",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "f6267018",
+          "tn": "OG Raiders ",
+          "gid": "debf526c",
+          "gn": "Wednesday U12 Boys Division 2",
+          "age": "U12",
+          "div": "Division 2",
+          "stats": {
+            "gp": 8,
+            "fouls": 19,
+            "fg": 23,
+            "pts": 47,
+            "wins": 5,
+            "losses": 3,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "f6267018",
+          "tn": "OG Raiders ",
+          "gid": "99887619",
+          "gn": "Wednesday U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 19,
+            "ft": 1,
+            "fg": 23,
+            "pts": 47,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "94f1fc73",
+      "sn": "2026",
+      "club": "Bellarine Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "2f7dbb59",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "d6a33d0f",
+          "gn": "U12 Boys 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "ft": 2,
+            "pts": 2,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ecfa56c",
+      "sn": "2025/26",
+      "club": "Bellarine Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "9f570ce4",
+          "gn": "U12 Boys RL3 (WEST)",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 27,
+            "ft": 1,
+            "fg": 17,
+            "pts": 35,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "994f1a1e",
+          "gn": "12 Boys - VJL Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 27,
+            "wins": 5,
+            "losses": 13,
+            "pts": 35,
+            "fg": 17,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "b0b81384",
+          "gn": "U12 Boys Grading 2 - LL Pool B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "wins": 5,
+            "losses": 13,
+            "pts": 35,
+            "fg": 17,
+            "ft": 1,
+            "fouls": 27
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "b059de0b",
+          "gn": "12 Boys Grading 1 - Pool 11A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 27,
+            "fg": 17,
+            "pts": 35,
+            "wins": 5,
+            "losses": 13,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "37aa55de",
+      "sn": "2025",
+      "club": "Bellarine Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "53485dd4",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "113c9986",
+          "gn": "U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "648e8b25",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "4d7a1eef",
+          "tn": "OG Raiders ",
+          "gid": "069d37e5",
+          "gn": "Wednesday U12 Boys Division 3",
+          "age": "U12",
+          "div": "Division 3",
+          "stats": {
+            "gp": 13,
+            "fouls": 28,
+            "fg": 20,
+            "pts": 40,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "4d7a1eef",
+          "tn": "OG Raiders ",
+          "gid": "c9accbfc",
+          "gn": "Wednesday U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 28,
+            "fg": 20,
+            "pts": 40,
+            "wins": 3,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "944aea0b",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2973d87a",
+          "tn": "OG Raiders ",
+          "gid": "afb54ea3",
+          "gn": "Wednesday U10 Boys Boomers (Div 1)",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 24,
+            "ft": 2,
+            "fg": 13,
+            "pts": 28,
+            "losses": 9,
+            "wins": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2973d87a",
+          "tn": "OG Raiders ",
+          "gid": "54871150",
+          "gn": "Wednesday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 24,
+            "fg": 13,
+            "pts": 28,
+            "losses": 9,
+            "wins": 4,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21b7d173",
+      "regs": [
+        {
+          "tid": "9361387c",
+          "stats": {
+            "wins": 4,
+            "gp": 6,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 13
+          },
+          "gid": "63801b22",
+          "gn": "U12 Boys F Grade"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T02:43:46.722Z",
+  "teams": [
+    {
+      "tid": "f6267018",
+      "sid": "ed318fce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f7dbb59",
+      "sid": "94f1fc73",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85b4d56e",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53485dd4",
+      "sid": "37aa55de",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4d7a1eef",
+      "sid": "648e8b25",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2973d87a",
+      "sid": "944aea0b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9361387c",
+      "sid": "21b7d173",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:23.003Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "37f5416d",
+      "sid": "ed318fce"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "020b5c16",
+    "026b8eec",
+    "02cfa75a",
+    "037609eb",
+    "0414ae4c",
+    "07ad3e7e",
+    "0970f6d5",
+    "1543145f",
+    "156a5c60",
+    "3014fe86",
+    "31068af0",
+    "37f5416d",
+    "398cabef",
+    "48b7cefa",
+    "4b4a3fd0",
+    "57e03f07",
+    "5b8188a4",
+    "5ccb8744",
+    "5e7ca2dd",
+    "5f48966f",
+    "61d5e548",
+    "65385ea3",
+    "6a3d8bb3",
+    "72ee9873",
+    "730106ae",
+    "733d9a5e",
+    "78d3b7f3",
+    "7bd821b2",
+    "7c49062e",
+    "7dd36fd8",
+    "7e869e1a",
+    "828dacda",
+    "848c9e04",
+    "857ade5d",
+    "8904fe20",
+    "8d586dde",
+    "8dde6c6d",
+    "90a83f94",
+    "91b405d3",
+    "960fee07",
+    "962853e2",
+    "9ca0fbc7",
+    "a1691f7a",
+    "a23ef4a3",
+    "a32c41cb",
+    "a67aa042",
+    "a6fcd935",
+    "a7aa41b7",
+    "abaab773",
+    "b57517c7",
+    "b7be781f",
+    "b8ac7cbf",
+    "c4b33fb4",
+    "c9d3738f",
+    "cb2c2331",
+    "d579caf5",
+    "d72283f6",
+    "d8352239",
+    "da968e08",
+    "eaf3a058",
+    "eb4cda15",
+    "ed0541b7",
+    "efae5944",
+    "f83b4e9d",
+    "fb3b698d"
+  ]
+}

@@ -1,1 +1,230 @@
-{"uuid":"6f26764a-318b-4fe6-87a1-49861a806fbd","name":"Luke Hill","gender":"Men","sports":{"Basketball":{"gp":34,"pts":53,"fouls":32,"fg":22,"threePt":3,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":17,"losses":17,"draws":1,"winPct":0.49,"statsChecked":"2026-07-05T15:36:28.710Z"}},"seasons":[{"sid":"f4e486df","sn":"Summer 2025/26","regs":[{"tid":"77a74531","tn":"Paper","gid":"0afdbd12","gn":"Thursday Senior Men Open Cockatoo","age":"Senior","div":null,"stats":{"gp":14,"fouls":12,"fg":12,"threePt":1,"pts":27,"finals":1,"gfApps":1,"wins":6,"losses":8}}]},{"sid":"ebf91dd0","sn":"Winter 2025","regs":[{"tid":"7517d49a","tn":"Paper","gid":"12024cf2","gn":"Thursday Senior Men Open Cockatoo","age":"Senior","div":null,"stats":{"gp":15,"fouls":13,"fg":7,"pts":14,"finals":1,"wins":10,"losses":4,"draws":1}},{"tid":"5ba9ad9d","tn":"Half a Chance","gid":"9d04beff","gn":"Wednesday Senior Men's Over 35s Upwey","age":"Senior","div":null,"stats":{"gp":4,"fouls":6,"fg":3,"threePt":2,"pts":12,"finals":1,"wins":1,"losses":3}}]},{"sid":"2ed40819","regs":[{"tid":"cc69d8b2","stats":{"gp":1,"fouls":1,"losses":1}},{"tid":"cc69d8b2","tn":"","gid":"e6be7e0f","gn":"Thursday Senior Men Open COCKATOO STADIUM","div":null,"stats":{"gp":1,"fouls":1,"losses":1}}]}],"updatedAt":"2026-07-04T05:37:31.907Z","teams":[{"tid":"cc69d8b2","sid":"2ed40819","status":"ACTIVE"},{"tid":"77a74531","sid":"f4e486df","status":"COMPLETED"},{"tid":"5ba9ad9d","sid":"ebf91dd0","status":"COMPLETED"},{"tid":"7517d49a","sid":"ebf91dd0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:03.276Z","records":{"maxGamePTS":{"v":10,"gameKey":"2fed9674","sid":"f4e486df"},"maxGameThreePt":{"v":2,"gameKey":"02543777","sid":"ebf91dd0"}},"games":["02543777","093e2769","1ec3fb6b","26b15630","2acff42e","2fed9674","30f69b5e","392d7a7e","39487cd0","3b96269a","4bf6e5fd","50fcd486","5cee4afa","6c51efe5","70052bab","75c778d8","7a20df34","82ff56eb","84b5e1bf","9392e339","99f1cd00","9dee79e5","9eafb6ca","add5a118","b27d488d","b7924e66","c0476b5f","c43ca0ee","c497854d","d9dc8f5a","de002606","dead1f48","e2e9f0ce","e7454b32"],"gameTids":{"b7924e66":"cc69d8b2","dead1f48":"77a74531","5cee4afa":"77a74531","9eafb6ca":"77a74531","c497854d":"77a74531","30f69b5e":"77a74531","2fed9674":"77a74531","2acff42e":"77a74531","9dee79e5":"77a74531","de002606":"77a74531","c0476b5f":"77a74531","39487cd0":"77a74531","4bf6e5fd":"77a74531","84b5e1bf":"77a74531","c43ca0ee":"77a74531","99f1cd00":"7517d49a","82ff56eb":"7517d49a","093e2769":"7517d49a","50fcd486":"7517d49a","75c778d8":"7517d49a","1ec3fb6b":"7517d49a","add5a118":"7517d49a","d9dc8f5a":"7517d49a","e7454b32":"7517d49a","e2e9f0ce":"7517d49a","6c51efe5":"7517d49a","70052bab":"7517d49a","26b15630":"7517d49a","b27d488d":"7517d49a","7a20df34":"7517d49a","3b96269a":"5ba9ad9d","392d7a7e":"5ba9ad9d","9392e339":"5ba9ad9d","02543777":"5ba9ad9d"}}
+{
+  "uuid": "6f26764a-318b-4fe6-87a1-49861a806fbd",
+  "name": "Luke Hill",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 53,
+      "fouls": 32,
+      "fg": 22,
+      "threePt": 3,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 17,
+      "losses": 17,
+      "draws": 1,
+      "winPct": 0.49,
+      "statsChecked": "2026-07-05T15:36:28.710Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f4e486df",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "77a74531",
+          "tn": "Paper",
+          "gid": "0afdbd12",
+          "gn": "Thursday Senior Men Open Cockatoo",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 12,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ebf91dd0",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "7517d49a",
+          "tn": "Paper",
+          "gid": "12024cf2",
+          "gn": "Thursday Senior Men Open Cockatoo",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "fg": 7,
+            "pts": 14,
+            "finals": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5ba9ad9d",
+          "tn": "Half a Chance",
+          "gid": "9d04beff",
+          "gn": "Wednesday Senior Men's Over 35s Upwey",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "fg": 3,
+            "threePt": 2,
+            "pts": 12,
+            "finals": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ed40819",
+      "regs": [
+        {
+          "tid": "cc69d8b2",
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "losses": 1
+          },
+          "gid": "e6be7e0f",
+          "gn": "Thursday Senior Men Open COCKATOO STADIUM"
+        },
+        {
+          "tid": "cc69d8b2",
+          "tn": "",
+          "gid": "e6be7e0f",
+          "gn": "Thursday Senior Men Open COCKATOO STADIUM",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:31.907Z",
+  "teams": [
+    {
+      "tid": "77a74531",
+      "sid": "f4e486df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7517d49a",
+      "sid": "ebf91dd0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ba9ad9d",
+      "sid": "ebf91dd0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc69d8b2",
+      "sid": "2ed40819",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:59.106Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "2fed9674",
+      "sid": "f4e486df"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "02543777",
+      "sid": "ebf91dd0"
+    }
+  },
+  "games": [
+    "02543777",
+    "093e2769",
+    "1ec3fb6b",
+    "26b15630",
+    "2acff42e",
+    "2fed9674",
+    "30f69b5e",
+    "392d7a7e",
+    "39487cd0",
+    "3b96269a",
+    "4bf6e5fd",
+    "50fcd486",
+    "5cee4afa",
+    "6c51efe5",
+    "70052bab",
+    "75c778d8",
+    "7a20df34",
+    "82ff56eb",
+    "84b5e1bf",
+    "9392e339",
+    "99f1cd00",
+    "9dee79e5",
+    "9eafb6ca",
+    "add5a118",
+    "b27d488d",
+    "b7924e66",
+    "c0476b5f",
+    "c43ca0ee",
+    "c497854d",
+    "d9dc8f5a",
+    "de002606",
+    "dead1f48",
+    "e2e9f0ce",
+    "e7454b32"
+  ],
+  "gameTids": {
+    "b7924e66": "cc69d8b2",
+    "dead1f48": "77a74531",
+    "5cee4afa": "77a74531",
+    "9eafb6ca": "77a74531",
+    "c497854d": "77a74531",
+    "30f69b5e": "77a74531",
+    "2fed9674": "77a74531",
+    "2acff42e": "77a74531",
+    "9dee79e5": "77a74531",
+    "de002606": "77a74531",
+    "c0476b5f": "77a74531",
+    "39487cd0": "77a74531",
+    "4bf6e5fd": "77a74531",
+    "84b5e1bf": "77a74531",
+    "c43ca0ee": "77a74531",
+    "99f1cd00": "7517d49a",
+    "82ff56eb": "7517d49a",
+    "093e2769": "7517d49a",
+    "50fcd486": "7517d49a",
+    "75c778d8": "7517d49a",
+    "1ec3fb6b": "7517d49a",
+    "add5a118": "7517d49a",
+    "d9dc8f5a": "7517d49a",
+    "e7454b32": "7517d49a",
+    "e2e9f0ce": "7517d49a",
+    "6c51efe5": "7517d49a",
+    "70052bab": "7517d49a",
+    "26b15630": "7517d49a",
+    "b27d488d": "7517d49a",
+    "7a20df34": "7517d49a",
+    "3b96269a": "5ba9ad9d",
+    "392d7a7e": "5ba9ad9d",
+    "9392e339": "5ba9ad9d",
+    "02543777": "5ba9ad9d"
+  }
+}

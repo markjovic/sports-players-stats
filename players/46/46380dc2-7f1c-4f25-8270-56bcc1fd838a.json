@@ -1,1 +1,193 @@
-{"uuid":"46380dc2-7f1c-4f25-8270-56bcc1fd838a","name":"Simon Pane","gender":"Men","sports":{"Basketball":{"gp":20,"pts":97,"fouls":29,"fg":38,"ft":9,"threePt":4,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":10,"maxGameThreePt":2,"wins":8,"losses":3,"winPct":0.67,"draws":1,"statsChecked":"2026-07-05T16:21:51.580Z"}},"seasons":[{"sid":"521d25fe","sn":"Spring 2024","regs":[{"tid":"6552fd03","tn":"Wizards","gid":"6497e2ce","gn":"Monday Open Men","age":"Senior","div":null,"stats":{"gp":3,"fouls":6,"ft":2,"fg":5,"pts":12,"wins":2,"draws":1}}]},{"sid":"082eb08a","sn":"Autumn 2022","regs":[{"tid":"c6afe07c","tn":"Gotsims Dream Team","gid":"643fa990","gn":"Monday Open Men A Reserve","age":"Senior","div":null,"stats":{"gp":9,"fouls":11,"ft":4,"fg":15,"threePt":1,"pts":37,"finals":1,"wins":2,"losses":1}},{"tid":"653c3515","stats":{"wins":2,"losses":1,"finals":1,"gp":8,"pts":48,"fg":18,"ft":3,"threePt":3,"fouls":12}}]},{"sid":"082eb08a","sn":"Autumn 2022","regs":[{"tid":"653c3515","tn":"Gotsims Dream Team","gid":"386fe6c8","gn":"Monday Open Men A Men","age":"Senior","div":null,"stats":{"gp":8,"fouls":12,"ft":3,"fg":18,"threePt":3,"pts":48,"finals":1,"wins":2,"losses":1}}]}],"updatedAt":"2026-06-02T12:39:10.248Z","teams":[{"tid":"6552fd03","sid":"521d25fe","status":"COMPLETED"},{"tid":"c6afe07c","sid":"082eb08a","status":"COMPLETED"},{"tid":"653c3515","sid":"082eb08a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:25:41.833Z","records":{"maxGamePTS":{"v":10,"gameKey":"1326fb65","sid":"082eb08a"},"maxGameThreePt":{"v":2,"gameKey":"b9433479","sid":"082eb08a"}},"games":["081da84f","0ad3a36c","1326fb65","191767e6","2d9a1b4c","3aae5dd2","3c9c2fe8","4d6a3ae6","500b521d","50778c31","5f98dee8","94dafe8d","b20d711a","b9433479","c7d4c106","cbeb4cce","db6ff466","dc449220","eb31f3e9","ff590c5f"],"gameTids":{"3aae5dd2":"6552fd03","c7d4c106":"6552fd03","081da84f":"6552fd03","cbeb4cce":"c6afe07c","db6ff466":"c6afe07c","3c9c2fe8":"c6afe07c","50778c31":"c6afe07c","94dafe8d":"c6afe07c","0ad3a36c":"c6afe07c","dc449220":"c6afe07c","b20d711a":"c6afe07c","ff590c5f":"c6afe07c","191767e6":"653c3515","b9433479":"653c3515","4d6a3ae6":"653c3515","eb31f3e9":"653c3515","500b521d":"653c3515","1326fb65":"653c3515","5f98dee8":"653c3515","2d9a1b4c":"653c3515"}}
+{
+  "uuid": "46380dc2-7f1c-4f25-8270-56bcc1fd838a",
+  "name": "Simon Pane",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 97,
+      "fouls": 29,
+      "fg": 38,
+      "ft": 9,
+      "threePt": 4,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 8,
+      "losses": 3,
+      "winPct": 0.67,
+      "draws": 1,
+      "statsChecked": "2026-07-05T16:21:51.580Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "521d25fe",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "6552fd03",
+          "tn": "Wizards",
+          "gid": "6497e2ce",
+          "gn": "Monday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 5,
+            "pts": 12,
+            "wins": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "082eb08a",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "c6afe07c",
+          "tn": "Gotsims Dream Team",
+          "gid": "643fa990",
+          "gn": "Monday Open Men A Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 11,
+            "ft": 4,
+            "fg": 15,
+            "threePt": 1,
+            "pts": 37,
+            "finals": 1,
+            "wins": 2,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "653c3515",
+          "stats": {
+            "wins": 2,
+            "losses": 1,
+            "finals": 1,
+            "gp": 8,
+            "pts": 48,
+            "fg": 18,
+            "ft": 3,
+            "threePt": 3,
+            "fouls": 12
+          },
+          "gid": "386fe6c8",
+          "gn": "Monday Open Men A Men"
+        }
+      ]
+    },
+    {
+      "sid": "082eb08a",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "653c3515",
+          "tn": "Gotsims Dream Team",
+          "gid": "386fe6c8",
+          "gn": "Monday Open Men A Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 18,
+            "threePt": 3,
+            "pts": 48,
+            "finals": 1,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T12:39:10.248Z",
+  "teams": [
+    {
+      "tid": "6552fd03",
+      "sid": "521d25fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6afe07c",
+      "sid": "082eb08a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "653c3515",
+      "sid": "082eb08a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:41.036Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "1326fb65",
+      "sid": "082eb08a"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "b9433479",
+      "sid": "082eb08a"
+    }
+  },
+  "games": [
+    "081da84f",
+    "0ad3a36c",
+    "1326fb65",
+    "191767e6",
+    "2d9a1b4c",
+    "3aae5dd2",
+    "3c9c2fe8",
+    "4d6a3ae6",
+    "500b521d",
+    "50778c31",
+    "5f98dee8",
+    "94dafe8d",
+    "b20d711a",
+    "b9433479",
+    "c7d4c106",
+    "cbeb4cce",
+    "db6ff466",
+    "dc449220",
+    "eb31f3e9",
+    "ff590c5f"
+  ],
+  "gameTids": {
+    "3aae5dd2": "6552fd03",
+    "c7d4c106": "6552fd03",
+    "081da84f": "6552fd03",
+    "cbeb4cce": "c6afe07c",
+    "db6ff466": "c6afe07c",
+    "3c9c2fe8": "c6afe07c",
+    "50778c31": "c6afe07c",
+    "94dafe8d": "c6afe07c",
+    "0ad3a36c": "c6afe07c",
+    "dc449220": "c6afe07c",
+    "b20d711a": "c6afe07c",
+    "ff590c5f": "c6afe07c",
+    "191767e6": "653c3515",
+    "b9433479": "653c3515",
+    "4d6a3ae6": "653c3515",
+    "eb31f3e9": "653c3515",
+    "500b521d": "653c3515",
+    "1326fb65": "653c3515",
+    "5f98dee8": "653c3515",
+    "2d9a1b4c": "653c3515"
+  }
+}

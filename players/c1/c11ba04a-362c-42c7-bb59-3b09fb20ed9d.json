@@ -1,1 +1,81 @@
-{"uuid":"c11ba04a-362c-42c7-bb59-3b09fb20ed9d","gender":null,"sports":{"Basketball":{"gp":1,"pts":2,"fouls":3,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T15:51:22.369Z"}},"seasons":[{"sid":"1603f576","sn":"Summer 2020/21","club":"Titans Basketball Club Inc. (Dandenong)","regs":[{"tid":"cd628796","tn":"U14 Girls Titans Diamonds","gid":"2db04c7a","gn":"Saturday U14 Girls A","stats":{"gp":1,"pts":2,"fouls":3,"fg":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:44:25.470Z","records":{"maxGamePTS":{"v":2,"gameKey":"3d3026ca","sid":"1603f576"},"maxGameThreePt":{"v":null}},"games":["3d3026ca"],"name":"Summer 2020/21"}
+{
+  "uuid": "c11ba04a-362c-42c7-bb59-3b09fb20ed9d",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 2,
+      "fouls": 3,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:51:22.369Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1603f576",
+      "sn": "Summer 2020/21",
+      "club": "Titans Basketball Club Inc. (Dandenong)",
+      "regs": [
+        {
+          "tid": "cd628796",
+          "tn": "U14 Girls Titans Diamonds",
+          "gid": "2db04c7a",
+          "gn": "Saturday U14 Girls A",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fouls": 3,
+            "fg": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "36479a41",
+          "tn": "Dandenong U14 Girls 1",
+          "gid": "c74640bb",
+          "gn": "U14 Girls VC - Ashe",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:25.470Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "3d3026ca",
+      "sid": "1603f576"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3d3026ca"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "cd628796",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36479a41",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:30.628Z"
+}

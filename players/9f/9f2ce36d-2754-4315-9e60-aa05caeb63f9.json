@@ -1,1 +1,74 @@
-{"uuid":"9f2ce36d-2754-4315-9e60-aa05caeb63f9","name":"Emily Liston-Abel","gender":"Girls","sports":{"Basketball":{"gp":7,"pts":14,"fouls":13,"fg":7,"foulOuts":{"aacc7335":2},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T14:29:15.407Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"South Camberwell Basketball Club","regs":[{"tid":"16c973c5","tn":"SCBC U8 Girls Shooting Stars","gid":"f03c2927","gn":"U8 Girls Grading","age":"U8","div":null,"stats":{"gp":7,"fouls":13,"fg":7,"pts":14,"foulOuts":1,"wins":2,"losses":3}}]}],"updatedAt":"2026-05-30T17:58:46.520Z","teams":[{"tid":"16c973c5","sid":"aacc7335","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:31:04.550Z","games":["359c2de1","4690d159","8292587d","a100aac1","be3dfdd6"],"records":{"maxGamePTS":{"v":6,"gameKey":"359c2de1","sid":"aacc7335"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "9f2ce36d-2754-4315-9e60-aa05caeb63f9",
+  "name": "Emily Liston-Abel",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 14,
+      "fouls": 13,
+      "fg": 7,
+      "foulOuts": {
+        "aacc7335": 2
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:29:15.407Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "16c973c5",
+          "tn": "SCBC U8 Girls Shooting Stars",
+          "gid": "65fb1191",
+          "gn": "U8 Girls A",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 13,
+            "fg": 7,
+            "pts": 14,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-30T17:58:46.520Z",
+  "teams": [
+    {
+      "tid": "16c973c5",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:33.207Z",
+  "games": [
+    "359c2de1",
+    "4690d159",
+    "8292587d",
+    "a100aac1",
+    "be3dfdd6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "359c2de1",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

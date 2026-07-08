@@ -1,1 +1,237 @@
-{"uuid":"cf48fa5b-6a22-4469-9bba-29f83b3ec1d2","gender":null,"sports":{"Basketball":{"gp":37,"pts":232,"fouls":70,"fg":99,"ft":13,"threePt":7,"foulOuts":{"66161eb9":1,"9eb1cb2b":1,"0912c55f":1},"maxGamePTS":26,"maxGameThreePt":2,"wins":15,"losses":16,"winPct":0.48,"statsChecked":"2026-07-05T16:03:39.740Z"}},"seasons":[{"sid":"702b232f","sn":"Winter 2026","club":null,"regs":[{"tid":"37822c9c","tn":"Dollar Fifty Hotdog","gid":"032acf0f","gn":"Wednesday Men -Div 2","stats":{"gp":3,"pts":24,"fouls":4,"fg":9,"ft":3,"threePt":1,"wins":1,"losses":2}}]},{"sid":"66161eb9","sn":"Winter 2023","club":null,"regs":[{"tid":"967f365b","tn":"Shaquille oatmeal","gid":"599adf1c","gn":"Tues Men B","stats":{"gp":14,"pts":128,"fouls":38,"fg":51,"ft":8,"threePt":6,"wins":7,"losses":7}},{"tid":"967f365b","tn":"Shaquille oatmeal","gid":"c2c81ffd","gn":"Tues Men A","stats":{"gp":14,"pts":128,"fouls":38,"fg":51,"ft":8,"threePt":6,"foulOuts":1,"wins":7,"losses":7}}]},{"sid":"9eb1cb2b","sn":"Winter 2021","club":null,"regs":[{"tid":"4b601732","tn":"Kaos","gid":"5c840c72","gn":"Wednesday Division 4","stats":{"gp":16,"pts":68,"fouls":20,"fg":34}},{"tid":"4b601732","tn":"Kaos","gid":"30426492","gn":"Wednesday Division 3","stats":{"gp":16,"pts":68,"fouls":20,"fg":34,"foulOuts":1}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"effc95fb","tn":"STC B18.2","gid":"a0e9f577","gn":"Saturday U18 Boys A Grade","stats":{"gp":4,"pts":12,"fouls":8,"fg":5,"ft":2,"foulOuts":1}}]}],"updatedAt":"2026-06-11T23:44:51.145Z","games":["06278fea","09f4ed1c","0c6bb895","0f5fbf10","25b83826","318d95d4","356bc919","3a28aff7","3c1b653f","4537ec78","494ee154","4b3e03db","619cc724","6713757d","7c2f66bd","8ab58a43","9556bfd9","98d253af","9924b408","9a18dc29","a1bb67cc","ad11ad97","b0428066","b1106b40","b1f4b9d0","c2465b29","c4b85bbb","c4db1648","c9086ffe","ce222d68","d0884741","d338a665","d384d584","db56aa6f","e782f25e","e987b01e","f8c0f17a"],"records":{"maxGamePTS":{"v":26,"gameKey":"d384d584","sid":"66161eb9"},"maxGameThreePt":{"v":2,"gameKey":"d384d584","sid":"66161eb9"}},"name":"Winter 2026"}
+{
+  "uuid": "cf48fa5b-6a22-4469-9bba-29f83b3ec1d2",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "pts": 232,
+      "fouls": 70,
+      "fg": 99,
+      "ft": 13,
+      "threePt": 7,
+      "foulOuts": {
+        "66161eb9": 1,
+        "9eb1cb2b": 1,
+        "0912c55f": 1
+      },
+      "maxGamePTS": 26,
+      "maxGameThreePt": 2,
+      "wins": 15,
+      "losses": 16,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T16:03:39.740Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "sn": "Winter 2026",
+      "club": null,
+      "regs": [
+        {
+          "tid": "37822c9c",
+          "tn": "Dollar Fifty Hotdog",
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2",
+          "stats": {
+            "gp": 3,
+            "pts": 24,
+            "fouls": 4,
+            "fg": 9,
+            "ft": 3,
+            "threePt": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "66161eb9",
+      "sn": "Winter 2023",
+      "club": null,
+      "regs": [
+        {
+          "tid": "967f365b",
+          "tn": "Shaquille oatmeal",
+          "gid": "599adf1c",
+          "gn": "Tues Men B",
+          "stats": {
+            "gp": 14,
+            "pts": 128,
+            "fouls": 38,
+            "fg": 51,
+            "ft": 8,
+            "threePt": 6,
+            "wins": 7,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "967f365b",
+          "tn": "Shaquille oatmeal",
+          "gid": "c2c81ffd",
+          "gn": "Tues Men A",
+          "stats": {
+            "gp": 14,
+            "pts": 128,
+            "fouls": 38,
+            "fg": 51,
+            "ft": 8,
+            "threePt": 6,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9eb1cb2b",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4b601732",
+          "tn": "Kaos",
+          "gid": "5c840c72",
+          "gn": "Wednesday Division 4",
+          "stats": {
+            "gp": 16,
+            "pts": 68,
+            "fouls": 20,
+            "fg": 34
+          }
+        },
+        {
+          "tid": "4b601732",
+          "tn": "Kaos",
+          "gid": "30426492",
+          "gn": "Wednesday Division 3",
+          "stats": {
+            "gp": 16,
+            "pts": 68,
+            "fouls": 20,
+            "fg": 34,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "effc95fb",
+          "tn": "STC B18.2",
+          "gid": "a0e9f577",
+          "gn": "Saturday U18 Boys A Grade",
+          "stats": {
+            "gp": 4,
+            "pts": 12,
+            "fouls": 8,
+            "fg": 5,
+            "ft": 2,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "179ebc61",
+          "tn": "Keilor U16 Boys 2",
+          "gid": "9e7d1624",
+          "gn": "U16 Boys VJL 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:51.145Z",
+  "games": [
+    "06278fea",
+    "09f4ed1c",
+    "0c6bb895",
+    "0f5fbf10",
+    "25b83826",
+    "318d95d4",
+    "356bc919",
+    "3a28aff7",
+    "3c1b653f",
+    "4537ec78",
+    "494ee154",
+    "4b3e03db",
+    "619cc724",
+    "6713757d",
+    "7c2f66bd",
+    "8ab58a43",
+    "9556bfd9",
+    "98d253af",
+    "9924b408",
+    "9a18dc29",
+    "a1bb67cc",
+    "ad11ad97",
+    "b0428066",
+    "b1106b40",
+    "b1f4b9d0",
+    "c2465b29",
+    "c4b85bbb",
+    "c4db1648",
+    "c9086ffe",
+    "ce222d68",
+    "d0884741",
+    "d338a665",
+    "d384d584",
+    "db56aa6f",
+    "e782f25e",
+    "e987b01e",
+    "f8c0f17a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "d384d584",
+      "sid": "66161eb9"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "d384d584",
+      "sid": "66161eb9"
+    }
+  },
+  "name": "Winter 2026",
+  "teams": [
+    {
+      "tid": "37822c9c",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "967f365b",
+      "sid": "66161eb9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4b601732",
+      "sid": "9eb1cb2b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "effc95fb",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "179ebc61",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:10.054Z"
+}

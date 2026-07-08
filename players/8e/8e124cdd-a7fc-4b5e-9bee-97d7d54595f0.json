@@ -1,1 +1,67 @@
-{"uuid":"8e124cdd-a7fc-4b5e-9bee-97d7d54595f0","name":"Josh Hutcheon","gender":"Men","sports":{"Basketball":{"gp":4,"pts":10,"fouls":3,"fg":5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"losses":4,"winPct":0,"statsChecked":"2026-07-05T15:49:56.189Z"}},"seasons":[{"sid":"9dce861b","sn":"Spring 2025","regs":[{"tid":"bd82ee35","tn":"Roxy Ballers","gid":"f02656ea","gn":"Tues Men C Grade","age":null,"div":null,"stats":{"gp":4,"fouls":3,"fg":5,"pts":10,"losses":4}}]}],"updatedAt":"2026-06-02T21:55:07.410Z","teams":[{"tid":"bd82ee35","sid":"9dce861b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:26:58.021Z","games":["3255e3fb","3c3b714e","41c6d5e1","d30e86ad"],"records":{"maxGamePTS":{"v":6,"gameKey":"d30e86ad","sid":"9dce861b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "8e124cdd-a7fc-4b5e-9bee-97d7d54595f0",
+  "name": "Josh Hutcheon",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 10,
+      "fouls": 3,
+      "fg": 5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "losses": 4,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:49:56.189Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9dce861b",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "bd82ee35",
+          "tn": "Roxy Ballers",
+          "gid": "1a164907",
+          "gn": "Tues Men D Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 5,
+            "pts": 10,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T21:55:07.410Z",
+  "teams": [
+    {
+      "tid": "bd82ee35",
+      "sid": "9dce861b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:52.347Z",
+  "games": [
+    "3255e3fb",
+    "3c3b714e",
+    "41c6d5e1",
+    "d30e86ad"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "d30e86ad",
+      "sid": "9dce861b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,294 @@
-{"uuid":"e61e7808-0371-4c21-b1f9-6dadc70432f6","name":"Eamon McManus","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":185,"fouls":52,"fg":74,"ft":22,"threePt":5,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":2,"wins":46,"losses":43,"draws":9,"winPct":0.47,"statsChecked":"2026-07-05T15:13:13.917Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"f965153e","tn":"Bulleen U15 Boys 05","gid":"5689f3a2","gn":"Boys U15 B Grading","age":"U15","div":null,"stats":{"gp":8,"ft":4,"fg":12,"pts":28,"fouls":4,"wins":4,"losses":2}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"b3a91500","tn":"Bulleen U16 Boys 06","gid":"f2d98dcf","gn":"Boys U16 DB","age":"U16","div":null,"stats":{"gp":12,"fouls":14,"ft":4,"fg":19,"threePt":2,"pts":48,"finals":1,"wins":6,"losses":5,"draws":1}},{"tid":"b3a91500","tn":"Bulleen U16 Boys 06","gid":"80ce3e97","gn":"Boys U16 D Grading","age":"U16","div":null,"stats":{"gp":12,"fouls":14,"fg":19,"pts":48,"finals":1,"wins":6,"losses":5,"draws":1,"ft":4,"threePt":2}},{"tid":"b3a91500","tn":"Bulleen U16 Boys 06","gid":"82e93bf0","gn":"Boys U16 C Grading","age":"U16","div":null,"stats":{"gp":12,"fouls":14,"ft":4,"fg":19,"pts":48,"finals":1,"wins":6,"losses":5,"draws":1,"threePt":2}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"fbc544e4","tn":"Bulleen U15 Boys 05","gid":"affe66fa","gn":"Boys U15 BC","age":"U15","div":null,"stats":{"gp":12,"fouls":14,"ft":4,"fg":7,"pts":18,"wins":4,"losses":6,"draws":2}},{"tid":"fbc544e4","tn":"Bulleen U15 Boys 05","gid":"073a015a","gn":"Boys U15 B Grading","age":"U15","div":null,"stats":{"gp":12,"fouls":14,"ft":4,"fg":7,"pts":18,"wins":4,"losses":6,"draws":2}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"e92f8e9d","tn":"Bulleen U14 Boys 15","gid":"26ece71a","gn":"Boys U14 DD","age":"U14","div":null,"stats":{"gp":16,"fouls":20,"ft":10,"fg":36,"pts":91,"finals":1,"wins":8,"losses":7,"draws":1,"threePt":3}},{"tid":"e92f8e9d","tn":"Bulleen U14 Boys 15","gid":"316966af","gn":"Boys U14 D Grading","age":"U14","div":null,"stats":{"gp":16,"fouls":20,"ft":10,"fg":36,"threePt":3,"pts":91,"finals":1,"wins":8,"losses":7,"draws":1}}]}],"updatedAt":"2026-07-04T05:44:38.309Z","teams":[{"tid":"f965153e","sid":"1ae60211","status":"ACTIVE"},{"tid":"b3a91500","sid":"88026885","status":"COMPLETED"},{"tid":"fbc544e4","sid":"f373fc05","status":"COMPLETED"},{"tid":"e92f8e9d","sid":"fa446579","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:28:50.949Z","records":{"maxGamePTS":{"v":11,"gameKey":"3b25847f","sid":"1ae60211"},"maxGameThreePt":{"v":2,"gameKey":"7d7b398d","sid":"fa446579"}},"games":["06ceea5c","14085259","1de9b483","28d3f931","31a403a7","31ae78e7","32405137","3b25847f","4078d163","4aabece4","50a7add9","60814b17","698c7d3c","6a3f96a4","6b17c995","70804687","7a08a0ea","7d7b398d","8815295f","88750f24","8ff23eca","945f2052","97d72446","986e6a3e","9b24d306","a2781d91","a7b5f07c","ac5c23e1","af86e5d5","b84ac69d","c0d5260e","c0e2f90e","c54fac30","c818573d","c8cd1c3d","c9a7a106","cc5ac24a","cd1bee93","d0551139","d418cc29","dadd8111","dfc01aea","dfdebfad","e43eb6fd","ecc453a7","fdbba6cb"]}
+{
+  "uuid": "e61e7808-0371-4c21-b1f9-6dadc70432f6",
+  "name": "Eamon McManus",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 185,
+      "fouls": 52,
+      "fg": 74,
+      "ft": 22,
+      "threePt": 5,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 2,
+      "wins": 46,
+      "losses": 43,
+      "draws": 9,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-05T15:13:13.917Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "f965153e",
+          "tn": "Bulleen U15 Boys 05",
+          "gid": "6af5a41e",
+          "gn": "Boys U15 BC",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 4,
+            "fg": 12,
+            "pts": 28,
+            "fouls": 4,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "b3a91500",
+          "tn": "Bulleen U16 Boys 06",
+          "gid": "f2d98dcf",
+          "gn": "Boys U16 DB",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 19,
+            "threePt": 2,
+            "pts": 48,
+            "finals": 1,
+            "wins": 6,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b3a91500",
+          "tn": "Bulleen U16 Boys 06",
+          "gid": "80ce3e97",
+          "gn": "Boys U16 D Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "fg": 19,
+            "pts": 48,
+            "finals": 1,
+            "wins": 6,
+            "losses": 5,
+            "draws": 1,
+            "ft": 4,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "b3a91500",
+          "tn": "Bulleen U16 Boys 06",
+          "gid": "82e93bf0",
+          "gn": "Boys U16 C Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 19,
+            "pts": 48,
+            "finals": 1,
+            "wins": 6,
+            "losses": 5,
+            "draws": 1,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "fbc544e4",
+          "tn": "Bulleen U15 Boys 05",
+          "gid": "affe66fa",
+          "gn": "Boys U15 BC",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 7,
+            "pts": 18,
+            "wins": 4,
+            "losses": 6,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "fbc544e4",
+          "tn": "Bulleen U15 Boys 05",
+          "gid": "073a015a",
+          "gn": "Boys U15 B Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 7,
+            "pts": 18,
+            "wins": 4,
+            "losses": 6,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "e92f8e9d",
+          "tn": "Bulleen U14 Boys 15",
+          "gid": "26ece71a",
+          "gn": "Boys U14 DD",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 20,
+            "ft": 10,
+            "fg": 36,
+            "pts": 91,
+            "finals": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "threePt": 3
+          }
+        },
+        {
+          "tid": "e92f8e9d",
+          "tn": "Bulleen U14 Boys 15",
+          "gid": "316966af",
+          "gn": "Boys U14 D Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 20,
+            "ft": 10,
+            "fg": 36,
+            "threePt": 3,
+            "pts": 91,
+            "finals": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:38.309Z",
+  "teams": [
+    {
+      "tid": "f965153e",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b3a91500",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fbc544e4",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e92f8e9d",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:04.342Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "3b25847f",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "7d7b398d",
+      "sid": "fa446579"
+    }
+  },
+  "games": [
+    "06ceea5c",
+    "14085259",
+    "1de9b483",
+    "28d3f931",
+    "31a403a7",
+    "31ae78e7",
+    "32405137",
+    "3b25847f",
+    "4078d163",
+    "4aabece4",
+    "50a7add9",
+    "60814b17",
+    "698c7d3c",
+    "6a3f96a4",
+    "6b17c995",
+    "70804687",
+    "7a08a0ea",
+    "7d7b398d",
+    "8815295f",
+    "88750f24",
+    "8ff23eca",
+    "945f2052",
+    "97d72446",
+    "986e6a3e",
+    "9b24d306",
+    "a2781d91",
+    "a7b5f07c",
+    "ac5c23e1",
+    "af86e5d5",
+    "b84ac69d",
+    "c0d5260e",
+    "c0e2f90e",
+    "c54fac30",
+    "c818573d",
+    "c8cd1c3d",
+    "c9a7a106",
+    "cc5ac24a",
+    "cd1bee93",
+    "d0551139",
+    "d418cc29",
+    "dadd8111",
+    "dfc01aea",
+    "dfdebfad",
+    "e43eb6fd",
+    "ecc453a7",
+    "fdbba6cb"
+  ]
+}

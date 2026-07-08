@@ -1,1 +1,99 @@
-{"uuid":"a6078650-0758-463e-8dbd-707eadf0e706","name":"River Irwin","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":14,"fouls":2,"fg":7,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"losses":5,"winPct":0,"draws":1,"statsChecked":"2026-07-05T16:14:50.114Z"}},"seasons":[{"sid":"a62ef5b1","sn":"Winter 2026","regs":[{"tid":"e51419a9","tn":"Knicks Ade","gid":"5ba7fc3e","gn":"Thursday U12 Boys Adelaide","age":"U12","div":null,"stats":{"gp":4,"fg":2,"pts":4,"losses":3}},{"tid":"981cc9ef","stats":{"draws":1,"gp":4,"pts":10,"fg":5,"fouls":2,"losses":2}}]}],"updatedAt":"2026-06-02T22:47:16.129Z","teams":[{"tid":"981cc9ef","sid":"a62ef5b1","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:32:42.342Z","games":["217d7bca","56ad1be2","70f17e86","c0f8d8ba","db04066c","e1930b16","f3ad792b","f9880432"],"records":{"maxGamePTS":{"v":8,"gameKey":"e1930b16","sid":"a62ef5b1"},"maxGameThreePt":{"v":null}},"gameTids":{"e1930b16":"981cc9ef","f9880432":"981cc9ef","217d7bca":"981cc9ef","56ad1be2":"981cc9ef","c0f8d8ba":"e51419a9","f3ad792b":"e51419a9","70f17e86":"e51419a9","db04066c":"e51419a9"}}
+{
+  "uuid": "a6078650-0758-463e-8dbd-707eadf0e706",
+  "name": "River Irwin",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 14,
+      "fouls": 2,
+      "fg": 7,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "losses": 5,
+      "winPct": 0,
+      "draws": 1,
+      "statsChecked": "2026-07-05T16:14:50.114Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62ef5b1",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e51419a9",
+          "tn": "Knicks Ade",
+          "gid": "5ba7fc3e",
+          "gn": "Thursday U12 Boys Adelaide",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fg": 2,
+            "pts": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "981cc9ef",
+          "stats": {
+            "draws": 1,
+            "gp": 4,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 2,
+            "losses": 2
+          },
+          "gid": "5ba7fc3e",
+          "gn": "Thursday U12 Boys Adelaide"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:47:16.129Z",
+  "teams": [
+    {
+      "tid": "e51419a9",
+      "sid": "a62ef5b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "981cc9ef",
+      "sid": "a62ef5b1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:38.480Z",
+  "games": [
+    "217d7bca",
+    "56ad1be2",
+    "70f17e86",
+    "c0f8d8ba",
+    "db04066c",
+    "e1930b16",
+    "f3ad792b",
+    "f9880432"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "e1930b16",
+      "sid": "a62ef5b1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "e1930b16": "981cc9ef",
+    "f9880432": "981cc9ef",
+    "217d7bca": "981cc9ef",
+    "56ad1be2": "981cc9ef",
+    "c0f8d8ba": "e51419a9",
+    "f3ad792b": "e51419a9",
+    "70f17e86": "e51419a9",
+    "db04066c": "e51419a9"
+  }
+}

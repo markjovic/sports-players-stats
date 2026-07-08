@@ -1,1 +1,355 @@
-{"uuid":"31046bd6-6ada-4545-849c-ae8336d59954","name":"Lexie Strong","gender":"Girls","sports":{"Basketball":{"gp":21,"pts":14,"fouls":30,"fg":5,"ft":4,"foulOuts":{"e7aed763":1,"e78cfce1":1},"maxGamePTS":3,"maxGameThreePt":null,"wins":5,"losses":23,"draws":2,"winPct":0.17,"statsChecked":"2026-07-05T14:54:30.063Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","regs":[{"tid":"8a3fde3c","tn":"Auburn Mystics","gid":"9db05ad7","gn":"Saturday U16/18 Girls B","age":"U16","div":null,"stats":{"gp":4,"fouls":11,"foulOuts":1,"losses":3,"wins":1}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","club":"Toorak Basketball Club","regs":[{"tid":"bff3302a","tn":"Toorak Tsunami","gid":"c572a3e2","gn":"Saturday U16 Girls B","age":"U16","div":null,"stats":{"gp":13,"pts":12,"fg":4,"ft":4,"fouls":15,"foulOuts":1,"wins":2,"losses":10,"draws":1}},{"tid":"bff3302a","tn":"Toorak Tsunami","gid":"08c5fa47","gn":"Saturday U19 Girls","age":"U19","div":null,"stats":{"gp":13,"wins":2,"losses":10,"draws":1,"pts":12,"fg":4,"ft":4,"fouls":15}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Melbourne Tigers Basketball Club","regs":[{"tid":"6b1385dd","tn":"Melbourne U12 Girls 3","gid":"b9785935","gn":"12 Girls - VJL4 (P2)","age":null,"div":null,"stats":{"gp":4,"fouls":4,"pts":2,"fg":1}},{"tid":"6b1385dd","tn":"Melbourne U12 Girls 3","gid":"cbe24f0a","gn":"U12G Crossover 1","age":null,"div":null,"stats":{"gp":4,"pts":2,"fg":1,"fouls":4}},{"tid":"6b1385dd","tn":"Melbourne U12 Girls 3","gid":"1a6fca53","gn":"U12G Grading 1 - Pool 3D","age":null,"div":null,"stats":{"gp":4,"pts":2,"fg":1,"fouls":4}}]}],"updatedAt":"2026-06-01T08:32:10.184Z","teams":[{"tid":"8a3fde3c","sid":"e7aed763","status":"ACTIVE"},{"tid":"bff3302a","sid":"e78cfce1","status":"COMPLETED"},{"tid":"636b8446","sid":"e5df46b3","status":"COMPLETED"},{"tid":"c6c9192f","sid":"e2637fe8","status":"COMPLETED"},{"tid":"e97bb960","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"171077f8","sid":"eb0c3879","status":"COMPLETED"},{"tid":"6cfe6502","sid":"3f4132a1","status":"COMPLETED"},{"tid":"67fbf5d4","sid":"11f9ba57","status":"COMPLETED"},{"tid":"c3051f50","sid":"9533d0c6","status":"COMPLETED"},{"tid":"6b1385dd","sid":"a5dfc5c1","status":"COMPLETED"},{"tid":"2fd094e6","sid":"977f8526","status":"COMPLETED"},{"tid":"50d54201","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:11:33.362Z","records":{"maxGamePTS":{"v":3,"gameKey":"e9ee3364","sid":"e78cfce1"},"maxGameThreePt":{"v":null}},"games":["04a44e23","0a956fb3","0ec7dc75","1ffd46c2","2abca0eb","2cfd4ef6","402580e6","488f8d54","5b05f39d","5bac2f5f","5c3fee28","60e2dee2","682d142d","693e31c3","6b776021","765f49a5","7aa1587c","b90ac357","dd227553","e6c8d9a7","e9ee3364"]}
+{
+  "uuid": "31046bd6-6ada-4545-849c-ae8336d59954",
+  "name": "Lexie Strong",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 21,
+      "pts": 14,
+      "fouls": 30,
+      "fg": 5,
+      "ft": 4,
+      "foulOuts": {
+        "e7aed763": 1,
+        "e78cfce1": 1
+      },
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 23,
+      "draws": 2,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T14:54:30.063Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "8a3fde3c",
+          "tn": "Auburn Mystics",
+          "gid": "9db05ad7",
+          "gn": "Saturday U16/18 Girls B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 11,
+            "foulOuts": 1,
+            "losses": 3,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "bff3302a",
+          "tn": "Toorak Tsunami",
+          "gid": "c572a3e2",
+          "gn": "Saturday U16 Girls B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 12,
+            "fg": 4,
+            "ft": 4,
+            "fouls": 15,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bff3302a",
+          "tn": "Toorak Tsunami",
+          "gid": "08c5fa47",
+          "gn": "Saturday U19 Girls",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "wins": 2,
+            "losses": 10,
+            "draws": 1,
+            "pts": 12,
+            "fg": 4,
+            "ft": 4,
+            "fouls": 15
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Melbourne Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "6b1385dd",
+          "tn": "Melbourne U12 Girls 3",
+          "gid": "b9785935",
+          "gn": "12 Girls - VJL4 (P2)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 4,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "6b1385dd",
+          "tn": "Melbourne U12 Girls 3",
+          "gid": "cbe24f0a",
+          "gn": "U12G Crossover 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "6b1385dd",
+          "tn": "Melbourne U12 Girls 3",
+          "gid": "1a6fca53",
+          "gn": "U12G Grading 1 - Pool 3D",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "636b8446",
+          "tn": "Toorak Thunder",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "c6c9192f",
+          "tn": "Toorak Trailblazers",
+          "gid": "ec2a4967",
+          "gn": "U12 Girls (S22_23) Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "e97bb960",
+          "tn": "Toorak Thunder",
+          "gid": "1a332899",
+          "gn": "Tuesday MSAC/Bayside YR.5 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "171077f8",
+          "tn": "Toorak Trailblazers",
+          "gid": "6cf63d08",
+          "gn": "U12 Girls Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "6cfe6502",
+          "tn": "Toorak Thunder",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "67fbf5d4",
+          "tn": "Toorak Trailblazers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9533d0c6",
+      "sn": "Term 4, 2021",
+      "regs": [
+        {
+          "tid": "c3051f50",
+          "tn": "Toorak Thunder",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "2fd094e6",
+          "tn": "Toorak Thunder",
+          "gid": "226604f1",
+          "gn": "Friday MSAC/Bayside YR.4 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "50d54201",
+          "tn": "Toorak Titans",
+          "gid": "730fb949",
+          "gn": "Friday MSAC/Bayside YR.3 GIRLS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:32:10.184Z",
+  "teams": [
+    {
+      "tid": "8a3fde3c",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bff3302a",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b1385dd",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "636b8446",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6c9192f",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e97bb960",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "171077f8",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6cfe6502",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67fbf5d4",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c3051f50",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2fd094e6",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50d54201",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:46.106Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "e9ee3364",
+      "sid": "e78cfce1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "04a44e23",
+    "0a956fb3",
+    "0ec7dc75",
+    "1ffd46c2",
+    "2abca0eb",
+    "2cfd4ef6",
+    "402580e6",
+    "488f8d54",
+    "5b05f39d",
+    "5bac2f5f",
+    "5c3fee28",
+    "60e2dee2",
+    "682d142d",
+    "693e31c3",
+    "6b776021",
+    "765f49a5",
+    "7aa1587c",
+    "b90ac357",
+    "dd227553",
+    "e6c8d9a7",
+    "e9ee3364"
+  ]
+}

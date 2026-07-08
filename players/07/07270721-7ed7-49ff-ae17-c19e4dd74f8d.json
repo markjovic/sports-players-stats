@@ -1,1 +1,416 @@
-{"uuid":"07270721-7ed7-49ff-ae17-c19e4dd74f8d","name":"Chris Lennon","gender":"Men","sports":{"Basketball":{"gp":114,"pts":1456,"fouls":172,"fg":351,"ft":159,"threePt":196,"foulOuts":{"2027aa8b":1},"finals":4,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":34,"maxGameThreePt":7,"wins":46,"losses":48,"winPct":0.49,"statsChecked":"2026-07-05T15:46:31.619Z"}},"seasons":[{"sid":"a589d21e","sn":"Winter 2024","regs":[{"tid":"a42145f1","tn":"Moops","gid":"b5dc3493","gn":"Wednesday Senior Men A/B","age":"Senior","div":null,"stats":{"gp":13,"pts":132,"threePt":21,"fg":29,"ft":11,"fouls":16,"wins":6,"losses":7}}]},{"sid":"04d31f9d","sn":"Summer 2023/24","regs":[{"tid":"90a6fa09","tn":"The Moops","gid":"b96d16b2","gn":"Wednesday Senior Men A/B","age":"Senior","div":null,"stats":{"gp":17,"pts":236,"threePt":34,"fg":54,"ft":26,"fouls":33,"finals":1,"wins":7,"losses":10}}]},{"sid":"29134600","sn":"Winter 2023","regs":[{"tid":"3bed3740","tn":"Heat","gid":"dcdd3988","gn":"Monday Senior Men A/B","age":"Senior","div":null,"stats":{"gp":16,"pts":193,"threePt":30,"fg":42,"ft":19,"fouls":14,"finals":1,"wins":8,"losses":8}}]},{"sid":"f98be930","sn":"Summer 2022/23","regs":[{"tid":"77e279ad","tn":"The Moops","gid":"d34d66ee","gn":"Wednesday Senior Men D","age":"Senior","div":null,"stats":{"gp":21,"pts":353,"threePt":45,"fg":95,"ft":21,"fouls":39}}]},{"sid":"74484257","sn":"Summer 2022/23","regs":[{"tid":"8e7e1544","tn":"Heat","gid":"463162cc","gn":"Monday Senior Men A/B","age":"Senior","div":null,"stats":{"gp":21,"pts":280,"threePt":28,"fg":68,"ft":60,"fouls":38,"finals":1,"wins":8,"losses":14}}]},{"sid":"2027aa8b","sn":"Autumn 2022","regs":[{"tid":"63235264","tn":"Heat","gid":"e68fb5f3","gn":"Monday Senior Men A","age":"Senior","div":null,"stats":{"gp":17,"pts":168,"threePt":25,"fg":40,"ft":13,"fouls":23,"foulOuts":1,"finals":1,"gfApps":1,"wins":12,"losses":5}}]},{"sid":"bfca9538","sn":"Winter 2021","regs":[{"tid":"ed60c85f","tn":"Heat","gid":"7de55df3","gn":"Monday Senior Men Div A","age":"Senior","div":null,"stats":{"gp":5,"pts":44,"threePt":8,"fg":10,"fouls":3,"wins":2,"losses":3}}]},{"sid":"2e89df33","sn":"Summer 2020/21","regs":[{"tid":"ea636bc2","tn":"Heat","gid":"40f723ba","gn":"Monday Open Men Div A/B","age":"Senior","div":null,"stats":{"gp":4,"pts":50,"threePt":5,"fg":13,"ft":9,"fouls":6,"wins":3,"losses":1}}]}],"updatedAt":"2026-06-02T17:29:05.179Z","teams":[{"tid":"a42145f1","sid":"a589d21e","status":"COMPLETED"},{"tid":"90a6fa09","sid":"04d31f9d","status":"COMPLETED"},{"tid":"3bed3740","sid":"29134600","status":"COMPLETED"},{"tid":"8e7e1544","sid":"74484257","status":"COMPLETED"},{"tid":"77e279ad","sid":"f98be930","status":"COMPLETED"},{"tid":"63235264","sid":"2027aa8b","status":"COMPLETED"},{"tid":"ed60c85f","sid":"bfca9538","status":"COMPLETED"},{"tid":"00d289bd","sid":"a750f9b4","status":"COMPLETED"},{"tid":"ea636bc2","sid":"2e89df33","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:53:30.824Z","records":{"maxGamePTS":{"v":34,"gameKey":"69640380","sid":"f98be930"},"maxGameThreePt":{"v":7,"gameKey":"265b0c0e","sid":"f98be930"}},"games":["0235c556","0374152d","039c2340","03b73453","03d4966d","0419d330","058212cc","0624ec95","06d1e56e","081552b6","0999f96b","0b1eb607","0e0a6bdc","0e954299","0f145921","10d34d01","14a28c76","1568c8a5","1e379942","21e75e38","2286f730","265b0c0e","27e06a0f","2d6ec5a4","2e3cac70","2e499248","335a1450","33e4793a","34ebb0b3","38770f35","39cc93c6","3b7a81fd","3bd5a780","3d17921f","3d3fb031","3dd571c9","428b17e3","466159f5","4da23dd1","4dd68c0b","507a66c8","5285c07a","52fa40fa","53453dae","53659ddb","56e02e51","56eba0a6","58232820","58fc5d52","59191aa4","59c3b96c","5bba7c94","5cddc47c","5e3274ed","6522f52a","65793134","693f5947","694cd061","69640380","69a8130e","6b0f88e8","77269f03","789d5d3f","7c044839","7c4cfa2a","7c788645","7f4e09c7","82072dd5","84e7fd12","86dd2bb1","8917f2ad","8a3b9b54","8d021477","91f901d2","93faf4ef","95e571b5","99be791c","9bb7dc94","a34295e7","a63e2e25","a7b96253","a852c638","a91d12f8","aa00c974","aec1cadc","b2162a3b","b5e1a046","b7f16674","ba181567","ba8b4b85","baf1c861","becd7202","c01086b6","c106885a","c1b7fab5","c3068d0c","ca2b9580","ca4e2db8","ca89a324","ce6e772a","d061fe59","d356935d","d3f61dff","d532b812","d5d757ec","d9ba386b","db9cdf12","dc503a4d","eb3307c5","eb754024","ee4d4253","f6c6954f","fc3c99e8","fea2bfa8","ff78c781"]}
+{
+  "uuid": "07270721-7ed7-49ff-ae17-c19e4dd74f8d",
+  "name": "Chris Lennon",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 114,
+      "pts": 1456,
+      "fouls": 172,
+      "fg": 351,
+      "ft": 159,
+      "threePt": 196,
+      "foulOuts": {
+        "2027aa8b": 1
+      },
+      "finals": 4,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 34,
+      "maxGameThreePt": 7,
+      "wins": 46,
+      "losses": 48,
+      "winPct": 0.49,
+      "statsChecked": "2026-07-05T15:46:31.619Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a589d21e",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "a42145f1",
+          "tn": "Moops",
+          "gid": "b5dc3493",
+          "gn": "Wednesday Senior Men A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 132,
+            "threePt": 21,
+            "fg": 29,
+            "ft": 11,
+            "fouls": 16,
+            "wins": 6,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "04d31f9d",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "90a6fa09",
+          "tn": "The Moops",
+          "gid": "b96d16b2",
+          "gn": "Wednesday Senior Men A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 236,
+            "threePt": 34,
+            "fg": 54,
+            "ft": 26,
+            "fouls": 33,
+            "finals": 1,
+            "wins": 7,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "29134600",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "3bed3740",
+          "tn": "Heat",
+          "gid": "dcdd3988",
+          "gn": "Monday Senior Men A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 193,
+            "threePt": 30,
+            "fg": 42,
+            "ft": 19,
+            "fouls": 14,
+            "finals": 1,
+            "wins": 8,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f98be930",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "77e279ad",
+          "tn": "The Moops",
+          "gid": "d34d66ee",
+          "gn": "Wednesday Senior Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "pts": 353,
+            "threePt": 45,
+            "fg": 95,
+            "ft": 21,
+            "fouls": 39
+          }
+        }
+      ]
+    },
+    {
+      "sid": "74484257",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "8e7e1544",
+          "tn": "Heat",
+          "gid": "463162cc",
+          "gn": "Monday Senior Men A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "pts": 280,
+            "threePt": 28,
+            "fg": 68,
+            "ft": 60,
+            "fouls": 38,
+            "finals": 1,
+            "wins": 8,
+            "losses": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2027aa8b",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "63235264",
+          "tn": "Heat",
+          "gid": "e68fb5f3",
+          "gn": "Monday Senior Men A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 168,
+            "threePt": 25,
+            "fg": 40,
+            "ft": 13,
+            "fouls": 23,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfca9538",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "ed60c85f",
+          "tn": "Heat",
+          "gid": "7de55df3",
+          "gn": "Monday Senior Men Div A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 44,
+            "threePt": 8,
+            "fg": 10,
+            "fouls": 3,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2e89df33",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "ea636bc2",
+          "tn": "Heat",
+          "gid": "40f723ba",
+          "gn": "Monday Open Men Div A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 50,
+            "threePt": 5,
+            "fg": 13,
+            "ft": 9,
+            "fouls": 6,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a750f9b4",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "00d289bd",
+          "tn": "Smegmen",
+          "gid": "c4f05a7f",
+          "gn": "Monday Open Men G GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T17:29:05.179Z",
+  "teams": [
+    {
+      "tid": "a42145f1",
+      "sid": "a589d21e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "90a6fa09",
+      "sid": "04d31f9d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3bed3740",
+      "sid": "29134600",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "77e279ad",
+      "sid": "f98be930",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e7e1544",
+      "sid": "74484257",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "63235264",
+      "sid": "2027aa8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed60c85f",
+      "sid": "bfca9538",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea636bc2",
+      "sid": "2e89df33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "00d289bd",
+      "sid": "a750f9b4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:13.220Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 34,
+      "gameKey": "69640380",
+      "sid": "f98be930"
+    },
+    "maxGameThreePt": {
+      "v": 7,
+      "gameKey": "265b0c0e",
+      "sid": "f98be930"
+    }
+  },
+  "games": [
+    "0235c556",
+    "0374152d",
+    "039c2340",
+    "03b73453",
+    "03d4966d",
+    "0419d330",
+    "058212cc",
+    "0624ec95",
+    "06d1e56e",
+    "081552b6",
+    "0999f96b",
+    "0b1eb607",
+    "0e0a6bdc",
+    "0e954299",
+    "0f145921",
+    "10d34d01",
+    "14a28c76",
+    "1568c8a5",
+    "1e379942",
+    "21e75e38",
+    "2286f730",
+    "265b0c0e",
+    "27e06a0f",
+    "2d6ec5a4",
+    "2e3cac70",
+    "2e499248",
+    "335a1450",
+    "33e4793a",
+    "34ebb0b3",
+    "38770f35",
+    "39cc93c6",
+    "3b7a81fd",
+    "3bd5a780",
+    "3d17921f",
+    "3d3fb031",
+    "3dd571c9",
+    "428b17e3",
+    "466159f5",
+    "4da23dd1",
+    "4dd68c0b",
+    "507a66c8",
+    "5285c07a",
+    "52fa40fa",
+    "53453dae",
+    "53659ddb",
+    "56e02e51",
+    "56eba0a6",
+    "58232820",
+    "58fc5d52",
+    "59191aa4",
+    "59c3b96c",
+    "5bba7c94",
+    "5cddc47c",
+    "5e3274ed",
+    "6522f52a",
+    "65793134",
+    "693f5947",
+    "694cd061",
+    "69640380",
+    "69a8130e",
+    "6b0f88e8",
+    "77269f03",
+    "789d5d3f",
+    "7c044839",
+    "7c4cfa2a",
+    "7c788645",
+    "7f4e09c7",
+    "82072dd5",
+    "84e7fd12",
+    "86dd2bb1",
+    "8917f2ad",
+    "8a3b9b54",
+    "8d021477",
+    "91f901d2",
+    "93faf4ef",
+    "95e571b5",
+    "99be791c",
+    "9bb7dc94",
+    "a34295e7",
+    "a63e2e25",
+    "a7b96253",
+    "a852c638",
+    "a91d12f8",
+    "aa00c974",
+    "aec1cadc",
+    "b2162a3b",
+    "b5e1a046",
+    "b7f16674",
+    "ba181567",
+    "ba8b4b85",
+    "baf1c861",
+    "becd7202",
+    "c01086b6",
+    "c106885a",
+    "c1b7fab5",
+    "c3068d0c",
+    "ca2b9580",
+    "ca4e2db8",
+    "ca89a324",
+    "ce6e772a",
+    "d061fe59",
+    "d356935d",
+    "d3f61dff",
+    "d532b812",
+    "d5d757ec",
+    "d9ba386b",
+    "db9cdf12",
+    "dc503a4d",
+    "eb3307c5",
+    "eb754024",
+    "ee4d4253",
+    "f6c6954f",
+    "fc3c99e8",
+    "fea2bfa8",
+    "ff78c781"
+  ]
+}

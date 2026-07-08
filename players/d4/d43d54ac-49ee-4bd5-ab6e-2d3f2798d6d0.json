@@ -1,1 +1,255 @@
-{"uuid":"d43d54ac-49ee-4bd5-ab6e-2d3f2798d6d0","name":"Matthew Wright","gender":"Mixed","sports":{"Basketball":{"gp":39,"pts":170,"fouls":40,"fg":72,"ft":5,"threePt":7,"foulOuts":{"ffbd9a4a":1},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.67,"maxGamePTS":26,"maxGameThreePt":2,"wins":30,"losses":51,"draws":5,"winPct":0.35,"statsChecked":"2026-07-05T15:51:59.636Z"}},"seasons":[{"sid":"23270ce4","sn":"Winter 2026","club":"Sharks Basketball Club (Geelong)","regs":[{"tid":"92ead2f4","tn":"Bull Sharks","gid":"622948bb","gn":"All Abilities 2","age":null,"div":null,"stats":{"gp":6,"fouls":7,"ft":4,"fg":12,"pts":28,"wins":1,"losses":4}},{"tid":"92ead2f4","tn":"","gid":"5e0f9744","gn":"All Abilities 2/3","div":null,"stats":{"gp":6,"pts":28,"fg":12,"ft":4,"fouls":7,"wins":1,"losses":4}}]},{"sid":"85e5f151","sn":"Summer 2025/26","club":"Sharks Basketball Club (Geelong)","regs":[{"tid":"525ff9c5","tn":"Bull Sharks","gid":"ff163c45","gn":"All Abilities 2","age":null,"div":null,"stats":{"gp":13,"fouls":7,"fg":58,"pts":122,"finals":1,"wins":4,"losses":7,"draws":1,"threePt":2}},{"tid":"525ff9c5","tn":"Bull Sharks","gid":"0977f840","gn":"ZZ__All Abilities 1/2","age":null,"div":null,"stats":{"gp":13,"fouls":7,"fg":58,"threePt":2,"pts":122,"finals":1,"wins":4,"losses":7,"draws":1}},{"tid":"525ff9c5","tn":"Bull Sharks","gid":"34423bab","gn":"ZZ__All Abilities 3/4","age":null,"div":null,"stats":{"gp":13,"fouls":7,"fg":58,"threePt":2,"pts":122,"finals":1,"wins":4,"losses":7,"draws":1}}]},{"sid":"ffbd9a4a","sn":"Summer 2023/24","regs":[{"tid":"b3cc83db","tn":"Fierce Kents","gid":"c34969e0","gn":"(SOCIAL) Wednesday Senior Men 8","age":"Senior","div":null,"stats":{"gp":20,"fouls":26,"ft":1,"fg":2,"threePt":5,"pts":20,"finals":1,"gfApps":1,"wins":8,"losses":11,"draws":1}},{"tid":"b3cc83db","tn":"Fierce Kents","gid":"ec278126","gn":"(SOCIAL) Wednesday Senior Men 7","age":"Senior","div":null,"stats":{"gp":20,"fouls":26,"threePt":5,"pts":20,"foulOuts":1,"finals":1,"gfApps":1,"wins":8,"losses":11,"draws":1,"fg":2,"ft":1}}]}],"updatedAt":"2026-07-04T05:45:43.141Z","teams":[{"tid":"92ead2f4","sid":"23270ce4","status":"ACTIVE"},{"tid":"525ff9c5","sid":"85e5f151","status":"COMPLETED"},{"tid":"b3cc83db","sid":"ffbd9a4a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:02.410Z","records":{"maxGamePTS":{"v":26,"gameKey":"a8594c9a","sid":"85e5f151"},"maxGameThreePt":{"v":2,"gameKey":"cd55863d","sid":"ffbd9a4a"}},"games":["05d055bf","099ffe5d","0caf3608","153ec41a","174c4e61","1c32070e","26f426b9","29a50ec8","2dfa4622","2fb890f7","30106ff6","326c428a","33c6012d","3bfd5f21","407477bc","4df22e2f","584aaeb2","58fac522","5adb234d","5bdaba85","709cf198","7139cf40","74835f2e","87400e30","991909c3","99a0f2a9","a8594c9a","bd88c591","c48cd81c","c93cd350","ca49cf23","cd55863d","ce7de5c6","d4e2bffa","db20c676","df072049","fbc87166","fc3f7a51"]}
+{
+  "uuid": "d43d54ac-49ee-4bd5-ab6e-2d3f2798d6d0",
+  "name": "Matthew Wright",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 170,
+      "fouls": 40,
+      "fg": 72,
+      "ft": 5,
+      "threePt": 7,
+      "foulOuts": {
+        "ffbd9a4a": 1
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "maxGamePTS": 26,
+      "maxGameThreePt": 2,
+      "wins": 30,
+      "losses": 51,
+      "draws": 5,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:51:59.636Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "23270ce4",
+      "sn": "Winter 2026",
+      "club": "Sharks Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "92ead2f4",
+          "tn": "Bull Sharks",
+          "gid": "5e0f9744",
+          "gn": "All Abilities 2/3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 7,
+            "ft": 4,
+            "fg": 12,
+            "pts": 28,
+            "wins": 1,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "92ead2f4",
+          "tn": "",
+          "gid": "5e0f9744",
+          "gn": "All Abilities 2/3",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 28,
+            "fg": 12,
+            "ft": 4,
+            "fouls": 7,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "85e5f151",
+      "sn": "Summer 2025/26",
+      "club": "Sharks Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "525ff9c5",
+          "tn": "Bull Sharks",
+          "gid": "ff163c45",
+          "gn": "All Abilities 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "fg": 58,
+            "pts": 122,
+            "finals": 1,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "525ff9c5",
+          "tn": "Bull Sharks",
+          "gid": "0977f840",
+          "gn": "ZZ__All Abilities 1/2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "fg": 58,
+            "threePt": 2,
+            "pts": 122,
+            "finals": 1,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "525ff9c5",
+          "tn": "Bull Sharks",
+          "gid": "34423bab",
+          "gn": "ZZ__All Abilities 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "fg": 58,
+            "threePt": 2,
+            "pts": 122,
+            "finals": 1,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ffbd9a4a",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "b3cc83db",
+          "tn": "Fierce Kents",
+          "gid": "c34969e0",
+          "gn": "(SOCIAL) Wednesday Senior Men 8",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 26,
+            "ft": 1,
+            "fg": 2,
+            "threePt": 5,
+            "pts": 20,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b3cc83db",
+          "tn": "Fierce Kents",
+          "gid": "ec278126",
+          "gn": "(SOCIAL) Wednesday Senior Men 7",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 26,
+            "threePt": 5,
+            "pts": 20,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 11,
+            "draws": 1,
+            "fg": 2,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:45:43.141Z",
+  "teams": [
+    {
+      "tid": "92ead2f4",
+      "sid": "23270ce4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "525ff9c5",
+      "sid": "85e5f151",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b3cc83db",
+      "sid": "ffbd9a4a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:32.109Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "a8594c9a",
+      "sid": "85e5f151"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "cd55863d",
+      "sid": "ffbd9a4a"
+    }
+  },
+  "games": [
+    "05d055bf",
+    "099ffe5d",
+    "0caf3608",
+    "153ec41a",
+    "174c4e61",
+    "1c32070e",
+    "26f426b9",
+    "29a50ec8",
+    "2dfa4622",
+    "2fb890f7",
+    "30106ff6",
+    "326c428a",
+    "33c6012d",
+    "3bfd5f21",
+    "407477bc",
+    "4df22e2f",
+    "584aaeb2",
+    "58fac522",
+    "5adb234d",
+    "5bdaba85",
+    "709cf198",
+    "7139cf40",
+    "74835f2e",
+    "87400e30",
+    "991909c3",
+    "99a0f2a9",
+    "a8594c9a",
+    "bd88c591",
+    "c48cd81c",
+    "c93cd350",
+    "ca49cf23",
+    "cd55863d",
+    "ce7de5c6",
+    "d4e2bffa",
+    "db20c676",
+    "df072049",
+    "fbc87166",
+    "fc3f7a51"
+  ]
+}

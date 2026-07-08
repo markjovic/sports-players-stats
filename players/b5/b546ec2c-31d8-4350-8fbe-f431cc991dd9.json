@@ -1,1 +1,271 @@
-{"uuid":"b546ec2c-31d8-4350-8fbe-f431cc991dd9","name":"Rayansh Gupta","gender":"Boys","sports":{"Basketball":{"gp":34,"pts":78,"fouls":71,"fg":38,"ft":2,"foulOuts":{"d67db0cf":3,"d97443b7":1},"maxGamePTS":16,"maxGameThreePt":null,"wins":16,"losses":28,"draws":4,"winPct":0.33,"statsChecked":"2026-07-05T15:38:15.052Z"}},"seasons":[{"sid":"7ccb2e98","sn":"Winter 2026","club":"Alamanda Basketball Club Inc.","regs":[{"tid":"e549716d","tn":"Alamanda Knights U14 Boys - Yellow","gid":"7d014234","gn":"Saturday U14 Boys Div 4 Night","age":"U14","div":null,"stats":{"gp":3,"fouls":1,"losses":2,"wins":1}},{"tid":"a8d9a137","tn":"Alamanda Knights U14 Boys - Purple","gid":"5c69b62f","gn":"Saturday U14 Boys Div 5 Night","age":"U14","div":null,"stats":{"gp":2,"fouls":3,"fg":1,"pts":2,"wins":1,"losses":1}},{"tid":"7ed47392","tn":"Alamanda Knights U12 Boys - Purple","gid":"22ac8461","gn":"Saturday U12 Boys Div 5 Night","age":"U12","div":null,"stats":{"gp":1,"fg":2,"pts":4,"losses":1}},{"tid":"e6d5c82b","stats":{"gp":1,"fouls":2,"losses":1}}]},{"sid":"d67db0cf","sn":"Summer 2025/26","club":"Alamanda Basketball Club Inc.","regs":[{"tid":"e1fcab95","tn":"Alamanda Knights U12 Boys - Yellow","gid":"57df17d2","gn":"Saturday U12 Boys Div 5 Night","age":"U12","div":null,"stats":{"gp":14,"fouls":43,"fg":29,"pts":58,"foulOuts":3,"wins":6,"losses":6,"draws":2}},{"tid":"e1fcab95","tn":"Alamanda Knights U12 Boys - Yellow","gid":"3852a3c6","gn":"XG Saturday U12 Boys Div 4 NIGHT","age":"U12","div":null,"stats":{"gp":14,"fouls":43,"fg":29,"pts":58,"wins":6,"losses":6,"draws":2}}]},{"sid":"d97443b7","sn":"Winter 2025","club":"Alamanda Basketball Club Inc.","regs":[{"tid":"268b5407","tn":"Alamanda Knights U12 Boys - Orange","gid":"9f85ad5a","gn":"Saturday U12 Boys Div 3 NIGHT","age":"U12","div":null,"stats":{"gp":13,"fouls":22,"ft":2,"fg":6,"pts":14,"foulOuts":1,"wins":2,"losses":11}}]}],"updatedAt":"2026-06-02T01:21:27.634Z","teams":[{"tid":"e549716d","sid":"7ccb2e98","status":"ACTIVE"},{"tid":"e1fcab95","sid":"d67db0cf","status":"COMPLETED"},{"tid":"268b5407","sid":"d97443b7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:07:10.645Z","records":{"maxGamePTS":{"v":16,"gameKey":"94f72350","sid":"d67db0cf"},"maxGameThreePt":{"v":null}},"games":["0156326b","09555d84","0dec049f","234a6064","24610db2","3204929d","386810c7","407792ba","418c9a45","46e94713","53a7ee91","53b14628","580ff8ac","6506f47d","75caec18","7770c466","7778043b","78b2c3ac","7954194e","81039e69","86a8f7c9","94f72350","b0dd34c4","b2be2de8","b5e6e5b1","b9e14e66","c26388c1","c8718ec5","ca3fc881","cddb7f22","d0d65556","d43103cd","ef2a51dc","fedd3275"],"gameTids":{"53b14628":"e6d5c82b","3204929d":"e549716d","b2be2de8":"e549716d","407792ba":"e549716d","7770c466":"a8d9a137","7778043b":"a8d9a137","418c9a45":"7ed47392","ef2a51dc":"e1fcab95","7954194e":"e1fcab95","cddb7f22":"e1fcab95","580ff8ac":"e1fcab95","78b2c3ac":"e1fcab95","c8718ec5":"e1fcab95","75caec18":"e1fcab95","0156326b":"e1fcab95","6506f47d":"e1fcab95","94f72350":"e1fcab95","0dec049f":"e1fcab95","24610db2":"e1fcab95","d43103cd":"e1fcab95","b0dd34c4":"e1fcab95","81039e69":"268b5407","b5e6e5b1":"268b5407","fedd3275":"268b5407","386810c7":"268b5407","09555d84":"268b5407","234a6064":"268b5407","53a7ee91":"268b5407","d0d65556":"268b5407","c26388c1":"268b5407","46e94713":"268b5407","b9e14e66":"268b5407","ca3fc881":"268b5407","86a8f7c9":"268b5407"}}
+{
+  "uuid": "b546ec2c-31d8-4350-8fbe-f431cc991dd9",
+  "name": "Rayansh Gupta",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 78,
+      "fouls": 71,
+      "fg": 38,
+      "ft": 2,
+      "foulOuts": {
+        "d67db0cf": 3,
+        "d97443b7": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "losses": 28,
+      "draws": 4,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:38:15.052Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7ccb2e98",
+      "sn": "Winter 2026",
+      "club": "Alamanda Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e549716d",
+          "tn": "Alamanda Knights U14 Boys - Yellow",
+          "gid": "7d014234",
+          "gn": "Saturday U14 Boys Div 4 Night",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 1,
+            "losses": 2,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "a8d9a137",
+          "tn": "Alamanda Knights U14 Boys - Purple",
+          "gid": "5c69b62f",
+          "gn": "Saturday U14 Boys Div 5 Night",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "7ed47392",
+          "tn": "Alamanda Knights U12 Boys - Purple",
+          "gid": "22ac8461",
+          "gn": "Saturday U12 Boys Div 5 Night",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 2,
+            "pts": 4,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "e6d5c82b",
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "losses": 1
+          },
+          "gid": "e9af5ebd",
+          "gn": "Saturday U12 Boys Div 3 NIGHT"
+        }
+      ]
+    },
+    {
+      "sid": "d67db0cf",
+      "sn": "Summer 2025/26",
+      "club": "Alamanda Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e1fcab95",
+          "tn": "Alamanda Knights U12 Boys - Yellow",
+          "gid": "57df17d2",
+          "gn": "Saturday U12 Boys Div 5 Night",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 43,
+            "fg": 29,
+            "pts": 58,
+            "foulOuts": 3,
+            "wins": 6,
+            "losses": 6,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "e1fcab95",
+          "tn": "Alamanda Knights U12 Boys - Yellow",
+          "gid": "3852a3c6",
+          "gn": "XG Saturday U12 Boys Div 4 NIGHT",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 43,
+            "fg": 29,
+            "pts": 58,
+            "wins": 6,
+            "losses": 6,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d97443b7",
+      "sn": "Winter 2025",
+      "club": "Alamanda Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "268b5407",
+          "tn": "Alamanda Knights U12 Boys - Orange",
+          "gid": "9f85ad5a",
+          "gn": "Saturday U12 Boys Div 3 NIGHT",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 22,
+            "ft": 2,
+            "fg": 6,
+            "pts": 14,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 11
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T01:21:27.634Z",
+  "teams": [
+    {
+      "tid": "e549716d",
+      "sid": "7ccb2e98",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8d9a137",
+      "sid": "7ccb2e98",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ed47392",
+      "sid": "7ccb2e98",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e6d5c82b",
+      "sid": "7ccb2e98",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1fcab95",
+      "sid": "d67db0cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "268b5407",
+      "sid": "d97443b7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:20.892Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "94f72350",
+      "sid": "d67db0cf"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0156326b",
+    "09555d84",
+    "0dec049f",
+    "234a6064",
+    "24610db2",
+    "3204929d",
+    "386810c7",
+    "407792ba",
+    "418c9a45",
+    "46e94713",
+    "53a7ee91",
+    "53b14628",
+    "580ff8ac",
+    "6506f47d",
+    "75caec18",
+    "7770c466",
+    "7778043b",
+    "78b2c3ac",
+    "7954194e",
+    "81039e69",
+    "86a8f7c9",
+    "94f72350",
+    "b0dd34c4",
+    "b2be2de8",
+    "b5e6e5b1",
+    "b9e14e66",
+    "c26388c1",
+    "c8718ec5",
+    "ca3fc881",
+    "cddb7f22",
+    "d0d65556",
+    "d43103cd",
+    "ef2a51dc",
+    "fedd3275"
+  ],
+  "gameTids": {
+    "53b14628": "e6d5c82b",
+    "3204929d": "e549716d",
+    "b2be2de8": "e549716d",
+    "407792ba": "e549716d",
+    "7770c466": "a8d9a137",
+    "7778043b": "a8d9a137",
+    "418c9a45": "7ed47392",
+    "ef2a51dc": "e1fcab95",
+    "7954194e": "e1fcab95",
+    "cddb7f22": "e1fcab95",
+    "580ff8ac": "e1fcab95",
+    "78b2c3ac": "e1fcab95",
+    "c8718ec5": "e1fcab95",
+    "75caec18": "e1fcab95",
+    "0156326b": "e1fcab95",
+    "6506f47d": "e1fcab95",
+    "94f72350": "e1fcab95",
+    "0dec049f": "e1fcab95",
+    "24610db2": "e1fcab95",
+    "d43103cd": "e1fcab95",
+    "b0dd34c4": "e1fcab95",
+    "81039e69": "268b5407",
+    "b5e6e5b1": "268b5407",
+    "fedd3275": "268b5407",
+    "386810c7": "268b5407",
+    "09555d84": "268b5407",
+    "234a6064": "268b5407",
+    "53a7ee91": "268b5407",
+    "d0d65556": "268b5407",
+    "c26388c1": "268b5407",
+    "46e94713": "268b5407",
+    "b9e14e66": "268b5407",
+    "ca3fc881": "268b5407",
+    "86a8f7c9": "268b5407"
+  }
+}

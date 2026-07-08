@@ -1,1 +1,260 @@
-{"uuid":"e60dffe7-bc44-4dc8-aa67-020bd41e1253","name":"Stella Vosko","gender":"Girls","sports":{"Basketball":{"gp":44,"pts":352,"fouls":79,"fg":161,"ft":21,"threePt":3,"foulOuts":{"26df4252":1},"finals":2,"gfApps":2,"gfWins":1,"finalsPerSeason":0.67,"maxGamePTS":18,"maxGameThreePt":1,"wins":50,"losses":11,"winPct":0.81,"draws":1,"statsChecked":"2026-07-07T18:30:25.723Z"}},"seasons":[{"sid":"7fde5e5c","sn":"Winter 2026","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"7ec1a655","tn":"CS BlueDevils U14 Girls YASSINE","gid":"332bbb8b","gn":"Saturday U14 Girls A Grade","age":"U14","div":null,"stats":{"gp":7,"fouls":14,"fg":25,"pts":56,"ft":3,"wins":4,"losses":3,"threePt":1}},{"tid":"7ec1a655","tn":"CS BlueDevils U14 Girls YASSINE","gid":"9e42fc45","gn":"Saturday U14 Girls Grading","age":"U14","div":null,"stats":{"gp":7,"fouls":14,"ft":3,"fg":25,"threePt":1,"pts":56,"wins":4,"losses":3}}]},{"sid":"8e63d65d","sn":"Summer 2025/26","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"1eae0674","tn":"CS BlueDevils U14 Girls YASSINE","gid":"2f9c4b1f","gn":"Saturday U14 Girls C Grade","age":"U14","div":null,"stats":{"gp":15,"fouls":32,"ft":7,"fg":79,"threePt":1,"pts":168,"finals":1,"gfApps":1,"wins":13,"losses":2}},{"tid":"1eae0674","tn":"CS BlueDevils U14 Girls YASSINE","gid":"93e622bf","gn":"Saturday U14 Girls Grading Pool C","age":"U14","div":null,"stats":{"gp":15,"fouls":32,"ft":7,"fg":79,"pts":168,"finals":1,"gfApps":1,"wins":13,"losses":2,"threePt":1}}]},{"sid":"c3dedc60","sn":"Winter 2025","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"f648bc57","tn":"CS BlueDevils U14 Girls STATHOPOULOS","gid":"55caa70b","gn":"Saturday U14 Girls B Grade","age":"U14","div":null,"stats":{"gp":18,"fouls":21,"ft":4,"fg":33,"pts":70,"finals":1,"gfApps":1,"wins":16,"losses":1,"draws":1,"gfWins":1}}]},{"sid":"26df4252","regs":[{"tid":"b405f7e8","stats":{"gp":4,"pts":58,"fg":24,"ft":7,"threePt":1,"fouls":12}},{"tid":"b405f7e8","tn":"","gid":"c6f4b313","gn":"U14 Girls Division 5","div":null,"stats":{"gp":4,"pts":58,"fg":24,"ft":7,"threePt":1,"fouls":12}}]}],"updatedAt":"2026-07-07T18:06:37.855Z","teams":[{"tid":"7ec1a655","sid":"7fde5e5c","status":"ACTIVE"},{"tid":"1eae0674","sid":"8e63d65d","status":"COMPLETED"},{"tid":"f648bc57","sid":"c3dedc60","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:28:50.094Z","games":["0d96bdb8","1dbdc3f3","1e9daa88","23a62a71","2ada4fc6","2f264e7d","33b122ad","33f54b2f","3b7f2a29","43a33b8c","48b9ab5e","48d51a05","4aae617f","4c391857","4c69a196","4d7452bc","4dcd15ca","4e19d3ad","50174153","7ade52f1","89529bae","8c6f63a4","923c9dc4","98f3fb49","9d8680c2","9e71d895","a38790d6","aa4f4d51","b3674b89","cf69bd14","d670860b","d837e7fc","d90cfa35","dd827c73","e6fac236","ed278d28","edfca5d2","efab3714","f1977b9e","fcfb9d08"],"records":{"maxGamePTS":{"v":18,"gameKey":"7ade52f1","sid":"8e63d65d"},"maxGameThreePt":{"v":1,"gameKey":"8cd19224","sid":"26df4252"}}}
+{
+  "uuid": "e60dffe7-bc44-4dc8-aa67-020bd41e1253",
+  "name": "Stella Vosko",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 352,
+      "fouls": 79,
+      "fg": 161,
+      "ft": 21,
+      "threePt": 3,
+      "foulOuts": {
+        "26df4252": 1
+      },
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.67,
+      "maxGamePTS": 18,
+      "maxGameThreePt": 1,
+      "wins": 50,
+      "losses": 11,
+      "winPct": 0.81,
+      "draws": 1,
+      "statsChecked": "2026-07-07T18:30:25.723Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7fde5e5c",
+      "sn": "Winter 2026",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "7ec1a655",
+          "tn": "CS BlueDevils U14 Girls YASSINE",
+          "gid": "332bbb8b",
+          "gn": "Saturday U14 Girls A Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "fg": 25,
+            "pts": 56,
+            "ft": 3,
+            "wins": 4,
+            "losses": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "7ec1a655",
+          "tn": "CS BlueDevils U14 Girls YASSINE",
+          "gid": "9e42fc45",
+          "gn": "Saturday U14 Girls Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 25,
+            "threePt": 1,
+            "pts": 56,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e63d65d",
+      "sn": "Summer 2025/26",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "1eae0674",
+          "tn": "CS BlueDevils U14 Girls YASSINE",
+          "gid": "2f9c4b1f",
+          "gn": "Saturday U14 Girls C Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 32,
+            "ft": 7,
+            "fg": 79,
+            "threePt": 1,
+            "pts": 168,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "1eae0674",
+          "tn": "CS BlueDevils U14 Girls YASSINE",
+          "gid": "93e622bf",
+          "gn": "Saturday U14 Girls Grading Pool C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 32,
+            "ft": 7,
+            "fg": 79,
+            "pts": 168,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 2,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c3dedc60",
+      "sn": "Winter 2025",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "f648bc57",
+          "tn": "CS BlueDevils U14 Girls STATHOPOULOS",
+          "gid": "55caa70b",
+          "gn": "Saturday U14 Girls B Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 21,
+            "ft": 4,
+            "fg": 33,
+            "pts": 70,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 16,
+            "losses": 1,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "b405f7e8",
+          "stats": {
+            "gp": 4,
+            "pts": 58,
+            "fg": 24,
+            "ft": 7,
+            "threePt": 1,
+            "fouls": 12
+          },
+          "gid": "c6f4b313",
+          "gn": "U14 Girls Division 5"
+        },
+        {
+          "tid": "b405f7e8",
+          "tn": "",
+          "gid": "c6f4b313",
+          "gn": "U14 Girls Division 5",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 58,
+            "fg": 24,
+            "ft": 7,
+            "threePt": 1,
+            "fouls": 12
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:37.855Z",
+  "teams": [
+    {
+      "tid": "7ec1a655",
+      "sid": "7fde5e5c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1eae0674",
+      "sid": "8e63d65d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f648bc57",
+      "sid": "c3dedc60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b405f7e8",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:01.534Z",
+  "games": [
+    "0d96bdb8",
+    "1dbdc3f3",
+    "1e9daa88",
+    "23a62a71",
+    "2ada4fc6",
+    "2f264e7d",
+    "33b122ad",
+    "33f54b2f",
+    "3b7f2a29",
+    "43a33b8c",
+    "48b9ab5e",
+    "48d51a05",
+    "4aae617f",
+    "4c391857",
+    "4c69a196",
+    "4d7452bc",
+    "4dcd15ca",
+    "4e19d3ad",
+    "50174153",
+    "7ade52f1",
+    "89529bae",
+    "8c6f63a4",
+    "923c9dc4",
+    "98f3fb49",
+    "9d8680c2",
+    "9e71d895",
+    "a38790d6",
+    "aa4f4d51",
+    "b3674b89",
+    "cf69bd14",
+    "d670860b",
+    "d837e7fc",
+    "d90cfa35",
+    "dd827c73",
+    "e6fac236",
+    "ed278d28",
+    "edfca5d2",
+    "efab3714",
+    "f1977b9e",
+    "fcfb9d08"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "7ade52f1",
+      "sid": "8e63d65d"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "8cd19224",
+      "sid": "26df4252"
+    }
+  }
+}

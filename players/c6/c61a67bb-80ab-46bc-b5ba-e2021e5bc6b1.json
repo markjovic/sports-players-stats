@@ -1,1 +1,299 @@
-{"uuid":"c61a67bb-80ab-46bc-b5ba-e2021e5bc6b1","name":"Gareth Wymond","gender":"Mixed","sports":{"Basketball":{"gp":44,"pts":111,"fouls":45,"fg":40,"ft":13,"threePt":2,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":10,"maxGameThreePt":1,"losses":43,"winPct":0.34,"wins":22,"statsChecked":"2026-07-06T19:00:51.879Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"69968840","tn":"Sentinels","gid":"6dd74606","gn":"Monday Open Men Section 02","age":"Senior","div":null,"stats":{"gp":16,"fouls":24,"ft":1,"fg":7,"pts":27,"wins":3,"losses":12}},{"tid":"69968840","tn":"Sentinels","gid":"4913d86d","gn":"Monday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":16,"fouls":24,"pts":27,"wins":3,"losses":12,"fg":7,"ft":1}}]},{"sid":"f287739e","sn":"Summer 2024/25","regs":[{"tid":"42622ec5","tn":"The Ballers","gid":"8894fd98","gn":"Sunday Mixed Section 3","age":null,"div":null,"stats":{"gp":4,"ft":2,"fg":2,"pts":6,"wins":2,"losses":2}}]},{"sid":"103e6ec7","sn":"Winter 2024","regs":[{"tid":"3d884767","tn":"The Ballers","gid":"f975ea26","gn":"Sunday Mixed Section 3","age":null,"div":null,"stats":{"gp":8,"fouls":6,"ft":3,"fg":13,"threePt":1,"pts":32,"losses":3,"wins":5}},{"tid":"3d884767","tn":"The Ballers","gid":"d0662b06","gn":"ZZ Sunday Mixed Grading Pool B","age":null,"div":null,"stats":{"gp":8,"ft":3,"fg":13,"pts":32,"losses":3,"wins":5,"threePt":1,"fouls":6}}]},{"sid":"0a007eba","sn":"Summer 2023/24","regs":[{"tid":"9dd39ea1","tn":"The Ballers","gid":"b18f6e51","gn":"Sunday Mixed Section 2","age":null,"div":null,"stats":{"gp":15,"fouls":14,"ft":7,"fg":17,"threePt":1,"pts":44,"finals":1,"wins":4,"losses":11}}]},{"sid":"297562bc","sn":"Spring 2026","club":"Waverley Basketball Association","regs":[{"tid":"d4439be6","tn":"","gid":"7f4a8909","gn":"Monday Open Men Section 2","div":null,"stats":{"gp":1,"pts":2,"fg":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:34:12.260Z","teams":[{"tid":"69968840","sid":"5593103d","status":"ACTIVE"},{"tid":"433f4fee","sid":"76897951","status":"COMPLETED"},{"tid":"42622ec5","sid":"f287739e","status":"COMPLETED"},{"tid":"3d884767","sid":"103e6ec7","status":"COMPLETED"},{"tid":"706ff263","sid":"348dbfb8","status":"COMPLETED"},{"tid":"9dd39ea1","sid":"0a007eba","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:03.453Z","records":{"maxGamePTS":{"v":10,"gameKey":"d685d7b5","sid":"0a007eba"},"maxGameThreePt":{"v":1,"gameKey":"a9b625e9","sid":"103e6ec7"}},"games":["0468e887","065c06cf","139cda46","1b08de4c","1cecae4c","227b1fc6","28a58243","35b4c87d","44ca54d9","466ea4cc","4e4f248c","559bd76a","55b6868c","5ebf5626","6507c23b","81e258d3","86860aee","8b2766d5","8e3928a5","8f3a7053","902a5d85","98f6d1b9","9aa4a637","9e9e13ce","a23b9cee","a3180d5d","a9b625e9","abc1acc9","b0c8cab0","b28be158","b28e6581","b40b810a","b9d44392","c00cd3ab","d5f40c5f","d685d7b5","d882123b","dc22c830","e0b56caf","e9598018","e97ed13c","eda8e37f","fc3c7bcc"]}
+{
+  "uuid": "c61a67bb-80ab-46bc-b5ba-e2021e5bc6b1",
+  "name": "Gareth Wymond",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 111,
+      "fouls": 45,
+      "fg": 40,
+      "ft": 13,
+      "threePt": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "losses": 43,
+      "winPct": 0.34,
+      "wins": 22,
+      "statsChecked": "2026-07-06T19:00:51.879Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "69968840",
+          "tn": "Sentinels",
+          "gid": "6dd74606",
+          "gn": "Monday Open Men Section 02",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 1,
+            "fg": 7,
+            "pts": 27,
+            "wins": 3,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "69968840",
+          "tn": "Sentinels",
+          "gid": "4913d86d",
+          "gn": "Monday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "pts": 27,
+            "wins": 3,
+            "losses": 12,
+            "fg": 7,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f287739e",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "42622ec5",
+          "tn": "The Ballers",
+          "gid": "8894fd98",
+          "gn": "Sunday Mixed Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "ft": 2,
+            "fg": 2,
+            "pts": 6,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "103e6ec7",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "3d884767",
+          "tn": "The Ballers",
+          "gid": "f975ea26",
+          "gn": "Sunday Mixed Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 13,
+            "threePt": 1,
+            "pts": 32,
+            "losses": 3,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "3d884767",
+          "tn": "The Ballers",
+          "gid": "d0662b06",
+          "gn": "ZZ Sunday Mixed Grading Pool B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 3,
+            "fg": 13,
+            "pts": 32,
+            "losses": 3,
+            "wins": 5,
+            "threePt": 1,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0a007eba",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "9dd39ea1",
+          "tn": "The Ballers",
+          "gid": "b18f6e51",
+          "gn": "Sunday Mixed Section 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "ft": 7,
+            "fg": 17,
+            "threePt": 1,
+            "pts": 44,
+            "finals": 1,
+            "wins": 4,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "club": "Waverley Basketball Association",
+      "regs": [
+        {
+          "tid": "d4439be6",
+          "tn": "",
+          "gid": "7f4a8909",
+          "gn": "Monday Open Men Section 2",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "433f4fee",
+          "tn": "Sentinels",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "706ff263",
+          "tn": "Sentinels",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:12.260Z",
+  "teams": [
+    {
+      "tid": "69968840",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42622ec5",
+      "sid": "f287739e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3d884767",
+      "sid": "103e6ec7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9dd39ea1",
+      "sid": "0a007eba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d4439be6",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "433f4fee",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "706ff263",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:41.533Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d685d7b5",
+      "sid": "0a007eba"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a9b625e9",
+      "sid": "103e6ec7"
+    }
+  },
+  "games": [
+    "0468e887",
+    "065c06cf",
+    "139cda46",
+    "1b08de4c",
+    "1cecae4c",
+    "227b1fc6",
+    "28a58243",
+    "35b4c87d",
+    "44ca54d9",
+    "466ea4cc",
+    "4e4f248c",
+    "559bd76a",
+    "55b6868c",
+    "5ebf5626",
+    "6507c23b",
+    "81e258d3",
+    "86860aee",
+    "8b2766d5",
+    "8e3928a5",
+    "8f3a7053",
+    "902a5d85",
+    "98f6d1b9",
+    "9aa4a637",
+    "9e9e13ce",
+    "a23b9cee",
+    "a3180d5d",
+    "a9b625e9",
+    "abc1acc9",
+    "b0c8cab0",
+    "b28be158",
+    "b28e6581",
+    "b40b810a",
+    "b9d44392",
+    "c00cd3ab",
+    "d5f40c5f",
+    "d685d7b5",
+    "d882123b",
+    "dc22c830",
+    "e0b56caf",
+    "e9598018",
+    "e97ed13c",
+    "eda8e37f",
+    "fc3c7bcc"
+  ]
+}

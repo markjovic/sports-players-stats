@@ -1,1 +1,406 @@
-{"uuid":"da086c3a-995c-4ccf-bf43-4b4d56b327f8","name":"Darren Lord","sports":{"Basketball":{"maxGamePTS":16,"maxGameThreePt":4,"foulOuts":{},"gp":343,"pts":1461,"fg":498,"ft":57,"threePt":136,"fouls":272,"statsChecked":"2026-07-06T19:01:31.696Z"}},"seasons":[{"sid":"83a38877","regs":[{"tid":"befec9c1"}]},{"sid":"ffba8120","regs":[{"tid":"3aa9c8a9"}]},{"sid":"8619cffe","regs":[{"tid":"0e06fd7f"}]},{"sid":"237aba49","regs":[{"tid":"7fbdeb34"}]},{"sid":"9477ea50","regs":[{"tid":"3ebff4f6"}]},{"sid":"8c667304","regs":[{"tid":"ee677bcc"}]},{"sid":"c740f204","regs":[{"tid":"78cb5ae0"}]},{"sid":"81fd65d2","regs":[{"tid":"084d2345"}]},{"sid":"690370c6","regs":[{"tid":"cec91188"}]},{"sid":"e00be969","regs":[{"tid":"a22ada0f"}]},{"sid":"bab62042","regs":[{"tid":"6372952d"}]},{"sid":"f83aaf33","regs":[{"tid":"aa601a8f"}]},{"sid":"f715de31","regs":[{"tid":"dacaf341"}]},{"sid":"21f0bd00","regs":[{"tid":"d8eb4a54"}]},{"sid":"46d3d1c7","regs":[{"tid":"f3bf1ad2"}]},{"sid":"863ceba6","regs":[{"tid":"2041164a"}]},{"sid":"3499b1da","regs":[{"tid":"95e09289"}]},{"sid":"0a9939ed","regs":[{"tid":"1c386e0a"}]},{"sid":"0d3fe477","regs":[{"tid":"488f8305"}]},{"sid":"e279b635","regs":[{"tid":"d2ddf68a"}]},{"sid":"542b62c9","regs":[{"tid":"820e5185"}]},{"sid":"2bcaa4e3","regs":[{"tid":"c3b27bcc"}]},{"sid":"89899a1c","regs":[{"tid":"3ee0660d"}]},{"sid":"ab1bf542","regs":[{"tid":"a85683dc"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":16,"gameKey":"ccd9c14c","sid":"f715de31"},"maxGameThreePt":{"v":4,"gameKey":"60712e23","sid":"8619cffe"}}}
+{
+  "uuid": "da086c3a-995c-4ccf-bf43-4b4d56b327f8",
+  "name": "Darren Lord",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 16,
+      "maxGameThreePt": 4,
+      "foulOuts": {},
+      "gp": 343,
+      "pts": 1461,
+      "fg": 498,
+      "ft": 57,
+      "threePt": 136,
+      "fouls": 272,
+      "statsChecked": "2026-07-06T19:01:31.696Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "83a38877",
+      "regs": [
+        {
+          "tid": "befec9c1",
+          "gid": "ada14a55",
+          "gn": "Monday Over 30 Men Grading"
+        },
+        {
+          "tid": "4c76dc6e",
+          "tn": "Belgravia",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ffba8120",
+      "regs": [
+        {
+          "tid": "3aa9c8a9"
+        }
+      ]
+    },
+    {
+      "sid": "8619cffe",
+      "regs": [
+        {
+          "tid": "0e06fd7f",
+          "gid": "ad23825f",
+          "gn": "Monday Over 30 Men B2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "237aba49",
+      "regs": [
+        {
+          "tid": "7fbdeb34",
+          "gid": "800f3b0c",
+          "gn": "Wednesday Senior (Over 35s) Men Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "9477ea50",
+      "regs": [
+        {
+          "tid": "3ebff4f6",
+          "gid": "f3f7c01c",
+          "gn": "Monday Over 30s Men B2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "8c667304",
+      "regs": [
+        {
+          "tid": "ee677bcc",
+          "gid": "587bb947",
+          "gn": "Monday Over 30 Men B1 - Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "c740f204",
+      "regs": [
+        {
+          "tid": "78cb5ae0",
+          "gid": "3303d76a",
+          "gn": "Wednesday Senior (Over 35s) Men Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "81fd65d2",
+      "regs": [
+        {
+          "tid": "084d2345",
+          "gid": "b65a4691",
+          "gn": "Monday Over 30 Men B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "690370c6",
+      "regs": [
+        {
+          "tid": "cec91188",
+          "gid": "3724da3e",
+          "gn": "Wednesday Senior (Over 35s) Men Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "e00be969",
+      "regs": [
+        {
+          "tid": "a22ada0f",
+          "gid": "0074ac07",
+          "gn": "Monday Over 30 Men B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "bab62042",
+      "regs": [
+        {
+          "tid": "6372952d",
+          "gid": "e01fdcdb",
+          "gn": "Wednesday Senior (Over 35s) Men Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "f83aaf33",
+      "regs": [
+        {
+          "tid": "aa601a8f",
+          "gid": "f2140b6d",
+          "gn": "Monday Over 30 Men A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "f715de31",
+      "regs": [
+        {
+          "tid": "dacaf341",
+          "gid": "78237a79",
+          "gn": "Wednesday Senior (Over 35s) Men Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "21f0bd00",
+      "regs": [
+        {
+          "tid": "d8eb4a54",
+          "gid": "f3fea493",
+          "gn": "Monday Over 30 Men B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "46d3d1c7",
+      "regs": [
+        {
+          "tid": "f3bf1ad2",
+          "gid": "a1e71eeb",
+          "gn": "Wednesday Senior Men Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "863ceba6",
+      "regs": [
+        {
+          "tid": "2041164a",
+          "gid": "e8443845",
+          "gn": "Monday Over 30 Men B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "3499b1da",
+      "regs": [
+        {
+          "tid": "95e09289",
+          "gid": "328a921b",
+          "gn": "Wednesday Senior Men League"
+        }
+      ]
+    },
+    {
+      "sid": "0a9939ed",
+      "regs": [
+        {
+          "tid": "1c386e0a",
+          "gid": "0eb5b50f",
+          "gn": "Monday Over 30 Men B2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "0d3fe477",
+      "regs": [
+        {
+          "tid": "488f8305",
+          "gid": "ef995145",
+          "gn": "Wednesday Senior Men League"
+        }
+      ]
+    },
+    {
+      "sid": "e279b635",
+      "regs": [
+        {
+          "tid": "d2ddf68a",
+          "gid": "6f9248eb",
+          "gn": "Monday O/30 Men SUMMER POOL 3"
+        }
+      ]
+    },
+    {
+      "sid": "542b62c9",
+      "regs": [
+        {
+          "tid": "820e5185",
+          "gid": "bce7731e",
+          "gn": "Wednesday Senior Men's League Over 35s"
+        }
+      ]
+    },
+    {
+      "sid": "2bcaa4e3",
+      "regs": [
+        {
+          "tid": "c3b27bcc",
+          "gid": "e3e7d9a9",
+          "gn": "Monday Over 30 Men B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "89899a1c",
+      "regs": [
+        {
+          "tid": "3ee0660d",
+          "gid": "214edc02",
+          "gn": "Wednesday Senior Men's League Over 35s"
+        }
+      ]
+    },
+    {
+      "sid": "ab1bf542",
+      "regs": [
+        {
+          "tid": "a85683dc",
+          "gid": "d5ec7e9d",
+          "gn": "Monday Over 30 Men B.1"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "befec9c1",
+      "sid": "83a38877",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c76dc6e",
+      "sid": "83a38877",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3aa9c8a9",
+      "sid": "ffba8120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0e06fd7f",
+      "sid": "8619cffe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7fbdeb34",
+      "sid": "237aba49",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ebff4f6",
+      "sid": "9477ea50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee677bcc",
+      "sid": "8c667304",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78cb5ae0",
+      "sid": "c740f204",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "084d2345",
+      "sid": "81fd65d2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cec91188",
+      "sid": "690370c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a22ada0f",
+      "sid": "e00be969",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6372952d",
+      "sid": "bab62042",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa601a8f",
+      "sid": "f83aaf33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dacaf341",
+      "sid": "f715de31",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8eb4a54",
+      "sid": "21f0bd00",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3bf1ad2",
+      "sid": "46d3d1c7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2041164a",
+      "sid": "863ceba6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "95e09289",
+      "sid": "3499b1da",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1c386e0a",
+      "sid": "0a9939ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "488f8305",
+      "sid": "0d3fe477",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d2ddf68a",
+      "sid": "e279b635",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "820e5185",
+      "sid": "542b62c9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c3b27bcc",
+      "sid": "2bcaa4e3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ee0660d",
+      "sid": "89899a1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a85683dc",
+      "sid": "ab1bf542",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "ccd9c14c",
+      "sid": "f715de31"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "60712e23",
+      "sid": "8619cffe"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:30:36.135Z"
+}

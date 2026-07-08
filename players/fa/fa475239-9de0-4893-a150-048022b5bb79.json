@@ -1,1 +1,104 @@
-{"uuid":"fa475239-9de0-4893-a150-048022b5bb79","name":"paddy baker","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":136,"fouls":10,"fg":62,"ft":9,"threePt":1,"foulOuts":{"3e7c1a8c":1},"maxGamePTS":22,"maxGameThreePt":1,"wins":10,"losses":1,"winPct":0.91,"statsChecked":"2026-07-05T16:04:46.701Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Bullits Basketball Club","regs":[]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Bullits Basketball Club","regs":[{"tid":"940e1e89","tn":"Bullits Avengers","gid":"6f23b6da","gn":"Sunday U23 Boys B Grade","age":"U23","div":null,"stats":{"gp":11,"fouls":10,"ft":9,"fg":62,"threePt":1,"pts":136,"wins":10,"losses":1}}]}],"updatedAt":"2026-06-01T23:20:59.127Z","teams":[{"tid":"940e1e89","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"4507a72e","sid":"e2b609ed","status":"UPCOMING"}],"teamsUpdatedAt":"2026-06-05T13:56:15.847Z","games":["17af1830","17d90b55","3754ecfd","449c4a56","5e128094","69c66dae","6faa209e","96d98695","c7ed2bb3","e0d066ff","f3a223ad"],"records":{"maxGamePTS":{"v":22,"gameKey":"f3a223ad","sid":"3e7c1a8c"},"maxGameThreePt":{"v":1,"gameKey":"6faa209e","sid":"3e7c1a8c"}}}
+{
+  "uuid": "fa475239-9de0-4893-a150-048022b5bb79",
+  "name": "paddy baker",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 136,
+      "fouls": 10,
+      "fg": 62,
+      "ft": 9,
+      "threePt": 1,
+      "foulOuts": {
+        "3e7c1a8c": 1
+      },
+      "maxGamePTS": 22,
+      "maxGameThreePt": 1,
+      "wins": 10,
+      "losses": 1,
+      "winPct": 0.91,
+      "statsChecked": "2026-07-05T16:04:46.701Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "4507a72e",
+          "tn": "Bullits Avengers",
+          "gid": "accb2e8a",
+          "gn": "Sunday U23 Boys A Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "940e1e89",
+          "tn": "Bullits Avengers",
+          "gid": "6f23b6da",
+          "gn": "Sunday U23 Boys B Grade",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 10,
+            "ft": 9,
+            "fg": 62,
+            "threePt": 1,
+            "pts": 136,
+            "wins": 10,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T23:20:59.127Z",
+  "teams": [
+    {
+      "tid": "4507a72e",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "940e1e89",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:56.157Z",
+  "games": [
+    "17af1830",
+    "17d90b55",
+    "3754ecfd",
+    "449c4a56",
+    "5e128094",
+    "69c66dae",
+    "6faa209e",
+    "96d98695",
+    "c7ed2bb3",
+    "e0d066ff",
+    "f3a223ad"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "f3a223ad",
+      "sid": "3e7c1a8c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6faa209e",
+      "sid": "3e7c1a8c"
+    }
+  }
+}

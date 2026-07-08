@@ -1,1 +1,118 @@
-{"uuid":"e931f589-c1a7-48d8-bc14-cb06edec71ed","name":"Han sun","gender":"Men","sports":{"Basketball":{"gp":13,"pts":36,"fouls":19,"fg":9,"ft":4,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"wins":7,"losses":2,"draws":1,"winPct":0.7,"threePt":1,"statsChecked":"2026-07-06T19:01:59.906Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"0948b605","tn":"Hamptons","gid":"1a871883","gn":"Wednesday Open Men Section 5","age":"Senior","div":null,"stats":{"gp":12,"fouls":17,"fg":9,"pts":32,"ft":3,"wins":7,"losses":2,"draws":1}}]},{"sid":"297562bc","regs":[{"tid":"9d7a02ad","stats":{"gp":1,"pts":4,"ft":1,"threePt":1,"fouls":2}},{"tid":"9d7a02ad","tn":"","gid":"6cb8f7dd","gn":"Wednesday Open Men Section 5","div":null,"stats":{"gp":1,"pts":4,"ft":1,"threePt":1,"fouls":2}}]}],"updatedAt":"2026-07-06T18:33:09.161Z","teams":[{"tid":"0948b605","sid":"5593103d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:51:32.972Z","games":["0fd12765","3b7178d8","5cff1947","79cb5fd2","844cb400","9ac0a8f0","a308eb1c","a433fa85","f6dc5f0a","faefde83"],"records":{"maxGamePTS":{"v":5,"gameKey":"79cb5fd2","sid":"5593103d"},"maxGameThreePt":{"v":1,"gameKey":"85344070","sid":"297562bc"}}}
+{
+  "uuid": "e931f589-c1a7-48d8-bc14-cb06edec71ed",
+  "name": "Han sun",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 36,
+      "fouls": 19,
+      "fg": 9,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "wins": 7,
+      "losses": 2,
+      "draws": 1,
+      "winPct": 0.7,
+      "threePt": 1,
+      "statsChecked": "2026-07-06T19:01:59.906Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "0948b605",
+          "tn": "Hamptons",
+          "gid": "1a871883",
+          "gn": "Wednesday Open Men Section 5",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "fg": 9,
+            "pts": 32,
+            "ft": 3,
+            "wins": 7,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "9d7a02ad",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 2
+          },
+          "gid": "6cb8f7dd",
+          "gn": "Wednesday Open Men Section 5"
+        },
+        {
+          "tid": "9d7a02ad",
+          "tn": "",
+          "gid": "6cb8f7dd",
+          "gn": "Wednesday Open Men Section 5",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:33:09.161Z",
+  "teams": [
+    {
+      "tid": "0948b605",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d7a02ad",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:48.520Z",
+  "games": [
+    "0fd12765",
+    "3b7178d8",
+    "5cff1947",
+    "79cb5fd2",
+    "844cb400",
+    "9ac0a8f0",
+    "a308eb1c",
+    "a433fa85",
+    "f6dc5f0a",
+    "faefde83"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "79cb5fd2",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "85344070",
+      "sid": "297562bc"
+    }
+  }
+}

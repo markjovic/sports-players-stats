@@ -1,1 +1,108 @@
-{"uuid":"cc0d7601-941c-4f53-ac9d-1a720d5224e1","name":"Mehmet Uctuk","gender":"Men","sports":{"Basketball":{"gp":5,"pts":3,"fouls":4,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T15:51:23.488Z"}},"seasons":[{"sid":"d53e3360","sn":"Summer 2023/24","regs":[{"tid":"99a1eabe","tn":"Just Play Devils","gid":"1675ebe8","gn":"Thursday Open Men G Grade","age":"Senior","div":null,"stats":{"gp":5,"fouls":4,"ft":1,"fg":1,"pts":3,"wins":1,"losses":3}}]}],"updatedAt":"2026-06-01T19:48:47.657Z","teams":[{"tid":"99a1eabe","sid":"d53e3360","status":"COMPLETED"},{"tid":"f0709852","sid":"afd26581","status":"COMPLETED"},{"tid":"cebcefbb","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:44:49.076Z","games":["40294da6","5643cd39","7a73e977","b5630e8e","f599eee1"],"records":{"maxGamePTS":{"v":2,"gameKey":"7a73e977","sid":"d53e3360"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "cc0d7601-941c-4f53-ac9d-1a720d5224e1",
+  "name": "Mehmet Uctuk",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 3,
+      "fouls": 4,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T15:51:23.488Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d53e3360",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "99a1eabe",
+          "tn": "Just Play Devils",
+          "gid": "1675ebe8",
+          "gn": "Thursday Open Men G Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "f0709852",
+          "tn": "Big Ticket",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "cebcefbb",
+          "tn": "Big Ticket",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T19:48:47.657Z",
+  "teams": [
+    {
+      "tid": "99a1eabe",
+      "sid": "d53e3360",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0709852",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cebcefbb",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:50.768Z",
+  "games": [
+    "40294da6",
+    "5643cd39",
+    "7a73e977",
+    "b5630e8e",
+    "f599eee1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "7a73e977",
+      "sid": "d53e3360"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

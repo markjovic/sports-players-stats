@@ -1,1 +1,428 @@
-{"uuid":"691f93bd-65d1-498e-8b25-6f557544b7a8","name":"Liam Devine","gender":"Men","sports":{"Basketball":{"gp":40,"pts":316,"fouls":54,"fg":83,"ft":29,"threePt":22,"foulOuts":{"157e9186":1},"maxGamePTS":17,"maxGameThreePt":3,"wins":21,"losses":32,"draws":2,"winPct":0.38,"statsChecked":"2026-07-05T15:09:52.440Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","club":"St Kevin's Old Boys Basketball (SKOB)","regs":[{"tid":"79af3363","tn":"SKOB Red","gid":"b666d6af","gn":"Thursday Open Men Section 02","age":"Senior","div":null,"stats":{"gp":8,"fouls":5,"ft":1,"fg":12,"threePt":1,"pts":68,"wins":5,"losses":3}}]},{"sid":"b1d83d05","sn":"Summer 2024/25","regs":[{"tid":"cfe59d30","tn":"District 9 Prawns","gid":"08c9e028","gn":"Thursday Open Men G Grade","age":"Senior","div":null,"stats":{"gp":16,"fouls":28,"ft":12,"fg":47,"threePt":9,"pts":148,"wins":6,"losses":9}}]},{"sid":"157e9186","sn":"Winter 2024","regs":[{"tid":"20ed12a4","tn":"District 9 Prawns","gid":"c355bcd8","gn":"Thursday Open Men F Grade","age":"Senior","div":null,"stats":{"gp":16,"fouls":21,"ft":16,"fg":24,"threePt":12,"pts":100,"foulOuts":1,"wins":5,"losses":10,"draws":1}},{"tid":"20ed12a4","tn":"District 9 Prawns","gid":"43a1a4f5","gn":"Thursday Open Men D Grade","age":"Senior","div":null,"stats":{"gp":16,"fouls":21,"ft":16,"fg":24,"pts":100,"wins":5,"losses":10,"draws":1,"threePt":12}}]}],"updatedAt":"2026-06-01T19:46:18.523Z","teams":[{"tid":"79af3363","sid":"5593103d","status":"ACTIVE"},{"tid":"fe5489f2","sid":"fab2be4d","status":"COMPLETED"},{"tid":"982d825c","sid":"76897951","status":"COMPLETED"},{"tid":"cfe59d30","sid":"b1d83d05","status":"COMPLETED"},{"tid":"bd646043","sid":"5944effa","status":"COMPLETED"},{"tid":"20ed12a4","sid":"157e9186","status":"COMPLETED"},{"tid":"d4c63eda","sid":"348dbfb8","status":"COMPLETED"},{"tid":"f16e236f","sid":"9358e51a","status":"COMPLETED"},{"tid":"070d5b1b","sid":"d3d4e181","status":"COMPLETED"},{"tid":"68b45d31","sid":"21cd9648","status":"COMPLETED"},{"tid":"7e1609ba","sid":"21cd9648","status":"COMPLETED"},{"tid":"58c2dc5e","sid":"d4cbf787","status":"COMPLETED"},{"tid":"2c503fb8","sid":"d4cbf787","status":"COMPLETED"},{"tid":"b2b9b356","sid":"d64fcfce","status":"COMPLETED"},{"tid":"cb37f388","sid":"d64fcfce","status":"COMPLETED"},{"tid":"b70bb73e","sid":"afd26581","status":"COMPLETED"},{"tid":"4f374ded","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:55.641Z","records":{"maxGamePTS":{"v":17,"gameKey":"3dea9d6c","sid":"b1d83d05"},"maxGameThreePt":{"v":3,"gameKey":"b4d68479","sid":"b1d83d05"}},"games":["06b8da9a","0c39d6c9","0c96c6dd","0e0a3e4c","0f4e2d76","11d675f2","13bef1fd","14afc4b7","3cfba092","3dea9d6c","3f87483d","3f9dc94b","3f9f9515","5017d462","5821b8a5","613a0fc2","63f83bbe","6b49a5a6","73e82cc8","7f2cab98","82012b12","82d95e45","8647ec3c","887561a0","8a54e040","9ff5e3ba","a53a49e0","aaa2a02c","b1d638c7","b4d68479","b6380bdf","baea65a0","bc1683db","c7484b93","c78b0893","d0ef13cb","dfee899e","e16438e8","e282ed71","e75d928f"]}
+{
+  "uuid": "691f93bd-65d1-498e-8b25-6f557544b7a8",
+  "name": "Liam Devine",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 316,
+      "fouls": 54,
+      "fg": 83,
+      "ft": 29,
+      "threePt": 22,
+      "foulOuts": {
+        "157e9186": 1
+      },
+      "maxGamePTS": 17,
+      "maxGameThreePt": 3,
+      "wins": 21,
+      "losses": 32,
+      "draws": 2,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:09:52.440Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "club": "St Kevin's Old Boys Basketball (SKOB)",
+      "regs": [
+        {
+          "tid": "79af3363",
+          "tn": "SKOB Red",
+          "gid": "b666d6af",
+          "gn": "Thursday Open Men Section 02",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 68,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b1d83d05",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "cfe59d30",
+          "tn": "District 9 Prawns",
+          "gid": "08c9e028",
+          "gn": "Thursday Open Men G Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 28,
+            "ft": 12,
+            "fg": 47,
+            "threePt": 9,
+            "pts": 148,
+            "wins": 6,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "157e9186",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "20ed12a4",
+          "tn": "District 9 Prawns",
+          "gid": "c355bcd8",
+          "gn": "Thursday Open Men F Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 16,
+            "fg": 24,
+            "threePt": 12,
+            "pts": 100,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "20ed12a4",
+          "tn": "District 9 Prawns",
+          "gid": "43a1a4f5",
+          "gn": "Thursday Open Men D Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 16,
+            "fg": 24,
+            "pts": 100,
+            "wins": 5,
+            "losses": 10,
+            "draws": 1,
+            "threePt": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "fe5489f2",
+          "tn": "SKOB Red",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "982d825c",
+          "tn": "SKOB Red",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "bd646043",
+          "tn": "SKOC RED",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "d4c63eda",
+          "tn": "SKOC RED",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "f16e236f",
+          "tn": "SKOC RED",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "070d5b1b",
+          "tn": "SKOC Red",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "68b45d31",
+          "tn": "Mailmen",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "7e1609ba",
+          "tn": "SKOC RED",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "58c2dc5e",
+          "tn": "Mailmen",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "2c503fb8",
+          "tn": "SKOC RED",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "b2b9b356",
+          "tn": "MAILMEN",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "cb37f388",
+          "tn": "SKOC Red",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "b70bb73e",
+          "tn": "SKOC RED",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "4f374ded",
+          "tn": "SKOC Red",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T19:46:18.523Z",
+  "teams": [
+    {
+      "tid": "79af3363",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cfe59d30",
+      "sid": "b1d83d05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20ed12a4",
+      "sid": "157e9186",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe5489f2",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "982d825c",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd646043",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d4c63eda",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f16e236f",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "070d5b1b",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68b45d31",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e1609ba",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58c2dc5e",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c503fb8",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2b9b356",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb37f388",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b70bb73e",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4f374ded",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:38.676Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "3dea9d6c",
+      "sid": "b1d83d05"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "b4d68479",
+      "sid": "b1d83d05"
+    }
+  },
+  "games": [
+    "06b8da9a",
+    "0c39d6c9",
+    "0c96c6dd",
+    "0e0a3e4c",
+    "0f4e2d76",
+    "11d675f2",
+    "13bef1fd",
+    "14afc4b7",
+    "3cfba092",
+    "3dea9d6c",
+    "3f87483d",
+    "3f9dc94b",
+    "3f9f9515",
+    "5017d462",
+    "5821b8a5",
+    "613a0fc2",
+    "63f83bbe",
+    "6b49a5a6",
+    "73e82cc8",
+    "7f2cab98",
+    "82012b12",
+    "82d95e45",
+    "8647ec3c",
+    "887561a0",
+    "8a54e040",
+    "9ff5e3ba",
+    "a53a49e0",
+    "aaa2a02c",
+    "b1d638c7",
+    "b4d68479",
+    "b6380bdf",
+    "baea65a0",
+    "bc1683db",
+    "c7484b93",
+    "c78b0893",
+    "d0ef13cb",
+    "dfee899e",
+    "e16438e8",
+    "e282ed71",
+    "e75d928f"
+  ]
+}

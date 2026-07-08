@@ -1,1 +1,280 @@
-{"uuid":"28409dc8-647b-4f84-a561-1bc12d242867","name":"Chris Slade","gender":"Men","sports":{"Basketball":{"gp":43,"pts":386,"fouls":62,"fg":136,"ft":51,"threePt":21,"foulOuts":{},"maxGamePTS":22,"maxGameThreePt":2,"wins":28,"losses":26,"draws":2,"winPct":0.5,"statsChecked":"2026-07-05T15:47:31.106Z"}},"seasons":[{"sid":"307cebbc","sn":"Autumn 2026","regs":[{"tid":"0b0f173d","tn":"Front Of The Singlet","gid":"171fac49","gn":"Tuesday Open Men C Grade","age":"Senior","div":null,"stats":{"gp":2,"pts":21,"threePt":1,"fg":8,"ft":2,"fouls":2,"wins":1,"losses":1}},{"tid":"693e7d7a","stats":{"wins":7,"losses":7,"gp":15,"pts":142,"fg":51,"ft":16,"threePt":8,"fouls":18}}]},{"sid":"307cebbc","sn":"Autumn 2026","regs":[{"tid":"693e7d7a","tn":"The Bayside Ballers","gid":"afcee9bd","gn":"Thursday Open Men D Grade","age":"Senior","div":null,"stats":{"gp":15,"pts":142,"threePt":8,"fg":51,"ft":16,"fouls":18,"wins":7,"losses":7}}]},{"sid":"9d4a51b2","sn":"Autumn 2025","regs":[{"tid":"e5db5c77","tn":"Winter Coats","gid":"3465fdf7","gn":"Wednesday Open Men Over 35 A Grade","age":"Senior","div":null,"stats":{"gp":14,"pts":101,"threePt":6,"fg":35,"ft":13,"fouls":27,"wins":5,"losses":9}}]},{"sid":"87cd6c89","sn":"Spring 2024","regs":[{"tid":"68d0bb78","tn":"Winter Coats","gid":"01c80002","gn":"Wednesday Open Men Over 35 A Grade","age":"Senior","div":null,"stats":{"gp":12,"pts":122,"threePt":6,"fg":42,"ft":20,"fouls":15,"wins":8,"losses":2,"draws":2}}]}],"updatedAt":"2026-06-02T21:15:27.447Z","teams":[{"tid":"0b0f173d","sid":"307cebbc","status":"ACTIVE"},{"tid":"693e7d7a","sid":"307cebbc","status":"ACTIVE"},{"tid":"e5db5c77","sid":"9d4a51b2","status":"COMPLETED"},{"tid":"68d0bb78","sid":"87cd6c89","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:56.229Z","records":{"maxGamePTS":{"v":22,"gameKey":"8bc4c219","sid":"87cd6c89"},"maxGameThreePt":{"v":2,"gameKey":"19ec4148","sid":"307cebbc"}},"games":["026c46d2","028bc470","06141346","06f2c2c6","0cbdedcc","0de0eb17","0e41fbfb","1802c994","19372dd4","19ec4148","29b5038a","341546bd","358ffff2","35c238db","44e03782","49f88865","5d57320e","5dd0621d","6527034d","66832621","678ccc27","69c9b40b","6bb339eb","6c081997","6c9daa52","7235b81f","833c2349","868a5fda","8727d409","875bbe21","8bc4c219","8f69a797","99d709cc","9a432973","9fb5e6e5","a97a8409","af9311ac","b2c1bf14","c4170103","d420f095","dc87413e","e54e51d2"],"gameTids":{"66832621":"68d0bb78","6c9daa52":"0b0f173d","6c081997":"0b0f173d","ab251371":"693e7d7a","6bb339eb":"693e7d7a","678ccc27":"693e7d7a","833c2349":"693e7d7a","af9311ac":"693e7d7a","d420f095":"693e7d7a","99d709cc":"693e7d7a","19ec4148":"693e7d7a","9fb5e6e5":"693e7d7a","5dd0621d":"693e7d7a","868a5fda":"693e7d7a","dc87413e":"693e7d7a","49f88865":"693e7d7a","1802c994":"693e7d7a","5d57320e":"693e7d7a","e54e51d2":"e5db5c77","0de0eb17":"e5db5c77","341546bd":"e5db5c77","06f2c2c6":"e5db5c77","0cbdedcc":"e5db5c77","35c238db":"e5db5c77","875bbe21":"e5db5c77","028bc470":"e5db5c77","8f69a797":"e5db5c77","026c46d2":"e5db5c77","0e41fbfb":"e5db5c77","44e03782":"e5db5c77","29b5038a":"e5db5c77","7235b81f":"e5db5c77","19372dd4":"68d0bb78","8bc4c219":"68d0bb78","8727d409":"68d0bb78","a97a8409":"68d0bb78","9a432973":"68d0bb78","b2c1bf14":"68d0bb78","06141346":"68d0bb78","69c9b40b":"68d0bb78","c4170103":"68d0bb78","358ffff2":"68d0bb78","6527034d":"68d0bb78"}}
+{
+  "uuid": "28409dc8-647b-4f84-a561-1bc12d242867",
+  "name": "Chris Slade",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 386,
+      "fouls": 62,
+      "fg": 136,
+      "ft": 51,
+      "threePt": 21,
+      "foulOuts": {},
+      "maxGamePTS": 22,
+      "maxGameThreePt": 2,
+      "wins": 28,
+      "losses": 26,
+      "draws": 2,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:47:31.106Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "0b0f173d",
+          "tn": "Front Of The Singlet",
+          "gid": "171fac49",
+          "gn": "Tuesday Open Men C Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 21,
+            "threePt": 1,
+            "fg": 8,
+            "ft": 2,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "693e7d7a",
+          "stats": {
+            "wins": 7,
+            "losses": 7,
+            "gp": 15,
+            "pts": 142,
+            "fg": 51,
+            "ft": 16,
+            "threePt": 8,
+            "fouls": 18
+          },
+          "gid": "afcee9bd",
+          "gn": "Thursday Open Men D Grade"
+        }
+      ]
+    },
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "693e7d7a",
+          "tn": "The Bayside Ballers",
+          "gid": "afcee9bd",
+          "gn": "Thursday Open Men D Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 142,
+            "threePt": 8,
+            "fg": 51,
+            "ft": 16,
+            "fouls": 18,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9d4a51b2",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "e5db5c77",
+          "tn": "Winter Coats",
+          "gid": "3465fdf7",
+          "gn": "Wednesday Open Men Over 35 A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 101,
+            "threePt": 6,
+            "fg": 35,
+            "ft": 13,
+            "fouls": 27,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "87cd6c89",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "68d0bb78",
+          "tn": "Winter Coats",
+          "gid": "01c80002",
+          "gn": "Wednesday Open Men Over 35 A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 122,
+            "threePt": 6,
+            "fg": 42,
+            "ft": 20,
+            "fouls": 15,
+            "wins": 8,
+            "losses": 2,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c2468a21",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "9e0e16a6",
+          "tn": "Bayside Ballers",
+          "gid": "fc785b41",
+          "gn": "Wednesday Open Men Over 35 A Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T21:15:27.447Z",
+  "teams": [
+    {
+      "tid": "0b0f173d",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "693e7d7a",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5db5c77",
+      "sid": "9d4a51b2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68d0bb78",
+      "sid": "87cd6c89",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e0e16a6",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:23.505Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "8bc4c219",
+      "sid": "87cd6c89"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "19ec4148",
+      "sid": "307cebbc"
+    }
+  },
+  "games": [
+    "026c46d2",
+    "028bc470",
+    "06141346",
+    "06f2c2c6",
+    "0cbdedcc",
+    "0de0eb17",
+    "0e41fbfb",
+    "1802c994",
+    "19372dd4",
+    "19ec4148",
+    "29b5038a",
+    "341546bd",
+    "358ffff2",
+    "35c238db",
+    "44e03782",
+    "49f88865",
+    "5d57320e",
+    "5dd0621d",
+    "6527034d",
+    "66832621",
+    "678ccc27",
+    "69c9b40b",
+    "6bb339eb",
+    "6c081997",
+    "6c9daa52",
+    "7235b81f",
+    "833c2349",
+    "868a5fda",
+    "8727d409",
+    "875bbe21",
+    "8bc4c219",
+    "8f69a797",
+    "99d709cc",
+    "9a432973",
+    "9fb5e6e5",
+    "a97a8409",
+    "af9311ac",
+    "b2c1bf14",
+    "c4170103",
+    "d420f095",
+    "dc87413e",
+    "e54e51d2"
+  ],
+  "gameTids": {
+    "66832621": "68d0bb78",
+    "6c9daa52": "0b0f173d",
+    "6c081997": "0b0f173d",
+    "ab251371": "693e7d7a",
+    "6bb339eb": "693e7d7a",
+    "678ccc27": "693e7d7a",
+    "833c2349": "693e7d7a",
+    "af9311ac": "693e7d7a",
+    "d420f095": "693e7d7a",
+    "99d709cc": "693e7d7a",
+    "19ec4148": "693e7d7a",
+    "9fb5e6e5": "693e7d7a",
+    "5dd0621d": "693e7d7a",
+    "868a5fda": "693e7d7a",
+    "dc87413e": "693e7d7a",
+    "49f88865": "693e7d7a",
+    "1802c994": "693e7d7a",
+    "5d57320e": "693e7d7a",
+    "e54e51d2": "e5db5c77",
+    "0de0eb17": "e5db5c77",
+    "341546bd": "e5db5c77",
+    "06f2c2c6": "e5db5c77",
+    "0cbdedcc": "e5db5c77",
+    "35c238db": "e5db5c77",
+    "875bbe21": "e5db5c77",
+    "028bc470": "e5db5c77",
+    "8f69a797": "e5db5c77",
+    "026c46d2": "e5db5c77",
+    "0e41fbfb": "e5db5c77",
+    "44e03782": "e5db5c77",
+    "29b5038a": "e5db5c77",
+    "7235b81f": "e5db5c77",
+    "19372dd4": "68d0bb78",
+    "8bc4c219": "68d0bb78",
+    "8727d409": "68d0bb78",
+    "a97a8409": "68d0bb78",
+    "9a432973": "68d0bb78",
+    "b2c1bf14": "68d0bb78",
+    "06141346": "68d0bb78",
+    "69c9b40b": "68d0bb78",
+    "c4170103": "68d0bb78",
+    "358ffff2": "68d0bb78",
+    "6527034d": "68d0bb78"
+  }
+}

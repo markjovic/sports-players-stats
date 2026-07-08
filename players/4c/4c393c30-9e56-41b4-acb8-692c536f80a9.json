@@ -1,1 +1,67 @@
-{"uuid":"4c393c30-9e56-41b4-acb8-692c536f80a9","gender":null,"sports":{"Basketball":{"gp":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"winPct":1,"statsChecked":"2026-07-05T16:00:46.387Z"}},"seasons":[{"sid":"2554d50b","sn":"Winter 2020","club":"Generals Basketball Club","regs":[{"tid":"c852adc1","tn":"Generals Kings","gid":"2980ccb3","gn":"Under 16 Boys Division 5","stats":{"gp":1,"wins":1}}]}],"updatedAt":"2026-06-11T23:39:21.300Z","games":["d4dadce6"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Winter 2020"}
+{
+  "uuid": "4c393c30-9e56-41b4-acb8-692c536f80a9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:00:46.387Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2554d50b",
+      "sn": "Winter 2020",
+      "club": "Generals Basketball Club",
+      "regs": [
+        {
+          "tid": "c852adc1",
+          "tn": "Generals Kings",
+          "gid": "2980ccb3",
+          "gn": "Under 16 Boys Division 5",
+          "stats": {
+            "gp": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "cb33c107",
+          "tn": "General Kings",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:21.300Z",
+  "games": [
+    "d4dadce6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2020",
+  "teams": [
+    {
+      "tid": "c852adc1",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb33c107",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:41.969Z"
+}

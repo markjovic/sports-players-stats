@@ -1,1 +1,185 @@
-{"uuid":"94007fd8-075a-4c6a-9307-f862d735ff41","name":"Rory Dance","sports":{"Basketball":{"maxGamePTS":27,"maxGameThreePt":4,"foulOuts":{"e7426d9d":1,"1ae60211":1,"f4ef6102":1,"a94981b4":1},"gp":48,"pts":506,"fg":158,"ft":49,"threePt":47,"fouls":101,"statsChecked":"2026-07-06T19:11:00.470Z"}},"seasons":[{"sid":"e7426d9d","regs":[{"tid":"45204d1f"}]},{"sid":"1ae60211","regs":[{"tid":"21d372f8"}]},{"sid":"f4ef6102","regs":[{"tid":"4e37d8b5"}]},{"sid":"d15715f7","regs":[{"tid":"31d5d9fd"}]},{"sid":"2485b3f7","regs":[{"tid":"cf09a96d"}]},{"sid":"a94981b4","regs":[{"tid":"baead1cc"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":27,"gameKey":"038f7f3a","sid":"1ae60211"},"maxGameThreePt":{"v":4,"gameKey":"038f7f3a","sid":"1ae60211"}}}
+{
+  "uuid": "94007fd8-075a-4c6a-9307-f862d735ff41",
+  "name": "Rory Dance",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 27,
+      "maxGameThreePt": 4,
+      "foulOuts": {
+        "e7426d9d": 1,
+        "1ae60211": 1,
+        "f4ef6102": 1,
+        "a94981b4": 1
+      },
+      "gp": 48,
+      "pts": 506,
+      "fg": 158,
+      "ft": 49,
+      "threePt": 47,
+      "fouls": 101,
+      "statsChecked": "2026-07-06T19:11:00.470Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7426d9d",
+      "regs": [
+        {
+          "tid": "45204d1f",
+          "gid": "d194b71f",
+          "gn": "Monday Open Men E1/E2 GRADE"
+        }
+      ]
+    },
+    {
+      "sid": "1ae60211",
+      "regs": [
+        {
+          "tid": "21d372f8",
+          "gid": "961b9b31",
+          "gn": "Boys U21 BA"
+        }
+      ]
+    },
+    {
+      "sid": "f4ef6102",
+      "regs": [
+        {
+          "tid": "4e37d8b5",
+          "gid": "b03348d9",
+          "gn": "Juniors  U20 Boys Div 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "d15715f7",
+      "regs": [
+        {
+          "tid": "31d5d9fd",
+          "gid": "432819ab",
+          "gn": "Juniors U20 Boys Div 2"
+        }
+      ]
+    },
+    {
+      "sid": "2485b3f7",
+      "regs": [
+        {
+          "tid": "cf09a96d",
+          "gid": "203b0e50",
+          "gn": "Juniors U20 Boys Div 2"
+        }
+      ]
+    },
+    {
+      "sid": "a94981b4",
+      "regs": [
+        {
+          "tid": "baead1cc",
+          "gid": "bf8a66a6",
+          "gn": "Saturday U18 Boys Division 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "f00a8108",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "76ecd4fc",
+          "tn": "Jets U18 Boys Blue",
+          "gid": "3595865e",
+          "gn": "Saturday U18 Boys Division 1/2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8e7c4b8e",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "f4b6fe62",
+          "tn": "Jets U17 Boys Blue",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "84079ea9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "e7fc3e11",
+          "tn": "Jets U17 Boys Blue",
+          "gid": "47acdfb4",
+          "gn": "Saturday U17 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "45204d1f",
+      "sid": "e7426d9d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "21d372f8",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e37d8b5",
+      "sid": "f4ef6102",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31d5d9fd",
+      "sid": "d15715f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cf09a96d",
+      "sid": "2485b3f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "baead1cc",
+      "sid": "a94981b4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76ecd4fc",
+      "sid": "f00a8108",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f4b6fe62",
+      "sid": "8e7c4b8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7fc3e11",
+      "sid": "84079ea9",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 27,
+      "gameKey": "038f7f3a",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "038f7f3a",
+      "sid": "1ae60211"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:27:56.792Z"
+}

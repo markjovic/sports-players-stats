@@ -1,1 +1,226 @@
-{"uuid":"0a088b65-80af-4bd2-978f-bc4905569107","name":"Terry Hertog","gender":"Men","sports":{"Basketball":{"gp":52,"pts":221,"fouls":103,"fg":80,"ft":28,"threePt":11,"foulOuts":{"56bbe16f":2,"fe85a0c5":1},"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.75,"maxGamePTS":13,"maxGameThreePt":2,"wins":36,"losses":13,"draws":7,"winPct":0.64,"statsChecked":"2026-07-05T15:58:54.263Z"}},"seasons":[{"sid":"56bbe16f","sn":"Summer 2025/26","regs":[{"tid":"0517962e","tn":"Bricklayers","gid":"420e8547","gn":"Wednesday Senior Men 1","age":"Senior","div":null,"stats":{"gp":15,"pts":41,"threePt":2,"fg":14,"ft":7,"fouls":38,"foulOuts":2,"finals":1,"gfApps":1,"wins":7,"losses":7,"draws":1}}]},{"sid":"21fa25fc","sn":"Winter 2025","regs":[{"tid":"2f0c6fb6","tn":"Bricklayers","gid":"04129a11","gn":"Wednesday Senior Men 2","age":"Senior","div":null,"stats":{"gp":19,"pts":66,"threePt":5,"fg":23,"ft":5,"fouls":28,"finals":1,"wins":14,"losses":2,"draws":3}},{"tid":"2f0c6fb6","tn":"Bricklayers","gid":"46558294","gn":"Wednesday Senior Men 3","age":"Senior","div":null,"stats":{"gp":19,"pts":66,"threePt":5,"fg":23,"ft":5,"fouls":28,"finals":1,"wins":14,"losses":2,"draws":3}}]},{"sid":"fe85a0c5","sn":"Summer 2024/25","club":"Exies Acmy Basketball Club","regs":[{"tid":"53fb9c7f","tn":"ExiesAcmy Open Men Wednesday 5","gid":"90e70237","gn":"Wednesday Senior Men 5","age":"Senior","div":null,"stats":{"gp":16,"pts":98,"threePt":2,"fg":38,"ft":16,"fouls":32,"foulOuts":1,"finals":1,"losses":1}}]},{"sid":"9b3f4951","regs":[{"tid":"4ee72f19","stats":{"gp":2,"pts":16,"fg":5,"threePt":2,"fouls":5,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-02T00:39:14.825Z","teams":[{"tid":"4ee72f19","sid":"9b3f4951","status":"ACTIVE"},{"tid":"0517962e","sid":"56bbe16f","status":"COMPLETED"},{"tid":"2f0c6fb6","sid":"21fa25fc","status":"COMPLETED"},{"tid":"53fb9c7f","sid":"fe85a0c5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:54:26.314Z","records":{"maxGamePTS":{"v":13,"gameKey":"5358416e","sid":"21fa25fc"},"maxGameThreePt":{"v":2,"gameKey":"dafbe693","sid":"9b3f4951"}},"games":["1b94f04c","24846cb7","24c3e941","2d5a0876","2dbbedd3","35dd2c48","3f099168","4f67ed3f","5358416e","54df1d51","586a7411","64887dc1","69a53644","6b4db038","7df4a7cc","7e8bafa5","81e990c4","8569f1c7","97c45f61","a3c8e33b","a421a646","a8057262","acf608a8","ae56f3bb","af2376af","b3493a4b","b3bf0d6b","b9bc47e6","c793a917","caf3e4b8","cd0e734b","da25efdd","dafbe693","e2dae731","f3e0b0a6","fa17d48f","fb0ca366"]}
+{
+  "uuid": "0a088b65-80af-4bd2-978f-bc4905569107",
+  "name": "Terry Hertog",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 221,
+      "fouls": 103,
+      "fg": 80,
+      "ft": 28,
+      "threePt": 11,
+      "foulOuts": {
+        "56bbe16f": 2,
+        "fe85a0c5": 1
+      },
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 13,
+      "maxGameThreePt": 2,
+      "wins": 36,
+      "losses": 13,
+      "draws": 7,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-05T15:58:54.263Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "56bbe16f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "0517962e",
+          "tn": "Bricklayers",
+          "gid": "420e8547",
+          "gn": "Wednesday Senior Men 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 41,
+            "threePt": 2,
+            "fg": 14,
+            "ft": 7,
+            "fouls": 38,
+            "foulOuts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21fa25fc",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2f0c6fb6",
+          "tn": "Bricklayers",
+          "gid": "04129a11",
+          "gn": "Wednesday Senior Men 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 66,
+            "threePt": 5,
+            "fg": 23,
+            "ft": 5,
+            "fouls": 28,
+            "finals": 1,
+            "wins": 14,
+            "losses": 2,
+            "draws": 3
+          }
+        },
+        {
+          "tid": "2f0c6fb6",
+          "tn": "Bricklayers",
+          "gid": "46558294",
+          "gn": "Wednesday Senior Men 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 66,
+            "threePt": 5,
+            "fg": 23,
+            "ft": 5,
+            "fouls": 28,
+            "finals": 1,
+            "wins": 14,
+            "losses": 2,
+            "draws": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fe85a0c5",
+      "sn": "Summer 2024/25",
+      "club": "Exies Acmy Basketball Club",
+      "regs": [
+        {
+          "tid": "53fb9c7f",
+          "tn": "ExiesAcmy Open Men Wednesday 5",
+          "gid": "90e70237",
+          "gn": "Wednesday Senior Men 5",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 98,
+            "threePt": 2,
+            "fg": 38,
+            "ft": 16,
+            "fouls": 32,
+            "foulOuts": 1,
+            "finals": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9b3f4951",
+      "regs": [
+        {
+          "tid": "4ee72f19",
+          "stats": {
+            "gp": 2,
+            "pts": 16,
+            "fg": 5,
+            "threePt": 2,
+            "fouls": 5,
+            "wins": 1,
+            "losses": 1
+          },
+          "gid": "7ab0cbb7",
+          "gn": "Wednesday Senior Men 1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T00:39:14.825Z",
+  "teams": [
+    {
+      "tid": "0517962e",
+      "sid": "56bbe16f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f0c6fb6",
+      "sid": "21fa25fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53fb9c7f",
+      "sid": "fe85a0c5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ee72f19",
+      "sid": "9b3f4951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:22:57.843Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "5358416e",
+      "sid": "21fa25fc"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "dafbe693",
+      "sid": "9b3f4951"
+    }
+  },
+  "games": [
+    "1b94f04c",
+    "24846cb7",
+    "24c3e941",
+    "2d5a0876",
+    "2dbbedd3",
+    "35dd2c48",
+    "3f099168",
+    "4f67ed3f",
+    "5358416e",
+    "54df1d51",
+    "586a7411",
+    "64887dc1",
+    "69a53644",
+    "6b4db038",
+    "7df4a7cc",
+    "7e8bafa5",
+    "81e990c4",
+    "8569f1c7",
+    "97c45f61",
+    "a3c8e33b",
+    "a421a646",
+    "a8057262",
+    "acf608a8",
+    "ae56f3bb",
+    "af2376af",
+    "b3493a4b",
+    "b3bf0d6b",
+    "b9bc47e6",
+    "c793a917",
+    "caf3e4b8",
+    "cd0e734b",
+    "da25efdd",
+    "dafbe693",
+    "e2dae731",
+    "f3e0b0a6",
+    "fa17d48f",
+    "fb0ca366"
+  ]
+}

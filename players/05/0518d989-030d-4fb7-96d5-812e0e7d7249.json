@@ -1,1 +1,290 @@
-{"uuid":"0518d989-030d-4fb7-96d5-812e0e7d7249","name":"Toby Drage","gender":"Boys","sports":{"Basketball":{"gp":43,"pts":281,"fouls":24,"fg":131,"ft":16,"threePt":1,"finals":3,"gfApps":3,"gfWins":3,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":1,"wins":23,"losses":17,"draws":3,"winPct":0.53,"statsChecked":"2026-07-05T16:11:33.077Z"}},"seasons":[{"sid":"3cb97b37","sn":"Summer 2023/24","regs":[{"tid":"84ad3162","tn":"Katz","gid":"1018c75c","gn":"Friday U21 Boys","age":"U21","div":null,"stats":{"gp":13,"fouls":14,"ft":7,"fg":54,"threePt":1,"pts":118,"finals":1,"gfApps":1,"wins":6,"losses":5,"draws":2,"gfWins":1}},{"tid":"de1a0931","tn":"Gazelles","gid":"220f21ef","gn":"Monday Mens Competition","age":null,"div":null,"stats":{"gp":11,"fouls":4,"ft":7,"fg":43,"pts":93,"finals":1,"gfApps":1,"wins":3,"losses":8,"gfWins":1}}]},{"sid":"bbe40d50","sn":"Summer 2022/23","regs":[{"tid":"ddce0989","tn":"Slabs","gid":"25ce9f39","gn":"Friday U21 Boys","age":"U21","div":null,"stats":{"gp":10,"fouls":2,"fg":13,"pts":26,"finals":1,"gfApps":1,"wins":5,"losses":4,"draws":1,"gfWins":1}}]},{"sid":"4a995627","sn":"Summer 2021/22","regs":[{"tid":"ce8d6406","tn":"Katz","gid":"b63fe750","gn":"Friday U21 Boys","age":"U21","div":null,"stats":{"gp":9,"fouls":4,"ft":2,"fg":21,"pts":44,"finals":1,"gfApps":1,"wins":9,"gfWins":1}}]}],"updatedAt":"2026-06-03T02:35:25.451Z","teams":[{"tid":"de1a0931","sid":"3cb97b37","status":"COMPLETED"},{"tid":"84ad3162","sid":"3cb97b37","status":"COMPLETED"},{"tid":"ddce0989","sid":"bbe40d50","status":"COMPLETED"},{"tid":"ce8d6406","sid":"4a995627","status":"COMPLETED"},{"tid":"611003d1","sid":"638a2fba","status":"COMPLETED"},{"tid":"33593458","sid":"ba1d7494","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:52:39.046Z","records":{"maxGamePTS":{"v":16,"gameKey":"7d0c24e0","sid":"3cb97b37"},"maxGameThreePt":{"v":1,"gameKey":"c7f83915","sid":"3cb97b37"}},"games":["00cb40e0","039addff","047fe7b7","08ff769d","108b3ff6","1c338297","23581dc6","271e8da8","2a4cbadd","2d79c079","2e38cd7f","36bc7545","375987bd","376d513a","384d7db3","3fd5431c","42088652","42b9f1f4","46122589","48216dc6","4ed812e6","5aee4078","5b401a3e","5e706636","7c354cb3","7d0c24e0","7e3de4a6","80da8b2a","9268ac0c","9cb83b0d","aced2894","b86a06c6","b8cef24b","c03da71d","c69cefb1","c7f83915","c94a0f4b","cf1c7377","dcdaca90","e34708e1","e9f1fc67","f57aae6a","f978a0ed"],"gameTids":{"42088652":"ce8d6406","46122589":"84ad3162","4ed812e6":"84ad3162","7c354cb3":"84ad3162","c94a0f4b":"84ad3162","108b3ff6":"84ad3162","3fd5431c":"84ad3162","c7f83915":"84ad3162","2a4cbadd":"84ad3162","7d0c24e0":"84ad3162","f57aae6a":"84ad3162","b86a06c6":"84ad3162","aced2894":"84ad3162","e9f1fc67":"84ad3162","9cb83b0d":"de1a0931","047fe7b7":"de1a0931","e34708e1":"de1a0931","80da8b2a":"de1a0931","f978a0ed":"de1a0931","5aee4078":"de1a0931","dcdaca90":"de1a0931","271e8da8":"de1a0931","5b401a3e":"de1a0931","7e3de4a6":"de1a0931","42b9f1f4":"de1a0931","2e38cd7f":"ddce0989","384d7db3":"ddce0989","039addff":"ddce0989","08ff769d":"ddce0989","b8cef24b":"ddce0989","5e706636":"ddce0989","c03da71d":"ddce0989","36bc7545":"ddce0989","375987bd":"ddce0989","c69cefb1":"ddce0989","23581dc6":"ce8d6406","48216dc6":"ce8d6406","376d513a":"ce8d6406","2d79c079":"ce8d6406","cf1c7377":"ce8d6406","9268ac0c":"ce8d6406","00cb40e0":"ce8d6406","1c338297":"ce8d6406"}}
+{
+  "uuid": "0518d989-030d-4fb7-96d5-812e0e7d7249",
+  "name": "Toby Drage",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 281,
+      "fouls": 24,
+      "fg": 131,
+      "ft": 16,
+      "threePt": 1,
+      "finals": 3,
+      "gfApps": 3,
+      "gfWins": 3,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": 1,
+      "wins": 23,
+      "losses": 17,
+      "draws": 3,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T16:11:33.077Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3cb97b37",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "84ad3162",
+          "tn": "Katz",
+          "gid": "1018c75c",
+          "gn": "Friday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "ft": 7,
+            "fg": 54,
+            "threePt": 1,
+            "pts": 118,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 5,
+            "draws": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "de1a0931",
+          "tn": "Gazelles",
+          "gid": "220f21ef",
+          "gn": "Monday Mens Competition",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 4,
+            "ft": 7,
+            "fg": 43,
+            "pts": 93,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 8,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bbe40d50",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "ddce0989",
+          "tn": "Slabs",
+          "gid": "25ce9f39",
+          "gn": "Friday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 2,
+            "fg": 13,
+            "pts": 26,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 4,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4a995627",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "ce8d6406",
+          "tn": "Katz",
+          "gid": "b63fe750",
+          "gn": "Friday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 21,
+            "pts": 44,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "638a2fba",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "611003d1",
+          "tn": "Cubs",
+          "gid": "7e6bbc35",
+          "gn": "Friday U18 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ba1d7494",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "33593458",
+          "tn": "Katz (U15 B)",
+          "gid": "26bcb98b",
+          "gn": "Friday U15 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T02:35:25.451Z",
+  "teams": [
+    {
+      "tid": "84ad3162",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de1a0931",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ddce0989",
+      "sid": "bbe40d50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ce8d6406",
+      "sid": "4a995627",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "611003d1",
+      "sid": "638a2fba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "33593458",
+      "sid": "ba1d7494",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:04.655Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "7d0c24e0",
+      "sid": "3cb97b37"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "c7f83915",
+      "sid": "3cb97b37"
+    }
+  },
+  "games": [
+    "00cb40e0",
+    "039addff",
+    "047fe7b7",
+    "08ff769d",
+    "108b3ff6",
+    "1c338297",
+    "23581dc6",
+    "271e8da8",
+    "2a4cbadd",
+    "2d79c079",
+    "2e38cd7f",
+    "36bc7545",
+    "375987bd",
+    "376d513a",
+    "384d7db3",
+    "3fd5431c",
+    "42088652",
+    "42b9f1f4",
+    "46122589",
+    "48216dc6",
+    "4ed812e6",
+    "5aee4078",
+    "5b401a3e",
+    "5e706636",
+    "7c354cb3",
+    "7d0c24e0",
+    "7e3de4a6",
+    "80da8b2a",
+    "9268ac0c",
+    "9cb83b0d",
+    "aced2894",
+    "b86a06c6",
+    "b8cef24b",
+    "c03da71d",
+    "c69cefb1",
+    "c7f83915",
+    "c94a0f4b",
+    "cf1c7377",
+    "dcdaca90",
+    "e34708e1",
+    "e9f1fc67",
+    "f57aae6a",
+    "f978a0ed"
+  ],
+  "gameTids": {
+    "42088652": "ce8d6406",
+    "46122589": "84ad3162",
+    "4ed812e6": "84ad3162",
+    "7c354cb3": "84ad3162",
+    "c94a0f4b": "84ad3162",
+    "108b3ff6": "84ad3162",
+    "3fd5431c": "84ad3162",
+    "c7f83915": "84ad3162",
+    "2a4cbadd": "84ad3162",
+    "7d0c24e0": "84ad3162",
+    "f57aae6a": "84ad3162",
+    "b86a06c6": "84ad3162",
+    "aced2894": "84ad3162",
+    "e9f1fc67": "84ad3162",
+    "9cb83b0d": "de1a0931",
+    "047fe7b7": "de1a0931",
+    "e34708e1": "de1a0931",
+    "80da8b2a": "de1a0931",
+    "f978a0ed": "de1a0931",
+    "5aee4078": "de1a0931",
+    "dcdaca90": "de1a0931",
+    "271e8da8": "de1a0931",
+    "5b401a3e": "de1a0931",
+    "7e3de4a6": "de1a0931",
+    "42b9f1f4": "de1a0931",
+    "2e38cd7f": "ddce0989",
+    "384d7db3": "ddce0989",
+    "039addff": "ddce0989",
+    "08ff769d": "ddce0989",
+    "b8cef24b": "ddce0989",
+    "5e706636": "ddce0989",
+    "c03da71d": "ddce0989",
+    "36bc7545": "ddce0989",
+    "375987bd": "ddce0989",
+    "c69cefb1": "ddce0989",
+    "23581dc6": "ce8d6406",
+    "48216dc6": "ce8d6406",
+    "376d513a": "ce8d6406",
+    "2d79c079": "ce8d6406",
+    "cf1c7377": "ce8d6406",
+    "9268ac0c": "ce8d6406",
+    "00cb40e0": "ce8d6406",
+    "1c338297": "ce8d6406"
+  }
+}

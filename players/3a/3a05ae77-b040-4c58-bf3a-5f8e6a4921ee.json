@@ -1,1 +1,75 @@
-{"uuid":"3a05ae77-b040-4c58-bf3a-5f8e6a4921ee","gender":null,"sports":{"Basketball":{"gp":1,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T16:00:18.038Z"}},"seasons":[{"sid":"dcc45073","sn":"Summer 2020/21","club":"Altona Pirates Basketball Club Inc.","regs":[{"tid":"9a61393a","tn":"AP CRYSTALS","gid":"2cd955cf","gn":"Saturday U14 Girls Div 1/2","stats":{"gp":1,"fouls":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:38:26.846Z","games":["20fce603"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "3a05ae77-b040-4c58-bf3a-5f8e6a4921ee",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:00:18.038Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Altona Pirates Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "9a61393a",
+          "tn": "AP CRYSTALS",
+          "gid": "2cd955cf",
+          "gn": "Saturday U14 Girls Div 1/2",
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0543eab",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "03806b3d",
+          "tn": "AP CRYSTALS",
+          "gid": "e9b9d6f9",
+          "gn": "Saturday U12 Girls Div 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:26.846Z",
+  "games": [
+    "20fce603"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "9a61393a",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "03806b3d",
+      "sid": "d0543eab",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:40.904Z"
+}

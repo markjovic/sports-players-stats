@@ -1,1 +1,237 @@
-{"uuid":"e62eea8d-ae3e-40b9-9d95-e23112c0d2ab","name":"Evie Dove","gender":"Girls","sports":{"Basketball":{"gp":34,"pts":36,"fouls":61,"fg":13,"ft":10,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{"3ecfff14":1,"f5bbd42a":3},"maxGamePTS":4,"maxGameThreePt":null,"wins":24,"losses":24,"draws":2,"winPct":0.48,"statsChecked":"2026-07-06T19:01:58.949Z"}},"seasons":[{"sid":"3ecfff14","sn":"Winter 2026","club":"Beacy Bandits Basketball Club","regs":[{"tid":"3433fba5","tn":"U12 Girls Beacy Bandits Lynx","gid":"75ee9631","gn":"Saturday U12 Girls D","age":"U12","div":null,"stats":{"gp":8,"fouls":26,"ft":3,"fg":4,"pts":11,"foulOuts":1,"wins":3,"losses":5}},{"tid":"3433fba5","tn":"U12 Girls Beacy Bandits Lynx","gid":"80512fb5","gn":"Saturday U12 Girls C","age":"U12","div":null,"stats":{"gp":8,"fouls":26,"wins":3,"losses":5,"pts":11,"fg":4,"ft":3}}]},{"sid":"8aec64e6","sn":"Term 1, 2026","regs":[{"tid":"6220c90a","tn":"Lynx","gid":"222ec426","gn":"U11 Girls","age":"U11","div":null,"stats":{"gp":4,"fouls":2,"ft":1,"pts":1,"finals":1,"losses":4}}]},{"sid":"f5bbd42a","sn":"Summer 2025/26","club":"Beacy Bandits Basketball Club","regs":[{"tid":"47b9b4c9","tn":"U10 Girls Beacy Bandits Lynx","gid":"6a5dbd1d","gn":"Saturday U10 Girls C","age":"U10","div":null,"stats":{"gp":16,"fouls":30,"ft":1,"fg":9,"pts":19,"finals":1,"gfApps":1,"foulOuts":2,"wins":9,"losses":5,"draws":1}},{"tid":"47b9b4c9","tn":"U10 Girls Beacy Bandits Lynx","gid":"b90694cd","gn":"Saturday U10 Girls B","age":"U10","div":null,"stats":{"gp":16,"fouls":30,"fg":9,"pts":19,"finals":1,"gfApps":1,"foulOuts":1,"wins":9,"losses":5,"draws":1,"ft":1}}]},{"sid":"d9d6ff18","regs":[{"tid":"b4dd4abf","stats":{"gp":6,"pts":5,"ft":5,"fouls":3}},{"tid":"b4dd4abf","tn":"","gid":"3875550c","gn":"U11 Girls","div":null,"stats":{"gp":6,"pts":5,"ft":5,"fouls":3}}]}],"updatedAt":"2026-07-06T18:34:40.975Z","teams":[{"tid":"3433fba5","sid":"3ecfff14","status":"ACTIVE"},{"tid":"47b9b4c9","sid":"f5bbd42a","status":"COMPLETED"},{"tid":"6220c90a","sid":"8aec64e6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:50.823Z","games":["06817c55","0852bf55","164858fe","19c2dceb","1b6e0ed4","2163ec15","22d17922","2cc72a95","300078c0","30888306","36534c9d","377511f1","53bdd190","5496257f","66ad2841","680ad331","7a21e27f","9051cb9d","9436e009","9ef1e494","a03c582c","d2fcef39","d56a2a81","de176282","e58f5630","ee6ba387","f2ccdc6d","f9e0a158"],"records":{"maxGamePTS":{"v":4,"gameKey":"19c2dceb","sid":"3ecfff14"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e62eea8d-ae3e-40b9-9d95-e23112c0d2ab",
+  "name": "Evie Dove",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 36,
+      "fouls": 61,
+      "fg": 13,
+      "ft": 10,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "3ecfff14": 1,
+        "f5bbd42a": 3
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 24,
+      "losses": 24,
+      "draws": 2,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-06T19:01:58.949Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3ecfff14",
+      "sn": "Winter 2026",
+      "club": "Beacy Bandits Basketball Club",
+      "regs": [
+        {
+          "tid": "3433fba5",
+          "tn": "U12 Girls Beacy Bandits Lynx",
+          "gid": "75ee9631",
+          "gn": "Saturday U12 Girls D",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 26,
+            "ft": 3,
+            "fg": 4,
+            "pts": 11,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "3433fba5",
+          "tn": "U12 Girls Beacy Bandits Lynx",
+          "gid": "80512fb5",
+          "gn": "Saturday U12 Girls C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 26,
+            "wins": 3,
+            "losses": 5,
+            "pts": 11,
+            "fg": 4,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8aec64e6",
+      "sn": "Term 1, 2026",
+      "regs": [
+        {
+          "tid": "6220c90a",
+          "tn": "Lynx",
+          "gid": "222ec426",
+          "gn": "U11 Girls",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "ft": 1,
+            "pts": 1,
+            "finals": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5bbd42a",
+      "sn": "Summer 2025/26",
+      "club": "Beacy Bandits Basketball Club",
+      "regs": [
+        {
+          "tid": "47b9b4c9",
+          "tn": "U10 Girls Beacy Bandits Lynx",
+          "gid": "6a5dbd1d",
+          "gn": "Saturday U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "ft": 1,
+            "fg": 9,
+            "pts": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 2,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "47b9b4c9",
+          "tn": "U10 Girls Beacy Bandits Lynx",
+          "gid": "b90694cd",
+          "gn": "Saturday U10 Girls B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "fg": 9,
+            "pts": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d9d6ff18",
+      "regs": [
+        {
+          "tid": "b4dd4abf",
+          "stats": {
+            "gp": 6,
+            "pts": 5,
+            "ft": 5,
+            "fouls": 3
+          },
+          "gid": "3875550c",
+          "gn": "U11 Girls"
+        },
+        {
+          "tid": "b4dd4abf",
+          "tn": "",
+          "gid": "3875550c",
+          "gn": "U11 Girls",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 5,
+            "ft": 5,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:40.975Z",
+  "teams": [
+    {
+      "tid": "3433fba5",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6220c90a",
+      "sid": "8aec64e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47b9b4c9",
+      "sid": "f5bbd42a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4dd4abf",
+      "sid": "d9d6ff18",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:07.418Z",
+  "games": [
+    "06817c55",
+    "0852bf55",
+    "164858fe",
+    "19c2dceb",
+    "1b6e0ed4",
+    "2163ec15",
+    "22d17922",
+    "2cc72a95",
+    "300078c0",
+    "30888306",
+    "36534c9d",
+    "377511f1",
+    "53bdd190",
+    "5496257f",
+    "66ad2841",
+    "680ad331",
+    "7a21e27f",
+    "9051cb9d",
+    "9436e009",
+    "9ef1e494",
+    "a03c582c",
+    "d2fcef39",
+    "d56a2a81",
+    "de176282",
+    "e58f5630",
+    "ee6ba387",
+    "f2ccdc6d",
+    "f9e0a158"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "19c2dceb",
+      "sid": "3ecfff14"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

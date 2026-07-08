@@ -1,1 +1,89 @@
-{"uuid":"ba385df1-34ff-474e-a922-4da4eb59168c","name":"George WU","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":8,"fouls":1,"fg":4,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T14:57:47.965Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"29f27f0b","tn":"U12 TIMBERWOLVES HORNETS","gid":"e3a83638","gn":"Saturday U12 Boys Section 11","age":"U12","div":null,"stats":{"gp":7,"fouls":1,"fg":4,"pts":8,"wins":2,"losses":3}}]}],"updatedAt":"2026-05-31T13:59:22.678Z","teams":[{"tid":"29f27f0b","sid":"6c117270","status":"ACTIVE"},{"tid":"d4b26bcc","sid":"68279835","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:39:00.130Z","games":["4d3b8201","5ebd9bb0","aa9b7dd7","d3a3afcd","fd03cb5c"],"records":{"maxGamePTS":{"v":4,"gameKey":"a2bd8d2c","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ba385df1-34ff-474e-a922-4da4eb59168c",
+  "name": "George WU",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 8,
+      "fouls": 1,
+      "fg": 4,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:57:47.965Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "29f27f0b",
+          "tn": "U12 TIMBERWOLVES HORNETS",
+          "gid": "79be9fd4",
+          "gn": "Saturday U12 Boys Section 12",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 1,
+            "fg": 4,
+            "pts": 8,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "d4b26bcc",
+          "tn": "U10 TIMBERWOLVES BUCKS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:22.678Z",
+  "teams": [
+    {
+      "tid": "29f27f0b",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d4b26bcc",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:32.533Z",
+  "games": [
+    "4d3b8201",
+    "5ebd9bb0",
+    "aa9b7dd7",
+    "d3a3afcd",
+    "fd03cb5c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "a2bd8d2c",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

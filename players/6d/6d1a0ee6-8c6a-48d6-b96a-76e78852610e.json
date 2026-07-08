@@ -1,1 +1,115 @@
-{"uuid":"6d1a0ee6-8c6a-48d6-b96a-76e78852610e","name":"Max Wallace","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":6,"fouls":5,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":6,"losses":2,"winPct":0.75,"statsChecked":"2026-07-05T15:36:30.180Z"}},"seasons":[{"sid":"b3efb4fc","sn":"Winter 2026","club":"Beavers Basketball Club (Bendigo)","regs":[{"tid":"e5cf44b8","tn":"Beavers Little Swish","gid":"d1eead7d","gn":"Friday U8 Boys 2 Yellow","age":"U8","div":null,"stats":{"gp":6,"fouls":4,"fg":3,"pts":6,"wins":6}},{"tid":"79ab6d27","stats":{"losses":1,"gp":1,"fouls":1}}]},{"sid":"b3efb4fc","sn":"Winter 2026","regs":[{"tid":"79ab6d27","tn":"MIGHTY FLAMINGO’S ","gid":"83f650fe","gn":"Friday U8 Boys 1","age":"U8","div":null,"stats":{"gp":1,"fouls":1,"losses":1}}]}],"updatedAt":"2026-07-04T05:41:33.819Z","teams":[{"tid":"e5cf44b8","sid":"b3efb4fc","status":"ACTIVE"},{"tid":"79ab6d27","sid":"b3efb4fc","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:48:38.348Z","records":{"maxGamePTS":{"v":2,"gameKey":"e1d5d2b1","sid":"b3efb4fc"},"maxGameThreePt":{"v":null}},"games":["03379471","1f20b9b5","4bee8383","ac472f57","b6f99484","e1d5d2b1","e86306cc"],"gameTids":{"4bee8383":"e5cf44b8","1f20b9b5":"e5cf44b8","e1d5d2b1":"e5cf44b8","b6f99484":"e5cf44b8","03379471":"e5cf44b8","e86306cc":"e5cf44b8","ac472f57":"79ab6d27"}}
+{
+  "uuid": "6d1a0ee6-8c6a-48d6-b96a-76e78852610e",
+  "name": "Max Wallace",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 6,
+      "fouls": 5,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 2,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-05T15:36:30.180Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3efb4fc",
+      "sn": "Winter 2026",
+      "club": "Beavers Basketball Club (Bendigo)",
+      "regs": [
+        {
+          "tid": "e5cf44b8",
+          "tn": "Beavers Little Swish",
+          "gid": "d1eead7d",
+          "gn": "Friday U8 Boys 2 Yellow",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "fg": 3,
+            "pts": 6,
+            "wins": 6
+          }
+        },
+        {
+          "tid": "79ab6d27",
+          "stats": {
+            "losses": 1,
+            "gp": 1,
+            "fouls": 1
+          },
+          "gid": "83f650fe",
+          "gn": "Friday U8 Boys 1"
+        }
+      ]
+    },
+    {
+      "sid": "b3efb4fc",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "79ab6d27",
+          "tn": "MIGHTY FLAMINGO’S ",
+          "gid": "83f650fe",
+          "gn": "Friday U8 Boys 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:41:33.819Z",
+  "teams": [
+    {
+      "tid": "e5cf44b8",
+      "sid": "b3efb4fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79ab6d27",
+      "sid": "b3efb4fc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:47.514Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "e1d5d2b1",
+      "sid": "b3efb4fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "03379471",
+    "1f20b9b5",
+    "4bee8383",
+    "ac472f57",
+    "b6f99484",
+    "e1d5d2b1",
+    "e86306cc"
+  ],
+  "gameTids": {
+    "4bee8383": "e5cf44b8",
+    "1f20b9b5": "e5cf44b8",
+    "e1d5d2b1": "e5cf44b8",
+    "b6f99484": "e5cf44b8",
+    "03379471": "e5cf44b8",
+    "e86306cc": "e5cf44b8",
+    "ac472f57": "79ab6d27"
+  }
+}

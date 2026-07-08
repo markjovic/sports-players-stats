@@ -1,1 +1,118 @@
-{"uuid":"b3083d4f-125b-4ee7-8e2a-67d643c4a765","name":"Term 4, 2024","gender":null,"sports":{"Basketball":{"gp":9,"pts":113,"fouls":23,"fg":38,"ft":13,"threePt":8,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":1,"foulOuts":{"b4124891":1},"maxGamePTS":14,"maxGameThreePt":2,"wins":5,"losses":4,"winPct":0.56,"statsChecked":"2026-07-05T16:03:09.354Z"}},"seasons":[{"sid":"b4124891","sn":"Term 4, 2024","club":null,"regs":[{"tid":"0d831a15","tn":"Yellow","gid":"9df5179a","gn":"Friday Senior Men","stats":{"gp":9,"pts":113,"fouls":23,"fg":38,"ft":13,"threePt":8,"finals":1,"gfApps":1,"foulOuts":1,"wins":5,"losses":4}}]}],"updatedAt":"2026-06-11T23:43:49.858Z","games":["05fa4f97","4bb30b58","695f5b27","6ebd08fd","8f08e94b","922e384c","ba193669","fa718031","ffa48610"],"records":{"maxGamePTS":{"v":14,"gameKey":"922e384c","sid":"b4124891"},"maxGameThreePt":{"v":2,"gameKey":"922e384c","sid":"b4124891"}}}
+{
+  "uuid": "b3083d4f-125b-4ee7-8e2a-67d643c4a765",
+  "name": "Term 4, 2024",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 113,
+      "fouls": 23,
+      "fg": 38,
+      "ft": 13,
+      "threePt": 8,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "b4124891": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 5,
+      "losses": 4,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T16:03:09.354Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b4124891",
+      "sn": "Term 4, 2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "0d831a15",
+          "tn": "Yellow",
+          "gid": "9df5179a",
+          "gn": "Friday Senior Men",
+          "stats": {
+            "gp": 9,
+            "pts": 113,
+            "fouls": 23,
+            "fg": 38,
+            "ft": 13,
+            "threePt": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9948d3ca",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "e4f4ddb6",
+          "tn": "Blue",
+          "gid": "24e033ec",
+          "gn": "Wednesday U14 Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "3e1b7a23",
+          "tn": "Bricklayers",
+          "gid": "476d6dc2",
+          "gn": "Wednesday Open Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:49.858Z",
+  "games": [
+    "05fa4f97",
+    "4bb30b58",
+    "695f5b27",
+    "6ebd08fd",
+    "8f08e94b",
+    "922e384c",
+    "ba193669",
+    "fa718031",
+    "ffa48610"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "922e384c",
+      "sid": "b4124891"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "922e384c",
+      "sid": "b4124891"
+    }
+  },
+  "teams": [
+    {
+      "tid": "0d831a15",
+      "sid": "b4124891",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4f4ddb6",
+      "sid": "9948d3ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e1b7a23",
+      "sid": "9948d3ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:01.471Z"
+}

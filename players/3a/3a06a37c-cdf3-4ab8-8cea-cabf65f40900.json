@@ -1,1 +1,271 @@
-{"uuid":"3a06a37c-cdf3-4ab8-8cea-cabf65f40900","name":"Milan Gallace","gender":"Girls","sports":{"Basketball":{"gp":40,"pts":97,"fouls":64,"fg":47,"ft":3,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{"06be12d0":1},"maxGamePTS":16,"maxGameThreePt":null,"wins":3,"losses":24,"draws":1,"winPct":0.11,"statsChecked":"2026-07-05T16:00:10.919Z"}},"seasons":[{"sid":"87866d78","sn":"Summer 2023/24","regs":[{"tid":"a300bb8e","tn":"OUTCASTS","gid":"e99d2eb7","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":11,"pts":66,"fg":32,"ft":2,"fouls":22,"finals":1,"wins":2,"losses":8,"draws":1}},{"tid":"8addc200","tn":"HAWKS","gid":"8776cc91","gn":"U18 Girls","age":"U18","div":null,"stats":{"gp":10,"pts":11,"fg":5,"ft":1,"fouls":10,"finals":1,"wins":1,"losses":9}}]},{"sid":"9e096645","sn":"Summer 2022/23","regs":[{"tid":"bbdea254","tn":"GIANTS","gid":"05243794","gn":"U/14 Girls","age":null,"div":null,"stats":{"gp":7,"pts":14,"fg":7,"fouls":5,"finals":1,"losses":7}}]},{"sid":"06be12d0","sn":"Summer 2021/22","regs":[{"tid":"d917b99f","tn":"HAWKS","gid":"f881ebf4","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":11,"pts":6,"fg":3,"fouls":26,"foulOuts":1,"finals":1}},{"tid":"fff74cc5","tn":"FALCONS","gid":"f881ebf4","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":1,"fouls":1,"finals":1}}]}],"updatedAt":"2026-06-03T10:48:58.539Z","teams":[{"tid":"8addc200","sid":"87866d78","status":"COMPLETED"},{"tid":"a300bb8e","sid":"87866d78","status":"COMPLETED"},{"tid":"bbdea254","sid":"9e096645","status":"COMPLETED"},{"tid":"d917b99f","sid":"06be12d0","status":"COMPLETED"},{"tid":"e81d52b6","sid":"34fbc30d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:21:27.446Z","records":{"maxGamePTS":{"v":16,"gameKey":"b5882545","sid":"87866d78"},"maxGameThreePt":{"v":null}},"games":["00eeeae9","00fddd47","11c3bd36","1ad08506","1dff6dfe","24f40bcb","26993e9e","2dffebd2","37a57e37","3c6dd381","425b5853","43421e6d","548e612e","565d66dc","570ebec6","57c74a60","61d4e7b3","65f6f9ce","67043173","6f096bc4","705d16b4","7486e0fa","78c68f45","8b9f1e37","8c8fc23c","94d1142c","a3789779","a3c46662","aa78c047","b5882545","b98ca54d","cb56e9ae","cb8c2ae0","cf394e97","d3e1b528","e27c0ca5","e2836e67","f1c67f8a","f530e899","f751132f"],"gameTids":{"67043173":"d917b99f","65f6f9ce":"a300bb8e","2dffebd2":"a300bb8e","cb56e9ae":"a300bb8e","570ebec6":"a300bb8e","b5882545":"a300bb8e","1ad08506":"a300bb8e","f751132f":"a300bb8e","f530e899":"a300bb8e","cf394e97":"a300bb8e","57c74a60":"a300bb8e","78c68f45":"a300bb8e","61d4e7b3":"8addc200","11c3bd36":"8addc200","24f40bcb":"8addc200","f1c67f8a":"8addc200","00fddd47":"8addc200","e27c0ca5":"8addc200","3c6dd381":"8addc200","aa78c047":"8addc200","d3e1b528":"8addc200","e2836e67":"8addc200","6f096bc4":"bbdea254","8c8fc23c":"bbdea254","00eeeae9":"bbdea254","1dff6dfe":"bbdea254","548e612e":"bbdea254","705d16b4":"bbdea254","7486e0fa":"bbdea254","a3789779":"d917b99f","425b5853":"d917b99f","cb8c2ae0":"d917b99f","43421e6d":"d917b99f","8b9f1e37":"d917b99f","565d66dc":"d917b99f","a3c46662":"d917b99f","94d1142c":"d917b99f","26993e9e":"d917b99f","37a57e37":"d917b99f","b98ca54d":"fff74cc5"}}
+{
+  "uuid": "3a06a37c-cdf3-4ab8-8cea-cabf65f40900",
+  "name": "Milan Gallace",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 97,
+      "fouls": 64,
+      "fg": 47,
+      "ft": 3,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "06be12d0": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 24,
+      "draws": 1,
+      "winPct": 0.11,
+      "statsChecked": "2026-07-05T16:00:10.919Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "87866d78",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a300bb8e",
+          "tn": "OUTCASTS",
+          "gid": "e99d2eb7",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 66,
+            "fg": 32,
+            "ft": 2,
+            "fouls": 22,
+            "finals": 1,
+            "wins": 2,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "8addc200",
+          "tn": "HAWKS",
+          "gid": "8776cc91",
+          "gn": "U18 Girls",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 10,
+            "finals": 1,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9e096645",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "bbdea254",
+          "tn": "GIANTS",
+          "gid": "05243794",
+          "gn": "U/14 Girls",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 5,
+            "finals": 1,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "06be12d0",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "d917b99f",
+          "tn": "HAWKS",
+          "gid": "f881ebf4",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 26,
+            "foulOuts": 1,
+            "finals": 1
+          }
+        },
+        {
+          "tid": "fff74cc5",
+          "tn": "FALCONS",
+          "gid": "f881ebf4",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "34fbc30d",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "e81d52b6",
+          "tn": "GIANTS",
+          "gid": "ee3faecd",
+          "gn": "10/U Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T10:48:58.539Z",
+  "teams": [
+    {
+      "tid": "a300bb8e",
+      "sid": "87866d78",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8addc200",
+      "sid": "87866d78",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbdea254",
+      "sid": "9e096645",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d917b99f",
+      "sid": "06be12d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fff74cc5",
+      "sid": "06be12d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e81d52b6",
+      "sid": "34fbc30d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:40.905Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "b5882545",
+      "sid": "87866d78"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00eeeae9",
+    "00fddd47",
+    "11c3bd36",
+    "1ad08506",
+    "1dff6dfe",
+    "24f40bcb",
+    "26993e9e",
+    "2dffebd2",
+    "37a57e37",
+    "3c6dd381",
+    "425b5853",
+    "43421e6d",
+    "548e612e",
+    "565d66dc",
+    "570ebec6",
+    "57c74a60",
+    "61d4e7b3",
+    "65f6f9ce",
+    "67043173",
+    "6f096bc4",
+    "705d16b4",
+    "7486e0fa",
+    "78c68f45",
+    "8b9f1e37",
+    "8c8fc23c",
+    "94d1142c",
+    "a3789779",
+    "a3c46662",
+    "aa78c047",
+    "b5882545",
+    "b98ca54d",
+    "cb56e9ae",
+    "cb8c2ae0",
+    "cf394e97",
+    "d3e1b528",
+    "e27c0ca5",
+    "e2836e67",
+    "f1c67f8a",
+    "f530e899",
+    "f751132f"
+  ],
+  "gameTids": {
+    "67043173": "d917b99f",
+    "65f6f9ce": "a300bb8e",
+    "2dffebd2": "a300bb8e",
+    "cb56e9ae": "a300bb8e",
+    "570ebec6": "a300bb8e",
+    "b5882545": "a300bb8e",
+    "1ad08506": "a300bb8e",
+    "f751132f": "a300bb8e",
+    "f530e899": "a300bb8e",
+    "cf394e97": "a300bb8e",
+    "57c74a60": "a300bb8e",
+    "78c68f45": "a300bb8e",
+    "61d4e7b3": "8addc200",
+    "11c3bd36": "8addc200",
+    "24f40bcb": "8addc200",
+    "f1c67f8a": "8addc200",
+    "00fddd47": "8addc200",
+    "e27c0ca5": "8addc200",
+    "3c6dd381": "8addc200",
+    "aa78c047": "8addc200",
+    "d3e1b528": "8addc200",
+    "e2836e67": "8addc200",
+    "6f096bc4": "bbdea254",
+    "8c8fc23c": "bbdea254",
+    "00eeeae9": "bbdea254",
+    "1dff6dfe": "bbdea254",
+    "548e612e": "bbdea254",
+    "705d16b4": "bbdea254",
+    "7486e0fa": "bbdea254",
+    "a3789779": "d917b99f",
+    "425b5853": "d917b99f",
+    "cb8c2ae0": "d917b99f",
+    "43421e6d": "d917b99f",
+    "8b9f1e37": "d917b99f",
+    "565d66dc": "d917b99f",
+    "a3c46662": "d917b99f",
+    "94d1142c": "d917b99f",
+    "26993e9e": "d917b99f",
+    "37a57e37": "d917b99f",
+    "b98ca54d": "fff74cc5"
+  }
+}

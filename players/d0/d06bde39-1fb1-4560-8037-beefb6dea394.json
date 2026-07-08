@@ -1,1 +1,124 @@
-{"uuid":"d06bde39-1fb1-4560-8037-beefb6dea394","name":"Ivy Anderson","gender":"Girls","sports":{"Basketball":{"gp":15,"pts":2,"fouls":1,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":7,"losses":7,"draws":1,"winPct":0.47,"statsChecked":"2026-07-05T15:39:06.491Z"}},"seasons":[{"sid":"a1b063e2","sn":"2026","club":"Benalla Breakers Basketball Club","regs":[{"tid":"dc970f7b","tn":"Benalla Breakers U10 Girls Orange","gid":"0744d796","gn":"U10 Girls","age":"U10","div":null,"stats":{"gp":3,"losses":3}}]},{"sid":"642ed3f8","sn":"Spring 2025","regs":[{"tid":"ee319609","tn":"Fever","gid":"16b9e2b9","gn":"Thursday U10 Girls","age":"U10","div":null,"stats":{"gp":12,"fouls":1,"fg":1,"pts":2,"wins":7,"losses":4,"draws":1}}]}],"updatedAt":"2026-07-04T05:50:29.543Z","teams":[{"tid":"50330afc","sid":"377b115d","status":"COMPLETED"},{"tid":"dc970f7b","sid":"a1b063e2","status":"COMPLETED"},{"tid":"ee319609","sid":"642ed3f8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:45:48.076Z","games":["002bfd03","15eca654","193e7a63","2d108c63","79d96a6b","9b66afab","9bf49fd2","a99a6f70","c2b128a0","c2de9ba1","d8619db8","d94c80ba","e1d056ec","fc47405a","febf319d"],"records":{"maxGamePTS":{"v":2,"gameKey":"002bfd03","sid":"642ed3f8"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d06bde39-1fb1-4560-8037-beefb6dea394",
+  "name": "Ivy Anderson",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 2,
+      "fouls": 1,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 7,
+      "draws": 1,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-05T15:39:06.491Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a1b063e2",
+      "sn": "2026",
+      "club": "Benalla Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "dc970f7b",
+          "tn": "Benalla Breakers U10 Girls Orange",
+          "gid": "0744d796",
+          "gn": "U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "642ed3f8",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "ee319609",
+          "tn": "Fever",
+          "gid": "16b9e2b9",
+          "gn": "Thursday U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "wins": 7,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "377b115d",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "50330afc",
+          "tn": "Fever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:29.543Z",
+  "teams": [
+    {
+      "tid": "dc970f7b",
+      "sid": "a1b063e2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee319609",
+      "sid": "642ed3f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50330afc",
+      "sid": "377b115d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:16.147Z",
+  "games": [
+    "002bfd03",
+    "15eca654",
+    "193e7a63",
+    "2d108c63",
+    "79d96a6b",
+    "9b66afab",
+    "9bf49fd2",
+    "a99a6f70",
+    "c2b128a0",
+    "c2de9ba1",
+    "d8619db8",
+    "d94c80ba",
+    "e1d056ec",
+    "fc47405a",
+    "febf319d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "002bfd03",
+      "sid": "642ed3f8"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

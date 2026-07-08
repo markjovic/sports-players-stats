@@ -1,1 +1,93 @@
-{"uuid":"d0194413-ce46-43f1-a6f8-0a39cfbafbaf","name":"MICHAEL Xu","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":null,"foulOuts":{"25aab112":1},"gp":24,"pts":89,"fg":39,"ft":11,"fouls":38,"statsChecked":"2026-07-07T18:29:56.834Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"b1e5c677"}]},{"sid":"796936f7","regs":[{"tid":"94b10fc1"}]},{"sid":"25aab112","regs":[{"tid":"58ac4449"}]},{"sid":"83ae36bf","regs":[{"tid":"5789d8a2"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":10,"gameKey":"55325db1","sid":"796936f7"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d0194413-ce46-43f1-a6f8-0a39cfbafbaf",
+  "name": "MICHAEL Xu",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "25aab112": 1
+      },
+      "gp": 24,
+      "pts": 89,
+      "fg": 39,
+      "ft": 11,
+      "fouls": 38,
+      "statsChecked": "2026-07-07T18:29:56.834Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "b1e5c677",
+          "gid": "f3f4f1ef",
+          "gn": "Tuesday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "94b10fc1"
+        }
+      ]
+    },
+    {
+      "sid": "25aab112",
+      "regs": [
+        {
+          "tid": "58ac4449",
+          "gid": "bebc2209",
+          "gn": "Tuesday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "83ae36bf",
+      "regs": [
+        {
+          "tid": "5789d8a2",
+          "gid": "f78da457",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "b1e5c677",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "94b10fc1",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58ac4449",
+      "sid": "25aab112",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5789d8a2",
+      "sid": "83ae36bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "55325db1",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:30:02.390Z"
+}

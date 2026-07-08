@@ -1,1 +1,91 @@
-{"uuid":"e44551d4-f107-4bbb-b8fe-172f31e8abfc","name":"Dylan Shepherd","gender":"Men","sports":{"Basketball":{"gp":7,"pts":34,"fouls":5,"fg":16,"ft":2,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":5,"losses":1,"winPct":0.83,"statsChecked":"2026-07-07T18:30:22.736Z"}},"seasons":[{"sid":"205c1638","sn":"Winter 2026","regs":[{"tid":"ba096057","tn":"Boonie Tunes","gid":"b630d145","gn":"Tuesday Men D1 Grading","age":null,"div":null,"stats":{"gp":7,"fouls":5,"fg":16,"pts":34,"ft":2,"wins":5,"losses":1}}]}],"updatedAt":"2026-07-07T18:06:32.985Z","teams":[{"tid":"ba096057","sid":"205c1638","status":"ACTIVE"},{"tid":"6283d6a4","sid":"8c5d9e70","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:42.108Z","records":{"maxGamePTS":{"v":10,"gameKey":"a114a910","sid":"205c1638"},"maxGameThreePt":{"v":null}},"games":["0b539ea2","8eb87618","a114a910","b4b0997a","c71f6e25","f81643c0"]}
+{
+  "uuid": "e44551d4-f107-4bbb-b8fe-172f31e8abfc",
+  "name": "Dylan Shepherd",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 34,
+      "fouls": 5,
+      "fg": 16,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 1,
+      "winPct": 0.83,
+      "statsChecked": "2026-07-07T18:30:22.736Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "ba096057",
+          "tn": "Boonie Tunes",
+          "gid": "b630d145",
+          "gn": "Tuesday Men D1 Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "fg": 16,
+            "pts": 34,
+            "ft": 2,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8c5d9e70",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "6283d6a4",
+          "tn": "Caliburns",
+          "gid": "6394b536",
+          "gn": "Monday Open Men A Res",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:32.985Z",
+  "teams": [
+    {
+      "tid": "ba096057",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6283d6a4",
+      "sid": "8c5d9e70",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:09.538Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "a114a910",
+      "sid": "205c1638"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b539ea2",
+    "8eb87618",
+    "a114a910",
+    "b4b0997a",
+    "c71f6e25",
+    "f81643c0"
+  ]
+}

@@ -1,1 +1,376 @@
-{"uuid":"4126f4a8-40f8-4514-8991-a9aff8b8a0e7","name":"Teddy Karpa","gender":"Boys","sports":{"Basketball":{"gp":66,"pts":148,"fouls":45,"fg":68,"ft":12,"foulOuts":{"944aea0b":1},"maxGamePTS":15,"maxGameThreePt":null,"wins":59,"losses":111,"winPct":0.34,"draws":2,"statsChecked":"2026-07-05T14:26:51.374Z"}},"seasons":[{"sid":"ed318fce","sn":"Winter 2026","club":"Ocean Grove Breakers Basketball Club","regs":[{"tid":"94601252","tn":"OG Breakers Falcons (U10 Boys)","gid":"2fbd6e1c","gn":"Wednesday U10 Boys Div 3 Crocs","age":"U10","div":null,"stats":{"gp":7,"fg":13,"pts":26,"fouls":6,"wins":5,"losses":1,"draws":1}},{"tid":"94601252","tn":"OG Breakers Falcons (U10 Boys)","gid":"26bf9399","gn":"Wednesday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":7,"fouls":6,"fg":13,"pts":26,"wins":5,"losses":1,"draws":1}}]},{"sid":"94f1fc73","sn":"2026","club":"Bellarine Storm Basketball Club","regs":[{"tid":"2f7dbb59","tn":"Bellarine U12 Boys 3","gid":"d6a33d0f","gn":"U12 Boys 3","age":"U12","div":null,"stats":{"gp":4,"wins":1,"losses":3}}]},{"sid":"2ecfa56c","sn":"2025/26","club":"Bellarine Storm Basketball Club","regs":[{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"9f570ce4","gn":"U12 Boys RL3 (WEST)","age":"U12","div":null,"stats":{"gp":21,"fouls":6,"ft":1,"fg":4,"pts":9,"wins":5,"losses":16}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"994f1a1e","gn":"12 Boys - VJL Crossover","age":null,"div":null,"stats":{"gp":21,"wins":5,"losses":16,"pts":9,"fg":4,"ft":1,"fouls":6}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"b0b81384","gn":"U12 Boys Grading 2 - LL Pool B","age":"U12","div":null,"stats":{"gp":21,"wins":5,"losses":16,"pts":9,"fg":4,"ft":1,"fouls":6}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"b1166530","gn":"12 Boys Grading 1 - Crossover","age":null,"div":null,"stats":{"gp":21,"fouls":6,"wins":5,"losses":16,"pts":9,"fg":4,"ft":1}},{"tid":"85b4d56e","tn":"Bellarine U12 Boys 3","gid":"b059de0b","gn":"12 Boys Grading 1 - Pool 11A","age":null,"div":null,"stats":{"gp":21,"fouls":6,"wins":5,"losses":16,"pts":9,"fg":4,"ft":1}}]},{"sid":"37aa55de","sn":"2025","club":"Bellarine Storm Basketball Club","regs":[{"tid":"53485dd4","tn":"Bellarine U12 Boys 3","gid":"113c9986","gn":"U12 Boys C","age":"U12","div":null,"stats":{"gp":4,"losses":4}}]},{"sid":"648e8b25","sn":"Summer 2025/26","club":"Ocean Grove Breakers Basketball Club","regs":[{"tid":"cb716ef5","tn":"OG Breakers Commanders (U10 Boys)","gid":"9d9f19ec","gn":"Wednesday U10 Boys Kangas (Div 4)","age":"U10","div":null,"stats":{"gp":15,"fouls":19,"ft":9,"fg":39,"pts":87,"wins":8,"losses":7}},{"tid":"cb716ef5","tn":"OG Breakers Commanders (U10 Boys)","gid":"f444da9b","gn":"Wednesday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":15,"fouls":19,"ft":9,"fg":39,"pts":87,"wins":8,"losses":7}}]},{"sid":"944aea0b","sn":"Winter 2025","club":"Ocean Grove Breakers Basketball Club","regs":[{"tid":"ec984860","tn":"OG Breakers Packers (U10 Boys)","gid":"daded492","gn":"Wednesday U10 Boys Kangas (Div 4)","age":"U10","div":null,"stats":{"gp":15,"fouls":14,"ft":2,"fg":12,"pts":26,"foulOuts":1,"wins":7,"losses":8}}]}],"updatedAt":"2026-07-04T05:49:14.984Z","teams":[{"tid":"94601252","sid":"ed318fce","status":"ACTIVE"},{"tid":"85b4d56e","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"cb716ef5","sid":"648e8b25","status":"COMPLETED"},{"tid":"2f7dbb59","sid":"94f1fc73","status":"COMPLETED"},{"tid":"53485dd4","sid":"37aa55de","status":"COMPLETED"},{"tid":"ec984860","sid":"944aea0b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:22:11.081Z","records":{"maxGamePTS":{"v":15,"gameKey":"099f9749","sid":"648e8b25"},"maxGameThreePt":{"v":null}},"games":["016c2bbd","020b5c16","0414ae4c","099f9749","1543145f","15fc2dc0","17d9682e","1897c896","30ea5680","31068af0","3292ac50","3e13998d","3e80d96d","3f19fabb","45a495cf","51858efd","57fc588a","5ae02906","5e7ca2dd","65385ea3","671ae558","6c977b6d","6fab2d47","730106ae","733d9a5e","7bd821b2","7c6ea141","7dd36fd8","7e869e1a","816f6d31","848c9e04","8904fe20","8cffef75","960fee07","9bf5b6a2","9ca0fbc7","a32c41cb","a486f322","a67aa042","abaab773","b22a4e9e","c3c0633a","c9d3738f","cdb97270","d0ffe9d9","d2056a17","d23d8b2c","d579caf5","d72283f6","d79291c2","d7cc8a35","d8352239","e0b636c0","e32275d5","e58ef637","ea46d88d","ea888649","eaf3a058","edf07c8b","efae5944","f262f1a0","f7b8f51a","f83b4e9d","f8bd6a0d","fb3b698d","ffed930a"]}
+{
+  "uuid": "4126f4a8-40f8-4514-8991-a9aff8b8a0e7",
+  "name": "Teddy Karpa",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 148,
+      "fouls": 45,
+      "fg": 68,
+      "ft": 12,
+      "foulOuts": {
+        "944aea0b": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": null,
+      "wins": 59,
+      "losses": 111,
+      "winPct": 0.34,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:26:51.374Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ed318fce",
+      "sn": "Winter 2026",
+      "club": "Ocean Grove Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "94601252",
+          "tn": "OG Breakers Falcons (U10 Boys)",
+          "gid": "cfa696ee",
+          "gn": "Wednesday U10 Boys Div 2 Emus",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 13,
+            "pts": 26,
+            "fouls": 6,
+            "wins": 5,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "94601252",
+          "tn": "OG Breakers Falcons (U10 Boys)",
+          "gid": "26bf9399",
+          "gn": "Wednesday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 6,
+            "fg": 13,
+            "pts": 26,
+            "wins": 5,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "94f1fc73",
+      "sn": "2026",
+      "club": "Bellarine Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "2f7dbb59",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "d6a33d0f",
+          "gn": "U12 Boys 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ecfa56c",
+      "sn": "2025/26",
+      "club": "Bellarine Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "9f570ce4",
+          "gn": "U12 Boys RL3 (WEST)",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 5,
+            "losses": 16
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "994f1a1e",
+          "gn": "12 Boys - VJL Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "wins": 5,
+            "losses": 16,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 6
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "b0b81384",
+          "gn": "U12 Boys Grading 2 - LL Pool B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "wins": 5,
+            "losses": 16,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 6
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "b1166530",
+          "gn": "12 Boys Grading 1 - Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 6,
+            "wins": 5,
+            "losses": 16,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "85b4d56e",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "b059de0b",
+          "gn": "12 Boys Grading 1 - Pool 11A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 6,
+            "wins": 5,
+            "losses": 16,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "37aa55de",
+      "sn": "2025",
+      "club": "Bellarine Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "53485dd4",
+          "tn": "Bellarine U12 Boys 3",
+          "gid": "113c9986",
+          "gn": "U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "648e8b25",
+      "sn": "Summer 2025/26",
+      "club": "Ocean Grove Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "cb716ef5",
+          "tn": "OG Breakers Commanders (U10 Boys)",
+          "gid": "9d9f19ec",
+          "gn": "Wednesday U10 Boys Kangas (Div 4)",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 19,
+            "ft": 9,
+            "fg": 39,
+            "pts": 87,
+            "wins": 8,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "cb716ef5",
+          "tn": "OG Breakers Commanders (U10 Boys)",
+          "gid": "f444da9b",
+          "gn": "Wednesday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 19,
+            "ft": 9,
+            "fg": 39,
+            "pts": 87,
+            "wins": 8,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "944aea0b",
+      "sn": "Winter 2025",
+      "club": "Ocean Grove Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "ec984860",
+          "tn": "OG Breakers Packers (U10 Boys)",
+          "gid": "daded492",
+          "gn": "Wednesday U10 Boys Kangas (Div 4)",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 8
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:14.984Z",
+  "teams": [
+    {
+      "tid": "94601252",
+      "sid": "ed318fce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f7dbb59",
+      "sid": "94f1fc73",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85b4d56e",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53485dd4",
+      "sid": "37aa55de",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb716ef5",
+      "sid": "648e8b25",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec984860",
+      "sid": "944aea0b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:28.153Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "099f9749",
+      "sid": "648e8b25"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "016c2bbd",
+    "020b5c16",
+    "0414ae4c",
+    "099f9749",
+    "1543145f",
+    "15fc2dc0",
+    "17d9682e",
+    "1897c896",
+    "30ea5680",
+    "31068af0",
+    "3292ac50",
+    "3e13998d",
+    "3e80d96d",
+    "3f19fabb",
+    "45a495cf",
+    "51858efd",
+    "57fc588a",
+    "5ae02906",
+    "5e7ca2dd",
+    "65385ea3",
+    "671ae558",
+    "6c977b6d",
+    "6fab2d47",
+    "730106ae",
+    "733d9a5e",
+    "7bd821b2",
+    "7c6ea141",
+    "7dd36fd8",
+    "7e869e1a",
+    "816f6d31",
+    "848c9e04",
+    "8904fe20",
+    "8cffef75",
+    "960fee07",
+    "9bf5b6a2",
+    "9ca0fbc7",
+    "a32c41cb",
+    "a486f322",
+    "a67aa042",
+    "abaab773",
+    "b22a4e9e",
+    "c3c0633a",
+    "c9d3738f",
+    "cdb97270",
+    "d0ffe9d9",
+    "d2056a17",
+    "d23d8b2c",
+    "d579caf5",
+    "d72283f6",
+    "d79291c2",
+    "d7cc8a35",
+    "d8352239",
+    "e0b636c0",
+    "e32275d5",
+    "e58ef637",
+    "ea46d88d",
+    "ea888649",
+    "eaf3a058",
+    "edf07c8b",
+    "efae5944",
+    "f262f1a0",
+    "f7b8f51a",
+    "f83b4e9d",
+    "f8bd6a0d",
+    "fb3b698d",
+    "ffed930a"
+  ]
+}

@@ -1,1 +1,104 @@
-{"uuid":"d320b853-39a5-4ba4-addf-cce4cc916b8e","gender":null,"sports":{"Basketball":{"gp":4,"pts":2,"fouls":5,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:03:51.001Z"}},"seasons":[{"sid":"e12cb3f0","sn":"Autumn 2021","club":null,"regs":[{"tid":"e5974677","tn":"Hornets","gid":"e67260ab","gn":"Mens","stats":{"gp":4,"pts":2,"fouls":5,"fg":1,"wins":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:45:04.458Z","games":["406309d4","51473bda","c0ad6002","eef36fde"],"records":{"maxGamePTS":{"v":2,"gameKey":"51473bda","sid":"e12cb3f0"},"maxGameThreePt":{"v":null}},"name":"Autumn 2021"}
+{
+  "uuid": "d320b853-39a5-4ba4-addf-cce4cc916b8e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 2,
+      "fouls": 5,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:03:51.001Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e12cb3f0",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "e5974677",
+          "tn": "Hornets",
+          "gid": "e67260ab",
+          "gn": "Mens",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fouls": 5,
+            "fg": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "45b62a00",
+          "tn": "Minimal Buckets",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "56196f56",
+          "tn": "Minimal Buckets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:04.458Z",
+  "games": [
+    "406309d4",
+    "51473bda",
+    "c0ad6002",
+    "eef36fde"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "51473bda",
+      "sid": "e12cb3f0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "e5974677",
+      "sid": "e12cb3f0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45b62a00",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56196f56",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:15.570Z"
+}

@@ -1,1 +1,265 @@
-{"uuid":"f54b2bc5-452c-4c62-9765-1b8027645993","name":"Thomas Bell","gender":"Mixed","sports":{"Basketball":{"gp":57,"pts":266,"fouls":80,"fg":127,"ft":12,"foulOuts":{"2ea45b5f":1},"maxGamePTS":14,"maxGameThreePt":null,"wins":47,"winPct":0.51,"losses":44,"draws":2,"statsChecked":"2026-07-05T14:31:39.401Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"1f0e5944","tn":"Blackburn U11 Boys 06","gid":"19e854ac","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":7,"fg":10,"pts":21,"ft":1,"wins":1,"losses":4,"fouls":3}},{"tid":"1f0e5944","tn":"Blackburn U11 Boys 06","gid":"fd707450","gn":"Boys U11 C Grading","age":"U11","div":null,"stats":{"gp":7,"fouls":3,"wins":1,"losses":4,"pts":21,"fg":10,"ft":1}}]},{"sid":"bf7d2b4c","sn":"Summer 2025/26","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"aaea5c7c","tn":"B09 Blackburn Vikings 3","gid":"78a928c9","gn":"Friday U9 Boys A/AR","age":"U9","div":null,"stats":{"gp":15,"fouls":26,"fg":34,"pts":68,"wins":3,"losses":12}},{"tid":"aaea5c7c","tn":"B09 Blackburn Vikings 3","gid":"e5b53c35","gn":"Friday U9 Boys AR","age":"U9","div":null,"stats":{"gp":15,"fouls":26,"fg":34,"pts":68,"wins":3,"losses":12}}]},{"sid":"52d31d16","sn":"Winter 2025","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"be09cbf9","tn":"B08 Blackburn Vikings 2","gid":"5da7af65","gn":"Monday U8 Boys A","age":"U8","div":null,"stats":{"gp":17,"fouls":28,"ft":9,"fg":50,"pts":109,"wins":13,"losses":4}}]},{"sid":"2ea45b5f","sn":"Summer 2024/25","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"b90cadf5","tn":"B08 Blackburn Vikings 2","gid":"e75ea6ac","gn":"Monday U08 Mixed 2","age":"U08","div":null,"stats":{"gp":18,"fouls":23,"fg":33,"pts":68,"foulOuts":1,"wins":13,"losses":4,"draws":1,"ft":2}},{"tid":"b90cadf5","tn":"B08 Blackburn Vikings 2","gid":"5e5a3dbd","gn":"Monday U08 Mixed 1","age":"U08","div":null,"stats":{"gp":18,"fouls":23,"ft":2,"pts":68,"wins":13,"losses":4,"draws":1,"fg":33}}]}],"updatedAt":"2026-07-04T05:51:17.733Z","teams":[{"tid":"1f0e5944","sid":"1ae60211","status":"ACTIVE"},{"tid":"aaea5c7c","sid":"bf7d2b4c","status":"COMPLETED"},{"tid":"be09cbf9","sid":"52d31d16","status":"COMPLETED"},{"tid":"b90cadf5","sid":"2ea45b5f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:58.339Z","games":["0c956833","0e8fdf3c","0ed90452","112ca3b0","15307ecc","15bd79f8","1908c824","23ed2c33","26c360c7","294b09b0","29d888a1","2bdf2a61","3383b95b","3bf00d11","43fe4b06","443af149","480596c4","49c9c6f7","517a8ada","52fa2037","53b4b8c1","7648ebf5","786a5de8","7d2f3b88","82a09ad4","889f3c24","8b7e18e0","8fa32e74","90535af8","916a421c","964d5ad5","9ac9380d","a3295e70","a4dc8b6e","a623375b","ad50862c","b5ad433f","b743f7b2","bd996c66","c00cbcfd","c08df6ba","c4e08d77","ca7c6d7f","d08142d2","d37ce2aa","d3a32448","df322e97","e18ab8f0","e42c65d9","e5f17263","e86a8f57","efd5ea19","fb3bc855","feaaa4e5","ffa0c16e"],"records":{"maxGamePTS":{"v":14,"gameKey":"23ed2c33","sid":"52d31d16"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "f54b2bc5-452c-4c62-9765-1b8027645993",
+  "name": "Thomas Bell",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 57,
+      "pts": 266,
+      "fouls": 80,
+      "fg": 127,
+      "ft": 12,
+      "foulOuts": {
+        "2ea45b5f": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 47,
+      "winPct": 0.51,
+      "losses": 44,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:31:39.401Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "1f0e5944",
+          "tn": "Blackburn U11 Boys 06",
+          "gid": "94b21dfb",
+          "gn": "Boys U11 DB",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 10,
+            "pts": 21,
+            "ft": 1,
+            "wins": 1,
+            "losses": 4,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "1f0e5944",
+          "tn": "Blackburn U11 Boys 06",
+          "gid": "fd707450",
+          "gn": "Boys U11 C Grading",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 4,
+            "pts": 21,
+            "fg": 10,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf7d2b4c",
+      "sn": "Summer 2025/26",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "aaea5c7c",
+          "tn": "B09 Blackburn Vikings 3",
+          "gid": "78a928c9",
+          "gn": "Friday U9 Boys A/AR",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "fg": 34,
+            "pts": 68,
+            "wins": 3,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "aaea5c7c",
+          "tn": "B09 Blackburn Vikings 3",
+          "gid": "e5b53c35",
+          "gn": "Friday U9 Boys AR",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "fg": 34,
+            "pts": 68,
+            "wins": 3,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "52d31d16",
+      "sn": "Winter 2025",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "be09cbf9",
+          "tn": "B08 Blackburn Vikings 2",
+          "gid": "5da7af65",
+          "gn": "Monday U8 Boys A",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 28,
+            "ft": 9,
+            "fg": 50,
+            "pts": 109,
+            "wins": 13,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ea45b5f",
+      "sn": "Summer 2024/25",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "b90cadf5",
+          "tn": "B08 Blackburn Vikings 2",
+          "gid": "e75ea6ac",
+          "gn": "Monday U08 Mixed 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 23,
+            "fg": 33,
+            "pts": 68,
+            "foulOuts": 1,
+            "wins": 13,
+            "losses": 4,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "b90cadf5",
+          "tn": "B08 Blackburn Vikings 2",
+          "gid": "5e5a3dbd",
+          "gn": "Monday U08 Mixed 1",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 23,
+            "ft": 2,
+            "pts": 68,
+            "wins": 13,
+            "losses": 4,
+            "draws": 1,
+            "fg": 33
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:51:17.733Z",
+  "teams": [
+    {
+      "tid": "1f0e5944",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aaea5c7c",
+      "sid": "bf7d2b4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be09cbf9",
+      "sid": "52d31d16",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b90cadf5",
+      "sid": "2ea45b5f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:52.324Z",
+  "games": [
+    "0c956833",
+    "0e8fdf3c",
+    "0ed90452",
+    "112ca3b0",
+    "15307ecc",
+    "15bd79f8",
+    "1908c824",
+    "23ed2c33",
+    "26c360c7",
+    "294b09b0",
+    "29d888a1",
+    "2bdf2a61",
+    "3383b95b",
+    "3bf00d11",
+    "43fe4b06",
+    "443af149",
+    "480596c4",
+    "49c9c6f7",
+    "517a8ada",
+    "52fa2037",
+    "53b4b8c1",
+    "7648ebf5",
+    "786a5de8",
+    "7d2f3b88",
+    "82a09ad4",
+    "889f3c24",
+    "8b7e18e0",
+    "8fa32e74",
+    "90535af8",
+    "916a421c",
+    "964d5ad5",
+    "9ac9380d",
+    "a3295e70",
+    "a4dc8b6e",
+    "a623375b",
+    "ad50862c",
+    "b5ad433f",
+    "b743f7b2",
+    "bd996c66",
+    "c00cbcfd",
+    "c08df6ba",
+    "c4e08d77",
+    "ca7c6d7f",
+    "d08142d2",
+    "d37ce2aa",
+    "d3a32448",
+    "df322e97",
+    "e18ab8f0",
+    "e42c65d9",
+    "e5f17263",
+    "e86a8f57",
+    "efd5ea19",
+    "fb3bc855",
+    "feaaa4e5",
+    "ffa0c16e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "23ed2c33",
+      "sid": "52d31d16"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

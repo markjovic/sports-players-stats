@@ -1,1 +1,90 @@
-{"uuid":"6903184d-78b8-41bf-8632-4aa26b47354c","name":"Inara Nikolof","gender":"Girls","sports":{"Basketball":{"gp":5,"pts":11,"fouls":7,"fg":4,"ft":3,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":1,"losses":4,"winPct":0.2,"statsChecked":"2026-07-05T14:14:00.470Z"}},"seasons":[{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"37758676","tn":"Sturt G16.2 (SA)","gid":"7bab80af","gn":"U16 Girls B3 (Dandenong)","age":"U16","div":null,"stats":{"gp":5,"fouls":7,"ft":3,"fg":4,"pts":11,"wins":1,"losses":4}}]}],"updatedAt":"2026-07-04T05:35:37.714Z","teams":[{"tid":"37758676","sid":"6b0cab9c","status":"COMPLETED"},{"tid":"27a2b2ac","sid":"fc2f84e0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:54.865Z","records":{"maxGamePTS":{"v":7,"gameKey":"9a2a2dd8","sid":"6b0cab9c"},"maxGameThreePt":{"v":null}},"games":["000a002c","3bde63ae","9a2a2dd8","d51597da","ecad25c4"]}
+{
+  "uuid": "6903184d-78b8-41bf-8632-4aa26b47354c",
+  "name": "Inara Nikolof",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 11,
+      "fouls": 7,
+      "fg": 4,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 4,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T14:14:00.470Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "37758676",
+          "tn": "Sturt G16.2 (SA)",
+          "gid": "7bab80af",
+          "gn": "U16 Girls B3 (Dandenong)",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "ft": 3,
+            "fg": 4,
+            "pts": 11,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fc2f84e0",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "27a2b2ac",
+          "tn": "Sturt Sabres 3T2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:37.714Z",
+  "teams": [
+    {
+      "tid": "37758676",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "27a2b2ac",
+      "sid": "fc2f84e0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:27.680Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "9a2a2dd8",
+      "sid": "6b0cab9c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "000a002c",
+    "3bde63ae",
+    "9a2a2dd8",
+    "d51597da",
+    "ecad25c4"
+  ]
+}

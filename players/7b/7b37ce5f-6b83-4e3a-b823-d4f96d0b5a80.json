@@ -1,1 +1,371 @@
-{"uuid":"7b37ce5f-6b83-4e3a-b823-d4f96d0b5a80","name":"Zac Chadwick","gender":"Boys","sports":{"Basketball":{"gp":71,"pts":102,"fouls":33,"fg":50,"ft":2,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":110,"losses":46,"draws":6,"winPct":0.68,"statsChecked":"2026-07-05T15:10:28.669Z"}},"seasons":[{"sid":"2e623bd2","sn":"Winter 2026","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"a0477bb2","tn":"SEM Magic B10.3","gid":"edecdd31","gn":"Saturday U10 Boys C1","age":"U10","div":"C1","stats":{"gp":8,"fouls":7,"fg":4,"pts":8,"wins":4,"losses":4}}]},{"sid":"fcfc254b","sn":"Summer 2025/26","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"40305f22","tn":"SEM Magic B8.1","gid":"0979d122","gn":"Saturday U8 Boys Div 01","age":"U8","div":"Div 01","stats":{"gp":15,"fouls":8,"fg":9,"pts":18,"wins":7,"losses":8}},{"tid":"40305f22","tn":"SEM Magic B8.1","gid":"4c2f3d36","gn":"Saturday U8 Boys Div 02","age":"U8","div":"Div 02","stats":{"gp":15,"fouls":8,"fg":9,"pts":18,"wins":7,"losses":8}}]},{"sid":"a74c91ee","sn":"Winter 2025","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"4fcae3ff","tn":"SEM Magic B8.1","gid":"7c471467","gn":"Saturday U8 Boys Div 03","age":"U8","div":"Div 03","stats":{"gp":15,"fouls":5,"fg":17,"pts":34,"wins":9,"losses":3,"draws":2}},{"tid":"4fcae3ff","tn":"SEM Magic B8.1","gid":"3d0291a7","gn":"Saturday U8 Boys Div 02","age":"U8","div":"Div 02","stats":{"gp":15,"wins":9,"losses":3,"draws":2,"pts":34,"fg":17,"fouls":5}},{"tid":"4fcae3ff","tn":"SEM Magic B8.1","gid":"d92eaab1","gn":"Saturday U8 Boys Div 01","age":"U8","div":"Div 01","stats":{"gp":15,"fouls":5,"fg":17,"pts":34,"wins":9,"losses":3,"draws":2}}]},{"sid":"81545684","sn":"Summer 2024/25","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"9660506f","tn":"SEM Magic B8.3","gid":"14705992","gn":"Saturday U8 Boys Div 10","age":"U8","div":"Div 10","stats":{"gp":16,"fg":18,"pts":38,"wins":13,"losses":3,"ft":2,"fouls":9}},{"tid":"9660506f","tn":"SEM Magic B8.3","gid":"a6a36e13","gn":"Saturday U8 Boys Div 11","age":"U8","div":"Div 11","stats":{"gp":16,"fouls":9,"ft":2,"fg":18,"pts":38,"wins":13,"losses":3}},{"tid":"9660506f","tn":"SEM Magic B8.3","gid":"dad78f13","gn":"Saturday U8 Boys Div 12","age":"U8","div":"Div 12","stats":{"gp":16,"fouls":9,"ft":2,"fg":18,"pts":38,"wins":13,"losses":3}}]},{"sid":"6110c4a5","sn":"Summer 2023/24","club":"Casey Dragons Basketball Club","regs":[{"tid":"67a75baf","tn":"Casey Dragons U8 Mixed Cadmus","gid":"ebabb74a","gn":"Saturday U8 Silver - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":17,"fouls":4,"fg":2,"pts":4,"wins":13,"losses":4}},{"tid":"67a75baf","tn":"Casey Dragons U8 Mixed Cadmus","gid":"acc56866","gn":"Saturday U8 Grey - Melbourne Orthodontic Group","age":"U8","div":null,"stats":{"gp":17,"wins":13,"losses":4,"pts":4,"fg":2,"fouls":4}}]}],"updatedAt":"2026-07-04T05:43:44.029Z","teams":[{"tid":"a0477bb2","sid":"2e623bd2","status":"ACTIVE"},{"tid":"40305f22","sid":"fcfc254b","status":"COMPLETED"},{"tid":"4fcae3ff","sid":"a74c91ee","status":"COMPLETED"},{"tid":"9660506f","sid":"81545684","status":"COMPLETED"},{"tid":"67a75baf","sid":"6110c4a5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:27.190Z","records":{"maxGamePTS":{"v":8,"gameKey":"0f28fa39","sid":"a74c91ee"},"maxGameThreePt":{"v":null}},"games":["0129ff01","01d06248","069208c3","091b6b9e","09d201af","0b12704e","0f28fa39","1758fe84","1acffa01","1d1aac7e","1e1ce29f","2238ff4c","23e94254","254fd8a6","268bc381","287a43f9","3054a55a","332298df","3ffe73a2","40001b93","4328da27","44896c7e","44e4925a","4b692d44","4befa73b","4c2857f0","51dc3f52","527bccb5","5302d302","55264709","56fff7b9","59624912","598cebad","63066b9d","657baeda","6a8568a2","705ff753","72025914","765f57ba","79d14fa3","7e1fa634","7fe5da67","85c658a5","869fc099","8b41c83c","99e89cd0","9e3083fc","9ed438d3","a0ab3175","a45ff31f","ab406b56","adf7e048","af452e86","b3766601","c1936edd","c3dc82fb","c3e3b26b","cc42c555","d3dcc105","dbfd053a","dcda9120","deac9e2d","e6215f4b","e7db93a8","ec57c882","ec6a49d1","f0588165","fb604304","fbcce0ba","fc3e44ea","fcab23ee"]}
+{
+  "uuid": "7b37ce5f-6b83-4e3a-b823-d4f96d0b5a80",
+  "name": "Zac Chadwick",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 71,
+      "pts": 102,
+      "fouls": 33,
+      "fg": 50,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 110,
+      "losses": 46,
+      "draws": 6,
+      "winPct": 0.68,
+      "statsChecked": "2026-07-05T15:10:28.669Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e623bd2",
+      "sn": "Winter 2026",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "a0477bb2",
+          "tn": "SEM Magic B10.3",
+          "gid": "edecdd31",
+          "gn": "Saturday U10 Boys C1",
+          "age": "U10",
+          "div": "C1",
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 4,
+            "pts": 8,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fcfc254b",
+      "sn": "Summer 2025/26",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "40305f22",
+          "tn": "SEM Magic B8.1",
+          "gid": "0979d122",
+          "gn": "Saturday U8 Boys Div 01",
+          "age": "U8",
+          "div": "Div 01",
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "fg": 9,
+            "pts": 18,
+            "wins": 7,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "40305f22",
+          "tn": "SEM Magic B8.1",
+          "gid": "4c2f3d36",
+          "gn": "Saturday U8 Boys Div 02",
+          "age": "U8",
+          "div": "Div 02",
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "fg": 9,
+            "pts": 18,
+            "wins": 7,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a74c91ee",
+      "sn": "Winter 2025",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "4fcae3ff",
+          "tn": "SEM Magic B8.1",
+          "gid": "7c471467",
+          "gn": "Saturday U8 Boys Div 03",
+          "age": "U8",
+          "div": "Div 03",
+          "stats": {
+            "gp": 15,
+            "fouls": 5,
+            "fg": 17,
+            "pts": 34,
+            "wins": 9,
+            "losses": 3,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "4fcae3ff",
+          "tn": "SEM Magic B8.1",
+          "gid": "3d0291a7",
+          "gn": "Saturday U8 Boys Div 02",
+          "age": "U8",
+          "div": "Div 02",
+          "stats": {
+            "gp": 15,
+            "wins": 9,
+            "losses": 3,
+            "draws": 2,
+            "pts": 34,
+            "fg": 17,
+            "fouls": 5
+          }
+        },
+        {
+          "tid": "4fcae3ff",
+          "tn": "SEM Magic B8.1",
+          "gid": "d92eaab1",
+          "gn": "Saturday U8 Boys Div 01",
+          "age": "U8",
+          "div": "Div 01",
+          "stats": {
+            "gp": 15,
+            "fouls": 5,
+            "fg": 17,
+            "pts": 34,
+            "wins": 9,
+            "losses": 3,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81545684",
+      "sn": "Summer 2024/25",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "9660506f",
+          "tn": "SEM Magic B8.3",
+          "gid": "14705992",
+          "gn": "Saturday U8 Boys Div 10",
+          "age": "U8",
+          "div": "Div 10",
+          "stats": {
+            "gp": 16,
+            "fg": 18,
+            "pts": 38,
+            "wins": 13,
+            "losses": 3,
+            "ft": 2,
+            "fouls": 9
+          }
+        },
+        {
+          "tid": "9660506f",
+          "tn": "SEM Magic B8.3",
+          "gid": "a6a36e13",
+          "gn": "Saturday U8 Boys Div 11",
+          "age": "U8",
+          "div": "Div 11",
+          "stats": {
+            "gp": 16,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 18,
+            "pts": 38,
+            "wins": 13,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "9660506f",
+          "tn": "SEM Magic B8.3",
+          "gid": "dad78f13",
+          "gn": "Saturday U8 Boys Div 12",
+          "age": "U8",
+          "div": "Div 12",
+          "stats": {
+            "gp": 16,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 18,
+            "pts": 38,
+            "wins": 13,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6110c4a5",
+      "sn": "Summer 2023/24",
+      "club": "Casey Dragons Basketball Club",
+      "regs": [
+        {
+          "tid": "67a75baf",
+          "tn": "Casey Dragons U8 Mixed Cadmus",
+          "gid": "ebabb74a",
+          "gn": "Saturday U8 Silver - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 4,
+            "fg": 2,
+            "pts": 4,
+            "wins": 13,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "67a75baf",
+          "tn": "Casey Dragons U8 Mixed Cadmus",
+          "gid": "acc56866",
+          "gn": "Saturday U8 Grey - Melbourne Orthodontic Group",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "wins": 13,
+            "losses": 4,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ab2e3371",
+      "sn": "Term 3, 2026",
+      "regs": [
+        {
+          "tid": "0d854c9a",
+          "tn": "U11B Ballers",
+          "gid": "34a774a0",
+          "gn": "U11 Boys D Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:44.029Z",
+  "teams": [
+    {
+      "tid": "a0477bb2",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "40305f22",
+      "sid": "fcfc254b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4fcae3ff",
+      "sid": "a74c91ee",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9660506f",
+      "sid": "81545684",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67a75baf",
+      "sid": "6110c4a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d854c9a",
+      "sid": "ab2e3371",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:25.418Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "0f28fa39",
+      "sid": "a74c91ee"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0129ff01",
+    "01d06248",
+    "069208c3",
+    "091b6b9e",
+    "09d201af",
+    "0b12704e",
+    "0f28fa39",
+    "1758fe84",
+    "1acffa01",
+    "1d1aac7e",
+    "1e1ce29f",
+    "2238ff4c",
+    "23e94254",
+    "254fd8a6",
+    "268bc381",
+    "287a43f9",
+    "3054a55a",
+    "332298df",
+    "3ffe73a2",
+    "40001b93",
+    "4328da27",
+    "44896c7e",
+    "44e4925a",
+    "4b692d44",
+    "4befa73b",
+    "4c2857f0",
+    "51dc3f52",
+    "527bccb5",
+    "5302d302",
+    "55264709",
+    "56fff7b9",
+    "59624912",
+    "598cebad",
+    "63066b9d",
+    "657baeda",
+    "6a8568a2",
+    "705ff753",
+    "72025914",
+    "765f57ba",
+    "79d14fa3",
+    "7e1fa634",
+    "7fe5da67",
+    "85c658a5",
+    "869fc099",
+    "8b41c83c",
+    "99e89cd0",
+    "9e3083fc",
+    "9ed438d3",
+    "a0ab3175",
+    "a45ff31f",
+    "ab406b56",
+    "adf7e048",
+    "af452e86",
+    "b3766601",
+    "c1936edd",
+    "c3dc82fb",
+    "c3e3b26b",
+    "cc42c555",
+    "d3dcc105",
+    "dbfd053a",
+    "dcda9120",
+    "deac9e2d",
+    "e6215f4b",
+    "e7db93a8",
+    "ec57c882",
+    "ec6a49d1",
+    "f0588165",
+    "fb604304",
+    "fbcce0ba",
+    "fc3e44ea",
+    "fcab23ee"
+  ]
+}

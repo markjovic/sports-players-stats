@@ -1,1 +1,84 @@
-{"uuid":"e726af7b-d3a8-4942-8a58-e0dfa7ff2509","name":"Angus Howey","sports":{"Basketball":{"maxGamePTS":25,"maxGameThreePt":1,"foulOuts":{},"gp":9,"pts":106,"fg":43,"ft":11,"threePt":3,"fouls":12,"statsChecked":"2026-07-06T19:01:56.434Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"38105cd2"}]},{"sid":"a48de8cf","regs":[{"tid":"ab7d8907"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":25,"gameKey":"d56f5c77","sid":"26df4252"},"maxGameThreePt":{"v":1,"gameKey":"d56f5c77","sid":"26df4252"}}}
+{
+  "uuid": "e726af7b-d3a8-4942-8a58-e0dfa7ff2509",
+  "name": "Angus Howey",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 25,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 9,
+      "pts": 106,
+      "fg": 43,
+      "ft": 11,
+      "threePt": 3,
+      "fouls": 12,
+      "statsChecked": "2026-07-06T19:01:56.434Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "38105cd2",
+          "gid": "a4e5c059",
+          "gn": "Senior Men"
+        }
+      ]
+    },
+    {
+      "sid": "a48de8cf",
+      "regs": [
+        {
+          "tid": "ab7d8907",
+          "gid": "a1877720",
+          "gn": "Open Men Premier Division"
+        }
+      ]
+    },
+    {
+      "sid": "6df0e5b4",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "d55da966",
+          "tn": "Team Iggy",
+          "gid": "d6ecfe12",
+          "gn": "AND1 Premier League Basketball - Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "38105cd2",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab7d8907",
+      "sid": "a48de8cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d55da966",
+      "sid": "6df0e5b4",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "d56f5c77",
+      "sid": "26df4252"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "d56f5c77",
+      "sid": "26df4252"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:31:18.477Z"
+}

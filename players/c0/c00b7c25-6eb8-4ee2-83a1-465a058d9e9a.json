@@ -1,1 +1,112 @@
-{"uuid":"c00b7c25-6eb8-4ee2-83a1-465a058d9e9a","name":"Liam Nash","gender":"Men","sports":{"Basketball":{"gp":9,"pts":41,"fouls":7,"fg":19,"ft":3,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":16,"winPct":0.94,"losses":1,"statsChecked":"2026-07-05T15:38:36.006Z"}},"seasons":[{"sid":"093830b1","sn":"Winter 2026","regs":[{"tid":"e55a8f4d","stats":{"gp":1,"fouls":3,"losses":1}}]},{"sid":"19179d84","sn":"Winter 2025","regs":[{"tid":"13e797c7","tn":"Cookies and Kareem ","gid":"5c45da0b","gn":"Monday Open Men Div 2","age":"Senior","div":"Div 2","stats":{"gp":8,"fouls":4,"ft":3,"fg":19,"pts":41,"wins":8}},{"tid":"13e797c7","tn":"Cookies and Kareem ","gid":"d59dae1b","gn":"Monday Open Men Div 3","age":"Senior","div":"Div 3","stats":{"gp":8,"ft":3,"fg":19,"pts":41,"wins":8,"fouls":4}}]}],"updatedAt":"2026-06-01T15:23:52.690Z","teams":[{"tid":"e55a8f4d","sid":"093830b1","status":"ACTIVE"},{"tid":"13e797c7","sid":"19179d84","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:09.755Z","games":["05b6ec5f","15d4f746","3f3ba359","4b82a5da","8b8d9f63","a0685795","bc4b92cf","d078f8fd","f09d6215"],"records":{"maxGamePTS":{"v":10,"gameKey":"15d4f746","sid":"19179d84"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c00b7c25-6eb8-4ee2-83a1-465a058d9e9a",
+  "name": "Liam Nash",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 41,
+      "fouls": 7,
+      "fg": 19,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "winPct": 0.94,
+      "losses": 1,
+      "statsChecked": "2026-07-05T15:38:36.006Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "093830b1",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e55a8f4d",
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "losses": 1
+          },
+          "gid": "562d7a1a",
+          "gn": "Monday Open Men Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "19179d84",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "13e797c7",
+          "tn": "Cookies and Kareem ",
+          "gid": "5c45da0b",
+          "gn": "Monday Open Men Div 2",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 3,
+            "fg": 19,
+            "pts": 41,
+            "wins": 8
+          }
+        },
+        {
+          "tid": "13e797c7",
+          "tn": "Cookies and Kareem ",
+          "gid": "d59dae1b",
+          "gn": "Monday Open Men Div 3",
+          "age": "Senior",
+          "div": "Div 3",
+          "stats": {
+            "gp": 8,
+            "ft": 3,
+            "fg": 19,
+            "pts": 41,
+            "wins": 8,
+            "fouls": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:23:52.690Z",
+  "teams": [
+    {
+      "tid": "e55a8f4d",
+      "sid": "093830b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13e797c7",
+      "sid": "19179d84",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:23.300Z",
+  "games": [
+    "05b6ec5f",
+    "15d4f746",
+    "3f3ba359",
+    "4b82a5da",
+    "8b8d9f63",
+    "a0685795",
+    "bc4b92cf",
+    "d078f8fd",
+    "f09d6215"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "15d4f746",
+      "sid": "19179d84"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

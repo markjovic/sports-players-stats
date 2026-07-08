@@ -1,1 +1,111 @@
-{"uuid":"9f1f2c5b-d5ba-4e91-b2d4-1675f38cef3c","name":"Rafi Wallace","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":21,"fouls":14,"fg":10,"ft":1,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":4,"losses":3,"winPct":0.57,"statsChecked":"2026-07-05T14:57:12.256Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Maccabi Victoria Basketball Club","regs":[{"tid":"793e1bd5","tn":"Maccabi U12 Boys Eagles","gid":"b34633c3","gn":"Saturday U12 Boys Section 06","age":"U12","div":null,"stats":{"gp":7,"fouls":14,"ft":1,"fg":10,"pts":21,"wins":4,"losses":3}}]}],"updatedAt":"2026-07-04T05:43:33.945Z","teams":[{"tid":"793e1bd5","sid":"6c117270","status":"ACTIVE"},{"tid":"22c4b1cb","sid":"ee5d2724","status":"COMPLETED"},{"tid":"418fc289","sid":"7d20ecad","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:31:03.994Z","games":["20c9d373","2b7aecb7","3c9010ca","46618bed","482e6ea8","b0bb6fda","cb69cef4"],"records":{"maxGamePTS":{"v":7,"gameKey":"3c9010ca","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "9f1f2c5b-d5ba-4e91-b2d4-1675f38cef3c",
+  "name": "Rafi Wallace",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 21,
+      "fouls": 14,
+      "fg": 10,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 3,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-05T14:57:12.256Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Maccabi Victoria Basketball Club",
+      "regs": [
+        {
+          "tid": "793e1bd5",
+          "tn": "Maccabi U12 Boys Eagles",
+          "gid": "b34633c3",
+          "gn": "Saturday U12 Boys Section 06",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "ft": 1,
+            "fg": 10,
+            "pts": 21,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "22c4b1cb",
+          "tn": "Maccabi U8 Boys Warriors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "418fc289",
+          "tn": "Maccabi U8 Boys Celtics",
+          "gid": "daaf87f7",
+          "gn": "Saturday U8 Boys Grading Pool 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:33.945Z",
+  "teams": [
+    {
+      "tid": "793e1bd5",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22c4b1cb",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "418fc289",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:30.038Z",
+  "games": [
+    "20c9d373",
+    "2b7aecb7",
+    "3c9010ca",
+    "46618bed",
+    "482e6ea8",
+    "b0bb6fda",
+    "cb69cef4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "3c9010ca",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

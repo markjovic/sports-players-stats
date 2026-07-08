@@ -1,1 +1,282 @@
-{"uuid":"2b090a93-4b0e-4d65-941f-2ecc09d28446","name":"Todd Parker","gender":"Men","sports":{"Basketball":{"gp":24,"pts":74,"fouls":60,"fg":26,"ft":16,"threePt":1,"foulOuts":{"531ceedf":3},"maxGamePTS":10,"maxGameThreePt":1,"wins":6,"losses":38,"winPct":0.14,"statsChecked":"2026-07-05T15:08:20.585Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"4d322c89","tn":"Pink Panthers","gid":"fdf81854","gn":"Sunday Open Mixed Section 2","age":"Senior","div":null,"stats":{"gp":2,"fouls":1,"losses":2}},{"tid":"baf7db16","stats":{"wins":1,"losses":3,"gp":4,"pts":3,"fouls":3}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"baf7db16","tn":"Golden Panthers","gid":"b2419f1f","gn":"Wednesday Open Men Section 6","age":"Senior","div":null,"stats":{"gp":4,"pts":3,"fouls":3,"wins":1,"losses":3}}]},{"sid":"531ceedf","sn":"Winter 2024","regs":[{"tid":"c6dbabde","tn":"Buckets","gid":"4a73b0cd","gn":"Wednesday Senior Men 7","age":"Senior","div":null,"stats":{"gp":18,"pts":71,"threePt":1,"fg":26,"ft":16,"fouls":56,"foulOuts":3,"wins":2,"losses":15}},{"tid":"c6dbabde","tn":"Buckets","gid":"d0313bf8","gn":"Wednesday Senior Men 6","age":"Senior","div":null,"stats":{"gp":18,"pts":71,"fg":26,"fouls":56,"wins":2,"losses":15,"ft":16,"threePt":1}}]}],"updatedAt":"2026-06-01T11:33:19.401Z","teams":[{"tid":"baf7db16","sid":"5593103d","status":"ACTIVE"},{"tid":"4d322c89","sid":"5593103d","status":"ACTIVE"},{"tid":"07aecc2b","sid":"fab2be4d","status":"COMPLETED"},{"tid":"8b647005","sid":"fab2be4d","status":"COMPLETED"},{"tid":"6ad846d7","sid":"76897951","status":"COMPLETED"},{"tid":"aa143b3d","sid":"5944effa","status":"COMPLETED"},{"tid":"89798a97","sid":"5944effa","status":"COMPLETED"},{"tid":"c6dbabde","sid":"531ceedf","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:08:57.386Z","records":{"maxGamePTS":{"v":10,"gameKey":"b59a3478","sid":"531ceedf"},"maxGameThreePt":{"v":1,"gameKey":"509b2803","sid":"531ceedf"}},"games":["00cb366b","05effdcc","08ad86e3","10161c87","1655fa65","1d1696ab","2cb97fb5","344a3a83","3982e147","43fd0ec0","47f07237","509b2803","6b25f4c7","89d79608","8a191195","8ed5ed90","9620db50","9a734560","b090b101","b59a3478","c8b81331","d0cff0eb","d90303e8","e6806ef5"],"gameTids":{"344a3a83":"4d322c89","9620db50":"4d322c89","e6806ef5":"baf7db16","47f07237":"baf7db16","c8b81331":"baf7db16","9a734560":"baf7db16","1655fa65":"c6dbabde","b090b101":"c6dbabde","3982e147":"c6dbabde","509b2803":"c6dbabde","8a191195":"c6dbabde","08ad86e3":"c6dbabde","00cb366b":"c6dbabde","d0cff0eb":"c6dbabde","05effdcc":"c6dbabde","89d79608":"c6dbabde","b59a3478":"c6dbabde","1d1696ab":"c6dbabde","d90303e8":"c6dbabde","8ed5ed90":"c6dbabde","6b25f4c7":"c6dbabde","2cb97fb5":"c6dbabde","10161c87":"c6dbabde","43fd0ec0":"c6dbabde"}}
+{
+  "uuid": "2b090a93-4b0e-4d65-941f-2ecc09d28446",
+  "name": "Todd Parker",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 24,
+      "pts": 74,
+      "fouls": 60,
+      "fg": 26,
+      "ft": 16,
+      "threePt": 1,
+      "foulOuts": {
+        "531ceedf": 3
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 38,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-05T15:08:20.585Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "4d322c89",
+          "tn": "Pink Panthers",
+          "gid": "fdf81854",
+          "gn": "Sunday Open Mixed Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "baf7db16",
+          "stats": {
+            "wins": 1,
+            "losses": 3,
+            "gp": 4,
+            "pts": 3,
+            "fouls": 3
+          },
+          "gid": "b2419f1f",
+          "gn": "Wednesday Open Men Section 6"
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "baf7db16",
+          "tn": "Golden Panthers",
+          "gid": "b2419f1f",
+          "gn": "Wednesday Open Men Section 6",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 3,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "531ceedf",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "c6dbabde",
+          "tn": "Buckets",
+          "gid": "4a73b0cd",
+          "gn": "Wednesday Senior Men 7",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "pts": 71,
+            "threePt": 1,
+            "fg": 26,
+            "ft": 16,
+            "fouls": 56,
+            "foulOuts": 3,
+            "wins": 2,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "c6dbabde",
+          "tn": "Buckets",
+          "gid": "d0313bf8",
+          "gn": "Wednesday Senior Men 6",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "pts": 71,
+            "fg": 26,
+            "fouls": 56,
+            "wins": 2,
+            "losses": 15,
+            "ft": 16,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "07aecc2b",
+          "tn": "Golden Panthers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "8b647005",
+          "tn": "Who knows",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "6ad846d7",
+          "tn": "Golden Panthers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "aa143b3d",
+          "tn": "Golden Panthers White",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "89798a97",
+          "tn": "Who Knows",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:33:19.401Z",
+  "teams": [
+    {
+      "tid": "4d322c89",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "baf7db16",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6dbabde",
+      "sid": "531ceedf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07aecc2b",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8b647005",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ad846d7",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa143b3d",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89798a97",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:25.496Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "b59a3478",
+      "sid": "531ceedf"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "509b2803",
+      "sid": "531ceedf"
+    }
+  },
+  "games": [
+    "00cb366b",
+    "05effdcc",
+    "08ad86e3",
+    "10161c87",
+    "1655fa65",
+    "1d1696ab",
+    "2cb97fb5",
+    "344a3a83",
+    "3982e147",
+    "43fd0ec0",
+    "47f07237",
+    "509b2803",
+    "6b25f4c7",
+    "89d79608",
+    "8a191195",
+    "8ed5ed90",
+    "9620db50",
+    "9a734560",
+    "b090b101",
+    "b59a3478",
+    "c8b81331",
+    "d0cff0eb",
+    "d90303e8",
+    "e6806ef5"
+  ],
+  "gameTids": {
+    "344a3a83": "4d322c89",
+    "9620db50": "4d322c89",
+    "e6806ef5": "baf7db16",
+    "47f07237": "baf7db16",
+    "c8b81331": "baf7db16",
+    "9a734560": "baf7db16",
+    "1655fa65": "c6dbabde",
+    "b090b101": "c6dbabde",
+    "3982e147": "c6dbabde",
+    "509b2803": "c6dbabde",
+    "8a191195": "c6dbabde",
+    "08ad86e3": "c6dbabde",
+    "00cb366b": "c6dbabde",
+    "d0cff0eb": "c6dbabde",
+    "05effdcc": "c6dbabde",
+    "89d79608": "c6dbabde",
+    "b59a3478": "c6dbabde",
+    "1d1696ab": "c6dbabde",
+    "d90303e8": "c6dbabde",
+    "8ed5ed90": "c6dbabde",
+    "6b25f4c7": "c6dbabde",
+    "2cb97fb5": "c6dbabde",
+    "10161c87": "c6dbabde",
+    "43fd0ec0": "c6dbabde"
+  }
+}

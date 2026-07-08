@@ -1,1 +1,116 @@
-{"uuid":"f02b3334-0df3-4b0c-b6af-a6309197b753","name":"Ricardo Joya Moreno","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":100,"fouls":19,"fg":46,"ft":8,"foulOuts":{},"maxGamePTS":17,"maxGameThreePt":null,"wins":16,"losses":1,"winPct":0.94,"statsChecked":"2026-07-05T14:45:24.005Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"40cbe3b3","tn":"Norwood Flames U14 Boys 7","gid":"a55a6cec","gn":"BOYS UNDER 14 D2","age":null,"div":"D2","stats":{"gp":5,"fouls":11,"ft":6,"fg":23,"pts":52,"wins":4,"losses":1}}]},{"sid":"0869ea69","regs":[{"tid":"be92bc2b","stats":{"wins":6,"gp":6,"pts":48,"fg":23,"ft":2,"fouls":8}},{"tid":"be92bc2b","tn":"","gid":"a23ddc4e","gn":"BOYS UNDER 16 C3","div":null,"stats":{"gp":6,"pts":48,"fg":23,"ft":2,"fouls":8,"wins":6}}]}],"updatedAt":"2026-07-04T05:45:56.752Z","teams":[{"tid":"be92bc2b","sid":"0869ea69","status":"UPCOMING"},{"tid":"40cbe3b3","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:53:55.808Z","games":["12c51917","265c69b4","4ee39234","4f4c453a","6d1133d0","6dc244b0","6e27c6d4","b4bdcf92","b8dbe501","e9334a05","ff1d09c4"],"records":{"maxGamePTS":{"v":17,"gameKey":"e9334a05","sid":"6dd649c0"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "f02b3334-0df3-4b0c-b6af-a6309197b753",
+  "name": "Ricardo Joya Moreno",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 100,
+      "fouls": 19,
+      "fg": 46,
+      "ft": 8,
+      "foulOuts": {},
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "losses": 1,
+      "winPct": 0.94,
+      "statsChecked": "2026-07-05T14:45:24.005Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "40cbe3b3",
+          "tn": "Norwood Flames U14 Boys 7",
+          "gid": "a55a6cec",
+          "gn": "BOYS UNDER 14 D2",
+          "age": null,
+          "div": "D2",
+          "stats": {
+            "gp": 5,
+            "fouls": 11,
+            "ft": 6,
+            "fg": 23,
+            "pts": 52,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "be92bc2b",
+          "stats": {
+            "wins": 6,
+            "gp": 6,
+            "pts": 48,
+            "fg": 23,
+            "ft": 2,
+            "fouls": 8
+          },
+          "gid": "a23ddc4e",
+          "gn": "BOYS UNDER 16 C3"
+        },
+        {
+          "tid": "be92bc2b",
+          "tn": "",
+          "gid": "a23ddc4e",
+          "gn": "BOYS UNDER 16 C3",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 48,
+            "fg": 23,
+            "ft": 2,
+            "fouls": 8,
+            "wins": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:45:56.752Z",
+  "teams": [
+    {
+      "tid": "40cbe3b3",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be92bc2b",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:48.349Z",
+  "games": [
+    "12c51917",
+    "265c69b4",
+    "4ee39234",
+    "4f4c453a",
+    "6d1133d0",
+    "6dc244b0",
+    "6e27c6d4",
+    "b4bdcf92",
+    "b8dbe501",
+    "e9334a05",
+    "ff1d09c4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "e9334a05",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

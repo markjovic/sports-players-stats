@@ -1,1 +1,281 @@
-{"uuid":"7a3d8dd1-32bc-44ff-bf50-a7d1da243dc3","name":"Tristan Buot","gender":"Boys","sports":{"Basketball":{"gp":44,"pts":403,"fouls":61,"fg":153,"ft":55,"threePt":14,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":24,"maxGameThreePt":2,"wins":16,"losses":19,"winPct":0.42,"draws":3,"statsChecked":"2026-07-05T14:42:27.424Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"Newlands Basketball Club (Coburg)","regs":[{"tid":"1581c436","tn":"Newlands U20 Boys HEAT","gid":"66405501","gn":"Saturday U20 Boys Div 1","age":"U20","div":"Div 1","stats":{"gp":7,"fouls":18,"ft":9,"fg":40,"threePt":3,"pts":98,"wins":3,"losses":4}}]},{"sid":"1ae60211","sn":"Winter 2026","club":"Darebin Basketball Club (Giants and Phoenix)","regs":[{"tid":"0f22915c","tn":"Darebin-Giants U19 Boys 01","gid":"f295afed","gn":"Boys U19 B Grading","age":"U19","div":null,"stats":{"gp":7,"fouls":12,"ft":10,"fg":31,"threePt":2,"pts":78,"wins":3,"losses":1,"draws":1}},{"tid":"0f22915c","tn":"Darebin-Giants U19 Boys 01","gid":"ca98482a","gn":"Boys U19 C Grading","age":"U19","div":null,"stats":{"gp":7,"fouls":12,"ft":10,"fg":31,"threePt":2,"pts":78,"wins":3,"losses":1,"draws":1}},{"tid":"0f22915c","tn":"Darebin-Giants U19 Boys 01","gid":"84cb8211","gn":"Boys U19 D Grading","age":"U19","div":null,"stats":{"gp":7,"fouls":12,"fg":31,"pts":78,"wins":3,"losses":1,"ft":10,"threePt":2,"draws":1}}]},{"sid":"796936f7","sn":"Summer 2025/26","regs":[{"tid":"1c7ae7ba","tn":"Little Boys","gid":"56843e1b","gn":"Wednesday Men -Div 1","age":null,"div":"Div 1","stats":{"gp":16,"fouls":10,"ft":15,"fg":40,"threePt":6,"pts":113,"finals":1,"gfApps":1,"wins":4,"losses":12}}]},{"sid":"eeaf6409","sn":"Summer 2025/26","club":"Newlands Basketball Club (Coburg)","regs":[{"tid":"ce9be3d2","tn":"Newlands U20 Boys HEAT","gid":"43c1cf0f","gn":"Saturday U20 Boys Div 2","age":"U20","div":"Div 2","stats":{"gp":14,"fouls":21,"ft":21,"fg":42,"threePt":3,"pts":114}},{"tid":"ce9be3d2","tn":"Newlands U20 Boys HEAT","gid":"68ae6a4f","gn":"Grading U20 Boys","age":"U20","div":null,"stats":{"gp":14,"fouls":21,"ft":21,"fg":42,"pts":114,"threePt":3}}]}],"updatedAt":"2026-07-04T05:36:58.152Z","teams":[{"tid":"0f22915c","sid":"1ae60211","status":"ACTIVE"},{"tid":"1581c436","sid":"e44fb190","status":"ACTIVE"},{"tid":"1c7ae7ba","sid":"796936f7","status":"COMPLETED"},{"tid":"ce9be3d2","sid":"eeaf6409","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:12.059Z","records":{"maxGamePTS":{"v":24,"gameKey":"528b0f7a","sid":"1ae60211"},"maxGameThreePt":{"v":2,"gameKey":"4bb025e4","sid":"e44fb190"}},"games":["01bfff19","0c47eae3","1f360acf","236196ef","3229866c","3302a78b","3779cda7","3860f6d1","3f19f4ca","43c49743","44d583f2","46d28f37","4bb025e4","522c47ae","528b0f7a","60391af5","719b5e70","7227dce6","7b82aa28","81dba766","841fbd06","89d1bf16","8cc4894a","8e2c08f0","947826f4","97bd959b","9cb33d4b","9d3a4ae0","9e19ecea","a2459285","a6a6980b","addc6899","b602d3b1","b72c446a","c2683394","d7e5fc96","da0a8237","e246f410","ead0ef8e","eeca9ccd","f0fc6b9e","fd54b41c"]}
+{
+  "uuid": "7a3d8dd1-32bc-44ff-bf50-a7d1da243dc3",
+  "name": "Tristan Buot",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 403,
+      "fouls": 61,
+      "fg": 153,
+      "ft": 55,
+      "threePt": 14,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 24,
+      "maxGameThreePt": 2,
+      "wins": 16,
+      "losses": 19,
+      "winPct": 0.42,
+      "draws": 3,
+      "statsChecked": "2026-07-05T14:42:27.424Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "Newlands Basketball Club (Coburg)",
+      "regs": [
+        {
+          "tid": "1581c436",
+          "tn": "Newlands U20 Boys HEAT",
+          "gid": "66405501",
+          "gn": "Saturday U20 Boys Div 1",
+          "age": "U20",
+          "div": "Div 1",
+          "stats": {
+            "gp": 7,
+            "fouls": 18,
+            "ft": 9,
+            "fg": 40,
+            "threePt": 3,
+            "pts": 98,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Darebin Basketball Club (Giants and Phoenix)",
+      "regs": [
+        {
+          "tid": "0f22915c",
+          "tn": "Darebin-Giants U19 Boys 01",
+          "gid": "80e79aba",
+          "gn": "Boys U19 BB",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 10,
+            "fg": 31,
+            "threePt": 2,
+            "pts": 78,
+            "wins": 3,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0f22915c",
+          "tn": "Darebin-Giants U19 Boys 01",
+          "gid": "ca98482a",
+          "gn": "Boys U19 C Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 10,
+            "fg": 31,
+            "threePt": 2,
+            "pts": 78,
+            "wins": 3,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0f22915c",
+          "tn": "Darebin-Giants U19 Boys 01",
+          "gid": "84cb8211",
+          "gn": "Boys U19 D Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "fg": 31,
+            "pts": 78,
+            "wins": 3,
+            "losses": 1,
+            "ft": 10,
+            "threePt": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "1c7ae7ba",
+          "tn": "Little Boys",
+          "gid": "56843e1b",
+          "gn": "Wednesday Men -Div 1",
+          "age": null,
+          "div": "Div 1",
+          "stats": {
+            "gp": 16,
+            "fouls": 10,
+            "ft": 15,
+            "fg": 40,
+            "threePt": 6,
+            "pts": 113,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eeaf6409",
+      "sn": "Summer 2025/26",
+      "club": "Newlands Basketball Club (Coburg)",
+      "regs": [
+        {
+          "tid": "ce9be3d2",
+          "tn": "Newlands U20 Boys HEAT",
+          "gid": "43c1cf0f",
+          "gn": "Saturday U20 Boys Div 2",
+          "age": "U20",
+          "div": "Div 2",
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "ft": 21,
+            "fg": 42,
+            "threePt": 3,
+            "pts": 114
+          }
+        },
+        {
+          "tid": "ce9be3d2",
+          "tn": "Newlands U20 Boys HEAT",
+          "gid": "68ae6a4f",
+          "gn": "Grading U20 Boys",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "ft": 21,
+            "fg": 42,
+            "pts": 114,
+            "threePt": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "702b232f",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "c7a13f09",
+          "tn": "Little Boys",
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:58.152Z",
+  "teams": [
+    {
+      "tid": "1581c436",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0f22915c",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1c7ae7ba",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ce9be3d2",
+      "sid": "eeaf6409",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7a13f09",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:20.890Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "528b0f7a",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4bb025e4",
+      "sid": "e44fb190"
+    }
+  },
+  "games": [
+    "01bfff19",
+    "0c47eae3",
+    "1f360acf",
+    "236196ef",
+    "3229866c",
+    "3302a78b",
+    "3779cda7",
+    "3860f6d1",
+    "3f19f4ca",
+    "43c49743",
+    "44d583f2",
+    "46d28f37",
+    "4bb025e4",
+    "522c47ae",
+    "528b0f7a",
+    "60391af5",
+    "719b5e70",
+    "7227dce6",
+    "7b82aa28",
+    "81dba766",
+    "841fbd06",
+    "89d1bf16",
+    "8cc4894a",
+    "8e2c08f0",
+    "947826f4",
+    "97bd959b",
+    "9cb33d4b",
+    "9d3a4ae0",
+    "9e19ecea",
+    "a2459285",
+    "a6a6980b",
+    "addc6899",
+    "b602d3b1",
+    "b72c446a",
+    "c2683394",
+    "d7e5fc96",
+    "da0a8237",
+    "e246f410",
+    "ead0ef8e",
+    "eeca9ccd",
+    "f0fc6b9e",
+    "fd54b41c"
+  ]
+}

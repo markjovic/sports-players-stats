@@ -1,1 +1,288 @@
-{"uuid":"ef5fce2b-3fd6-4a8d-a0c2-0738de3d11d3","name":"Wanying Lee","gender":"Women","sports":{"Basketball":{"gp":31,"pts":170,"fouls":35,"fg":63,"ft":11,"threePt":11,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":15,"maxGameThreePt":2,"wins":32,"losses":34,"draws":4,"winPct":0.46,"statsChecked":"2026-07-05T15:39:49.203Z"}},"seasons":[{"sid":"8ca75679","sn":"Winter 2026","regs":[{"tid":"ac64afee","tn":"Birds of Prey","gid":"f22eee5d","gn":"Wednesday Open Women Division 1/2","age":"Senior","div":null,"stats":{"gp":11,"fouls":16,"ft":9,"fg":25,"threePt":6,"pts":77,"wins":5,"losses":6}},{"tid":"ac64afee","tn":"Birds of Prey","gid":"8a879098","gn":"Wednesday Open Women Division - DO NOT USE was 2/3","age":"Senior","div":null,"stats":{"gp":11,"fouls":16,"ft":9,"fg":25,"threePt":6,"pts":77,"wins":5,"losses":6}},{"tid":"ac64afee","tn":"Birds of Prey","gid":"e6bd0e23","gn":"Wednesday Open Women Division 3","age":"Senior","div":"Division 3","stats":{"gp":11,"fouls":16,"ft":9,"fg":25,"threePt":6,"pts":77,"wins":5,"losses":6}}]},{"sid":"6298b730","sn":"Winter 2022","regs":[{"tid":"2f1c9111","tn":"1 UP","gid":"5a81b2f4","gn":"Sunday Senior Mixed A/B","age":"Senior","div":null,"stats":{"gp":10,"fouls":10,"ft":1,"fg":27,"threePt":3,"pts":64,"finals":1,"wins":4,"losses":5,"draws":1}},{"tid":"2f1c9111","tn":"1 UP","gid":"025b4523","gn":"Sunday Senior Mixed B","age":"Senior","div":null,"stats":{"gp":10,"fouls":10,"fg":27,"pts":64,"finals":1,"wins":4,"losses":5,"draws":1,"ft":1,"threePt":3}},{"tid":"2f1c9111","tn":"1 UP","gid":"887a0a7c","gn":"Sunday Senior Mixed D","age":"Senior","div":null,"stats":{"gp":10,"fg":27,"pts":64,"finals":1,"wins":4,"losses":5,"draws":1,"ft":1,"threePt":3,"fouls":10}}]},{"sid":"5dfac2a9","sn":"Summer 2020/21","regs":[{"tid":"a5245b0a","tn":"Bluestars","gid":"f57f6af4","gn":"Monday Open Women C","age":"Senior","div":null,"stats":{"gp":7,"fouls":7,"fg":7,"threePt":1,"pts":17,"wins":5,"losses":1,"draws":1}}]},{"sid":"a163b55e","sn":"Summer 2020/21","regs":[{"tid":"c7a9cb5f","tn":"Swish Cheese","gid":"154d8f4e","gn":"Sunday Open Mixed B","age":"Senior","div":null,"stats":{"gp":3,"fouls":2,"ft":1,"fg":4,"threePt":1,"pts":12}}]}],"updatedAt":"2026-07-04T05:35:17.624Z","teams":[{"tid":"ac64afee","sid":"8ca75679","status":"ACTIVE"},{"tid":"2f1c9111","sid":"6298b730","status":"COMPLETED"},{"tid":"a5245b0a","sid":"5dfac2a9","status":"COMPLETED"},{"tid":"c7a9cb5f","sid":"a163b55e","status":"COMPLETED"},{"tid":"b49e1553","sid":"b4300865","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:53:41.090Z","games":["01ef4bce","021effb2","095176fd","0aa212ef","17a988c3","1ca2df21","1d3addb8","25884ae0","2e74e22f","30c2536f","3cce70d6","41e472c0","479125e4","4952aeee","66fefd88","72640abb","8cf225ea","9142e7de","aa2baa09","acbaac29","b7626d04","bd6b1a1e","c74d3cde","d3cfe289","d86bea08","da5455a2","ec2f87f1","efca9f3d","f7aae5d7","faa96c8e","fd2f4741"],"records":{"maxGamePTS":{"v":15,"gameKey":"d3cfe289","sid":"8ca75679"},"maxGameThreePt":{"v":2,"gameKey":"66fefd88","sid":"8ca75679"}}}
+{
+  "uuid": "ef5fce2b-3fd6-4a8d-a0c2-0738de3d11d3",
+  "name": "Wanying Lee",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 170,
+      "fouls": 35,
+      "fg": 63,
+      "ft": 11,
+      "threePt": 11,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 15,
+      "maxGameThreePt": 2,
+      "wins": 32,
+      "losses": 34,
+      "draws": 4,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T15:39:49.203Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8ca75679",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "ac64afee",
+          "tn": "Birds of Prey",
+          "gid": "f22eee5d",
+          "gn": "Wednesday Open Women Division 1/2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 9,
+            "fg": 25,
+            "threePt": 6,
+            "pts": 77,
+            "wins": 5,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "ac64afee",
+          "tn": "Birds of Prey",
+          "gid": "8a879098",
+          "gn": "Wednesday Open Women Division - DO NOT USE was 2/3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 9,
+            "fg": 25,
+            "threePt": 6,
+            "pts": 77,
+            "wins": 5,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "ac64afee",
+          "tn": "Birds of Prey",
+          "gid": "e6bd0e23",
+          "gn": "Wednesday Open Women Division 3",
+          "age": "Senior",
+          "div": "Division 3",
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 9,
+            "fg": 25,
+            "threePt": 6,
+            "pts": 77,
+            "wins": 5,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6298b730",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "2f1c9111",
+          "tn": "1 UP",
+          "gid": "5a81b2f4",
+          "gn": "Sunday Senior Mixed A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 10,
+            "ft": 1,
+            "fg": 27,
+            "threePt": 3,
+            "pts": 64,
+            "finals": 1,
+            "wins": 4,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2f1c9111",
+          "tn": "1 UP",
+          "gid": "025b4523",
+          "gn": "Sunday Senior Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 10,
+            "fg": 27,
+            "pts": 64,
+            "finals": 1,
+            "wins": 4,
+            "losses": 5,
+            "draws": 1,
+            "ft": 1,
+            "threePt": 3
+          }
+        },
+        {
+          "tid": "2f1c9111",
+          "tn": "1 UP",
+          "gid": "887a0a7c",
+          "gn": "Sunday Senior Mixed D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fg": 27,
+            "pts": 64,
+            "finals": 1,
+            "wins": 4,
+            "losses": 5,
+            "draws": 1,
+            "ft": 1,
+            "threePt": 3,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "a5245b0a",
+          "tn": "Bluestars",
+          "gid": "f57f6af4",
+          "gn": "Monday Open Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "fg": 7,
+            "threePt": 1,
+            "pts": 17,
+            "wins": 5,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a163b55e",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "c7a9cb5f",
+          "tn": "Swish Cheese",
+          "gid": "154d8f4e",
+          "gn": "Sunday Open Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 4,
+            "threePt": 1,
+            "pts": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b4300865",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "b49e1553",
+          "tn": "Swish Cheese",
+          "gid": "1b4ce2de",
+          "gn": "Wednesday Open Mixed B GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:17.624Z",
+  "teams": [
+    {
+      "tid": "ac64afee",
+      "sid": "8ca75679",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f1c9111",
+      "sid": "6298b730",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a5245b0a",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7a9cb5f",
+      "sid": "a163b55e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b49e1553",
+      "sid": "b4300865",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:56.864Z",
+  "games": [
+    "01ef4bce",
+    "021effb2",
+    "095176fd",
+    "0aa212ef",
+    "17a988c3",
+    "1ca2df21",
+    "1d3addb8",
+    "25884ae0",
+    "2e74e22f",
+    "30c2536f",
+    "3cce70d6",
+    "41e472c0",
+    "479125e4",
+    "4952aeee",
+    "66fefd88",
+    "72640abb",
+    "8cf225ea",
+    "9142e7de",
+    "aa2baa09",
+    "acbaac29",
+    "b7626d04",
+    "bd6b1a1e",
+    "c74d3cde",
+    "d3cfe289",
+    "d86bea08",
+    "da5455a2",
+    "ec2f87f1",
+    "efca9f3d",
+    "f7aae5d7",
+    "faa96c8e",
+    "fd2f4741"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "d3cfe289",
+      "sid": "8ca75679"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "66fefd88",
+      "sid": "8ca75679"
+    }
+  }
+}

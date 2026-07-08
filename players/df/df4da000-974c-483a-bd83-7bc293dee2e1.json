@@ -1,1 +1,94 @@
-{"uuid":"df4da000-974c-483a-bd83-7bc293dee2e1","name":"Nicholas Keramidopoulos","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":12,"fouls":8,"fg":6,"foulOuts":{"79d2b087":1},"maxGamePTS":6,"maxGameThreePt":null,"wins":3,"losses":4,"winPct":0.43,"statsChecked":"2026-07-05T14:58:59.624Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"South East Warriors Basketball Club","regs":[{"tid":"b3968065","tn":"Combat Warriors U10 Boys","gid":"d0023cd4","gn":"Saturday U10 Boys Div  7","age":"U10","div":"Div 7","stats":{"gp":7,"fouls":8,"fg":6,"pts":12,"foulOuts":1,"wins":3,"losses":4}}]}],"updatedAt":"2026-07-04T05:37:12.001Z","teams":[{"tid":"b3968065","sid":"79d2b087","status":"ACTIVE"},{"tid":"0715dadd","sid":"8884de2d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:28.640Z","games":["23045d3f","94bb361a","9663026c","a1a44490","d68bcfca","eab13ca4","fa948b0e"],"records":{"maxGamePTS":{"v":6,"gameKey":"a1a44490","sid":"79d2b087"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "df4da000-974c-483a-bd83-7bc293dee2e1",
+  "name": "Nicholas Keramidopoulos",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 12,
+      "fouls": 8,
+      "fg": 6,
+      "foulOuts": {
+        "79d2b087": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 4,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T14:58:59.624Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "South East Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "b3968065",
+          "tn": "Combat Warriors U10 Boys",
+          "gid": "d0023cd4",
+          "gn": "Saturday U10 Boys Div  7",
+          "age": "U10",
+          "div": "Div 7",
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "fg": 6,
+            "pts": 12,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "0715dadd",
+          "tn": "Tucker Tigers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:12.001Z",
+  "teams": [
+    {
+      "tid": "b3968065",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0715dadd",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:02.835Z",
+  "games": [
+    "23045d3f",
+    "94bb361a",
+    "9663026c",
+    "a1a44490",
+    "d68bcfca",
+    "eab13ca4",
+    "fa948b0e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "a1a44490",
+      "sid": "79d2b087"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,94 @@
-{"uuid":"313eb653-f72e-49be-898b-80d4526f712e","gender":null,"sports":{"Basketball":{"gp":6,"pts":18,"fouls":12,"fg":7,"ft":1,"threePt":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":2,"losses":4,"winPct":0.33,"statsChecked":"2026-07-05T16:12:34.430Z"}},"seasons":[{"sid":"fb916efa","sn":"Winter 2021","club":"Sharks Basketball Club (Geelong)","regs":[{"tid":"5505c5bc","tn":"Sharks U18 Boys D5","gid":"e0baa062","gn":"(CLUB) Wednesday U18 Boys 4/5","stats":{"gp":6,"pts":18,"threePt":1,"fg":7,"ft":1,"fouls":12,"wins":2,"losses":4}}]}],"updatedAt":"2026-06-11T23:37:59.483Z","records":{"maxGamePTS":{"v":6,"gameKey":"aa6ac08e","sid":"fb916efa"},"maxGameThreePt":{"v":1,"gameKey":"5f26ab81","sid":"fb916efa"}},"games":["44f1cc14","5f26ab81","61aaa29e","7fe68cc1","aa6ac08e","d61e45f4"],"name":"Winter 2021"}
+{
+  "uuid": "313eb653-f72e-49be-898b-80d4526f712e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 18,
+      "fouls": 12,
+      "fg": 7,
+      "ft": 1,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "losses": 4,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:12:34.430Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": "Sharks Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "5505c5bc",
+          "tn": "Sharks U18 Boys D5",
+          "gid": "e0baa062",
+          "gn": "(CLUB) Wednesday U18 Boys 4/5",
+          "stats": {
+            "gp": 6,
+            "pts": 18,
+            "threePt": 1,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 12,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "f5b3e06f",
+          "tn": "Sharks U18 Boys D4",
+          "gid": "1b9e9dd8",
+          "gn": "Wednesday 18 Boys 3/4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:59.483Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "aa6ac08e",
+      "sid": "fb916efa"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5f26ab81",
+      "sid": "fb916efa"
+    }
+  },
+  "games": [
+    "44f1cc14",
+    "5f26ab81",
+    "61aaa29e",
+    "7fe68cc1",
+    "aa6ac08e",
+    "d61e45f4"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "5505c5bc",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f5b3e06f",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:01.097Z"
+}

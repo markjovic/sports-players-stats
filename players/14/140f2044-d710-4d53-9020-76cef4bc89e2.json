@@ -1,1 +1,126 @@
-{"uuid":"140f2044-d710-4d53-9020-76cef4bc89e2","gender":null,"sports":{"Basketball":{"gp":16,"pts":55,"fouls":17,"fg":25,"ft":5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":2,"losses":4,"draws":4,"winPct":0.2,"statsChecked":"2026-07-05T15:59:36.916Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"29b63ae2","tn":"Aberfeldie Jets G19.04","gid":"0be6d31d","gn":"Saturday U19 Girls C1 Grade","stats":{"gp":10,"pts":29,"fg":12,"ft":5,"fouls":8,"wins":2,"losses":4,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"a760a510","tn":"Aberfeldie Jets U19 Girls 4","gid":"6fc29f77","gn":"Saturday U19 Girls B Grade","stats":{"gp":6,"pts":26,"fg":13,"fouls":9}}]}],"updatedAt":"2026-06-11T23:36:38.641Z","records":{"maxGamePTS":{"v":12,"gameKey":"32b45287","sid":"8e4e71fc"},"maxGameThreePt":{"v":null}},"games":["00c03d61","0648eb6a","22adaa3c","32b45287","4817f2ab","4dca8b11","53f527c9","8502360a","93aa0e17","9bf61154","9d2f15dc","9dbf2789","b3ec6207","b53841ec","dfb5eb66","fde594d7"],"name":"Winter 2021"}
+{
+  "uuid": "140f2044-d710-4d53-9020-76cef4bc89e2",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 55,
+      "fouls": 17,
+      "fg": 25,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 4,
+      "draws": 4,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:59:36.916Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "29b63ae2",
+          "tn": "Aberfeldie Jets G19.04",
+          "gid": "0be6d31d",
+          "gn": "Saturday U19 Girls C1 Grade",
+          "stats": {
+            "gp": 10,
+            "pts": 29,
+            "fg": 12,
+            "ft": 5,
+            "fouls": 8,
+            "wins": 2,
+            "losses": 4,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "a760a510",
+          "tn": "Aberfeldie Jets U19 Girls 4",
+          "gid": "6fc29f77",
+          "gn": "Saturday U19 Girls B Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 26,
+            "fg": 13,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "95219a68",
+          "tn": "Aberfeldie Jets U19 Girls 6",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:38.641Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "32b45287",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00c03d61",
+    "0648eb6a",
+    "22adaa3c",
+    "32b45287",
+    "4817f2ab",
+    "4dca8b11",
+    "53f527c9",
+    "8502360a",
+    "93aa0e17",
+    "9bf61154",
+    "9d2f15dc",
+    "9dbf2789",
+    "b3ec6207",
+    "b53841ec",
+    "dfb5eb66",
+    "fde594d7"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "29b63ae2",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a760a510",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "95219a68",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:40.834Z"
+}

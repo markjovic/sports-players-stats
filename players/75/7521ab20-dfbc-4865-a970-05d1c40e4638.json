@@ -1,1 +1,281 @@
-{"uuid":"7521ab20-dfbc-4865-a970-05d1c40e4638","name":"Michael Mikhail","gender":"Men","sports":{"Basketball":{"gp":26,"pts":150,"fouls":49,"fg":52,"ft":25,"threePt":7,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":2,"wins":17,"losses":19,"winPct":0.47,"statsChecked":"2026-07-05T15:49:19.474Z"}},"seasons":[{"sid":"98e6f08c","sn":"Winter 2026","regs":[{"tid":"a3caeed7","tn":"McKinnon Bulls ","gid":"2b439449","gn":"Wednesday Over 35's Men Div 3","age":null,"div":"Div 3","stats":{"gp":7,"fouls":12,"ft":12,"fg":22,"threePt":3,"pts":65,"wins":6,"losses":1}}]},{"sid":"a8481556","sn":"Summer 2025/26","regs":[{"tid":"4d640df1","tn":"McKinnon Bulls ","gid":"a77af616","gn":"Wednesday Over 35's Men Div 2","age":null,"div":"Div 2","stats":{"gp":10,"fouls":19,"ft":4,"fg":15,"threePt":2,"pts":40,"wins":4,"losses":6}},{"tid":"4d640df1","tn":"McKinnon Bulls ","gid":"3e8a6d3f","gn":"Wednesday Over 35's Men Div 3","age":null,"div":"Div 3","stats":{"gp":10,"fouls":19,"ft":4,"fg":15,"pts":40,"wins":4,"losses":6,"threePt":2}}]},{"sid":"30c47dc0","sn":"Winter 2025","regs":[{"tid":"3b7547c2","tn":"McKinnon Bulls ","gid":"577acc34","gn":"Wednesday Over 35's Men Div 2","age":null,"div":"Div 2","stats":{"gp":9,"fouls":18,"ft":9,"fg":15,"threePt":2,"pts":45,"wins":3,"losses":6}}]}],"updatedAt":"2026-07-04T05:36:34.852Z","teams":[{"tid":"a3caeed7","sid":"98e6f08c","status":"ACTIVE"},{"tid":"4d640df1","sid":"a8481556","status":"COMPLETED"},{"tid":"3b7547c2","sid":"30c47dc0","status":"COMPLETED"},{"tid":"4adcfbc2","sid":"9358e51a","status":"COMPLETED"},{"tid":"766265a2","sid":"d3d4e181","status":"COMPLETED"},{"tid":"f6328f4d","sid":"21cd9648","status":"COMPLETED"},{"tid":"c3cba337","sid":"d4cbf787","status":"COMPLETED"},{"tid":"31944940","sid":"d64fcfce","status":"COMPLETED"},{"tid":"c827cc8c","sid":"afd26581","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:52:07.903Z","records":{"maxGamePTS":{"v":14,"gameKey":"745b583d","sid":"98e6f08c"},"maxGameThreePt":{"v":2,"gameKey":"5bdb4c81","sid":"a8481556"}},"games":["04fc7bec","0b4570d6","293622e8","2f2bf554","34a990cc","4fbdde36","5bdb4c81","635104a3","675b7b2e","6d011ecb","745b583d","75d1bf09","88d16b79","a5b0ff15","a68db4bc","b303abe5","b5625faa","b9629507","c049d196","c7eeefd3","cdb25ff4","d621d615","dc887a4d","e9534190","ee714e84","f9295093"]}
+{
+  "uuid": "7521ab20-dfbc-4865-a970-05d1c40e4638",
+  "name": "Michael Mikhail",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 150,
+      "fouls": 49,
+      "fg": 52,
+      "ft": 25,
+      "threePt": 7,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 17,
+      "losses": 19,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-05T15:49:19.474Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "98e6f08c",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "a3caeed7",
+          "tn": "McKinnon Bulls ",
+          "gid": "2b439449",
+          "gn": "Wednesday Over 35's Men Div 3",
+          "age": null,
+          "div": "Div 3",
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 12,
+            "fg": 22,
+            "threePt": 3,
+            "pts": 65,
+            "wins": 6,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a8481556",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "4d640df1",
+          "tn": "McKinnon Bulls ",
+          "gid": "a77af616",
+          "gn": "Wednesday Over 35's Men Div 2",
+          "age": null,
+          "div": "Div 2",
+          "stats": {
+            "gp": 10,
+            "fouls": 19,
+            "ft": 4,
+            "fg": 15,
+            "threePt": 2,
+            "pts": 40,
+            "wins": 4,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "4d640df1",
+          "tn": "McKinnon Bulls ",
+          "gid": "3e8a6d3f",
+          "gn": "Wednesday Over 35's Men Div 3",
+          "age": null,
+          "div": "Div 3",
+          "stats": {
+            "gp": 10,
+            "fouls": 19,
+            "ft": 4,
+            "fg": 15,
+            "pts": 40,
+            "wins": 4,
+            "losses": 6,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "30c47dc0",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "3b7547c2",
+          "tn": "McKinnon Bulls ",
+          "gid": "577acc34",
+          "gn": "Wednesday Over 35's Men Div 2",
+          "age": null,
+          "div": "Div 2",
+          "stats": {
+            "gp": 9,
+            "fouls": 18,
+            "ft": 9,
+            "fg": 15,
+            "threePt": 2,
+            "pts": 45,
+            "wins": 3,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "4adcfbc2",
+          "tn": "Loose Cannons ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "766265a2",
+          "tn": "Loose Cannons ",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "f6328f4d",
+          "tn": "Loose Cannons ",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "c3cba337",
+          "tn": "Loose Cannons ",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "31944940",
+          "tn": "Loose Cannons",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "c827cc8c",
+          "tn": "Loose Cannons ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:34.852Z",
+  "teams": [
+    {
+      "tid": "a3caeed7",
+      "sid": "98e6f08c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4d640df1",
+      "sid": "a8481556",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b7547c2",
+      "sid": "30c47dc0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4adcfbc2",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "766265a2",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6328f4d",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c3cba337",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31944940",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c827cc8c",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:57.628Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "745b583d",
+      "sid": "98e6f08c"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "5bdb4c81",
+      "sid": "a8481556"
+    }
+  },
+  "games": [
+    "04fc7bec",
+    "0b4570d6",
+    "293622e8",
+    "2f2bf554",
+    "34a990cc",
+    "4fbdde36",
+    "5bdb4c81",
+    "635104a3",
+    "675b7b2e",
+    "6d011ecb",
+    "745b583d",
+    "75d1bf09",
+    "88d16b79",
+    "a5b0ff15",
+    "a68db4bc",
+    "b303abe5",
+    "b5625faa",
+    "b9629507",
+    "c049d196",
+    "c7eeefd3",
+    "cdb25ff4",
+    "d621d615",
+    "dc887a4d",
+    "e9534190",
+    "ee714e84",
+    "f9295093"
+  ]
+}

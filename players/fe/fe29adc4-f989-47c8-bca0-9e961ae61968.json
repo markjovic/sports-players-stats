@@ -1,1 +1,283 @@
-{"uuid":"fe29adc4-f989-47c8-bca0-9e961ae61968","name":"Nixon Lepp","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":236,"fouls":120,"fg":97,"ft":42,"foulOuts":{"b3efb4fc":1,"0bf74768":2,"470d4433":1},"maxGamePTS":14,"maxGameThreePt":null,"wins":46,"losses":18,"winPct":0.72,"statsChecked":"2026-07-05T15:27:12.264Z"}},"seasons":[{"sid":"b3efb4fc","sn":"Winter 2026","regs":[{"tid":"79ab6d27","tn":"MIGHTY FLAMINGO’S ","gid":"d1eead7d","gn":"Friday U8 Boys 2 Yellow","age":"U8","div":null,"stats":{"gp":8,"fouls":15,"ft":10,"fg":29,"pts":68,"wins":8}},{"tid":"79ab6d27","tn":"MIGHTY FLAMINGO’S ","gid":"83f650fe","gn":"Friday U8 Boys 1","age":"U8","div":null,"stats":{"gp":8,"fouls":15,"fg":29,"pts":68,"ft":10,"wins":8}},{"tid":"78647c3b","stats":{"wins":6,"losses":2,"gp":8,"pts":68,"fg":28,"ft":12,"fouls":19}}]},{"sid":"b3efb4fc","sn":"Winter 2026","regs":[{"tid":"78647c3b","tn":"JUMPING FLAMINGO’S","gid":"a85b7e68","gn":"Friday U10 Boys 5","age":"U10","div":null,"stats":{"gp":8,"fouls":19,"ft":12,"fg":28,"pts":68,"wins":6,"losses":2}}]},{"sid":"0bf74768","sn":"Summer 2025/26","regs":[{"tid":"22ff907b","tn":"U8’s Mighty Flamingos","gid":"9239d513","gn":"Friday U8 Boys","age":"U8","div":null,"stats":{"gp":15,"fouls":37,"ft":15,"fg":27,"pts":69,"wins":14,"losses":1}}]},{"sid":"470d4433","sn":"Winter 2025","club":"Phoenix United Basketball Development Club (Bendigo)","regs":[{"tid":"851611c1","tn":"PHOENIX Thunder","gid":"22423bc1","gn":"Friday U8 Boys","age":"U8","div":null,"stats":{"gp":17,"fouls":49,"ft":5,"fg":13,"pts":31,"wins":4,"losses":13}}]}],"updatedAt":"2026-06-01T21:21:06.612Z","teams":[{"tid":"78647c3b","sid":"b3efb4fc","status":"ACTIVE"},{"tid":"79ab6d27","sid":"b3efb4fc","status":"ACTIVE"},{"tid":"22ff907b","sid":"0bf74768","status":"COMPLETED"},{"tid":"851611c1","sid":"470d4433","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:57:14.482Z","games":["00444f86","05dfb700","081007af","0d630d31","189ca5a0","250125d6","2d8f8dd5","2f977eb8","312f1e03","31aeacb2","34ea8a61","39d7731e","40f1e7cd","4106a6a6","45918c00","46dea0f3","5faa79a1","603ab9f2","699b37bb","79a64f23","7cccfc69","827c34e2","83050a14","8967ccef","89cc1e16","8ab2e06d","92f8778b","94f5720e","963f0614","a1d90f0a","a657e396","b1ae47c5","b74d33c1","bf46e8df","c18e03b1","c47aec51","c89dc43e","ca1a655a","cb5e3ad6","d1a3ee39","e161646e","e1d24f34","e6e0adf1","e753d382","edff4806","f36be9f4","f62ecfe6","fd0c2229"],"records":{"maxGamePTS":{"v":14,"gameKey":"45918c00","sid":"b3efb4fc"},"maxGameThreePt":{"v":null}},"gameTids":{"e161646e":"79ab6d27","00444f86":"79ab6d27","83050a14":"79ab6d27","fd0c2229":"79ab6d27","bf46e8df":"79ab6d27","963f0614":"79ab6d27","c47aec51":"79ab6d27","45918c00":"79ab6d27","8967ccef":"78647c3b","ca1a655a":"78647c3b","05dfb700":"78647c3b","312f1e03":"78647c3b","e1d24f34":"78647c3b","e753d382":"78647c3b","7cccfc69":"78647c3b","46dea0f3":"78647c3b","827c34e2":"22ff907b","31aeacb2":"22ff907b","edff4806":"22ff907b","8ab2e06d":"22ff907b","d1a3ee39":"22ff907b","79a64f23":"22ff907b","2d8f8dd5":"22ff907b","cb5e3ad6":"22ff907b","603ab9f2":"22ff907b","40f1e7cd":"22ff907b","250125d6":"22ff907b","2f977eb8":"22ff907b","89cc1e16":"22ff907b","0d630d31":"22ff907b","92f8778b":"22ff907b","f62ecfe6":"851611c1","b74d33c1":"851611c1","39d7731e":"851611c1","a1d90f0a":"851611c1","94f5720e":"851611c1","4106a6a6":"851611c1","c89dc43e":"851611c1","a657e396":"851611c1","c18e03b1":"851611c1","699b37bb":"851611c1","5faa79a1":"851611c1","f36be9f4":"851611c1","b1ae47c5":"851611c1","e6e0adf1":"851611c1","189ca5a0":"851611c1","081007af":"851611c1","34ea8a61":"851611c1"}}
+{
+  "uuid": "fe29adc4-f989-47c8-bca0-9e961ae61968",
+  "name": "Nixon Lepp",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 236,
+      "fouls": 120,
+      "fg": 97,
+      "ft": 42,
+      "foulOuts": {
+        "b3efb4fc": 1,
+        "0bf74768": 2,
+        "470d4433": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 46,
+      "losses": 18,
+      "winPct": 0.72,
+      "statsChecked": "2026-07-05T15:27:12.264Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3efb4fc",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "79ab6d27",
+          "tn": "MIGHTY FLAMINGO’S ",
+          "gid": "83f650fe",
+          "gn": "Friday U8 Boys 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 15,
+            "ft": 10,
+            "fg": 29,
+            "pts": 68,
+            "wins": 8
+          }
+        },
+        {
+          "tid": "79ab6d27",
+          "tn": "MIGHTY FLAMINGO’S ",
+          "gid": "83f650fe",
+          "gn": "Friday U8 Boys 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 15,
+            "fg": 29,
+            "pts": 68,
+            "ft": 10,
+            "wins": 8
+          }
+        },
+        {
+          "tid": "78647c3b",
+          "stats": {
+            "wins": 6,
+            "losses": 2,
+            "gp": 8,
+            "pts": 68,
+            "fg": 28,
+            "ft": 12,
+            "fouls": 19
+          },
+          "gid": "a85b7e68",
+          "gn": "Friday U10 Boys 5"
+        }
+      ]
+    },
+    {
+      "sid": "b3efb4fc",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "78647c3b",
+          "tn": "JUMPING FLAMINGO’S",
+          "gid": "a85b7e68",
+          "gn": "Friday U10 Boys 5",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 19,
+            "ft": 12,
+            "fg": 28,
+            "pts": 68,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0bf74768",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "22ff907b",
+          "tn": "U8’s Mighty Flamingos",
+          "gid": "9239d513",
+          "gn": "Friday U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 37,
+            "ft": 15,
+            "fg": 27,
+            "pts": 69,
+            "wins": 14,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "470d4433",
+      "sn": "Winter 2025",
+      "club": "Phoenix United Basketball Development Club (Bendigo)",
+      "regs": [
+        {
+          "tid": "851611c1",
+          "tn": "PHOENIX Thunder",
+          "gid": "22423bc1",
+          "gn": "Friday U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 49,
+            "ft": 5,
+            "fg": 13,
+            "pts": 31,
+            "wins": 4,
+            "losses": 13
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:21:06.612Z",
+  "teams": [
+    {
+      "tid": "79ab6d27",
+      "sid": "b3efb4fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78647c3b",
+      "sid": "b3efb4fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22ff907b",
+      "sid": "0bf74768",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "851611c1",
+      "sid": "470d4433",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:32:17.807Z",
+  "games": [
+    "00444f86",
+    "05dfb700",
+    "081007af",
+    "0d630d31",
+    "189ca5a0",
+    "250125d6",
+    "2d8f8dd5",
+    "2f977eb8",
+    "312f1e03",
+    "31aeacb2",
+    "34ea8a61",
+    "39d7731e",
+    "40f1e7cd",
+    "4106a6a6",
+    "45918c00",
+    "46dea0f3",
+    "5faa79a1",
+    "603ab9f2",
+    "699b37bb",
+    "79a64f23",
+    "7cccfc69",
+    "827c34e2",
+    "83050a14",
+    "8967ccef",
+    "89cc1e16",
+    "8ab2e06d",
+    "92f8778b",
+    "94f5720e",
+    "963f0614",
+    "a1d90f0a",
+    "a657e396",
+    "b1ae47c5",
+    "b74d33c1",
+    "bf46e8df",
+    "c18e03b1",
+    "c47aec51",
+    "c89dc43e",
+    "ca1a655a",
+    "cb5e3ad6",
+    "d1a3ee39",
+    "e161646e",
+    "e1d24f34",
+    "e6e0adf1",
+    "e753d382",
+    "edff4806",
+    "f36be9f4",
+    "f62ecfe6",
+    "fd0c2229"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "45918c00",
+      "sid": "b3efb4fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "e161646e": "79ab6d27",
+    "00444f86": "79ab6d27",
+    "83050a14": "79ab6d27",
+    "fd0c2229": "79ab6d27",
+    "bf46e8df": "79ab6d27",
+    "963f0614": "79ab6d27",
+    "c47aec51": "79ab6d27",
+    "45918c00": "79ab6d27",
+    "8967ccef": "78647c3b",
+    "ca1a655a": "78647c3b",
+    "05dfb700": "78647c3b",
+    "312f1e03": "78647c3b",
+    "e1d24f34": "78647c3b",
+    "e753d382": "78647c3b",
+    "7cccfc69": "78647c3b",
+    "46dea0f3": "78647c3b",
+    "827c34e2": "22ff907b",
+    "31aeacb2": "22ff907b",
+    "edff4806": "22ff907b",
+    "8ab2e06d": "22ff907b",
+    "d1a3ee39": "22ff907b",
+    "79a64f23": "22ff907b",
+    "2d8f8dd5": "22ff907b",
+    "cb5e3ad6": "22ff907b",
+    "603ab9f2": "22ff907b",
+    "40f1e7cd": "22ff907b",
+    "250125d6": "22ff907b",
+    "2f977eb8": "22ff907b",
+    "89cc1e16": "22ff907b",
+    "0d630d31": "22ff907b",
+    "92f8778b": "22ff907b",
+    "f62ecfe6": "851611c1",
+    "b74d33c1": "851611c1",
+    "39d7731e": "851611c1",
+    "a1d90f0a": "851611c1",
+    "94f5720e": "851611c1",
+    "4106a6a6": "851611c1",
+    "c89dc43e": "851611c1",
+    "a657e396": "851611c1",
+    "c18e03b1": "851611c1",
+    "699b37bb": "851611c1",
+    "5faa79a1": "851611c1",
+    "f36be9f4": "851611c1",
+    "b1ae47c5": "851611c1",
+    "e6e0adf1": "851611c1",
+    "189ca5a0": "851611c1",
+    "081007af": "851611c1",
+    "34ea8a61": "851611c1"
+  }
+}

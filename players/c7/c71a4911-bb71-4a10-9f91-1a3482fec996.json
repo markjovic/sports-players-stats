@@ -1,1 +1,84 @@
-{"uuid":"c71a4911-bb71-4a10-9f91-1a3482fec996","name":"Dev Udhay","gender":"Boys","sports":{"Basketball":{"gp":8,"fouls":21,"foulOuts":{"43448c02":2},"maxGamePTS":null,"maxGameThreePt":null,"wins":8,"losses":8,"winPct":0.5,"statsChecked":"2026-07-05T15:12:50.058Z"}},"seasons":[{"sid":"43448c02","sn":"Winter 2026","club":"E.Bees Junior Basketball Club","regs":[{"tid":"9dda23d4","tn":"B08 E.Bees 1 (CR)","gid":"d4a6a825","gn":"Friday U8 Boys Pool 1","age":"U8","div":null,"stats":{"gp":8,"fouls":21,"foulOuts":1,"wins":4,"losses":4}},{"tid":"9dda23d4","tn":"","gid":"4bb580df","gn":"Friday U8 Boys Pool 2","div":null,"stats":{"gp":8,"fouls":21,"wins":4,"losses":4}}]}],"updatedAt":"2026-07-04T05:44:31.535Z","teams":[{"tid":"9dda23d4","sid":"43448c02","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:43:08.732Z","games":["12370f2a","2db8e578","41ff0d6c","478e170e","98de0781","a81645ba","d3543ec3","e520d968"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c71a4911-bb71-4a10-9f91-1a3482fec996",
+  "name": "Dev Udhay",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "fouls": 21,
+      "foulOuts": {
+        "43448c02": 2
+      },
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 8,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:12:50.058Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "43448c02",
+      "sn": "Winter 2026",
+      "club": "E.Bees Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "9dda23d4",
+          "tn": "B08 E.Bees 1 (CR)",
+          "gid": "4bb580df",
+          "gn": "Friday U8 Boys Pool 2",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 21,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "9dda23d4",
+          "tn": "",
+          "gid": "4bb580df",
+          "gn": "Friday U8 Boys Pool 2",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 21,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:31.535Z",
+  "teams": [
+    {
+      "tid": "9dda23d4",
+      "sid": "43448c02",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:44.592Z",
+  "games": [
+    "12370f2a",
+    "2db8e578",
+    "41ff0d6c",
+    "478e170e",
+    "98de0781",
+    "a81645ba",
+    "d3543ec3",
+    "e520d968"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

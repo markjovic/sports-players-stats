@@ -1,1 +1,94 @@
-{"uuid":"ab348b48-be66-4c48-a93a-a6aaebceae15","name":"Parisa Williams","gender":"Girls","sports":{"Basketball":{"gp":8,"pts":2,"fouls":7,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"losses":4,"winPct":0.5,"statsChecked":"2026-07-05T14:43:43.419Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"08ab1181","tn":"Norths Bears U12 Girls Black","gid":"1e1df3e3","gn":"GIRLS UNDER 12 AR","age":null,"div":null,"stats":{"gp":5,"fouls":3,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"b4373f82","stats":{"wins":2,"losses":1,"gp":3,"pts":2,"fg":1,"fouls":4}}]}],"updatedAt":"2026-05-31T01:03:42.042Z","teams":[{"tid":"08ab1181","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:34:19.602Z","records":{"maxGamePTS":{"v":2,"gameKey":"9b4383d6","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["116fefdd","29f2cfbb","44b01db3","6fc52b2e","879861a5","8991ed7c","9b4383d6","fb693e42"]}
+{
+  "uuid": "ab348b48-be66-4c48-a93a-a6aaebceae15",
+  "name": "Parisa Williams",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 2,
+      "fouls": 7,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 4,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:43:43.419Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "08ab1181",
+          "tn": "Norths Bears U12 Girls Black",
+          "gid": "1e1df3e3",
+          "gn": "GIRLS UNDER 12 AR",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "b4373f82",
+          "stats": {
+            "wins": 2,
+            "losses": 1,
+            "gp": 3,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4
+          },
+          "gid": "69f8d0bf",
+          "gn": "GIRLS UNDER 14 C1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:03:42.042Z",
+  "teams": [
+    {
+      "tid": "08ab1181",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4373f82",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:54.928Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "9b4383d6",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "116fefdd",
+    "29f2cfbb",
+    "44b01db3",
+    "6fc52b2e",
+    "879861a5",
+    "8991ed7c",
+    "9b4383d6",
+    "fb693e42"
+  ]
+}

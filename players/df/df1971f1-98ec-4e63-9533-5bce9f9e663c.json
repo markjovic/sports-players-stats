@@ -1,1 +1,184 @@
-{"uuid":"df1971f1-98ec-4e63-9533-5bce9f9e663c","name":"Elizabeth Ren","gender":"Girls","sports":{"Basketball":{"gp":9,"pts":13,"fouls":18,"fg":4,"ft":2,"threePt":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":1,"losses":21,"winPct":0,"statsChecked":"2026-07-05T14:58:50.123Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Korowa Basketball Club","regs":[{"tid":"337f000d","tn":"U16 Korowa Cherry","gid":"1f9f4963","gn":"Tuesday U16 Girls Section 02/03","age":"U16","div":null,"stats":{"gp":9,"fouls":18,"fg":4,"pts":13,"ft":2,"threePt":1,"losses":7}},{"tid":"337f000d","tn":"U16 Korowa Cherry","gid":"5432fbe3","gn":"Tuesday U16 Girls Grading Section 03","age":"U16","div":null,"stats":{"gp":9,"fouls":18,"fg":4,"pts":13,"losses":7,"ft":2,"threePt":1}},{"tid":"337f000d","tn":"U16 Korowa Cherry","gid":"0b37c6cf","gn":"Tuesday U16 Girls Grading Section 02","age":"U16","div":null,"stats":{"gp":9,"fouls":18,"fg":4,"pts":13,"losses":7,"ft":2,"threePt":1}}]}],"updatedAt":"2026-07-04T05:37:11.963Z","teams":[{"tid":"337f000d","sid":"6c117270","status":"ACTIVE"},{"tid":"7455d109","sid":"913d1397","status":"COMPLETED"},{"tid":"e089bc45","sid":"df876355","status":"COMPLETED"},{"tid":"d2aa6ebe","sid":"e54d0c37","status":"COMPLETED"},{"tid":"a53a959a","sid":"ee5d2724","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:27.546Z","records":{"maxGamePTS":{"v":3,"gameKey":"93d13a70","sid":"6c117270"},"maxGameThreePt":{"v":1,"gameKey":"93d13a70","sid":"6c117270"}},"games":["0400801f","80927575","9222d643","93d13a70","a853113c","acb8b123","b6605db6","e055e725"]}
+{
+  "uuid": "df1971f1-98ec-4e63-9533-5bce9f9e663c",
+  "name": "Elizabeth Ren",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 13,
+      "fouls": 18,
+      "fg": 4,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "losses": 21,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:58:50.123Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Korowa Basketball Club",
+      "regs": [
+        {
+          "tid": "337f000d",
+          "tn": "U16 Korowa Cherry",
+          "gid": "1f9f4963",
+          "gn": "Tuesday U16 Girls Section 02/03",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 18,
+            "fg": 4,
+            "pts": 13,
+            "ft": 2,
+            "threePt": 1,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "337f000d",
+          "tn": "U16 Korowa Cherry",
+          "gid": "5432fbe3",
+          "gn": "Tuesday U16 Girls Grading Section 03",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 18,
+            "fg": 4,
+            "pts": 13,
+            "losses": 7,
+            "ft": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "337f000d",
+          "tn": "U16 Korowa Cherry",
+          "gid": "0b37c6cf",
+          "gn": "Tuesday U16 Girls Grading Section 02",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 18,
+            "fg": 4,
+            "pts": 13,
+            "losses": 7,
+            "ft": 2,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "7455d109",
+          "tn": "U14 Girls Grey",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "e089bc45",
+          "tn": "U14 Girls Grey",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "d2aa6ebe",
+          "tn": "U12 Girls Cherry",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a53a959a",
+          "tn": "U12 Girls Korowa Cherry",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:11.963Z",
+  "teams": [
+    {
+      "tid": "337f000d",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7455d109",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e089bc45",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d2aa6ebe",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a53a959a",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:53.663Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "93d13a70",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "93d13a70",
+      "sid": "6c117270"
+    }
+  },
+  "games": [
+    "0400801f",
+    "80927575",
+    "9222d643",
+    "93d13a70",
+    "a853113c",
+    "acb8b123",
+    "b6605db6",
+    "e055e725"
+  ]
+}

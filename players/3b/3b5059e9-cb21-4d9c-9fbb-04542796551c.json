@@ -1,1 +1,92 @@
-{"uuid":"3b5059e9-cb21-4d9c-9fbb-04542796551c","gender":null,"sports":{"Basketball":{"gp":5,"pts":2,"fouls":3,"fg":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":5,"winPct":1,"statsChecked":"2026-07-05T16:00:19.180Z"}},"seasons":[{"sid":"e860ae5b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"21a4ab1c","tn":"ROVERS (U15 Boys)","gid":"ac482b4d","gn":"Tuesday U15 Boys","stats":{"gp":5,"pts":2,"fouls":3,"fg":1,"finals":1,"gfApps":1,"wins":5,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:38:31.249Z","records":{"maxGamePTS":{"v":2,"gameKey":"54309cee","sid":"e860ae5b"},"maxGameThreePt":{"v":null}},"games":["0fe7e2c7","54309cee","b92848cb","e38c0704","f4cc072a"],"name":"Summer 2020/21"}
+{
+  "uuid": "3b5059e9-cb21-4d9c-9fbb-04542796551c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 2,
+      "fouls": 3,
+      "fg": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:00:19.180Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e860ae5b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "21a4ab1c",
+          "tn": "ROVERS (U15 Boys)",
+          "gid": "ac482b4d",
+          "gn": "Tuesday U15 Boys",
+          "stats": {
+            "gp": 5,
+            "pts": 2,
+            "fouls": 3,
+            "fg": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fe192805",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "fe5b0781",
+          "tn": "Falcons",
+          "gid": "dea0f716",
+          "gn": "Tuesday U14 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:31.249Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "54309cee",
+      "sid": "e860ae5b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0fe7e2c7",
+    "54309cee",
+    "b92848cb",
+    "e38c0704",
+    "f4cc072a"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "21a4ab1c",
+      "sid": "e860ae5b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe5b0781",
+      "sid": "fe192805",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:04.089Z"
+}

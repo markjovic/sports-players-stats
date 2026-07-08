@@ -1,1 +1,322 @@
-{"uuid":"6f170027-aaa4-49de-8cdc-71d079b299c7","name":"Adam Stecher","gender":"Men","sports":{"Basketball":{"gp":41,"pts":305,"fouls":44,"fg":91,"ft":18,"threePt":35,"foulOuts":{"0a007eba":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":22,"maxGameThreePt":6,"wins":44,"winPct":0.56,"losses":35,"statsChecked":"2026-07-05T15:23:14.628Z"}},"seasons":[{"sid":"5390040a","sn":"Summer 2025/26","regs":[{"tid":"8de92fdd","tn":"The Thicky Nickies","gid":"7782294c","gn":"Sunday Men Section 10","age":null,"div":null,"stats":{"gp":6,"fouls":3,"ft":3,"fg":12,"threePt":5,"pts":42,"wins":5,"losses":1}},{"tid":"8de92fdd","tn":"The Thicky Nickies","gid":"17fcfcb1","gn":"ZZZ Sunday Men GRADING","age":null,"div":null,"stats":{"gp":6,"ft":3,"threePt":5,"pts":42,"wins":5,"losses":1,"fg":12,"fouls":3}},{"tid":"8de92fdd","tn":"The Thicky Nickies","gid":"dee98c3f","gn":"Sunday Men Section 15","age":null,"div":null,"stats":{"gp":6,"fouls":3,"fg":12,"threePt":5,"pts":42,"wins":5,"losses":1,"ft":3}}]},{"sid":"0a007eba","sn":"Summer 2023/24","regs":[{"tid":"04b0d32e","tn":"The New Ballers [N]","gid":"c543764b","gn":"Monday Men Section 3","age":null,"div":null,"stats":{"gp":5,"fouls":5,"fg":6,"threePt":3,"pts":21,"finals":1,"wins":5}},{"tid":"72a0cd61","stats":{"wins":6,"losses":8,"finals":1,"gp":14,"pts":87,"fg":25,"ft":4,"threePt":11,"fouls":23}}]},{"sid":"0a007eba","sn":"Summer 2023/24","regs":[{"tid":"72a0cd61","tn":"Balls [N]","gid":"a19f57fa","gn":"Sunday Men Section 5","age":null,"div":null,"stats":{"gp":14,"fouls":23,"ft":4,"fg":25,"threePt":11,"pts":87,"foulOuts":1,"finals":1,"wins":6,"losses":8}},{"tid":"72a0cd61","tn":"Balls [N]","gid":"2b77b870","gn":"Sunday Men Section 8","age":null,"div":null,"stats":{"gp":14,"fouls":23,"fg":25,"threePt":11,"pts":87,"finals":1,"wins":6,"losses":8,"ft":4}},{"tid":"72a0cd61","tn":"Balls [N]","gid":"f76075c0","gn":"Sunday Men Section 6","age":null,"div":null,"stats":{"gp":14,"fouls":23,"fg":25,"threePt":11,"pts":87,"finals":1,"wins":6,"losses":8,"ft":4}}]},{"sid":"5e155c7d","sn":"Summer 2022/23","club":"Huntingtower Heat Basketball Club","regs":[{"tid":"39cf93e7","tn":"B21 Huntingtower Heat 1","gid":"2503d90a","gn":"Friday U18/21 Boys C/C2","age":"U18","div":"C2","stats":{"gp":16,"fouls":13,"ft":11,"fg":48,"threePt":16,"pts":155}}]}],"updatedAt":"2026-06-01T13:03:44.873Z","teams":[{"tid":"8de92fdd","sid":"5390040a","status":"COMPLETED"},{"tid":"72a0cd61","sid":"0a007eba","status":"COMPLETED"},{"tid":"04b0d32e","sid":"0a007eba","status":"COMPLETED"},{"tid":"39cf93e7","sid":"5e155c7d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:02.636Z","records":{"maxGamePTS":{"v":22,"gameKey":"0e6046cc","sid":"5e155c7d"},"maxGameThreePt":{"v":6,"gameKey":"0e6046cc","sid":"5e155c7d"}},"games":["004323d3","0ab8c38a","22211fbd","2333ca10","23389474","27308cb3","41a7d004","457cacd6","6d8e7aa4","7eb5c396","7f5c6ea9","82bf0b5c","88c07c35","93163d15","9e822b5b","a09ea05c","a9635e60","aec38cd1","b60fb0bb","d591d91f","dadd0820","db817616","e33013c7","e5b79c89","e7112526"],"gameTids":{"23389474":"72a0cd61","d591d91f":"8de92fdd","27308cb3":"8de92fdd","2333ca10":"8de92fdd","e33013c7":"8de92fdd","b60fb0bb":"8de92fdd","6d8e7aa4":"8de92fdd","7f5c6ea9":"04b0d32e","db817616":"04b0d32e","a09ea05c":"04b0d32e","88c07c35":"04b0d32e","7eb5c396":"04b0d32e","0ab8c38a":"72a0cd61","457cacd6":"72a0cd61","e5b79c89":"72a0cd61","93163d15":"72a0cd61","dadd0820":"72a0cd61","a9635e60":"72a0cd61","82bf0b5c":"72a0cd61","9e822b5b":"72a0cd61","e7112526":"72a0cd61","004323d3":"72a0cd61","41a7d004":"72a0cd61","22211fbd":"72a0cd61","aec38cd1":"72a0cd61","ac70dbd5":"39cf93e7","638e2bfd":"39cf93e7","b739c5e0":"39cf93e7","48f5a1fd":"39cf93e7","358fa9db":"39cf93e7","0e6046cc":"39cf93e7","d32e78e3":"39cf93e7","a7b121e1":"39cf93e7","6dc25a82":"39cf93e7","f0744cba":"39cf93e7","22d9d527":"39cf93e7","2d87ac2f":"39cf93e7","355a9b34":"39cf93e7","38b100e0":"39cf93e7","3908e78c":"39cf93e7","8b6c24e2":"39cf93e7"}}
+{
+  "uuid": "6f170027-aaa4-49de-8cdc-71d079b299c7",
+  "name": "Adam Stecher",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 41,
+      "pts": 305,
+      "fouls": 44,
+      "fg": 91,
+      "ft": 18,
+      "threePt": 35,
+      "foulOuts": {
+        "0a007eba": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 22,
+      "maxGameThreePt": 6,
+      "wins": 44,
+      "winPct": 0.56,
+      "losses": 35,
+      "statsChecked": "2026-07-05T15:23:14.628Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5390040a",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "8de92fdd",
+          "tn": "The Thicky Nickies",
+          "gid": "7782294c",
+          "gn": "Sunday Men Section 10",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "ft": 3,
+            "fg": 12,
+            "threePt": 5,
+            "pts": 42,
+            "wins": 5,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "8de92fdd",
+          "tn": "The Thicky Nickies",
+          "gid": "17fcfcb1",
+          "gn": "ZZZ Sunday Men GRADING",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "ft": 3,
+            "threePt": 5,
+            "pts": 42,
+            "wins": 5,
+            "losses": 1,
+            "fg": 12,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "8de92fdd",
+          "tn": "The Thicky Nickies",
+          "gid": "dee98c3f",
+          "gn": "Sunday Men Section 15",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "fg": 12,
+            "threePt": 5,
+            "pts": 42,
+            "wins": 5,
+            "losses": 1,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0a007eba",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "04b0d32e",
+          "tn": "The New Ballers [N]",
+          "gid": "c543764b",
+          "gn": "Monday Men Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "fg": 6,
+            "threePt": 3,
+            "pts": 21,
+            "finals": 1,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "72a0cd61",
+          "stats": {
+            "wins": 6,
+            "losses": 8,
+            "finals": 1,
+            "gp": 14,
+            "pts": 87,
+            "fg": 25,
+            "ft": 4,
+            "threePt": 11,
+            "fouls": 23
+          },
+          "gid": "a19f57fa",
+          "gn": "Sunday Men Section 5"
+        }
+      ]
+    },
+    {
+      "sid": "0a007eba",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "72a0cd61",
+          "tn": "Balls [N]",
+          "gid": "a19f57fa",
+          "gn": "Sunday Men Section 5",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 23,
+            "ft": 4,
+            "fg": 25,
+            "threePt": 11,
+            "pts": 87,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "72a0cd61",
+          "tn": "Balls [N]",
+          "gid": "2b77b870",
+          "gn": "Sunday Men Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 23,
+            "fg": 25,
+            "threePt": 11,
+            "pts": 87,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8,
+            "ft": 4
+          }
+        },
+        {
+          "tid": "72a0cd61",
+          "tn": "Balls [N]",
+          "gid": "f76075c0",
+          "gn": "Sunday Men Section 6",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 23,
+            "fg": 25,
+            "threePt": 11,
+            "pts": 87,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5e155c7d",
+      "sn": "Summer 2022/23",
+      "club": "Huntingtower Heat Basketball Club",
+      "regs": [
+        {
+          "tid": "39cf93e7",
+          "tn": "B21 Huntingtower Heat 1",
+          "gid": "2503d90a",
+          "gn": "Friday U18/21 Boys C/C2",
+          "age": "U18",
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "ft": 11,
+            "fg": 48,
+            "threePt": 16,
+            "pts": 155
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T13:03:44.873Z",
+  "teams": [
+    {
+      "tid": "8de92fdd",
+      "sid": "5390040a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "04b0d32e",
+      "sid": "0a007eba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "72a0cd61",
+      "sid": "0a007eba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39cf93e7",
+      "sid": "5e155c7d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:53.153Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "0e6046cc",
+      "sid": "5e155c7d"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "0e6046cc",
+      "sid": "5e155c7d"
+    }
+  },
+  "games": [
+    "004323d3",
+    "0ab8c38a",
+    "22211fbd",
+    "2333ca10",
+    "23389474",
+    "27308cb3",
+    "41a7d004",
+    "457cacd6",
+    "6d8e7aa4",
+    "7eb5c396",
+    "7f5c6ea9",
+    "82bf0b5c",
+    "88c07c35",
+    "93163d15",
+    "9e822b5b",
+    "a09ea05c",
+    "a9635e60",
+    "aec38cd1",
+    "b60fb0bb",
+    "d591d91f",
+    "dadd0820",
+    "db817616",
+    "e33013c7",
+    "e5b79c89",
+    "e7112526"
+  ],
+  "gameTids": {
+    "23389474": "72a0cd61",
+    "d591d91f": "8de92fdd",
+    "27308cb3": "8de92fdd",
+    "2333ca10": "8de92fdd",
+    "e33013c7": "8de92fdd",
+    "b60fb0bb": "8de92fdd",
+    "6d8e7aa4": "8de92fdd",
+    "7f5c6ea9": "04b0d32e",
+    "db817616": "04b0d32e",
+    "a09ea05c": "04b0d32e",
+    "88c07c35": "04b0d32e",
+    "7eb5c396": "04b0d32e",
+    "0ab8c38a": "72a0cd61",
+    "457cacd6": "72a0cd61",
+    "e5b79c89": "72a0cd61",
+    "93163d15": "72a0cd61",
+    "dadd0820": "72a0cd61",
+    "a9635e60": "72a0cd61",
+    "82bf0b5c": "72a0cd61",
+    "9e822b5b": "72a0cd61",
+    "e7112526": "72a0cd61",
+    "004323d3": "72a0cd61",
+    "41a7d004": "72a0cd61",
+    "22211fbd": "72a0cd61",
+    "aec38cd1": "72a0cd61",
+    "ac70dbd5": "39cf93e7",
+    "638e2bfd": "39cf93e7",
+    "b739c5e0": "39cf93e7",
+    "48f5a1fd": "39cf93e7",
+    "358fa9db": "39cf93e7",
+    "0e6046cc": "39cf93e7",
+    "d32e78e3": "39cf93e7",
+    "a7b121e1": "39cf93e7",
+    "6dc25a82": "39cf93e7",
+    "f0744cba": "39cf93e7",
+    "22d9d527": "39cf93e7",
+    "2d87ac2f": "39cf93e7",
+    "355a9b34": "39cf93e7",
+    "38b100e0": "39cf93e7",
+    "3908e78c": "39cf93e7",
+    "8b6c24e2": "39cf93e7"
+  }
+}

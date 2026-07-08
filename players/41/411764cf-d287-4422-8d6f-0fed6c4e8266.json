@@ -1,1 +1,91 @@
-{"uuid":"411764cf-d287-4422-8d6f-0fed6c4e8266","name":"Jackson Geard","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":26,"fouls":12,"fg":9,"ft":8,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":5,"losses":1,"winPct":0.83,"statsChecked":"2026-07-05T14:26:50.629Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"b92dd1e9","tn":"Swisherr Academy U12 Boys Black","gid":"fbb4fd1f","gn":"BOYS UNDER 12 B3","age":null,"div":"B3","stats":{"gp":6,"fouls":12,"ft":8,"fg":9,"pts":26,"finals":1,"gfApps":1,"wins":5,"losses":1}}]}],"updatedAt":"2026-05-31T01:00:45.679Z","teams":[{"tid":"b92dd1e9","sid":"6dd649c0","status":"COMPLETED"},{"tid":"09dd744a","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:22:11.471Z","records":{"maxGamePTS":{"v":8,"gameKey":"07e68914","sid":"6dd649c0"},"maxGameThreePt":{"v":null}},"games":["07e68914","7a744e61","a3a16ebd","d1e6d4f7","f42b529b","f8146855"]}
+{
+  "uuid": "411764cf-d287-4422-8d6f-0fed6c4e8266",
+  "name": "Jackson Geard",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 26,
+      "fouls": 12,
+      "fg": 9,
+      "ft": 8,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 1,
+      "winPct": 0.83,
+      "statsChecked": "2026-07-05T14:26:50.629Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "b92dd1e9",
+          "tn": "Swisherr Academy U12 Boys Black",
+          "gid": "fbb4fd1f",
+          "gn": "BOYS UNDER 12 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 8,
+            "fg": 9,
+            "pts": 26,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "09dd744a",
+          "tn": "Swisherr Academy U16 Girls Black",
+          "gid": "03a32d18",
+          "gn": "GIRLS UNDER 16 B3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:00:45.679Z",
+  "teams": [
+    {
+      "tid": "b92dd1e9",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "09dd744a",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:20.396Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "07e68914",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "07e68914",
+    "7a744e61",
+    "a3a16ebd",
+    "d1e6d4f7",
+    "f42b529b",
+    "f8146855"
+  ]
+}

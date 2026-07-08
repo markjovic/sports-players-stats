@@ -1,1 +1,291 @@
-{"uuid":"491f066c-98cb-410d-a7a6-74bfafd7d9fa","name":"Lake Dempsey","gender":"Girls","sports":{"Basketball":{"gp":38,"pts":122,"fouls":26,"fg":58,"ft":6,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":24,"losses":11,"draws":3,"winPct":0.63,"statsChecked":"2026-07-05T15:22:24.275Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","club":"Toorak Basketball Club","regs":[{"tid":"f302ebbf","tn":"Toorak Tigercubs","gid":"08edb27a","gn":"Tuesday Year 5 Girls A","age":null,"div":null,"stats":{"gp":18,"fouls":15,"ft":6,"fg":27,"pts":60,"wins":12,"losses":6}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","club":"Toorak Basketball Club","regs":[{"tid":"2c2a1e36","tn":"Toorak Tigercubs","gid":"777fe522","gn":"Friday Year 4 Girls A","age":null,"div":null,"stats":{"gp":13,"fouls":8,"fg":24,"pts":48,"wins":8,"losses":3,"draws":2}}]},{"sid":"31d05517","sn":"Autumn 2025","club":"Toorak Basketball Club","regs":[{"tid":"317f670c","tn":"Toorak Tigercubs","gid":"d860e715","gn":"Friday MSAC/Bayside Year 4 Girls A","age":null,"div":null,"stats":{"gp":7,"fouls":3,"fg":7,"pts":14,"wins":4,"losses":2,"draws":1}}]}],"updatedAt":"2026-06-02T22:42:23.244Z","teams":[{"tid":"f302ebbf","sid":"ad68db8b","status":"ACTIVE"},{"tid":"2c2a1e36","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"317f670c","sid":"31d05517","status":"COMPLETED"},{"tid":"f9c6dadb","sid":"8884de2d","status":"COMPLETED"},{"tid":"4f2c957f","sid":"0fef30ca","status":"COMPLETED"},{"tid":"aeaba68b","sid":"09a70808","status":"COMPLETED"},{"tid":"0a56b24e","sid":"e5df46b3","status":"COMPLETED"},{"tid":"30abfb60","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"3d9e8343","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:27:46.619Z","records":{"maxGamePTS":{"v":10,"gameKey":"b1c389b5","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["04682921","073bccde","081bd989","0cc52f44","0e998286","0fa7c63f","1037400d","207edb2d","2ef48247","3ae28b84","40bd078b","4fe63544","50aa2bb8","595b853b","5ce3c7be","78073a28","782b0a74","7c4c411c","7e37ed33","7e99f72a","816450d4","820f705b","82477d31","82bad3b3","8b9f3ee0","8bb66b48","9ae7506c","9c7c4062","a6ea4441","a83c3fd3","b1c389b5","b42d8ce0","d00817b9","d8e7e01c","d986d364","dea9bfc4","e56cd125","e5e9041c"]}
+{
+  "uuid": "491f066c-98cb-410d-a7a6-74bfafd7d9fa",
+  "name": "Lake Dempsey",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 122,
+      "fouls": 26,
+      "fg": 58,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 24,
+      "losses": 11,
+      "draws": 3,
+      "winPct": 0.63,
+      "statsChecked": "2026-07-05T15:22:24.275Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "f302ebbf",
+          "tn": "Toorak Tigercubs",
+          "gid": "08edb27a",
+          "gn": "Tuesday Year 5 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 15,
+            "ft": 6,
+            "fg": 27,
+            "pts": 60,
+            "wins": 12,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "2c2a1e36",
+          "tn": "Toorak Tigercubs",
+          "gid": "777fe522",
+          "gn": "Friday Year 4 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 8,
+            "fg": 24,
+            "pts": 48,
+            "wins": 8,
+            "losses": 3,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "317f670c",
+          "tn": "Toorak Tigercubs",
+          "gid": "d860e715",
+          "gn": "Friday MSAC/Bayside Year 4 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 3,
+            "fg": 7,
+            "pts": 14,
+            "wins": 4,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "66c71503",
+          "tn": "Toorak Tigercubs",
+          "gid": "a6d4f2c3",
+          "gn": "Tuesday Year 5 Girls A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "f9c6dadb",
+          "tn": "Toorak Tigercubs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "4f2c957f",
+          "tn": "Toorak Tigercubs",
+          "gid": "8e81252b",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "aeaba68b",
+          "tn": "Toorak Tigercubs",
+          "gid": "caee07df",
+          "gn": "Friday MSAC/Bayside YR.2 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "0a56b24e",
+          "tn": "Toorak Tigercubs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "30abfb60",
+          "tn": "Toorak Tigercubs",
+          "gid": "9effba5c",
+          "gn": "Friday MSAC/Bayside YR.1 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "3d9e8343",
+          "tn": "Toorak Tigercubs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:23.244Z",
+  "teams": [
+    {
+      "tid": "f302ebbf",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c2a1e36",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "317f670c",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "66c71503",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9c6dadb",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4f2c957f",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aeaba68b",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a56b24e",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30abfb60",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3d9e8343",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:31.304Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "b1c389b5",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "04682921",
+    "073bccde",
+    "081bd989",
+    "0cc52f44",
+    "0e998286",
+    "0fa7c63f",
+    "1037400d",
+    "207edb2d",
+    "2ef48247",
+    "3ae28b84",
+    "40bd078b",
+    "4fe63544",
+    "50aa2bb8",
+    "595b853b",
+    "5ce3c7be",
+    "78073a28",
+    "782b0a74",
+    "7c4c411c",
+    "7e37ed33",
+    "7e99f72a",
+    "816450d4",
+    "820f705b",
+    "82477d31",
+    "82bad3b3",
+    "8b9f3ee0",
+    "8bb66b48",
+    "9ae7506c",
+    "9c7c4062",
+    "a6ea4441",
+    "a83c3fd3",
+    "b1c389b5",
+    "b42d8ce0",
+    "d00817b9",
+    "d8e7e01c",
+    "d986d364",
+    "dea9bfc4",
+    "e56cd125",
+    "e5e9041c"
+  ]
+}

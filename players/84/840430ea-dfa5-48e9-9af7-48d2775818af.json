@@ -1,1 +1,387 @@
-{"uuid":"840430ea-dfa5-48e9-9af7-48d2775818af","name":"Stefan Ristovic","gender":"Boys","sports":{"Basketball":{"gp":17,"pts":70,"fouls":23,"fg":22,"ft":14,"threePt":4,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"wins":10,"losses":16,"winPct":0.38,"statsChecked":"2026-07-05T15:10:38.497Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Toorak Basketball Club","regs":[{"tid":"ff2d0642","tn":"Toorak Trackers","gid":"0ef9cb1f","gn":"Saturday U16 Boys Section 04","age":"U16","div":null,"stats":{"gp":8,"fouls":14,"ft":9,"fg":16,"threePt":4,"pts":53,"wins":6,"losses":2}}]},{"sid":"6924f649","sn":"Summer 2023/24","club":"Toorak Basketball Club","regs":[{"tid":"080729e2","tn":"Toorak Tidalwave","gid":"8212c508","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":9,"fouls":9,"ft":5,"fg":6,"pts":17,"wins":2,"losses":7}},{"tid":"080729e2","tn":"Toorak Tidalwave","gid":"566fe198","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":9,"fg":6,"pts":17,"wins":2,"losses":7,"ft":5,"fouls":9}}]}],"updatedAt":"2026-07-04T05:59:20.356Z","teams":[{"tid":"ff2d0642","sid":"6c117270","status":"ACTIVE"},{"tid":"8b4c1ba8","sid":"68279835","status":"COMPLETED"},{"tid":"a2825eb1","sid":"913d1397","status":"COMPLETED"},{"tid":"01789d1b","sid":"df876355","status":"COMPLETED"},{"tid":"2685b9ce","sid":"e54d0c37","status":"COMPLETED"},{"tid":"080729e2","sid":"6924f649","status":"COMPLETED"},{"tid":"c994d12e","sid":"09a70808","status":"COMPLETED"},{"tid":"8c08d726","sid":"7d20ecad","status":"COMPLETED"},{"tid":"e964cb56","sid":"e5df46b3","status":"COMPLETED"},{"tid":"d7f4ca98","sid":"e2637fe8","status":"COMPLETED"},{"tid":"586b56bc","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"c79cb5bd","sid":"3f4132a1","status":"COMPLETED"},{"tid":"c35a90a8","sid":"9533d0c6","status":"COMPLETED"},{"tid":"b6c56dfe","sid":"977f8526","status":"COMPLETED"},{"tid":"2f2b9cac","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:50:08.594Z","records":{"maxGamePTS":{"v":13,"gameKey":"440de926","sid":"6c117270"},"maxGameThreePt":{"v":1,"gameKey":"6b585ef4","sid":"6c117270"}},"games":["2427912c","2e5a7a20","41e13c20","440de926","46eb5885","48fbbdaf","4e7a5e75","587b52d6","69cbe135","6b585ef4","70998dc9","94f05e31","c2f7101f","c49461b1","c79c7fb9","e453b5d5","f0ceafcf"]}
+{
+  "uuid": "840430ea-dfa5-48e9-9af7-48d2775818af",
+  "name": "Stefan Ristovic",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 17,
+      "pts": 70,
+      "fouls": 23,
+      "fg": 22,
+      "ft": 14,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 10,
+      "losses": 16,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:10:38.497Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "ff2d0642",
+          "tn": "Toorak Trackers",
+          "gid": "0ef9cb1f",
+          "gn": "Saturday U16 Boys Section 04",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "ft": 9,
+            "fg": 16,
+            "threePt": 4,
+            "pts": 53,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6924f649",
+      "sn": "Summer 2023/24",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "080729e2",
+          "tn": "Toorak Tidalwave",
+          "gid": "8212c508",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 5,
+            "fg": 6,
+            "pts": 17,
+            "wins": 2,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "080729e2",
+          "tn": "Toorak Tidalwave",
+          "gid": "566fe198",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fg": 6,
+            "pts": 17,
+            "wins": 2,
+            "losses": 7,
+            "ft": 5,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f51ac790",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "e5ab82fd",
+          "tn": "Auburn Sharks ",
+          "gid": "30f02835",
+          "gn": "U16 Boys B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "8b4c1ba8",
+          "tn": "Toorak Trackers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "a2825eb1",
+          "tn": "Toorak Toros",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "01789d1b",
+          "tn": "Toorak Toros",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "2685b9ce",
+          "tn": "Toorak Toros",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "c994d12e",
+          "tn": "Toorak Tomahawks",
+          "gid": "7c1d0402",
+          "gn": "Tuesday MSAC/Bayside YR.6 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "8c08d726",
+          "tn": "Toorak Toros",
+          "gid": "568cb67c",
+          "gn": "Saturday U12 Boys Grading Pool 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "e964cb56",
+          "tn": "Toorak Tomahawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "d7f4ca98",
+          "tn": "Toorak Toros",
+          "gid": "7acd9206",
+          "gn": "U12 Boys (S22_23) Division 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "586b56bc",
+          "tn": "Toorak Tomahawks",
+          "gid": "d336db05",
+          "gn": "Wednesday MSAC YR.5 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "c79cb5bd",
+          "tn": "Toorak Tomahawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9533d0c6",
+      "sn": "Term 4, 2021",
+      "regs": [
+        {
+          "tid": "c35a90a8",
+          "tn": "Toorak Tomahawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "b6c56dfe",
+          "tn": "Toorak Tomahawks",
+          "gid": "2740c3bd",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "2f2b9cac",
+          "tn": "Toorak Tomahawks (3617)",
+          "gid": "40dc8f54",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:59:20.356Z",
+  "teams": [
+    {
+      "tid": "ff2d0642",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "080729e2",
+      "sid": "6924f649",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5ab82fd",
+      "sid": "f51ac790",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8b4c1ba8",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2825eb1",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "01789d1b",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2685b9ce",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c994d12e",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c08d726",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e964cb56",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d7f4ca98",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "586b56bc",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c79cb5bd",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c35a90a8",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6c56dfe",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f2b9cac",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:20.227Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "440de926",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6b585ef4",
+      "sid": "6c117270"
+    }
+  },
+  "games": [
+    "2427912c",
+    "2e5a7a20",
+    "41e13c20",
+    "440de926",
+    "46eb5885",
+    "48fbbdaf",
+    "4e7a5e75",
+    "587b52d6",
+    "69cbe135",
+    "6b585ef4",
+    "70998dc9",
+    "94f05e31",
+    "c2f7101f",
+    "c49461b1",
+    "c79c7fb9",
+    "e453b5d5",
+    "f0ceafcf"
+  ]
+}

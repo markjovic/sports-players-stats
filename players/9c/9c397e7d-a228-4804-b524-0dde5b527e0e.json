@@ -1,1 +1,361 @@
-{"uuid":"9c397e7d-a228-4804-b524-0dde5b527e0e","name":"Tom Venier","gender":"Men","sports":{"Basketball":{"gp":61,"pts":464,"fouls":76,"fg":110,"ft":19,"threePt":75,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":24,"maxGameThreePt":5,"wins":38,"losses":31,"draws":3,"winPct":0.53,"statsChecked":"2026-07-05T15:24:24.226Z"}},"seasons":[{"sid":"6c4355f1","sn":"Winter 2026","regs":[{"tid":"17a76aea","tn":"Jim's Ballers","gid":"f42aff16","gn":"Sunday Open Men Div 2","age":"Senior","div":"Div 2","stats":{"gp":5,"fouls":4,"wins":2,"losses":1,"pts":22,"fg":6,"ft":1,"threePt":3}},{"tid":"17a76aea","tn":"Jim's Ballers","gid":"0f1e6a43","gn":"Sunday Open Men Div 3","age":"Senior","div":"Div 3","stats":{"gp":5,"fouls":4,"fg":6,"threePt":3,"pts":22,"wins":2,"losses":1,"ft":1}},{"tid":"17a76aea","tn":"Jim's Ballers","gid":"180ce78b","gn":"Sunday Open Men Div 4","age":"Senior","div":"Div 4","stats":{"gp":5,"fg":6,"threePt":3,"pts":22,"ft":1,"wins":2,"losses":1,"fouls":4}}]},{"sid":"b91780a6","sn":"Winter 2025","regs":[{"tid":"c6786f1b","tn":"Jim’s Ballers","gid":"7d0fc500","gn":"Sunday Open Men Div 4","age":"Senior","div":"Div 4","stats":{"gp":12,"fouls":12,"ft":5,"fg":17,"threePt":20,"pts":99,"wins":5,"losses":6,"draws":1}}]},{"sid":"bece5e56","sn":"2024","regs":[{"tid":"8766478e","tn":"Jim’s Ballers","gid":"ea067f31","gn":"Monday Open Men F GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":11,"fouls":10,"ft":5,"fg":23,"threePt":17,"pts":102,"wins":3,"losses":7,"draws":1}}]},{"sid":"703d0c8f","sn":"Summer 2023/24","regs":[{"tid":"3c613dad","tn":"Jim’s Ballers","gid":"78a2b4a2","gn":"Monday Open Men C GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":16,"fouls":28,"ft":1,"fg":16,"threePt":13,"pts":72,"wins":4,"losses":11,"draws":1}}]},{"sid":"3008b4df","sn":"Winter 2022","regs":[{"tid":"7bed97e0","tn":"Jims Ballers","gid":"e55bc095","gn":"Sunday Open Classic Men DIV 5","age":"Senior","div":"DIV 5","stats":{"gp":11,"fouls":13,"ft":6,"fg":33,"threePt":18,"pts":126,"finals":1,"gfApps":1,"wins":8,"losses":1,"gfWins":1}},{"tid":"7bed97e0","tn":"Jims Ballers","gid":"81d51e33","gn":"Sunday Open Classic Men DIV 5 Grading","age":"Senior","div":null,"stats":{"gp":11,"fouls":13,"ft":6,"fg":33,"pts":126,"finals":1,"gfApps":1,"wins":8,"losses":1,"threePt":18,"gfWins":1}}]},{"sid":"09407bad","sn":"Summer 2020/21","regs":[{"tid":"29577245","tn":"Jim’s Ballers","gid":"5c223c87","gn":"Sunday Open Classic Men Div 5","age":"Senior","div":"Div 5","stats":{"gp":6,"fouls":9,"ft":1,"fg":15,"threePt":4,"pts":43,"finals":1,"wins":4,"losses":2}}]}],"updatedAt":"2026-07-04T05:39:54.499Z","teams":[{"tid":"17a76aea","sid":"6c4355f1","status":"ACTIVE"},{"tid":"c6786f1b","sid":"b91780a6","status":"COMPLETED"},{"tid":"8766478e","sid":"bece5e56","status":"COMPLETED"},{"tid":"3c613dad","sid":"703d0c8f","status":"COMPLETED"},{"tid":"7bed97e0","sid":"3008b4df","status":"COMPLETED"},{"tid":"f7f56edf","sid":"a11abfe0","status":"COMPLETED"},{"tid":"29577245","sid":"09407bad","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:36.258Z","games":["0f398397","10106754","12bb1f94","1325ba24","16d417fd","195b508e","1cb04383","1ea22cc1","1f592030","257d1df9","2d19da2a","369abf5d","36ce02b8","37ed77f1","39c1a694","3df1978d","4fc3c6ac","51f36e54","5645d1e3","685bd06b","6b75d896","71e3fd22","76f9810d","7c8b7563","7d23545d","8babe429","8cb7a358","904dddbc","958fb3ca","9a0e8575","9dee09f3","9f46f2a5","a3103d5d","a6f3d962","a7a4863a","a80fa0c6","a927530a","a98c020d","ade68a76","b18ab3cf","b2587da4","bcf15301","bee944b7","c6024432","c8e24ca2","cc42ed0f","d19b4662","d729f2a3","def22868","e4a326cd","e6dd7a91","e76cbf58","e9f8805d","ec21aaee","ee40f2bf","f7e6713f","fa9cdb2e","fab9eda4"],"records":{"maxGamePTS":{"v":24,"gameKey":"e76cbf58","sid":"3008b4df"},"maxGameThreePt":{"v":5,"gameKey":"e76cbf58","sid":"3008b4df"}}}
+{
+  "uuid": "9c397e7d-a228-4804-b524-0dde5b527e0e",
+  "name": "Tom Venier",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 61,
+      "pts": 464,
+      "fouls": 76,
+      "fg": 110,
+      "ft": 19,
+      "threePt": 75,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 24,
+      "maxGameThreePt": 5,
+      "wins": 38,
+      "losses": 31,
+      "draws": 3,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T15:24:24.226Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c4355f1",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "17a76aea",
+          "tn": "Jim's Ballers",
+          "gid": "0f1e6a43",
+          "gn": "Sunday Open Men Div 3",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 1,
+            "pts": 22,
+            "fg": 6,
+            "ft": 1,
+            "threePt": 3
+          }
+        },
+        {
+          "tid": "17a76aea",
+          "tn": "Jim's Ballers",
+          "gid": "0f1e6a43",
+          "gn": "Sunday Open Men Div 3",
+          "age": "Senior",
+          "div": "Div 3",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "fg": 6,
+            "threePt": 3,
+            "pts": 22,
+            "wins": 2,
+            "losses": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "17a76aea",
+          "tn": "Jim's Ballers",
+          "gid": "180ce78b",
+          "gn": "Sunday Open Men Div 4",
+          "age": "Senior",
+          "div": "Div 4",
+          "stats": {
+            "gp": 5,
+            "fg": 6,
+            "threePt": 3,
+            "pts": 22,
+            "ft": 1,
+            "wins": 2,
+            "losses": 1,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b91780a6",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "c6786f1b",
+          "tn": "Jim’s Ballers",
+          "gid": "7d0fc500",
+          "gn": "Sunday Open Men Div 4",
+          "age": "Senior",
+          "div": "Div 4",
+          "stats": {
+            "gp": 12,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 17,
+            "threePt": 20,
+            "pts": 99,
+            "wins": 5,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bece5e56",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "8766478e",
+          "tn": "Jim’s Ballers",
+          "gid": "ea067f31",
+          "gn": "Monday Open Men F GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 10,
+            "ft": 5,
+            "fg": 23,
+            "threePt": 17,
+            "pts": 102,
+            "wins": 3,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "703d0c8f",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "3c613dad",
+          "tn": "Jim’s Ballers",
+          "gid": "78a2b4a2",
+          "gn": "Monday Open Men C GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 28,
+            "ft": 1,
+            "fg": 16,
+            "threePt": 13,
+            "pts": 72,
+            "wins": 4,
+            "losses": 11,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3008b4df",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "7bed97e0",
+          "tn": "Jims Ballers",
+          "gid": "e55bc095",
+          "gn": "Sunday Open Classic Men DIV 5",
+          "age": "Senior",
+          "div": "DIV 5",
+          "stats": {
+            "gp": 11,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 33,
+            "threePt": 18,
+            "pts": 126,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "7bed97e0",
+          "tn": "Jims Ballers",
+          "gid": "81d51e33",
+          "gn": "Sunday Open Classic Men DIV 5 Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 13,
+            "ft": 6,
+            "fg": 33,
+            "pts": 126,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 1,
+            "threePt": 18,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09407bad",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "29577245",
+          "tn": "Jim’s Ballers",
+          "gid": "5c223c87",
+          "gn": "Sunday Open Classic Men Div 5",
+          "age": "Senior",
+          "div": "Div 5",
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 15,
+            "threePt": 4,
+            "pts": 43,
+            "finals": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a11abfe0",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "f7f56edf",
+          "tn": "We the Northcote",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:54.499Z",
+  "teams": [
+    {
+      "tid": "17a76aea",
+      "sid": "6c4355f1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6786f1b",
+      "sid": "b91780a6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8766478e",
+      "sid": "bece5e56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c613dad",
+      "sid": "703d0c8f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7bed97e0",
+      "sid": "3008b4df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "29577245",
+      "sid": "09407bad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f7f56edf",
+      "sid": "a11abfe0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:26.056Z",
+  "games": [
+    "0f398397",
+    "10106754",
+    "12bb1f94",
+    "1325ba24",
+    "16d417fd",
+    "195b508e",
+    "1cb04383",
+    "1ea22cc1",
+    "1f592030",
+    "257d1df9",
+    "2d19da2a",
+    "369abf5d",
+    "36ce02b8",
+    "37ed77f1",
+    "39c1a694",
+    "3df1978d",
+    "4fc3c6ac",
+    "51f36e54",
+    "5645d1e3",
+    "685bd06b",
+    "6b75d896",
+    "71e3fd22",
+    "76f9810d",
+    "7c8b7563",
+    "7d23545d",
+    "8babe429",
+    "8cb7a358",
+    "904dddbc",
+    "958fb3ca",
+    "9a0e8575",
+    "9dee09f3",
+    "9f46f2a5",
+    "a3103d5d",
+    "a6f3d962",
+    "a7a4863a",
+    "a80fa0c6",
+    "a927530a",
+    "a98c020d",
+    "ade68a76",
+    "b18ab3cf",
+    "b2587da4",
+    "bcf15301",
+    "bee944b7",
+    "c6024432",
+    "c8e24ca2",
+    "cc42ed0f",
+    "d19b4662",
+    "d729f2a3",
+    "def22868",
+    "e4a326cd",
+    "e6dd7a91",
+    "e76cbf58",
+    "e9f8805d",
+    "ec21aaee",
+    "ee40f2bf",
+    "f7e6713f",
+    "fa9cdb2e",
+    "fab9eda4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "e76cbf58",
+      "sid": "3008b4df"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "e76cbf58",
+      "sid": "3008b4df"
+    }
+  }
+}

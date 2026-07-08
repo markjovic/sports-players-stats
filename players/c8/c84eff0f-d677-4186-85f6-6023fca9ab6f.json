@@ -1,1 +1,127 @@
-{"uuid":"c84eff0f-d677-4186-85f6-6023fca9ab6f","name":"Isla Simpson","gender":"Girls","sports":{"Basketball":{"gp":12,"pts":65,"fouls":4,"fg":31,"ft":3,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":null,"wins":10,"losses":6,"winPct":0.63,"statsChecked":"2026-07-06T19:00:48.021Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Ashy Basketball Club","regs":[{"tid":"81255a71","tn":"Ashy Lightning U10 Girls Green","gid":"a2514d21","gn":"Saturday U10 Girls Section 05","age":"U10","div":null,"stats":{"gp":8,"ft":3,"fg":30,"pts":63,"wins":5,"losses":3,"fouls":1}},{"tid":"81255a71","tn":"Ashy Lightning U10 Girls Green","gid":"d07e4e6d","gn":"Saturday U10 Girls Section 04","age":"U10","div":null,"stats":{"gp":8,"fouls":1,"fg":30,"pts":63,"wins":5,"losses":3,"ft":3}}]},{"sid":"26df4252","regs":[{"tid":"6376c7f9","stats":{"gp":4,"pts":2,"fg":1,"fouls":3}},{"tid":"6376c7f9","tn":"","gid":"6ed75d2c","gn":"U10 Girls Division 3","div":null,"stats":{"gp":4,"pts":2,"fg":1,"fouls":3}}]}],"updatedAt":"2026-07-06T18:30:42.905Z","teams":[{"tid":"81255a71","sid":"6c117270","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:43:36.002Z","games":["4fabd865","53dcd3fc","5ef59e32","9f0ecded","aeb567e8","bf170bbf","c450a570","d366bf79"],"records":{"maxGamePTS":{"v":18,"gameKey":"aeb567e8","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c84eff0f-d677-4186-85f6-6023fca9ab6f",
+  "name": "Isla Simpson",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 65,
+      "fouls": 4,
+      "fg": 31,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 6,
+      "winPct": 0.63,
+      "statsChecked": "2026-07-06T19:00:48.021Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Ashy Basketball Club",
+      "regs": [
+        {
+          "tid": "81255a71",
+          "tn": "Ashy Lightning U10 Girls Green",
+          "gid": "a2514d21",
+          "gn": "Saturday U10 Girls Section 05",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 3,
+            "fg": 30,
+            "pts": 63,
+            "wins": 5,
+            "losses": 3,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "81255a71",
+          "tn": "Ashy Lightning U10 Girls Green",
+          "gid": "d07e4e6d",
+          "gn": "Saturday U10 Girls Section 04",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "fg": 30,
+            "pts": 63,
+            "wins": 5,
+            "losses": 3,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "6376c7f9",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          },
+          "gid": "6ed75d2c",
+          "gn": "U10 Girls Division 3"
+        },
+        {
+          "tid": "6376c7f9",
+          "tn": "",
+          "gid": "6ed75d2c",
+          "gn": "U10 Girls Division 3",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:42.905Z",
+  "teams": [
+    {
+      "tid": "81255a71",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6376c7f9",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:56.421Z",
+  "games": [
+    "4fabd865",
+    "53dcd3fc",
+    "5ef59e32",
+    "9f0ecded",
+    "aeb567e8",
+    "bf170bbf",
+    "c450a570",
+    "d366bf79"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "aeb567e8",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

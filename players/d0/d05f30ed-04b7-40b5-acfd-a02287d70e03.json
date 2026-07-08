@@ -1,1 +1,324 @@
-{"uuid":"d05f30ed-04b7-40b5-acfd-a02287d70e03","name":"Harry Carroll","gender":"Boys","sports":{"Basketball":{"gp":64,"pts":32,"fouls":66,"fg":14,"ft":4,"foulOuts":{},"finals":4,"gfApps":1,"gfWins":0,"finalsPerSeason":0.8,"maxGamePTS":4,"maxGameThreePt":null,"wins":33,"losses":87,"winPct":0.27,"draws":1,"statsChecked":"2026-07-05T14:30:48.278Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"South Camberwell Basketball Club","regs":[{"tid":"63f356ab","tn":"SCBC U12 Boys Wreckers","gid":"f9d7de60","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":5,"fouls":6,"fg":1,"pts":3,"wins":1,"losses":1,"draws":1,"ft":1}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"South Camberwell Basketball Club","regs":[{"tid":"36809ec6","tn":"SCBC U12 Boys Wreckers","gid":"7865bcc8","gn":"U12 Boys D3","age":"U12","div":"D3","stats":{"gp":12,"fouls":9,"ft":1,"fg":7,"pts":15,"finals":1,"wins":5,"losses":7}},{"tid":"36809ec6","tn":"SCBC U12 Boys Wreckers","gid":"e753dba4","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":12,"fouls":9,"fg":7,"pts":15,"finals":1,"wins":5,"losses":7,"ft":1}}]},{"sid":"c9bdcd48","sn":"Winter 2025","club":"South Camberwell Basketball Club","regs":[{"tid":"3cf2ba4b","tn":"SCBC U10 Boys Wreckers","gid":"34fbf7a8","gn":"U10 Boys D2","age":"U10","div":"D2","stats":{"gp":16,"fouls":18,"ft":1,"fg":4,"pts":9,"finals":1,"wins":5,"losses":11}},{"tid":"3cf2ba4b","tn":"SCBC U10 Boys Wreckers","gid":"cf607a2a","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":16,"fouls":18,"fg":4,"pts":9,"finals":1,"wins":5,"losses":11,"ft":1}}]},{"sid":"7a7de984","sn":"Summer 2024/25","club":"South Camberwell Basketball Club","regs":[{"tid":"75a099b0","tn":"SCBC U10 Boys Wreckers","gid":"1b6c0e1d","gn":"U10 Boys D2","age":"U10","div":"D2","stats":{"gp":15,"fouls":11,"ft":1,"fg":2,"pts":5,"finals":1,"gfApps":1,"losses":12,"wins":3}},{"tid":"75a099b0","tn":"SCBC U10 Boys Wreckers","gid":"97e7233d","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":15,"fouls":11,"finals":1,"gfApps":1,"losses":12,"wins":3,"pts":5,"fg":2,"ft":1}}]},{"sid":"a272a809","sn":"Winter 2024","club":"South Camberwell Basketball Club","regs":[{"tid":"433cb5fe","tn":"SCBC U9 Boys Wreckers","gid":"9759179c","gn":"U9 Boys D1","age":"U9","div":"D1","stats":{"gp":16,"fouls":22,"finals":1,"wins":3,"losses":13}},{"tid":"433cb5fe","tn":"SCBC U9 Boys Wreckers","gid":"e7b0f56e","gn":"U09 Boys Grading","age":"U09","div":null,"stats":{"gp":16,"fouls":22,"finals":1,"wins":3,"losses":13}}]}],"updatedAt":"2026-07-04T05:50:22.811Z","teams":[{"tid":"63f356ab","sid":"aacc7335","status":"ACTIVE"},{"tid":"36809ec6","sid":"6fd8e780","status":"COMPLETED"},{"tid":"3cf2ba4b","sid":"c9bdcd48","status":"COMPLETED"},{"tid":"75a099b0","sid":"7a7de984","status":"COMPLETED"},{"tid":"433cb5fe","sid":"a272a809","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:45:48.066Z","games":["01de7f8b","05685f25","09800278","0ccea80c","115d59b4","127764c4","135838f7","175ac5f6","1edbea9c","1ff139b2","25225aa3","26fbb80f","33996082","3546b72b","3715e296","37b2b9b8","3910b955","496ead92","4fd7ab46","528d019d","554c3f96","55957c2a","58b998d5","67a89015","697862e6","6ec40423","71d679b3","75f97151","7a4737f2","7ece3faf","7f075ea5","84740c34","84af7e17","87b90ddf","8c526fd0","8ee7daf8","908569d8","941eb9b1","96a2eb0b","a00ac778","a5b3540c","a6bde0db","b0387299","b62c81be","b6f01d79","b73c5df8","bd2742c5","cbdb8af8","cf064811","d14582d0","d516abab","d6c7b250","da44da16","e1c911de","e2a12068","e4e28d70","e65039c7","e9ad7c67","f13817c6","f541618b","f76b5b2e","f8fa7104"],"records":{"maxGamePTS":{"v":4,"gameKey":"37b2b9b8","sid":"6fd8e780"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d05f30ed-04b7-40b5-acfd-a02287d70e03",
+  "name": "Harry Carroll",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 64,
+      "pts": 32,
+      "fouls": 66,
+      "fg": 14,
+      "ft": 4,
+      "foulOuts": {},
+      "finals": 4,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.8,
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 33,
+      "losses": 87,
+      "winPct": 0.27,
+      "draws": 1,
+      "statsChecked": "2026-07-05T14:30:48.278Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "63f356ab",
+          "tn": "SCBC U12 Boys Wreckers",
+          "gid": "a31b4608",
+          "gn": "U12 Boys D2",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "fg": 1,
+            "pts": 3,
+            "wins": 1,
+            "losses": 1,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "36809ec6",
+          "tn": "SCBC U12 Boys Wreckers",
+          "gid": "7865bcc8",
+          "gn": "U12 Boys D3",
+          "age": "U12",
+          "div": "D3",
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 5,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "36809ec6",
+          "tn": "SCBC U12 Boys Wreckers",
+          "gid": "e753dba4",
+          "gn": "U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 5,
+            "losses": 7,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c9bdcd48",
+      "sn": "Winter 2025",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "3cf2ba4b",
+          "tn": "SCBC U10 Boys Wreckers",
+          "gid": "34fbf7a8",
+          "gn": "U10 Boys D2",
+          "age": "U10",
+          "div": "D2",
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "wins": 5,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "3cf2ba4b",
+          "tn": "SCBC U10 Boys Wreckers",
+          "gid": "cf607a2a",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "wins": 5,
+            "losses": 11,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a7de984",
+      "sn": "Summer 2024/25",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "75a099b0",
+          "tn": "SCBC U10 Boys Wreckers",
+          "gid": "1b6c0e1d",
+          "gn": "U10 Boys D2",
+          "age": "U10",
+          "div": "D2",
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 2,
+            "pts": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 12,
+            "wins": 3
+          }
+        },
+        {
+          "tid": "75a099b0",
+          "tn": "SCBC U10 Boys Wreckers",
+          "gid": "97e7233d",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 12,
+            "wins": 3,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a272a809",
+      "sn": "Winter 2024",
+      "club": "South Camberwell Basketball Club",
+      "regs": [
+        {
+          "tid": "433cb5fe",
+          "tn": "SCBC U9 Boys Wreckers",
+          "gid": "9759179c",
+          "gn": "U9 Boys D1",
+          "age": "U9",
+          "div": "D1",
+          "stats": {
+            "gp": 16,
+            "fouls": 22,
+            "finals": 1,
+            "wins": 3,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "433cb5fe",
+          "tn": "SCBC U9 Boys Wreckers",
+          "gid": "e7b0f56e",
+          "gn": "U09 Boys Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 22,
+            "finals": 1,
+            "wins": 3,
+            "losses": 13
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:22.811Z",
+  "teams": [
+    {
+      "tid": "63f356ab",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36809ec6",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cf2ba4b",
+      "sid": "c9bdcd48",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75a099b0",
+      "sid": "7a7de984",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "433cb5fe",
+      "sid": "a272a809",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:13.931Z",
+  "games": [
+    "01de7f8b",
+    "05685f25",
+    "09800278",
+    "0ccea80c",
+    "115d59b4",
+    "127764c4",
+    "135838f7",
+    "175ac5f6",
+    "1edbea9c",
+    "1ff139b2",
+    "25225aa3",
+    "26fbb80f",
+    "33996082",
+    "3546b72b",
+    "3715e296",
+    "37b2b9b8",
+    "3910b955",
+    "496ead92",
+    "4fd7ab46",
+    "528d019d",
+    "554c3f96",
+    "55957c2a",
+    "58b998d5",
+    "67a89015",
+    "697862e6",
+    "6ec40423",
+    "71d679b3",
+    "75f97151",
+    "7a4737f2",
+    "7ece3faf",
+    "7f075ea5",
+    "84740c34",
+    "84af7e17",
+    "87b90ddf",
+    "8c526fd0",
+    "8ee7daf8",
+    "908569d8",
+    "941eb9b1",
+    "96a2eb0b",
+    "a00ac778",
+    "a5b3540c",
+    "a6bde0db",
+    "b0387299",
+    "b62c81be",
+    "b6f01d79",
+    "b73c5df8",
+    "bd2742c5",
+    "cbdb8af8",
+    "cf064811",
+    "d14582d0",
+    "d516abab",
+    "d6c7b250",
+    "da44da16",
+    "e1c911de",
+    "e2a12068",
+    "e4e28d70",
+    "e65039c7",
+    "e9ad7c67",
+    "f13817c6",
+    "f541618b",
+    "f76b5b2e",
+    "f8fa7104"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "37b2b9b8",
+      "sid": "6fd8e780"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

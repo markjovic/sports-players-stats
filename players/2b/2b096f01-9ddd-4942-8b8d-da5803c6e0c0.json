@@ -1,1 +1,59 @@
-{"uuid":"2b096f01-9ddd-4942-8b8d-da5803c6e0c0","name":"Corey Zielinski","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":null,"foulOuts":{},"gp":2,"pts":20,"fg":10,"fouls":6,"statsChecked":"2026-07-06T19:09:43.901Z"}},"seasons":[{"sid":"297562bc","regs":[{"tid":"5e3423b5"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":10,"gameKey":"54988bc5","sid":"297562bc"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "2b096f01-9ddd-4942-8b8d-da5803c6e0c0",
+  "name": "Corey Zielinski",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 2,
+      "pts": 20,
+      "fg": 10,
+      "fouls": 6,
+      "statsChecked": "2026-07-06T19:09:43.901Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "5e3423b5",
+          "gid": "aae9105b",
+          "gn": "Monday Open Men Section 4"
+        },
+        {
+          "tid": "b5a76db9",
+          "tn": "Zooper Dooper Sourz",
+          "gid": "5a517af6",
+          "gn": "Wednesday Open Men Section 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "5e3423b5",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5a76db9",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "54988bc5",
+      "sid": "297562bc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:24:25.496Z"
+}

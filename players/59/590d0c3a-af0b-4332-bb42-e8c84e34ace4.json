@@ -1,1 +1,384 @@
-{"uuid":"590d0c3a-af0b-4332-bb42-e8c84e34ace4","name":"Brandon Lin","gender":"Boys","sports":{"Basketball":{"gp":57,"pts":426,"fouls":39,"fg":75,"ft":9,"threePt":89,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{},"maxGamePTS":25,"maxGameThreePt":6,"wins":47,"losses":91,"draws":3,"winPct":0.33,"statsChecked":"2026-07-05T14:41:38.534Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"4329940f","tn":"Balwyn U21 Boys 04","gid":"3ff5e0b0","gn":"Boys U21 C Grading","age":"U21","div":null,"stats":{"gp":6,"fouls":1,"fg":9,"threePt":12,"pts":54,"wins":3,"losses":2}},{"tid":"4329940f","tn":"Balwyn U21 Boys 04","gid":"fe18bb00","gn":"Boys U21 D Grading","age":"U21","div":null,"stats":{"gp":6,"fg":9,"threePt":12,"pts":54,"wins":3,"losses":2,"fouls":1}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"d142a6d3","tn":"Balwyn U21 Boys 06","gid":"ffa40e59","gn":"Boys U21 DB","age":"U21","div":null,"stats":{"gp":11,"fouls":5,"fg":8,"threePt":27,"pts":97,"wins":4,"losses":7}},{"tid":"d142a6d3","tn":"Balwyn U21 Boys 06","gid":"dc0053a1","gn":"Boys U21 C Grading","age":"U21","div":null,"stats":{"gp":11,"fouls":5,"fg":8,"threePt":27,"pts":97,"wins":4,"losses":7}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"bdfed155","tn":"Balwyn U19 Boys 06","gid":"b15d0733","gn":"Boys U19 DB","age":"U19","div":null,"stats":{"gp":16,"fouls":21,"ft":2,"fg":13,"threePt":21,"pts":91,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1}},{"tid":"bdfed155","tn":"Balwyn U19 Boys 06","gid":"4f635639","gn":"Boys U19 D Grading","age":"U19","div":null,"stats":{"gp":16,"fouls":21,"fg":13,"threePt":21,"pts":91,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1,"ft":2}},{"tid":"bdfed155","tn":"Balwyn U19 Boys 06","gid":"e10a9484","gn":"Boys U19 C Grading","age":"U19","div":null,"stats":{"gp":16,"fouls":21,"threePt":21,"pts":91,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1,"fg":13,"ft":2}}]},{"sid":"8c5855c1","sn":"Winter 2024","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"9fc447c8","tn":"Balwyn U19 Boys 04","gid":"4f704d1a","gn":"Boys U19 DC","age":"U19","div":null,"stats":{"gp":13,"fouls":7,"ft":6,"fg":33,"threePt":17,"pts":123,"wins":1,"losses":12}},{"tid":"9fc447c8","tn":"Balwyn U19 Boys 04","gid":"7b0c9035","gn":"Boys U19 D Grading","age":"U19","div":null,"stats":{"gp":13,"fouls":7,"ft":6,"fg":33,"threePt":17,"pts":123,"wins":1,"losses":12}},{"tid":"9fc447c8","tn":"Balwyn U19 Boys 04","gid":"2945f1a2","gn":"Boys U19 C Grading","age":"U19","div":null,"stats":{"gp":13,"ft":6,"fg":33,"pts":123,"wins":1,"losses":12,"threePt":17,"fouls":7}}]},{"sid":"f30d4c74","sn":"Summer 2023/24","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"fda8ffcc","tn":"Balwyn U18 Boys 09","gid":"be1b8821","gn":"Boys U18 DD","age":"U18","div":null,"stats":{"gp":11,"fouls":5,"fg":12,"threePt":12,"pts":61,"wins":3,"losses":8,"ft":1}},{"tid":"fda8ffcc","tn":"Balwyn U18 Boys 09","gid":"f77c5cb4","gn":"Boys U18 D Grading","age":"U18","div":null,"stats":{"gp":11,"ft":1,"fg":12,"threePt":12,"pts":61,"wins":3,"losses":8,"fouls":5}}]}],"updatedAt":"2026-07-04T05:57:00.324Z","teams":[{"tid":"4329940f","sid":"1ae60211","status":"ACTIVE"},{"tid":"d142a6d3","sid":"88026885","status":"COMPLETED"},{"tid":"bdfed155","sid":"f373fc05","status":"COMPLETED"},{"tid":"9fc447c8","sid":"8c5855c1","status":"COMPLETED"},{"tid":"fda8ffcc","sid":"f30d4c74","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:36:47.577Z","records":{"maxGamePTS":{"v":25,"gameKey":"baa61b50","sid":"88026885"},"maxGameThreePt":{"v":6,"gameKey":"fee17db0","sid":"88026885"}},"games":["09d9a6d5","10bcaf05","27364188","279cd69a","306bd1dc","3817237b","3af60d06","3f809d13","40971db2","42e8708c","448aed9f","4a1d05d2","4b0fe6d7","4b855d47","4f107adb","54fc5993","59cff4e6","5af6db0c","5b9b1317","601f7dce","6337b7b5","64c52e5f","6515fbe1","66193493","66d6983a","6b307c21","6f461daa","71d828f0","7bb0ab21","7db5c310","861599b0","8d4c1c7c","8f2ea44e","9721e3c6","9770f2fe","9b237140","9bb0e2b8","9cb1acba","a28fab86","ac2c7147","afe52ce9","b5588df7","b6dee076","baa61b50","c52b5900","c5ace851","ccbfd341","d1456f3e","d78ac664","e1ee2fb8","e2248a25","e7b66f64","e7dde04e","ebdca9e4","ebe41118","fee17db0"]}
+{
+  "uuid": "590d0c3a-af0b-4332-bb42-e8c84e34ace4",
+  "name": "Brandon Lin",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 57,
+      "pts": 426,
+      "fouls": 39,
+      "fg": 75,
+      "ft": 9,
+      "threePt": 89,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {},
+      "maxGamePTS": 25,
+      "maxGameThreePt": 6,
+      "wins": 47,
+      "losses": 91,
+      "draws": 3,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T14:41:38.534Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "4329940f",
+          "tn": "Balwyn U21 Boys 04",
+          "gid": "82d35d53",
+          "gn": "Boys U21 CA",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 1,
+            "fg": 9,
+            "threePt": 12,
+            "pts": 54,
+            "wins": 3,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "4329940f",
+          "tn": "Balwyn U21 Boys 04",
+          "gid": "fe18bb00",
+          "gn": "Boys U21 D Grading",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fg": 9,
+            "threePt": 12,
+            "pts": 54,
+            "wins": 3,
+            "losses": 2,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "d142a6d3",
+          "tn": "Balwyn U21 Boys 06",
+          "gid": "ffa40e59",
+          "gn": "Boys U21 DB",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "fg": 8,
+            "threePt": 27,
+            "pts": 97,
+            "wins": 4,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "d142a6d3",
+          "tn": "Balwyn U21 Boys 06",
+          "gid": "dc0053a1",
+          "gn": "Boys U21 C Grading",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "fg": 8,
+            "threePt": 27,
+            "pts": 97,
+            "wins": 4,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "bdfed155",
+          "tn": "Balwyn U19 Boys 06",
+          "gid": "b15d0733",
+          "gn": "Boys U19 DB",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 13,
+            "threePt": 21,
+            "pts": 91,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bdfed155",
+          "tn": "Balwyn U19 Boys 06",
+          "gid": "4f635639",
+          "gn": "Boys U19 D Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "fg": 13,
+            "threePt": 21,
+            "pts": 91,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "bdfed155",
+          "tn": "Balwyn U19 Boys 06",
+          "gid": "e10a9484",
+          "gn": "Boys U19 C Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "threePt": 21,
+            "pts": 91,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "fg": 13,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8c5855c1",
+      "sn": "Winter 2024",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "9fc447c8",
+          "tn": "Balwyn U19 Boys 04",
+          "gid": "4f704d1a",
+          "gn": "Boys U19 DC",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "ft": 6,
+            "fg": 33,
+            "threePt": 17,
+            "pts": 123,
+            "wins": 1,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "9fc447c8",
+          "tn": "Balwyn U19 Boys 04",
+          "gid": "7b0c9035",
+          "gn": "Boys U19 D Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "ft": 6,
+            "fg": 33,
+            "threePt": 17,
+            "pts": 123,
+            "wins": 1,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "9fc447c8",
+          "tn": "Balwyn U19 Boys 04",
+          "gid": "2945f1a2",
+          "gn": "Boys U19 C Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "ft": 6,
+            "fg": 33,
+            "pts": 123,
+            "wins": 1,
+            "losses": 12,
+            "threePt": 17,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f30d4c74",
+      "sn": "Summer 2023/24",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "fda8ffcc",
+          "tn": "Balwyn U18 Boys 09",
+          "gid": "be1b8821",
+          "gn": "Boys U18 DD",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "fg": 12,
+            "threePt": 12,
+            "pts": 61,
+            "wins": 3,
+            "losses": 8,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "fda8ffcc",
+          "tn": "Balwyn U18 Boys 09",
+          "gid": "f77c5cb4",
+          "gn": "Boys U18 D Grading",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "ft": 1,
+            "fg": 12,
+            "threePt": 12,
+            "pts": 61,
+            "wins": 3,
+            "losses": 8,
+            "fouls": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:00.324Z",
+  "teams": [
+    {
+      "tid": "4329940f",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d142a6d3",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bdfed155",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9fc447c8",
+      "sid": "8c5855c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fda8ffcc",
+      "sid": "f30d4c74",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:55.063Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "baa61b50",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "fee17db0",
+      "sid": "88026885"
+    }
+  },
+  "games": [
+    "09d9a6d5",
+    "10bcaf05",
+    "27364188",
+    "279cd69a",
+    "306bd1dc",
+    "3817237b",
+    "3af60d06",
+    "3f809d13",
+    "40971db2",
+    "42e8708c",
+    "448aed9f",
+    "4a1d05d2",
+    "4b0fe6d7",
+    "4b855d47",
+    "4f107adb",
+    "54fc5993",
+    "59cff4e6",
+    "5af6db0c",
+    "5b9b1317",
+    "601f7dce",
+    "6337b7b5",
+    "64c52e5f",
+    "6515fbe1",
+    "66193493",
+    "66d6983a",
+    "6b307c21",
+    "6f461daa",
+    "71d828f0",
+    "7bb0ab21",
+    "7db5c310",
+    "861599b0",
+    "8d4c1c7c",
+    "8f2ea44e",
+    "9721e3c6",
+    "9770f2fe",
+    "9b237140",
+    "9bb0e2b8",
+    "9cb1acba",
+    "a28fab86",
+    "ac2c7147",
+    "afe52ce9",
+    "b5588df7",
+    "b6dee076",
+    "baa61b50",
+    "c52b5900",
+    "c5ace851",
+    "ccbfd341",
+    "d1456f3e",
+    "d78ac664",
+    "e1ee2fb8",
+    "e2248a25",
+    "e7b66f64",
+    "e7dde04e",
+    "ebdca9e4",
+    "ebe41118",
+    "fee17db0"
+  ]
+}

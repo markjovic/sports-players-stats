@@ -1,1 +1,389 @@
-{"uuid":"bd08f294-c00c-410d-b7f3-e64fe428e184","name":"Hubert Reynolds","gender":"Boys","sports":{"Basketball":{"gp":34,"pts":24,"fouls":29,"fg":11,"ft":2,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":4,"maxGameThreePt":null,"losses":36,"winPct":0.17,"wins":8,"draws":4,"statsChecked":"2026-07-05T14:58:04.163Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"281b23d1","tn":"EPS MAVERICKS ","gid":"2016de33","gn":"Tuesday Year 6 Boys C","age":null,"div":null,"stats":{"gp":11,"fouls":9,"fg":6,"pts":13,"ft":1,"wins":4,"losses":4,"draws":2}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"682c4815","tn":"EPS MAVERICKS ","gid":"24f85033","gn":"Round Robin Finals","age":null,"div":null,"stats":{"gp":15,"fouls":15,"wins":2,"losses":12,"draws":1,"pts":9,"fg":4,"ft":1}},{"tid":"682c4815","tn":"EPS MAVERICKS ","gid":"39b097b1","gn":"Wednesday Year 5 Boys C","age":null,"div":null,"stats":{"gp":15,"fouls":15,"ft":1,"fg":4,"pts":9,"wins":2,"losses":12,"draws":1}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"c2292050","tn":"EPS MAVERICKS","gid":"113f1e83","gn":"Wednesday MSAC/Bayside Year 5 Boys C","age":null,"div":null,"stats":{"gp":4,"fouls":5,"fg":1,"pts":2,"losses":4}}]},{"sid":"1e201d91","sn":"Autumn 2024","regs":[{"tid":"5fb7184e","tn":"The Raptors","gid":"ba587e5e","gn":"U11 Boys A","age":"U11","div":null,"stats":{"gp":4,"finals":1,"losses":4}}]}],"updatedAt":"2026-06-02T22:42:28.067Z","teams":[{"tid":"281b23d1","sid":"ad68db8b","status":"ACTIVE"},{"tid":"682c4815","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"c2292050","sid":"31d05517","status":"COMPLETED"},{"tid":"bbb8fb40","sid":"8884de2d","status":"COMPLETED"},{"tid":"b20ada2f","sid":"0fef30ca","status":"COMPLETED"},{"tid":"5fb7184e","sid":"1e201d91","status":"COMPLETED"},{"tid":"db75cd75","sid":"09a70808","status":"COMPLETED"},{"tid":"60fdd8a0","sid":"09a70808","status":"COMPLETED"},{"tid":"62530f19","sid":"e5df46b3","status":"COMPLETED"},{"tid":"ee36e4ac","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"c01ec724","sid":"3f4132a1","status":"COMPLETED"},{"tid":"f0deb377","sid":"9533d0c6","status":"COMPLETED"},{"tid":"b9eff38c","sid":"9533d0c6","status":"COMPLETED"},{"tid":"2277b94b","sid":"977f8526","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:39:56.441Z","records":{"maxGamePTS":{"v":4,"gameKey":"0c008b7f","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["0660052d","0a88fa70","0aafd4f9","0c008b7f","0d86ef28","0de7bd82","10cf59df","1db3fdb1","22bbff53","27b24468","34ab14cd","367cef1d","3b88adba","43d07821","4cae8df6","6866bba3","68d0b01d","6bbca4ac","6f09a6c6","7148bcbf","791ab332","7d87222d","81ff107d","8cf6b8ab","932d5a38","9d802026","a8d0617a","aeac3ebb","bddd854b","cfe4c1ee","daed3e37","effdeaf2","f064dee9"]}
+{
+  "uuid": "bd08f294-c00c-410d-b7f3-e64fe428e184",
+  "name": "Hubert Reynolds",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 24,
+      "fouls": 29,
+      "fg": 11,
+      "ft": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 36,
+      "winPct": 0.17,
+      "wins": 8,
+      "draws": 4,
+      "statsChecked": "2026-07-05T14:58:04.163Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "281b23d1",
+          "tn": "EPS MAVERICKS ",
+          "gid": "2016de33",
+          "gn": "Tuesday Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "fg": 6,
+            "pts": 13,
+            "ft": 1,
+            "wins": 4,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "682c4815",
+          "tn": "EPS MAVERICKS ",
+          "gid": "39b097b1",
+          "gn": "Wednesday Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 15,
+            "wins": 2,
+            "losses": 12,
+            "draws": 1,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "682c4815",
+          "tn": "EPS MAVERICKS ",
+          "gid": "39b097b1",
+          "gn": "Wednesday Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 15,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 2,
+            "losses": 12,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "c2292050",
+          "tn": "EPS MAVERICKS",
+          "gid": "113f1e83",
+          "gn": "Wednesday MSAC/Bayside Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 5,
+            "fg": 1,
+            "pts": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e201d91",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "5fb7184e",
+          "tn": "The Raptors",
+          "gid": "ba587e5e",
+          "gn": "U11 Boys A",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "finals": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "bb31bacb",
+          "tn": "EPS MAVERICKS ",
+          "gid": "0860dff5",
+          "gn": "Tuesday Year 6 Boys C",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "bbb8fb40",
+          "tn": "EP Raptors (3813)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "b20ada2f",
+          "tn": "The Raptos (3813)  ",
+          "gid": "094069f6",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "db75cd75",
+          "tn": "EPS Aces",
+          "gid": "070894fd",
+          "gn": "Friday MSAC/Bayside YR.3 GIRLS",
+          "stats": {}
+        },
+        {
+          "tid": "60fdd8a0",
+          "tn": "The Raptos (3813)  ",
+          "gid": "bbabee42",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "62530f19",
+          "tn": "The Raptos (3813)  ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "ee36e4ac",
+          "tn": "The Raptos (3813)  ",
+          "gid": "80fd8656",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "c01ec724",
+          "tn": "The Raptos (3813)  ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9533d0c6",
+      "sn": "Term 4, 2021",
+      "regs": [
+        {
+          "tid": "f0deb377",
+          "tn": "EPS Aces ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "b9eff38c",
+          "tn": "The Raptors (3813)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "2277b94b",
+          "tn": "The Raptors (3813)",
+          "gid": "1e9545bb",
+          "gn": "Friday MSAC/Bayside YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:28.067Z",
+  "teams": [
+    {
+      "tid": "281b23d1",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "682c4815",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c2292050",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5fb7184e",
+      "sid": "1e201d91",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bb31bacb",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbb8fb40",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b20ada2f",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db75cd75",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60fdd8a0",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62530f19",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee36e4ac",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c01ec724",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0deb377",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b9eff38c",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2277b94b",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:20.730Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "0c008b7f",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0660052d",
+    "0a88fa70",
+    "0aafd4f9",
+    "0c008b7f",
+    "0d86ef28",
+    "0de7bd82",
+    "10cf59df",
+    "1db3fdb1",
+    "22bbff53",
+    "27b24468",
+    "34ab14cd",
+    "367cef1d",
+    "3b88adba",
+    "43d07821",
+    "4cae8df6",
+    "6866bba3",
+    "68d0b01d",
+    "6bbca4ac",
+    "6f09a6c6",
+    "7148bcbf",
+    "791ab332",
+    "7d87222d",
+    "81ff107d",
+    "8cf6b8ab",
+    "932d5a38",
+    "9d802026",
+    "a8d0617a",
+    "aeac3ebb",
+    "bddd854b",
+    "cfe4c1ee",
+    "daed3e37",
+    "effdeaf2",
+    "f064dee9"
+  ]
+}

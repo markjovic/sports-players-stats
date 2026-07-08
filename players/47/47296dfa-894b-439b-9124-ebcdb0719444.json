@@ -1,1 +1,112 @@
-{"uuid":"47296dfa-894b-439b-9124-ebcdb0719444","name":"Evie King","gender":"Girls","sports":{"Basketball":{"gp":11,"pts":51,"fouls":12,"fg":14,"ft":11,"threePt":4,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":10,"winPct":0.91,"losses":1,"statsChecked":"2026-07-05T14:54:48.954Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"8be33f2c","tn":"Swisherr Academy U18 Girls Purple","gid":"4092c057","gn":"GIRLS UNDER 18 B3","age":null,"div":"B3","stats":{"gp":6,"fouls":7,"ft":8,"fg":10,"threePt":4,"pts":40,"finals":1,"gfApps":1,"wins":6,"gfWins":1}}]},{"sid":"0869ea69","regs":[{"tid":"9e02202e","stats":{"wins":4,"losses":1,"gp":5,"pts":11,"fg":4,"ft":3,"fouls":5}}]}],"updatedAt":"2026-05-31T01:24:13.051Z","teams":[{"tid":"9e02202e","sid":"0869ea69","status":"UPCOMING"},{"tid":"8be33f2c","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:25:51.492Z","records":{"maxGamePTS":{"v":10,"gameKey":"29b88e37","sid":"6dd649c0"},"maxGameThreePt":{"v":2,"gameKey":"29b88e37","sid":"6dd649c0"}},"games":["14f54d16","29b88e37","356660f7","40c1ff41","47008d65","7087853a","847ca953","a4a2204b","b2c1381a","ba06be60","e9ff8242"]}
+{
+  "uuid": "47296dfa-894b-439b-9124-ebcdb0719444",
+  "name": "Evie King",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 51,
+      "fouls": 12,
+      "fg": 14,
+      "ft": 11,
+      "threePt": 4,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 10,
+      "winPct": 0.91,
+      "losses": 1,
+      "statsChecked": "2026-07-05T14:54:48.954Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "8be33f2c",
+          "tn": "Swisherr Academy U18 Girls Purple",
+          "gid": "4092c057",
+          "gn": "GIRLS UNDER 18 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 6,
+            "fouls": 7,
+            "ft": 8,
+            "fg": 10,
+            "threePt": 4,
+            "pts": 40,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "9e02202e",
+          "stats": {
+            "wins": 4,
+            "losses": 1,
+            "gp": 5,
+            "pts": 11,
+            "fg": 4,
+            "ft": 3,
+            "fouls": 5
+          },
+          "gid": "b2ab18c8",
+          "gn": "GIRLS UNDER 18 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:24:13.051Z",
+  "teams": [
+    {
+      "tid": "8be33f2c",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e02202e",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:33.074Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "29b88e37",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "29b88e37",
+      "sid": "6dd649c0"
+    }
+  },
+  "games": [
+    "14f54d16",
+    "29b88e37",
+    "356660f7",
+    "40c1ff41",
+    "47008d65",
+    "7087853a",
+    "847ca953",
+    "a4a2204b",
+    "b2c1381a",
+    "ba06be60",
+    "e9ff8242"
+  ]
+}

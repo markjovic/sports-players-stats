@@ -1,1 +1,127 @@
-{"uuid":"eb47c7bd-2349-4409-8753-8ee8ab143f10","name":"Melissa Millsteed","gender":"Women","sports":{"Basketball":{"gp":12,"pts":4,"fouls":6,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"losses":8,"winPct":0.33,"statsChecked":"2026-07-05T15:13:15.561Z"}},"seasons":[{"sid":"5dfc7567","sn":"Winter 2025","regs":[{"tid":"169558b8","tn":"The Dream Team","gid":"13cd9694","gn":"Thursday Open Women E/ERES","age":"Senior","div":null,"stats":{"gp":1,"losses":1}}]},{"sid":"fe143c79","sn":"Summer 2024/25","regs":[{"tid":"c21d2187","tn":"The Dream Team","gid":"c6b0aa2c","gn":"Thursday Open Women E","age":"Senior","div":null,"stats":{"gp":2,"fouls":2,"fg":1,"pts":2,"wins":1,"losses":1}}]},{"sid":"15554ef0","sn":"Winter 2024","regs":[{"tid":"ba2c604e","tn":"The Dream Team","gid":"0ae423c7","gn":"Thursday Open Women D","age":"Senior","div":null,"stats":{"gp":9,"fouls":4,"fg":1,"pts":2,"wins":3,"losses":6}}]}],"updatedAt":"2026-06-01T14:39:36.973Z","teams":[{"tid":"169558b8","sid":"5dfc7567","status":"COMPLETED"},{"tid":"c21d2187","sid":"fe143c79","status":"COMPLETED"},{"tid":"ba2c604e","sid":"15554ef0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:52:42.922Z","games":["15667a7d","164eb574","5c7686a7","752fd049","7686ec9f","76b81297","7b41acb7","90b02bf7","95650597","9ed03263","d469c843","ee9bf579"],"records":{"maxGamePTS":{"v":2,"gameKey":"7b41acb7","sid":"fe143c79"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "eb47c7bd-2349-4409-8753-8ee8ab143f10",
+  "name": "Melissa Millsteed",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 4,
+      "fouls": 6,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 8,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:13:15.561Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5dfc7567",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "169558b8",
+          "tn": "The Dream Team",
+          "gid": "bd5a44e4",
+          "gn": "Thursday Open Women D/DRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fe143c79",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "c21d2187",
+          "tn": "The Dream Team",
+          "gid": "c6b0aa2c",
+          "gn": "Thursday Open Women E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "15554ef0",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "ba2c604e",
+          "tn": "The Dream Team",
+          "gid": "0ae423c7",
+          "gn": "Thursday Open Women D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "wins": 3,
+            "losses": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T14:39:36.973Z",
+  "teams": [
+    {
+      "tid": "169558b8",
+      "sid": "5dfc7567",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c21d2187",
+      "sid": "fe143c79",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba2c604e",
+      "sid": "15554ef0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:51.475Z",
+  "games": [
+    "15667a7d",
+    "164eb574",
+    "5c7686a7",
+    "752fd049",
+    "7686ec9f",
+    "76b81297",
+    "7b41acb7",
+    "90b02bf7",
+    "95650597",
+    "9ed03263",
+    "d469c843",
+    "ee9bf579"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "7b41acb7",
+      "sid": "fe143c79"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

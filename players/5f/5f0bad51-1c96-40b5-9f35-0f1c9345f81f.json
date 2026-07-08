@@ -1,1 +1,105 @@
-{"uuid":"5f0bad51-1c96-40b5-9f35-0f1c9345f81f","name":"Jasmine Hietanen","gender":"Girls","sports":{"Basketball":{"gp":11,"pts":15,"fouls":22,"fg":7,"ft":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":5,"losses":5,"winPct":0.5,"statsChecked":"2026-07-05T14:41:40.845Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"b893b2bd","tn":"Hawkesbury Jets U12 Girls Arosha","gid":"cdf71d2c","gn":"GIRLS UNDER 12 C1","age":null,"div":"C1","stats":{"gp":6,"fouls":12,"ft":1,"fg":6,"pts":13,"finals":1,"gfApps":1,"wins":5,"losses":1}}]},{"sid":"0869ea69","regs":[{"tid":"e73bf123","stats":{"losses":4,"gp":5,"pts":2,"fg":1,"fouls":10}}]}],"updatedAt":"2026-05-31T01:04:48.993Z","teams":[{"tid":"e73bf123","sid":"0869ea69","status":"UPCOMING"},{"tid":"b893b2bd","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:40:27.921Z","records":{"maxGamePTS":{"v":5,"gameKey":"87ec2dfa","sid":"6dd649c0"},"maxGameThreePt":{"v":null}},"games":["3c268795","4d7ab04f","5c3bbab1","6782a845","6cc7693c","87ec2dfa","9920b8db","b66c69ce","caea6dfc","cdedbc76"]}
+{
+  "uuid": "5f0bad51-1c96-40b5-9f35-0f1c9345f81f",
+  "name": "Jasmine Hietanen",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 15,
+      "fouls": 22,
+      "fg": 7,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:41:40.845Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "b893b2bd",
+          "tn": "Hawkesbury Jets U12 Girls Arosha",
+          "gid": "cdf71d2c",
+          "gn": "GIRLS UNDER 12 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "e73bf123",
+          "stats": {
+            "losses": 4,
+            "gp": 5,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 10
+          },
+          "gid": "029fe376",
+          "gn": "GIRLS UNDER 14 C3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:04:48.993Z",
+  "teams": [
+    {
+      "tid": "b893b2bd",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e73bf123",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:03.665Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "87ec2dfa",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3c268795",
+    "4d7ab04f",
+    "5c3bbab1",
+    "6782a845",
+    "6cc7693c",
+    "87ec2dfa",
+    "9920b8db",
+    "b66c69ce",
+    "caea6dfc",
+    "cdedbc76"
+  ]
+}

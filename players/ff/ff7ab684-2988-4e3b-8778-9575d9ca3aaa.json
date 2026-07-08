@@ -1,1 +1,247 @@
-{"uuid":"ff7ab684-2988-4e3b-8778-9575d9ca3aaa","name":"Noah Theuma","gender":"Boys","sports":{"Basketball":{"gp":44,"pts":119,"fouls":76,"fg":54,"ft":11,"foulOuts":{"d868771d":1},"maxGamePTS":20,"maxGameThreePt":null,"wins":23,"losses":41,"draws":3,"winPct":0.34,"statsChecked":"2026-07-05T15:27:21.840Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Marymede Flames Basketball Club Inc.","regs":[{"tid":"840bd715","tn":"Marymede-Flames U12 Boys 5","gid":"2b879843","gn":"Saturday U12 Boys D2","age":"U12","div":"D2","stats":{"gp":14,"fouls":25,"ft":3,"fg":11,"pts":25,"wins":3,"losses":5,"draws":1}},{"tid":"840bd715","tn":"Marymede-Flames U12 Boys 5","gid":"f0cdbcab","gn":"Saturday U12 Boys Grading Group 4","age":"U12","div":null,"stats":{"gp":14,"fouls":25,"fg":11,"pts":25,"wins":3,"losses":5,"draws":1,"ft":3}},{"tid":"840bd715","tn":"Marymede-Flames U12 Boys 5","gid":"0cc86448","gn":"Saturday U12 Boys Grading Group 3","age":"U12","div":null,"stats":{"gp":14,"fouls":25,"ft":3,"fg":11,"pts":25,"wins":3,"losses":5,"draws":1}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Power Basketball Club","regs":[{"tid":"fa23db2b","tn":"Power U10 Boys 2","gid":"9321f9f0","gn":"Saturday U10 Boys C2","age":"U10","div":"C2","stats":{"gp":15,"fouls":30,"ft":2,"fg":13,"pts":28,"wins":2,"losses":8}},{"tid":"fa23db2b","tn":"Power U10 Boys 2","gid":"832eed65","gn":"Saturday U10 Boys Grading Group 3","age":"U10","div":null,"stats":{"gp":15,"fouls":30,"fg":13,"pts":28,"wins":2,"losses":8,"ft":2}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Power Basketball Club","regs":[{"tid":"8703591d","tn":"Power U10 Boys 4","gid":"1f701217","gn":"Saturday U10 Boys D3","age":"U10","div":"D3","stats":{"gp":15,"fouls":21,"ft":6,"fg":30,"pts":66,"wins":5,"losses":5}},{"tid":"8703591d","tn":"Power U10 Boys 4","gid":"dca1b972","gn":"Grading - Saturday U10 Boys D3","age":"U10","div":"D3","stats":{"gp":15,"fouls":21,"ft":6,"fg":30,"pts":66,"wins":5,"losses":5}}]}],"updatedAt":"2026-06-01T06:33:10.671Z","teams":[{"tid":"840bd715","sid":"d868771d","status":"ACTIVE"},{"tid":"fa23db2b","sid":"f57b7901","status":"COMPLETED"},{"tid":"8703591d","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:57:32.394Z","games":["0156fb72","13bdb973","1dc406cc","297ccffb","46c01329","531abf69","5e7d7c02","60d74906","72173c71","77bdd38a","7d96b032","84ba43c6","85c9507b","87ff2cc5","978b2a95","9a5f8b30","9b1c4892","a1016a9c","b02af6f5","b5e39832","bf4c746f","c334a318","c5d554c5","c6f0b188","c9738846","d670b438","dd64b34f","edecf60f","f5f876a5"],"records":{"maxGamePTS":{"v":20,"gameKey":"531abf69","sid":"868d6996"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ff7ab684-2988-4e3b-8778-9575d9ca3aaa",
+  "name": "Noah Theuma",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 119,
+      "fouls": 76,
+      "fg": 54,
+      "ft": 11,
+      "foulOuts": {
+        "d868771d": 1
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 23,
+      "losses": 41,
+      "draws": 3,
+      "winPct": 0.34,
+      "statsChecked": "2026-07-05T15:27:21.840Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Marymede Flames Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "840bd715",
+          "tn": "Marymede-Flames U12 Boys 5",
+          "gid": "2b879843",
+          "gn": "Saturday U12 Boys D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 14,
+            "fouls": 25,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "840bd715",
+          "tn": "Marymede-Flames U12 Boys 5",
+          "gid": "f0cdbcab",
+          "gn": "Saturday U12 Boys Grading Group 4",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 25,
+            "fg": 11,
+            "pts": 25,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "840bd715",
+          "tn": "Marymede-Flames U12 Boys 5",
+          "gid": "0cc86448",
+          "gn": "Saturday U12 Boys Grading Group 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 25,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Power Basketball Club",
+      "regs": [
+        {
+          "tid": "fa23db2b",
+          "tn": "Power U10 Boys 2",
+          "gid": "9321f9f0",
+          "gn": "Saturday U10 Boys C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "fouls": 30,
+            "ft": 2,
+            "fg": 13,
+            "pts": 28,
+            "wins": 2,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "fa23db2b",
+          "tn": "Power U10 Boys 2",
+          "gid": "832eed65",
+          "gn": "Saturday U10 Boys Grading Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 30,
+            "fg": 13,
+            "pts": 28,
+            "wins": 2,
+            "losses": 8,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Power Basketball Club",
+      "regs": [
+        {
+          "tid": "8703591d",
+          "tn": "Power U10 Boys 4",
+          "gid": "1f701217",
+          "gn": "Saturday U10 Boys D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 15,
+            "fouls": 21,
+            "ft": 6,
+            "fg": 30,
+            "pts": 66,
+            "wins": 5,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "8703591d",
+          "tn": "Power U10 Boys 4",
+          "gid": "dca1b972",
+          "gn": "Grading - Saturday U10 Boys D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 15,
+            "fouls": 21,
+            "ft": 6,
+            "fg": 30,
+            "pts": 66,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "96b70976",
+          "tn": "Marymede-Flames U12 Boys 6",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:33:10.671Z",
+  "teams": [
+    {
+      "tid": "840bd715",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa23db2b",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8703591d",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96b70976",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:32:26.480Z",
+  "games": [
+    "0156fb72",
+    "13bdb973",
+    "1dc406cc",
+    "297ccffb",
+    "46c01329",
+    "531abf69",
+    "5e7d7c02",
+    "60d74906",
+    "72173c71",
+    "77bdd38a",
+    "7d96b032",
+    "84ba43c6",
+    "85c9507b",
+    "87ff2cc5",
+    "978b2a95",
+    "9a5f8b30",
+    "9b1c4892",
+    "a1016a9c",
+    "b02af6f5",
+    "b5e39832",
+    "bf4c746f",
+    "c334a318",
+    "c5d554c5",
+    "c6f0b188",
+    "c9738846",
+    "d670b438",
+    "dd64b34f",
+    "edecf60f",
+    "f5f876a5"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "531abf69",
+      "sid": "868d6996"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

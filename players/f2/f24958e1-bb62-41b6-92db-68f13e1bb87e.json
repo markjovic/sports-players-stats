@@ -1,1 +1,115 @@
-{"uuid":"f24958e1-bb62-41b6-92db-68f13e1bb87e","gender":null,"sports":{"Basketball":{"gp":11,"pts":88,"fouls":13,"fg":37,"ft":8,"threePt":2,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"wins":12,"winPct":0.55,"losses":10,"statsChecked":"2026-07-05T15:40:00.242Z"}},"seasons":[{"sid":"c7a12175","sn":"Autumn 2026","club":null,"regs":[{"tid":"9d771e58","tn":"The Rando's","gid":"57659e07","gn":"Womens Pool 1","stats":{"gp":11,"pts":88,"fouls":13,"fg":37,"ft":8,"threePt":2,"wins":6,"losses":5}},{"tid":"9d771e58","tn":"The Rando's","gid":"0f004c51","gn":"Monday Open Women","stats":{"gp":11,"pts":88,"fouls":13,"fg":37,"ft":8,"wins":6,"losses":5,"threePt":2}}]}],"updatedAt":"2026-07-04T05:42:58.643Z","records":{"maxGamePTS":{"v":13,"gameKey":"121ffa90","sid":"c7a12175"},"maxGameThreePt":{"v":1,"gameKey":"dd703e3e","sid":"c7a12175"}},"games":["121ffa90","1cb0c3f6","4b84ee9e","597747c8","80c5945d","89970398","8b3d094f","c2d401e5","dd703e3e","f4a651a9","fbadda7b"],"name":"Autumn 2026"}
+{
+  "uuid": "f24958e1-bb62-41b6-92db-68f13e1bb87e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 88,
+      "fouls": 13,
+      "fg": 37,
+      "ft": 8,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 12,
+      "winPct": 0.55,
+      "losses": 10,
+      "statsChecked": "2026-07-05T15:40:00.242Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c7a12175",
+      "sn": "Autumn 2026",
+      "club": null,
+      "regs": [
+        {
+          "tid": "9d771e58",
+          "tn": "The Rando's",
+          "gid": "57659e07",
+          "gn": "Womens Pool 1",
+          "stats": {
+            "gp": 11,
+            "pts": 88,
+            "fouls": 13,
+            "fg": 37,
+            "ft": 8,
+            "threePt": 2,
+            "wins": 6,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "9d771e58",
+          "tn": "The Rando's",
+          "gid": "0f004c51",
+          "gn": "Monday Open Women",
+          "stats": {
+            "gp": 11,
+            "pts": 88,
+            "fouls": 13,
+            "fg": 37,
+            "ft": 8,
+            "wins": 6,
+            "losses": 5,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ba6c85d4",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "15698882",
+          "tn": "The Rando's",
+          "gid": "c86b92f7",
+          "gn": "Monday Open Women",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:42:58.643Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "121ffa90",
+      "sid": "c7a12175"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "dd703e3e",
+      "sid": "c7a12175"
+    }
+  },
+  "games": [
+    "121ffa90",
+    "1cb0c3f6",
+    "4b84ee9e",
+    "597747c8",
+    "80c5945d",
+    "89970398",
+    "8b3d094f",
+    "c2d401e5",
+    "dd703e3e",
+    "f4a651a9",
+    "fbadda7b"
+  ],
+  "name": "Autumn 2026",
+  "teams": [
+    {
+      "tid": "9d771e58",
+      "sid": "c7a12175",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "15698882",
+      "sid": "ba6c85d4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:52.096Z"
+}

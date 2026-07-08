@@ -1,1 +1,80 @@
-{"uuid":"e73f9fa1-3a7f-42c6-b6b1-ba1abb0ed433","name":"Elena Atkinson","sports":{"Basketball":{"maxGamePTS":2,"maxGameThreePt":null,"foulOuts":{},"gp":12,"pts":2,"fg":1,"fouls":4,"statsChecked":"2026-07-06T19:01:56.792Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"13b9e9ba"}]},{"sid":"facf8c4c","regs":[{"tid":"52250fd5"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":2,"gameKey":"b5ec8266","sid":"73551fc8"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e73f9fa1-3a7f-42c6-b6b1-ba1abb0ed433",
+  "name": "Elena Atkinson",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 12,
+      "pts": 2,
+      "fg": 1,
+      "fouls": 4,
+      "statsChecked": "2026-07-06T19:01:56.792Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "13b9e9ba",
+          "gid": "888c8f82",
+          "gn": "U10 Girls"
+        }
+      ]
+    },
+    {
+      "sid": "facf8c4c",
+      "regs": [
+        {
+          "tid": "52250fd5",
+          "gid": "0ef21126",
+          "gn": "U8 Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "b6b9c9b9",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "fa8a9ec6",
+          "tn": "Gippsland Wrens",
+          "gid": "cd070539",
+          "gn": "U10 Girls D1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "13b9e9ba",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52250fd5",
+      "sid": "facf8c4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa8a9ec6",
+      "sid": "b6b9c9b9",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "b5ec8266",
+      "sid": "73551fc8"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:31:22.101Z"
+}

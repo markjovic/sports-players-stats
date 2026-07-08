@@ -1,1 +1,146 @@
-{"uuid":"24061ddd-4c3b-497b-8d4b-8b8f18e0ecc6","gender":null,"sports":{"Basketball":{"gp":23,"pts":122,"fouls":33,"fg":51,"ft":14,"threePt":2,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"27c68881":1},"maxGamePTS":15,"maxGameThreePt":1,"wins":8,"losses":3,"winPct":0.73,"statsChecked":"2026-07-05T16:21:24.401Z"}},"seasons":[{"sid":"4da3bbae","sn":"Winter 2022","club":null,"regs":[{"tid":"80e889d5","tn":"UC","gid":"60bd7ba6","gn":"Tuesday Senior Men A B Grade","stats":{"gp":11,"pts":39,"fg":18,"ft":3,"fouls":12,"finals":1,"gfApps":1,"wins":8,"losses":3,"gfWins":1}}]},{"sid":"27c68881","sn":"Summer 2020/21","club":null,"regs":[{"tid":"6cd27757","tn":"Pippin aint easy","gid":"2a0773f1","gn":"Wednesday Open Men E1 Grade","stats":{"gp":12,"pts":83,"threePt":2,"fg":33,"ft":11,"fouls":21,"foulOuts":1}}]}],"updatedAt":"2026-06-11T23:37:27.057Z","records":{"maxGamePTS":{"v":15,"gameKey":"7c8cc752","sid":"27c68881"},"maxGameThreePt":{"v":1,"gameKey":"7c8cc752","sid":"27c68881"}},"games":["0c86638c","20b21972","250d1297","38f409ba","429921e9","5e43d235","6dd43f5e","70003e5c","73b0ece0","7c8cc752","85405751","91861b82","98304e57","988a3900","9b55a9fd","a12db5e8","afc36eab","ce169a26","d28eb667","d654fb00","dc1da4bc","f5dff71f","fe6a05d7"],"name":"Winter 2022"}
+{
+  "uuid": "24061ddd-4c3b-497b-8d4b-8b8f18e0ecc6",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 122,
+      "fouls": 33,
+      "fg": 51,
+      "ft": 14,
+      "threePt": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "27c68881": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 3,
+      "winPct": 0.73,
+      "statsChecked": "2026-07-05T16:21:24.401Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4da3bbae",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "80e889d5",
+          "tn": "UC",
+          "gid": "60bd7ba6",
+          "gn": "Tuesday Senior Men A B Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 39,
+            "fg": 18,
+            "ft": 3,
+            "fouls": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 3,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "27c68881",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "6cd27757",
+          "tn": "Pippin aint easy",
+          "gid": "2a0773f1",
+          "gn": "Wednesday Open Men E1 Grade",
+          "stats": {
+            "gp": 12,
+            "pts": 83,
+            "threePt": 2,
+            "fg": 33,
+            "ft": 11,
+            "fouls": 21,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "946e0e9a",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "5318cf5e",
+          "tn": "Pippin ain’t easy ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:27.057Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "7c8cc752",
+      "sid": "27c68881"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "7c8cc752",
+      "sid": "27c68881"
+    }
+  },
+  "games": [
+    "0c86638c",
+    "20b21972",
+    "250d1297",
+    "38f409ba",
+    "429921e9",
+    "5e43d235",
+    "6dd43f5e",
+    "70003e5c",
+    "73b0ece0",
+    "7c8cc752",
+    "85405751",
+    "91861b82",
+    "98304e57",
+    "988a3900",
+    "9b55a9fd",
+    "a12db5e8",
+    "afc36eab",
+    "ce169a26",
+    "d28eb667",
+    "d654fb00",
+    "dc1da4bc",
+    "f5dff71f",
+    "fe6a05d7"
+  ],
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "80e889d5",
+      "sid": "4da3bbae",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6cd27757",
+      "sid": "27c68881",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5318cf5e",
+      "sid": "946e0e9a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:44.389Z"
+}

@@ -1,1 +1,204 @@
-{"uuid":"d929714b-15c1-4390-9d00-c25434e0852b","name":"Chuong Kuok","gender":"Mixed","sports":{"Basketball":{"gp":34,"pts":169,"fouls":29,"fg":78,"ft":10,"threePt":1,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":19,"maxGameThreePt":1,"wins":27,"losses":31,"winPct":0.47,"statsChecked":"2026-07-05T14:44:54.080Z"}},"seasons":[{"sid":"3ecfff14","sn":"Winter 2026","club":"Pakenham Mavericks Basketball Club","regs":[{"tid":"d6bfa5e2","tn":"Mavericks U10 Boys VENOM","gid":"a2682658","gn":"Saturday U10 Mixed B1","age":"U10","div":"B1","stats":{"gp":9,"fouls":7,"ft":3,"fg":15,"pts":33,"wins":4,"losses":5}},{"tid":"d6bfa5e2","tn":"Mavericks U10 Boys VENOM","gid":"19e2d54d","gn":"Saturday U10 Mixed A","age":"U10","div":null,"stats":{"gp":9,"fouls":7,"fg":15,"pts":33,"ft":3,"wins":4,"losses":5}}]},{"sid":"f5bbd42a","sn":"Summer 2025/26","club":"Pakenham Mavericks Basketball Club","regs":[{"tid":"a2ee7574","tn":"Mavericks U10 Boys TOMCATS","gid":"e6ae0881","gn":"Saturday U10 Mixed C2","age":"U10","div":"C2","stats":{"gp":15,"fouls":14,"ft":7,"fg":51,"threePt":1,"pts":112,"finals":1,"wins":9,"losses":6}},{"tid":"a2ee7574","tn":"Mavericks U10 Boys TOMCATS","gid":"49996466","gn":"Saturday U10 Mixed C1","age":"U10","div":"C1","stats":{"gp":15,"fouls":14,"ft":7,"fg":51,"pts":112,"finals":1,"wins":9,"losses":6,"threePt":1}}]},{"sid":"94473b5e","sn":"Winter 2025","club":"Pakenham Mavericks Basketball Club","regs":[{"tid":"e7c19826","tn":"Mavericks U10 Boys TOMCATS","gid":"81a09d95","gn":"Saturday U10 Mixed B2","age":"U10","div":"B2","stats":{"gp":10,"fouls":8,"fg":12,"pts":24,"wins":1,"losses":9}}]}],"updatedAt":"2026-07-04T05:36:48.268Z","teams":[{"tid":"d6bfa5e2","sid":"3ecfff14","status":"ACTIVE"},{"tid":"a2ee7574","sid":"f5bbd42a","status":"COMPLETED"},{"tid":"e7c19826","sid":"94473b5e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:22.047Z","games":["02ab3637","0a4ab09f","0b48e8c0","14015189","1d046630","210b6c2e","26c44009","28acbec1","2b6f8b3a","2bd50feb","2ec81d16","2f7e3177","348da917","35786dbc","35de0dd8","3745938c","394ee1a4","441aaeb7","47ad79c2","4f6cf25a","5801d711","6625227f","8068672b","8ac391a4","922f8f5d","9cc5ee9a","a6198669","ab654935","c94b5cd0","cc16ddc0","cc1a7b2f","ccacf2da","cd80e85c","e76c933f"],"records":{"maxGamePTS":{"v":19,"gameKey":"922f8f5d","sid":"f5bbd42a"},"maxGameThreePt":{"v":1,"gameKey":"1d046630","sid":"f5bbd42a"}}}
+{
+  "uuid": "d929714b-15c1-4390-9d00-c25434e0852b",
+  "name": "Chuong Kuok",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 169,
+      "fouls": 29,
+      "fg": 78,
+      "ft": 10,
+      "threePt": 1,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 19,
+      "maxGameThreePt": 1,
+      "wins": 27,
+      "losses": 31,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-05T14:44:54.080Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3ecfff14",
+      "sn": "Winter 2026",
+      "club": "Pakenham Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "d6bfa5e2",
+          "tn": "Mavericks U10 Boys VENOM",
+          "gid": "19e2d54d",
+          "gn": "Saturday U10 Mixed A",
+          "age": "U10",
+          "div": "B1",
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "ft": 3,
+            "fg": 15,
+            "pts": 33,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "d6bfa5e2",
+          "tn": "Mavericks U10 Boys VENOM",
+          "gid": "19e2d54d",
+          "gn": "Saturday U10 Mixed A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "fg": 15,
+            "pts": 33,
+            "ft": 3,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5bbd42a",
+      "sn": "Summer 2025/26",
+      "club": "Pakenham Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "a2ee7574",
+          "tn": "Mavericks U10 Boys TOMCATS",
+          "gid": "e6ae0881",
+          "gn": "Saturday U10 Mixed C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "ft": 7,
+            "fg": 51,
+            "threePt": 1,
+            "pts": 112,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "a2ee7574",
+          "tn": "Mavericks U10 Boys TOMCATS",
+          "gid": "49996466",
+          "gn": "Saturday U10 Mixed C1",
+          "age": "U10",
+          "div": "C1",
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "ft": 7,
+            "fg": 51,
+            "pts": 112,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "94473b5e",
+      "sn": "Winter 2025",
+      "club": "Pakenham Mavericks Basketball Club",
+      "regs": [
+        {
+          "tid": "e7c19826",
+          "tn": "Mavericks U10 Boys TOMCATS",
+          "gid": "81a09d95",
+          "gn": "Saturday U10 Mixed B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 10,
+            "fouls": 8,
+            "fg": 12,
+            "pts": 24,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:48.268Z",
+  "teams": [
+    {
+      "tid": "d6bfa5e2",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2ee7574",
+      "sid": "f5bbd42a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7c19826",
+      "sid": "94473b5e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:38.869Z",
+  "games": [
+    "02ab3637",
+    "0a4ab09f",
+    "0b48e8c0",
+    "14015189",
+    "1d046630",
+    "210b6c2e",
+    "26c44009",
+    "28acbec1",
+    "2b6f8b3a",
+    "2bd50feb",
+    "2ec81d16",
+    "2f7e3177",
+    "348da917",
+    "35786dbc",
+    "35de0dd8",
+    "3745938c",
+    "394ee1a4",
+    "441aaeb7",
+    "47ad79c2",
+    "4f6cf25a",
+    "5801d711",
+    "6625227f",
+    "8068672b",
+    "8ac391a4",
+    "922f8f5d",
+    "9cc5ee9a",
+    "a6198669",
+    "ab654935",
+    "c94b5cd0",
+    "cc16ddc0",
+    "cc1a7b2f",
+    "ccacf2da",
+    "cd80e85c",
+    "e76c933f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "922f8f5d",
+      "sid": "f5bbd42a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1d046630",
+      "sid": "f5bbd42a"
+    }
+  }
+}

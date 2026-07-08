@@ -1,1 +1,133 @@
-{"uuid":"b718c592-7c09-4e63-86a4-f0897faf1f99","gender":null,"sports":{"Basketball":{"gp":14,"pts":59,"fouls":22,"fg":29,"ft":1,"foulOuts":{"bb27dd74":1},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"maxGamePTS":10,"maxGameThreePt":null,"wins":7,"losses":7,"winPct":0.5,"statsChecked":"2026-07-05T16:14:54.229Z"}},"seasons":[{"sid":"99aa24b1","sn":"Winter 2024","club":null,"regs":[{"tid":"3acacda2","tn":"Icarus","gid":"ef7686c7","gn":"Wednesday Senior Men","stats":{"gp":5,"pts":16,"fouls":8,"fg":8,"finals":1,"gfApps":1,"wins":5,"gfWins":1}}]},{"sid":"bb27dd74","sn":"Autumn 2023","club":null,"regs":[{"tid":"d138b734","tn":"Icarus (Yellow)","gid":"01f43b71","gn":"Wednesday Senior Men","stats":{"gp":9,"pts":43,"fouls":14,"fg":21,"ft":1,"foulOuts":1,"wins":2,"losses":7}}]}],"updatedAt":"2026-06-11T23:43:58.049Z","games":["09600998","43a782d0","5c516b66","64fda361","67c3cc70","6bb486bc","6e16024a","6fa31d48","7ea2728b","8a25da83","b119d8c5","dc9379d4","def866c3","e2f164be"],"records":{"maxGamePTS":{"v":10,"gameKey":"6e16024a","sid":"bb27dd74"},"maxGameThreePt":{"v":null}},"name":"Winter 2024"}
+{
+  "uuid": "b718c592-7c09-4e63-86a4-f0897faf1f99",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 59,
+      "fouls": 22,
+      "fg": 29,
+      "ft": 1,
+      "foulOuts": {
+        "bb27dd74": 1
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 7,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:14:54.229Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "99aa24b1",
+      "sn": "Winter 2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "3acacda2",
+          "tn": "Icarus",
+          "gid": "ef7686c7",
+          "gn": "Wednesday Senior Men",
+          "stats": {
+            "gp": 5,
+            "pts": 16,
+            "fouls": 8,
+            "fg": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bb27dd74",
+      "sn": "Autumn 2023",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d138b734",
+          "tn": "Icarus (Yellow)",
+          "gid": "01f43b71",
+          "gn": "Wednesday Senior Men",
+          "stats": {
+            "gp": 9,
+            "pts": 43,
+            "fouls": 14,
+            "fg": 21,
+            "ft": 1,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b4b05de7",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "b32be792",
+          "tn": "Lay Z",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:58.049Z",
+  "games": [
+    "09600998",
+    "43a782d0",
+    "5c516b66",
+    "64fda361",
+    "67c3cc70",
+    "6bb486bc",
+    "6e16024a",
+    "6fa31d48",
+    "7ea2728b",
+    "8a25da83",
+    "b119d8c5",
+    "dc9379d4",
+    "def866c3",
+    "e2f164be"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "6e16024a",
+      "sid": "bb27dd74"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2024",
+  "teams": [
+    {
+      "tid": "3acacda2",
+      "sid": "99aa24b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d138b734",
+      "sid": "bb27dd74",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b32be792",
+      "sid": "b4b05de7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:11.755Z"
+}

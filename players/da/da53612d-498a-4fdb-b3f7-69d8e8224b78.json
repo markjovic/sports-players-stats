@@ -1,1 +1,141 @@
-{"uuid":"da53612d-498a-4fdb-b3f7-69d8e8224b78","name":"Megan Kruger","gender":"Girls","sports":{"Basketball":{"gp":16,"pts":22,"fouls":14,"fg":10,"ft":2,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":7,"losses":9,"winPct":0.44,"statsChecked":"2026-07-05T14:58:50.082Z"}},"seasons":[{"sid":"56bad6ef","sn":"2024","club":"Norwood Flames Basketball Club","regs":[{"tid":"091dee5d","tn":"Norwood U12 Girls","gid":"996b46f3","gn":"U12 Girls NJC","age":"U12","div":null,"stats":{"gp":6,"fouls":5,"ft":1,"fg":4,"pts":9,"finals":1,"gfApps":1,"wins":3,"losses":3}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"42c89203","tn":"Norwood Flames U12 Girls 2","gid":"6f0a9234","gn":"GIRLS UNDER 12 B3","age":null,"div":"B3","stats":{"gp":5,"fouls":6,"ft":1,"fg":4,"pts":9,"wins":3,"losses":2}}]},{"sid":"0869ea69","regs":[{"tid":"79e5208a","stats":{"wins":1,"losses":4,"gp":5,"pts":4,"fg":2,"fouls":3}}]}],"updatedAt":"2026-06-01T03:11:10.736Z","teams":[{"tid":"79e5208a","sid":"0869ea69","status":"UPCOMING"},{"tid":"091dee5d","sid":"56bad6ef","status":"COMPLETED"},{"tid":"42c89203","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:41.663Z","games":["02c6b400","07f42112","0a9abd60","1d473f4b","2f0a6a4f","4aa2c7cb","572d6738","66031185","81db0d6a","88ec9db6","99fe4910","b346ecb7","cc018438","cea30e49","d3e34430","ff970bf2"],"records":{"maxGamePTS":{"v":4,"gameKey":"cea30e49","sid":"56bad6ef"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "da53612d-498a-4fdb-b3f7-69d8e8224b78",
+  "name": "Megan Kruger",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 22,
+      "fouls": 14,
+      "fg": 10,
+      "ft": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 9,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T14:58:50.082Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "56bad6ef",
+      "sn": "2024",
+      "club": "Norwood Flames Basketball Club",
+      "regs": [
+        {
+          "tid": "091dee5d",
+          "tn": "Norwood U12 Girls",
+          "gid": "996b46f3",
+          "gn": "U12 Girls NJC",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "42c89203",
+          "tn": "Norwood Flames U12 Girls 2",
+          "gid": "6f0a9234",
+          "gn": "GIRLS UNDER 12 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "79e5208a",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3
+          },
+          "gid": "022a396e",
+          "gn": "GIRLS UNDER 14 AR"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T03:11:10.736Z",
+  "teams": [
+    {
+      "tid": "091dee5d",
+      "sid": "56bad6ef",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42c89203",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79e5208a",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:49.081Z",
+  "games": [
+    "02c6b400",
+    "07f42112",
+    "0a9abd60",
+    "1d473f4b",
+    "2f0a6a4f",
+    "4aa2c7cb",
+    "572d6738",
+    "66031185",
+    "81db0d6a",
+    "88ec9db6",
+    "99fe4910",
+    "b346ecb7",
+    "cc018438",
+    "cea30e49",
+    "d3e34430",
+    "ff970bf2"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "cea30e49",
+      "sid": "56bad6ef"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

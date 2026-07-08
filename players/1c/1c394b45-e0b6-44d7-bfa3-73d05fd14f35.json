@@ -1,1 +1,73 @@
-{"uuid":"1c394b45-e0b6-44d7-bfa3-73d05fd14f35","gender":null,"sports":{"Basketball":{"gp":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"winPct":1,"statsChecked":"2026-07-05T16:12:16.613Z"}},"seasons":[{"sid":"18b12060","sn":"Spring 2023","club":null,"regs":[{"tid":"353f62f7","tn":"Team 4 - Silver","gid":"e72afc22","gn":"Wednesday Mini’s Mixed","stats":{"gp":1,"wins":1}}]}],"updatedAt":"2026-06-11T23:37:02.476Z","games":["8b1cadf4"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Spring 2023"}
+{
+  "uuid": "1c394b45-e0b6-44d7-bfa3-73d05fd14f35",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:12:16.613Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "18b12060",
+      "sn": "Spring 2023",
+      "club": null,
+      "regs": [
+        {
+          "tid": "353f62f7",
+          "tn": "Team 4 - Silver",
+          "gid": "e72afc22",
+          "gn": "Wednesday Mini’s Mixed",
+          "stats": {
+            "gp": 1,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2207fc8f",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "8745abca",
+          "tn": "Team 3 - Pink",
+          "gid": "8573f32e",
+          "gn": "Wednesday Mini’s Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:02.476Z",
+  "games": [
+    "8b1cadf4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Spring 2023",
+  "teams": [
+    {
+      "tid": "353f62f7",
+      "sid": "18b12060",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8745abca",
+      "sid": "2207fc8f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:08.272Z"
+}

@@ -1,1 +1,302 @@
-{"uuid":"7522421e-5c80-4fec-a902-896fad49bb18","name":"Adam Douglas","gender":"Men","sports":{"Basketball":{"gp":50,"pts":231,"fouls":25,"fg":60,"ft":10,"threePt":28,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.2,"foulOuts":{},"maxGamePTS":15,"maxGameThreePt":2,"wins":14,"losses":9,"draws":1,"winPct":0.58,"statsChecked":"2026-07-05T15:49:10.271Z"}},"seasons":[{"sid":"0b68a9b6","sn":"Summer 2022/23","regs":[{"tid":"0747ecf9","tn":"The AirBallers","gid":"df8eaa4e","gn":"Monday Open Men Division 4","age":"Senior","div":"Division 4","stats":{"gp":12,"fouls":5,"ft":4,"fg":15,"threePt":2,"pts":40,"finals":1,"gfApps":1,"wins":11,"losses":1,"draws":1,"gfWins":1}}]},{"sid":"1c6cd7c4","sn":"Winter 2022","regs":[{"tid":"780dc234","tn":"Air Ballers","gid":"80b68db2","gn":"Monday Open Men Division 2","age":"Senior","div":"Division 2","stats":{"gp":11,"fouls":7,"ft":6,"fg":19,"threePt":8,"pts":68,"wins":3,"losses":8}}]},{"sid":"100b4142","sn":"Winter 2021","regs":[{"tid":"4a341d46","tn":"Air Ballers","gid":"58fdbb2e","gn":"Monday Men 5","age":null,"div":null,"stats":{"gp":10,"fouls":7,"fg":14,"threePt":3,"pts":48}}]},{"sid":"391c5805","sn":"Summer 2020/21","regs":[{"tid":"3cb84254","tn":"A Team","gid":"1edb2e72","gn":"Wednesday Men Division 3","age":null,"div":"Division 3","stats":{"gp":9,"fouls":2,"fg":6,"threePt":8,"pts":42}},{"tid":"9e8800d2","stats":{"gp":8,"pts":33,"fg":6,"threePt":7,"fouls":4}}]},{"sid":"391c5805","sn":"Summer 2020/21","regs":[{"tid":"9e8800d2","tn":"Solo","gid":"eaf7c101","gn":"Monday Men Division 4/5","age":null,"div":null,"stats":{"gp":8,"fouls":4,"fg":6,"threePt":7,"pts":33}}]}],"updatedAt":"2026-06-02T14:29:24.223Z","teams":[{"tid":"0747ecf9","sid":"0b68a9b6","status":"COMPLETED"},{"tid":"780dc234","sid":"1c6cd7c4","status":"COMPLETED"},{"tid":"4a341d46","sid":"100b4142","status":"COMPLETED"},{"tid":"3cb84254","sid":"391c5805","status":"COMPLETED"},{"tid":"9e8800d2","sid":"391c5805","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:52:07.900Z","records":{"maxGamePTS":{"v":15,"gameKey":"dd2f2481","sid":"1c6cd7c4"},"maxGameThreePt":{"v":2,"gameKey":"5d51ce53","sid":"0b68a9b6"}},"games":["0c9e59eb","0dcb3915","11779d3d","1211243d","176a824d","179d6185","17fac8b5","1f5c7be8","214a3d21","23717145","23bbe193","3252a10f","35a62702","40faa80f","419742e8","487886ac","4b710855","4e81c2e0","5528b3e4","5abcaa4d","5d51ce53","67be21d7","69e85263","7722c75e","79202b8f","8fcd54b2","906b0538","90b3b16a","98f406fb","99cd0578","a059e87c","a0a29c26","a3ba5065","ad81df27","b1eec94a","b8182cba","b8a1e8cb","bb7f7cb5","c6b05fa3","c9628006","cfd84d8e","d1ae09fd","d2c0526f","d7865e42","dacd19ae","dcbb2503","dd2f2481","de239dee","e92dd78f","ea9fb9a9","f47a483d"],"gameTids":{"23717145":"0747ecf9","d1ae09fd":"0747ecf9","79202b8f":"0747ecf9","11779d3d":"0747ecf9","f47a483d":"0747ecf9","de239dee":"0747ecf9","ad81df27":"0747ecf9","4e81c2e0":"0747ecf9","0c9e59eb":"0747ecf9","b8a1e8cb":"0747ecf9","487886ac":"0747ecf9","5d51ce53":"0747ecf9","7722c75e":"780dc234","419742e8":"780dc234","3252a10f":"780dc234","69e85263":"780dc234","bb7f7cb5":"780dc234","dd2f2481":"780dc234","23bbe193":"780dc234","67be21d7":"780dc234","90b3b16a":"780dc234","b1eec94a":"780dc234","179d6185":"780dc234","ea9fb9a9":"4a341d46","35a62702":"4a341d46","4b710855":"4a341d46","cfd84d8e":"4a341d46","17fac8b5":"4a341d46","5528b3e4":"4a341d46","a059e87c":"4a341d46","d2c0526f":"4a341d46","c9628006":"4a341d46","1211243d":"4a341d46","b8182cba":"3cb84254","dcbb2503":"3cb84254","40faa80f":"3cb84254","c6b05fa3":"3cb84254","a0a29c26":"3cb84254","1f5c7be8":"3cb84254","a3ba5065":"3cb84254","214a3d21":"3cb84254","0dcb3915":"3cb84254","176a824d":"9e8800d2","8fcd54b2":"9e8800d2","5abcaa4d":"9e8800d2","dacd19ae":"9e8800d2","d7865e42":"9e8800d2","98f406fb":"9e8800d2","99cd0578":"9e8800d2","906b0538":"9e8800d2"}}
+{
+  "uuid": "7522421e-5c80-4fec-a902-896fad49bb18",
+  "name": "Adam Douglas",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 231,
+      "fouls": 25,
+      "fg": 60,
+      "ft": 10,
+      "threePt": 28,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {},
+      "maxGamePTS": 15,
+      "maxGameThreePt": 2,
+      "wins": 14,
+      "losses": 9,
+      "draws": 1,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T15:49:10.271Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0b68a9b6",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "0747ecf9",
+          "tn": "The AirBallers",
+          "gid": "df8eaa4e",
+          "gn": "Monday Open Men Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 12,
+            "fouls": 5,
+            "ft": 4,
+            "fg": 15,
+            "threePt": 2,
+            "pts": 40,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c6cd7c4",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "780dc234",
+          "tn": "Air Ballers",
+          "gid": "80b68db2",
+          "gn": "Monday Open Men Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 11,
+            "fouls": 7,
+            "ft": 6,
+            "fg": 19,
+            "threePt": 8,
+            "pts": 68,
+            "wins": 3,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "100b4142",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "4a341d46",
+          "tn": "Air Ballers",
+          "gid": "58fdbb2e",
+          "gn": "Monday Men 5",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 7,
+            "fg": 14,
+            "threePt": 3,
+            "pts": 48
+          }
+        }
+      ]
+    },
+    {
+      "sid": "391c5805",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "3cb84254",
+          "tn": "A Team",
+          "gid": "1edb2e72",
+          "gn": "Wednesday Men Division 3",
+          "age": null,
+          "div": "Division 3",
+          "stats": {
+            "gp": 9,
+            "fouls": 2,
+            "fg": 6,
+            "threePt": 8,
+            "pts": 42
+          }
+        },
+        {
+          "tid": "9e8800d2",
+          "stats": {
+            "gp": 8,
+            "pts": 33,
+            "fg": 6,
+            "threePt": 7,
+            "fouls": 4
+          },
+          "gid": "eaf7c101",
+          "gn": "Monday Men Division 4/5"
+        }
+      ]
+    },
+    {
+      "sid": "391c5805",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "9e8800d2",
+          "tn": "Solo",
+          "gid": "eaf7c101",
+          "gn": "Monday Men Division 4/5",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "fg": 6,
+            "threePt": 7,
+            "pts": 33
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T14:29:24.223Z",
+  "teams": [
+    {
+      "tid": "0747ecf9",
+      "sid": "0b68a9b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "780dc234",
+      "sid": "1c6cd7c4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4a341d46",
+      "sid": "100b4142",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cb84254",
+      "sid": "391c5805",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e8800d2",
+      "sid": "391c5805",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:57.629Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "dd2f2481",
+      "sid": "1c6cd7c4"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "5d51ce53",
+      "sid": "0b68a9b6"
+    }
+  },
+  "games": [
+    "0c9e59eb",
+    "0dcb3915",
+    "11779d3d",
+    "1211243d",
+    "176a824d",
+    "179d6185",
+    "17fac8b5",
+    "1f5c7be8",
+    "214a3d21",
+    "23717145",
+    "23bbe193",
+    "3252a10f",
+    "35a62702",
+    "40faa80f",
+    "419742e8",
+    "487886ac",
+    "4b710855",
+    "4e81c2e0",
+    "5528b3e4",
+    "5abcaa4d",
+    "5d51ce53",
+    "67be21d7",
+    "69e85263",
+    "7722c75e",
+    "79202b8f",
+    "8fcd54b2",
+    "906b0538",
+    "90b3b16a",
+    "98f406fb",
+    "99cd0578",
+    "a059e87c",
+    "a0a29c26",
+    "a3ba5065",
+    "ad81df27",
+    "b1eec94a",
+    "b8182cba",
+    "b8a1e8cb",
+    "bb7f7cb5",
+    "c6b05fa3",
+    "c9628006",
+    "cfd84d8e",
+    "d1ae09fd",
+    "d2c0526f",
+    "d7865e42",
+    "dacd19ae",
+    "dcbb2503",
+    "dd2f2481",
+    "de239dee",
+    "e92dd78f",
+    "ea9fb9a9",
+    "f47a483d"
+  ],
+  "gameTids": {
+    "23717145": "0747ecf9",
+    "d1ae09fd": "0747ecf9",
+    "79202b8f": "0747ecf9",
+    "11779d3d": "0747ecf9",
+    "f47a483d": "0747ecf9",
+    "de239dee": "0747ecf9",
+    "ad81df27": "0747ecf9",
+    "4e81c2e0": "0747ecf9",
+    "0c9e59eb": "0747ecf9",
+    "b8a1e8cb": "0747ecf9",
+    "487886ac": "0747ecf9",
+    "5d51ce53": "0747ecf9",
+    "7722c75e": "780dc234",
+    "419742e8": "780dc234",
+    "3252a10f": "780dc234",
+    "69e85263": "780dc234",
+    "bb7f7cb5": "780dc234",
+    "dd2f2481": "780dc234",
+    "23bbe193": "780dc234",
+    "67be21d7": "780dc234",
+    "90b3b16a": "780dc234",
+    "b1eec94a": "780dc234",
+    "179d6185": "780dc234",
+    "ea9fb9a9": "4a341d46",
+    "35a62702": "4a341d46",
+    "4b710855": "4a341d46",
+    "cfd84d8e": "4a341d46",
+    "17fac8b5": "4a341d46",
+    "5528b3e4": "4a341d46",
+    "a059e87c": "4a341d46",
+    "d2c0526f": "4a341d46",
+    "c9628006": "4a341d46",
+    "1211243d": "4a341d46",
+    "b8182cba": "3cb84254",
+    "dcbb2503": "3cb84254",
+    "40faa80f": "3cb84254",
+    "c6b05fa3": "3cb84254",
+    "a0a29c26": "3cb84254",
+    "1f5c7be8": "3cb84254",
+    "a3ba5065": "3cb84254",
+    "214a3d21": "3cb84254",
+    "0dcb3915": "3cb84254",
+    "176a824d": "9e8800d2",
+    "8fcd54b2": "9e8800d2",
+    "5abcaa4d": "9e8800d2",
+    "dacd19ae": "9e8800d2",
+    "d7865e42": "9e8800d2",
+    "98f406fb": "9e8800d2",
+    "99cd0578": "9e8800d2",
+    "906b0538": "9e8800d2"
+  }
+}

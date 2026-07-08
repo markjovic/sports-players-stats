@@ -1,1 +1,353 @@
-{"uuid":"fb1da967-7739-4352-8efd-c8a286e4333e","name":"Harriet Wendt","gender":"Girls","sports":{"Basketball":{"gp":51,"pts":76,"fouls":33,"fg":37,"ft":2,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":54,"losses":70,"draws":2,"winPct":0.43,"statsChecked":"2026-07-05T14:45:46.131Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"2b943e67","tn":"Balwyn U09 Girls 01","gid":"781b440d","gn":"Girls U09 B Grading","age":"U09","div":null,"stats":{"gp":6,"fouls":7,"wins":3,"losses":2,"pts":24,"fg":12}},{"tid":"2b943e67","tn":"Balwyn U09 Girls 01","gid":"f522b476","gn":"Girls U09 C Grading","age":"U09","div":null,"stats":{"gp":6,"fouls":7,"fg":12,"pts":24,"wins":3,"losses":2}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"d1685ced","tn":"Balwyn U10 Girls 04","gid":"0ac7a6c0","gn":"Girls U10 D3","age":"U10","div":"D3","stats":{"gp":12,"fouls":4,"fg":5,"pts":10,"finals":1,"wins":4,"losses":8}},{"tid":"d1685ced","tn":"Balwyn U10 Girls 04","gid":"b053dfcd","gn":"Girls U10 D Grading","age":"U10","div":null,"stats":{"gp":12,"fouls":4,"fg":5,"pts":10,"finals":1,"wins":4,"losses":8}},{"tid":"d1685ced","tn":"Balwyn U10 Girls 04","gid":"7455924e","gn":"Girls U10 C Grading","age":"U10","div":null,"stats":{"gp":12,"fouls":4,"fg":5,"pts":10,"finals":1,"wins":4,"losses":8}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"57ccd19d","tn":"Balwyn U09 Girls 05","gid":"e6a7cc5c","gn":"Girls U09 C3","age":"U09","div":"C3","stats":{"gp":17,"fouls":14,"ft":1,"fg":14,"pts":29,"finals":1,"wins":8,"losses":8}},{"tid":"57ccd19d","tn":"Balwyn U09 Girls 05","gid":"a409a245","gn":"Girls U09 C Grading","age":"U09","div":null,"stats":{"gp":17,"fg":14,"pts":29,"finals":1,"wins":8,"losses":8,"ft":1,"fouls":14}},{"tid":"57ccd19d","tn":"Balwyn U09 Girls 05","gid":"84f1d3db","gn":"Girls U09 D Grading","age":"U09","div":null,"stats":{"gp":17,"fouls":14,"fg":14,"pts":29,"finals":1,"wins":8,"losses":8,"ft":1}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"1e9e6c0b","tn":"Balwyn U08 Girls 03","gid":"6901a4ff","gn":"Girls U08 C1","age":"U08","div":"C1","stats":{"gp":16,"fouls":8,"ft":1,"fg":6,"pts":13,"finals":1,"wins":6,"losses":9,"draws":1}},{"tid":"1e9e6c0b","tn":"Balwyn U08 Girls 03","gid":"ff9e21fe","gn":"Girls U08 C Grading","age":"U08","div":null,"stats":{"gp":16,"fouls":8,"fg":6,"pts":13,"finals":1,"wins":6,"losses":9,"draws":1,"ft":1}}]}],"updatedAt":"2026-07-04T05:54:48.824Z","teams":[{"tid":"2b943e67","sid":"1ae60211","status":"ACTIVE"},{"tid":"d1685ced","sid":"88026885","status":"COMPLETED"},{"tid":"57ccd19d","sid":"f373fc05","status":"COMPLETED"},{"tid":"1e9e6c0b","sid":"fa446579","status":"COMPLETED"},{"tid":"3ad9194a","sid":"8884de2d","status":"COMPLETED"},{"tid":"1820b755","sid":"0fef30ca","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:56:45.832Z","games":["0eb2f5c1","0eecc6eb","0f139d07","2354b925","281b40e8","30e48e54","3203ed5a","346281d2","3b852f94","3da42c04","453e38eb","4c87a679","51c6055c","5a4e2215","5b80e57e","641064fc","689675b2","68e94647","6a64150d","6c7753a3","6ef3bf10","71871998","7cfe4a00","7fda4d81","839e7fda","868630c3","8f387ca8","91c2d06a","96b9a047","9c0c214a","abb221e9","b42066f8","b5294aed","b60261ef","b734e2d2","ba06c279","c1434455","c652fc08","cb14561e","cc3b16e8","d0da628f","d30e3f36","d31d44ba","d8e9f95c","f0d1a6bf","f2a139ec","f3b2eecc","f5a18e56","f675cf47","fcefc8ed"],"records":{"maxGamePTS":{"v":12,"gameKey":"689675b2","sid":"1ae60211"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "fb1da967-7739-4352-8efd-c8a286e4333e",
+  "name": "Harriet Wendt",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 76,
+      "fouls": 33,
+      "fg": 37,
+      "ft": 2,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 54,
+      "losses": 70,
+      "draws": 2,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T14:45:46.131Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "2b943e67",
+          "tn": "Balwyn U09 Girls 01",
+          "gid": "23cc6cb0",
+          "gn": "Girls U09 B1",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 7,
+            "wins": 3,
+            "losses": 2,
+            "pts": 24,
+            "fg": 12
+          }
+        },
+        {
+          "tid": "2b943e67",
+          "tn": "Balwyn U09 Girls 01",
+          "gid": "f522b476",
+          "gn": "Girls U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 7,
+            "fg": 12,
+            "pts": 24,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "d1685ced",
+          "tn": "Balwyn U10 Girls 04",
+          "gid": "0ac7a6c0",
+          "gn": "Girls U10 D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 12,
+            "fouls": 4,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 4,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "d1685ced",
+          "tn": "Balwyn U10 Girls 04",
+          "gid": "b053dfcd",
+          "gn": "Girls U10 D Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 4,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 4,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "d1685ced",
+          "tn": "Balwyn U10 Girls 04",
+          "gid": "7455924e",
+          "gn": "Girls U10 C Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 4,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 4,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "57ccd19d",
+          "tn": "Balwyn U09 Girls 05",
+          "gid": "e6a7cc5c",
+          "gn": "Girls U09 C3",
+          "age": "U09",
+          "div": "C3",
+          "stats": {
+            "gp": 17,
+            "fouls": 14,
+            "ft": 1,
+            "fg": 14,
+            "pts": 29,
+            "finals": 1,
+            "wins": 8,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "57ccd19d",
+          "tn": "Balwyn U09 Girls 05",
+          "gid": "a409a245",
+          "gn": "Girls U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fg": 14,
+            "pts": 29,
+            "finals": 1,
+            "wins": 8,
+            "losses": 8,
+            "ft": 1,
+            "fouls": 14
+          }
+        },
+        {
+          "tid": "57ccd19d",
+          "tn": "Balwyn U09 Girls 05",
+          "gid": "84f1d3db",
+          "gn": "Girls U09 D Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 14,
+            "fg": 14,
+            "pts": 29,
+            "finals": 1,
+            "wins": 8,
+            "losses": 8,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "1e9e6c0b",
+          "tn": "Balwyn U08 Girls 03",
+          "gid": "6901a4ff",
+          "gn": "Girls U08 C1",
+          "age": "U08",
+          "div": "C1",
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 6,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1e9e6c0b",
+          "tn": "Balwyn U08 Girls 03",
+          "gid": "ff9e21fe",
+          "gn": "Girls U08 C Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 6,
+            "losses": 9,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "3ad9194a",
+          "tn": "Surrey Sparkles",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "1820b755",
+          "tn": "Surrey Sparkles",
+          "gid": "8677345c",
+          "gn": "Friday Whitehorse YR.1 - YR.3 GIRLS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:48.824Z",
+  "teams": [
+    {
+      "tid": "2b943e67",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d1685ced",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57ccd19d",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e9e6c0b",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ad9194a",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1820b755",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:54.804Z",
+  "games": [
+    "0eb2f5c1",
+    "0eecc6eb",
+    "0f139d07",
+    "2354b925",
+    "281b40e8",
+    "30e48e54",
+    "3203ed5a",
+    "346281d2",
+    "3b852f94",
+    "3da42c04",
+    "453e38eb",
+    "4c87a679",
+    "51c6055c",
+    "5a4e2215",
+    "5b80e57e",
+    "641064fc",
+    "689675b2",
+    "68e94647",
+    "6a64150d",
+    "6c7753a3",
+    "6ef3bf10",
+    "71871998",
+    "7cfe4a00",
+    "7fda4d81",
+    "839e7fda",
+    "868630c3",
+    "8f387ca8",
+    "91c2d06a",
+    "96b9a047",
+    "9c0c214a",
+    "abb221e9",
+    "b42066f8",
+    "b5294aed",
+    "b60261ef",
+    "b734e2d2",
+    "ba06c279",
+    "c1434455",
+    "c652fc08",
+    "cb14561e",
+    "cc3b16e8",
+    "d0da628f",
+    "d30e3f36",
+    "d31d44ba",
+    "d8e9f95c",
+    "f0d1a6bf",
+    "f2a139ec",
+    "f3b2eecc",
+    "f5a18e56",
+    "f675cf47",
+    "fcefc8ed"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "689675b2",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

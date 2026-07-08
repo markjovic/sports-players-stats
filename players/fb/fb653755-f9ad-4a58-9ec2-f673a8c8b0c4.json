@@ -1,1 +1,92 @@
-{"uuid":"fb653755-f9ad-4a58-9ec2-f673a8c8b0c4","gender":null,"sports":{"Basketball":{"gp":5,"pts":10,"fouls":2,"fg":5,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":4,"losses":1,"winPct":0.8,"statsChecked":"2026-07-05T16:04:51.558Z"}},"seasons":[{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Moorabbin Magic Basketball Club","regs":[{"tid":"4a7eaa9a","tn":"MM U16 Boys Sharks","gid":"1cb4e5a0","gn":"Saturday U16 Boys Div 4","stats":{"gp":5,"pts":10,"fouls":2,"fg":5,"finals":1,"wins":4,"losses":1}}]}],"updatedAt":"2026-06-11T23:46:32.879Z","games":["159b6b7f","200d14b4","c372dd39","c504a52e","f9bec527"],"records":{"maxGamePTS":{"v":4,"gameKey":"200d14b4","sid":"cc2b1283"},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "fb653755-f9ad-4a58-9ec2-f673a8c8b0c4",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 10,
+      "fouls": 2,
+      "fg": 5,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 1,
+      "winPct": 0.8,
+      "statsChecked": "2026-07-05T16:04:51.558Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Moorabbin Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "4a7eaa9a",
+          "tn": "MM U16 Boys Sharks",
+          "gid": "1cb4e5a0",
+          "gn": "Saturday U16 Boys Div 4",
+          "stats": {
+            "gp": 5,
+            "pts": 10,
+            "fouls": 2,
+            "fg": 5,
+            "finals": 1,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6a36400d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "6d966b1f",
+          "tn": "MM U14 Boys Sharks",
+          "gid": "3d655e54",
+          "gn": "Saturday U14 Boys Div 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:32.879Z",
+  "games": [
+    "159b6b7f",
+    "200d14b4",
+    "c372dd39",
+    "c504a52e",
+    "f9bec527"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "200d14b4",
+      "sid": "cc2b1283"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "4a7eaa9a",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d966b1f",
+      "sid": "6a36400d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:32:04.696Z"
+}

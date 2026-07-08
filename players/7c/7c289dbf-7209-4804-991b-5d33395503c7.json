@@ -1,1 +1,96 @@
-{"uuid":"7c289dbf-7209-4804-991b-5d33395503c7","name":"Zak Wiedemann","sports":{"Basketball":{"maxGamePTS":5,"maxGameThreePt":1,"foulOuts":{},"gp":31,"pts":56,"fg":19,"ft":6,"threePt":4,"fouls":32,"statsChecked":"2026-07-07T18:28:16.234Z"}},"seasons":[{"sid":"04854767","regs":[{"tid":"b9dbb810"}]},{"sid":"5baf6003","regs":[{"tid":"eaed7b27"}]},{"sid":"9c1e219b","regs":[{"tid":"3081be3c"}]},{"sid":"1603f576","regs":[{"tid":"fe50d9ac"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":5,"gameKey":"67eba09f","sid":"9c1e219b"},"maxGameThreePt":{"v":1,"gameKey":"0592edfc","sid":"9c1e219b"}}}
+{
+  "uuid": "7c289dbf-7209-4804-991b-5d33395503c7",
+  "name": "Zak Wiedemann",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 31,
+      "pts": 56,
+      "fg": 19,
+      "ft": 6,
+      "threePt": 4,
+      "fouls": 32,
+      "statsChecked": "2026-07-07T18:28:16.234Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "04854767",
+      "regs": [
+        {
+          "tid": "b9dbb810",
+          "gid": "b7fc7f2f",
+          "gn": "Tuesday Men E1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "5baf6003",
+      "regs": [
+        {
+          "tid": "eaed7b27",
+          "gid": "4d2b781f",
+          "gn": "Sunday U23 Men C/CR"
+        }
+      ]
+    },
+    {
+      "sid": "9c1e219b",
+      "regs": [
+        {
+          "tid": "3081be3c",
+          "gid": "30db1dd9",
+          "gn": "Sunday U18 Boys C/CR"
+        }
+      ]
+    },
+    {
+      "sid": "1603f576",
+      "regs": [
+        {
+          "tid": "fe50d9ac",
+          "gid": "182df9a5",
+          "gn": "Sunday U18 Boys D"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "b9dbb810",
+      "sid": "04854767",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eaed7b27",
+      "sid": "5baf6003",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3081be3c",
+      "sid": "9c1e219b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe50d9ac",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "67eba09f",
+      "sid": "9c1e219b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "0592edfc",
+      "sid": "9c1e219b"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:27:23.402Z"
+}

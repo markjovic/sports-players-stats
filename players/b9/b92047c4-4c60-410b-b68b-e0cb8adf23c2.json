@@ -1,1 +1,243 @@
-{"uuid":"b92047c4-4c60-410b-b68b-e0cb8adf23c2","gender":null,"sports":{"Basketball":{"gp":39,"pts":171,"fouls":72,"fg":80,"ft":11,"foulOuts":{"21fa25fc":1,"6598707d":1},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.67,"maxGamePTS":14,"maxGameThreePt":null,"wins":39,"losses":27,"winPct":0.59,"statsChecked":"2026-07-05T16:14:58.637Z"}},"seasons":[{"sid":"21fa25fc","sn":"Winter 2025","club":null,"regs":[{"tid":"86d407d2","tn":"Golden Girls","gid":"014714ed","gn":"Thursday Open Women","stats":{"gp":3,"pts":17,"fouls":4,"fg":7,"ft":3,"finals":1,"wins":1,"losses":2}},{"tid":"28481b20","stats":{"wins":9,"losses":6,"finals":1,"gp":17,"pts":84,"fg":39,"ft":6,"fouls":33}}]},{"sid":"21fa25fc","sn":"Winter 2025","club":"Wildcats Basketball Club (Ballarat)","regs":[{"tid":"28481b20","tn":"Wildcats B Women Gold","gid":"52504723","gn":"Tuesday A1 Women","stats":{"gp":17,"pts":84,"fouls":33,"fg":39,"ft":6,"foulOuts":1,"finals":1,"wins":9,"losses":6}},{"tid":"28481b20","tn":"Wildcats B Women Gold","gid":"f09ee0b2","gn":"Tuesday B1 Women","stats":{"gp":17,"pts":84,"fouls":33,"fg":39,"finals":1,"wins":9,"losses":6,"ft":6}}]},{"sid":"6598707d","sn":"Winter 2021","club":"Sunbury Braves Basketball Club","regs":[{"tid":"89e5c059","tn":"Braves BD","gid":"648a5514","gn":"Tuesday Senior Women A/B","stats":{"gp":19,"pts":70,"fouls":35,"fg":34,"ft":2,"foulOuts":1,"finals":1,"wins":11,"losses":7}}]}],"updatedAt":"2026-06-11T23:44:05.033Z","games":["0458f107","1c098518","1f0b46d9","24a10fd0","295be513","2a0abf8a","2aa24706","3139330a","3780278f","3bc01740","3e034513","3fc3fd0c","447bf2d1","44a463f1","475998df","47e7c720","4de07e79","502a424b","57ad42d3","5b69edd1","6e0dc094","6e684d59","72a2bd40","7431f94d","7a5e7bf7","817d5e68","88fc3697","8cda8927","94668bd7","9500c968","a1af23a2","a3d337a1","a8dc82d6","b081650b","b0cf05f1","c242a9b0","e6f3f4e5","f63442fd","f866c33b"],"records":{"maxGamePTS":{"v":14,"gameKey":"4de07e79","sid":"21fa25fc"},"maxGameThreePt":{"v":null}},"name":"Winter 2025","gameTids":{"a8dc82d6":"86d407d2","1f0b46d9":"86d407d2","447bf2d1":"86d407d2","9500c968":"28481b20","44a463f1":"28481b20","0458f107":"28481b20","6e0dc094":"28481b20","57ad42d3":"28481b20","24a10fd0":"28481b20","7a5e7bf7":"28481b20","7431f94d":"28481b20","5b69edd1":"28481b20","817d5e68":"28481b20","502a424b":"28481b20","94668bd7":"28481b20","f866c33b":"28481b20","1c098518":"28481b20","3fc3fd0c":"28481b20","8cda8927":"28481b20","4de07e79":"28481b20","e6f3f4e5":"89e5c059","88fc3697":"89e5c059","f63442fd":"89e5c059","c242a9b0":"89e5c059","3780278f":"89e5c059","a1af23a2":"89e5c059","72a2bd40":"89e5c059","475998df":"89e5c059","3bc01740":"89e5c059","b081650b":"89e5c059","3139330a":"89e5c059","a3d337a1":"89e5c059","2a0abf8a":"89e5c059","295be513":"89e5c059","b0cf05f1":"89e5c059","2aa24706":"89e5c059","47e7c720":"89e5c059","3e034513":"89e5c059","6e684d59":"89e5c059"}}
+{
+  "uuid": "b92047c4-4c60-410b-b68b-e0cb8adf23c2",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 171,
+      "fouls": 72,
+      "fg": 80,
+      "ft": 11,
+      "foulOuts": {
+        "21fa25fc": 1,
+        "6598707d": 1
+      },
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 39,
+      "losses": 27,
+      "winPct": 0.59,
+      "statsChecked": "2026-07-05T16:14:58.637Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "21fa25fc",
+      "sn": "Winter 2025",
+      "club": null,
+      "regs": [
+        {
+          "tid": "86d407d2",
+          "tn": "Golden Girls",
+          "gid": "014714ed",
+          "gn": "Thursday Open Women",
+          "stats": {
+            "gp": 3,
+            "pts": 17,
+            "fouls": 4,
+            "fg": 7,
+            "ft": 3,
+            "finals": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "28481b20",
+          "stats": {
+            "wins": 9,
+            "losses": 6,
+            "finals": 1,
+            "gp": 17,
+            "pts": 84,
+            "fg": 39,
+            "ft": 6,
+            "fouls": 33
+          },
+          "gid": "52504723",
+          "gn": "Tuesday A1 Women"
+        }
+      ]
+    },
+    {
+      "sid": "21fa25fc",
+      "sn": "Winter 2025",
+      "club": "Wildcats Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "28481b20",
+          "tn": "Wildcats B Women Gold",
+          "gid": "52504723",
+          "gn": "Tuesday A1 Women",
+          "stats": {
+            "gp": 17,
+            "pts": 84,
+            "fouls": 33,
+            "fg": 39,
+            "ft": 6,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "28481b20",
+          "tn": "Wildcats B Women Gold",
+          "gid": "f09ee0b2",
+          "gn": "Tuesday B1 Women",
+          "stats": {
+            "gp": 17,
+            "pts": 84,
+            "fouls": 33,
+            "fg": 39,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6,
+            "ft": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6598707d",
+      "sn": "Winter 2021",
+      "club": "Sunbury Braves Basketball Club",
+      "regs": [
+        {
+          "tid": "89e5c059",
+          "tn": "Braves BD",
+          "gid": "648a5514",
+          "gn": "Tuesday Senior Women A/B",
+          "stats": {
+            "gp": 19,
+            "pts": 70,
+            "fouls": 35,
+            "fg": 34,
+            "ft": 2,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 11,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:05.033Z",
+  "games": [
+    "0458f107",
+    "1c098518",
+    "1f0b46d9",
+    "24a10fd0",
+    "295be513",
+    "2a0abf8a",
+    "2aa24706",
+    "3139330a",
+    "3780278f",
+    "3bc01740",
+    "3e034513",
+    "3fc3fd0c",
+    "447bf2d1",
+    "44a463f1",
+    "475998df",
+    "47e7c720",
+    "4de07e79",
+    "502a424b",
+    "57ad42d3",
+    "5b69edd1",
+    "6e0dc094",
+    "6e684d59",
+    "72a2bd40",
+    "7431f94d",
+    "7a5e7bf7",
+    "817d5e68",
+    "88fc3697",
+    "8cda8927",
+    "94668bd7",
+    "9500c968",
+    "a1af23a2",
+    "a3d337a1",
+    "a8dc82d6",
+    "b081650b",
+    "b0cf05f1",
+    "c242a9b0",
+    "e6f3f4e5",
+    "f63442fd",
+    "f866c33b"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "4de07e79",
+      "sid": "21fa25fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2025",
+  "gameTids": {
+    "a8dc82d6": "86d407d2",
+    "1f0b46d9": "86d407d2",
+    "447bf2d1": "86d407d2",
+    "9500c968": "28481b20",
+    "44a463f1": "28481b20",
+    "0458f107": "28481b20",
+    "6e0dc094": "28481b20",
+    "57ad42d3": "28481b20",
+    "24a10fd0": "28481b20",
+    "7a5e7bf7": "28481b20",
+    "7431f94d": "28481b20",
+    "5b69edd1": "28481b20",
+    "817d5e68": "28481b20",
+    "502a424b": "28481b20",
+    "94668bd7": "28481b20",
+    "f866c33b": "28481b20",
+    "1c098518": "28481b20",
+    "3fc3fd0c": "28481b20",
+    "8cda8927": "28481b20",
+    "4de07e79": "28481b20",
+    "e6f3f4e5": "89e5c059",
+    "88fc3697": "89e5c059",
+    "f63442fd": "89e5c059",
+    "c242a9b0": "89e5c059",
+    "3780278f": "89e5c059",
+    "a1af23a2": "89e5c059",
+    "72a2bd40": "89e5c059",
+    "475998df": "89e5c059",
+    "3bc01740": "89e5c059",
+    "b081650b": "89e5c059",
+    "3139330a": "89e5c059",
+    "a3d337a1": "89e5c059",
+    "2a0abf8a": "89e5c059",
+    "295be513": "89e5c059",
+    "b0cf05f1": "89e5c059",
+    "2aa24706": "89e5c059",
+    "47e7c720": "89e5c059",
+    "3e034513": "89e5c059",
+    "6e684d59": "89e5c059"
+  },
+  "teams": [
+    {
+      "tid": "86d407d2",
+      "sid": "21fa25fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "28481b20",
+      "sid": "21fa25fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89e5c059",
+      "sid": "6598707d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:18.668Z"
+}

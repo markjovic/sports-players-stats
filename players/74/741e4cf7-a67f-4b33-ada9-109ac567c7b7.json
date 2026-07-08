@@ -1,1 +1,315 @@
-{"uuid":"741e4cf7-a67f-4b33-ada9-109ac567c7b7","name":"Jack Abugan","gender":"Boys","sports":{"Basketball":{"gp":35,"pts":83,"fouls":44,"fg":31,"ft":15,"threePt":2,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":2,"wins":34,"losses":36,"winPct":0.49,"statsChecked":"2026-07-05T14:55:56.854Z"}},"seasons":[{"sid":"b970a30d","sn":"Winter 2025","club":"Vales Basketball Club","regs":[{"tid":"3d2c5744","tn":"Vales B12 Bobcats","gid":"bcc11cfe","gn":"Saturday U12 Boys B3","age":"U12","div":"B3","stats":{"gp":10,"fouls":15,"ft":8,"fg":12,"pts":38,"wins":4,"losses":6,"threePt":2}},{"tid":"3d2c5744","tn":"Vales B12 Bobcats","gid":"c612acc0","gn":"Saturday U12 Boys C1","age":"U12","div":"C1","stats":{"gp":10,"fouls":15,"ft":8,"fg":12,"threePt":2,"pts":38,"wins":4,"losses":6}}]},{"sid":"3b5042cd","sn":"Summer 2024/25","club":"Vales Basketball Club","regs":[{"tid":"f84677f4","tn":"Vales B12 Wildcats","gid":"008c4a4b","gn":"Saturday U12 Boys B1","age":"U12","div":"B1","stats":{"gp":17,"fouls":18,"ft":4,"fg":12,"pts":28,"finals":1,"gfApps":1,"wins":13,"losses":4,"gfWins":1}},{"tid":"f84677f4","tn":"Vales B12 Wildcats","gid":"9d4ab50c","gn":"Saturday U12 Boys A1/A2","age":"U12","div":"A2","stats":{"gp":17,"fouls":18,"ft":4,"fg":12,"pts":28,"finals":1,"gfApps":1,"wins":13,"losses":4,"gfWins":1}}]},{"sid":"6924f649","sn":"Summer 2023/24","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"9d69fc54","tn":"Bayside Warriors U12 Boys Blue","gid":"48d7cde8","gn":"Saturday U12 Boys B","age":"U12","div":null,"stats":{"gp":8,"fouls":11,"ft":3,"fg":7,"pts":17,"losses":8}},{"tid":"9d69fc54","tn":"Bayside Warriors U12 Boys Blue","gid":"feaa2fb1","gn":"Saturday U12 Boys A","age":"U12","div":null,"stats":{"gp":8,"fouls":11,"fg":7,"pts":17,"losses":8,"ft":3}}]}],"updatedAt":"2026-06-01T08:28:35.931Z","teams":[{"tid":"3d2c5744","sid":"b970a30d","status":"COMPLETED"},{"tid":"f84677f4","sid":"3b5042cd","status":"COMPLETED"},{"tid":"9d69fc54","sid":"6924f649","status":"COMPLETED"},{"tid":"a705daa2","sid":"09a70808","status":"COMPLETED"},{"tid":"bf1537cd","sid":"e5df46b3","status":"COMPLETED"},{"tid":"4ebacc8a","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"43a1756d","sid":"3f4132a1","status":"COMPLETED"},{"tid":"3bdb5d36","sid":"977f8526","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:51:57.638Z","records":{"maxGamePTS":{"v":13,"gameKey":"d3eac903","sid":"b970a30d"},"maxGameThreePt":{"v":2,"gameKey":"a17d59dc","sid":"b970a30d"}},"games":["0933602c","1feb0697","219cf0b8","2970e4b0","2ba95315","33224dde","3329436a","3e299d95","43c7c512","456db3f9","542ff745","5d737005","656f0f94","665eea84","712a5859","77efaca8","79463584","7f701e1e","8dd641fc","a17d59dc","a4748804","ae9df2e1","ba255cd9","c479893b","c74d41a5","cee4e4f3","d3eac903","d594f14e","d9721714","ec3c0126","f2476e89","f86aeb3b","fd254704","fd57adae","fe4d0f99"]}
+{
+  "uuid": "741e4cf7-a67f-4b33-ada9-109ac567c7b7",
+  "name": "Jack Abugan",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 83,
+      "fouls": 44,
+      "fg": 31,
+      "ft": 15,
+      "threePt": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 2,
+      "wins": 34,
+      "losses": 36,
+      "winPct": 0.49,
+      "statsChecked": "2026-07-05T14:55:56.854Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b970a30d",
+      "sn": "Winter 2025",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "3d2c5744",
+          "tn": "Vales B12 Bobcats",
+          "gid": "bcc11cfe",
+          "gn": "Saturday U12 Boys B3",
+          "age": "U12",
+          "div": "B3",
+          "stats": {
+            "gp": 10,
+            "fouls": 15,
+            "ft": 8,
+            "fg": 12,
+            "pts": 38,
+            "wins": 4,
+            "losses": 6,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "3d2c5744",
+          "tn": "Vales B12 Bobcats",
+          "gid": "c612acc0",
+          "gn": "Saturday U12 Boys C1",
+          "age": "U12",
+          "div": "C1",
+          "stats": {
+            "gp": 10,
+            "fouls": 15,
+            "ft": 8,
+            "fg": 12,
+            "threePt": 2,
+            "pts": 38,
+            "wins": 4,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b5042cd",
+      "sn": "Summer 2024/25",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "f84677f4",
+          "tn": "Vales B12 Wildcats",
+          "gid": "008c4a4b",
+          "gn": "Saturday U12 Boys B1",
+          "age": "U12",
+          "div": "B1",
+          "stats": {
+            "gp": 17,
+            "fouls": 18,
+            "ft": 4,
+            "fg": 12,
+            "pts": 28,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "f84677f4",
+          "tn": "Vales B12 Wildcats",
+          "gid": "9d4ab50c",
+          "gn": "Saturday U12 Boys A1/A2",
+          "age": "U12",
+          "div": "A2",
+          "stats": {
+            "gp": 17,
+            "fouls": 18,
+            "ft": 4,
+            "fg": 12,
+            "pts": 28,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6924f649",
+      "sn": "Summer 2023/24",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "9d69fc54",
+          "tn": "Bayside Warriors U12 Boys Blue",
+          "gid": "48d7cde8",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 11,
+            "ft": 3,
+            "fg": 7,
+            "pts": 17,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "9d69fc54",
+          "tn": "Bayside Warriors U12 Boys Blue",
+          "gid": "feaa2fb1",
+          "gn": "Saturday U12 Boys A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 11,
+            "fg": 7,
+            "pts": 17,
+            "losses": 8,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "a705daa2",
+          "tn": "Port Melbourne Ninjas",
+          "gid": "741c81c0",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "bf1537cd",
+          "tn": "Port Melbourne Ninjas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "4ebacc8a",
+          "tn": "Port Ninjas (3766)",
+          "gid": "b6e9943d",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "43a1756d",
+          "tn": "Port Ninjas (3766)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "3bdb5d36",
+          "tn": "Port Melbourne Ninjas",
+          "gid": "d9de2e7a",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:28:35.931Z",
+  "teams": [
+    {
+      "tid": "3d2c5744",
+      "sid": "b970a30d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f84677f4",
+      "sid": "3b5042cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d69fc54",
+      "sid": "6924f649",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a705daa2",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf1537cd",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ebacc8a",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "43a1756d",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3bdb5d36",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:54.400Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "d3eac903",
+      "sid": "b970a30d"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "a17d59dc",
+      "sid": "b970a30d"
+    }
+  },
+  "games": [
+    "0933602c",
+    "1feb0697",
+    "219cf0b8",
+    "2970e4b0",
+    "2ba95315",
+    "33224dde",
+    "3329436a",
+    "3e299d95",
+    "43c7c512",
+    "456db3f9",
+    "542ff745",
+    "5d737005",
+    "656f0f94",
+    "665eea84",
+    "712a5859",
+    "77efaca8",
+    "79463584",
+    "7f701e1e",
+    "8dd641fc",
+    "a17d59dc",
+    "a4748804",
+    "ae9df2e1",
+    "ba255cd9",
+    "c479893b",
+    "c74d41a5",
+    "cee4e4f3",
+    "d3eac903",
+    "d594f14e",
+    "d9721714",
+    "ec3c0126",
+    "f2476e89",
+    "f86aeb3b",
+    "fd254704",
+    "fd57adae",
+    "fe4d0f99"
+  ]
+}

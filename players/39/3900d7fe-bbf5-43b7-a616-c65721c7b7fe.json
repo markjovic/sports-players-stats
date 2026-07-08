@@ -1,1 +1,98 @@
-{"uuid":"3900d7fe-bbf5-43b7-a616-c65721c7b7fe","name":"Brent Kay","gender":"Mixed","sports":{"Basketball":{"gp":2,"pts":24,"fouls":1,"fg":12,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":null,"wins":2,"winPct":1,"statsChecked":"2026-07-05T16:00:13.076Z"}},"seasons":[{"sid":"db6f638a","sn":"Winter 2026","club":"IOE All-Inclusive Basketball","regs":[{"tid":"2bb94e1f","tn":"IOE Senior Mixed Nuggets (BLACK)","gid":"a6461718","gn":"MONDAY IOE GROUP B","age":null,"div":null,"stats":{"gp":1,"fouls":1,"fg":10,"pts":20,"wins":1}},{"tid":"6b4efd24","stats":{"gp":1,"pts":4,"fg":2,"wins":1}}]}],"updatedAt":"2026-06-03T00:35:03.974Z","teams":[{"tid":"2bb94e1f","sid":"db6f638a","status":"ACTIVE"},{"tid":"5ca79f16","sid":"db6f638a","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:16:03.541Z","records":{"maxGamePTS":{"v":20,"gameKey":"b7275230","sid":"db6f638a"},"maxGameThreePt":{"v":null}},"games":["b7275230","d699bf80"],"gameTids":{"d699bf80":"6b4efd24","b7275230":"2bb94e1f"}}
+{
+  "uuid": "3900d7fe-bbf5-43b7-a616-c65721c7b7fe",
+  "name": "Brent Kay",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 24,
+      "fouls": 1,
+      "fg": 12,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:00:13.076Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "db6f638a",
+      "sn": "Winter 2026",
+      "club": "IOE All-Inclusive Basketball",
+      "regs": [
+        {
+          "tid": "2bb94e1f",
+          "tn": "IOE Senior Mixed Nuggets (BLACK)",
+          "gid": "a6461718",
+          "gn": "MONDAY IOE GROUP B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "fg": 10,
+            "pts": 20,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "6b4efd24",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 2,
+            "wins": 1
+          },
+          "gid": "a6461718",
+          "gn": "MONDAY IOE GROUP B"
+        },
+        {
+          "tid": "5ca79f16",
+          "tn": "IOE Senior Mixed Tigers (BLACK)",
+          "gid": "96f4e458",
+          "gn": "MONDAY IOE GROUP A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T00:35:03.974Z",
+  "teams": [
+    {
+      "tid": "2bb94e1f",
+      "sid": "db6f638a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b4efd24",
+      "sid": "db6f638a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ca79f16",
+      "sid": "db6f638a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:41.274Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "b7275230",
+      "sid": "db6f638a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "b7275230",
+    "d699bf80"
+  ],
+  "gameTids": {
+    "d699bf80": "6b4efd24",
+    "b7275230": "2bb94e1f"
+  }
+}

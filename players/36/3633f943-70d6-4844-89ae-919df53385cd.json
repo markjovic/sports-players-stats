@@ -1,1 +1,315 @@
-{"uuid":"3633f943-70d6-4844-89ae-919df53385cd","name":"Tyler Fraser","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":271,"fouls":42,"fg":126,"ft":16,"threePt":1,"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.6,"foulOuts":{"f4722ed8":1},"maxGamePTS":26,"maxGameThreePt":1,"wins":8,"losses":7,"winPct":0.53,"statsChecked":"2026-07-05T16:00:05.729Z"}},"seasons":[{"sid":"8a5cb60f","sn":"Autumn 2023","regs":[{"tid":"f05d5d46","tn":"U14B Blue","gid":"5b222336","gn":"Monday U14 Boys","age":"U14","div":null,"stats":{"gp":7,"pts":57,"fg":28,"ft":1,"fouls":6,"finals":1,"wins":1,"losses":3}},{"tid":"be1536f8","tn":"U14B Yellow","gid":"5b222336","gn":"Monday U14 Boys","age":"U14","div":null,"stats":{"gp":2,"pts":5,"fg":2,"ft":1,"finals":1,"losses":1}}]},{"sid":"0155d448","sn":"Spring 2022","regs":[{"tid":"8ba2babe","tn":"U14B Yellow","gid":"3e053acb","gn":"Monday U14 Boys","age":"U14","div":null,"stats":{"gp":12,"pts":71,"fg":34,"ft":3,"fouls":8}}]},{"sid":"d89ae74b","sn":"Autumn 2022","regs":[{"tid":"0704b425","tn":"U12B Yellow","gid":"7c864ecc","gn":"Monday U12 Boys","age":"U12","div":null,"stats":{"gp":12,"pts":91,"threePt":1,"fg":40,"ft":8,"fouls":17,"finals":1,"gfApps":1}}]},{"sid":"a3de628b","sn":"Autumn 2021","regs":[{"tid":"c701a0ba","tn":"U12/14 Yellow Boys","gid":"e0c49a9f","gn":"Monday U12/U14 Boys","age":"U12","div":null,"stats":{"gp":10,"pts":44,"fg":21,"ft":2,"fouls":1,"finals":1,"wins":7,"losses":3}}]},{"sid":"f4722ed8","sn":"Autumn 2020","regs":[{"tid":"42caf072","tn":"U10 Blue","gid":"0267bf80","gn":"Monday U10 Boys","age":"U10","div":null,"stats":{"gp":5,"pts":3,"fg":1,"ft":1,"fouls":10,"foulOuts":1}}]}],"updatedAt":"2026-06-02T08:28:08.684Z","teams":[{"tid":"f05d5d46","sid":"8a5cb60f","status":"COMPLETED"},{"tid":"8ba2babe","sid":"0155d448","status":"COMPLETED"},{"tid":"0704b425","sid":"d89ae74b","status":"COMPLETED"},{"tid":"fc31df39","sid":"f6b90c77","status":"COMPLETED"},{"tid":"c701a0ba","sid":"a3de628b","status":"COMPLETED"},{"tid":"42caf072","sid":"f4722ed8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:14:31.037Z","records":{"maxGamePTS":{"v":26,"gameKey":"5c76a40a","sid":"d89ae74b"},"maxGameThreePt":{"v":1,"gameKey":"5c76a40a","sid":"d89ae74b"}},"games":["113100dd","1af15f4e","1c17a16c","26069827","27b9b101","31cdc118","33e28c06","376f79b9","394d85b0","42cba7e0","506b834b","5c76a40a","6c0057c9","703328dc","729f05fc","753a5899","7a18160a","7c4aa371","8036c617","83e11139","8597f369","8e48e1fb","8f8d96db","92da7a32","93ed81f0","9bbe3d52","9d245a29","a37c0e6a","a73b988a","a76e545a","aa46387f","ad861d4e","bd900325","cdef4d03","d2b164d8","dfb168e2","ed44b67e","f8d3b8c3"],"gameTids":{"26069827":"c701a0ba","33e28c06":"f05d5d46","a76e545a":"f05d5d46","bd900325":"f05d5d46","a73b988a":"f05d5d46","9bbe3d52":"f05d5d46","729f05fc":"f05d5d46","f8d3b8c3":"f05d5d46","31cdc118":"be1536f8","ad861d4e":"be1536f8","753bd100":"8ba2babe","2791a61f":"8ba2babe","e1a30b79":"8ba2babe","4661ca74":"8ba2babe","6f62a9ca":"8ba2babe","c8508d8d":"8ba2babe","027a3129":"8ba2babe","fcaa4285":"8ba2babe","de7f9395":"8ba2babe","92da7a32":"8ba2babe","506b834b":"8ba2babe","42cba7e0":"8ba2babe","753a5899":"0704b425","394d85b0":"0704b425","3b925355":"0704b425","cdef4d03":"0704b425","27b9b101":"0704b425","9d245a29":"0704b425","113100dd":"0704b425","83e11139":"0704b425","a37c0e6a":"0704b425","93ed81f0":"0704b425","7c4aa371":"0704b425","5c76a40a":"0704b425","ed44b67e":"c701a0ba","aa46387f":"c701a0ba","376f79b9":"c701a0ba","dfb168e2":"c701a0ba","8f8d96db":"c701a0ba","7a18160a":"c701a0ba","1af15f4e":"c701a0ba","d2b164d8":"c701a0ba","8e48e1fb":"c701a0ba","703328dc":"42caf072","8597f369":"42caf072","6c0057c9":"42caf072","1c17a16c":"42caf072","8036c617":"42caf072"}}
+{
+  "uuid": "3633f943-70d6-4844-89ae-919df53385cd",
+  "name": "Tyler Fraser",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 271,
+      "fouls": 42,
+      "fg": 126,
+      "ft": 16,
+      "threePt": 1,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {
+        "f4722ed8": 1
+      },
+      "maxGamePTS": 26,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 7,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T16:00:05.729Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8a5cb60f",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "f05d5d46",
+          "tn": "U14B Blue",
+          "gid": "5b222336",
+          "gn": "Monday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 57,
+            "fg": 28,
+            "ft": 1,
+            "fouls": 6,
+            "finals": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "be1536f8",
+          "tn": "U14B Yellow",
+          "gid": "5b222336",
+          "gn": "Monday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "finals": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0155d448",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "8ba2babe",
+          "tn": "U14B Yellow",
+          "gid": "3e053acb",
+          "gn": "Monday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 71,
+            "fg": 34,
+            "ft": 3,
+            "fouls": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d89ae74b",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "0704b425",
+          "tn": "U12B Yellow",
+          "gid": "7c864ecc",
+          "gn": "Monday U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 91,
+            "threePt": 1,
+            "fg": 40,
+            "ft": 8,
+            "fouls": 17,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3de628b",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "c701a0ba",
+          "tn": "U12/14 Yellow Boys",
+          "gid": "e0c49a9f",
+          "gn": "Monday U12/U14 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 44,
+            "fg": 21,
+            "ft": 2,
+            "fouls": 1,
+            "finals": 1,
+            "wins": 7,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f4722ed8",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "42caf072",
+          "tn": "U10 Blue",
+          "gid": "0267bf80",
+          "gn": "Monday U10 Boys",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 10,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f6b90c77",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "fc31df39",
+          "tn": "U12B Blue",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T08:28:08.684Z",
+  "teams": [
+    {
+      "tid": "f05d5d46",
+      "sid": "8a5cb60f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be1536f8",
+      "sid": "8a5cb60f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8ba2babe",
+      "sid": "0155d448",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0704b425",
+      "sid": "d89ae74b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c701a0ba",
+      "sid": "a3de628b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42caf072",
+      "sid": "f4722ed8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fc31df39",
+      "sid": "f6b90c77",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:46.997Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "5c76a40a",
+      "sid": "d89ae74b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5c76a40a",
+      "sid": "d89ae74b"
+    }
+  },
+  "games": [
+    "113100dd",
+    "1af15f4e",
+    "1c17a16c",
+    "26069827",
+    "27b9b101",
+    "31cdc118",
+    "33e28c06",
+    "376f79b9",
+    "394d85b0",
+    "42cba7e0",
+    "506b834b",
+    "5c76a40a",
+    "6c0057c9",
+    "703328dc",
+    "729f05fc",
+    "753a5899",
+    "7a18160a",
+    "7c4aa371",
+    "8036c617",
+    "83e11139",
+    "8597f369",
+    "8e48e1fb",
+    "8f8d96db",
+    "92da7a32",
+    "93ed81f0",
+    "9bbe3d52",
+    "9d245a29",
+    "a37c0e6a",
+    "a73b988a",
+    "a76e545a",
+    "aa46387f",
+    "ad861d4e",
+    "bd900325",
+    "cdef4d03",
+    "d2b164d8",
+    "dfb168e2",
+    "ed44b67e",
+    "f8d3b8c3"
+  ],
+  "gameTids": {
+    "26069827": "c701a0ba",
+    "33e28c06": "f05d5d46",
+    "a76e545a": "f05d5d46",
+    "bd900325": "f05d5d46",
+    "a73b988a": "f05d5d46",
+    "9bbe3d52": "f05d5d46",
+    "729f05fc": "f05d5d46",
+    "f8d3b8c3": "f05d5d46",
+    "31cdc118": "be1536f8",
+    "ad861d4e": "be1536f8",
+    "753bd100": "8ba2babe",
+    "2791a61f": "8ba2babe",
+    "e1a30b79": "8ba2babe",
+    "4661ca74": "8ba2babe",
+    "6f62a9ca": "8ba2babe",
+    "c8508d8d": "8ba2babe",
+    "027a3129": "8ba2babe",
+    "fcaa4285": "8ba2babe",
+    "de7f9395": "8ba2babe",
+    "92da7a32": "8ba2babe",
+    "506b834b": "8ba2babe",
+    "42cba7e0": "8ba2babe",
+    "753a5899": "0704b425",
+    "394d85b0": "0704b425",
+    "3b925355": "0704b425",
+    "cdef4d03": "0704b425",
+    "27b9b101": "0704b425",
+    "9d245a29": "0704b425",
+    "113100dd": "0704b425",
+    "83e11139": "0704b425",
+    "a37c0e6a": "0704b425",
+    "93ed81f0": "0704b425",
+    "7c4aa371": "0704b425",
+    "5c76a40a": "0704b425",
+    "ed44b67e": "c701a0ba",
+    "aa46387f": "c701a0ba",
+    "376f79b9": "c701a0ba",
+    "dfb168e2": "c701a0ba",
+    "8f8d96db": "c701a0ba",
+    "7a18160a": "c701a0ba",
+    "1af15f4e": "c701a0ba",
+    "d2b164d8": "c701a0ba",
+    "8e48e1fb": "c701a0ba",
+    "703328dc": "42caf072",
+    "8597f369": "42caf072",
+    "6c0057c9": "42caf072",
+    "1c17a16c": "42caf072",
+    "8036c617": "42caf072"
+  }
+}

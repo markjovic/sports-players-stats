@@ -1,1 +1,269 @@
-{"uuid":"db29e63b-b75c-4abd-9ecc-23ace932d428","name":"Banjo Rumbold","gender":"Boys","sports":{"Basketball":{"gp":30,"pts":84,"fouls":29,"fg":27,"ft":12,"threePt":6,"foulOuts":{},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.67,"maxGamePTS":12,"maxGameThreePt":1,"wins":8,"losses":15,"draws":1,"winPct":0.33,"statsChecked":"2026-07-05T15:52:03.726Z"}},"seasons":[{"sid":"330ab84b","sn":"Spring 2023","regs":[{"tid":"51da8ee9","tn":"Purple","gid":"dbd58719","gn":"Thursday U15 Boys","age":"U15","div":null,"stats":{"gp":6,"fouls":3,"ft":6,"fg":9,"threePt":2,"pts":30,"wins":1,"losses":5}}]},{"sid":"85eb30a8","sn":"Spring 2022","regs":[{"tid":"4d39754e","tn":"GREY","gid":"f1927f90","gn":"Thursday U15 Boys","age":"U15","div":null,"stats":{"gp":13,"fouls":18,"ft":4,"fg":14,"threePt":4,"pts":44,"finals":1,"gfApps":1,"wins":6,"losses":7}}]},{"sid":"c1f64e28","sn":"Autumn 2022","regs":[{"tid":"611ac1d9","tn":"BLUE","gid":"57868354","gn":"Thursday U15 Boys","age":"U15","div":null,"stats":{"gp":10,"fouls":8,"ft":2,"fg":4,"pts":10,"finals":1,"wins":1,"losses":3,"draws":1}},{"tid":"4cd8ac7a","tn":"YELLOW","gid":"57868354","gn":"Thursday U15 Boys","age":"U15","div":null,"stats":{"gp":1,"finals":1}}]}],"updatedAt":"2026-06-02T10:22:20.467Z","teams":[{"tid":"51da8ee9","sid":"330ab84b","status":"COMPLETED"},{"tid":"4d39754e","sid":"85eb30a8","status":"COMPLETED"},{"tid":"611ac1d9","sid":"c1f64e28","status":"COMPLETED"},{"tid":"d7801108","sid":"cf18f771","status":"COMPLETED"},{"tid":"0ae1c2de","sid":"f17e365d","status":"COMPLETED"},{"tid":"fad5f6c3","sid":"3816daa8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:46.124Z","games":["03ccf120","0aa8bb54","0ad90e10","0d81cc9e","1845a7f0","205d5444","31fd09ee","3e178795","499a00db","4ea2f486","51ec9ec6","57b98360","59db274c","6176bc6e","65f2d586","6e2f8c19","72dbac8e","788d7a93","7d22441e","80963689","932e9a4f","93dc7e8b","94933290","9ca82543","a0781d35","b1a7ffc5","bd177a10","c54586ce","ce73141b"],"records":{"maxGamePTS":{"v":12,"gameKey":"4ea2f486","sid":"330ab84b"},"maxGameThreePt":{"v":1,"gameKey":"4ea2f486","sid":"330ab84b"}},"gameTids":{"80963689":"4d39754e","94933290":"4d39754e","b1a7ffc5":"51da8ee9","9ca82543":"51da8ee9","59db274c":"51da8ee9","4ea2f486":"51da8ee9","0d81cc9e":"51da8ee9","72dbac8e":"51da8ee9","1845a7f0":"4d39754e","3e178795":"4d39754e","93dc7e8b":"4d39754e","a0781d35":"4d39754e","51ec9ec6":"4d39754e","6e2f8c19":"4d39754e","788d7a93":"4d39754e","57b98360":"4d39754e","ce73141b":"4d39754e","932e9a4f":"4d39754e","03ccf120":"4d39754e","bd177a10":"611ac1d9","0aa8bb54":"611ac1d9","c54586ce":"611ac1d9","65f2d586":"611ac1d9","31fd09ee":"611ac1d9","499a00db":"611ac1d9","12d4df08":"611ac1d9","6176bc6e":"611ac1d9","7d22441e":"611ac1d9","205d5444":"611ac1d9","0ad90e10":"4cd8ac7a"}}
+{
+  "uuid": "db29e63b-b75c-4abd-9ecc-23ace932d428",
+  "name": "Banjo Rumbold",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 84,
+      "fouls": 29,
+      "fg": 27,
+      "ft": 12,
+      "threePt": 6,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 15,
+      "draws": 1,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:52:03.726Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "330ab84b",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "51da8ee9",
+          "tn": "Purple",
+          "gid": "dbd58719",
+          "gn": "Thursday U15 Boys",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "ft": 6,
+            "fg": 9,
+            "threePt": 2,
+            "pts": 30,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "85eb30a8",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "4d39754e",
+          "tn": "GREY",
+          "gid": "f1927f90",
+          "gn": "Thursday U15 Boys",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 18,
+            "ft": 4,
+            "fg": 14,
+            "threePt": 4,
+            "pts": 44,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c1f64e28",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "611ac1d9",
+          "tn": "BLUE",
+          "gid": "57868354",
+          "gn": "Thursday U15 Boys",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 8,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "finals": 1,
+            "wins": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "4cd8ac7a",
+          "tn": "YELLOW",
+          "gid": "57868354",
+          "gn": "Thursday U15 Boys",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cf18f771",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "d7801108",
+          "tn": "BLUE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "f17e365d",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "0ae1c2de",
+          "tn": "GREEN",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3816daa8",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "fad5f6c3",
+          "tn": "Knicks (orange)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T10:22:20.467Z",
+  "teams": [
+    {
+      "tid": "51da8ee9",
+      "sid": "330ab84b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4d39754e",
+      "sid": "85eb30a8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "611ac1d9",
+      "sid": "c1f64e28",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4cd8ac7a",
+      "sid": "c1f64e28",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d7801108",
+      "sid": "cf18f771",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ae1c2de",
+      "sid": "f17e365d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fad5f6c3",
+      "sid": "3816daa8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:51.194Z",
+  "games": [
+    "03ccf120",
+    "0aa8bb54",
+    "0ad90e10",
+    "0d81cc9e",
+    "1845a7f0",
+    "205d5444",
+    "31fd09ee",
+    "3e178795",
+    "499a00db",
+    "4ea2f486",
+    "51ec9ec6",
+    "57b98360",
+    "59db274c",
+    "6176bc6e",
+    "65f2d586",
+    "6e2f8c19",
+    "72dbac8e",
+    "788d7a93",
+    "7d22441e",
+    "80963689",
+    "932e9a4f",
+    "93dc7e8b",
+    "94933290",
+    "9ca82543",
+    "a0781d35",
+    "b1a7ffc5",
+    "bd177a10",
+    "c54586ce",
+    "ce73141b"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "4ea2f486",
+      "sid": "330ab84b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "4ea2f486",
+      "sid": "330ab84b"
+    }
+  },
+  "gameTids": {
+    "80963689": "4d39754e",
+    "94933290": "4d39754e",
+    "b1a7ffc5": "51da8ee9",
+    "9ca82543": "51da8ee9",
+    "59db274c": "51da8ee9",
+    "4ea2f486": "51da8ee9",
+    "0d81cc9e": "51da8ee9",
+    "72dbac8e": "51da8ee9",
+    "1845a7f0": "4d39754e",
+    "3e178795": "4d39754e",
+    "93dc7e8b": "4d39754e",
+    "a0781d35": "4d39754e",
+    "51ec9ec6": "4d39754e",
+    "6e2f8c19": "4d39754e",
+    "788d7a93": "4d39754e",
+    "57b98360": "4d39754e",
+    "ce73141b": "4d39754e",
+    "932e9a4f": "4d39754e",
+    "03ccf120": "4d39754e",
+    "bd177a10": "611ac1d9",
+    "0aa8bb54": "611ac1d9",
+    "c54586ce": "611ac1d9",
+    "65f2d586": "611ac1d9",
+    "31fd09ee": "611ac1d9",
+    "499a00db": "611ac1d9",
+    "12d4df08": "611ac1d9",
+    "6176bc6e": "611ac1d9",
+    "7d22441e": "611ac1d9",
+    "205d5444": "611ac1d9",
+    "0ad90e10": "4cd8ac7a"
+  }
+}

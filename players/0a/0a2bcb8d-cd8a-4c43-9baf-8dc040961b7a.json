@@ -1,1 +1,101 @@
-{"uuid":"0a2bcb8d-cd8a-4c43-9baf-8dc040961b7a","name":"Nicholas Brown","gender":"Men","sports":{"Basketball":{"gp":12,"pts":50,"fouls":25,"fg":18,"ft":5,"threePt":3,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":2,"wins":2,"losses":10,"winPct":0.17,"statsChecked":"2026-07-05T16:11:29.234Z"}},"seasons":[{"sid":"45f120dc","sn":"Autumn 2026","regs":[{"tid":"6d136943","tn":"Free Ballers","gid":"2f53560a","gn":"Open Men D grade","age":"Senior","div":null,"stats":{"gp":12,"pts":50,"threePt":3,"fg":18,"ft":5,"fouls":25,"wins":2,"losses":10}}]}],"updatedAt":"2026-06-02T18:17:11.309Z","teams":[{"tid":"6d136943","sid":"45f120dc","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T11:54:32.571Z","records":{"maxGamePTS":{"v":11,"gameKey":"db750bc8","sid":"45f120dc"},"maxGameThreePt":{"v":2,"gameKey":"858d36f0","sid":"45f120dc"}},"games":["14f08b6e","1b589044","294b0934","3273fc66","4303e5fd","4a77d33f","6b50b4ee","858d36f0","af5d5c40","cdc1549d","db750bc8","e40668bc"]}
+{
+  "uuid": "0a2bcb8d-cd8a-4c43-9baf-8dc040961b7a",
+  "name": "Nicholas Brown",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 50,
+      "fouls": 25,
+      "fg": 18,
+      "ft": 5,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 2,
+      "wins": 2,
+      "losses": 10,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T16:11:29.234Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "45f120dc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "6d136943",
+          "tn": "Free Ballers",
+          "gid": "2f53560a",
+          "gn": "Open Men D grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 50,
+            "threePt": 3,
+            "fg": 18,
+            "ft": 5,
+            "fouls": 25,
+            "wins": 2,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbd5087",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "06ef9fc8",
+          "tn": "Free Ballers",
+          "gid": "139eceda",
+          "gn": "Wednesday Open Men C grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T18:17:11.309Z",
+  "teams": [
+    {
+      "tid": "6d136943",
+      "sid": "45f120dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06ef9fc8",
+      "sid": "bfbd5087",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:13.679Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "db750bc8",
+      "sid": "45f120dc"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "858d36f0",
+      "sid": "45f120dc"
+    }
+  },
+  "games": [
+    "14f08b6e",
+    "1b589044",
+    "294b0934",
+    "3273fc66",
+    "4303e5fd",
+    "4a77d33f",
+    "6b50b4ee",
+    "858d36f0",
+    "af5d5c40",
+    "cdc1549d",
+    "db750bc8",
+    "e40668bc"
+  ]
+}

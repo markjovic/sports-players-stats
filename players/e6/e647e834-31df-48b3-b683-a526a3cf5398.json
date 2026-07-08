@@ -1,1 +1,316 @@
-{"uuid":"e647e834-31df-48b3-b683-a526a3cf5398","name":"Jaibir Sra","gender":"Boys","sports":{"Basketball":{"gp":58,"pts":527,"fouls":58,"fg":219,"ft":26,"threePt":21,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":34,"maxGameThreePt":5,"wins":49,"losses":65,"draws":2,"winPct":0.42,"statsChecked":"2026-07-05T14:45:20.657Z"}},"seasons":[{"sid":"3f8e0029","sn":"Winter 2026","club":"Narre Warren Basketball Club","regs":[{"tid":"90156d60","tn":"NWBC U18 Boys Raptors","gid":"7b0a477b","gn":"Sunday U18 Boys D2 Grade","age":"U18","div":null,"stats":{"gp":10,"fouls":11,"ft":3,"fg":26,"pts":55,"wins":2,"losses":8}},{"tid":"90156d60","tn":"NWBC U18 Boys Raptors","gid":"4f7ce2bd","gn":"Sunday U18 Boys D1 Grade","age":"U18","div":null,"stats":{"gp":10,"fouls":11,"fg":26,"pts":55,"wins":2,"losses":8,"ft":3}}]},{"sid":"cb7b1f18","sn":"Summer 2025/26","club":"Clyde Phoenix Basketball Club","regs":[{"tid":"dc7c372e","tn":"Phoenix U16 Boys Dragons","gid":"ac740c01","gn":"Saturday U16 Boys D3 Grade","age":"U16","div":null,"stats":{"gp":14,"fouls":16,"ft":7,"fg":42,"threePt":4,"pts":103,"wins":3,"losses":10,"draws":1}},{"tid":"dc7c372e","tn":"Phoenix U16 Boys Dragons","gid":"8a5cd5d5","gn":"Saturday U16 Boys E1 Grade","age":"U16","div":null,"stats":{"gp":14,"fouls":16,"fg":42,"pts":103,"wins":3,"losses":10,"draws":1,"ft":7,"threePt":4}}]},{"sid":"98a85c5f","sn":"Winter 2025","club":"Clyde Phoenix Basketball Club","regs":[{"tid":"b7b92b47","tn":"Phoenix U16 Boys Dragons","gid":"325d1363","gn":"Saturday U16 Boys E1 Grade","age":"U16","div":null,"stats":{"gp":17,"fouls":19,"ft":11,"fg":95,"threePt":13,"pts":240,"wins":10,"losses":7}},{"tid":"b7b92b47","tn":"Phoenix U16 Boys Dragons","gid":"7dad4095","gn":"Saturday U16 Boys D3 Grade","age":"U16","div":null,"stats":{"gp":17,"fouls":19,"fg":95,"pts":240,"wins":10,"losses":7,"ft":11,"threePt":13}},{"tid":"b7b92b47","tn":"Phoenix U16 Boys Dragons","gid":"2986f7ea","gn":"Saturday U16 Boys F1 Grade","age":"U16","div":null,"stats":{"gp":17,"fouls":19,"fg":95,"pts":240,"wins":10,"losses":7,"ft":11,"threePt":13}}]},{"sid":"bf3744d0","sn":"Summer 2024/25","club":"Clyde Phoenix Basketball Club","regs":[{"tid":"6aab62ca","tn":"Phoenix U16 Boys Suns","gid":"b671aa05","gn":"Saturday U16 Boys E2 Grade","age":"U16","div":null,"stats":{"gp":17,"fouls":12,"ft":5,"fg":56,"threePt":4,"pts":129,"finals":1,"wins":9,"losses":8}}]}],"updatedAt":"2026-07-04T05:44:41.699Z","teams":[{"tid":"90156d60","sid":"3f8e0029","status":"ACTIVE"},{"tid":"dc7c372e","sid":"cb7b1f18","status":"COMPLETED"},{"tid":"d4cfdd06","sid":"2bca72fb","status":"COMPLETED"},{"tid":"b7b92b47","sid":"98a85c5f","status":"COMPLETED"},{"tid":"6aab62ca","sid":"bf3744d0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:51.972Z","games":["0c015958","11996561","144a5c9b","1778600e","1b6c5016","1c7f4afc","2898dee4","29eb0491","2d672c42","2e104335","316d5baf","361993ab","39599099","407e2f24","411dcc09","45e52322","46904cfa","4ea83c3e","51f8b101","5526ba54","5763d528","5931b364","5b13de3e","5ff6b930","634acd7c","65c91464","714b06ae","723468fd","724dc424","798d3ead","81c9d3cd","825b5dae","8593a66b","85b8a025","8b63efcd","97c8c363","9b7ca3ad","9d638857","9ed93b09","a2d62c8e","a8b7d32d","ae7fb832","ae891ea7","aff6e302","b6968bfa","bb78a02d","befa7ee3","c2864aaa","c28c913f","c302ba9a","c9afe93f","c9c1ca34","d1ac416b","d2db2c23","ded3dcb7","e0d6e5a6","f05a8ad3","f4f13753"],"records":{"maxGamePTS":{"v":34,"gameKey":"714b06ae","sid":"98a85c5f"},"maxGameThreePt":{"v":5,"gameKey":"4ea83c3e","sid":"98a85c5f"}}}
+{
+  "uuid": "e647e834-31df-48b3-b683-a526a3cf5398",
+  "name": "Jaibir Sra",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 527,
+      "fouls": 58,
+      "fg": 219,
+      "ft": 26,
+      "threePt": 21,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 34,
+      "maxGameThreePt": 5,
+      "wins": 49,
+      "losses": 65,
+      "draws": 2,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-05T14:45:20.657Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f8e0029",
+      "sn": "Winter 2026",
+      "club": "Narre Warren Basketball Club",
+      "regs": [
+        {
+          "tid": "90156d60",
+          "tn": "NWBC U18 Boys Raptors",
+          "gid": "7b0a477b",
+          "gn": "Sunday U18 Boys D2 Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 11,
+            "ft": 3,
+            "fg": 26,
+            "pts": 55,
+            "wins": 2,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "90156d60",
+          "tn": "NWBC U18 Boys Raptors",
+          "gid": "4f7ce2bd",
+          "gn": "Sunday U18 Boys D1 Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 11,
+            "fg": 26,
+            "pts": 55,
+            "wins": 2,
+            "losses": 8,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cb7b1f18",
+      "sn": "Summer 2025/26",
+      "club": "Clyde Phoenix Basketball Club",
+      "regs": [
+        {
+          "tid": "dc7c372e",
+          "tn": "Phoenix U16 Boys Dragons",
+          "gid": "ac740c01",
+          "gn": "Saturday U16 Boys D3 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 7,
+            "fg": 42,
+            "threePt": 4,
+            "pts": 103,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "dc7c372e",
+          "tn": "Phoenix U16 Boys Dragons",
+          "gid": "8a5cd5d5",
+          "gn": "Saturday U16 Boys E1 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "fg": 42,
+            "pts": 103,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1,
+            "ft": 7,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98a85c5f",
+      "sn": "Winter 2025",
+      "club": "Clyde Phoenix Basketball Club",
+      "regs": [
+        {
+          "tid": "b7b92b47",
+          "tn": "Phoenix U16 Boys Dragons",
+          "gid": "325d1363",
+          "gn": "Saturday U16 Boys E1 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 19,
+            "ft": 11,
+            "fg": 95,
+            "threePt": 13,
+            "pts": 240,
+            "wins": 10,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "b7b92b47",
+          "tn": "Phoenix U16 Boys Dragons",
+          "gid": "7dad4095",
+          "gn": "Saturday U16 Boys D3 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 19,
+            "fg": 95,
+            "pts": 240,
+            "wins": 10,
+            "losses": 7,
+            "ft": 11,
+            "threePt": 13
+          }
+        },
+        {
+          "tid": "b7b92b47",
+          "tn": "Phoenix U16 Boys Dragons",
+          "gid": "2986f7ea",
+          "gn": "Saturday U16 Boys F1 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 19,
+            "fg": 95,
+            "pts": 240,
+            "wins": 10,
+            "losses": 7,
+            "ft": 11,
+            "threePt": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf3744d0",
+      "sn": "Summer 2024/25",
+      "club": "Clyde Phoenix Basketball Club",
+      "regs": [
+        {
+          "tid": "6aab62ca",
+          "tn": "Phoenix U16 Boys Suns",
+          "gid": "b671aa05",
+          "gn": "Saturday U16 Boys E2 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 56,
+            "threePt": 4,
+            "pts": 129,
+            "finals": 1,
+            "wins": 9,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2bca72fb",
+      "sn": "Term 4, 2025",
+      "regs": [
+        {
+          "tid": "d4cfdd06",
+          "tn": "sixseven",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:41.699Z",
+  "teams": [
+    {
+      "tid": "90156d60",
+      "sid": "3f8e0029",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dc7c372e",
+      "sid": "cb7b1f18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7b92b47",
+      "sid": "98a85c5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6aab62ca",
+      "sid": "bf3744d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d4cfdd06",
+      "sid": "2bca72fb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:09.711Z",
+  "games": [
+    "0c015958",
+    "11996561",
+    "144a5c9b",
+    "1778600e",
+    "1b6c5016",
+    "1c7f4afc",
+    "2898dee4",
+    "29eb0491",
+    "2d672c42",
+    "2e104335",
+    "316d5baf",
+    "361993ab",
+    "39599099",
+    "407e2f24",
+    "411dcc09",
+    "45e52322",
+    "46904cfa",
+    "4ea83c3e",
+    "51f8b101",
+    "5526ba54",
+    "5763d528",
+    "5931b364",
+    "5b13de3e",
+    "5ff6b930",
+    "634acd7c",
+    "65c91464",
+    "714b06ae",
+    "723468fd",
+    "724dc424",
+    "798d3ead",
+    "81c9d3cd",
+    "825b5dae",
+    "8593a66b",
+    "85b8a025",
+    "8b63efcd",
+    "97c8c363",
+    "9b7ca3ad",
+    "9d638857",
+    "9ed93b09",
+    "a2d62c8e",
+    "a8b7d32d",
+    "ae7fb832",
+    "ae891ea7",
+    "aff6e302",
+    "b6968bfa",
+    "bb78a02d",
+    "befa7ee3",
+    "c2864aaa",
+    "c28c913f",
+    "c302ba9a",
+    "c9afe93f",
+    "c9c1ca34",
+    "d1ac416b",
+    "d2db2c23",
+    "ded3dcb7",
+    "e0d6e5a6",
+    "f05a8ad3",
+    "f4f13753"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 34,
+      "gameKey": "714b06ae",
+      "sid": "98a85c5f"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "4ea83c3e",
+      "sid": "98a85c5f"
+    }
+  }
+}

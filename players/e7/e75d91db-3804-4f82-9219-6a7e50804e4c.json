@@ -1,1 +1,92 @@
-{"uuid":"e75d91db-3804-4f82-9219-6a7e50804e4c","gender":null,"sports":{"Basketball":{"gp":4,"pts":13,"fouls":6,"fg":4,"ft":2,"threePt":1,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:04:16.507Z"}},"seasons":[{"sid":"c08d14fd","sn":"Winter 2021","club":null,"regs":[{"tid":"c5196836","tn":"Bentleigh Red","gid":"4d92639b","gn":"Sunday Open Classic Women","stats":{"gp":4,"pts":13,"fouls":6,"fg":4,"ft":2,"threePt":1,"wins":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:45:51.131Z","records":{"maxGamePTS":{"v":7,"gameKey":"dc445f52","sid":"c08d14fd"},"maxGameThreePt":{"v":1,"gameKey":"dc445f52","sid":"c08d14fd"}},"games":["19428d0c","2cff81fd","cb0b741e","dc445f52"],"name":"Winter 2021"}
+{
+  "uuid": "e75d91db-3804-4f82-9219-6a7e50804e4c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 13,
+      "fouls": 6,
+      "fg": 4,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:04:16.507Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c08d14fd",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c5196836",
+          "tn": "Bentleigh Red",
+          "gid": "4d92639b",
+          "gn": "Sunday Open Classic Women",
+          "stats": {
+            "gp": 4,
+            "pts": 13,
+            "fouls": 6,
+            "fg": 4,
+            "ft": 2,
+            "threePt": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "893e210b",
+          "tn": "McKinnon U21 Girls 1",
+          "gid": "0b421e80",
+          "gn": "U21 Women VJL 1 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:51.131Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "dc445f52",
+      "sid": "c08d14fd"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "dc445f52",
+      "sid": "c08d14fd"
+    }
+  },
+  "games": [
+    "19428d0c",
+    "2cff81fd",
+    "cb0b741e",
+    "dc445f52"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "c5196836",
+      "sid": "c08d14fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "893e210b",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:26.974Z"
+}

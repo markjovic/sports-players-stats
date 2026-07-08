@@ -1,1 +1,101 @@
-{"uuid":"cf56486f-891c-4990-9537-672d6abf5d91","name":"Reece Bishop","gender":"Men","sports":{"Basketball":{"gp":15,"pts":68,"fouls":12,"fg":5,"ft":1,"threePt":19,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":3,"wins":9,"losses":3,"winPct":0.75,"statsChecked":"2026-07-06T19:01:28.308Z"}},"seasons":[{"sid":"00404092","sn":"Autumn 2026","regs":[{"tid":"af3d9291","tn":"Inbound boys","gid":"2afc900d","gn":"Division 6 Sunday Mens","age":null,"div":null,"stats":{"gp":15,"fouls":12,"ft":1,"fg":5,"threePt":19,"pts":68,"wins":9,"losses":3}}]}],"updatedAt":"2026-07-05T16:56:37.959Z","teams":[{"tid":"af3d9291","sid":"00404092","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:45:32.438Z","records":{"maxGamePTS":{"v":11,"gameKey":"b1614aa8","sid":"00404092"},"maxGameThreePt":{"v":3,"gameKey":"b1614aa8","sid":"00404092"}},"games":["01812b5e","321ea844","4205b2c0","5fdc9dc3","71d3bd24","78c31a77","876c7a62","882dc106","b1614aa8","b18b8a83","c27efb52","ddd63844"]}
+{
+  "uuid": "cf56486f-891c-4990-9537-672d6abf5d91",
+  "name": "Reece Bishop",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 68,
+      "fouls": 12,
+      "fg": 5,
+      "ft": 1,
+      "threePt": 19,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 3,
+      "wins": 9,
+      "losses": 3,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-06T19:01:28.308Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "00404092",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "af3d9291",
+          "tn": "Inbound boys",
+          "gid": "2afc900d",
+          "gn": "Division 6 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 5,
+            "threePt": 19,
+            "pts": 68,
+            "wins": 9,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eb9b4562",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "34ef23c7",
+          "tn": "Flamin Hot",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-05T16:56:37.959Z",
+  "teams": [
+    {
+      "tid": "af3d9291",
+      "sid": "00404092",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "34ef23c7",
+      "sid": "eb9b4562",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:12.427Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "b1614aa8",
+      "sid": "00404092"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "b1614aa8",
+      "sid": "00404092"
+    }
+  },
+  "games": [
+    "01812b5e",
+    "321ea844",
+    "4205b2c0",
+    "5fdc9dc3",
+    "71d3bd24",
+    "78c31a77",
+    "876c7a62",
+    "882dc106",
+    "b1614aa8",
+    "b18b8a83",
+    "c27efb52",
+    "ddd63844"
+  ]
+}

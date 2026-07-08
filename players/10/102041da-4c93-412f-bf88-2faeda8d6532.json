@@ -1,1 +1,386 @@
-{"uuid":"102041da-4c93-412f-bf88-2faeda8d6532","name":"Adrian Hume","gender":"Men","sports":{"Basketball":{"gp":55,"pts":409,"fouls":53,"fg":83,"ft":24,"threePt":73,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":29,"maxGameThreePt":9,"wins":61,"losses":24,"draws":7,"winPct":0.66,"statsChecked":"2026-07-05T15:46:17.933Z"}},"seasons":[{"sid":"c70702e8","sn":"Summer 2024/25","regs":[{"tid":"ff654255","tn":"KPPS","gid":"ecc21ce7","gn":"Tuesday Men C1","age":null,"div":"C1","stats":{"gp":7,"pts":39,"threePt":4,"fg":12,"ft":3,"fouls":11,"wins":5,"losses":1,"draws":1}},{"tid":"ff654255","tn":"KPPS","gid":"53eecd84","gn":"Tuesday Men B","age":null,"div":null,"stats":{"gp":7,"pts":39,"fg":12,"fouls":11,"wins":5,"losses":1,"draws":1,"ft":3,"threePt":4}}]},{"sid":"59b847c2","sn":"Winter 2024","regs":[{"tid":"a4166870","tn":"KPPS","gid":"3a91ddad","gn":"Tuesday Men C1","age":null,"div":"C1","stats":{"gp":13,"pts":60,"threePt":9,"fg":13,"ft":7,"fouls":14,"finals":1,"gfApps":1,"wins":10,"losses":2,"draws":1,"gfWins":1}}]},{"sid":"703d0c8f","sn":"Summer 2023/24","regs":[{"tid":"52c3d286","tn":"Cheers Guys Cheers","gid":"59832b05","gn":"Wednesday Open Men A GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":3,"pts":26,"threePt":3,"fg":8,"ft":1,"fouls":2,"wins":1,"losses":2}}]},{"sid":"9210adb2","sn":"Summer 2023/24","regs":[{"tid":"9db4f27b","tn":"KPPS","gid":"cce82ee9","gn":"Tuesday Men C1","age":null,"div":"C1","stats":{"gp":17,"pts":149,"threePt":30,"fg":26,"ft":7,"fouls":17,"finals":1,"wins":13,"losses":3,"draws":1}},{"tid":"9db4f27b","tn":"KPPS","gid":"15e9a95f","gn":"Tuesday Men C2","age":null,"div":"C2","stats":{"gp":17,"pts":149,"threePt":30,"fg":26,"ft":7,"fouls":17,"finals":1,"wins":13,"losses":3,"draws":1}}]},{"sid":"90a7a885","sn":"Summer 2021/22","regs":[{"tid":"5c32621a","tn":"Negative Nancy’s","gid":"10a0036b","gn":"Thursday Senior Men E","age":"Senior","div":null,"stats":{"gp":15,"pts":135,"threePt":27,"fg":24,"ft":6,"fouls":9,"wins":7,"losses":6,"draws":1}},{"tid":"5c32621a","tn":"Negative Nancy’s","gid":"938374e7","gn":"Thursday Senior Men E Reserve","age":"Senior","div":null,"stats":{"gp":15,"pts":135,"threePt":27,"fg":24,"ft":6,"fouls":9,"wins":7,"losses":6,"draws":1}}]}],"updatedAt":"2026-06-02T15:18:16.417Z","teams":[{"tid":"ff654255","sid":"c70702e8","status":"COMPLETED"},{"tid":"a4166870","sid":"59b847c2","status":"COMPLETED"},{"tid":"52c3d286","sid":"703d0c8f","status":"COMPLETED"},{"tid":"9db4f27b","sid":"9210adb2","status":"COMPLETED"},{"tid":"6c6ae9db","sid":"d3d4e181","status":"COMPLETED"},{"tid":"b387c6a4","sid":"21cd9648","status":"COMPLETED"},{"tid":"5c32621a","sid":"90a7a885","status":"COMPLETED"},{"tid":"c5a2ee21","sid":"a750f9b4","status":"COMPLETED"},{"tid":"64ab51a4","sid":"b4300865","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:57:34.261Z","records":{"maxGamePTS":{"v":29,"gameKey":"1eda2e80","sid":"90a7a885"},"maxGameThreePt":{"v":9,"gameKey":"1eda2e80","sid":"90a7a885"}},"statsChecked":"2026-06-20","games":["06b3ac0f","089f83d0","0a469ba9","1ab8202f","1eda2e80","21a237d7","23068b33","2417bb6d","247dd621","24a06267","264ab117","275e56ed","28eea866","32fb9d29","3327a8be","3562d83e","3671a0ce","3f5b9d8e","46ccc9ce","4b86a0ea","4d2fe543","4d8e9299","52843873","5fb368bb","63da0662","64a1da7d","700d9ef8","7c8ef330","869144f0","8c48c9e3","97ac66c2","abe3e40e","b41ed8e5","b4faed1a","b6d57152","bd276bf4","c0223159","c7960290","d3cd776f","d6006239","d9c6dd61","da2a5429","db33dfa4","dddbb83f","e497d078","e569ab68","f0873091","f32a806e","f3aaf8b5","f6500c35","f73e148b","f9352194","f9f74b43","fb07751d","fe0adc9d"]}
+{
+  "uuid": "102041da-4c93-412f-bf88-2faeda8d6532",
+  "name": "Adrian Hume",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 409,
+      "fouls": 53,
+      "fg": 83,
+      "ft": 24,
+      "threePt": 73,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 29,
+      "maxGameThreePt": 9,
+      "wins": 61,
+      "losses": 24,
+      "draws": 7,
+      "winPct": 0.66,
+      "statsChecked": "2026-07-05T15:46:17.933Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c70702e8",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "ff654255",
+          "tn": "KPPS",
+          "gid": "ecc21ce7",
+          "gn": "Tuesday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 7,
+            "pts": 39,
+            "threePt": 4,
+            "fg": 12,
+            "ft": 3,
+            "fouls": 11,
+            "wins": 5,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "ff654255",
+          "tn": "KPPS",
+          "gid": "53eecd84",
+          "gn": "Tuesday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 39,
+            "fg": 12,
+            "fouls": 11,
+            "wins": 5,
+            "losses": 1,
+            "draws": 1,
+            "ft": 3,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "59b847c2",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "a4166870",
+          "tn": "KPPS",
+          "gid": "3a91ddad",
+          "gn": "Tuesday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 13,
+            "pts": 60,
+            "threePt": 9,
+            "fg": 13,
+            "ft": 7,
+            "fouls": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 2,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "703d0c8f",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "52c3d286",
+          "tn": "Cheers Guys Cheers",
+          "gid": "59832b05",
+          "gn": "Wednesday Open Men A GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 26,
+            "threePt": 3,
+            "fg": 8,
+            "ft": 1,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9210adb2",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "9db4f27b",
+          "tn": "KPPS",
+          "gid": "cce82ee9",
+          "gn": "Tuesday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 17,
+            "pts": 149,
+            "threePt": 30,
+            "fg": 26,
+            "ft": 7,
+            "fouls": 17,
+            "finals": 1,
+            "wins": 13,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "9db4f27b",
+          "tn": "KPPS",
+          "gid": "15e9a95f",
+          "gn": "Tuesday Men C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 17,
+            "pts": 149,
+            "threePt": 30,
+            "fg": 26,
+            "ft": 7,
+            "fouls": 17,
+            "finals": 1,
+            "wins": 13,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "90a7a885",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "5c32621a",
+          "tn": "Negative Nancy’s",
+          "gid": "10a0036b",
+          "gn": "Thursday Senior Men E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 135,
+            "threePt": 27,
+            "fg": 24,
+            "ft": 6,
+            "fouls": 9,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5c32621a",
+          "tn": "Negative Nancy’s",
+          "gid": "938374e7",
+          "gn": "Thursday Senior Men E Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 135,
+            "threePt": 27,
+            "fg": 24,
+            "ft": 6,
+            "fouls": 9,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "6c6ae9db",
+          "tn": "LeTrash",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "b387c6a4",
+          "tn": "Letrash",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "a750f9b4",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "c5a2ee21",
+          "tn": "Cheers Guys Cheers",
+          "gid": "c4f05a7f",
+          "gn": "Monday Open Men G GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b4300865",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "64ab51a4",
+          "tn": "Cheers Guys Cheers",
+          "gid": "b34e3a55",
+          "gn": "Monday Open Men H GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:18:16.417Z",
+  "teams": [
+    {
+      "tid": "ff654255",
+      "sid": "c70702e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4166870",
+      "sid": "59b847c2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52c3d286",
+      "sid": "703d0c8f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9db4f27b",
+      "sid": "9210adb2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c32621a",
+      "sid": "90a7a885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c6ae9db",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b387c6a4",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5a2ee21",
+      "sid": "a750f9b4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64ab51a4",
+      "sid": "b4300865",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:11.867Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 29,
+      "gameKey": "1eda2e80",
+      "sid": "90a7a885"
+    },
+    "maxGameThreePt": {
+      "v": 9,
+      "gameKey": "1eda2e80",
+      "sid": "90a7a885"
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "06b3ac0f",
+    "089f83d0",
+    "0a469ba9",
+    "1ab8202f",
+    "1eda2e80",
+    "21a237d7",
+    "23068b33",
+    "2417bb6d",
+    "247dd621",
+    "24a06267",
+    "264ab117",
+    "275e56ed",
+    "28eea866",
+    "32fb9d29",
+    "3327a8be",
+    "3562d83e",
+    "3671a0ce",
+    "3f5b9d8e",
+    "46ccc9ce",
+    "4b86a0ea",
+    "4d2fe543",
+    "4d8e9299",
+    "52843873",
+    "5fb368bb",
+    "63da0662",
+    "64a1da7d",
+    "700d9ef8",
+    "7c8ef330",
+    "869144f0",
+    "8c48c9e3",
+    "97ac66c2",
+    "abe3e40e",
+    "b41ed8e5",
+    "b4faed1a",
+    "b6d57152",
+    "bd276bf4",
+    "c0223159",
+    "c7960290",
+    "d3cd776f",
+    "d6006239",
+    "d9c6dd61",
+    "da2a5429",
+    "db33dfa4",
+    "dddbb83f",
+    "e497d078",
+    "e569ab68",
+    "f0873091",
+    "f32a806e",
+    "f3aaf8b5",
+    "f6500c35",
+    "f73e148b",
+    "f9352194",
+    "f9f74b43",
+    "fb07751d",
+    "fe0adc9d"
+  ]
+}

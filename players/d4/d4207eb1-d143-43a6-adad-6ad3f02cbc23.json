@@ -1,1 +1,104 @@
-{"uuid":"d4207eb1-d143-43a6-adad-6ad3f02cbc23","name":"Austin Wu","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":41,"fouls":25,"fg":14,"ft":13,"foulOuts":{"6dd649c0":1},"maxGamePTS":13,"maxGameThreePt":null,"wins":5,"losses":5,"winPct":0.5,"statsChecked":"2026-07-05T14:44:43.656Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"45c06bf6","tn":"West Sydney Wolves U12 Boys Black","gid":"61d6258f","gn":"BOYS UNDER 12 C4","age":null,"div":"C4","stats":{"gp":5,"fouls":19,"ft":11,"fg":13,"pts":37,"foulOuts":1,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"8161b03a","stats":{"wins":3,"losses":2,"gp":5,"pts":4,"fg":1,"ft":2,"fouls":6}}]}],"updatedAt":"2026-05-31T01:02:22.056Z","teams":[{"tid":"8161b03a","sid":"0869ea69","status":"UPCOMING"},{"tid":"45c06bf6","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:02.390Z","games":["01d54b27","5bbcbd08","7022f781","7abe29f0","b4966014","c51cea75","cc281803","cfaa29a2","d82233bd","e901adb0"],"records":{"maxGamePTS":{"v":13,"gameKey":"01d54b27","sid":"6dd649c0"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d4207eb1-d143-43a6-adad-6ad3f02cbc23",
+  "name": "Austin Wu",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 41,
+      "fouls": 25,
+      "fg": 14,
+      "ft": 13,
+      "foulOuts": {
+        "6dd649c0": 1
+      },
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:44:43.656Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "45c06bf6",
+          "tn": "West Sydney Wolves U12 Boys Black",
+          "gid": "61d6258f",
+          "gn": "BOYS UNDER 12 C4",
+          "age": null,
+          "div": "C4",
+          "stats": {
+            "gp": 5,
+            "fouls": 19,
+            "ft": 11,
+            "fg": 13,
+            "pts": 37,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "8161b03a",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 4,
+            "fg": 1,
+            "ft": 2,
+            "fouls": 6
+          },
+          "gid": "63c10aaf",
+          "gn": "BOYS UNDER 14 C3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:02:22.056Z",
+  "teams": [
+    {
+      "tid": "45c06bf6",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8161b03a",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:26.217Z",
+  "games": [
+    "01d54b27",
+    "5bbcbd08",
+    "7022f781",
+    "7abe29f0",
+    "b4966014",
+    "c51cea75",
+    "cc281803",
+    "cfaa29a2",
+    "d82233bd",
+    "e901adb0"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "01d54b27",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

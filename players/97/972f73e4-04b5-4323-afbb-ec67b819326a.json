@@ -1,1 +1,144 @@
-{"uuid":"972f73e4-04b5-4323-afbb-ec67b819326a","name":"2021/22","gender":null,"sports":{"Basketball":{"gp":13,"pts":23,"fouls":19,"fg":11,"ft":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":9,"losses":2,"winPct":0.82,"statsChecked":"2026-07-05T16:14:50.340Z"}},"seasons":[{"sid":"9c1e219b","sn":"2021/22","club":"Malvern Tigers Basketball Club","regs":[{"tid":"fca04aa4","tn":"Malvern Tigers U14 Boys","gid":"30323f83","gn":"Saturday U12 Boys B**","stats":{"gp":2,"pts":4,"fouls":3,"fg":2}}]},{"sid":"1603f576","sn":"Summer 2020/21","club":"Malvern Tigers Basketball Club","regs":[{"tid":"83076c50","tn":"Malvern Tigers U12 Boys Black","gid":"b901cf81","gn":"Saturday U12 Boys B1/B1R","stats":{"gp":11,"pts":19,"fouls":16,"fg":9,"ft":1,"finals":1,"gfApps":1,"wins":9,"losses":2,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:42:39.744Z","records":{"maxGamePTS":{"v":4,"gameKey":"2b7fc577","sid":"9c1e219b"},"maxGameThreePt":{"v":null}},"games":["3a27bf47","4cd9c373","540ba0c6","6c4a21aa","70d160b0","a322af8c","a9eeac41","ad0a87be","d9504111","e2d7c53e","fca76e4b"]}
+{
+  "uuid": "972f73e4-04b5-4323-afbb-ec67b819326a",
+  "name": "2021/22",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 23,
+      "fouls": 19,
+      "fg": 11,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 2,
+      "winPct": 0.82,
+      "statsChecked": "2026-07-05T16:14:50.340Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9c1e219b",
+      "sn": "2021/22",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "fca04aa4",
+          "tn": "Malvern Tigers U14 Boys",
+          "gid": "30323f83",
+          "gn": "Saturday U12 Boys B**",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fouls": 3,
+            "fg": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1603f576",
+      "sn": "Summer 2020/21",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "83076c50",
+          "tn": "Malvern Tigers U12 Boys Black",
+          "gid": "b901cf81",
+          "gn": "Saturday U12 Boys B1/B1R",
+          "stats": {
+            "gp": 11,
+            "pts": 19,
+            "fouls": 16,
+            "fg": 9,
+            "ft": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "9203b4dc",
+          "tn": "Malvern Tigers U12 Boys Red",
+          "gid": "08655415",
+          "gn": "U12 Boys GP2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "c6f7250f",
+          "tn": "Malvern Tigers U12 Boys Yellow",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:39.744Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "2b7fc577",
+      "sid": "9c1e219b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3a27bf47",
+    "4cd9c373",
+    "540ba0c6",
+    "6c4a21aa",
+    "70d160b0",
+    "a322af8c",
+    "a9eeac41",
+    "ad0a87be",
+    "d9504111",
+    "e2d7c53e",
+    "fca76e4b"
+  ],
+  "teams": [
+    {
+      "tid": "fca04aa4",
+      "sid": "9c1e219b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "83076c50",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9203b4dc",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6f7250f",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:14.706Z"
+}

@@ -1,1 +1,106 @@
-{"uuid":"27463982-b21b-424c-8851-4553ff9db3c6","name":"Sophia Natt","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":41,"fouls":8,"fg":20,"ft":1,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"wins":2,"losses":8,"winPct":0.2,"statsChecked":"2026-07-05T14:25:28.376Z"}},"seasons":[{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"a9b2a844","tn":"South Adelaide G12.1 (SA)","gid":"f2e43001","gn":"U12 Girls A Res (Central)","age":"U12","div":null,"stats":{"gp":4,"pts":9,"fg":4,"ft":1,"fouls":3,"wins":1,"losses":3}}]},{"sid":"10ee56a5","regs":[{"tid":"74846d42","stats":{"wins":1,"losses":5,"finals":1,"gfApps":1,"gp":6,"pts":32,"fg":16,"fouls":5}}]}],"updatedAt":"2026-05-30T14:54:13.004Z","teams":[{"tid":"74846d42","sid":"10ee56a5","status":"UPCOMING"},{"tid":"a9b2a844","sid":"6b0cab9c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:14.989Z","records":{"maxGamePTS":{"v":10,"gameKey":"2230d69b","sid":"10ee56a5"},"maxGameThreePt":{"v":null}},"games":["2230d69b","2f6e18fb","3e872af4","4ee0c68e","5bb42296","5e9bad1a","68403fc9","8801cbf1","a7087fc7","d9477cec"]}
+{
+  "uuid": "27463982-b21b-424c-8851-4553ff9db3c6",
+  "name": "Sophia Natt",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 41,
+      "fouls": 8,
+      "fg": 20,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "wins": 2,
+      "losses": 8,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T14:25:28.376Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "a9b2a844",
+          "tn": "South Adelaide G12.1 (SA)",
+          "gid": "f2e43001",
+          "gn": "U12 Girls A Res (Central)",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "74846d42",
+          "stats": {
+            "wins": 1,
+            "losses": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 6,
+            "pts": 32,
+            "fg": 16,
+            "fouls": 5
+          },
+          "gid": "09821aa8",
+          "gn": "U12 Girls NJC"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-30T14:54:13.004Z",
+  "teams": [
+    {
+      "tid": "a9b2a844",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "74846d42",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:10.625Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "2230d69b",
+      "sid": "10ee56a5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2230d69b",
+    "2f6e18fb",
+    "3e872af4",
+    "4ee0c68e",
+    "5bb42296",
+    "5e9bad1a",
+    "68403fc9",
+    "8801cbf1",
+    "a7087fc7",
+    "d9477cec"
+  ]
+}

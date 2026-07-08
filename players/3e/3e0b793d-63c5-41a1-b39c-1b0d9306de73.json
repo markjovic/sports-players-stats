@@ -1,1 +1,418 @@
-{"uuid":"3e0b793d-63c5-41a1-b39c-1b0d9306de73","name":"Isaiah Karasavvidis","gender":"Boys","sports":{"Basketball":{"gp":52,"pts":115,"fouls":52,"fg":54,"ft":7,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":null,"wins":62,"losses":67,"draws":7,"winPct":0.46,"statsChecked":"2026-07-05T14:40:48.408Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Carnegie Basketball Club","regs":[{"tid":"42413112","tn":"Carnegie Chargers U12 Boys Hudson","gid":"3dcdfe5c","gn":"Saturday U12 Boys Div 10","age":"U12","div":"Div 10","stats":{"gp":7,"fouls":11,"fg":12,"pts":25,"wins":2,"losses":5,"ft":1}},{"tid":"42413112","tn":"Carnegie Chargers U12 Boys Hudson","gid":"b7c9302f","gn":"Saturday U12 Boys Div  9","age":"U12","div":"Div 9","stats":{"gp":7,"fouls":11,"ft":1,"fg":12,"pts":25,"wins":2,"losses":5}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"Carnegie Basketball Club","regs":[{"tid":"addd1329","tn":"Carnegie Chargers U12 Boys Chris","gid":"27db2a0a","gn":"Saturday U12 Boys Div 11","age":"U12","div":"Div 11","stats":{"gp":15,"fouls":17,"ft":1,"fg":21,"pts":43,"wins":6,"losses":8,"draws":1}},{"tid":"addd1329","tn":"Carnegie Chargers U12 Boys Chris","gid":"086799f6","gn":"Saturday U12 Boys Div 12","age":"U12","div":"Div 12","stats":{"gp":15,"fouls":17,"fg":21,"pts":43,"wins":6,"losses":8,"draws":1,"ft":1}},{"tid":"addd1329","tn":"Carnegie Chargers U12 Boys Chris","gid":"101b53cb","gn":"Saturday U12 Boys Div 10","age":"U12","div":"Div 10","stats":{"gp":15,"wins":6,"losses":8,"draws":1,"pts":43,"fg":21,"ft":1,"fouls":17}},{"tid":"addd1329","tn":"Carnegie Chargers U12 Boys Chris","gid":"2f79b7f6","gn":"Saturday U12 Boys Div  9","age":"U12","div":"Div 9","stats":{"gp":15,"fouls":17,"wins":6,"losses":8,"draws":1,"pts":43,"fg":21,"ft":1}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Carnegie Basketball Club","regs":[{"tid":"be6a2372","tn":"Carnegie Chargers U10 Boys Joaquin / James","gid":"a5cf6a03","gn":"Saturday U10 Boys 1","age":"U10","div":null,"stats":{"gp":14,"fouls":9,"ft":1,"fg":8,"pts":17,"wins":4,"losses":7,"draws":3}}]},{"sid":"475831bc","sn":"Winter 2024","club":"Carnegie Basketball Club","regs":[{"tid":"991c94d0","tn":"Carnegie Chargers U10 Boys NICK","gid":"7bc379d4","gn":"Saturday U10 Boys 4","age":"U10","div":null,"stats":{"gp":16,"fouls":15,"ft":4,"fg":13,"pts":30,"finals":1,"wins":10,"losses":6}},{"tid":"991c94d0","tn":"Carnegie Chargers U10 Boys NICK","gid":"d57adfd1","gn":"Saturday U10 Boys 5","age":"U10","div":null,"stats":{"gp":16,"fouls":15,"fg":13,"pts":30,"finals":1,"wins":10,"losses":6,"ft":4}},{"tid":"991c94d0","tn":"Carnegie Chargers U10 Boys NICK","gid":"9545a7a8","gn":"Saturday U10 Boys 6","age":"U10","div":null,"stats":{"gp":16,"fouls":15,"ft":4,"fg":13,"pts":30,"finals":1,"wins":10,"losses":6}}]}],"updatedAt":"2026-05-31T20:09:02.151Z","teams":[{"tid":"42413112","sid":"79d2b087","status":"ACTIVE"},{"tid":"addd1329","sid":"4b758d19","status":"COMPLETED"},{"tid":"be6a2372","sid":"c01b75f6","status":"COMPLETED"},{"tid":"991c94d0","sid":"475831bc","status":"COMPLETED"},{"tid":"2083bd56","sid":"0fef30ca","status":"COMPLETED"},{"tid":"c8adcfcf","sid":"09a70808","status":"COMPLETED"},{"tid":"4741762c","sid":"09a70808","status":"COMPLETED"},{"tid":"230a2254","sid":"e5df46b3","status":"COMPLETED"},{"tid":"2d39ec2b","sid":"e5df46b3","status":"COMPLETED"},{"tid":"7d4de1de","sid":"cf8ebef7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:19:02.630Z","records":{"maxGamePTS":{"v":13,"gameKey":"2aa67f4e","sid":"4b758d19"},"maxGameThreePt":{"v":null}},"games":["02141fd5","082fd5f0","0ff8784d","10f9d2bd","13ef0fda","16eb81ea","191c21e5","235e660d","28f42af0","2a1b54af","2aa67f4e","35795570","3777cc5f","37b93cd8","396289ad","39b01740","48b2cbb3","4befe0a0","520a825b","546c0830","55a0722d","611347ff","62ea4e13","696d8100","6a638e62","6a9f259e","6e94c632","70880c39","70d8146d","795bb77f","86ff87ba","91d1b6c5","951c5dca","a15f41c1","a5117ae3","ac5dee19","b26810ea","b3c002dd","b77d85f9","b86b3452","badee2fd","bd92d912","cdac4e0b","ce36d95e","d428baf0","d50be99e","dd7e9325","dfa3752f","ec819434","ecb9ec4c","f5544525","f8f74de2"]}
+{
+  "uuid": "3e0b793d-63c5-41a1-b39c-1b0d9306de73",
+  "name": "Isaiah Karasavvidis",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 115,
+      "fouls": 52,
+      "fg": 54,
+      "ft": 7,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 62,
+      "losses": 67,
+      "draws": 7,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T14:40:48.408Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "42413112",
+          "tn": "Carnegie Chargers U12 Boys Hudson",
+          "gid": "3dcdfe5c",
+          "gn": "Saturday U12 Boys Div 10",
+          "age": "U12",
+          "div": "Div 10",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "fg": 12,
+            "pts": 25,
+            "wins": 2,
+            "losses": 5,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "42413112",
+          "tn": "Carnegie Chargers U12 Boys Hudson",
+          "gid": "b7c9302f",
+          "gn": "Saturday U12 Boys Div  9",
+          "age": "U12",
+          "div": "Div 9",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 12,
+            "pts": 25,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "addd1329",
+          "tn": "Carnegie Chargers U12 Boys Chris",
+          "gid": "27db2a0a",
+          "gn": "Saturday U12 Boys Div 11",
+          "age": "U12",
+          "div": "Div 11",
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 21,
+            "pts": 43,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "addd1329",
+          "tn": "Carnegie Chargers U12 Boys Chris",
+          "gid": "086799f6",
+          "gn": "Saturday U12 Boys Div 12",
+          "age": "U12",
+          "div": "Div 12",
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "fg": 21,
+            "pts": 43,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "addd1329",
+          "tn": "Carnegie Chargers U12 Boys Chris",
+          "gid": "101b53cb",
+          "gn": "Saturday U12 Boys Div 10",
+          "age": "U12",
+          "div": "Div 10",
+          "stats": {
+            "gp": 15,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "pts": 43,
+            "fg": 21,
+            "ft": 1,
+            "fouls": 17
+          }
+        },
+        {
+          "tid": "addd1329",
+          "tn": "Carnegie Chargers U12 Boys Chris",
+          "gid": "2f79b7f6",
+          "gn": "Saturday U12 Boys Div  9",
+          "age": "U12",
+          "div": "Div 9",
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "pts": 43,
+            "fg": 21,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "be6a2372",
+          "tn": "Carnegie Chargers U10 Boys Joaquin / James",
+          "gid": "a5cf6a03",
+          "gn": "Saturday U10 Boys 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "wins": 4,
+            "losses": 7,
+            "draws": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "475831bc",
+      "sn": "Winter 2024",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "991c94d0",
+          "tn": "Carnegie Chargers U10 Boys NICK",
+          "gid": "7bc379d4",
+          "gn": "Saturday U10 Boys 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 15,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "991c94d0",
+          "tn": "Carnegie Chargers U10 Boys NICK",
+          "gid": "d57adfd1",
+          "gn": "Saturday U10 Boys 5",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 15,
+            "fg": 13,
+            "pts": 30,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6,
+            "ft": 4
+          }
+        },
+        {
+          "tid": "991c94d0",
+          "tn": "Carnegie Chargers U10 Boys NICK",
+          "gid": "9545a7a8",
+          "gn": "Saturday U10 Boys 6",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 15,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "2083bd56",
+          "tn": "Carnegie Chargers U10 Boys YR2 4233 Nick T1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "c8adcfcf",
+          "tn": "Carnegie Chargers U10 Boys YR1 4233 Nick T4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "4741762c",
+          "tn": "Carnegie Chargers U8 Boys YR1 4233 Jarrod T3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "230a2254",
+          "tn": "Carnegie Chargers U9 Boys YR1 (Jarrod)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "2d39ec2b",
+          "tn": "Carnegie Chargers U9 Boys YR1 4233 Jarrod T2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "7d4de1de",
+          "tn": "Carnegie Chargers U9 Boys IAIN T4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T20:09:02.151Z",
+  "teams": [
+    {
+      "tid": "42413112",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "addd1329",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be6a2372",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "991c94d0",
+      "sid": "475831bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2083bd56",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c8adcfcf",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4741762c",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "230a2254",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d39ec2b",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d4de1de",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:09.686Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "2aa67f4e",
+      "sid": "4b758d19"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02141fd5",
+    "082fd5f0",
+    "0ff8784d",
+    "10f9d2bd",
+    "13ef0fda",
+    "16eb81ea",
+    "191c21e5",
+    "235e660d",
+    "28f42af0",
+    "2a1b54af",
+    "2aa67f4e",
+    "35795570",
+    "3777cc5f",
+    "37b93cd8",
+    "396289ad",
+    "39b01740",
+    "48b2cbb3",
+    "4befe0a0",
+    "520a825b",
+    "546c0830",
+    "55a0722d",
+    "611347ff",
+    "62ea4e13",
+    "696d8100",
+    "6a638e62",
+    "6a9f259e",
+    "6e94c632",
+    "70880c39",
+    "70d8146d",
+    "795bb77f",
+    "86ff87ba",
+    "91d1b6c5",
+    "951c5dca",
+    "a15f41c1",
+    "a5117ae3",
+    "ac5dee19",
+    "b26810ea",
+    "b3c002dd",
+    "b77d85f9",
+    "b86b3452",
+    "badee2fd",
+    "bd92d912",
+    "cdac4e0b",
+    "ce36d95e",
+    "d428baf0",
+    "d50be99e",
+    "dd7e9325",
+    "dfa3752f",
+    "ec819434",
+    "ecb9ec4c",
+    "f5544525",
+    "f8f74de2"
+  ]
+}

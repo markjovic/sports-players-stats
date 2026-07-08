@@ -1,1 +1,81 @@
-{"uuid":"a411fb95-75ae-4744-b762-469b950417d1","gender":null,"sports":{"Basketball":{"gp":1,"pts":3,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T15:50:29.042Z"}},"seasons":[{"sid":"0d744732","sn":"Summer 2022/23","club":null,"regs":[{"tid":"cc8daf31","tn":"Altered Beasts","gid":"834d2b3a","gn":"Thursday Open Men G","stats":{"gp":1,"pts":3,"fg":1,"ft":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:43:16.358Z","games":["a01d7620"],"records":{"maxGamePTS":{"v":3,"gameKey":"a01d7620","sid":"0d744732"},"maxGameThreePt":{"v":null}},"name":"Summer 2022/23"}
+{
+  "uuid": "a411fb95-75ae-4744-b762-469b950417d1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 3,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:50:29.042Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0d744732",
+      "sn": "Summer 2022/23",
+      "club": null,
+      "regs": [
+        {
+          "tid": "cc8daf31",
+          "tn": "Altered Beasts",
+          "gid": "834d2b3a",
+          "gn": "Thursday Open Men G",
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "87ac8b58",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "844a3709",
+          "tn": "Kwame Brown ",
+          "gid": "a84b66e7",
+          "gn": "Thursday Open Men A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:16.358Z",
+  "games": [
+    "a01d7620"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "a01d7620",
+      "sid": "0d744732"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "cc8daf31",
+      "sid": "0d744732",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "844a3709",
+      "sid": "87ac8b58",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:34.242Z"
+}

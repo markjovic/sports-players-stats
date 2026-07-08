@@ -1,1 +1,88 @@
-{"uuid":"063428eb-1649-4342-9329-f7d0bbb3dc2f","gender":null,"sports":{"Basketball":{"gp":2,"pts":33,"fouls":4,"fg":11,"ft":8,"threePt":1,"foulOuts":{},"maxGamePTS":19,"maxGameThreePt":1,"wins":2,"winPct":1,"statsChecked":"2026-07-05T16:20:48.942Z"}},"seasons":[{"sid":"27dd2c71","sn":"Summer 2020/21","club":null,"regs":[{"tid":"9e6112c6","tn":"The Seahorses","gid":"eba4a821","gn":"Sunday Open Men D Grade (1)","stats":{"gp":2,"pts":33,"fouls":4,"fg":11,"ft":8,"threePt":1,"wins":2}}]}],"updatedAt":"2026-06-11T23:35:57.644Z","records":{"maxGamePTS":{"v":19,"gameKey":"34bf3a41","sid":"27dd2c71"},"maxGameThreePt":{"v":1,"gameKey":"652851d4","sid":"27dd2c71"}},"games":["34bf3a41","652851d4"],"name":"Summer 2020/21"}
+{
+  "uuid": "063428eb-1649-4342-9329-f7d0bbb3dc2f",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 33,
+      "fouls": 4,
+      "fg": 11,
+      "ft": 8,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 19,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:20:48.942Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "27dd2c71",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "9e6112c6",
+          "tn": "The Seahorses",
+          "gid": "eba4a821",
+          "gn": "Sunday Open Men D Grade (1)",
+          "stats": {
+            "gp": 2,
+            "pts": 33,
+            "fouls": 4,
+            "fg": 11,
+            "ft": 8,
+            "threePt": 1,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "85c14870",
+          "tn": "Melbourne U16 Boys 1",
+          "gid": "7c9ab47d",
+          "gn": "U16 Boys VC - Ashe",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:35:57.644Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "34bf3a41",
+      "sid": "27dd2c71"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "652851d4",
+      "sid": "27dd2c71"
+    }
+  },
+  "games": [
+    "34bf3a41",
+    "652851d4"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "9e6112c6",
+      "sid": "27dd2c71",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85c14870",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:22.225Z"
+}

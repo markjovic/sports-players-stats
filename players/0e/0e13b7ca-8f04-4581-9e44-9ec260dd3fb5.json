@@ -1,1 +1,407 @@
-{"uuid":"0e13b7ca-8f04-4581-9e44-9ec260dd3fb5","name":"Lisa Fleming","gender":"Women","sports":{"Basketball":{"gp":72,"pts":274,"fouls":53,"fg":106,"ft":57,"threePt":1,"foulOuts":{},"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":12,"maxGameThreePt":1,"losses":37,"winPct":0.51,"wins":39,"draws":1,"statsChecked":"2026-07-05T15:33:36.376Z"}},"seasons":[{"sid":"d3df72f7","sn":"Winter 2026","regs":[{"tid":"e2105381","tn":"Swish, You Wish","gid":"7e8b8fef","gn":"Thursday Open Women A/B","age":"Senior","div":null,"stats":{"gp":9,"fouls":6,"ft":4,"fg":15,"pts":34,"wins":6,"losses":3}}]},{"sid":"b34474b8","sn":"Autumn 2026","regs":[{"tid":"f7d006da","tn":"Yarra Valley Vixens","gid":"d34c20e4","gn":"Wednesday Daytime Ladies","age":null,"div":null,"stats":{"gp":11,"fouls":9,"ft":4,"fg":16,"pts":36,"wins":6,"losses":4}}]},{"sid":"559eb7e8","sn":"Summer 2025/26","regs":[{"tid":"6c514b5a","tn":"Swish, you wish","gid":"02a02c85","gn":"Thursday Open Women A/B","age":"Senior","div":null,"stats":{"gp":15,"fouls":12,"ft":5,"fg":14,"threePt":1,"pts":36,"finals":1,"wins":7,"losses":7,"draws":1}}]},{"sid":"5dfc7567","sn":"Winter 2025","regs":[{"tid":"fb9975e1","tn":"Uniforce","gid":"1408dcac","gn":"Thursday Open Women B/BRES","age":"Senior","div":null,"stats":{"gp":2,"ft":3,"fg":2,"pts":7,"wins":2}}]},{"sid":"d8f25640","sn":"Spring 2025","regs":[{"tid":"f3d49640","tn":"Yarra Valley Vixens","gid":"34253f7b","gn":"Wednesday Daytime Ladies","age":null,"div":null,"stats":{"gp":8,"fouls":6,"ft":10,"fg":11,"pts":32,"finals":1,"wins":6,"losses":2}}]},{"sid":"5f0d0670","sn":"Autumn 2025","regs":[{"tid":"aece5d91","tn":"Yarra Valley Vixens","gid":"641f4ade","gn":"Wednesday Daytime Ladies Section 1/2","age":null,"div":null,"stats":{"gp":10,"fouls":11,"ft":13,"fg":19,"pts":51,"finals":1,"wins":5,"losses":5}}]},{"sid":"1a1ebb96","sn":"Spring 2024","regs":[{"tid":"f83fcb2a","tn":"Rebels","gid":"c90af80e","gn":"Monday Open Women AB Season","age":"Senior","div":null,"stats":{"gp":3,"fouls":2,"ft":4,"fg":8,"pts":20,"wins":1,"losses":2}}]},{"sid":"4c1032be","sn":"Autumn 2024","regs":[{"tid":"7ebf08c7","tn":"Rebels","gid":"8c81dd0e","gn":"Monday Open Women AB","age":"Senior","div":null,"stats":{"gp":6,"fouls":3,"ft":8,"fg":10,"pts":28,"losses":6}},{"tid":"7ebf08c7","tn":"Rebels","gid":"4663174f","gn":"Monday Open Women Grading","age":"Senior","div":null,"stats":{"gp":6,"fouls":3,"ft":8,"fg":10,"pts":28,"losses":6}}]},{"sid":"a537e827","sn":"Summer 2021/22","regs":[{"tid":"801922a1","tn":"Uni-Force","gid":"120be73c","gn":"Thursday Open Women C","age":"Senior","div":null,"stats":{"gp":8,"fouls":4,"ft":6,"fg":11,"pts":30,"wins":6,"losses":2}}]}],"updatedAt":"2026-06-01T20:07:46.597Z","teams":[{"tid":"f7d006da","sid":"b34474b8","status":"ACTIVE"},{"tid":"e2105381","sid":"d3df72f7","status":"ACTIVE"},{"tid":"6c514b5a","sid":"559eb7e8","status":"COMPLETED"},{"tid":"f3d49640","sid":"d8f25640","status":"COMPLETED"},{"tid":"fb9975e1","sid":"5dfc7567","status":"COMPLETED"},{"tid":"aece5d91","sid":"5f0d0670","status":"COMPLETED"},{"tid":"f83fcb2a","sid":"1a1ebb96","status":"COMPLETED"},{"tid":"798c67f0","sid":"15554ef0","status":"COMPLETED"},{"tid":"7ebf08c7","sid":"4c1032be","status":"COMPLETED"},{"tid":"801922a1","sid":"a537e827","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:56:42.642Z","records":{"maxGamePTS":{"v":12,"gameKey":"ebe5930e","sid":"1a1ebb96"},"maxGameThreePt":{"v":1,"gameKey":"fa33e5ed","sid":"559eb7e8"}},"statsChecked":"2026-06-20","games":["00e09e38","04e61b55","0727e0c7","09ebcf89","12418341","1717ac57","17c8fec2","1c6c151b","1d282bc3","204cc59b","210b89e0","224f5128","23a604fb","24230d96","26aee7d6","26b6dde7","27092b30","2bcbe1ee","332a1d30","36766c64","3d49dcbc","3d4fde25","3daa0291","3e787524","4164124a","421d96f6","4b0567e4","4bd7e67d","4efd1b6c","510c80bf","5461ac64","5734316e","5b0276d1","5f4d2cf3","5fb30343","60b0989f","67056cfe","7036d1c0","71cad0d4","7666cd4a","8757eb47","89999c9c","9f0d70ba","a1306659","a3036a75","aa492bd5","b3f88acb","b57ab76b","b78caac0","c26d4635","c2853c05","c3f4f559","c729c70a","c85209a3","cd053069","cf96195d","d079e14b","d0f134b4","d338af52","d3fe2569","de9d09d1","e50b9481","e9706af0","ebe5930e","ee45a3eb","f03bdc38","f4308f4d","f70371fa","f964ac7f","fa33e5ed","fab9d7c2"]}
+{
+  "uuid": "0e13b7ca-8f04-4581-9e44-9ec260dd3fb5",
+  "name": "Lisa Fleming",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 72,
+      "pts": 274,
+      "fouls": 53,
+      "fg": 106,
+      "ft": 57,
+      "threePt": 1,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "losses": 37,
+      "winPct": 0.51,
+      "wins": 39,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:33:36.376Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3df72f7",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e2105381",
+          "tn": "Swish, You Wish",
+          "gid": "7e8b8fef",
+          "gn": "Thursday Open Women A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "ft": 4,
+            "fg": 15,
+            "pts": 34,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b34474b8",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "f7d006da",
+          "tn": "Yarra Valley Vixens",
+          "gid": "d34c20e4",
+          "gn": "Wednesday Daytime Ladies",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 16,
+            "pts": 36,
+            "wins": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "559eb7e8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "6c514b5a",
+          "tn": "Swish, you wish",
+          "gid": "02a02c85",
+          "gn": "Thursday Open Women A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 14,
+            "threePt": 1,
+            "pts": 36,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfc7567",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "fb9975e1",
+          "tn": "Uniforce",
+          "gid": "1408dcac",
+          "gn": "Thursday Open Women B/BRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "ft": 3,
+            "fg": 2,
+            "pts": 7,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d8f25640",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "f3d49640",
+          "tn": "Yarra Valley Vixens",
+          "gid": "34253f7b",
+          "gn": "Wednesday Daytime Ladies",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "ft": 10,
+            "fg": 11,
+            "pts": 32,
+            "finals": 1,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f0d0670",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "aece5d91",
+          "tn": "Yarra Valley Vixens",
+          "gid": "641f4ade",
+          "gn": "Wednesday Daytime Ladies Section 1/2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 11,
+            "ft": 13,
+            "fg": 19,
+            "pts": 51,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1a1ebb96",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "f83fcb2a",
+          "tn": "Rebels",
+          "gid": "c90af80e",
+          "gn": "Monday Open Women AB Season",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "ft": 4,
+            "fg": 8,
+            "pts": 20,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4c1032be",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "7ebf08c7",
+          "tn": "Rebels",
+          "gid": "8c81dd0e",
+          "gn": "Monday Open Women AB",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "ft": 8,
+            "fg": 10,
+            "pts": 28,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "7ebf08c7",
+          "tn": "Rebels",
+          "gid": "4663174f",
+          "gn": "Monday Open Women Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "ft": 8,
+            "fg": 10,
+            "pts": 28,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a537e827",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "801922a1",
+          "tn": "Uni-Force",
+          "gid": "120be73c",
+          "gn": "Thursday Open Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 6,
+            "fg": 11,
+            "pts": 30,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "15554ef0",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "798c67f0",
+          "tn": "Uniforce",
+          "gid": "dcfd56bd",
+          "gn": "Thursday Open Women C/CRES",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:07:46.597Z",
+  "teams": [
+    {
+      "tid": "e2105381",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f7d006da",
+      "sid": "b34474b8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c514b5a",
+      "sid": "559eb7e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb9975e1",
+      "sid": "5dfc7567",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3d49640",
+      "sid": "d8f25640",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aece5d91",
+      "sid": "5f0d0670",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f83fcb2a",
+      "sid": "1a1ebb96",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ebf08c7",
+      "sid": "4c1032be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "801922a1",
+      "sid": "a537e827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "798c67f0",
+      "sid": "15554ef0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:03.898Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "ebe5930e",
+      "sid": "1a1ebb96"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "fa33e5ed",
+      "sid": "559eb7e8"
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "00e09e38",
+    "04e61b55",
+    "0727e0c7",
+    "09ebcf89",
+    "12418341",
+    "1717ac57",
+    "17c8fec2",
+    "1c6c151b",
+    "1d282bc3",
+    "204cc59b",
+    "210b89e0",
+    "224f5128",
+    "23a604fb",
+    "24230d96",
+    "26aee7d6",
+    "26b6dde7",
+    "27092b30",
+    "2bcbe1ee",
+    "332a1d30",
+    "36766c64",
+    "3d49dcbc",
+    "3d4fde25",
+    "3daa0291",
+    "3e787524",
+    "4164124a",
+    "421d96f6",
+    "4b0567e4",
+    "4bd7e67d",
+    "4efd1b6c",
+    "510c80bf",
+    "5461ac64",
+    "5734316e",
+    "5b0276d1",
+    "5f4d2cf3",
+    "5fb30343",
+    "60b0989f",
+    "67056cfe",
+    "7036d1c0",
+    "71cad0d4",
+    "7666cd4a",
+    "8757eb47",
+    "89999c9c",
+    "9f0d70ba",
+    "a1306659",
+    "a3036a75",
+    "aa492bd5",
+    "b3f88acb",
+    "b57ab76b",
+    "b78caac0",
+    "c26d4635",
+    "c2853c05",
+    "c3f4f559",
+    "c729c70a",
+    "c85209a3",
+    "cd053069",
+    "cf96195d",
+    "d079e14b",
+    "d0f134b4",
+    "d338af52",
+    "d3fe2569",
+    "de9d09d1",
+    "e50b9481",
+    "e9706af0",
+    "ebe5930e",
+    "ee45a3eb",
+    "f03bdc38",
+    "f4308f4d",
+    "f70371fa",
+    "f964ac7f",
+    "fa33e5ed",
+    "fab9d7c2"
+  ]
+}

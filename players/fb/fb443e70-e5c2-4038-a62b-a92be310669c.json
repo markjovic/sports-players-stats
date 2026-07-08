@@ -1,1 +1,468 @@
-{"uuid":"fb443e70-e5c2-4038-a62b-a92be310669c","name":"Adi Gupta","gender":"Men","sports":{"Basketball":{"gp":46,"pts":374,"fouls":47,"fg":69,"ft":44,"threePt":64,"foulOuts":{},"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":0.6,"maxGamePTS":25,"maxGameThreePt":5,"wins":14,"losses":24,"winPct":0.34,"draws":3,"statsChecked":"2026-07-05T15:14:10.476Z"}},"seasons":[{"sid":"5390040a","sn":"Summer 2025/26","regs":[{"tid":"d95aaa1d","tn":"Halibum Heat","gid":"401fdcc4","gn":"Thursday Men Section 03/04","age":null,"div":null,"stats":{"gp":18,"fouls":31,"ft":22,"fg":37,"threePt":31,"pts":189,"finals":1,"gfApps":1,"wins":9,"losses":7,"draws":2,"gfWins":1}}]},{"sid":"34f97ca3","sn":"Winter 2025","regs":[{"tid":"4925ff9d","tn":"Hardcore ","gid":"86034722","gn":"Wednesday Open Men A","age":"Senior","div":null,"stats":{"gp":2,"losses":1}}]},{"sid":"a41e2e17","sn":"Winter 2024","regs":[{"tid":"ca5d1454","tn":"Hardcore","gid":"8369bb9f","gn":"Wednesday Open Men A/A Res","age":"Senior","div":null,"stats":{"gp":5,"fouls":1,"fg":1,"threePt":5,"pts":17,"finals":1,"gfApps":1,"losses":1}}]},{"sid":"a88d4358","sn":"Summer 2024/25","regs":[{"tid":"72beb4ea","tn":"Hardcore","gid":"1ad3d1e4","gn":"Wednesday Open Men A/A Res","age":"Senior","div":null,"stats":{"gp":17,"fouls":13,"ft":14,"fg":21,"threePt":22,"pts":122,"finals":1,"wins":2,"losses":14,"draws":1}}]},{"sid":"d3dee716","sn":"Winter 2022","regs":[{"tid":"a5c2ca8b","tn":"We Need Intense","gid":"8a7a5fdc","gn":"Men SUNDAY Section 8","age":null,"div":null,"stats":{"gp":4,"fouls":2,"ft":8,"fg":10,"threePt":6,"pts":46,"wins":3,"losses":1}}]}],"updatedAt":"2026-07-04T05:54:58.932Z","teams":[{"tid":"d95aaa1d","sid":"5390040a","status":"COMPLETED"},{"tid":"71248979","sid":"fab2be4d","status":"COMPLETED"},{"tid":"4925ff9d","sid":"34f97ca3","status":"COMPLETED"},{"tid":"f889111a","sid":"76897951","status":"COMPLETED"},{"tid":"72beb4ea","sid":"a88d4358","status":"COMPLETED"},{"tid":"af6f1200","sid":"5944effa","status":"COMPLETED"},{"tid":"59d3ab6d","sid":"5944effa","status":"COMPLETED"},{"tid":"ca5d1454","sid":"a41e2e17","status":"COMPLETED"},{"tid":"5f093f75","sid":"348dbfb8","status":"COMPLETED"},{"tid":"1f3c8759","sid":"348dbfb8","status":"COMPLETED"},{"tid":"550edd12","sid":"9358e51a","status":"COMPLETED"},{"tid":"696d1abc","sid":"9358e51a","status":"COMPLETED"},{"tid":"8f0c70d7","sid":"d3d4e181","status":"COMPLETED"},{"tid":"e8b9bd28","sid":"d3d4e181","status":"COMPLETED"},{"tid":"854da16e","sid":"d3d4e181","status":"COMPLETED"},{"tid":"b1fc2690","sid":"21cd9648","status":"COMPLETED"},{"tid":"2fab3891","sid":"21cd9648","status":"COMPLETED"},{"tid":"a5c2ca8b","sid":"d3dee716","status":"COMPLETED"},{"tid":"c83679a6","sid":"d4cbf787","status":"COMPLETED"},{"tid":"44394712","sid":"d64fcfce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:56:46.451Z","games":["01bf9d2f","02027636","04bb2691","06851fa4","0f20fc00","2566d0b0","36ad8f04","3f900861","42d6adbc","44dc5490","46ef4388","490ea7d8","51ad17e4","6075cecd","60f5339c","64b964ff","68d069d2","801db6a5","891c8610","8d68d65e","97f8415c","a7903476","a79f859d","aa5d0f4c","b8680e4d","b9fece1a","bfafe8a9","c866ecf6","c98e47bc","cad2e738","ce71ad4c","d0d3c26f","d36a110e","d3ce4e7b","d932b157","db982d2c","e1a0f411","e2906b1e","e59484a1","e7cd2965","f72af91c","f98aa796"],"records":{"maxGamePTS":{"v":25,"gameKey":"01bf9d2f","sid":"5390040a"},"maxGameThreePt":{"v":5,"gameKey":"04bb2691","sid":"a41e2e17"}}}
+{
+  "uuid": "fb443e70-e5c2-4038-a62b-a92be310669c",
+  "name": "Adi Gupta",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 374,
+      "fouls": 47,
+      "fg": 69,
+      "ft": 44,
+      "threePt": 64,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.6,
+      "maxGamePTS": 25,
+      "maxGameThreePt": 5,
+      "wins": 14,
+      "losses": 24,
+      "winPct": 0.34,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:14:10.476Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5390040a",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "d95aaa1d",
+          "tn": "Halibum Heat",
+          "gid": "401fdcc4",
+          "gn": "Thursday Men Section 03/04",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 31,
+            "ft": 22,
+            "fg": 37,
+            "threePt": 31,
+            "pts": 189,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 7,
+            "draws": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "34f97ca3",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "4925ff9d",
+          "tn": "Hardcore ",
+          "gid": "86034722",
+          "gn": "Wednesday Open Men A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a41e2e17",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "ca5d1454",
+          "tn": "Hardcore",
+          "gid": "8369bb9f",
+          "gn": "Wednesday Open Men A/A Res",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "fg": 1,
+            "threePt": 5,
+            "pts": 17,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a88d4358",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "72beb4ea",
+          "tn": "Hardcore",
+          "gid": "1ad3d1e4",
+          "gn": "Wednesday Open Men A/A Res",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 13,
+            "ft": 14,
+            "fg": 21,
+            "threePt": 22,
+            "pts": 122,
+            "finals": 1,
+            "wins": 2,
+            "losses": 14,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "a5c2ca8b",
+          "tn": "We Need Intense",
+          "gid": "8a7a5fdc",
+          "gn": "Men SUNDAY Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "ft": 8,
+            "fg": 10,
+            "threePt": 6,
+            "pts": 46,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "71248979",
+          "tn": "Asahi Bricks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "f889111a",
+          "tn": "Seven",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "af6f1200",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "59d3ab6d",
+          "tn": "Seven",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "5f093f75",
+          "tn": "Kookies and Kareem",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "1f3c8759",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "550edd12",
+          "tn": "Kookies and Kareem",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "696d1abc",
+          "tn": "Real Bricklayers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "8f0c70d7",
+          "tn": "Asahi Bricks",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "e8b9bd28",
+          "tn": "Kookies and Kareem",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "854da16e",
+          "tn": "Real Bricklayers",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "b1fc2690",
+          "tn": "Kookies and Kareem",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "2fab3891",
+          "tn": "REAL BRICKLAYERS",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "c83679a6",
+          "tn": "Kookies and Kareem",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "44394712",
+          "tn": "Kookies and Kareem",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:58.932Z",
+  "teams": [
+    {
+      "tid": "d95aaa1d",
+      "sid": "5390040a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4925ff9d",
+      "sid": "34f97ca3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ca5d1454",
+      "sid": "a41e2e17",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "72beb4ea",
+      "sid": "a88d4358",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a5c2ca8b",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71248979",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f889111a",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af6f1200",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59d3ab6d",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f093f75",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f3c8759",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "550edd12",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "696d1abc",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8f0c70d7",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8b9bd28",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "854da16e",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1fc2690",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2fab3891",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c83679a6",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44394712",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:59.514Z",
+  "games": [
+    "01bf9d2f",
+    "02027636",
+    "04bb2691",
+    "06851fa4",
+    "0f20fc00",
+    "2566d0b0",
+    "36ad8f04",
+    "3f900861",
+    "42d6adbc",
+    "44dc5490",
+    "46ef4388",
+    "490ea7d8",
+    "51ad17e4",
+    "6075cecd",
+    "60f5339c",
+    "64b964ff",
+    "68d069d2",
+    "801db6a5",
+    "891c8610",
+    "8d68d65e",
+    "97f8415c",
+    "a7903476",
+    "a79f859d",
+    "aa5d0f4c",
+    "b8680e4d",
+    "b9fece1a",
+    "bfafe8a9",
+    "c866ecf6",
+    "c98e47bc",
+    "cad2e738",
+    "ce71ad4c",
+    "d0d3c26f",
+    "d36a110e",
+    "d3ce4e7b",
+    "d932b157",
+    "db982d2c",
+    "e1a0f411",
+    "e2906b1e",
+    "e59484a1",
+    "e7cd2965",
+    "f72af91c",
+    "f98aa796"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "01bf9d2f",
+      "sid": "5390040a"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "04bb2691",
+      "sid": "a41e2e17"
+    }
+  }
+}

@@ -1,1 +1,95 @@
-{"uuid":"e858637d-4432-4a3c-abaa-fb085aa3a69c","name":"Eloise Campbell","gender":"Girls","sports":{"Basketball":{"gp":9,"pts":4,"fouls":1,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":5,"losses":3,"draws":1,"winPct":0.56,"statsChecked":"2026-07-05T16:04:13.965Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","club":"Toorak Basketball Club","regs":[{"tid":"be5cc51f","tn":"Toorak Terminators","gid":"e456d5aa","gn":"Friday Year 1 Girls AP","age":null,"div":null,"stats":{"gp":9,"fouls":1,"fg":2,"pts":4,"wins":5,"losses":3,"draws":1}}]}],"updatedAt":"2026-06-02T22:42:42.077Z","teams":[{"tid":"be5cc51f","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:51:28.447Z","games":["0a3e7e14","0c02eaaa","581ddb06","62dd1a04","a40cc54b","a483bca0","ad6c1e03","f1051ad4","f8cc84c4"],"records":{"maxGamePTS":{"v":2,"gameKey":"f1051ad4","sid":"ad68db8b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e858637d-4432-4a3c-abaa-fb085aa3a69c",
+  "name": "Eloise Campbell",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 4,
+      "fouls": 1,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 3,
+      "draws": 1,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T16:04:13.965Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "be5cc51f",
+          "tn": "Toorak Terminators",
+          "gid": "e456d5aa",
+          "gn": "Friday Year 1 Girls AP",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 1,
+            "fg": 2,
+            "pts": 4,
+            "wins": 5,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "06066c2b",
+          "tn": "Toorak Terminators",
+          "gid": "410f9246",
+          "gn": "Friday Year 1 Girls A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:42.077Z",
+  "teams": [
+    {
+      "tid": "be5cc51f",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06066c2b",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:31.737Z",
+  "games": [
+    "0a3e7e14",
+    "0c02eaaa",
+    "581ddb06",
+    "62dd1a04",
+    "a40cc54b",
+    "a483bca0",
+    "ad6c1e03",
+    "f1051ad4",
+    "f8cc84c4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f1051ad4",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

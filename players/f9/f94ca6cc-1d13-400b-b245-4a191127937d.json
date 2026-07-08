@@ -1,1 +1,138 @@
-{"uuid":"f94ca6cc-1d13-400b-b245-4a191127937d","name":"Jacob Carnegie","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":52,"fouls":24,"fg":18,"ft":7,"threePt":3,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":8,"losses":7,"winPct":0.53,"statsChecked":"2026-07-05T14:31:56.290Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"92941133","tn":"Sutherland Sharks U16 Boys 1","gid":"731b640e","gn":"BOYS UNDER 16 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":14,"ft":3,"fg":11,"pts":25,"wins":3,"losses":2}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"b51d0c15","tn":"Sutherland Sharks U14 Boys JPL","gid":"38295bc8","gn":"BOYS UNDER 14 A","age":null,"div":null,"stats":{"gp":5,"fouls":1,"ft":3,"fg":5,"pts":13,"wins":3,"losses":2}}]},{"sid":"0869ea69","regs":[{"tid":"82b8bf34","stats":{"wins":2,"losses":3,"gp":5,"pts":14,"fg":2,"ft":1,"threePt":3,"fouls":9}}]}],"updatedAt":"2026-05-31T22:39:16.654Z","teams":[{"tid":"82b8bf34","sid":"0869ea69","status":"UPCOMING"},{"tid":"92941133","sid":"6dd649c0","status":"COMPLETED"},{"tid":"b51d0c15","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:56:11.454Z","games":["2651f90b","3639de26","3e7c738d","7c71d86a","8c56e26d","8e448848","9909278e","9e438546","a29ea883","c6c0cadc","cee10158","d3ce6549","ea227172","f51af016","ff73ed73"],"records":{"maxGamePTS":{"v":10,"gameKey":"d3ce6549","sid":"6dd649c0"},"maxGameThreePt":{"v":2,"gameKey":"3639de26","sid":"0869ea69"}}}
+{
+  "uuid": "f94ca6cc-1d13-400b-b245-4a191127937d",
+  "name": "Jacob Carnegie",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 52,
+      "fouls": 24,
+      "fg": 18,
+      "ft": 7,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 8,
+      "losses": 7,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T14:31:56.290Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "92941133",
+          "tn": "Sutherland Sharks U16 Boys 1",
+          "gid": "731b640e",
+          "gn": "BOYS UNDER 16 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "b51d0c15",
+          "tn": "Sutherland Sharks U14 Boys JPL",
+          "gid": "38295bc8",
+          "gn": "BOYS UNDER 14 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "ft": 3,
+            "fg": 5,
+            "pts": 13,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "82b8bf34",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 14,
+            "fg": 2,
+            "ft": 1,
+            "threePt": 3,
+            "fouls": 9
+          },
+          "gid": "4f595bcb",
+          "gn": "BOYS UNDER 18 AR"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T22:39:16.654Z",
+  "teams": [
+    {
+      "tid": "92941133",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b51d0c15",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82b8bf34",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:54.771Z",
+  "games": [
+    "2651f90b",
+    "3639de26",
+    "3e7c738d",
+    "7c71d86a",
+    "8c56e26d",
+    "8e448848",
+    "9909278e",
+    "9e438546",
+    "a29ea883",
+    "c6c0cadc",
+    "cee10158",
+    "d3ce6549",
+    "ea227172",
+    "f51af016",
+    "ff73ed73"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d3ce6549",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "3639de26",
+      "sid": "0869ea69"
+    }
+  }
+}

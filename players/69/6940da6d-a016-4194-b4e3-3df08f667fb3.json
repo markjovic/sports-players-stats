@@ -1,1 +1,84 @@
-{"uuid":"6940da6d-a016-4194-b4e3-3df08f667fb3","name":"Mitchell Fife","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":4,"foulOuts":{},"gp":29,"pts":28,"fg":3,"ft":1,"threePt":7,"fouls":46,"statsChecked":"2026-07-07T18:27:49.301Z"}},"seasons":[{"sid":"d3df72f7","regs":[{"tid":"54a1e014"}]},{"sid":"559eb7e8","regs":[{"tid":"9a69a63a"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":12,"gameKey":"942b57c5","sid":"d3df72f7"},"maxGameThreePt":{"v":4,"gameKey":"942b57c5","sid":"d3df72f7"}}}
+{
+  "uuid": "6940da6d-a016-4194-b4e3-3df08f667fb3",
+  "name": "Mitchell Fife",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": 4,
+      "foulOuts": {},
+      "gp": 29,
+      "pts": 28,
+      "fg": 3,
+      "ft": 1,
+      "threePt": 7,
+      "fouls": 46,
+      "statsChecked": "2026-07-07T18:27:49.301Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3df72f7",
+      "regs": [
+        {
+          "tid": "54a1e014",
+          "gid": "8a4d9f58",
+          "gn": "Tuesday Open Men F"
+        }
+      ]
+    },
+    {
+      "sid": "559eb7e8",
+      "regs": [
+        {
+          "tid": "9a69a63a",
+          "gid": "197ab815",
+          "gn": "Tuesday Open Men FRES"
+        }
+      ]
+    },
+    {
+      "sid": "87261e12",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "13fd13c9",
+          "tn": "ZZ - Los Angeles Bakers - WITHDRAWN -",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "54a1e014",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a69a63a",
+      "sid": "559eb7e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13fd13c9",
+      "sid": "87261e12",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "942b57c5",
+      "sid": "d3df72f7"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "942b57c5",
+      "sid": "d3df72f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:26:52.109Z"
+}

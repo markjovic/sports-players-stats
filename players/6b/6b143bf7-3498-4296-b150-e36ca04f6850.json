@@ -1,1 +1,171 @@
-{"uuid":"6b143bf7-3498-4296-b150-e36ca04f6850","name":"Sarah Labza","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":48,"fouls":4,"fg":18,"ft":6,"threePt":2,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":15,"losses":9,"winPct":0.63,"statsChecked":"2026-07-05T15:09:57.225Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"4c2c32cc","tn":"U16 TIMBERWOLVES EMERALDS","gid":"1f9f4963","gn":"Tuesday U16 Girls Section 02/03","age":"U16","div":null,"stats":{"gp":10,"fg":18,"threePt":2,"pts":48,"ft":6,"fouls":4,"wins":5,"losses":3}},{"tid":"4c2c32cc","tn":"U16 TIMBERWOLVES EMERALDS","gid":"de121358","gn":"Tuesday U16 Girls Grading Section 01/02","age":"U16","div":null,"stats":{"gp":10,"ft":6,"fg":18,"pts":48,"wins":5,"losses":3,"threePt":2,"fouls":4}},{"tid":"4c2c32cc","tn":"U16 TIMBERWOLVES EMERALDS","gid":"c0e543ca","gn":"Tuesday U16 Girls Grading Section 01","age":"U16","div":null,"stats":{"gp":10,"fg":18,"pts":48,"wins":5,"losses":3,"ft":6,"threePt":2,"fouls":4}}]}],"updatedAt":"2026-05-31T13:57:59.498Z","teams":[{"tid":"4c2c32cc","sid":"6c117270","status":"ACTIVE"},{"tid":"f9e8dadd","sid":"68279835","status":"COMPLETED"},{"tid":"0e896eab","sid":"913d1397","status":"COMPLETED"},{"tid":"2146e943","sid":"7d20ecad","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:47:46.155Z","records":{"maxGamePTS":{"v":12,"gameKey":"7de798b9","sid":"6c117270"},"maxGameThreePt":{"v":2,"gameKey":"7de144ca","sid":"6c117270"}},"games":["0400801f","18722b36","455241b0","4f4c90b1","596bdebc","60868c01","61a2ca08","7de798b9","a20295b3"]}
+{
+  "uuid": "6b143bf7-3498-4296-b150-e36ca04f6850",
+  "name": "Sarah Labza",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 48,
+      "fouls": 4,
+      "fg": 18,
+      "ft": 6,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 15,
+      "losses": 9,
+      "winPct": 0.63,
+      "statsChecked": "2026-07-05T15:09:57.225Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "4c2c32cc",
+          "tn": "U16 TIMBERWOLVES EMERALDS",
+          "gid": "1f9f4963",
+          "gn": "Tuesday U16 Girls Section 02/03",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fg": 18,
+            "threePt": 2,
+            "pts": 48,
+            "ft": 6,
+            "fouls": 4,
+            "wins": 5,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "4c2c32cc",
+          "tn": "U16 TIMBERWOLVES EMERALDS",
+          "gid": "de121358",
+          "gn": "Tuesday U16 Girls Grading Section 01/02",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "ft": 6,
+            "fg": 18,
+            "pts": 48,
+            "wins": 5,
+            "losses": 3,
+            "threePt": 2,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "4c2c32cc",
+          "tn": "U16 TIMBERWOLVES EMERALDS",
+          "gid": "c0e543ca",
+          "gn": "Tuesday U16 Girls Grading Section 01",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fg": 18,
+            "pts": 48,
+            "wins": 5,
+            "losses": 3,
+            "ft": 6,
+            "threePt": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "f9e8dadd",
+          "tn": "U16 TIMBERWOLVES EMERALDS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "0e896eab",
+          "tn": "U16 TIMBERWOLVES ROCKETS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "2146e943",
+          "tn": "Ashy Lightning U14 Girls Ashy Green",
+          "gid": "d7c24c12",
+          "gn": "Saturday U14 Girls Grading Pool 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:57:59.498Z",
+  "teams": [
+    {
+      "tid": "4c2c32cc",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9e8dadd",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0e896eab",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2146e943",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:44.762Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "7de798b9",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "7de144ca",
+      "sid": "6c117270"
+    }
+  },
+  "games": [
+    "0400801f",
+    "18722b36",
+    "455241b0",
+    "4f4c90b1",
+    "596bdebc",
+    "60868c01",
+    "61a2ca08",
+    "7de798b9",
+    "a20295b3"
+  ]
+}

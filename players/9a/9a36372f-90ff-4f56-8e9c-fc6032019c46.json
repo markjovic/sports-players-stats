@@ -1,1 +1,86 @@
-{"uuid":"9a36372f-90ff-4f56-8e9c-fc6032019c46","name":"Taro McHatton","gender":"Boys","sports":{"Basketball":{"gp":5,"pts":5,"fg":2,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":5,"winPct":0,"statsChecked":"2026-07-05T15:11:06.713Z"}},"seasons":[{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"6dead227","tn":"Black Mambas U14 Boys 1","gid":"9c728383","gn":"BOYS UNDER 14 C1","age":null,"div":"C1","stats":{"gp":5,"ft":1,"fg":2,"pts":5,"losses":5}}]}],"updatedAt":"2026-05-31T22:40:26.475Z","teams":[{"tid":"48b8f51c","sid":"8630ad4c","status":"COMPLETED"},{"tid":"6dead227","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:15.543Z","records":{"maxGamePTS":{"v":2,"gameKey":"26f87f92","sid":"1b51c73f"},"maxGameThreePt":{"v":null}},"games":["09b7e1ea","26f87f92","7312bc3c","cec0378f","ffa0ebed"]}
+{
+  "uuid": "9a36372f-90ff-4f56-8e9c-fc6032019c46",
+  "name": "Taro McHatton",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 5,
+      "fg": 2,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 5,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:11:06.713Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "6dead227",
+          "tn": "Black Mambas U14 Boys 1",
+          "gid": "9c728383",
+          "gn": "BOYS UNDER 14 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "ft": 1,
+            "fg": 2,
+            "pts": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "48b8f51c",
+          "tn": "Sydney Comets U12 Boys Green",
+          "gid": "5f39e100",
+          "gn": "BOYS UNDER 12 B2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T22:40:26.475Z",
+  "teams": [
+    {
+      "tid": "6dead227",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48b8f51c",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:19.668Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "26f87f92",
+      "sid": "1b51c73f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "09b7e1ea",
+    "26f87f92",
+    "7312bc3c",
+    "cec0378f",
+    "ffa0ebed"
+  ]
+}

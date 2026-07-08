@@ -1,1 +1,377 @@
-{"uuid":"8d05db69-0449-4abb-9e73-5cdf681f4659","name":"Charles Jackson","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":198,"fouls":70,"fg":94,"ft":10,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"maxGamePTS":13,"maxGameThreePt":null,"wins":34,"losses":18,"winPct":0.64,"draws":1,"statsChecked":"2026-07-05T14:56:51.520Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Titans Hoops Academy","regs":[{"tid":"741088fb","tn":"Titans U14 Boys WHITE","gid":"4754bbd3","gn":"Saturday U14 Boys C","age":"U14","div":null,"stats":{"gp":4,"fouls":12,"fg":7,"pts":14,"wins":1,"losses":3}},{"tid":"741088fb","tn":"Titans U14 Boys WHITE","gid":"c6d90390","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":4,"fouls":12,"fg":7,"pts":14,"wins":1,"losses":3}},{"tid":"3661e3b0","stats":{"gp":2,"pts":11,"fg":5,"ft":1,"fouls":2,"wins":1,"losses":1}},{"tid":"3661e3b0","tn":"","gid":"c6d90390","gn":"Saturday U14 Boys B","div":null,"stats":{"gp":2,"pts":11,"fg":5,"ft":1,"fouls":2,"wins":1,"losses":1}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"b931d69b","tn":"Dream Team Red","gid":"1c3605d3","gn":"Saturday U14 Boys C","age":"U14","div":null,"stats":{"gp":12,"fouls":23,"ft":4,"fg":40,"pts":84,"finals":1,"gfApps":1,"wins":11,"losses":1,"gfWins":1}},{"tid":"b931d69b","tn":"Dream Team Red","gid":"97db8de1","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":12,"fouls":23,"ft":4,"fg":40,"pts":84,"finals":1,"gfApps":1,"wins":11,"losses":1,"gfWins":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"b4ab4520","tn":"Port Melbourne Heat","gid":"c70be2aa","gn":"Tuesday Year 6 Boys C","age":null,"div":null,"stats":{"gp":11,"fouls":23,"ft":3,"fg":25,"pts":53,"wins":3,"losses":6,"draws":1}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"9f428f7d","tn":"Port Melbourne Heat ","gid":"61bb654f","gn":"Tuesday MSAC/Bayside Year 6 Boys C","age":null,"div":null,"stats":{"gp":7,"fouls":10,"ft":2,"fg":17,"pts":36,"wins":5,"losses":2}}]}],"updatedAt":"2026-07-04T05:57:58.641Z","teams":[{"tid":"3661e3b0","sid":"e7aed763","status":"ACTIVE"},{"tid":"b931d69b","sid":"e78cfce1","status":"COMPLETED"},{"tid":"b4ab4520","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"9f428f7d","sid":"31d05517","status":"COMPLETED"},{"tid":"e8a8ec2b","sid":"e00a5a15","status":"COMPLETED"},{"tid":"2f51b1ed","sid":"0fef30ca","status":"COMPLETED"},{"tid":"a705daa2","sid":"09a70808","status":"COMPLETED"},{"tid":"bf1537cd","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:54:04.592Z","records":{"maxGamePTS":{"v":13,"gameKey":"ad59424a","sid":"e78cfce1"},"maxGameThreePt":{"v":null}},"games":["025131a5","143916e2","1b5b2aeb","21f1c224","264f13d5","28d303e0","2ed19e0f","50c1c8d4","590cf2c5","5c1b2854","60ae9ed8","61ced65a","63a7ec28","65f52ce8","6c46cf08","7fa9bc30","8b662785","92f9b82e","93ccf569","973068a0","9a30dea5","a2ad43d6","ad59424a","ad9e80dd","af5f543d","b373f77a","b5def607","b80d17b9","b9ac6dc4","bbab8c4b","befdabd8","c697f571","c8c2a006","d83713e5","f966d4a5","fd7e6a3a"],"gameTids":{"d83713e5":"3661e3b0","9a30dea5":"3661e3b0","590cf2c5":"741088fb","5c1b2854":"741088fb","21f1c224":"741088fb","befdabd8":"741088fb","ad59424a":"b931d69b","8b662785":"b931d69b","c8c2a006":"b931d69b","6c46cf08":"b931d69b","b80d17b9":"b931d69b","143916e2":"b931d69b","025131a5":"b931d69b","bbab8c4b":"b931d69b","ad9e80dd":"b931d69b","7fa9bc30":"b931d69b","93ccf569":"b931d69b","92f9b82e":"b931d69b","c697f571":"b4ab4520","af5f543d":"b4ab4520","f966d4a5":"b4ab4520","b5def607":"b4ab4520","61ced65a":"b4ab4520","2ed19e0f":"b4ab4520","b9ac6dc4":"b4ab4520","63a7ec28":"b4ab4520","60ae9ed8":"b4ab4520","a2ad43d6":"b4ab4520","50c1c8d4":"b4ab4520","28d303e0":"9f428f7d","fd7e6a3a":"9f428f7d","1b5b2aeb":"9f428f7d","b373f77a":"9f428f7d","65f52ce8":"9f428f7d","264f13d5":"9f428f7d","973068a0":"9f428f7d"}}
+{
+  "uuid": "8d05db69-0449-4abb-9e73-5cdf681f4659",
+  "name": "Charles Jackson",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 198,
+      "fouls": 70,
+      "fg": 94,
+      "ft": 10,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 34,
+      "losses": 18,
+      "winPct": 0.64,
+      "draws": 1,
+      "statsChecked": "2026-07-05T14:56:51.520Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Titans Hoops Academy",
+      "regs": [
+        {
+          "tid": "741088fb",
+          "tn": "Titans U14 Boys WHITE",
+          "gid": "4754bbd3",
+          "gn": "Saturday U14 Boys C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 12,
+            "fg": 7,
+            "pts": 14,
+            "wins": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "741088fb",
+          "tn": "Titans U14 Boys WHITE",
+          "gid": "c6d90390",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 12,
+            "fg": 7,
+            "pts": 14,
+            "wins": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "3661e3b0",
+          "stats": {
+            "gp": 2,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 1
+          },
+          "gid": "c6d90390",
+          "gn": "Saturday U14 Boys B"
+        },
+        {
+          "tid": "3661e3b0",
+          "tn": "",
+          "gid": "c6d90390",
+          "gn": "Saturday U14 Boys B",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "b931d69b",
+          "tn": "Dream Team Red",
+          "gid": "1c3605d3",
+          "gn": "Saturday U14 Boys C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 23,
+            "ft": 4,
+            "fg": 40,
+            "pts": 84,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "b931d69b",
+          "tn": "Dream Team Red",
+          "gid": "97db8de1",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 23,
+            "ft": 4,
+            "fg": 40,
+            "pts": 84,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "b4ab4520",
+          "tn": "Port Melbourne Heat",
+          "gid": "c70be2aa",
+          "gn": "Tuesday Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 23,
+            "ft": 3,
+            "fg": 25,
+            "pts": 53,
+            "wins": 3,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "9f428f7d",
+          "tn": "Port Melbourne Heat ",
+          "gid": "61bb654f",
+          "gn": "Tuesday MSAC/Bayside Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 17,
+            "pts": 36,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e00a5a15",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "e8a8ec2b",
+          "tn": "Port Phoenix ",
+          "gid": "98e16672",
+          "gn": "U13 Boys B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "2f51b1ed",
+          "tn": "Port Melbourne Ninjas",
+          "gid": "b0e75b8a",
+          "gn": "Wednesday MSAC YR5.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "a705daa2",
+          "tn": "Port Melbourne Ninjas",
+          "gid": "741c81c0",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "bf1537cd",
+          "tn": "Port Melbourne Ninjas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:58.641Z",
+  "teams": [
+    {
+      "tid": "741088fb",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3661e3b0",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b931d69b",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4ab4520",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9f428f7d",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8a8ec2b",
+      "sid": "e00a5a15",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f51b1ed",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a705daa2",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf1537cd",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:45.872Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "ad59424a",
+      "sid": "e78cfce1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "025131a5",
+    "143916e2",
+    "1b5b2aeb",
+    "21f1c224",
+    "264f13d5",
+    "28d303e0",
+    "2ed19e0f",
+    "50c1c8d4",
+    "590cf2c5",
+    "5c1b2854",
+    "60ae9ed8",
+    "61ced65a",
+    "63a7ec28",
+    "65f52ce8",
+    "6c46cf08",
+    "7fa9bc30",
+    "8b662785",
+    "92f9b82e",
+    "93ccf569",
+    "973068a0",
+    "9a30dea5",
+    "a2ad43d6",
+    "ad59424a",
+    "ad9e80dd",
+    "af5f543d",
+    "b373f77a",
+    "b5def607",
+    "b80d17b9",
+    "b9ac6dc4",
+    "bbab8c4b",
+    "befdabd8",
+    "c697f571",
+    "c8c2a006",
+    "d83713e5",
+    "f966d4a5",
+    "fd7e6a3a"
+  ],
+  "gameTids": {
+    "d83713e5": "3661e3b0",
+    "9a30dea5": "3661e3b0",
+    "590cf2c5": "741088fb",
+    "5c1b2854": "741088fb",
+    "21f1c224": "741088fb",
+    "befdabd8": "741088fb",
+    "ad59424a": "b931d69b",
+    "8b662785": "b931d69b",
+    "c8c2a006": "b931d69b",
+    "6c46cf08": "b931d69b",
+    "b80d17b9": "b931d69b",
+    "143916e2": "b931d69b",
+    "025131a5": "b931d69b",
+    "bbab8c4b": "b931d69b",
+    "ad9e80dd": "b931d69b",
+    "7fa9bc30": "b931d69b",
+    "93ccf569": "b931d69b",
+    "92f9b82e": "b931d69b",
+    "c697f571": "b4ab4520",
+    "af5f543d": "b4ab4520",
+    "f966d4a5": "b4ab4520",
+    "b5def607": "b4ab4520",
+    "61ced65a": "b4ab4520",
+    "2ed19e0f": "b4ab4520",
+    "b9ac6dc4": "b4ab4520",
+    "63a7ec28": "b4ab4520",
+    "60ae9ed8": "b4ab4520",
+    "a2ad43d6": "b4ab4520",
+    "50c1c8d4": "b4ab4520",
+    "28d303e0": "9f428f7d",
+    "fd7e6a3a": "9f428f7d",
+    "1b5b2aeb": "9f428f7d",
+    "b373f77a": "9f428f7d",
+    "65f52ce8": "9f428f7d",
+    "264f13d5": "9f428f7d",
+    "973068a0": "9f428f7d"
+  }
+}

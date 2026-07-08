@@ -1,1 +1,328 @@
-{"uuid":"cd20c757-b36f-4c50-964b-e2e6a858f56b","gender":null,"sports":{"Basketball":{"gp":43,"pts":362,"fouls":56,"fg":160,"ft":24,"threePt":6,"foulOuts":{"0d84d42d":1,"dcc45073":1},"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"maxGamePTS":23,"maxGameThreePt":1,"losses":28,"winPct":0.44,"wins":24,"draws":2,"statsChecked":"2026-07-05T16:03:49.065Z"}},"seasons":[{"sid":"0d84d42d","sn":"Summer 2022/23","club":"Altona Pirates Basketball Club Inc.","regs":[{"tid":"96c07964","tn":"AP Muskets U18B","gid":"feadf15e","gn":"Monday U18 Boys Div 3","stats":{"gp":16,"pts":104,"fouls":24,"fg":43,"ft":9,"threePt":3,"foulOuts":1,"finals":1,"gfApps":1,"losses":9,"wins":7,"gfWins":1}},{"tid":"96c07964","tn":"AP Muskets U18B","gid":"814f2f24","gn":"Monday U18 Boys Grading","stats":{"gp":16,"pts":104,"fouls":24,"fg":43,"ft":9,"threePt":3,"finals":1,"gfApps":1,"losses":9,"wins":7,"gfWins":1}}]},{"sid":"3de67f2e","sn":"Autumn 2022","club":"Altona Pirates Basketball Club Inc.","regs":[{"tid":"c7ce8fa0","tn":"AP Muskets","gid":"322f9e82","gn":"Saturday U16 Boys Division 2","stats":{"gp":14,"pts":135,"fouls":9,"fg":61,"ft":7,"threePt":2,"finals":1,"wins":7,"losses":7}},{"tid":"f3916184","tn":"Grading AP Muskets","gid":"7fcaf7ab","gn":"Saturday U16 Boys Div 1 / 2 Grading Division","stats":{"gp":2,"pts":17,"fouls":2,"fg":8,"ft":1,"finals":1}}]},{"sid":"4b655bab","sn":"Winter 2021","club":"Altona Pirates Basketball Club Inc.","regs":[{"tid":"7ac4a4f7","tn":"(RTS) AP MUSKETS","gid":"1638baa3","gn":"(RTS) Friday U16 Boys Div 3","stats":{"gp":4,"pts":29,"fouls":6,"fg":13,"threePt":1,"losses":2,"draws":2}},{"tid":"46999ca6","tn":"AP MUSKETS","gid":"3014663b","gn":"Friday/Saturday U16 Boys Div 3","stats":{"gp":3,"pts":32,"fouls":6,"fg":14,"ft":4}}]},{"sid":"dcc45073","sn":"Summer 2020/21","club":"Altona Pirates Basketball Club Inc.","regs":[{"tid":"367e5138","tn":"AP MUSKETS","gid":"db2c8666","gn":"Friday /Saturday U16 Boys Div 3","stats":{"gp":4,"pts":45,"fouls":9,"fg":21,"ft":3,"foulOuts":1,"wins":3,"losses":1}}]}],"updatedAt":"2026-06-11T23:44:47.737Z","records":{"maxGamePTS":{"v":23,"gameKey":"f63a341f","sid":"3de67f2e"},"maxGameThreePt":{"v":1,"gameKey":"6f01bdb9","sid":"0d84d42d"}},"games":["12eaf0ac","1ba2479e","313d1979","3e48f160","3f0be8b4","4f3dca0e","596c00e0","5effc85f","6f01bdb9","737397a6","77680353","7a1a2008","7a5ffc00","7cf7721c","7e2dee47","84abcee1","897c13db","8bb76736","9b2a6f00","a1bb1216","a50a75c9","a7a0a6b9","a9d768e9","aab478af","b1929fec","b2212518","bc5e1c9d","bcaa6f93","c2ac5be6","c3176057","c3a88e51","c5d8a5f9","c7e05b3a","c828f173","c974ff5c","dd8799b2","e491c3ea","e4f529bc","e7a0f55b","ee56ed60","ef59c6f6","f63a341f","fdcf59ef"],"name":"Summer 2022/23","gameTids":{"77680353":"c7ce8fa0","a9d768e9":"96c07964","a50a75c9":"96c07964","12eaf0ac":"96c07964","ee56ed60":"96c07964","b2212518":"96c07964","737397a6":"96c07964","8bb76736":"96c07964","4f3dca0e":"96c07964","6f01bdb9":"96c07964","897c13db":"96c07964","aab478af":"96c07964","7a5ffc00":"96c07964","a1bb1216":"96c07964","ef59c6f6":"96c07964","9b2a6f00":"96c07964","bcaa6f93":"96c07964","dd8799b2":"c7ce8fa0","7e2dee47":"c7ce8fa0","7a1a2008":"c7ce8fa0","5effc85f":"c7ce8fa0","313d1979":"c7ce8fa0","c828f173":"c7ce8fa0","3f0be8b4":"c7ce8fa0","84abcee1":"c7ce8fa0","a7a0a6b9":"c7ce8fa0","f63a341f":"c7ce8fa0","e7a0f55b":"c7ce8fa0","b1929fec":"c7ce8fa0","c3176057":"c7ce8fa0","c7e05b3a":"f3916184","c2ac5be6":"f3916184","bc5e1c9d":"7ac4a4f7","3e48f160":"7ac4a4f7","c974ff5c":"7ac4a4f7","fdcf59ef":"7ac4a4f7","7cf7721c":"46999ca6","596c00e0":"46999ca6","1ba2479e":"46999ca6","c3a88e51":"367e5138","e4f529bc":"367e5138","e491c3ea":"367e5138","c5d8a5f9":"367e5138"}}
+{
+  "uuid": "cd20c757-b36f-4c50-964b-e2e6a858f56b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 362,
+      "fouls": 56,
+      "fg": 160,
+      "ft": 24,
+      "threePt": 6,
+      "foulOuts": {
+        "0d84d42d": 1,
+        "dcc45073": 1
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 23,
+      "maxGameThreePt": 1,
+      "losses": 28,
+      "winPct": 0.44,
+      "wins": 24,
+      "draws": 2,
+      "statsChecked": "2026-07-05T16:03:49.065Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0d84d42d",
+      "sn": "Summer 2022/23",
+      "club": "Altona Pirates Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "96c07964",
+          "tn": "AP Muskets U18B",
+          "gid": "feadf15e",
+          "gn": "Monday U18 Boys Div 3",
+          "stats": {
+            "gp": 16,
+            "pts": 104,
+            "fouls": 24,
+            "fg": 43,
+            "ft": 9,
+            "threePt": 3,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 9,
+            "wins": 7,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "96c07964",
+          "tn": "AP Muskets U18B",
+          "gid": "814f2f24",
+          "gn": "Monday U18 Boys Grading",
+          "stats": {
+            "gp": 16,
+            "pts": 104,
+            "fouls": 24,
+            "fg": 43,
+            "ft": 9,
+            "threePt": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 9,
+            "wins": 7,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3de67f2e",
+      "sn": "Autumn 2022",
+      "club": "Altona Pirates Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "c7ce8fa0",
+          "tn": "AP Muskets",
+          "gid": "322f9e82",
+          "gn": "Saturday U16 Boys Division 2",
+          "stats": {
+            "gp": 14,
+            "pts": 135,
+            "fouls": 9,
+            "fg": 61,
+            "ft": 7,
+            "threePt": 2,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "f3916184",
+          "tn": "Grading AP Muskets",
+          "gid": "7fcaf7ab",
+          "gn": "Saturday U16 Boys Div 1 / 2 Grading Division",
+          "stats": {
+            "gp": 2,
+            "pts": 17,
+            "fouls": 2,
+            "fg": 8,
+            "ft": 1,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b655bab",
+      "sn": "Winter 2021",
+      "club": "Altona Pirates Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "7ac4a4f7",
+          "tn": "(RTS) AP MUSKETS",
+          "gid": "1638baa3",
+          "gn": "(RTS) Friday U16 Boys Div 3",
+          "stats": {
+            "gp": 4,
+            "pts": 29,
+            "fouls": 6,
+            "fg": 13,
+            "threePt": 1,
+            "losses": 2,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "46999ca6",
+          "tn": "AP MUSKETS",
+          "gid": "3014663b",
+          "gn": "Friday/Saturday U16 Boys Div 3",
+          "stats": {
+            "gp": 3,
+            "pts": 32,
+            "fouls": 6,
+            "fg": 14,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Altona Pirates Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "367e5138",
+          "tn": "AP MUSKETS",
+          "gid": "db2c8666",
+          "gn": "Friday /Saturday U16 Boys Div 3",
+          "stats": {
+            "gp": 4,
+            "pts": 45,
+            "fouls": 9,
+            "fg": 21,
+            "ft": 3,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0543eab",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "ab4fefb6",
+          "tn": "AP MUSKETS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:47.737Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "f63a341f",
+      "sid": "3de67f2e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6f01bdb9",
+      "sid": "0d84d42d"
+    }
+  },
+  "games": [
+    "12eaf0ac",
+    "1ba2479e",
+    "313d1979",
+    "3e48f160",
+    "3f0be8b4",
+    "4f3dca0e",
+    "596c00e0",
+    "5effc85f",
+    "6f01bdb9",
+    "737397a6",
+    "77680353",
+    "7a1a2008",
+    "7a5ffc00",
+    "7cf7721c",
+    "7e2dee47",
+    "84abcee1",
+    "897c13db",
+    "8bb76736",
+    "9b2a6f00",
+    "a1bb1216",
+    "a50a75c9",
+    "a7a0a6b9",
+    "a9d768e9",
+    "aab478af",
+    "b1929fec",
+    "b2212518",
+    "bc5e1c9d",
+    "bcaa6f93",
+    "c2ac5be6",
+    "c3176057",
+    "c3a88e51",
+    "c5d8a5f9",
+    "c7e05b3a",
+    "c828f173",
+    "c974ff5c",
+    "dd8799b2",
+    "e491c3ea",
+    "e4f529bc",
+    "e7a0f55b",
+    "ee56ed60",
+    "ef59c6f6",
+    "f63a341f",
+    "fdcf59ef"
+  ],
+  "name": "Summer 2022/23",
+  "gameTids": {
+    "77680353": "c7ce8fa0",
+    "a9d768e9": "96c07964",
+    "a50a75c9": "96c07964",
+    "12eaf0ac": "96c07964",
+    "ee56ed60": "96c07964",
+    "b2212518": "96c07964",
+    "737397a6": "96c07964",
+    "8bb76736": "96c07964",
+    "4f3dca0e": "96c07964",
+    "6f01bdb9": "96c07964",
+    "897c13db": "96c07964",
+    "aab478af": "96c07964",
+    "7a5ffc00": "96c07964",
+    "a1bb1216": "96c07964",
+    "ef59c6f6": "96c07964",
+    "9b2a6f00": "96c07964",
+    "bcaa6f93": "96c07964",
+    "dd8799b2": "c7ce8fa0",
+    "7e2dee47": "c7ce8fa0",
+    "7a1a2008": "c7ce8fa0",
+    "5effc85f": "c7ce8fa0",
+    "313d1979": "c7ce8fa0",
+    "c828f173": "c7ce8fa0",
+    "3f0be8b4": "c7ce8fa0",
+    "84abcee1": "c7ce8fa0",
+    "a7a0a6b9": "c7ce8fa0",
+    "f63a341f": "c7ce8fa0",
+    "e7a0f55b": "c7ce8fa0",
+    "b1929fec": "c7ce8fa0",
+    "c3176057": "c7ce8fa0",
+    "c7e05b3a": "f3916184",
+    "c2ac5be6": "f3916184",
+    "bc5e1c9d": "7ac4a4f7",
+    "3e48f160": "7ac4a4f7",
+    "c974ff5c": "7ac4a4f7",
+    "fdcf59ef": "7ac4a4f7",
+    "7cf7721c": "46999ca6",
+    "596c00e0": "46999ca6",
+    "1ba2479e": "46999ca6",
+    "c3a88e51": "367e5138",
+    "e4f529bc": "367e5138",
+    "e491c3ea": "367e5138",
+    "c5d8a5f9": "367e5138"
+  },
+  "teams": [
+    {
+      "tid": "96c07964",
+      "sid": "0d84d42d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7ce8fa0",
+      "sid": "3de67f2e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3916184",
+      "sid": "3de67f2e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ac4a4f7",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46999ca6",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "367e5138",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab4fefb6",
+      "sid": "d0543eab",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:57.228Z"
+}

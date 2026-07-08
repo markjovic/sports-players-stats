@@ -1,1 +1,186 @@
-{"uuid":"b64ee578-79aa-4cdb-a639-e214e16d5a73","name":"Lachlan Hipwell","gender":"Men","sports":{"Basketball":{"gp":32,"pts":111,"fouls":39,"fg":30,"ft":9,"threePt":14,"foulOuts":{"297562bc":1,"fbb79f9e":1},"maxGamePTS":24,"maxGameThreePt":6,"wins":18,"losses":26,"winPct":0.41,"statsChecked":"2026-07-06T19:00:29.665Z"}},"seasons":[{"sid":"ad1f9276","sn":"Summer 2025/26","regs":[{"tid":"c080b861","tn":"The Barry Lird's","gid":"5d4fda32","gn":"Tuesday Men 4 - 2026 Summer","age":null,"div":null,"stats":{"gp":13,"fouls":14,"ft":4,"fg":17,"threePt":14,"pts":80,"wins":6,"losses":7}},{"tid":"c080b861","tn":"The Barry Lird's","gid":"adad3229","gn":"Tuesday Men 3 - 2026 Summer","age":null,"div":null,"stats":{"gp":13,"fouls":14,"fg":17,"threePt":14,"pts":80,"wins":6,"losses":7,"ft":4}}]},{"sid":"fbb79f9e","sn":"Winter 2025","regs":[{"tid":"8fd11dd9","tn":"The Barry Lird's","gid":"6dd0b01d","gn":"Tuesday Men 3 - 2025 Winter","age":null,"div":null,"stats":{"gp":18,"fouls":20,"ft":5,"fg":12,"pts":29,"foulOuts":1,"wins":6,"losses":12}}]},{"sid":"297562bc","regs":[{"tid":"8fe5bb86","stats":{"gp":1,"pts":2,"fg":1,"fouls":5}},{"tid":"8fe5bb86","tn":"","gid":"2a868829","gn":"Wednesday Open Men Section 3","div":null,"stats":{"gp":1,"pts":2,"fg":1,"fouls":5}}]}],"updatedAt":"2026-07-06T18:32:59.409Z","teams":[{"tid":"c080b861","sid":"ad1f9276","status":"COMPLETED"},{"tid":"8fd11dd9","sid":"fbb79f9e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:33.471Z","games":["0946e005","0c386932","12e5fd02","1f1464b9","27ff19eb","302ba858","3510b532","42f84188","4918608c","4ccd985f","4e17a784","4efbbaae","66a25be2","6c151ab4","7b61d931","7dc0aad3","81ad1c74","840f402f","8b7cc2e7","8ed25fbe","9bebf49e","a09643f1","a8d8cdcd","aa23a306","b684609d","c2b52270","c3ac69d7","d96cbcaa","da99f2fd","f482b0d2","ffe48e34"],"records":{"maxGamePTS":{"v":24,"gameKey":"1f1464b9","sid":"ad1f9276"},"maxGameThreePt":{"v":6,"gameKey":"1f1464b9","sid":"ad1f9276"}}}
+{
+  "uuid": "b64ee578-79aa-4cdb-a639-e214e16d5a73",
+  "name": "Lachlan Hipwell",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 32,
+      "pts": 111,
+      "fouls": 39,
+      "fg": 30,
+      "ft": 9,
+      "threePt": 14,
+      "foulOuts": {
+        "297562bc": 1,
+        "fbb79f9e": 1
+      },
+      "maxGamePTS": 24,
+      "maxGameThreePt": 6,
+      "wins": 18,
+      "losses": 26,
+      "winPct": 0.41,
+      "statsChecked": "2026-07-06T19:00:29.665Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad1f9276",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "c080b861",
+          "tn": "The Barry Lird's",
+          "gid": "5d4fda32",
+          "gn": "Tuesday Men 4 - 2026 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 17,
+            "threePt": 14,
+            "pts": 80,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "c080b861",
+          "tn": "The Barry Lird's",
+          "gid": "adad3229",
+          "gn": "Tuesday Men 3 - 2026 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "fg": 17,
+            "threePt": 14,
+            "pts": 80,
+            "wins": 6,
+            "losses": 7,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbb79f9e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "8fd11dd9",
+          "tn": "The Barry Lird's",
+          "gid": "6dd0b01d",
+          "gn": "Tuesday Men 3 - 2025 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 12,
+            "pts": 29,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "8fe5bb86",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 5
+          },
+          "gid": "2a868829",
+          "gn": "Wednesday Open Men Section 3"
+        },
+        {
+          "tid": "8fe5bb86",
+          "tn": "",
+          "gid": "2a868829",
+          "gn": "Wednesday Open Men Section 3",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:59.409Z",
+  "teams": [
+    {
+      "tid": "c080b861",
+      "sid": "ad1f9276",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8fd11dd9",
+      "sid": "fbb79f9e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8fe5bb86",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:23.426Z",
+  "games": [
+    "0946e005",
+    "0c386932",
+    "12e5fd02",
+    "1f1464b9",
+    "27ff19eb",
+    "302ba858",
+    "3510b532",
+    "42f84188",
+    "4918608c",
+    "4ccd985f",
+    "4e17a784",
+    "4efbbaae",
+    "66a25be2",
+    "6c151ab4",
+    "7b61d931",
+    "7dc0aad3",
+    "81ad1c74",
+    "840f402f",
+    "8b7cc2e7",
+    "8ed25fbe",
+    "9bebf49e",
+    "a09643f1",
+    "a8d8cdcd",
+    "aa23a306",
+    "b684609d",
+    "c2b52270",
+    "c3ac69d7",
+    "d96cbcaa",
+    "da99f2fd",
+    "f482b0d2",
+    "ffe48e34"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "1f1464b9",
+      "sid": "ad1f9276"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "1f1464b9",
+      "sid": "ad1f9276"
+    }
+  }
+}

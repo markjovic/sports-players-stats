@@ -1,1 +1,111 @@
-{"uuid":"e801e292-9550-4efa-a2ae-0f1889d69914","name":"Spencer Elliott","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":89,"fouls":6,"fg":33,"ft":17,"threePt":2,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":2,"wins":5,"losses":5,"winPct":0.5,"statsChecked":"2026-07-05T14:31:22.185Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Atoms Basketball Club","regs":[{"tid":"bb7df209","tn":"Atoms U16 Boys Mavericks","gid":"da64a425","gn":"U16 Boys Grading","age":"U16","div":null,"stats":{"gp":6,"fouls":4,"ft":11,"fg":19,"pts":55,"wins":3,"losses":2,"threePt":2}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Atoms Basketball Club","regs":[{"tid":"685e0f29","tn":"Atoms U16 Boys Mav's","gid":"431fe33f","gn":"U16 Boys D1","age":"U16","div":"D1","stats":{"gp":5,"fouls":2,"ft":6,"fg":14,"pts":34,"wins":2,"losses":3}}]}],"updatedAt":"2026-05-30T18:16:40.901Z","teams":[{"tid":"bb7df209","sid":"aacc7335","status":"ACTIVE"},{"tid":"685e0f29","sid":"6fd8e780","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:26.475Z","games":["15f5b4c1","a7ca1dec","a9fd0cff","b7476812","bba571b5","c62af7d5","d36d4b52","d9e11d73","f5ec7ca5","ff29cf3a"],"records":{"maxGamePTS":{"v":20,"gameKey":"f0a2402b","sid":"aacc7335"},"maxGameThreePt":{"v":2,"gameKey":"f0a2402b","sid":"aacc7335"}}}
+{
+  "uuid": "e801e292-9550-4efa-a2ae-0f1889d69914",
+  "name": "Spencer Elliott",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 89,
+      "fouls": 6,
+      "fg": 33,
+      "ft": 17,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": 2,
+      "wins": 5,
+      "losses": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:31:22.185Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Atoms Basketball Club",
+      "regs": [
+        {
+          "tid": "bb7df209",
+          "tn": "Atoms U16 Boys Mavericks",
+          "gid": "2b76dede",
+          "gn": "U16 Boys D1",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 11,
+            "fg": 19,
+            "pts": 55,
+            "wins": 3,
+            "losses": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Atoms Basketball Club",
+      "regs": [
+        {
+          "tid": "685e0f29",
+          "tn": "Atoms U16 Boys Mav's",
+          "gid": "431fe33f",
+          "gn": "U16 Boys D1",
+          "age": "U16",
+          "div": "D1",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 6,
+            "fg": 14,
+            "pts": 34,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-30T18:16:40.901Z",
+  "teams": [
+    {
+      "tid": "bb7df209",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "685e0f29",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:17.496Z",
+  "games": [
+    "15f5b4c1",
+    "a7ca1dec",
+    "a9fd0cff",
+    "b7476812",
+    "bba571b5",
+    "c62af7d5",
+    "d36d4b52",
+    "d9e11d73",
+    "f5ec7ca5",
+    "ff29cf3a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "f0a2402b",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "f0a2402b",
+      "sid": "aacc7335"
+    }
+  }
+}

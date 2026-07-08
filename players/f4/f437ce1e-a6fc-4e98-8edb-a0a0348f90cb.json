@@ -1,1 +1,294 @@
-{"uuid":"f437ce1e-a6fc-4e98-8edb-a0a0348f90cb","name":"Coco Malcolm","gender":"Girls","sports":{"Basketball":{"gp":39,"pts":93,"fouls":48,"fg":43,"ft":7,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{"3cb97b37":1},"maxGamePTS":9,"maxGameThreePt":null,"wins":17,"losses":17,"draws":1,"winPct":0.49,"statsChecked":"2026-07-05T15:52:30.022Z"}},"seasons":[{"sid":"3cb97b37","sn":"Summer 2023/24","regs":[{"tid":"e68d4ebd","tn":"Slabs","gid":"5e046cb0","gn":"Monday Womens Competition","age":null,"div":null,"stats":{"gp":8,"fouls":12,"fg":4,"pts":8,"finals":1,"wins":4,"losses":4}},{"tid":"82cdb3a0","tn":"Olympics","gid":"d4b99c3b","gn":"Friday U21 Girls","age":"U21","div":null,"stats":{"gp":6,"fouls":12,"ft":1,"fg":7,"pts":15,"finals":1,"wins":3}},{"tid":"b31642b2","tn":"Katz","gid":"d4b99c3b","gn":"Friday U21 Girls","age":"U21","div":null,"stats":{"gp":4,"fouls":10,"ft":2,"fg":3,"pts":8,"finals":1,"foulOuts":1,"losses":2,"draws":1}}]},{"sid":"bbe40d50","sn":"Summer 2022/23","regs":[{"tid":"72e51263","tn":"Cubs","gid":"1c03fef7","gn":"Friday U21 Girls","age":"U21","div":null,"stats":{"gp":12,"fouls":6,"ft":2,"fg":19,"pts":40,"finals":1,"wins":9,"losses":3}}]},{"sid":"4a995627","sn":"Summer 2021/22","regs":[{"tid":"d183c0a9","tn":"Katz","gid":"bea4253f","gn":"Friday U21 Girls","age":"U21","div":null,"stats":{"gp":9,"fouls":8,"ft":2,"fg":10,"pts":22,"finals":1,"wins":1,"losses":8}}]}],"updatedAt":"2026-06-03T02:35:28.035Z","teams":[{"tid":"82cdb3a0","sid":"3cb97b37","status":"COMPLETED"},{"tid":"e68d4ebd","sid":"3cb97b37","status":"COMPLETED"},{"tid":"72e51263","sid":"bbe40d50","status":"COMPLETED"},{"tid":"d183c0a9","sid":"4a995627","status":"COMPLETED"},{"tid":"16d7c356","sid":"638a2fba","status":"COMPLETED"},{"tid":"cdcf5b36","sid":"ba1d7494","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:52.116Z","games":["16eb9e74","190dc9d2","1cc5576b","1e9c873f","20ee665a","24f156ba","28fb5c11","2d351f04","330e6986","33563eec","3de617d3","601ef1cf","6715d70d","77dbc2ee","797e7dd9","84c32809","91a1058c","93d76a28","95505b39","a09e889b","a37bf7fe","a6ffeab7","a9d2044c","adefa97f","b0212b92","b70b3c1f","ba6926db","c07b9bfa","cf43a4cb","d0574ee6","d440c4ee","e0afc438","e55ff209","ebb0cbf4","ec9d1019","ecc2e9bb","f6da2dcf","f9239f4f","fa5a11a1"],"records":{"maxGamePTS":{"v":9,"gameKey":"95505b39","sid":"bbe40d50"},"maxGameThreePt":{"v":null}},"gameTids":{"e55ff209":"e68d4ebd","2d351f04":"e68d4ebd","1cc5576b":"e68d4ebd","93d76a28":"e68d4ebd","797e7dd9":"e68d4ebd","84c32809":"e68d4ebd","ba6926db":"e68d4ebd","c07b9bfa":"e68d4ebd","a37bf7fe":"82cdb3a0","d440c4ee":"82cdb3a0","1e9c873f":"82cdb3a0","e0afc438":"82cdb3a0","ebb0cbf4":"82cdb3a0","cf43a4cb":"82cdb3a0","a9d2044c":"b31642b2","ecc2e9bb":"b31642b2","d0574ee6":"b31642b2","24f156ba":"b31642b2","adefa97f":"72e51263","190dc9d2":"72e51263","20ee665a":"72e51263","3de617d3":"72e51263","28fb5c11":"72e51263","a6ffeab7":"72e51263","77dbc2ee":"72e51263","b70b3c1f":"72e51263","6715d70d":"72e51263","330e6986":"72e51263","95505b39":"72e51263","601ef1cf":"72e51263","b0212b92":"d183c0a9","91a1058c":"d183c0a9","f6da2dcf":"d183c0a9","fa5a11a1":"d183c0a9","ec9d1019":"d183c0a9","f9239f4f":"d183c0a9","33563eec":"d183c0a9","a09e889b":"d183c0a9","16eb9e74":"d183c0a9"}}
+{
+  "uuid": "f437ce1e-a6fc-4e98-8edb-a0a0348f90cb",
+  "name": "Coco Malcolm",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 93,
+      "fouls": 48,
+      "fg": 43,
+      "ft": 7,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "3cb97b37": 1
+      },
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 17,
+      "losses": 17,
+      "draws": 1,
+      "winPct": 0.49,
+      "statsChecked": "2026-07-05T15:52:30.022Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3cb97b37",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "e68d4ebd",
+          "tn": "Slabs",
+          "gid": "5e046cb0",
+          "gn": "Monday Womens Competition",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "wins": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "82cdb3a0",
+          "tn": "Olympics",
+          "gid": "d4b99c3b",
+          "gn": "Friday U21 Girls",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 3
+          }
+        },
+        {
+          "tid": "b31642b2",
+          "tn": "Katz",
+          "gid": "d4b99c3b",
+          "gn": "Friday U21 Girls",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 3,
+            "pts": 8,
+            "finals": 1,
+            "foulOuts": 1,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bbe40d50",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "72e51263",
+          "tn": "Cubs",
+          "gid": "1c03fef7",
+          "gn": "Friday U21 Girls",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 9,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4a995627",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "d183c0a9",
+          "tn": "Katz",
+          "gid": "bea4253f",
+          "gn": "Friday U21 Girls",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 8,
+            "ft": 2,
+            "fg": 10,
+            "pts": 22,
+            "finals": 1,
+            "wins": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "638a2fba",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "16d7c356",
+          "tn": "Cubs",
+          "gid": "cef3ffd9",
+          "gn": "Friday U15 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ba1d7494",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "cdcf5b36",
+          "tn": "Olympics (U15 G)",
+          "gid": "1dc77a88",
+          "gn": "Friday U15 Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T02:35:28.035Z",
+  "teams": [
+    {
+      "tid": "e68d4ebd",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82cdb3a0",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b31642b2",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "72e51263",
+      "sid": "bbe40d50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d183c0a9",
+      "sid": "4a995627",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "16d7c356",
+      "sid": "638a2fba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cdcf5b36",
+      "sid": "ba1d7494",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:50.945Z",
+  "games": [
+    "16eb9e74",
+    "190dc9d2",
+    "1cc5576b",
+    "1e9c873f",
+    "20ee665a",
+    "24f156ba",
+    "28fb5c11",
+    "2d351f04",
+    "330e6986",
+    "33563eec",
+    "3de617d3",
+    "601ef1cf",
+    "6715d70d",
+    "77dbc2ee",
+    "797e7dd9",
+    "84c32809",
+    "91a1058c",
+    "93d76a28",
+    "95505b39",
+    "a09e889b",
+    "a37bf7fe",
+    "a6ffeab7",
+    "a9d2044c",
+    "adefa97f",
+    "b0212b92",
+    "b70b3c1f",
+    "ba6926db",
+    "c07b9bfa",
+    "cf43a4cb",
+    "d0574ee6",
+    "d440c4ee",
+    "e0afc438",
+    "e55ff209",
+    "ebb0cbf4",
+    "ec9d1019",
+    "ecc2e9bb",
+    "f6da2dcf",
+    "f9239f4f",
+    "fa5a11a1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "95505b39",
+      "sid": "bbe40d50"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "e55ff209": "e68d4ebd",
+    "2d351f04": "e68d4ebd",
+    "1cc5576b": "e68d4ebd",
+    "93d76a28": "e68d4ebd",
+    "797e7dd9": "e68d4ebd",
+    "84c32809": "e68d4ebd",
+    "ba6926db": "e68d4ebd",
+    "c07b9bfa": "e68d4ebd",
+    "a37bf7fe": "82cdb3a0",
+    "d440c4ee": "82cdb3a0",
+    "1e9c873f": "82cdb3a0",
+    "e0afc438": "82cdb3a0",
+    "ebb0cbf4": "82cdb3a0",
+    "cf43a4cb": "82cdb3a0",
+    "a9d2044c": "b31642b2",
+    "ecc2e9bb": "b31642b2",
+    "d0574ee6": "b31642b2",
+    "24f156ba": "b31642b2",
+    "adefa97f": "72e51263",
+    "190dc9d2": "72e51263",
+    "20ee665a": "72e51263",
+    "3de617d3": "72e51263",
+    "28fb5c11": "72e51263",
+    "a6ffeab7": "72e51263",
+    "77dbc2ee": "72e51263",
+    "b70b3c1f": "72e51263",
+    "6715d70d": "72e51263",
+    "330e6986": "72e51263",
+    "95505b39": "72e51263",
+    "601ef1cf": "72e51263",
+    "b0212b92": "d183c0a9",
+    "91a1058c": "d183c0a9",
+    "f6da2dcf": "d183c0a9",
+    "fa5a11a1": "d183c0a9",
+    "ec9d1019": "d183c0a9",
+    "f9239f4f": "d183c0a9",
+    "33563eec": "d183c0a9",
+    "a09e889b": "d183c0a9",
+    "16eb9e74": "d183c0a9"
+  }
+}

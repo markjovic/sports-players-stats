@@ -1,1 +1,96 @@
-{"uuid":"ef3e439c-f148-4b37-b75c-bf758ccbe9dc","name":"Nick Bonner","sports":{"Basketball":{"maxGamePTS":31,"maxGameThreePt":1,"foulOuts":{},"gp":24,"pts":97,"fg":38,"ft":12,"threePt":3,"fouls":32,"statsChecked":"2026-07-06T19:02:03.739Z"}},"seasons":[{"sid":"297562bc","regs":[{"tid":"72a6ffe0"}]},{"sid":"f284a56e","regs":[{"tid":"0ba3e999"}]},{"sid":"badcb509","regs":[{"tid":"7df8d2bf"}]},{"sid":"27dd2c71","regs":[{"tid":"4881d090"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":31,"gameKey":"f381f4c8","sid":"badcb509"},"maxGameThreePt":{"v":1,"gameKey":"6c3b0250","sid":"f284a56e"}}}
+{
+  "uuid": "ef3e439c-f148-4b37-b75c-bf758ccbe9dc",
+  "name": "Nick Bonner",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 31,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 24,
+      "pts": 97,
+      "fg": 38,
+      "ft": 12,
+      "threePt": 3,
+      "fouls": 32,
+      "statsChecked": "2026-07-06T19:02:03.739Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "72a6ffe0",
+          "gid": "9e9fdef7",
+          "gn": "Monday Open Men Section 6"
+        }
+      ]
+    },
+    {
+      "sid": "f284a56e",
+      "regs": [
+        {
+          "tid": "0ba3e999",
+          "gid": "b0c3fab0",
+          "gn": "Sunday Senior Men D Grade (2)"
+        }
+      ]
+    },
+    {
+      "sid": "badcb509",
+      "regs": [
+        {
+          "tid": "7df8d2bf",
+          "gid": "981cba4f",
+          "gn": "Sunday Senior Men D Grade (1)"
+        }
+      ]
+    },
+    {
+      "sid": "27dd2c71",
+      "regs": [
+        {
+          "tid": "4881d090",
+          "gid": "80b4801c",
+          "gn": "Sunday Open Men C Grade (2)"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "72a6ffe0",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ba3e999",
+      "sid": "f284a56e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7df8d2bf",
+      "sid": "badcb509",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4881d090",
+      "sid": "27dd2c71",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 31,
+      "gameKey": "f381f4c8",
+      "sid": "badcb509"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6c3b0250",
+      "sid": "f284a56e"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:31:50.507Z"
+}

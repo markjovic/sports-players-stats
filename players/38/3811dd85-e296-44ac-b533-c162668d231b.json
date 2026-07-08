@@ -1,1 +1,101 @@
-{"uuid":"3811dd85-e296-44ac-b533-c162668d231b","name":"Zane Walsh","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":34,"fouls":13,"fg":16,"ft":2,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":5,"losses":5,"winPct":0.5,"statsChecked":"2026-07-05T14:54:25.363Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"8fc1c876","tn":"North Adelaide Rockets U12 Boys 4 Jason","gid":"61d6258f","gn":"BOYS UNDER 12 C4","age":null,"div":"C4","stats":{"gp":5,"pts":15,"fg":7,"ft":1,"fouls":8,"wins":3,"losses":2}}]},{"sid":"0869ea69","regs":[{"tid":"cbaa6c5d","stats":{"wins":2,"losses":3,"gp":5,"pts":19,"fg":9,"ft":1,"fouls":5}}]}],"updatedAt":"2026-05-31T01:02:17.108Z","teams":[{"tid":"cbaa6c5d","sid":"0869ea69","status":"UPCOMING"},{"tid":"8fc1c876","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:15:22.005Z","records":{"maxGamePTS":{"v":10,"gameKey":"d4fca8eb","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["3b2216c3","602e2e2e","6aa3edc6","7abe29f0","c14cd0c5","d4fca8eb","e8a29f46","e9bffd70","f7718aa2","ff9e9508"]}
+{
+  "uuid": "3811dd85-e296-44ac-b533-c162668d231b",
+  "name": "Zane Walsh",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 34,
+      "fouls": 13,
+      "fg": 16,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:54:25.363Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "8fc1c876",
+          "tn": "North Adelaide Rockets U12 Boys 4 Jason",
+          "gid": "61d6258f",
+          "gn": "BOYS UNDER 12 C4",
+          "age": null,
+          "div": "C4",
+          "stats": {
+            "gp": 5,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 8,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "cbaa6c5d",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 19,
+            "fg": 9,
+            "ft": 1,
+            "fouls": 5
+          },
+          "gid": "44adad6c",
+          "gn": "BOYS UNDER 14 D2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:02:17.108Z",
+  "teams": [
+    {
+      "tid": "8fc1c876",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cbaa6c5d",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:35.439Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d4fca8eb",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3b2216c3",
+    "602e2e2e",
+    "6aa3edc6",
+    "7abe29f0",
+    "c14cd0c5",
+    "d4fca8eb",
+    "e8a29f46",
+    "e9bffd70",
+    "f7718aa2",
+    "ff9e9508"
+  ]
+}

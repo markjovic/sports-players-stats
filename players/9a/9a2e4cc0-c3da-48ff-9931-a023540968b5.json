@@ -1,1 +1,190 @@
-{"uuid":"9a2e4cc0-c3da-48ff-9931-a023540968b5","name":"David Nguyen","gender":"Men","sports":{"Basketball":{"gp":24,"pts":67,"fouls":24,"fg":21,"ft":1,"threePt":8,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":9,"losses":23,"winPct":0.28,"statsChecked":"2026-07-06T19:11:04.092Z"}},"seasons":[{"sid":"a9f7ee61","sn":"Winter 2026","regs":[{"tid":"e7c856dc","tn":"Lennut","gid":"15561894","gn":"Monday Open Men G GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":6,"fouls":9,"fg":7,"threePt":2,"pts":20,"wins":1,"losses":4}}]},{"sid":"3b14c51e","sn":"Winter 2025","regs":[{"tid":"a3b12615","tn":"Richmond Raiders","gid":"90e5d0dc","gn":"Monday Open Men G GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":7,"fouls":2,"ft":1,"fg":8,"threePt":3,"pts":26,"wins":6,"losses":1}},{"tid":"5b94e3f6","stats":{"wins":1,"losses":9,"gp":11,"pts":21,"fg":6,"threePt":3,"fouls":13}}]},{"sid":"3b14c51e","sn":"Winter 2025","regs":[{"tid":"5b94e3f6","tn":"Lennut","gid":"4701d2c1","gn":"Monday Open Men E GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":11,"fouls":13,"fg":6,"threePt":3,"pts":21,"wins":1,"losses":9}}]}],"updatedAt":"2026-07-06T18:32:39.415Z","teams":[{"tid":"e7c856dc","sid":"a9f7ee61","status":"ACTIVE"},{"tid":"5b94e3f6","sid":"3b14c51e","status":"COMPLETED"},{"tid":"a3b12615","sid":"3b14c51e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:15.466Z","games":["03b35182","05cb4d2c","0dae175d","1ba98a4a","29519267","336e1461","39e52f16","41fdeb75","496bb98e","4ea614bd","807f15e4","89b08baf","89fbdf96","97a77b07","ab5f0f65","b94116bd","c037e1a6","c63542c1","ca969926","e88c78ae","eb2b719c","eff403cf","fab0bba4"],"records":{"maxGamePTS":{"v":12,"gameKey":"39e52f16","sid":"3b14c51e"},"maxGameThreePt":{"v":2,"gameKey":"89fbdf96","sid":"a9f7ee61"}},"gameTids":{"29519267":"a3b12615","57a22aa6":"e7c856dc","336e1461":"e7c856dc","0dae175d":"e7c856dc","89fbdf96":"e7c856dc","e88c78ae":"e7c856dc","eff403cf":"e7c856dc","4ea614bd":"a3b12615","ca969926":"a3b12615","03b35182":"a3b12615","807f15e4":"a3b12615","ab5f0f65":"a3b12615","c037e1a6":"a3b12615","b94116bd":"5b94e3f6","c63542c1":"5b94e3f6","eb2b719c":"5b94e3f6","fab0bba4":"5b94e3f6","1ba98a4a":"5b94e3f6","89b08baf":"5b94e3f6","97a77b07":"5b94e3f6","05cb4d2c":"5b94e3f6","39e52f16":"5b94e3f6","496bb98e":"5b94e3f6","41fdeb75":"5b94e3f6"}}
+{
+  "uuid": "9a2e4cc0-c3da-48ff-9931-a023540968b5",
+  "name": "David Nguyen",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 24,
+      "pts": 67,
+      "fouls": 24,
+      "fg": 21,
+      "ft": 1,
+      "threePt": 8,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 9,
+      "losses": 23,
+      "winPct": 0.28,
+      "statsChecked": "2026-07-06T19:11:04.092Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a9f7ee61",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e7c856dc",
+          "tn": "Lennut",
+          "gid": "15561894",
+          "gn": "Monday Open Men G GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "fg": 7,
+            "threePt": 2,
+            "pts": 20,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b14c51e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "a3b12615",
+          "tn": "Richmond Raiders",
+          "gid": "90e5d0dc",
+          "gn": "Monday Open Men G GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 8,
+            "threePt": 3,
+            "pts": 26,
+            "wins": 6,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "5b94e3f6",
+          "stats": {
+            "wins": 1,
+            "losses": 9,
+            "gp": 11,
+            "pts": 21,
+            "fg": 6,
+            "threePt": 3,
+            "fouls": 13
+          },
+          "gid": "4701d2c1",
+          "gn": "Monday Open Men E GRADE - MSAC"
+        }
+      ]
+    },
+    {
+      "sid": "3b14c51e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5b94e3f6",
+          "tn": "Lennut",
+          "gid": "4701d2c1",
+          "gn": "Monday Open Men E GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 13,
+            "fg": 6,
+            "threePt": 3,
+            "pts": 21,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:39.415Z",
+  "teams": [
+    {
+      "tid": "e7c856dc",
+      "sid": "a9f7ee61",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a3b12615",
+      "sid": "3b14c51e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b94e3f6",
+      "sid": "3b14c51e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:17.704Z",
+  "games": [
+    "03b35182",
+    "05cb4d2c",
+    "0dae175d",
+    "1ba98a4a",
+    "29519267",
+    "336e1461",
+    "39e52f16",
+    "41fdeb75",
+    "496bb98e",
+    "4ea614bd",
+    "807f15e4",
+    "89b08baf",
+    "89fbdf96",
+    "97a77b07",
+    "ab5f0f65",
+    "b94116bd",
+    "c037e1a6",
+    "c63542c1",
+    "ca969926",
+    "e88c78ae",
+    "eb2b719c",
+    "eff403cf",
+    "fab0bba4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "39e52f16",
+      "sid": "3b14c51e"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "89fbdf96",
+      "sid": "a9f7ee61"
+    }
+  },
+  "gameTids": {
+    "29519267": "a3b12615",
+    "57a22aa6": "e7c856dc",
+    "336e1461": "e7c856dc",
+    "0dae175d": "e7c856dc",
+    "89fbdf96": "e7c856dc",
+    "e88c78ae": "e7c856dc",
+    "eff403cf": "e7c856dc",
+    "4ea614bd": "a3b12615",
+    "ca969926": "a3b12615",
+    "03b35182": "a3b12615",
+    "807f15e4": "a3b12615",
+    "ab5f0f65": "a3b12615",
+    "c037e1a6": "a3b12615",
+    "b94116bd": "5b94e3f6",
+    "c63542c1": "5b94e3f6",
+    "eb2b719c": "5b94e3f6",
+    "fab0bba4": "5b94e3f6",
+    "1ba98a4a": "5b94e3f6",
+    "89b08baf": "5b94e3f6",
+    "97a77b07": "5b94e3f6",
+    "05cb4d2c": "5b94e3f6",
+    "39e52f16": "5b94e3f6",
+    "496bb98e": "5b94e3f6",
+    "41fdeb75": "5b94e3f6"
+  }
+}

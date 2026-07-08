@@ -1,1 +1,93 @@
-{"uuid":"cb45de1d-331c-47f7-a087-c5b8c59df777","gender":null,"sports":{"Basketball":{"gp":3,"pts":7,"fouls":4,"fg":3,"ft":1,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"losses":2,"draws":1,"winPct":0,"statsChecked":"2026-07-05T16:03:33.226Z"}},"seasons":[{"sid":"b200c0f6","sn":"Winter 2021","club":null,"regs":[{"tid":"b0d6f484","tn":"Broke Ballers","gid":"85405921","gn":"Monday Open Men F","stats":{"gp":1,"pts":5,"fouls":2,"fg":2,"ft":1,"draws":1}}]},{"sid":"e8437d1b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"d0e76615","tn":"Orlando Tragic","gid":"cb5ee69a","gn":"Monday Open Men F/FRES","stats":{"gp":2,"pts":2,"fouls":2,"fg":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:44:44.456Z","records":{"maxGamePTS":{"v":5,"gameKey":"e015d47e","sid":"b200c0f6"},"maxGameThreePt":{"v":null}},"games":["8b98b7b7","b0991b12","e015d47e"],"name":"Winter 2021"}
+{
+  "uuid": "cb45de1d-331c-47f7-a087-c5b8c59df777",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 7,
+      "fouls": 4,
+      "fg": 3,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "draws": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:03:33.226Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b200c0f6",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "b0d6f484",
+          "tn": "Broke Ballers",
+          "gid": "b1aea070",
+          "gn": "Monday Open Men E/ERES",
+          "stats": {
+            "gp": 1,
+            "pts": 5,
+            "fouls": 2,
+            "fg": 2,
+            "ft": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e8437d1b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d0e76615",
+          "tn": "Orlando Tragic",
+          "gid": "cb5ee69a",
+          "gn": "Monday Open Men F/FRES",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fouls": 2,
+            "fg": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:44.456Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "e015d47e",
+      "sid": "b200c0f6"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "8b98b7b7",
+    "b0991b12",
+    "e015d47e"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "b0d6f484",
+      "sid": "b200c0f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d0e76615",
+      "sid": "e8437d1b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:04.754Z"
+}

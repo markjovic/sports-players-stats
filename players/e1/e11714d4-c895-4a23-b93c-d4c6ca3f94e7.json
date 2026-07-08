@@ -1,1 +1,128 @@
-{"uuid":"e11714d4-c895-4a23-b93c-d4c6ca3f94e7","name":"Jingyu Be","gender":"Boys","sports":{"Basketball":{"gp":18,"pts":111,"fouls":46,"fg":52,"ft":4,"threePt":1,"foulOuts":{"3e7c1a8c":2},"maxGamePTS":20,"maxGameThreePt":1,"wins":22,"losses":12,"winPct":0.65,"statsChecked":"2026-07-05T15:39:41.474Z"}},"seasons":[{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Melbourne Wolves Basketball Club","regs":[{"tid":"6f9cd631","tn":"Melbourne Wolves Thunderbolts A","gid":"603b7b1b","gn":"Thursday U10 Boys C2 Grade","age":"U10","div":null,"stats":{"gp":18,"fouls":46,"ft":4,"fg":52,"threePt":1,"pts":111,"wins":11,"losses":6}},{"tid":"6f9cd631","tn":"Melbourne Wolves Thunderbolts A","gid":"f3c880c2","gn":"Thursday U10 Boys D Grade","age":"U10","div":null,"stats":{"gp":18,"fouls":46,"fg":52,"pts":111,"foulOuts":2,"wins":11,"losses":6,"ft":4,"threePt":1}}]}],"updatedAt":"2026-07-04T06:01:11.664Z","teams":[{"tid":"6f9cd631","sid":"3e7c1a8c","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:50:04.301Z","games":["02f1a703","0545c627","0973223c","2865e83f","3405ce19","3b310be1","3eb46622","4c30bb85","505c6a94","52d4797e","628cdf29","87765cb7","93b8a4e5","a5d3b10b","dc71294b","dd87e42e","fcd8f0f2"],"records":{"maxGamePTS":{"v":20,"gameKey":"f2e61b4b","sid":"3e7c1a8c"},"maxGameThreePt":{"v":1,"gameKey":"87765cb7","sid":"3e7c1a8c"}}}
+{
+  "uuid": "e11714d4-c895-4a23-b93c-d4c6ca3f94e7",
+  "name": "Jingyu Be",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 111,
+      "fouls": 46,
+      "fg": 52,
+      "ft": 4,
+      "threePt": 1,
+      "foulOuts": {
+        "3e7c1a8c": 2
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": 1,
+      "wins": 22,
+      "losses": 12,
+      "winPct": 0.65,
+      "statsChecked": "2026-07-05T15:39:41.474Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Melbourne Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "6f9cd631",
+          "tn": "Melbourne Wolves Thunderbolts A",
+          "gid": "603b7b1b",
+          "gn": "Thursday U10 Boys C2 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 46,
+            "ft": 4,
+            "fg": 52,
+            "threePt": 1,
+            "pts": 111,
+            "wins": 11,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "6f9cd631",
+          "tn": "Melbourne Wolves Thunderbolts A",
+          "gid": "f3c880c2",
+          "gn": "Thursday U10 Boys D Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 46,
+            "fg": 52,
+            "pts": 111,
+            "foulOuts": 2,
+            "wins": 11,
+            "losses": 6,
+            "ft": 4,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "292b4e5f",
+          "tn": "Melbourne Wolves Thunderbolts",
+          "gid": "9ffba725",
+          "gn": "Thursday U10 Boys B2 Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T06:01:11.664Z",
+  "teams": [
+    {
+      "tid": "6f9cd631",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "292b4e5f",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:52.980Z",
+  "games": [
+    "02f1a703",
+    "0545c627",
+    "0973223c",
+    "2865e83f",
+    "3405ce19",
+    "3b310be1",
+    "3eb46622",
+    "4c30bb85",
+    "505c6a94",
+    "52d4797e",
+    "628cdf29",
+    "87765cb7",
+    "93b8a4e5",
+    "a5d3b10b",
+    "dc71294b",
+    "dd87e42e",
+    "fcd8f0f2"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "f2e61b4b",
+      "sid": "3e7c1a8c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "87765cb7",
+      "sid": "3e7c1a8c"
+    }
+  }
+}

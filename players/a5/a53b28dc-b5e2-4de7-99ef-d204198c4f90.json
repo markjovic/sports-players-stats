@@ -1,1 +1,187 @@
-{"uuid":"a53b28dc-b5e2-4de7-99ef-d204198c4f90","name":"Alexia Duncan","gender":"Mixed","sports":{"Basketball":{"gp":26,"pts":30,"fouls":3,"fg":15,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":9,"losses":17,"winPct":0.35,"statsChecked":"2026-07-05T15:50:27.371Z"}},"seasons":[{"sid":"984f6883","sn":"Autumn 2026","regs":[{"tid":"3b75ec45","tn":"U12 MAGIC","gid":"9580a319","gn":"U12","age":"U12","div":"U12","stats":{"gp":10,"fg":11,"pts":22,"wins":6,"losses":4}},{"tid":"1debe5e8","tn":"U14 FALCONS","gid":"cdd3faf6","gn":"U14","age":"U14","div":"U14","stats":{"gp":4,"fouls":1,"wins":1,"losses":3}}]},{"sid":"b1c04d4d","sn":"Spring 2025","regs":[{"tid":"4d49fe33","tn":"U12 BLUE MAGIC","gid":"4a637c28","gn":"U12 BLUE","age":"U12","div":null,"stats":{"gp":12,"fouls":2,"fg":4,"pts":8,"finals":1,"wins":2,"losses":10}}]}],"updatedAt":"2026-07-04T05:55:12.922Z","teams":[{"tid":"3b75ec45","sid":"984f6883","status":"ACTIVE"},{"tid":"4d49fe33","sid":"b1c04d4d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:01:15.487Z","games":["0627a943","153ee0e0","222faa3b","2a974222","4766e709","53d7cd17","6500ae10","661d9a17","6f1ca8ae","6f5b2665","7d0a7748","7ff1d1a8","8a0426aa","9787d406","9d0c6f58","a226aa4c","bd27a02f","c47984fd","c9503a2d","d284346c","d5b2fcd3","de1d6d05","e86f335b","ea3d6a42","f3713f7c","fc449aa9"],"records":{"maxGamePTS":{"v":10,"gameKey":"c9503a2d","sid":"984f6883"},"maxGameThreePt":{"v":null}},"gameTids":{"bd27a02f":"3b75ec45","6500ae10":"3b75ec45","8a0426aa":"3b75ec45","9d0c6f58":"3b75ec45","2a974222":"3b75ec45","661d9a17":"3b75ec45","9787d406":"3b75ec45","c9503a2d":"3b75ec45","153ee0e0":"3b75ec45","d5b2fcd3":"3b75ec45","c47984fd":"1debe5e8","de1d6d05":"1debe5e8","a226aa4c":"1debe5e8","6f5b2665":"1debe5e8","d284346c":"4d49fe33","7d0a7748":"4d49fe33","ea3d6a42":"4d49fe33","6f1ca8ae":"4d49fe33","222faa3b":"4d49fe33","7ff1d1a8":"4d49fe33","4766e709":"4d49fe33","0627a943":"4d49fe33","e86f335b":"4d49fe33","fc449aa9":"4d49fe33","53d7cd17":"4d49fe33","f3713f7c":"4d49fe33"}}
+{
+  "uuid": "a53b28dc-b5e2-4de7-99ef-d204198c4f90",
+  "name": "Alexia Duncan",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 30,
+      "fouls": 3,
+      "fg": 15,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 17,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:50:27.371Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "984f6883",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "3b75ec45",
+          "tn": "U12 MAGIC",
+          "gid": "9580a319",
+          "gn": "U12",
+          "age": "U12",
+          "div": "U12",
+          "stats": {
+            "gp": 10,
+            "fg": 11,
+            "pts": 22,
+            "wins": 6,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "1debe5e8",
+          "tn": "U14 FALCONS",
+          "gid": "cdd3faf6",
+          "gn": "U14",
+          "age": "U14",
+          "div": "U14",
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b1c04d4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "4d49fe33",
+          "tn": "U12 BLUE MAGIC",
+          "gid": "4a637c28",
+          "gn": "U12 BLUE",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 2,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "wins": 2,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3046fb5f",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "caf9e3d5",
+          "tn": "U12 POWER",
+          "gid": "5bcf1b27",
+          "gn": "U12",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:55:12.922Z",
+  "teams": [
+    {
+      "tid": "3b75ec45",
+      "sid": "984f6883",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1debe5e8",
+      "sid": "984f6883",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4d49fe33",
+      "sid": "b1c04d4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "caf9e3d5",
+      "sid": "3046fb5f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:52.242Z",
+  "games": [
+    "0627a943",
+    "153ee0e0",
+    "222faa3b",
+    "2a974222",
+    "4766e709",
+    "53d7cd17",
+    "6500ae10",
+    "661d9a17",
+    "6f1ca8ae",
+    "6f5b2665",
+    "7d0a7748",
+    "7ff1d1a8",
+    "8a0426aa",
+    "9787d406",
+    "9d0c6f58",
+    "a226aa4c",
+    "bd27a02f",
+    "c47984fd",
+    "c9503a2d",
+    "d284346c",
+    "d5b2fcd3",
+    "de1d6d05",
+    "e86f335b",
+    "ea3d6a42",
+    "f3713f7c",
+    "fc449aa9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "c9503a2d",
+      "sid": "984f6883"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "bd27a02f": "3b75ec45",
+    "6500ae10": "3b75ec45",
+    "8a0426aa": "3b75ec45",
+    "9d0c6f58": "3b75ec45",
+    "2a974222": "3b75ec45",
+    "661d9a17": "3b75ec45",
+    "9787d406": "3b75ec45",
+    "c9503a2d": "3b75ec45",
+    "153ee0e0": "3b75ec45",
+    "d5b2fcd3": "3b75ec45",
+    "c47984fd": "1debe5e8",
+    "de1d6d05": "1debe5e8",
+    "a226aa4c": "1debe5e8",
+    "6f5b2665": "1debe5e8",
+    "d284346c": "4d49fe33",
+    "7d0a7748": "4d49fe33",
+    "ea3d6a42": "4d49fe33",
+    "6f1ca8ae": "4d49fe33",
+    "222faa3b": "4d49fe33",
+    "7ff1d1a8": "4d49fe33",
+    "4766e709": "4d49fe33",
+    "0627a943": "4d49fe33",
+    "e86f335b": "4d49fe33",
+    "fc449aa9": "4d49fe33",
+    "53d7cd17": "4d49fe33",
+    "f3713f7c": "4d49fe33"
+  }
+}

@@ -1,1 +1,101 @@
-{"uuid":"b002fcb5-45b5-42a0-9ac5-237e6891e405","gender":null,"sports":{"Basketball":{"gp":12,"pts":2,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":5,"losses":3,"winPct":0.63,"fouls":1,"statsChecked":"2026-07-06T19:11:22.288Z"}},"seasons":[{"sid":"fd10f834","sn":"Winter 2026","club":null,"regs":[{"tid":"f67bc8f4","tn":"TABA Kings","gid":"e44578c9","gn":"Monday U8 Boys","stats":{"gp":8,"pts":2,"fg":1,"wins":5,"losses":3}}]},{"sid":"73551fc8","regs":[{"tid":"6b603042","stats":{"gp":4,"fouls":1}},{"tid":"6b603042","tn":"","gid":"30250496","gn":"U8 Mixed","div":null,"stats":{"gp":4,"fouls":1}}]}],"updatedAt":"2026-07-06T18:34:02.514Z","records":{"maxGamePTS":{"v":2,"gameKey":"204a4fd7","sid":"fd10f834"},"maxGameThreePt":{"v":null}},"games":["111b9944","204a4fd7","2ff5e0c1","380d9d91","8bc73684","9f81071b","ba1cb716","d32ba3e8"],"name":"Winter 2026"}
+{
+  "uuid": "b002fcb5-45b5-42a0-9ac5-237e6891e405",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 2,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 3,
+      "winPct": 0.63,
+      "fouls": 1,
+      "statsChecked": "2026-07-06T19:11:22.288Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fd10f834",
+      "sn": "Winter 2026",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f67bc8f4",
+          "tn": "TABA Kings",
+          "gid": "e44578c9",
+          "gn": "Monday U8 Boys",
+          "stats": {
+            "gp": 8,
+            "pts": 2,
+            "fg": 1,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "6b603042",
+          "stats": {
+            "gp": 4,
+            "fouls": 1
+          },
+          "gid": "30250496",
+          "gn": "U8 Mixed"
+        },
+        {
+          "tid": "6b603042",
+          "tn": "",
+          "gid": "30250496",
+          "gn": "U8 Mixed",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:02.514Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "204a4fd7",
+      "sid": "fd10f834"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "111b9944",
+    "204a4fd7",
+    "2ff5e0c1",
+    "380d9d91",
+    "8bc73684",
+    "9f81071b",
+    "ba1cb716",
+    "d32ba3e8"
+  ],
+  "name": "Winter 2026",
+  "teams": [
+    {
+      "tid": "f67bc8f4",
+      "sid": "fd10f834",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b603042",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:53.060Z"
+}

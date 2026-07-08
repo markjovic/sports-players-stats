@@ -1,1 +1,95 @@
-{"uuid":"5d0ef9ff-edd1-4713-ba02-cba1b85eca44","gender":null,"sports":{"Basketball":{"gp":6,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":11,"winPct":0,"statsChecked":"2026-07-05T16:13:35.106Z"}},"seasons":[{"sid":"901dabcd","sn":"Summer 2021/22","club":"Ormond Jets Basketball Club","regs":[{"tid":"288c73ec","tn":"JETS U14 Girls Mint","gid":"fd32000e","gn":"Sunday U14 Girls DIV 5","stats":{"gp":1,"losses":1}}]},{"sid":"0f6dd17f","sn":"Winter 2021","club":"Ormond Jets Basketball Club","regs":[{"tid":"56d253a5","tn":"JETS U12 Girls Oliver","gid":"2ea95c12","gn":"Sunday U12 Girls DIV 4","stats":{"gp":5,"fouls":1,"losses":5}},{"tid":"56d253a5","tn":"JETS U12 Girls Oliver","gid":"d7e5ceb4","gn":"Sunday U12 Girls DIV 3","stats":{"gp":5,"losses":5,"fouls":1}}]}],"updatedAt":"2026-06-11T23:39:59.336Z","games":["0466059c","b2dcfa3d","c89debad","cf45305a","f6072ce7","f9fc05b6"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Summer 2021/22"}
+{
+  "uuid": "5d0ef9ff-edd1-4713-ba02-cba1b85eca44",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 11,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:13:35.106Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "901dabcd",
+      "sn": "Summer 2021/22",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "288c73ec",
+          "tn": "JETS U14 Girls Mint",
+          "gid": "7f883fff",
+          "gn": "Sunday U14 Girls DIV 7",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "56d253a5",
+          "tn": "JETS U12 Girls Oliver",
+          "gid": "2ea95c12",
+          "gn": "Sunday U12 Girls DIV 4",
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "56d253a5",
+          "tn": "JETS U12 Girls Oliver",
+          "gid": "d7e5ceb4",
+          "gn": "Sunday U12 Girls DIV 3",
+          "stats": {
+            "gp": 5,
+            "losses": 5,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:59.336Z",
+  "games": [
+    "0466059c",
+    "b2dcfa3d",
+    "c89debad",
+    "cf45305a",
+    "f6072ce7",
+    "f9fc05b6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "288c73ec",
+      "sid": "901dabcd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56d253a5",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:05.255Z"
+}

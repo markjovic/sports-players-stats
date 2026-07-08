@@ -1,1 +1,113 @@
-{"uuid":"c023a4d8-a794-4870-891f-c1a7bf3c61a0","name":"Julia Thiem","gender":"Women","sports":{"Basketball":{"gp":14,"pts":27,"fouls":9,"fg":12,"ft":3,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":4,"losses":8,"winPct":0.33,"statsChecked":"2026-07-07T18:29:44.536Z"}},"seasons":[{"sid":"71efaeda","sn":"Winter 2026","regs":[{"tid":"28090760","tn":"Nothing But Netflix","gid":"83fe4155","gn":"Wednesday Women D2","age":null,"div":"D2","stats":{"gp":12,"fouls":7,"ft":3,"fg":8,"pts":19,"wins":4,"losses":8}}]},{"sid":"297562bc","regs":[{"tid":"4c6943ca","stats":{"gp":2,"pts":8,"fg":4,"fouls":2}},{"tid":"4c6943ca","tn":"","gid":"e7b71ce1","gn":"Tuesday Women Division 2","div":null,"stats":{"gp":2,"pts":8,"fg":4,"fouls":2}}]}],"updatedAt":"2026-07-07T18:04:32.711Z","teams":[{"tid":"28090760","sid":"71efaeda","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:41:09.786Z","records":{"maxGamePTS":{"v":6,"gameKey":"176358d9","sid":"297562bc"},"maxGameThreePt":{"v":null}},"games":["17ec283d","231b6239","36dc0a9a","3aa4f749","6b8bb21b","99ae3132","b16ed9b7","b59d3b4a","dc86f577","e0153d68","e11aff6d","ecb8eceb"]}
+{
+  "uuid": "c023a4d8-a794-4870-891f-c1a7bf3c61a0",
+  "name": "Julia Thiem",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 27,
+      "fouls": 9,
+      "fg": 12,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 8,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-07T18:29:44.536Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "71efaeda",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "28090760",
+          "tn": "Nothing But Netflix",
+          "gid": "83fe4155",
+          "gn": "Wednesday Women D2",
+          "age": null,
+          "div": "D2",
+          "stats": {
+            "gp": 12,
+            "fouls": 7,
+            "ft": 3,
+            "fg": 8,
+            "pts": 19,
+            "wins": 4,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "4c6943ca",
+          "stats": {
+            "gp": 2,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 2
+          },
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2"
+        },
+        {
+          "tid": "4c6943ca",
+          "tn": "",
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:04:32.711Z",
+  "teams": [
+    {
+      "tid": "28090760",
+      "sid": "71efaeda",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c6943ca",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:29.995Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "176358d9",
+      "sid": "297562bc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "17ec283d",
+    "231b6239",
+    "36dc0a9a",
+    "3aa4f749",
+    "6b8bb21b",
+    "99ae3132",
+    "b16ed9b7",
+    "b59d3b4a",
+    "dc86f577",
+    "e0153d68",
+    "e11aff6d",
+    "ecb8eceb"
+  ]
+}

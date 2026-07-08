@@ -1,1 +1,400 @@
-{"uuid":"44157344-c5a6-40d1-b7e1-8d3973f40c5c","name":"Coby Anseline","gender":"Men","sports":{"Basketball":{"gp":97,"pts":224,"fouls":57,"fg":99,"ft":11,"threePt":5,"finals":4,"gfApps":3,"gfWins":0,"finalsPerSeason":0.4,"foulOuts":{"40baf436":1},"maxGamePTS":16,"maxGameThreePt":1,"wins":12,"losses":28,"winPct":0.3,"statsChecked":"2026-07-05T15:48:07.529Z"}},"seasons":[{"sid":"da50ec1a","sn":"Winter 2026","regs":[{"tid":"905a41e8","tn":"TAFE Dropkicks","gid":"9a879e94","gn":"Wednesday Senior Men C White","age":"Senior","div":null,"stats":{"gp":6,"fouls":8,"ft":5,"fg":13,"pts":34,"threePt":1,"losses":6}}]},{"sid":"a383cc2c","sn":"Winter 2025","regs":[{"tid":"f579c998","tn":"Warriors","gid":"197e82f2","gn":"Monday U19 Boys","age":"U19","div":null,"stats":{"gp":12,"fouls":7,"ft":2,"fg":33,"pts":68,"finals":1,"wins":2,"losses":10}}]},{"sid":"f20dd561","sn":"Summer 2024/25","regs":[{"tid":"19e1c612","tn":"Paint Protectors","gid":"7ab533a2","gn":"Monday U19 Boys","age":"U19","div":null,"stats":{"gp":8,"fouls":8,"ft":1,"fg":13,"threePt":1,"pts":30,"finals":1,"gfApps":1,"wins":5,"losses":3}}]},{"sid":"40baf436","sn":"Winter 2024","regs":[{"tid":"de76f7d1","tn":"Bricklayers","gid":"e2911fbd","gn":"Monday U16/18 Boys","age":"U16","div":null,"stats":{"gp":14,"fouls":17,"fg":2,"threePt":2,"pts":10,"finals":1,"gfApps":1,"foulOuts":1,"wins":5,"losses":9}}]},{"sid":"5d28a7c6","sn":"Summer 2023/24","regs":[{"tid":"a33629e0","tn":"Umbilical Brothers","gid":"aa6892e4","gn":"Monday U19 Boys","age":"U19","div":null,"stats":{"gp":13,"fouls":3,"fg":7,"threePt":1,"pts":17}}]},{"sid":"231511fd","sn":"Winter 2023","regs":[{"tid":"d22bfbcd","tn":"Bannana Slugs","gid":"870d6bbf","gn":"Under 16/18 Boys","age":null,"div":null,"stats":{"gp":5,"fouls":1,"ft":1,"pts":1}}]},{"sid":"79a53ca1","sn":"Summer 2022/23","regs":[{"tid":"d3a21a23","tn":"Sock Puppets","gid":"373a25cd","gn":"U16/18 Boys","age":"U16","div":null,"stats":{"gp":14,"fouls":1,"fg":6,"pts":12}}]},{"sid":"742af589","sn":"Summer 2021/22","regs":[{"tid":"58ffce75","tn":"Warriors","gid":"0e81683a","gn":"U16 Boys","age":"U16","div":null,"stats":{"gp":9,"fouls":1,"fg":3,"pts":6}}]},{"sid":"9e6462d7","sn":"Winter 2021","regs":[{"tid":"6368de09","tn":"Tigers","gid":"051971f5","gn":"Monday U14 Boys","age":"U14","div":null,"stats":{"gp":15,"fouls":11,"ft":2,"fg":22,"pts":46,"finals":1,"gfApps":1}}]},{"sid":"11f80c29","sn":"Spring 2020","regs":[{"tid":"8db13d0f","tn":"Wizards","gid":"76cae6d4","gn":"Monday U14 Boys","age":"U14","div":null,"stats":{"gp":1}}]}],"updatedAt":"2026-06-02T11:01:32.191Z","teams":[{"tid":"905a41e8","sid":"da50ec1a","status":"ACTIVE"},{"tid":"f579c998","sid":"a383cc2c","status":"COMPLETED"},{"tid":"19e1c612","sid":"f20dd561","status":"COMPLETED"},{"tid":"de76f7d1","sid":"40baf436","status":"COMPLETED"},{"tid":"a33629e0","sid":"5d28a7c6","status":"COMPLETED"},{"tid":"d22bfbcd","sid":"231511fd","status":"COMPLETED"},{"tid":"d3a21a23","sid":"79a53ca1","status":"COMPLETED"},{"tid":"58ffce75","sid":"742af589","status":"COMPLETED"},{"tid":"6368de09","sid":"9e6462d7","status":"COMPLETED"},{"tid":"c66ecb31","sid":"950cd951","status":"COMPLETED"},{"tid":"8db13d0f","sid":"11f80c29","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:24:17.125Z","records":{"maxGamePTS":{"v":16,"gameKey":"07b5c53e","sid":"da50ec1a"},"maxGameThreePt":{"v":1,"gameKey":"07b5c53e","sid":"da50ec1a"}},"games":["051eed10","07b5c53e","09ffcfba","0df07593","10a73a58","152ca427","165601f0","173e1479","20d971cb","2647810f","2af3e44c","356a860c","44df2310","44fd1fe0","4f77326d","521d483c","555fb88f","576408e0","57f08610","5c19fec9","72398d2c","73059ec8","73064433","7598cc1b","769d02d4","7a28e2d3","7a2b6c4e","7a8afe55","87ee73b6","9004c55d","9961233f","9b430c05","9e37414f","a0dcac0f","a640e599","a7b7514f","aa94a68e","aabf68d8","ab7213f0","abca3634","af8f1daf","b553b634","b7a5c815","ba1d9907","c9810287","ca2a4435","d23f729c","d542e5f3","d72bd36d","dd4d419a","dd7e2c40","df3786b4","dff90d99","e923d9a9","eaa6f09a","ee0256dc","eeba2817","f28303be","f43be818","f7148c2b","f748584d","f7dcb5e4","f8308760","fd127d76"]}
+{
+  "uuid": "44157344-c5a6-40d1-b7e1-8d3973f40c5c",
+  "name": "Coby Anseline",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 97,
+      "pts": 224,
+      "fouls": 57,
+      "fg": 99,
+      "ft": 11,
+      "threePt": 5,
+      "finals": 4,
+      "gfApps": 3,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {
+        "40baf436": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": 1,
+      "wins": 12,
+      "losses": 28,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T15:48:07.529Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "da50ec1a",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "905a41e8",
+          "tn": "TAFE Dropkicks",
+          "gid": "9a879e94",
+          "gn": "Wednesday Senior Men C White",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 8,
+            "ft": 5,
+            "fg": 13,
+            "pts": 34,
+            "threePt": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a383cc2c",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "f579c998",
+          "tn": "Warriors",
+          "gid": "197e82f2",
+          "gn": "Monday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 33,
+            "pts": 68,
+            "finals": 1,
+            "wins": 2,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f20dd561",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "19e1c612",
+          "tn": "Paint Protectors",
+          "gid": "7ab533a2",
+          "gn": "Monday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 13,
+            "threePt": 1,
+            "pts": 30,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "40baf436",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "de76f7d1",
+          "tn": "Bricklayers",
+          "gid": "e2911fbd",
+          "gn": "Monday U16/18 Boys",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 17,
+            "fg": 2,
+            "threePt": 2,
+            "pts": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5d28a7c6",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a33629e0",
+          "tn": "Umbilical Brothers",
+          "gid": "aa6892e4",
+          "gn": "Monday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 3,
+            "fg": 7,
+            "threePt": 1,
+            "pts": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "231511fd",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "d22bfbcd",
+          "tn": "Bannana Slugs",
+          "gid": "870d6bbf",
+          "gn": "Under 16/18 Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "ft": 1,
+            "pts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "79a53ca1",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "d3a21a23",
+          "tn": "Sock Puppets",
+          "gid": "373a25cd",
+          "gn": "U16/18 Boys",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 1,
+            "fg": 6,
+            "pts": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "742af589",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "58ffce75",
+          "tn": "Warriors",
+          "gid": "0e81683a",
+          "gn": "U16 Boys",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 1,
+            "fg": 3,
+            "pts": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9e6462d7",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "6368de09",
+          "tn": "Tigers",
+          "gid": "051971f5",
+          "gn": "Monday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 22,
+            "pts": 46,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "11f80c29",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "8db13d0f",
+          "tn": "Wizards",
+          "gid": "76cae6d4",
+          "gn": "Monday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "950cd951",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "c66ecb31",
+          "tn": "Black",
+          "gid": "c7350388",
+          "gn": "U13 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T11:01:32.191Z",
+  "teams": [
+    {
+      "tid": "905a41e8",
+      "sid": "da50ec1a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f579c998",
+      "sid": "a383cc2c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "19e1c612",
+      "sid": "f20dd561",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de76f7d1",
+      "sid": "40baf436",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a33629e0",
+      "sid": "5d28a7c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d22bfbcd",
+      "sid": "231511fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3a21a23",
+      "sid": "79a53ca1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58ffce75",
+      "sid": "742af589",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6368de09",
+      "sid": "9e6462d7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8db13d0f",
+      "sid": "11f80c29",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c66ecb31",
+      "sid": "950cd951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:23.458Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "07b5c53e",
+      "sid": "da50ec1a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "07b5c53e",
+      "sid": "da50ec1a"
+    }
+  },
+  "games": [
+    "051eed10",
+    "07b5c53e",
+    "09ffcfba",
+    "0df07593",
+    "10a73a58",
+    "152ca427",
+    "165601f0",
+    "173e1479",
+    "20d971cb",
+    "2647810f",
+    "2af3e44c",
+    "356a860c",
+    "44df2310",
+    "44fd1fe0",
+    "4f77326d",
+    "521d483c",
+    "555fb88f",
+    "576408e0",
+    "57f08610",
+    "5c19fec9",
+    "72398d2c",
+    "73059ec8",
+    "73064433",
+    "7598cc1b",
+    "769d02d4",
+    "7a28e2d3",
+    "7a2b6c4e",
+    "7a8afe55",
+    "87ee73b6",
+    "9004c55d",
+    "9961233f",
+    "9b430c05",
+    "9e37414f",
+    "a0dcac0f",
+    "a640e599",
+    "a7b7514f",
+    "aa94a68e",
+    "aabf68d8",
+    "ab7213f0",
+    "abca3634",
+    "af8f1daf",
+    "b553b634",
+    "b7a5c815",
+    "ba1d9907",
+    "c9810287",
+    "ca2a4435",
+    "d23f729c",
+    "d542e5f3",
+    "d72bd36d",
+    "dd4d419a",
+    "dd7e2c40",
+    "df3786b4",
+    "dff90d99",
+    "e923d9a9",
+    "eaa6f09a",
+    "ee0256dc",
+    "eeba2817",
+    "f28303be",
+    "f43be818",
+    "f7148c2b",
+    "f748584d",
+    "f7dcb5e4",
+    "f8308760",
+    "fd127d76"
+  ]
+}

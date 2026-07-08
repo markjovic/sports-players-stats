@@ -1,1 +1,81 @@
-{"uuid":"381da5f6-29cf-4078-a87a-b7414cfb6a66","name":null,"gender":null,"sports":{"Basketball":{"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"statsChecked":"2026-07-05T16:12:47.640Z"}},"seasons":[],"updatedAt":"2026-06-11T23:38:16.888Z","records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "381da5f6-29cf-4078-a87a-b7414cfb6a66",
+  "name": null,
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "statsChecked": "2026-07-05T16:12:47.640Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "581da7c7",
+          "tn": "DADDIES",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dfcc28f8",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "6af8e175",
+          "tn": "Rangers",
+          "gid": "bd570a96",
+          "gn": "Wednesday U18 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "483151a7",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "f8a4070c",
+          "tn": "Rochester Tigers U18 Girls",
+          "gid": "60d50536",
+          "gn": "U18 Girls Division 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:16.888Z",
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teams": [
+    {
+      "tid": "581da7c7",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6af8e175",
+      "sid": "dfcc28f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f8a4070c",
+      "sid": "483151a7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:40.491Z"
+}

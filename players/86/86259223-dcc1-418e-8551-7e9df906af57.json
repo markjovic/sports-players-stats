@@ -1,1 +1,153 @@
-{"uuid":"86259223-dcc1-418e-8551-7e9df906af57","gender":null,"sports":{"Basketball":{"gp":23,"pts":170,"fouls":36,"fg":40,"ft":9,"threePt":27,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":6,"wins":12,"losses":12,"winPct":0.5,"statsChecked":"2026-07-05T16:02:18.896Z"}},"seasons":[{"sid":"036d9de9","sn":"Summer 2021/22","club":null,"regs":[{"tid":"77e8102e","tn":"Victor Bravos","gid":"baef1ac7","gn":"(SOCIAL) Wednesday Senior Men 5","stats":{"gp":13,"pts":84,"fouls":16,"fg":24,"ft":6,"threePt":10,"wins":6,"losses":6}},{"tid":"77e8102e","tn":"Victor Bravos","gid":"db5798cc","gn":"(SOCIAL) Wednesday Senior Men 6","stats":{"gp":13,"pts":84,"fouls":16,"fg":24,"threePt":10,"wins":6,"losses":6,"ft":6}}]},{"sid":"46b3ce15","sn":"Summer 2020/21","club":null,"regs":[{"tid":"d7a28128","tn":"Victor Bravos","gid":"dfffbdab","gn":"Wednesday Social Men 5","stats":{"gp":10,"pts":86,"fouls":20,"fg":16,"ft":3,"threePt":17}}]}],"updatedAt":"2026-06-11T23:42:03.159Z","records":{"maxGamePTS":{"v":20,"gameKey":"11f8f8da","sid":"46b3ce15"},"maxGameThreePt":{"v":6,"gameKey":"11f8f8da","sid":"46b3ce15"}},"games":["105aeed0","11f8f8da","12990b0c","1a68203c","2cba2218","2e59b1dc","3b2699e0","62c5ef19","6c529573","6e50b4da","83aace29","8b230909","8c88b2bb","8e751613","963032c7","983e0059","b99f77d4","c05b1fa1","cca139f5","e1afec6c","e8bd16e7","f01be934","f0c06443"],"name":"Summer 2021/22"}
+{
+  "uuid": "86259223-dcc1-418e-8551-7e9df906af57",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 170,
+      "fouls": 36,
+      "fg": 40,
+      "ft": 9,
+      "threePt": 27,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": 6,
+      "wins": 12,
+      "losses": 12,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:02:18.896Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "77e8102e",
+          "tn": "Victor Bravos",
+          "gid": "baef1ac7",
+          "gn": "(SOCIAL) Wednesday Senior Men 5",
+          "stats": {
+            "gp": 13,
+            "pts": 84,
+            "fouls": 16,
+            "fg": 24,
+            "ft": 6,
+            "threePt": 10,
+            "wins": 6,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "77e8102e",
+          "tn": "Victor Bravos",
+          "gid": "db5798cc",
+          "gn": "(SOCIAL) Wednesday Senior Men 6",
+          "stats": {
+            "gp": 13,
+            "pts": 84,
+            "fouls": 16,
+            "fg": 24,
+            "threePt": 10,
+            "wins": 6,
+            "losses": 6,
+            "ft": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "46b3ce15",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d7a28128",
+          "tn": "Victor Bravos",
+          "gid": "dfffbdab",
+          "gn": "Wednesday Social Men 5",
+          "stats": {
+            "gp": 10,
+            "pts": 86,
+            "fouls": 20,
+            "fg": 16,
+            "ft": 3,
+            "threePt": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5d2b2ed8",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "3149ca4a",
+          "tn": "Victor Bravos",
+          "gid": "2459cf2e",
+          "gn": "Wednesday Social Men's 8",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:03.159Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "11f8f8da",
+      "sid": "46b3ce15"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "11f8f8da",
+      "sid": "46b3ce15"
+    }
+  },
+  "games": [
+    "105aeed0",
+    "11f8f8da",
+    "12990b0c",
+    "1a68203c",
+    "2cba2218",
+    "2e59b1dc",
+    "3b2699e0",
+    "62c5ef19",
+    "6c529573",
+    "6e50b4da",
+    "83aace29",
+    "8b230909",
+    "8c88b2bb",
+    "8e751613",
+    "963032c7",
+    "983e0059",
+    "b99f77d4",
+    "c05b1fa1",
+    "cca139f5",
+    "e1afec6c",
+    "e8bd16e7",
+    "f01be934",
+    "f0c06443"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "77e8102e",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d7a28128",
+      "sid": "46b3ce15",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3149ca4a",
+      "sid": "5d2b2ed8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:39.360Z"
+}

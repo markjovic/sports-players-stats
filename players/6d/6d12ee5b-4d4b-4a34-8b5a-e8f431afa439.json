@@ -1,1 +1,81 @@
-{"uuid":"6d12ee5b-4d4b-4a34-8b5a-e8f431afa439","name":"Jahla Smith","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":1,"foulOuts":{},"gp":14,"pts":75,"fg":32,"ft":8,"threePt":1,"fouls":25,"statsChecked":"2026-07-07T18:27:55.841Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"21e8f959"}]},{"sid":"25aab112","regs":[{"tid":"c4af6682"}]},{"sid":"d4e380e1","regs":[{"tid":"b64b3cda"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":15,"gameKey":"533bfc53","sid":"702b232f"},"maxGameThreePt":{"v":1,"gameKey":"533bfc53","sid":"702b232f"}}}
+{
+  "uuid": "6d12ee5b-4d4b-4a34-8b5a-e8f431afa439",
+  "name": "Jahla Smith",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 14,
+      "pts": 75,
+      "fg": 32,
+      "ft": 8,
+      "threePt": 1,
+      "fouls": 25,
+      "statsChecked": "2026-07-07T18:27:55.841Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "21e8f959",
+          "gid": "872db30d",
+          "gn": "Tuesday Women- Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "25aab112",
+      "regs": [
+        {
+          "tid": "c4af6682",
+          "gid": "390755cd",
+          "gn": "Tuesday Women- Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "regs": [
+        {
+          "tid": "b64b3cda",
+          "gid": "658eb308",
+          "gn": "Tuesday U19 Girls 1/2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "21e8f959",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c4af6682",
+      "sid": "25aab112",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b64b3cda",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "533bfc53",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "533bfc53",
+      "sid": "702b232f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:26:43.631Z"
+}

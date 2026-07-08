@@ -1,1 +1,117 @@
-{"uuid":"7229764a-436c-4369-bf75-83eceecb8b52","name":"Asha Bambrick","gender":"Girls","sports":{"Basketball":{"gp":12,"pts":34,"fouls":22,"fg":14,"ft":3,"threePt":1,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":1,"foulOuts":{"1a8d7a6d":2},"maxGamePTS":8,"maxGameThreePt":1,"wins":5,"losses":7,"winPct":0.42,"statsChecked":"2026-07-05T15:36:29.700Z"}},"seasons":[{"sid":"1a8d7a6d","sn":"Winter 2024","regs":[{"tid":"5c0b6989","tn":"Norwood Flames - Red","gid":"4c93e9d1","gn":"Under 12 Girls","age":null,"div":null,"stats":{"gp":6,"fouls":15,"ft":1,"fg":7,"pts":15,"finals":1,"foulOuts":2,"wins":3,"losses":3}}]},{"sid":"10ee56a5","regs":[{"tid":"76a219e6","stats":{"wins":2,"losses":4,"finals":1,"gfApps":1,"gp":6,"pts":19,"fg":7,"ft":2,"threePt":1,"fouls":7}}]}],"updatedAt":"2026-06-02T05:02:26.471Z","teams":[{"tid":"76a219e6","sid":"10ee56a5","status":"UPCOMING"},{"tid":"5c0b6989","sid":"1a8d7a6d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:51:05.278Z","records":{"maxGamePTS":{"v":8,"gameKey":"3775e6a4","sid":"10ee56a5"},"maxGameThreePt":{"v":1,"gameKey":"8be0e440","sid":"10ee56a5"}},"games":["07992554","24ceb8d9","3775e6a4","478e013c","5fa73bb0","609af59c","8be0e440","aa7e17d8","c0cbde88","cb4ace51","f0d164a4","f87c21fe"]}
+{
+  "uuid": "7229764a-436c-4369-bf75-83eceecb8b52",
+  "name": "Asha Bambrick",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 34,
+      "fouls": 22,
+      "fg": 14,
+      "ft": 3,
+      "threePt": 1,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "1a8d7a6d": 2
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 5,
+      "losses": 7,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-05T15:36:29.700Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1a8d7a6d",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "5c0b6989",
+          "tn": "Norwood Flames - Red",
+          "gid": "4c93e9d1",
+          "gn": "Under 12 Girls",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 15,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "76a219e6",
+          "stats": {
+            "wins": 2,
+            "losses": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 6,
+            "pts": 19,
+            "fg": 7,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 7
+          },
+          "gid": "6d66d28f",
+          "gn": "U14 Girls NJC"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T05:02:26.471Z",
+  "teams": [
+    {
+      "tid": "5c0b6989",
+      "sid": "1a8d7a6d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76a219e6",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:58.705Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "3775e6a4",
+      "sid": "10ee56a5"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "8be0e440",
+      "sid": "10ee56a5"
+    }
+  },
+  "games": [
+    "07992554",
+    "24ceb8d9",
+    "3775e6a4",
+    "478e013c",
+    "5fa73bb0",
+    "609af59c",
+    "8be0e440",
+    "aa7e17d8",
+    "c0cbde88",
+    "cb4ace51",
+    "f0d164a4",
+    "f87c21fe"
+  ]
+}

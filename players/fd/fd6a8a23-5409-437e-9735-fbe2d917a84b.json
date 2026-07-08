@@ -1,1 +1,377 @@
-{"uuid":"fd6a8a23-5409-437e-9735-fbe2d917a84b","name":"Huxley Wolf-Allison","gender":"Boys","sports":{"Basketball":{"gp":67,"pts":116,"fouls":82,"fg":56,"ft":4,"finals":3,"gfApps":2,"gfWins":2,"finalsPerSeason":0.6,"foulOuts":{"c9bdcd48":1},"maxGamePTS":10,"maxGameThreePt":null,"wins":57,"losses":35,"draws":3,"winPct":0.6,"statsChecked":"2026-07-05T14:32:02.183Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"cb4128a6","tn":"Cougars U12 Boys Chargers","gid":"f9d7de60","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":7,"fouls":14,"fg":7,"pts":14,"wins":3,"losses":1,"draws":1}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"59db914a","tn":"Cougars U12 Boys Warriors","gid":"ef4c67b2","gn":"U12 Boys D2","age":"U12","div":"D2","stats":{"gp":11,"fouls":18,"fg":29,"pts":59,"wins":1,"losses":5,"ft":1}},{"tid":"59db914a","tn":"Cougars U12 Boys Warriors","gid":"e753dba4","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":11,"fouls":18,"ft":1,"fg":29,"pts":59,"wins":1,"losses":5}}]},{"sid":"c9bdcd48","sn":"Winter 2025","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"71cbf506","tn":"Cougars U10 Boys Cheetahs","gid":"688cefa4","gn":"U10 Boys B","age":"U10","div":null,"stats":{"gp":17,"fouls":17,"fg":7,"pts":15,"finals":1,"gfApps":1,"wins":11,"losses":1,"ft":1,"gfWins":1}},{"tid":"71cbf506","tn":"Cougars U10 Boys Cheetahs","gid":"cf607a2a","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":17,"fouls":17,"ft":1,"fg":7,"pts":15,"finals":1,"gfApps":1,"wins":11,"losses":1,"gfWins":1}}]},{"sid":"7a7de984","sn":"Summer 2024/25","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"a7917b2e","tn":"Cougars U10 Boys Cheetahs","gid":"809e1462","gn":"U10 Boys A","age":"U10","div":null,"stats":{"gp":15,"fouls":12,"fg":6,"pts":12,"finals":1,"wins":2,"losses":7,"draws":1}},{"tid":"a7917b2e","tn":"Cougars U10 Boys Cheetahs","gid":"97e7233d","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":15,"fouls":12,"fg":6,"pts":12,"finals":1,"wins":2,"losses":7,"draws":1}}]},{"sid":"a272a809","sn":"Winter 2024","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"6c93a237","tn":"Cougars U9 Boys Cheetahs","gid":"37a8eccf","gn":"U9 Boys B1","age":"U9","div":"B1","stats":{"gp":17,"fouls":21,"ft":2,"fg":7,"pts":16,"finals":1,"gfApps":1,"wins":13,"losses":4,"gfWins":1}},{"tid":"6c93a237","tn":"Cougars U9 Boys Cheetahs","gid":"e7b0f56e","gn":"U09 Boys Grading","age":"U09","div":null,"stats":{"gp":17,"fouls":21,"fg":7,"pts":16,"finals":1,"gfApps":1,"wins":13,"losses":4,"ft":2,"gfWins":1}}]}],"updatedAt":"2026-05-31T03:52:49.809Z","teams":[{"tid":"cb4128a6","sid":"aacc7335","status":"ACTIVE"},{"tid":"59db914a","sid":"6fd8e780","status":"COMPLETED"},{"tid":"71cbf506","sid":"c9bdcd48","status":"COMPLETED"},{"tid":"a7917b2e","sid":"7a7de984","status":"COMPLETED"},{"tid":"6c93a237","sid":"a272a809","status":"COMPLETED"},{"tid":"96857c9b","sid":"09a70808","status":"COMPLETED"},{"tid":"49b442ef","sid":"e5df46b3","status":"COMPLETED"},{"tid":"7f4ca139","sid":"cf8ebef7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:57:10.955Z","games":["0700d54f","0a801e26","0e90cad1","14765101","290c577d","2cecab39","30ed2c88","31133e79","4b60b41a","5a56917b","6000919a","690f072e","6973e923","6ab5c8bf","6b496619","6feb1164","79d4ab7a","7b04afa6","7b13ead5","7ca4ab17","8448380a","88d3eba3","9234a810","986ba69e","a183260f","a58ee5e6","a5d606cc","a690309e","a8c2288f","aad6bbe3","b29ef736","bac0f7c7","bb857ee2","c7f89000","d2984230","d3d809de","d5389cf0","d9053a93","dc9138e2","dd3cafee","e18d373a","eab77865","eccfdf49","efcd01d3","f0f55070","f800701f","f8c55d9f","fa84b5b1","fef66ec0","ffd727b1"],"records":{"maxGamePTS":{"v":10,"gameKey":"d2984230","sid":"6fd8e780"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "fd6a8a23-5409-437e-9735-fbe2d917a84b",
+  "name": "Huxley Wolf-Allison",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 67,
+      "pts": 116,
+      "fouls": 82,
+      "fg": 56,
+      "ft": 4,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {
+        "c9bdcd48": 1
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 57,
+      "losses": 35,
+      "draws": 3,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T14:32:02.183Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "cb4128a6",
+          "tn": "Cougars U12 Boys Chargers",
+          "gid": "f915bd89",
+          "gn": "U12 Boys C3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "fg": 7,
+            "pts": 14,
+            "wins": 3,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "59db914a",
+          "tn": "Cougars U12 Boys Warriors",
+          "gid": "ef4c67b2",
+          "gn": "U12 Boys D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "fg": 29,
+            "pts": 59,
+            "wins": 1,
+            "losses": 5,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "59db914a",
+          "tn": "Cougars U12 Boys Warriors",
+          "gid": "e753dba4",
+          "gn": "U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "ft": 1,
+            "fg": 29,
+            "pts": 59,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c9bdcd48",
+      "sn": "Winter 2025",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "71cbf506",
+          "tn": "Cougars U10 Boys Cheetahs",
+          "gid": "688cefa4",
+          "gn": "U10 Boys B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 17,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "ft": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "71cbf506",
+          "tn": "Cougars U10 Boys Cheetahs",
+          "gid": "cf607a2a",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a7de984",
+      "sn": "Summer 2024/25",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "a7917b2e",
+          "tn": "Cougars U10 Boys Cheetahs",
+          "gid": "809e1462",
+          "gn": "U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 12,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 2,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a7917b2e",
+          "tn": "Cougars U10 Boys Cheetahs",
+          "gid": "97e7233d",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 12,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 2,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a272a809",
+      "sn": "Winter 2024",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "6c93a237",
+          "tn": "Cougars U9 Boys Cheetahs",
+          "gid": "37a8eccf",
+          "gn": "U9 Boys B1",
+          "age": "U9",
+          "div": "B1",
+          "stats": {
+            "gp": 17,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 7,
+            "pts": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "6c93a237",
+          "tn": "Cougars U9 Boys Cheetahs",
+          "gid": "e7b0f56e",
+          "gn": "U09 Boys Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 21,
+            "fg": 7,
+            "pts": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 4,
+            "ft": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "96857c9b",
+          "tn": "Canterbury Cheetahs",
+          "gid": "12523768",
+          "gn": "Friday Whitehorse YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "49b442ef",
+          "tn": "Canterbury Beyblades ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "7f4ca139",
+          "tn": "Canterbury Beyblades (2775)",
+          "gid": "fc0c0b37",
+          "gn": "Friday Whitehorse TRAIN & PLAY",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T03:52:49.809Z",
+  "teams": [
+    {
+      "tid": "cb4128a6",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59db914a",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71cbf506",
+      "sid": "c9bdcd48",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a7917b2e",
+      "sid": "7a7de984",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c93a237",
+      "sid": "a272a809",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96857c9b",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "49b442ef",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f4ca139",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:32:19.499Z",
+  "games": [
+    "0700d54f",
+    "0a801e26",
+    "0e90cad1",
+    "14765101",
+    "290c577d",
+    "2cecab39",
+    "30ed2c88",
+    "31133e79",
+    "4b60b41a",
+    "5a56917b",
+    "6000919a",
+    "690f072e",
+    "6973e923",
+    "6ab5c8bf",
+    "6b496619",
+    "6feb1164",
+    "79d4ab7a",
+    "7b04afa6",
+    "7b13ead5",
+    "7ca4ab17",
+    "8448380a",
+    "88d3eba3",
+    "9234a810",
+    "986ba69e",
+    "a183260f",
+    "a58ee5e6",
+    "a5d606cc",
+    "a690309e",
+    "a8c2288f",
+    "aad6bbe3",
+    "b29ef736",
+    "bac0f7c7",
+    "bb857ee2",
+    "c7f89000",
+    "d2984230",
+    "d3d809de",
+    "d5389cf0",
+    "d9053a93",
+    "dc9138e2",
+    "dd3cafee",
+    "e18d373a",
+    "eab77865",
+    "eccfdf49",
+    "efcd01d3",
+    "f0f55070",
+    "f800701f",
+    "f8c55d9f",
+    "fa84b5b1",
+    "fef66ec0",
+    "ffd727b1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d2984230",
+      "sid": "6fd8e780"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

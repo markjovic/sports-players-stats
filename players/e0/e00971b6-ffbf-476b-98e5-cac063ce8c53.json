@@ -1,1 +1,120 @@
-{"uuid":"e00971b6-ffbf-476b-98e5-cac063ce8c53","gender":null,"sports":{"Basketball":{"gp":6,"pts":106,"fouls":6,"fg":26,"ft":12,"threePt":14,"foulOuts":{},"maxGamePTS":25,"maxGameThreePt":5,"wins":1,"losses":1,"winPct":0.5,"statsChecked":"2026-07-05T16:15:40.324Z"}},"seasons":[{"sid":"f249b3ee","sn":"Winter 2021","club":"Aztec Tigers Basketball Club","regs":[{"tid":"d0f95e90","tn":"Aztec Senior Men Green","gid":"42aad626","gn":"Monday A Grade Men","stats":{"gp":4,"pts":74,"fouls":3,"fg":16,"ft":6,"threePt":12}}]},{"sid":"2554d50b","sn":"Winter 2020","club":"Aztec Tigers Basketball Club","regs":[{"tid":"2db6828a","tn":"Aztec Tigers Green","gid":"fe8b33db","gn":"Under 18 Boys Division 1","stats":{"gp":2,"pts":32,"fouls":3,"fg":10,"ft":6,"threePt":2,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:45:30.187Z","games":["117b6f1a","11ace62f","4e301e17","ab6b37d7","e672efb7","e6f9eae6"],"records":{"maxGamePTS":{"v":25,"gameKey":"11ace62f","sid":"f249b3ee"},"maxGameThreePt":{"v":5,"gameKey":"11ace62f","sid":"f249b3ee"}},"name":"Winter 2021"}
+{
+  "uuid": "e00971b6-ffbf-476b-98e5-cac063ce8c53",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 106,
+      "fouls": 6,
+      "fg": 26,
+      "ft": 12,
+      "threePt": 14,
+      "foulOuts": {},
+      "maxGamePTS": 25,
+      "maxGameThreePt": 5,
+      "wins": 1,
+      "losses": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:15:40.324Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f249b3ee",
+      "sn": "Winter 2021",
+      "club": "Aztec Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "d0f95e90",
+          "tn": "Aztec Senior Men Green",
+          "gid": "42aad626",
+          "gn": "Monday A Grade Men",
+          "stats": {
+            "gp": 4,
+            "pts": 74,
+            "fouls": 3,
+            "fg": 16,
+            "ft": 6,
+            "threePt": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2554d50b",
+      "sn": "Winter 2020",
+      "club": "Aztec Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "2db6828a",
+          "tn": "Aztec Tigers Green",
+          "gid": "fe8b33db",
+          "gn": "Under 18 Boys Division 1",
+          "stats": {
+            "gp": 2,
+            "pts": 32,
+            "fouls": 3,
+            "fg": 10,
+            "ft": 6,
+            "threePt": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "617ceec4",
+          "tn": "Bendigo U18 Boys 1",
+          "gid": "bf293461",
+          "gn": "U18 Boys VC - Watson",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:30.187Z",
+  "games": [
+    "117b6f1a",
+    "11ace62f",
+    "4e301e17",
+    "ab6b37d7",
+    "e672efb7",
+    "e6f9eae6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "11ace62f",
+      "sid": "f249b3ee"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "11ace62f",
+      "sid": "f249b3ee"
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "d0f95e90",
+      "sid": "f249b3ee",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2db6828a",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "617ceec4",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:50.106Z"
+}

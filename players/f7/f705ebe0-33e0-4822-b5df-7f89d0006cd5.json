@@ -1,1 +1,266 @@
-{"uuid":"f705ebe0-33e0-4822-b5df-7f89d0006cd5","name":"Holly Camilleri","gender":"Girls","sports":{"Basketball":{"gp":48,"pts":28,"fouls":24,"fg":14,"finals":3,"gfApps":2,"gfWins":0,"finalsPerSeason":0.6,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":16,"losses":31,"draws":1,"winPct":0.33,"statsChecked":"2026-07-05T15:52:34.724Z"}},"seasons":[{"sid":"be483f6c","sn":"Summer 2025/26","regs":[{"tid":"a0d6e39c","tn":"Cubs","gid":"7a2c3526","gn":"Friday U20 Girls","age":"U20","div":null,"stats":{"gp":14,"fouls":9,"fg":1,"pts":2,"finals":1,"gfApps":1,"wins":7,"losses":7}}]},{"sid":"6481b3cd","sn":"Summer 2024/25","regs":[{"tid":"ba0768b0","tn":"Olympics","gid":"80bd1083","gn":"U19 Girls","age":"U19","div":null,"stats":{"gp":7,"fouls":8,"fg":3,"pts":6,"wins":2,"losses":5}}]},{"sid":"3cb97b37","sn":"Summer 2023/24","regs":[{"tid":"713e0cd9","tn":"Katz","gid":"c3580fbf","gn":"Friday U15 Girls","age":"U15","div":null,"stats":{"gp":9,"fouls":6,"fg":1,"pts":2,"losses":9}}]},{"sid":"bbe40d50","sn":"Summer 2022/23","regs":[{"tid":"7157a5a6","tn":"Katz","gid":"47453712","gn":"Friday U15 Girls","age":"U15","div":null,"stats":{"gp":10,"fouls":1,"fg":5,"pts":10,"finals":1,"gfApps":1,"wins":6,"losses":4}}]},{"sid":"4a995627","sn":"Summer 2021/22","regs":[{"tid":"73b495e8","tn":"Cubs","gid":"30bf86db","gn":"Friday U15 Girls","age":"U15","div":null,"stats":{"gp":8,"fg":4,"pts":8,"finals":1,"wins":1,"losses":6,"draws":1}}]}],"updatedAt":"2026-07-04T05:42:44.700Z","teams":[{"tid":"a0d6e39c","sid":"be483f6c","status":"COMPLETED"},{"tid":"ba0768b0","sid":"6481b3cd","status":"COMPLETED"},{"tid":"713e0cd9","sid":"3cb97b37","status":"COMPLETED"},{"tid":"7157a5a6","sid":"bbe40d50","status":"COMPLETED"},{"tid":"73b495e8","sid":"4a995627","status":"COMPLETED"},{"tid":"56dc5ab8","sid":"638a2fba","status":"COMPLETED"},{"tid":"b342a164","sid":"ba1d7494","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:55:37.212Z","records":{"maxGamePTS":{"v":8,"gameKey":"13e21dd8","sid":"4a995627"},"maxGameThreePt":{"v":null}},"games":["13e21dd8","14206ede","15087591","1705e52f","181f9fdf","1991ddd2","24a31350","2ecdfd54","30bbe510","44ed2488","4850ff7d","4f015001","59317d3c","59bf6303","653cf50f","685c655f","68e9b14c","6965536a","6a0301c1","77dad767","8758e979","89b4eea2","8b0f18e3","8ec02068","8f3edbee","976fe0ba","99fac67a","9a7f82ce","a0a7c2ee","ad1bd582","b09e1da1","baa3ead5","c31567d1","c6b3922f","c78345f2","cb5a48a9","d0bdab9b","d3529a17","d953be5b","d98be2e6","d9c0044e","e243f45b","e7a10a2e","e8339708","ed9b9e5d","f0dbd158","f57fb57e","f969b255"]}
+{
+  "uuid": "f705ebe0-33e0-4822-b5df-7f89d0006cd5",
+  "name": "Holly Camilleri",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 28,
+      "fouls": 24,
+      "fg": 14,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "losses": 31,
+      "draws": 1,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:52:34.724Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be483f6c",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "a0d6e39c",
+          "tn": "Cubs",
+          "gid": "7a2c3526",
+          "gn": "Friday U20 Girls",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6481b3cd",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "ba0768b0",
+          "tn": "Olympics",
+          "gid": "80bd1083",
+          "gn": "U19 Girls",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "fg": 3,
+            "pts": 6,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3cb97b37",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "713e0cd9",
+          "tn": "Katz",
+          "gid": "c3580fbf",
+          "gn": "Friday U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "fg": 1,
+            "pts": 2,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bbe40d50",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "7157a5a6",
+          "tn": "Katz",
+          "gid": "47453712",
+          "gn": "Friday U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 1,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4a995627",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "73b495e8",
+          "tn": "Cubs",
+          "gid": "30bf86db",
+          "gn": "Friday U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "wins": 1,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "638a2fba",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "56dc5ab8",
+          "tn": "Cubs",
+          "gid": "100ee050",
+          "gn": "Friday U12 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ba1d7494",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "b342a164",
+          "tn": "Slabs (U12 G)",
+          "gid": "d5b2d380",
+          "gn": "Friday U12 Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:42:44.700Z",
+  "teams": [
+    {
+      "tid": "a0d6e39c",
+      "sid": "be483f6c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba0768b0",
+      "sid": "6481b3cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "713e0cd9",
+      "sid": "3cb97b37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7157a5a6",
+      "sid": "bbe40d50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "73b495e8",
+      "sid": "4a995627",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56dc5ab8",
+      "sid": "638a2fba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b342a164",
+      "sid": "ba1d7494",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:37.022Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "13e21dd8",
+      "sid": "4a995627"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "13e21dd8",
+    "14206ede",
+    "15087591",
+    "1705e52f",
+    "181f9fdf",
+    "1991ddd2",
+    "24a31350",
+    "2ecdfd54",
+    "30bbe510",
+    "44ed2488",
+    "4850ff7d",
+    "4f015001",
+    "59317d3c",
+    "59bf6303",
+    "653cf50f",
+    "685c655f",
+    "68e9b14c",
+    "6965536a",
+    "6a0301c1",
+    "77dad767",
+    "8758e979",
+    "89b4eea2",
+    "8b0f18e3",
+    "8ec02068",
+    "8f3edbee",
+    "976fe0ba",
+    "99fac67a",
+    "9a7f82ce",
+    "a0a7c2ee",
+    "ad1bd582",
+    "b09e1da1",
+    "baa3ead5",
+    "c31567d1",
+    "c6b3922f",
+    "c78345f2",
+    "cb5a48a9",
+    "d0bdab9b",
+    "d3529a17",
+    "d953be5b",
+    "d98be2e6",
+    "d9c0044e",
+    "e243f45b",
+    "e7a10a2e",
+    "e8339708",
+    "ed9b9e5d",
+    "f0dbd158",
+    "f57fb57e",
+    "f969b255"
+  ]
+}

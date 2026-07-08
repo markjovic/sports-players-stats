@@ -1,1 +1,104 @@
-{"uuid":"ba39e11c-fbd3-4f8c-b9a1-ba0a77f7b3d4","name":"Zachary Darling","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":38,"fouls":20,"fg":13,"ft":3,"threePt":3,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":1,"losses":9,"winPct":0.1,"statsChecked":"2026-07-05T14:30:17.489Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"7c4b40a2","tn":"Forestville Eagles U14 Boys Matt","gid":"d77225cc","gn":"BOYS UNDER 14 C4","age":null,"div":"C4","stats":{"gp":5,"fouls":14,"ft":3,"fg":11,"threePt":2,"pts":31,"wins":1,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"c15bcc02","stats":{"losses":5,"gp":5,"pts":7,"fg":2,"threePt":1,"fouls":6}}]}],"updatedAt":"2026-05-31T01:08:54.027Z","teams":[{"tid":"c15bcc02","sid":"0869ea69","status":"UPCOMING"},{"tid":"7c4b40a2","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:39:00.204Z","games":["18496cc4","530ee89f","61ea3d0e","7e114969","8ec340c1","9ad89e2b","b95d96a1","c8241888","ddea18c0","ea01ea4c"],"records":{"maxGamePTS":{"v":10,"gameKey":"9ad89e2b","sid":"6dd649c0"},"maxGameThreePt":{"v":2,"gameKey":"9ad89e2b","sid":"6dd649c0"}}}
+{
+  "uuid": "ba39e11c-fbd3-4f8c-b9a1-ba0a77f7b3d4",
+  "name": "Zachary Darling",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 38,
+      "fouls": 20,
+      "fg": 13,
+      "ft": 3,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 1,
+      "losses": 9,
+      "winPct": 0.1,
+      "statsChecked": "2026-07-05T14:30:17.489Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "7c4b40a2",
+          "tn": "Forestville Eagles U14 Boys Matt",
+          "gid": "d77225cc",
+          "gn": "BOYS UNDER 14 C4",
+          "age": null,
+          "div": "C4",
+          "stats": {
+            "gp": 5,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 11,
+            "threePt": 2,
+            "pts": 31,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "c15bcc02",
+          "stats": {
+            "losses": 5,
+            "gp": 5,
+            "pts": 7,
+            "fg": 2,
+            "threePt": 1,
+            "fouls": 6
+          },
+          "gid": "be09c778",
+          "gn": "BOYS UNDER 16 D1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:08:54.027Z",
+  "teams": [
+    {
+      "tid": "7c4b40a2",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c15bcc02",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:32.534Z",
+  "games": [
+    "18496cc4",
+    "530ee89f",
+    "61ea3d0e",
+    "7e114969",
+    "8ec340c1",
+    "9ad89e2b",
+    "b95d96a1",
+    "c8241888",
+    "ddea18c0",
+    "ea01ea4c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "9ad89e2b",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "9ad89e2b",
+      "sid": "6dd649c0"
+    }
+  }
+}

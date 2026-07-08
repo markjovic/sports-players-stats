@@ -1,1 +1,87 @@
-{"uuid":"a027a447-cda6-4bfe-93e6-d10df22c7d8e","gender":null,"sports":{"Basketball":{"gp":3,"pts":8,"fouls":3,"fg":4,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":3,"winPct":1,"statsChecked":"2026-07-05T16:02:57.270Z"}},"seasons":[{"sid":"a266aca4","sn":"Summer 2020/21","club":null,"regs":[{"tid":"918f8df4","tn":"Maiden gully gaints ","gid":"c1554eaf","gn":"Under 14 Boys Division 2","stats":{"gp":2,"pts":8,"fouls":3,"fg":4,"wins":2}}]},{"sid":"2554d50b","sn":"Winter 2020","club":null,"regs":[{"tid":"706d8456","tn":"maiden gully gaints ","gid":"2bf716e1","gn":"Under 14 Boys Division 3","stats":{"gp":1,"wins":1}}]}],"updatedAt":"2026-06-11T23:43:07.966Z","games":["5de35840","dfe96523","e412dfa0"],"records":{"maxGamePTS":{"v":4,"gameKey":"dfe96523","sid":"a266aca4"},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "a027a447-cda6-4bfe-93e6-d10df22c7d8e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 8,
+      "fouls": 3,
+      "fg": 4,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:02:57.270Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a266aca4",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "918f8df4",
+          "tn": "Maiden gully gaints ",
+          "gid": "7bade27d",
+          "gn": "Under 14 Boys Division 1",
+          "stats": {
+            "gp": 2,
+            "pts": 8,
+            "fouls": 3,
+            "fg": 4,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2554d50b",
+      "sn": "Winter 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "706d8456",
+          "tn": "maiden gully gaints ",
+          "gid": "2bf716e1",
+          "gn": "Under 14 Boys Division 3",
+          "stats": {
+            "gp": 1,
+            "wins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:07.966Z",
+  "games": [
+    "5de35840",
+    "dfe96523",
+    "e412dfa0"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "dfe96523",
+      "sid": "a266aca4"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "918f8df4",
+      "sid": "a266aca4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "706d8456",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:28:33.679Z"
+}

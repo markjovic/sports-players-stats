@@ -1,1 +1,107 @@
-{"uuid":"d32066dd-4995-4745-94a0-dfdf45c6f872","name":"Ivory Pascal","gender":"Girls","sports":{"Basketball":{"gp":7,"pts":4,"fouls":2,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":10,"winPct":0.71,"losses":4,"statsChecked":"2026-07-05T14:58:46.256Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Toorak Basketball Club","regs":[{"tid":"0021f877","tn":"Toorak Titans","gid":"0301f39c","gn":"Saturday U14 Girls Section 05","age":"U14","div":null,"stats":{"gp":7,"fg":2,"pts":4,"wins":5,"fouls":2,"losses":2}},{"tid":"0021f877","tn":"Toorak Titans","gid":"c4f93c53","gn":"Saturday U14 Girls Section 06","age":"U14","div":null,"stats":{"gp":7,"fouls":2,"fg":2,"pts":4,"wins":5,"losses":2}}]}],"updatedAt":"2026-07-04T05:36:18.323Z","teams":[{"tid":"0021f877","sid":"6c117270","status":"ACTIVE"},{"tid":"56559ba8","sid":"68279835","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:21:08.677Z","games":["2b986ffe","53825662","95db56bc","99f0a8da","9faa806c","def22a2d","ec9c597a"],"records":{"maxGamePTS":{"v":2,"gameKey":"ec9c597a","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d32066dd-4995-4745-94a0-dfdf45c6f872",
+  "name": "Ivory Pascal",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 4,
+      "fouls": 2,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "winPct": 0.71,
+      "losses": 4,
+      "statsChecked": "2026-07-05T14:58:46.256Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "0021f877",
+          "tn": "Toorak Titans",
+          "gid": "0301f39c",
+          "gn": "Saturday U14 Girls Section 05",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 2,
+            "pts": 4,
+            "wins": 5,
+            "fouls": 2,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "0021f877",
+          "tn": "Toorak Titans",
+          "gid": "c4f93c53",
+          "gn": "Saturday U14 Girls Section 06",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 4,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "56559ba8",
+          "tn": "Toorak Titans",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:18.323Z",
+  "teams": [
+    {
+      "tid": "0021f877",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56559ba8",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:30:15.569Z",
+  "games": [
+    "2b986ffe",
+    "53825662",
+    "95db56bc",
+    "99f0a8da",
+    "9faa806c",
+    "def22a2d",
+    "ec9c597a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "ec9c597a",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,151 @@
-{"uuid":"673e40cc-d48d-418a-8f12-11d6397a2d36","gender":null,"sports":{"Basketball":{"gp":15,"pts":3,"fouls":5,"threePt":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":1,"wins":3,"losses":1,"draws":5,"winPct":0.33,"statsChecked":"2026-07-05T15:49:09.948Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"e0cc0144","tn":"CSBD U16 Boys 2","gid":"74934165","gn":"Saturday U16 Boys A Grade","stats":{"gp":9,"pts":3,"fouls":3,"threePt":1,"wins":3,"losses":1,"draws":5}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"57ba8e60","tn":"CSBD U16 Boys 2","gid":"04b19741","gn":"Saturday U16 Boys A Grade","stats":{"gp":6,"fouls":2}},{"tid":"57ba8e60","tn":"CSBD U16 Boys 2","gid":"5f3b653f","gn":"Saturday U16 Boys B Grade","stats":{"gp":6,"fouls":2}}]}],"updatedAt":"2026-06-11T23:40:35.563Z","records":{"maxGamePTS":{"v":3,"gameKey":"3551442b","sid":"8e4e71fc"},"maxGameThreePt":{"v":1,"gameKey":"3551442b","sid":"8e4e71fc"}},"games":["098aa531","230fafde","3551442b","4da27eb5","50fa5ab3","7b5fb42d","869df0aa","88954fa1","88e219eb","a150f243","b00bb782","b593244e","d3fb0a03","e22048fd","ffde1d73"],"name":"Winter 2021"}
+{
+  "uuid": "673e40cc-d48d-418a-8f12-11d6397a2d36",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 3,
+      "fouls": 5,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 1,
+      "draws": 5,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:49:09.948Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "e0cc0144",
+          "tn": "CSBD U16 Boys 2",
+          "gid": "74934165",
+          "gn": "Saturday U16 Boys A Grade",
+          "stats": {
+            "gp": 9,
+            "pts": 3,
+            "fouls": 3,
+            "threePt": 1,
+            "wins": 3,
+            "losses": 1,
+            "draws": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "57ba8e60",
+          "tn": "CSBD U16 Boys 2",
+          "gid": "04b19741",
+          "gn": "Saturday U16 Boys A Grade",
+          "stats": {
+            "gp": 6,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "57ba8e60",
+          "tn": "CSBD U16 Boys 2",
+          "gid": "5f3b653f",
+          "gn": "Saturday U16 Boys B Grade",
+          "stats": {
+            "gp": 6,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "12d0d3f4",
+          "tn": "Keilor U14 Boys 6",
+          "gid": "b98c41b1",
+          "gn": "U14 Boys VJL 6 - Pool 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "919448d2",
+          "tn": "CSBD U14 Boys 3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:35.563Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "3551442b",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3551442b",
+      "sid": "8e4e71fc"
+    }
+  },
+  "games": [
+    "098aa531",
+    "230fafde",
+    "3551442b",
+    "4da27eb5",
+    "50fa5ab3",
+    "7b5fb42d",
+    "869df0aa",
+    "88954fa1",
+    "88e219eb",
+    "a150f243",
+    "b00bb782",
+    "b593244e",
+    "d3fb0a03",
+    "e22048fd",
+    "ffde1d73"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "e0cc0144",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57ba8e60",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "12d0d3f4",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "919448d2",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:49.303Z"
+}

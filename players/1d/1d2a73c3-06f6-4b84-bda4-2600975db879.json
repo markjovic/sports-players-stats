@@ -1,1 +1,94 @@
-{"uuid":"1d2a73c3-06f6-4b84-bda4-2600975db879","gender":null,"sports":{"Basketball":{"gp":8,"pts":6,"fg":3,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":7,"losses":1,"winPct":0.88,"statsChecked":"2026-07-05T16:12:08.584Z"}},"seasons":[{"sid":"e2acddc3","sn":"Winter 2021","club":"Hornets Basketball Academy","regs":[{"tid":"aca0142e","tn":"Hornets U12.1 Girls","gid":"2287139d","gn":"Saturday U12 Girls","stats":{"gp":8,"pts":6,"fg":3,"finals":1,"gfApps":1,"wins":7,"losses":1}}]}],"updatedAt":"2026-06-11T23:37:08.016Z","records":{"maxGamePTS":{"v":2,"gameKey":"e16f391a","sid":"e2acddc3"},"maxGameThreePt":{"v":null}},"games":["0fd2c43b","38474792","5c819eb6","8b6bf4c2","e03db65a","e16f391a","ec9be51d","ef9654ea"],"name":"Winter 2021"}
+{
+  "uuid": "1d2a73c3-06f6-4b84-bda4-2600975db879",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 6,
+      "fg": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 1,
+      "winPct": 0.88,
+      "statsChecked": "2026-07-05T16:12:08.584Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2acddc3",
+      "sn": "Winter 2021",
+      "club": "Hornets Basketball Academy",
+      "regs": [
+        {
+          "tid": "aca0142e",
+          "tn": "Hornets U12.1 Girls",
+          "gid": "2287139d",
+          "gn": "Saturday U12 Girls",
+          "stats": {
+            "gp": 8,
+            "pts": 6,
+            "fg": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "95274e9e",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "2d8e0f01",
+          "tn": "Hornets 12.2 Girls",
+          "gid": "8e6e0f24",
+          "gn": "Saturday U12 Girls B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:08.016Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "e16f391a",
+      "sid": "e2acddc3"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0fd2c43b",
+    "38474792",
+    "5c819eb6",
+    "8b6bf4c2",
+    "e03db65a",
+    "e16f391a",
+    "ec9be51d",
+    "ef9654ea"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "aca0142e",
+      "sid": "e2acddc3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d8e0f01",
+      "sid": "95274e9e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:23:55.749Z"
+}

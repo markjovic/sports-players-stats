@@ -1,1 +1,171 @@
-{"uuid":"3d107eb3-11b4-4d43-8a9d-6fa5d6af0704","name":"Thomas Austin","gender":"Men","sports":{"Basketball":{"gp":23,"pts":246,"fouls":30,"fg":58,"ft":16,"threePt":38,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":24,"maxGameThreePt":6,"wins":14,"losses":12,"winPct":0.54,"statsChecked":"2026-07-05T15:22:09.102Z"}},"seasons":[{"sid":"dd527b2d","sn":"Winter 2026","regs":[{"tid":"1d85f280","tn":"Maroon","gid":"30f424b1","gn":"Men’s A Grade","age":null,"div":null,"stats":{"gp":5,"pts":58,"threePt":10,"fg":13,"ft":2,"fouls":7,"wins":3,"losses":2}}]},{"sid":"d1d18102","sn":"Spring 2023","regs":[{"tid":"4ebc4e87","tn":"Fear The Deer","gid":"eadd3383","gn":"Wednesday Men D2","age":null,"div":"D2","stats":{"gp":15,"pts":164,"threePt":26,"fg":37,"ft":12,"fouls":19,"finals":1,"gfApps":1,"wins":9,"losses":6}}]},{"sid":"03d7c340","regs":[{"tid":"3080b0f1","stats":{"gp":3,"pts":24,"fg":8,"ft":2,"threePt":2,"fouls":4,"wins":1,"losses":2}},{"tid":"3080b0f1","tn":"","gid":"ce5b2785","gn":"Wednesday Open Men A","div":null,"stats":{"gp":3,"pts":24,"fg":8,"ft":2,"threePt":2,"fouls":4,"wins":1,"losses":2}}]}],"updatedAt":"2026-07-04T05:47:50.209Z","teams":[{"tid":"1d85f280","sid":"dd527b2d","status":"ACTIVE"},{"tid":"3080b0f1","sid":"03d7c340","status":"ACTIVE"},{"tid":"4ebc4e87","sid":"d1d18102","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:18:20.148Z","records":{"maxGamePTS":{"v":24,"gameKey":"4c5da7e9","sid":"d1d18102"},"maxGameThreePt":{"v":6,"gameKey":"54a358ba","sid":"d1d18102"}},"games":["2c0a12dc","3454e4f4","416d2d23","42dc492c","4c5da7e9","54a358ba","5d557174","61cedd68","7cb6d22a","93d6d2fb","9f6312fb","a4f67ad4","a699bae3","b4db1ed0","b9af594f","bd5741fb","cdc5bf67","ce392d92","cec18bde","e9df6298","eab5235b","f3ebd877","fe3401af"]}
+{
+  "uuid": "3d107eb3-11b4-4d43-8a9d-6fa5d6af0704",
+  "name": "Thomas Austin",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 246,
+      "fouls": 30,
+      "fg": 58,
+      "ft": 16,
+      "threePt": 38,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 24,
+      "maxGameThreePt": 6,
+      "wins": 14,
+      "losses": 12,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T15:22:09.102Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dd527b2d",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "1d85f280",
+          "tn": "Maroon",
+          "gid": "30f424b1",
+          "gn": "Men’s A Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 58,
+            "threePt": 10,
+            "fg": 13,
+            "ft": 2,
+            "fouls": 7,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d1d18102",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "4ebc4e87",
+          "tn": "Fear The Deer",
+          "gid": "eadd3383",
+          "gn": "Wednesday Men D2",
+          "age": null,
+          "div": "D2",
+          "stats": {
+            "gp": 15,
+            "pts": 164,
+            "threePt": 26,
+            "fg": 37,
+            "ft": 12,
+            "fouls": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "03d7c340",
+      "regs": [
+        {
+          "tid": "3080b0f1",
+          "stats": {
+            "gp": 3,
+            "pts": 24,
+            "fg": 8,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 2
+          },
+          "gid": "ce5b2785",
+          "gn": "Wednesday Open Men A"
+        },
+        {
+          "tid": "3080b0f1",
+          "tn": "",
+          "gid": "ce5b2785",
+          "gn": "Wednesday Open Men A",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 24,
+            "fg": 8,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:50.209Z",
+  "teams": [
+    {
+      "tid": "1d85f280",
+      "sid": "dd527b2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ebc4e87",
+      "sid": "d1d18102",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3080b0f1",
+      "sid": "03d7c340",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:06.788Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "4c5da7e9",
+      "sid": "d1d18102"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "54a358ba",
+      "sid": "d1d18102"
+    }
+  },
+  "games": [
+    "2c0a12dc",
+    "3454e4f4",
+    "416d2d23",
+    "42dc492c",
+    "4c5da7e9",
+    "54a358ba",
+    "5d557174",
+    "61cedd68",
+    "7cb6d22a",
+    "93d6d2fb",
+    "9f6312fb",
+    "a4f67ad4",
+    "a699bae3",
+    "b4db1ed0",
+    "b9af594f",
+    "bd5741fb",
+    "cdc5bf67",
+    "ce392d92",
+    "cec18bde",
+    "e9df6298",
+    "eab5235b",
+    "f3ebd877",
+    "fe3401af"
+  ]
+}

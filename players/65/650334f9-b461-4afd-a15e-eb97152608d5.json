@@ -1,1 +1,406 @@
-{"uuid":"650334f9-b461-4afd-a15e-eb97152608d5","name":"Seth Burriss","gender":"Men","sports":{"Basketball":{"gp":40,"pts":251,"fouls":61,"fg":58,"ft":18,"threePt":39,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"adc6b519":1},"maxGamePTS":18,"maxGameThreePt":4,"wins":15,"losses":37,"winPct":0.29,"statsChecked":"2026-07-05T15:48:54.940Z"}},"seasons":[{"sid":"adc6b519","sn":"Summer 2023/24","regs":[{"tid":"a647e7be","tn":"Sharks","gid":"16bca717","gn":"Saturday U21 Men","age":"U21","div":null,"stats":{"gp":10,"fouls":19,"fg":13,"threePt":5,"pts":41,"finals":1,"foulOuts":1,"wins":3,"losses":7}}]},{"sid":"b387bcd4","sn":"2022","club":"~[ARCHIVED] Melbourne Tigers Boys","regs":[{"tid":"4b46f7bd","tn":"Melbourne U20 Boys 2","gid":"268a913b","gn":"20 Boys - VJL3","age":null,"div":"L3","stats":{"gp":19,"fouls":26,"ft":12,"fg":26,"threePt":21,"pts":127,"wins":4,"losses":10}},{"tid":"4b46f7bd","tn":"Melbourne U20 Boys 2","gid":"29326601","gn":"U20B Crossover 2 - VJL","age":null,"div":null,"stats":{"gp":19,"fouls":26,"fg":26,"threePt":21,"pts":127,"wins":4,"losses":10,"ft":12}},{"tid":"4b46f7bd","tn":"Melbourne U20 Boys 2","gid":"f427c102","gn":"U20 Boys Grading 2 - Pool 2E","age":"U20","div":null,"stats":{"gp":19,"fouls":26,"fg":26,"threePt":21,"pts":127,"wins":4,"losses":10,"ft":12}}]},{"sid":"a5dfc5c1","sn":"2021","club":"~[ARCHIVED] Melbourne Tigers Boys","regs":[{"tid":"f567e217","tn":"Melbourne U21 Boys 2","gid":"f1baf84b","gn":"21 Boys - VJL4","age":null,"div":"L4","stats":{"gp":11,"fouls":16,"ft":6,"fg":19,"threePt":13,"pts":83}},{"tid":"f567e217","tn":"Melbourne U21 Boys 2","gid":"760a601d","gn":"U21B Crossover 2 - VJL","age":null,"div":null,"stats":{"gp":11,"fouls":16,"fg":19,"threePt":13,"pts":83,"ft":6}},{"tid":"f567e217","tn":"Melbourne U21 Boys 2","gid":"06a0d1fa","gn":"U21B Grading 2 - Pool 2D","age":null,"div":null,"stats":{"gp":11,"fouls":16,"ft":6,"fg":19,"threePt":13,"pts":83}}]}],"updatedAt":"2026-06-02T15:28:58.649Z","teams":[{"tid":"d269c2b2","sid":"348dbfb8","status":"COMPLETED"},{"tid":"a647e7be","sid":"adc6b519","status":"COMPLETED"},{"tid":"b08294f0","sid":"9358e51a","status":"COMPLETED"},{"tid":"ee7b1bb0","sid":"d3d4e181","status":"COMPLETED"},{"tid":"ee7d4f4b","sid":"21cd9648","status":"COMPLETED"},{"tid":"a1731fcc","sid":"eb0c3879","status":"COMPLETED"},{"tid":"4b46f7bd","sid":"b387bcd4","status":"COMPLETED"},{"tid":"7555aa0a","sid":"11f9ba57","status":"COMPLETED"},{"tid":"f567e217","sid":"a5dfc5c1","status":"COMPLETED"},{"tid":"f7e6ad2e","sid":"00e10ea1","status":"COMPLETED"},{"tid":"afe46905","sid":"59a334d9","status":"COMPLETED"},{"tid":"79069f51","sid":"3bd06129","status":"COMPLETED"},{"tid":"79069f51","sid":"3bd06129","status":"COMPLETED"},{"tid":"79069f51","sid":"3bd06129","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:44:39.520Z","records":{"maxGamePTS":{"v":18,"gameKey":"1991fa48","sid":"a5dfc5c1"},"maxGameThreePt":{"v":4,"gameKey":"1991fa48","sid":"a5dfc5c1"}},"games":["08d67e49","127326a4","12d73341","1991fa48","1b4e0144","292e8b58","2e5d79a0","2fad606f","39b0fa9e","3db4e349","4057a66d","45ec96ba","4c16b480","4c5d889a","5ebf8d88","619cf222","69156462","6c3e9e6e","739f98ea","7ddcf3ee","802a2566","8cdb0f11","956f4d02","9e0786ba","adcd1416","ae2c952f","b414b30d","b55dc5d2","b94e944c","bb2900bd","c53286b0","c9aa0459","ca9a2b45","d12de360","e2942914","e5d87e45","e9dd2b8d","ed68a2b9","f7c9e410","fb022ccb"]}
+{
+  "uuid": "650334f9-b461-4afd-a15e-eb97152608d5",
+  "name": "Seth Burriss",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 251,
+      "fouls": 61,
+      "fg": 58,
+      "ft": 18,
+      "threePt": 39,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "adc6b519": 1
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": 4,
+      "wins": 15,
+      "losses": 37,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T15:48:54.940Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "adc6b519",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a647e7be",
+          "tn": "Sharks",
+          "gid": "16bca717",
+          "gn": "Saturday U21 Men",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 19,
+            "fg": 13,
+            "threePt": 5,
+            "pts": 41,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "~[ARCHIVED] Melbourne Tigers Boys",
+      "regs": [
+        {
+          "tid": "4b46f7bd",
+          "tn": "Melbourne U20 Boys 2",
+          "gid": "268a913b",
+          "gn": "20 Boys - VJL3",
+          "age": null,
+          "div": "L3",
+          "stats": {
+            "gp": 19,
+            "fouls": 26,
+            "ft": 12,
+            "fg": 26,
+            "threePt": 21,
+            "pts": 127,
+            "wins": 4,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "4b46f7bd",
+          "tn": "Melbourne U20 Boys 2",
+          "gid": "29326601",
+          "gn": "U20B Crossover 2 - VJL",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 26,
+            "fg": 26,
+            "threePt": 21,
+            "pts": 127,
+            "wins": 4,
+            "losses": 10,
+            "ft": 12
+          }
+        },
+        {
+          "tid": "4b46f7bd",
+          "tn": "Melbourne U20 Boys 2",
+          "gid": "f427c102",
+          "gn": "U20 Boys Grading 2 - Pool 2E",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 26,
+            "fg": 26,
+            "threePt": 21,
+            "pts": 127,
+            "wins": 4,
+            "losses": 10,
+            "ft": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "~[ARCHIVED] Melbourne Tigers Boys",
+      "regs": [
+        {
+          "tid": "f567e217",
+          "tn": "Melbourne U21 Boys 2",
+          "gid": "f1baf84b",
+          "gn": "21 Boys - VJL4",
+          "age": null,
+          "div": "L4",
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 6,
+            "fg": 19,
+            "threePt": 13,
+            "pts": 83
+          }
+        },
+        {
+          "tid": "f567e217",
+          "tn": "Melbourne U21 Boys 2",
+          "gid": "760a601d",
+          "gn": "U21B Crossover 2 - VJL",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "fg": 19,
+            "threePt": 13,
+            "pts": 83,
+            "ft": 6
+          }
+        },
+        {
+          "tid": "f567e217",
+          "tn": "Melbourne U21 Boys 2",
+          "gid": "06a0d1fa",
+          "gn": "U21B Grading 2 - Pool 2D",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 6,
+            "fg": 19,
+            "threePt": 13,
+            "pts": 83
+          }
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "d269c2b2",
+          "tn": "TOORAK TROUBLE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "b08294f0",
+          "tn": "Toorak Tryhards",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "ee7b1bb0",
+          "tn": "Toorak Trouble",
+          "gid": "9adc1096",
+          "gn": "AUTUMN Sunday U23 Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "ee7d4f4b",
+          "tn": "Toorak Trouble",
+          "gid": "d6d1064f",
+          "gn": "SPRING Sunday U23 Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "a1731fcc",
+          "tn": "Toorak Trouble",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "7555aa0a",
+          "tn": "Toorak Trouble",
+          "gid": "3ca24ba4",
+          "gn": "U18 Boys GP2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "f7e6ad2e",
+          "tn": "Toorak Trouble",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "59a334d9",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "afe46905",
+          "tn": "Toorak Trouble",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3bd06129",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "79069f51",
+          "tn": "Toorak Trouble",
+          "gid": "59e54004",
+          "gn": "Saturday U18 Boys Boston Celtics",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:28:58.649Z",
+  "teams": [
+    {
+      "tid": "a647e7be",
+      "sid": "adc6b519",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4b46f7bd",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f567e217",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d269c2b2",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b08294f0",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee7b1bb0",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee7d4f4b",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1731fcc",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7555aa0a",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f7e6ad2e",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "afe46905",
+      "sid": "59a334d9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79069f51",
+      "sid": "3bd06129",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:19.289Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "1991fa48",
+      "sid": "a5dfc5c1"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "1991fa48",
+      "sid": "a5dfc5c1"
+    }
+  },
+  "games": [
+    "08d67e49",
+    "127326a4",
+    "12d73341",
+    "1991fa48",
+    "1b4e0144",
+    "292e8b58",
+    "2e5d79a0",
+    "2fad606f",
+    "39b0fa9e",
+    "3db4e349",
+    "4057a66d",
+    "45ec96ba",
+    "4c16b480",
+    "4c5d889a",
+    "5ebf8d88",
+    "619cf222",
+    "69156462",
+    "6c3e9e6e",
+    "739f98ea",
+    "7ddcf3ee",
+    "802a2566",
+    "8cdb0f11",
+    "956f4d02",
+    "9e0786ba",
+    "adcd1416",
+    "ae2c952f",
+    "b414b30d",
+    "b55dc5d2",
+    "b94e944c",
+    "bb2900bd",
+    "c53286b0",
+    "c9aa0459",
+    "ca9a2b45",
+    "d12de360",
+    "e2942914",
+    "e5d87e45",
+    "e9dd2b8d",
+    "ed68a2b9",
+    "f7c9e410",
+    "fb022ccb"
+  ]
+}

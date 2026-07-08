@@ -1,1 +1,390 @@
-{"uuid":"362720b2-3efd-4adb-90bb-cff5aeb4dba4","name":"Laurence Seaholme","gender":"Men","sports":{"Basketball":{"gp":69,"pts":372,"fouls":107,"fg":118,"ft":43,"threePt":31,"foulOuts":{"35e7481e":2,"0370d9d6":1},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":17,"maxGameThreePt":3,"wins":55,"losses":34,"winPct":0.61,"draws":1,"statsChecked":"2026-07-05T15:21:51.035Z"}},"seasons":[{"sid":"3b14c51e","sn":"Winter 2025","regs":[{"tid":"3dbd12c7","tn":"Crimea K","gid":"d805e132","gn":"Monday Open Men C GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":7,"pts":37,"threePt":3,"fg":11,"ft":6,"fouls":16,"wins":5,"losses":2}}]},{"sid":"49bbc8fb","sn":"Summer 2024/25","regs":[{"tid":"79137bbc","tn":"Crimea K","gid":"aebc0d88","gn":"Monday Open Men B GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":14,"pts":42,"threePt":8,"fg":7,"ft":4,"fouls":12,"wins":2,"losses":11,"draws":1}}]},{"sid":"703d0c8f","sn":"Summer 2023/24","regs":[{"tid":"52c29b3f","tn":"Crimea K","gid":"bbc53f44","gn":"Monday Open Men F GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":10,"pts":62,"threePt":4,"fg":22,"ft":6,"fouls":8,"wins":7,"losses":2}},{"tid":"52c29b3f","tn":"Crimea K","gid":"4ace8872","gn":"Monday Open Men F GRADE - MSAC - Old","age":"Senior","div":null,"stats":{"gp":10,"pts":62,"threePt":4,"fg":22,"fouls":8,"wins":7,"losses":2,"ft":6}}]},{"sid":"16aaf14b","sn":"Winter 2022","regs":[{"tid":"e0288785","tn":"Bucket Patrol","gid":"9d55eef7","gn":"Monday Open Men E GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":12,"pts":63,"threePt":8,"fg":16,"ft":7,"fouls":11,"wins":6,"losses":5}}]},{"sid":"35e7481e","sn":"Autumn 2022","regs":[{"tid":"988baff3","tn":"Team Monkeh","gid":"65bac079","gn":"Wednesday Men B","age":null,"div":null,"stats":{"gp":20,"pts":131,"threePt":4,"fg":50,"ft":19,"fouls":44,"foulOuts":1,"finals":1,"wins":12,"losses":5}},{"tid":"988baff3","tn":"Team Monkeh","gid":"9a8230bf","gn":"Wednesday Men x","age":null,"div":null,"stats":{"gp":20,"pts":131,"fg":50,"ft":19,"fouls":44,"foulOuts":1,"finals":1,"wins":12,"losses":5,"threePt":4}}]},{"sid":"0370d9d6","sn":"Spring 2021","regs":[{"tid":"4c1ba883","tn":"Team Monkeh","gid":"13edf363","gn":"Wednesday Men C1","age":null,"div":"C1","stats":{"gp":6,"pts":37,"threePt":4,"fg":12,"ft":1,"fouls":16,"foulOuts":1,"finals":1,"wins":4,"losses":2}}]}],"updatedAt":"2026-06-01T14:29:33.303Z","teams":[{"tid":"3dbd12c7","sid":"3b14c51e","status":"COMPLETED"},{"tid":"79137bbc","sid":"49bbc8fb","status":"COMPLETED"},{"tid":"52c29b3f","sid":"703d0c8f","status":"COMPLETED"},{"tid":"393a96fd","sid":"9358e51a","status":"COMPLETED"},{"tid":"48caee3a","sid":"d3d4e181","status":"COMPLETED"},{"tid":"e0288785","sid":"16aaf14b","status":"COMPLETED"},{"tid":"988baff3","sid":"35e7481e","status":"COMPLETED"},{"tid":"4c1ba883","sid":"0370d9d6","status":"COMPLETED"},{"tid":"1e5060b4","sid":"d64fcfce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:14:31.073Z","records":{"maxGamePTS":{"v":17,"gameKey":"715c7ef1","sid":"35e7481e"},"maxGameThreePt":{"v":3,"gameKey":"2eb3ff27","sid":"49bbc8fb"}},"games":["0967c786","0bc1f10d","0cc0e480","164a04c0","1ba06fed","1cb6af1d","1e3be9d4","200b6d9b","251e633a","2eb3ff27","31caf53a","35b5222d","39199d95","3eb8f8df","447da215","48ba98e4","4981e365","4bdd449c","4c8a7aed","501af118","505c7ff0","520a1277","52b6097b","57cc1aea","597bb93c","621ceb10","64b2f3fd","68d37f81","6d87da83","6f0c44f8","715c7ef1","74b32994","792d366b","7a41c92d","812e8c6f","85726fe5","92bf4efb","94630fca","95781083","9f110acb","a0a1ad52","a26fdd98","a42b69ef","a5258310","a5e79bc9","acf04d73","aec1adfc","afca5aa0","b4402866","bbd0944f","bdc7f88f","c1211787","c4522102","c61fbb0d","c64752d0","cb8e8dd9","cca7085a","cd2e9174","cfdc9f57","d5a4eb97","e202bb48","e21ca778","e73c5d6e","e7f2ae01","e9585e41","eb26a32e","ee5b570e","f63a84ae","fa3907e5"]}
+{
+  "uuid": "362720b2-3efd-4adb-90bb-cff5aeb4dba4",
+  "name": "Laurence Seaholme",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 69,
+      "pts": 372,
+      "fouls": 107,
+      "fg": 118,
+      "ft": 43,
+      "threePt": 31,
+      "foulOuts": {
+        "35e7481e": 2,
+        "0370d9d6": 1
+      },
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 17,
+      "maxGameThreePt": 3,
+      "wins": 55,
+      "losses": 34,
+      "winPct": 0.61,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:21:51.035Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3b14c51e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "3dbd12c7",
+          "tn": "Crimea K",
+          "gid": "d805e132",
+          "gn": "Monday Open Men C GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 37,
+            "threePt": 3,
+            "fg": 11,
+            "ft": 6,
+            "fouls": 16,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "49bbc8fb",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "79137bbc",
+          "tn": "Crimea K",
+          "gid": "aebc0d88",
+          "gn": "Monday Open Men B GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 42,
+            "threePt": 8,
+            "fg": 7,
+            "ft": 4,
+            "fouls": 12,
+            "wins": 2,
+            "losses": 11,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "703d0c8f",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "52c29b3f",
+          "tn": "Crimea K",
+          "gid": "bbc53f44",
+          "gn": "Monday Open Men F GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 62,
+            "threePt": 4,
+            "fg": 22,
+            "ft": 6,
+            "fouls": 8,
+            "wins": 7,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "52c29b3f",
+          "tn": "Crimea K",
+          "gid": "4ace8872",
+          "gn": "Monday Open Men F GRADE - MSAC - Old",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 62,
+            "threePt": 4,
+            "fg": 22,
+            "fouls": 8,
+            "wins": 7,
+            "losses": 2,
+            "ft": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "16aaf14b",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "e0288785",
+          "tn": "Bucket Patrol",
+          "gid": "9d55eef7",
+          "gn": "Monday Open Men E GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 63,
+            "threePt": 8,
+            "fg": 16,
+            "ft": 7,
+            "fouls": 11,
+            "wins": 6,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "35e7481e",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "988baff3",
+          "tn": "Team Monkeh",
+          "gid": "65bac079",
+          "gn": "Wednesday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "pts": 131,
+            "threePt": 4,
+            "fg": 50,
+            "ft": 19,
+            "fouls": 44,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 12,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "988baff3",
+          "tn": "Team Monkeh",
+          "gid": "9a8230bf",
+          "gn": "Wednesday Men x",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "pts": 131,
+            "fg": 50,
+            "ft": 19,
+            "fouls": 44,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 12,
+            "losses": 5,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "4c1ba883",
+          "tn": "Team Monkeh",
+          "gid": "13edf363",
+          "gn": "Wednesday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 6,
+            "pts": 37,
+            "threePt": 4,
+            "fg": 12,
+            "ft": 1,
+            "fouls": 16,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "393a96fd",
+          "tn": "Team Monkeh",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "48caee3a",
+          "tn": "Monkeh",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "1e5060b4",
+          "tn": "Woj Bombs",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T14:29:33.303Z",
+  "teams": [
+    {
+      "tid": "3dbd12c7",
+      "sid": "3b14c51e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79137bbc",
+      "sid": "49bbc8fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52c29b3f",
+      "sid": "703d0c8f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0288785",
+      "sid": "16aaf14b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "988baff3",
+      "sid": "35e7481e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c1ba883",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "393a96fd",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48caee3a",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e5060b4",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:41.985Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "715c7ef1",
+      "sid": "35e7481e"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "2eb3ff27",
+      "sid": "49bbc8fb"
+    }
+  },
+  "games": [
+    "0967c786",
+    "0bc1f10d",
+    "0cc0e480",
+    "164a04c0",
+    "1ba06fed",
+    "1cb6af1d",
+    "1e3be9d4",
+    "200b6d9b",
+    "251e633a",
+    "2eb3ff27",
+    "31caf53a",
+    "35b5222d",
+    "39199d95",
+    "3eb8f8df",
+    "447da215",
+    "48ba98e4",
+    "4981e365",
+    "4bdd449c",
+    "4c8a7aed",
+    "501af118",
+    "505c7ff0",
+    "520a1277",
+    "52b6097b",
+    "57cc1aea",
+    "597bb93c",
+    "621ceb10",
+    "64b2f3fd",
+    "68d37f81",
+    "6d87da83",
+    "6f0c44f8",
+    "715c7ef1",
+    "74b32994",
+    "792d366b",
+    "7a41c92d",
+    "812e8c6f",
+    "85726fe5",
+    "92bf4efb",
+    "94630fca",
+    "95781083",
+    "9f110acb",
+    "a0a1ad52",
+    "a26fdd98",
+    "a42b69ef",
+    "a5258310",
+    "a5e79bc9",
+    "acf04d73",
+    "aec1adfc",
+    "afca5aa0",
+    "b4402866",
+    "bbd0944f",
+    "bdc7f88f",
+    "c1211787",
+    "c4522102",
+    "c61fbb0d",
+    "c64752d0",
+    "cb8e8dd9",
+    "cca7085a",
+    "cd2e9174",
+    "cfdc9f57",
+    "d5a4eb97",
+    "e202bb48",
+    "e21ca778",
+    "e73c5d6e",
+    "e7f2ae01",
+    "e9585e41",
+    "eb26a32e",
+    "ee5b570e",
+    "f63a84ae",
+    "fa3907e5"
+  ]
+}

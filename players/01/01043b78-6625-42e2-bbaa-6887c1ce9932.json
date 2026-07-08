@@ -1,1 +1,260 @@
-{"uuid":"01043b78-6625-42e2-bbaa-6887c1ce9932","name":"Archina Jenkins","gender":"Girls","sports":{"Basketball":{"gp":34,"pts":141,"fouls":88,"fg":63,"ft":12,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"790feeb5":2,"4c590ea3":1},"maxGamePTS":15,"maxGameThreePt":1,"wins":18,"losses":29,"winPct":0.38,"draws":1,"statsChecked":"2026-07-05T15:46:19.132Z"}},"seasons":[{"sid":"e4fda0f9","sn":"Winter 2026","club":"Drummo Dragons Basketball Club (Ballarat)","regs":[{"tid":"5c958afd","tn":"Drummo Dragons U16 G.3","gid":"e2e63d1b","gn":"Friday U16 Girls C","age":"U16","div":null,"stats":{"gp":6,"fouls":13,"pts":28,"fg":14,"losses":3,"wins":2,"draws":1}},{"tid":"9f6401d4","stats":{"gp":1,"pts":2,"fg":1,"fouls":4,"losses":1}},{"tid":"9f6401d4","tn":"","gid":"08a8199c","gn":"Monday U19 Girls D","div":null,"stats":{"gp":1,"pts":2,"fg":1,"fouls":4,"losses":1}}]},{"sid":"790feeb5","sn":"Summer 2025/26","club":"Drummo Dragons Basketball Club (Ballarat)","regs":[{"tid":"1a927d0c","tn":"Drummo Dragons U16 G.3","gid":"7dbe147a","gn":"Friday U16 Girls C","age":"U16","div":null,"stats":{"gp":14,"fouls":36,"ft":3,"fg":16,"pts":35,"finals":1,"foulOuts":2,"wins":10,"losses":4}}]},{"sid":"4c590ea3","sn":"Winter 2025","club":"Drummo Dragons Basketball Club (Ballarat)","regs":[{"tid":"5ae5c25b","tn":"Drummo Dragons U14 Girls U14 G.2","gid":"7f622b0b","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":13,"fouls":35,"ft":9,"fg":32,"threePt":1,"pts":76,"foulOuts":1,"wins":3,"losses":10}},{"tid":"5ae5c25b","tn":"Drummo Dragons U14 Girls U14 G.2","gid":"e830ef2b","gn":"Saturday U14 Girls C","age":"U14","div":null,"stats":{"gp":13,"ft":9,"fg":32,"pts":76,"wins":3,"losses":10,"threePt":1,"fouls":35}}]}],"updatedAt":"2026-07-04T05:57:51.691Z","teams":[{"tid":"5c958afd","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"9f6401d4","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"1a927d0c","sid":"790feeb5","status":"COMPLETED"},{"tid":"5ae5c25b","sid":"4c590ea3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:03:45.720Z","records":{"maxGamePTS":{"v":15,"gameKey":"cdb134c6","sid":"4c590ea3"},"maxGameThreePt":{"v":1,"gameKey":"b4e4689a","sid":"4c590ea3"}},"games":["023ee586","05818064","0668a675","122c7a7a","132bd5bf","1990422e","1ff37b05","3862ae9e","47e71e91","4bae46e3","4c5a35e6","556645ef","6af0d162","6fc22a4f","7d636f84","7db8a4d8","87c83354","9a10a3e4","a131ce50","a3385c64","b379eb30","b4e4689a","c1252aec","c1d40528","cdb134c6","cf337036","d0239116","d9f0f593","dde79e62","de4db9a6","e22b9f7a","ebed2aae","f2641111","f8b7bab0"],"gameTids":{"a3385c64":"5c958afd","f2641111":"5c958afd","c1d40528":"5c958afd","7d636f84":"5c958afd","87c83354":"5c958afd","7db8a4d8":"5c958afd","d9f0f593":"9f6401d4","556645ef":"1a927d0c","023ee586":"1a927d0c","132bd5bf":"1a927d0c","1990422e":"1a927d0c","4bae46e3":"1a927d0c","9a10a3e4":"1a927d0c","cf337036":"1a927d0c","47e71e91":"1a927d0c","d0239116":"1a927d0c","f8b7bab0":"1a927d0c","05818064":"1a927d0c","de4db9a6":"1a927d0c","c1252aec":"1a927d0c","dde79e62":"1a927d0c","6af0d162":"5ae5c25b","e22b9f7a":"5ae5c25b","b4e4689a":"5ae5c25b","6fc22a4f":"5ae5c25b","4c5a35e6":"5ae5c25b","0668a675":"5ae5c25b","1ff37b05":"5ae5c25b","3862ae9e":"5ae5c25b","b379eb30":"5ae5c25b","ebed2aae":"5ae5c25b","a131ce50":"5ae5c25b","cdb134c6":"5ae5c25b","122c7a7a":"5ae5c25b"}}
+{
+  "uuid": "01043b78-6625-42e2-bbaa-6887c1ce9932",
+  "name": "Archina Jenkins",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 141,
+      "fouls": 88,
+      "fg": 63,
+      "ft": 12,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "790feeb5": 2,
+        "4c590ea3": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "wins": 18,
+      "losses": 29,
+      "winPct": 0.38,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:46:19.132Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Drummo Dragons Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "5c958afd",
+          "tn": "Drummo Dragons U16 G.3",
+          "gid": "e2e63d1b",
+          "gn": "Friday U16 Girls C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 13,
+            "pts": 28,
+            "fg": 14,
+            "losses": 3,
+            "wins": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "9f6401d4",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4,
+            "losses": 1
+          },
+          "gid": "08a8199c",
+          "gn": "Monday U19 Girls D"
+        },
+        {
+          "tid": "9f6401d4",
+          "tn": "",
+          "gid": "08a8199c",
+          "gn": "Monday U19 Girls D",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "790feeb5",
+      "sn": "Summer 2025/26",
+      "club": "Drummo Dragons Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "1a927d0c",
+          "tn": "Drummo Dragons U16 G.3",
+          "gid": "7dbe147a",
+          "gn": "Friday U16 Girls C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 36,
+            "ft": 3,
+            "fg": 16,
+            "pts": 35,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 10,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4c590ea3",
+      "sn": "Winter 2025",
+      "club": "Drummo Dragons Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "5ae5c25b",
+          "tn": "Drummo Dragons U14 Girls U14 G.2",
+          "gid": "7f622b0b",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 35,
+            "ft": 9,
+            "fg": 32,
+            "threePt": 1,
+            "pts": 76,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "5ae5c25b",
+          "tn": "Drummo Dragons U14 Girls U14 G.2",
+          "gid": "e830ef2b",
+          "gn": "Saturday U14 Girls C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "ft": 9,
+            "fg": 32,
+            "pts": 76,
+            "wins": 3,
+            "losses": 10,
+            "threePt": 1,
+            "fouls": 35
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:51.691Z",
+  "teams": [
+    {
+      "tid": "5c958afd",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9f6401d4",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1a927d0c",
+      "sid": "790feeb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ae5c25b",
+      "sid": "4c590ea3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:22:56.577Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "cdb134c6",
+      "sid": "4c590ea3"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b4e4689a",
+      "sid": "4c590ea3"
+    }
+  },
+  "games": [
+    "023ee586",
+    "05818064",
+    "0668a675",
+    "122c7a7a",
+    "132bd5bf",
+    "1990422e",
+    "1ff37b05",
+    "3862ae9e",
+    "47e71e91",
+    "4bae46e3",
+    "4c5a35e6",
+    "556645ef",
+    "6af0d162",
+    "6fc22a4f",
+    "7d636f84",
+    "7db8a4d8",
+    "87c83354",
+    "9a10a3e4",
+    "a131ce50",
+    "a3385c64",
+    "b379eb30",
+    "b4e4689a",
+    "c1252aec",
+    "c1d40528",
+    "cdb134c6",
+    "cf337036",
+    "d0239116",
+    "d9f0f593",
+    "dde79e62",
+    "de4db9a6",
+    "e22b9f7a",
+    "ebed2aae",
+    "f2641111",
+    "f8b7bab0"
+  ],
+  "gameTids": {
+    "a3385c64": "5c958afd",
+    "f2641111": "5c958afd",
+    "c1d40528": "5c958afd",
+    "7d636f84": "5c958afd",
+    "87c83354": "5c958afd",
+    "7db8a4d8": "5c958afd",
+    "d9f0f593": "9f6401d4",
+    "556645ef": "1a927d0c",
+    "023ee586": "1a927d0c",
+    "132bd5bf": "1a927d0c",
+    "1990422e": "1a927d0c",
+    "4bae46e3": "1a927d0c",
+    "9a10a3e4": "1a927d0c",
+    "cf337036": "1a927d0c",
+    "47e71e91": "1a927d0c",
+    "d0239116": "1a927d0c",
+    "f8b7bab0": "1a927d0c",
+    "05818064": "1a927d0c",
+    "de4db9a6": "1a927d0c",
+    "c1252aec": "1a927d0c",
+    "dde79e62": "1a927d0c",
+    "6af0d162": "5ae5c25b",
+    "e22b9f7a": "5ae5c25b",
+    "b4e4689a": "5ae5c25b",
+    "6fc22a4f": "5ae5c25b",
+    "4c5a35e6": "5ae5c25b",
+    "0668a675": "5ae5c25b",
+    "1ff37b05": "5ae5c25b",
+    "3862ae9e": "5ae5c25b",
+    "b379eb30": "5ae5c25b",
+    "ebed2aae": "5ae5c25b",
+    "a131ce50": "5ae5c25b",
+    "cdb134c6": "5ae5c25b",
+    "122c7a7a": "5ae5c25b"
+  }
+}

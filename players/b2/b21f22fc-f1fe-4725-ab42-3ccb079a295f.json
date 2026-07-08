@@ -1,1 +1,113 @@
-{"uuid":"b21f22fc-f1fe-4725-ab42-3ccb079a295f","gender":null,"sports":{"Basketball":{"gp":14,"pts":52,"fouls":15,"fg":25,"ft":2,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"wins":10,"losses":18,"winPct":0.36,"statsChecked":"2026-07-05T16:03:08.268Z"}},"seasons":[{"sid":"5c9b2429","sn":"Summer 2022/23","club":"All Saints Basketball Club","regs":[{"tid":"c3c1862d","tn":"ABC U16 Boys TEAM 1","gid":"9a751813","gn":"Sat 16 Boys C","stats":{"gp":14,"pts":52,"fouls":15,"fg":25,"ft":2,"wins":5,"losses":9}},{"tid":"c3c1862d","tn":"ABC U16 Boys TEAM 1","gid":"0899624a","gn":"Sat 16 Boys A","stats":{"gp":14,"pts":52,"fouls":15,"fg":25,"ft":2,"wins":5,"losses":9}}]}],"updatedAt":"2026-06-11T23:43:49.854Z","records":{"maxGamePTS":{"v":9,"gameKey":"801dd788","sid":"5c9b2429"},"maxGameThreePt":{"v":null}},"games":["060a458c","4310778f","521a4c9e","571f5f79","5cd8c2fb","63561cce","6cab561a","801dd788","9114c7e0","97b9f464","a4864fcd","ab75f7c4","d338b2f2","d69eedff"],"name":"Summer 2022/23"}
+{
+  "uuid": "b21f22fc-f1fe-4725-ab42-3ccb079a295f",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 52,
+      "fouls": 15,
+      "fg": 25,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 18,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T16:03:08.268Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5c9b2429",
+      "sn": "Summer 2022/23",
+      "club": "All Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "c3c1862d",
+          "tn": "ABC U16 Boys TEAM 1",
+          "gid": "9a751813",
+          "gn": "Sat 16 Boys C",
+          "stats": {
+            "gp": 14,
+            "pts": 52,
+            "fouls": 15,
+            "fg": 25,
+            "ft": 2,
+            "wins": 5,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "c3c1862d",
+          "tn": "ABC U16 Boys TEAM 1",
+          "gid": "0899624a",
+          "gn": "Sat 16 Boys A",
+          "stats": {
+            "gp": 14,
+            "pts": 52,
+            "fouls": 15,
+            "fg": 25,
+            "ft": 2,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8aa3d654",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "625df6a4",
+          "tn": "ABC U16 Boys TEAM 1",
+          "gid": "2b457bd0",
+          "gn": "Saturday U16 Boys B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:49.854Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "801dd788",
+      "sid": "5c9b2429"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "060a458c",
+    "4310778f",
+    "521a4c9e",
+    "571f5f79",
+    "5cd8c2fb",
+    "63561cce",
+    "6cab561a",
+    "801dd788",
+    "9114c7e0",
+    "97b9f464",
+    "a4864fcd",
+    "ab75f7c4",
+    "d338b2f2",
+    "d69eedff"
+  ],
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "c3c1862d",
+      "sid": "5c9b2429",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "625df6a4",
+      "sid": "8aa3d654",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:08.552Z"
+}

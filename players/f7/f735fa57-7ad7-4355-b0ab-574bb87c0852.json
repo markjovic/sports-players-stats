@@ -1,1 +1,340 @@
-{"uuid":"f735fa57-7ad7-4355-b0ab-574bb87c0852","gender":null,"sports":{"Basketball":{"gp":52,"pts":167,"fouls":99,"fg":76,"ft":12,"threePt":1,"foulOuts":{"762d9301":4},"finals":4,"gfApps":2,"gfWins":1,"finalsPerSeason":0.8,"maxGamePTS":14,"maxGameThreePt":1,"losses":7,"winPct":0.67,"wins":14,"statsChecked":"2026-07-05T16:04:30.801Z"}},"seasons":[{"sid":"5b4ac2dc","sn":"Summer 2022/23","club":"~[ARCHIVED] Hornets Junior Basketball Club (Keilor)","regs":[{"tid":"576bb0c8","tn":"Hornets  U19 Girls Cliffe","gid":"88a9730e","gn":"Saturday U19 Girls A1 2 Grade","stats":{"gp":9,"pts":4,"fouls":2,"fg":2,"finals":1,"wins":7,"losses":2}}]},{"sid":"fbc7e3fe","sn":"Winter 2022","club":"Westside Suns Basketball Club","regs":[{"tid":"4376880a","tn":"Westside Suns U16 Girls (Sean C)","gid":"389a7e21","gn":"U16 Girls Div 1/2","stats":{"gp":11,"pts":35,"fouls":19,"fg":15,"ft":5,"finals":1,"gfApps":1,"wins":7,"losses":4,"gfWins":1}}]},{"sid":"7b35a4da","sn":"Summer 2021/22","club":"Westside Suns Basketball Club","regs":[{"tid":"9cb141fb","tn":"U16 Girls Westside Suns (Sean C)","gid":"b814ff32","gn":"U16 Girls Div 1/2","stats":{"gp":10,"pts":62,"fouls":25,"fg":30,"ft":2,"finals":1,"losses":1}}]},{"sid":"e7d885e4","sn":"Winter 2021","club":"Westside Suns Basketball Club","regs":[{"tid":"29328c16","tn":"Westside Suns (Sean C)","gid":"795282f9","gn":"Saturday U16 Girls","stats":{"gp":2}}]},{"sid":"762d9301","sn":"Summer 2020/21","club":"Westside Suns Basketball Club","regs":[{"tid":"b075277d","tn":"Westside Suns (Sean C)","gid":"36e0214e","gn":"U16 Girls","stats":{"gp":9,"pts":43,"fouls":19,"fg":18,"ft":4,"threePt":1,"finals":1,"gfApps":1}},{"tid":"3a2fe1f8","tn":"Westside Suns (Nerolee A)","gid":"4fd0026f","gn":"U14 Girls Div 1","stats":{"gp":11,"pts":23,"fouls":34,"fg":11,"ft":1,"foulOuts":4,"finals":1,"gfApps":1}},{"tid":"3a2fe1f8","tn":"Westside Suns (Nerolee A)","gid":"ab75871c","gn":"U14 Girls GRADING","stats":{"gp":11,"fouls":34,"finals":1,"gfApps":1,"pts":23,"fg":11,"ft":1}}]}],"updatedAt":"2026-06-11T23:46:19.591Z","games":["0090a658","0dd98375","13ac8eb6","1f58e551","20f2dd05","226fe41a","241bf9e6","2b3e079b","3012c392","376e3360","38193269","4092c4fd","4a873897","4d3bd09d","4f0c253e","5001c833","510c3d23","5664f3b0","57428971","57bf7c17","5dbd711f","5e83aa7f","5ffe3a1b","6034cd84","60e568c4","647e01ca","6d269dfc","6f20ee28","6fcf35c3","742005bb","797f5670","79bcc8e4","7f5a5fb0","8015c667","84bf8531","853eb3a4","9807e06d","9b9f44a8","a5642610","aa2390e2","b24b7d3b","b296e97b","b3404981","cd085e84","ce94db63","d00d642b","dc1b292e","e0c69c42","eb58af20","ecfd6b0a","ee3d4907"],"records":{"maxGamePTS":{"v":14,"gameKey":"9b9f44a8","sid":"762d9301"},"maxGameThreePt":{"v":1,"gameKey":"4d3bd09d","sid":"762d9301"}},"name":"Summer 2022/23","gameTids":{"38193269":"576bb0c8","57428971":"3a2fe1f8","b3404981":"576bb0c8","eb58af20":"576bb0c8","742005bb":"576bb0c8","797f5670":"576bb0c8","3012c392":"576bb0c8","79bcc8e4":"576bb0c8","853eb3a4":"576bb0c8","ecfd6b0a":"576bb0c8","ee3d4907":"4376880a","5001c833":"4376880a","57bf7c17":"4376880a","4f0c253e":"4376880a","7f5a5fb0":"4376880a","8015c667":"4376880a","60e568c4":"4376880a","4092c4fd":"4376880a","2b3e079b":"4376880a","510c3d23":"4376880a","6d269dfc":"4376880a","6fcf35c3":"9cb141fb","8f975183":"9cb141fb","4a873897":"9cb141fb","ce94db63":"9cb141fb","241bf9e6":"9cb141fb","6f20ee28":"9cb141fb","647e01ca":"9cb141fb","5e83aa7f":"9cb141fb","226fe41a":"9cb141fb","5dbd711f":"9cb141fb","e0c69c42":"29328c16","376e3360":"29328c16","20f2dd05":"b075277d","13ac8eb6":"b075277d","9b9f44a8":"b075277d","aa2390e2":"b075277d","4d3bd09d":"b075277d","0dd98375":"b075277d","dc1b292e":"b075277d","9807e06d":"b075277d","b24b7d3b":"b075277d","1f58e551":"3a2fe1f8","d00d642b":"3a2fe1f8","b296e97b":"3a2fe1f8","0090a658":"3a2fe1f8","5664f3b0":"3a2fe1f8","84bf8531":"3a2fe1f8","cd085e84":"3a2fe1f8","5ffe3a1b":"3a2fe1f8","a5642610":"3a2fe1f8","6034cd84":"3a2fe1f8"}}
+{
+  "uuid": "f735fa57-7ad7-4355-b0ab-574bb87c0852",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 167,
+      "fouls": 99,
+      "fg": 76,
+      "ft": 12,
+      "threePt": 1,
+      "foulOuts": {
+        "762d9301": 4
+      },
+      "finals": 4,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.8,
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "losses": 7,
+      "winPct": 0.67,
+      "wins": 14,
+      "statsChecked": "2026-07-05T16:04:30.801Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5b4ac2dc",
+      "sn": "Summer 2022/23",
+      "club": "~[ARCHIVED] Hornets Junior Basketball Club (Keilor)",
+      "regs": [
+        {
+          "tid": "576bb0c8",
+          "tn": "Hornets  U19 Girls Cliffe",
+          "gid": "88a9730e",
+          "gn": "Saturday U19 Girls A1 2 Grade",
+          "stats": {
+            "gp": 9,
+            "pts": 4,
+            "fouls": 2,
+            "fg": 2,
+            "finals": 1,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbc7e3fe",
+      "sn": "Winter 2022",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "4376880a",
+          "tn": "Westside Suns U16 Girls (Sean C)",
+          "gid": "389a7e21",
+          "gn": "U16 Girls Div 1/2",
+          "stats": {
+            "gp": 11,
+            "pts": 35,
+            "fouls": 19,
+            "fg": 15,
+            "ft": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7b35a4da",
+      "sn": "Summer 2021/22",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "9cb141fb",
+          "tn": "U16 Girls Westside Suns (Sean C)",
+          "gid": "b814ff32",
+          "gn": "U16 Girls Div 1/2",
+          "stats": {
+            "gp": 10,
+            "pts": 62,
+            "fouls": 25,
+            "fg": 30,
+            "ft": 2,
+            "finals": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e7d885e4",
+      "sn": "Winter 2021",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "29328c16",
+          "tn": "Westside Suns (Sean C)",
+          "gid": "795282f9",
+          "gn": "Saturday U16 Girls",
+          "stats": {
+            "gp": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "762d9301",
+      "sn": "Summer 2020/21",
+      "club": "Westside Suns Basketball Club",
+      "regs": [
+        {
+          "tid": "b075277d",
+          "tn": "Westside Suns (Sean C)",
+          "gid": "36e0214e",
+          "gn": "U16 Girls",
+          "stats": {
+            "gp": 9,
+            "pts": 43,
+            "fouls": 19,
+            "fg": 18,
+            "ft": 4,
+            "threePt": 1,
+            "finals": 1,
+            "gfApps": 1
+          }
+        },
+        {
+          "tid": "3a2fe1f8",
+          "tn": "Westside Suns (Nerolee A)",
+          "gid": "4fd0026f",
+          "gn": "U14 Girls Div 1",
+          "stats": {
+            "gp": 11,
+            "pts": 23,
+            "fouls": 34,
+            "fg": 11,
+            "ft": 1,
+            "foulOuts": 4,
+            "finals": 1,
+            "gfApps": 1
+          }
+        },
+        {
+          "tid": "3a2fe1f8",
+          "tn": "Westside Suns (Nerolee A)",
+          "gid": "ab75871c",
+          "gn": "U14 Girls GRADING",
+          "stats": {
+            "gp": 11,
+            "fouls": 34,
+            "finals": 1,
+            "gfApps": 1,
+            "pts": 23,
+            "fg": 11,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "99ccfd04",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "a014fba6",
+          "tn": "Westside Suns (Nerolee)",
+          "gid": "e5faf018",
+          "gn": "U14 Girls Grading",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:19.591Z",
+  "games": [
+    "0090a658",
+    "0dd98375",
+    "13ac8eb6",
+    "1f58e551",
+    "20f2dd05",
+    "226fe41a",
+    "241bf9e6",
+    "2b3e079b",
+    "3012c392",
+    "376e3360",
+    "38193269",
+    "4092c4fd",
+    "4a873897",
+    "4d3bd09d",
+    "4f0c253e",
+    "5001c833",
+    "510c3d23",
+    "5664f3b0",
+    "57428971",
+    "57bf7c17",
+    "5dbd711f",
+    "5e83aa7f",
+    "5ffe3a1b",
+    "6034cd84",
+    "60e568c4",
+    "647e01ca",
+    "6d269dfc",
+    "6f20ee28",
+    "6fcf35c3",
+    "742005bb",
+    "797f5670",
+    "79bcc8e4",
+    "7f5a5fb0",
+    "8015c667",
+    "84bf8531",
+    "853eb3a4",
+    "9807e06d",
+    "9b9f44a8",
+    "a5642610",
+    "aa2390e2",
+    "b24b7d3b",
+    "b296e97b",
+    "b3404981",
+    "cd085e84",
+    "ce94db63",
+    "d00d642b",
+    "dc1b292e",
+    "e0c69c42",
+    "eb58af20",
+    "ecfd6b0a",
+    "ee3d4907"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "9b9f44a8",
+      "sid": "762d9301"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "4d3bd09d",
+      "sid": "762d9301"
+    }
+  },
+  "name": "Summer 2022/23",
+  "gameTids": {
+    "38193269": "576bb0c8",
+    "57428971": "3a2fe1f8",
+    "b3404981": "576bb0c8",
+    "eb58af20": "576bb0c8",
+    "742005bb": "576bb0c8",
+    "797f5670": "576bb0c8",
+    "3012c392": "576bb0c8",
+    "79bcc8e4": "576bb0c8",
+    "853eb3a4": "576bb0c8",
+    "ecfd6b0a": "576bb0c8",
+    "ee3d4907": "4376880a",
+    "5001c833": "4376880a",
+    "57bf7c17": "4376880a",
+    "4f0c253e": "4376880a",
+    "7f5a5fb0": "4376880a",
+    "8015c667": "4376880a",
+    "60e568c4": "4376880a",
+    "4092c4fd": "4376880a",
+    "2b3e079b": "4376880a",
+    "510c3d23": "4376880a",
+    "6d269dfc": "4376880a",
+    "6fcf35c3": "9cb141fb",
+    "8f975183": "9cb141fb",
+    "4a873897": "9cb141fb",
+    "ce94db63": "9cb141fb",
+    "241bf9e6": "9cb141fb",
+    "6f20ee28": "9cb141fb",
+    "647e01ca": "9cb141fb",
+    "5e83aa7f": "9cb141fb",
+    "226fe41a": "9cb141fb",
+    "5dbd711f": "9cb141fb",
+    "e0c69c42": "29328c16",
+    "376e3360": "29328c16",
+    "20f2dd05": "b075277d",
+    "13ac8eb6": "b075277d",
+    "9b9f44a8": "b075277d",
+    "aa2390e2": "b075277d",
+    "4d3bd09d": "b075277d",
+    "0dd98375": "b075277d",
+    "dc1b292e": "b075277d",
+    "9807e06d": "b075277d",
+    "b24b7d3b": "b075277d",
+    "1f58e551": "3a2fe1f8",
+    "d00d642b": "3a2fe1f8",
+    "b296e97b": "3a2fe1f8",
+    "0090a658": "3a2fe1f8",
+    "5664f3b0": "3a2fe1f8",
+    "84bf8531": "3a2fe1f8",
+    "cd085e84": "3a2fe1f8",
+    "5ffe3a1b": "3a2fe1f8",
+    "a5642610": "3a2fe1f8",
+    "6034cd84": "3a2fe1f8"
+  },
+  "teams": [
+    {
+      "tid": "576bb0c8",
+      "sid": "5b4ac2dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4376880a",
+      "sid": "fbc7e3fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9cb141fb",
+      "sid": "7b35a4da",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "29328c16",
+      "sid": "e7d885e4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b075277d",
+      "sid": "762d9301",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3a2fe1f8",
+      "sid": "762d9301",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a014fba6",
+      "sid": "99ccfd04",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:49.564Z"
+}

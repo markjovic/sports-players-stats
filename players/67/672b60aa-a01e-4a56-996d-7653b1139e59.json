@@ -1,1 +1,316 @@
-{"uuid":"672b60aa-a01e-4a56-996d-7653b1139e59","name":"Isabel Townsend","gender":"Girls","sports":{"Basketball":{"gp":43,"pts":298,"fouls":90,"fg":148,"ft":2,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"790feeb5":1,"4c590ea3":2},"maxGamePTS":22,"maxGameThreePt":null,"wins":60,"losses":17,"winPct":0.78,"statsChecked":"2026-07-05T15:09:56.628Z"}},"seasons":[{"sid":"e4fda0f9","sn":"Winter 2026","club":"Ballan Brumbies Basketball Club","regs":[{"tid":"4897a73b","tn":"Ballan Brumbies U16 Girls Yellow","gid":"e2e63d1b","gn":"Friday U16 Girls C","age":"U16","div":null,"stats":{"gp":6,"fouls":3,"fg":4,"pts":8,"wins":3,"losses":3}},{"tid":"17ee503e","stats":{"wins":6,"gp":6,"pts":47,"fg":23,"ft":1,"fouls":14}},{"tid":"17ee503e","tn":"","gid":"f0d1c4be","gn":"Saturday U14 Girls D","div":null,"stats":{"gp":6,"pts":47,"fg":23,"ft":1,"fouls":14,"wins":6}},{"tid":"17ee503e","tn":"","gid":"ddb0c333","gn":"Saturday U14 Girls E","div":null,"stats":{"gp":6,"pts":47,"fg":23,"ft":1,"fouls":14,"wins":6}}]},{"sid":"e4fda0f9","sn":"Winter 2026","club":"Ballan Brumbies Basketball Club","regs":[{"tid":"17ee503e","tn":"Ballan Brumbies U14 Girls Yellow","gid":"ddb0c333","gn":"Saturday U14 Girls E","age":"U14","div":null,"stats":{"gp":6,"fouls":14,"fg":23,"pts":47,"wins":6,"ft":1}}]},{"sid":"790feeb5","sn":"Summer 2025/26","club":"Ballan Brumbies Basketball Club","regs":[{"tid":"ca5b50b9","tn":"Ballan Brumbies U14 Girls Yellow","gid":"e7232ea1","gn":"Saturday U14 Girls C","age":"U14","div":null,"stats":{"gp":15,"fouls":37,"fg":48,"pts":96,"finals":1,"foulOuts":1,"wins":9,"losses":6}}]},{"sid":"4c590ea3","sn":"Winter 2025","club":"Ballan Brumbies Basketball Club","regs":[{"tid":"c56be7d2","tn":"Ballan Brumbies U12.1 Girls","gid":"922d923c","gn":"Saturday U12 Girls C","age":"U12","div":null,"stats":{"gp":16,"fouls":36,"ft":1,"fg":73,"pts":147,"finals":1,"gfApps":1,"foulOuts":2,"wins":12,"losses":4,"gfWins":1}},{"tid":"c56be7d2","tn":"Ballan Brumbies U12.1 Girls","gid":"1de8c80c","gn":"Saturday U12 Girls D","age":"U12","div":null,"stats":{"gp":16,"fouls":36,"fg":73,"pts":147,"finals":1,"gfApps":1,"wins":12,"losses":4,"ft":1,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:35:31.105Z","teams":[{"tid":"17ee503e","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"4897a73b","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"ca5b50b9","sid":"790feeb5","status":"COMPLETED"},{"tid":"c56be7d2","sid":"4c590ea3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:37:24.828Z","records":{"maxGamePTS":{"v":22,"gameKey":"7ee09731","sid":"790feeb5"},"maxGameThreePt":{"v":null}},"games":["035c8f83","066071ca","08f22704","0955b54c","0eff84ce","1409e381","14641fd9","1c7bef59","26b4a2bd","31234cfe","346025b8","36150632","3ee495b5","4598c7f6","4e1bc6e3","59879bfd","5ac7fe26","5b94b15e","5c482ab5","622346ef","6c31baad","6c53d5d9","70beede5","7ee09731","8168d268","865e54ed","8663aeb0","8b3fec6a","8c4dbe75","9bce8c90","9c25188d","a9cc7882","bd4377ad","be4b54a0","c7f29adb","d6635cbf","d7206592","d80b9318","f383755f","f4c4fd01","f8713513","f9987444","fa4140c0"],"gameTids":{"36150632":"4897a73b","be4b54a0":"4897a73b","066071ca":"4897a73b","bd4377ad":"4897a73b","6c53d5d9":"4897a73b","5c482ab5":"4897a73b","6c31baad":"17ee503e","f383755f":"17ee503e","4598c7f6":"17ee503e","a9cc7882":"17ee503e","8b3fec6a":"17ee503e","865e54ed":"17ee503e","fa4140c0":"ca5b50b9","9bce8c90":"ca5b50b9","4e1bc6e3":"ca5b50b9","31234cfe":"ca5b50b9","9c25188d":"ca5b50b9","035c8f83":"ca5b50b9","f8713513":"ca5b50b9","70beede5":"ca5b50b9","1c7bef59":"ca5b50b9","26b4a2bd":"ca5b50b9","622346ef":"ca5b50b9","3ee495b5":"ca5b50b9","08f22704":"ca5b50b9","14641fd9":"ca5b50b9","7ee09731":"ca5b50b9","59879bfd":"c56be7d2","8c4dbe75":"c56be7d2","5ac7fe26":"c56be7d2","8168d268":"c56be7d2","8663aeb0":"c56be7d2","f9987444":"c56be7d2","d7206592":"c56be7d2","d80b9318":"c56be7d2","5b94b15e":"c56be7d2","346025b8":"c56be7d2","1409e381":"c56be7d2","0eff84ce":"c56be7d2","c7f29adb":"c56be7d2","f4c4fd01":"c56be7d2","d6635cbf":"c56be7d2","0955b54c":"c56be7d2"}}
+{
+  "uuid": "672b60aa-a01e-4a56-996d-7653b1139e59",
+  "name": "Isabel Townsend",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 298,
+      "fouls": 90,
+      "fg": 148,
+      "ft": 2,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "790feeb5": 1,
+        "4c590ea3": 2
+      },
+      "maxGamePTS": 22,
+      "maxGameThreePt": null,
+      "wins": 60,
+      "losses": 17,
+      "winPct": 0.78,
+      "statsChecked": "2026-07-05T15:09:56.628Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Ballan Brumbies Basketball Club",
+      "regs": [
+        {
+          "tid": "4897a73b",
+          "tn": "Ballan Brumbies U16 Girls Yellow",
+          "gid": "e2e63d1b",
+          "gn": "Friday U16 Girls C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "17ee503e",
+          "stats": {
+            "wins": 6,
+            "gp": 6,
+            "pts": 47,
+            "fg": 23,
+            "ft": 1,
+            "fouls": 14
+          },
+          "gid": "f0d1c4be",
+          "gn": "Saturday U14 Girls D"
+        },
+        {
+          "tid": "17ee503e",
+          "tn": "",
+          "gid": "f0d1c4be",
+          "gn": "Saturday U14 Girls D",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 47,
+            "fg": 23,
+            "ft": 1,
+            "fouls": 14,
+            "wins": 6
+          }
+        },
+        {
+          "tid": "17ee503e",
+          "tn": "",
+          "gid": "ddb0c333",
+          "gn": "Saturday U14 Girls E",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 47,
+            "fg": 23,
+            "ft": 1,
+            "fouls": 14,
+            "wins": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Ballan Brumbies Basketball Club",
+      "regs": [
+        {
+          "tid": "17ee503e",
+          "tn": "Ballan Brumbies U14 Girls Yellow",
+          "gid": "ddb0c333",
+          "gn": "Saturday U14 Girls E",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "fg": 23,
+            "pts": 47,
+            "wins": 6,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "790feeb5",
+      "sn": "Summer 2025/26",
+      "club": "Ballan Brumbies Basketball Club",
+      "regs": [
+        {
+          "tid": "ca5b50b9",
+          "tn": "Ballan Brumbies U14 Girls Yellow",
+          "gid": "e7232ea1",
+          "gn": "Saturday U14 Girls C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 37,
+            "fg": 48,
+            "pts": 96,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4c590ea3",
+      "sn": "Winter 2025",
+      "club": "Ballan Brumbies Basketball Club",
+      "regs": [
+        {
+          "tid": "c56be7d2",
+          "tn": "Ballan Brumbies U12.1 Girls",
+          "gid": "922d923c",
+          "gn": "Saturday U12 Girls C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 36,
+            "ft": 1,
+            "fg": 73,
+            "pts": 147,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 2,
+            "wins": 12,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "c56be7d2",
+          "tn": "Ballan Brumbies U12.1 Girls",
+          "gid": "1de8c80c",
+          "gn": "Saturday U12 Girls D",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 36,
+            "fg": 73,
+            "pts": 147,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 4,
+            "ft": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:31.105Z",
+  "teams": [
+    {
+      "tid": "4897a73b",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "17ee503e",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ca5b50b9",
+      "sid": "790feeb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c56be7d2",
+      "sid": "4c590ea3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:26:40.543Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "7ee09731",
+      "sid": "790feeb5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "035c8f83",
+    "066071ca",
+    "08f22704",
+    "0955b54c",
+    "0eff84ce",
+    "1409e381",
+    "14641fd9",
+    "1c7bef59",
+    "26b4a2bd",
+    "31234cfe",
+    "346025b8",
+    "36150632",
+    "3ee495b5",
+    "4598c7f6",
+    "4e1bc6e3",
+    "59879bfd",
+    "5ac7fe26",
+    "5b94b15e",
+    "5c482ab5",
+    "622346ef",
+    "6c31baad",
+    "6c53d5d9",
+    "70beede5",
+    "7ee09731",
+    "8168d268",
+    "865e54ed",
+    "8663aeb0",
+    "8b3fec6a",
+    "8c4dbe75",
+    "9bce8c90",
+    "9c25188d",
+    "a9cc7882",
+    "bd4377ad",
+    "be4b54a0",
+    "c7f29adb",
+    "d6635cbf",
+    "d7206592",
+    "d80b9318",
+    "f383755f",
+    "f4c4fd01",
+    "f8713513",
+    "f9987444",
+    "fa4140c0"
+  ],
+  "gameTids": {
+    "36150632": "4897a73b",
+    "be4b54a0": "4897a73b",
+    "066071ca": "4897a73b",
+    "bd4377ad": "4897a73b",
+    "6c53d5d9": "4897a73b",
+    "5c482ab5": "4897a73b",
+    "6c31baad": "17ee503e",
+    "f383755f": "17ee503e",
+    "4598c7f6": "17ee503e",
+    "a9cc7882": "17ee503e",
+    "8b3fec6a": "17ee503e",
+    "865e54ed": "17ee503e",
+    "fa4140c0": "ca5b50b9",
+    "9bce8c90": "ca5b50b9",
+    "4e1bc6e3": "ca5b50b9",
+    "31234cfe": "ca5b50b9",
+    "9c25188d": "ca5b50b9",
+    "035c8f83": "ca5b50b9",
+    "f8713513": "ca5b50b9",
+    "70beede5": "ca5b50b9",
+    "1c7bef59": "ca5b50b9",
+    "26b4a2bd": "ca5b50b9",
+    "622346ef": "ca5b50b9",
+    "3ee495b5": "ca5b50b9",
+    "08f22704": "ca5b50b9",
+    "14641fd9": "ca5b50b9",
+    "7ee09731": "ca5b50b9",
+    "59879bfd": "c56be7d2",
+    "8c4dbe75": "c56be7d2",
+    "5ac7fe26": "c56be7d2",
+    "8168d268": "c56be7d2",
+    "8663aeb0": "c56be7d2",
+    "f9987444": "c56be7d2",
+    "d7206592": "c56be7d2",
+    "d80b9318": "c56be7d2",
+    "5b94b15e": "c56be7d2",
+    "346025b8": "c56be7d2",
+    "1409e381": "c56be7d2",
+    "0eff84ce": "c56be7d2",
+    "c7f29adb": "c56be7d2",
+    "f4c4fd01": "c56be7d2",
+    "d6635cbf": "c56be7d2",
+    "0955b54c": "c56be7d2"
+  }
+}

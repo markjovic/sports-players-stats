@@ -1,1 +1,327 @@
-{"uuid":"c90c21da-af38-4ff9-bd8c-3b6707399e40","name":"Nick Collins","gender":"Men","sports":{"Basketball":{"gp":38,"pts":134,"fouls":51,"fg":59,"ft":13,"threePt":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"wins":37,"losses":24,"draws":2,"winPct":0.59,"statsChecked":"2026-07-05T15:25:46.999Z"}},"seasons":[{"sid":"12acc552","sn":"Summer 2024/25","regs":[{"tid":"6c6bcd7f","tn":"Shark tits & the gang","gid":"5e0273ab","gn":"Tuesday Men 4 - 2025 Summer","age":null,"div":null,"stats":{"gp":4,"fouls":8,"fg":12,"threePt":1,"pts":27,"wins":3,"losses":1}}]},{"sid":"f5ece0be","sn":"Summer 2023/24","regs":[{"tid":"73f6ae21","tn":"Shark tits & the gang","gid":"3f9ee34a","gn":"Tuesday Men 3 - 2024 Summer","age":null,"div":null,"stats":{"gp":11,"fouls":14,"ft":1,"fg":13,"pts":27,"finals":1,"gfApps":1,"wins":9,"losses":2}},{"tid":"73f6ae21","tn":"Shark tits & the gang","gid":"a4a59f0d","gn":"Tuesday Men 4 - 2024 Summer","age":null,"div":null,"stats":{"gp":11,"fouls":14,"fg":13,"pts":27,"finals":1,"gfApps":1,"wins":9,"losses":2,"ft":1}}]},{"sid":"a98ae506","sn":"Winter 2023","regs":[{"tid":"1e0f1802","tn":"Shark tits & the gang","gid":"81c0cec1","gn":"Wednesday Men 5 - 2023 Winter","age":null,"div":null,"stats":{"gp":14,"fouls":18,"ft":6,"fg":26,"pts":58,"wins":5,"losses":8,"draws":1}},{"tid":"1e0f1802","tn":"Shark tits & the gang","gid":"43f7bac5","gn":"Wednesday Men 4 - 2023 Winter","age":null,"div":null,"stats":{"gp":14,"fouls":18,"ft":6,"fg":26,"pts":58,"wins":5,"losses":8,"draws":1}}]},{"sid":"7c90a07c","sn":"Summer 2022/23","regs":[{"tid":"bb1ff79f","tn":"Shark tits & the gang","gid":"2ab171b0","gn":"Thursday Men 3 - 2023 Summer","age":null,"div":null,"stats":{"gp":9,"fouls":11,"ft":6,"fg":8,"pts":22,"wins":6,"losses":3}}]}],"updatedAt":"2026-06-01T16:49:49.508Z","teams":[{"tid":"6c6bcd7f","sid":"12acc552","status":"COMPLETED"},{"tid":"6953b5ff","sid":"348dbfb8","status":"COMPLETED"},{"tid":"73f6ae21","sid":"f5ece0be","status":"COMPLETED"},{"tid":"58266aae","sid":"9358e51a","status":"COMPLETED"},{"tid":"1e0f1802","sid":"a98ae506","status":"COMPLETED"},{"tid":"f49d4ddd","sid":"d3d4e181","status":"COMPLETED"},{"tid":"bb1ff79f","sid":"7c90a07c","status":"COMPLETED"},{"tid":"5911f624","sid":"21cd9648","status":"COMPLETED"},{"tid":"87ac5863","sid":"d4cbf787","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:44:01.349Z","games":["01aa3ca0","13d457ae","15335104","180c4434","20886ec6","28f0f430","2da99859","312ee22b","34621af1","3a05f470","3acc517e","3d3e8cec","3fa01281","454b45a5","50e52f97","54308639","583fef76","5cc1b38e","62197a28","6b5c8dc9","7093e83d","7778a613","80650531","8ab1a1c3","8b22080c","9339b66f","941a2705","9a7460db","9a83dcac","9cc2e872","a1fdb4c3","a7eb7dc2","ab945f10","b27eab31","b75f2622","d14122ad","f39e1720","fa87d8ec"],"records":{"maxGamePTS":{"v":12,"gameKey":"9a7460db","sid":"a98ae506"},"maxGameThreePt":{"v":1,"gameKey":"7093e83d","sid":"12acc552"}}}
+{
+  "uuid": "c90c21da-af38-4ff9-bd8c-3b6707399e40",
+  "name": "Nick Collins",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 134,
+      "fouls": 51,
+      "fg": 59,
+      "ft": 13,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 37,
+      "losses": 24,
+      "draws": 2,
+      "winPct": 0.59,
+      "statsChecked": "2026-07-05T15:25:46.999Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "12acc552",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "6c6bcd7f",
+          "tn": "Shark tits & the gang",
+          "gid": "5e0273ab",
+          "gn": "Tuesday Men 4 - 2025 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 8,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 27,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5ece0be",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "73f6ae21",
+          "tn": "Shark tits & the gang",
+          "gid": "3f9ee34a",
+          "gn": "Tuesday Men 3 - 2024 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 14,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "73f6ae21",
+          "tn": "Shark tits & the gang",
+          "gid": "a4a59f0d",
+          "gn": "Tuesday Men 4 - 2024 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 14,
+            "fg": 13,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 2,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a98ae506",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "1e0f1802",
+          "tn": "Shark tits & the gang",
+          "gid": "81c0cec1",
+          "gn": "Wednesday Men 5 - 2023 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 18,
+            "ft": 6,
+            "fg": 26,
+            "pts": 58,
+            "wins": 5,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1e0f1802",
+          "tn": "Shark tits & the gang",
+          "gid": "43f7bac5",
+          "gn": "Wednesday Men 4 - 2023 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 18,
+            "ft": 6,
+            "fg": 26,
+            "pts": 58,
+            "wins": 5,
+            "losses": 8,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7c90a07c",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "bb1ff79f",
+          "tn": "Shark tits & the gang",
+          "gid": "2ab171b0",
+          "gn": "Thursday Men 3 - 2023 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 11,
+            "ft": 6,
+            "fg": 8,
+            "pts": 22,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "6953b5ff",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "58266aae",
+          "tn": "Sonics 19",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "f49d4ddd",
+          "tn": "Sonics 19",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "5911f624",
+          "tn": "Sonics 19",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "87ac5863",
+          "tn": "Sonics 19",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T16:49:49.508Z",
+  "teams": [
+    {
+      "tid": "6c6bcd7f",
+      "sid": "12acc552",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "73f6ae21",
+      "sid": "f5ece0be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e0f1802",
+      "sid": "a98ae506",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bb1ff79f",
+      "sid": "7c90a07c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6953b5ff",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58266aae",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f49d4ddd",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5911f624",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87ac5863",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:29:45.639Z",
+  "games": [
+    "01aa3ca0",
+    "13d457ae",
+    "15335104",
+    "180c4434",
+    "20886ec6",
+    "28f0f430",
+    "2da99859",
+    "312ee22b",
+    "34621af1",
+    "3a05f470",
+    "3acc517e",
+    "3d3e8cec",
+    "3fa01281",
+    "454b45a5",
+    "50e52f97",
+    "54308639",
+    "583fef76",
+    "5cc1b38e",
+    "62197a28",
+    "6b5c8dc9",
+    "7093e83d",
+    "7778a613",
+    "80650531",
+    "8ab1a1c3",
+    "8b22080c",
+    "9339b66f",
+    "941a2705",
+    "9a7460db",
+    "9a83dcac",
+    "9cc2e872",
+    "a1fdb4c3",
+    "a7eb7dc2",
+    "ab945f10",
+    "b27eab31",
+    "b75f2622",
+    "d14122ad",
+    "f39e1720",
+    "fa87d8ec"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "9a7460db",
+      "sid": "a98ae506"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "7093e83d",
+      "sid": "12acc552"
+    }
+  }
+}

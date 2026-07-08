@@ -1,1 +1,81 @@
-{"uuid":"641d78cc-9cda-4063-9d09-d76ae099ba28","name":"Mikahla Butcher","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":1,"foulOuts":{},"gp":18,"pts":95,"fg":41,"ft":1,"threePt":4,"fouls":23,"statsChecked":"2026-07-07T18:27:43.143Z"}},"seasons":[{"sid":"9b3f4951","regs":[{"tid":"3e806079"}]},{"sid":"44eb04d1","regs":[{"tid":"9f6d0751"}]},{"sid":"01882461","regs":[{"tid":"4d95258b"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":12,"gameKey":"3e704dc9","sid":"01882461"},"maxGameThreePt":{"v":1,"gameKey":"a31d403b","sid":"9b3f4951"}}}
+{
+  "uuid": "641d78cc-9cda-4063-9d09-d76ae099ba28",
+  "name": "Mikahla Butcher",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 18,
+      "pts": 95,
+      "fg": 41,
+      "ft": 1,
+      "threePt": 4,
+      "fouls": 23,
+      "statsChecked": "2026-07-07T18:27:43.143Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9b3f4951",
+      "regs": [
+        {
+          "tid": "3e806079",
+          "gid": "da9b96bd",
+          "gn": "Tuesday B3 Women"
+        }
+      ]
+    },
+    {
+      "sid": "44eb04d1",
+      "regs": [
+        {
+          "tid": "9f6d0751",
+          "gid": "df6c0a3c",
+          "gn": "Thursday Open Women 1"
+        }
+      ]
+    },
+    {
+      "sid": "01882461",
+      "regs": [
+        {
+          "tid": "4d95258b",
+          "gid": "087b9b64",
+          "gn": "Thursday Open Women 3"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "3e806079",
+      "sid": "9b3f4951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9f6d0751",
+      "sid": "44eb04d1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4d95258b",
+      "sid": "01882461",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "3e704dc9",
+      "sid": "01882461"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a31d403b",
+      "sid": "9b3f4951"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:26:34.390Z"
+}

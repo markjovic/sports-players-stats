@@ -1,1 +1,219 @@
-{"uuid":"520dd280-b62f-403c-83bb-59c6eed055b8","name":"Lottie Bartley","gender":"Women","sports":{"Basketball":{"gp":24,"pts":17,"fouls":19,"fg":8,"ft":1,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":3,"maxGameThreePt":null,"wins":14,"losses":39,"draws":2,"winPct":0.25,"statsChecked":"2026-07-05T15:48:28.371Z"}},"seasons":[{"sid":"a5b09157","sn":"Winter 2026","regs":[{"tid":"42e784f0","tn":"Hoop there it is ","gid":"dca9cd1b","gn":"Monday Senior Women Div 3","age":"Senior","div":"Div 3","stats":{"gp":3,"fouls":4,"fg":1,"pts":2,"losses":3}},{"tid":"42e784f0","tn":"","gid":"991c201f","gn":"Monday Senior Women Div 2","div":null,"stats":{"gp":3,"pts":2,"fg":1,"fouls":4,"losses":3}}]},{"sid":"b331976c","sn":"Summer 2023/24","regs":[{"tid":"037ea849","tn":"Sunsets","gid":"83e956e8","gn":"Tuesday U14 Girls","age":"U14","div":null,"stats":{"gp":9,"fouls":5,"fg":4,"pts":9,"wins":2,"losses":7,"ft":1}},{"tid":"037ea849","tn":"Sunsets","gid":"0eeb593f","gn":"Tuesday U14 Girls Grading","age":"U14","div":null,"stats":{"gp":9,"fouls":5,"fg":4,"pts":9,"wins":2,"losses":7,"ft":1}},{"tid":"037ea849","tn":"Sunsets","gid":"7be1c4a2","gn":"Tuesday U16 Girls Grading","age":"U16","div":null,"stats":{"gp":9,"fouls":5,"ft":1,"fg":4,"pts":9,"wins":2,"losses":7}}]},{"sid":"b220f7b6","sn":"Winter 2023","regs":[{"tid":"7f9eafee","tn":"Sunsets","gid":"ae8cca78","gn":"Tuesday U14 Girls B","age":"U14","div":null,"stats":{"gp":12,"fouls":10,"fg":3,"pts":6,"finals":1,"gfApps":1,"wins":4,"losses":6,"draws":1}},{"tid":"7f9eafee","tn":"Sunsets","gid":"ac728a27","gn":"Tuesday U14 Girls Grading","age":"U14","div":null,"stats":{"gp":12,"fouls":10,"finals":1,"gfApps":1,"wins":4,"losses":6,"draws":1,"pts":6,"fg":3}}]}],"updatedAt":"2026-07-04T05:56:04.743Z","teams":[{"tid":"42e784f0","sid":"a5b09157","status":"ACTIVE"},{"tid":"037ea849","sid":"b331976c","status":"COMPLETED"},{"tid":"7f9eafee","sid":"b220f7b6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:30:01.467Z","records":{"maxGamePTS":{"v":3,"gameKey":"d2d61c25","sid":"b331976c"},"maxGameThreePt":{"v":null}},"games":["2341a902","27f31df4","336c06cf","37468dec","40098d76","4bd5987d","531eb9c0","53ec26ca","655b8283","6850554d","6cd92c83","6e8ea2d5","7932826b","7f0ff1f0","9fdd230a","baed2774","bcd91a6c","c5f5d454","ce6c9452","d2d61c25","d6b35742","e27dbb9e","f4b5ff36","fbe46ae0"]}
+{
+  "uuid": "520dd280-b62f-403c-83bb-59c6eed055b8",
+  "name": "Lottie Bartley",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 24,
+      "pts": 17,
+      "fouls": 19,
+      "fg": 8,
+      "ft": 1,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 14,
+      "losses": 39,
+      "draws": 2,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T15:48:28.371Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a5b09157",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "42e784f0",
+          "tn": "Hoop there it is ",
+          "gid": "991c201f",
+          "gn": "Monday Senior Women Div 2",
+          "age": "Senior",
+          "div": "Div 3",
+          "stats": {
+            "gp": 3,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "42e784f0",
+          "tn": "",
+          "gid": "991c201f",
+          "gn": "Monday Senior Women Div 2",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b331976c",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "037ea849",
+          "tn": "Sunsets",
+          "gid": "83e956e8",
+          "gn": "Tuesday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 9,
+            "wins": 2,
+            "losses": 7,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "037ea849",
+          "tn": "Sunsets",
+          "gid": "0eeb593f",
+          "gn": "Tuesday U14 Girls Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 9,
+            "wins": 2,
+            "losses": 7,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "037ea849",
+          "tn": "Sunsets",
+          "gid": "7be1c4a2",
+          "gn": "Tuesday U16 Girls Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 2,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b220f7b6",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "7f9eafee",
+          "tn": "Sunsets",
+          "gid": "ae8cca78",
+          "gn": "Tuesday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "fg": 3,
+            "pts": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "7f9eafee",
+          "tn": "Sunsets",
+          "gid": "ac728a27",
+          "gn": "Tuesday U14 Girls Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1,
+            "pts": 6,
+            "fg": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:56:04.743Z",
+  "teams": [
+    {
+      "tid": "42e784f0",
+      "sid": "a5b09157",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "037ea849",
+      "sid": "b331976c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f9eafee",
+      "sid": "b220f7b6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:25:43.858Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "d2d61c25",
+      "sid": "b331976c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2341a902",
+    "27f31df4",
+    "336c06cf",
+    "37468dec",
+    "40098d76",
+    "4bd5987d",
+    "531eb9c0",
+    "53ec26ca",
+    "655b8283",
+    "6850554d",
+    "6cd92c83",
+    "6e8ea2d5",
+    "7932826b",
+    "7f0ff1f0",
+    "9fdd230a",
+    "baed2774",
+    "bcd91a6c",
+    "c5f5d454",
+    "ce6c9452",
+    "d2d61c25",
+    "d6b35742",
+    "e27dbb9e",
+    "f4b5ff36",
+    "fbe46ae0"
+  ]
+}

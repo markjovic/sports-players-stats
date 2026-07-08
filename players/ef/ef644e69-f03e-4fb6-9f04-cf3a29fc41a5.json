@@ -1,1 +1,105 @@
-{"uuid":"ef644e69-f03e-4fb6-9f04-cf3a29fc41a5","name":"Ryan Shi","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":42,"fouls":14,"fg":14,"ft":5,"threePt":3,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":3,"losses":7,"winPct":0.3,"statsChecked":"2026-07-05T14:45:39.328Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"6df1e6c1","tn":"Norths Bears U12 Boys Red","gid":"fbb4fd1f","gn":"BOYS UNDER 12 B3","age":null,"div":"B3","stats":{"gp":5,"fouls":7,"ft":2,"fg":5,"pts":12,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"1e86c071","stats":{"wins":1,"losses":4,"gp":5,"pts":30,"fg":9,"ft":3,"threePt":3,"fouls":7}}]}],"updatedAt":"2026-05-31T01:00:53.473Z","teams":[{"tid":"1e86c071","sid":"0869ea69","status":"UPCOMING"},{"tid":"6df1e6c1","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:53:41.106Z","games":["00dfdc64","4508864b","516fbacf","7a2bceb4","7a744e61","8b983ed1","8cd7e351","c5900523","d7cbef9e","e8fb8ad0"],"records":{"maxGamePTS":{"v":10,"gameKey":"4508864b","sid":"0869ea69"},"maxGameThreePt":{"v":2,"gameKey":"4508864b","sid":"0869ea69"}}}
+{
+  "uuid": "ef644e69-f03e-4fb6-9f04-cf3a29fc41a5",
+  "name": "Ryan Shi",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 42,
+      "fouls": 14,
+      "fg": 14,
+      "ft": 5,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 3,
+      "losses": 7,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T14:45:39.328Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "6df1e6c1",
+          "tn": "Norths Bears U12 Boys Red",
+          "gid": "fbb4fd1f",
+          "gn": "BOYS UNDER 12 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 5,
+            "pts": 12,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "1e86c071",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 30,
+            "fg": 9,
+            "ft": 3,
+            "threePt": 3,
+            "fouls": 7
+          },
+          "gid": "e66c4180",
+          "gn": "BOYS UNDER 12 B6"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:00:53.473Z",
+  "teams": [
+    {
+      "tid": "6df1e6c1",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e86c071",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:57.339Z",
+  "games": [
+    "00dfdc64",
+    "4508864b",
+    "516fbacf",
+    "7a2bceb4",
+    "7a744e61",
+    "8b983ed1",
+    "8cd7e351",
+    "c5900523",
+    "d7cbef9e",
+    "e8fb8ad0"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "4508864b",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4508864b",
+      "sid": "0869ea69"
+    }
+  }
+}

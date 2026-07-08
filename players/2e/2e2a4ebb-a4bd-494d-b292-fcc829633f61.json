@@ -1,1 +1,95 @@
-{"uuid":"2e2a4ebb-a4bd-494d-b292-fcc829633f61","gender":null,"sports":{"Basketball":{"gp":1,"pts":4,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":1,"winPct":1,"statsChecked":"2026-07-05T16:00:08.243Z"}},"seasons":[{"sid":"0d21f7c1","sn":"Winter 2021","club":null,"regs":[{"tid":"a0f66640","tn":"Ravens","gid":"15a75000","gn":"Friday Open Mixed Division 4","stats":{"gp":1,"pts":4,"wins":1}}]}],"updatedAt":"2026-06-11T23:37:51.007Z","records":{"maxGamePTS":{"v":4,"gameKey":"a4f7990f","sid":"0d21f7c1"},"maxGameThreePt":{"v":null}},"games":["a4f7990f"],"name":"Winter 2021"}
+{
+  "uuid": "2e2a4ebb-a4bd-494d-b292-fcc829633f61",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 4,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:00:08.243Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0d21f7c1",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a0f66640",
+          "tn": "Ravens",
+          "gid": "15a75000",
+          "gn": "Friday Open Mixed Division 4",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98fc6a8b",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "5dd4fb7f",
+          "tn": "Ravens",
+          "gid": "aed9e61b",
+          "gn": "Friday Open Mixed Division 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "150099e3",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "5be2807c",
+          "tn": "Ravens",
+          "gid": "08deb7c0",
+          "gn": "Division 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:51.007Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "a4f7990f",
+      "sid": "0d21f7c1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "a4f7990f"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "a0f66640",
+      "sid": "0d21f7c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5dd4fb7f",
+      "sid": "98fc6a8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5be2807c",
+      "sid": "150099e3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:24:48.669Z"
+}

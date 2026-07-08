@@ -1,1 +1,371 @@
-{"uuid":"fb1bbec9-5de4-4f8d-a2f4-9c88133cff72","gender":null,"sports":{"Basketball":{"gp":61,"pts":204,"fouls":51,"fg":90,"ft":12,"threePt":4,"foulOuts":{"7db274ec":1},"maxGamePTS":17,"maxGameThreePt":1,"wins":4,"losses":15,"winPct":0.18,"draws":3,"statsChecked":"2026-07-05T16:04:55.850Z"}},"seasons":[{"sid":"ee38043a","sn":"Autumn 2022","club":null,"regs":[{"tid":"9aa9ff76","tn":"And one ","gid":"faf255a1","gn":"Wed Mixed","stats":{"gp":10,"pts":36,"fouls":9,"fg":16,"ft":1,"threePt":1,"wins":2,"losses":2}}]},{"sid":"f5d019eb","sn":"Summer 2021/22","club":null,"regs":[{"tid":"533bf27d","tn":"Nothing But Net","gid":"1b2616e4","gn":"Wednesday Open Women","stats":{"gp":5,"pts":30,"fouls":3,"fg":13,"ft":1,"threePt":1}}]},{"sid":"7db274ec","sn":"Spring 2021","club":null,"regs":[{"tid":"a9b78d34","tn":"Minions ","gid":"84646bf5","gn":"Tuesday Open Women","stats":{"gp":18,"pts":41,"fouls":22,"fg":18,"ft":2,"threePt":1,"foulOuts":1,"wins":2,"losses":13,"draws":3}}]},{"sid":"11ee1c28","sn":"Spring 2021","club":null,"regs":[{"tid":"97a7e742","tn":"Nothing But Net","gid":"fe0adb30","gn":"Wednesday Open Women","stats":{"gp":12,"pts":30,"fouls":9,"fg":12,"ft":3,"threePt":1}},{"tid":"4a7440dc","stats":{"gp":15,"pts":50,"fg":24,"ft":2,"fouls":7}}]},{"sid":"11ee1c28","sn":"Spring 2021","club":null,"regs":[{"tid":"4a7440dc","tn":"And One","gid":"4859b189","gn":"Wednesday Open Mixed","stats":{"gp":15,"pts":50,"fouls":7,"fg":24,"ft":2}}]},{"sid":"32cd834a","sn":"Autumn 2020","club":null,"regs":[{"tid":"43d3c8a9","tn":"And One","gid":"704a8706","gn":"Wednesday Open Mixed","stats":{"gp":1,"pts":17,"fouls":1,"fg":7,"ft":3}}]}],"updatedAt":"2026-06-11T23:46:32.881Z","records":{"maxGamePTS":{"v":17,"gameKey":"91db12a8","sid":"32cd834a"},"maxGameThreePt":{"v":1,"gameKey":"a85c5334","sid":"ee38043a"}},"games":["01f1bca3","022912cc","033aeceb","06545671","07e6df95","0a0c35e0","0c31b384","15bf0197","15d2cc81","1debfbb2","2cf2e6a2","2f210ec1","30f50b98","3158239e","343607e7","37fe23d5","435fce02","47f4ef80","5091b51b","51d48a46","551ec860","55f7a10c","5925f811","629a4669","634c1aaa","66cb70e2","6c4e2d7e","71d47755","79960cd5","7c3054f1","87831fa5","8bc02893","90bdf581","91db12a8","98dc116c","996bc79e","a1e2eab6","a1eb81f5","a85c5334","a8a7992e","af9f52c5","b249e528","b545aee6","bbb5c36e","c2d684eb","cc299724","cdcd0b82","d2917a0c","d3134ce0","daa3aedf","dc3fc1b5","dc549b44","eb9dc408","ebb50890","ec0f78d3","ed9edf4d","f985f08d","f9de1922","fa11067d","fa34bfa3","ff32b3de"],"name":"Autumn 2022","gameTids":{"ebb50890":"9aa9ff76","629a4669":"9aa9ff76","dc3fc1b5":"9aa9ff76","55f7a10c":"9aa9ff76","79960cd5":"9aa9ff76","5091b51b":"9aa9ff76","1debfbb2":"9aa9ff76","a85c5334":"9aa9ff76","ff32b3de":"9aa9ff76","15d2cc81":"9aa9ff76","cdcd0b82":"533bf27d","daa3aedf":"533bf27d","7c3054f1":"533bf27d","435fce02":"533bf27d","c2d684eb":"533bf27d","634c1aaa":"a9b78d34","033aeceb":"a9b78d34","d2917a0c":"a9b78d34","fa34bfa3":"a9b78d34","022912cc":"a9b78d34","f985f08d":"a9b78d34","996bc79e":"a9b78d34","eb9dc408":"a9b78d34","af9f52c5":"a9b78d34","66cb70e2":"a9b78d34","01f1bca3":"a9b78d34","551ec860":"a9b78d34","8bc02893":"a9b78d34","a1e2eab6":"a9b78d34","dc549b44":"a9b78d34","5925f811":"a9b78d34","6c4e2d7e":"a9b78d34","bbb5c36e":"a9b78d34","0c31b384":"97a7e742","06545671":"97a7e742","cc299724":"97a7e742","3158239e":"97a7e742","90bdf581":"97a7e742","a1eb81f5":"97a7e742","71d47755":"97a7e742","30f50b98":"97a7e742","07e6df95":"97a7e742","b249e528":"97a7e742","0a0c35e0":"97a7e742","47f4ef80":"97a7e742","d3134ce0":"4a7440dc","a8a7992e":"4a7440dc","15bf0197":"4a7440dc","51d48a46":"4a7440dc","fa11067d":"4a7440dc","b545aee6":"4a7440dc","87831fa5":"4a7440dc","37fe23d5":"4a7440dc","98dc116c":"4a7440dc","ec0f78d3":"4a7440dc","2cf2e6a2":"4a7440dc","ed9edf4d":"4a7440dc","343607e7":"4a7440dc","f9de1922":"4a7440dc","2f210ec1":"4a7440dc","91db12a8":"43d3c8a9"}}
+{
+  "uuid": "fb1bbec9-5de4-4f8d-a2f4-9c88133cff72",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 61,
+      "pts": 204,
+      "fouls": 51,
+      "fg": 90,
+      "ft": 12,
+      "threePt": 4,
+      "foulOuts": {
+        "7db274ec": 1
+      },
+      "maxGamePTS": 17,
+      "maxGameThreePt": 1,
+      "wins": 4,
+      "losses": 15,
+      "winPct": 0.18,
+      "draws": 3,
+      "statsChecked": "2026-07-05T16:04:55.850Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ee38043a",
+      "sn": "Autumn 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "9aa9ff76",
+          "tn": "And one ",
+          "gid": "faf255a1",
+          "gn": "Wed Mixed",
+          "stats": {
+            "gp": 10,
+            "pts": 36,
+            "fouls": 9,
+            "fg": 16,
+            "ft": 1,
+            "threePt": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5d019eb",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "533bf27d",
+          "tn": "Nothing But Net",
+          "gid": "1b2616e4",
+          "gn": "Wednesday Open Women",
+          "stats": {
+            "gp": 5,
+            "pts": 30,
+            "fouls": 3,
+            "fg": 13,
+            "ft": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7db274ec",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a9b78d34",
+          "tn": "Minions ",
+          "gid": "84646bf5",
+          "gn": "Tuesday Open Women",
+          "stats": {
+            "gp": 18,
+            "pts": 41,
+            "fouls": 22,
+            "fg": 18,
+            "ft": 2,
+            "threePt": 1,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 13,
+            "draws": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "11ee1c28",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "97a7e742",
+          "tn": "Nothing But Net",
+          "gid": "fe0adb30",
+          "gn": "Wednesday Open Women",
+          "stats": {
+            "gp": 12,
+            "pts": 30,
+            "fouls": 9,
+            "fg": 12,
+            "ft": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "4a7440dc",
+          "stats": {
+            "gp": 15,
+            "pts": 50,
+            "fg": 24,
+            "ft": 2,
+            "fouls": 7
+          },
+          "gid": "4859b189",
+          "gn": "Wednesday Open Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "11ee1c28",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4a7440dc",
+          "tn": "And One",
+          "gid": "4859b189",
+          "gn": "Wednesday Open Mixed",
+          "stats": {
+            "gp": 15,
+            "pts": 50,
+            "fouls": 7,
+            "fg": 24,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32cd834a",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "43d3c8a9",
+          "tn": "And One",
+          "gid": "704a8706",
+          "gn": "Wednesday Open Mixed",
+          "stats": {
+            "gp": 1,
+            "pts": 17,
+            "fouls": 1,
+            "fg": 7,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09b0ec21",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "463807c2",
+          "tn": "And One",
+          "gid": "27beb0d2",
+          "gn": "Wednesday Open Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "de237b2e",
+          "tn": "Nothing But Net",
+          "gid": "2aa419be",
+          "gn": "Wednesday Open Women",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:32.881Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "91db12a8",
+      "sid": "32cd834a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a85c5334",
+      "sid": "ee38043a"
+    }
+  },
+  "games": [
+    "01f1bca3",
+    "022912cc",
+    "033aeceb",
+    "06545671",
+    "07e6df95",
+    "0a0c35e0",
+    "0c31b384",
+    "15bf0197",
+    "15d2cc81",
+    "1debfbb2",
+    "2cf2e6a2",
+    "2f210ec1",
+    "30f50b98",
+    "3158239e",
+    "343607e7",
+    "37fe23d5",
+    "435fce02",
+    "47f4ef80",
+    "5091b51b",
+    "51d48a46",
+    "551ec860",
+    "55f7a10c",
+    "5925f811",
+    "629a4669",
+    "634c1aaa",
+    "66cb70e2",
+    "6c4e2d7e",
+    "71d47755",
+    "79960cd5",
+    "7c3054f1",
+    "87831fa5",
+    "8bc02893",
+    "90bdf581",
+    "91db12a8",
+    "98dc116c",
+    "996bc79e",
+    "a1e2eab6",
+    "a1eb81f5",
+    "a85c5334",
+    "a8a7992e",
+    "af9f52c5",
+    "b249e528",
+    "b545aee6",
+    "bbb5c36e",
+    "c2d684eb",
+    "cc299724",
+    "cdcd0b82",
+    "d2917a0c",
+    "d3134ce0",
+    "daa3aedf",
+    "dc3fc1b5",
+    "dc549b44",
+    "eb9dc408",
+    "ebb50890",
+    "ec0f78d3",
+    "ed9edf4d",
+    "f985f08d",
+    "f9de1922",
+    "fa11067d",
+    "fa34bfa3",
+    "ff32b3de"
+  ],
+  "name": "Autumn 2022",
+  "gameTids": {
+    "ebb50890": "9aa9ff76",
+    "629a4669": "9aa9ff76",
+    "dc3fc1b5": "9aa9ff76",
+    "55f7a10c": "9aa9ff76",
+    "79960cd5": "9aa9ff76",
+    "5091b51b": "9aa9ff76",
+    "1debfbb2": "9aa9ff76",
+    "a85c5334": "9aa9ff76",
+    "ff32b3de": "9aa9ff76",
+    "15d2cc81": "9aa9ff76",
+    "cdcd0b82": "533bf27d",
+    "daa3aedf": "533bf27d",
+    "7c3054f1": "533bf27d",
+    "435fce02": "533bf27d",
+    "c2d684eb": "533bf27d",
+    "634c1aaa": "a9b78d34",
+    "033aeceb": "a9b78d34",
+    "d2917a0c": "a9b78d34",
+    "fa34bfa3": "a9b78d34",
+    "022912cc": "a9b78d34",
+    "f985f08d": "a9b78d34",
+    "996bc79e": "a9b78d34",
+    "eb9dc408": "a9b78d34",
+    "af9f52c5": "a9b78d34",
+    "66cb70e2": "a9b78d34",
+    "01f1bca3": "a9b78d34",
+    "551ec860": "a9b78d34",
+    "8bc02893": "a9b78d34",
+    "a1e2eab6": "a9b78d34",
+    "dc549b44": "a9b78d34",
+    "5925f811": "a9b78d34",
+    "6c4e2d7e": "a9b78d34",
+    "bbb5c36e": "a9b78d34",
+    "0c31b384": "97a7e742",
+    "06545671": "97a7e742",
+    "cc299724": "97a7e742",
+    "3158239e": "97a7e742",
+    "90bdf581": "97a7e742",
+    "a1eb81f5": "97a7e742",
+    "71d47755": "97a7e742",
+    "30f50b98": "97a7e742",
+    "07e6df95": "97a7e742",
+    "b249e528": "97a7e742",
+    "0a0c35e0": "97a7e742",
+    "47f4ef80": "97a7e742",
+    "d3134ce0": "4a7440dc",
+    "a8a7992e": "4a7440dc",
+    "15bf0197": "4a7440dc",
+    "51d48a46": "4a7440dc",
+    "fa11067d": "4a7440dc",
+    "b545aee6": "4a7440dc",
+    "87831fa5": "4a7440dc",
+    "37fe23d5": "4a7440dc",
+    "98dc116c": "4a7440dc",
+    "ec0f78d3": "4a7440dc",
+    "2cf2e6a2": "4a7440dc",
+    "ed9edf4d": "4a7440dc",
+    "343607e7": "4a7440dc",
+    "f9de1922": "4a7440dc",
+    "2f210ec1": "4a7440dc",
+    "91db12a8": "43d3c8a9"
+  },
+  "teams": [
+    {
+      "tid": "9aa9ff76",
+      "sid": "ee38043a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "533bf27d",
+      "sid": "f5d019eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a9b78d34",
+      "sid": "7db274ec",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "97a7e742",
+      "sid": "11ee1c28",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4a7440dc",
+      "sid": "11ee1c28",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "43d3c8a9",
+      "sid": "32cd834a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "463807c2",
+      "sid": "09b0ec21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de237b2e",
+      "sid": "09b0ec21",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:31:53.671Z"
+}

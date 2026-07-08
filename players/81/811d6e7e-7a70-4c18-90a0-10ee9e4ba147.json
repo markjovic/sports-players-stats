@@ -1,1 +1,82 @@
-{"uuid":"811d6e7e-7a70-4c18-90a0-10ee9e4ba147","name":"Anthony Bourke","gender":"Boys","sports":{"Basketball":{"gp":6,"fouls":6,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":6,"winPct":0,"statsChecked":"2026-07-05T14:56:28.894Z"}},"seasons":[{"sid":"24f3a282","sn":"Winter 2026","club":"Vales Basketball Club","regs":[{"tid":"5cad8908","tn":"Vales B18 Cubs","gid":"2bec9d1b","gn":"Sunday U18 Boys C2","age":"U18","div":"C2","stats":{"gp":6,"fouls":6,"losses":6}}]}],"updatedAt":"2026-07-04T05:44:55.287Z","teams":[{"tid":"5cad8908","sid":"24f3a282","status":"ACTIVE"},{"tid":"6035b88a","sid":"913d1397","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:31.625Z","games":["45373973","46c54a1a","584a8041","b18e6c35","c8e9a370","cc08c916"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "811d6e7e-7a70-4c18-90a0-10ee9e4ba147",
+  "name": "Anthony Bourke",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "fouls": 6,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 6,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:56:28.894Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "24f3a282",
+      "sn": "Winter 2026",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "5cad8908",
+          "tn": "Vales B18 Cubs",
+          "gid": "2bec9d1b",
+          "gn": "Sunday U18 Boys C2",
+          "age": "U18",
+          "div": "C2",
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "6035b88a",
+          "tn": "Comets U14 Boys Lightning",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:55.287Z",
+  "teams": [
+    {
+      "tid": "5cad8908",
+      "sid": "24f3a282",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6035b88a",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T11:27:25.496Z",
+  "games": [
+    "45373973",
+    "46c54a1a",
+    "584a8041",
+    "b18e6c35",
+    "c8e9a370",
+    "cc08c916"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

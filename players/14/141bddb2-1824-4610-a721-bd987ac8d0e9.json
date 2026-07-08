@@ -1,1 +1,81 @@
-{"uuid":"141bddb2-1824-4610-a721-bd987ac8d0e9","name":"Mia Carnovale","sports":{"Basketball":{"maxGamePTS":14,"maxGameThreePt":1,"foulOuts":{},"gp":39,"pts":182,"fg":85,"ft":3,"threePt":3,"fouls":14,"statsChecked":"2026-07-07T18:26:00.662Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"21e8f959"}]},{"sid":"796936f7","regs":[{"tid":"6a484cd1"}]},{"sid":"880bda3c","regs":[{"tid":"1d71e83a"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":14,"gameKey":"111fdc5c","sid":"702b232f"},"maxGameThreePt":{"v":1,"gameKey":"55242c73","sid":"702b232f"}}}
+{
+  "uuid": "141bddb2-1824-4610-a721-bd987ac8d0e9",
+  "name": "Mia Carnovale",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 39,
+      "pts": 182,
+      "fg": 85,
+      "ft": 3,
+      "threePt": 3,
+      "fouls": 14,
+      "statsChecked": "2026-07-07T18:26:00.662Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "21e8f959",
+          "gid": "872db30d",
+          "gn": "Tuesday Women- Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "6a484cd1",
+          "gid": "eb3fc060",
+          "gn": "Tuesday Women- Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "1d71e83a",
+          "gid": "47b7c78c",
+          "gn": "Tuesday Women- Div 3R-4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "21e8f959",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a484cd1",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d71e83a",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "111fdc5c",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "55242c73",
+      "sid": "702b232f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T11:23:44.645Z"
+}
