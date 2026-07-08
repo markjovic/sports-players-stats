@@ -51,6 +51,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            data
+            scripts
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: gen
         env:
@@ -69,7 +74,9 @@ jobs:
               p = progress.get(shard, {})
               if not (p.get('done') == True and p.get('mode') == mode and not toks):
                   targets.append({'shard': shard, 'cursor': p.get('cursor', 0)})
-          print(f"::set-output name=targets::{json.dumps(targets)}")
+          
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write(f'targets={json.dumps(targets)}\n')
           PYEOF
 
   map:
@@ -86,6 +93,12 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data
+            players/${{ matrix.target.shard }}
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
@@ -101,6 +114,7 @@ jobs:
         with:
           name: discover-shard-${{ matrix.target.shard }}
           path: discover-shard-${{ matrix.target.shard }}.json
+          retention-days: 1
 
   reduce:
     needs: [generate-shards, map]
@@ -119,6 +133,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
@@ -143,28 +158,4 @@ jobs:
         with:
           name: undone-shards
           path: undone_shards.json
-
-  retrigger:
-    needs: reduce
-    if: success() && inputs.dry_run != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: undone-shards
-      - name: Trigger chain
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-        run: |
-          UNDONE=$(cat undone_shards.json)
-          if [ "$UNDONE" != '[]' ] && [ -n "$UNDONE" ] && [ "${{ inputs.run_number }}" -lt "${{ env.MAX_RUNS }}" ]; then
-             echo "↺ Re-triggering chain..."
-             gh workflow run discover-seasons-matrix.yml \
-               --repo "${{ github.repository }}" \
-               --field shards="$UNDONE" \
-               --field all_players="${{ inputs.all_players }}" \
-               --field backfill_teams="${{ inputs.backfill_teams }}" \
-               --field run_number="$((${{ inputs.run_number }} + 1))"
-          else
-             echo "All shards complete or max runs reached."
-          fi
+          retention-days: 1
