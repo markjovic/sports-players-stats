@@ -33,15 +33,15 @@
 //
 // Modes:
 //   node scripts/discover-seasons.js --shard=XX --cursor=N --out=discover-shard-XX.json
-//                                                      # MAP: burst-probe from cursor, stop dead at wall
+//                                                       # MAP: burst-probe from cursor, stop dead at wall
 //   node scripts/discover-seasons.js --reduce --in=<dir>
-//                                                      # REDUCE: merge artifacts + cursors → index + progress
-//   node scripts/discover-seasons.js --all-players   # (map) probe every player, not just current-season
-//   node scripts/discover-seasons.js                 # legacy standalone (single-IP AIMD; walls at scale)
-//   node scripts/discover-seasons.js --concurrency=N # burst batch size (shard) / AIMD cap (standalone), default 25
-//   node scripts/discover-seasons.js --uuid=<id>     # manual escape hatch: probe one player
-//   node scripts/discover-seasons.js --dry-run       # report only, no writes/commit
-//   node scripts/discover-seasons.js --backfill-teams # extract pre-season rosters into players/ and team-lookup/
+//                                                       # REDUCE: merge artifacts + cursors → index + progress
+//   node scripts/discover-seasons.js --all-players      # (map) probe every player, not just current-season
+//   node scripts/discover-seasons.js                    # legacy standalone (single-IP AIMD; walls at scale)
+//   node scripts/discover-seasons.js --concurrency=N    # burst batch size (shard) / AIMD cap (standalone), default 25
+//   node scripts/discover-seasons.js --uuid=<id>        # manual escape hatch: probe one player
+//   node scripts/discover-seasons.js --dry-run          # report only, no writes/commit
+//   node scripts/discover-seasons.js --backfill-teams   # extract pre-season rosters into players/ and team-lookup/
 //
 // PRODUCTION PATH is the sharded matrix (discover-seasons-matrix.yml): shard MAP jobs
 // each get a fresh runner IP, burst-probe until walled, save a cursor; a control loop
@@ -360,6 +360,7 @@ async function burstRun(items, concurrency, worker) {
 function gitCommit(msg, extraPaths = []) {
   if (DRY_RUN) return;
   try {
+    // FORCE ALL UPDATES to be staged (crucial for dynamically created player files)
     execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
     const staged = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
@@ -400,7 +401,7 @@ function doFetch(url, options) {
 }
 
 async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPaths = []) {
-  const { probed = 0, blockedEvents = 0, privateN = 0, errors = 0, t0 = Date.now() } = stats;
+  const { probed = 0, blockedEvents = 0, privateN = 0, errors = 0, t0 = Date.now(), playersWritten = 0, teamsWritten = 0 } = stats;
 
   let created = 0, removed = 0;
   const metaEntries = [...newSeasonMeta];
@@ -472,9 +473,10 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
     }
   }
 
-  if ((created > 0 || removed > 0 || refreshed > 0 || extraCommitPaths.length > 0) && !DRY_RUN) {
+  // FORCE COMMIT IF FILES WERE WRITTEN (Even if no new seasons found)
+  if ((created > 0 || removed > 0 || refreshed > 0 || playersWritten > 0 || teamsWritten > 0 || extraCommitPaths.length > 0) && !DRY_RUN) {
     if (created > 0 || removed > 0 || refreshed > 0) fs.writeFileSync(INDEX_FILE, JSON.stringify(index));
-    gitCommit(`discover-seasons: ${created} new + ${removed} removed + ${refreshed} grade-refreshed`, extraCommitPaths);
+    gitCommit(`discover-seasons: ${created} new, ${removed} removed, ${refreshed} refreshed, ${playersWritten} players updated`, extraCommitPaths);
   }
 
   console.log('\n─── Summary ─────────────────────────────────────────────────────────');
@@ -488,6 +490,10 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
   console.log(`  Seasons created       : ${created}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
   console.log(`  Removed stubs         : ${removed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
   console.log(`  Grade-refreshed       : ${refreshed}${DRY_RUN ? ' (dry-run — none written)' : ''}`);
+  if (playersWritten > 0 || teamsWritten > 0) {
+    console.log(`  Players persisted     : ${playersWritten}`);
+    console.log(`  Teams persisted       : ${teamsWritten}`);
+  }
   if (newSeasonMeta.size > created + removed) console.log(`  (${newSeasonMeta.size - created - removed} left for next run — grade resolution blocked)`);
   console.log('─'.repeat(60));
   if (created > 0) console.log('\nNext: roster-fill (piece 2) should run for the new season(s) until round 1 completes.');
@@ -521,7 +527,7 @@ async function main() {
     if (fs.existsSync(PROGRESS_FILE)) { try { progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); } catch { progress = {}; } }
 
     const merged = new Map();
-    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [];
+    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [], playersWritten = 0, teamsWritten = 0;
     for (const f of files) {
       let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
       shardProbed += a.probed || 0;
@@ -534,12 +540,37 @@ async function main() {
         progress[a.shard] = { mode: a.mode, cursor: a.cursor, total: a.total, done: a.done, updatedAt: a.at };
         if (a.done) doneCount++; else undoneShards.push(a.shard);
       }
+
+      // --- PERSISTENT WRITE LOGIC (Only runs in REDUCE where git is present) ---
+      if (a.playerUpdates && !DRY_RUN) {
+        for (const [uuid, player] of Object.entries(a.playerUpdates)) {
+          const root = process.env.GITHUB_WORKSPACE || process.cwd();
+          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
+          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+          fs.writeFileSync(path.join(targetDir, `${uuid}.json`), JSON.stringify(player, null, 2));
+          playersWritten++;
+        }
+      }
+      if (a.teamUpdates && !DRY_RUN) {
+        for (const [tid, team] of Object.entries(a.teamUpdates)) {
+          const root = process.env.GITHUB_WORKSPACE || process.cwd();
+          const tPath = path.join(root, 'team-lookup', 'bv', `${tid}.json`);
+          if (!fs.existsSync(path.dirname(tPath))) fs.mkdirSync(path.dirname(tPath), { recursive: true });
+          fs.writeFileSync(tPath, JSON.stringify(team, null, 2));
+          teamsWritten++;
+        }
+      }
     }
     console.log(`  Merged ${merged.size} distinct new season(s) across ${files.length} shard(s) (probed ${shardProbed}, wall hits ${wallHits}).`);
     console.log(`  Shard progress: ${doneCount} done, ${undoneShards.length} not yet complete this sweep.`);
+    if (playersWritten > 0 || teamsWritten > 0) {
+      console.log(`  Artifact data written to disk: ${playersWritten} players, ${teamsWritten} teams.`);
+    }
 
     if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
-    await applyDiscoveries(index, merged, { t0 }, [PROGRESS_FILE]);
+    
+    // Pass playersWritten into stats so applyDiscoveries knows to commit!
+    await applyDiscoveries(index, merged, { t0, playersWritten, teamsWritten }, [PROGRESS_FILE]);
 
     console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
     return;
@@ -633,6 +664,8 @@ async function main() {
     console.log(`  Shard total: ${total}  cursor: ${CURSOR}  remaining: ${toProbe.length}  burst concurrency: ${CONCURRENCY}`);
 
     const newSeasonMeta = new Map();
+    const playerUpdates = {}; // Added to hold updates in memory
+    const teamUpdates = {};   // Added to hold updates in memory
     let probed = 0, privateN = 0, errors = 0;
     const t0 = Date.now();
 
@@ -657,23 +690,18 @@ async function main() {
         for (const reg of r.teams || []) {
           const se = reg.season;
           const tm = { id: reg.id, name: reg.name };
-          // Debug print: This will show you exactly what ID is being processed
+          
           if (DEBUG_TEAMS) {
             console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
-            console.log(`  DEBUG: Team found in local file: ${!!found}`);
           }
 
           if (localPlayer) {
             let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
             if (seasonObj) {
               const found = seasonObj.regs.find(r => r.tid === tm.id);
-              if (DEBUG_TEAMS) {
-                console.log(`  DEBUG: Team found in local file: ${!!found}`);
-              }
+              if (DEBUG_TEAMS) console.log(`  DEBUG: Team found in local file: ${!!found}`);
             } else {
-              if (DEBUG_TEAMS) {
-                console.log(`  DEBUG: Season ${se.id} not found in player file.`);
-              }
+              if (DEBUG_TEAMS) console.log(`  DEBUG: Season ${se.id} not found in player file.`);
             }
           }
           if (!se?.id) continue;
@@ -689,14 +717,9 @@ async function main() {
             console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
           }
 
-          // 2. BACKFILL: Update Team Lookup Directory
+          // 2. BACKFILL: Update Team Lookup Directory IN MEMORY
           if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
-            const teamLookupPath = path.join(TEAM_LOOKUP_DIR, `${tm.id}.json`);
-            if (!fs.existsSync(teamLookupPath)) {
-              fs.writeFileSync(teamLookupPath, JSON.stringify({
-                id: tm.id, name: tm.name, seasonId: se.id 
-              }, null, 2));
-            }
+            teamUpdates[tm.id] = { id: tm.id, name: tm.name, seasonId: se.id };
           }
 
           // 3. BACKFILL: Update the local player's registrations
@@ -707,40 +730,29 @@ async function main() {
               localPlayer.seasons.push(seasonObj);
             }
             const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
-          if (!hasTeam) {
-            seasonObj.regs.push({
-              tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
-            });
-            fileModified = true;
-            console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
-          } else {
-            // Catch late grade allocations or grade changes
-            const newGid = reg.grade?.id || null;
-            if (newGid && hasTeam.gid !== newGid) {
-              hasTeam.gid = newGid;
-              hasTeam.gn = reg.grade?.name || null;
+            if (!hasTeam) {
+              seasonObj.regs.push({
+                tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
+              });
               fileModified = true;
-              console.log(`   🆙 Updated grade for ${localPlayer.name || uuid} in ${tm.name} to ${reg.grade?.name}`);
+              console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
+            } else {
+              // Catch late grade allocations or grade changes
+              const newGid = reg.grade?.id || null;
+              if (newGid && hasTeam.gid !== newGid) {
+                hasTeam.gid = newGid;
+                hasTeam.gn = reg.grade?.name || null;
+                fileModified = true;
+                console.log(`   🆙 Updated grade for ${localPlayer.name || uuid} in ${tm.name} to ${reg.grade?.name}`);
+              }
             }
-          }
           }
         }
 
+        // SAVE TO ARTIFACT BUCKET INSTEAD OF EPHEMERAL DISK
         if (fileModified && localPlayer && !DRY_RUN) {
           syncTeams(localPlayer);
-          const root = process.env.GITHUB_WORKSPACE || process.cwd();
-          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
-          const absolutePath = path.join(targetDir, `${uuid}.json`);
-
-          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-          fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
-          
-          // Diagnostic: verify existence immediately
-          if (fs.existsSync(absolutePath)) {
-            console.log(`  ✔ Verified write: ${absolutePath}`);
-          } else {
-            console.log(`  ✗ FAILED write: ${absolutePath}`);
-          }
+          playerUpdates[uuid] = localPlayer;
         }
       }
     });
@@ -753,7 +765,10 @@ async function main() {
     const discovered = Object.fromEntries(newSeasonMeta);
     const artifact = {
       shard: SHARD, mode: ALL_PLAYERS ? 'all' : 'current',
-      discovered, cursor: newCursor, total, done, wallHit,
+      discovered, 
+      playerUpdates, // Pushing updates to the JSON file
+      teamUpdates,   // Pushing updates to the JSON file
+      cursor: newCursor, total, done, wallHit,
       probed, private: privateN, errors, at: new Date().toISOString(),
     };
     fs.writeFileSync(OUT_FILE, JSON.stringify(artifact));
@@ -785,7 +800,7 @@ async function main() {
 
   const newSeasonMeta = new Map();
   let probed = 0, privateN = 0, errors = 0;
-  let probesSinceNew = 0, stop = false;
+  let probesSinceNew = 0, stop = false, playersWritten = 0, teamsWritten = 0;
 
   const total = probeList.length;
   const t0 = Date.now();
@@ -832,20 +847,15 @@ async function main() {
         const tm = { id: reg.id, name: reg.name };
           if (DEBUG_TEAMS) {
             console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
-            console.log(`  DEBUG: Team found in local file: ${!!found}`);
           }
 
           if (localPlayer) {
             let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
             if (seasonObj) {
               const found = seasonObj.regs.find(r => r.tid === tm.id);
-              if (DEBUG_TEAMS) {
-                console.log(`  DEBUG: Team found in local file: ${!!found}`);
-              }
+              if (DEBUG_TEAMS) console.log(`  DEBUG: Team found in local file: ${!!found}`);
             } else {
-              if (DEBUG_TEAMS) {
-                console.log(`  DEBUG: Season ${se.id} not found in player file.`);
-              }
+              if (DEBUG_TEAMS) console.log(`  DEBUG: Season ${se.id} not found in player file.`);
             }
           }
         if (!se?.id) continue;
@@ -862,13 +872,14 @@ async function main() {
           console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
         }
 
-        // 2. BACKFILL: Update Team Lookup Directory
+        // 2. BACKFILL: Update Team Lookup Directory (Direct Write for Standalone mode)
         if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
           const teamLookupPath = path.join(TEAM_LOOKUP_DIR, `${tm.id}.json`);
           if (!fs.existsSync(teamLookupPath)) {
             fs.writeFileSync(teamLookupPath, JSON.stringify({
               id: tm.id, name: tm.name, seasonId: se.id 
             }, null, 2));
+            teamsWritten++;
           }
         }
 
@@ -887,7 +898,6 @@ async function main() {
             fileModified = true;
             console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
           } else {
-            // Catch late grade allocations or grade changes
             const newGid = reg.grade?.id || null;
             if (newGid && hasTeam.gid !== newGid) {
               hasTeam.gid = newGid;
@@ -899,22 +909,17 @@ async function main() {
         }
       }
 
+      // Standalone writes directly to disk because it's running locally, not in an ephemeral container
       if (fileModified && localPlayer && !DRY_RUN) {
-          syncTeams(localPlayer);
-          const root = process.env.GITHUB_WORKSPACE || process.cwd();
-          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
-          const absolutePath = path.join(targetDir, `${uuid}.json`);
+        syncTeams(localPlayer);
+        const root = process.env.GITHUB_WORKSPACE || process.cwd();
+        const targetDir = path.join(root, 'players', uuid.substring(0, 2));
+        const absolutePath = path.join(targetDir, `${uuid}.json`);
 
-          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-          fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
-          
-          // Diagnostic: verify existence immediately
-          if (fs.existsSync(absolutePath)) {
-            console.log(`  ✔ Verified write: ${absolutePath}`);
-          } else {
-            console.log(`  ✗ FAILED write: ${absolutePath}`);
-          }
-        }
+        if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+        fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
+        playersWritten++;
+      }
     }
     
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
@@ -931,7 +936,8 @@ async function main() {
   });
   const blockedEvents = probeStats.blockedEvents;
 
-  await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0 });
+  // Pass tracking vars to applyDiscoveries
+  await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0, playersWritten, teamsWritten });
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
