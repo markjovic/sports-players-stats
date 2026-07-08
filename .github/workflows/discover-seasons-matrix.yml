@@ -1,3 +1,4 @@
+# .github/workflows/discover-seasons-matrix.yml
 name: Discover Seasons (Matrix)
 
 on:
@@ -121,34 +122,82 @@ jobs:
     needs: [generate-shards, map]
     if: always()
     runs-on: ubuntu-latest
-    concurrency:
-      group: data-write
-      cancel-in-progress: false
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download all shard artifacts
+        uses: actions/download-artifact@v4
         with:
           pattern: discover-shard-*
           path: /tmp/discoveries/
           merge-multiple: true
+
+      # Sparse checkout: only scripts + data for the reduce step.
+      # Player files are NOT checked out here — that happens in apply-and-commit.
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Merge and Commit
+
+      - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          node scripts/discover-seasons.js --reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }} | tee /tmp/reduce.log
-          
+
+      - name: Merge artifacts and resolve grades
+        run: |
+          node scripts/discover-seasons.js \
+            --reduce \
+            --in=/tmp/discoveries \
+            --concurrency=${{ inputs.concurrency }} \
+            ${{ inputs.dry_run == 'true' && '--dry-run' || '' }} \
+            | tee /tmp/reduce.log
+
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
           echo "${undone:-[]}" > undone_shards.json
 
-          export TOTAL_PLAYERS=$(git ls-files 'players/' | grep -c '\.json$')
+      # Commit the sports-index.json and progress file updates (small files, safe here)
+      - name: Commit index and progress
+        run: |
+          git add data/sports-index.json data/discover-progress.json
+          if git diff --staged --quiet; then
+            echo "No index/progress changes to commit."
+          else
+            git commit -m "discover-seasons: index + progress update (run ${{ inputs.run_number }})"
+            git fetch origin main
+            git merge -X ours FETCH_HEAD --no-edit
+            git push origin main
+            echo "Index/progress committed."
+          fi
 
+      - name: Upload manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: discover-reduce-manifest
+          path: discover-reduce-manifest.json
+          retention-days: 1
+          if-no-files-found: ignore
+
+      - name: Upload undone shards
+        uses: actions/upload-artifact@v4
+        with:
+          name: undone-shards
+          path: undone_shards.json
+          retention-days: 1
+          if-no-files-found: warn
+
+      - name: Report progress
+        run: |
+          export TOTAL_PLAYERS=$(git ls-files 'players/' | grep -c '\.json$' || echo 0)
           python3 - << 'PYEOF'
           import json, os
           if os.path.exists('data/discover-progress.json'):
@@ -158,7 +207,6 @@ jobs:
                   cursor_sum = sum(v.get('cursor', 0) for v in data.values())
                   total = int(os.environ.get('TOTAL_PLAYERS', 0))
                   pct = (cursor_sum / total * 100) if total > 0 else 0
-                  
                   print("\n========================================")
                   print("📊 MATRIX PROGRESS REPORT")
                   print(f"   Shards Complete : {done_count} / 256")
@@ -168,15 +216,135 @@ jobs:
                   print(f"Could not parse progress: {e}")
           PYEOF
 
-      - uses: actions/upload-artifact@v4
+  apply-and-commit:
+    needs: reduce
+    if: always()
+    runs-on: ubuntu-latest
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    timeout-minutes: 60
+    steps:
+      - name: Download manifest
+        uses: actions/download-artifact@v4
         with:
-          name: undone-shards
-          path: 'undone_shards.json'
-          retention-days: 1
-          if-no-files-found: warn
+          name: discover-reduce-manifest
+          path: /tmp/manifest/
+
+      - name: Check if anything to apply
+        id: check
+        run: |
+          manifest=/tmp/manifest/discover-reduce-manifest.json
+          if [ ! -f "$manifest" ]; then
+            echo "No manifest found — nothing to apply."
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          player_count=$(python3 -c "import json; d=json.load(open('$manifest')); print(d.get('playerCount',0))")
+          team_count=$(python3 -c "import json; d=json.load(open('$manifest')); print(d.get('teamCount',0))")
+          echo "Player updates: $player_count  Team updates: $team_count"
+          if [ "$player_count" -eq 0 ] && [ "$team_count" -eq 0 ]; then
+            echo "Nothing to apply."
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+            # Extract affected shard dirs for sparse checkout
+            python3 -c "
+          import json
+          d = json.load(open('$manifest'))
+          shards = d.get('affectedShards', [])
+          dirs = ['scripts', 'data', 'team-lookup'] + ['players/' + s for s in shards]
+          print('\n'.join(dirs))
+          " > /tmp/sparse-dirs.txt
+            echo "Sparse checkout dirs:"
+            cat /tmp/sparse-dirs.txt
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.has_updates == 'true'
+        with:
+          ref: main
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Expand sparse checkout to affected shards
+        if: steps.check.outputs.has_updates == 'true'
+        run: |
+          git sparse-checkout set --no-cone $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
+
+      - name: Configure git
+        if: steps.check.outputs.has_updates == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.has_updates == 'true'
+        with:
+          node-version: '20'
+
+      - name: Apply player and team file updates
+        if: steps.check.outputs.has_updates == 'true'
+        run: |
+          node - << 'JSEOF'
+          const fs   = require('fs');
+          const path = require('path');
+          const manifest = JSON.parse(fs.readFileSync('/tmp/manifest/discover-reduce-manifest.json', 'utf8'));
+          let playersWritten = 0, teamsWritten = 0, errors = 0;
+
+          for (const [uuid, player] of Object.entries(manifest.playerUpdates || {})) {
+            const dir  = path.join(process.cwd(), 'players', uuid.substring(0, 2));
+            const file = path.join(dir, `${uuid}.json`);
+            try {
+              if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+              fs.writeFileSync(file, JSON.stringify(player, null, 2));
+              playersWritten++;
+            } catch (e) {
+              console.error(`  ✗ failed to write player ${uuid}: ${e.message}`);
+              errors++;
+            }
+          }
+
+          for (const [tid, team] of Object.entries(manifest.teamUpdates || {})) {
+            const dir  = path.join(process.cwd(), 'team-lookup', 'bv');
+            const file = path.join(dir, `${tid}.json`);
+            try {
+              if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+              if (!fs.existsSync(file)) {
+                fs.writeFileSync(file, JSON.stringify(team, null, 2));
+                teamsWritten++;
+              }
+            } catch (e) {
+              console.error(`  ✗ failed to write team ${tid}: ${e.message}`);
+              errors++;
+            }
+          }
+
+          console.log(`Players written: ${playersWritten}`);
+          console.log(`Teams written:   ${teamsWritten}`);
+          console.log(`Errors:          ${errors}`);
+          if (errors > 0) process.exit(1);
+          JSEOF
+
+      - name: Commit and push
+        if: steps.check.outputs.has_updates == 'true'
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Nothing to commit (all files already up to date)."
+            exit 0
+          fi
+          count=$(git diff --staged --name-only | wc -l)
+          git commit -m "discover-seasons: backfill ${count} player/team files (run ${{ inputs.run_number }})"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git push origin main
+          echo "Committed and pushed: ${count} files"
 
   retrigger:
-    needs: reduce
+    needs: [reduce, apply-and-commit]
     if: always() && inputs.dry_run != 'true'
     runs-on: ubuntu-latest
     steps:
