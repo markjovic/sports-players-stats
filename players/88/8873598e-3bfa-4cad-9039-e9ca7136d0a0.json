@@ -1,1 +1,127 @@
-{"uuid":"8873598e-3bfa-4cad-9039-e9ca7136d0a0","name":"Jake Fernando","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":10,"fouls":5,"fg":5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"losses":6,"draws":4,"winPct":0.29,"wins":4,"statsChecked":"2026-07-05T14:56:30.062Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"0f2c75cf","tn":"U10 TIMBERWOLVES HAWKS","gid":"75d5ac8e","gn":"Saturday U10 Boys Section 10","age":"U10","div":null,"stats":{"gp":7,"fouls":5,"fg":5,"pts":10,"losses":3,"draws":2,"wins":2}},{"tid":"0f2c75cf","tn":"","gid":"e320df34","gn":"Saturday U10 Boys Section 11","div":null,"stats":{"gp":7,"pts":10,"fg":5,"fouls":5,"wins":2,"losses":3,"draws":2}}]}],"updatedAt":"2026-07-04T05:56:22.586Z","teams":[{"tid":"0f2c75cf","sid":"6c117270","status":"ACTIVE"},{"tid":"d1ca51b7","sid":"68279835","status":"COMPLETED"},{"tid":"5ddafd71","sid":"913d1397","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:25:10.274Z","records":{"maxGamePTS":{"v":4,"gameKey":"2c0aa2c1","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["03bfb140","2c0aa2c1","3d2526e5","58dcca4a","a4bb847f","abd2df93","b45d0638"]}
+{
+  "uuid": "8873598e-3bfa-4cad-9039-e9ca7136d0a0",
+  "name": "Jake Fernando",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 10,
+      "fouls": 5,
+      "fg": 5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 6,
+      "draws": 4,
+      "winPct": 0.29,
+      "wins": 4,
+      "statsChecked": "2026-07-05T14:56:30.062Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "0f2c75cf",
+          "tn": "U10 TIMBERWOLVES HAWKS",
+          "gid": "e320df34",
+          "gn": "Saturday U10 Boys Section 11",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "fg": 5,
+            "pts": 10,
+            "losses": 3,
+            "draws": 2,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "0f2c75cf",
+          "tn": "",
+          "gid": "e320df34",
+          "gn": "Saturday U10 Boys Section 11",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 5,
+            "wins": 2,
+            "losses": 3,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "d1ca51b7",
+          "tn": "U10 TIMBERWOLVES HAWKS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5ddafd71",
+          "tn": "U8 TIMBERWOLVES PYTHONS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:56:22.586Z",
+  "teams": [
+    {
+      "tid": "0f2c75cf",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d1ca51b7",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ddafd71",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:35:40.241Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "2c0aa2c1",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "03bfb140",
+    "2c0aa2c1",
+    "3d2526e5",
+    "58dcca4a",
+    "a4bb847f",
+    "abd2df93",
+    "b45d0638"
+  ]
+}

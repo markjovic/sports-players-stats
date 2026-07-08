@@ -1,1 +1,126 @@
-{"uuid":"27765642-1456-4ebb-999d-04648404234b","name":"Belinda Stone","gender":"Women","sports":{"Basketball":{"gp":15,"pts":50,"fouls":19,"fg":25,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"losses":15,"winPct":0,"statsChecked":"2026-07-05T15:47:09.300Z"}},"seasons":[{"sid":"d027552f","sn":"Summer 2025/26","regs":[{"tid":"86d9c1bf","tn":"Bay City Lakers Hot Shots ","gid":"7673d21d","gn":"Wednesday Senior Women D","age":"Senior","div":null,"stats":{"gp":7,"pts":22,"fg":11,"fouls":11,"losses":7}}]},{"sid":"d144cc7b","sn":"Winter 2025","regs":[{"tid":"0e1e24df","tn":"Bay City Lakers Hot Shots ","gid":"0cb7510e","gn":"Wednesday Senior Women C","age":"Senior","div":null,"stats":{"gp":7,"pts":26,"fg":13,"fouls":7,"losses":7}}]},{"sid":"dbda2023","regs":[{"tid":"98531123","stats":{"gp":1,"pts":2,"fg":1,"fouls":1,"losses":1}}]}],"updatedAt":"2026-06-02T01:35:24.850Z","teams":[{"tid":"98531123","sid":"dbda2023","status":"ACTIVE"},{"tid":"86d9c1bf","sid":"d027552f","status":"COMPLETED"},{"tid":"0e1e24df","sid":"d144cc7b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:21.109Z","records":{"maxGamePTS":{"v":10,"gameKey":"d780bd84","sid":"d144cc7b"},"maxGameThreePt":{"v":null}},"games":["35642b47","3a83ec8e","3f7549c5","3f9296e8","4f64f50e","5008aae8","5e711bba","6138ce91","631d8761","84baa3f4","a0a1d930","bbae7c4d","d780bd84","de837cf9","f0ea90d5"]}
+{
+  "uuid": "27765642-1456-4ebb-999d-04648404234b",
+  "name": "Belinda Stone",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 50,
+      "fouls": 19,
+      "fg": 25,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "losses": 15,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:47:09.300Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d027552f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "86d9c1bf",
+          "tn": "Bay City Lakers Hot Shots ",
+          "gid": "7673d21d",
+          "gn": "Wednesday Senior Women D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 22,
+            "fg": 11,
+            "fouls": 11,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d144cc7b",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "0e1e24df",
+          "tn": "Bay City Lakers Hot Shots ",
+          "gid": "0cb7510e",
+          "gn": "Wednesday Senior Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 26,
+            "fg": 13,
+            "fouls": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dbda2023",
+      "regs": [
+        {
+          "tid": "98531123",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1,
+            "losses": 1
+          },
+          "gid": "c032750d",
+          "gn": "Wednesday Senior Women D"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T01:35:24.850Z",
+  "teams": [
+    {
+      "tid": "86d9c1bf",
+      "sid": "d027552f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0e1e24df",
+      "sid": "d144cc7b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "98531123",
+      "sid": "dbda2023",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:30:18.226Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d780bd84",
+      "sid": "d144cc7b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "35642b47",
+    "3a83ec8e",
+    "3f7549c5",
+    "3f9296e8",
+    "4f64f50e",
+    "5008aae8",
+    "5e711bba",
+    "6138ce91",
+    "631d8761",
+    "84baa3f4",
+    "a0a1d930",
+    "bbae7c4d",
+    "d780bd84",
+    "de837cf9",
+    "f0ea90d5"
+  ]
+}

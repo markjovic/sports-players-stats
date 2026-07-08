@@ -1,1 +1,90 @@
-{"uuid":"254b4ec8-9c08-42e0-a001-10a1560e9dc1","name":"Maisie Nyariri","gender":"Girls","sports":{"Basketball":{"gp":8,"pts":4,"fouls":3,"fg":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":1,"losses":6,"winPct":0.14,"statsChecked":"2026-07-05T16:12:35.189Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"5deb7e21","tn":"Albert Park Dolphins","gid":"e456d5aa","gn":"Friday Year 1 Girls AP","age":null,"div":null,"stats":{"gp":8,"pts":4,"fg":2,"fouls":3,"wins":1,"losses":6}}]}],"updatedAt":"2026-07-04T05:44:04.427Z","teams":[{"tid":"5deb7e21","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:06:23.609Z","records":{"maxGamePTS":{"v":4,"gameKey":"2beb552f","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["2beb552f","62dd1a04","d90473ef","da140237","e35be18b","f20a4b53","f5a5ad29"]}
+{
+  "uuid": "254b4ec8-9c08-42e0-a001-10a1560e9dc1",
+  "name": "Maisie Nyariri",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 4,
+      "fouls": 3,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 6,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-05T16:12:35.189Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "5deb7e21",
+          "tn": "Albert Park Dolphins",
+          "gid": "e456d5aa",
+          "gn": "Friday Year 1 Girls AP",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "eb117a03",
+          "tn": "Albert Park Dolphins",
+          "gid": "e497420a",
+          "gn": "Friday Year 1 Girls C",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:04.427Z",
+  "teams": [
+    {
+      "tid": "5deb7e21",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eb117a03",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:29:56.102Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "2beb552f",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2beb552f",
+    "62dd1a04",
+    "d90473ef",
+    "da140237",
+    "e35be18b",
+    "f20a4b53",
+    "f5a5ad29"
+  ]
+}

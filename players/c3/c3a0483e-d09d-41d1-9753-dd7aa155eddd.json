@@ -1,1 +1,358 @@
-{"uuid":"c3a0483e-d09d-41d1-9753-dd7aa155eddd","name":"Jim Poulos","gender":"Mixed","sports":{"Basketball":{"gp":42,"pts":11,"fg":1,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":8,"losses":33,"winPct":0.2,"statsChecked":"2026-07-05T15:51:21.773Z"}},"seasons":[{"sid":"c054de6a","sn":"Summer 2024/25","regs":[{"tid":"93a83b99","tn":"Grizzlies","gid":"5b9755c8","gn":"Friday Open Mixed Championship","age":"Senior","div":null,"stats":{"gp":4,"wins":1,"losses":3}}]},{"sid":"8e9a9300","sn":"Winter 2024","regs":[{"tid":"e41c1394","tn":"Grizzlies","gid":"c9e46c3a","gn":"Friday Open Mixed Championship","age":"Senior","div":null,"stats":{"gp":1,"losses":1}}]},{"sid":"fd9782df","sn":"Summer 2023/24","regs":[{"tid":"86996414","tn":"Grizzlies","gid":"677576c7","gn":"Friday Open Mixed Championship","age":"Senior","div":null,"stats":{"gp":4,"wins":1,"losses":3}}]},{"sid":"4fb8d89f","sn":"Winter 2023","regs":[{"tid":"d35fa2cb","tn":"Grizzlies","gid":"b9f15fa8","gn":"Friday Open Mixed Championship","age":"Senior","div":null,"stats":{"gp":8,"pts":2,"wins":3,"losses":5}}]},{"sid":"eca19a31","sn":"Summer 2022/23","regs":[{"tid":"4fe6db05","tn":"Grizzlies","gid":"b58aac7f","gn":"Friday Open Mixed Championship","age":"Senior","div":null,"stats":{"gp":4,"losses":4}}]},{"sid":"3288249c","sn":"Winter 2022","regs":[{"tid":"5ae272fa","tn":"Grizzlies","gid":"f2b2570f","gn":"Friday Open Men Championship Men","age":"Senior","div":null,"stats":{"gp":7,"pts":5,"finals":1,"wins":2,"losses":5}}]},{"sid":"98fc6a8b","sn":"Summer 2021/22","regs":[{"tid":"b5272859","tn":"Grizzlies","gid":"4a28de69","gn":"Friday Open Men Championship Men","age":"Senior","div":null,"stats":{"gp":7,"fg":1,"pts":2,"finals":1,"wins":1,"losses":6}}]},{"sid":"0d21f7c1","sn":"Winter 2021","regs":[{"tid":"e1e3292d","tn":"Grizzlies","gid":"cd65a690","gn":"Friday Open Men Championship Men","age":"Senior","div":null,"stats":{"gp":5,"pts":2,"losses":5}},{"tid":"04fdf7db","tn":"Dukes","gid":"cd65a690","gn":"Friday Open Men Championship Men","age":"Senior","div":null,"stats":{"gp":2,"losses":1}}]}],"updatedAt":"2026-06-03T06:49:11.805Z","teams":[{"tid":"93a83b99","sid":"c054de6a","status":"COMPLETED"},{"tid":"e41c1394","sid":"8e9a9300","status":"COMPLETED"},{"tid":"86996414","sid":"fd9782df","status":"COMPLETED"},{"tid":"d35fa2cb","sid":"4fb8d89f","status":"COMPLETED"},{"tid":"4fe6db05","sid":"eca19a31","status":"COMPLETED"},{"tid":"5ae272fa","sid":"3288249c","status":"COMPLETED"},{"tid":"b5272859","sid":"98fc6a8b","status":"COMPLETED"},{"tid":"e1e3292d","sid":"0d21f7c1","status":"COMPLETED"},{"tid":"9ed28afb","sid":"150099e3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:48.029Z","records":{"maxGamePTS":{"v":5,"gameKey":"367c76ac","sid":"3288249c"},"maxGameThreePt":{"v":null}},"games":["024278c0","02682576","0a9fcad0","0d0d3a18","0d827eeb","0f2f58bb","1cd37ddc","1fb996a1","30908801","34d21e11","367c76ac","3bdf5ac4","3d1e1d49","3e7c6867","3f4f2e27","4d7c2666","5f02ce75","6d1c9988","6ef138e9","75ed53d6","77ebb7b7","832158e7","8400dc88","846704c4","8dff516c","a08dcbf4","a7aeb90e","a7dddbe4","b06d5e09","be93c2fa","bf607211","c293ccb9","c3464501","ca6e2c35","ddb3dd27","e003c423","e82a0e6e","e917cf4a","e9a09f5b","edfbf10b","f4da9d69","f54a618b"],"gameTids":{"30908801":"e1e3292d","be93c2fa":"93a83b99","5f02ce75":"93a83b99","ca6e2c35":"93a83b99","f54a618b":"93a83b99","e82a0e6e":"e41c1394","3d1e1d49":"86996414","832158e7":"86996414","3f4f2e27":"86996414","1fb996a1":"86996414","e917cf4a":"d35fa2cb","8400dc88":"d35fa2cb","4d7c2666":"d35fa2cb","3e7c6867":"d35fa2cb","e9a09f5b":"d35fa2cb","846704c4":"d35fa2cb","75ed53d6":"d35fa2cb","0d827eeb":"d35fa2cb","1cd37ddc":"4fe6db05","edfbf10b":"4fe6db05","c293ccb9":"4fe6db05","02682576":"4fe6db05","6ef138e9":"5ae272fa","8dff516c":"5ae272fa","0a9fcad0":"5ae272fa","f4da9d69":"5ae272fa","c3464501":"5ae272fa","367c76ac":"5ae272fa","024278c0":"5ae272fa","6d1c9988":"b5272859","a08dcbf4":"b5272859","ddb3dd27":"b5272859","3bdf5ac4":"b5272859","b06d5e09":"b5272859","bf607211":"b5272859","e003c423":"b5272859","34d21e11":"e1e3292d","77ebb7b7":"e1e3292d","0f2f58bb":"e1e3292d","a7aeb90e":"e1e3292d","0d0d3a18":"04fdf7db","a7dddbe4":"04fdf7db"}}
+{
+  "uuid": "c3a0483e-d09d-41d1-9753-dd7aa155eddd",
+  "name": "Jim Poulos",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 11,
+      "fg": 1,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 33,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:51:21.773Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c054de6a",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "93a83b99",
+          "tn": "Grizzlies",
+          "gid": "5b9755c8",
+          "gn": "Friday Open Mixed Championship",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e9a9300",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "e41c1394",
+          "tn": "Grizzlies",
+          "gid": "c9e46c3a",
+          "gn": "Friday Open Mixed Championship",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fd9782df",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "86996414",
+          "tn": "Grizzlies",
+          "gid": "677576c7",
+          "gn": "Friday Open Mixed Championship",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4fb8d89f",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "d35fa2cb",
+          "tn": "Grizzlies",
+          "gid": "b9f15fa8",
+          "gn": "Friday Open Mixed Championship",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 2,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eca19a31",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "4fe6db05",
+          "tn": "Grizzlies",
+          "gid": "b58aac7f",
+          "gn": "Friday Open Mixed Championship",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3288249c",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "5ae272fa",
+          "tn": "Grizzlies",
+          "gid": "f2b2570f",
+          "gn": "Friday Open Men Championship Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 5,
+            "finals": 1,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98fc6a8b",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "b5272859",
+          "tn": "Grizzlies",
+          "gid": "4a28de69",
+          "gn": "Friday Open Men Championship Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0d21f7c1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "e1e3292d",
+          "tn": "Grizzlies",
+          "gid": "cd65a690",
+          "gn": "Friday Open Men Championship Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 2,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "04fdf7db",
+          "tn": "Dukes",
+          "gid": "cd65a690",
+          "gn": "Friday Open Men Championship Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "150099e3",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "9ed28afb",
+          "tn": "Dukes",
+          "gid": "72011e60",
+          "gn": "Championship Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T06:49:11.805Z",
+  "teams": [
+    {
+      "tid": "93a83b99",
+      "sid": "c054de6a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e41c1394",
+      "sid": "8e9a9300",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "86996414",
+      "sid": "fd9782df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d35fa2cb",
+      "sid": "4fb8d89f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4fe6db05",
+      "sid": "eca19a31",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ae272fa",
+      "sid": "3288249c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5272859",
+      "sid": "98fc6a8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1e3292d",
+      "sid": "0d21f7c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "04fdf7db",
+      "sid": "0d21f7c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ed28afb",
+      "sid": "150099e3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:38:04.059Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "367c76ac",
+      "sid": "3288249c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "024278c0",
+    "02682576",
+    "0a9fcad0",
+    "0d0d3a18",
+    "0d827eeb",
+    "0f2f58bb",
+    "1cd37ddc",
+    "1fb996a1",
+    "30908801",
+    "34d21e11",
+    "367c76ac",
+    "3bdf5ac4",
+    "3d1e1d49",
+    "3e7c6867",
+    "3f4f2e27",
+    "4d7c2666",
+    "5f02ce75",
+    "6d1c9988",
+    "6ef138e9",
+    "75ed53d6",
+    "77ebb7b7",
+    "832158e7",
+    "8400dc88",
+    "846704c4",
+    "8dff516c",
+    "a08dcbf4",
+    "a7aeb90e",
+    "a7dddbe4",
+    "b06d5e09",
+    "be93c2fa",
+    "bf607211",
+    "c293ccb9",
+    "c3464501",
+    "ca6e2c35",
+    "ddb3dd27",
+    "e003c423",
+    "e82a0e6e",
+    "e917cf4a",
+    "e9a09f5b",
+    "edfbf10b",
+    "f4da9d69",
+    "f54a618b"
+  ],
+  "gameTids": {
+    "30908801": "e1e3292d",
+    "be93c2fa": "93a83b99",
+    "5f02ce75": "93a83b99",
+    "ca6e2c35": "93a83b99",
+    "f54a618b": "93a83b99",
+    "e82a0e6e": "e41c1394",
+    "3d1e1d49": "86996414",
+    "832158e7": "86996414",
+    "3f4f2e27": "86996414",
+    "1fb996a1": "86996414",
+    "e917cf4a": "d35fa2cb",
+    "8400dc88": "d35fa2cb",
+    "4d7c2666": "d35fa2cb",
+    "3e7c6867": "d35fa2cb",
+    "e9a09f5b": "d35fa2cb",
+    "846704c4": "d35fa2cb",
+    "75ed53d6": "d35fa2cb",
+    "0d827eeb": "d35fa2cb",
+    "1cd37ddc": "4fe6db05",
+    "edfbf10b": "4fe6db05",
+    "c293ccb9": "4fe6db05",
+    "02682576": "4fe6db05",
+    "6ef138e9": "5ae272fa",
+    "8dff516c": "5ae272fa",
+    "0a9fcad0": "5ae272fa",
+    "f4da9d69": "5ae272fa",
+    "c3464501": "5ae272fa",
+    "367c76ac": "5ae272fa",
+    "024278c0": "5ae272fa",
+    "6d1c9988": "b5272859",
+    "a08dcbf4": "b5272859",
+    "ddb3dd27": "b5272859",
+    "3bdf5ac4": "b5272859",
+    "b06d5e09": "b5272859",
+    "bf607211": "b5272859",
+    "e003c423": "b5272859",
+    "34d21e11": "e1e3292d",
+    "77ebb7b7": "e1e3292d",
+    "0f2f58bb": "e1e3292d",
+    "a7aeb90e": "e1e3292d",
+    "0d0d3a18": "04fdf7db",
+    "a7dddbe4": "04fdf7db"
+  }
+}

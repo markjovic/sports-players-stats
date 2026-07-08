@@ -1,1 +1,265 @@
-{"uuid":"c2ac00a1-a359-4cae-b591-543059153e43","name":"James Pennington","gender":"Men","sports":{"Basketball":{"gp":42,"pts":117,"fouls":70,"fg":48,"ft":9,"threePt":4,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"307cebbc":2},"maxGamePTS":20,"maxGameThreePt":1,"wins":16,"losses":41,"winPct":0.28,"statsChecked":"2026-07-07T18:29:44.022Z"}},"seasons":[{"sid":"307cebbc","sn":"Autumn 2026","regs":[{"tid":"b6cbcf95","tn":"The Kings","gid":"afcee9bd","gn":"Thursday Open Men D Grade","age":"Senior","div":null,"stats":{"gp":5,"fouls":7,"fg":6,"pts":12,"losses":5}},{"tid":"1ea2d072","stats":{"wins":4,"losses":14,"gp":19,"pts":31,"fg":12,"ft":4,"threePt":1,"fouls":34}}]},{"sid":"307cebbc","sn":"Autumn 2026","regs":[{"tid":"1ea2d072","tn":"The Silver Surfers","gid":"8f39abe3","gn":"Tuesday Open Men B Grade","age":"Senior","div":null,"stats":{"gp":19,"fouls":34,"ft":4,"fg":12,"threePt":1,"pts":31,"foulOuts":2,"wins":4,"losses":14}}]},{"sid":"1eae7c99","sn":"Winter 2023","regs":[{"tid":"ab4d3325","tn":"Ball Handlerd","gid":"65f9f9c3","gn":"Sunday U20 Boys 3","age":"U20","div":null,"stats":{"gp":16,"fouls":29,"ft":5,"fg":30,"threePt":2,"pts":71,"finals":1,"gfApps":1,"wins":8,"losses":8}}]},{"sid":"c2468a21","regs":[{"tid":"4cb28ad0","stats":{"gp":2,"pts":3,"threePt":1}},{"tid":"4cb28ad0","tn":"","gid":"005853ac","gn":"Tuesday Open Men C Grade","div":null,"stats":{"gp":2,"pts":3,"threePt":1}}]}],"updatedAt":"2026-07-07T18:05:13.916Z","teams":[{"tid":"b6cbcf95","sid":"307cebbc","status":"ACTIVE"},{"tid":"1ea2d072","sid":"307cebbc","status":"ACTIVE"},{"tid":"ab4d3325","sid":"1eae7c99","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:22.293Z","records":{"maxGamePTS":{"v":20,"gameKey":"d40e08a8","sid":"1eae7c99"},"maxGameThreePt":{"v":1,"gameKey":"e137ef47","sid":"c2468a21"}},"games":["056c73f9","084472cd","0b9e622b","0bcb3ca0","11f91e1b","1356fde0","1c0a697b","27de41c7","2a006c8d","2a25d6b2","3c9b2cca","4c37184e","4cc60705","50f23d92","6095097a","627a1258","68302d97","7087d1ad","716dd985","717fa35c","77f09fc9","82cafadd","9a3c3083","a0dd6be2","a24229e4","a58a4db3","ab2ec816","aefb24aa","c73f8710","d0eed6cd","d40e08a8","d7f73726","d949ffa1","db41c0bb","dc4b7063","e520dab9","f03de830","f4ea17eb","fd114a9a"],"gameTids":{"e137ef47":"4cb28ad0","9915149b":"4cb28ad0","ab2ec816":"b6cbcf95","6095097a":"b6cbcf95","a0dd6be2":"b6cbcf95","aefb24aa":"b6cbcf95","c73f8710":"b6cbcf95","81e1de26":"1ea2d072","2a25d6b2":"1ea2d072","d0eed6cd":"1ea2d072","0bcb3ca0":"1ea2d072","084472cd":"1ea2d072","9a3c3083":"1ea2d072","a58a4db3":"1ea2d072","82cafadd":"1ea2d072","4c37184e":"1ea2d072","fd114a9a":"1ea2d072","1356fde0":"1ea2d072","3c9b2cca":"1ea2d072","11f91e1b":"1ea2d072","f03de830":"1ea2d072","1c0a697b":"1ea2d072","d7f73726":"1ea2d072","627a1258":"1ea2d072","68302d97":"1ea2d072","27de41c7":"1ea2d072","056c73f9":"ab4d3325","f4ea17eb":"ab4d3325","db41c0bb":"ab4d3325","716dd985":"ab4d3325","d40e08a8":"ab4d3325","50f23d92":"ab4d3325","7087d1ad":"ab4d3325","dc4b7063":"ab4d3325","a24229e4":"ab4d3325","77f09fc9":"ab4d3325","d949ffa1":"ab4d3325","2a006c8d":"ab4d3325","e520dab9":"ab4d3325","717fa35c":"ab4d3325","4cc60705":"ab4d3325","0b9e622b":"ab4d3325"}}
+{
+  "uuid": "c2ac00a1-a359-4cae-b591-543059153e43",
+  "name": "James Pennington",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 117,
+      "fouls": 70,
+      "fg": 48,
+      "ft": 9,
+      "threePt": 4,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "307cebbc": 2
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": 1,
+      "wins": 16,
+      "losses": 41,
+      "winPct": 0.28,
+      "statsChecked": "2026-07-07T18:29:44.022Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "b6cbcf95",
+          "tn": "The Kings",
+          "gid": "afcee9bd",
+          "gn": "Thursday Open Men D Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "fg": 6,
+            "pts": 12,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "1ea2d072",
+          "stats": {
+            "wins": 4,
+            "losses": 14,
+            "gp": 19,
+            "pts": 31,
+            "fg": 12,
+            "ft": 4,
+            "threePt": 1,
+            "fouls": 34
+          },
+          "gid": "8f39abe3",
+          "gn": "Tuesday Open Men B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "1ea2d072",
+          "tn": "The Silver Surfers",
+          "gid": "8f39abe3",
+          "gn": "Tuesday Open Men B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 34,
+            "ft": 4,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 31,
+            "foulOuts": 2,
+            "wins": 4,
+            "losses": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1eae7c99",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "ab4d3325",
+          "tn": "Ball Handlerd",
+          "gid": "65f9f9c3",
+          "gn": "Sunday U20 Boys 3",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 29,
+            "ft": 5,
+            "fg": 30,
+            "threePt": 2,
+            "pts": 71,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "4cb28ad0",
+          "stats": {
+            "gp": 2,
+            "pts": 3,
+            "threePt": 1
+          },
+          "gid": "005853ac",
+          "gn": "Tuesday Open Men C Grade"
+        },
+        {
+          "tid": "4cb28ad0",
+          "tn": "",
+          "gid": "005853ac",
+          "gn": "Tuesday Open Men C Grade",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 3,
+            "threePt": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:13.916Z",
+  "teams": [
+    {
+      "tid": "b6cbcf95",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ea2d072",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab4d3325",
+      "sid": "1eae7c99",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4cb28ad0",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:37:52.798Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "d40e08a8",
+      "sid": "1eae7c99"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "e137ef47",
+      "sid": "c2468a21"
+    }
+  },
+  "games": [
+    "056c73f9",
+    "084472cd",
+    "0b9e622b",
+    "0bcb3ca0",
+    "11f91e1b",
+    "1356fde0",
+    "1c0a697b",
+    "27de41c7",
+    "2a006c8d",
+    "2a25d6b2",
+    "3c9b2cca",
+    "4c37184e",
+    "4cc60705",
+    "50f23d92",
+    "6095097a",
+    "627a1258",
+    "68302d97",
+    "7087d1ad",
+    "716dd985",
+    "717fa35c",
+    "77f09fc9",
+    "82cafadd",
+    "9a3c3083",
+    "a0dd6be2",
+    "a24229e4",
+    "a58a4db3",
+    "ab2ec816",
+    "aefb24aa",
+    "c73f8710",
+    "d0eed6cd",
+    "d40e08a8",
+    "d7f73726",
+    "d949ffa1",
+    "db41c0bb",
+    "dc4b7063",
+    "e520dab9",
+    "f03de830",
+    "f4ea17eb",
+    "fd114a9a"
+  ],
+  "gameTids": {
+    "e137ef47": "4cb28ad0",
+    "9915149b": "4cb28ad0",
+    "ab2ec816": "b6cbcf95",
+    "6095097a": "b6cbcf95",
+    "a0dd6be2": "b6cbcf95",
+    "aefb24aa": "b6cbcf95",
+    "c73f8710": "b6cbcf95",
+    "81e1de26": "1ea2d072",
+    "2a25d6b2": "1ea2d072",
+    "d0eed6cd": "1ea2d072",
+    "0bcb3ca0": "1ea2d072",
+    "084472cd": "1ea2d072",
+    "9a3c3083": "1ea2d072",
+    "a58a4db3": "1ea2d072",
+    "82cafadd": "1ea2d072",
+    "4c37184e": "1ea2d072",
+    "fd114a9a": "1ea2d072",
+    "1356fde0": "1ea2d072",
+    "3c9b2cca": "1ea2d072",
+    "11f91e1b": "1ea2d072",
+    "f03de830": "1ea2d072",
+    "1c0a697b": "1ea2d072",
+    "d7f73726": "1ea2d072",
+    "627a1258": "1ea2d072",
+    "68302d97": "1ea2d072",
+    "27de41c7": "1ea2d072",
+    "056c73f9": "ab4d3325",
+    "f4ea17eb": "ab4d3325",
+    "db41c0bb": "ab4d3325",
+    "716dd985": "ab4d3325",
+    "d40e08a8": "ab4d3325",
+    "50f23d92": "ab4d3325",
+    "7087d1ad": "ab4d3325",
+    "dc4b7063": "ab4d3325",
+    "a24229e4": "ab4d3325",
+    "77f09fc9": "ab4d3325",
+    "d949ffa1": "ab4d3325",
+    "2a006c8d": "ab4d3325",
+    "e520dab9": "ab4d3325",
+    "717fa35c": "ab4d3325",
+    "4cc60705": "ab4d3325",
+    "0b9e622b": "ab4d3325"
+  }
+}

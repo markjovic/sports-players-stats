@@ -1,1 +1,321 @@
-{"uuid":"0b6835c0-cb94-45d0-ac10-12e006bcfc17","name":"Ronan Griffin","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":154,"fouls":74,"fg":74,"ft":6,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":12,"maxGameThreePt":null,"wins":60,"winPct":0.44,"losses":73,"draws":3,"statsChecked":"2026-07-05T14:53:17.829Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Beaumaris Sharks Basketball Club","regs":[]},{"sid":"310d356a","sn":"2026","regs":[{"tid":"fe124333","tn":"Beaumaris Ballers ","gid":"cc93365a","gn":"U10 Boys D Grade","age":"U10","div":null,"stats":{"gp":4,"pts":16,"fg":8,"fouls":12,"losses":4}}]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Beaumaris Sharks Basketball Club","regs":[{"tid":"9614e8f5","tn":"Sharks U10 Boys Hammerheads","gid":"0afee9ae","gn":"Thursday U10 Boys B2 Grade","age":"U10","div":null,"stats":{"gp":19,"pts":66,"fg":32,"ft":2,"fouls":41,"wins":9,"losses":9}},{"tid":"9614e8f5","tn":"Sharks U10 Boys Hammerheads","gid":"1c8b45de","gn":"Thursday U10 Boys C1 Grade","age":"U10","div":null,"stats":{"gp":19,"wins":9,"losses":9,"pts":66,"fg":32,"ft":2,"fouls":41}}]},{"sid":"e830df83","sn":"Spring 2025","club":"Beaumaris Sharks Basketball Club","regs":[{"tid":"4e0e215c","tn":"Sharks U9 Boys Hammerheads","gid":"637048f4","gn":"Friday U9 Boys Full Height B1","age":"U9","div":"B1","stats":{"gp":16,"pts":39,"fg":19,"ft":1,"fouls":11,"wins":7,"losses":8,"draws":1}},{"tid":"4e0e215c","tn":"Sharks U9 Boys Hammerheads","gid":"ba2cd357","gn":"Friday U9 Boys Full Height A","age":"U9","div":null,"stats":{"gp":16,"pts":39,"fg":19,"wins":7,"losses":8,"draws":1,"ft":1,"fouls":11}},{"tid":"4e0e215c","tn":"Sharks U9 Boys Hammerheads","gid":"4c793917","gn":"Friday U9 Boys - Do not use","age":"U9","div":null,"stats":{"gp":16,"pts":39,"fg":19,"wins":7,"losses":8,"draws":1,"ft":1,"fouls":11}}]},{"sid":"38710f3b","sn":"Autumn 2025","club":"Beaumaris Sharks Basketball Club","regs":[{"tid":"dfc9efdd","tn":"Sharks U9 Boys Hammerheads","gid":"ba522299","gn":"Friday U9 Boys Modified A Grade","age":"U9","div":null,"stats":{"gp":16,"pts":33,"fg":15,"ft":3,"fouls":10,"finals":1,"wins":7,"losses":9}},{"tid":"dfc9efdd","tn":"Sharks U9 Boys Hammerheads","gid":"5951e314","gn":"Friday U9 Boys Full Height B Grade","age":"U9","div":null,"stats":{"gp":16,"finals":1,"wins":7,"losses":9,"pts":33,"fg":15,"ft":3,"fouls":10}},{"tid":"dfc9efdd","tn":"Sharks U9 Boys Hammerheads","gid":"9435825a","gn":"Friday U9 Boys Full Height A Grade","age":"U9","div":null,"stats":{"gp":16,"pts":33,"ft":3,"finals":1,"wins":7,"losses":9,"fg":15,"fouls":10}}]}],"updatedAt":"2026-07-04T05:43:02.296Z","teams":[{"tid":"9614e8f5","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"fe124333","sid":"310d356a","status":"COMPLETED"},{"tid":"4e0e215c","sid":"e830df83","status":"COMPLETED"},{"tid":"dfc9efdd","sid":"38710f3b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:15.564Z","records":{"maxGamePTS":{"v":12,"gameKey":"0598179d","sid":"e830df83"},"maxGameThreePt":{"v":null}},"games":["0598179d","07e7a56a","0dc0ebf6","10f6a89e","1476a974","14b7a38b","19b727b6","19fa0c95","1ae3ea86","293351cd","2aa4754c","31f62a23","3202dc2c","3506ff9a","36c9a62a","3ed9cd49","41b8c40a","4336a4c2","4d88d416","50b475ab","59d58aa4","5cabe47e","5e2e7e84","628ffb7f","6d9852e1","6ff30db2","76e5e942","7be02a87","7eab931a","80fbf0d9","83230aa3","8418020b","84fc3bad","8771883f","8e7a468a","90065dbb","903d5142","9300f258","94799c5d","9d100675","a278e273","a422612d","ad26cdda","b9719690","c2fc8060","d24e3ddd","da09d589","dc19c8fc","de342755","e85a8719","eebdfca8","f4db2668","f5e8966b","ff31ad87"]}
+{
+  "uuid": "0b6835c0-cb94-45d0-ac10-12e006bcfc17",
+  "name": "Ronan Griffin",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 154,
+      "fouls": 74,
+      "fg": 74,
+      "ft": 6,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 60,
+      "winPct": 0.44,
+      "losses": 73,
+      "draws": 3,
+      "statsChecked": "2026-07-05T14:53:17.829Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Beaumaris Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "a0008355",
+          "tn": "Sharks U10 Boys Hammerheads",
+          "gid": "9ffba725",
+          "gn": "Thursday U10 Boys B2 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "310d356a",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "fe124333",
+          "tn": "Beaumaris Ballers ",
+          "gid": "cc93365a",
+          "gn": "U10 Boys D Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 12,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Beaumaris Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "9614e8f5",
+          "tn": "Sharks U10 Boys Hammerheads",
+          "gid": "0afee9ae",
+          "gn": "Thursday U10 Boys B2 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 66,
+            "fg": 32,
+            "ft": 2,
+            "fouls": 41,
+            "wins": 9,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "9614e8f5",
+          "tn": "Sharks U10 Boys Hammerheads",
+          "gid": "1c8b45de",
+          "gn": "Thursday U10 Boys C1 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "wins": 9,
+            "losses": 9,
+            "pts": 66,
+            "fg": 32,
+            "ft": 2,
+            "fouls": 41
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e830df83",
+      "sn": "Spring 2025",
+      "club": "Beaumaris Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "4e0e215c",
+          "tn": "Sharks U9 Boys Hammerheads",
+          "gid": "637048f4",
+          "gn": "Friday U9 Boys Full Height B1",
+          "age": "U9",
+          "div": "B1",
+          "stats": {
+            "gp": 16,
+            "pts": 39,
+            "fg": 19,
+            "ft": 1,
+            "fouls": 11,
+            "wins": 7,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "4e0e215c",
+          "tn": "Sharks U9 Boys Hammerheads",
+          "gid": "ba2cd357",
+          "gn": "Friday U9 Boys Full Height A",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 39,
+            "fg": 19,
+            "wins": 7,
+            "losses": 8,
+            "draws": 1,
+            "ft": 1,
+            "fouls": 11
+          }
+        },
+        {
+          "tid": "4e0e215c",
+          "tn": "Sharks U9 Boys Hammerheads",
+          "gid": "4c793917",
+          "gn": "Friday U9 Boys - Do not use",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 39,
+            "fg": 19,
+            "wins": 7,
+            "losses": 8,
+            "draws": 1,
+            "ft": 1,
+            "fouls": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38710f3b",
+      "sn": "Autumn 2025",
+      "club": "Beaumaris Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "dfc9efdd",
+          "tn": "Sharks U9 Boys Hammerheads",
+          "gid": "ba522299",
+          "gn": "Friday U9 Boys Modified A Grade",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 33,
+            "fg": 15,
+            "ft": 3,
+            "fouls": 10,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "dfc9efdd",
+          "tn": "Sharks U9 Boys Hammerheads",
+          "gid": "5951e314",
+          "gn": "Friday U9 Boys Full Height B Grade",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9,
+            "pts": 33,
+            "fg": 15,
+            "ft": 3,
+            "fouls": 10
+          }
+        },
+        {
+          "tid": "dfc9efdd",
+          "tn": "Sharks U9 Boys Hammerheads",
+          "gid": "9435825a",
+          "gn": "Friday U9 Boys Full Height A Grade",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 33,
+            "ft": 3,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9,
+            "fg": 15,
+            "fouls": 10
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:02.296Z",
+  "teams": [
+    {
+      "tid": "a0008355",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe124333",
+      "sid": "310d356a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9614e8f5",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e0e215c",
+      "sid": "e830df83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dfc9efdd",
+      "sid": "38710f3b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:29:18.747Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "0598179d",
+      "sid": "e830df83"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0598179d",
+    "07e7a56a",
+    "0dc0ebf6",
+    "10f6a89e",
+    "1476a974",
+    "14b7a38b",
+    "19b727b6",
+    "19fa0c95",
+    "1ae3ea86",
+    "293351cd",
+    "2aa4754c",
+    "31f62a23",
+    "3202dc2c",
+    "3506ff9a",
+    "36c9a62a",
+    "3ed9cd49",
+    "41b8c40a",
+    "4336a4c2",
+    "4d88d416",
+    "50b475ab",
+    "59d58aa4",
+    "5cabe47e",
+    "5e2e7e84",
+    "628ffb7f",
+    "6d9852e1",
+    "6ff30db2",
+    "76e5e942",
+    "7be02a87",
+    "7eab931a",
+    "80fbf0d9",
+    "83230aa3",
+    "8418020b",
+    "84fc3bad",
+    "8771883f",
+    "8e7a468a",
+    "90065dbb",
+    "903d5142",
+    "9300f258",
+    "94799c5d",
+    "9d100675",
+    "a278e273",
+    "a422612d",
+    "ad26cdda",
+    "b9719690",
+    "c2fc8060",
+    "d24e3ddd",
+    "da09d589",
+    "dc19c8fc",
+    "de342755",
+    "e85a8719",
+    "eebdfca8",
+    "f4db2668",
+    "f5e8966b",
+    "ff31ad87"
+  ]
+}

@@ -1,1 +1,300 @@
-{"uuid":"175f0259-aa1c-4fed-ae0d-525d80045bc8","name":"Kristie Gillardeau","gender":"Women","sports":{"Basketball":{"gp":40,"pts":211,"fouls":37,"fg":99,"ft":10,"threePt":1,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":18,"maxGameThreePt":1,"losses":31,"winPct":0.46,"wins":28,"draws":2,"statsChecked":"2026-07-05T15:59:31.864Z"}},"seasons":[{"sid":"38466a15","sn":"Winter 2026","regs":[{"tid":"91784365","tn":"Baller Babes ","gid":"c6ebec1c","gn":"Monday Senior Women Division 1","age":"Senior","div":"Division 1","stats":{"gp":5,"fouls":5,"fg":4,"pts":10,"ft":2,"losses":3,"wins":2}},{"tid":"91784365","tn":"Baller Babes ","gid":"b6bfb07b","gn":"Monday Senior Women Grading","age":"Senior","div":null,"stats":{"gp":5,"fouls":5,"losses":3,"wins":2,"pts":10,"fg":4,"ft":2}}]},{"sid":"fb47e20e","sn":"Summer 2025/26","regs":[{"tid":"269a83f9","tn":"Baller Babes ","gid":"c0487fbc","gn":"Monday Senior Women Division 2","age":"Senior","div":"Division 2","stats":{"gp":13,"fouls":12,"ft":3,"fg":30,"pts":63,"finals":1,"wins":5,"losses":8}},{"tid":"269a83f9","tn":"Baller Babes ","gid":"707d89a3","gn":"Monday Senior Women Division 1","age":"Senior","div":"Division 1","stats":{"gp":13,"fouls":12,"ft":3,"fg":30,"pts":63,"finals":1,"wins":5,"losses":8}}]},{"sid":"2d35b729","sn":"Winter 2025","regs":[{"tid":"5744442f","tn":"Baller Babes ","gid":"675f5abc","gn":"Monday Senior Women Division 1","age":"Senior","div":"Division 1","stats":{"gp":9,"fouls":10,"ft":2,"fg":24,"pts":50,"wins":4,"losses":3,"draws":2}}]},{"sid":"2bcaa4e3","sn":"Autumn 2021","regs":[{"tid":"959f4609","tn":"Screaming Hamburgers","gid":"e2c1b32b","gn":"Monday Open Women C2 Grade","age":"Senior","div":null,"stats":{"gp":10,"fouls":7,"ft":2,"fg":31,"threePt":1,"pts":67,"wins":5,"losses":3}},{"tid":"959f4609","tn":"Screaming Hamburgers","gid":"ead19834","gn":"Monday Open Women Grading","age":"Senior","div":null,"stats":{"gp":10,"fouls":7,"fg":31,"pts":67,"wins":5,"losses":3,"ft":2,"threePt":1}}]},{"sid":"ab1bf542","sn":"Autumn 2020","regs":[{"tid":"e96c06e2","tn":"Screaming Hamburgers","gid":"c4680fb9","gn":"Monday Open Women C.2","age":"Senior","div":null,"stats":{"gp":3,"fouls":3,"ft":1,"fg":10,"pts":21}}]}],"updatedAt":"2026-07-04T05:55:31.913Z","teams":[{"tid":"91784365","sid":"38466a15","status":"ACTIVE"},{"tid":"269a83f9","sid":"fb47e20e","status":"COMPLETED"},{"tid":"5744442f","sid":"2d35b729","status":"COMPLETED"},{"tid":"d7072426","sid":"e279b635","status":"COMPLETED"},{"tid":"959f4609","sid":"2bcaa4e3","status":"COMPLETED"},{"tid":"e96c06e2","sid":"ab1bf542","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:00:57.771Z","records":{"maxGamePTS":{"v":18,"gameKey":"24ca5976","sid":"2bcaa4e3"},"maxGameThreePt":{"v":1,"gameKey":"f31803f4","sid":"2bcaa4e3"}},"statsChecked":"2026-06-20","games":["080f45e0","0c879696","0e87dc07","1711dd3d","24ca5976","27d0a323","2bdd8ee7","2c1d6391","34df5f41","35f64a8c","367d47a7","3a46db39","42b34a56","4351ca57","46b2b825","5ee1f5af","6c0b8887","6efc6420","7d9b9dcf","89786924","8d735f00","9070543f","92602351","93a9922a","9a3016f7","a9bdf0c7","ab9312fb","b501026f","b7a93b77","b8154f66","c9df9762","cd478a59","cf09d0a9","d0ac3c00","ec0f6aa2","f31803f4","f5e311d3","f93a97b6","fb92cd44","ff7b9164"]}
+{
+  "uuid": "175f0259-aa1c-4fed-ae0d-525d80045bc8",
+  "name": "Kristie Gillardeau",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 211,
+      "fouls": 37,
+      "fg": 99,
+      "ft": 10,
+      "threePt": 1,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 18,
+      "maxGameThreePt": 1,
+      "losses": 31,
+      "winPct": 0.46,
+      "wins": 28,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:59:31.864Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "38466a15",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "91784365",
+          "tn": "Baller Babes ",
+          "gid": "c6ebec1c",
+          "gn": "Monday Senior Women Division 1",
+          "age": "Senior",
+          "div": "Division 1",
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 10,
+            "ft": 2,
+            "losses": 3,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "91784365",
+          "tn": "Baller Babes ",
+          "gid": "b6bfb07b",
+          "gn": "Monday Senior Women Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "losses": 3,
+            "wins": 2,
+            "pts": 10,
+            "fg": 4,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb47e20e",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "269a83f9",
+          "tn": "Baller Babes ",
+          "gid": "c0487fbc",
+          "gn": "Monday Senior Women Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 30,
+            "pts": 63,
+            "finals": 1,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "269a83f9",
+          "tn": "Baller Babes ",
+          "gid": "707d89a3",
+          "gn": "Monday Senior Women Division 1",
+          "age": "Senior",
+          "div": "Division 1",
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 30,
+            "pts": 63,
+            "finals": 1,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2d35b729",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5744442f",
+          "tn": "Baller Babes ",
+          "gid": "675f5abc",
+          "gn": "Monday Senior Women Division 1",
+          "age": "Senior",
+          "div": "Division 1",
+          "stats": {
+            "gp": 9,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 24,
+            "pts": 50,
+            "wins": 4,
+            "losses": 3,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2bcaa4e3",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "959f4609",
+          "tn": "Screaming Hamburgers",
+          "gid": "e2c1b32b",
+          "gn": "Monday Open Women C2 Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 31,
+            "threePt": 1,
+            "pts": 67,
+            "wins": 5,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "959f4609",
+          "tn": "Screaming Hamburgers",
+          "gid": "ead19834",
+          "gn": "Monday Open Women Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 7,
+            "fg": 31,
+            "pts": 67,
+            "wins": 5,
+            "losses": 3,
+            "ft": 2,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ab1bf542",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "e96c06e2",
+          "tn": "Screaming Hamburgers",
+          "gid": "c4680fb9",
+          "gn": "Monday Open Women C.2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 10,
+            "pts": 21
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e279b635",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "d7072426",
+          "tn": "Screaming Hamburgers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:55:31.913Z",
+  "teams": [
+    {
+      "tid": "91784365",
+      "sid": "38466a15",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "269a83f9",
+      "sid": "fb47e20e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5744442f",
+      "sid": "2d35b729",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "959f4609",
+      "sid": "2bcaa4e3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e96c06e2",
+      "sid": "ab1bf542",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d7072426",
+      "sid": "e279b635",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:30:00.790Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "24ca5976",
+      "sid": "2bcaa4e3"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f31803f4",
+      "sid": "2bcaa4e3"
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "080f45e0",
+    "0c879696",
+    "0e87dc07",
+    "1711dd3d",
+    "24ca5976",
+    "27d0a323",
+    "2bdd8ee7",
+    "2c1d6391",
+    "34df5f41",
+    "35f64a8c",
+    "367d47a7",
+    "3a46db39",
+    "42b34a56",
+    "4351ca57",
+    "46b2b825",
+    "5ee1f5af",
+    "6c0b8887",
+    "6efc6420",
+    "7d9b9dcf",
+    "89786924",
+    "8d735f00",
+    "9070543f",
+    "92602351",
+    "93a9922a",
+    "9a3016f7",
+    "a9bdf0c7",
+    "ab9312fb",
+    "b501026f",
+    "b7a93b77",
+    "b8154f66",
+    "c9df9762",
+    "cd478a59",
+    "cf09d0a9",
+    "d0ac3c00",
+    "ec0f6aa2",
+    "f31803f4",
+    "f5e311d3",
+    "f93a97b6",
+    "fb92cd44",
+    "ff7b9164"
+  ]
+}

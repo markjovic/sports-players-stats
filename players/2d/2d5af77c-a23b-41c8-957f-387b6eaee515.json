@@ -1,1 +1,224 @@
-{"uuid":"2d5af77c-a23b-41c8-957f-387b6eaee515","name":"Cameron Blair","gender":"Men","sports":{"Basketball":{"gp":15,"pts":132,"fouls":22,"fg":18,"ft":9,"threePt":29,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":4,"wins":15,"losses":13,"winPct":0.54,"statsChecked":"2026-07-05T15:34:37.132Z"}},"seasons":[{"sid":"ec96e474","sn":"Winter 2023","regs":[{"tid":"274c56b4","tn":"Rainmakers","gid":"ad6af2ca","gn":"Tuesday Open Men F/FRES","age":"Senior","div":null,"stats":{"gp":1,"ft":1,"fg":2,"threePt":1,"pts":8,"losses":1}}]},{"sid":"b200c0f6","sn":"Winter 2021","regs":[{"tid":"6d897d9b","tn":"WINS N TINS ","gid":"443db271","gn":"Monday Open Men C/CRES","age":"Senior","div":null,"stats":{"gp":1,"fouls":1,"threePt":3,"pts":9,"wins":1}},{"tid":"426657ac","stats":{"wins":1,"losses":1,"gp":2,"pts":25,"fg":6,"ft":1,"threePt":4,"fouls":3}}]},{"sid":"b200c0f6","sn":"Winter 2021","regs":[{"tid":"426657ac","tn":"Cookies & Kareem ","gid":"b8c1e54e","gn":"Sunday Open Men Section 3","age":"Senior","div":null,"stats":{"gp":2,"fouls":3,"ft":1,"fg":6,"threePt":4,"pts":25,"wins":1,"losses":1}}]},{"sid":"e8437d1b","sn":"Summer 2020/21","regs":[{"tid":"450f5710","tn":"Cookies & Kareem ","gid":"34aa1634","gn":"Sunday Open Men Section 3","age":"Senior","div":null,"stats":{"gp":11,"fouls":18,"ft":7,"fg":10,"threePt":21,"pts":90,"finals":1,"wins":6,"losses":5}},{"tid":"450f5710","tn":"Cookies & Kareem ","gid":"873541c9","gn":"Sunday Open Men Section 4","age":"Senior","div":null,"stats":{"gp":11,"fouls":18,"ft":7,"fg":10,"threePt":21,"pts":90,"finals":1,"wins":6,"losses":5}}]}],"updatedAt":"2026-06-01T14:46:13.484Z","teams":[{"tid":"274c56b4","sid":"ec96e474","status":"COMPLETED"},{"tid":"426657ac","sid":"b200c0f6","status":"COMPLETED"},{"tid":"6d897d9b","sid":"b200c0f6","status":"COMPLETED"},{"tid":"450f5710","sid":"e8437d1b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:09:49.561Z","records":{"maxGamePTS":{"v":20,"gameKey":"e409eff1","sid":"e8437d1b"},"maxGameThreePt":{"v":4,"gameKey":"254573fd","sid":"e8437d1b"}},"games":["12a5f440","254573fd","349fe931","3b6371da","4459a0d6","53fbbc12","596d449a","73e37ddb","91f48106","9a68ffd9","d7750703","e409eff1","eac1e5b8","f2ffb453","f6986f57"],"gameTids":{"d7750703":"274c56b4","4459a0d6":"6d897d9b","53fbbc12":"426657ac","91f48106":"426657ac","12a5f440":"450f5710","596d449a":"450f5710","254573fd":"450f5710","349fe931":"450f5710","3b6371da":"450f5710","73e37ddb":"450f5710","eac1e5b8":"450f5710","9a68ffd9":"450f5710","f6986f57":"450f5710","e409eff1":"450f5710","f2ffb453":"450f5710"}}
+{
+  "uuid": "2d5af77c-a23b-41c8-957f-387b6eaee515",
+  "name": "Cameron Blair",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 132,
+      "fouls": 22,
+      "fg": 18,
+      "ft": 9,
+      "threePt": 29,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": 4,
+      "wins": 15,
+      "losses": 13,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T15:34:37.132Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ec96e474",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "274c56b4",
+          "tn": "Rainmakers",
+          "gid": "ad6af2ca",
+          "gn": "Tuesday Open Men F/FRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "ft": 1,
+            "fg": 2,
+            "threePt": 1,
+            "pts": 8,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b200c0f6",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "6d897d9b",
+          "tn": "WINS N TINS ",
+          "gid": "443db271",
+          "gn": "Monday Open Men C/CRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "threePt": 3,
+            "pts": 9,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "426657ac",
+          "stats": {
+            "wins": 1,
+            "losses": 1,
+            "gp": 2,
+            "pts": 25,
+            "fg": 6,
+            "ft": 1,
+            "threePt": 4,
+            "fouls": 3
+          },
+          "gid": "b8c1e54e",
+          "gn": "Sunday Open Men Section 3"
+        }
+      ]
+    },
+    {
+      "sid": "b200c0f6",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "426657ac",
+          "tn": "Cookies & Kareem ",
+          "gid": "b8c1e54e",
+          "gn": "Sunday Open Men Section 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 6,
+            "threePt": 4,
+            "pts": 25,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e8437d1b",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "450f5710",
+          "tn": "Cookies & Kareem ",
+          "gid": "34aa1634",
+          "gn": "Sunday Open Men Section 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "ft": 7,
+            "fg": 10,
+            "threePt": 21,
+            "pts": 90,
+            "finals": 1,
+            "wins": 6,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "450f5710",
+          "tn": "Cookies & Kareem ",
+          "gid": "873541c9",
+          "gn": "Sunday Open Men Section 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "ft": 7,
+            "fg": 10,
+            "threePt": 21,
+            "pts": 90,
+            "finals": 1,
+            "wins": 6,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T14:46:13.484Z",
+  "teams": [
+    {
+      "tid": "274c56b4",
+      "sid": "ec96e474",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d897d9b",
+      "sid": "b200c0f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "426657ac",
+      "sid": "b200c0f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "450f5710",
+      "sid": "e8437d1b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:30:42.317Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "e409eff1",
+      "sid": "e8437d1b"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "254573fd",
+      "sid": "e8437d1b"
+    }
+  },
+  "games": [
+    "12a5f440",
+    "254573fd",
+    "349fe931",
+    "3b6371da",
+    "4459a0d6",
+    "53fbbc12",
+    "596d449a",
+    "73e37ddb",
+    "91f48106",
+    "9a68ffd9",
+    "d7750703",
+    "e409eff1",
+    "eac1e5b8",
+    "f2ffb453",
+    "f6986f57"
+  ],
+  "gameTids": {
+    "d7750703": "274c56b4",
+    "4459a0d6": "6d897d9b",
+    "53fbbc12": "426657ac",
+    "91f48106": "426657ac",
+    "12a5f440": "450f5710",
+    "596d449a": "450f5710",
+    "254573fd": "450f5710",
+    "349fe931": "450f5710",
+    "3b6371da": "450f5710",
+    "73e37ddb": "450f5710",
+    "eac1e5b8": "450f5710",
+    "9a68ffd9": "450f5710",
+    "f6986f57": "450f5710",
+    "e409eff1": "450f5710",
+    "f2ffb453": "450f5710"
+  }
+}

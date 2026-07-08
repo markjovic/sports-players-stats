@@ -1,1 +1,102 @@
-{"uuid":"718f9da2-f61d-4a18-9c20-dde6cb7d5df0","gender":null,"sports":{"Basketball":{"gp":12,"pts":45,"fouls":29,"fg":21,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{"62a70b80":2},"maxGamePTS":10,"maxGameThreePt":1,"wins":8,"losses":3,"draws":1,"winPct":0.67,"statsChecked":"2026-07-05T16:14:04.502Z"}},"seasons":[{"sid":"62a70b80","sn":"Summer 2021/22","club":"Generals Basketball Club","regs":[{"tid":"47cda5eb","tn":"Generals U18 Girls Sonics","gid":"b8ded39d","gn":"Tuesday U18 Girls 3","stats":{"gp":12,"pts":45,"fouls":29,"fg":21,"threePt":1,"finals":1,"foulOuts":2,"wins":8,"losses":3,"draws":1}}]}],"updatedAt":"2026-06-11T23:41:01.746Z","records":{"maxGamePTS":{"v":10,"gameKey":"15252182","sid":"62a70b80"},"maxGameThreePt":{"v":1,"gameKey":"d2bd47d4","sid":"62a70b80"}},"games":["058db9de","15252182","22ba6efd","32417246","38ca6398","3dae82b1","81e2bff8","a32b1b9b","b56ade06","d2bd47d4","de545627","f082e8ac"],"name":"Summer 2021/22"}
+{
+  "uuid": "718f9da2-f61d-4a18-9c20-dde6cb7d5df0",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 45,
+      "fouls": 29,
+      "fg": 21,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "62a70b80": 2
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 3,
+      "draws": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:14:04.502Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "62a70b80",
+      "sn": "Summer 2021/22",
+      "club": "Generals Basketball Club",
+      "regs": [
+        {
+          "tid": "47cda5eb",
+          "tn": "Generals U18 Girls Sonics",
+          "gid": "b8ded39d",
+          "gn": "Tuesday U18 Girls 3",
+          "stats": {
+            "gp": 12,
+            "pts": 45,
+            "fouls": 29,
+            "fg": 21,
+            "threePt": 1,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 8,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "ece32079",
+          "tn": "Sonics",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:01.746Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "15252182",
+      "sid": "62a70b80"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "d2bd47d4",
+      "sid": "62a70b80"
+    }
+  },
+  "games": [
+    "058db9de",
+    "15252182",
+    "22ba6efd",
+    "32417246",
+    "38ca6398",
+    "3dae82b1",
+    "81e2bff8",
+    "a32b1b9b",
+    "b56ade06",
+    "d2bd47d4",
+    "de545627",
+    "f082e8ac"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "47cda5eb",
+      "sid": "62a70b80",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ece32079",
+      "sid": "62a70b80",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:14.880Z"
+}

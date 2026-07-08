@@ -1,1 +1,234 @@
-{"uuid":"71a8cf28-85f3-44c9-a30f-1c801576ba8c","name":"Lucas Tucker","gender":"Men","sports":{"Basketball":{"gp":42,"pts":305,"fouls":34,"fg":127,"ft":18,"threePt":11,"foulOuts":{},"maxGamePTS":30,"maxGameThreePt":2,"losses":14,"draws":1,"winPct":0.12,"wins":2,"statsChecked":"2026-07-06T18:58:14.318Z"}},"seasons":[{"sid":"6e0c32cd","sn":"Winter 2026","regs":[{"tid":"92a8e1c1","tn":"Alchemy","gid":"e8fd8a15","gn":"Sunday Men D Grade (2)","age":null,"div":null,"stats":{"gp":5,"ft":3,"fg":24,"pts":63,"threePt":4,"fouls":4,"losses":2,"wins":2}}]},{"sid":"6bc7f565","sn":"Winter 2023","regs":[{"tid":"6cae796e","tn":"Alligators","gid":"b78426a8","gn":"Saturday U17 Boys","age":"U17","div":null,"stats":{"gp":15,"fouls":13,"ft":3,"fg":38,"threePt":2,"pts":85,"losses":12,"draws":1}}]},{"sid":"610ed2fa","sn":"Winter 2022","regs":[{"tid":"5a0b0e81","tn":"Alligators","gid":"1eee1f13","gn":"Saturday U16 Boys B","age":"U16","div":null,"stats":{"gp":14,"fouls":11,"ft":9,"fg":54,"threePt":3,"pts":126}}]},{"sid":"903100a3","sn":"Term 1, 2022","regs":[{"tid":"449f9840","tn":"Alligators","gid":"ed4fd0a9","gn":"Saturday U16 Boys Pool A","age":"U16","div":null,"stats":{"gp":8,"fouls":6,"ft":3,"fg":11,"threePt":2,"pts":31}}]}],"updatedAt":"2026-07-06T18:34:21.495Z","teams":[{"tid":"92a8e1c1","sid":"6e0c32cd","status":"ACTIVE"},{"tid":"6cae796e","sid":"6bc7f565","status":"COMPLETED"},{"tid":"5a0b0e81","sid":"610ed2fa","status":"COMPLETED"},{"tid":"449f9840","sid":"903100a3","status":"COMPLETED"},{"tid":"e0a63a25","sid":"eb1ab237","status":"COMPLETED"},{"tid":"7c1f3456","sid":"59a334d9","status":"COMPLETED"},{"tid":"354fd0b0","sid":"3bd06129","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:57.632Z","records":{"maxGamePTS":{"v":30,"gameKey":"de497583","sid":"6e0c32cd"},"maxGameThreePt":{"v":2,"gameKey":"de497583","sid":"6e0c32cd"}},"games":["0d4eaca4","0f7fcca0","1482f3b5","14d1d3e6","175e2341","1a5579fb","1fc81e28","2c88784d","2f5b78c9","3303ae84","3fbcef1a","4baa6845","535cdcc8","84e65c09","ab7ec22a","afcab25a","b7042834","ba9725eb","baa3f047","be535003","c0b5f018","c5169b5d","cbea2b38","e0622724","eb96236f"]}
+{
+  "uuid": "71a8cf28-85f3-44c9-a30f-1c801576ba8c",
+  "name": "Lucas Tucker",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 305,
+      "fouls": 34,
+      "fg": 127,
+      "ft": 18,
+      "threePt": 11,
+      "foulOuts": {},
+      "maxGamePTS": 30,
+      "maxGameThreePt": 2,
+      "losses": 14,
+      "draws": 1,
+      "winPct": 0.12,
+      "wins": 2,
+      "statsChecked": "2026-07-06T18:58:14.318Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6e0c32cd",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "92a8e1c1",
+          "tn": "Alchemy",
+          "gid": "e8fd8a15",
+          "gn": "Sunday Men D Grade (2)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "ft": 3,
+            "fg": 24,
+            "pts": 63,
+            "threePt": 4,
+            "fouls": 4,
+            "losses": 2,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6bc7f565",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "6cae796e",
+          "tn": "Alligators",
+          "gid": "b78426a8",
+          "gn": "Saturday U17 Boys",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 38,
+            "threePt": 2,
+            "pts": 85,
+            "losses": 12,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "610ed2fa",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "5a0b0e81",
+          "tn": "Alligators",
+          "gid": "1eee1f13",
+          "gn": "Saturday U16 Boys B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 11,
+            "ft": 9,
+            "fg": 54,
+            "threePt": 3,
+            "pts": 126
+          }
+        }
+      ]
+    },
+    {
+      "sid": "903100a3",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "449f9840",
+          "tn": "Alligators",
+          "gid": "ed4fd0a9",
+          "gn": "Saturday U16 Boys Pool A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 11,
+            "threePt": 2,
+            "pts": 31
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eb1ab237",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "e0a63a25",
+          "tn": "Alligators",
+          "gid": "ca621952",
+          "gn": "U16 BA Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "59a334d9",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "7c1f3456",
+          "tn": "PP Alligators",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3bd06129",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "354fd0b0",
+          "tn": "PP Alligators",
+          "gid": "57746571",
+          "gn": "Saturday U14 Boys Denver Nuggets",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:21.495Z",
+  "teams": [
+    {
+      "tid": "92a8e1c1",
+      "sid": "6e0c32cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6cae796e",
+      "sid": "6bc7f565",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a0b0e81",
+      "sid": "610ed2fa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "449f9840",
+      "sid": "903100a3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0a63a25",
+      "sid": "eb1ab237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7c1f3456",
+      "sid": "59a334d9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "354fd0b0",
+      "sid": "3bd06129",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:21.841Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 30,
+      "gameKey": "de497583",
+      "sid": "6e0c32cd"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "de497583",
+      "sid": "6e0c32cd"
+    }
+  },
+  "games": [
+    "0d4eaca4",
+    "0f7fcca0",
+    "1482f3b5",
+    "14d1d3e6",
+    "175e2341",
+    "1a5579fb",
+    "1fc81e28",
+    "2c88784d",
+    "2f5b78c9",
+    "3303ae84",
+    "3fbcef1a",
+    "4baa6845",
+    "535cdcc8",
+    "84e65c09",
+    "ab7ec22a",
+    "afcab25a",
+    "b7042834",
+    "ba9725eb",
+    "baa3f047",
+    "be535003",
+    "c0b5f018",
+    "c5169b5d",
+    "cbea2b38",
+    "e0622724",
+    "eb96236f"
+  ]
+}

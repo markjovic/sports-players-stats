@@ -1,1 +1,118 @@
-{"uuid":"3564e16a-faac-47e7-b633-fdd5fc132dfc","gender":null,"sports":{"Basketball":{"gp":6,"pts":30,"fouls":4,"fg":14,"ft":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":3,"losses":1,"winPct":0.75,"statsChecked":"2026-07-05T16:12:34.391Z"}},"seasons":[{"sid":"e279b635","sn":"Spring 2021","club":null,"regs":[{"tid":"a3197103","tn":"Only Buckets ","gid":"a73e1801","gn":"Tuesday Open Men SUMMER POOL 4","stats":{"gp":5,"pts":30,"fg":14,"ft":2,"fouls":3,"finals":1,"wins":3,"losses":1}},{"tid":"4e38f712","stats":{"finals":1,"gp":1,"fouls":1}}]},{"sid":"e279b635","sn":"Spring 2021","club":null,"regs":[{"tid":"4e38f712","tn":"Power","gid":"c0748902","gn":"Tuesday Open Men Grading","stats":{"gp":1,"fouls":1,"finals":1}}]}],"updatedAt":"2026-06-11T23:38:12.955Z","records":{"maxGamePTS":{"v":12,"gameKey":"7de7a386","sid":"e279b635"},"maxGameThreePt":{"v":null}},"games":["0dd2412d","7bbe2068","7de7a386","97b35193","bde61362","c1150d9a"],"name":"Spring 2021","gameTids":{"0dd2412d":"a3197103","bde61362":"a3197103","7de7a386":"a3197103","c1150d9a":"a3197103","7bbe2068":"a3197103","97b35193":"4e38f712"}}
+{
+  "uuid": "3564e16a-faac-47e7-b633-fdd5fc132dfc",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 30,
+      "fouls": 4,
+      "fg": 14,
+      "ft": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 1,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-05T16:12:34.391Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e279b635",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a3197103",
+          "tn": "Only Buckets ",
+          "gid": "a73e1801",
+          "gn": "Tuesday Open Men SUMMER POOL 4",
+          "stats": {
+            "gp": 5,
+            "pts": 30,
+            "fg": 14,
+            "ft": 2,
+            "fouls": 3,
+            "finals": 1,
+            "wins": 3,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "4e38f712",
+          "stats": {
+            "finals": 1,
+            "gp": 1,
+            "fouls": 1
+          },
+          "gid": "a73e1801",
+          "gn": "Tuesday Open Men SUMMER POOL 4"
+        }
+      ]
+    },
+    {
+      "sid": "e279b635",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4e38f712",
+          "tn": "Power",
+          "gid": "c0748902",
+          "gn": "Tuesday Open Men Grading",
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "finals": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:12.955Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "7de7a386",
+      "sid": "e279b635"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0dd2412d",
+    "7bbe2068",
+    "7de7a386",
+    "97b35193",
+    "bde61362",
+    "c1150d9a"
+  ],
+  "name": "Spring 2021",
+  "gameTids": {
+    "0dd2412d": "a3197103",
+    "bde61362": "a3197103",
+    "7de7a386": "a3197103",
+    "c1150d9a": "a3197103",
+    "7bbe2068": "a3197103",
+    "97b35193": "4e38f712"
+  },
+  "teams": [
+    {
+      "tid": "a3197103",
+      "sid": "e279b635",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e38f712",
+      "sid": "e279b635",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:31:07.125Z"
+}

@@ -1,1 +1,225 @@
-{"uuid":"268b274b-c27f-4245-a65e-6c2e5f3184cf","name":"Jude Keiller","gender":"Mixed","sports":{"Basketball":{"gp":43,"pts":161,"fouls":15,"fg":74,"ft":13,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":22,"losses":18,"draws":1,"winPct":0.54,"statsChecked":"2026-07-05T15:21:06.254Z"}},"seasons":[{"sid":"c36e5626","sn":"Winter 2026","regs":[{"tid":"7e4d59f0","tn":"Irritators - Tate Street Primary School Prep/1/2","gid":"1a9ea7b5","gn":"(SCHOOL) Thursday Prep - 2 All Stars","age":null,"div":null,"stats":{"gp":8,"ft":4,"fg":11,"pts":26,"fouls":2,"wins":4,"losses":4}},{"tid":"56bde73c","stats":{"gp":1}}]},{"sid":"b82479c8","sn":"Summer 2025/26","regs":[{"tid":"97cd330d","tn":"Irritators - Tate Street Primary School Prep/1/2","gid":"50b249a5","gn":"(SCHOOL) Thursday Prep - 2 All Stars","age":null,"div":null,"stats":{"gp":16,"fouls":4,"ft":2,"fg":25,"pts":52,"wins":5,"losses":10}}]},{"sid":"2f8128d7","sn":"Winter 2025","regs":[{"tid":"d5ebcf1c","tn":"Irritators - Tate Street Primary School Prep/1/2","gid":"0800e365","gn":"(SCHOOL) Thursday Prep-2 Rookies","age":null,"div":null,"stats":{"gp":18,"fouls":9,"ft":7,"fg":38,"pts":83,"wins":13,"losses":4,"draws":1}}]}],"updatedAt":"2026-07-04T05:50:02.233Z","teams":[{"tid":"7e4d59f0","sid":"c36e5626","status":"ACTIVE"},{"tid":"97cd330d","sid":"b82479c8","status":"COMPLETED"},{"tid":"d5ebcf1c","sid":"2f8128d7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:11.442Z","records":{"maxGamePTS":{"v":12,"gameKey":"33e71e7e","sid":"b82479c8"},"maxGameThreePt":{"v":null}},"games":["0a560d5a","0f71250d","129999f9","1549fc67","17584463","1b635d21","1b7575fa","294feb39","2fa27c07","30ea2c33","33e71e7e","3961ada3","4478f504","482888b8","619660c6","6adc3c97","6f06ffd9","7a17cd10","7a61b3c0","7a9b3a0d","7ae02099","819b0bfb","84c3a357","87be7929","8d5bd499","9692bd72","98f4e113","99574ea5","a3d492e8","a4957a44","ade30d35","af29caed","b82aaf6e","ba9f5fb4","bf140f79","ca199a25","d22386f6","e81e1e04","ea11ebc8","f9bf1037","ff1a6e9e","ff7458cb"],"gameTids":{"17584463":"97cd330d","3961ada3":"7e4d59f0","30ea2c33":"7e4d59f0","7a61b3c0":"7e4d59f0","bf140f79":"7e4d59f0","ca199a25":"7e4d59f0","e81e1e04":"7e4d59f0","6f06ffd9":"7e4d59f0","a4957a44":"7e4d59f0","50cdc7cf":"56bde73c","129999f9":"97cd330d","482888b8":"97cd330d","9692bd72":"97cd330d","4478f504":"97cd330d","2fa27c07":"97cd330d","af29caed":"97cd330d","99574ea5":"97cd330d","1b7575fa":"97cd330d","7a9b3a0d":"97cd330d","b82aaf6e":"97cd330d","ff7458cb":"97cd330d","1b635d21":"97cd330d","33e71e7e":"97cd330d","0a560d5a":"97cd330d","a3d492e8":"97cd330d","f9bf1037":"d5ebcf1c","ade30d35":"d5ebcf1c","294feb39":"d5ebcf1c","619660c6":"d5ebcf1c","819b0bfb":"d5ebcf1c","ff1a6e9e":"d5ebcf1c","d22386f6":"d5ebcf1c","8d5bd499":"d5ebcf1c","7a17cd10":"d5ebcf1c","7ae02099":"d5ebcf1c","0f71250d":"d5ebcf1c","ea11ebc8":"d5ebcf1c","6adc3c97":"d5ebcf1c","84c3a357":"d5ebcf1c","1549fc67":"d5ebcf1c","87be7929":"d5ebcf1c","98f4e113":"d5ebcf1c","ba9f5fb4":"d5ebcf1c"}}
+{
+  "uuid": "268b274b-c27f-4245-a65e-6c2e5f3184cf",
+  "name": "Jude Keiller",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 161,
+      "fouls": 15,
+      "fg": 74,
+      "ft": 13,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 22,
+      "losses": 18,
+      "draws": 1,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T15:21:06.254Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c36e5626",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "7e4d59f0",
+          "tn": "Irritators - Tate Street Primary School Prep/1/2",
+          "gid": "1a9ea7b5",
+          "gn": "(SCHOOL) Thursday Prep - 2 All Stars",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 4,
+            "fg": 11,
+            "pts": 26,
+            "fouls": 2,
+            "wins": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "56bde73c",
+          "stats": {
+            "gp": 1
+          },
+          "gid": "fab0f474",
+          "gn": "(SCHOOL) Thursday Grade 3&4 Rookies"
+        }
+      ]
+    },
+    {
+      "sid": "b82479c8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "97cd330d",
+          "tn": "Irritators - Tate Street Primary School Prep/1/2",
+          "gid": "50b249a5",
+          "gn": "(SCHOOL) Thursday Prep - 2 All Stars",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 25,
+            "pts": 52,
+            "wins": 5,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2f8128d7",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "d5ebcf1c",
+          "tn": "Irritators - Tate Street Primary School Prep/1/2",
+          "gid": "0800e365",
+          "gn": "(SCHOOL) Thursday Prep-2 Rookies",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 9,
+            "ft": 7,
+            "fg": 38,
+            "pts": 83,
+            "wins": 13,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:02.233Z",
+  "teams": [
+    {
+      "tid": "7e4d59f0",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56bde73c",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "97cd330d",
+      "sid": "b82479c8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d5ebcf1c",
+      "sid": "2f8128d7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:30:16.497Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "33e71e7e",
+      "sid": "b82479c8"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0a560d5a",
+    "0f71250d",
+    "129999f9",
+    "1549fc67",
+    "17584463",
+    "1b635d21",
+    "1b7575fa",
+    "294feb39",
+    "2fa27c07",
+    "30ea2c33",
+    "33e71e7e",
+    "3961ada3",
+    "4478f504",
+    "482888b8",
+    "619660c6",
+    "6adc3c97",
+    "6f06ffd9",
+    "7a17cd10",
+    "7a61b3c0",
+    "7a9b3a0d",
+    "7ae02099",
+    "819b0bfb",
+    "84c3a357",
+    "87be7929",
+    "8d5bd499",
+    "9692bd72",
+    "98f4e113",
+    "99574ea5",
+    "a3d492e8",
+    "a4957a44",
+    "ade30d35",
+    "af29caed",
+    "b82aaf6e",
+    "ba9f5fb4",
+    "bf140f79",
+    "ca199a25",
+    "d22386f6",
+    "e81e1e04",
+    "ea11ebc8",
+    "f9bf1037",
+    "ff1a6e9e",
+    "ff7458cb"
+  ],
+  "gameTids": {
+    "17584463": "97cd330d",
+    "3961ada3": "7e4d59f0",
+    "30ea2c33": "7e4d59f0",
+    "7a61b3c0": "7e4d59f0",
+    "bf140f79": "7e4d59f0",
+    "ca199a25": "7e4d59f0",
+    "e81e1e04": "7e4d59f0",
+    "6f06ffd9": "7e4d59f0",
+    "a4957a44": "7e4d59f0",
+    "50cdc7cf": "56bde73c",
+    "129999f9": "97cd330d",
+    "482888b8": "97cd330d",
+    "9692bd72": "97cd330d",
+    "4478f504": "97cd330d",
+    "2fa27c07": "97cd330d",
+    "af29caed": "97cd330d",
+    "99574ea5": "97cd330d",
+    "1b7575fa": "97cd330d",
+    "7a9b3a0d": "97cd330d",
+    "b82aaf6e": "97cd330d",
+    "ff7458cb": "97cd330d",
+    "1b635d21": "97cd330d",
+    "33e71e7e": "97cd330d",
+    "0a560d5a": "97cd330d",
+    "a3d492e8": "97cd330d",
+    "f9bf1037": "d5ebcf1c",
+    "ade30d35": "d5ebcf1c",
+    "294feb39": "d5ebcf1c",
+    "619660c6": "d5ebcf1c",
+    "819b0bfb": "d5ebcf1c",
+    "ff1a6e9e": "d5ebcf1c",
+    "d22386f6": "d5ebcf1c",
+    "8d5bd499": "d5ebcf1c",
+    "7a17cd10": "d5ebcf1c",
+    "7ae02099": "d5ebcf1c",
+    "0f71250d": "d5ebcf1c",
+    "ea11ebc8": "d5ebcf1c",
+    "6adc3c97": "d5ebcf1c",
+    "84c3a357": "d5ebcf1c",
+    "1549fc67": "d5ebcf1c",
+    "87be7929": "d5ebcf1c",
+    "98f4e113": "d5ebcf1c",
+    "ba9f5fb4": "d5ebcf1c"
+  }
+}

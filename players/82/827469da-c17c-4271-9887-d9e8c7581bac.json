@@ -1,1 +1,239 @@
-{"uuid":"827469da-c17c-4271-9887-d9e8c7581bac","name":"Brayden Clarke","gender":"Men","sports":{"Basketball":{"gp":51,"pts":122,"fouls":34,"fg":56,"ft":4,"threePt":2,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"wins":30,"losses":44,"draws":5,"winPct":0.38,"statsChecked":"2026-07-05T15:49:44.735Z"}},"seasons":[{"sid":"c8a300a4","sn":"Summer 2025/26","regs":[{"tid":"d25d2499","tn":"Cream City","gid":"314eb075","gn":"Tuesday Men E1 Grade","age":null,"div":null,"stats":{"gp":14,"fouls":11,"fg":20,"pts":41,"wins":3,"losses":10,"draws":1,"ft":1}},{"tid":"d25d2499","tn":"Cream City","gid":"5f51cd94","gn":"Tuesday Men D3 Grade","age":null,"div":null,"stats":{"gp":14,"ft":1,"fg":20,"pts":41,"wins":3,"losses":10,"draws":1,"fouls":11}},{"tid":"d25d2499","tn":"Cream City","gid":"969b4343","gn":"Tuesday Men D2 Grade","age":null,"div":null,"stats":{"gp":14,"fg":20,"pts":41,"wins":3,"losses":10,"draws":1,"ft":1,"fouls":11}}]},{"sid":"ecf1ec70","sn":"Winter 2025","regs":[{"tid":"d82517c9","tn":"Cream City","gid":"36e37bb5","gn":"Tuesday Men D2 Grade","age":null,"div":null,"stats":{"gp":17,"fouls":11,"ft":1,"fg":12,"threePt":1,"pts":28,"finals":1,"wins":10,"losses":6,"draws":1}}]},{"sid":"3653b42f","sn":"Winter 2024","regs":[{"tid":"3de705b7","tn":"Cream City","gid":"3ff1cc5d","gn":"Tuesday Men D3 Grade","age":null,"div":null,"stats":{"gp":20,"fouls":12,"ft":2,"fg":24,"threePt":1,"pts":53,"finals":1,"gfApps":1,"wins":11,"losses":8,"draws":1,"gfWins":1}}]}],"updatedAt":"2026-06-02T12:01:32.420Z","teams":[{"tid":"d25d2499","sid":"c8a300a4","status":"COMPLETED"},{"tid":"f795b2b1","sid":"c8a300a4","status":"COMPLETED"},{"tid":"d82517c9","sid":"ecf1ec70","status":"COMPLETED"},{"tid":"3de705b7","sid":"3653b42f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:51.428Z","records":{"maxGamePTS":{"v":12,"gameKey":"2b322ef4","sid":"c8a300a4"},"maxGameThreePt":{"v":1,"gameKey":"d51c25fb","sid":"ecf1ec70"}},"games":["010a3f70","0707aaac","0bffb7e8","15edd485","22836e7e","2790a087","2b322ef4","310af8c4","351ca3f4","395a9d4e","42acfbe1","42d0aa14","46d67014","4ac605f6","4ca985a3","4fa934f4","4ff30bb0","5873c760","587fd60c","5e4f711b","5eba2694","653a0efc","678b9448","6933f3cc","6d57bcfa","6d81ed69","6e9b78c8","7076d4e5","74b7cf54","75c2845b","7d3357e9","83c20d0e","8f72b58b","912ec178","9f1bb0bb","ab131eaf","abbd25af","acd7ce7b","afc474cf","b2230705","b247e9c0","b2ca8ec0","c03f5fa0","c5119763","c8695815","ca255b87","d51c25fb","d51d72f4","d8a60c9e","e502cb7c","f66fb3b6"]}
+{
+  "uuid": "827469da-c17c-4271-9887-d9e8c7581bac",
+  "name": "Brayden Clarke",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 122,
+      "fouls": 34,
+      "fg": 56,
+      "ft": 4,
+      "threePt": 2,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 30,
+      "losses": 44,
+      "draws": 5,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:49:44.735Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c8a300a4",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "d25d2499",
+          "tn": "Cream City",
+          "gid": "314eb075",
+          "gn": "Tuesday Men E1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 11,
+            "fg": 20,
+            "pts": 41,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "d25d2499",
+          "tn": "Cream City",
+          "gid": "5f51cd94",
+          "gn": "Tuesday Men D3 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "ft": 1,
+            "fg": 20,
+            "pts": 41,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1,
+            "fouls": 11
+          }
+        },
+        {
+          "tid": "d25d2499",
+          "tn": "Cream City",
+          "gid": "969b4343",
+          "gn": "Tuesday Men D2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 20,
+            "pts": 41,
+            "wins": 3,
+            "losses": 10,
+            "draws": 1,
+            "ft": 1,
+            "fouls": 11
+          }
+        },
+        {
+          "tid": "f795b2b1",
+          "tn": "The Rimmers",
+          "gid": "6253a899",
+          "gn": "Tuesday Mixed B Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ecf1ec70",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "d82517c9",
+          "tn": "Cream City",
+          "gid": "36e37bb5",
+          "gn": "Tuesday Men D2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 28,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3653b42f",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "3de705b7",
+          "tn": "Cream City",
+          "gid": "3ff1cc5d",
+          "gn": "Tuesday Men D3 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 24,
+            "threePt": 1,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 8,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T12:01:32.420Z",
+  "teams": [
+    {
+      "tid": "d25d2499",
+      "sid": "c8a300a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f795b2b1",
+      "sid": "c8a300a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d82517c9",
+      "sid": "ecf1ec70",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3de705b7",
+      "sid": "3653b42f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:35:12.780Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "2b322ef4",
+      "sid": "c8a300a4"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "d51c25fb",
+      "sid": "ecf1ec70"
+    }
+  },
+  "games": [
+    "010a3f70",
+    "0707aaac",
+    "0bffb7e8",
+    "15edd485",
+    "22836e7e",
+    "2790a087",
+    "2b322ef4",
+    "310af8c4",
+    "351ca3f4",
+    "395a9d4e",
+    "42acfbe1",
+    "42d0aa14",
+    "46d67014",
+    "4ac605f6",
+    "4ca985a3",
+    "4fa934f4",
+    "4ff30bb0",
+    "5873c760",
+    "587fd60c",
+    "5e4f711b",
+    "5eba2694",
+    "653a0efc",
+    "678b9448",
+    "6933f3cc",
+    "6d57bcfa",
+    "6d81ed69",
+    "6e9b78c8",
+    "7076d4e5",
+    "74b7cf54",
+    "75c2845b",
+    "7d3357e9",
+    "83c20d0e",
+    "8f72b58b",
+    "912ec178",
+    "9f1bb0bb",
+    "ab131eaf",
+    "abbd25af",
+    "acd7ce7b",
+    "afc474cf",
+    "b2230705",
+    "b247e9c0",
+    "b2ca8ec0",
+    "c03f5fa0",
+    "c5119763",
+    "c8695815",
+    "ca255b87",
+    "d51c25fb",
+    "d51d72f4",
+    "d8a60c9e",
+    "e502cb7c",
+    "f66fb3b6"
+  ]
+}

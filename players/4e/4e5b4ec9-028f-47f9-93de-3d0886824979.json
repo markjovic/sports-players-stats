@@ -1,1 +1,265 @@
-{"uuid":"4e5b4ec9-028f-47f9-93de-3d0886824979","name":"Tarik Tasiyan","gender":"Mixed","sports":{"Basketball":{"gp":36,"pts":79,"fouls":13,"fg":17,"ft":45,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":52,"losses":47,"winPct":0.53,"statsChecked":"2026-07-05T14:55:11.074Z"}},"seasons":[{"sid":"73075b54","sn":"Winter 2026","club":"Mernda Bulls Basketball Club","regs":[{"tid":"e3b58f75","tn":"Bulls Boys 8 (LT)","gid":"24cee017","gn":"Saturday U8 Mixed Brumbies","age":"U8","div":null,"stats":{"gp":6,"ft":7,"fg":5,"pts":17,"fouls":2,"wins":2,"losses":4}},{"tid":"e3b58f75","tn":"Bulls Boys 8 (LT)","gid":"f842e719","gn":"Saturday U8 Mixed - Grading","age":"U8","div":null,"stats":{"gp":6,"fouls":2,"ft":7,"fg":5,"pts":17,"wins":2,"losses":4}}]},{"sid":"ca8e8393","sn":"Summer 2025/26","club":"Mernda Bulls Basketball Club","regs":[{"tid":"cad6d065","tn":"Bulls Boys 8 (LT)","gid":"8c4f1330","gn":"Saturday U8","age":"U8","div":"U8","stats":{"gp":14,"fouls":4,"ft":13,"fg":7,"pts":27,"wins":5,"losses":9}},{"tid":"cad6d065","tn":"Bulls Boys 8 (LT)","gid":"ab90857e","gn":"Saturday U8 Mixed Brumbies","age":"U8","div":null,"stats":{"gp":14,"ft":13,"fg":7,"pts":27,"wins":5,"losses":9,"fouls":4}},{"tid":"cad6d065","tn":"Bulls Boys 8 (LT)","gid":"8b597e03","gn":"Saturday U8 Mixed Grading","age":"U8","div":null,"stats":{"gp":14,"fouls":4,"ft":13,"fg":7,"pts":27,"wins":5,"losses":9}}]},{"sid":"413d5fb6","sn":"Winter 2025","club":"Mernda Bulls Basketball Club","regs":[{"tid":"26545504","tn":"Winter Bulls 8 (LT)","gid":"bf92dfa7","gn":"Saturday U8 Mixed Ponies","age":"U8","div":null,"stats":{"gp":16,"fouls":7,"ft":25,"fg":5,"pts":35,"wins":11,"losses":4}},{"tid":"26545504","tn":"Winter Bulls 8 (LT)","gid":"e16a816f","gn":"X- Ponies R1-2","age":null,"div":null,"stats":{"gp":16,"ft":25,"pts":35,"wins":11,"losses":4,"fg":5,"fouls":7}},{"tid":"26545504","tn":"Winter Bulls 8 (LT)","gid":"c50212f8","gn":"Saturday U8 Mixed - Grading","age":"U8","div":null,"stats":{"gp":16,"fouls":7,"ft":25,"fg":5,"pts":35,"wins":11,"losses":4}}]}],"updatedAt":"2026-07-04T05:43:20.541Z","teams":[{"tid":"e3b58f75","sid":"73075b54","status":"ACTIVE"},{"tid":"cad6d065","sid":"ca8e8393","status":"COMPLETED"},{"tid":"26545504","sid":"413d5fb6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:30:12.895Z","records":{"maxGamePTS":{"v":7,"gameKey":"176de52c","sid":"ca8e8393"},"maxGameThreePt":{"v":null}},"games":["176de52c","2065143a","23ca7d4a","26dc2432","28e776cc","34a28393","379c1fcd","383b0ee7","42cb1176","4f6298d8","57b58304","5cc39e37","6446d975","6f26aa6d","7bc62e11","7fd74bbd","81d7f672","8601c0fb","88095442","8b259ddd","8d078f92","8d760e09","94e75bfc","ab1b0cfc","b4200f12","bc1c66ff","d4f558a8","d707fd60","dd766ed0","df3ec817","df76b55f","e38bc69d","f09430c7","f68f3646","f8d29c32","fa448dcb"]}
+{
+  "uuid": "4e5b4ec9-028f-47f9-93de-3d0886824979",
+  "name": "Tarik Tasiyan",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 79,
+      "fouls": 13,
+      "fg": 17,
+      "ft": 45,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 52,
+      "losses": 47,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T14:55:11.074Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73075b54",
+      "sn": "Winter 2026",
+      "club": "Mernda Bulls Basketball Club",
+      "regs": [
+        {
+          "tid": "e3b58f75",
+          "tn": "Bulls Boys 8 (LT)",
+          "gid": "24cee017",
+          "gn": "Saturday U8 Mixed Brumbies",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "ft": 7,
+            "fg": 5,
+            "pts": 17,
+            "fouls": 2,
+            "wins": 2,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "e3b58f75",
+          "tn": "Bulls Boys 8 (LT)",
+          "gid": "f842e719",
+          "gn": "Saturday U8 Mixed - Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 2,
+            "ft": 7,
+            "fg": 5,
+            "pts": 17,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ca8e8393",
+      "sn": "Summer 2025/26",
+      "club": "Mernda Bulls Basketball Club",
+      "regs": [
+        {
+          "tid": "cad6d065",
+          "tn": "Bulls Boys 8 (LT)",
+          "gid": "8c4f1330",
+          "gn": "Saturday U8",
+          "age": "U8",
+          "div": "U8",
+          "stats": {
+            "gp": 14,
+            "fouls": 4,
+            "ft": 13,
+            "fg": 7,
+            "pts": 27,
+            "wins": 5,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "cad6d065",
+          "tn": "Bulls Boys 8 (LT)",
+          "gid": "ab90857e",
+          "gn": "Saturday U8 Mixed Brumbies",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "ft": 13,
+            "fg": 7,
+            "pts": 27,
+            "wins": 5,
+            "losses": 9,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "cad6d065",
+          "tn": "Bulls Boys 8 (LT)",
+          "gid": "8b597e03",
+          "gn": "Saturday U8 Mixed Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 4,
+            "ft": 13,
+            "fg": 7,
+            "pts": 27,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "413d5fb6",
+      "sn": "Winter 2025",
+      "club": "Mernda Bulls Basketball Club",
+      "regs": [
+        {
+          "tid": "26545504",
+          "tn": "Winter Bulls 8 (LT)",
+          "gid": "bf92dfa7",
+          "gn": "Saturday U8 Mixed Ponies",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 7,
+            "ft": 25,
+            "fg": 5,
+            "pts": 35,
+            "wins": 11,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "26545504",
+          "tn": "Winter Bulls 8 (LT)",
+          "gid": "e16a816f",
+          "gn": "X- Ponies R1-2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "ft": 25,
+            "pts": 35,
+            "wins": 11,
+            "losses": 4,
+            "fg": 5,
+            "fouls": 7
+          }
+        },
+        {
+          "tid": "26545504",
+          "tn": "Winter Bulls 8 (LT)",
+          "gid": "c50212f8",
+          "gn": "Saturday U8 Mixed - Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 7,
+            "ft": 25,
+            "fg": 5,
+            "pts": 35,
+            "wins": 11,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "05dbff91",
+          "tn": "Yarrambat  U08 Boys 3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:20.541Z",
+  "teams": [
+    {
+      "tid": "e3b58f75",
+      "sid": "73075b54",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cad6d065",
+      "sid": "ca8e8393",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "26545504",
+      "sid": "413d5fb6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05dbff91",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:32:19.454Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "176de52c",
+      "sid": "ca8e8393"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "176de52c",
+    "2065143a",
+    "23ca7d4a",
+    "26dc2432",
+    "28e776cc",
+    "34a28393",
+    "379c1fcd",
+    "383b0ee7",
+    "42cb1176",
+    "4f6298d8",
+    "57b58304",
+    "5cc39e37",
+    "6446d975",
+    "6f26aa6d",
+    "7bc62e11",
+    "7fd74bbd",
+    "81d7f672",
+    "8601c0fb",
+    "88095442",
+    "8b259ddd",
+    "8d078f92",
+    "8d760e09",
+    "94e75bfc",
+    "ab1b0cfc",
+    "b4200f12",
+    "bc1c66ff",
+    "d4f558a8",
+    "d707fd60",
+    "dd766ed0",
+    "df3ec817",
+    "df76b55f",
+    "e38bc69d",
+    "f09430c7",
+    "f68f3646",
+    "f8d29c32",
+    "fa448dcb"
+  ]
+}

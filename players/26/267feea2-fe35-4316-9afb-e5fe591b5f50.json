@@ -1,1 +1,66 @@
-{"uuid":"267feea2-fe35-4316-9afb-e5fe591b5f50","name":"Andrew Strolla","sports":{"Basketball":{"maxGamePTS":16,"maxGameThreePt":2,"foulOuts":{},"gp":10,"pts":89,"fg":34,"ft":9,"threePt":4,"fouls":12,"statsChecked":"2026-07-06T19:09:45.362Z"}},"seasons":[{"sid":"205c1638","regs":[{"tid":"287fab34"}]},{"sid":"e52daff4","regs":[{"tid":"c505918a"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":16,"gameKey":"56ecbfc9","sid":"205c1638"},"maxGameThreePt":{"v":2,"gameKey":"56ecbfc9","sid":"205c1638"}}}
+{
+  "uuid": "267feea2-fe35-4316-9afb-e5fe591b5f50",
+  "name": "Andrew Strolla",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 16,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 10,
+      "pts": 89,
+      "fg": 34,
+      "ft": 9,
+      "threePt": 4,
+      "fouls": 12,
+      "statsChecked": "2026-07-06T19:09:45.362Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "287fab34",
+          "gid": "162b83fc",
+          "gn": "Monday Men A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "e52daff4",
+      "regs": [
+        {
+          "tid": "c505918a",
+          "gid": "e7b3d79d",
+          "gn": "Wednesday Senior Men D2 Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "287fab34",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c505918a",
+      "sid": "e52daff4",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "56ecbfc9",
+      "sid": "205c1638"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "56ecbfc9",
+      "sid": "205c1638"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T13:30:14.448Z"
+}

@@ -1,1 +1,92 @@
-{"uuid":"6a5e7fdc-7e76-447c-999a-1f32261b1a8d","gender":null,"sports":{"Basketball":{"gp":5,"pts":26,"fouls":12,"fg":11,"ft":4,"foulOuts":{"2e89df33":1},"maxGamePTS":9,"maxGameThreePt":null,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T16:01:39.462Z"}},"seasons":[{"sid":"2e89df33","sn":"Summer 2020/21","club":null,"regs":[{"tid":"d8f4c189","tn":"Diamonds","gid":"f4825ea8","gn":"Wednesday Open Women","stats":{"gp":5,"pts":26,"fouls":12,"fg":11,"ft":4,"foulOuts":1,"wins":2,"losses":3}}]}],"updatedAt":"2026-06-11T23:40:41.532Z","records":{"maxGamePTS":{"v":9,"gameKey":"e53df1cf","sid":"2e89df33"},"maxGameThreePt":{"v":null}},"games":["b471fac8","b6deed8f","bc45225b","e53df1cf","f5757b9b"],"name":"Summer 2020/21"}
+{
+  "uuid": "6a5e7fdc-7e76-447c-999a-1f32261b1a8d",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 26,
+      "fouls": 12,
+      "fg": 11,
+      "ft": 4,
+      "foulOuts": {
+        "2e89df33": 1
+      },
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:01:39.462Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e89df33",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d8f4c189",
+          "tn": "Diamonds",
+          "gid": "f4825ea8",
+          "gn": "Wednesday Open Women",
+          "stats": {
+            "gp": 5,
+            "pts": 26,
+            "fouls": 12,
+            "fg": 11,
+            "ft": 4,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0543eab",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "225ddff7",
+          "tn": "AP JEWELS",
+          "gid": "56a24f12",
+          "gn": "Wednesday U18 Girls Div 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:41.532Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "e53df1cf",
+      "sid": "2e89df33"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "b471fac8",
+    "b6deed8f",
+    "bc45225b",
+    "e53df1cf",
+    "f5757b9b"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "d8f4c189",
+      "sid": "2e89df33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "225ddff7",
+      "sid": "d0543eab",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:08.833Z"
+}

@@ -1,1 +1,291 @@
-{"uuid":"6782c337-2f54-4701-97b2-8a87b2c0c631","name":"Ava Williams","gender":"Girls","sports":{"Basketball":{"gp":66,"pts":165,"fouls":56,"fg":76,"ft":13,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.2,"foulOuts":{},"maxGamePTS":24,"maxGameThreePt":null,"wins":38,"losses":48,"draws":2,"winPct":0.43,"statsChecked":"2026-07-05T14:14:11.024Z"}},"seasons":[{"sid":"a6c675bb","sn":"Winter 2026","club":"Emerald Lakers Basketball Club Inc.","regs":[{"tid":"cf855074","tn":"Lakers U10 Girls 1","gid":"0d658a45","gn":"Saturday U10 Girls BR - 2026 Winter","age":"U10","div":null,"stats":{"gp":6,"fouls":4,"ft":6,"fg":23,"pts":52,"wins":5,"losses":1}},{"tid":"cf855074","tn":"","gid":"ed5b0791","gn":"Saturday U10 Girls AR - 2026 Winter","div":null,"stats":{"gp":6,"pts":52,"fg":23,"ft":6,"fouls":4,"wins":5,"losses":1}}]},{"sid":"cc946e47","sn":"Summer 2025/26","club":"Emerald Lakers Basketball Club Inc.","regs":[{"tid":"4409ff5d","tn":"Lakers U10 Girls 1","gid":"c2fa8c63","gn":"Saturday U10 Girls B - 2026 Summer","age":"U10","div":null,"stats":{"gp":13,"fouls":19,"ft":2,"fg":14,"pts":30,"wins":3,"losses":9,"draws":1}}]},{"sid":"94473b5e","sn":"Winter 2025","club":"Beacy Bandits Basketball Club","regs":[{"tid":"4033d235","tn":"U10 Girls Beacy Bandits Lynx","gid":"3115ce54","gn":"Saturday U10 Girls C","age":"U10","div":null,"stats":{"gp":18,"fouls":11,"ft":4,"fg":22,"pts":48,"finals":1,"gfApps":1,"wins":8,"losses":9,"draws":1,"gfWins":1}}]},{"sid":"dd5e56e5","sn":"Summer 2024/25","club":"Beacy Bandits Basketball Club","regs":[{"tid":"3e2e95f1","tn":"U8 Mixed Beacy Bandits Raptors","gid":"ea4c8dd9","gn":"Saturday U8 Mixed B","age":"U8","div":null,"stats":{"gp":13,"fouls":14,"ft":1,"fg":6,"pts":13,"wins":5,"losses":8}}]},{"sid":"412b8e26","sn":"Winter 2024","club":"Beacy Bandits Basketball Club","regs":[{"tid":"edbd6c07","tn":"U8 Mixed Beacy Bandits Raptors","gid":"6c9db9a9","gn":"Saturday U8 Mixed B","age":"U8","div":null,"stats":{"gp":16,"fouls":8,"fg":11,"pts":22,"wins":6,"losses":10}},{"tid":"edbd6c07","tn":"U8 Mixed Beacy Bandits Raptors","gid":"4f596d91","gn":"Saturday U8 Mixed C","age":"U8","div":null,"stats":{"gp":16,"fouls":8,"fg":11,"pts":22,"wins":6,"losses":10}}]}],"updatedAt":"2026-07-04T05:35:24.416Z","teams":[{"tid":"cf855074","sid":"a6c675bb","status":"ACTIVE"},{"tid":"4409ff5d","sid":"cc946e47","status":"COMPLETED"},{"tid":"4033d235","sid":"94473b5e","status":"COMPLETED"},{"tid":"3e2e95f1","sid":"dd5e56e5","status":"COMPLETED"},{"tid":"edbd6c07","sid":"412b8e26","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:36.995Z","records":{"maxGamePTS":{"v":24,"gameKey":"55910e5f","sid":"a6c675bb"},"maxGameThreePt":{"v":null}},"games":["006cebf2","03595096","05dd7f5e","09281581","0c3c780b","0f305c4c","100ad82b","15aa229f","1bad1e2a","28b3bf67","3292cb24","374eac7d","384dabe6","3e1f1127","44e3f0b6","4662488b","47412f8e","4ddc8548","4eb4cccf","4ff47aa6","547d32dc","54bcdf20","55910e5f","55e60f5c","5a7d5f82","5d233aa6","62a45811","661ef529","66539642","6762f5d4","698c6232","69de0055","725daa91","8284ebf2","8334417b","84918210","8e0973db","8f745a76","8f9f9117","8fbc1311","921ee748","95c35875","9c944b37","a2d9095d","a882f5b9","ab1a4ecc","ba56e023","bacf282c","bf7e4675","c0afe368","c0c7cffa","c10fa2e4","d537e4dc","d54b2017","d7868ff8","da6dec41","dbbfff5d","dc8e12dd","e13124a4","e72510b7","e80b5234","f202098a","f219e172","fc14cfd7","fd5a334e","ff9a3678"]}
+{
+  "uuid": "6782c337-2f54-4701-97b2-8a87b2c0c631",
+  "name": "Ava Williams",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 165,
+      "fouls": 56,
+      "fg": 76,
+      "ft": 13,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {},
+      "maxGamePTS": 24,
+      "maxGameThreePt": null,
+      "wins": 38,
+      "losses": 48,
+      "draws": 2,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-05T14:14:11.024Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a6c675bb",
+      "sn": "Winter 2026",
+      "club": "Emerald Lakers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "cf855074",
+          "tn": "Lakers U10 Girls 1",
+          "gid": "ed5b0791",
+          "gn": "Saturday U10 Girls AR - 2026 Winter",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 6,
+            "fg": 23,
+            "pts": 52,
+            "wins": 5,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "cf855074",
+          "tn": "",
+          "gid": "ed5b0791",
+          "gn": "Saturday U10 Girls AR - 2026 Winter",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 52,
+            "fg": 23,
+            "ft": 6,
+            "fouls": 4,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc946e47",
+      "sn": "Summer 2025/26",
+      "club": "Emerald Lakers Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "4409ff5d",
+          "tn": "Lakers U10 Girls 1",
+          "gid": "c2fa8c63",
+          "gn": "Saturday U10 Girls B - 2026 Summer",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "ft": 2,
+            "fg": 14,
+            "pts": 30,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "94473b5e",
+      "sn": "Winter 2025",
+      "club": "Beacy Bandits Basketball Club",
+      "regs": [
+        {
+          "tid": "4033d235",
+          "tn": "U10 Girls Beacy Bandits Lynx",
+          "gid": "3115ce54",
+          "gn": "Saturday U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 11,
+            "ft": 4,
+            "fg": 22,
+            "pts": 48,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 9,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dd5e56e5",
+      "sn": "Summer 2024/25",
+      "club": "Beacy Bandits Basketball Club",
+      "regs": [
+        {
+          "tid": "3e2e95f1",
+          "tn": "U8 Mixed Beacy Bandits Raptors",
+          "gid": "ea4c8dd9",
+          "gn": "Saturday U8 Mixed B",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "412b8e26",
+      "sn": "Winter 2024",
+      "club": "Beacy Bandits Basketball Club",
+      "regs": [
+        {
+          "tid": "edbd6c07",
+          "tn": "U8 Mixed Beacy Bandits Raptors",
+          "gid": "6c9db9a9",
+          "gn": "Saturday U8 Mixed B",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 11,
+            "pts": 22,
+            "wins": 6,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "edbd6c07",
+          "tn": "U8 Mixed Beacy Bandits Raptors",
+          "gid": "4f596d91",
+          "gn": "Saturday U8 Mixed C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 11,
+            "pts": 22,
+            "wins": 6,
+            "losses": 10
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:24.416Z",
+  "teams": [
+    {
+      "tid": "cf855074",
+      "sid": "a6c675bb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4409ff5d",
+      "sid": "cc946e47",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4033d235",
+      "sid": "94473b5e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e2e95f1",
+      "sid": "dd5e56e5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "edbd6c07",
+      "sid": "412b8e26",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:33:22.423Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "55910e5f",
+      "sid": "a6c675bb"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "006cebf2",
+    "03595096",
+    "05dd7f5e",
+    "09281581",
+    "0c3c780b",
+    "0f305c4c",
+    "100ad82b",
+    "15aa229f",
+    "1bad1e2a",
+    "28b3bf67",
+    "3292cb24",
+    "374eac7d",
+    "384dabe6",
+    "3e1f1127",
+    "44e3f0b6",
+    "4662488b",
+    "47412f8e",
+    "4ddc8548",
+    "4eb4cccf",
+    "4ff47aa6",
+    "547d32dc",
+    "54bcdf20",
+    "55910e5f",
+    "55e60f5c",
+    "5a7d5f82",
+    "5d233aa6",
+    "62a45811",
+    "661ef529",
+    "66539642",
+    "6762f5d4",
+    "698c6232",
+    "69de0055",
+    "725daa91",
+    "8284ebf2",
+    "8334417b",
+    "84918210",
+    "8e0973db",
+    "8f745a76",
+    "8f9f9117",
+    "8fbc1311",
+    "921ee748",
+    "95c35875",
+    "9c944b37",
+    "a2d9095d",
+    "a882f5b9",
+    "ab1a4ecc",
+    "ba56e023",
+    "bacf282c",
+    "bf7e4675",
+    "c0afe368",
+    "c0c7cffa",
+    "c10fa2e4",
+    "d537e4dc",
+    "d54b2017",
+    "d7868ff8",
+    "da6dec41",
+    "dbbfff5d",
+    "dc8e12dd",
+    "e13124a4",
+    "e72510b7",
+    "e80b5234",
+    "f202098a",
+    "f219e172",
+    "fc14cfd7",
+    "fd5a334e",
+    "ff9a3678"
+  ]
+}

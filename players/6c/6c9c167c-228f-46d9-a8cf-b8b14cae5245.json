@@ -1,1 +1,259 @@
-{"uuid":"6c9c167c-228f-46d9-a8cf-b8b14cae5245","name":"Ezekiel Fleay","gender":"Boys","sports":{"Basketball":{"gp":38,"pts":185,"fouls":25,"fg":87,"ft":11,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":null,"wins":40,"losses":38,"winPct":0.51,"statsChecked":"2026-07-05T15:23:09.771Z"}},"seasons":[{"sid":"e4fda0f9","sn":"Winter 2026","club":"Sovereign Knights Basketball Club","regs":[{"tid":"cebc0480","tn":"Sovereign Knights 14CS","gid":"932c2334","gn":"Saturday U14 Boys E","age":"U14","div":null,"stats":{"gp":8,"ft":1,"fg":14,"pts":29,"wins":4,"losses":4,"fouls":3}},{"tid":"cebc0480","tn":"Sovereign Knights 14CS","gid":"43ea28ce","gn":"Saturday U14 Boys D","age":"U14","div":null,"stats":{"gp":8,"fouls":3,"fg":14,"pts":29,"wins":4,"losses":4,"ft":1}},{"tid":"cebc0480","tn":"","gid":"a07515b9","gn":"Saturday U14 Boys F","div":null,"stats":{"gp":8,"pts":29,"fg":14,"ft":1,"fouls":3,"wins":4,"losses":4}}]},{"sid":"790feeb5","sn":"Summer 2025/26","club":"Sovereign Knights Basketball Club","regs":[{"tid":"974b90ec","tn":"Sovereign Knights 14CS","gid":"4d6c467e","gn":"Saturday U14 Boys E","age":"U14","div":null,"stats":{"gp":12,"fouls":8,"ft":3,"fg":24,"pts":51,"wins":3,"losses":9}},{"tid":"974b90ec","tn":"Sovereign Knights 14CS","gid":"03ada88b","gn":"Saturday U14 Boys D","age":"U14","div":null,"stats":{"gp":12,"fouls":8,"fg":24,"pts":51,"wins":3,"losses":9,"ft":3}}]},{"sid":"4c590ea3","sn":"Winter 2025","club":"Sovereign Knights Basketball Club","regs":[{"tid":"80c61973","tn":"Sovereign Knights 12SK","gid":"02c8ab9a","gn":"Saturday U12 Boys G","age":"U12","div":null,"stats":{"gp":15,"fouls":14,"ft":7,"fg":46,"pts":99,"finals":1,"wins":11,"losses":4}},{"tid":"80c61973","tn":"Sovereign Knights 12SK","gid":"b3683687","gn":"Saturday U12 Boys F","age":"U12","div":null,"stats":{"gp":15,"fouls":14,"fg":46,"pts":99,"finals":1,"wins":11,"losses":4,"ft":7}}]},{"sid":"3eb78b60","sn":"Summer 2024/25","club":"Sovereign Knights Basketball Club","regs":[{"tid":"ce851bee","tn":"Sovereign Knights 12F","gid":"dc4ff9b9","gn":"Saturday U12 Boys F","age":"U12","div":null,"stats":{"gp":3,"fg":3,"pts":6}}]}],"updatedAt":"2026-07-04T05:38:38.826Z","teams":[{"tid":"cebc0480","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"974b90ec","sid":"790feeb5","status":"COMPLETED"},{"tid":"80c61973","sid":"4c590ea3","status":"COMPLETED"},{"tid":"ce851bee","sid":"3eb78b60","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:39:18.131Z","records":{"maxGamePTS":{"v":20,"gameKey":"585a2f06","sid":"4c590ea3"},"maxGameThreePt":{"v":null}},"games":["099103cd","0d906c3f","0ea4d99d","10403026","16477f5f","1cdccf85","1cf3c80d","33f15e1f","3e8d18d5","5531ceb3","5831e51f","585a2f06","5bd47f8a","5cf54175","62e9ce65","6fce312b","70c34049","70d6e927","7cd4bd61","7fbe01f1","8122893c","8285ea24","88830e53","901bc447","9e1baa9b","ad3240e9","b3cb6545","b9e3b4de","c9653203","cce99456","dca2469d","e806d077","e999e2d4","eddbde68","f86c1a6a"]}
+{
+  "uuid": "6c9c167c-228f-46d9-a8cf-b8b14cae5245",
+  "name": "Ezekiel Fleay",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 185,
+      "fouls": 25,
+      "fg": 87,
+      "ft": 11,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 40,
+      "losses": 38,
+      "winPct": 0.51,
+      "statsChecked": "2026-07-05T15:23:09.771Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Sovereign Knights Basketball Club",
+      "regs": [
+        {
+          "tid": "cebc0480",
+          "tn": "Sovereign Knights 14CS",
+          "gid": "a07515b9",
+          "gn": "Saturday U14 Boys F",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 1,
+            "fg": 14,
+            "pts": 29,
+            "wins": 4,
+            "losses": 4,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "cebc0480",
+          "tn": "Sovereign Knights 14CS",
+          "gid": "43ea28ce",
+          "gn": "Saturday U14 Boys D",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 3,
+            "fg": 14,
+            "pts": 29,
+            "wins": 4,
+            "losses": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "cebc0480",
+          "tn": "",
+          "gid": "a07515b9",
+          "gn": "Saturday U14 Boys F",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 29,
+            "fg": 14,
+            "ft": 1,
+            "fouls": 3,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "790feeb5",
+      "sn": "Summer 2025/26",
+      "club": "Sovereign Knights Basketball Club",
+      "regs": [
+        {
+          "tid": "974b90ec",
+          "tn": "Sovereign Knights 14CS",
+          "gid": "4d6c467e",
+          "gn": "Saturday U14 Boys E",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 8,
+            "ft": 3,
+            "fg": 24,
+            "pts": 51,
+            "wins": 3,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "974b90ec",
+          "tn": "Sovereign Knights 14CS",
+          "gid": "03ada88b",
+          "gn": "Saturday U14 Boys D",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 8,
+            "fg": 24,
+            "pts": 51,
+            "wins": 3,
+            "losses": 9,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4c590ea3",
+      "sn": "Winter 2025",
+      "club": "Sovereign Knights Basketball Club",
+      "regs": [
+        {
+          "tid": "80c61973",
+          "tn": "Sovereign Knights 12SK",
+          "gid": "02c8ab9a",
+          "gn": "Saturday U12 Boys G",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "ft": 7,
+            "fg": 46,
+            "pts": 99,
+            "finals": 1,
+            "wins": 11,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "80c61973",
+          "tn": "Sovereign Knights 12SK",
+          "gid": "b3683687",
+          "gn": "Saturday U12 Boys F",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 14,
+            "fg": 46,
+            "pts": 99,
+            "finals": 1,
+            "wins": 11,
+            "losses": 4,
+            "ft": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3eb78b60",
+      "sn": "Summer 2024/25",
+      "club": "Sovereign Knights Basketball Club",
+      "regs": [
+        {
+          "tid": "ce851bee",
+          "tn": "Sovereign Knights 12F",
+          "gid": "dc4ff9b9",
+          "gn": "Saturday U12 Boys F",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fg": 3,
+            "pts": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:38:38.826Z",
+  "teams": [
+    {
+      "tid": "cebc0480",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "974b90ec",
+      "sid": "790feeb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80c61973",
+      "sid": "4c590ea3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ce851bee",
+      "sid": "3eb78b60",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:34.449Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "585a2f06",
+      "sid": "4c590ea3"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "099103cd",
+    "0d906c3f",
+    "0ea4d99d",
+    "10403026",
+    "16477f5f",
+    "1cdccf85",
+    "1cf3c80d",
+    "33f15e1f",
+    "3e8d18d5",
+    "5531ceb3",
+    "5831e51f",
+    "585a2f06",
+    "5bd47f8a",
+    "5cf54175",
+    "62e9ce65",
+    "6fce312b",
+    "70c34049",
+    "70d6e927",
+    "7cd4bd61",
+    "7fbe01f1",
+    "8122893c",
+    "8285ea24",
+    "88830e53",
+    "901bc447",
+    "9e1baa9b",
+    "ad3240e9",
+    "b3cb6545",
+    "b9e3b4de",
+    "c9653203",
+    "cce99456",
+    "dca2469d",
+    "e806d077",
+    "e999e2d4",
+    "eddbde68",
+    "f86c1a6a"
+  ]
+}

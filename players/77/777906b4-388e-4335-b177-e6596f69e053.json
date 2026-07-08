@@ -1,1 +1,279 @@
-{"uuid":"777906b4-388e-4335-b177-e6596f69e053","name":"Sonny Brasher","gender":"Boys","sports":{"Basketball":{"gp":41,"pts":82,"fouls":21,"fg":38,"ft":3,"threePt":1,"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":1,"wins":21,"losses":18,"draws":3,"winPct":0.5,"statsChecked":"2026-07-05T15:23:44.713Z"}},"seasons":[{"sid":"a62ef5b1","sn":"Winter 2026","regs":[{"tid":"4020a35c","tn":"Warriors Pev","gid":"19435e67","gn":"Thursday U12 Boys Pevensey","age":"U12","div":null,"stats":{"gp":4,"fouls":2,"fg":5,"pts":10,"wins":3,"losses":1}},{"tid":"1be5a8ae","stats":{"gp":3,"pts":4,"fg":2,"fouls":3,"losses":2}},{"tid":"1be5a8ae","tn":"","gid":"19435e67","gn":"Thursday U12 Boys Pevensey","div":null,"stats":{"gp":3,"pts":4,"fg":2,"fouls":3,"losses":2}}]},{"sid":"06ab894d","sn":"Summer 2025/26","regs":[{"tid":"3ae099de","tn":"Nuggets Adel","gid":"ff081004","gn":"Thursday U12 Boys Adelaide","age":"U12","div":null,"stats":{"gp":12,"fouls":5,"ft":1,"fg":17,"pts":35,"finals":1,"wins":9,"losses":3}}]},{"sid":"5a16cc0b","sn":"Winter 2025","regs":[{"tid":"9549b15c","tn":"Giants Adel","gid":"61f76824","gn":"Thursday U12 Boys Adelaide","age":"U12","div":null,"stats":{"gp":10,"fouls":4,"fg":10,"pts":20,"finals":1,"gfApps":1,"wins":4,"losses":5,"draws":1}}]},{"sid":"f41d8d7f","sn":"Summer 2024/25","regs":[{"tid":"896a356f","tn":"Pacers Adel","gid":"6f6c434f","gn":"Thursday U12 Boys Adelaide","age":"U12","div":null,"stats":{"gp":12,"fouls":7,"ft":2,"fg":4,"threePt":1,"pts":13,"finals":1,"wins":5,"losses":5,"draws":2}}]}],"updatedAt":"2026-07-04T05:53:07.963Z","teams":[{"tid":"1be5a8ae","sid":"a62ef5b1","status":"ACTIVE"},{"tid":"3ae099de","sid":"06ab894d","status":"COMPLETED"},{"tid":"9549b15c","sid":"5a16cc0b","status":"COMPLETED"},{"tid":"896a356f","sid":"f41d8d7f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:53:02.196Z","records":{"maxGamePTS":{"v":10,"gameKey":"a9b67f2c","sid":"06ab894d"},"maxGameThreePt":{"v":1,"gameKey":"a71edcde","sid":"f41d8d7f"}},"games":["01fcc76f","092ede42","0ddd4e2d","11df3369","1364b532","175b7809","191527bd","1a7563e4","1b5fe021","1dd72ee2","291b0e6e","2cde89ff","2e902016","419aa8aa","4491aa70","4c293825","61d45a9e","66f07ac3","69b17552","6aca5568","6dbe3f8f","8483d486","8649d22c","897318be","8bb12056","93c34367","9a3f7ead","9d234e20","a71edcde","a7f70232","a85d334f","a9b67f2c","b187f54f","bd03b46b","bf086e1c","c117e62b","c5df6994","c7cfe7b2","d21a4bfd","d7957712","ee8d45cc"],"gameTids":{"175b7809":"1be5a8ae","1dd72ee2":"1be5a8ae","8483d486":"1be5a8ae","a7f70232":"4020a35c","c5df6994":"4020a35c","0ddd4e2d":"4020a35c","191527bd":"4020a35c","1b5fe021":"3ae099de","9d234e20":"3ae099de","c7cfe7b2":"3ae099de","61d45a9e":"3ae099de","93c34367":"3ae099de","8bb12056":"3ae099de","9a3f7ead":"3ae099de","a9b67f2c":"3ae099de","66f07ac3":"3ae099de","4491aa70":"3ae099de","4c293825":"3ae099de","092ede42":"3ae099de","2cde89ff":"9549b15c","6dbe3f8f":"9549b15c","bf086e1c":"9549b15c","a85d334f":"9549b15c","d21a4bfd":"9549b15c","291b0e6e":"9549b15c","1a7563e4":"9549b15c","bd03b46b":"9549b15c","b187f54f":"9549b15c","2e902016":"9549b15c","6aca5568":"896a356f","ee8d45cc":"896a356f","c117e62b":"896a356f","11df3369":"896a356f","69b17552":"896a356f","01fcc76f":"896a356f","d7957712":"896a356f","419aa8aa":"896a356f","1364b532":"896a356f","8649d22c":"896a356f","a71edcde":"896a356f","897318be":"896a356f"}}
+{
+  "uuid": "777906b4-388e-4335-b177-e6596f69e053",
+  "name": "Sonny Brasher",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 41,
+      "pts": 82,
+      "fouls": 21,
+      "fg": 38,
+      "ft": 3,
+      "threePt": 1,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 21,
+      "losses": 18,
+      "draws": 3,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:23:44.713Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62ef5b1",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "4020a35c",
+          "tn": "Warriors Pev",
+          "gid": "19435e67",
+          "gn": "Thursday U12 Boys Pevensey",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "fg": 5,
+            "pts": 10,
+            "wins": 3,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "1be5a8ae",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3,
+            "losses": 2
+          },
+          "gid": "19435e67",
+          "gn": "Thursday U12 Boys Pevensey"
+        },
+        {
+          "tid": "1be5a8ae",
+          "tn": "",
+          "gid": "19435e67",
+          "gn": "Thursday U12 Boys Pevensey",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "06ab894d",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "3ae099de",
+          "tn": "Nuggets Adel",
+          "gid": "ff081004",
+          "gn": "Thursday U12 Boys Adelaide",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 17,
+            "pts": 35,
+            "finals": 1,
+            "wins": 9,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5a16cc0b",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "9549b15c",
+          "tn": "Giants Adel",
+          "gid": "61f76824",
+          "gn": "Thursday U12 Boys Adelaide",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 4,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f41d8d7f",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "896a356f",
+          "tn": "Pacers Adel",
+          "gid": "6f6c434f",
+          "gn": "Thursday U12 Boys Adelaide",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 4,
+            "threePt": 1,
+            "pts": 13,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5,
+            "draws": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:53:07.963Z",
+  "teams": [
+    {
+      "tid": "4020a35c",
+      "sid": "a62ef5b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1be5a8ae",
+      "sid": "a62ef5b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ae099de",
+      "sid": "06ab894d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9549b15c",
+      "sid": "5a16cc0b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "896a356f",
+      "sid": "f41d8d7f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:33.438Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "a9b67f2c",
+      "sid": "06ab894d"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a71edcde",
+      "sid": "f41d8d7f"
+    }
+  },
+  "games": [
+    "01fcc76f",
+    "092ede42",
+    "0ddd4e2d",
+    "11df3369",
+    "1364b532",
+    "175b7809",
+    "191527bd",
+    "1a7563e4",
+    "1b5fe021",
+    "1dd72ee2",
+    "291b0e6e",
+    "2cde89ff",
+    "2e902016",
+    "419aa8aa",
+    "4491aa70",
+    "4c293825",
+    "61d45a9e",
+    "66f07ac3",
+    "69b17552",
+    "6aca5568",
+    "6dbe3f8f",
+    "8483d486",
+    "8649d22c",
+    "897318be",
+    "8bb12056",
+    "93c34367",
+    "9a3f7ead",
+    "9d234e20",
+    "a71edcde",
+    "a7f70232",
+    "a85d334f",
+    "a9b67f2c",
+    "b187f54f",
+    "bd03b46b",
+    "bf086e1c",
+    "c117e62b",
+    "c5df6994",
+    "c7cfe7b2",
+    "d21a4bfd",
+    "d7957712",
+    "ee8d45cc"
+  ],
+  "gameTids": {
+    "175b7809": "1be5a8ae",
+    "1dd72ee2": "1be5a8ae",
+    "8483d486": "1be5a8ae",
+    "a7f70232": "4020a35c",
+    "c5df6994": "4020a35c",
+    "0ddd4e2d": "4020a35c",
+    "191527bd": "4020a35c",
+    "1b5fe021": "3ae099de",
+    "9d234e20": "3ae099de",
+    "c7cfe7b2": "3ae099de",
+    "61d45a9e": "3ae099de",
+    "93c34367": "3ae099de",
+    "8bb12056": "3ae099de",
+    "9a3f7ead": "3ae099de",
+    "a9b67f2c": "3ae099de",
+    "66f07ac3": "3ae099de",
+    "4491aa70": "3ae099de",
+    "4c293825": "3ae099de",
+    "092ede42": "3ae099de",
+    "2cde89ff": "9549b15c",
+    "6dbe3f8f": "9549b15c",
+    "bf086e1c": "9549b15c",
+    "a85d334f": "9549b15c",
+    "d21a4bfd": "9549b15c",
+    "291b0e6e": "9549b15c",
+    "1a7563e4": "9549b15c",
+    "bd03b46b": "9549b15c",
+    "b187f54f": "9549b15c",
+    "2e902016": "9549b15c",
+    "6aca5568": "896a356f",
+    "ee8d45cc": "896a356f",
+    "c117e62b": "896a356f",
+    "11df3369": "896a356f",
+    "69b17552": "896a356f",
+    "01fcc76f": "896a356f",
+    "d7957712": "896a356f",
+    "419aa8aa": "896a356f",
+    "1364b532": "896a356f",
+    "8649d22c": "896a356f",
+    "a71edcde": "896a356f",
+    "897318be": "896a356f"
+  }
+}

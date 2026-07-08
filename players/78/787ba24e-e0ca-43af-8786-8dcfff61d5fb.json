@@ -1,1 +1,101 @@
-{"uuid":"787ba24e-e0ca-43af-8786-8dcfff61d5fb","name":"2026","gender":null,"sports":{"Basketball":{"gp":6,"pts":30,"fouls":8,"fg":10,"ft":7,"threePt":1,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":1,"wins":1,"losses":5,"winPct":0.17,"statsChecked":"2026-07-05T16:02:04.829Z"}},"seasons":[{"sid":"10ee56a5","sn":"2026","club":"Sutherland Sharks Basketball Club","regs":[{"tid":"05eb79cb","tn":"Sutherland U12 Girls","gid":"09821aa8","gn":"U12 Girls NJC","stats":{"gp":6,"pts":30,"fouls":8,"fg":10,"ft":7,"threePt":1,"finals":1,"gfApps":1,"wins":1,"losses":5,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:41:28.310Z","records":{"maxGamePTS":{"v":9,"gameKey":"673a8822","sid":"10ee56a5"},"maxGameThreePt":{"v":1,"gameKey":"673a8822","sid":"10ee56a5"}},"games":["0e36b3dd","45c51c18","54b2dbcc","673a8822","75aa6b90","8b1dec39"]}
+{
+  "uuid": "787ba24e-e0ca-43af-8786-8dcfff61d5fb",
+  "name": "2026",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 30,
+      "fouls": 8,
+      "fg": 10,
+      "ft": 7,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T16:02:04.829Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "10ee56a5",
+      "sn": "2026",
+      "club": "Sutherland Sharks Basketball Club",
+      "regs": [
+        {
+          "tid": "05eb79cb",
+          "tn": "Sutherland U12 Girls",
+          "gid": "09821aa8",
+          "gn": "U12 Girls NJC",
+          "stats": {
+            "gp": 6,
+            "pts": 30,
+            "fouls": 8,
+            "fg": 10,
+            "ft": 7,
+            "threePt": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "e1144dac",
+          "tn": "ZZZ Sutherland Sharks U12 Girls 1 [WITHDRAWN - CLASSIC]",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:28.310Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "673a8822",
+      "sid": "10ee56a5"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "673a8822",
+      "sid": "10ee56a5"
+    }
+  },
+  "games": [
+    "0e36b3dd",
+    "45c51c18",
+    "54b2dbcc",
+    "673a8822",
+    "75aa6b90",
+    "8b1dec39"
+  ],
+  "teams": [
+    {
+      "tid": "05eb79cb",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1144dac",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:18.931Z"
+}

@@ -1,1 +1,353 @@
-{"uuid":"845ed89b-11ec-41cd-b377-fc018d7cd913","name":"Samson Heinz-Freeman","gender":"Boys","sports":{"Basketball":{"gp":46,"pts":207,"fouls":46,"fg":62,"ft":29,"threePt":18,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":4,"wins":22,"losses":51,"draws":4,"winPct":0.29,"statsChecked":"2026-07-07T18:28:26.080Z"}},"seasons":[{"sid":"be8759f2","sn":"Winter 2026","club":"Footscray Hawks Basketball Club","regs":[{"tid":"dcb61f3e","tn":"Footscray Hawks U16 Boys Darren","gid":"fadd0272","gn":"U16 Boys Div 4","age":"U16","div":"Div 4","stats":{"gp":7,"fouls":9,"fg":11,"threePt":5,"pts":39,"ft":2,"wins":1,"losses":5,"draws":1}},{"tid":"dcb61f3e","tn":"Footscray Hawks U16 Boys Darren","gid":"c3cc7e2a","gn":"U16 Boys GRADING","age":"U16","div":null,"stats":{"gp":7,"fouls":9,"ft":2,"fg":11,"threePt":5,"pts":39,"wins":1,"losses":5,"draws":1}}]},{"sid":"32b88c6e","sn":"Summer 2025/26","club":"Footscray Hawks Basketball Club","regs":[{"tid":"08ff7c29","tn":"Footscray Hawks U16 Boys Darren & Andrew","gid":"4bb7529d","gn":"U16 Boys Div 3","age":"U16","div":"Div 3","stats":{"gp":14,"fouls":22,"ft":6,"fg":19,"threePt":3,"pts":53,"wins":2,"losses":11}},{"tid":"08ff7c29","tn":"Footscray Hawks U16 Boys Darren & Andrew","gid":"652d2adf","gn":"U16 Boys GRADING","age":"U16","div":null,"stats":{"gp":14,"fouls":22,"fg":19,"threePt":3,"pts":53,"wins":2,"losses":11,"ft":6}}]},{"sid":"23985a8e","sn":"2025","regs":[{"tid":"9d0e2bee","tn":"Footscray Hawks EYAS 14's","gid":"d357bf3f","gn":"U14 Boys Division 7","age":"U14","div":"Division 7","stats":{"gp":5,"fouls":2,"fg":4,"pts":8,"finals":1,"wins":4,"losses":1}}]},{"sid":"95d474df","sn":"Winter 2025","club":"Footscray Hawks Basketball Club","regs":[{"tid":"533d3c98","tn":"Footscray Hawks U14 Boys Gianfranco","gid":"a8cecf17","gn":"U14 Boys Div 3","age":"U14","div":"Div 3","stats":{"gp":14,"fouls":9,"ft":20,"fg":25,"threePt":9,"pts":97,"wins":5,"losses":8,"draws":1}},{"tid":"533d3c98","tn":"Footscray Hawks U14 Boys Gianfranco","gid":"68721f57","gn":"U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":14,"fouls":9,"ft":20,"fg":25,"threePt":9,"pts":97,"wins":5,"losses":8,"draws":1}}]},{"sid":"b9b96577","sn":"Summer 2022/23","club":"Footscray Hawks Basketball Club","regs":[{"tid":"30284ed1","tn":"Footscray Hawks U12 Boys Gavin","gid":"1c1aa827","gn":"U12 Boys Div 5","age":"U12","div":"Div 5","stats":{"gp":2,"wins":1,"losses":1}},{"tid":"30284ed1","tn":"Footscray Hawks U12 Boys Gavin","gid":"1c09ea50","gn":"U12 Boys GRADING","age":"U12","div":null,"stats":{"gp":2,"wins":1,"losses":1}}]},{"sid":"26df4252","regs":[{"tid":"87b3fbce","stats":{"gp":4,"pts":10,"fg":3,"ft":1,"threePt":1,"fouls":4}},{"tid":"87b3fbce","tn":"","gid":"b8abf282","gn":"U16 Boys Division 4","div":null,"stats":{"gp":4,"pts":10,"fg":3,"ft":1,"threePt":1,"fouls":4}}]}],"updatedAt":"2026-07-07T18:05:03.224Z","teams":[{"tid":"dcb61f3e","sid":"be8759f2","status":"ACTIVE"},{"tid":"87b3fbce","sid":"26df4252","status":"UPCOMING"},{"tid":"08ff7c29","sid":"32b88c6e","status":"COMPLETED"},{"tid":"533d3c98","sid":"95d474df","status":"COMPLETED"},{"tid":"b5f59459","sid":"95d474df","status":"COMPLETED"},{"tid":"9d0e2bee","sid":"23985a8e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:50:12.374Z","records":{"maxGamePTS":{"v":21,"gameKey":"3a47114b","sid":"95d474df"},"maxGameThreePt":{"v":4,"gameKey":"9eb0f8d8","sid":"be8759f2"}},"games":["00582e3b","03db476b","12e0fd91","180fcbae","202137a4","2ab878ad","2b6d20ba","34666b30","363fd47b","3a47114b","3e9956d1","4264530d","4806d2d1","4b79cecb","4ca92163","568eb872","59105fd5","6154a543","640ee033","68c060ca","69fdd386","77a66796","79745c2a","89a6dff4","8b282ad7","8d63f73e","9b33788d","9eb0f8d8","bc00a820","c753e7a5","c7d04de7","c884294e","d68299c0","db64775d","df54b397","e08b88d9","e175f6bf","e190a721","e983a199","ebe6b43e","efd45a8e","fed6567c"]}
+{
+  "uuid": "845ed89b-11ec-41cd-b377-fc018d7cd913",
+  "name": "Samson Heinz-Freeman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 207,
+      "fouls": 46,
+      "fg": 62,
+      "ft": 29,
+      "threePt": 18,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 4,
+      "wins": 22,
+      "losses": 51,
+      "draws": 4,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-07T18:28:26.080Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be8759f2",
+      "sn": "Winter 2026",
+      "club": "Footscray Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "dcb61f3e",
+          "tn": "Footscray Hawks U16 Boys Darren",
+          "gid": "fadd0272",
+          "gn": "U16 Boys Div 4",
+          "age": "U16",
+          "div": "Div 4",
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "fg": 11,
+            "threePt": 5,
+            "pts": 39,
+            "ft": 2,
+            "wins": 1,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "dcb61f3e",
+          "tn": "Footscray Hawks U16 Boys Darren",
+          "gid": "c3cc7e2a",
+          "gn": "U16 Boys GRADING",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 11,
+            "threePt": 5,
+            "pts": 39,
+            "wins": 1,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32b88c6e",
+      "sn": "Summer 2025/26",
+      "club": "Footscray Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "08ff7c29",
+          "tn": "Footscray Hawks U16 Boys Darren & Andrew",
+          "gid": "4bb7529d",
+          "gn": "U16 Boys Div 3",
+          "age": "U16",
+          "div": "Div 3",
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "ft": 6,
+            "fg": 19,
+            "threePt": 3,
+            "pts": 53,
+            "wins": 2,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "08ff7c29",
+          "tn": "Footscray Hawks U16 Boys Darren & Andrew",
+          "gid": "652d2adf",
+          "gn": "U16 Boys GRADING",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "fg": 19,
+            "threePt": 3,
+            "pts": 53,
+            "wins": 2,
+            "losses": 11,
+            "ft": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "23985a8e",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "9d0e2bee",
+          "tn": "Footscray Hawks EYAS 14's",
+          "gid": "d357bf3f",
+          "gn": "U14 Boys Division 7",
+          "age": "U14",
+          "div": "Division 7",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "95d474df",
+      "sn": "Winter 2025",
+      "club": "Footscray Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "533d3c98",
+          "tn": "Footscray Hawks U14 Boys Gianfranco",
+          "gid": "a8cecf17",
+          "gn": "U14 Boys Div 3",
+          "age": "U14",
+          "div": "Div 3",
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 20,
+            "fg": 25,
+            "threePt": 9,
+            "pts": 97,
+            "wins": 5,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "533d3c98",
+          "tn": "Footscray Hawks U14 Boys Gianfranco",
+          "gid": "68721f57",
+          "gn": "U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 20,
+            "fg": 25,
+            "threePt": 9,
+            "pts": 97,
+            "wins": 5,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b5f59459",
+          "tn": "Footscray Hawks U16 Boys Davies",
+          "gid": "aa2756e4",
+          "gn": "U16 Boys Div 2B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b9b96577",
+      "sn": "Summer 2022/23",
+      "club": "Footscray Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "30284ed1",
+          "tn": "Footscray Hawks U12 Boys Gavin",
+          "gid": "1c1aa827",
+          "gn": "U12 Boys Div 5",
+          "age": "U12",
+          "div": "Div 5",
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "30284ed1",
+          "tn": "Footscray Hawks U12 Boys Gavin",
+          "gid": "1c09ea50",
+          "gn": "U12 Boys GRADING",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "87b3fbce",
+          "stats": {
+            "gp": 4,
+            "pts": 10,
+            "fg": 3,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 4
+          },
+          "gid": "b8abf282",
+          "gn": "U16 Boys Division 4"
+        },
+        {
+          "tid": "87b3fbce",
+          "tn": "",
+          "gid": "b8abf282",
+          "gn": "U16 Boys Division 4",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 10,
+            "fg": 3,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:03.224Z",
+  "teams": [
+    {
+      "tid": "dcb61f3e",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "08ff7c29",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d0e2bee",
+      "sid": "23985a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "533d3c98",
+      "sid": "95d474df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5f59459",
+      "sid": "95d474df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30284ed1",
+      "sid": "b9b96577",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87b3fbce",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:35:22.510Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "3a47114b",
+      "sid": "95d474df"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "9eb0f8d8",
+      "sid": "be8759f2"
+    }
+  },
+  "games": [
+    "00582e3b",
+    "03db476b",
+    "12e0fd91",
+    "180fcbae",
+    "202137a4",
+    "2ab878ad",
+    "2b6d20ba",
+    "34666b30",
+    "363fd47b",
+    "3a47114b",
+    "3e9956d1",
+    "4264530d",
+    "4806d2d1",
+    "4b79cecb",
+    "4ca92163",
+    "568eb872",
+    "59105fd5",
+    "6154a543",
+    "640ee033",
+    "68c060ca",
+    "69fdd386",
+    "77a66796",
+    "79745c2a",
+    "89a6dff4",
+    "8b282ad7",
+    "8d63f73e",
+    "9b33788d",
+    "9eb0f8d8",
+    "bc00a820",
+    "c753e7a5",
+    "c7d04de7",
+    "c884294e",
+    "d68299c0",
+    "db64775d",
+    "df54b397",
+    "e08b88d9",
+    "e175f6bf",
+    "e190a721",
+    "e983a199",
+    "ebe6b43e",
+    "efd45a8e",
+    "fed6567c"
+  ]
+}

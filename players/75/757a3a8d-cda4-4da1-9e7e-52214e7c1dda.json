@@ -1,1 +1,356 @@
-{"uuid":"757a3a8d-cda4-4da1-9e7e-52214e7c1dda","name":"Jack Benson","gender":"Boys","sports":{"Basketball":{"gp":57,"pts":295,"fouls":94,"fg":135,"ft":25,"finals":3,"gfApps":2,"gfWins":0,"finalsPerSeason":0.75,"foulOuts":{"88026885":1,"f373fc05":1},"maxGamePTS":17,"maxGameThreePt":null,"wins":71,"losses":87,"draws":2,"winPct":0.44,"statsChecked":"2026-07-05T14:28:04.767Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Ivanhoe Knights Basketball Club (EDJBA)","regs":[{"tid":"b5597291","tn":"Ivanhoe U09 Boys 02","gid":"697208de","gn":"Boys U09 A Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":8,"ft":4,"fg":17,"pts":38,"wins":3,"losses":3}},{"tid":"b5597291","tn":"Ivanhoe U09 Boys 02","gid":"20380c78","gn":"Boys U09 B Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":8,"fg":17,"pts":38,"wins":3,"losses":3,"ft":4}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Ivanhoe Knights Basketball Club (EDJBA)","regs":[{"tid":"e3452626","tn":"Ivanhoe U10 Boys 13","gid":"b7a734e0","gn":"Boys U10 CF","age":"U10","div":null,"stats":{"gp":16,"fouls":34,"ft":9,"fg":42,"pts":93,"finals":1,"gfApps":1,"foulOuts":1,"wins":8,"losses":7,"draws":1}},{"tid":"e3452626","tn":"Ivanhoe U10 Boys 13","gid":"dbb35526","gn":"Boys U10 C Grading","age":"U10","div":null,"stats":{"gp":16,"fouls":34,"ft":9,"fg":42,"pts":93,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Ivanhoe Knights Basketball Club (EDJBA)","regs":[{"tid":"99119288","tn":"Ivanhoe U09 Boys 07","gid":"72a23b41","gn":"Boys U09 DC","age":"U09","div":null,"stats":{"gp":17,"fouls":34,"ft":9,"fg":54,"pts":117,"finals":1,"gfApps":1,"foulOuts":1,"wins":10,"losses":7}},{"tid":"99119288","tn":"Ivanhoe U09 Boys 07","gid":"d1b5a80e","gn":"Boys U09 D Grading","age":"U09","div":null,"stats":{"gp":17,"ft":9,"fg":54,"pts":117,"finals":1,"gfApps":1,"wins":10,"losses":7,"fouls":34}},{"tid":"99119288","tn":"Ivanhoe U09 Boys 07","gid":"c074709e","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":17,"fouls":34,"fg":54,"pts":117,"finals":1,"gfApps":1,"wins":10,"losses":7,"ft":9}},{"tid":"99119288","tn":"Ivanhoe U09 Boys 07","gid":"1005f1fd","gn":"Boys U09 B Grading","age":"U09","div":null,"stats":{"gp":17,"ft":9,"pts":117,"finals":1,"gfApps":1,"wins":10,"losses":7,"fg":54,"fouls":34}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Ivanhoe Knights Basketball Club (EDJBA)","regs":[{"tid":"77db6a36","tn":"Ivanhoe U08 Boys 11","gid":"5919bbe5","gn":"Boys U08 CB","age":"U08","div":null,"stats":{"gp":16,"fouls":18,"ft":3,"fg":22,"pts":47,"finals":1,"wins":3,"losses":13}},{"tid":"77db6a36","tn":"Ivanhoe U08 Boys 11","gid":"c5c9ed85","gn":"Boys U08 C Grading","age":"U08","div":null,"stats":{"gp":16,"fouls":18,"fg":22,"pts":47,"finals":1,"wins":3,"losses":13,"ft":3}},{"tid":"77db6a36","tn":"Ivanhoe U08 Boys 11","gid":"d77f3a00","gn":"Boys U08 B Grading","age":"U08","div":null,"stats":{"gp":16,"fouls":18,"fg":22,"pts":47,"finals":1,"wins":3,"losses":13,"ft":3}}]}],"updatedAt":"2026-07-04T05:36:27.983Z","teams":[{"tid":"b5597291","sid":"1ae60211","status":"ACTIVE"},{"tid":"e3452626","sid":"88026885","status":"COMPLETED"},{"tid":"99119288","sid":"f373fc05","status":"COMPLETED"},{"tid":"77db6a36","sid":"fa446579","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:52:41.509Z","records":{"maxGamePTS":{"v":17,"gameKey":"6e521f72","sid":"88026885"},"maxGameThreePt":{"v":null}},"games":["020ede3d","06c56c3c","07fa6a35","0a3914c1","0b6329a5","0f431ad5","0f6bb452","1c9887c8","215f4ad1","236a29f1","259ed071","2941ad61","2df26fc7","308dbf37","31cd6108","31d158c2","3e4c4b83","46438553","4b41b41a","4eef1adc","530cc582","55b59304","591bd88e","5eb9b9f9","6177f9be","6513300c","6b4324d5","6e521f72","71581b74","7653718c","7e11af07","8c22e2d9","8decc33c","8ee1afb1","94b23aeb","96de049d","98555519","9b67e45f","9d31c071","9dcda69d","a0b1d621","b6c5eca9","c31586e0","c58336f7","cd28ddb4","cff397f9","d48980e4","d9c02bf1","e3e8061c","f192c852","f53adb92","f7268ea7","f7e62042","fb45e4a8","fee41d9a"]}
+{
+  "uuid": "757a3a8d-cda4-4da1-9e7e-52214e7c1dda",
+  "name": "Jack Benson",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 57,
+      "pts": 295,
+      "fouls": 94,
+      "fg": 135,
+      "ft": 25,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {
+        "88026885": 1,
+        "f373fc05": 1
+      },
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 71,
+      "losses": 87,
+      "draws": 2,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T14:28:04.767Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Ivanhoe Knights Basketball Club (EDJBA)",
+      "regs": [
+        {
+          "tid": "b5597291",
+          "tn": "Ivanhoe U09 Boys 02",
+          "gid": "d507c328",
+          "gn": "Boys U09 AR",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "ft": 4,
+            "fg": 17,
+            "pts": 38,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "b5597291",
+          "tn": "Ivanhoe U09 Boys 02",
+          "gid": "20380c78",
+          "gn": "Boys U09 B Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "fg": 17,
+            "pts": 38,
+            "wins": 3,
+            "losses": 3,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Ivanhoe Knights Basketball Club (EDJBA)",
+      "regs": [
+        {
+          "tid": "e3452626",
+          "tn": "Ivanhoe U10 Boys 13",
+          "gid": "b7a734e0",
+          "gn": "Boys U10 CF",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "ft": 9,
+            "fg": 42,
+            "pts": 93,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e3452626",
+          "tn": "Ivanhoe U10 Boys 13",
+          "gid": "dbb35526",
+          "gn": "Boys U10 C Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "ft": 9,
+            "fg": 42,
+            "pts": 93,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Ivanhoe Knights Basketball Club (EDJBA)",
+      "regs": [
+        {
+          "tid": "99119288",
+          "tn": "Ivanhoe U09 Boys 07",
+          "gid": "72a23b41",
+          "gn": "Boys U09 DC",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 34,
+            "ft": 9,
+            "fg": 54,
+            "pts": 117,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "99119288",
+          "tn": "Ivanhoe U09 Boys 07",
+          "gid": "d1b5a80e",
+          "gn": "Boys U09 D Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "ft": 9,
+            "fg": 54,
+            "pts": 117,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 7,
+            "fouls": 34
+          }
+        },
+        {
+          "tid": "99119288",
+          "tn": "Ivanhoe U09 Boys 07",
+          "gid": "c074709e",
+          "gn": "Boys U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 34,
+            "fg": 54,
+            "pts": 117,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 7,
+            "ft": 9
+          }
+        },
+        {
+          "tid": "99119288",
+          "tn": "Ivanhoe U09 Boys 07",
+          "gid": "1005f1fd",
+          "gn": "Boys U09 B Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "ft": 9,
+            "pts": 117,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 7,
+            "fg": 54,
+            "fouls": 34
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Ivanhoe Knights Basketball Club (EDJBA)",
+      "regs": [
+        {
+          "tid": "77db6a36",
+          "tn": "Ivanhoe U08 Boys 11",
+          "gid": "5919bbe5",
+          "gn": "Boys U08 CB",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 3,
+            "fg": 22,
+            "pts": 47,
+            "finals": 1,
+            "wins": 3,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "77db6a36",
+          "tn": "Ivanhoe U08 Boys 11",
+          "gid": "c5c9ed85",
+          "gn": "Boys U08 C Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "fg": 22,
+            "pts": 47,
+            "finals": 1,
+            "wins": 3,
+            "losses": 13,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "77db6a36",
+          "tn": "Ivanhoe U08 Boys 11",
+          "gid": "d77f3a00",
+          "gn": "Boys U08 B Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "fg": 22,
+            "pts": 47,
+            "finals": 1,
+            "wins": 3,
+            "losses": 13,
+            "ft": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:27.983Z",
+  "teams": [
+    {
+      "tid": "b5597291",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e3452626",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99119288",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "77db6a36",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:53.070Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "6e521f72",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "020ede3d",
+    "06c56c3c",
+    "07fa6a35",
+    "0a3914c1",
+    "0b6329a5",
+    "0f431ad5",
+    "0f6bb452",
+    "1c9887c8",
+    "215f4ad1",
+    "236a29f1",
+    "259ed071",
+    "2941ad61",
+    "2df26fc7",
+    "308dbf37",
+    "31cd6108",
+    "31d158c2",
+    "3e4c4b83",
+    "46438553",
+    "4b41b41a",
+    "4eef1adc",
+    "530cc582",
+    "55b59304",
+    "591bd88e",
+    "5eb9b9f9",
+    "6177f9be",
+    "6513300c",
+    "6b4324d5",
+    "6e521f72",
+    "71581b74",
+    "7653718c",
+    "7e11af07",
+    "8c22e2d9",
+    "8decc33c",
+    "8ee1afb1",
+    "94b23aeb",
+    "96de049d",
+    "98555519",
+    "9b67e45f",
+    "9d31c071",
+    "9dcda69d",
+    "a0b1d621",
+    "b6c5eca9",
+    "c31586e0",
+    "c58336f7",
+    "cd28ddb4",
+    "cff397f9",
+    "d48980e4",
+    "d9c02bf1",
+    "e3e8061c",
+    "f192c852",
+    "f53adb92",
+    "f7268ea7",
+    "f7e62042",
+    "fb45e4a8",
+    "fee41d9a"
+  ]
+}

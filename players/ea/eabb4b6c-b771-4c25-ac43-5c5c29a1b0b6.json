@@ -1,1 +1,434 @@
-{"uuid":"eabb4b6c-b771-4c25-ac43-5c5c29a1b0b6","name":"Lucas Pink","gender":"Boys","sports":{"Basketball":{"gp":52,"pts":237,"fouls":64,"fg":109,"ft":10,"threePt":3,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":19,"maxGameThreePt":1,"wins":48,"losses":41,"winPct":0.54,"statsChecked":"2026-07-05T15:13:36.598Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","regs":[{"tid":"0672f495","tn":"Parkside Players ","gid":"4754bbd3","gn":"Saturday U14 Boys C","age":"U14","div":null,"stats":{"gp":8,"fouls":12,"fg":26,"threePt":1,"pts":56,"wins":6,"losses":2,"ft":1}},{"tid":"0672f495","tn":"Parkside Players ","gid":"c6d90390","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":8,"fouls":12,"ft":1,"fg":26,"pts":56,"wins":6,"losses":2,"threePt":1}},{"tid":"0672f495","tn":"Parkside Players ","gid":"d27469c1","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":8,"fouls":12,"fg":26,"pts":56,"wins":6,"losses":2,"ft":1,"threePt":1}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"e64905cd","tn":"Parkside Players ","gid":"97db8de1","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":15,"fouls":15,"ft":2,"fg":35,"threePt":2,"pts":78,"finals":1,"wins":13,"losses":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"c159bed8","tn":"Albert Park Sharks","gid":"24f85033","gn":"Round Robin Finals","age":null,"div":null,"stats":{"gp":11,"fouls":16,"fg":21,"pts":42,"wins":3,"losses":8}},{"tid":"c159bed8","tn":"Albert Park Sharks","gid":"d52c47c0","gn":"Tuesday Year 6 Boys B","age":null,"div":null,"stats":{"gp":11,"fouls":16,"fg":21,"pts":42,"wins":3,"losses":8}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"d465ff20","tn":"Albert Park Sharks","gid":"eadba50a","gn":"Tuesday MSAC/Bayside Year 6 Boys B","age":null,"div":null,"stats":{"gp":7,"fouls":7,"fg":7,"pts":14,"wins":3,"losses":4}}]},{"sid":"3d243fd6","sn":"Winter 2024","regs":[{"tid":"2433c34b","tn":"Hoop School Boys U12 Black","gid":"259b35e0","gn":"Saturday U12 Boys B","age":"U12","div":null,"stats":{"gp":11,"fouls":14,"ft":7,"fg":20,"pts":47,"wins":4,"losses":7}},{"tid":"2433c34b","tn":"Hoop School Boys U12 Black","gid":"e26ddf19","gn":"Saturday U12 Boys A","age":"U12","div":null,"stats":{"gp":11,"fouls":14,"fg":20,"pts":47,"wins":4,"losses":7,"ft":7}}]}],"updatedAt":"2026-06-01T08:31:43.550Z","teams":[{"tid":"0672f495","sid":"e7aed763","status":"ACTIVE"},{"tid":"e64905cd","sid":"e78cfce1","status":"COMPLETED"},{"tid":"c159bed8","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"d465ff20","sid":"31d05517","status":"COMPLETED"},{"tid":"2433c34b","sid":"3d243fd6","status":"COMPLETED"},{"tid":"48a499c3","sid":"0fef30ca","status":"COMPLETED"},{"tid":"31b8138d","sid":"09a70808","status":"COMPLETED"},{"tid":"c5b0a9de","sid":"e5df46b3","status":"COMPLETED"},{"tid":"af305f68","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"a594e920","sid":"3f4132a1","status":"COMPLETED"},{"tid":"5a85e6e9","sid":"977f8526","status":"COMPLETED"},{"tid":"db4f0a6a","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:30:39.785Z","records":{"maxGamePTS":{"v":19,"gameKey":"d2af6bbc","sid":"3d243fd6"},"maxGameThreePt":{"v":1,"gameKey":"bc2cfae6","sid":"e7aed763"}},"games":["000d64b2","0066211a","0102d2ce","12e4fc9c","14af28fd","153d5aa8","1690aa9a","16e17a76","1893cd2d","1a721c16","1accf744","2188c08e","243db7a9","26fa463b","270bd85f","2d367348","2d892776","2ff1db00","3232a82b","347f21e2","3db81ca9","3e8887f7","590cf2c5","59969fa5","6d349440","7785f2e4","79a4f45b","7eda681b","86b60a4a","897f7f8a","91984fce","92f9b82e","98fb3c54","9a563b99","a0bed6b5","a36b8e0a","a81bb07d","ac117a8c","ad884db2","bc2cfae6","c4257eb6","c438f0ff","c6b24e81","d2af6bbc","d302778f","df060f21","df997899","ed2c7980","ef9aaf05","f4bec51c","f87979ab","ff418098"]}
+{
+  "uuid": "eabb4b6c-b771-4c25-ac43-5c5c29a1b0b6",
+  "name": "Lucas Pink",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 237,
+      "fouls": 64,
+      "fg": 109,
+      "ft": 10,
+      "threePt": 3,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 19,
+      "maxGameThreePt": 1,
+      "wins": 48,
+      "losses": 41,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T15:13:36.598Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "0672f495",
+          "tn": "Parkside Players ",
+          "gid": "4754bbd3",
+          "gn": "Saturday U14 Boys C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "fg": 26,
+            "threePt": 1,
+            "pts": 56,
+            "wins": 6,
+            "losses": 2,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "0672f495",
+          "tn": "Parkside Players ",
+          "gid": "c6d90390",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 26,
+            "pts": 56,
+            "wins": 6,
+            "losses": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "0672f495",
+          "tn": "Parkside Players ",
+          "gid": "d27469c1",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "fg": 26,
+            "pts": 56,
+            "wins": 6,
+            "losses": 2,
+            "ft": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "e64905cd",
+          "tn": "Parkside Players ",
+          "gid": "97db8de1",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 15,
+            "ft": 2,
+            "fg": 35,
+            "threePt": 2,
+            "pts": 78,
+            "finals": 1,
+            "wins": 13,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "c159bed8",
+          "tn": "Albert Park Sharks",
+          "gid": "d52c47c0",
+          "gn": "Tuesday Year 6 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "fg": 21,
+            "pts": 42,
+            "wins": 3,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "c159bed8",
+          "tn": "Albert Park Sharks",
+          "gid": "d52c47c0",
+          "gn": "Tuesday Year 6 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "fg": 21,
+            "pts": 42,
+            "wins": 3,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "d465ff20",
+          "tn": "Albert Park Sharks",
+          "gid": "eadba50a",
+          "gn": "Tuesday MSAC/Bayside Year 6 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "fg": 7,
+            "pts": 14,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3d243fd6",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "2433c34b",
+          "tn": "Hoop School Boys U12 Black",
+          "gid": "259b35e0",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 14,
+            "ft": 7,
+            "fg": 20,
+            "pts": 47,
+            "wins": 4,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "2433c34b",
+          "tn": "Hoop School Boys U12 Black",
+          "gid": "e26ddf19",
+          "gn": "Saturday U12 Boys A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 14,
+            "fg": 20,
+            "pts": 47,
+            "wins": 4,
+            "losses": 7,
+            "ft": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "48a499c3",
+          "tn": "Albert Park Sharks",
+          "gid": "b0e75b8a",
+          "gn": "Wednesday MSAC YR5.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "31b8138d",
+          "tn": "Albert Park Sharks",
+          "gid": "741c81c0",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "c5b0a9de",
+          "tn": "Albert Park Sharks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "af305f68",
+          "tn": "AP Sharks",
+          "gid": "b6e9943d",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "a594e920",
+          "tn": "Albert Park Sharks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "5a85e6e9",
+          "tn": "AP Sharks",
+          "gid": "d9de2e7a",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "db4f0a6a",
+          "tn": "AP Sharks (3751)",
+          "gid": "08b90e70",
+          "gn": "Friday MSAC/Bayside YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:31:43.550Z",
+  "teams": [
+    {
+      "tid": "0672f495",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e64905cd",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c159bed8",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d465ff20",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2433c34b",
+      "sid": "3d243fd6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48a499c3",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31b8138d",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5b0a9de",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af305f68",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a594e920",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a85e6e9",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db4f0a6a",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:39:35.803Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "d2af6bbc",
+      "sid": "3d243fd6"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "bc2cfae6",
+      "sid": "e7aed763"
+    }
+  },
+  "games": [
+    "000d64b2",
+    "0066211a",
+    "0102d2ce",
+    "12e4fc9c",
+    "14af28fd",
+    "153d5aa8",
+    "1690aa9a",
+    "16e17a76",
+    "1893cd2d",
+    "1a721c16",
+    "1accf744",
+    "2188c08e",
+    "243db7a9",
+    "26fa463b",
+    "270bd85f",
+    "2d367348",
+    "2d892776",
+    "2ff1db00",
+    "3232a82b",
+    "347f21e2",
+    "3db81ca9",
+    "3e8887f7",
+    "590cf2c5",
+    "59969fa5",
+    "6d349440",
+    "7785f2e4",
+    "79a4f45b",
+    "7eda681b",
+    "86b60a4a",
+    "897f7f8a",
+    "91984fce",
+    "92f9b82e",
+    "98fb3c54",
+    "9a563b99",
+    "a0bed6b5",
+    "a36b8e0a",
+    "a81bb07d",
+    "ac117a8c",
+    "ad884db2",
+    "bc2cfae6",
+    "c4257eb6",
+    "c438f0ff",
+    "c6b24e81",
+    "d2af6bbc",
+    "d302778f",
+    "df060f21",
+    "df997899",
+    "ed2c7980",
+    "ef9aaf05",
+    "f4bec51c",
+    "f87979ab",
+    "ff418098"
+  ]
+}

@@ -1,1 +1,79 @@
-{"uuid":"626a6d56-90e2-4232-a08d-99c5a4edd214","name":"Jye Rees","sports":{"Basketball":{"maxGamePTS":11,"maxGameThreePt":1,"foulOuts":{},"gp":13,"pts":34,"fg":12,"ft":1,"threePt":3,"fouls":15,"statsChecked":"2026-07-06T19:10:30.025Z"}},"seasons":[{"sid":"e7426d9d","regs":[{"tid":"45204d1f"}]},{"sid":"e948c75e","regs":[{"tid":"016d506e"}]},{"sid":"8d446140","regs":[{"tid":"32ef229b"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":11,"gameKey":"b015803d","sid":"8d446140"},"maxGameThreePt":{"v":1,"gameKey":"0d647790","sid":"e7426d9d"}}}
+{
+  "uuid": "626a6d56-90e2-4232-a08d-99c5a4edd214",
+  "name": "Jye Rees",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 13,
+      "pts": 34,
+      "fg": 12,
+      "ft": 1,
+      "threePt": 3,
+      "fouls": 15,
+      "statsChecked": "2026-07-06T19:10:30.025Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7426d9d",
+      "regs": [
+        {
+          "tid": "45204d1f",
+          "gid": "d194b71f",
+          "gn": "Monday Open Men E1/E2 GRADE"
+        }
+      ]
+    },
+    {
+      "sid": "e948c75e",
+      "regs": [
+        {
+          "tid": "016d506e",
+          "gid": "4e754381",
+          "gn": "Monday Open Men C.2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "8d446140",
+      "regs": [
+        {
+          "tid": "32ef229b"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "45204d1f",
+      "sid": "e7426d9d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "016d506e",
+      "sid": "e948c75e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32ef229b",
+      "sid": "8d446140",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "b015803d",
+      "sid": "8d446140"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "0d647790",
+      "sid": "e7426d9d"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T13:33:16.803Z"
+}

@@ -1,1 +1,111 @@
-{"uuid":"7b7d6eee-f5f1-4b84-8fca-ac98dd26d755","name":"Jordan Loulanting","gender":"Mixed","sports":{"Basketball":{"gp":8,"fouls":3,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":9,"losses":15,"winPct":0.38,"statsChecked":"2026-07-05T15:36:48.506Z"}},"seasons":[{"sid":"3ecfff14","sn":"Winter 2026","club":"Pakenham Huskies Basketball Club","regs":[{"tid":"cd11b080","stats":{"wins":3,"losses":5,"gp":8,"fouls":3}},{"tid":"cd11b080","tn":"","gid":"fa13b692","gn":"Saturday U10 Mixed D","div":null,"stats":{"gp":8,"fouls":3,"wins":3,"losses":5}}]},{"sid":"3ecfff14","sn":"Winter 2026","club":"Pakenham Huskies Basketball Club","regs":[{"tid":"cd11b080","tn":"U10 HUSKIE ROCKETS","gid":"fa13b692","gn":"Saturday U10 Mixed D","age":"U10","div":null,"stats":{"gp":8,"fouls":3,"wins":3,"losses":5}}]}],"updatedAt":"2026-07-04T05:43:50.939Z","teams":[{"tid":"30623e9d","sid":"3ecfff14","status":"ACTIVE"},{"tid":"cd11b080","sid":"3ecfff14","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:06:28.237Z","games":["2f09013d","3b19bed5","4116abfa","60fa791a","984125bd","a5695db2","cd86e115","eb78a8a9"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "7b7d6eee-f5f1-4b84-8fca-ac98dd26d755",
+  "name": "Jordan Loulanting",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "fouls": 3,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 15,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:36:48.506Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3ecfff14",
+      "sn": "Winter 2026",
+      "club": "Pakenham Huskies Basketball Club",
+      "regs": [
+        {
+          "tid": "cd11b080",
+          "stats": {
+            "wins": 3,
+            "losses": 5,
+            "gp": 8,
+            "fouls": 3
+          },
+          "gid": "fa13b692",
+          "gn": "Saturday U10 Mixed D"
+        },
+        {
+          "tid": "cd11b080",
+          "tn": "",
+          "gid": "fa13b692",
+          "gn": "Saturday U10 Mixed D",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 3,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "30623e9d",
+          "tn": "GET ACTIVE KIDS VOUCHER - Huskies Junior Mixed",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3ecfff14",
+      "sn": "Winter 2026",
+      "club": "Pakenham Huskies Basketball Club",
+      "regs": [
+        {
+          "tid": "cd11b080",
+          "tn": "U10 HUSKIE ROCKETS",
+          "gid": "fa13b692",
+          "gn": "Saturday U10 Mixed D",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 3,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:43:50.939Z",
+  "teams": [
+    {
+      "tid": "cd11b080",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30623e9d",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:34:54.893Z",
+  "games": [
+    "2f09013d",
+    "3b19bed5",
+    "4116abfa",
+    "60fa791a",
+    "984125bd",
+    "a5695db2",
+    "cd86e115",
+    "eb78a8a9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

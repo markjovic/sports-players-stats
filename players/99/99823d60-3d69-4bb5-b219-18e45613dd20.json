@@ -1,1 +1,326 @@
-{"uuid":"99823d60-3d69-4bb5-b219-18e45613dd20","name":"Tom Farrell","gender":"Boys","sports":{"Basketball":{"gp":37,"pts":105,"fouls":25,"fg":43,"ft":4,"threePt":5,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":4,"wins":54,"losses":39,"winPct":0.58,"statsChecked":"2026-07-05T14:29:18.570Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"dd102371","tn":"Collingwood U19 Boys 08","gid":"ca98482a","gn":"Boys U19 C Grading","age":"U19","div":null,"stats":{"gp":8,"fouls":4,"ft":2,"fg":14,"pts":33,"wins":3,"losses":3,"threePt":1}},{"tid":"dd102371","tn":"Collingwood U19 Boys 08","gid":"84cb8211","gn":"Boys U19 D Grading","age":"U19","div":null,"stats":{"gp":8,"fouls":4,"ft":2,"fg":14,"pts":33,"wins":3,"losses":3,"threePt":1}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"14cf6261","tn":"Collingwood U18 Boys 09","gid":"041967ad","gn":"Boys U18 BE","age":"U18","div":null,"stats":{"gp":13,"fouls":12,"ft":1,"fg":12,"pts":37,"wins":7,"losses":6,"threePt":4}},{"tid":"14cf6261","tn":"Collingwood U18 Boys 09","gid":"4656cf29","gn":"Boys U18 B Grading","age":"U18","div":null,"stats":{"gp":13,"fouls":12,"fg":12,"pts":37,"wins":7,"losses":6,"ft":1,"threePt":4}},{"tid":"14cf6261","tn":"Collingwood U18 Boys 09","gid":"f09b2ecc","gn":"Boys U18 C Grading","age":"U18","div":null,"stats":{"gp":13,"fouls":12,"fg":12,"threePt":4,"pts":37,"wins":7,"losses":6,"ft":1}}]},{"sid":"5161abf1","sn":"Winter 2023","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"50c63903","tn":"Collingwood U15 Boys 08","gid":"9c04c6db","gn":"Boys U15 BE (PM)","age":"U15","div":null,"stats":{"gp":14,"fouls":9,"fg":16,"pts":32,"wins":9,"losses":5}},{"tid":"50c63903","tn":"Collingwood U15 Boys 08","gid":"0200f734","gn":"Boys U15 B Grading","age":"U15","div":null,"stats":{"gp":14,"fouls":9,"fg":16,"pts":32,"wins":9,"losses":5}},{"tid":"50c63903","tn":"Collingwood U15 Boys 08","gid":"5919c250","gn":"Boys U15 C Grading","age":"U15","div":null,"stats":{"gp":14,"fouls":9,"fg":16,"pts":32,"wins":9,"losses":5}}]},{"sid":"a94981b4","sn":"Summer 2022/23","club":"Northcote Jets Basketball Club Inc.","regs":[{"tid":"223f0b7d","tn":"Jets U16 Boys Blue","gid":"cddbe9fa","gn":"Saturday U16 Boys Division 4/5","age":"U16","div":null,"stats":{"gp":2,"pts":3,"fg":1,"ft":1}},{"tid":"223f0b7d","tn":"Jets U16 Boys Blue","gid":"1b0adca9","gn":"Saturday U16 Boys Division 3","age":"U16","div":"Division 3","stats":{"gp":2,"ft":1,"fg":1,"pts":3}}]}],"updatedAt":"2026-06-01T20:44:57.151Z","teams":[{"tid":"dd102371","sid":"1ae60211","status":"ACTIVE"},{"tid":"14cf6261","sid":"88026885","status":"COMPLETED"},{"tid":"50c63903","sid":"5161abf1","status":"COMPLETED"},{"tid":"223f0b7d","sid":"a94981b4","status":"COMPLETED"},{"tid":"4774ab5b","sid":"8e7c4b8e","status":"COMPLETED"},{"tid":"f3856d7c","sid":"84079ea9","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:01.981Z","games":["01bfa699","03f6a420","1484c0c0","17528ca7","17e2395f","1a5fe67c","1ba3a67c","1e2125c7","2160a10f","31b842ea","3ca002bf","44993646","49b44395","52ffa4a3","570ba1c2","59faf562","5ea43b5b","5f07c6b0","6c5c60f8","7dbaab58","8d7521a9","8eb45c5a","90ba70b1","9119c1e5","94104eac","9cb33d4b","c23a6ccc","c7f6582a","cc5e2dec","d4e68e0b","db3eb88d","f7bfcde5","fbebecae","fe1794ab"],"records":{"maxGamePTS":{"v":16,"gameKey":"8eb45c5a","sid":"88026885"},"maxGameThreePt":{"v":4,"gameKey":"8eb45c5a","sid":"88026885"}}}
+{
+  "uuid": "99823d60-3d69-4bb5-b219-18e45613dd20",
+  "name": "Tom Farrell",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "pts": 105,
+      "fouls": 25,
+      "fg": 43,
+      "ft": 4,
+      "threePt": 5,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": 4,
+      "wins": 54,
+      "losses": 39,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T14:29:18.570Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "dd102371",
+          "tn": "Collingwood U19 Boys 08",
+          "gid": "91650ed3",
+          "gn": "Boys U19 CA",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 14,
+            "pts": 33,
+            "wins": 3,
+            "losses": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "dd102371",
+          "tn": "Collingwood U19 Boys 08",
+          "gid": "84cb8211",
+          "gn": "Boys U19 D Grading",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 14,
+            "pts": 33,
+            "wins": 3,
+            "losses": 3,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "14cf6261",
+          "tn": "Collingwood U18 Boys 09",
+          "gid": "041967ad",
+          "gn": "Boys U18 BE",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 12,
+            "pts": 37,
+            "wins": 7,
+            "losses": 6,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "14cf6261",
+          "tn": "Collingwood U18 Boys 09",
+          "gid": "4656cf29",
+          "gn": "Boys U18 B Grading",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "fg": 12,
+            "pts": 37,
+            "wins": 7,
+            "losses": 6,
+            "ft": 1,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "14cf6261",
+          "tn": "Collingwood U18 Boys 09",
+          "gid": "f09b2ecc",
+          "gn": "Boys U18 C Grading",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "fg": 12,
+            "threePt": 4,
+            "pts": 37,
+            "wins": 7,
+            "losses": 6,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5161abf1",
+      "sn": "Winter 2023",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "50c63903",
+          "tn": "Collingwood U15 Boys 08",
+          "gid": "9c04c6db",
+          "gn": "Boys U15 BE (PM)",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "fg": 16,
+            "pts": 32,
+            "wins": 9,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "50c63903",
+          "tn": "Collingwood U15 Boys 08",
+          "gid": "0200f734",
+          "gn": "Boys U15 B Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "fg": 16,
+            "pts": 32,
+            "wins": 9,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "50c63903",
+          "tn": "Collingwood U15 Boys 08",
+          "gid": "5919c250",
+          "gn": "Boys U15 C Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "fg": 16,
+            "pts": 32,
+            "wins": 9,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a94981b4",
+      "sn": "Summer 2022/23",
+      "club": "Northcote Jets Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "223f0b7d",
+          "tn": "Jets U16 Boys Blue",
+          "gid": "cddbe9fa",
+          "gn": "Saturday U16 Boys Division 4/5",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "223f0b7d",
+          "tn": "Jets U16 Boys Blue",
+          "gid": "1b0adca9",
+          "gn": "Saturday U16 Boys Division 3",
+          "age": "U16",
+          "div": "Division 3",
+          "stats": {
+            "gp": 2,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e7c4b8e",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "4774ab5b",
+          "tn": "Jets U15 Boys Red",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "84079ea9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "f3856d7c",
+          "tn": "Jets U15 Boys Blue",
+          "gid": "b093ddfa",
+          "gn": "Saturday U15 Boys Division 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:44:57.151Z",
+  "teams": [
+    {
+      "tid": "dd102371",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "14cf6261",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50c63903",
+      "sid": "5161abf1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "223f0b7d",
+      "sid": "a94981b4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4774ab5b",
+      "sid": "8e7c4b8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3856d7c",
+      "sid": "84079ea9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:36:22.694Z",
+  "games": [
+    "01bfa699",
+    "03f6a420",
+    "1484c0c0",
+    "17528ca7",
+    "17e2395f",
+    "1a5fe67c",
+    "1ba3a67c",
+    "1e2125c7",
+    "2160a10f",
+    "31b842ea",
+    "3ca002bf",
+    "44993646",
+    "49b44395",
+    "52ffa4a3",
+    "570ba1c2",
+    "59faf562",
+    "5ea43b5b",
+    "5f07c6b0",
+    "6c5c60f8",
+    "7dbaab58",
+    "8d7521a9",
+    "8eb45c5a",
+    "90ba70b1",
+    "9119c1e5",
+    "94104eac",
+    "9cb33d4b",
+    "c23a6ccc",
+    "c7f6582a",
+    "cc5e2dec",
+    "d4e68e0b",
+    "db3eb88d",
+    "f7bfcde5",
+    "fbebecae",
+    "fe1794ab"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "8eb45c5a",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "8eb45c5a",
+      "sid": "88026885"
+    }
+  }
+}

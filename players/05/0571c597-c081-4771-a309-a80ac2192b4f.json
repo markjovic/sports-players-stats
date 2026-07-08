@@ -1,1 +1,139 @@
-{"uuid":"0571c597-c081-4771-a309-a80ac2192b4f","name":"Ashlyn Jones","gender":"Mixed","sports":{"Basketball":{"gp":16,"pts":32,"fouls":6,"fg":16,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":9,"losses":7,"winPct":0.56,"statsChecked":"2026-07-05T15:58:56.524Z"}},"seasons":[{"sid":"66a52dcf","sn":"Summer 2023/24","regs":[{"tid":"b05eaa88","tn":"TIMBERWOLVES (Grey)","gid":"750c66b2","gn":"Monday U20 Mixed","age":"U20","div":null,"stats":{"gp":5,"fouls":3,"fg":12,"pts":24,"wins":2,"losses":3}}]},{"sid":"15ac07ad","sn":"Autumn 2023","regs":[{"tid":"fda6bc85","tn":"RAPTORS (Lime Green)","gid":"13815fcd","gn":"Monday U19 Mixed","age":"U19","div":null,"stats":{"gp":11,"fouls":3,"fg":4,"pts":8,"finals":1,"gfApps":1,"wins":7,"losses":4,"gfWins":1}}]}],"updatedAt":"2026-06-02T03:46:34.513Z","teams":[{"tid":"2404259d","sid":"66a52dcf","status":"COMPLETED"},{"tid":"ef7e51e2","sid":"66a52dcf","status":"COMPLETED"},{"tid":"b05eaa88","sid":"66a52dcf","status":"COMPLETED"},{"tid":"fda6bc85","sid":"15ac07ad","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:52:40.946Z","records":{"maxGamePTS":{"v":12,"gameKey":"614f1c37","sid":"66a52dcf"},"maxGameThreePt":{"v":null}},"games":["1cc8a696","2c8c4762","39fd5df1","3bcfda12","3f2dd841","45fa7f4d","520f5a50","5ae3cbff","5f92fd61","614f1c37","6fc8f7eb","74c5a880","78bd6f8e","c134ede1","e20d3561","ebd37ff2"]}
+{
+  "uuid": "0571c597-c081-4771-a309-a80ac2192b4f",
+  "name": "Ashlyn Jones",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 32,
+      "fouls": 6,
+      "fg": 16,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 7,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T15:58:56.524Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "66a52dcf",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "b05eaa88",
+          "tn": "TIMBERWOLVES (Grey)",
+          "gid": "750c66b2",
+          "gn": "Monday U20 Mixed",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "fg": 12,
+            "pts": 24,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "2404259d",
+          "tn": "DENVER (Black)",
+          "gid": "750c66b2",
+          "gn": "Monday U20 Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "ef7e51e2",
+          "tn": "MIAMI (Red)",
+          "gid": "750c66b2",
+          "gn": "Monday U20 Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "15ac07ad",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "fda6bc85",
+          "tn": "RAPTORS (Lime Green)",
+          "gid": "13815fcd",
+          "gn": "Monday U19 Mixed",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 3,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T03:46:34.513Z",
+  "teams": [
+    {
+      "tid": "b05eaa88",
+      "sid": "66a52dcf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2404259d",
+      "sid": "66a52dcf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef7e51e2",
+      "sid": "66a52dcf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fda6bc85",
+      "sid": "15ac07ad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:29:09.284Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "614f1c37",
+      "sid": "66a52dcf"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1cc8a696",
+    "2c8c4762",
+    "39fd5df1",
+    "3bcfda12",
+    "3f2dd841",
+    "45fa7f4d",
+    "520f5a50",
+    "5ae3cbff",
+    "5f92fd61",
+    "614f1c37",
+    "6fc8f7eb",
+    "74c5a880",
+    "78bd6f8e",
+    "c134ede1",
+    "e20d3561",
+    "ebd37ff2"
+  ]
+}

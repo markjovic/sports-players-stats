@@ -1,1 +1,361 @@
-{"uuid":"68770054-dbf3-42ce-8aa7-e7e700d737a1","gender":null,"sports":{"Basketball":{"gp":45,"pts":103,"fouls":99,"fg":43,"ft":14,"threePt":1,"foulOuts":{"b7c3491e":1,"532e7f37":1},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"maxGamePTS":9,"maxGameThreePt":1,"wins":45,"losses":81,"winPct":0.33,"draws":9,"statsChecked":"2026-07-05T16:01:25.701Z"}},"seasons":[{"sid":"0ad6013c","sn":"Winter 2022","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"c42e576c","tn":"Blackburn U17 Girls 04","gid":"13de193a","gn":"Girls U17D1","stats":{"gp":12,"pts":38,"fouls":38,"fg":15,"ft":5,"wins":3,"losses":9,"threePt":1}},{"tid":"c42e576c","tn":"Blackburn U17 Girls 04","gid":"4aa39859","gn":"Girls U17 D Grading","stats":{"gp":12,"pts":38,"fouls":38,"fg":15,"ft":5,"threePt":1,"wins":3,"losses":9}},{"tid":"c42e576c","tn":"Blackburn U17 Girls 04","gid":"a7e7941f","gn":"Girls U17 C Grading","stats":{"gp":12,"fouls":38,"wins":3,"losses":9,"pts":38,"fg":15,"ft":5,"threePt":1}}]},{"sid":"b7c3491e","sn":"Summer 2021/22","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"3ca8c155","tn":"Blackburn U16 Girls 03","gid":"3cb520eb","gn":"Girls U16B3","stats":{"gp":12,"pts":16,"fouls":16,"fg":7,"ft":2,"foulOuts":1,"wins":3,"losses":8,"draws":1}},{"tid":"3ca8c155","tn":"Blackburn U16 Girls 03","gid":"43ff4445","gn":"Girls U16 B Grading","stats":{"gp":12,"pts":16,"fouls":16,"fg":7,"wins":3,"losses":8,"draws":1,"ft":2}},{"tid":"3ca8c155","tn":"Blackburn U16 Girls 03","gid":"01c4d753","gn":"Girls U16 C Grading","stats":{"gp":12,"pts":16,"fouls":16,"fg":7,"wins":3,"losses":8,"draws":1,"ft":2}}]},{"sid":"532e7f37","sn":"Winter 2021","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"68f0cb2c","tn":"Blackburn U17 Girls 06","gid":"394c84f7","gn":"Girls U17C1","stats":{"gp":9,"pts":19,"fouls":21,"fg":9,"wins":3,"losses":4,"draws":2,"ft":1}},{"tid":"68f0cb2c","tn":"Blackburn U17 Girls 06","gid":"7082f8f1","gn":"Girls U17 D Grading","stats":{"gp":9,"pts":19,"fouls":21,"fg":9,"ft":1,"foulOuts":1,"wins":3,"losses":4,"draws":2}},{"tid":"68f0cb2c","tn":"Blackburn U17 Girls 06","gid":"9de03973","gn":"Girls U17 C Grading","stats":{"gp":9,"fouls":21,"wins":3,"losses":4,"draws":2,"pts":19,"fg":9,"ft":1}}]},{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"490a7350","tn":"Blackburn U16 Girls 07","gid":"44120866","gn":"Girls U16C2 South","stats":{"gp":12,"pts":30,"fouls":24,"fg":12,"ft":6,"finals":1,"gfApps":1,"wins":6,"losses":6,"gfWins":1}},{"tid":"490a7350","tn":"Blackburn U16 Girls 07","gid":"9026f236","gn":"U16 Girls C Grading","stats":{"gp":12,"fouls":24,"finals":1,"gfApps":1,"wins":6,"losses":6,"pts":30,"fg":12,"ft":6,"gfWins":1}},{"tid":"490a7350","tn":"Blackburn U16 Girls 07","gid":"b503a471","gn":"U16 Girls D Grading","stats":{"gp":12,"pts":30,"fouls":24,"fg":12,"finals":1,"gfApps":1,"wins":6,"losses":6,"ft":6,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:40:35.567Z","records":{"maxGamePTS":{"v":9,"gameKey":"da136196","sid":"0ad6013c"},"maxGameThreePt":{"v":1,"gameKey":"da136196","sid":"0ad6013c"}},"games":["078728a7","07ee95e8","082ba778","08caeaee","0971d955","0a54b435","0fceb4d5","118ea3f1","18f22e35","20461181","26fe8379","29ae15e0","2cf6eaff","2d0c6a87","3617d6c8","52b551c1","5304ba85","5ef33f60","5f4e759b","71edaa2b","74610618","76c64dde","77dca24f","7a1c52a2","7a9c06f9","7d0ac708","8ab16425","8daed014","8ee87fc2","97425926","a287428c","a7b47af9","a99d371e","b09177b8","b539bcba","c38fd01c","c565d8eb","cce7d085","d11b3721","d19ee280","d3c1ebaf","d4138f33","da136196","ed8da202","f80fff3f"],"name":"Winter 2022"}
+{
+  "uuid": "68770054-dbf3-42ce-8aa7-e7e700d737a1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "pts": 103,
+      "fouls": 99,
+      "fg": 43,
+      "ft": 14,
+      "threePt": 1,
+      "foulOuts": {
+        "b7c3491e": 1,
+        "532e7f37": 1
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 45,
+      "losses": 81,
+      "winPct": 0.33,
+      "draws": 9,
+      "statsChecked": "2026-07-05T16:01:25.701Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0ad6013c",
+      "sn": "Winter 2022",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "c42e576c",
+          "tn": "Blackburn U17 Girls 04",
+          "gid": "13de193a",
+          "gn": "Girls U17D1",
+          "stats": {
+            "gp": 12,
+            "pts": 38,
+            "fouls": 38,
+            "fg": 15,
+            "ft": 5,
+            "wins": 3,
+            "losses": 9,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "c42e576c",
+          "tn": "Blackburn U17 Girls 04",
+          "gid": "4aa39859",
+          "gn": "Girls U17 D Grading",
+          "stats": {
+            "gp": 12,
+            "pts": 38,
+            "fouls": 38,
+            "fg": 15,
+            "ft": 5,
+            "threePt": 1,
+            "wins": 3,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "c42e576c",
+          "tn": "Blackburn U17 Girls 04",
+          "gid": "a7e7941f",
+          "gn": "Girls U17 C Grading",
+          "stats": {
+            "gp": 12,
+            "fouls": 38,
+            "wins": 3,
+            "losses": 9,
+            "pts": 38,
+            "fg": 15,
+            "ft": 5,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b7c3491e",
+      "sn": "Summer 2021/22",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "3ca8c155",
+          "tn": "Blackburn U16 Girls 03",
+          "gid": "3cb520eb",
+          "gn": "Girls U16B3",
+          "stats": {
+            "gp": 12,
+            "pts": 16,
+            "fouls": 16,
+            "fg": 7,
+            "ft": 2,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "3ca8c155",
+          "tn": "Blackburn U16 Girls 03",
+          "gid": "43ff4445",
+          "gn": "Girls U16 B Grading",
+          "stats": {
+            "gp": 12,
+            "pts": 16,
+            "fouls": 16,
+            "fg": 7,
+            "wins": 3,
+            "losses": 8,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "3ca8c155",
+          "tn": "Blackburn U16 Girls 03",
+          "gid": "01c4d753",
+          "gn": "Girls U16 C Grading",
+          "stats": {
+            "gp": 12,
+            "pts": 16,
+            "fouls": 16,
+            "fg": 7,
+            "wins": 3,
+            "losses": 8,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "532e7f37",
+      "sn": "Winter 2021",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "68f0cb2c",
+          "tn": "Blackburn U17 Girls 06",
+          "gid": "394c84f7",
+          "gn": "Girls U17C1",
+          "stats": {
+            "gp": 9,
+            "pts": 19,
+            "fouls": 21,
+            "fg": 9,
+            "wins": 3,
+            "losses": 4,
+            "draws": 2,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "68f0cb2c",
+          "tn": "Blackburn U17 Girls 06",
+          "gid": "7082f8f1",
+          "gn": "Girls U17 D Grading",
+          "stats": {
+            "gp": 9,
+            "pts": 19,
+            "fouls": 21,
+            "fg": 9,
+            "ft": 1,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 4,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "68f0cb2c",
+          "tn": "Blackburn U17 Girls 06",
+          "gid": "9de03973",
+          "gn": "Girls U17 C Grading",
+          "stats": {
+            "gp": 9,
+            "fouls": 21,
+            "wins": 3,
+            "losses": 4,
+            "draws": 2,
+            "pts": 19,
+            "fg": 9,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "490a7350",
+          "tn": "Blackburn U16 Girls 07",
+          "gid": "44120866",
+          "gn": "Girls U16C2 South",
+          "stats": {
+            "gp": 12,
+            "pts": 30,
+            "fouls": 24,
+            "fg": 12,
+            "ft": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 6,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "490a7350",
+          "tn": "Blackburn U16 Girls 07",
+          "gid": "9026f236",
+          "gn": "U16 Girls C Grading",
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 6,
+            "pts": 30,
+            "fg": 12,
+            "ft": 6,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "490a7350",
+          "tn": "Blackburn U16 Girls 07",
+          "gid": "b503a471",
+          "gn": "U16 Girls D Grading",
+          "stats": {
+            "gp": 12,
+            "pts": 30,
+            "fouls": 24,
+            "fg": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 6,
+            "ft": 6,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "862ffff2",
+          "tn": "Blackburn U16 Girls 4",
+          "gid": "1ccc6b88",
+          "gn": "U16 Girls VJL 6 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:35.567Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "da136196",
+      "sid": "0ad6013c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "da136196",
+      "sid": "0ad6013c"
+    }
+  },
+  "games": [
+    "078728a7",
+    "07ee95e8",
+    "082ba778",
+    "08caeaee",
+    "0971d955",
+    "0a54b435",
+    "0fceb4d5",
+    "118ea3f1",
+    "18f22e35",
+    "20461181",
+    "26fe8379",
+    "29ae15e0",
+    "2cf6eaff",
+    "2d0c6a87",
+    "3617d6c8",
+    "52b551c1",
+    "5304ba85",
+    "5ef33f60",
+    "5f4e759b",
+    "71edaa2b",
+    "74610618",
+    "76c64dde",
+    "77dca24f",
+    "7a1c52a2",
+    "7a9c06f9",
+    "7d0ac708",
+    "8ab16425",
+    "8daed014",
+    "8ee87fc2",
+    "97425926",
+    "a287428c",
+    "a7b47af9",
+    "a99d371e",
+    "b09177b8",
+    "b539bcba",
+    "c38fd01c",
+    "c565d8eb",
+    "cce7d085",
+    "d11b3721",
+    "d19ee280",
+    "d3c1ebaf",
+    "d4138f33",
+    "da136196",
+    "ed8da202",
+    "f80fff3f"
+  ],
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "c42e576c",
+      "sid": "0ad6013c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3ca8c155",
+      "sid": "b7c3491e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68f0cb2c",
+      "sid": "532e7f37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "490a7350",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "862ffff2",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:33:17.005Z"
+}

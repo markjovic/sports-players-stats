@@ -1,1 +1,80 @@
-{"uuid":"688f55d0-9f35-4f20-b9ab-db8dcb5b6491","gender":null,"sports":{"Basketball":{"gp":2,"pts":8,"fg":4,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T16:01:35.376Z"}},"seasons":[{"sid":"2e89df33","sn":"Summer 2020/21","club":null,"regs":[{"tid":"4aa12f5e","tn":"Stars","gid":"3f064d6f","gn":"Sunday Open Mixed","stats":{"gp":2,"pts":8,"fg":4,"losses":2}}]}],"updatedAt":"2026-06-11T23:40:35.573Z","records":{"maxGamePTS":{"v":8,"gameKey":"7088b669","sid":"2e89df33"},"maxGameThreePt":{"v":null}},"games":["7088b669","e462aaa7"],"name":"Summer 2020/21"}
+{
+  "uuid": "688f55d0-9f35-4f20-b9ab-db8dcb5b6491",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 8,
+      "fg": 4,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:01:35.376Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e89df33",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4aa12f5e",
+          "tn": "Stars",
+          "gid": "3f064d6f",
+          "gn": "Sunday Open Mixed",
+          "stats": {
+            "gp": 2,
+            "pts": 8,
+            "fg": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfca9538",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "433a3883",
+          "tn": "Stars",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:35.573Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "7088b669",
+      "sid": "2e89df33"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "7088b669",
+    "e462aaa7"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "4aa12f5e",
+      "sid": "2e89df33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "433a3883",
+      "sid": "bfca9538",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T13:33:22.981Z"
+}
