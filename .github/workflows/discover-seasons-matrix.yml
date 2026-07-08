@@ -128,7 +128,7 @@ jobs:
         with:
           pattern: discover-shard-*
           path: /tmp/discoveries/
-          merge-multiple: false
+          merge-multiple: true
       - uses: actions/checkout@v4
         with:
           ref: main
@@ -156,6 +156,4 @@ jobs:
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name: undone-shards
-          path: undone_shards.json
-          retention-days: 1
+          name:
