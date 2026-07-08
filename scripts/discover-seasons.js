@@ -527,7 +527,13 @@ async function main() {
     if (fs.existsSync(PROGRESS_FILE)) { try { progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); } catch { progress = {}; } }
 
     const merged = new Map();
-    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [], playersWritten = 0, teamsWritten = 0;
+    // Accumulate all player/team updates from all shard artifacts in memory.
+    // File I/O is done by the workflow's apply-and-commit step (sparse checkout,
+    // tar extract) — never here. This mirrors fetch-profile-stats-matrix.yml.
+    const allPlayerUpdates = {}; // uuid → player object
+    const allTeamUpdates   = {}; // tid  → team object
+    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [];
+
     for (const f of files) {
       let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
       shardProbed += a.probed || 0;
@@ -540,37 +546,50 @@ async function main() {
         progress[a.shard] = { mode: a.mode, cursor: a.cursor, total: a.total, done: a.done, updatedAt: a.at };
         if (a.done) doneCount++; else undoneShards.push(a.shard);
       }
-
-      // --- PERSISTENT WRITE LOGIC (Only runs in REDUCE where git is present) ---
-      if (a.playerUpdates && !DRY_RUN) {
-        for (const [uuid, player] of Object.entries(a.playerUpdates)) {
-          const root = process.env.GITHUB_WORKSPACE || process.cwd();
-          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
-          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-          fs.writeFileSync(path.join(targetDir, `${uuid}.json`), JSON.stringify(player, null, 2));
-          playersWritten++;
-        }
+      // Merge player/team updates — last write wins (fine: same player in two shards
+      // would be a data error, and cursor-based sharding prevents it).
+      for (const [uuid, player] of Object.entries(a.playerUpdates || {})) {
+        allPlayerUpdates[uuid] = player;
       }
-      if (a.teamUpdates && !DRY_RUN) {
-        for (const [tid, team] of Object.entries(a.teamUpdates)) {
-          const root = process.env.GITHUB_WORKSPACE || process.cwd();
-          const tPath = path.join(root, 'team-lookup', 'bv', `${tid}.json`);
-          if (!fs.existsSync(path.dirname(tPath))) fs.mkdirSync(path.dirname(tPath), { recursive: true });
-          fs.writeFileSync(tPath, JSON.stringify(team, null, 2));
-          teamsWritten++;
-        }
+      for (const [tid, team] of Object.entries(a.teamUpdates || {})) {
+        allTeamUpdates[tid] = team;
       }
     }
+
+    const playerCount = Object.keys(allPlayerUpdates).length;
+    const teamCount   = Object.keys(allTeamUpdates).length;
     console.log(`  Merged ${merged.size} distinct new season(s) across ${files.length} shard(s) (probed ${shardProbed}, wall hits ${wallHits}).`);
     console.log(`  Shard progress: ${doneCount} done, ${undoneShards.length} not yet complete this sweep.`);
-    if (playersWritten > 0 || teamsWritten > 0) {
-      console.log(`  Artifact data written to disk: ${playersWritten} players, ${teamsWritten} teams.`);
+    console.log(`  Player updates pending write: ${playerCount}`);
+    console.log(`  Team updates pending write:   ${teamCount}`);
+
+    // Write progress file (small, safe to write here — it lives in data/ not players/)
+    if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
+
+    // Write the pending player/team updates to a single manifest artifact so
+    // the workflow's apply-and-commit step can extract them into a sparse checkout.
+    // The manifest also tells the workflow which player shard dirs need checking out.
+    const affectedShards = [...new Set(Object.keys(allPlayerUpdates).map(uuid => uuid.substring(0, 2)))].sort();
+    const manifest = {
+      playerUpdates: allPlayerUpdates,
+      teamUpdates:   allTeamUpdates,
+      affectedShards,
+      playerCount,
+      teamCount,
+      newSeasons:    merged.size,
+      at:            new Date().toISOString(),
+    };
+    const manifestPath = path.join(process.cwd(), 'discover-reduce-manifest.json');
+    if (!DRY_RUN) {
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+      console.log(`  Manifest written: ${manifestPath} (${affectedShards.length} affected shard(s))`);
+    } else {
+      console.log(`  [dry-run] would write manifest with ${playerCount} players, ${teamCount} teams across ${affectedShards.length} shard(s)`);
     }
 
-    if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
-    
-    // Pass playersWritten into stats so applyDiscoveries knows to commit!
-    await applyDiscoveries(index, merged, { t0, playersWritten, teamsWritten }, [PROGRESS_FILE]);
+    // Resolve grades and write sports-index — this is index/data only, safe here.
+    // playersWritten=0 here because the workflow writes files, not this script.
+    await applyDiscoveries(index, merged, { t0, playersWritten: 0, teamsWritten: 0 }, [PROGRESS_FILE]);
 
     console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
     return;
