@@ -113,8 +113,9 @@ jobs:
         if: always()
         with:
           name: discover-shard-${{ matrix.target.shard }}
-          path: discover-shard-${{ matrix.target.shard }}.json
+          path: 'discover-shard-${{ matrix.target.shard }}.json'
           retention-days: 1
+          if-no-files-found: ignore
 
   reduce:
     needs: [generate-shards, map]
@@ -147,6 +148,28 @@ jobs:
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
           echo "${undone:-[]}" > undone_shards.json
 
+          # Instantly count all .json files in the players/ directory using the Git index
+          export TOTAL_PLAYERS=$(git ls-files 'players/' | grep -c '\.json$')
+
+          python3 - << 'PYEOF'
+          import json, os
+          if os.path.exists('data/discover-progress.json'):
+              try:
+                  data = json.load(open('data/discover-progress.json'))
+                  done_count = sum(1 for v in data.values() if v.get('done'))
+                  cursor_sum = sum(v.get('cursor', 0) for v in data.values())
+                  total = int(os.environ.get('TOTAL_PLAYERS', 0))
+                  pct = (cursor_sum / total * 100) if total > 0 else 0
+                  
+                  print("\n========================================")
+                  print("📊 MATRIX PROGRESS REPORT")
+                  print(f"   Shards Complete : {done_count} / 256")
+                  print(f"   Players Probed  : {cursor_sum} / {total} ({pct:.2f}%)")
+                  print("========================================\n")
+              except Exception as e:
+                  print(f"Could not parse progress: {e}")
+          PYEOF
+
           if [ "${{ inputs.dry_run }}" != "true" ]; then
             git add data/discover-progress.json data/sports-index.json players/ team-lookup/
             if ! git diff --cached --quiet; then
@@ -156,4 +179,37 @@ jobs:
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name:
+          name: undone-shards
+          path: 'undone_shards.json'
+          retention-days: 1
+          if-no-files-found: warn
+
+  retrigger:
+    needs: reduce
+    if: always() && inputs.dry_run != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: undone-shards
+      - name: Trigger chain
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          if [ ! -f undone_shards.json ]; then
+            echo "[]" > undone_shards.json
+          fi
+          
+          UNDONE=$(cat undone_shards.json)
+          if [ "$UNDONE" != '[]' ] && [ -n "$UNDONE" ] && [ "${{ inputs.run_number }}" -lt "${{ env.MAX_RUNS }}" ]; then
+             echo "↺ Re-triggering chain..."
+             gh workflow run discover-seasons-matrix.yml \
+               --repo "${{ github.repository }}" \
+               --field shards="$UNDONE" \
+               --field all_players="${{ inputs.all_players }}" \
+               --field backfill_teams="${{ inputs.backfill_teams }}" \
+               --field run_number="$((${{ inputs.run_number }} + 1))"
+          else
+             echo "All shards complete, max runs reached, or loop terminated."
+          fi
