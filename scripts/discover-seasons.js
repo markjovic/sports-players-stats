@@ -727,10 +727,20 @@ async function main() {
         }
 
         if (fileModified && localPlayer && !DRY_RUN) {
-          syncTeams(localPlayer); // Add this sync!
+          syncTeams(localPlayer);
           const root = process.env.GITHUB_WORKSPACE || process.cwd();
-          const absolutePath = path.join(root, 'players', uuid.substring(0, 2), `${uuid}.json`);
+          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
+          const absolutePath = path.join(targetDir, `${uuid}.json`);
+
+          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
           fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
+          
+          // Diagnostic: verify existence immediately
+          if (fs.existsSync(absolutePath)) {
+            console.log(`  ✔ Verified write: ${absolutePath}`);
+          } else {
+            console.log(`  ✗ FAILED write: ${absolutePath}`);
+          }
         }
       }
     });
@@ -890,11 +900,21 @@ async function main() {
       }
 
       if (fileModified && localPlayer && !DRY_RUN) {
-        syncTeams(localPlayer); // Add this sync!
-        const root = process.env.GITHUB_WORKSPACE || process.cwd();
-        const absolutePath = path.join(root, 'players', uuid.substring(0, 2), `${uuid}.json`);
-        fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
-      }
+          syncTeams(localPlayer);
+          const root = process.env.GITHUB_WORKSPACE || process.cwd();
+          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
+          const absolutePath = path.join(targetDir, `${uuid}.json`);
+
+          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+          fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
+          
+          // Diagnostic: verify existence immediately
+          if (fs.existsSync(absolutePath)) {
+            console.log(`  ✔ Verified write: ${absolutePath}`);
+          } else {
+            console.log(`  ✗ FAILED write: ${absolutePath}`);
+          }
+        }
     }
     
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
