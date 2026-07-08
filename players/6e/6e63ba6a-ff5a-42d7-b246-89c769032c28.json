@@ -1,1 +1,102 @@
-{"uuid":"6e63ba6a-ff5a-42d7-b246-89c769032c28","name":"Jake Hocking","gender":"Boys","sports":{"Basketball":{"gp":6,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":3,"losses":6,"winPct":0.33,"statsChecked":"2026-07-05T15:49:03.245Z"}},"seasons":[{"sid":"2388a0a6","sn":"Winter 2026","club":"Workers Warriors Basketball Club","regs":[{"tid":"fee75f72","tn":"Workers U14 Boys Hughes","gid":"d6d93252","gn":"Under 14 Boys Division 1","age":null,"div":"Division 1","stats":{"gp":5,"wins":1,"losses":3,"fouls":1}},{"tid":"fee75f72","tn":"Workers U14 Boys Hughes","gid":"36300c9c","gn":"Under 14 Boys Division 2","age":null,"div":"Division 2","stats":{"gp":5,"fouls":1,"wins":1,"losses":3}},{"tid":"ef1fa064","stats":{"gp":1,"wins":1}}]}],"updatedAt":"2026-06-02T07:49:37.615Z","teams":[{"tid":"fee75f72","sid":"2388a0a6","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:49:22.166Z","games":["8523e70b","b300bc70","c90e08f1","c94854f3","cbf2d702","eee04b66"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"gameTids":{"c94854f3":"ef1fa064","c90e08f1":"fee75f72","8523e70b":"fee75f72","b300bc70":"fee75f72","eee04b66":"fee75f72","cbf2d702":"fee75f72"}}
+{
+  "uuid": "6e63ba6a-ff5a-42d7-b246-89c769032c28",
+  "name": "Jake Hocking",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 6,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:49:03.245Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2388a0a6",
+      "sn": "Winter 2026",
+      "club": "Workers Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "fee75f72",
+          "tn": "Workers U14 Boys Hughes",
+          "gid": "d6d93252",
+          "gn": "Under 14 Boys Division 1",
+          "age": null,
+          "div": "Division 1",
+          "stats": {
+            "gp": 5,
+            "wins": 1,
+            "losses": 3,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "fee75f72",
+          "tn": "Workers U14 Boys Hughes",
+          "gid": "36300c9c",
+          "gn": "Under 14 Boys Division 2",
+          "age": null,
+          "div": "Division 2",
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "ef1fa064",
+          "stats": {
+            "gp": 1,
+            "wins": 1
+          },
+          "gid": "36300c9c",
+          "gn": "Under 14 Boys Division 2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T07:49:37.615Z",
+  "teams": [
+    {
+      "tid": "fee75f72",
+      "sid": "2388a0a6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef1fa064",
+      "sid": "2388a0a6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:26.064Z",
+  "games": [
+    "8523e70b",
+    "b300bc70",
+    "c90e08f1",
+    "c94854f3",
+    "cbf2d702",
+    "eee04b66"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "c94854f3": "ef1fa064",
+    "c90e08f1": "fee75f72",
+    "8523e70b": "fee75f72",
+    "b300bc70": "fee75f72",
+    "eee04b66": "fee75f72",
+    "cbf2d702": "fee75f72"
+  }
+}

@@ -1,1 +1,362 @@
-{"uuid":"9d66df88-a731-4b2d-9bf1-0f1c621e9fd1","name":"Harvey Van de laarschot","gender":"Boys","sports":{"Basketball":{"gp":80,"pts":143,"fouls":48,"fg":64,"ft":12,"threePt":1,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.13,"maxGamePTS":11,"maxGameThreePt":1,"wins":20,"losses":17,"winPct":0.5,"draws":3,"statsChecked":"2026-07-05T15:11:18.370Z"}},"seasons":[{"sid":"2e623bd2","sn":"Winter 2026","club":"South East Melbourne Magic Basketball Club","regs":[{"tid":"f62a9300","tn":"SEM Magic B12.4","gid":"6fd047a5","gn":"Saturday U12 Boys D3","age":"U12","div":"D3","stats":{"gp":5,"pts":11,"fg":5,"ft":1,"fouls":3,"losses":3,"wins":2}},{"tid":"f62a9300","tn":"SEM Magic B12.4","gid":"ee0708d8","gn":"Saturday U12 Boys D2","age":"U12","div":"D2","stats":{"gp":5,"fouls":3,"losses":3,"pts":11,"fg":5,"ft":1,"wins":2}}]},{"sid":"3f1715bc","sn":"Winter 2026","club":"St. Macartan's Basketball Club","regs":[{"tid":"65bc96d0","tn":"St Mac's Sharks","gid":"b8c91ed1","gn":"Saturday \"Schnitz\" U12 Boys Div 6","age":"U12","div":"Div 6","stats":{"gp":6,"fg":16,"pts":36,"threePt":1,"fouls":8,"wins":3,"losses":2,"draws":1,"ft":1}},{"tid":"65bc96d0","tn":"St Mac's Sharks","gid":"92a54efb","gn":"Saturday \"Schnitz\" U12 Boys Div 5","age":"U12","div":"Div 5","stats":{"gp":6,"fg":16,"pts":36,"wins":3,"losses":2,"draws":1,"ft":1,"threePt":1,"fouls":8}},{"tid":"65bc96d0","tn":"St Mac's Sharks","gid":"9af5752f","gn":"Saturday \"Schnitz\" U12 Boys Div 4","age":"U12","div":"Div 4","stats":{"gp":6,"fouls":8,"ft":1,"fg":16,"pts":36,"wins":3,"losses":2,"draws":1,"threePt":1}}]},{"sid":"f46c6951","sn":"Summer 2025/26","club":"St. Macartan's Basketball Club","regs":[{"tid":"2abdd763","tn":"St Mac's Sharks","gid":"5dea9b25","gn":"Saturday \"Schnitz\" U12 Boys Div 5","age":"U12","div":"Div 5","stats":{"gp":12,"fouls":10,"ft":2,"fg":15,"pts":32,"finals":1,"gfApps":1,"wins":7,"losses":4}}]},{"sid":"ad0e7cbd","sn":"Winter 2025","regs":[{"tid":"70ff3eb4","tn":"Sharks ","gid":"70a7ab68","gn":"U11 Boys White","age":"U11","div":null,"stats":{"gp":4,"fouls":1,"ft":4,"pts":4}}]},{"sid":"2a305f65","sn":"Winter 2025","regs":[{"tid":"c2a26d02","tn":"Sharks","gid":"37691957","gn":"Saturday U10 Boys Div 2","age":"U10","div":"Div 2","stats":{"gp":13,"fouls":14,"ft":3,"fg":22,"pts":47,"losses":1}}]},{"sid":"0fadb815","sn":"Summer 2024/25","regs":[{"tid":"b4667504","tn":"St Macs Sharks","gid":"5778d7a3","gn":"Saturday U10 Boys Div 2","age":"U10","div":"Div 2","stats":{"gp":13,"fouls":9,"fg":4,"pts":8}}]},{"sid":"95236f14","sn":"Winter 2024","regs":[{"tid":"0276b90e","tn":"Sharks (Cook)","gid":"fefbbf74","gn":"Saturday U10 Boys Div 4","age":"U10","div":"Div 4","stats":{"gp":13,"fouls":2,"ft":1,"pts":1}}]},{"sid":"0d9c11dd","sn":"Summer 2023/24","regs":[{"tid":"81a85772","tn":"St Macs Sharks","gid":"35b2f46f","gn":"Saturday U10 Boys Div 6","age":"U10","div":"Div 6","stats":{"gp":14,"fouls":1,"fg":2,"pts":4}}]}],"updatedAt":"2026-06-01T17:25:06.450Z","teams":[{"tid":"65bc96d0","sid":"3f1715bc","status":"ACTIVE"},{"tid":"f62a9300","sid":"2e623bd2","status":"ACTIVE"},{"tid":"2abdd763","sid":"f46c6951","status":"COMPLETED"},{"tid":"c2a26d02","sid":"2a305f65","status":"COMPLETED"},{"tid":"70ff3eb4","sid":"ad0e7cbd","status":"COMPLETED"},{"tid":"b4667504","sid":"0fadb815","status":"COMPLETED"},{"tid":"0276b90e","sid":"95236f14","status":"COMPLETED"},{"tid":"81a85772","sid":"0d9c11dd","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:42.923Z","games":["1b1e5421","1ffe130b","2012c87d","29fd495c","2e227414","4938025c","511a6419","6b5f6694","73a76838","7b0ee05d","a0ba5711","a6490a1b","a6bc4cd7","ad679e50","ae46a6be","c47add24","cbdb10d6","dfa3b6b5","e260d448","ed2dc778","ed703489","f5e08eb3","f6461527","fbcac226"],"records":{"maxGamePTS":{"v":11,"gameKey":"ed703489","sid":"3f1715bc"},"maxGameThreePt":{"v":1,"gameKey":"ed703489","sid":"3f1715bc"}}}
+{
+  "uuid": "9d66df88-a731-4b2d-9bf1-0f1c621e9fd1",
+  "name": "Harvey Van de laarschot",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 80,
+      "pts": 143,
+      "fouls": 48,
+      "fg": 64,
+      "ft": 12,
+      "threePt": 1,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.13,
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 20,
+      "losses": 17,
+      "winPct": 0.5,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:11:18.370Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e623bd2",
+      "sn": "Winter 2026",
+      "club": "South East Melbourne Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "f62a9300",
+          "tn": "SEM Magic B12.4",
+          "gid": "6fd047a5",
+          "gn": "Saturday U12 Boys D3",
+          "age": "U12",
+          "div": "D3",
+          "stats": {
+            "gp": 5,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 3,
+            "losses": 3,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "f62a9300",
+          "tn": "SEM Magic B12.4",
+          "gid": "ee0708d8",
+          "gn": "Saturday U12 Boys D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "losses": 3,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "St. Macartan's Basketball Club",
+      "regs": [
+        {
+          "tid": "65bc96d0",
+          "tn": "St Mac's Sharks",
+          "gid": "b8c91ed1",
+          "gn": "Saturday \"Schnitz\" U12 Boys Div 6",
+          "age": "U12",
+          "div": "Div 6",
+          "stats": {
+            "gp": 6,
+            "fg": 16,
+            "pts": 36,
+            "threePt": 1,
+            "fouls": 8,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "65bc96d0",
+          "tn": "St Mac's Sharks",
+          "gid": "92a54efb",
+          "gn": "Saturday \"Schnitz\" U12 Boys Div 5",
+          "age": "U12",
+          "div": "Div 5",
+          "stats": {
+            "gp": 6,
+            "fg": 16,
+            "pts": 36,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 8
+          }
+        },
+        {
+          "tid": "65bc96d0",
+          "tn": "St Mac's Sharks",
+          "gid": "9af5752f",
+          "gn": "Saturday \"Schnitz\" U12 Boys Div 4",
+          "age": "U12",
+          "div": "Div 4",
+          "stats": {
+            "gp": 6,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 16,
+            "pts": 36,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f46c6951",
+      "sn": "Summer 2025/26",
+      "club": "St. Macartan's Basketball Club",
+      "regs": [
+        {
+          "tid": "2abdd763",
+          "tn": "St Mac's Sharks",
+          "gid": "5dea9b25",
+          "gn": "Saturday \"Schnitz\" U12 Boys Div 5",
+          "age": "U12",
+          "div": "Div 5",
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad0e7cbd",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "70ff3eb4",
+          "tn": "Sharks ",
+          "gid": "70a7ab68",
+          "gn": "U11 Boys White",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "ft": 4,
+            "pts": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2a305f65",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "c2a26d02",
+          "tn": "Sharks",
+          "gid": "37691957",
+          "gn": "Saturday U10 Boys Div 2",
+          "age": "U10",
+          "div": "Div 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 22,
+            "pts": 47,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0fadb815",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "b4667504",
+          "tn": "St Macs Sharks",
+          "gid": "5778d7a3",
+          "gn": "Saturday U10 Boys Div 2",
+          "age": "U10",
+          "div": "Div 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "fg": 4,
+            "pts": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "95236f14",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "0276b90e",
+          "tn": "Sharks (Cook)",
+          "gid": "fefbbf74",
+          "gn": "Saturday U10 Boys Div 4",
+          "age": "U10",
+          "div": "Div 4",
+          "stats": {
+            "gp": 13,
+            "fouls": 2,
+            "ft": 1,
+            "pts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0d9c11dd",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "81a85772",
+          "tn": "St Macs Sharks",
+          "gid": "35b2f46f",
+          "gn": "Saturday U10 Boys Div 6",
+          "age": "U10",
+          "div": "Div 6",
+          "stats": {
+            "gp": 14,
+            "fouls": 1,
+            "fg": 2,
+            "pts": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c26423d2",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "3c3e5664",
+          "tn": "Ballers ",
+          "gid": "8d4308df",
+          "gn": "U11 Boys Purple",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T17:25:06.450Z",
+  "teams": [
+    {
+      "tid": "f62a9300",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "65bc96d0",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2abdd763",
+      "sid": "f46c6951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70ff3eb4",
+      "sid": "ad0e7cbd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c2a26d02",
+      "sid": "2a305f65",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b4667504",
+      "sid": "0fadb815",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0276b90e",
+      "sid": "95236f14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81a85772",
+      "sid": "0d9c11dd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c3e5664",
+      "sid": "c26423d2",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:17.571Z",
+  "games": [
+    "1b1e5421",
+    "1ffe130b",
+    "2012c87d",
+    "29fd495c",
+    "2e227414",
+    "4938025c",
+    "511a6419",
+    "6b5f6694",
+    "73a76838",
+    "7b0ee05d",
+    "a0ba5711",
+    "a6490a1b",
+    "a6bc4cd7",
+    "ad679e50",
+    "ae46a6be",
+    "c47add24",
+    "cbdb10d6",
+    "dfa3b6b5",
+    "e260d448",
+    "ed2dc778",
+    "ed703489",
+    "f5e08eb3",
+    "f6461527",
+    "fbcac226"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "ed703489",
+      "sid": "3f1715bc"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ed703489",
+      "sid": "3f1715bc"
+    }
+  }
+}

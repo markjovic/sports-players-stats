@@ -1,1 +1,575 @@
-{"uuid":"6f3a8dda-dcac-4207-a891-8e2f97fa42ad","name":"Amanda Read","gender":"Women","sports":{"Basketball":{"gp":19,"pts":128,"fouls":13,"fg":58,"threePt":4,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"wins":16,"losses":19,"winPct":0.46,"statsChecked":"2026-07-05T16:01:25.990Z"}},"seasons":[{"sid":"75ebb237","sn":"Winter 2026","regs":[{"tid":"bc1e91f9","tn":"Hoops","gid":"fa3cd524","gn":"Tuesday Women C","age":null,"div":null,"stats":{"gp":8,"fouls":7,"fg":27,"threePt":1,"pts":57,"wins":6,"losses":2}},{"tid":"bc1e91f9","tn":"Hoops","gid":"bdc36754","gn":"Tuesday Women B","age":null,"div":null,"stats":{"gp":8,"fg":27,"pts":57,"wins":6,"losses":2,"threePt":1,"fouls":7}}]},{"sid":"5bb7c87f","sn":"Summer 2025/26","regs":[{"tid":"89a84e22","tn":"Hoops","gid":"6939a78e","gn":"Tuesday Championship Women","age":null,"div":null,"stats":{"gp":9,"fouls":6,"fg":29,"threePt":3,"pts":67,"wins":2,"losses":7}},{"tid":"89a84e22","tn":"Hoops","gid":"bc16204e","gn":"Tuesday Women B","age":null,"div":null,"stats":{"gp":9,"fg":29,"pts":67,"wins":2,"losses":7,"threePt":3,"fouls":6}}]},{"sid":"d855bcfa","sn":"Winter 2025","regs":[{"tid":"2b119a33","tn":"Hoops","gid":"a16c4dc8","gn":"Tuesday Championship Women","age":null,"div":null,"stats":{"gp":1,"fg":2,"pts":4,"losses":1}}]},{"sid":"c5894d25","sn":"Winter 2021","regs":[{"tid":"c9de34c0","tn":"Yellow Canaries","gid":"612e4aaa","gn":"Monday Women Social","age":null,"div":null,"stats":{"gp":1}}]}],"updatedAt":"2026-07-04T05:37:35.020Z","teams":[{"tid":"2d33a1a7","sid":"07e17ea8","status":"ACTIVE"},{"tid":"bc1e91f9","sid":"75ebb237","status":"ACTIVE"},{"tid":"89a84e22","sid":"5bb7c87f","status":"COMPLETED"},{"tid":"526c33bc","sid":"dd075c41","status":"COMPLETED"},{"tid":"2b119a33","sid":"d855bcfa","status":"COMPLETED"},{"tid":"93615ca7","sid":"a53cbe5c","status":"COMPLETED"},{"tid":"32470407","sid":"76897951","status":"COMPLETED"},{"tid":"a06b4976","sid":"5944effa","status":"COMPLETED"},{"tid":"1fb0421b","sid":"d965deb3","status":"COMPLETED"},{"tid":"c0bd2b8a","sid":"b1ea3bfe","status":"COMPLETED"},{"tid":"2d1daf4a","sid":"348dbfb8","status":"COMPLETED"},{"tid":"8951c77f","sid":"9358e51a","status":"COMPLETED"},{"tid":"2149a302","sid":"6385eb99","status":"COMPLETED"},{"tid":"13ea9125","sid":"d3d4e181","status":"COMPLETED"},{"tid":"1529e929","sid":"bab5fe11","status":"COMPLETED"},{"tid":"24d9058c","sid":"21cd9648","status":"COMPLETED"},{"tid":"8c3c96b4","sid":"c4863b35","status":"COMPLETED"},{"tid":"5ba49242","sid":"2bc7b9c4","status":"COMPLETED"},{"tid":"b43e5237","sid":"d4cbf787","status":"COMPLETED"},{"tid":"56f10700","sid":"0370d9d6","status":"COMPLETED"},{"tid":"52001ec7","sid":"d64fcfce","status":"COMPLETED"},{"tid":"cc0011a4","sid":"25efb80f","status":"COMPLETED"},{"tid":"35aa42bb","sid":"afd26581","status":"COMPLETED"},{"tid":"c9de34c0","sid":"c5894d25","status":"COMPLETED"},{"tid":"ae04d786","sid":"339d530f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:03.408Z","records":{"maxGamePTS":{"v":13,"gameKey":"959c8fd5","sid":"5bb7c87f"},"maxGameThreePt":{"v":1,"gameKey":"047e5dc1","sid":"75ebb237"}},"games":["025a21dc","047e5dc1","0aab73e5","0c58926c","42bf7e0c","4758d114","476c7e01","4d13be06","55e19e34","5743cf97","628f2fb9","63dc5b98","773b5906","7bf5c77e","94ea6ba5","959c8fd5","db958504","de997772","fb88efa0"]}
+{
+  "uuid": "6f3a8dda-dcac-4207-a891-8e2f97fa42ad",
+  "name": "Amanda Read",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 19,
+      "pts": 128,
+      "fouls": 13,
+      "fg": 58,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 16,
+      "losses": 19,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T16:01:25.990Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "bc1e91f9",
+          "tn": "Hoops",
+          "gid": "fa3cd524",
+          "gn": "Tuesday Women C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 27,
+            "threePt": 1,
+            "pts": 57,
+            "wins": 6,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "bc1e91f9",
+          "tn": "Hoops",
+          "gid": "bdc36754",
+          "gn": "Tuesday Women B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 27,
+            "pts": 57,
+            "wins": 6,
+            "losses": 2,
+            "threePt": 1,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5bb7c87f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "89a84e22",
+          "tn": "Hoops",
+          "gid": "6939a78e",
+          "gn": "Tuesday Championship Women",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "fg": 29,
+            "threePt": 3,
+            "pts": 67,
+            "wins": 2,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "89a84e22",
+          "tn": "Hoops",
+          "gid": "bc16204e",
+          "gn": "Tuesday Women B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fg": 29,
+            "pts": 67,
+            "wins": 2,
+            "losses": 7,
+            "threePt": 3,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d855bcfa",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2b119a33",
+          "tn": "Hoops",
+          "gid": "a16c4dc8",
+          "gn": "Tuesday Championship Women",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 2,
+            "pts": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c5894d25",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "c9de34c0",
+          "tn": "Yellow Canaries",
+          "gid": "612e4aaa",
+          "gn": "Monday Women Social",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "07e17ea8",
+      "sn": "Term 1, 2026",
+      "regs": [
+        {
+          "tid": "2d33a1a7",
+          "tn": "Hoops",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dd075c41",
+      "sn": "Term 3, 2025",
+      "regs": [
+        {
+          "tid": "526c33bc",
+          "tn": "Hoops",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "a53cbe5c",
+      "sn": "Term 1, 2025",
+      "regs": [
+        {
+          "tid": "93615ca7",
+          "tn": "Hoops",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "32470407",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "a06b4976",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d965deb3",
+      "sn": "Term 3, 2024",
+      "regs": [
+        {
+          "tid": "1fb0421b",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b1ea3bfe",
+      "sn": "Term 1, 2024",
+      "regs": [
+        {
+          "tid": "c0bd2b8a",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "2d1daf4a",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "8951c77f",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "6385eb99",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "2149a302",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "13ea9125",
+          "tn": "Whatever",
+          "gid": "c4d93390",
+          "gn": "AUTUMN Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "bab5fe11",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "1529e929",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "24d9058c",
+          "tn": "Whatever",
+          "gid": "350cacc9",
+          "gn": "SPRING Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "c4863b35",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "8c3c96b4",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "2bc7b9c4",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "5ba49242",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "b43e5237",
+          "tn": "Whatever",
+          "gid": "548420fd",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0370d9d6",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "56f10700",
+          "tn": "ZZZ Yellow",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "52001ec7",
+          "tn": "Whatever",
+          "gid": "f8f42300",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "25efb80f",
+      "sn": "Term 3, 2021",
+      "regs": [
+        {
+          "tid": "cc0011a4",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "35aa42bb",
+          "tn": "Whatever",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "339d530f",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "ae04d786",
+          "tn": "Iris",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:35.020Z",
+  "teams": [
+    {
+      "tid": "bc1e91f9",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89a84e22",
+      "sid": "5bb7c87f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2b119a33",
+      "sid": "d855bcfa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c9de34c0",
+      "sid": "c5894d25",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d33a1a7",
+      "sid": "07e17ea8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "526c33bc",
+      "sid": "dd075c41",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "93615ca7",
+      "sid": "a53cbe5c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32470407",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a06b4976",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1fb0421b",
+      "sid": "d965deb3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c0bd2b8a",
+      "sid": "b1ea3bfe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d1daf4a",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8951c77f",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2149a302",
+      "sid": "6385eb99",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13ea9125",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1529e929",
+      "sid": "bab5fe11",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "24d9058c",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c3c96b4",
+      "sid": "c4863b35",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ba49242",
+      "sid": "2bc7b9c4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b43e5237",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56f10700",
+      "sid": "0370d9d6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52001ec7",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc0011a4",
+      "sid": "25efb80f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35aa42bb",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ae04d786",
+      "sid": "339d530f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:35.357Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "959c8fd5",
+      "sid": "5bb7c87f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "047e5dc1",
+      "sid": "75ebb237"
+    }
+  },
+  "games": [
+    "025a21dc",
+    "047e5dc1",
+    "0aab73e5",
+    "0c58926c",
+    "42bf7e0c",
+    "4758d114",
+    "476c7e01",
+    "4d13be06",
+    "55e19e34",
+    "5743cf97",
+    "628f2fb9",
+    "63dc5b98",
+    "773b5906",
+    "7bf5c77e",
+    "94ea6ba5",
+    "959c8fd5",
+    "db958504",
+    "de997772",
+    "fb88efa0"
+  ]
+}

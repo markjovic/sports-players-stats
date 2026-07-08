@@ -1,1 +1,295 @@
-{"uuid":"a041d8e2-ca2d-4f3c-a2a4-67d91a93abd5","name":"Yugraaj Singh Gill","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":37,"fouls":118,"fg":14,"ft":9,"foulOuts":{"c279d5cf":1,"788813cf":4},"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"maxGamePTS":4,"maxGameThreePt":null,"wins":42,"losses":45,"winPct":0.48,"statsChecked":"2026-07-05T15:24:34.481Z"}},"seasons":[{"sid":"9db4334a","sn":"Winter 2026","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"5ea8a8b1","tn":"MPB U10 Boys Black","gid":"f6709dc3","gn":"ZZ Saturday U10 Boys GRADING","age":"U10","div":null,"stats":{"gp":7,"fouls":18,"ft":1,"fg":5,"pts":11,"wins":5,"losses":1}},{"tid":"5ea8a8b1","tn":"","gid":"5d7db103","gn":"Saturday U10 Boys A","div":null,"stats":{"gp":7,"pts":11,"fg":5,"ft":1,"fouls":18,"wins":5,"losses":1}}]},{"sid":"c279d5cf","sn":"Summer 2025/26","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"ef00084c","tn":"MPB U10 Boys Black","gid":"89e05122","gn":"Saturday U10 Boys A Grade","age":"U10","div":null,"stats":{"gp":13,"fouls":24,"ft":3,"fg":5,"pts":13,"foulOuts":1,"wins":2,"losses":7}},{"tid":"ef00084c","tn":"MPB U10 Boys Black","gid":"62df0fcb","gn":"Saturday U10 Boys GRADING","age":"U10","div":null,"stats":{"gp":13,"fouls":24,"wins":2,"losses":7,"pts":13,"fg":5,"ft":3}}]},{"sid":"788813cf","sn":"Winter 2025","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"022740e5","tn":"MPB U10 Boys Black","gid":"fc3e08a3","gn":"Saturday U10 Boys A","age":"U10","div":null,"stats":{"gp":15,"fouls":50,"ft":3,"pts":7,"foulOuts":4,"finals":1,"wins":2,"losses":9,"fg":2}},{"tid":"022740e5","tn":"MPB U10 Boys Black","gid":"10045b63","gn":"Saturday U23 Boys","age":"U23","div":null,"stats":{"gp":15,"fouls":50,"fg":2,"pts":7,"finals":1,"wins":2,"losses":9,"ft":3}},{"tid":"022740e5","tn":"MPB U10 Boys Black","gid":"2f1574ad","gn":"Saturday U23 Boys GREEN","age":"U23","div":null,"stats":{"gp":15,"fouls":50,"fg":2,"pts":7,"finals":1,"wins":2,"losses":9,"ft":3}}]},{"sid":"9af1c292","sn":"Summer 2024/25","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"ba646c6e","tn":"MPB U10 Boys Blue","gid":"4212e2ce","gn":"Saturday U10 Boys B","age":"U10","div":null,"stats":{"gp":13,"fouls":26,"ft":2,"fg":2,"pts":6,"finals":1,"gfApps":1,"wins":11,"losses":1,"gfWins":1}},{"tid":"ba646c6e","tn":"MPB U10 Boys Blue","gid":"26d06d6c","gn":"ZZ Saturday U10 Boys Green","age":"U10","div":null,"stats":{"gp":13,"fouls":26,"fg":2,"pts":6,"finals":1,"gfApps":1,"wins":11,"losses":1,"ft":2,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:57:37.992Z","teams":[{"tid":"5ea8a8b1","sid":"9db4334a","status":"ACTIVE"},{"tid":"ef00084c","sid":"c279d5cf","status":"COMPLETED"},{"tid":"022740e5","sid":"788813cf","status":"COMPLETED"},{"tid":"ba646c6e","sid":"9af1c292","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:31:23.037Z","games":["00c15ca5","054e6be9","0aa9cd36","104eec9b","155d5af6","1a65ed5a","1f8773f4","248fd56b","2f36b78d","347e6bfc","371cbd93","43c92901","50747622","5730c104","578258a8","5d2cc652","6a46e9bb","77846b7f","8162ca99","84233eae","87a84288","8c8f6cb4","961e9405","9f5834a4","a0a2a4c5","ad209962","b03cf2af","b38c7709","c03ae4dd","c0f7b6f5","c4c28d6e","c78d99b5","d9530fd8","f71a7020","faa36228","fe6fb06f","ff3b7499","ff8030a7"],"records":{"maxGamePTS":{"v":4,"gameKey":"ad209962","sid":"9db4334a"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a041d8e2-ca2d-4f3c-a2a4-67d91a93abd5",
+  "name": "Yugraaj Singh Gill",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 37,
+      "fouls": 118,
+      "fg": 14,
+      "ft": 9,
+      "foulOuts": {
+        "c279d5cf": 1,
+        "788813cf": 4
+      },
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 42,
+      "losses": 45,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T15:24:34.481Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9db4334a",
+      "sn": "Winter 2026",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "5ea8a8b1",
+          "tn": "MPB U10 Boys Black",
+          "gid": "5d7db103",
+          "gn": "Saturday U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 18,
+            "ft": 1,
+            "fg": 5,
+            "pts": 11,
+            "wins": 5,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "5ea8a8b1",
+          "tn": "",
+          "gid": "5d7db103",
+          "gn": "Saturday U10 Boys A",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 18,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c279d5cf",
+      "sn": "Summer 2025/26",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "ef00084c",
+          "tn": "MPB U10 Boys Black",
+          "gid": "89e05122",
+          "gn": "Saturday U10 Boys A Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 24,
+            "ft": 3,
+            "fg": 5,
+            "pts": 13,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "ef00084c",
+          "tn": "MPB U10 Boys Black",
+          "gid": "62df0fcb",
+          "gn": "Saturday U10 Boys GRADING",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 24,
+            "wins": 2,
+            "losses": 7,
+            "pts": 13,
+            "fg": 5,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "788813cf",
+      "sn": "Winter 2025",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "022740e5",
+          "tn": "MPB U10 Boys Black",
+          "gid": "fc3e08a3",
+          "gn": "Saturday U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 50,
+            "ft": 3,
+            "pts": 7,
+            "foulOuts": 4,
+            "finals": 1,
+            "wins": 2,
+            "losses": 9,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "022740e5",
+          "tn": "MPB U10 Boys Black",
+          "gid": "10045b63",
+          "gn": "Saturday U23 Boys",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 50,
+            "fg": 2,
+            "pts": 7,
+            "finals": 1,
+            "wins": 2,
+            "losses": 9,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "022740e5",
+          "tn": "MPB U10 Boys Black",
+          "gid": "2f1574ad",
+          "gn": "Saturday U23 Boys GREEN",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 50,
+            "fg": 2,
+            "pts": 7,
+            "finals": 1,
+            "wins": 2,
+            "losses": 9,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9af1c292",
+      "sn": "Summer 2024/25",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "ba646c6e",
+          "tn": "MPB U10 Boys Blue",
+          "gid": "4212e2ce",
+          "gn": "Saturday U10 Boys B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 26,
+            "ft": 2,
+            "fg": 2,
+            "pts": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "ba646c6e",
+          "tn": "MPB U10 Boys Blue",
+          "gid": "26d06d6c",
+          "gn": "ZZ Saturday U10 Boys Green",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 26,
+            "fg": 2,
+            "pts": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 1,
+            "ft": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:37.992Z",
+  "teams": [
+    {
+      "tid": "5ea8a8b1",
+      "sid": "9db4334a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef00084c",
+      "sid": "c279d5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "022740e5",
+      "sid": "788813cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba646c6e",
+      "sid": "9af1c292",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:24.381Z",
+  "games": [
+    "00c15ca5",
+    "054e6be9",
+    "0aa9cd36",
+    "104eec9b",
+    "155d5af6",
+    "1a65ed5a",
+    "1f8773f4",
+    "248fd56b",
+    "2f36b78d",
+    "347e6bfc",
+    "371cbd93",
+    "43c92901",
+    "50747622",
+    "5730c104",
+    "578258a8",
+    "5d2cc652",
+    "6a46e9bb",
+    "77846b7f",
+    "8162ca99",
+    "84233eae",
+    "87a84288",
+    "8c8f6cb4",
+    "961e9405",
+    "9f5834a4",
+    "a0a2a4c5",
+    "ad209962",
+    "b03cf2af",
+    "b38c7709",
+    "c03ae4dd",
+    "c0f7b6f5",
+    "c4c28d6e",
+    "c78d99b5",
+    "d9530fd8",
+    "f71a7020",
+    "faa36228",
+    "fe6fb06f",
+    "ff3b7499",
+    "ff8030a7"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "ad209962",
+      "sid": "9db4334a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

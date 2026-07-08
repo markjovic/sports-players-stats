@@ -1,1 +1,121 @@
-{"uuid":"ae4e9deb-4066-4322-b4f8-4a64ecb6b576","name":"Lucas Libertino","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":27,"fouls":19,"fg":13,"ft":1,"foulOuts":{"d868771d":1},"maxGamePTS":9,"maxGameThreePt":null,"wins":6,"losses":24,"winPct":0.2,"statsChecked":"2026-07-05T15:11:43.643Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Greenhills Amateur Basketball Club","regs":[{"tid":"72e8797b","tn":"Greenhills U08 Boys 4","gid":"08ec71a5","gn":"Saturday U08 Boys C2","age":"U08","div":"C2","stats":{"gp":15,"fouls":19,"ft":1,"fg":13,"pts":27,"wins":3,"losses":12}},{"tid":"72e8797b","tn":"Greenhills U08 Boys 4","gid":"bb52f85d","gn":"Saturday U08 Boys Grading Group 3","age":"U08","div":null,"stats":{"gp":15,"fouls":19,"fg":13,"pts":27,"foulOuts":1,"wins":3,"losses":12,"ft":1}}]}],"updatedAt":"2026-06-01T06:08:07.159Z","teams":[{"tid":"72e8797b","sid":"d868771d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:35:29.620Z","games":["028a2fef","2415fe1d","254e6a02","6127c783","7780ab6b","8bc0e278","911e0e62","a99ba612","a9b99836","bb135747","c3575f65","c63b0e2b","cbf99276","da453546","fcb8febb"],"records":{"maxGamePTS":{"v":9,"gameKey":"fcb8febb","sid":"d868771d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "ae4e9deb-4066-4322-b4f8-4a64ecb6b576",
+  "name": "Lucas Libertino",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 27,
+      "fouls": 19,
+      "fg": 13,
+      "ft": 1,
+      "foulOuts": {
+        "d868771d": 1
+      },
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 24,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:11:43.643Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Greenhills Amateur Basketball Club",
+      "regs": [
+        {
+          "tid": "72e8797b",
+          "tn": "Greenhills U08 Boys 4",
+          "gid": "08ec71a5",
+          "gn": "Saturday U08 Boys C2",
+          "age": "U08",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "fouls": 19,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "wins": 3,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "72e8797b",
+          "tn": "Greenhills U08 Boys 4",
+          "gid": "bb52f85d",
+          "gn": "Saturday U08 Boys Grading Group 3",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 19,
+            "fg": 13,
+            "pts": 27,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 12,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "50581717",
+          "tn": "Greenhills U08 Boys 4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:08:07.159Z",
+  "teams": [
+    {
+      "tid": "72e8797b",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50581717",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:44.648Z",
+  "games": [
+    "028a2fef",
+    "2415fe1d",
+    "254e6a02",
+    "6127c783",
+    "7780ab6b",
+    "8bc0e278",
+    "911e0e62",
+    "a99ba612",
+    "a9b99836",
+    "bb135747",
+    "c3575f65",
+    "c63b0e2b",
+    "cbf99276",
+    "da453546",
+    "fcb8febb"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "fcb8febb",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

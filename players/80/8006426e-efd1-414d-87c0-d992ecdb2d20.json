@@ -1,1 +1,107 @@
-{"uuid":"8006426e-efd1-414d-87c0-d992ecdb2d20","gender":null,"sports":{"Basketball":{"gp":6,"pts":9,"fouls":5,"fg":2,"ft":2,"threePt":1,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"losses":10,"winPct":0,"statsChecked":"2026-07-05T16:14:11.641Z"}},"seasons":[{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"d79b61f6","tn":"Bulleen U16 Boys 01","gid":"aead6c28","gn":"Boys U16AR North","stats":{"gp":6,"pts":9,"fouls":5,"ft":2,"losses":5,"fg":2,"threePt":1}},{"tid":"d79b61f6","tn":"Bulleen U16 Boys 01","gid":"dcd3c1b0","gn":"U16 Boys A Grading","stats":{"gp":6,"pts":9,"fouls":5,"fg":2,"ft":2,"threePt":1,"losses":5}}]}],"updatedAt":"2026-06-11T23:41:45.201Z","records":{"maxGamePTS":{"v":5,"gameKey":"2a05e881","sid":"a62fadf9"},"maxGameThreePt":{"v":1,"gameKey":"2a05e881","sid":"a62fadf9"}},"games":["2a05e881","30ad0ce3","47de4f48","a19837af","db5b6712","dbcf46a0"],"name":"Summer 2020/21"}
+{
+  "uuid": "8006426e-efd1-414d-87c0-d992ecdb2d20",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 9,
+      "fouls": 5,
+      "fg": 2,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "losses": 10,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:14:11.641Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "d79b61f6",
+          "tn": "Bulleen U16 Boys 01",
+          "gid": "aead6c28",
+          "gn": "Boys U16AR North",
+          "stats": {
+            "gp": 6,
+            "pts": 9,
+            "fouls": 5,
+            "ft": 2,
+            "losses": 5,
+            "fg": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "d79b61f6",
+          "tn": "Bulleen U16 Boys 01",
+          "gid": "dcd3c1b0",
+          "gn": "U16 Boys A Grading",
+          "stats": {
+            "gp": 6,
+            "pts": 9,
+            "fouls": 5,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "9362008b",
+          "tn": "Bulleen U16 Boys 3",
+          "gid": "1531efec",
+          "gn": "U16 Boys VJL 4 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:45.201Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "2a05e881",
+      "sid": "a62fadf9"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "2a05e881",
+      "sid": "a62fadf9"
+    }
+  },
+  "games": [
+    "2a05e881",
+    "30ad0ce3",
+    "47de4f48",
+    "a19837af",
+    "db5b6712",
+    "dbcf46a0"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "d79b61f6",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9362008b",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:58.796Z"
+}

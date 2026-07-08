@@ -1,1 +1,260 @@
-{"uuid":"be552777-135e-4e7f-ae7b-e2817c2755e7","name":"2025","gender":null,"sports":{"Basketball":{"gp":21,"pts":53,"fouls":41,"fg":17,"ft":7,"threePt":4,"finals":2,"gfApps":2,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":2,"wins":12,"winPct":1,"statsChecked":"2026-07-07T18:29:43.784Z"}},"seasons":[{"sid":"573a49c2","sn":"2025","club":null,"regs":[{"tid":"55146e4b","tn":"(46) MS54","gid":"7569a6b4","gn":"Senior Women 35+ Handicapped","stats":{"gp":2,"pts":2,"fouls":2,"fg":1,"finals":1,"gfApps":1,"wins":2,"gfWins":1}},{"tid":"6b0389d7","tn":"(46) MS54 (Crossover)","gid":"c33fb466","gn":"Senior Women Crossover","stats":{"gp":2,"pts":1,"fouls":5,"ft":1,"finals":1,"gfApps":1,"wins":2,"gfWins":1}}]},{"sid":"5f7e49e4","sn":"2024","club":null,"regs":[{"tid":"2a4aed8e","tn":"MS54 (48)","gid":"7cc6ef24","gn":"35+ Handicapped Womens Grade","stats":{"gp":3,"pts":4,"fouls":4,"fg":2,"wins":3}}]},{"sid":"407d16cf","sn":"2023","club":null,"regs":[{"tid":"08ae12ca","tn":"MS54 (47)","gid":"96d71e16","gn":"Open Women Grade","stats":{"gp":5,"pts":30,"fouls":13,"fg":8,"ft":5,"threePt":3,"wins":5}}]},{"sid":"294a93b7","sn":"2021","club":null,"regs":[{"tid":"94e08a92","tn":"MS54 (48)","gid":"846ad642","gn":"Open Women","stats":{"gp":4,"pts":9,"fouls":7,"fg":4,"ft":1,"finals":1,"gfApps":1}}]},{"sid":"a69bdb4b","regs":[{"tid":"9f70bc6b","stats":{"gp":5,"pts":7,"fg":2,"threePt":1,"fouls":10}},{"tid":"9f70bc6b","tn":"","gid":"24a2a076","gn":"Senior Women 35+ Handicapped","div":null,"stats":{"gp":5,"pts":7,"fg":2,"threePt":1,"fouls":10}}]}],"updatedAt":"2026-07-07T18:04:47.432Z","records":{"maxGamePTS":{"v":9,"gameKey":"77ac2437","sid":"407d16cf"},"maxGameThreePt":{"v":2,"gameKey":"47838a9a","sid":"407d16cf"}},"games":["07c6a8ea","0f75f412","28083a24","2afc94f7","3841fd35","38d40f2f","3980961f","47838a9a","47db0afb","73df637c","77ac2437","9c433edb","c361eaa0","cf73226d","d6e07c20","e6f4ef43"],"gameTids":{"c277a481":"9f70bc6b","aac6aa8b":"9f70bc6b","01288cba":"9f70bc6b","8beeef1f":"9f70bc6b","badc7366":"9f70bc6b","d6e07c20":"55146e4b","cf73226d":"55146e4b","73df637c":"6b0389d7","3841fd35":"6b0389d7","c361eaa0":"2a4aed8e","e6f4ef43":"2a4aed8e","0f75f412":"2a4aed8e","2afc94f7":"08ae12ca","3980961f":"08ae12ca","47838a9a":"08ae12ca","47db0afb":"08ae12ca","77ac2437":"08ae12ca","28083a24":"94e08a92","9c433edb":"94e08a92","07c6a8ea":"94e08a92","38d40f2f":"94e08a92"}}
+{
+  "uuid": "be552777-135e-4e7f-ae7b-e2817c2755e7",
+  "name": "2025",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 21,
+      "pts": 53,
+      "fouls": 41,
+      "fg": 17,
+      "ft": 7,
+      "threePt": 4,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 2,
+      "wins": 12,
+      "winPct": 1,
+      "statsChecked": "2026-07-07T18:29:43.784Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "573a49c2",
+      "sn": "2025",
+      "club": null,
+      "regs": [
+        {
+          "tid": "55146e4b",
+          "tn": "(46) MS54",
+          "gid": "7569a6b4",
+          "gn": "Senior Women 35+ Handicapped",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fouls": 2,
+            "fg": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "6b0389d7",
+          "tn": "(46) MS54 (Crossover)",
+          "gid": "c33fb466",
+          "gn": "Senior Women Crossover",
+          "stats": {
+            "gp": 2,
+            "pts": 1,
+            "fouls": 5,
+            "ft": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f7e49e4",
+      "sn": "2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "2a4aed8e",
+          "tn": "MS54 (48)",
+          "gid": "7cc6ef24",
+          "gn": "35+ Handicapped Womens Grade",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fouls": 4,
+            "fg": 2,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "407d16cf",
+      "sn": "2023",
+      "club": null,
+      "regs": [
+        {
+          "tid": "08ae12ca",
+          "tn": "MS54 (47)",
+          "gid": "96d71e16",
+          "gn": "Open Women Grade",
+          "stats": {
+            "gp": 5,
+            "pts": 30,
+            "fouls": 13,
+            "fg": 8,
+            "ft": 5,
+            "threePt": 3,
+            "wins": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "294a93b7",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "94e08a92",
+          "tn": "MS54 (48)",
+          "gid": "846ad642",
+          "gn": "Open Women",
+          "stats": {
+            "gp": 4,
+            "pts": 9,
+            "fouls": 7,
+            "fg": 4,
+            "ft": 1,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a69bdb4b",
+      "regs": [
+        {
+          "tid": "9f70bc6b",
+          "stats": {
+            "gp": 5,
+            "pts": 7,
+            "fg": 2,
+            "threePt": 1,
+            "fouls": 10
+          },
+          "gid": "24a2a076",
+          "gn": "Senior Women 35+ Handicapped"
+        },
+        {
+          "tid": "9f70bc6b",
+          "tn": "",
+          "gid": "24a2a076",
+          "gn": "Senior Women 35+ Handicapped",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 7,
+            "fg": 2,
+            "threePt": 1,
+            "fouls": 10
+          }
+        },
+        {
+          "tid": "0902bb37",
+          "tn": "(47) MS54 (Crossover)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:04:47.432Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "77ac2437",
+      "sid": "407d16cf"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "47838a9a",
+      "sid": "407d16cf"
+    }
+  },
+  "games": [
+    "07c6a8ea",
+    "0f75f412",
+    "28083a24",
+    "2afc94f7",
+    "3841fd35",
+    "38d40f2f",
+    "3980961f",
+    "47838a9a",
+    "47db0afb",
+    "73df637c",
+    "77ac2437",
+    "9c433edb",
+    "c361eaa0",
+    "cf73226d",
+    "d6e07c20",
+    "e6f4ef43"
+  ],
+  "gameTids": {
+    "c277a481": "9f70bc6b",
+    "aac6aa8b": "9f70bc6b",
+    "01288cba": "9f70bc6b",
+    "8beeef1f": "9f70bc6b",
+    "badc7366": "9f70bc6b",
+    "d6e07c20": "55146e4b",
+    "cf73226d": "55146e4b",
+    "73df637c": "6b0389d7",
+    "3841fd35": "6b0389d7",
+    "c361eaa0": "2a4aed8e",
+    "e6f4ef43": "2a4aed8e",
+    "0f75f412": "2a4aed8e",
+    "2afc94f7": "08ae12ca",
+    "3980961f": "08ae12ca",
+    "47838a9a": "08ae12ca",
+    "47db0afb": "08ae12ca",
+    "77ac2437": "08ae12ca",
+    "28083a24": "94e08a92",
+    "9c433edb": "94e08a92",
+    "07c6a8ea": "94e08a92",
+    "38d40f2f": "94e08a92"
+  },
+  "teams": [
+    {
+      "tid": "55146e4b",
+      "sid": "573a49c2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b0389d7",
+      "sid": "573a49c2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a4aed8e",
+      "sid": "5f7e49e4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "08ae12ca",
+      "sid": "407d16cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "94e08a92",
+      "sid": "294a93b7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9f70bc6b",
+      "sid": "a69bdb4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0902bb37",
+      "sid": "a69bdb4b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:08:21.503Z"
+}

@@ -1,1 +1,81 @@
-{"uuid":"7e167add-d240-4476-b38f-498be9598f65","name":"Ava Goldman","gender":"Girls","sports":{"Basketball":{"gp":3,"fouls":7,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":4,"winPct":0,"pts":2,"fg":1,"statsChecked":"2026-07-05T14:56:17.872Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Maccabi Victoria Basketball Club","regs":[{"tid":"bb5201fa","tn":"Maccabi U14 Girls Ducks","gid":"c4f93c53","gn":"Saturday U14 Girls Section 06","age":"U14","div":null,"stats":{"gp":3,"fouls":7,"losses":2,"pts":2,"fg":1}},{"tid":"bb5201fa","tn":"Maccabi U14 Girls Ducks","gid":"0301f39c","gn":"Saturday U14 Girls Section 05","age":"U14","div":null,"stats":{"gp":3,"losses":2,"pts":2,"fg":1,"fouls":7}}]}],"updatedAt":"2026-05-31T14:00:38.098Z","teams":[{"tid":"bb5201fa","sid":"6c117270","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T10:45:59.841Z","games":["a9a56ad0","d07fe8c6"],"records":{"maxGamePTS":{"v":2,"gameKey":"883549df","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "7e167add-d240-4476-b38f-498be9598f65",
+  "name": "Ava Goldman",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "fouls": 7,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 4,
+      "winPct": 0,
+      "pts": 2,
+      "fg": 1,
+      "statsChecked": "2026-07-05T14:56:17.872Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Maccabi Victoria Basketball Club",
+      "regs": [
+        {
+          "tid": "bb5201fa",
+          "tn": "Maccabi U14 Girls Ducks",
+          "gid": "be6c590d",
+          "gn": "Saturday U14 Girls Section 07",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 7,
+            "losses": 2,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "bb5201fa",
+          "tn": "Maccabi U14 Girls Ducks",
+          "gid": "0301f39c",
+          "gn": "Saturday U14 Girls Section 05",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "losses": 2,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T14:00:38.098Z",
+  "teams": [
+    {
+      "tid": "bb5201fa",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:59.614Z",
+  "games": [
+    "a9a56ad0",
+    "d07fe8c6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "883549df",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

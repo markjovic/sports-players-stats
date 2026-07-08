@@ -1,1 +1,99 @@
-{"uuid":"6d551e9a-d019-480e-b579-eb66a2f2a32a","name":"Rami Elmohandis","sports":{"Basketball":{"maxGamePTS":22,"maxGameThreePt":2,"foulOuts":{},"gp":28,"pts":126,"fg":49,"ft":7,"threePt":7,"fouls":15,"statsChecked":"2026-07-06T19:10:33.444Z"}},"seasons":[{"sid":"82f9d173","regs":[{"tid":"a8958e40"}]},{"sid":"dcf99310","regs":[{"tid":"1591f1d5"}]},{"sid":"3f9d58d2","regs":[{"tid":"e8a5c668"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":22,"gameKey":"9e71c90c","sid":"dcf99310"},"maxGameThreePt":{"v":2,"gameKey":"5fc8aaa7","sid":"82f9d173"}}}
+{
+  "uuid": "6d551e9a-d019-480e-b579-eb66a2f2a32a",
+  "name": "Rami Elmohandis",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 22,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 28,
+      "pts": 126,
+      "fg": 49,
+      "ft": 7,
+      "threePt": 7,
+      "fouls": 15,
+      "statsChecked": "2026-07-06T19:10:33.444Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "82f9d173",
+      "regs": [
+        {
+          "tid": "a8958e40",
+          "gid": "ae506e68",
+          "gn": "Monday Division 1"
+        }
+      ]
+    },
+    {
+      "sid": "dcf99310",
+      "regs": [
+        {
+          "tid": "1591f1d5",
+          "gid": "bfcd2957",
+          "gn": "Wednesday Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "3f9d58d2",
+      "regs": [
+        {
+          "tid": "e8a5c668",
+          "gid": "7ffe1fe7",
+          "gn": "Wednesday Division 5"
+        }
+      ]
+    },
+    {
+      "sid": "f64c9c45",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "56ca8d6a",
+          "tn": "Resurrection Brothers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "a8958e40",
+      "sid": "82f9d173",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1591f1d5",
+      "sid": "dcf99310",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8a5c668",
+      "sid": "3f9d58d2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56ca8d6a",
+      "sid": "f64c9c45",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "9e71c90c",
+      "sid": "dcf99310"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "5fc8aaa7",
+      "sid": "82f9d173"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:05:21.273Z"
+}

@@ -1,1 +1,404 @@
-{"uuid":"6e5d5716-05f7-49b5-97eb-3efbfe571c46","name":"Angus Macdonald","gender":"Boys","sports":{"Basketball":{"gp":71,"pts":175,"fouls":79,"fg":61,"ft":14,"threePt":13,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":43,"losses":51,"draws":2,"winPct":0.45,"statsChecked":"2026-07-05T15:09:52.631Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"9802c57e","tn":"Bayside Warriors U16 Boys Green","gid":"6e22c98b","gn":"Saturday U16 Boys C","age":"U16","div":null,"stats":{"gp":7,"fouls":7,"ft":4,"fg":8,"threePt":1,"pts":23,"wins":4,"losses":3}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"dde1b52e","tn":"Bayside Warriors U16 Boys Blue","gid":"fde84283","gn":"Saturday U16 Boys C","age":"U16","div":null,"stats":{"gp":13,"fouls":7,"ft":4,"fg":26,"threePt":4,"pts":68,"losses":10,"draws":2}}]},{"sid":"0c4ad170","sn":"Winter 2025","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"1e848889","tn":"Bayside Warriors U14 Boys Green","gid":"74c56ad4","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":13,"fouls":21,"ft":2,"fg":5,"threePt":2,"pts":18,"wins":5,"losses":8}},{"tid":"1e848889","tn":"Bayside Warriors U14 Boys Green","gid":"8fa81e6b","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":13,"fouls":21,"ft":2,"fg":5,"threePt":2,"pts":18,"wins":5,"losses":8}}]},{"sid":"0261a532","sn":"Summer 2024/25","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"57a5321d","tn":"Bayside Warriors U14 Boys Green","gid":"e46be63a","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":9,"fouls":12,"ft":1,"fg":3,"threePt":3,"pts":16,"wins":2,"losses":7}}]},{"sid":"3d243fd6","sn":"Winter 2024","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"a16313d6","tn":"Bayside Warriors U14 Boys Blue","gid":"ae150809","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":16,"fouls":21,"ft":3,"fg":9,"threePt":3,"pts":30,"finals":1,"wins":11,"losses":5}}]},{"sid":"6924f649","sn":"Summer 2023/24","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"8d843cfc","tn":"Bayside Warriors U14 Boys Green","gid":"566fe198","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":13,"fouls":11,"fg":10,"pts":20,"finals":1,"wins":8,"losses":5}},{"tid":"8d843cfc","tn":"Bayside Warriors U14 Boys Green","gid":"8212c508","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":13,"fouls":11,"fg":10,"pts":20,"finals":1,"wins":8,"losses":5}}]}],"updatedAt":"2026-06-01T08:32:01.862Z","teams":[{"tid":"9802c57e","sid":"e7aed763","status":"ACTIVE"},{"tid":"dde1b52e","sid":"e78cfce1","status":"COMPLETED"},{"tid":"1e848889","sid":"0c4ad170","status":"COMPLETED"},{"tid":"57a5321d","sid":"0261a532","status":"COMPLETED"},{"tid":"f9d023bc","sid":"8884de2d","status":"COMPLETED"},{"tid":"a16313d6","sid":"3d243fd6","status":"COMPLETED"},{"tid":"8d843cfc","sid":"6924f649","status":"COMPLETED"},{"tid":"03dbeb84","sid":"09a70808","status":"COMPLETED"},{"tid":"a126f679","sid":"e5df46b3","status":"COMPLETED"},{"tid":"16fe3e79","sid":"cf8ebef7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:39:35.992Z","records":{"maxGamePTS":{"v":12,"gameKey":"4e227fbe","sid":"e78cfce1"},"maxGameThreePt":{"v":2,"gameKey":"1b3db1da","sid":"3d243fd6"}},"games":["157fdaef","183bfac3","19aa3bcc","1b3db1da","1e5d40ac","282ed233","28d56562","2a8b576d","31ce0c8d","36f5e046","3a5832a0","42b5c46f","486e639c","4df84a25","4e227fbe","4ed26084","5453f629","552773f4","5bcdb643","5c6be5d2","5d22f11b","62510607","64074fa8","68af3bc8","6f601d7d","72882b53","770aab15","78de0e48","79c47443","7b6481b6","7f5b1ee2","84f98b66","87e4ddf5","891cf621","8a6be267","91720c0f","98fa1cc6","997c559c","9d86cc49","9e73a998","a0cbbbf0","a13b458f","a555badb","acf68462","af6a4821","b0fad5d3","b570e712","b7f9677c","bed3b62b","bfe93922","c22e4587","c79c7fb9","c89d2631","c8d130c9","c93dcce6","cb62dc03","cc6fc738","d13a4d6f","d5fe074d","d700f2f6","ddeeda28","dfe6c82d","e0a358ac","e626b2a8","ea6db909","ee95dc58","f2cfacad","f46dcd82","f6b5abca","f73bb610"]}
+{
+  "uuid": "6e5d5716-05f7-49b5-97eb-3efbfe571c46",
+  "name": "Angus Macdonald",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 71,
+      "pts": 175,
+      "fouls": 79,
+      "fg": 61,
+      "ft": 14,
+      "threePt": 13,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 43,
+      "losses": 51,
+      "draws": 2,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T15:09:52.631Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "9802c57e",
+          "tn": "Bayside Warriors U16 Boys Green",
+          "gid": "6e22c98b",
+          "gn": "Saturday U16 Boys C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 4,
+            "fg": 8,
+            "threePt": 1,
+            "pts": 23,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "dde1b52e",
+          "tn": "Bayside Warriors U16 Boys Blue",
+          "gid": "fde84283",
+          "gn": "Saturday U16 Boys C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "ft": 4,
+            "fg": 26,
+            "threePt": 4,
+            "pts": 68,
+            "losses": 10,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "1e848889",
+          "tn": "Bayside Warriors U14 Boys Green",
+          "gid": "74c56ad4",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 18,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "1e848889",
+          "tn": "Bayside Warriors U14 Boys Green",
+          "gid": "8fa81e6b",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 18,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0261a532",
+      "sn": "Summer 2024/25",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "57a5321d",
+          "tn": "Bayside Warriors U14 Boys Green",
+          "gid": "e46be63a",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "ft": 1,
+            "fg": 3,
+            "threePt": 3,
+            "pts": 16,
+            "wins": 2,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3d243fd6",
+      "sn": "Winter 2024",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "a16313d6",
+          "tn": "Bayside Warriors U14 Boys Blue",
+          "gid": "ae150809",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 21,
+            "ft": 3,
+            "fg": 9,
+            "threePt": 3,
+            "pts": 30,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6924f649",
+      "sn": "Summer 2023/24",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "8d843cfc",
+          "tn": "Bayside Warriors U14 Boys Green",
+          "gid": "566fe198",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 11,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "8d843cfc",
+          "tn": "Bayside Warriors U14 Boys Green",
+          "gid": "8212c508",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 11,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "f9d023bc",
+          "tn": "SKIPPS Bulls",
+          "gid": "6ac91896",
+          "gn": "Tuesday MSAC/Bayside YR.6 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "03dbeb84",
+          "tn": "SKIPPS Bulls",
+          "gid": "f8232eab",
+          "gn": "Wednesday MSAC YR.5 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "a126f679",
+          "tn": "SKIPPS Bulls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "16fe3e79",
+          "tn": "SKIPPS Bulls",
+          "gid": "4c2ffa1a",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:32:01.862Z",
+  "teams": [
+    {
+      "tid": "9802c57e",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dde1b52e",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e848889",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57a5321d",
+      "sid": "0261a532",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a16313d6",
+      "sid": "3d243fd6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d843cfc",
+      "sid": "6924f649",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9d023bc",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "03dbeb84",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a126f679",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "16fe3e79",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:25.252Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "4e227fbe",
+      "sid": "e78cfce1"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "1b3db1da",
+      "sid": "3d243fd6"
+    }
+  },
+  "games": [
+    "157fdaef",
+    "183bfac3",
+    "19aa3bcc",
+    "1b3db1da",
+    "1e5d40ac",
+    "282ed233",
+    "28d56562",
+    "2a8b576d",
+    "31ce0c8d",
+    "36f5e046",
+    "3a5832a0",
+    "42b5c46f",
+    "486e639c",
+    "4df84a25",
+    "4e227fbe",
+    "4ed26084",
+    "5453f629",
+    "552773f4",
+    "5bcdb643",
+    "5c6be5d2",
+    "5d22f11b",
+    "62510607",
+    "64074fa8",
+    "68af3bc8",
+    "6f601d7d",
+    "72882b53",
+    "770aab15",
+    "78de0e48",
+    "79c47443",
+    "7b6481b6",
+    "7f5b1ee2",
+    "84f98b66",
+    "87e4ddf5",
+    "891cf621",
+    "8a6be267",
+    "91720c0f",
+    "98fa1cc6",
+    "997c559c",
+    "9d86cc49",
+    "9e73a998",
+    "a0cbbbf0",
+    "a13b458f",
+    "a555badb",
+    "acf68462",
+    "af6a4821",
+    "b0fad5d3",
+    "b570e712",
+    "b7f9677c",
+    "bed3b62b",
+    "bfe93922",
+    "c22e4587",
+    "c79c7fb9",
+    "c89d2631",
+    "c8d130c9",
+    "c93dcce6",
+    "cb62dc03",
+    "cc6fc738",
+    "d13a4d6f",
+    "d5fe074d",
+    "d700f2f6",
+    "ddeeda28",
+    "dfe6c82d",
+    "e0a358ac",
+    "e626b2a8",
+    "ea6db909",
+    "ee95dc58",
+    "f2cfacad",
+    "f46dcd82",
+    "f6b5abca",
+    "f73bb610"
+  ]
+}

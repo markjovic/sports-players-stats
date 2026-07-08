@@ -1,1 +1,225 @@
-{"uuid":"ad6442c3-f6f8-4ae8-a488-3235cb26ac16","name":"Adam Bradshaw","gender":"Mixed","sports":{"Basketball":{"gp":27,"pts":189,"fouls":48,"fg":76,"ft":37,"foulOuts":{},"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"maxGamePTS":16,"maxGameThreePt":null,"wins":18,"losses":9,"winPct":0.67,"statsChecked":"2026-07-05T15:11:39.921Z"}},"seasons":[{"sid":"cc171593","sn":"Summer 2023/24","regs":[{"tid":"7f097573","tn":"Team Two - Black","gid":"3f4140b4","gn":"Thursday Wildcard 28 Men","age":null,"div":null,"stats":{"gp":5,"fouls":6,"ft":4,"fg":21,"pts":46,"finals":1,"wins":5}},{"tid":"ee4156e1","tn":"Millgrove schooners","gid":"d6d5bc9c","gn":"Thursday Over 28 Men","age":null,"div":null,"stats":{"gp":9,"fouls":19,"ft":2,"fg":33,"pts":68,"finals":1,"wins":7,"losses":2}}]},{"sid":"e055d33b","sn":"2023","regs":[{"tid":"a7984af1","tn":"Junction Hills","gid":"a0009f95","gn":"Open Men & Open Women","age":"Senior","div":null,"stats":{"gp":4,"ft":18,"fg":1,"pts":20,"finals":1,"wins":2,"losses":2}}]},{"sid":"4f3c0f4f","sn":"Winter 2023","regs":[{"tid":"08541b2e","tn":"Millgrove schooners","gid":"206029f8","gn":"Thursday Over 28 Men","age":null,"div":null,"stats":{"gp":9,"fouls":23,"ft":13,"fg":21,"pts":55,"finals":1,"wins":4,"losses":5}}]}],"updatedAt":"2026-06-01T15:16:48.557Z","teams":[{"tid":"ee4156e1","sid":"cc171593","status":"COMPLETED"},{"tid":"7f097573","sid":"cc171593","status":"COMPLETED"},{"tid":"08541b2e","sid":"4f3c0f4f","status":"COMPLETED"},{"tid":"a7984af1","sid":"e055d33b","status":"COMPLETED"},{"tid":"ebeb5b04","sid":"407d16cf","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:13.341Z","games":["02ce193c","089f4b94","0d1a1fd5","1108b535","1461f3cd","150c83c6","174cd0fe","253e6a53","2b572f10","4cc8fa07","69732a82","8c30af18","907ab306","924b1d9d","957ffd9f","9c07954b","b35f385c","b7fc8a6c","bd8c4ad5","c47be408","c659531d","dca082af","dd4a9eef","f0c50e26","f67fdc05","fa0a97b2","ffe23269"],"records":{"maxGamePTS":{"v":16,"gameKey":"69732a82","sid":"cc171593"},"maxGameThreePt":{"v":null}},"gameTids":{"150c83c6":"7f097573","fa0a97b2":"7f097573","69732a82":"7f097573","b7fc8a6c":"7f097573","4cc8fa07":"7f097573","dca082af":"ee4156e1","dd4a9eef":"ee4156e1","924b1d9d":"ee4156e1","ffe23269":"ee4156e1","957ffd9f":"ee4156e1","1461f3cd":"ee4156e1","089f4b94":"ee4156e1","174cd0fe":"ee4156e1","c659531d":"ee4156e1","1108b535":"a7984af1","bd8c4ad5":"a7984af1","c47be408":"a7984af1","02ce193c":"a7984af1","f0c50e26":"08541b2e","0d1a1fd5":"08541b2e","8c30af18":"08541b2e","f67fdc05":"08541b2e","253e6a53":"08541b2e","9c07954b":"08541b2e","b35f385c":"08541b2e","2b572f10":"08541b2e","907ab306":"08541b2e"}}
+{
+  "uuid": "ad6442c3-f6f8-4ae8-a488-3235cb26ac16",
+  "name": "Adam Bradshaw",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 189,
+      "fouls": 48,
+      "fg": 76,
+      "ft": 37,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 18,
+      "losses": 9,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T15:11:39.921Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cc171593",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "7f097573",
+          "tn": "Team Two - Black",
+          "gid": "3f4140b4",
+          "gn": "Thursday Wildcard 28 Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 4,
+            "fg": 21,
+            "pts": 46,
+            "finals": 1,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "ee4156e1",
+          "tn": "Millgrove schooners",
+          "gid": "d6d5bc9c",
+          "gn": "Thursday Over 28 Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 19,
+            "ft": 2,
+            "fg": 33,
+            "pts": 68,
+            "finals": 1,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e055d33b",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "a7984af1",
+          "tn": "Junction Hills",
+          "gid": "a0009f95",
+          "gn": "Open Men & Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "ft": 18,
+            "fg": 1,
+            "pts": 20,
+            "finals": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4f3c0f4f",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "08541b2e",
+          "tn": "Millgrove schooners",
+          "gid": "206029f8",
+          "gn": "Thursday Over 28 Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 23,
+            "ft": 13,
+            "fg": 21,
+            "pts": 55,
+            "finals": 1,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "407d16cf",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "ebeb5b04",
+          "tn": "UYBA (51)",
+          "gid": "516c1c23",
+          "gn": "Open Men C Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:16:48.557Z",
+  "teams": [
+    {
+      "tid": "7f097573",
+      "sid": "cc171593",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee4156e1",
+      "sid": "cc171593",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a7984af1",
+      "sid": "e055d33b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "08541b2e",
+      "sid": "4f3c0f4f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ebeb5b04",
+      "sid": "407d16cf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:46.337Z",
+  "games": [
+    "02ce193c",
+    "089f4b94",
+    "0d1a1fd5",
+    "1108b535",
+    "1461f3cd",
+    "150c83c6",
+    "174cd0fe",
+    "253e6a53",
+    "2b572f10",
+    "4cc8fa07",
+    "69732a82",
+    "8c30af18",
+    "907ab306",
+    "924b1d9d",
+    "957ffd9f",
+    "9c07954b",
+    "b35f385c",
+    "b7fc8a6c",
+    "bd8c4ad5",
+    "c47be408",
+    "c659531d",
+    "dca082af",
+    "dd4a9eef",
+    "f0c50e26",
+    "f67fdc05",
+    "fa0a97b2",
+    "ffe23269"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "69732a82",
+      "sid": "cc171593"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "150c83c6": "7f097573",
+    "fa0a97b2": "7f097573",
+    "69732a82": "7f097573",
+    "b7fc8a6c": "7f097573",
+    "4cc8fa07": "7f097573",
+    "dca082af": "ee4156e1",
+    "dd4a9eef": "ee4156e1",
+    "924b1d9d": "ee4156e1",
+    "ffe23269": "ee4156e1",
+    "957ffd9f": "ee4156e1",
+    "1461f3cd": "ee4156e1",
+    "089f4b94": "ee4156e1",
+    "174cd0fe": "ee4156e1",
+    "c659531d": "ee4156e1",
+    "1108b535": "a7984af1",
+    "bd8c4ad5": "a7984af1",
+    "c47be408": "a7984af1",
+    "02ce193c": "a7984af1",
+    "f0c50e26": "08541b2e",
+    "0d1a1fd5": "08541b2e",
+    "8c30af18": "08541b2e",
+    "f67fdc05": "08541b2e",
+    "253e6a53": "08541b2e",
+    "9c07954b": "08541b2e",
+    "b35f385c": "08541b2e",
+    "2b572f10": "08541b2e",
+    "907ab306": "08541b2e"
+  }
+}

@@ -1,1 +1,78 @@
-{"uuid":"643da73a-f785-40e5-8dd6-a457e99756cf","gender":null,"sports":{"Basketball":{"gp":2,"pts":2,"fouls":1,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":1,"winPct":0.5,"statsChecked":"2026-07-05T16:22:20.384Z"}},"seasons":[{"sid":"2554d50b","sn":"Winter 2020","club":"Phoenix United Basketball Development Club (Bendigo)","regs":[{"tid":"4f44c336","tn":"Phoenix White","gid":"070103e4","gn":"Under 14 Boys Division 5","stats":{"gp":2,"pts":2,"fouls":1,"fg":1,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:40:23.704Z","records":{"maxGamePTS":{"v":2,"gameKey":"b0093720","sid":"2554d50b"},"maxGameThreePt":{"v":null}},"games":["3f751aea","b0093720"],"name":"Winter 2020"}
+{
+  "uuid": "643da73a-f785-40e5-8dd6-a457e99756cf",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 2,
+      "fouls": 1,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:22:20.384Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2554d50b",
+      "sn": "Winter 2020",
+      "club": "Phoenix United Basketball Development Club (Bendigo)",
+      "regs": [
+        {
+          "tid": "4f44c336",
+          "tn": "Phoenix White",
+          "gid": "070103e4",
+          "gn": "Under 14 Boys Division 5",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fouls": 1,
+            "fg": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "2d808b58",
+          "tn": "Generals Tigers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:23.704Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "b0093720",
+      "sid": "2554d50b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3f751aea",
+    "b0093720"
+  ],
+  "name": "Winter 2020",
+  "teams": [
+    {
+      "tid": "4f44c336",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d808b58",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:01.689Z"
+}

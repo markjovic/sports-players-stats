@@ -1,1 +1,334 @@
-{"uuid":"5011bcae-e05f-4d33-a064-f8d137886738","name":"Jiana Kaur","gender":"Girls","sports":{"Basketball":{"gp":42,"pts":51,"fouls":12,"fg":24,"ft":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":39,"losses":46,"winPct":0.46,"statsChecked":"2026-07-05T14:27:08.045Z"}},"seasons":[{"sid":"3f8e0029","sn":"Winter 2026","club":"Berwick Saints Basketball Club","regs":[{"tid":"5ef1e3cc","tn":"Berwick Saints Fever","gid":"6b32ada5","gn":"Saturday U14 Girls C2 Grade","age":"U14","div":null,"stats":{"gp":9,"fouls":7,"fg":10,"pts":20,"wins":4,"losses":5}},{"tid":"5ef1e3cc","tn":"Berwick Saints Fever","gid":"d2a84390","gn":"Saturday U14 Girls C1 Grade","age":"U14","div":null,"stats":{"gp":9,"fouls":7,"fg":10,"pts":20,"wins":4,"losses":5}},{"tid":"23d83b7a","tn":"Berwick Saints Sapphires","gid":"5e8126f9","gn":"Saturday U16 Girls C1 Grade - Physioworks Health Group","age":"U16","div":null,"stats":{"gp":6,"wins":2,"losses":4,"pts":1,"ft":1}}]},{"sid":"cb7b1f18","sn":"Summer 2025/26","club":"Berwick Basketball Club","regs":[{"tid":"c879ec03","tn":"Berwick U14 Girls Sapphires","gid":"aad1efb2","gn":"Saturday U14 Girls D1 Grade","age":"U14","div":null,"stats":{"gp":3,"fg":1,"pts":2,"finals":1,"losses":3}},{"tid":"321fabea","stats":{"wins":9,"losses":8,"finals":1,"gp":17,"pts":16,"fg":8,"fouls":5}}]},{"sid":"cb7b1f18","sn":"Summer 2025/26","club":"Berwick Saints Basketball Club","regs":[{"tid":"321fabea","tn":"Berwick Saints Fever","gid":"32e3442c","gn":"Saturday U14 Girls C2 Grade","age":"U14","div":null,"stats":{"gp":17,"fouls":5,"fg":8,"pts":16,"finals":1,"wins":9,"losses":8}},{"tid":"321fabea","tn":"Berwick Saints Fever","gid":"6c3884b5","gn":"Saturday U14 Girls C3 Grade","age":"U14","div":null,"stats":{"gp":17,"fouls":5,"finals":1,"wins":9,"losses":8,"pts":16,"fg":8}}]},{"sid":"98a85c5f","sn":"Winter 2025","club":"Berwick Basketball Club","regs":[{"tid":"d8f98a7f","tn":"Berwick U14 Girls Sapphires","gid":"f95e3e42","gn":"Saturday U14 Girls D1 Grade","age":"U14","div":null,"stats":{"gp":6,"ft":2,"fg":4,"pts":10,"wins":1,"losses":5}}]},{"sid":"bf3744d0","sn":"Summer 2024/25","club":"Berwick Basketball Club","regs":[{"tid":"f75f530f","tn":"Berwick U12 Girls Mercury","gid":"23c6ad34","gn":"Saturday U12 Girls C3 Grade","age":"U12","div":null,"stats":{"gp":1,"fg":1,"pts":2,"wins":1}}]}],"updatedAt":"2026-06-01T11:37:49.150Z","teams":[{"tid":"5ef1e3cc","sid":"3f8e0029","status":"ACTIVE"},{"tid":"23d83b7a","sid":"3f8e0029","status":"ACTIVE"},{"tid":"321fabea","sid":"cb7b1f18","status":"COMPLETED"},{"tid":"d8f98a7f","sid":"98a85c5f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:29:28.869Z","records":{"maxGamePTS":{"v":6,"gameKey":"fff387de","sid":"3f8e0029"},"maxGameThreePt":{"v":null}},"games":["06a0214b","0cf916bf","1097c73d","1405813c","169b82f2","1a9c04e3","2ca9fb47","35e931e0","3741a338","3aed2ad7","3da382cb","4142778e","48ea2290","5500d2af","579594c0","686c6c7f","686d34e1","6a614ad5","6ebf2811","7008da19","83a24d1a","8f5b386a","95b7e475","99a85863","a2504cd4","af06f387","b8ad5290","b94837af","bcd0296c","bd6c53cf","c23296c7","c9423b38","cce80155","d065749e","d07a6820","d1c06489","d2c6154b","d5c3e1f4","e20ac1ec","ea6bf169","f70019b7","fff387de"],"gameTids":{"b94837af":"23d83b7a","0cf916bf":"23d83b7a","e20ac1ec":"23d83b7a","48ea2290":"23d83b7a","95b7e475":"23d83b7a","3aed2ad7":"23d83b7a","fff387de":"5ef1e3cc","7008da19":"5ef1e3cc","1a9c04e3":"5ef1e3cc","d2c6154b":"5ef1e3cc","3741a338":"5ef1e3cc","35e931e0":"5ef1e3cc","99a85863":"5ef1e3cc","579594c0":"5ef1e3cc","4142778e":"5ef1e3cc","d1c06489":"c879ec03","c23296c7":"c879ec03","6a614ad5":"c879ec03","1097c73d":"321fabea","1405813c":"321fabea","d065749e":"321fabea","06a0214b":"321fabea","8f5b386a":"321fabea","83a24d1a":"321fabea","d07a6820":"321fabea","f70019b7":"321fabea","bcd0296c":"321fabea","6ebf2811":"321fabea","bd6c53cf":"321fabea","3da382cb":"321fabea","a2504cd4":"321fabea","c9423b38":"321fabea","686d34e1":"321fabea","169b82f2":"321fabea","ea6bf169":"321fabea","af06f387":"d8f98a7f","b8ad5290":"d8f98a7f","5500d2af":"d8f98a7f","686c6c7f":"d8f98a7f","cce80155":"d8f98a7f","d5c3e1f4":"d8f98a7f","2ca9fb47":"f75f530f"}}
+{
+  "uuid": "5011bcae-e05f-4d33-a064-f8d137886738",
+  "name": "Jiana Kaur",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 51,
+      "fouls": 12,
+      "fg": 24,
+      "ft": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 39,
+      "losses": 46,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T14:27:08.045Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f8e0029",
+      "sn": "Winter 2026",
+      "club": "Berwick Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "5ef1e3cc",
+          "tn": "Berwick Saints Fever",
+          "gid": "d2a84390",
+          "gn": "Saturday U14 Girls C1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "fg": 10,
+            "pts": 20,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "5ef1e3cc",
+          "tn": "Berwick Saints Fever",
+          "gid": "d2a84390",
+          "gn": "Saturday U14 Girls C1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "fg": 10,
+            "pts": 20,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "23d83b7a",
+          "tn": "Berwick Saints Sapphires",
+          "gid": "5e8126f9",
+          "gn": "Saturday U16 Girls C1 Grade - Physioworks Health Group",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "wins": 2,
+            "losses": 4,
+            "pts": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cb7b1f18",
+      "sn": "Summer 2025/26",
+      "club": "Berwick Basketball Club",
+      "regs": [
+        {
+          "tid": "c879ec03",
+          "tn": "Berwick U14 Girls Sapphires",
+          "gid": "aad1efb2",
+          "gn": "Saturday U14 Girls D1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "321fabea",
+          "stats": {
+            "wins": 9,
+            "losses": 8,
+            "finals": 1,
+            "gp": 17,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 5
+          },
+          "gid": "32e3442c",
+          "gn": "Saturday U14 Girls C2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "cb7b1f18",
+      "sn": "Summer 2025/26",
+      "club": "Berwick Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "321fabea",
+          "tn": "Berwick Saints Fever",
+          "gid": "32e3442c",
+          "gn": "Saturday U14 Girls C2 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 5,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "wins": 9,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "321fabea",
+          "tn": "Berwick Saints Fever",
+          "gid": "6c3884b5",
+          "gn": "Saturday U14 Girls C3 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 5,
+            "finals": 1,
+            "wins": 9,
+            "losses": 8,
+            "pts": 16,
+            "fg": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98a85c5f",
+      "sn": "Winter 2025",
+      "club": "Berwick Basketball Club",
+      "regs": [
+        {
+          "tid": "d8f98a7f",
+          "tn": "Berwick U14 Girls Sapphires",
+          "gid": "f95e3e42",
+          "gn": "Saturday U14 Girls D1 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf3744d0",
+      "sn": "Summer 2024/25",
+      "club": "Berwick Basketball Club",
+      "regs": [
+        {
+          "tid": "f75f530f",
+          "tn": "Berwick U12 Girls Mercury",
+          "gid": "23c6ad34",
+          "gn": "Saturday U12 Girls C3 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:37:49.150Z",
+  "teams": [
+    {
+      "tid": "5ef1e3cc",
+      "sid": "3f8e0029",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23d83b7a",
+      "sid": "3f8e0029",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c879ec03",
+      "sid": "cb7b1f18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "321fabea",
+      "sid": "cb7b1f18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8f98a7f",
+      "sid": "98a85c5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f75f530f",
+      "sid": "bf3744d0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:04:03.132Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "fff387de",
+      "sid": "3f8e0029"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06a0214b",
+    "0cf916bf",
+    "1097c73d",
+    "1405813c",
+    "169b82f2",
+    "1a9c04e3",
+    "2ca9fb47",
+    "35e931e0",
+    "3741a338",
+    "3aed2ad7",
+    "3da382cb",
+    "4142778e",
+    "48ea2290",
+    "5500d2af",
+    "579594c0",
+    "686c6c7f",
+    "686d34e1",
+    "6a614ad5",
+    "6ebf2811",
+    "7008da19",
+    "83a24d1a",
+    "8f5b386a",
+    "95b7e475",
+    "99a85863",
+    "a2504cd4",
+    "af06f387",
+    "b8ad5290",
+    "b94837af",
+    "bcd0296c",
+    "bd6c53cf",
+    "c23296c7",
+    "c9423b38",
+    "cce80155",
+    "d065749e",
+    "d07a6820",
+    "d1c06489",
+    "d2c6154b",
+    "d5c3e1f4",
+    "e20ac1ec",
+    "ea6bf169",
+    "f70019b7",
+    "fff387de"
+  ],
+  "gameTids": {
+    "b94837af": "23d83b7a",
+    "0cf916bf": "23d83b7a",
+    "e20ac1ec": "23d83b7a",
+    "48ea2290": "23d83b7a",
+    "95b7e475": "23d83b7a",
+    "3aed2ad7": "23d83b7a",
+    "fff387de": "5ef1e3cc",
+    "7008da19": "5ef1e3cc",
+    "1a9c04e3": "5ef1e3cc",
+    "d2c6154b": "5ef1e3cc",
+    "3741a338": "5ef1e3cc",
+    "35e931e0": "5ef1e3cc",
+    "99a85863": "5ef1e3cc",
+    "579594c0": "5ef1e3cc",
+    "4142778e": "5ef1e3cc",
+    "d1c06489": "c879ec03",
+    "c23296c7": "c879ec03",
+    "6a614ad5": "c879ec03",
+    "1097c73d": "321fabea",
+    "1405813c": "321fabea",
+    "d065749e": "321fabea",
+    "06a0214b": "321fabea",
+    "8f5b386a": "321fabea",
+    "83a24d1a": "321fabea",
+    "d07a6820": "321fabea",
+    "f70019b7": "321fabea",
+    "bcd0296c": "321fabea",
+    "6ebf2811": "321fabea",
+    "bd6c53cf": "321fabea",
+    "3da382cb": "321fabea",
+    "a2504cd4": "321fabea",
+    "c9423b38": "321fabea",
+    "686d34e1": "321fabea",
+    "169b82f2": "321fabea",
+    "ea6bf169": "321fabea",
+    "af06f387": "d8f98a7f",
+    "b8ad5290": "d8f98a7f",
+    "5500d2af": "d8f98a7f",
+    "686c6c7f": "d8f98a7f",
+    "cce80155": "d8f98a7f",
+    "d5c3e1f4": "d8f98a7f",
+    "2ca9fb47": "f75f530f"
+  }
+}

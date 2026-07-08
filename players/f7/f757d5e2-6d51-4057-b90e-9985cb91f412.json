@@ -1,1 +1,280 @@
-{"uuid":"f757d5e2-6d51-4057-b90e-9985cb91f412","name":"Alexander Orr","gender":"Mixed","sports":{"Basketball":{"gp":20,"pts":156,"fg":64,"foulOuts":{},"maxGamePTS":30,"maxGameThreePt":null,"wins":4,"losses":8,"winPct":0.33,"statsChecked":"2026-07-05T15:13:45.251Z"}},"seasons":[{"sid":"b97b4f4b","sn":"Winter 2026","regs":[{"tid":"45822251","tn":"Force 1","gid":"8cc356f9","gn":"Thursday Open Mixed Division 4","age":"Senior","div":"Division 4","stats":{"gp":3,"fg":15,"pts":30}},{"tid":"788c4615","tn":"Force 2","gid":"8cc356f9","gn":"Thursday Open Mixed Division 4","age":"Senior","div":"Division 4","stats":{"gp":1,"fg":9,"pts":18}},{"tid":"ec3c6c8c","stats":{"gp":1,"pts":12,"fg":6}},{"tid":"ec3c6c8c","tn":"","gid":"8cc356f9","gn":"Thursday Open Mixed Division 4","div":null,"stats":{"gp":1,"pts":12,"fg":6}}]},{"sid":"b6064d68","sn":"Summer 2025/26","regs":[{"tid":"0b33a974","tn":"Aces 2","gid":"84882e8e","gn":"Thursday Open Mixed Division 4","age":"Senior","div":"Division 4","stats":{"gp":4,"fg":21,"pts":42,"wins":1,"losses":1}},{"tid":"f5c2e47e","tn":"Force 1","gid":"84882e8e","gn":"Thursday Open Mixed Division 4","age":"Senior","div":"Division 4","stats":{"gp":2,"fg":2,"pts":4,"wins":1,"losses":1}},{"tid":"f1b0d291","tn":"Force 2","gid":"84882e8e","gn":"Thursday Open Mixed Division 4","age":"Senior","div":"Division 4","stats":{"gp":2,"fg":11,"pts":22,"wins":1}}]},{"sid":"8e9a9300","sn":"Winter 2024","regs":[{"tid":"c4e7e29e","tn":"Jaeman Wizards","gid":"777003c7","gn":"Friday Open Mixed Division 4","age":"Senior","div":"Division 4","stats":{"gp":7,"pts":28,"wins":1,"losses":6}}]}],"updatedAt":"2026-07-04T05:42:44.716Z","teams":[{"tid":"a93205e4","sid":"b97b4f4b","status":"ACTIVE"},{"tid":"ec3c6c8c","sid":"b97b4f4b","status":"ACTIVE"},{"tid":"45822251","sid":"b97b4f4b","status":"ACTIVE"},{"tid":"788c4615","sid":"b97b4f4b","status":"ACTIVE"},{"tid":"f593c1fc","sid":"b6064d68","status":"COMPLETED"},{"tid":"0b33a974","sid":"b6064d68","status":"COMPLETED"},{"tid":"f5c2e47e","sid":"b6064d68","status":"COMPLETED"},{"tid":"f1b0d291","sid":"b6064d68","status":"COMPLETED"},{"tid":"32b97fa9","sid":"c054de6a","status":"COMPLETED"},{"tid":"c4e7e29e","sid":"8e9a9300","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:55:49.579Z","records":{"maxGamePTS":{"v":30,"gameKey":"37c6db55","sid":"b6064d68"},"maxGameThreePt":{"v":null}},"games":["025db8fd","0605726c","17073d6b","2e0142f3","37c6db55","42ff2a98","47bea62c","5587d9b4","5974d3f6","5ee118cd","718f3373","90eb8b55","a16e29db","b74c5627","bc780f43","be634fb0","e346c04a","ee87da05","f6cf2293","f7eeda57"],"gameTids":{"5974d3f6":"ec3c6c8c","be634fb0":"45822251","17073d6b":"45822251","b74c5627":"45822251","5587d9b4":"788c4615","718f3373":"0b33a974","37c6db55":"0b33a974","a16e29db":"0b33a974","47bea62c":"0b33a974","ee87da05":"f5c2e47e","f6cf2293":"f5c2e47e","42ff2a98":"f1b0d291","5ee118cd":"f1b0d291","e346c04a":"c4e7e29e","0605726c":"c4e7e29e","f7eeda57":"c4e7e29e","bc780f43":"c4e7e29e","025db8fd":"c4e7e29e","90eb8b55":"c4e7e29e","2e0142f3":"c4e7e29e"}}
+{
+  "uuid": "f757d5e2-6d51-4057-b90e-9985cb91f412",
+  "name": "Alexander Orr",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 156,
+      "fg": 64,
+      "foulOuts": {},
+      "maxGamePTS": 30,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 8,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:13:45.251Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b97b4f4b",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "45822251",
+          "tn": "Force 1",
+          "gid": "8cc356f9",
+          "gn": "Thursday Open Mixed Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 3,
+            "fg": 15,
+            "pts": 30
+          }
+        },
+        {
+          "tid": "788c4615",
+          "tn": "Force 2",
+          "gid": "8cc356f9",
+          "gn": "Thursday Open Mixed Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 1,
+            "fg": 9,
+            "pts": 18
+          }
+        },
+        {
+          "tid": "ec3c6c8c",
+          "stats": {
+            "gp": 1,
+            "pts": 12,
+            "fg": 6
+          },
+          "gid": "8cc356f9",
+          "gn": "Thursday Open Mixed Division 4"
+        },
+        {
+          "tid": "ec3c6c8c",
+          "tn": "",
+          "gid": "8cc356f9",
+          "gn": "Thursday Open Mixed Division 4",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 12,
+            "fg": 6
+          }
+        },
+        {
+          "tid": "a93205e4",
+          "tn": "Aces 1",
+          "gid": "8cc356f9",
+          "gn": "Thursday Open Mixed Division 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b6064d68",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "0b33a974",
+          "tn": "Aces 2",
+          "gid": "84882e8e",
+          "gn": "Thursday Open Mixed Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 4,
+            "fg": 21,
+            "pts": 42,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "f5c2e47e",
+          "tn": "Force 1",
+          "gid": "84882e8e",
+          "gn": "Thursday Open Mixed Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 2,
+            "fg": 2,
+            "pts": 4,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "f1b0d291",
+          "tn": "Force 2",
+          "gid": "84882e8e",
+          "gn": "Thursday Open Mixed Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 2,
+            "fg": 11,
+            "pts": 22,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "f593c1fc",
+          "tn": "Aces 1",
+          "gid": "84882e8e",
+          "gn": "Thursday Open Mixed Division 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8e9a9300",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "c4e7e29e",
+          "tn": "Jaeman Wizards",
+          "gid": "777003c7",
+          "gn": "Friday Open Mixed Division 4",
+          "age": "Senior",
+          "div": "Division 4",
+          "stats": {
+            "gp": 7,
+            "pts": 28,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c054de6a",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "32b97fa9",
+          "tn": "Jaeman Wizards",
+          "gid": "1f9b40e5",
+          "gn": "Friday Open Mixed Division 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:42:44.716Z",
+  "teams": [
+    {
+      "tid": "45822251",
+      "sid": "b97b4f4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "788c4615",
+      "sid": "b97b4f4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec3c6c8c",
+      "sid": "b97b4f4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a93205e4",
+      "sid": "b97b4f4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b33a974",
+      "sid": "b6064d68",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f5c2e47e",
+      "sid": "b6064d68",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1b0d291",
+      "sid": "b6064d68",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f593c1fc",
+      "sid": "b6064d68",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c4e7e29e",
+      "sid": "8e9a9300",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32b97fa9",
+      "sid": "c054de6a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:10:05.911Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 30,
+      "gameKey": "37c6db55",
+      "sid": "b6064d68"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "025db8fd",
+    "0605726c",
+    "17073d6b",
+    "2e0142f3",
+    "37c6db55",
+    "42ff2a98",
+    "47bea62c",
+    "5587d9b4",
+    "5974d3f6",
+    "5ee118cd",
+    "718f3373",
+    "90eb8b55",
+    "a16e29db",
+    "b74c5627",
+    "bc780f43",
+    "be634fb0",
+    "e346c04a",
+    "ee87da05",
+    "f6cf2293",
+    "f7eeda57"
+  ],
+  "gameTids": {
+    "5974d3f6": "ec3c6c8c",
+    "be634fb0": "45822251",
+    "17073d6b": "45822251",
+    "b74c5627": "45822251",
+    "5587d9b4": "788c4615",
+    "718f3373": "0b33a974",
+    "37c6db55": "0b33a974",
+    "a16e29db": "0b33a974",
+    "47bea62c": "0b33a974",
+    "ee87da05": "f5c2e47e",
+    "f6cf2293": "f5c2e47e",
+    "42ff2a98": "f1b0d291",
+    "5ee118cd": "f1b0d291",
+    "e346c04a": "c4e7e29e",
+    "0605726c": "c4e7e29e",
+    "f7eeda57": "c4e7e29e",
+    "bc780f43": "c4e7e29e",
+    "025db8fd": "c4e7e29e",
+    "90eb8b55": "c4e7e29e",
+    "2e0142f3": "c4e7e29e"
+  }
+}

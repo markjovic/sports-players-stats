@@ -1,1 +1,294 @@
-{"uuid":"ca716a83-d4bf-4e4b-a35a-52da631bc2b3","name":"Ari Krasniqi","gender":"Boys","sports":{"Basketball":{"gp":51,"pts":159,"fouls":74,"fg":69,"ft":12,"threePt":3,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"042eefb6":2},"maxGamePTS":10,"maxGameThreePt":1,"wins":31,"losses":76,"draws":2,"winPct":0.28,"statsChecked":"2026-07-05T15:12:28.616Z"}},"seasons":[{"sid":"24f3a282","sn":"Winter 2026","club":"Vales Basketball Club","regs":[{"tid":"c7ffddd1","tn":"Vales B16 Wolves","gid":"ce7c9acc","gn":"Saturday U16 Boys E2","age":"U16","div":"E2","stats":{"gp":6,"fouls":11,"ft":3,"fg":17,"pts":37,"wins":5,"losses":1}}]},{"sid":"b970a30d","sn":"Winter 2025","club":"Vales Basketball Club","regs":[{"tid":"4930ab73","tn":"Vales B14 Lions","gid":"97dcb7cf","gn":"Saturday U14 Boys C3/C4","age":"U14","div":"C4","stats":{"gp":13,"fouls":16,"ft":2,"fg":19,"pts":40,"finals":1,"wins":2,"losses":11}},{"tid":"4930ab73","tn":"Vales B14 Lions","gid":"7ecc6952","gn":"Saturday U14 Boys D1","age":"U14","div":"D1","stats":{"gp":13,"fg":19,"pts":40,"finals":1,"wins":2,"losses":11,"ft":2,"fouls":16}},{"tid":"4930ab73","tn":"Vales B14 Lions","gid":"e6eec605","gn":"Saturday U14 Boys C1/C2","age":"U14","div":"C2","stats":{"gp":13,"fouls":16,"ft":2,"fg":19,"pts":40,"finals":1,"wins":2,"losses":11}}]},{"sid":"3b5042cd","sn":"Summer 2024/25","club":"Vales Basketball Club","regs":[{"tid":"270079db","tn":"Vales B14 Leopards","gid":"4092a12f","gn":"Saturday U14 Boys D3","age":"U14","div":"D3","stats":{"gp":16,"fouls":20,"ft":5,"fg":22,"pts":49,"finals":1,"wins":9,"losses":6,"draws":1}},{"tid":"270079db","tn":"Vales B14 Leopards","gid":"477af6cd","gn":"Saturday U14 Boys E1","age":"U14","div":"E1","stats":{"gp":16,"fouls":20,"ft":5,"fg":22,"pts":49,"finals":1,"wins":9,"losses":6,"draws":1}}]},{"sid":"042eefb6","sn":"Winter 2024","club":"Vales Basketball Club","regs":[{"tid":"4270f7fd","tn":"Vales B14 Bengals","gid":"74677e63","gn":"Saturday U14 Boys E2","age":"U14","div":"E2","stats":{"gp":16,"fouls":27,"ft":2,"fg":11,"threePt":3,"pts":33,"foulOuts":2,"wins":1,"losses":15}},{"tid":"4270f7fd","tn":"Vales B14 Bengals","gid":"487e8806","gn":"Saturday U14 Boys E1","age":"U14","div":"E1","stats":{"gp":16,"fouls":27,"fg":11,"threePt":3,"pts":33,"wins":1,"losses":15,"ft":2}}]}],"updatedAt":"2026-05-31T18:23:48.354Z","teams":[{"tid":"c7ffddd1","sid":"24f3a282","status":"ACTIVE"},{"tid":"4930ab73","sid":"b970a30d","status":"COMPLETED"},{"tid":"270079db","sid":"3b5042cd","status":"COMPLETED"},{"tid":"4270f7fd","sid":"042eefb6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:18:13.816Z","games":["02588414","07f9828a","1bf9803f","1cdd5b8e","1d7267be","227e1f37","2290fede","2ad20dd0","2dd1f2c1","3095f91c","32ef3283","3d23fa85","42198a77","475d002b","4a56e95a","4c4a6fd9","51d6869a","539d5a99","54ef64ba","552d2f38","564e2c5f","5b082e3c","5eed88d4","683186b7","6b2e4b93","72a51ee2","75203e17","78cde6f8","7b27a8c1","7cc74476","8947b787","9ac8bffd","a961d715","ac6df125","b201ea0c","b331ee55","b8c86b64","bce9a42a","bd510c9b","c04f8724","cb8492f1","cd8a7cd4","d5989543","ddcc2888","def24b60","e3e468f4","ec0e9f46","f630ada4","f665a2a0","f83149cb","fc05144d"],"records":{"maxGamePTS":{"v":10,"gameKey":"f665a2a0","sid":"24f3a282"},"maxGameThreePt":{"v":1,"gameKey":"b8c86b64","sid":"042eefb6"}}}
+{
+  "uuid": "ca716a83-d4bf-4e4b-a35a-52da631bc2b3",
+  "name": "Ari Krasniqi",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 159,
+      "fouls": 74,
+      "fg": 69,
+      "ft": 12,
+      "threePt": 3,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "042eefb6": 2
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 31,
+      "losses": 76,
+      "draws": 2,
+      "winPct": 0.28,
+      "statsChecked": "2026-07-05T15:12:28.616Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "24f3a282",
+      "sn": "Winter 2026",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "c7ffddd1",
+          "tn": "Vales B16 Wolves",
+          "gid": "f97b0802",
+          "gn": "Saturday U16 Boys E1",
+          "age": "U16",
+          "div": "E2",
+          "stats": {
+            "gp": 6,
+            "fouls": 11,
+            "ft": 3,
+            "fg": 17,
+            "pts": 37,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b970a30d",
+      "sn": "Winter 2025",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "4930ab73",
+          "tn": "Vales B14 Lions",
+          "gid": "97dcb7cf",
+          "gn": "Saturday U14 Boys C3/C4",
+          "age": "U14",
+          "div": "C4",
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 2,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "4930ab73",
+          "tn": "Vales B14 Lions",
+          "gid": "7ecc6952",
+          "gn": "Saturday U14 Boys D1",
+          "age": "U14",
+          "div": "D1",
+          "stats": {
+            "gp": 13,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 2,
+            "losses": 11,
+            "ft": 2,
+            "fouls": 16
+          }
+        },
+        {
+          "tid": "4930ab73",
+          "tn": "Vales B14 Lions",
+          "gid": "e6eec605",
+          "gn": "Saturday U14 Boys C1/C2",
+          "age": "U14",
+          "div": "C2",
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 2,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b5042cd",
+      "sn": "Summer 2024/25",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "270079db",
+          "tn": "Vales B14 Leopards",
+          "gid": "4092a12f",
+          "gn": "Saturday U14 Boys D3",
+          "age": "U14",
+          "div": "D3",
+          "stats": {
+            "gp": 16,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 22,
+            "pts": 49,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "270079db",
+          "tn": "Vales B14 Leopards",
+          "gid": "477af6cd",
+          "gn": "Saturday U14 Boys E1",
+          "age": "U14",
+          "div": "E1",
+          "stats": {
+            "gp": 16,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 22,
+            "pts": 49,
+            "finals": 1,
+            "wins": 9,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "042eefb6",
+      "sn": "Winter 2024",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "4270f7fd",
+          "tn": "Vales B14 Bengals",
+          "gid": "74677e63",
+          "gn": "Saturday U14 Boys E2",
+          "age": "U14",
+          "div": "E2",
+          "stats": {
+            "gp": 16,
+            "fouls": 27,
+            "ft": 2,
+            "fg": 11,
+            "threePt": 3,
+            "pts": 33,
+            "foulOuts": 2,
+            "wins": 1,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "4270f7fd",
+          "tn": "Vales B14 Bengals",
+          "gid": "487e8806",
+          "gn": "Saturday U14 Boys E1",
+          "age": "U14",
+          "div": "E1",
+          "stats": {
+            "gp": 16,
+            "fouls": 27,
+            "fg": 11,
+            "threePt": 3,
+            "pts": 33,
+            "wins": 1,
+            "losses": 15,
+            "ft": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T18:23:48.354Z",
+  "teams": [
+    {
+      "tid": "c7ffddd1",
+      "sid": "24f3a282",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4930ab73",
+      "sid": "b970a30d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "270079db",
+      "sid": "3b5042cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4270f7fd",
+      "sid": "042eefb6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:08:46.870Z",
+  "games": [
+    "02588414",
+    "07f9828a",
+    "1bf9803f",
+    "1cdd5b8e",
+    "1d7267be",
+    "227e1f37",
+    "2290fede",
+    "2ad20dd0",
+    "2dd1f2c1",
+    "3095f91c",
+    "32ef3283",
+    "3d23fa85",
+    "42198a77",
+    "475d002b",
+    "4a56e95a",
+    "4c4a6fd9",
+    "51d6869a",
+    "539d5a99",
+    "54ef64ba",
+    "552d2f38",
+    "564e2c5f",
+    "5b082e3c",
+    "5eed88d4",
+    "683186b7",
+    "6b2e4b93",
+    "72a51ee2",
+    "75203e17",
+    "78cde6f8",
+    "7b27a8c1",
+    "7cc74476",
+    "8947b787",
+    "9ac8bffd",
+    "a961d715",
+    "ac6df125",
+    "b201ea0c",
+    "b331ee55",
+    "b8c86b64",
+    "bce9a42a",
+    "bd510c9b",
+    "c04f8724",
+    "cb8492f1",
+    "cd8a7cd4",
+    "d5989543",
+    "ddcc2888",
+    "def24b60",
+    "e3e468f4",
+    "ec0e9f46",
+    "f630ada4",
+    "f665a2a0",
+    "f83149cb",
+    "fc05144d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "f665a2a0",
+      "sid": "24f3a282"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b8c86b64",
+      "sid": "042eefb6"
+    }
+  }
+}

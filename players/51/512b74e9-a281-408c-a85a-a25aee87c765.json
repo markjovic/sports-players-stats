@@ -1,1 +1,310 @@
-{"uuid":"512b74e9-a281-408c-a85a-a25aee87c765","name":"Chayse Volkers","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":291,"fouls":57,"fg":128,"ft":26,"threePt":3,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"f0c9ba03":1,"970faa76":1},"maxGamePTS":23,"maxGameThreePt":1,"wins":11,"losses":23,"winPct":0.32,"statsChecked":"2026-07-05T15:22:28.677Z"}},"seasons":[{"sid":"cc855f21","sn":"Autumn 2026","regs":[{"tid":"3fe1d8db","tn":"Outlaws","gid":"75b8c8b2","gn":"Thursday U14 Boys Div 1","age":"U14","div":"Div 1","stats":{"gp":8,"fouls":8,"ft":2,"fg":36,"threePt":1,"pts":77,"wins":1,"losses":6}},{"tid":"01d48156","tn":"Z2H","gid":"75b8c8b2","gn":"Thursday U14 Boys Div 1","age":"U14","div":"Div 1","stats":{"gp":1,"fouls":2,"fg":2,"pts":4,"losses":1}}]},{"sid":"38ce88ed","sn":"2026","club":"Albury/Wodonga (ACJBC)","regs":[{"tid":"b583c5c4","tn":"U14 Boys Albury Wodonga","gid":"c8a73ded","gn":"U14 Boys D1","age":"U14","div":"D1","stats":{"gp":2,"finals":1,"gfApps":1,"wins":2,"gfWins":1}}]},{"sid":"f0c9ba03","sn":"Summer 2025/26","regs":[{"tid":"9027e061","tn":"Leopards","gid":"966bf4eb","gn":"Thursday U14 Boys North","age":"U14","div":null,"stats":{"gp":12,"fouls":25,"ft":19,"fg":73,"threePt":1,"pts":168,"finals":1,"foulOuts":1,"wins":8,"losses":4}}]},{"sid":"970faa76","sn":"2025","club":"Albury Cougars Basketball Club","regs":[{"tid":"82dd151e","tn":"Albury Cougars U14 Boys","gid":"c939a55a","gn":"Mitsubishi U14 Boys Division 2","age":"U14","div":"Division 2","stats":{"gp":4,"fouls":9,"ft":2,"fg":7,"pts":16,"finals":1,"foulOuts":1,"losses":4}}]},{"sid":"694d773a","sn":"2025","club":"Albury Cougars Basketball Club","regs":[{"tid":"9cc589f2","tn":"Albury Cougars U14 Boys White","gid":"b290cdf0","gn":"Delatite Ford U14 Boys Div 2","age":"U14","div":"Div 2","stats":{"gp":4,"fouls":4,"ft":2,"fg":4,"pts":10,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"8e0fdcce","stats":{"losses":4,"gp":5,"pts":16,"fg":6,"ft":1,"threePt":1,"fouls":9}}]}],"updatedAt":"2026-06-03T11:20:43.245Z","teams":[{"tid":"3fe1d8db","sid":"cc855f21","status":"ACTIVE"},{"tid":"8e0fdcce","sid":"0869ea69","status":"UPCOMING"},{"tid":"b583c5c4","sid":"38ce88ed","status":"COMPLETED"},{"tid":"9027e061","sid":"f0c9ba03","status":"COMPLETED"},{"tid":"82dd151e","sid":"970faa76","status":"COMPLETED"},{"tid":"9cc589f2","sid":"694d773a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:29:49.266Z","records":{"maxGamePTS":{"v":23,"gameKey":"cafc59fa","sid":"f0c9ba03"},"maxGameThreePt":{"v":1,"gameKey":"ef2dd399","sid":"0869ea69"}},"games":["0df7e914","0e3db1d1","19c7535a","2a9383f2","42323b5e","42c82a1b","56f15675","5ec9c353","61279e7b","6cf54235","6f19e1e7","77a612b8","7c8b2f8a","81a3b164","825471c2","829c4408","82ce8f83","98210f3d","9ae81527","9b0ec134","a80f3ce7","ad363aeb","ad9bea54","bf2fb442","c3799d74","cafc59fa","cd02ffc1","dcd41930","e4319d5e","eae643e8","ef2dd399","f1a5cd7e","f535225d","fbb31b8c"],"gameTids":{"6cf54235":"8e0fdcce","ef2dd399":"8e0fdcce","77a612b8":"8e0fdcce","829c4408":"8e0fdcce","bd9833a0":"8e0fdcce","fbb31b8c":"b583c5c4","f1a5cd7e":"b583c5c4","656faed7":"3fe1d8db","cd02ffc1":"3fe1d8db","c3799d74":"3fe1d8db","0df7e914":"3fe1d8db","42323b5e":"3fe1d8db","7c8b2f8a":"3fe1d8db","a80f3ce7":"3fe1d8db","56f15675":"3fe1d8db","825471c2":"01d48156","61279e7b":"9027e061","cafc59fa":"9027e061","0e3db1d1":"9027e061","bf2fb442":"9027e061","9b0ec134":"9027e061","6f19e1e7":"9027e061","98210f3d":"9027e061","42c82a1b":"9027e061","9ae81527":"9027e061","81a3b164":"9027e061","dcd41930":"9027e061","19c7535a":"9027e061","5ec9c353":"82dd151e","ad9bea54":"82dd151e","82ce8f83":"82dd151e","2a9383f2":"82dd151e","eae643e8":"9cc589f2","f535225d":"9cc589f2","ad363aeb":"9cc589f2","e4319d5e":"9cc589f2"}}
+{
+  "uuid": "512b74e9-a281-408c-a85a-a25aee87c765",
+  "name": "Chayse Volkers",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 291,
+      "fouls": 57,
+      "fg": 128,
+      "ft": 26,
+      "threePt": 3,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "f0c9ba03": 1,
+        "970faa76": 1
+      },
+      "maxGamePTS": 23,
+      "maxGameThreePt": 1,
+      "wins": 11,
+      "losses": 23,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-05T15:22:28.677Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cc855f21",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "3fe1d8db",
+          "tn": "Outlaws",
+          "gid": "75b8c8b2",
+          "gn": "Thursday U14 Boys Div 1",
+          "age": "U14",
+          "div": "Div 1",
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "ft": 2,
+            "fg": 36,
+            "threePt": 1,
+            "pts": 77,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "01d48156",
+          "tn": "Z2H",
+          "gid": "75b8c8b2",
+          "gn": "Thursday U14 Boys Div 1",
+          "age": "U14",
+          "div": "Div 1",
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "club": "Albury/Wodonga (ACJBC)",
+      "regs": [
+        {
+          "tid": "b583c5c4",
+          "tn": "U14 Boys Albury Wodonga",
+          "gid": "c8a73ded",
+          "gn": "U14 Boys D1",
+          "age": "U14",
+          "div": "D1",
+          "stats": {
+            "gp": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f0c9ba03",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "9027e061",
+          "tn": "Leopards",
+          "gid": "966bf4eb",
+          "gn": "Thursday U14 Boys North",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 25,
+            "ft": 19,
+            "fg": 73,
+            "threePt": 1,
+            "pts": 168,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "970faa76",
+      "sn": "2025",
+      "club": "Albury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "82dd151e",
+          "tn": "Albury Cougars U14 Boys",
+          "gid": "c939a55a",
+          "gn": "Mitsubishi U14 Boys Division 2",
+          "age": "U14",
+          "div": "Division 2",
+          "stats": {
+            "gp": 4,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 7,
+            "pts": 16,
+            "finals": 1,
+            "foulOuts": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "694d773a",
+      "sn": "2025",
+      "club": "Albury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "9cc589f2",
+          "tn": "Albury Cougars U14 Boys White",
+          "gid": "b290cdf0",
+          "gn": "Delatite Ford U14 Boys Div 2",
+          "age": "U14",
+          "div": "Div 2",
+          "stats": {
+            "gp": 4,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "8e0fdcce",
+          "stats": {
+            "losses": 4,
+            "gp": 5,
+            "pts": 16,
+            "fg": 6,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 9
+          },
+          "gid": "afdd2d95",
+          "gn": "BOYS UNDER 14 B1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T11:20:43.245Z",
+  "teams": [
+    {
+      "tid": "3fe1d8db",
+      "sid": "cc855f21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "01d48156",
+      "sid": "cc855f21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b583c5c4",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9027e061",
+      "sid": "f0c9ba03",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82dd151e",
+      "sid": "970faa76",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9cc589f2",
+      "sid": "694d773a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e0fdcce",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:04:11.627Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "cafc59fa",
+      "sid": "f0c9ba03"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ef2dd399",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "0df7e914",
+    "0e3db1d1",
+    "19c7535a",
+    "2a9383f2",
+    "42323b5e",
+    "42c82a1b",
+    "56f15675",
+    "5ec9c353",
+    "61279e7b",
+    "6cf54235",
+    "6f19e1e7",
+    "77a612b8",
+    "7c8b2f8a",
+    "81a3b164",
+    "825471c2",
+    "829c4408",
+    "82ce8f83",
+    "98210f3d",
+    "9ae81527",
+    "9b0ec134",
+    "a80f3ce7",
+    "ad363aeb",
+    "ad9bea54",
+    "bf2fb442",
+    "c3799d74",
+    "cafc59fa",
+    "cd02ffc1",
+    "dcd41930",
+    "e4319d5e",
+    "eae643e8",
+    "ef2dd399",
+    "f1a5cd7e",
+    "f535225d",
+    "fbb31b8c"
+  ],
+  "gameTids": {
+    "6cf54235": "8e0fdcce",
+    "ef2dd399": "8e0fdcce",
+    "77a612b8": "8e0fdcce",
+    "829c4408": "8e0fdcce",
+    "bd9833a0": "8e0fdcce",
+    "fbb31b8c": "b583c5c4",
+    "f1a5cd7e": "b583c5c4",
+    "656faed7": "3fe1d8db",
+    "cd02ffc1": "3fe1d8db",
+    "c3799d74": "3fe1d8db",
+    "0df7e914": "3fe1d8db",
+    "42323b5e": "3fe1d8db",
+    "7c8b2f8a": "3fe1d8db",
+    "a80f3ce7": "3fe1d8db",
+    "56f15675": "3fe1d8db",
+    "825471c2": "01d48156",
+    "61279e7b": "9027e061",
+    "cafc59fa": "9027e061",
+    "0e3db1d1": "9027e061",
+    "bf2fb442": "9027e061",
+    "9b0ec134": "9027e061",
+    "6f19e1e7": "9027e061",
+    "98210f3d": "9027e061",
+    "42c82a1b": "9027e061",
+    "9ae81527": "9027e061",
+    "81a3b164": "9027e061",
+    "dcd41930": "9027e061",
+    "19c7535a": "9027e061",
+    "5ec9c353": "82dd151e",
+    "ad9bea54": "82dd151e",
+    "82ce8f83": "82dd151e",
+    "2a9383f2": "82dd151e",
+    "eae643e8": "9cc589f2",
+    "f535225d": "9cc589f2",
+    "ad363aeb": "9cc589f2",
+    "e4319d5e": "9cc589f2"
+  }
+}

@@ -1,1 +1,480 @@
-{"uuid":"724daca7-f7f0-4e73-b727-f8dc9c055e53","name":"Jack Thorn","sports":{"Basketball":{"maxGamePTS":25,"maxGameThreePt":1,"foulOuts":{"82580827":3,"7e04a54a":1,"222b6add":2,"4a3fdcc2":1,"316f425f":1,"24e148e6":1},"gp":218,"pts":1413,"fg":591,"ft":201,"threePt":10,"fouls":409,"statsChecked":"2026-07-07T18:28:05.221Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"63c0654f","stats":{"gp":4,"pts":6,"fg":1,"ft":1,"threePt":1,"fouls":7}},{"tid":"63c0654f","tn":"","gid":"c2ee75e9","gn":"U16 Boys Division 7","div":null,"stats":{"gp":4,"pts":6,"fg":1,"ft":1,"threePt":1,"fouls":7}}]},{"sid":"7a1c970f","regs":[{"tid":"899e267d","stats":{"gp":12,"pts":88,"fg":34,"ft":5,"threePt":5,"fouls":12}}]},{"sid":"813135df","regs":[{"tid":"da8cddfd","stats":{"gp":12,"pts":60,"fg":27,"ft":6,"fouls":13}}]},{"sid":"d16173ed","regs":[{"tid":"9cdc89a5","stats":{"gp":4,"pts":18,"fg":9,"fouls":7}}]},{"sid":"b81be631","regs":[{"tid":"e649df54","stats":{"gp":18,"pts":92,"fg":30,"ft":29,"threePt":1,"fouls":27}}]},{"sid":"91c0c237","regs":[{"tid":"1c38e0a4","stats":{"gp":4,"pts":14,"fg":4,"ft":6,"fouls":9}}]},{"sid":"7e04a54a","regs":[{"tid":"2e4c14e7","stats":{"gp":5,"pts":60,"fg":27,"ft":6,"fouls":10}}]},{"sid":"82c4363e","regs":[{"tid":"b3f447a2","stats":{"gp":4,"pts":30,"fg":13,"ft":4,"fouls":10}}]},{"sid":"e0b8b997","regs":[{"tid":"15e2d552","stats":{"gp":25,"pts":209,"fg":92,"ft":25,"fouls":44}}]},{"sid":"12286207","regs":[{"tid":"9e2220e1","stats":{"gp":11,"pts":69,"fg":29,"ft":11,"fouls":21}}]},{"sid":"81545684","regs":[{"tid":"beaaa185","stats":{"gp":13,"pts":138,"fg":60,"ft":15,"threePt":1,"fouls":26}}]},{"sid":"d03246b1","regs":[{"tid":"bd7f6440","stats":{"gp":18,"pts":197,"fg":80,"ft":34,"threePt":1,"fouls":36}}]},{"sid":"222b6add","regs":[{"tid":"0084c98d","stats":{"gp":13,"pts":117,"fg":44,"ft":26,"threePt":1,"fouls":26}}]},{"sid":"c6b07ab6","regs":[{"tid":"721ca37c","stats":{"gp":13,"pts":33,"fg":14,"ft":5,"fouls":22}}]},{"sid":"82580827","regs":[{"tid":"56236e9d","stats":{"gp":14,"pts":106,"fg":48,"ft":10,"fouls":39}}]},{"sid":"4a3fdcc2","regs":[{"tid":"213fc261","stats":{"gp":18,"pts":111,"fg":49,"ft":13,"fouls":49}}]},{"sid":"316f425f","regs":[{"tid":"68cc212c","stats":{"gp":12,"pts":29,"fg":13,"ft":3,"fouls":25}}]},{"sid":"24e148e6","regs":[{"tid":"ce8141e2","stats":{"gp":7,"pts":16,"fg":8,"fouls":17}}]},{"sid":"307e7a12","regs":[{"tid":"e7e98024","stats":{"gp":11,"pts":20,"fg":9,"ft":2,"fouls":9}}]}],"teams":[],"updatedAt":"2026-07-07T18:06:37.904Z","records":{"maxGamePTS":{"v":25,"gameKey":"ad0c6db0","sid":"81545684"},"maxGameThreePt":{"v":1,"gameKey":"6f991af1","sid":"26df4252"}}}
+{
+  "uuid": "724daca7-f7f0-4e73-b727-f8dc9c055e53",
+  "name": "Jack Thorn",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 25,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "82580827": 3,
+        "7e04a54a": 1,
+        "222b6add": 2,
+        "4a3fdcc2": 1,
+        "316f425f": 1,
+        "24e148e6": 1
+      },
+      "gp": 218,
+      "pts": 1413,
+      "fg": 591,
+      "ft": 201,
+      "threePt": 10,
+      "fouls": 409,
+      "statsChecked": "2026-07-07T18:28:05.221Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "63c0654f",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 1,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 7
+          },
+          "gid": "c2ee75e9",
+          "gn": "U16 Boys Division 7"
+        },
+        {
+          "tid": "63c0654f",
+          "tn": "",
+          "gid": "c2ee75e9",
+          "gn": "U16 Boys Division 7",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 1,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a1c970f",
+      "regs": [
+        {
+          "tid": "899e267d",
+          "stats": {
+            "gp": 12,
+            "pts": 88,
+            "fg": 34,
+            "ft": 5,
+            "threePt": 5,
+            "fouls": 12
+          },
+          "gid": "6bed60e5",
+          "gn": "Somersmiles Dental - Monday U16 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "813135df",
+      "regs": [
+        {
+          "tid": "da8cddfd",
+          "stats": {
+            "gp": 12,
+            "pts": 60,
+            "fg": 27,
+            "ft": 6,
+            "fouls": 13
+          },
+          "gid": "91a4e331",
+          "gn": "Somersmiles Dental - Monday U16 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "d16173ed",
+      "regs": [
+        {
+          "tid": "9cdc89a5",
+          "stats": {
+            "gp": 4,
+            "pts": 18,
+            "fg": 9,
+            "fouls": 7
+          },
+          "gid": "5bd44c1f",
+          "gn": "U16 Boys G Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b81be631",
+      "regs": [
+        {
+          "tid": "e649df54",
+          "stats": {
+            "gp": 18,
+            "pts": 92,
+            "fg": 30,
+            "ft": 29,
+            "threePt": 1,
+            "fouls": 27
+          },
+          "gid": "cc820198",
+          "gn": "U16 Boys - VJL12 (P1)"
+        }
+      ]
+    },
+    {
+      "sid": "91c0c237",
+      "regs": [
+        {
+          "tid": "1c38e0a4",
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fg": 4,
+            "ft": 6,
+            "fouls": 9
+          },
+          "gid": "9550b218",
+          "gn": "U16 Boys Division 8B"
+        }
+      ]
+    },
+    {
+      "sid": "7e04a54a",
+      "regs": [
+        {
+          "tid": "2e4c14e7",
+          "stats": {
+            "gp": 5,
+            "pts": 60,
+            "fg": 27,
+            "ft": 6,
+            "fouls": 10
+          },
+          "gid": "ad8006c0",
+          "gn": "U14 Boys Division 3B"
+        }
+      ]
+    },
+    {
+      "sid": "82c4363e",
+      "regs": [
+        {
+          "tid": "b3f447a2",
+          "stats": {
+            "gp": 4,
+            "pts": 30,
+            "fg": 13,
+            "ft": 4,
+            "fouls": 10
+          },
+          "gid": "6d00d2a0",
+          "gn": "U14 Boys F Grade"
+        }
+      ]
+    },
+    {
+      "sid": "e0b8b997",
+      "regs": [
+        {
+          "tid": "15e2d552",
+          "stats": {
+            "gp": 25,
+            "pts": 209,
+            "fg": 92,
+            "ft": 25,
+            "fouls": 44
+          },
+          "gid": "319b991f",
+          "gn": "U14 Boys - VJL12 (P1)"
+        }
+      ]
+    },
+    {
+      "sid": "12286207",
+      "regs": [
+        {
+          "tid": "9e2220e1",
+          "stats": {
+            "gp": 11,
+            "pts": 69,
+            "fg": 29,
+            "ft": 11,
+            "fouls": 21
+          },
+          "gid": "1c99921b",
+          "gn": "Monday U14 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "81545684",
+      "regs": [
+        {
+          "tid": "beaaa185",
+          "stats": {
+            "gp": 13,
+            "pts": 138,
+            "fg": 60,
+            "ft": 15,
+            "threePt": 1,
+            "fouls": 26
+          },
+          "gid": "da1a1af4",
+          "gn": "Saturday U14 Boys B1"
+        }
+      ]
+    },
+    {
+      "sid": "d03246b1",
+      "regs": [
+        {
+          "tid": "bd7f6440",
+          "stats": {
+            "gp": 18,
+            "pts": 197,
+            "fg": 80,
+            "ft": 34,
+            "threePt": 1,
+            "fouls": 36
+          },
+          "gid": "009c4e44",
+          "gn": "Saturday U14 Boys B3"
+        }
+      ]
+    },
+    {
+      "sid": "222b6add",
+      "regs": [
+        {
+          "tid": "0084c98d",
+          "stats": {
+            "gp": 13,
+            "pts": 117,
+            "fg": 44,
+            "ft": 26,
+            "threePt": 1,
+            "fouls": 26
+          },
+          "gid": "79726597",
+          "gn": "Saturday U14 Boys D3"
+        }
+      ]
+    },
+    {
+      "sid": "c6b07ab6",
+      "regs": [
+        {
+          "tid": "721ca37c",
+          "stats": {
+            "gp": 13,
+            "pts": 33,
+            "fg": 14,
+            "ft": 5,
+            "fouls": 22
+          },
+          "gid": "f2cca594",
+          "gn": "Saturday U14 Boys C2"
+        }
+      ]
+    },
+    {
+      "sid": "82580827",
+      "regs": [
+        {
+          "tid": "56236e9d",
+          "stats": {
+            "gp": 14,
+            "pts": 106,
+            "fg": 48,
+            "ft": 10,
+            "fouls": 39
+          },
+          "gid": "45b95ca2",
+          "gn": "Saturday U12 Boys C3"
+        }
+      ]
+    },
+    {
+      "sid": "4a3fdcc2",
+      "regs": [
+        {
+          "tid": "213fc261",
+          "stats": {
+            "gp": 18,
+            "pts": 111,
+            "fg": 49,
+            "ft": 13,
+            "fouls": 49
+          },
+          "gid": "a690fbe9",
+          "gn": "Saturday U12 Boys D2"
+        }
+      ]
+    },
+    {
+      "sid": "316f425f",
+      "regs": [
+        {
+          "tid": "68cc212c",
+          "stats": {
+            "gp": 12,
+            "pts": 29,
+            "fg": 13,
+            "ft": 3,
+            "fouls": 25
+          },
+          "gid": "16b1dc25",
+          "gn": "Saturday U12 Boys D2"
+        }
+      ]
+    },
+    {
+      "sid": "24e148e6",
+      "regs": [
+        {
+          "tid": "ce8141e2",
+          "stats": {
+            "gp": 7,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 17
+          },
+          "gid": "cad79b36",
+          "gn": "Saturday U12 Boys D3"
+        }
+      ]
+    },
+    {
+      "sid": "307e7a12",
+      "regs": [
+        {
+          "tid": "e7e98024",
+          "stats": {
+            "gp": 11,
+            "pts": 20,
+            "fg": 9,
+            "ft": 2,
+            "fouls": 9
+          },
+          "gid": "320a0883",
+          "gn": "Saturday U10 Boys C2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "63c0654f",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "899e267d",
+      "sid": "7a1c970f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da8cddfd",
+      "sid": "813135df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9cdc89a5",
+      "sid": "d16173ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e649df54",
+      "sid": "b81be631",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1c38e0a4",
+      "sid": "91c0c237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2e4c14e7",
+      "sid": "7e04a54a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b3f447a2",
+      "sid": "82c4363e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "15e2d552",
+      "sid": "e0b8b997",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e2220e1",
+      "sid": "12286207",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "beaaa185",
+      "sid": "81545684",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd7f6440",
+      "sid": "d03246b1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0084c98d",
+      "sid": "222b6add",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "721ca37c",
+      "sid": "c6b07ab6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56236e9d",
+      "sid": "82580827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "213fc261",
+      "sid": "4a3fdcc2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68cc212c",
+      "sid": "316f425f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ce8141e2",
+      "sid": "24e148e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7e98024",
+      "sid": "307e7a12",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:37.904Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "ad0c6db0",
+      "sid": "81545684"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6f991af1",
+      "sid": "26df4252"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:05:41.007Z"
+}

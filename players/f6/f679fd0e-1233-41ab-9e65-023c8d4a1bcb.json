@@ -1,1 +1,100 @@
-{"uuid":"f679fd0e-1233-41ab-9e65-023c8d4a1bcb","gender":null,"sports":{"Basketball":{"gp":9,"pts":89,"fouls":24,"fg":40,"ft":6,"threePt":1,"foulOuts":{"1603f576":1},"maxGamePTS":20,"maxGameThreePt":1,"wins":1,"losses":8,"winPct":0.11,"statsChecked":"2026-07-05T16:04:32.053Z"}},"seasons":[{"sid":"1603f576","sn":"Summer 2020/21","club":"DSD Basketball Club","regs":[{"tid":"ec776f4d","tn":"DSD  U18 Boys White","gid":"60771013","gn":"Sunday U18 Boys A","stats":{"gp":9,"pts":89,"fouls":24,"fg":40,"ft":6,"threePt":1,"foulOuts":1,"wins":1,"losses":8}}]}],"updatedAt":"2026-06-11T23:46:19.585Z","records":{"maxGamePTS":{"v":20,"gameKey":"b131f066","sid":"1603f576"},"maxGameThreePt":{"v":1,"gameKey":"b4582df9","sid":"1603f576"}},"games":["447acd89","5a4d57b3","b131f066","b4582df9","ba52fc4d","c8b010a7","cd18900e","f08193f2","f6e125d6"],"name":"Summer 2020/21"}
+{
+  "uuid": "f679fd0e-1233-41ab-9e65-023c8d4a1bcb",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 89,
+      "fouls": 24,
+      "fg": 40,
+      "ft": 6,
+      "threePt": 1,
+      "foulOuts": {
+        "1603f576": 1
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 8,
+      "winPct": 0.11,
+      "statsChecked": "2026-07-05T16:04:32.053Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1603f576",
+      "sn": "Summer 2020/21",
+      "club": "DSD Basketball Club",
+      "regs": [
+        {
+          "tid": "ec776f4d",
+          "tn": "DSD  U18 Boys White",
+          "gid": "60771013",
+          "gn": "Sunday U18 Boys A",
+          "stats": {
+            "gp": 9,
+            "pts": 89,
+            "fouls": 24,
+            "fg": 40,
+            "ft": 6,
+            "threePt": 1,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "7fe44745",
+          "tn": "Dandenong U18 Boys 3",
+          "gid": "4238dbe4",
+          "gn": "U18 Boys VJL 5 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:19.585Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "b131f066",
+      "sid": "1603f576"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b4582df9",
+      "sid": "1603f576"
+    }
+  },
+  "games": [
+    "447acd89",
+    "5a4d57b3",
+    "b131f066",
+    "b4582df9",
+    "ba52fc4d",
+    "c8b010a7",
+    "cd18900e",
+    "f08193f2",
+    "f6e125d6"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "ec776f4d",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7fe44745",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:10:11.168Z"
+}

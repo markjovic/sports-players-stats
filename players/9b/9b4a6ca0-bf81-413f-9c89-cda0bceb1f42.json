@@ -1,1 +1,78 @@
-{"uuid":"9b4a6ca0-bf81-413f-9c89-cda0bceb1f42","gender":null,"sports":{"Basketball":{"gp":6,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"draws":6,"winPct":0,"statsChecked":"2026-07-05T15:50:19.185Z"}},"seasons":[{"sid":"03a007aa","sn":"Summer 2023/24","club":null,"regs":[{"tid":"930841fd","tn":"Thursday Mini Hoops","gid":"e2c6cbcc","gn":"Thursday Mini Hoops","stats":{"gp":6,"draws":6}}]}],"updatedAt":"2026-06-11T23:42:55.111Z","games":["84e38186","bf615bbf","c4c4973e","cb09505f","e3928e79","eba75e6e"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Summer 2023/24"}
+{
+  "uuid": "9b4a6ca0-bf81-413f-9c89-cda0bceb1f42",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "draws": 6,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:50:19.185Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "03a007aa",
+      "sn": "Summer 2023/24",
+      "club": null,
+      "regs": [
+        {
+          "tid": "930841fd",
+          "tn": "Thursday Mini Hoops",
+          "gid": "e2c6cbcc",
+          "gn": "Thursday Mini Hoops",
+          "stats": {
+            "gp": 6,
+            "draws": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1aa8cfe6",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "744a7a0a",
+          "tn": "Mini Hoops 1",
+          "gid": "a492ff84",
+          "gn": "Thursday Mini Hoops",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:55.111Z",
+  "games": [
+    "84e38186",
+    "bf615bbf",
+    "c4c4973e",
+    "cb09505f",
+    "e3928e79",
+    "eba75e6e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2023/24",
+  "teams": [
+    {
+      "tid": "930841fd",
+      "sid": "03a007aa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "744a7a0a",
+      "sid": "1aa8cfe6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:07.054Z"
+}

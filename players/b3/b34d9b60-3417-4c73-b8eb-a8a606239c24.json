@@ -1,1 +1,357 @@
-{"uuid":"b34d9b60-3417-4c73-b8eb-a8a606239c24","name":"Jordan Hooper","gender":"Boys","sports":{"Basketball":{"gp":54,"pts":59,"fouls":16,"fg":26,"ft":7,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":null,"wins":79,"losses":53,"draws":4,"winPct":0.58,"statsChecked":"2026-07-07T18:29:31.376Z"}},"seasons":[{"sid":"2e623bd2","sn":"Winter 2026","club":"Overport Allstars Basketball Club","regs":[{"tid":"3b12b880","tn":"OABC U10 Boys Dolphins","gid":"0e7fec21","gn":"Saturday U10 Boys D1","age":"U10","div":"D1","stats":{"gp":5,"fg":10,"pts":20,"wins":2,"fouls":6,"losses":3}},{"tid":"3b12b880","tn":"OABC U10 Boys Dolphins","gid":"351b266a","gn":"Saturday U10 Boys D2","age":"U10","div":"D2","stats":{"gp":5,"fouls":6,"fg":10,"pts":20,"wins":2,"losses":3}},{"tid":"3b12b880","tn":"","gid":"c9fbd030","gn":"Saturday U10 Boys C3","div":null,"stats":{"gp":5,"pts":20,"fg":10,"fouls":6,"wins":2,"losses":3}}]},{"sid":"fcfc254b","sn":"Summer 2025/26","club":"Overport Allstars Basketball Club","regs":[{"tid":"dd09970f","tn":"Overport U10 Boys Dolphins","gid":"db44644f","gn":"Saturday U10 Boys D4","age":"U10","div":"D4","stats":{"gp":14,"fouls":4,"ft":2,"fg":9,"pts":20,"finals":1,"wins":8,"losses":6}}]},{"sid":"a74c91ee","sn":"Winter 2025","club":"Overport Allstars Basketball Club","regs":[{"tid":"9460dbc8","tn":"Overport U10 Boys Dingoes","gid":"205bc115","gn":"Saturday U10 Boys D1","age":"U10","div":"D1","stats":{"gp":16,"fouls":3,"ft":2,"pts":2,"finals":1,"wins":5,"losses":9,"draws":2}},{"tid":"9460dbc8","tn":"Overport U10 Boys Dingoes","gid":"39fbc9cf","gn":"Saturday U10 Boys C4","age":"U10","div":"C4","stats":{"gp":16,"fouls":3,"finals":1,"wins":5,"losses":9,"draws":2,"pts":2,"ft":2}}]},{"sid":"81545684","sn":"Summer 2024/25","club":"Overport Allstars Basketball Club","regs":[{"tid":"0b653897","tn":"Overport U8 Boys Dingoes","gid":"b2afa830","gn":"Saturday U8 Boys Div 07","age":"U8","div":"Div 07","stats":{"gp":15,"fg":7,"pts":14,"wins":11,"losses":4,"fouls":2}},{"tid":"0b653897","tn":"Overport U8 Boys Dingoes","gid":"51201a92","gn":"Saturday U8 Boys Div 08","age":"U8","div":"Div 08","stats":{"gp":15,"fouls":2,"fg":7,"pts":14,"wins":11,"losses":4}},{"tid":"0b653897","tn":"Overport U8 Boys Dingoes","gid":"7a608d46","gn":"Saturday U8 Boys Div 09","age":"U8","div":"Div 09","stats":{"gp":15,"fg":7,"pts":14,"wins":11,"losses":4,"fouls":2}},{"tid":"0b653897","tn":"Overport U8 Boys Dingoes","gid":"14705992","gn":"Saturday U8 Boys Div 10","age":"U8","div":"Div 10","stats":{"gp":15,"fouls":2,"fg":7,"pts":14,"wins":11,"losses":4}},{"tid":"0b653897","tn":"Overport U8 Boys Dingoes","gid":"a6a36e13","gn":"Saturday U8 Boys Div 11","age":"U8","div":"Div 11","stats":{"gp":15,"wins":11,"losses":4,"pts":14,"fg":7,"fouls":2}}]},{"sid":"26df4252","regs":[{"tid":"250c707d","stats":{"gp":4,"pts":3,"ft":3,"fouls":1}},{"tid":"250c707d","tn":"","gid":"2b7f30cd","gn":"U10 Boys Division 3","div":null,"stats":{"gp":4,"pts":3,"ft":3,"fouls":1}}]}],"updatedAt":"2026-07-07T18:05:58.727Z","teams":[{"tid":"3b12b880","sid":"2e623bd2","status":"ACTIVE"},{"tid":"dd09970f","sid":"fcfc254b","status":"COMPLETED"},{"tid":"9460dbc8","sid":"a74c91ee","status":"COMPLETED"},{"tid":"0b653897","sid":"81545684","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:07.769Z","records":{"maxGamePTS":{"v":11,"gameKey":"97fe483f","sid":"fcfc254b"},"maxGameThreePt":{"v":null}},"games":["059e669f","05bb7d88","081c2e18","0ceeaa06","0fa3e18e","15619f19","17cc78d3","1ada6f91","1b46a8e9","1bb758ec","2062932e","209972e7","21085162","3aab1118","3b1235e9","3b2df5e8","42c20484","61480ea9","636bc0b3","6ad4f704","6b093f05","6e13b92d","71f2e742","772b5318","78c30aed","7c686ec2","803f440d","80df6b18","824badc2","87c547e1","97fe483f","9b750ce6","a235871a","a47d3e78","ade8c8d9","b022b54f","c5319b44","c94a4d4c","cdd8b254","d67a5f5f","da507cf9","e16f746e","e41d00ce","e5241e5c","e77e2bec","e78507dd","ea751b84","f5fb965e","fb03d279","fcbe7fcd"]}
+{
+  "uuid": "b34d9b60-3417-4c73-b8eb-a8a606239c24",
+  "name": "Jordan Hooper",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 59,
+      "fouls": 16,
+      "fg": 26,
+      "ft": 7,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 79,
+      "losses": 53,
+      "draws": 4,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-07T18:29:31.376Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e623bd2",
+      "sn": "Winter 2026",
+      "club": "Overport Allstars Basketball Club",
+      "regs": [
+        {
+          "tid": "3b12b880",
+          "tn": "OABC U10 Boys Dolphins",
+          "gid": "c9fbd030",
+          "gn": "Saturday U10 Boys C3",
+          "age": "U10",
+          "div": "D1",
+          "stats": {
+            "gp": 5,
+            "fg": 10,
+            "pts": 20,
+            "wins": 2,
+            "fouls": 6,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "3b12b880",
+          "tn": "OABC U10 Boys Dolphins",
+          "gid": "351b266a",
+          "gn": "Saturday U10 Boys D2",
+          "age": "U10",
+          "div": "D2",
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "fg": 10,
+            "pts": 20,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "3b12b880",
+          "tn": "",
+          "gid": "c9fbd030",
+          "gn": "Saturday U10 Boys C3",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 20,
+            "fg": 10,
+            "fouls": 6,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fcfc254b",
+      "sn": "Summer 2025/26",
+      "club": "Overport Allstars Basketball Club",
+      "regs": [
+        {
+          "tid": "dd09970f",
+          "tn": "Overport U10 Boys Dolphins",
+          "gid": "db44644f",
+          "gn": "Saturday U10 Boys D4",
+          "age": "U10",
+          "div": "D4",
+          "stats": {
+            "gp": 14,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a74c91ee",
+      "sn": "Winter 2025",
+      "club": "Overport Allstars Basketball Club",
+      "regs": [
+        {
+          "tid": "9460dbc8",
+          "tn": "Overport U10 Boys Dingoes",
+          "gid": "205bc115",
+          "gn": "Saturday U10 Boys D1",
+          "age": "U10",
+          "div": "D1",
+          "stats": {
+            "gp": 16,
+            "fouls": 3,
+            "ft": 2,
+            "pts": 2,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "9460dbc8",
+          "tn": "Overport U10 Boys Dingoes",
+          "gid": "39fbc9cf",
+          "gn": "Saturday U10 Boys C4",
+          "age": "U10",
+          "div": "C4",
+          "stats": {
+            "gp": 16,
+            "fouls": 3,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 2,
+            "pts": 2,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81545684",
+      "sn": "Summer 2024/25",
+      "club": "Overport Allstars Basketball Club",
+      "regs": [
+        {
+          "tid": "0b653897",
+          "tn": "Overport U8 Boys Dingoes",
+          "gid": "b2afa830",
+          "gn": "Saturday U8 Boys Div 07",
+          "age": "U8",
+          "div": "Div 07",
+          "stats": {
+            "gp": 15,
+            "fg": 7,
+            "pts": 14,
+            "wins": 11,
+            "losses": 4,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "0b653897",
+          "tn": "Overport U8 Boys Dingoes",
+          "gid": "51201a92",
+          "gn": "Saturday U8 Boys Div 08",
+          "age": "U8",
+          "div": "Div 08",
+          "stats": {
+            "gp": 15,
+            "fouls": 2,
+            "fg": 7,
+            "pts": 14,
+            "wins": 11,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "0b653897",
+          "tn": "Overport U8 Boys Dingoes",
+          "gid": "7a608d46",
+          "gn": "Saturday U8 Boys Div 09",
+          "age": "U8",
+          "div": "Div 09",
+          "stats": {
+            "gp": 15,
+            "fg": 7,
+            "pts": 14,
+            "wins": 11,
+            "losses": 4,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "0b653897",
+          "tn": "Overport U8 Boys Dingoes",
+          "gid": "14705992",
+          "gn": "Saturday U8 Boys Div 10",
+          "age": "U8",
+          "div": "Div 10",
+          "stats": {
+            "gp": 15,
+            "fouls": 2,
+            "fg": 7,
+            "pts": 14,
+            "wins": 11,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "0b653897",
+          "tn": "Overport U8 Boys Dingoes",
+          "gid": "a6a36e13",
+          "gn": "Saturday U8 Boys Div 11",
+          "age": "U8",
+          "div": "Div 11",
+          "stats": {
+            "gp": 15,
+            "wins": 11,
+            "losses": 4,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "250c707d",
+          "stats": {
+            "gp": 4,
+            "pts": 3,
+            "ft": 3,
+            "fouls": 1
+          },
+          "gid": "2b7f30cd",
+          "gn": "U10 Boys Division 3"
+        },
+        {
+          "tid": "250c707d",
+          "tn": "",
+          "gid": "2b7f30cd",
+          "gn": "U10 Boys Division 3",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 3,
+            "ft": 3,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:58.727Z",
+  "teams": [
+    {
+      "tid": "3b12b880",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd09970f",
+      "sid": "fcfc254b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9460dbc8",
+      "sid": "a74c91ee",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b653897",
+      "sid": "81545684",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "250c707d",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:57.967Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "97fe483f",
+      "sid": "fcfc254b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "059e669f",
+    "05bb7d88",
+    "081c2e18",
+    "0ceeaa06",
+    "0fa3e18e",
+    "15619f19",
+    "17cc78d3",
+    "1ada6f91",
+    "1b46a8e9",
+    "1bb758ec",
+    "2062932e",
+    "209972e7",
+    "21085162",
+    "3aab1118",
+    "3b1235e9",
+    "3b2df5e8",
+    "42c20484",
+    "61480ea9",
+    "636bc0b3",
+    "6ad4f704",
+    "6b093f05",
+    "6e13b92d",
+    "71f2e742",
+    "772b5318",
+    "78c30aed",
+    "7c686ec2",
+    "803f440d",
+    "80df6b18",
+    "824badc2",
+    "87c547e1",
+    "97fe483f",
+    "9b750ce6",
+    "a235871a",
+    "a47d3e78",
+    "ade8c8d9",
+    "b022b54f",
+    "c5319b44",
+    "c94a4d4c",
+    "cdd8b254",
+    "d67a5f5f",
+    "da507cf9",
+    "e16f746e",
+    "e41d00ce",
+    "e5241e5c",
+    "e77e2bec",
+    "e78507dd",
+    "ea751b84",
+    "f5fb965e",
+    "fb03d279",
+    "fcbe7fcd"
+  ]
+}

@@ -1,1 +1,522 @@
-{"uuid":"de822c0d-b1ef-4c31-a17f-1da4dea8044b","name":"Mitchell Andrews","sports":{"Basketball":{"maxGamePTS":27,"maxGameThreePt":5,"foulOuts":{},"gp":240,"pts":1599,"fg":621,"ft":153,"threePt":68,"fouls":201,"statsChecked":"2026-07-07T18:30:21.407Z"}},"seasons":[{"sid":"ec012c43","regs":[{"tid":"2049e940","stats":{"gp":1,"pts":4,"fg":1,"ft":2}}]},{"sid":"702b232f","regs":[{"tid":"489b0d7c","stats":{"gp":3,"pts":29,"fg":14,"ft":1,"fouls":1}}]},{"sid":"205c1638","regs":[{"tid":"fd6da1cd","stats":{"gp":8,"pts":68,"fg":24,"ft":5,"threePt":5,"fouls":13}},{"tid":"fd6da1cd","tn":"","gid":"417cfe25","gn":"Tuesday Men AB Grade","div":null,"stats":{"gp":8,"pts":68,"fg":24,"ft":5,"threePt":5,"fouls":13}}]},{"sid":"82f9d173","regs":[{"tid":"1595e9a8","stats":{"gp":9,"pts":106,"fg":30,"ft":4,"threePt":14,"fouls":6}}]},{"sid":"8b1ee8b8","regs":[{"tid":"ec276283","stats":{"gp":12,"pts":92,"fg":37,"ft":3,"threePt":5,"fouls":3}}]},{"sid":"532a035b","regs":[{"tid":"7be797c5","stats":{"gp":8,"pts":5,"fg":2,"ft":1,"fouls":6}}]},{"sid":"1faf9865","regs":[{"tid":"1b2ddae7","stats":{"gp":18,"pts":73,"fg":26,"ft":12,"threePt":3,"fouls":17}}]},{"sid":"3747f5be","regs":[{"tid":"91356587","stats":{"gp":19,"pts":94,"fg":30,"ft":10,"threePt":8,"fouls":16}}]},{"sid":"bde346e8","regs":[{"tid":"bf7daff0","stats":{"gp":19,"pts":90,"fg":41,"ft":5,"threePt":1,"fouls":21}}]},{"sid":"4d338d67","regs":[{"tid":"392b4437","stats":{"gp":21,"pts":83,"fg":32,"ft":13,"threePt":2,"fouls":8}}]},{"sid":"6f09c8ad","regs":[{"tid":"cda2a216","stats":{"gp":15,"pts":99,"fg":40,"ft":13,"threePt":2,"fouls":15}}]},{"sid":"5d394863","regs":[{"tid":"9741a7c4","stats":{"gp":11,"pts":64,"fg":23,"ft":6,"threePt":4,"fouls":9}}]},{"sid":"3980667f","regs":[{"tid":"5b01c7b1","stats":{"gp":12,"pts":67,"fg":17,"ft":3,"threePt":10,"fouls":10}}]},{"sid":"f6c7f0fc","regs":[{"tid":"ea6ae5f1","stats":{"gp":14,"pts":104,"fg":41,"ft":10,"threePt":4,"fouls":12}}]},{"sid":"f64c9c45","regs":[{"tid":"10efd7b6","stats":{"gp":14,"pts":90,"fg":34,"ft":13,"threePt":3,"fouls":17}}]},{"sid":"27615b5c","regs":[{"tid":"f3c6884f","stats":{"gp":12,"pts":152,"fg":67,"ft":12,"threePt":2,"fouls":11}}]},{"sid":"73cf42fe","regs":[{"tid":"891f3f6b","stats":{"gp":11,"pts":98,"fg":45,"ft":5,"threePt":1,"fouls":8}}]},{"sid":"473e1b17","regs":[{"tid":"55b92f96","stats":{"gp":19,"pts":184,"fg":75,"ft":28,"threePt":2,"fouls":20}}]},{"sid":"29595399","regs":[{"tid":"367ec36e","stats":{"gp":5,"pts":34,"fg":13,"ft":2,"threePt":2,"fouls":1}}]},{"sid":"da08ea24","regs":[{"tid":"d3949f68","stats":{"gp":9,"pts":63,"fg":29,"ft":5,"fouls":7}}]}],"teams":[],"updatedAt":"2026-07-07T18:05:08.772Z","records":{"maxGamePTS":{"v":27,"gameKey":"9a62941d","sid":"82f9d173"},"maxGameThreePt":{"v":5,"gameKey":"9a62941d","sid":"82f9d173"}}}
+{
+  "uuid": "de822c0d-b1ef-4c31-a17f-1da4dea8044b",
+  "name": "Mitchell Andrews",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 27,
+      "maxGameThreePt": 5,
+      "foulOuts": {},
+      "gp": 240,
+      "pts": 1599,
+      "fg": 621,
+      "ft": 153,
+      "threePt": 68,
+      "fouls": 201,
+      "statsChecked": "2026-07-07T18:30:21.407Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ec012c43",
+      "regs": [
+        {
+          "tid": "2049e940",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 1,
+            "ft": 2
+          },
+          "gid": "6fe97810",
+          "gn": "Wednesday Premier League"
+        }
+      ]
+    },
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "489b0d7c",
+          "stats": {
+            "gp": 3,
+            "pts": 29,
+            "fg": 14,
+            "ft": 1,
+            "fouls": 1
+          },
+          "gid": "58efb3fd",
+          "gn": "Thursday  Mixed Div 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "fd6da1cd",
+          "stats": {
+            "gp": 8,
+            "pts": 68,
+            "fg": 24,
+            "ft": 5,
+            "threePt": 5,
+            "fouls": 13
+          },
+          "gid": "417cfe25",
+          "gn": "Tuesday Men AB Grade"
+        },
+        {
+          "tid": "fd6da1cd",
+          "tn": "",
+          "gid": "417cfe25",
+          "gn": "Tuesday Men AB Grade",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 68,
+            "fg": 24,
+            "ft": 5,
+            "threePt": 5,
+            "fouls": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "82f9d173",
+      "regs": [
+        {
+          "tid": "1595e9a8",
+          "stats": {
+            "gp": 9,
+            "pts": 106,
+            "fg": 30,
+            "ft": 4,
+            "threePt": 14,
+            "fouls": 6
+          },
+          "gid": "b6a58880",
+          "gn": "Monday Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "8b1ee8b8",
+      "regs": [
+        {
+          "tid": "ec276283",
+          "stats": {
+            "gp": 12,
+            "pts": 92,
+            "fg": 37,
+            "ft": 3,
+            "threePt": 5,
+            "fouls": 3
+          },
+          "gid": "b2b276f3",
+          "gn": "Wednesday Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "532a035b",
+      "regs": [
+        {
+          "tid": "7be797c5",
+          "stats": {
+            "gp": 8,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 6
+          },
+          "gid": "b1fe135f",
+          "gn": "Monday Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "1faf9865",
+      "regs": [
+        {
+          "tid": "1b2ddae7",
+          "stats": {
+            "gp": 18,
+            "pts": 73,
+            "fg": 26,
+            "ft": 12,
+            "threePt": 3,
+            "fouls": 17
+          },
+          "gid": "991ed625",
+          "gn": "Tuesday Men AB Grade"
+        }
+      ]
+    },
+    {
+      "sid": "3747f5be",
+      "regs": [
+        {
+          "tid": "91356587",
+          "stats": {
+            "gp": 19,
+            "pts": 94,
+            "fg": 30,
+            "ft": 10,
+            "threePt": 8,
+            "fouls": 16
+          },
+          "gid": "3e9545ba",
+          "gn": "Tuesday Senior Men A B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "bde346e8",
+      "regs": [
+        {
+          "tid": "bf7daff0",
+          "stats": {
+            "gp": 19,
+            "pts": 90,
+            "fg": 41,
+            "ft": 5,
+            "threePt": 1,
+            "fouls": 21
+          },
+          "gid": "c0ec2cec",
+          "gn": "Monday Division 1"
+        }
+      ]
+    },
+    {
+      "sid": "4d338d67",
+      "regs": [
+        {
+          "tid": "392b4437",
+          "stats": {
+            "gp": 21,
+            "pts": 83,
+            "fg": 32,
+            "ft": 13,
+            "threePt": 2,
+            "fouls": 8
+          },
+          "gid": "8969915f",
+          "gn": "Tuesday Senior Men A B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "6f09c8ad",
+      "regs": [
+        {
+          "tid": "cda2a216",
+          "stats": {
+            "gp": 15,
+            "pts": 99,
+            "fg": 40,
+            "ft": 13,
+            "threePt": 2,
+            "fouls": 15
+          },
+          "gid": "14032b8a",
+          "gn": "Monday Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "5d394863",
+      "regs": [
+        {
+          "tid": "9741a7c4",
+          "stats": {
+            "gp": 11,
+            "pts": 64,
+            "fg": 23,
+            "ft": 6,
+            "threePt": 4,
+            "fouls": 9
+          },
+          "gid": "18cb2c49",
+          "gn": "Monday Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "3980667f",
+      "regs": [
+        {
+          "tid": "5b01c7b1",
+          "stats": {
+            "gp": 12,
+            "pts": 67,
+            "fg": 17,
+            "ft": 3,
+            "threePt": 10,
+            "fouls": 10
+          },
+          "gid": "7dd45b28",
+          "gn": "Wednesday Senior Men D2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "f6c7f0fc",
+      "regs": [
+        {
+          "tid": "ea6ae5f1",
+          "stats": {
+            "gp": 14,
+            "pts": 104,
+            "fg": 41,
+            "ft": 10,
+            "threePt": 4,
+            "fouls": 12
+          },
+          "gid": "e8eb0713",
+          "gn": "Wednesday Senior Men D1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "f64c9c45",
+      "regs": [
+        {
+          "tid": "10efd7b6",
+          "stats": {
+            "gp": 14,
+            "pts": 90,
+            "fg": 34,
+            "ft": 13,
+            "threePt": 3,
+            "fouls": 17
+          },
+          "gid": "e757056b",
+          "gn": "Monday Division 5"
+        }
+      ]
+    },
+    {
+      "sid": "27615b5c",
+      "regs": [
+        {
+          "tid": "f3c6884f",
+          "stats": {
+            "gp": 12,
+            "pts": 152,
+            "fg": 67,
+            "ft": 12,
+            "threePt": 2,
+            "fouls": 11
+          },
+          "gid": "71810faf",
+          "gn": "Tuesday Senior Men Premier"
+        }
+      ]
+    },
+    {
+      "sid": "73cf42fe",
+      "regs": [
+        {
+          "tid": "891f3f6b",
+          "stats": {
+            "gp": 11,
+            "pts": 98,
+            "fg": 45,
+            "ft": 5,
+            "threePt": 1,
+            "fouls": 8
+          },
+          "gid": "e91dfacf",
+          "gn": "Monday Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "473e1b17",
+      "regs": [
+        {
+          "tid": "55b92f96",
+          "stats": {
+            "gp": 19,
+            "pts": 184,
+            "fg": 75,
+            "ft": 28,
+            "threePt": 2,
+            "fouls": 20
+          },
+          "gid": "87eaf523",
+          "gn": "Wednesday Senior Men D1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "29595399",
+      "regs": [
+        {
+          "tid": "367ec36e",
+          "stats": {
+            "gp": 5,
+            "pts": 34,
+            "fg": 13,
+            "ft": 2,
+            "threePt": 2,
+            "fouls": 1
+          },
+          "gid": "6866fb0c",
+          "gn": "Wednesday Senior Men D2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "da08ea24",
+      "regs": [
+        {
+          "tid": "d3949f68",
+          "stats": {
+            "gp": 9,
+            "pts": 63,
+            "fg": 29,
+            "ft": 5,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ba31b924",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "71c2a34c",
+          "tn": "Northern Silverbacks ",
+          "gid": "1d139ebe",
+          "gn": "Wednesday Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "2049e940",
+      "sid": "ec012c43",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "489b0d7c",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd6da1cd",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1595e9a8",
+      "sid": "82f9d173",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec276283",
+      "sid": "8b1ee8b8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7be797c5",
+      "sid": "532a035b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1b2ddae7",
+      "sid": "1faf9865",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "91356587",
+      "sid": "3747f5be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf7daff0",
+      "sid": "bde346e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "392b4437",
+      "sid": "4d338d67",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cda2a216",
+      "sid": "6f09c8ad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9741a7c4",
+      "sid": "5d394863",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b01c7b1",
+      "sid": "3980667f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea6ae5f1",
+      "sid": "f6c7f0fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "10efd7b6",
+      "sid": "f64c9c45",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3c6884f",
+      "sid": "27615b5c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "891f3f6b",
+      "sid": "73cf42fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "55b92f96",
+      "sid": "473e1b17",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "367ec36e",
+      "sid": "29595399",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3949f68",
+      "sid": "da08ea24",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71c2a34c",
+      "sid": "ba31b924",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:08.772Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 27,
+      "gameKey": "9a62941d",
+      "sid": "82f9d173"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "9a62941d",
+      "sid": "82f9d173"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:09:27.928Z"
+}

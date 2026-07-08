@@ -1,1 +1,84 @@
-{"uuid":"eb522128-d3ed-4f9c-9217-64b5e44ca253","name":"Chloe Archer","gender":"Mixed","sports":{"Basketball":{"gp":3,"pts":20,"fg":10,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":null,"losses":1,"draws":2,"winPct":0,"statsChecked":"2026-07-05T15:39:48.144Z"}},"seasons":[{"sid":"ef4601c5","sn":"Summer 2023/24","regs":[{"tid":"b48648cd","tn":"Frankston All Abilities Rowellyn  2","gid":"89d24ceb","gn":"Friday Junior Mixed Div 4","age":"Junior","div":"Div 4","stats":{"gp":3,"fg":10,"pts":20,"losses":1,"draws":2}}]}],"updatedAt":"2026-06-02T23:43:55.533Z","teams":[{"tid":"9baae640","sid":"425b92ec","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:52:42.839Z","games":["49d98e50","49e16654","c0ec04ba"],"records":{"maxGamePTS":{"v":20,"gameKey":"49e16654","sid":"ef4601c5"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "eb522128-d3ed-4f9c-9217-64b5e44ca253",
+  "name": "Chloe Archer",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 20,
+      "fg": 10,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "draws": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:39:48.144Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ef4601c5",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "b48648cd",
+          "tn": "Frankston All Abilities Rowellyn  2",
+          "gid": "89d24ceb",
+          "gn": "Friday Junior Mixed Div 4",
+          "age": "Junior",
+          "div": "Div 4",
+          "stats": {
+            "gp": 3,
+            "fg": 10,
+            "pts": 20,
+            "losses": 1,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "425b92ec",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "9baae640",
+          "tn": "Frankston All Abilities Rowellyn  2",
+          "gid": "38487e16",
+          "gn": "Friday Junior Mixed Division 4 Beginners",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T23:43:55.533Z",
+  "teams": [
+    {
+      "tid": "b48648cd",
+      "sid": "ef4601c5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9baae640",
+      "sid": "425b92ec",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:09:35.341Z",
+  "games": [
+    "49d98e50",
+    "49e16654",
+    "c0ec04ba"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "49e16654",
+      "sid": "ef4601c5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

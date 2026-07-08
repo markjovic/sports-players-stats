@@ -1,1 +1,103 @@
-{"uuid":"3f05a5c8-8243-4141-9da1-fd65b5020850","name":"Lexi Bahlmann","gender":"Girls","sports":{"Basketball":{"gp":9,"pts":21,"fouls":4,"fg":8,"ft":2,"threePt":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":1,"wins":3,"losses":6,"winPct":0.33,"statsChecked":"2026-07-05T14:40:55.182Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"b4822600","tn":"Penrith Panthers U14 Girls 2","gid":"38d5af06","gn":"GIRLS UNDER 14 B4","age":null,"div":"B4","stats":{"gp":5,"pts":10,"fg":5,"fouls":2,"wins":1,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"53f4715f","stats":{"wins":2,"losses":2,"gp":4,"pts":11,"fg":3,"ft":2,"threePt":1,"fouls":2}}]}],"updatedAt":"2026-05-31T01:11:42.060Z","teams":[{"tid":"53f4715f","sid":"0869ea69","status":"UPCOMING"},{"tid":"b4822600","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:20:47.388Z","records":{"maxGamePTS":{"v":4,"gameKey":"819c2bf0","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"3735651e","sid":"0869ea69"}},"games":["188eb9c4","3735651e","386175c4","41a7714a","67d39cf0","819c2bf0","824f2a02","dfcf6653","edbadb19"]}
+{
+  "uuid": "3f05a5c8-8243-4141-9da1-fd65b5020850",
+  "name": "Lexi Bahlmann",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 21,
+      "fouls": 4,
+      "fg": 8,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 6,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T14:40:55.182Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "b4822600",
+          "tn": "Penrith Panthers U14 Girls 2",
+          "gid": "38d5af06",
+          "gn": "GIRLS UNDER 14 B4",
+          "age": null,
+          "div": "B4",
+          "stats": {
+            "gp": 5,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "53f4715f",
+          "stats": {
+            "wins": 2,
+            "losses": 2,
+            "gp": 4,
+            "pts": 11,
+            "fg": 3,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 2
+          },
+          "gid": "6a378312",
+          "gn": "GIRLS UNDER 14 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:11:42.060Z",
+  "teams": [
+    {
+      "tid": "b4822600",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53f4715f",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:03:24.344Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "819c2bf0",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3735651e",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "188eb9c4",
+    "3735651e",
+    "386175c4",
+    "41a7714a",
+    "67d39cf0",
+    "819c2bf0",
+    "824f2a02",
+    "dfcf6653",
+    "edbadb19"
+  ]
+}

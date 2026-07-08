@@ -1,1 +1,102 @@
-{"uuid":"b2588550-db05-4949-92eb-1386ebb8083b","name":"John Allen","gender":"Boys","sports":{"Basketball":{"gp":5,"pts":2,"fouls":3,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":3,"losses":12,"winPct":0.2,"statsChecked":"2026-07-05T15:11:43.101Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Brighton Wolves Basketball Club","regs":[{"tid":"a872a729","tn":"Pack Wolves U16 Boys","gid":"82771db9","gn":"Saturday U16 Boys Div  9","age":"U16","div":"Div 9","stats":{"gp":5,"fouls":3,"wins":1,"losses":4,"pts":2,"fg":1}},{"tid":"a872a729","tn":"Pack Wolves U16 Boys","gid":"aaaec155","gn":"Saturday U16 Boys Div  8","age":"U16","div":"Div 8","stats":{"gp":5,"fg":1,"pts":2,"wins":1,"losses":4,"fouls":3}},{"tid":"a872a729","tn":"","gid":"fe49fda0","gn":"Saturday U16 Boys Div 10","div":null,"stats":{"gp":5,"pts":2,"fg":1,"fouls":3,"wins":1,"losses":4}}]}],"updatedAt":"2026-07-04T05:50:50.339Z","teams":[{"tid":"a872a729","sid":"79d2b087","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:36:50.697Z","records":{"maxGamePTS":{"v":2,"gameKey":"1ce5afa5","sid":"79d2b087"},"maxGameThreePt":{"v":null}},"games":["1ce5afa5","2e139fbb","503497e1","806d2faa","a82d3ddd"]}
+{
+  "uuid": "b2588550-db05-4949-92eb-1386ebb8083b",
+  "name": "John Allen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 2,
+      "fouls": 3,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 12,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:11:43.101Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "a872a729",
+          "tn": "Pack Wolves U16 Boys",
+          "gid": "fe49fda0",
+          "gn": "Saturday U16 Boys Div 10",
+          "age": "U16",
+          "div": "Div 9",
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 4,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "a872a729",
+          "tn": "Pack Wolves U16 Boys",
+          "gid": "aaaec155",
+          "gn": "Saturday U16 Boys Div  8",
+          "age": "U16",
+          "div": "Div 8",
+          "stats": {
+            "gp": 5,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 4,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "a872a729",
+          "tn": "",
+          "gid": "fe49fda0",
+          "gn": "Saturday U16 Boys Div 10",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:50.339Z",
+  "teams": [
+    {
+      "tid": "a872a729",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:57.248Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "1ce5afa5",
+      "sid": "79d2b087"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1ce5afa5",
+    "2e139fbb",
+    "503497e1",
+    "806d2faa",
+    "a82d3ddd"
+  ]
+}

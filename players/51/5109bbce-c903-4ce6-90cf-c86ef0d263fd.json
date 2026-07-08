@@ -1,1 +1,105 @@
-{"uuid":"5109bbce-c903-4ce6-90cf-c86ef0d263fd","name":"Taylor Siegel","gender":"Girls","sports":{"Basketball":{"gp":5,"pts":4,"fouls":2,"fg":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"losses":5,"winPct":0,"statsChecked":"2026-07-05T14:54:56.141Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Maccabi Victoria Basketball Club","regs":[{"tid":"2fc06d8a","tn":"Maccabi U12 Girls Eagles","gid":"f6d350f4","gn":"Saturday U12 Girls Section 07","age":"U12","div":null,"stats":{"gp":5,"pts":4,"fg":2,"fouls":2,"losses":5}}]}],"updatedAt":"2026-05-31T13:59:38.562Z","teams":[{"tid":"2fc06d8a","sid":"6c117270","status":"ACTIVE"},{"tid":"d0c00b4f","sid":"e54d0c37","status":"COMPLETED"},{"tid":"ad9cd263","sid":"ee5d2724","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:32:48.474Z","records":{"maxGamePTS":{"v":4,"gameKey":"57e28bbb","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["57e28bbb","654a85fd","6f16cf73","d35a1dbc","db66d72f"]}
+{
+  "uuid": "5109bbce-c903-4ce6-90cf-c86ef0d263fd",
+  "name": "Taylor Siegel",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 4,
+      "fouls": 2,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 5,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:54:56.141Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Maccabi Victoria Basketball Club",
+      "regs": [
+        {
+          "tid": "2fc06d8a",
+          "tn": "Maccabi U12 Girls Eagles",
+          "gid": "f6d350f4",
+          "gn": "Saturday U12 Girls Section 07",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "d0c00b4f",
+          "tn": "Maccabi U10 Girls Celtics",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "ad9cd263",
+          "tn": "Maccabi U10 Girls Ducks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:38.562Z",
+  "teams": [
+    {
+      "tid": "2fc06d8a",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d0c00b4f",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ad9cd263",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:04:01.291Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "57e28bbb",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "57e28bbb",
+    "654a85fd",
+    "6f16cf73",
+    "d35a1dbc",
+    "db66d72f"
+  ]
+}

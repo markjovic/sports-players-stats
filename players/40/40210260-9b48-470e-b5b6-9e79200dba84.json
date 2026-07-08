@@ -1,1 +1,306 @@
-{"uuid":"40210260-9b48-470e-b5b6-9e79200dba84","name":"Aaryan Chopra","gender":"Boys","sports":{"Basketball":{"gp":47,"pts":62,"fouls":18,"fg":31,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":57,"losses":38,"winPct":0.59,"draws":1,"statsChecked":"2026-07-05T15:22:06.634Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"St Helena Basketball Club","regs":[{"tid":"3a3e1350","tn":"St Helena Saints U14 Boys Team 1","gid":"97467c83","gn":"Saturday U14 Boys B2","age":"U14","div":"B2","stats":{"gp":17,"fouls":10,"fg":11,"pts":22,"wins":11,"losses":6}},{"tid":"3a3e1350","tn":"St Helena Saints U14 Boys Team 1","gid":"e6aae990","gn":"Saturday U14 Boys Grading Group 1","age":"U14","div":null,"stats":{"gp":17,"fouls":10,"wins":11,"losses":6,"pts":22,"fg":11}},{"tid":"3a3e1350","tn":"St Helena Saints U14 Boys Team 1","gid":"379ad08d","gn":"Saturday U14 Boys Grading Group 2","age":"U14","div":null,"stats":{"gp":17,"fg":11,"pts":22,"wins":11,"losses":6,"fouls":10}},{"tid":"c1fe7502","tn":"St Helena Saints U16 Boys Team 2","gid":"13b997e5","gn":"Saturday U16 Boys B2","age":"U16","div":"B2","stats":{"gp":1,"fouls":1,"fg":1,"pts":2,"losses":1}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"St Helena Basketball Club","regs":[{"tid":"77cfdf58","tn":"St Helena U14 Boys Team 4","gid":"614da0d0","gn":"Saturday U14 Boys C2","age":"U14","div":"C2","stats":{"gp":15,"fg":9,"pts":18,"wins":8,"losses":7,"fouls":2}},{"tid":"77cfdf58","tn":"St Helena U14 Boys Team 4","gid":"7683928e","gn":"Saturday U14 Boys Grading Group 3","age":"U14","div":null,"stats":{"gp":15,"fouls":2,"fg":9,"pts":18,"wins":8,"losses":7}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"St Helena Basketball Club","regs":[{"tid":"cb2caeec","tn":"St Helena U14 Boys 6","gid":"ca9d3f5d","gn":"Saturday U14 Boys D2","age":"U14","div":"D2","stats":{"gp":14,"fouls":5,"fg":10,"pts":20,"wins":8,"losses":5,"draws":1}}]}],"updatedAt":"2026-06-01T06:35:32.426Z","teams":[{"tid":"3a3e1350","sid":"d868771d","status":"ACTIVE"},{"tid":"77cfdf58","sid":"f57b7901","status":"COMPLETED"},{"tid":"cb2caeec","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:23:53.690Z","records":{"maxGamePTS":{"v":6,"gameKey":"573ce262","sid":"d868771d"},"maxGameThreePt":{"v":null}},"games":["00f6958d","11aa405b","1c88f6b7","1d333f17","26d098e7","2a7ea3a7","2b57fbae","324a857b","45db6132","4e8fb8dd","4e92770f","5637b51c","56bb928e","573ce262","61a688fb","625d871a","6bd86787","707a7b72","7775724c","783370aa","7972840d","8095e966","818e2355","85508fbb","897bb557","900520fc","931b520c","998c88dc","9a21abe3","a0b0fc9c","a36d87bd","a564d242","a6fdd73f","a8112f6d","aad76642","b0b38baa","b2ea9085","b6d60eff","c2f4460e","c49b40c1","c55865a1","cc38e52d","d3c78c07","d56450b1","e1d6d76c","eabef7d8","f8ebac9c"],"gameTids":{"56bb928e":"3a3e1350","897bb557":"3a3e1350","2a7ea3a7":"3a3e1350","a36d87bd":"3a3e1350","6bd86787":"3a3e1350","9a21abe3":"3a3e1350","625d871a":"3a3e1350","e1d6d76c":"3a3e1350","26d098e7":"3a3e1350","931b520c":"3a3e1350","8095e966":"3a3e1350","cc38e52d":"3a3e1350","783370aa":"3a3e1350","85508fbb":"3a3e1350","a0b0fc9c":"3a3e1350","900520fc":"3a3e1350","573ce262":"3a3e1350","11aa405b":"c1fe7502","5637b51c":"77cfdf58","998c88dc":"77cfdf58","c2f4460e":"77cfdf58","707a7b72":"77cfdf58","a6fdd73f":"77cfdf58","b0b38baa":"77cfdf58","aad76642":"77cfdf58","c49b40c1":"77cfdf58","61a688fb":"77cfdf58","7972840d":"77cfdf58","a8112f6d":"77cfdf58","1c88f6b7":"77cfdf58","324a857b":"77cfdf58","f8ebac9c":"77cfdf58","2b57fbae":"77cfdf58","45db6132":"cb2caeec","4e8fb8dd":"cb2caeec","a564d242":"cb2caeec","818e2355":"cb2caeec","7775724c":"cb2caeec","00f6958d":"cb2caeec","b6d60eff":"cb2caeec","4e92770f":"cb2caeec","c55865a1":"cb2caeec","eabef7d8":"cb2caeec","b2ea9085":"cb2caeec","d3c78c07":"cb2caeec","d56450b1":"cb2caeec","1d333f17":"cb2caeec"}}
+{
+  "uuid": "40210260-9b48-470e-b5b6-9e79200dba84",
+  "name": "Aaryan Chopra",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 47,
+      "pts": 62,
+      "fouls": 18,
+      "fg": 31,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 57,
+      "losses": 38,
+      "winPct": 0.59,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:22:06.634Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "3a3e1350",
+          "tn": "St Helena Saints U14 Boys Team 1",
+          "gid": "97467c83",
+          "gn": "Saturday U14 Boys B2",
+          "age": "U14",
+          "div": "B2",
+          "stats": {
+            "gp": 17,
+            "fouls": 10,
+            "fg": 11,
+            "pts": 22,
+            "wins": 11,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "3a3e1350",
+          "tn": "St Helena Saints U14 Boys Team 1",
+          "gid": "e6aae990",
+          "gn": "Saturday U14 Boys Grading Group 1",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 10,
+            "wins": 11,
+            "losses": 6,
+            "pts": 22,
+            "fg": 11
+          }
+        },
+        {
+          "tid": "3a3e1350",
+          "tn": "St Helena Saints U14 Boys Team 1",
+          "gid": "379ad08d",
+          "gn": "Saturday U14 Boys Grading Group 2",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fg": 11,
+            "pts": 22,
+            "wins": 11,
+            "losses": 6,
+            "fouls": 10
+          }
+        },
+        {
+          "tid": "c1fe7502",
+          "tn": "St Helena Saints U16 Boys Team 2",
+          "gid": "13b997e5",
+          "gn": "Saturday U16 Boys B2",
+          "age": "U16",
+          "div": "B2",
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "77cfdf58",
+          "tn": "St Helena U14 Boys Team 4",
+          "gid": "614da0d0",
+          "gn": "Saturday U14 Boys C2",
+          "age": "U14",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "fg": 9,
+            "pts": 18,
+            "wins": 8,
+            "losses": 7,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "77cfdf58",
+          "tn": "St Helena U14 Boys Team 4",
+          "gid": "7683928e",
+          "gn": "Saturday U14 Boys Grading Group 3",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 2,
+            "fg": 9,
+            "pts": 18,
+            "wins": 8,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "cb2caeec",
+          "tn": "St Helena U14 Boys 6",
+          "gid": "ca9d3f5d",
+          "gn": "Saturday U14 Boys D2",
+          "age": "U14",
+          "div": "D2",
+          "stats": {
+            "gp": 14,
+            "fouls": 5,
+            "fg": 10,
+            "pts": 20,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "99c99ebf",
+          "tn": "St Helena Saints U16 Boys Team 3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:35:32.426Z",
+  "teams": [
+    {
+      "tid": "3a3e1350",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c1fe7502",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "77cfdf58",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb2caeec",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99c99ebf",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:03:43.457Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "573ce262",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00f6958d",
+    "11aa405b",
+    "1c88f6b7",
+    "1d333f17",
+    "26d098e7",
+    "2a7ea3a7",
+    "2b57fbae",
+    "324a857b",
+    "45db6132",
+    "4e8fb8dd",
+    "4e92770f",
+    "5637b51c",
+    "56bb928e",
+    "573ce262",
+    "61a688fb",
+    "625d871a",
+    "6bd86787",
+    "707a7b72",
+    "7775724c",
+    "783370aa",
+    "7972840d",
+    "8095e966",
+    "818e2355",
+    "85508fbb",
+    "897bb557",
+    "900520fc",
+    "931b520c",
+    "998c88dc",
+    "9a21abe3",
+    "a0b0fc9c",
+    "a36d87bd",
+    "a564d242",
+    "a6fdd73f",
+    "a8112f6d",
+    "aad76642",
+    "b0b38baa",
+    "b2ea9085",
+    "b6d60eff",
+    "c2f4460e",
+    "c49b40c1",
+    "c55865a1",
+    "cc38e52d",
+    "d3c78c07",
+    "d56450b1",
+    "e1d6d76c",
+    "eabef7d8",
+    "f8ebac9c"
+  ],
+  "gameTids": {
+    "56bb928e": "3a3e1350",
+    "897bb557": "3a3e1350",
+    "2a7ea3a7": "3a3e1350",
+    "a36d87bd": "3a3e1350",
+    "6bd86787": "3a3e1350",
+    "9a21abe3": "3a3e1350",
+    "625d871a": "3a3e1350",
+    "e1d6d76c": "3a3e1350",
+    "26d098e7": "3a3e1350",
+    "931b520c": "3a3e1350",
+    "8095e966": "3a3e1350",
+    "cc38e52d": "3a3e1350",
+    "783370aa": "3a3e1350",
+    "85508fbb": "3a3e1350",
+    "a0b0fc9c": "3a3e1350",
+    "900520fc": "3a3e1350",
+    "573ce262": "3a3e1350",
+    "11aa405b": "c1fe7502",
+    "5637b51c": "77cfdf58",
+    "998c88dc": "77cfdf58",
+    "c2f4460e": "77cfdf58",
+    "707a7b72": "77cfdf58",
+    "a6fdd73f": "77cfdf58",
+    "b0b38baa": "77cfdf58",
+    "aad76642": "77cfdf58",
+    "c49b40c1": "77cfdf58",
+    "61a688fb": "77cfdf58",
+    "7972840d": "77cfdf58",
+    "a8112f6d": "77cfdf58",
+    "1c88f6b7": "77cfdf58",
+    "324a857b": "77cfdf58",
+    "f8ebac9c": "77cfdf58",
+    "2b57fbae": "77cfdf58",
+    "45db6132": "cb2caeec",
+    "4e8fb8dd": "cb2caeec",
+    "a564d242": "cb2caeec",
+    "818e2355": "cb2caeec",
+    "7775724c": "cb2caeec",
+    "00f6958d": "cb2caeec",
+    "b6d60eff": "cb2caeec",
+    "4e92770f": "cb2caeec",
+    "c55865a1": "cb2caeec",
+    "eabef7d8": "cb2caeec",
+    "b2ea9085": "cb2caeec",
+    "d3c78c07": "cb2caeec",
+    "d56450b1": "cb2caeec",
+    "1d333f17": "cb2caeec"
+  }
+}

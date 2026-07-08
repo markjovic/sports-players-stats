@@ -1,1 +1,114 @@
-{"uuid":"d75b0203-f91e-479d-8e5b-4c2e2ad81d78","gender":null,"sports":{"Basketball":{"gp":8,"pts":2,"fouls":8,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:23:39.701Z"}},"seasons":[{"sid":"4b655bab","sn":"Winter 2021","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"6644680f","tn":"Willy Cannons U16 Girls BB","gid":"a742b8d5","gn":"Saturday U16 Girls Div 3","stats":{"gp":4,"pts":2,"fouls":2,"fg":1}},{"tid":"6644680f","tn":"Willy Cannons U16 Girls BB","gid":"ccebb471","gn":"Grading Saturday U16 Girls Div 3 Grading","stats":{"gp":4,"pts":2,"fg":1,"fouls":2}}]},{"sid":"dcc45073","sn":"Summer 2020/21","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"2a653d45","tn":"Willy Cannons U16 Girls BB","gid":"5c3d901f","gn":"Saturday U16 Girls Div 3","stats":{"gp":4,"fouls":6,"wins":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:45:12.139Z","games":["4568abbf","4aa1453d","9e22de8d","e9999d75"],"records":{"maxGamePTS":{"v":2,"gameKey":"76b53dd1","sid":"4b655bab"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "d75b0203-f91e-479d-8e5b-4c2e2ad81d78",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 2,
+      "fouls": 8,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:23:39.701Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b655bab",
+      "sn": "Winter 2021",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "6644680f",
+          "tn": "Willy Cannons U16 Girls BB",
+          "gid": "a742b8d5",
+          "gn": "Saturday U16 Girls Div 3",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fouls": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "6644680f",
+          "tn": "Willy Cannons U16 Girls BB",
+          "gid": "ccebb471",
+          "gn": "Grading Saturday U16 Girls Div 3 Grading",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "ea220162",
+          "tn": "Willy Cannons U16 Girls BB",
+          "gid": "adbe931c",
+          "gn": "(RTS) Saturday U16 Girls Div 2/3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "2a653d45",
+          "tn": "Willy Cannons U16 Girls BB",
+          "gid": "5c3d901f",
+          "gn": "Saturday U16 Girls Div 3",
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:12.139Z",
+  "games": [
+    "4568abbf",
+    "4aa1453d",
+    "9e22de8d",
+    "e9999d75"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "76b53dd1",
+      "sid": "4b655bab"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "6644680f",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea220162",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a653d45",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:09:04.348Z"
+}

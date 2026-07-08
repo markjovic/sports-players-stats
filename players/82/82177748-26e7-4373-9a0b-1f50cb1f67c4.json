@@ -1,1 +1,372 @@
-{"uuid":"82177748-26e7-4373-9a0b-1f50cb1f67c4","name":"Liam O'Driscoll","gender":"Men","sports":{"Basketball":{"gp":70,"pts":836,"fouls":147,"fg":361,"ft":81,"threePt":11,"foulOuts":{"4898de25":2,"3008b4df":1,"c08d14fd":1},"finals":5,"gfApps":4,"gfWins":2,"finalsPerSeason":0.71,"maxGamePTS":32,"maxGameThreePt":2,"wins":49,"winPct":0.65,"losses":24,"draws":2,"statsChecked":"2026-07-05T16:02:05.540Z"}},"seasons":[{"sid":"c1ca67fd","sn":"Winter 2023","regs":[{"tid":"92a6c6d7","tn":"B Week","gid":"3394848f","gn":"Sunday Open Men 1 / 2","age":"Senior","div":null,"stats":{"gp":12,"fouls":25,"ft":5,"fg":54,"threePt":1,"pts":116,"finals":1,"gfApps":1,"wins":7,"losses":5,"gfWins":1}}]},{"sid":"668d5b95","sn":"2023","regs":[{"tid":"8030c432","tn":"Bye Week","gid":"1fafe40d","gn":"Open Men","age":"Senior","div":null,"stats":{"gp":4,"fouls":7,"ft":5,"fg":14,"pts":33}}]},{"sid":"4898de25","sn":"Summer 2022/23","regs":[{"tid":"a03c912a","tn":"B Week","gid":"5fbdc5ca","gn":"Sunday Open Men DIV 1","age":"Senior","div":"DIV 1","stats":{"gp":16,"fouls":38,"ft":26,"fg":78,"threePt":1,"pts":185,"foulOuts":2,"finals":1,"gfApps":1,"wins":8,"losses":8}}]},{"sid":"3008b4df","sn":"Winter 2022","regs":[{"tid":"3d92c35a","tn":"B Week","gid":"7e63cfa2","gn":"Sunday Open Classic Men DIV 2","age":"Senior","div":"DIV 2","stats":{"gp":11,"fouls":20,"ft":21,"fg":74,"threePt":5,"pts":184,"foulOuts":1,"finals":1,"gfApps":1,"wins":9,"losses":1}},{"tid":"3d92c35a","tn":"B Week","gid":"7bdfc1c7","gn":"Sunday Open Classic Men DIV 2 Grading","age":"Senior","div":null,"stats":{"gp":11,"fouls":20,"ft":21,"fg":74,"threePt":5,"pts":184,"finals":1,"gfApps":1,"wins":9,"losses":1}}]},{"sid":"bd61c7e1","sn":"Summer 2021/22","regs":[{"tid":"b0636346","tn":"B Week","gid":"0e193b2a","gn":"Sunday Open Classic Men DIV 2","age":"Senior","div":"DIV 2","stats":{"gp":13,"fouls":23,"ft":9,"fg":73,"threePt":4,"pts":167,"finals":1,"gfApps":1,"wins":7,"losses":4,"draws":2,"gfWins":1}}]},{"sid":"c08d14fd","sn":"Winter 2021","regs":[{"tid":"18c6e23d","tn":"B Week","gid":"36aaa7f5","gn":"Sunday Open Classic Men DIV 2","age":"Senior","div":"DIV 2","stats":{"gp":7,"fouls":21,"ft":10,"fg":36,"pts":82,"foulOuts":1,"wins":4,"losses":3}}]},{"sid":"09407bad","sn":"Summer 2020/21","regs":[{"tid":"70fbf9b9","tn":"B Week","gid":"8c430137","gn":"Sunday Open Classic Men Div 2","age":"Senior","div":"Div 2","stats":{"gp":7,"fouls":13,"ft":5,"fg":32,"pts":69,"finals":1,"wins":5,"losses":2}}]}],"updatedAt":"2026-06-03T00:12:59.705Z","teams":[{"tid":"92a6c6d7","sid":"c1ca67fd","status":"COMPLETED"},{"tid":"a03c912a","sid":"4898de25","status":"COMPLETED"},{"tid":"8030c432","sid":"668d5b95","status":"COMPLETED"},{"tid":"3d92c35a","sid":"3008b4df","status":"COMPLETED"},{"tid":"b0636346","sid":"bd61c7e1","status":"COMPLETED"},{"tid":"18c6e23d","sid":"c08d14fd","status":"COMPLETED"},{"tid":"70fbf9b9","sid":"09407bad","status":"COMPLETED"},{"tid":"57faf314","sid":"0506ff02","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:47.161Z","records":{"maxGamePTS":{"v":32,"gameKey":"331e33d1","sid":"bd61c7e1"},"maxGameThreePt":{"v":2,"gameKey":"095fade5","sid":"3008b4df"}},"games":["03a1d8e9","03b51304","05bcb056","0690857f","08b88218","095fade5","09a4ee71","0c0fc236","102a1be9","11039811","152b25cb","1973fc62","1b5b5875","21b88bf0","244451ef","331e33d1","345aaffa","3cabab9c","3ef61e88","43384865","4638bf56","47e44cba","4c9e21e4","4da150ef","4dfd4839","50200dc2","50c9956b","50e78aa8","55844871","5ac906ac","5cb53e69","60ce6bf0","62e35478","6a45de5f","6c1e7fa7","744b7c67","7adc2849","7dd0bf88","8290555b","82b3fbdd","83854f15","8406949d","8c7a112e","96890254","9842d9a3","9ab67a1c","9d8e43b5","9dd8e8fd","a0f84207","a14e4b79","a860fc28","a877d5c2","aa722f6f","afddb7e6","b0b3a6c0","b1ab2c68","b2b028b4","b2f4bece","ba660aa7","c6a88f74","ce4be3db","cf345601","d97eacfd","dd54c962","e1a32ef0","e2f855be","f2a7d55e","f563de2d","f715ce3c","fe151f33"]}
+{
+  "uuid": "82177748-26e7-4373-9a0b-1f50cb1f67c4",
+  "name": "Liam O'Driscoll",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 70,
+      "pts": 836,
+      "fouls": 147,
+      "fg": 361,
+      "ft": 81,
+      "threePt": 11,
+      "foulOuts": {
+        "4898de25": 2,
+        "3008b4df": 1,
+        "c08d14fd": 1
+      },
+      "finals": 5,
+      "gfApps": 4,
+      "gfWins": 2,
+      "finalsPerSeason": 0.71,
+      "maxGamePTS": 32,
+      "maxGameThreePt": 2,
+      "wins": 49,
+      "winPct": 0.65,
+      "losses": 24,
+      "draws": 2,
+      "statsChecked": "2026-07-05T16:02:05.540Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c1ca67fd",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "92a6c6d7",
+          "tn": "B Week",
+          "gid": "3394848f",
+          "gn": "Sunday Open Men 1 / 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 25,
+            "ft": 5,
+            "fg": 54,
+            "threePt": 1,
+            "pts": 116,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "668d5b95",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "8030c432",
+          "tn": "Bye Week",
+          "gid": "1fafe40d",
+          "gn": "Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 7,
+            "ft": 5,
+            "fg": 14,
+            "pts": 33
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4898de25",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "a03c912a",
+          "tn": "B Week",
+          "gid": "5fbdc5ca",
+          "gn": "Sunday Open Men DIV 1",
+          "age": "Senior",
+          "div": "DIV 1",
+          "stats": {
+            "gp": 16,
+            "fouls": 38,
+            "ft": 26,
+            "fg": 78,
+            "threePt": 1,
+            "pts": 185,
+            "foulOuts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3008b4df",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "3d92c35a",
+          "tn": "B Week",
+          "gid": "7e63cfa2",
+          "gn": "Sunday Open Classic Men DIV 2",
+          "age": "Senior",
+          "div": "DIV 2",
+          "stats": {
+            "gp": 11,
+            "fouls": 20,
+            "ft": 21,
+            "fg": 74,
+            "threePt": 5,
+            "pts": 184,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "3d92c35a",
+          "tn": "B Week",
+          "gid": "7bdfc1c7",
+          "gn": "Sunday Open Classic Men DIV 2 Grading",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 20,
+            "ft": 21,
+            "fg": 74,
+            "threePt": 5,
+            "pts": 184,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bd61c7e1",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "b0636346",
+          "tn": "B Week",
+          "gid": "0e193b2a",
+          "gn": "Sunday Open Classic Men DIV 2",
+          "age": "Senior",
+          "div": "DIV 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 23,
+            "ft": 9,
+            "fg": 73,
+            "threePt": 4,
+            "pts": 167,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 4,
+            "draws": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c08d14fd",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "18c6e23d",
+          "tn": "B Week",
+          "gid": "36aaa7f5",
+          "gn": "Sunday Open Classic Men DIV 2",
+          "age": "Senior",
+          "div": "DIV 2",
+          "stats": {
+            "gp": 7,
+            "fouls": 21,
+            "ft": 10,
+            "fg": 36,
+            "pts": 82,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09407bad",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "70fbf9b9",
+          "tn": "B Week",
+          "gid": "8c430137",
+          "gn": "Sunday Open Classic Men Div 2",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 7,
+            "fouls": 13,
+            "ft": 5,
+            "fg": 32,
+            "pts": 69,
+            "finals": 1,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0506ff02",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "57faf314",
+          "tn": "B Week",
+          "gid": "65f544ef",
+          "gn": "Sunday Open Classic Men Div 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T00:12:59.705Z",
+  "teams": [
+    {
+      "tid": "92a6c6d7",
+      "sid": "c1ca67fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8030c432",
+      "sid": "668d5b95",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a03c912a",
+      "sid": "4898de25",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3d92c35a",
+      "sid": "3008b4df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b0636346",
+      "sid": "bd61c7e1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "18c6e23d",
+      "sid": "c08d14fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70fbf9b9",
+      "sid": "09407bad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57faf314",
+      "sid": "0506ff02",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:06:03.760Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 32,
+      "gameKey": "331e33d1",
+      "sid": "bd61c7e1"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "095fade5",
+      "sid": "3008b4df"
+    }
+  },
+  "games": [
+    "03a1d8e9",
+    "03b51304",
+    "05bcb056",
+    "0690857f",
+    "08b88218",
+    "095fade5",
+    "09a4ee71",
+    "0c0fc236",
+    "102a1be9",
+    "11039811",
+    "152b25cb",
+    "1973fc62",
+    "1b5b5875",
+    "21b88bf0",
+    "244451ef",
+    "331e33d1",
+    "345aaffa",
+    "3cabab9c",
+    "3ef61e88",
+    "43384865",
+    "4638bf56",
+    "47e44cba",
+    "4c9e21e4",
+    "4da150ef",
+    "4dfd4839",
+    "50200dc2",
+    "50c9956b",
+    "50e78aa8",
+    "55844871",
+    "5ac906ac",
+    "5cb53e69",
+    "60ce6bf0",
+    "62e35478",
+    "6a45de5f",
+    "6c1e7fa7",
+    "744b7c67",
+    "7adc2849",
+    "7dd0bf88",
+    "8290555b",
+    "82b3fbdd",
+    "83854f15",
+    "8406949d",
+    "8c7a112e",
+    "96890254",
+    "9842d9a3",
+    "9ab67a1c",
+    "9d8e43b5",
+    "9dd8e8fd",
+    "a0f84207",
+    "a14e4b79",
+    "a860fc28",
+    "a877d5c2",
+    "aa722f6f",
+    "afddb7e6",
+    "b0b3a6c0",
+    "b1ab2c68",
+    "b2b028b4",
+    "b2f4bece",
+    "ba660aa7",
+    "c6a88f74",
+    "ce4be3db",
+    "cf345601",
+    "d97eacfd",
+    "dd54c962",
+    "e1a32ef0",
+    "e2f855be",
+    "f2a7d55e",
+    "f563de2d",
+    "f715ce3c",
+    "fe151f33"
+  ]
+}

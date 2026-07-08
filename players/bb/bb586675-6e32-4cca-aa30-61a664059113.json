@@ -1,1 +1,60 @@
-{"uuid":"bb586675-6e32-4cca-aa30-61a664059113","name":"James Broderick","sports":{"Basketball":{"maxGamePTS":null,"maxGameThreePt":null,"foulOuts":{},"gp":2,"statsChecked":"2026-07-06T19:00:56.809Z"}},"seasons":[{"sid":"75ebb237","regs":[{"tid":"27483ae1"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "bb586675-6e32-4cca-aa30-61a664059113",
+  "name": "James Broderick",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 2,
+      "statsChecked": "2026-07-06T19:00:56.809Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "regs": [
+        {
+          "tid": "27483ae1",
+          "gid": "52393cd2",
+          "gn": "Monday Men B"
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "3b452ee2",
+          "tn": "Crayons ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "27483ae1",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b452ee2",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:08:19.282Z"
+}

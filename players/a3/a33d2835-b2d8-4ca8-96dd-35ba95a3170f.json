@@ -1,1 +1,136 @@
-{"uuid":"a33d2835-b2d8-4ca8-96dd-35ba95a3170f","name":"2021","gender":null,"sports":{"Basketball":{"gp":15,"pts":53,"fouls":10,"fg":16,"ft":3,"threePt":6,"finals":2,"gfApps":2,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":4,"losses":2,"winPct":0.67,"statsChecked":"2026-07-05T16:02:57.151Z"}},"seasons":[{"sid":"483151a7","sn":"2021","club":"Rochester Tigers Basketball Club","regs":[{"tid":"f8a4070c","tn":"Rochester Tigers U18 Girls","gid":"60d50536","gn":"U18 Girls Division 2","stats":{"gp":6,"pts":7,"fouls":4,"fg":2,"threePt":1,"finals":1,"gfApps":1,"wins":4,"losses":2}}]},{"sid":"dfcc28f8","sn":"Winter 2020","club":null,"regs":[{"tid":"47e616b9","tn":"Air Ballers ","gid":"bd570a96","gn":"Wednesday U18 Girls","stats":{"gp":9,"pts":46,"fouls":6,"fg":14,"ft":3,"threePt":5,"finals":1,"gfApps":1}}]}],"updatedAt":"2026-06-11T23:43:12.404Z","games":["0b6156b3","0ba3b459","23417470","2d2d0646","350bd194","3be5ecb8","61f48d97","718c32d9","73aafdf4","89a9a70a","a73f5da9","df685209","e31e6b37","f1eec12e","f5b8c36f"],"records":{"maxGamePTS":{"v":10,"gameKey":"a73f5da9","sid":"dfcc28f8"},"maxGameThreePt":{"v":2,"gameKey":"a73f5da9","sid":"dfcc28f8"}}}
+{
+  "uuid": "a33d2835-b2d8-4ca8-96dd-35ba95a3170f",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 53,
+      "fouls": 10,
+      "fg": 16,
+      "ft": 3,
+      "threePt": 6,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 4,
+      "losses": 2,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:02:57.151Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "483151a7",
+      "sn": "2021",
+      "club": "Rochester Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "f8a4070c",
+          "tn": "Rochester Tigers U18 Girls",
+          "gid": "60d50536",
+          "gn": "U18 Girls Division 2",
+          "stats": {
+            "gp": 6,
+            "pts": 7,
+            "fouls": 4,
+            "fg": 2,
+            "threePt": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dfcc28f8",
+      "sn": "Winter 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "47e616b9",
+          "tn": "Air Ballers ",
+          "gid": "bd570a96",
+          "gn": "Wednesday U18 Girls",
+          "stats": {
+            "gp": 9,
+            "pts": 46,
+            "fouls": 6,
+            "fg": 14,
+            "ft": 3,
+            "threePt": 5,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e58ab281",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "218db3a8",
+          "tn": "U18 Girls Rochester Tigers",
+          "gid": "185db88e",
+          "gn": "U18 Girls Chemmart",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:12.404Z",
+  "games": [
+    "0b6156b3",
+    "0ba3b459",
+    "23417470",
+    "2d2d0646",
+    "350bd194",
+    "3be5ecb8",
+    "61f48d97",
+    "718c32d9",
+    "73aafdf4",
+    "89a9a70a",
+    "a73f5da9",
+    "df685209",
+    "e31e6b37",
+    "f1eec12e",
+    "f5b8c36f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "a73f5da9",
+      "sid": "dfcc28f8"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "a73f5da9",
+      "sid": "dfcc28f8"
+    }
+  },
+  "teams": [
+    {
+      "tid": "f8a4070c",
+      "sid": "483151a7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47e616b9",
+      "sid": "dfcc28f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "218db3a8",
+      "sid": "e58ab281",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:07:35.489Z"
+}

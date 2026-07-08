@@ -1,1 +1,140 @@
-{"uuid":"6c5ab13c-177f-47de-93f7-7287c6e48d18","name":"Oliver Simpson","gender":"Men","sports":{"Basketball":{"gp":22,"pts":101,"fouls":18,"fg":37,"ft":3,"threePt":8,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":2,"wins":18,"losses":8,"winPct":0.69,"statsChecked":"2026-07-05T15:49:04.933Z"}},"seasons":[{"sid":"5bb7c87f","sn":"Summer 2025/26","regs":[{"tid":"cab28ce0","tn":"Drew Peacocks","gid":"e50a8387","gn":"Thursday Championship Men","age":null,"div":null,"stats":{"gp":18,"fouls":14,"ft":3,"fg":31,"threePt":7,"pts":86,"finals":1,"gfApps":1,"wins":14,"losses":4,"gfWins":1}}]},{"sid":"75ebb237","regs":[{"tid":"b1baabd5","stats":{"gp":4,"pts":15,"fg":6,"threePt":1,"fouls":4,"wins":2,"losses":2}},{"tid":"b1baabd5","tn":"","gid":"ea2fceec","gn":"Thursday Championship Men","div":null,"stats":{"gp":4,"pts":15,"fg":6,"threePt":1,"fouls":4,"wins":2,"losses":2}}]}],"updatedAt":"2026-07-04T05:38:38.812Z","teams":[{"tid":"cab28ce0","sid":"5bb7c87f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:48:29.122Z","records":{"maxGamePTS":{"v":21,"gameKey":"1cd2dae3","sid":"5bb7c87f"},"maxGameThreePt":{"v":2,"gameKey":"3b39204f","sid":"5bb7c87f"}},"games":["0568b64c","0d132525","1cd2dae3","26e1c5fa","2977c70c","3b39204f","46de1416","5236ba5b","6db13f01","6faed9ce","79ceca90","7c79f4d3","7d44c009","837eb3a0","917f6cc3","b4bee49a","c5808f0a","db6bd00b","e1474458","e389c09e","edf6b5ca","ffa6ece4"]}
+{
+  "uuid": "6c5ab13c-177f-47de-93f7-7287c6e48d18",
+  "name": "Oliver Simpson",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 101,
+      "fouls": 18,
+      "fg": 37,
+      "ft": 3,
+      "threePt": 8,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 2,
+      "wins": 18,
+      "losses": 8,
+      "winPct": 0.69,
+      "statsChecked": "2026-07-05T15:49:04.933Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5bb7c87f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "cab28ce0",
+          "tn": "Drew Peacocks",
+          "gid": "e50a8387",
+          "gn": "Thursday Championship Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 31,
+            "threePt": 7,
+            "pts": 86,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 14,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "75ebb237",
+      "regs": [
+        {
+          "tid": "b1baabd5",
+          "stats": {
+            "gp": 4,
+            "pts": 15,
+            "fg": 6,
+            "threePt": 1,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 2
+          },
+          "gid": "ea2fceec",
+          "gn": "Thursday Championship Men"
+        },
+        {
+          "tid": "b1baabd5",
+          "tn": "",
+          "gid": "ea2fceec",
+          "gn": "Thursday Championship Men",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 15,
+            "fg": 6,
+            "threePt": 1,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:38:38.812Z",
+  "teams": [
+    {
+      "tid": "cab28ce0",
+      "sid": "5bb7c87f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1baabd5",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:20.108Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "1cd2dae3",
+      "sid": "5bb7c87f"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "3b39204f",
+      "sid": "5bb7c87f"
+    }
+  },
+  "games": [
+    "0568b64c",
+    "0d132525",
+    "1cd2dae3",
+    "26e1c5fa",
+    "2977c70c",
+    "3b39204f",
+    "46de1416",
+    "5236ba5b",
+    "6db13f01",
+    "6faed9ce",
+    "79ceca90",
+    "7c79f4d3",
+    "7d44c009",
+    "837eb3a0",
+    "917f6cc3",
+    "b4bee49a",
+    "c5808f0a",
+    "db6bd00b",
+    "e1474458",
+    "e389c09e",
+    "edf6b5ca",
+    "ffa6ece4"
+  ]
+}

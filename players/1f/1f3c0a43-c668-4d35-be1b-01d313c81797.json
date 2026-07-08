@@ -1,1 +1,366 @@
-{"uuid":"1f3c0a43-c668-4d35-be1b-01d313c81797","name":"Ace Carson","gender":"Boys","sports":{"Basketball":{"gp":72,"pts":634,"fouls":82,"fg":306,"ft":22,"finals":4,"gfApps":2,"gfWins":2,"finalsPerSeason":0.67,"foulOuts":{"b82479c8":1},"maxGamePTS":30,"maxGameThreePt":null,"wins":72,"losses":50,"draws":5,"winPct":0.57,"statsChecked":"2026-07-05T15:34:28.233Z"}},"seasons":[{"sid":"c36e5626","sn":"Winter 2026","club":"Rovers Basketball Club","regs":[{"tid":"5d1ab648","tn":"Rovers U14 Boys Koalas D9","gid":"137e9fce","gn":"(CLUB) Monday U14 Boys 8","age":"U14","div":null,"stats":{"gp":9,"pts":150,"fg":72,"ft":6,"fouls":6,"wins":6,"losses":3}}]},{"sid":"c36e5626","sn":"Winter 2026","club":"Rovers Basketball Club","regs":[{"tid":"5d1ab648","tn":"Rovers U14 Boys Koalas D9","gid":"137e9fce","gn":"(CLUB) Monday U14 Boys 8","age":"U14","div":null,"stats":{"gp":9,"pts":150,"fg":72,"ft":6,"fouls":6,"wins":6,"losses":3}}]},{"sid":"b82479c8","sn":"Summer 2025/26","club":"Rovers Basketball Club","regs":[{"tid":"53a73f22","tn":"Rovers U14 Boys Koalas D9","gid":"8058e0a7","gn":"(CLUB) Monday U14 Boys 9","age":"U14","div":null,"stats":{"gp":16,"pts":130,"fg":62,"ft":6,"fouls":27,"foulOuts":1,"finals":1,"wins":8,"losses":8}},{"tid":"53a73f22","tn":"Rovers U14 Boys Koalas D9","gid":"f9562b44","gn":"(CLUB) Monday U14 Boys 7","age":"U14","div":null,"stats":{"gp":16,"pts":130,"ft":6,"fouls":27,"finals":1,"wins":8,"losses":8,"fg":62}}]},{"sid":"2f8128d7","sn":"Winter 2025","club":"Rovers Basketball Club","regs":[{"tid":"40c4496b","tn":"Rovers U12 Boys Ibises Sat D4","gid":"4037344a","gn":"(CLUB) Saturday U12 Boys 3","age":"U12","div":null,"stats":{"gp":13,"pts":124,"fg":60,"ft":4,"fouls":12,"finals":1,"gfApps":1,"wins":6,"losses":7,"gfWins":1}},{"tid":"40c4496b","tn":"Rovers U12 Boys Ibises Sat D4","gid":"1fb75acf","gn":"(CLUB) Saturday U12 Boys 4","age":"U12","div":null,"stats":{"gp":13,"pts":124,"fg":60,"fouls":12,"finals":1,"gfApps":1,"wins":6,"losses":7,"ft":4,"gfWins":1}}]},{"sid":"09f9b4c1","sn":"Summer 2024/25","club":"Rovers Basketball Club","regs":[{"tid":"d6c76962","tn":"Rovers U12 Boys Cockatoos","gid":"668d4312","gn":"(CLUB) Saturday U12 Boys 3","age":"U12","div":null,"stats":{"gp":17,"pts":166,"fg":83,"fouls":24,"finals":1,"gfApps":1,"wins":10,"losses":6,"draws":1,"gfWins":1}}]},{"sid":"8c47a1de","sn":"Winter 2024","club":"Rovers Basketball Club","regs":[{"tid":"05d66fde","tn":"Rovers U12 Boys Redbacks Mon D5","gid":"7955091d","gn":"(CLUB) Monday U12 Boys 5","age":"U12","div":null,"stats":{"gp":17,"pts":64,"fg":29,"ft":6,"fouls":13,"finals":1,"wins":11,"losses":4,"draws":2}},{"tid":"05d66fde","tn":"Rovers U12 Boys Redbacks Mon D5","gid":"c8e56152","gn":"(CLUB) Monday U12 Boys 4","age":"U12","div":null,"stats":{"gp":17,"pts":64,"fg":29,"ft":6,"finals":1,"wins":11,"losses":4,"draws":2,"fouls":13}}]}],"updatedAt":"2026-06-02T02:17:06.303Z","teams":[{"tid":"5d1ab648","sid":"c36e5626","status":"ACTIVE"},{"tid":"5d1ab648","sid":"c36e5626","status":"ACTIVE"},{"tid":"53a73f22","sid":"b82479c8","status":"COMPLETED"},{"tid":"40c4496b","sid":"2f8128d7","status":"COMPLETED"},{"tid":"d6c76962","sid":"09f9b4c1","status":"COMPLETED"},{"tid":"67a9e08e","sid":"09f9b4c1","status":"COMPLETED"},{"tid":"05d66fde","sid":"8c47a1de","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:13:09.635Z","records":{"maxGamePTS":{"v":30,"gameKey":"cc889247","sid":"c36e5626"},"maxGameThreePt":{"v":null}},"games":["0345b1d6","04a149f1","0874fe46","0e4334d7","15cab08a","1c0e33f5","1dba9171","1eef4b3c","284940a0","30928cf8","318f46c5","39e7a1f2","420ef3e1","429dfbe9","4f0a9e17","59c07993","5b1e4711","5b7a7017","5eaaffef","6753b342","735711c5","7536be34","773d69b0","780df58f","78cbceb0","7c9e7371","7e22ecda","81df9d75","852ea626","868164ff","879f4d56","8bffdc5b","91154d2d","93973d44","962fd306","9991b5c2","9ae4ce0f","9b79a8c8","9b8149a4","9df771a3","a0716bf1","a1937a87","a4939702","a8b53619","abb32aea","ad6fac20","aede7025","b3ca9827","b4964b6b","b9671156","bbc89fa4","bcf636b6","bfbc9d44","c3356064","c3eb5646","c97279f0","cc889247","cd5a1e97","d013e176","da4fb2ab","dc2c4a2d","e3204d7b","e39339b7","e6ff2b50","e98617d4","ede66297","ee92fe2e","efd26f1d","f16f0a55","f19ab3ab","f9434130","f996914b"]}
+{
+  "uuid": "1f3c0a43-c668-4d35-be1b-01d313c81797",
+  "name": "Ace Carson",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 72,
+      "pts": 634,
+      "fouls": 82,
+      "fg": 306,
+      "ft": 22,
+      "finals": 4,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "b82479c8": 1
+      },
+      "maxGamePTS": 30,
+      "maxGameThreePt": null,
+      "wins": 72,
+      "losses": 50,
+      "draws": 5,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-05T15:34:28.233Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c36e5626",
+      "sn": "Winter 2026",
+      "club": "Rovers Basketball Club",
+      "regs": [
+        {
+          "tid": "5d1ab648",
+          "tn": "Rovers U14 Boys Koalas D9",
+          "gid": "137e9fce",
+          "gn": "(CLUB) Monday U14 Boys 8",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 150,
+            "fg": 72,
+            "ft": 6,
+            "fouls": 6,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c36e5626",
+      "sn": "Winter 2026",
+      "club": "Rovers Basketball Club",
+      "regs": [
+        {
+          "tid": "5d1ab648",
+          "tn": "Rovers U14 Boys Koalas D9",
+          "gid": "137e9fce",
+          "gn": "(CLUB) Monday U14 Boys 8",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 150,
+            "fg": 72,
+            "ft": 6,
+            "fouls": 6,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b82479c8",
+      "sn": "Summer 2025/26",
+      "club": "Rovers Basketball Club",
+      "regs": [
+        {
+          "tid": "53a73f22",
+          "tn": "Rovers U14 Boys Koalas D9",
+          "gid": "8058e0a7",
+          "gn": "(CLUB) Monday U14 Boys 9",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 130,
+            "fg": 62,
+            "ft": 6,
+            "fouls": 27,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 8,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "53a73f22",
+          "tn": "Rovers U14 Boys Koalas D9",
+          "gid": "f9562b44",
+          "gn": "(CLUB) Monday U14 Boys 7",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 130,
+            "ft": 6,
+            "fouls": 27,
+            "finals": 1,
+            "wins": 8,
+            "losses": 8,
+            "fg": 62
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2f8128d7",
+      "sn": "Winter 2025",
+      "club": "Rovers Basketball Club",
+      "regs": [
+        {
+          "tid": "40c4496b",
+          "tn": "Rovers U12 Boys Ibises Sat D4",
+          "gid": "4037344a",
+          "gn": "(CLUB) Saturday U12 Boys 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 124,
+            "fg": 60,
+            "ft": 4,
+            "fouls": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 7,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "40c4496b",
+          "tn": "Rovers U12 Boys Ibises Sat D4",
+          "gid": "1fb75acf",
+          "gn": "(CLUB) Saturday U12 Boys 4",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 124,
+            "fg": 60,
+            "fouls": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 7,
+            "ft": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09f9b4c1",
+      "sn": "Summer 2024/25",
+      "club": "Rovers Basketball Club",
+      "regs": [
+        {
+          "tid": "d6c76962",
+          "tn": "Rovers U12 Boys Cockatoos",
+          "gid": "668d4312",
+          "gn": "(CLUB) Saturday U12 Boys 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 166,
+            "fg": 83,
+            "fouls": 24,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 6,
+            "draws": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "67a9e08e",
+          "tn": "Rovers U12 Boys Redbacks",
+          "gid": "15f9d08c",
+          "gn": "(CLUB) Saturday U12 Boys 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8c47a1de",
+      "sn": "Winter 2024",
+      "club": "Rovers Basketball Club",
+      "regs": [
+        {
+          "tid": "05d66fde",
+          "tn": "Rovers U12 Boys Redbacks Mon D5",
+          "gid": "7955091d",
+          "gn": "(CLUB) Monday U12 Boys 5",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 64,
+            "fg": 29,
+            "ft": 6,
+            "fouls": 13,
+            "finals": 1,
+            "wins": 11,
+            "losses": 4,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "05d66fde",
+          "tn": "Rovers U12 Boys Redbacks Mon D5",
+          "gid": "c8e56152",
+          "gn": "(CLUB) Monday U12 Boys 4",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 64,
+            "fg": 29,
+            "ft": 6,
+            "finals": 1,
+            "wins": 11,
+            "losses": 4,
+            "draws": 2,
+            "fouls": 13
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T02:17:06.303Z",
+  "teams": [
+    {
+      "tid": "5d1ab648",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53a73f22",
+      "sid": "b82479c8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "40c4496b",
+      "sid": "2f8128d7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d6c76962",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67a9e08e",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05d66fde",
+      "sid": "8c47a1de",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:02:32.718Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 30,
+      "gameKey": "cc889247",
+      "sid": "c36e5626"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0345b1d6",
+    "04a149f1",
+    "0874fe46",
+    "0e4334d7",
+    "15cab08a",
+    "1c0e33f5",
+    "1dba9171",
+    "1eef4b3c",
+    "284940a0",
+    "30928cf8",
+    "318f46c5",
+    "39e7a1f2",
+    "420ef3e1",
+    "429dfbe9",
+    "4f0a9e17",
+    "59c07993",
+    "5b1e4711",
+    "5b7a7017",
+    "5eaaffef",
+    "6753b342",
+    "735711c5",
+    "7536be34",
+    "773d69b0",
+    "780df58f",
+    "78cbceb0",
+    "7c9e7371",
+    "7e22ecda",
+    "81df9d75",
+    "852ea626",
+    "868164ff",
+    "879f4d56",
+    "8bffdc5b",
+    "91154d2d",
+    "93973d44",
+    "962fd306",
+    "9991b5c2",
+    "9ae4ce0f",
+    "9b79a8c8",
+    "9b8149a4",
+    "9df771a3",
+    "a0716bf1",
+    "a1937a87",
+    "a4939702",
+    "a8b53619",
+    "abb32aea",
+    "ad6fac20",
+    "aede7025",
+    "b3ca9827",
+    "b4964b6b",
+    "b9671156",
+    "bbc89fa4",
+    "bcf636b6",
+    "bfbc9d44",
+    "c3356064",
+    "c3eb5646",
+    "c97279f0",
+    "cc889247",
+    "cd5a1e97",
+    "d013e176",
+    "da4fb2ab",
+    "dc2c4a2d",
+    "e3204d7b",
+    "e39339b7",
+    "e6ff2b50",
+    "e98617d4",
+    "ede66297",
+    "ee92fe2e",
+    "efd26f1d",
+    "f16f0a55",
+    "f19ab3ab",
+    "f9434130",
+    "f996914b"
+  ]
+}

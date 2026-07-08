@@ -1,1 +1,132 @@
-{"uuid":"71593bb8-d17d-4164-b2aa-ee6d6626b667","gender":null,"sports":{"Basketball":{"gp":8,"pts":9,"fouls":1,"fg":2,"ft":2,"threePt":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"wins":9,"losses":9,"draws":6,"winPct":0.38,"statsChecked":"2026-07-05T16:13:57.663Z"}},"seasons":[{"sid":"532e7f37","sn":"Winter 2021","club":"Eltham Wildcats Basketball Club","regs":[{"tid":"9a607c22","tn":"Eltham U17 Girls 01","gid":"e82f01e7","gn":"Girls U17B1","stats":{"gp":8,"wins":3,"losses":3,"draws":2,"pts":9,"fg":2,"ft":2,"threePt":1,"fouls":1}},{"tid":"9a607c22","tn":"Eltham U17 Girls 01","gid":"b45b7b4f","gn":"Girls U17 B Grading","stats":{"gp":8,"pts":9,"fouls":1,"fg":2,"ft":2,"threePt":1,"wins":3,"losses":3,"draws":2}},{"tid":"9a607c22","tn":"Eltham U17 Girls 01","gid":"0f5b1f63","gn":"Girls U17 A Grading","stats":{"gp":8,"wins":3,"losses":3,"draws":2,"pts":9,"fg":2,"ft":2,"threePt":1,"fouls":1}}]}],"updatedAt":"2026-06-11T23:41:01.743Z","records":{"maxGamePTS":{"v":8,"gameKey":"68a9dce3","sid":"532e7f37"},"maxGameThreePt":{"v":1,"gameKey":"68a9dce3","sid":"532e7f37"}},"games":["0ea304a5","1813ac7a","18dff878","68a9dce3","71a64c55","8671a4b1","cb32db2f","e352b1f8"],"name":"Winter 2021"}
+{
+  "uuid": "71593bb8-d17d-4164-b2aa-ee6d6626b667",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 9,
+      "fouls": 1,
+      "fg": 2,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 9,
+      "losses": 9,
+      "draws": 6,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T16:13:57.663Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "532e7f37",
+      "sn": "Winter 2021",
+      "club": "Eltham Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "9a607c22",
+          "tn": "Eltham U17 Girls 01",
+          "gid": "e82f01e7",
+          "gn": "Girls U17B1",
+          "stats": {
+            "gp": 8,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2,
+            "pts": 9,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "9a607c22",
+          "tn": "Eltham U17 Girls 01",
+          "gid": "b45b7b4f",
+          "gn": "Girls U17 B Grading",
+          "stats": {
+            "gp": 8,
+            "pts": 9,
+            "fouls": 1,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 1,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "9a607c22",
+          "tn": "Eltham U17 Girls 01",
+          "gid": "0f5b1f63",
+          "gn": "Girls U17 A Grading",
+          "stats": {
+            "gp": 8,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2,
+            "pts": 9,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "011b6ea1",
+          "tn": "Craigieburn U16 Girls 3",
+          "gid": "9ff180b4",
+          "gn": "U16 Girls VJL 7 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:01.743Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "68a9dce3",
+      "sid": "532e7f37"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "68a9dce3",
+      "sid": "532e7f37"
+    }
+  },
+  "games": [
+    "0ea304a5",
+    "1813ac7a",
+    "18dff878",
+    "68a9dce3",
+    "71a64c55",
+    "8671a4b1",
+    "cb32db2f",
+    "e352b1f8"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "9a607c22",
+      "sid": "532e7f37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "011b6ea1",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-08T12:05:41.375Z"
+}

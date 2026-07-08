@@ -1,1 +1,110 @@
-{"uuid":"b24e3578-7243-4e5c-96aa-2f362581313b","name":"Mason Hayes","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":null,"foulOuts":{"5753f3d9":1},"gp":18,"pts":39,"fg":18,"ft":3,"fouls":20,"statsChecked":"2026-07-06T19:00:31.659Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"17725d63"},{"tid":"17cb8b7c"}]},{"sid":"facf8c4c","regs":[{"tid":"14662bfc"}]},{"sid":"5753f3d9","regs":[{"tid":"9f6fc811"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","gameTids":{"49818019":"17725d63","03601f76":"17725d63","cbcb1783":"17725d63","8a2d16dd":"17725d63","66f5037d":"17725d63","d542a3be":"17cb8b7c","0f8ef3ed":"14662bfc","3783c9e0":"14662bfc","0c864f1b":"14662bfc","c5eaed95":"14662bfc","be220ade":"14662bfc","2bae9d68":"9f6fc811","6e104fc6":"9f6fc811","11f0a888":"9f6fc811","548c2745":"9f6fc811","095720f8":"9f6fc811","efe3adb4":"9f6fc811","863d0e5c":"9f6fc811"},"records":{"maxGamePTS":{"v":12,"gameKey":"6e104fc6","sid":"5753f3d9"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "b24e3578-7243-4e5c-96aa-2f362581313b",
+  "name": "Mason Hayes",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "5753f3d9": 1
+      },
+      "gp": 18,
+      "pts": 39,
+      "fg": 18,
+      "ft": 3,
+      "fouls": 20,
+      "statsChecked": "2026-07-06T19:00:31.659Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "17725d63",
+          "gid": "b14c789a",
+          "gn": "U14 Boys"
+        },
+        {
+          "tid": "17cb8b7c",
+          "gid": "b14c789a",
+          "gn": "U14 Boys"
+        }
+      ]
+    },
+    {
+      "sid": "facf8c4c",
+      "regs": [
+        {
+          "tid": "14662bfc",
+          "gid": "0194a7a2",
+          "gn": "U10 Boys"
+        }
+      ]
+    },
+    {
+      "sid": "5753f3d9",
+      "regs": [
+        {
+          "tid": "9f6fc811",
+          "gid": "98e74571",
+          "gn": "U10 Mixed"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "17725d63",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "17cb8b7c",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "14662bfc",
+      "sid": "facf8c4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9f6fc811",
+      "sid": "5753f3d9",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "gameTids": {
+    "49818019": "17725d63",
+    "03601f76": "17725d63",
+    "cbcb1783": "17725d63",
+    "8a2d16dd": "17725d63",
+    "66f5037d": "17725d63",
+    "d542a3be": "17cb8b7c",
+    "0f8ef3ed": "14662bfc",
+    "3783c9e0": "14662bfc",
+    "0c864f1b": "14662bfc",
+    "c5eaed95": "14662bfc",
+    "be220ade": "14662bfc",
+    "2bae9d68": "9f6fc811",
+    "6e104fc6": "9f6fc811",
+    "11f0a888": "9f6fc811",
+    "548c2745": "9f6fc811",
+    "095720f8": "9f6fc811",
+    "efe3adb4": "9f6fc811",
+    "863d0e5c": "9f6fc811"
+  },
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "6e104fc6",
+      "sid": "5753f3d9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-08T12:07:54.985Z"
+}
