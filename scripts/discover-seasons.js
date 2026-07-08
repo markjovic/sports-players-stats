@@ -112,6 +112,22 @@ const COOKIE_QUERIES = [
   { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
 ];
 
+function syncTeams(player) {
+    const teams = [];
+    const seen = new Set();
+    for (const s of (player.seasons || [])) {
+        for (const r of (s.regs || [])) {
+            if (r.tid && !seen.has(`${r.tid}-${s.sid}`)) {
+                teams.push({ tid: r.tid, sid: s.sid, status: s.status?.value || 'ACTIVE' });
+                seen.add(`${r.tid}-${s.sid}`);
+            }
+        }
+    }
+    player.teams = teams;
+    player.teamsUpdatedAt = new Date().toISOString();
+    return player;
+}
+
 async function refreshSession() {
   if (sessionPromise) return sessionPromise;
   sessionPromise = (async () => {
@@ -711,7 +727,10 @@ async function main() {
         }
 
         if (fileModified && localPlayer && !DRY_RUN) {
-          fs.writeFileSync(filePath, JSON.stringify(localPlayer, null, 2));
+          syncTeams(localPlayer); // Add this sync!
+          const root = process.env.GITHUB_WORKSPACE || process.cwd();
+          const absolutePath = path.join(root, 'players', uuid.substring(0, 2), `${uuid}.json`);
+          fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
         }
       }
     });
@@ -871,7 +890,10 @@ async function main() {
       }
 
       if (fileModified && localPlayer && !DRY_RUN) {
-        fs.writeFileSync(filePath, JSON.stringify(localPlayer, null, 2));
+        syncTeams(localPlayer); // Add this sync!
+        const root = process.env.GITHUB_WORKSPACE || process.cwd();
+        const absolutePath = path.join(root, 'players', uuid.substring(0, 2), `${uuid}.json`);
+        fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
       }
     }
     
