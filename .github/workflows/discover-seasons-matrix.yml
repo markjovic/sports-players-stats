@@ -134,7 +134,6 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
-          filter: blob:none
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
@@ -171,6 +170,7 @@ jobs:
           PYEOF
 
           if [ "${{ inputs.dry_run }}" != "true" ]; then
+            git add -u
             git add data/discover-progress.json data/sports-index.json players/ team-lookup/
             if ! git diff --cached --quiet; then
               git commit -m "update: progress + rosters"
