@@ -41,7 +41,17 @@ function fmtMB(bytes) {
 
 function run(cmd) {
   console.log('> ' + cmd);
-  return execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'inherit'] })
+  // maxBuffer bumped as defense-in-depth, but the real fix is that every
+  // command below is invoked in its quiet/no-stat form. git commit (without
+  // -q) prints a "delete mode <mode> <path>" line per deleted file, and git
+  // merge (without --no-stat) prints a full per-file diffstat by default —
+  // both blow well past 1MB of stdout at 355k deletions, which is exactly
+  // the ENOBUFS class of bug this project already guards against for
+  // `git diff --stat` (use --shortstat instead). Confirmed against a scratch
+  // repo before landing this fix: git commit -q and git merge --no-stat both
+  // produce near-zero stdout regardless of file count, with identical
+  // resulting commit/merge behavior.
+  return execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 10 * 1024 * 1024 })
     .toString()
     .trim();
 }
@@ -60,8 +70,9 @@ function gitCommit(targets, message) {
   }
 
   run('git fetch origin main');
-  run('git merge -X ours FETCH_HEAD --no-edit');
-  run(`git commit -m "${message}"`);
+  run('git merge -X ours FETCH_HEAD --no-edit --no-stat');
+  run(`git commit -q -m "${message}"`);
+  run('git log -1 --oneline'); // read-back proof the commit actually landed, cheap and small
   run('git push origin main');
 }
 
