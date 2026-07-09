@@ -733,11 +733,29 @@ async function main() {
 
   // ── SHARD/MAP role: cursor-resumable burst probe. 
   if (SHARD && OUT_FILE) {
+    // Cursor resolution: an explicit --cursor=N wins (manual/adhoc use). Otherwise
+    // the map job passes only the shard, and we read this shard's saved cursor from
+    // the committed progress file ourselves. This is deliberate — passing cursors
+    // through the matrix output made that output grow past the ~8KB size boundary
+    // that caused GitHub to resolve the matrix EMPTY and skip the whole map job.
+    // Keeping the matrix output to bare shard strings avoids that entirely.
+    let effectiveCursor = CURSOR;
+    const cursorWasExplicit = args.some(a => a.startsWith('--cursor='));
+    if (!cursorWasExplicit) {
+      try {
+        const prog = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
+        const p = prog[SHARD];
+        const expectedMode = BACKFILL_TEAMS ? 'all+backfill' : (ALL_PLAYERS ? 'all' : 'current');
+        // Only resume from a cursor recorded for THIS mode — a cursor from a
+        // different mode indexes a different player list and would be meaningless.
+        if (p && p.mode === expectedMode && !p.done) effectiveCursor = p.cursor || 0;
+      } catch { /* no progress file yet → cursor 0 (fresh) */ }
+    }
     console.log(`  Scanning shard ${SHARD} for ${ALL_PLAYERS ? 'ALL players' : 'current-season players'}…`);
     const full = currentSeasonPlayers(activeSids, { shard: SHARD, allPlayers: ALL_PLAYERS });
     const total = full.length;
-    const toProbe = full.slice(CURSOR);
-    console.log(`  Shard total: ${total}  cursor: ${CURSOR}  remaining: ${toProbe.length}  burst concurrency: ${CONCURRENCY}`);
+    const toProbe = full.slice(effectiveCursor);
+    console.log(`  Shard total: ${total}  cursor: ${effectiveCursor}${cursorWasExplicit ? ' (explicit)' : ' (from progress)'}  remaining: ${toProbe.length}  burst concurrency: ${CONCURRENCY}`);
 
     const newSeasonMeta = new Map();
     const playerDeltas = {};   // uuid -> [{sid, sn, tid, tn, gid, gn}, ...] — NOT a file snapshot.
@@ -779,9 +797,9 @@ async function main() {
       }
     });
 
-    const newCursor = CURSOR + completed;
+    const newCursor = effectiveCursor + completed;
     const done = newCursor >= total;
-    if (wallHit) console.log(`  ⛔ wall hit after ${completed} clean this run — stopping dead (cursor ${CURSOR} → ${newCursor}/${total}). Fresh runner will resume.`);
+    if (wallHit) console.log(`  ⛔ wall hit after ${completed} clean this run — stopping dead (cursor ${effectiveCursor} → ${newCursor}/${total}). Fresh runner will resume.`);
     else if (done) console.log(`  ✔ shard exhausted (cursor ${newCursor}/${total}).`);
 
     const discovered = Object.fromEntries(newSeasonMeta);
