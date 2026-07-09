@@ -41,7 +41,7 @@
 //   node scripts/discover-seasons.js --concurrency=N    # burst batch size (shard) / AIMD cap (standalone), default 25
 //   node scripts/discover-seasons.js --uuid=<id>        # manual escape hatch: probe one player
 //   node scripts/discover-seasons.js --dry-run          # report only, no writes/commit
-//   node scripts/discover-seasons.js --backfill-teams   # extract pre-season rosters into players/ and team-lookup/
+//   node scripts/discover-seasons.js --backfill-teams   # extract pre-season rosters into players/ (team-lookup/ writes disabled — no consumer)
 //
 // PRODUCTION PATH is the sharded matrix (discover-seasons-matrix.yml): shard MAP jobs
 // each get a fresh runner IP, burst-probe until walled, save a cursor; a control loop
@@ -62,7 +62,9 @@ const { execSync } = require('child_process');
 const ROOT        = path.join(__dirname, '..');
 const API_URL     = 'https://api.playhq.com/graphql';
 const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
+const INDEX_FILE_REL = 'data/sports-index.json';
 const PROGRESS_FILE = path.join(ROOT, 'data', 'discover-progress.json');   // per-shard cursor/done (matrix resume state)
+const PROGRESS_FILE_REL = 'data/discover-progress.json';
 const PLAYERS_DIR = path.join(ROOT, 'players');
 
 // TEAM_LOOKUP_DIR disabled — team-lookup/ files are not consumed by any downstream script.
@@ -358,11 +360,16 @@ async function burstRun(items, concurrency, worker) {
   return { completed, wallHit: false };
 }
 
-function gitCommit(msg, extraPaths = []) {
+function gitCommit(msg, paths = []) {
   if (DRY_RUN) return;
+  const uniquePaths = [...new Set(paths)].filter(Boolean);
+  if (!uniquePaths.length) { console.log('  Nothing to commit (no paths given).'); return; }
   try {
-    // FORCE ALL UPDATES to be staged (crucial for dynamically created player files)
-    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
+    // Explicit paths only — NEVER -A. This repo is ~8.6GB / 369k+ files; `-A` walks
+    // the whole index and risks ENOBUFS, exactly what the project's own git
+    // conventions exist to prevent. git add on an unchanged tracked path is a
+    // harmless no-op, so always including index/progress here is safe.
+    execSync(`git add ${uniquePaths.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
     const staged = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
     execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
@@ -585,6 +592,7 @@ async function main() {
     //    This is what eliminates the stale-snapshot clobber risk: we read each
     //    player's CURRENT on-disk content right here, not whatever MAP saw earlier.
     let playersWritten = 0, playersMissing = 0;
+    const touchedPlayerDirs = new Set();   // relative paths, e.g. 'players/00' — for explicit git add
     for (const [uuid, deltas] of mergedDeltas) {
       const filePath = path.join(PLAYERS_DIR, uuid.substring(0, 2), `${uuid}.json`);
       let player;
@@ -608,6 +616,7 @@ async function main() {
         syncTeams(player);
         if (!DRY_RUN) fs.writeFileSync(filePath, JSON.stringify(player, null, 2));
         playersWritten++;
+        touchedPlayerDirs.add(`players/${uuid.substring(0, 2)}`);
       }
     }
     if (mergedDeltas.size) {
@@ -620,17 +629,24 @@ async function main() {
     // rather than leave a stale 256-entry "all done" file sitting in the repo.
     const trackedShards = Object.values(progress);
     const allDone = trackedShards.length > 0 && trackedShards.every(p => p.done === true);
+    let progressDeleted = false;
     if (!DRY_RUN) {
       if (allDone) {
         if (fs.existsSync(PROGRESS_FILE)) fs.unlinkSync(PROGRESS_FILE);
+        progressDeleted = true;
         console.log('  ✔ All tracked shards complete — progress file removed (redundant until the next fresh sweep).');
       } else {
         fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
       }
     }
-    
-    // Pass playersWritten into stats so applyDiscoveries knows to commit!
-    await applyDiscoveries(index, merged, { t0, playersWritten }, [PROGRESS_FILE]);
+
+    // Explicit paths only — index always (no-op if unchanged), progress unless it
+    // was just deleted (git add on a path that no longer exists on disk correctly
+    // stages the deletion — but only if it was TRACKED before; deleting an already-
+    // untracked/never-committed file has nothing to stage, which is fine either way),
+    // and every shard directory the delta-apply loop actually touched.
+    const commitPaths = [INDEX_FILE_REL, ...(progressDeleted || fs.existsSync(PROGRESS_FILE) ? [PROGRESS_FILE_REL] : []), ...touchedPlayerDirs];
+    await applyDiscoveries(index, merged, { t0, playersWritten }, commitPaths);
 
     console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
     return;
@@ -806,6 +822,7 @@ async function main() {
   const newSeasonMeta = new Map();
   let probed = 0, privateN = 0, errors = 0;
   let probesSinceNew = 0, stop = false, playersWritten = 0, teamsWritten = 0;
+  const touchedPlayerDirsStandalone = new Set();
 
   const total = probeList.length;
   const t0 = Date.now();
@@ -925,6 +942,7 @@ async function main() {
         if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
         fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
         playersWritten++;
+        touchedPlayerDirsStandalone.add(`players/${uuid.substring(0, 2)}`);
       }
     }
     
@@ -943,7 +961,7 @@ async function main() {
   const blockedEvents = probeStats.blockedEvents;
 
   // Pass tracking vars to applyDiscoveries
-  await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0, playersWritten, teamsWritten });
+  await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0, playersWritten, teamsWritten }, [INDEX_FILE_REL, ...touchedPlayerDirsStandalone]);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
