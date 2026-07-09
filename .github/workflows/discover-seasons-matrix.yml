@@ -332,6 +332,14 @@ jobs:
           fi
           next_run=$(( run_number + 1 ))
           echo "↺ $(echo "$UNDONE" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))') shard(s) not yet done — re-triggering run $next_run on fresh runners."
+          # Deliberate delay: this fires immediately after THIS run's own 256-job
+          # matrix finished. A manual dispatch never has that problem — it happens
+          # at an arbitrary time with no residual load. A self-triggered run always
+          # requests its own 256-job matrix in the immediate aftermath of one just
+          # finishing. Give runners time to actually deprovision before asking for
+          # 256 more, rather than requesting them the instant reduce completes.
+          echo "Waiting 90s before requesting the next matrix…"
+          sleep 90
           gh workflow run discover-seasons-matrix.yml \
             --repo "${{ github.repository }}" \
             --field "shards=${UNDONE}" \
