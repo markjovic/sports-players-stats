@@ -1,1 +1,311 @@
-{"uuid":"89160939-5530-40ae-937f-c4ca4ea90c96","name":"Dale Duggan","gender":"Men","sports":{"Basketball":{"gp":55,"pts":245,"fouls":99,"fg":87,"ft":36,"threePt":7,"foulOuts":{"aeb3379c":2,"ad52ee1b":1},"maxGamePTS":13,"maxGameThreePt":1,"wins":26,"losses":22,"winPct":0.52,"draws":2,"statsChecked":"2026-07-08T17:53:21.733Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"c14ff4c8","tn":"Bentleigh Fakers ","gid":"1a871883","gn":"Wednesday Open Men Section 5","age":"Senior","div":null,"stats":{"gp":12,"fouls":12,"ft":3,"fg":7,"threePt":1,"pts":34,"wins":11}}]},{"sid":"aeb3379c","sn":"Summer 2024/25","regs":[{"tid":"34f931c0","tn":"Horsin' Around (Jungle Boys)","gid":"9a719c20","gn":"Wednesday Senior Men F1/F2","age":"Senior","div":"F2","stats":{"gp":17,"fouls":39,"ft":20,"fg":29,"threePt":2,"pts":84,"foulOuts":2,"wins":9,"losses":5,"draws":2}}]},{"sid":"ad52ee1b","sn":"Winter 2024","regs":[{"tid":"d5545f5b","tn":"Jive Turkeys","gid":"4af0f6e4","gn":"Wednesday Senior Men A/B","age":"Senior","div":null,"stats":{"gp":14,"fouls":26,"ft":8,"fg":39,"threePt":3,"pts":95,"foulOuts":1,"wins":1,"losses":12}}]},{"sid":"7a6ac9e2","sn":"Summer 2022/23","regs":[{"tid":"e3fa344c","tn":"Don Johnsons","gid":"ccd27fbb","gn":"Wednesday Open Men A GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":8,"fouls":13,"ft":3,"fg":7,"pts":17,"wins":3,"losses":4}}]},{"sid":"d18d4630","sn":"Winter 2022","regs":[{"tid":"e9e2e6ab","tn":"Jive Turkeys","gid":"26b759b1","gn":"Wednesday Senior Men B","age":"Senior","div":null,"stats":{"gp":1,"fouls":2,"fg":3,"threePt":1,"pts":9,"wins":1}}]},{"sid":"90a7a885","sn":"Summer 2021/22","regs":[{"tid":"10bc8bb8","tn":"Court Kingz Mon","gid":"df0f2357","gn":"Monday Senior Men C Reserve","age":"Senior","div":null,"stats":{"gp":2,"fouls":7,"ft":2,"fg":1,"pts":4,"wins":1,"losses":1}}]},{"sid":"297562bc","sn":"Spring 2026","regs":[{"tid":"07617988","tn":"Bentleigh Fakers ","gid":"5a517af6","gn":"Wednesday Open Men Section 4","stats":{"gp":1,"pts":2,"fg":1}}]},{"sid":"fab2be4d","sn":"Spring 2025","regs":[{"tid":"48184a9e","tn":"Just Play Pirates","gid":null,"gn":null,"stats":{}}]}],"updatedAt":"2026-07-08T17:28:23.718Z","teams":[{"tid":"c14ff4c8","sid":"5593103d","status":"ACTIVE"},{"tid":"34f931c0","sid":"aeb3379c","status":"ACTIVE"},{"tid":"d5545f5b","sid":"ad52ee1b","status":"ACTIVE"},{"tid":"e3fa344c","sid":"7a6ac9e2","status":"ACTIVE"},{"tid":"e9e2e6ab","sid":"d18d4630","status":"ACTIVE"},{"tid":"10bc8bb8","sid":"90a7a885","status":"ACTIVE"},{"tid":"07617988","sid":"297562bc","status":"ACTIVE"},{"tid":"48184a9e","sid":"fab2be4d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-07-08T11:27:38.447Z","records":{"maxGamePTS":{"v":13,"gameKey":"13c02523","sid":"ad52ee1b"},"maxGameThreePt":{"v":1,"gameKey":"9ac0a8f0","sid":"5593103d"}},"games":["0c088e63","0d259951","13c02523","15fdb42d","18b65ee9","18d76dac","1e5a1e8c","1eb99c0a","281d2c82","2cc14ea1","2f3b7871","317b36fc","3fa65f53","469107fe","4d7eb31a","4ed20f70","5ab9a537","5d9a5535","5dc8eb24","6364f1ae","6e3bd364","767ad9c2","78873592","7eb5ad56","7fd9d516","80824813","88be0836","8c272b14","938a5689","94e45a3c","9ac0a8f0","a32f817c","a41eb4d4","af362e5f","b29f5463","b32bcabe","b81602f2","bb537cf0","c7e108a5","ccb03f9a","cd972819","d0f35323","d44e9a8f","d51843e8","daf9dec2","e640eab4","e723e9a5","f6dc5f0a","f75cbbf8","fa542a85","fa5594ae","fbb8f4f5","fdc207bc"]}
+{
+  "uuid": "89160939-5530-40ae-937f-c4ca4ea90c96",
+  "name": "Dale Duggan",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 245,
+      "fouls": 99,
+      "fg": 87,
+      "ft": 36,
+      "threePt": 7,
+      "foulOuts": {
+        "aeb3379c": 2,
+        "ad52ee1b": 1
+      },
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 26,
+      "losses": 22,
+      "winPct": 0.52,
+      "draws": 2,
+      "statsChecked": "2026-07-08T17:53:21.733Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "c14ff4c8",
+          "tn": "Bentleigh Fakers ",
+          "gid": "1a871883",
+          "gn": "Wednesday Open Men Section 5",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 7,
+            "threePt": 1,
+            "pts": 34,
+            "wins": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "aeb3379c",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "34f931c0",
+          "tn": "Horsin' Around (Jungle Boys)",
+          "gid": "9a719c20",
+          "gn": "Wednesday Senior Men F1/F2",
+          "age": "Senior",
+          "div": "F2",
+          "stats": {
+            "gp": 17,
+            "fouls": 39,
+            "ft": 20,
+            "fg": 29,
+            "threePt": 2,
+            "pts": 84,
+            "foulOuts": 2,
+            "wins": 9,
+            "losses": 5,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad52ee1b",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "d5545f5b",
+          "tn": "Jive Turkeys",
+          "gid": "4af0f6e4",
+          "gn": "Wednesday Senior Men A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 26,
+            "ft": 8,
+            "fg": 39,
+            "threePt": 3,
+            "pts": 95,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a6ac9e2",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "e3fa344c",
+          "tn": "Don Johnsons",
+          "gid": "ccd27fbb",
+          "gn": "Wednesday Open Men A GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 7,
+            "pts": 17,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d18d4630",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "e9e2e6ab",
+          "tn": "Jive Turkeys",
+          "gid": "26b759b1",
+          "gn": "Wednesday Senior Men B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 9,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "90a7a885",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "10bc8bb8",
+          "tn": "Court Kingz Mon",
+          "gid": "df0f2357",
+          "gn": "Monday Senior Men C Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 1,
+            "pts": 4,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "07617988",
+          "tn": "Bentleigh Fakers ",
+          "gid": "2a868829",
+          "gn": "Wednesday Open Men Section 3",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "48184a9e",
+          "tn": "Just Play Pirates",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:28:23.718Z",
+  "teams": [
+    {
+      "tid": "c14ff4c8",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "34f931c0",
+      "sid": "aeb3379c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d5545f5b",
+      "sid": "ad52ee1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e3fa344c",
+      "sid": "7a6ac9e2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e9e2e6ab",
+      "sid": "d18d4630",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "10bc8bb8",
+      "sid": "90a7a885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07617988",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "48184a9e",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T09:02:15.262Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "13c02523",
+      "sid": "ad52ee1b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "9ac0a8f0",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "0c088e63",
+    "0d259951",
+    "13c02523",
+    "15fdb42d",
+    "18b65ee9",
+    "18d76dac",
+    "1e5a1e8c",
+    "1eb99c0a",
+    "281d2c82",
+    "2cc14ea1",
+    "2f3b7871",
+    "317b36fc",
+    "3fa65f53",
+    "469107fe",
+    "4d7eb31a",
+    "4ed20f70",
+    "5ab9a537",
+    "5d9a5535",
+    "5dc8eb24",
+    "6364f1ae",
+    "6e3bd364",
+    "767ad9c2",
+    "78873592",
+    "7eb5ad56",
+    "7fd9d516",
+    "80824813",
+    "88be0836",
+    "8c272b14",
+    "938a5689",
+    "94e45a3c",
+    "9ac0a8f0",
+    "a32f817c",
+    "a41eb4d4",
+    "af362e5f",
+    "b29f5463",
+    "b32bcabe",
+    "b81602f2",
+    "bb537cf0",
+    "c7e108a5",
+    "ccb03f9a",
+    "cd972819",
+    "d0f35323",
+    "d44e9a8f",
+    "d51843e8",
+    "daf9dec2",
+    "e640eab4",
+    "e723e9a5",
+    "f6dc5f0a",
+    "f75cbbf8",
+    "fa542a85",
+    "fa5594ae",
+    "fbb8f4f5",
+    "fdc207bc"
+  ]
+}
