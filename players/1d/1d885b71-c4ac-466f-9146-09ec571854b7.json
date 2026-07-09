@@ -1,1 +1,74 @@
-{"uuid":"1d885b71-c4ac-466f-9146-09ec571854b7","name":"Josh Hunter","sports":{"Basketball":{"maxGamePTS":2,"maxGameThreePt":null,"foulOuts":{},"gp":3,"pts":2,"fg":1,"fouls":2,"statsChecked":"2026-07-06T19:09:36.888Z"}},"seasons":[{"sid":"ec7d3f73","regs":[{"tid":"786e11c3"},{"tid":"b276643e"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","gameTids":{"1fb449a4":"786e11c3","f59699c8":"b276643e","38ca0f47":"b276643e"},"records":{"maxGamePTS":{"v":2,"gameKey":"1fb449a4","sid":"ec7d3f73"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "1d885b71-c4ac-466f-9146-09ec571854b7",
+  "name": "Josh Hunter",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 3,
+      "pts": 2,
+      "fg": 1,
+      "fouls": 2,
+      "statsChecked": "2026-07-06T19:09:36.888Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ec7d3f73",
+      "regs": [
+        {
+          "tid": "786e11c3",
+          "gid": "a6363a34",
+          "gn": "Monday Senior Men Division 4"
+        },
+        {
+          "tid": "b276643e",
+          "gid": "9cd12882",
+          "gn": "Monday Senior Men Division 3"
+        },
+        {
+          "tid": "5146e66c",
+          "tn": "90s Melbourne Rooftop Ballers",
+          "gid": "0c7f76ed",
+          "gn": "Monday Senior Men Division 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "786e11c3",
+      "sid": "ec7d3f73",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b276643e",
+      "sid": "ec7d3f73",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5146e66c",
+      "sid": "ec7d3f73",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "gameTids": {
+    "1fb449a4": "786e11c3",
+    "f59699c8": "b276643e",
+    "38ca0f47": "b276643e"
+  },
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "1fb449a4",
+      "sid": "ec7d3f73"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:18.350Z"
+}

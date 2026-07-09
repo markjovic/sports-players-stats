@@ -1,1 +1,162 @@
-{"uuid":"d7c338b0-fc19-4785-871e-75a258dfa814","name":"Sonny Gelbak","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":37,"fouls":11,"fg":17,"ft":3,"foulOuts":{"6c117270":1},"maxGamePTS":11,"maxGameThreePt":null,"losses":12,"winPct":0,"statsChecked":"2026-07-05T15:12:59.274Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Maccabi Victoria Basketball Club","regs":[{"tid":"c60390dd","tn":"Maccabi U16 Boys Ducks","gid":"f51e75cb","gn":"Saturday U16 Boys Section 05","age":"U16","div":null,"stats":{"gp":6,"fouls":11,"ft":3,"fg":17,"pts":37,"foulOuts":1,"losses":6}},{"tid":"c60390dd","tn":"","gid":"4e7f10d4","gn":"Saturday U16 Boys Section 06","div":null,"stats":{"gp":6,"pts":37,"fg":17,"ft":3,"fouls":11,"losses":6}}]}],"updatedAt":"2026-07-04T05:45:22.764Z","teams":[{"tid":"c60390dd","sid":"6c117270","status":"ACTIVE"},{"tid":"878e68e4","sid":"ee5d2724","status":"COMPLETED"},{"tid":"ea6c0708","sid":"7d20ecad","status":"COMPLETED"},{"tid":"a4ccd9ca","sid":"e2637fe8","status":"COMPLETED"},{"tid":"7e79dd47","sid":"eb0c3879","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:53.211Z","records":{"maxGamePTS":{"v":11,"gameKey":"5f9e00a9","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["1eaefae4","5b6a14d6","5f9e00a9","7be8b972","9ab09e72","fbfd2ded"]}
+{
+  "uuid": "d7c338b0-fc19-4785-871e-75a258dfa814",
+  "name": "Sonny Gelbak",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 37,
+      "fouls": 11,
+      "fg": 17,
+      "ft": 3,
+      "foulOuts": {
+        "6c117270": 1
+      },
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "losses": 12,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:12:59.274Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Maccabi Victoria Basketball Club",
+      "regs": [
+        {
+          "tid": "c60390dd",
+          "tn": "Maccabi U16 Boys Ducks",
+          "gid": "4e7f10d4",
+          "gn": "Saturday U16 Boys Section 06",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 11,
+            "ft": 3,
+            "fg": 17,
+            "pts": 37,
+            "foulOuts": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "c60390dd",
+          "tn": "",
+          "gid": "4e7f10d4",
+          "gn": "Saturday U16 Boys Section 06",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 37,
+            "fg": 17,
+            "ft": 3,
+            "fouls": 11,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "878e68e4",
+          "tn": "Maccabi U12 Boys Jaguars",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "ea6c0708",
+          "tn": "Maccabi U12 Boys Hawks",
+          "gid": "a01a90ad",
+          "gn": "Saturday U12 Boys Grading pool 6",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "a4ccd9ca",
+          "tn": "Maccabi U12 Boys Eagles",
+          "gid": "ec6fa7a7",
+          "gn": "U12 Boys (S22_23) Division 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "7e79dd47",
+          "tn": "Maccabi U10 Boys Celtics",
+          "gid": "dfe5e439",
+          "gn": "U10 Boys Division 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:45:22.764Z",
+  "teams": [
+    {
+      "tid": "c60390dd",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "878e68e4",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ea6c0708",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4ccd9ca",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e79dd47",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.059Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "5f9e00a9",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1eaefae4",
+    "5b6a14d6",
+    "5f9e00a9",
+    "7be8b972",
+    "9ab09e72",
+    "fbfd2ded"
+  ]
+}

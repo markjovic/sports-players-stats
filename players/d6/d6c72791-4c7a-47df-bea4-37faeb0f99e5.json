@@ -1,1 +1,307 @@
-{"uuid":"d6c72791-4c7a-47df-bea4-37faeb0f99e5","name":"Margita Putnikovic","gender":"Girls","sports":{"Basketball":{"gp":35,"pts":51,"fouls":32,"fg":21,"ft":9,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{"9c1e219b":1},"maxGamePTS":6,"maxGameThreePt":null,"wins":18,"losses":36,"winPct":0.33,"statsChecked":"2026-07-05T15:13:01.745Z"}},"seasons":[{"sid":"3ae39dac","sn":"Winter 2023","club":"White Eagles Basketball Club","regs":[{"tid":"ca759ae8","tn":"White Eagles U16 Girls Bora","gid":"a0e78605","gn":"Saturday U16 Girls A","age":"U16","div":null,"stats":{"gp":7,"fouls":5,"fg":1,"pts":2,"wins":1,"losses":6}}]},{"sid":"5baf6003","sn":"Winter 2022","regs":[{"tid":"52428673","tn":"White Eagles G16","gid":"994f4fef","gn":"Saturday U16 Girls B","age":"U16","div":null,"stats":{"gp":9,"fouls":3,"ft":4,"fg":5,"pts":14,"wins":1,"losses":8}},{"tid":"29fddb47","stats":{"wins":1,"gp":2}}]},{"sid":"5baf6003","sn":"Winter 2022","regs":[{"tid":"29fddb47","tn":"White Eagles B16","gid":"1018e127","gn":"Saturday U16 Boys A1","age":"U16","div":"A1","stats":{"gp":2,"wins":1}},{"tid":"29fddb47","tn":"White Eagles B16","gid":"8d983577","gn":"Saturday U16 Boys B/BR","age":"U16","div":null,"stats":{"gp":2,"wins":1}}]},{"sid":"9c1e219b","sn":"2021/22","regs":[{"tid":"ef4f9af9","tn":"White Eagles 14 Girls","gid":"abe1a2ef","gn":"Saturday U14 Girls B/BR","age":"U14","div":null,"stats":{"gp":12,"fouls":24,"ft":5,"fg":15,"pts":35,"finals":1,"foulOuts":1,"wins":4,"losses":6}},{"tid":"ef4f9af9","tn":"White Eagles 14 Girls","gid":"76ab9efa","gn":"Saturday U14 Girls A","age":"U14","div":null,"stats":{"gp":12,"fouls":24,"ft":5,"fg":15,"pts":35,"finals":1,"wins":4,"losses":6}},{"tid":"ef4f9af9","tn":"White Eagles 14 Girls","gid":"5e774913","gn":"Saturday U14 Girls C**","age":"U14","div":null,"stats":{"gp":12,"fouls":24,"ft":5,"fg":15,"pts":35,"finals":1,"wins":4,"losses":6}}]},{"sid":"1603f576","sn":"Summer 2020/21","regs":[{"tid":"2674513c","tn":"White Eagles U16","gid":"a9e86a74","gn":"Saturday U16 Boys E/ER","age":"U16","div":null,"stats":{"gp":5,"wins":1,"losses":4}}]}],"updatedAt":"2026-06-01T05:54:37.987Z","teams":[{"tid":"ca759ae8","sid":"3ae39dac","status":"COMPLETED"},{"tid":"29fddb47","sid":"5baf6003","status":"COMPLETED"},{"tid":"52428673","sid":"5baf6003","status":"COMPLETED"},{"tid":"ef4f9af9","sid":"9c1e219b","status":"COMPLETED"},{"tid":"2674513c","sid":"1603f576","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:47.893Z","records":{"maxGamePTS":{"v":6,"gameKey":"847af5f6","sid":"9c1e219b"},"maxGameThreePt":{"v":null}},"games":["04c1dc6d","050bc7a3","1241f10e","162335b0","1d78a802","24cda7af","25d1d418","2bc2b926","316c8056","38876db3","406129bd","4171c729","4d03da5c","50413dd4","5b494182","62d7baef","67b75387","686af471","6c3c81aa","6dcc0234","7850e678","7dfc6ae4","82bbef1c","847af5f6","955a9f4c","9c2d4f34","9d63994b","b23edaec","bb8e56dc","c685ff11","c89a9b03","d0d869cc","d4f6295d","d70f6fab","f19efbb9"],"gameTids":{"67b75387":"ca759ae8","9c2d4f34":"ca759ae8","2bc2b926":"ca759ae8","38876db3":"ca759ae8","5b494182":"ca759ae8","f19efbb9":"ca759ae8","6c3c81aa":"ca759ae8","b23edaec":"52428673","c685ff11":"52428673","82bbef1c":"52428673","d4f6295d":"52428673","4171c729":"52428673","6dcc0234":"52428673","bb8e56dc":"52428673","04c1dc6d":"52428673","d0d869cc":"52428673","1241f10e":"29fddb47","7dfc6ae4":"29fddb47","316c8056":"ef4f9af9","50413dd4":"ef4f9af9","4d03da5c":"ef4f9af9","9d63994b":"ef4f9af9","62d7baef":"ef4f9af9","1d78a802":"ef4f9af9","955a9f4c":"ef4f9af9","162335b0":"ef4f9af9","c89a9b03":"ef4f9af9","406129bd":"ef4f9af9","d70f6fab":"ef4f9af9","847af5f6":"ef4f9af9","24cda7af":"2674513c","050bc7a3":"2674513c","686af471":"2674513c","7850e678":"2674513c","25d1d418":"2674513c"}}
+{
+  "uuid": "d6c72791-4c7a-47df-bea4-37faeb0f99e5",
+  "name": "Margita Putnikovic",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 51,
+      "fouls": 32,
+      "fg": 21,
+      "ft": 9,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {
+        "9c1e219b": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 18,
+      "losses": 36,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:13:01.745Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3ae39dac",
+      "sn": "Winter 2023",
+      "club": "White Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "ca759ae8",
+          "tn": "White Eagles U16 Girls Bora",
+          "gid": "a0e78605",
+          "gn": "Saturday U16 Girls A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5baf6003",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "52428673",
+          "tn": "White Eagles G16",
+          "gid": "994f4fef",
+          "gn": "Saturday U16 Girls B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 3,
+            "ft": 4,
+            "fg": 5,
+            "pts": 14,
+            "wins": 1,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "29fddb47",
+          "stats": {
+            "wins": 1,
+            "gp": 2
+          },
+          "gid": "1018e127",
+          "gn": "Saturday U16 Boys A1"
+        }
+      ]
+    },
+    {
+      "sid": "5baf6003",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "29fddb47",
+          "tn": "White Eagles B16",
+          "gid": "1018e127",
+          "gn": "Saturday U16 Boys A1",
+          "age": "U16",
+          "div": "A1",
+          "stats": {
+            "gp": 2,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "29fddb47",
+          "tn": "White Eagles B16",
+          "gid": "8d983577",
+          "gn": "Saturday U16 Boys B/BR",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9c1e219b",
+      "sn": "2021/22",
+      "regs": [
+        {
+          "tid": "ef4f9af9",
+          "tn": "White Eagles 14 Girls",
+          "gid": "abe1a2ef",
+          "gn": "Saturday U14 Girls B/BR",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "ft": 5,
+            "fg": 15,
+            "pts": 35,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "ef4f9af9",
+          "tn": "White Eagles 14 Girls",
+          "gid": "76ab9efa",
+          "gn": "Saturday U14 Girls A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "ft": 5,
+            "fg": 15,
+            "pts": 35,
+            "finals": 1,
+            "wins": 4,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "ef4f9af9",
+          "tn": "White Eagles 14 Girls",
+          "gid": "5e774913",
+          "gn": "Saturday U14 Girls C**",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "ft": 5,
+            "fg": 15,
+            "pts": 35,
+            "finals": 1,
+            "wins": 4,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1603f576",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "2674513c",
+          "tn": "White Eagles U16",
+          "gid": "a9e86a74",
+          "gn": "Saturday U16 Boys E/ER",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T05:54:37.987Z",
+  "teams": [
+    {
+      "tid": "ca759ae8",
+      "sid": "3ae39dac",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52428673",
+      "sid": "5baf6003",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "29fddb47",
+      "sid": "5baf6003",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef4f9af9",
+      "sid": "9c1e219b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2674513c",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.979Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "847af5f6",
+      "sid": "9c1e219b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "04c1dc6d",
+    "050bc7a3",
+    "1241f10e",
+    "162335b0",
+    "1d78a802",
+    "24cda7af",
+    "25d1d418",
+    "2bc2b926",
+    "316c8056",
+    "38876db3",
+    "406129bd",
+    "4171c729",
+    "4d03da5c",
+    "50413dd4",
+    "5b494182",
+    "62d7baef",
+    "67b75387",
+    "686af471",
+    "6c3c81aa",
+    "6dcc0234",
+    "7850e678",
+    "7dfc6ae4",
+    "82bbef1c",
+    "847af5f6",
+    "955a9f4c",
+    "9c2d4f34",
+    "9d63994b",
+    "b23edaec",
+    "bb8e56dc",
+    "c685ff11",
+    "c89a9b03",
+    "d0d869cc",
+    "d4f6295d",
+    "d70f6fab",
+    "f19efbb9"
+  ],
+  "gameTids": {
+    "67b75387": "ca759ae8",
+    "9c2d4f34": "ca759ae8",
+    "2bc2b926": "ca759ae8",
+    "38876db3": "ca759ae8",
+    "5b494182": "ca759ae8",
+    "f19efbb9": "ca759ae8",
+    "6c3c81aa": "ca759ae8",
+    "b23edaec": "52428673",
+    "c685ff11": "52428673",
+    "82bbef1c": "52428673",
+    "d4f6295d": "52428673",
+    "4171c729": "52428673",
+    "6dcc0234": "52428673",
+    "bb8e56dc": "52428673",
+    "04c1dc6d": "52428673",
+    "d0d869cc": "52428673",
+    "1241f10e": "29fddb47",
+    "7dfc6ae4": "29fddb47",
+    "316c8056": "ef4f9af9",
+    "50413dd4": "ef4f9af9",
+    "4d03da5c": "ef4f9af9",
+    "9d63994b": "ef4f9af9",
+    "62d7baef": "ef4f9af9",
+    "1d78a802": "ef4f9af9",
+    "955a9f4c": "ef4f9af9",
+    "162335b0": "ef4f9af9",
+    "c89a9b03": "ef4f9af9",
+    "406129bd": "ef4f9af9",
+    "d70f6fab": "ef4f9af9",
+    "847af5f6": "ef4f9af9",
+    "24cda7af": "2674513c",
+    "050bc7a3": "2674513c",
+    "686af471": "2674513c",
+    "7850e678": "2674513c",
+    "25d1d418": "2674513c"
+  }
+}

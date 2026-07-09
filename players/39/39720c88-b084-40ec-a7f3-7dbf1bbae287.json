@@ -1,1 +1,84 @@
-{"uuid":"39720c88-b084-40ec-a7f3-7dbf1bbae287","name":"Ka Keung Chan","gender":"Men","sports":{"Basketball":{"gp":7,"fouls":3,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":6,"winPct":0.14,"wins":1,"statsChecked":"2026-07-05T15:34:54.947Z"}},"seasons":[{"sid":"103e6ec7","sn":"Winter 2024","regs":[{"tid":"51bc3165","tn":"Bench Potatoes","gid":"63d5d52a","gn":"Tuesday Over 35s Men's Section 2","age":null,"div":null,"stats":{"gp":7,"fouls":3,"losses":6,"wins":1}}]}],"updatedAt":"2026-06-01T13:00:22.978Z","teams":[{"tid":"aaa2faab","sid":"84137cb7","status":"COMPLETED"},{"tid":"51bc3165","sid":"103e6ec7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:16:36.610Z","games":["3769bd47","41646279","5f567273","8ff1dcb4","9b7b50b7","b66d1d74","e56176e4"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "39720c88-b084-40ec-a7f3-7dbf1bbae287",
+  "name": "Ka Keung Chan",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "fouls": 3,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 6,
+      "winPct": 0.14,
+      "wins": 1,
+      "statsChecked": "2026-07-05T15:34:54.947Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "103e6ec7",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "51bc3165",
+          "tn": "Bench Potatoes",
+          "gid": "63d5d52a",
+          "gn": "Tuesday Over 35s Men's Section 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 3,
+            "losses": 6,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "84137cb7",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "aaa2faab",
+          "tn": "Bench Potatoes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T13:00:22.978Z",
+  "teams": [
+    {
+      "tid": "51bc3165",
+      "sid": "103e6ec7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aaa2faab",
+      "sid": "84137cb7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.049Z",
+  "games": [
+    "3769bd47",
+    "41646279",
+    "5f567273",
+    "8ff1dcb4",
+    "9b7b50b7",
+    "b66d1d74",
+    "e56176e4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

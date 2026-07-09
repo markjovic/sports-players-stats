@@ -1,1 +1,325 @@
-{"uuid":"7d9c0416-858e-4b3a-b1f2-d27b60d26255","name":"Jade Crawford","gender":"Girls","sports":{"Basketball":{"gp":38,"pts":46,"fouls":12,"fg":22,"ft":2,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.17,"maxGamePTS":6,"maxGameThreePt":null,"wins":3,"losses":9,"draws":1,"winPct":0.23,"statsChecked":"2026-07-05T15:36:44.020Z"}},"seasons":[{"sid":"21cd70ec","sn":"Autumn 2025","regs":[{"tid":"84af7926","tn":"Viper Vibes","gid":"1341a35b","gn":"Monday Albury - Wodonga Youth Girls Div 1","age":null,"div":"Div 1","stats":{"gp":3,"fouls":1,"losses":3}}]},{"sid":"19da44dc","sn":"Winter 2022","regs":[{"tid":"9b1f7308","tn":"Storm","gid":"ca0cdc8f","gn":"Thursday U14 Girls Division 1","age":"U14","div":"Division 1","stats":{"gp":6,"fouls":1,"fg":6,"pts":12,"finals":1,"wins":2,"losses":3,"draws":1}},{"tid":"5fe06750","tn":"Sparks","gid":"ca0cdc8f","gn":"Thursday U14 Girls Division 1","age":"U14","div":"Division 1","stats":{"gp":3,"ft":1,"fg":3,"pts":7,"finals":1,"wins":1,"losses":2}},{"tid":"6d31c602","tn":"Mercury","gid":"ca0cdc8f","gn":"Thursday U14 Girls Division 1","age":"U14","div":"Division 1","stats":{"gp":1,"finals":1}}]},{"sid":"746b11d9","sn":"2022","regs":[{"tid":"1fb6b786","tn":"LJ","gid":"76e3dd0c","gn":"Thursday U14 Girls","age":"U14","div":null,"stats":{"gp":11,"fouls":3,"fg":7,"pts":14,"losses":1}}]},{"sid":"9e7d14c0","sn":"Winter 2021","regs":[{"tid":"06231125","tn":"Wildcats (U14)","gid":"d43df641","gn":"Thursday U14 Girls Division 1","age":"U14","div":"Division 1","stats":{"gp":5,"ft":1,"fg":1,"pts":3}}]},{"sid":"5c95c3a3","sn":"Autumn 2021","regs":[{"tid":"0d195f27","tn":"Owls (12)","gid":"e7b1c2d2","gn":"Friday U12 Girls Social","age":"U12","div":null,"stats":{"gp":8,"fouls":7,"fg":4,"pts":8}}]},{"sid":"7eaa2a76","sn":"2020","regs":[{"tid":"481eecb5","tn":"Crows (12)","gid":"8a024b72","gn":"Friday U12 Girls Division 2","age":"U12","div":"Division 2","stats":{"gp":1,"fg":1,"pts":2}}]}],"updatedAt":"2026-06-02T05:00:14.858Z","teams":[{"tid":"9b1f7308","sid":"19da44dc","status":"COMPLETED"},{"tid":"1fb6b786","sid":"746b11d9","status":"COMPLETED"},{"tid":"60e69323","sid":"9e7d14c0","status":"COMPLETED"},{"tid":"0d195f27","sid":"5c95c3a3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:07:10.924Z","records":{"maxGamePTS":{"v":6,"gameKey":"a9ef7fe3","sid":"19da44dc"},"maxGameThreePt":{"v":null}},"games":["0132d93d","01817e45","0d2564aa","0e4d990a","1398db66","196329f1","323fe9ee","38cbb94f","448515cc","44ab02d0","4ef9d212","58bab51f","660de3d3","6823264e","6d2bd765","6f3eb076","7d9299e4","812cbfed","8219e335","84aa114e","84e88000","859756f1","8b5be333","8bdfa13b","8fec3e56","913fc288","a528d8d9","a89490d6","a9ef7fe3","aca5005d","cd162017","e1c1fe1b","e594796b","e759da04","eef9c206","f863c3f2","fc49767f"],"gameTids":{"6823264e":"84af7926","6f3eb076":"84af7926","0e4d990a":"84af7926","913fc288":"9b1f7308","323fe9ee":"9b1f7308","44ab02d0":"9b1f7308","660de3d3":"9b1f7308","a528d8d9":"9b1f7308","6d2bd765":"9b1f7308","a9ef7fe3":"5fe06750","a89490d6":"5fe06750","cd162017":"5fe06750","aca5005d":"6d31c602","8219e335":"1fb6b786","8bdfa13b":"1fb6b786","e594796b":"1fb6b786","448515cc":"1fb6b786","0d2564aa":"1fb6b786","38cbb94f":"1fb6b786","8fec3e56":"1fb6b786","2dc7188a":"1fb6b786","812cbfed":"1fb6b786","eef9c206":"1fb6b786","e759da04":"1fb6b786","1398db66":"06231125","f863c3f2":"06231125","fc49767f":"06231125","4ef9d212":"06231125","8b5be333":"06231125","196329f1":"0d195f27","01817e45":"0d195f27","84aa114e":"0d195f27","0132d93d":"0d195f27","58bab51f":"0d195f27","e1c1fe1b":"0d195f27","84e88000":"0d195f27","859756f1":"0d195f27","7d9299e4":"481eecb5"}}
+{
+  "uuid": "7d9c0416-858e-4b3a-b1f2-d27b60d26255",
+  "name": "Jade Crawford",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 46,
+      "fouls": 12,
+      "fg": 22,
+      "ft": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.17,
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 9,
+      "draws": 1,
+      "winPct": 0.23,
+      "statsChecked": "2026-07-05T15:36:44.020Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "21cd70ec",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "84af7926",
+          "tn": "Viper Vibes",
+          "gid": "1341a35b",
+          "gn": "Monday Albury - Wodonga Youth Girls Div 1",
+          "age": null,
+          "div": "Div 1",
+          "stats": {
+            "gp": 3,
+            "fouls": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "19da44dc",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "9b1f7308",
+          "tn": "Storm",
+          "gid": "ca0cdc8f",
+          "gn": "Thursday U14 Girls Division 1",
+          "age": "U14",
+          "div": "Division 1",
+          "stats": {
+            "gp": 6,
+            "fouls": 1,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 2,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5fe06750",
+          "tn": "Sparks",
+          "gid": "ca0cdc8f",
+          "gn": "Thursday U14 Girls Division 1",
+          "age": "U14",
+          "div": "Division 1",
+          "stats": {
+            "gp": 3,
+            "ft": 1,
+            "fg": 3,
+            "pts": 7,
+            "finals": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "6d31c602",
+          "tn": "Mercury",
+          "gid": "ca0cdc8f",
+          "gn": "Thursday U14 Girls Division 1",
+          "age": "U14",
+          "div": "Division 1",
+          "stats": {
+            "gp": 1,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "746b11d9",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "1fb6b786",
+          "tn": "LJ",
+          "gid": "76e3dd0c",
+          "gn": "Thursday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 3,
+            "fg": 7,
+            "pts": 14,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9e7d14c0",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "06231125",
+          "tn": "Wildcats (U14)",
+          "gid": "d43df641",
+          "gn": "Thursday U14 Girls Division 1",
+          "age": "U14",
+          "div": "Division 1",
+          "stats": {
+            "gp": 5,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3
+          }
+        },
+        {
+          "tid": "60e69323",
+          "tn": "Leopards (U14)",
+          "gid": "d43df641",
+          "gn": "Thursday U14 Girls Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5c95c3a3",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "0d195f27",
+          "tn": "Owls (12)",
+          "gid": "e7b1c2d2",
+          "gn": "Friday U12 Girls Social",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 4,
+            "pts": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7eaa2a76",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "481eecb5",
+          "tn": "Crows (12)",
+          "gid": "8a024b72",
+          "gn": "Friday U12 Girls Division 2",
+          "age": "U12",
+          "div": "Division 2",
+          "stats": {
+            "gp": 1,
+            "fg": 1,
+            "pts": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T05:00:14.858Z",
+  "teams": [
+    {
+      "tid": "84af7926",
+      "sid": "21cd70ec",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b1f7308",
+      "sid": "19da44dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5fe06750",
+      "sid": "19da44dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d31c602",
+      "sid": "19da44dc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1fb6b786",
+      "sid": "746b11d9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06231125",
+      "sid": "9e7d14c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60e69323",
+      "sid": "9e7d14c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d195f27",
+      "sid": "5c95c3a3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "481eecb5",
+      "sid": "7eaa2a76",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.048Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "a9ef7fe3",
+      "sid": "19da44dc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0132d93d",
+    "01817e45",
+    "0d2564aa",
+    "0e4d990a",
+    "1398db66",
+    "196329f1",
+    "323fe9ee",
+    "38cbb94f",
+    "448515cc",
+    "44ab02d0",
+    "4ef9d212",
+    "58bab51f",
+    "660de3d3",
+    "6823264e",
+    "6d2bd765",
+    "6f3eb076",
+    "7d9299e4",
+    "812cbfed",
+    "8219e335",
+    "84aa114e",
+    "84e88000",
+    "859756f1",
+    "8b5be333",
+    "8bdfa13b",
+    "8fec3e56",
+    "913fc288",
+    "a528d8d9",
+    "a89490d6",
+    "a9ef7fe3",
+    "aca5005d",
+    "cd162017",
+    "e1c1fe1b",
+    "e594796b",
+    "e759da04",
+    "eef9c206",
+    "f863c3f2",
+    "fc49767f"
+  ],
+  "gameTids": {
+    "6823264e": "84af7926",
+    "6f3eb076": "84af7926",
+    "0e4d990a": "84af7926",
+    "913fc288": "9b1f7308",
+    "323fe9ee": "9b1f7308",
+    "44ab02d0": "9b1f7308",
+    "660de3d3": "9b1f7308",
+    "a528d8d9": "9b1f7308",
+    "6d2bd765": "9b1f7308",
+    "a9ef7fe3": "5fe06750",
+    "a89490d6": "5fe06750",
+    "cd162017": "5fe06750",
+    "aca5005d": "6d31c602",
+    "8219e335": "1fb6b786",
+    "8bdfa13b": "1fb6b786",
+    "e594796b": "1fb6b786",
+    "448515cc": "1fb6b786",
+    "0d2564aa": "1fb6b786",
+    "38cbb94f": "1fb6b786",
+    "8fec3e56": "1fb6b786",
+    "2dc7188a": "1fb6b786",
+    "812cbfed": "1fb6b786",
+    "eef9c206": "1fb6b786",
+    "e759da04": "1fb6b786",
+    "1398db66": "06231125",
+    "f863c3f2": "06231125",
+    "fc49767f": "06231125",
+    "4ef9d212": "06231125",
+    "8b5be333": "06231125",
+    "196329f1": "0d195f27",
+    "01817e45": "0d195f27",
+    "84aa114e": "0d195f27",
+    "0132d93d": "0d195f27",
+    "58bab51f": "0d195f27",
+    "e1c1fe1b": "0d195f27",
+    "84e88000": "0d195f27",
+    "859756f1": "0d195f27",
+    "7d9299e4": "481eecb5"
+  }
+}

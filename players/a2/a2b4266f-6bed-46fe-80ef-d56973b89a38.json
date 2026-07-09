@@ -1,1 +1,121 @@
-{"uuid":"a2b4266f-6bed-46fe-80ef-d56973b89a38","name":"Oliver Griffiths","gender":"Boys","sports":{"Basketball":{"gp":14,"pts":26,"fouls":6,"fg":12,"ft":2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":24,"losses":2,"draws":2,"winPct":0.86,"statsChecked":"2026-07-05T15:37:50.208Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Bullits Basketball Club","regs":[]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Bullits Basketball Club","regs":[{"tid":"625e4251","tn":"Bullits Gladiators","gid":"52dea907","gn":"Saturday U12 Boys D3 Grade","age":"U12","div":null,"stats":{"gp":14,"fouls":6,"ft":2,"fg":12,"pts":26,"wins":12,"losses":1,"draws":1}},{"tid":"625e4251","tn":"Bullits Gladiators","gid":"ca7df75d","gn":"Saturday U12 Boys D2 Grade","age":"U12","div":null,"stats":{"gp":14,"fouls":6,"wins":12,"losses":1,"draws":1,"pts":26,"fg":12,"ft":2}}]}],"updatedAt":"2026-06-01T23:19:51.286Z","teams":[{"tid":"625e4251","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"b9964d7f","sid":"e2b609ed","status":"UPCOMING"}],"teamsUpdatedAt":"2026-06-05T13:31:56.361Z","games":["0f7e7641","2043c449","2d91da33","36500e80","5e9b1052","7a331404","88572f39","943a64c9","a8627543","b0682d52","b508fbf8","d16e5888","d82c7d84","db5ad038"],"records":{"maxGamePTS":{"v":6,"gameKey":"b0682d52","sid":"3e7c1a8c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a2b4266f-6bed-46fe-80ef-d56973b89a38",
+  "name": "Oliver Griffiths",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 26,
+      "fouls": 6,
+      "fg": 12,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 24,
+      "losses": 2,
+      "draws": 2,
+      "winPct": 0.86,
+      "statsChecked": "2026-07-05T15:37:50.208Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "b9964d7f",
+          "tn": "Bullits Gladiators",
+          "gid": "c2071b65",
+          "gn": "Saturday U12 Boys D2 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Bullits Basketball Club",
+      "regs": [
+        {
+          "tid": "625e4251",
+          "tn": "Bullits Gladiators",
+          "gid": "52dea907",
+          "gn": "Saturday U12 Boys D3 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 12,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "625e4251",
+          "tn": "Bullits Gladiators",
+          "gid": "ca7df75d",
+          "gn": "Saturday U12 Boys D2 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "wins": 12,
+            "losses": 1,
+            "draws": 1,
+            "pts": 26,
+            "fg": 12,
+            "ft": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T23:19:51.286Z",
+  "teams": [
+    {
+      "tid": "b9964d7f",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "625e4251",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.979Z",
+  "games": [
+    "0f7e7641",
+    "2043c449",
+    "2d91da33",
+    "36500e80",
+    "5e9b1052",
+    "7a331404",
+    "88572f39",
+    "943a64c9",
+    "a8627543",
+    "b0682d52",
+    "b508fbf8",
+    "d16e5888",
+    "d82c7d84",
+    "db5ad038"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "b0682d52",
+      "sid": "3e7c1a8c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

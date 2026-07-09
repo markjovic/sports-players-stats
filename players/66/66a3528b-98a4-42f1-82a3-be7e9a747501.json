@@ -1,1 +1,283 @@
-{"uuid":"66a3528b-98a4-42f1-82a3-be7e9a747501","name":"Mariochoho Mario","gender":"Boys","sports":{"Basketball":{"gp":56,"pts":190,"fouls":26,"fg":86,"ft":18,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":13,"maxGameThreePt":null,"wins":46,"losses":34,"winPct":0.57,"statsChecked":"2026-07-05T15:09:43.262Z"}},"seasons":[{"sid":"ec8a2628","sn":"Winter 2024","regs":[{"tid":"d76d00fa","tn":"Team Stand Out ","gid":"901bcde4","gn":"Saturday U14 Boys B Grade","age":"U14","div":null,"stats":{"gp":8,"fouls":1,"fg":4,"pts":8,"wins":3,"losses":5}},{"tid":"d76d00fa","tn":"Team Stand Out ","gid":"2e4e005e","gn":"Saturday U14 Boys C2 Grade","age":"U14","div":null,"stats":{"gp":8,"fg":4,"pts":8,"wins":3,"losses":5,"fouls":1}}]},{"sid":"6110c4a5","sn":"Summer 2023/24","club":"Narre Warren Basketball Club","regs":[{"tid":"dfab36aa","tn":"NWBC U12 Boys Chiefs","gid":"2761d4ef","gn":"Saturday U12 Boys B Grade","age":"U12","div":null,"stats":{"gp":12,"fg":5,"pts":11,"wins":7,"losses":5,"ft":1,"fouls":1}},{"tid":"dfab36aa","tn":"NWBC U12 Boys Chiefs","gid":"b4eee223","gn":"Saturday U12 Boys C1 Grade","age":"U12","div":null,"stats":{"gp":12,"fouls":1,"ft":1,"fg":5,"pts":11,"wins":7,"losses":5}}]},{"sid":"f729667e","sn":"Winter 2023","club":"Narre Warren Basketball Club","regs":[{"tid":"1b6c387f","tn":"NWBC U12 Boys Chiefs","gid":"e8fb8ec6","gn":"Saturday U12 Boys C2 Grade","age":"U12","div":null,"stats":{"gp":20,"fouls":9,"ft":9,"fg":45,"pts":99,"finals":1,"gfApps":1,"wins":13,"losses":7}},{"tid":"1b6c387f","tn":"NWBC U12 Boys Chiefs","gid":"9ecc2393","gn":"Saturday U12 Boys C1 Grade","age":"U12","div":null,"stats":{"gp":20,"fouls":9,"ft":9,"fg":45,"pts":99,"finals":1,"gfApps":1,"wins":13,"losses":7}}]},{"sid":"913ee1a8","sn":"Summer 2022/23","club":"Narre Warren Basketball Club","regs":[{"tid":"717afe77","tn":"NWBC U12 Boys Arrows","gid":"4762af15","gn":"Saturday U12 Boys D3 Grade","age":"U12","div":null,"stats":{"gp":16,"fouls":15,"ft":8,"fg":32,"pts":72}}]}],"updatedAt":"2026-05-31T21:34:57.367Z","teams":[{"tid":"d76d00fa","sid":"ec8a2628","status":"COMPLETED"},{"tid":"dfab36aa","sid":"6110c4a5","status":"COMPLETED"},{"tid":"1b6c387f","sid":"f729667e","status":"COMPLETED"},{"tid":"717afe77","sid":"913ee1a8","status":"COMPLETED"},{"tid":"9a773675","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:37:18.513Z","records":{"maxGamePTS":{"v":13,"gameKey":"3b64ab32","sid":"f729667e"},"maxGameThreePt":{"v":null}},"games":["012faea2","05053173","050c641d","067e1d96","0ef89970","1542e1d2","264f34bc","29899652","2a1c9e7e","35e282c1","38b24299","391fb651","3b64ab32","3b917309","3df89395","3e1155f3","3e284fd8","45136177","48b38280","48f8ece5","4b09c417","4d8512e3","4fbd4232","4fc4ba97","51a6eb34","569b02f7","5d11e2bc","60780a96","69985c47","6a503501","6b558ba1","714287d9","8143bd75","895d964f","8b4b5e60","8c4ade49","92f8bae8","9657377f","969d8e9d","97e0b1dd","a290152a","bac76f3f","be111fab","c7b6dd8f","c909244b","c98eb6be","d3c90394","d453b7fa","e363c832","e8240dda","ec94e11b","f2b81b0b","f5013d1d","f97f4f1c","fb1e3f82","fe11b100"]}
+{
+  "uuid": "66a3528b-98a4-42f1-82a3-be7e9a747501",
+  "name": "Mariochoho Mario",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 56,
+      "pts": 190,
+      "fouls": 26,
+      "fg": 86,
+      "ft": 18,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 46,
+      "losses": 34,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-05T15:09:43.262Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ec8a2628",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "d76d00fa",
+          "tn": "Team Stand Out ",
+          "gid": "901bcde4",
+          "gn": "Saturday U14 Boys B Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "d76d00fa",
+          "tn": "Team Stand Out ",
+          "gid": "2e4e005e",
+          "gn": "Saturday U14 Boys C2 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 5,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6110c4a5",
+      "sn": "Summer 2023/24",
+      "club": "Narre Warren Basketball Club",
+      "regs": [
+        {
+          "tid": "dfab36aa",
+          "tn": "NWBC U12 Boys Chiefs",
+          "gid": "2761d4ef",
+          "gn": "Saturday U12 Boys B Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fg": 5,
+            "pts": 11,
+            "wins": 7,
+            "losses": 5,
+            "ft": 1,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "dfab36aa",
+          "tn": "NWBC U12 Boys Chiefs",
+          "gid": "b4eee223",
+          "gn": "Saturday U12 Boys C1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 5,
+            "pts": 11,
+            "wins": 7,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f729667e",
+      "sn": "Winter 2023",
+      "club": "Narre Warren Basketball Club",
+      "regs": [
+        {
+          "tid": "1b6c387f",
+          "tn": "NWBC U12 Boys Chiefs",
+          "gid": "e8fb8ec6",
+          "gn": "Saturday U12 Boys C2 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 9,
+            "ft": 9,
+            "fg": 45,
+            "pts": 99,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "1b6c387f",
+          "tn": "NWBC U12 Boys Chiefs",
+          "gid": "9ecc2393",
+          "gn": "Saturday U12 Boys C1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 9,
+            "ft": 9,
+            "fg": 45,
+            "pts": 99,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "913ee1a8",
+      "sn": "Summer 2022/23",
+      "club": "Narre Warren Basketball Club",
+      "regs": [
+        {
+          "tid": "717afe77",
+          "tn": "NWBC U12 Boys Arrows",
+          "gid": "4762af15",
+          "gn": "Saturday U12 Boys D3 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 15,
+            "ft": 8,
+            "fg": 32,
+            "pts": 72
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "9a773675",
+          "tn": "Hampton Park U12 Boys 1",
+          "gid": "a6a7a8dd",
+          "gn": "U12 Boys VJL 5 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T21:34:57.367Z",
+  "teams": [
+    {
+      "tid": "d76d00fa",
+      "sid": "ec8a2628",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dfab36aa",
+      "sid": "6110c4a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1b6c387f",
+      "sid": "f729667e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "717afe77",
+      "sid": "913ee1a8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a773675",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.922Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "3b64ab32",
+      "sid": "f729667e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "012faea2",
+    "05053173",
+    "050c641d",
+    "067e1d96",
+    "0ef89970",
+    "1542e1d2",
+    "264f34bc",
+    "29899652",
+    "2a1c9e7e",
+    "35e282c1",
+    "38b24299",
+    "391fb651",
+    "3b64ab32",
+    "3b917309",
+    "3df89395",
+    "3e1155f3",
+    "3e284fd8",
+    "45136177",
+    "48b38280",
+    "48f8ece5",
+    "4b09c417",
+    "4d8512e3",
+    "4fbd4232",
+    "4fc4ba97",
+    "51a6eb34",
+    "569b02f7",
+    "5d11e2bc",
+    "60780a96",
+    "69985c47",
+    "6a503501",
+    "6b558ba1",
+    "714287d9",
+    "8143bd75",
+    "895d964f",
+    "8b4b5e60",
+    "8c4ade49",
+    "92f8bae8",
+    "9657377f",
+    "969d8e9d",
+    "97e0b1dd",
+    "a290152a",
+    "bac76f3f",
+    "be111fab",
+    "c7b6dd8f",
+    "c909244b",
+    "c98eb6be",
+    "d3c90394",
+    "d453b7fa",
+    "e363c832",
+    "e8240dda",
+    "ec94e11b",
+    "f2b81b0b",
+    "f5013d1d",
+    "f97f4f1c",
+    "fb1e3f82",
+    "fe11b100"
+  ]
+}

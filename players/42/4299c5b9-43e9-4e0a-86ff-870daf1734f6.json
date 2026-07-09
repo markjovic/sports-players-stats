@@ -1,1 +1,128 @@
-{"uuid":"4299c5b9-43e9-4e0a-86ff-870daf1734f6","gender":null,"sports":{"Basketball":{"gp":11,"pts":7,"fouls":11,"fg":3,"ft":1,"foulOuts":{"4402ae0f":1},"maxGamePTS":4,"maxGameThreePt":null,"wins":6,"losses":27,"winPct":0.18,"statsChecked":"2026-07-05T16:22:03.444Z"}},"seasons":[{"sid":"4402ae0f","sn":"Winter 2022","club":"Officer Basketball Club","regs":[{"tid":"d7ddce0b","tn":"Officer Bulls U10 Boys 2","gid":"13b4ec77","gn":"Saturday U10 D Grade","stats":{"gp":11,"pts":7,"fouls":11,"fg":3,"wins":2,"losses":9,"ft":1}},{"tid":"d7ddce0b","tn":"Officer Bulls U10 Boys 2","gid":"4fa8585b","gn":"Saturday U10 C Grade","stats":{"gp":11,"pts":7,"fouls":11,"fg":3,"ft":1,"wins":2,"losses":9}},{"tid":"d7ddce0b","tn":"Officer Bulls U10 Boys 2","gid":"9f0339b0","gn":"Saturday U10 B Grade","stats":{"gp":11,"fouls":11,"foulOuts":1,"wins":2,"losses":9,"pts":7,"fg":3,"ft":1}}]}],"updatedAt":"2026-06-11T23:38:44.547Z","records":{"maxGamePTS":{"v":4,"gameKey":"220b7840","sid":"4402ae0f"},"maxGameThreePt":{"v":null}},"games":["1b9f5c0a","1dcd9a4e","220b7840","2dec6fdd","4613dc46","530624b1","71e9df00","899947c1","bbd49be7","fa72dc49","fb78ca55"],"name":"Winter 2022"}
+{
+  "uuid": "4299c5b9-43e9-4e0a-86ff-870daf1734f6",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 7,
+      "fouls": 11,
+      "fg": 3,
+      "ft": 1,
+      "foulOuts": {
+        "4402ae0f": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 27,
+      "winPct": 0.18,
+      "statsChecked": "2026-07-05T16:22:03.444Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4402ae0f",
+      "sn": "Winter 2022",
+      "club": "Officer Basketball Club",
+      "regs": [
+        {
+          "tid": "d7ddce0b",
+          "tn": "Officer Bulls U10 Boys 2",
+          "gid": "13b4ec77",
+          "gn": "Saturday U10 D Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 7,
+            "fouls": 11,
+            "fg": 3,
+            "wins": 2,
+            "losses": 9,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "d7ddce0b",
+          "tn": "Officer Bulls U10 Boys 2",
+          "gid": "4fa8585b",
+          "gn": "Saturday U10 C Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 7,
+            "fouls": 11,
+            "fg": 3,
+            "ft": 1,
+            "wins": 2,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "d7ddce0b",
+          "tn": "Officer Bulls U10 Boys 2",
+          "gid": "9f0339b0",
+          "gn": "Saturday U10 B Grade",
+          "stats": {
+            "gp": 11,
+            "fouls": 11,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 9,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf3744d0",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "f764c804",
+          "tn": "KOO WEE RUP RAPTORS BLACK U14’S",
+          "gid": "494233ef",
+          "gn": "Tuesday U14 Afterschool Mixed B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:44.547Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "220b7840",
+      "sid": "4402ae0f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1b9f5c0a",
+    "1dcd9a4e",
+    "220b7840",
+    "2dec6fdd",
+    "4613dc46",
+    "530624b1",
+    "71e9df00",
+    "899947c1",
+    "bbd49be7",
+    "fa72dc49",
+    "fb78ca55"
+  ],
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "d7ddce0b",
+      "sid": "4402ae0f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f764c804",
+      "sid": "bf3744d0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.734Z"
+}

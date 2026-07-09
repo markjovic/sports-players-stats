@@ -1,1 +1,89 @@
-{"uuid":"e2ce37d4-5147-4b5c-a3c9-4a564b002b56","gender":null,"sports":{"Basketball":{"gp":5,"pts":16,"fouls":2,"fg":6,"ft":4,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T16:04:21.156Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Ormond Jets Basketball Club","regs":[{"tid":"d6afc8d0","tn":"JETS U14 Boys Nick","gid":"657d256f","gn":"Saturday U14 Boys DIV 6","stats":{"gp":5,"pts":16,"fouls":2,"fg":6,"ft":4,"wins":2,"losses":3}}]}],"updatedAt":"2026-06-11T23:45:33.473Z","records":{"maxGamePTS":{"v":6,"gameKey":"3113d9b6","sid":"0f6dd17f"},"maxGameThreePt":{"v":null}},"games":["13ff8110","3113d9b6","6481471d","bc6f5814","fb03800c"],"name":"Winter 2021"}
+{
+  "uuid": "e2ce37d4-5147-4b5c-a3c9-4a564b002b56",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 16,
+      "fouls": 2,
+      "fg": 6,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:04:21.156Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "d6afc8d0",
+          "tn": "JETS U14 Boys Nick",
+          "gid": "657d256f",
+          "gn": "Saturday U14 Boys DIV 6",
+          "stats": {
+            "gp": 5,
+            "pts": 16,
+            "fouls": 2,
+            "fg": 6,
+            "ft": 4,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "a25edaa9",
+          "tn": "EPS Volcanoes",
+          "gid": "c0e32e60",
+          "gn": "Tuesday MSAC/Bayside YR.6 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:33.473Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "3113d9b6",
+      "sid": "0f6dd17f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "13ff8110",
+    "3113d9b6",
+    "6481471d",
+    "bc6f5814",
+    "fb03800c"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "d6afc8d0",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a25edaa9",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.852Z"
+}

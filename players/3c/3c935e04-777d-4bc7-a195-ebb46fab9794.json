@@ -1,1 +1,277 @@
-{"uuid":"3c935e04-777d-4bc7-a195-ebb46fab9794","name":"Jeremy Abrey","gender":"Men","sports":{"Basketball":{"gp":25,"pts":80,"fouls":25,"fg":26,"ft":1,"threePt":9,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":10,"losses":9,"draws":3,"winPct":0.45,"statsChecked":"2026-07-05T16:00:13.726Z"}},"seasons":[{"sid":"7c8348bf","sn":"Summer 2023/24","regs":[{"tid":"47b7c910","tn":"Total Reball","gid":"eebfc752","gn":"Thursday Men D1 Grade","age":null,"div":null,"stats":{"gp":5,"fouls":7,"wins":4,"losses":1,"pts":10,"fg":3,"ft":1,"threePt":1}},{"tid":"47b7c910","tn":"Total Reball","gid":"6795c318","gn":"Thursday Men C2 Grade","age":null,"div":null,"stats":{"gp":5,"fouls":7,"ft":1,"fg":3,"threePt":1,"pts":10,"wins":4,"losses":1}},{"tid":"f1e95826","stats":{"losses":1,"gp":1,"pts":9,"fg":3,"threePt":1}}]},{"sid":"7c8348bf","sn":"Summer 2023/24","regs":[{"tid":"f1e95826","tn":"Tuff Fluff","gid":"efc0ed12","gn":"Tuesday Mixed A Grade","age":null,"div":null,"stats":{"gp":1,"fg":3,"threePt":1,"pts":9,"losses":1}}]},{"sid":"55008d04","sn":"Summer 2022/23","regs":[{"tid":"ae9bc4af","tn":"Total Reball","gid":"fca2e60f","gn":"Thursday Men D1 Grade","age":null,"div":null,"stats":{"gp":4,"fouls":3,"fg":8,"pts":16,"wins":2,"losses":1,"draws":1}}]},{"sid":"fb7865be","sn":"Summer 2020/21","regs":[{"tid":"4c5042fe","tn":"And-None","gid":"6571cdfc","gn":"Tuesday Men C3 Grade","age":null,"div":null,"stats":{"gp":9,"fouls":10,"fg":9,"threePt":2,"pts":24}},{"tid":"4c5042fe","tn":"And-None","gid":"d0787be0","gn":"Tuesday Men C2 Grade","age":null,"div":null,"stats":{"gp":9,"fg":9,"pts":24,"threePt":2,"fouls":10}}]},{"sid":"5dfac2a9","sn":"Summer 2020/21","regs":[{"tid":"a93a4b49","tn":"Total Reball","gid":"50e4e38e","gn":"Wednesday Open Men E","age":"Senior","div":null,"stats":{"gp":6,"fouls":5,"fg":3,"threePt":5,"pts":21,"losses":4,"draws":2}}]}],"updatedAt":"2026-06-02T21:18:32.282Z","teams":[{"tid":"47b7c910","sid":"7c8348bf","status":"COMPLETED"},{"tid":"f1e95826","sid":"7c8348bf","status":"COMPLETED"},{"tid":"ae9bc4af","sid":"55008d04","status":"COMPLETED"},{"tid":"a93a4b49","sid":"5dfac2a9","status":"COMPLETED"},{"tid":"4c5042fe","sid":"fb7865be","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:18:18.571Z","records":{"maxGamePTS":{"v":10,"gameKey":"519bbc9b","sid":"55008d04"},"maxGameThreePt":{"v":2,"gameKey":"f1bba32a","sid":"5dfac2a9"}},"games":["0c96f93b","11ccdb3e","21808769","27e70431","3d1d5689","4c1da7c7","519bbc9b","594fccdc","5c28d927","6a07a41a","70a5dc7d","77b82db4","8fa04e01","94585c6e","9fa2cf3a","bfcdf6af","d23797cb","e0c298ac","e288c0d3","ea2880a6","f1bba32a","f2071e67","f6f33d84","f84bc86d","fe93c431"],"gameTids":{"21808769":"4c5042fe","94585c6e":"47b7c910","70a5dc7d":"47b7c910","fe93c431":"47b7c910","e288c0d3":"47b7c910","11ccdb3e":"47b7c910","f2071e67":"f1e95826","519bbc9b":"ae9bc4af","0c96f93b":"ae9bc4af","f6f33d84":"ae9bc4af","77b82db4":"ae9bc4af","594fccdc":"4c5042fe","27e70431":"4c5042fe","9fa2cf3a":"4c5042fe","6a07a41a":"4c5042fe","4c1da7c7":"4c5042fe","ea2880a6":"4c5042fe","e0c298ac":"4c5042fe","bfcdf6af":"4c5042fe","d23797cb":"a93a4b49","f84bc86d":"a93a4b49","f1bba32a":"a93a4b49","3d1d5689":"a93a4b49","5c28d927":"a93a4b49","8fa04e01":"a93a4b49"}}
+{
+  "uuid": "3c935e04-777d-4bc7-a195-ebb46fab9794",
+  "name": "Jeremy Abrey",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 25,
+      "pts": 80,
+      "fouls": 25,
+      "fg": 26,
+      "ft": 1,
+      "threePt": 9,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 10,
+      "losses": 9,
+      "draws": 3,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T16:00:13.726Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7c8348bf",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "47b7c910",
+          "tn": "Total Reball",
+          "gid": "eebfc752",
+          "gn": "Thursday Men D1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "wins": 4,
+            "losses": 1,
+            "pts": 10,
+            "fg": 3,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "47b7c910",
+          "tn": "Total Reball",
+          "gid": "6795c318",
+          "gn": "Thursday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 10,
+            "wins": 4,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "f1e95826",
+          "stats": {
+            "losses": 1,
+            "gp": 1,
+            "pts": 9,
+            "fg": 3,
+            "threePt": 1
+          },
+          "gid": "2ab8bd30",
+          "gn": "Tuesday Mixed B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "7c8348bf",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "f1e95826",
+          "tn": "Tuff Fluff",
+          "gid": "efc0ed12",
+          "gn": "Tuesday Mixed A Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 9,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "55008d04",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "ae9bc4af",
+          "tn": "Total Reball",
+          "gid": "fca2e60f",
+          "gn": "Thursday Men D1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 8,
+            "pts": 16,
+            "wins": 2,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb7865be",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "4c5042fe",
+          "tn": "And-None",
+          "gid": "6571cdfc",
+          "gn": "Tuesday Men C3 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 10,
+            "fg": 9,
+            "threePt": 2,
+            "pts": 24
+          }
+        },
+        {
+          "tid": "4c5042fe",
+          "tn": "And-None",
+          "gid": "d0787be0",
+          "gn": "Tuesday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fg": 9,
+            "pts": 24,
+            "threePt": 2,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "a93a4b49",
+          "tn": "Total Reball",
+          "gid": "50e4e38e",
+          "gn": "Wednesday Open Men E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "fg": 3,
+            "threePt": 5,
+            "pts": 21,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T21:18:32.282Z",
+  "teams": [
+    {
+      "tid": "47b7c910",
+      "sid": "7c8348bf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1e95826",
+      "sid": "7c8348bf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ae9bc4af",
+      "sid": "55008d04",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c5042fe",
+      "sid": "fb7865be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a93a4b49",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.287Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "519bbc9b",
+      "sid": "55008d04"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "f1bba32a",
+      "sid": "5dfac2a9"
+    }
+  },
+  "games": [
+    "0c96f93b",
+    "11ccdb3e",
+    "21808769",
+    "27e70431",
+    "3d1d5689",
+    "4c1da7c7",
+    "519bbc9b",
+    "594fccdc",
+    "5c28d927",
+    "6a07a41a",
+    "70a5dc7d",
+    "77b82db4",
+    "8fa04e01",
+    "94585c6e",
+    "9fa2cf3a",
+    "bfcdf6af",
+    "d23797cb",
+    "e0c298ac",
+    "e288c0d3",
+    "ea2880a6",
+    "f1bba32a",
+    "f2071e67",
+    "f6f33d84",
+    "f84bc86d",
+    "fe93c431"
+  ],
+  "gameTids": {
+    "21808769": "4c5042fe",
+    "94585c6e": "47b7c910",
+    "70a5dc7d": "47b7c910",
+    "fe93c431": "47b7c910",
+    "e288c0d3": "47b7c910",
+    "11ccdb3e": "47b7c910",
+    "f2071e67": "f1e95826",
+    "519bbc9b": "ae9bc4af",
+    "0c96f93b": "ae9bc4af",
+    "f6f33d84": "ae9bc4af",
+    "77b82db4": "ae9bc4af",
+    "594fccdc": "4c5042fe",
+    "27e70431": "4c5042fe",
+    "9fa2cf3a": "4c5042fe",
+    "6a07a41a": "4c5042fe",
+    "4c1da7c7": "4c5042fe",
+    "ea2880a6": "4c5042fe",
+    "e0c298ac": "4c5042fe",
+    "bfcdf6af": "4c5042fe",
+    "d23797cb": "a93a4b49",
+    "f84bc86d": "a93a4b49",
+    "f1bba32a": "a93a4b49",
+    "3d1d5689": "a93a4b49",
+    "5c28d927": "a93a4b49",
+    "8fa04e01": "a93a4b49"
+  }
+}

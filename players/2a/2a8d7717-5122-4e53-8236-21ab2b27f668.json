@@ -1,1 +1,174 @@
-{"uuid":"2a8d7717-5122-4e53-8236-21ab2b27f668","name":"Eric Goode","gender":"Boys","sports":{"Basketball":{"gp":22,"pts":45,"fouls":42,"fg":21,"ft":3,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"foulOuts":{"8630ad4c":2},"maxGamePTS":9,"maxGameThreePt":null,"wins":9,"losses":13,"winPct":0.41,"statsChecked":"2026-07-05T14:40:16.836Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"1837e1f5","tn":"Norwood Flames U16 Boys 2","gid":"731b640e","gn":"BOYS UNDER 16 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":2,"wins":1,"losses":4}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"dd158a92","tn":"Norwood Flames U16 Boys 4","gid":"853ed2be","gn":"BOYS UNDER 16 C2","age":null,"div":"C2","stats":{"gp":6,"pts":6,"fg":3,"fouls":16,"foulOuts":2,"wins":3,"losses":3}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"f8c8455e","tn":"Norwood Flames U14 Boys 2","gid":"edb539d5","gn":"BOYS UNDER 14 B3","age":null,"div":"B3","stats":{"gp":6,"pts":31,"fg":15,"ft":1,"fouls":12,"finals":1,"gfApps":1,"wins":5,"losses":1,"gfWins":1}}]},{"sid":"0869ea69","regs":[{"tid":"91a6c9e2","stats":{"losses":5,"gp":5,"pts":8,"fg":3,"ft":2,"fouls":12}}]}],"updatedAt":"2026-05-31T22:39:50.650Z","teams":[{"tid":"91a6c9e2","sid":"0869ea69","status":"UPCOMING"},{"tid":"1837e1f5","sid":"6dd649c0","status":"COMPLETED"},{"tid":"dd158a92","sid":"8630ad4c","status":"COMPLETED"},{"tid":"f8c8455e","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:08:54.339Z","records":{"maxGamePTS":{"v":9,"gameKey":"f7443768","sid":"1b51c73f"},"maxGameThreePt":{"v":null}},"games":["20394ea7","2a3c6986","4c8d6f58","4edc876e","656f14fa","7c71d86a","98f050c8","c346826f","c59bc638","c5b36b7e","c9af4949","d144e7b0","d338dbf9","dcfb4b5f","e066ccb1","e0f2ba99","e954afce","ea64f1b4","f7443768","f77a6fde","fe4e7200","ffb1dcf4"]}
+{
+  "uuid": "2a8d7717-5122-4e53-8236-21ab2b27f668",
+  "name": "Eric Goode",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 45,
+      "fouls": 42,
+      "fg": 21,
+      "ft": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "8630ad4c": 2
+      },
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 13,
+      "winPct": 0.41,
+      "statsChecked": "2026-07-05T14:40:16.836Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "1837e1f5",
+          "tn": "Norwood Flames U16 Boys 2",
+          "gid": "731b640e",
+          "gn": "BOYS UNDER 16 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "dd158a92",
+          "tn": "Norwood Flames U16 Boys 4",
+          "gid": "853ed2be",
+          "gn": "BOYS UNDER 16 C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 6,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 16,
+            "foulOuts": 2,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "f8c8455e",
+          "tn": "Norwood Flames U14 Boys 2",
+          "gid": "edb539d5",
+          "gn": "BOYS UNDER 14 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 6,
+            "pts": 31,
+            "fg": 15,
+            "ft": 1,
+            "fouls": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "91a6c9e2",
+          "stats": {
+            "losses": 5,
+            "gp": 5,
+            "pts": 8,
+            "fg": 3,
+            "ft": 2,
+            "fouls": 12
+          },
+          "gid": "e0a6e2de",
+          "gn": "BOYS UNDER 18 B4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T22:39:50.650Z",
+  "teams": [
+    {
+      "tid": "1837e1f5",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd158a92",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f8c8455e",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "91a6c9e2",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.197Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "f7443768",
+      "sid": "1b51c73f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "20394ea7",
+    "2a3c6986",
+    "4c8d6f58",
+    "4edc876e",
+    "656f14fa",
+    "7c71d86a",
+    "98f050c8",
+    "c346826f",
+    "c59bc638",
+    "c5b36b7e",
+    "c9af4949",
+    "d144e7b0",
+    "d338dbf9",
+    "dcfb4b5f",
+    "e066ccb1",
+    "e0f2ba99",
+    "e954afce",
+    "ea64f1b4",
+    "f7443768",
+    "f77a6fde",
+    "fe4e7200",
+    "ffb1dcf4"
+  ]
+}

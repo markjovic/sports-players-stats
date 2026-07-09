@@ -1,1 +1,136 @@
-{"uuid":"b9db0fda-a30f-469d-91f1-4f395fb76fc2","name":"William Tucker","gender":"Boys","sports":{"Basketball":{"gp":14,"pts":34,"fouls":29,"fg":9,"ft":10,"threePt":2,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"wins":5,"losses":9,"winPct":0.36,"statsChecked":"2026-07-05T14:30:07.147Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"ab0e6f33","tn":"Norths Bears U12 Boys Black","gid":"ba876bf5","gn":"BOYS UNDER 12 AR","age":null,"div":null,"stats":{"gp":4,"fouls":12,"fg":4,"pts":8,"wins":2,"losses":2}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"b50e6298","tn":"Norths Bears U12 Boys Red","gid":"e18e3aa5","gn":"BOYS UNDER 12 B3","age":null,"div":"B3","stats":{"gp":5,"fouls":9,"ft":5,"fg":1,"pts":7,"wins":1,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"aed6a6a6","stats":{"wins":2,"losses":3,"gp":5,"pts":19,"fg":4,"ft":5,"threePt":2,"fouls":8}}]}],"updatedAt":"2026-05-31T10:48:00.498Z","teams":[{"tid":"aed6a6a6","sid":"0869ea69","status":"UPCOMING"},{"tid":"ab0e6f33","sid":"6dd649c0","status":"COMPLETED"},{"tid":"b50e6298","sid":"8630ad4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:38:47.975Z","records":{"maxGamePTS":{"v":8,"gameKey":"16ba0024","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"16ba0024","sid":"0869ea69"}},"games":["0c94624d","0f29298b","16ba0024","201ed408","29f69bab","411c4cc2","5acd4380","6f578de1","733295a8","7b885581","8beb92df","b1e02301","bf5003d8","f40b49ee"]}
+{
+  "uuid": "b9db0fda-a30f-469d-91f1-4f395fb76fc2",
+  "name": "William Tucker",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 34,
+      "fouls": 29,
+      "fg": 9,
+      "ft": 10,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 5,
+      "losses": 9,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T14:30:07.147Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "ab0e6f33",
+          "tn": "Norths Bears U12 Boys Black",
+          "gid": "ba876bf5",
+          "gn": "BOYS UNDER 12 AR",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 12,
+            "fg": 4,
+            "pts": 8,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "b50e6298",
+          "tn": "Norths Bears U12 Boys Red",
+          "gid": "e18e3aa5",
+          "gn": "BOYS UNDER 12 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 5,
+            "fouls": 9,
+            "ft": 5,
+            "fg": 1,
+            "pts": 7,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "aed6a6a6",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 19,
+            "fg": 4,
+            "ft": 5,
+            "threePt": 2,
+            "fouls": 8
+          },
+          "gid": "4b838fe5",
+          "gn": "BOYS UNDER 14 C1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T10:48:00.498Z",
+  "teams": [
+    {
+      "tid": "ab0e6f33",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b50e6298",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aed6a6a6",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.115Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "16ba0024",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "16ba0024",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "0c94624d",
+    "0f29298b",
+    "16ba0024",
+    "201ed408",
+    "29f69bab",
+    "411c4cc2",
+    "5acd4380",
+    "6f578de1",
+    "733295a8",
+    "7b885581",
+    "8beb92df",
+    "b1e02301",
+    "bf5003d8",
+    "f40b49ee"
+  ]
+}

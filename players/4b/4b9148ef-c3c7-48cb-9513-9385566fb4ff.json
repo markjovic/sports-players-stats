@@ -1,1 +1,371 @@
-{"uuid":"4b9148ef-c3c7-48cb-9513-9385566fb4ff","gender":null,"sports":{"Basketball":{"gp":42,"pts":172,"fouls":40,"fg":59,"ft":30,"threePt":8,"foulOuts":{},"finals":2,"gfApps":2,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":15,"maxGameThreePt":3,"wins":33,"losses":11,"winPct":0.75,"statsChecked":"2026-07-05T16:13:28.312Z"}},"seasons":[{"sid":"5ae37dcf","sn":"Winter 2023","club":null,"regs":[{"tid":"122a788e","tn":"Swish Kebabs","gid":"4640bc52","gn":"Monday Senior Women B","stats":{"gp":4,"wins":3,"losses":1,"pts":30,"fg":8,"ft":5,"threePt":3,"fouls":4}},{"tid":"122a788e","tn":"Swish Kebabs","gid":"b3dc559d","gn":"Monday Senior Women C","stats":{"gp":4,"pts":30,"fouls":4,"fg":8,"ft":5,"threePt":3,"wins":3,"losses":1}}]},{"sid":"1af4ce72","sn":"2022","club":"Warragul Warriors Basketball Club","regs":[{"tid":"f55dcb7c","tn":"Warragul Warriors U19 Girls","gid":"88ddc567","gn":"U19 Girls","stats":{"gp":4,"pts":4,"fouls":2,"fg":2,"finals":1,"gfApps":1,"wins":2,"losses":2}}]},{"sid":"3f5877f8","sn":"2022","club":null,"regs":[{"tid":"5105d3f6","tn":"Warragul Warriors","gid":"0f2c548c","gn":"U19 Girls A","stats":{"gp":4,"pts":10,"fouls":2,"fg":5}}]},{"sid":"9dbd9371","sn":"2022","club":"Warragul Warriors Basketball Club","regs":[{"tid":"ab67b98a","tn":"Warragul Warriors U18 Girls","gid":"cdd6893c","gn":"U18 Girls Division 3 & 4","stats":{"gp":4,"pts":14,"fouls":3,"fg":5,"ft":4,"wins":1,"losses":3}}]},{"sid":"8493938b","sn":"Summer 2022/23","club":"Chalkies Basketball Club","regs":[{"tid":"23f743fd","tn":"Chalkies U19 Girls Flyers","gid":"974fb5d1","gn":"Thursday U19 Girls","stats":{"gp":14,"pts":71,"fouls":14,"fg":23,"ft":13,"threePt":4,"finals":1,"gfApps":1,"wins":12,"losses":2}},{"tid":"23f743fd","tn":"Chalkies U19 Girls Flyers","gid":"6c155f7d","gn":"Thursday U16 Girls","stats":{"gp":14,"pts":71,"fouls":14,"fg":23,"finals":1,"gfApps":1,"wins":12,"losses":2,"ft":13,"threePt":4}}]},{"sid":"50712173","sn":"Summer 2021/22","club":"Gladiators Basketball Club","regs":[{"tid":"74d52cdf","tn":"U19 Girls Gladiators Shadow","gid":"6e7b6766","gn":"Thursday U19 Girls","stats":{"gp":1,"pts":3,"fouls":4,"fg":1,"ft":1}}]},{"sid":"f3b79a84","sn":"Autumn 2022","club":null,"regs":[{"tid":"e0a1d60f","tn":"Tropics 18.1","gid":"8dc12bd1","gn":"U18 Girls B Grade","stats":{"gp":4,"pts":5,"fouls":6,"fg":1,"ft":3}}]},{"sid":"a00636e2","sn":"Winter 2021","club":"Chalkies Basketball Club","regs":[{"tid":"b52cfab4","tn":"U16 Girls Chalkies Flyers","gid":"c62b1776","gn":"Thursday U16 Girls A","stats":{"gp":7,"pts":35,"fouls":5,"fg":14,"ft":4,"threePt":1}}]}],"updatedAt":"2026-06-11T23:39:10.351Z","records":{"maxGamePTS":{"v":15,"gameKey":"5728e730","sid":"5ae37dcf"},"maxGameThreePt":{"v":3,"gameKey":"5728e730","sid":"5ae37dcf"}},"games":["0621b13a","06aeddc0","0f807c7b","2d1a10df","31fed6cb","32f3bb81","35ef8cf9","3cc37cd1","477f21dd","4ecf1a70","4fc1c93d","55247333","56ab6111","5728e730","61ec670d","6fe1cd32","76081f87","79d5ef43","8a6d5f21","8c6d3d0e","952e5f65","9a0e05fa","9bd09506","9ce184df","9e765595","a18148b4","a593ca9f","a6b79cd6","a9f40d8f","acb371da","adad9ece","bec80295","c203c4d9","c423226e","c8205c21","d628b9a0","d82f0993","dbc7c560","e36f599c","e614b7cc","eac4331e","fa040f2d"],"name":"Winter 2023"}
+{
+  "uuid": "4b9148ef-c3c7-48cb-9513-9385566fb4ff",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 172,
+      "fouls": 40,
+      "fg": 59,
+      "ft": 30,
+      "threePt": 8,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 15,
+      "maxGameThreePt": 3,
+      "wins": 33,
+      "losses": 11,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-05T16:13:28.312Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5ae37dcf",
+      "sn": "Winter 2023",
+      "club": null,
+      "regs": [
+        {
+          "tid": "122a788e",
+          "tn": "Swish Kebabs",
+          "gid": "4640bc52",
+          "gn": "Monday Senior Women B",
+          "stats": {
+            "gp": 4,
+            "wins": 3,
+            "losses": 1,
+            "pts": 30,
+            "fg": 8,
+            "ft": 5,
+            "threePt": 3,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "122a788e",
+          "tn": "Swish Kebabs",
+          "gid": "b3dc559d",
+          "gn": "Monday Senior Women C",
+          "stats": {
+            "gp": 4,
+            "pts": 30,
+            "fouls": 4,
+            "fg": 8,
+            "ft": 5,
+            "threePt": 3,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1af4ce72",
+      "sn": "2022",
+      "club": "Warragul Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "f55dcb7c",
+          "tn": "Warragul Warriors U19 Girls",
+          "gid": "88ddc567",
+          "gn": "U19 Girls",
+          "stats": {
+            "gp": 4,
+            "pts": 4,
+            "fouls": 2,
+            "fg": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3f5877f8",
+      "sn": "2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5105d3f6",
+          "tn": "Warragul Warriors",
+          "gid": "0f2c548c",
+          "gn": "U19 Girls A",
+          "stats": {
+            "gp": 4,
+            "pts": 10,
+            "fouls": 2,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9dbd9371",
+      "sn": "2022",
+      "club": "Warragul Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "ab67b98a",
+          "tn": "Warragul Warriors U18 Girls",
+          "gid": "cdd6893c",
+          "gn": "U18 Girls Division 3 & 4",
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fouls": 3,
+            "fg": 5,
+            "ft": 4,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8493938b",
+      "sn": "Summer 2022/23",
+      "club": "Chalkies Basketball Club",
+      "regs": [
+        {
+          "tid": "23f743fd",
+          "tn": "Chalkies U19 Girls Flyers",
+          "gid": "974fb5d1",
+          "gn": "Thursday U19 Girls",
+          "stats": {
+            "gp": 14,
+            "pts": 71,
+            "fouls": 14,
+            "fg": 23,
+            "ft": 13,
+            "threePt": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "23f743fd",
+          "tn": "Chalkies U19 Girls Flyers",
+          "gid": "6c155f7d",
+          "gn": "Thursday U16 Girls",
+          "stats": {
+            "gp": 14,
+            "pts": 71,
+            "fouls": 14,
+            "fg": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 2,
+            "ft": 13,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "50712173",
+      "sn": "Summer 2021/22",
+      "club": "Gladiators Basketball Club",
+      "regs": [
+        {
+          "tid": "74d52cdf",
+          "tn": "U19 Girls Gladiators Shadow",
+          "gid": "6e7b6766",
+          "gn": "Thursday U19 Girls",
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "fouls": 4,
+            "fg": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f3b79a84",
+      "sn": "Autumn 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "e0a1d60f",
+          "tn": "Tropics 18.1",
+          "gid": "8dc12bd1",
+          "gn": "U18 Girls B Grade",
+          "stats": {
+            "gp": 4,
+            "pts": 5,
+            "fouls": 6,
+            "fg": 1,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a00636e2",
+      "sn": "Winter 2021",
+      "club": "Chalkies Basketball Club",
+      "regs": [
+        {
+          "tid": "b52cfab4",
+          "tn": "U16 Girls Chalkies Flyers",
+          "gid": "c62b1776",
+          "gn": "Thursday U16 Girls A",
+          "stats": {
+            "gp": 7,
+            "pts": 35,
+            "fouls": 5,
+            "fg": 14,
+            "ft": 4,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c539594d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "6bc55b8f",
+          "tn": "Chalkies Flyers",
+          "gid": "5747dbeb",
+          "gn": "Thursday U19 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "e3376e2e",
+          "tn": "Dandenong U16 Girls 4",
+          "gid": "4817977e",
+          "gn": "U16 Girls VJL 7 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:10.351Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "5728e730",
+      "sid": "5ae37dcf"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "5728e730",
+      "sid": "5ae37dcf"
+    }
+  },
+  "games": [
+    "0621b13a",
+    "06aeddc0",
+    "0f807c7b",
+    "2d1a10df",
+    "31fed6cb",
+    "32f3bb81",
+    "35ef8cf9",
+    "3cc37cd1",
+    "477f21dd",
+    "4ecf1a70",
+    "4fc1c93d",
+    "55247333",
+    "56ab6111",
+    "5728e730",
+    "61ec670d",
+    "6fe1cd32",
+    "76081f87",
+    "79d5ef43",
+    "8a6d5f21",
+    "8c6d3d0e",
+    "952e5f65",
+    "9a0e05fa",
+    "9bd09506",
+    "9ce184df",
+    "9e765595",
+    "a18148b4",
+    "a593ca9f",
+    "a6b79cd6",
+    "a9f40d8f",
+    "acb371da",
+    "adad9ece",
+    "bec80295",
+    "c203c4d9",
+    "c423226e",
+    "c8205c21",
+    "d628b9a0",
+    "d82f0993",
+    "dbc7c560",
+    "e36f599c",
+    "e614b7cc",
+    "eac4331e",
+    "fa040f2d"
+  ],
+  "name": "Winter 2023",
+  "teams": [
+    {
+      "tid": "122a788e",
+      "sid": "5ae37dcf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f55dcb7c",
+      "sid": "1af4ce72",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5105d3f6",
+      "sid": "3f5877f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab67b98a",
+      "sid": "9dbd9371",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23f743fd",
+      "sid": "8493938b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "74d52cdf",
+      "sid": "50712173",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0a1d60f",
+      "sid": "f3b79a84",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b52cfab4",
+      "sid": "a00636e2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6bc55b8f",
+      "sid": "c539594d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e3376e2e",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.171Z"
+}

@@ -1,1 +1,79 @@
-{"uuid":"62af45d0-c229-41f4-a367-e61151e23df8","name":"Ali Saad","sports":{"Basketball":{"maxGamePTS":13,"maxGameThreePt":3,"foulOuts":{},"gp":26,"pts":76,"fg":21,"ft":10,"threePt":8,"fouls":45,"statsChecked":"2026-07-08T17:52:20.486Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"bca77db1"}]},{"sid":"bde346e8","regs":[{"tid":"6fa9cfc2"}]},{"sid":"da08ea24","regs":[{"tid":"11e31de0"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":13,"gameKey":"14a4517c","sid":"bde346e8"},"maxGameThreePt":{"v":3,"gameKey":"14a4517c","sid":"bde346e8"}}}
+{
+  "uuid": "62af45d0-c229-41f4-a367-e61151e23df8",
+  "name": "Ali Saad",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 13,
+      "maxGameThreePt": 3,
+      "foulOuts": {},
+      "gp": 26,
+      "pts": 76,
+      "fg": 21,
+      "ft": 10,
+      "threePt": 8,
+      "fouls": 45,
+      "statsChecked": "2026-07-08T17:52:20.486Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "bca77db1",
+          "gid": "7edb93b5",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "bde346e8",
+      "regs": [
+        {
+          "tid": "6fa9cfc2",
+          "gid": "46c60092",
+          "gn": "Monday Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "da08ea24",
+      "regs": [
+        {
+          "tid": "11e31de0"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "bca77db1",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6fa9cfc2",
+      "sid": "bde346e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11e31de0",
+      "sid": "da08ea24",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "14a4517c",
+      "sid": "bde346e8"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "14a4517c",
+      "sid": "bde346e8"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:22.417Z"
+}

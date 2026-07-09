@@ -1,1 +1,342 @@
-{"uuid":"94c31e40-9dd4-4ec8-bd95-98caa37f5d62","name":"Ned Thadani","gender":"Boys","sports":{"Basketball":{"gp":66,"pts":311,"fouls":88,"fg":138,"ft":35,"foulOuts":{"d868771d":1,"fb0c8cb5":1},"maxGamePTS":17,"maxGameThreePt":null,"wins":61,"losses":58,"winPct":0.51,"statsChecked":"2026-07-06T18:59:18.705Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"97fb0ab2","tn":"Watsonia Warriors U10 Boys 1","gid":"4b235217","gn":"Saturday U10 Boys A","age":"U10","div":null,"stats":{"gp":16,"fouls":26,"ft":14,"fg":20,"pts":54,"foulOuts":1,"wins":9,"losses":7}},{"tid":"97fb0ab2","tn":"Watsonia Warriors U10 Boys 1","gid":"994176b4","gn":"Saturday U10 Boys Grading Group 1","age":"U10","div":null,"stats":{"gp":16,"fouls":26,"ft":14,"fg":20,"pts":54,"wins":9,"losses":7}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"e036f4b3","tn":"Watsonia Warriors U10 Boys 1","gid":"89af5668","gn":"Saturday U10 Boys B1","age":"U10","div":"B1","stats":{"gp":13,"fouls":11,"ft":1,"fg":13,"pts":27,"wins":2,"losses":10}},{"tid":"e036f4b3","tn":"Watsonia Warriors U10 Boys 1","gid":"b75d7f41","gn":"Saturday U10 Boys Grading Group 1","age":"U10","div":null,"stats":{"gp":13,"fouls":11,"fg":13,"pts":27,"wins":2,"losses":10,"ft":1}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"c0af46e7","tn":"Watsonia Warriors U10 Boys 3","gid":"e7d83834","gn":"Saturday U10 Boys B2","age":"U10","div":"B2","stats":{"gp":15,"fouls":20,"ft":5,"fg":18,"pts":41,"wins":9,"losses":6}},{"tid":"c0af46e7","tn":"Watsonia Warriors U10 Boys 3","gid":"cbe6e41a","gn":"Grading - Saturday U10 Boys B2","age":"U10","div":"B2","stats":{"gp":15,"fouls":20,"ft":5,"fg":18,"pts":41,"wins":9,"losses":6}},{"tid":"c0af46e7","tn":"Watsonia Warriors U10 Boys 3","gid":"fed14e25","gn":"Grading - Saturday U10 Boys C1","age":"U10","div":"C1","stats":{"gp":15,"fouls":20,"ft":5,"fg":18,"pts":41,"wins":9,"losses":6}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"12d865dc","tn":"Watsonia Warriors U8 Boys 3","gid":"a6c92247","gn":"Saturday U8 Boys C1","age":"U8","div":"C1","stats":{"gp":18,"fouls":29,"ft":9,"fg":87,"pts":183,"foulOuts":1,"wins":12,"losses":6}}]},{"sid":"e98ba69f","regs":[{"tid":"463bd4f6","stats":{"gp":4,"pts":6,"ft":6,"fouls":2}},{"tid":"463bd4f6","tn":"","gid":"65ff6872","gn":"U10 Boys A/B","div":null,"stats":{"gp":4,"pts":6,"ft":6,"fouls":2}}]}],"updatedAt":"2026-07-06T18:30:52.675Z","teams":[{"tid":"97fb0ab2","sid":"d868771d","status":"ACTIVE"},{"tid":"e036f4b3","sid":"f57b7901","status":"COMPLETED"},{"tid":"c0af46e7","sid":"868d6996","status":"COMPLETED"},{"tid":"12d865dc","sid":"fb0c8cb5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:50.079Z","records":{"maxGamePTS":{"v":17,"gameKey":"597f703b","sid":"fb0c8cb5"},"maxGameThreePt":{"v":null}},"games":["02aee434","031f41fc","053b948a","08228603","09e1d59a","0c5b76a8","0d6b04eb","29ec45f4","30635e1d","30b5dea1","33961b89","357572b6","35f346b9","3cbae634","3cf50bbc","42ec956c","43bf0750","44b6fa3e","456503d5","46461675","4b64d0b8","4e333cfd","597f703b","67ac72c6","6d08a8bc","6e55e5d2","6e61ca2f","760d1c26","796a531b","79a29c0c","81d9bcd9","81e4e51a","82a3cfea","85af4998","87384c99","89783303","8e798ec0","964b2aed","99b88bbf","a2b5383c","af472afe","b1710229","b1ab7d71","b58e4ddd","bf65e4f9","c42880a1","cc336661","cc58e639","d0b132bb","d8c5d1ff","db870ad7","e0752e9f","e91db77e","ea6b4bab","ec0fa655","f2ecf8e3","f31f2fc2","f3ab1dc6","f5879ea5","f6392f4d","f81f978e","f9ac039b"]}
+{
+  "uuid": "94c31e40-9dd4-4ec8-bd95-98caa37f5d62",
+  "name": "Ned Thadani",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 311,
+      "fouls": 88,
+      "fg": 138,
+      "ft": 35,
+      "foulOuts": {
+        "d868771d": 1,
+        "fb0c8cb5": 1
+      },
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 61,
+      "losses": 58,
+      "winPct": 0.51,
+      "statsChecked": "2026-07-06T18:59:18.705Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "97fb0ab2",
+          "tn": "Watsonia Warriors U10 Boys 1",
+          "gid": "4b235217",
+          "gn": "Saturday U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 26,
+            "ft": 14,
+            "fg": 20,
+            "pts": 54,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "97fb0ab2",
+          "tn": "Watsonia Warriors U10 Boys 1",
+          "gid": "994176b4",
+          "gn": "Saturday U10 Boys Grading Group 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 26,
+            "ft": 14,
+            "fg": 20,
+            "pts": 54,
+            "wins": 9,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "e036f4b3",
+          "tn": "Watsonia Warriors U10 Boys 1",
+          "gid": "89af5668",
+          "gn": "Saturday U10 Boys B1",
+          "age": "U10",
+          "div": "B1",
+          "stats": {
+            "gp": 13,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "wins": 2,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "e036f4b3",
+          "tn": "Watsonia Warriors U10 Boys 1",
+          "gid": "b75d7f41",
+          "gn": "Saturday U10 Boys Grading Group 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 11,
+            "fg": 13,
+            "pts": 27,
+            "wins": 2,
+            "losses": 10,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "c0af46e7",
+          "tn": "Watsonia Warriors U10 Boys 3",
+          "gid": "e7d83834",
+          "gn": "Saturday U10 Boys B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "c0af46e7",
+          "tn": "Watsonia Warriors U10 Boys 3",
+          "gid": "cbe6e41a",
+          "gn": "Grading - Saturday U10 Boys B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "c0af46e7",
+          "tn": "Watsonia Warriors U10 Boys 3",
+          "gid": "fed14e25",
+          "gn": "Grading - Saturday U10 Boys C1",
+          "age": "U10",
+          "div": "C1",
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "wins": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "12d865dc",
+          "tn": "Watsonia Warriors U8 Boys 3",
+          "gid": "a6c92247",
+          "gn": "Saturday U8 Boys C1",
+          "age": "U8",
+          "div": "C1",
+          "stats": {
+            "gp": 18,
+            "fouls": 29,
+            "ft": 9,
+            "fg": 87,
+            "pts": 183,
+            "foulOuts": 1,
+            "wins": 12,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e98ba69f",
+      "regs": [
+        {
+          "tid": "463bd4f6",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "ft": 6,
+            "fouls": 2
+          },
+          "gid": "65ff6872",
+          "gn": "U10 Boys A/B"
+        },
+        {
+          "tid": "463bd4f6",
+          "tn": "",
+          "gid": "65ff6872",
+          "gn": "U10 Boys A/B",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "ft": 6,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "38022824",
+          "tn": "Watsonia Warriors U10 Boys 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:52.675Z",
+  "teams": [
+    {
+      "tid": "97fb0ab2",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e036f4b3",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c0af46e7",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "12d865dc",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "463bd4f6",
+      "sid": "e98ba69f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "38022824",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.409Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "597f703b",
+      "sid": "fb0c8cb5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02aee434",
+    "031f41fc",
+    "053b948a",
+    "08228603",
+    "09e1d59a",
+    "0c5b76a8",
+    "0d6b04eb",
+    "29ec45f4",
+    "30635e1d",
+    "30b5dea1",
+    "33961b89",
+    "357572b6",
+    "35f346b9",
+    "3cbae634",
+    "3cf50bbc",
+    "42ec956c",
+    "43bf0750",
+    "44b6fa3e",
+    "456503d5",
+    "46461675",
+    "4b64d0b8",
+    "4e333cfd",
+    "597f703b",
+    "67ac72c6",
+    "6d08a8bc",
+    "6e55e5d2",
+    "6e61ca2f",
+    "760d1c26",
+    "796a531b",
+    "79a29c0c",
+    "81d9bcd9",
+    "81e4e51a",
+    "82a3cfea",
+    "85af4998",
+    "87384c99",
+    "89783303",
+    "8e798ec0",
+    "964b2aed",
+    "99b88bbf",
+    "a2b5383c",
+    "af472afe",
+    "b1710229",
+    "b1ab7d71",
+    "b58e4ddd",
+    "bf65e4f9",
+    "c42880a1",
+    "cc336661",
+    "cc58e639",
+    "d0b132bb",
+    "d8c5d1ff",
+    "db870ad7",
+    "e0752e9f",
+    "e91db77e",
+    "ea6b4bab",
+    "ec0fa655",
+    "f2ecf8e3",
+    "f31f2fc2",
+    "f3ab1dc6",
+    "f5879ea5",
+    "f6392f4d",
+    "f81f978e",
+    "f9ac039b"
+  ]
+}

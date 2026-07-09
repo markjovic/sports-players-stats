@@ -1,1 +1,244 @@
-{"uuid":"faaafcd7-6fbd-49a4-b399-b4ce42254818","name":"Hamza Amyra","gender":"Boys","sports":{"Basketball":{"gp":40,"pts":161,"fouls":74,"fg":76,"ft":3,"threePt":2,"foulOuts":{"f2d66c1b":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":12,"maxGameThreePt":1,"wins":32,"losses":56,"winPct":0.36,"statsChecked":"2026-07-05T14:31:42.266Z"}},"seasons":[{"sid":"15908988","sn":"Winter 2026","club":"Huntingtower Heat Basketball Club","regs":[{"tid":"24992a61","tn":"B15 Huntingtower Heat 7","gid":"9d916ae2","gn":"Saturday U15 Boys F","age":"U15","div":null,"stats":{"gp":8,"fouls":14,"fg":9,"pts":18,"losses":6,"wins":2}},{"tid":"24992a61","tn":"B15 Huntingtower Heat 7","gid":"f9338662","gn":"Saturday U15 Boys ER","age":"U15","div":null,"stats":{"gp":8,"fouls":14,"fg":9,"pts":18,"losses":6,"wins":2}},{"tid":"24992a61","tn":"","gid":"ebb415c0","gn":"Saturday U15 Boys FR","div":null,"stats":{"gp":8,"pts":18,"fg":9,"fouls":14,"wins":2,"losses":6}}]},{"sid":"bfbe9c11","sn":"Summer 2025/26","club":"Waverley Wildcats Basketball Club","regs":[{"tid":"4dd49d99","tn":"B15 Waverley Wildcats 2","gid":"7589ed77","gn":"Saturday U15 Boys H","age":"U15","div":null,"stats":{"gp":15,"fouls":23,"ft":1,"fg":27,"pts":55,"wins":3,"losses":12}},{"tid":"4dd49d99","tn":"B15 Waverley Wildcats 2","gid":"ca64533f","gn":"Saturday U15 Boys HR","age":"U15","div":null,"stats":{"gp":15,"fouls":23,"fg":27,"pts":55,"wins":3,"losses":12,"ft":1}}]},{"sid":"f2d66c1b","sn":"Winter 2025","club":"Waverley Wildcats Basketball Club","regs":[{"tid":"06a1d414","tn":"B13 Waverley Wildcats 2","gid":"5d0be8cf","gn":"Saturday U13 Boys HR","age":"U13","div":null,"stats":{"gp":17,"fouls":37,"ft":2,"fg":40,"threePt":2,"pts":88,"foulOuts":1,"finals":1,"wins":10,"losses":7}},{"tid":"06a1d414","tn":"B13 Waverley Wildcats 2","gid":"3db33cac","gn":"Saturday U13 Boys H","age":"U13","div":null,"stats":{"gp":17,"fouls":37,"fg":40,"pts":88,"finals":1,"wins":10,"losses":7,"ft":2,"threePt":2}}]}],"updatedAt":"2026-07-03T20:36:43.502Z","teams":[{"tid":"24992a61","sid":"15908988","status":"ACTIVE"},{"tid":"4dd49d99","sid":"bfbe9c11","status":"COMPLETED"},{"tid":"06a1d414","sid":"f2d66c1b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:35:07.228Z","games":["00bf9efe","02e91103","09234fe5","0944c0ba","0c3d9f3f","11630877","116f3d32","171de3c6","17799397","1ca4937c","219fc98b","23af0974","25d97bc9","2892ce91","2c7c82ba","4241c507","4616149f","4e362b32","5ee884fe","6110b43e","77828d4f","81014a64","84dd843b","8a69c9d7","8d2188f3","8dd2f210","933a3aed","96ecfa28","b19561cb","bcebadd2","c5c5aa2c","c6a1344f","cd8ce6f7","ce62d595","cee0e874","d3ace8f8","e28109ab","e830153e","fb0157e1","fc492cd9"],"records":{"maxGamePTS":{"v":12,"gameKey":"2c7c82ba","sid":"bfbe9c11"},"maxGameThreePt":{"v":1,"gameKey":"4616149f","sid":"f2d66c1b"}}}
+{
+  "uuid": "faaafcd7-6fbd-49a4-b399-b4ce42254818",
+  "name": "Hamza Amyra",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 161,
+      "fouls": 74,
+      "fg": 76,
+      "ft": 3,
+      "threePt": 2,
+      "foulOuts": {
+        "f2d66c1b": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 32,
+      "losses": 56,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T14:31:42.266Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "15908988",
+      "sn": "Winter 2026",
+      "club": "Huntingtower Heat Basketball Club",
+      "regs": [
+        {
+          "tid": "24992a61",
+          "tn": "B15 Huntingtower Heat 7",
+          "gid": "ebb415c0",
+          "gn": "Saturday U15 Boys FR",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "fg": 9,
+            "pts": 18,
+            "losses": 6,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "24992a61",
+          "tn": "B15 Huntingtower Heat 7",
+          "gid": "f9338662",
+          "gn": "Saturday U15 Boys ER",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "fg": 9,
+            "pts": 18,
+            "losses": 6,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "24992a61",
+          "tn": "",
+          "gid": "ebb415c0",
+          "gn": "Saturday U15 Boys FR",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 18,
+            "fg": 9,
+            "fouls": 14,
+            "wins": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbe9c11",
+      "sn": "Summer 2025/26",
+      "club": "Waverley Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "4dd49d99",
+          "tn": "B15 Waverley Wildcats 2",
+          "gid": "7589ed77",
+          "gn": "Saturday U15 Boys H",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "ft": 1,
+            "fg": 27,
+            "pts": 55,
+            "wins": 3,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "4dd49d99",
+          "tn": "B15 Waverley Wildcats 2",
+          "gid": "ca64533f",
+          "gn": "Saturday U15 Boys HR",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 27,
+            "pts": 55,
+            "wins": 3,
+            "losses": 12,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f2d66c1b",
+      "sn": "Winter 2025",
+      "club": "Waverley Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "06a1d414",
+          "tn": "B13 Waverley Wildcats 2",
+          "gid": "5d0be8cf",
+          "gn": "Saturday U13 Boys HR",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 37,
+            "ft": 2,
+            "fg": 40,
+            "threePt": 2,
+            "pts": 88,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 10,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "06a1d414",
+          "tn": "B13 Waverley Wildcats 2",
+          "gid": "3db33cac",
+          "gn": "Saturday U13 Boys H",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 37,
+            "fg": 40,
+            "pts": 88,
+            "finals": 1,
+            "wins": 10,
+            "losses": 7,
+            "ft": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-03T20:36:43.502Z",
+  "teams": [
+    {
+      "tid": "24992a61",
+      "sid": "15908988",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4dd49d99",
+      "sid": "bfbe9c11",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06a1d414",
+      "sid": "f2d66c1b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:31.466Z",
+  "games": [
+    "00bf9efe",
+    "02e91103",
+    "09234fe5",
+    "0944c0ba",
+    "0c3d9f3f",
+    "11630877",
+    "116f3d32",
+    "171de3c6",
+    "17799397",
+    "1ca4937c",
+    "219fc98b",
+    "23af0974",
+    "25d97bc9",
+    "2892ce91",
+    "2c7c82ba",
+    "4241c507",
+    "4616149f",
+    "4e362b32",
+    "5ee884fe",
+    "6110b43e",
+    "77828d4f",
+    "81014a64",
+    "84dd843b",
+    "8a69c9d7",
+    "8d2188f3",
+    "8dd2f210",
+    "933a3aed",
+    "96ecfa28",
+    "b19561cb",
+    "bcebadd2",
+    "c5c5aa2c",
+    "c6a1344f",
+    "cd8ce6f7",
+    "ce62d595",
+    "cee0e874",
+    "d3ace8f8",
+    "e28109ab",
+    "e830153e",
+    "fb0157e1",
+    "fc492cd9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "2c7c82ba",
+      "sid": "bfbe9c11"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "4616149f",
+      "sid": "f2d66c1b"
+    }
+  }
+}

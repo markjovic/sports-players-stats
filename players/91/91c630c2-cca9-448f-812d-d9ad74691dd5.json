@@ -1,1 +1,132 @@
-{"uuid":"91c630c2-cca9-448f-812d-d9ad74691dd5","name":"Paul Massaro","gender":"Men","sports":{"Basketball":{"gp":7,"pts":33,"fouls":17,"fg":10,"ft":4,"threePt":3,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":1,"wins":2,"losses":12,"winPct":0.14,"statsChecked":"2026-07-05T15:37:39.727Z"}},"seasons":[{"sid":"4b160a26","sn":"Winter 2026","regs":[{"tid":"06cc5adc","tn":"Beacy Dad Bod Squad ","gid":"30467fa1","gn":"Wednesday Open Men E","age":"Senior","div":null,"stats":{"gp":7,"fouls":17,"ft":4,"fg":10,"threePt":3,"pts":33,"wins":1,"losses":6}},{"tid":"06cc5adc","tn":"Beacy Dad Bod Squad ","gid":"29fdb0b6","gn":"Wednesday Open Men D","age":"Senior","div":null,"stats":{"gp":7,"fouls":17,"ft":4,"fg":10,"threePt":3,"pts":33,"wins":1,"losses":6}}]}],"updatedAt":"2026-07-04T05:40:39.889Z","teams":[{"tid":"06cc5adc","sid":"4b160a26","status":"ACTIVE"},{"tid":"4ed2e5aa","sid":"d4cbf787","status":"COMPLETED"},{"tid":"d30b6748","sid":"d64fcfce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:34.856Z","games":["05bbb457","2bfd3441","4c7bea2c","552bcc74","5de07788","e3542c8a","eee42ff1"],"records":{"maxGamePTS":{"v":9,"gameKey":"552bcc74","sid":"4b160a26"},"maxGameThreePt":{"v":1,"gameKey":"eee42ff1","sid":"4b160a26"}}}
+{
+  "uuid": "91c630c2-cca9-448f-812d-d9ad74691dd5",
+  "name": "Paul Massaro",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 33,
+      "fouls": 17,
+      "fg": 10,
+      "ft": 4,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "losses": 12,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-05T15:37:39.727Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b160a26",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "06cc5adc",
+          "tn": "Beacy Dad Bod Squad ",
+          "gid": "30467fa1",
+          "gn": "Wednesday Open Men E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 10,
+            "threePt": 3,
+            "pts": 33,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "06cc5adc",
+          "tn": "Beacy Dad Bod Squad ",
+          "gid": "29fdb0b6",
+          "gn": "Wednesday Open Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 10,
+            "threePt": 3,
+            "pts": 33,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "4ed2e5aa",
+          "tn": "Badd Boyz",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "d30b6748",
+          "tn": "Badd Boyz",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:40:39.889Z",
+  "teams": [
+    {
+      "tid": "06cc5adc",
+      "sid": "4b160a26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ed2e5aa",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d30b6748",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.232Z",
+  "games": [
+    "05bbb457",
+    "2bfd3441",
+    "4c7bea2c",
+    "552bcc74",
+    "5de07788",
+    "e3542c8a",
+    "eee42ff1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "552bcc74",
+      "sid": "4b160a26"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "eee42ff1",
+      "sid": "4b160a26"
+    }
+  }
+}

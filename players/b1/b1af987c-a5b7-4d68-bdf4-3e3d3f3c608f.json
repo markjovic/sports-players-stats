@@ -1,1 +1,89 @@
-{"uuid":"b1af987c-a5b7-4d68-bdf4-3e3d3f3c608f","name":"Casey Rosengarten","gender":"Women","sports":{"Basketball":{"gp":4,"pts":9,"fouls":2,"fg":4,"ft":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":3,"winPct":0.75,"losses":1,"statsChecked":"2026-07-05T16:03:02.281Z"}},"seasons":[{"sid":"b3025a8e","sn":"Winter 2026","regs":[{"tid":"41107404","tn":"Crackers","gid":"8c7c7835","gn":"Tuesday Women C","age":null,"div":null,"stats":{"gp":4,"fouls":2,"ft":1,"fg":4,"pts":9,"wins":3,"losses":1}}]}],"updatedAt":"2026-07-04T05:46:17.692Z","teams":[{"tid":"41107404","sid":"b3025a8e","status":"ACTIVE"},{"tid":"9a1ee8c2","sid":"a750f9b4","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:36:09.139Z","records":{"maxGamePTS":{"v":3,"gameKey":"dcb8ae22","sid":"b3025a8e"},"maxGameThreePt":{"v":null}},"games":["732576fc","89f7dd12","9b645f13","dcb8ae22"]}
+{
+  "uuid": "b1af987c-a5b7-4d68-bdf4-3e3d3f3c608f",
+  "name": "Casey Rosengarten",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 9,
+      "fouls": 2,
+      "fg": 4,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "winPct": 0.75,
+      "losses": 1,
+      "statsChecked": "2026-07-05T16:03:02.281Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3025a8e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "41107404",
+          "tn": "Crackers",
+          "gid": "8c7c7835",
+          "gn": "Tuesday Women C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a750f9b4",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "9a1ee8c2",
+          "tn": "East High Wildcats",
+          "gid": "05d7899a",
+          "gn": "Wednesday Open Mixed B GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:17.692Z",
+  "teams": [
+    {
+      "tid": "41107404",
+      "sid": "b3025a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a1ee8c2",
+      "sid": "a750f9b4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:26.714Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "dcb8ae22",
+      "sid": "b3025a8e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "732576fc",
+    "89f7dd12",
+    "9b645f13",
+    "dcb8ae22"
+  ]
+}

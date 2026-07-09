@@ -1,1 +1,128 @@
-{"uuid":"d4c8aed0-3b08-49cc-9f2c-19a690bcfbf8","name":"Cooper Edwards","gender":"Men","sports":{"Basketball":{"gp":20,"pts":44,"fouls":30,"fg":16,"ft":3,"threePt":3,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":2,"wins":3,"losses":19,"winPct":0.14,"statsChecked":"2026-07-08T17:55:27.093Z"}},"seasons":[{"sid":"1faf9865","sn":"Summer 2025/26","regs":[{"tid":"bd104124","tn":"Blue ballerz ","gid":"aa538904","gn":"Monday Men E3 Grade","age":null,"div":null,"stats":{"gp":16,"fouls":24,"ft":3,"fg":9,"threePt":3,"pts":30,"wins":1,"losses":15}}]},{"sid":"205c1638","regs":[{"tid":"2f114737","stats":{"gp":4,"pts":14,"fg":7,"fouls":6,"wins":1,"losses":2}},{"tid":"2f114737","tn":"","gid":"b372ccf2","gn":"Wednesday Men E3 Grade","div":null,"stats":{"gp":4,"pts":14,"fg":7,"fouls":6,"wins":1,"losses":2}}]}],"updatedAt":"2026-07-08T17:29:58.097Z","teams":[{"tid":"2f114737","sid":"205c1638","status":"ACTIVE"},{"tid":"bd104124","sid":"1faf9865","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:05.893Z","games":["03e5618a","1802ee3a","1cf3540a","2c026a74","39e0e6fb","4d825694","4ecc6548","50fe8798","59ea097d","83bc8d62","8ea2ab1e","97cb0f05","9fcf01aa","a5698659","b10f3ff6","c5c25dbc","cc5545c7","e2af5fea","ebf6373f"],"records":{"maxGamePTS":{"v":8,"gameKey":"e2af5fea","sid":"1faf9865"},"maxGameThreePt":{"v":2,"gameKey":"e2af5fea","sid":"1faf9865"}}}
+{
+  "uuid": "d4c8aed0-3b08-49cc-9f2c-19a690bcfbf8",
+  "name": "Cooper Edwards",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 44,
+      "fouls": 30,
+      "fg": 16,
+      "ft": 3,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 2,
+      "wins": 3,
+      "losses": 19,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-08T17:55:27.093Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1faf9865",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "bd104124",
+          "tn": "Blue ballerz ",
+          "gid": "aa538904",
+          "gn": "Monday Men E3 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 3,
+            "fg": 9,
+            "threePt": 3,
+            "pts": 30,
+            "wins": 1,
+            "losses": 15
+          }
+        }
+      ]
+    },
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "2f114737",
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 2
+          },
+          "gid": "b372ccf2",
+          "gn": "Wednesday Men E3 Grade"
+        },
+        {
+          "tid": "2f114737",
+          "tn": "",
+          "gid": "b372ccf2",
+          "gn": "Wednesday Men E3 Grade",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:29:58.097Z",
+  "teams": [
+    {
+      "tid": "bd104124",
+      "sid": "1faf9865",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f114737",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.821Z",
+  "games": [
+    "03e5618a",
+    "1802ee3a",
+    "1cf3540a",
+    "2c026a74",
+    "39e0e6fb",
+    "4d825694",
+    "4ecc6548",
+    "50fe8798",
+    "59ea097d",
+    "83bc8d62",
+    "8ea2ab1e",
+    "97cb0f05",
+    "9fcf01aa",
+    "a5698659",
+    "b10f3ff6",
+    "c5c25dbc",
+    "cc5545c7",
+    "e2af5fea",
+    "ebf6373f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "e2af5fea",
+      "sid": "1faf9865"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "e2af5fea",
+      "sid": "1faf9865"
+    }
+  }
+}

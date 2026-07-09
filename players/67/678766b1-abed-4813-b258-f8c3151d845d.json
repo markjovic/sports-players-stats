@@ -1,1 +1,235 @@
-{"uuid":"678766b1-abed-4813-b258-f8c3151d845d","gender":null,"sports":{"Basketball":{"gp":44,"pts":134,"fouls":50,"fg":32,"ft":10,"threePt":20,"foulOuts":{},"maxGamePTS":17,"maxGameThreePt":3,"wins":5,"losses":9,"winPct":0.36,"statsChecked":"2026-07-05T15:49:03.254Z"}},"seasons":[{"sid":"0d3fe477","sn":"Spring 2021","club":null,"regs":[{"tid":"e9d977ab","tn":"AND 1","gid":"c1263f11","gn":"Wednesday Open Men Division 4","stats":{"gp":15,"pts":40,"fouls":18,"fg":12,"ft":4,"threePt":4}},{"tid":"e9d977ab","tn":"AND 1","gid":"77cbec5d","gn":"OLD Wednesday Open Men Division 5","stats":{"gp":15,"pts":40,"fouls":18,"fg":12,"ft":4,"threePt":4}}]},{"sid":"c2fda449","sn":"Autumn 2021","club":null,"regs":[{"tid":"f9124b34","tn":"Count it and a Foul","gid":"359b495e","gn":"Wednesday Open Men - All Teams","stats":{"gp":14,"pts":73,"fouls":19,"fg":14,"ft":3,"threePt":14,"wins":5,"losses":9}}]},{"sid":"542b62c9","sn":"Autumn 2021","club":null,"regs":[{"tid":"5d704644","tn":"RonBakersDelight","gid":"6282fe7c","gn":"Sunday Open Men Division 7","stats":{"gp":12,"pts":18,"fouls":9,"fg":6,"ft":3,"threePt":1}},{"tid":"5d704644","tn":"RonBakersDelight","gid":"e3831d68","gn":"Sunday Open Men Division 6","stats":{"gp":12,"pts":18,"fg":6,"ft":3,"threePt":1,"fouls":9}}]},{"sid":"89899a1c","sn":"Autumn 2020","club":null,"regs":[{"tid":"ba595e90","tn":"RonBakersDelight","gid":"40abe38a","gn":"Sunday Men Division 7","stats":{"gp":3,"pts":3,"fouls":4,"threePt":1}}]}],"updatedAt":"2026-06-11T23:40:35.560Z","records":{"maxGamePTS":{"v":17,"gameKey":"8292e08a","sid":"c2fda449"},"maxGameThreePt":{"v":3,"gameKey":"10096b05","sid":"0d3fe477"}},"games":["0535c06d","059b0dbd","0e59aee5","0e807fa2","10ceffd7","12c7f92b","165efb73","181391b9","1b30d3dc","243f3a83","24d16e43","2f089e6d","324bba75","32db74da","345f241d","4ae8d54c","4f42a542","513c39bb","6c768ccf","6c8d6221","6ced3edb","6f150c3e","7fa95968","8292e08a","8863f6a0","a31857bd","becd5dd1","c036ad5a","ca60d6b5","ce7c344e","d7ad6b40","dd43d582","e22db21f","e2a7ff32","e3b110c3","e63e072c","e8a8be53","ef9a8bf5","f227f4c3","f2dacec9","f46e1ecf","f4ac090c","f4af0485"],"name":"Spring 2021"}
+{
+  "uuid": "678766b1-abed-4813-b258-f8c3151d845d",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 134,
+      "fouls": 50,
+      "fg": 32,
+      "ft": 10,
+      "threePt": 20,
+      "foulOuts": {},
+      "maxGamePTS": 17,
+      "maxGameThreePt": 3,
+      "wins": 5,
+      "losses": 9,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T15:49:03.254Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0d3fe477",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "e9d977ab",
+          "tn": "AND 1",
+          "gid": "c1263f11",
+          "gn": "Wednesday Open Men Division 4",
+          "stats": {
+            "gp": 15,
+            "pts": 40,
+            "fouls": 18,
+            "fg": 12,
+            "ft": 4,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "e9d977ab",
+          "tn": "AND 1",
+          "gid": "77cbec5d",
+          "gn": "OLD Wednesday Open Men Division 5",
+          "stats": {
+            "gp": 15,
+            "pts": 40,
+            "fouls": 18,
+            "fg": 12,
+            "ft": 4,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c2fda449",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f9124b34",
+          "tn": "Count it and a Foul",
+          "gid": "359b495e",
+          "gn": "Wednesday Open Men - All Teams",
+          "stats": {
+            "gp": 14,
+            "pts": 73,
+            "fouls": 19,
+            "fg": 14,
+            "ft": 3,
+            "threePt": 14,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "542b62c9",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5d704644",
+          "tn": "RonBakersDelight",
+          "gid": "6282fe7c",
+          "gn": "Sunday Open Men Division 7",
+          "stats": {
+            "gp": 12,
+            "pts": 18,
+            "fouls": 9,
+            "fg": 6,
+            "ft": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "5d704644",
+          "tn": "RonBakersDelight",
+          "gid": "e3831d68",
+          "gn": "Sunday Open Men Division 6",
+          "stats": {
+            "gp": 12,
+            "pts": 18,
+            "fg": 6,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89899a1c",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "ba595e90",
+          "tn": "RonBakersDelight",
+          "gid": "40abe38a",
+          "gn": "Sunday Men Division 7",
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "fouls": 4,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a15c09c1",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "e7281155",
+          "tn": "Count it and a foul",
+          "gid": "b593273d",
+          "gn": "Wednesday Open Men C/D Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:35.560Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "8292e08a",
+      "sid": "c2fda449"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "10096b05",
+      "sid": "0d3fe477"
+    }
+  },
+  "games": [
+    "0535c06d",
+    "059b0dbd",
+    "0e59aee5",
+    "0e807fa2",
+    "10ceffd7",
+    "12c7f92b",
+    "165efb73",
+    "181391b9",
+    "1b30d3dc",
+    "243f3a83",
+    "24d16e43",
+    "2f089e6d",
+    "324bba75",
+    "32db74da",
+    "345f241d",
+    "4ae8d54c",
+    "4f42a542",
+    "513c39bb",
+    "6c768ccf",
+    "6c8d6221",
+    "6ced3edb",
+    "6f150c3e",
+    "7fa95968",
+    "8292e08a",
+    "8863f6a0",
+    "a31857bd",
+    "becd5dd1",
+    "c036ad5a",
+    "ca60d6b5",
+    "ce7c344e",
+    "d7ad6b40",
+    "dd43d582",
+    "e22db21f",
+    "e2a7ff32",
+    "e3b110c3",
+    "e63e072c",
+    "e8a8be53",
+    "ef9a8bf5",
+    "f227f4c3",
+    "f2dacec9",
+    "f46e1ecf",
+    "f4ac090c",
+    "f4af0485"
+  ],
+  "name": "Spring 2021",
+  "teams": [
+    {
+      "tid": "e9d977ab",
+      "sid": "0d3fe477",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9124b34",
+      "sid": "c2fda449",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5d704644",
+      "sid": "542b62c9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba595e90",
+      "sid": "89899a1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7281155",
+      "sid": "a15c09c1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.962Z"
+}

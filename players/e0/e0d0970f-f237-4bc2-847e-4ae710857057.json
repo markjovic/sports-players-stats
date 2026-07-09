@@ -1,1 +1,193 @@
-{"uuid":"e0d0970f-f237-4bc2-847e-4ae710857057","name":"Finn Grech","gender":"Boys","sports":{"Basketball":{"gp":58,"pts":333,"fouls":91,"fg":160,"ft":13,"foulOuts":{"2a305f65":1,"0fadb815":1},"maxGamePTS":20,"maxGameThreePt":null,"wins":2,"losses":1,"winPct":0.67,"statsChecked":"2026-07-06T19:01:43.972Z"}},"seasons":[{"sid":"3f1715bc","sn":"Winter 2026","club":"Osborne United Basketball Club","regs":[{"tid":"5beb1f56","tn":"OsborneUTD Bullets","gid":"2b73c015","gn":"Saturday \"Schnitz\" U10 Boys Div 2","age":"U10","div":"Div 2","stats":{"gp":6,"fouls":9,"ft":2,"fg":11,"pts":24,"wins":2,"losses":1}}]},{"sid":"f46c6951","sn":"Summer 2025/26","club":"Osborne United Basketball Club","regs":[{"tid":"64e21774","tn":"OsborneUTD Bullets","gid":"048fb610","gn":"Saturday \"Schnitz\" U10 Boys Div 3","age":"U10","div":"Div 3","stats":{"gp":16,"fouls":24,"ft":6,"fg":44,"pts":94}}]},{"sid":"2a305f65","sn":"Winter 2025","club":"Osborne United Basketball Club","regs":[{"tid":"26da9280","tn":"OsborneUTD Bullets","gid":"8641cec6","gn":"Saturday U8 Boys Black","age":"U8","div":null,"stats":{"gp":18,"fouls":35,"ft":3,"fg":46,"pts":95,"foulOuts":1}}]},{"sid":"0fadb815","sn":"Summer 2024/25","club":"Osborne United Basketball Club","regs":[{"tid":"df3c4876","tn":"OsborneUTD Bullets","gid":"d76fbeb4","gn":"Saturday U8 Boys","age":"U8","div":null,"stats":{"gp":14,"fouls":22,"ft":1,"fg":52,"pts":105,"foulOuts":1}}]},{"sid":"26df4252","regs":[{"tid":"b514c213","stats":{"gp":4,"pts":15,"fg":7,"ft":1,"fouls":1}},{"tid":"b514c213","tn":"","gid":"f087d3b8","gn":"U10 Boys Division 7","div":null,"stats":{"gp":4,"pts":15,"fg":7,"ft":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:32:09.879Z","teams":[{"tid":"5beb1f56","sid":"3f1715bc","status":"ACTIVE"},{"tid":"b514c213","sid":"26df4252","status":"UPCOMING"},{"tid":"64e21774","sid":"f46c6951","status":"COMPLETED"},{"tid":"26da9280","sid":"2a305f65","status":"COMPLETED"},{"tid":"df3c4876","sid":"0fadb815","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:02.949Z","records":{"maxGamePTS":{"v":20,"gameKey":"82954c96","sid":"0fadb815"},"maxGameThreePt":{"v":null}},"games":["201131a4","711bcae4","b36e5883"]}
+{
+  "uuid": "e0d0970f-f237-4bc2-847e-4ae710857057",
+  "name": "Finn Grech",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 333,
+      "fouls": 91,
+      "fg": 160,
+      "ft": 13,
+      "foulOuts": {
+        "2a305f65": 1,
+        "0fadb815": 1
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-06T19:01:43.972Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Osborne United Basketball Club",
+      "regs": [
+        {
+          "tid": "5beb1f56",
+          "tn": "OsborneUTD Bullets",
+          "gid": "2b73c015",
+          "gn": "Saturday \"Schnitz\" U10 Boys Div 2",
+          "age": "U10",
+          "div": "Div 2",
+          "stats": {
+            "gp": 6,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 11,
+            "pts": 24,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f46c6951",
+      "sn": "Summer 2025/26",
+      "club": "Osborne United Basketball Club",
+      "regs": [
+        {
+          "tid": "64e21774",
+          "tn": "OsborneUTD Bullets",
+          "gid": "048fb610",
+          "gn": "Saturday \"Schnitz\" U10 Boys Div 3",
+          "age": "U10",
+          "div": "Div 3",
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 6,
+            "fg": 44,
+            "pts": 94
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2a305f65",
+      "sn": "Winter 2025",
+      "club": "Osborne United Basketball Club",
+      "regs": [
+        {
+          "tid": "26da9280",
+          "tn": "OsborneUTD Bullets",
+          "gid": "8641cec6",
+          "gn": "Saturday U8 Boys Black",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 35,
+            "ft": 3,
+            "fg": 46,
+            "pts": 95,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0fadb815",
+      "sn": "Summer 2024/25",
+      "club": "Osborne United Basketball Club",
+      "regs": [
+        {
+          "tid": "df3c4876",
+          "tn": "OsborneUTD Bullets",
+          "gid": "d76fbeb4",
+          "gn": "Saturday U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "ft": 1,
+            "fg": 52,
+            "pts": 105,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "b514c213",
+          "stats": {
+            "gp": 4,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 1
+          },
+          "gid": "f087d3b8",
+          "gn": "U10 Boys Division 7"
+        },
+        {
+          "tid": "b514c213",
+          "tn": "",
+          "gid": "f087d3b8",
+          "gn": "U10 Boys Division 7",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:09.879Z",
+  "teams": [
+    {
+      "tid": "5beb1f56",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64e21774",
+      "sid": "f46c6951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "26da9280",
+      "sid": "2a305f65",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df3c4876",
+      "sid": "0fadb815",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b514c213",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.748Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "82954c96",
+      "sid": "0fadb815"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "201131a4",
+    "711bcae4",
+    "b36e5883"
+  ]
+}

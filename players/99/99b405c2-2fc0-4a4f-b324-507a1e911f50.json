@@ -1,1 +1,297 @@
-{"uuid":"99b405c2-2fc0-4a4f-b324-507a1e911f50","name":"David Blythe","gender":"Men","sports":{"Basketball":{"gp":40,"pts":137,"fouls":85,"fg":51,"ft":26,"threePt":3,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":1,"wins":26,"losses":20,"winPct":0.57,"statsChecked":"2026-07-06T18:59:36.198Z"}},"seasons":[{"sid":"d809d546","sn":"Autumn 2026","regs":[{"tid":"013d40a1","tn":"BlueBallers","gid":"13826648","gn":"Sunday Senior Men 2","age":"Senior","div":null,"stats":{"gp":10,"fouls":23,"ft":3,"fg":11,"pts":25,"wins":5,"losses":5}}]},{"sid":"9732be7e","sn":"Spring 2025","regs":[{"tid":"d4b2a071","tn":"BlueBallers","gid":"ddcf613d","gn":"Sunday Senior Men 2","age":"Senior","div":null,"stats":{"gp":15,"fouls":35,"ft":9,"fg":14,"threePt":1,"pts":40,"wins":9,"losses":6}},{"tid":"d4b2a071","tn":"BlueBallers","gid":"c2e60559","gn":"Sunday Senior Men 3","age":"Senior","div":null,"stats":{"gp":15,"fouls":35,"fg":14,"pts":40,"wins":9,"losses":6,"ft":9,"threePt":1}}]},{"sid":"2ad447ff","sn":"Winter 2022","regs":[{"tid":"c37083ef","tn":"Ubanis","gid":"ea23876e","gn":"Thursday Open Men A Grade","age":"Senior","div":null,"stats":{"gp":6,"fouls":13,"ft":5,"fg":8,"pts":21,"wins":3,"losses":3}}]},{"sid":"af382b95","sn":"Summer 2021/22","regs":[{"tid":"9dcfaa00","tn":"Blueballers","gid":"d2ba24c3","gn":"Monday Open Men B GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":5,"fouls":6,"ft":3,"fg":9,"threePt":2,"pts":27}}]},{"sid":"5af3234f","regs":[{"tid":"ab9e09ba","stats":{"gp":4,"pts":24,"fg":9,"ft":6,"fouls":8}},{"tid":"ab9e09ba","tn":"","gid":"2ae04110","gn":"Sunday Senior Men 3","div":null,"stats":{"gp":4,"pts":24,"fg":9,"ft":6,"fouls":8}}]}],"updatedAt":"2026-07-06T18:35:26.093Z","teams":[{"tid":"013d40a1","sid":"d809d546","status":"COMPLETED"},{"tid":"d4b2a071","sid":"9732be7e","status":"COMPLETED"},{"tid":"3f56abde","sid":"654894cc","status":"COMPLETED"},{"tid":"c37083ef","sid":"2ad447ff","status":"COMPLETED"},{"tid":"9dcfaa00","sid":"af382b95","status":"COMPLETED"},{"tid":"e4536ed8","sid":"a750f9b4","status":"COMPLETED"},{"tid":"38ddc553","sid":"e0054130","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:03.076Z","games":["0f44387b","2af52bdd","2b925728","4404755e","4d8a907b","54cafb42","558915f2","56ac9e9c","594573ec","596c15c1","6671cca6","71541967","76311c56","768c1b28","7840a062","80376bbe","83311752","860ac673","89a1795b","9b615a77","9fa136d8","a1f22b68","b4f70fb4","bcf6beee","c17e248f","c2e48681","c9118b01","cc93410a","eeb7da62","ef10bae3","f126ef12","f495a22f","f7185561","fe74337f","ff723538"],"records":{"maxGamePTS":{"v":11,"gameKey":"31400968","sid":"5af3234f"},"maxGameThreePt":{"v":1,"gameKey":"a1f22b68","sid":"9732be7e"}}}
+{
+  "uuid": "99b405c2-2fc0-4a4f-b324-507a1e911f50",
+  "name": "David Blythe",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 137,
+      "fouls": 85,
+      "fg": 51,
+      "ft": 26,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 26,
+      "losses": 20,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-06T18:59:36.198Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d809d546",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "013d40a1",
+          "tn": "BlueBallers",
+          "gid": "13826648",
+          "gn": "Sunday Senior Men 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 23,
+            "ft": 3,
+            "fg": 11,
+            "pts": 25,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9732be7e",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "d4b2a071",
+          "tn": "BlueBallers",
+          "gid": "ddcf613d",
+          "gn": "Sunday Senior Men 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 35,
+            "ft": 9,
+            "fg": 14,
+            "threePt": 1,
+            "pts": 40,
+            "wins": 9,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "d4b2a071",
+          "tn": "BlueBallers",
+          "gid": "c2e60559",
+          "gn": "Sunday Senior Men 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 35,
+            "fg": 14,
+            "pts": 40,
+            "wins": 9,
+            "losses": 6,
+            "ft": 9,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ad447ff",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "c37083ef",
+          "tn": "Ubanis",
+          "gid": "ea23876e",
+          "gn": "Thursday Open Men A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 13,
+            "ft": 5,
+            "fg": 8,
+            "pts": 21,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "af382b95",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "9dcfaa00",
+          "tn": "Blueballers",
+          "gid": "d2ba24c3",
+          "gn": "Monday Open Men B GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 9,
+            "threePt": 2,
+            "pts": 27
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5af3234f",
+      "regs": [
+        {
+          "tid": "ab9e09ba",
+          "stats": {
+            "gp": 4,
+            "pts": 24,
+            "fg": 9,
+            "ft": 6,
+            "fouls": 8
+          },
+          "gid": "2ae04110",
+          "gn": "Sunday Senior Men 3"
+        },
+        {
+          "tid": "ab9e09ba",
+          "tn": "",
+          "gid": "2ae04110",
+          "gn": "Sunday Senior Men 3",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 24,
+            "fg": 9,
+            "ft": 6,
+            "fouls": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "654894cc",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "3f56abde",
+          "tn": "Lemmings ",
+          "gid": "22801734",
+          "gn": "Tuesday Open Men Fitzroy College",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "a750f9b4",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "e4536ed8",
+          "tn": "Blueballers",
+          "gid": "5e2f6e02",
+          "gn": "Monday Open Men D GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e0054130",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "38ddc553",
+          "tn": "Blueballers",
+          "gid": "e832c8bf",
+          "gn": "Monday MSAC Open Men A2 Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:26.093Z",
+  "teams": [
+    {
+      "tid": "013d40a1",
+      "sid": "d809d546",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d4b2a071",
+      "sid": "9732be7e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c37083ef",
+      "sid": "2ad447ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9dcfaa00",
+      "sid": "af382b95",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab9e09ba",
+      "sid": "5af3234f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f56abde",
+      "sid": "654894cc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4536ed8",
+      "sid": "a750f9b4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "38ddc553",
+      "sid": "e0054130",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.637Z",
+  "games": [
+    "0f44387b",
+    "2af52bdd",
+    "2b925728",
+    "4404755e",
+    "4d8a907b",
+    "54cafb42",
+    "558915f2",
+    "56ac9e9c",
+    "594573ec",
+    "596c15c1",
+    "6671cca6",
+    "71541967",
+    "76311c56",
+    "768c1b28",
+    "7840a062",
+    "80376bbe",
+    "83311752",
+    "860ac673",
+    "89a1795b",
+    "9b615a77",
+    "9fa136d8",
+    "a1f22b68",
+    "b4f70fb4",
+    "bcf6beee",
+    "c17e248f",
+    "c2e48681",
+    "c9118b01",
+    "cc93410a",
+    "eeb7da62",
+    "ef10bae3",
+    "f126ef12",
+    "f495a22f",
+    "f7185561",
+    "fe74337f",
+    "ff723538"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "31400968",
+      "sid": "5af3234f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a1f22b68",
+      "sid": "9732be7e"
+    }
+  }
+}

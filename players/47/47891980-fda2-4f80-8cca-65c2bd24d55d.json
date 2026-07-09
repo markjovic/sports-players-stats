@@ -1,1 +1,298 @@
-{"uuid":"47891980-fda2-4f80-8cca-65c2bd24d55d","name":"malual Meem","gender":"Boys","sports":{"Basketball":{"gp":35,"pts":82,"fouls":24,"fg":32,"ft":9,"threePt":3,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":2,"wins":52,"losses":14,"winPct":0.79,"statsChecked":"2026-07-05T15:47:57.705Z"}},"seasons":[{"sid":"be8759f2","sn":"Winter 2026","club":"Braybrook 96ers Basketball Club","regs":[{"tid":"8aca6aa7","tn":"Braybrook 96ers U14 Boys Josh","gid":"a4ff08be","gn":"U14 Boys Div 1","age":"U14","div":"Div 1","stats":{"gp":2,"wins":1,"losses":1}},{"tid":"8aca6aa7","tn":"Braybrook 96ers U14 Boys Josh","gid":"01ed5c46","gn":"U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":2,"wins":1,"losses":1}},{"tid":"282dc739","tn":"Braybrook 96ers U16 Boys Daniel","gid":"c3cc7e2a","gn":"U16 Boys GRADING","age":"U16","div":null,"stats":{"gp":3,"wins":2,"losses":1,"fouls":1}}]},{"sid":"32b88c6e","sn":"Summer 2025/26","club":"Braybrook 96ers Basketball Club","regs":[{"tid":"b8d92456","tn":"Braybrook 96ers U16 Boys Blue","gid":"4bb7529d","gn":"U16 Boys Div 3","age":"U16","div":"Div 3","stats":{"gp":15,"fouls":9,"ft":1,"fg":4,"pts":9,"finals":1,"gfApps":1,"wins":12,"losses":3,"gfWins":1}},{"tid":"b8d92456","tn":"Braybrook 96ers U16 Boys Blue","gid":"652d2adf","gn":"U16 Boys GRADING","age":"U16","div":null,"stats":{"gp":15,"fouls":9,"finals":1,"gfApps":1,"wins":12,"losses":3,"pts":9,"fg":4,"ft":1,"gfWins":1}},{"tid":"f991612d","tn":"Braybrook 96ers U14 Boys Black","gid":"40fc2af6","gn":"U14 Boys Div 2","age":"U14","div":"Div 2","stats":{"gp":14,"fouls":11,"ft":8,"fg":27,"threePt":1,"pts":65,"finals":1,"gfApps":1,"wins":12,"losses":2,"gfWins":1}},{"tid":"f991612d","tn":"Braybrook 96ers U14 Boys Black","gid":"797694dc","gn":"U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":14,"ft":8,"pts":65,"finals":1,"gfApps":1,"wins":12,"losses":2,"fg":27,"threePt":1,"fouls":11,"gfWins":1}},{"tid":"f4a191bb","tn":"Braybrook 96ers U14 Boys Blue","gid":"797694dc","gn":"U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":1,"fouls":3,"fg":1,"threePt":2,"pts":8,"finals":1,"gfApps":1,"losses":1,"gfWins":1}}]}],"updatedAt":"2026-06-01T22:32:20.107Z","teams":[{"tid":"8aca6aa7","sid":"be8759f2","status":"ACTIVE"},{"tid":"282dc739","sid":"be8759f2","status":"ACTIVE"},{"tid":"f991612d","sid":"32b88c6e","status":"COMPLETED"},{"tid":"b8d92456","sid":"32b88c6e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:25:52.875Z","records":{"maxGamePTS":{"v":14,"gameKey":"6dbe4ebc","sid":"32b88c6e"},"maxGameThreePt":{"v":2,"gameKey":"8f956f5c","sid":"32b88c6e"}},"games":["06893d35","06c462a7","0937375a","1f5336cf","2162716d","23a09a08","2613a021","2846adb6","30e2c5d1","46401cec","47a9e632","58e8b2de","59105fd5","5ef45611","634efb5e","6dbe4ebc","6e201af0","723a505d","7ad70233","7adba878","7fc51ce9","86daa01f","8839a4c0","8f956f5c","9b9833f5","ab4bd6c2","b20e724e","b2c8b687","c5f0beda","d23ddbc5","d3d5aaac","e983a199","ead6cfe6","f5b679d3","ff9f4dca"],"gameTids":{"06893d35":"282dc739","b20e724e":"282dc739","d23ddbc5":"282dc739","2162716d":"8aca6aa7","ead6cfe6":"8aca6aa7","634efb5e":"b8d92456","8839a4c0":"b8d92456","e983a199":"b8d92456","7ad70233":"b8d92456","23a09a08":"b8d92456","2846adb6":"b8d92456","723a505d":"b8d92456","ab4bd6c2":"b8d92456","47a9e632":"b8d92456","1f5336cf":"b8d92456","5ef45611":"b8d92456","59105fd5":"b8d92456","30e2c5d1":"b8d92456","6e201af0":"b8d92456","f5b679d3":"b8d92456","2613a021":"f991612d","58e8b2de":"f991612d","9b9833f5":"f991612d","0937375a":"f991612d","b2c8b687":"f991612d","86daa01f":"f991612d","7fc51ce9":"f991612d","06c462a7":"f991612d","ff9f4dca":"f991612d","7adba878":"f991612d","c5f0beda":"f991612d","6dbe4ebc":"f991612d","46401cec":"f991612d","d3d5aaac":"f991612d","8f956f5c":"f4a191bb"}}
+{
+  "uuid": "47891980-fda2-4f80-8cca-65c2bd24d55d",
+  "name": "malual Meem",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 82,
+      "fouls": 24,
+      "fg": 32,
+      "ft": 9,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 52,
+      "losses": 14,
+      "winPct": 0.79,
+      "statsChecked": "2026-07-05T15:47:57.705Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be8759f2",
+      "sn": "Winter 2026",
+      "club": "Braybrook 96ers Basketball Club",
+      "regs": [
+        {
+          "tid": "8aca6aa7",
+          "tn": "Braybrook 96ers U14 Boys Josh",
+          "gid": "a4ff08be",
+          "gn": "U14 Boys Div 1",
+          "age": "U14",
+          "div": "Div 1",
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "8aca6aa7",
+          "tn": "Braybrook 96ers U14 Boys Josh",
+          "gid": "01ed5c46",
+          "gn": "U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "282dc739",
+          "tn": "Braybrook 96ers U16 Boys Daniel",
+          "gid": "249d716f",
+          "gn": "U16 Boys Div 2",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "wins": 2,
+            "losses": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32b88c6e",
+      "sn": "Summer 2025/26",
+      "club": "Braybrook 96ers Basketball Club",
+      "regs": [
+        {
+          "tid": "b8d92456",
+          "tn": "Braybrook 96ers U16 Boys Blue",
+          "gid": "4bb7529d",
+          "gn": "U16 Boys Div 3",
+          "age": "U16",
+          "div": "Div 3",
+          "stats": {
+            "gp": 15,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 3,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "b8d92456",
+          "tn": "Braybrook 96ers U16 Boys Blue",
+          "gid": "652d2adf",
+          "gn": "U16 Boys GRADING",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 3,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "f991612d",
+          "tn": "Braybrook 96ers U14 Boys Black",
+          "gid": "40fc2af6",
+          "gn": "U14 Boys Div 2",
+          "age": "U14",
+          "div": "Div 2",
+          "stats": {
+            "gp": 14,
+            "fouls": 11,
+            "ft": 8,
+            "fg": 27,
+            "threePt": 1,
+            "pts": 65,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "f991612d",
+          "tn": "Braybrook 96ers U14 Boys Black",
+          "gid": "797694dc",
+          "gn": "U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "ft": 8,
+            "pts": 65,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 2,
+            "fg": 27,
+            "threePt": 1,
+            "fouls": 11,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "f4a191bb",
+          "tn": "Braybrook 96ers U14 Boys Blue",
+          "gid": "797694dc",
+          "gn": "U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "fg": 1,
+            "threePt": 2,
+            "pts": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T22:32:20.107Z",
+  "teams": [
+    {
+      "tid": "8aca6aa7",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "282dc739",
+      "sid": "be8759f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b8d92456",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f991612d",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f4a191bb",
+      "sid": "32b88c6e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.977Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "6dbe4ebc",
+      "sid": "32b88c6e"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "8f956f5c",
+      "sid": "32b88c6e"
+    }
+  },
+  "games": [
+    "06893d35",
+    "06c462a7",
+    "0937375a",
+    "1f5336cf",
+    "2162716d",
+    "23a09a08",
+    "2613a021",
+    "2846adb6",
+    "30e2c5d1",
+    "46401cec",
+    "47a9e632",
+    "58e8b2de",
+    "59105fd5",
+    "5ef45611",
+    "634efb5e",
+    "6dbe4ebc",
+    "6e201af0",
+    "723a505d",
+    "7ad70233",
+    "7adba878",
+    "7fc51ce9",
+    "86daa01f",
+    "8839a4c0",
+    "8f956f5c",
+    "9b9833f5",
+    "ab4bd6c2",
+    "b20e724e",
+    "b2c8b687",
+    "c5f0beda",
+    "d23ddbc5",
+    "d3d5aaac",
+    "e983a199",
+    "ead6cfe6",
+    "f5b679d3",
+    "ff9f4dca"
+  ],
+  "gameTids": {
+    "06893d35": "282dc739",
+    "b20e724e": "282dc739",
+    "d23ddbc5": "282dc739",
+    "2162716d": "8aca6aa7",
+    "ead6cfe6": "8aca6aa7",
+    "634efb5e": "b8d92456",
+    "8839a4c0": "b8d92456",
+    "e983a199": "b8d92456",
+    "7ad70233": "b8d92456",
+    "23a09a08": "b8d92456",
+    "2846adb6": "b8d92456",
+    "723a505d": "b8d92456",
+    "ab4bd6c2": "b8d92456",
+    "47a9e632": "b8d92456",
+    "1f5336cf": "b8d92456",
+    "5ef45611": "b8d92456",
+    "59105fd5": "b8d92456",
+    "30e2c5d1": "b8d92456",
+    "6e201af0": "b8d92456",
+    "f5b679d3": "b8d92456",
+    "2613a021": "f991612d",
+    "58e8b2de": "f991612d",
+    "9b9833f5": "f991612d",
+    "0937375a": "f991612d",
+    "b2c8b687": "f991612d",
+    "86daa01f": "f991612d",
+    "7fc51ce9": "f991612d",
+    "06c462a7": "f991612d",
+    "ff9f4dca": "f991612d",
+    "7adba878": "f991612d",
+    "c5f0beda": "f991612d",
+    "6dbe4ebc": "f991612d",
+    "46401cec": "f991612d",
+    "d3d5aaac": "f991612d",
+    "8f956f5c": "f4a191bb"
+  }
+}

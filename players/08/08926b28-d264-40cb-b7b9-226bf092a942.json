@@ -1,1 +1,85 @@
-{"uuid":"08926b28-d264-40cb-b7b9-226bf092a942","gender":null,"sports":{"Basketball":{"gp":4,"pts":6,"fg":3,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T16:11:38.789Z"}},"seasons":[{"sid":"f5a2b268","sn":"Summer 2024/25","club":null,"regs":[{"tid":"9c50e45c","tn":"Coasters","gid":"ec4487e2","gn":"Men 40+ Div1","stats":{"gp":4,"pts":6,"fg":3,"wins":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:36:02.403Z","records":{"maxGamePTS":{"v":6,"gameKey":"fed342c0","sid":"f5a2b268"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["2918aa4d","af2382f7","e9a1692a","fed342c0"],"name":"Summer 2024/25"}
+{
+  "uuid": "08926b28-d264-40cb-b7b9-226bf092a942",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 6,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:11:38.789Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f5a2b268",
+      "sn": "Summer 2024/25",
+      "club": null,
+      "regs": [
+        {
+          "tid": "9c50e45c",
+          "tn": "Coasters",
+          "gid": "ec4487e2",
+          "gn": "Men 40+ Div1",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5dd05fe",
+      "sn": "Term 1, 2025",
+      "regs": [
+        {
+          "tid": "f3e645d2",
+          "tn": "Wyndham Walkers ",
+          "gid": "24469b14",
+          "gn": "Senior Mixed Walking Basketball",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:02.403Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "fed342c0",
+      "sid": "f5a2b268"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "2918aa4d",
+    "af2382f7",
+    "e9a1692a",
+    "fed342c0"
+  ],
+  "name": "Summer 2024/25",
+  "teams": [
+    {
+      "tid": "9c50e45c",
+      "sid": "f5a2b268",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3e645d2",
+      "sid": "f5dd05fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.314Z"
+}

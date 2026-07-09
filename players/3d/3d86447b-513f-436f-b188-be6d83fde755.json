@@ -1,1 +1,63 @@
-{"uuid":"3d86447b-513f-436f-b188-be6d83fde755","name":"mason carrigan","sports":{"Basketball":{"maxGamePTS":7,"maxGameThreePt":null,"foulOuts":{},"gp":12,"pts":32,"fg":13,"ft":6,"fouls":23,"statsChecked":"2026-07-08T18:03:37.257Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"3725c980"}]},{"sid":"cb6167fe","regs":[{"tid":"0ae98f09"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":7,"gameKey":"c9ea18a2","sid":"cb6167fe"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "3d86447b-513f-436f-b188-be6d83fde755",
+  "name": "mason carrigan",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 12,
+      "pts": 32,
+      "fg": 13,
+      "ft": 6,
+      "fouls": 23,
+      "statsChecked": "2026-07-08T18:03:37.257Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "3725c980",
+          "gid": "6e1ae1de",
+          "gn": "Wednesday Open Men B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "cb6167fe",
+      "regs": [
+        {
+          "tid": "0ae98f09",
+          "gid": "2177aa20",
+          "gn": "Saturday U18 Boys A/A Reserve Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "3725c980",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ae98f09",
+      "sid": "cb6167fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "c9ea18a2",
+      "sid": "cb6167fe"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:20.370Z"
+}

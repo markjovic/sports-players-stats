@@ -1,1 +1,131 @@
-{"uuid":"e2dbf621-6410-41e9-b183-ebcf8f0a072a","name":"Harrison Toso","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":27,"fouls":3,"fg":13,"ft":1,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":null,"wins":15,"losses":18,"winPct":0.45,"statsChecked":"2026-07-05T15:13:25.297Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Yarrambat Basketball Club","regs":[{"tid":"f23ae0a0","tn":"Yarrambat  U08 Boys 6","gid":"2e89ba5c","gn":"Saturday U08 Boys D2","age":"U08","div":"D2","stats":{"gp":15,"fouls":3,"ft":1,"fg":13,"pts":27,"wins":5,"losses":6}},{"tid":"f23ae0a0","tn":"Yarrambat  U08 Boys 6","gid":"9c0c9d1b","gn":"Saturday U08 Boys D1","age":"U08","div":"D1","stats":{"gp":15,"fg":13,"pts":27,"wins":5,"losses":6,"ft":1,"fouls":3}},{"tid":"f23ae0a0","tn":"Yarrambat  U08 Boys 6","gid":"bb52f85d","gn":"Saturday U08 Boys Grading Group 3","age":"U08","div":null,"stats":{"gp":15,"fouls":3,"fg":13,"pts":27,"wins":5,"losses":6,"ft":1}}]}],"updatedAt":"2026-06-01T06:08:10.693Z","teams":[{"tid":"f23ae0a0","sid":"d868771d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:50:34.649Z","games":["001c0736","1f06a40c","2d7cd22a","4405c56a","5943dbf4","6c5f99bb","91876154","b1206bc9","bdcd2b79","ebe4c885","f3f5715c"],"records":{"maxGamePTS":{"v":13,"gameKey":"4405c56a","sid":"d868771d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e2dbf621-6410-41e9-b183-ebcf8f0a072a",
+  "name": "Harrison Toso",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 27,
+      "fouls": 3,
+      "fg": 13,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 15,
+      "losses": 18,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T15:13:25.297Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Yarrambat Basketball Club",
+      "regs": [
+        {
+          "tid": "f23ae0a0",
+          "tn": "Yarrambat  U08 Boys 6",
+          "gid": "2e89ba5c",
+          "gn": "Saturday U08 Boys D2",
+          "age": "U08",
+          "div": "D2",
+          "stats": {
+            "gp": 15,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "wins": 5,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "f23ae0a0",
+          "tn": "Yarrambat  U08 Boys 6",
+          "gid": "9c0c9d1b",
+          "gn": "Saturday U08 Boys D1",
+          "age": "U08",
+          "div": "D1",
+          "stats": {
+            "gp": 15,
+            "fg": 13,
+            "pts": 27,
+            "wins": 5,
+            "losses": 6,
+            "ft": 1,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "f23ae0a0",
+          "tn": "Yarrambat  U08 Boys 6",
+          "gid": "bb52f85d",
+          "gn": "Saturday U08 Boys Grading Group 3",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 3,
+            "fg": 13,
+            "pts": 27,
+            "wins": 5,
+            "losses": 6,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "15822bf2",
+          "tn": "Yarrambat  U08 Boys 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:08:10.693Z",
+  "teams": [
+    {
+      "tid": "f23ae0a0",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "15822bf2",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.864Z",
+  "games": [
+    "001c0736",
+    "1f06a40c",
+    "2d7cd22a",
+    "4405c56a",
+    "5943dbf4",
+    "6c5f99bb",
+    "91876154",
+    "b1206bc9",
+    "bdcd2b79",
+    "ebe4c885",
+    "f3f5715c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "4405c56a",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

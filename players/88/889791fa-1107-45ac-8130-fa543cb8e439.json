@@ -1,1 +1,390 @@
-{"uuid":"889791fa-1107-45ac-8130-fa543cb8e439","gender":null,"sports":{"Basketball":{"gp":59,"pts":162,"fouls":135,"fg":65,"ft":32,"foulOuts":{"a94981b4":3,"b387bcd4":3,"a5dfc5c1":1},"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":0.75,"maxGamePTS":10,"maxGameThreePt":null,"wins":45,"losses":45,"winPct":0.5,"statsChecked":"2026-07-05T16:02:15.473Z"}},"seasons":[{"sid":"a94981b4","sn":"Summer 2022/23","club":"Newlands Basketball Club (Coburg)","regs":[{"tid":"7a2e41b0","tn":"Newlands U18 Girls THUNDERBOLTS","gid":"75efe372","gn":"Saturday U18 Girls Division 1","stats":{"gp":13,"pts":55,"fouls":36,"fg":23,"ft":9,"foulOuts":2,"finals":1,"wins":6,"losses":7}},{"tid":"7a2e41b0","tn":"Newlands U18 Girls THUNDERBOLTS","gid":"49e74fe2","gn":"Saturday U18 Girls Division 2","stats":{"gp":13,"pts":55,"fouls":36,"fg":23,"foulOuts":1,"finals":1,"wins":6,"losses":7,"ft":9}}]},{"sid":"80d8cc4b","sn":"Winter 2022","club":"Newlands Basketball Club (Coburg)","regs":[{"tid":"42ee2541","tn":"Newlands U18 Girls THUNDERBOLTS","gid":"fd17f489","gn":"Saturday U18 Girls Division 1","stats":{"gp":8,"pts":31,"fouls":12,"fg":13,"ft":5,"finals":1,"wins":5,"losses":3}}]},{"sid":"b387bcd4","sn":"2022","club":"Coburg Giants Basketball Club","regs":[{"tid":"bce8e175","tn":"Coburg U16 Girls 1","gid":"4a163f2b","gn":"16 Girls - VJL4 (P2)","stats":{"gp":21,"pts":35,"fouls":52,"fg":14,"ft":7,"foulOuts":1,"finals":1,"wins":7,"losses":7}},{"tid":"bce8e175","tn":"Coburg U16 Girls 1","gid":"0194ad5f","gn":"U16G Crossover 2 - VJL","stats":{"gp":21,"pts":35,"fouls":52,"fg":14,"finals":1,"wins":7,"losses":7,"ft":7}},{"tid":"bce8e175","tn":"Coburg U16 Girls 1","gid":"bb44d477","gn":"U16 Girls Grading 2 - CC Pool D","stats":{"gp":21,"pts":35,"fouls":52,"fg":14,"ft":7,"foulOuts":2,"finals":1,"wins":7,"losses":7}},{"tid":"bce8e175","tn":"Coburg U16 Girls 1","gid":"18c79fef","gn":"U16 Girls Grading 1 - Pool 3A","stats":{"gp":21,"pts":35,"fouls":52,"fg":14,"ft":7,"finals":1,"wins":7,"losses":7}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Coburg Giants Basketball Club","regs":[{"tid":"c86a0c8b","tn":"Coburg U16 Girls 2","gid":"0c3f8cd3","gn":"16 Girls - VJL7 (P1)","stats":{"gp":17,"pts":41,"fouls":35,"fg":15,"ft":11}},{"tid":"c86a0c8b","tn":"Coburg U16 Girls 2","gid":"b9791d75","gn":"U16G Crossover 2 - VJL","stats":{"gp":17,"pts":41,"fouls":35,"fg":15,"foulOuts":1,"ft":11}},{"tid":"c86a0c8b","tn":"Coburg U16 Girls 2","gid":"97332e73","gn":"U16G Grading 2 - HH Pool C","stats":{"gp":17,"pts":41,"fouls":35,"fg":15,"ft":11}},{"tid":"c86a0c8b","tn":"Coburg U16 Girls 2","gid":"af2b3832","gn":"U16G Crossover 1","stats":{"gp":17,"pts":41,"fouls":35,"fg":15,"ft":11}},{"tid":"c86a0c8b","tn":"Coburg U16 Girls 2","gid":"b1cb9b6d","gn":"U16G Grading 1 - Pool 8C","stats":{"gp":17,"pts":41,"fouls":35,"fg":15,"ft":11}}]}],"updatedAt":"2026-06-11T23:42:07.329Z","records":{"maxGamePTS":{"v":10,"gameKey":"4aaf903d","sid":"a94981b4"},"maxGameThreePt":{"v":null}},"games":["03f002f6","04674820","04a51a3d","0ac84f08","0b2bc63d","0eb21c5a","11418ab3","141fb2a6","146bce05","1990ce7e","251a8c1b","28dbeb8e","29a76e8f","308dea05","337b5631","361c8db1","39775e83","3d8b5674","3e700a29","403770db","4440ffe2","4849c085","4aaf903d","4e0ea6da","5aabea9c","60ef17a9","65b389f5","7113b3e1","7650b7d6","77050c63","78befabf","7c6cc443","7d1b0db6","7dd9d16e","7fd8acc7","801ada36","814b947e","832d20ab","89245351","94ad1636","9770faaf","9aaf7192","a28f102d","a8b4fe5e","b5676380","b5d64906","c141b981","ccc7f145","cce8c46e","ce97ba3f","cf3e0025","cfc2a79d","d4ac1ecd","dc6ff699","e74e81b9","e84c7ccd","eb843bf3","f1e79e12","fba93f8c"],"name":"Summer 2022/23"}
+{
+  "uuid": "889791fa-1107-45ac-8130-fa543cb8e439",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 59,
+      "pts": 162,
+      "fouls": 135,
+      "fg": 65,
+      "ft": 32,
+      "foulOuts": {
+        "a94981b4": 3,
+        "b387bcd4": 3,
+        "a5dfc5c1": 1
+      },
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 45,
+      "losses": 45,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:02:15.473Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a94981b4",
+      "sn": "Summer 2022/23",
+      "club": "Newlands Basketball Club (Coburg)",
+      "regs": [
+        {
+          "tid": "7a2e41b0",
+          "tn": "Newlands U18 Girls THUNDERBOLTS",
+          "gid": "75efe372",
+          "gn": "Saturday U18 Girls Division 1",
+          "stats": {
+            "gp": 13,
+            "pts": 55,
+            "fouls": 36,
+            "fg": 23,
+            "ft": 9,
+            "foulOuts": 2,
+            "finals": 1,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "7a2e41b0",
+          "tn": "Newlands U18 Girls THUNDERBOLTS",
+          "gid": "49e74fe2",
+          "gn": "Saturday U18 Girls Division 2",
+          "stats": {
+            "gp": 13,
+            "pts": 55,
+            "fouls": 36,
+            "fg": 23,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 6,
+            "losses": 7,
+            "ft": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "80d8cc4b",
+      "sn": "Winter 2022",
+      "club": "Newlands Basketball Club (Coburg)",
+      "regs": [
+        {
+          "tid": "42ee2541",
+          "tn": "Newlands U18 Girls THUNDERBOLTS",
+          "gid": "fd17f489",
+          "gn": "Saturday U18 Girls Division 1",
+          "stats": {
+            "gp": 8,
+            "pts": 31,
+            "fouls": 12,
+            "fg": 13,
+            "ft": 5,
+            "finals": 1,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Coburg Giants Basketball Club",
+      "regs": [
+        {
+          "tid": "bce8e175",
+          "tn": "Coburg U16 Girls 1",
+          "gid": "4a163f2b",
+          "gn": "16 Girls - VJL4 (P2)",
+          "stats": {
+            "gp": 21,
+            "pts": 35,
+            "fouls": 52,
+            "fg": 14,
+            "ft": 7,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "bce8e175",
+          "tn": "Coburg U16 Girls 1",
+          "gid": "0194ad5f",
+          "gn": "U16G Crossover 2 - VJL",
+          "stats": {
+            "gp": 21,
+            "pts": 35,
+            "fouls": 52,
+            "fg": 14,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7,
+            "ft": 7
+          }
+        },
+        {
+          "tid": "bce8e175",
+          "tn": "Coburg U16 Girls 1",
+          "gid": "bb44d477",
+          "gn": "U16 Girls Grading 2 - CC Pool D",
+          "stats": {
+            "gp": 21,
+            "pts": 35,
+            "fouls": 52,
+            "fg": 14,
+            "ft": 7,
+            "foulOuts": 2,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "bce8e175",
+          "tn": "Coburg U16 Girls 1",
+          "gid": "18c79fef",
+          "gn": "U16 Girls Grading 1 - Pool 3A",
+          "stats": {
+            "gp": 21,
+            "pts": 35,
+            "fouls": 52,
+            "fg": 14,
+            "ft": 7,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Coburg Giants Basketball Club",
+      "regs": [
+        {
+          "tid": "c86a0c8b",
+          "tn": "Coburg U16 Girls 2",
+          "gid": "0c3f8cd3",
+          "gn": "16 Girls - VJL7 (P1)",
+          "stats": {
+            "gp": 17,
+            "pts": 41,
+            "fouls": 35,
+            "fg": 15,
+            "ft": 11
+          }
+        },
+        {
+          "tid": "c86a0c8b",
+          "tn": "Coburg U16 Girls 2",
+          "gid": "b9791d75",
+          "gn": "U16G Crossover 2 - VJL",
+          "stats": {
+            "gp": 17,
+            "pts": 41,
+            "fouls": 35,
+            "fg": 15,
+            "foulOuts": 1,
+            "ft": 11
+          }
+        },
+        {
+          "tid": "c86a0c8b",
+          "tn": "Coburg U16 Girls 2",
+          "gid": "97332e73",
+          "gn": "U16G Grading 2 - HH Pool C",
+          "stats": {
+            "gp": 17,
+            "pts": 41,
+            "fouls": 35,
+            "fg": 15,
+            "ft": 11
+          }
+        },
+        {
+          "tid": "c86a0c8b",
+          "tn": "Coburg U16 Girls 2",
+          "gid": "af2b3832",
+          "gn": "U16G Crossover 1",
+          "stats": {
+            "gp": 17,
+            "pts": 41,
+            "fouls": 35,
+            "fg": 15,
+            "ft": 11
+          }
+        },
+        {
+          "tid": "c86a0c8b",
+          "tn": "Coburg U16 Girls 2",
+          "gid": "b1cb9b6d",
+          "gn": "U16G Grading 1 - Pool 8C",
+          "stats": {
+            "gp": 17,
+            "pts": 41,
+            "fouls": 35,
+            "fg": 15,
+            "ft": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f00a8108",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "448a7746",
+          "tn": "Newlands U18 Girls THUNDERBOLTS",
+          "gid": "1db09eaa",
+          "gn": "Saturday U18 Girls Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8e7c4b8e",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "159d2d01",
+          "tn": "Newlands U17 Girls Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "84079ea9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "a8728d76",
+          "tn": "Newlands U15 Girls Thunderbolts",
+          "gid": "b46e8a3b",
+          "gn": "Saturday U15 Girls Division 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:07.329Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "4aaf903d",
+      "sid": "a94981b4"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "03f002f6",
+    "04674820",
+    "04a51a3d",
+    "0ac84f08",
+    "0b2bc63d",
+    "0eb21c5a",
+    "11418ab3",
+    "141fb2a6",
+    "146bce05",
+    "1990ce7e",
+    "251a8c1b",
+    "28dbeb8e",
+    "29a76e8f",
+    "308dea05",
+    "337b5631",
+    "361c8db1",
+    "39775e83",
+    "3d8b5674",
+    "3e700a29",
+    "403770db",
+    "4440ffe2",
+    "4849c085",
+    "4aaf903d",
+    "4e0ea6da",
+    "5aabea9c",
+    "60ef17a9",
+    "65b389f5",
+    "7113b3e1",
+    "7650b7d6",
+    "77050c63",
+    "78befabf",
+    "7c6cc443",
+    "7d1b0db6",
+    "7dd9d16e",
+    "7fd8acc7",
+    "801ada36",
+    "814b947e",
+    "832d20ab",
+    "89245351",
+    "94ad1636",
+    "9770faaf",
+    "9aaf7192",
+    "a28f102d",
+    "a8b4fe5e",
+    "b5676380",
+    "b5d64906",
+    "c141b981",
+    "ccc7f145",
+    "cce8c46e",
+    "ce97ba3f",
+    "cf3e0025",
+    "cfc2a79d",
+    "d4ac1ecd",
+    "dc6ff699",
+    "e74e81b9",
+    "e84c7ccd",
+    "eb843bf3",
+    "f1e79e12",
+    "fba93f8c"
+  ],
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "7a2e41b0",
+      "sid": "a94981b4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42ee2541",
+      "sid": "80d8cc4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bce8e175",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c86a0c8b",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "448a7746",
+      "sid": "f00a8108",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "159d2d01",
+      "sid": "8e7c4b8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8728d76",
+      "sid": "84079ea9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.671Z"
+}

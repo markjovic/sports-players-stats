@@ -1,1 +1,194 @@
-{"uuid":"3dd03568-649d-4a0d-ad5a-5879754556de","name":"Vincent Nguyen","gender":"Men","sports":{"Basketball":{"gp":3,"pts":42,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":4,"losses":1,"winPct":0,"fg":3,"ft":6,"threePt":5,"fouls":3,"statsChecked":"2026-07-08T17:51:04.858Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"f6735573","tn":"Asahi Bricks","gid":"2d576243","gn":"Wednesday Open Men Section 4","age":"Senior","div":null,"stats":{"gp":1,"pts":15,"losses":1}}]},{"sid":"297562bc","regs":[{"tid":"fd0d77ce","stats":{"gp":2,"pts":27,"fg":3,"ft":6,"threePt":5,"fouls":3}},{"tid":"fd0d77ce","tn":"","gid":"630e138e","gn":"Wednesday Open Men Section 6","div":null,"stats":{"gp":2,"pts":27,"fg":3,"ft":6,"threePt":5,"fouls":3}}]}],"updatedAt":"2026-07-08T17:28:34.574Z","teams":[{"tid":"f6735573","sid":"5593103d","status":"ACTIVE"},{"tid":"71248979","sid":"fab2be4d","status":"COMPLETED"},{"tid":"71139c6f","sid":"5944effa","status":"COMPLETED"},{"tid":"b6360c46","sid":"348dbfb8","status":"COMPLETED"},{"tid":"8898c375","sid":"d3d4e181","status":"COMPLETED"},{"tid":"31f29e47","sid":"21cd9648","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:19:01.283Z","records":{"maxGamePTS":{"v":18,"gameKey":"ecd1bb74","sid":"297562bc"},"maxGameThreePt":{"v":4,"gameKey":"ecd1bb74","sid":"297562bc"}},"games":["474d4512"]}
+{
+  "uuid": "3dd03568-649d-4a0d-ad5a-5879754556de",
+  "name": "Vincent Nguyen",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 42,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": 4,
+      "losses": 1,
+      "winPct": 0,
+      "fg": 3,
+      "ft": 6,
+      "threePt": 5,
+      "fouls": 3,
+      "statsChecked": "2026-07-08T17:51:04.858Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "f6735573",
+          "tn": "Asahi Bricks",
+          "gid": "2d576243",
+          "gn": "Wednesday Open Men Section 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 15,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "fd0d77ce",
+          "stats": {
+            "gp": 2,
+            "pts": 27,
+            "fg": 3,
+            "ft": 6,
+            "threePt": 5,
+            "fouls": 3
+          },
+          "gid": "630e138e",
+          "gn": "Wednesday Open Men Section 6"
+        },
+        {
+          "tid": "fd0d77ce",
+          "tn": "",
+          "gid": "630e138e",
+          "gn": "Wednesday Open Men Section 6",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 27,
+            "fg": 3,
+            "ft": 6,
+            "threePt": 5,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "71248979",
+          "tn": "Asahi Bricks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "71139c6f",
+          "tn": "Asahi Bricks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "b6360c46",
+          "tn": "Asahi Bricks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "8898c375",
+          "tn": "Tickles Tess",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "31f29e47",
+          "tn": "Tickles Tess",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:28:34.574Z",
+  "teams": [
+    {
+      "tid": "f6735573",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd0d77ce",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71248979",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71139c6f",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6360c46",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8898c375",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31f29e47",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.430Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "ecd1bb74",
+      "sid": "297562bc"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "ecd1bb74",
+      "sid": "297562bc"
+    }
+  },
+  "games": [
+    "474d4512"
+  ]
+}

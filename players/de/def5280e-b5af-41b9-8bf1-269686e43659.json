@@ -1,1 +1,77 @@
-{"uuid":"def5280e-b5af-41b9-8bf1-269686e43659","name":"2021","gender":null,"sports":{"Basketball":{"gp":3,"fouls":2,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":3,"winPct":0,"statsChecked":"2026-07-05T16:04:20.374Z"}},"seasons":[{"sid":"259baa34","sn":"2021","club":"Wodonga Wolves Basketball Club","regs":[{"tid":"f1b1942a","tn":"Wodonga Wolves U16 Girls 2","gid":"10461ac4","gn":"U16 Girls 1","stats":{"gp":3,"fouls":2,"losses":3}}]}],"updatedAt":"2026-06-11T23:45:26.143Z","games":["2bab6c87","9a8afbd3","a05128a9"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "def5280e-b5af-41b9-8bf1-269686e43659",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "fouls": 2,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:04:20.374Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "259baa34",
+      "sn": "2021",
+      "club": "Wodonga Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "f1b1942a",
+          "tn": "Wodonga Wolves U16 Girls 2",
+          "gid": "10461ac4",
+          "gn": "U16 Girls 1",
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5c95c3a3",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "359f6ade",
+          "tn": "Panthers (U14)",
+          "gid": "a5968c56",
+          "gn": "Thursday U14 Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:26.143Z",
+  "games": [
+    "2bab6c87",
+    "9a8afbd3",
+    "a05128a9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teams": [
+    {
+      "tid": "f1b1942a",
+      "sid": "259baa34",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "359f6ade",
+      "sid": "5c95c3a3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.613Z"
+}

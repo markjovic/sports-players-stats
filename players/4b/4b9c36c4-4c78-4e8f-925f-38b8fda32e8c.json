@@ -1,1 +1,283 @@
-{"uuid":"4b9c36c4-4c78-4e8f-925f-38b8fda32e8c","name":"Ashaan Patel","gender":"Men","sports":{"Basketball":{"gp":10,"pts":30,"fouls":20,"fg":6,"ft":9,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":7,"losses":3,"winPct":0.7,"statsChecked":"2026-07-05T15:22:25.313Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"7c92eaf6","tn":"Jayhawks","gid":"2d576243","gn":"Wednesday Open Men Section 4","age":"Senior","div":null,"stats":{"gp":8,"fouls":18,"ft":7,"fg":6,"pts":28,"wins":5,"losses":3}}]},{"sid":"5dfac2a9","sn":"Summer 2020/21","regs":[{"tid":"60c9cd08","tn":"Brick City","gid":"aba6392c","gn":"Monday Open Men F Reserve","age":"Senior","div":null,"stats":{"gp":2,"fouls":2,"ft":2,"pts":2,"wins":2}}]}],"updatedAt":"2026-06-01T11:33:12.576Z","teams":[{"tid":"7c92eaf6","sid":"5593103d","status":"ACTIVE"},{"tid":"30f086c8","sid":"fab2be4d","status":"COMPLETED"},{"tid":"db3e929d","sid":"76897951","status":"COMPLETED"},{"tid":"6ad1af7b","sid":"5944effa","status":"COMPLETED"},{"tid":"9598cbdf","sid":"348dbfb8","status":"COMPLETED"},{"tid":"e40e2c7f","sid":"9358e51a","status":"COMPLETED"},{"tid":"7ea0e3d9","sid":"d3d4e181","status":"COMPLETED"},{"tid":"d9b76097","sid":"21cd9648","status":"COMPLETED"},{"tid":"55d66068","sid":"d4cbf787","status":"COMPLETED"},{"tid":"cb1d3714","sid":"d64fcfce","status":"COMPLETED"},{"tid":"60c9cd08","sid":"5dfac2a9","status":"COMPLETED"},{"tid":"1808f18e","sid":"afd26581","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:29:42.726Z","records":{"maxGamePTS":{"v":7,"gameKey":"b1ad3231","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["14f6b4c4","3052febd","314d4934","45b1e1f1","53d881d4","557574fa","742d5c07","92bb461c","b1ad3231","f336b73a"]}
+{
+  "uuid": "4b9c36c4-4c78-4e8f-925f-38b8fda32e8c",
+  "name": "Ashaan Patel",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 30,
+      "fouls": 20,
+      "fg": 6,
+      "ft": 9,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 3,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T15:22:25.313Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "7c92eaf6",
+          "tn": "Jayhawks",
+          "gid": "2d576243",
+          "gn": "Wednesday Open Men Section 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 18,
+            "ft": 7,
+            "fg": 6,
+            "pts": 28,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "60c9cd08",
+          "tn": "Brick City",
+          "gid": "aba6392c",
+          "gn": "Monday Open Men F Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "ft": 2,
+            "pts": 2,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "30f086c8",
+          "tn": "Jayhawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "db3e929d",
+          "tn": "Jayhawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "6ad1af7b",
+          "tn": "Jayhawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "9598cbdf",
+          "tn": "Jayhawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "e40e2c7f",
+          "tn": "Jayhawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "7ea0e3d9",
+          "tn": "Jayhawks",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "d9b76097",
+          "tn": "Jayhawks",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "55d66068",
+          "tn": "Jayhawks",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "cb1d3714",
+          "tn": "Jayhawks",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "1808f18e",
+          "tn": "Jayhawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:33:12.576Z",
+  "teams": [
+    {
+      "tid": "7c92eaf6",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60c9cd08",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30f086c8",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db3e929d",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ad1af7b",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9598cbdf",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e40e2c7f",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ea0e3d9",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d9b76097",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "55d66068",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb1d3714",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1808f18e",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.186Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "b1ad3231",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "14f6b4c4",
+    "3052febd",
+    "314d4934",
+    "45b1e1f1",
+    "53d881d4",
+    "557574fa",
+    "742d5c07",
+    "92bb461c",
+    "b1ad3231",
+    "f336b73a"
+  ]
+}

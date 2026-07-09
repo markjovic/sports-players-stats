@@ -1,1 +1,104 @@
-{"uuid":"a0b996c6-68f4-42c9-acad-8522a40e234e","gender":null,"sports":{"Basketball":{"gp":6,"pts":3,"fouls":6,"threePt":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":1,"losses":6,"draws":6,"winPct":0,"statsChecked":"2026-07-05T16:02:55.325Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"6463d125","tn":"STC B16.9","gid":"1840aeb8","gn":"Saturday U16 Boys E3 Grade","stats":{"gp":6,"pts":3,"fouls":6,"threePt":1,"losses":3,"draws":3}},{"tid":"6463d125","tn":"STC B16.9","gid":"8d1113d6","gn":"Saturday U16 Boys E2 Grade","stats":{"gp":6,"fouls":6,"losses":3,"draws":3,"pts":3,"threePt":1}}]}],"updatedAt":"2026-06-11T23:43:07.964Z","games":["3a7df359","733fa007","a3cc944d","a5d7bb7e","bbf0beec","ecaf13d4"],"records":{"maxGamePTS":{"v":3,"gameKey":"a3cc944d","sid":"8e4e71fc"},"maxGameThreePt":{"v":1,"gameKey":"a3cc944d","sid":"8e4e71fc"}},"name":"Winter 2021"}
+{
+  "uuid": "a0b996c6-68f4-42c9-acad-8522a40e234e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 3,
+      "fouls": 6,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "losses": 6,
+      "draws": 6,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:02:55.325Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "6463d125",
+          "tn": "STC B16.9",
+          "gid": "1840aeb8",
+          "gn": "Saturday U16 Boys E3 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 3,
+            "fouls": 6,
+            "threePt": 1,
+            "losses": 3,
+            "draws": 3
+          }
+        },
+        {
+          "tid": "6463d125",
+          "tn": "STC B16.9",
+          "gid": "8d1113d6",
+          "gn": "Saturday U16 Boys E2 Grade",
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "losses": 3,
+            "draws": 3,
+            "pts": 3,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d8992df0",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "32625eb9",
+          "tn": "STC B16.4",
+          "gid": "ea1b7709",
+          "gn": "Saturday U16 Boys E1 Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:07.964Z",
+  "games": [
+    "3a7df359",
+    "733fa007",
+    "a3cc944d",
+    "a5d7bb7e",
+    "bbf0beec",
+    "ecaf13d4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "a3cc944d",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a3cc944d",
+      "sid": "8e4e71fc"
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "6463d125",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32625eb9",
+      "sid": "d8992df0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.912Z"
+}

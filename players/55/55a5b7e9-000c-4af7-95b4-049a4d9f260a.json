@@ -1,1 +1,222 @@
-{"uuid":"55a5b7e9-000c-4af7-95b4-049a4d9f260a","name":"Paul O'keeffe","gender":"Men","sports":{"Basketball":{"gp":31,"pts":37,"fouls":29,"fg":13,"ft":2,"threePt":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":22,"losses":24,"draws":2,"winPct":0.46,"statsChecked":"2026-07-07T18:27:30.852Z"}},"seasons":[{"sid":"c36e5626","sn":"Winter 2026","club":"Lara Giants Basketball Club (Geelong)","regs":[{"tid":"a1e237f1","tn":"Lara Heat Men MD4","gid":"fa2e80c0","gn":"(CLUB) Monday Senior Men 3","age":"Senior","div":null,"stats":{"gp":9,"fouls":6,"pts":9,"fg":3,"wins":6,"losses":2,"threePt":1}},{"tid":"ed21fa02","stats":{"gp":3,"pts":9,"threePt":2,"wins":1,"fg":1,"ft":1,"fouls":2}},{"tid":"ed21fa02","tn":"","gid":"489980c1","gn":"(SOCIAL) Tuesday Senior Men 3","div":null,"stats":{"gp":3,"pts":9,"threePt":2,"wins":1,"fg":1,"ft":1,"fouls":2}}]},{"sid":"b82479c8","sn":"Summer 2025/26","club":"Lara Giants Basketball Club (Geelong)","regs":[{"tid":"0b53d609","tn":"Lara Heat Men MD4","gid":"7b5c045c","gn":"(CLUB) Monday Senior Men 4","age":"Senior","div":null,"stats":{"gp":19,"fouls":21,"ft":1,"fg":9,"pts":19,"finals":1,"wins":7,"losses":11,"draws":1}},{"tid":"0b53d609","tn":"Lara Heat Men MD4","gid":"d5c93bff","gn":"(CLUB) Monday Senior Men 3","age":"Senior","div":null,"stats":{"gp":19,"fouls":21,"fg":9,"pts":19,"finals":1,"wins":7,"losses":11,"draws":1,"ft":1}}]}],"updatedAt":"2026-07-07T18:06:03.908Z","teams":[{"tid":"ed21fa02","sid":"c36e5626","status":"ACTIVE"},{"tid":"a1e237f1","sid":"c36e5626","status":"ACTIVE"},{"tid":"0b53d609","sid":"b82479c8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:34:34.407Z","records":{"maxGamePTS":{"v":6,"gameKey":"196c9190","sid":"c36e5626"},"maxGameThreePt":{"v":1,"gameKey":"196c9190","sid":"c36e5626"}},"games":["025f2bb5","0757c016","0b8b0944","0eaed440","0f8426b3","2e659f4f","3a98ad49","3c4139ba","48f11dfe","6127254d","619a876d","6686fa61","7dfbb483","90f72d01","92de2fe7","a38dd398","a3d11b0c","a97a9cf3","b55d0b83","bde5089f","becc4a59","c61f493d","c7e1cc5d","dac486ec","dfec8f51","e5db6ed3","f31b74b2","fd4d1bf3"],"gameTids":{"196c9190":"ed21fa02","6127254d":"ed21fa02","abeaf290":"ed21fa02","7efd0c6d":"a1e237f1","7dfbb483":"a1e237f1","0eaed440":"a1e237f1","becc4a59":"a1e237f1","b55d0b83":"a1e237f1","3c4139ba":"a1e237f1","90f72d01":"a1e237f1","0b8b0944":"a1e237f1","e5db6ed3":"a1e237f1","dfec8f51":"0b53d609","c7e1cc5d":"0b53d609","2e659f4f":"0b53d609","48f11dfe":"0b53d609","0757c016":"0b53d609","6686fa61":"0b53d609","a38dd398":"0b53d609","dac486ec":"0b53d609","025f2bb5":"0b53d609","619a876d":"0b53d609","3a98ad49":"0b53d609","c61f493d":"0b53d609","a3d11b0c":"0b53d609","f31b74b2":"0b53d609","fd4d1bf3":"0b53d609","a97a9cf3":"0b53d609","92de2fe7":"0b53d609","bde5089f":"0b53d609","0f8426b3":"0b53d609"}}
+{
+  "uuid": "55a5b7e9-000c-4af7-95b4-049a4d9f260a",
+  "name": "Paul O'keeffe",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 37,
+      "fouls": 29,
+      "fg": 13,
+      "ft": 2,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 22,
+      "losses": 24,
+      "draws": 2,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-07T18:27:30.852Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c36e5626",
+      "sn": "Winter 2026",
+      "club": "Lara Giants Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "a1e237f1",
+          "tn": "Lara Heat Men MD4",
+          "gid": "fa2e80c0",
+          "gn": "(CLUB) Monday Senior Men 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "pts": 9,
+            "fg": 3,
+            "wins": 6,
+            "losses": 2,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "ed21fa02",
+          "stats": {
+            "gp": 3,
+            "pts": 9,
+            "threePt": 2,
+            "wins": 1,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 2
+          },
+          "gid": "489980c1",
+          "gn": "(SOCIAL) Tuesday Senior Men 3"
+        },
+        {
+          "tid": "ed21fa02",
+          "tn": "",
+          "gid": "489980c1",
+          "gn": "(SOCIAL) Tuesday Senior Men 3",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 9,
+            "threePt": 2,
+            "wins": 1,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b82479c8",
+      "sn": "Summer 2025/26",
+      "club": "Lara Giants Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "0b53d609",
+          "tn": "Lara Heat Men MD4",
+          "gid": "7b5c045c",
+          "gn": "(CLUB) Monday Senior Men 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 21,
+            "ft": 1,
+            "fg": 9,
+            "pts": 19,
+            "finals": 1,
+            "wins": 7,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0b53d609",
+          "tn": "Lara Heat Men MD4",
+          "gid": "d5c93bff",
+          "gn": "(CLUB) Monday Senior Men 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 21,
+            "fg": 9,
+            "pts": 19,
+            "finals": 1,
+            "wins": 7,
+            "losses": 11,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:03.908Z",
+  "teams": [
+    {
+      "tid": "a1e237f1",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed21fa02",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b53d609",
+      "sid": "b82479c8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.663Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "196c9190",
+      "sid": "c36e5626"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "196c9190",
+      "sid": "c36e5626"
+    }
+  },
+  "games": [
+    "025f2bb5",
+    "0757c016",
+    "0b8b0944",
+    "0eaed440",
+    "0f8426b3",
+    "2e659f4f",
+    "3a98ad49",
+    "3c4139ba",
+    "48f11dfe",
+    "6127254d",
+    "619a876d",
+    "6686fa61",
+    "7dfbb483",
+    "90f72d01",
+    "92de2fe7",
+    "a38dd398",
+    "a3d11b0c",
+    "a97a9cf3",
+    "b55d0b83",
+    "bde5089f",
+    "becc4a59",
+    "c61f493d",
+    "c7e1cc5d",
+    "dac486ec",
+    "dfec8f51",
+    "e5db6ed3",
+    "f31b74b2",
+    "fd4d1bf3"
+  ],
+  "gameTids": {
+    "196c9190": "ed21fa02",
+    "6127254d": "ed21fa02",
+    "abeaf290": "ed21fa02",
+    "7efd0c6d": "a1e237f1",
+    "7dfbb483": "a1e237f1",
+    "0eaed440": "a1e237f1",
+    "becc4a59": "a1e237f1",
+    "b55d0b83": "a1e237f1",
+    "3c4139ba": "a1e237f1",
+    "90f72d01": "a1e237f1",
+    "0b8b0944": "a1e237f1",
+    "e5db6ed3": "a1e237f1",
+    "dfec8f51": "0b53d609",
+    "c7e1cc5d": "0b53d609",
+    "2e659f4f": "0b53d609",
+    "48f11dfe": "0b53d609",
+    "0757c016": "0b53d609",
+    "6686fa61": "0b53d609",
+    "a38dd398": "0b53d609",
+    "dac486ec": "0b53d609",
+    "025f2bb5": "0b53d609",
+    "619a876d": "0b53d609",
+    "3a98ad49": "0b53d609",
+    "c61f493d": "0b53d609",
+    "a3d11b0c": "0b53d609",
+    "f31b74b2": "0b53d609",
+    "fd4d1bf3": "0b53d609",
+    "a97a9cf3": "0b53d609",
+    "92de2fe7": "0b53d609",
+    "bde5089f": "0b53d609",
+    "0f8426b3": "0b53d609"
+  }
+}

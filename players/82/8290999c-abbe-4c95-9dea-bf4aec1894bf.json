@@ -1,1 +1,83 @@
-{"uuid":"8290999c-abbe-4c95-9dea-bf4aec1894bf","name":"Michelle Lowry","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":1,"foulOuts":{"25aab112":1},"gp":31,"pts":142,"fg":65,"ft":6,"threePt":2,"fouls":15,"statsChecked":"2026-07-09T18:31:26.076Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"c7901a14"}]},{"sid":"880bda3c","regs":[{"tid":"4333582b"}]},{"sid":"25aab112","regs":[{"tid":"bab32dc3"}]}],"teams":[],"updatedAt":"2026-07-09T18:09:23.820Z","records":{"maxGamePTS":{"v":10,"gameKey":"d0300389","sid":"25aab112"},"maxGameThreePt":{"v":1,"gameKey":"9cea4b3f","sid":"880bda3c"}}}
+{
+  "uuid": "8290999c-abbe-4c95-9dea-bf4aec1894bf",
+  "name": "Michelle Lowry",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "25aab112": 1
+      },
+      "gp": 31,
+      "pts": 142,
+      "fg": 65,
+      "ft": 6,
+      "threePt": 2,
+      "fouls": 15,
+      "statsChecked": "2026-07-09T18:31:26.076Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "c7901a14",
+          "gid": "fbfa7989",
+          "gn": "Thursday  Mixed  Div 3/4"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "4333582b",
+          "gid": "f249aef6",
+          "gn": "Thursday  Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "25aab112",
+      "regs": [
+        {
+          "tid": "bab32dc3",
+          "gid": "8b3a3d5b",
+          "gn": "Thursday  Mixed Div 3/4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "c7901a14",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4333582b",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bab32dc3",
+      "sid": "25aab112",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:23.820Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "d0300389",
+      "sid": "25aab112"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "9cea4b3f",
+      "sid": "880bda3c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.264Z"
+}

@@ -1,1 +1,73 @@
-{"uuid":"dae4ecbe-eea6-4fc4-be06-64eaedc7e71c","gender":null,"sports":{"Basketball":{"gp":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T16:15:34.055Z"}},"seasons":[{"sid":"b1264826","sn":"Autumn 2021","club":null,"regs":[{"tid":"ac77c4bc","tn":"Collingwood kings B ","gid":"1bfe01be","gn":"Monday Senior Men","stats":{"gp":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:45:18.674Z","games":["5a392f34"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Autumn 2021"}
+{
+  "uuid": "dae4ecbe-eea6-4fc4-be06-64eaedc7e71c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:15:34.055Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b1264826",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "ac77c4bc",
+          "tn": "Collingwood kings B ",
+          "gid": "1bfe01be",
+          "gn": "Monday Senior Men",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c42a2c7f",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "ec0d543b",
+          "tn": "Collingwood Kings B",
+          "gid": "fc91dd9d",
+          "gn": "Monday Open Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:18.674Z",
+  "games": [
+    "5a392f34"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "ac77c4bc",
+      "sid": "b1264826",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec0d543b",
+      "sid": "c42a2c7f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.326Z"
+}

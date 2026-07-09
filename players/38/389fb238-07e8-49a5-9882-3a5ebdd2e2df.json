@@ -1,1 +1,379 @@
-{"uuid":"389fb238-07e8-49a5-9882-3a5ebdd2e2df","name":"Alieu Chol","gender":"Men","sports":{"Basketball":{"gp":62,"pts":582,"fouls":127,"fg":236,"ft":74,"threePt":12,"foulOuts":{"92cc895d":1,"bd3e7f12":1,"4fab3000":1},"finals":3,"gfApps":2,"gfWins":2,"finalsPerSeason":0.43,"maxGamePTS":27,"maxGameThreePt":1,"wins":45,"losses":28,"draws":2,"winPct":0.6,"statsChecked":"2026-07-05T15:47:36.540Z"}},"seasons":[{"sid":"77017a7e","sn":"2026","regs":[{"tid":"05adf040","tn":"Cubepilot Vipers","gid":"3520c13e","gn":"Senior Men C Grade - Eureka","age":"Senior","div":null,"stats":{"gp":6,"pts":25,"fg":9,"ft":7,"fouls":12,"finals":1,"gfApps":1,"gfWins":1,"wins":4,"losses":2}}]},{"sid":"92cc895d","sn":"Summer 2023/24","regs":[{"tid":"a7e8baa7","tn":"IXOYE 777","gid":"3f6bf33b","gn":"Division 1 Sunday Mens","age":null,"div":null,"stats":{"gp":4,"pts":25,"fg":12,"fouls":13,"foulOuts":1,"wins":2,"losses":2,"ft":1}},{"tid":"a7e8baa7","tn":"IXOYE 777","gid":"0df2c2ee","gn":"zz. Grading Sunday Mens","age":null,"div":null,"stats":{"gp":4,"pts":25,"fg":12,"ft":1,"fouls":13,"wins":2,"losses":2}}]},{"sid":"bd3e7f12","sn":"Summer 2023/24","regs":[{"tid":"c7a85ed6","tn":"Ballan Brumbies Yellow","gid":"1a9eab96","gn":"Tuesday B1/B2 Men","age":null,"div":null,"stats":{"gp":16,"pts":167,"threePt":3,"fg":68,"ft":22,"fouls":34,"foulOuts":1,"finals":1,"wins":5,"losses":9,"draws":1}}]},{"sid":"13065e88","sn":"Winter 2023","regs":[{"tid":"5738b5e0","tn":"IXOYE 777","gid":"d69b4fd9","gn":"Division 3 Sunday Mens","age":null,"div":null,"stats":{"gp":14,"pts":163,"threePt":2,"fg":65,"ft":27,"fouls":19,"finals":1,"gfApps":1,"wins":11,"losses":2,"gfWins":1}},{"tid":"5738b5e0","tn":"IXOYE 777","gid":"fcf76ec6","gn":"Grading Sunday Mens","age":null,"div":null,"stats":{"gp":14,"pts":163,"threePt":2,"fg":65,"ft":27,"fouls":19,"finals":1,"gfApps":1,"wins":11,"losses":2,"gfWins":1}}]},{"sid":"4fab3000","sn":"Summer 2022/23","regs":[{"tid":"8bac4376","tn":"Valley Boys","gid":"27febb42","gn":"Thursday Open Men A Grade","age":"Senior","div":null,"stats":{"gp":10,"pts":79,"threePt":2,"fg":35,"ft":3,"fouls":19,"foulOuts":1,"wins":3,"losses":4,"draws":1}}]},{"sid":"bf57913c","sn":"Summer 2021/22","regs":[{"tid":"c7f89432","tn":"Valley Boys","gid":"666a45f0","gn":"Thursday Open Men","age":"Senior","div":null,"stats":{"gp":10,"pts":106,"threePt":5,"fg":40,"ft":11,"fouls":23,"wins":5,"losses":5}}]},{"sid":"a11ae827","sn":"Winter 2021","regs":[{"tid":"cdbe1c70","tn":"Valley Boys","gid":"b26e7e18","gn":"Thursday Open Men","age":"Senior","div":null,"stats":{"gp":2,"pts":17,"fg":7,"ft":3,"fouls":7,"wins":2}}]}],"updatedAt":"2026-06-01T23:48:30.828Z","teams":[{"tid":"05adf040","sid":"77017a7e","status":"COMPLETED"},{"tid":"c7a85ed6","sid":"bd3e7f12","status":"COMPLETED"},{"tid":"a7e8baa7","sid":"92cc895d","status":"COMPLETED"},{"tid":"5738b5e0","sid":"13065e88","status":"COMPLETED"},{"tid":"8bac4376","sid":"4fab3000","status":"COMPLETED"},{"tid":"c7f89432","sid":"bf57913c","status":"COMPLETED"},{"tid":"2cd0fc9d","sid":"c453aef8","status":"COMPLETED"},{"tid":"cdbe1c70","sid":"a11ae827","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:16:01.912Z","records":{"maxGamePTS":{"v":27,"gameKey":"578f9a82","sid":"13065e88"},"maxGameThreePt":{"v":1,"gameKey":"985ea7d2","sid":"bd3e7f12"}},"games":["01e58d45","0e6e0c1e","10248446","154739ef","24e60963","2c43ff55","2e5668c3","32452d3a","32c9b9ac","3321ecbb","39042569","3c2a02b1","41db6275","422dd1f5","4485cb25","45903be9","45f6dfb1","4a7985a8","4b2a7210","4ce7c5fc","578f9a82","6025cb56","63992689","69d05b28","6b165a6b","70c97468","73711260","76d0e6cf","7b2778b2","82f86b8a","85b192f7","8847c648","90b36b51","90ea41bc","97d958ee","985ea7d2","9a398550","9c5f431a","9ef2a392","a2394f5d","a293af3c","a45ce182","aac6451b","ad7d5f4a","add7d4ef","b40c2579","b54105d9","b924795d","bad16c70","d232500a","d367a703","d5435401","dc6ef5d7","dd7d1457","e3b13aa8","e6f37b18","edddb4ca","f58a0815","fd2bcf10","fe93f2d9","ff532004"]}
+{
+  "uuid": "389fb238-07e8-49a5-9882-3a5ebdd2e2df",
+  "name": "Alieu Chol",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 62,
+      "pts": 582,
+      "fouls": 127,
+      "fg": 236,
+      "ft": 74,
+      "threePt": 12,
+      "foulOuts": {
+        "92cc895d": 1,
+        "bd3e7f12": 1,
+        "4fab3000": 1
+      },
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.43,
+      "maxGamePTS": 27,
+      "maxGameThreePt": 1,
+      "wins": 45,
+      "losses": 28,
+      "draws": 2,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T15:47:36.540Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "77017a7e",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "05adf040",
+          "tn": "Cubepilot Vipers",
+          "gid": "3520c13e",
+          "gn": "Senior Men C Grade - Eureka",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 25,
+            "fg": 9,
+            "ft": 7,
+            "fouls": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "92cc895d",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a7e8baa7",
+          "tn": "IXOYE 777",
+          "gid": "3f6bf33b",
+          "gn": "Division 1 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 25,
+            "fg": 12,
+            "fouls": 13,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 2,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "a7e8baa7",
+          "tn": "IXOYE 777",
+          "gid": "0df2c2ee",
+          "gn": "zz. Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 25,
+            "fg": 12,
+            "ft": 1,
+            "fouls": 13,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bd3e7f12",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "c7a85ed6",
+          "tn": "Ballan Brumbies Yellow",
+          "gid": "1a9eab96",
+          "gn": "Tuesday B1/B2 Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 167,
+            "threePt": 3,
+            "fg": 68,
+            "ft": 22,
+            "fouls": 34,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "13065e88",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "5738b5e0",
+          "tn": "IXOYE 777",
+          "gid": "d69b4fd9",
+          "gn": "Division 3 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 163,
+            "threePt": 2,
+            "fg": 65,
+            "ft": 27,
+            "fouls": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "5738b5e0",
+          "tn": "IXOYE 777",
+          "gid": "fcf76ec6",
+          "gn": "Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 163,
+            "threePt": 2,
+            "fg": 65,
+            "ft": 27,
+            "fouls": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4fab3000",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "8bac4376",
+          "tn": "Valley Boys",
+          "gid": "27febb42",
+          "gn": "Thursday Open Men A Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 79,
+            "threePt": 2,
+            "fg": 35,
+            "ft": 3,
+            "fouls": 19,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf57913c",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "c7f89432",
+          "tn": "Valley Boys",
+          "gid": "666a45f0",
+          "gn": "Thursday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 106,
+            "threePt": 5,
+            "fg": 40,
+            "ft": 11,
+            "fouls": 23,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a11ae827",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "cdbe1c70",
+          "tn": "Valley Boys",
+          "gid": "b26e7e18",
+          "gn": "Thursday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 17,
+            "fg": 7,
+            "ft": 3,
+            "fouls": 7,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c453aef8",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "2cd0fc9d",
+          "tn": "Ballan Brumbies",
+          "gid": "cc5e8347",
+          "gn": "Senior Men C Grade - Sovereign",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T23:48:30.828Z",
+  "teams": [
+    {
+      "tid": "05adf040",
+      "sid": "77017a7e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a7e8baa7",
+      "sid": "92cc895d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7a85ed6",
+      "sid": "bd3e7f12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5738b5e0",
+      "sid": "13065e88",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8bac4376",
+      "sid": "4fab3000",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c7f89432",
+      "sid": "bf57913c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cdbe1c70",
+      "sid": "a11ae827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2cd0fc9d",
+      "sid": "c453aef8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.008Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 27,
+      "gameKey": "578f9a82",
+      "sid": "13065e88"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "985ea7d2",
+      "sid": "bd3e7f12"
+    }
+  },
+  "games": [
+    "01e58d45",
+    "0e6e0c1e",
+    "10248446",
+    "154739ef",
+    "24e60963",
+    "2c43ff55",
+    "2e5668c3",
+    "32452d3a",
+    "32c9b9ac",
+    "3321ecbb",
+    "39042569",
+    "3c2a02b1",
+    "41db6275",
+    "422dd1f5",
+    "4485cb25",
+    "45903be9",
+    "45f6dfb1",
+    "4a7985a8",
+    "4b2a7210",
+    "4ce7c5fc",
+    "578f9a82",
+    "6025cb56",
+    "63992689",
+    "69d05b28",
+    "6b165a6b",
+    "70c97468",
+    "73711260",
+    "76d0e6cf",
+    "7b2778b2",
+    "82f86b8a",
+    "85b192f7",
+    "8847c648",
+    "90b36b51",
+    "90ea41bc",
+    "97d958ee",
+    "985ea7d2",
+    "9a398550",
+    "9c5f431a",
+    "9ef2a392",
+    "a2394f5d",
+    "a293af3c",
+    "a45ce182",
+    "aac6451b",
+    "ad7d5f4a",
+    "add7d4ef",
+    "b40c2579",
+    "b54105d9",
+    "b924795d",
+    "bad16c70",
+    "d232500a",
+    "d367a703",
+    "d5435401",
+    "dc6ef5d7",
+    "dd7d1457",
+    "e3b13aa8",
+    "e6f37b18",
+    "edddb4ca",
+    "f58a0815",
+    "fd2bcf10",
+    "fe93f2d9",
+    "ff532004"
+  ]
+}

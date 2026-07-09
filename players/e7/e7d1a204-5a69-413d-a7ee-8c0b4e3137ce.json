@@ -1,1 +1,78 @@
-{"uuid":"e7d1a204-5a69-413d-a7ee-8c0b4e3137ce","name":"Madeleine Stubbs","sports":{"Basketball":{"maxGamePTS":4,"maxGameThreePt":null,"foulOuts":{},"gp":13,"pts":31,"fg":14,"ft":3,"fouls":11,"statsChecked":"2026-07-06T19:01:56.343Z"}},"seasons":[{"sid":"c36e5626","regs":[{"tid":"5ace4fb5"}]},{"sid":"68490f32","regs":[{"tid":"8584bcc3"}]},{"sid":"1ca322dc","regs":[{"tid":"fbb9dc6d"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":4,"gameKey":"68d39ab8","sid":"68490f32"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e7d1a204-5a69-413d-a7ee-8c0b4e3137ce",
+  "name": "Madeleine Stubbs",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 13,
+      "pts": 31,
+      "fg": 14,
+      "ft": 3,
+      "fouls": 11,
+      "statsChecked": "2026-07-06T19:01:56.343Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c36e5626",
+      "regs": [
+        {
+          "tid": "5ace4fb5",
+          "gid": "a581d932",
+          "gn": "(CLUB) Monday Senior Women 2"
+        }
+      ]
+    },
+    {
+      "sid": "68490f32",
+      "regs": [
+        {
+          "tid": "8584bcc3",
+          "gid": "eaf1a0c3",
+          "gn": "Women TUESDAY Section 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "1ca322dc",
+      "regs": [
+        {
+          "tid": "fbb9dc6d",
+          "gid": "a0b7fbc2",
+          "gn": "Women TUESDAY Section 1/2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "5ace4fb5",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8584bcc3",
+      "sid": "68490f32",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fbb9dc6d",
+      "sid": "1ca322dc",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "68d39ab8",
+      "sid": "68490f32"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:30.170Z"
+}

@@ -1,1 +1,91 @@
-{"uuid":"f1e3a404-cf24-4df9-85a5-2aa5577b3182","name":"Henry Goodman","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":10,"fouls":10,"fg":5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":5,"losses":2,"winPct":0.71,"statsChecked":"2026-07-05T15:27:05.865Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"Northside Thunder Basketball Club","regs":[{"tid":"6c9ce4e9","tn":"Thunder U16 Boys Blue","gid":"810cc7cc","gn":"Saturday U16 Boys Div 3","age":"U16","div":"Div 3","stats":{"gp":7,"fouls":10,"fg":5,"pts":10,"wins":5,"losses":2}}]}],"updatedAt":"2026-06-02T06:08:46.318Z","teams":[{"tid":"6c9ce4e9","sid":"e44fb190","status":"ACTIVE"},{"tid":"fe582760","sid":"f00a8108","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:27.175Z","records":{"maxGamePTS":{"v":6,"gameKey":"d97ea6e2","sid":"e44fb190"},"maxGameThreePt":{"v":null}},"games":["025f803d","13393811","6d4a0a48","ac1f838d","d6922e36","d97ea6e2","dcc1b77d"]}
+{
+  "uuid": "f1e3a404-cf24-4df9-85a5-2aa5577b3182",
+  "name": "Henry Goodman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 10,
+      "fouls": 10,
+      "fg": 5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 2,
+      "winPct": 0.71,
+      "statsChecked": "2026-07-05T15:27:05.865Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "Northside Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "6c9ce4e9",
+          "tn": "Thunder U16 Boys Blue",
+          "gid": "810cc7cc",
+          "gn": "Saturday U16 Boys Div 3",
+          "age": "U16",
+          "div": "Div 3",
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "fg": 5,
+            "pts": 10,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f00a8108",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "fe582760",
+          "tn": "STARS U12 Boys CR",
+          "gid": "b0d3f0dd",
+          "gn": "Saturday U12 Boys Division 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T06:08:46.318Z",
+  "teams": [
+    {
+      "tid": "6c9ce4e9",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe582760",
+      "sid": "f00a8108",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.900Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "d97ea6e2",
+      "sid": "e44fb190"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "025f803d",
+    "13393811",
+    "6d4a0a48",
+    "ac1f838d",
+    "d6922e36",
+    "d97ea6e2",
+    "dcc1b77d"
+  ]
+}

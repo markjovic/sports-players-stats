@@ -1,1 +1,312 @@
-{"uuid":"61a1e033-b556-425c-a939-7d6eeebdee56","name":"Robert Peters","gender":"Mixed","sports":{"Basketball":{"gp":13,"fouls":4,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":14,"losses":8,"winPct":0.64,"statsChecked":"2026-07-06T19:10:24.838Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"e3c468ec","tn":"A.O.S","gid":"fdf81854","gn":"Sunday Open Mixed Section 2","age":"Senior","div":null,"stats":{"gp":11,"fouls":3,"wins":7,"losses":4}},{"tid":"e3c468ec","tn":"A.O.S","gid":"273651e1","gn":"Sunday Open Mixed Section 1","age":"Senior","div":null,"stats":{"gp":11,"wins":7,"losses":4,"fouls":3}}]},{"sid":"297562bc","regs":[{"tid":"0d8474a3","stats":{"gp":2,"fouls":1}},{"tid":"0d8474a3","tn":"","gid":"4be5ebac","gn":"Sunday Mixed Division 1","div":null,"stats":{"gp":2,"fouls":1}}]}],"updatedAt":"2026-07-06T18:33:47.971Z","teams":[{"tid":"e3c468ec","sid":"5593103d","status":"ACTIVE"},{"tid":"2a125ac3","sid":"fab2be4d","status":"COMPLETED"},{"tid":"a3793e15","sid":"76897951","status":"COMPLETED"},{"tid":"c9f743de","sid":"5944effa","status":"COMPLETED"},{"tid":"08f2391a","sid":"348dbfb8","status":"COMPLETED"},{"tid":"ddf710c9","sid":"9358e51a","status":"COMPLETED"},{"tid":"a9184ad5","sid":"d3d4e181","status":"COMPLETED"},{"tid":"20ba9291","sid":"21cd9648","status":"COMPLETED"},{"tid":"d04c42f6","sid":"d4cbf787","status":"COMPLETED"},{"tid":"c3e0d0af","sid":"d64fcfce","status":"COMPLETED"},{"tid":"d18a8ab0","sid":"afd26581","status":"COMPLETED"},{"tid":"8745e042","sid":"922f0463","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:41:54.686Z","games":["17399f5c","1f5d945f","47d62067","48ad84f0","735767f9","857ef5a1","8a072530","a8d91602","addf7136","c122a464","da5d9226"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "61a1e033-b556-425c-a939-7d6eeebdee56",
+  "name": "Robert Peters",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "fouls": 4,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 14,
+      "losses": 8,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-06T19:10:24.838Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e3c468ec",
+          "tn": "A.O.S",
+          "gid": "fdf81854",
+          "gn": "Sunday Open Mixed Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 3,
+            "wins": 7,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "e3c468ec",
+          "tn": "A.O.S",
+          "gid": "273651e1",
+          "gn": "Sunday Open Mixed Section 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "wins": 7,
+            "losses": 4,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "0d8474a3",
+          "stats": {
+            "gp": 2,
+            "fouls": 1
+          },
+          "gid": "4be5ebac",
+          "gn": "Sunday Mixed Division 1"
+        },
+        {
+          "tid": "0d8474a3",
+          "tn": "",
+          "gid": "4be5ebac",
+          "gn": "Sunday Mixed Division 1",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "2a125ac3",
+          "tn": "A.O.S",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "a3793e15",
+          "tn": "A.O.S.",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "c9f743de",
+          "tn": "A.O.S.",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "08f2391a",
+          "tn": "A.O.S.",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "ddf710c9",
+          "tn": "A.O.S.",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "a9184ad5",
+          "tn": "A.O.S.",
+          "gid": "4f25a2f7",
+          "gn": "AUTUMN Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "20ba9291",
+          "tn": "A.O.S.",
+          "gid": "e8cfad13",
+          "gn": "SPRING Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "d04c42f6",
+          "tn": "AGENTZ OF SHIELD",
+          "gid": "1375dfd5",
+          "gn": "Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "c3e0d0af",
+          "tn": "AGENTZ OF SHIELD",
+          "gid": "332b438a",
+          "gn": "Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "d18a8ab0",
+          "tn": "AGENTZ OF SHIELD",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "8745e042",
+          "tn": "Stormz",
+          "gid": "a78747eb",
+          "gn": "Sunday Open Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:33:47.971Z",
+  "teams": [
+    {
+      "tid": "e3c468ec",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d8474a3",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a125ac3",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a3793e15",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c9f743de",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "08f2391a",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ddf710c9",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a9184ad5",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20ba9291",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d04c42f6",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c3e0d0af",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d18a8ab0",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8745e042",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.332Z",
+  "games": [
+    "17399f5c",
+    "1f5d945f",
+    "47d62067",
+    "48ad84f0",
+    "735767f9",
+    "857ef5a1",
+    "8a072530",
+    "a8d91602",
+    "addf7136",
+    "c122a464",
+    "da5d9226"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

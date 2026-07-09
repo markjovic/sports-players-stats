@@ -1,1 +1,213 @@
-{"uuid":"f1ee1494-95de-49f1-8b9b-2d903fc1c1c0","name":"Kai Gasperotti","gender":"Mixed","sports":{"Basketball":{"gp":26,"pts":29,"fouls":20,"fg":14,"ft":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"556d9704":1},"maxGamePTS":6,"maxGameThreePt":null,"wins":14,"losses":18,"winPct":0.44,"statsChecked":"2026-07-05T15:27:05.958Z"}},"seasons":[{"sid":"556d9704","sn":"Summer 2025/26","regs":[{"tid":"a91312cc","tn":"Breakers","gid":"35e46663","gn":"Thursday U12 Boys","age":"U12","div":null,"stats":{"gp":15,"fouls":15,"ft":1,"fg":13,"pts":27,"finals":1,"gfApps":1,"foulOuts":1,"wins":10,"losses":5}}]},{"sid":"b46b0db6","sn":"Summer 2023/24","regs":[{"tid":"39b15e14","tn":"Rebounders","gid":"aaba6cb5","gn":"Monday U10 Mixed Term 1","age":"U10","div":null,"stats":{"gp":5,"fouls":2,"wins":2,"losses":3}},{"tid":"80a728ad","stats":{"wins":1,"losses":5,"gp":6,"pts":2,"fg":1,"fouls":3}}]},{"sid":"b46b0db6","sn":"Summer 2023/24","regs":[{"tid":"80a728ad","tn":"Lollipops","gid":"ff95b1aa","gn":"Monday U10 Mixed","age":"U10","div":null,"stats":{"gp":6,"fouls":3,"fg":1,"pts":2,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-02T05:47:51.003Z","teams":[{"tid":"a91312cc","sid":"556d9704","status":"COMPLETED"},{"tid":"3a918bab","sid":"e6d0caa9","status":"COMPLETED"},{"tid":"80a728ad","sid":"b46b0db6","status":"COMPLETED"},{"tid":"39b15e14","sid":"b46b0db6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:27.778Z","records":{"maxGamePTS":{"v":6,"gameKey":"863f52d5","sid":"556d9704"},"maxGameThreePt":{"v":null}},"games":["07326aae","0eab4a26","10eaeea3","11baba03","1e975f1b","200bd066","258386f4","331088d5","39019df5","4584c642","6c2230e1","7041e8c9","7a6b8370","7bb48262","7d1b0860","863f52d5","9d661522","b79186d2","c07998f1","c2e4d9fa","ca4c4b9f","cb77f9ed","cdcacdb8","e52a4183","ec24717d","f42b626f"],"gameTids":{"cdcacdb8":"a91312cc","ec24717d":"a91312cc","9d661522":"a91312cc","863f52d5":"a91312cc","cb77f9ed":"a91312cc","258386f4":"a91312cc","7041e8c9":"a91312cc","c2e4d9fa":"a91312cc","6c2230e1":"a91312cc","7d1b0860":"a91312cc","c07998f1":"a91312cc","b79186d2":"a91312cc","39019df5":"a91312cc","10eaeea3":"a91312cc","200bd066":"a91312cc","ca4c4b9f":"39b15e14","f42b626f":"39b15e14","7a6b8370":"39b15e14","7bb48262":"39b15e14","07326aae":"39b15e14","e52a4183":"80a728ad","0eab4a26":"80a728ad","1e975f1b":"80a728ad","331088d5":"80a728ad","4584c642":"80a728ad","11baba03":"80a728ad"}}
+{
+  "uuid": "f1ee1494-95de-49f1-8b9b-2d903fc1c1c0",
+  "name": "Kai Gasperotti",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 26,
+      "pts": 29,
+      "fouls": 20,
+      "fg": 14,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "556d9704": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 14,
+      "losses": 18,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T15:27:05.958Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "556d9704",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "a91312cc",
+          "tn": "Breakers",
+          "gid": "35e46663",
+          "gn": "Thursday U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 15,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b46b0db6",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "39b15e14",
+          "tn": "Rebounders",
+          "gid": "aaba6cb5",
+          "gn": "Monday U10 Mixed Term 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "80a728ad",
+          "stats": {
+            "wins": 1,
+            "losses": 5,
+            "gp": 6,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          },
+          "gid": "ff95b1aa",
+          "gn": "Monday U10 Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "b46b0db6",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "80a728ad",
+          "tn": "Lollipops",
+          "gid": "ff95b1aa",
+          "gn": "Monday U10 Mixed",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e6d0caa9",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "3a918bab",
+          "tn": "U10 Rising Stars",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T05:47:51.003Z",
+  "teams": [
+    {
+      "tid": "a91312cc",
+      "sid": "556d9704",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39b15e14",
+      "sid": "b46b0db6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80a728ad",
+      "sid": "b46b0db6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3a918bab",
+      "sid": "e6d0caa9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.906Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "863f52d5",
+      "sid": "556d9704"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "07326aae",
+    "0eab4a26",
+    "10eaeea3",
+    "11baba03",
+    "1e975f1b",
+    "200bd066",
+    "258386f4",
+    "331088d5",
+    "39019df5",
+    "4584c642",
+    "6c2230e1",
+    "7041e8c9",
+    "7a6b8370",
+    "7bb48262",
+    "7d1b0860",
+    "863f52d5",
+    "9d661522",
+    "b79186d2",
+    "c07998f1",
+    "c2e4d9fa",
+    "ca4c4b9f",
+    "cb77f9ed",
+    "cdcacdb8",
+    "e52a4183",
+    "ec24717d",
+    "f42b626f"
+  ],
+  "gameTids": {
+    "cdcacdb8": "a91312cc",
+    "ec24717d": "a91312cc",
+    "9d661522": "a91312cc",
+    "863f52d5": "a91312cc",
+    "cb77f9ed": "a91312cc",
+    "258386f4": "a91312cc",
+    "7041e8c9": "a91312cc",
+    "c2e4d9fa": "a91312cc",
+    "6c2230e1": "a91312cc",
+    "7d1b0860": "a91312cc",
+    "c07998f1": "a91312cc",
+    "b79186d2": "a91312cc",
+    "39019df5": "a91312cc",
+    "10eaeea3": "a91312cc",
+    "200bd066": "a91312cc",
+    "ca4c4b9f": "39b15e14",
+    "f42b626f": "39b15e14",
+    "7a6b8370": "39b15e14",
+    "7bb48262": "39b15e14",
+    "07326aae": "39b15e14",
+    "e52a4183": "80a728ad",
+    "0eab4a26": "80a728ad",
+    "1e975f1b": "80a728ad",
+    "331088d5": "80a728ad",
+    "4584c642": "80a728ad",
+    "11baba03": "80a728ad"
+  }
+}

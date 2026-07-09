@@ -1,1 +1,458 @@
-{"uuid":"c7dd2812-60a9-40bb-ad23-227842627a87","name":"Levi Shulman","gender":"Boys","sports":{"Basketball":{"gp":49,"pts":521,"fouls":44,"fg":209,"ft":82,"threePt":7,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":23,"maxGameThreePt":2,"wins":55,"losses":62,"draws":2,"winPct":0.46,"statsChecked":"2026-07-05T14:30:15.722Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Ormond Jets Basketball Club","regs":[{"tid":"80d318df","tn":"JETS U16 Boys Nick","gid":"ed87fe6b","gn":"Saturday U16 Boys Div 14","age":"U16","div":"Div 14","stats":{"gp":7,"fouls":11,"ft":13,"fg":23,"threePt":3,"pts":68,"wins":4,"losses":3}},{"tid":"80d318df","tn":"JETS U16 Boys Nick","gid":"083355af","gn":"Saturday U16 Boys Div 13","age":"U16","div":"Div 13","stats":{"gp":7,"fouls":11,"ft":13,"fg":23,"threePt":3,"pts":68,"wins":4,"losses":3}},{"tid":"80d318df","tn":"JETS U16 Boys Nick","gid":"b0c4fdd9","gn":"Saturday U16 Boys Div 12","age":"U16","div":"Div 12","stats":{"gp":7,"fouls":11,"ft":13,"fg":23,"pts":68,"wins":4,"losses":3,"threePt":3}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"Ormond Jets Basketball Club","regs":[{"tid":"4fded2ed","tn":"JETS U16 Boys Nick","gid":"173a2080","gn":"Saturday U16 Boys Div 13","age":"U16","div":"Div 13","stats":{"gp":14,"fouls":16,"ft":19,"fg":51,"threePt":2,"pts":127,"wins":5,"losses":9}},{"tid":"4fded2ed","tn":"JETS U16 Boys Nick","gid":"2996016c","gn":"Saturday U16 Boys Div 12","age":"U16","div":"Div 12","stats":{"gp":14,"fg":51,"pts":127,"wins":5,"losses":9,"ft":19,"threePt":2,"fouls":16}},{"tid":"4fded2ed","tn":"JETS U16 Boys Nick","gid":"e23484c4","gn":"Saturday U16 Boys Div 11","age":"U16","div":"Div 11","stats":{"gp":14,"fouls":16,"ft":19,"fg":51,"pts":127,"wins":5,"losses":9,"threePt":2}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Ormond Jets Basketball Club","regs":[{"tid":"b6bf5c08","tn":"JETS U14 Boys Nick","gid":"8aa87cc3","gn":"Saturday U14 Boys Div 10","age":"U14","div":"Div 10","stats":{"gp":13,"fouls":12,"ft":28,"fg":53,"pts":137,"wins":3,"losses":9,"draws":1,"threePt":1}},{"tid":"b6bf5c08","tn":"JETS U14 Boys Nick","gid":"8efbf948","gn":"Saturday U14 Boys Div  9","age":"U14","div":"Div 9","stats":{"gp":13,"fouls":12,"ft":28,"fg":53,"threePt":1,"pts":137,"wins":3,"losses":9,"draws":1}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Ormond Jets Basketball Club","regs":[{"tid":"6796c046","tn":"JETS U14 Boys Nick","gid":"1a54006a","gn":"Saturday U14 Boys Div 10","age":"U14","div":"Div 10","stats":{"gp":15,"fouls":5,"ft":22,"fg":82,"pts":189,"finals":1,"gfApps":1,"wins":11,"losses":4,"threePt":1,"gfWins":1}},{"tid":"6796c046","tn":"JETS U14 Boys Nick","gid":"53b69c8d","gn":"Saturday U14 Boys Div 11","age":"U14","div":"Div 11","stats":{"gp":15,"ft":22,"fg":82,"threePt":1,"pts":189,"finals":1,"gfApps":1,"wins":11,"losses":4,"fouls":5,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:44:28.287Z","teams":[{"tid":"80d318df","sid":"79d2b087","status":"ACTIVE"},{"tid":"4fded2ed","sid":"4b758d19","status":"COMPLETED"},{"tid":"b6bf5c08","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"6796c046","sid":"c01b75f6","status":"COMPLETED"},{"tid":"9733263e","sid":"ee5d2724","status":"COMPLETED"},{"tid":"d8424d2c","sid":"7d20ecad","status":"COMPLETED"},{"tid":"deac5482","sid":"e2637fe8","status":"COMPLETED"},{"tid":"96956859","sid":"eb0c3879","status":"COMPLETED"},{"tid":"47d001eb","sid":"11f9ba57","status":"COMPLETED"},{"tid":"425a064a","sid":"00e10ea1","status":"COMPLETED"},{"tid":"90bdcf39","sid":"1d1c4dfd","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:15:24.087Z","games":["0038b69c","0567d1db","0b3961cd","0f690365","13fc76dc","1788e13a","23290822","23b0b304","31dc9da3","32359576","376b7092","3d3093a3","4307cc9e","43b54c7c","4964b2b9","49d297b0","4c4bacc0","56fe5833","5935580c","5e700309","6152f45c","7a843325","7c0b600d","82e81112","8cc2c3b5","a0badfea","a1f891e8","a49717d3","a78affd1","a7f6adcb","abace480","ac813bcb","b29c8bbd","b6e285bc","b78511e3","c6299415","c8c5903d","c95bd4fc","cb0cc5a2","d5d8875c","d72dafa4","db431e1b","db5bb0e6","e3927661","e455f91f","e77d9e3f","eff4b2fd","f84e31bc","fe172e30"],"records":{"maxGamePTS":{"v":23,"gameKey":"c95bd4fc","sid":"c01b75f6"},"maxGameThreePt":{"v":2,"gameKey":"e455f91f","sid":"4b758d19"}}}
+{
+  "uuid": "c7dd2812-60a9-40bb-ad23-227842627a87",
+  "name": "Levi Shulman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 49,
+      "pts": 521,
+      "fouls": 44,
+      "fg": 209,
+      "ft": 82,
+      "threePt": 7,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 23,
+      "maxGameThreePt": 2,
+      "wins": 55,
+      "losses": 62,
+      "draws": 2,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T14:30:15.722Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "80d318df",
+          "tn": "JETS U16 Boys Nick",
+          "gid": "ed87fe6b",
+          "gn": "Saturday U16 Boys Div 14",
+          "age": "U16",
+          "div": "Div 14",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 13,
+            "fg": 23,
+            "threePt": 3,
+            "pts": 68,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "80d318df",
+          "tn": "JETS U16 Boys Nick",
+          "gid": "083355af",
+          "gn": "Saturday U16 Boys Div 13",
+          "age": "U16",
+          "div": "Div 13",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 13,
+            "fg": 23,
+            "threePt": 3,
+            "pts": 68,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "80d318df",
+          "tn": "JETS U16 Boys Nick",
+          "gid": "b0c4fdd9",
+          "gn": "Saturday U16 Boys Div 12",
+          "age": "U16",
+          "div": "Div 12",
+          "stats": {
+            "gp": 7,
+            "fouls": 11,
+            "ft": 13,
+            "fg": 23,
+            "pts": 68,
+            "wins": 4,
+            "losses": 3,
+            "threePt": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "4fded2ed",
+          "tn": "JETS U16 Boys Nick",
+          "gid": "173a2080",
+          "gn": "Saturday U16 Boys Div 13",
+          "age": "U16",
+          "div": "Div 13",
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 19,
+            "fg": 51,
+            "threePt": 2,
+            "pts": 127,
+            "wins": 5,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "4fded2ed",
+          "tn": "JETS U16 Boys Nick",
+          "gid": "2996016c",
+          "gn": "Saturday U16 Boys Div 12",
+          "age": "U16",
+          "div": "Div 12",
+          "stats": {
+            "gp": 14,
+            "fg": 51,
+            "pts": 127,
+            "wins": 5,
+            "losses": 9,
+            "ft": 19,
+            "threePt": 2,
+            "fouls": 16
+          }
+        },
+        {
+          "tid": "4fded2ed",
+          "tn": "JETS U16 Boys Nick",
+          "gid": "e23484c4",
+          "gn": "Saturday U16 Boys Div 11",
+          "age": "U16",
+          "div": "Div 11",
+          "stats": {
+            "gp": 14,
+            "fouls": 16,
+            "ft": 19,
+            "fg": 51,
+            "pts": 127,
+            "wins": 5,
+            "losses": 9,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "b6bf5c08",
+          "tn": "JETS U14 Boys Nick",
+          "gid": "8aa87cc3",
+          "gn": "Saturday U14 Boys Div 10",
+          "age": "U14",
+          "div": "Div 10",
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 28,
+            "fg": 53,
+            "pts": 137,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "b6bf5c08",
+          "tn": "JETS U14 Boys Nick",
+          "gid": "8efbf948",
+          "gn": "Saturday U14 Boys Div  9",
+          "age": "U14",
+          "div": "Div 9",
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 28,
+            "fg": 53,
+            "threePt": 1,
+            "pts": 137,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "6796c046",
+          "tn": "JETS U14 Boys Nick",
+          "gid": "1a54006a",
+          "gn": "Saturday U14 Boys Div 10",
+          "age": "U14",
+          "div": "Div 10",
+          "stats": {
+            "gp": 15,
+            "fouls": 5,
+            "ft": 22,
+            "fg": 82,
+            "pts": 189,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 4,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "6796c046",
+          "tn": "JETS U14 Boys Nick",
+          "gid": "53b69c8d",
+          "gn": "Saturday U14 Boys Div 11",
+          "age": "U14",
+          "div": "Div 11",
+          "stats": {
+            "gp": 15,
+            "ft": 22,
+            "fg": 82,
+            "threePt": 1,
+            "pts": 189,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 4,
+            "fouls": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "9733263e",
+          "tn": "Maccabi U12 Boys Warriors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "d8424d2c",
+          "tn": "Maccabi U12 Boys Warriors Blue",
+          "gid": "76c93aa3",
+          "gn": "Saturday U12 Boys Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "deac5482",
+          "tn": "Maccabi U10 Boys Warriors Blue",
+          "gid": "c1588f48",
+          "gn": "U10 Boys (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "96956859",
+          "tn": "Maccabi U10 Boys Giants",
+          "gid": "989ddc30",
+          "gn": "U10 Boys Division 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "47d001eb",
+          "tn": "Maccabi U10 Boys Kings",
+          "gid": "facfe2bd",
+          "gn": "U10 Boys GP7",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "425a064a",
+          "tn": "Maccabi U10 Boys Yellow (1)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "1d1c4dfd",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "90bdcf39",
+          "tn": "Maccabi U8 Boys Grizzlies",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:28.287Z",
+  "teams": [
+    {
+      "tid": "80d318df",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4fded2ed",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6bf5c08",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6796c046",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9733263e",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d8424d2c",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "deac5482",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96956859",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47d001eb",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "425a064a",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "90bdcf39",
+      "sid": "1d1c4dfd",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.982Z",
+  "games": [
+    "0038b69c",
+    "0567d1db",
+    "0b3961cd",
+    "0f690365",
+    "13fc76dc",
+    "1788e13a",
+    "23290822",
+    "23b0b304",
+    "31dc9da3",
+    "32359576",
+    "376b7092",
+    "3d3093a3",
+    "4307cc9e",
+    "43b54c7c",
+    "4964b2b9",
+    "49d297b0",
+    "4c4bacc0",
+    "56fe5833",
+    "5935580c",
+    "5e700309",
+    "6152f45c",
+    "7a843325",
+    "7c0b600d",
+    "82e81112",
+    "8cc2c3b5",
+    "a0badfea",
+    "a1f891e8",
+    "a49717d3",
+    "a78affd1",
+    "a7f6adcb",
+    "abace480",
+    "ac813bcb",
+    "b29c8bbd",
+    "b6e285bc",
+    "b78511e3",
+    "c6299415",
+    "c8c5903d",
+    "c95bd4fc",
+    "cb0cc5a2",
+    "d5d8875c",
+    "d72dafa4",
+    "db431e1b",
+    "db5bb0e6",
+    "e3927661",
+    "e455f91f",
+    "e77d9e3f",
+    "eff4b2fd",
+    "f84e31bc",
+    "fe172e30"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "c95bd4fc",
+      "sid": "c01b75f6"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "e455f91f",
+      "sid": "4b758d19"
+    }
+  }
+}

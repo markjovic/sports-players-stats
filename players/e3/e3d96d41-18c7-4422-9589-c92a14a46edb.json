@@ -1,1 +1,192 @@
-{"uuid":"e3d96d41-18c7-4422-9589-c92a14a46edb","name":"Fletcher Runge","gender":"Boys","sports":{"Basketball":{"gp":32,"pts":93,"fouls":28,"fg":45,"ft":3,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":null,"wins":14,"losses":35,"draws":2,"winPct":0.27,"statsChecked":"2026-07-05T14:59:01.295Z"}},"seasons":[{"sid":"8ff9f39e","sn":"Winter 2026","club":"Mt Lilydale Lakers Basketball Club (MLBC)","regs":[{"tid":"ca9007db","tn":"MLBC B52","gid":"da039394","gn":"Saturday U10 Boys BRES","age":"U10","div":null,"stats":{"gp":8,"fouls":8,"fg":30,"pts":61,"wins":4,"losses":4,"ft":1}},{"tid":"ca9007db","tn":"MLBC B52","gid":"2de13032","gn":"Saturday U10 Boys C","age":"U10","div":null,"stats":{"gp":8,"fouls":8,"ft":1,"fg":30,"pts":61,"wins":4,"losses":4}}]},{"sid":"68f8c050","sn":"Autumn 2026","regs":[{"tid":"cea061b4","tn":"St Marys Scorpions ","gid":"a73f1035","gn":"Monday Boys Grade 4","age":null,"div":null,"stats":{"gp":12,"fouls":11,"fg":7,"pts":14,"wins":2,"losses":9}}]},{"sid":"e26f328b","sn":"Summer 2025/26","club":"Mt Lilydale Lakers Basketball Club (MLBC)","regs":[{"tid":"31a95b51","tn":"MLBC B49","gid":"e1e811fe","gn":"Saturday U10 Boys CRES","age":"U10","div":null,"stats":{"gp":12,"fouls":9,"fg":8,"pts":18,"wins":2,"losses":9,"draws":1,"ft":2}},{"tid":"31a95b51","tn":"MLBC B49","gid":"cebb7804","gn":"Saturday U10 Boys C","age":"U10","div":null,"stats":{"gp":12,"fouls":9,"ft":2,"fg":8,"pts":18,"wins":2,"losses":9,"draws":1}}]}],"updatedAt":"2026-07-04T05:47:16.123Z","teams":[{"tid":"cea061b4","sid":"68f8c050","status":"ACTIVE"},{"tid":"ca9007db","sid":"8ff9f39e","status":"ACTIVE"},{"tid":"31a95b51","sid":"e26f328b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:39.861Z","games":["0214e00f","0afdbc74","2640df78","265f2fae","27d93781","3ce52006","4675817b","47063d7c","5534cfdb","5e8d2836","72b60c3b","76c46e99","7c76f07a","7e8a96b2","80ebba1b","819645d2","8243886f","8498b4b2","875bf3b9","8e88fa5b","8ffd73f5","9232e451","9ecffd4a","a14048e2","a20994f9","e1b01152","e201d615","e47e9120","ebbcd017","fab58e33","fb056e18"],"records":{"maxGamePTS":{"v":20,"gameKey":"8243886f","sid":"8ff9f39e"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "e3d96d41-18c7-4422-9589-c92a14a46edb",
+  "name": "Fletcher Runge",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 32,
+      "pts": 93,
+      "fouls": 28,
+      "fg": 45,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": null,
+      "wins": 14,
+      "losses": 35,
+      "draws": 2,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T14:59:01.295Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8ff9f39e",
+      "sn": "Winter 2026",
+      "club": "Mt Lilydale Lakers Basketball Club (MLBC)",
+      "regs": [
+        {
+          "tid": "ca9007db",
+          "tn": "MLBC B52",
+          "gid": "2de13032",
+          "gn": "Saturday U10 Boys C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "fg": 30,
+            "pts": 61,
+            "wins": 4,
+            "losses": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "ca9007db",
+          "tn": "MLBC B52",
+          "gid": "2de13032",
+          "gn": "Saturday U10 Boys C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 30,
+            "pts": 61,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68f8c050",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "cea061b4",
+          "tn": "St Marys Scorpions ",
+          "gid": "a73f1035",
+          "gn": "Monday Boys Grade 4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 11,
+            "fg": 7,
+            "pts": 14,
+            "wins": 2,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e26f328b",
+      "sn": "Summer 2025/26",
+      "club": "Mt Lilydale Lakers Basketball Club (MLBC)",
+      "regs": [
+        {
+          "tid": "31a95b51",
+          "tn": "MLBC B49",
+          "gid": "e1e811fe",
+          "gn": "Saturday U10 Boys CRES",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "fg": 8,
+            "pts": 18,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "31a95b51",
+          "tn": "MLBC B49",
+          "gid": "cebb7804",
+          "gn": "Saturday U10 Boys C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:16.123Z",
+  "teams": [
+    {
+      "tid": "ca9007db",
+      "sid": "8ff9f39e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cea061b4",
+      "sid": "68f8c050",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31a95b51",
+      "sid": "e26f328b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.925Z",
+  "games": [
+    "0214e00f",
+    "0afdbc74",
+    "2640df78",
+    "265f2fae",
+    "27d93781",
+    "3ce52006",
+    "4675817b",
+    "47063d7c",
+    "5534cfdb",
+    "5e8d2836",
+    "72b60c3b",
+    "76c46e99",
+    "7c76f07a",
+    "7e8a96b2",
+    "80ebba1b",
+    "819645d2",
+    "8243886f",
+    "8498b4b2",
+    "875bf3b9",
+    "8e88fa5b",
+    "8ffd73f5",
+    "9232e451",
+    "9ecffd4a",
+    "a14048e2",
+    "a20994f9",
+    "e1b01152",
+    "e201d615",
+    "e47e9120",
+    "ebbcd017",
+    "fab58e33",
+    "fb056e18"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "8243886f",
+      "sid": "8ff9f39e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

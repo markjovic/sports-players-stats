@@ -1,1 +1,150 @@
-{"uuid":"3877ccd3-59cb-4c30-9419-9c27e96aa239","gender":null,"sports":{"Basketball":{"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"gp":18,"pts":115,"fg":56,"ft":3,"fouls":32,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"wins":5,"losses":4,"winPct":0.56,"statsChecked":"2026-07-05T16:12:47.846Z"}},"seasons":[{"sid":"036d9de9","regs":[{"tid":"72310f0e","stats":{"wins":3,"losses":2,"gp":5,"pts":46,"fg":22,"ft":2,"fouls":11}}]},{"sid":"fb916efa","regs":[{"tid":"297427b1","stats":{"wins":2,"losses":2,"gp":4,"pts":28,"fg":14,"fouls":8}}]},{"sid":"0c8a1c35","regs":[{"tid":"1cf05565","stats":{"finals":1,"gfApps":1,"gp":9,"pts":41,"fg":20,"ft":1,"fouls":13}}]}],"updatedAt":"2026-06-11T23:38:16.888Z","records":{"maxGamePTS":{"v":12,"gameKey":"78a6bc70","sid":"036d9de9"},"maxGameThreePt":{"v":null}},"games":["17b3c090","2a645796","3260f53d","3e868e14","4c4ab8dd","6031f9b2","6ff2b33f","740229af","78a6bc70","85112203","8ff1bcf0","9423c673","a75eafb4","c17953c6","c4ecf687","c5efbfd7","f0da6612","f505303a"],"name":"Summer 2021/22"}
+{
+  "uuid": "3877ccd3-59cb-4c30-9419-9c27e96aa239",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "gp": 18,
+      "pts": 115,
+      "fg": 56,
+      "ft": 3,
+      "fouls": 32,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "wins": 5,
+      "losses": 4,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T16:12:47.846Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "036d9de9",
+      "regs": [
+        {
+          "tid": "72310f0e",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 46,
+            "fg": 22,
+            "ft": 2,
+            "fouls": 11
+          },
+          "gid": "77b83dda",
+          "gn": "(CLUB) Tuesday U16 Girls 1"
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "regs": [
+        {
+          "tid": "297427b1",
+          "stats": {
+            "wins": 2,
+            "losses": 2,
+            "gp": 4,
+            "pts": 28,
+            "fg": 14,
+            "fouls": 8
+          },
+          "gid": "0997d3ad",
+          "gn": "(CLUB) Tuesday U16 Girls 2"
+        }
+      ]
+    },
+    {
+      "sid": "0c8a1c35",
+      "regs": [
+        {
+          "tid": "1cf05565",
+          "stats": {
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 9,
+            "pts": 41,
+            "fg": 20,
+            "ft": 1,
+            "fouls": 13
+          },
+          "gid": "e827f94f",
+          "gn": "Tuesday U16 Girls 3"
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "bfd25cbe",
+          "tn": "Try Boys Polar Bears",
+          "gid": "1b22ec9d",
+          "gn": "Tuesday U14 Girls 1/2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:16.888Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "78a6bc70",
+      "sid": "036d9de9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "17b3c090",
+    "2a645796",
+    "3260f53d",
+    "3e868e14",
+    "4c4ab8dd",
+    "6031f9b2",
+    "6ff2b33f",
+    "740229af",
+    "78a6bc70",
+    "85112203",
+    "8ff1bcf0",
+    "9423c673",
+    "a75eafb4",
+    "c17953c6",
+    "c4ecf687",
+    "c5efbfd7",
+    "f0da6612",
+    "f505303a"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "72310f0e",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "297427b1",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1cf05565",
+      "sid": "0c8a1c35",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bfd25cbe",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.980Z"
+}

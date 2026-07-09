@@ -1,1 +1,226 @@
-{"uuid":"61b0e329-b74e-45f2-b391-eda8c83f7995","name":"Junsen Huang","gender":"Men","sports":{"Basketball":{"gp":49,"pts":281,"fouls":87,"fg":93,"ft":26,"threePt":23,"foulOuts":{"bece5e56":1},"maxGamePTS":23,"maxGameThreePt":3,"wins":30,"losses":25,"draws":2,"winPct":0.53,"statsChecked":"2026-07-05T15:35:56.763Z"}},"seasons":[{"sid":"e9440fb8","sn":"Winter 2025","regs":[{"tid":"9f2960ab","tn":"ZZ - GG Bond","gid":"a8470f23","gn":"Thursday Open Men F Grade","age":"Senior","div":null,"stats":{"gp":13,"fouls":17,"ft":13,"fg":16,"threePt":5,"pts":60,"wins":4,"losses":6,"draws":1}}]},{"sid":"e9440fb8","sn":"Winter 2025","regs":[{"tid":"9f2960ab","tn":"ZZ - GG Bond","gid":"a8470f23","gn":"Thursday Open Men F Grade","age":"Senior","div":null,"stats":{"gp":13,"fouls":17,"fg":16,"threePt":5,"pts":60,"ft":13,"wins":4,"losses":6,"draws":1}}]},{"sid":"49bbc8fb","sn":"Summer 2024/25","regs":[{"tid":"e8851fbf","tn":"GG Bond","gid":"752ae93a","gn":"Monday Open Men E GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":16,"fouls":28,"ft":7,"fg":36,"threePt":12,"pts":115,"wins":9,"losses":7}}]},{"sid":"bece5e56","sn":"2024","regs":[{"tid":"1373d637","tn":"GG Bond","gid":"b3052887","gn":"Monday Open Men E GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":20,"fouls":42,"ft":6,"fg":41,"threePt":6,"pts":106,"foulOuts":1,"wins":13,"losses":6}}]}],"updatedAt":"2026-06-01T19:44:14.877Z","teams":[{"tid":"9f2960ab","sid":"e9440fb8","status":"COMPLETED"},{"tid":"9f2960ab","sid":"e9440fb8","status":"COMPLETED"},{"tid":"54dd8507","sid":"d23d9e49","status":"COMPLETED"},{"tid":"e8851fbf","sid":"49bbc8fb","status":"COMPLETED"},{"tid":"1373d637","sid":"bece5e56","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:41:55.247Z","records":{"maxGamePTS":{"v":23,"gameKey":"d45dd1fd","sid":"49bbc8fb"},"maxGameThreePt":{"v":3,"gameKey":"080a94b0","sid":"e9440fb8"}},"games":["07d334ff","080a94b0","1feffa7c","34204542","3c67068b","4439a4b0","49ca10a7","524b09ba","539470f4","54bb6fde","587599f6","5ed23ccb","6ab60752","71e8e74c","72e289c5","820c7ef2","830f25b1","844c3823","88f6a20b","8a76e9b1","8fd5f7de","953812a2","989a8d95","a00282e0","a08c7bb3","a4b13175","a537932c","a57cca5a","abfa6450","b01feae7","b4f7460e","b75882e5","ba099614","bc54b642","be02f258","c34b1ec6","c80760b2","c9288250","c9b298a9","d45dd1fd","d6f6f520","db93c6b4","dfdb8043","e390215c","e619b981","e678438f","e95cb9d4","f8ba4ac6","fed5b14d"]}
+{
+  "uuid": "61b0e329-b74e-45f2-b391-eda8c83f7995",
+  "name": "Junsen Huang",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 49,
+      "pts": 281,
+      "fouls": 87,
+      "fg": 93,
+      "ft": 26,
+      "threePt": 23,
+      "foulOuts": {
+        "bece5e56": 1
+      },
+      "maxGamePTS": 23,
+      "maxGameThreePt": 3,
+      "wins": 30,
+      "losses": 25,
+      "draws": 2,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T15:35:56.763Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e9440fb8",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "9f2960ab",
+          "tn": "ZZ - GG Bond",
+          "gid": "a8470f23",
+          "gn": "Thursday Open Men F Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 17,
+            "ft": 13,
+            "fg": 16,
+            "threePt": 5,
+            "pts": 60,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e9440fb8",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "9f2960ab",
+          "tn": "ZZ - GG Bond",
+          "gid": "a8470f23",
+          "gn": "Thursday Open Men F Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 17,
+            "fg": 16,
+            "threePt": 5,
+            "pts": 60,
+            "ft": 13,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "49bbc8fb",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "e8851fbf",
+          "tn": "GG Bond",
+          "gid": "752ae93a",
+          "gn": "Monday Open Men E GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 28,
+            "ft": 7,
+            "fg": 36,
+            "threePt": 12,
+            "pts": 115,
+            "wins": 9,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bece5e56",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "1373d637",
+          "tn": "GG Bond",
+          "gid": "b3052887",
+          "gn": "Monday Open Men E GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 42,
+            "ft": 6,
+            "fg": 41,
+            "threePt": 6,
+            "pts": 106,
+            "foulOuts": 1,
+            "wins": 13,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d23d9e49",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "54dd8507",
+          "tn": "ZZ - GG Bond",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T19:44:14.877Z",
+  "teams": [
+    {
+      "tid": "9f2960ab",
+      "sid": "e9440fb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8851fbf",
+      "sid": "49bbc8fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1373d637",
+      "sid": "bece5e56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "54dd8507",
+      "sid": "d23d9e49",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.346Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "d45dd1fd",
+      "sid": "49bbc8fb"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "080a94b0",
+      "sid": "e9440fb8"
+    }
+  },
+  "games": [
+    "07d334ff",
+    "080a94b0",
+    "1feffa7c",
+    "34204542",
+    "3c67068b",
+    "4439a4b0",
+    "49ca10a7",
+    "524b09ba",
+    "539470f4",
+    "54bb6fde",
+    "587599f6",
+    "5ed23ccb",
+    "6ab60752",
+    "71e8e74c",
+    "72e289c5",
+    "820c7ef2",
+    "830f25b1",
+    "844c3823",
+    "88f6a20b",
+    "8a76e9b1",
+    "8fd5f7de",
+    "953812a2",
+    "989a8d95",
+    "a00282e0",
+    "a08c7bb3",
+    "a4b13175",
+    "a537932c",
+    "a57cca5a",
+    "abfa6450",
+    "b01feae7",
+    "b4f7460e",
+    "b75882e5",
+    "ba099614",
+    "bc54b642",
+    "be02f258",
+    "c34b1ec6",
+    "c80760b2",
+    "c9288250",
+    "c9b298a9",
+    "d45dd1fd",
+    "d6f6f520",
+    "db93c6b4",
+    "dfdb8043",
+    "e390215c",
+    "e619b981",
+    "e678438f",
+    "e95cb9d4",
+    "f8ba4ac6",
+    "fed5b14d"
+  ]
+}

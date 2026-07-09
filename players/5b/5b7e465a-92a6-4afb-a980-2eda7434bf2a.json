@@ -1,1 +1,336 @@
-{"uuid":"5b7e465a-92a6-4afb-a980-2eda7434bf2a","name":"Joshua Murray","gender":"Boys","sports":{"Basketball":{"gp":38,"pts":363,"fouls":76,"fg":128,"ft":44,"threePt":21,"foulOuts":{"6fd8e780":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":20,"maxGameThreePt":2,"wins":30,"winPct":0.52,"losses":26,"draws":2,"statsChecked":"2026-07-05T14:27:25.887Z"}},"seasons":[{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"8714294c","tn":"Cougars U22 Boys Giants","gid":"9e2ee0e8","gn":"U22 Boys B","age":"U22","div":null,"stats":{"gp":14,"fouls":32,"ft":12,"fg":38,"threePt":5,"pts":103,"finals":1,"wins":6,"losses":3,"draws":1}},{"tid":"8714294c","tn":"Cougars U22 Boys Giants","gid":"676c447b","gn":"U22 Men Grading","age":"U22","div":null,"stats":{"gp":14,"fouls":32,"ft":12,"fg":38,"threePt":5,"pts":103,"foulOuts":1,"finals":1,"wins":6,"losses":3,"draws":1}}]},{"sid":"7a7de984","sn":"Summer 2024/25","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"6004e204","tn":"Cougars U18 Boys Giants","gid":"87eecdae","gn":"U18 Boys B1","age":"U18","div":"B1","stats":{"gp":13,"fouls":28,"ft":21,"fg":57,"threePt":5,"pts":150,"wins":5,"losses":3}},{"tid":"6004e204","tn":"Cougars U18 Boys Giants","gid":"f679300b","gn":"U18 Boys Grading","age":"U18","div":null,"stats":{"gp":13,"fouls":28,"ft":21,"fg":57,"threePt":5,"pts":150,"wins":5,"losses":3}}]},{"sid":"a272a809","sn":"Winter 2024","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"9c919bdf","tn":"Cougars U18 Boys Giants","gid":"92fee63e","gn":"U18 Boys C1","age":"U18","div":"C1","stats":{"gp":11,"fouls":16,"ft":11,"fg":33,"threePt":11,"pts":110,"wins":4,"losses":7}},{"tid":"9c919bdf","tn":"Cougars U18 Boys Giants","gid":"2eeae920","gn":"U18 Boys Grading","age":"U18","div":null,"stats":{"gp":11,"fouls":16,"ft":11,"fg":33,"threePt":11,"pts":110,"wins":4,"losses":7}}]}],"updatedAt":"2026-05-31T03:57:58.745Z","teams":[{"tid":"8714294c","sid":"6fd8e780","status":"COMPLETED"},{"tid":"6004e204","sid":"7a7de984","status":"COMPLETED"},{"tid":"9c919bdf","sid":"a272a809","status":"COMPLETED"},{"tid":"9ea3f377","sid":"ee5d2724","status":"COMPLETED"},{"tid":"f1924ff4","sid":"7d20ecad","status":"COMPLETED"},{"tid":"1a3ed27a","sid":"e2637fe8","status":"COMPLETED"},{"tid":"160bd9a6","sid":"eb0c3879","status":"COMPLETED"},{"tid":"065a532a","sid":"11f9ba57","status":"COMPLETED"},{"tid":"26163c8e","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:37:10.065Z","records":{"maxGamePTS":{"v":20,"gameKey":"69efe8a6","sid":"7a7de984"},"maxGameThreePt":{"v":2,"gameKey":"6a5777b1","sid":"6fd8e780"}},"games":["0dd0eec5","1f5e4516","211c6283","21f3a66c","22323602","275c977e","425fd679","45598aa7","4d332e17","4e96b4aa","5991d894","69efe8a6","84edc26e","8b1a9306","9a35f0f8","a6b290bf","aada866d","b28b0e0d","b44ac618","b5f24f81","bada1133","d0a74d48","d39816fd","dc8f915c","e9158089","edd121eb","f76416cb","f783e61c","fbc31edc","ff32bd4c"]}
+{
+  "uuid": "5b7e465a-92a6-4afb-a980-2eda7434bf2a",
+  "name": "Joshua Murray",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 363,
+      "fouls": 76,
+      "fg": 128,
+      "ft": 44,
+      "threePt": 21,
+      "foulOuts": {
+        "6fd8e780": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 20,
+      "maxGameThreePt": 2,
+      "wins": 30,
+      "winPct": 0.52,
+      "losses": 26,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:27:25.887Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "8714294c",
+          "tn": "Cougars U22 Boys Giants",
+          "gid": "9e2ee0e8",
+          "gn": "U22 Boys B",
+          "age": "U22",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 32,
+            "ft": 12,
+            "fg": 38,
+            "threePt": 5,
+            "pts": 103,
+            "finals": 1,
+            "wins": 6,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "8714294c",
+          "tn": "Cougars U22 Boys Giants",
+          "gid": "676c447b",
+          "gn": "U22 Men Grading",
+          "age": "U22",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 32,
+            "ft": 12,
+            "fg": 38,
+            "threePt": 5,
+            "pts": 103,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 6,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a7de984",
+      "sn": "Summer 2024/25",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "6004e204",
+          "tn": "Cougars U18 Boys Giants",
+          "gid": "87eecdae",
+          "gn": "U18 Boys B1",
+          "age": "U18",
+          "div": "B1",
+          "stats": {
+            "gp": 13,
+            "fouls": 28,
+            "ft": 21,
+            "fg": 57,
+            "threePt": 5,
+            "pts": 150,
+            "wins": 5,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "6004e204",
+          "tn": "Cougars U18 Boys Giants",
+          "gid": "f679300b",
+          "gn": "U18 Boys Grading",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 28,
+            "ft": 21,
+            "fg": 57,
+            "threePt": 5,
+            "pts": 150,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a272a809",
+      "sn": "Winter 2024",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "9c919bdf",
+          "tn": "Cougars U18 Boys Giants",
+          "gid": "92fee63e",
+          "gn": "U18 Boys C1",
+          "age": "U18",
+          "div": "C1",
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 11,
+            "fg": 33,
+            "threePt": 11,
+            "pts": 110,
+            "wins": 4,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "9c919bdf",
+          "tn": "Cougars U18 Boys Giants",
+          "gid": "2eeae920",
+          "gn": "U18 Boys Grading",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 11,
+            "fg": 33,
+            "threePt": 11,
+            "pts": 110,
+            "wins": 4,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "9ea3f377",
+          "tn": "Solway U18 Boys Bullets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "f1924ff4",
+          "tn": "Solway U16 Boys Bullets",
+          "gid": "18600cc0",
+          "gn": "Saturday U16 Boys Grading Pool 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "1a3ed27a",
+          "tn": "Solway U16 Boys Bullets",
+          "gid": "6d8b5b22",
+          "gn": "U16 Boys (S22_23) Division 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "160bd9a6",
+          "tn": "Solway U14 Boys Knights",
+          "gid": "a2f10ceb",
+          "gn": "U14 Boys Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "065a532a",
+          "tn": "Solway U14 Boys Knights",
+          "gid": "58cf6b3b",
+          "gn": "U14 Boys GP2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "26163c8e",
+          "tn": "Solway U14 Boys Ninjas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T03:57:58.745Z",
+  "teams": [
+    {
+      "tid": "8714294c",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6004e204",
+      "sid": "7a7de984",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c919bdf",
+      "sid": "a272a809",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ea3f377",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1924ff4",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1a3ed27a",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "160bd9a6",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "065a532a",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "26163c8e",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.959Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "69efe8a6",
+      "sid": "7a7de984"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "6a5777b1",
+      "sid": "6fd8e780"
+    }
+  },
+  "games": [
+    "0dd0eec5",
+    "1f5e4516",
+    "211c6283",
+    "21f3a66c",
+    "22323602",
+    "275c977e",
+    "425fd679",
+    "45598aa7",
+    "4d332e17",
+    "4e96b4aa",
+    "5991d894",
+    "69efe8a6",
+    "84edc26e",
+    "8b1a9306",
+    "9a35f0f8",
+    "a6b290bf",
+    "aada866d",
+    "b28b0e0d",
+    "b44ac618",
+    "b5f24f81",
+    "bada1133",
+    "d0a74d48",
+    "d39816fd",
+    "dc8f915c",
+    "e9158089",
+    "edd121eb",
+    "f76416cb",
+    "f783e61c",
+    "fbc31edc",
+    "ff32bd4c"
+  ]
+}

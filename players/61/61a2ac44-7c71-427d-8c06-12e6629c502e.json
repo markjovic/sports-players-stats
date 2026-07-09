@@ -1,1 +1,102 @@
-{"uuid":"61a2ac44-7c71-427d-8c06-12e6629c502e","name":"Barach Akoy","gender":"Boys","sports":{"Basketball":{"gp":9,"pts":35,"fouls":27,"fg":14,"ft":4,"threePt":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"losses":7,"winPct":0.13,"wins":1,"statsChecked":"2026-07-05T14:55:33.320Z"}},"seasons":[{"sid":"310d356a","sn":"2026","regs":[{"tid":"d46e3f4e","tn":"Adelaide Warriors","gid":"9fe0d118","gn":"U16 Boys A Grade","age":"U16","div":null,"stats":{"gp":4,"fouls":16,"ft":2,"fg":5,"threePt":1,"pts":15,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"b0986319","stats":{"wins":1,"losses":3,"gp":5,"pts":20,"fg":9,"ft":2,"fouls":11}}]}],"updatedAt":"2026-05-31T08:35:26.217Z","teams":[{"tid":"b0986319","sid":"0869ea69","status":"UPCOMING"},{"tid":"d46e3f4e","sid":"310d356a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:41:54.649Z","records":{"maxGamePTS":{"v":8,"gameKey":"71a3dd1a","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"773d0c5d","sid":"310d356a"}},"games":["0a394318","1cd8f900","71a3dd1a","74ba26e8","773d0c5d","c861e94e","d295cdc6","fad79bab"]}
+{
+  "uuid": "61a2ac44-7c71-427d-8c06-12e6629c502e",
+  "name": "Barach Akoy",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 35,
+      "fouls": 27,
+      "fg": 14,
+      "ft": 4,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "losses": 7,
+      "winPct": 0.13,
+      "wins": 1,
+      "statsChecked": "2026-07-05T14:55:33.320Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "310d356a",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "d46e3f4e",
+          "tn": "Adelaide Warriors",
+          "gid": "9fe0d118",
+          "gn": "U16 Boys A Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 5,
+            "threePt": 1,
+            "pts": 15,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "b0986319",
+          "stats": {
+            "wins": 1,
+            "losses": 3,
+            "gp": 5,
+            "pts": 20,
+            "fg": 9,
+            "ft": 2,
+            "fouls": 11
+          },
+          "gid": "b1a0a06b",
+          "gn": "BOYS UNDER 16 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T08:35:26.217Z",
+  "teams": [
+    {
+      "tid": "d46e3f4e",
+      "sid": "310d356a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b0986319",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.334Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "71a3dd1a",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "773d0c5d",
+      "sid": "310d356a"
+    }
+  },
+  "games": [
+    "0a394318",
+    "1cd8f900",
+    "71a3dd1a",
+    "74ba26e8",
+    "773d0c5d",
+    "c861e94e",
+    "d295cdc6",
+    "fad79bab"
+  ]
+}

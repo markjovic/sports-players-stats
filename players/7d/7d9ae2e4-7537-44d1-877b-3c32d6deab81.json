@@ -1,1 +1,238 @@
-{"uuid":"7d9ae2e4-7537-44d1-877b-3c32d6deab81","name":"Valentina Nimmo","gender":"Girls","sports":{"Basketball":{"gp":34,"pts":51,"fouls":18,"fg":24,"ft":3,"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":24,"losses":19,"winPct":0.56,"statsChecked":"2026-07-05T14:56:23.231Z"}},"seasons":[{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"a09796e5","tn":"United","gid":"670cf61c","gn":"Saturday U16 Girls A","age":"U16","div":null,"stats":{"gp":9,"fouls":4,"fg":1,"pts":2,"finals":1,"gfApps":1,"wins":7,"losses":2}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"f3020508","tn":"SKiPPS United","gid":"b9ab843e","gn":"Saturday U14 Girls A","age":"U14","div":null,"stats":{"gp":11,"fouls":3,"ft":1,"fg":7,"pts":15,"finals":1,"wins":2,"losses":8}},{"tid":"f3020508","tn":"SKiPPS United","gid":"a2168c69","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":11,"fg":7,"pts":15,"finals":1,"wins":2,"losses":8,"ft":1,"fouls":3}}]},{"sid":"0261a532","sn":"Summer 2024/25","regs":[{"tid":"7f222a27","tn":"SKiPPS United","gid":"7336b7fd","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":14,"fouls":11,"ft":2,"fg":16,"pts":34,"finals":1,"gfApps":1,"wins":13,"losses":1,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:47:32.963Z","teams":[{"tid":"a09796e5","sid":"e78cfce1","status":"COMPLETED"},{"tid":"f3020508","sid":"0c4ad170","status":"COMPLETED"},{"tid":"7f222a27","sid":"0261a532","status":"COMPLETED"},{"tid":"9ccb3c64","sid":"8884de2d","status":"COMPLETED"},{"tid":"4cb61b38","sid":"0fef30ca","status":"COMPLETED"},{"tid":"da7260f2","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:44:49.372Z","records":{"maxGamePTS":{"v":8,"gameKey":"75dced23","sid":"0261a532"},"maxGameThreePt":{"v":null}},"games":["0363d766","06d1ce14","096dd5f7","0b7c86c4","0b7cb9df","1682034d","1787631f","21709742","22dea912","2ee96f21","3765c58f","3b6668cc","3c94b527","4696f2de","515bc08c","75dced23","79d0ffc5","7d976fec","987beb61","9b42cf57","ad6691ea","b1a25a25","b6042e8c","bde712f4","d58c9065","d591ef29","d59c1a22","e4f65bea","e6b7bfa7","ea6b6d9d","f0fcbfbf","f97bb3a0","fb973147","fc16c391"]}
+{
+  "uuid": "7d9ae2e4-7537-44d1-877b-3c32d6deab81",
+  "name": "Valentina Nimmo",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 51,
+      "fouls": 18,
+      "fg": 24,
+      "ft": 3,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 24,
+      "losses": 19,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T14:56:23.231Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "a09796e5",
+          "tn": "United",
+          "gid": "670cf61c",
+          "gn": "Saturday U16 Girls A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "f3020508",
+          "tn": "SKiPPS United",
+          "gid": "b9ab843e",
+          "gn": "Saturday U14 Girls A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 2,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "f3020508",
+          "tn": "SKiPPS United",
+          "gid": "a2168c69",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 2,
+            "losses": 8,
+            "ft": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0261a532",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "7f222a27",
+          "tn": "SKiPPS United",
+          "gid": "7336b7fd",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 11,
+            "ft": 2,
+            "fg": 16,
+            "pts": 34,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "9ccb3c64",
+          "tn": "SKIPPS Firecrackers",
+          "gid": "60850006",
+          "gn": "Tuesday MSAC/Bayside YR6 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "4cb61b38",
+          "tn": "SKIPPS Firecrackers",
+          "gid": "3a8d4749",
+          "gn": "Tuesday MSAC/Bayside YR6 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "da7260f2",
+          "tn": "Skipps Firecrackers ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:32.963Z",
+  "teams": [
+    {
+      "tid": "a09796e5",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3020508",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f222a27",
+      "sid": "0261a532",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ccb3c64",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4cb61b38",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da7260f2",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.048Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "75dced23",
+      "sid": "0261a532"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0363d766",
+    "06d1ce14",
+    "096dd5f7",
+    "0b7c86c4",
+    "0b7cb9df",
+    "1682034d",
+    "1787631f",
+    "21709742",
+    "22dea912",
+    "2ee96f21",
+    "3765c58f",
+    "3b6668cc",
+    "3c94b527",
+    "4696f2de",
+    "515bc08c",
+    "75dced23",
+    "79d0ffc5",
+    "7d976fec",
+    "987beb61",
+    "9b42cf57",
+    "ad6691ea",
+    "b1a25a25",
+    "b6042e8c",
+    "bde712f4",
+    "d58c9065",
+    "d591ef29",
+    "d59c1a22",
+    "e4f65bea",
+    "e6b7bfa7",
+    "ea6b6d9d",
+    "f0fcbfbf",
+    "f97bb3a0",
+    "fb973147",
+    "fc16c391"
+  ]
+}

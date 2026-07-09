@@ -1,1 +1,191 @@
-{"uuid":"f4eaa78b-8f5c-4a63-9188-0f8378c4899a","name":"Marcus Rogasch","gender":"Men","sports":{"Basketball":{"gp":23,"pts":85,"fouls":43,"fg":11,"ft":15,"threePt":16,"foulOuts":{"3f1715bc":1,"f46c6951":1},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.33,"maxGamePTS":10,"maxGameThreePt":2,"wins":19,"losses":8,"winPct":0.7,"statsChecked":"2026-07-05T15:26:56.731Z"}},"seasons":[{"sid":"3f1715bc","sn":"Winter 2026","regs":[{"tid":"f61f7091","tn":"Pacemakers","gid":"22d8454b","gn":"Thursday \"Loosie's Diner\" O30's Men Div 3 (Grading)","age":null,"div":null,"stats":{"gp":4,"fouls":10,"threePt":5,"pts":23,"fg":3,"ft":2,"wins":2}},{"tid":"f61f7091","tn":"","gid":"2df6b3ed","gn":"Thursday \"Loosie's Diner\" O30's Men Div 2","div":null,"stats":{"gp":4,"pts":23,"fg":3,"ft":2,"threePt":5,"fouls":10,"wins":2}}]},{"sid":"f46c6951","sn":"Summer 2025/26","regs":[{"tid":"5cdb0fb1","tn":"pacemakers","gid":"bdbafadc","gn":"Thursday \"Loosie's Diner\" O30's Men Div 4","age":null,"div":"Div 4","stats":{"gp":15,"fouls":27,"ft":12,"fg":7,"threePt":10,"pts":56,"foulOuts":1,"finals":1,"gfApps":1,"gfWins":1,"wins":13,"losses":2}}]},{"sid":"db9c4e8a","regs":[{"tid":"8197b7f8","stats":{"gp":4,"pts":6,"fg":1,"ft":1,"threePt":1,"fouls":6,"wins":1,"losses":3}},{"tid":"8197b7f8","tn":"","gid":"c0e86f7a","gn":"Wednesday Open Men E","div":null,"stats":{"gp":4,"pts":6,"fg":1,"ft":1,"threePt":1,"fouls":6,"wins":1,"losses":3}}]}],"updatedAt":"2026-07-04T05:58:53.430Z","teams":[{"tid":"f61f7091","sid":"3f1715bc","status":"ACTIVE"},{"tid":"8197b7f8","sid":"db9c4e8a","status":"ACTIVE"},{"tid":"5cdb0fb1","sid":"f46c6951","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:55.769Z","games":["19a176c7","2531febb","2ad27825","2f83a2c8","34dee3ac","693390d6","6d53a5b2","81dc8888","8d6def74","8fb56b5d","91cebb29","9a4bcff2","a5ae4897","ba96e443","c184f148","cc0c4303","cce88753","e8fe8c0f","ead67292","ee8b74ce","f653dc2c","f757135f","fdf9ca50"],"records":{"maxGamePTS":{"v":10,"gameKey":"91cebb29","sid":"f46c6951"},"maxGameThreePt":{"v":2,"gameKey":"2531febb","sid":"3f1715bc"}}}
+{
+  "uuid": "f4eaa78b-8f5c-4a63-9188-0f8378c4899a",
+  "name": "Marcus Rogasch",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 85,
+      "fouls": 43,
+      "fg": 11,
+      "ft": 15,
+      "threePt": 16,
+      "foulOuts": {
+        "3f1715bc": 1,
+        "f46c6951": 1
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 19,
+      "losses": 8,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T15:26:56.731Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "f61f7091",
+          "tn": "Pacemakers",
+          "gid": "2df6b3ed",
+          "gn": "Thursday \"Loosie's Diner\" O30's Men Div 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 10,
+            "threePt": 5,
+            "pts": 23,
+            "fg": 3,
+            "ft": 2,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "f61f7091",
+          "tn": "",
+          "gid": "2df6b3ed",
+          "gn": "Thursday \"Loosie's Diner\" O30's Men Div 2",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 23,
+            "fg": 3,
+            "ft": 2,
+            "threePt": 5,
+            "fouls": 10,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f46c6951",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "5cdb0fb1",
+          "tn": "pacemakers",
+          "gid": "bdbafadc",
+          "gn": "Thursday \"Loosie's Diner\" O30's Men Div 4",
+          "age": null,
+          "div": "Div 4",
+          "stats": {
+            "gp": 15,
+            "fouls": 27,
+            "ft": 12,
+            "fg": 7,
+            "threePt": 10,
+            "pts": 56,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 13,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db9c4e8a",
+      "regs": [
+        {
+          "tid": "8197b7f8",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 1,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 3
+          },
+          "gid": "c0e86f7a",
+          "gn": "Wednesday Open Men E"
+        },
+        {
+          "tid": "8197b7f8",
+          "tn": "",
+          "gid": "c0e86f7a",
+          "gn": "Wednesday Open Men E",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 1,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:58:53.430Z",
+  "teams": [
+    {
+      "tid": "f61f7091",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5cdb0fb1",
+      "sid": "f46c6951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8197b7f8",
+      "sid": "db9c4e8a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:31.139Z",
+  "games": [
+    "19a176c7",
+    "2531febb",
+    "2ad27825",
+    "2f83a2c8",
+    "34dee3ac",
+    "693390d6",
+    "6d53a5b2",
+    "81dc8888",
+    "8d6def74",
+    "8fb56b5d",
+    "91cebb29",
+    "9a4bcff2",
+    "a5ae4897",
+    "ba96e443",
+    "c184f148",
+    "cc0c4303",
+    "cce88753",
+    "e8fe8c0f",
+    "ead67292",
+    "ee8b74ce",
+    "f653dc2c",
+    "f757135f",
+    "fdf9ca50"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "91cebb29",
+      "sid": "f46c6951"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "2531febb",
+      "sid": "3f1715bc"
+    }
+  }
+}

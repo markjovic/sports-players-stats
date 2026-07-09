@@ -1,1 +1,167 @@
-{"uuid":"377e80d7-ac96-465f-b95d-2146441ca658","name":"Leonard Callister","gender":"Boys","sports":{"Basketball":{"gp":19,"pts":48,"fouls":26,"fg":22,"ft":4,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":11,"losses":32,"winPct":0.26,"statsChecked":"2026-07-05T15:08:22.352Z"}},"seasons":[{"sid":"4b758d19","sn":"Summer 2025/26","club":"Brighton Wolves Basketball Club","regs":[{"tid":"3fc0abd0","tn":"Knight Wolves U14 Boys","gid":"88171241","gn":"Saturday U14 Boys Div 11","age":"U14","div":"Div 11","stats":{"gp":12,"pts":20,"fg":9,"ft":2,"fouls":14,"wins":3,"losses":9}},{"tid":"3fc0abd0","tn":"Knight Wolves U14 Boys","gid":"a1d719d1","gn":"Saturday U14 Boys Div 10","age":"U14","div":"Div 10","stats":{"gp":12,"fouls":14,"wins":3,"losses":9,"pts":20,"fg":9,"ft":2}},{"tid":"3fc0abd0","tn":"Knight Wolves U14 Boys","gid":"412ee8b1","gn":"Saturday U14 Boys Div  9","age":"U14","div":"Div 9","stats":{"gp":12,"pts":20,"ft":2,"wins":3,"losses":9,"fg":9,"fouls":14}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"0786993a","tn":"EP Stormfighters","gid":"113f1e83","gn":"Wednesday MSAC/Bayside Year 5 Boys C","age":null,"div":null,"stats":{"gp":7,"pts":28,"fg":13,"ft":2,"fouls":12,"wins":2,"losses":5}}]}],"updatedAt":"2026-05-31T19:56:47.529Z","teams":[{"tid":"3fc0abd0","sid":"4b758d19","status":"COMPLETED"},{"tid":"0786993a","sid":"31d05517","status":"COMPLETED"},{"tid":"8d8019c9","sid":"cf8ebef7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:20:55.111Z","records":{"maxGamePTS":{"v":12,"gameKey":"5acf14c2","sid":"31d05517"},"maxGameThreePt":{"v":null}},"games":["06c03890","0afb7926","19b11092","1a007b17","291ecf1a","2b7f1afc","5936ed90","59c680a9","5acf14c2","73fcd13a","80f039bc","9dd2bc2a","a260e076","ab78aadc","bd8fed23","cde65af0","d1ec6268","d8ce8d54","ee1832d5"]}
+{
+  "uuid": "377e80d7-ac96-465f-b95d-2146441ca658",
+  "name": "Leonard Callister",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 19,
+      "pts": 48,
+      "fouls": 26,
+      "fg": 22,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 11,
+      "losses": 32,
+      "winPct": 0.26,
+      "statsChecked": "2026-07-05T15:08:22.352Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "3fc0abd0",
+          "tn": "Knight Wolves U14 Boys",
+          "gid": "88171241",
+          "gn": "Saturday U14 Boys Div 11",
+          "age": "U14",
+          "div": "Div 11",
+          "stats": {
+            "gp": 12,
+            "pts": 20,
+            "fg": 9,
+            "ft": 2,
+            "fouls": 14,
+            "wins": 3,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "3fc0abd0",
+          "tn": "Knight Wolves U14 Boys",
+          "gid": "a1d719d1",
+          "gn": "Saturday U14 Boys Div 10",
+          "age": "U14",
+          "div": "Div 10",
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "wins": 3,
+            "losses": 9,
+            "pts": 20,
+            "fg": 9,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "3fc0abd0",
+          "tn": "Knight Wolves U14 Boys",
+          "gid": "412ee8b1",
+          "gn": "Saturday U14 Boys Div  9",
+          "age": "U14",
+          "div": "Div 9",
+          "stats": {
+            "gp": 12,
+            "pts": 20,
+            "ft": 2,
+            "wins": 3,
+            "losses": 9,
+            "fg": 9,
+            "fouls": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "0786993a",
+          "tn": "EP Stormfighters",
+          "gid": "113f1e83",
+          "gn": "Wednesday MSAC/Bayside Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 28,
+            "fg": 13,
+            "ft": 2,
+            "fouls": 12,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "8d8019c9",
+          "tn": "EP Storm Fighters",
+          "gid": "80fd8656",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T19:56:47.529Z",
+  "teams": [
+    {
+      "tid": "3fc0abd0",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0786993a",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d8019c9",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.890Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "5acf14c2",
+      "sid": "31d05517"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06c03890",
+    "0afb7926",
+    "19b11092",
+    "1a007b17",
+    "291ecf1a",
+    "2b7f1afc",
+    "5936ed90",
+    "59c680a9",
+    "5acf14c2",
+    "73fcd13a",
+    "80f039bc",
+    "9dd2bc2a",
+    "a260e076",
+    "ab78aadc",
+    "bd8fed23",
+    "cde65af0",
+    "d1ec6268",
+    "d8ce8d54",
+    "ee1832d5"
+  ]
+}

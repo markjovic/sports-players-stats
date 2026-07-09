@@ -1,1 +1,83 @@
-{"uuid":"58961558-d130-4522-9dae-27cf674adaf1","name":"Alexander Hooper","sports":{"Basketball":{"maxGamePTS":17,"maxGameThreePt":2,"foulOuts":{"702b232f":1},"gp":23,"pts":55,"fg":15,"ft":4,"threePt":7,"fouls":38,"statsChecked":"2026-07-06T18:57:38.415Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"ba23d9d9"}]},{"sid":"796936f7","regs":[{"tid":"569062c0"}]},{"sid":"880bda3c","regs":[{"tid":"919b373e"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":17,"gameKey":"fd70858e","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"11c4fcf1","sid":"880bda3c"}}}
+{
+  "uuid": "58961558-d130-4522-9dae-27cf674adaf1",
+  "name": "Alexander Hooper",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 17,
+      "maxGameThreePt": 2,
+      "foulOuts": {
+        "702b232f": 1
+      },
+      "gp": 23,
+      "pts": 55,
+      "fg": 15,
+      "ft": 4,
+      "threePt": 7,
+      "fouls": 38,
+      "statsChecked": "2026-07-06T18:57:38.415Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "ba23d9d9",
+          "gid": "db8e1fa8",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "569062c0",
+          "gid": "5bd3d465",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "919b373e",
+          "gid": "39799369",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "ba23d9d9",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "569062c0",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "919b373e",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "fd70858e",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "11c4fcf1",
+      "sid": "880bda3c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:21.813Z"
+}

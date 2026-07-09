@@ -1,1 +1,216 @@
-{"uuid":"82b259b6-77b2-4839-9dab-f93a1881c69b","name":"Isabella Staker","gender":"Girls","sports":{"Basketball":{"gp":27,"pts":128,"fouls":52,"fg":32,"ft":19,"threePt":15,"foulOuts":{"1b51c73f":2},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":14,"maxGameThreePt":3,"wins":14,"losses":8,"winPct":0.64,"statsChecked":"2026-07-05T14:42:41.510Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"079ef918","tn":"West Adelaide Bearcats U16 Girls 1","gid":"efe7b285","gn":"GIRLS UNDER 16 A","age":null,"div":null,"stats":{"gp":6,"fouls":16,"ft":1,"fg":3,"threePt":1,"pts":10,"finals":1,"gfApps":1,"wins":3,"losses":3}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"4462d7b3","tn":"West Adelaide Bearcats U16 Girls 2","gid":"7112d9e4","gn":"GIRLS UNDER 16 C1","age":null,"div":"C1","stats":{"gp":5,"fouls":6,"ft":3,"fg":4,"threePt":2,"pts":17,"wins":3,"losses":2}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"0d64edeb","tn":"West Adelaide Bearcats U14 Girls 2","gid":"e434499a","gn":"GIRLS UNDER 14 B2","age":null,"div":"B2","stats":{"gp":5,"fouls":17,"ft":3,"fg":12,"threePt":2,"pts":33,"foulOuts":2,"wins":3,"losses":2}}]},{"sid":"a48d8524","sn":"2022","regs":[{"tid":"8d913c14","tn":"North Adelaide Rockets U14 Girls 2","gid":"2dbb30b6","gn":"GIRLS UNDER 14 B3","age":null,"div":"B3","stats":{"gp":5,"fouls":1,"ft":4,"fg":2,"pts":8}}]},{"sid":"0869ea69","regs":[{"tid":"297e3f39","stats":{"wins":5,"losses":1,"gp":6,"pts":60,"fg":11,"ft":8,"threePt":10,"fouls":12}}]}],"updatedAt":"2026-05-31T22:43:02.324Z","teams":[{"tid":"297e3f39","sid":"0869ea69","status":"UPCOMING"},{"tid":"079ef918","sid":"6dd649c0","status":"COMPLETED"},{"tid":"4462d7b3","sid":"8630ad4c","status":"COMPLETED"},{"tid":"0d64edeb","sid":"1b51c73f","status":"COMPLETED"},{"tid":"8d913c14","sid":"a48d8524","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:52.692Z","records":{"maxGamePTS":{"v":14,"gameKey":"e2069ed2","sid":"0869ea69"},"maxGameThreePt":{"v":3,"gameKey":"e2069ed2","sid":"0869ea69"}},"games":["0e3886b5","132d8701","1acfbbb3","255c082e","3065d249","33e69531","3b2b2b53","40c1ff41","487da00f","48cf7ef1","50755b4e","60178929","69acc634","6d783403","7757a9bd","88f1f980","8a726e82","ab85dcc6","b382955f","b8b899df","b9b64072","dbc07784","dce0778f","e2069ed2","e55edcdd","e790d6fe","ed5fb2f5"]}
+{
+  "uuid": "82b259b6-77b2-4839-9dab-f93a1881c69b",
+  "name": "Isabella Staker",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 128,
+      "fouls": 52,
+      "fg": 32,
+      "ft": 19,
+      "threePt": 15,
+      "foulOuts": {
+        "1b51c73f": 2
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 14,
+      "maxGameThreePt": 3,
+      "wins": 14,
+      "losses": 8,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-05T14:42:41.510Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "079ef918",
+          "tn": "West Adelaide Bearcats U16 Girls 1",
+          "gid": "efe7b285",
+          "gn": "GIRLS UNDER 16 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 16,
+            "ft": 1,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "4462d7b3",
+          "tn": "West Adelaide Bearcats U16 Girls 2",
+          "gid": "7112d9e4",
+          "gn": "GIRLS UNDER 16 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 4,
+            "threePt": 2,
+            "pts": 17,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "0d64edeb",
+          "tn": "West Adelaide Bearcats U14 Girls 2",
+          "gid": "e434499a",
+          "gn": "GIRLS UNDER 14 B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 5,
+            "fouls": 17,
+            "ft": 3,
+            "fg": 12,
+            "threePt": 2,
+            "pts": 33,
+            "foulOuts": 2,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a48d8524",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "8d913c14",
+          "tn": "North Adelaide Rockets U14 Girls 2",
+          "gid": "2dbb30b6",
+          "gn": "GIRLS UNDER 14 B3",
+          "age": null,
+          "div": "B3",
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "ft": 4,
+            "fg": 2,
+            "pts": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "297e3f39",
+          "stats": {
+            "wins": 5,
+            "losses": 1,
+            "gp": 6,
+            "pts": 60,
+            "fg": 11,
+            "ft": 8,
+            "threePt": 10,
+            "fouls": 12
+          },
+          "gid": "b2ab18c8",
+          "gn": "GIRLS UNDER 18 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T22:43:02.324Z",
+  "teams": [
+    {
+      "tid": "079ef918",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4462d7b3",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d64edeb",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d913c14",
+      "sid": "a48d8524",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "297e3f39",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.289Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "e2069ed2",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "e2069ed2",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "0e3886b5",
+    "132d8701",
+    "1acfbbb3",
+    "255c082e",
+    "3065d249",
+    "33e69531",
+    "3b2b2b53",
+    "40c1ff41",
+    "487da00f",
+    "48cf7ef1",
+    "50755b4e",
+    "60178929",
+    "69acc634",
+    "6d783403",
+    "7757a9bd",
+    "88f1f980",
+    "8a726e82",
+    "ab85dcc6",
+    "b382955f",
+    "b8b899df",
+    "b9b64072",
+    "dbc07784",
+    "dce0778f",
+    "e2069ed2",
+    "e55edcdd",
+    "e790d6fe",
+    "ed5fb2f5"
+  ]
+}

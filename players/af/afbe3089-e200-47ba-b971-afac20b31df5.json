@@ -1,1 +1,93 @@
-{"uuid":"afbe3089-e200-47ba-b971-afac20b31df5","name":"Jimmy Reed","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":null,"foulOuts":{},"gp":29,"pts":35,"fg":15,"ft":5,"fouls":6,"statsChecked":"2026-07-08T17:54:36.315Z"}},"seasons":[{"sid":"34017a83","regs":[{"tid":"3f987d04"}]},{"sid":"e44fb190","regs":[{"tid":"06a72c75"}]},{"sid":"ddc93766","regs":[{"tid":"69b0137d"}]},{"sid":"eeaf6409","regs":[{"tid":"ec237ceb"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":10,"gameKey":"49b30962","sid":"eeaf6409"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "afbe3089-e200-47ba-b971-afac20b31df5",
+  "name": "Jimmy Reed",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 29,
+      "pts": 35,
+      "fg": 15,
+      "ft": 5,
+      "fouls": 6,
+      "statsChecked": "2026-07-08T17:54:36.315Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "34017a83",
+      "regs": [
+        {
+          "tid": "3f987d04",
+          "gid": "164d0512",
+          "gn": "U14 Boys C"
+        }
+      ]
+    },
+    {
+      "sid": "e44fb190",
+      "regs": [
+        {
+          "tid": "06a72c75",
+          "gid": "0ccaa255",
+          "gn": "Saturday U14 Boys Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "ddc93766",
+      "regs": [
+        {
+          "tid": "69b0137d",
+          "gid": "a0227216",
+          "gn": "U14 Boys CRes"
+        }
+      ]
+    },
+    {
+      "sid": "eeaf6409",
+      "regs": [
+        {
+          "tid": "ec237ceb",
+          "gid": "2dac88a1",
+          "gn": "Saturday U14 Boys Div 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "3f987d04",
+      "sid": "34017a83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06a72c75",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "69b0137d",
+      "sid": "ddc93766",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ec237ceb",
+      "sid": "eeaf6409",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "49b30962",
+      "sid": "eeaf6409"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:26.614Z"
+}

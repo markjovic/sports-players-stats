@@ -1,1 +1,267 @@
-{"uuid":"007963d9-092d-44e5-a5da-d12e48447f9a","name":"Mya Lovelle","gender":"Mixed","sports":{"Basketball":{"gp":43,"pts":64,"fouls":16,"fg":30,"ft":4,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":26,"losses":22,"draws":1,"winPct":0.53,"statsChecked":"2026-07-05T16:11:27.997Z"}},"seasons":[{"sid":"556d9704","sn":"Summer 2025/26","regs":[{"tid":"1a7fb15a","tn":"Lightning","gid":"9eaa90bc","gn":"Tuesday U14 Girls","age":"U14","div":null,"stats":{"gp":16,"fouls":5,"ft":2,"fg":18,"pts":38,"finals":1,"wins":11,"losses":5}}]},{"sid":"e6d0caa9","sn":"Summer 2024/25","regs":[{"tid":"13f48db8","tn":"Flyers","gid":"c6719d8d","gn":"Tuesday U13 Girls","age":"U13","div":null,"stats":{"gp":13,"fouls":6,"fg":4,"pts":8,"finals":1,"wins":5,"losses":7,"draws":1}}]},{"sid":"b46b0db6","sn":"Summer 2023/24","regs":[{"tid":"8e5b3b8f","tn":"Slam Dunks","gid":"aaba6cb5","gn":"Monday U10 Mixed Term 1","age":"U10","div":null,"stats":{"gp":8,"fouls":4,"ft":2,"fg":6,"pts":14,"finals":1,"gfApps":1,"wins":8,"gfWins":1}},{"tid":"80a728ad","stats":{"wins":1,"losses":5,"finals":1,"gfApps":1,"gfWins":1,"gp":6,"pts":4,"fg":2,"fouls":1}}]},{"sid":"b46b0db6","sn":"Summer 2023/24","regs":[{"tid":"80a728ad","tn":"Lollipops","gid":"ff95b1aa","gn":"Monday U10 Mixed","age":"U10","div":null,"stats":{"gp":6,"fouls":1,"fg":2,"pts":4,"finals":1,"gfApps":1,"wins":1,"losses":5,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:54:48.724Z","teams":[{"tid":"1a7fb15a","sid":"556d9704","status":"COMPLETED"},{"tid":"13f48db8","sid":"e6d0caa9","status":"COMPLETED"},{"tid":"80a728ad","sid":"b46b0db6","status":"COMPLETED"},{"tid":"8e5b3b8f","sid":"b46b0db6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:03:07.542Z","records":{"maxGamePTS":{"v":10,"gameKey":"3f115abe","sid":"556d9704"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["04c2aaac","07326aae","0eab4a26","11baba03","15862293","1a42ccf3","1a573b93","1e975f1b","21a5026e","26c11791","3082efff","331088d5","3f115abe","4344f7d5","4474de6e","44e0726e","4584c642","4e861c7c","4ef9fc85","54314aa1","59967bcc","5a61605c","5caee986","78546e09","7c245a5c","83ba0e71","94d0c480","966ada55","97faa8c0","99f8608f","a13f65b8","a4e57e29","a4e82d7e","a534e6c5","b721016c","ca4c4b9f","ce8c7d41","d27f2ceb","d51419d8","d8a613cf","e52a4183","f37dac49","fa74d47c"],"gameTids":{"15862293":"1a7fb15a","44e0726e":"1a7fb15a","26c11791":"1a7fb15a","3f115abe":"1a7fb15a","5a61605c":"1a7fb15a","4ef9fc85":"1a7fb15a","d8a613cf":"1a7fb15a","59967bcc":"1a7fb15a","5caee986":"1a7fb15a","a13f65b8":"1a7fb15a","ce8c7d41":"1a7fb15a","966ada55":"1a7fb15a","94d0c480":"1a7fb15a","b721016c":"1a7fb15a","3082efff":"1a7fb15a","a4e57e29":"1a7fb15a","a534e6c5":"13f48db8","97faa8c0":"13f48db8","78546e09":"13f48db8","4474de6e":"13f48db8","1a573b93":"13f48db8","99f8608f":"13f48db8","83ba0e71":"13f48db8","fa74d47c":"13f48db8","1a42ccf3":"13f48db8","4e861c7c":"13f48db8","7c245a5c":"13f48db8","d27f2ceb":"13f48db8","d51419d8":"13f48db8","21a5026e":"8e5b3b8f","ca4c4b9f":"8e5b3b8f","f37dac49":"8e5b3b8f","54314aa1":"8e5b3b8f","4344f7d5":"8e5b3b8f","a4e82d7e":"8e5b3b8f","04c2aaac":"8e5b3b8f","07326aae":"8e5b3b8f","e52a4183":"80a728ad","0eab4a26":"80a728ad","1e975f1b":"80a728ad","331088d5":"80a728ad","4584c642":"80a728ad","11baba03":"80a728ad"}}
+{
+  "uuid": "007963d9-092d-44e5-a5da-d12e48447f9a",
+  "name": "Mya Lovelle",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 64,
+      "fouls": 16,
+      "fg": 30,
+      "ft": 4,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 26,
+      "losses": 22,
+      "draws": 1,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T16:11:27.997Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "556d9704",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "1a7fb15a",
+          "tn": "Lightning",
+          "gid": "9eaa90bc",
+          "gn": "Tuesday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 5,
+            "ft": 2,
+            "fg": 18,
+            "pts": 38,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e6d0caa9",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "13f48db8",
+          "tn": "Flyers",
+          "gid": "c6719d8d",
+          "gn": "Tuesday U13 Girls",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 6,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "wins": 5,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b46b0db6",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "8e5b3b8f",
+          "tn": "Slam Dunks",
+          "gid": "aaba6cb5",
+          "gn": "Monday U10 Mixed Term 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 6,
+            "pts": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "80a728ad",
+          "stats": {
+            "wins": 1,
+            "losses": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 6,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 1
+          },
+          "gid": "ff95b1aa",
+          "gn": "Monday U10 Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "b46b0db6",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "80a728ad",
+          "tn": "Lollipops",
+          "gid": "ff95b1aa",
+          "gn": "Monday U10 Mixed",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 1,
+            "fg": 2,
+            "pts": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:48.724Z",
+  "teams": [
+    {
+      "tid": "1a7fb15a",
+      "sid": "556d9704",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13f48db8",
+      "sid": "e6d0caa9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e5b3b8f",
+      "sid": "b46b0db6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80a728ad",
+      "sid": "b46b0db6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:16.914Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "3f115abe",
+      "sid": "556d9704"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "04c2aaac",
+    "07326aae",
+    "0eab4a26",
+    "11baba03",
+    "15862293",
+    "1a42ccf3",
+    "1a573b93",
+    "1e975f1b",
+    "21a5026e",
+    "26c11791",
+    "3082efff",
+    "331088d5",
+    "3f115abe",
+    "4344f7d5",
+    "4474de6e",
+    "44e0726e",
+    "4584c642",
+    "4e861c7c",
+    "4ef9fc85",
+    "54314aa1",
+    "59967bcc",
+    "5a61605c",
+    "5caee986",
+    "78546e09",
+    "7c245a5c",
+    "83ba0e71",
+    "94d0c480",
+    "966ada55",
+    "97faa8c0",
+    "99f8608f",
+    "a13f65b8",
+    "a4e57e29",
+    "a4e82d7e",
+    "a534e6c5",
+    "b721016c",
+    "ca4c4b9f",
+    "ce8c7d41",
+    "d27f2ceb",
+    "d51419d8",
+    "d8a613cf",
+    "e52a4183",
+    "f37dac49",
+    "fa74d47c"
+  ],
+  "gameTids": {
+    "15862293": "1a7fb15a",
+    "44e0726e": "1a7fb15a",
+    "26c11791": "1a7fb15a",
+    "3f115abe": "1a7fb15a",
+    "5a61605c": "1a7fb15a",
+    "4ef9fc85": "1a7fb15a",
+    "d8a613cf": "1a7fb15a",
+    "59967bcc": "1a7fb15a",
+    "5caee986": "1a7fb15a",
+    "a13f65b8": "1a7fb15a",
+    "ce8c7d41": "1a7fb15a",
+    "966ada55": "1a7fb15a",
+    "94d0c480": "1a7fb15a",
+    "b721016c": "1a7fb15a",
+    "3082efff": "1a7fb15a",
+    "a4e57e29": "1a7fb15a",
+    "a534e6c5": "13f48db8",
+    "97faa8c0": "13f48db8",
+    "78546e09": "13f48db8",
+    "4474de6e": "13f48db8",
+    "1a573b93": "13f48db8",
+    "99f8608f": "13f48db8",
+    "83ba0e71": "13f48db8",
+    "fa74d47c": "13f48db8",
+    "1a42ccf3": "13f48db8",
+    "4e861c7c": "13f48db8",
+    "7c245a5c": "13f48db8",
+    "d27f2ceb": "13f48db8",
+    "d51419d8": "13f48db8",
+    "21a5026e": "8e5b3b8f",
+    "ca4c4b9f": "8e5b3b8f",
+    "f37dac49": "8e5b3b8f",
+    "54314aa1": "8e5b3b8f",
+    "4344f7d5": "8e5b3b8f",
+    "a4e82d7e": "8e5b3b8f",
+    "04c2aaac": "8e5b3b8f",
+    "07326aae": "8e5b3b8f",
+    "e52a4183": "80a728ad",
+    "0eab4a26": "80a728ad",
+    "1e975f1b": "80a728ad",
+    "331088d5": "80a728ad",
+    "4584c642": "80a728ad",
+    "11baba03": "80a728ad"
+  }
+}

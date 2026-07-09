@@ -1,1 +1,126 @@
-{"uuid":"f8d4ac79-9a55-4df2-ba78-71c283c036c6","gender":null,"sports":{"Basketball":{"gp":9,"pts":44,"fouls":5,"fg":22,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":5,"losses":4,"winPct":0.56,"statsChecked":"2026-07-05T16:04:36.267Z"}},"seasons":[{"sid":"f0847da4","sn":"Summer 2024/25","club":null,"regs":[{"tid":"677a46c0","tn":"Flames","gid":"cf7353a3","gn":"Monday Primary Girls","stats":{"gp":8,"pts":36,"fouls":2,"fg":18,"finals":1,"wins":4,"losses":4}},{"tid":"901d74b9","tn":"Flames","gid":"43dcf70f","gn":"Monday Secondary Girls","stats":{"gp":1,"pts":8,"fouls":3,"fg":4,"finals":1,"wins":1}}]}],"updatedAt":"2026-06-11T23:46:19.596Z","games":["061b4bab","11f4d3fe","16b1ac5c","20e2b0a4","4733510e","5e4aebaa","8255dd74","846b9b95","8f07bb44"],"records":{"maxGamePTS":{"v":10,"gameKey":"4733510e","sid":"f0847da4"},"maxGameThreePt":{"v":null}},"name":"Summer 2024/25","gameTids":{"061b4bab":"677a46c0","11f4d3fe":"677a46c0","8255dd74":"677a46c0","4733510e":"677a46c0","20e2b0a4":"677a46c0","16b1ac5c":"677a46c0","846b9b95":"677a46c0","5e4aebaa":"677a46c0","8f07bb44":"901d74b9"}}
+{
+  "uuid": "f8d4ac79-9a55-4df2-ba78-71c283c036c6",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 44,
+      "fouls": 5,
+      "fg": 22,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 4,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T16:04:36.267Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f0847da4",
+      "sn": "Summer 2024/25",
+      "club": null,
+      "regs": [
+        {
+          "tid": "677a46c0",
+          "tn": "Flames",
+          "gid": "cf7353a3",
+          "gn": "Monday Primary Girls",
+          "stats": {
+            "gp": 8,
+            "pts": 36,
+            "fouls": 2,
+            "fg": 18,
+            "finals": 1,
+            "wins": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "901d74b9",
+          "tn": "Flames",
+          "gid": "43dcf70f",
+          "gn": "Monday Secondary Girls",
+          "stats": {
+            "gp": 1,
+            "pts": 8,
+            "fouls": 3,
+            "fg": 4,
+            "finals": 1,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0ac3e8a2",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "213c17cb",
+          "tn": "Flames",
+          "gid": "70b788e2",
+          "gn": "Primary Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:19.596Z",
+  "games": [
+    "061b4bab",
+    "11f4d3fe",
+    "16b1ac5c",
+    "20e2b0a4",
+    "4733510e",
+    "5e4aebaa",
+    "8255dd74",
+    "846b9b95",
+    "8f07bb44"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "4733510e",
+      "sid": "f0847da4"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2024/25",
+  "gameTids": {
+    "061b4bab": "677a46c0",
+    "11f4d3fe": "677a46c0",
+    "8255dd74": "677a46c0",
+    "4733510e": "677a46c0",
+    "20e2b0a4": "677a46c0",
+    "16b1ac5c": "677a46c0",
+    "846b9b95": "677a46c0",
+    "5e4aebaa": "677a46c0",
+    "8f07bb44": "901d74b9"
+  },
+  "teams": [
+    {
+      "tid": "677a46c0",
+      "sid": "f0847da4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "901d74b9",
+      "sid": "f0847da4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "213c17cb",
+      "sid": "0ac3e8a2",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:31.375Z"
+}

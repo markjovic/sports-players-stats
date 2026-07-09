@@ -1,1 +1,314 @@
-{"uuid":"829bbabe-2c46-44f6-af7e-c69ae8c2733a","name":"Reuben Silva","gender":"Boys","sports":{"Basketball":{"gp":44,"pts":158,"fouls":85,"fg":72,"ft":14,"foulOuts":{"f57b7901":1},"maxGamePTS":18,"maxGameThreePt":null,"wins":110,"losses":35,"winPct":0.74,"draws":3,"statsChecked":"2026-07-05T15:10:29.501Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Eltham North Basketball Club Inc.","regs":[{"tid":"066472a8","tn":"Jets U08 Boys 2","gid":"d61ba30c","gn":"Saturday U08 Boys B1","age":"U08","div":"B1","stats":{"gp":14,"fouls":26,"ft":6,"fg":23,"pts":52,"wins":11,"losses":3}},{"tid":"066472a8","tn":"Jets U08 Boys 2","gid":"d2cf1837","gn":"Saturday U08 Boys Grading Group 1","age":"U08","div":null,"stats":{"gp":14,"fouls":26,"wins":11,"losses":3,"pts":52,"fg":23,"ft":6}},{"tid":"066472a8","tn":"Jets U08 Boys 2","gid":"cb944c70","gn":"Saturday U08 Boys Grading Group 2","age":"U08","div":null,"stats":{"gp":14,"fouls":26,"ft":6,"fg":23,"pts":52,"wins":11,"losses":3}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Eltham North Basketball Club Inc.","regs":[{"tid":"e40eb62a","tn":"Jets U08 Boys 4","gid":"90f0574f","gn":"Saturday U08 Boys D1","age":"U08","div":"D1","stats":{"gp":14,"fouls":27,"ft":7,"fg":37,"pts":81,"foulOuts":1,"wins":11,"losses":2,"draws":1}},{"tid":"e40eb62a","tn":"Jets U08 Boys 4","gid":"a19a1f88","gn":"Saturday U08 Boys Grading Group 2","age":"U08","div":null,"stats":{"gp":14,"fouls":27,"ft":7,"fg":37,"pts":81,"wins":11,"losses":2,"draws":1}},{"tid":"e40eb62a","tn":"Jets U08 Boys 4","gid":"601f55f7","gn":"Saturday U08 Boys Grading Group 3","age":"U08","div":null,"stats":{"gp":14,"fouls":27,"ft":7,"fg":37,"pts":81,"wins":11,"losses":2,"draws":1}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Eltham North Basketball Club Inc.","regs":[{"tid":"b2b6872c","tn":"Jets U08 Boys 4","gid":"43af154f","gn":"Saturday U8 Boys C2","age":"U8","div":"C2","stats":{"gp":16,"fouls":32,"ft":1,"fg":12,"pts":25,"wins":11,"losses":5}},{"tid":"b2b6872c","tn":"Jets U08 Boys 4","gid":"9c91bbff","gn":"Saturday U8 Boys C1","age":"U8","div":"C1","stats":{"gp":16,"fouls":32,"fg":12,"pts":25,"wins":11,"losses":5,"ft":1}},{"tid":"b2b6872c","tn":"Jets U08 Boys 4","gid":"17e09247","gn":"Saturday U8 Boys D1","age":"U8","div":"D1","stats":{"gp":16,"fg":12,"pts":25,"wins":11,"losses":5,"ft":1,"fouls":32}},{"tid":"b2b6872c","tn":"Jets U08 Boys 4","gid":"f9ab3e13","gn":"Saturday U8 Boys D2","age":"U8","div":"D2","stats":{"gp":16,"fouls":32,"fg":12,"pts":25,"wins":11,"losses":5,"ft":1}}]}],"updatedAt":"2026-06-01T06:32:19.976Z","teams":[{"tid":"066472a8","sid":"d868771d","status":"ACTIVE"},{"tid":"e40eb62a","sid":"f57b7901","status":"COMPLETED"},{"tid":"b2b6872c","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:52.294Z","records":{"maxGamePTS":{"v":18,"gameKey":"fa0b4c7d","sid":"f57b7901"},"maxGameThreePt":{"v":null}},"games":["12dcb14e","1ba31385","1bb44a18","2b01ad67","3e81876a","45eb3ec6","507b7e39","5143ee57","5206a6d2","561b6591","6e17ce20","70e32b96","778451e2","7f8127c1","8867ff6b","89aee56b","8f192076","985cb67e","9ba14227","9c3e395b","9ec88386","9ee27b27","a7985d2d","ac480e05","ae040d63","b4b37446","bb9c614f","bebaed36","c5e9a461","c7fbc84a","d27dcd98","d2e571d8","d5b8c6a4","de65aac1","dfce25f6","e7602c63","eb9668a1","f22e6cb2","f572eba0","fa0b4c7d","fa4bdc92","fc97f115","ffb4774b","fff22476"]}
+{
+  "uuid": "829bbabe-2c46-44f6-af7e-c69ae8c2733a",
+  "name": "Reuben Silva",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 158,
+      "fouls": 85,
+      "fg": 72,
+      "ft": 14,
+      "foulOuts": {
+        "f57b7901": 1
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 110,
+      "losses": 35,
+      "winPct": 0.74,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:10:29.501Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Eltham North Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "066472a8",
+          "tn": "Jets U08 Boys 2",
+          "gid": "d61ba30c",
+          "gn": "Saturday U08 Boys B1",
+          "age": "U08",
+          "div": "B1",
+          "stats": {
+            "gp": 14,
+            "fouls": 26,
+            "ft": 6,
+            "fg": 23,
+            "pts": 52,
+            "wins": 11,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "066472a8",
+          "tn": "Jets U08 Boys 2",
+          "gid": "d2cf1837",
+          "gn": "Saturday U08 Boys Grading Group 1",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 26,
+            "wins": 11,
+            "losses": 3,
+            "pts": 52,
+            "fg": 23,
+            "ft": 6
+          }
+        },
+        {
+          "tid": "066472a8",
+          "tn": "Jets U08 Boys 2",
+          "gid": "cb944c70",
+          "gn": "Saturday U08 Boys Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 26,
+            "ft": 6,
+            "fg": 23,
+            "pts": 52,
+            "wins": 11,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Eltham North Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e40eb62a",
+          "tn": "Jets U08 Boys 4",
+          "gid": "90f0574f",
+          "gn": "Saturday U08 Boys D1",
+          "age": "U08",
+          "div": "D1",
+          "stats": {
+            "gp": 14,
+            "fouls": 27,
+            "ft": 7,
+            "fg": 37,
+            "pts": 81,
+            "foulOuts": 1,
+            "wins": 11,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e40eb62a",
+          "tn": "Jets U08 Boys 4",
+          "gid": "a19a1f88",
+          "gn": "Saturday U08 Boys Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 27,
+            "ft": 7,
+            "fg": 37,
+            "pts": 81,
+            "wins": 11,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e40eb62a",
+          "tn": "Jets U08 Boys 4",
+          "gid": "601f55f7",
+          "gn": "Saturday U08 Boys Grading Group 3",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 27,
+            "ft": 7,
+            "fg": 37,
+            "pts": 81,
+            "wins": 11,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Eltham North Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "b2b6872c",
+          "tn": "Jets U08 Boys 4",
+          "gid": "43af154f",
+          "gn": "Saturday U8 Boys C2",
+          "age": "U8",
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "fouls": 32,
+            "ft": 1,
+            "fg": 12,
+            "pts": 25,
+            "wins": 11,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "b2b6872c",
+          "tn": "Jets U08 Boys 4",
+          "gid": "9c91bbff",
+          "gn": "Saturday U8 Boys C1",
+          "age": "U8",
+          "div": "C1",
+          "stats": {
+            "gp": 16,
+            "fouls": 32,
+            "fg": 12,
+            "pts": 25,
+            "wins": 11,
+            "losses": 5,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "b2b6872c",
+          "tn": "Jets U08 Boys 4",
+          "gid": "17e09247",
+          "gn": "Saturday U8 Boys D1",
+          "age": "U8",
+          "div": "D1",
+          "stats": {
+            "gp": 16,
+            "fg": 12,
+            "pts": 25,
+            "wins": 11,
+            "losses": 5,
+            "ft": 1,
+            "fouls": 32
+          }
+        },
+        {
+          "tid": "b2b6872c",
+          "tn": "Jets U08 Boys 4",
+          "gid": "f9ab3e13",
+          "gn": "Saturday U8 Boys D2",
+          "age": "U8",
+          "div": "D2",
+          "stats": {
+            "gp": 16,
+            "fouls": 32,
+            "fg": 12,
+            "pts": 25,
+            "wins": 11,
+            "losses": 5,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "f8267498",
+          "tn": "Jets U08 Boys 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:32:19.976Z",
+  "teams": [
+    {
+      "tid": "066472a8",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e40eb62a",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2b6872c",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f8267498",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.270Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "fa0b4c7d",
+      "sid": "f57b7901"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "12dcb14e",
+    "1ba31385",
+    "1bb44a18",
+    "2b01ad67",
+    "3e81876a",
+    "45eb3ec6",
+    "507b7e39",
+    "5143ee57",
+    "5206a6d2",
+    "561b6591",
+    "6e17ce20",
+    "70e32b96",
+    "778451e2",
+    "7f8127c1",
+    "8867ff6b",
+    "89aee56b",
+    "8f192076",
+    "985cb67e",
+    "9ba14227",
+    "9c3e395b",
+    "9ec88386",
+    "9ee27b27",
+    "a7985d2d",
+    "ac480e05",
+    "ae040d63",
+    "b4b37446",
+    "bb9c614f",
+    "bebaed36",
+    "c5e9a461",
+    "c7fbc84a",
+    "d27dcd98",
+    "d2e571d8",
+    "d5b8c6a4",
+    "de65aac1",
+    "dfce25f6",
+    "e7602c63",
+    "eb9668a1",
+    "f22e6cb2",
+    "f572eba0",
+    "fa0b4c7d",
+    "fa4bdc92",
+    "fc97f115",
+    "ffb4774b",
+    "fff22476"
+  ]
+}

@@ -1,1 +1,137 @@
-{"uuid":"d8ece31f-edaf-49fc-a892-5498d387bb00","name":"Toby Di Pietro","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":55,"fouls":9,"fg":15,"ft":7,"threePt":6,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":1,"wins":10,"losses":2,"winPct":0.77,"draws":1,"statsChecked":"2026-07-08T17:55:19.940Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"4329940f","tn":"Balwyn U21 Boys 04","gid":"3ff5e0b0","gn":"Boys U21 C Grading","age":"U21","div":null,"stats":{"gp":7,"fouls":9,"fg":8,"threePt":3,"pts":30,"ft":5,"wins":4,"losses":1}},{"tid":"4329940f","tn":"Balwyn U21 Boys 04","gid":"fe18bb00","gn":"Boys U21 D Grading","age":"U21","div":null,"stats":{"gp":7,"ft":5,"fg":8,"pts":30,"wins":4,"losses":1,"threePt":3,"fouls":9}}]},{"sid":"75ebb237","regs":[{"tid":"da415987","stats":{"gp":4,"pts":25,"fg":7,"ft":2,"threePt":3,"wins":2,"draws":1}},{"tid":"da415987","tn":"","gid":"f2fe4e0d","gn":"Wednesday Men D","div":null,"stats":{"gp":4,"pts":25,"fg":7,"ft":2,"threePt":3}}]}],"updatedAt":"2026-07-08T17:27:43.603Z","teams":[{"tid":"4329940f","sid":"1ae60211","status":"ACTIVE"},{"tid":"da415987","sid":"75ebb237","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:48:20.915Z","games":["10bcaf05","18e86e34","6b307c21","8f2ea44e","a8c9b9e1","c1f3fdad","ca497444","d78ac664"],"records":{"maxGamePTS":{"v":11,"gameKey":"18e86e34","sid":"75ebb237"},"maxGameThreePt":{"v":1,"gameKey":"91ae8e73","sid":"75ebb237"}}}
+{
+  "uuid": "d8ece31f-edaf-49fc-a892-5498d387bb00",
+  "name": "Toby Di Pietro",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 55,
+      "fouls": 9,
+      "fg": 15,
+      "ft": 7,
+      "threePt": 6,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 10,
+      "losses": 2,
+      "winPct": 0.77,
+      "draws": 1,
+      "statsChecked": "2026-07-08T17:55:19.940Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "4329940f",
+          "tn": "Balwyn U21 Boys 04",
+          "gid": "82d35d53",
+          "gn": "Boys U21 CA",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "fg": 8,
+            "threePt": 3,
+            "pts": 30,
+            "ft": 5,
+            "wins": 4,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "4329940f",
+          "tn": "Balwyn U21 Boys 04",
+          "gid": "fe18bb00",
+          "gn": "Boys U21 D Grading",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "ft": 5,
+            "fg": 8,
+            "pts": 30,
+            "wins": 4,
+            "losses": 1,
+            "threePt": 3,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "75ebb237",
+      "regs": [
+        {
+          "tid": "da415987",
+          "stats": {
+            "gp": 4,
+            "pts": 25,
+            "fg": 7,
+            "ft": 2,
+            "threePt": 3,
+            "wins": 2,
+            "draws": 1
+          },
+          "gid": "f2fe4e0d",
+          "gn": "Wednesday Men D"
+        },
+        {
+          "tid": "da415987",
+          "tn": "",
+          "gid": "f2fe4e0d",
+          "gn": "Wednesday Men D",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 25,
+            "fg": 7,
+            "ft": 2,
+            "threePt": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:27:43.603Z",
+  "teams": [
+    {
+      "tid": "4329940f",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da415987",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.163Z",
+  "games": [
+    "10bcaf05",
+    "18e86e34",
+    "6b307c21",
+    "8f2ea44e",
+    "a8c9b9e1",
+    "c1f3fdad",
+    "ca497444",
+    "d78ac664"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "18e86e34",
+      "sid": "75ebb237"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "91ae8e73",
+      "sid": "75ebb237"
+    }
+  }
+}

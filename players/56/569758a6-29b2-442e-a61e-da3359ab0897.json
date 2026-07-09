@@ -1,1 +1,229 @@
-{"uuid":"569758a6-29b2-442e-a61e-da3359ab0897","name":"Kieran Shaw","gender":"Men","sports":{"Basketball":{"gp":33,"pts":69,"fouls":64,"fg":19,"ft":7,"threePt":8,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":27,"losses":36,"draws":1,"winPct":0.42,"statsChecked":"2026-07-08T17:51:48.138Z"}},"seasons":[{"sid":"dbda2023","sn":"Winter 2026","regs":[{"tid":"9a1355e9","tn":"Phineas n Ferb","gid":"54057020","gn":"Wednesday Senior Men D Reserve","age":"Senior","div":null,"stats":{"gp":11,"fouls":16,"ft":2,"fg":6,"threePt":4,"pts":26,"wins":2,"losses":7,"draws":1}}]},{"sid":"d027552f","sn":"Summer 2025/26","regs":[{"tid":"c6deea26","tn":"The Brick Layers","gid":"04f237e2","gn":"Monday Senior Men D RES","age":"Senior","div":null,"stats":{"gp":6,"fouls":14,"ft":3,"fg":5,"pts":13,"wins":1,"losses":5}},{"tid":"eb302896","stats":{"wins":8,"losses":8,"gp":16,"pts":30,"fg":8,"ft":2,"threePt":4,"fouls":34}},{"tid":"eb302896","tn":"","gid":"208ba350","gn":"Wednesday Senior Men D Reserve","div":null,"stats":{"gp":16,"pts":30,"fg":8,"ft":2,"threePt":4,"fouls":34,"wins":8,"losses":8}}]},{"sid":"d027552f","sn":"Summer 2025/26","regs":[{"tid":"eb302896","tn":"Phineas n Ferb","gid":"208ba350","gn":"Wednesday Senior Men D Reserve","age":"Senior","div":null,"stats":{"gp":16,"fouls":34,"ft":2,"fg":8,"threePt":4,"pts":30,"wins":8,"losses":8}}]}],"updatedAt":"2026-07-08T17:29:24.374Z","teams":[{"tid":"9a1355e9","sid":"dbda2023","status":"ACTIVE"},{"tid":"eb302896","sid":"d027552f","status":"COMPLETED"},{"tid":"c6deea26","sid":"d027552f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:35:16.134Z","records":{"maxGamePTS":{"v":6,"gameKey":"290e1fbb","sid":"dbda2023"},"maxGameThreePt":{"v":1,"gameKey":"1eeea070","sid":"dbda2023"}},"games":["0620e6c3","0898bef2","0d9035bc","0f7345e9","150471b8","1eeea070","290e1fbb","333daff1","3977b9ff","46d7afb6","4a6414b8","5b0c8cd6","5ee9c85c","6436a259","6fc26174","7c9285a4","7ca64620","7d92b004","96deda09","97e8038a","a8f6e6fe","b93713f0","be589554","beca8bdc","c941e123","c9faca20","ced5fde3","d1610888","d1b57159","d991309c","da0891e1","e71b0484"],"gameTids":{"a3476385":"9a1355e9","7ca64620":"9a1355e9","6fc26174":"9a1355e9","1eeea070":"9a1355e9","beca8bdc":"9a1355e9","c941e123":"9a1355e9","a8f6e6fe":"9a1355e9","7c9285a4":"9a1355e9","0d9035bc":"9a1355e9","5ee9c85c":"9a1355e9","290e1fbb":"9a1355e9","333daff1":"c6deea26","da0891e1":"c6deea26","c9faca20":"c6deea26","150471b8":"c6deea26","0620e6c3":"c6deea26","0898bef2":"c6deea26","4a6414b8":"eb302896","3977b9ff":"eb302896","be589554":"eb302896","7d92b004":"eb302896","0f7345e9":"eb302896","d1b57159":"eb302896","97e8038a":"eb302896","6436a259":"eb302896","46d7afb6":"eb302896","e71b0484":"eb302896","96deda09":"eb302896","ced5fde3":"eb302896","b93713f0":"eb302896","5b0c8cd6":"eb302896","d1610888":"eb302896","d991309c":"eb302896"}}
+{
+  "uuid": "569758a6-29b2-442e-a61e-da3359ab0897",
+  "name": "Kieran Shaw",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 69,
+      "fouls": 64,
+      "fg": 19,
+      "ft": 7,
+      "threePt": 8,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 27,
+      "losses": 36,
+      "draws": 1,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-08T17:51:48.138Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dbda2023",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "9a1355e9",
+          "tn": "Phineas n Ferb",
+          "gid": "54057020",
+          "gn": "Wednesday Senior Men D Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 6,
+            "threePt": 4,
+            "pts": 26,
+            "wins": 2,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d027552f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "c6deea26",
+          "tn": "The Brick Layers",
+          "gid": "04f237e2",
+          "gn": "Monday Senior Men D RES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 5,
+            "pts": 13,
+            "wins": 1,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "eb302896",
+          "stats": {
+            "wins": 8,
+            "losses": 8,
+            "gp": 16,
+            "pts": 30,
+            "fg": 8,
+            "ft": 2,
+            "threePt": 4,
+            "fouls": 34
+          },
+          "gid": "208ba350",
+          "gn": "Wednesday Senior Men D Reserve"
+        },
+        {
+          "tid": "eb302896",
+          "tn": "",
+          "gid": "208ba350",
+          "gn": "Wednesday Senior Men D Reserve",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 30,
+            "fg": 8,
+            "ft": 2,
+            "threePt": 4,
+            "fouls": 34,
+            "wins": 8,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d027552f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "eb302896",
+          "tn": "Phineas n Ferb",
+          "gid": "208ba350",
+          "gn": "Wednesday Senior Men D Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "ft": 2,
+            "fg": 8,
+            "threePt": 4,
+            "pts": 30,
+            "wins": 8,
+            "losses": 8
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:29:24.374Z",
+  "teams": [
+    {
+      "tid": "9a1355e9",
+      "sid": "dbda2023",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6deea26",
+      "sid": "d027552f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eb302896",
+      "sid": "d027552f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.710Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "290e1fbb",
+      "sid": "dbda2023"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1eeea070",
+      "sid": "dbda2023"
+    }
+  },
+  "games": [
+    "0620e6c3",
+    "0898bef2",
+    "0d9035bc",
+    "0f7345e9",
+    "150471b8",
+    "1eeea070",
+    "290e1fbb",
+    "333daff1",
+    "3977b9ff",
+    "46d7afb6",
+    "4a6414b8",
+    "5b0c8cd6",
+    "5ee9c85c",
+    "6436a259",
+    "6fc26174",
+    "7c9285a4",
+    "7ca64620",
+    "7d92b004",
+    "96deda09",
+    "97e8038a",
+    "a8f6e6fe",
+    "b93713f0",
+    "be589554",
+    "beca8bdc",
+    "c941e123",
+    "c9faca20",
+    "ced5fde3",
+    "d1610888",
+    "d1b57159",
+    "d991309c",
+    "da0891e1",
+    "e71b0484"
+  ],
+  "gameTids": {
+    "a3476385": "9a1355e9",
+    "7ca64620": "9a1355e9",
+    "6fc26174": "9a1355e9",
+    "1eeea070": "9a1355e9",
+    "beca8bdc": "9a1355e9",
+    "c941e123": "9a1355e9",
+    "a8f6e6fe": "9a1355e9",
+    "7c9285a4": "9a1355e9",
+    "0d9035bc": "9a1355e9",
+    "5ee9c85c": "9a1355e9",
+    "290e1fbb": "9a1355e9",
+    "333daff1": "c6deea26",
+    "da0891e1": "c6deea26",
+    "c9faca20": "c6deea26",
+    "150471b8": "c6deea26",
+    "0620e6c3": "c6deea26",
+    "0898bef2": "c6deea26",
+    "4a6414b8": "eb302896",
+    "3977b9ff": "eb302896",
+    "be589554": "eb302896",
+    "7d92b004": "eb302896",
+    "0f7345e9": "eb302896",
+    "d1b57159": "eb302896",
+    "97e8038a": "eb302896",
+    "6436a259": "eb302896",
+    "46d7afb6": "eb302896",
+    "e71b0484": "eb302896",
+    "96deda09": "eb302896",
+    "ced5fde3": "eb302896",
+    "b93713f0": "eb302896",
+    "5b0c8cd6": "eb302896",
+    "d1610888": "eb302896",
+    "d991309c": "eb302896"
+  }
+}

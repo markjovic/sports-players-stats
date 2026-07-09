@@ -1,1 +1,327 @@
-{"uuid":"5b8c623a-fbbb-4257-a077-7a8a413732e0","name":"2022","gender":null,"sports":{"Basketball":{"gp":44,"pts":42,"fouls":15,"fg":19,"ft":1,"threePt":1,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"1e0eafb0":1},"maxGamePTS":10,"maxGameThreePt":1,"wins":14,"losses":30,"winPct":0.32,"statsChecked":"2026-07-05T16:27:28.972Z"}},"seasons":[{"sid":"13bfc244","sn":"2022","club":"Benalla Breakers Basketball Club","regs":[{"tid":"fda6f4d6","tn":"Benalla Breakers U12 Boys Div1","gid":"3fbb0e29","gn":"U12 Boys Division 1","stats":{"gp":2,"fouls":2,"wins":1,"losses":1}}]},{"sid":"52ae0815","sn":"Winter 2021","club":null,"regs":[{"tid":"dd62b24f","tn":"Celtics","gid":"a9502938","gn":"Monday  Mixed Junior","stats":{"gp":6,"pts":28,"fouls":1,"fg":12,"ft":1,"threePt":1,"finals":1,"wins":3,"losses":3}}]},{"sid":"1e0eafb0","sn":"2021","club":"Benalla Breakers Basketball Club","regs":[{"tid":"c397a087","tn":"Benalla Breakers U12 Boys","gid":"b9d379fd","gn":"U12 Boys Premiership","stats":{"gp":4,"fouls":6,"finals":1,"foulOuts":1,"losses":4}}]},{"sid":"259baa34","sn":"2021","club":"Benalla Breakers Basketball Club","regs":[{"tid":"e0f0d91e","tn":"Benalla Breakers U12 Boys","gid":"0b322f5d","gn":"U12 Boys 2","stats":{"gp":6,"pts":2,"fg":1,"wins":1,"losses":5}}]},{"sid":"71923b80","sn":"2020","club":"Benalla Breakers Basketball Club","regs":[{"tid":"69772b21","tn":"Breakers boys Mcbay","gid":"86819902","gn":"U12 Boys","stats":{"gp":3,"losses":3}}]},{"sid":"63d6f71b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"67104931","tn":"Knicks","gid":"3a641756","gn":"Thursday U12 Boys 1","stats":{"gp":14,"pts":8,"fouls":3,"fg":4,"finals":1,"wins":9,"losses":5}},{"tid":"9359e913","tn":"12B M Mcbay Breakers","gid":"6878645d","gn":"Monday U14 Boys 1","stats":{"gp":9,"pts":4,"fouls":3,"fg":2,"finals":1,"losses":9}}]}],"updatedAt":"2026-06-11T23:39:54.850Z","records":{"maxGamePTS":{"v":10,"gameKey":"6fec51e8","sid":"52ae0815"},"maxGameThreePt":{"v":1,"gameKey":"475f37ed","sid":"52ae0815"}},"games":["0ebf4a40","178ac648","1f12a08c","208dd2b0","221b9c4b","24d516e0","2d2b595b","3384f35d","34742e98","36f0f407","3ae541d5","3cf61684","40309416","475f37ed","48930730","5309f611","53aff0f1","543162c3","5bd8e8f3","5c4a0c50","60e09471","60ff2094","6fec51e8","7380782d","77681367","7ca0c151","80479cd9","86876ef1","88335d18","9086e9ab","91d65210","93d6c204","9f1817a4","a2868705","a73bbe37","b2317cc1","c0e26b8a","c460b44d","c8d9a26f","cb8490cf","cf6dcec0","d46fe01d","f03ae80f","fe8d48ad"],"gameTids":{"40309416":"67104931","48930730":"9359e913","77681367":"67104931","5bd8e8f3":"fda6f4d6","88335d18":"fda6f4d6","91d65210":"dd62b24f","b2317cc1":"dd62b24f","3ae541d5":"dd62b24f","3384f35d":"dd62b24f","6fec51e8":"dd62b24f","475f37ed":"dd62b24f","7380782d":"c397a087","a73bbe37":"c397a087","cb8490cf":"c397a087","9f1817a4":"c397a087","221b9c4b":"e0f0d91e","2d2b595b":"e0f0d91e","208dd2b0":"e0f0d91e","9086e9ab":"e0f0d91e","fe8d48ad":"e0f0d91e","5309f611":"e0f0d91e","3cf61684":"69772b21","cf6dcec0":"69772b21","c0e26b8a":"69772b21","c460b44d":"67104931","f03ae80f":"67104931","d46fe01d":"67104931","86876ef1":"67104931","24d516e0":"67104931","543162c3":"67104931","60e09471":"67104931","60ff2094":"67104931","36f0f407":"67104931","0ebf4a40":"67104931","80479cd9":"67104931","53aff0f1":"67104931","178ac648":"9359e913","a2868705":"9359e913","c8d9a26f":"9359e913","5c4a0c50":"9359e913","34742e98":"9359e913","7ca0c151":"9359e913","93d6c204":"9359e913","1f12a08c":"9359e913"}}
+{
+  "uuid": "5b8c623a-fbbb-4257-a077-7a8a413732e0",
+  "name": "2022",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 42,
+      "fouls": 15,
+      "fg": 19,
+      "ft": 1,
+      "threePt": 1,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "1e0eafb0": 1
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 14,
+      "losses": 30,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-05T16:27:28.972Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "13bfc244",
+      "sn": "2022",
+      "club": "Benalla Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "fda6f4d6",
+          "tn": "Benalla Breakers U12 Boys Div1",
+          "gid": "3fbb0e29",
+          "gn": "U12 Boys Division 1",
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "52ae0815",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "dd62b24f",
+          "tn": "Celtics",
+          "gid": "a9502938",
+          "gn": "Monday  Mixed Junior",
+          "stats": {
+            "gp": 6,
+            "pts": 28,
+            "fouls": 1,
+            "fg": 12,
+            "ft": 1,
+            "threePt": 1,
+            "finals": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e0eafb0",
+      "sn": "2021",
+      "club": "Benalla Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "c397a087",
+          "tn": "Benalla Breakers U12 Boys",
+          "gid": "b9d379fd",
+          "gn": "U12 Boys Premiership",
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "finals": 1,
+            "foulOuts": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "259baa34",
+      "sn": "2021",
+      "club": "Benalla Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "e0f0d91e",
+          "tn": "Benalla Breakers U12 Boys",
+          "gid": "0b322f5d",
+          "gn": "U12 Boys 2",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fg": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "71923b80",
+      "sn": "2020",
+      "club": "Benalla Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "69772b21",
+          "tn": "Breakers boys Mcbay",
+          "gid": "86819902",
+          "gn": "U12 Boys",
+          "stats": {
+            "gp": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "63d6f71b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "67104931",
+          "tn": "Knicks",
+          "gid": "3a641756",
+          "gn": "Thursday U12 Boys 1",
+          "stats": {
+            "gp": 14,
+            "pts": 8,
+            "fouls": 3,
+            "fg": 4,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "9359e913",
+          "tn": "12B M Mcbay Breakers",
+          "gid": "6878645d",
+          "gn": "Monday U14 Boys 1",
+          "stats": {
+            "gp": 9,
+            "pts": 4,
+            "fouls": 3,
+            "fg": 2,
+            "finals": 1,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bd42c91f",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "815a1251",
+          "tn": "Crocs",
+          "gid": "d105b1bb",
+          "gn": "Thursday U12 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:54.850Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "6fec51e8",
+      "sid": "52ae0815"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "475f37ed",
+      "sid": "52ae0815"
+    }
+  },
+  "games": [
+    "0ebf4a40",
+    "178ac648",
+    "1f12a08c",
+    "208dd2b0",
+    "221b9c4b",
+    "24d516e0",
+    "2d2b595b",
+    "3384f35d",
+    "34742e98",
+    "36f0f407",
+    "3ae541d5",
+    "3cf61684",
+    "40309416",
+    "475f37ed",
+    "48930730",
+    "5309f611",
+    "53aff0f1",
+    "543162c3",
+    "5bd8e8f3",
+    "5c4a0c50",
+    "60e09471",
+    "60ff2094",
+    "6fec51e8",
+    "7380782d",
+    "77681367",
+    "7ca0c151",
+    "80479cd9",
+    "86876ef1",
+    "88335d18",
+    "9086e9ab",
+    "91d65210",
+    "93d6c204",
+    "9f1817a4",
+    "a2868705",
+    "a73bbe37",
+    "b2317cc1",
+    "c0e26b8a",
+    "c460b44d",
+    "c8d9a26f",
+    "cb8490cf",
+    "cf6dcec0",
+    "d46fe01d",
+    "f03ae80f",
+    "fe8d48ad"
+  ],
+  "gameTids": {
+    "40309416": "67104931",
+    "48930730": "9359e913",
+    "77681367": "67104931",
+    "5bd8e8f3": "fda6f4d6",
+    "88335d18": "fda6f4d6",
+    "91d65210": "dd62b24f",
+    "b2317cc1": "dd62b24f",
+    "3ae541d5": "dd62b24f",
+    "3384f35d": "dd62b24f",
+    "6fec51e8": "dd62b24f",
+    "475f37ed": "dd62b24f",
+    "7380782d": "c397a087",
+    "a73bbe37": "c397a087",
+    "cb8490cf": "c397a087",
+    "9f1817a4": "c397a087",
+    "221b9c4b": "e0f0d91e",
+    "2d2b595b": "e0f0d91e",
+    "208dd2b0": "e0f0d91e",
+    "9086e9ab": "e0f0d91e",
+    "fe8d48ad": "e0f0d91e",
+    "5309f611": "e0f0d91e",
+    "3cf61684": "69772b21",
+    "cf6dcec0": "69772b21",
+    "c0e26b8a": "69772b21",
+    "c460b44d": "67104931",
+    "f03ae80f": "67104931",
+    "d46fe01d": "67104931",
+    "86876ef1": "67104931",
+    "24d516e0": "67104931",
+    "543162c3": "67104931",
+    "60e09471": "67104931",
+    "60ff2094": "67104931",
+    "36f0f407": "67104931",
+    "0ebf4a40": "67104931",
+    "80479cd9": "67104931",
+    "53aff0f1": "67104931",
+    "178ac648": "9359e913",
+    "a2868705": "9359e913",
+    "c8d9a26f": "9359e913",
+    "5c4a0c50": "9359e913",
+    "34742e98": "9359e913",
+    "7ca0c151": "9359e913",
+    "93d6c204": "9359e913",
+    "1f12a08c": "9359e913"
+  },
+  "teams": [
+    {
+      "tid": "fda6f4d6",
+      "sid": "13bfc244",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd62b24f",
+      "sid": "52ae0815",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c397a087",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0f0d91e",
+      "sid": "259baa34",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "69772b21",
+      "sid": "71923b80",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67104931",
+      "sid": "63d6f71b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9359e913",
+      "sid": "63d6f71b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "815a1251",
+      "sid": "bd42c91f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.968Z"
+}

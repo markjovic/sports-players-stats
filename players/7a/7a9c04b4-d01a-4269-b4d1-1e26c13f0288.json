@@ -1,1 +1,418 @@
-{"uuid":"7a9c04b4-d01a-4269-b4d1-1e26c13f0288","name":"Thomas Hamilton","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":149,"fouls":48,"fg":64,"ft":21,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":42,"losses":74,"winPct":0.36,"statsChecked":"2026-07-05T14:14:21.607Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Solway Basketball Club","regs":[{"tid":"17180c11","tn":"Solway U12 Boys Wolves","gid":"a6b06b86","gn":"Saturday U12 Boys Section 07","age":"U12","div":null,"stats":{"gp":7,"fouls":12,"ft":5,"fg":22,"pts":49,"wins":4,"losses":3}}]},{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"75d4923a","tn":"Camberwell B12.7","gid":"f6c324b6","gn":"U12 Boys C3 East (Eltham)","age":"U12","div":null,"stats":{"gp":5,"fouls":2,"fg":5,"pts":10,"wins":1,"losses":4}}]},{"sid":"d8da6b7a","sn":"2025","regs":[{"tid":"6474bde6","tn":"Camberwell U12 Boys 7","gid":"467331d4","gn":"U12 Boys Division 7A","age":"U12","div":null,"stats":{"gp":4,"fouls":3,"ft":2,"fg":7,"pts":16,"wins":2,"losses":2}}]},{"sid":"2ecfa56c","sn":"2025/26","club":"Camberwell Dragons Basketball Club","regs":[{"tid":"82cd9fdc","tn":"Camberwell U12 Boys 7","gid":"6a459374","gn":"U12 Boys RL1 (NORTH)","age":"U12","div":null,"stats":{"gp":20,"fouls":31,"ft":14,"fg":30,"pts":74,"wins":7,"losses":13}},{"tid":"82cd9fdc","tn":"Camberwell U12 Boys 7","gid":"994f1a1e","gn":"12 Boys - VJL Crossover","age":null,"div":null,"stats":{"gp":20,"fg":30,"pts":74,"wins":7,"losses":13,"ft":14,"fouls":31}},{"tid":"82cd9fdc","tn":"Camberwell U12 Boys 7","gid":"cde31141","gn":"U12 Boys Grading 2 - JJ Pool B","age":"U12","div":null,"stats":{"gp":20,"fouls":31,"ft":14,"fg":30,"pts":74,"wins":7,"losses":13}},{"tid":"82cd9fdc","tn":"Camberwell U12 Boys 7","gid":"b1166530","gn":"12 Boys Grading 1 - Crossover","age":null,"div":null,"stats":{"gp":20,"fouls":31,"ft":14,"fg":30,"pts":74,"wins":7,"losses":13}},{"tid":"82cd9fdc","tn":"Camberwell U12 Boys 7","gid":"8b3ee96e","gn":"12 Boys Grading 1 - Pool 12A","age":null,"div":null,"stats":{"gp":20,"fouls":31,"fg":30,"pts":74,"wins":7,"losses":13,"ft":14}}]}],"updatedAt":"2026-07-04T05:36:54.771Z","teams":[{"tid":"82cd9fdc","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"17180c11","sid":"6c117270","status":"ACTIVE"},{"tid":"0d2910bf","sid":"50975698","status":"COMPLETED"},{"tid":"9e5d0248","sid":"68279835","status":"COMPLETED"},{"tid":"75d4923a","sid":"6b0cab9c","status":"COMPLETED"},{"tid":"6474bde6","sid":"d8da6b7a","status":"COMPLETED"},{"tid":"46745c13","sid":"913d1397","status":"COMPLETED"},{"tid":"36cf4d17","sid":"df876355","status":"COMPLETED"},{"tid":"7948bb15","sid":"e54d0c37","status":"COMPLETED"},{"tid":"e0a9f0fc","sid":"ee5d2724","status":"COMPLETED"},{"tid":"c3684c53","sid":"7d20ecad","status":"COMPLETED"},{"tid":"e61bdb18","sid":"e2637fe8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:14.122Z","records":{"maxGamePTS":{"v":12,"gameKey":"17d36d1f","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["0b140e43","0e0e879d","17d36d1f","19b4fd71","2043c711","26927eb8","31cd3c20","35f32f52","3b3a7ec3","409d878f","43dc9c4d","56a85802","5b8d6e94","5c408182","626cca90","675fbce0","67b4b6df","7db2e99d","8057ac78","8236ad1f","a7d457e4","ad2fa4da","b725d1d6","b934b53a","c32ea3e6","c9e8a7ab","dbb5500f","e5abd066","e98cf18d","eaa0c8e9","eaacb10a","f44692cc","f647f3ba","f825d551","fe10f857","fe38ba6b"]}
+{
+  "uuid": "7a9c04b4-d01a-4269-b4d1-1e26c13f0288",
+  "name": "Thomas Hamilton",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 149,
+      "fouls": 48,
+      "fg": 64,
+      "ft": 21,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 42,
+      "losses": 74,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T14:14:21.607Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Solway Basketball Club",
+      "regs": [
+        {
+          "tid": "17180c11",
+          "tn": "Solway U12 Boys Wolves",
+          "gid": "a6b06b86",
+          "gn": "Saturday U12 Boys Section 07",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 5,
+            "fg": 22,
+            "pts": 49,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "75d4923a",
+          "tn": "Camberwell B12.7",
+          "gid": "f6c324b6",
+          "gn": "U12 Boys C3 East (Eltham)",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d8da6b7a",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "6474bde6",
+          "tn": "Camberwell U12 Boys 7",
+          "gid": "467331d4",
+          "gn": "U12 Boys Division 7A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 7,
+            "pts": 16,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ecfa56c",
+      "sn": "2025/26",
+      "club": "Camberwell Dragons Basketball Club",
+      "regs": [
+        {
+          "tid": "82cd9fdc",
+          "tn": "Camberwell U12 Boys 7",
+          "gid": "6a459374",
+          "gn": "U12 Boys RL1 (NORTH)",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 31,
+            "ft": 14,
+            "fg": 30,
+            "pts": 74,
+            "wins": 7,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "82cd9fdc",
+          "tn": "Camberwell U12 Boys 7",
+          "gid": "994f1a1e",
+          "gn": "12 Boys - VJL Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fg": 30,
+            "pts": 74,
+            "wins": 7,
+            "losses": 13,
+            "ft": 14,
+            "fouls": 31
+          }
+        },
+        {
+          "tid": "82cd9fdc",
+          "tn": "Camberwell U12 Boys 7",
+          "gid": "cde31141",
+          "gn": "U12 Boys Grading 2 - JJ Pool B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 31,
+            "ft": 14,
+            "fg": 30,
+            "pts": 74,
+            "wins": 7,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "82cd9fdc",
+          "tn": "Camberwell U12 Boys 7",
+          "gid": "b1166530",
+          "gn": "12 Boys Grading 1 - Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 31,
+            "ft": 14,
+            "fg": 30,
+            "pts": 74,
+            "wins": 7,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "82cd9fdc",
+          "tn": "Camberwell U12 Boys 7",
+          "gid": "8b3ee96e",
+          "gn": "12 Boys Grading 1 - Pool 12A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 31,
+            "fg": 30,
+            "pts": 74,
+            "wins": 7,
+            "losses": 13,
+            "ft": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f51ac790",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "de32b302",
+          "tn": "Mega MegaDucks",
+          "gid": "47faa790",
+          "gn": "U12 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "50975698",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "0d2910bf",
+          "tn": "Triple Flame",
+          "gid": "481158a3",
+          "gn": "U11 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "9e5d0248",
+          "tn": "U12 TIMBERWOLVES HEAT",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "46745c13",
+          "tn": "Solway U10 Boys Hawks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "36cf4d17",
+          "tn": "Solway U10 Boys Thunder",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "7948bb15",
+          "tn": "Solway U10 Boys Thunder",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "e0a9f0fc",
+          "tn": "Solway U10 Boys Thunder",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "c3684c53",
+          "tn": "Solway U8 Boys Thunder",
+          "gid": "8e8ef467",
+          "gn": "Saturday U8 Boys Grading Pool 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "e61bdb18",
+          "tn": "Solway U8 Boys Thunder",
+          "gid": "12eb5968",
+          "gn": "U8 Boys (S22_23) Division 6",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:54.771Z",
+  "teams": [
+    {
+      "tid": "17180c11",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75d4923a",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6474bde6",
+      "sid": "d8da6b7a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82cd9fdc",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de32b302",
+      "sid": "f51ac790",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d2910bf",
+      "sid": "50975698",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e5d0248",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46745c13",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36cf4d17",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7948bb15",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0a9f0fc",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c3684c53",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e61bdb18",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:23.876Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "17d36d1f",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b140e43",
+    "0e0e879d",
+    "17d36d1f",
+    "19b4fd71",
+    "2043c711",
+    "26927eb8",
+    "31cd3c20",
+    "35f32f52",
+    "3b3a7ec3",
+    "409d878f",
+    "43dc9c4d",
+    "56a85802",
+    "5b8d6e94",
+    "5c408182",
+    "626cca90",
+    "675fbce0",
+    "67b4b6df",
+    "7db2e99d",
+    "8057ac78",
+    "8236ad1f",
+    "a7d457e4",
+    "ad2fa4da",
+    "b725d1d6",
+    "b934b53a",
+    "c32ea3e6",
+    "c9e8a7ab",
+    "dbb5500f",
+    "e5abd066",
+    "e98cf18d",
+    "eaa0c8e9",
+    "eaacb10a",
+    "f44692cc",
+    "f647f3ba",
+    "f825d551",
+    "fe10f857",
+    "fe38ba6b"
+  ]
+}

@@ -1,1 +1,132 @@
-{"uuid":"98aea232-7a8d-4bf9-895d-6f7d4f2736da","name":"Jacob Crupi","gender":"Boys","sports":{"Basketball":{"gp":19,"pts":7,"fouls":9,"fg":2,"threePt":1,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":1,"wins":2,"losses":2,"winPct":0.5,"statsChecked":"2026-07-05T15:11:18.229Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Eltham Wildcats Basketball Club","regs":[{"tid":"cb791f96","tn":"Eltham U15 Boys 42","gid":"0933d196","gn":"Boys U15 D Grading","age":"U15","div":null,"stats":{"gp":6,"fouls":5,"fg":1,"threePt":1,"pts":5,"wins":2,"losses":2}}]},{"sid":"aae55e2f","sn":"Spring 2023","club":"St Helena Basketball Club","regs":[{"tid":"09a9ed9b","tn":"St Helena U14 Boys Team 1","gid":"d83c1de3","gn":"Saturday U14 Boys C1","age":"U14","div":"C1","stats":{"gp":13,"fouls":4,"pts":2,"fg":1}},{"tid":"09a9ed9b","tn":"St Helena U14 Boys Team 1","gid":"bab37526","gn":"Saturday U14 Boys B2","age":"U14","div":"B2","stats":{"gp":13,"fg":1,"pts":2,"fouls":4}}]}],"updatedAt":"2026-07-04T05:39:37.471Z","teams":[{"tid":"cb791f96","sid":"1ae60211","status":"ACTIVE"},{"tid":"09a9ed9b","sid":"aae55e2f","status":"COMPLETED"},{"tid":"bf2c0d2e","sid":"9bce68ee","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:29:57.958Z","records":{"maxGamePTS":{"v":3,"gameKey":"b9214b76","sid":"1ae60211"},"maxGameThreePt":{"v":1,"gameKey":"b9214b76","sid":"1ae60211"}},"games":["101cebf4","30432ff6","8053158f","b9214b76"]}
+{
+  "uuid": "98aea232-7a8d-4bf9-895d-6f7d4f2736da",
+  "name": "Jacob Crupi",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 19,
+      "pts": 7,
+      "fouls": 9,
+      "fg": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "losses": 2,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:11:18.229Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Eltham Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "cb791f96",
+          "tn": "Eltham U15 Boys 42",
+          "gid": "bcbbeb8b",
+          "gn": "Boys U15 DE",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "fg": 1,
+            "threePt": 1,
+            "pts": 5,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "aae55e2f",
+      "sn": "Spring 2023",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "09a9ed9b",
+          "tn": "St Helena U14 Boys Team 1",
+          "gid": "d83c1de3",
+          "gn": "Saturday U14 Boys C1",
+          "age": "U14",
+          "div": "C1",
+          "stats": {
+            "gp": 13,
+            "fouls": 4,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "09a9ed9b",
+          "tn": "St Helena U14 Boys Team 1",
+          "gid": "bab37526",
+          "gn": "Saturday U14 Boys B2",
+          "age": "U14",
+          "div": "B2",
+          "stats": {
+            "gp": 13,
+            "fg": 1,
+            "pts": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9bce68ee",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "bf2c0d2e",
+          "tn": "Hurricanes U10 Boys 1",
+          "gid": "376057f0",
+          "gn": "Saturday U10 Boys B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:37.471Z",
+  "teams": [
+    {
+      "tid": "cb791f96",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "09a9ed9b",
+      "sid": "aae55e2f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf2c0d2e",
+      "sid": "9bce68ee",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.599Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "b9214b76",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b9214b76",
+      "sid": "1ae60211"
+    }
+  },
+  "games": [
+    "101cebf4",
+    "30432ff6",
+    "8053158f",
+    "b9214b76"
+  ]
+}

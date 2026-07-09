@@ -1,1 +1,344 @@
-{"uuid":"4c98d0e7-6273-416d-ade9-abc3ae9f44d9","name":"Jared Schwieger","gender":"Men","sports":{"Basketball":{"gp":11,"pts":42,"fouls":9,"fg":10,"ft":7,"threePt":5,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":1,"wins":1,"losses":1,"winPct":0.5,"statsChecked":"2026-07-05T15:22:10.608Z"}},"seasons":[{"sid":"ad1f9276","sn":"Summer 2025/26","regs":[{"tid":"ffe7f84d","tn":"Stone Cold","gid":"ac7e3a83","gn":"Monday Men 7 - 2026 Summer","age":null,"div":null,"stats":{"gp":2,"wins":1,"losses":1}}]},{"sid":"1094cb2b","sn":"Summer 2021/22","regs":[{"tid":"9934cc1c","tn":"Section 9","gid":"08644b8f","gn":"Tuesday Open Men E","age":"Senior","div":null,"stats":{"gp":9,"fouls":9,"ft":7,"fg":10,"threePt":5,"pts":42}}]}],"updatedAt":"2026-06-01T12:31:20.620Z","teams":[{"tid":"ffe7f84d","sid":"ad1f9276","status":"COMPLETED"},{"tid":"1bf88324","sid":"76897951","status":"COMPLETED"},{"tid":"7989336d","sid":"5944effa","status":"COMPLETED"},{"tid":"5cd6e846","sid":"348dbfb8","status":"COMPLETED"},{"tid":"cb5cc0d0","sid":"9358e51a","status":"COMPLETED"},{"tid":"aff67247","sid":"d3d4e181","status":"COMPLETED"},{"tid":"35e83481","sid":"d3d4e181","status":"COMPLETED"},{"tid":"dc49803c","sid":"21cd9648","status":"COMPLETED"},{"tid":"0710dfe3","sid":"21cd9648","status":"COMPLETED"},{"tid":"bea6e237","sid":"d4cbf787","status":"COMPLETED"},{"tid":"52bfdbda","sid":"d4cbf787","status":"COMPLETED"},{"tid":"9934cc1c","sid":"1094cb2b","status":"COMPLETED"},{"tid":"ee1ec0fe","sid":"d64fcfce","status":"COMPLETED"},{"tid":"ab3a8295","sid":"d64fcfce","status":"COMPLETED"},{"tid":"855e6dbf","sid":"afd26581","status":"COMPLETED"},{"tid":"aecf4c1e","sid":"17f0da9b","status":"COMPLETED"},{"tid":"92f08602","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:29:52.889Z","records":{"maxGamePTS":{"v":11,"gameKey":"e8508a5f","sid":"1094cb2b"},"maxGameThreePt":{"v":1,"gameKey":"1c994cb6","sid":"1094cb2b"}},"games":["06b2ebca","0db680a1","1c994cb6","464f5f53","70808d93","a9200525","ac177909","ad6f8d38","b234cb1b","d3e27834","e8508a5f"]}
+{
+  "uuid": "4c98d0e7-6273-416d-ade9-abc3ae9f44d9",
+  "name": "Jared Schwieger",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 42,
+      "fouls": 9,
+      "fg": 10,
+      "ft": 7,
+      "threePt": 5,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "losses": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:22:10.608Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad1f9276",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "ffe7f84d",
+          "tn": "Stone Cold",
+          "gid": "ac7e3a83",
+          "gn": "Monday Men 7 - 2026 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1094cb2b",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "9934cc1c",
+          "tn": "Section 9",
+          "gid": "08644b8f",
+          "gn": "Tuesday Open Men E",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 7,
+            "fg": 10,
+            "threePt": 5,
+            "pts": 42
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "1bf88324",
+          "tn": "Limes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "7989336d",
+          "tn": "Limes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "5cd6e846",
+          "tn": "Limes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "cb5cc0d0",
+          "tn": "Limes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "aff67247",
+          "tn": "Limes",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "35e83481",
+          "tn": "Limes 2",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "dc49803c",
+          "tn": "Miami Vice",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "0710dfe3",
+          "tn": "Miami Vice 2",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "bea6e237",
+          "tn": "Miami Vice",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "52bfdbda",
+          "tn": "Miami Vice 2",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "ee1ec0fe",
+          "tn": "Miami Vice",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "ab3a8295",
+          "tn": "Miami Vice 2",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "855e6dbf",
+          "tn": "Miami Vice",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "aecf4c1e",
+          "tn": "Miami Vice",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "92f08602",
+          "tn": "Miami Vice 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T12:31:20.620Z",
+  "teams": [
+    {
+      "tid": "ffe7f84d",
+      "sid": "ad1f9276",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9934cc1c",
+      "sid": "1094cb2b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1bf88324",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7989336d",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5cd6e846",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb5cc0d0",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aff67247",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35e83481",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dc49803c",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0710dfe3",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bea6e237",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52bfdbda",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee1ec0fe",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab3a8295",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "855e6dbf",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aecf4c1e",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92f08602",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.229Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "e8508a5f",
+      "sid": "1094cb2b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1c994cb6",
+      "sid": "1094cb2b"
+    }
+  },
+  "games": [
+    "06b2ebca",
+    "0db680a1",
+    "1c994cb6",
+    "464f5f53",
+    "70808d93",
+    "a9200525",
+    "ac177909",
+    "ad6f8d38",
+    "b234cb1b",
+    "d3e27834",
+    "e8508a5f"
+  ]
+}

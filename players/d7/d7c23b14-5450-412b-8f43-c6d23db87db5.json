@@ -1,1 +1,241 @@
-{"uuid":"d7c23b14-5450-412b-8f43-c6d23db87db5","name":"Bonnie Rundle","gender":"Girls","sports":{"Basketball":{"gp":41,"pts":20,"fouls":14,"fg":10,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":4,"maxGameThreePt":null,"losses":58,"winPct":0.24,"wins":20,"draws":4,"statsChecked":"2026-07-05T15:26:18.846Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"8aaa3c74","tn":"Laurimar Thunder U14 Girls 2","gid":"e2fabe3b","gn":"Saturday U14 Girls D2","age":"U14","div":"D2","stats":{"gp":11,"fouls":7,"fg":5,"pts":10,"losses":10,"wins":1}},{"tid":"8aaa3c74","tn":"Laurimar Thunder U14 Girls 2","gid":"f09e716e","gn":"Saturday U14 Girls Grading Group 3","age":"U14","div":null,"stats":{"gp":11,"fouls":7,"losses":10,"wins":1,"pts":10,"fg":5}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"b7bd1439","tn":"Laurimar Thunder U14 Girls 1","gid":"07499a73","gn":"Saturday U14 Girls D1","age":"U14","div":"D1","stats":{"gp":15,"fouls":5,"fg":4,"pts":8,"finals":1,"losses":9,"wins":5,"draws":1}},{"tid":"b7bd1439","tn":"Laurimar Thunder U14 Girls 1","gid":"6846424b","gn":"Saturday U14 Girls Grading Group 3","age":"U14","div":null,"stats":{"gp":15,"fg":4,"pts":8,"finals":1,"losses":9,"wins":5,"draws":1,"fouls":5}},{"tid":"b7bd1439","tn":"Laurimar Thunder U14 Girls 1","gid":"6819cd53","gn":"Saturday U14 Girls Grading Group 2","age":"U14","div":null,"stats":{"gp":15,"finals":1,"losses":9,"wins":5,"draws":1,"pts":8,"fg":4,"fouls":5}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"034b2551","tn":"Laurimar Thunder U14 Girls 3","gid":"ef3513c1","gn":"Saturday U14 Girls D1","age":"U14","div":"D1","stats":{"gp":15,"fouls":2,"fg":1,"pts":2,"wins":3,"losses":11,"draws":1}}]}],"updatedAt":"2026-06-01T06:36:03.494Z","teams":[{"tid":"8aaa3c74","sid":"d868771d","status":"ACTIVE"},{"tid":"b7bd1439","sid":"f57b7901","status":"COMPLETED"},{"tid":"034b2551","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:23:17.288Z","games":["059a0ab8","05cca399","08aa20e3","0be90efc","174fcedf","1ef5e768","26df841a","28eb77f2","29f8cb61","2b227c3e","2d1bf535","3350b051","35f2c464","4242bcb7","4f48e63e","5730096c","60a5c374","645e5a21","64721ea7","6fc59a8a","70a8cb2f","742403b7","7a8c0e0d","7d40e331","912728f7","919ebe14","962f13a1","9dc46d0b","ac6b3cee","b81283f2","b8c7eeb7","bbc4055a","bd90fd06","c5737d81","cbaa8753","cee673c5","d490bf52","df9bf6f4","e4387f9f","ed7fa8d5","f5f080ec"],"records":{"maxGamePTS":{"v":4,"gameKey":"64721ea7","sid":"d868771d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d7c23b14-5450-412b-8f43-c6d23db87db5",
+  "name": "Bonnie Rundle",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 41,
+      "pts": 20,
+      "fouls": 14,
+      "fg": 10,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 58,
+      "winPct": 0.24,
+      "wins": 20,
+      "draws": 4,
+      "statsChecked": "2026-07-05T15:26:18.846Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "8aaa3c74",
+          "tn": "Laurimar Thunder U14 Girls 2",
+          "gid": "e2fabe3b",
+          "gn": "Saturday U14 Girls D2",
+          "age": "U14",
+          "div": "D2",
+          "stats": {
+            "gp": 11,
+            "fouls": 7,
+            "fg": 5,
+            "pts": 10,
+            "losses": 10,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "8aaa3c74",
+          "tn": "Laurimar Thunder U14 Girls 2",
+          "gid": "f09e716e",
+          "gn": "Saturday U14 Girls Grading Group 3",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 7,
+            "losses": 10,
+            "wins": 1,
+            "pts": 10,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "b7bd1439",
+          "tn": "Laurimar Thunder U14 Girls 1",
+          "gid": "07499a73",
+          "gn": "Saturday U14 Girls D1",
+          "age": "U14",
+          "div": "D1",
+          "stats": {
+            "gp": 15,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "losses": 9,
+            "wins": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b7bd1439",
+          "tn": "Laurimar Thunder U14 Girls 1",
+          "gid": "6846424b",
+          "gn": "Saturday U14 Girls Grading Group 3",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "losses": 9,
+            "wins": 5,
+            "draws": 1,
+            "fouls": 5
+          }
+        },
+        {
+          "tid": "b7bd1439",
+          "tn": "Laurimar Thunder U14 Girls 1",
+          "gid": "6819cd53",
+          "gn": "Saturday U14 Girls Grading Group 2",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "finals": 1,
+            "losses": 9,
+            "wins": 5,
+            "draws": 1,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "034b2551",
+          "tn": "Laurimar Thunder U14 Girls 3",
+          "gid": "ef3513c1",
+          "gn": "Saturday U14 Girls D1",
+          "age": "U14",
+          "div": "D1",
+          "stats": {
+            "gp": 15,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 3,
+            "losses": 11,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "5bcd2194",
+          "tn": "Laurimar Thunder U14 Girls 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:36:03.494Z",
+  "teams": [
+    {
+      "tid": "8aaa3c74",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7bd1439",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "034b2551",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5bcd2194",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.058Z",
+  "games": [
+    "059a0ab8",
+    "05cca399",
+    "08aa20e3",
+    "0be90efc",
+    "174fcedf",
+    "1ef5e768",
+    "26df841a",
+    "28eb77f2",
+    "29f8cb61",
+    "2b227c3e",
+    "2d1bf535",
+    "3350b051",
+    "35f2c464",
+    "4242bcb7",
+    "4f48e63e",
+    "5730096c",
+    "60a5c374",
+    "645e5a21",
+    "64721ea7",
+    "6fc59a8a",
+    "70a8cb2f",
+    "742403b7",
+    "7a8c0e0d",
+    "7d40e331",
+    "912728f7",
+    "919ebe14",
+    "962f13a1",
+    "9dc46d0b",
+    "ac6b3cee",
+    "b81283f2",
+    "b8c7eeb7",
+    "bbc4055a",
+    "bd90fd06",
+    "c5737d81",
+    "cbaa8753",
+    "cee673c5",
+    "d490bf52",
+    "df9bf6f4",
+    "e4387f9f",
+    "ed7fa8d5",
+    "f5f080ec"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "64721ea7",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

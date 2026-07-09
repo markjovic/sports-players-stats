@@ -1,1 +1,582 @@
-{"uuid":"0f79eef7-647c-4d0f-a319-61e14208152a","name":"Cameron van Stratum","gender":"Men","sports":{"Basketball":{"gp":38,"pts":268,"fouls":28,"fg":25,"ft":8,"threePt":20,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":3,"wins":18,"losses":32,"winPct":0.36,"statsChecked":"2026-07-09T18:28:44.422Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"8915de4c","tn":"G.I Scorpions","gid":"2446d760","gn":"Thursday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":14,"pts":75,"threePt":9,"fg":2,"ft":3,"fouls":4,"wins":10,"losses":4}},{"tid":"55a96c3f","stats":{"wins":4,"losses":14,"gp":21,"pts":164,"fg":18,"ft":1,"threePt":6,"fouls":20}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"55a96c3f","tn":"Richmond Oilers","gid":"3254b45d","gn":"Wednesday Open Men Section 1","age":"Senior","div":null,"stats":{"gp":21,"pts":164,"threePt":6,"fg":18,"ft":1,"fouls":20,"wins":4,"losses":14}}]},{"sid":"297562bc","regs":[{"tid":"1e43f6c7","stats":{"gp":2,"pts":23,"ft":3,"threePt":4,"fouls":1,"fg":4}},{"tid":"1e43f6c7","tn":"","gid":"b3b1e9a6","gn":"Thursday Open Men Section 3","div":null,"stats":{"gp":2,"pts":23,"ft":3,"threePt":4,"fouls":1,"fg":4}},{"tid":"ef7f353e","tn":"","gid":"0c291d05","gn":"Wednesday Open Men Section 1","div":null,"stats":{"gp":1,"pts":6,"fg":1,"ft":1,"threePt":1,"fouls":3}}]}],"updatedAt":"2026-07-09T18:07:53.021Z","teams":[{"tid":"8915de4c","sid":"5593103d","status":"ACTIVE"},{"tid":"55a96c3f","sid":"5593103d","status":"ACTIVE"},{"tid":"fd22bb4c","sid":"fab2be4d","status":"COMPLETED"},{"tid":"ddc9d3e3","sid":"fab2be4d","status":"COMPLETED"},{"tid":"b1f48744","sid":"76897951","status":"COMPLETED"},{"tid":"a890953e","sid":"76897951","status":"COMPLETED"},{"tid":"ac1582b3","sid":"5944effa","status":"COMPLETED"},{"tid":"7097fb67","sid":"5944effa","status":"COMPLETED"},{"tid":"8fa456b7","sid":"348dbfb8","status":"COMPLETED"},{"tid":"d1a2c9ed","sid":"348dbfb8","status":"COMPLETED"},{"tid":"220e6724","sid":"9358e51a","status":"COMPLETED"},{"tid":"b6e3d69b","sid":"9358e51a","status":"COMPLETED"},{"tid":"0a424fee","sid":"d3d4e181","status":"COMPLETED"},{"tid":"db29025c","sid":"d3d4e181","status":"COMPLETED"},{"tid":"5b3858d6","sid":"21cd9648","status":"COMPLETED"},{"tid":"d92068d3","sid":"21cd9648","status":"COMPLETED"},{"tid":"46fe1aa7","sid":"d4cbf787","status":"COMPLETED"},{"tid":"f6bf574c","sid":"d4cbf787","status":"COMPLETED"},{"tid":"f1e03620","sid":"d64fcfce","status":"COMPLETED"},{"tid":"90a9ddff","sid":"d64fcfce","status":"COMPLETED"},{"tid":"f2768f1a","sid":"afd26581","status":"COMPLETED"},{"tid":"b87fadfe","sid":"afd26581","status":"COMPLETED"},{"tid":"60db6c88","sid":"922f0463","status":"COMPLETED"},{"tid":"f1d534d1","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:56:59.747Z","records":{"maxGamePTS":{"v":18,"gameKey":"d902213a","sid":"297562bc"},"maxGameThreePt":{"v":3,"gameKey":"d902213a","sid":"297562bc"}},"games":["02ce8d80","04b5e06d","27035ecf","2aee40ed","345829a4","34694c03","38e7f24e","4b072866","4c1483ca","5045dedc","50ef23c1","577d7cd4","57af2de7","5bc2b7bb","6d66c51c","844c8c91","919123f8","9b73640a","a7a6da6d","b293db9f","be52f8ab","bebb1690","c66b03ba","cfd47066","d9c7642e","db63e717","e5ea0382","e6694dda","e8cfea83","eaeca182","ed5cd610","f8e6558e","fe0dd31d"],"gameTids":{"d902213a":"1e43f6c7","6d66ad6b":"1e43f6c7","abbe0bdf":"ef7f353e","9b73640a":"8915de4c","5045dedc":"8915de4c","f8e6558e":"8915de4c","50ef23c1":"8915de4c","844c8c91":"8915de4c","ed5cd610":"8915de4c","919123f8":"8915de4c","4b072866":"8915de4c","a7a6da6d":"8915de4c","577d7cd4":"8915de4c","b293db9f":"8915de4c","fe0dd31d":"8915de4c","d9c7642e":"8915de4c","e8cfea83":"8915de4c","9a4940fd":"55a96c3f","d9da65fc":"55a96c3f","be52f8ab":"55a96c3f","34694c03":"55a96c3f","57af2de7":"55a96c3f","2aee40ed":"55a96c3f","6d66c51c":"55a96c3f","345829a4":"55a96c3f","db63e717":"55a96c3f","e6694dda":"55a96c3f","e5ea0382":"55a96c3f","4c1483ca":"55a96c3f","5bc2b7bb":"55a96c3f","04b5e06d":"55a96c3f","cfd47066":"55a96c3f","27035ecf":"55a96c3f","38e7f24e":"55a96c3f","bebb1690":"55a96c3f","c66b03ba":"55a96c3f","02ce8d80":"55a96c3f","eaeca182":"55a96c3f"}}
+{
+  "uuid": "0f79eef7-647c-4d0f-a319-61e14208152a",
+  "name": "Cameron van Stratum",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 268,
+      "fouls": 28,
+      "fg": 25,
+      "ft": 8,
+      "threePt": 20,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": 3,
+      "wins": 18,
+      "losses": 32,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-09T18:28:44.422Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "8915de4c",
+          "tn": "G.I Scorpions",
+          "gid": "2446d760",
+          "gn": "Thursday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 75,
+            "threePt": 9,
+            "fg": 2,
+            "ft": 3,
+            "fouls": 4,
+            "wins": 10,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "55a96c3f",
+          "stats": {
+            "wins": 4,
+            "losses": 14,
+            "gp": 21,
+            "pts": 164,
+            "fg": 18,
+            "ft": 1,
+            "threePt": 6,
+            "fouls": 20
+          },
+          "gid": "3254b45d",
+          "gn": "Wednesday Open Men Section 1"
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "55a96c3f",
+          "tn": "Richmond Oilers",
+          "gid": "3254b45d",
+          "gn": "Wednesday Open Men Section 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "pts": 164,
+            "threePt": 6,
+            "fg": 18,
+            "ft": 1,
+            "fouls": 20,
+            "wins": 4,
+            "losses": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "1e43f6c7",
+          "stats": {
+            "gp": 2,
+            "pts": 23,
+            "ft": 3,
+            "threePt": 4,
+            "fouls": 1,
+            "fg": 4
+          },
+          "gid": "b3b1e9a6",
+          "gn": "Thursday Open Men Section 3"
+        },
+        {
+          "tid": "1e43f6c7",
+          "tn": "",
+          "gid": "b3b1e9a6",
+          "gn": "Thursday Open Men Section 3",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 23,
+            "ft": 3,
+            "threePt": 4,
+            "fouls": 1,
+            "fg": 4
+          }
+        },
+        {
+          "tid": "ef7f353e",
+          "tn": "",
+          "gid": "0c291d05",
+          "gn": "Wednesday Open Men Section 1",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 6,
+            "fg": 1,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "fd22bb4c",
+          "tn": "G.I Scorpions",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "ddc9d3e3",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "b1f48744",
+          "tn": "G.I Scorpions",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "a890953e",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "ac1582b3",
+          "tn": "G.I Scorpions",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "7097fb67",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "8fa456b7",
+          "tn": "G.I Scorpions",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "d1a2c9ed",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "220e6724",
+          "tn": "G.I.Scorpions",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "b6e3d69b",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "0a424fee",
+          "tn": "Glen Iris Scorpions",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "db29025c",
+          "tn": "Richmond Oilers",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "5b3858d6",
+          "tn": "Glen Iris Scorpions",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "d92068d3",
+          "tn": "Richmond Oilers",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "46fe1aa7",
+          "tn": "Glen Iris Scorpions",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "f6bf574c",
+          "tn": "Richmond Oilers",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "f1e03620",
+          "tn": "Glen Iris Scorpions CHS",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "90a9ddff",
+          "tn": "RICHMOND OILERS",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "f2768f1a",
+          "tn": "Glen Iris Scorpions Open Men CHS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "b87fadfe",
+          "tn": "Richmond Oilers ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "60db6c88",
+          "tn": "Scorpions CHS",
+          "gid": "762e11d1",
+          "gn": "Thursday Open Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "f1d534d1",
+          "tn": "Richmond Oilers ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:07:53.021Z",
+  "teams": [
+    {
+      "tid": "8915de4c",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "55a96c3f",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e43f6c7",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef7f353e",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd22bb4c",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ddc9d3e3",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1f48744",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a890953e",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ac1582b3",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7097fb67",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8fa456b7",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d1a2c9ed",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "220e6724",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6e3d69b",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a424fee",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db29025c",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b3858d6",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d92068d3",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46fe1aa7",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6bf574c",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1e03620",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "90a9ddff",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f2768f1a",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b87fadfe",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60db6c88",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1d534d1",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.646Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "d902213a",
+      "sid": "297562bc"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "d902213a",
+      "sid": "297562bc"
+    }
+  },
+  "games": [
+    "02ce8d80",
+    "04b5e06d",
+    "27035ecf",
+    "2aee40ed",
+    "345829a4",
+    "34694c03",
+    "38e7f24e",
+    "4b072866",
+    "4c1483ca",
+    "5045dedc",
+    "50ef23c1",
+    "577d7cd4",
+    "57af2de7",
+    "5bc2b7bb",
+    "6d66c51c",
+    "844c8c91",
+    "919123f8",
+    "9b73640a",
+    "a7a6da6d",
+    "b293db9f",
+    "be52f8ab",
+    "bebb1690",
+    "c66b03ba",
+    "cfd47066",
+    "d9c7642e",
+    "db63e717",
+    "e5ea0382",
+    "e6694dda",
+    "e8cfea83",
+    "eaeca182",
+    "ed5cd610",
+    "f8e6558e",
+    "fe0dd31d"
+  ],
+  "gameTids": {
+    "d902213a": "1e43f6c7",
+    "6d66ad6b": "1e43f6c7",
+    "abbe0bdf": "ef7f353e",
+    "9b73640a": "8915de4c",
+    "5045dedc": "8915de4c",
+    "f8e6558e": "8915de4c",
+    "50ef23c1": "8915de4c",
+    "844c8c91": "8915de4c",
+    "ed5cd610": "8915de4c",
+    "919123f8": "8915de4c",
+    "4b072866": "8915de4c",
+    "a7a6da6d": "8915de4c",
+    "577d7cd4": "8915de4c",
+    "b293db9f": "8915de4c",
+    "fe0dd31d": "8915de4c",
+    "d9c7642e": "8915de4c",
+    "e8cfea83": "8915de4c",
+    "9a4940fd": "55a96c3f",
+    "d9da65fc": "55a96c3f",
+    "be52f8ab": "55a96c3f",
+    "34694c03": "55a96c3f",
+    "57af2de7": "55a96c3f",
+    "2aee40ed": "55a96c3f",
+    "6d66c51c": "55a96c3f",
+    "345829a4": "55a96c3f",
+    "db63e717": "55a96c3f",
+    "e6694dda": "55a96c3f",
+    "e5ea0382": "55a96c3f",
+    "4c1483ca": "55a96c3f",
+    "5bc2b7bb": "55a96c3f",
+    "04b5e06d": "55a96c3f",
+    "cfd47066": "55a96c3f",
+    "27035ecf": "55a96c3f",
+    "38e7f24e": "55a96c3f",
+    "bebb1690": "55a96c3f",
+    "c66b03ba": "55a96c3f",
+    "02ce8d80": "55a96c3f",
+    "eaeca182": "55a96c3f"
+  }
+}

@@ -1,1 +1,66 @@
-{"uuid":"85a1f1c5-7748-4126-bc94-0ee00b4ce546","name":"Tyrese Brown","sports":{"Basketball":{"maxGamePTS":26,"maxGameThreePt":null,"foulOuts":{"04854767":1,"cb7b1f18":1},"gp":18,"pts":227,"fg":110,"ft":7,"fouls":37,"statsChecked":"2026-07-07T18:28:28.380Z"}},"seasons":[{"sid":"04854767","regs":[{"tid":"92bf9fb3"}]},{"sid":"cb7b1f18","regs":[{"tid":"bcb866eb"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":26,"gameKey":"095333f4","sid":"04854767"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "85a1f1c5-7748-4126-bc94-0ee00b4ce546",
+  "name": "Tyrese Brown",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 26,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "04854767": 1,
+        "cb7b1f18": 1
+      },
+      "gp": 18,
+      "pts": 227,
+      "fg": 110,
+      "ft": 7,
+      "fouls": 37,
+      "statsChecked": "2026-07-07T18:28:28.380Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "04854767",
+      "regs": [
+        {
+          "tid": "92bf9fb3",
+          "gid": "5c386e8d",
+          "gn": "Tuesday Men E2 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "cb7b1f18",
+      "regs": [
+        {
+          "tid": "bcb866eb",
+          "gid": "877dd700",
+          "gn": "Saturday U16 Boys D1 Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "92bf9fb3",
+      "sid": "04854767",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bcb866eb",
+      "sid": "cb7b1f18",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "095333f4",
+      "sid": "04854767"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.455Z"
+}

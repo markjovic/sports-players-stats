@@ -1,1 +1,367 @@
-{"uuid":"2d89a5e5-67a4-4b2e-ae4c-ddb6ef0e46f8","name":"Savenaca Koroinivalu","gender":"Men","sports":{"Basketball":{"gp":59,"pts":347,"fouls":148,"fg":149,"ft":22,"threePt":9,"foulOuts":{"58f07ecc":1,"2e947e2e":2,"78d6dc68":2,"6ffec519":3,"408cf044":2},"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.43,"maxGamePTS":25,"maxGameThreePt":3,"wins":37,"losses":31,"winPct":0.5,"draws":6,"statsChecked":"2026-07-05T15:34:34.787Z"}},"seasons":[{"sid":"53352e30","sn":"Autumn 2026","regs":[{"tid":"a1fcc183","tn":"Saiyanz ","gid":"b7cf2b91","gn":"Tuesday Mens Division 3","age":null,"div":"Division 3","stats":{"gp":2,"fouls":1,"fg":1,"pts":2,"losses":1}}]},{"sid":"00404092","sn":"Autumn 2026","regs":[{"tid":"88917fcb","tn":"Bomb squad","gid":"7c0529fc","gn":"Division 4 Sunday Mens","age":null,"div":null,"stats":{"gp":8,"fouls":22,"ft":2,"fg":15,"pts":32,"wins":2,"losses":3}}]},{"sid":"2e947e2e","sn":"Summer 2025/26","regs":[{"tid":"4eb11f00","tn":"STRAW HATS","gid":"e52e2bd1","gn":"Wednesday Senior Men D","age":"Senior","div":null,"stats":{"gp":7,"fouls":17,"ft":8,"fg":18,"pts":44,"foulOuts":2,"wins":2,"losses":4,"draws":1}}]},{"sid":"78d6dc68","sn":"Winter 2025","regs":[{"tid":"c4fa6860","tn":"STRAW HATS","gid":"fbc6b0ff","gn":"Wednesday Senior Men D","age":"Senior","div":null,"stats":{"gp":8,"fouls":18,"ft":1,"fg":19,"threePt":6,"pts":57,"foulOuts":2,"finals":1,"gfApps":1,"wins":6,"losses":1,"draws":1,"gfWins":1}}]},{"sid":"6ffec519","sn":"Spring 2025","regs":[{"tid":"dd21961c","tn":"Big Betlog Boys","gid":"564ffa8a","gn":"Division 4 Sunday Mens","age":null,"div":null,"stats":{"gp":14,"fouls":41,"ft":3,"fg":39,"pts":81,"foulOuts":3,"finals":1,"wins":6,"losses":4,"draws":1}},{"tid":"dd21961c","tn":"Big Betlog Boys","gid":"b2d6cf71","gn":"Grading Sunday Mens","age":null,"div":null,"stats":{"gp":14,"fouls":41,"ft":3,"fg":39,"pts":81,"finals":1,"wins":6,"losses":4,"draws":1}}]},{"sid":"408cf044","sn":"Autumn 2025","regs":[{"tid":"6d6d2170","tn":"BFG","gid":"3c840603","gn":"Division 5 Sunday Mens","age":null,"div":null,"stats":{"gp":16,"fouls":40,"ft":7,"fg":53,"threePt":3,"pts":122,"foulOuts":2,"finals":1,"wins":7,"losses":6,"draws":1}},{"tid":"6d6d2170","tn":"BFG","gid":"425cfdd7","gn":"Grading Sunday Mens","age":null,"div":null,"stats":{"gp":16,"fouls":40,"ft":7,"fg":53,"pts":122,"finals":1,"wins":7,"losses":6,"draws":1,"threePt":3}}]},{"sid":"58f07ecc","regs":[{"tid":"4a940bce","stats":{"gp":4,"pts":9,"fg":4,"ft":1,"fouls":9,"wins":1,"losses":2}}]}],"updatedAt":"2026-06-02T03:48:39.148Z","teams":[{"tid":"88917fcb","sid":"00404092","status":"ACTIVE"},{"tid":"a1fcc183","sid":"53352e30","status":"ACTIVE"},{"tid":"4a940bce","sid":"58f07ecc","status":"ACTIVE"},{"tid":"4eb11f00","sid":"2e947e2e","status":"COMPLETED"},{"tid":"dd21961c","sid":"6ffec519","status":"COMPLETED"},{"tid":"c4fa6860","sid":"78d6dc68","status":"COMPLETED"},{"tid":"6d6d2170","sid":"408cf044","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:09:55.949Z","records":{"maxGamePTS":{"v":25,"gameKey":"6664ed5f","sid":"408cf044"},"maxGameThreePt":{"v":3,"gameKey":"dd995e1d","sid":"78d6dc68"}},"games":["01abb54d","01b53914","0f02d438","13a79616","1710c7a0","17f243e1","18f84fa6","1c81c13c","25603892","2b78bcdf","2debe71e","2eebfc60","3bcc6511","428981d7","4df8fa0d","5250a291","5556683e","5de2852a","5decca5e","65c92cf2","6664ed5f","6f2fb189","71ece3ca","7475ae59","749cca32","77a0361e","79910200","83266741","967c41cf","99b1c6e4","a0712a25","a3d075c0","b1d59426","b3025a11","b96b5520","bca1f600","c2db67a7","c300674f","c5d5f37f","c7b9a001","c861cb6c","cfd8e572","d3831ad3","d4dbde8a","d5752366","d597c07c","dd995e1d","e43201e1","e5d6c440","f9430a6e","faea66d2","fbf86a0c"]}
+{
+  "uuid": "2d89a5e5-67a4-4b2e-ae4c-ddb6ef0e46f8",
+  "name": "Savenaca Koroinivalu",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 59,
+      "pts": 347,
+      "fouls": 148,
+      "fg": 149,
+      "ft": 22,
+      "threePt": 9,
+      "foulOuts": {
+        "58f07ecc": 1,
+        "2e947e2e": 2,
+        "78d6dc68": 2,
+        "6ffec519": 3,
+        "408cf044": 2
+      },
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.43,
+      "maxGamePTS": 25,
+      "maxGameThreePt": 3,
+      "wins": 37,
+      "losses": 31,
+      "winPct": 0.5,
+      "draws": 6,
+      "statsChecked": "2026-07-05T15:34:34.787Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "53352e30",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "a1fcc183",
+          "tn": "Saiyanz ",
+          "gid": "b7cf2b91",
+          "gn": "Tuesday Mens Division 3",
+          "age": null,
+          "div": "Division 3",
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "00404092",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "88917fcb",
+          "tn": "Bomb squad",
+          "gid": "7c0529fc",
+          "gn": "Division 4 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 22,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2e947e2e",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "4eb11f00",
+          "tn": "STRAW HATS",
+          "gid": "e52e2bd1",
+          "gn": "Wednesday Senior Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 8,
+            "fg": 18,
+            "pts": 44,
+            "foulOuts": 2,
+            "wins": 2,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "78d6dc68",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "c4fa6860",
+          "tn": "STRAW HATS",
+          "gid": "fbc6b0ff",
+          "gn": "Wednesday Senior Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 18,
+            "ft": 1,
+            "fg": 19,
+            "threePt": 6,
+            "pts": 57,
+            "foulOuts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 1,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6ffec519",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "dd21961c",
+          "tn": "Big Betlog Boys",
+          "gid": "564ffa8a",
+          "gn": "Division 4 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 41,
+            "ft": 3,
+            "fg": 39,
+            "pts": 81,
+            "foulOuts": 3,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "dd21961c",
+          "tn": "Big Betlog Boys",
+          "gid": "b2d6cf71",
+          "gn": "Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 41,
+            "ft": 3,
+            "fg": 39,
+            "pts": 81,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "408cf044",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "6d6d2170",
+          "tn": "BFG",
+          "gid": "3c840603",
+          "gn": "Division 5 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 40,
+            "ft": 7,
+            "fg": 53,
+            "threePt": 3,
+            "pts": 122,
+            "foulOuts": 2,
+            "finals": 1,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "6d6d2170",
+          "tn": "BFG",
+          "gid": "425cfdd7",
+          "gn": "Grading Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 40,
+            "ft": 7,
+            "fg": 53,
+            "pts": 122,
+            "finals": 1,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1,
+            "threePt": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "58f07ecc",
+      "regs": [
+        {
+          "tid": "4a940bce",
+          "stats": {
+            "gp": 4,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 9,
+            "wins": 1,
+            "losses": 2
+          },
+          "gid": "5f63ccae",
+          "gn": "Wednesday Senior Men D"
+        }
+      ]
+    },
+    {
+      "sid": "343c5d11",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "8a64151e",
+          "tn": "Bomb squad",
+          "gid": "9a6e37d3",
+          "gn": "Division 4 Sunday Mens",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T03:48:39.148Z",
+  "teams": [
+    {
+      "tid": "a1fcc183",
+      "sid": "53352e30",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88917fcb",
+      "sid": "00404092",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4eb11f00",
+      "sid": "2e947e2e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c4fa6860",
+      "sid": "78d6dc68",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd21961c",
+      "sid": "6ffec519",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d6d2170",
+      "sid": "408cf044",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4a940bce",
+      "sid": "58f07ecc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8a64151e",
+      "sid": "343c5d11",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.358Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 25,
+      "gameKey": "6664ed5f",
+      "sid": "408cf044"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "dd995e1d",
+      "sid": "78d6dc68"
+    }
+  },
+  "games": [
+    "01abb54d",
+    "01b53914",
+    "0f02d438",
+    "13a79616",
+    "1710c7a0",
+    "17f243e1",
+    "18f84fa6",
+    "1c81c13c",
+    "25603892",
+    "2b78bcdf",
+    "2debe71e",
+    "2eebfc60",
+    "3bcc6511",
+    "428981d7",
+    "4df8fa0d",
+    "5250a291",
+    "5556683e",
+    "5de2852a",
+    "5decca5e",
+    "65c92cf2",
+    "6664ed5f",
+    "6f2fb189",
+    "71ece3ca",
+    "7475ae59",
+    "749cca32",
+    "77a0361e",
+    "79910200",
+    "83266741",
+    "967c41cf",
+    "99b1c6e4",
+    "a0712a25",
+    "a3d075c0",
+    "b1d59426",
+    "b3025a11",
+    "b96b5520",
+    "bca1f600",
+    "c2db67a7",
+    "c300674f",
+    "c5d5f37f",
+    "c7b9a001",
+    "c861cb6c",
+    "cfd8e572",
+    "d3831ad3",
+    "d4dbde8a",
+    "d5752366",
+    "d597c07c",
+    "dd995e1d",
+    "e43201e1",
+    "e5d6c440",
+    "f9430a6e",
+    "faea66d2",
+    "fbf86a0c"
+  ]
+}

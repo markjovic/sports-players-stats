@@ -1,1 +1,127 @@
-{"uuid":"196e5696-df3f-4be5-b288-7f4adb77747e","name":"Henrik Stasiuk","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":3,"fouls":14,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"winPct":0.33,"losses":8,"statsChecked":"2026-07-05T14:53:51.933Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Malvern Tigers Basketball Club","regs":[{"tid":"3f7faf3f","tn":"Malvern Tigers U10 Boys Brown","gid":"68726c52","gn":"Saturday U10 Boys Section 08","age":"U10","div":null,"stats":{"gp":6,"pts":3,"ft":1,"fouls":14,"wins":2,"losses":4,"fg":1}},{"tid":"3f7faf3f","tn":"Malvern Tigers U10 Boys Brown","gid":"6842b841","gn":"Saturday U10 Boys Section 07","age":"U10","div":null,"stats":{"gp":6,"pts":3,"fg":1,"fouls":14,"wins":2,"losses":4,"ft":1}}]}],"updatedAt":"2026-05-31T13:58:38.600Z","teams":[{"tid":"3f7faf3f","sid":"6c117270","status":"ACTIVE"},{"tid":"8500f5d6","sid":"7d20ecad","status":"COMPLETED"},{"tid":"77532919","sid":"e2637fe8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:02:21.821Z","records":{"maxGamePTS":{"v":2,"gameKey":"5e0fc671","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["14d61743","235c86a4","2f3ccb85","5e0fc671","6b12a31d","a217d0b3"]}
+{
+  "uuid": "196e5696-df3f-4be5-b288-7f4adb77747e",
+  "name": "Henrik Stasiuk",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 3,
+      "fouls": 14,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "winPct": 0.33,
+      "losses": 8,
+      "statsChecked": "2026-07-05T14:53:51.933Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "3f7faf3f",
+          "tn": "Malvern Tigers U10 Boys Brown",
+          "gid": "6842b841",
+          "gn": "Saturday U10 Boys Section 07",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 3,
+            "ft": 1,
+            "fouls": 14,
+            "wins": 2,
+            "losses": 4,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "3f7faf3f",
+          "tn": "Malvern Tigers U10 Boys Brown",
+          "gid": "6842b841",
+          "gn": "Saturday U10 Boys Section 07",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 3,
+            "fg": 1,
+            "fouls": 14,
+            "wins": 2,
+            "losses": 4,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "8500f5d6",
+          "tn": "Malvern Tigers U8 Boys Red",
+          "gid": "801e4cbe",
+          "gn": "Saturday U8 Boys Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "77532919",
+          "tn": "Malvern Tigers U8 Boys Orange",
+          "gid": "b27c82d2",
+          "gn": "U8 Boys (S22_23) Division 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:58:38.600Z",
+  "teams": [
+    {
+      "tid": "3f7faf3f",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8500f5d6",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "77532919",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.150Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "5e0fc671",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "14d61743",
+    "235c86a4",
+    "2f3ccb85",
+    "5e0fc671",
+    "6b12a31d",
+    "a217d0b3"
+  ]
+}

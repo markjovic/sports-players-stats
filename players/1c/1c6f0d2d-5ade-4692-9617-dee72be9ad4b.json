@@ -1,1 +1,216 @@
-{"uuid":"1c6f0d2d-5ade-4692-9617-dee72be9ad4b","name":"Poppy Smart","gender":"Girls","sports":{"Basketball":{"gp":2,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":2,"winPct":1,"statsChecked":"2026-07-05T15:07:29.102Z"}},"seasons":[{"sid":"e0b8b997","sn":"2024","club":"Waverley Falcons Basketball Club","regs":[{"tid":"1adb9709","tn":"Waverley U16 Girls 2","gid":"16356eb2","gn":"U16 Girls - VJL3","age":"U16","div":"L3","stats":{"gp":1}}]},{"sid":"6c117270","regs":[{"tid":"6158640f","stats":{"gp":1,"fouls":1,"wins":1}},{"tid":"6158640f","tn":"","gid":"8a52b885","gn":"Tuesday U18 Girls Section 01","div":null,"stats":{"gp":1,"fouls":1,"wins":1}}]}],"updatedAt":"2026-07-04T05:49:28.586Z","teams":[{"tid":"6158640f","sid":"6c117270","status":"ACTIVE"},{"tid":"1adb9709","sid":"e0b8b997","status":"COMPLETED"},{"tid":"7cdb77e3","sid":"e54d0c37","status":"COMPLETED"},{"tid":"b06c9849","sid":"ee5d2724","status":"COMPLETED"},{"tid":"f50fd9f4","sid":"7d20ecad","status":"COMPLETED"},{"tid":"3f81f597","sid":"e2637fe8","status":"COMPLETED"},{"tid":"25da64fb","sid":"eb0c3879","status":"COMPLETED"},{"tid":"811283e2","sid":"11f9ba57","status":"COMPLETED"},{"tid":"b0696d72","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:55.229Z","games":["05af6b9f","c20ba655"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "1c6f0d2d-5ade-4692-9617-dee72be9ad4b",
+  "name": "Poppy Smart",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T15:07:29.102Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e0b8b997",
+      "sn": "2024",
+      "club": "Waverley Falcons Basketball Club",
+      "regs": [
+        {
+          "tid": "1adb9709",
+          "tn": "Waverley U16 Girls 2",
+          "gid": "16356eb2",
+          "gn": "U16 Girls - VJL3",
+          "age": "U16",
+          "div": "L3",
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6c117270",
+      "regs": [
+        {
+          "tid": "6158640f",
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "wins": 1
+          },
+          "gid": "8a52b885",
+          "gn": "Tuesday U18 Girls Section 01"
+        },
+        {
+          "tid": "6158640f",
+          "tn": "",
+          "gid": "8a52b885",
+          "gn": "Tuesday U18 Girls Section 01",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "7cdb77e3",
+          "tn": "Solway U16 Girls Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "b06c9849",
+          "tn": "Solway U16 Girls Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "f50fd9f4",
+          "tn": "Solway U14 Girls Jewels",
+          "gid": "3642a3c7",
+          "gn": "Saturday U14 Girls Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "3f81f597",
+          "tn": "Solway U14 Girls Sparx",
+          "gid": "407d9a36",
+          "gn": "U14 Girls (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "25da64fb",
+          "tn": "Solway U12 Girls Jaguars",
+          "gid": "7a284590",
+          "gn": "U12 Girls Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "811283e2",
+          "tn": "Solway U12 Girls Jaguars",
+          "gid": "e37bf9a4",
+          "gn": "U12 Girls GP1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "b0696d72",
+          "tn": "Solway U12 Girls Jaguars",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:28.586Z",
+  "teams": [
+    {
+      "tid": "1adb9709",
+      "sid": "e0b8b997",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6158640f",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7cdb77e3",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b06c9849",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f50fd9f4",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f81f597",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25da64fb",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "811283e2",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b0696d72",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.288Z",
+  "games": [
+    "05af6b9f",
+    "c20ba655"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

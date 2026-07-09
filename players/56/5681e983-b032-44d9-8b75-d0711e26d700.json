@@ -1,1 +1,321 @@
-{"uuid":"5681e983-b032-44d9-8b75-d0711e26d700","name":"Agamjot Bhatia","gender":"Boys","sports":{"Basketball":{"gp":43,"pts":35,"fouls":36,"fg":17,"ft":1,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":4,"maxGameThreePt":null,"wins":48,"losses":78,"winPct":0.38,"statsChecked":"2026-07-05T15:09:30.555Z"}},"seasons":[{"sid":"9db4334a","sn":"Winter 2026","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"38eda786","tn":"MPB U12 Boys Panthers","gid":"d6ff8b9a","gn":"Saturday U12 Boys GRADING","age":"U12","div":null,"stats":{"gp":6,"fouls":10,"fg":6,"pts":12,"wins":1,"losses":5}},{"tid":"38eda786","tn":"","gid":"6b50bae5","gn":"Saturday U12 Boys B","div":null,"stats":{"gp":6,"pts":12,"fg":6,"fouls":10,"wins":1,"losses":5}}]},{"sid":"c279d5cf","sn":"Summer 2025/26","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"3436c45d","tn":"MPB U12 Boys Panthers","gid":"c062192c","gn":"Saturday U12 Boys B Grade","age":"U12","div":null,"stats":{"gp":10,"fouls":7,"fg":8,"pts":16,"wins":1,"losses":9}},{"tid":"3436c45d","tn":"MPB U12 Boys Panthers","gid":"829d7139","gn":"Saturday U12 Boys GRADING","age":"U12","div":null,"stats":{"gp":10,"fouls":7,"fg":8,"pts":16,"wins":1,"losses":9}}]},{"sid":"788813cf","sn":"Winter 2025","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"6a26a090","tn":"MPB U12 Boys Green","gid":"d67f0a82","gn":"Saturday U12 Boys C","age":"U12","div":null,"stats":{"gp":13,"fouls":15,"ft":1,"fg":1,"pts":3,"finals":1,"gfApps":1,"wins":8,"losses":5}},{"tid":"6a26a090","tn":"MPB U12 Boys Green","gid":"4c55af54","gn":"Saturday U23 Boys Grading White","age":"U23","div":null,"stats":{"gp":13,"fouls":15,"finals":1,"gfApps":1,"wins":8,"losses":5,"pts":3,"fg":1,"ft":1}},{"tid":"6a26a090","tn":"MPB U12 Boys Green","gid":"7cb14695","gn":"Saturday U23 Boys Grading Green","age":"U23","div":null,"stats":{"gp":13,"fouls":15,"finals":1,"gfApps":1,"wins":8,"losses":5,"pts":3,"fg":1,"ft":1}},{"tid":"6a26a090","tn":"MPB U12 Boys Green","gid":"cb7915b0","gn":"Saturday U23 Boys Grading Brown","age":"U23","div":null,"stats":{"gp":13,"fouls":15,"finals":1,"gfApps":1,"wins":8,"losses":5,"pts":3,"fg":1,"ft":1}}]},{"sid":"9af1c292","sn":"Summer 2024/25","club":"Merrifield Panthers Basketball Club","regs":[{"tid":"153b4fdb","tn":"MPB U12 Boys Green","gid":"fce18f70","gn":"Saturday U12 Boys B","age":"U12","div":null,"stats":{"gp":14,"fouls":4,"fg":2,"pts":4,"wins":4,"losses":10}},{"tid":"153b4fdb","tn":"MPB U12 Boys Green","gid":"b7dfae33","gn":"ZZ Saturday U12 Boys Green","age":"U12","div":null,"stats":{"gp":14,"fouls":4,"wins":4,"losses":10,"pts":4,"fg":2}},{"tid":"153b4fdb","tn":"MPB U12 Boys Green","gid":"49a36a90","gn":"ZZ Saturday U12 Boys White","age":"U12","div":null,"stats":{"gp":14,"wins":4,"losses":10,"pts":4,"fg":2,"fouls":4}}]}],"updatedAt":"2026-07-04T05:39:16.932Z","teams":[{"tid":"38eda786","sid":"9db4334a","status":"ACTIVE"},{"tid":"3436c45d","sid":"c279d5cf","status":"COMPLETED"},{"tid":"6a26a090","sid":"788813cf","status":"COMPLETED"},{"tid":"153b4fdb","sid":"9af1c292","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:35:15.214Z","records":{"maxGamePTS":{"v":4,"gameKey":"db0b5ae5","sid":"9db4334a"},"maxGameThreePt":{"v":null}},"games":["01258e96","0731412a","075875df","0d568925","0e56a1af","1ee0ab69","22f4fd79","28ff9333","2eabc327","314059d6","382567cf","38ee7acf","39293eb0","3bb83e92","4b1136e9","50a333f8","59735433","5a9a38c8","5f535991","60e527ca","62ac8eac","70c892e2","72ddfead","7960b0b1","79e5d945","7a859e04","80d12c7c","82b4d7e6","97ac87f1","988a2fe9","98ea7833","a38cbf3a","bcdf1cca","bdae8bba","cfc80574","d42412f9","d589a11a","db0b5ae5","e8e1f931","f7390b41","fa01fad8","fa9af2d2","fb820ddb"]}
+{
+  "uuid": "5681e983-b032-44d9-8b75-d0711e26d700",
+  "name": "Agamjot Bhatia",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 35,
+      "fouls": 36,
+      "fg": 17,
+      "ft": 1,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 48,
+      "losses": 78,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:09:30.555Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9db4334a",
+      "sn": "Winter 2026",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "38eda786",
+          "tn": "MPB U12 Boys Panthers",
+          "gid": "6b50bae5",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 10,
+            "fg": 6,
+            "pts": 12,
+            "wins": 1,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "38eda786",
+          "tn": "",
+          "gid": "6b50bae5",
+          "gn": "Saturday U12 Boys B",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 10,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c279d5cf",
+      "sn": "Summer 2025/26",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "3436c45d",
+          "tn": "MPB U12 Boys Panthers",
+          "gid": "c062192c",
+          "gn": "Saturday U12 Boys B Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 7,
+            "fg": 8,
+            "pts": 16,
+            "wins": 1,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "3436c45d",
+          "tn": "MPB U12 Boys Panthers",
+          "gid": "829d7139",
+          "gn": "Saturday U12 Boys GRADING",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 7,
+            "fg": 8,
+            "pts": 16,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "788813cf",
+      "sn": "Winter 2025",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "6a26a090",
+          "tn": "MPB U12 Boys Green",
+          "gid": "d67f0a82",
+          "gn": "Saturday U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "6a26a090",
+          "tn": "MPB U12 Boys Green",
+          "gid": "4c55af54",
+          "gn": "Saturday U23 Boys Grading White",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "6a26a090",
+          "tn": "MPB U12 Boys Green",
+          "gid": "7cb14695",
+          "gn": "Saturday U23 Boys Grading Green",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "6a26a090",
+          "tn": "MPB U12 Boys Green",
+          "gid": "cb7915b0",
+          "gn": "Saturday U23 Boys Grading Brown",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9af1c292",
+      "sn": "Summer 2024/25",
+      "club": "Merrifield Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "153b4fdb",
+          "tn": "MPB U12 Boys Green",
+          "gid": "fce18f70",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 4,
+            "fg": 2,
+            "pts": 4,
+            "wins": 4,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "153b4fdb",
+          "tn": "MPB U12 Boys Green",
+          "gid": "b7dfae33",
+          "gn": "ZZ Saturday U12 Boys Green",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 4,
+            "wins": 4,
+            "losses": 10,
+            "pts": 4,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "153b4fdb",
+          "tn": "MPB U12 Boys Green",
+          "gid": "49a36a90",
+          "gn": "ZZ Saturday U12 Boys White",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "wins": 4,
+            "losses": 10,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:16.932Z",
+  "teams": [
+    {
+      "tid": "38eda786",
+      "sid": "9db4334a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3436c45d",
+      "sid": "c279d5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a26a090",
+      "sid": "788813cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "153b4fdb",
+      "sid": "9af1c292",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.695Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "db0b5ae5",
+      "sid": "9db4334a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01258e96",
+    "0731412a",
+    "075875df",
+    "0d568925",
+    "0e56a1af",
+    "1ee0ab69",
+    "22f4fd79",
+    "28ff9333",
+    "2eabc327",
+    "314059d6",
+    "382567cf",
+    "38ee7acf",
+    "39293eb0",
+    "3bb83e92",
+    "4b1136e9",
+    "50a333f8",
+    "59735433",
+    "5a9a38c8",
+    "5f535991",
+    "60e527ca",
+    "62ac8eac",
+    "70c892e2",
+    "72ddfead",
+    "7960b0b1",
+    "79e5d945",
+    "7a859e04",
+    "80d12c7c",
+    "82b4d7e6",
+    "97ac87f1",
+    "988a2fe9",
+    "98ea7833",
+    "a38cbf3a",
+    "bcdf1cca",
+    "bdae8bba",
+    "cfc80574",
+    "d42412f9",
+    "d589a11a",
+    "db0b5ae5",
+    "e8e1f931",
+    "f7390b41",
+    "fa01fad8",
+    "fa9af2d2",
+    "fb820ddb"
+  ]
+}

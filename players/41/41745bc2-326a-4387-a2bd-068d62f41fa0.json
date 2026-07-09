@@ -1,1 +1,305 @@
-{"uuid":"41745bc2-326a-4387-a2bd-068d62f41fa0","name":"Leila Soufan","gender":"Girls","sports":{"Basketball":{"gp":78,"pts":16,"fouls":22,"fg":7,"ft":2,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":32,"losses":41,"draws":3,"winPct":0.42,"statsChecked":"2026-07-05T14:41:03.050Z"}},"seasons":[{"sid":"68f8c050","sn":"Autumn 2026","club":"Good Shepherd Primary School Basketball Club","regs":[{"tid":"c827ae3f","tn":"GSLPS Sapphires (G4)","gid":"414aef0a","gn":"Thursday Girls Grade 3/4","age":null,"div":null,"stats":{"gp":17,"fouls":7,"ft":2,"fg":4,"pts":10,"wins":9,"losses":5,"draws":1}}]},{"sid":"e26f328b","sn":"Summer 2025/26","club":"Maroondah Magic Basketball Club","regs":[{"tid":"524e8035","tn":"MMG42","gid":"3c17d537","gn":"Tuesday U9 Girls B/Bres","age":"U9","div":null,"stats":{"gp":5,"fg":2,"pts":4,"wins":2,"losses":3}}]},{"sid":"bb2d59f8","sn":"Spring 2025","club":"Good Shepherd Primary School Basketball Club","regs":[{"tid":"b0aa4191","tn":"GSLPS Sapphires (G3)","gid":"639c33b3","gn":"Thursday Girls Grade 3/4","age":null,"div":null,"stats":{"gp":10,"fouls":4,"fg":1,"pts":2,"finals":1,"wins":2,"losses":8}}]},{"sid":"fd2b7a84","sn":"Autumn 2025","club":"Good Shepherd Primary School Basketball Club","regs":[{"tid":"a7ca8ad8","tn":"GSLPS Sapphires (G3)","gid":"b098e81b","gn":"Thursday Girls Grade 3/4","age":null,"div":null,"stats":{"gp":12,"fouls":1,"finals":1,"wins":4,"losses":8}}]},{"sid":"a5af6a24","sn":"Spring 2024","club":"Good Shepherd Primary School Basketball Club","regs":[{"tid":"88d6d60b","tn":"GSLPS Sapphires (G2)","gid":"795d55ec","gn":"Friday Girls Grade 2","age":null,"div":null,"stats":{"gp":18,"fouls":8,"wins":8,"losses":9,"draws":1}}]},{"sid":"f2da6886","sn":"Autumn 2024","club":"Good Shepherd Primary School Basketball Club","regs":[{"tid":"189d1d80","tn":"GSLPS Sapphires (G2)","gid":"2f743747","gn":"Friday Girls Grade 2","age":null,"div":null,"stats":{"gp":16,"fouls":2,"wins":7,"losses":8,"draws":1}}]}],"updatedAt":"2026-07-04T05:49:15.060Z","teams":[{"tid":"c827ae3f","sid":"68f8c050","status":"ACTIVE"},{"tid":"b0aa4191","sid":"bb2d59f8","status":"COMPLETED"},{"tid":"a7ca8ad8","sid":"fd2b7a84","status":"COMPLETED"},{"tid":"88d6d60b","sid":"a5af6a24","status":"COMPLETED"},{"tid":"189d1d80","sid":"f2da6886","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:22:44.300Z","records":{"maxGamePTS":{"v":3,"gameKey":"7707e787","sid":"68f8c050"},"maxGameThreePt":{"v":null}},"games":["00705462","06409928","089ebf06","08d63e28","0a9a6b87","0be3678b","101d4972","106459de","15deb624","18c1e6ea","1ab539e4","1de4ba8c","227fd130","250cde05","266fcbcb","27180c23","27fe6bef","28da329d","29471244","36c6fe54","3907c5ee","3c3e5141","40cccdf2","45ab26c8","496984dd","49bab7c0","49ff5cf5","4eb71103","52f3f624","532b7a5f","572bd229","5bfefaac","6169b10a","654dceb7","665913dc","6787d8bb","67f65934","68afc19b","6aaef18a","76fd249b","7707e787","7b51ffe2","7f9e0a20","809518e6","80f015e0","837b9048","882bdaa4","99d71d43","9db1583b","a1dd5bf1","a6eecfa6","a8765ea4","acb15136","ae811710","b04cb906","b728393d","b7578741","b84cdcd6","c0147742","c095dca2","c51d1012","c55d1a02","cff694ee","d0fcfde3","d4dec3c1","d957458d","da8f23e4","def5ad19","dff2d268","e2d39fab","e3c33290","ec7941a4","f299e0fb","f4d31e3f","f7bc6eaf","fe82f21f"]}
+{
+  "uuid": "41745bc2-326a-4387-a2bd-068d62f41fa0",
+  "name": "Leila Soufan",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 78,
+      "pts": 16,
+      "fouls": 22,
+      "fg": 7,
+      "ft": 2,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 32,
+      "losses": 41,
+      "draws": 3,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-05T14:41:03.050Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "68f8c050",
+      "sn": "Autumn 2026",
+      "club": "Good Shepherd Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "c827ae3f",
+          "tn": "GSLPS Sapphires (G4)",
+          "gid": "414aef0a",
+          "gn": "Thursday Girls Grade 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 7,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e26f328b",
+      "sn": "Summer 2025/26",
+      "club": "Maroondah Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "524e8035",
+          "tn": "MMG42",
+          "gid": "3c17d537",
+          "gn": "Tuesday U9 Girls B/Bres",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fg": 2,
+            "pts": 4,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bb2d59f8",
+      "sn": "Spring 2025",
+      "club": "Good Shepherd Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "b0aa4191",
+          "tn": "GSLPS Sapphires (G3)",
+          "gid": "639c33b3",
+          "gn": "Thursday Girls Grade 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "wins": 2,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fd2b7a84",
+      "sn": "Autumn 2025",
+      "club": "Good Shepherd Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "a7ca8ad8",
+          "tn": "GSLPS Sapphires (G3)",
+          "gid": "b098e81b",
+          "gn": "Thursday Girls Grade 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 1,
+            "finals": 1,
+            "wins": 4,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5af6a24",
+      "sn": "Spring 2024",
+      "club": "Good Shepherd Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "88d6d60b",
+          "tn": "GSLPS Sapphires (G2)",
+          "gid": "795d55ec",
+          "gn": "Friday Girls Grade 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 8,
+            "wins": 8,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f2da6886",
+      "sn": "Autumn 2024",
+      "club": "Good Shepherd Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "189d1d80",
+          "tn": "GSLPS Sapphires (G2)",
+          "gid": "2f743747",
+          "gn": "Friday Girls Grade 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 2,
+            "wins": 7,
+            "losses": 8,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "96c25259",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "3c2b2eb4",
+          "tn": "GSLPS Sapphires (G4)",
+          "gid": "ba675748",
+          "gn": "Thursday Girls Grade 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:15.060Z",
+  "teams": [
+    {
+      "tid": "c827ae3f",
+      "sid": "68f8c050",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "524e8035",
+      "sid": "e26f328b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b0aa4191",
+      "sid": "bb2d59f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a7ca8ad8",
+      "sid": "fd2b7a84",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88d6d60b",
+      "sid": "a5af6a24",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "189d1d80",
+      "sid": "f2da6886",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c2b2eb4",
+      "sid": "96c25259",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.647Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "7707e787",
+      "sid": "68f8c050"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00705462",
+    "06409928",
+    "089ebf06",
+    "08d63e28",
+    "0a9a6b87",
+    "0be3678b",
+    "101d4972",
+    "106459de",
+    "15deb624",
+    "18c1e6ea",
+    "1ab539e4",
+    "1de4ba8c",
+    "227fd130",
+    "250cde05",
+    "266fcbcb",
+    "27180c23",
+    "27fe6bef",
+    "28da329d",
+    "29471244",
+    "36c6fe54",
+    "3907c5ee",
+    "3c3e5141",
+    "40cccdf2",
+    "45ab26c8",
+    "496984dd",
+    "49bab7c0",
+    "49ff5cf5",
+    "4eb71103",
+    "52f3f624",
+    "532b7a5f",
+    "572bd229",
+    "5bfefaac",
+    "6169b10a",
+    "654dceb7",
+    "665913dc",
+    "6787d8bb",
+    "67f65934",
+    "68afc19b",
+    "6aaef18a",
+    "76fd249b",
+    "7707e787",
+    "7b51ffe2",
+    "7f9e0a20",
+    "809518e6",
+    "80f015e0",
+    "837b9048",
+    "882bdaa4",
+    "99d71d43",
+    "9db1583b",
+    "a1dd5bf1",
+    "a6eecfa6",
+    "a8765ea4",
+    "acb15136",
+    "ae811710",
+    "b04cb906",
+    "b728393d",
+    "b7578741",
+    "b84cdcd6",
+    "c0147742",
+    "c095dca2",
+    "c51d1012",
+    "c55d1a02",
+    "cff694ee",
+    "d0fcfde3",
+    "d4dec3c1",
+    "d957458d",
+    "da8f23e4",
+    "def5ad19",
+    "dff2d268",
+    "e2d39fab",
+    "e3c33290",
+    "ec7941a4",
+    "f299e0fb",
+    "f4d31e3f",
+    "f7bc6eaf",
+    "fe82f21f"
+  ]
+}

@@ -1,1 +1,377 @@
-{"uuid":"5e857f40-a46a-4a12-b376-e02050b27f28","name":"Brett Stothers","gender":"Men","sports":{"Basketball":{"gp":56,"pts":620,"fouls":102,"fg":285,"ft":47,"threePt":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.11,"foulOuts":{"fbf7b529":1},"maxGamePTS":23,"maxGameThreePt":1,"wins":33,"losses":21,"draws":1,"winPct":0.6,"statsChecked":"2026-07-05T15:23:01.049Z"}},"seasons":[{"sid":"a9f7ee61","sn":"Winter 2026","regs":[{"tid":"2260c839","tn":"Latrobe Woodchoppers","gid":"955a45fd","gn":"Monday Open Men D GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":5,"fouls":9,"fg":30,"pts":64,"ft":4,"wins":4,"losses":1}}]},{"sid":"33879dae","sn":"Summer 2025/26","regs":[{"tid":"5620eeb8","tn":"Ring Maggots","gid":"7352f7cb","gn":"Open Men 50+","age":"Senior","div":null,"stats":{"gp":3,"fouls":2,"ft":6,"fg":17,"pts":40,"wins":3}}]},{"sid":"38e48a16","sn":"Summer 2025/26","regs":[{"tid":"bdf7e776","tn":"Latrobe Woodchoppers","gid":"d735e6c8","gn":"Monday Open Men D GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":11,"fouls":22,"ft":5,"fg":55,"threePt":1,"pts":118,"wins":8,"losses":3}}]},{"sid":"fbf7b529","sn":"2025","regs":[{"tid":"e63f9705","tn":"Ring Maggots","gid":"a7910989","gn":"Senior Men Over 50's","age":"Senior","div":null,"stats":{"gp":5,"fouls":11,"ft":9,"fg":30,"pts":69,"finals":1,"gfApps":1,"foulOuts":1,"wins":5,"gfWins":1}}]},{"sid":"3b14c51e","sn":"Winter 2025","regs":[{"tid":"739b78ac","tn":"Latrobe Woodchoppers","gid":"d805e132","gn":"Monday Open Men C GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":13,"fouls":31,"ft":16,"fg":82,"pts":180,"wins":3,"losses":8,"draws":1}}]},{"sid":"f5a2b268","sn":"Summer 2024/25","regs":[{"tid":"97bb741f","tn":"Ring Maggots","gid":"ec4487e2","gn":"Men 40+ Div1","age":null,"div":"v1","stats":{"gp":4,"fouls":4,"ft":5,"fg":18,"pts":41,"wins":2,"losses":2}}]},{"sid":"49bbc8fb","sn":"Summer 2024/25","regs":[{"tid":"7e1f01e6","tn":"Latrobe Woodchoppers","gid":"ee1d6dc8","gn":"Monday Open Men C GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":6,"fouls":12,"ft":2,"fg":24,"pts":50,"wins":2,"losses":4}}]},{"sid":"bece5e56","sn":"2024","regs":[{"tid":"a020d359","tn":"Latrobe Woodchoppers","gid":"ec490fbd","gn":"Monday Open Men B GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":4,"fouls":9,"fg":23,"pts":46,"wins":2,"losses":2}}]},{"sid":"88aeadbb","sn":"2024","regs":[{"tid":"9ed99789","tn":"Ring Maggots","gid":"e97a89c8","gn":"35+ Men","age":null,"div":null,"stats":{"gp":5,"fouls":2,"fg":6,"pts":12,"wins":4,"losses":1}}]}],"updatedAt":"2026-06-03T07:15:46.147Z","teams":[{"tid":"2260c839","sid":"a9f7ee61","status":"ACTIVE"},{"tid":"bdf7e776","sid":"38e48a16","status":"COMPLETED"},{"tid":"5620eeb8","sid":"33879dae","status":"COMPLETED"},{"tid":"e63f9705","sid":"fbf7b529","status":"COMPLETED"},{"tid":"739b78ac","sid":"3b14c51e","status":"COMPLETED"},{"tid":"7e1f01e6","sid":"49bbc8fb","status":"COMPLETED"},{"tid":"97bb741f","sid":"f5a2b268","status":"COMPLETED"},{"tid":"56e5ba8c","sid":"77829cdb","status":"COMPLETED"},{"tid":"a020d359","sid":"bece5e56","status":"COMPLETED"},{"tid":"9ed99789","sid":"88aeadbb","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:40:20.283Z","records":{"maxGamePTS":{"v":23,"gameKey":"d67acb11","sid":"3b14c51e"},"maxGameThreePt":{"v":1,"gameKey":"36a46006","sid":"38e48a16"}},"games":["00540337","01426d58","0434d52d","05ca3a7a","0e704011","10a76c39","133a8a0a","18db0e50","1e3be9d4","23e2413e","25c4f742","275af0b3","318e0af1","3247e1e5","35397a6e","35874b11","36a46006","3a07ac10","3ca90358","4be5e4fe","50d42834","52e58ea6","6d47f56e","6da2596d","753a0cf7","79e89692","7bb134bb","7c768eb4","7eb15efc","7f8d51cf","976041c5","9e2d92a0","a3bf59a5","aab5d711","b071a6eb","b24a8cf1","bee9cf94","c9822095","cd78562d","d20c2e1b","d3284e82","d67acb11","dd0b2390","dda96a58","df0d4fec","e1918e76","e1e92f37","e9a1692a","ecf2e34a","efc34040","f3823266","f77d034f","f799ba4e","fb460140","fed82053","ffdd8f95"]}
+{
+  "uuid": "5e857f40-a46a-4a12-b376-e02050b27f28",
+  "name": "Brett Stothers",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 56,
+      "pts": 620,
+      "fouls": 102,
+      "fg": 285,
+      "ft": 47,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.11,
+      "foulOuts": {
+        "fbf7b529": 1
+      },
+      "maxGamePTS": 23,
+      "maxGameThreePt": 1,
+      "wins": 33,
+      "losses": 21,
+      "draws": 1,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T15:23:01.049Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a9f7ee61",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "2260c839",
+          "tn": "Latrobe Woodchoppers",
+          "gid": "955a45fd",
+          "gn": "Monday Open Men D GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 9,
+            "fg": 30,
+            "pts": 64,
+            "ft": 4,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "33879dae",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "5620eeb8",
+          "tn": "Ring Maggots",
+          "gid": "7352f7cb",
+          "gn": "Open Men 50+",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "ft": 6,
+            "fg": 17,
+            "pts": 40,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38e48a16",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "bdf7e776",
+          "tn": "Latrobe Woodchoppers",
+          "gid": "d735e6c8",
+          "gn": "Monday Open Men D GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 22,
+            "ft": 5,
+            "fg": 55,
+            "threePt": 1,
+            "pts": 118,
+            "wins": 8,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbf7b529",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "e63f9705",
+          "tn": "Ring Maggots",
+          "gid": "a7910989",
+          "gn": "Senior Men Over 50's",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 11,
+            "ft": 9,
+            "fg": 30,
+            "pts": 69,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b14c51e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "739b78ac",
+          "tn": "Latrobe Woodchoppers",
+          "gid": "d805e132",
+          "gn": "Monday Open Men C GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 31,
+            "ft": 16,
+            "fg": 82,
+            "pts": 180,
+            "wins": 3,
+            "losses": 8,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5a2b268",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "97bb741f",
+          "tn": "Ring Maggots",
+          "gid": "ec4487e2",
+          "gn": "Men 40+ Div1",
+          "age": null,
+          "div": "v1",
+          "stats": {
+            "gp": 4,
+            "fouls": 4,
+            "ft": 5,
+            "fg": 18,
+            "pts": 41,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "49bbc8fb",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "7e1f01e6",
+          "tn": "Latrobe Woodchoppers",
+          "gid": "ee1d6dc8",
+          "gn": "Monday Open Men C GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 12,
+            "ft": 2,
+            "fg": 24,
+            "pts": 50,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bece5e56",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "a020d359",
+          "tn": "Latrobe Woodchoppers",
+          "gid": "ec490fbd",
+          "gn": "Monday Open Men B GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 9,
+            "fg": 23,
+            "pts": 46,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88aeadbb",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "9ed99789",
+          "tn": "Ring Maggots",
+          "gid": "e97a89c8",
+          "gn": "35+ Men",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 6,
+            "pts": 12,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "77829cdb",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "56e5ba8c",
+          "tn": "Ring Maggots",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T07:15:46.147Z",
+  "teams": [
+    {
+      "tid": "2260c839",
+      "sid": "a9f7ee61",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5620eeb8",
+      "sid": "33879dae",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bdf7e776",
+      "sid": "38e48a16",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e63f9705",
+      "sid": "fbf7b529",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "739b78ac",
+      "sid": "3b14c51e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "97bb741f",
+      "sid": "f5a2b268",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e1f01e6",
+      "sid": "49bbc8fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a020d359",
+      "sid": "bece5e56",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ed99789",
+      "sid": "88aeadbb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56e5ba8c",
+      "sid": "77829cdb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.108Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "d67acb11",
+      "sid": "3b14c51e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "36a46006",
+      "sid": "38e48a16"
+    }
+  },
+  "games": [
+    "00540337",
+    "01426d58",
+    "0434d52d",
+    "05ca3a7a",
+    "0e704011",
+    "10a76c39",
+    "133a8a0a",
+    "18db0e50",
+    "1e3be9d4",
+    "23e2413e",
+    "25c4f742",
+    "275af0b3",
+    "318e0af1",
+    "3247e1e5",
+    "35397a6e",
+    "35874b11",
+    "36a46006",
+    "3a07ac10",
+    "3ca90358",
+    "4be5e4fe",
+    "50d42834",
+    "52e58ea6",
+    "6d47f56e",
+    "6da2596d",
+    "753a0cf7",
+    "79e89692",
+    "7bb134bb",
+    "7c768eb4",
+    "7eb15efc",
+    "7f8d51cf",
+    "976041c5",
+    "9e2d92a0",
+    "a3bf59a5",
+    "aab5d711",
+    "b071a6eb",
+    "b24a8cf1",
+    "bee9cf94",
+    "c9822095",
+    "cd78562d",
+    "d20c2e1b",
+    "d3284e82",
+    "d67acb11",
+    "dd0b2390",
+    "dda96a58",
+    "df0d4fec",
+    "e1918e76",
+    "e1e92f37",
+    "e9a1692a",
+    "ecf2e34a",
+    "efc34040",
+    "f3823266",
+    "f77d034f",
+    "f799ba4e",
+    "fb460140",
+    "fed82053",
+    "ffdd8f95"
+  ]
+}

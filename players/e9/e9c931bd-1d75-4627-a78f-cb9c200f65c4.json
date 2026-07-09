@@ -1,1 +1,83 @@
-{"uuid":"e9c931bd-1d75-4627-a78f-cb9c200f65c4","name":"Ben Delaney","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":3,"foulOuts":{"88fd4210":1},"gp":34,"pts":125,"fg":43,"ft":15,"threePt":8,"fouls":40,"statsChecked":"2026-07-06T19:01:59.959Z"}},"seasons":[{"sid":"297562bc","regs":[{"tid":"bde3ad50"}]},{"sid":"88fd4210","regs":[{"tid":"87f93a66"}]},{"sid":"d3dee716","regs":[{"tid":"23338397"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":15,"gameKey":"05b60119","sid":"88fd4210"},"maxGameThreePt":{"v":3,"gameKey":"05b60119","sid":"88fd4210"}}}
+{
+  "uuid": "e9c931bd-1d75-4627-a78f-cb9c200f65c4",
+  "name": "Ben Delaney",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 3,
+      "foulOuts": {
+        "88fd4210": 1
+      },
+      "gp": 34,
+      "pts": 125,
+      "fg": 43,
+      "ft": 15,
+      "threePt": 8,
+      "fouls": 40,
+      "statsChecked": "2026-07-06T19:01:59.959Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "bde3ad50",
+          "gid": "4be5ebac",
+          "gn": "Sunday Mixed Division 1"
+        }
+      ]
+    },
+    {
+      "sid": "88fd4210",
+      "regs": [
+        {
+          "tid": "87f93a66",
+          "gid": "73b90942",
+          "gn": "Men WEDNESDAY Section 13"
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "regs": [
+        {
+          "tid": "23338397",
+          "gid": "541e0a47",
+          "gn": "Men WEDNESDAY Section 12"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "bde3ad50",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87f93a66",
+      "sid": "88fd4210",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23338397",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "05b60119",
+      "sid": "88fd4210"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "05b60119",
+      "sid": "88fd4210"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:30.297Z"
+}

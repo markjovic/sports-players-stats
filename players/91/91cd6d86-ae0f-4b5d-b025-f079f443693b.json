@@ -1,1 +1,95 @@
-{"uuid":"91cd6d86-ae0f-4b5d-b025-f079f443693b","name":"Jessica Looker","gender":"Women","sports":{"Basketball":{"gp":5,"pts":4,"fouls":7,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":10,"winPct":1,"statsChecked":"2026-07-05T15:24:18.474Z"}},"seasons":[{"sid":"3f1715bc","sn":"Winter 2026","club":"Osborne United Basketball Club","regs":[{"tid":"b00349f3","tn":"OsborneUTD Big Bullets","gid":"817c71fd","gn":"Tuesday \"Loosie's Diner\" Open Women Div 3 (Grading)","age":"Senior","div":null,"stats":{"gp":5,"fouls":7,"fg":2,"pts":4,"wins":5}},{"tid":"b00349f3","tn":"","gid":"ee9d2d11","gn":"Tuesday \"Loosie's Diner\" Open Women Div 2","div":null,"stats":{"gp":5,"pts":4,"fg":2,"fouls":7,"wins":5}}]}],"updatedAt":"2026-07-04T05:40:36.517Z","teams":[{"tid":"1b5f264f","sid":"3f1715bc","status":"ACTIVE"},{"tid":"b00349f3","sid":"3f1715bc","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:28:34.839Z","records":{"maxGamePTS":{"v":2,"gameKey":"f1b15bbe","sid":"3f1715bc"},"maxGameThreePt":{"v":null}},"games":["0e3d7e14","26e6e590","2a2fd432","f1b15bbe","fbaf5e27"]}
+{
+  "uuid": "91cd6d86-ae0f-4b5d-b025-f079f443693b",
+  "name": "Jessica Looker",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 4,
+      "fouls": 7,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T15:24:18.474Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Osborne United Basketball Club",
+      "regs": [
+        {
+          "tid": "b00349f3",
+          "tn": "OsborneUTD Big Bullets",
+          "gid": "ee9d2d11",
+          "gn": "Tuesday \"Loosie's Diner\" Open Women Div 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "fg": 2,
+            "pts": 4,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "b00349f3",
+          "tn": "",
+          "gid": "ee9d2d11",
+          "gn": "Tuesday \"Loosie's Diner\" Open Women Div 2",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 7,
+            "wins": 5
+          }
+        },
+        {
+          "tid": "1b5f264f",
+          "tn": "Big Bullets (REMOVE - CLUB TEAM)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:40:36.517Z",
+  "teams": [
+    {
+      "tid": "b00349f3",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1b5f264f",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.238Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f1b15bbe",
+      "sid": "3f1715bc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0e3d7e14",
+    "26e6e590",
+    "2a2fd432",
+    "f1b15bbe",
+    "fbaf5e27"
+  ]
+}

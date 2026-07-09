@@ -1,1 +1,335 @@
-{"uuid":"c1fc274e-0ff0-44be-aabe-0bc6999b8156","name":"Kira Sargent","gender":"Women","sports":{"Basketball":{"gp":47,"pts":120,"fouls":14,"fg":54,"ft":6,"threePt":2,"foulOuts":{},"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.75,"maxGamePTS":9,"maxGameThreePt":1,"wins":61,"losses":28,"winPct":0.66,"draws":3,"statsChecked":"2026-07-05T15:38:49.491Z"}},"seasons":[{"sid":"9174b4c3","sn":"Summer 2024/25","regs":[{"tid":"acba77ba","tn":"All Pain No Gain","gid":"ae056332","gn":"Sunday Open Mixed A","age":"Senior","div":null,"stats":{"gp":11,"fouls":4,"ft":2,"fg":5,"pts":12,"finals":1,"wins":7,"losses":2}}]},{"sid":"d9c33f98","sn":"Winter 2024","regs":[{"tid":"5fbc7162","tn":"All Pain No Gain","gid":"f437ccdc","gn":"Sunday Open Mixed","age":"Senior","div":null,"stats":{"gp":18,"fouls":6,"ft":1,"fg":27,"pts":55,"finals":1,"gfApps":1,"wins":10,"losses":8}},{"tid":"5fbc7162","tn":"All Pain No Gain","gid":"8ca57bb8","gn":"Sunday Open Mixed B","age":"Senior","div":null,"stats":{"gp":18,"fouls":6,"fg":27,"pts":55,"finals":1,"gfApps":1,"wins":10,"losses":8,"ft":1}}]},{"sid":"11f4ba8a","sn":"Summer 2023/24","regs":[{"tid":"d574ad62","tn":"newbies ","gid":"e7dbdd65","gn":"Monday Senior Women D","age":"Senior","div":null,"stats":{"gp":2,"fg":3,"threePt":1,"pts":9,"finals":1,"wins":1,"losses":1}},{"tid":"7f10f11f","stats":{"wins":11,"losses":3,"draws":1,"finals":1,"gp":16,"pts":44,"fg":19,"ft":3,"threePt":1,"fouls":4}}]},{"sid":"11f4ba8a","sn":"Summer 2023/24","regs":[{"tid":"7f10f11f","tn":"All Pain No Gain","gid":"9ac566d4","gn":"Sunday Senior Mixed B","age":"Senior","div":null,"stats":{"gp":16,"fouls":4,"ft":3,"fg":19,"threePt":1,"pts":44,"finals":1,"wins":11,"losses":3,"draws":1}},{"tid":"7f10f11f","tn":"All Pain No Gain","gid":"542e085d","gn":"Sunday Senior Mixed A","age":"Senior","div":null,"stats":{"gp":16,"finals":1,"wins":11,"losses":3,"draws":1,"pts":44,"fg":19,"ft":3,"threePt":1,"fouls":4}}]}],"updatedAt":"2026-06-02T14:51:55.946Z","teams":[{"tid":"a4c1afb8","sid":"cc9be2f3","status":"COMPLETED"},{"tid":"acba77ba","sid":"9174b4c3","status":"COMPLETED"},{"tid":"5fbc7162","sid":"d9c33f98","status":"COMPLETED"},{"tid":"7f10f11f","sid":"11f4ba8a","status":"COMPLETED"},{"tid":"d574ad62","sid":"11f4ba8a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:19.760Z","records":{"maxGamePTS":{"v":9,"gameKey":"1dfd4e9e","sid":"11f4ba8a"},"maxGameThreePt":{"v":1,"gameKey":"1dfd4e9e","sid":"11f4ba8a"}},"games":["05e77512","060243e0","072736e8","0c062b73","132b93ef","17c56a62","19d83cf8","1dfd4e9e","28d0ea3e","2beb9ddb","2ca80460","38724f93","3b144e00","4588360c","48fdde0b","499faf47","617102b0","64c61285","65cbebc5","6d3cf776","707539ae","7533ae60","7d81678b","8060eb20","82b086be","82d0b0d1","8dae2944","8e0b6a1c","92eef163","9afae311","a34295b1","a91423b2","abaa1ed2","acf7774b","b06eb559","b1ddfab0","b412f9a2","b460de9c","b782e4c3","ccdf0174","d5b30db5","d949396b","df75d298","e5656833","e818de8d","ec12666c","f058f6fb"],"gameTids":{"3b144e00":"acba77ba","38724f93":"acba77ba","707539ae":"acba77ba","ccdf0174":"acba77ba","65cbebc5":"acba77ba","0c062b73":"acba77ba","f058f6fb":"acba77ba","64c61285":"acba77ba","8dae2944":"acba77ba","d949396b":"acba77ba","8e0b6a1c":"acba77ba","617102b0":"5fbc7162","28d0ea3e":"5fbc7162","6d3cf776":"5fbc7162","05e77512":"5fbc7162","ec12666c":"5fbc7162","48fdde0b":"5fbc7162","072736e8":"5fbc7162","17c56a62":"5fbc7162","b06eb559":"5fbc7162","acf7774b":"5fbc7162","19d83cf8":"5fbc7162","060243e0":"5fbc7162","a91423b2":"5fbc7162","82b086be":"5fbc7162","b782e4c3":"5fbc7162","132b93ef":"5fbc7162","7d81678b":"5fbc7162","d5b30db5":"5fbc7162","1dfd4e9e":"d574ad62","2ca80460":"d574ad62","df75d298":"7f10f11f","e5656833":"7f10f11f","a34295b1":"7f10f11f","92eef163":"7f10f11f","499faf47":"7f10f11f","8060eb20":"7f10f11f","2beb9ddb":"7f10f11f","9afae311":"7f10f11f","b460de9c":"7f10f11f","4588360c":"7f10f11f","abaa1ed2":"7f10f11f","b1ddfab0":"7f10f11f","82d0b0d1":"7f10f11f","b412f9a2":"7f10f11f","e818de8d":"7f10f11f","7533ae60":"7f10f11f"}}
+{
+  "uuid": "c1fc274e-0ff0-44be-aabe-0bc6999b8156",
+  "name": "Kira Sargent",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 47,
+      "pts": 120,
+      "fouls": 14,
+      "fg": 54,
+      "ft": 6,
+      "threePt": 2,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 61,
+      "losses": 28,
+      "winPct": 0.66,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:38:49.491Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9174b4c3",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "acba77ba",
+          "tn": "All Pain No Gain",
+          "gid": "ae056332",
+          "gn": "Sunday Open Mixed A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 5,
+            "pts": 12,
+            "finals": 1,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d9c33f98",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "5fbc7162",
+          "tn": "All Pain No Gain",
+          "gid": "f437ccdc",
+          "gn": "Sunday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 27,
+            "pts": 55,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "5fbc7162",
+          "tn": "All Pain No Gain",
+          "gid": "8ca57bb8",
+          "gn": "Sunday Open Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 6,
+            "fg": 27,
+            "pts": 55,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 8,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "11f4ba8a",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "d574ad62",
+          "tn": "newbies ",
+          "gid": "e7dbdd65",
+          "gn": "Monday Senior Women D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 9,
+            "finals": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "7f10f11f",
+          "stats": {
+            "wins": 11,
+            "losses": 3,
+            "draws": 1,
+            "finals": 1,
+            "gp": 16,
+            "pts": 44,
+            "fg": 19,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 4
+          },
+          "gid": "9ac566d4",
+          "gn": "Sunday Senior Mixed B"
+        }
+      ]
+    },
+    {
+      "sid": "11f4ba8a",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "7f10f11f",
+          "tn": "All Pain No Gain",
+          "gid": "9ac566d4",
+          "gn": "Sunday Senior Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 4,
+            "ft": 3,
+            "fg": 19,
+            "threePt": 1,
+            "pts": 44,
+            "finals": 1,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "7f10f11f",
+          "tn": "All Pain No Gain",
+          "gid": "542e085d",
+          "gn": "Sunday Senior Mixed A",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "finals": 1,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1,
+            "pts": 44,
+            "fg": 19,
+            "ft": 3,
+            "threePt": 1,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc9be2f3",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "a4c1afb8",
+          "tn": "All Pain No Gain",
+          "gid": "5714e296",
+          "gn": "Sunday Open Mixed A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T14:51:55.946Z",
+  "teams": [
+    {
+      "tid": "acba77ba",
+      "sid": "9174b4c3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5fbc7162",
+      "sid": "d9c33f98",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d574ad62",
+      "sid": "11f4ba8a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f10f11f",
+      "sid": "11f4ba8a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4c1afb8",
+      "sid": "cc9be2f3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.608Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "1dfd4e9e",
+      "sid": "11f4ba8a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1dfd4e9e",
+      "sid": "11f4ba8a"
+    }
+  },
+  "games": [
+    "05e77512",
+    "060243e0",
+    "072736e8",
+    "0c062b73",
+    "132b93ef",
+    "17c56a62",
+    "19d83cf8",
+    "1dfd4e9e",
+    "28d0ea3e",
+    "2beb9ddb",
+    "2ca80460",
+    "38724f93",
+    "3b144e00",
+    "4588360c",
+    "48fdde0b",
+    "499faf47",
+    "617102b0",
+    "64c61285",
+    "65cbebc5",
+    "6d3cf776",
+    "707539ae",
+    "7533ae60",
+    "7d81678b",
+    "8060eb20",
+    "82b086be",
+    "82d0b0d1",
+    "8dae2944",
+    "8e0b6a1c",
+    "92eef163",
+    "9afae311",
+    "a34295b1",
+    "a91423b2",
+    "abaa1ed2",
+    "acf7774b",
+    "b06eb559",
+    "b1ddfab0",
+    "b412f9a2",
+    "b460de9c",
+    "b782e4c3",
+    "ccdf0174",
+    "d5b30db5",
+    "d949396b",
+    "df75d298",
+    "e5656833",
+    "e818de8d",
+    "ec12666c",
+    "f058f6fb"
+  ],
+  "gameTids": {
+    "3b144e00": "acba77ba",
+    "38724f93": "acba77ba",
+    "707539ae": "acba77ba",
+    "ccdf0174": "acba77ba",
+    "65cbebc5": "acba77ba",
+    "0c062b73": "acba77ba",
+    "f058f6fb": "acba77ba",
+    "64c61285": "acba77ba",
+    "8dae2944": "acba77ba",
+    "d949396b": "acba77ba",
+    "8e0b6a1c": "acba77ba",
+    "617102b0": "5fbc7162",
+    "28d0ea3e": "5fbc7162",
+    "6d3cf776": "5fbc7162",
+    "05e77512": "5fbc7162",
+    "ec12666c": "5fbc7162",
+    "48fdde0b": "5fbc7162",
+    "072736e8": "5fbc7162",
+    "17c56a62": "5fbc7162",
+    "b06eb559": "5fbc7162",
+    "acf7774b": "5fbc7162",
+    "19d83cf8": "5fbc7162",
+    "060243e0": "5fbc7162",
+    "a91423b2": "5fbc7162",
+    "82b086be": "5fbc7162",
+    "b782e4c3": "5fbc7162",
+    "132b93ef": "5fbc7162",
+    "7d81678b": "5fbc7162",
+    "d5b30db5": "5fbc7162",
+    "1dfd4e9e": "d574ad62",
+    "2ca80460": "d574ad62",
+    "df75d298": "7f10f11f",
+    "e5656833": "7f10f11f",
+    "a34295b1": "7f10f11f",
+    "92eef163": "7f10f11f",
+    "499faf47": "7f10f11f",
+    "8060eb20": "7f10f11f",
+    "2beb9ddb": "7f10f11f",
+    "9afae311": "7f10f11f",
+    "b460de9c": "7f10f11f",
+    "4588360c": "7f10f11f",
+    "abaa1ed2": "7f10f11f",
+    "b1ddfab0": "7f10f11f",
+    "82d0b0d1": "7f10f11f",
+    "b412f9a2": "7f10f11f",
+    "e818de8d": "7f10f11f",
+    "7533ae60": "7f10f11f"
+  }
+}

@@ -1,1 +1,305 @@
-{"uuid":"7c905800-5a38-4392-bc82-4fe45df301fe","name":"Arnhem Saunders","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":530,"fouls":53,"fg":248,"ft":22,"threePt":4,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.6,"foulOuts":{"632fa886":1},"maxGamePTS":38,"maxGameThreePt":1,"wins":20,"losses":15,"draws":1,"winPct":0.56,"statsChecked":"2026-07-05T15:10:24.846Z"}},"seasons":[{"sid":"614a2f6d","sn":"2026","regs":[{"tid":"81926c4f","tn":"BRUS 14 Boys","gid":"56fa2bb5","gn":"U14 Boys","age":"U14","div":null,"stats":{"gp":5,"fouls":2,"fg":6,"pts":12,"finals":1,"wins":3,"losses":2}}]},{"sid":"7bf0d576","sn":"Summer 2025/26","regs":[{"tid":"6f91a356","tn":"GREEN U14B","gid":"07ea7994","gn":"Tuesday U14 Boys B","age":"U14","div":null,"stats":{"gp":17,"fouls":25,"ft":10,"fg":132,"threePt":1,"pts":277,"finals":1,"gfApps":1,"wins":10,"losses":7,"gfWins":1}}]},{"sid":"e9e6b681","sn":"Winter 2025","regs":[{"tid":"fbc33653","tn":"SILVER U14B","gid":"b859d71d","gn":"Tuesday U14 Boys B","age":"U14","div":null,"stats":{"gp":12,"fouls":5,"ft":8,"fg":64,"threePt":2,"pts":142,"finals":1,"wins":4,"losses":4,"draws":1}},{"tid":"445118ab","tn":"NAVY U14B","gid":"b859d71d","gn":"Tuesday U14 Boys B","age":"U14","div":null,"stats":{"gp":4,"fouls":5,"ft":3,"fg":10,"pts":23,"finals":1,"wins":1,"losses":1}}]},{"sid":"632fa886","sn":"2024","regs":[{"tid":"bcf7f47f","tn":"BRUS","gid":"798e035a","gn":"U12 Boys","age":"U12","div":null,"stats":{"gp":7,"fouls":12,"fg":6,"pts":12,"foulOuts":1}}]},{"sid":"ebd43d14","regs":[{"tid":"19852786","stats":{"gp":3,"pts":64,"fg":30,"ft":1,"threePt":1,"fouls":4,"wins":2,"losses":1}}]}],"updatedAt":"2026-06-02T11:34:49.197Z","teams":[{"tid":"19852786","sid":"ebd43d14","status":"ACTIVE"},{"tid":"6f91a356","sid":"7bf0d576","status":"COMPLETED"},{"tid":"81926c4f","sid":"614a2f6d","status":"COMPLETED"},{"tid":"fbc33653","sid":"e9e6b681","status":"COMPLETED"},{"tid":"bcf7f47f","sid":"632fa886","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:44:03.694Z","records":{"maxGamePTS":{"v":38,"gameKey":"6203802a","sid":"7bf0d576"},"maxGameThreePt":{"v":1,"gameKey":"b8a0a518","sid":"ebd43d14"}},"games":["0df47ef5","0e0e662b","120519d2","14e74164","17ef20f7","271dd825","29e8ec1b","2b4cbfa0","310e21e6","31a71d40","347c38aa","3b0d70fb","3b1352be","3f5e54f6","465b78c9","47b6d766","4e119950","522e7874","6203802a","69b70232","77874bb5","8d3389f7","9208ecb7","92ef24e9","9e2a9f4e","a2733b84","abd26e0b","b37a47c0","b760f20b","b819d8c0","b8a0a518","b9ded168","c4ff044d","c55e5906","da8f6ea2","dfbcf21a","e0e937ce","edb4163b","f0042291","f6c2c40f","f8c2d2a7"],"gameTids":{"b8a0a518":"19852786","120519d2":"19852786","f6c2c40f":"19852786","abd26e0b":"81926c4f","9208ecb7":"81926c4f","f8c2d2a7":"81926c4f","29e8ec1b":"81926c4f","b9ded168":"81926c4f","465b78c9":"6f91a356","a2733b84":"6f91a356","6203802a":"6f91a356","31a71d40":"6f91a356","edb4163b":"6f91a356","271dd825":"6f91a356","92ef24e9":"6f91a356","e0e937ce":"6f91a356","9e2a9f4e":"6f91a356","522e7874":"6f91a356","2b4cbfa0":"6f91a356","14e74164":"6f91a356","da8f6ea2":"6f91a356","8d3389f7":"6f91a356","3f5e54f6":"6f91a356","17ef20f7":"6f91a356","f0042291":"6f91a356","0df47ef5":"fbc33653","b760f20b":"fbc33653","c4ff044d":"fbc33653","b37a47c0":"fbc33653","347c38aa":"fbc33653","3b0d70fb":"fbc33653","310e21e6":"fbc33653","0e0e662b":"fbc33653","c55e5906":"fbc33653","3b1352be":"fbc33653","69b70232":"fbc33653","47b6d766":"fbc33653","dfbcf21a":"445118ab","4e119950":"445118ab","b819d8c0":"445118ab","77874bb5":"445118ab","9581278e":"bcf7f47f","f4840489":"bcf7f47f","a68ce7ca":"bcf7f47f","1c76bf74":"bcf7f47f","681383cf":"bcf7f47f","6b5a6b5e":"bcf7f47f","e57a9e04":"bcf7f47f"}}
+{
+  "uuid": "7c905800-5a38-4392-bc82-4fe45df301fe",
+  "name": "Arnhem Saunders",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 530,
+      "fouls": 53,
+      "fg": 248,
+      "ft": 22,
+      "threePt": 4,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.6,
+      "foulOuts": {
+        "632fa886": 1
+      },
+      "maxGamePTS": 38,
+      "maxGameThreePt": 1,
+      "wins": 20,
+      "losses": 15,
+      "draws": 1,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T15:10:24.846Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "614a2f6d",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "81926c4f",
+          "tn": "BRUS 14 Boys",
+          "gid": "56fa2bb5",
+          "gn": "U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7bf0d576",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "6f91a356",
+          "tn": "GREEN U14B",
+          "gid": "07ea7994",
+          "gn": "Tuesday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 25,
+            "ft": 10,
+            "fg": 132,
+            "threePt": 1,
+            "pts": 277,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 7,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e9e6b681",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "fbc33653",
+          "tn": "SILVER U14B",
+          "gid": "b859d71d",
+          "gn": "Tuesday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 5,
+            "ft": 8,
+            "fg": 64,
+            "threePt": 2,
+            "pts": 142,
+            "finals": 1,
+            "wins": 4,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "445118ab",
+          "tn": "NAVY U14B",
+          "gid": "b859d71d",
+          "gn": "Tuesday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 5,
+            "ft": 3,
+            "fg": 10,
+            "pts": 23,
+            "finals": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "632fa886",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "bcf7f47f",
+          "tn": "BRUS",
+          "gid": "798e035a",
+          "gn": "U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "fg": 6,
+            "pts": 12,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ebd43d14",
+      "regs": [
+        {
+          "tid": "19852786",
+          "stats": {
+            "gp": 3,
+            "pts": 64,
+            "fg": 30,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 1
+          },
+          "gid": "4f3bd8f0",
+          "gn": "Tuesday U14 Boys B"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T11:34:49.197Z",
+  "teams": [
+    {
+      "tid": "81926c4f",
+      "sid": "614a2f6d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f91a356",
+      "sid": "7bf0d576",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fbc33653",
+      "sid": "e9e6b681",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "445118ab",
+      "sid": "e9e6b681",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bcf7f47f",
+      "sid": "632fa886",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "19852786",
+      "sid": "ebd43d14",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:23.981Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 38,
+      "gameKey": "6203802a",
+      "sid": "7bf0d576"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b8a0a518",
+      "sid": "ebd43d14"
+    }
+  },
+  "games": [
+    "0df47ef5",
+    "0e0e662b",
+    "120519d2",
+    "14e74164",
+    "17ef20f7",
+    "271dd825",
+    "29e8ec1b",
+    "2b4cbfa0",
+    "310e21e6",
+    "31a71d40",
+    "347c38aa",
+    "3b0d70fb",
+    "3b1352be",
+    "3f5e54f6",
+    "465b78c9",
+    "47b6d766",
+    "4e119950",
+    "522e7874",
+    "6203802a",
+    "69b70232",
+    "77874bb5",
+    "8d3389f7",
+    "9208ecb7",
+    "92ef24e9",
+    "9e2a9f4e",
+    "a2733b84",
+    "abd26e0b",
+    "b37a47c0",
+    "b760f20b",
+    "b819d8c0",
+    "b8a0a518",
+    "b9ded168",
+    "c4ff044d",
+    "c55e5906",
+    "da8f6ea2",
+    "dfbcf21a",
+    "e0e937ce",
+    "edb4163b",
+    "f0042291",
+    "f6c2c40f",
+    "f8c2d2a7"
+  ],
+  "gameTids": {
+    "b8a0a518": "19852786",
+    "120519d2": "19852786",
+    "f6c2c40f": "19852786",
+    "abd26e0b": "81926c4f",
+    "9208ecb7": "81926c4f",
+    "f8c2d2a7": "81926c4f",
+    "29e8ec1b": "81926c4f",
+    "b9ded168": "81926c4f",
+    "465b78c9": "6f91a356",
+    "a2733b84": "6f91a356",
+    "6203802a": "6f91a356",
+    "31a71d40": "6f91a356",
+    "edb4163b": "6f91a356",
+    "271dd825": "6f91a356",
+    "92ef24e9": "6f91a356",
+    "e0e937ce": "6f91a356",
+    "9e2a9f4e": "6f91a356",
+    "522e7874": "6f91a356",
+    "2b4cbfa0": "6f91a356",
+    "14e74164": "6f91a356",
+    "da8f6ea2": "6f91a356",
+    "8d3389f7": "6f91a356",
+    "3f5e54f6": "6f91a356",
+    "17ef20f7": "6f91a356",
+    "f0042291": "6f91a356",
+    "0df47ef5": "fbc33653",
+    "b760f20b": "fbc33653",
+    "c4ff044d": "fbc33653",
+    "b37a47c0": "fbc33653",
+    "347c38aa": "fbc33653",
+    "3b0d70fb": "fbc33653",
+    "310e21e6": "fbc33653",
+    "0e0e662b": "fbc33653",
+    "c55e5906": "fbc33653",
+    "3b1352be": "fbc33653",
+    "69b70232": "fbc33653",
+    "47b6d766": "fbc33653",
+    "dfbcf21a": "445118ab",
+    "4e119950": "445118ab",
+    "b819d8c0": "445118ab",
+    "77874bb5": "445118ab",
+    "9581278e": "bcf7f47f",
+    "f4840489": "bcf7f47f",
+    "a68ce7ca": "bcf7f47f",
+    "1c76bf74": "bcf7f47f",
+    "681383cf": "bcf7f47f",
+    "6b5a6b5e": "bcf7f47f",
+    "e57a9e04": "bcf7f47f"
+  }
+}

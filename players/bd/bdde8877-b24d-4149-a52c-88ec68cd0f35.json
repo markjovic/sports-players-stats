@@ -1,1 +1,97 @@
-{"uuid":"bdde8877-b24d-4149-a52c-88ec68cd0f35","name":"Wesley Wong","gender":"Boys","sports":{"Basketball":{"gp":9,"pts":15,"fouls":12,"fg":5,"ft":5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":5,"losses":4,"winPct":0.56,"statsChecked":"2026-07-05T14:30:15.709Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"acee54b9","tn":"Inner West Bulls U12 Boys 2","gid":"6f4c9aba","gn":"BOYS UNDER 12 C1","age":null,"div":"C1","stats":{"gp":5,"fouls":10,"ft":5,"fg":5,"pts":15,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"5b69750b","stats":{"wins":3,"losses":1,"gp":4,"fouls":2}}]}],"updatedAt":"2026-05-31T01:01:45.258Z","teams":[{"tid":"5b69750b","sid":"0869ea69","status":"UPCOMING"},{"tid":"acee54b9","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:40:21.611Z","games":["039e9979","07a5894a","0fa66dd7","5d1531ef","7f36190b","897bd889","89dde4fd","e879c25b","f2a9432f"],"records":{"maxGamePTS":{"v":4,"gameKey":"f2a9432f","sid":"6dd649c0"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "bdde8877-b24d-4149-a52c-88ec68cd0f35",
+  "name": "Wesley Wong",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 15,
+      "fouls": 12,
+      "fg": 5,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 4,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T14:30:15.709Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "acee54b9",
+          "tn": "Inner West Bulls U12 Boys 2",
+          "gid": "6f4c9aba",
+          "gn": "BOYS UNDER 12 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "fouls": 10,
+            "ft": 5,
+            "fg": 5,
+            "pts": 15,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "5b69750b",
+          "stats": {
+            "wins": 3,
+            "losses": 1,
+            "gp": 4,
+            "fouls": 2
+          },
+          "gid": "31c6a4b9",
+          "gn": "BOYS UNDER 14 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:01:45.258Z",
+  "teams": [
+    {
+      "tid": "acee54b9",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b69750b",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.325Z",
+  "games": [
+    "039e9979",
+    "07a5894a",
+    "0fa66dd7",
+    "5d1531ef",
+    "7f36190b",
+    "897bd889",
+    "89dde4fd",
+    "e879c25b",
+    "f2a9432f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "f2a9432f",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

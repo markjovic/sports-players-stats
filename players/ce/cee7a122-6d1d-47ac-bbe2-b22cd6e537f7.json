@@ -1,1 +1,347 @@
-{"uuid":"cee7a122-6d1d-47ac-bbe2-b22cd6e537f7","name":"Edward Goulding","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":70,"fouls":53,"fg":29,"ft":12,"foulOuts":{},"finals":3,"gfApps":1,"gfWins":0,"finalsPerSeason":0.75,"maxGamePTS":11,"maxGameThreePt":null,"wins":58,"losses":42,"winPct":0.53,"draws":10,"statsChecked":"2026-07-05T14:44:39.798Z"}},"seasons":[{"sid":"7fde5e5c","sn":"Winter 2026","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"5a175901","tn":"SCJB Saints U10 Boys Goulding","gid":"d8cfbcc2","gn":"Saturday U10 Boys C Grade","age":"U10","div":null,"stats":{"gp":7,"fouls":14,"ft":5,"fg":17,"pts":39,"losses":6,"draws":1}},{"tid":"5a175901","tn":"SCJB Saints U10 Boys Goulding","gid":"86555c87","gn":"Saturday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":7,"fouls":14,"ft":5,"fg":17,"pts":39,"losses":6,"draws":1}}]},{"sid":"8e63d65d","sn":"Summer 2025/26","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"dd579f69","tn":"STC Saints U10 Boys Goulding","gid":"20fb6e07","gn":"Saturday U10 Boys B Grade","age":"U10","div":null,"stats":{"gp":15,"fouls":13,"ft":2,"fg":6,"pts":14,"finals":1,"wins":8,"losses":5,"draws":2}},{"tid":"dd579f69","tn":"STC Saints U10 Boys Goulding","gid":"c61dd21e","gn":"X Saturday U10 Boys Grading Pool C","age":"U10","div":null,"stats":{"gp":15,"fouls":13,"fg":6,"pts":14,"finals":1,"wins":8,"losses":5,"draws":2,"ft":2}}]},{"sid":"c3dedc60","sn":"Winter 2025","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"0fc6145c","tn":"STC Saints U10 Boys Goulding","gid":"456b32f1","gn":"Saturday U10 Boys E Grade","age":"U10","div":null,"stats":{"gp":17,"fouls":13,"ft":4,"pts":4,"finals":1,"gfApps":1,"wins":10,"losses":5,"draws":2}},{"tid":"0fc6145c","tn":"STC Saints U10 Boys Goulding","gid":"0d5d57f3","gn":"Saturday U10 Boys D Grade","age":"U10","div":null,"stats":{"gp":17,"fouls":13,"finals":1,"gfApps":1,"wins":10,"losses":5,"draws":2,"pts":4,"ft":4}}]},{"sid":"c5116801","sn":"Summer 2024/25","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"d3adc16a","tn":"STC Saints U10 Boys Goulding","gid":"ba921c4b","gn":"Saturday U10 Boys E Grade","age":"U10","div":null,"stats":{"gp":16,"fouls":13,"ft":1,"fg":6,"pts":13,"finals":1,"wins":11,"losses":5}},{"tid":"d3adc16a","tn":"STC Saints U10 Boys Goulding","gid":"74fcf97e","gn":"Saturday U10 Boys D Grade","age":"U10","div":null,"stats":{"gp":16,"fouls":13,"fg":6,"pts":13,"finals":1,"wins":11,"losses":5,"ft":1}}]}],"updatedAt":"2026-06-01T21:56:30.839Z","teams":[{"tid":"5a175901","sid":"7fde5e5c","status":"ACTIVE"},{"tid":"dd579f69","sid":"8e63d65d","status":"COMPLETED"},{"tid":"0fc6145c","sid":"c3dedc60","status":"COMPLETED"},{"tid":"d3adc16a","sid":"c5116801","status":"COMPLETED"},{"tid":"f2e31381","sid":"f5d8954a","status":"COMPLETED"},{"tid":"88deebef","sid":"8e1c87c4","status":"COMPLETED"},{"tid":"7fcb62a7","sid":"8629025b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:45:30.346Z","games":["0443ebe7","070189f8","16a6a85e","23cae54f","28faa820","3147bd6f","32c00d6d","33b7f22f","39b0dc2a","3a1f9f86","41b6efb6","42079ba8","437ecbcb","47d91e76","4a039b84","51e85360","536e0a7d","598193e8","600f7ebb","63dbab1d","6ccc2265","7046814e","7125aea5","74336c43","75a603c8","76dd2db8","789e71e3","85bf2119","89ae8c61","8a1b6324","a3684974","a4e3f3b0","a55f5798","a732f3e5","a76b7276","ad298cc8","b0e4f913","b1ff069e","b8bea1d0","b9e9d27c","c260fe3d","c391212d","c743ff8b","c82f2b8e","cdc8514b","d2740462","dd991bbb","e2b6c36d","e49b3378","ea1d0dff","ed930403","efa473d3","f4a7251d","f7a3fc25","ff5493a5"],"records":{"maxGamePTS":{"v":11,"gameKey":"a732f3e5","sid":"7fde5e5c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "cee7a122-6d1d-47ac-bbe2-b22cd6e537f7",
+  "name": "Edward Goulding",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 70,
+      "fouls": 53,
+      "fg": 29,
+      "ft": 12,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 58,
+      "losses": 42,
+      "winPct": 0.53,
+      "draws": 10,
+      "statsChecked": "2026-07-05T14:44:39.798Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7fde5e5c",
+      "sn": "Winter 2026",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "5a175901",
+          "tn": "SCJB Saints U10 Boys Goulding",
+          "gid": "d8cfbcc2",
+          "gn": "Saturday U10 Boys C Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "ft": 5,
+            "fg": 17,
+            "pts": 39,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5a175901",
+          "tn": "SCJB Saints U10 Boys Goulding",
+          "gid": "86555c87",
+          "gn": "Saturday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 14,
+            "ft": 5,
+            "fg": 17,
+            "pts": 39,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e63d65d",
+      "sn": "Summer 2025/26",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "dd579f69",
+          "tn": "STC Saints U10 Boys Goulding",
+          "gid": "20fb6e07",
+          "gn": "Saturday U10 Boys B Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "ft": 2,
+            "fg": 6,
+            "pts": 14,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "dd579f69",
+          "tn": "STC Saints U10 Boys Goulding",
+          "gid": "c61dd21e",
+          "gn": "X Saturday U10 Boys Grading Pool C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "fg": 6,
+            "pts": 14,
+            "finals": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 2,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c3dedc60",
+      "sn": "Winter 2025",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "0fc6145c",
+          "tn": "STC Saints U10 Boys Goulding",
+          "gid": "456b32f1",
+          "gn": "Saturday U10 Boys E Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 13,
+            "ft": 4,
+            "pts": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 5,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "0fc6145c",
+          "tn": "STC Saints U10 Boys Goulding",
+          "gid": "0d5d57f3",
+          "gn": "Saturday U10 Boys D Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 13,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 5,
+            "draws": 2,
+            "pts": 4,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c5116801",
+      "sn": "Summer 2024/25",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "d3adc16a",
+          "tn": "STC Saints U10 Boys Goulding",
+          "gid": "ba921c4b",
+          "gn": "Saturday U10 Boys E Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "d3adc16a",
+          "tn": "STC Saints U10 Boys Goulding",
+          "gid": "74fcf97e",
+          "gn": "Saturday U10 Boys D Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "fg": 6,
+            "pts": 13,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5d8954a",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "f2e31381",
+          "tn": "Saints",
+          "gid": "cfc97835",
+          "gn": "Friday U8 Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8e1c87c4",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "88deebef",
+          "tn": "Saints",
+          "gid": "0342ca8d",
+          "gn": "Friday U8 Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8629025b",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "7fcb62a7",
+          "tn": "Saints (2)",
+          "gid": "f2e0f5d2",
+          "gn": "Friday U8 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:56:30.839Z",
+  "teams": [
+    {
+      "tid": "5a175901",
+      "sid": "7fde5e5c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd579f69",
+      "sid": "8e63d65d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0fc6145c",
+      "sid": "c3dedc60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3adc16a",
+      "sid": "c5116801",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f2e31381",
+      "sid": "f5d8954a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88deebef",
+      "sid": "8e1c87c4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7fcb62a7",
+      "sid": "8629025b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.442Z",
+  "games": [
+    "0443ebe7",
+    "070189f8",
+    "16a6a85e",
+    "23cae54f",
+    "28faa820",
+    "3147bd6f",
+    "32c00d6d",
+    "33b7f22f",
+    "39b0dc2a",
+    "3a1f9f86",
+    "41b6efb6",
+    "42079ba8",
+    "437ecbcb",
+    "47d91e76",
+    "4a039b84",
+    "51e85360",
+    "536e0a7d",
+    "598193e8",
+    "600f7ebb",
+    "63dbab1d",
+    "6ccc2265",
+    "7046814e",
+    "7125aea5",
+    "74336c43",
+    "75a603c8",
+    "76dd2db8",
+    "789e71e3",
+    "85bf2119",
+    "89ae8c61",
+    "8a1b6324",
+    "a3684974",
+    "a4e3f3b0",
+    "a55f5798",
+    "a732f3e5",
+    "a76b7276",
+    "ad298cc8",
+    "b0e4f913",
+    "b1ff069e",
+    "b8bea1d0",
+    "b9e9d27c",
+    "c260fe3d",
+    "c391212d",
+    "c743ff8b",
+    "c82f2b8e",
+    "cdc8514b",
+    "d2740462",
+    "dd991bbb",
+    "e2b6c36d",
+    "e49b3378",
+    "ea1d0dff",
+    "ed930403",
+    "efa473d3",
+    "f4a7251d",
+    "f7a3fc25",
+    "ff5493a5"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "a732f3e5",
+      "sid": "7fde5e5c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

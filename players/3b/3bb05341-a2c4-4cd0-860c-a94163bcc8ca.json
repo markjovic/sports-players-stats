@@ -1,1 +1,389 @@
-{"uuid":"3bb05341-a2c4-4cd0-860c-a94163bcc8ca","name":"Matthew Walsh","gender":"Men","sports":{"Basketball":{"gp":88,"pts":291,"fouls":158,"fg":119,"ft":26,"threePt":9,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.13,"foulOuts":{"f992967d":1,"0c4ad170":1,"b201bd01":1,"610ed2fa":2,"903100a3":1},"maxGamePTS":14,"maxGameThreePt":3,"wins":18,"losses":45,"draws":4,"winPct":0.27,"statsChecked":"2026-07-08T17:51:06.799Z"}},"seasons":[{"sid":"f992967d","sn":"Winter 2026","regs":[{"tid":"c4e29640","tn":"Red Dragons","gid":"41bc09b6","gn":"Wednesday Men E","age":null,"div":null,"stats":{"gp":13,"fouls":16,"fg":7,"threePt":1,"pts":17,"wins":3,"losses":9}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"2787ab95","tn":"Red Dragons","gid":"0ff4d889","gn":"Saturday U21 Boys","age":"U21","div":null,"stats":{"gp":16,"fouls":30,"ft":6,"fg":24,"threePt":4,"pts":66,"foulOuts":2,"wins":4,"losses":10,"draws":2}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"2787ab95","tn":"Red Dragons","gid":"0ff4d889","gn":"Saturday U21 Boys","age":"U21","div":null,"stats":{"gp":16,"fouls":30,"fg":24,"pts":66,"foulOuts":2,"ft":6,"threePt":4,"wins":4,"losses":10,"draws":2}}]},{"sid":"3d243fd6","sn":"Winter 2024","regs":[{"tid":"4596224b","tn":"Red Dragons","gid":"5e150841","gn":"Saturday U23 Boys","age":"U23","div":null,"stats":{"gp":10,"fouls":20,"ft":5,"fg":13,"pts":31,"finals":1,"wins":5,"losses":5}}]},{"sid":"6bc7f565","sn":"Winter 2023","regs":[{"tid":"580a763f","tn":"Red Dragons ","gid":"55c28040","gn":"Saturday U21 Boys","age":"U21","div":null,"stats":{"gp":14,"fouls":9,"ft":5,"fg":11,"pts":27,"wins":2,"losses":11}}]},{"sid":"b201bd01","sn":"Summer 2022/23","regs":[{"tid":"8a1375d0","tn":"Red Dragons ","gid":"44547325","gn":"Saturday U18 Boys B","age":"U18","div":null,"stats":{"gp":10,"fouls":18,"ft":5,"fg":19,"threePt":4,"pts":55,"foulOuts":1}}]},{"sid":"610ed2fa","sn":"Winter 2022","regs":[{"tid":"6f587a74","tn":"Red Dragons ","gid":"bcbdc05a","gn":"Saturday U18 Boys B","age":"U18","div":null,"stats":{"gp":17,"fouls":43,"ft":2,"fg":33,"pts":68,"foulOuts":2}}]},{"sid":"903100a3","sn":"Term 1, 2022","regs":[{"tid":"b3edaa08","tn":"Red Dragons ","gid":"b94a08f9","gn":"Saturday U18 Boys A/B","age":"U18","div":null,"stats":{"gp":8,"fouls":22,"ft":3,"fg":12,"pts":27,"foulOuts":1}}]}],"updatedAt":"2026-07-08T17:27:55.074Z","teams":[{"tid":"c4e29640","sid":"f992967d","status":"ACTIVE"},{"tid":"2787ab95","sid":"0c4ad170","status":"COMPLETED"},{"tid":"2787ab95","sid":"0c4ad170","status":"COMPLETED"},{"tid":"4596224b","sid":"3d243fd6","status":"COMPLETED"},{"tid":"580a763f","sid":"6bc7f565","status":"COMPLETED"},{"tid":"8a1375d0","sid":"b201bd01","status":"COMPLETED"},{"tid":"6f587a74","sid":"610ed2fa","status":"COMPLETED"},{"tid":"b3edaa08","sid":"903100a3","status":"COMPLETED"},{"tid":"ab84f03b","sid":"eb1ab237","status":"COMPLETED"},{"tid":"0e192844","sid":"59a334d9","status":"COMPLETED"},{"tid":"71eede54","sid":"3bd06129","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:17:05.502Z","records":{"maxGamePTS":{"v":14,"gameKey":"36c077bc","sid":"610ed2fa"},"maxGameThreePt":{"v":3,"gameKey":"665e92f3","sid":"0c4ad170"}},"games":["017bf931","047b1a8a","08885e4c","0b3a4d0e","13133572","1363faf7","3131aeda","32a1706d","37e04630","39dbe134","43f9f678","4990da94","4c6c22a9","4ca08ced","53c171fc","5548381e","5609a747","5a77e206","606d83be","6295b14b","66281fcf","665e92f3","6aa1a6f6","79630186","850a1da5","858d8d61","8b4fb0ea","8e577cc3","95d48db3","9fe11c65","a16fba96","a65332fb","adc5791b","b6b47568","bd5c3ae9","c0ffd5ad","c10edc81","c43e5aaa","c588faf4","c8db7485","ce234258","e1b6192c","e35f24bd","e6ffdf97","e9224f31","eaa23205","eaa720f7","ec5fcd4e","ef8c78a1","f0139dea","f07f2647","f3aa50a5","f457bf88","f491e516","f7450040","fada928a","fc67d37b","fc685a36"]}
+{
+  "uuid": "3bb05341-a2c4-4cd0-860c-a94163bcc8ca",
+  "name": "Matthew Walsh",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 88,
+      "pts": 291,
+      "fouls": 158,
+      "fg": 119,
+      "ft": 26,
+      "threePt": 9,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.13,
+      "foulOuts": {
+        "f992967d": 1,
+        "0c4ad170": 1,
+        "b201bd01": 1,
+        "610ed2fa": 2,
+        "903100a3": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": 3,
+      "wins": 18,
+      "losses": 45,
+      "draws": 4,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-08T17:51:06.799Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f992967d",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "c4e29640",
+          "tn": "Red Dragons",
+          "gid": "41bc09b6",
+          "gn": "Wednesday Men E",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "fg": 7,
+            "threePt": 1,
+            "pts": 17,
+            "wins": 3,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2787ab95",
+          "tn": "Red Dragons",
+          "gid": "0ff4d889",
+          "gn": "Saturday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "ft": 6,
+            "fg": 24,
+            "threePt": 4,
+            "pts": 66,
+            "foulOuts": 2,
+            "wins": 4,
+            "losses": 10,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2787ab95",
+          "tn": "Red Dragons",
+          "gid": "0ff4d889",
+          "gn": "Saturday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 30,
+            "fg": 24,
+            "pts": 66,
+            "foulOuts": 2,
+            "ft": 6,
+            "threePt": 4,
+            "wins": 4,
+            "losses": 10,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3d243fd6",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "4596224b",
+          "tn": "Red Dragons",
+          "gid": "5e150841",
+          "gn": "Saturday U23 Boys",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 20,
+            "ft": 5,
+            "fg": 13,
+            "pts": 31,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6bc7f565",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "580a763f",
+          "tn": "Red Dragons ",
+          "gid": "55c28040",
+          "gn": "Saturday U21 Boys",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 5,
+            "fg": 11,
+            "pts": 27,
+            "wins": 2,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b201bd01",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "8a1375d0",
+          "tn": "Red Dragons ",
+          "gid": "44547325",
+          "gn": "Saturday U18 Boys B",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 18,
+            "ft": 5,
+            "fg": 19,
+            "threePt": 4,
+            "pts": 55,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "610ed2fa",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "6f587a74",
+          "tn": "Red Dragons ",
+          "gid": "bcbdc05a",
+          "gn": "Saturday U18 Boys B",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 43,
+            "ft": 2,
+            "fg": 33,
+            "pts": 68,
+            "foulOuts": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "903100a3",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "b3edaa08",
+          "tn": "Red Dragons ",
+          "gid": "b94a08f9",
+          "gn": "Saturday U18 Boys A/B",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 22,
+            "ft": 3,
+            "fg": 12,
+            "pts": 27,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eb1ab237",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "ab84f03b",
+          "tn": "Red Dragons",
+          "gid": "a4cc9c45",
+          "gn": "U18  Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "59a334d9",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "0e192844",
+          "tn": "Red Dragons",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3bd06129",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "71eede54",
+          "tn": "Red Dragons",
+          "gid": "d939470f",
+          "gn": "Saturday U16 Boys Phoenix Suns",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:27:55.074Z",
+  "teams": [
+    {
+      "tid": "c4e29640",
+      "sid": "f992967d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2787ab95",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4596224b",
+      "sid": "3d243fd6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "580a763f",
+      "sid": "6bc7f565",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8a1375d0",
+      "sid": "b201bd01",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f587a74",
+      "sid": "610ed2fa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b3edaa08",
+      "sid": "903100a3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab84f03b",
+      "sid": "eb1ab237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0e192844",
+      "sid": "59a334d9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71eede54",
+      "sid": "3bd06129",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.232Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "36c077bc",
+      "sid": "610ed2fa"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "665e92f3",
+      "sid": "0c4ad170"
+    }
+  },
+  "games": [
+    "017bf931",
+    "047b1a8a",
+    "08885e4c",
+    "0b3a4d0e",
+    "13133572",
+    "1363faf7",
+    "3131aeda",
+    "32a1706d",
+    "37e04630",
+    "39dbe134",
+    "43f9f678",
+    "4990da94",
+    "4c6c22a9",
+    "4ca08ced",
+    "53c171fc",
+    "5548381e",
+    "5609a747",
+    "5a77e206",
+    "606d83be",
+    "6295b14b",
+    "66281fcf",
+    "665e92f3",
+    "6aa1a6f6",
+    "79630186",
+    "850a1da5",
+    "858d8d61",
+    "8b4fb0ea",
+    "8e577cc3",
+    "95d48db3",
+    "9fe11c65",
+    "a16fba96",
+    "a65332fb",
+    "adc5791b",
+    "b6b47568",
+    "bd5c3ae9",
+    "c0ffd5ad",
+    "c10edc81",
+    "c43e5aaa",
+    "c588faf4",
+    "c8db7485",
+    "ce234258",
+    "e1b6192c",
+    "e35f24bd",
+    "e6ffdf97",
+    "e9224f31",
+    "eaa23205",
+    "eaa720f7",
+    "ec5fcd4e",
+    "ef8c78a1",
+    "f0139dea",
+    "f07f2647",
+    "f3aa50a5",
+    "f457bf88",
+    "f491e516",
+    "f7450040",
+    "fada928a",
+    "fc67d37b",
+    "fc685a36"
+  ]
+}

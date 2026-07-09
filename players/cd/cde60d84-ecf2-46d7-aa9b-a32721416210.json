@@ -1,1 +1,90 @@
-{"uuid":"cde60d84-ecf2-46d7-aa9b-a32721416210","gender":null,"sports":{"Basketball":{"gp":3,"pts":4,"fouls":6,"fg":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":2,"losses":1,"winPct":0.67,"statsChecked":"2026-07-05T16:03:50.718Z"}},"seasons":[{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Maccabi Victoria Basketball Club","regs":[{"tid":"603e751b","tn":"Maccabi U16 Girls Yellow","gid":"d9e39006","gn":"Sunday U16 Girls Div 4","stats":{"gp":3,"pts":4,"fouls":6,"fg":2,"finals":1,"wins":2,"losses":1}}]}],"updatedAt":"2026-06-11T23:44:47.737Z","games":["130329c2","51c70294","c5fe4a10"],"records":{"maxGamePTS":{"v":2,"gameKey":"51c70294","sid":"cc2b1283"},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "cde60d84-ecf2-46d7-aa9b-a32721416210",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 4,
+      "fouls": 6,
+      "fg": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:03:50.718Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Maccabi Victoria Basketball Club",
+      "regs": [
+        {
+          "tid": "603e751b",
+          "tn": "Maccabi U16 Girls Yellow",
+          "gid": "d9e39006",
+          "gn": "Sunday U16 Girls Div 4",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fouls": 6,
+            "fg": 2,
+            "finals": 1,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "44bf4d15",
+          "tn": "Maccabi U16 Girls White (1)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:47.737Z",
+  "games": [
+    "130329c2",
+    "51c70294",
+    "c5fe4a10"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "51c70294",
+      "sid": "cc2b1283"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "603e751b",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44bf4d15",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.346Z"
+}

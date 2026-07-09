@@ -1,1 +1,309 @@
-{"uuid":"6370e06d-3d3d-4b2c-85c4-b7f8119ae52f","name":"Bul Niop","gender":"Men","sports":{"Basketball":{"gp":48,"pts":545,"fouls":37,"fg":125,"ft":55,"threePt":80,"foulOuts":{},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.4,"maxGamePTS":28,"maxGameThreePt":7,"wins":22,"losses":23,"draws":4,"winPct":0.45,"statsChecked":"2026-07-05T15:48:52.782Z"}},"seasons":[{"sid":"2d2b38cb","sn":"Spring 2024","regs":[{"tid":"a0378be5","tn":"Black Rhinos City","gid":"a3b2624f","gn":"Wednesday Open Men Premier","age":"Senior","div":null,"stats":{"gp":6,"fouls":4,"ft":5,"fg":13,"threePt":11,"pts":64,"wins":2,"losses":3}}]},{"sid":"23f2dbfc","sn":"Autumn 2024","regs":[{"tid":"c5c321ec","tn":"Team Stand Out","gid":"bf5feb10","gn":"Wednesday Open Men Premier","age":"Senior","div":null,"stats":{"gp":11,"fouls":6,"ft":6,"fg":18,"threePt":18,"pts":96,"finals":1,"wins":5,"losses":5,"draws":1}}]},{"sid":"9214b6f0","sn":"Spring 2023","regs":[{"tid":"24003e18","tn":"Team Stand Out","gid":"5566e695","gn":"Wednesday Open Men","age":"Senior","div":null,"stats":{"gp":15,"fouls":9,"ft":24,"fg":54,"threePt":22,"pts":198,"finals":1,"wins":9,"losses":5}},{"tid":"e8e60c57","stats":{"wins":1,"losses":2,"finals":1,"gp":3,"pts":29,"fg":12,"ft":5,"fouls":3}}]},{"sid":"9214b6f0","sn":"Spring 2023","regs":[{"tid":"e8e60c57","tn":"Black Rhinos North","gid":"5566e695","gn":"Wednesday Open Men","age":"Senior","div":null,"stats":{"gp":3,"fouls":3,"ft":5,"fg":12,"pts":29,"finals":1,"wins":1,"losses":2}}]},{"sid":"9f8224fe","sn":"Autumn 2023","regs":[{"tid":"61aa82ed","tn":"Black Rhinos North","gid":"28dd7e82","gn":"Wednesday Open Men","age":"Senior","div":null,"stats":{"gp":13,"fouls":15,"ft":15,"fg":28,"threePt":29,"pts":158,"wins":4,"losses":6,"draws":3}}]}],"updatedAt":"2026-06-02T15:46:03.737Z","teams":[{"tid":"a0378be5","sid":"2d2b38cb","status":"COMPLETED"},{"tid":"c5c321ec","sid":"23f2dbfc","status":"COMPLETED"},{"tid":"e8e60c57","sid":"9214b6f0","status":"COMPLETED"},{"tid":"24003e18","sid":"9214b6f0","status":"COMPLETED"},{"tid":"61aa82ed","sid":"9f8224fe","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:43:18.139Z","records":{"maxGamePTS":{"v":28,"gameKey":"f4642a1d","sid":"9f8224fe"},"maxGameThreePt":{"v":7,"gameKey":"30cc5cb2","sid":"9f8224fe"}},"games":["14af2863","185a8af5","1bebfdb2","1d7ab525","2efa5c7b","30cc5cb2","316035ac","35707d03","3b6f104f","592c6a37","600c8001","607ac32f","6989c38b","6a50ca2b","6c3e17e2","6e858059","716561f7","74291e68","755de42d","7a98c533","7b300c94","7e9e1d0b","86abdd4b","87977509","9ba104be","a0fdb363","a1660966","ae0914f1","b4984004","b79ae4ec","b8cb8013","bee030e3","c1c419d8","c616dede","d0e6503b","d4600a29","d58327c6","d5ccf543","da61ef83","db97dd8e","e21b4bb5","e7e8e584","e8adc744","e9f84de0","f23a069d","f4642a1d","f6bd321d","fed70512"],"gameTids":{"87977509":"24003e18","b79ae4ec":"a0378be5","b4984004":"a0378be5","755de42d":"a0378be5","86abdd4b":"a0378be5","f23a069d":"a0378be5","e9f84de0":"a0378be5","da61ef83":"c5c321ec","9ba104be":"c5c321ec","7b300c94":"c5c321ec","185a8af5":"c5c321ec","600c8001":"c5c321ec","6a50ca2b":"c5c321ec","bee030e3":"c5c321ec","1bebfdb2":"c5c321ec","e7e8e584":"c5c321ec","e21b4bb5":"c5c321ec","6e858059":"c5c321ec","7e9e1d0b":"24003e18","6989c38b":"24003e18","1d7ab525":"24003e18","6c3e17e2":"24003e18","607ac32f":"24003e18","d4600a29":"24003e18","a1660966":"24003e18","7a98c533":"24003e18","ae0914f1":"24003e18","74291e68":"24003e18","592c6a37":"24003e18","14af2863":"24003e18","35707d03":"24003e18","d0e6503b":"24003e18","e8adc744":"e8e60c57","d5ccf543":"e8e60c57","a0fdb363":"e8e60c57","db97dd8e":"61aa82ed","f6bd321d":"61aa82ed","3b6f104f":"61aa82ed","c616dede":"61aa82ed","d58327c6":"61aa82ed","c1c419d8":"61aa82ed","2efa5c7b":"61aa82ed","316035ac":"61aa82ed","f4642a1d":"61aa82ed","716561f7":"61aa82ed","30cc5cb2":"61aa82ed","b8cb8013":"61aa82ed","fed70512":"61aa82ed"}}
+{
+  "uuid": "6370e06d-3d3d-4b2c-85c4-b7f8119ae52f",
+  "name": "Bul Niop",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 545,
+      "fouls": 37,
+      "fg": 125,
+      "ft": 55,
+      "threePt": 80,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 28,
+      "maxGameThreePt": 7,
+      "wins": 22,
+      "losses": 23,
+      "draws": 4,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T15:48:52.782Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2d2b38cb",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "a0378be5",
+          "tn": "Black Rhinos City",
+          "gid": "a3b2624f",
+          "gn": "Wednesday Open Men Premier",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 5,
+            "fg": 13,
+            "threePt": 11,
+            "pts": 64,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "23f2dbfc",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "c5c321ec",
+          "tn": "Team Stand Out",
+          "gid": "bf5feb10",
+          "gn": "Wednesday Open Men Premier",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 6,
+            "ft": 6,
+            "fg": 18,
+            "threePt": 18,
+            "pts": 96,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9214b6f0",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "24003e18",
+          "tn": "Team Stand Out",
+          "gid": "5566e695",
+          "gn": "Wednesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 9,
+            "ft": 24,
+            "fg": 54,
+            "threePt": 22,
+            "pts": 198,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "e8e60c57",
+          "stats": {
+            "wins": 1,
+            "losses": 2,
+            "finals": 1,
+            "gp": 3,
+            "pts": 29,
+            "fg": 12,
+            "ft": 5,
+            "fouls": 3
+          },
+          "gid": "5566e695",
+          "gn": "Wednesday Open Men"
+        }
+      ]
+    },
+    {
+      "sid": "9214b6f0",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "e8e60c57",
+          "tn": "Black Rhinos North",
+          "gid": "5566e695",
+          "gn": "Wednesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 3,
+            "ft": 5,
+            "fg": 12,
+            "pts": 29,
+            "finals": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9f8224fe",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "61aa82ed",
+          "tn": "Black Rhinos North",
+          "gid": "28dd7e82",
+          "gn": "Wednesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "ft": 15,
+            "fg": 28,
+            "threePt": 29,
+            "pts": 158,
+            "wins": 4,
+            "losses": 6,
+            "draws": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:46:03.737Z",
+  "teams": [
+    {
+      "tid": "a0378be5",
+      "sid": "2d2b38cb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5c321ec",
+      "sid": "23f2dbfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "24003e18",
+      "sid": "9214b6f0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e8e60c57",
+      "sid": "9214b6f0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "61aa82ed",
+      "sid": "9f8224fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.445Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 28,
+      "gameKey": "f4642a1d",
+      "sid": "9f8224fe"
+    },
+    "maxGameThreePt": {
+      "v": 7,
+      "gameKey": "30cc5cb2",
+      "sid": "9f8224fe"
+    }
+  },
+  "games": [
+    "14af2863",
+    "185a8af5",
+    "1bebfdb2",
+    "1d7ab525",
+    "2efa5c7b",
+    "30cc5cb2",
+    "316035ac",
+    "35707d03",
+    "3b6f104f",
+    "592c6a37",
+    "600c8001",
+    "607ac32f",
+    "6989c38b",
+    "6a50ca2b",
+    "6c3e17e2",
+    "6e858059",
+    "716561f7",
+    "74291e68",
+    "755de42d",
+    "7a98c533",
+    "7b300c94",
+    "7e9e1d0b",
+    "86abdd4b",
+    "87977509",
+    "9ba104be",
+    "a0fdb363",
+    "a1660966",
+    "ae0914f1",
+    "b4984004",
+    "b79ae4ec",
+    "b8cb8013",
+    "bee030e3",
+    "c1c419d8",
+    "c616dede",
+    "d0e6503b",
+    "d4600a29",
+    "d58327c6",
+    "d5ccf543",
+    "da61ef83",
+    "db97dd8e",
+    "e21b4bb5",
+    "e7e8e584",
+    "e8adc744",
+    "e9f84de0",
+    "f23a069d",
+    "f4642a1d",
+    "f6bd321d",
+    "fed70512"
+  ],
+  "gameTids": {
+    "87977509": "24003e18",
+    "b79ae4ec": "a0378be5",
+    "b4984004": "a0378be5",
+    "755de42d": "a0378be5",
+    "86abdd4b": "a0378be5",
+    "f23a069d": "a0378be5",
+    "e9f84de0": "a0378be5",
+    "da61ef83": "c5c321ec",
+    "9ba104be": "c5c321ec",
+    "7b300c94": "c5c321ec",
+    "185a8af5": "c5c321ec",
+    "600c8001": "c5c321ec",
+    "6a50ca2b": "c5c321ec",
+    "bee030e3": "c5c321ec",
+    "1bebfdb2": "c5c321ec",
+    "e7e8e584": "c5c321ec",
+    "e21b4bb5": "c5c321ec",
+    "6e858059": "c5c321ec",
+    "7e9e1d0b": "24003e18",
+    "6989c38b": "24003e18",
+    "1d7ab525": "24003e18",
+    "6c3e17e2": "24003e18",
+    "607ac32f": "24003e18",
+    "d4600a29": "24003e18",
+    "a1660966": "24003e18",
+    "7a98c533": "24003e18",
+    "ae0914f1": "24003e18",
+    "74291e68": "24003e18",
+    "592c6a37": "24003e18",
+    "14af2863": "24003e18",
+    "35707d03": "24003e18",
+    "d0e6503b": "24003e18",
+    "e8adc744": "e8e60c57",
+    "d5ccf543": "e8e60c57",
+    "a0fdb363": "e8e60c57",
+    "db97dd8e": "61aa82ed",
+    "f6bd321d": "61aa82ed",
+    "3b6f104f": "61aa82ed",
+    "c616dede": "61aa82ed",
+    "d58327c6": "61aa82ed",
+    "c1c419d8": "61aa82ed",
+    "2efa5c7b": "61aa82ed",
+    "316035ac": "61aa82ed",
+    "f4642a1d": "61aa82ed",
+    "716561f7": "61aa82ed",
+    "30cc5cb2": "61aa82ed",
+    "b8cb8013": "61aa82ed",
+    "fed70512": "61aa82ed"
+  }
+}

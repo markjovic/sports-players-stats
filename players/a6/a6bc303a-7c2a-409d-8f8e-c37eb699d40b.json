@@ -1,1 +1,422 @@
-{"uuid":"a6bc303a-7c2a-409d-8f8e-c37eb699d40b","gender":null,"sports":{"Basketball":{"gp":57,"pts":439,"fouls":89,"fg":150,"ft":61,"threePt":26,"foulOuts":{"f3b79a84":1,"dc2b7418":1,"b387bcd4":1,"a5dfc5c1":1},"maxGamePTS":22,"maxGameThreePt":5,"wins":24,"losses":49,"winPct":0.31,"draws":4,"statsChecked":"2026-07-05T16:14:57.496Z"}},"seasons":[{"sid":"f3b79a84","sn":"Autumn 2022","club":"Sandringham Sabres Basketball Club","regs":[{"tid":"4540f611","tn":"Sandringham U18 Boys 18.3 Boys","gid":"402d20b4","gn":"U18 Boys B Grade","stats":{"gp":3,"pts":33,"fouls":9,"fg":11,"ft":2,"threePt":3,"foulOuts":1}}]},{"sid":"dc2b7418","sn":"Autumn 2022","club":"Mordy Flyers Basketball Club","regs":[{"tid":"7e941e11","tn":"Mordy Flyers U21 Boys Hawks","gid":"5c79e33a","gn":"Sunday U21 Boys B1","stats":{"gp":8,"pts":59,"fouls":12,"fg":20,"ft":1,"threePt":6,"foulOuts":1,"wins":1,"losses":2}},{"tid":"7e941e11","tn":"Mordy Flyers U21 Boys Hawks","gid":"4f27e187","gn":"Sunday U21 Boys B2","stats":{"gp":8,"pts":59,"fouls":12,"fg":20,"threePt":6,"wins":1,"losses":2,"ft":1}}]},{"sid":"b387bcd4","sn":"2022","club":"Sandringham Sabres Basketball Club","regs":[{"tid":"87962329","tn":"Sandringham U18 Boys 3","gid":"ced1fab8","gn":"18 Boys - VJL4","stats":{"gp":23,"pts":194,"fouls":43,"fg":58,"ft":39,"threePt":13,"foulOuts":1,"wins":4,"losses":10,"draws":1}},{"tid":"87962329","tn":"Sandringham U18 Boys 3","gid":"9fb99e78","gn":"U18B Crossover 2 - VJL","stats":{"gp":23,"pts":194,"fouls":43,"fg":58,"ft":39,"threePt":13,"wins":4,"losses":10,"draws":1}},{"tid":"87962329","tn":"Sandringham U18 Boys 3","gid":"ef0805eb","gn":"U18 Boys Grading 2 - CC Pool B","stats":{"gp":23,"pts":194,"fouls":43,"fg":58,"ft":39,"threePt":13,"wins":4,"losses":10,"draws":1}},{"tid":"87962329","tn":"Sandringham U18 Boys 3","gid":"7ba9e903","gn":"U18 Boys Grading 1 - Pool 4B","stats":{"gp":23,"pts":194,"fouls":43,"fg":58,"ft":39,"threePt":13,"wins":4,"losses":10,"draws":1}}]},{"sid":"3b619b6f","sn":"Winter 2021","club":null,"regs":[{"tid":"361a2ba8","tn":"Bayside Knights","gid":"16ecbeef","gn":"Wednesday U18 Boys 1","stats":{"gp":6,"pts":72,"fouls":6,"fg":32,"ft":2,"threePt":2,"wins":4,"losses":2}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Chelsea Gulls Basketball Club","regs":[{"tid":"448448e0","tn":"Chelsea U18 Boys 2","gid":"c5455b73","gn":"18 Boys - VJL5 (P2)","stats":{"gp":12,"pts":63,"fouls":18,"fg":22,"ft":13,"threePt":2,"foulOuts":1}},{"tid":"448448e0","tn":"Chelsea U18 Boys 2","gid":"bc3e117b","gn":"U18B Grading 2 - DD Pool C","stats":{"gp":12,"pts":63,"fg":22,"ft":13,"threePt":2,"fouls":18}},{"tid":"448448e0","tn":"Chelsea U18 Boys 2","gid":"35fcd822","gn":"U18B Grading 1 - Pool 6D","stats":{"gp":12,"pts":63,"fouls":18,"fg":22,"ft":13,"threePt":2}}]},{"sid":"b1515564","sn":"Summer 2020/21","club":null,"regs":[{"tid":"d614740d","tn":"Bayside Knights","gid":"933f5265","gn":"Wednesday U18 Boys Div 2","stats":{"gp":5,"pts":18,"fouls":1,"fg":7,"ft":4,"wins":2,"losses":3}}]}],"updatedAt":"2026-06-11T23:43:19.704Z","records":{"maxGamePTS":{"v":22,"gameKey":"7f38a853","sid":"3b619b6f"},"maxGameThreePt":{"v":5,"gameKey":"37fa24d3","sid":"dc2b7418"}},"games":["0b646f7a","0c08dbd6","14130e44","1abbae1a","1c6e4a4d","1dab0ee6","23e96555","2f4be813","31d00a18","35100290","37fa24d3","388f66e7","3a0c4398","3ef7f8ce","485d8e84","4be810ca","512e0b1c","561fc024","5dc1ac03","63db5c49","661b1248","6a3320cb","712a8fd3","7553bf1d","755a9f64","7713305a","78df164a","7a2a8a90","7f38a853","840c7b7d","8d8cbeb7","925d6336","9952492a","999d25e1","a7a4b40e","a7bdb703","a9967422","abaa4288","ae4baea6","b5f85f08","bbf58480","bc9274d4","bd8e8cf3","be715cc7","be9b7ace","cb25b7ed","cb3414e5","cd29295e","d2955345","d530054a","d8f6de34","da72d49f","db7fdeb4","dcf364fc","de2721bb","f1c9303d","fd786a87"],"name":"Autumn 2022"}
+{
+  "uuid": "a6bc303a-7c2a-409d-8f8e-c37eb699d40b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 57,
+      "pts": 439,
+      "fouls": 89,
+      "fg": 150,
+      "ft": 61,
+      "threePt": 26,
+      "foulOuts": {
+        "f3b79a84": 1,
+        "dc2b7418": 1,
+        "b387bcd4": 1,
+        "a5dfc5c1": 1
+      },
+      "maxGamePTS": 22,
+      "maxGameThreePt": 5,
+      "wins": 24,
+      "losses": 49,
+      "winPct": 0.31,
+      "draws": 4,
+      "statsChecked": "2026-07-05T16:14:57.496Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f3b79a84",
+      "sn": "Autumn 2022",
+      "club": "Sandringham Sabres Basketball Club",
+      "regs": [
+        {
+          "tid": "4540f611",
+          "tn": "Sandringham U18 Boys 18.3 Boys",
+          "gid": "402d20b4",
+          "gn": "U18 Boys B Grade",
+          "stats": {
+            "gp": 3,
+            "pts": 33,
+            "fouls": 9,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 3,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dc2b7418",
+      "sn": "Autumn 2022",
+      "club": "Mordy Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "7e941e11",
+          "tn": "Mordy Flyers U21 Boys Hawks",
+          "gid": "5c79e33a",
+          "gn": "Sunday U21 Boys B1",
+          "stats": {
+            "gp": 8,
+            "pts": 59,
+            "fouls": 12,
+            "fg": 20,
+            "ft": 1,
+            "threePt": 6,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "7e941e11",
+          "tn": "Mordy Flyers U21 Boys Hawks",
+          "gid": "4f27e187",
+          "gn": "Sunday U21 Boys B2",
+          "stats": {
+            "gp": 8,
+            "pts": 59,
+            "fouls": 12,
+            "fg": 20,
+            "threePt": 6,
+            "wins": 1,
+            "losses": 2,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Sandringham Sabres Basketball Club",
+      "regs": [
+        {
+          "tid": "87962329",
+          "tn": "Sandringham U18 Boys 3",
+          "gid": "ced1fab8",
+          "gn": "18 Boys - VJL4",
+          "stats": {
+            "gp": 23,
+            "pts": 194,
+            "fouls": 43,
+            "fg": 58,
+            "ft": 39,
+            "threePt": 13,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "87962329",
+          "tn": "Sandringham U18 Boys 3",
+          "gid": "9fb99e78",
+          "gn": "U18B Crossover 2 - VJL",
+          "stats": {
+            "gp": 23,
+            "pts": 194,
+            "fouls": 43,
+            "fg": 58,
+            "ft": 39,
+            "threePt": 13,
+            "wins": 4,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "87962329",
+          "tn": "Sandringham U18 Boys 3",
+          "gid": "ef0805eb",
+          "gn": "U18 Boys Grading 2 - CC Pool B",
+          "stats": {
+            "gp": 23,
+            "pts": 194,
+            "fouls": 43,
+            "fg": 58,
+            "ft": 39,
+            "threePt": 13,
+            "wins": 4,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "87962329",
+          "tn": "Sandringham U18 Boys 3",
+          "gid": "7ba9e903",
+          "gn": "U18 Boys Grading 1 - Pool 4B",
+          "stats": {
+            "gp": 23,
+            "pts": 194,
+            "fouls": 43,
+            "fg": 58,
+            "ft": 39,
+            "threePt": 13,
+            "wins": 4,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b619b6f",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "361a2ba8",
+          "tn": "Bayside Knights",
+          "gid": "16ecbeef",
+          "gn": "Wednesday U18 Boys 1",
+          "stats": {
+            "gp": 6,
+            "pts": 72,
+            "fouls": 6,
+            "fg": 32,
+            "ft": 2,
+            "threePt": 2,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Chelsea Gulls Basketball Club",
+      "regs": [
+        {
+          "tid": "448448e0",
+          "tn": "Chelsea U18 Boys 2",
+          "gid": "c5455b73",
+          "gn": "18 Boys - VJL5 (P2)",
+          "stats": {
+            "gp": 12,
+            "pts": 63,
+            "fouls": 18,
+            "fg": 22,
+            "ft": 13,
+            "threePt": 2,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "448448e0",
+          "tn": "Chelsea U18 Boys 2",
+          "gid": "bc3e117b",
+          "gn": "U18B Grading 2 - DD Pool C",
+          "stats": {
+            "gp": 12,
+            "pts": 63,
+            "fg": 22,
+            "ft": 13,
+            "threePt": 2,
+            "fouls": 18
+          }
+        },
+        {
+          "tid": "448448e0",
+          "tn": "Chelsea U18 Boys 2",
+          "gid": "35fcd822",
+          "gn": "U18B Grading 1 - Pool 6D",
+          "stats": {
+            "gp": 12,
+            "pts": 63,
+            "fouls": 18,
+            "fg": 22,
+            "ft": 13,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b1515564",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d614740d",
+          "tn": "Bayside Knights",
+          "gid": "933f5265",
+          "gn": "Wednesday U18 Boys Div 2",
+          "stats": {
+            "gp": 5,
+            "pts": 18,
+            "fouls": 1,
+            "fg": 7,
+            "ft": 4,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88108ca6",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "30828ed3",
+          "tn": "Chelsea Gulls 18.2 Boys",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "4f7c5b8c",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "efa0ade2",
+          "tn": "Goal Diggers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "9d6ee601",
+          "tn": "Chelsea U16 Boys 1",
+          "gid": "b6301f90",
+          "gn": "U16 Boys VJL 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:19.704Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "7f38a853",
+      "sid": "3b619b6f"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "37fa24d3",
+      "sid": "dc2b7418"
+    }
+  },
+  "games": [
+    "0b646f7a",
+    "0c08dbd6",
+    "14130e44",
+    "1abbae1a",
+    "1c6e4a4d",
+    "1dab0ee6",
+    "23e96555",
+    "2f4be813",
+    "31d00a18",
+    "35100290",
+    "37fa24d3",
+    "388f66e7",
+    "3a0c4398",
+    "3ef7f8ce",
+    "485d8e84",
+    "4be810ca",
+    "512e0b1c",
+    "561fc024",
+    "5dc1ac03",
+    "63db5c49",
+    "661b1248",
+    "6a3320cb",
+    "712a8fd3",
+    "7553bf1d",
+    "755a9f64",
+    "7713305a",
+    "78df164a",
+    "7a2a8a90",
+    "7f38a853",
+    "840c7b7d",
+    "8d8cbeb7",
+    "925d6336",
+    "9952492a",
+    "999d25e1",
+    "a7a4b40e",
+    "a7bdb703",
+    "a9967422",
+    "abaa4288",
+    "ae4baea6",
+    "b5f85f08",
+    "bbf58480",
+    "bc9274d4",
+    "bd8e8cf3",
+    "be715cc7",
+    "be9b7ace",
+    "cb25b7ed",
+    "cb3414e5",
+    "cd29295e",
+    "d2955345",
+    "d530054a",
+    "d8f6de34",
+    "da72d49f",
+    "db7fdeb4",
+    "dcf364fc",
+    "de2721bb",
+    "f1c9303d",
+    "fd786a87"
+  ],
+  "name": "Autumn 2022",
+  "teams": [
+    {
+      "tid": "4540f611",
+      "sid": "f3b79a84",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e941e11",
+      "sid": "dc2b7418",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87962329",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "361a2ba8",
+      "sid": "3b619b6f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "448448e0",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d614740d",
+      "sid": "b1515564",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30828ed3",
+      "sid": "88108ca6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "efa0ade2",
+      "sid": "4f7c5b8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d6ee601",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:26.174Z"
+}

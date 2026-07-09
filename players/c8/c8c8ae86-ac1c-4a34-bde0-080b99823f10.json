@@ -1,1 +1,84 @@
-{"uuid":"c8c8ae86-ac1c-4a34-bde0-080b99823f10","name":"Brett Blandthorn","sports":{"Basketball":{"maxGamePTS":3,"maxGameThreePt":null,"foulOuts":{},"gp":6,"pts":7,"fg":3,"ft":1,"fouls":1,"statsChecked":"2026-07-08T17:54:57.855Z"}},"seasons":[{"sid":"ab2e3371","regs":[{"tid":"93a642c0"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":3,"gameKey":"b2690337","sid":"ab2e3371"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c8c8ae86-ac1c-4a34-bde0-080b99823f10",
+  "name": "Brett Blandthorn",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 6,
+      "pts": 7,
+      "fg": 3,
+      "ft": 1,
+      "fouls": 1,
+      "statsChecked": "2026-07-08T17:54:57.855Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ab2e3371",
+      "regs": [
+        {
+          "tid": "93a642c0",
+          "gid": "1d198b4b",
+          "gn": "U17 Boys A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "310d356a",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "59ec2e26",
+          "tn": "Bacchus Marsh 20.1 Boys",
+          "gid": "c02ef0e7",
+          "gn": "U20 Boys B Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "18beed8c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "f6787f4b",
+          "tn": "Bacchus Marsh U16 Boys 1",
+          "gid": "9599b415",
+          "gn": "U16 Boys Championship",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "93a642c0",
+      "sid": "ab2e3371",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59ec2e26",
+      "sid": "310d356a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6787f4b",
+      "sid": "18beed8c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "b2690337",
+      "sid": "ab2e3371"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:28.045Z"
+}

@@ -1,1 +1,76 @@
-{"uuid":"5b6d776d-eb78-499a-9367-178959c0e142","gender":null,"sports":{"Basketball":{"gp":2,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"draws":1,"winPct":0.5,"statsChecked":"2026-07-05T16:27:33.271Z"}},"seasons":[{"sid":"c08d14fd","sn":"Winter 2021","club":null,"regs":[{"tid":"070fe645","tn":"Huskies","gid":"1458006c","gn":"Sunday Open Classic Men DIV 1","stats":{"gp":2,"wins":1,"draws":1}}]}],"updatedAt":"2026-06-11T23:39:59.325Z","games":["74d774ce","7c7b5e80"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "5b6d776d-eb78-499a-9367-178959c0e142",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "draws": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:27:33.271Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c08d14fd",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "070fe645",
+          "tn": "Huskies",
+          "gid": "1458006c",
+          "gn": "Sunday Open Classic Men DIV 1",
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09407bad",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "32d27720",
+          "tn": "Huskies",
+          "gid": "1ef638fa",
+          "gn": "Sunday Open Classic Men Div 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:59.325Z",
+  "games": [
+    "74d774ce",
+    "7c7b5e80"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "070fe645",
+      "sid": "c08d14fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32d27720",
+      "sid": "09407bad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.944Z"
+}

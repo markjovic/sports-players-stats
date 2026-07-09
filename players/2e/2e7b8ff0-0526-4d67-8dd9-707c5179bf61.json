@@ -1,1 +1,242 @@
-{"uuid":"2e7b8ff0-0526-4d67-8dd9-707c5179bf61","gender":null,"sports":{"Basketball":{"gp":28,"pts":33,"fouls":19,"fg":15,"ft":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":16,"losses":22,"draws":3,"winPct":0.39,"statsChecked":"2026-07-05T16:21:31.945Z"}},"seasons":[{"sid":"a537e827","sn":"Summer 2021/22","club":null,"regs":[{"tid":"1519bb8e","tn":"The Silverbacks","gid":"5abdd178","gn":"Sunday Open Mixed Section 3/4","stats":{"gp":5,"pts":12,"fouls":4,"fg":6,"wins":3,"losses":2}}]},{"sid":"b200c0f6","sn":"Winter 2021","club":null,"regs":[{"tid":"c2c17fde","tn":"The Silverbacks","gid":"72bdb294","gn":"Sunday Open Mixed Section 4","stats":{"gp":2,"pts":2,"fg":1,"wins":2}}]},{"sid":"e8437d1b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"d3a32de9","tn":"The Silverbacks","gid":"9ce8d265","gn":"Sunday Open Mixed Section 1","stats":{"gp":7,"pts":3,"fouls":2,"fg":1,"ft":1,"finals":1,"wins":2,"losses":5}},{"tid":"923a0053","stats":{"wins":3,"losses":5,"draws":1,"finals":1,"gp":14,"pts":16,"fg":7,"ft":2,"fouls":13}}]},{"sid":"e8437d1b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"923a0053","tn":"Eastern Bulldogs","gid":"4a4ee713","gn":"Friday Open Mixed Section 1/2","stats":{"gp":14,"pts":16,"fouls":13,"fg":7,"ft":2,"finals":1,"wins":3,"losses":5,"draws":1}},{"tid":"923a0053","tn":"Eastern Bulldogs","gid":"98d5396f","gn":"Friday Open Mixed Section 2","stats":{"gp":14,"pts":16,"fouls":13,"ft":2,"finals":1,"wins":3,"losses":5,"draws":1,"fg":7}}]}],"updatedAt":"2026-06-11T23:37:54.875Z","records":{"maxGamePTS":{"v":8,"gameKey":"afbb3e04","sid":"a537e827"},"maxGameThreePt":{"v":null}},"games":["050d40ff","06ec5018","0de4153a","15006aef","2ca816b0","3329e93f","37e204e1","4469a1a1","47f879ea","742c21ae","7454fedf","7df6c449","85d2d1ed","894ff742","9654131f","9771ea89","9acff48d","9b475bca","a051f683","ae43fa2e","afbb3e04","b9887cc0","c6caae18","e1872950","f392ca3d","f5baddee","fa23f721","fe63f941"],"name":"Summer 2021/22","gameTids":{"9771ea89":"1519bb8e","afbb3e04":"1519bb8e","4469a1a1":"1519bb8e","c6caae18":"1519bb8e","0de4153a":"1519bb8e","f5baddee":"c2c17fde","3329e93f":"c2c17fde","15006aef":"d3a32de9","050d40ff":"d3a32de9","37e204e1":"d3a32de9","fe63f941":"d3a32de9","7df6c449":"d3a32de9","9b475bca":"d3a32de9","e1872950":"d3a32de9","85d2d1ed":"923a0053","06ec5018":"923a0053","f392ca3d":"923a0053","47f879ea":"923a0053","fa23f721":"923a0053","742c21ae":"923a0053","9654131f":"923a0053","894ff742":"923a0053","9acff48d":"923a0053","a051f683":"923a0053","ae43fa2e":"923a0053","2ca816b0":"923a0053","b9887cc0":"923a0053","7454fedf":"923a0053"}}
+{
+  "uuid": "2e7b8ff0-0526-4d67-8dd9-707c5179bf61",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 28,
+      "pts": 33,
+      "fouls": 19,
+      "fg": 15,
+      "ft": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 16,
+      "losses": 22,
+      "draws": 3,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T16:21:31.945Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a537e827",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1519bb8e",
+          "tn": "The Silverbacks",
+          "gid": "5abdd178",
+          "gn": "Sunday Open Mixed Section 3/4",
+          "stats": {
+            "gp": 5,
+            "pts": 12,
+            "fouls": 4,
+            "fg": 6,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b200c0f6",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c2c17fde",
+          "tn": "The Silverbacks",
+          "gid": "72bdb294",
+          "gn": "Sunday Open Mixed Section 4",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fg": 1,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e8437d1b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d3a32de9",
+          "tn": "The Silverbacks",
+          "gid": "9ce8d265",
+          "gn": "Sunday Open Mixed Section 1",
+          "stats": {
+            "gp": 7,
+            "pts": 3,
+            "fouls": 2,
+            "fg": 1,
+            "ft": 1,
+            "finals": 1,
+            "wins": 2,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "923a0053",
+          "stats": {
+            "wins": 3,
+            "losses": 5,
+            "draws": 1,
+            "finals": 1,
+            "gp": 14,
+            "pts": 16,
+            "fg": 7,
+            "ft": 2,
+            "fouls": 13
+          },
+          "gid": "4a4ee713",
+          "gn": "Friday Open Mixed Section 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "e8437d1b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "923a0053",
+          "tn": "Eastern Bulldogs",
+          "gid": "4a4ee713",
+          "gn": "Friday Open Mixed Section 1/2",
+          "stats": {
+            "gp": 14,
+            "pts": 16,
+            "fouls": 13,
+            "fg": 7,
+            "ft": 2,
+            "finals": 1,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "923a0053",
+          "tn": "Eastern Bulldogs",
+          "gid": "98d5396f",
+          "gn": "Friday Open Mixed Section 2",
+          "stats": {
+            "gp": 14,
+            "pts": 16,
+            "fouls": 13,
+            "ft": 2,
+            "finals": 1,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1,
+            "fg": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:54.875Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "afbb3e04",
+      "sid": "a537e827"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "050d40ff",
+    "06ec5018",
+    "0de4153a",
+    "15006aef",
+    "2ca816b0",
+    "3329e93f",
+    "37e204e1",
+    "4469a1a1",
+    "47f879ea",
+    "742c21ae",
+    "7454fedf",
+    "7df6c449",
+    "85d2d1ed",
+    "894ff742",
+    "9654131f",
+    "9771ea89",
+    "9acff48d",
+    "9b475bca",
+    "a051f683",
+    "ae43fa2e",
+    "afbb3e04",
+    "b9887cc0",
+    "c6caae18",
+    "e1872950",
+    "f392ca3d",
+    "f5baddee",
+    "fa23f721",
+    "fe63f941"
+  ],
+  "name": "Summer 2021/22",
+  "gameTids": {
+    "9771ea89": "1519bb8e",
+    "afbb3e04": "1519bb8e",
+    "4469a1a1": "1519bb8e",
+    "c6caae18": "1519bb8e",
+    "0de4153a": "1519bb8e",
+    "f5baddee": "c2c17fde",
+    "3329e93f": "c2c17fde",
+    "15006aef": "d3a32de9",
+    "050d40ff": "d3a32de9",
+    "37e204e1": "d3a32de9",
+    "fe63f941": "d3a32de9",
+    "7df6c449": "d3a32de9",
+    "9b475bca": "d3a32de9",
+    "e1872950": "d3a32de9",
+    "85d2d1ed": "923a0053",
+    "06ec5018": "923a0053",
+    "f392ca3d": "923a0053",
+    "47f879ea": "923a0053",
+    "fa23f721": "923a0053",
+    "742c21ae": "923a0053",
+    "9654131f": "923a0053",
+    "894ff742": "923a0053",
+    "9acff48d": "923a0053",
+    "a051f683": "923a0053",
+    "ae43fa2e": "923a0053",
+    "2ca816b0": "923a0053",
+    "b9887cc0": "923a0053",
+    "7454fedf": "923a0053"
+  },
+  "teams": [
+    {
+      "tid": "1519bb8e",
+      "sid": "a537e827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c2c17fde",
+      "sid": "b200c0f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3a32de9",
+      "sid": "e8437d1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "923a0053",
+      "sid": "e8437d1b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.404Z"
+}

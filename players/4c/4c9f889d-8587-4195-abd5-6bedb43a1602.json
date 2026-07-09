@@ -1,1 +1,124 @@
-{"uuid":"4c9f889d-8587-4195-abd5-6bedb43a1602","name":"Margot De Cruz","gender":"Girls","sports":{"Basketball":{"gp":6,"fouls":15,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":10,"winPct":0.17,"pts":2,"fg":1,"wins":2,"statsChecked":"2026-07-05T14:55:08.448Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Malvern Tigers Basketball Club","regs":[{"tid":"6b068d42","tn":"Malvern Tigers U12 Girls Blue","gid":"f6d350f4","gn":"Saturday U12 Girls Section 07","age":"U12","div":null,"stats":{"gp":6,"fouls":15,"losses":5,"pts":2,"fg":1,"wins":1}},{"tid":"6b068d42","tn":"Malvern Tigers U12 Girls Blue","gid":"0ff83b89","gn":"Saturday U12 Girls Section 06","age":"U12","div":null,"stats":{"gp":6,"fouls":15,"losses":5,"pts":2,"fg":1,"wins":1}}]}],"updatedAt":"2026-05-31T13:59:38.687Z","teams":[{"tid":"6b068d42","sid":"6c117270","status":"ACTIVE"},{"tid":"988928c1","sid":"7d20ecad","status":"COMPLETED"},{"tid":"44ba3e5c","sid":"e2637fe8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:29:52.863Z","games":["1565f755","57978784","57e28bbb","9731a470","e74bdab6","ebf19f6c"],"records":{"maxGamePTS":{"v":2,"gameKey":"1565f755","sid":"6c117270"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "4c9f889d-8587-4195-abd5-6bedb43a1602",
+  "name": "Margot De Cruz",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "fouls": 15,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 10,
+      "winPct": 0.17,
+      "pts": 2,
+      "fg": 1,
+      "wins": 2,
+      "statsChecked": "2026-07-05T14:55:08.448Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "6b068d42",
+          "tn": "Malvern Tigers U12 Girls Blue",
+          "gid": "f6d350f4",
+          "gn": "Saturday U12 Girls Section 07",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 15,
+            "losses": 5,
+            "pts": 2,
+            "fg": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "6b068d42",
+          "tn": "Malvern Tigers U12 Girls Blue",
+          "gid": "0ff83b89",
+          "gn": "Saturday U12 Girls Section 06",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 15,
+            "losses": 5,
+            "pts": 2,
+            "fg": 1,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "988928c1",
+          "tn": "Malvern Tigers U8 Girls Black",
+          "gid": "e9188464",
+          "gn": "Saturday U8 Girls Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "44ba3e5c",
+          "tn": "Malvern Tigers U8 Girls Green",
+          "gid": "76f8daf7",
+          "gn": "U8 Girls (S22_23) Division 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:38.687Z",
+  "teams": [
+    {
+      "tid": "6b068d42",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "988928c1",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44ba3e5c",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.235Z",
+  "games": [
+    "1565f755",
+    "57978784",
+    "57e28bbb",
+    "9731a470",
+    "e74bdab6",
+    "ebf19f6c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "1565f755",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

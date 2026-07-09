@@ -1,1 +1,99 @@
-{"uuid":"d3d5668f-8400-4e8a-a867-9d21b9eeb63a","gender":null,"sports":{"Basketball":{"gp":15,"pts":48,"fouls":16,"fg":22,"ft":4,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":null,"wins":4,"losses":9,"winPct":0.31,"statsChecked":"2026-07-05T16:03:48.380Z"}},"seasons":[{"sid":"d18d4630","sn":"Winter 2022","club":null,"regs":[{"tid":"a6141862","tn":"Wonder Women","gid":"bce33afd","gn":"Tuesday Senior Women B","stats":{"gp":15,"pts":48,"fouls":16,"fg":22,"ft":4,"wins":4,"losses":9}}]}],"updatedAt":"2026-06-11T23:45:04.456Z","games":["0adf8d3e","0c07bd0c","1396955c","434c5792","4763f433","6af1a31a","9060c8a4","97882a59","a81049af","aa96ff54","ad50a728","cf3cb72c","db667642","e0c08c8c","f9f9fd44"],"records":{"maxGamePTS":{"v":11,"gameKey":"434c5792","sid":"d18d4630"},"maxGameThreePt":{"v":null}},"name":"Winter 2022"}
+{
+  "uuid": "d3d5668f-8400-4e8a-a867-9d21b9eeb63a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 48,
+      "fouls": 16,
+      "fg": 22,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 9,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T16:03:48.380Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d18d4630",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a6141862",
+          "tn": "Wonder Women",
+          "gid": "bce33afd",
+          "gn": "Tuesday Senior Women B",
+          "stats": {
+            "gp": 15,
+            "pts": 48,
+            "fouls": 16,
+            "fg": 22,
+            "ft": 4,
+            "wins": 4,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "97a4667f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "55d62aab",
+          "tn": "Wonder Women",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:04.456Z",
+  "games": [
+    "0adf8d3e",
+    "0c07bd0c",
+    "1396955c",
+    "434c5792",
+    "4763f433",
+    "6af1a31a",
+    "9060c8a4",
+    "97882a59",
+    "a81049af",
+    "aa96ff54",
+    "ad50a728",
+    "cf3cb72c",
+    "db667642",
+    "e0c08c8c",
+    "f9f9fd44"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "434c5792",
+      "sid": "d18d4630"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "a6141862",
+      "sid": "d18d4630",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "55d62aab",
+      "sid": "97a4667f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.769Z"
+}

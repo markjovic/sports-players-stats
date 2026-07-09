@@ -1,1 +1,264 @@
-{"uuid":"61b29f1c-507d-4cb8-a903-e2e0bb36da2c","name":"Rufus Brown","gender":"Boys","sports":{"Basketball":{"gp":46,"pts":24,"fouls":52,"fg":12,"finals":3,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":42,"losses":63,"draws":2,"winPct":0.39,"statsChecked":"2026-07-05T14:41:38.322Z"}},"seasons":[{"sid":"f373fc05","sn":"Winter 2025","club":"Banyule Hawks Basketball Club","regs":[{"tid":"9cbac415","tn":"Banyule U09 Boys 04","gid":"ea91a58f","gn":"Boys U09 CC","age":"U09","div":null,"stats":{"gp":14,"fouls":21,"fg":5,"pts":10,"finals":1,"wins":5,"losses":9}},{"tid":"9cbac415","tn":"Banyule U09 Boys 04","gid":"c074709e","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":14,"fouls":21,"fg":5,"pts":10,"finals":1,"wins":5,"losses":9}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Banyule Hawks Basketball Club","regs":[{"tid":"79a33d88","tn":"Banyule U08 Boys 02","gid":"6505de2b","gn":"Boys U08 BB","age":"U08","div":null,"stats":{"gp":15,"fouls":24,"fg":6,"pts":12,"finals":1,"wins":4,"losses":11}},{"tid":"79a33d88","tn":"Banyule U08 Boys 02","gid":"d77f3a00","gn":"Boys U08 B Grading","age":"U08","div":null,"stats":{"gp":15,"fouls":24,"fg":6,"pts":12,"finals":1,"wins":4,"losses":11}},{"tid":"79a33d88","tn":"Banyule U08 Boys 02","gid":"c5c9ed85","gn":"Boys U08 C Grading","age":"U08","div":null,"stats":{"gp":15,"fouls":24,"finals":1,"wins":4,"losses":11,"pts":12,"fg":6}}]},{"sid":"8c5855c1","sn":"Winter 2024","club":"Banyule Hawks Basketball Club","regs":[{"tid":"80fc7921","tn":"Banyule U09 Boys 04","gid":"7470ced7","gn":"Boys U09 CD","age":"U09","div":null,"stats":{"gp":17,"fouls":7,"fg":1,"pts":2,"finals":1,"wins":10,"losses":6,"draws":1}},{"tid":"80fc7921","tn":"Banyule U09 Boys 04","gid":"8706c5e9","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":17,"fouls":7,"finals":1,"wins":10,"losses":6,"draws":1,"pts":2,"fg":1}}]}],"updatedAt":"2026-05-31T05:34:51.720Z","teams":[{"tid":"9cbac415","sid":"f373fc05","status":"COMPLETED"},{"tid":"598c5a40","sid":"20dd3013","status":"COMPLETED"},{"tid":"79a33d88","sid":"fa446579","status":"COMPLETED"},{"tid":"80fc7921","sid":"8c5855c1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:41:55.298Z","records":{"maxGamePTS":{"v":4,"gameKey":"f7a3c20c","sid":"fa446579"},"maxGameThreePt":{"v":null}},"games":["11383445","1f679803","232f495a","26672895","26d07678","289f3723","2add779e","2fdfab88","3310ce1d","33867dec","34e4d08d","387c6566","3d524102","4d4b847a","50d1e8e1","5ed2119c","5f9c2ba2","620db4bf","620e7e48","6326d5b7","6951c17b","71c1f2fd","74f2e37c","76994abf","77da2e9b","78fc8629","795f6a11","7e032bf2","8a257ff7","90c3d9e2","9fe82c77","acfb5619","bbee6a15","bd66e6c1","c02e5bfc","c0b1e4aa","c11af875","c3d26d98","cce7f704","de882586","dfca0d3b","e8d7e211","e9d5a90c","f43cfef7","f53adb92","f7a3c20c"]}
+{
+  "uuid": "61b29f1c-507d-4cb8-a903-e2e0bb36da2c",
+  "name": "Rufus Brown",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 24,
+      "fouls": 52,
+      "fg": 12,
+      "finals": 3,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 42,
+      "losses": 63,
+      "draws": 2,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T14:41:38.322Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "9cbac415",
+          "tn": "Banyule U09 Boys 04",
+          "gid": "ea91a58f",
+          "gn": "Boys U09 CC",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "9cbac415",
+          "tn": "Banyule U09 Boys 04",
+          "gid": "c074709e",
+          "gn": "Boys U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "79a33d88",
+          "tn": "Banyule U08 Boys 02",
+          "gid": "6505de2b",
+          "gn": "Boys U08 BB",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 24,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 4,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "79a33d88",
+          "tn": "Banyule U08 Boys 02",
+          "gid": "d77f3a00",
+          "gn": "Boys U08 B Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 24,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 4,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "79a33d88",
+          "tn": "Banyule U08 Boys 02",
+          "gid": "c5c9ed85",
+          "gn": "Boys U08 C Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 24,
+            "finals": 1,
+            "wins": 4,
+            "losses": 11,
+            "pts": 12,
+            "fg": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8c5855c1",
+      "sn": "Winter 2024",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "80fc7921",
+          "tn": "Banyule U09 Boys 04",
+          "gid": "7470ced7",
+          "gn": "Boys U09 CD",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 7,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "80fc7921",
+          "tn": "Banyule U09 Boys 04",
+          "gid": "8706c5e9",
+          "gn": "Boys U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 7,
+            "finals": 1,
+            "wins": 10,
+            "losses": 6,
+            "draws": 1,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "20dd3013",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "598c5a40",
+          "tn": "Banyule",
+          "gid": "c34e54a1",
+          "gn": "U10 Boys B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T05:34:51.720Z",
+  "teams": [
+    {
+      "tid": "9cbac415",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79a33d88",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "80fc7921",
+      "sid": "8c5855c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "598c5a40",
+      "sid": "20dd3013",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.347Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "f7a3c20c",
+      "sid": "fa446579"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "11383445",
+    "1f679803",
+    "232f495a",
+    "26672895",
+    "26d07678",
+    "289f3723",
+    "2add779e",
+    "2fdfab88",
+    "3310ce1d",
+    "33867dec",
+    "34e4d08d",
+    "387c6566",
+    "3d524102",
+    "4d4b847a",
+    "50d1e8e1",
+    "5ed2119c",
+    "5f9c2ba2",
+    "620db4bf",
+    "620e7e48",
+    "6326d5b7",
+    "6951c17b",
+    "71c1f2fd",
+    "74f2e37c",
+    "76994abf",
+    "77da2e9b",
+    "78fc8629",
+    "795f6a11",
+    "7e032bf2",
+    "8a257ff7",
+    "90c3d9e2",
+    "9fe82c77",
+    "acfb5619",
+    "bbee6a15",
+    "bd66e6c1",
+    "c02e5bfc",
+    "c0b1e4aa",
+    "c11af875",
+    "c3d26d98",
+    "cce7f704",
+    "de882586",
+    "dfca0d3b",
+    "e8d7e211",
+    "e9d5a90c",
+    "f43cfef7",
+    "f53adb92",
+    "f7a3c20c"
+  ]
+}

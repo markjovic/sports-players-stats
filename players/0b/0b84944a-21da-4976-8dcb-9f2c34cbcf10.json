@@ -1,1 +1,81 @@
-{"uuid":"0b84944a-21da-4976-8dcb-9f2c34cbcf10","name":"Matthew Roche","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":5,"foulOuts":{},"gp":29,"pts":133,"fg":15,"ft":7,"threePt":32,"fouls":15,"statsChecked":"2026-07-08T17:49:58.935Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"d6110059"}]},{"sid":"fbe5a041","regs":[{"tid":"1caf23fc"}]},{"sid":"67fa5f49","regs":[{"tid":"ba26988b"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":15,"gameKey":"6ca30b74","sid":"fbe5a041"},"maxGameThreePt":{"v":5,"gameKey":"6ca30b74","sid":"fbe5a041"}}}
+{
+  "uuid": "0b84944a-21da-4976-8dcb-9f2c34cbcf10",
+  "name": "Matthew Roche",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 5,
+      "foulOuts": {},
+      "gp": 29,
+      "pts": 133,
+      "fg": 15,
+      "ft": 7,
+      "threePt": 32,
+      "fouls": 15,
+      "statsChecked": "2026-07-08T17:49:58.935Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "d6110059",
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2"
+        }
+      ]
+    },
+    {
+      "sid": "fbe5a041",
+      "regs": [
+        {
+          "tid": "1caf23fc",
+          "gid": "93c52f30",
+          "gn": "Wednesday Men -Div 1"
+        }
+      ]
+    },
+    {
+      "sid": "67fa5f49",
+      "regs": [
+        {
+          "tid": "ba26988b",
+          "gid": "007418ed",
+          "gn": "Wednesday Men -Div1/2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "d6110059",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1caf23fc",
+      "sid": "fbe5a041",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba26988b",
+      "sid": "67fa5f49",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "6ca30b74",
+      "sid": "fbe5a041"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "6ca30b74",
+      "sid": "fbe5a041"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:17.439Z"
+}

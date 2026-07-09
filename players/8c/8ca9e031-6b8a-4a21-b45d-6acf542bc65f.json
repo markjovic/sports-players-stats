@@ -1,1 +1,65 @@
-{"uuid":"8ca9e031-6b8a-4a21-b45d-6acf542bc65f","name":"Tom Flannery","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":null,"foulOuts":{"796936f7":2},"gp":11,"pts":72,"fg":33,"ft":6,"fouls":24,"statsChecked":"2026-07-09T18:31:36.197Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"5cf96898"}]},{"sid":"796936f7","regs":[{"tid":"864a8964"}]}],"teams":[],"updatedAt":"2026-07-09T18:09:23.820Z","records":{"maxGamePTS":{"v":10,"gameKey":"0110cba3","sid":"702b232f"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "8ca9e031-6b8a-4a21-b45d-6acf542bc65f",
+  "name": "Tom Flannery",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "796936f7": 2
+      },
+      "gp": 11,
+      "pts": 72,
+      "fg": 33,
+      "ft": 6,
+      "fouls": 24,
+      "statsChecked": "2026-07-09T18:31:36.197Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "5cf96898",
+          "gid": "58efb3fd",
+          "gn": "Thursday  Mixed Div 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "864a8964",
+          "gid": "384ac4bb",
+          "gn": "Thursday  Mixed Div 1/2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "5cf96898",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "864a8964",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:23.820Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "0110cba3",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.914Z"
+}

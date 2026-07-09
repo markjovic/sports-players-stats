@@ -1,1 +1,93 @@
-{"uuid":"6895c9a5-71d9-4e49-aa68-0c41b7415789","name":"Tyler Mcgiveron","sports":{"Basketball":{"maxGamePTS":2,"maxGameThreePt":null,"foulOuts":{},"gp":43,"pts":13,"fg":6,"ft":1,"fouls":17,"statsChecked":"2026-07-08T17:52:37.208Z"}},"seasons":[{"sid":"ab2e3371","regs":[{"tid":"7cf29be1"}]},{"sid":"1ee2cc6c","regs":[{"tid":"564ed93a"}]},{"sid":"c7dedf75","regs":[{"tid":"1b0ec96d"}]},{"sid":"028bb8b1","regs":[{"tid":"22c37acd"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":2,"gameKey":"f81ae010","sid":"ab2e3371"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "6895c9a5-71d9-4e49-aa68-0c41b7415789",
+  "name": "Tyler Mcgiveron",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 43,
+      "pts": 13,
+      "fg": 6,
+      "ft": 1,
+      "fouls": 17,
+      "statsChecked": "2026-07-08T17:52:37.208Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ab2e3371",
+      "regs": [
+        {
+          "tid": "7cf29be1",
+          "gid": "1d198b4b",
+          "gn": "U17 Boys A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "1ee2cc6c",
+      "regs": [
+        {
+          "tid": "564ed93a",
+          "gid": "026a69d9",
+          "gn": "Wednesday U18 Boys Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "c7dedf75",
+      "regs": [
+        {
+          "tid": "1b0ec96d",
+          "gid": "b6950968",
+          "gn": "Saturday U16 Boys Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "028bb8b1",
+      "regs": [
+        {
+          "tid": "22c37acd",
+          "gid": "c1eea6e7",
+          "gn": "Saturday U16 Boys Division 2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "7cf29be1",
+      "sid": "ab2e3371",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "564ed93a",
+      "sid": "1ee2cc6c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1b0ec96d",
+      "sid": "c7dedf75",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22c37acd",
+      "sid": "028bb8b1",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f81ae010",
+      "sid": "ab2e3371"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:23.020Z"
+}

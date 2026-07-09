@@ -1,1 +1,106 @@
-{"uuid":"1186b8f8-8ec2-49fe-bfa9-4bd7a0773ae8","gender":null,"sports":{"Basketball":{"gp":7,"fouls":4,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":3,"losses":1,"winPct":0.75,"statsChecked":"2026-07-05T16:26:51.163Z"}},"seasons":[{"sid":"4b655bab","sn":"Winter 2021","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"cf8537fe","tn":"Willy Cannons U10 Boys LOU","gid":"aee9d4ef","gn":"Friday U10 Boys Div 3","stats":{"gp":3,"fouls":3}},{"tid":"cf8537fe","tn":"Willy Cannons U10 Boys LOU","gid":"a2d7b410","gn":"Z Grading Friday U10 Boys Div 3 Grading","stats":{"gp":3,"fouls":3}}]},{"sid":"dcc45073","sn":"Summer 2020/21","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"c973c7a4","tn":"Willy Cannons U10 Boys LOU","gid":"64198b78","gn":"Friday U10 Boys Div 3/4","stats":{"gp":4,"fouls":1,"wins":3,"losses":1}}]}],"updatedAt":"2026-06-11T23:36:28.045Z","games":["2e0b0e21","432a0070","b35e3649","e4c87ff9"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "1186b8f8-8ec2-49fe-bfa9-4bd7a0773ae8",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "fouls": 4,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 1,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-05T16:26:51.163Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b655bab",
+      "sn": "Winter 2021",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "cf8537fe",
+          "tn": "Willy Cannons U10 Boys LOU",
+          "gid": "aee9d4ef",
+          "gn": "Friday U10 Boys Div 3",
+          "stats": {
+            "gp": 3,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "cf8537fe",
+          "tn": "Willy Cannons U10 Boys LOU",
+          "gid": "a2d7b410",
+          "gn": "Z Grading Friday U10 Boys Div 3 Grading",
+          "stats": {
+            "gp": 3,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "536f8c32",
+          "tn": "Willy Cannons U10 Boys LOV",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "c973c7a4",
+          "tn": "Willy Cannons U10 Boys LOU",
+          "gid": "64198b78",
+          "gn": "Friday U10 Boys Div 3/4",
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:28.045Z",
+  "games": [
+    "2e0b0e21",
+    "432a0070",
+    "b35e3649",
+    "e4c87ff9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "cf8537fe",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "536f8c32",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c973c7a4",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.742Z"
+}

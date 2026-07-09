@@ -1,1 +1,82 @@
-{"uuid":"0c8892c7-6daf-4301-8ada-5c38f98d732c","name":"Max Sharp","gender":"Boys","sports":{"Basketball":{"gp":4,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"losses":3,"winPct":0.25,"statsChecked":"2026-07-05T15:58:55.231Z"}},"seasons":[{"sid":"3c7d9d2a","sn":"2024","club":"Kyneton Tigers Basketball Club","regs":[{"tid":"075cd056","tn":"Kyneton Tigers U10 Boys","gid":"5f64c5a3","gn":"U10 Boys Div 1","age":"U10","div":"Div 1","stats":{"gp":4,"fouls":1,"wins":1,"losses":3}}]},{"sid":"a7f145dd","sn":"Summer 2024/25","regs":[]}],"updatedAt":"2026-06-01T21:38:32.227Z","teams":[{"tid":"211f05bd","sid":"a7f145dd","status":"COMPLETED"},{"tid":"075cd056","sid":"3c7d9d2a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:57.879Z","games":["0d956789","4cd61905","f4dc3021","ffc10bdf"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "0c8892c7-6daf-4301-8ada-5c38f98d732c",
+  "name": "Max Sharp",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T15:58:55.231Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3c7d9d2a",
+      "sn": "2024",
+      "club": "Kyneton Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "075cd056",
+          "tn": "Kyneton Tigers U10 Boys",
+          "gid": "5f64c5a3",
+          "gn": "U10 Boys Div 1",
+          "age": "U10",
+          "div": "Div 1",
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a7f145dd",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "211f05bd",
+          "tn": "Kyneton Tiger Cubs Black",
+          "gid": "bfa91440",
+          "gn": "Monday U10 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:38:32.227Z",
+  "teams": [
+    {
+      "tid": "075cd056",
+      "sid": "3c7d9d2a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "211f05bd",
+      "sid": "a7f145dd",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.504Z",
+  "games": [
+    "0d956789",
+    "4cd61905",
+    "f4dc3021",
+    "ffc10bdf"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,305 @@
-{"uuid":"efcc4973-0f9a-4ba9-8148-213afc0d30f7","name":"William Zhao","gender":"Boys","sports":{"Basketball":{"gp":46,"pts":106,"fouls":97,"fg":52,"ft":2,"foulOuts":{"15908988":1,"52d31d16":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":8,"maxGameThreePt":null,"wins":71,"losses":70,"winPct":0.5,"draws":1,"statsChecked":"2026-07-05T14:17:44.043Z"}},"seasons":[{"sid":"15908988","sn":"Winter 2026","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"7cd1b713","tn":"B11 Nunawading Kangas 4","gid":"e3a6a3ee","gn":"Saturday U11 Boys BR","age":"U11","div":null,"stats":{"gp":8,"fouls":20,"fg":18,"pts":37,"foulOuts":1,"ft":1,"wins":2,"losses":5,"draws":1}}]},{"sid":"2ecfa56c","sn":"2025/26","club":"Nunawading Spectres Basketball Club","regs":[{"tid":"1548a52d","tn":"Nunawading U12 Boys 5","gid":"f3360181","gn":"U12 Boys RL1 (EAST)","age":"U12","div":null,"stats":{"gp":21,"fouls":44,"fg":16,"pts":32,"wins":11,"losses":10}},{"tid":"1548a52d","tn":"Nunawading U12 Boys 5","gid":"994f1a1e","gn":"12 Boys - VJL Crossover","age":null,"div":null,"stats":{"gp":21,"fouls":44,"fg":16,"pts":32,"wins":11,"losses":10}},{"tid":"1548a52d","tn":"Nunawading U12 Boys 5","gid":"145dbdcb","gn":"U12 Boys Grading 2 - II Pool A","age":"U12","div":null,"stats":{"gp":21,"fouls":44,"fg":16,"pts":32,"wins":11,"losses":10}},{"tid":"1548a52d","tn":"Nunawading U12 Boys 5","gid":"b1166530","gn":"12 Boys Grading 1 - Crossover","age":null,"div":null,"stats":{"gp":21,"fouls":44,"wins":11,"losses":10,"pts":32,"fg":16}},{"tid":"1548a52d","tn":"Nunawading U12 Boys 5","gid":"bf8c622f","gn":"12 Boys Grading 1 - Pool 8B","age":null,"div":null,"stats":{"gp":21,"fouls":44,"fg":16,"pts":32,"wins":11,"losses":10}}]},{"sid":"52d31d16","sn":"Winter 2025","club":"Southeast Venom Basketball Club","regs":[{"tid":"e775b271","tn":"B11 SE Venom RBT Warriors (P)","gid":"6a59c2a8","gn":"Friday U11 Boys C","age":"U11","div":null,"stats":{"gp":12,"fouls":25,"fg":10,"pts":20,"foulOuts":1,"finals":1,"wins":6,"losses":6}},{"tid":"e775b271","tn":"B11 SE Venom RBT Warriors (P)","gid":"bf1deea0","gn":"Friday U11 Boys CR","age":"U11","div":null,"stats":{"gp":12,"fouls":25,"finals":1,"wins":6,"losses":6,"pts":20,"fg":10}}]},{"sid":"0869ea69","regs":[{"tid":"d3096e29","stats":{"wins":2,"losses":3,"gp":5,"pts":17,"fg":8,"ft":1,"fouls":8}}]}],"updatedAt":"2026-07-04T05:35:11.041Z","teams":[{"tid":"1548a52d","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"7cd1b713","sid":"15908988","status":"ACTIVE"},{"tid":"d3096e29","sid":"0869ea69","status":"UPCOMING"},{"tid":"e775b271","sid":"52d31d16","status":"COMPLETED"},{"tid":"156a6f3f","sid":"913d1397","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:53:54.024Z","games":["0201f500","0546a811","08e22d02","0ccfa616","0e0933d5","11943932","2de6f982","2feef0b2","329cca3d","3a784c5e","3b50ed75","435f1eea","573389c3","5a2d4f6b","5c70fafa","5d29afac","664a0d37","6751c267","6fe2c76b","76599518","79108aee","7b900f5d","7b9839dc","7be484eb","8bc832ef","8d29ebae","95bacfce","9c7e176e","9c7ff037","a0c4f523","ab4c9e20","b9c409ba","beda97f3","c9adf7e7","cd5c945a","d12e6716","d370c46a","d9def72b","dde48efb","e298aa19","e58a88b2","e5bb5b50","e61201e2","ec28cea6","f2d0ea11","f2ed06f1"],"records":{"maxGamePTS":{"v":8,"gameKey":"d9def72b","sid":"15908988"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "efcc4973-0f9a-4ba9-8148-213afc0d30f7",
+  "name": "William Zhao",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 106,
+      "fouls": 97,
+      "fg": 52,
+      "ft": 2,
+      "foulOuts": {
+        "15908988": 1,
+        "52d31d16": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 71,
+      "losses": 70,
+      "winPct": 0.5,
+      "draws": 1,
+      "statsChecked": "2026-07-05T14:17:44.043Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "15908988",
+      "sn": "Winter 2026",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "7cd1b713",
+          "tn": "B11 Nunawading Kangas 4",
+          "gid": "e3a6a3ee",
+          "gn": "Saturday U11 Boys BR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 20,
+            "fg": 18,
+            "pts": 37,
+            "foulOuts": 1,
+            "ft": 1,
+            "wins": 2,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ecfa56c",
+      "sn": "2025/26",
+      "club": "Nunawading Spectres Basketball Club",
+      "regs": [
+        {
+          "tid": "1548a52d",
+          "tn": "Nunawading U12 Boys 5",
+          "gid": "f3360181",
+          "gn": "U12 Boys RL1 (EAST)",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 44,
+            "fg": 16,
+            "pts": 32,
+            "wins": 11,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "1548a52d",
+          "tn": "Nunawading U12 Boys 5",
+          "gid": "994f1a1e",
+          "gn": "12 Boys - VJL Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 44,
+            "fg": 16,
+            "pts": 32,
+            "wins": 11,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "1548a52d",
+          "tn": "Nunawading U12 Boys 5",
+          "gid": "145dbdcb",
+          "gn": "U12 Boys Grading 2 - II Pool A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 44,
+            "fg": 16,
+            "pts": 32,
+            "wins": 11,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "1548a52d",
+          "tn": "Nunawading U12 Boys 5",
+          "gid": "b1166530",
+          "gn": "12 Boys Grading 1 - Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 44,
+            "wins": 11,
+            "losses": 10,
+            "pts": 32,
+            "fg": 16
+          }
+        },
+        {
+          "tid": "1548a52d",
+          "tn": "Nunawading U12 Boys 5",
+          "gid": "bf8c622f",
+          "gn": "12 Boys Grading 1 - Pool 8B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 44,
+            "fg": 16,
+            "pts": 32,
+            "wins": 11,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "52d31d16",
+      "sn": "Winter 2025",
+      "club": "Southeast Venom Basketball Club",
+      "regs": [
+        {
+          "tid": "e775b271",
+          "tn": "B11 SE Venom RBT Warriors (P)",
+          "gid": "6a59c2a8",
+          "gn": "Friday U11 Boys C",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 25,
+            "fg": 10,
+            "pts": 20,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 6,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "e775b271",
+          "tn": "B11 SE Venom RBT Warriors (P)",
+          "gid": "bf1deea0",
+          "gn": "Friday U11 Boys CR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 25,
+            "finals": 1,
+            "wins": 6,
+            "losses": 6,
+            "pts": 20,
+            "fg": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "d3096e29",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 17,
+            "fg": 8,
+            "ft": 1,
+            "fouls": 8
+          },
+          "gid": "1fc201d0",
+          "gn": "BOYS UNDER 12 B7"
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "156a6f3f",
+          "tn": "Melbourne Wolves RBT Vipers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:11.041Z",
+  "teams": [
+    {
+      "tid": "7cd1b713",
+      "sid": "15908988",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1548a52d",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e775b271",
+      "sid": "52d31d16",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3096e29",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "156a6f3f",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.731Z",
+  "games": [
+    "0201f500",
+    "0546a811",
+    "08e22d02",
+    "0ccfa616",
+    "0e0933d5",
+    "11943932",
+    "2de6f982",
+    "2feef0b2",
+    "329cca3d",
+    "3a784c5e",
+    "3b50ed75",
+    "435f1eea",
+    "573389c3",
+    "5a2d4f6b",
+    "5c70fafa",
+    "5d29afac",
+    "664a0d37",
+    "6751c267",
+    "6fe2c76b",
+    "76599518",
+    "79108aee",
+    "7b900f5d",
+    "7b9839dc",
+    "7be484eb",
+    "8bc832ef",
+    "8d29ebae",
+    "95bacfce",
+    "9c7e176e",
+    "9c7ff037",
+    "a0c4f523",
+    "ab4c9e20",
+    "b9c409ba",
+    "beda97f3",
+    "c9adf7e7",
+    "cd5c945a",
+    "d12e6716",
+    "d370c46a",
+    "d9def72b",
+    "dde48efb",
+    "e298aa19",
+    "e58a88b2",
+    "e5bb5b50",
+    "e61201e2",
+    "ec28cea6",
+    "f2d0ea11",
+    "f2ed06f1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "d9def72b",
+      "sid": "15908988"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

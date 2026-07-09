@@ -1,1 +1,116 @@
-{"uuid":"0a75dd7d-68cb-4f13-a49e-15e364cf7ecd","name":"Marcus Jakschik","gender":"Mixed","sports":{"Basketball":{"gp":21,"pts":48,"fouls":3,"fg":24,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":2,"losses":6,"winPct":0.25,"statsChecked":"2026-07-05T16:11:29.307Z"}},"seasons":[{"sid":"8aeb72bf","sn":"Autumn 2026","regs":[{"tid":"b6d6648e","tn":"Majors Red","gid":"e4ab670b","gn":"Friday Majors","age":null,"div":null,"stats":{"gp":8,"pts":20,"fg":10,"wins":2,"losses":6}}]},{"sid":"d59292e5","sn":"Spring 2025","regs":[{"tid":"49260f5a","tn":"Majors Sky Blue","gid":"d32a3bd7","gn":"Friday Majors","age":null,"div":null,"stats":{"gp":13,"pts":28,"fg":14,"fouls":3}}]}],"updatedAt":"2026-06-02T18:32:26.494Z","teams":[{"tid":"b6d6648e","sid":"8aeb72bf","status":"COMPLETED"},{"tid":"49260f5a","sid":"d59292e5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:54:33.773Z","records":{"maxGamePTS":{"v":10,"gameKey":"23487a80","sid":"d59292e5"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["157f99b9","6c0d5c08","9405ab14","c7c9c33d","d8ada151","dadf72b4","dcf6a736","ebcfa11a"]}
+{
+  "uuid": "0a75dd7d-68cb-4f13-a49e-15e364cf7ecd",
+  "name": "Marcus Jakschik",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 21,
+      "pts": 48,
+      "fouls": 3,
+      "fg": 24,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 6,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:11:29.307Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8aeb72bf",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "b6d6648e",
+          "tn": "Majors Red",
+          "gid": "e4ab670b",
+          "gn": "Friday Majors",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 20,
+            "fg": 10,
+            "wins": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d59292e5",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "49260f5a",
+          "tn": "Majors Sky Blue",
+          "gid": "d32a3bd7",
+          "gn": "Friday Majors",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 28,
+            "fg": 14,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "129942f6",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "6dfdfc7d",
+          "tn": "02 Majors Grade",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T18:32:26.494Z",
+  "teams": [
+    {
+      "tid": "b6d6648e",
+      "sid": "8aeb72bf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "49260f5a",
+      "sid": "d59292e5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6dfdfc7d",
+      "sid": "129942f6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.402Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "23487a80",
+      "sid": "d59292e5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "157f99b9",
+    "6c0d5c08",
+    "9405ab14",
+    "c7c9c33d",
+    "d8ada151",
+    "dadf72b4",
+    "dcf6a736",
+    "ebcfa11a"
+  ]
+}

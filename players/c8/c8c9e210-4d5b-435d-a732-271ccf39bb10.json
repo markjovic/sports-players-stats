@@ -1,1 +1,81 @@
-{"uuid":"c8c9e210-4d5b-435d-a732-271ccf39bb10","name":"Blair Zorzetto","sports":{"Basketball":{"maxGamePTS":24,"maxGameThreePt":1,"foulOuts":{},"gp":22,"pts":110,"fg":51,"ft":2,"threePt":2,"fouls":23,"statsChecked":"2026-07-07T18:29:51.064Z"}},"seasons":[{"sid":"71efaeda","regs":[{"tid":"99e71056"}]},{"sid":"172eac4c","regs":[{"tid":"272c09e9"}]},{"sid":"941a6507","regs":[{"tid":"b81588c2"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":24,"gameKey":"74762914","sid":"71efaeda"},"maxGameThreePt":{"v":1,"gameKey":"36cd5758","sid":"71efaeda"}}}
+{
+  "uuid": "c8c9e210-4d5b-435d-a732-271ccf39bb10",
+  "name": "Blair Zorzetto",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 24,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 22,
+      "pts": 110,
+      "fg": 51,
+      "ft": 2,
+      "threePt": 2,
+      "fouls": 23,
+      "statsChecked": "2026-07-07T18:29:51.064Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "71efaeda",
+      "regs": [
+        {
+          "tid": "99e71056",
+          "gid": "76c43805",
+          "gn": "Tuesday Men B"
+        }
+      ]
+    },
+    {
+      "sid": "172eac4c",
+      "regs": [
+        {
+          "tid": "272c09e9",
+          "gid": "597443b2",
+          "gn": "Tuesday U21 Boys Div 1"
+        }
+      ]
+    },
+    {
+      "sid": "941a6507",
+      "regs": [
+        {
+          "tid": "b81588c2",
+          "gid": "3df189af",
+          "gn": "Tuesday U21 Boys"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "99e71056",
+      "sid": "71efaeda",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "272c09e9",
+      "sid": "172eac4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b81588c2",
+      "sid": "941a6507",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "74762914",
+      "sid": "71efaeda"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "36cd5758",
+      "sid": "71efaeda"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:28.045Z"
+}

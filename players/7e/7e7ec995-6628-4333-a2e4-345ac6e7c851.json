@@ -1,1 +1,79 @@
-{"uuid":"7e7ec995-6628-4333-a2e4-345ac6e7c851","gender":null,"sports":{"Basketball":{"gp":7,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"draws":7,"winPct":0,"statsChecked":"2026-07-05T16:02:01.861Z"}},"seasons":[{"sid":"7ca3c99e","sn":"Spring 2025","club":null,"regs":[{"tid":"2156bc9c","tn":"Surrey Sparkles (G)","gid":"20e23b29","gn":"Friday Whitehorse Train & Play","stats":{"gp":7,"draws":7}}]}],"updatedAt":"2026-06-11T23:41:41.351Z","games":["015bebfe","4fd49bb5","92481612","944a4610","a8252efe","dc757e38","f9676064"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Spring 2025"}
+{
+  "uuid": "7e7ec995-6628-4333-a2e4-345ac6e7c851",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "draws": 7,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:02:01.861Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7ca3c99e",
+      "sn": "Spring 2025",
+      "club": null,
+      "regs": [
+        {
+          "tid": "2156bc9c",
+          "tn": "Surrey Sparkles (G)",
+          "gid": "20e23b29",
+          "gn": "Friday Whitehorse Train & Play",
+          "stats": {
+            "gp": 7,
+            "draws": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "05b54d55",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "403123a7",
+          "tn": "Surrey Sparkles",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:41.351Z",
+  "games": [
+    "015bebfe",
+    "4fd49bb5",
+    "92481612",
+    "944a4610",
+    "a8252efe",
+    "dc757e38",
+    "f9676064"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Spring 2025",
+  "teams": [
+    {
+      "tid": "2156bc9c",
+      "sid": "7ca3c99e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "403123a7",
+      "sid": "05b54d55",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.075Z"
+}

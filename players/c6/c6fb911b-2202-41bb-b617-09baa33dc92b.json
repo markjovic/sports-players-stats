@@ -1,1 +1,234 @@
-{"uuid":"c6fb911b-2202-41bb-b617-09baa33dc92b","name":"Benjamin Shelmerdine","gender":"Boys","sports":{"Basketball":{"gp":38,"pts":78,"fouls":20,"fg":38,"ft":2,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":20,"losses":17,"winPct":0.53,"draws":1,"statsChecked":"2026-07-05T15:26:00.385Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"26a4aa47","tn":"Wesley Hot Shots","gid":"b5b31405","gn":"Friday Year 4 Boys B","age":null,"div":null,"stats":{"gp":15,"fouls":8,"fg":16,"pts":33,"ft":1,"wins":6,"losses":9}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"e43c4fd9","tn":"Wesley Hot Shots","gid":"57b2fe47","gn":"Friday Year 3 Boys B","age":null,"div":null,"stats":{"gp":15,"fouls":9,"fg":14,"pts":28,"wins":8,"losses":6,"draws":1}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"c5894fa6","tn":"Wesley Hot Shots","gid":"d90e801a","gn":"Friday MSAC/Bayside Year 3 Boys B","age":null,"div":null,"stats":{"gp":8,"fouls":3,"ft":1,"fg":8,"pts":17,"wins":6,"losses":2}}]}],"updatedAt":"2026-07-04T05:59:47.988Z","teams":[{"tid":"26a4aa47","sid":"ad68db8b","status":"ACTIVE"},{"tid":"e43c4fd9","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"c5894fa6","sid":"31d05517","status":"COMPLETED"},{"tid":"64f2425b","sid":"8884de2d","status":"COMPLETED"},{"tid":"4b873f3b","sid":"0fef30ca","status":"COMPLETED"},{"tid":"70d0f58f","sid":"09a70808","status":"COMPLETED"},{"tid":"0ac1fd86","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:43:07.267Z","games":["00b6270c","02ac7a73","0890381c","0f386b84","0f73d0d9","1874ebbc","1b784b6c","277153d7","33ff3226","3f6319a9","420db464","451d1332","4980b486","5f07db8b","5f4debd3","65f72bba","6a99307e","8220757d","8d67b911","8e25e15e","8e7982c3","9175042e","928a50e5","949181a1","97d545ef","9e7668a5","a9f3e0c9","ae68f7ec","b29d986c","b3379941","bbda0dbd","c2116af6","c369914a","c63bd9e2","da9262fe","e0653b5f","eb33bb4c","f530f63e"],"records":{"maxGamePTS":{"v":8,"gameKey":"9e7668a5","sid":"1d1b8d1c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c6fb911b-2202-41bb-b617-09baa33dc92b",
+  "name": "Benjamin Shelmerdine",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 78,
+      "fouls": 20,
+      "fg": 38,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 20,
+      "losses": 17,
+      "winPct": 0.53,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:26:00.385Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "26a4aa47",
+          "tn": "Wesley Hot Shots",
+          "gid": "b5b31405",
+          "gn": "Friday Year 4 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "fg": 16,
+            "pts": 33,
+            "ft": 1,
+            "wins": 6,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "e43c4fd9",
+          "tn": "Wesley Hot Shots",
+          "gid": "57b2fe47",
+          "gn": "Friday Year 3 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 9,
+            "fg": 14,
+            "pts": 28,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "c5894fa6",
+          "tn": "Wesley Hot Shots",
+          "gid": "d90e801a",
+          "gn": "Friday MSAC/Bayside Year 3 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "64f2425b",
+          "tn": "Wesley Hot Shots",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "4b873f3b",
+          "tn": "Wesley Hot Shots",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "70d0f58f",
+          "tn": "Wesley Hot Shots",
+          "gid": "f2d55266",
+          "gn": "Friday MSAC/Bayside YR.1.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "0ac1fd86",
+          "tn": "Wesley Red",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:59:47.988Z",
+  "teams": [
+    {
+      "tid": "26a4aa47",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e43c4fd9",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5894fa6",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64f2425b",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4b873f3b",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70d0f58f",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ac1fd86",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.938Z",
+  "games": [
+    "00b6270c",
+    "02ac7a73",
+    "0890381c",
+    "0f386b84",
+    "0f73d0d9",
+    "1874ebbc",
+    "1b784b6c",
+    "277153d7",
+    "33ff3226",
+    "3f6319a9",
+    "420db464",
+    "451d1332",
+    "4980b486",
+    "5f07db8b",
+    "5f4debd3",
+    "65f72bba",
+    "6a99307e",
+    "8220757d",
+    "8d67b911",
+    "8e25e15e",
+    "8e7982c3",
+    "9175042e",
+    "928a50e5",
+    "949181a1",
+    "97d545ef",
+    "9e7668a5",
+    "a9f3e0c9",
+    "ae68f7ec",
+    "b29d986c",
+    "b3379941",
+    "bbda0dbd",
+    "c2116af6",
+    "c369914a",
+    "c63bd9e2",
+    "da9262fe",
+    "e0653b5f",
+    "eb33bb4c",
+    "f530f63e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "9e7668a5",
+      "sid": "1d1b8d1c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

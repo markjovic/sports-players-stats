@@ -1,1 +1,91 @@
-{"uuid":"6378dae4-c6ec-4717-a72f-efd8e9ddbc1a","name":"Lucas Saravia","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":20,"fouls":17,"fg":10,"foulOuts":{"ad68db8b":2},"maxGamePTS":6,"maxGameThreePt":null,"wins":7,"winPct":1,"statsChecked":"2026-07-05T15:48:54.954Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"275c282d","tn":"Port Melbourne Panthers (Withdrawn)","gid":"f578f36f","gn":"Friday Year 3 Boys C","age":null,"div":null,"stats":{"gp":7,"fouls":17,"fg":10,"pts":20,"foulOuts":2,"wins":7}}]}],"updatedAt":"2026-06-02T22:42:55.300Z","teams":[{"tid":"275c282d","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:43:50.814Z","records":{"maxGamePTS":{"v":6,"gameKey":"65b3466d","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["1847ce3a","4c901e4c","574d6cfe","6194b7d1","65b3466d","9a2ed50f","b0e3c43f"]}
+{
+  "uuid": "6378dae4-c6ec-4717-a72f-efd8e9ddbc1a",
+  "name": "Lucas Saravia",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 20,
+      "fouls": 17,
+      "fg": 10,
+      "foulOuts": {
+        "ad68db8b": 2
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T15:48:54.954Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "275c282d",
+          "tn": "Port Melbourne Panthers (Withdrawn)",
+          "gid": "f578f36f",
+          "gn": "Friday Year 3 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "fg": 10,
+            "pts": 20,
+            "foulOuts": 2,
+            "wins": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "df49b074",
+          "tn": "Port Melbourne Panthers (Term 4 Only)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:55.300Z",
+  "teams": [
+    {
+      "tid": "275c282d",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df49b074",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.454Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "65b3466d",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1847ce3a",
+    "4c901e4c",
+    "574d6cfe",
+    "6194b7d1",
+    "65b3466d",
+    "9a2ed50f",
+    "b0e3c43f"
+  ]
+}

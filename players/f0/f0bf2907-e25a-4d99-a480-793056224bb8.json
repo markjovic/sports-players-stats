@@ -1,1 +1,91 @@
-{"uuid":"f0bf2907-e25a-4d99-a480-793056224bb8","name":"William Martin","gender":"Mixed","sports":{"Basketball":{"gp":6,"pts":20,"fouls":8,"fg":9,"ft":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":1,"losses":5,"winPct":0.17,"statsChecked":"2026-07-05T15:52:32.652Z"}},"seasons":[{"sid":"4e38d684","sn":"Summer 2023/24","regs":[{"tid":"182c7e69","tn":"Kings","gid":"eab2e11a","gn":"Tuesday Intermediate Mixed U16 - U18","age":"U16","div":"U18","stats":{"gp":6,"fouls":8,"ft":2,"fg":9,"pts":20,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-02T13:00:53.098Z","teams":[{"tid":"182c7e69","sid":"4e38d684","status":"COMPLETED"},{"tid":"fd21777c","sid":"83287ee7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:54:09.108Z","records":{"maxGamePTS":{"v":4,"gameKey":"33b07d85","sid":"4e38d684"},"maxGameThreePt":{"v":null}},"games":["1c5a17ce","33b07d85","582ec5db","82b1ad03","a1ba44a8","cda46700"]}
+{
+  "uuid": "f0bf2907-e25a-4d99-a480-793056224bb8",
+  "name": "William Martin",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 20,
+      "fouls": 8,
+      "fg": 9,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T15:52:32.652Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4e38d684",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "182c7e69",
+          "tn": "Kings",
+          "gid": "eab2e11a",
+          "gn": "Tuesday Intermediate Mixed U16 - U18",
+          "age": "U16",
+          "div": "U18",
+          "stats": {
+            "gp": 6,
+            "fouls": 8,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "83287ee7",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "fd21777c",
+          "tn": "Celtics",
+          "gid": "3dab1d8e",
+          "gn": "Tuesday Intermediate Mixed U16 - U18",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T13:00:53.098Z",
+  "teams": [
+    {
+      "tid": "182c7e69",
+      "sid": "4e38d684",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd21777c",
+      "sid": "83287ee7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.809Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "33b07d85",
+      "sid": "4e38d684"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1c5a17ce",
+    "33b07d85",
+    "582ec5db",
+    "82b1ad03",
+    "a1ba44a8",
+    "cda46700"
+  ]
+}

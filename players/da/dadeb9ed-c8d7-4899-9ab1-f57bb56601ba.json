@@ -1,1 +1,167 @@
-{"uuid":"dadeb9ed-c8d7-4899-9ab1-f57bb56601ba","name":"Matthew Stather","gender":"Men","sports":{"Basketball":{"gp":25,"pts":87,"fouls":85,"fg":37,"ft":13,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"5dfc7567":5,"a537e827":1},"maxGamePTS":8,"maxGameThreePt":null,"wins":10,"losses":29,"winPct":0.26,"statsChecked":"2026-07-05T15:12:59.278Z"}},"seasons":[{"sid":"5dfc7567","sn":"Winter 2025","regs":[{"tid":"cd326fc5","tn":"WILD HOGS","gid":"b96ca0ca","gn":"Monday Open Men I","age":"Senior","div":null,"stats":{"gp":14,"fouls":54,"ft":3,"fg":18,"pts":39,"foulOuts":3,"wins":2,"losses":12}},{"tid":"cd326fc5","tn":"WILD HOGS","gid":"f889d2ec","gn":"Monday Open Men H/HRES","age":"Senior","div":null,"stats":{"gp":14,"fouls":54,"fg":18,"pts":39,"foulOuts":2,"wins":2,"losses":12,"ft":3}}]},{"sid":"a537e827","sn":"Summer 2021/22","regs":[{"tid":"69db745f","tn":"The Bald Eagles","gid":"644a0d72","gn":"Monday Open Men H/HRES","age":"Senior","div":null,"stats":{"gp":11,"fouls":31,"ft":10,"fg":19,"pts":48,"finals":1,"gfApps":1,"foulOuts":1,"wins":6,"losses":5}}]}],"updatedAt":"2026-06-01T11:43:58.355Z","teams":[{"tid":"cd326fc5","sid":"5dfc7567","status":"COMPLETED"},{"tid":"26671179","sid":"8e2a5f72","status":"COMPLETED"},{"tid":"69db745f","sid":"a537e827","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:45.110Z","records":{"maxGamePTS":{"v":8,"gameKey":"650d4a49","sid":"5dfc7567"},"maxGameThreePt":{"v":null}},"games":["0be85b03","1b9af759","20ebfbf3","21bd1160","243bfaf1","302a71c8","3e82f7e8","48552a6b","4dfc51c3","547ac399","587521e4","650b0ab2","650d4a49","6af433ac","75f5e6d0","76d3335c","770b736e","91095292","a9006d67","aa3057ad","ae8371ac","bb4f7373","d1c66fd3","dfbc132c","e5e2c27a"]}
+{
+  "uuid": "dadeb9ed-c8d7-4899-9ab1-f57bb56601ba",
+  "name": "Matthew Stather",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 25,
+      "pts": 87,
+      "fouls": 85,
+      "fg": 37,
+      "ft": 13,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "5dfc7567": 5,
+        "a537e827": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 29,
+      "winPct": 0.26,
+      "statsChecked": "2026-07-05T15:12:59.278Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5dfc7567",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "cd326fc5",
+          "tn": "WILD HOGS",
+          "gid": "b96ca0ca",
+          "gn": "Monday Open Men I",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 54,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39,
+            "foulOuts": 3,
+            "wins": 2,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "cd326fc5",
+          "tn": "WILD HOGS",
+          "gid": "f889d2ec",
+          "gn": "Monday Open Men H/HRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 54,
+            "fg": 18,
+            "pts": 39,
+            "foulOuts": 2,
+            "wins": 2,
+            "losses": 12,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a537e827",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "69db745f",
+          "tn": "The Bald Eagles",
+          "gid": "644a0d72",
+          "gn": "Monday Open Men H/HRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 31,
+            "ft": 10,
+            "fg": 19,
+            "pts": 48,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e2a5f72",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "26671179",
+          "tn": "ZZThe Bald Eagles - WITHDRAWN",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:43:58.355Z",
+  "teams": [
+    {
+      "tid": "cd326fc5",
+      "sid": "5dfc7567",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "69db745f",
+      "sid": "a537e827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "26671179",
+      "sid": "8e2a5f72",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.321Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "650d4a49",
+      "sid": "5dfc7567"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0be85b03",
+    "1b9af759",
+    "20ebfbf3",
+    "21bd1160",
+    "243bfaf1",
+    "302a71c8",
+    "3e82f7e8",
+    "48552a6b",
+    "4dfc51c3",
+    "547ac399",
+    "587521e4",
+    "650b0ab2",
+    "650d4a49",
+    "6af433ac",
+    "75f5e6d0",
+    "76d3335c",
+    "770b736e",
+    "91095292",
+    "a9006d67",
+    "aa3057ad",
+    "ae8371ac",
+    "bb4f7373",
+    "d1c66fd3",
+    "dfbc132c",
+    "e5e2c27a"
+  ]
+}

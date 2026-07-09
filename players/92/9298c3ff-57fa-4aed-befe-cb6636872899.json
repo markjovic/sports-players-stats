@@ -1,1 +1,221 @@
-{"uuid":"9298c3ff-57fa-4aed-befe-cb6636872899","name":"Nicholas Ireland","gender":"Men","sports":{"Basketball":{"gp":31,"pts":65,"fouls":26,"fg":23,"ft":4,"threePt":5,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":2,"wins":14,"losses":22,"winPct":0.39,"statsChecked":"2026-07-05T15:50:17.932Z"}},"seasons":[{"sid":"ba7f8a1f","sn":"Summer 2022/23","regs":[{"tid":"01bcfa16","tn":"The Morticians","gid":"9ee51881","gn":"Monday Men D1","age":null,"div":"D1","stats":{"gp":19,"fouls":13,"ft":1,"fg":14,"threePt":5,"pts":44,"wins":3,"losses":16}}]},{"sid":"d3dee716","sn":"Winter 2022","regs":[{"tid":"5ee10c08","tn":"Deakin 14s","gid":"76d84149","gn":"Men WEDNESDAY Section 8","age":null,"div":null,"stats":{"gp":7,"fouls":9,"ft":3,"fg":5,"pts":13,"wins":5,"losses":2}},{"tid":"e86a0e1f","stats":{"wins":3,"losses":2,"gp":5,"pts":8,"fg":4,"fouls":4}}]},{"sid":"d3dee716","sn":"Winter 2022","regs":[{"tid":"e86a0e1f","tn":"Deakin 6s","gid":"1e5b403e","gn":"Mixed TUESDAY Section 3","age":null,"div":null,"stats":{"gp":5,"fouls":4,"fg":4,"pts":8,"wins":3,"losses":2}}]}],"updatedAt":"2026-06-02T15:25:44.569Z","teams":[{"tid":"01bcfa16","sid":"ba7f8a1f","status":"COMPLETED"},{"tid":"5ee10c08","sid":"d3dee716","status":"COMPLETED"},{"tid":"e86a0e1f","sid":"d3dee716","status":"COMPLETED"},{"tid":"6f9ec678","sid":"27811fb0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:38.918Z","records":{"maxGamePTS":{"v":12,"gameKey":"a38e0390","sid":"ba7f8a1f"},"maxGameThreePt":{"v":2,"gameKey":"a38e0390","sid":"ba7f8a1f"}},"games":["0d3f9856","123d1780","143bee69","160c34eb","194854b9","20722b28","292e9a23","31196363","383bce86","3902f07d","390c822b","43185d0c","4e6179e5","502eb1e2","58cd0691","8285f431","940ced2c","94b66365","a38e0390","a8540cd4","b2db7a89","b5859981","b98f0217","ba84932d","cca07271","d02c6a36","d083e4b0","d6149361","d6260d71","dd636896","eb2ef3cf"],"gameTids":{"31196363":"01bcfa16","ba84932d":"01bcfa16","b2db7a89":"01bcfa16","94b66365":"01bcfa16","a8540cd4":"01bcfa16","123d1780":"01bcfa16","58cd0691":"01bcfa16","b98f0217":"01bcfa16","143bee69":"01bcfa16","8285f431":"01bcfa16","292e9a23":"01bcfa16","d02c6a36":"01bcfa16","390c822b":"01bcfa16","d6149361":"01bcfa16","dd636896":"01bcfa16","eb2ef3cf":"01bcfa16","0d3f9856":"01bcfa16","a38e0390":"01bcfa16","d6260d71":"01bcfa16","383bce86":"5ee10c08","160c34eb":"5ee10c08","b5859981":"5ee10c08","43185d0c":"5ee10c08","4e6179e5":"5ee10c08","d083e4b0":"5ee10c08","502eb1e2":"5ee10c08","194854b9":"e86a0e1f","20722b28":"e86a0e1f","cca07271":"e86a0e1f","3902f07d":"e86a0e1f","940ced2c":"e86a0e1f"}}
+{
+  "uuid": "9298c3ff-57fa-4aed-befe-cb6636872899",
+  "name": "Nicholas Ireland",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 65,
+      "fouls": 26,
+      "fg": 23,
+      "ft": 4,
+      "threePt": 5,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 14,
+      "losses": 22,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T15:50:17.932Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ba7f8a1f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "01bcfa16",
+          "tn": "The Morticians",
+          "gid": "9ee51881",
+          "gn": "Monday Men D1",
+          "age": null,
+          "div": "D1",
+          "stats": {
+            "gp": 19,
+            "fouls": 13,
+            "ft": 1,
+            "fg": 14,
+            "threePt": 5,
+            "pts": 44,
+            "wins": 3,
+            "losses": 16
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "5ee10c08",
+          "tn": "Deakin 14s",
+          "gid": "76d84149",
+          "gn": "Men WEDNESDAY Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "ft": 3,
+            "fg": 5,
+            "pts": 13,
+            "wins": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "e86a0e1f",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 4
+          },
+          "gid": "1e5b403e",
+          "gn": "Mixed TUESDAY Section 3"
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "e86a0e1f",
+          "tn": "Deakin 6s",
+          "gid": "1e5b403e",
+          "gn": "Mixed TUESDAY Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "27811fb0",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "6f9ec678",
+          "tn": "Morticians",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:25:44.569Z",
+  "teams": [
+    {
+      "tid": "01bcfa16",
+      "sid": "ba7f8a1f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ee10c08",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e86a0e1f",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f9ec678",
+      "sid": "27811fb0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.268Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "a38e0390",
+      "sid": "ba7f8a1f"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "a38e0390",
+      "sid": "ba7f8a1f"
+    }
+  },
+  "games": [
+    "0d3f9856",
+    "123d1780",
+    "143bee69",
+    "160c34eb",
+    "194854b9",
+    "20722b28",
+    "292e9a23",
+    "31196363",
+    "383bce86",
+    "3902f07d",
+    "390c822b",
+    "43185d0c",
+    "4e6179e5",
+    "502eb1e2",
+    "58cd0691",
+    "8285f431",
+    "940ced2c",
+    "94b66365",
+    "a38e0390",
+    "a8540cd4",
+    "b2db7a89",
+    "b5859981",
+    "b98f0217",
+    "ba84932d",
+    "cca07271",
+    "d02c6a36",
+    "d083e4b0",
+    "d6149361",
+    "d6260d71",
+    "dd636896",
+    "eb2ef3cf"
+  ],
+  "gameTids": {
+    "31196363": "01bcfa16",
+    "ba84932d": "01bcfa16",
+    "b2db7a89": "01bcfa16",
+    "94b66365": "01bcfa16",
+    "a8540cd4": "01bcfa16",
+    "123d1780": "01bcfa16",
+    "58cd0691": "01bcfa16",
+    "b98f0217": "01bcfa16",
+    "143bee69": "01bcfa16",
+    "8285f431": "01bcfa16",
+    "292e9a23": "01bcfa16",
+    "d02c6a36": "01bcfa16",
+    "390c822b": "01bcfa16",
+    "d6149361": "01bcfa16",
+    "dd636896": "01bcfa16",
+    "eb2ef3cf": "01bcfa16",
+    "0d3f9856": "01bcfa16",
+    "a38e0390": "01bcfa16",
+    "d6260d71": "01bcfa16",
+    "383bce86": "5ee10c08",
+    "160c34eb": "5ee10c08",
+    "b5859981": "5ee10c08",
+    "43185d0c": "5ee10c08",
+    "4e6179e5": "5ee10c08",
+    "d083e4b0": "5ee10c08",
+    "502eb1e2": "5ee10c08",
+    "194854b9": "e86a0e1f",
+    "20722b28": "e86a0e1f",
+    "cca07271": "e86a0e1f",
+    "3902f07d": "e86a0e1f",
+    "940ced2c": "e86a0e1f"
+  }
+}

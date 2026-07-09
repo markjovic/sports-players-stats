@@ -1,1 +1,140 @@
-{"uuid":"2a717dff-bb98-4ab2-a1ad-0773ce7a322a","gender":null,"sports":{"Basketball":{"gp":16,"pts":3,"fouls":12,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":8,"losses":4,"draws":8,"winPct":0.4,"statsChecked":"2026-07-05T16:12:16.627Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Sydenham Panthers Basketball Club","regs":[{"tid":"1c8e9b5e","tn":"Panthers U16 Boys SP4","gid":"d3445f1e","gn":"Saturday U16 Boys E4 Grade","stats":{"gp":10,"pts":1,"ft":1,"fouls":9,"wins":4,"losses":2,"draws":4}},{"tid":"1c8e9b5e","tn":"Panthers U16 Boys SP4","gid":"1840aeb8","gn":"Saturday U16 Boys E3 Grade","stats":{"gp":10,"fouls":9,"wins":4,"losses":2,"draws":4,"pts":1,"ft":1}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Sydenham Panthers Basketball Club","regs":[{"tid":"3f33da60","tn":"Panthers U16 Boys SP4","gid":"3808a8e9","gn":"Saturday U16 Boys C2 Grade","stats":{"gp":6,"pts":2,"fg":1,"fouls":3}}]}],"updatedAt":"2026-06-11T23:37:46.786Z","records":{"maxGamePTS":{"v":2,"gameKey":"7a9981b8","sid":"0912c55f"},"maxGameThreePt":{"v":null}},"games":["17d11dc6","26b9d174","2e17b6cc","328c5b37","35535af9","45c4e5fb","67b6d971","7a9981b8","8622c6fc","941f1259","99b2e9d2","b200c27d","cb825ca9","d5dc9a48","e14e0558","f332bf72"],"name":"Winter 2021"}
+{
+  "uuid": "2a717dff-bb98-4ab2-a1ad-0773ce7a322a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 3,
+      "fouls": 12,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 4,
+      "draws": 8,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:12:16.627Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Sydenham Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "1c8e9b5e",
+          "tn": "Panthers U16 Boys SP4",
+          "gid": "d3445f1e",
+          "gn": "Saturday U16 Boys E4 Grade",
+          "stats": {
+            "gp": 10,
+            "pts": 1,
+            "ft": 1,
+            "fouls": 9,
+            "wins": 4,
+            "losses": 2,
+            "draws": 4
+          }
+        },
+        {
+          "tid": "1c8e9b5e",
+          "tn": "Panthers U16 Boys SP4",
+          "gid": "1840aeb8",
+          "gn": "Saturday U16 Boys E3 Grade",
+          "stats": {
+            "gp": 10,
+            "fouls": 9,
+            "wins": 4,
+            "losses": 2,
+            "draws": 4,
+            "pts": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Sydenham Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "3f33da60",
+          "tn": "Panthers U16 Boys SP4",
+          "gid": "3808a8e9",
+          "gn": "Saturday U16 Boys C2 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "a78ebd86",
+          "tn": "Panthers U16 Boys SP4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:46.786Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "7a9981b8",
+      "sid": "0912c55f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "17d11dc6",
+    "26b9d174",
+    "2e17b6cc",
+    "328c5b37",
+    "35535af9",
+    "45c4e5fb",
+    "67b6d971",
+    "7a9981b8",
+    "8622c6fc",
+    "941f1259",
+    "99b2e9d2",
+    "b200c27d",
+    "cb825ca9",
+    "d5dc9a48",
+    "e14e0558",
+    "f332bf72"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "1c8e9b5e",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f33da60",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a78ebd86",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.178Z"
+}

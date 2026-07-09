@@ -1,1 +1,58 @@
-{"uuid":"8eb4288a-a4fa-4a2c-bf3d-b5caaf0c9c0c","name":"Milly Briggs/Smith","sports":{"Basketball":{"maxGamePTS":null,"maxGameThreePt":null,"foulOuts":{},"gp":3,"fouls":5,"statsChecked":"2026-07-06T19:10:56.380Z"}},"seasons":[{"sid":"73551fc8","regs":[{"tid":"79092b09"},{"tid":"e1740adf"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","gameTids":{"978d97ec":"79092b09","d1903b7e":"79092b09","790e22fa":"e1740adf"},"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "8eb4288a-a4fa-4a2c-bf3d-b5caaf0c9c0c",
+  "name": "Milly Briggs/Smith",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 3,
+      "fouls": 5,
+      "statsChecked": "2026-07-06T19:10:56.380Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "73551fc8",
+      "regs": [
+        {
+          "tid": "79092b09",
+          "gid": "44c0a6c0",
+          "gn": "U14 Girls"
+        },
+        {
+          "tid": "e1740adf",
+          "gid": "e08b31de",
+          "gn": "U12 Girls"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "79092b09",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1740adf",
+      "sid": "73551fc8",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "gameTids": {
+    "978d97ec": "79092b09",
+    "d1903b7e": "79092b09",
+    "790e22fa": "e1740adf"
+  },
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:25.081Z"
+}

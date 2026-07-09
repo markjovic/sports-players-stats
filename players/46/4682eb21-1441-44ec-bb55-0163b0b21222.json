@@ -1,1 +1,86 @@
-{"uuid":"4682eb21-1441-44ec-bb55-0163b0b21222","name":"Raine Caldow","gender":"Mixed","sports":{"Basketball":{"gp":8,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":3,"winPct":0.75,"losses":1,"statsChecked":"2026-07-05T16:00:32.649Z"}},"seasons":[{"sid":"00324933","sn":"Winter 2026","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"4b740473","tn":"Aberfeldie Jets U8 Mixed RICHARDSON","gid":"0fac3ae9","gn":"U8 Mixed Grading","age":"U8","div":null,"stats":{"gp":1,"wins":1}}]},{"sid":"ec40087c","sn":"Summer 2025/26","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"92618a44","tn":"Aberfeldie Jets U8 Mixed RICHARDSON","gid":"5732b93c","gn":"U8 Mixed YELLOW","age":"U8","div":null,"stats":{"gp":7,"wins":2,"losses":1}}]}],"updatedAt":"2026-06-02T01:17:25.080Z","teams":[{"tid":"4b740473","sid":"00324933","status":"ACTIVE"},{"tid":"92618a44","sid":"ec40087c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:25:48.817Z","games":["244a32c3","48a2e93e","795a4903","802c624d"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "4682eb21-1441-44ec-bb55-0163b0b21222",
+  "name": "Raine Caldow",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "winPct": 0.75,
+      "losses": 1,
+      "statsChecked": "2026-07-05T16:00:32.649Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "00324933",
+      "sn": "Winter 2026",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "4b740473",
+          "tn": "Aberfeldie Jets U8 Mixed RICHARDSON",
+          "gid": "5fcb64bd",
+          "gn": "U8 Mixed BLUE",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec40087c",
+      "sn": "Summer 2025/26",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "92618a44",
+          "tn": "Aberfeldie Jets U8 Mixed RICHARDSON",
+          "gid": "5732b93c",
+          "gn": "U8 Mixed YELLOW",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T01:17:25.080Z",
+  "teams": [
+    {
+      "tid": "4b740473",
+      "sid": "00324933",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92618a44",
+      "sid": "ec40087c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.942Z",
+  "games": [
+    "244a32c3",
+    "48a2e93e",
+    "795a4903",
+    "802c624d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

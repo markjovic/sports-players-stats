@@ -1,1 +1,81 @@
-{"uuid":"23b44a38-c9b8-47ae-9e3e-01a8f4607f53","name":"Daniel Mcginn","sports":{"Basketball":{"maxGamePTS":14,"maxGameThreePt":3,"foulOuts":{},"gp":24,"pts":161,"fg":33,"ft":5,"threePt":30,"fouls":13,"statsChecked":"2026-07-08T18:03:14.429Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"7f344496"}]},{"sid":"796936f7","regs":[{"tid":"ad1afa22"}]},{"sid":"67fa5f49","regs":[{"tid":"1cfed4ec"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":14,"gameKey":"07300377","sid":"796936f7"},"maxGameThreePt":{"v":3,"gameKey":"1c3dd9f3","sid":"796936f7"}}}
+{
+  "uuid": "23b44a38-c9b8-47ae-9e3e-01a8f4607f53",
+  "name": "Daniel Mcginn",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 14,
+      "maxGameThreePt": 3,
+      "foulOuts": {},
+      "gp": 24,
+      "pts": 161,
+      "fg": 33,
+      "ft": 5,
+      "threePt": 30,
+      "fouls": 13,
+      "statsChecked": "2026-07-08T18:03:14.429Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "7f344496",
+          "gid": "854861a2",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "ad1afa22",
+          "gid": "617dabe4",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "67fa5f49",
+      "regs": [
+        {
+          "tid": "1cfed4ec",
+          "gid": "e1efb0de",
+          "gn": "Wednesday Men -Div5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "7f344496",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ad1afa22",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1cfed4ec",
+      "sid": "67fa5f49",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "07300377",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "1c3dd9f3",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:18.667Z"
+}

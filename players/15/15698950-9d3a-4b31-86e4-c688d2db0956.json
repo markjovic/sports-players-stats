@@ -1,1 +1,89 @@
-{"uuid":"15698950-9d3a-4b31-86e4-c688d2db0956","name":"Evelyn Wilson","gender":"Girls","sports":{"Basketball":{"gp":6,"pts":2,"fouls":3,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":5,"winPct":0.17,"wins":1,"statsChecked":"2026-07-05T15:59:44.561Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"bda4aeab","tn":"Joey Giants Tigers","gid":"08edb27a","gn":"Tuesday Year 5 Girls A","age":null,"div":null,"stats":{"gp":6,"fouls":3,"fg":1,"pts":2,"losses":5,"wins":1}}]}],"updatedAt":"2026-07-04T05:34:26.349Z","teams":[{"tid":"bda4aeab","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T11:59:35.320Z","records":{"maxGamePTS":{"v":2,"gameKey":"4c015c4f","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["4c015c4f","7e37ed33","a8a54f46","d03e75c1","f8246a96","fd9cd596"]}
+{
+  "uuid": "15698950-9d3a-4b31-86e4-c688d2db0956",
+  "name": "Evelyn Wilson",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 2,
+      "fouls": 3,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 5,
+      "winPct": 0.17,
+      "wins": 1,
+      "statsChecked": "2026-07-05T15:59:44.561Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "bda4aeab",
+          "tn": "Joey Giants Tigers",
+          "gid": "08edb27a",
+          "gn": "Tuesday Year 5 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "fg": 1,
+            "pts": 2,
+            "losses": 5,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "234d06d2",
+          "tn": "Joey Giants Tigers",
+          "gid": "fc78d4c5",
+          "gn": "Tuesday Year 5 Girls B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:34:26.349Z",
+  "teams": [
+    {
+      "tid": "bda4aeab",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "234d06d2",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.941Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "4c015c4f",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "4c015c4f",
+    "7e37ed33",
+    "a8a54f46",
+    "d03e75c1",
+    "f8246a96",
+    "fd9cd596"
+  ]
+}

@@ -1,1 +1,209 @@
-{"uuid":"ecf98dd6-534d-4d41-b4a2-58713d3a3cb0","name":"Nate O’Sullivan","gender":"Mixed","sports":{"Basketball":{"gp":23,"pts":35,"fouls":8,"fg":16,"ft":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":null,"wins":8,"losses":13,"winPct":0.38,"statsChecked":"2026-07-05T15:52:24.858Z"}},"seasons":[{"sid":"b11d9229","sn":"Summer 2025/26","regs":[{"tid":"277b5d66","tn":"Mavericks","gid":"b39964a5","gn":"Thursday Junior Mixed","age":"Junior","div":null,"stats":{"gp":4,"fouls":2,"ft":1,"fg":4,"pts":9,"losses":2}},{"tid":"dcc73b23","tn":"Warriors","gid":"b39964a5","gn":"Thursday Junior Mixed","age":"Junior","div":null,"stats":{"gp":1,"fg":1,"pts":2,"losses":1}}]},{"sid":"9e7ce22c","sn":"Winter 2025","regs":[{"tid":"00c187df","tn":"Mavericks","gid":"e9107c8a","gn":"Thursday Junior Mixed","age":"Junior","div":null,"stats":{"gp":7,"fouls":2,"ft":2,"fg":11,"pts":24,"finals":1,"wins":5,"losses":2}}]},{"sid":"2fb47ba8","sn":"Winter 2024","regs":[{"tid":"0b34559e","tn":"Thursday Rockets","gid":"7ccf6dcc","gn":"Thursday Junior Mixed","age":"Junior","div":null,"stats":{"gp":11,"fouls":4,"wins":3,"losses":8}}]}],"updatedAt":"2026-06-03T01:07:00.783Z","teams":[{"tid":"277b5d66","sid":"b11d9229","status":"COMPLETED"},{"tid":"00c187df","sid":"9e7ce22c","status":"COMPLETED"},{"tid":"0b34559e","sid":"2fb47ba8","status":"COMPLETED"},{"tid":"744a7a0a","sid":"1aa8cfe6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:52:50.992Z","games":["0707977d","0b0ec400","0fa7a04f","0ffa09fd","13fa7930","2b3ccdde","2fdc56b5","328259cc","35e3d229","3d76fafa","4585e39b","5187b36c","6ddde41a","721848af","73c75393","7f59ff19","96641a26","b1d4e1b0","bf02e911","c34a8d8d","c3f639c4","e94fac22","eced90db"],"records":{"maxGamePTS":{"v":14,"gameKey":"c34a8d8d","sid":"9e7ce22c"},"maxGameThreePt":{"v":null}},"gameTids":{"35e3d229":"277b5d66","0ffa09fd":"277b5d66","2b3ccdde":"277b5d66","5187b36c":"277b5d66","4585e39b":"dcc73b23","e94fac22":"00c187df","721848af":"00c187df","b1d4e1b0":"00c187df","c3f639c4":"00c187df","13fa7930":"00c187df","c34a8d8d":"00c187df","0b0ec400":"00c187df","73c75393":"0b34559e","0707977d":"0b34559e","6ddde41a":"0b34559e","2fdc56b5":"0b34559e","bf02e911":"0b34559e","3d76fafa":"0b34559e","7f59ff19":"0b34559e","eced90db":"0b34559e","96641a26":"0b34559e","328259cc":"0b34559e","0fa7a04f":"0b34559e"}}
+{
+  "uuid": "ecf98dd6-534d-4d41-b4a2-58713d3a3cb0",
+  "name": "Nate O’Sullivan",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 35,
+      "fouls": 8,
+      "fg": 16,
+      "ft": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 13,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T15:52:24.858Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b11d9229",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "277b5d66",
+          "tn": "Mavericks",
+          "gid": "b39964a5",
+          "gn": "Thursday Junior Mixed",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "dcc73b23",
+          "tn": "Warriors",
+          "gid": "b39964a5",
+          "gn": "Thursday Junior Mixed",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9e7ce22c",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "00c187df",
+          "tn": "Mavericks",
+          "gid": "e9107c8a",
+          "gn": "Thursday Junior Mixed",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 11,
+            "pts": 24,
+            "finals": 1,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2fb47ba8",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "0b34559e",
+          "tn": "Thursday Rockets",
+          "gid": "7ccf6dcc",
+          "gn": "Thursday Junior Mixed",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1aa8cfe6",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "744a7a0a",
+          "tn": "Mini Hoops 1",
+          "gid": "a492ff84",
+          "gn": "Thursday Mini Hoops",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T01:07:00.783Z",
+  "teams": [
+    {
+      "tid": "277b5d66",
+      "sid": "b11d9229",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dcc73b23",
+      "sid": "b11d9229",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "00c187df",
+      "sid": "9e7ce22c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b34559e",
+      "sid": "2fb47ba8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "744a7a0a",
+      "sid": "1aa8cfe6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.549Z",
+  "games": [
+    "0707977d",
+    "0b0ec400",
+    "0fa7a04f",
+    "0ffa09fd",
+    "13fa7930",
+    "2b3ccdde",
+    "2fdc56b5",
+    "328259cc",
+    "35e3d229",
+    "3d76fafa",
+    "4585e39b",
+    "5187b36c",
+    "6ddde41a",
+    "721848af",
+    "73c75393",
+    "7f59ff19",
+    "96641a26",
+    "b1d4e1b0",
+    "bf02e911",
+    "c34a8d8d",
+    "c3f639c4",
+    "e94fac22",
+    "eced90db"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "c34a8d8d",
+      "sid": "9e7ce22c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "35e3d229": "277b5d66",
+    "0ffa09fd": "277b5d66",
+    "2b3ccdde": "277b5d66",
+    "5187b36c": "277b5d66",
+    "4585e39b": "dcc73b23",
+    "e94fac22": "00c187df",
+    "721848af": "00c187df",
+    "b1d4e1b0": "00c187df",
+    "c3f639c4": "00c187df",
+    "13fa7930": "00c187df",
+    "c34a8d8d": "00c187df",
+    "0b0ec400": "00c187df",
+    "73c75393": "0b34559e",
+    "0707977d": "0b34559e",
+    "6ddde41a": "0b34559e",
+    "2fdc56b5": "0b34559e",
+    "bf02e911": "0b34559e",
+    "3d76fafa": "0b34559e",
+    "7f59ff19": "0b34559e",
+    "eced90db": "0b34559e",
+    "96641a26": "0b34559e",
+    "328259cc": "0b34559e",
+    "0fa7a04f": "0b34559e"
+  }
+}

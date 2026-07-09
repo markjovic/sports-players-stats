@@ -1,1 +1,113 @@
-{"uuid":"96b6adf0-c836-40fa-8be3-a3dad9ca9217","name":"Toby Gooch","gender":"Boys","sports":{"Basketball":{"gp":4,"pts":12,"fouls":8,"fg":6,"foulOuts":{"38ce88ed":1},"maxGamePTS":8,"maxGameThreePt":null,"losses":7,"winPct":0,"statsChecked":"2026-07-05T15:37:40.959Z"}},"seasons":[{"sid":"38ce88ed","sn":"2026","regs":[{"tid":"1f802104","tn":"U18 Boys ACT Gunners (CP)","gid":"0ce40ebf","gn":"U18 Boys Cross Pool","age":"U18","div":null,"stats":{"gp":1,"fg":1,"pts":2,"losses":1}},{"tid":"99c6d3d6","stats":{"losses":3,"gp":3,"pts":10,"fg":5,"fouls":8}}]},{"sid":"38ce88ed","sn":"2026","regs":[{"tid":"99c6d3d6","tn":"U18 Boys ACT Gunners","gid":"173d059c","gn":"U18 Boys D1","age":"U18","div":"D1","stats":{"gp":3,"fouls":8,"fg":5,"pts":10,"foulOuts":1,"losses":3}}]}],"updatedAt":"2026-06-01T15:57:36.580Z","teams":[{"tid":"99c6d3d6","sid":"38ce88ed","status":"COMPLETED"},{"tid":"1f802104","sid":"38ce88ed","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:29:32.300Z","records":{"maxGamePTS":{"v":8,"gameKey":"116c3af4","sid":"38ce88ed"},"maxGameThreePt":{"v":null}},"games":["116c3af4","1461ae78","4b061fbe","b3090515"],"gameTids":{"b3090515":"1f802104","1461ae78":"99c6d3d6","116c3af4":"99c6d3d6","4b061fbe":"99c6d3d6"}}
+{
+  "uuid": "96b6adf0-c836-40fa-8be3-a3dad9ca9217",
+  "name": "Toby Gooch",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 12,
+      "fouls": 8,
+      "fg": 6,
+      "foulOuts": {
+        "38ce88ed": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "losses": 7,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:37:40.959Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "1f802104",
+          "tn": "U18 Boys ACT Gunners (CP)",
+          "gid": "0ce40ebf",
+          "gn": "U18 Boys Cross Pool",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "99c6d3d6",
+          "stats": {
+            "losses": 3,
+            "gp": 3,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 8
+          },
+          "gid": "173d059c",
+          "gn": "U18 Boys D1"
+        }
+      ]
+    },
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "99c6d3d6",
+          "tn": "U18 Boys ACT Gunners",
+          "gid": "173d059c",
+          "gn": "U18 Boys D1",
+          "age": "U18",
+          "div": "D1",
+          "stats": {
+            "gp": 3,
+            "fouls": 8,
+            "fg": 5,
+            "pts": 10,
+            "foulOuts": 1,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:57:36.580Z",
+  "teams": [
+    {
+      "tid": "1f802104",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99c6d3d6",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.514Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "116c3af4",
+      "sid": "38ce88ed"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "116c3af4",
+    "1461ae78",
+    "4b061fbe",
+    "b3090515"
+  ],
+  "gameTids": {
+    "b3090515": "1f802104",
+    "1461ae78": "99c6d3d6",
+    "116c3af4": "99c6d3d6",
+    "4b061fbe": "99c6d3d6"
+  }
+}

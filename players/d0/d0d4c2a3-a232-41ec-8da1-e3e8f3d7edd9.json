@@ -1,1 +1,128 @@
-{"uuid":"d0d4c2a3-a232-41ec-8da1-e3e8f3d7edd9","name":"Daniel Stow","sports":{"Basketball":{"maxGamePTS":17,"maxGameThreePt":3,"foulOuts":{"4b160a26":1},"gp":73,"pts":284,"fg":46,"ft":27,"threePt":55,"fouls":68,"statsChecked":"2026-07-08T17:55:24.954Z"}},"seasons":[{"sid":"4b160a26","regs":[{"tid":"94321a80"}]},{"sid":"cc9be2f3","regs":[{"tid":"c0843072"}]},{"sid":"9174b4c3","regs":[{"tid":"a4016619"}]},{"sid":"d9c33f98","regs":[{"tid":"f1cd285f"}]},{"sid":"11f4ba8a","regs":[{"tid":"4561b865"}]},{"sid":"2dce64a8","regs":[{"tid":"7c38de1d"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":17,"gameKey":"2d592380","sid":"11f4ba8a"},"maxGameThreePt":{"v":3,"gameKey":"1e465927","sid":"4b160a26"}}}
+{
+  "uuid": "d0d4c2a3-a232-41ec-8da1-e3e8f3d7edd9",
+  "name": "Daniel Stow",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 17,
+      "maxGameThreePt": 3,
+      "foulOuts": {
+        "4b160a26": 1
+      },
+      "gp": 73,
+      "pts": 284,
+      "fg": 46,
+      "ft": 27,
+      "threePt": 55,
+      "fouls": 68,
+      "statsChecked": "2026-07-08T17:55:24.954Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b160a26",
+      "regs": [
+        {
+          "tid": "94321a80",
+          "gid": "30467fa1",
+          "gn": "Wednesday Open Men E"
+        }
+      ]
+    },
+    {
+      "sid": "cc9be2f3",
+      "regs": [
+        {
+          "tid": "c0843072",
+          "gid": "ff10e7ea",
+          "gn": "Wednesday Open Men B"
+        }
+      ]
+    },
+    {
+      "sid": "9174b4c3",
+      "regs": [
+        {
+          "tid": "a4016619",
+          "gid": "6685a60f",
+          "gn": "Thursday Open Men B2"
+        }
+      ]
+    },
+    {
+      "sid": "d9c33f98",
+      "regs": [
+        {
+          "tid": "f1cd285f",
+          "gid": "113fa11a",
+          "gn": "Wednesday Open Men B"
+        }
+      ]
+    },
+    {
+      "sid": "11f4ba8a",
+      "regs": [
+        {
+          "tid": "4561b865",
+          "gid": "23933ed0",
+          "gn": "Wednesday Senior Men B"
+        }
+      ]
+    },
+    {
+      "sid": "2dce64a8",
+      "regs": [
+        {
+          "tid": "7c38de1d",
+          "gid": "5695be70",
+          "gn": "Thursday Men A/B Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "94321a80",
+      "sid": "4b160a26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c0843072",
+      "sid": "cc9be2f3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4016619",
+      "sid": "9174b4c3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1cd285f",
+      "sid": "d9c33f98",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4561b865",
+      "sid": "11f4ba8a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7c38de1d",
+      "sid": "2dce64a8",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "2d592380",
+      "sid": "11f4ba8a"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "1e465927",
+      "sid": "4b160a26"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:28.570Z"
+}

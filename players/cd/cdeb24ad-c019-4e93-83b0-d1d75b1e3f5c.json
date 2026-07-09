@@ -1,1 +1,118 @@
-{"uuid":"cdeb24ad-c019-4e93-83b0-d1d75b1e3f5c","gender":null,"sports":{"Basketball":{"gp":10,"pts":6,"fouls":15,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":5,"winPct":0.17,"statsChecked":"2026-07-05T16:03:47.957Z"}},"seasons":[{"sid":"4b655bab","sn":"Winter 2021","club":"Williamstown Magic Basketball Club","regs":[{"tid":"7cba52d0","tn":"Williamstown Magic U14 Girls Charms","gid":"d02a53f8","gn":"Saturday U14 Girls Div 2","stats":{"gp":4,"fouls":6,"pts":2,"fg":1}},{"tid":"7cba52d0","tn":"Williamstown Magic U14 Girls Charms","gid":"8622be26","gn":"Saturday U14 Girls Div 2 Grading","stats":{"gp":4,"pts":2,"fouls":6,"fg":1}}]},{"sid":"dcc45073","sn":"Summer 2020/21","club":"Williamstown Magic Basketball Club","regs":[{"tid":"dfee12bf","tn":"Williamstown Magic U14 Girls Charms","gid":"2cd955cf","gn":"Saturday U14 Girls Div 1/2","stats":{"gp":6,"pts":4,"fouls":9,"fg":2,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-11T23:44:47.737Z","games":["29c1b173","463f6bf8","5baaf998","87e2c660","9f91cff7","c7660a4a"],"records":{"maxGamePTS":{"v":2,"gameKey":"675d0e24","sid":"4b655bab"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "cdeb24ad-c019-4e93-83b0-d1d75b1e3f5c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 6,
+      "fouls": 15,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T16:03:47.957Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b655bab",
+      "sn": "Winter 2021",
+      "club": "Williamstown Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "7cba52d0",
+          "tn": "Williamstown Magic U14 Girls Charms",
+          "gid": "d02a53f8",
+          "gn": "Saturday U14 Girls Div 2",
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "7cba52d0",
+          "tn": "Williamstown Magic U14 Girls Charms",
+          "gid": "8622be26",
+          "gn": "Saturday U14 Girls Div 2 Grading",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fouls": 6,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "63c797ff",
+          "tn": "(RTS) Williamstown Magic U14 Girls Charms",
+          "gid": "60152197",
+          "gn": "(RTS) Saturday U14 Girls Div 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Williamstown Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "dfee12bf",
+          "tn": "Williamstown Magic U14 Girls Charms",
+          "gid": "2cd955cf",
+          "gn": "Saturday U14 Girls Div 1/2",
+          "stats": {
+            "gp": 6,
+            "pts": 4,
+            "fouls": 9,
+            "fg": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:47.737Z",
+  "games": [
+    "29c1b173",
+    "463f6bf8",
+    "5baaf998",
+    "87e2c660",
+    "9f91cff7",
+    "c7660a4a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "675d0e24",
+      "sid": "4b655bab"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "7cba52d0",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "63c797ff",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dfee12bf",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.350Z"
+}

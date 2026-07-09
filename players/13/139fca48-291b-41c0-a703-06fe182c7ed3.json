@@ -1,1 +1,305 @@
-{"uuid":"139fca48-291b-41c0-a703-06fe182c7ed3","name":"Thomas Totos","gender":"Boys","sports":{"Basketball":{"gp":45,"pts":21,"fouls":64,"fg":9,"ft":3,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":24,"losses":31,"winPct":0.42,"draws":2,"statsChecked":"2026-07-05T15:20:29.044Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"53259be2","tn":"APL U12 Boys Blue","gid":"b0a67102","gn":"Saturday U12 Boys B/C","age":"U12","div":null,"stats":{"gp":6,"fouls":6,"losses":6,"pts":4,"fg":2}},{"tid":"53259be2","tn":"APL U12 Boys Blue","gid":"aec6fbe5","gn":"Saturday U12 Boys C","age":"U12","div":null,"stats":{"gp":6,"fouls":6,"losses":6,"pts":4,"fg":2}},{"tid":"53259be2","tn":"APL U12 Boys Blue","gid":"bc98684a","gn":"Saturday U12 Boys A","age":"U12","div":null,"stats":{"gp":6,"pts":4,"fg":2,"fouls":6,"losses":6}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"e7b9952c","tn":"Bayside Ballers ","gid":"a129fde2","gn":"Friday Year 3 Boys A","age":null,"div":null,"stats":{"gp":15,"pts":10,"fg":5,"fouls":24,"wins":9,"losses":4,"draws":2}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","club":"Albert Park Lakers Basketball Club","regs":[{"tid":"35235184","tn":"APL U12 Boys Blue","gid":"ab0696ef","gn":"Saturday U12 Boys B/C","age":"U12","div":null,"stats":{"gp":3,"fouls":3,"wins":1,"losses":2}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"7682060e","tn":"Bayside Ballers ","gid":"834db669","gn":"Friday Year 2 Boys A","age":null,"div":null,"stats":{"gp":13,"pts":2,"fg":1,"fouls":17,"wins":7,"losses":6}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"e4cea633","tn":"Bayside Ballers ","gid":"f850dd1a","gn":"Friday MSAC/Bayside Year 2 Boys A","age":null,"div":null,"stats":{"gp":8,"pts":5,"fg":1,"ft":3,"fouls":14,"wins":7,"losses":1}}]}],"updatedAt":"2026-06-02T22:42:51.752Z","teams":[{"tid":"e7b9952c","sid":"ad68db8b","status":"ACTIVE"},{"tid":"53259be2","sid":"e7aed763","status":"ACTIVE"},{"tid":"35235184","sid":"e78cfce1","status":"COMPLETED"},{"tid":"7682060e","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"e4cea633","sid":"31d05517","status":"COMPLETED"},{"tid":"314e6a87","sid":"8884de2d","status":"COMPLETED"},{"tid":"17db5241","sid":"0fef30ca","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:58:13.028Z","records":{"maxGamePTS":{"v":4,"gameKey":"24f85adb","sid":"e7aed763"},"maxGameThreePt":{"v":null}},"games":["0b228271","0eda6726","13eba06f","14633bd3","21044be1","21ade282","224ef0f3","24f85adb","2cb606bf","2fe6ab28","30f2513d","352327dc","3e76a674","43a454f8","47d6fe90","51242d43","5ebc9f5b","62ec6fe1","659904fc","76b32b59","780f4250","8408e315","8413c7cc","8e3c43c6","939564e6","93d423d9","94bf1051","990aa50b","99621ec8","a098c750","a725d670","a7410641","a7929686","b19d2c2a","b1f16954","bba252bc","c068e42a","c3257d8d","c703d862","ce8ee3ac","e22ba292","e56f3f99","ec0e8456","f3cce2be","f55d925f"]}
+{
+  "uuid": "139fca48-291b-41c0-a703-06fe182c7ed3",
+  "name": "Thomas Totos",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "pts": 21,
+      "fouls": 64,
+      "fg": 9,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 24,
+      "losses": 31,
+      "winPct": 0.42,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:20:29.044Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "53259be2",
+          "tn": "APL U12 Boys Blue",
+          "gid": "b0a67102",
+          "gn": "Saturday U12 Boys B/C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "losses": 6,
+            "pts": 4,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "53259be2",
+          "tn": "APL U12 Boys Blue",
+          "gid": "aec6fbe5",
+          "gn": "Saturday U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 6,
+            "losses": 6,
+            "pts": 4,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "53259be2",
+          "tn": "APL U12 Boys Blue",
+          "gid": "bc98684a",
+          "gn": "Saturday U12 Boys A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 6,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e7b9952c",
+          "tn": "Bayside Ballers ",
+          "gid": "a129fde2",
+          "gn": "Friday Year 3 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 24,
+            "wins": 9,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "club": "Albert Park Lakers Basketball Club",
+      "regs": [
+        {
+          "tid": "35235184",
+          "tn": "APL U12 Boys Blue",
+          "gid": "ab0696ef",
+          "gn": "Saturday U12 Boys B/C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "7682060e",
+          "tn": "Bayside Ballers ",
+          "gid": "834db669",
+          "gn": "Friday Year 2 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 17,
+            "wins": 7,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "e4cea633",
+          "tn": "Bayside Ballers ",
+          "gid": "f850dd1a",
+          "gn": "Friday MSAC/Bayside Year 2 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 5,
+            "fg": 1,
+            "ft": 3,
+            "fouls": 14,
+            "wins": 7,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "1ae2bf4a",
+          "tn": "Bayside Ballers ",
+          "gid": "bee6f7d3",
+          "gn": "Friday Year 3 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "314e6a87",
+          "tn": "Bayside Ballers ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "17db5241",
+          "tn": "Bayside Ballers ",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:51.752Z",
+  "teams": [
+    {
+      "tid": "53259be2",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7b9952c",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35235184",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7682060e",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4cea633",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ae2bf4a",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "314e6a87",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "17db5241",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.867Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "24f85adb",
+      "sid": "e7aed763"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b228271",
+    "0eda6726",
+    "13eba06f",
+    "14633bd3",
+    "21044be1",
+    "21ade282",
+    "224ef0f3",
+    "24f85adb",
+    "2cb606bf",
+    "2fe6ab28",
+    "30f2513d",
+    "352327dc",
+    "3e76a674",
+    "43a454f8",
+    "47d6fe90",
+    "51242d43",
+    "5ebc9f5b",
+    "62ec6fe1",
+    "659904fc",
+    "76b32b59",
+    "780f4250",
+    "8408e315",
+    "8413c7cc",
+    "8e3c43c6",
+    "939564e6",
+    "93d423d9",
+    "94bf1051",
+    "990aa50b",
+    "99621ec8",
+    "a098c750",
+    "a725d670",
+    "a7410641",
+    "a7929686",
+    "b19d2c2a",
+    "b1f16954",
+    "bba252bc",
+    "c068e42a",
+    "c3257d8d",
+    "c703d862",
+    "ce8ee3ac",
+    "e22ba292",
+    "e56f3f99",
+    "ec0e8456",
+    "f3cce2be",
+    "f55d925f"
+  ]
+}

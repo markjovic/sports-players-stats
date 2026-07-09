@@ -1,1 +1,94 @@
-{"uuid":"8ec1004c-8748-4602-9490-7694d8081c72","name":"William Van Soest","gender":"Boys","sports":{"Basketball":{"gp":13,"fouls":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":5,"losses":2,"winPct":0.71,"pts":4,"fg":2,"statsChecked":"2026-07-05T15:37:17.852Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"Pascoe Vale Panthers Basketball Club","regs":[{"tid":"d8c1116e","tn":"Panthers U10 Boys Gold","gid":"4197b79f","gn":"Saturday U10 Boys Group 4","age":"U10","div":null,"stats":{"gp":7,"fouls":1,"wins":5,"losses":2,"pts":2,"fg":1}}]},{"sid":"8810ce3f","regs":[{"tid":"65b4ff9d","stats":{"gp":6,"pts":2,"fg":1,"fouls":2}}]}],"updatedAt":"2026-07-04T05:54:21.021Z","teams":[{"tid":"d8c1116e","sid":"e44fb190","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:27:01.388Z","games":["227cad6e","499dd263","980e23b3","d2babcaf","dc6d045b","df13e0ad","f141d891"],"records":{"maxGamePTS":{"v":2,"gameKey":"825cfa95","sid":"8810ce3f"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "8ec1004c-8748-4602-9490-7694d8081c72",
+  "name": "William Van Soest",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "fouls": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 2,
+      "winPct": 0.71,
+      "pts": 4,
+      "fg": 2,
+      "statsChecked": "2026-07-05T15:37:17.852Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "Pascoe Vale Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "d8c1116e",
+          "tn": "Panthers U10 Boys Gold",
+          "gid": "4197b79f",
+          "gn": "Saturday U10 Boys Group 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 1,
+            "wins": 5,
+            "losses": 2,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "65b4ff9d",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          },
+          "gid": "2dbb8cf5",
+          "gn": "U10 Boys Division 3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:21.021Z",
+  "teams": [
+    {
+      "tid": "d8c1116e",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "65b4ff9d",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.088Z",
+  "games": [
+    "227cad6e",
+    "499dd263",
+    "980e23b3",
+    "d2babcaf",
+    "dc6d045b",
+    "df13e0ad",
+    "f141d891"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "825cfa95",
+      "sid": "8810ce3f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

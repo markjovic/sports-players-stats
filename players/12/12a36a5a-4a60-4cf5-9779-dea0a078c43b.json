@@ -1,1 +1,330 @@
-{"uuid":"12a36a5a-4a60-4cf5-9779-dea0a078c43b","name":"Blake Lavelle","gender":"Men","sports":{"Basketball":{"gp":38,"pts":188,"fouls":47,"fg":51,"ft":14,"threePt":24,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.17,"foulOuts":{},"maxGamePTS":19,"maxGameThreePt":4,"wins":17,"losses":41,"draws":1,"winPct":0.29,"statsChecked":"2026-07-07T18:25:41.015Z"}},"seasons":[{"sid":"d3df72f7","sn":"Winter 2026","regs":[{"tid":"30285b4d","tn":"Turbos","gid":"8a4d9f58","gn":"Tuesday Open Men F","age":"Senior","div":null,"stats":{"gp":12,"pts":53,"threePt":4,"fg":18,"ft":5,"fouls":20,"wins":4,"losses":6,"draws":1}}]},{"sid":"d3eca93b","sn":"Winter 2022","regs":[{"tid":"2398e71c","tn":"Domonoids","gid":"d81960fc","gn":"(SOCIAL) Thursday Senior Men 1","age":"Senior","div":null,"stats":{"gp":1,"pts":3,"threePt":1,"losses":1}}]},{"sid":"036d9de9","sn":"Summer 2021/22","club":"Lara Giants Basketball Club (Geelong)","regs":[{"tid":"4182187a","tn":"Lara Titans MD4","gid":"9795a89b","gn":"(CLUB) Monday Senior Men 4","age":"Senior","div":null,"stats":{"gp":5,"pts":22,"threePt":3,"fg":6,"ft":1,"fouls":10,"finals":1,"gfApps":1,"wins":1,"losses":4,"gfWins":1}},{"tid":"b6918948","stats":{"wins":4,"losses":10,"finals":1,"gfApps":1,"gfWins":1,"gp":15,"pts":110,"fg":27,"ft":8,"threePt":16,"fouls":16}}]},{"sid":"036d9de9","sn":"Summer 2021/22","regs":[{"tid":"b6918948","tn":"Domonoids","gid":"cc3c3782","gn":"(SOCIAL) Tuesday Senior Men 4","age":"Senior","div":null,"stats":{"gp":15,"pts":110,"threePt":16,"fg":27,"ft":8,"fouls":16,"finals":1,"gfApps":1,"wins":4,"losses":10,"gfWins":1}},{"tid":"b6918948","tn":"Domonoids","gid":"cbac0775","gn":"(SOCIAL) Tuesday Senior Men 2","age":"Senior","div":null,"stats":{"gp":15,"pts":110,"threePt":16,"fg":27,"fouls":16,"finals":1,"gfApps":1,"wins":4,"losses":10,"ft":8,"gfWins":1}}]},{"sid":"0c8a1c35","sn":"Summer 2020/21","club":"Lara Giants Basketball Club (Geelong)","regs":[{"tid":"b5ee0d80","tn":"Lara Thunder Men MD4","gid":"bc0ffcb5","gn":"Z_DO NOT USE THIS GAME_Monday Men 4","age":null,"div":null,"stats":{"gp":3}}]},{"sid":"d4e380e1","sn":"Winter 2020","club":"Lara Giants Basketball Club (Geelong)","regs":[{"tid":"32b5f1a2","tn":"Lara Titans U19 Boys","gid":"91eababb","gn":"Thursday U19 Boys","age":"U19","div":null,"stats":{"gp":2,"fouls":1}}]}],"updatedAt":"2026-07-07T18:05:08.587Z","teams":[{"tid":"30285b4d","sid":"d3df72f7","status":"ACTIVE"},{"tid":"b6918948","sid":"036d9de9","status":"COMPLETED"},{"tid":"4182187a","sid":"036d9de9","status":"COMPLETED"},{"tid":"b5ee0d80","sid":"0c8a1c35","status":"COMPLETED"},{"tid":"32b5f1a2","sid":"d4e380e1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:58:02.081Z","records":{"maxGamePTS":{"v":19,"gameKey":"98e3e30d","sid":"036d9de9"},"maxGameThreePt":{"v":4,"gameKey":"ba6c3cf1","sid":"036d9de9"}},"games":["000efd6b","0c50a52e","20d77164","32b04544","39682ab6","450b1d8e","4a0eb7bb","4a9f24b5","53d4fafb","542f3963","5b7606f2","619aa0d0","6c6ba5c6","6f145f93","73fc2648","74c2778b","78612b99","7eccd17d","89b49e51","917df813","9705dda0","98e3e30d","a12f5ea4","a67b520a","a83e1df5","b0fb9171","b27b460d","b8d0438e","ba6c3cf1","bd59e3c0","be2521f1","bf4bda18","c6dcf4b3","c8334975","e1356a68","e5ac384c","ee881990"],"gameTids":{"9184f1a6":"30285b4d","4a0eb7bb":"30285b4d","89b49e51":"30285b4d","b27b460d":"30285b4d","c6dcf4b3":"30285b4d","73fc2648":"30285b4d","b8d0438e":"30285b4d","619aa0d0":"30285b4d","0c50a52e":"30285b4d","74c2778b":"30285b4d","be2521f1":"30285b4d","917df813":"30285b4d","53d4fafb":"2398e71c","b0fb9171":"4182187a","542f3963":"4182187a","6c6ba5c6":"4182187a","e1356a68":"4182187a","39682ab6":"4182187a","a12f5ea4":"b6918948","6f145f93":"b6918948","98e3e30d":"b6918948","5b7606f2":"b6918948","a83e1df5":"b6918948","450b1d8e":"b6918948","bd59e3c0":"b6918948","9705dda0":"b6918948","ee881990":"b6918948","78612b99":"b6918948","e5ac384c":"b6918948","bf4bda18":"b6918948","32b04544":"b6918948","ba6c3cf1":"b6918948","4a9f24b5":"b6918948","7eccd17d":"b5ee0d80","000efd6b":"b5ee0d80","a67b520a":"b5ee0d80","c8334975":"32b5f1a2","20d77164":"32b5f1a2"}}
+{
+  "uuid": "12a36a5a-4a60-4cf5-9779-dea0a078c43b",
+  "name": "Blake Lavelle",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 188,
+      "fouls": 47,
+      "fg": 51,
+      "ft": 14,
+      "threePt": 24,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.17,
+      "foulOuts": {},
+      "maxGamePTS": 19,
+      "maxGameThreePt": 4,
+      "wins": 17,
+      "losses": 41,
+      "draws": 1,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-07T18:25:41.015Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3df72f7",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "30285b4d",
+          "tn": "Turbos",
+          "gid": "8a4d9f58",
+          "gn": "Tuesday Open Men F",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 53,
+            "threePt": 4,
+            "fg": 18,
+            "ft": 5,
+            "fouls": 20,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3eca93b",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "2398e71c",
+          "tn": "Domonoids",
+          "gid": "d81960fc",
+          "gn": "(SOCIAL) Thursday Senior Men 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "threePt": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "club": "Lara Giants Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "4182187a",
+          "tn": "Lara Titans MD4",
+          "gid": "9795a89b",
+          "gn": "(CLUB) Monday Senior Men 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 22,
+            "threePt": 3,
+            "fg": 6,
+            "ft": 1,
+            "fouls": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "b6918948",
+          "stats": {
+            "wins": 4,
+            "losses": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 15,
+            "pts": 110,
+            "fg": 27,
+            "ft": 8,
+            "threePt": 16,
+            "fouls": 16
+          },
+          "gid": "cc3c3782",
+          "gn": "(SOCIAL) Tuesday Senior Men 4"
+        }
+      ]
+    },
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "b6918948",
+          "tn": "Domonoids",
+          "gid": "cc3c3782",
+          "gn": "(SOCIAL) Tuesday Senior Men 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 110,
+            "threePt": 16,
+            "fg": 27,
+            "ft": 8,
+            "fouls": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 10,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "b6918948",
+          "tn": "Domonoids",
+          "gid": "cbac0775",
+          "gn": "(SOCIAL) Tuesday Senior Men 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 110,
+            "threePt": 16,
+            "fg": 27,
+            "fouls": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 10,
+            "ft": 8,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c8a1c35",
+      "sn": "Summer 2020/21",
+      "club": "Lara Giants Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "b5ee0d80",
+          "tn": "Lara Thunder Men MD4",
+          "gid": "6ea81944",
+          "gn": "Monday Senior Men 4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "sn": "Winter 2020",
+      "club": "Lara Giants Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "32b5f1a2",
+          "tn": "Lara Titans U19 Boys",
+          "gid": "91eababb",
+          "gn": "Thursday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:08.587Z",
+  "teams": [
+    {
+      "tid": "30285b4d",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2398e71c",
+      "sid": "d3eca93b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4182187a",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6918948",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5ee0d80",
+      "sid": "0c8a1c35",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32b5f1a2",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.837Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "98e3e30d",
+      "sid": "036d9de9"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "ba6c3cf1",
+      "sid": "036d9de9"
+    }
+  },
+  "games": [
+    "000efd6b",
+    "0c50a52e",
+    "20d77164",
+    "32b04544",
+    "39682ab6",
+    "450b1d8e",
+    "4a0eb7bb",
+    "4a9f24b5",
+    "53d4fafb",
+    "542f3963",
+    "5b7606f2",
+    "619aa0d0",
+    "6c6ba5c6",
+    "6f145f93",
+    "73fc2648",
+    "74c2778b",
+    "78612b99",
+    "7eccd17d",
+    "89b49e51",
+    "917df813",
+    "9705dda0",
+    "98e3e30d",
+    "a12f5ea4",
+    "a67b520a",
+    "a83e1df5",
+    "b0fb9171",
+    "b27b460d",
+    "b8d0438e",
+    "ba6c3cf1",
+    "bd59e3c0",
+    "be2521f1",
+    "bf4bda18",
+    "c6dcf4b3",
+    "c8334975",
+    "e1356a68",
+    "e5ac384c",
+    "ee881990"
+  ],
+  "gameTids": {
+    "9184f1a6": "30285b4d",
+    "4a0eb7bb": "30285b4d",
+    "89b49e51": "30285b4d",
+    "b27b460d": "30285b4d",
+    "c6dcf4b3": "30285b4d",
+    "73fc2648": "30285b4d",
+    "b8d0438e": "30285b4d",
+    "619aa0d0": "30285b4d",
+    "0c50a52e": "30285b4d",
+    "74c2778b": "30285b4d",
+    "be2521f1": "30285b4d",
+    "917df813": "30285b4d",
+    "53d4fafb": "2398e71c",
+    "b0fb9171": "4182187a",
+    "542f3963": "4182187a",
+    "6c6ba5c6": "4182187a",
+    "e1356a68": "4182187a",
+    "39682ab6": "4182187a",
+    "a12f5ea4": "b6918948",
+    "6f145f93": "b6918948",
+    "98e3e30d": "b6918948",
+    "5b7606f2": "b6918948",
+    "a83e1df5": "b6918948",
+    "450b1d8e": "b6918948",
+    "bd59e3c0": "b6918948",
+    "9705dda0": "b6918948",
+    "ee881990": "b6918948",
+    "78612b99": "b6918948",
+    "e5ac384c": "b6918948",
+    "bf4bda18": "b6918948",
+    "32b04544": "b6918948",
+    "ba6c3cf1": "b6918948",
+    "4a9f24b5": "b6918948",
+    "7eccd17d": "b5ee0d80",
+    "000efd6b": "b5ee0d80",
+    "a67b520a": "b5ee0d80",
+    "c8334975": "32b5f1a2",
+    "20d77164": "32b5f1a2"
+  }
+}

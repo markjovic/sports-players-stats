@@ -1,1 +1,302 @@
-{"uuid":"919a32ef-8d89-4a2b-a592-6cae932c4e2a","name":"Joshua Miles","gender":"Boys","sports":{"Basketball":{"gp":59,"pts":246,"fouls":75,"fg":114,"ft":9,"threePt":3,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.75,"foulOuts":{"ec8a2628":1},"maxGamePTS":20,"maxGameThreePt":1,"wins":44,"losses":30,"draws":4,"winPct":0.56,"statsChecked":"2026-07-05T14:29:04.803Z"}},"seasons":[{"sid":"98a85c5f","sn":"Winter 2025","club":"Berwick Flames Basketball Club Inc.","regs":[{"tid":"7f487477","tn":"BFBC U14 Boys HEAT","gid":"5760cf99","gn":"Saturday U14 Boys D3 Grade","age":"U14","div":null,"stats":{"gp":12,"fouls":9,"ft":3,"fg":14,"pts":31,"wins":4,"losses":7,"draws":1}}]},{"sid":"bf3744d0","sn":"Summer 2024/25","club":"Berwick Flames Basketball Club Inc.","regs":[{"tid":"0fe49866","tn":"BFBC U12 Boys  HEAT","gid":"2dbf876c","gn":"Saturday U12 Boys D3 Grade","age":"U12","div":null,"stats":{"gp":18,"fouls":14,"ft":2,"fg":41,"threePt":3,"pts":93,"finals":1,"wins":10,"losses":7,"draws":1}}]},{"sid":"ec8a2628","sn":"Winter 2024","club":"Berwick Flames Basketball Club Inc.","regs":[{"tid":"b7a24f9e","tn":"BFBC U12 Boys  HEAT","gid":"fe9c112b","gn":"Saturday U12 Boys D3 Grade","age":"U12","div":null,"stats":{"gp":16,"fouls":34,"ft":4,"fg":37,"pts":78,"finals":1,"gfApps":1,"foulOuts":1,"wins":13,"losses":3,"gfWins":1}},{"tid":"b7a24f9e","tn":"BFBC U12 Boys  HEAT","gid":"1419fb40","gn":"Saturday U12 Boys E1 Grade","age":"U12","div":null,"stats":{"gp":16,"fouls":34,"fg":37,"pts":78,"finals":1,"gfApps":1,"wins":13,"losses":3,"ft":4,"gfWins":1}}]},{"sid":"3ae39dac","sn":"Winter 2023","club":"Oatlander Outlaws Basketball Club","regs":[{"tid":"0c0f501b","tn":"Outlaws U12 Boys Oatlander Outlaws Heat","gid":"f34af212","gn":"Saturday U12 Boys E/E Res","age":"U12","div":null,"stats":{"gp":13,"fouls":18,"fg":22,"pts":44,"finals":1,"wins":2,"losses":5,"draws":1}},{"tid":"0c0f501b","tn":"Outlaws U12 Boys Oatlander Outlaws Heat","gid":"9759fc03","gn":"Saturday U12 Boys Grading","age":"U12","div":null,"stats":{"gp":13,"fouls":18,"fg":22,"pts":44,"finals":1,"wins":2,"losses":5,"draws":1}}]}],"updatedAt":"2026-06-01T05:52:59.702Z","teams":[{"tid":"60df6abe","sid":"2bca72fb","status":"COMPLETED"},{"tid":"7f487477","sid":"98a85c5f","status":"COMPLETED"},{"tid":"0c7f411f","sid":"477d997c","status":"COMPLETED"},{"tid":"0fe49866","sid":"bf3744d0","status":"COMPLETED"},{"tid":"b7a24f9e","sid":"ec8a2628","status":"COMPLETED"},{"tid":"0c0f501b","sid":"3ae39dac","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:55:35.385Z","games":["019e6f71","04d123c5","0f5b84fe","112111cc","158bd541","1711bced","21c39715","2315dc1b","28a7cfa1","2fbfe124","3336f61e","343a3f43","383cd167","38cf42ea","3a6478cd","458718bc","48aeaadd","4ad83e6b","4dbd69b9","540170b8","57dc3539","5809a4c1","5c2eb5e6","5e850c58","61a87807","6973ebbe","702ada84","70b45240","79af4b30","7bd5aa95","7e63ff1a","851552e2","8530b358","89336c38","8f9b7c89","92be143f","9d47d46f","a1dbacf9","a3dcff8b","ab811590","ae6216c6","af98cfa3","bf288e2f","c1de42fd","c23e8d68","c6681e90","c90ebb29","caaa5f75","ce3047e7","d39e1f42","ed3a3b98","f776c147","f94b2db0","fa6e414b"],"records":{"maxGamePTS":{"v":20,"gameKey":"702ada84","sid":"ec8a2628"},"maxGameThreePt":{"v":1,"gameKey":"4dbd69b9","sid":"bf3744d0"}}}
+{
+  "uuid": "919a32ef-8d89-4a2b-a592-6cae932c4e2a",
+  "name": "Joshua Miles",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 59,
+      "pts": 246,
+      "fouls": 75,
+      "fg": 114,
+      "ft": 9,
+      "threePt": 3,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {
+        "ec8a2628": 1
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": 1,
+      "wins": 44,
+      "losses": 30,
+      "draws": 4,
+      "winPct": 0.56,
+      "statsChecked": "2026-07-05T14:29:04.803Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "98a85c5f",
+      "sn": "Winter 2025",
+      "club": "Berwick Flames Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "7f487477",
+          "tn": "BFBC U14 Boys HEAT",
+          "gid": "5760cf99",
+          "gn": "Saturday U14 Boys D3 Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "ft": 3,
+            "fg": 14,
+            "pts": 31,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf3744d0",
+      "sn": "Summer 2024/25",
+      "club": "Berwick Flames Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "0fe49866",
+          "tn": "BFBC U12 Boys  HEAT",
+          "gid": "2dbf876c",
+          "gn": "Saturday U12 Boys D3 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 14,
+            "ft": 2,
+            "fg": 41,
+            "threePt": 3,
+            "pts": 93,
+            "finals": 1,
+            "wins": 10,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec8a2628",
+      "sn": "Winter 2024",
+      "club": "Berwick Flames Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "b7a24f9e",
+          "tn": "BFBC U12 Boys  HEAT",
+          "gid": "fe9c112b",
+          "gn": "Saturday U12 Boys D3 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "ft": 4,
+            "fg": 37,
+            "pts": 78,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 13,
+            "losses": 3,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "b7a24f9e",
+          "tn": "BFBC U12 Boys  HEAT",
+          "gid": "1419fb40",
+          "gn": "Saturday U12 Boys E1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 34,
+            "fg": 37,
+            "pts": 78,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 3,
+            "ft": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3ae39dac",
+      "sn": "Winter 2023",
+      "club": "Oatlander Outlaws Basketball Club",
+      "regs": [
+        {
+          "tid": "0c0f501b",
+          "tn": "Outlaws U12 Boys Oatlander Outlaws Heat",
+          "gid": "f34af212",
+          "gn": "Saturday U12 Boys E/E Res",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 18,
+            "fg": 22,
+            "pts": 44,
+            "finals": 1,
+            "wins": 2,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0c0f501b",
+          "tn": "Outlaws U12 Boys Oatlander Outlaws Heat",
+          "gid": "9759fc03",
+          "gn": "Saturday U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 18,
+            "fg": 22,
+            "pts": 44,
+            "finals": 1,
+            "wins": 2,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2bca72fb",
+      "sn": "Term 4, 2025",
+      "regs": [
+        {
+          "tid": "60df6abe",
+          "tn": "Heat Wave",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "477d997c",
+      "sn": "Term 2, 2025",
+      "regs": [
+        {
+          "tid": "0c7f411f",
+          "tn": "Heat Wave",
+          "gid": "d0b2bc16",
+          "gn": "U13 Boys D Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T05:52:59.702Z",
+  "teams": [
+    {
+      "tid": "7f487477",
+      "sid": "98a85c5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0fe49866",
+      "sid": "bf3744d0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7a24f9e",
+      "sid": "ec8a2628",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0c0f501b",
+      "sid": "3ae39dac",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60df6abe",
+      "sid": "2bca72fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0c7f411f",
+      "sid": "477d997c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.203Z",
+  "games": [
+    "019e6f71",
+    "04d123c5",
+    "0f5b84fe",
+    "112111cc",
+    "158bd541",
+    "1711bced",
+    "21c39715",
+    "2315dc1b",
+    "28a7cfa1",
+    "2fbfe124",
+    "3336f61e",
+    "343a3f43",
+    "383cd167",
+    "38cf42ea",
+    "3a6478cd",
+    "458718bc",
+    "48aeaadd",
+    "4ad83e6b",
+    "4dbd69b9",
+    "540170b8",
+    "57dc3539",
+    "5809a4c1",
+    "5c2eb5e6",
+    "5e850c58",
+    "61a87807",
+    "6973ebbe",
+    "702ada84",
+    "70b45240",
+    "79af4b30",
+    "7bd5aa95",
+    "7e63ff1a",
+    "851552e2",
+    "8530b358",
+    "89336c38",
+    "8f9b7c89",
+    "92be143f",
+    "9d47d46f",
+    "a1dbacf9",
+    "a3dcff8b",
+    "ab811590",
+    "ae6216c6",
+    "af98cfa3",
+    "bf288e2f",
+    "c1de42fd",
+    "c23e8d68",
+    "c6681e90",
+    "c90ebb29",
+    "caaa5f75",
+    "ce3047e7",
+    "d39e1f42",
+    "ed3a3b98",
+    "f776c147",
+    "f94b2db0",
+    "fa6e414b"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "702ada84",
+      "sid": "ec8a2628"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "4dbd69b9",
+      "sid": "bf3744d0"
+    }
+  }
+}

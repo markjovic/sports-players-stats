@@ -1,1 +1,287 @@
-{"uuid":"3376cec6-1f9e-489e-a0aa-75ca48ba4a4f","gender":null,"sports":{"Basketball":{"gp":44,"pts":117,"fouls":84,"fg":54,"ft":6,"threePt":1,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":1,"wins":6,"losses":4,"draws":1,"winPct":0.55,"statsChecked":"2026-07-05T16:00:17.734Z"}},"seasons":[{"sid":"62a15fa5","sn":"Winter 2022","club":null,"regs":[{"tid":"3df735f2","tn":"Sparks16G","gid":"269ac4d0","gn":"Monday U16 Girls Division 1","stats":{"gp":11,"pts":24,"fg":11,"ft":2,"fouls":23,"finals":1,"gfApps":1,"wins":6,"losses":4,"draws":1}}]},{"sid":"a0fcd2e0","sn":"Summer 2021/22","club":null,"regs":[{"tid":"0bcf8e84","tn":"KoolKatz","gid":"df75159b","gn":"Thursday Open Women Social","stats":{"gp":10,"pts":15,"fg":7,"ft":1,"fouls":16}},{"tid":"7875aa59","stats":{"gp":11,"pts":43,"fg":20,"ft":3,"fouls":19}}]},{"sid":"a0fcd2e0","sn":"Summer 2021/22","club":null,"regs":[{"tid":"7875aa59","tn":"Aces","gid":"cd798b53","gn":"Thursday U16 Girls Division 1","stats":{"gp":11,"pts":43,"fg":20,"ft":3,"fouls":19}}]},{"sid":"29c7cfee","sn":"Winter 2021","club":null,"regs":[{"tid":"2a3e0482","tn":"Sparks","gid":"f74b798e","gn":"Thursday U16-14 Girls Division 1","stats":{"gp":1}}]},{"sid":"435adb72","sn":"Spring 2021","club":null,"regs":[{"tid":"0a7b29e8","tn":"Storm","gid":"460e520e","gn":"Thursday U16 Girls Division 1","stats":{"gp":11,"pts":35,"threePt":1,"fg":16,"fouls":26,"finals":1}}]}],"updatedAt":"2026-06-11T23:38:04.023Z","records":{"maxGamePTS":{"v":10,"gameKey":"191f5f7c","sid":"a0fcd2e0"},"maxGameThreePt":{"v":1,"gameKey":"38c9e321","sid":"435adb72"}},"games":["02ce8cc9","056562df","103da23d","15bf073c","191f5f7c","2a3175c4","301e2292","30b7ac42","316dc0ed","38c9e321","3ae2efa4","4b126ed3","4c8e68ab","5083c4f8","532ebfb5","557cedd3","68d9c7df","6d4e72b1","708b9af2","729ad1be","8bc5a651","8db7e66a","92081535","926a2fb5","998b8cf2","9ec9b5c0","a284fcd8","a60ea43d","a6c07e80","ac549dce","b115cf56","b3421667","b3d5a10d","be757d38","c640c012","cbce18e4","cfef06a5","d1649c05","d38724c8","d55ee5a6","d7d5aeb6","de67b0d3","f30c4d4e"],"name":"Winter 2022","gameTids":{"92081535":"3df735f2","998b8cf2":"3df735f2","729ad1be":"3df735f2","926a2fb5":"3df735f2","103da23d":"3df735f2","2a3175c4":"3df735f2","cbce18e4":"3df735f2","8db7e66a":"3df735f2","708b9af2":"3df735f2","a284fcd8":"3df735f2","c640c012":"3df735f2","4c8e68ab":"0bcf8e84","b3d5a10d":"0bcf8e84","301e2292":"0bcf8e84","557cedd3":"0bcf8e84","3ae2efa4":"0bcf8e84","316dc0ed":"0bcf8e84","d1649c05":"0bcf8e84","15bf073c":"0bcf8e84","02ce8cc9":"0bcf8e84","532ebfb5":"0bcf8e84","e7cbc186":"7875aa59","68d9c7df":"7875aa59","ac549dce":"7875aa59","191f5f7c":"7875aa59","8bc5a651":"7875aa59","30b7ac42":"7875aa59","056562df":"7875aa59","4b126ed3":"7875aa59","f30c4d4e":"7875aa59","be757d38":"7875aa59","d7d5aeb6":"7875aa59","cfef06a5":"2a3e0482","b115cf56":"0a7b29e8","38c9e321":"0a7b29e8","a60ea43d":"0a7b29e8","5083c4f8":"0a7b29e8","d38724c8":"0a7b29e8","b3421667":"0a7b29e8","6d4e72b1":"0a7b29e8","9ec9b5c0":"0a7b29e8","de67b0d3":"0a7b29e8","d55ee5a6":"0a7b29e8","a6c07e80":"0a7b29e8"}}
+{
+  "uuid": "3376cec6-1f9e-489e-a0aa-75ca48ba4a4f",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 117,
+      "fouls": 84,
+      "fg": 54,
+      "ft": 6,
+      "threePt": 1,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 4,
+      "draws": 1,
+      "winPct": 0.55,
+      "statsChecked": "2026-07-05T16:00:17.734Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "62a15fa5",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "3df735f2",
+          "tn": "Sparks16G",
+          "gid": "269ac4d0",
+          "gn": "Monday U16 Girls Division 1",
+          "stats": {
+            "gp": 11,
+            "pts": 24,
+            "fg": 11,
+            "ft": 2,
+            "fouls": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2c9446c9",
+          "tn": "KoolKatz",
+          "gid": "97e700d4",
+          "gn": "Thursday Open Women Social",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "a0fcd2e0",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "0bcf8e84",
+          "tn": "KoolKatz",
+          "gid": "df75159b",
+          "gn": "Thursday Open Women Social",
+          "stats": {
+            "gp": 10,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 16
+          }
+        },
+        {
+          "tid": "7875aa59",
+          "stats": {
+            "gp": 11,
+            "pts": 43,
+            "fg": 20,
+            "ft": 3,
+            "fouls": 19
+          },
+          "gid": "cd798b53",
+          "gn": "Thursday U16 Girls Division 1"
+        }
+      ]
+    },
+    {
+      "sid": "a0fcd2e0",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "7875aa59",
+          "tn": "Aces",
+          "gid": "cd798b53",
+          "gn": "Thursday U16 Girls Division 1",
+          "stats": {
+            "gp": 11,
+            "pts": 43,
+            "fg": 20,
+            "ft": 3,
+            "fouls": 19
+          }
+        }
+      ]
+    },
+    {
+      "sid": "29c7cfee",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "2a3e0482",
+          "tn": "Sparks",
+          "gid": "f74b798e",
+          "gn": "Thursday U16-14 Girls Division 1",
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "435adb72",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "0a7b29e8",
+          "tn": "Storm",
+          "gid": "460e520e",
+          "gn": "Thursday U16 Girls Division 1",
+          "stats": {
+            "gp": 11,
+            "pts": 35,
+            "threePt": 1,
+            "fg": 16,
+            "fouls": 26,
+            "finals": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:04.023Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "191f5f7c",
+      "sid": "a0fcd2e0"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "38c9e321",
+      "sid": "435adb72"
+    }
+  },
+  "games": [
+    "02ce8cc9",
+    "056562df",
+    "103da23d",
+    "15bf073c",
+    "191f5f7c",
+    "2a3175c4",
+    "301e2292",
+    "30b7ac42",
+    "316dc0ed",
+    "38c9e321",
+    "3ae2efa4",
+    "4b126ed3",
+    "4c8e68ab",
+    "5083c4f8",
+    "532ebfb5",
+    "557cedd3",
+    "68d9c7df",
+    "6d4e72b1",
+    "708b9af2",
+    "729ad1be",
+    "8bc5a651",
+    "8db7e66a",
+    "92081535",
+    "926a2fb5",
+    "998b8cf2",
+    "9ec9b5c0",
+    "a284fcd8",
+    "a60ea43d",
+    "a6c07e80",
+    "ac549dce",
+    "b115cf56",
+    "b3421667",
+    "b3d5a10d",
+    "be757d38",
+    "c640c012",
+    "cbce18e4",
+    "cfef06a5",
+    "d1649c05",
+    "d38724c8",
+    "d55ee5a6",
+    "d7d5aeb6",
+    "de67b0d3",
+    "f30c4d4e"
+  ],
+  "name": "Winter 2022",
+  "gameTids": {
+    "92081535": "3df735f2",
+    "998b8cf2": "3df735f2",
+    "729ad1be": "3df735f2",
+    "926a2fb5": "3df735f2",
+    "103da23d": "3df735f2",
+    "2a3175c4": "3df735f2",
+    "cbce18e4": "3df735f2",
+    "8db7e66a": "3df735f2",
+    "708b9af2": "3df735f2",
+    "a284fcd8": "3df735f2",
+    "c640c012": "3df735f2",
+    "4c8e68ab": "0bcf8e84",
+    "b3d5a10d": "0bcf8e84",
+    "301e2292": "0bcf8e84",
+    "557cedd3": "0bcf8e84",
+    "3ae2efa4": "0bcf8e84",
+    "316dc0ed": "0bcf8e84",
+    "d1649c05": "0bcf8e84",
+    "15bf073c": "0bcf8e84",
+    "02ce8cc9": "0bcf8e84",
+    "532ebfb5": "0bcf8e84",
+    "e7cbc186": "7875aa59",
+    "68d9c7df": "7875aa59",
+    "ac549dce": "7875aa59",
+    "191f5f7c": "7875aa59",
+    "8bc5a651": "7875aa59",
+    "30b7ac42": "7875aa59",
+    "056562df": "7875aa59",
+    "4b126ed3": "7875aa59",
+    "f30c4d4e": "7875aa59",
+    "be757d38": "7875aa59",
+    "d7d5aeb6": "7875aa59",
+    "cfef06a5": "2a3e0482",
+    "b115cf56": "0a7b29e8",
+    "38c9e321": "0a7b29e8",
+    "a60ea43d": "0a7b29e8",
+    "5083c4f8": "0a7b29e8",
+    "d38724c8": "0a7b29e8",
+    "b3421667": "0a7b29e8",
+    "6d4e72b1": "0a7b29e8",
+    "9ec9b5c0": "0a7b29e8",
+    "de67b0d3": "0a7b29e8",
+    "d55ee5a6": "0a7b29e8",
+    "a6c07e80": "0a7b29e8"
+  },
+  "teams": [
+    {
+      "tid": "3df735f2",
+      "sid": "62a15fa5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c9446c9",
+      "sid": "62a15fa5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0bcf8e84",
+      "sid": "a0fcd2e0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7875aa59",
+      "sid": "a0fcd2e0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a3e0482",
+      "sid": "29c7cfee",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a7b29e8",
+      "sid": "435adb72",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.663Z"
+}

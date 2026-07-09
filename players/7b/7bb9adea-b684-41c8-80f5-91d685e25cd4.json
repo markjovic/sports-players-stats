@@ -1,1 +1,464 @@
-{"uuid":"7bb9adea-b684-41c8-80f5-91d685e25cd4","name":"Yixuan Chou","gender":"Boys","sports":{"Basketball":{"gp":54,"pts":323,"fouls":83,"fg":91,"ft":21,"threePt":40,"foulOuts":{"8c5855c1":1,"5161abf1":2},"maxGamePTS":20,"maxGameThreePt":4,"wins":51,"losses":87,"draws":8,"winPct":0.35,"statsChecked":"2026-07-05T14:56:09.533Z"}},"seasons":[{"sid":"e2fad5cf","sn":"Summer 2024/25","club":"Huntingtower Heat Basketball Club","regs":[{"tid":"90fadd69","tn":"B17 Huntingtower Heat 6","gid":"29823218","gn":"Saturday U17 Boys C","age":"U17","div":null,"stats":{"gp":13,"fouls":9,"ft":3,"fg":4,"threePt":10,"pts":41,"wins":3,"losses":9,"draws":1}},{"tid":"90fadd69","tn":"B17 Huntingtower Heat 6","gid":"3df91f5a","gn":"Saturday U17 Boys E","age":"U17","div":null,"stats":{"gp":13,"fouls":9,"ft":3,"pts":41,"wins":3,"losses":9,"draws":1,"fg":4,"threePt":10}}]},{"sid":"8c5855c1","sn":"Winter 2024","club":"Whitehorse Mustangs","regs":[{"tid":"bff33ac1","tn":"Whitehorse U15 Boys 01","gid":"d521d88d","gn":"Boys U15 BD","age":"U15","div":null,"stats":{"gp":15,"fouls":26,"ft":4,"fg":21,"threePt":15,"pts":91,"foulOuts":1,"wins":7,"losses":7,"draws":1}},{"tid":"bff33ac1","tn":"Whitehorse U15 Boys 01","gid":"d11b1a0b","gn":"Boys U15 B Grading","age":"U15","div":null,"stats":{"gp":15,"fouls":26,"ft":4,"fg":21,"threePt":15,"pts":91,"wins":7,"losses":7,"draws":1}},{"tid":"bff33ac1","tn":"Whitehorse U15 Boys 01","gid":"f31a4e14","gn":"Boys U15 C Grading","age":"U15","div":null,"stats":{"gp":15,"fouls":26,"fg":21,"threePt":15,"pts":91,"wins":7,"losses":7,"draws":1,"ft":4}}]},{"sid":"f30d4c74","sn":"Summer 2023/24","club":"Whitehorse Mustangs","regs":[{"tid":"062affa6","tn":"Whitehorse U16 Boys 02","gid":"2876f9b3","gn":"Boys U16 CE","age":"U16","div":null,"stats":{"gp":13,"fouls":12,"ft":4,"fg":20,"threePt":6,"pts":62,"wins":4,"losses":8}},{"tid":"062affa6","tn":"Whitehorse U16 Boys 02","gid":"fc3a2072","gn":"Boys U16 D Grading","age":"U16","div":null,"stats":{"gp":13,"ft":4,"fg":20,"threePt":6,"pts":62,"wins":4,"losses":8,"fouls":12}},{"tid":"062affa6","tn":"Whitehorse U16 Boys 02","gid":"7964b4e3","gn":"Boys U16 C Grading","age":"U16","div":null,"stats":{"gp":13,"fg":20,"pts":62,"wins":4,"losses":8,"ft":4,"threePt":6,"fouls":12}}]},{"sid":"5161abf1","sn":"Winter 2023","club":"Whitehorse Mustangs","regs":[{"tid":"483477e7","tn":"Whitehorse U15 Boys 06","gid":"cd68e6c5","gn":"Boys U15 CD","age":"U15","div":null,"stats":{"gp":13,"fouls":36,"ft":10,"fg":46,"threePt":9,"pts":129,"foulOuts":2,"wins":4,"losses":8,"draws":1}},{"tid":"483477e7","tn":"Whitehorse U15 Boys 06","gid":"5919c250","gn":"Boys U15 C Grading","age":"U15","div":null,"stats":{"gp":13,"fouls":36,"fg":46,"threePt":9,"pts":129,"wins":4,"losses":8,"draws":1,"ft":10}},{"tid":"483477e7","tn":"Whitehorse U15 Boys 06","gid":"47d3211c","gn":"Boys U15 D Grading","age":"U15","div":null,"stats":{"gp":13,"fouls":36,"ft":10,"fg":46,"pts":129,"wins":4,"losses":8,"draws":1,"threePt":9}}]}],"updatedAt":"2026-06-01T21:05:29.679Z","teams":[{"tid":"90fadd69","sid":"e2fad5cf","status":"COMPLETED"},{"tid":"74a95f1b","sid":"df876355","status":"COMPLETED"},{"tid":"7498e6b1","sid":"e54d0c37","status":"COMPLETED"},{"tid":"bff33ac1","sid":"8c5855c1","status":"COMPLETED"},{"tid":"45827349","sid":"ee5d2724","status":"COMPLETED"},{"tid":"062affa6","sid":"f30d4c74","status":"COMPLETED"},{"tid":"7726bf31","sid":"7d20ecad","status":"COMPLETED"},{"tid":"483477e7","sid":"5161abf1","status":"COMPLETED"},{"tid":"11b2b2b8","sid":"e2637fe8","status":"COMPLETED"},{"tid":"f31ddaab","sid":"eb0c3879","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:40.173Z","records":{"maxGamePTS":{"v":20,"gameKey":"cfcfc050","sid":"5161abf1"},"maxGameThreePt":{"v":4,"gameKey":"e7aeaac6","sid":"5161abf1"}},"games":["05fcae3a","09f57450","0ef1dbdc","13a16007","16fa7cb6","17ebf597","1b4b63e0","1dba4f6e","1ee6b485","20d93b87","2248b0d2","276f9a7f","35421818","35f22e8e","38c7b8d0","3c96f79c","486aa941","48dca518","54f83926","64d7701f","6644ba71","696ae0e2","6c44e869","6da3c46a","6dec4521","950ea60d","9a048edc","9dc517f8","a62a4ece","a8a9753e","a91bbca9","af12a7ee","b01a85a2","b0ccb3a8","b9febbeb","c520b01b","c804f1b3","cf2cd531","cfcfc050","d11fa0b5","d185d87f","d2b49870","dad5b65f","e0ba3814","e28e12c2","e3241c9f","e5795cc8","e7aeaac6","e933fdea","ea7bd151","eaa7025c","ec79a558","f7e9973b","fa75b2db"]}
+{
+  "uuid": "7bb9adea-b684-41c8-80f5-91d685e25cd4",
+  "name": "Yixuan Chou",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 323,
+      "fouls": 83,
+      "fg": 91,
+      "ft": 21,
+      "threePt": 40,
+      "foulOuts": {
+        "8c5855c1": 1,
+        "5161abf1": 2
+      },
+      "maxGamePTS": 20,
+      "maxGameThreePt": 4,
+      "wins": 51,
+      "losses": 87,
+      "draws": 8,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T14:56:09.533Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2fad5cf",
+      "sn": "Summer 2024/25",
+      "club": "Huntingtower Heat Basketball Club",
+      "regs": [
+        {
+          "tid": "90fadd69",
+          "tn": "B17 Huntingtower Heat 6",
+          "gid": "29823218",
+          "gn": "Saturday U17 Boys C",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "ft": 3,
+            "fg": 4,
+            "threePt": 10,
+            "pts": 41,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "90fadd69",
+          "tn": "B17 Huntingtower Heat 6",
+          "gid": "3df91f5a",
+          "gn": "Saturday U17 Boys E",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "ft": 3,
+            "pts": 41,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1,
+            "fg": 4,
+            "threePt": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8c5855c1",
+      "sn": "Winter 2024",
+      "club": "Whitehorse Mustangs",
+      "regs": [
+        {
+          "tid": "bff33ac1",
+          "tn": "Whitehorse U15 Boys 01",
+          "gid": "d521d88d",
+          "gn": "Boys U15 BD",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "ft": 4,
+            "fg": 21,
+            "threePt": 15,
+            "pts": 91,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bff33ac1",
+          "tn": "Whitehorse U15 Boys 01",
+          "gid": "d11b1a0b",
+          "gn": "Boys U15 B Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "ft": 4,
+            "fg": 21,
+            "threePt": 15,
+            "pts": 91,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bff33ac1",
+          "tn": "Whitehorse U15 Boys 01",
+          "gid": "f31a4e14",
+          "gn": "Boys U15 C Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 26,
+            "fg": 21,
+            "threePt": 15,
+            "pts": 91,
+            "wins": 7,
+            "losses": 7,
+            "draws": 1,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f30d4c74",
+      "sn": "Summer 2023/24",
+      "club": "Whitehorse Mustangs",
+      "regs": [
+        {
+          "tid": "062affa6",
+          "tn": "Whitehorse U16 Boys 02",
+          "gid": "2876f9b3",
+          "gn": "Boys U16 CE",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "ft": 4,
+            "fg": 20,
+            "threePt": 6,
+            "pts": 62,
+            "wins": 4,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "062affa6",
+          "tn": "Whitehorse U16 Boys 02",
+          "gid": "fc3a2072",
+          "gn": "Boys U16 D Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "ft": 4,
+            "fg": 20,
+            "threePt": 6,
+            "pts": 62,
+            "wins": 4,
+            "losses": 8,
+            "fouls": 12
+          }
+        },
+        {
+          "tid": "062affa6",
+          "tn": "Whitehorse U16 Boys 02",
+          "gid": "7964b4e3",
+          "gn": "Boys U16 C Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 20,
+            "pts": 62,
+            "wins": 4,
+            "losses": 8,
+            "ft": 4,
+            "threePt": 6,
+            "fouls": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5161abf1",
+      "sn": "Winter 2023",
+      "club": "Whitehorse Mustangs",
+      "regs": [
+        {
+          "tid": "483477e7",
+          "tn": "Whitehorse U15 Boys 06",
+          "gid": "cd68e6c5",
+          "gn": "Boys U15 CD",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 36,
+            "ft": 10,
+            "fg": 46,
+            "threePt": 9,
+            "pts": 129,
+            "foulOuts": 2,
+            "wins": 4,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "483477e7",
+          "tn": "Whitehorse U15 Boys 06",
+          "gid": "5919c250",
+          "gn": "Boys U15 C Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 36,
+            "fg": 46,
+            "threePt": 9,
+            "pts": 129,
+            "wins": 4,
+            "losses": 8,
+            "draws": 1,
+            "ft": 10
+          }
+        },
+        {
+          "tid": "483477e7",
+          "tn": "Whitehorse U15 Boys 06",
+          "gid": "47d3211c",
+          "gn": "Boys U15 D Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 36,
+            "ft": 10,
+            "fg": 46,
+            "pts": 129,
+            "wins": 4,
+            "losses": 8,
+            "draws": 1,
+            "threePt": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "74a95f1b",
+          "tn": "Comets U16 Boys Vipers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "7498e6b1",
+          "tn": "Comets U16 Boys Vipers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "45827349",
+          "tn": "Comets U16 Boys Vipers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "7726bf31",
+          "tn": "Comets U16 Boys Vipers",
+          "gid": "f3613f85",
+          "gn": "Saturday U16 Boys Grading Pool 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "11b2b2b8",
+          "tn": "Comets U14 Boys Taipans",
+          "gid": "9651e87d",
+          "gn": "U14 Boys (S22_23) Division 6",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "f31ddaab",
+          "tn": "Comets U14 Boys Taipans",
+          "gid": "e978d8fc",
+          "gn": "U14 Boys Division 6",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:05:29.679Z",
+  "teams": [
+    {
+      "tid": "90fadd69",
+      "sid": "e2fad5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bff33ac1",
+      "sid": "8c5855c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "062affa6",
+      "sid": "f30d4c74",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "483477e7",
+      "sid": "5161abf1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "74a95f1b",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7498e6b1",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45827349",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7726bf31",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11b2b2b8",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f31ddaab",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:23.955Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "cfcfc050",
+      "sid": "5161abf1"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "e7aeaac6",
+      "sid": "5161abf1"
+    }
+  },
+  "games": [
+    "05fcae3a",
+    "09f57450",
+    "0ef1dbdc",
+    "13a16007",
+    "16fa7cb6",
+    "17ebf597",
+    "1b4b63e0",
+    "1dba4f6e",
+    "1ee6b485",
+    "20d93b87",
+    "2248b0d2",
+    "276f9a7f",
+    "35421818",
+    "35f22e8e",
+    "38c7b8d0",
+    "3c96f79c",
+    "486aa941",
+    "48dca518",
+    "54f83926",
+    "64d7701f",
+    "6644ba71",
+    "696ae0e2",
+    "6c44e869",
+    "6da3c46a",
+    "6dec4521",
+    "950ea60d",
+    "9a048edc",
+    "9dc517f8",
+    "a62a4ece",
+    "a8a9753e",
+    "a91bbca9",
+    "af12a7ee",
+    "b01a85a2",
+    "b0ccb3a8",
+    "b9febbeb",
+    "c520b01b",
+    "c804f1b3",
+    "cf2cd531",
+    "cfcfc050",
+    "d11fa0b5",
+    "d185d87f",
+    "d2b49870",
+    "dad5b65f",
+    "e0ba3814",
+    "e28e12c2",
+    "e3241c9f",
+    "e5795cc8",
+    "e7aeaac6",
+    "e933fdea",
+    "ea7bd151",
+    "eaa7025c",
+    "ec79a558",
+    "f7e9973b",
+    "fa75b2db"
+  ]
+}

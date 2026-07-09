@@ -1,1 +1,104 @@
-{"uuid":"66a7791c-76e4-4415-987d-25f554231d98","name":"Sasha Georgievski","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":32,"fouls":13,"fg":14,"ft":1,"threePt":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"wins":5,"losses":5,"winPct":0.5,"statsChecked":"2026-07-05T14:42:07.704Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"f4a3808d","tn":"Joflow Academy U14 Boys 1","gid":"7731facc","gn":"BOYS UNDER 14 C5","age":null,"div":"C5","stats":{"gp":5,"fouls":9,"ft":1,"fg":9,"threePt":1,"pts":22,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"1d5a4fc8","stats":{"wins":3,"losses":2,"gp":5,"pts":10,"fg":5,"fouls":4}}]}],"updatedAt":"2026-05-31T01:09:14.742Z","teams":[{"tid":"1d5a4fc8","sid":"0869ea69","status":"UPCOMING"},{"tid":"f4a3808d","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:45:24.141Z","records":{"maxGamePTS":{"v":8,"gameKey":"0f68396d","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"f267bc8c","sid":"6dd649c0"}},"games":["0f68396d","26e48da2","4a12fcff","6f3c2c1b","83dfc54e","9cbc79b5","a781adda","c949729c","dd35e0ce","f267bc8c"]}
+{
+  "uuid": "66a7791c-76e4-4415-987d-25f554231d98",
+  "name": "Sasha Georgievski",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 32,
+      "fouls": 13,
+      "fg": 14,
+      "ft": 1,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 5,
+      "losses": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:42:07.704Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "f4a3808d",
+          "tn": "Joflow Academy U14 Boys 1",
+          "gid": "7731facc",
+          "gn": "BOYS UNDER 14 C5",
+          "age": null,
+          "div": "C5",
+          "stats": {
+            "gp": 5,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 9,
+            "threePt": 1,
+            "pts": 22,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "1d5a4fc8",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 4
+          },
+          "gid": "23b0b0d6",
+          "gn": "BOYS UNDER 16 C5"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:09:14.742Z",
+  "teams": [
+    {
+      "tid": "f4a3808d",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d5a4fc8",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.925Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "0f68396d",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f267bc8c",
+      "sid": "6dd649c0"
+    }
+  },
+  "games": [
+    "0f68396d",
+    "26e48da2",
+    "4a12fcff",
+    "6f3c2c1b",
+    "83dfc54e",
+    "9cbc79b5",
+    "a781adda",
+    "c949729c",
+    "dd35e0ce",
+    "f267bc8c"
+  ]
+}

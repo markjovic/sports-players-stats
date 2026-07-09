@@ -1,1 +1,90 @@
-{"uuid":"d7d0cb59-de7a-4165-b719-23ed763956c9","name":"Kel Booth","sports":{"Basketball":{"maxGamePTS":5,"maxGameThreePt":null,"foulOuts":{},"gp":6,"pts":7,"fg":3,"fouls":6,"ft":1,"statsChecked":"2026-07-08T17:55:23.564Z"}},"seasons":[{"sid":"83a38877","regs":[{"tid":"3157e3b6","stats":{"gp":2,"pts":5,"fg":2,"ft":1,"fouls":2}},{"tid":"3157e3b6","tn":"","gid":"9cba89f0","gn":"Wednesday Open Mixed Grading","div":null,"stats":{"gp":2,"pts":5,"fg":2,"ft":1,"fouls":2}}]},{"sid":"89899a1c","regs":[{"tid":"e094f783","stats":{"gp":4,"pts":2,"fg":1,"fouls":4}}]}],"teams":[],"updatedAt":"2026-07-08T17:27:09.500Z","records":{"maxGamePTS":{"v":5,"gameKey":"3659195c","sid":"83a38877"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d7d0cb59-de7a-4165-b719-23ed763956c9",
+  "name": "Kel Booth",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 6,
+      "pts": 7,
+      "fg": 3,
+      "fouls": 6,
+      "ft": 1,
+      "statsChecked": "2026-07-08T17:55:23.564Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "83a38877",
+      "regs": [
+        {
+          "tid": "3157e3b6",
+          "stats": {
+            "gp": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 2
+          },
+          "gid": "9cba89f0",
+          "gn": "Wednesday Open Mixed Grading"
+        },
+        {
+          "tid": "3157e3b6",
+          "tn": "",
+          "gid": "9cba89f0",
+          "gn": "Wednesday Open Mixed Grading",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89899a1c",
+      "regs": [
+        {
+          "tid": "e094f783",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4
+          },
+          "gid": "cbc77732",
+          "gn": "Sunday Men Division 1"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "3157e3b6",
+      "sid": "83a38877",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e094f783",
+      "sid": "89899a1c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:27:09.500Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "3659195c",
+      "sid": "83a38877"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:29.074Z"
+}

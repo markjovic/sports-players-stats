@@ -1,1 +1,193 @@
-{"uuid":"d3cd03cd-50ec-44aa-83fe-6eebf8514b52","name":"Isobel Bull","gender":"Girls","sports":{"Basketball":{"gp":35,"pts":43,"fouls":35,"fg":21,"ft":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":12,"losses":28,"winPct":0.27,"draws":4,"statsChecked":"2026-07-05T15:12:51.286Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"c514b055","tn":"Fierce Girls","gid":"fa96f8ac","gn":"Friday Year 2 Girls C","age":null,"div":null,"stats":{"gp":17,"fouls":17,"fg":10,"pts":21,"ft":1,"wins":6,"losses":11}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"268b2b59","tn":"Fierce Girls","gid":"24f85033","gn":"Round Robin Finals","age":null,"div":null,"stats":{"gp":9,"wins":1,"losses":6,"draws":2,"pts":10,"fg":5,"fouls":5}},{"tid":"268b2b59","tn":"Fierce Girls","gid":"23c0e852","gn":"Friday Year 1 Girls B","age":null,"div":null,"stats":{"gp":9,"fouls":5,"fg":5,"pts":10,"wins":1,"losses":6,"draws":2}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"b6516d27","tn":"Fierce Girls","gid":"c1fa5797","gn":"Friday MSAC/Bayside Year 1 Girls AP","age":null,"div":null,"stats":{"gp":9,"fouls":13,"fg":6,"pts":12,"wins":4,"losses":5}}]}],"updatedAt":"2026-07-04T05:36:21.497Z","teams":[{"tid":"c514b055","sid":"ad68db8b","status":"ACTIVE"},{"tid":"268b2b59","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"b6516d27","sid":"31d05517","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:46:49.968Z","games":["1094ec6d","2ae6e232","3bcbf485","3c1b8b8d","54fd403c","5bc49249","62dcd7e1","63b8058b","6432d417","6578560a","6c242400","6f67e211","7631ec4d","787d5b05","7e173825","8a60e823","90128f5f","95325532","970839c3","a1e87f4a","a6a77a6d","a99449b0","b04a90e5","b0992aa2","bacc8de9","c96b11ed","cbed9cfa","cd281690","ce85f3b7","d45edccb","debe8ab1","e13623b6","ec21dab9","efc00682","f64f1b81"],"records":{"maxGamePTS":{"v":6,"gameKey":"7e173825","sid":"ad68db8b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d3cd03cd-50ec-44aa-83fe-6eebf8514b52",
+  "name": "Isobel Bull",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 43,
+      "fouls": 35,
+      "fg": 21,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 12,
+      "losses": 28,
+      "winPct": 0.27,
+      "draws": 4,
+      "statsChecked": "2026-07-05T15:12:51.286Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "c514b055",
+          "tn": "Fierce Girls",
+          "gid": "fa96f8ac",
+          "gn": "Friday Year 2 Girls C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 17,
+            "fg": 10,
+            "pts": 21,
+            "ft": 1,
+            "wins": 6,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "268b2b59",
+          "tn": "Fierce Girls",
+          "gid": "23c0e852",
+          "gn": "Friday Year 1 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "wins": 1,
+            "losses": 6,
+            "draws": 2,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 5
+          }
+        },
+        {
+          "tid": "268b2b59",
+          "tn": "Fierce Girls",
+          "gid": "23c0e852",
+          "gn": "Friday Year 1 Girls B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1,
+            "losses": 6,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "b6516d27",
+          "tn": "Fierce Girls",
+          "gid": "c1fa5797",
+          "gn": "Friday MSAC/Bayside Year 1 Girls AP",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 13,
+            "fg": 6,
+            "pts": 12,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "49019d10",
+          "tn": "Fierce Girls",
+          "gid": "6fb6712f",
+          "gn": "Friday Year 2 Girls C",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:21.497Z",
+  "teams": [
+    {
+      "tid": "c514b055",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "268b2b59",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6516d27",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "49019d10",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.762Z",
+  "games": [
+    "1094ec6d",
+    "2ae6e232",
+    "3bcbf485",
+    "3c1b8b8d",
+    "54fd403c",
+    "5bc49249",
+    "62dcd7e1",
+    "63b8058b",
+    "6432d417",
+    "6578560a",
+    "6c242400",
+    "6f67e211",
+    "7631ec4d",
+    "787d5b05",
+    "7e173825",
+    "8a60e823",
+    "90128f5f",
+    "95325532",
+    "970839c3",
+    "a1e87f4a",
+    "a6a77a6d",
+    "a99449b0",
+    "b04a90e5",
+    "b0992aa2",
+    "bacc8de9",
+    "c96b11ed",
+    "cbed9cfa",
+    "cd281690",
+    "ce85f3b7",
+    "d45edccb",
+    "debe8ab1",
+    "e13623b6",
+    "ec21dab9",
+    "efc00682",
+    "f64f1b81"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "7e173825",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

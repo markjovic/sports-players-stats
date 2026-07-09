@@ -1,1 +1,74 @@
-{"uuid":"dbcc69a1-a7f2-4f40-8a61-f3b4814e52e4","name":"Harry Byatt-Porcaro","gender":"Mixed","sports":{"Basketball":{"gp":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T15:52:10.839Z"}},"seasons":[{"sid":"a6d44120","sn":"Winter 2024","regs":[{"tid":"6f05a0ab","tn":"Air ballerz","gid":"3312c184","gn":"Friday Open Mixed B All Abilities","age":"Senior","div":null,"stats":{"gp":1,"losses":1}}]}],"updatedAt":"2026-06-02T23:38:13.443Z","teams":[{"tid":"6f05a0ab","sid":"a6d44120","status":"COMPLETED"},{"tid":"20a84dbe","sid":"80d356ce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:59.801Z","games":["61785b42"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "dbcc69a1-a7f2-4f40-8a61-f3b4814e52e4",
+  "name": "Harry Byatt-Porcaro",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:52:10.839Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a6d44120",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "6f05a0ab",
+          "tn": "Air ballerz",
+          "gid": "3312c184",
+          "gn": "Friday Open Mixed B All Abilities",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "80d356ce",
+      "sn": "2022",
+      "regs": [
+        {
+          "tid": "20a84dbe",
+          "tn": "Ausome Hoops ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T23:38:13.443Z",
+  "teams": [
+    {
+      "tid": "6f05a0ab",
+      "sid": "a6d44120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20a84dbe",
+      "sid": "80d356ce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.403Z",
+  "games": [
+    "61785b42"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

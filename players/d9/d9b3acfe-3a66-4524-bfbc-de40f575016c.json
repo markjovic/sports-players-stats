@@ -1,1 +1,513 @@
-{"uuid":"d9b3acfe-3a66-4524-bfbc-de40f575016c","name":"Alex Rogovenko","gender":"Men","sports":{"Basketball":{"gp":75,"pts":316,"fouls":118,"fg":109,"ft":54,"threePt":11,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"foulOuts":{"5593103d":1,"30c47dc0":1,"5e86f85b":1},"maxGamePTS":15,"maxGameThreePt":2,"wins":43,"losses":42,"draws":4,"winPct":0.48,"statsChecked":"2026-07-06T19:01:30.368Z"}},"seasons":[{"sid":"98e6f08c","sn":"Winter 2026","club":"Ormond Jets Basketball Club","regs":[{"tid":"13a2a397","tn":"JETS Over 35 Men","gid":"a9081517","gn":"Wednesday Over 35's Men Div 1","age":null,"div":"Div 1","stats":{"gp":7,"fouls":12,"ft":4,"fg":12,"threePt":1,"pts":31,"wins":5,"losses":2}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"61e9f3dd","tn":"VILKAS","gid":"1feaf74c","gn":"Monday Open Men Section 01","age":"Senior","div":null,"stats":{"gp":17,"fouls":32,"ft":8,"fg":13,"pts":45,"foulOuts":1,"wins":9,"losses":7,"draws":1}},{"tid":"61e9f3dd","tn":"VILKAS","gid":"6dd74606","gn":"Monday Open Men Section 02","age":"Senior","div":null,"stats":{"gp":17,"fouls":32,"wins":9,"losses":7,"draws":1,"pts":45,"fg":13,"ft":8}}]},{"sid":"a8481556","sn":"Summer 2025/26","club":"Ormond Jets Basketball Club","regs":[{"tid":"3df8fc7c","tn":"JETS Over 35 Men","gid":"346013ac","gn":"Wednesday Over 35's Men Div 1","age":null,"div":"Div 1","stats":{"gp":16,"fouls":18,"ft":14,"fg":27,"threePt":2,"pts":74,"finals":1,"wins":8,"losses":6,"draws":1}}]},{"sid":"30c47dc0","sn":"Winter 2025","club":"Ormond Jets Basketball Club","regs":[{"tid":"25a2e33d","tn":"JETS Senior Men Ed","gid":"710a4260","gn":"Wednesday Over 35's Men Div 1","age":null,"div":"Div 1","stats":{"gp":17,"fouls":24,"ft":14,"fg":24,"threePt":6,"pts":80,"foulOuts":1,"wins":7,"losses":10}}]},{"sid":"5e86f85b","sn":"Summer 2024/25","club":"Ormond Jets Basketball Club","regs":[{"tid":"1ee77c8a","tn":"JETS Senior Men Ed","gid":"797b104c","gn":"Wednesday Over 35's Men Div 1","age":null,"div":"Div 1","stats":{"gp":16,"fouls":31,"ft":13,"fg":29,"threePt":2,"pts":77,"foulOuts":1,"wins":5,"losses":10,"draws":1}}]},{"sid":"297562bc","regs":[{"tid":"9d282a43","stats":{"gp":2,"pts":9,"fg":4,"ft":1,"fouls":1}},{"tid":"9d282a43","tn":"","gid":"fc78fad5","gn":"Monday Open Men Section 1","div":null,"stats":{"gp":2,"pts":9,"fg":4,"ft":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:31:40.789Z","teams":[{"tid":"61e9f3dd","sid":"5593103d","status":"ACTIVE"},{"tid":"13a2a397","sid":"98e6f08c","status":"ACTIVE"},{"tid":"3df8fc7c","sid":"a8481556","status":"COMPLETED"},{"tid":"75c0ac97","sid":"fab2be4d","status":"COMPLETED"},{"tid":"25a2e33d","sid":"30c47dc0","status":"COMPLETED"},{"tid":"c8f8e6ac","sid":"76897951","status":"COMPLETED"},{"tid":"1ee77c8a","sid":"5e86f85b","status":"COMPLETED"},{"tid":"af7be70e","sid":"5944effa","status":"COMPLETED"},{"tid":"35028ce0","sid":"348dbfb8","status":"COMPLETED"},{"tid":"04258b69","sid":"9358e51a","status":"COMPLETED"},{"tid":"bab5d779","sid":"d3d4e181","status":"COMPLETED"},{"tid":"a1a5e1d0","sid":"21cd9648","status":"COMPLETED"},{"tid":"653310b9","sid":"d4cbf787","status":"COMPLETED"},{"tid":"e16bc75b","sid":"d64fcfce","status":"COMPLETED"},{"tid":"525ba69d","sid":"fcc2b344","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:38.034Z","games":["01a39140","039b9512","05ea28a4","0dc572ff","10e71d15","12a10c85","12b155d3","16a63b36","17a75802","1847a274","187504ff","19169201","221ce546","2380a80b","271c29ad","29b13890","2c11bb61","2caadb6b","2ee44c3c","317d279a","378f21bb","3b133f67","405890bb","45979f53","45a089fe","46995bcd","487ca7c2","53cc4af7","540fe091","59d118d9","5bbde7a7","5db53902","600d1ca7","6035d524","60598646","6b109307","6badb0c1","7445554e","774efb1b","7bfecaff","81897a1c","86499ad0","892238cf","8dc4a200","8f195def","935451e1","9425d379","974c1551","9b9a5883","9f17386b","9f696c33","aa3bbcba","ae7b8f6b","b055c188","b2a86b76","b51d3af8","b576e30a","b709a14d","bcb9efeb","bd5b74b0","bfc80aa2","c477b151","c83bf3f6","c8f65716","c9ab32c8","cc758c62","db738b08","dc627dd9","e55bcfe6","eb9f8fc0","ec60277c","ee38cb4f","fbd17695"],"records":{"maxGamePTS":{"v":15,"gameKey":"271c29ad","sid":"a8481556"},"maxGameThreePt":{"v":2,"gameKey":"892238cf","sid":"30c47dc0"}}}
+{
+  "uuid": "d9b3acfe-3a66-4524-bfbc-de40f575016c",
+  "name": "Alex Rogovenko",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 75,
+      "pts": 316,
+      "fouls": 118,
+      "fg": 109,
+      "ft": 54,
+      "threePt": 11,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {
+        "5593103d": 1,
+        "30c47dc0": 1,
+        "5e86f85b": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 2,
+      "wins": 43,
+      "losses": 42,
+      "draws": 4,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-06T19:01:30.368Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "98e6f08c",
+      "sn": "Winter 2026",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "13a2a397",
+          "tn": "JETS Over 35 Men",
+          "gid": "a9081517",
+          "gn": "Wednesday Over 35's Men Div 1",
+          "age": null,
+          "div": "Div 1",
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 4,
+            "fg": 12,
+            "threePt": 1,
+            "pts": 31,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "61e9f3dd",
+          "tn": "VILKAS",
+          "gid": "1feaf74c",
+          "gn": "Monday Open Men Section 01",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 32,
+            "ft": 8,
+            "fg": 13,
+            "pts": 45,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "61e9f3dd",
+          "tn": "VILKAS",
+          "gid": "6dd74606",
+          "gn": "Monday Open Men Section 02",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 32,
+            "wins": 9,
+            "losses": 7,
+            "draws": 1,
+            "pts": 45,
+            "fg": 13,
+            "ft": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a8481556",
+      "sn": "Summer 2025/26",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "3df8fc7c",
+          "tn": "JETS Over 35 Men",
+          "gid": "346013ac",
+          "gn": "Wednesday Over 35's Men Div 1",
+          "age": null,
+          "div": "Div 1",
+          "stats": {
+            "gp": 16,
+            "fouls": 18,
+            "ft": 14,
+            "fg": 27,
+            "threePt": 2,
+            "pts": 74,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "30c47dc0",
+      "sn": "Winter 2025",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "25a2e33d",
+          "tn": "JETS Senior Men Ed",
+          "gid": "710a4260",
+          "gn": "Wednesday Over 35's Men Div 1",
+          "age": null,
+          "div": "Div 1",
+          "stats": {
+            "gp": 17,
+            "fouls": 24,
+            "ft": 14,
+            "fg": 24,
+            "threePt": 6,
+            "pts": 80,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5e86f85b",
+      "sn": "Summer 2024/25",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "1ee77c8a",
+          "tn": "JETS Senior Men Ed",
+          "gid": "797b104c",
+          "gn": "Wednesday Over 35's Men Div 1",
+          "age": null,
+          "div": "Div 1",
+          "stats": {
+            "gp": 16,
+            "fouls": 31,
+            "ft": 13,
+            "fg": 29,
+            "threePt": 2,
+            "pts": 77,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "9d282a43",
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 1
+          },
+          "gid": "fc78fad5",
+          "gn": "Monday Open Men Section 1"
+        },
+        {
+          "tid": "9d282a43",
+          "tn": "",
+          "gid": "fc78fad5",
+          "gn": "Monday Open Men Section 1",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "75c0ac97",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "c8f8e6ac",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "af7be70e",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "35028ce0",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "04258b69",
+          "tn": "VILKAS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "bab5d779",
+          "tn": "VILKAS",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "a1a5e1d0",
+          "tn": "VILKAS",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "653310b9",
+          "tn": "VILKAS",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "e16bc75b",
+          "tn": "VILKAS",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "fcc2b344",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "525ba69d",
+          "tn": "VILKAS",
+          "gid": "14669b5f",
+          "gn": "Thursday Open Men A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:40.789Z",
+  "teams": [
+    {
+      "tid": "13a2a397",
+      "sid": "98e6f08c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "61e9f3dd",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3df8fc7c",
+      "sid": "a8481556",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25a2e33d",
+      "sid": "30c47dc0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ee77c8a",
+      "sid": "5e86f85b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d282a43",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75c0ac97",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c8f8e6ac",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af7be70e",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35028ce0",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "04258b69",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bab5d779",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1a5e1d0",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "653310b9",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e16bc75b",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "525ba69d",
+      "sid": "fcc2b344",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.224Z",
+  "games": [
+    "01a39140",
+    "039b9512",
+    "05ea28a4",
+    "0dc572ff",
+    "10e71d15",
+    "12a10c85",
+    "12b155d3",
+    "16a63b36",
+    "17a75802",
+    "1847a274",
+    "187504ff",
+    "19169201",
+    "221ce546",
+    "2380a80b",
+    "271c29ad",
+    "29b13890",
+    "2c11bb61",
+    "2caadb6b",
+    "2ee44c3c",
+    "317d279a",
+    "378f21bb",
+    "3b133f67",
+    "405890bb",
+    "45979f53",
+    "45a089fe",
+    "46995bcd",
+    "487ca7c2",
+    "53cc4af7",
+    "540fe091",
+    "59d118d9",
+    "5bbde7a7",
+    "5db53902",
+    "600d1ca7",
+    "6035d524",
+    "60598646",
+    "6b109307",
+    "6badb0c1",
+    "7445554e",
+    "774efb1b",
+    "7bfecaff",
+    "81897a1c",
+    "86499ad0",
+    "892238cf",
+    "8dc4a200",
+    "8f195def",
+    "935451e1",
+    "9425d379",
+    "974c1551",
+    "9b9a5883",
+    "9f17386b",
+    "9f696c33",
+    "aa3bbcba",
+    "ae7b8f6b",
+    "b055c188",
+    "b2a86b76",
+    "b51d3af8",
+    "b576e30a",
+    "b709a14d",
+    "bcb9efeb",
+    "bd5b74b0",
+    "bfc80aa2",
+    "c477b151",
+    "c83bf3f6",
+    "c8f65716",
+    "c9ab32c8",
+    "cc758c62",
+    "db738b08",
+    "dc627dd9",
+    "e55bcfe6",
+    "eb9f8fc0",
+    "ec60277c",
+    "ee38cb4f",
+    "fbd17695"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "271c29ad",
+      "sid": "a8481556"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "892238cf",
+      "sid": "30c47dc0"
+    }
+  }
+}

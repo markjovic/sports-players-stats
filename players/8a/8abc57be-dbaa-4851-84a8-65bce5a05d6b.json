@@ -1,1 +1,113 @@
-{"uuid":"8abc57be-dbaa-4851-84a8-65bce5a05d6b","name":"Andrea Augustine","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":null,"foulOuts":{"26df4252":1,"a74c91ee":1},"gp":32,"pts":71,"fg":35,"ft":1,"fouls":35,"statsChecked":"2026-07-07T18:28:33.809Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"a301ea1c","stats":{"gp":4,"pts":4,"fg":2,"fouls":5}},{"tid":"a301ea1c","tn":"","gid":"c6f4b313","gn":"U14 Girls Division 5","div":null,"stats":{"gp":4,"pts":4,"fg":2,"fouls":5}}]},{"sid":"fcfc254b","regs":[{"tid":"ca1d9933","stats":{"gp":13,"pts":39,"fg":19,"ft":1,"fouls":12}}]},{"sid":"a74c91ee","regs":[{"tid":"b33f8d95","stats":{"gp":15,"pts":28,"fg":14,"fouls":18}}]}],"teams":[],"updatedAt":"2026-07-07T18:05:19.578Z","records":{"maxGamePTS":{"v":6,"gameKey":"cdd95590","sid":"fcfc254b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "8abc57be-dbaa-4851-84a8-65bce5a05d6b",
+  "name": "Andrea Augustine",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "26df4252": 1,
+        "a74c91ee": 1
+      },
+      "gp": 32,
+      "pts": 71,
+      "fg": 35,
+      "ft": 1,
+      "fouls": 35,
+      "statsChecked": "2026-07-07T18:28:33.809Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "a301ea1c",
+          "stats": {
+            "gp": 4,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 5
+          },
+          "gid": "c6f4b313",
+          "gn": "U14 Girls Division 5"
+        },
+        {
+          "tid": "a301ea1c",
+          "tn": "",
+          "gid": "c6f4b313",
+          "gn": "U14 Girls Division 5",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fcfc254b",
+      "regs": [
+        {
+          "tid": "ca1d9933",
+          "stats": {
+            "gp": 13,
+            "pts": 39,
+            "fg": 19,
+            "ft": 1,
+            "fouls": 12
+          },
+          "gid": "12a7a5f8",
+          "gn": "Saturday U14 Girls D2"
+        }
+      ]
+    },
+    {
+      "sid": "a74c91ee",
+      "regs": [
+        {
+          "tid": "b33f8d95",
+          "stats": {
+            "gp": 15,
+            "pts": 28,
+            "fg": 14,
+            "fouls": 18
+          },
+          "gid": "0f546673",
+          "gn": "Saturday U14 Girls D3"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "a301ea1c",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ca1d9933",
+      "sid": "fcfc254b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b33f8d95",
+      "sid": "a74c91ee",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:19.578Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "cdd95590",
+      "sid": "fcfc254b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.770Z"
+}

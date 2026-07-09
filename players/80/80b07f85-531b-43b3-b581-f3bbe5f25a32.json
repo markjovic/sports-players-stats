@@ -1,1 +1,83 @@
-{"uuid":"80b07f85-531b-43b3-b581-f3bbe5f25a32","name":"Ryan Kelly","sports":{"Basketball":{"maxGamePTS":16,"maxGameThreePt":2,"foulOuts":{"f98be930":1},"gp":35,"pts":166,"fg":60,"ft":22,"threePt":8,"fouls":62,"statsChecked":"2026-07-06T18:59:03.254Z"}},"seasons":[{"sid":"c57ce3ff","regs":[{"tid":"7211f820"}]},{"sid":"f98be930","regs":[{"tid":"9e171534"}]},{"sid":"2ad447ff","regs":[{"tid":"9a9ba638"}]}],"teams":[],"updatedAt":"2026-07-05T16:57:28.075Z","records":{"maxGamePTS":{"v":16,"gameKey":"4b37e4aa","sid":"2ad447ff"},"maxGameThreePt":{"v":2,"gameKey":"4b37e4aa","sid":"2ad447ff"}}}
+{
+  "uuid": "80b07f85-531b-43b3-b581-f3bbe5f25a32",
+  "name": "Ryan Kelly",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 16,
+      "maxGameThreePt": 2,
+      "foulOuts": {
+        "f98be930": 1
+      },
+      "gp": 35,
+      "pts": 166,
+      "fg": 60,
+      "ft": 22,
+      "threePt": 8,
+      "fouls": 62,
+      "statsChecked": "2026-07-06T18:59:03.254Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c57ce3ff",
+      "regs": [
+        {
+          "tid": "7211f820",
+          "gid": "5fef12e2",
+          "gn": "Men A/B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "f98be930",
+      "regs": [
+        {
+          "tid": "9e171534",
+          "gid": "b92e88d2",
+          "gn": "Monday Senior Men 2"
+        }
+      ]
+    },
+    {
+      "sid": "2ad447ff",
+      "regs": [
+        {
+          "tid": "9a9ba638",
+          "gid": "fe736360",
+          "gn": "Thursday Open Men E Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "7211f820",
+      "sid": "c57ce3ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e171534",
+      "sid": "f98be930",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a9ba638",
+      "sid": "2ad447ff",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-05T16:57:28.075Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "4b37e4aa",
+      "sid": "2ad447ff"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4b37e4aa",
+      "sid": "2ad447ff"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.207Z"
+}

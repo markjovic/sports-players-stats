@@ -1,1 +1,81 @@
-{"uuid":"8bab9bb0-361e-43fe-9a8a-74e6289bfea0","name":"Sergio Perez","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":1,"foulOuts":{},"gp":31,"pts":68,"fg":28,"ft":6,"threePt":2,"fouls":42,"statsChecked":"2026-07-07T18:28:33.257Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"57a32c2e"}]},{"sid":"796936f7","regs":[{"tid":"58d4f9fd"}]},{"sid":"880bda3c","regs":[{"tid":"9d7cc07f"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":10,"gameKey":"fcae63ac","sid":"880bda3c"},"maxGameThreePt":{"v":1,"gameKey":"c1dfcd16","sid":"796936f7"}}}
+{
+  "uuid": "8bab9bb0-361e-43fe-9a8a-74e6289bfea0",
+  "name": "Sergio Perez",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 31,
+      "pts": 68,
+      "fg": 28,
+      "ft": 6,
+      "threePt": 2,
+      "fouls": 42,
+      "statsChecked": "2026-07-07T18:28:33.257Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "57a32c2e",
+          "gid": "025e656d",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "58d4f9fd",
+          "gid": "0ef6df70",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "9d7cc07f",
+          "gid": "73954faf",
+          "gn": "Tuesday Men -Div 2-3"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "57a32c2e",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58d4f9fd",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d7cc07f",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "fcae63ac",
+      "sid": "880bda3c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "c1dfcd16",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.832Z"
+}

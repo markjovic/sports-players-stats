@@ -1,1 +1,277 @@
-{"uuid":"b8c8dfae-377a-46b2-a6f2-6b250d7855a3","name":"Xuebin Chen","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":22,"fouls":44,"fg":10,"ft":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":42,"losses":30,"draws":4,"winPct":0.55,"statsChecked":"2026-07-05T14:30:10.193Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Banyule Hawks Basketball Club","regs":[{"tid":"f79ec04c","tn":"Banyule U17 Boys 05","gid":"c34a205f","gn":"Boys U17 D Grading","age":"U17","div":null,"stats":{"gp":8,"fouls":7,"fg":1,"pts":2,"wins":4,"losses":1,"draws":1}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Banyule Hawks Basketball Club","regs":[{"tid":"5bf4bcee","tn":"Banyule U16 Boys 08","gid":"5002cf4e","gn":"Boys U16 CE","age":"U16","div":null,"stats":{"gp":15,"fouls":20,"fg":5,"pts":10,"finals":1,"wins":10,"losses":4,"draws":1}},{"tid":"5bf4bcee","tn":"Banyule U16 Boys 08","gid":"82e93bf0","gn":"Boys U16 C Grading","age":"U16","div":null,"stats":{"gp":15,"fouls":20,"fg":5,"pts":10,"finals":1,"wins":10,"losses":4,"draws":1}},{"tid":"5bf4bcee","tn":"Banyule U16 Boys 08","gid":"80ce3e97","gn":"Boys U16 D Grading","age":"U16","div":null,"stats":{"gp":15,"fouls":20,"finals":1,"wins":10,"losses":4,"draws":1,"pts":10,"fg":5}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Banyule Hawks Basketball Club","regs":[{"tid":"68f9096f","tn":"Banyule U17 Boys 07","gid":"3e077753","gn":"Boys U17 DF","age":"U17","div":null,"stats":{"gp":12,"fouls":14,"ft":2,"fg":2,"pts":6,"wins":4,"losses":8}},{"tid":"68f9096f","tn":"Banyule U17 Boys 07","gid":"364cd1c9","gn":"Boys U17 D Grading","age":"U17","div":null,"stats":{"gp":12,"fouls":14,"wins":4,"losses":8,"pts":6,"fg":2,"ft":2}},{"tid":"b253b121","tn":"Banyule U17 Boys 09","gid":"364cd1c9","gn":"Boys U17 D Grading","age":"U17","div":null,"stats":{"gp":1,"fouls":3,"fg":2,"pts":4,"losses":1}}]}],"updatedAt":"2026-07-04T05:57:13.933Z","teams":[{"tid":"f79ec04c","sid":"1ae60211","status":"ACTIVE"},{"tid":"5bf4bcee","sid":"88026885","status":"COMPLETED"},{"tid":"68f9096f","sid":"f373fc05","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:38:22.313Z","records":{"maxGamePTS":{"v":4,"gameKey":"aa6d2e68","sid":"88026885"},"maxGameThreePt":{"v":null}},"games":["0271b2f7","04060634","17929803","2db74fd5","411e2443","4e6ca9a1","568d3fa8","58cd4202","6988ff71","701d6232","7665f75a","786275a6","7a1ae4d9","7d2aab49","7d7c7354","7e6ddc5a","7e9cb755","81341546","8262803a","8d2b2c1c","8e2200ba","a844b43b","aa6d2e68","ab58932e","acf23ab3","aeb9d594","b8cf9ec1","c08d8f14","c170461f","c20308b3","d7ae94cc","e4bb1bc9","ea7bb070","ee6a0e14"],"gameTids":{"17929803":"f79ec04c","81341546":"68f9096f","f15992c5":"f79ec04c","47342a04":"f79ec04c","8262803a":"f79ec04c","c08d8f14":"f79ec04c","8e2200ba":"f79ec04c","ee6a0e14":"f79ec04c","e4bb1bc9":"f79ec04c","ab58932e":"5bf4bcee","a844b43b":"5bf4bcee","7d2aab49":"5bf4bcee","7d7c7354":"5bf4bcee","8d2b2c1c":"5bf4bcee","b8cf9ec1":"5bf4bcee","411e2443":"5bf4bcee","aa6d2e68":"5bf4bcee","c170461f":"5bf4bcee","c20308b3":"5bf4bcee","7e9cb755":"5bf4bcee","58cd4202":"5bf4bcee","acf23ab3":"5bf4bcee","6988ff71":"5bf4bcee","7665f75a":"5bf4bcee","2db74fd5":"68f9096f","4e6ca9a1":"68f9096f","d7ae94cc":"68f9096f","568d3fa8":"68f9096f","7e6ddc5a":"68f9096f","aeb9d594":"68f9096f","786275a6":"68f9096f","04060634":"68f9096f","ea7bb070":"68f9096f","7a1ae4d9":"68f9096f","701d6232":"68f9096f","0271b2f7":"b253b121"}}
+{
+  "uuid": "b8c8dfae-377a-46b2-a6f2-6b250d7855a3",
+  "name": "Xuebin Chen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 22,
+      "fouls": 44,
+      "fg": 10,
+      "ft": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 42,
+      "losses": 30,
+      "draws": 4,
+      "winPct": 0.55,
+      "statsChecked": "2026-07-05T14:30:10.193Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "f79ec04c",
+          "tn": "Banyule U17 Boys 05",
+          "gid": "786120b5",
+          "gn": "Boys U17 CF",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 1,
+            "pts": 2,
+            "wins": 4,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "5bf4bcee",
+          "tn": "Banyule U16 Boys 08",
+          "gid": "5002cf4e",
+          "gn": "Boys U16 CE",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5bf4bcee",
+          "tn": "Banyule U16 Boys 08",
+          "gid": "82e93bf0",
+          "gn": "Boys U16 C Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5bf4bcee",
+          "tn": "Banyule U16 Boys 08",
+          "gid": "80ce3e97",
+          "gn": "Boys U16 D Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 20,
+            "finals": 1,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1,
+            "pts": 10,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "68f9096f",
+          "tn": "Banyule U17 Boys 07",
+          "gid": "3e077753",
+          "gn": "Boys U17 DF",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "ft": 2,
+            "fg": 2,
+            "pts": 6,
+            "wins": 4,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "68f9096f",
+          "tn": "Banyule U17 Boys 07",
+          "gid": "364cd1c9",
+          "gn": "Boys U17 D Grading",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 14,
+            "wins": 4,
+            "losses": 8,
+            "pts": 6,
+            "fg": 2,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "b253b121",
+          "tn": "Banyule U17 Boys 09",
+          "gid": "364cd1c9",
+          "gn": "Boys U17 D Grading",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "fg": 2,
+            "pts": 4,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:13.933Z",
+  "teams": [
+    {
+      "tid": "f79ec04c",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5bf4bcee",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68f9096f",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b253b121",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.052Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "aa6d2e68",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0271b2f7",
+    "04060634",
+    "17929803",
+    "2db74fd5",
+    "411e2443",
+    "4e6ca9a1",
+    "568d3fa8",
+    "58cd4202",
+    "6988ff71",
+    "701d6232",
+    "7665f75a",
+    "786275a6",
+    "7a1ae4d9",
+    "7d2aab49",
+    "7d7c7354",
+    "7e6ddc5a",
+    "7e9cb755",
+    "81341546",
+    "8262803a",
+    "8d2b2c1c",
+    "8e2200ba",
+    "a844b43b",
+    "aa6d2e68",
+    "ab58932e",
+    "acf23ab3",
+    "aeb9d594",
+    "b8cf9ec1",
+    "c08d8f14",
+    "c170461f",
+    "c20308b3",
+    "d7ae94cc",
+    "e4bb1bc9",
+    "ea7bb070",
+    "ee6a0e14"
+  ],
+  "gameTids": {
+    "17929803": "f79ec04c",
+    "81341546": "68f9096f",
+    "f15992c5": "f79ec04c",
+    "47342a04": "f79ec04c",
+    "8262803a": "f79ec04c",
+    "c08d8f14": "f79ec04c",
+    "8e2200ba": "f79ec04c",
+    "ee6a0e14": "f79ec04c",
+    "e4bb1bc9": "f79ec04c",
+    "ab58932e": "5bf4bcee",
+    "a844b43b": "5bf4bcee",
+    "7d2aab49": "5bf4bcee",
+    "7d7c7354": "5bf4bcee",
+    "8d2b2c1c": "5bf4bcee",
+    "b8cf9ec1": "5bf4bcee",
+    "411e2443": "5bf4bcee",
+    "aa6d2e68": "5bf4bcee",
+    "c170461f": "5bf4bcee",
+    "c20308b3": "5bf4bcee",
+    "7e9cb755": "5bf4bcee",
+    "58cd4202": "5bf4bcee",
+    "acf23ab3": "5bf4bcee",
+    "6988ff71": "5bf4bcee",
+    "7665f75a": "5bf4bcee",
+    "2db74fd5": "68f9096f",
+    "4e6ca9a1": "68f9096f",
+    "d7ae94cc": "68f9096f",
+    "568d3fa8": "68f9096f",
+    "7e6ddc5a": "68f9096f",
+    "aeb9d594": "68f9096f",
+    "786275a6": "68f9096f",
+    "04060634": "68f9096f",
+    "ea7bb070": "68f9096f",
+    "7a1ae4d9": "68f9096f",
+    "701d6232": "68f9096f",
+    "0271b2f7": "b253b121"
+  }
+}

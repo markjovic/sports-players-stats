@@ -1,1 +1,65 @@
-{"uuid":"8297c8b6-1b4f-4d2e-85c3-a997e613a11a","name":"Oliver Gibbon","sports":{"Basketball":{"maxGamePTS":8,"maxGameThreePt":2,"foulOuts":{},"gp":6,"pts":14,"fg":4,"threePt":2,"fouls":2,"statsChecked":"2026-07-06T18:58:49.266Z"}},"seasons":[{"sid":"0adc7f94","regs":[{"tid":"977d7402"}]},{"sid":"48a88c19","regs":[{"tid":"a1a58754"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":8,"gameKey":"05779ca7","sid":"48a88c19"},"maxGameThreePt":{"v":2,"gameKey":"05779ca7","sid":"48a88c19"}}}
+{
+  "uuid": "8297c8b6-1b4f-4d2e-85c3-a997e613a11a",
+  "name": "Oliver Gibbon",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 8,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 6,
+      "pts": 14,
+      "fg": 4,
+      "threePt": 2,
+      "fouls": 2,
+      "statsChecked": "2026-07-06T18:58:49.266Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0adc7f94",
+      "regs": [
+        {
+          "tid": "977d7402",
+          "gid": "76222f7b",
+          "gn": "Monday Senior Men K1"
+        }
+      ]
+    },
+    {
+      "sid": "48a88c19",
+      "regs": [
+        {
+          "tid": "a1a58754",
+          "gid": "b056f994",
+          "gn": "Sunday U21 Boys C Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "977d7402",
+      "sid": "0adc7f94",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1a58754",
+      "sid": "48a88c19",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "05779ca7",
+      "sid": "48a88c19"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "05779ca7",
+      "sid": "48a88c19"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:24.268Z"
+}

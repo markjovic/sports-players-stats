@@ -1,1 +1,304 @@
-{"uuid":"13956807-fcf0-4281-a588-2624c81fa5d5","name":"Jason Crabtree","gender":"Mixed","sports":{"Basketball":{"gp":23,"pts":126,"fouls":10,"fg":54,"ft":9,"threePt":3,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":1,"wins":17,"losses":5,"draws":1,"winPct":0.74,"statsChecked":"2026-07-05T15:46:29.439Z"}},"seasons":[{"sid":"db6f638a","sn":"Winter 2026","club":"IOE All-Inclusive Basketball","regs":[{"tid":"475218da","tn":"IOE Senior Mixed Moss (GREEN)","gid":"96f4e458","gn":"MONDAY IOE GROUP A","age":null,"div":null,"stats":{"gp":3,"pts":25,"fg":11,"ft":3,"fouls":1,"losses":1,"wins":2}}]},{"sid":"fbb79f9e","sn":"Winter 2025","club":"IOE All-Inclusive Basketball","regs":[{"tid":"e5fbe48b","tn":"IOE Open Mixed STORM","gid":"559110d4","gn":"Monday All Abilities - 2025 Winter","age":null,"div":null,"stats":{"gp":9,"pts":34,"fg":15,"ft":4,"fouls":7,"finals":1,"wins":7,"losses":2}}]},{"sid":"7278a893","sn":"Winter 2022","regs":[{"tid":"74e7185b","tn":"Wanderers","gid":"5b7a8c24","gn":"Thursday Open Mixed IOE Carers Division","age":"Senior","div":null,"stats":{"gp":7,"pts":54,"threePt":3,"fg":22,"ft":1,"fouls":2,"finals":1,"wins":5,"losses":1,"draws":1}},{"tid":"5c1f711a","tn":"Monstars","gid":"ab571c42","gn":"Thursday Open Mixed Division 1","age":"Senior","div":"Division 1","stats":{"gp":3,"pts":3,"fg":1,"ft":1,"finals":1,"wins":3}}]},{"sid":"b38e3c89","sn":"Winter 2021","regs":[{"tid":"ee2b8505","tn":"Monstars","gid":"ee743f7e","gn":"Thursday Open Mixed Division 1","age":"Senior","div":"Division 1","stats":{"gp":1,"pts":10,"fg":5,"losses":1}}]}],"updatedAt":"2026-06-03T00:35:03.804Z","teams":[{"tid":"475218da","sid":"db6f638a","status":"ACTIVE"},{"tid":"e5fbe48b","sid":"fbb79f9e","status":"COMPLETED"},{"tid":"e22bf23f","sid":"92fb08a4","status":"COMPLETED"},{"tid":"201202b7","sid":"92fb08a4","status":"COMPLETED"},{"tid":"bdac97e1","sid":"92fb08a4","status":"COMPLETED"},{"tid":"8c7d302b","sid":"92fb08a4","status":"COMPLETED"},{"tid":"5c1f711a","sid":"7278a893","status":"COMPLETED"},{"tid":"74e7185b","sid":"7278a893","status":"COMPLETED"},{"tid":"442210bb","sid":"39236afd","status":"COMPLETED"},{"tid":"ee2b8505","sid":"b38e3c89","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:58:13.083Z","records":{"maxGamePTS":{"v":14,"gameKey":"c9bc057d","sid":"7278a893"},"maxGameThreePt":{"v":1,"gameKey":"78799d72","sid":"7278a893"}},"statsChecked":"2026-06-20","games":["122d384f","2538a8c7","2971bfc5","2e92f989","315bc5a4","6d3b8b27","78799d72","7eba42ff","89c9ab0b","8f53c349","92e0f0ca","9804d2db","a6f452e2","b5a8ce7a","bc24e399","bc31ae6c","c9bc057d","d15d766d","e52ab444","ec2231a7","edfb5b3e","f6e73372","f89316b2"],"gameTids":{"315bc5a4":"475218da","89c9ab0b":"475218da","f6e73372":"475218da","122d384f":"e5fbe48b","b5a8ce7a":"e5fbe48b","92e0f0ca":"e5fbe48b","bc31ae6c":"e5fbe48b","ec2231a7":"e5fbe48b","2971bfc5":"e5fbe48b","6d3b8b27":"e5fbe48b","edfb5b3e":"e5fbe48b","f89316b2":"e5fbe48b","d15d766d":"74e7185b","78799d72":"74e7185b","e52ab444":"74e7185b","2538a8c7":"74e7185b","a6f452e2":"74e7185b","8f53c349":"74e7185b","c9bc057d":"74e7185b","2e92f989":"5c1f711a","9804d2db":"5c1f711a","bc24e399":"5c1f711a","7eba42ff":"ee2b8505"}}
+{
+  "uuid": "13956807-fcf0-4281-a588-2624c81fa5d5",
+  "name": "Jason Crabtree",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 126,
+      "fouls": 10,
+      "fg": 54,
+      "ft": 9,
+      "threePt": 3,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "wins": 17,
+      "losses": 5,
+      "draws": 1,
+      "winPct": 0.74,
+      "statsChecked": "2026-07-05T15:46:29.439Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "db6f638a",
+      "sn": "Winter 2026",
+      "club": "IOE All-Inclusive Basketball",
+      "regs": [
+        {
+          "tid": "475218da",
+          "tn": "IOE Senior Mixed Moss (GREEN)",
+          "gid": "96f4e458",
+          "gn": "MONDAY IOE GROUP A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 25,
+            "fg": 11,
+            "ft": 3,
+            "fouls": 1,
+            "losses": 1,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbb79f9e",
+      "sn": "Winter 2025",
+      "club": "IOE All-Inclusive Basketball",
+      "regs": [
+        {
+          "tid": "e5fbe48b",
+          "tn": "IOE Open Mixed STORM",
+          "gid": "559110d4",
+          "gn": "Monday All Abilities - 2025 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 34,
+            "fg": 15,
+            "ft": 4,
+            "fouls": 7,
+            "finals": 1,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7278a893",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "74e7185b",
+          "tn": "Wanderers",
+          "gid": "5b7a8c24",
+          "gn": "Thursday Open Mixed IOE Carers Division",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 54,
+            "threePt": 3,
+            "fg": 22,
+            "ft": 1,
+            "fouls": 2,
+            "finals": 1,
+            "wins": 5,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5c1f711a",
+          "tn": "Monstars",
+          "gid": "ab571c42",
+          "gn": "Thursday Open Mixed Division 1",
+          "age": "Senior",
+          "div": "Division 1",
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "finals": 1,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b38e3c89",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "ee2b8505",
+          "tn": "Monstars",
+          "gid": "ee743f7e",
+          "gn": "Thursday Open Mixed Division 1",
+          "age": "Senior",
+          "div": "Division 1",
+          "stats": {
+            "gp": 1,
+            "pts": 10,
+            "fg": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "92fb08a4",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "e22bf23f",
+          "tn": "City Slickers",
+          "gid": "2758d78f",
+          "gn": "Thursday Open Mixed IOE Carers",
+          "stats": {}
+        },
+        {
+          "tid": "201202b7",
+          "tn": "Dream Team",
+          "gid": "2758d78f",
+          "gn": "Thursday Open Mixed IOE Carers",
+          "stats": {}
+        },
+        {
+          "tid": "bdac97e1",
+          "tn": "Giants",
+          "gid": "2758d78f",
+          "gn": "Thursday Open Mixed IOE Carers",
+          "stats": {}
+        },
+        {
+          "tid": "8c7d302b",
+          "tn": "Wanderers",
+          "gid": "2758d78f",
+          "gn": "Thursday Open Mixed IOE Carers",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "39236afd",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "442210bb",
+          "tn": "Monstars",
+          "gid": "4150c871",
+          "gn": "Thursday Open Mixed Division 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T00:35:03.804Z",
+  "teams": [
+    {
+      "tid": "475218da",
+      "sid": "db6f638a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5fbe48b",
+      "sid": "fbb79f9e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "74e7185b",
+      "sid": "7278a893",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c1f711a",
+      "sid": "7278a893",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee2b8505",
+      "sid": "b38e3c89",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e22bf23f",
+      "sid": "92fb08a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "201202b7",
+      "sid": "92fb08a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bdac97e1",
+      "sid": "92fb08a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c7d302b",
+      "sid": "92fb08a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "442210bb",
+      "sid": "39236afd",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.858Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "c9bc057d",
+      "sid": "7278a893"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "78799d72",
+      "sid": "7278a893"
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "122d384f",
+    "2538a8c7",
+    "2971bfc5",
+    "2e92f989",
+    "315bc5a4",
+    "6d3b8b27",
+    "78799d72",
+    "7eba42ff",
+    "89c9ab0b",
+    "8f53c349",
+    "92e0f0ca",
+    "9804d2db",
+    "a6f452e2",
+    "b5a8ce7a",
+    "bc24e399",
+    "bc31ae6c",
+    "c9bc057d",
+    "d15d766d",
+    "e52ab444",
+    "ec2231a7",
+    "edfb5b3e",
+    "f6e73372",
+    "f89316b2"
+  ],
+  "gameTids": {
+    "315bc5a4": "475218da",
+    "89c9ab0b": "475218da",
+    "f6e73372": "475218da",
+    "122d384f": "e5fbe48b",
+    "b5a8ce7a": "e5fbe48b",
+    "92e0f0ca": "e5fbe48b",
+    "bc31ae6c": "e5fbe48b",
+    "ec2231a7": "e5fbe48b",
+    "2971bfc5": "e5fbe48b",
+    "6d3b8b27": "e5fbe48b",
+    "edfb5b3e": "e5fbe48b",
+    "f89316b2": "e5fbe48b",
+    "d15d766d": "74e7185b",
+    "78799d72": "74e7185b",
+    "e52ab444": "74e7185b",
+    "2538a8c7": "74e7185b",
+    "a6f452e2": "74e7185b",
+    "8f53c349": "74e7185b",
+    "c9bc057d": "74e7185b",
+    "2e92f989": "5c1f711a",
+    "9804d2db": "5c1f711a",
+    "bc24e399": "5c1f711a",
+    "7eba42ff": "ee2b8505"
+  }
+}

@@ -1,1 +1,87 @@
-{"uuid":"3dadfea8-95e1-488e-b19b-be2a774e6ab5","name":"Finn Weir","gender":"Boys","sports":{"Basketball":{"gp":5,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":8,"losses":2,"winPct":0.8,"statsChecked":"2026-07-05T15:35:01.163Z"}},"seasons":[{"sid":"b3efb4fc","sn":"Winter 2026","regs":[{"tid":"79ab6d27","tn":"MIGHTY FLAMINGO’S ","gid":"d1eead7d","gn":"Friday U8 Boys 2 Yellow","age":"U8","div":null,"stats":{"gp":5,"wins":4,"losses":1}},{"tid":"79ab6d27","tn":"MIGHTY FLAMINGO’S ","gid":"83f650fe","gn":"Friday U8 Boys 1","age":"U8","div":null,"stats":{"gp":5,"wins":4,"losses":1}}]}],"updatedAt":"2026-07-04T05:47:50.267Z","teams":[{"tid":"78647c3b","sid":"b3efb4fc","status":"ACTIVE"},{"tid":"79ab6d27","sid":"b3efb4fc","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:19:00.593Z","games":["45918c00","83050a14","963f0614","ac472f57","e161646e"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "3dadfea8-95e1-488e-b19b-be2a774e6ab5",
+  "name": "Finn Weir",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 2,
+      "winPct": 0.8,
+      "statsChecked": "2026-07-05T15:35:01.163Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3efb4fc",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "79ab6d27",
+          "tn": "MIGHTY FLAMINGO’S ",
+          "gid": "83f650fe",
+          "gn": "Friday U8 Boys 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "wins": 4,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "79ab6d27",
+          "tn": "MIGHTY FLAMINGO’S ",
+          "gid": "83f650fe",
+          "gn": "Friday U8 Boys 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "wins": 4,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "78647c3b",
+          "tn": "JUMPING FLAMINGO’S",
+          "gid": "a85b7e68",
+          "gn": "Friday U10 Boys 5",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:47:50.267Z",
+  "teams": [
+    {
+      "tid": "79ab6d27",
+      "sid": "b3efb4fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78647c3b",
+      "sid": "b3efb4fc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.400Z",
+  "games": [
+    "45918c00",
+    "83050a14",
+    "963f0614",
+    "ac472f57",
+    "e161646e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

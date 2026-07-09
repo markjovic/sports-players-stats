@@ -1,1 +1,375 @@
-{"uuid":"64a959d7-fd47-4d0b-a59e-54fe0a34611e","name":"Astin Chen","gender":"Mixed","sports":{"Basketball":{"gp":75,"pts":247,"fouls":157,"fg":117,"ft":13,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.14,"foulOuts":{"15908988":1,"6b0cab9c":1,"43448c02":2,"bfbe9c11":1,"f2d66c1b":1},"maxGamePTS":16,"maxGameThreePt":null,"wins":57,"losses":42,"winPct":0.58,"statsChecked":"2026-07-05T14:13:32.193Z"}},"seasons":[{"sid":"43448c02","sn":"Winter 2026","club":"Southeast Venom Basketball Club","regs":[{"tid":"ed96514a","tn":"B09 SE Venom 1 (PTR)","gid":"1460457d","gn":"Friday U9 Boys A","age":"U9","div":null,"stats":{"gp":10,"fouls":33,"ft":3,"fg":21,"pts":45,"foulOuts":1,"wins":7,"losses":3}},{"tid":"ed96514a","tn":"B09 SE Venom 1 (PTR)","gid":"616c4476","gn":"Friday U9 Boys B/BR","age":"U9","div":null,"stats":{"gp":10,"fouls":33,"fg":21,"pts":45,"wins":7,"losses":3,"ft":3}}]},{"sid":"15908988","sn":"Winter 2026","club":"Waverley Basketball Club (Nunawading)","regs":[{"tid":"f6c7e285","tn":"B08 Waverley 1","gid":"dfdaf9e5","gn":"Saturday U8 Mixed Pool 1","age":"U8","div":null,"stats":{"gp":8,"fouls":14,"ft":3,"fg":12,"pts":27,"foulOuts":1,"wins":8}}]},{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"1adfd401","tn":"Nunawading Dev B10.Blue","gid":"0d19843c","gn":"U10 Boys C1 (Eltham)","age":"U10","div":null,"stats":{"gp":4,"fouls":8,"ft":1,"pts":1,"foulOuts":1,"losses":4}}]},{"sid":"bfbe9c11","sn":"Summer 2025/26","club":"Waverley Basketball Club (Nunawading)","regs":[{"tid":"1f130d4e","tn":"B08 Waverley 1","gid":"33b28905","gn":"Saturday U09 Boys B/BR","age":"U09","div":null,"stats":{"gp":14,"fouls":38,"fg":16,"pts":32,"finals":1,"foulOuts":1,"wins":8,"losses":6}},{"tid":"1f130d4e","tn":"B08 Waverley 1","gid":"81dfe905","gn":"Saturday U08 Mixed","age":"U08","div":null,"stats":{"gp":14,"fouls":38,"fg":16,"pts":32,"finals":1,"wins":8,"losses":6}}]},{"sid":"f2d66c1b","sn":"Winter 2025","club":"Waverley Basketball Club (Nunawading)","regs":[{"tid":"a6f0cb1b","tn":"B08 Waverley 3","gid":"fe3723f8","gn":"Saturday U08 Mixed","age":"U08","div":null,"stats":{"gp":19,"fouls":29,"ft":3,"fg":42,"pts":87,"foulOuts":1,"wins":10,"losses":9}}]},{"sid":"e2fad5cf","sn":"Summer 2024/25","club":"Waverley Basketball Club (Nunawading)","regs":[{"tid":"364cfead","tn":"B08 Waverley 5","gid":"92e307f8","gn":"Saturday U08 Mixed","age":"U08","div":null,"stats":{"gp":15,"fouls":21,"ft":2,"fg":21,"pts":44,"wins":8,"losses":7}}]},{"sid":"0869ea69","regs":[{"tid":"1ca24e74","stats":{"wins":1,"losses":4,"gp":5,"pts":11,"fg":5,"ft":1,"fouls":14}}]}],"updatedAt":"2026-07-04T06:00:53.797Z","teams":[{"tid":"ed96514a","sid":"43448c02","status":"ACTIVE"},{"tid":"f6c7e285","sid":"15908988","status":"ACTIVE"},{"tid":"1ca24e74","sid":"0869ea69","status":"UPCOMING"},{"tid":"1f130d4e","sid":"bfbe9c11","status":"COMPLETED"},{"tid":"1adfd401","sid":"6b0cab9c","status":"COMPLETED"},{"tid":"a6f0cb1b","sid":"f2d66c1b","status":"COMPLETED"},{"tid":"364cfead","sid":"e2fad5cf","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:44:32.559Z","records":{"maxGamePTS":{"v":16,"gameKey":"e6f0343c","sid":"f2d66c1b"},"maxGameThreePt":{"v":null}},"games":["00150416","002e5cbd","03323bef","03334b74","10b5f004","14c83872","1fc9e51f","26021bca","26d5bed9","2afda47d","2d279989","2e5f318d","2ecedfe1","3eb9d1e3","40ad4368","4100fcdb","4577a92e","45f1d822","493d1666","4afad4ec","54ad139a","594ae69f","5a326385","5fade5ed","6dd18156","6dd8d19d","71307201","77c0b100","78cb6745","795edb5b","7fd51c02","80e5b6b4","86e2dc1d","8a47f477","8b062f8f","8b6c56cc","8e5ce5f3","8fc53d55","92879cdd","9a78fb62","9b0742bf","9bf103cd","9cfaf2e2","a4cf17b0","a517eea8","aad002d2","ac5640ba","b02be7d3","b859fbe1","b90e7462","badd1415","bc5288ed","bfa13e0b","c2095845","c55c5ea5","ca7af915","cd3a4d69","cf0c9d86","d83e7d0c","daddaa98","db604850","dbc8304c","dcf189a8","ddddd394","dec2554b","e39183fa","e44d1699","e4f61a2d","e68e3108","e6f0343c","e96cf32e","f333572d","f8a2aaab","fa47524c","fee073fc"]}
+{
+  "uuid": "64a959d7-fd47-4d0b-a59e-54fe0a34611e",
+  "name": "Astin Chen",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 75,
+      "pts": 247,
+      "fouls": 157,
+      "fg": 117,
+      "ft": 13,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.14,
+      "foulOuts": {
+        "15908988": 1,
+        "6b0cab9c": 1,
+        "43448c02": 2,
+        "bfbe9c11": 1,
+        "f2d66c1b": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 57,
+      "losses": 42,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T14:13:32.193Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "43448c02",
+      "sn": "Winter 2026",
+      "club": "Southeast Venom Basketball Club",
+      "regs": [
+        {
+          "tid": "ed96514a",
+          "tn": "B09 SE Venom 1 (PTR)",
+          "gid": "1460457d",
+          "gn": "Friday U9 Boys A",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 33,
+            "ft": 3,
+            "fg": 21,
+            "pts": 45,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "ed96514a",
+          "tn": "B09 SE Venom 1 (PTR)",
+          "gid": "616c4476",
+          "gn": "Friday U9 Boys B/BR",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 33,
+            "fg": 21,
+            "pts": 45,
+            "wins": 7,
+            "losses": 3,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "15908988",
+      "sn": "Winter 2026",
+      "club": "Waverley Basketball Club (Nunawading)",
+      "regs": [
+        {
+          "tid": "f6c7e285",
+          "tn": "B08 Waverley 1",
+          "gid": "dfdaf9e5",
+          "gn": "Saturday U8 Mixed Pool 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "ft": 3,
+            "fg": 12,
+            "pts": 27,
+            "foulOuts": 1,
+            "wins": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "1adfd401",
+          "tn": "Nunawading Dev B10.Blue",
+          "gid": "0d19843c",
+          "gn": "U10 Boys C1 (Eltham)",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 8,
+            "ft": 1,
+            "pts": 1,
+            "foulOuts": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbe9c11",
+      "sn": "Summer 2025/26",
+      "club": "Waverley Basketball Club (Nunawading)",
+      "regs": [
+        {
+          "tid": "1f130d4e",
+          "tn": "B08 Waverley 1",
+          "gid": "33b28905",
+          "gn": "Saturday U09 Boys B/BR",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 38,
+            "fg": 16,
+            "pts": 32,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "1f130d4e",
+          "tn": "B08 Waverley 1",
+          "gid": "81dfe905",
+          "gn": "Saturday U08 Mixed",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 38,
+            "fg": 16,
+            "pts": 32,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f2d66c1b",
+      "sn": "Winter 2025",
+      "club": "Waverley Basketball Club (Nunawading)",
+      "regs": [
+        {
+          "tid": "a6f0cb1b",
+          "tn": "B08 Waverley 3",
+          "gid": "fe3723f8",
+          "gn": "Saturday U08 Mixed",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 29,
+            "ft": 3,
+            "fg": 42,
+            "pts": 87,
+            "foulOuts": 1,
+            "wins": 10,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2fad5cf",
+      "sn": "Summer 2024/25",
+      "club": "Waverley Basketball Club (Nunawading)",
+      "regs": [
+        {
+          "tid": "364cfead",
+          "tn": "B08 Waverley 5",
+          "gid": "92e307f8",
+          "gn": "Saturday U08 Mixed",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 21,
+            "pts": 44,
+            "wins": 8,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "1ca24e74",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 14
+          },
+          "gid": "f1fbbd19",
+          "gn": "BOYS UNDER 10 C2"
+        }
+      ]
+    },
+    {
+      "sid": "19446969",
+      "sn": "Term 3, 2026",
+      "regs": [
+        {
+          "tid": "89c47677",
+          "tn": "Four Aces",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T06:00:53.797Z",
+  "teams": [
+    {
+      "tid": "ed96514a",
+      "sid": "43448c02",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6c7e285",
+      "sid": "15908988",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1adfd401",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f130d4e",
+      "sid": "bfbe9c11",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a6f0cb1b",
+      "sid": "f2d66c1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "364cfead",
+      "sid": "e2fad5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ca24e74",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "89c47677",
+      "sid": "19446969",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.822Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "e6f0343c",
+      "sid": "f2d66c1b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00150416",
+    "002e5cbd",
+    "03323bef",
+    "03334b74",
+    "10b5f004",
+    "14c83872",
+    "1fc9e51f",
+    "26021bca",
+    "26d5bed9",
+    "2afda47d",
+    "2d279989",
+    "2e5f318d",
+    "2ecedfe1",
+    "3eb9d1e3",
+    "40ad4368",
+    "4100fcdb",
+    "4577a92e",
+    "45f1d822",
+    "493d1666",
+    "4afad4ec",
+    "54ad139a",
+    "594ae69f",
+    "5a326385",
+    "5fade5ed",
+    "6dd18156",
+    "6dd8d19d",
+    "71307201",
+    "77c0b100",
+    "78cb6745",
+    "795edb5b",
+    "7fd51c02",
+    "80e5b6b4",
+    "86e2dc1d",
+    "8a47f477",
+    "8b062f8f",
+    "8b6c56cc",
+    "8e5ce5f3",
+    "8fc53d55",
+    "92879cdd",
+    "9a78fb62",
+    "9b0742bf",
+    "9bf103cd",
+    "9cfaf2e2",
+    "a4cf17b0",
+    "a517eea8",
+    "aad002d2",
+    "ac5640ba",
+    "b02be7d3",
+    "b859fbe1",
+    "b90e7462",
+    "badd1415",
+    "bc5288ed",
+    "bfa13e0b",
+    "c2095845",
+    "c55c5ea5",
+    "ca7af915",
+    "cd3a4d69",
+    "cf0c9d86",
+    "d83e7d0c",
+    "daddaa98",
+    "db604850",
+    "dbc8304c",
+    "dcf189a8",
+    "ddddd394",
+    "dec2554b",
+    "e39183fa",
+    "e44d1699",
+    "e4f61a2d",
+    "e68e3108",
+    "e6f0343c",
+    "e96cf32e",
+    "f333572d",
+    "f8a2aaab",
+    "fa47524c",
+    "fee073fc"
+  ]
+}

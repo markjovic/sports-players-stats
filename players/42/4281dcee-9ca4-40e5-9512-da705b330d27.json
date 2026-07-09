@@ -1,1 +1,392 @@
-{"uuid":"4281dcee-9ca4-40e5-9512-da705b330d27","name":"Billy Tate","gender":"Boys","sports":{"Basketball":{"gp":69,"pts":438,"fouls":77,"fg":210,"ft":18,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":null,"wins":63,"losses":97,"draws":4,"winPct":0.38,"statsChecked":"2026-07-05T14:54:56.047Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"St Helena Basketball Club","regs":[{"tid":"72bbdc7d","tn":"St Helena Saints U10 Boys Team 2","gid":"e0f633cf","gn":"Saturday U10 Boys C2","age":"U10","div":"C2","stats":{"gp":14,"fouls":18,"ft":8,"fg":27,"pts":62,"losses":12,"wins":2}},{"tid":"72bbdc7d","tn":"St Helena Saints U10 Boys Team 2","gid":"32582dcc","gn":"Saturday U10 Boys Grading Group 3","age":"U10","div":null,"stats":{"gp":14,"fouls":18,"ft":8,"fg":27,"pts":62,"losses":12,"wins":2}},{"tid":"72bbdc7d","tn":"St Helena Saints U10 Boys Team 2","gid":"45e9a7dd","gn":"Saturday U10 Boys Grading Group 2","age":"U10","div":null,"stats":{"gp":14,"fg":27,"pts":62,"losses":12,"wins":2,"ft":8,"fouls":18}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"St Helena Basketball Club","regs":[{"tid":"f0175a09","tn":"St Helena U10 Boys Team 4","gid":"9321f9f0","gn":"Saturday U10 Boys C2","age":"U10","div":"C2","stats":{"gp":13,"fouls":16,"ft":2,"fg":15,"pts":32,"wins":6,"losses":7}},{"tid":"f0175a09","tn":"St Helena U10 Boys Team 4","gid":"832eed65","gn":"Saturday U10 Boys Grading Group 3","age":"U10","div":null,"stats":{"gp":13,"fouls":16,"ft":2,"fg":15,"pts":32,"wins":6,"losses":7}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"St Helena Basketball Club","regs":[{"tid":"7becd6d7","tn":"St Helena U10 Boys 4","gid":"2f010293","gn":"Saturday U10 Boys C3","age":"U10","div":"C3","stats":{"gp":13,"fouls":19,"ft":5,"fg":34,"pts":73,"wins":3,"losses":10}},{"tid":"7becd6d7","tn":"St Helena U10 Boys 4","gid":"e78daad9","gn":"Grading - Saturday U10 Boys C3","age":"U10","div":"C3","stats":{"gp":13,"fouls":19,"fg":34,"pts":73,"wins":3,"losses":10,"ft":5}},{"tid":"7becd6d7","tn":"St Helena U10 Boys 4","gid":"dbb77026","gn":"Grading - Saturday U10 Boys D1","age":"U10","div":"D1","stats":{"gp":13,"fouls":19,"fg":34,"pts":73,"wins":3,"losses":10,"ft":5}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"St Helena Basketball Club","regs":[{"tid":"0a119aec","tn":"St Helena U8 Boys Team 3","gid":"a6c92247","gn":"Saturday U8 Boys C1","age":"U8","div":"C1","stats":{"gp":15,"fouls":17,"ft":3,"fg":74,"pts":151,"wins":9,"losses":5,"draws":1}}]},{"sid":"9dbb9dac","sn":"Autumn 2024","club":"St Helena Basketball Club","regs":[{"tid":"7266895e","tn":"St Helena U8 Boys Team 3","gid":"f59a542d","gn":"Saturday U8 Boys C2","age":"U8","div":"C2","stats":{"gp":14,"fouls":7,"fg":60,"pts":120,"wins":9,"losses":4,"draws":1}},{"tid":"7266895e","tn":"St Helena U8 Boys Team 3","gid":"a2d327e4","gn":"Saturday U8 Boys D1","age":"U8","div":"D1","stats":{"gp":14,"fg":60,"pts":120,"wins":9,"losses":4,"draws":1,"fouls":7}},{"tid":"7266895e","tn":"St Helena U8 Boys Team 3","gid":"fdb77da6","gn":"Saturday U8 Boys D2","age":"U8","div":"D2","stats":{"gp":14,"fouls":7,"fg":60,"pts":120,"wins":9,"losses":4,"draws":1}}]}],"updatedAt":"2026-06-01T06:33:00.693Z","teams":[{"tid":"72bbdc7d","sid":"d868771d","status":"ACTIVE"},{"tid":"f0175a09","sid":"f57b7901","status":"COMPLETED"},{"tid":"7becd6d7","sid":"868d6996","status":"COMPLETED"},{"tid":"0a119aec","sid":"fb0c8cb5","status":"COMPLETED"},{"tid":"7266895e","sid":"9dbb9dac","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:23:32.151Z","records":{"maxGamePTS":{"v":16,"gameKey":"597f703b","sid":"fb0c8cb5"},"maxGameThreePt":{"v":null}},"games":["0309fb75","104fa983","10c99357","11fceb72","12334a71","1bf93978","1cbfbba2","1db63f38","1e0ed8e7","1ef3067c","29438ede","2bdc6d1d","3af7edd4","4431f613","454d079d","4593d70b","46702f95","47110eee","4761efc2","49b84733","4b2a0597","500226e5","565c425b","5947b8bd","597f703b","62c4d0a5","62d0a5d1","665faa0c","6791c415","6a0c712f","7a0c16cf","7d6695b7","82865e3a","87ff2cc5","8db0a6b3","92251cac","9444a725","9bb33565","a1eb2386","a43592a1","ae123afa","b0fd55b0","b2dc4755","b54bb1b5","b5da2f41","b7e8efb3","bd98fb2e","bdeb3f1f","c4669a37","c5dbd2a5","c5ff031b","c6f0b188","d026d5bb","d11c4a90","d4917b31","d5053e4d","d757be97","d84e724e","d87585d7","e693764e","e991becf","eafb8764","f09fc8c7","f40265e5","f440d2e4","f720dc49","f85e447c","fce9276b","ffb8f1d4"]}
+{
+  "uuid": "4281dcee-9ca4-40e5-9512-da705b330d27",
+  "name": "Billy Tate",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 69,
+      "pts": 438,
+      "fouls": 77,
+      "fg": 210,
+      "ft": 18,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 63,
+      "losses": 97,
+      "draws": 4,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T14:54:56.047Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "72bbdc7d",
+          "tn": "St Helena Saints U10 Boys Team 2",
+          "gid": "e0f633cf",
+          "gn": "Saturday U10 Boys C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 14,
+            "fouls": 18,
+            "ft": 8,
+            "fg": 27,
+            "pts": 62,
+            "losses": 12,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "72bbdc7d",
+          "tn": "St Helena Saints U10 Boys Team 2",
+          "gid": "32582dcc",
+          "gn": "Saturday U10 Boys Grading Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 18,
+            "ft": 8,
+            "fg": 27,
+            "pts": 62,
+            "losses": 12,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "72bbdc7d",
+          "tn": "St Helena Saints U10 Boys Team 2",
+          "gid": "45e9a7dd",
+          "gn": "Saturday U10 Boys Grading Group 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 27,
+            "pts": 62,
+            "losses": 12,
+            "wins": 2,
+            "ft": 8,
+            "fouls": 18
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "f0175a09",
+          "tn": "St Helena U10 Boys Team 4",
+          "gid": "9321f9f0",
+          "gn": "Saturday U10 Boys C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "f0175a09",
+          "tn": "St Helena U10 Boys Team 4",
+          "gid": "832eed65",
+          "gn": "Saturday U10 Boys Grading Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 2,
+            "fg": 15,
+            "pts": 32,
+            "wins": 6,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "7becd6d7",
+          "tn": "St Helena U10 Boys 4",
+          "gid": "2f010293",
+          "gn": "Saturday U10 Boys C3",
+          "age": "U10",
+          "div": "C3",
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "ft": 5,
+            "fg": 34,
+            "pts": 73,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "7becd6d7",
+          "tn": "St Helena U10 Boys 4",
+          "gid": "e78daad9",
+          "gn": "Grading - Saturday U10 Boys C3",
+          "age": "U10",
+          "div": "C3",
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "fg": 34,
+            "pts": 73,
+            "wins": 3,
+            "losses": 10,
+            "ft": 5
+          }
+        },
+        {
+          "tid": "7becd6d7",
+          "tn": "St Helena U10 Boys 4",
+          "gid": "dbb77026",
+          "gn": "Grading - Saturday U10 Boys D1",
+          "age": "U10",
+          "div": "D1",
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "fg": 34,
+            "pts": 73,
+            "wins": 3,
+            "losses": 10,
+            "ft": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "0a119aec",
+          "tn": "St Helena U8 Boys Team 3",
+          "gid": "a6c92247",
+          "gn": "Saturday U8 Boys C1",
+          "age": "U8",
+          "div": "C1",
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 3,
+            "fg": 74,
+            "pts": 151,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9dbb9dac",
+      "sn": "Autumn 2024",
+      "club": "St Helena Basketball Club",
+      "regs": [
+        {
+          "tid": "7266895e",
+          "tn": "St Helena U8 Boys Team 3",
+          "gid": "f59a542d",
+          "gn": "Saturday U8 Boys C2",
+          "age": "U8",
+          "div": "C2",
+          "stats": {
+            "gp": 14,
+            "fouls": 7,
+            "fg": 60,
+            "pts": 120,
+            "wins": 9,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "7266895e",
+          "tn": "St Helena U8 Boys Team 3",
+          "gid": "a2d327e4",
+          "gn": "Saturday U8 Boys D1",
+          "age": "U8",
+          "div": "D1",
+          "stats": {
+            "gp": 14,
+            "fg": 60,
+            "pts": 120,
+            "wins": 9,
+            "losses": 4,
+            "draws": 1,
+            "fouls": 7
+          }
+        },
+        {
+          "tid": "7266895e",
+          "tn": "St Helena U8 Boys Team 3",
+          "gid": "fdb77da6",
+          "gn": "Saturday U8 Boys D2",
+          "age": "U8",
+          "div": "D2",
+          "stats": {
+            "gp": 14,
+            "fouls": 7,
+            "fg": 60,
+            "pts": 120,
+            "wins": 9,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "1591daab",
+          "tn": "St Helena Saints U10 Boys Team 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:33:00.693Z",
+  "teams": [
+    {
+      "tid": "72bbdc7d",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0175a09",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7becd6d7",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a119aec",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7266895e",
+      "sid": "9dbb9dac",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1591daab",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.712Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "597f703b",
+      "sid": "fb0c8cb5"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0309fb75",
+    "104fa983",
+    "10c99357",
+    "11fceb72",
+    "12334a71",
+    "1bf93978",
+    "1cbfbba2",
+    "1db63f38",
+    "1e0ed8e7",
+    "1ef3067c",
+    "29438ede",
+    "2bdc6d1d",
+    "3af7edd4",
+    "4431f613",
+    "454d079d",
+    "4593d70b",
+    "46702f95",
+    "47110eee",
+    "4761efc2",
+    "49b84733",
+    "4b2a0597",
+    "500226e5",
+    "565c425b",
+    "5947b8bd",
+    "597f703b",
+    "62c4d0a5",
+    "62d0a5d1",
+    "665faa0c",
+    "6791c415",
+    "6a0c712f",
+    "7a0c16cf",
+    "7d6695b7",
+    "82865e3a",
+    "87ff2cc5",
+    "8db0a6b3",
+    "92251cac",
+    "9444a725",
+    "9bb33565",
+    "a1eb2386",
+    "a43592a1",
+    "ae123afa",
+    "b0fd55b0",
+    "b2dc4755",
+    "b54bb1b5",
+    "b5da2f41",
+    "b7e8efb3",
+    "bd98fb2e",
+    "bdeb3f1f",
+    "c4669a37",
+    "c5dbd2a5",
+    "c5ff031b",
+    "c6f0b188",
+    "d026d5bb",
+    "d11c4a90",
+    "d4917b31",
+    "d5053e4d",
+    "d757be97",
+    "d84e724e",
+    "d87585d7",
+    "e693764e",
+    "e991becf",
+    "eafb8764",
+    "f09fc8c7",
+    "f40265e5",
+    "f440d2e4",
+    "f720dc49",
+    "f85e447c",
+    "fce9276b",
+    "ffb8f1d4"
+  ]
+}

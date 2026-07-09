@@ -1,1 +1,81 @@
-{"uuid":"91c79437-32d1-4a9a-9475-28be83b66f7d","name":"Dane Phillips","sports":{"Basketball":{"maxGamePTS":16,"maxGameThreePt":1,"foulOuts":{},"gp":32,"pts":163,"fg":73,"ft":11,"threePt":2,"fouls":51,"statsChecked":"2026-07-06T18:59:36.428Z"}},"seasons":[{"sid":"d9d6ff18","regs":[{"tid":"0f4476b4"}]},{"sid":"3ecfff14","regs":[{"tid":"90be3d97"}]},{"sid":"f5bbd42a","regs":[{"tid":"81c798a1"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":16,"gameKey":"7e031533","sid":"f5bbd42a"},"maxGameThreePt":{"v":1,"gameKey":"457865f6","sid":"3ecfff14"}}}
+{
+  "uuid": "91c79437-32d1-4a9a-9475-28be83b66f7d",
+  "name": "Dane Phillips",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 16,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 32,
+      "pts": 163,
+      "fg": 73,
+      "ft": 11,
+      "threePt": 2,
+      "fouls": 51,
+      "statsChecked": "2026-07-06T18:59:36.428Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d9d6ff18",
+      "regs": [
+        {
+          "tid": "0f4476b4",
+          "gid": "996d4b7c",
+          "gn": "U15 Boys Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "3ecfff14",
+      "regs": [
+        {
+          "tid": "90be3d97",
+          "gid": "43ba6bd9",
+          "gn": "Monday U16 Boys D1"
+        }
+      ]
+    },
+    {
+      "sid": "f5bbd42a",
+      "regs": [
+        {
+          "tid": "81c798a1",
+          "gid": "91a18b9b",
+          "gn": "Saturday U14 Boys D"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "0f4476b4",
+      "sid": "d9d6ff18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "90be3d97",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81c798a1",
+      "sid": "f5bbd42a",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "7e031533",
+      "sid": "f5bbd42a"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "457865f6",
+      "sid": "3ecfff14"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:25.234Z"
+}

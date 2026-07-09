@@ -1,1 +1,68 @@
-{"uuid":"eadac356-c999-4b2b-8720-59a2433aa2de","name":"Bree Fekete","sports":{"Basketball":{"maxGamePTS":14,"maxGameThreePt":1,"foulOuts":{"1cb2288a":1},"gp":17,"pts":102,"fg":42,"ft":12,"threePt":2,"fouls":27,"statsChecked":"2026-07-07T18:30:29.345Z"}},"seasons":[{"sid":"fb06d69e","regs":[{"tid":"c5bc8283"}]},{"sid":"1cb2288a","regs":[{"tid":"1ca2210a"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":14,"gameKey":"1d1008df","sid":"fb06d69e"},"maxGameThreePt":{"v":1,"gameKey":"afe47f9d","sid":"1cb2288a"}}}
+{
+  "uuid": "eadac356-c999-4b2b-8720-59a2433aa2de",
+  "name": "Bree Fekete",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "1cb2288a": 1
+      },
+      "gp": 17,
+      "pts": 102,
+      "fg": 42,
+      "ft": 12,
+      "threePt": 2,
+      "fouls": 27,
+      "statsChecked": "2026-07-07T18:30:29.345Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fb06d69e",
+      "regs": [
+        {
+          "tid": "c5bc8283",
+          "gid": "4669af3d",
+          "gn": "Tuesday Mixed 3 - 2026 Winter"
+        }
+      ]
+    },
+    {
+      "sid": "1cb2288a",
+      "regs": [
+        {
+          "tid": "1ca2210a",
+          "gid": "587fc9d4",
+          "gn": "Wednesday Open Women Division 1/2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "c5bc8283",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ca2210a",
+      "sid": "1cb2288a",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "1d1008df",
+      "sid": "fb06d69e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "afe47f9d",
+      "sid": "1cb2288a"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:30.376Z"
+}

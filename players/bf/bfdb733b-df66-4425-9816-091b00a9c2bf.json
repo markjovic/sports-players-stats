@@ -1,1 +1,303 @@
-{"uuid":"bfdb733b-df66-4425-9816-091b00a9c2bf","name":"Miller Pendlington","gender":"Boys","sports":{"Basketball":{"gp":42,"pts":39,"fouls":7,"fg":19,"ft":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":21,"losses":18,"draws":1,"winPct":0.53,"statsChecked":"2026-07-05T16:03:29.401Z"}},"seasons":[{"sid":"29b39761","sn":"Winter 2026","regs":[{"tid":"695c550a","tn":"U14B.3 - Spurs","gid":"1a7c330c","gn":"Thursday U14 Boys","age":"U14","div":null,"stats":{"gp":8,"fouls":1,"fg":6,"pts":12,"wins":8}}]},{"sid":"870c3662","sn":"Summer 2025/26","regs":[{"tid":"453fd6d0","tn":"Team 7 - Green","gid":"9d22ab39","gn":"Thursday U14 Boys","age":"U14","div":null,"stats":{"gp":10,"fouls":1,"ft":1,"fg":4,"pts":9,"wins":1,"losses":9}}]},{"sid":"f04abfb9","sn":"Winter 2025","regs":[{"tid":"a8d062d2","tn":"Team 5 - Pink","gid":"e4e25133","gn":"Friday U12 Boys","age":"U12","div":null,"stats":{"gp":9,"fouls":3,"fg":6,"pts":12,"finals":1,"gfApps":1,"wins":8,"gfWins":1}},{"tid":"d3749398","tn":"Team 6 - Black","gid":"e4e25133","gn":"Friday U12 Boys","age":"U12","div":null,"stats":{"gp":3,"fg":2,"pts":4,"finals":1,"gfApps":1,"losses":2,"gfWins":1}}]},{"sid":"6d28208f","sn":"Summer 2023/24","regs":[{"tid":"b7463a5f","tn":"Team 4","gid":"1965ea92","gn":"Friday U12 Boys","age":"U12","div":null,"stats":{"gp":11,"fouls":2,"fg":1,"pts":2,"wins":4,"losses":7}}]},{"sid":"4bae2128","sn":"Autumn 2021","regs":[{"tid":"a95d3acb","tn":"Yellow","gid":"c39f68c8","gn":"Under 8 Mixed","age":null,"div":null,"stats":{"gp":1,"draws":1}}]}],"updatedAt":"2026-06-02T19:25:13.995Z","teams":[{"tid":"695c550a","sid":"29b39761","status":"ACTIVE"},{"tid":"453fd6d0","sid":"870c3662","status":"COMPLETED"},{"tid":"a8d062d2","sid":"f04abfb9","status":"COMPLETED"},{"tid":"b7463a5f","sid":"6d28208f","status":"COMPLETED"},{"tid":"46c7dcd2","sid":"3e625d62","status":"COMPLETED"},{"tid":"a95d3acb","sid":"4bae2128","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:12:29.222Z","games":["0b588e2e","0e187225","1aad628d","1c0a5c76","1e602d88","21b739b4","2c339b17","31a6bb2a","328d769e","3348ff07","36f096fc","39612900","396dab54","3f4256a1","4b0917e6","546f7d07","551c2e94","59e9c001","5bb8983b","66c8d224","68ae4cdd","7948296e","842847e7","84844c47","86708add","90245576","a16ab077","b828b9a6","bad34556","bbd7480a","c258d1da","c8f25645","ca1dcd03","cfe4eb6c","d78ac459","d8b10ec3","e8ba6d11","e92010df","ed0d5d91","f3daa059","f43f4103","f8c3203a"],"records":{"maxGamePTS":{"v":6,"gameKey":"59e9c001","sid":"f04abfb9"},"maxGameThreePt":{"v":null}},"gameTids":{"39612900":"695c550a","90245576":"453fd6d0","a16ab077":"695c550a","1e602d88":"695c550a","bad34556":"695c550a","1c0a5c76":"695c550a","e92010df":"695c550a","7948296e":"695c550a","cfe4eb6c":"695c550a","328d769e":"453fd6d0","4b0917e6":"453fd6d0","c8f25645":"453fd6d0","e8ba6d11":"453fd6d0","f3daa059":"453fd6d0","bbd7480a":"453fd6d0","66c8d224":"453fd6d0","551c2e94":"453fd6d0","ed0d5d91":"453fd6d0","0b588e2e":"a8d062d2","1aad628d":"a8d062d2","5bb8983b":"a8d062d2","546f7d07":"a8d062d2","31a6bb2a":"a8d062d2","3f4256a1":"a8d062d2","36f096fc":"a8d062d2","59e9c001":"a8d062d2","ca1dcd03":"a8d062d2","396dab54":"d3749398","3348ff07":"d3749398","0e187225":"d3749398","84844c47":"b7463a5f","21b739b4":"b7463a5f","2c339b17":"b7463a5f","68ae4cdd":"b7463a5f","86708add":"b7463a5f","d78ac459":"b7463a5f","f43f4103":"b7463a5f","c258d1da":"b7463a5f","b828b9a6":"b7463a5f","f8c3203a":"b7463a5f","842847e7":"b7463a5f","d8b10ec3":"a95d3acb"}}
+{
+  "uuid": "bfdb733b-df66-4425-9816-091b00a9c2bf",
+  "name": "Miller Pendlington",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 39,
+      "fouls": 7,
+      "fg": 19,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 21,
+      "losses": 18,
+      "draws": 1,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T16:03:29.401Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "29b39761",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "695c550a",
+          "tn": "U14B.3 - Spurs",
+          "gid": "1a7c330c",
+          "gn": "Thursday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "fg": 6,
+            "pts": 12,
+            "wins": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "870c3662",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "453fd6d0",
+          "tn": "Team 7 - Green",
+          "gid": "9d22ab39",
+          "gn": "Thursday U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 1,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f04abfb9",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "a8d062d2",
+          "tn": "Team 5 - Pink",
+          "gid": "e4e25133",
+          "gn": "Friday U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 3,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "d3749398",
+          "tn": "Team 6 - Black",
+          "gid": "e4e25133",
+          "gn": "Friday U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fg": 2,
+            "pts": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6d28208f",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "b7463a5f",
+          "tn": "Team 4",
+          "gid": "1965ea92",
+          "gn": "Friday U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 4,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4bae2128",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "a95d3acb",
+          "tn": "Yellow",
+          "gid": "c39f68c8",
+          "gn": "Under 8 Mixed",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3e625d62",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "46c7dcd2",
+          "tn": "Under 8 Group 3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T19:25:13.995Z",
+  "teams": [
+    {
+      "tid": "695c550a",
+      "sid": "29b39761",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "453fd6d0",
+      "sid": "870c3662",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8d062d2",
+      "sid": "f04abfb9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d3749398",
+      "sid": "f04abfb9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7463a5f",
+      "sid": "6d28208f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a95d3acb",
+      "sid": "4bae2128",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46c7dcd2",
+      "sid": "3e625d62",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.450Z",
+  "games": [
+    "0b588e2e",
+    "0e187225",
+    "1aad628d",
+    "1c0a5c76",
+    "1e602d88",
+    "21b739b4",
+    "2c339b17",
+    "31a6bb2a",
+    "328d769e",
+    "3348ff07",
+    "36f096fc",
+    "39612900",
+    "396dab54",
+    "3f4256a1",
+    "4b0917e6",
+    "546f7d07",
+    "551c2e94",
+    "59e9c001",
+    "5bb8983b",
+    "66c8d224",
+    "68ae4cdd",
+    "7948296e",
+    "842847e7",
+    "84844c47",
+    "86708add",
+    "90245576",
+    "a16ab077",
+    "b828b9a6",
+    "bad34556",
+    "bbd7480a",
+    "c258d1da",
+    "c8f25645",
+    "ca1dcd03",
+    "cfe4eb6c",
+    "d78ac459",
+    "d8b10ec3",
+    "e8ba6d11",
+    "e92010df",
+    "ed0d5d91",
+    "f3daa059",
+    "f43f4103",
+    "f8c3203a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "59e9c001",
+      "sid": "f04abfb9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "39612900": "695c550a",
+    "90245576": "453fd6d0",
+    "a16ab077": "695c550a",
+    "1e602d88": "695c550a",
+    "bad34556": "695c550a",
+    "1c0a5c76": "695c550a",
+    "e92010df": "695c550a",
+    "7948296e": "695c550a",
+    "cfe4eb6c": "695c550a",
+    "328d769e": "453fd6d0",
+    "4b0917e6": "453fd6d0",
+    "c8f25645": "453fd6d0",
+    "e8ba6d11": "453fd6d0",
+    "f3daa059": "453fd6d0",
+    "bbd7480a": "453fd6d0",
+    "66c8d224": "453fd6d0",
+    "551c2e94": "453fd6d0",
+    "ed0d5d91": "453fd6d0",
+    "0b588e2e": "a8d062d2",
+    "1aad628d": "a8d062d2",
+    "5bb8983b": "a8d062d2",
+    "546f7d07": "a8d062d2",
+    "31a6bb2a": "a8d062d2",
+    "3f4256a1": "a8d062d2",
+    "36f096fc": "a8d062d2",
+    "59e9c001": "a8d062d2",
+    "ca1dcd03": "a8d062d2",
+    "396dab54": "d3749398",
+    "3348ff07": "d3749398",
+    "0e187225": "d3749398",
+    "84844c47": "b7463a5f",
+    "21b739b4": "b7463a5f",
+    "2c339b17": "b7463a5f",
+    "68ae4cdd": "b7463a5f",
+    "86708add": "b7463a5f",
+    "d78ac459": "b7463a5f",
+    "f43f4103": "b7463a5f",
+    "c258d1da": "b7463a5f",
+    "b828b9a6": "b7463a5f",
+    "f8c3203a": "b7463a5f",
+    "842847e7": "b7463a5f",
+    "d8b10ec3": "a95d3acb"
+  }
+}

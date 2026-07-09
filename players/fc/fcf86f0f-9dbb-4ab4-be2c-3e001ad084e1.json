@@ -1,1 +1,309 @@
-{"uuid":"fcf86f0f-9dbb-4ab4-be2c-3e001ad084e1","name":"Archer Morris","gender":"Boys","sports":{"Basketball":{"gp":48,"pts":114,"fouls":67,"fg":52,"ft":10,"foulOuts":{"1d1b8d1c":1},"maxGamePTS":11,"maxGameThreePt":null,"wins":10,"losses":33,"draws":2,"winPct":0.22,"statsChecked":"2026-07-05T15:13:56.603Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Bayside Warriors Basketball Club Inc","regs":[{"tid":"848e08eb","tn":"Bayside Warriors U14 Boys Blue","gid":"4754bbd3","gn":"Saturday U14 Boys C","age":"U14","div":null,"stats":{"gp":6,"fouls":2,"fg":5,"pts":10,"losses":6}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"3e874a30","tn":"St Kilda Bobcats ","gid":"2016de33","gn":"Tuesday Year 6 Boys C","age":null,"div":null,"stats":{"gp":17,"fouls":23,"ft":9,"fg":28,"pts":65,"wins":1,"losses":13}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"fff67e1f","tn":"St Kilda Bobcats ","gid":"39b097b1","gn":"Wednesday Year 5 Boys C","age":null,"div":null,"stats":{"gp":16,"fouls":25,"ft":1,"fg":10,"pts":21,"foulOuts":1,"wins":6,"losses":9,"draws":1}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"e97d14cd","tn":"St Kilda Bobcats","gid":"113f1e83","gn":"Wednesday MSAC/Bayside Year 5 Boys C","age":null,"div":null,"stats":{"gp":9,"fouls":17,"fg":9,"pts":18,"wins":3,"losses":5,"draws":1}}]}],"updatedAt":"2026-07-04T05:52:09.722Z","teams":[{"tid":"3e874a30","sid":"ad68db8b","status":"ACTIVE"},{"tid":"848e08eb","sid":"e7aed763","status":"ACTIVE"},{"tid":"fff67e1f","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"e97d14cd","sid":"31d05517","status":"COMPLETED"},{"tid":"6f2ba6a6","sid":"8884de2d","status":"COMPLETED"},{"tid":"0107fda0","sid":"0fef30ca","status":"COMPLETED"},{"tid":"ed087fd6","sid":"09a70808","status":"COMPLETED"},{"tid":"b032cd50","sid":"e5df46b3","status":"COMPLETED"},{"tid":"f968031a","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"d6003720","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:35:38.971Z","games":["0346c626","0a8f4086","109289e8","12fb50a2","13d98c4c","13e15c1f","17f02394","1fc14abc","2e9f1108","3b4de251","3cd4df92","3dde01f9","410a0d09","4ee53278","51645ed5","518f9633","544bcd20","554761e5","563257b6","5e0035ff","60e0e768","62f48191","70369805","7131d0ac","71a56a5e","71cd3f9b","7c2c00fb","8bc97e36","932d5a38","984251c0","99e72786","a260e076","a8d0617a","ae51e5cf","b2d436c9","b5c52ed0","b80d51c3","bddd854b","c215beab","c4433cce","d790d121","dd9dfc02","ddfc695d","f15dbb85","f87979ab","fda9dc65"],"records":{"maxGamePTS":{"v":11,"gameKey":"12fb50a2","sid":"ad68db8b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "fcf86f0f-9dbb-4ab4-be2c-3e001ad084e1",
+  "name": "Archer Morris",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 48,
+      "pts": 114,
+      "fouls": 67,
+      "fg": 52,
+      "ft": 10,
+      "foulOuts": {
+        "1d1b8d1c": 1
+      },
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 33,
+      "draws": 2,
+      "winPct": 0.22,
+      "statsChecked": "2026-07-05T15:13:56.603Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Bayside Warriors Basketball Club Inc",
+      "regs": [
+        {
+          "tid": "848e08eb",
+          "tn": "Bayside Warriors U14 Boys Blue",
+          "gid": "4754bbd3",
+          "gn": "Saturday U14 Boys C",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 2,
+            "fg": 5,
+            "pts": 10,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "3e874a30",
+          "tn": "St Kilda Bobcats ",
+          "gid": "2016de33",
+          "gn": "Tuesday Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 23,
+            "ft": 9,
+            "fg": 28,
+            "pts": 65,
+            "wins": 1,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "fff67e1f",
+          "tn": "St Kilda Bobcats ",
+          "gid": "39b097b1",
+          "gn": "Wednesday Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 25,
+            "ft": 1,
+            "fg": 10,
+            "pts": 21,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "e97d14cd",
+          "tn": "St Kilda Bobcats",
+          "gid": "113f1e83",
+          "gn": "Wednesday MSAC/Bayside Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 17,
+            "fg": 9,
+            "pts": 18,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "6f2ba6a6",
+          "tn": "St Kilda Bobcats",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "0107fda0",
+          "tn": "St Kilda Bobcats",
+          "gid": "094069f6",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "ed087fd6",
+          "tn": "St Kilda Bobcats",
+          "gid": "bbabee42",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "b032cd50",
+          "tn": "St Kilda Bobcats",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "f968031a",
+          "tn": "St Kilda Bobcats",
+          "gid": "80fd8656",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "d6003720",
+          "tn": "Bobcats",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:09.722Z",
+  "teams": [
+    {
+      "tid": "848e08eb",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e874a30",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fff67e1f",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e97d14cd",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f2ba6a6",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0107fda0",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed087fd6",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b032cd50",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f968031a",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d6003720",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:31.655Z",
+  "games": [
+    "0346c626",
+    "0a8f4086",
+    "109289e8",
+    "12fb50a2",
+    "13d98c4c",
+    "13e15c1f",
+    "17f02394",
+    "1fc14abc",
+    "2e9f1108",
+    "3b4de251",
+    "3cd4df92",
+    "3dde01f9",
+    "410a0d09",
+    "4ee53278",
+    "51645ed5",
+    "518f9633",
+    "544bcd20",
+    "554761e5",
+    "563257b6",
+    "5e0035ff",
+    "60e0e768",
+    "62f48191",
+    "70369805",
+    "7131d0ac",
+    "71a56a5e",
+    "71cd3f9b",
+    "7c2c00fb",
+    "8bc97e36",
+    "932d5a38",
+    "984251c0",
+    "99e72786",
+    "a260e076",
+    "a8d0617a",
+    "ae51e5cf",
+    "b2d436c9",
+    "b5c52ed0",
+    "b80d51c3",
+    "bddd854b",
+    "c215beab",
+    "c4433cce",
+    "d790d121",
+    "dd9dfc02",
+    "ddfc695d",
+    "f15dbb85",
+    "f87979ab",
+    "fda9dc65"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "12fb50a2",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,237 @@
-{"uuid":"2e8cb8b9-4152-4a5f-8178-dbcdb36354db","name":"Lukas Nicolazzo","gender":"Men","sports":{"Basketball":{"gp":33,"pts":99,"fouls":46,"fg":47,"ft":5,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":42,"winPct":0.54,"losses":36,"statsChecked":"2026-07-05T17:18:17.068Z"}},"seasons":[{"sid":"8fe1a354","sn":"Winter 2026","regs":[{"tid":"7235c1d1","tn":"Ronald’s Rejects","gid":"1000be8a","gn":"Sunday Men Section 05","age":null,"div":null,"stats":{"gp":10,"fouls":15,"ft":2,"fg":12,"pts":26,"wins":7,"losses":2}},{"tid":"7235c1d1","tn":"Ronald’s Rejects","gid":"4371f193","gn":"Sunday Men Section 06","age":null,"div":null,"stats":{"gp":10,"fouls":15,"wins":7,"losses":2,"pts":26,"fg":12,"ft":2}},{"tid":"7235c1d1","tn":"Ronald’s Rejects","gid":"0dadf573","gn":"ZZZ Sunday Men Section 11","age":null,"div":null,"stats":{"gp":10,"fouls":15,"fg":12,"pts":26,"wins":7,"losses":2,"ft":2}}]},{"sid":"1ae60211","sn":"Winter 2026","club":"Koonung Comets Basketball Club","regs":[{"tid":"ef6b3df1","tn":"Koonung U21 Boys 03","gid":"fe18bb00","gn":"Boys U21 D Grading","age":"U21","div":null,"stats":{"gp":8,"fouls":8,"ft":3,"fg":15,"pts":33,"wins":3,"losses":3}}]},{"sid":"64ab9100","sn":"Summer 2025/26","regs":[{"tid":"cb79f9fa","tn":"Ronald’s Rejects","gid":"2592e47e","gn":"Sunday Men E Grade","age":null,"div":null,"stats":{"gp":15,"fouls":23,"fg":20,"pts":40,"wins":6,"losses":9}},{"tid":"cb79f9fa","tn":"Ronald’s Rejects","gid":"54abb575","gn":"Sunday Men D Grade (2)","age":null,"div":null,"stats":{"gp":15,"fouls":23,"fg":20,"pts":40,"wins":6,"losses":9}},{"tid":"cb79f9fa","tn":"Ronald’s Rejects","gid":"39ebf818","gn":"Sunday Men C Grade (1)","age":null,"div":null,"stats":{"gp":15,"fouls":23,"wins":6,"losses":9,"pts":40,"fg":20}}]}],"updatedAt":"2026-07-05T16:56:37.752Z","teams":[{"tid":"ef6b3df1","sid":"1ae60211","status":"ACTIVE"},{"tid":"7235c1d1","sid":"8fe1a354","status":"ACTIVE"},{"tid":"cb79f9fa","sid":"64ab9100","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:10:38.731Z","records":{"maxGamePTS":{"v":10,"gameKey":"5d4edcf9","sid":"8fe1a354"},"maxGameThreePt":{"v":null}},"games":["046713f7","09b96051","09ee0b49","16bf039b","1b73f0e4","1cbf218f","3f055449","54992d54","5d4edcf9","60d97ca2","6fcd5c64","761c368d","92875152","93c09377","97897abd","9de5de06","a310f777","a40a0ec4","ae280fbf","b21d0a15","bede414c","d162832b","d3aacf93","d3fcc22d","d7e21543","e5252098","e53d9796","e7e7dd5d","f19143c8","ffcd215f"]}
+{
+  "uuid": "2e8cb8b9-4152-4a5f-8178-dbcdb36354db",
+  "name": "Lukas Nicolazzo",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 99,
+      "fouls": 46,
+      "fg": 47,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 42,
+      "winPct": 0.54,
+      "losses": 36,
+      "statsChecked": "2026-07-05T17:18:17.068Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8fe1a354",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "7235c1d1",
+          "tn": "Ronald’s Rejects",
+          "gid": "1000be8a",
+          "gn": "Sunday Men Section 05",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 15,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 7,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "7235c1d1",
+          "tn": "Ronald’s Rejects",
+          "gid": "4371f193",
+          "gn": "Sunday Men Section 06",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 15,
+            "wins": 7,
+            "losses": 2,
+            "pts": 26,
+            "fg": 12,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "7235c1d1",
+          "tn": "Ronald’s Rejects",
+          "gid": "0dadf573",
+          "gn": "ZZZ Sunday Men Section 11",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 15,
+            "fg": 12,
+            "pts": 26,
+            "wins": 7,
+            "losses": 2,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Koonung Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "ef6b3df1",
+          "tn": "Koonung U21 Boys 03",
+          "gid": "8f88c911",
+          "gn": "Boys U21 DA",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "ft": 3,
+            "fg": 15,
+            "pts": 33,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "64ab9100",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "cb79f9fa",
+          "tn": "Ronald’s Rejects",
+          "gid": "2592e47e",
+          "gn": "Sunday Men E Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 20,
+            "pts": 40,
+            "wins": 6,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "cb79f9fa",
+          "tn": "Ronald’s Rejects",
+          "gid": "54abb575",
+          "gn": "Sunday Men D Grade (2)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 20,
+            "pts": 40,
+            "wins": 6,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "cb79f9fa",
+          "tn": "Ronald’s Rejects",
+          "gid": "39ebf818",
+          "gn": "Sunday Men C Grade (1)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "wins": 6,
+            "losses": 9,
+            "pts": 40,
+            "fg": 20
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "675e9f87",
+          "tn": "Koonung Komets 21’s",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-05T16:56:37.752Z",
+  "teams": [
+    {
+      "tid": "7235c1d1",
+      "sid": "8fe1a354",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef6b3df1",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb79f9fa",
+      "sid": "64ab9100",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "675e9f87",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.416Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "5d4edcf9",
+      "sid": "8fe1a354"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "046713f7",
+    "09b96051",
+    "09ee0b49",
+    "16bf039b",
+    "1b73f0e4",
+    "1cbf218f",
+    "3f055449",
+    "54992d54",
+    "5d4edcf9",
+    "60d97ca2",
+    "6fcd5c64",
+    "761c368d",
+    "92875152",
+    "93c09377",
+    "97897abd",
+    "9de5de06",
+    "a310f777",
+    "a40a0ec4",
+    "ae280fbf",
+    "b21d0a15",
+    "bede414c",
+    "d162832b",
+    "d3aacf93",
+    "d3fcc22d",
+    "d7e21543",
+    "e5252098",
+    "e53d9796",
+    "e7e7dd5d",
+    "f19143c8",
+    "ffcd215f"
+  ]
+}

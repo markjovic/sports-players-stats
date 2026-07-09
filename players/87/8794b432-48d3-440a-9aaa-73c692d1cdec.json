@@ -1,1 +1,99 @@
-{"uuid":"8794b432-48d3-440a-9aaa-73c692d1cdec","name":"Frances Goode","gender":"Girls","sports":{"Basketball":{"gp":11,"pts":20,"fouls":22,"fg":8,"ft":4,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":1,"losses":9,"winPct":0.1,"statsChecked":"2026-07-05T14:42:53.532Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"aa0404f3","tn":"Norwood Flames U12 Girls 1","gid":"2f8c4de9","gn":"GIRLS UNDER 12 A","age":null,"div":null,"stats":{"gp":6,"fouls":15,"fg":1,"pts":2,"wins":1,"losses":5}}]},{"sid":"0869ea69","regs":[{"tid":"fdcdaa33","stats":{"losses":4,"gp":5,"pts":18,"fg":7,"ft":4,"fouls":7}}]}],"updatedAt":"2026-05-31T01:03:37.665Z","teams":[{"tid":"fdcdaa33","sid":"0869ea69","status":"UPCOMING"},{"tid":"aa0404f3","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:25:05.435Z","records":{"maxGamePTS":{"v":6,"gameKey":"eb0a9178","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["25663e1f","265e8ea8","3f6e883e","4b6c2c07","5b4b33c1","62f1d91f","a66f3057","b7ec81c9","bfa928f6","eb0a9178"]}
+{
+  "uuid": "8794b432-48d3-440a-9aaa-73c692d1cdec",
+  "name": "Frances Goode",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 20,
+      "fouls": 22,
+      "fg": 8,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 9,
+      "winPct": 0.1,
+      "statsChecked": "2026-07-05T14:42:53.532Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "aa0404f3",
+          "tn": "Norwood Flames U12 Girls 1",
+          "gid": "2f8c4de9",
+          "gn": "GIRLS UNDER 12 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 15,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "fdcdaa33",
+          "stats": {
+            "losses": 4,
+            "gp": 5,
+            "pts": 18,
+            "fg": 7,
+            "ft": 4,
+            "fouls": 7
+          },
+          "gid": "45f3e46b",
+          "gn": "GIRLS UNDER 14 B4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:03:37.665Z",
+  "teams": [
+    {
+      "tid": "aa0404f3",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fdcdaa33",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.606Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "eb0a9178",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "25663e1f",
+    "265e8ea8",
+    "3f6e883e",
+    "4b6c2c07",
+    "5b4b33c1",
+    "62f1d91f",
+    "a66f3057",
+    "b7ec81c9",
+    "bfa928f6",
+    "eb0a9178"
+  ]
+}

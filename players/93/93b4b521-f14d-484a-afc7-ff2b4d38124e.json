@@ -1,1 +1,302 @@
-{"uuid":"93b4b521-f14d-484a-afc7-ff2b4d38124e","name":"Poppy Stylianou","gender":"Girls","sports":{"Basketball":{"gp":43,"pts":7,"fouls":39,"fg":3,"ft":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":50,"losses":52,"draws":6,"winPct":0.46,"statsChecked":"2026-07-05T15:37:38.729Z"}},"seasons":[{"sid":"7201e8c1","sn":"Winter 2026","club":"Rye & District Basketball Club","regs":[{"tid":"258cc925","tn":"Rye Robins","gid":"9236c8f2","gn":"Saturday U12 Girls Division 3","age":"U12","div":"Division 3","stats":{"gp":5,"wins":1,"losses":4,"fouls":8}},{"tid":"258cc925","tn":"Rye Robins","gid":"ccbe1082","gn":"Saturday U12 Girls Division 2","age":"U12","div":"Division 2","stats":{"gp":5,"fouls":8,"wins":1,"losses":4}}]},{"sid":"81ce0e24","sn":"Summer 2025/26","club":"Rye & District Basketball Club","regs":[{"tid":"6d9bbb67","tn":"Rye Robins","gid":"2f87a123","gn":"Saturday U12 Girls Division 3","age":"U12","div":"Division 3","stats":{"gp":16,"fouls":17,"ft":1,"fg":1,"pts":3,"finals":1,"gfApps":1,"wins":12,"losses":4,"gfWins":1}},{"tid":"6d9bbb67","tn":"Rye Robins","gid":"478881ec","gn":"Saturday U12 Girls Division 2","age":"U12","div":"Division 2","stats":{"gp":16,"fouls":17,"finals":1,"gfApps":1,"wins":12,"losses":4,"pts":3,"fg":1,"ft":1,"gfWins":1}}]},{"sid":"db3ad4e5","sn":"Winter 2025","club":"Rye & District Basketball Club","regs":[{"tid":"2facb605","tn":"Rye Robins","gid":"043692b0","gn":"Saturday U10 Girls Division 1","age":"U10","div":"Division 1","stats":{"gp":12,"fouls":5,"wins":5,"losses":7,"pts":2,"fg":1}},{"tid":"2facb605","tn":"Rye Robins","gid":"c35fc61c","gn":"Saturday U10 Girls Division 2","age":"U10","div":"Division 2","stats":{"gp":12,"wins":5,"losses":7,"pts":2,"fg":1,"fouls":5}},{"tid":"2facb605","tn":"Rye Robins","gid":"1e75d794","gn":"Saturday U10 Girls Division 3","age":"U10","div":"Division 3","stats":{"gp":12,"fouls":5,"fg":1,"pts":2,"wins":5,"losses":7}}]},{"sid":"7c0c3874","sn":"Summer 2024/25","club":"Rye & District Basketball Club","regs":[{"tid":"214949e8","tn":"Rye Robins","gid":"dc4d1284","gn":"Saturday U10 Girls Division 1","age":"U10","div":"Division 1","stats":{"gp":10,"fouls":9,"wins":3,"losses":5,"draws":2,"pts":2,"fg":1}},{"tid":"214949e8","tn":"Rye Robins","gid":"888a2c2a","gn":"Saturday U10 Girls Division 2","age":"U10","div":"Division 2","stats":{"gp":10,"fouls":9,"wins":3,"losses":5,"draws":2,"pts":2,"fg":1}},{"tid":"214949e8","tn":"Rye Robins","gid":"79e63092","gn":"Saturday U10 Girls Division 3","age":"U10","div":"Division 3","stats":{"gp":10,"fg":1,"pts":2,"wins":3,"losses":5,"draws":2,"fouls":9}}]}],"updatedAt":"2026-07-04T05:35:01.165Z","teams":[{"tid":"258cc925","sid":"7201e8c1","status":"ACTIVE"},{"tid":"6d9bbb67","sid":"81ce0e24","status":"COMPLETED"},{"tid":"2facb605","sid":"db3ad4e5","status":"COMPLETED"},{"tid":"214949e8","sid":"7c0c3874","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:44.254Z","records":{"maxGamePTS":{"v":3,"gameKey":"c7fd8e03","sid":"81ce0e24"},"maxGameThreePt":{"v":null}},"games":["0285eefb","03dea5eb","04b6c756","10989b49","186a4d82","1cd5be20","20c9002d","21045fa7","216a4677","2d561468","3180ce9e","3476d029","3e426895","4405ede9","4527c1a4","465fd138","47232f82","4c280643","4e266c47","5a7803cd","6006e0f9","6053c9f3","69a72f40","72c2ebdd","73638680","76b8c51f","83e0ca53","8568c9f3","8604c2ad","8bfdff43","8e1b468d","9fa0fe9d","af655985","af690396","b53858ac","c6f68981","c7fd8e03","ce837ce9","e183f5c1","e6a9575d","ef1f4d9c","f86f4cbd","f8c297f3"]}
+{
+  "uuid": "93b4b521-f14d-484a-afc7-ff2b4d38124e",
+  "name": "Poppy Stylianou",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 7,
+      "fouls": 39,
+      "fg": 3,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 50,
+      "losses": 52,
+      "draws": 6,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T15:37:38.729Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7201e8c1",
+      "sn": "Winter 2026",
+      "club": "Rye & District Basketball Club",
+      "regs": [
+        {
+          "tid": "258cc925",
+          "tn": "Rye Robins",
+          "gid": "ccbe1082",
+          "gn": "Saturday U12 Girls Division 2",
+          "age": "U12",
+          "div": "Division 3",
+          "stats": {
+            "gp": 5,
+            "wins": 1,
+            "losses": 4,
+            "fouls": 8
+          }
+        },
+        {
+          "tid": "258cc925",
+          "tn": "Rye Robins",
+          "gid": "ccbe1082",
+          "gn": "Saturday U12 Girls Division 2",
+          "age": "U12",
+          "div": "Division 2",
+          "stats": {
+            "gp": 5,
+            "fouls": 8,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81ce0e24",
+      "sn": "Summer 2025/26",
+      "club": "Rye & District Basketball Club",
+      "regs": [
+        {
+          "tid": "6d9bbb67",
+          "tn": "Rye Robins",
+          "gid": "2f87a123",
+          "gn": "Saturday U12 Girls Division 3",
+          "age": "U12",
+          "div": "Division 3",
+          "stats": {
+            "gp": 16,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "6d9bbb67",
+          "tn": "Rye Robins",
+          "gid": "478881ec",
+          "gn": "Saturday U12 Girls Division 2",
+          "age": "U12",
+          "div": "Division 2",
+          "stats": {
+            "gp": 16,
+            "fouls": 17,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 4,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db3ad4e5",
+      "sn": "Winter 2025",
+      "club": "Rye & District Basketball Club",
+      "regs": [
+        {
+          "tid": "2facb605",
+          "tn": "Rye Robins",
+          "gid": "043692b0",
+          "gn": "Saturday U10 Girls Division 1",
+          "age": "U10",
+          "div": "Division 1",
+          "stats": {
+            "gp": 12,
+            "fouls": 5,
+            "wins": 5,
+            "losses": 7,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "2facb605",
+          "tn": "Rye Robins",
+          "gid": "c35fc61c",
+          "gn": "Saturday U10 Girls Division 2",
+          "age": "U10",
+          "div": "Division 2",
+          "stats": {
+            "gp": 12,
+            "wins": 5,
+            "losses": 7,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 5
+          }
+        },
+        {
+          "tid": "2facb605",
+          "tn": "Rye Robins",
+          "gid": "1e75d794",
+          "gn": "Saturday U10 Girls Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 12,
+            "fouls": 5,
+            "fg": 1,
+            "pts": 2,
+            "wins": 5,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7c0c3874",
+      "sn": "Summer 2024/25",
+      "club": "Rye & District Basketball Club",
+      "regs": [
+        {
+          "tid": "214949e8",
+          "tn": "Rye Robins",
+          "gid": "dc4d1284",
+          "gn": "Saturday U10 Girls Division 1",
+          "age": "U10",
+          "div": "Division 1",
+          "stats": {
+            "gp": 10,
+            "fouls": 9,
+            "wins": 3,
+            "losses": 5,
+            "draws": 2,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "214949e8",
+          "tn": "Rye Robins",
+          "gid": "888a2c2a",
+          "gn": "Saturday U10 Girls Division 2",
+          "age": "U10",
+          "div": "Division 2",
+          "stats": {
+            "gp": 10,
+            "fouls": 9,
+            "wins": 3,
+            "losses": 5,
+            "draws": 2,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "214949e8",
+          "tn": "Rye Robins",
+          "gid": "79e63092",
+          "gn": "Saturday U10 Girls Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 10,
+            "fg": 1,
+            "pts": 2,
+            "wins": 3,
+            "losses": 5,
+            "draws": 2,
+            "fouls": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:01.165Z",
+  "teams": [
+    {
+      "tid": "258cc925",
+      "sid": "7201e8c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d9bbb67",
+      "sid": "81ce0e24",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2facb605",
+      "sid": "db3ad4e5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "214949e8",
+      "sid": "7c0c3874",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.339Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "c7fd8e03",
+      "sid": "81ce0e24"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0285eefb",
+    "03dea5eb",
+    "04b6c756",
+    "10989b49",
+    "186a4d82",
+    "1cd5be20",
+    "20c9002d",
+    "21045fa7",
+    "216a4677",
+    "2d561468",
+    "3180ce9e",
+    "3476d029",
+    "3e426895",
+    "4405ede9",
+    "4527c1a4",
+    "465fd138",
+    "47232f82",
+    "4c280643",
+    "4e266c47",
+    "5a7803cd",
+    "6006e0f9",
+    "6053c9f3",
+    "69a72f40",
+    "72c2ebdd",
+    "73638680",
+    "76b8c51f",
+    "83e0ca53",
+    "8568c9f3",
+    "8604c2ad",
+    "8bfdff43",
+    "8e1b468d",
+    "9fa0fe9d",
+    "af655985",
+    "af690396",
+    "b53858ac",
+    "c6f68981",
+    "c7fd8e03",
+    "ce837ce9",
+    "e183f5c1",
+    "e6a9575d",
+    "ef1f4d9c",
+    "f86f4cbd",
+    "f8c297f3"
+  ]
+}

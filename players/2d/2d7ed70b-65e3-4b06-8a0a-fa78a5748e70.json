@@ -1,1 +1,539 @@
-{"uuid":"2d7ed70b-65e3-4b06-8a0a-fa78a5748e70","name":"Lucas Handley","gender":"Men","sports":{"Basketball":{"gp":44,"pts":319,"fouls":34,"fg":37,"ft":12,"threePt":34,"foulOuts":{},"maxGamePTS":17,"maxGameThreePt":4,"wins":24,"losses":27,"draws":2,"winPct":0.45,"statsChecked":"2026-07-09T18:29:28.194Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"55a96c3f","tn":"Richmond Oilers","gid":"3254b45d","gn":"Wednesday Open Men Section 1","age":"Senior","div":null,"stats":{"gp":22,"fouls":13,"ft":3,"fg":16,"threePt":15,"pts":173,"wins":4,"losses":15}},{"tid":"1819ce5a","stats":{"wins":10,"losses":6,"draws":1,"gp":20,"pts":138,"fg":18,"ft":7,"threePt":19,"fouls":20}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"1819ce5a","tn":"Solway Raiders","gid":"a9d1eeae","gn":"Thursday Open Men Section 01","age":"Senior","div":null,"stats":{"gp":20,"fouls":20,"fg":18,"threePt":19,"pts":138,"ft":7,"wins":10,"losses":6,"draws":1}}]},{"sid":"297562bc","sn":"Spring 2026","club":"Waverley Basketball Association","regs":[{"tid":"ef7f353e","tn":"","gid":"0c291d05","gn":"Wednesday Open Men Section 1","div":null,"stats":{"gp":1,"pts":4,"fg":1,"ft":2}},{"tid":"140d4459","tn":"","gid":"1d02bb5d","gn":"Thursday Open Men Section 1","div":null,"stats":{"gp":1,"pts":4,"fg":2,"fouls":1}}]}],"updatedAt":"2026-07-09T18:08:57.878Z","teams":[{"tid":"55a96c3f","sid":"5593103d","status":"ACTIVE"},{"tid":"1819ce5a","sid":"5593103d","status":"ACTIVE"},{"tid":"ddc9d3e3","sid":"fab2be4d","status":"COMPLETED"},{"tid":"c4ffd684","sid":"fab2be4d","status":"COMPLETED"},{"tid":"a890953e","sid":"76897951","status":"COMPLETED"},{"tid":"deb7e84d","sid":"76897951","status":"COMPLETED"},{"tid":"7097fb67","sid":"5944effa","status":"COMPLETED"},{"tid":"58e246e6","sid":"5944effa","status":"COMPLETED"},{"tid":"5da1bcde","sid":"348dbfb8","status":"COMPLETED"},{"tid":"d1a2c9ed","sid":"348dbfb8","status":"COMPLETED"},{"tid":"0999b31e","sid":"348dbfb8","status":"COMPLETED"},{"tid":"7d672fdb","sid":"9358e51a","status":"COMPLETED"},{"tid":"b6e3d69b","sid":"9358e51a","status":"COMPLETED"},{"tid":"3a4963f1","sid":"9358e51a","status":"COMPLETED"},{"tid":"e4853edf","sid":"d3d4e181","status":"COMPLETED"},{"tid":"db29025c","sid":"d3d4e181","status":"COMPLETED"},{"tid":"64c3b130","sid":"d3d4e181","status":"COMPLETED"},{"tid":"e5d15691","sid":"21cd9648","status":"COMPLETED"},{"tid":"595aa537","sid":"21cd9648","status":"COMPLETED"},{"tid":"34c98b91","sid":"d4cbf787","status":"COMPLETED"},{"tid":"7debcd8d","sid":"d4cbf787","status":"COMPLETED"},{"tid":"c625eee5","sid":"d64fcfce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:09:55.951Z","records":{"maxGamePTS":{"v":17,"gameKey":"04af6e71","sid":"5593103d"},"maxGameThreePt":{"v":4,"gameKey":"be52f8ab","sid":"5593103d"}},"games":["02ce8d80","04af6e71","04b5e06d","068fdf3a","0c7cb8d1","17ad9ae1","27035ecf","2aee40ed","32724ca5","345829a4","34694c03","368c30c0","38e7f24e","3b140b7b","4912d6ce","4c1483ca","57af2de7","5bc2b7bb","60dd5ce0","63895350","6d66c51c","735a96ab","78abbe95","952444f7","aae3a716","ada08b62","be52f8ab","bebb1690","c66b03ba","cfd47066","da3d629f","db63e717","e5ea0382","e6694dda","e9709e50","eaeca182","ebf47a37","ee9df555"],"gameTids":{"63895350":"1819ce5a","3ba21236":"140d4459","abbe0bdf":"ef7f353e","9a4940fd":"55a96c3f","d9da65fc":"55a96c3f","be52f8ab":"55a96c3f","34694c03":"55a96c3f","57af2de7":"55a96c3f","2aee40ed":"55a96c3f","6d66c51c":"55a96c3f","345829a4":"55a96c3f","da3d629f":"55a96c3f","db63e717":"55a96c3f","e6694dda":"55a96c3f","e5ea0382":"55a96c3f","4c1483ca":"55a96c3f","5bc2b7bb":"55a96c3f","04b5e06d":"55a96c3f","cfd47066":"55a96c3f","27035ecf":"55a96c3f","38e7f24e":"55a96c3f","bebb1690":"55a96c3f","c66b03ba":"55a96c3f","02ce8d80":"55a96c3f","eaeca182":"55a96c3f","3b140b7b":"1819ce5a","04af6e71":"1819ce5a","b67daebc":"1819ce5a","77c2a6ff":"1819ce5a","4912d6ce":"1819ce5a","735a96ab":"1819ce5a","17ad9ae1":"1819ce5a","952444f7":"1819ce5a","0c7cb8d1":"1819ce5a","ee9df555":"1819ce5a","068fdf3a":"1819ce5a","aae3a716":"1819ce5a","60dd5ce0":"1819ce5a","e9709e50":"1819ce5a","78abbe95":"1819ce5a","368c30c0":"1819ce5a","ebf47a37":"1819ce5a","32724ca5":"1819ce5a","ada08b62":"1819ce5a"}}
+{
+  "uuid": "2d7ed70b-65e3-4b06-8a0a-fa78a5748e70",
+  "name": "Lucas Handley",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 319,
+      "fouls": 34,
+      "fg": 37,
+      "ft": 12,
+      "threePt": 34,
+      "foulOuts": {},
+      "maxGamePTS": 17,
+      "maxGameThreePt": 4,
+      "wins": 24,
+      "losses": 27,
+      "draws": 2,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-09T18:29:28.194Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "55a96c3f",
+          "tn": "Richmond Oilers",
+          "gid": "3254b45d",
+          "gn": "Wednesday Open Men Section 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 16,
+            "threePt": 15,
+            "pts": 173,
+            "wins": 4,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "1819ce5a",
+          "stats": {
+            "wins": 10,
+            "losses": 6,
+            "draws": 1,
+            "gp": 20,
+            "pts": 138,
+            "fg": 18,
+            "ft": 7,
+            "threePt": 19,
+            "fouls": 20
+          },
+          "gid": "a9d1eeae",
+          "gn": "Thursday Open Men Section 01"
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "1819ce5a",
+          "tn": "Solway Raiders",
+          "gid": "a9d1eeae",
+          "gn": "Thursday Open Men Section 01",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 20,
+            "fg": 18,
+            "threePt": 19,
+            "pts": 138,
+            "ft": 7,
+            "wins": 10,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "club": "Waverley Basketball Association",
+      "regs": [
+        {
+          "tid": "ef7f353e",
+          "tn": "",
+          "gid": "0c291d05",
+          "gn": "Wednesday Open Men Section 1",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "140d4459",
+          "tn": "",
+          "gid": "1d02bb5d",
+          "gn": "Thursday Open Men Section 1",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "ddc9d3e3",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "c4ffd684",
+          "tn": "Solway Raiders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "a890953e",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "deb7e84d",
+          "tn": "Solway Raiders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "7097fb67",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "58e246e6",
+          "tn": "Solway Raiders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "5da1bcde",
+          "tn": "CBAA",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "d1a2c9ed",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "0999b31e",
+          "tn": "Solway Raiders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "7d672fdb",
+          "tn": "CBAA",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "b6e3d69b",
+          "tn": "Richmond Oilers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "3a4963f1",
+          "tn": "Solway Raiders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "e4853edf",
+          "tn": "CBAA",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "db29025c",
+          "tn": "Richmond Oilers",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "64c3b130",
+          "tn": "Solway Raiders",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "e5d15691",
+          "tn": "CBAA",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "595aa537",
+          "tn": "Solway Raiders",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "34c98b91",
+          "tn": "Solway Raiders",
+          "gid": "c8aa2ca0",
+          "gn": "Sunday U23 Men",
+          "stats": {}
+        },
+        {
+          "tid": "7debcd8d",
+          "tn": "Solway U23 Men Raiders",
+          "gid": "c8aa2ca0",
+          "gn": "Sunday U23 Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "c625eee5",
+          "tn": "Solway U23 Men Raiders",
+          "gid": "b3998180",
+          "gn": "Sunday U23 Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:08:57.878Z",
+  "teams": [
+    {
+      "tid": "55a96c3f",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1819ce5a",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef7f353e",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "140d4459",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ddc9d3e3",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c4ffd684",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a890953e",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "deb7e84d",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7097fb67",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58e246e6",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5da1bcde",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d1a2c9ed",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0999b31e",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d672fdb",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6e3d69b",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3a4963f1",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4853edf",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db29025c",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64c3b130",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5d15691",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "595aa537",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "34c98b91",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7debcd8d",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c625eee5",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:19.351Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "04af6e71",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "be52f8ab",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "02ce8d80",
+    "04af6e71",
+    "04b5e06d",
+    "068fdf3a",
+    "0c7cb8d1",
+    "17ad9ae1",
+    "27035ecf",
+    "2aee40ed",
+    "32724ca5",
+    "345829a4",
+    "34694c03",
+    "368c30c0",
+    "38e7f24e",
+    "3b140b7b",
+    "4912d6ce",
+    "4c1483ca",
+    "57af2de7",
+    "5bc2b7bb",
+    "60dd5ce0",
+    "63895350",
+    "6d66c51c",
+    "735a96ab",
+    "78abbe95",
+    "952444f7",
+    "aae3a716",
+    "ada08b62",
+    "be52f8ab",
+    "bebb1690",
+    "c66b03ba",
+    "cfd47066",
+    "da3d629f",
+    "db63e717",
+    "e5ea0382",
+    "e6694dda",
+    "e9709e50",
+    "eaeca182",
+    "ebf47a37",
+    "ee9df555"
+  ],
+  "gameTids": {
+    "63895350": "1819ce5a",
+    "3ba21236": "140d4459",
+    "abbe0bdf": "ef7f353e",
+    "9a4940fd": "55a96c3f",
+    "d9da65fc": "55a96c3f",
+    "be52f8ab": "55a96c3f",
+    "34694c03": "55a96c3f",
+    "57af2de7": "55a96c3f",
+    "2aee40ed": "55a96c3f",
+    "6d66c51c": "55a96c3f",
+    "345829a4": "55a96c3f",
+    "da3d629f": "55a96c3f",
+    "db63e717": "55a96c3f",
+    "e6694dda": "55a96c3f",
+    "e5ea0382": "55a96c3f",
+    "4c1483ca": "55a96c3f",
+    "5bc2b7bb": "55a96c3f",
+    "04b5e06d": "55a96c3f",
+    "cfd47066": "55a96c3f",
+    "27035ecf": "55a96c3f",
+    "38e7f24e": "55a96c3f",
+    "bebb1690": "55a96c3f",
+    "c66b03ba": "55a96c3f",
+    "02ce8d80": "55a96c3f",
+    "eaeca182": "55a96c3f",
+    "3b140b7b": "1819ce5a",
+    "04af6e71": "1819ce5a",
+    "b67daebc": "1819ce5a",
+    "77c2a6ff": "1819ce5a",
+    "4912d6ce": "1819ce5a",
+    "735a96ab": "1819ce5a",
+    "17ad9ae1": "1819ce5a",
+    "952444f7": "1819ce5a",
+    "0c7cb8d1": "1819ce5a",
+    "ee9df555": "1819ce5a",
+    "068fdf3a": "1819ce5a",
+    "aae3a716": "1819ce5a",
+    "60dd5ce0": "1819ce5a",
+    "e9709e50": "1819ce5a",
+    "78abbe95": "1819ce5a",
+    "368c30c0": "1819ce5a",
+    "ebf47a37": "1819ce5a",
+    "32724ca5": "1819ce5a",
+    "ada08b62": "1819ce5a"
+  }
+}

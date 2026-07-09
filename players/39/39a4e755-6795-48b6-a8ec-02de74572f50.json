@@ -1,1 +1,379 @@
-{"uuid":"39a4e755-6795-48b6-a8ec-02de74572f50","name":"Oscar Betts","gender":"Boys","sports":{"Basketball":{"gp":53,"pts":80,"fouls":103,"fg":37,"ft":6,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"6cb21cfc":1,"c01b75f6":1,"475831bc":1},"maxGamePTS":6,"maxGameThreePt":null,"wins":52,"losses":91,"draws":4,"winPct":0.35,"statsChecked":"2026-07-05T14:40:28.920Z"}},"seasons":[{"sid":"4b758d19","sn":"Summer 2025/26","club":"Brighton Wolves Basketball Club","regs":[{"tid":"5854fa0b","tn":"Shadow Wolves U14 Boys","gid":"009f9b96","gn":"Saturday U14 Boys Div  7","age":"U14","div":"Div 7","stats":{"gp":12,"fouls":24,"ft":2,"fg":8,"pts":18,"wins":5,"losses":7}},{"tid":"5854fa0b","tn":"Shadow Wolves U14 Boys","gid":"b5241a46","gn":"Saturday U14 Boys Div  8","age":"U14","div":"Div 8","stats":{"gp":12,"fouls":24,"fg":8,"pts":18,"wins":5,"losses":7,"ft":2}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Brighton Wolves Basketball Club","regs":[{"tid":"f2696d15","tn":"Shadow Wolves U14 Boys","gid":"8efbf948","gn":"Saturday U14 Boys Div  9","age":"U14","div":"Div 9","stats":{"gp":13,"fouls":30,"ft":2,"fg":7,"pts":16,"foulOuts":1,"wins":2,"losses":9}}]},{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Brighton Wolves Basketball Club","regs":[{"tid":"47d9debb","tn":"Shadow Wolves U14 Boys","gid":"fd117f8f","gn":"Saturday U14 Boys 9","age":"U14","div":null,"stats":{"gp":15,"fouls":23,"ft":2,"fg":10,"pts":22,"finals":1,"foulOuts":1,"wins":5,"losses":9,"draws":1}},{"tid":"47d9debb","tn":"Shadow Wolves U14 Boys","gid":"03d2229f","gn":"Saturday U14 Boys 8","age":"U14","div":null,"stats":{"gp":15,"fouls":23,"finals":1,"wins":5,"losses":9,"draws":1,"pts":22,"fg":10,"ft":2}},{"tid":"47d9debb","tn":"Shadow Wolves U14 Boys","gid":"1a54006a","gn":"Saturday U14 Boys Div 10","age":"U14","div":"Div 10","stats":{"gp":15,"fouls":23,"fg":10,"pts":22,"finals":1,"wins":5,"losses":9,"draws":1,"ft":2}},{"tid":"47d9debb","tn":"Shadow Wolves U14 Boys","gid":"d80bd73b","gn":"Saturday U14 Boys 7","age":"U14","div":null,"stats":{"gp":15,"fouls":23,"finals":1,"wins":5,"losses":9,"draws":1,"pts":22,"fg":10,"ft":2}}]},{"sid":"475831bc","sn":"Winter 2024","club":"Brighton Wolves Basketball Club","regs":[{"tid":"62e5d9d8","tn":"Teen Wolves U12 Boys","gid":"eb0de4f1","gn":"Saturday U12 Boys 3","age":"U12","div":null,"stats":{"gp":13,"fouls":26,"fg":12,"pts":24,"foulOuts":1,"wins":5,"losses":8}},{"tid":"62e5d9d8","tn":"Teen Wolves U12 Boys","gid":"8d083c93","gn":"Saturday U12 Boys 5","age":"U12","div":null,"stats":{"gp":13,"fouls":26,"fg":12,"pts":24,"wins":5,"losses":8}},{"tid":"62e5d9d8","tn":"Teen Wolves U12 Boys","gid":"f8cfde84","gn":"Saturday U12 Boys 7","age":"U12","div":null,"stats":{"gp":13,"fouls":26,"fg":12,"pts":24,"wins":5,"losses":8}},{"tid":"62e5d9d8","tn":"Teen Wolves U12 Boys","gid":"176b9507","gn":"Saturday U12 Boys Div 10","age":"U12","div":"Div 10","stats":{"gp":13,"fg":12,"pts":24,"wins":5,"losses":8,"fouls":26}}]}],"updatedAt":"2026-05-31T20:09:50.402Z","teams":[{"tid":"5854fa0b","sid":"4b758d19","status":"COMPLETED"},{"tid":"f2696d15","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"47d9debb","sid":"c01b75f6","status":"COMPLETED"},{"tid":"62e5d9d8","sid":"475831bc","status":"COMPLETED"},{"tid":"59b436be","sid":"e5df46b3","status":"COMPLETED"},{"tid":"6ee37bdf","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:21:23.396Z","records":{"maxGamePTS":{"v":6,"gameKey":"3b061b9a","sid":"6cb21cfc"},"maxGameThreePt":{"v":null}},"games":["02d59e8e","091a94f7","0d93a53a","1138e6d6","1678892a","1b4b3589","1fcbd6b3","226c785b","26b44c7e","283b1c50","28cb06b9","2d74e5ab","336a5262","3b061b9a","4284fd76","451a761b","4ce155f2","51099f79","556afbed","61e6ff8c","62fc9fec","634ac328","71609816","7575f553","7576d83b","771ebf84","7c8ad8f2","83d99ab6","91fca99a","943b0043","9499456f","9cd63d1c","a00b72ee","a14d080d","a40bc785","a6d1e413","a6f257b6","aaa4d97f","b3fa0b29","b4d27a17","b59e929c","c8c5903d","cd4db0f7","ce9defac","de6c15be","e1137d50","e215a7de","e7b90a62","f20a7729","f303e7fe","f37cd1c1","f3acdecb","fc5610ec"]}
+{
+  "uuid": "39a4e755-6795-48b6-a8ec-02de74572f50",
+  "name": "Oscar Betts",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 53,
+      "pts": 80,
+      "fouls": 103,
+      "fg": 37,
+      "ft": 6,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "6cb21cfc": 1,
+        "c01b75f6": 1,
+        "475831bc": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 52,
+      "losses": 91,
+      "draws": 4,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T14:40:28.920Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "5854fa0b",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "009f9b96",
+          "gn": "Saturday U14 Boys Div  7",
+          "age": "U14",
+          "div": "Div 7",
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "wins": 5,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "5854fa0b",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "b5241a46",
+          "gn": "Saturday U14 Boys Div  8",
+          "age": "U14",
+          "div": "Div 8",
+          "stats": {
+            "gp": 12,
+            "fouls": 24,
+            "fg": 8,
+            "pts": 18,
+            "wins": 5,
+            "losses": 7,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "f2696d15",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "8efbf948",
+          "gn": "Saturday U14 Boys Div  9",
+          "age": "U14",
+          "div": "Div 9",
+          "stats": {
+            "gp": 13,
+            "fouls": 30,
+            "ft": 2,
+            "fg": 7,
+            "pts": 16,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "47d9debb",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "fd117f8f",
+          "gn": "Saturday U14 Boys 9",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "ft": 2,
+            "fg": 10,
+            "pts": 22,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "47d9debb",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "03d2229f",
+          "gn": "Saturday U14 Boys 8",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1,
+            "pts": 22,
+            "fg": 10,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "47d9debb",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "1a54006a",
+          "gn": "Saturday U14 Boys Div 10",
+          "age": "U14",
+          "div": "Div 10",
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "fg": 10,
+            "pts": 22,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "47d9debb",
+          "tn": "Shadow Wolves U14 Boys",
+          "gid": "d80bd73b",
+          "gn": "Saturday U14 Boys 7",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 23,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1,
+            "pts": 22,
+            "fg": 10,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "475831bc",
+      "sn": "Winter 2024",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "62e5d9d8",
+          "tn": "Teen Wolves U12 Boys",
+          "gid": "eb0de4f1",
+          "gn": "Saturday U12 Boys 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 26,
+            "fg": 12,
+            "pts": 24,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "62e5d9d8",
+          "tn": "Teen Wolves U12 Boys",
+          "gid": "8d083c93",
+          "gn": "Saturday U12 Boys 5",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 26,
+            "fg": 12,
+            "pts": 24,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "62e5d9d8",
+          "tn": "Teen Wolves U12 Boys",
+          "gid": "f8cfde84",
+          "gn": "Saturday U12 Boys 7",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 26,
+            "fg": 12,
+            "pts": 24,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "62e5d9d8",
+          "tn": "Teen Wolves U12 Boys",
+          "gid": "176b9507",
+          "gn": "Saturday U12 Boys Div 10",
+          "age": "U12",
+          "div": "Div 10",
+          "stats": {
+            "gp": 13,
+            "fg": 12,
+            "pts": 24,
+            "wins": 5,
+            "losses": 8,
+            "fouls": 26
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "59b436be",
+          "tn": "EPS Ninjas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "6ee37bdf",
+          "tn": "EPS Ninjas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T20:09:50.402Z",
+  "teams": [
+    {
+      "tid": "5854fa0b",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f2696d15",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47d9debb",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62e5d9d8",
+      "sid": "475831bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59b436be",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ee37bdf",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.088Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "3b061b9a",
+      "sid": "6cb21cfc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02d59e8e",
+    "091a94f7",
+    "0d93a53a",
+    "1138e6d6",
+    "1678892a",
+    "1b4b3589",
+    "1fcbd6b3",
+    "226c785b",
+    "26b44c7e",
+    "283b1c50",
+    "28cb06b9",
+    "2d74e5ab",
+    "336a5262",
+    "3b061b9a",
+    "4284fd76",
+    "451a761b",
+    "4ce155f2",
+    "51099f79",
+    "556afbed",
+    "61e6ff8c",
+    "62fc9fec",
+    "634ac328",
+    "71609816",
+    "7575f553",
+    "7576d83b",
+    "771ebf84",
+    "7c8ad8f2",
+    "83d99ab6",
+    "91fca99a",
+    "943b0043",
+    "9499456f",
+    "9cd63d1c",
+    "a00b72ee",
+    "a14d080d",
+    "a40bc785",
+    "a6d1e413",
+    "a6f257b6",
+    "aaa4d97f",
+    "b3fa0b29",
+    "b4d27a17",
+    "b59e929c",
+    "c8c5903d",
+    "cd4db0f7",
+    "ce9defac",
+    "de6c15be",
+    "e1137d50",
+    "e215a7de",
+    "e7b90a62",
+    "f20a7729",
+    "f303e7fe",
+    "f37cd1c1",
+    "f3acdecb",
+    "fc5610ec"
+  ]
+}

@@ -1,1 +1,104 @@
-{"uuid":"119a2551-1f40-45f5-acdb-fd12d31877a9","name":"Lennox Jones","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":45,"fouls":15,"fg":18,"ft":3,"threePt":2,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":1,"losses":8,"winPct":0.2,"wins":2,"statsChecked":"2026-07-05T14:53:08.013Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"d4954136","tn":"Camden Valley Wildfire U12 Girls 1","gid":"60884f30","gn":"GIRLS UNDER 12 C3","age":null,"div":"C3","stats":{"gp":5,"pts":30,"fg":14,"ft":2,"fouls":7,"losses":5}}]},{"sid":"0869ea69","regs":[{"tid":"fd41bdc8","stats":{"wins":2,"losses":3,"gp":5,"pts":15,"fg":4,"ft":1,"threePt":2,"fouls":8}}]}],"updatedAt":"2026-05-31T01:05:32.452Z","teams":[{"tid":"fd41bdc8","sid":"0869ea69","status":"UPCOMING"},{"tid":"d4954136","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:57:52.428Z","records":{"maxGamePTS":{"v":11,"gameKey":"cb113a7e","sid":"6dd649c0"},"maxGameThreePt":{"v":1,"gameKey":"91abf972","sid":"0869ea69"}},"games":["5db7de5d","89432c87","8a9f87f0","91abf972","9d4e2b32","a588a8dc","cb113a7e","d44877e4","db0005f0","f83e9b3c"]}
+{
+  "uuid": "119a2551-1f40-45f5-acdb-fd12d31877a9",
+  "name": "Lennox Jones",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 45,
+      "fouls": 15,
+      "fg": 18,
+      "ft": 3,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "losses": 8,
+      "winPct": 0.2,
+      "wins": 2,
+      "statsChecked": "2026-07-05T14:53:08.013Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "d4954136",
+          "tn": "Camden Valley Wildfire U12 Girls 1",
+          "gid": "60884f30",
+          "gn": "GIRLS UNDER 12 C3",
+          "age": null,
+          "div": "C3",
+          "stats": {
+            "gp": 5,
+            "pts": 30,
+            "fg": 14,
+            "ft": 2,
+            "fouls": 7,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "fd41bdc8",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 15,
+            "fg": 4,
+            "ft": 1,
+            "threePt": 2,
+            "fouls": 8
+          },
+          "gid": "1e697c31",
+          "gn": "GIRLS UNDER 14 C5"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:05:32.452Z",
+  "teams": [
+    {
+      "tid": "d4954136",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd41bdc8",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.759Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "cb113a7e",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "91abf972",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "5db7de5d",
+    "89432c87",
+    "8a9f87f0",
+    "91abf972",
+    "9d4e2b32",
+    "a588a8dc",
+    "cb113a7e",
+    "d44877e4",
+    "db0005f0",
+    "f83e9b3c"
+  ]
+}

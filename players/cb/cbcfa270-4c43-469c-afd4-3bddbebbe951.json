@@ -1,1 +1,89 @@
-{"uuid":"cbcfa270-4c43-469c-afd4-3bddbebbe951","gender":null,"sports":{"Basketball":{"gp":4,"pts":16,"fouls":5,"fg":8,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"losses":4,"winPct":0,"statsChecked":"2026-07-05T15:51:35.212Z"}},"seasons":[{"sid":"29640d87","sn":"Summer 2020/21","club":null,"regs":[{"tid":"5d0da54c","tn":"JAGUARS","gid":"691f5b5a","gn":"Wednesday Open Women","stats":{"gp":4,"pts":16,"fouls":5,"fg":8,"finals":1,"losses":4}}]}],"updatedAt":"2026-06-11T23:44:44.452Z","records":{"maxGamePTS":{"v":8,"gameKey":"1eafc7e7","sid":"29640d87"},"maxGameThreePt":{"v":null}},"games":["104f6832","1eafc7e7","56a34703","7d419c4d"],"name":"Summer 2020/21"}
+{
+  "uuid": "cbcfa270-4c43-469c-afd4-3bddbebbe951",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 16,
+      "fouls": 5,
+      "fg": 8,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "losses": 4,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:51:35.212Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "29640d87",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5d0da54c",
+          "tn": "JAGUARS",
+          "gid": "691f5b5a",
+          "gn": "Wednesday Open Women",
+          "stats": {
+            "gp": 4,
+            "pts": 16,
+            "fouls": 5,
+            "fg": 8,
+            "finals": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d98844ee",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "be5b59d2",
+          "tn": "Blues",
+          "gid": "1c6753f1",
+          "gn": "Wednesday Open Women",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:44.452Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "1eafc7e7",
+      "sid": "29640d87"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "104f6832",
+    "1eafc7e7",
+    "56a34703",
+    "7d419c4d"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "5d0da54c",
+      "sid": "29640d87",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "be5b59d2",
+      "sid": "d98844ee",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.239Z"
+}

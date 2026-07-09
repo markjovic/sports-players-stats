@@ -1,1 +1,172 @@
-{"uuid":"24a78ad8-93cb-424e-a8c0-0d0c86743fd0","name":"Tamika Mcqueen","gender":"Women","sports":{"Basketball":{"gp":16,"pts":15,"fouls":20,"fg":6,"ft":3,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":10,"losses":11,"draws":1,"winPct":0.45,"statsChecked":"2026-07-05T15:21:09.436Z"}},"seasons":[{"sid":"4b160a26","sn":"Winter 2026","regs":[{"tid":"d950f7bc","tn":"Flamin Leprechauns","gid":"d96dc3ff","gn":"Monday Open Women C","age":"Senior","div":null,"stats":{"gp":2,"pts":2,"fg":1,"fouls":1,"losses":1,"wins":1}},{"tid":"870ee927","stats":{"wins":4,"losses":2,"gp":6,"pts":5,"fg":2,"ft":1,"fouls":8}}]},{"sid":"4b160a26","sn":"Winter 2026","regs":[{"tid":"870ee927","tn":"Raging Leprechauns ","gid":"c8b53f0f","gn":"Sunday Open Mixed C","age":"Senior","div":null,"stats":{"gp":6,"pts":5,"fg":2,"ft":1,"fouls":8,"wins":4,"losses":2}}]},{"sid":"bacfa099","sn":"Summer 2025/26","regs":[{"tid":"3b04e688","tn":"Raging Leprechaun Blue","gid":"b336446a","gn":"Sunday Open Mixed B","age":"Senior","div":null,"stats":{"gp":8,"pts":8,"fg":3,"ft":2,"fouls":11,"wins":1,"losses":6,"draws":1}}]}],"updatedAt":"2026-06-02T10:24:12.407Z","teams":[{"tid":"d950f7bc","sid":"4b160a26","status":"ACTIVE"},{"tid":"870ee927","sid":"4b160a26","status":"ACTIVE"},{"tid":"3b04e688","sid":"bacfa099","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:06:20.643Z","records":{"maxGamePTS":{"v":4,"gameKey":"59a0bebf","sid":"4b160a26"},"maxGameThreePt":{"v":null}},"games":["07ed3077","18a6c64f","2b7de093","2eea0ef6","4012e65f","4e23de96","59a0bebf","6e501430","95479207","a39fd042","a7626e1f","cbe79923","d2367283","dfe9079e","e555c5ac","f5bd6de4"],"gameTids":{"95479207":"870ee927","cbe79923":"d950f7bc","f5bd6de4":"d950f7bc","6e501430":"870ee927","2b7de093":"870ee927","a7626e1f":"870ee927","59a0bebf":"870ee927","18a6c64f":"870ee927","a39fd042":"3b04e688","d2367283":"3b04e688","dfe9079e":"3b04e688","4e23de96":"3b04e688","07ed3077":"3b04e688","2eea0ef6":"3b04e688","4012e65f":"3b04e688","e555c5ac":"3b04e688"}}
+{
+  "uuid": "24a78ad8-93cb-424e-a8c0-0d0c86743fd0",
+  "name": "Tamika Mcqueen",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 15,
+      "fouls": 20,
+      "fg": 6,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 11,
+      "draws": 1,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T15:21:09.436Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b160a26",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "d950f7bc",
+          "tn": "Flamin Leprechauns",
+          "gid": "d96dc3ff",
+          "gn": "Monday Open Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1,
+            "losses": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "870ee927",
+          "stats": {
+            "wins": 4,
+            "losses": 2,
+            "gp": 6,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 8
+          },
+          "gid": "c8b53f0f",
+          "gn": "Sunday Open Mixed C"
+        }
+      ]
+    },
+    {
+      "sid": "4b160a26",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "870ee927",
+          "tn": "Raging Leprechauns ",
+          "gid": "c8b53f0f",
+          "gn": "Sunday Open Mixed C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 8,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bacfa099",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "3b04e688",
+          "tn": "Raging Leprechaun Blue",
+          "gid": "b336446a",
+          "gn": "Sunday Open Mixed B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 8,
+            "fg": 3,
+            "ft": 2,
+            "fouls": 11,
+            "wins": 1,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T10:24:12.407Z",
+  "teams": [
+    {
+      "tid": "d950f7bc",
+      "sid": "4b160a26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "870ee927",
+      "sid": "4b160a26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b04e688",
+      "sid": "bacfa099",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.736Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "59a0bebf",
+      "sid": "4b160a26"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "07ed3077",
+    "18a6c64f",
+    "2b7de093",
+    "2eea0ef6",
+    "4012e65f",
+    "4e23de96",
+    "59a0bebf",
+    "6e501430",
+    "95479207",
+    "a39fd042",
+    "a7626e1f",
+    "cbe79923",
+    "d2367283",
+    "dfe9079e",
+    "e555c5ac",
+    "f5bd6de4"
+  ],
+  "gameTids": {
+    "95479207": "870ee927",
+    "cbe79923": "d950f7bc",
+    "f5bd6de4": "d950f7bc",
+    "6e501430": "870ee927",
+    "2b7de093": "870ee927",
+    "a7626e1f": "870ee927",
+    "59a0bebf": "870ee927",
+    "18a6c64f": "870ee927",
+    "a39fd042": "3b04e688",
+    "d2367283": "3b04e688",
+    "dfe9079e": "3b04e688",
+    "4e23de96": "3b04e688",
+    "07ed3077": "3b04e688",
+    "2eea0ef6": "3b04e688",
+    "4012e65f": "3b04e688",
+    "e555c5ac": "3b04e688"
+  }
+}

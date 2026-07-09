@@ -1,1 +1,63 @@
-{"uuid":"13a3e044-6de0-4692-bb81-c24e103f0333","name":"Ryan Lin","sports":{"Basketball":{"maxGamePTS":8,"maxGameThreePt":null,"foulOuts":{},"gp":11,"pts":59,"fg":28,"ft":3,"fouls":8,"statsChecked":"2026-07-06T19:09:25.297Z"}},"seasons":[{"sid":"3ecfff14","regs":[{"tid":"20fc7110"}]},{"sid":"f5bbd42a","regs":[{"tid":"f5c120a9"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":8,"gameKey":"09d77c47","sid":"3ecfff14"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "13a3e044-6de0-4692-bb81-c24e103f0333",
+  "name": "Ryan Lin",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 11,
+      "pts": 59,
+      "fg": 28,
+      "ft": 3,
+      "fouls": 8,
+      "statsChecked": "2026-07-06T19:09:25.297Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3ecfff14",
+      "regs": [
+        {
+          "tid": "20fc7110",
+          "gid": "43ba6bd9",
+          "gn": "Monday U16 Boys D1"
+        }
+      ]
+    },
+    {
+      "sid": "f5bbd42a",
+      "regs": [
+        {
+          "tid": "f5c120a9",
+          "gid": "969bd18b",
+          "gn": "Monday U16 Boys D2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "20fc7110",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f5c120a9",
+      "sid": "f5bbd42a",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "09d77c47",
+      "sid": "3ecfff14"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:17.870Z"
+}

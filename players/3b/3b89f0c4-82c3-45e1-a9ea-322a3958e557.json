@@ -1,1 +1,326 @@
-{"uuid":"3b89f0c4-82c3-45e1-a9ea-322a3958e557","name":"Flynn Hibbert","gender":"Boys","sports":{"Basketball":{"gp":66,"pts":210,"fouls":56,"fg":88,"ft":34,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":15,"maxGameThreePt":null,"wins":47,"losses":65,"winPct":0.41,"draws":2,"statsChecked":"2026-07-05T14:40:45.669Z"}},"seasons":[{"sid":"367cf946","sn":"Winter 2026","club":"Hoppers Crossing Junior Basketball Club","regs":[{"tid":"398ac3a5","tn":"Hoppers Tigers 3 (U10B)","gid":"0ad7884e","gn":"Saturday U10 Boys Grading Pool","age":"U10","div":null,"stats":{"gp":6,"fouls":4,"ft":4,"fg":13,"pts":30,"wins":2,"losses":4}},{"tid":"398ac3a5","tn":"","gid":"647c7040","gn":"Saturday U10 Boys B","div":null,"stats":{"gp":6,"pts":30,"fg":13,"ft":4,"fouls":4,"wins":2,"losses":4}}]},{"sid":"d67db0cf","sn":"Summer 2025/26","club":"Point Cook Flyers Basketball Club","regs":[{"tid":"33e7fd81","tn":"PCF U10 Boys Nighthawks","gid":"7b02fe9f","gn":"Friday U10 Boys Div 3","age":"U10","div":"Div 3","stats":{"gp":12,"fouls":11,"ft":5,"fg":22,"pts":49,"wins":4,"losses":8}},{"tid":"33e7fd81","tn":"PCF U10 Boys Nighthawks","gid":"58f1036d","gn":"XG Friday U10 Boys Div 3","age":"U10","div":"Div 3","stats":{"gp":12,"fouls":11,"ft":5,"fg":22,"pts":49,"wins":4,"losses":8}}]},{"sid":"ca6a3805","sn":"Summer 2024/25","club":"Point Cook Flyers Basketball Club","regs":[{"tid":"2637ed9e","tn":"PCF U10 Boys Nighthawks","gid":"4a2c9a7b","gn":"Friday U10 Boys Div 6","age":"U10","div":"Div 6","stats":{"gp":17,"fouls":21,"ft":2,"fg":22,"pts":46,"finals":1,"wins":7,"losses":9,"draws":1}},{"tid":"2637ed9e","tn":"PCF U10 Boys Nighthawks","gid":"6ede73a5","gn":"Friday U10 Boys Div 5","age":"U10","div":"Div 5","stats":{"gp":17,"fouls":21,"finals":1,"wins":7,"losses":9,"draws":1,"pts":46,"fg":22,"ft":2}}]},{"sid":"e2f09a72","sn":"Winter 2024","club":"Point Cook Flyers Basketball Club","regs":[{"tid":"85aeef2e","tn":"PCF U8 Mixed Cadets","gid":"fb26a406","gn":"Friday U8 Mixed Purple","age":"U8","div":null,"stats":{"gp":18,"fouls":17,"ft":18,"fg":30,"pts":78,"wins":9,"losses":9}}]},{"sid":"d2471111","sn":"Winter 2023","club":"Point Cook Flyers Basketball Club","regs":[{"tid":"136a8e9c","tn":"PCF U8 Mixed Cadets","gid":"52eda246","gn":"Friday U8 Mixed Purple","age":"U8","div":null,"stats":{"gp":13,"fouls":3,"ft":5,"fg":1,"pts":7,"wins":6,"losses":7}},{"tid":"136a8e9c","tn":"PCF U8 Mixed Cadets","gid":"efbbd364","gn":"Friday U8 Mixed Grading","age":"U8","div":null,"stats":{"gp":13,"wins":6,"losses":7,"pts":7,"fg":1,"ft":5,"fouls":3}}]}],"updatedAt":"2026-07-04T05:46:31.427Z","teams":[{"tid":"398ac3a5","sid":"367cf946","status":"ACTIVE"},{"tid":"33e7fd81","sid":"d67db0cf","status":"COMPLETED"},{"tid":"2637ed9e","sid":"ca6a3805","status":"COMPLETED"},{"tid":"85aeef2e","sid":"e2f09a72","status":"COMPLETED"},{"tid":"136a8e9c","sid":"d2471111","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:17:05.243Z","records":{"maxGamePTS":{"v":15,"gameKey":"45fcc2ed","sid":"367cf946"},"maxGameThreePt":{"v":null}},"games":["031b17c5","046bbd75","099aec63","0a2e87a8","0a43d3c1","0bbe0f73","0ec88375","0f22c09a","11349546","11d98d2d","1275c037","20a5a391","24ae8dbc","25a68f30","2c4d5e68","2f30d41a","34bda339","388f6772","3cfab44c","3ea81d52","45fcc2ed","4bc34525","4dfac895","4fe4665e","506702ca","51158932","5967432d","5f1ca03f","6624c0f2","6db79983","6f6b763c","706f5aea","724b6a2a","75a4f1a6","7831938e","79ad513b","79f7cbdf","87fcd3b2","8d8b9a17","8e53c646","94dcb171","960139b1","9ed70639","9f94910c","a12bcd52","a73d287c","ab236124","b65567de","ba2b12a0","c50c1a38","c54f141c","c8aae3a8","c9f9cd5d","cdd124b9","d250de31","d425656f","d92db6dd","dc8bbad0","df0de337","df313cd9","dfd963c1","e431d461","e5c0a5e5","e815c568","f60502cb","f9e9a6a4"]}
+{
+  "uuid": "3b89f0c4-82c3-45e1-a9ea-322a3958e557",
+  "name": "Flynn Hibbert",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 210,
+      "fouls": 56,
+      "fg": 88,
+      "ft": 34,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 15,
+      "maxGameThreePt": null,
+      "wins": 47,
+      "losses": 65,
+      "winPct": 0.41,
+      "draws": 2,
+      "statsChecked": "2026-07-05T14:40:45.669Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "367cf946",
+      "sn": "Winter 2026",
+      "club": "Hoppers Crossing Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "398ac3a5",
+          "tn": "Hoppers Tigers 3 (U10B)",
+          "gid": "647c7040",
+          "gn": "Saturday U10 Boys B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "ft": 4,
+            "fg": 13,
+            "pts": 30,
+            "wins": 2,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "398ac3a5",
+          "tn": "",
+          "gid": "647c7040",
+          "gn": "Saturday U10 Boys B",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 30,
+            "fg": 13,
+            "ft": 4,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d67db0cf",
+      "sn": "Summer 2025/26",
+      "club": "Point Cook Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "33e7fd81",
+          "tn": "PCF U10 Boys Nighthawks",
+          "gid": "7b02fe9f",
+          "gn": "Friday U10 Boys Div 3",
+          "age": "U10",
+          "div": "Div 3",
+          "stats": {
+            "gp": 12,
+            "fouls": 11,
+            "ft": 5,
+            "fg": 22,
+            "pts": 49,
+            "wins": 4,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "33e7fd81",
+          "tn": "PCF U10 Boys Nighthawks",
+          "gid": "58f1036d",
+          "gn": "XG Friday U10 Boys Div 3",
+          "age": "U10",
+          "div": "Div 3",
+          "stats": {
+            "gp": 12,
+            "fouls": 11,
+            "ft": 5,
+            "fg": 22,
+            "pts": 49,
+            "wins": 4,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ca6a3805",
+      "sn": "Summer 2024/25",
+      "club": "Point Cook Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "2637ed9e",
+          "tn": "PCF U10 Boys Nighthawks",
+          "gid": "4a2c9a7b",
+          "gn": "Friday U10 Boys Div 6",
+          "age": "U10",
+          "div": "Div 6",
+          "stats": {
+            "gp": 17,
+            "fouls": 21,
+            "ft": 2,
+            "fg": 22,
+            "pts": 46,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2637ed9e",
+          "tn": "PCF U10 Boys Nighthawks",
+          "gid": "6ede73a5",
+          "gn": "Friday U10 Boys Div 5",
+          "age": "U10",
+          "div": "Div 5",
+          "stats": {
+            "gp": 17,
+            "fouls": 21,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9,
+            "draws": 1,
+            "pts": 46,
+            "fg": 22,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2f09a72",
+      "sn": "Winter 2024",
+      "club": "Point Cook Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "85aeef2e",
+          "tn": "PCF U8 Mixed Cadets",
+          "gid": "fb26a406",
+          "gn": "Friday U8 Mixed Purple",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 17,
+            "ft": 18,
+            "fg": 30,
+            "pts": 78,
+            "wins": 9,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d2471111",
+      "sn": "Winter 2023",
+      "club": "Point Cook Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "136a8e9c",
+          "tn": "PCF U8 Mixed Cadets",
+          "gid": "52eda246",
+          "gn": "Friday U8 Mixed Purple",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 3,
+            "ft": 5,
+            "fg": 1,
+            "pts": 7,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "136a8e9c",
+          "tn": "PCF U8 Mixed Cadets",
+          "gid": "efbbd364",
+          "gn": "Friday U8 Mixed Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "wins": 6,
+            "losses": 7,
+            "pts": 7,
+            "fg": 1,
+            "ft": 5,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:31.427Z",
+  "teams": [
+    {
+      "tid": "398ac3a5",
+      "sid": "367cf946",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "33e7fd81",
+      "sid": "d67db0cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2637ed9e",
+      "sid": "ca6a3805",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85aeef2e",
+      "sid": "e2f09a72",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "136a8e9c",
+      "sid": "d2471111",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.203Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "45fcc2ed",
+      "sid": "367cf946"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "031b17c5",
+    "046bbd75",
+    "099aec63",
+    "0a2e87a8",
+    "0a43d3c1",
+    "0bbe0f73",
+    "0ec88375",
+    "0f22c09a",
+    "11349546",
+    "11d98d2d",
+    "1275c037",
+    "20a5a391",
+    "24ae8dbc",
+    "25a68f30",
+    "2c4d5e68",
+    "2f30d41a",
+    "34bda339",
+    "388f6772",
+    "3cfab44c",
+    "3ea81d52",
+    "45fcc2ed",
+    "4bc34525",
+    "4dfac895",
+    "4fe4665e",
+    "506702ca",
+    "51158932",
+    "5967432d",
+    "5f1ca03f",
+    "6624c0f2",
+    "6db79983",
+    "6f6b763c",
+    "706f5aea",
+    "724b6a2a",
+    "75a4f1a6",
+    "7831938e",
+    "79ad513b",
+    "79f7cbdf",
+    "87fcd3b2",
+    "8d8b9a17",
+    "8e53c646",
+    "94dcb171",
+    "960139b1",
+    "9ed70639",
+    "9f94910c",
+    "a12bcd52",
+    "a73d287c",
+    "ab236124",
+    "b65567de",
+    "ba2b12a0",
+    "c50c1a38",
+    "c54f141c",
+    "c8aae3a8",
+    "c9f9cd5d",
+    "cdd124b9",
+    "d250de31",
+    "d425656f",
+    "d92db6dd",
+    "dc8bbad0",
+    "df0de337",
+    "df313cd9",
+    "dfd963c1",
+    "e431d461",
+    "e5c0a5e5",
+    "e815c568",
+    "f60502cb",
+    "f9e9a6a4"
+  ]
+}

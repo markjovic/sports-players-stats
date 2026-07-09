@@ -1,1 +1,85 @@
-{"uuid":"57766923-7c77-4f58-bace-3d797a5fd588","gender":null,"sports":{"Basketball":{"gp":5,"pts":4,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":3,"losses":2,"winPct":0.6,"statsChecked":"2026-07-05T16:27:26.288Z"}},"seasons":[{"sid":"dee767b9","sn":"Winter 2021","club":"Hawks Basketball Club (Mildura)","regs":[{"tid":"a92a8bb1","tn":"Hawks U12 Boys Harris","gid":"0c272ec6","gn":"Under 12 Boys Division 2B","stats":{"gp":5,"pts":4,"fg":2,"wins":3,"losses":2}}]}],"updatedAt":"2026-06-11T23:39:45.786Z","records":{"maxGamePTS":{"v":2,"gameKey":"808a71a8","sid":"dee767b9"},"maxGameThreePt":{"v":null}},"games":["1caca286","1fe5584d","808a71a8","bd9ce0f0","d4844654"],"name":"Winter 2021"}
+{
+  "uuid": "57766923-7c77-4f58-bace-3d797a5fd588",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 4,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 2,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T16:27:26.288Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dee767b9",
+      "sn": "Winter 2021",
+      "club": "Hawks Basketball Club (Mildura)",
+      "regs": [
+        {
+          "tid": "a92a8bb1",
+          "tn": "Hawks U12 Boys Harris",
+          "gid": "0c272ec6",
+          "gn": "Under 12 Boys Division 2B",
+          "stats": {
+            "gp": 5,
+            "pts": 4,
+            "fg": 2,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "02f949c6",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "1e659fa0",
+          "tn": "Hawks Red",
+          "gid": "7c4a7be8",
+          "gn": "Under 10 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:45.786Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "808a71a8",
+      "sid": "dee767b9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1caca286",
+    "1fe5584d",
+    "808a71a8",
+    "bd9ce0f0",
+    "d4844654"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "a92a8bb1",
+      "sid": "dee767b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e659fa0",
+      "sid": "02f949c6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.740Z"
+}

@@ -1,1 +1,82 @@
-{"uuid":"3f928ac1-2800-46d0-bd80-9975830ad582","gender":null,"sports":{"Basketball":{"gp":2,"pts":2,"ft":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"draws":1,"winPct":0.5,"statsChecked":"2026-07-05T16:21:55.587Z"}},"seasons":[{"sid":"171fb8f9","sn":"Autumn 2021","club":null,"regs":[{"tid":"628a3e4b","tn":"The Expendables","gid":"c8da42a1","gn":"Thursday Open Men","stats":{"gp":2,"pts":2,"ft":2,"wins":1,"draws":1}}]}],"updatedAt":"2026-06-11T23:38:39.779Z","records":{"maxGamePTS":{"v":2,"gameKey":"587f3937","sid":"171fb8f9"},"maxGameThreePt":{"v":null}},"games":["587f3937","f2a432a4"],"name":"Autumn 2021"}
+{
+  "uuid": "3f928ac1-2800-46d0-bd80-9975830ad582",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 2,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "draws": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:21:55.587Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "171fb8f9",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "628a3e4b",
+          "tn": "The Expendables",
+          "gid": "c8da42a1",
+          "gn": "Thursday Open Men",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "ft": 2,
+            "wins": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ae94c677",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "bce534bf",
+          "tn": "The Expendables",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:39.779Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "587f3937",
+      "sid": "171fb8f9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "587f3937",
+    "f2a432a4"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "628a3e4b",
+      "sid": "171fb8f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bce534bf",
+      "sid": "ae94c677",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.533Z"
+}

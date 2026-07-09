@@ -1,1 +1,343 @@
-{"uuid":"5c898782-a7dd-48a3-9c9c-18f06d27bffa","name":"Matthew Bromley","gender":"Men","sports":{"Basketball":{"gp":14,"pts":18,"fouls":19,"fg":5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"losses":9,"draws":1,"winPct":0,"statsChecked":"2026-07-08T17:51:55.205Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"83449faa","tn":"Longarms","gid":"1a871883","gn":"Wednesday Open Men Section 5","age":"Senior","div":null,"stats":{"gp":12,"fouls":17,"fg":4,"pts":16,"losses":9,"draws":1}}]},{"sid":"297562bc","regs":[{"tid":"424d4f53","stats":{"gp":2,"pts":2,"fg":1,"fouls":2}},{"tid":"424d4f53","tn":"","gid":"6cb8f7dd","gn":"Wednesday Open Men Section 5","div":null,"stats":{"gp":2,"pts":2,"fg":1,"fouls":2}}]}],"updatedAt":"2026-07-08T17:27:49.371Z","teams":[{"tid":"83449faa","sid":"5593103d","status":"ACTIVE"},{"tid":"63a0d718","sid":"fab2be4d","status":"COMPLETED"},{"tid":"5780e230","sid":"76897951","status":"COMPLETED"},{"tid":"af011cda","sid":"5944effa","status":"COMPLETED"},{"tid":"0c43bfd1","sid":"348dbfb8","status":"COMPLETED"},{"tid":"cd5461e8","sid":"9358e51a","status":"COMPLETED"},{"tid":"6abb39cd","sid":"d3d4e181","status":"COMPLETED"},{"tid":"11082994","sid":"21cd9648","status":"COMPLETED"},{"tid":"9663ef7c","sid":"d4cbf787","status":"COMPLETED"},{"tid":"e4226cba","sid":"d4cbf787","status":"COMPLETED"},{"tid":"6654a78b","sid":"d64fcfce","status":"COMPLETED"},{"tid":"6ae5153a","sid":"d64fcfce","status":"COMPLETED"},{"tid":"df53d03a","sid":"afd26581","status":"COMPLETED"},{"tid":"921100d4","sid":"afd26581","status":"COMPLETED"},{"tid":"ca47fb22","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:38:23.408Z","records":{"maxGamePTS":{"v":4,"gameKey":"39c565bf","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["215e0516","39c565bf","78199e59","8b6348ce","b8129d9f","bfcb0040","f16a0655","fc3047c1","fc734156","fc790f6a"]}
+{
+  "uuid": "5c898782-a7dd-48a3-9c9c-18f06d27bffa",
+  "name": "Matthew Bromley",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 18,
+      "fouls": 19,
+      "fg": 5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 9,
+      "draws": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-08T17:51:55.205Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "83449faa",
+          "tn": "Longarms",
+          "gid": "1a871883",
+          "gn": "Wednesday Open Men Section 5",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "fg": 4,
+            "pts": 16,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "424d4f53",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          },
+          "gid": "6cb8f7dd",
+          "gn": "Wednesday Open Men Section 5"
+        },
+        {
+          "tid": "424d4f53",
+          "tn": "",
+          "gid": "6cb8f7dd",
+          "gn": "Wednesday Open Men Section 5",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "63a0d718",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "5780e230",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "af011cda",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "0c43bfd1",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "cd5461e8",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "6abb39cd",
+          "tn": "Longarms",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "11082994",
+          "tn": "Longarms",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "9663ef7c",
+          "tn": "Longarms",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "e4226cba",
+          "tn": "Longarms Too",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "6654a78b",
+          "tn": "Longarms",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "6ae5153a",
+          "tn": "Longarms Too",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "df53d03a",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "921100d4",
+          "tn": "Longarms Too",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "ca47fb22",
+          "tn": "Longarms",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:27:49.371Z",
+  "teams": [
+    {
+      "tid": "83449faa",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "424d4f53",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "63a0d718",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5780e230",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "af011cda",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0c43bfd1",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd5461e8",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6abb39cd",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11082994",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9663ef7c",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4226cba",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6654a78b",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ae5153a",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df53d03a",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "921100d4",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ca47fb22",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.014Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "39c565bf",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "215e0516",
+    "39c565bf",
+    "78199e59",
+    "8b6348ce",
+    "b8129d9f",
+    "bfcb0040",
+    "f16a0655",
+    "fc3047c1",
+    "fc734156",
+    "fc790f6a"
+  ]
+}

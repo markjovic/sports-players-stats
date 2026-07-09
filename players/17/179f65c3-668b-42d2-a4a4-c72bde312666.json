@@ -1,1 +1,480 @@
-{"uuid":"179f65c3-668b-42d2-a4a4-c72bde312666","name":"Lachlan Webb","gender":"Men","sports":{"Basketball":{"gp":64,"pts":435,"fouls":166,"fg":155,"ft":57,"threePt":1,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"5bb7c87f":1},"maxGamePTS":16,"maxGameThreePt":1,"wins":41,"losses":36,"draws":2,"winPct":0.52,"statsChecked":"2026-07-06T18:55:19.235Z"}},"seasons":[{"sid":"75ebb237","sn":"Winter 2026","regs":[{"tid":"e0e256f2","tn":"The Anomalies","gid":"52393cd2","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":9,"fouls":27,"ft":14,"fg":40,"pts":94,"wins":7,"losses":1}}]},{"sid":"5593103d","sn":"Autumn 2026","club":"St Kevin's Old Boys Basketball (SKOB)","regs":[{"tid":"13c5893f","tn":"SKOB Silver","gid":"36534163","gn":"Wednesday Open Men Section 2","age":"Senior","div":null,"stats":{"gp":18,"fouls":48,"ft":8,"fg":25,"pts":123,"wins":13,"losses":3}}]},{"sid":"5bb7c87f","sn":"Summer 2025/26","regs":[{"tid":"56aacee2","tn":"The Anomalies","gid":"f1aba158","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":19,"fouls":47,"ft":16,"fg":50,"pts":116,"finals":1,"foulOuts":1,"wins":11,"losses":8}}]},{"sid":"d855bcfa","sn":"Winter 2025","regs":[{"tid":"95982f1f","tn":"The Anomalies","gid":"4ffc96f9","gn":"Monday Men A","age":null,"div":null,"stats":{"gp":18,"fouls":44,"ft":19,"fg":40,"threePt":1,"pts":102,"finals":1,"gfApps":1,"wins":5,"losses":12,"draws":1,"gfWins":1}},{"tid":"95982f1f","tn":"The Anomalies","gid":"d5aa5463","gn":"Monday Men B","age":null,"div":null,"stats":{"gp":18,"fouls":44,"ft":19,"fg":40,"pts":102,"finals":1,"gfApps":1,"wins":5,"losses":12,"draws":1,"threePt":1,"gfWins":1}}]}],"updatedAt":"2026-07-06T18:31:21.467Z","teams":[{"tid":"13c5893f","sid":"5593103d","status":"ACTIVE"},{"tid":"e0e256f2","sid":"75ebb237","status":"ACTIVE"},{"tid":"56aacee2","sid":"5bb7c87f","status":"COMPLETED"},{"tid":"2d2bbeaf","sid":"fab2be4d","status":"COMPLETED"},{"tid":"95982f1f","sid":"d855bcfa","status":"COMPLETED"},{"tid":"b7eb4df8","sid":"5944effa","status":"COMPLETED"},{"tid":"0347b3d8","sid":"5944effa","status":"COMPLETED"},{"tid":"c48e2bf1","sid":"348dbfb8","status":"COMPLETED"},{"tid":"0d44b283","sid":"348dbfb8","status":"COMPLETED"},{"tid":"a6f8d230","sid":"9358e51a","status":"COMPLETED"},{"tid":"325b4b94","sid":"9358e51a","status":"COMPLETED"},{"tid":"8390d821","sid":"d3d4e181","status":"COMPLETED"},{"tid":"741f53c3","sid":"d3d4e181","status":"COMPLETED"},{"tid":"aef46d73","sid":"21cd9648","status":"COMPLETED"},{"tid":"a741e243","sid":"d4cbf787","status":"COMPLETED"},{"tid":"30815fca","sid":"d64fcfce","status":"COMPLETED"},{"tid":"9a16efdf","sid":"afd26581","status":"COMPLETED"},{"tid":"f3bb3cfd","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:00:59.691Z","records":{"maxGamePTS":{"v":16,"gameKey":"b25bb6fb","sid":"5593103d"},"maxGameThreePt":{"v":1,"gameKey":"0df977cd","sid":"d855bcfa"}},"games":["0153a582","0247df9b","033294ff","0df977cd","12e94d59","15cf03ae","178aa2e6","17db94ff","187dd91c","20446334","20f1b3c2","2b971492","2c4d87b5","31f87383","37919d81","38b9a346","3dde7c35","4168b99f","453ae21a","458ecb4a","4a834461","4ae851f2","5190ddbc","521d7aba","586dcf0c","59dbb864","6af81c5b","6fefaa6b","7b33e398","7be8df3b","8113827b","819d451f","8293b59a","833fc8b5","843a12e8","8b2bab65","8f0f7d7f","97f7040a","a7778043","a94ac1fd","a973e57b","ab526841","af765ce1","b25bb6fb","b293af79","c42380a9","c5b743b2","c90a7457","c9887a7e","cca4e23c","d7bcfdde","e9af3ae4","eb900608","ede34c36","f30cf549","f62a814a","fb0b611b","fc87a525","fd23cab1","fe67d394","feef75e2"]}
+{
+  "uuid": "179f65c3-668b-42d2-a4a4-c72bde312666",
+  "name": "Lachlan Webb",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 64,
+      "pts": 435,
+      "fouls": 166,
+      "fg": 155,
+      "ft": 57,
+      "threePt": 1,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "5bb7c87f": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": 1,
+      "wins": 41,
+      "losses": 36,
+      "draws": 2,
+      "winPct": 0.52,
+      "statsChecked": "2026-07-06T18:55:19.235Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "75ebb237",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e0e256f2",
+          "tn": "The Anomalies",
+          "gid": "52393cd2",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 27,
+            "ft": 14,
+            "fg": 40,
+            "pts": 94,
+            "wins": 7,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "club": "St Kevin's Old Boys Basketball (SKOB)",
+      "regs": [
+        {
+          "tid": "13c5893f",
+          "tn": "SKOB Silver",
+          "gid": "36534163",
+          "gn": "Wednesday Open Men Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 48,
+            "ft": 8,
+            "fg": 25,
+            "pts": 123,
+            "wins": 13,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5bb7c87f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "56aacee2",
+          "tn": "The Anomalies",
+          "gid": "f1aba158",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 47,
+            "ft": 16,
+            "fg": 50,
+            "pts": 116,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 11,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d855bcfa",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "95982f1f",
+          "tn": "The Anomalies",
+          "gid": "4ffc96f9",
+          "gn": "Monday Men A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 44,
+            "ft": 19,
+            "fg": 40,
+            "threePt": 1,
+            "pts": 102,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 12,
+            "draws": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "95982f1f",
+          "tn": "The Anomalies",
+          "gid": "d5aa5463",
+          "gn": "Monday Men B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 44,
+            "ft": 19,
+            "fg": 40,
+            "pts": 102,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 12,
+            "draws": 1,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "2d2bbeaf",
+          "tn": "SKOB Silver",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "b7eb4df8",
+          "tn": "SKOC SILVER",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "0347b3d8",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "c48e2bf1",
+          "tn": "SKOC SILVER",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "0d44b283",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "a6f8d230",
+          "tn": "SKOC SILVER",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "325b4b94",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "8390d821",
+          "tn": "SKOC Silver",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "741f53c3",
+          "tn": "SKOC White",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "aef46d73",
+          "tn": "SKOC WHITE",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "a741e243",
+          "tn": "SKOC WHITE",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "30815fca",
+          "tn": "SKOC White",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "9a16efdf",
+          "tn": "SKOC WHITE",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "f3bb3cfd",
+          "tn": "SKOC White",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:21.467Z",
+  "teams": [
+    {
+      "tid": "e0e256f2",
+      "sid": "75ebb237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13c5893f",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "56aacee2",
+      "sid": "5bb7c87f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "95982f1f",
+      "sid": "d855bcfa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d2bbeaf",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7eb4df8",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0347b3d8",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c48e2bf1",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d44b283",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a6f8d230",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "325b4b94",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8390d821",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "741f53c3",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aef46d73",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a741e243",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30815fca",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a16efdf",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3bb3cfd",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.091Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "b25bb6fb",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "0df977cd",
+      "sid": "d855bcfa"
+    }
+  },
+  "games": [
+    "0153a582",
+    "0247df9b",
+    "033294ff",
+    "0df977cd",
+    "12e94d59",
+    "15cf03ae",
+    "178aa2e6",
+    "17db94ff",
+    "187dd91c",
+    "20446334",
+    "20f1b3c2",
+    "2b971492",
+    "2c4d87b5",
+    "31f87383",
+    "37919d81",
+    "38b9a346",
+    "3dde7c35",
+    "4168b99f",
+    "453ae21a",
+    "458ecb4a",
+    "4a834461",
+    "4ae851f2",
+    "5190ddbc",
+    "521d7aba",
+    "586dcf0c",
+    "59dbb864",
+    "6af81c5b",
+    "6fefaa6b",
+    "7b33e398",
+    "7be8df3b",
+    "8113827b",
+    "819d451f",
+    "8293b59a",
+    "833fc8b5",
+    "843a12e8",
+    "8b2bab65",
+    "8f0f7d7f",
+    "97f7040a",
+    "a7778043",
+    "a94ac1fd",
+    "a973e57b",
+    "ab526841",
+    "af765ce1",
+    "b25bb6fb",
+    "b293af79",
+    "c42380a9",
+    "c5b743b2",
+    "c90a7457",
+    "c9887a7e",
+    "cca4e23c",
+    "d7bcfdde",
+    "e9af3ae4",
+    "eb900608",
+    "ede34c36",
+    "f30cf549",
+    "f62a814a",
+    "fb0b611b",
+    "fc87a525",
+    "fd23cab1",
+    "fe67d394",
+    "feef75e2"
+  ]
+}

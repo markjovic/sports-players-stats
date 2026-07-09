@@ -1,1 +1,217 @@
-{"uuid":"3f767f29-dff4-488f-9dce-eda8cc889db9","name":"Blake Hall","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":8,"fouls":7,"fg":4,"finals":2,"gfApps":2,"gfWins":2,"finalsPerSeason":0.67,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":37,"losses":32,"winPct":0.54,"statsChecked":"2026-07-05T14:26:35.679Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"921abde7","tn":"Blackburn U11 Boys 16","gid":"19e854ac","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":6,"pts":4,"fg":2,"fouls":1,"wins":1,"losses":2}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"7ecc77d4","tn":"Blackburn U12 Boys 17","gid":"51c96d96","gn":"Boys U12 DF","age":"U12","div":null,"stats":{"gp":14,"pts":2,"fg":1,"finals":1,"gfApps":1,"wins":6,"losses":3,"fouls":2,"gfWins":1}},{"tid":"7ecc77d4","tn":"Blackburn U12 Boys 17","gid":"48599f53","gn":"Boys U12 D Grading","age":"U12","div":null,"stats":{"gp":14,"fouls":2,"finals":1,"gfApps":1,"wins":6,"losses":3,"pts":2,"fg":1,"gfWins":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"1eacd40e","tn":"Blackburn U11 Boys 07","gid":"cbf9652c","gn":"Boys U11 DE","age":"U11","div":null,"stats":{"gp":16,"pts":2,"fg":1,"fouls":4,"finals":1,"gfApps":1,"wins":8,"losses":8,"gfWins":1}},{"tid":"1eacd40e","tn":"Blackburn U11 Boys 07","gid":"a6bbacc0","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":16,"fouls":4,"finals":1,"gfApps":1,"wins":8,"losses":8,"pts":2,"fg":1,"gfWins":1}},{"tid":"1eacd40e","tn":"Blackburn U11 Boys 07","gid":"bc727d28","gn":"Boys U11 C Grading","age":"U11","div":null,"stats":{"gp":16,"fouls":4,"finals":1,"gfApps":1,"wins":8,"losses":8,"pts":2,"fg":1,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:38:15.675Z","teams":[{"tid":"921abde7","sid":"1ae60211","status":"ACTIVE"},{"tid":"7ecc77d4","sid":"88026885","status":"COMPLETED"},{"tid":"1eacd40e","sid":"f373fc05","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:21:21.091Z","records":{"maxGamePTS":{"v":2,"gameKey":"1a931789","sid":"1ae60211"},"maxGameThreePt":{"v":null}},"games":["0a45c394","0b3946e6","1a931789","1ddac438","2b4dce35","37c3527a","3976fb05","4081c81d","449ab182","47144c17","50b86bb0","52b04142","7f5ea291","90f73153","9e71ec2a","acbf32f5","b5f78515","c274ac07","c941165b","cabc2ed8","cfd289e2","d8bf025f","d8c824fd","db774957","e3a3e38f","efad9014","f7135945","f7919503"]}
+{
+  "uuid": "3f767f29-dff4-488f-9dce-eda8cc889db9",
+  "name": "Blake Hall",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 8,
+      "fouls": 7,
+      "fg": 4,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 37,
+      "losses": 32,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T14:26:35.679Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "921abde7",
+          "tn": "Blackburn U11 Boys 16",
+          "gid": "2dc83d10",
+          "gn": "Boys U11 DD",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "7ecc77d4",
+          "tn": "Blackburn U12 Boys 17",
+          "gid": "51c96d96",
+          "gn": "Boys U12 DF",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 2,
+            "fg": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3,
+            "fouls": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "7ecc77d4",
+          "tn": "Blackburn U12 Boys 17",
+          "gid": "48599f53",
+          "gn": "Boys U12 D Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3,
+            "pts": 2,
+            "fg": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "1eacd40e",
+          "tn": "Blackburn U11 Boys 07",
+          "gid": "cbf9652c",
+          "gn": "Boys U11 DE",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 8,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "1eacd40e",
+          "tn": "Blackburn U11 Boys 07",
+          "gid": "a6bbacc0",
+          "gn": "Boys U11 D Grading",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 8,
+            "pts": 2,
+            "fg": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "1eacd40e",
+          "tn": "Blackburn U11 Boys 07",
+          "gid": "bc727d28",
+          "gn": "Boys U11 C Grading",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 8,
+            "pts": 2,
+            "fg": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:38:15.675Z",
+  "teams": [
+    {
+      "tid": "921abde7",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ecc77d4",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1eacd40e",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.514Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "1a931789",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0a45c394",
+    "0b3946e6",
+    "1a931789",
+    "1ddac438",
+    "2b4dce35",
+    "37c3527a",
+    "3976fb05",
+    "4081c81d",
+    "449ab182",
+    "47144c17",
+    "50b86bb0",
+    "52b04142",
+    "7f5ea291",
+    "90f73153",
+    "9e71ec2a",
+    "acbf32f5",
+    "b5f78515",
+    "c274ac07",
+    "c941165b",
+    "cabc2ed8",
+    "cfd289e2",
+    "d8bf025f",
+    "d8c824fd",
+    "db774957",
+    "e3a3e38f",
+    "efad9014",
+    "f7135945",
+    "f7919503"
+  ]
+}

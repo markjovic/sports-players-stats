@@ -1,1 +1,81 @@
-{"uuid":"ede1cc55-f1d7-426d-bf1b-c8bb2d64d632","name":"Gordon Leslie","sports":{"Basketball":{"maxGamePTS":20,"maxGameThreePt":6,"foulOuts":{},"gp":18,"pts":114,"fg":36,"ft":9,"threePt":11,"fouls":22,"statsChecked":"2026-07-06T19:02:07.862Z"}},"seasons":[{"sid":"205c1638","regs":[{"tid":"374d30e2"}]},{"sid":"26811ba3","regs":[{"tid":"b6590377"}]},{"sid":"dcf99310","regs":[{"tid":"7fe23fe8"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":20,"gameKey":"05fef66d","sid":"205c1638"},"maxGameThreePt":{"v":6,"gameKey":"05fef66d","sid":"205c1638"}}}
+{
+  "uuid": "ede1cc55-f1d7-426d-bf1b-c8bb2d64d632",
+  "name": "Gordon Leslie",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 20,
+      "maxGameThreePt": 6,
+      "foulOuts": {},
+      "gp": 18,
+      "pts": 114,
+      "fg": 36,
+      "ft": 9,
+      "threePt": 11,
+      "fouls": 22,
+      "statsChecked": "2026-07-06T19:02:07.862Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "374d30e2",
+          "gid": "3bac1eee",
+          "gn": "Monday Men E1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "26811ba3",
+      "regs": [
+        {
+          "tid": "b6590377",
+          "gid": "712d93ce",
+          "gn": "Monday Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "dcf99310",
+      "regs": [
+        {
+          "tid": "7fe23fe8",
+          "gid": "c42b7497",
+          "gn": "Monday Division 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "374d30e2",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6590377",
+      "sid": "26811ba3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7fe23fe8",
+      "sid": "dcf99310",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "05fef66d",
+      "sid": "205c1638"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "05fef66d",
+      "sid": "205c1638"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:30.615Z"
+}

@@ -1,1 +1,112 @@
-{"uuid":"5a6e25d7-f9cc-4d6e-a321-fd323c3d8f95","name":"Jackson Hurst","gender":"Men","sports":{"Basketball":{"gp":7,"pts":40,"fouls":5,"fg":16,"ft":2,"threePt":2,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"wins":3,"losses":3,"winPct":0.5,"statsChecked":"2026-07-08T17:51:53.662Z"}},"seasons":[{"sid":"a9f7ee61","sn":"Winter 2026","regs":[{"tid":"049eacea","tn":"MSAC Melbourne Rooftop Ballers","gid":"e3f7964a","gn":"Monday Open Men C GRADE - MSAC","age":"Senior","div":null,"stats":{"gp":5,"fouls":4,"ft":2,"fg":12,"threePt":2,"pts":32,"wins":2,"losses":3}}]},{"sid":"f992967d","regs":[{"tid":"51609a9c","stats":{"gp":2,"pts":8,"fg":4,"fouls":1,"wins":1}},{"tid":"51609a9c","tn":"","gid":"76801442","gn":"Wednesday Men B","div":null,"stats":{"gp":2,"pts":8,"fg":4,"fouls":1}}]}],"updatedAt":"2026-07-08T17:28:29.260Z","teams":[{"tid":"049eacea","sid":"a9f7ee61","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:36:58.820Z","records":{"maxGamePTS":{"v":12,"gameKey":"b8ae7160","sid":"a9f7ee61"},"maxGameThreePt":{"v":1,"gameKey":"76d0fd3e","sid":"a9f7ee61"}},"games":["4fd30e28","76d0fd3e","849f014f","ab61def1","b8ae7160","d59a7bb2"]}
+{
+  "uuid": "5a6e25d7-f9cc-4d6e-a321-fd323c3d8f95",
+  "name": "Jackson Hurst",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 40,
+      "fouls": 5,
+      "fg": 16,
+      "ft": 2,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 3,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-08T17:51:53.662Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a9f7ee61",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "049eacea",
+          "tn": "MSAC Melbourne Rooftop Ballers",
+          "gid": "e3f7964a",
+          "gn": "Monday Open Men C GRADE - MSAC",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 2,
+            "fg": 12,
+            "threePt": 2,
+            "pts": 32,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f992967d",
+      "regs": [
+        {
+          "tid": "51609a9c",
+          "stats": {
+            "gp": 2,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 1,
+            "wins": 1
+          },
+          "gid": "76801442",
+          "gn": "Wednesday Men B"
+        },
+        {
+          "tid": "51609a9c",
+          "tn": "",
+          "gid": "76801442",
+          "gn": "Wednesday Men B",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:28:29.260Z",
+  "teams": [
+    {
+      "tid": "049eacea",
+      "sid": "a9f7ee61",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "51609a9c",
+      "sid": "f992967d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.903Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "b8ae7160",
+      "sid": "a9f7ee61"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "76d0fd3e",
+      "sid": "a9f7ee61"
+    }
+  },
+  "games": [
+    "4fd30e28",
+    "76d0fd3e",
+    "849f014f",
+    "ab61def1",
+    "b8ae7160",
+    "d59a7bb2"
+  ]
+}

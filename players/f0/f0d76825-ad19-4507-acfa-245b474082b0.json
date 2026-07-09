@@ -1,1 +1,83 @@
-{"uuid":"f0d76825-ad19-4507-acfa-245b474082b0","gender":null,"sports":{"Basketball":{"gp":3,"pts":2,"fouls":4,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":3,"winPct":0,"statsChecked":"2026-07-05T16:04:24.563Z"}},"seasons":[{"sid":"05f86ef0","sn":"Summer 2020/21","club":"Fosters Phantoms Basketball Club","regs":[{"tid":"bcfc4d6e","tn":"Fosters Phantoms U21 Boys Team 5","gid":"960c38f3","gn":"Saturday U21 Boys C","stats":{"gp":3,"pts":2,"fouls":4,"fg":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:46:05.415Z","games":["327da519","3aac79ff","d2863629"],"records":{"maxGamePTS":{"v":2,"gameKey":"327da519","sid":"05f86ef0"},"maxGameThreePt":{"v":null}},"name":"Summer 2020/21"}
+{
+  "uuid": "f0d76825-ad19-4507-acfa-245b474082b0",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 2,
+      "fouls": 4,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:04:24.563Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "05f86ef0",
+      "sn": "Summer 2020/21",
+      "club": "Fosters Phantoms Basketball Club",
+      "regs": [
+        {
+          "tid": "bcfc4d6e",
+          "tn": "Fosters Phantoms U21 Boys Team 5",
+          "gid": "960c38f3",
+          "gn": "Saturday U21 Boys C",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fouls": 4,
+            "fg": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "37dc839f",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "983f04c7",
+          "tn": "Fosters B5",
+          "gid": "f4e7ddc9",
+          "gn": "Saturday U21 Boys C",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:05.415Z",
+  "games": [
+    "327da519",
+    "3aac79ff",
+    "d2863629"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "327da519",
+      "sid": "05f86ef0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "bcfc4d6e",
+      "sid": "05f86ef0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "983f04c7",
+      "sid": "37dc839f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.823Z"
+}

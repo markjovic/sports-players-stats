@@ -1,1 +1,98 @@
-{"uuid":"27f71f22-d6e7-409d-99de-0253e65f50b1","name":"Ryan Rui Zheng","gender":"Boys","sports":{"Basketball":{"gp":10,"pts":6,"fouls":16,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"losses":6,"winPct":0.4,"statsChecked":"2026-07-05T14:40:04.067Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"0756e830","tn":"Hills Start U10 Boys 1","gid":"d12ae6e8","gn":"BOYS UNDER 10 B2","age":null,"div":"B2","stats":{"gp":5,"pts":2,"fg":1,"fouls":9,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"a8dd4172","stats":{"wins":2,"losses":3,"gp":5,"pts":4,"fg":2,"fouls":7}}]}],"updatedAt":"2026-05-31T00:59:13.187Z","teams":[{"tid":"a8dd4172","sid":"0869ea69","status":"UPCOMING"},{"tid":"0756e830","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:54.732Z","records":{"maxGamePTS":{"v":2,"gameKey":"d58a4240","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["0294823f","1ca924ce","418d46e0","4d5e1a8e","503cc02e","66540e4e","686cae21","caf55466","d58a4240","ea686fe9"]}
+{
+  "uuid": "27f71f22-d6e7-409d-99de-0253e65f50b1",
+  "name": "Ryan Rui Zheng",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 6,
+      "fouls": 16,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 6,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:40:04.067Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "0756e830",
+          "tn": "Hills Start U10 Boys 1",
+          "gid": "d12ae6e8",
+          "gn": "BOYS UNDER 10 B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 5,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 9,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "a8dd4172",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 7
+          },
+          "gid": "3af54565",
+          "gn": "BOYS UNDER 10 A"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T00:59:13.187Z",
+  "teams": [
+    {
+      "tid": "0756e830",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8dd4172",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.986Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "d58a4240",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0294823f",
+    "1ca924ce",
+    "418d46e0",
+    "4d5e1a8e",
+    "503cc02e",
+    "66540e4e",
+    "686cae21",
+    "caf55466",
+    "d58a4240",
+    "ea686fe9"
+  ]
+}

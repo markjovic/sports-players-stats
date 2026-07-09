@@ -1,1 +1,106 @@
-{"uuid":"e7c896fd-a69f-4866-8e56-d854f347dcba","gender":null,"sports":{"Basketball":{"gp":2,"pts":4,"ft":4,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":1,"losses":1,"winPct":0.5,"statsChecked":"2026-07-05T15:52:20.174Z"}},"seasons":[{"sid":"0c2333fb","sn":"Winter 2024","club":null,"regs":[{"tid":"6cddd55f","tn":"Tornadoes (GREEN)","gid":"838a8079","gn":"Thursday Senior Mixed SOCIAL COMP","stats":{"gp":2,"pts":4,"ft":4,"wins":1,"losses":1}}]}],"updatedAt":"2026-06-11T23:45:47.576Z","games":["94b6cbd3","d3e7281f"],"records":{"maxGamePTS":{"v":3,"gameKey":"d3e7281f","sid":"0c2333fb"},"maxGameThreePt":{"v":null}},"name":"Winter 2024"}
+{
+  "uuid": "e7c896fd-a69f-4866-8e56-d854f347dcba",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 4,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:52:20.174Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0c2333fb",
+      "sn": "Winter 2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "6cddd55f",
+          "tn": "Tornadoes (GREEN)",
+          "gid": "838a8079",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "ft": 4,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "d2c925c7",
+          "tn": "Hurricanes (PINK)",
+          "gid": "838a8079",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7802b860",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "6c51fdc5",
+          "tn": "APEX LEGENDS (Pink)",
+          "gid": "b318292d",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {}
+        },
+        {
+          "tid": "286a7d25",
+          "tn": "SHADOW WOLVES (Green)",
+          "gid": "b318292d",
+          "gn": "Thursday Senior Mixed SOCIAL COMP",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:47.576Z",
+  "games": [
+    "94b6cbd3",
+    "d3e7281f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "d3e7281f",
+      "sid": "0c2333fb"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2024",
+  "teams": [
+    {
+      "tid": "6cddd55f",
+      "sid": "0c2333fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d2c925c7",
+      "sid": "0c2333fb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c51fdc5",
+      "sid": "7802b860",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "286a7d25",
+      "sid": "7802b860",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.163Z"
+}

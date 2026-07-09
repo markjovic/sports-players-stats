@@ -1,1 +1,132 @@
-{"uuid":"b1c3497d-e7be-4deb-ad1b-7bbb6bc076d3","gender":null,"sports":{"Basketball":{"gp":7,"pts":67,"fouls":6,"fg":23,"ft":6,"threePt":5,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":2,"wins":14,"winPct":1,"statsChecked":"2026-07-05T16:15:05.361Z"}},"seasons":[{"sid":"cc2b1283","sn":"Summer 2020/21","club":null,"regs":[{"tid":"ab678b1d","tn":"Jcrew Jousters","gid":"81bf4068","gn":"Saturday U18 Boys Div 2","stats":{"gp":7,"pts":67,"fouls":6,"fg":23,"ft":6,"threePt":5,"finals":1,"wins":7}},{"tid":"ab678b1d","tn":"Jcrew Jousters","gid":"3fa79b8d","gn":"Saturday U18 Boys Div 3","stats":{"gp":7,"pts":67,"fouls":6,"fg":23,"ft":6,"threePt":5,"finals":1,"wins":7}}]}],"updatedAt":"2026-06-11T23:43:49.848Z","games":["133d10e1","251f10f3","56891aa0","5bb662d8","8753509f","9746b610","d657ad1e"],"records":{"maxGamePTS":{"v":14,"gameKey":"8753509f","sid":"cc2b1283"},"maxGameThreePt":{"v":2,"gameKey":"9746b610","sid":"cc2b1283"}},"name":"Summer 2020/21"}
+{
+  "uuid": "b1c3497d-e7be-4deb-ad1b-7bbb6bc076d3",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 67,
+      "fouls": 6,
+      "fg": 23,
+      "ft": 6,
+      "threePt": 5,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 14,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:15:05.361Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "ab678b1d",
+          "tn": "Jcrew Jousters",
+          "gid": "81bf4068",
+          "gn": "Saturday U18 Boys Div 2",
+          "stats": {
+            "gp": 7,
+            "pts": 67,
+            "fouls": 6,
+            "fg": 23,
+            "ft": 6,
+            "threePt": 5,
+            "finals": 1,
+            "wins": 7
+          }
+        },
+        {
+          "tid": "ab678b1d",
+          "tn": "Jcrew Jousters",
+          "gid": "3fa79b8d",
+          "gn": "Saturday U18 Boys Div 3",
+          "stats": {
+            "gp": 7,
+            "pts": 67,
+            "fouls": 6,
+            "fg": 23,
+            "ft": 6,
+            "threePt": 5,
+            "finals": 1,
+            "wins": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "32dc16c1",
+          "tn": "Maccabi U18 Boys Warriors",
+          "gid": "a45dd494",
+          "gn": "U18 Boys GP1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "1d1c4dfd",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "2bb424d4",
+          "tn": "Maccabi U16 Boys Warriors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:49.848Z",
+  "games": [
+    "133d10e1",
+    "251f10f3",
+    "56891aa0",
+    "5bb662d8",
+    "8753509f",
+    "9746b610",
+    "d657ad1e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "8753509f",
+      "sid": "cc2b1283"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "9746b610",
+      "sid": "cc2b1283"
+    }
+  },
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "ab678b1d",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32dc16c1",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2bb424d4",
+      "sid": "1d1c4dfd",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:26.728Z"
+}

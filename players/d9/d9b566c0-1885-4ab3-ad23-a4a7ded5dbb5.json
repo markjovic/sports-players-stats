@@ -1,1 +1,197 @@
-{"uuid":"d9b566c0-1885-4ab3-ad23-a4a7ded5dbb5","name":"Abbi Tricarico","gender":"Women","sports":{"Basketball":{"gp":22,"pts":26,"fouls":19,"fg":13,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":8,"maxGameThreePt":null,"wins":14,"losses":11,"winPct":0.52,"draws":2,"statsChecked":"2026-07-05T15:26:28.765Z"}},"seasons":[{"sid":"56bbe16f","sn":"Summer 2025/26","club":"Drummo Dragons Basketball Club (Ballarat)","regs":[{"tid":"c19aeea5","tn":"Drummo Dragons Senior Women (Thu)","gid":"4190334d","gn":"Thursday Open Women 2","age":"Senior","div":null,"stats":{"gp":6,"fouls":5,"fg":4,"pts":8,"wins":3,"losses":2,"draws":1}},{"tid":"c19aeea5","tn":"Drummo Dragons Senior Women (Thu)","gid":"f6c10012","gn":"Thursday Open Women 1","age":"Senior","div":null,"stats":{"gp":6,"fouls":5,"wins":3,"losses":2,"draws":1,"pts":8,"fg":4}}]},{"sid":"21fa25fc","sn":"Winter 2025","club":"Drummo Dragons Basketball Club (Ballarat)","regs":[{"tid":"ab6b2b40","tn":"Drummo Dragons Senior Women (Thu)","gid":"014714ed","gn":"Thursday Open Women","age":"Senior","div":null,"stats":{"gp":15,"fouls":13,"fg":8,"pts":16,"finals":1,"wins":8,"losses":6}},{"tid":"5c7d0d07","tn":"Drummo Dragons Senior Women (Tue)","gid":"f09ee0b2","gn":"Tuesday B1 Women","age":null,"div":null,"stats":{"gp":1,"fouls":1,"fg":1,"pts":2,"finals":1,"losses":1}}]}],"updatedAt":"2026-07-04T05:36:51.483Z","teams":[{"tid":"c19aeea5","sid":"56bbe16f","status":"COMPLETED"},{"tid":"eefa60be","sid":"56bbe16f","status":"COMPLETED"},{"tid":"ab6b2b40","sid":"21fa25fc","status":"COMPLETED"},{"tid":"5c7d0d07","sid":"21fa25fc","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:48:37.947Z","games":["06915d6b","06f5725a","217c15b6","21f8bedd","26223c03","33c26905","3d38ed14","57d404e2","5ddc2083","77fa94b1","7d4d0859","8686ee4c","95a81c0d","9918718f","ac19b14c","be3ea556","c1714438","c444f7d0","c8cbb697","ec66f020","fbb2929b","fc04af22"],"records":{"maxGamePTS":{"v":8,"gameKey":"06f5725a","sid":"21fa25fc"},"maxGameThreePt":{"v":null}},"gameTids":{"fc04af22":"c19aeea5","c1714438":"c19aeea5","7d4d0859":"c19aeea5","fbb2929b":"c19aeea5","3d38ed14":"c19aeea5","33c26905":"c19aeea5","217c15b6":"ab6b2b40","c8cbb697":"ab6b2b40","ec66f020":"ab6b2b40","8686ee4c":"ab6b2b40","95a81c0d":"ab6b2b40","ac19b14c":"ab6b2b40","c444f7d0":"ab6b2b40","26223c03":"ab6b2b40","5ddc2083":"ab6b2b40","77fa94b1":"ab6b2b40","be3ea556":"ab6b2b40","21f8bedd":"ab6b2b40","06915d6b":"ab6b2b40","06f5725a":"ab6b2b40","9918718f":"ab6b2b40","57d404e2":"5c7d0d07"}}
+{
+  "uuid": "d9b566c0-1885-4ab3-ad23-a4a7ded5dbb5",
+  "name": "Abbi Tricarico",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 26,
+      "fouls": 19,
+      "fg": 13,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 14,
+      "losses": 11,
+      "winPct": 0.52,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:26:28.765Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "56bbe16f",
+      "sn": "Summer 2025/26",
+      "club": "Drummo Dragons Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "c19aeea5",
+          "tn": "Drummo Dragons Senior Women (Thu)",
+          "gid": "4190334d",
+          "gn": "Thursday Open Women 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c19aeea5",
+          "tn": "Drummo Dragons Senior Women (Thu)",
+          "gid": "f6c10012",
+          "gn": "Thursday Open Women 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "pts": 8,
+            "fg": 4
+          }
+        },
+        {
+          "tid": "eefa60be",
+          "tn": "Drummo Dragons Senior Women (Tue)",
+          "gid": "bffbed61",
+          "gn": "Tuesday B2 Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21fa25fc",
+      "sn": "Winter 2025",
+      "club": "Drummo Dragons Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "ab6b2b40",
+          "tn": "Drummo Dragons Senior Women (Thu)",
+          "gid": "014714ed",
+          "gn": "Thursday Open Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 13,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "wins": 8,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "5c7d0d07",
+          "tn": "Drummo Dragons Senior Women (Tue)",
+          "gid": "f09ee0b2",
+          "gn": "Tuesday B1 Women",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "finals": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:51.483Z",
+  "teams": [
+    {
+      "tid": "c19aeea5",
+      "sid": "56bbe16f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eefa60be",
+      "sid": "56bbe16f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab6b2b40",
+      "sid": "21fa25fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c7d0d07",
+      "sid": "21fa25fc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:29.226Z",
+  "games": [
+    "06915d6b",
+    "06f5725a",
+    "217c15b6",
+    "21f8bedd",
+    "26223c03",
+    "33c26905",
+    "3d38ed14",
+    "57d404e2",
+    "5ddc2083",
+    "77fa94b1",
+    "7d4d0859",
+    "8686ee4c",
+    "95a81c0d",
+    "9918718f",
+    "ac19b14c",
+    "be3ea556",
+    "c1714438",
+    "c444f7d0",
+    "c8cbb697",
+    "ec66f020",
+    "fbb2929b",
+    "fc04af22"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "06f5725a",
+      "sid": "21fa25fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "fc04af22": "c19aeea5",
+    "c1714438": "c19aeea5",
+    "7d4d0859": "c19aeea5",
+    "fbb2929b": "c19aeea5",
+    "3d38ed14": "c19aeea5",
+    "33c26905": "c19aeea5",
+    "217c15b6": "ab6b2b40",
+    "c8cbb697": "ab6b2b40",
+    "ec66f020": "ab6b2b40",
+    "8686ee4c": "ab6b2b40",
+    "95a81c0d": "ab6b2b40",
+    "ac19b14c": "ab6b2b40",
+    "c444f7d0": "ab6b2b40",
+    "26223c03": "ab6b2b40",
+    "5ddc2083": "ab6b2b40",
+    "77fa94b1": "ab6b2b40",
+    "be3ea556": "ab6b2b40",
+    "21f8bedd": "ab6b2b40",
+    "06915d6b": "ab6b2b40",
+    "06f5725a": "ab6b2b40",
+    "9918718f": "ab6b2b40",
+    "57d404e2": "5c7d0d07"
+  }
+}

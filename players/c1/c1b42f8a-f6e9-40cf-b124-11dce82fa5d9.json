@@ -1,1 +1,278 @@
-{"uuid":"c1b42f8a-f6e9-40cf-b124-11dce82fa5d9","name":"Owen Mizzi","gender":"Boys","sports":{"Basketball":{"gp":42,"pts":6,"fouls":7,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":33,"losses":90,"winPct":0.27,"statsChecked":"2026-07-05T14:58:17.249Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Diamond Creek Basketball Club Inc.","regs":[{"tid":"cd1393c7","tn":"Diamond Creek U08 Boys 3","gid":"4047496e","gn":"Saturday U08 Boys C1","age":"U08","div":"C1","stats":{"gp":12,"fouls":3,"fg":1,"pts":2,"wins":2,"losses":10}},{"tid":"cd1393c7","tn":"Diamond Creek U08 Boys 3","gid":"cb944c70","gn":"Saturday U08 Boys Grading Group 2","age":"U08","div":null,"stats":{"gp":12,"wins":2,"losses":10,"pts":2,"fg":1,"fouls":3}},{"tid":"cd1393c7","tn":"Diamond Creek U08 Boys 3","gid":"bb52f85d","gn":"Saturday U08 Boys Grading Group 3","age":"U08","div":null,"stats":{"gp":12,"wins":2,"losses":10,"pts":2,"fg":1,"fouls":3}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Diamond Creek Basketball Club Inc.","regs":[{"tid":"2d413a98","tn":"Diamond Creek U08 Boys 4","gid":"f8d0dddd","gn":"Saturday U08 Boys D2","age":"U08","div":"D2","stats":{"gp":13,"wins":3,"losses":9,"pts":2,"fg":1,"fouls":2}},{"tid":"2d413a98","tn":"Diamond Creek U08 Boys 4","gid":"90f0574f","gn":"Saturday U08 Boys D1","age":"U08","div":"D1","stats":{"gp":13,"wins":3,"losses":9,"pts":2,"fg":1,"fouls":2}},{"tid":"2d413a98","tn":"Diamond Creek U08 Boys 4","gid":"a19a1f88","gn":"Saturday U08 Boys Grading Group 2","age":"U08","div":null,"stats":{"gp":13,"fouls":2,"fg":1,"pts":2,"wins":3,"losses":9}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Diamond Creek Basketball Club Inc.","regs":[{"tid":"6f09d0a4","tn":"Diamond Creek U08 Boys 06","gid":"17e09247","gn":"Saturday U8 Boys D1","age":"U8","div":"D1","stats":{"gp":17,"fouls":2,"fg":1,"pts":2,"wins":6,"losses":11}},{"tid":"6f09d0a4","tn":"Diamond Creek U08 Boys 06","gid":"f9ab3e13","gn":"Saturday U8 Boys D2","age":"U8","div":"D2","stats":{"gp":17,"wins":6,"losses":11,"pts":2,"fg":1,"fouls":2}},{"tid":"6f09d0a4","tn":"Diamond Creek U08 Boys 06","gid":"43af154f","gn":"Saturday U8 Boys C2","age":"U8","div":"C2","stats":{"gp":17,"wins":6,"losses":11,"pts":2,"fg":1,"fouls":2}}]}],"updatedAt":"2026-06-01T06:32:23.456Z","teams":[{"tid":"cd1393c7","sid":"d868771d","status":"ACTIVE"},{"tid":"2d413a98","sid":"f57b7901","status":"COMPLETED"},{"tid":"6f09d0a4","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:41:18.731Z","games":["067bec2c","099a2961","0c97a67a","0d73074b","13825bf7","165c0514","3d911561","471f5725","4b99ab2d","4d1f0f33","5143ee57","5320239d","568f9df8","5abc8166","5c6a2f2f","5fd897e3","603e1192","635f6ff4","645f5f7f","753eec80","7b26687e","7da2ab29","807d7ad6","8761450d","8d97f0bc","99e9cc7d","9ed88019","a2f7bc9c","afa05026","b0a1f01a","b6584a8e","c689bd73","c7de825e","d0372979","d140afc7","d3230475","ecfdfb0d","ed4907f3","f4aa3c4e","f5f5939e","f76ef32c","f8dd26fb"],"records":{"maxGamePTS":{"v":2,"gameKey":"f4aa3c4e","sid":"d868771d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "c1b42f8a-f6e9-40cf-b124-11dce82fa5d9",
+  "name": "Owen Mizzi",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 6,
+      "fouls": 7,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 33,
+      "losses": 90,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T14:58:17.249Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Diamond Creek Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "cd1393c7",
+          "tn": "Diamond Creek U08 Boys 3",
+          "gid": "4047496e",
+          "gn": "Saturday U08 Boys C1",
+          "age": "U08",
+          "div": "C1",
+          "stats": {
+            "gp": 12,
+            "fouls": 3,
+            "fg": 1,
+            "pts": 2,
+            "wins": 2,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "cd1393c7",
+          "tn": "Diamond Creek U08 Boys 3",
+          "gid": "cb944c70",
+          "gn": "Saturday U08 Boys Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "wins": 2,
+            "losses": 10,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "cd1393c7",
+          "tn": "Diamond Creek U08 Boys 3",
+          "gid": "bb52f85d",
+          "gn": "Saturday U08 Boys Grading Group 3",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "wins": 2,
+            "losses": 10,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Diamond Creek Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "2d413a98",
+          "tn": "Diamond Creek U08 Boys 4",
+          "gid": "f8d0dddd",
+          "gn": "Saturday U08 Boys D2",
+          "age": "U08",
+          "div": "D2",
+          "stats": {
+            "gp": 13,
+            "wins": 3,
+            "losses": 9,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "2d413a98",
+          "tn": "Diamond Creek U08 Boys 4",
+          "gid": "90f0574f",
+          "gn": "Saturday U08 Boys D1",
+          "age": "U08",
+          "div": "D1",
+          "stats": {
+            "gp": 13,
+            "wins": 3,
+            "losses": 9,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "2d413a98",
+          "tn": "Diamond Creek U08 Boys 4",
+          "gid": "a19a1f88",
+          "gn": "Saturday U08 Boys Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 3,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Diamond Creek Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "6f09d0a4",
+          "tn": "Diamond Creek U08 Boys 06",
+          "gid": "17e09247",
+          "gn": "Saturday U8 Boys D1",
+          "age": "U8",
+          "div": "D1",
+          "stats": {
+            "gp": 17,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 6,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "6f09d0a4",
+          "tn": "Diamond Creek U08 Boys 06",
+          "gid": "f9ab3e13",
+          "gn": "Saturday U8 Boys D2",
+          "age": "U8",
+          "div": "D2",
+          "stats": {
+            "gp": 17,
+            "wins": 6,
+            "losses": 11,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "6f09d0a4",
+          "tn": "Diamond Creek U08 Boys 06",
+          "gid": "43af154f",
+          "gn": "Saturday U8 Boys C2",
+          "age": "U8",
+          "div": "C2",
+          "stats": {
+            "gp": 17,
+            "wins": 6,
+            "losses": 11,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "e930f11f",
+          "tn": "Diamond Creek U10 Boys 9",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:32:23.456Z",
+  "teams": [
+    {
+      "tid": "cd1393c7",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d413a98",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f09d0a4",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e930f11f",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.551Z",
+  "games": [
+    "067bec2c",
+    "099a2961",
+    "0c97a67a",
+    "0d73074b",
+    "13825bf7",
+    "165c0514",
+    "3d911561",
+    "471f5725",
+    "4b99ab2d",
+    "4d1f0f33",
+    "5143ee57",
+    "5320239d",
+    "568f9df8",
+    "5abc8166",
+    "5c6a2f2f",
+    "5fd897e3",
+    "603e1192",
+    "635f6ff4",
+    "645f5f7f",
+    "753eec80",
+    "7b26687e",
+    "7da2ab29",
+    "807d7ad6",
+    "8761450d",
+    "8d97f0bc",
+    "99e9cc7d",
+    "9ed88019",
+    "a2f7bc9c",
+    "afa05026",
+    "b0a1f01a",
+    "b6584a8e",
+    "c689bd73",
+    "c7de825e",
+    "d0372979",
+    "d140afc7",
+    "d3230475",
+    "ecfdfb0d",
+    "ed4907f3",
+    "f4aa3c4e",
+    "f5f5939e",
+    "f76ef32c",
+    "f8dd26fb"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f4aa3c4e",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

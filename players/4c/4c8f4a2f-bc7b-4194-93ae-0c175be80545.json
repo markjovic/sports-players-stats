@@ -1,1 +1,82 @@
-{"uuid":"4c8f4a2f-bc7b-4194-93ae-0c175be80545","gender":null,"sports":{"Basketball":{"gp":2,"pts":10,"fouls":3,"fg":5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"losses":2,"winPct":0,"statsChecked":"2026-07-05T16:13:12.894Z"}},"seasons":[{"sid":"be330458","sn":"Autumn 2021","club":null,"regs":[{"tid":"728480e7","tn":"Spetsnaz","gid":"34d100d8","gn":"Sunday Open Mixed","stats":{"gp":2,"pts":10,"fouls":3,"fg":5,"losses":2}}]}],"updatedAt":"2026-06-11T23:39:21.301Z","records":{"maxGamePTS":{"v":6,"gameKey":"9f98550b","sid":"be330458"},"maxGameThreePt":{"v":null}},"games":["9672f7f9","9f98550b"],"name":"Autumn 2021"}
+{
+  "uuid": "4c8f4a2f-bc7b-4194-93ae-0c175be80545",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 10,
+      "fouls": 3,
+      "fg": 5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:13:12.894Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "be330458",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "728480e7",
+          "tn": "Spetsnaz",
+          "gid": "34d100d8",
+          "gn": "Sunday Open Mixed",
+          "stats": {
+            "gp": 2,
+            "pts": 10,
+            "fouls": 3,
+            "fg": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8834b5a0",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "3da97527",
+          "tn": "the 15ers",
+          "gid": "ae556f5d",
+          "gn": "Monday Open Men B grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:21.301Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "9f98550b",
+      "sid": "be330458"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "9672f7f9",
+    "9f98550b"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "728480e7",
+      "sid": "be330458",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3da97527",
+      "sid": "8834b5a0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.216Z"
+}

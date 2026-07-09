@@ -1,1 +1,121 @@
-{"uuid":"d4c0df8a-ff4c-4943-9134-4b86dbea7a43","name":"grace wilson","gender":"Mixed","sports":{"Basketball":{"gp":11,"pts":35,"fouls":12,"fg":16,"ft":3,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":null,"wins":5,"draws":1,"winPct":0.83,"statsChecked":"2026-07-05T15:51:53.912Z"}},"seasons":[{"sid":"b7775cc6","sn":"Spring 2025","regs":[{"tid":"6cfee134","tn":"Senior - Black","gid":"4f4b1b97","gn":"Thursday Senior Mixed","age":"Senior","div":null,"stats":{"gp":6,"fouls":8,"fg":9,"pts":18,"wins":5,"draws":1}}]},{"sid":"f4722ed8","sn":"Autumn 2020","regs":[{"tid":"4abbc90b","tn":"U14 Girls Pink","gid":"b6483370","gn":"Tuesday U14 Girls","age":"U14","div":null,"stats":{"gp":5,"fouls":4,"ft":3,"fg":7,"pts":17}}]}],"updatedAt":"2026-06-02T19:36:04.022Z","teams":[{"tid":"6cfee134","sid":"b7775cc6","status":"COMPLETED"},{"tid":"336052fe","sid":"f6b90c77","status":"COMPLETED"},{"tid":"4abbc90b","sid":"f4722ed8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:05.262Z","games":["19452ba0","4b26368e","6cf44ed7","74318912","8a47a97f","8eecfcf7","a1a76712","a67a908b","c3114cc2","e2844dbd","fa023388"],"records":{"maxGamePTS":{"v":9,"gameKey":"8a47a97f","sid":"f4722ed8"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d4c0df8a-ff4c-4943-9134-4b86dbea7a43",
+  "name": "grace wilson",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 35,
+      "fouls": 12,
+      "fg": 16,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "draws": 1,
+      "winPct": 0.83,
+      "statsChecked": "2026-07-05T15:51:53.912Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b7775cc6",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "6cfee134",
+          "tn": "Senior - Black",
+          "gid": "4f4b1b97",
+          "gn": "Thursday Senior Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 8,
+            "fg": 9,
+            "pts": 18,
+            "wins": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f4722ed8",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "4abbc90b",
+          "tn": "U14 Girls Pink",
+          "gid": "b6483370",
+          "gn": "Tuesday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 3,
+            "fg": 7,
+            "pts": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f6b90c77",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "336052fe",
+          "tn": "Yr 7-10G Purple",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T19:36:04.022Z",
+  "teams": [
+    {
+      "tid": "6cfee134",
+      "sid": "b7775cc6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4abbc90b",
+      "sid": "f4722ed8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "336052fe",
+      "sid": "f6b90c77",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:28.815Z",
+  "games": [
+    "19452ba0",
+    "4b26368e",
+    "6cf44ed7",
+    "74318912",
+    "8a47a97f",
+    "8eecfcf7",
+    "a1a76712",
+    "a67a908b",
+    "c3114cc2",
+    "e2844dbd",
+    "fa023388"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "8a47a97f",
+      "sid": "f4722ed8"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

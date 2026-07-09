@@ -1,1 +1,183 @@
-{"uuid":"c0d1236e-0f9b-472e-a55e-b7c9bab13241","gender":null,"sports":{"Basketball":{"gp":12,"pts":36,"fouls":9,"fg":12,"threePt":4,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":2,"losses":1,"winPct":0.67,"statsChecked":"2026-07-05T16:03:36.451Z"}},"seasons":[{"sid":"9ce58175","sn":"Summer 2021/22","club":null,"regs":[{"tid":"d0b5987c","tn":"Kings","gid":"f17d77d5","gn":"Monday U20 Boys","stats":{"gp":1,"pts":3,"threePt":1,"losses":1}}]},{"sid":"3e625d62","sn":"Winter 2021","club":null,"regs":[{"tid":"8e76c26a","tn":"Lakers","gid":"486a5904","gn":"U16 Boys","stats":{"gp":2,"pts":9,"fouls":2,"threePt":3,"wins":2}}]},{"sid":"69029016","sn":"Autumn 2021","club":null,"regs":[{"tid":"454cb84e","tn":"Celtics","gid":"b5d8c988","gn":"Monday U16 Boys","stats":{"gp":8,"pts":24,"fouls":7,"fg":12}}]},{"sid":"20c83ee2","sn":"Autumn 2020","club":null,"regs":[{"tid":"4e107218","tn":"Spurs","gid":"96d34ad5","gn":"Under 16 Boys","stats":{"gp":1}}]}],"updatedAt":"2026-06-11T23:44:21.689Z","records":{"maxGamePTS":{"v":10,"gameKey":"fbf4ccac","sid":"69029016"},"maxGameThreePt":{"v":2,"gameKey":"611c6139","sid":"3e625d62"}},"games":["55854679","611c6139","6562c33a","757a4355","8d412a34","965cca08","9f31734a","ae4c96a0","b3c11a07","ebf469f5","f1bd4ce7","fbf4ccac"],"name":"Summer 2021/22"}
+{
+  "uuid": "c0d1236e-0f9b-472e-a55e-b7c9bab13241",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 36,
+      "fouls": 9,
+      "fg": 12,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 2,
+      "losses": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:03:36.451Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9ce58175",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d0b5987c",
+          "tn": "Kings",
+          "gid": "f17d77d5",
+          "gn": "Monday U20 Boys",
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "threePt": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "b2feac3c",
+          "tn": "CAVS",
+          "gid": "f17d77d5",
+          "gn": "Monday U20 Boys",
+          "stats": {}
+        },
+        {
+          "tid": "cb0dc311",
+          "tn": "Hurricanes",
+          "gid": "f17d77d5",
+          "gn": "Monday U20 Boys",
+          "stats": {}
+        },
+        {
+          "tid": "bf5d92b9",
+          "tn": "Raiders",
+          "gid": "f17d77d5",
+          "gn": "Monday U20 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e625d62",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "8e76c26a",
+          "tn": "Lakers",
+          "gid": "486a5904",
+          "gn": "U16 Boys",
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fouls": 2,
+            "threePt": 3,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "69029016",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "454cb84e",
+          "tn": "Celtics",
+          "gid": "b5d8c988",
+          "gn": "Monday U16 Boys",
+          "stats": {
+            "gp": 8,
+            "pts": 24,
+            "fouls": 7,
+            "fg": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "20c83ee2",
+      "sn": "Autumn 2020",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4e107218",
+          "tn": "Spurs",
+          "gid": "96d34ad5",
+          "gn": "Under 16 Boys",
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:21.689Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "fbf4ccac",
+      "sid": "69029016"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "611c6139",
+      "sid": "3e625d62"
+    }
+  },
+  "games": [
+    "55854679",
+    "611c6139",
+    "6562c33a",
+    "757a4355",
+    "8d412a34",
+    "965cca08",
+    "9f31734a",
+    "ae4c96a0",
+    "b3c11a07",
+    "ebf469f5",
+    "f1bd4ce7",
+    "fbf4ccac"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "d0b5987c",
+      "sid": "9ce58175",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2feac3c",
+      "sid": "9ce58175",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb0dc311",
+      "sid": "9ce58175",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf5d92b9",
+      "sid": "9ce58175",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e76c26a",
+      "sid": "3e625d62",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "454cb84e",
+      "sid": "69029016",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e107218",
+      "sid": "20c83ee2",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.518Z"
+}

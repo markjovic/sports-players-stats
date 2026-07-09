@@ -1,1 +1,109 @@
-{"uuid":"ebb4ba60-7853-4de4-af93-b9e50aa8baf2","name":"David Fleming","gender":"Men","sports":{"Basketball":{"gp":6,"pts":28,"fouls":3,"fg":3,"threePt":4,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":4,"wins":2,"losses":8,"winPct":0.2,"statsChecked":"2026-07-05T14:59:20.568Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"7ca43d50","tn":"Ben Cousins","gid":"39248390","gn":"Thursday Open Men Section 04","age":"Senior","div":null,"stats":{"gp":6,"fouls":3,"threePt":4,"pts":28,"fg":3,"wins":1,"losses":4}},{"tid":"7ca43d50","tn":"Ben Cousins","gid":"2446d760","gn":"Thursday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":6,"fouls":3,"pts":28,"wins":1,"losses":4,"fg":3,"threePt":4}}]}],"updatedAt":"2026-06-01T11:33:24.590Z","teams":[{"tid":"7ca43d50","sid":"5593103d","status":"ACTIVE"},{"tid":"1d2b6bd0","sid":"fab2be4d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:52:45.314Z","games":["8e4419aa","9f1520f6","a3f2e63e","a61cf1ba","becb7cd9"],"records":{"maxGamePTS":{"v":12,"gameKey":"a3f2e63e","sid":"5593103d"},"maxGameThreePt":{"v":4,"gameKey":"a3f2e63e","sid":"5593103d"}}}
+{
+  "uuid": "ebb4ba60-7853-4de4-af93-b9e50aa8baf2",
+  "name": "David Fleming",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 28,
+      "fouls": 3,
+      "fg": 3,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 4,
+      "wins": 2,
+      "losses": 8,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T14:59:20.568Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "7ca43d50",
+          "tn": "Ben Cousins",
+          "gid": "39248390",
+          "gn": "Thursday Open Men Section 04",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "threePt": 4,
+            "pts": 28,
+            "fg": 3,
+            "wins": 1,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "7ca43d50",
+          "tn": "Ben Cousins",
+          "gid": "2446d760",
+          "gn": "Thursday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "pts": 28,
+            "wins": 1,
+            "losses": 4,
+            "fg": 3,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "1d2b6bd0",
+          "tn": "Ben Cousins",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:33:24.590Z",
+  "teams": [
+    {
+      "tid": "7ca43d50",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d2b6bd0",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.423Z",
+  "games": [
+    "8e4419aa",
+    "9f1520f6",
+    "a3f2e63e",
+    "a61cf1ba",
+    "becb7cd9"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "a3f2e63e",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "a3f2e63e",
+      "sid": "5593103d"
+    }
+  }
+}

@@ -1,1 +1,320 @@
-{"uuid":"ebda79e6-5e29-4c74-9625-7801fff193d9","gender":null,"sports":{"Basketball":{"gp":41,"pts":310,"fouls":89,"fg":126,"ft":25,"threePt":11,"foulOuts":{"762d9301":1},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.4,"maxGamePTS":19,"maxGameThreePt":3,"wins":20,"losses":18,"winPct":0.53,"statsChecked":"2026-07-05T16:15:49.072Z"}},"seasons":[{"sid":"699ea041","sn":"Winter 2022","club":null,"regs":[{"tid":"c08a4a99","tn":"Blaze","gid":"f23667ae","gn":"Sunday Senior Men F Grade","stats":{"gp":11,"pts":121,"fouls":24,"fg":51,"ft":13,"threePt":2,"finals":1,"wins":5,"losses":5}},{"tid":"c08a4a99","tn":"Blaze","gid":"50be2007","gn":"Sunday Senior Men E Grading","stats":{"gp":11,"pts":121,"fouls":24,"fg":51,"finals":1,"wins":5,"losses":5,"ft":13,"threePt":2}}]},{"sid":"fbc7e3fe","sn":"Winter 2022","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"88c2e30e","tn":"Willy Cannons U18 Boys HER","gid":"e124403a","gn":"U18 Boys Div 1 A/B","stats":{"gp":9,"pts":29,"fouls":15,"fg":13,"ft":3,"finals":1,"wins":5,"losses":4}},{"tid":"88c2e30e","tn":"Willy Cannons U18 Boys HER","gid":"5adf7b3f","gn":"U18 Boys GRADING","stats":{"gp":9,"pts":29,"fouls":15,"fg":13,"finals":1,"wins":5,"losses":4,"ft":3}}]},{"sid":"7b35a4da","sn":"Summer 2021/22","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"b36a09e1","tn":"Willy Cannons U18 Boys MER","gid":"b45430fb","gn":"U18 Boys Div 1","stats":{"gp":9,"pts":68,"fouls":16,"fg":30,"ft":2,"threePt":2}},{"tid":"b36a09e1","tn":"Willy Cannons U18 Boys MER","gid":"762058ad","gn":"U18 Boys GRADING","stats":{"gp":9,"pts":68,"fouls":16,"fg":30,"threePt":2,"ft":2}}]},{"sid":"e7d885e4","sn":"Winter 2021","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"c1d6ddbe","tn":"Willy Cannons U18 Boys MER","gid":"077823b1","gn":"Saturday U18 Boys Div 1","stats":{"gp":2,"pts":19,"fouls":6,"fg":9,"ft":1}}]},{"sid":"762d9301","sn":"Summer 2020/21","club":"Williamstown Cannons Basketball Club Inc.","regs":[{"tid":"54423549","tn":"Willy Cannons U18 Boys MER","gid":"6c1184ea","gn":"U18 Boys Div 1","stats":{"gp":10,"pts":73,"fouls":28,"fg":23,"ft":6,"threePt":7,"foulOuts":1}},{"tid":"54423549","tn":"Willy Cannons U18 Boys MER","gid":"39a20b14","gn":"U18 Boys GRADING","stats":{"gp":10,"pts":73,"fouls":28,"fg":23,"ft":6,"threePt":7}}]}],"updatedAt":"2026-06-11T23:45:58.212Z","records":{"maxGamePTS":{"v":19,"gameKey":"06474341","sid":"699ea041"},"maxGameThreePt":{"v":3,"gameKey":"c0f20f5b","sid":"762d9301"}},"games":["004de5cc","00fa1226","06474341","0c97303b","0d3e4d64","121382d5","2d8c197a","30fd6938","32e139a2","3a332819","3b51010a","555dc879","562c3d05","579dc819","6a20af3f","6af5745c","6ed69d3a","7f9e2006","88202027","88d3ecd9","8b1f7d56","8ed0ffa3","9dbf0fcb","a06117ff","a1eedc31","a71f3194","aa01549e","add09d7e","b3218014","b705f303","b9fefddc","bc984916","be14d21f","c0f20f5b","c4a8fcca","c6843371","cf181ab7","f30846f3","f5ad2665","fac330f5"],"name":"Winter 2022"}
+{
+  "uuid": "ebda79e6-5e29-4c74-9625-7801fff193d9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 41,
+      "pts": 310,
+      "fouls": 89,
+      "fg": 126,
+      "ft": 25,
+      "threePt": 11,
+      "foulOuts": {
+        "762d9301": 1
+      },
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 19,
+      "maxGameThreePt": 3,
+      "wins": 20,
+      "losses": 18,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T16:15:49.072Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "699ea041",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c08a4a99",
+          "tn": "Blaze",
+          "gid": "f23667ae",
+          "gn": "Sunday Senior Men F Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 121,
+            "fouls": 24,
+            "fg": 51,
+            "ft": 13,
+            "threePt": 2,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "c08a4a99",
+          "tn": "Blaze",
+          "gid": "50be2007",
+          "gn": "Sunday Senior Men E Grading",
+          "stats": {
+            "gp": 11,
+            "pts": 121,
+            "fouls": 24,
+            "fg": 51,
+            "finals": 1,
+            "wins": 5,
+            "losses": 5,
+            "ft": 13,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbc7e3fe",
+      "sn": "Winter 2022",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "88c2e30e",
+          "tn": "Willy Cannons U18 Boys HER",
+          "gid": "e124403a",
+          "gn": "U18 Boys Div 1 A/B",
+          "stats": {
+            "gp": 9,
+            "pts": 29,
+            "fouls": 15,
+            "fg": 13,
+            "ft": 3,
+            "finals": 1,
+            "wins": 5,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "88c2e30e",
+          "tn": "Willy Cannons U18 Boys HER",
+          "gid": "5adf7b3f",
+          "gn": "U18 Boys GRADING",
+          "stats": {
+            "gp": 9,
+            "pts": 29,
+            "fouls": 15,
+            "fg": 13,
+            "finals": 1,
+            "wins": 5,
+            "losses": 4,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7b35a4da",
+      "sn": "Summer 2021/22",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "b36a09e1",
+          "tn": "Willy Cannons U18 Boys MER",
+          "gid": "b45430fb",
+          "gn": "U18 Boys Div 1",
+          "stats": {
+            "gp": 9,
+            "pts": 68,
+            "fouls": 16,
+            "fg": 30,
+            "ft": 2,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "b36a09e1",
+          "tn": "Willy Cannons U18 Boys MER",
+          "gid": "762058ad",
+          "gn": "U18 Boys GRADING",
+          "stats": {
+            "gp": 9,
+            "pts": 68,
+            "fouls": 16,
+            "fg": 30,
+            "threePt": 2,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e7d885e4",
+      "sn": "Winter 2021",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "c1d6ddbe",
+          "tn": "Willy Cannons U18 Boys MER",
+          "gid": "077823b1",
+          "gn": "Saturday U18 Boys Div 1",
+          "stats": {
+            "gp": 2,
+            "pts": 19,
+            "fouls": 6,
+            "fg": 9,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "762d9301",
+      "sn": "Summer 2020/21",
+      "club": "Williamstown Cannons Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "54423549",
+          "tn": "Willy Cannons U18 Boys MER",
+          "gid": "6c1184ea",
+          "gn": "U18 Boys Div 1",
+          "stats": {
+            "gp": 10,
+            "pts": 73,
+            "fouls": 28,
+            "fg": 23,
+            "ft": 6,
+            "threePt": 7,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "54423549",
+          "tn": "Willy Cannons U18 Boys MER",
+          "gid": "39a20b14",
+          "gn": "U18 Boys GRADING",
+          "stats": {
+            "gp": 10,
+            "pts": 73,
+            "fouls": 28,
+            "fg": 23,
+            "ft": 6,
+            "threePt": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "9b14beaf",
+          "tn": "Altona U16 Boys 1",
+          "gid": "b6301f90",
+          "gn": "U16 Boys VJL 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "bb316d41",
+          "tn": "CSBD U16 Boys 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:58.212Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "06474341",
+      "sid": "699ea041"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "c0f20f5b",
+      "sid": "762d9301"
+    }
+  },
+  "games": [
+    "004de5cc",
+    "00fa1226",
+    "06474341",
+    "0c97303b",
+    "0d3e4d64",
+    "121382d5",
+    "2d8c197a",
+    "30fd6938",
+    "32e139a2",
+    "3a332819",
+    "3b51010a",
+    "555dc879",
+    "562c3d05",
+    "579dc819",
+    "6a20af3f",
+    "6af5745c",
+    "6ed69d3a",
+    "7f9e2006",
+    "88202027",
+    "88d3ecd9",
+    "8b1f7d56",
+    "8ed0ffa3",
+    "9dbf0fcb",
+    "a06117ff",
+    "a1eedc31",
+    "a71f3194",
+    "aa01549e",
+    "add09d7e",
+    "b3218014",
+    "b705f303",
+    "b9fefddc",
+    "bc984916",
+    "be14d21f",
+    "c0f20f5b",
+    "c4a8fcca",
+    "c6843371",
+    "cf181ab7",
+    "f30846f3",
+    "f5ad2665",
+    "fac330f5"
+  ],
+  "name": "Winter 2022",
+  "teams": [
+    {
+      "tid": "c08a4a99",
+      "sid": "699ea041",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88c2e30e",
+      "sid": "fbc7e3fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b36a09e1",
+      "sid": "7b35a4da",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c1d6ddbe",
+      "sid": "e7d885e4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "54423549",
+      "sid": "762d9301",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b14beaf",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bb316d41",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.450Z"
+}

@@ -1,1 +1,241 @@
-{"uuid":"82893c39-4e89-43be-91a6-aa6c2a3f16b2","name":"Darcy Hillier","gender":"Boys","sports":{"Basketball":{"gp":38,"pts":73,"fouls":16,"fg":32,"ft":9,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":35,"losses":35,"winPct":0.5,"statsChecked":"2026-07-05T14:28:29.889Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Ormond Jets Basketball Club","regs":[{"tid":"97fbcaf0","tn":"JETS U10 Boys Anthony","gid":"eae45fee","gn":"Saturday U10 Boys Div  8 Modified","age":"U10","div":null,"stats":{"gp":6,"fouls":3,"ft":2,"fg":4,"pts":10,"wins":2,"losses":4}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"Ormond Jets Basketball Club","regs":[{"tid":"1b88c8bb","tn":"JETS U10 Boys Anthony","gid":"15a3ace1","gn":"Saturday U10 Boys Div  9 Modified","age":"U10","div":null,"stats":{"gp":16,"fouls":10,"ft":2,"fg":19,"pts":40,"finals":1,"wins":7,"losses":9}},{"tid":"1b88c8bb","tn":"JETS U10 Boys Anthony","gid":"377adb90","gn":"Saturday U10 Boys Div  8","age":"U10","div":"Div 8","stats":{"gp":16,"fouls":10,"fg":19,"pts":40,"finals":1,"wins":7,"losses":9,"ft":2}},{"tid":"1b88c8bb","tn":"JETS U10 Boys Anthony","gid":"b66fd93b","gn":"Saturday U10 Boys (Grading Rd 1) Div  9 Modified","age":"U10","div":null,"stats":{"gp":16,"ft":2,"fg":19,"pts":40,"finals":1,"wins":7,"losses":9,"fouls":10}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Carnegie Basketball Club","regs":[{"tid":"28abff98","tn":"Carnegie Chargers U8 Mixed Idan","gid":"abc91309","gn":"Saturday U8 Mixed BLUE Loans on the Run","age":"U8","div":null,"stats":{"gp":16,"fouls":3,"ft":5,"fg":9,"pts":23,"wins":12,"losses":4}}]}],"updatedAt":"2026-05-31T19:54:13.140Z","teams":[{"tid":"97fbcaf0","sid":"79d2b087","status":"ACTIVE"},{"tid":"1b88c8bb","sid":"4b758d19","status":"COMPLETED"},{"tid":"28abff98","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"6b8a6f1b","sid":"31d05517","status":"COMPLETED"},{"tid":"2b7c8c83","sid":"8884de2d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:51.797Z","records":{"maxGamePTS":{"v":7,"gameKey":"a4e76d93","sid":"6cb21cfc"},"maxGameThreePt":{"v":null}},"games":["07c5ccfe","1103a575","152a6ae5","164fc282","186c7994","248e99a8","327fce45","38523ef1","5157a63d","5f4747c2","63277150","64aad8d6","64e0a754","68979d01","75f1baf8","7b92c28a","9144a96d","9cb215d4","9f71d085","a0d9afe8","a4e76d93","a7f109f1","aa917931","af9e306d","b52f409f","b7e17118","b8dcd32d","ba0fdb4c","bc14c11e","bd286051","bf18617f","c9e2ee6d","cb15da1c","e30dac2f","e3175c08","f01e3628","f1048122","f481b6b7"]}
+{
+  "uuid": "82893c39-4e89-43be-91a6-aa6c2a3f16b2",
+  "name": "Darcy Hillier",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 73,
+      "fouls": 16,
+      "fg": 32,
+      "ft": 9,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 35,
+      "losses": 35,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:28:29.889Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "97fbcaf0",
+          "tn": "JETS U10 Boys Anthony",
+          "gid": "eae45fee",
+          "gn": "Saturday U10 Boys Div  8 Modified",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "1b88c8bb",
+          "tn": "JETS U10 Boys Anthony",
+          "gid": "15a3ace1",
+          "gn": "Saturday U10 Boys Div  9 Modified",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 10,
+            "ft": 2,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "1b88c8bb",
+          "tn": "JETS U10 Boys Anthony",
+          "gid": "377adb90",
+          "gn": "Saturday U10 Boys Div  8",
+          "age": "U10",
+          "div": "Div 8",
+          "stats": {
+            "gp": 16,
+            "fouls": 10,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "1b88c8bb",
+          "tn": "JETS U10 Boys Anthony",
+          "gid": "b66fd93b",
+          "gn": "Saturday U10 Boys (Grading Rd 1) Div  9 Modified",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "ft": 2,
+            "fg": 19,
+            "pts": 40,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "28abff98",
+          "tn": "Carnegie Chargers U8 Mixed Idan",
+          "gid": "abc91309",
+          "gn": "Saturday U8 Mixed BLUE Loans on the Run",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 3,
+            "ft": 5,
+            "fg": 9,
+            "pts": 23,
+            "wins": 12,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "6b8a6f1b",
+          "tn": "Mini Dunkers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "2b7c8c83",
+          "tn": "Carnegie Chargers U8 Mixed T+P Team 2 4274 T4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T19:54:13.140Z",
+  "teams": [
+    {
+      "tid": "97fbcaf0",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1b88c8bb",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "28abff98",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b8a6f1b",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2b7c8c83",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.257Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "a4e76d93",
+      "sid": "6cb21cfc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "07c5ccfe",
+    "1103a575",
+    "152a6ae5",
+    "164fc282",
+    "186c7994",
+    "248e99a8",
+    "327fce45",
+    "38523ef1",
+    "5157a63d",
+    "5f4747c2",
+    "63277150",
+    "64aad8d6",
+    "64e0a754",
+    "68979d01",
+    "75f1baf8",
+    "7b92c28a",
+    "9144a96d",
+    "9cb215d4",
+    "9f71d085",
+    "a0d9afe8",
+    "a4e76d93",
+    "a7f109f1",
+    "aa917931",
+    "af9e306d",
+    "b52f409f",
+    "b7e17118",
+    "b8dcd32d",
+    "ba0fdb4c",
+    "bc14c11e",
+    "bd286051",
+    "bf18617f",
+    "c9e2ee6d",
+    "cb15da1c",
+    "e30dac2f",
+    "e3175c08",
+    "f01e3628",
+    "f1048122",
+    "f481b6b7"
+  ]
+}

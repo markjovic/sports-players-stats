@@ -1,1 +1,112 @@
-{"uuid":"117ead55-728c-4304-aee2-a7e1fc964ee3","name":"Samuel Andreatta","gender":"Mixed","sports":{"Basketball":{"gp":10,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":6,"losses":2,"draws":2,"winPct":0.6,"statsChecked":"2026-07-05T16:26:37.916Z"}},"seasons":[{"sid":"6d28208f","sn":"Summer 2023/24","regs":[{"tid":"c083a307","tn":"Team 6","gid":"e79353cb","gn":"Tuesday U10 Boys","age":"U10","div":null,"stats":{"gp":8,"fouls":1,"wins":6,"losses":2}}]},{"sid":"06e1b5ff","sn":"Summer 2022/23","regs":[{"tid":"71fa94b3","tn":"Group 2","gid":"6fe0d6b2","gn":"Wednesday U8 Mixed","age":"U8","div":null,"stats":{"gp":2,"draws":2}}]}],"updatedAt":"2026-06-02T19:30:58.205Z","teams":[{"tid":"c083a307","sid":"6d28208f","status":"COMPLETED"},{"tid":"4161d683","sid":"5e4acbcd","status":"COMPLETED"},{"tid":"71fa94b3","sid":"06e1b5ff","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:57:51.232Z","statsChecked":"2026-06-20","games":["149acd53","440a5d17","523e42e0","5ceb86e6","63f7507a","922704a0","a563cb47","b414f15f","ed968e68","ee62abfb"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "117ead55-728c-4304-aee2-a7e1fc964ee3",
+  "name": "Samuel Andreatta",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 2,
+      "draws": 2,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-05T16:26:37.916Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6d28208f",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "c083a307",
+          "tn": "Team 6",
+          "gid": "e79353cb",
+          "gn": "Tuesday U10 Boys",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "wins": 6,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "06e1b5ff",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "71fa94b3",
+          "tn": "Group 2",
+          "gid": "6fe0d6b2",
+          "gn": "Wednesday U8 Mixed",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5e4acbcd",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "4161d683",
+          "tn": "BLUE - Group 6",
+          "gid": "39853fd2",
+          "gn": "Under 8 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T19:30:58.205Z",
+  "teams": [
+    {
+      "tid": "c083a307",
+      "sid": "6d28208f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71fa94b3",
+      "sid": "06e1b5ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4161d683",
+      "sid": "5e4acbcd",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.734Z",
+  "statsChecked": "2026-06-20",
+  "games": [
+    "149acd53",
+    "440a5d17",
+    "523e42e0",
+    "5ceb86e6",
+    "63f7507a",
+    "922704a0",
+    "a563cb47",
+    "b414f15f",
+    "ed968e68",
+    "ee62abfb"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

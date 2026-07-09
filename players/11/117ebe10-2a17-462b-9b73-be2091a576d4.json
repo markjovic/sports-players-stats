@@ -1,1 +1,77 @@
-{"uuid":"117ebe10-2a17-462b-9b73-be2091a576d4","name":"Patrick Buchanan89","gender":"Boys","sports":{"Basketball":{"gp":2,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"draws":1,"winPct":0.5,"statsChecked":"2026-07-05T16:26:43.173Z"}},"seasons":[{"sid":"caca55eb","sn":"Summer 2025/26","regs":[{"tid":"60ea6fee","tn":"GIANTS","gid":"29073475","gn":"Junior Boys","age":"Junior","div":null,"stats":{"gp":2,"wins":1,"draws":1}}]}],"updatedAt":"2026-06-03T04:58:14.852Z","teams":[{"tid":"60ea6fee","sid":"caca55eb","status":"COMPLETED"},{"tid":"7036708b","sid":"7f5c9c8e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:57:51.538Z","games":["421c5679","f8e8b4b6"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "117ebe10-2a17-462b-9b73-be2091a576d4",
+  "name": "Patrick Buchanan89",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "draws": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:26:43.173Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "caca55eb",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "60ea6fee",
+          "tn": "GIANTS",
+          "gid": "29073475",
+          "gn": "Junior Boys",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7f5c9c8e",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "7036708b",
+          "tn": "Manatunga U10",
+          "gid": "d0dc90bd",
+          "gn": "U10 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T04:58:14.852Z",
+  "teams": [
+    {
+      "tid": "60ea6fee",
+      "sid": "caca55eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7036708b",
+      "sid": "7f5c9c8e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.734Z",
+  "games": [
+    "421c5679",
+    "f8e8b4b6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

@@ -1,1 +1,91 @@
-{"uuid":"efbb59ac-e34c-482b-b120-1b02c48dc95b","name":"Jack Bastian","gender":"Men","sports":{"Basketball":{"gp":7,"pts":10,"fouls":6,"fg":2,"threePt":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":1,"losses":10,"winPct":0.17,"wins":2,"statsChecked":"2026-07-06T19:02:04.253Z"}},"seasons":[{"sid":"205c1638","sn":"Winter 2026","regs":[{"tid":"407f7ea8","tn":"Brick By Brick","gid":"3bac1eee","gn":"Monday Men E1 Grading","age":null,"div":null,"stats":{"gp":7,"fouls":6,"threePt":2,"pts":10,"losses":5,"fg":2,"wins":1}},{"tid":"407f7ea8","tn":"","gid":"3eafe5bb","gn":"Monday Men E2 Grade","div":null,"stats":{"gp":7,"pts":10,"fg":2,"threePt":2,"fouls":6,"wins":1,"losses":5}}]}],"updatedAt":"2026-07-06T18:34:16.626Z","teams":[{"tid":"407f7ea8","sid":"205c1638","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:53:53.312Z","records":{"maxGamePTS":{"v":4,"gameKey":"23bcbbb2","sid":"205c1638"},"maxGameThreePt":{"v":1,"gameKey":"3a81e67a","sid":"205c1638"}},"games":["23bcbbb2","26fa1059","5a19e09c","6748467f","73622d97","b7a7813e"]}
+{
+  "uuid": "efbb59ac-e34c-482b-b120-1b02c48dc95b",
+  "name": "Jack Bastian",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 10,
+      "fouls": 6,
+      "fg": 2,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "losses": 10,
+      "winPct": 0.17,
+      "wins": 2,
+      "statsChecked": "2026-07-06T19:02:04.253Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "407f7ea8",
+          "tn": "Brick By Brick",
+          "gid": "3eafe5bb",
+          "gn": "Monday Men E2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 6,
+            "threePt": 2,
+            "pts": 10,
+            "losses": 5,
+            "fg": 2,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "407f7ea8",
+          "tn": "",
+          "gid": "3eafe5bb",
+          "gn": "Monday Men E2 Grade",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 10,
+            "fg": 2,
+            "threePt": 2,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:16.626Z",
+  "teams": [
+    {
+      "tid": "407f7ea8",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:30.719Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "23bcbbb2",
+      "sid": "205c1638"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3a81e67a",
+      "sid": "205c1638"
+    }
+  },
+  "games": [
+    "23bcbbb2",
+    "26fa1059",
+    "5a19e09c",
+    "6748467f",
+    "73622d97",
+    "b7a7813e"
+  ]
+}

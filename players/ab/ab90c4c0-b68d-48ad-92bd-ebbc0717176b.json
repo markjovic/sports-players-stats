@@ -1,1 +1,155 @@
-{"uuid":"ab90c4c0-b68d-48ad-92bd-ebbc0717176b","name":"2021","gender":null,"sports":{"Basketball":{"gp":16,"pts":118,"fouls":28,"fg":16,"ft":20,"threePt":22,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":22,"maxGameThreePt":5,"wins":7,"losses":3,"winPct":0.7,"statsChecked":"2026-07-05T16:02:53.359Z"}},"seasons":[{"sid":"a5dfc5c1","sn":"2021","club":"Sandringham Sabres Basketball Club","regs":[{"tid":"e81dd312","tn":"Sandringham U21 Boys 1","gid":"e18bcf92","gn":"21 Boys - VC","stats":{"gp":6,"pts":57,"fouls":16,"fg":7,"ft":7,"threePt":12}}]},{"sid":"1603f576","sn":"Summer 2020/21","club":null,"regs":[{"tid":"96c4ce40","tn":"Lakers","gid":"60771013","gn":"Sunday U18 Boys A","stats":{"gp":10,"pts":61,"fouls":12,"fg":9,"ft":13,"threePt":10,"finals":1,"gfApps":1,"wins":7,"losses":3,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:43:28.789Z","records":{"maxGamePTS":{"v":22,"gameKey":"5b4f4c3f","sid":"1603f576"},"maxGameThreePt":{"v":5,"gameKey":"5b4f4c3f","sid":"1603f576"}},"games":["1b8d5312","27b66e96","4774b16a","5a4d57b3","5b4f4c3f","61fd7218","8ed8dcd4","a5ec172f","a6e831df","ac8510b8","acc83a68","b4582df9","ba52fc4d","cceddeec","ff84b1a1","ffc84aa0"]}
+{
+  "uuid": "ab90c4c0-b68d-48ad-92bd-ebbc0717176b",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 118,
+      "fouls": 28,
+      "fg": 16,
+      "ft": 20,
+      "threePt": 22,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 22,
+      "maxGameThreePt": 5,
+      "wins": 7,
+      "losses": 3,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T16:02:53.359Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Sandringham Sabres Basketball Club",
+      "regs": [
+        {
+          "tid": "e81dd312",
+          "tn": "Sandringham U21 Boys 1",
+          "gid": "e18bcf92",
+          "gn": "21 Boys - VC",
+          "stats": {
+            "gp": 6,
+            "pts": 57,
+            "fouls": 16,
+            "fg": 7,
+            "ft": 7,
+            "threePt": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1603f576",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "96c4ce40",
+          "tn": "Lakers",
+          "gid": "60771013",
+          "gn": "Sunday U18 Boys A",
+          "stats": {
+            "gp": 10,
+            "pts": 61,
+            "fouls": 12,
+            "fg": 9,
+            "ft": 13,
+            "threePt": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 3,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "96e58f39",
+          "tn": "Hairline Airlines",
+          "gid": "ed78e5a2",
+          "gn": "Thursday Open Men B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "9a5f1ed8",
+          "tn": "Dandenong U18 Boys 1",
+          "gid": "d3745db5",
+          "gn": "U18 Boys VC - Ashe",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:28.789Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "5b4f4c3f",
+      "sid": "1603f576"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "5b4f4c3f",
+      "sid": "1603f576"
+    }
+  },
+  "games": [
+    "1b8d5312",
+    "27b66e96",
+    "4774b16a",
+    "5a4d57b3",
+    "5b4f4c3f",
+    "61fd7218",
+    "8ed8dcd4",
+    "a5ec172f",
+    "a6e831df",
+    "ac8510b8",
+    "acc83a68",
+    "b4582df9",
+    "ba52fc4d",
+    "cceddeec",
+    "ff84b1a1",
+    "ffc84aa0"
+  ],
+  "teams": [
+    {
+      "tid": "e81dd312",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96c4ce40",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96e58f39",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a5f1ed8",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:26.412Z"
+}

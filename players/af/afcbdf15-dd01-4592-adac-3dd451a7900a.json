@@ -1,1 +1,330 @@
-{"uuid":"afcbdf15-dd01-4592-adac-3dd451a7900a","name":"Shloke Dey","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":28,"fouls":53,"fg":13,"ft":2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":62,"losses":96,"winPct":0.39,"statsChecked":"2026-07-05T14:15:45.599Z"}},"seasons":[{"sid":"15908988","sn":"Winter 2026","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"16480382","tn":"B11 Nunawading Kangas 7 (CPR)","gid":"5ecc18c5","gn":"Saturday U11 Boys E","age":"U11","div":null,"stats":{"gp":6,"fouls":4,"fg":5,"pts":10,"wins":3,"losses":3}},{"tid":"16480382","tn":"B11 Nunawading Kangas 7 (CPR)","gid":"80f6450a","gn":"Saturday U11 Boys ER","age":"U11","div":null,"stats":{"gp":6,"fouls":4,"wins":3,"losses":3,"pts":10,"fg":5}},{"tid":"16480382","tn":"B11 Nunawading Kangas 7 (CPR)","gid":"1100993c","gn":"Saturday U11 Boys F","age":"U11","div":null,"stats":{"gp":6,"fg":5,"pts":10,"wins":3,"losses":3,"fouls":4}},{"tid":"16480382","tn":"","gid":"55184734","gn":"Saturday U11 Boys DR","div":null,"stats":{"gp":6,"pts":10,"fg":5,"fouls":4,"wins":3,"losses":3}}]},{"sid":"bf7d2b4c","sn":"Summer 2025/26","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"37f13509","tn":"B11 Nunawading Kangas 2","gid":"2436bc9d","gn":"Friday U11 Boys CR","age":"U11","div":null,"stats":{"gp":17,"fouls":20,"wins":9,"losses":8}},{"tid":"37f13509","tn":"B11 Nunawading Kangas 2","gid":"357e55f4","gn":"Friday U11 Boys D","age":"U11","div":null,"stats":{"gp":17,"fouls":20,"wins":9,"losses":8}},{"tid":"37f13509","tn":"B11 Nunawading Kangas 2","gid":"5ebcf744","gn":"Friday U11 Boys DR","age":"U11","div":null,"stats":{"gp":17,"fouls":20,"wins":9,"losses":8}}]},{"sid":"bfbe9c11","sn":"Summer 2025/26","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"f8950e52","tn":"B11 Nunawading Kangas 8","gid":"5a1b897e","gn":"Saturday U11 Boys G","age":"U11","div":null,"stats":{"gp":16,"fouls":17,"ft":1,"fg":8,"pts":17,"wins":1,"losses":15}},{"tid":"f8950e52","tn":"B11 Nunawading Kangas 8","gid":"ee4dbe5c","gn":"Saturday U11 Boys FR","age":"U11","div":null,"stats":{"gp":16,"fouls":17,"wins":1,"losses":15,"pts":17,"fg":8,"ft":1}}]},{"sid":"f2d66c1b","sn":"Winter 2025","club":"Vermont Vultures Basketball Club","regs":[{"tid":"297c3515","tn":"B09 Vermont Vultures Grey","gid":"f839f16a","gn":"Saturday U09 Boys CR","age":"U09","div":null,"stats":{"gp":16,"fouls":12,"ft":1,"pts":1,"wins":7,"losses":10}},{"tid":"297c3515","tn":"B09 Vermont Vultures Grey","gid":"85e50644","gn":"Saturday U09 Boys D","age":"U09","div":null,"stats":{"gp":16,"fouls":12,"wins":7,"losses":10,"pts":1,"ft":1}},{"tid":"297c3515","tn":"B09 Vermont Vultures Grey","gid":"a78713ec","gn":"Saturday U09 Boys","age":"U09","div":null,"stats":{"gp":16,"fouls":12,"wins":7,"losses":10,"pts":1,"ft":1}}]}],"updatedAt":"2026-07-04T05:52:26.664Z","teams":[{"tid":"16480382","sid":"15908988","status":"ACTIVE"},{"tid":"37f13509","sid":"bf7d2b4c","status":"COMPLETED"},{"tid":"f8950e52","sid":"bfbe9c11","status":"COMPLETED"},{"tid":"297c3515","sid":"f2d66c1b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:38.065Z","games":["0692470d","07308a08","09461cff","09ed5a82","0c6f2a39","0e175f60","0e2aa242","0f161a97","126a40e0","14cae212","183a7abc","1b8fc651","1daa8ca5","23267cbf","241300e9","2494ce94","32d5aed4","35675d46","38bae6e3","3b178c1f","50cd92a7","549fb493","5e088845","68a8adc5","71c33417","71c76150","813d67be","85a5c530","88e56d11","890c2922","89a254b2","8ff00666","911b7921","94324302","96a40129","a24289f0","a2ac8269","b40c2254","b60d5d74","b70b2b36","be8776d5","c5e6b369","ca5244f9","ceb2a42a","d033bbc4","db830100","dc743401","dd5e5a02","dea4e7df","e1c5d693","e69365c4","ea876ba2","f05d92cd","fd1a60ef","ff51432b","ff7f2229"],"records":{"maxGamePTS":{"v":6,"gameKey":"e69365c4","sid":"15908988"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "afcbdf15-dd01-4592-adac-3dd451a7900a",
+  "name": "Shloke Dey",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 28,
+      "fouls": 53,
+      "fg": 13,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 62,
+      "losses": 96,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T14:15:45.599Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "15908988",
+      "sn": "Winter 2026",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "16480382",
+          "tn": "B11 Nunawading Kangas 7 (CPR)",
+          "gid": "55184734",
+          "gn": "Saturday U11 Boys DR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "fg": 5,
+            "pts": 10,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "16480382",
+          "tn": "B11 Nunawading Kangas 7 (CPR)",
+          "gid": "80f6450a",
+          "gn": "Saturday U11 Boys ER",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 3,
+            "pts": 10,
+            "fg": 5
+          }
+        },
+        {
+          "tid": "16480382",
+          "tn": "B11 Nunawading Kangas 7 (CPR)",
+          "gid": "1100993c",
+          "gn": "Saturday U11 Boys F",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fg": 5,
+            "pts": 10,
+            "wins": 3,
+            "losses": 3,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "16480382",
+          "tn": "",
+          "gid": "55184734",
+          "gn": "Saturday U11 Boys DR",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bf7d2b4c",
+      "sn": "Summer 2025/26",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "37f13509",
+          "tn": "B11 Nunawading Kangas 2",
+          "gid": "2436bc9d",
+          "gn": "Friday U11 Boys CR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 20,
+            "wins": 9,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "37f13509",
+          "tn": "B11 Nunawading Kangas 2",
+          "gid": "357e55f4",
+          "gn": "Friday U11 Boys D",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 20,
+            "wins": 9,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "37f13509",
+          "tn": "B11 Nunawading Kangas 2",
+          "gid": "5ebcf744",
+          "gn": "Friday U11 Boys DR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 20,
+            "wins": 9,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbe9c11",
+      "sn": "Summer 2025/26",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "f8950e52",
+          "tn": "B11 Nunawading Kangas 8",
+          "gid": "5a1b897e",
+          "gn": "Saturday U11 Boys G",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "wins": 1,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "f8950e52",
+          "tn": "B11 Nunawading Kangas 8",
+          "gid": "ee4dbe5c",
+          "gn": "Saturday U11 Boys FR",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 17,
+            "wins": 1,
+            "losses": 15,
+            "pts": 17,
+            "fg": 8,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f2d66c1b",
+      "sn": "Winter 2025",
+      "club": "Vermont Vultures Basketball Club",
+      "regs": [
+        {
+          "tid": "297c3515",
+          "tn": "B09 Vermont Vultures Grey",
+          "gid": "f839f16a",
+          "gn": "Saturday U09 Boys CR",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 12,
+            "ft": 1,
+            "pts": 1,
+            "wins": 7,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "297c3515",
+          "tn": "B09 Vermont Vultures Grey",
+          "gid": "85e50644",
+          "gn": "Saturday U09 Boys D",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 12,
+            "wins": 7,
+            "losses": 10,
+            "pts": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "297c3515",
+          "tn": "B09 Vermont Vultures Grey",
+          "gid": "a78713ec",
+          "gn": "Saturday U09 Boys",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 12,
+            "wins": 7,
+            "losses": 10,
+            "pts": 1,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:26.664Z",
+  "teams": [
+    {
+      "tid": "16480382",
+      "sid": "15908988",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "37f13509",
+      "sid": "bf7d2b4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f8950e52",
+      "sid": "bfbe9c11",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "297c3515",
+      "sid": "f2d66c1b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:26.625Z",
+  "games": [
+    "0692470d",
+    "07308a08",
+    "09461cff",
+    "09ed5a82",
+    "0c6f2a39",
+    "0e175f60",
+    "0e2aa242",
+    "0f161a97",
+    "126a40e0",
+    "14cae212",
+    "183a7abc",
+    "1b8fc651",
+    "1daa8ca5",
+    "23267cbf",
+    "241300e9",
+    "2494ce94",
+    "32d5aed4",
+    "35675d46",
+    "38bae6e3",
+    "3b178c1f",
+    "50cd92a7",
+    "549fb493",
+    "5e088845",
+    "68a8adc5",
+    "71c33417",
+    "71c76150",
+    "813d67be",
+    "85a5c530",
+    "88e56d11",
+    "890c2922",
+    "89a254b2",
+    "8ff00666",
+    "911b7921",
+    "94324302",
+    "96a40129",
+    "a24289f0",
+    "a2ac8269",
+    "b40c2254",
+    "b60d5d74",
+    "b70b2b36",
+    "be8776d5",
+    "c5e6b369",
+    "ca5244f9",
+    "ceb2a42a",
+    "d033bbc4",
+    "db830100",
+    "dc743401",
+    "dd5e5a02",
+    "dea4e7df",
+    "e1c5d693",
+    "e69365c4",
+    "ea876ba2",
+    "f05d92cd",
+    "fd1a60ef",
+    "ff51432b",
+    "ff7f2229"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "e69365c4",
+      "sid": "15908988"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

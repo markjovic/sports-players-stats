@@ -1,1 +1,244 @@
-{"uuid":"5288aea6-178b-417f-b97f-9f192de52f33","name":"Ben Morrell","gender":"Men","sports":{"Basketball":{"gp":31,"pts":196,"fouls":37,"fg":67,"ft":14,"threePt":16,"foulOuts":{},"finals":2,"gfApps":2,"gfWins":1,"finalsPerSeason":0.5,"maxGamePTS":19,"maxGameThreePt":3,"wins":19,"losses":20,"winPct":0.48,"draws":1,"statsChecked":"2026-07-05T15:48:28.704Z"}},"seasons":[{"sid":"a88d4358","sn":"Summer 2024/25","regs":[{"tid":"7bbb2a83","tn":"Beers","gid":"6a06a2fa","gn":"Tuesday Open Men C","age":"Senior","div":null,"stats":{"gp":7,"fouls":12,"ft":8,"fg":23,"threePt":3,"pts":63,"finals":1,"gfApps":1,"wins":6,"draws":1,"gfWins":1}}]},{"sid":"a41e2e17","sn":"Winter 2024","regs":[{"tid":"0920c150","tn":"Beers","gid":"b91253d9","gn":"Tuesday Open Men C","age":"Senior","div":null,"stats":{"gp":7,"fouls":3,"ft":1,"fg":11,"pts":23,"finals":1,"gfApps":1,"wins":1,"losses":1}},{"tid":"3e5dba32","stats":{"wins":5,"losses":9,"finals":1,"gfApps":1,"gp":14,"pts":95,"fg":27,"ft":5,"threePt":12,"fouls":21}}]},{"sid":"a41e2e17","sn":"Winter 2024","regs":[{"tid":"3e5dba32","tn":"Old Melburnians","gid":"8369bb9f","gn":"Wednesday Open Men A/A Res","age":"Senior","div":null,"stats":{"gp":14,"fouls":21,"ft":5,"fg":27,"threePt":12,"pts":95,"finals":1,"gfApps":1,"wins":5,"losses":9}}]},{"sid":"bc1dcefa","sn":"Winter 2022","regs":[{"tid":"682b8992","tn":"Beers","gid":"0c597371","gn":"Tuesday Open Men D","age":"Senior","div":null,"stats":{"gp":3,"fouls":1,"fg":6,"threePt":1,"pts":15,"wins":2,"losses":1}}]}],"updatedAt":"2026-06-02T08:19:24.998Z","teams":[{"tid":"7bbb2a83","sid":"a88d4358","status":"COMPLETED"},{"tid":"0920c150","sid":"a41e2e17","status":"COMPLETED"},{"tid":"3e5dba32","sid":"a41e2e17","status":"COMPLETED"},{"tid":"682b8992","sid":"bc1dcefa","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:33:01.082Z","records":{"maxGamePTS":{"v":19,"gameKey":"6b260c2d","sid":"a41e2e17"},"maxGameThreePt":{"v":3,"gameKey":"5898cddd","sid":"a41e2e17"}},"games":["01c01b24","048ded2d","0e39949d","2d79350c","34bd44f5","3acf01e8","3e702105","46635892","4bc6dc83","52401181","5898cddd","5b05e9ac","5ca44e0e","63ba76e5","65228bbe","6b260c2d","78d29760","83a7b58c","850bad52","970bc946","a8024149","c905da61","d7c84ad4","e9c7e949","ea074ce9","f664856b"],"gameTids":{"46635892":"7bbb2a83","52401181":"0920c150","850bad52":"7bbb2a83","048ded2d":"7bbb2a83","01c01b24":"7bbb2a83","970bc946":"7bbb2a83","34bd44f5":"7bbb2a83","f664856b":"7bbb2a83","6b260c2d":"0920c150","5a23ddc1":"0920c150","2a007615":"0920c150","23810dce":"0920c150","76b33d64":"0920c150","c15c9950":"0920c150","0e39949d":"3e5dba32","3acf01e8":"3e5dba32","c905da61":"3e5dba32","5898cddd":"3e5dba32","e9c7e949":"3e5dba32","4bc6dc83":"3e5dba32","d7c84ad4":"3e5dba32","ea074ce9":"3e5dba32","5ca44e0e":"3e5dba32","2d79350c":"3e5dba32","3e702105":"3e5dba32","78d29760":"3e5dba32","5b05e9ac":"3e5dba32","a8024149":"3e5dba32","63ba76e5":"682b8992","83a7b58c":"682b8992","65228bbe":"682b8992"}}
+{
+  "uuid": "5288aea6-178b-417f-b97f-9f192de52f33",
+  "name": "Ben Morrell",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 196,
+      "fouls": 37,
+      "fg": 67,
+      "ft": 14,
+      "threePt": 16,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 19,
+      "maxGameThreePt": 3,
+      "wins": 19,
+      "losses": 20,
+      "winPct": 0.48,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:48:28.704Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a88d4358",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "7bbb2a83",
+          "tn": "Beers",
+          "gid": "6a06a2fa",
+          "gn": "Tuesday Open Men C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 8,
+            "fg": 23,
+            "threePt": 3,
+            "pts": 63,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a41e2e17",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "0920c150",
+          "tn": "Beers",
+          "gid": "b91253d9",
+          "gn": "Tuesday Open Men C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 3,
+            "ft": 1,
+            "fg": 11,
+            "pts": 23,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "3e5dba32",
+          "stats": {
+            "wins": 5,
+            "losses": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 14,
+            "pts": 95,
+            "fg": 27,
+            "ft": 5,
+            "threePt": 12,
+            "fouls": 21
+          },
+          "gid": "8369bb9f",
+          "gn": "Wednesday Open Men A/A Res"
+        }
+      ]
+    },
+    {
+      "sid": "a41e2e17",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "3e5dba32",
+          "tn": "Old Melburnians",
+          "gid": "8369bb9f",
+          "gn": "Wednesday Open Men A/A Res",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "ft": 5,
+            "fg": 27,
+            "threePt": 12,
+            "pts": 95,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bc1dcefa",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "682b8992",
+          "tn": "Beers",
+          "gid": "0c597371",
+          "gn": "Tuesday Open Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 1,
+            "fg": 6,
+            "threePt": 1,
+            "pts": 15,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T08:19:24.998Z",
+  "teams": [
+    {
+      "tid": "7bbb2a83",
+      "sid": "a88d4358",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0920c150",
+      "sid": "a41e2e17",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e5dba32",
+      "sid": "a41e2e17",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "682b8992",
+      "sid": "bc1dcefa",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:21.484Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "6b260c2d",
+      "sid": "a41e2e17"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "5898cddd",
+      "sid": "a41e2e17"
+    }
+  },
+  "games": [
+    "01c01b24",
+    "048ded2d",
+    "0e39949d",
+    "2d79350c",
+    "34bd44f5",
+    "3acf01e8",
+    "3e702105",
+    "46635892",
+    "4bc6dc83",
+    "52401181",
+    "5898cddd",
+    "5b05e9ac",
+    "5ca44e0e",
+    "63ba76e5",
+    "65228bbe",
+    "6b260c2d",
+    "78d29760",
+    "83a7b58c",
+    "850bad52",
+    "970bc946",
+    "a8024149",
+    "c905da61",
+    "d7c84ad4",
+    "e9c7e949",
+    "ea074ce9",
+    "f664856b"
+  ],
+  "gameTids": {
+    "46635892": "7bbb2a83",
+    "52401181": "0920c150",
+    "850bad52": "7bbb2a83",
+    "048ded2d": "7bbb2a83",
+    "01c01b24": "7bbb2a83",
+    "970bc946": "7bbb2a83",
+    "34bd44f5": "7bbb2a83",
+    "f664856b": "7bbb2a83",
+    "6b260c2d": "0920c150",
+    "5a23ddc1": "0920c150",
+    "2a007615": "0920c150",
+    "23810dce": "0920c150",
+    "76b33d64": "0920c150",
+    "c15c9950": "0920c150",
+    "0e39949d": "3e5dba32",
+    "3acf01e8": "3e5dba32",
+    "c905da61": "3e5dba32",
+    "5898cddd": "3e5dba32",
+    "e9c7e949": "3e5dba32",
+    "4bc6dc83": "3e5dba32",
+    "d7c84ad4": "3e5dba32",
+    "ea074ce9": "3e5dba32",
+    "5ca44e0e": "3e5dba32",
+    "2d79350c": "3e5dba32",
+    "3e702105": "3e5dba32",
+    "78d29760": "3e5dba32",
+    "5b05e9ac": "3e5dba32",
+    "a8024149": "3e5dba32",
+    "63ba76e5": "682b8992",
+    "83a7b58c": "682b8992",
+    "65228bbe": "682b8992"
+  }
+}

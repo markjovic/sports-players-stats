@@ -1,1 +1,175 @@
-{"uuid":"7fa91442-e9e0-4e51-ae86-a2e15d7e8366","name":"Chloe Harris","gender":"Girls","sports":{"Basketball":{"gp":23,"pts":12,"fouls":31,"fg":6,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":27,"losses":12,"winPct":0.69,"statsChecked":"2026-07-05T15:36:57.386Z"}},"seasons":[{"sid":"803cd270","sn":"Winter 2026","club":"Gisborne Basketball Club","regs":[{"tid":"6dbf0030","tn":"Bulldogs U16 Girls B11","gid":"ddc1a4ad","gn":"U16 Girls Division 3","age":"U16","div":"Division 3","stats":{"gp":7,"fouls":8,"fg":4,"pts":8,"wins":3,"losses":4}}]},{"sid":"c40ee50f","sn":"Summer 2025/26","club":"Gisborne Basketball Club","regs":[{"tid":"20c164a2","tn":"Bulldogs U16 Girls B11","gid":"260a9b3d","gn":"U16 Girls Division 3","age":"U16","div":"Division 3","stats":{"gp":16,"fouls":23,"fg":2,"pts":4,"finals":1,"wins":12,"losses":4}},{"tid":"20c164a2","tn":"Bulldogs U16 Girls B11","gid":"73990713","gn":"U16 Girls Grading","age":"U16","div":null,"stats":{"gp":16,"fouls":23,"fg":2,"pts":4,"finals":1,"wins":12,"losses":4}}]}],"updatedAt":"2026-07-04T05:58:18.914Z","teams":[{"tid":"6dbf0030","sid":"803cd270","status":"ACTIVE"},{"tid":"20c164a2","sid":"c40ee50f","status":"COMPLETED"},{"tid":"14827542","sid":"4eeaea49","status":"COMPLETED"},{"tid":"f1aa53b0","sid":"8b05fee4","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:13.760Z","records":{"maxGamePTS":{"v":4,"gameKey":"b23e90ef","sid":"803cd270"},"maxGameThreePt":{"v":null}},"games":["039ab8ae","048c8bb4","0519c9fd","086f560d","11082d3c","1340d464","135b0155","41d62be8","4451c581","48a8ab00","56c96041","6589a7e7","659093fa","8dd9fc9d","955c7123","9b320a73","a6d178de","a92c4f31","b23e90ef","c0fd7311","e261c35e","e4332192","f9fd2c6c"]}
+{
+  "uuid": "7fa91442-e9e0-4e51-ae86-a2e15d7e8366",
+  "name": "Chloe Harris",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 12,
+      "fouls": 31,
+      "fg": 6,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 27,
+      "losses": 12,
+      "winPct": 0.69,
+      "statsChecked": "2026-07-05T15:36:57.386Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "803cd270",
+      "sn": "Winter 2026",
+      "club": "Gisborne Basketball Club",
+      "regs": [
+        {
+          "tid": "6dbf0030",
+          "tn": "Bulldogs U16 Girls B11",
+          "gid": "ddc1a4ad",
+          "gn": "U16 Girls Division 3",
+          "age": "U16",
+          "div": "Division 3",
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c40ee50f",
+      "sn": "Summer 2025/26",
+      "club": "Gisborne Basketball Club",
+      "regs": [
+        {
+          "tid": "20c164a2",
+          "tn": "Bulldogs U16 Girls B11",
+          "gid": "260a9b3d",
+          "gn": "U16 Girls Division 3",
+          "age": "U16",
+          "div": "Division 3",
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "fg": 2,
+            "pts": 4,
+            "finals": 1,
+            "wins": 12,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "20c164a2",
+          "tn": "Bulldogs U16 Girls B11",
+          "gid": "73990713",
+          "gn": "U16 Girls Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "fg": 2,
+            "pts": 4,
+            "finals": 1,
+            "wins": 12,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4eeaea49",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "14827542",
+          "tn": "Junior Development - PURPLE Bendigo Bendigo",
+          "gid": "98e98622",
+          "gn": "Wednesday U8 Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8b05fee4",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "f1aa53b0",
+          "tn": "JD - Bendigo Bank",
+          "gid": "57af08d6",
+          "gn": "Wednesday Junior Development",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:58:18.914Z",
+  "teams": [
+    {
+      "tid": "6dbf0030",
+      "sid": "803cd270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20c164a2",
+      "sid": "c40ee50f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "14827542",
+      "sid": "4eeaea49",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1aa53b0",
+      "sid": "8b05fee4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.149Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "b23e90ef",
+      "sid": "803cd270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "039ab8ae",
+    "048c8bb4",
+    "0519c9fd",
+    "086f560d",
+    "11082d3c",
+    "1340d464",
+    "135b0155",
+    "41d62be8",
+    "4451c581",
+    "48a8ab00",
+    "56c96041",
+    "6589a7e7",
+    "659093fa",
+    "8dd9fc9d",
+    "955c7123",
+    "9b320a73",
+    "a6d178de",
+    "a92c4f31",
+    "b23e90ef",
+    "c0fd7311",
+    "e261c35e",
+    "e4332192",
+    "f9fd2c6c"
+  ]
+}

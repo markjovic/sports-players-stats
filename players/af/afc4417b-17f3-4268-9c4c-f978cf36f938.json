@@ -1,1 +1,187 @@
-{"uuid":"afc4417b-17f3-4268-9c4c-f978cf36f938","name":"Lara Berghella","gender":"Girls","sports":{"Basketball":{"gp":38,"pts":63,"fouls":45,"fg":30,"ft":3,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{"bb2d59f8":1},"maxGamePTS":8,"maxGameThreePt":null,"wins":15,"losses":33,"winPct":0.31,"statsChecked":"2026-07-05T14:57:47.551Z"}},"seasons":[{"sid":"8ff9f39e","sn":"Winter 2026","club":"Eastern Eagles Basketball Club","regs":[{"tid":"6a24fdae","tn":"EEBC G15","gid":"69efa274","gn":"Wednesday U12 Girls BRES","age":"U12","div":null,"stats":{"gp":10,"fouls":8,"wins":4,"losses":6,"pts":10,"fg":5}},{"tid":"6a24fdae","tn":"","gid":"c3bbf83f","gn":"Wednesday U12 Girls C","div":null,"stats":{"gp":10,"pts":10,"fg":5,"fouls":8,"wins":4,"losses":6}}]},{"sid":"bb2d59f8","sn":"Spring 2025","club":"Wonga Park Primary School Basketball Club","regs":[{"tid":"2324ff94","tn":"WONGA PARK Lightning (Year 4)","gid":"639c33b3","gn":"Thursday Girls Grade 3/4","age":null,"div":null,"stats":{"gp":15,"fouls":30,"ft":2,"fg":17,"pts":36,"finals":1,"foulOuts":1,"wins":6,"losses":9}}]},{"sid":"fd2b7a84","sn":"Autumn 2025","club":"Wonga Park Primary School Basketball Club","regs":[{"tid":"3f3a88cd","tn":"WONGA PARK Lightning (Year 4)","gid":"b098e81b","gn":"Thursday Girls Grade 3/4","age":null,"div":null,"stats":{"gp":13,"fouls":7,"ft":1,"fg":8,"pts":17,"finals":1,"wins":1,"losses":12}}]}],"updatedAt":"2026-07-04T05:52:23.368Z","teams":[{"tid":"6a24fdae","sid":"8ff9f39e","status":"ACTIVE"},{"tid":"2324ff94","sid":"bb2d59f8","status":"COMPLETED"},{"tid":"3f3a88cd","sid":"fd2b7a84","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:37.605Z","games":["06409928","0e591980","135ccd51","16d13737","1b8ad337","212e446b","22f0e9c1","2341eed1","27180c23","4d42c92f","55ca709f","566f181b","56da2d0e","653a41b7","661fc82c","67f65934","68afc19b","74a1096e","82965d88","87a07437","8b4ce97b","8b9234a9","908be319","9d240356","9f1399d7","aebe21e0","b190c4d9","bbc11c1d","be2969f7","c21044f0","c74bdfc7","c8c95a0a","d75f7f48","da8f23e4","dfcbbfb1","eff6fd96","f26e110c","f29b04ab"],"records":{"maxGamePTS":{"v":8,"gameKey":"b190c4d9","sid":"8ff9f39e"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "afc4417b-17f3-4268-9c4c-f978cf36f938",
+  "name": "Lara Berghella",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 63,
+      "fouls": 45,
+      "fg": 30,
+      "ft": 3,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "bb2d59f8": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 15,
+      "losses": 33,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T14:57:47.551Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8ff9f39e",
+      "sn": "Winter 2026",
+      "club": "Eastern Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "6a24fdae",
+          "tn": "EEBC G15",
+          "gid": "c3bbf83f",
+          "gn": "Wednesday U12 Girls C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 8,
+            "wins": 4,
+            "losses": 6,
+            "pts": 10,
+            "fg": 5
+          }
+        },
+        {
+          "tid": "6a24fdae",
+          "tn": "",
+          "gid": "c3bbf83f",
+          "gn": "Wednesday U12 Girls C",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 8,
+            "wins": 4,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bb2d59f8",
+      "sn": "Spring 2025",
+      "club": "Wonga Park Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "2324ff94",
+          "tn": "WONGA PARK Lightning (Year 4)",
+          "gid": "639c33b3",
+          "gn": "Thursday Girls Grade 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 30,
+            "ft": 2,
+            "fg": 17,
+            "pts": 36,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fd2b7a84",
+      "sn": "Autumn 2025",
+      "club": "Wonga Park Primary School Basketball Club",
+      "regs": [
+        {
+          "tid": "3f3a88cd",
+          "tn": "WONGA PARK Lightning (Year 4)",
+          "gid": "b098e81b",
+          "gn": "Thursday Girls Grade 3/4",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "finals": 1,
+            "wins": 1,
+            "losses": 12
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:23.368Z",
+  "teams": [
+    {
+      "tid": "6a24fdae",
+      "sid": "8ff9f39e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2324ff94",
+      "sid": "bb2d59f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f3a88cd",
+      "sid": "fd2b7a84",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:26.618Z",
+  "games": [
+    "06409928",
+    "0e591980",
+    "135ccd51",
+    "16d13737",
+    "1b8ad337",
+    "212e446b",
+    "22f0e9c1",
+    "2341eed1",
+    "27180c23",
+    "4d42c92f",
+    "55ca709f",
+    "566f181b",
+    "56da2d0e",
+    "653a41b7",
+    "661fc82c",
+    "67f65934",
+    "68afc19b",
+    "74a1096e",
+    "82965d88",
+    "87a07437",
+    "8b4ce97b",
+    "8b9234a9",
+    "908be319",
+    "9d240356",
+    "9f1399d7",
+    "aebe21e0",
+    "b190c4d9",
+    "bbc11c1d",
+    "be2969f7",
+    "c21044f0",
+    "c74bdfc7",
+    "c8c95a0a",
+    "d75f7f48",
+    "da8f23e4",
+    "dfcbbfb1",
+    "eff6fd96",
+    "f26e110c",
+    "f29b04ab"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "b190c4d9",
+      "sid": "8ff9f39e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

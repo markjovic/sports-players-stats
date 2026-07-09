@@ -1,1 +1,95 @@
-{"uuid":"9fc5b6f3-03aa-4442-bbbd-a22e2f90a4ad","gender":null,"sports":{"Basketball":{"gp":7,"pts":17,"fouls":7,"fg":5,"ft":1,"threePt":2,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":2,"wins":5,"losses":2,"winPct":0.71,"statsChecked":"2026-07-05T16:22:59.020Z"}},"seasons":[{"sid":"8cb1849e","sn":"Autumn 2021","club":null,"regs":[{"tid":"c1ecccee","tn":"IC Red","gid":"ef945c54","gn":"Wednesday Men C1","stats":{"gp":7,"pts":17,"fouls":7,"fg":5,"ft":1,"threePt":2,"wins":5,"losses":2}}]}],"updatedAt":"2026-06-11T23:43:07.960Z","records":{"maxGamePTS":{"v":9,"gameKey":"439a8d20","sid":"8cb1849e"},"maxGameThreePt":{"v":2,"gameKey":"4ba0fe99","sid":"8cb1849e"}},"games":["29a075ac","34216777","439a8d20","479f638f","4ba0fe99","7a4926f0","aa450a46"],"name":"Autumn 2021"}
+{
+  "uuid": "9fc5b6f3-03aa-4442-bbbd-a22e2f90a4ad",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 17,
+      "fouls": 7,
+      "fg": 5,
+      "ft": 1,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 2,
+      "wins": 5,
+      "losses": 2,
+      "winPct": 0.71,
+      "statsChecked": "2026-07-05T16:22:59.020Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8cb1849e",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c1ecccee",
+          "tn": "IC Red",
+          "gid": "ef945c54",
+          "gn": "Wednesday Men C1",
+          "stats": {
+            "gp": 7,
+            "pts": 17,
+            "fouls": 7,
+            "fg": 5,
+            "ft": 1,
+            "threePt": 2,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "6135ff66",
+          "tn": "SKOC GREEN",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:07.960Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "439a8d20",
+      "sid": "8cb1849e"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4ba0fe99",
+      "sid": "8cb1849e"
+    }
+  },
+  "games": [
+    "29a075ac",
+    "34216777",
+    "439a8d20",
+    "479f638f",
+    "4ba0fe99",
+    "7a4926f0",
+    "aa450a46"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "c1ecccee",
+      "sid": "8cb1849e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6135ff66",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.876Z"
+}

@@ -1,1 +1,86 @@
-{"uuid":"5d983f1c-6585-4012-948f-a318ac69bae7","gender":null,"sports":{"Basketball":{"gp":6,"pts":24,"fouls":5,"fg":12,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":6,"winPct":1,"statsChecked":"2026-07-05T16:13:35.269Z"}},"seasons":[{"sid":"5469e8f3","sn":"Summer 2020/21","club":"Hornets Basketball Academy","regs":[{"tid":"a751e73c","tn":"Hornets U10 Boys 10.1","gid":"38334360","gn":"Saturday U10 Boys","stats":{"gp":6,"pts":24,"fouls":5,"fg":12,"wins":6}}]}],"updatedAt":"2026-06-11T23:39:59.337Z","records":{"maxGamePTS":{"v":8,"gameKey":"bcf55cb9","sid":"5469e8f3"},"maxGameThreePt":{"v":null}},"games":["16b1d2e2","46c176c5","5a4343b0","aaf12f79","bcf55cb9","dd0fe064"],"name":"Summer 2020/21"}
+{
+  "uuid": "5d983f1c-6585-4012-948f-a318ac69bae7",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 24,
+      "fouls": 5,
+      "fg": 12,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:13:35.269Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5469e8f3",
+      "sn": "Summer 2020/21",
+      "club": "Hornets Basketball Academy",
+      "regs": [
+        {
+          "tid": "a751e73c",
+          "tn": "Hornets U10 Boys 10.1",
+          "gid": "38334360",
+          "gn": "Saturday U10 Boys",
+          "stats": {
+            "gp": 6,
+            "pts": 24,
+            "fouls": 5,
+            "fg": 12,
+            "wins": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "95274e9e",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "8c7a7fc6",
+          "tn": "Hornets 10.3 Boys",
+          "gid": "a8788f73",
+          "gn": "Saturday U10 Boys B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:59.337Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "bcf55cb9",
+      "sid": "5469e8f3"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "16b1d2e2",
+    "46c176c5",
+    "5a4343b0",
+    "aaf12f79",
+    "bcf55cb9",
+    "dd0fe064"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "a751e73c",
+      "sid": "5469e8f3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c7a7fc6",
+      "sid": "95274e9e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:22.076Z"
+}

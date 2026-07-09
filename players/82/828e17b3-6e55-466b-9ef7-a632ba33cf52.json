@@ -1,1 +1,83 @@
-{"uuid":"828e17b3-6e55-466b-9ef7-a632ba33cf52","gender":null,"sports":{"Basketball":{"gp":5,"pts":3,"fouls":4,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":4,"draws":1,"winPct":0,"statsChecked":"2026-07-05T16:14:15.415Z"}},"seasons":[{"sid":"339df73a","sn":"Autumn 2022","club":"Portland Mustangs Basketball Club","regs":[{"tid":"29fdfa21","tn":"Mustangs (Team 2) D4M","gid":"2d5ebf2c","gn":"Div 4 Men","stats":{"gp":5,"pts":3,"fouls":4,"fg":1,"ft":1,"losses":4,"draws":1}}]}],"updatedAt":"2026-06-11T23:41:48.943Z","records":{"maxGamePTS":{"v":2,"gameKey":"8007b18a","sid":"339df73a"},"maxGameThreePt":{"v":null}},"games":["678efc34","8007b18a","eea7a33e","f9987ef9","fa623c23"],"name":"Autumn 2022"}
+{
+  "uuid": "828e17b3-6e55-466b-9ef7-a632ba33cf52",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 3,
+      "fouls": 4,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 4,
+      "draws": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:14:15.415Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "339df73a",
+      "sn": "Autumn 2022",
+      "club": "Portland Mustangs Basketball Club",
+      "regs": [
+        {
+          "tid": "29fdfa21",
+          "tn": "Mustangs (Team 2) D4M",
+          "gid": "2d5ebf2c",
+          "gn": "Div 4 Men",
+          "stats": {
+            "gp": 5,
+            "pts": 3,
+            "fouls": 4,
+            "fg": 1,
+            "ft": 1,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "78a5cc6d",
+          "tn": "Mustangs (Team 2) D3M",
+          "gid": "6578ceeb",
+          "gn": "Div 3 Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:48.943Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "8007b18a",
+      "sid": "339df73a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "678efc34",
+    "8007b18a",
+    "eea7a33e",
+    "f9987ef9",
+    "fa623c23"
+  ],
+  "name": "Autumn 2022",
+  "teams": [
+    {
+      "tid": "29fdfa21",
+      "sid": "339df73a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "78a5cc6d",
+      "sid": "339df73a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:24.261Z"
+}

@@ -1,1 +1,326 @@
-{"uuid":"38b46082-527c-49b2-baea-502cd24896b6","name":"Sadie Davies","gender":"Girls","sports":{"Basketball":{"gp":69,"pts":92,"fouls":46,"fg":45,"ft":2,"finals":6,"gfApps":2,"gfWins":0,"finalsPerSeason":0.86,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":27,"losses":32,"winPct":0.46,"statsChecked":"2026-07-05T16:00:04.288Z"}},"seasons":[{"sid":"d3b754a2","sn":"Spring 2025","regs":[{"tid":"9c0f6b49","tn":"U16/18 Girls Sparks","gid":"a49c46de","gn":"Tuesday U16/18 Girls","age":"U16","div":null,"stats":{"gp":10,"pts":14,"fg":7,"fouls":17,"finals":1,"wins":6,"losses":4}}]},{"sid":"7e7b8ce8","sn":"Spring 2024","regs":[{"tid":"311cf920","tn":"Juniors","gid":"b3b5c928","gn":"Tuesday U16/18 Girls","age":"U16","div":null,"stats":{"gp":12,"pts":6,"fg":3,"fouls":13,"finals":1,"wins":4,"losses":8}}]},{"sid":"12815be3","sn":"Autumn 2024","regs":[{"tid":"66f835a0","tn":"YOUTH - THE JUNIORS","gid":"07ff9c6a","gn":"YOUTH U16 - U20 Girls","age":"U16","div":null,"stats":{"gp":14,"pts":22,"fg":10,"ft":2,"fouls":4,"finals":1,"wins":5,"losses":9}}]},{"sid":"28f58beb","sn":"Spring 2023","regs":[{"tid":"e91f26b7","tn":"YOUTH - THE JUNIORS","gid":"46eb4e77","gn":"YOUTH U16 - U20 Girls","age":"U16","div":null,"stats":{"gp":4,"pts":14,"fg":7,"wins":1,"losses":3}}]},{"sid":"fd3317ff","sn":"Autumn 2023","regs":[{"tid":"064d2983","tn":"U14-18 Girls Vipers","gid":"0c5478ca","gn":"Tuesday U14 - U18 Girls","age":"U14","div":null,"stats":{"gp":9,"pts":6,"fg":3,"fouls":6,"finals":1,"gfApps":1,"wins":8,"losses":2}}]},{"sid":"9ce58175","sn":"Summer 2021/22","regs":[{"tid":"211e19f0","tn":"VIPERS","gid":"d828bf93","gn":"Tuesday U14 Girls","age":"U14","div":null,"stats":{"gp":9,"pts":12,"fg":6,"fouls":2,"finals":1,"wins":3,"losses":6}}]},{"sid":"69029016","sn":"Autumn 2021","regs":[{"tid":"73fad106","tn":"Jazz","gid":"7589a2a8","gn":"Tuesday U12 Girls","age":"U12","div":null,"stats":{"gp":11,"pts":18,"fg":9,"fouls":4,"finals":1,"gfApps":1}}]}],"updatedAt":"2026-06-02T08:42:16.823Z","teams":[{"tid":"9c0f6b49","sid":"d3b754a2","status":"COMPLETED"},{"tid":"311cf920","sid":"7e7b8ce8","status":"COMPLETED"},{"tid":"66f835a0","sid":"12815be3","status":"COMPLETED"},{"tid":"e91f26b7","sid":"28f58beb","status":"COMPLETED"},{"tid":"064d2983","sid":"fd3317ff","status":"COMPLETED"},{"tid":"211e19f0","sid":"9ce58175","status":"COMPLETED"},{"tid":"73fad106","sid":"69029016","status":"COMPLETED"},{"tid":"4a8f5190","sid":"26e3ca71","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:16:01.992Z","records":{"maxGamePTS":{"v":10,"gameKey":"0f56b961","sid":"d3b754a2"},"maxGameThreePt":{"v":null}},"games":["045d6062","08eae07f","0bf34652","0f56b961","11632fda","12610608","197437c0","1f5de3c4","25a3e2bc","273d2637","2f39df45","3303cc32","357d3428","3d0f6750","3e447d99","3ea609ed","3ea68808","3ffdd132","43574236","45a2cabe","4ca3dfdf","503ccd08","50cc5f10","5548c278","59c68f3e","5c6a5c39","5d22ff4d","6309830c","6c77d27f","6f71f484","814c360b","841d52de","85c57c7c","8686dd70","8791826f","8ad1e0fa","8e478c54","9253c73f","94ffd952","9d174199","9e47f268","a14e2b5a","ae654f30","b5a5fbe8","b5d415ee","b72f6eda","ba57abf5","bf28385a","c15129c9","c2315b7e","c2cb1313","c466ac23","c9734c13","cfadc578","d1f90b55","d4946e1b","d5007911","d5444d0d","da3a4b45","dedb8da9","e0dd06e1","e0efcf96","e79e7444","eb69d68d","f1971a11","f66868c1","fa4437bb","faa3b70e","fd40aa21","fd554b35"]}
+{
+  "uuid": "38b46082-527c-49b2-baea-502cd24896b6",
+  "name": "Sadie Davies",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 69,
+      "pts": 92,
+      "fouls": 46,
+      "fg": 45,
+      "ft": 2,
+      "finals": 6,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.86,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 27,
+      "losses": 32,
+      "winPct": 0.46,
+      "statsChecked": "2026-07-05T16:00:04.288Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3b754a2",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "9c0f6b49",
+          "tn": "U16/18 Girls Sparks",
+          "gid": "a49c46de",
+          "gn": "Tuesday U16/18 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 17,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7e7b8ce8",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "311cf920",
+          "tn": "Juniors",
+          "gid": "b3b5c928",
+          "gn": "Tuesday U16/18 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 13,
+            "finals": 1,
+            "wins": 4,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "12815be3",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "66f835a0",
+          "tn": "YOUTH - THE JUNIORS",
+          "gid": "07ff9c6a",
+          "gn": "YOUTH U16 - U20 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 22,
+            "fg": 10,
+            "ft": 2,
+            "fouls": 4,
+            "finals": 1,
+            "wins": 5,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "28f58beb",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "e91f26b7",
+          "tn": "YOUTH - THE JUNIORS",
+          "gid": "46eb4e77",
+          "gn": "YOUTH U16 - U20 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 14,
+            "fg": 7,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fd3317ff",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "064d2983",
+          "tn": "U14-18 Girls Vipers",
+          "gid": "0c5478ca",
+          "gn": "Tuesday U14 - U18 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9ce58175",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "211e19f0",
+          "tn": "VIPERS",
+          "gid": "d828bf93",
+          "gn": "Tuesday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 2,
+            "finals": 1,
+            "wins": 3,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "69029016",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "73fad106",
+          "tn": "Jazz",
+          "gid": "7589a2a8",
+          "gn": "Tuesday U12 Girls",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 18,
+            "fg": 9,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26e3ca71",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "4a8f5190",
+          "tn": "Jazz",
+          "gid": "1e69a192",
+          "gn": "Tuesday U12 Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T08:42:16.823Z",
+  "teams": [
+    {
+      "tid": "9c0f6b49",
+      "sid": "d3b754a2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "311cf920",
+      "sid": "7e7b8ce8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "66f835a0",
+      "sid": "12815be3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e91f26b7",
+      "sid": "28f58beb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "064d2983",
+      "sid": "fd3317ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "211e19f0",
+      "sid": "9ce58175",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "73fad106",
+      "sid": "69029016",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4a8f5190",
+      "sid": "26e3ca71",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.023Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "0f56b961",
+      "sid": "d3b754a2"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "045d6062",
+    "08eae07f",
+    "0bf34652",
+    "0f56b961",
+    "11632fda",
+    "12610608",
+    "197437c0",
+    "1f5de3c4",
+    "25a3e2bc",
+    "273d2637",
+    "2f39df45",
+    "3303cc32",
+    "357d3428",
+    "3d0f6750",
+    "3e447d99",
+    "3ea609ed",
+    "3ea68808",
+    "3ffdd132",
+    "43574236",
+    "45a2cabe",
+    "4ca3dfdf",
+    "503ccd08",
+    "50cc5f10",
+    "5548c278",
+    "59c68f3e",
+    "5c6a5c39",
+    "5d22ff4d",
+    "6309830c",
+    "6c77d27f",
+    "6f71f484",
+    "814c360b",
+    "841d52de",
+    "85c57c7c",
+    "8686dd70",
+    "8791826f",
+    "8ad1e0fa",
+    "8e478c54",
+    "9253c73f",
+    "94ffd952",
+    "9d174199",
+    "9e47f268",
+    "a14e2b5a",
+    "ae654f30",
+    "b5a5fbe8",
+    "b5d415ee",
+    "b72f6eda",
+    "ba57abf5",
+    "bf28385a",
+    "c15129c9",
+    "c2315b7e",
+    "c2cb1313",
+    "c466ac23",
+    "c9734c13",
+    "cfadc578",
+    "d1f90b55",
+    "d4946e1b",
+    "d5007911",
+    "d5444d0d",
+    "da3a4b45",
+    "dedb8da9",
+    "e0dd06e1",
+    "e0efcf96",
+    "e79e7444",
+    "eb69d68d",
+    "f1971a11",
+    "f66868c1",
+    "fa4437bb",
+    "faa3b70e",
+    "fd40aa21",
+    "fd554b35"
+  ]
+}

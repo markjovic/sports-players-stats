@@ -1,1 +1,88 @@
-{"uuid":"0b97e4d1-cc58-432e-a370-98ff66601840","name":"Madison Longmire","gender":"Girls","sports":{"Basketball":{"gp":5,"pts":18,"fouls":8,"fg":6,"ft":6,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"losses":5,"winPct":0,"statsChecked":"2026-07-05T15:20:26.306Z"}},"seasons":[{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"ec7addd6","tn":"Scorers Academy U14 Girls ","gid":"51352f3e","gn":"GIRLS UNDER 14 B1","age":null,"div":"B1","stats":{"gp":5,"pts":18,"fg":6,"ft":6,"fouls":8,"losses":5}}]}],"updatedAt":"2026-05-31T22:42:46.942Z","teams":[{"tid":"ec7addd6","sid":"1b51c73f","status":"COMPLETED"},{"tid":"87d99450","sid":"4d3f698f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:16.187Z","records":{"maxGamePTS":{"v":7,"gameKey":"00d7339c","sid":"1b51c73f"},"maxGameThreePt":{"v":null}},"games":["00d7339c","3518e876","a653b74e","ed9c021b","ff4a1f78"]}
+{
+  "uuid": "0b97e4d1-cc58-432e-a370-98ff66601840",
+  "name": "Madison Longmire",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 18,
+      "fouls": 8,
+      "fg": 6,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "losses": 5,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:20:26.306Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "ec7addd6",
+          "tn": "Scorers Academy U14 Girls ",
+          "gid": "51352f3e",
+          "gn": "GIRLS UNDER 14 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "pts": 18,
+            "fg": 6,
+            "ft": 6,
+            "fouls": 8,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4d3f698f",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "87d99450",
+          "tn": "Basketball ACT - 12 Girls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T22:42:46.942Z",
+  "teams": [
+    {
+      "tid": "ec7addd6",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87d99450",
+      "sid": "4d3f698f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.453Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "00d7339c",
+      "sid": "1b51c73f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00d7339c",
+    "3518e876",
+    "a653b74e",
+    "ed9c021b",
+    "ff4a1f78"
+  ]
+}

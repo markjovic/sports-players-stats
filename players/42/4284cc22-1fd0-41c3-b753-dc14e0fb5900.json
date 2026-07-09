@@ -1,1 +1,88 @@
-{"uuid":"4284cc22-1fd0-41c3-b753-dc14e0fb5900","name":"Perry Cho","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":2,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":5,"winPct":0.29,"wins":2,"statsChecked":"2026-07-05T16:21:51.200Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"5f616430","tn":"St Joseph's Celtics","gid":"a5b58e73","gn":"Friday Year 1 Boys STH","age":null,"div":null,"stats":{"gp":7,"fg":1,"pts":2,"losses":5,"wins":2}}]}],"updatedAt":"2026-06-02T22:42:42.021Z","teams":[{"tid":"5f616430","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:23:32.180Z","records":{"maxGamePTS":{"v":2,"gameKey":"f9f8be51","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["49f6c5cb","538402d7","5a704ad0","8eeccf09","ab21f921","cd77d53b","f9f8be51"]}
+{
+  "uuid": "4284cc22-1fd0-41c3-b753-dc14e0fb5900",
+  "name": "Perry Cho",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 2,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 5,
+      "winPct": 0.29,
+      "wins": 2,
+      "statsChecked": "2026-07-05T16:21:51.200Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "5f616430",
+          "tn": "St Joseph's Celtics",
+          "gid": "a5b58e73",
+          "gn": "Friday Year 1 Boys STH",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 1,
+            "pts": 2,
+            "losses": 5,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "578d20df",
+          "tn": "St Joseph's Celtics",
+          "gid": "b1693454",
+          "gn": "Friday Year 1 Boys B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:42.021Z",
+  "teams": [
+    {
+      "tid": "5f616430",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "578d20df",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:20.715Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f9f8be51",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "49f6c5cb",
+    "538402d7",
+    "5a704ad0",
+    "8eeccf09",
+    "ab21f921",
+    "cd77d53b",
+    "f9f8be51"
+  ]
+}

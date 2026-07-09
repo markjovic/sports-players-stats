@@ -1,1 +1,144 @@
-{"uuid":"168dbaaa-f4cf-4fd4-8267-2e4cf69e213a","name":"Adam Pasquill","gender":"Men","sports":{"Basketball":{"gp":13,"pts":63,"fouls":32,"fg":26,"ft":5,"threePt":2,"foulOuts":{"71efaeda":1},"maxGamePTS":21,"maxGameThreePt":1,"wins":3,"losses":8,"draws":1,"winPct":0.25,"statsChecked":"2026-07-06T18:55:17.092Z"}},"seasons":[{"sid":"71efaeda","sn":"Winter 2026","regs":[{"tid":"1a99706c","tn":"99 problems","gid":"d7cdc218","gn":"Sunday Mixed A/B","age":null,"div":null,"stats":{"gp":11,"pts":39,"fg":16,"ft":4,"fouls":23,"wins":3,"losses":4,"draws":1,"threePt":1}},{"tid":"e65b49b4","stats":{"losses":2,"gp":2,"pts":24,"fg":10,"ft":1,"threePt":1,"fouls":9}}]},{"sid":"71efaeda","sn":"Winter 2026","regs":[{"tid":"e65b49b4","tn":"Bounce Broz","gid":"c7da5b9e","gn":"Monday Men D3","age":null,"div":"D3","stats":{"gp":2,"pts":24,"threePt":1,"fg":10,"ft":1,"fouls":9,"foulOuts":1,"losses":2}}]}],"updatedAt":"2026-07-05T16:56:47.183Z","teams":[{"tid":"1a99706c","sid":"71efaeda","status":"ACTIVE"},{"tid":"e65b49b4","sid":"71efaeda","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:00:48.955Z","records":{"maxGamePTS":{"v":21,"gameKey":"62457c78","sid":"71efaeda"},"maxGameThreePt":{"v":1,"gameKey":"3cda517c","sid":"71efaeda"}},"games":["0bf1df65","19f853d6","20b0e4d9","5a841ca5","62457c78","7d3f32cc","94422d14","a2e25892","a7fd5825","d97d5488","f6fd256a"],"gameTids":{"c17a3383":"1a99706c","0bf1df65":"1a99706c","7d3f32cc":"1a99706c","94422d14":"1a99706c","20b0e4d9":"1a99706c","a7fd5825":"1a99706c","a2e25892":"1a99706c","19f853d6":"1a99706c","d97d5488":"1a99706c","5a841ca5":"1a99706c","3cda517c":"1a99706c","f6fd256a":"e65b49b4","62457c78":"e65b49b4"}}
+{
+  "uuid": "168dbaaa-f4cf-4fd4-8267-2e4cf69e213a",
+  "name": "Adam Pasquill",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 63,
+      "fouls": 32,
+      "fg": 26,
+      "ft": 5,
+      "threePt": 2,
+      "foulOuts": {
+        "71efaeda": 1
+      },
+      "maxGamePTS": 21,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 8,
+      "draws": 1,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-06T18:55:17.092Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "71efaeda",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "1a99706c",
+          "tn": "99 problems",
+          "gid": "d7cdc218",
+          "gn": "Sunday Mixed A/B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 39,
+            "fg": 16,
+            "ft": 4,
+            "fouls": 23,
+            "wins": 3,
+            "losses": 4,
+            "draws": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "e65b49b4",
+          "stats": {
+            "losses": 2,
+            "gp": 2,
+            "pts": 24,
+            "fg": 10,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 9
+          },
+          "gid": "c7da5b9e",
+          "gn": "Monday Men D3"
+        }
+      ]
+    },
+    {
+      "sid": "71efaeda",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e65b49b4",
+          "tn": "Bounce Broz",
+          "gid": "c7da5b9e",
+          "gn": "Monday Men D3",
+          "age": null,
+          "div": "D3",
+          "stats": {
+            "gp": 2,
+            "pts": 24,
+            "threePt": 1,
+            "fg": 10,
+            "ft": 1,
+            "fouls": 9,
+            "foulOuts": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-05T16:56:47.183Z",
+  "teams": [
+    {
+      "tid": "1a99706c",
+      "sid": "71efaeda",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e65b49b4",
+      "sid": "71efaeda",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.023Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "62457c78",
+      "sid": "71efaeda"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3cda517c",
+      "sid": "71efaeda"
+    }
+  },
+  "games": [
+    "0bf1df65",
+    "19f853d6",
+    "20b0e4d9",
+    "5a841ca5",
+    "62457c78",
+    "7d3f32cc",
+    "94422d14",
+    "a2e25892",
+    "a7fd5825",
+    "d97d5488",
+    "f6fd256a"
+  ],
+  "gameTids": {
+    "c17a3383": "1a99706c",
+    "0bf1df65": "1a99706c",
+    "7d3f32cc": "1a99706c",
+    "94422d14": "1a99706c",
+    "20b0e4d9": "1a99706c",
+    "a7fd5825": "1a99706c",
+    "a2e25892": "1a99706c",
+    "19f853d6": "1a99706c",
+    "d97d5488": "1a99706c",
+    "5a841ca5": "1a99706c",
+    "3cda517c": "1a99706c",
+    "f6fd256a": "e65b49b4",
+    "62457c78": "e65b49b4"
+  }
+}

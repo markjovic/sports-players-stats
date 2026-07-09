@@ -1,1 +1,84 @@
-{"uuid":"9bcdbfdb-f6c3-4dd0-a333-446e586f8854","name":"sasha ernest","sports":{"Basketball":{"maxGamePTS":19,"maxGameThreePt":2,"foulOuts":{},"gp":14,"pts":95,"fg":26,"ft":13,"threePt":10,"fouls":15,"statsChecked":"2026-07-07T18:28:56.021Z"}},"seasons":[{"sid":"b3025a8e","regs":[{"tid":"ade37ef4"}]},{"sid":"cbfb5a5c","regs":[{"tid":"e149b7c5"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":19,"gameKey":"a43a9d5c","sid":"cbfb5a5c"},"maxGameThreePt":{"v":2,"gameKey":"c2273704","sid":"cbfb5a5c"}}}
+{
+  "uuid": "9bcdbfdb-f6c3-4dd0-a333-446e586f8854",
+  "name": "sasha ernest",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 19,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 14,
+      "pts": 95,
+      "fg": 26,
+      "ft": 13,
+      "threePt": 10,
+      "fouls": 15,
+      "statsChecked": "2026-07-07T18:28:56.021Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3025a8e",
+      "regs": [
+        {
+          "tid": "ade37ef4",
+          "gid": "8c7c7835",
+          "gn": "Tuesday Women C"
+        }
+      ]
+    },
+    {
+      "sid": "cbfb5a5c",
+      "regs": [
+        {
+          "tid": "e149b7c5",
+          "gid": "0ae1d741",
+          "gn": "Sunday U18 Girls DIV 2"
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "05595071",
+          "tn": "Maccabi U18 Girls Blue (1)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "ade37ef4",
+      "sid": "b3025a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e149b7c5",
+      "sid": "cbfb5a5c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05595071",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "a43a9d5c",
+      "sid": "cbfb5a5c"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "c2273704",
+      "sid": "cbfb5a5c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:25.725Z"
+}

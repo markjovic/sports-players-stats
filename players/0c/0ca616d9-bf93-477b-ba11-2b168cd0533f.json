@@ -1,1 +1,300 @@
-{"uuid":"0ca616d9-bf93-477b-ba11-2b168cd0533f","name":"Ben Ellul","gender":"Boys","sports":{"Basketball":{"gp":36,"pts":119,"fouls":35,"fg":32,"ft":4,"threePt":17,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":3,"wins":49,"losses":34,"draws":7,"winPct":0.54,"statsChecked":"2026-07-08T17:49:46.654Z"}},"seasons":[{"sid":"f30d4c74","sn":"Summer 2023/24","club":"Banyule Hawks Basketball Club","regs":[{"tid":"12f98466","tn":"Banyule U16 Boys 06","gid":"c46bdfa2","gn":"Boys U16 BE","age":"U16","div":null,"stats":{"gp":8,"pts":21,"threePt":3,"fg":6,"fouls":2,"wins":4,"losses":4}},{"tid":"12f98466","tn":"Banyule U16 Boys 06","gid":"61818d8b","gn":"Boys U16 B Grading","age":"U16","div":null,"stats":{"gp":8,"pts":21,"fg":6,"wins":4,"losses":4,"threePt":3,"fouls":2}},{"tid":"12f98466","tn":"Banyule U16 Boys 06","gid":"7964b4e3","gn":"Boys U16 C Grading","age":"U16","div":null,"stats":{"gp":8,"pts":21,"fg":6,"fouls":2,"wins":4,"losses":4,"threePt":3}}]},{"sid":"5161abf1","sn":"Winter 2023","club":"Banyule Hawks Basketball Club","regs":[{"tid":"fd1343cb","tn":"Banyule U15 Boys 04","gid":"f132fb81","gn":"Boys U15 CC","age":"U15","div":null,"stats":{"gp":12,"pts":50,"threePt":8,"fg":12,"ft":2,"fouls":15,"wins":7,"losses":4,"draws":1}},{"tid":"fd1343cb","tn":"Banyule U15 Boys 04","gid":"5919c250","gn":"Boys U15 C Grading","age":"U15","div":null,"stats":{"gp":12,"pts":50,"fg":12,"fouls":15,"wins":7,"losses":4,"draws":1,"ft":2,"threePt":8}},{"tid":"fd1343cb","tn":"Banyule U15 Boys 04","gid":"0200f734","gn":"Boys U15 B Grading","age":"U15","div":null,"stats":{"gp":12,"pts":50,"threePt":8,"fg":12,"fouls":15,"wins":7,"losses":4,"draws":1,"ft":2}}]},{"sid":"43299630","sn":"Summer 2022/23","club":"Banyule Hawks Basketball Club","regs":[{"tid":"a85d2515","tn":"Banyule U14 Boys 04","gid":"497eab6d","gn":"Boys U14 BH","age":"U14","div":null,"stats":{"gp":12,"pts":30,"threePt":2,"fg":12,"fouls":12,"wins":7,"losses":3,"draws":2}},{"tid":"a85d2515","tn":"Banyule U14 Boys 04","gid":"870ecb41","gn":"Boys U14 B Grading","age":"U14","div":null,"stats":{"gp":12,"pts":30,"fg":12,"fouls":12,"wins":7,"losses":3,"draws":2,"threePt":2}}]},{"sid":"702b232f","regs":[{"tid":"e2c96c95","stats":{"losses":2,"gp":4,"pts":18,"fg":2,"ft":2,"threePt":4,"fouls":6,"wins":1}},{"tid":"e2c96c95","tn":"","gid":"032acf0f","gn":"Wednesday Men -Div 2","div":null,"stats":{"gp":4,"pts":18,"fg":2,"ft":2,"threePt":4,"fouls":6,"wins":1,"losses":2}}]}],"updatedAt":"2026-07-08T17:26:58.055Z","teams":[{"tid":"e2c96c95","sid":"702b232f","status":"ACTIVE"},{"tid":"12f98466","sid":"f30d4c74","status":"COMPLETED"},{"tid":"fd1343cb","sid":"5161abf1","status":"COMPLETED"},{"tid":"a85d2515","sid":"43299630","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:58.787Z","records":{"maxGamePTS":{"v":9,"gameKey":"c4c22a3d","sid":"702b232f"},"maxGameThreePt":{"v":3,"gameKey":"299f635f","sid":"5161abf1"}},"games":["064faaf7","15104921","160d837e","164ed47d","17fddc1c","1f18b1ff","299f635f","3aa04af9","3f301b70","46bc3e84","533d03d9","607705ed","655b8ced","6627632e","71098b48","7166a9f3","7b74643d","8180ee48","8d9adee3","8e39404a","92156521","993a27dd","a204a297","b0fb7fe3","b399b9e3","c07ac1e3","c4c22a3d","c99fb56f","cddb3ed9","cfdc276f","d656ece1","e67ab18a","ec737885","f9e96068","fbfedf73"]}
+{
+  "uuid": "0ca616d9-bf93-477b-ba11-2b168cd0533f",
+  "name": "Ben Ellul",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 36,
+      "pts": 119,
+      "fouls": 35,
+      "fg": 32,
+      "ft": 4,
+      "threePt": 17,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 3,
+      "wins": 49,
+      "losses": 34,
+      "draws": 7,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-08T17:49:46.654Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f30d4c74",
+      "sn": "Summer 2023/24",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "12f98466",
+          "tn": "Banyule U16 Boys 06",
+          "gid": "c46bdfa2",
+          "gn": "Boys U16 BE",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 21,
+            "threePt": 3,
+            "fg": 6,
+            "fouls": 2,
+            "wins": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "12f98466",
+          "tn": "Banyule U16 Boys 06",
+          "gid": "61818d8b",
+          "gn": "Boys U16 B Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 21,
+            "fg": 6,
+            "wins": 4,
+            "losses": 4,
+            "threePt": 3,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "12f98466",
+          "tn": "Banyule U16 Boys 06",
+          "gid": "7964b4e3",
+          "gn": "Boys U16 C Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "pts": 21,
+            "fg": 6,
+            "fouls": 2,
+            "wins": 4,
+            "losses": 4,
+            "threePt": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5161abf1",
+      "sn": "Winter 2023",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "fd1343cb",
+          "tn": "Banyule U15 Boys 04",
+          "gid": "f132fb81",
+          "gn": "Boys U15 CC",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 50,
+            "threePt": 8,
+            "fg": 12,
+            "ft": 2,
+            "fouls": 15,
+            "wins": 7,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "fd1343cb",
+          "tn": "Banyule U15 Boys 04",
+          "gid": "5919c250",
+          "gn": "Boys U15 C Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 50,
+            "fg": 12,
+            "fouls": 15,
+            "wins": 7,
+            "losses": 4,
+            "draws": 1,
+            "ft": 2,
+            "threePt": 8
+          }
+        },
+        {
+          "tid": "fd1343cb",
+          "tn": "Banyule U15 Boys 04",
+          "gid": "0200f734",
+          "gn": "Boys U15 B Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 50,
+            "threePt": 8,
+            "fg": 12,
+            "fouls": 15,
+            "wins": 7,
+            "losses": 4,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "43299630",
+      "sn": "Summer 2022/23",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "a85d2515",
+          "tn": "Banyule U14 Boys 04",
+          "gid": "497eab6d",
+          "gn": "Boys U14 BH",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 30,
+            "threePt": 2,
+            "fg": 12,
+            "fouls": 12,
+            "wins": 7,
+            "losses": 3,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "a85d2515",
+          "tn": "Banyule U14 Boys 04",
+          "gid": "870ecb41",
+          "gn": "Boys U14 B Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 30,
+            "fg": 12,
+            "fouls": 12,
+            "wins": 7,
+            "losses": 3,
+            "draws": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "e2c96c95",
+          "stats": {
+            "losses": 2,
+            "gp": 4,
+            "pts": 18,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 4,
+            "fouls": 6,
+            "wins": 1
+          },
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2"
+        },
+        {
+          "tid": "e2c96c95",
+          "tn": "",
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 18,
+            "fg": 2,
+            "ft": 2,
+            "threePt": 4,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:26:58.055Z",
+  "teams": [
+    {
+      "tid": "12f98466",
+      "sid": "f30d4c74",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd1343cb",
+      "sid": "5161abf1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a85d2515",
+      "sid": "43299630",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e2c96c95",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.529Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "c4c22a3d",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "299f635f",
+      "sid": "5161abf1"
+    }
+  },
+  "games": [
+    "064faaf7",
+    "15104921",
+    "160d837e",
+    "164ed47d",
+    "17fddc1c",
+    "1f18b1ff",
+    "299f635f",
+    "3aa04af9",
+    "3f301b70",
+    "46bc3e84",
+    "533d03d9",
+    "607705ed",
+    "655b8ced",
+    "6627632e",
+    "71098b48",
+    "7166a9f3",
+    "7b74643d",
+    "8180ee48",
+    "8d9adee3",
+    "8e39404a",
+    "92156521",
+    "993a27dd",
+    "a204a297",
+    "b0fb7fe3",
+    "b399b9e3",
+    "c07ac1e3",
+    "c4c22a3d",
+    "c99fb56f",
+    "cddb3ed9",
+    "cfdc276f",
+    "d656ece1",
+    "e67ab18a",
+    "ec737885",
+    "f9e96068",
+    "fbfedf73"
+  ]
+}

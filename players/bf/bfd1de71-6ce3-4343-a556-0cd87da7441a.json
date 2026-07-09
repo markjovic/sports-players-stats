@@ -1,1 +1,139 @@
-{"uuid":"bfd1de71-6ce3-4343-a556-0cd87da7441a","gender":null,"sports":{"Basketball":{"gp":11,"pts":16,"fouls":4,"fg":8,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":3,"losses":7,"draws":1,"winPct":0.27,"statsChecked":"2026-07-05T16:03:39.213Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Ormond Jets Basketball Club","regs":[{"tid":"a4c66ccf","tn":"JETS U12 Girls Nir","gid":"23a446ea","gn":"Sunday U12 Girls DIV 1","stats":{"gp":6,"pts":12,"fouls":2,"fg":6,"wins":2,"losses":4}}]},{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Ormond Jets Basketball Club","regs":[{"tid":"abc983f8","tn":"JETS U12 Girls Nir","gid":"68d3c340","gn":"Sunday U12 Girls Div 1","stats":{"gp":5,"pts":4,"fouls":2,"fg":2,"wins":1,"losses":3,"draws":1}}]}],"updatedAt":"2026-06-11T23:44:21.681Z","games":["335d78bb","3e6e423d","56cf7bf2","61a910bd","7cdb55b6","888d657f","a139e394","b43918f7","ba2e3ec1","e9101b49","f7cbd5f0"],"records":{"maxGamePTS":{"v":6,"gameKey":"b43918f7","sid":"0f6dd17f"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "bfd1de71-6ce3-4343-a556-0cd87da7441a",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 16,
+      "fouls": 4,
+      "fg": 8,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 7,
+      "draws": 1,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T16:03:39.213Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "a4c66ccf",
+          "tn": "JETS U12 Girls Nir",
+          "gid": "23a446ea",
+          "gn": "Sunday U12 Girls DIV 1",
+          "stats": {
+            "gp": 6,
+            "pts": 12,
+            "fouls": 2,
+            "fg": 6,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "abc983f8",
+          "tn": "JETS U12 Girls Nir",
+          "gid": "68d3c340",
+          "gn": "Sunday U12 Girls Div 1",
+          "stats": {
+            "gp": 5,
+            "pts": 4,
+            "fouls": 2,
+            "fg": 2,
+            "wins": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "997caf5b",
+          "tn": "Joey Giants Jaguars (3521)",
+          "gid": "edb0b71b",
+          "gn": "Tuesday MSAC/Bayside YR.6 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "bda21922",
+          "tn": "Joey Giants Jaguars (3521)",
+          "gid": "a3ba4457",
+          "gn": "Tuesday MSAC/Bayside YR.5 GIRLS Div. B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:44:21.681Z",
+  "games": [
+    "335d78bb",
+    "3e6e423d",
+    "56cf7bf2",
+    "61a910bd",
+    "7cdb55b6",
+    "888d657f",
+    "a139e394",
+    "b43918f7",
+    "ba2e3ec1",
+    "e9101b49",
+    "f7cbd5f0"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "b43918f7",
+      "sid": "0f6dd17f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "a4c66ccf",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "abc983f8",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "997caf5b",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bda21922",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:27.441Z"
+}

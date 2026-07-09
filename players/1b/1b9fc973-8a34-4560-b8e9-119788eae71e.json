@@ -1,1 +1,101 @@
-{"uuid":"1b9fc973-8a34-4560-b8e9-119788eae71e","name":"Anthony Spadina","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":49,"fouls":17,"fg":23,"ft":3,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":null,"wins":8,"losses":3,"winPct":0.73,"statsChecked":"2026-07-05T14:40:11.194Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"53ffccae","tn":"Manly Warringah Sea Eagles U18 Boys 2 Black","gid":"112c15f8","gn":"BOYS UNDER 18 B2","age":null,"div":"B2","stats":{"gp":5,"fouls":4,"fg":4,"pts":8,"wins":3,"losses":2}}]},{"sid":"0869ea69","regs":[{"tid":"36a1221e","stats":{"wins":5,"gp":6,"pts":41,"fg":19,"ft":3,"fouls":13,"losses":1}}]}],"updatedAt":"2026-05-31T01:21:01.581Z","teams":[{"tid":"36a1221e","sid":"0869ea69","status":"UPCOMING"},{"tid":"53ffccae","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:45.543Z","records":{"maxGamePTS":{"v":11,"gameKey":"171a9890","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["0c1bc9a9","171a9890","1e4e54f5","28b7a734","2b8bf797","2ed027e9","60ad84ac","65753f65","aec30eea","b456cf14","fb8fd95c"]}
+{
+  "uuid": "1b9fc973-8a34-4560-b8e9-119788eae71e",
+  "name": "Anthony Spadina",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 49,
+      "fouls": 17,
+      "fg": 23,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 3,
+      "winPct": 0.73,
+      "statsChecked": "2026-07-05T14:40:11.194Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "53ffccae",
+          "tn": "Manly Warringah Sea Eagles U18 Boys 2 Black",
+          "gid": "112c15f8",
+          "gn": "BOYS UNDER 18 B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "36a1221e",
+          "stats": {
+            "wins": 5,
+            "gp": 6,
+            "pts": 41,
+            "fg": 19,
+            "ft": 3,
+            "fouls": 13,
+            "losses": 1
+          },
+          "gid": "24ed2672",
+          "gn": "BOYS UNDER 18 B3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:21:01.581Z",
+  "teams": [
+    {
+      "tid": "53ffccae",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36a1221e",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:18.259Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "171a9890",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0c1bc9a9",
+    "171a9890",
+    "1e4e54f5",
+    "28b7a734",
+    "2b8bf797",
+    "2ed027e9",
+    "60ad84ac",
+    "65753f65",
+    "aec30eea",
+    "b456cf14",
+    "fb8fd95c"
+  ]
+}

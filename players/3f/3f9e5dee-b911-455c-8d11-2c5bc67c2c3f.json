@@ -1,1 +1,141 @@
-{"uuid":"3f9e5dee-b911-455c-8d11-2c5bc67c2c3f","name":"Dylan Milat","sports":{"Basketball":{"maxGamePTS":23,"maxGameThreePt":1,"foulOuts":{"c2468a21":1,"cb6167fe":2},"gp":29,"pts":186,"fg":78,"ft":24,"threePt":2,"fouls":59,"statsChecked":"2026-07-08T17:51:20.306Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"3725c980","stats":{"gp":2,"pts":4,"fg":2,"fouls":7}},{"tid":"3725c980","tn":"","gid":"6e1ae1de","gn":"Wednesday Open Men B Grade","div":null,"stats":{"gp":2,"pts":4,"fg":2,"fouls":7}}]},{"sid":"f0dbb83e","regs":[{"tid":"07183369","stats":{"gp":12,"pts":84,"fg":35,"ft":11,"threePt":1,"fouls":17}}]},{"sid":"b795df4b","regs":[{"tid":"760bf29c","stats":{"gp":4,"pts":26,"fg":11,"ft":1,"threePt":1,"fouls":7}}]},{"sid":"cb6167fe","regs":[{"tid":"2b8a2182","stats":{"gp":11,"pts":72,"fg":30,"ft":12,"fouls":28}}]}],"teams":[],"updatedAt":"2026-07-08T17:28:06.678Z","records":{"maxGamePTS":{"v":23,"gameKey":"5d4f40f5","sid":"f0dbb83e"},"maxGameThreePt":{"v":1,"gameKey":"4bff3338","sid":"f0dbb83e"}}}
+{
+  "uuid": "3f9e5dee-b911-455c-8d11-2c5bc67c2c3f",
+  "name": "Dylan Milat",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 23,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "c2468a21": 1,
+        "cb6167fe": 2
+      },
+      "gp": 29,
+      "pts": 186,
+      "fg": 78,
+      "ft": 24,
+      "threePt": 2,
+      "fouls": 59,
+      "statsChecked": "2026-07-08T17:51:20.306Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "3725c980",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 7
+          },
+          "gid": "6e1ae1de",
+          "gn": "Wednesday Open Men B Grade"
+        },
+        {
+          "tid": "3725c980",
+          "tn": "",
+          "gid": "6e1ae1de",
+          "gn": "Wednesday Open Men B Grade",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f0dbb83e",
+      "regs": [
+        {
+          "tid": "07183369",
+          "stats": {
+            "gp": 12,
+            "pts": 84,
+            "fg": 35,
+            "ft": 11,
+            "threePt": 1,
+            "fouls": 17
+          },
+          "gid": "a7f2542c",
+          "gn": "Saturday U18 Boys B1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "b795df4b",
+      "regs": [
+        {
+          "tid": "760bf29c",
+          "stats": {
+            "gp": 4,
+            "pts": 26,
+            "fg": 11,
+            "ft": 1,
+            "threePt": 1,
+            "fouls": 7
+          },
+          "gid": "523b7dae",
+          "gn": "Sunday U18 Boys D Grade"
+        }
+      ]
+    },
+    {
+      "sid": "cb6167fe",
+      "regs": [
+        {
+          "tid": "2b8a2182",
+          "stats": {
+            "gp": 11,
+            "pts": 72,
+            "fg": 30,
+            "ft": 12,
+            "fouls": 28
+          },
+          "gid": "7ce3275e",
+          "gn": "Sunday U18 Boys D Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "3725c980",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07183369",
+      "sid": "f0dbb83e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "760bf29c",
+      "sid": "b795df4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2b8a2182",
+      "sid": "cb6167fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:28:06.678Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "5d4f40f5",
+      "sid": "f0dbb83e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "4bff3338",
+      "sid": "f0dbb83e"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:18:20.545Z"
+}

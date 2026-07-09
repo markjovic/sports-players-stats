@@ -1,1 +1,89 @@
-{"uuid":"7aa470b0-dac7-478a-a7a4-60571771559a","name":"Siena De Sousa","gender":"Girls","sports":{"Basketball":{"gp":9,"fouls":9,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":2,"losses":6,"winPct":0.22,"draws":1,"statsChecked":"2026-07-05T15:10:13.084Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"St Mary's Basketball Club Inc.","regs":[{"tid":"ab3f4824","tn":"St Mary's U08 Girls 2","gid":"01cdf43d","gn":"Saturday U08 Girls C","age":"U08","div":null,"stats":{"gp":9,"fouls":9,"wins":2,"losses":6,"draws":1}}]}],"updatedAt":"2026-07-04T05:37:01.511Z","teams":[{"tid":"ab3f4824","sid":"d868771d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:06:13.770Z","games":["1e28fa34","2edb8754","39093383","54842b7a","5d8988a1","816a4c49","8697ed04","997eb430","b463173c"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "7aa470b0-dac7-478a-a7a4-60571771559a",
+  "name": "Siena De Sousa",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "fouls": 9,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 6,
+      "winPct": 0.22,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:10:13.084Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "St Mary's Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "ab3f4824",
+          "tn": "St Mary's U08 Girls 2",
+          "gid": "01cdf43d",
+          "gn": "Saturday U08 Girls C",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "wins": 2,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "e36c7892",
+          "tn": "St Mary's U08 Girls 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:01.511Z",
+  "teams": [
+    {
+      "tid": "ab3f4824",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e36c7892",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:23.881Z",
+  "games": [
+    "1e28fa34",
+    "2edb8754",
+    "39093383",
+    "54842b7a",
+    "5d8988a1",
+    "816a4c49",
+    "8697ed04",
+    "997eb430",
+    "b463173c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

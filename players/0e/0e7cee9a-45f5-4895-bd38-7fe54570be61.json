@@ -1,1 +1,89 @@
-{"uuid":"0e7cee9a-45f5-4895-bd38-7fe54570be61","gender":null,"sports":{"Basketball":{"gp":5,"pts":11,"fouls":3,"fg":5,"ft":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T16:21:03.630Z"}},"seasons":[{"sid":"dcc45073","sn":"Summer 2020/21","club":"Altona Pirates Basketball Club Inc.","regs":[{"tid":"e410fa42","tn":"AP TREASURES","gid":"8dba96e5","gn":"Saturday U12 Girls Div 1/2","stats":{"gp":5,"pts":11,"fouls":3,"fg":5,"ft":1,"wins":2,"losses":3}}]}],"updatedAt":"2026-06-11T23:36:17.090Z","records":{"maxGamePTS":{"v":4,"gameKey":"3acb7046","sid":"dcc45073"},"maxGameThreePt":{"v":null}},"games":["3acb7046","a61dfdb5","aba42ca3","b104d293","b53370a6"],"name":"Summer 2020/21"}
+{
+  "uuid": "0e7cee9a-45f5-4895-bd38-7fe54570be61",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 11,
+      "fouls": 3,
+      "fg": 5,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T16:21:03.630Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Altona Pirates Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "e410fa42",
+          "tn": "AP TREASURES",
+          "gid": "8dba96e5",
+          "gn": "Saturday U12 Girls Div 1/2",
+          "stats": {
+            "gp": 5,
+            "pts": 11,
+            "fouls": 3,
+            "fg": 5,
+            "ft": 1,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0543eab",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "64010922",
+          "tn": "AP CHARMS",
+          "gid": "b25cbb30",
+          "gn": "Saturday U10 Girls Div 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:17.090Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "3acb7046",
+      "sid": "dcc45073"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3acb7046",
+    "a61dfdb5",
+    "aba42ca3",
+    "b104d293",
+    "b53370a6"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "e410fa42",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64010922",
+      "sid": "d0543eab",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:17.601Z"
+}

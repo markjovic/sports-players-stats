@@ -1,1 +1,119 @@
-{"uuid":"91d46c7b-dca0-4572-a1e1-787d6af6f1dd","gender":null,"sports":{"Basketball":{"gp":10,"pts":15,"fouls":13,"fg":4,"ft":1,"threePt":2,"foulOuts":{"da4b2d62":1},"maxGamePTS":6,"maxGameThreePt":2,"wins":2,"losses":8,"winPct":0.2,"statsChecked":"2026-07-05T15:50:06.509Z"}},"seasons":[{"sid":"da4b2d62","sn":"Summer 2021/22","club":null,"regs":[{"tid":"4565ccc6","tn":"SPACE JAM","gid":"7a7de42d","gn":"Wednesday Open Men Open","stats":{"gp":10,"pts":15,"fouls":13,"fg":4,"ft":1,"threePt":2,"foulOuts":1,"wins":2,"losses":8}}]}],"updatedAt":"2026-06-11T23:42:26.455Z","records":{"maxGamePTS":{"v":6,"gameKey":"ce9c1a35","sid":"da4b2d62"},"maxGameThreePt":{"v":2,"gameKey":"ce9c1a35","sid":"da4b2d62"}},"games":["19ec80cb","1b7426c4","3af2036b","5aa9fd7c","93d9f215","ab5b6020","ce9c1a35","d3e6cacf","f18cae34","fa4e8dc6"],"name":"Summer 2021/22"}
+{
+  "uuid": "91d46c7b-dca0-4572-a1e1-787d6af6f1dd",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 15,
+      "fouls": 13,
+      "fg": 4,
+      "ft": 1,
+      "threePt": 2,
+      "foulOuts": {
+        "da4b2d62": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": 2,
+      "wins": 2,
+      "losses": 8,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:50:06.509Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "da4b2d62",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4565ccc6",
+          "tn": "SPACE JAM",
+          "gid": "7a7de42d",
+          "gn": "Wednesday Open Men Open",
+          "stats": {
+            "gp": 10,
+            "pts": 15,
+            "fouls": 13,
+            "fg": 4,
+            "ft": 1,
+            "threePt": 2,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fe192805",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "0b81f11a",
+          "tn": "Falcons",
+          "gid": "33bc56a0",
+          "gn": "Tuesday U19 Boys",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d98844ee",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "f3a1fb80",
+          "tn": "Tune Squad",
+          "gid": "d8f8095c",
+          "gn": "Wednesday Open Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:26.455Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "ce9c1a35",
+      "sid": "da4b2d62"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "ce9c1a35",
+      "sid": "da4b2d62"
+    }
+  },
+  "games": [
+    "19ec80cb",
+    "1b7426c4",
+    "3af2036b",
+    "5aa9fd7c",
+    "93d9f215",
+    "ab5b6020",
+    "ce9c1a35",
+    "d3e6cacf",
+    "f18cae34",
+    "fa4e8dc6"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "4565ccc6",
+      "sid": "da4b2d62",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0b81f11a",
+      "sid": "fe192805",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3a1fb80",
+      "sid": "d98844ee",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:25.241Z"
+}

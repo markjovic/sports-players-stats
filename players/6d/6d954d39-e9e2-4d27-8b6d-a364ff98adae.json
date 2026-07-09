@@ -1,1 +1,126 @@
-{"uuid":"6d954d39-e9e2-4d27-8b6d-a364ff98adae","gender":null,"sports":{"Basketball":{"gp":15,"pts":30,"fouls":19,"fg":14,"ft":2,"foulOuts":{},"maxGamePTS":15,"maxGameThreePt":null,"wins":4,"losses":1,"draws":4,"winPct":0.44,"statsChecked":"2026-07-05T16:01:37.511Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"331066e9","tn":"Aberfeldie Jets B16.10","gid":"4a57f642","gn":"Saturday U16 Boys D2 Grade","stats":{"gp":9,"pts":5,"fouls":11,"fg":2,"ft":1,"wins":4,"losses":1,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"ab3f9189","tn":"Aberfeldie Jets U16 Boys 11","gid":"e2f7b6cd","gn":"Saturday U16 Boys D2 Grade","stats":{"gp":6,"pts":25,"fouls":8,"fg":12,"ft":1}}]}],"updatedAt":"2026-06-11T23:40:51.606Z","records":{"maxGamePTS":{"v":15,"gameKey":"afcc0975","sid":"0912c55f"},"maxGameThreePt":{"v":null}},"games":["150139cb","3a1d255f","4bded1ff","707f2136","9bd2f50e","a0894462","a72d8cdb","aa93560c","afcc0975","b3b30c94","bebd12be","cb0548dc","da131b3b","e90f6df6","feba2961"],"name":"Winter 2021"}
+{
+  "uuid": "6d954d39-e9e2-4d27-8b6d-a364ff98adae",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 30,
+      "fouls": 19,
+      "fg": 14,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 15,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 1,
+      "draws": 4,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T16:01:37.511Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "331066e9",
+          "tn": "Aberfeldie Jets B16.10",
+          "gid": "4a57f642",
+          "gn": "Saturday U16 Boys D2 Grade",
+          "stats": {
+            "gp": 9,
+            "pts": 5,
+            "fouls": 11,
+            "fg": 2,
+            "ft": 1,
+            "wins": 4,
+            "losses": 1,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "ab3f9189",
+          "tn": "Aberfeldie Jets U16 Boys 11",
+          "gid": "e2f7b6cd",
+          "gn": "Saturday U16 Boys D2 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 25,
+            "fouls": 8,
+            "fg": 12,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "6e9604a5",
+          "tn": "Aberfeldie Jets U14 Boys 8",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:51.606Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "afcc0975",
+      "sid": "0912c55f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "150139cb",
+    "3a1d255f",
+    "4bded1ff",
+    "707f2136",
+    "9bd2f50e",
+    "a0894462",
+    "a72d8cdb",
+    "aa93560c",
+    "afcc0975",
+    "b3b30c94",
+    "bebd12be",
+    "cb0548dc",
+    "da131b3b",
+    "e90f6df6",
+    "feba2961"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "331066e9",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab3f9189",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e9604a5",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:18:23.250Z"
+}
