@@ -166,9 +166,26 @@ jobs:
               fh.write(f'targets={json.dumps(targets)}\n')
           PYEOF
 
+  # Diagnostic: confirms GitHub's OWN resolved view of the output matches what
+  # generate-shards' Python printed. If these two ever disagree, the break is
+  # between the step's GITHUB_OUTPUT write and GitHub's output resolution — not in
+  # generate-shards' logic itself. Cheap (one job, no checkout), keeps this
+  # debuggable from logs alone without needing an Actions-UI screenshot next time.
+  verify-targets:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo GitHub's resolved view of the targets output
+        run: |
+          echo "Raw output length (chars): ${#TARGETS}"
+          echo "First 200 chars: ${TARGETS:0:200}"
+          echo "$TARGETS" | python3 -c "import sys,json; print('Parsed element count:', len(json.load(sys.stdin)))"
+        env:
+          TARGETS: ${{ needs.generate-shards.outputs.targets }}
+
   map:
     needs: generate-shards
-    if: needs.generate-shards.outputs.targets != '[]'
+    if: fromJson(needs.generate-shards.outputs.targets)[0] != null
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
