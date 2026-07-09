@@ -137,7 +137,7 @@ jobs:
 
   map:
     needs: generate-shards
-    if: fromJson(needs.generate-shards.outputs.targets)[0] != null
+    if: needs.generate-shards.outputs.targets != '[]' && needs.generate-shards.outputs.targets != ''
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
