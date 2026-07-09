@@ -1,1 +1,81 @@
-{"uuid":"21e42d36-9e0a-4a5f-aeea-eabcfa19cdd0","name":"David Noorda","sports":{"Basketball":{"maxGamePTS":21,"maxGameThreePt":1,"foulOuts":{},"gp":31,"pts":349,"fg":137,"ft":63,"threePt":4,"fouls":30,"statsChecked":"2026-07-06T19:09:44.410Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"90a7a01e"}]},{"sid":"796936f7","regs":[{"tid":"cd4784ca"}]},{"sid":"880bda3c","regs":[{"tid":"2e283851"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":21,"gameKey":"179e0fb9","sid":"796936f7"},"maxGameThreePt":{"v":1,"gameKey":"a14216e2","sid":"796936f7"}}}
+{
+  "uuid": "21e42d36-9e0a-4a5f-aeea-eabcfa19cdd0",
+  "name": "David Noorda",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 21,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 31,
+      "pts": 349,
+      "fg": 137,
+      "ft": 63,
+      "threePt": 4,
+      "fouls": 30,
+      "statsChecked": "2026-07-06T19:09:44.410Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "90a7a01e",
+          "gid": "a8ca659b",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "cd4784ca",
+          "gid": "1a1a66ab",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "2e283851",
+          "gid": "8fc6259b",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "90a7a01e",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd4784ca",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2e283851",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "179e0fb9",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a14216e2",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:35:57.154Z"
+}

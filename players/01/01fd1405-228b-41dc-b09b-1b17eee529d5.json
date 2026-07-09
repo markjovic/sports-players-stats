@@ -1,1 +1,88 @@
-{"uuid":"01fd1405-228b-41dc-b09b-1b17eee529d5","name":"Harrison Wongoemar","gender":"Boys","sports":{"Basketball":{"gp":5,"pts":16,"fouls":3,"fg":3,"ft":7,"threePt":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":2,"losses":3,"winPct":0.4,"statsChecked":"2026-07-05T15:07:07.713Z"}},"seasons":[{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"716a02ca","tn":"Sutherland Sharks U14 Boys 1","gid":"16278a1d","gn":"BOYS UNDER 14 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":3,"ft":7,"fg":3,"threePt":1,"pts":16,"wins":2,"losses":3}}]}],"updatedAt":"2026-05-31T10:53:20.262Z","teams":[{"tid":"716a02ca","sid":"8630ad4c","status":"COMPLETED"},{"tid":"3a784cda","sid":"8630ad4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:50:27.728Z","records":{"maxGamePTS":{"v":6,"gameKey":"f5737b07","sid":"8630ad4c"},"maxGameThreePt":{"v":1,"gameKey":"6da5dde9","sid":"8630ad4c"}},"games":["0dda08d5","6da5dde9","8bae5933","e03abe25","f5737b07"]}
+{
+  "uuid": "01fd1405-228b-41dc-b09b-1b17eee529d5",
+  "name": "Harrison Wongoemar",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 16,
+      "fouls": 3,
+      "fg": 3,
+      "ft": 7,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:07:07.713Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "716a02ca",
+          "tn": "Sutherland Sharks U14 Boys 1",
+          "gid": "16278a1d",
+          "gn": "BOYS UNDER 14 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "ft": 7,
+            "fg": 3,
+            "threePt": 1,
+            "pts": 16,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "3a784cda",
+          "tn": "Sutherland Sharks U14 Boys 4",
+          "gid": "93595246",
+          "gn": "BOYS UNDER 14 C4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T10:53:20.262Z",
+  "teams": [
+    {
+      "tid": "716a02ca",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3a784cda",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:56.721Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "f5737b07",
+      "sid": "8630ad4c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6da5dde9",
+      "sid": "8630ad4c"
+    }
+  },
+  "games": [
+    "0dda08d5",
+    "6da5dde9",
+    "8bae5933",
+    "e03abe25",
+    "f5737b07"
+  ]
+}

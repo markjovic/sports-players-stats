@@ -1,1 +1,291 @@
-{"uuid":"5afcc127-84c0-4062-9cae-d284937fe288","name":"David Beavis","gender":"Men","sports":{"Basketball":{"gp":43,"pts":151,"fouls":97,"fg":58,"ft":14,"threePt":7,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"f76b81fc":2,"449e3a9f":1,"c70702e8":2},"maxGamePTS":12,"maxGameThreePt":2,"wins":34,"losses":27,"draws":2,"winPct":0.54,"statsChecked":"2026-07-05T15:48:29.668Z"}},"seasons":[{"sid":"f76b81fc","sn":"Summer 2025/26","regs":[{"tid":"c5d408e3","tn":"Cerberus Hounds","gid":"64c195c0","gn":"Thursday Men D1","age":null,"div":"D1","stats":{"gp":12,"fouls":23,"ft":6,"fg":17,"threePt":5,"pts":55,"foulOuts":2,"wins":1,"losses":10}}]},{"sid":"449e3a9f","sn":"Winter 2025","regs":[{"tid":"f5976654","tn":"Hounds","gid":"2f17fe6c","gn":"Thursday Men C2","age":null,"div":"C2","stats":{"gp":18,"fouls":52,"ft":3,"fg":25,"pts":53,"finals":1,"foulOuts":1,"wins":12,"losses":5,"draws":1}},{"tid":"f5976654","tn":"Hounds","gid":"0e25d487","gn":"Thursday Men D1","age":null,"div":"D1","stats":{"gp":18,"fouls":52,"ft":3,"fg":25,"pts":53,"finals":1,"wins":12,"losses":5,"draws":1}},{"tid":"5fa8bafb","stats":{"wins":4,"finals":1,"gp":5,"pts":18,"fg":8,"ft":2,"fouls":2}}]},{"sid":"449e3a9f","sn":"Winter 2025","regs":[{"tid":"5fa8bafb","tn":"Cerberus Hounds","gid":"52c812ae","gn":"Thursday Men D2","age":null,"div":"D2","stats":{"gp":5,"fouls":2,"ft":2,"fg":8,"pts":18,"finals":1,"wins":4}}]},{"sid":"c70702e8","sn":"Summer 2024/25","regs":[{"tid":"c09a506b","tn":"Hounds","gid":"7915a244","gn":"Thursday Men D1","age":null,"div":"D1","stats":{"gp":8,"fouls":20,"ft":3,"fg":8,"threePt":2,"pts":25,"foulOuts":2,"wins":1,"losses":7}}]}],"updatedAt":"2026-06-02T15:15:08.147Z","teams":[{"tid":"c5d408e3","sid":"f76b81fc","status":"COMPLETED"},{"tid":"5fa8bafb","sid":"449e3a9f","status":"COMPLETED"},{"tid":"f5976654","sid":"449e3a9f","status":"COMPLETED"},{"tid":"c09a506b","sid":"c70702e8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:37:08.072Z","records":{"maxGamePTS":{"v":12,"gameKey":"e576d8ec","sid":"c70702e8"},"maxGameThreePt":{"v":2,"gameKey":"00986ca1","sid":"f76b81fc"}},"games":["00986ca1","08923c99","1363c4d4","182c8117","3240e139","336e9014","3b44e898","4129557a","491c2a69","63209d66","74afff95","79410d64","81ac7c3c","8251f86b","83d91a96","8591d1c4","8f5fef51","938e7508","9c2d76f8","9f47c655","a3a2752a","a883723a","aa7b23b2","b1c8c355","b51904a3","b54596cf","b56af7dc","b65929fc","bb3f3bd7","c400e909","cbdf3214","cd35cb25","d24212fd","ddfd223a","e576d8ec","eead7165","eef75c90","f2d4774e","f538f3d9","f80f16b3","f957d3a1","f9dec450","fe4a8961"],"gameTids":{"182c8117":"c5d408e3","f957d3a1":"c5d408e3","00986ca1":"c5d408e3","f538f3d9":"c5d408e3","b51904a3":"c5d408e3","b65929fc":"c5d408e3","a3a2752a":"c5d408e3","81ac7c3c":"c5d408e3","aa7b23b2":"c5d408e3","f2d4774e":"c5d408e3","3240e139":"c5d408e3","b1c8c355":"c5d408e3","a883723a":"f5976654","9f47c655":"f5976654","74afff95":"f5976654","f80f16b3":"f5976654","8591d1c4":"f5976654","fe4a8961":"f5976654","ddfd223a":"f5976654","491c2a69":"f5976654","336e9014":"f5976654","b56af7dc":"f5976654","bb3f3bd7":"f5976654","f9dec450":"f5976654","08923c99":"f5976654","eef75c90":"f5976654","938e7508":"f5976654","83d91a96":"f5976654","eead7165":"f5976654","63209d66":"f5976654","d24212fd":"5fa8bafb","c400e909":"5fa8bafb","79410d64":"5fa8bafb","9c2d76f8":"5fa8bafb","3b44e898":"5fa8bafb","8251f86b":"c09a506b","b54596cf":"c09a506b","e576d8ec":"c09a506b","cd35cb25":"c09a506b","4129557a":"c09a506b","cbdf3214":"c09a506b","1363c4d4":"c09a506b","8f5fef51":"c09a506b"}}
+{
+  "uuid": "5afcc127-84c0-4062-9cae-d284937fe288",
+  "name": "David Beavis",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 151,
+      "fouls": 97,
+      "fg": 58,
+      "ft": 14,
+      "threePt": 7,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "f76b81fc": 2,
+        "449e3a9f": 1,
+        "c70702e8": 2
+      },
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "wins": 34,
+      "losses": 27,
+      "draws": 2,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T15:48:29.668Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f76b81fc",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "c5d408e3",
+          "tn": "Cerberus Hounds",
+          "gid": "64c195c0",
+          "gn": "Thursday Men D1",
+          "age": null,
+          "div": "D1",
+          "stats": {
+            "gp": 12,
+            "fouls": 23,
+            "ft": 6,
+            "fg": 17,
+            "threePt": 5,
+            "pts": 55,
+            "foulOuts": 2,
+            "wins": 1,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "449e3a9f",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "f5976654",
+          "tn": "Hounds",
+          "gid": "2f17fe6c",
+          "gn": "Thursday Men C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 18,
+            "fouls": 52,
+            "ft": 3,
+            "fg": 25,
+            "pts": 53,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 12,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "f5976654",
+          "tn": "Hounds",
+          "gid": "0e25d487",
+          "gn": "Thursday Men D1",
+          "age": null,
+          "div": "D1",
+          "stats": {
+            "gp": 18,
+            "fouls": 52,
+            "ft": 3,
+            "fg": 25,
+            "pts": 53,
+            "finals": 1,
+            "wins": 12,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "5fa8bafb",
+          "stats": {
+            "wins": 4,
+            "finals": 1,
+            "gp": 5,
+            "pts": 18,
+            "fg": 8,
+            "ft": 2,
+            "fouls": 2
+          },
+          "gid": "52c812ae",
+          "gn": "Thursday Men D2"
+        }
+      ]
+    },
+    {
+      "sid": "449e3a9f",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5fa8bafb",
+          "tn": "Cerberus Hounds",
+          "gid": "52c812ae",
+          "gn": "Thursday Men D2",
+          "age": null,
+          "div": "D2",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "finals": 1,
+            "wins": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c70702e8",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "c09a506b",
+          "tn": "Hounds",
+          "gid": "7915a244",
+          "gn": "Thursday Men D1",
+          "age": null,
+          "div": "D1",
+          "stats": {
+            "gp": 8,
+            "fouls": 20,
+            "ft": 3,
+            "fg": 8,
+            "threePt": 2,
+            "pts": 25,
+            "foulOuts": 2,
+            "wins": 1,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:15:08.147Z",
+  "teams": [
+    {
+      "tid": "c5d408e3",
+      "sid": "f76b81fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f5976654",
+      "sid": "449e3a9f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5fa8bafb",
+      "sid": "449e3a9f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c09a506b",
+      "sid": "c70702e8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:57.311Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "e576d8ec",
+      "sid": "c70702e8"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "00986ca1",
+      "sid": "f76b81fc"
+    }
+  },
+  "games": [
+    "00986ca1",
+    "08923c99",
+    "1363c4d4",
+    "182c8117",
+    "3240e139",
+    "336e9014",
+    "3b44e898",
+    "4129557a",
+    "491c2a69",
+    "63209d66",
+    "74afff95",
+    "79410d64",
+    "81ac7c3c",
+    "8251f86b",
+    "83d91a96",
+    "8591d1c4",
+    "8f5fef51",
+    "938e7508",
+    "9c2d76f8",
+    "9f47c655",
+    "a3a2752a",
+    "a883723a",
+    "aa7b23b2",
+    "b1c8c355",
+    "b51904a3",
+    "b54596cf",
+    "b56af7dc",
+    "b65929fc",
+    "bb3f3bd7",
+    "c400e909",
+    "cbdf3214",
+    "cd35cb25",
+    "d24212fd",
+    "ddfd223a",
+    "e576d8ec",
+    "eead7165",
+    "eef75c90",
+    "f2d4774e",
+    "f538f3d9",
+    "f80f16b3",
+    "f957d3a1",
+    "f9dec450",
+    "fe4a8961"
+  ],
+  "gameTids": {
+    "182c8117": "c5d408e3",
+    "f957d3a1": "c5d408e3",
+    "00986ca1": "c5d408e3",
+    "f538f3d9": "c5d408e3",
+    "b51904a3": "c5d408e3",
+    "b65929fc": "c5d408e3",
+    "a3a2752a": "c5d408e3",
+    "81ac7c3c": "c5d408e3",
+    "aa7b23b2": "c5d408e3",
+    "f2d4774e": "c5d408e3",
+    "3240e139": "c5d408e3",
+    "b1c8c355": "c5d408e3",
+    "a883723a": "f5976654",
+    "9f47c655": "f5976654",
+    "74afff95": "f5976654",
+    "f80f16b3": "f5976654",
+    "8591d1c4": "f5976654",
+    "fe4a8961": "f5976654",
+    "ddfd223a": "f5976654",
+    "491c2a69": "f5976654",
+    "336e9014": "f5976654",
+    "b56af7dc": "f5976654",
+    "bb3f3bd7": "f5976654",
+    "f9dec450": "f5976654",
+    "08923c99": "f5976654",
+    "eef75c90": "f5976654",
+    "938e7508": "f5976654",
+    "83d91a96": "f5976654",
+    "eead7165": "f5976654",
+    "63209d66": "f5976654",
+    "d24212fd": "5fa8bafb",
+    "c400e909": "5fa8bafb",
+    "79410d64": "5fa8bafb",
+    "9c2d76f8": "5fa8bafb",
+    "3b44e898": "5fa8bafb",
+    "8251f86b": "c09a506b",
+    "b54596cf": "c09a506b",
+    "e576d8ec": "c09a506b",
+    "cd35cb25": "c09a506b",
+    "4129557a": "c09a506b",
+    "cbdf3214": "c09a506b",
+    "1363c4d4": "c09a506b",
+    "8f5fef51": "c09a506b"
+  }
+}

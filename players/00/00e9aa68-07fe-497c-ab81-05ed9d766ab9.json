@@ -1,1 +1,101 @@
-{"uuid":"00e9aa68-07fe-497c-ab81-05ed9d766ab9","name":"Roman Cerovina","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":4,"fouls":2,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":8,"winPct":0.43,"wins":6,"statsChecked":"2026-07-05T15:06:59.135Z"}},"seasons":[{"sid":"24f3a282","sn":"Winter 2026","club":"White Eagles Basketball Club","regs":[{"tid":"586a8f55","tn":"White Eagles U10B1 Strahinja","gid":"63388d5c","gn":"Saturday U10 Boys C1/C2","age":"U10","div":"C2","stats":{"gp":7,"fouls":2,"losses":4,"pts":4,"fg":2,"wins":3}},{"tid":"586a8f55","tn":"","gid":"5e8bb78f","gn":"Saturday U10 Boys D1","div":null,"stats":{"gp":7,"pts":4,"fg":2,"fouls":2,"wins":3,"losses":4}}]}],"updatedAt":"2026-07-04T05:54:38.478Z","teams":[{"tid":"586a8f55","sid":"24f3a282","status":"ACTIVE"},{"tid":"4e1d23b0","sid":"24f3a282","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T11:50:17.415Z","statsChecked":"2026-06-20","records":{"maxGamePTS":{"v":2,"gameKey":"3b405c5a","sid":"24f3a282"},"maxGameThreePt":{"v":null}},"games":["1743dc0d","1b85f749","1cd2b299","3b405c5a","89ebde66","d29f2fe1","fa9e02ae"]}
+{
+  "uuid": "00e9aa68-07fe-497c-ab81-05ed9d766ab9",
+  "name": "Roman Cerovina",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 4,
+      "fouls": 2,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 8,
+      "winPct": 0.43,
+      "wins": 6,
+      "statsChecked": "2026-07-05T15:06:59.135Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "24f3a282",
+      "sn": "Winter 2026",
+      "club": "White Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "586a8f55",
+          "tn": "White Eagles U10B1 Strahinja",
+          "gid": "63388d5c",
+          "gn": "Saturday U10 Boys C1/C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "losses": 4,
+            "pts": 4,
+            "fg": 2,
+            "wins": 3
+          }
+        },
+        {
+          "tid": "586a8f55",
+          "tn": "",
+          "gid": "5e8bb78f",
+          "gn": "Saturday U10 Boys D1",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 2,
+            "wins": 3,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "4e1d23b0",
+          "tn": "White Eagles U8 Daniel",
+          "gid": "cdb117ed",
+          "gn": "Saturday U8 Mixed Yellow",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:38.478Z",
+  "teams": [
+    {
+      "tid": "586a8f55",
+      "sid": "24f3a282",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e1d23b0",
+      "sid": "24f3a282",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:56.694Z",
+  "statsChecked": "2026-06-20",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "3b405c5a",
+      "sid": "24f3a282"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1743dc0d",
+    "1b85f749",
+    "1cd2b299",
+    "3b405c5a",
+    "89ebde66",
+    "d29f2fe1",
+    "fa9e02ae"
+  ]
+}

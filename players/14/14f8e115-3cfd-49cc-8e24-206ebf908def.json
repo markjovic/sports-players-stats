@@ -1,1 +1,488 @@
-{"uuid":"14f8e115-3cfd-49cc-8e24-206ebf908def","name":"Connor McDonnell","gender":"Men","sports":{"Basketball":{"gp":47,"pts":105,"fouls":49,"fg":45,"ft":5,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":null,"wins":37,"losses":50,"draws":1,"winPct":0.42,"statsChecked":"2026-07-09T18:29:00.050Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"b07124d6","tn":"Overbuilt","gid":"2446d760","gn":"Thursday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":15,"pts":29,"fg":8,"ft":3,"fouls":14,"wins":8,"losses":7}},{"tid":"b07124d6","tn":"Overbuilt","gid":"b666d6af","gn":"Thursday Open Men Section 02","age":"Senior","div":null,"stats":{"gp":15,"pts":29,"fouls":14,"wins":8,"losses":7,"fg":8,"ft":3}}]},{"sid":"90a7a885","sn":"Summer 2021/22","regs":[{"tid":"fbe2d1e1","tn":"Bread","gid":"96acf510","gn":"Wednesday Senior Men G","age":"Senior","div":null,"stats":{"gp":14,"pts":45,"fg":22,"ft":1,"fouls":21,"wins":5,"losses":8}},{"tid":"fbe2d1e1","tn":"Bread","gid":"2abf514e","gn":"Wednesday Senior Men F Reserve","age":"Senior","div":null,"stats":{"gp":14,"pts":45,"fg":22,"fouls":21,"wins":5,"losses":8,"ft":1}},{"tid":"fbe2d1e1","tn":"Bread","gid":"f2d0cfee","gn":"Wednesday Senior Men F","age":"Senior","div":null,"stats":{"gp":14,"fouls":21,"wins":5,"losses":8,"pts":45,"fg":22,"ft":1}}]},{"sid":"6af581a9","sn":"Winter 2021","regs":[{"tid":"1705e504","tn":"Bread","gid":"f8e7e7b4","gn":"Wednesday Senior Men F","age":"Senior","div":null,"stats":{"gp":3,"pts":6,"fg":3,"fouls":2,"losses":3}}]},{"sid":"6af581a9","sn":"Winter 2021","regs":[{"tid":"1705e504","tn":"Bread","gid":"f8e7e7b4","gn":"Wednesday Senior Men F","age":"Senior","div":null,"stats":{"gp":3,"pts":6,"fg":3,"fouls":2,"losses":3}}]},{"sid":"5dfac2a9","sn":"Summer 2020/21","regs":[{"tid":"f53dd039","tn":"Bread","gid":"7af65bfe","gn":"Monday Open Men D","age":"Senior","div":null,"stats":{"gp":13,"pts":19,"fg":9,"ft":1,"fouls":9,"wins":6,"losses":6,"draws":1}}]},{"sid":"297562bc","regs":[{"tid":"e16b4e5d","stats":{"gp":2,"pts":6,"fg":3,"fouls":3}},{"tid":"e16b4e5d","tn":"","gid":"f985236f","gn":"Thursday Open Men Section 2","div":null,"stats":{"gp":2,"pts":6,"fg":3,"fouls":3}}]}],"updatedAt":"2026-07-09T18:07:13.852Z","teams":[{"tid":"b07124d6","sid":"5593103d","status":"ACTIVE"},{"tid":"4bb7e153","sid":"fab2be4d","status":"COMPLETED"},{"tid":"b55e53db","sid":"76897951","status":"COMPLETED"},{"tid":"7030f560","sid":"5944effa","status":"COMPLETED"},{"tid":"a2073fa0","sid":"348dbfb8","status":"COMPLETED"},{"tid":"83373bb0","sid":"9358e51a","status":"COMPLETED"},{"tid":"7748cd5e","sid":"d3d4e181","status":"COMPLETED"},{"tid":"ccd952cd","sid":"21cd9648","status":"COMPLETED"},{"tid":"2c25df38","sid":"21cd9648","status":"COMPLETED"},{"tid":"7e0d0ab2","sid":"d4cbf787","status":"COMPLETED"},{"tid":"cadd7584","sid":"d4cbf787","status":"COMPLETED"},{"tid":"fbe2d1e1","sid":"90a7a885","status":"COMPLETED"},{"tid":"9fe19c5f","sid":"d64fcfce","status":"COMPLETED"},{"tid":"1705e504","sid":"6af581a9","status":"COMPLETED"},{"tid":"1705e504","sid":"6af581a9","status":"COMPLETED"},{"tid":"f53dd039","sid":"5dfac2a9","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:58:56.057Z","records":{"maxGamePTS":{"v":14,"gameKey":"602b3c6e","sid":"90a7a885"},"maxGameThreePt":{"v":null}},"games":["05312464","0a5f2438","15928745","1effb4e5","217d279a","243cdb0d","2be9e97c","3341192b","37bf334d","380b28a2","3a6a6c8c","3d848b26","3efff962","41fdbbb1","4e4a08fb","5045dedc","602b3c6e","6622ba8c","751bf252","7a73b270","7a8af1dc","7df91987","8345b488","8415c9a3","844c8c91","84604fe1","887561a0","88e127e8","9ffcc3b6","a1f3515c","a3e3a399","a9d05556","ac42b418","ad5a97e3","b27af977","b293db9f","b2d7f24a","bd0d2117","c538c5dc","c552ee7e","caf07230","d01ef6fb","dedabfac","fd5ee2b8","fe21973a"]}
+{
+  "uuid": "14f8e115-3cfd-49cc-8e24-206ebf908def",
+  "name": "Connor McDonnell",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 47,
+      "pts": 105,
+      "fouls": 49,
+      "fg": 45,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 37,
+      "losses": 50,
+      "draws": 1,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-09T18:29:00.050Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "b07124d6",
+          "tn": "Overbuilt",
+          "gid": "2446d760",
+          "gn": "Thursday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 29,
+            "fg": 8,
+            "ft": 3,
+            "fouls": 14,
+            "wins": 8,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "b07124d6",
+          "tn": "Overbuilt",
+          "gid": "b666d6af",
+          "gn": "Thursday Open Men Section 02",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 29,
+            "fouls": 14,
+            "wins": 8,
+            "losses": 7,
+            "fg": 8,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "90a7a885",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "fbe2d1e1",
+          "tn": "Bread",
+          "gid": "96acf510",
+          "gn": "Wednesday Senior Men G",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 45,
+            "fg": 22,
+            "ft": 1,
+            "fouls": 21,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "fbe2d1e1",
+          "tn": "Bread",
+          "gid": "2abf514e",
+          "gn": "Wednesday Senior Men F Reserve",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 45,
+            "fg": 22,
+            "fouls": 21,
+            "wins": 5,
+            "losses": 8,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "fbe2d1e1",
+          "tn": "Bread",
+          "gid": "f2d0cfee",
+          "gn": "Wednesday Senior Men F",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 21,
+            "wins": 5,
+            "losses": 8,
+            "pts": 45,
+            "fg": 22,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6af581a9",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "1705e504",
+          "tn": "Bread",
+          "gid": "f8e7e7b4",
+          "gn": "Wednesday Senior Men F",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6af581a9",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "1705e504",
+          "tn": "Bread",
+          "gid": "f8e7e7b4",
+          "gn": "Wednesday Senior Men F",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5dfac2a9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "f53dd039",
+          "tn": "Bread",
+          "gid": "7af65bfe",
+          "gn": "Monday Open Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 19,
+            "fg": 9,
+            "ft": 1,
+            "fouls": 9,
+            "wins": 6,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "e16b4e5d",
+          "stats": {
+            "gp": 2,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 3
+          },
+          "gid": "f985236f",
+          "gn": "Thursday Open Men Section 2"
+        },
+        {
+          "tid": "e16b4e5d",
+          "tn": "",
+          "gid": "f985236f",
+          "gn": "Thursday Open Men Section 2",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "4bb7e153",
+          "tn": "Overbuilt",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "b55e53db",
+          "tn": "Overbuilt",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "7030f560",
+          "tn": "OverBuilt",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "a2073fa0",
+          "tn": "OverBuilt",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "83373bb0",
+          "tn": "Overbuilt",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "7748cd5e",
+          "tn": "Overbuilt",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "ccd952cd",
+          "tn": "Overbuilt",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "2c25df38",
+          "tn": "Overbuilt Nerds",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "7e0d0ab2",
+          "tn": "OVERBUILT NERDS",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "cadd7584",
+          "tn": "Overbuilt",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "9fe19c5f",
+          "tn": "Overbuilt",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:07:13.852Z",
+  "teams": [
+    {
+      "tid": "b07124d6",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fbe2d1e1",
+      "sid": "90a7a885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1705e504",
+      "sid": "6af581a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f53dd039",
+      "sid": "5dfac2a9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e16b4e5d",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4bb7e153",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b55e53db",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7030f560",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2073fa0",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "83373bb0",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7748cd5e",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ccd952cd",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c25df38",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e0d0ab2",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cadd7584",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9fe19c5f",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:57.022Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "602b3c6e",
+      "sid": "90a7a885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "05312464",
+    "0a5f2438",
+    "15928745",
+    "1effb4e5",
+    "217d279a",
+    "243cdb0d",
+    "2be9e97c",
+    "3341192b",
+    "37bf334d",
+    "380b28a2",
+    "3a6a6c8c",
+    "3d848b26",
+    "3efff962",
+    "41fdbbb1",
+    "4e4a08fb",
+    "5045dedc",
+    "602b3c6e",
+    "6622ba8c",
+    "751bf252",
+    "7a73b270",
+    "7a8af1dc",
+    "7df91987",
+    "8345b488",
+    "8415c9a3",
+    "844c8c91",
+    "84604fe1",
+    "887561a0",
+    "88e127e8",
+    "9ffcc3b6",
+    "a1f3515c",
+    "a3e3a399",
+    "a9d05556",
+    "ac42b418",
+    "ad5a97e3",
+    "b27af977",
+    "b293db9f",
+    "b2d7f24a",
+    "bd0d2117",
+    "c538c5dc",
+    "c552ee7e",
+    "caf07230",
+    "d01ef6fb",
+    "dedabfac",
+    "fd5ee2b8",
+    "fe21973a"
+  ]
+}

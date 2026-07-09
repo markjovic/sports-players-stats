@@ -1,1 +1,124 @@
-{"uuid":"00f8b634-79ec-47df-976f-67721214f36f","gender":null,"sports":{"Basketball":{"gp":17,"pts":41,"fouls":19,"fg":19,"threePt":1,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":1,"wins":3,"losses":13,"winPct":0.19,"statsChecked":"2026-07-05T16:26:43.980Z"}},"seasons":[{"sid":"036d9de9","sn":"Summer 2021/22","club":"Try Boys Basketball Club","regs":[{"tid":"d79b7c46","tn":"Try Boys U16 Boys Bruins","gid":"babad7e5","gn":"(CLUB) Wednesday U16 Boys 2","stats":{"gp":10,"pts":31,"fouls":12,"fg":14,"threePt":1,"wins":2,"losses":7}}]},{"sid":"fb916efa","sn":"Winter 2021","club":"Try Boys Basketball Club","regs":[{"tid":"8ec1f569","tn":"Try Boys U16 Boys Polar Bears","gid":"1d1023bd","gn":"(CLUB) Wednesday U16 Boys 4","stats":{"gp":7,"pts":10,"fouls":7,"fg":5,"wins":1,"losses":6}}]}],"updatedAt":"2026-06-11T23:35:42.391Z","records":{"maxGamePTS":{"v":9,"gameKey":"2bdf63c9","sid":"036d9de9"},"maxGameThreePt":{"v":1,"gameKey":"2bdf63c9","sid":"036d9de9"}},"statsChecked":"2026-06-20","games":["081659a9","1b734127","2591a5aa","2bdf63c9","3afccfb5","639ecca2","69130628","77cd7276","83892080","93257afe","a1dfccb5","ba3bd9a2","d05978fe","d26fd12c","d2cf5875","ef420ead","ef9ddfb1"],"name":"Summer 2021/22"}
+{
+  "uuid": "00f8b634-79ec-47df-976f-67721214f36f",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 17,
+      "pts": 41,
+      "fouls": 19,
+      "fg": 19,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 13,
+      "winPct": 0.19,
+      "statsChecked": "2026-07-05T16:26:43.980Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "036d9de9",
+      "sn": "Summer 2021/22",
+      "club": "Try Boys Basketball Club",
+      "regs": [
+        {
+          "tid": "d79b7c46",
+          "tn": "Try Boys U16 Boys Bruins",
+          "gid": "babad7e5",
+          "gn": "(CLUB) Wednesday U16 Boys 2",
+          "stats": {
+            "gp": 10,
+            "pts": 31,
+            "fouls": 12,
+            "fg": 14,
+            "threePt": 1,
+            "wins": 2,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb916efa",
+      "sn": "Winter 2021",
+      "club": "Try Boys Basketball Club",
+      "regs": [
+        {
+          "tid": "8ec1f569",
+          "tn": "Try Boys U16 Boys Polar Bears",
+          "gid": "1d1023bd",
+          "gn": "(CLUB) Wednesday U16 Boys 4",
+          "stats": {
+            "gp": 7,
+            "pts": 10,
+            "fouls": 7,
+            "fg": 5,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "a8e9b3ec",
+          "tn": "Try Boys U16 Boys Black Bears",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:35:42.391Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "2bdf63c9",
+      "sid": "036d9de9"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "2bdf63c9",
+      "sid": "036d9de9"
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "081659a9",
+    "1b734127",
+    "2591a5aa",
+    "2bdf63c9",
+    "3afccfb5",
+    "639ecca2",
+    "69130628",
+    "77cd7276",
+    "83892080",
+    "93257afe",
+    "a1dfccb5",
+    "ba3bd9a2",
+    "d05978fe",
+    "d26fd12c",
+    "d2cf5875",
+    "ef420ead",
+    "ef9ddfb1"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "d79b7c46",
+      "sid": "036d9de9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8ec1f569",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8e9b3ec",
+      "sid": "fb916efa",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:56.707Z"
+}

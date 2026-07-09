@@ -1,1 +1,187 @@
-{"uuid":"18f1b595-76c2-4e84-a010-ddaf5f2858ff","name":"Xavier McInnes Smith","gender":"Boys","sports":{"Basketball":{"gp":30,"pts":62,"fouls":10,"fg":30,"ft":2,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":10,"losses":42,"winPct":0.19,"statsChecked":"2026-07-05T14:25:36.416Z"}},"seasons":[{"sid":"a6c675bb","sn":"Winter 2026","club":"Mountain Tigers Basketball Club","regs":[{"tid":"687559fa","tn":"Mountain Tigers U14 Boys 8","gid":"b62212ad","gn":"Saturday U14 Boys FR - 2026 Winter","age":"U14","div":null,"stats":{"gp":8,"fouls":4,"fg":10,"pts":20,"losses":6,"wins":2}}]},{"sid":"cc946e47","sn":"Summer 2025/26","club":"Mountain Tigers Basketball Club","regs":[{"tid":"d46f8ead","tn":"Mountain Tigers U12 Boys 7","gid":"79a5b417","gn":"Saturday U12 Boys ER - 2026 Summer","age":"U12","div":null,"stats":{"gp":12,"fg":13,"pts":28,"wins":3,"losses":9,"ft":2,"fouls":1}},{"tid":"d46f8ead","tn":"Mountain Tigers U12 Boys 7","gid":"26300987","gn":"Saturday U12 Boys E - 2026 Summer","age":"U12","div":null,"stats":{"gp":12,"fouls":1,"ft":2,"fg":13,"pts":28,"wins":3,"losses":9}}]},{"sid":"32f6f69d","sn":"Winter 2025","club":"Mountain Tigers Basketball Club","regs":[{"tid":"8b4f3c80","tn":"Mountain Tigers U12 Boys 8","gid":"12863481","gn":"Saturday U12 Boys F - 2025 Winter","age":"U12","div":null,"stats":{"gp":10,"fouls":5,"fg":7,"pts":14,"wins":1,"losses":9}},{"tid":"8b4f3c80","tn":"Mountain Tigers U12 Boys 8","gid":"3fec0068","gn":"Saturday U12 Boys ER - 2025 Winter","age":"U12","div":null,"stats":{"gp":10,"fouls":5,"wins":1,"losses":9,"pts":14,"fg":7}}]}],"updatedAt":"2026-05-31T07:02:50.932Z","teams":[{"tid":"687559fa","sid":"a6c675bb","status":"ACTIVE"},{"tid":"d46f8ead","sid":"cc946e47","status":"COMPLETED"},{"tid":"8b4f3c80","sid":"32f6f69d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:11:41.763Z","records":{"maxGamePTS":{"v":10,"gameKey":"2cfd5e00","sid":"32f6f69d"},"maxGameThreePt":{"v":null}},"games":["15f0909a","239ec32c","2cfd5e00","38b991e3","3e504ce1","44ccafab","4835f9d3","4a560de4","5652bf5d","5a86e584","5c2096d5","6283d170","6830aa70","6947c505","6af98786","7f13d712","7f8c5ca0","80d7beca","87f906da","8b183638","98c6bed4","9b59be32","9cd534ef","a91b7fe1","af7c531f","d8ae1c8a","e6919ca1","ec2357d3","ee6dba9e","fbbc1605"]}
+{
+  "uuid": "18f1b595-76c2-4e84-a010-ddaf5f2858ff",
+  "name": "Xavier McInnes Smith",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 62,
+      "fouls": 10,
+      "fg": 30,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 42,
+      "winPct": 0.19,
+      "statsChecked": "2026-07-05T14:25:36.416Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a6c675bb",
+      "sn": "Winter 2026",
+      "club": "Mountain Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "687559fa",
+          "tn": "Mountain Tigers U14 Boys 8",
+          "gid": "ec4c519d",
+          "gn": "Saturday U14 Boys GR - 2026 Winter",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "fg": 10,
+            "pts": 20,
+            "losses": 6,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc946e47",
+      "sn": "Summer 2025/26",
+      "club": "Mountain Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "d46f8ead",
+          "tn": "Mountain Tigers U12 Boys 7",
+          "gid": "79a5b417",
+          "gn": "Saturday U12 Boys ER - 2026 Summer",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fg": 13,
+            "pts": 28,
+            "wins": 3,
+            "losses": 9,
+            "ft": 2,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "d46f8ead",
+          "tn": "Mountain Tigers U12 Boys 7",
+          "gid": "26300987",
+          "gn": "Saturday U12 Boys E - 2026 Summer",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 13,
+            "pts": 28,
+            "wins": 3,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32f6f69d",
+      "sn": "Winter 2025",
+      "club": "Mountain Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "8b4f3c80",
+          "tn": "Mountain Tigers U12 Boys 8",
+          "gid": "12863481",
+          "gn": "Saturday U12 Boys F - 2025 Winter",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 5,
+            "fg": 7,
+            "pts": 14,
+            "wins": 1,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "8b4f3c80",
+          "tn": "Mountain Tigers U12 Boys 8",
+          "gid": "3fec0068",
+          "gn": "Saturday U12 Boys ER - 2025 Winter",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 5,
+            "wins": 1,
+            "losses": 9,
+            "pts": 14,
+            "fg": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T07:02:50.932Z",
+  "teams": [
+    {
+      "tid": "687559fa",
+      "sid": "a6c675bb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d46f8ead",
+      "sid": "cc946e47",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8b4f3c80",
+      "sid": "32f6f69d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:57.041Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "2cfd5e00",
+      "sid": "32f6f69d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "15f0909a",
+    "239ec32c",
+    "2cfd5e00",
+    "38b991e3",
+    "3e504ce1",
+    "44ccafab",
+    "4835f9d3",
+    "4a560de4",
+    "5652bf5d",
+    "5a86e584",
+    "5c2096d5",
+    "6283d170",
+    "6830aa70",
+    "6947c505",
+    "6af98786",
+    "7f13d712",
+    "7f8c5ca0",
+    "80d7beca",
+    "87f906da",
+    "8b183638",
+    "98c6bed4",
+    "9b59be32",
+    "9cd534ef",
+    "a91b7fe1",
+    "af7c531f",
+    "d8ae1c8a",
+    "e6919ca1",
+    "ec2357d3",
+    "ee6dba9e",
+    "fbbc1605"
+  ]
+}

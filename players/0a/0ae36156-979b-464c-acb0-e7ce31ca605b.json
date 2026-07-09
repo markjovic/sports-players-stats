@@ -1,1 +1,275 @@
-{"uuid":"0ae36156-979b-464c-acb0-e7ce31ca605b","name":"Harriet Carnie","gender":"Girls","sports":{"Basketball":{"gp":42,"pts":149,"fouls":8,"fg":71,"ft":7,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":null,"wins":28,"losses":76,"winPct":0.25,"draws":6,"statsChecked":"2026-07-05T15:20:28.359Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"23993a57","tn":"Watsonia Warriors U12 Girls 2","gid":"2650149c","gn":"Saturday U12 Girls D1","age":"U12","div":"D1","stats":{"gp":13,"pts":48,"fg":22,"ft":4,"fouls":4,"wins":5,"losses":8}},{"tid":"23993a57","tn":"Watsonia Warriors U12 Girls 2","gid":"f9d1239b","gn":"Saturday U12 Girls D2","age":"U12","div":"D2","stats":{"gp":13,"pts":48,"fg":22,"wins":5,"losses":8,"ft":4,"fouls":4}},{"tid":"23993a57","tn":"Watsonia Warriors U12 Girls 2","gid":"7bfdf93b","gn":"Saturday U12 Girls Grading Group 3","age":"U12","div":null,"stats":{"gp":13,"pts":48,"fg":22,"wins":5,"losses":8,"ft":4,"fouls":4}},{"tid":"23993a57","tn":"Watsonia Warriors U12 Girls 2","gid":"dace81bf","gn":"Saturday U12 Girls Grading Group 2","age":"U12","div":null,"stats":{"gp":13,"pts":48,"fg":22,"ft":4,"fouls":4,"wins":5,"losses":8}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"0bc7f161","tn":"Watsonia Warriors U10 Girls 3","gid":"5cd5279a","gn":"Saturday U10 Girls C2","age":"U10","div":"C2","stats":{"gp":15,"pts":85,"fg":41,"ft":3,"fouls":3,"wins":2,"losses":11,"draws":2}},{"tid":"0bc7f161","tn":"Watsonia Warriors U10 Girls 3","gid":"ed3a8477","gn":"Saturday U10 Girls Grading Group 2","age":"U10","div":null,"stats":{"gp":15,"pts":85,"fg":41,"wins":2,"losses":11,"draws":2,"ft":3,"fouls":3}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Watsonia Warriors Junior Basketball Club","regs":[{"tid":"b2b73fee","tn":"Watsonia Warriors U10 Girls 3","gid":"9345db46","gn":"Saturday U10 Girls D","age":"U10","div":null,"stats":{"gp":14,"pts":16,"fg":8,"fouls":1,"wins":2,"losses":11,"draws":1}},{"tid":"b2b73fee","tn":"Watsonia Warriors U10 Girls 3","gid":"b4e385fa","gn":"Saturday U10 Girls C2","age":"U10","div":"C2","stats":{"gp":14,"pts":16,"fg":8,"wins":2,"losses":11,"draws":1,"fouls":1}}]}],"updatedAt":"2026-06-01T06:33:26.386Z","teams":[{"tid":"23993a57","sid":"d868771d","status":"ACTIVE"},{"tid":"0bc7f161","sid":"f57b7901","status":"COMPLETED"},{"tid":"b2b73fee","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:54:36.067Z","records":{"maxGamePTS":{"v":14,"gameKey":"35c8f829","sid":"d868771d"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["046cfebd","0544b52c","0796079f","0d477a67","0f3fdc15","1400a898","17e2d9f7","1fc1aefc","2915ffa4","2bb0b12d","338444d6","33ad83f5","3459ebbd","35c8f829","373bc1e4","432bfcf2","5be0ac85","5ddfb68c","61233e2b","6cadf95f","744f4185","7e243094","7ecc7b7b","82fb272e","8978c477","8b2111fe","8c73a305","9f670651","a86ed2c6","adaa6ef4","addbc38f","ae829064","bc4cbb88","c96d3957","d625ba08","dcc16154","e14acb3c","e5e958fd","eddef529","f3fc4b36","f40fbfe7","f5f1e2ac"]}
+{
+  "uuid": "0ae36156-979b-464c-acb0-e7ce31ca605b",
+  "name": "Harriet Carnie",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 149,
+      "fouls": 8,
+      "fg": 71,
+      "ft": 7,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 28,
+      "losses": 76,
+      "winPct": 0.25,
+      "draws": 6,
+      "statsChecked": "2026-07-05T15:20:28.359Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "23993a57",
+          "tn": "Watsonia Warriors U12 Girls 2",
+          "gid": "2650149c",
+          "gn": "Saturday U12 Girls D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 13,
+            "pts": 48,
+            "fg": 22,
+            "ft": 4,
+            "fouls": 4,
+            "wins": 5,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "23993a57",
+          "tn": "Watsonia Warriors U12 Girls 2",
+          "gid": "f9d1239b",
+          "gn": "Saturday U12 Girls D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 13,
+            "pts": 48,
+            "fg": 22,
+            "wins": 5,
+            "losses": 8,
+            "ft": 4,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "23993a57",
+          "tn": "Watsonia Warriors U12 Girls 2",
+          "gid": "7bfdf93b",
+          "gn": "Saturday U12 Girls Grading Group 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 48,
+            "fg": 22,
+            "wins": 5,
+            "losses": 8,
+            "ft": 4,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "23993a57",
+          "tn": "Watsonia Warriors U12 Girls 2",
+          "gid": "dace81bf",
+          "gn": "Saturday U12 Girls Grading Group 2",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 48,
+            "fg": 22,
+            "ft": 4,
+            "fouls": 4,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "0bc7f161",
+          "tn": "Watsonia Warriors U10 Girls 3",
+          "gid": "5cd5279a",
+          "gn": "Saturday U10 Girls C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 15,
+            "pts": 85,
+            "fg": 41,
+            "ft": 3,
+            "fouls": 3,
+            "wins": 2,
+            "losses": 11,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "0bc7f161",
+          "tn": "Watsonia Warriors U10 Girls 3",
+          "gid": "ed3a8477",
+          "gn": "Saturday U10 Girls Grading Group 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 85,
+            "fg": 41,
+            "wins": 2,
+            "losses": 11,
+            "draws": 2,
+            "ft": 3,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Watsonia Warriors Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "b2b73fee",
+          "tn": "Watsonia Warriors U10 Girls 3",
+          "gid": "9345db46",
+          "gn": "Saturday U10 Girls D",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 1,
+            "wins": 2,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b2b73fee",
+          "tn": "Watsonia Warriors U10 Girls 3",
+          "gid": "b4e385fa",
+          "gn": "Saturday U10 Girls C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 14,
+            "pts": 16,
+            "fg": 8,
+            "wins": 2,
+            "losses": 11,
+            "draws": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "ed51710e",
+          "tn": "Watsonia Warriors U12 Girls 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:33:26.386Z",
+  "teams": [
+    {
+      "tid": "23993a57",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0bc7f161",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2b73fee",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed51710e",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:56.887Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "35c8f829",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "046cfebd",
+    "0544b52c",
+    "0796079f",
+    "0d477a67",
+    "0f3fdc15",
+    "1400a898",
+    "17e2d9f7",
+    "1fc1aefc",
+    "2915ffa4",
+    "2bb0b12d",
+    "338444d6",
+    "33ad83f5",
+    "3459ebbd",
+    "35c8f829",
+    "373bc1e4",
+    "432bfcf2",
+    "5be0ac85",
+    "5ddfb68c",
+    "61233e2b",
+    "6cadf95f",
+    "744f4185",
+    "7e243094",
+    "7ecc7b7b",
+    "82fb272e",
+    "8978c477",
+    "8b2111fe",
+    "8c73a305",
+    "9f670651",
+    "a86ed2c6",
+    "adaa6ef4",
+    "addbc38f",
+    "ae829064",
+    "bc4cbb88",
+    "c96d3957",
+    "d625ba08",
+    "dcc16154",
+    "e14acb3c",
+    "e5e958fd",
+    "eddef529",
+    "f3fc4b36",
+    "f40fbfe7",
+    "f5f1e2ac"
+  ]
+}

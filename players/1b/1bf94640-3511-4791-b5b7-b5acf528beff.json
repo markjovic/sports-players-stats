@@ -1,1 +1,271 @@
-{"uuid":"1bf94640-3511-4791-b5b7-b5acf528beff","name":"Ged Killeen","gender":"Boys","sports":{"Basketball":{"gp":29,"pts":100,"fouls":19,"fg":48,"ft":4,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":null,"wins":10,"losses":16,"draws":1,"winPct":0.37,"statsChecked":"2026-07-05T15:34:30.284Z"}},"seasons":[{"sid":"8cdbd748","sn":"Winter 2026","regs":[{"tid":"e5c98c2b","tn":"Team 3 Blue","gid":"d2f2b231","gn":"Monday U12 Boys","age":"U12","div":null,"stats":{"gp":3,"fouls":1,"ft":2,"fg":12,"pts":26,"wins":3}}]},{"sid":"737c2b51","sn":"Summer 2025/26","regs":[{"tid":"f9323112","tn":"Team 3 - Blue","gid":"39fb7209","gn":"Monday U13 Mixed","age":"U13","div":null,"stats":{"gp":5,"fouls":3,"fg":16,"pts":32,"finals":1,"gfApps":1,"wins":1,"losses":3,"draws":1}}]},{"sid":"4dac1e27","sn":"Summer 2024/25","regs":[{"tid":"418fa4ae","tn":"Green","gid":"0f14f6d0","gn":"Under 10 Boys","age":null,"div":null,"stats":{"gp":9,"fouls":9,"ft":2,"fg":12,"pts":26,"wins":1,"losses":8}}]},{"sid":"2b567771","sn":"Winter 2024","regs":[{"tid":"27586ada","tn":"Red","gid":"b40f0289","gn":"Under 10 Boys","age":null,"div":null,"stats":{"gp":10,"fouls":6,"fg":6,"pts":12,"wins":5,"losses":4}},{"tid":"b97ef146","tn":"White","gid":"b40f0289","gn":"Under 10 Boys","age":null,"div":null,"stats":{"gp":2,"fg":2,"pts":4,"losses":1}}]}],"updatedAt":"2026-06-02T23:36:18.254Z","teams":[{"tid":"e5c98c2b","sid":"8cdbd748","status":"ACTIVE"},{"tid":"f9323112","sid":"737c2b51","status":"COMPLETED"},{"tid":"418fa4ae","sid":"4dac1e27","status":"COMPLETED"},{"tid":"3015e3fb","sid":"0d45bbdc","status":"COMPLETED"},{"tid":"27586ada","sid":"2b567771","status":"COMPLETED"},{"tid":"6fe61092","sid":"2376ffb1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:12:23.314Z","records":{"maxGamePTS":{"v":18,"gameKey":"b4404e36","sid":"737c2b51"},"maxGameThreePt":{"v":null}},"games":["0957c25e","107439a9","1378f29c","13b57e2b","18892f9f","189770db","1cca034d","270454a3","2bcaf054","384df1d3","3b81c29b","43e43cdf","45664b74","4f60b846","5b762add","603fa360","6d140631","7a91e224","7e7e1b76","85d55567","9937fac2","9a8e5fd8","a2cab3d2","ae061ebe","b4404e36","bb2cc161","bc5df6cf","bd10effc","f978f81a"],"gameTids":{"189770db":"e5c98c2b","bc5df6cf":"e5c98c2b","603fa360":"e5c98c2b","9a8e5fd8":"f9323112","b4404e36":"f9323112","f978f81a":"f9323112","18892f9f":"f9323112","1cca034d":"f9323112","13b57e2b":"418fa4ae","6d140631":"418fa4ae","bb2cc161":"418fa4ae","4f60b846":"418fa4ae","270454a3":"418fa4ae","9937fac2":"418fa4ae","0957c25e":"418fa4ae","7a91e224":"418fa4ae","43e43cdf":"418fa4ae","384df1d3":"27586ada","107439a9":"27586ada","45664b74":"27586ada","a2cab3d2":"27586ada","3b81c29b":"27586ada","1378f29c":"27586ada","2bcaf054":"27586ada","85d55567":"27586ada","bd10effc":"27586ada","ae061ebe":"27586ada","7e7e1b76":"b97ef146","5b762add":"b97ef146"}}
+{
+  "uuid": "1bf94640-3511-4791-b5b7-b5acf528beff",
+  "name": "Ged Killeen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 29,
+      "pts": 100,
+      "fouls": 19,
+      "fg": 48,
+      "ft": 4,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 16,
+      "draws": 1,
+      "winPct": 0.37,
+      "statsChecked": "2026-07-05T15:34:30.284Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8cdbd748",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e5c98c2b",
+          "tn": "Team 3 Blue",
+          "gid": "d2f2b231",
+          "gn": "Monday U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "737c2b51",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "f9323112",
+          "tn": "Team 3 - Blue",
+          "gid": "39fb7209",
+          "gn": "Monday U13 Mixed",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "fg": 16,
+            "pts": 32,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4dac1e27",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "418fa4ae",
+          "tn": "Green",
+          "gid": "0f14f6d0",
+          "gn": "Under 10 Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 12,
+            "pts": 26,
+            "wins": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2b567771",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "27586ada",
+          "tn": "Red",
+          "gid": "b40f0289",
+          "gn": "Under 10 Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "fg": 6,
+            "pts": 12,
+            "wins": 5,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "b97ef146",
+          "tn": "White",
+          "gid": "b40f0289",
+          "gn": "Under 10 Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fg": 2,
+            "pts": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0d45bbdc",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "3015e3fb",
+          "tn": "Team 1 - Green",
+          "gid": "432224f4",
+          "gn": "Monday U13 Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "2376ffb1",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "6fe61092",
+          "tn": "U12 Team 2 Yellow",
+          "gid": "31506621",
+          "gn": "Monday U12 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T23:36:18.254Z",
+  "teams": [
+    {
+      "tid": "e5c98c2b",
+      "sid": "8cdbd748",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9323112",
+      "sid": "737c2b51",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "418fa4ae",
+      "sid": "4dac1e27",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "27586ada",
+      "sid": "2b567771",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b97ef146",
+      "sid": "2b567771",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3015e3fb",
+      "sid": "0d45bbdc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6fe61092",
+      "sid": "2376ffb1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:57.099Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "b4404e36",
+      "sid": "737c2b51"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0957c25e",
+    "107439a9",
+    "1378f29c",
+    "13b57e2b",
+    "18892f9f",
+    "189770db",
+    "1cca034d",
+    "270454a3",
+    "2bcaf054",
+    "384df1d3",
+    "3b81c29b",
+    "43e43cdf",
+    "45664b74",
+    "4f60b846",
+    "5b762add",
+    "603fa360",
+    "6d140631",
+    "7a91e224",
+    "7e7e1b76",
+    "85d55567",
+    "9937fac2",
+    "9a8e5fd8",
+    "a2cab3d2",
+    "ae061ebe",
+    "b4404e36",
+    "bb2cc161",
+    "bc5df6cf",
+    "bd10effc",
+    "f978f81a"
+  ],
+  "gameTids": {
+    "189770db": "e5c98c2b",
+    "bc5df6cf": "e5c98c2b",
+    "603fa360": "e5c98c2b",
+    "9a8e5fd8": "f9323112",
+    "b4404e36": "f9323112",
+    "f978f81a": "f9323112",
+    "18892f9f": "f9323112",
+    "1cca034d": "f9323112",
+    "13b57e2b": "418fa4ae",
+    "6d140631": "418fa4ae",
+    "bb2cc161": "418fa4ae",
+    "4f60b846": "418fa4ae",
+    "270454a3": "418fa4ae",
+    "9937fac2": "418fa4ae",
+    "0957c25e": "418fa4ae",
+    "7a91e224": "418fa4ae",
+    "43e43cdf": "418fa4ae",
+    "384df1d3": "27586ada",
+    "107439a9": "27586ada",
+    "45664b74": "27586ada",
+    "a2cab3d2": "27586ada",
+    "3b81c29b": "27586ada",
+    "1378f29c": "27586ada",
+    "2bcaf054": "27586ada",
+    "85d55567": "27586ada",
+    "bd10effc": "27586ada",
+    "ae061ebe": "27586ada",
+    "7e7e1b76": "b97ef146",
+    "5b762add": "b97ef146"
+  }
+}

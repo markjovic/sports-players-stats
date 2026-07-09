@@ -1,1 +1,160 @@
-{"uuid":"46eed01f-c3d4-4ccd-a53d-374a20583664","name":"Ruby Bond","gender":"Girls","sports":{"Basketball":{"gp":21,"pts":26,"fouls":2,"fg":12,"ft":2,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":18,"losses":18,"draws":2,"winPct":0.47,"statsChecked":"2026-07-05T14:41:19.713Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Banyule Hawks Basketball Club","regs":[{"tid":"a985dbd2","tn":"Banyule U13 Girls 08","gid":"da8ce1bf","gn":"Girls U13 D Grading","age":"U13","div":null,"stats":{"gp":7,"fg":4,"pts":8,"wins":1,"losses":4}},{"tid":"a985dbd2","tn":"Banyule U13 Girls 08","gid":"4799a2cf","gn":"Girls U13 C Grading","age":"U13","div":null,"stats":{"gp":7,"wins":1,"losses":4,"pts":8,"fg":4}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Banyule Hawks Basketball Club","regs":[{"tid":"eb7f50de","tn":"Banyule U12 Girls 12","gid":"c7eea808","gn":"Girls U12 D3","age":"U12","div":"D3","stats":{"gp":14,"fouls":2,"ft":2,"fg":8,"pts":18,"finals":1,"gfApps":1,"wins":8,"losses":5,"draws":1,"gfWins":1}},{"tid":"eb7f50de","tn":"Banyule U12 Girls 12","gid":"238a56d0","gn":"Girls U12 D Grading","age":"U12","div":null,"stats":{"gp":14,"fouls":2,"ft":2,"fg":8,"pts":18,"finals":1,"gfApps":1,"wins":8,"losses":5,"draws":1,"gfWins":1}}]}],"updatedAt":"2026-06-01T20:37:35.320Z","teams":[{"tid":"a985dbd2","sid":"1ae60211","status":"ACTIVE"},{"tid":"eb7f50de","sid":"88026885","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:25:44.604Z","records":{"maxGamePTS":{"v":5,"gameKey":"f93f1b57","sid":"88026885"},"maxGameThreePt":{"v":null}},"games":["002dfdab","192588d3","2c4cb582","3bdd4c23","3d2c635f","4611192d","480be6c6","55368ca3","5df287d5","662b9a6c","6bcd88d9","75ac3367","86d1a874","8fb74f0f","970c5255","c5768347","cac6052d","ee759072","f262c734","f93f1b57"]}
+{
+  "uuid": "46eed01f-c3d4-4ccd-a53d-374a20583664",
+  "name": "Ruby Bond",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 21,
+      "pts": 26,
+      "fouls": 2,
+      "fg": 12,
+      "ft": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 18,
+      "losses": 18,
+      "draws": 2,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-05T14:41:19.713Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "a985dbd2",
+          "tn": "Banyule U13 Girls 08",
+          "gid": "d2c4df97",
+          "gn": "Girls U13 D2",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 4,
+            "pts": 8,
+            "wins": 1,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "a985dbd2",
+          "tn": "Banyule U13 Girls 08",
+          "gid": "4799a2cf",
+          "gn": "Girls U13 C Grading",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "wins": 1,
+            "losses": 4,
+            "pts": 8,
+            "fg": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "eb7f50de",
+          "tn": "Banyule U12 Girls 12",
+          "gid": "c7eea808",
+          "gn": "Girls U12 D3",
+          "age": "U12",
+          "div": "D3",
+          "stats": {
+            "gp": 14,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "eb7f50de",
+          "tn": "Banyule U12 Girls 12",
+          "gid": "238a56d0",
+          "gn": "Girls U12 D Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:37:35.320Z",
+  "teams": [
+    {
+      "tid": "a985dbd2",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eb7f50de",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:35:57.265Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "f93f1b57",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "002dfdab",
+    "192588d3",
+    "2c4cb582",
+    "3bdd4c23",
+    "3d2c635f",
+    "4611192d",
+    "480be6c6",
+    "55368ca3",
+    "5df287d5",
+    "662b9a6c",
+    "6bcd88d9",
+    "75ac3367",
+    "86d1a874",
+    "8fb74f0f",
+    "970c5255",
+    "c5768347",
+    "cac6052d",
+    "ee759072",
+    "f262c734",
+    "f93f1b57"
+  ]
+}
