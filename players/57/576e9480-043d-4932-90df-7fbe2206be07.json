@@ -1,1 +1,363 @@
-{"uuid":"576e9480-043d-4932-90df-7fbe2206be07","name":"Lucy Ambrosini","gender":"Girls","sports":{"Basketball":{"gp":21,"pts":68,"fouls":30,"fg":22,"ft":12,"threePt":4,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":2,"wins":29,"winPct":0.67,"losses":14,"statsChecked":"2026-07-05T14:55:27.573Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Solway Basketball Club","regs":[{"tid":"6158640f","tn":"Solway U18 Girls Magic","gid":"8a52b885","gn":"Tuesday U18 Girls Section 01","age":"U18","div":null,"stats":{"gp":9,"fouls":14,"ft":4,"fg":12,"pts":40,"threePt":4,"wins":7,"losses":2}},{"tid":"6158640f","tn":"Solway U18 Girls Magic","gid":"ed0e0828","gn":"Tuesday U18 Girls Grading Section 01/02","age":"U18","div":null,"stats":{"gp":9,"fouls":14,"ft":4,"pts":40,"wins":7,"losses":2,"fg":12,"threePt":4}},{"tid":"6158640f","tn":"Solway U18 Girls Magic","gid":"f2f8d2ea","gn":"Tuesday U18 Girls Grading Section 01","age":"U18","div":null,"stats":{"gp":9,"fouls":14,"ft":4,"fg":12,"threePt":4,"pts":40,"wins":7,"losses":2}}]},{"sid":"df876355","sn":"Summer 2024/25","club":"Solway Basketball Club","regs":[{"tid":"a595575c","tn":"Solway U16 Girls Magic","gid":"d12ecdb1","gn":"Tuesday U16 Girls Test Season Division 1","age":"U16","div":"Division 1","stats":{"gp":3,"fouls":5,"ft":1,"fg":5,"pts":11}}]},{"sid":"3d243fd6","sn":"Winter 2024","regs":[{"tid":"06779d27","tn":"Bayside Rollers","gid":"09e2803b","gn":"Saturday U16/18 Girls A","age":"U16","div":null,"stats":{"gp":9,"fouls":11,"ft":7,"pts":17,"wins":4,"losses":4,"fg":5}},{"tid":"06779d27","tn":"Bayside Rollers","gid":"67455a9f","gn":"Saturday U16/18 Girls B","age":"U16","div":null,"stats":{"gp":9,"ft":7,"fg":5,"pts":17,"wins":4,"losses":4,"fouls":11}}]}],"updatedAt":"2026-06-01T08:26:21.801Z","teams":[{"tid":"6158640f","sid":"6c117270","status":"ACTIVE"},{"tid":"285e98e1","sid":"68279835","status":"COMPLETED"},{"tid":"2ddd1a91","sid":"913d1397","status":"COMPLETED"},{"tid":"a595575c","sid":"df876355","status":"COMPLETED"},{"tid":"7cdb77e3","sid":"e54d0c37","status":"COMPLETED"},{"tid":"06779d27","sid":"3d243fd6","status":"COMPLETED"},{"tid":"b06c9849","sid":"ee5d2724","status":"COMPLETED"},{"tid":"6b6d47ca","sid":"7d20ecad","status":"COMPLETED"},{"tid":"a0ebcbbf","sid":"e2637fe8","status":"COMPLETED"},{"tid":"343f4b35","sid":"eb0c3879","status":"COMPLETED"},{"tid":"5a239ae8","sid":"11f9ba57","status":"COMPLETED"},{"tid":"1e130ab3","sid":"00e10ea1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:35:56.859Z","records":{"maxGamePTS":{"v":14,"gameKey":"e2e27531","sid":"6c117270"},"maxGameThreePt":{"v":2,"gameKey":"e2e27531","sid":"6c117270"}},"games":["05af6b9f","0a5b6ffa","2ed157f8","2ef067df","32a8a861","38110ed0","3955fd4e","39706e07","50644dc3","555e65c0","6906ce08","8cd7a8ce","975b35b1","a90d91a5","ac09a682","cd4714dc","d632333f","e2e27531","e310b886","efed3b66","fa96cdbb"]}
+{
+  "uuid": "576e9480-043d-4932-90df-7fbe2206be07",
+  "name": "Lucy Ambrosini",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 21,
+      "pts": 68,
+      "fouls": 30,
+      "fg": 22,
+      "ft": 12,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 29,
+      "winPct": 0.67,
+      "losses": 14,
+      "statsChecked": "2026-07-05T14:55:27.573Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Solway Basketball Club",
+      "regs": [
+        {
+          "tid": "6158640f",
+          "tn": "Solway U18 Girls Magic",
+          "gid": "8a52b885",
+          "gn": "Tuesday U18 Girls Section 01",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 12,
+            "pts": 40,
+            "threePt": 4,
+            "wins": 7,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "6158640f",
+          "tn": "Solway U18 Girls Magic",
+          "gid": "ed0e0828",
+          "gn": "Tuesday U18 Girls Grading Section 01/02",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 14,
+            "ft": 4,
+            "pts": 40,
+            "wins": 7,
+            "losses": 2,
+            "fg": 12,
+            "threePt": 4
+          }
+        },
+        {
+          "tid": "6158640f",
+          "tn": "Solway U18 Girls Magic",
+          "gid": "f2f8d2ea",
+          "gn": "Tuesday U18 Girls Grading Section 01",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 12,
+            "threePt": 4,
+            "pts": 40,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "club": "Solway Basketball Club",
+      "regs": [
+        {
+          "tid": "a595575c",
+          "tn": "Solway U16 Girls Magic",
+          "gid": "d12ecdb1",
+          "gn": "Tuesday U16 Girls Test Season Division 1",
+          "age": "U16",
+          "div": "Division 1",
+          "stats": {
+            "gp": 3,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 5,
+            "pts": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3d243fd6",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "06779d27",
+          "tn": "Bayside Rollers",
+          "gid": "09e2803b",
+          "gn": "Saturday U16/18 Girls A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 11,
+            "ft": 7,
+            "pts": 17,
+            "wins": 4,
+            "losses": 4,
+            "fg": 5
+          }
+        },
+        {
+          "tid": "06779d27",
+          "tn": "Bayside Rollers",
+          "gid": "67455a9f",
+          "gn": "Saturday U16/18 Girls B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "ft": 7,
+            "fg": 5,
+            "pts": 17,
+            "wins": 4,
+            "losses": 4,
+            "fouls": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "285e98e1",
+          "tn": "Solway U18 Girls Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "2ddd1a91",
+          "tn": "Solway U18 Girls Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "7cdb77e3",
+          "tn": "Solway U16 Girls Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "b06c9849",
+          "tn": "Solway U16 Girls Magic",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "6b6d47ca",
+          "tn": "Solway U16 Girls Mystics",
+          "gid": "3c462827",
+          "gn": "Tuesday U16 Girls Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "a0ebcbbf",
+          "tn": "Solway U14 Girls Flames",
+          "gid": "10c2e629",
+          "gn": "U14 Girls (S22_23) Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "343f4b35",
+          "tn": "Solway U14 Girls Flames",
+          "gid": "347b92bd",
+          "gn": "U14 Girls Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "5a239ae8",
+          "tn": "Solway U14 Girls Flames",
+          "gid": "36fe43cc",
+          "gn": "U14 Girls GP3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "1e130ab3",
+          "tn": "Solway U12 Girls Lynx",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:26:21.801Z",
+  "teams": [
+    {
+      "tid": "6158640f",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a595575c",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06779d27",
+      "sid": "3d243fd6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "285e98e1",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2ddd1a91",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7cdb77e3",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b06c9849",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b6d47ca",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a0ebcbbf",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "343f4b35",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5a239ae8",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e130ab3",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T13:33:08.239Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "e2e27531",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "e2e27531",
+      "sid": "6c117270"
+    }
+  },
+  "games": [
+    "05af6b9f",
+    "0a5b6ffa",
+    "2ed157f8",
+    "2ef067df",
+    "32a8a861",
+    "38110ed0",
+    "3955fd4e",
+    "39706e07",
+    "50644dc3",
+    "555e65c0",
+    "6906ce08",
+    "8cd7a8ce",
+    "975b35b1",
+    "a90d91a5",
+    "ac09a682",
+    "cd4714dc",
+    "d632333f",
+    "e2e27531",
+    "e310b886",
+    "efed3b66",
+    "fa96cdbb"
+  ]
+}

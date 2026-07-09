@@ -1,1 +1,127 @@
-{"uuid":"566f1de0-1485-4900-baf2-69abf0cb91c6","name":"Zachary Qiang","gender":"Boys","sports":{"Basketball":{"gp":7,"pts":8,"fouls":5,"fg":4,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":1,"losses":3,"draws":1,"winPct":0.2,"statsChecked":"2026-07-05T14:27:24.889Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Canterbury Cougars Basketball Club","regs":[{"tid":"eb76d2a2","tn":"Cougars U12 Boys Sharks","gid":"f9d7de60","gn":"U12 Boys Grading","age":"U12","div":null,"stats":{"gp":7,"fouls":5,"fg":4,"pts":8,"wins":1,"losses":3,"draws":1}}]}],"updatedAt":"2026-07-04T05:39:09.289Z","teams":[{"tid":"eb76d2a2","sid":"aacc7335","status":"ACTIVE"},{"tid":"7ca09f92","sid":"8884de2d","status":"COMPLETED"},{"tid":"b994fed7","sid":"0fef30ca","status":"COMPLETED"},{"tid":"49b442ef","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:35:15.443Z","records":{"maxGamePTS":{"v":6,"gameKey":"9bff5f70","sid":"aacc7335"},"maxGameThreePt":{"v":null}},"games":["92581941","9bff5f70","b9c374d7","c892e71a","eab77865"]}
+{
+  "uuid": "566f1de0-1485-4900-baf2-69abf0cb91c6",
+  "name": "Zachary Qiang",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 8,
+      "fouls": 5,
+      "fg": 4,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 3,
+      "draws": 1,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T14:27:24.889Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Canterbury Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "eb76d2a2",
+          "tn": "Cougars U12 Boys Sharks",
+          "gid": "f915bd89",
+          "gn": "U12 Boys C3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 8,
+            "wins": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "7ca09f92",
+          "tn": "Canterbury Sharks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "b994fed7",
+          "tn": "Canterbury Sharks",
+          "gid": "3cbd5196",
+          "gn": "Friday Whitehorse YR.1 - YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "49b442ef",
+          "tn": "Canterbury Beyblades ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:39:09.289Z",
+  "teams": [
+    {
+      "tid": "eb76d2a2",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ca09f92",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b994fed7",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "49b442ef",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T13:33:08.172Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "9bff5f70",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "92581941",
+    "9bff5f70",
+    "b9c374d7",
+    "c892e71a",
+    "eab77865"
+  ]
+}
