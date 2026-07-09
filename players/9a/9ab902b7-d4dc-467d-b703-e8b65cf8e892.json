@@ -1,1 +1,117 @@
-{"uuid":"9ab902b7-d4dc-467d-b703-e8b65cf8e892","name":"Eileen Christou","gender":"Women","sports":{"Basketball":{"gp":2,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"statsChecked":"2026-07-06T19:11:04.764Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"dd0d8f01","tn":"Golden Ballers","gid":"50c9ad5b","gn":"Tuesday Open Women Section 2","age":"Senior","div":null,"stats":{"gp":1}}]},{"sid":"297562bc","regs":[{"tid":"0668c537","stats":{"gp":1}},{"tid":"0668c537","tn":"","gid":"e7b71ce1","gn":"Tuesday Women Division 2","div":null,"stats":{"gp":1}}]}],"updatedAt":"2026-07-06T18:32:44.078Z","teams":[{"tid":"dd0d8f01","sid":"5593103d","status":"ACTIVE"},{"tid":"17e7f782","sid":"fab2be4d","status":"COMPLETED"},{"tid":"01437d57","sid":"76897951","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:30:18.950Z","games":["c22490c4"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "9ab902b7-d4dc-467d-b703-e8b65cf8e892",
+  "name": "Eileen Christou",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "statsChecked": "2026-07-06T19:11:04.764Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "dd0d8f01",
+          "tn": "Golden Ballers",
+          "gid": "50c9ad5b",
+          "gn": "Tuesday Open Women Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "0668c537",
+          "stats": {
+            "gp": 1
+          },
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2"
+        },
+        {
+          "tid": "0668c537",
+          "tn": "",
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2",
+          "div": null,
+          "stats": {
+            "gp": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "17e7f782",
+          "tn": "Golden Ballers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "01437d57",
+          "tn": "Golden Ballers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:44.078Z",
+  "teams": [
+    {
+      "tid": "dd0d8f01",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0668c537",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "17e7f782",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "01437d57",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T02:44:16.399Z",
+  "games": [
+    "c22490c4"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

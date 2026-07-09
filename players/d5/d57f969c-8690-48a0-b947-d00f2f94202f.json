@@ -1,1 +1,81 @@
-{"uuid":"d57f969c-8690-48a0-b947-d00f2f94202f","name":"Michael Sourlos","sports":{"Basketball":{"maxGamePTS":14,"maxGameThreePt":2,"foulOuts":{},"gp":33,"pts":194,"fg":69,"ft":20,"threePt":12,"fouls":48,"statsChecked":"2026-07-08T17:55:36.071Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"b506855d"}]},{"sid":"796936f7","regs":[{"tid":"bcd5bff9"}]},{"sid":"d3e6f402","regs":[{"tid":"ba05f7cb"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":14,"gameKey":"3bfb0f7c","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"7a0bbd72","sid":"796936f7"}}}
+{
+  "uuid": "d57f969c-8690-48a0-b947-d00f2f94202f",
+  "name": "Michael Sourlos",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 33,
+      "pts": 194,
+      "fg": 69,
+      "ft": 20,
+      "threePt": 12,
+      "fouls": 48,
+      "statsChecked": "2026-07-08T17:55:36.071Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "b506855d",
+          "gid": "7edb93b5",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "bcd5bff9",
+          "gid": "8e5fec03",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "d3e6f402",
+      "regs": [
+        {
+          "tid": "ba05f7cb",
+          "gid": "2062a2b0",
+          "gn": "Monday Open Men C/D"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "b506855d",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bcd5bff9",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ba05f7cb",
+      "sid": "d3e6f402",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "3bfb0f7c",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "7a0bbd72",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T02:44:18.382Z"
+}

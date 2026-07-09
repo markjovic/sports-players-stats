@@ -1,1 +1,105 @@
-{"uuid":"063c792b-a106-490e-8e0c-452c442d6a56","name":"Jackson Ronchi","sports":{"Basketball":{"maxGamePTS":20,"maxGameThreePt":2,"foulOuts":{"702b232f":1,"796936f7":1},"gp":23,"pts":243,"fg":90,"ft":45,"threePt":6,"fouls":55,"statsChecked":"2026-07-08T17:50:02.405Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"dbfff7d8"}]},{"sid":"796936f7","regs":[{"tid":"79956384"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":20,"gameKey":"94f8a107","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"94f8a107","sid":"796936f7"}}}
+{
+  "uuid": "063c792b-a106-490e-8e0c-452c442d6a56",
+  "name": "Jackson Ronchi",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 20,
+      "maxGameThreePt": 2,
+      "foulOuts": {
+        "702b232f": 1,
+        "796936f7": 1
+      },
+      "gp": 23,
+      "pts": 243,
+      "fg": 90,
+      "ft": 45,
+      "threePt": 6,
+      "fouls": 55,
+      "statsChecked": "2026-07-08T17:50:02.405Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "dbfff7d8",
+          "gid": "854861a2",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "79956384",
+          "gid": "617dabe4",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "92423520",
+          "tn": "SKOC SAINTS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "f318b750",
+          "tn": "SKOC Saints",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "dbfff7d8",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79956384",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92423520",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f318b750",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "94f8a107",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "94f8a107",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T02:44:13.022Z"
+}

@@ -1,1 +1,366 @@
-{"uuid":"1f3de89f-a139-4458-b970-75bcb2d4d6cc","name":"John Kalantzis","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":45,"fouls":18,"fg":19,"ft":4,"threePt":1,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"wins":3,"losses":7,"winPct":0.27,"draws":1,"statsChecked":"2026-07-05T15:07:36.746Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Toorak Basketball Club","regs":[{"tid":"5c2766cf","tn":"Toorak Thorns","gid":"7f6d296d","gn":"Saturday U14 Boys Section 04","age":"U14","div":null,"stats":{"gp":5,"pts":3,"fg":1,"ft":1,"fouls":5,"wins":2,"losses":2,"draws":1}}]},{"sid":"31d05517","sn":"Autumn 2025","club":"Toorak Basketball Club","regs":[{"tid":"35fd6d42","tn":"Toorak Troopers","gid":"61bb654f","gn":"Tuesday MSAC/Bayside Year 6 Boys C","age":null,"div":null,"stats":{"gp":6,"pts":42,"threePt":1,"fg":18,"ft":3,"fouls":13,"wins":1,"losses":5}}]}],"updatedAt":"2026-05-31T14:00:01.138Z","teams":[{"tid":"5c2766cf","sid":"6c117270","status":"ACTIVE"},{"tid":"4fe02246","sid":"68279835","status":"COMPLETED"},{"tid":"81653a8f","sid":"913d1397","status":"COMPLETED"},{"tid":"35fd6d42","sid":"31d05517","status":"COMPLETED"},{"tid":"15cf543e","sid":"df876355","status":"COMPLETED"},{"tid":"3c3e05ac","sid":"8884de2d","status":"COMPLETED"},{"tid":"7deabaa7","sid":"e54d0c37","status":"COMPLETED"},{"tid":"37904d01","sid":"0fef30ca","status":"COMPLETED"},{"tid":"50e825bf","sid":"ee5d2724","status":"COMPLETED"},{"tid":"55b34419","sid":"09a70808","status":"COMPLETED"},{"tid":"ef4a08e0","sid":"e5df46b3","status":"COMPLETED"},{"tid":"2ad9461c","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"a689cb61","sid":"3f4132a1","status":"COMPLETED"},{"tid":"5cc49063","sid":"9533d0c6","status":"COMPLETED"},{"tid":"bbb605e9","sid":"977f8526","status":"COMPLETED"},{"tid":"f23fd47a","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:13:09.574Z","records":{"maxGamePTS":{"v":12,"gameKey":"23193f6e","sid":"31d05517"},"maxGameThreePt":{"v":1,"gameKey":"23193f6e","sid":"31d05517"}},"games":["0baa3da2","23193f6e","2dc5c7ae","3136514a","41cdd86f","48055f5a","973068a0","dacb3b3d","dda41823","eba3a949","fd5c42e8"]}
+{
+  "uuid": "1f3de89f-a139-4458-b970-75bcb2d4d6cc",
+  "name": "John Kalantzis",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 45,
+      "fouls": 18,
+      "fg": 19,
+      "ft": 4,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 7,
+      "winPct": 0.27,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:07:36.746Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "5c2766cf",
+          "tn": "Toorak Thorns",
+          "gid": "7f6d296d",
+          "gn": "Saturday U14 Boys Section 04",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 5,
+            "wins": 2,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "club": "Toorak Basketball Club",
+      "regs": [
+        {
+          "tid": "35fd6d42",
+          "tn": "Toorak Troopers",
+          "gid": "61bb654f",
+          "gn": "Tuesday MSAC/Bayside Year 6 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 42,
+            "threePt": 1,
+            "fg": 18,
+            "ft": 3,
+            "fouls": 13,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "4fe02246",
+          "tn": "Toorak Tractors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "81653a8f",
+          "tn": "Toorak Tractors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "15cf543e",
+          "tn": "Toorak Tractors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "3c3e05ac",
+          "tn": "Toorak Troopers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "7deabaa7",
+          "tn": "Toorak Tractors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "37904d01",
+          "tn": "Toorak Troopers",
+          "gid": "b0e75b8a",
+          "gn": "Wednesday MSAC YR5.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "50e825bf",
+          "tn": "Toorak Tractors",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "55b34419",
+          "tn": "Toorak T-Bolts",
+          "gid": "741c81c0",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "ef4a08e0",
+          "tn": "Toorak T-Bolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "2ad9461c",
+          "tn": "Toorak T-Bolts",
+          "gid": "b6e9943d",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "a689cb61",
+          "tn": "Toorak T-Bolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9533d0c6",
+      "sn": "Term 4, 2021",
+      "regs": [
+        {
+          "tid": "5cc49063",
+          "tn": "Toorak T-Bolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "bbb605e9",
+          "tn": "Toorak T-Bolts",
+          "gid": "d9de2e7a",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "f23fd47a",
+          "tn": "Toorak Thunderbolts",
+          "gid": "08b90e70",
+          "gn": "Friday MSAC/Bayside YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T14:00:01.138Z",
+  "teams": [
+    {
+      "tid": "5c2766cf",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35fd6d42",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4fe02246",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81653a8f",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "15cf543e",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c3e05ac",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7deabaa7",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "37904d01",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50e825bf",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "55b34419",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef4a08e0",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2ad9461c",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a689cb61",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5cc49063",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbb605e9",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f23fd47a",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T02:44:13.833Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "23193f6e",
+      "sid": "31d05517"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "23193f6e",
+      "sid": "31d05517"
+    }
+  },
+  "games": [
+    "0baa3da2",
+    "23193f6e",
+    "2dc5c7ae",
+    "3136514a",
+    "41cdd86f",
+    "48055f5a",
+    "973068a0",
+    "dacb3b3d",
+    "dda41823",
+    "eba3a949",
+    "fd5c42e8"
+  ]
+}

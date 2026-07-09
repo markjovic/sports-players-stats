@@ -1,1 +1,110 @@
-{"uuid":"9aae423b-b7e2-438c-9bd2-c001babbca6b","gender":null,"sports":{"Basketball":{"gp":8,"pts":6,"fouls":1,"fg":2,"ft":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":6,"losses":6,"draws":4,"winPct":0.38,"statsChecked":"2026-07-05T16:02:44.178Z"}},"seasons":[{"sid":"532e7f37","sn":"Winter 2021","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"b63da883","tn":"Blackburn U15 Boys 04","gid":"959ba542","gn":"Boys U15BD","stats":{"gp":8,"pts":6,"fg":2,"wins":3,"losses":3,"draws":2,"ft":2,"fouls":1}},{"tid":"b63da883","tn":"Blackburn U15 Boys 04","gid":"ae9ed886","gn":"Boys U15 B Grading","stats":{"gp":8,"pts":6,"fouls":1,"fg":2,"ft":2,"wins":3,"losses":3,"draws":2}}]}],"updatedAt":"2026-06-11T23:42:55.107Z","games":["2627a3a3","3d8a815f","458c4013","4bc5aff7","a70a86ed","d3b1be08","d3d6db3c","ff30db9d"],"records":{"maxGamePTS":{"v":4,"gameKey":"d3b1be08","sid":"532e7f37"},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "9aae423b-b7e2-438c-9bd2-c001babbca6b",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 6,
+      "fouls": 1,
+      "fg": 2,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 6,
+      "draws": 4,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T16:02:44.178Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "532e7f37",
+      "sn": "Winter 2021",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "b63da883",
+          "tn": "Blackburn U15 Boys 04",
+          "gid": "959ba542",
+          "gn": "Boys U15BD",
+          "stats": {
+            "gp": 8,
+            "pts": 6,
+            "fg": 2,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2,
+            "ft": 2,
+            "fouls": 1
+          }
+        },
+        {
+          "tid": "b63da883",
+          "tn": "Blackburn U15 Boys 04",
+          "gid": "ae9ed886",
+          "gn": "Boys U15 B Grading",
+          "stats": {
+            "gp": 8,
+            "pts": 6,
+            "fouls": 1,
+            "fg": 2,
+            "ft": 2,
+            "wins": 3,
+            "losses": 3,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "1045bb33",
+          "tn": "Blackburn U14 Boys 4",
+          "gid": "ac2020ac",
+          "gn": "U14 Boys VJL 8 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:55.107Z",
+  "games": [
+    "2627a3a3",
+    "3d8a815f",
+    "458c4013",
+    "4bc5aff7",
+    "a70a86ed",
+    "d3b1be08",
+    "d3d6db3c",
+    "ff30db9d"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "d3b1be08",
+      "sid": "532e7f37"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "b63da883",
+      "sid": "532e7f37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1045bb33",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T02:44:16.392Z"
+}

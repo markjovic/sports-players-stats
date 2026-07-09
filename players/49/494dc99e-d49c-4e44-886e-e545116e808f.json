@@ -1,1 +1,98 @@
-{"uuid":"494dc99e-d49c-4e44-886e-e545116e808f","name":"Zachary Prentner","sports":{"Basketball":{"maxGamePTS":19,"maxGameThreePt":1,"foulOuts":{"0d3fe477":1},"gp":41,"pts":231,"fg":94,"ft":28,"threePt":5,"fouls":71,"statsChecked":"2026-07-08T17:51:35.338Z"}},"seasons":[{"sid":"8a2cc9e6","regs":[{"tid":"7705a84e"}]},{"sid":"0d3fe477","regs":[{"tid":"9afc67b9"}]},{"sid":"542b62c9","regs":[{"tid":"7886c7ee"}]},{"sid":"89899a1c","regs":[{"tid":"edc65a3c"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":19,"gameKey":"9e8efa94","sid":"542b62c9"},"maxGameThreePt":{"v":1,"gameKey":"3407395a","sid":"0d3fe477"}}}
+{
+  "uuid": "494dc99e-d49c-4e44-886e-e545116e808f",
+  "name": "Zachary Prentner",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 19,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "0d3fe477": 1
+      },
+      "gp": 41,
+      "pts": 231,
+      "fg": 94,
+      "ft": 28,
+      "threePt": 5,
+      "fouls": 71,
+      "statsChecked": "2026-07-08T17:51:35.338Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8a2cc9e6",
+      "regs": [
+        {
+          "tid": "7705a84e",
+          "gid": "e2499785",
+          "gn": "Wednesday Open Men Section 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "0d3fe477",
+      "regs": [
+        {
+          "tid": "9afc67b9",
+          "gid": "6697e4c0",
+          "gn": "Monday Open Men Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "542b62c9",
+      "regs": [
+        {
+          "tid": "7886c7ee",
+          "gid": "9fbc8346",
+          "gn": "Monday Open Men Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "89899a1c",
+      "regs": [
+        {
+          "tid": "edc65a3c",
+          "gid": "72c276be",
+          "gn": "Monday Men Division 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "7705a84e",
+      "sid": "8a2cc9e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9afc67b9",
+      "sid": "0d3fe477",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7886c7ee",
+      "sid": "542b62c9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "edc65a3c",
+      "sid": "89899a1c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "9e8efa94",
+      "sid": "542b62c9"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3407395a",
+      "sid": "0d3fe477"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T02:44:14.730Z"
+}

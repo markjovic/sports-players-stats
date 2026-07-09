@@ -1,1 +1,96 @@
-{"uuid":"486cf2ff-3ea2-4f8f-829b-fcce9178d999","name":"Ivy Waugh","gender":"Mixed","sports":{"Basketball":{"gp":14,"pts":7,"fouls":7,"fg":2,"ft":3,"foulOuts":{},"maxGamePTS":3,"maxGameThreePt":null,"wins":3,"losses":6,"winPct":0.33,"statsChecked":"2026-07-05T16:00:34.609Z"}},"seasons":[{"sid":"e44fb190","sn":"Winter 2026","club":"Pascoe Vale Panthers Basketball Club","regs":[{"tid":"74e3d4cb","tn":"Panthers U8 Mixed White","gid":"56a18796","gn":"Saturday U8 Mixed Group 2","age":"U8","div":null,"stats":{"gp":9,"fouls":5,"ft":3,"fg":2,"pts":7,"wins":3,"losses":6}}]},{"sid":"8810ce3f","regs":[{"tid":"02e4db2a","stats":{"gp":5,"fouls":2}}]}],"updatedAt":"2026-06-02T06:08:04.236Z","teams":[{"tid":"74e3d4cb","sid":"e44fb190","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:27:06.407Z","records":{"maxGamePTS":{"v":3,"gameKey":"f86ff5af","sid":"e44fb190"},"maxGameThreePt":{"v":null}},"games":["0f414a63","1295d6c2","14b89433","33f94507","3e44b4b7","55062529","db767469","ee2f3c40","f86ff5af"]}
+{
+  "uuid": "486cf2ff-3ea2-4f8f-829b-fcce9178d999",
+  "name": "Ivy Waugh",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 7,
+      "fouls": 7,
+      "fg": 2,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 3,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 6,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:00:34.609Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e44fb190",
+      "sn": "Winter 2026",
+      "club": "Pascoe Vale Panthers Basketball Club",
+      "regs": [
+        {
+          "tid": "74e3d4cb",
+          "tn": "Panthers U8 Mixed White",
+          "gid": "56a18796",
+          "gn": "Saturday U8 Mixed Group 2",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "ft": 3,
+            "fg": 2,
+            "pts": 7,
+            "wins": 3,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8810ce3f",
+      "regs": [
+        {
+          "tid": "02e4db2a",
+          "stats": {
+            "gp": 5,
+            "fouls": 2
+          },
+          "gid": "3a6cce19",
+          "gn": "U10 Girls Division 1"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T06:08:04.236Z",
+  "teams": [
+    {
+      "tid": "74e3d4cb",
+      "sid": "e44fb190",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "02e4db2a",
+      "sid": "8810ce3f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T02:44:14.713Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 3,
+      "gameKey": "f86ff5af",
+      "sid": "e44fb190"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0f414a63",
+    "1295d6c2",
+    "14b89433",
+    "33f94507",
+    "3e44b4b7",
+    "55062529",
+    "db767469",
+    "ee2f3c40",
+    "f86ff5af"
+  ]
+}

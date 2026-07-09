@@ -1,1 +1,205 @@
-{"uuid":"1c61a971-9eec-4277-9c32-eb3a51c75ed7","name":"Algreg Fortin","gender":"Men","sports":{"Basketball":{"gp":18,"pts":143,"fouls":32,"fg":66,"ft":8,"threePt":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":1,"wins":14,"losses":5,"draws":2,"winPct":0.67,"statsChecked":"2026-07-05T15:59:36.375Z"}},"seasons":[{"sid":"c8a300a4","sn":"Summer 2025/26","club":"Dream Team Basketball Club (Casey)","regs":[{"tid":"9ddd0d3a","tn":"Dreamteam Cougars","gid":"1b7708fa","gn":"Tuesday Men C2 Grade","age":null,"div":null,"stats":{"gp":3,"fouls":9,"ft":1,"fg":17,"threePt":1,"pts":38,"wins":2,"losses":1}},{"tid":"9ddd0d3a","tn":"Dreamteam Cougars","gid":"8e903b84","gn":"Tuesday Men C1 Grade","age":null,"div":null,"stats":{"gp":3,"fouls":9,"fg":17,"pts":38,"wins":2,"losses":1,"ft":1,"threePt":1}},{"tid":"6ffc13b8","tn":"Dreamteam Mustangs","gid":"1b7708fa","gn":"Tuesday Men C2 Grade","age":null,"div":null,"stats":{"gp":1,"fouls":4,"fg":5,"pts":10,"wins":1}},{"tid":"f22fceb1","tn":"Dreamteam All Stars","gid":"4cd68bd8","gn":"Tuesday Men C3 Grade","age":null,"div":null,"stats":{"gp":1,"fg":3,"pts":6,"losses":1}}]},{"sid":"ecf1ec70","sn":"Winter 2025","club":"Casey Dragons Basketball Club","regs":[{"tid":"9b1aeb29","tn":"Back in My Day","gid":"1c56859e","gn":"Monday Men C2 Grade","age":null,"div":null,"stats":{"gp":13,"fouls":19,"ft":7,"fg":41,"pts":89,"finals":1,"gfApps":1,"wins":9,"losses":2,"draws":2,"gfWins":1}}]}],"updatedAt":"2026-06-02T09:59:14.903Z","teams":[{"tid":"f22fceb1","sid":"c8a300a4","status":"COMPLETED"},{"tid":"9b1aeb29","sid":"ecf1ec70","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:48.215Z","records":{"maxGamePTS":{"v":16,"gameKey":"f992ec0e","sid":"c8a300a4"},"maxGameThreePt":{"v":1,"gameKey":"f992ec0e","sid":"c8a300a4"}},"games":["01f9ad63","03bf593d","0bae0534","103a1233","18bdd8e9","320925ca","4b4716d4","4cb94826","6e3b4ef7","962fae40","9a9960a9","a14aa0cc","a286c9b9","a7d3cf67","ee6dbf8e","f992ec0e","fca5d117","feeff00f"],"gameTids":{"f992ec0e":"9ddd0d3a","01f9ad63":"9ddd0d3a","ee6dbf8e":"9ddd0d3a","9a9960a9":"6ffc13b8","4cb94826":"f22fceb1","6e3b4ef7":"9b1aeb29","03bf593d":"9b1aeb29","320925ca":"9b1aeb29","0bae0534":"9b1aeb29","18bdd8e9":"9b1aeb29","fca5d117":"9b1aeb29","4b4716d4":"9b1aeb29","feeff00f":"9b1aeb29","a14aa0cc":"9b1aeb29","a286c9b9":"9b1aeb29","a7d3cf67":"9b1aeb29","103a1233":"9b1aeb29","962fae40":"9b1aeb29"}}
+{
+  "uuid": "1c61a971-9eec-4277-9c32-eb3a51c75ed7",
+  "name": "Algreg Fortin",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 143,
+      "fouls": 32,
+      "fg": 66,
+      "ft": 8,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": 1,
+      "wins": 14,
+      "losses": 5,
+      "draws": 2,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T15:59:36.375Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c8a300a4",
+      "sn": "Summer 2025/26",
+      "club": "Dream Team Basketball Club (Casey)",
+      "regs": [
+        {
+          "tid": "9ddd0d3a",
+          "tn": "Dreamteam Cougars",
+          "gid": "1b7708fa",
+          "gn": "Tuesday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 17,
+            "threePt": 1,
+            "pts": 38,
+            "wins": 2,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "9ddd0d3a",
+          "tn": "Dreamteam Cougars",
+          "gid": "8e903b84",
+          "gn": "Tuesday Men C1 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 9,
+            "fg": 17,
+            "pts": 38,
+            "wins": 2,
+            "losses": 1,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "6ffc13b8",
+          "tn": "Dreamteam Mustangs",
+          "gid": "1b7708fa",
+          "gn": "Tuesday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "f22fceb1",
+          "tn": "Dreamteam All Stars",
+          "gid": "969b4343",
+          "gn": "Tuesday Men D2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 3,
+            "pts": 6,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ecf1ec70",
+      "sn": "Winter 2025",
+      "club": "Casey Dragons Basketball Club",
+      "regs": [
+        {
+          "tid": "9b1aeb29",
+          "tn": "Back in My Day",
+          "gid": "1c56859e",
+          "gn": "Monday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 19,
+            "ft": 7,
+            "fg": 41,
+            "pts": 89,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 2,
+            "draws": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T09:59:14.903Z",
+  "teams": [
+    {
+      "tid": "9ddd0d3a",
+      "sid": "c8a300a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ffc13b8",
+      "sid": "c8a300a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f22fceb1",
+      "sid": "c8a300a4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b1aeb29",
+      "sid": "ecf1ec70",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T02:44:13.785Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "f992ec0e",
+      "sid": "c8a300a4"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f992ec0e",
+      "sid": "c8a300a4"
+    }
+  },
+  "games": [
+    "01f9ad63",
+    "03bf593d",
+    "0bae0534",
+    "103a1233",
+    "18bdd8e9",
+    "320925ca",
+    "4b4716d4",
+    "4cb94826",
+    "6e3b4ef7",
+    "962fae40",
+    "9a9960a9",
+    "a14aa0cc",
+    "a286c9b9",
+    "a7d3cf67",
+    "ee6dbf8e",
+    "f992ec0e",
+    "fca5d117",
+    "feeff00f"
+  ],
+  "gameTids": {
+    "f992ec0e": "9ddd0d3a",
+    "01f9ad63": "9ddd0d3a",
+    "ee6dbf8e": "9ddd0d3a",
+    "9a9960a9": "6ffc13b8",
+    "4cb94826": "f22fceb1",
+    "6e3b4ef7": "9b1aeb29",
+    "03bf593d": "9b1aeb29",
+    "320925ca": "9b1aeb29",
+    "0bae0534": "9b1aeb29",
+    "18bdd8e9": "9b1aeb29",
+    "fca5d117": "9b1aeb29",
+    "4b4716d4": "9b1aeb29",
+    "feeff00f": "9b1aeb29",
+    "a14aa0cc": "9b1aeb29",
+    "a286c9b9": "9b1aeb29",
+    "a7d3cf67": "9b1aeb29",
+    "103a1233": "9b1aeb29",
+    "962fae40": "9b1aeb29"
+  }
+}

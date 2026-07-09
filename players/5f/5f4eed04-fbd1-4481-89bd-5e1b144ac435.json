@@ -1,1 +1,66 @@
-{"uuid":"5f4eed04-fbd1-4481-89bd-5e1b144ac435","name":"zach chamberlain","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":2,"foulOuts":{},"gp":21,"pts":81,"fg":13,"ft":1,"threePt":18,"fouls":14,"statsChecked":"2026-07-08T17:52:14.587Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"86c4073f"}]},{"sid":"25aab112","regs":[{"tid":"e019e591"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":12,"gameKey":"6b190a5a","sid":"25aab112"},"maxGameThreePt":{"v":2,"gameKey":"d09d66d5","sid":"702b232f"}}}
+{
+  "uuid": "5f4eed04-fbd1-4481-89bd-5e1b144ac435",
+  "name": "zach chamberlain",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 21,
+      "pts": 81,
+      "fg": 13,
+      "ft": 1,
+      "threePt": 18,
+      "fouls": 14,
+      "statsChecked": "2026-07-08T17:52:14.587Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "86c4073f",
+          "gid": "854861a2",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "25aab112",
+      "regs": [
+        {
+          "tid": "e019e591",
+          "gid": "5e647b71",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "86c4073f",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e019e591",
+      "sid": "25aab112",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "6b190a5a",
+      "sid": "25aab112"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "d09d66d5",
+      "sid": "702b232f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T02:44:15.197Z"
+}

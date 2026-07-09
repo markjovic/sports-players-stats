@@ -1,1 +1,81 @@
-{"uuid":"264cd511-dd82-48fa-882c-c2da21600238","name":"Ross Henderson","sports":{"Basketball":{"maxGamePTS":11,"maxGameThreePt":2,"foulOuts":{},"gp":38,"pts":129,"fg":55,"ft":4,"threePt":5,"fouls":57,"statsChecked":"2026-07-08T17:50:31.012Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"261bbc0b"}]},{"sid":"d2f257e6","regs":[{"tid":"58a0e517"}]},{"sid":"6a065310","regs":[{"tid":"13d92919"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":11,"gameKey":"5231629b","sid":"6a065310"},"maxGameThreePt":{"v":2,"gameKey":"9ab98f90","sid":"d2f257e6"}}}
+{
+  "uuid": "264cd511-dd82-48fa-882c-c2da21600238",
+  "name": "Ross Henderson",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 11,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 38,
+      "pts": 129,
+      "fg": 55,
+      "ft": 4,
+      "threePt": 5,
+      "fouls": 57,
+      "statsChecked": "2026-07-08T17:50:31.012Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "261bbc0b",
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2"
+        }
+      ]
+    },
+    {
+      "sid": "d2f257e6",
+      "regs": [
+        {
+          "tid": "58a0e517",
+          "gid": "009b5d69",
+          "gn": "Wednesday Men -Div 1"
+        }
+      ]
+    },
+    {
+      "sid": "6a065310",
+      "regs": [
+        {
+          "tid": "13d92919",
+          "gid": "e4c019d9",
+          "gn": "Wednesday Men -Div 1"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "261bbc0b",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58a0e517",
+      "sid": "d2f257e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13d92919",
+      "sid": "6a065310",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "5231629b",
+      "sid": "6a065310"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "9ab98f90",
+      "sid": "d2f257e6"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T02:44:13.966Z"
+}
