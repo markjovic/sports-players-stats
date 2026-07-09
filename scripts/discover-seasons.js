@@ -814,7 +814,7 @@ async function main() {
 
     console.log('\n─── Shard summary ───────────────────────────────────────────────────');
     console.log(`  Shard                 : ${SHARD}`);
-    console.log(`  Cursor                : ${CURSOR} → ${newCursor} / ${total}  (done=${done})`);
+    console.log(`  Cursor                : ${effectiveCursor} → ${newCursor} / ${total}  (done=${done})`);
     console.log(`  Players probed        : ${probed}`);
     console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
     console.log(`  Private / error       : ${privateN} / ${errors}`);
