@@ -530,10 +530,12 @@ async function main() {
     const merged = new Map();
     let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [];
     const mergedDeltas = new Map();   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] merged across shards
+    const modesThisRun = new Set();   // for the progress report below — what THIS run actually processed
     for (const f of files) {
       let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
       shardProbed += a.probed || 0;
       if (a.wallHit) wallHits++;
+      if (a.mode) modesThisRun.add(a.mode);
       for (const [sid, meta] of Object.entries(a.discovered || {})) {
         if (knownSeasonIds.has(sid) || merged.has(sid)) continue;
         merged.set(sid, meta);
@@ -552,6 +554,30 @@ async function main() {
     }
     console.log(`  Merged ${merged.size} distinct new season(s) across ${files.length} shard(s) (probed ${shardProbed}, wall hits ${wallHits}).`);
     console.log(`  Shard progress: ${doneCount} done, ${undoneShards.length} not yet complete this sweep.`);
+
+    // ── Progress report, scoped to THIS RUN'S mode ─────────────────────────────
+    // Denominator is the sum of each shard's own `total` (recorded per-shard, per-
+    // mode, at probe time) — NOT a global player count. A global count is wrong for
+    // any limited-scope run: a 'current'-mode sweep only ever targets ~220k of the
+    // ~370k players, so it could never show 100%; an explicit small-shard test run
+    // would show a near-zero percentage even at full completion for those shards.
+    // Mode is read off the artifacts actually merged this run (not a CLI flag —
+    // --reduce doesn't take one — this way the report reflects what really ran).
+    const reportMode = modesThisRun.size ? [...modesThisRun][0] : null;
+    if (reportMode) {
+      if (modesThisRun.size > 1) console.log(`  ⚠ multiple modes in this run's artifacts (${[...modesThisRun].join(', ')}) — reporting against '${reportMode}' only.`);
+      const modeEntries = Object.values(progress).filter(p => p.mode === reportMode);
+      const shardsDone = modeEntries.filter(p => p.done).length;
+      const totalPlayers = modeEntries.reduce((s, p) => s + (p.total || 0), 0);
+      const probedPlayers = modeEntries.reduce((s, p) => s + (p.cursor || 0), 0);
+      const pct = totalPlayers > 0 ? (probedPlayers / totalPlayers * 100) : 0;
+      console.log('\n========================================');
+      console.log('📊 MATRIX PROGRESS REPORT');
+      console.log(`   Mode            : ${reportMode}`);
+      console.log(`   Shards Complete : ${shardsDone} / ${modeEntries.length} tracked  (256 total)`);
+      console.log(`   Players Probed  : ${probedPlayers} / ${totalPlayers} (${pct.toFixed(2)}%)`);
+      console.log('========================================\n');
+    }
 
     // ── Apply deltas against FRESH files (the workflow must have already expanded ──
     //    its checkout to cover every affected shard before invoking --reduce — see
