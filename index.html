@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.56</span>
+      <span class="rail-ver">Beta 0.58</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -909,12 +909,9 @@ function renderPlayer(p){
     const regL=_wldReg?.losses||0;
     const regD=_wldReg?.draws||0;
     const regWinPct=(regW+regL+regD)>0?Math.round(regW/(regW+regL+regD)*100)+'%':null;
-    // Medal: use reg-level stats; fall back to career if all regs show zero (data not yet written by matrix)
-    // Use reg-level stats; fall back to career totals if no reg data available
-    const medalGfWins=st.gfWins>0?st.gfWins:gfWins;
-    const medalGfApps=st.gfApps>0?st.gfApps:gfApps;
-    const medalFinals=st.finals>0?st.finals:finals;
-    const medal=medalGfWins>0?' \ud83e\udd47':medalGfApps>0?' \ud83e\udd48':medalFinals>0?' \ud83e\udd49':'';
+    // Medal keys off this season's reg stats ONLY. A career fallback here painted the
+    // GF-winner medal on every season a winner ever played. Per-reg data is authoritative.
+    const medal=st.gfWins>0?' \ud83e\udd47':st.gfApps>0?' \ud83e\udd48':st.finals>0?' \ud83e\udd49':'';
     h+=`<div class="sc">
       <div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
         <div class="sc-info" class="sc-info">
@@ -1890,26 +1887,62 @@ function switchLBStat(stat){
   if(stat==='finalsPerSeason'&&isSeasonScope){S.lbStat='finals';document.querySelectorAll('.lb-stat').forEach(b=>b.classList.toggle('on',b.dataset.stat==='finals'));}
   loadLB();
 }
-function denormSeason(data){
-  if(!data||!data.players)return data;
-  const pm=data.players;
-  const out={};
-  for(const[cat,arr]of Object.entries(data)){
-    if(cat==='players'||!Array.isArray(arr))continue;
-    out[cat]=arr.map(e=>{
-      const m=pm[e.id]||{};
-      const uuid=e.id.split('|')[0];
-      // Guard: if uuid doesn't look like a UUID, skip this entry
-      // Guard: must look like a UUID (contains hyphens and is correct length)
-      if(!uuid||uuid.length<32||!uuid.includes('-'))return null;
-      return{uuid,name:m.n||null,club:m.club||null,team:m.team||'',
-             org:m.org||'',comp:m.comp||'',grade:m.grade||'',
-             age:m.age||'',gender:m.gender||'',gp:m.gp||0,
-             foulOuts:m.foulOuts||0,foulOutsPG:m.foulOutsPG||0,
-             threePtPG:m.threePtPG||0,foulsPG:m.foulsPG||0,
-             finals:m.finals||0,gfApps:m.gfApps||0,gfWins:m.gfWins||0,
-             v:e.v};
-    }).filter(Boolean);
+// Mirrors the exact per-category inclusion rule build-leaderboards.js used to
+// apply server-side before season files carried pre-sorted arrays. Returns the
+// stat value for this player, or null if this player shouldn't appear in this
+// category at all (matches old server behaviour exactly: pts/gp/threePt/fouls/
+// ppg require only the right type; the *PG and finals/gfApps/gfWins/wins/
+// losses/draws categories require >0; winPct/lossPct require gp>=10 AND a
+// non-zero wins+losses+draws total).
+function statValueForPlayer(m,stat){
+  const gp=m.gp||0;
+  switch(stat){
+    case 'pts':       return typeof m.pts==='number'?m.pts:null;
+    case 'gp':        return typeof m.gp==='number'?m.gp:null;
+    case 'threePt':   return typeof m.threePt==='number'?m.threePt:null;
+    case 'fouls':     return typeof m.fouls==='number'?m.fouls:null;
+    case 'ppg':       return typeof m.pts==='number'&&gp>0?Math.round((m.pts/gp)*10)/10:null;
+    case 'threePtPG': return (m.threePtPG||0)>0?m.threePtPG:null;
+    case 'foulsPG':   return (m.foulsPG||0)>0?m.foulsPG:null;
+    case 'foulOuts':  return (m.foulOuts||0)>0?m.foulOuts:null;
+    case 'foulOutsPG':return (m.foulOutsPG||0)>0?m.foulOutsPG:null;
+    case 'finals':    return (m.finals||0)>0?m.finals:null;
+    case 'gfApps':    return (m.gfApps||0)>0?m.gfApps:null;
+    case 'gfWins':    return (m.gfWins||0)>0?m.gfWins:null;
+    case 'wins':      return (m.wins||0)>0?m.wins:null;
+    case 'losses':    return (m.losses||0)>0?m.losses:null;
+    case 'draws':     return (m.draws||0)>0?m.draws:null;
+    case 'winPct': {
+      if(gp<10)return null;
+      const total=(m.wins||0)+(m.losses||0)+(m.draws||0);
+      return total>0?Math.round((m.wins/total)*100):null;
+    }
+    case 'lossPct': {
+      if(gp<10)return null;
+      const total=(m.wins||0)+(m.losses||0)+(m.draws||0);
+      return total>0?Math.round((m.losses/total)*100):null;
+    }
+    default: return null;
+  }
+}
+// Replaces denormSeason(data) — season files now ship ONLY the raw players map
+// (no pre-sorted per-category arrays). Computes the display-ready entry list
+// for exactly ONE stat, on demand, from that raw map.
+function seasonEntriesForStat(playersMap,stat){
+  const out=[];
+  for(const[id,m]of Object.entries(playersMap||{})){
+    const uuid=id.split('|')[0];
+    // Guard: must look like a UUID (contains hyphens and is correct length)
+    if(!uuid||uuid.length<32||!uuid.includes('-'))continue;
+    const v=statValueForPlayer(m,stat);
+    if(v===null)continue;
+    out.push({uuid,name:m.n||null,club:m.club||null,team:m.team||'',
+           org:m.org||'',comp:m.comp||'',grade:m.grade||'',
+           age:m.age||'',gender:m.gender||'',gp:m.gp||0,
+           foulOuts:m.foulOuts||0,foulOutsPG:m.foulOutsPG||0,
+           threePtPG:m.threePtPG||0,foulsPG:m.foulsPG||0,
+           finals:m.finals||0,gfApps:m.gfApps||0,gfWins:m.gfWins||0,
+           v});
   }
   return out;
 }
@@ -1925,21 +1958,20 @@ async function loadLB(){
   }else{
     // scope is a season name — fetch ALL sids with that name and merge
     const sids=(S.lbSeasonMap||{})[scope]||[];
+    if(!S.lbRaw)S.lbRaw={};
     const parts=await Promise.all(sids.map(async sid=>{
-      if(!S.lbData[sid]){
+      if(!S.lbRaw[sid]){
         const raw=await gj(BASE+'/leaderboard/season/'+sid+'.json');
-        S.lbData[sid]=denormSeason(raw);
+        S.lbRaw[sid]=(raw&&raw.players)||{};
       }
-      return S.lbData[sid];
+      // Compute per-sid first, then concatenate below — NOT a merge-by-id
+      // across sids. Object-merging raw maps here would silently drop an
+      // entry on any uuid|tid collision between two same-named sids; per-sid
+      // arrays concatenated afterward can never lose data that way (matches
+      // the original array-concat behaviour exactly).
+      return seasonEntriesForStat(S.lbRaw[sid],S.lbStat);
     }));
-    const merged={};
-    for(const part of parts){
-      if(!part)continue;
-      for(const [stat,arr] of Object.entries(part)){
-        merged[stat]=[...(merged[stat]||[]),...arr];
-      }
-    }
-    data=merged;
+    data={[S.lbStat]:parts.flat()};
     S.lbData[scope]=data;
   }
   if(!data||!Object.keys(data).length){(el('lb-results')||ve).innerHTML='<div class="empty">No leaderboard data available.</div>';return;}
