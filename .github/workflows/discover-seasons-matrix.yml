@@ -164,9 +164,24 @@ jobs:
               targets.append({'shard': shard, 'cursor': cursor})
 
           print(f'  Targets: {len(targets)}  (skipped {skipped_done} already-done shards for mode={mode})')
+          out_line = f'targets={json.dumps(targets)}'
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-              fh.write(f'targets={json.dumps(targets)}\n')
+              fh.write(out_line + '\n')
+          # Ground-truth read-back: prove what actually landed in GITHUB_OUTPUT,
+          # not just what Python computed. If the file content here looks correct
+          # but the downstream job still sees empty, the loss is in GitHub's
+          # step-output→job-output resolution, not in this write.
+          print('  --- GITHUB_OUTPUT read-back ---')
+          print(f'  bytes written for this line: {len(out_line)}')
+          with open(os.environ['GITHUB_OUTPUT']) as fh:
+              content = fh.read()
+          print(f'  total GITHUB_OUTPUT file bytes: {len(content)}')
+          print(f'  targets= line present: {"targets=" in content}')
           PYEOF
+          echo "=== raw GITHUB_OUTPUT file contents ==="
+          cat "$GITHUB_OUTPUT" | head -c 400
+          echo ""
+          echo "=== end ==="
 
   # Diagnostic: confirms GitHub's OWN resolved view of the output matches what
   # generate-shards' Python printed. Deliberately sequenced AFTER reduce (not
