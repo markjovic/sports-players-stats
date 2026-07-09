@@ -133,9 +133,61 @@ jobs:
           # BASH writes the job output (matches the working fetch-profile-stats matrix).
           echo "targets=$targets" >> $GITHUB_OUTPUT
 
+          echo "=== VERBOSE: raw \$targets shell variable ==="
+          echo "byte length: ${#targets}"
+          echo "first 60 chars: ${targets:0:60}"
+          echo "last 60 chars:  ${targets: -60}"
+          echo "--- hexdump of first 40 bytes (catches invisible/CRLF/BOM issues) ---"
+          printf '%s' "$targets" | head -c 40 | od -An -tx1
+          echo "--- hexdump of last 40 bytes ---"
+          printf '%s' "$targets" | tail -c 40 | od -An -tx1
+          echo "=== VERBOSE: raw \$GITHUB_OUTPUT file, targets= line only ==="
+          grep '^targets=' "$GITHUB_OUTPUT" | head -c 300
+          echo ""
+          echo "byte length of that line: $(grep '^targets=' "$GITHUB_OUTPUT" | wc -c)"
+          echo "=== VERBOSE: re-parse the GITHUB_OUTPUT line exactly as GitHub would need to ==="
+          python3 -c "
+          import sys
+          line = open('$GITHUB_OUTPUT').read()
+          for l in line.splitlines():
+              if l.startswith('targets='):
+                  val = l[len('targets='):]
+                  import json
+                  try:
+                      parsed = json.loads(val)
+                      print(f'  re-parsed OK: {len(parsed)} elements, first={parsed[0] if parsed else None!r}, last={parsed[-1] if parsed else None!r}')
+                  except Exception as e:
+                      print(f'  RE-PARSE FAILED: {e}')
+                      print(f'  value repr (first 200 chars): {val[:200]!r}')
+          "
+          echo "=== END VERBOSE ==="
+
+  # Independent of map entirely — runs unconditionally, so if map STILL doesn't
+  # fan out after removing the redundant if:, this proves definitively whether
+  # GitHub's own resolution of the output (not bash's, not Python's) is empty.
+  verify-output:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo GitHub's own resolved view of the output
+        env:
+          TARGETS: ${{ needs.generate-shards.outputs.targets }}
+        run: |
+          echo "GitHub-resolved byte length: ${#TARGETS}"
+          echo "First 100 chars: ${TARGETS:0:100}"
+          echo "$TARGETS" | python3 -c "
+          import sys, json
+          raw = sys.stdin.read()
+          print(f'raw repr (first 150 chars): {raw[:150]!r}')
+          try:
+              parsed = json.loads(raw)
+              print(f'Parsed OK: {len(parsed)} elements')
+          except Exception as e:
+              print(f'PARSE FAILED: {e}')
+          "
+
   map:
     needs: generate-shards
-    if: needs.generate-shards.outputs.targets != '[]' && needs.generate-shards.outputs.targets != ''
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
