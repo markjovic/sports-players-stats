@@ -588,7 +588,20 @@ async function main() {
       console.log(`  Roster backfill: ${playersWritten} player(s) updated, ${playersMissing} not found on disk (not checked out or absent) — of ${mergedDeltas.size} with pending deltas.`);
     }
 
-    if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
+    // Once EVERY tracked shard (across all modes, not just this run's targets) is
+    // done, the progress file has no remaining purpose — it exists purely to let
+    // this workflow's own retrigger chain resume; nothing else reads it. Delete it
+    // rather than leave a stale 256-entry "all done" file sitting in the repo.
+    const trackedShards = Object.values(progress);
+    const allDone = trackedShards.length > 0 && trackedShards.every(p => p.done === true);
+    if (!DRY_RUN) {
+      if (allDone) {
+        if (fs.existsSync(PROGRESS_FILE)) fs.unlinkSync(PROGRESS_FILE);
+        console.log('  ✔ All tracked shards complete — progress file removed (redundant until the next fresh sweep).');
+      } else {
+        fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
+      }
+    }
     
     // Pass playersWritten into stats so applyDiscoveries knows to commit!
     await applyDiscoveries(index, merged, { t0, playersWritten }, [PROGRESS_FILE]);
@@ -731,7 +744,7 @@ async function main() {
 
     const discovered = Object.fromEntries(newSeasonMeta);
     const artifact = {
-      shard: SHARD, mode: ALL_PLAYERS ? 'all' : 'current',
+      shard: SHARD, mode: BACKFILL_TEAMS ? 'all+backfill' : (ALL_PLAYERS ? 'all' : 'current'),
       discovered,
       playerDeltas,   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] — applied against a FRESH file in REDUCE
       cursor: newCursor, total, done, wallHit,
