@@ -303,6 +303,13 @@ let nullScore = 0, flagCollisions = 0, inProgress = 0;
 const otherStatuses = {};
 const seasonBreakdown = [];
 
+// UUID footprint — counts every full-length UUID string instance in p[]/hp[]/ap[]
+// and what it would cost at a truncated length instead (same precedent already
+// used for private-profile display names: 10-char prefix, zero collisions
+// confirmed at 369k players).
+let uuidInstancesGames = 0, uuidBytesGamesFull = 0;
+const TRUNC_LEN = 10;
+
 const activeSids = sportsIndex
   ? new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id))
   : new Set();
@@ -336,6 +343,18 @@ if (fs.existsSync(gamesDir)) {
       if (g.legacy && (g.hidden || g.profileOnly || g.forfeit || g.bye)) flagCollisions++;
       if (['LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(g.st || '')) inProgress++;
       if (g.hs === null) nullScore++;
+
+      // UUID footprint: p[].id, hp[].profileID, ap[].profileID
+      for (const uuidField of [
+        ...(g.p  || []).map(x => x && x.id),
+        ...(g.hp || []).map(x => x && x.profileID),
+        ...(g.ap || []).map(x => x && x.profileID),
+      ]) {
+        if (typeof uuidField === 'string' && uuidField.length > TRUNC_LEN) {
+          uuidInstancesGames++;
+          uuidBytesGamesFull += Buffer.byteLength(uuidField, 'utf8');
+        }
+      }
 
       // Finals detection from round name
       const rn = (g.rn || '').toLowerCase();
@@ -421,6 +440,7 @@ const searchDir = path.join(ROOT, 'search', 'players');
 let searchFiles = 0, searchKeys = 0;
 let searchValuesAreArrays = true, searchHasBothFormats = false;
 let fnSeen = false, snSeen = false;
+let uuidInstancesSearch = 0, uuidBytesSearchFull = 0;
 
 if (fs.existsSync(searchDir)) {
   const files = fs.readdirSync(searchDir).filter(f => f.endsWith('.json'));
@@ -431,6 +451,14 @@ if (fs.existsSync(searchDir)) {
     if (!data) continue;
     const keys = Object.keys(data);
     searchKeys += keys.length;
+    for (const v of Object.values(data)) {
+      for (const entry of (Array.isArray(v) ? v : [])) {
+        if (entry && typeof entry.id === 'string' && entry.id.length > TRUNC_LEN) {
+          uuidInstancesSearch++;
+          uuidBytesSearchFull += Buffer.byteLength(entry.id, 'utf8');
+        }
+      }
+    }
     if (i % step === 0) {
       for (const [k, v] of Object.entries(data)) {
         if (!Array.isArray(v)) searchValuesAreArrays = false;
@@ -442,7 +470,7 @@ if (fs.existsSync(searchDir)) {
   searchHasBothFormats = fnSeen && snSeen;
 }
 
-row('Search shard files',          fmt(searchFiles), searchFiles > 500 ? '✅' : '⚠️  expected ~630');
+row('Search shard files',          fmt(searchFiles));
 row('Unique search keys',          fmt(searchKeys));
 row('Values are arrays',           searchValuesAreArrays ? '✅' : '❌');
 row('Both name formats present',   searchHasBothFormats  ? '✅' : '❌');
@@ -453,6 +481,7 @@ section('6 · leaderboard/');
 const lbDir     = path.join(ROOT, 'leaderboard');
 const lbAllTime = readJSON(path.join(lbDir, 'all-time.json'));
 row('all-time.json', lbAllTime ? '✅ present' : '❌ MISSING');
+let uuidInstancesLb = 0, uuidBytesLbFull = 0;
 if (lbAllTime) {
   const cats = Object.keys(lbAllTime);
   row('  Categories', cats.length, cats.join(', '));
@@ -465,24 +494,49 @@ if (lbAllTime) {
     } else {
       row(`  ${cat}`, fmt(entries));
     }
+    for (const e of (lbAllTime[cat] || [])) {
+      if (e && typeof e.uuid === 'string' && e.uuid.length > TRUNC_LEN) {
+        uuidInstancesLb++;
+        uuidBytesLbFull += Buffer.byteLength(e.uuid, 'utf8');
+      }
+    }
   }
 }
 const lbSeasonDir = path.join(lbDir, 'season');
-let lbSeasonFiles = 0, lbSeasonSample = null;
+let lbSeasonFiles = 0;
 if (fs.existsSync(lbSeasonDir)) {
   const files = fs.readdirSync(lbSeasonDir).filter(f => f.endsWith('.json'));
   lbSeasonFiles = files.length;
-  // Spot-check one file for normalized schema
-  if (files.length > 0) {
-    lbSeasonSample = readJSON(path.join(lbSeasonDir, files[0]));
+  let schemaCheckedPlayersMap = false, schemaCheckedIdvArrays = false;
+  for (const f of files) {
+    const data = readJSON(path.join(lbSeasonDir, f));
+    if (!data) continue;
+    if (!schemaCheckedPlayersMap && typeof data.players === 'object' && !Array.isArray(data.players)) schemaCheckedPlayersMap = true;
+    // players map keys are "uuid|tid" — the uuid portion is full-length
+    for (const key of Object.keys(data.players || {})) {
+      const uuidPart = key.split('|')[0];
+      if (uuidPart && uuidPart.length > TRUNC_LEN) {
+        uuidInstancesLb++;
+        uuidBytesLbFull += Buffer.byteLength(uuidPart, 'utf8');
+      }
+    }
+    for (const [k, v] of Object.entries(data)) {
+      if (k === 'players' || !Array.isArray(v)) continue;
+      if (v[0]?.id !== undefined) schemaCheckedIdvArrays = true;
+      for (const e of v) {
+        if (e && typeof e.id === 'string') {
+          const uuidPart = e.id.split('|')[0];
+          if (uuidPart.length > TRUNC_LEN) {
+            uuidInstancesLb++;
+            uuidBytesLbFull += Buffer.byteLength(uuidPart, 'utf8');
+          }
+        }
+      }
+    }
   }
-}
-row('season/{seasonId}.json files', fmt(lbSeasonFiles), lbSeasonFiles >= 2793 ? '✅' : `⚠️  expected ~2793`);
-if (lbSeasonSample) {
-  const hasPlayersMap = typeof lbSeasonSample.players === 'object' && !Array.isArray(lbSeasonSample.players);
-  const hasIdvArrays  = Object.values(lbSeasonSample).some(v => Array.isArray(v) && v[0]?.id !== undefined);
-  row('  Schema: players map',   hasPlayersMap ? '✅' : '❌');
-  row('  Schema: {id,v} arrays', hasIdvArrays  ? '✅' : '❌');
+  row('season/{seasonId}.json files', fmt(lbSeasonFiles));
+  row('  Schema: players map',   schemaCheckedPlayersMap ? '✅' : '❌');
+  row('  Schema: {id,v} arrays', schemaCheckedIdvArrays  ? '✅' : '❌');
 }
 
 // ─── 7. team-stats files ──────────────────────────────────────────────────────
@@ -508,6 +562,24 @@ row('Teams sampled (first 20 files)',     fmt(tsTeams));
 if (tsTeams > 0) {
   row('  With non-empty roster',          fmt(tsWithRoster),   pct(tsWithRoster, tsTeams));
   row('  With fixtures',                  fmt(tsWithFixtures), pct(tsWithFixtures, tsTeams));
+}
+
+// Full scan (all files, not just the 20-file sample above) for accurate UUID byte
+// tallying — roster is keyed by full player UUID.
+let uuidInstancesTs = 0, uuidBytesTsFull = 0;
+if (fs.existsSync(tsDir)) {
+  for (const f of fs.readdirSync(tsDir).filter(f => f.endsWith('.json'))) {
+    const data = readJSON(path.join(tsDir, f));
+    if (!data) continue;
+    for (const team of Object.values(data)) {
+      for (const uuid of Object.keys(team.roster || {})) {
+        if (uuid.length > TRUNC_LEN) {
+          uuidInstancesTs++;
+          uuidBytesTsFull += Buffer.byteLength(uuid, 'utf8');
+        }
+      }
+    }
+  }
 }
 
 // ─── 8. venue-lookup ─────────────────────────────────────────────────────────
@@ -551,11 +623,15 @@ if (fs.existsSync(dviDir)) {
 }
 row('Date-venue index files', fmt(dviFiles));
 
-// ─── 10. Root index files ─────────────────────────────────────────────────────
+// ─── 10. data/ index files ────────────────────────────────────────────────────
+// Moved from ROOT to data/ in the June 2026 migration (see section 1, which
+// already correctly reads data/sports-index.json). This section previously
+// checked ROOT directly and reported all four as MISSING every run — they were
+// never missing, just checked at their pre-migration location.
 
-section('10 · Root index files');
+section('10 · data/ index files');
 for (const f of ['sports-index.json','team-index.json','venue-index.json','season-venue-index.json']) {
-  const p = path.join(ROOT, f);
+  const p = path.join(ROOT, 'data', f);
   if (!fs.existsSync(p)) { row(f, '❌ MISSING'); continue; }
   const data = readJSON(p);
   if (!data) { row(f, '❌ PARSE ERROR'); continue; }
@@ -568,7 +644,7 @@ for (const f of ['sports-index.json','team-index.json','venue-index.json','seaso
 
 section('11 · Misc files');
 const miscFiles = [
-  ['forfeit-games.json',         null,  true],  // count grows over time — not baselined
+  ['data/forfeit-games.json',    null,  true],  // count grows over time — not baselined (moved under data/ June 2026)
   ['records/all-time.json',      null,  true],
   ['needs-matrix-shards.json',   null,  false],
   ['matrix-force-pending.json',  null,  false],  // should not exist
@@ -587,46 +663,72 @@ for (const [f, expected, shouldExist] of miscFiles) {
   row(f, fmt(count) + ' entries', note);
 }
 
-// ─── 12. Summary vs baseline ──────────────────────────────────────────────────
+// ─── 12. Summary ───────────────────────────────────────────────────────────────
 
-section('12 · Summary vs documented baseline (June 2026)');
-// Only structurally fixed values are baselined — counts that should never change
-// without a deliberate schema migration. Growing metrics (players, games, finals)
-// are reported only, not compared.
+section('12 · Summary (current counts — not baselined)');
+// Every metric below grows continuously via the nightly crawl and discovery —
+// there is no "expected" fixed value for any of them without a deliberate
+// schema migration changing what's counted. Reported as current state only.
 console.log(`  Player index entries................  ${fmt(indexEntries)}`);
 console.log(`  Player detail files.................  ${fmt(detailCount)}`);
 console.log(`  Total game entries..................  ${fmt(totalGames)}`);
 console.log(`  Players with finals > 0.............  ${fmt(finalsNonZero)}  (${pct(finalsNonZero, processed)} of players)`);
 console.log(`  statsChecked present................  ${fmt(withStatsChecked)}  (${pct(withStatsChecked, processed)} — remainder are confirmed private/inaccessible)`);
 console.log('');
+console.log(`  Seasons in sports-index.............  ${fmt(sportsIndex ? Object.values(sportsIndex.seasons||{}).length : 0)}`);
+console.log(`  Finals round games...................  ${fmt(gamesFinalsRound)}`);
+console.log(`  Grand Final games....................  ${fmt(gamesGrandFinal)}`);
+console.log(`  Venue dirs...........................  ${fmt(vlVenues)}`);
+console.log(`  Date-venue index files...............  ${fmt(dviFiles)}`);
+console.log(`  Leaderboard season files.............  ${fmt(lbSeasonFiles)}`);
+console.log(`  Game files (bv/).....................  ${fmt(gameFiles)}`);
+console.log(`  Team-stats files (bv/)...............  ${fmt(tsFiles)}`);
+console.log('');
 
-const baseline = [
-  ['Seasons in sports-index',   sportsIndex ? Object.values(sportsIndex.seasons||{}).length : 0, 2792],
-  ['Finals round games',        gamesFinalsRound, 119021],
-  ['Grand Final games',         gamesGrandFinal,  34846],
-  ['Venue dirs',                vlVenues,         532],
-  ['Date-venue index files',    dviFiles,         2016],
-  ['Leaderboard season files',  lbSeasonFiles,    2793],
-  ['Game files (bv/)',          gameFiles,        2792],
-  ['Team-stats files (bv/)',    tsFiles,          2792],
+// Genuinely structural checks — things that SHOULD be constant regardless of
+// DB growth, unlike the counts above. Sections 2 and 3 already flag shard-count
+// mismatches (should always be 256); this just re-confirms both agree.
+const structuralOk = indexFiles === 256 && shardDirs.length === 256;
+console.log(structuralOk
+  ? '  ✅ Structural invariants OK (256 index shards, 256 player-detail shard dirs).'
+  : '  ⚠️  Structural invariant mismatch — see sections 2 and 3 above.');
+
+// ─── 13. UUID storage footprint ───────────────────────────────────────────────
+// Measures every place a FULL 36-char UUID is stored as a repeated data value
+// (not a filename/directory — players/{shard}/{uuid}.json already encodes it
+// for free, and player.uuid is already stripped from the file body, June 2026).
+// Compares against the cost at a 10-char prefix — the same precedent already in
+// production for private-profile display names (zero collisions confirmed at
+// 369k players). This is a measurement only; no migration is applied here.
+
+section('13 · UUID storage footprint (full-length vs 10-char-prefix)');
+const uuidSources = [
+  ['games/ (p[].id, hp[]/ap[].profileID)', uuidInstancesGames, uuidBytesGamesFull],
+  ['leaderboard/ (uuid, uuid|tid keys/ids)', uuidInstancesLb,    uuidBytesLbFull],
+  ['team-stats/ (roster keys)',              uuidInstancesTs,    uuidBytesTsFull],
+  ['search/ (id field)',                     uuidInstancesSearch, uuidBytesSearchFull],
 ];
-
-let allGood = true;
-for (const [label, actual, expected] of baseline) {
-  const match   = actual === expected;
-  const icon    = match ? '✅' : (actual > 0 ? '⚠️ ' : '❌');
-  if (!match) allGood = false;
-  const diff    = actual - expected;
-  const diffStr = diff === 0 ? '' : (diff > 0 ? ` (+${fmt(diff)})` : ` (${fmt(diff)})`);
-  row(label, fmt(actual), `${icon} expected ${fmt(expected)}${diffStr}`);
+let grandInstances = 0, grandBytesFull = 0;
+for (const [label, instances, bytesFull] of uuidSources) {
+  const bytesTrunc = instances * TRUNC_LEN;
+  const savings = bytesFull - bytesTrunc;
+  grandInstances += instances;
+  grandBytesFull += bytesFull;
+  row(label, fmt(instances) + ' instances', `${fmtBytes(bytesFull)} → ${fmtBytes(bytesTrunc)} if truncated (saves ${fmtBytes(savings)})`);
 }
 console.log('');
-console.log(allGood ? '  ✅ All counts match baseline.' : '  ⚠️  One or more counts differ from baseline — review above.');
+const grandBytesTrunc = grandInstances * TRUNC_LEN;
+row('TOTAL', fmt(grandInstances) + ' instances', `${fmtBytes(grandBytesFull)} → ${fmtBytes(grandBytesTrunc)} (saves ${fmtBytes(grandBytesFull - grandBytesTrunc)})`);
+console.log('  Note: this is JSON-content bytes, not repo-on-disk bytes (git compression,');
+console.log('  whitespace, and history all differ). Treat as a lower-bound signal for');
+console.log('  which directories are worth a truncation migration, not a final size delta.');
+console.log('  A truncation migration would need every consumer that does exact-string');
+console.log('  UUID matching on these fields updated in the same pass — not attempted here.');
 
-// ─── 13. Repo size ────────────────────────────────────────────────────────────
+// ─── 14. Repo size ────────────────────────────────────────────────────────────
 
 if (!NO_SIZE) {
-  section('13 · Repo size');
+  section('14 · Repo size');
   const entries = fs.readdirSync(ROOT, { withFileTypes: true })
     .filter(e => !e.name.startsWith('.') && e.name !== 'node_modules');
 
