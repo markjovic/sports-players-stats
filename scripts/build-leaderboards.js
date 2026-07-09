@@ -4,10 +4,19 @@
 //
 // Output files:
 //   leaderboard/all-time.json          — top 2000 per stat category, career totals
-//   leaderboard/season/{sid}.json      — all regs sorted desc, one season, per-reg stats
+//   leaderboard/season/{sid}.json      — { players: { "uuid|tid": {...raw stats} } }
+//                                         NO pre-sorted per-category arrays — StatTrack
+//                                         computes rankings client-side from raw fields
+//                                         (removed ~Jul 2026: 17 redundant {id,v} arrays
+//                                         per file were pure overhead — SEASON_LIMIT was
+//                                         already "effectively unlimited", so they held
+//                                         the same ~500-1500 ids as the players map, just
+//                                         repeated up to 17x).
 //
 // All-time entry:  { uuid, name, club, sport, gp, v }
-// Per-season entry: { uuid, name, club, grade, age, gender, gp, v }
+// Per-season entry (players map): { n, team, org, comp, grade, age, gender, gp,
+//   foulOuts, foulOutsPG, threePtPG, foulsPG, finals, gfApps, gfWins,
+//   pts, threePt, fouls, wins, losses, draws, club? }
 //
 // Caps:
 //   ALL_TIME_LIMIT = 2000  — deep enough for grade/age/gender filters across every age group
@@ -40,10 +49,10 @@ const DRY_RUN         = process.argv.includes('--dry-run');
 const ACTIVE_ONLY     = process.argv.includes('--active-only');
 const FORCE_FULL      = process.argv.includes('--force'); // ignore progress file, full rebuild
 const ALL_TIME_LIMIT  = 2000;
-const SEASON_LIMIT    = 50000; // effectively unlimited — no cap applied
 
 const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt','wins','losses','draws','winPct','lossPct'];
-const SEASON_CATS   = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','wins','losses','draws','winPct','lossPct'];
+// SEASON_CATS list moved to StatTrack's client-side statValueForPlayer() — season
+// files now ship only the players map (see pushSeason), computed on demand there.
 const PASS2_PROGRESS  = path.join(ROOT, 'scripts', '.build-leaderboards-progress.json');
 const COMMIT_INTERVAL = 100;
 
@@ -58,10 +67,11 @@ function writeJson(p, data) {
 
 function gitCommit(message, dirs) {
   try {
-    // Use git add -A so any locally written files (e.g. all-time.json sitting on disk
-    // before its own commit turn) are staged — prevents "local changes would be
-    // overwritten by merge" error from git pull / git merge
-    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
+    // Explicit paths only — never -A. This repo is multi-GB with 370k+ player
+    // files; -A walks the whole index and risks ENOBUFS. dirs is always passed
+    // by every call site below; using it here (finally) rather than ignoring it.
+    const paths = (dirs && dirs.length ? dirs : ['.']).join(' ');
+    execSync(`git add ${paths}`, { cwd: ROOT, stdio: 'pipe' });
     const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  nothing to commit'); return; }
     execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
@@ -106,15 +116,6 @@ function makeBuckets(cats, limit) {
 function serialise(buckets) {
   const out = {};
   for (const [cat, heap] of Object.entries(buckets)) out[cat] = heap.result();
-  return out;
-}
-
-function serialiseSeason(buckets, players) {
-  const out = {};
-  for (const [cat, heap] of Object.entries(buckets)) {
-    out[cat] = heap.result().map(e => ({ id: e.id, v: e.v }));
-  }
-  out.players = players;
   return out;
 }
 
@@ -245,7 +246,7 @@ function pushAllTime(buckets, player) {
   }
 }
 
-function pushSeason(buckets, players, player, sid) {
+function pushSeason(players, player, sid) {
   const uuid   = player.uuid;
   const name   = player.name || `Player #${uuid.slice(0, 10)}`;
   const gender = player.gender || null;
@@ -266,38 +267,21 @@ function pushSeason(buckets, players, player, sid) {
       const finals     = stats.finals ?? 0;
       const gfApps     = stats.gfApps ?? 0;
       const gfWins     = stats.gfWins ?? 0;
+      // Every raw field needed to derive all 17 SEASON_CATS client-side, so the
+      // per-category {id,v} arrays below are no longer written at all — this
+      // players map is now the ONLY thing a season file contains besides it.
       const playerEntry = {
         n: name, team: reg.tn || '', org, comp,
         grade: reg.gn || '', age: reg.age || '', gender: gender || '',
         gp, foulOuts, foulOutsPG, threePtPG, foulsPG, finals, gfApps, gfWins,
+        pts: stats.pts, threePt: stats.threePt, fouls: stats.fouls,
+        wins: stats.wins, losses: stats.losses, draws: stats.draws,
       };
+      // Strip undefined values (e.g. stats.pts missing) rather than serialise
+      // them as explicit nulls — keeps the file no larger than it needs to be.
+      for (const k of Object.keys(playerEntry)) if (playerEntry[k] === undefined) delete playerEntry[k];
       if (sClub) playerEntry.club = sClub;
       players[id] = playerEntry;
-      if (typeof stats.pts     === 'number') buckets.pts    .push({ id, v: stats.pts });
-      if (typeof stats.gp      === 'number') buckets.gp     .push({ id, v: stats.gp });
-      if (typeof stats.threePt === 'number') buckets.threePt.push({ id, v: stats.threePt });
-      if (typeof stats.fouls   === 'number') buckets.fouls  .push({ id, v: stats.fouls });
-      if (threePtPG  > 0) buckets.threePtPG .push({ id, v: threePtPG });
-      if (foulsPG    > 0) buckets.foulsPG   .push({ id, v: foulsPG });
-      if (foulOuts   > 0) buckets.foulOuts  .push({ id, v: foulOuts });
-      if (foulOutsPG > 0) buckets.foulOutsPG.push({ id, v: foulOutsPG });
-      if (finals     > 0) buckets.finals    .push({ id, v: finals });
-      if (gfApps     > 0) buckets.gfApps    .push({ id, v: gfApps });
-      if (gfWins     > 0) buckets.gfWins    .push({ id, v: gfWins });
-      if (typeof stats.wins   === 'number' && stats.wins > 0)   buckets.wins  .push({ id, v: stats.wins });
-      if (typeof stats.losses === 'number' && stats.losses > 0) buckets.losses.push({ id, v: stats.losses });
-      if (typeof stats.draws  === 'number' && stats.draws > 0)  buckets.draws .push({ id, v: stats.draws });
-      if (typeof stats.wins === 'number' && gp >= 10) {
-        const total = (stats.wins || 0) + (stats.losses || 0) + (stats.draws || 0);
-        if (total > 0) buckets.winPct.push({ id, v: Math.round((stats.wins / total) * 100) });
-      }
-      if (typeof stats.losses === 'number' && gp >= 10) {
-        const total = (stats.wins || 0) + (stats.losses || 0) + (stats.draws || 0);
-        if (total > 0) buckets.lossPct.push({ id, v: Math.round((stats.losses / total) * 100) });
-      }
-      if (typeof stats.pts === 'number') {
-        buckets.ppg.push({ id, v: Math.round((stats.pts / gp) * 10) / 10 });
-      }
     }
     break;
   }
@@ -397,16 +381,15 @@ for (const sid of seasonIds) {
   const uuids = sidToUuids.get(sid) || [];
   if (uuids.length === 0) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
-  const buckets = makeBuckets(SEASON_CATS, SEASON_LIMIT);
   const players = {};
   for (const uuid of uuids) {
     const player = readPlayer(uuid);
     if (!player) continue;
-    pushSeason(buckets, players, player, sid);
+    pushSeason(players, player, sid);
   }
 
-  const out     = serialiseSeason(buckets, players);
-  const hasData = SEASON_CATS.some(cat => (out[cat] || []).length > 0);
+  const out     = { players };
+  const hasData = Object.keys(players).length > 0;
   if (!hasData) { doneSids.add(sid); seasonFilesSkipped++; continue; }
 
   if (!DRY_RUN) writeJson(path.join(ROOT, 'leaderboard', 'season', `${sid}.json`), out);

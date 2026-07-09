@@ -249,16 +249,15 @@ row('    null (no record)',           fmt(maxGameThreePtIsNull),   pct(maxGameTh
 row('  records{}',                   fmt(withRecords),            pct(withRecords, processed));
 
 console.log('\n  ── Per-reg stats (seasons[].regs[].stats) ──');
-console.log('  ⚠️  gp/pts/fouls/threePt/fg/ft were written by fetch-playhq.js (obsolete, retired).');
-console.log('      No current script maintains these fields — values are from original bootstrap only.');
-console.log('      foulOuts/finals/gfApps/gfWins are actively maintained by nightly + build-finals-stats.');
+console.log('  gp/pts/fouls/threePt/fg/ft are written by fetch-profile-stats.js (current, active — every matrix run).');
+console.log('  foulOuts/finals/gfApps/gfWins are actively maintained by nightly + build-finals-stats.');
 row('  Total regs scanned',               fmt(regsTotal));
-row('  gp      [NOT MAINTAINED]',         fmt(regsWithGp),             pct(regsWithGp, regsTotal));
-row('  pts     [NOT MAINTAINED]',         fmt(regsWithPts),            pct(regsWithPts, regsTotal));
-row('  fouls   [NOT MAINTAINED]',         fmt(regsWithFouls),          pct(regsWithFouls, regsTotal));
-row('  threePt [NOT MAINTAINED]',         fmt(regsWithThreePt),        pct(regsWithThreePt, regsTotal));
-row('  fg      [NOT MAINTAINED]',         fmt(regsWithFg),             pct(regsWithFg, regsTotal));
-row('  ft      [NOT MAINTAINED]',         fmt(regsWithFt),             pct(regsWithFt, regsTotal));
+row('  gp',                               fmt(regsWithGp),             pct(regsWithGp, regsTotal));
+row('  pts',                              fmt(regsWithPts),            pct(regsWithPts, regsTotal));
+row('  fouls',                            fmt(regsWithFouls),          pct(regsWithFouls, regsTotal));
+row('  threePt',                          fmt(regsWithThreePt),        pct(regsWithThreePt, regsTotal));
+row('  fg',                               fmt(regsWithFg),             pct(regsWithFg, regsTotal));
+row('  ft',                               fmt(regsWithFt),             pct(regsWithFt, regsTotal));
 row('  foulOuts [nightly+matrix]',        fmt(regsWithFoulOuts),       pct(regsWithFoulOuts, regsTotal));
 row('    foulOuts > 0',                   fmt(regsWithFoulOutsGtZero), pct(regsWithFoulOutsGtZero, regsWithFoulOuts));
 row('  finals  [nightly+build-finals]',   fmt(regsWithFinals),         pct(regsWithFinals, regsTotal));
