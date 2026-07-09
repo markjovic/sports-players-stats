@@ -1,49 +1,42 @@
 # .github/workflows/discover-seasons-matrix.yml
 name: Discover Seasons (Matrix)
 
-# Sharded, RESUMABLE season DETECTION + optional pre-season ROSTER BACKFILL.
-# Each MAP job gets a FRESH runner IP and burst-probes its shard's players until the
-# per-IP WAF wall hits, then stops dead (no grind) and saves a cursor. With
-# --backfill-teams it ALSO emits lightweight per-player DELTAS (registrations to add)
-# straight from the API response — it never reads or snapshots a player file, so
-# there is nothing stale to clobber later.
-#
-# ONE job (reduce) then: merges discoveries + cursors, expands its OWN checkout to
-# cover only the shards with pending deltas, reads each affected player file FRESH
-# off disk, applies the deltas, and commits everything (index + progress + players)
-# in one push — all under concurrency group data-write, the same lock nightly-crawl
-# and the stats matrix use, so this can never race either of them on the same files.
+# Rebuilt from the proven-working base that fanned out 256 map jobs. The matrix
+# output mechanism (object array via steps.gen.outputs.targets, cone-mode sparse
+# checkout, != '[]' gate) is kept EXACTLY as that working version — it is not the
+# place to experiment. Added on top: fresh_start progress reset, a data-write lock
+# on the single writer, and the delta-based roster backfill.
 
 on:
   workflow_dispatch:
     inputs:
       shards:
-        description: 'JSON array of specific shards (e.g. ["00","1a","ff"]). Empty = all 256 not already done for this mode.'
+        description: 'JSON array of shards (e.g. ["00","1a","ff"]). Empty = all not-done for this mode.'
         required: false
         default: '[]'
         type: string
       all_players:
-        description: 'Backlog pass: probe EVERY player (not just current-season). Slower, thorough.'
+        description: 'Backlog pass: probe EVERY player'
         required: false
         default: false
         type: boolean
       backfill_teams:
-        description: 'Also write discovered team/grade registrations into player files (implies all_players)'
+        description: 'Backfill pre-season teams into player files (implies all_players)'
         required: false
         default: false
         type: boolean
       concurrency:
-        description: 'Burst batch size per shard (default 25 — matches the proven clean-run length before a fresh IP walls)'
+        description: 'Burst batch size'
         required: false
         default: '25'
         type: string
       dry_run:
-        description: 'Report only — writes/commits nothing'
+        description: 'Report only'
         required: false
         default: false
         type: boolean
       fresh_start:
-        description: 'Ignore/delete existing progress (re-sweep from scratch). Applies ONLY to the run you dispatch — never propagated to self-triggered continuations.'
+        description: 'Delete existing progress and re-sweep from scratch (only the run you dispatch)'
         required: false
         default: false
         type: boolean
@@ -58,14 +51,12 @@ permissions:
   actions: write
 
 env:
-  MAX_RUNS: 40   # safety cap on self-trigger chain length
+  MAX_RUNS: 40
 
 jobs:
   reset-progress:
     if: inputs.fresh_start == true
     runs-on: ubuntu-latest
-    # Only this job — the rare, deliberately-requested case — pays the lock cost.
-    # generate-shards stays lock-free so every normal run keeps starting instantly.
     concurrency:
       group: data-write
       cancel-in-progress: false
@@ -74,9 +65,10 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
           sparse-checkout: |
-            data/discover-progress.json
-          sparse-checkout-cone-mode: false
+            data
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete progress file
         run: |
@@ -98,17 +90,18 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     outputs:
-      shards: ${{ steps.gen.outputs.shards }}
+      targets: ${{ steps.gen.outputs.targets }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
           sparse-checkout: |
-            data/discover-progress.json
-          sparse-checkout-cone-mode: false
+            data
+            scripts
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - id: gen
         env:
           INPUT_SHARDS: ${{ inputs.shards }}
@@ -117,107 +110,73 @@ jobs:
         run: |
           python3 - << 'PYEOF'
           import json, os, re
-
           raw = (os.environ.get('INPUT_SHARDS') or '').strip()
-          inner = raw[1:-1] if raw.startswith('[') and raw.endswith(']') else raw
-          toks = [t.strip().strip('"').strip("'") for t in inner.split(',')]
+          toks = [t.strip().strip('"').strip("'") for t in (raw[1:-1] if raw.startswith('[') else raw).split(',')]
           toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
-          explicit = bool(toks)
-          if not toks:
-              toks = [format(i, '02x') for i in range(256)]
-
-          # backfill_teams FORCES all_players inside the script (see discover-seasons.js)
-          # — mirror that here so cursor/mode tracking never desyncs from what the
-          # script actually scans (this was a real bug: mismatched cursor base).
-          # It ALSO gets its own mode key ('all+backfill', not 'all') — a prior plain
-          # all_players discovery pass marks shards done under mode='all', and if
-          # backfill shared that key, this run would see everything already "done"
-          # and skip all 256 shards, backfilling nothing. Same player list either way
-          # (only what happens with the results differs), so this is a resume-state
-          # label fix, not a change to what gets probed.
+          # backfill_teams implies all_players and uses its own mode key, matching the script.
           backfill = os.environ.get('BACKFILL_TEAMS') == 'true'
           all_players = os.environ.get('ALL_PLAYERS') == 'true' or backfill
           mode = ('all+backfill' if backfill else 'all') if all_players else 'current'
-
-          progress = {}
-          try:
-              with open('data/discover-progress.json') as f:
-                  progress = json.load(f)
-          except FileNotFoundError:
-              pass
-          except Exception as e:
-              print(f'  Warning: could not parse progress file: {e}')
-
+          progress = json.load(open('data/discover-progress.json')) if os.path.exists('data/discover-progress.json') else {}
           targets = []
-          skipped_done = 0
-          for shard in toks:
-              p = progress.get(shard)
-              cursor = 0
-              if p and p.get('mode') == mode:
-                  if p.get('done'):
-                      if not explicit:
-                          skipped_done += 1
-                          continue
-                      cursor = 0
-                  else:
-                      cursor = p.get('cursor', 0)
-              targets.append({'shard': shard, 'cursor': cursor})
-
-          # Emit ONLY the shard strings — a small (~1.5KB) array that never grows.
-          # The cursor-bearing object array grew past ~8KB as cursors climbed, and
-          # crossing that boundary made GitHub resolve map's matrix EMPTY (map
-          # skipped) — proven from run logs: 7680 bytes worked, 8200 skipped. Each
-          # map job now looks up its own cursor from discover-progress.json (which it
-          # already checks out), so this output stays tiny and constant forever.
-          shard_list = [t['shard'] for t in targets]
-          print(f'  Targets: {len(shard_list)}  (skipped {skipped_done} already-done shards for mode={mode})')
-          out_line = f'shards={json.dumps(shard_list)}'
+          for shard in (toks if toks else [format(i, '02x') for i in range(256)]):
+              p = progress.get(shard, {})
+              if not (p.get('done') == True and p.get('mode') == mode and not toks):
+                  targets.append({'shard': shard, 'cursor': p.get('cursor', 0)})
+          print(f'generate-shards: {len(targets)} targets for mode={mode}')
+          out_line = f'targets={json.dumps(targets)}'
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
               fh.write(out_line + '\n')
-          print(f'  output bytes: {len(out_line)} (static — does not grow with cursors)')
+          # Read-back: proves EXACTLY what landed in GITHUB_OUTPUT (not just the count
+          # above). If map skips, this log line tells us instantly whether the output
+          # was empty / malformed / truncated vs written-fine-but-not-consumed — the
+          # generate-shards→map boundary is where every prior failure occurred.
+          with open(os.environ['GITHUB_OUTPUT']) as fh:
+              written = fh.read()
+          print(f'generate-shards: wrote {len(out_line)} bytes; targets= present in GITHUB_OUTPUT: {"targets=" in written}')
           PYEOF
+          echo "=== raw GITHUB_OUTPUT (first 300 chars) ==="
+          head -c 300 "$GITHUB_OUTPUT"; echo ""
 
   map:
     needs: generate-shards
-    if: fromJson(needs.generate-shards.outputs.shards)[0] != null
+    if: needs.generate-shards.outputs.targets != '[]'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 20
       matrix:
-        shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
+        target: ${{ fromJson(needs.generate-shards.outputs.targets) }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
           sparse-checkout: |
-            scripts/discover-seasons.js
-            data/sports-index.json
-            data/discover-progress.json
-            players/${{ matrix.shard }}
-          sparse-checkout-cone-mode: false
+            scripts
+            data
+            players/${{ matrix.target.shard }}
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Burst-probe shard ${{ matrix.shard }}
+      - name: Matrix position
+        run: echo "shard=${{ matrix.target.shard }} cursor=${{ matrix.target.cursor }} | job ${{ strategy.job-index }} of ${{ strategy.job-total }}"
+      - name: Burst-probe
         run: |
-          ARGS="--shard=${{ matrix.shard }} --out=discover-shard-${{ matrix.shard }}.json --concurrency=${{ inputs.concurrency }}"
-          if [ "${{ inputs.all_players }}" = "true" ]; then ARGS="$ARGS --all-players"; fi
-          if [ "${{ inputs.backfill_teams }}" = "true" ]; then ARGS="$ARGS --backfill-teams"; fi
+          ARGS="--shard=${{ matrix.target.shard }} --cursor=${{ matrix.target.cursor }} --out=discover-shard-${{ matrix.target.shard }}.json --concurrency=${{ inputs.concurrency }}"
+          [ "${{ inputs.all_players }}" == "true" ] && ARGS="$ARGS --all-players"
+          [ "${{ inputs.backfill_teams }}" == "true" ] && ARGS="$ARGS --backfill-teams"
           node scripts/discover-seasons.js $ARGS
-
-      - name: Upload shard discoveries
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: discover-shard-${{ matrix.shard }}
-          path: discover-shard-${{ matrix.shard }}.json
-          if-no-files-found: ignore
+          name: discover-shard-${{ matrix.target.shard }}
+          path: 'discover-shard-${{ matrix.target.shard }}.json'
           retention-days: 1
+          if-no-files-found: ignore
 
   reduce:
     needs: [generate-shards, map]
@@ -225,29 +184,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     outputs:
-      undone_shards: ${{ steps.reduce.outputs.undone_shards }}
-    # THE single writer of index + progress + players for this workflow. Locked
-    # against nightly-crawl / fetch-profile-stats-matrix / anything else touching
-    # players/** or data/sports-index.json — this is the fix for the missing lock
-    # that let the old apply-and-commit job (now removed — it never actually ran;
-    # its manifest was never produced) write player files with no protection at all.
+      undone_shards: ${{ steps.reduce.outputs.undone }}
+    # Single writer of index + progress + player files — locked against nightly-crawl
+    # and the stats matrix so it can never race them on the same files.
     concurrency:
       group: data-write
       cancel-in-progress: false
     steps:
-      - name: Download all shard discoveries
+      - name: Download all shard artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: discover-shard-*
           path: /tmp/discoveries/
           merge-multiple: true
 
-      - name: Determine affected shards (for the checkout below)
+      - name: Determine affected shards
         id: affected
         run: |
           python3 - << 'PYEOF'
           import json, glob, os
-
           shards = set()
           for f in glob.glob('/tmp/discoveries/discover-shard-*.json'):
               try:
@@ -256,22 +211,19 @@ jobs:
                   continue
               if a.get('playerDeltas'):
                   shards.add(a.get('shard'))
-
           dirs = ['players/' + s for s in sorted(shards) if s]
-          print(f'  Shards with pending roster deltas: {len(dirs)}')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
               fh.write('player_dirs<<SPARSEEOF\n')
-              fh.write('\n'.join(dirs) + '\n' if dirs else '')
+              fh.write(('\n'.join(dirs) + '\n') if dirs else '')
               fh.write('SPARSEEOF\n')
+          print(f'affected player shards: {len(dirs)}')
           PYEOF
 
-      # scripts + data always; players/{shard} ONLY for shards with real deltas to
-      # apply. This is what lets --reduce read each affected file FRESH (not the
-      # stale snapshot MAP saw, potentially a long time ago).
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
+          filter: blob:none
           sparse-checkout: |
             scripts
             data
@@ -294,10 +246,9 @@ jobs:
           ARGS="--reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/discover-seasons.js $ARGS | tee /tmp/reduce.log
-
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
           if [ -z "$undone" ]; then undone='[]'; fi
-          echo "undone_shards=$undone" >> $GITHUB_OUTPUT
+          echo "undone=$undone" >> $GITHUB_OUTPUT
           echo "Undone shards this sweep: $undone"
 
   retrigger:
@@ -308,24 +259,17 @@ jobs:
       - name: Re-trigger for remaining shards (fresh runners)
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-          UNDONE: ${{ needs.reduce.outputs.undone_shards }}
         run: |
           run_number=${{ inputs.run_number }}
           if [ "$run_number" -ge "$MAX_RUNS" ]; then
-            echo "⚠️ Reached $MAX_RUNS-run cap with shards still undone: $UNDONE"
-            echo "Re-trigger manually to continue (progress is saved — nothing lost)."
+            echo "Reached $MAX_RUNS-run cap. Re-trigger manually to continue (progress saved)."
             exit 0
           fi
           next_run=$(( run_number + 1 ))
-          echo "↺ $(echo "$UNDONE" | python3 -c 'import sys,json;print(len(json.load(sys.stdin)))') shard(s) not yet done — re-triggering run $next_run on fresh runners."
-          # Do NOT pass the undone-shard array back as an input. generate-shards
-          # recomputes undone shards itself from the committed discover-progress.json
-          # (reduce just committed it), skipping any shard marked done for this mode —
-          # identical to how run 1 works. Passing a 7680-char array as a workflow
-          # input string is what silently produced an EMPTY targets output on run 2
-          # (the string print showed 256, but the GITHUB_OUTPUT write came back empty),
-          # which skipped the whole map job. Leaving shards empty sidesteps that
-          # entirely — this is exactly the pattern the working stats matrix uses.
+          echo "Re-triggering run $next_run on fresh runners."
+          # Do NOT pass the undone shard list back — generate-shards recomputes it from
+          # the committed progress file itself (identical to how run 1 computes it),
+          # skipping shards already marked done for this mode.
           gh workflow run discover-seasons-matrix.yml \
             --repo "${{ github.repository }}" \
             --field "all_players=${{ inputs.all_players }}" \
