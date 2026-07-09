@@ -108,12 +108,11 @@ jobs:
           ALL_PLAYERS: ${{ inputs.all_players }}
           BACKFILL_TEAMS: ${{ inputs.backfill_teams }}
         run: |
-          python3 - << 'PYEOF'
-          import json, os, re
+          targets=$(python3 - << 'PYEOF'
+          import json, os, re, sys
           raw = (os.environ.get('INPUT_SHARDS') or '').strip()
           toks = [t.strip().strip('"').strip("'") for t in (raw[1:-1] if raw.startswith('[') else raw).split(',')]
           toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
-          # backfill_teams implies all_players and uses its own mode key, matching the script.
           backfill = os.environ.get('BACKFILL_TEAMS') == 'true'
           all_players = os.environ.get('ALL_PLAYERS') == 'true' or backfill
           mode = ('all+backfill' if backfill else 'all') if all_players else 'current'
@@ -122,18 +121,17 @@ jobs:
           for shard in (toks if toks else [format(i, '02x') for i in range(256)]):
               p = progress.get(shard, {})
               if not (p.get('done') == True and p.get('mode') == mode and not toks):
-                  targets.append(shard)   # SHARD STRING ONLY — no cursor. Cursors vary on
-                  # resumed runs and a varying numeric substring can collide with a
-                  # registered secret, which makes GitHub redact the whole job output
-                  # (empty → matrix skips). Static hex strings can't collide or vary.
-                  # The map job's script reads each shard's cursor from the progress
-                  # file itself. (Confirmed cause: community discussion #71024.)
-          print(f'generate-shards: {len(targets)} targets for mode={mode}')
-          out_line = f'targets={json.dumps(targets)}'
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-              fh.write(out_line + '\n')
-          print(f'generate-shards: wrote {len(out_line)} bytes (static shard list)')
+                  targets.append(shard)   # shard string only; map job reads cursor from progress file
+          # Diagnostics to STDERR so they don't pollute the stdout that bash captures.
+          print(f'generate-shards: {len(targets)} targets for mode={mode}', file=sys.stderr)
+          # ONLY the JSON array goes to stdout — this is what bash captures.
+          print(json.dumps(targets))
           PYEOF
+          )
+          n=$(printf '%s' "$targets" | python3 -c 'import sys,json; print(len(json.load(sys.stdin)))')
+          echo "Shards selected: $n"
+          # BASH writes the job output (matches the working fetch-profile-stats matrix).
+          echo "targets=$targets" >> $GITHUB_OUTPUT
 
   map:
     needs: generate-shards
