@@ -1,1 +1,86 @@
-{"uuid":"9c67cd9a-2cf0-4d36-8b5a-7673dafd7c16","name":"Patrick Williamson-Hill","sports":{"Basketball":{"maxGamePTS":11,"maxGameThreePt":1,"foulOuts":{"796936f7":1},"gp":21,"pts":147,"fg":67,"ft":10,"threePt":1,"fouls":38,"statsChecked":"2026-07-09T18:31:49.841Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"5cf96898"}]},{"sid":"796936f7","regs":[{"tid":"864a8964"}]}],"teams":[],"updatedAt":"2026-07-09T18:09:23.820Z","records":{"maxGamePTS":{"v":11,"gameKey":"ffd80b3d","sid":"702b232f"},"maxGameThreePt":{"v":1,"gameKey":"96df90a5","sid":"702b232f"}}}
+{
+  "uuid": "9c67cd9a-2cf0-4d36-8b5a-7673dafd7c16",
+  "name": "Patrick Williamson-Hill",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "796936f7": 1
+      },
+      "gp": 21,
+      "pts": 147,
+      "fg": 67,
+      "ft": 10,
+      "threePt": 1,
+      "fouls": 38,
+      "statsChecked": "2026-07-09T18:31:49.841Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "5cf96898",
+          "gid": "58efb3fd",
+          "gn": "Thursday  Mixed Div 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "864a8964",
+          "gid": "384ac4bb",
+          "gn": "Thursday  Mixed Div 1/2"
+        }
+      ]
+    },
+    {
+      "sid": "b4300865",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "c0e54591",
+          "tn": "Guerillas",
+          "gid": "32e3f1b9",
+          "gn": "Tuesday Open Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "5cf96898",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "864a8964",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c0e54591",
+      "sid": "b4300865",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:23.820Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "ffd80b3d",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "96df90a5",
+      "sid": "702b232f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:02:41.962Z"
+}

@@ -1,1 +1,197 @@
-{"uuid":"596402af-20bc-4802-b397-a12f09fff80e","name":"Gus Buhagiar","gender":"Boys","sports":{"Basketball":{"gp":24,"pts":110,"fouls":48,"fg":51,"ft":8,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":12,"maxGameThreePt":null,"wins":28,"losses":20,"winPct":0.58,"statsChecked":"2026-07-05T15:35:51.244Z"}},"seasons":[{"sid":"09f9b4c1","sn":"Summer 2024/25","club":"Wildcats Basketball Club (Geelong)","regs":[{"tid":"e6cf1820","tn":"Wildcats U12 Boys D1 Orange","gid":"c9c4dfe2","gn":"(CLUB) Monday U12 Boys 1","age":"U12","div":null,"stats":{"gp":7,"fouls":9,"ft":1,"fg":15,"pts":31,"wins":7}},{"tid":"e6cf1820","tn":"Wildcats U12 Boys D1 Orange","gid":"15f9d08c","gn":"(CLUB) Saturday U12 Boys 1","age":"U12","div":null,"stats":{"gp":7,"fouls":9,"fg":15,"pts":31,"wins":7,"ft":1}}]},{"sid":"8e7c3699","sn":"Summer 2023/24","club":"Ocean Grove Breakers Basketball Club","regs":[{"tid":"7f992158","tn":"OG Breakers Hawks (U12 Boys)","gid":"9f1ffd7d","gn":"Wednesday U12 Boys Division 5","age":"U12","div":"Division 5","stats":{"gp":14,"fouls":28,"ft":7,"fg":32,"pts":71,"finals":1,"wins":6,"losses":8}},{"tid":"7f992158","tn":"OG Breakers Hawks (U12 Boys)","gid":"e62b0d32","gn":"Wednesday U12 Boys Grading","age":"U12","div":null,"stats":{"gp":14,"fouls":28,"ft":7,"fg":32,"pts":71,"finals":1,"wins":6,"losses":8}}]},{"sid":"ed318fce","regs":[{"tid":"30575205","stats":{"gp":3,"pts":8,"fg":4,"fouls":11,"wins":1,"losses":2}},{"tid":"30575205","tn":"","gid":"b1f1da4a","gn":"Thursday U14 Boys Division 3","div":null,"stats":{"gp":3,"pts":8,"fg":4,"fouls":11,"wins":1,"losses":2}}]}],"updatedAt":"2026-07-04T05:57:07.298Z","teams":[{"tid":"30575205","sid":"ed318fce","status":"ACTIVE"},{"tid":"e6cf1820","sid":"09f9b4c1","status":"COMPLETED"},{"tid":"7f992158","sid":"8e7c3699","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:36:49.052Z","records":{"maxGamePTS":{"v":12,"gameKey":"90b51075","sid":"09f9b4c1"},"maxGameThreePt":{"v":null}},"games":["0fefc3a3","20a0f27f","2c3dfc3c","2ff143dc","37f6b9b4","3bc5e9ad","4846b7b0","612751f0","77456102","8af0e032","90447f12","90b51075","a0e7669e","a56d958f","a7755ca8","af09c823","bad3d259","c955865a","d24a4d3c","e4cc0219","edf316fe","f0c5cd6a","f5d6187f","f626d86c"]}
+{
+  "uuid": "596402af-20bc-4802-b397-a12f09fff80e",
+  "name": "Gus Buhagiar",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 24,
+      "pts": 110,
+      "fouls": 48,
+      "fg": 51,
+      "ft": 8,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 28,
+      "losses": 20,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T15:35:51.244Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "09f9b4c1",
+      "sn": "Summer 2024/25",
+      "club": "Wildcats Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "e6cf1820",
+          "tn": "Wildcats U12 Boys D1 Orange",
+          "gid": "c9c4dfe2",
+          "gn": "(CLUB) Monday U12 Boys 1",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 15,
+            "pts": 31,
+            "wins": 7
+          }
+        },
+        {
+          "tid": "e6cf1820",
+          "tn": "Wildcats U12 Boys D1 Orange",
+          "gid": "15f9d08c",
+          "gn": "(CLUB) Saturday U12 Boys 1",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "fg": 15,
+            "pts": 31,
+            "wins": 7,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e7c3699",
+      "sn": "Summer 2023/24",
+      "club": "Ocean Grove Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "7f992158",
+          "tn": "OG Breakers Hawks (U12 Boys)",
+          "gid": "9f1ffd7d",
+          "gn": "Wednesday U12 Boys Division 5",
+          "age": "U12",
+          "div": "Division 5",
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 7,
+            "fg": 32,
+            "pts": 71,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "7f992158",
+          "tn": "OG Breakers Hawks (U12 Boys)",
+          "gid": "e62b0d32",
+          "gn": "Wednesday U12 Boys Grading",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 28,
+            "ft": 7,
+            "fg": 32,
+            "pts": 71,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ed318fce",
+      "regs": [
+        {
+          "tid": "30575205",
+          "stats": {
+            "gp": 3,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 11,
+            "wins": 1,
+            "losses": 2
+          },
+          "gid": "b1f1da4a",
+          "gn": "Thursday U14 Boys Division 3"
+        },
+        {
+          "tid": "30575205",
+          "tn": "",
+          "gid": "b1f1da4a",
+          "gn": "Thursday U14 Boys Division 3",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 11,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:07.298Z",
+  "teams": [
+    {
+      "tid": "e6cf1820",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7f992158",
+      "sid": "8e7c3699",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "30575205",
+      "sid": "ed318fce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:02:40.658Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "90b51075",
+      "sid": "09f9b4c1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0fefc3a3",
+    "20a0f27f",
+    "2c3dfc3c",
+    "2ff143dc",
+    "37f6b9b4",
+    "3bc5e9ad",
+    "4846b7b0",
+    "612751f0",
+    "77456102",
+    "8af0e032",
+    "90447f12",
+    "90b51075",
+    "a0e7669e",
+    "a56d958f",
+    "a7755ca8",
+    "af09c823",
+    "bad3d259",
+    "c955865a",
+    "d24a4d3c",
+    "e4cc0219",
+    "edf316fe",
+    "f0c5cd6a",
+    "f5d6187f",
+    "f626d86c"
+  ]
+}

@@ -1,1 +1,93 @@
-{"uuid":"2b61ff62-7151-4cb7-898a-743935c035d9","name":"Steven Martin","sports":{"Basketball":{"maxGamePTS":16,"maxGameThreePt":null,"foulOuts":{},"gp":4,"pts":32,"fg":12,"ft":8,"fouls":7,"statsChecked":"2026-07-09T18:29:21.141Z"}},"seasons":[{"sid":"fb06d69e","regs":[{"tid":"eda85da9"}]},{"sid":"af382b95","regs":[{"tid":"345b25c7"}]}],"teams":[],"updatedAt":"2026-07-09T18:09:23.820Z","records":{"maxGamePTS":{"v":16,"gameKey":"31316162","sid":"fb06d69e"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "2b61ff62-7151-4cb7-898a-743935c035d9",
+  "name": "Steven Martin",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 4,
+      "pts": 32,
+      "fg": 12,
+      "ft": 8,
+      "fouls": 7,
+      "statsChecked": "2026-07-09T18:29:21.141Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fb06d69e",
+      "regs": [
+        {
+          "tid": "eda85da9",
+          "gid": "22efe810",
+          "gn": "Thursday Men 8 - 2026 Winter"
+        }
+      ]
+    },
+    {
+      "sid": "af382b95",
+      "regs": [
+        {
+          "tid": "345b25c7",
+          "gid": "f4b78386",
+          "gn": "Monday Open Men D GRADE - MSAC"
+        },
+        {
+          "tid": "54955ae3",
+          "tn": "Ferocia Lions 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "b4300865",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "07770f94",
+          "tn": "Ferocia Lions ",
+          "gid": "ea2db636",
+          "gn": "Monday Open Men F GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "eda85da9",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "345b25c7",
+      "sid": "af382b95",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "54955ae3",
+      "sid": "af382b95",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07770f94",
+      "sid": "b4300865",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:23.820Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "31316162",
+      "sid": "fb06d69e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:02:39.771Z"
+}

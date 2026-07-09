@@ -1,1 +1,372 @@
-{"uuid":"61608ddf-008a-417b-ab41-68fdbbf175aa","name":"Jackson Jacotine","gender":"Men","sports":{"Basketball":{"gp":49,"pts":385,"fouls":126,"fg":83,"ft":20,"threePt":41,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"5593103d":4,"97a4667f":1,"a5dfc5c1":2},"maxGamePTS":19,"maxGameThreePt":5,"wins":48,"losses":26,"draws":2,"winPct":0.63,"statsChecked":"2026-07-05T15:23:02.102Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"de1e9e56","tn":"Sniper Gang","gid":"36534163","gn":"Wednesday Open Men Section 2","age":"Senior","div":null,"stats":{"gp":19,"fouls":59,"ft":11,"fg":33,"threePt":17,"pts":204,"foulOuts":3,"wins":11,"losses":6,"draws":1}},{"tid":"de1e9e56","tn":"Sniper Gang","gid":"9d01aa3e","gn":"Wednesday Open Men Section 3","age":"Senior","div":null,"stats":{"gp":19,"fouls":59,"pts":204,"foulOuts":1,"wins":11,"losses":6,"draws":1,"fg":33,"ft":11,"threePt":17}}]},{"sid":"97a4667f","sn":"Summer 2022/23","regs":[{"tid":"dfa73472","tn":"Make Moves","gid":"47df5b17","gn":"Wednesday Senior Men B","age":"Senior","div":null,"stats":{"gp":21,"fouls":42,"ft":6,"fg":38,"threePt":20,"pts":142,"finals":1,"gfApps":1,"foulOuts":1,"wins":13,"losses":7}},{"tid":"dfa73472","tn":"Make Moves","gid":"e5680b2b","gn":"Wednesday Senior Men C","age":"Senior","div":null,"stats":{"gp":21,"fouls":42,"ft":6,"fg":38,"pts":142,"finals":1,"gfApps":1,"wins":13,"losses":7,"threePt":20}}]},{"sid":"a5dfc5c1","sn":"2021","club":"~[ARCHIVED] Melbourne Tigers Boys","regs":[{"tid":"7ac53b43","tn":"Melbourne U21 Boys 3","gid":"26c6ad10","gn":"21 Boys - VJL5 (P1)","age":null,"div":null,"stats":{"gp":9,"fouls":25,"ft":3,"fg":12,"threePt":4,"pts":39,"foulOuts":1}},{"tid":"7ac53b43","tn":"Melbourne U21 Boys 3","gid":"760a601d","gn":"U21B Crossover 2 - VJL","age":null,"div":null,"stats":{"gp":9,"fouls":25,"ft":3,"fg":12,"threePt":4,"pts":39,"foulOuts":1}},{"tid":"7ac53b43","tn":"Melbourne U21 Boys 3","gid":"3bd41f0b","gn":"U21B Grading 2 - Pool 3B","age":null,"div":null,"stats":{"gp":9,"fouls":25,"fg":12,"pts":39,"ft":3,"threePt":4}}]}],"updatedAt":"2026-06-01T11:33:13.046Z","teams":[{"tid":"de1e9e56","sid":"5593103d","status":"ACTIVE"},{"tid":"8cde694b","sid":"fab2be4d","status":"COMPLETED"},{"tid":"5019a6f4","sid":"76897951","status":"COMPLETED"},{"tid":"edf7e51d","sid":"5944effa","status":"COMPLETED"},{"tid":"9c0218ed","sid":"348dbfb8","status":"COMPLETED"},{"tid":"856c25be","sid":"9358e51a","status":"COMPLETED"},{"tid":"dfa73472","sid":"97a4667f","status":"COMPLETED"},{"tid":"7ac53b43","sid":"a5dfc5c1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:41:53.483Z","records":{"maxGamePTS":{"v":19,"gameKey":"843a12e8","sid":"5593103d"},"maxGameThreePt":{"v":5,"gameKey":"10f32784","sid":"97a4667f"}},"games":["0088c431","10f32784","14dde465","18065d6c","194be044","1bcb1490","1c6ac2cc","273c29a4","38fa420d","3d0b694f","4193bf3f","42380b99","44b5143f","4d4d6256","4f4a54aa","5d9e278d","620f94d0","68ef185e","782259a4","7848e657","82947604","843a12e8","8642f766","8b2bab65","8b3c3715","92531491","94ee9784","96f27152","97f7040a","98f66790","99d298d9","aae89eb8","aae8ba08","aee8e4a5","b8be023c","ba5be9c7","bb6e3444","c2c848fb","c62619bf","cd9e847f","d3f30a64","d7cf662e","db819b4a","dce23c0e","e5e0f3cd","e62ccfca","eb4ed1b8","fa6c14e1"]}
+{
+  "uuid": "61608ddf-008a-417b-ab41-68fdbbf175aa",
+  "name": "Jackson Jacotine",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 49,
+      "pts": 385,
+      "fouls": 126,
+      "fg": 83,
+      "ft": 20,
+      "threePt": 41,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "5593103d": 4,
+        "97a4667f": 1,
+        "a5dfc5c1": 2
+      },
+      "maxGamePTS": 19,
+      "maxGameThreePt": 5,
+      "wins": 48,
+      "losses": 26,
+      "draws": 2,
+      "winPct": 0.63,
+      "statsChecked": "2026-07-05T15:23:02.102Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "de1e9e56",
+          "tn": "Sniper Gang",
+          "gid": "36534163",
+          "gn": "Wednesday Open Men Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 59,
+            "ft": 11,
+            "fg": 33,
+            "threePt": 17,
+            "pts": 204,
+            "foulOuts": 3,
+            "wins": 11,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "de1e9e56",
+          "tn": "Sniper Gang",
+          "gid": "9d01aa3e",
+          "gn": "Wednesday Open Men Section 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 59,
+            "pts": 204,
+            "foulOuts": 1,
+            "wins": 11,
+            "losses": 6,
+            "draws": 1,
+            "fg": 33,
+            "ft": 11,
+            "threePt": 17
+          }
+        }
+      ]
+    },
+    {
+      "sid": "97a4667f",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "dfa73472",
+          "tn": "Make Moves",
+          "gid": "47df5b17",
+          "gn": "Wednesday Senior Men B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 42,
+            "ft": 6,
+            "fg": 38,
+            "threePt": 20,
+            "pts": 142,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 13,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "dfa73472",
+          "tn": "Make Moves",
+          "gid": "e5680b2b",
+          "gn": "Wednesday Senior Men C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 42,
+            "ft": 6,
+            "fg": 38,
+            "pts": 142,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 7,
+            "threePt": 20
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "~[ARCHIVED] Melbourne Tigers Boys",
+      "regs": [
+        {
+          "tid": "7ac53b43",
+          "tn": "Melbourne U21 Boys 3",
+          "gid": "26c6ad10",
+          "gn": "21 Boys - VJL5 (P1)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 25,
+            "ft": 3,
+            "fg": 12,
+            "threePt": 4,
+            "pts": 39,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "7ac53b43",
+          "tn": "Melbourne U21 Boys 3",
+          "gid": "760a601d",
+          "gn": "U21B Crossover 2 - VJL",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 25,
+            "ft": 3,
+            "fg": 12,
+            "threePt": 4,
+            "pts": 39,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "7ac53b43",
+          "tn": "Melbourne U21 Boys 3",
+          "gid": "3bd41f0b",
+          "gn": "U21B Grading 2 - Pool 3B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 25,
+            "fg": 12,
+            "pts": 39,
+            "ft": 3,
+            "threePt": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "3f4b41fc",
+          "tn": "Sniper Gang",
+          "gid": "0c291d05",
+          "gn": "Wednesday Open Men Section 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "8cde694b",
+          "tn": "Sniper Gang",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "5019a6f4",
+          "tn": "IGET BUCKETS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "edf7e51d",
+          "tn": "IGet Buckets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "9c0218ed",
+          "tn": "IGet Buckets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "856c25be",
+          "tn": "SNIPER GANG",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:33:13.046Z",
+  "teams": [
+    {
+      "tid": "de1e9e56",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dfa73472",
+      "sid": "97a4667f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7ac53b43",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f4b41fc",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8cde694b",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5019a6f4",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "edf7e51d",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c0218ed",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "856c25be",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:02:40.801Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "843a12e8",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "10f32784",
+      "sid": "97a4667f"
+    }
+  },
+  "games": [
+    "0088c431",
+    "10f32784",
+    "14dde465",
+    "18065d6c",
+    "194be044",
+    "1bcb1490",
+    "1c6ac2cc",
+    "273c29a4",
+    "38fa420d",
+    "3d0b694f",
+    "4193bf3f",
+    "42380b99",
+    "44b5143f",
+    "4d4d6256",
+    "4f4a54aa",
+    "5d9e278d",
+    "620f94d0",
+    "68ef185e",
+    "782259a4",
+    "7848e657",
+    "82947604",
+    "843a12e8",
+    "8642f766",
+    "8b2bab65",
+    "8b3c3715",
+    "92531491",
+    "94ee9784",
+    "96f27152",
+    "97f7040a",
+    "98f66790",
+    "99d298d9",
+    "aae89eb8",
+    "aae8ba08",
+    "aee8e4a5",
+    "b8be023c",
+    "ba5be9c7",
+    "bb6e3444",
+    "c2c848fb",
+    "c62619bf",
+    "cd9e847f",
+    "d3f30a64",
+    "d7cf662e",
+    "db819b4a",
+    "dce23c0e",
+    "e5e0f3cd",
+    "e62ccfca",
+    "eb4ed1b8",
+    "fa6c14e1"
+  ]
+}
