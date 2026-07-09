@@ -528,7 +528,8 @@ async function main() {
     if (fs.existsSync(PROGRESS_FILE)) { try { progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); } catch { progress = {}; } }
 
     const merged = new Map();
-    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [], playersWritten = 0, teamsWritten = 0;
+    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [];
+    const mergedDeltas = new Map();   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] merged across shards
     for (const f of files) {
       let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
       shardProbed += a.probed || 0;
@@ -541,38 +542,56 @@ async function main() {
         progress[a.shard] = { mode: a.mode, cursor: a.cursor, total: a.total, done: a.done, updatedAt: a.at };
         if (a.done) doneCount++; else undoneShards.push(a.shard);
       }
-
-      // --- PERSISTENT WRITE LOGIC (Only runs in REDUCE where git is present) ---
-      if (a.playerUpdates && !DRY_RUN) {
-        for (const [uuid, player] of Object.entries(a.playerUpdates)) {
-          const root = process.env.GITHUB_WORKSPACE || process.cwd();
-          const targetDir = path.join(root, 'players', uuid.substring(0, 2));
-          if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-          fs.writeFileSync(path.join(targetDir, `${uuid}.json`), JSON.stringify(player, null, 2));
-          playersWritten++;
-        }
+      // Deltas are collected here but applied AGAINST A FRESH FILE below — never a
+      // stale MAP-time snapshot. Each uuid can only appear in one shard's artifact
+      // (sharded by uuid prefix), so no cross-shard merge conflict on a single key.
+      for (const [uuid, deltas] of Object.entries(a.playerDeltas || {})) {
+        if (!mergedDeltas.has(uuid)) mergedDeltas.set(uuid, []);
+        mergedDeltas.get(uuid).push(...deltas);
       }
-      // DISABLED — team-lookup/ writes removed; not consumed downstream.
-      // if (a.teamUpdates && !DRY_RUN) {
-      //   for (const [tid, team] of Object.entries(a.teamUpdates)) {
-      //     const root = process.env.GITHUB_WORKSPACE || process.cwd();
-      //     const tPath = path.join(root, 'team-lookup', 'bv', `${tid}.json`);
-      //     if (!fs.existsSync(path.dirname(tPath))) fs.mkdirSync(path.dirname(tPath), { recursive: true });
-      //     fs.writeFileSync(tPath, JSON.stringify(team, null, 2));
-      //     teamsWritten++;
-      //   }
-      // }
     }
     console.log(`  Merged ${merged.size} distinct new season(s) across ${files.length} shard(s) (probed ${shardProbed}, wall hits ${wallHits}).`);
     console.log(`  Shard progress: ${doneCount} done, ${undoneShards.length} not yet complete this sweep.`);
-    if (playersWritten > 0 || teamsWritten > 0) {
-      console.log(`  Artifact data written to disk: ${playersWritten} players, ${teamsWritten} teams.`);
+
+    // ── Apply deltas against FRESH files (the workflow must have already expanded ──
+    //    its checkout to cover every affected shard before invoking --reduce — see
+    //    discover-seasons-matrix.yml's "Expand checkout for affected shards" step).
+    //    This is what eliminates the stale-snapshot clobber risk: we read each
+    //    player's CURRENT on-disk content right here, not whatever MAP saw earlier.
+    let playersWritten = 0, playersMissing = 0;
+    for (const [uuid, deltas] of mergedDeltas) {
+      const filePath = path.join(PLAYERS_DIR, uuid.substring(0, 2), `${uuid}.json`);
+      let player;
+      try { player = JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+      catch { playersMissing++; continue; }   // file not checked out or genuinely absent — skip, don't fabricate
+      if (!player.seasons) player.seasons = [];
+      let fileModified = false;
+      for (const d of deltas) {
+        let seasonObj = player.seasons.find(s => s.sid === d.sid);
+        if (!seasonObj) { seasonObj = { sid: d.sid, sn: d.sn, regs: [] }; player.seasons.push(seasonObj); }
+        const hasTeam = seasonObj.regs.find(r => r.tid === d.tid);
+        if (!hasTeam) {
+          seasonObj.regs.push({ tid: d.tid, tn: d.tn, gid: d.gid, gn: d.gn, stats: {} });
+          fileModified = true;
+        } else if (d.gid && hasTeam.gid !== d.gid) {
+          hasTeam.gid = d.gid; hasTeam.gn = d.gn;
+          fileModified = true;
+        }
+      }
+      if (fileModified) {
+        syncTeams(player);
+        if (!DRY_RUN) fs.writeFileSync(filePath, JSON.stringify(player, null, 2));
+        playersWritten++;
+      }
+    }
+    if (mergedDeltas.size) {
+      console.log(`  Roster backfill: ${playersWritten} player(s) updated, ${playersMissing} not found on disk (not checked out or absent) — of ${mergedDeltas.size} with pending deltas.`);
     }
 
     if (!DRY_RUN) fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
     
     // Pass playersWritten into stats so applyDiscoveries knows to commit!
-    await applyDiscoveries(index, merged, { t0, playersWritten, teamsWritten }, [PROGRESS_FILE]);
+    await applyDiscoveries(index, merged, { t0, playersWritten }, [PROGRESS_FILE]);
 
     console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
     return;
@@ -666,8 +685,10 @@ async function main() {
     console.log(`  Shard total: ${total}  cursor: ${CURSOR}  remaining: ${toProbe.length}  burst concurrency: ${CONCURRENCY}`);
 
     const newSeasonMeta = new Map();
-    const playerUpdates = {}; // Added to hold updates in memory
-    // const teamUpdates = {};  // DISABLED — team-lookup/ not consumed downstream
+    const playerDeltas = {};   // uuid -> [{sid, sn, tid, tn, gid, gn}, ...] — NOT a file snapshot.
+                                // REDUCE reads the CURRENT file fresh and applies these — this is
+                                // what eliminates the stale-snapshot clobber risk: MAP never reads
+                                // or writes a player file at all in backfill mode.
     let probed = 0, privateN = 0, errors = 0;
     const t0 = Date.now();
 
@@ -676,36 +697,8 @@ async function main() {
       if (r.kind === 'private') { privateN++; return; }
       if (r.kind === 'error') { errors++; return; }
       if (r.kind === 'ok') {
-        let fileModified = false;
-        const filePath = path.join(PLAYERS_DIR, `${uuid.substring(0, 2)}`, `${uuid}.json`);
-        let localPlayer = null;
-
-        if (r.teams && r.teams.length > 0) {
-          try {
-            localPlayer = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-            if (!localPlayer.seasons) localPlayer.seasons = [];
-          } catch (e) {
-            // Ignore
-          }
-        }
-
         for (const reg of r.teams || []) {
           const se = reg.season;
-          const tm = { id: reg.id, name: reg.name };
-          
-          if (DEBUG_TEAMS) {
-            console.log(`  DEBUG: Processing team ${tm.name} (${tm.id}) for season ${se.id}`);
-          }
-
-          if (localPlayer) {
-            let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
-            if (seasonObj) {
-              const found = seasonObj.regs.find(r => r.tid === tm.id);
-              if (DEBUG_TEAMS) console.log(`  DEBUG: Team found in local file: ${!!found}`);
-            } else {
-              if (DEBUG_TEAMS) console.log(`  DEBUG: Season ${se.id} not found in player file.`);
-            }
-          }
           if (!se?.id) continue;
 
           // 1. Track new seasons for the index
@@ -719,43 +712,14 @@ async function main() {
             console.log(`  ✦ new season: ${se.id}  ${se.name}  (${se.status?.value || '?'})  via ${uuid}`);
           }
 
-          // 2. BACKFILL: Update Team Lookup Directory IN MEMORY — DISABLED
-          // team-lookup/ files are not consumed by any downstream script or the HTML.
-          // if (BACKFILL_TEAMS && tm?.id && tm?.name && !DRY_RUN) {
-          //   teamUpdates[tm.id] = { id: tm.id, name: tm.name, seasonId: se.id };
-          // }
-
-          // 3. BACKFILL: Update the local player's registrations
-          if (BACKFILL_TEAMS && localPlayer && tm?.id) {
-            let seasonObj = localPlayer.seasons.find(s => s.sid === se.id);
-            if (!seasonObj) {
-              seasonObj = { sid: se.id, sn: se.name, regs: [] };
-              localPlayer.seasons.push(seasonObj);
-            }
-            const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
-            if (!hasTeam) {
-              seasonObj.regs.push({
-                tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
-              });
-              fileModified = true;
-              console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
-            } else {
-              // Catch late grade allocations or grade changes
-              const newGid = reg.grade?.id || null;
-              if (newGid && hasTeam.gid !== newGid) {
-                hasTeam.gid = newGid;
-                hasTeam.gn = reg.grade?.name || null;
-                fileModified = true;
-                console.log(`   🆙 Updated grade for ${localPlayer.name || uuid} in ${tm.name} to ${reg.grade?.name}`);
-              }
-            }
+          // 2. BACKFILL: record the registration as a DELTA (applied against a fresh
+          //    file read in REDUCE, not against whatever MAP happened to see here).
+          if (BACKFILL_TEAMS && reg?.id) {
+            (playerDeltas[uuid] ||= []).push({
+              sid: se.id, sn: se.name, tid: reg.id, tn: reg.name,
+              gid: reg.grade?.id || null, gn: reg.grade?.name || null,
+            });
           }
-        }
-
-        // SAVE TO ARTIFACT BUCKET INSTEAD OF EPHEMERAL DISK
-        if (fileModified && localPlayer && !DRY_RUN) {
-          syncTeams(localPlayer);
-          playerUpdates[uuid] = localPlayer;
         }
       }
     });
@@ -768,9 +732,8 @@ async function main() {
     const discovered = Object.fromEntries(newSeasonMeta);
     const artifact = {
       shard: SHARD, mode: ALL_PLAYERS ? 'all' : 'current',
-      discovered, 
-      playerUpdates, // Pushing updates to the JSON file
-      teamUpdates: {},   // DISABLED — team-lookup/ not consumed downstream'
+      discovered,
+      playerDeltas,   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] — applied against a FRESH file in REDUCE
       cursor: newCursor, total, done, wallHit,
       probed, private: privateN, errors, at: new Date().toISOString(),
     };
