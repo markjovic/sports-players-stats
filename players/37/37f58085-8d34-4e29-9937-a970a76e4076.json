@@ -1,1 +1,328 @@
-{"uuid":"37f58085-8d34-4e29-9937-a970a76e4076","name":"Thom Read","gender":"Boys","sports":{"Basketball":{"gp":30,"pts":80,"fouls":31,"fg":22,"ft":6,"threePt":10,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":11,"maxGameThreePt":3,"wins":18,"losses":25,"draws":2,"winPct":0.4,"statsChecked":"2026-07-05T15:08:23.951Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","regs":[{"tid":"03687d37","tn":"MP Dragons","gid":"6e22c98b","gn":"Saturday U16 Boys C","age":"U16","div":null,"stats":{"gp":4,"pts":9,"threePt":1,"fg":3,"fouls":1,"losses":2,"wins":2}}]},{"sid":"0261a532","sn":"Summer 2024/25","regs":[{"tid":"87b4d07a","tn":"Hoop School Boys U14 Green","gid":"e46be63a","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":11,"pts":22,"threePt":4,"fg":4,"ft":2,"fouls":6,"finals":1,"wins":6,"losses":5}}]},{"sid":"3d243fd6","sn":"Winter 2024","regs":[{"tid":"0d98e7cd","tn":"Hoop School Boys U14 White","gid":"ae150809","gn":"Saturday U14 Boys B","age":"U14","div":null,"stats":{"gp":15,"pts":49,"threePt":5,"fg":15,"ft":4,"fouls":24,"wins":5,"losses":9,"draws":1}},{"tid":"0d98e7cd","tn":"Hoop School Boys U14 White","gid":"c4a09c79","gn":"Saturday U14 Boys A","age":"U14","div":null,"stats":{"gp":15,"pts":49,"fg":15,"fouls":24,"wins":5,"losses":9,"draws":1,"ft":4,"threePt":5}}]}],"updatedAt":"2026-06-01T08:25:44.197Z","teams":[{"tid":"03687d37","sid":"e7aed763","status":"ACTIVE"},{"tid":"87b4d07a","sid":"0261a532","status":"COMPLETED"},{"tid":"f9d023bc","sid":"8884de2d","status":"COMPLETED"},{"tid":"0d98e7cd","sid":"3d243fd6","status":"COMPLETED"},{"tid":"9e9c32b3","sid":"0fef30ca","status":"COMPLETED"},{"tid":"03dbeb84","sid":"09a70808","status":"COMPLETED"},{"tid":"a126f679","sid":"e5df46b3","status":"COMPLETED"},{"tid":"16fe3e79","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"93f7d4cc","sid":"9533d0c6","status":"COMPLETED"},{"tid":"66d5b4c0","sid":"977f8526","status":"COMPLETED"},{"tid":"970ef038","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:21:00.407Z","records":{"maxGamePTS":{"v":11,"gameKey":"1800c4a5","sid":"0261a532"},"maxGameThreePt":{"v":3,"gameKey":"1800c4a5","sid":"0261a532"}},"games":["00845bd5","012e1240","1456a06e","1800c4a5","183bfac3","19aa3bcc","37a45722","3a95bb07","3cd823b9","41d1ff1e","44db26af","4f36c406","57bf4f4d","5c9f5fc0","6c68419c","72076607","76523e60","78de0e48","7a5becc5","89cd2886","8b3b7b9e","a13b458f","a4b6e0b6","b59db297","b7006e72","bb273da0","bb28ffcc","bed3b62b","dc2b96a0","f1374b3f"]}
+{
+  "uuid": "37f58085-8d34-4e29-9937-a970a76e4076",
+  "name": "Thom Read",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 80,
+      "fouls": 31,
+      "fg": 22,
+      "ft": 6,
+      "threePt": 10,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 11,
+      "maxGameThreePt": 3,
+      "wins": 18,
+      "losses": 25,
+      "draws": 2,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:08:23.951Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "03687d37",
+          "tn": "MP Dragons",
+          "gid": "6e22c98b",
+          "gn": "Saturday U16 Boys C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 9,
+            "threePt": 1,
+            "fg": 3,
+            "fouls": 1,
+            "losses": 2,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0261a532",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "87b4d07a",
+          "tn": "Hoop School Boys U14 Green",
+          "gid": "e46be63a",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 22,
+            "threePt": 4,
+            "fg": 4,
+            "ft": 2,
+            "fouls": 6,
+            "finals": 1,
+            "wins": 6,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3d243fd6",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "0d98e7cd",
+          "tn": "Hoop School Boys U14 White",
+          "gid": "ae150809",
+          "gn": "Saturday U14 Boys B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 49,
+            "threePt": 5,
+            "fg": 15,
+            "ft": 4,
+            "fouls": 24,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "0d98e7cd",
+          "tn": "Hoop School Boys U14 White",
+          "gid": "c4a09c79",
+          "gn": "Saturday U14 Boys A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 49,
+            "fg": 15,
+            "fouls": 24,
+            "wins": 5,
+            "losses": 9,
+            "draws": 1,
+            "ft": 4,
+            "threePt": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "f9d023bc",
+          "tn": "SKIPPS Bulls",
+          "gid": "6ac91896",
+          "gn": "Tuesday MSAC/Bayside YR.6 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "9e9c32b3",
+          "tn": "SKIPPS Bulls",
+          "gid": "614c776b",
+          "gn": "Tuesday MSAC/Bayside YR.6 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "03dbeb84",
+          "tn": "SKIPPS Bulls",
+          "gid": "f8232eab",
+          "gn": "Wednesday MSAC YR.5 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "a126f679",
+          "tn": "SKIPPS Bulls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "16fe3e79",
+          "tn": "SKIPPS Bulls",
+          "gid": "4c2ffa1a",
+          "gn": "Friday MSAC/Bayside YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9533d0c6",
+      "sn": "Term 4, 2021",
+      "regs": [
+        {
+          "tid": "93f7d4cc",
+          "tn": "SKiPPS Rockets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "66d5b4c0",
+          "tn": "SKIPPS Bulls",
+          "gid": "4b7e960b",
+          "gn": "Friday MSAC/Bayside YR.3 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "970ef038",
+          "tn": "SKIPPS Bulls (3657)",
+          "gid": "c0de2b94",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T08:25:44.197Z",
+  "teams": [
+    {
+      "tid": "03687d37",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "87b4d07a",
+      "sid": "0261a532",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d98e7cd",
+      "sid": "3d243fd6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9d023bc",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e9c32b3",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "03dbeb84",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a126f679",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "16fe3e79",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "93f7d4cc",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "66d5b4c0",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "970ef038",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.436Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "1800c4a5",
+      "sid": "0261a532"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "1800c4a5",
+      "sid": "0261a532"
+    }
+  },
+  "games": [
+    "00845bd5",
+    "012e1240",
+    "1456a06e",
+    "1800c4a5",
+    "183bfac3",
+    "19aa3bcc",
+    "37a45722",
+    "3a95bb07",
+    "3cd823b9",
+    "41d1ff1e",
+    "44db26af",
+    "4f36c406",
+    "57bf4f4d",
+    "5c9f5fc0",
+    "6c68419c",
+    "72076607",
+    "76523e60",
+    "78de0e48",
+    "7a5becc5",
+    "89cd2886",
+    "8b3b7b9e",
+    "a13b458f",
+    "a4b6e0b6",
+    "b59db297",
+    "b7006e72",
+    "bb273da0",
+    "bb28ffcc",
+    "bed3b62b",
+    "dc2b96a0",
+    "f1374b3f"
+  ]
+}

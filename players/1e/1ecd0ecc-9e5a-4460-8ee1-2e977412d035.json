@@ -1,1 +1,86 @@
-{"uuid":"1ecd0ecc-9e5a-4460-8ee1-2e977412d035","gender":null,"sports":{"Basketball":{"gp":10,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":4,"losses":4,"draws":2,"winPct":0.4,"statsChecked":"2026-07-05T15:59:35.939Z"}},"seasons":[{"sid":"7ca3c99e","sn":"Spring 2025","club":null,"regs":[{"tid":"e11a2f16","tn":"Robbie Mac Queen bees","gid":"2fe4e472","gn":"Friday Whitehorse YR.1 Girls","stats":{"gp":10,"wins":4,"losses":4,"draws":2}}]}],"updatedAt":"2026-06-11T23:37:08.018Z","games":["35ca2783","52e34c68","8322d4e9","892f06cf","8f6fe991","9df2a021","b1026782","d3d7bd42","ed9ff843","fc8131c1"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Spring 2025"}
+{
+  "uuid": "1ecd0ecc-9e5a-4460-8ee1-2e977412d035",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 4,
+      "draws": 2,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:59:35.939Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7ca3c99e",
+      "sn": "Spring 2025",
+      "club": null,
+      "regs": [
+        {
+          "tid": "e11a2f16",
+          "tn": "Robbie Mac Queen bees",
+          "gid": "2fe4e472",
+          "gn": "Friday Whitehorse YR.1 Girls",
+          "stats": {
+            "gp": 10,
+            "wins": 4,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "1ecc0400",
+          "tn": "Robbie Mac Queen bees",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:08.018Z",
+  "games": [
+    "35ca2783",
+    "52e34c68",
+    "8322d4e9",
+    "892f06cf",
+    "8f6fe991",
+    "9df2a021",
+    "b1026782",
+    "d3d7bd42",
+    "ed9ff843",
+    "fc8131c1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Spring 2025",
+  "teams": [
+    {
+      "tid": "e11a2f16",
+      "sid": "7ca3c99e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ecc0400",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.836Z"
+}

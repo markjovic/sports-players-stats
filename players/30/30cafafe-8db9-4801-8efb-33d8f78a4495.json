@@ -1,1 +1,430 @@
-{"uuid":"30cafafe-8db9-4801-8efb-33d8f78a4495","name":"Robert Davey","gender":"Men","sports":{"Basketball":{"gp":15,"pts":41,"fouls":22,"fg":4,"ft":3,"threePt":3,"foulOuts":{"5593103d":1},"maxGamePTS":9,"maxGameThreePt":3,"wins":12,"losses":16,"winPct":0.43,"statsChecked":"2026-07-06T19:09:52.412Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"dfdd0d29","tn":"Solway Slammers","gid":"4913d86d","gn":"Monday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":14,"fouls":22,"ft":1,"fg":4,"threePt":3,"pts":39,"foulOuts":1,"wins":6,"losses":8}},{"tid":"dfdd0d29","tn":"Solway Slammers","gid":"429a30f0","gn":"Monday Open Men Section 04","age":"Senior","div":null,"stats":{"gp":14,"fouls":22,"pts":39,"wins":6,"losses":8,"fg":4,"ft":1,"threePt":3}}]},{"sid":"297562bc","sn":"Spring 2026","club":"Waverley Basketball Association","regs":[{"tid":"8e0556dd","tn":"","gid":"4429ee83","gn":"Monday Open Men Section 3","div":null,"stats":{"gp":1,"pts":2,"ft":2}}]}],"updatedAt":"2026-07-06T18:32:54.741Z","teams":[{"tid":"dfdd0d29","sid":"5593103d","status":"ACTIVE"},{"tid":"b7bc8441","sid":"fab2be4d","status":"COMPLETED"},{"tid":"daf030ca","sid":"76897951","status":"COMPLETED"},{"tid":"853e6516","sid":"5944effa","status":"COMPLETED"},{"tid":"6b268b2d","sid":"348dbfb8","status":"COMPLETED"},{"tid":"f6a745a9","sid":"9358e51a","status":"COMPLETED"},{"tid":"a6c6cc2d","sid":"9358e51a","status":"COMPLETED"},{"tid":"d0c5d904","sid":"d3d4e181","status":"COMPLETED"},{"tid":"99bbb538","sid":"d3d4e181","status":"COMPLETED"},{"tid":"fb24a1e3","sid":"21cd9648","status":"COMPLETED"},{"tid":"859e3014","sid":"21cd9648","status":"COMPLETED"},{"tid":"7c9bc3ef","sid":"d4cbf787","status":"COMPLETED"},{"tid":"11f950b6","sid":"d4cbf787","status":"COMPLETED"},{"tid":"27d5e65c","sid":"d64fcfce","status":"COMPLETED"},{"tid":"e0b8a649","sid":"afd26581","status":"COMPLETED"},{"tid":"6e9684fa","sid":"922f0463","status":"COMPLETED"},{"tid":"189fee60","sid":"922f0463","status":"COMPLETED"},{"tid":"9569f33e","sid":"17f0da9b","status":"COMPLETED"},{"tid":"de94915d","sid":"17f0da9b","status":"COMPLETED"},{"tid":"f21e88f1","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:11:30.918Z","records":{"maxGamePTS":{"v":9,"gameKey":"1bd49e00","sid":"5593103d"},"maxGameThreePt":{"v":3,"gameKey":"1bd49e00","sid":"5593103d"}},"games":["09dac3f6","09ecc0b5","1bd49e00","2c21dfe7","3b2627c2","41014aea","4e0e2e17","8803cd75","95280e9a","9d6b3dbd","a9e20e9b","b2795c1c","b88c367f","f8c61d22"]}
+{
+  "uuid": "30cafafe-8db9-4801-8efb-33d8f78a4495",
+  "name": "Robert Davey",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 41,
+      "fouls": 22,
+      "fg": 4,
+      "ft": 3,
+      "threePt": 3,
+      "foulOuts": {
+        "5593103d": 1
+      },
+      "maxGamePTS": 9,
+      "maxGameThreePt": 3,
+      "wins": 12,
+      "losses": 16,
+      "winPct": 0.43,
+      "statsChecked": "2026-07-06T19:09:52.412Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "dfdd0d29",
+          "tn": "Solway Slammers",
+          "gid": "4913d86d",
+          "gn": "Monday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "ft": 1,
+            "fg": 4,
+            "threePt": 3,
+            "pts": 39,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "dfdd0d29",
+          "tn": "Solway Slammers",
+          "gid": "429a30f0",
+          "gn": "Monday Open Men Section 04",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 22,
+            "pts": 39,
+            "wins": 6,
+            "losses": 8,
+            "fg": 4,
+            "ft": 1,
+            "threePt": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "club": "Waverley Basketball Association",
+      "regs": [
+        {
+          "tid": "8e0556dd",
+          "tn": "",
+          "gid": "aae9105b",
+          "gn": "Monday Open Men Section 4",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "b7bc8441",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "daf030ca",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "853e6516",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "6b268b2d",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "f6a745a9",
+          "tn": "NBA ALL SPUDS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "a6c6cc2d",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "d0c5d904",
+          "tn": "NBA ALL SPUDS",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "99bbb538",
+          "tn": "Solway Slammers",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "fb24a1e3",
+          "tn": "NBA ALL SPUDS",
+          "gid": "4ac791d8",
+          "gn": "SPRING Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "859e3014",
+          "tn": "Solway Slammers",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "7c9bc3ef",
+          "tn": "NBA ALL SPUDS",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "11f950b6",
+          "tn": "Solway Slammers",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "27d5e65c",
+          "tn": "Solway Slammers",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "e0b8a649",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "6e9684fa",
+          "tn": "Solway Slammers",
+          "gid": "33f87ae0",
+          "gn": "Monday Open Men",
+          "stats": {}
+        },
+        {
+          "tid": "189fee60",
+          "tn": "Space Cadets",
+          "gid": "a78747eb",
+          "gn": "Sunday Open Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "9569f33e",
+          "tn": "Beersketballers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "de94915d",
+          "tn": "Solway Slammers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "f21e88f1",
+          "tn": "Space Cadets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:32:54.741Z",
+  "teams": [
+    {
+      "tid": "dfdd0d29",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8e0556dd",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7bc8441",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "daf030ca",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "853e6516",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b268b2d",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6a745a9",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a6c6cc2d",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d0c5d904",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99bbb538",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb24a1e3",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "859e3014",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7c9bc3ef",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11f950b6",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "27d5e65c",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0b8a649",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6e9684fa",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "189fee60",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9569f33e",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de94915d",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f21e88f1",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.390Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "1bd49e00",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "1bd49e00",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "09dac3f6",
+    "09ecc0b5",
+    "1bd49e00",
+    "2c21dfe7",
+    "3b2627c2",
+    "41014aea",
+    "4e0e2e17",
+    "8803cd75",
+    "95280e9a",
+    "9d6b3dbd",
+    "a9e20e9b",
+    "b2795c1c",
+    "b88c367f",
+    "f8c61d22"
+  ]
+}

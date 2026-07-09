@@ -1,1 +1,296 @@
-{"uuid":"97cdb226-0307-437d-a6f3-bc02a2fcacf8","gender":null,"sports":{"Basketball":{"gp":33,"pts":41,"fouls":20,"fg":19,"ft":3,"foulOuts":{},"finals":4,"gfApps":2,"gfWins":1,"finalsPerSeason":0.8,"maxGamePTS":8,"maxGameThreePt":null,"wins":10,"losses":4,"draws":1,"winPct":0.67,"statsChecked":"2026-07-05T16:14:50.945Z"}},"seasons":[{"sid":"44a1619f","sn":"Summer 2023/24","club":"Chalkies Basketball Club","regs":[{"tid":"b522c4e8","tn":"Chalkies U16 Girls Firebirds","gid":"91c04812","gn":"Thursday U16 Girls A","stats":{"gp":9,"pts":14,"fouls":5,"fg":6,"ft":2,"finals":1,"gfApps":1,"gfWins":1,"wins":7,"losses":1,"draws":1}}]},{"sid":"1e0eafb0","sn":"2021","club":"Warragul Warriors Basketball Club","regs":[{"tid":"1614641e","tn":"Warragul Warriors U14 Girls (Phase 2)","gid":"5db66cfe","gn":"U14 Girls Championship","stats":{"gp":3,"finals":1,"wins":1,"losses":2}},{"tid":"9bee9fc5","tn":"Warragul Warriors U14 Girls (Phase 1)","gid":"44b31f21","gn":"U14 Girls","stats":{"gp":3,"pts":2,"fg":1,"finals":1,"wins":2,"losses":1}}]},{"sid":"19517459","sn":"2021","club":null,"regs":[{"tid":"9b457d1b","tn":"Warragul Warriors14GA ","gid":"d0bfd19a","gn":"U14 Girls A","stats":{"gp":3,"fouls":2,"finals":1}}]},{"sid":"5f3516b7","sn":"2021","club":null,"regs":[{"tid":"a98539a8","tn":"Warragul Warriors","gid":"242a9d7d","gn":"U14 Girls A","stats":{"gp":6,"pts":2,"fouls":4,"fg":1,"finals":1,"gfApps":1}}]},{"sid":"a00636e2","sn":"Winter 2021","club":"Chalkies Basketball Club","regs":[{"tid":"8c9948af","tn":"U14 Girls Chalkies Stars","gid":"682f20a7","gn":"Thursday U14 Girls A","stats":{"gp":9,"pts":23,"fouls":9,"fg":11,"ft":1}}]}],"updatedAt":"2026-06-11T23:42:39.745Z","records":{"maxGamePTS":{"v":8,"gameKey":"3a3c7153","sid":"a00636e2"},"maxGameThreePt":{"v":null}},"games":["030031e6","179d977e","2948265a","2a37a71b","2c06a742","2f474b04","3a0bf25c","3a3c7153","45993eeb","47af7bf6","58bbab07","60132bfc","6566ce2a","67d1109a","71374b90","8118c7fe","84d35423","85b8ad9b","983c5a5d","9b5425a4","af5e632f","b205e39e","bfb65dd3","c280b90c","c33d5027","d1a8074f","d3f431a8","d586e232","ed51b6a4","f43cdfe1","f545d76d","f7577451","f8fbb030"],"name":"Summer 2023/24","gameTids":{"71374b90":"b522c4e8","b205e39e":"b522c4e8","f545d76d":"b522c4e8","2948265a":"b522c4e8","2f474b04":"b522c4e8","8118c7fe":"b522c4e8","f8fbb030":"b522c4e8","d3f431a8":"b522c4e8","9b5425a4":"b522c4e8","6566ce2a":"1614641e","f43cdfe1":"1614641e","983c5a5d":"1614641e","3a0bf25c":"9bee9fc5","bfb65dd3":"9bee9fc5","ed51b6a4":"9bee9fc5","2c06a742":"9b457d1b","58bbab07":"9b457d1b","47af7bf6":"9b457d1b","60132bfc":"a98539a8","2a37a71b":"a98539a8","d1a8074f":"a98539a8","030031e6":"a98539a8","d586e232":"a98539a8","67d1109a":"a98539a8","179d977e":"8c9948af","85b8ad9b":"8c9948af","f7577451":"8c9948af","af5e632f":"8c9948af","c280b90c":"8c9948af","c33d5027":"8c9948af","45993eeb":"8c9948af","84d35423":"8c9948af","3a3c7153":"8c9948af"}}
+{
+  "uuid": "97cdb226-0307-437d-a6f3-bc02a2fcacf8",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 41,
+      "fouls": 20,
+      "fg": 19,
+      "ft": 3,
+      "foulOuts": {},
+      "finals": 4,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.8,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 10,
+      "losses": 4,
+      "draws": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:14:50.945Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "44a1619f",
+      "sn": "Summer 2023/24",
+      "club": "Chalkies Basketball Club",
+      "regs": [
+        {
+          "tid": "b522c4e8",
+          "tn": "Chalkies U16 Girls Firebirds",
+          "gid": "91c04812",
+          "gn": "Thursday U16 Girls A",
+          "stats": {
+            "gp": 9,
+            "pts": 14,
+            "fouls": 5,
+            "fg": 6,
+            "ft": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 7,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e0eafb0",
+      "sn": "2021",
+      "club": "Warragul Warriors Basketball Club",
+      "regs": [
+        {
+          "tid": "1614641e",
+          "tn": "Warragul Warriors U14 Girls (Phase 2)",
+          "gid": "5db66cfe",
+          "gn": "U14 Girls Championship",
+          "stats": {
+            "gp": 3,
+            "finals": 1,
+            "wins": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "9bee9fc5",
+          "tn": "Warragul Warriors U14 Girls (Phase 1)",
+          "gid": "44b31f21",
+          "gn": "U14 Girls",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1,
+            "finals": 1,
+            "wins": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "19517459",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "9b457d1b",
+          "tn": "Warragul Warriors14GA ",
+          "gid": "d0bfd19a",
+          "gn": "U14 Girls A",
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "finals": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f3516b7",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a98539a8",
+          "tn": "Warragul Warriors",
+          "gid": "242a9d7d",
+          "gn": "U14 Girls A",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fouls": 4,
+            "fg": 1,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a00636e2",
+      "sn": "Winter 2021",
+      "club": "Chalkies Basketball Club",
+      "regs": [
+        {
+          "tid": "8c9948af",
+          "tn": "U14 Girls Chalkies Stars",
+          "gid": "682f20a7",
+          "gn": "Thursday U14 Girls A",
+          "stats": {
+            "gp": 9,
+            "pts": 23,
+            "fouls": 9,
+            "fg": 11,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "15356642",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "27c76236",
+          "tn": "Warragul Warriors",
+          "gid": "0fceaff4",
+          "gn": "U14 Girls A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "c539594d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "4ee7d7e7",
+          "tn": "Chalkies Lightening",
+          "gid": "54ec2eb1",
+          "gn": "Thursday U12 Girls A",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:39.745Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "3a3c7153",
+      "sid": "a00636e2"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "030031e6",
+    "179d977e",
+    "2948265a",
+    "2a37a71b",
+    "2c06a742",
+    "2f474b04",
+    "3a0bf25c",
+    "3a3c7153",
+    "45993eeb",
+    "47af7bf6",
+    "58bbab07",
+    "60132bfc",
+    "6566ce2a",
+    "67d1109a",
+    "71374b90",
+    "8118c7fe",
+    "84d35423",
+    "85b8ad9b",
+    "983c5a5d",
+    "9b5425a4",
+    "af5e632f",
+    "b205e39e",
+    "bfb65dd3",
+    "c280b90c",
+    "c33d5027",
+    "d1a8074f",
+    "d3f431a8",
+    "d586e232",
+    "ed51b6a4",
+    "f43cdfe1",
+    "f545d76d",
+    "f7577451",
+    "f8fbb030"
+  ],
+  "name": "Summer 2023/24",
+  "gameTids": {
+    "71374b90": "b522c4e8",
+    "b205e39e": "b522c4e8",
+    "f545d76d": "b522c4e8",
+    "2948265a": "b522c4e8",
+    "2f474b04": "b522c4e8",
+    "8118c7fe": "b522c4e8",
+    "f8fbb030": "b522c4e8",
+    "d3f431a8": "b522c4e8",
+    "9b5425a4": "b522c4e8",
+    "6566ce2a": "1614641e",
+    "f43cdfe1": "1614641e",
+    "983c5a5d": "1614641e",
+    "3a0bf25c": "9bee9fc5",
+    "bfb65dd3": "9bee9fc5",
+    "ed51b6a4": "9bee9fc5",
+    "2c06a742": "9b457d1b",
+    "58bbab07": "9b457d1b",
+    "47af7bf6": "9b457d1b",
+    "60132bfc": "a98539a8",
+    "2a37a71b": "a98539a8",
+    "d1a8074f": "a98539a8",
+    "030031e6": "a98539a8",
+    "d586e232": "a98539a8",
+    "67d1109a": "a98539a8",
+    "179d977e": "8c9948af",
+    "85b8ad9b": "8c9948af",
+    "f7577451": "8c9948af",
+    "af5e632f": "8c9948af",
+    "c280b90c": "8c9948af",
+    "c33d5027": "8c9948af",
+    "45993eeb": "8c9948af",
+    "84d35423": "8c9948af",
+    "3a3c7153": "8c9948af"
+  },
+  "teams": [
+    {
+      "tid": "b522c4e8",
+      "sid": "44a1619f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1614641e",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9bee9fc5",
+      "sid": "1e0eafb0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9b457d1b",
+      "sid": "19517459",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a98539a8",
+      "sid": "5f3516b7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c9948af",
+      "sid": "a00636e2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "27c76236",
+      "sid": "15356642",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ee7d7e7",
+      "sid": "c539594d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.995Z"
+}

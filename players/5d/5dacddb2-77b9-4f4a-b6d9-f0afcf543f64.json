@@ -1,1 +1,353 @@
-{"uuid":"5dacddb2-77b9-4f4a-b6d9-f0afcf543f64","name":"Damian Federico","gender":"Boys","sports":{"Basketball":{"gp":60,"pts":74,"fouls":42,"fg":36,"ft":2,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":8,"maxGameThreePt":null,"wins":89,"losses":75,"winPct":0.53,"draws":3,"statsChecked":"2026-07-05T15:09:26.401Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Yarrambat Basketball Club","regs":[{"tid":"938e910d","tn":"Yarrambat  U10 Boys 7","gid":"e0f633cf","gn":"Saturday U10 Boys C2","age":"U10","div":"C2","stats":{"gp":16,"fouls":8,"fg":5,"pts":10,"wins":11,"losses":5}},{"tid":"938e910d","tn":"Yarrambat  U10 Boys 7","gid":"32582dcc","gn":"Saturday U10 Boys Grading Group 3","age":"U10","div":null,"stats":{"gp":16,"fouls":8,"fg":5,"pts":10,"wins":11,"losses":5}},{"tid":"938e910d","tn":"Yarrambat  U10 Boys 7","gid":"a92c13f8","gn":"Saturday U10 Boys Grading Group 4","age":"U10","div":null,"stats":{"gp":16,"fouls":8,"wins":11,"losses":5,"pts":10,"fg":5}},{"tid":"938e910d","tn":"Yarrambat  U10 Boys 7","gid":"45e9a7dd","gn":"Saturday U10 Boys Grading Group 2","age":"U10","div":null,"stats":{"gp":16,"fouls":8,"wins":11,"losses":5,"pts":10,"fg":5}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"e6be01c3","tn":"Laurimar Thunder U10 Boys 5","gid":"f9e25581","gn":"Saturday U10 Boys D3","age":"U10","div":"D3","stats":{"gp":15,"fouls":22,"ft":2,"fg":26,"pts":54,"finals":1,"losses":9,"wins":6}},{"tid":"e6be01c3","tn":"Laurimar Thunder U10 Boys 5","gid":"abddb07d","gn":"Saturday U10 Boys Grading Group 4","age":"U10","div":null,"stats":{"gp":15,"fouls":22,"ft":2,"fg":26,"pts":54,"finals":1,"losses":9,"wins":6}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"c1e3924b","tn":"Laurimar Thunder U08 Boys 1","gid":"be08c647","gn":"Saturday U8 Boys B1","age":"U8","div":"B1","stats":{"gp":15,"fouls":6,"fg":4,"pts":8,"losses":9,"wins":5,"draws":1}},{"tid":"c1e3924b","tn":"Laurimar Thunder U08 Boys 1","gid":"452cb38f","gn":"Saturday U8 Boys B2","age":"U8","div":"B2","stats":{"gp":15,"fouls":6,"fg":4,"pts":8,"losses":9,"wins":5,"draws":1}},{"tid":"c1e3924b","tn":"Laurimar Thunder U08 Boys 1","gid":"dff33109","gn":"Unspecified - Saturday Boys A","age":null,"div":null,"stats":{"gp":15,"losses":9,"wins":5,"draws":1,"pts":8,"fg":4,"fouls":6}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"3808f5ca","tn":"Laurimar Thunder U8 Boys 1","gid":"134076e2","gn":"Saturday U8 Boys B1","age":"U8","div":"B1","stats":{"gp":14,"fouls":6,"wins":9,"losses":5,"pts":2,"fg":1}},{"tid":"3808f5ca","tn":"Laurimar Thunder U8 Boys 1","gid":"801149fc","gn":"Saturday U8 Boys A","age":"U8","div":null,"stats":{"gp":14,"fouls":6,"fg":1,"pts":2,"wins":9,"losses":5}}]}],"updatedAt":"2026-06-01T06:32:11.474Z","teams":[{"tid":"938e910d","sid":"d868771d","status":"ACTIVE"},{"tid":"e6be01c3","sid":"f57b7901","status":"COMPLETED"},{"tid":"c1e3924b","sid":"868d6996","status":"COMPLETED"},{"tid":"3808f5ca","sid":"fb0c8cb5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:39:38.996Z","records":{"maxGamePTS":{"v":8,"gameKey":"dcd794e1","sid":"f57b7901"},"maxGameThreePt":{"v":null}},"games":["061f6402","08b86f02","0996d4b9","0d85d8fa","0df51d9c","0ea62163","1229bc1b","122e3555","15f490bd","1f36efdc","3502312d","3af7edd4","3cc79207","3fdaf89b","4b645102","4e10d1e6","570e6cf6","5d1676b3","6426a6eb","64b0db12","65d3f096","75d6e7fe","768b8abd","7f8081b3","83742907","88b2bada","8b047bbd","8e71bf45","8ea84fee","9074daa4","913ec86e","91835297","9278a792","9353c166","9473cd54","9f598d2d","a23cb737","a6c4a554","b172e501","ba46e619","bcf5be53","c472119a","c53ebaad","cb60b2b2","d4246da9","d83f809e","db74b841","dcc555b5","dcd794e1","e3393ac0","e3afa1e4","e84f1e9d","edd600e8","eee25b82","f2df61e4","f8189f97","fc776ca2","fc8aaaca","fd01549d","fd6f887e"]}
+{
+  "uuid": "5dacddb2-77b9-4f4a-b6d9-f0afcf543f64",
+  "name": "Damian Federico",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 60,
+      "pts": 74,
+      "fouls": 42,
+      "fg": 36,
+      "ft": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 89,
+      "losses": 75,
+      "winPct": 0.53,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:09:26.401Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Yarrambat Basketball Club",
+      "regs": [
+        {
+          "tid": "938e910d",
+          "tn": "Yarrambat  U10 Boys 7",
+          "gid": "e0f633cf",
+          "gn": "Saturday U10 Boys C2",
+          "age": "U10",
+          "div": "C2",
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 5,
+            "pts": 10,
+            "wins": 11,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "938e910d",
+          "tn": "Yarrambat  U10 Boys 7",
+          "gid": "32582dcc",
+          "gn": "Saturday U10 Boys Grading Group 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 5,
+            "pts": 10,
+            "wins": 11,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "938e910d",
+          "tn": "Yarrambat  U10 Boys 7",
+          "gid": "a92c13f8",
+          "gn": "Saturday U10 Boys Grading Group 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "wins": 11,
+            "losses": 5,
+            "pts": 10,
+            "fg": 5
+          }
+        },
+        {
+          "tid": "938e910d",
+          "tn": "Yarrambat  U10 Boys 7",
+          "gid": "45e9a7dd",
+          "gn": "Saturday U10 Boys Grading Group 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "wins": 11,
+            "losses": 5,
+            "pts": 10,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "e6be01c3",
+          "tn": "Laurimar Thunder U10 Boys 5",
+          "gid": "f9e25581",
+          "gn": "Saturday U10 Boys D3",
+          "age": "U10",
+          "div": "D3",
+          "stats": {
+            "gp": 15,
+            "fouls": 22,
+            "ft": 2,
+            "fg": 26,
+            "pts": 54,
+            "finals": 1,
+            "losses": 9,
+            "wins": 6
+          }
+        },
+        {
+          "tid": "e6be01c3",
+          "tn": "Laurimar Thunder U10 Boys 5",
+          "gid": "abddb07d",
+          "gn": "Saturday U10 Boys Grading Group 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 22,
+            "ft": 2,
+            "fg": 26,
+            "pts": 54,
+            "finals": 1,
+            "losses": 9,
+            "wins": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "c1e3924b",
+          "tn": "Laurimar Thunder U08 Boys 1",
+          "gid": "be08c647",
+          "gn": "Saturday U8 Boys B1",
+          "age": "U8",
+          "div": "B1",
+          "stats": {
+            "gp": 15,
+            "fouls": 6,
+            "fg": 4,
+            "pts": 8,
+            "losses": 9,
+            "wins": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c1e3924b",
+          "tn": "Laurimar Thunder U08 Boys 1",
+          "gid": "452cb38f",
+          "gn": "Saturday U8 Boys B2",
+          "age": "U8",
+          "div": "B2",
+          "stats": {
+            "gp": 15,
+            "fouls": 6,
+            "fg": 4,
+            "pts": 8,
+            "losses": 9,
+            "wins": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "c1e3924b",
+          "tn": "Laurimar Thunder U08 Boys 1",
+          "gid": "dff33109",
+          "gn": "Unspecified - Saturday Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "losses": 9,
+            "wins": 5,
+            "draws": 1,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "3808f5ca",
+          "tn": "Laurimar Thunder U8 Boys 1",
+          "gid": "134076e2",
+          "gn": "Saturday U8 Boys B1",
+          "age": "U8",
+          "div": "B1",
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "wins": 9,
+            "losses": 5,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "3808f5ca",
+          "tn": "Laurimar Thunder U8 Boys 1",
+          "gid": "801149fc",
+          "gn": "Saturday U8 Boys A",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 6,
+            "fg": 1,
+            "pts": 2,
+            "wins": 9,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "0170d239",
+          "tn": "Yarrambat  U10 Boys 4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:32:11.474Z",
+  "teams": [
+    {
+      "tid": "938e910d",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e6be01c3",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c1e3924b",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3808f5ca",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0170d239",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.722Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "dcd794e1",
+      "sid": "f57b7901"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "061f6402",
+    "08b86f02",
+    "0996d4b9",
+    "0d85d8fa",
+    "0df51d9c",
+    "0ea62163",
+    "1229bc1b",
+    "122e3555",
+    "15f490bd",
+    "1f36efdc",
+    "3502312d",
+    "3af7edd4",
+    "3cc79207",
+    "3fdaf89b",
+    "4b645102",
+    "4e10d1e6",
+    "570e6cf6",
+    "5d1676b3",
+    "6426a6eb",
+    "64b0db12",
+    "65d3f096",
+    "75d6e7fe",
+    "768b8abd",
+    "7f8081b3",
+    "83742907",
+    "88b2bada",
+    "8b047bbd",
+    "8e71bf45",
+    "8ea84fee",
+    "9074daa4",
+    "913ec86e",
+    "91835297",
+    "9278a792",
+    "9353c166",
+    "9473cd54",
+    "9f598d2d",
+    "a23cb737",
+    "a6c4a554",
+    "b172e501",
+    "ba46e619",
+    "bcf5be53",
+    "c472119a",
+    "c53ebaad",
+    "cb60b2b2",
+    "d4246da9",
+    "d83f809e",
+    "db74b841",
+    "dcc555b5",
+    "dcd794e1",
+    "e3393ac0",
+    "e3afa1e4",
+    "e84f1e9d",
+    "edd600e8",
+    "eee25b82",
+    "f2df61e4",
+    "f8189f97",
+    "fc776ca2",
+    "fc8aaaca",
+    "fd01549d",
+    "fd6f887e"
+  ]
+}

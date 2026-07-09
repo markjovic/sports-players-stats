@@ -1,1 +1,96 @@
-{"uuid":"39df2d21-89e2-466c-894e-30bb99f867a7","gender":null,"sports":{"Basketball":{"gp":9,"pts":2,"fouls":13,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":3,"losses":6,"winPct":0.33,"statsChecked":"2026-07-05T16:12:42.325Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Ormond Jets Basketball Club","regs":[{"tid":"8d45b6e9","tn":"JETS U16 Girls Nattali","gid":"28e689ce","gn":"Sunday U16 Girls DIV 3","stats":{"gp":3,"fouls":6,"losses":3}}]},{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Ormond Jets Basketball Club","regs":[{"tid":"1ffa01c5","tn":"JETS U16 Girls Nattali","gid":"cb1f5ee6","gn":"Sunday U16 Girls Div 3","stats":{"gp":6,"pts":2,"fouls":7,"fg":1,"wins":3,"losses":3}}]}],"updatedAt":"2026-06-11T23:38:26.838Z","records":{"maxGamePTS":{"v":2,"gameKey":"8f418df6","sid":"cc2b1283"},"maxGameThreePt":{"v":null}},"games":["0b7e392a","0c135712","1b65bfb1","2ba46347","844bdb04","8d274b24","8f418df6","c525743b","e24dbb5f"],"name":"Winter 2021"}
+{
+  "uuid": "39df2d21-89e2-466c-894e-30bb99f867a7",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 2,
+      "fouls": 13,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 6,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:12:42.325Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "8d45b6e9",
+          "tn": "JETS U16 Girls Nattali",
+          "gid": "6c0d9b5d",
+          "gn": "Sunday U16 Girls DIV 4",
+          "stats": {
+            "gp": 3,
+            "fouls": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "1ffa01c5",
+          "tn": "JETS U16 Girls Nattali",
+          "gid": "cb1f5ee6",
+          "gn": "Sunday U16 Girls Div 3",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fouls": 7,
+            "fg": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:26.838Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "8f418df6",
+      "sid": "cc2b1283"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b7e392a",
+    "0c135712",
+    "1b65bfb1",
+    "2ba46347",
+    "844bdb04",
+    "8d274b24",
+    "8f418df6",
+    "c525743b",
+    "e24dbb5f"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "8d45b6e9",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ffa01c5",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.584Z"
+}

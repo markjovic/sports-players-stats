@@ -1,1 +1,300 @@
-{"uuid":"e6eb9c6d-a58a-4b0e-a676-abbca4c43ac9","name":"Andee McCarthy","gender":"Girls","sports":{"Basketball":{"gp":52,"pts":161,"fouls":95,"fg":66,"ft":29,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":1,"foulOuts":{"5f63af45":3},"maxGamePTS":11,"maxGameThreePt":null,"wins":33,"losses":37,"winPct":0.47,"statsChecked":"2026-07-05T15:26:45.479Z"}},"seasons":[{"sid":"bb0893b9","sn":"Summer 2023/24","club":"Knox City Cougars Basketball Club","regs":[{"tid":"83e150db","tn":"Knox U19 Girls 3","gid":"b7e528e4","gn":"Sunday U19 Girls BR - 2024 Summer","age":"U19","div":null,"stats":{"gp":18,"fouls":26,"ft":12,"fg":8,"pts":28,"finals":1,"gfApps":1,"wins":12,"losses":6,"gfWins":1}},{"tid":"83e150db","tn":"Knox U19 Girls 3","gid":"a4c007b9","gn":"Sunday U19 Girls B - 2024 Summer","age":"U19","div":null,"stats":{"gp":18,"fouls":26,"ft":12,"fg":8,"pts":28,"finals":1,"gfApps":1,"wins":12,"losses":6,"gfWins":1}}]},{"sid":"5f63af45","sn":"Winter 2023","club":"Knox City Cougars Basketball Club","regs":[{"tid":"33ece12a","tn":"Knox U19 Girls 6","gid":"83619dee","gn":"Sunday U19 Girls BR - 2023 Winter","age":"U19","div":null,"stats":{"gp":18,"fouls":41,"ft":10,"fg":33,"pts":76,"finals":1,"foulOuts":3,"wins":6,"losses":12}}]},{"sid":"0fb1b72e","sn":"Summer 2020/21","club":"Knox City Cougars Basketball Club","regs":[{"tid":"1d00afbf","tn":"Knox U14 Girls 2","gid":"4cad2d0f","gn":"Saturday U14 Girls AR","age":"U14","div":null,"stats":{"gp":1,"finals":1,"wins":1}},{"tid":"96f30425","tn":"Knox U14 Girls 3","gid":"092a144e","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":15,"fouls":28,"ft":7,"fg":25,"pts":57,"finals":1,"wins":2,"losses":13}}]}],"updatedAt":"2026-05-31T18:59:15.538Z","teams":[{"tid":"83e150db","sid":"bb0893b9","status":"COMPLETED"},{"tid":"33ece12a","sid":"5f63af45","status":"COMPLETED"},{"tid":"2a895073","sid":"db7c1fb3","status":"COMPLETED"},{"tid":"1d00afbf","sid":"0fb1b72e","status":"COMPLETED"},{"tid":"96f30425","sid":"0fb1b72e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:51:10.474Z","records":{"maxGamePTS":{"v":11,"gameKey":"ac35602f","sid":"0fb1b72e"},"maxGameThreePt":{"v":null}},"games":["02a35857","06ecd865","20ada26c","28112512","34139367","37e9f3a8","448d45d5","501b8b0a","523a2706","523ffd01","55eba831","57b48dd0","5cf2626f","5d8d178b","625142c4","79fbec89","7f505a84","80c4d60a","83677c85","843f3ee8","88d97787","8e830094","907451fe","93258d86","9ceee4d9","9d4808af","9e1bfa41","9e8fa0b7","a4666a98","ab2eb8f6","ac31b5cf","ac35602f","af47ba29","b145fafb","b3a1140b","b6e6147a","bad88309","bb74b474","bba33c1c","bc08e568","bdcf2d7d","c213d276","c3df025e","c6f0ac14","cb567873","cf15031a","d29b6e7a","e728881d","ece922fd","edac85a9","f3e5a831","fb3f3468"],"gameTids":{"28112512":"33ece12a","34139367":"83e150db","9ceee4d9":"83e150db","9e8fa0b7":"83e150db","f3e5a831":"83e150db","907451fe":"83e150db","79fbec89":"83e150db","d29b6e7a":"83e150db","b6e6147a":"83e150db","88d97787":"83e150db","c3df025e":"83e150db","83677c85":"83e150db","b145fafb":"83e150db","501b8b0a":"83e150db","9d4808af":"83e150db","5d8d178b":"83e150db","cf15031a":"83e150db","bba33c1c":"83e150db","bdcf2d7d":"83e150db","ece922fd":"33ece12a","7f505a84":"33ece12a","523ffd01":"33ece12a","448d45d5":"33ece12a","625142c4":"33ece12a","06ecd865":"33ece12a","02a35857":"33ece12a","80c4d60a":"33ece12a","af47ba29":"33ece12a","9e1bfa41":"33ece12a","8e830094":"33ece12a","5cf2626f":"33ece12a","20ada26c":"33ece12a","bad88309":"33ece12a","fb3f3468":"33ece12a","bb74b474":"33ece12a","55eba831":"33ece12a","e728881d":"1d00afbf","93258d86":"96f30425","523a2706":"96f30425","cb567873":"96f30425","ac35602f":"96f30425","c213d276":"96f30425","b3a1140b":"96f30425","37e9f3a8":"96f30425","bc08e568":"96f30425","843f3ee8":"96f30425","a4666a98":"96f30425","57b48dd0":"96f30425","c6f0ac14":"96f30425","ab2eb8f6":"96f30425","edac85a9":"96f30425","ac31b5cf":"96f30425"}}
+{
+  "uuid": "e6eb9c6d-a58a-4b0e-a676-abbca4c43ac9",
+  "name": "Andee McCarthy",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 161,
+      "fouls": 95,
+      "fg": 66,
+      "ft": 29,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "5f63af45": 3
+      },
+      "maxGamePTS": 11,
+      "maxGameThreePt": null,
+      "wins": 33,
+      "losses": 37,
+      "winPct": 0.47,
+      "statsChecked": "2026-07-05T15:26:45.479Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "bb0893b9",
+      "sn": "Summer 2023/24",
+      "club": "Knox City Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "83e150db",
+          "tn": "Knox U19 Girls 3",
+          "gid": "b7e528e4",
+          "gn": "Sunday U19 Girls BR - 2024 Summer",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 26,
+            "ft": 12,
+            "fg": 8,
+            "pts": 28,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 6,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "83e150db",
+          "tn": "Knox U19 Girls 3",
+          "gid": "a4c007b9",
+          "gn": "Sunday U19 Girls B - 2024 Summer",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 26,
+            "ft": 12,
+            "fg": 8,
+            "pts": 28,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 6,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f63af45",
+      "sn": "Winter 2023",
+      "club": "Knox City Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "33ece12a",
+          "tn": "Knox U19 Girls 6",
+          "gid": "83619dee",
+          "gn": "Sunday U19 Girls BR - 2023 Winter",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 41,
+            "ft": 10,
+            "fg": 33,
+            "pts": 76,
+            "finals": 1,
+            "foulOuts": 3,
+            "wins": 6,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0fb1b72e",
+      "sn": "Summer 2020/21",
+      "club": "Knox City Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "1d00afbf",
+          "tn": "Knox U14 Girls 2",
+          "gid": "4cad2d0f",
+          "gn": "Saturday U14 Girls AR",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "finals": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "96f30425",
+          "tn": "Knox U14 Girls 3",
+          "gid": "092a144e",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 28,
+            "ft": 7,
+            "fg": 25,
+            "pts": 57,
+            "finals": 1,
+            "wins": 2,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db7c1fb3",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "2a895073",
+          "tn": "Knox U14 Girls 3",
+          "gid": "4f46398d",
+          "gn": "Saturday U14 Girls BR - 2021 Winter",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T18:59:15.538Z",
+  "teams": [
+    {
+      "tid": "83e150db",
+      "sid": "bb0893b9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "33ece12a",
+      "sid": "5f63af45",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d00afbf",
+      "sid": "0fb1b72e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96f30425",
+      "sid": "0fb1b72e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a895073",
+      "sid": "db7c1fb3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:17.247Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "ac35602f",
+      "sid": "0fb1b72e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02a35857",
+    "06ecd865",
+    "20ada26c",
+    "28112512",
+    "34139367",
+    "37e9f3a8",
+    "448d45d5",
+    "501b8b0a",
+    "523a2706",
+    "523ffd01",
+    "55eba831",
+    "57b48dd0",
+    "5cf2626f",
+    "5d8d178b",
+    "625142c4",
+    "79fbec89",
+    "7f505a84",
+    "80c4d60a",
+    "83677c85",
+    "843f3ee8",
+    "88d97787",
+    "8e830094",
+    "907451fe",
+    "93258d86",
+    "9ceee4d9",
+    "9d4808af",
+    "9e1bfa41",
+    "9e8fa0b7",
+    "a4666a98",
+    "ab2eb8f6",
+    "ac31b5cf",
+    "ac35602f",
+    "af47ba29",
+    "b145fafb",
+    "b3a1140b",
+    "b6e6147a",
+    "bad88309",
+    "bb74b474",
+    "bba33c1c",
+    "bc08e568",
+    "bdcf2d7d",
+    "c213d276",
+    "c3df025e",
+    "c6f0ac14",
+    "cb567873",
+    "cf15031a",
+    "d29b6e7a",
+    "e728881d",
+    "ece922fd",
+    "edac85a9",
+    "f3e5a831",
+    "fb3f3468"
+  ],
+  "gameTids": {
+    "28112512": "33ece12a",
+    "34139367": "83e150db",
+    "9ceee4d9": "83e150db",
+    "9e8fa0b7": "83e150db",
+    "f3e5a831": "83e150db",
+    "907451fe": "83e150db",
+    "79fbec89": "83e150db",
+    "d29b6e7a": "83e150db",
+    "b6e6147a": "83e150db",
+    "88d97787": "83e150db",
+    "c3df025e": "83e150db",
+    "83677c85": "83e150db",
+    "b145fafb": "83e150db",
+    "501b8b0a": "83e150db",
+    "9d4808af": "83e150db",
+    "5d8d178b": "83e150db",
+    "cf15031a": "83e150db",
+    "bba33c1c": "83e150db",
+    "bdcf2d7d": "83e150db",
+    "ece922fd": "33ece12a",
+    "7f505a84": "33ece12a",
+    "523ffd01": "33ece12a",
+    "448d45d5": "33ece12a",
+    "625142c4": "33ece12a",
+    "06ecd865": "33ece12a",
+    "02a35857": "33ece12a",
+    "80c4d60a": "33ece12a",
+    "af47ba29": "33ece12a",
+    "9e1bfa41": "33ece12a",
+    "8e830094": "33ece12a",
+    "5cf2626f": "33ece12a",
+    "20ada26c": "33ece12a",
+    "bad88309": "33ece12a",
+    "fb3f3468": "33ece12a",
+    "bb74b474": "33ece12a",
+    "55eba831": "33ece12a",
+    "e728881d": "1d00afbf",
+    "93258d86": "96f30425",
+    "523a2706": "96f30425",
+    "cb567873": "96f30425",
+    "ac35602f": "96f30425",
+    "c213d276": "96f30425",
+    "b3a1140b": "96f30425",
+    "37e9f3a8": "96f30425",
+    "bc08e568": "96f30425",
+    "843f3ee8": "96f30425",
+    "a4666a98": "96f30425",
+    "57b48dd0": "96f30425",
+    "c6f0ac14": "96f30425",
+    "ab2eb8f6": "96f30425",
+    "edac85a9": "96f30425",
+    "ac31b5cf": "96f30425"
+  }
+}

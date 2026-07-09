@@ -1,1 +1,354 @@
-{"uuid":"86faf7a7-f450-4d0b-943c-191966dc042e","name":"Claire Lake","gender":"Girls","sports":{"Basketball":{"gp":43,"pts":29,"fouls":85,"fg":14,"ft":1,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.67,"foulOuts":{"c01b75f6":1,"475831bc":2,"5c7c2fbe":2},"maxGamePTS":10,"maxGameThreePt":null,"wins":69,"losses":55,"draws":7,"winPct":0.53,"statsChecked":"2026-07-05T14:14:47.842Z"}},"seasons":[{"sid":"c01b75f6","sn":"Summer 2024/25","club":"Carnegie Basketball Club","regs":[{"tid":"7b8f00d2","tn":"Carnegie Chargers U12 Girls KEN","gid":"60510348","gn":"Sunday U12 Girls 3","age":"U12","div":null,"stats":{"gp":13,"fouls":23,"ft":1,"pts":1,"foulOuts":1,"wins":3,"losses":10}},{"tid":"7b8f00d2","tn":"Carnegie Chargers U12 Girls KEN","gid":"dedd3c54","gn":"Sunday U12 Girls 2","age":"U12","div":null,"stats":{"gp":13,"fouls":23,"wins":3,"losses":10,"pts":1,"ft":1}}]},{"sid":"475831bc","sn":"Winter 2024","club":"Carnegie Basketball Club","regs":[{"tid":"1ac89817","tn":"Carnegie Chargers U10 Girls KEN","gid":"9703cfbc","gn":"Sunday U10 Girls 2/3","age":"U10","div":null,"stats":{"gp":15,"fouls":31,"fg":8,"pts":16,"finals":1,"foulOuts":2,"wins":9,"losses":5,"draws":1}},{"tid":"1ac89817","tn":"Carnegie Chargers U10 Girls KEN","gid":"114cf8a8","gn":"Sunday U10 Girls 2","age":"U10","div":null,"stats":{"gp":15,"fouls":31,"fg":8,"pts":16,"finals":1,"wins":9,"losses":5,"draws":1}},{"tid":"1ac89817","tn":"Carnegie Chargers U10 Girls KEN","gid":"271d60b1","gn":"Sunday U10 Girls 4","age":"U10","div":null,"stats":{"gp":15,"fouls":31,"fg":8,"pts":16,"finals":1,"wins":9,"losses":5,"draws":1}},{"tid":"1ac89817","tn":"Carnegie Chargers U10 Girls KEN","gid":"7f8f96ad","gn":"Sunday U10 Girls 1","age":"U10","div":null,"stats":{"gp":15,"finals":1,"wins":9,"losses":5,"draws":1,"pts":16,"fg":8,"fouls":31}}]},{"sid":"5c7c2fbe","sn":"Summer 2023/24","club":"Carnegie Basketball Club","regs":[{"tid":"67a08bd1","tn":"Carnegie Chargers U10 Girls Dharmendra","gid":"35b4d3fe","gn":"Sunday U10 Girls 2","age":"U10","div":null,"stats":{"gp":15,"fouls":31,"fg":6,"pts":12,"finals":1,"foulOuts":2,"wins":9,"losses":5,"draws":1}},{"tid":"67a08bd1","tn":"Carnegie Chargers U10 Girls Dharmendra","gid":"d41c588a","gn":"Sunday U10 Girls 3","age":"U10","div":null,"stats":{"gp":15,"fouls":31,"fg":6,"pts":12,"finals":1,"wins":9,"losses":5,"draws":1}},{"tid":"67a08bd1","tn":"Carnegie Chargers U10 Girls Dharmendra","gid":"88a8eb7b","gn":"Sunday U10 Girls 4","age":"U10","div":null,"stats":{"gp":15,"fg":6,"pts":12,"finals":1,"wins":9,"losses":5,"draws":1,"fouls":31}}]}],"updatedAt":"2026-05-31T20:29:15.903Z","teams":[{"tid":"7b8f00d2","sid":"c01b75f6","status":"COMPLETED"},{"tid":"1ac89817","sid":"475831bc","status":"COMPLETED"},{"tid":"67a08bd1","sid":"5c7c2fbe","status":"COMPLETED"},{"tid":"b5954d1e","sid":"09a70808","status":"COMPLETED"},{"tid":"f1cd663b","sid":"e5df46b3","status":"COMPLETED"},{"tid":"7a6ca378","sid":"e5df46b3","status":"COMPLETED"},{"tid":"22959333","sid":"cf8ebef7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:25:02.797Z","records":{"maxGamePTS":{"v":10,"gameKey":"3e986076","sid":"475831bc"},"maxGameThreePt":{"v":null}},"games":["00a3c014","021ffc0d","02b03795","02c01a69","14d5d960","31381ff2","381d1258","3e986076","4129a667","41b46166","4820c55f","4985d1d2","49b17163","4b053e91","5dcfeb56","69cde7cd","721d36b8","7c4a15b0","85c2250c","8e688b47","93cd6732","9b9a6586","a5faba59","b50b99e3","b89ef0ef","bba8ea74","bcc7a4ab","bd59fcb5","c3e91876","c561e767","c5799db0","c894781c","ca2eb502","d1cc7623","d9a9621e","de05a56d","de0d859b","df63d40b","ed060a6b","f1aebbdb","f3d5ffea","fa69ac68","fcfc5450"]}
+{
+  "uuid": "86faf7a7-f450-4d0b-943c-191966dc042e",
+  "name": "Claire Lake",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 29,
+      "fouls": 85,
+      "fg": 14,
+      "ft": 1,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "c01b75f6": 1,
+        "475831bc": 2,
+        "5c7c2fbe": 2
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 69,
+      "losses": 55,
+      "draws": 7,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T14:14:47.842Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c01b75f6",
+      "sn": "Summer 2024/25",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "7b8f00d2",
+          "tn": "Carnegie Chargers U12 Girls KEN",
+          "gid": "60510348",
+          "gn": "Sunday U12 Girls 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 23,
+            "ft": 1,
+            "pts": 1,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "7b8f00d2",
+          "tn": "Carnegie Chargers U12 Girls KEN",
+          "gid": "dedd3c54",
+          "gn": "Sunday U12 Girls 2",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 23,
+            "wins": 3,
+            "losses": 10,
+            "pts": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "475831bc",
+      "sn": "Winter 2024",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "1ac89817",
+          "tn": "Carnegie Chargers U10 Girls KEN",
+          "gid": "9703cfbc",
+          "gn": "Sunday U10 Girls 2/3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 31,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1ac89817",
+          "tn": "Carnegie Chargers U10 Girls KEN",
+          "gid": "114cf8a8",
+          "gn": "Sunday U10 Girls 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 31,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1ac89817",
+          "tn": "Carnegie Chargers U10 Girls KEN",
+          "gid": "271d60b1",
+          "gn": "Sunday U10 Girls 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 31,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1ac89817",
+          "tn": "Carnegie Chargers U10 Girls KEN",
+          "gid": "7f8f96ad",
+          "gn": "Sunday U10 Girls 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 31
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5c7c2fbe",
+      "sn": "Summer 2023/24",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "67a08bd1",
+          "tn": "Carnegie Chargers U10 Girls Dharmendra",
+          "gid": "35b4d3fe",
+          "gn": "Sunday U10 Girls 2",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 31,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "67a08bd1",
+          "tn": "Carnegie Chargers U10 Girls Dharmendra",
+          "gid": "d41c588a",
+          "gn": "Sunday U10 Girls 3",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 31,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "67a08bd1",
+          "tn": "Carnegie Chargers U10 Girls Dharmendra",
+          "gid": "88a8eb7b",
+          "gn": "Sunday U10 Girls 4",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fg": 6,
+            "pts": 12,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1,
+            "fouls": 31
+          }
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "b5954d1e",
+          "tn": "Carnegie Chargers U8 Mixed YR1-2 4248 Red T3",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "f1cd663b",
+          "tn": "Carnegie Chargers U9 Mixed (Training Team)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "7a6ca378",
+          "tn": "Carnegie Chargers U9 Mixed YR2 4248 T2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "22959333",
+          "tn": "Carnegie Chargers U9 Mixed TRAINING TEAM T4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T20:29:15.903Z",
+  "teams": [
+    {
+      "tid": "7b8f00d2",
+      "sid": "c01b75f6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ac89817",
+      "sid": "475831bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "67a08bd1",
+      "sid": "5c7c2fbe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b5954d1e",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1cd663b",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a6ca378",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22959333",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.431Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "3e986076",
+      "sid": "475831bc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "00a3c014",
+    "021ffc0d",
+    "02b03795",
+    "02c01a69",
+    "14d5d960",
+    "31381ff2",
+    "381d1258",
+    "3e986076",
+    "4129a667",
+    "41b46166",
+    "4820c55f",
+    "4985d1d2",
+    "49b17163",
+    "4b053e91",
+    "5dcfeb56",
+    "69cde7cd",
+    "721d36b8",
+    "7c4a15b0",
+    "85c2250c",
+    "8e688b47",
+    "93cd6732",
+    "9b9a6586",
+    "a5faba59",
+    "b50b99e3",
+    "b89ef0ef",
+    "bba8ea74",
+    "bcc7a4ab",
+    "bd59fcb5",
+    "c3e91876",
+    "c561e767",
+    "c5799db0",
+    "c894781c",
+    "ca2eb502",
+    "d1cc7623",
+    "d9a9621e",
+    "de05a56d",
+    "de0d859b",
+    "df63d40b",
+    "ed060a6b",
+    "f1aebbdb",
+    "f3d5ffea",
+    "fa69ac68",
+    "fcfc5450"
+  ]
+}

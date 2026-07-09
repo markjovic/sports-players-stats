@@ -1,1 +1,71 @@
-{"uuid":"2eea7205-d630-4c58-81a2-14b39f1954fc","gender":null,"sports":{"Basketball":{"gp":3,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":2,"draws":1,"winPct":0,"statsChecked":"2026-07-05T16:21:31.863Z"}},"seasons":[{"sid":"2554d50b","sn":"Winter 2020","club":"Generals Basketball Club","regs":[{"tid":"d515235e","tn":"Generals Mystics","gid":"2fc89a18","gn":"Under 14 Girls Division 3","stats":{"gp":3,"losses":2,"draws":1}}]}],"updatedAt":"2026-06-11T23:37:54.876Z","games":["36ce0b6c","98ac7d35","e2615c71"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Winter 2020"}
+{
+  "uuid": "2eea7205-d630-4c58-81a2-14b39f1954fc",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 2,
+      "draws": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:21:31.863Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2554d50b",
+      "sn": "Winter 2020",
+      "club": "Generals Basketball Club",
+      "regs": [
+        {
+          "tid": "d515235e",
+          "tn": "Generals Mystics",
+          "gid": "2fc89a18",
+          "gn": "Under 14 Girls Division 3",
+          "stats": {
+            "gp": 3,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "11524696",
+          "tn": "Generals Magic",
+          "gid": "1805b709",
+          "gn": "Under 10 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:54.876Z",
+  "games": [
+    "36ce0b6c",
+    "98ac7d35",
+    "e2615c71"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2020",
+  "teams": [
+    {
+      "tid": "d515235e",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11524696",
+      "sid": "2554d50b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.105Z"
+}

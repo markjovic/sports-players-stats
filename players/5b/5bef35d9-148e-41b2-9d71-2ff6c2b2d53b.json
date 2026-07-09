@@ -1,1 +1,98 @@
-{"uuid":"5bef35d9-148e-41b2-9d71-2ff6c2b2d53b","name":"Tom Graham","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":2,"foulOuts":{"1eae7c99":1},"gp":36,"pts":128,"fg":39,"ft":8,"threePt":14,"fouls":65,"statsChecked":"2026-07-06T18:57:44.293Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"96ea65e3"}]},{"sid":"1eae7c99","regs":[{"tid":"c0049ee2"}]},{"sid":"ba7f19b2","regs":[{"tid":"9d4bb02b"}]},{"sid":"cbfb5a5c","regs":[{"tid":"7880565a"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":10,"gameKey":"4e7a1c8c","sid":"1eae7c99"},"maxGameThreePt":{"v":2,"gameKey":"4e7a1c8c","sid":"1eae7c99"}}}
+{
+  "uuid": "5bef35d9-148e-41b2-9d71-2ff6c2b2d53b",
+  "name": "Tom Graham",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "foulOuts": {
+        "1eae7c99": 1
+      },
+      "gp": 36,
+      "pts": 128,
+      "fg": 39,
+      "ft": 8,
+      "threePt": 14,
+      "fouls": 65,
+      "statsChecked": "2026-07-06T18:57:44.293Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "96ea65e3",
+          "gid": "ed84b3ff",
+          "gn": "Monday Open Men C Grade"
+        }
+      ]
+    },
+    {
+      "sid": "1eae7c99",
+      "regs": [
+        {
+          "tid": "c0049ee2",
+          "gid": "f1c1ac70",
+          "gn": "Saturday U18 Boys 4B"
+        }
+      ]
+    },
+    {
+      "sid": "ba7f19b2",
+      "regs": [
+        {
+          "tid": "9d4bb02b",
+          "gid": "e08cb858",
+          "gn": "Saturday U18 Boys DIV 4"
+        }
+      ]
+    },
+    {
+      "sid": "cbfb5a5c",
+      "regs": [
+        {
+          "tid": "7880565a",
+          "gid": "8a6c4bb7",
+          "gn": "Saturday U18 Boys DIV 6"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "96ea65e3",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c0049ee2",
+      "sid": "1eae7c99",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d4bb02b",
+      "sid": "ba7f19b2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7880565a",
+      "sid": "cbfb5a5c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "4e7a1c8c",
+      "sid": "1eae7c99"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4e7a1c8c",
+      "sid": "1eae7c99"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:11.627Z"
+}

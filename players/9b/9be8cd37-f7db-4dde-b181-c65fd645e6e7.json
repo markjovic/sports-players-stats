@@ -1,1 +1,93 @@
-{"uuid":"9be8cd37-f7db-4dde-b181-c65fd645e6e7","name":"John Hargreaves","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":41,"fouls":3,"fg":19,"threePt":1,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":1,"wins":6,"losses":6,"winPct":0.5,"statsChecked":"2026-07-05T15:11:20.973Z"}},"seasons":[{"sid":"2e623bd2","sn":"Winter 2026","club":"Belvedere Breakers Basketball Club","regs":[{"tid":"f97ed57e","tn":"Breakers U16 Boys","gid":"cf0d6d42","gn":"Wednesday U16 Boys C1","age":"U16","div":"C1","stats":{"gp":6,"fg":19,"threePt":1,"pts":41,"wins":3,"losses":3,"fouls":3}},{"tid":"f97ed57e","tn":"Breakers U16 Boys","gid":"a582c177","gn":"Wednesday U16 Boys C3","age":"U16","div":"C3","stats":{"gp":6,"fouls":3,"fg":19,"pts":41,"wins":3,"losses":3,"threePt":1}}]}],"updatedAt":"2026-06-01T10:37:08.403Z","teams":[{"tid":"f97ed57e","sid":"2e623bd2","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:30:35.118Z","games":["2ed1a9ba","31790d56","752307be","92cb80ff","9c92f718","b58e4781"],"records":{"maxGamePTS":{"v":21,"gameKey":"2ed1a9ba","sid":"2e623bd2"},"maxGameThreePt":{"v":1,"gameKey":"2ed1a9ba","sid":"2e623bd2"}}}
+{
+  "uuid": "9be8cd37-f7db-4dde-b181-c65fd645e6e7",
+  "name": "John Hargreaves",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 41,
+      "fouls": 3,
+      "fg": 19,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 6,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:11:20.973Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e623bd2",
+      "sn": "Winter 2026",
+      "club": "Belvedere Breakers Basketball Club",
+      "regs": [
+        {
+          "tid": "f97ed57e",
+          "tn": "Breakers U16 Boys",
+          "gid": "f0944c5e",
+          "gn": "Wednesday U16 Boys B",
+          "age": "U16",
+          "div": "C1",
+          "stats": {
+            "gp": 6,
+            "fg": 19,
+            "threePt": 1,
+            "pts": 41,
+            "wins": 3,
+            "losses": 3,
+            "fouls": 3
+          }
+        },
+        {
+          "tid": "f97ed57e",
+          "tn": "Breakers U16 Boys",
+          "gid": "a582c177",
+          "gn": "Wednesday U16 Boys C3",
+          "age": "U16",
+          "div": "C3",
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "fg": 19,
+            "pts": 41,
+            "wins": 3,
+            "losses": 3,
+            "threePt": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T10:37:08.403Z",
+  "teams": [
+    {
+      "tid": "f97ed57e",
+      "sid": "2e623bd2",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.212Z",
+  "games": [
+    "2ed1a9ba",
+    "31790d56",
+    "752307be",
+    "92cb80ff",
+    "9c92f718",
+    "b58e4781"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "2ed1a9ba",
+      "sid": "2e623bd2"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "2ed1a9ba",
+      "sid": "2e623bd2"
+    }
+  }
+}

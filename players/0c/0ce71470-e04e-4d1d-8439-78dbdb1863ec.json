@@ -1,1 +1,111 @@
-{"uuid":"0ce71470-e04e-4d1d-8439-78dbdb1863ec","gender":null,"sports":{"Basketball":{"gp":6,"pts":14,"fouls":20,"fg":5,"ft":4,"foulOuts":{"7e5fa6e1":1},"maxGamePTS":4,"maxGameThreePt":null,"wins":2,"losses":4,"winPct":0.33,"statsChecked":"2026-07-05T16:26:44.457Z"}},"seasons":[{"sid":"7e5fa6e1","sn":"Summer 2021/22","club":"Sale Sonics Basketball Club","regs":[{"tid":"6894bc0c","tn":"Sale Sonics","gid":"3da04186","gn":"Gippsland Women","stats":{"gp":6,"pts":14,"fg":5,"ft":4,"fouls":20,"foulOuts":1,"wins":2,"losses":4}}]}],"updatedAt":"2026-06-11T23:36:12.473Z","records":{"maxGamePTS":{"v":4,"gameKey":"b71aee02","sid":"7e5fa6e1"},"maxGameThreePt":{"v":null}},"games":["22b99c62","5be249ac","5e045306","b71aee02","b7ee2194","fcf5017c"],"name":"Summer 2021/22"}
+{
+  "uuid": "0ce71470-e04e-4d1d-8439-78dbdb1863ec",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 14,
+      "fouls": 20,
+      "fg": 5,
+      "ft": 4,
+      "foulOuts": {
+        "7e5fa6e1": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 4,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:26:44.457Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7e5fa6e1",
+      "sn": "Summer 2021/22",
+      "club": "Sale Sonics Basketball Club",
+      "regs": [
+        {
+          "tid": "6894bc0c",
+          "tn": "Sale Sonics",
+          "gid": "3da04186",
+          "gn": "Gippsland Women",
+          "stats": {
+            "gp": 6,
+            "pts": 14,
+            "fg": 5,
+            "ft": 4,
+            "fouls": 20,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "492b1e4d",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "d356cc56",
+          "tn": "Angels",
+          "gid": "c4dd2d3b",
+          "gn": "Tuesday Open Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "bd07f5e1",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "7e474117",
+          "tn": "Capitals",
+          "gid": "e2a2ed21",
+          "gn": "Tuesday Open Women A Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:12.473Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "b71aee02",
+      "sid": "7e5fa6e1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "22b99c62",
+    "5be249ac",
+    "5e045306",
+    "b71aee02",
+    "b7ee2194",
+    "fcf5017c"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "6894bc0c",
+      "sid": "7e5fa6e1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d356cc56",
+      "sid": "492b1e4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e474117",
+      "sid": "bd07f5e1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.643Z"
+}

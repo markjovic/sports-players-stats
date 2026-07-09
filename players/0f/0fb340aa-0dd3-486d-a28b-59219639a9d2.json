@@ -1,1 +1,65 @@
-{"uuid":"0fb340aa-0dd3-486d-a28b-59219639a9d2","name":"Félix Lennon","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":null,"foulOuts":{"155257bd":2},"gp":7,"pts":47,"fg":22,"ft":3,"fouls":21,"statsChecked":"2026-07-07T18:25:44.197Z"}},"seasons":[{"sid":"b3025a8e","regs":[{"tid":"ac246ec5"}]},{"sid":"155257bd","regs":[{"tid":"ab0033e3"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":12,"gameKey":"8b1fc7c9","sid":"155257bd"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "0fb340aa-0dd3-486d-a28b-59219639a9d2",
+  "name": "Félix Lennon",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "155257bd": 2
+      },
+      "gp": 7,
+      "pts": 47,
+      "fg": 22,
+      "ft": 3,
+      "fouls": 21,
+      "statsChecked": "2026-07-07T18:25:44.197Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3025a8e",
+      "regs": [
+        {
+          "tid": "ac246ec5",
+          "gid": "1936ab5c",
+          "gn": "Tuesday Men A"
+        }
+      ]
+    },
+    {
+      "sid": "155257bd",
+      "regs": [
+        {
+          "tid": "ab0033e3",
+          "gid": "c3b53abd",
+          "gn": "Wednesday Open Men B"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "ac246ec5",
+      "sid": "b3025a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab0033e3",
+      "sid": "155257bd",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "8b1fc7c9",
+      "sid": "155257bd"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:05.827Z"
+}

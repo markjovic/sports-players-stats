@@ -1,1 +1,68 @@
-{"uuid":"9bcf2b13-f280-4ec9-99b6-ef3d5ae83136","name":"Jayden Rattle","sports":{"Basketball":{"maxGamePTS":8,"maxGameThreePt":2,"foulOuts":{"7c90a07c":1},"gp":17,"pts":36,"fg":7,"ft":4,"threePt":6,"fouls":39,"statsChecked":"2026-07-06T19:11:07.372Z"}},"seasons":[{"sid":"8fe1a354","regs":[{"tid":"5e418b87"}]},{"sid":"7c90a07c","regs":[{"tid":"ee406bc8"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":8,"gameKey":"7d1d60d6","sid":"7c90a07c"},"maxGameThreePt":{"v":2,"gameKey":"7d1d60d6","sid":"7c90a07c"}}}
+{
+  "uuid": "9bcf2b13-f280-4ec9-99b6-ef3d5ae83136",
+  "name": "Jayden Rattle",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 8,
+      "maxGameThreePt": 2,
+      "foulOuts": {
+        "7c90a07c": 1
+      },
+      "gp": 17,
+      "pts": 36,
+      "fg": 7,
+      "ft": 4,
+      "threePt": 6,
+      "fouls": 39,
+      "statsChecked": "2026-07-06T19:11:07.372Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8fe1a354",
+      "regs": [
+        {
+          "tid": "5e418b87",
+          "gid": "a6c86ef2",
+          "gn": "Monday Men Section 06"
+        }
+      ]
+    },
+    {
+      "sid": "7c90a07c",
+      "regs": [
+        {
+          "tid": "ee406bc8",
+          "gid": "d7769d2d",
+          "gn": "Tuesday Men 3 - 2023 Summer"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "5e418b87",
+      "sid": "8fe1a354",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee406bc8",
+      "sid": "7c90a07c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "7d1d60d6",
+      "sid": "7c90a07c"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "7d1d60d6",
+      "sid": "7c90a07c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:15.192Z"
+}

@@ -1,1 +1,338 @@
-{"uuid":"6ec99065-44ea-4a8c-826f-6f758682cd3e","name":"Harvey Sullivan","gender":"Boys","sports":{"Basketball":{"gp":41,"pts":52,"fouls":27,"fg":20,"ft":12,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":27,"losses":25,"winPct":0.48,"draws":4,"statsChecked":"2026-07-05T15:09:56.574Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"5352d011","tn":"Galilee Geckos Black","gid":"dba4543c","gn":"Wednesday Year 5 Boys C","age":null,"div":null,"stats":{"gp":7,"pts":2,"fg":1,"wins":3,"losses":3}},{"tid":"23e45687","stats":{"wins":10,"losses":4,"draws":2,"gp":16,"pts":43,"fg":16,"ft":11,"fouls":16}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"23e45687","tn":"Galilee Geckos Green","gid":"d3494ebf","gn":"Friday Year 4 Boys C","age":null,"div":null,"stats":{"gp":16,"fouls":16,"ft":11,"fg":16,"pts":43,"wins":10,"losses":4,"draws":2}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"3e74eaf0","tn":"Galilee Geckos","gid":"60933569","gn":"Friday Year 3 Boys A","age":null,"div":null,"stats":{"gp":12,"fouls":10,"ft":1,"fg":2,"pts":5,"wins":3,"losses":9}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"925d4099","tn":"Galilee Geckos","gid":"ea459de8","gn":"Friday MSAC/Bayside Year 3 Boys A","age":null,"div":null,"stats":{"gp":6,"fouls":1,"fg":1,"pts":2,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-02T22:42:38.460Z","teams":[{"tid":"5352d011","sid":"ad68db8b","status":"ACTIVE"},{"tid":"23e45687","sid":"ad68db8b","status":"ACTIVE"},{"tid":"3e74eaf0","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"925d4099","sid":"31d05517","status":"COMPLETED"},{"tid":"780967cf","sid":"8884de2d","status":"COMPLETED"},{"tid":"79c77faf","sid":"0fef30ca","status":"COMPLETED"},{"tid":"200440ff","sid":"09a70808","status":"COMPLETED"},{"tid":"6c646881","sid":"e5df46b3","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:49:56.175Z","records":{"maxGamePTS":{"v":7,"gameKey":"20e35f3c","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["07039483","098838ae","1c351197","1e19da0c","202e6bf0","20e35f3c","26677b92","2c15a595","34c825ac","3f0356f8","409f70fc","41de31fb","42c015d6","4332ed7c","4a93e3ae","5a8ee74d","5bd0cc01","61096b09","6414d801","708e55de","777f4380","7b4b822a","92f5ab66","96b177e9","9ab6c5c4","a7e4f6e5","aa1f8f11","b1b94705","b2fd06c5","b701f3f8","caea2c52","cdfa2fd6","cf5ff422","d7cce6fc","de96f669","e0cb1bd6","e2dc6aa3","e6252751","f6004323","ff74a86c"],"gameTids":{"2836fb07":"5352d011","aa1f8f11":"5352d011","202e6bf0":"5352d011","92f5ab66":"5352d011","b2fd06c5":"5352d011","61096b09":"5352d011","6414d801":"5352d011","d7cce6fc":"23e45687","2c15a595":"23e45687","777f4380":"23e45687","5a8ee74d":"23e45687","098838ae":"23e45687","e0cb1bd6":"23e45687","409f70fc":"23e45687","b1b94705":"23e45687","708e55de":"23e45687","ff74a86c":"23e45687","20e35f3c":"23e45687","41de31fb":"23e45687","e6252751":"23e45687","1e19da0c":"23e45687","96b177e9":"23e45687","5bd0cc01":"23e45687","07039483":"3e74eaf0","de96f669":"3e74eaf0","7b4b822a":"3e74eaf0","e2dc6aa3":"3e74eaf0","4332ed7c":"3e74eaf0","34c825ac":"3e74eaf0","f6004323":"3e74eaf0","cdfa2fd6":"3e74eaf0","42c015d6":"3e74eaf0","4a93e3ae":"3e74eaf0","1c351197":"3e74eaf0","9ab6c5c4":"3e74eaf0","3f0356f8":"925d4099","cf5ff422":"925d4099","a7e4f6e5":"925d4099","caea2c52":"925d4099","b701f3f8":"925d4099","26677b92":"925d4099"}}
+{
+  "uuid": "6ec99065-44ea-4a8c-826f-6f758682cd3e",
+  "name": "Harvey Sullivan",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 41,
+      "pts": 52,
+      "fouls": 27,
+      "fg": 20,
+      "ft": 12,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 27,
+      "losses": 25,
+      "winPct": 0.48,
+      "draws": 4,
+      "statsChecked": "2026-07-05T15:09:56.574Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "5352d011",
+          "tn": "Galilee Geckos Black",
+          "gid": "dba4543c",
+          "gn": "Wednesday Year 5 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 2,
+            "fg": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "23e45687",
+          "stats": {
+            "wins": 10,
+            "losses": 4,
+            "draws": 2,
+            "gp": 16,
+            "pts": 43,
+            "fg": 16,
+            "ft": 11,
+            "fouls": 16
+          },
+          "gid": "d3494ebf",
+          "gn": "Friday Year 4 Boys C"
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "23e45687",
+          "tn": "Galilee Geckos Green",
+          "gid": "d3494ebf",
+          "gn": "Friday Year 4 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 16,
+            "ft": 11,
+            "fg": 16,
+            "pts": 43,
+            "wins": 10,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "3e74eaf0",
+          "tn": "Galilee Geckos",
+          "gid": "60933569",
+          "gn": "Friday Year 3 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "ft": 1,
+            "fg": 2,
+            "pts": 5,
+            "wins": 3,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "925d4099",
+          "tn": "Galilee Geckos",
+          "gid": "ea459de8",
+          "gn": "Friday MSAC/Bayside Year 3 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "abc155cf",
+          "tn": "Galilee Geckos Green",
+          "gid": "ddfffaf8",
+          "gn": "Friday Year 4 Boys D",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "780967cf",
+          "tn": "Galilee Geckos",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "79c77faf",
+          "tn": "Galilee Geckos",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "200440ff",
+          "tn": "Galilee Geckos",
+          "gid": "f2d55266",
+          "gn": "Friday MSAC/Bayside YR.1.BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "6c646881",
+          "tn": "Galilee Geckos",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:38.460Z",
+  "teams": [
+    {
+      "tid": "5352d011",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23e45687",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3e74eaf0",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "925d4099",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "abc155cf",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "780967cf",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79c77faf",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "200440ff",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c646881",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.825Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "20e35f3c",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "07039483",
+    "098838ae",
+    "1c351197",
+    "1e19da0c",
+    "202e6bf0",
+    "20e35f3c",
+    "26677b92",
+    "2c15a595",
+    "34c825ac",
+    "3f0356f8",
+    "409f70fc",
+    "41de31fb",
+    "42c015d6",
+    "4332ed7c",
+    "4a93e3ae",
+    "5a8ee74d",
+    "5bd0cc01",
+    "61096b09",
+    "6414d801",
+    "708e55de",
+    "777f4380",
+    "7b4b822a",
+    "92f5ab66",
+    "96b177e9",
+    "9ab6c5c4",
+    "a7e4f6e5",
+    "aa1f8f11",
+    "b1b94705",
+    "b2fd06c5",
+    "b701f3f8",
+    "caea2c52",
+    "cdfa2fd6",
+    "cf5ff422",
+    "d7cce6fc",
+    "de96f669",
+    "e0cb1bd6",
+    "e2dc6aa3",
+    "e6252751",
+    "f6004323",
+    "ff74a86c"
+  ],
+  "gameTids": {
+    "2836fb07": "5352d011",
+    "aa1f8f11": "5352d011",
+    "202e6bf0": "5352d011",
+    "92f5ab66": "5352d011",
+    "b2fd06c5": "5352d011",
+    "61096b09": "5352d011",
+    "6414d801": "5352d011",
+    "d7cce6fc": "23e45687",
+    "2c15a595": "23e45687",
+    "777f4380": "23e45687",
+    "5a8ee74d": "23e45687",
+    "098838ae": "23e45687",
+    "e0cb1bd6": "23e45687",
+    "409f70fc": "23e45687",
+    "b1b94705": "23e45687",
+    "708e55de": "23e45687",
+    "ff74a86c": "23e45687",
+    "20e35f3c": "23e45687",
+    "41de31fb": "23e45687",
+    "e6252751": "23e45687",
+    "1e19da0c": "23e45687",
+    "96b177e9": "23e45687",
+    "5bd0cc01": "23e45687",
+    "07039483": "3e74eaf0",
+    "de96f669": "3e74eaf0",
+    "7b4b822a": "3e74eaf0",
+    "e2dc6aa3": "3e74eaf0",
+    "4332ed7c": "3e74eaf0",
+    "34c825ac": "3e74eaf0",
+    "f6004323": "3e74eaf0",
+    "cdfa2fd6": "3e74eaf0",
+    "42c015d6": "3e74eaf0",
+    "4a93e3ae": "3e74eaf0",
+    "1c351197": "3e74eaf0",
+    "9ab6c5c4": "3e74eaf0",
+    "3f0356f8": "925d4099",
+    "cf5ff422": "925d4099",
+    "a7e4f6e5": "925d4099",
+    "caea2c52": "925d4099",
+    "b701f3f8": "925d4099",
+    "26677b92": "925d4099"
+  }
+}

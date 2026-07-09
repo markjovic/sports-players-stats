@@ -1,1 +1,419 @@
-{"uuid":"b8fac217-d84c-4d43-9724-676becc0116e","name":"Chloe Simmonds","gender":"Girls","sports":{"Basketball":{"gp":27,"pts":61,"fouls":48,"fg":30,"ft":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":83,"losses":22,"winPct":0.79,"statsChecked":"2026-07-05T14:16:17.961Z"}},"seasons":[{"sid":"79d2b087","sn":"Winter 2026","club":"Ormond Jets Basketball Club","regs":[{"tid":"728eeddd","tn":"JETS U14 Girls Andrew","gid":"d1b1c0da","gn":"Sunday U14 Girls Div  2","age":"U14","div":"Div 2","stats":{"gp":1,"fouls":2,"fg":2,"pts":4,"wins":1}}]},{"sid":"4b758d19","sn":"Summer 2025/26","club":"Ormond Jets Basketball Club","regs":[{"tid":"5f247caf","tn":"JETS U14 Girls Andrew","gid":"db22568a","gn":"Sunday U14 Girls Div  3","age":"U14","div":"Div 3","stats":{"gp":13,"fouls":21,"ft":1,"fg":18,"pts":37,"wins":8,"losses":5}},{"tid":"5f247caf","tn":"JETS U14 Girls Andrew","gid":"52a68eff","gn":"Sunday U14 Girls Div  2","age":"U14","div":"Div 2","stats":{"gp":13,"fouls":21,"fg":18,"pts":37,"wins":8,"losses":5,"ft":1}}]},{"sid":"6cb21cfc","sn":"Winter 2025","club":"Ormond Jets Basketball Club","regs":[{"tid":"71df83b7","tn":"JETS U12 Girls Andrew","gid":"40ea9b4d","gn":"Sunday U12 Girls Div 1B","age":"U12","div":null,"stats":{"gp":13,"fouls":25,"fg":10,"pts":20,"finals":1,"wins":11,"losses":2}},{"tid":"71df83b7","tn":"JETS U12 Girls Andrew","gid":"2688f762","gn":"Sunday U12 Girls Div 2","age":"U12","div":"Div 2","stats":{"gp":13,"fouls":25,"fg":10,"pts":20,"finals":1,"wins":11,"losses":2}},{"tid":"71df83b7","tn":"JETS U12 Girls Andrew","gid":"23e13e16","gn":"Sunday U12 Girls Div 3","age":"U12","div":"Div 3","stats":{"gp":13,"fouls":25,"fg":10,"pts":20,"finals":1,"wins":11,"losses":2}},{"tid":"71df83b7","tn":"JETS U12 Girls Andrew","gid":"5cd7db82","gn":"Sunday U12 Girls Div 4","age":"U12","div":"Div 4","stats":{"gp":13,"fouls":25,"finals":1,"wins":11,"losses":2,"pts":20,"fg":10}},{"tid":"71df83b7","tn":"JETS U12 Girls Andrew","gid":"bd93a61f","gn":"Sunday U12 Girls Div 5","age":"U12","div":"Div 5","stats":{"gp":13,"fouls":25,"fg":10,"pts":20,"finals":1,"wins":11,"losses":2}},{"tid":"71df83b7","tn":"JETS U12 Girls Andrew","gid":"b6416ac1","gn":"Sunday U12 Girls Div 7","age":"U12","div":"Div 7","stats":{"gp":13,"fouls":25,"fg":10,"pts":20,"finals":1,"wins":11,"losses":2}}]}],"updatedAt":"2026-07-04T05:57:17.509Z","teams":[{"tid":"728eeddd","sid":"79d2b087","status":"ACTIVE"},{"tid":"abf06588","sid":"e2b609ed","status":"UPCOMING"},{"tid":"5f247caf","sid":"4b758d19","status":"COMPLETED"},{"tid":"71df83b7","sid":"6cb21cfc","status":"COMPLETED"},{"tid":"ce149c67","sid":"8884de2d","status":"COMPLETED"},{"tid":"f198dbe6","sid":"0fef30ca","status":"COMPLETED"},{"tid":"41dd4111","sid":"09a70808","status":"COMPLETED"},{"tid":"9e3f2096","sid":"e5df46b3","status":"COMPLETED"},{"tid":"a94a390c","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"e541b45b","sid":"3f4132a1","status":"COMPLETED"},{"tid":"3b0c5b85","sid":"9533d0c6","status":"COMPLETED"},{"tid":"20f3d5d3","sid":"977f8526","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:09:07.222Z","games":["12ae65a7","1b5960cd","46053844","4d7f5652","52a44360","56e4e422","663d88ea","6b358392","715b1b40","72cfe173","96b28828","a37276e4","b3389958","b3c80663","b59431db","b8fe9bd4","ba90f08b","c324c046","ca4f55de","d1e6f312","d437c77d","dc613ec3","ddb9bc26","e126e2af","e74e08ab","f98a5b22","ff22d0dd"],"records":{"maxGamePTS":{"v":6,"gameKey":"b59431db","sid":"4b758d19"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "b8fac217-d84c-4d43-9724-676becc0116e",
+  "name": "Chloe Simmonds",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 27,
+      "pts": 61,
+      "fouls": 48,
+      "fg": 30,
+      "ft": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 83,
+      "losses": 22,
+      "winPct": 0.79,
+      "statsChecked": "2026-07-05T14:16:17.961Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "79d2b087",
+      "sn": "Winter 2026",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "728eeddd",
+          "tn": "JETS U14 Girls Andrew",
+          "gid": "d18ba539",
+          "gn": "Sunday U14 Girls Div  3",
+          "age": "U14",
+          "div": "Div 2",
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 4,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "sn": "Summer 2025/26",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "5f247caf",
+          "tn": "JETS U14 Girls Andrew",
+          "gid": "db22568a",
+          "gn": "Sunday U14 Girls Div  3",
+          "age": "U14",
+          "div": "Div 3",
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "ft": 1,
+            "fg": 18,
+            "pts": 37,
+            "wins": 8,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "5f247caf",
+          "tn": "JETS U14 Girls Andrew",
+          "gid": "52a68eff",
+          "gn": "Sunday U14 Girls Div  2",
+          "age": "U14",
+          "div": "Div 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 21,
+            "fg": 18,
+            "pts": 37,
+            "wins": 8,
+            "losses": 5,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6cb21cfc",
+      "sn": "Winter 2025",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "71df83b7",
+          "tn": "JETS U12 Girls Andrew",
+          "gid": "40ea9b4d",
+          "gn": "Sunday U12 Girls Div 1B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 11,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "71df83b7",
+          "tn": "JETS U12 Girls Andrew",
+          "gid": "2688f762",
+          "gn": "Sunday U12 Girls Div 2",
+          "age": "U12",
+          "div": "Div 2",
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 11,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "71df83b7",
+          "tn": "JETS U12 Girls Andrew",
+          "gid": "23e13e16",
+          "gn": "Sunday U12 Girls Div 3",
+          "age": "U12",
+          "div": "Div 3",
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 11,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "71df83b7",
+          "tn": "JETS U12 Girls Andrew",
+          "gid": "5cd7db82",
+          "gn": "Sunday U12 Girls Div 4",
+          "age": "U12",
+          "div": "Div 4",
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "finals": 1,
+            "wins": 11,
+            "losses": 2,
+            "pts": 20,
+            "fg": 10
+          }
+        },
+        {
+          "tid": "71df83b7",
+          "tn": "JETS U12 Girls Andrew",
+          "gid": "bd93a61f",
+          "gn": "Sunday U12 Girls Div 5",
+          "age": "U12",
+          "div": "Div 5",
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 11,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "71df83b7",
+          "tn": "JETS U12 Girls Andrew",
+          "gid": "b6416ac1",
+          "gn": "Sunday U12 Girls Div 7",
+          "age": "U12",
+          "div": "Div 7",
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 10,
+            "pts": 20,
+            "finals": 1,
+            "wins": 11,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "abf06588",
+          "tn": "Tigers U14 Girls Shooting Stars💫",
+          "gid": "70609afd",
+          "gn": "Tuesday U14 Girls D2 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "ce149c67",
+          "tn": "EPS Dolphins ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "f198dbe6",
+          "tn": "EPS Dolphins Basketball Team",
+          "gid": "8e81252b",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "41dd4111",
+          "tn": "EPS Dolphins Basketball Team",
+          "gid": "070894fd",
+          "gn": "Friday MSAC/Bayside YR.3 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "9e3f2096",
+          "tn": "EPS Dolphins Basketball Team",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "a94a390c",
+          "tn": "EPS Dolphins Basketball Team",
+          "gid": "5ba124fa",
+          "gn": "Friday MSAC/Bayside YR.2 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "e541b45b",
+          "tn": "EPS Dolphins Basketball Team",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9533d0c6",
+      "sn": "Term 4, 2021",
+      "regs": [
+        {
+          "tid": "3b0c5b85",
+          "tn": "EPS Dolphins",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "977f8526",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "20f3d5d3",
+          "tn": "EP Flamingos (3808)",
+          "gid": "a7d42fe5",
+          "gn": "Friday MSAC/Bayside YR.1 GIRLS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:57:17.509Z",
+  "teams": [
+    {
+      "tid": "728eeddd",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f247caf",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71df83b7",
+      "sid": "6cb21cfc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "abf06588",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ce149c67",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f198dbe6",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "41dd4111",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e3f2096",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a94a390c",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e541b45b",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b0c5b85",
+      "sid": "9533d0c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "20f3d5d3",
+      "sid": "977f8526",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.586Z",
+  "games": [
+    "12ae65a7",
+    "1b5960cd",
+    "46053844",
+    "4d7f5652",
+    "52a44360",
+    "56e4e422",
+    "663d88ea",
+    "6b358392",
+    "715b1b40",
+    "72cfe173",
+    "96b28828",
+    "a37276e4",
+    "b3389958",
+    "b3c80663",
+    "b59431db",
+    "b8fe9bd4",
+    "ba90f08b",
+    "c324c046",
+    "ca4f55de",
+    "d1e6f312",
+    "d437c77d",
+    "dc613ec3",
+    "ddb9bc26",
+    "e126e2af",
+    "e74e08ab",
+    "f98a5b22",
+    "ff22d0dd"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "b59431db",
+      "sid": "4b758d19"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

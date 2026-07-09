@@ -1,1 +1,67 @@
-{"uuid":"6ffb7065-2ea4-4b9c-89af-bc183b9ac9b1","name":"Makol Good","gender":"Boys","sports":{"Basketball":{"gp":1,"pts":15,"fouls":1,"fg":6,"ft":3,"foulOuts":{},"maxGamePTS":15,"maxGameThreePt":null,"wins":1,"winPct":1,"statsChecked":"2026-07-05T14:55:49.588Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"005bd597","tn":"Collingwood U15 Boys 05","gid":"c31667b8","gn":"Boys U15 C Grading","age":"U15","div":null,"stats":{"gp":1,"fouls":1,"ft":3,"fg":6,"pts":15,"wins":1}}]}],"updatedAt":"2026-07-04T05:37:25.353Z","teams":[{"tid":"005bd597","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:50:12.726Z","records":{"maxGamePTS":{"v":15,"gameKey":"d28a2689","sid":"1ae60211"},"maxGameThreePt":{"v":null}},"games":["d28a2689"]}
+{
+  "uuid": "6ffb7065-2ea4-4b9c-89af-bc183b9ac9b1",
+  "name": "Makol Good",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 15,
+      "fouls": 1,
+      "fg": 6,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 15,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T14:55:49.588Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "005bd597",
+          "tn": "Collingwood U15 Boys 05",
+          "gid": "39933508",
+          "gn": "Boys U15 BE",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "ft": 3,
+            "fg": 6,
+            "pts": 15,
+            "wins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:37:25.353Z",
+  "teams": [
+    {
+      "tid": "005bd597",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.948Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "d28a2689",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "d28a2689"
+  ]
+}

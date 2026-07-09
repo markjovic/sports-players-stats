@@ -1,1 +1,140 @@
-{"uuid":"07dc6dd6-4a55-43ae-9fae-bf5be34b79fb","gender":null,"sports":{"Basketball":{"gp":16,"pts":4,"fouls":8,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":6,"losses":8,"draws":1,"winPct":0.4,"statsChecked":"2026-07-05T15:59:19.201Z"}},"seasons":[{"sid":"ec18ef3b","sn":"Autumn 2021","club":"Hamilton Minders Basketball Club","regs":[{"tid":"f09db248","tn":"Minders Clippers U14B","gid":"18e179c0","gn":"Monday U14B Boys","stats":{"gp":8,"pts":4,"fg":2,"fouls":3,"wins":1,"losses":6,"draws":1}}]},{"sid":"cee11ae3","sn":"Term 1, 2021","club":"Hamilton Minders Basketball Club","regs":[{"tid":"857b3d25","tn":"Minders Clippers U14B","gid":"88e9545f","gn":"Monday U14B Boys","stats":{"gp":7,"fouls":5,"wins":5,"losses":2}}]},{"sid":"a222a651","sn":"Autumn 2020","club":"Hamilton Minders Basketball Club","regs":[{"tid":"9e52d4a4","tn":"U14B Boys Minders","gid":"06adb546","gn":"Monday U14 Boys B","stats":{"gp":1}}]}],"updatedAt":"2026-06-11T23:35:57.648Z","records":{"maxGamePTS":{"v":2,"gameKey":"849aba3a","sid":"ec18ef3b"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["0d9a4652","24503542","2fa8c8ad","481fd726","5585fa24","849aba3a","9b6e3d04","9f20e711","a08400ad","a3405530","bee97476","c4723ba8","cd634826","cfd0abb5","e226b798","f60f9393"],"name":"Autumn 2021"}
+{
+  "uuid": "07dc6dd6-4a55-43ae-9fae-bf5be34b79fb",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 4,
+      "fouls": 8,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 8,
+      "draws": 1,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:59:19.201Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ec18ef3b",
+      "sn": "Autumn 2021",
+      "club": "Hamilton Minders Basketball Club",
+      "regs": [
+        {
+          "tid": "f09db248",
+          "tn": "Minders Clippers U14B",
+          "gid": "18e179c0",
+          "gn": "Monday U14B Boys",
+          "stats": {
+            "gp": 8,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cee11ae3",
+      "sn": "Term 1, 2021",
+      "club": "Hamilton Minders Basketball Club",
+      "regs": [
+        {
+          "tid": "857b3d25",
+          "tn": "Minders Clippers U14B",
+          "gid": "88e9545f",
+          "gn": "Monday U14B Boys",
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a222a651",
+      "sn": "Autumn 2020",
+      "club": "Hamilton Minders Basketball Club",
+      "regs": [
+        {
+          "tid": "9e52d4a4",
+          "tn": "U14B Boys Minders",
+          "gid": "06adb546",
+          "gn": "Monday U14 Boys B",
+          "stats": {
+            "gp": 1
+          }
+        },
+        {
+          "tid": "8611927c",
+          "tn": "U12B Boys Minders Nuggets",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:35:57.648Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "849aba3a",
+      "sid": "ec18ef3b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "0d9a4652",
+    "24503542",
+    "2fa8c8ad",
+    "481fd726",
+    "5585fa24",
+    "849aba3a",
+    "9b6e3d04",
+    "9f20e711",
+    "a08400ad",
+    "a3405530",
+    "bee97476",
+    "c4723ba8",
+    "cd634826",
+    "cfd0abb5",
+    "e226b798",
+    "f60f9393"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "f09db248",
+      "sid": "ec18ef3b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "857b3d25",
+      "sid": "cee11ae3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9e52d4a4",
+      "sid": "a222a651",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8611927c",
+      "sid": "a222a651",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.329Z"
+}

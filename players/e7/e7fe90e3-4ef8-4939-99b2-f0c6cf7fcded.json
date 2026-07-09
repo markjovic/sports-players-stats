@@ -1,1 +1,112 @@
-{"uuid":"e7fe90e3-4ef8-4939-99b2-f0c6cf7fcded","gender":null,"sports":{"Basketball":{"gp":8,"pts":28,"fouls":13,"fg":12,"ft":1,"threePt":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"wins":6,"losses":10,"winPct":0.38,"statsChecked":"2026-07-05T16:04:18.834Z"}},"seasons":[{"sid":"8cb1849e","sn":"Autumn 2021","club":null,"regs":[{"tid":"b0090f80","tn":"The Glass Cleaners","gid":"2a49c84b","gn":"Monday Men A","stats":{"gp":8,"pts":28,"fouls":13,"fg":12,"wins":3,"losses":5,"ft":1,"threePt":1}},{"tid":"b0090f80","tn":"The Glass Cleaners","gid":"621eda5c","gn":"Monday Men B","stats":{"gp":8,"pts":28,"fouls":13,"fg":12,"ft":1,"threePt":1,"wins":3,"losses":5}}]}],"updatedAt":"2026-06-11T23:45:51.132Z","games":["12948884","28f742f4","43759189","494dce24","892db1a8","89e7c86a","b47ee292","c4889703"],"records":{"maxGamePTS":{"v":8,"gameKey":"28f742f4","sid":"8cb1849e"},"maxGameThreePt":{"v":1,"gameKey":"28f742f4","sid":"8cb1849e"}},"name":"Autumn 2021"}
+{
+  "uuid": "e7fe90e3-4ef8-4939-99b2-f0c6cf7fcded",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 28,
+      "fouls": 13,
+      "fg": 12,
+      "ft": 1,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 10,
+      "winPct": 0.38,
+      "statsChecked": "2026-07-05T16:04:18.834Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8cb1849e",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "b0090f80",
+          "tn": "The Glass Cleaners",
+          "gid": "2a49c84b",
+          "gn": "Monday Men A",
+          "stats": {
+            "gp": 8,
+            "pts": 28,
+            "fouls": 13,
+            "fg": 12,
+            "wins": 3,
+            "losses": 5,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "b0090f80",
+          "tn": "The Glass Cleaners",
+          "gid": "621eda5c",
+          "gn": "Monday Men B",
+          "stats": {
+            "gp": 8,
+            "pts": 28,
+            "fouls": 13,
+            "fg": 12,
+            "ft": 1,
+            "threePt": 1,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "60b8cd63",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "925d2946",
+          "tn": "Tailgate Party",
+          "gid": "f61fbdd4",
+          "gn": "Monday Open Men A Res Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:45:51.132Z",
+  "games": [
+    "12948884",
+    "28f742f4",
+    "43759189",
+    "494dce24",
+    "892db1a8",
+    "89e7c86a",
+    "b47ee292",
+    "c4889703"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "28f742f4",
+      "sid": "8cb1849e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "28f742f4",
+      "sid": "8cb1849e"
+    }
+  },
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "b0090f80",
+      "sid": "8cb1849e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "925d2946",
+      "sid": "60b8cd63",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:17.282Z"
+}

@@ -1,1 +1,296 @@
-{"uuid":"6cba0b3b-9288-447b-bb62-86c3d2fc1627","name":"Elzat ILYAR","gender":"Boys","sports":{"Basketball":{"gp":33,"pts":89,"fouls":41,"fg":39,"ft":2,"threePt":3,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":1,"wins":22,"losses":39,"draws":2,"winPct":0.35,"statsChecked":"2026-07-05T14:55:50.212Z"}},"seasons":[{"sid":"24f3a282","sn":"Winter 2026","club":"Vales Basketball Club","regs":[{"tid":"c7ffddd1","tn":"Vales B16 Wolves","gid":"ce7c9acc","gn":"Saturday U16 Boys E2","age":"U16","div":"E2","stats":{"gp":2,"fouls":1,"fg":3,"pts":6,"wins":2}},{"tid":"cfb148cd","tn":"Vales B16 Guardians","gid":"ce7c9acc","gn":"Saturday U16 Boys E2","age":"U16","div":"E2","stats":{"gp":1,"fouls":3,"losses":1}}]},{"sid":"b970a30d","sn":"Winter 2025","club":"Vales Basketball Club","regs":[{"tid":"4930ab73","tn":"Vales B14 Lions","gid":"97dcb7cf","gn":"Saturday U14 Boys C3/C4","age":"U14","div":"C4","stats":{"gp":4,"losses":4,"pts":6,"fg":3,"fouls":4}},{"tid":"4930ab73","tn":"Vales B14 Lions","gid":"e6eec605","gn":"Saturday U14 Boys C1/C2","age":"U14","div":"C2","stats":{"gp":4,"fouls":4,"fg":3,"pts":6,"losses":4}}]},{"sid":"3b5042cd","sn":"Summer 2024/25","club":"Vales Basketball Club","regs":[{"tid":"270079db","tn":"Vales B14 Leopards","gid":"4092a12f","gn":"Saturday U14 Boys D3","age":"U14","div":"D3","stats":{"gp":13,"fouls":15,"fg":14,"threePt":1,"pts":32,"wins":8,"losses":4,"draws":1,"ft":1}},{"tid":"270079db","tn":"Vales B14 Leopards","gid":"477af6cd","gn":"Saturday U14 Boys E1","age":"U14","div":"E1","stats":{"gp":13,"fouls":15,"ft":1,"fg":14,"pts":32,"wins":8,"losses":4,"draws":1,"threePt":1}}]},{"sid":"042eefb6","sn":"Winter 2024","club":"Vales Basketball Club","regs":[{"tid":"4270f7fd","tn":"Vales B14 Bengals","gid":"74677e63","gn":"Saturday U14 Boys E2","age":"U14","div":"E2","stats":{"gp":13,"fouls":18,"ft":1,"fg":19,"pts":45,"wins":2,"losses":11,"threePt":2}},{"tid":"4270f7fd","tn":"Vales B14 Bengals","gid":"487e8806","gn":"Saturday U14 Boys E1","age":"U14","div":"E1","stats":{"gp":13,"fouls":18,"fg":19,"threePt":2,"pts":45,"wins":2,"losses":11,"ft":1}}]}],"updatedAt":"2026-07-04T05:38:32.247Z","teams":[{"tid":"c7ffddd1","sid":"24f3a282","status":"ACTIVE"},{"tid":"4930ab73","sid":"b970a30d","status":"COMPLETED"},{"tid":"270079db","sid":"3b5042cd","status":"COMPLETED"},{"tid":"4270f7fd","sid":"042eefb6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:39:19.308Z","records":{"maxGamePTS":{"v":10,"gameKey":"2dd1f2c1","sid":"3b5042cd"},"maxGameThreePt":{"v":1,"gameKey":"f83149cb","sid":"3b5042cd"}},"games":["02588414","1cdd5b8e","21009d69","227e1f37","2290fede","2ad20dd0","2dd1f2c1","32ef3283","475d002b","4c4a6fd9","51d6869a","539d5a99","54ef64ba","552d2f38","564e2c5f","5b082e3c","5eed88d4","683186b7","6b2e4b93","78cde6f8","8947b787","a961d715","ac6df125","b331ee55","bd510c9b","c04f8724","cd8a7cd4","d5bb5b53","def24b60","e9f524db","ec0e9f46","f665a2a0","f83149cb"],"gameTids":{"a961d715":"c7ffddd1","f665a2a0":"c7ffddd1","e9f524db":"cfb148cd","1cdd5b8e":"4930ab73","5eed88d4":"4930ab73","4c4a6fd9":"4930ab73","cd8a7cd4":"4930ab73","78cde6f8":"270079db","ec0e9f46":"270079db","32ef3283":"270079db","f83149cb":"270079db","227e1f37":"270079db","b331ee55":"270079db","552d2f38":"270079db","2dd1f2c1":"270079db","539d5a99":"270079db","02588414":"270079db","2ad20dd0":"270079db","54ef64ba":"270079db","475d002b":"270079db","2290fede":"4270f7fd","21009d69":"4270f7fd","683186b7":"4270f7fd","d5bb5b53":"4270f7fd","def24b60":"4270f7fd","c04f8724":"4270f7fd","564e2c5f":"4270f7fd","51d6869a":"4270f7fd","8947b787":"4270f7fd","ac6df125":"4270f7fd","bd510c9b":"4270f7fd","5b082e3c":"4270f7fd","6b2e4b93":"4270f7fd"}}
+{
+  "uuid": "6cba0b3b-9288-447b-bb62-86c3d2fc1627",
+  "name": "Elzat ILYAR",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 89,
+      "fouls": 41,
+      "fg": 39,
+      "ft": 2,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 22,
+      "losses": 39,
+      "draws": 2,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T14:55:50.212Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "24f3a282",
+      "sn": "Winter 2026",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "c7ffddd1",
+          "tn": "Vales B16 Wolves",
+          "gid": "f97b0802",
+          "gn": "Saturday U16 Boys E1",
+          "age": "U16",
+          "div": "E2",
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "fg": 3,
+            "pts": 6,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "cfb148cd",
+          "tn": "Vales B16 Guardians",
+          "gid": "ce7c9acc",
+          "gn": "Saturday U16 Boys E2",
+          "age": "U16",
+          "div": "E2",
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b970a30d",
+      "sn": "Winter 2025",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "4930ab73",
+          "tn": "Vales B14 Lions",
+          "gid": "97dcb7cf",
+          "gn": "Saturday U14 Boys C3/C4",
+          "age": "U14",
+          "div": "C4",
+          "stats": {
+            "gp": 4,
+            "losses": 4,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "4930ab73",
+          "tn": "Vales B14 Lions",
+          "gid": "e6eec605",
+          "gn": "Saturday U14 Boys C1/C2",
+          "age": "U14",
+          "div": "C2",
+          "stats": {
+            "gp": 4,
+            "fouls": 4,
+            "fg": 3,
+            "pts": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b5042cd",
+      "sn": "Summer 2024/25",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "270079db",
+          "tn": "Vales B14 Leopards",
+          "gid": "4092a12f",
+          "gn": "Saturday U14 Boys D3",
+          "age": "U14",
+          "div": "D3",
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "fg": 14,
+            "threePt": 1,
+            "pts": 32,
+            "wins": 8,
+            "losses": 4,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "270079db",
+          "tn": "Vales B14 Leopards",
+          "gid": "477af6cd",
+          "gn": "Saturday U14 Boys E1",
+          "age": "U14",
+          "div": "E1",
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "ft": 1,
+            "fg": 14,
+            "pts": 32,
+            "wins": 8,
+            "losses": 4,
+            "draws": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "042eefb6",
+      "sn": "Winter 2024",
+      "club": "Vales Basketball Club",
+      "regs": [
+        {
+          "tid": "4270f7fd",
+          "tn": "Vales B14 Bengals",
+          "gid": "74677e63",
+          "gn": "Saturday U14 Boys E2",
+          "age": "U14",
+          "div": "E2",
+          "stats": {
+            "gp": 13,
+            "fouls": 18,
+            "ft": 1,
+            "fg": 19,
+            "pts": 45,
+            "wins": 2,
+            "losses": 11,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "4270f7fd",
+          "tn": "Vales B14 Bengals",
+          "gid": "487e8806",
+          "gn": "Saturday U14 Boys E1",
+          "age": "U14",
+          "div": "E1",
+          "stats": {
+            "gp": 13,
+            "fouls": 18,
+            "fg": 19,
+            "threePt": 2,
+            "pts": 45,
+            "wins": 2,
+            "losses": 11,
+            "ft": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:38:32.247Z",
+  "teams": [
+    {
+      "tid": "c7ffddd1",
+      "sid": "24f3a282",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cfb148cd",
+      "sid": "24f3a282",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4930ab73",
+      "sid": "b970a30d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "270079db",
+      "sid": "3b5042cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4270f7fd",
+      "sid": "042eefb6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.678Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "2dd1f2c1",
+      "sid": "3b5042cd"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f83149cb",
+      "sid": "3b5042cd"
+    }
+  },
+  "games": [
+    "02588414",
+    "1cdd5b8e",
+    "21009d69",
+    "227e1f37",
+    "2290fede",
+    "2ad20dd0",
+    "2dd1f2c1",
+    "32ef3283",
+    "475d002b",
+    "4c4a6fd9",
+    "51d6869a",
+    "539d5a99",
+    "54ef64ba",
+    "552d2f38",
+    "564e2c5f",
+    "5b082e3c",
+    "5eed88d4",
+    "683186b7",
+    "6b2e4b93",
+    "78cde6f8",
+    "8947b787",
+    "a961d715",
+    "ac6df125",
+    "b331ee55",
+    "bd510c9b",
+    "c04f8724",
+    "cd8a7cd4",
+    "d5bb5b53",
+    "def24b60",
+    "e9f524db",
+    "ec0e9f46",
+    "f665a2a0",
+    "f83149cb"
+  ],
+  "gameTids": {
+    "a961d715": "c7ffddd1",
+    "f665a2a0": "c7ffddd1",
+    "e9f524db": "cfb148cd",
+    "1cdd5b8e": "4930ab73",
+    "5eed88d4": "4930ab73",
+    "4c4a6fd9": "4930ab73",
+    "cd8a7cd4": "4930ab73",
+    "78cde6f8": "270079db",
+    "ec0e9f46": "270079db",
+    "32ef3283": "270079db",
+    "f83149cb": "270079db",
+    "227e1f37": "270079db",
+    "b331ee55": "270079db",
+    "552d2f38": "270079db",
+    "2dd1f2c1": "270079db",
+    "539d5a99": "270079db",
+    "02588414": "270079db",
+    "2ad20dd0": "270079db",
+    "54ef64ba": "270079db",
+    "475d002b": "270079db",
+    "2290fede": "4270f7fd",
+    "21009d69": "4270f7fd",
+    "683186b7": "4270f7fd",
+    "d5bb5b53": "4270f7fd",
+    "def24b60": "4270f7fd",
+    "c04f8724": "4270f7fd",
+    "564e2c5f": "4270f7fd",
+    "51d6869a": "4270f7fd",
+    "8947b787": "4270f7fd",
+    "ac6df125": "4270f7fd",
+    "bd510c9b": "4270f7fd",
+    "5b082e3c": "4270f7fd",
+    "6b2e4b93": "4270f7fd"
+  }
+}

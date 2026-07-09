@@ -1,1 +1,458 @@
-{"uuid":"74ba3d03-3850-4a70-9476-ae571a226506","name":"Peter Kalabun","gender":"Men","sports":{"Basketball":{"gp":30,"pts":324,"fouls":31,"fg":92,"ft":44,"threePt":4,"foulOuts":{},"maxGamePTS":28,"maxGameThreePt":2,"wins":30,"losses":16,"draws":3,"winPct":0.61,"statsChecked":"2026-07-09T18:31:14.665Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"7e077d54","tn":"Ball Hogs","gid":"2d576243","gn":"Wednesday Open Men Section 4","age":"Senior","div":null,"stats":{"gp":15,"fouls":17,"ft":19,"fg":38,"threePt":1,"pts":154,"wins":3,"losses":10}},{"tid":"aee9350a","stats":{"wins":9,"losses":2,"draws":1,"gp":14,"pts":160,"fg":49,"ft":25,"threePt":3,"fouls":13}},{"tid":"aee9350a","tn":"","gid":"b666d6af","gn":"Thursday Open Men Section 02","div":null,"stats":{"gp":14,"pts":160,"fg":49,"ft":25,"threePt":3,"fouls":13,"wins":9,"losses":2,"draws":1}}]},{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"aee9350a","tn":"Car Park Kings","gid":"b666d6af","gn":"Thursday Open Men Section 02","age":"Senior","div":null,"stats":{"gp":14,"fouls":13,"ft":25,"fg":49,"threePt":3,"pts":160,"wins":9,"losses":2,"draws":1}}]},{"sid":"297562bc","sn":"Spring 2026","club":"Waverley Basketball Association","regs":[{"tid":"9ba4797a","tn":"","gid":"1d02bb5d","gn":"Thursday Open Men Section 1","div":null,"stats":{"gp":1,"pts":10,"fg":5,"fouls":1}}]}],"updatedAt":"2026-07-09T18:08:12.290Z","teams":[{"tid":"7e077d54","sid":"5593103d","status":"ACTIVE"},{"tid":"aee9350a","sid":"5593103d","status":"ACTIVE"},{"tid":"abce007e","sid":"fab2be4d","status":"COMPLETED"},{"tid":"c9dc84d9","sid":"76897951","status":"COMPLETED"},{"tid":"b427d490","sid":"76897951","status":"COMPLETED"},{"tid":"994b1462","sid":"348dbfb8","status":"COMPLETED"},{"tid":"d75c3dc9","sid":"348dbfb8","status":"COMPLETED"},{"tid":"f68ad15d","sid":"9358e51a","status":"COMPLETED"},{"tid":"62791067","sid":"9358e51a","status":"COMPLETED"},{"tid":"800ee8f3","sid":"d3d4e181","status":"COMPLETED"},{"tid":"95767369","sid":"d3d4e181","status":"COMPLETED"},{"tid":"22eb8d61","sid":"21cd9648","status":"COMPLETED"},{"tid":"a70da60f","sid":"21cd9648","status":"COMPLETED"},{"tid":"eeed8b31","sid":"d4cbf787","status":"COMPLETED"},{"tid":"d7aa77f0","sid":"d64fcfce","status":"COMPLETED"},{"tid":"b24d8844","sid":"afd26581","status":"COMPLETED"},{"tid":"59d1e2db","sid":"922f0463","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:52:00.588Z","records":{"maxGamePTS":{"v":28,"gameKey":"a3b4a964","sid":"5593103d"},"maxGameThreePt":{"v":2,"gameKey":"f3f25914","sid":"5593103d"}},"games":["09e4ac5a","13ab43d4","2b2bb936","2b42441c","2d6431ad","3052febd","3f4a6e89","42822fc0","5f980511","66383a0b","6ce6c633","76ec250d","78964910","804d2d5c","84ee9adc","91438a44","94e34215","9dcdbf21","9ff5e3ba","a3b4a964","b8fce957","c4e8a61d","d17dc9d9","f0284493","f3f25914"],"gameTids":{"78964910":"7e077d54","d9a2923f":"9ba4797a","2843a2ef":"7e077d54","c41fc2aa":"7e077d54","2d6431ad":"7e077d54","2b42441c":"7e077d54","09e4ac5a":"7e077d54","76ec250d":"7e077d54","b8fce957":"7e077d54","84ee9adc":"7e077d54","3052febd":"7e077d54","6ce6c633":"7e077d54","804d2d5c":"7e077d54","f0284493":"7e077d54","94e34215":"7e077d54","5f980511":"7e077d54","91438a44":"aee9350a","42822fc0":"aee9350a","28784cc3":"aee9350a","a08feb5a":"aee9350a","a3b4a964":"aee9350a","3f4a6e89":"aee9350a","c4e8a61d":"aee9350a","13ab43d4":"aee9350a","66383a0b":"aee9350a","9dcdbf21":"aee9350a","f3f25914":"aee9350a","9ff5e3ba":"aee9350a","d17dc9d9":"aee9350a","2b2bb936":"aee9350a"}}
+{
+  "uuid": "74ba3d03-3850-4a70-9476-ae571a226506",
+  "name": "Peter Kalabun",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 324,
+      "fouls": 31,
+      "fg": 92,
+      "ft": 44,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 28,
+      "maxGameThreePt": 2,
+      "wins": 30,
+      "losses": 16,
+      "draws": 3,
+      "winPct": 0.61,
+      "statsChecked": "2026-07-09T18:31:14.665Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "7e077d54",
+          "tn": "Ball Hogs",
+          "gid": "2d576243",
+          "gn": "Wednesday Open Men Section 4",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 19,
+            "fg": 38,
+            "threePt": 1,
+            "pts": 154,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "aee9350a",
+          "stats": {
+            "wins": 9,
+            "losses": 2,
+            "draws": 1,
+            "gp": 14,
+            "pts": 160,
+            "fg": 49,
+            "ft": 25,
+            "threePt": 3,
+            "fouls": 13
+          },
+          "gid": "b666d6af",
+          "gn": "Thursday Open Men Section 02"
+        },
+        {
+          "tid": "aee9350a",
+          "tn": "",
+          "gid": "b666d6af",
+          "gn": "Thursday Open Men Section 02",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 160,
+            "fg": 49,
+            "ft": 25,
+            "threePt": 3,
+            "fouls": 13,
+            "wins": 9,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "aee9350a",
+          "tn": "Car Park Kings",
+          "gid": "b666d6af",
+          "gn": "Thursday Open Men Section 02",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 13,
+            "ft": 25,
+            "fg": 49,
+            "threePt": 3,
+            "pts": 160,
+            "wins": 9,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "club": "Waverley Basketball Association",
+      "regs": [
+        {
+          "tid": "9ba4797a",
+          "tn": "",
+          "gid": "1d02bb5d",
+          "gn": "Thursday Open Men Section 1",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "abce007e",
+          "tn": "Ball Hogs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "c9dc84d9",
+          "tn": "Ball Hogs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "b427d490",
+          "tn": "Car Park Kings",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "994b1462",
+          "tn": "Ball Hogs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "d75c3dc9",
+          "tn": "CAR PARK KINGS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "f68ad15d",
+          "tn": "Ball Hogs",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "62791067",
+          "tn": "CAR PARK KINGS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "800ee8f3",
+          "tn": "Ball Hogs",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "95767369",
+          "tn": "Malvern Tigers Senior Men Couldabeens",
+          "gid": "6223c363",
+          "gn": "AUTUMN Thursday Senior Men Over 35s",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "22eb8d61",
+          "tn": "Just Play Bulls",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "a70da60f",
+          "tn": "Malvern Tigers Senior Men Couldabeens",
+          "gid": "3bb8ccdf",
+          "gn": "SPRING Thursday Senior Men Over 35s",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "eeed8b31",
+          "tn": "Malvern Tigers Senior Men Couldabeens",
+          "gid": "2157b5f2",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "d7aa77f0",
+          "tn": "Malvern Tigers Open Men Couldabeens",
+          "gid": "51fd1d92",
+          "gn": "Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "b24d8844",
+          "tn": "Malvern Tigers Couldabeens",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "59d1e2db",
+          "tn": "Couldabeens",
+          "gid": "3ac7dfd1",
+          "gn": "Thursday Open Men O'35s",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:08:12.290Z",
+  "teams": [
+    {
+      "tid": "7e077d54",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aee9350a",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ba4797a",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "abce007e",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c9dc84d9",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b427d490",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "994b1462",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d75c3dc9",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f68ad15d",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "62791067",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "800ee8f3",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "95767369",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22eb8d61",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a70da60f",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "eeed8b31",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d7aa77f0",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b24d8844",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59d1e2db",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.233Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 28,
+      "gameKey": "a3b4a964",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "f3f25914",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "09e4ac5a",
+    "13ab43d4",
+    "2b2bb936",
+    "2b42441c",
+    "2d6431ad",
+    "3052febd",
+    "3f4a6e89",
+    "42822fc0",
+    "5f980511",
+    "66383a0b",
+    "6ce6c633",
+    "76ec250d",
+    "78964910",
+    "804d2d5c",
+    "84ee9adc",
+    "91438a44",
+    "94e34215",
+    "9dcdbf21",
+    "9ff5e3ba",
+    "a3b4a964",
+    "b8fce957",
+    "c4e8a61d",
+    "d17dc9d9",
+    "f0284493",
+    "f3f25914"
+  ],
+  "gameTids": {
+    "78964910": "7e077d54",
+    "d9a2923f": "9ba4797a",
+    "2843a2ef": "7e077d54",
+    "c41fc2aa": "7e077d54",
+    "2d6431ad": "7e077d54",
+    "2b42441c": "7e077d54",
+    "09e4ac5a": "7e077d54",
+    "76ec250d": "7e077d54",
+    "b8fce957": "7e077d54",
+    "84ee9adc": "7e077d54",
+    "3052febd": "7e077d54",
+    "6ce6c633": "7e077d54",
+    "804d2d5c": "7e077d54",
+    "f0284493": "7e077d54",
+    "94e34215": "7e077d54",
+    "5f980511": "7e077d54",
+    "91438a44": "aee9350a",
+    "42822fc0": "aee9350a",
+    "28784cc3": "aee9350a",
+    "a08feb5a": "aee9350a",
+    "a3b4a964": "aee9350a",
+    "3f4a6e89": "aee9350a",
+    "c4e8a61d": "aee9350a",
+    "13ab43d4": "aee9350a",
+    "66383a0b": "aee9350a",
+    "9dcdbf21": "aee9350a",
+    "f3f25914": "aee9350a",
+    "9ff5e3ba": "aee9350a",
+    "d17dc9d9": "aee9350a",
+    "2b2bb936": "aee9350a"
+  }
+}

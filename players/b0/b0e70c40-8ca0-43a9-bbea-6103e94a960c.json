@@ -1,1 +1,328 @@
-{"uuid":"b0e70c40-8ca0-43a9-bbea-6103e94a960c","name":"Nathifa Deg","gender":"Girls","sports":{"Basketball":{"gp":66,"pts":162,"fouls":99,"fg":72,"ft":18,"foulOuts":{},"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.4,"maxGamePTS":10,"maxGameThreePt":null,"wins":55,"losses":69,"winPct":0.44,"draws":2,"statsChecked":"2026-07-05T15:11:46.414Z"}},"seasons":[{"sid":"9db4334a","sn":"Winter 2026","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"94ee4327","tn":"HBC U14 Girls BLACK - Coach Colin","gid":"ceadde4b","gn":"Saturday U14 Girls GRADING","age":"U14","div":null,"stats":{"gp":6,"fouls":4,"fg":8,"pts":16,"wins":5,"losses":1}}]},{"sid":"c279d5cf","sn":"Summer 2025/26","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"d7724552","tn":"HBC U14 Girls BLUE - Coach Chris","gid":"e257291c","gn":"Saturday U14 Girls B Grade","age":"U14","div":null,"stats":{"gp":16,"fouls":24,"ft":6,"fg":28,"pts":62,"finals":1,"gfApps":1,"wins":13,"losses":3}},{"tid":"d7724552","tn":"HBC U14 Girls BLUE - Coach Chris","gid":"71386550","gn":"Saturday U14 Girls GRADING","age":"U14","div":null,"stats":{"gp":16,"fouls":24,"ft":6,"fg":28,"pts":62,"finals":1,"gfApps":1,"wins":13,"losses":3}}]},{"sid":"788813cf","sn":"Winter 2025","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"dcccca2d","tn":"HBC U14 Girls ORANGE","gid":"2ecbbb1f","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":13,"fouls":16,"ft":7,"fg":12,"pts":31,"losses":8,"wins":4,"draws":1}},{"tid":"dcccca2d","tn":"HBC U14 Girls ORANGE","gid":"b2e5f218","gn":"Saturday U23 Girls Grading Green1","age":"U23","div":"n1","stats":{"gp":13,"fouls":16,"ft":7,"fg":12,"pts":31,"losses":8,"wins":4,"draws":1}}]},{"sid":"9af1c292","sn":"Summer 2024/25","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"1edb5b25","tn":"HBC U14 Girls ORANGE","gid":"5194f77a","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":14,"fouls":20,"fg":11,"pts":22,"wins":6,"losses":8}},{"tid":"1edb5b25","tn":"HBC U14 Girls ORANGE","gid":"afea4828","gn":"ZZ Saturday U14 Girls Green","age":"U14","div":null,"stats":{"gp":14,"fouls":20,"fg":11,"pts":22,"wins":6,"losses":8}}]},{"sid":"ebd7afa4","sn":"Winter 2024","club":"Craigieburn Hammers Basketball Club","regs":[{"tid":"ed9d9312","tn":"HBC U12 Girls Black","gid":"5dd56e72","gn":"Saturday U12 Girls A","age":"U12","div":null,"stats":{"gp":17,"fouls":35,"ft":5,"fg":13,"pts":31,"finals":1,"wins":2,"losses":15}},{"tid":"ed9d9312","tn":"HBC U12 Girls Black","gid":"d5a05d22","gn":"Saturday U12 Girls B","age":"U12","div":null,"stats":{"gp":17,"fouls":35,"fg":13,"pts":31,"finals":1,"wins":2,"losses":15,"ft":5}}]}],"updatedAt":"2026-06-02T00:48:27.132Z","teams":[{"tid":"94ee4327","sid":"9db4334a","status":"ACTIVE"},{"tid":"d7724552","sid":"c279d5cf","status":"COMPLETED"},{"tid":"dcccca2d","sid":"788813cf","status":"COMPLETED"},{"tid":"1edb5b25","sid":"9af1c292","status":"COMPLETED"},{"tid":"ed9d9312","sid":"ebd7afa4","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:05:39.361Z","records":{"maxGamePTS":{"v":10,"gameKey":"21270ea5","sid":"c279d5cf"},"maxGameThreePt":{"v":null}},"games":["0178b95f","08a6ba35","0adad9aa","0e033fac","19226213","1ad04a90","1d2038d3","1d413961","1e365314","21270ea5","2414614d","24902ad6","2bc9a503","2d1552fd","34f7249a","401b5957","4325dafa","4563964e","470c696c","509c8f3a","52972aac","57d21126","5a07881a","5f2b1962","6d247676","6dcd81b5","6e2ab920","70c0d2dc","72dd6a2c","76b4ffe7","7b95823f","7d030646","873a8507","8b4f2a75","8fa27dac","93bf16b1","9d6112c9","a540b952","a5bca98b","b4a40610","b644caf4","b8c78cf0","b9b9b085","bd341796","c12d2853","c5f035fa","c66abe9c","c8ecde96","d2bc0ecb","d50b4fc2","dad7ee65","e0098aa9","e06706ea","e2db7059","e827af99","e96d98cf","eac887aa","eb17e37a","eeea77f4","f15257c7","f27f2ba9","f4335415","f53e39c1","f6bfd640","fcd605a7","fee19813"]}
+{
+  "uuid": "b0e70c40-8ca0-43a9-bbea-6103e94a960c",
+  "name": "Nathifa Deg",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 162,
+      "fouls": 99,
+      "fg": 72,
+      "ft": 18,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 55,
+      "losses": 69,
+      "winPct": 0.44,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:11:46.414Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9db4334a",
+      "sn": "Winter 2026",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "94ee4327",
+          "tn": "HBC U14 Girls BLACK - Coach Colin",
+          "gid": "ee7cd541",
+          "gn": "Saturday U14 Girls A",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "fg": 8,
+            "pts": 16,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c279d5cf",
+      "sn": "Summer 2025/26",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "d7724552",
+          "tn": "HBC U14 Girls BLUE - Coach Chris",
+          "gid": "e257291c",
+          "gn": "Saturday U14 Girls B Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 6,
+            "fg": 28,
+            "pts": 62,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "d7724552",
+          "tn": "HBC U14 Girls BLUE - Coach Chris",
+          "gid": "71386550",
+          "gn": "Saturday U14 Girls GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 6,
+            "fg": 28,
+            "pts": 62,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "788813cf",
+      "sn": "Winter 2025",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "dcccca2d",
+          "tn": "HBC U14 Girls ORANGE",
+          "gid": "2ecbbb1f",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 7,
+            "fg": 12,
+            "pts": 31,
+            "losses": 8,
+            "wins": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "dcccca2d",
+          "tn": "HBC U14 Girls ORANGE",
+          "gid": "b2e5f218",
+          "gn": "Saturday U23 Girls Grading Green1",
+          "age": "U23",
+          "div": "n1",
+          "stats": {
+            "gp": 13,
+            "fouls": 16,
+            "ft": 7,
+            "fg": 12,
+            "pts": 31,
+            "losses": 8,
+            "wins": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9af1c292",
+      "sn": "Summer 2024/25",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "1edb5b25",
+          "tn": "HBC U14 Girls ORANGE",
+          "gid": "5194f77a",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 20,
+            "fg": 11,
+            "pts": 22,
+            "wins": 6,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "1edb5b25",
+          "tn": "HBC U14 Girls ORANGE",
+          "gid": "afea4828",
+          "gn": "ZZ Saturday U14 Girls Green",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 20,
+            "fg": 11,
+            "pts": 22,
+            "wins": 6,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ebd7afa4",
+      "sn": "Winter 2024",
+      "club": "Craigieburn Hammers Basketball Club",
+      "regs": [
+        {
+          "tid": "ed9d9312",
+          "tn": "HBC U12 Girls Black",
+          "gid": "5dd56e72",
+          "gn": "Saturday U12 Girls A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 35,
+            "ft": 5,
+            "fg": 13,
+            "pts": 31,
+            "finals": 1,
+            "wins": 2,
+            "losses": 15
+          }
+        },
+        {
+          "tid": "ed9d9312",
+          "tn": "HBC U12 Girls Black",
+          "gid": "d5a05d22",
+          "gn": "Saturday U12 Girls B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 35,
+            "fg": 13,
+            "pts": 31,
+            "finals": 1,
+            "wins": 2,
+            "losses": 15,
+            "ft": 5
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T00:48:27.132Z",
+  "teams": [
+    {
+      "tid": "94ee4327",
+      "sid": "9db4334a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d7724552",
+      "sid": "c279d5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dcccca2d",
+      "sid": "788813cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1edb5b25",
+      "sid": "9af1c292",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed9d9312",
+      "sid": "ebd7afa4",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.164Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "21270ea5",
+      "sid": "c279d5cf"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0178b95f",
+    "08a6ba35",
+    "0adad9aa",
+    "0e033fac",
+    "19226213",
+    "1ad04a90",
+    "1d2038d3",
+    "1d413961",
+    "1e365314",
+    "21270ea5",
+    "2414614d",
+    "24902ad6",
+    "2bc9a503",
+    "2d1552fd",
+    "34f7249a",
+    "401b5957",
+    "4325dafa",
+    "4563964e",
+    "470c696c",
+    "509c8f3a",
+    "52972aac",
+    "57d21126",
+    "5a07881a",
+    "5f2b1962",
+    "6d247676",
+    "6dcd81b5",
+    "6e2ab920",
+    "70c0d2dc",
+    "72dd6a2c",
+    "76b4ffe7",
+    "7b95823f",
+    "7d030646",
+    "873a8507",
+    "8b4f2a75",
+    "8fa27dac",
+    "93bf16b1",
+    "9d6112c9",
+    "a540b952",
+    "a5bca98b",
+    "b4a40610",
+    "b644caf4",
+    "b8c78cf0",
+    "b9b9b085",
+    "bd341796",
+    "c12d2853",
+    "c5f035fa",
+    "c66abe9c",
+    "c8ecde96",
+    "d2bc0ecb",
+    "d50b4fc2",
+    "dad7ee65",
+    "e0098aa9",
+    "e06706ea",
+    "e2db7059",
+    "e827af99",
+    "e96d98cf",
+    "eac887aa",
+    "eb17e37a",
+    "eeea77f4",
+    "f15257c7",
+    "f27f2ba9",
+    "f4335415",
+    "f53e39c1",
+    "f6bfd640",
+    "fcd605a7",
+    "fee19813"
+  ]
+}

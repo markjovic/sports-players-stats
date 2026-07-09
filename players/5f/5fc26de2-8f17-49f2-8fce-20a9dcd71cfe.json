@@ -1,1 +1,197 @@
-{"uuid":"5fc26de2-8f17-49f2-8fce-20a9dcd71cfe","name":"Flynn Marshall","gender":"Boys","sports":{"Basketball":{"gp":28,"pts":30,"fouls":25,"fg":15,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":8,"maxGameThreePt":null,"wins":22,"losses":15,"winPct":0.59,"statsChecked":"2026-07-05T15:23:07.239Z"}},"seasons":[{"sid":"3f1715bc","sn":"Winter 2026","club":"Mt Eliza Storm Basketball Club","regs":[{"tid":"33cbb2b3","tn":"Storm U16 Boys Cats","gid":"4d15e0ec","gn":"Wednesday U16 Boys Div 5","age":"U16","div":"Div 5","stats":{"gp":3,"fg":1,"pts":2,"wins":1,"losses":2}},{"tid":"573f7d5a","stats":{"wins":7,"losses":2,"gp":9,"pts":10,"fg":5,"fouls":12}}]},{"sid":"3f1715bc","sn":"Winter 2026","club":"Mt Eliza Storm Basketball Club","regs":[{"tid":"573f7d5a","tn":"Storm U14 Boys Phantoms","gid":"2f52bc1a","gn":"Thursday U14 Boys Div 6","age":"U14","div":"Div 6","stats":{"gp":9,"fouls":12,"fg":5,"pts":10,"wins":7,"losses":2}}]},{"sid":"f46c6951","sn":"Summer 2025/26","club":"Mt Eliza Storm Basketball Club","regs":[{"tid":"695a68f1","tn":"Storm U14 Boys Phantoms","gid":"674b6881","gn":"Thursday U14 Boys Div 6","age":"U14","div":"Div 6","stats":{"gp":16,"fouls":13,"fg":9,"pts":18,"finals":1,"wins":7,"losses":9}}]}],"updatedAt":"2026-06-01T17:24:09.915Z","teams":[{"tid":"573f7d5a","sid":"3f1715bc","status":"ACTIVE"},{"tid":"33cbb2b3","sid":"3f1715bc","status":"ACTIVE"},{"tid":"695a68f1","sid":"f46c6951","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:34:16.609Z","records":{"maxGamePTS":{"v":8,"gameKey":"4798c940","sid":"f46c6951"},"maxGameThreePt":{"v":null}},"games":["089b6b34","0a24a26f","0a24d3ac","22f6edcf","2b0b1ee8","30a9558e","369ebe4c","3bbe950d","4798c940","4d6d8891","63d86058","6eecfe3a","744c40a4","77eb4834","883df46f","98fa53f0","995cb918","a0daec51","a30a2239","aa0c0c09","aac1aff5","ab7c8d26","ad693016","b384d6ec","d3c23e93","d582d566","d6123347","e4599928"],"gameTids":{"744c40a4":"33cbb2b3","d6123347":"33cbb2b3","30a9558e":"33cbb2b3","0a24a26f":"573f7d5a","77eb4834":"573f7d5a","369ebe4c":"573f7d5a","aa0c0c09":"573f7d5a","63d86058":"573f7d5a","ab7c8d26":"573f7d5a","883df46f":"573f7d5a","98fa53f0":"573f7d5a","089b6b34":"573f7d5a","3bbe950d":"695a68f1","aac1aff5":"695a68f1","d3c23e93":"695a68f1","22f6edcf":"695a68f1","995cb918":"695a68f1","2b0b1ee8":"695a68f1","e4599928":"695a68f1","4798c940":"695a68f1","6eecfe3a":"695a68f1","a30a2239":"695a68f1","ad693016":"695a68f1","d582d566":"695a68f1","a0daec51":"695a68f1","0a24d3ac":"695a68f1","4d6d8891":"695a68f1","b384d6ec":"695a68f1"}}
+{
+  "uuid": "5fc26de2-8f17-49f2-8fce-20a9dcd71cfe",
+  "name": "Flynn Marshall",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 28,
+      "pts": 30,
+      "fouls": 25,
+      "fg": 15,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 22,
+      "losses": 15,
+      "winPct": 0.59,
+      "statsChecked": "2026-07-05T15:23:07.239Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Mt Eliza Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "33cbb2b3",
+          "tn": "Storm U16 Boys Cats",
+          "gid": "4d15e0ec",
+          "gn": "Wednesday U16 Boys Div 5",
+          "age": "U16",
+          "div": "Div 5",
+          "stats": {
+            "gp": 3,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "573f7d5a",
+          "stats": {
+            "wins": 7,
+            "losses": 2,
+            "gp": 9,
+            "pts": 10,
+            "fg": 5,
+            "fouls": 12
+          },
+          "gid": "2f52bc1a",
+          "gn": "Thursday U14 Boys Div 6"
+        }
+      ]
+    },
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Mt Eliza Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "573f7d5a",
+          "tn": "Storm U14 Boys Phantoms",
+          "gid": "2f52bc1a",
+          "gn": "Thursday U14 Boys Div 6",
+          "age": "U14",
+          "div": "Div 6",
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "fg": 5,
+            "pts": 10,
+            "wins": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f46c6951",
+      "sn": "Summer 2025/26",
+      "club": "Mt Eliza Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "695a68f1",
+          "tn": "Storm U14 Boys Phantoms",
+          "gid": "674b6881",
+          "gn": "Thursday U14 Boys Div 6",
+          "age": "U14",
+          "div": "Div 6",
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "fg": 9,
+            "pts": 18,
+            "finals": 1,
+            "wins": 7,
+            "losses": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T17:24:09.915Z",
+  "teams": [
+    {
+      "tid": "33cbb2b3",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "573f7d5a",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "695a68f1",
+      "sid": "f46c6951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.878Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "4798c940",
+      "sid": "f46c6951"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "089b6b34",
+    "0a24a26f",
+    "0a24d3ac",
+    "22f6edcf",
+    "2b0b1ee8",
+    "30a9558e",
+    "369ebe4c",
+    "3bbe950d",
+    "4798c940",
+    "4d6d8891",
+    "63d86058",
+    "6eecfe3a",
+    "744c40a4",
+    "77eb4834",
+    "883df46f",
+    "98fa53f0",
+    "995cb918",
+    "a0daec51",
+    "a30a2239",
+    "aa0c0c09",
+    "aac1aff5",
+    "ab7c8d26",
+    "ad693016",
+    "b384d6ec",
+    "d3c23e93",
+    "d582d566",
+    "d6123347",
+    "e4599928"
+  ],
+  "gameTids": {
+    "744c40a4": "33cbb2b3",
+    "d6123347": "33cbb2b3",
+    "30a9558e": "33cbb2b3",
+    "0a24a26f": "573f7d5a",
+    "77eb4834": "573f7d5a",
+    "369ebe4c": "573f7d5a",
+    "aa0c0c09": "573f7d5a",
+    "63d86058": "573f7d5a",
+    "ab7c8d26": "573f7d5a",
+    "883df46f": "573f7d5a",
+    "98fa53f0": "573f7d5a",
+    "089b6b34": "573f7d5a",
+    "3bbe950d": "695a68f1",
+    "aac1aff5": "695a68f1",
+    "d3c23e93": "695a68f1",
+    "22f6edcf": "695a68f1",
+    "995cb918": "695a68f1",
+    "2b0b1ee8": "695a68f1",
+    "e4599928": "695a68f1",
+    "4798c940": "695a68f1",
+    "6eecfe3a": "695a68f1",
+    "a30a2239": "695a68f1",
+    "ad693016": "695a68f1",
+    "d582d566": "695a68f1",
+    "a0daec51": "695a68f1",
+    "0a24d3ac": "695a68f1",
+    "4d6d8891": "695a68f1",
+    "b384d6ec": "695a68f1"
+  }
+}

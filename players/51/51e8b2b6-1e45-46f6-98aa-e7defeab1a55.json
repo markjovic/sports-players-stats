@@ -1,1 +1,78 @@
-{"uuid":"51e8b2b6-1e45-46f6-98aa-e7defeab1a55","name":"Gaylene McKay","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":null,"foulOuts":{},"gp":3,"pts":22,"fg":11,"fouls":2,"statsChecked":"2026-07-06T18:57:32.532Z"}},"seasons":[{"sid":"a69bdb4b","regs":[{"tid":"6d655521"},{"tid":"53c6c19b"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","gameTids":{"676a01b5":"6d655521","88f91178":"6d655521","5bbbff73":"53c6c19b"},"records":{"maxGamePTS":{"v":10,"gameKey":"5bbbff73","sid":"a69bdb4b"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "51e8b2b6-1e45-46f6-98aa-e7defeab1a55",
+  "name": "Gaylene McKay",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 3,
+      "pts": 22,
+      "fg": 11,
+      "fouls": 2,
+      "statsChecked": "2026-07-06T18:57:32.532Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a69bdb4b",
+      "regs": [
+        {
+          "tid": "6d655521",
+          "gid": "96ec81b7",
+          "gn": "Senior Women 50+ Handicapped"
+        },
+        {
+          "tid": "53c6c19b"
+        }
+      ]
+    },
+    {
+      "sid": "07e17ea8",
+      "sn": "Term 1, 2026",
+      "regs": [
+        {
+          "tid": "85e83032",
+          "tn": "Love the game",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "6d655521",
+      "sid": "a69bdb4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53c6c19b",
+      "sid": "a69bdb4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85e83032",
+      "sid": "07e17ea8",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "gameTids": {
+    "676a01b5": "6d655521",
+    "88f91178": "6d655521",
+    "5bbbff73": "53c6c19b"
+  },
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "5bbbff73",
+      "sid": "a69bdb4b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:10.937Z"
+}

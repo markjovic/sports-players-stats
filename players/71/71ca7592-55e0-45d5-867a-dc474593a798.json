@@ -1,1 +1,180 @@
-{"uuid":"71ca7592-55e0-45d5-867a-dc474593a798","name":"Evie Atkinson","gender":"Girls","sports":{"Basketball":{"gp":31,"pts":6,"fouls":71,"fg":3,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"26df4252":3,"8ff9f39e":2},"maxGamePTS":2,"maxGameThreePt":null,"wins":23,"losses":12,"draws":1,"winPct":0.64,"statsChecked":"2026-07-06T18:58:03.773Z"}},"seasons":[{"sid":"8ff9f39e","sn":"Winter 2026","club":"SEBC Saints","regs":[{"tid":"d17f9c8f","tn":"SEBC Saints G31","gid":"b3e6165a","gn":"Tuesday U10 Girls BRES","age":"U10","div":null,"stats":{"gp":9,"fouls":25,"foulOuts":2,"pts":2,"fg":1,"wins":5,"losses":4}},{"tid":"d17f9c8f","tn":"SEBC Saints G31","gid":"2451707b","gn":"Tuesday U10 Girls C","age":"U10","div":null,"stats":{"gp":9,"fouls":25,"wins":5,"losses":4,"pts":2,"fg":1}}]},{"sid":"e26f328b","sn":"Summer 2025/26","club":"SEBC Saints","regs":[{"tid":"f9c90c02","tn":"SEBC Saints G34","gid":"10c29b9e","gn":"Tuesday U10 Girls C","age":"U10","div":null,"stats":{"gp":18,"fouls":27,"fg":2,"pts":4,"finals":1,"gfApps":1,"wins":13,"losses":4,"draws":1,"gfWins":1}}]},{"sid":"26df4252","regs":[{"tid":"f1482854","stats":{"gp":4,"fouls":19}},{"tid":"f1482854","tn":"","gid":"653749ac","gn":"U12 Girls Division 6","div":null,"stats":{"gp":4,"fouls":19}}]}],"updatedAt":"2026-07-06T18:34:21.619Z","teams":[{"tid":"d17f9c8f","sid":"8ff9f39e","status":"ACTIVE"},{"tid":"f1482854","sid":"26df4252","status":"UPCOMING"},{"tid":"f9c90c02","sid":"e26f328b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:58.274Z","records":{"maxGamePTS":{"v":2,"gameKey":"34fd5c5a","sid":"8ff9f39e"},"maxGameThreePt":{"v":null}},"games":["045985c8","04688051","090d3ffc","09bb9b13","1a477298","299a8ab3","2f8d8b8c","34fd5c5a","416d9069","4700993f","4f62adea","503d4a01","52de5618","642b0616","702cd8b9","713f4a37","8554eb95","8df5ca0d","ade3f771","beefa9a7","c17f0c41","c7a8eb00","c8ea88a0","ca7fda69","e0c5e433","ebe92b7d","fe693408"]}
+{
+  "uuid": "71ca7592-55e0-45d5-867a-dc474593a798",
+  "name": "Evie Atkinson",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 6,
+      "fouls": 71,
+      "fg": 3,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "26df4252": 3,
+        "8ff9f39e": 2
+      },
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 23,
+      "losses": 12,
+      "draws": 1,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-06T18:58:03.773Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8ff9f39e",
+      "sn": "Winter 2026",
+      "club": "SEBC Saints",
+      "regs": [
+        {
+          "tid": "d17f9c8f",
+          "tn": "SEBC Saints G31",
+          "gid": "b3e6165a",
+          "gn": "Tuesday U10 Girls BRES",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 25,
+            "foulOuts": 2,
+            "pts": 2,
+            "fg": 1,
+            "wins": 5,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "d17f9c8f",
+          "tn": "SEBC Saints G31",
+          "gid": "2451707b",
+          "gn": "Tuesday U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 25,
+            "wins": 5,
+            "losses": 4,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e26f328b",
+      "sn": "Summer 2025/26",
+      "club": "SEBC Saints",
+      "regs": [
+        {
+          "tid": "f9c90c02",
+          "tn": "SEBC Saints G34",
+          "gid": "10c29b9e",
+          "gn": "Tuesday U10 Girls C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 27,
+            "fg": 2,
+            "pts": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 4,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "f1482854",
+          "stats": {
+            "gp": 4,
+            "fouls": 19
+          },
+          "gid": "653749ac",
+          "gn": "U12 Girls Division 6"
+        },
+        {
+          "tid": "f1482854",
+          "tn": "",
+          "gid": "653749ac",
+          "gn": "U12 Girls Division 6",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 19
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:21.619Z",
+  "teams": [
+    {
+      "tid": "d17f9c8f",
+      "sid": "8ff9f39e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9c90c02",
+      "sid": "e26f328b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1482854",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.049Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "34fd5c5a",
+      "sid": "8ff9f39e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "045985c8",
+    "04688051",
+    "090d3ffc",
+    "09bb9b13",
+    "1a477298",
+    "299a8ab3",
+    "2f8d8b8c",
+    "34fd5c5a",
+    "416d9069",
+    "4700993f",
+    "4f62adea",
+    "503d4a01",
+    "52de5618",
+    "642b0616",
+    "702cd8b9",
+    "713f4a37",
+    "8554eb95",
+    "8df5ca0d",
+    "ade3f771",
+    "beefa9a7",
+    "c17f0c41",
+    "c7a8eb00",
+    "c8ea88a0",
+    "ca7fda69",
+    "e0c5e433",
+    "ebe92b7d",
+    "fe693408"
+  ]
+}

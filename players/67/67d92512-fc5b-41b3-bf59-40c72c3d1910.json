@@ -1,1 +1,83 @@
-{"uuid":"67d92512-fc5b-41b3-bf59-40c72c3d1910","name":"Darcy White","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":1,"foulOuts":{"796936f7":1},"gp":39,"pts":151,"fg":67,"ft":2,"threePt":5,"fouls":43,"statsChecked":"2026-07-08T17:52:19.757Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"b506855d"}]},{"sid":"796936f7","regs":[{"tid":"bcd5bff9"}]},{"sid":"880bda3c","regs":[{"tid":"566b03b0"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":15,"gameKey":"ab60922f","sid":"880bda3c"},"maxGameThreePt":{"v":1,"gameKey":"f3313170","sid":"796936f7"}}}
+{
+  "uuid": "67d92512-fc5b-41b3-bf59-40c72c3d1910",
+  "name": "Darcy White",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "796936f7": 1
+      },
+      "gp": 39,
+      "pts": 151,
+      "fg": 67,
+      "ft": 2,
+      "threePt": 5,
+      "fouls": 43,
+      "statsChecked": "2026-07-08T17:52:19.757Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "b506855d",
+          "gid": "7edb93b5",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "bcd5bff9",
+          "gid": "8e5fec03",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "566b03b0",
+          "gid": "a6ebcb14",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "b506855d",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bcd5bff9",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "566b03b0",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "ab60922f",
+      "sid": "880bda3c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "f3313170",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:12.373Z"
+}

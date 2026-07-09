@@ -1,1 +1,104 @@
-{"uuid":"97f58011-2c0d-4b2d-8dc6-8f1bd0059978","gender":null,"sports":{"Basketball":{"gp":11,"pts":7,"fouls":4,"fg":1,"ft":2,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":1,"wins":8,"losses":3,"winPct":0.73,"statsChecked":"2026-07-05T16:14:50.988Z"}},"seasons":[{"sid":"bf57913c","sn":"Summer 2021/22","club":"Saints Basketball Club (Bacchus Marsh)","regs":[{"tid":"cc474ee3","tn":"Saints U16.2 Boys","gid":"18bf626b","gn":"Tuesday U16 Boys B Grade","stats":{"gp":11,"pts":7,"fouls":4,"fg":1,"ft":2,"threePt":1,"finals":1,"wins":8,"losses":3}}]}],"updatedAt":"2026-06-11T23:42:39.744Z","games":["08c496f8","1c86777b","1d6bf0cd","3a2851db","5e712d10","646440be","69528507","7b5099e8","a8602c66","b1d5e399","c6f3c47f"],"records":{"maxGamePTS":{"v":4,"gameKey":"a8602c66","sid":"bf57913c"},"maxGameThreePt":{"v":1,"gameKey":"b1d5e399","sid":"bf57913c"}},"name":"Summer 2021/22"}
+{
+  "uuid": "97f58011-2c0d-4b2d-8dc6-8f1bd0059978",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 7,
+      "fouls": 4,
+      "fg": 1,
+      "ft": 2,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 3,
+      "winPct": 0.73,
+      "statsChecked": "2026-07-05T16:14:50.988Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "bf57913c",
+      "sn": "Summer 2021/22",
+      "club": "Saints Basketball Club (Bacchus Marsh)",
+      "regs": [
+        {
+          "tid": "cc474ee3",
+          "tn": "Saints U16.2 Boys",
+          "gid": "18bf626b",
+          "gn": "Tuesday U16 Boys B Grade",
+          "stats": {
+            "gp": 11,
+            "pts": 7,
+            "fouls": 4,
+            "fg": 1,
+            "ft": 2,
+            "threePt": 1,
+            "finals": 1,
+            "wins": 8,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f3feacd1",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "6211536b",
+          "tn": "Saints U16.3 Boys",
+          "gid": "4c045530",
+          "gn": "Tuesday U16 Boys B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:39.744Z",
+  "games": [
+    "08c496f8",
+    "1c86777b",
+    "1d6bf0cd",
+    "3a2851db",
+    "5e712d10",
+    "646440be",
+    "69528507",
+    "7b5099e8",
+    "a8602c66",
+    "b1d5e399",
+    "c6f3c47f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "a8602c66",
+      "sid": "bf57913c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "b1d5e399",
+      "sid": "bf57913c"
+    }
+  },
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "cc474ee3",
+      "sid": "bf57913c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6211536b",
+      "sid": "f3feacd1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.036Z"
+}

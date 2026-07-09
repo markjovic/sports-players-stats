@@ -1,1 +1,86 @@
-{"uuid":"83d9ade5-a30a-41cb-b87d-1707a62ed28c","name":"Kylie Peiris","gender":"Girls","sports":{"Basketball":{"gp":9,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":1,"losses":8,"winPct":0.11,"statsChecked":"2026-07-05T14:28:40.368Z"}},"seasons":[{"sid":"cb7b1f18","sn":"Summer 2025/26","club":"Narre Warren Basketball Club","regs":[{"tid":"a3d0d2e5","tn":"NWBC U10 Girls Warriors","gid":"9d82a63c","gn":"Saturday U10 Girls C1 Grade","age":"U10","div":null,"stats":{"gp":8,"wins":1,"losses":7}}]},{"sid":"3f8e0029","regs":[{"tid":"52b0d3e4","stats":{"gp":1,"losses":1}}]}],"updatedAt":"2026-05-30T19:19:19.487Z","teams":[{"tid":"52b0d3e4","sid":"3f8e0029","status":"ACTIVE"},{"tid":"a3d0d2e5","sid":"cb7b1f18","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:24:15.276Z","games":["3347082f","4275bc01","4a006876","4c8b0111","51eef6f6","7ba8eebb","93f7c1c2","ad701975","f2f85f6a"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "83d9ade5-a30a-41cb-b87d-1707a62ed28c",
+  "name": "Kylie Peiris",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 8,
+      "winPct": 0.11,
+      "statsChecked": "2026-07-05T14:28:40.368Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cb7b1f18",
+      "sn": "Summer 2025/26",
+      "club": "Narre Warren Basketball Club",
+      "regs": [
+        {
+          "tid": "a3d0d2e5",
+          "tn": "NWBC U10 Girls Warriors",
+          "gid": "9d82a63c",
+          "gn": "Saturday U10 Girls C1 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "wins": 1,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3f8e0029",
+      "regs": [
+        {
+          "tid": "52b0d3e4",
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          },
+          "gid": "78412871",
+          "gn": "Saturday U12 Girls C2 Grade"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-30T19:19:19.487Z",
+  "teams": [
+    {
+      "tid": "a3d0d2e5",
+      "sid": "cb7b1f18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52b0d3e4",
+      "sid": "3f8e0029",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.222Z",
+  "games": [
+    "3347082f",
+    "4275bc01",
+    "4a006876",
+    "4c8b0111",
+    "51eef6f6",
+    "7ba8eebb",
+    "93f7c1c2",
+    "ad701975",
+    "f2f85f6a"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

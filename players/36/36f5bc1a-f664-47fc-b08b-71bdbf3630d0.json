@@ -1,1 +1,102 @@
-{"uuid":"36f5bc1a-f664-47fc-b08b-71bdbf3630d0","name":"Airlee Hickson","gender":"Girls","sports":{"Basketball":{"gp":10,"pts":46,"fouls":25,"fg":21,"ft":4,"foulOuts":{"0869ea69":1},"maxGamePTS":9,"maxGameThreePt":null,"wins":2,"losses":7,"winPct":0.22,"statsChecked":"2026-07-05T14:40:43.174Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"673e7837","tn":"Forestville Eagles U16 Girls Alan","gid":"451ecdc4","gn":"GIRLS UNDER 16 C2","age":null,"div":"C2","stats":{"gp":5,"pts":19,"fg":9,"ft":1,"fouls":8,"wins":1,"losses":4}}]},{"sid":"0869ea69","regs":[{"tid":"86c41fd1","stats":{"wins":1,"losses":3,"gp":5,"pts":27,"fg":12,"ft":3,"fouls":17}}]}],"updatedAt":"2026-05-31T01:19:46.813Z","teams":[{"tid":"86c41fd1","sid":"0869ea69","status":"UPCOMING"},{"tid":"673e7837","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:15:12.229Z","records":{"maxGamePTS":{"v":9,"gameKey":"4c73346b","sid":"6dd649c0"},"maxGameThreePt":{"v":null}},"games":["0b4e9a49","33b88c29","3df70ead","4c73346b","69ad568c","808cbef7","add0ab98","ce93287d","f92755df"]}
+{
+  "uuid": "36f5bc1a-f664-47fc-b08b-71bdbf3630d0",
+  "name": "Airlee Hickson",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 46,
+      "fouls": 25,
+      "fg": 21,
+      "ft": 4,
+      "foulOuts": {
+        "0869ea69": 1
+      },
+      "maxGamePTS": 9,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 7,
+      "winPct": 0.22,
+      "statsChecked": "2026-07-05T14:40:43.174Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "673e7837",
+          "tn": "Forestville Eagles U16 Girls Alan",
+          "gid": "451ecdc4",
+          "gn": "GIRLS UNDER 16 C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 5,
+            "pts": 19,
+            "fg": 9,
+            "ft": 1,
+            "fouls": 8,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "86c41fd1",
+          "stats": {
+            "wins": 1,
+            "losses": 3,
+            "gp": 5,
+            "pts": 27,
+            "fg": 12,
+            "ft": 3,
+            "fouls": 17
+          },
+          "gid": "70de113d",
+          "gn": "GIRLS UNDER 16 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:19:46.813Z",
+  "teams": [
+    {
+      "tid": "673e7837",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "86c41fd1",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.377Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "4c73346b",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b4e9a49",
+    "33b88c29",
+    "3df70ead",
+    "4c73346b",
+    "69ad568c",
+    "808cbef7",
+    "add0ab98",
+    "ce93287d",
+    "f92755df"
+  ]
+}

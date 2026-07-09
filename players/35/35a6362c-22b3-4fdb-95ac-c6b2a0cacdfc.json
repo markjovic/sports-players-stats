@@ -1,1 +1,238 @@
-{"uuid":"35a6362c-22b3-4fdb-95ac-c6b2a0cacdfc","name":"Alice Hand","gender":"Girls","sports":{"Basketball":{"gp":38,"pts":181,"fouls":67,"fg":81,"ft":19,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":null,"wins":26,"losses":21,"draws":3,"winPct":0.52,"statsChecked":"2026-07-05T14:25:57.688Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Eltham Wildcats Basketball Club","regs":[{"tid":"aa40a1aa","tn":"Eltham U15 Girls 11","gid":"590a217a","gn":"Girls U15 C Grading","age":"U15","div":null,"stats":{"gp":7,"pts":26,"fg":12,"ft":2,"fouls":11,"losses":4,"draws":1}}]},{"sid":"310d356a","sn":"2026","regs":[{"tid":"1ff7c7de","tn":"Eltham Domestic Girls","gid":"b768be1a","gn":"U16 Girls E Grade","age":"U16","div":null,"stats":{"gp":5,"pts":8,"fg":3,"ft":2,"fouls":7,"finals":1,"wins":3,"losses":2}}]},{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"4488494e","tn":"Eltham Sat G16.Tournament","gid":"48115282","gn":"U16 Girls C6 Central (Eltham)","age":"U16","div":null,"stats":{"gp":6,"pts":13,"fg":5,"ft":3,"fouls":18,"wins":2,"losses":4}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Eltham Wildcats Basketball Club","regs":[{"tid":"de588f62","tn":"Eltham U14 Girls 20","gid":"0cd48dc2","gn":"Girls U14 D3","age":"U14","div":"D3","stats":{"gp":15,"pts":126,"fg":57,"ft":12,"fouls":27,"finals":1,"wins":9,"losses":5,"draws":1}},{"tid":"de588f62","tn":"Eltham U14 Girls 20","gid":"36af858f","gn":"Girls U14 D Grading","age":"U14","div":null,"stats":{"gp":15,"pts":126,"fg":57,"ft":12,"fouls":27,"finals":1,"wins":9,"losses":5,"draws":1}}]},{"sid":"0869ea69","regs":[{"tid":"5dab5144","stats":{"wins":3,"losses":1,"gp":5,"pts":8,"fg":4,"fouls":4}}]}],"updatedAt":"2026-06-01T20:41:42.812Z","teams":[{"tid":"aa40a1aa","sid":"1ae60211","status":"ACTIVE"},{"tid":"5dab5144","sid":"0869ea69","status":"UPCOMING"},{"tid":"de588f62","sid":"88026885","status":"COMPLETED"},{"tid":"1ff7c7de","sid":"310d356a","status":"COMPLETED"},{"tid":"4488494e","sid":"6b0cab9c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:20:00.085Z","records":{"maxGamePTS":{"v":18,"gameKey":"85f392c7","sid":"88026885"},"maxGameThreePt":{"v":null}},"games":["0a367e02","0deb1818","144793d8","1888e446","29ac2104","2a47a430","2b5dbe9f","3301fa6d","374ddb3d","4c5369a9","50fc4341","5ba03b19","65263056","68dc17df","6f552ee6","75858a22","81be326f","82b18886","85f392c7","87a20e6d","91283590","94bba940","94cff801","9f03b925","a2b6320b","a4a9fb95","a51d1a1c","c52b75da","d1edd7fb","dd306ce6","e22c26e2","ee6e6e9c","f27ae50f","f5e5e9b9","fd16b5ee"]}
+{
+  "uuid": "35a6362c-22b3-4fdb-95ac-c6b2a0cacdfc",
+  "name": "Alice Hand",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 38,
+      "pts": 181,
+      "fouls": 67,
+      "fg": 81,
+      "ft": 19,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": null,
+      "wins": 26,
+      "losses": 21,
+      "draws": 3,
+      "winPct": 0.52,
+      "statsChecked": "2026-07-05T14:25:57.688Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Eltham Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "aa40a1aa",
+          "tn": "Eltham U15 Girls 11",
+          "gid": "7733a935",
+          "gn": "Girls U15 C4",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 26,
+            "fg": 12,
+            "ft": 2,
+            "fouls": 11,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "310d356a",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "1ff7c7de",
+          "tn": "Eltham Domestic Girls",
+          "gid": "b768be1a",
+          "gn": "U16 Girls E Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 8,
+            "fg": 3,
+            "ft": 2,
+            "fouls": 7,
+            "finals": 1,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "4488494e",
+          "tn": "Eltham Sat G16.Tournament",
+          "gid": "48115282",
+          "gn": "U16 Girls C6 Central (Eltham)",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 13,
+            "fg": 5,
+            "ft": 3,
+            "fouls": 18,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Eltham Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "de588f62",
+          "tn": "Eltham U14 Girls 20",
+          "gid": "0cd48dc2",
+          "gn": "Girls U14 D3",
+          "age": "U14",
+          "div": "D3",
+          "stats": {
+            "gp": 15,
+            "pts": 126,
+            "fg": 57,
+            "ft": 12,
+            "fouls": 27,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "de588f62",
+          "tn": "Eltham U14 Girls 20",
+          "gid": "36af858f",
+          "gn": "Girls U14 D Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 126,
+            "fg": 57,
+            "ft": 12,
+            "fouls": 27,
+            "finals": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "5dab5144",
+          "stats": {
+            "wins": 3,
+            "losses": 1,
+            "gp": 5,
+            "pts": 8,
+            "fg": 4,
+            "fouls": 4
+          },
+          "gid": "04fdf997",
+          "gn": "GIRLS UNDER 16 D"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:41:42.812Z",
+  "teams": [
+    {
+      "tid": "aa40a1aa",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ff7c7de",
+      "sid": "310d356a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4488494e",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de588f62",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5dab5144",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.135Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "85f392c7",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0a367e02",
+    "0deb1818",
+    "144793d8",
+    "1888e446",
+    "29ac2104",
+    "2a47a430",
+    "2b5dbe9f",
+    "3301fa6d",
+    "374ddb3d",
+    "4c5369a9",
+    "50fc4341",
+    "5ba03b19",
+    "65263056",
+    "68dc17df",
+    "6f552ee6",
+    "75858a22",
+    "81be326f",
+    "82b18886",
+    "85f392c7",
+    "87a20e6d",
+    "91283590",
+    "94bba940",
+    "94cff801",
+    "9f03b925",
+    "a2b6320b",
+    "a4a9fb95",
+    "a51d1a1c",
+    "c52b75da",
+    "d1edd7fb",
+    "dd306ce6",
+    "e22c26e2",
+    "ee6e6e9c",
+    "f27ae50f",
+    "f5e5e9b9",
+    "fd16b5ee"
+  ]
+}

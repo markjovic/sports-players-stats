@@ -1,1 +1,388 @@
-{"uuid":"08efb2ed-6dfb-4724-8d50-2c98d0552341","name":"2022","gender":null,"sports":{"Basketball":{"gp":50,"pts":201,"fouls":102,"fg":82,"ft":22,"threePt":5,"foulOuts":{"b387bcd4":1,"a5dfc5c1":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"maxGamePTS":11,"maxGameThreePt":1,"wins":52,"losses":32,"winPct":0.62,"statsChecked":"2026-07-05T16:20:52.698Z"}},"seasons":[{"sid":"09d640e4","sn":"2022","club":null,"regs":[{"tid":"d7807c9b","tn":"Melbourne G18.3","gid":"1fc97ddb","gn":"U18 Girls B Grade","stats":{"gp":4,"pts":18,"fouls":12,"fg":9,"wins":2,"losses":2}}]},{"sid":"b387bcd4","sn":"2022","club":"Melbourne Tigers Basketball Club","regs":[{"tid":"6cde779f","tn":"Melbourne U18 Girls 3","gid":"546b6ef2","gn":"18 Girls - VJL4","stats":{"gp":26,"pts":72,"fouls":47,"fg":28,"ft":10,"threePt":2,"foulOuts":1,"finals":1,"wins":12,"losses":7}},{"tid":"6cde779f","tn":"Melbourne U18 Girls 3","gid":"00ad682f","gn":"U18G Crossover 2 - VJL","stats":{"gp":26,"pts":72,"fouls":47,"fg":28,"finals":1,"wins":12,"losses":7,"ft":10,"threePt":2}},{"tid":"6cde779f","tn":"Melbourne U18 Girls 3","gid":"152c0d7d","gn":"U18 Girls Grading 2 - CC Pool B","stats":{"gp":26,"pts":72,"fouls":47,"fg":28,"ft":10,"finals":1,"wins":12,"losses":7,"threePt":2}},{"tid":"6cde779f","tn":"Melbourne U18 Girls 3","gid":"52350f37","gn":"U18 Girls Grading 1 - Pool 4C","stats":{"gp":26,"pts":72,"fouls":47,"fg":28,"ft":10,"finals":1,"wins":12,"losses":7,"threePt":2}}]},{"sid":"ceb7a2f2","sn":"2021","club":"Melbourne Tigers Basketball Club","regs":[{"tid":"5cc2fe4b","tn":"Melbourne U18 Girls 3","gid":"a05387a1","gn":"U18 Girls Division 2","stats":{"gp":4,"pts":19,"fouls":8,"fg":8,"threePt":1,"wins":2,"losses":2}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Melbourne Tigers Basketball Club","regs":[{"tid":"909d3a6c","tn":"Melbourne U18 Girls 4","gid":"9fbba6b0","gn":"18 Girls - VJL5 (P2)","stats":{"gp":16,"pts":92,"fouls":35,"fg":37,"ft":12,"threePt":2}},{"tid":"909d3a6c","tn":"Melbourne U18 Girls 4","gid":"252b2662","gn":"U18G Crossover 2 - VJL","stats":{"gp":16,"pts":92,"fouls":35,"fg":37,"ft":12,"threePt":2}},{"tid":"909d3a6c","tn":"Melbourne U18 Girls 4","gid":"3b2cf026","gn":"U18G Grading 2 - DD Pool D","stats":{"gp":16,"pts":92,"fouls":35,"fg":37,"threePt":2,"foulOuts":1,"ft":12}},{"tid":"909d3a6c","tn":"Melbourne U18 Girls 4","gid":"0800032e","gn":"U18G Crossover 1","stats":{"gp":16,"pts":92,"fouls":35,"fg":37,"ft":12,"threePt":2}},{"tid":"909d3a6c","tn":"Melbourne U18 Girls 4","gid":"23fbd184","gn":"U18G Grading 1 - Pool 4C","stats":{"gp":16,"pts":92,"fouls":35,"fg":37,"ft":12,"threePt":2}}]}],"updatedAt":"2026-06-11T23:36:02.405Z","records":{"maxGamePTS":{"v":11,"gameKey":"ad25ce2f","sid":"a5dfc5c1"},"maxGameThreePt":{"v":1,"gameKey":"dc631f8d","sid":"b387bcd4"}},"games":["181f456a","1a366cda","1dde22e3","2245ab4a","243a9b60","2960e1bc","3520a338","3aa37490","3aa8e0ef","3b8bfa03","3cb0a3f5","4477e24f","59907885","60080496","661d3bb7","7069d5a4","72daf29b","74589df9","75fdf1b4","77b52e04","78fdad66","8534d229","86bb0d2c","890716ab","8e6e5bb9","913c6345","920f14fd","95b3bd48","970b00ad","9bd79a0f","a430a339","acafc529","ad25ce2f","b18382ad","b20eccc6","bdf73fdf","c2966f02","cc68bd9b","cd746257","cf4f23e7","d213e374","d501cb24","d9e72bb7","dc631f8d","dc89707e","e11a57e7","e6f56213","e73436aa","f4b7ca75","fe644cb7"]}
+{
+  "uuid": "08efb2ed-6dfb-4724-8d50-2c98d0552341",
+  "name": "2022",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 201,
+      "fouls": 102,
+      "fg": 82,
+      "ft": 22,
+      "threePt": 5,
+      "foulOuts": {
+        "b387bcd4": 1,
+        "a5dfc5c1": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "maxGamePTS": 11,
+      "maxGameThreePt": 1,
+      "wins": 52,
+      "losses": 32,
+      "winPct": 0.62,
+      "statsChecked": "2026-07-05T16:20:52.698Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "09d640e4",
+      "sn": "2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "d7807c9b",
+          "tn": "Melbourne G18.3",
+          "gid": "1fc97ddb",
+          "gn": "U18 Girls B Grade",
+          "stats": {
+            "gp": 4,
+            "pts": 18,
+            "fouls": 12,
+            "fg": 9,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Melbourne Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "6cde779f",
+          "tn": "Melbourne U18 Girls 3",
+          "gid": "546b6ef2",
+          "gn": "18 Girls - VJL4",
+          "stats": {
+            "gp": 26,
+            "pts": 72,
+            "fouls": 47,
+            "fg": 28,
+            "ft": 10,
+            "threePt": 2,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 12,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "6cde779f",
+          "tn": "Melbourne U18 Girls 3",
+          "gid": "00ad682f",
+          "gn": "U18G Crossover 2 - VJL",
+          "stats": {
+            "gp": 26,
+            "pts": 72,
+            "fouls": 47,
+            "fg": 28,
+            "finals": 1,
+            "wins": 12,
+            "losses": 7,
+            "ft": 10,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "6cde779f",
+          "tn": "Melbourne U18 Girls 3",
+          "gid": "152c0d7d",
+          "gn": "U18 Girls Grading 2 - CC Pool B",
+          "stats": {
+            "gp": 26,
+            "pts": 72,
+            "fouls": 47,
+            "fg": 28,
+            "ft": 10,
+            "finals": 1,
+            "wins": 12,
+            "losses": 7,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "6cde779f",
+          "tn": "Melbourne U18 Girls 3",
+          "gid": "52350f37",
+          "gn": "U18 Girls Grading 1 - Pool 4C",
+          "stats": {
+            "gp": 26,
+            "pts": 72,
+            "fouls": 47,
+            "fg": 28,
+            "ft": 10,
+            "finals": 1,
+            "wins": 12,
+            "losses": 7,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ceb7a2f2",
+      "sn": "2021",
+      "club": "Melbourne Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "5cc2fe4b",
+          "tn": "Melbourne U18 Girls 3",
+          "gid": "a05387a1",
+          "gn": "U18 Girls Division 2",
+          "stats": {
+            "gp": 4,
+            "pts": 19,
+            "fouls": 8,
+            "fg": 8,
+            "threePt": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Melbourne Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "909d3a6c",
+          "tn": "Melbourne U18 Girls 4",
+          "gid": "9fbba6b0",
+          "gn": "18 Girls - VJL5 (P2)",
+          "stats": {
+            "gp": 16,
+            "pts": 92,
+            "fouls": 35,
+            "fg": 37,
+            "ft": 12,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "909d3a6c",
+          "tn": "Melbourne U18 Girls 4",
+          "gid": "252b2662",
+          "gn": "U18G Crossover 2 - VJL",
+          "stats": {
+            "gp": 16,
+            "pts": 92,
+            "fouls": 35,
+            "fg": 37,
+            "ft": 12,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "909d3a6c",
+          "tn": "Melbourne U18 Girls 4",
+          "gid": "3b2cf026",
+          "gn": "U18G Grading 2 - DD Pool D",
+          "stats": {
+            "gp": 16,
+            "pts": 92,
+            "fouls": 35,
+            "fg": 37,
+            "threePt": 2,
+            "foulOuts": 1,
+            "ft": 12
+          }
+        },
+        {
+          "tid": "909d3a6c",
+          "tn": "Melbourne U18 Girls 4",
+          "gid": "0800032e",
+          "gn": "U18G Crossover 1",
+          "stats": {
+            "gp": 16,
+            "pts": 92,
+            "fouls": 35,
+            "fg": 37,
+            "ft": 12,
+            "threePt": 2
+          }
+        },
+        {
+          "tid": "909d3a6c",
+          "tn": "Melbourne U18 Girls 4",
+          "gid": "23fbd184",
+          "gn": "U18G Grading 1 - Pool 4C",
+          "stats": {
+            "gp": 16,
+            "pts": 92,
+            "fouls": 35,
+            "fg": 37,
+            "ft": 12,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "eb1ab237",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "ed7d5a85",
+          "tn": "Mp firebirds",
+          "gid": "b59b5e8c",
+          "gn": "U18 Girls",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "59a334d9",
+      "sn": "Term 1, 2021",
+      "regs": [
+        {
+          "tid": "b1ebd236",
+          "tn": "MP Firebirds",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3bd06129",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "c47a2dc5",
+          "tn": "MP Firebirds",
+          "gid": "246ff405",
+          "gn": "Saturday U18 Girls Boston Celtics",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "4e7fe776",
+          "tn": "Melbourne U16 Girls 4",
+          "gid": "380a6238",
+          "gn": "U16 Girls VJL 4 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:02.405Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "ad25ce2f",
+      "sid": "a5dfc5c1"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "dc631f8d",
+      "sid": "b387bcd4"
+    }
+  },
+  "games": [
+    "181f456a",
+    "1a366cda",
+    "1dde22e3",
+    "2245ab4a",
+    "243a9b60",
+    "2960e1bc",
+    "3520a338",
+    "3aa37490",
+    "3aa8e0ef",
+    "3b8bfa03",
+    "3cb0a3f5",
+    "4477e24f",
+    "59907885",
+    "60080496",
+    "661d3bb7",
+    "7069d5a4",
+    "72daf29b",
+    "74589df9",
+    "75fdf1b4",
+    "77b52e04",
+    "78fdad66",
+    "8534d229",
+    "86bb0d2c",
+    "890716ab",
+    "8e6e5bb9",
+    "913c6345",
+    "920f14fd",
+    "95b3bd48",
+    "970b00ad",
+    "9bd79a0f",
+    "a430a339",
+    "acafc529",
+    "ad25ce2f",
+    "b18382ad",
+    "b20eccc6",
+    "bdf73fdf",
+    "c2966f02",
+    "cc68bd9b",
+    "cd746257",
+    "cf4f23e7",
+    "d213e374",
+    "d501cb24",
+    "d9e72bb7",
+    "dc631f8d",
+    "dc89707e",
+    "e11a57e7",
+    "e6f56213",
+    "e73436aa",
+    "f4b7ca75",
+    "fe644cb7"
+  ],
+  "teams": [
+    {
+      "tid": "d7807c9b",
+      "sid": "09d640e4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6cde779f",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5cc2fe4b",
+      "sid": "ceb7a2f2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "909d3a6c",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed7d5a85",
+      "sid": "eb1ab237",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1ebd236",
+      "sid": "59a334d9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c47a2dc5",
+      "sid": "3bd06129",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e7fe776",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.393Z"
+}

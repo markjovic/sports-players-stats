@@ -1,1 +1,107 @@
-{"uuid":"21ba2b29-d8f9-492c-8b26-02093c222aab","name":"Amelia Chao","gender":"Girls","sports":{"Basketball":{"gp":7,"pts":12,"fouls":2,"fg":6,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":12,"losses":2,"winPct":0.86,"statsChecked":"2026-07-05T14:53:59.742Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Glen Iris Scorpions Basketball Club","regs":[{"tid":"13c4dd40","tn":"Glen Iris Scorpions U10 Girls Nettleton","gid":"a2514d21","gn":"Saturday U10 Girls Section 05","age":"U10","div":null,"stats":{"gp":7,"pts":12,"fg":6,"fouls":2,"wins":6,"losses":1}},{"tid":"13c4dd40","tn":"Glen Iris Scorpions U10 Girls Nettleton","gid":"42d21282","gn":"Saturday U10 Girls Section 06","age":"U10","div":null,"stats":{"gp":7,"wins":6,"losses":1,"pts":12,"fg":6,"fouls":2}}]}],"updatedAt":"2026-07-04T05:52:50.883Z","teams":[{"tid":"13c4dd40","sid":"6c117270","status":"ACTIVE"},{"tid":"7648d094","sid":"68279835","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:05:49.713Z","records":{"maxGamePTS":{"v":4,"gameKey":"b5aa9eab","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["0a04a917","28d9cb27","5ef59e32","b5aa9eab","ec14a20a","f8424e3d","feddf3a1"]}
+{
+  "uuid": "21ba2b29-d8f9-492c-8b26-02093c222aab",
+  "name": "Amelia Chao",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 12,
+      "fouls": 2,
+      "fg": 6,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 12,
+      "losses": 2,
+      "winPct": 0.86,
+      "statsChecked": "2026-07-05T14:53:59.742Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Glen Iris Scorpions Basketball Club",
+      "regs": [
+        {
+          "tid": "13c4dd40",
+          "tn": "Glen Iris Scorpions U10 Girls Nettleton",
+          "gid": "d07e4e6d",
+          "gn": "Saturday U10 Girls Section 04",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 2,
+            "wins": 6,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "13c4dd40",
+          "tn": "Glen Iris Scorpions U10 Girls Nettleton",
+          "gid": "42d21282",
+          "gn": "Saturday U10 Girls Section 06",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "wins": 6,
+            "losses": 1,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "7648d094",
+          "tn": "Glen Iris Scorpions U10 Girls Gardiner",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:52:50.883Z",
+  "teams": [
+    {
+      "tid": "13c4dd40",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7648d094",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.053Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "b5aa9eab",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0a04a917",
+    "28d9cb27",
+    "5ef59e32",
+    "b5aa9eab",
+    "ec14a20a",
+    "f8424e3d",
+    "feddf3a1"
+  ]
+}

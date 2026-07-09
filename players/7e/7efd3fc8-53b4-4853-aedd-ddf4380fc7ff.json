@@ -1,1 +1,294 @@
-{"uuid":"7efd3fc8-53b4-4853-aedd-ddf4380fc7ff","name":"Todd Davis","gender":"Men","sports":{"Basketball":{"gp":45,"pts":321,"fouls":51,"fg":82,"ft":43,"threePt":38,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":15,"maxGameThreePt":4,"wins":33,"losses":33,"winPct":0.49,"draws":1,"statsChecked":"2026-07-05T15:23:40.777Z"}},"seasons":[{"sid":"d809d546","sn":"Autumn 2026","regs":[{"tid":"a2ed1548","tn":"86ers","gid":"13826648","gn":"Sunday Senior Men 2","age":"Senior","div":null,"stats":{"gp":7,"fouls":12,"ft":8,"fg":7,"threePt":6,"pts":40,"wins":1,"losses":6}}]},{"sid":"a0b25049","sn":"Summer 2025/26","regs":[{"tid":"36177a50","tn":"86ers","gid":"fe961958","gn":"Thursday Over 35s Men C GRADE","age":null,"div":null,"stats":{"gp":6,"fouls":8,"ft":9,"fg":10,"threePt":5,"pts":44,"wins":3,"losses":3}}]},{"sid":"76ff1607","sn":"Winter 2025","regs":[{"tid":"5d5047c8","tn":"86ers","gid":"48dd11a4","gn":"Thursday Over 35s Men B GRADE","age":null,"div":null,"stats":{"gp":10,"fouls":9,"ft":1,"fg":16,"threePt":4,"pts":45,"wins":5,"losses":4,"draws":1}}]},{"sid":"879e7b0b","sn":"Spring 2024","regs":[{"tid":"5165200c","tn":"86ers","gid":"92044b7b","gn":"Mens Pool 1","age":null,"div":null,"stats":{"gp":14,"fouls":13,"ft":18,"fg":33,"threePt":15,"pts":129,"finals":1,"wins":7,"losses":7}},{"tid":"5165200c","tn":"86ers","gid":"60d580df","gn":"Monday Open Men","age":"Senior","div":null,"stats":{"gp":14,"fouls":13,"ft":18,"fg":33,"threePt":15,"pts":129,"finals":1,"wins":7,"losses":7}}]},{"sid":"548a21ce","sn":"Autumn 2024","regs":[{"tid":"b661dca2","tn":"86ers","gid":"f8b40f79","gn":"Mens Pool 2","age":null,"div":null,"stats":{"gp":8,"fouls":9,"ft":7,"fg":16,"threePt":8,"pts":63,"wins":5,"losses":3}},{"tid":"b661dca2","tn":"86ers","gid":"60d89f60","gn":"Monday Open Men","age":"Senior","div":null,"stats":{"gp":8,"ft":7,"fg":16,"threePt":8,"pts":63,"wins":5,"losses":3,"fouls":9}}]}],"updatedAt":"2026-06-02T23:32:37.684Z","teams":[{"tid":"0a0c4964","sid":"80be84c7","status":"ACTIVE"},{"tid":"a2ed1548","sid":"d809d546","status":"COMPLETED"},{"tid":"36177a50","sid":"a0b25049","status":"COMPLETED"},{"tid":"5d5047c8","sid":"76ff1607","status":"COMPLETED"},{"tid":"5165200c","sid":"879e7b0b","status":"COMPLETED"},{"tid":"b661dca2","sid":"548a21ce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:07:59.296Z","records":{"maxGamePTS":{"v":15,"gameKey":"720ccf39","sid":"d809d546"},"maxGameThreePt":{"v":4,"gameKey":"720ccf39","sid":"d809d546"}},"games":["00b51a20","0bdb0900","1397318a","1877f3ae","21895e21","24e30885","2a176777","2c6ad038","2fd36da9","31ed2296","33ffa991","35e82762","3ad57793","3ca882e2","3f6f0066","3fba20f4","42fca90d","4b7d6b3e","4d33e7a9","513e5a30","527821b4","535a6eda","53fe5b3a","57d914ff","720ccf39","a26b0f30","a975b282","b5178b66","b591e2d0","bfb8b0ee","c6374f5f","c7ad3248","c7d618eb","cca166c5","cd48e536","d019d934","d25dbd62","d277d50b","d4281569","e74480f8","ea1164bb","eda7e9e1","f24202ac","f5345fae","fce77f84"]}
+{
+  "uuid": "7efd3fc8-53b4-4853-aedd-ddf4380fc7ff",
+  "name": "Todd Davis",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "pts": 321,
+      "fouls": 51,
+      "fg": 82,
+      "ft": 43,
+      "threePt": 38,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 15,
+      "maxGameThreePt": 4,
+      "wins": 33,
+      "losses": 33,
+      "winPct": 0.49,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:23:40.777Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d809d546",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "a2ed1548",
+          "tn": "86ers",
+          "gid": "13826648",
+          "gn": "Sunday Senior Men 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 8,
+            "fg": 7,
+            "threePt": 6,
+            "pts": 40,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a0b25049",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "36177a50",
+          "tn": "86ers",
+          "gid": "fe961958",
+          "gn": "Thursday Over 35s Men C GRADE",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 8,
+            "ft": 9,
+            "fg": 10,
+            "threePt": 5,
+            "pts": 44,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76ff1607",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "5d5047c8",
+          "tn": "86ers",
+          "gid": "48dd11a4",
+          "gn": "Thursday Over 35s Men B GRADE",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 16,
+            "threePt": 4,
+            "pts": 45,
+            "wins": 5,
+            "losses": 4,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "879e7b0b",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "5165200c",
+          "tn": "86ers",
+          "gid": "92044b7b",
+          "gn": "Mens Pool 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 13,
+            "ft": 18,
+            "fg": 33,
+            "threePt": 15,
+            "pts": 129,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "5165200c",
+          "tn": "86ers",
+          "gid": "60d580df",
+          "gn": "Monday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 13,
+            "ft": 18,
+            "fg": 33,
+            "threePt": 15,
+            "pts": 129,
+            "finals": 1,
+            "wins": 7,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "548a21ce",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "b661dca2",
+          "tn": "86ers",
+          "gid": "f8b40f79",
+          "gn": "Mens Pool 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 9,
+            "ft": 7,
+            "fg": 16,
+            "threePt": 8,
+            "pts": 63,
+            "wins": 5,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "b661dca2",
+          "tn": "86ers",
+          "gid": "60d89f60",
+          "gn": "Monday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "ft": 7,
+            "fg": 16,
+            "threePt": 8,
+            "pts": 63,
+            "wins": 5,
+            "losses": 3,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "80be84c7",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "0a0c4964",
+          "tn": "86ers",
+          "gid": "5ae769cb",
+          "gn": "Masters (Over 35)",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T23:32:37.684Z",
+  "teams": [
+    {
+      "tid": "a2ed1548",
+      "sid": "d809d546",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36177a50",
+      "sid": "a0b25049",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5d5047c8",
+      "sid": "76ff1607",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5165200c",
+      "sid": "879e7b0b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b661dca2",
+      "sid": "548a21ce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a0c4964",
+      "sid": "80be84c7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.897Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "720ccf39",
+      "sid": "d809d546"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "720ccf39",
+      "sid": "d809d546"
+    }
+  },
+  "games": [
+    "00b51a20",
+    "0bdb0900",
+    "1397318a",
+    "1877f3ae",
+    "21895e21",
+    "24e30885",
+    "2a176777",
+    "2c6ad038",
+    "2fd36da9",
+    "31ed2296",
+    "33ffa991",
+    "35e82762",
+    "3ad57793",
+    "3ca882e2",
+    "3f6f0066",
+    "3fba20f4",
+    "42fca90d",
+    "4b7d6b3e",
+    "4d33e7a9",
+    "513e5a30",
+    "527821b4",
+    "535a6eda",
+    "53fe5b3a",
+    "57d914ff",
+    "720ccf39",
+    "a26b0f30",
+    "a975b282",
+    "b5178b66",
+    "b591e2d0",
+    "bfb8b0ee",
+    "c6374f5f",
+    "c7ad3248",
+    "c7d618eb",
+    "cca166c5",
+    "cd48e536",
+    "d019d934",
+    "d25dbd62",
+    "d277d50b",
+    "d4281569",
+    "e74480f8",
+    "ea1164bb",
+    "eda7e9e1",
+    "f24202ac",
+    "f5345fae",
+    "fce77f84"
+  ]
+}

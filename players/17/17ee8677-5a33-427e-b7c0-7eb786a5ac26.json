@@ -1,1 +1,103 @@
-{"uuid":"17ee8677-5a33-427e-b7c0-7eb786a5ac26","name":"Ella Warner","gender":"Girls","sports":{"Basketball":{"gp":9,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":2,"losses":3,"winPct":0.4,"pts":2,"fg":1,"fouls":1,"statsChecked":"2026-07-06T18:55:16.791Z"}},"seasons":[{"sid":"3f1715bc","sn":"Winter 2026","club":"Mt Eliza Meteors Basketball Club","regs":[{"tid":"bfaeb99b","tn":"Mt Eliza Meteors U14 Girls Touzell","gid":"5c78477f","gn":"Monday U14 Girls Div 1","age":"U14","div":"Div 1","stats":{"gp":5,"wins":2,"losses":3}}]},{"sid":"26df4252","regs":[{"tid":"a27019bf","stats":{"gp":4,"pts":2,"fg":1,"fouls":1}},{"tid":"a27019bf","tn":"","gid":"41bdd02a","gn":"U14 Girls Division 4","div":null,"stats":{"gp":4,"pts":2,"fg":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:31:21.503Z","teams":[{"tid":"bfaeb99b","sid":"3f1715bc","status":"ACTIVE"},{"tid":"a27019bf","sid":"26df4252","status":"UPCOMING"}],"teamsUpdatedAt":"2026-06-05T10:11:28.640Z","statsChecked":"2026-06-20","games":["362dde35","4afc8c9e","a7b9d356","ad7b6a45","c58ae493"],"records":{"maxGamePTS":{"v":2,"gameKey":"cbe27b69","sid":"26df4252"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "17ee8677-5a33-427e-b7c0-7eb786a5ac26",
+  "name": "Ella Warner",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "winPct": 0.4,
+      "pts": 2,
+      "fg": 1,
+      "fouls": 1,
+      "statsChecked": "2026-07-06T18:55:16.791Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3f1715bc",
+      "sn": "Winter 2026",
+      "club": "Mt Eliza Meteors Basketball Club",
+      "regs": [
+        {
+          "tid": "bfaeb99b",
+          "tn": "Mt Eliza Meteors U14 Girls Touzell",
+          "gid": "5c78477f",
+          "gn": "Monday U14 Girls Div 1",
+          "age": "U14",
+          "div": "Div 1",
+          "stats": {
+            "gp": 5,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "a27019bf",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1
+          },
+          "gid": "41bdd02a",
+          "gn": "U14 Girls Division 4"
+        },
+        {
+          "tid": "a27019bf",
+          "tn": "",
+          "gid": "41bdd02a",
+          "gn": "U14 Girls Division 4",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:21.503Z",
+  "teams": [
+    {
+      "tid": "bfaeb99b",
+      "sid": "3f1715bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a27019bf",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.396Z",
+  "statsChecked": "2026-06-20",
+  "games": [
+    "362dde35",
+    "4afc8c9e",
+    "a7b9d356",
+    "ad7b6a45",
+    "c58ae493"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "cbe27b69",
+      "sid": "26df4252"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

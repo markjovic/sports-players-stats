@@ -1,1 +1,192 @@
-{"uuid":"1a9e1d7f-310c-4a9d-ad78-fa5202c3eb68","name":"Huxton Bank","gender":"Boys","sports":{"Basketball":{"gp":34,"pts":16,"fouls":38,"fg":8,"foulOuts":{"31d05517":1},"maxGamePTS":4,"maxGameThreePt":null,"wins":17,"losses":14,"winPct":0.5,"draws":3,"statsChecked":"2026-07-05T15:07:42.723Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"76964553","tn":"EPS Bayside Ballers","gid":"ec98ffc2","gn":"Friday Year 2 Boys C","age":null,"div":null,"stats":{"gp":13,"pts":14,"fg":7,"fouls":11,"wins":10,"losses":3}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"e0964b30","tn":"EPS Bayside Ballers","gid":"b115e6e0","gn":"Friday Year 1 Boys C","age":null,"div":null,"stats":{"gp":14,"pts":2,"fg":1,"fouls":9,"wins":6,"losses":5,"draws":3}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"f25127ae","tn":"EPS Bayside Ballers","gid":"6037ec78","gn":"Friday MSAC/Bayside Year 1 Boys STH","age":null,"div":null,"stats":{"gp":7,"fouls":18,"foulOuts":1,"wins":1,"losses":6}}]}],"updatedAt":"2026-06-02T22:42:47.971Z","teams":[{"tid":"76964553","sid":"ad68db8b","status":"ACTIVE"},{"tid":"e0964b30","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"f25127ae","sid":"31d05517","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:04.229Z","records":{"maxGamePTS":{"v":4,"gameKey":"924153bb","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["14428bdd","19acdb49","19d1cd21","1a9f0b51","239c7c73","34e303ee","38dc97bb","4a8e6e3f","4ff0386b","524c744f","5f316c44","63e26c39","6dd2437c","6f804c8b","706a8083","710f8b43","754e7fe7","835966dc","84a67e83","8b348d11","906f4e65","91ec9c8a","924153bb","9541fe3b","9a141c2a","a1bf7d93","a965afd2","ae2fe972","bcdbe0a4","db6e2137","df9d2d18","f7c4a6e5","f9029691","fa449f53"]}
+{
+  "uuid": "1a9e1d7f-310c-4a9d-ad78-fa5202c3eb68",
+  "name": "Huxton Bank",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 16,
+      "fouls": 38,
+      "fg": 8,
+      "foulOuts": {
+        "31d05517": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 17,
+      "losses": 14,
+      "winPct": 0.5,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:07:42.723Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "76964553",
+          "tn": "EPS Bayside Ballers",
+          "gid": "ec98ffc2",
+          "gn": "Friday Year 2 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 14,
+            "fg": 7,
+            "fouls": 11,
+            "wins": 10,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "e0964b30",
+          "tn": "EPS Bayside Ballers",
+          "gid": "b115e6e0",
+          "gn": "Friday Year 1 Boys C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 9,
+            "wins": 6,
+            "losses": 5,
+            "draws": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "f25127ae",
+          "tn": "EPS Bayside Ballers",
+          "gid": "6037ec78",
+          "gn": "Friday MSAC/Bayside Year 1 Boys STH",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 18,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "f957922c",
+          "tn": "EPS Bayside Ballers",
+          "gid": "1c948e2b",
+          "gn": "Friday Year 2 Boys B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "fbb62b8c",
+          "tn": "ABA Wolverines Fire",
+          "gid": "1cdccccb",
+          "gn": "Monday U9 Boys Full Height B Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:47.971Z",
+  "teams": [
+    {
+      "tid": "76964553",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0964b30",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f25127ae",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f957922c",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fbb62b8c",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.546Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "924153bb",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "14428bdd",
+    "19acdb49",
+    "19d1cd21",
+    "1a9f0b51",
+    "239c7c73",
+    "34e303ee",
+    "38dc97bb",
+    "4a8e6e3f",
+    "4ff0386b",
+    "524c744f",
+    "5f316c44",
+    "63e26c39",
+    "6dd2437c",
+    "6f804c8b",
+    "706a8083",
+    "710f8b43",
+    "754e7fe7",
+    "835966dc",
+    "84a67e83",
+    "8b348d11",
+    "906f4e65",
+    "91ec9c8a",
+    "924153bb",
+    "9541fe3b",
+    "9a141c2a",
+    "a1bf7d93",
+    "a965afd2",
+    "ae2fe972",
+    "bcdbe0a4",
+    "db6e2137",
+    "df9d2d18",
+    "f7c4a6e5",
+    "f9029691",
+    "fa449f53"
+  ]
+}

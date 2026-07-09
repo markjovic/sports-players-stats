@@ -1,1 +1,85 @@
-{"uuid":"2bcc3070-eb45-4fe2-b713-cb68500dd4c6","gender":null,"sports":{"Basketball":{"gp":3,"pts":2,"fouls":3,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":2,"draws":1,"winPct":0.67,"statsChecked":"2026-07-05T16:00:07.948Z"}},"seasons":[{"sid":"171fb8f9","sn":"Autumn 2021","club":null,"regs":[{"tid":"edfbce79","tn":"Wildcats","gid":"c8da42a1","gn":"Thursday Open Men","stats":{"gp":3,"pts":2,"fg":1,"fouls":3,"wins":2,"draws":1}}]}],"updatedAt":"2026-06-11T23:37:46.796Z","records":{"maxGamePTS":{"v":2,"gameKey":"7b7b9912","sid":"171fb8f9"},"maxGameThreePt":{"v":null}},"games":["383969a4","65777f63","7b7b9912"],"name":"Autumn 2021"}
+{
+  "uuid": "2bcc3070-eb45-4fe2-b713-cb68500dd4c6",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 2,
+      "fouls": 3,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "draws": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:00:07.948Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "171fb8f9",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "edfbce79",
+          "tn": "Wildcats",
+          "gid": "c8da42a1",
+          "gn": "Thursday Open Men",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "wins": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ae94c677",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "028b66f9",
+          "tn": "Wildcats",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:46.796Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "7b7b9912",
+      "sid": "171fb8f9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "383969a4",
+    "65777f63",
+    "7b7b9912"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "edfbce79",
+      "sid": "171fb8f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "028b66f9",
+      "sid": "ae94c677",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.595Z"
+}

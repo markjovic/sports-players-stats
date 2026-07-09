@@ -1,1 +1,350 @@
-{"uuid":"67ded352-cb0d-43d2-bfc5-3e935f7b9f49","name":"Ryan Hu","gender":"Boys","sports":{"Basketball":{"gp":54,"pts":101,"fouls":19,"fg":48,"ft":5,"finals":3,"gfApps":2,"gfWins":1,"finalsPerSeason":0.75,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":null,"wins":78,"losses":60,"draws":6,"winPct":0.54,"statsChecked":"2026-07-05T14:27:43.626Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Koonung Comets Basketball Club","regs":[{"tid":"07e9f4dd","tn":"Koonung U11 Boys 10","gid":"19e854ac","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":8,"fouls":1,"ft":4,"fg":15,"pts":34,"wins":3,"losses":3}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Koonung Comets Basketball Club","regs":[{"tid":"7a7568cf","tn":"Koonung U10 Boys 07","gid":"c314cefb","gn":"Boys U10 CH","age":"U10","div":null,"stats":{"gp":16,"fouls":2,"fg":21,"pts":42,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1,"gfWins":1}},{"tid":"7a7568cf","tn":"Koonung U10 Boys 07","gid":"dbb35526","gn":"Boys U10 C Grading","age":"U10","div":null,"stats":{"gp":16,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1,"pts":42,"fg":21,"fouls":2,"gfWins":1}},{"tid":"7a7568cf","tn":"Koonung U10 Boys 07","gid":"fbefd3b5","gn":"Boys U10 D Grading","age":"U10","div":null,"stats":{"gp":16,"fg":21,"pts":42,"finals":1,"gfApps":1,"wins":8,"losses":7,"draws":1,"fouls":2,"gfWins":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Koonung Comets Basketball Club","regs":[{"tid":"2364e107","tn":"Koonung U09 Boys 04","gid":"ea91a58f","gn":"Boys U09 CC","age":"U09","div":null,"stats":{"gp":16,"fouls":9,"fg":7,"pts":15,"finals":1,"wins":11,"losses":5,"ft":1}},{"tid":"2364e107","tn":"Koonung U09 Boys 04","gid":"d1b5a80e","gn":"Boys U09 D Grading","age":"U09","div":null,"stats":{"gp":16,"finals":1,"wins":11,"losses":5,"pts":15,"fg":7,"ft":1,"fouls":9}},{"tid":"2364e107","tn":"Koonung U09 Boys 04","gid":"1005f1fd","gn":"Boys U09 B Grading","age":"U09","div":null,"stats":{"gp":16,"fouls":9,"ft":1,"fg":7,"pts":15,"finals":1,"wins":11,"losses":5}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Koonung Comets Basketball Club","regs":[{"tid":"50de593d","tn":"Koonung U08 Boys 02","gid":"6505de2b","gn":"Boys U08 BB","age":"U08","div":null,"stats":{"gp":14,"fouls":7,"fg":5,"pts":10,"finals":1,"gfApps":1,"wins":6,"losses":7,"draws":1}},{"tid":"50de593d","tn":"Koonung U08 Boys 02","gid":"d77f3a00","gn":"Boys U08 B Grading","age":"U08","div":null,"stats":{"gp":14,"fouls":7,"finals":1,"gfApps":1,"wins":6,"losses":7,"draws":1,"pts":10,"fg":5}},{"tid":"50de593d","tn":"Koonung U08 Boys 02","gid":"c5c9ed85","gn":"Boys U08 C Grading","age":"U08","div":null,"stats":{"gp":14,"fg":5,"pts":10,"finals":1,"gfApps":1,"wins":6,"losses":7,"draws":1,"fouls":7}}]}],"updatedAt":"2026-07-04T05:35:20.951Z","teams":[{"tid":"07e9f4dd","sid":"1ae60211","status":"ACTIVE"},{"tid":"7a7568cf","sid":"88026885","status":"COMPLETED"},{"tid":"2364e107","sid":"f373fc05","status":"COMPLETED"},{"tid":"50de593d","sid":"fa446579","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:44.286Z","records":{"maxGamePTS":{"v":12,"gameKey":"12f3ee9c","sid":"88026885"},"maxGameThreePt":{"v":null}},"games":["06ec1dae","0f7c59ed","12f3ee9c","13e520e1","14dd82e2","1b4fc93f","20337c80","25dd612e","2a909f4d","2e4b5040","3650da1d","37086cd6","37fa0e19","38b7f49b","43500d17","47b405f4","487dea73","4af50673","4edc9dbb","5206e2da","53fe91b3","5a20b703","5bf17f41","66a434ef","6ed97d22","77811c82","77da2e9b","793cd4d1","7fd24cce","835138f6","89110241","8e134c4d","8fd2f953","9156f354","947d331b","9ff92f70","a24a523e","adffa51e","b0203ca1","b787998d","bad69e6c","c5403518","c89b65c9","c9bc1f79","cb7b941f","d1ff1abb","d5ad5430","dea54263","deac4078","e4845b1d","eddef124","f341c8d0"]}
+{
+  "uuid": "67ded352-cb0d-43d2-bfc5-3e935f7b9f49",
+  "name": "Ryan Hu",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 101,
+      "fouls": 19,
+      "fg": 48,
+      "ft": 5,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 78,
+      "losses": 60,
+      "draws": 6,
+      "winPct": 0.54,
+      "statsChecked": "2026-07-05T14:27:43.626Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Koonung Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "07e9f4dd",
+          "tn": "Koonung U11 Boys 10",
+          "gid": "88741dc1",
+          "gn": "Boys U11 DG",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 1,
+            "ft": 4,
+            "fg": 15,
+            "pts": 34,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Koonung Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "7a7568cf",
+          "tn": "Koonung U10 Boys 07",
+          "gid": "c314cefb",
+          "gn": "Boys U10 CH",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 2,
+            "fg": 21,
+            "pts": 42,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "7a7568cf",
+          "tn": "Koonung U10 Boys 07",
+          "gid": "dbb35526",
+          "gn": "Boys U10 C Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "pts": 42,
+            "fg": 21,
+            "fouls": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "7a7568cf",
+          "tn": "Koonung U10 Boys 07",
+          "gid": "fbefd3b5",
+          "gn": "Boys U10 D Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fg": 21,
+            "pts": 42,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "fouls": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Koonung Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "2364e107",
+          "tn": "Koonung U09 Boys 04",
+          "gid": "ea91a58f",
+          "gn": "Boys U09 CC",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 9,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "2364e107",
+          "tn": "Koonung U09 Boys 04",
+          "gid": "d1b5a80e",
+          "gn": "Boys U09 D Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5,
+            "pts": 15,
+            "fg": 7,
+            "ft": 1,
+            "fouls": 9
+          }
+        },
+        {
+          "tid": "2364e107",
+          "tn": "Koonung U09 Boys 04",
+          "gid": "1005f1fd",
+          "gn": "Boys U09 B Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Koonung Comets Basketball Club",
+      "regs": [
+        {
+          "tid": "50de593d",
+          "tn": "Koonung U08 Boys 02",
+          "gid": "6505de2b",
+          "gn": "Boys U08 BB",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 7,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "50de593d",
+          "tn": "Koonung U08 Boys 02",
+          "gid": "d77f3a00",
+          "gn": "Boys U08 B Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 7,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1,
+            "pts": 10,
+            "fg": 5
+          }
+        },
+        {
+          "tid": "50de593d",
+          "tn": "Koonung U08 Boys 02",
+          "gid": "c5c9ed85",
+          "gn": "Boys U08 C Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 5,
+            "pts": 10,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f51ac790",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "df775c37",
+          "tn": "Koonung Kings",
+          "gid": "77183286",
+          "gn": "U12 Boys D",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:35:20.951Z",
+  "teams": [
+    {
+      "tid": "07e9f4dd",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a7568cf",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2364e107",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50de593d",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df775c37",
+      "sid": "f51ac790",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.382Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "12f3ee9c",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06ec1dae",
+    "0f7c59ed",
+    "12f3ee9c",
+    "13e520e1",
+    "14dd82e2",
+    "1b4fc93f",
+    "20337c80",
+    "25dd612e",
+    "2a909f4d",
+    "2e4b5040",
+    "3650da1d",
+    "37086cd6",
+    "37fa0e19",
+    "38b7f49b",
+    "43500d17",
+    "47b405f4",
+    "487dea73",
+    "4af50673",
+    "4edc9dbb",
+    "5206e2da",
+    "53fe91b3",
+    "5a20b703",
+    "5bf17f41",
+    "66a434ef",
+    "6ed97d22",
+    "77811c82",
+    "77da2e9b",
+    "793cd4d1",
+    "7fd24cce",
+    "835138f6",
+    "89110241",
+    "8e134c4d",
+    "8fd2f953",
+    "9156f354",
+    "947d331b",
+    "9ff92f70",
+    "a24a523e",
+    "adffa51e",
+    "b0203ca1",
+    "b787998d",
+    "bad69e6c",
+    "c5403518",
+    "c89b65c9",
+    "c9bc1f79",
+    "cb7b941f",
+    "d1ff1abb",
+    "d5ad5430",
+    "dea54263",
+    "deac4078",
+    "e4845b1d",
+    "eddef124",
+    "f341c8d0"
+  ]
+}

@@ -1,1 +1,422 @@
-{"uuid":"acf46db6-7e93-4adb-9b1c-6fcea2c7b242","name":"Brad Walker","gender":"Men","sports":{"Basketball":{"gp":63,"pts":259,"fouls":102,"fg":115,"ft":26,"threePt":1,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"ffba8120":1,"8b1ee8b8":1},"maxGamePTS":13,"maxGameThreePt":1,"wins":38,"losses":55,"draws":1,"winPct":0.4,"statsChecked":"2026-07-08T17:54:17.013Z"}},"seasons":[{"sid":"ffba8120","sn":"Winter 2026","regs":[{"tid":"5f9fce19","tn":"Findon Colts ","gid":"0f3ebbad","gn":"Wednesday Senior Men (over 35s) Div 2","age":"Senior","div":"Div 2","stats":{"gp":6,"fouls":14,"ft":4,"fg":16,"threePt":1,"pts":39,"foulOuts":1,"wins":1,"losses":3,"draws":1}}]},{"sid":"8265d7ac","sn":"Winter 2026","regs":[{"tid":"9d92639d","tn":"Wildcard","gid":"fdfadd59","gn":"Sunday Open Men D Grade","age":"Senior","div":null,"stats":{"gp":5,"fouls":6,"ft":1,"fg":6,"pts":13,"wins":3,"losses":2}},{"tid":"9d92639d","tn":"Wildcard","gid":"83d2d4fe","gn":"Sunday Open Men C Grade","age":"Senior","div":null,"stats":{"gp":5,"fouls":6,"fg":6,"pts":13,"wins":3,"losses":2,"ft":1}}]},{"sid":"8b1ee8b8","sn":"Summer 2025/26","regs":[{"tid":"1066b1fa","tn":"Ball Busters","gid":"783c61b8","gn":"Tuesday Men E","age":null,"div":null,"stats":{"gp":14,"fouls":26,"ft":7,"fg":25,"pts":57,"foulOuts":1,"wins":8,"losses":5}}]},{"sid":"237aba49","sn":"Summer 2025/26","regs":[{"tid":"9bda7087","tn":"Findon Colts ","gid":"888688e2","gn":"Wednesday Senior Men (over 35s) Div 2","age":"Senior","div":"Div 2","stats":{"gp":16,"fouls":23,"ft":3,"fg":30,"pts":63,"finals":1,"wins":3,"losses":12}},{"tid":"9bda7087","tn":"Findon Colts ","gid":"4578b85d","gn":"Wednesday Senior (Over 35s) Men Div 1","age":"Senior","div":"Div 1","stats":{"gp":16,"fouls":23,"fg":30,"pts":63,"finals":1,"wins":3,"losses":12,"ft":3}},{"tid":"9bda7087","tn":"Findon Colts ","gid":"18fa521f","gn":"Wednesday Senior (Over 35s) Men Division 2","age":"Senior","div":"Division 2","stats":{"gp":16,"fouls":23,"fg":30,"pts":63,"finals":1,"wins":3,"losses":12,"ft":3}}]},{"sid":"4e69904b","sn":"Summer 2025/26","regs":[{"tid":"4e604633","tn":"Wildcard","gid":"35c45efb","gn":"Sunday Open Men C Grade","age":"Senior","div":null,"stats":{"gp":9,"fouls":20,"ft":3,"fg":12,"pts":27,"finals":1,"gfApps":1,"wins":6,"losses":3}}]},{"sid":"9dce861b","sn":"Spring 2025","regs":[{"tid":"2754e63a","tn":"Ball Busters","gid":"e1c1ca1e","gn":"TuesMen E Grade","age":null,"div":null,"stats":{"gp":8,"fouls":6,"ft":2,"fg":14,"pts":30,"wins":5,"losses":3}}]},{"sid":"69e36571","sn":"Winter 2025","regs":[{"tid":"42b36a30","tn":"Wildcard","gid":"5ec8077d","gn":"Sunday Open Men C Grade","age":"Senior","div":null,"stats":{"gp":4,"fouls":3,"ft":6,"fg":10,"pts":26,"wins":3,"losses":1}}]},{"sid":"32cd834a","sn":"Autumn 2020","regs":[{"tid":"5ed731e4","tn":"313","gid":"042511d9","gn":"Tuesday Open Men D","age":"Senior","div":null,"stats":{"gp":1,"fouls":4,"fg":2,"pts":4}}]}],"updatedAt":"2026-07-08T17:27:15.039Z","teams":[{"tid":"1066b1fa","sid":"8b1ee8b8","status":"ACTIVE"},{"tid":"9d92639d","sid":"8265d7ac","status":"ACTIVE"},{"tid":"5f9fce19","sid":"ffba8120","status":"ACTIVE"},{"tid":"9bda7087","sid":"237aba49","status":"COMPLETED"},{"tid":"4e604633","sid":"4e69904b","status":"COMPLETED"},{"tid":"42b36a30","sid":"69e36571","status":"COMPLETED"},{"tid":"6ca75021","sid":"f5d019eb","status":"COMPLETED"},{"tid":"05fdc960","sid":"32cd834a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:35:00.873Z","games":["0513dffb","0579c9ca","08826d78","0fba5a86","141e79c1","17de57fa","18822440","278c727b","2b927add","2c4dcac3","2eb28ac2","463fbdea","4e84b9eb","52792917","529bd8ef","572e1df8","5a986af1","5d8d5132","5df6032f","5ed3f140","602ad3c8","631956a1","68c8d4ed","6c8d7044","6d80231c","7078b841","7a1a448e","7c25af22","8444c33e","86b4af62","889bd9fe","890774f5","8a724c33","923d4f23","943d28d9","96fe27b2","9c58f19a","a5375415","a6caf6e2","ad4bdb13","ae12bb2d","aeb0c60f","b15da31c","b5a3f088","b92edc6c","c0ed3d74","c94a636d","cf127f6f","cf269c47","d15dfe51","d23301ac","d3db6ee1","dacb3c1a","db1886b3","e1ef82fd","ee985a76","ef38baea","f5c8e302","fbcb4e9e","fbe576bb","fd1f9ac0"],"records":{"maxGamePTS":{"v":13,"gameKey":"fbe576bb","sid":"ffba8120"},"maxGameThreePt":{"v":1,"gameKey":"fbe576bb","sid":"ffba8120"}}}
+{
+  "uuid": "acf46db6-7e93-4adb-9b1c-6fcea2c7b242",
+  "name": "Brad Walker",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 63,
+      "pts": 259,
+      "fouls": 102,
+      "fg": 115,
+      "ft": 26,
+      "threePt": 1,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "ffba8120": 1,
+        "8b1ee8b8": 1
+      },
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 38,
+      "losses": 55,
+      "draws": 1,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-08T17:54:17.013Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ffba8120",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "5f9fce19",
+          "tn": "Findon Colts ",
+          "gid": "0f3ebbad",
+          "gn": "Wednesday Senior Men (over 35s) Div 2",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "ft": 4,
+            "fg": 16,
+            "threePt": 1,
+            "pts": 39,
+            "foulOuts": 1,
+            "wins": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8265d7ac",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "9d92639d",
+          "tn": "Wildcard",
+          "gid": "fdfadd59",
+          "gn": "Sunday Open Men D Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13,
+            "wins": 3,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "9d92639d",
+          "tn": "Wildcard",
+          "gid": "83d2d4fe",
+          "gn": "Sunday Open Men C Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "fg": 6,
+            "pts": 13,
+            "wins": 3,
+            "losses": 2,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8b1ee8b8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "1066b1fa",
+          "tn": "Ball Busters",
+          "gid": "783c61b8",
+          "gn": "Tuesday Men E",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 26,
+            "ft": 7,
+            "fg": 25,
+            "pts": 57,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "237aba49",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "9bda7087",
+          "tn": "Findon Colts ",
+          "gid": "888688e2",
+          "gn": "Wednesday Senior Men (over 35s) Div 2",
+          "age": "Senior",
+          "div": "Div 2",
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "ft": 3,
+            "fg": 30,
+            "pts": 63,
+            "finals": 1,
+            "wins": 3,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "9bda7087",
+          "tn": "Findon Colts ",
+          "gid": "4578b85d",
+          "gn": "Wednesday Senior (Over 35s) Men Div 1",
+          "age": "Senior",
+          "div": "Div 1",
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "fg": 30,
+            "pts": 63,
+            "finals": 1,
+            "wins": 3,
+            "losses": 12,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "9bda7087",
+          "tn": "Findon Colts ",
+          "gid": "18fa521f",
+          "gn": "Wednesday Senior (Over 35s) Men Division 2",
+          "age": "Senior",
+          "div": "Division 2",
+          "stats": {
+            "gp": 16,
+            "fouls": 23,
+            "fg": 30,
+            "pts": 63,
+            "finals": 1,
+            "wins": 3,
+            "losses": 12,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4e69904b",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "4e604633",
+          "tn": "Wildcard",
+          "gid": "35c45efb",
+          "gn": "Sunday Open Men C Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 20,
+            "ft": 3,
+            "fg": 12,
+            "pts": 27,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9dce861b",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "2754e63a",
+          "tn": "Ball Busters",
+          "gid": "e1c1ca1e",
+          "gn": "TuesMen E Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 14,
+            "pts": 30,
+            "wins": 5,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "69e36571",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "42b36a30",
+          "tn": "Wildcard",
+          "gid": "5ec8077d",
+          "gn": "Sunday Open Men C Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "ft": 6,
+            "fg": 10,
+            "pts": 26,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "32cd834a",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "5ed731e4",
+          "tn": "313",
+          "gid": "042511d9",
+          "gn": "Tuesday Open Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 4,
+            "fg": 2,
+            "pts": 4
+          }
+        },
+        {
+          "tid": "05fdc960",
+          "tn": "Minions ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "f5d019eb",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "6ca75021",
+          "tn": "Minions ",
+          "gid": "36389cea",
+          "gn": "Wednesday Open Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:27:15.039Z",
+  "teams": [
+    {
+      "tid": "5f9fce19",
+      "sid": "ffba8120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d92639d",
+      "sid": "8265d7ac",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1066b1fa",
+      "sid": "8b1ee8b8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9bda7087",
+      "sid": "237aba49",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4e604633",
+      "sid": "4e69904b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2754e63a",
+      "sid": "9dce861b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42b36a30",
+      "sid": "69e36571",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5ed731e4",
+      "sid": "32cd834a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05fdc960",
+      "sid": "32cd834a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ca75021",
+      "sid": "f5d019eb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.964Z",
+  "games": [
+    "0513dffb",
+    "0579c9ca",
+    "08826d78",
+    "0fba5a86",
+    "141e79c1",
+    "17de57fa",
+    "18822440",
+    "278c727b",
+    "2b927add",
+    "2c4dcac3",
+    "2eb28ac2",
+    "463fbdea",
+    "4e84b9eb",
+    "52792917",
+    "529bd8ef",
+    "572e1df8",
+    "5a986af1",
+    "5d8d5132",
+    "5df6032f",
+    "5ed3f140",
+    "602ad3c8",
+    "631956a1",
+    "68c8d4ed",
+    "6c8d7044",
+    "6d80231c",
+    "7078b841",
+    "7a1a448e",
+    "7c25af22",
+    "8444c33e",
+    "86b4af62",
+    "889bd9fe",
+    "890774f5",
+    "8a724c33",
+    "923d4f23",
+    "943d28d9",
+    "96fe27b2",
+    "9c58f19a",
+    "a5375415",
+    "a6caf6e2",
+    "ad4bdb13",
+    "ae12bb2d",
+    "aeb0c60f",
+    "b15da31c",
+    "b5a3f088",
+    "b92edc6c",
+    "c0ed3d74",
+    "c94a636d",
+    "cf127f6f",
+    "cf269c47",
+    "d15dfe51",
+    "d23301ac",
+    "d3db6ee1",
+    "dacb3c1a",
+    "db1886b3",
+    "e1ef82fd",
+    "ee985a76",
+    "ef38baea",
+    "f5c8e302",
+    "fbcb4e9e",
+    "fbe576bb",
+    "fd1f9ac0"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "fbe576bb",
+      "sid": "ffba8120"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "fbe576bb",
+      "sid": "ffba8120"
+    }
+  }
+}

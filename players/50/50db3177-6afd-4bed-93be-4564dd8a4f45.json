@@ -1,1 +1,328 @@
-{"uuid":"50db3177-6afd-4bed-93be-4564dd8a4f45","name":"Tom Blaikie","gender":"Men","sports":{"Basketball":{"gp":25,"pts":169,"fouls":38,"fg":46,"ft":11,"threePt":22,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{"90a7a885":1},"maxGamePTS":16,"maxGameThreePt":4,"wins":18,"losses":26,"draws":2,"winPct":0.39,"statsChecked":"2026-07-08T17:51:41.819Z"}},"seasons":[{"sid":"8fe1a354","sn":"Winter 2026","regs":[{"tid":"1bbaeda9","tn":"LeFreaks","gid":"35d81883","gn":"Wednesday Men Section 08","age":null,"div":null,"stats":{"gp":9,"fouls":11,"ft":9,"fg":23,"pts":76,"threePt":7,"wins":3,"losses":5}},{"tid":"1bbaeda9","tn":"LeFreaks","gid":"cb3142e8","gn":"Wednesday Men Section 09","age":null,"div":null,"stats":{"gp":9,"fouls":11,"ft":9,"fg":23,"threePt":7,"pts":76,"wins":3,"losses":5}}]},{"sid":"90a7a885","sn":"Summer 2021/22","regs":[{"tid":"05a1d41e","tn":"Scooz","gid":"a19efa08","gn":"Monday Senior Men C","age":"Senior","div":null,"stats":{"gp":16,"fouls":27,"ft":2,"fg":23,"threePt":15,"pts":93,"finals":1,"foulOuts":1,"wins":6,"losses":8,"draws":1}},{"tid":"05a1d41e","tn":"Scooz","gid":"e582c872","gn":"Monday Senior Men D","age":"Senior","div":null,"stats":{"gp":16,"fouls":27,"fg":23,"threePt":15,"pts":93,"finals":1,"wins":6,"losses":8,"draws":1,"ft":2}}]}],"updatedAt":"2026-07-08T17:28:40.116Z","teams":[{"tid":"1bbaeda9","sid":"8fe1a354","status":"ACTIVE"},{"tid":"dbbe1196","sid":"76897951","status":"COMPLETED"},{"tid":"d2080fe6","sid":"5944effa","status":"COMPLETED"},{"tid":"4673e1c0","sid":"348dbfb8","status":"COMPLETED"},{"tid":"db06289f","sid":"ee5d2724","status":"COMPLETED"},{"tid":"5f4d37d8","sid":"9358e51a","status":"COMPLETED"},{"tid":"31146024","sid":"d3d4e181","status":"COMPLETED"},{"tid":"dc7c0427","sid":"d3d4e181","status":"COMPLETED"},{"tid":"a1c46d92","sid":"eb0c3879","status":"COMPLETED"},{"tid":"05a1d41e","sid":"90a7a885","status":"COMPLETED"},{"tid":"d43526d7","sid":"11f9ba57","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:32:47.454Z","records":{"maxGamePTS":{"v":16,"gameKey":"a336a601","sid":"90a7a885"},"maxGameThreePt":{"v":4,"gameKey":"a336a601","sid":"90a7a885"}},"games":["0abdf74f","0f8f2a39","1925e0b2","24dcfec4","25516831","35419a2a","38e57347","40d58fbe","4e19218d","5075cd35","57c10828","80edee3e","87bb6fe7","89c25978","8ee1f462","976a0be0","a336a601","aac7d461","b1376a50","b42f3d52","bb08af3a","bb2c40b7","d2e89c42","d6fbba00"]}
+{
+  "uuid": "50db3177-6afd-4bed-93be-4564dd8a4f45",
+  "name": "Tom Blaikie",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 25,
+      "pts": 169,
+      "fouls": 38,
+      "fg": 46,
+      "ft": 11,
+      "threePt": 22,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "90a7a885": 1
+      },
+      "maxGamePTS": 16,
+      "maxGameThreePt": 4,
+      "wins": 18,
+      "losses": 26,
+      "draws": 2,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-08T17:51:41.819Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8fe1a354",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "1bbaeda9",
+          "tn": "LeFreaks",
+          "gid": "35d81883",
+          "gn": "Wednesday Men Section 08",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 11,
+            "ft": 9,
+            "fg": 23,
+            "pts": 76,
+            "threePt": 7,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "1bbaeda9",
+          "tn": "LeFreaks",
+          "gid": "cb3142e8",
+          "gn": "Wednesday Men Section 09",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 11,
+            "ft": 9,
+            "fg": 23,
+            "threePt": 7,
+            "pts": 76,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "90a7a885",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "05a1d41e",
+          "tn": "Scooz",
+          "gid": "a19efa08",
+          "gn": "Monday Senior Men C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 27,
+            "ft": 2,
+            "fg": 23,
+            "threePt": 15,
+            "pts": 93,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "05a1d41e",
+          "tn": "Scooz",
+          "gid": "e582c872",
+          "gn": "Monday Senior Men D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 27,
+            "fg": 23,
+            "threePt": 15,
+            "pts": 93,
+            "finals": 1,
+            "wins": 6,
+            "losses": 8,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "dbbe1196",
+          "tn": "Xudo",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "d2080fe6",
+          "tn": "XUDO Solway U23 Men Taipans",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "4673e1c0",
+          "tn": "Solway U23 Men Mambas",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "db06289f",
+          "tn": "Solway U20 Men Taipans",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "5f4d37d8",
+          "tn": "Vintage Solway",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "31146024",
+          "tn": "Solway U23 Men Blazers",
+          "gid": "9adc1096",
+          "gn": "AUTUMN Sunday U23 Men",
+          "stats": {}
+        },
+        {
+          "tid": "dc7c0427",
+          "tn": "Vintage Solway",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "a1c46d92",
+          "tn": "Solway U18 Boys Blazers",
+          "gid": "ca2ddbc5",
+          "gn": "U18 Boys Section 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "d43526d7",
+          "tn": "Solway U18 Boys Cannons",
+          "gid": "7cdd6142",
+          "gn": "U18 Boys GP3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-08T17:28:40.116Z",
+  "teams": [
+    {
+      "tid": "1bbaeda9",
+      "sid": "8fe1a354",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05a1d41e",
+      "sid": "90a7a885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dbbe1196",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d2080fe6",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4673e1c0",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db06289f",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f4d37d8",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31146024",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dc7c0427",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1c46d92",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d43526d7",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.867Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "a336a601",
+      "sid": "90a7a885"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "a336a601",
+      "sid": "90a7a885"
+    }
+  },
+  "games": [
+    "0abdf74f",
+    "0f8f2a39",
+    "1925e0b2",
+    "24dcfec4",
+    "25516831",
+    "35419a2a",
+    "38e57347",
+    "40d58fbe",
+    "4e19218d",
+    "5075cd35",
+    "57c10828",
+    "80edee3e",
+    "87bb6fe7",
+    "89c25978",
+    "8ee1f462",
+    "976a0be0",
+    "a336a601",
+    "aac7d461",
+    "b1376a50",
+    "b42f3d52",
+    "bb08af3a",
+    "bb2c40b7",
+    "d2e89c42",
+    "d6fbba00"
+  ]
+}

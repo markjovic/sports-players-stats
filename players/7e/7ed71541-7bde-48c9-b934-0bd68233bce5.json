@@ -1,1 +1,346 @@
-{"uuid":"7ed71541-7bde-48c9-b934-0bd68233bce5","name":"Sina Tofilau","gender":"Girls","sports":{"Basketball":{"gp":40,"pts":279,"fouls":98,"fg":96,"ft":42,"threePt":15,"foulOuts":{"e0b8b997":3,"f30d4c74":1,"8da816be":1,"5161abf1":2},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.17,"maxGamePTS":20,"maxGameThreePt":3,"wins":46,"losses":25,"draws":3,"winPct":0.62,"statsChecked":"2026-07-05T14:42:42.704Z"}},"seasons":[{"sid":"e0b8b997","sn":"2024","club":"Keilor Thunder Basketball Club","regs":[{"tid":"8b65838b","tn":"Keilor U18 Girls 2","gid":"523d8ab2","gn":"U18 Girls Grading 2 - AA Pool B","age":"U18","div":null,"stats":{"gp":4,"fouls":19,"ft":8,"pts":29,"foulOuts":1,"losses":3,"draws":1,"fg":9,"threePt":1}},{"tid":"8b65838b","tn":"Keilor U18 Girls 2","gid":"f4165352","gn":"18 Girls Grading 1 - Crossover","age":null,"div":null,"stats":{"gp":4,"fouls":19,"ft":8,"fg":9,"pts":29,"foulOuts":1,"losses":3,"draws":1,"threePt":1}},{"tid":"8b65838b","tn":"Keilor U18 Girls 2","gid":"6210cb7f","gn":"18 Girls Grading 1 - Pool 1F","age":null,"div":null,"stats":{"gp":4,"fouls":19,"ft":8,"fg":9,"threePt":1,"pts":29,"foulOuts":1,"losses":3,"draws":1}}]},{"sid":"f30d4c74","sn":"Summer 2023/24","club":"Doreen Cougars Basketball Club","regs":[{"tid":"6fd067c5","tn":"Doreen-Cougars U16 Girls 01","gid":"d5611c26","gn":"Girls U16 A1","age":"U16","div":"A1","stats":{"gp":11,"fouls":21,"ft":14,"fg":21,"pts":59,"foulOuts":1,"wins":8,"losses":3,"threePt":1}},{"tid":"6fd067c5","tn":"Doreen-Cougars U16 Girls 01","gid":"27540f87","gn":"Girls U16 A Grading","age":"U16","div":null,"stats":{"gp":11,"fouls":21,"ft":14,"fg":21,"threePt":1,"pts":59,"wins":8,"losses":3}}]},{"sid":"426606a2","sn":"2023","regs":[{"tid":"c18aea65","tn":"Maribyrnong Sports Academy","gid":"1f14f205","gn":"U17 Girls - SBC","age":"U17","div":null,"stats":{"gp":1,"fouls":3,"ft":2,"fg":4,"pts":10,"wins":1}}]},{"sid":"8da816be","sn":"2023","regs":[{"tid":"637c5737","tn":"Doreen Cougars U16 girls","gid":"105f19fd","gn":"U16 Girls A","age":"U16","div":null,"stats":{"gp":5,"fouls":14,"ft":8,"fg":22,"threePt":5,"pts":67,"foulOuts":1,"finals":1,"gfApps":1,"wins":3,"losses":2}}]},{"sid":"40f52c45","sn":"Winter 2023","regs":[{"tid":"f838b1d1","tn":"Cougars","gid":"2226a8da","gn":"U16 Girls","age":"U16","div":null,"stats":{"gp":4,"fouls":1,"ft":2,"fg":11,"threePt":2,"pts":30,"wins":4}}]},{"sid":"5161abf1","sn":"Winter 2023","club":"Doreen Cougars Basketball Club","regs":[{"tid":"6c64b348","tn":"Doreen-Cougars U15 Girls 01","gid":"154eb450","gn":"Girls U15 A1","age":"U15","div":"A1","stats":{"gp":15,"fouls":40,"ft":8,"fg":29,"threePt":6,"pts":84,"foulOuts":2,"wins":11,"losses":4}},{"tid":"6c64b348","tn":"Doreen-Cougars U15 Girls 01","gid":"7692e3c2","gn":"Girls U15 A Grading","age":"U15","div":null,"stats":{"gp":15,"fouls":40,"ft":8,"fg":29,"pts":84,"wins":11,"losses":4,"threePt":6}}]}],"updatedAt":"2026-06-02T03:17:54.702Z","teams":[{"tid":"8b65838b","sid":"e0b8b997","status":"COMPLETED"},{"tid":"6fd067c5","sid":"f30d4c74","status":"COMPLETED"},{"tid":"c18aea65","sid":"426606a2","status":"COMPLETED"},{"tid":"6c64b348","sid":"5161abf1","status":"COMPLETED"},{"tid":"f838b1d1","sid":"40f52c45","status":"COMPLETED"},{"tid":"637c5737","sid":"8da816be","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:07:59.264Z","records":{"maxGamePTS":{"v":20,"gameKey":"d49871a2","sid":"8da816be"},"maxGameThreePt":{"v":3,"gameKey":"78ba1286","sid":"8da816be"}},"games":["00e8ad9a","02ae48b4","06a33b87","0ac79391","102f9780","1075532a","1f7408de","3451487b","3b4478e7","3ccfd6e2","40f4c82b","444bfafb","4733d752","51fa0106","58246584","5bec86d5","5efccec8","62e826c7","6928afc2","6f44fbe7","71ff4e16","78ba1286","825a043e","84bfd73d","85f2844a","996a4b56","99cfab21","a3391fbe","aabf1904","adbad424","af176528","b7cf3f43","cf35c73c","d49871a2","dcfd9489","e345720a","e81a318d","eb5aa505","f9e7be78","fd43259f"]}
+{
+  "uuid": "7ed71541-7bde-48c9-b934-0bd68233bce5",
+  "name": "Sina Tofilau",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 279,
+      "fouls": 98,
+      "fg": 96,
+      "ft": 42,
+      "threePt": 15,
+      "foulOuts": {
+        "e0b8b997": 3,
+        "f30d4c74": 1,
+        "8da816be": 1,
+        "5161abf1": 2
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.17,
+      "maxGamePTS": 20,
+      "maxGameThreePt": 3,
+      "wins": 46,
+      "losses": 25,
+      "draws": 3,
+      "winPct": 0.62,
+      "statsChecked": "2026-07-05T14:42:42.704Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e0b8b997",
+      "sn": "2024",
+      "club": "Keilor Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "8b65838b",
+          "tn": "Keilor U18 Girls 2",
+          "gid": "415605ca",
+          "gn": "U18 Girls - VJL1",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 19,
+            "ft": 8,
+            "pts": 29,
+            "foulOuts": 1,
+            "losses": 3,
+            "draws": 1,
+            "fg": 9,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "8b65838b",
+          "tn": "Keilor U18 Girls 2",
+          "gid": "f4165352",
+          "gn": "18 Girls Grading 1 - Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 19,
+            "ft": 8,
+            "fg": 9,
+            "pts": 29,
+            "foulOuts": 1,
+            "losses": 3,
+            "draws": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "8b65838b",
+          "tn": "Keilor U18 Girls 2",
+          "gid": "6210cb7f",
+          "gn": "18 Girls Grading 1 - Pool 1F",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 19,
+            "ft": 8,
+            "fg": 9,
+            "threePt": 1,
+            "pts": 29,
+            "foulOuts": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f30d4c74",
+      "sn": "Summer 2023/24",
+      "club": "Doreen Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "6fd067c5",
+          "tn": "Doreen-Cougars U16 Girls 01",
+          "gid": "d5611c26",
+          "gn": "Girls U16 A1",
+          "age": "U16",
+          "div": "A1",
+          "stats": {
+            "gp": 11,
+            "fouls": 21,
+            "ft": 14,
+            "fg": 21,
+            "pts": 59,
+            "foulOuts": 1,
+            "wins": 8,
+            "losses": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "6fd067c5",
+          "tn": "Doreen-Cougars U16 Girls 01",
+          "gid": "27540f87",
+          "gn": "Girls U16 A Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 21,
+            "ft": 14,
+            "fg": 21,
+            "threePt": 1,
+            "pts": 59,
+            "wins": 8,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "426606a2",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "c18aea65",
+          "tn": "Maribyrnong Sports Academy",
+          "gid": "1f14f205",
+          "gn": "U17 Girls - SBC",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8da816be",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "637c5737",
+          "tn": "Doreen Cougars U16 girls",
+          "gid": "105f19fd",
+          "gn": "U16 Girls A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 14,
+            "ft": 8,
+            "fg": 22,
+            "threePt": 5,
+            "pts": 67,
+            "foulOuts": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "40f52c45",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "f838b1d1",
+          "tn": "Cougars",
+          "gid": "2226a8da",
+          "gn": "U16 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 11,
+            "threePt": 2,
+            "pts": 30,
+            "wins": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5161abf1",
+      "sn": "Winter 2023",
+      "club": "Doreen Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "6c64b348",
+          "tn": "Doreen-Cougars U15 Girls 01",
+          "gid": "154eb450",
+          "gn": "Girls U15 A1",
+          "age": "U15",
+          "div": "A1",
+          "stats": {
+            "gp": 15,
+            "fouls": 40,
+            "ft": 8,
+            "fg": 29,
+            "threePt": 6,
+            "pts": 84,
+            "foulOuts": 2,
+            "wins": 11,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "6c64b348",
+          "tn": "Doreen-Cougars U15 Girls 01",
+          "gid": "7692e3c2",
+          "gn": "Girls U15 A Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 40,
+            "ft": 8,
+            "fg": 29,
+            "pts": 84,
+            "wins": 11,
+            "losses": 4,
+            "threePt": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T03:17:54.702Z",
+  "teams": [
+    {
+      "tid": "8b65838b",
+      "sid": "e0b8b997",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6fd067c5",
+      "sid": "f30d4c74",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c18aea65",
+      "sid": "426606a2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "637c5737",
+      "sid": "8da816be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f838b1d1",
+      "sid": "40f52c45",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6c64b348",
+      "sid": "5161abf1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.867Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "d49871a2",
+      "sid": "8da816be"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "78ba1286",
+      "sid": "8da816be"
+    }
+  },
+  "games": [
+    "00e8ad9a",
+    "02ae48b4",
+    "06a33b87",
+    "0ac79391",
+    "102f9780",
+    "1075532a",
+    "1f7408de",
+    "3451487b",
+    "3b4478e7",
+    "3ccfd6e2",
+    "40f4c82b",
+    "444bfafb",
+    "4733d752",
+    "51fa0106",
+    "58246584",
+    "5bec86d5",
+    "5efccec8",
+    "62e826c7",
+    "6928afc2",
+    "6f44fbe7",
+    "71ff4e16",
+    "78ba1286",
+    "825a043e",
+    "84bfd73d",
+    "85f2844a",
+    "996a4b56",
+    "99cfab21",
+    "a3391fbe",
+    "aabf1904",
+    "adbad424",
+    "af176528",
+    "b7cf3f43",
+    "cf35c73c",
+    "d49871a2",
+    "dcfd9489",
+    "e345720a",
+    "e81a318d",
+    "eb5aa505",
+    "f9e7be78",
+    "fd43259f"
+  ]
+}

@@ -1,1 +1,91 @@
-{"uuid":"aff7a6b7-c464-4017-8e29-77e653ea3206","gender":null,"sports":{"Basketball":{"gp":5,"pts":13,"fouls":2,"fg":2,"threePt":3,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"wins":4,"losses":1,"winPct":0.8,"statsChecked":"2026-07-05T16:15:01.249Z"}},"seasons":[{"sid":"c08d14fd","sn":"Winter 2021","club":null,"regs":[{"tid":"f1ec6a2a","tn":"Wills Bend Mck","gid":"1d2c99d9","gn":"Sunday Open Classic Men DIV 5","stats":{"gp":5,"pts":13,"fouls":2,"fg":2,"threePt":3,"wins":4,"losses":1}}]}],"updatedAt":"2026-06-11T23:43:45.643Z","games":["57cec2fc","83fc3f89","a0644221","c00fb1c2","c596ee22"],"records":{"maxGamePTS":{"v":5,"gameKey":"c596ee22","sid":"c08d14fd"},"maxGameThreePt":{"v":1,"gameKey":"c596ee22","sid":"c08d14fd"}},"name":"Winter 2021"}
+{
+  "uuid": "aff7a6b7-c464-4017-8e29-77e653ea3206",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 13,
+      "fouls": 2,
+      "fg": 2,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "wins": 4,
+      "losses": 1,
+      "winPct": 0.8,
+      "statsChecked": "2026-07-05T16:15:01.249Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c08d14fd",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f1ec6a2a",
+          "tn": "Wills Bend Mck",
+          "gid": "1d2c99d9",
+          "gn": "Sunday Open Classic Men DIV 5",
+          "stats": {
+            "gp": 5,
+            "pts": 13,
+            "fouls": 2,
+            "fg": 2,
+            "threePt": 3,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "6d272e26",
+          "tn": "Wills Bend",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:43:45.643Z",
+  "games": [
+    "57cec2fc",
+    "83fc3f89",
+    "a0644221",
+    "c00fb1c2",
+    "c596ee22"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "c596ee22",
+      "sid": "c08d14fd"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "c596ee22",
+      "sid": "c08d14fd"
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "f1ec6a2a",
+      "sid": "c08d14fd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6d272e26",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.144Z"
+}

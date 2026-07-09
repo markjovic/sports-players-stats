@@ -1,1 +1,78 @@
-{"uuid":"60b5689a-3a9b-4acb-965d-ec2f0287cbb0","gender":null,"sports":{"Basketball":{"gp":6,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"losses":6,"winPct":0,"statsChecked":"2026-07-05T16:01:25.500Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Ormond Jets Basketball Club","regs":[{"tid":"a3ab63a2","tn":"JETS U12 Boys Paul & Paul","gid":"ef8637ee","gn":"Saturday U12 Boys DIV 4","stats":{"gp":6,"losses":6}}]}],"updatedAt":"2026-06-11T23:40:14.407Z","games":["17ad9d0b","304177b7","4a72b613","65aef0ef","d3f4a42d","da0d980e"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Winter 2021"}
+{
+  "uuid": "60b5689a-3a9b-4acb-965d-ec2f0287cbb0",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "losses": 6,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:01:25.500Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Ormond Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "a3ab63a2",
+          "tn": "JETS U12 Boys Paul & Paul",
+          "gid": "ef8637ee",
+          "gn": "Saturday U12 Boys DIV 4",
+          "stats": {
+            "gp": 6,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6a36400d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "23a4316b",
+          "tn": "MM U12 Boys Thunder",
+          "gid": "f6777d07",
+          "gn": "Saturday U12 Boys Div 9",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:14.407Z",
+  "games": [
+    "17ad9d0b",
+    "304177b7",
+    "4a72b613",
+    "65aef0ef",
+    "d3f4a42d",
+    "da0d980e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "a3ab63a2",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "23a4316b",
+      "sid": "6a36400d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.944Z"
+}

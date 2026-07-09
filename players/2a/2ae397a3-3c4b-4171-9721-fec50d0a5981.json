@@ -1,1 +1,235 @@
-{"uuid":"2ae397a3-3c4b-4171-9721-fec50d0a5981","name":"Abey Abrha","gender":"Boys","sports":{"Basketball":{"gp":33,"pts":133,"fouls":61,"fg":49,"ft":14,"threePt":7,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"5f327b4a":2},"maxGamePTS":14,"maxGameThreePt":3,"wins":10,"losses":31,"winPct":0.24,"statsChecked":"2026-07-06T18:55:48.364Z"}},"seasons":[{"sid":"426bbb74","sn":"Winter 2026","club":"Melton Dragons Basketball Club","regs":[{"tid":"54139a8d","tn":"White Dragons U16 Boys","gid":"d00f8bf7","gn":"U16 Boys E Grade","age":"U16","div":null,"stats":{"gp":6,"pts":31,"fg":13,"ft":5,"fouls":9,"wins":1,"losses":5}},{"tid":"54139a8d","tn":"White Dragons U16 Boys","gid":"aadfe7c4","gn":"U16 Boys D Grade","age":"U16","div":null,"stats":{"gp":6,"pts":31,"fg":13,"ft":5,"fouls":9,"wins":1,"losses":5}}]},{"sid":"db32aba0","sn":"Summer 2025/26","club":"Spartans Basketball Club (Melton)","regs":[{"tid":"3cde0dab","tn":"Spartans U16.3 Boys","gid":"e8e48d49","gn":"U16 Boys D Grade","age":"U16","div":null,"stats":{"gp":10,"pts":32,"threePt":6,"fg":6,"ft":2,"fouls":14,"losses":8}},{"tid":"3cde0dab","tn":"Spartans U16.3 Boys","gid":"3118cfd2","gn":"U16 Boys C Grade","age":"U16","div":null,"stats":{"gp":10,"pts":32,"fg":6,"fouls":14,"losses":8,"ft":2,"threePt":6}}]},{"sid":"5f327b4a","sn":"Winter 2025","club":"Spartans Basketball Club (Melton)","regs":[{"tid":"218a3e9a","tn":"Spartans U14.3 Boys","gid":"6d749312","gn":"U14 Boys E Grade","age":"U14","div":null,"stats":{"gp":13,"pts":64,"threePt":1,"fg":27,"ft":7,"fouls":35,"foulOuts":2,"finals":1,"gfApps":1,"wins":8,"losses":5}}]},{"sid":"26df4252","regs":[{"tid":"24a19e48","stats":{"gp":4,"pts":6,"fg":3,"fouls":3}},{"tid":"24a19e48","tn":"","gid":"1b2bd04c","gn":"U16 Boys Division 6","div":null,"stats":{"gp":4,"pts":6,"fg":3,"fouls":3}}]}],"updatedAt":"2026-07-06T18:34:41.226Z","teams":[{"tid":"54139a8d","sid":"426bbb74","status":"ACTIVE"},{"tid":"24a19e48","sid":"26df4252","status":"UPCOMING"},{"tid":"3cde0dab","sid":"db32aba0","status":"COMPLETED"},{"tid":"218a3e9a","sid":"5f327b4a","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:16:23.415Z","records":{"maxGamePTS":{"v":14,"gameKey":"c6febf22","sid":"5f327b4a"},"maxGameThreePt":{"v":3,"gameKey":"4b957916","sid":"db32aba0"}},"games":["0259b4f6","3cc394cd","4a44c598","4b957916","505551b7","56f75038","6433aa44","65ed9767","72cbe0e6","76db4ef3","7be2b912","830709a5","8e05dcb3","901b1c31","9588df35","98f980a2","9cf2a4bf","a1024e0d","afc998cd","b0170468","b4455693","bb0e45fa","c6febf22","cb1648b1","cd8e9052","d771a248","e380a115","fdba3c57"]}
+{
+  "uuid": "2ae397a3-3c4b-4171-9721-fec50d0a5981",
+  "name": "Abey Abrha",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 133,
+      "fouls": 61,
+      "fg": 49,
+      "ft": 14,
+      "threePt": 7,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "5f327b4a": 2
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": 3,
+      "wins": 10,
+      "losses": 31,
+      "winPct": 0.24,
+      "statsChecked": "2026-07-06T18:55:48.364Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "426bbb74",
+      "sn": "Winter 2026",
+      "club": "Melton Dragons Basketball Club",
+      "regs": [
+        {
+          "tid": "54139a8d",
+          "tn": "White Dragons U16 Boys",
+          "gid": "d00f8bf7",
+          "gn": "U16 Boys E Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 31,
+            "fg": 13,
+            "ft": 5,
+            "fouls": 9,
+            "wins": 1,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "54139a8d",
+          "tn": "White Dragons U16 Boys",
+          "gid": "aadfe7c4",
+          "gn": "U16 Boys D Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 31,
+            "fg": 13,
+            "ft": 5,
+            "fouls": 9,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "db32aba0",
+      "sn": "Summer 2025/26",
+      "club": "Spartans Basketball Club (Melton)",
+      "regs": [
+        {
+          "tid": "3cde0dab",
+          "tn": "Spartans U16.3 Boys",
+          "gid": "e8e48d49",
+          "gn": "U16 Boys D Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 32,
+            "threePt": 6,
+            "fg": 6,
+            "ft": 2,
+            "fouls": 14,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "3cde0dab",
+          "tn": "Spartans U16.3 Boys",
+          "gid": "3118cfd2",
+          "gn": "U16 Boys C Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 32,
+            "fg": 6,
+            "fouls": 14,
+            "losses": 8,
+            "ft": 2,
+            "threePt": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f327b4a",
+      "sn": "Winter 2025",
+      "club": "Spartans Basketball Club (Melton)",
+      "regs": [
+        {
+          "tid": "218a3e9a",
+          "tn": "Spartans U14.3 Boys",
+          "gid": "6d749312",
+          "gn": "U14 Boys E Grade",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 64,
+            "threePt": 1,
+            "fg": 27,
+            "ft": 7,
+            "fouls": 35,
+            "foulOuts": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "24a19e48",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 3
+          },
+          "gid": "1b2bd04c",
+          "gn": "U16 Boys Division 6"
+        },
+        {
+          "tid": "24a19e48",
+          "tn": "",
+          "gid": "1b2bd04c",
+          "gn": "U16 Boys Division 6",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:41.226Z",
+  "teams": [
+    {
+      "tid": "54139a8d",
+      "sid": "426bbb74",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cde0dab",
+      "sid": "db32aba0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "218a3e9a",
+      "sid": "5f327b4a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "24a19e48",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.478Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "c6febf22",
+      "sid": "5f327b4a"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "4b957916",
+      "sid": "db32aba0"
+    }
+  },
+  "games": [
+    "0259b4f6",
+    "3cc394cd",
+    "4a44c598",
+    "4b957916",
+    "505551b7",
+    "56f75038",
+    "6433aa44",
+    "65ed9767",
+    "72cbe0e6",
+    "76db4ef3",
+    "7be2b912",
+    "830709a5",
+    "8e05dcb3",
+    "901b1c31",
+    "9588df35",
+    "98f980a2",
+    "9cf2a4bf",
+    "a1024e0d",
+    "afc998cd",
+    "b0170468",
+    "b4455693",
+    "bb0e45fa",
+    "c6febf22",
+    "cb1648b1",
+    "cd8e9052",
+    "d771a248",
+    "e380a115",
+    "fdba3c57"
+  ]
+}

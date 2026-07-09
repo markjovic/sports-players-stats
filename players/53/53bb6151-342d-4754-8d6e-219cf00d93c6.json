@@ -1,1 +1,225 @@
-{"uuid":"53bb6151-342d-4754-8d6e-219cf00d93c6","name":"Tyler Egan","gender":"Men","sports":{"Basketball":{"gp":23,"pts":172,"fouls":40,"fg":52,"ft":11,"threePt":19,"foulOuts":{"307e7a12":1},"maxGamePTS":26,"maxGameThreePt":8,"wins":7,"losses":14,"winPct":0.33,"statsChecked":"2026-07-05T15:48:38.471Z"}},"seasons":[{"sid":"41e66962","sn":"Winter 2023","regs":[{"tid":"c8e1af5f","tn":"The Wiggles","gid":"a7fa1195","gn":"Monday Men C2","age":null,"div":"C2","stats":{"gp":7,"fouls":7,"ft":1,"fg":6,"threePt":9,"pts":40,"wins":2,"losses":3}},{"tid":"c8e1af5f","tn":"The Wiggles","gid":"9c183f81","gn":"Monday Men C1","age":null,"div":"C1","stats":{"gp":7,"fouls":7,"fg":6,"threePt":9,"pts":40,"wins":2,"losses":3,"ft":1}},{"tid":"c8e1af5f","tn":"The Wiggles","gid":"593548dd","gn":"Monday Men B2","age":null,"div":"B2","stats":{"gp":7,"wins":2,"losses":3,"pts":40,"fg":6,"ft":1,"threePt":9,"fouls":7}}]},{"sid":"24e148e6","sn":"Winter 2021","club":"Rowellyn Rockets Basketball Club","regs":[{"tid":"3bbf7b6f","tn":"Rowellyn Rockets U16 Boys Houston","gid":"c5d151ca","gn":"Wednesday U16 Boys B1","age":"U16","div":"B1","stats":{"gp":6,"fouls":10,"ft":3,"fg":20,"threePt":5,"pts":58,"wins":1,"losses":5}}]},{"sid":"307e7a12","sn":"Summer 2020/21","club":"Rowellyn Rockets Basketball Club","regs":[{"tid":"92cd6610","tn":"Rowellyn  Houston Rockets","gid":"67d6d199","gn":"Wednesday U16 Boys C1","age":"U16","div":"C1","stats":{"gp":10,"fouls":23,"ft":7,"fg":26,"threePt":5,"pts":74,"foulOuts":1}},{"tid":"92cd6610","tn":"Rowellyn  Houston Rockets","gid":"4fa69e11","gn":"Wednesday U16 Boys C2","age":"U16","div":"C2","stats":{"gp":10,"fouls":23,"ft":7,"fg":26,"pts":74,"threePt":5}}]}],"updatedAt":"2026-06-02T15:21:30.587Z","teams":[{"tid":"c8e1af5f","sid":"41e66962","status":"COMPLETED"},{"tid":"3bbf7b6f","sid":"24e148e6","status":"COMPLETED"},{"tid":"92cd6610","sid":"307e7a12","status":"COMPLETED"},{"tid":"0f7fb7e2","sid":"5ac8c8a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:33:11.952Z","records":{"maxGamePTS":{"v":26,"gameKey":"dc5382bc","sid":"41e66962"},"maxGameThreePt":{"v":8,"gameKey":"dc5382bc","sid":"41e66962"}},"games":["04003d4e","0f975817","13675bc2","2b273c8f","3c9d5006","44cc4af6","68cc8f4c","6d560a2a","6e356a91","7d107249","8c0a7d55","8d39b0d8","96668708","98925a72","a4427392","ac3bf3ca","b863b8d9","bad44fd0","da14ce07","dc5382bc","e3d52187","f71d23cc","ff0da09b"]}
+{
+  "uuid": "53bb6151-342d-4754-8d6e-219cf00d93c6",
+  "name": "Tyler Egan",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 23,
+      "pts": 172,
+      "fouls": 40,
+      "fg": 52,
+      "ft": 11,
+      "threePt": 19,
+      "foulOuts": {
+        "307e7a12": 1
+      },
+      "maxGamePTS": 26,
+      "maxGameThreePt": 8,
+      "wins": 7,
+      "losses": 14,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T15:48:38.471Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "41e66962",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "c8e1af5f",
+          "tn": "The Wiggles",
+          "gid": "a7fa1195",
+          "gn": "Monday Men C2",
+          "age": null,
+          "div": "C2",
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 6,
+            "threePt": 9,
+            "pts": 40,
+            "wins": 2,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "c8e1af5f",
+          "tn": "The Wiggles",
+          "gid": "9c183f81",
+          "gn": "Monday Men C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "fg": 6,
+            "threePt": 9,
+            "pts": 40,
+            "wins": 2,
+            "losses": 3,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "c8e1af5f",
+          "tn": "The Wiggles",
+          "gid": "593548dd",
+          "gn": "Monday Men B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 7,
+            "wins": 2,
+            "losses": 3,
+            "pts": 40,
+            "fg": 6,
+            "ft": 1,
+            "threePt": 9,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "24e148e6",
+      "sn": "Winter 2021",
+      "club": "Rowellyn Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "3bbf7b6f",
+          "tn": "Rowellyn Rockets U16 Boys Houston",
+          "gid": "c5d151ca",
+          "gn": "Wednesday U16 Boys B1",
+          "age": "U16",
+          "div": "B1",
+          "stats": {
+            "gp": 6,
+            "fouls": 10,
+            "ft": 3,
+            "fg": 20,
+            "threePt": 5,
+            "pts": 58,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "307e7a12",
+      "sn": "Summer 2020/21",
+      "club": "Rowellyn Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "92cd6610",
+          "tn": "Rowellyn  Houston Rockets",
+          "gid": "67d6d199",
+          "gn": "Wednesday U16 Boys C1",
+          "age": "U16",
+          "div": "C1",
+          "stats": {
+            "gp": 10,
+            "fouls": 23,
+            "ft": 7,
+            "fg": 26,
+            "threePt": 5,
+            "pts": 74,
+            "foulOuts": 1
+          }
+        },
+        {
+          "tid": "92cd6610",
+          "tn": "Rowellyn  Houston Rockets",
+          "gid": "4fa69e11",
+          "gn": "Wednesday U16 Boys C2",
+          "age": "U16",
+          "div": "C2",
+          "stats": {
+            "gp": 10,
+            "fouls": 23,
+            "ft": 7,
+            "fg": 26,
+            "pts": 74,
+            "threePt": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "0f7fb7e2",
+          "tn": "Chelsea U16 Boys 5",
+          "gid": "a11c4431",
+          "gn": "U16 Boys VJL 10 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T15:21:30.587Z",
+  "teams": [
+    {
+      "tid": "c8e1af5f",
+      "sid": "41e66962",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3bbf7b6f",
+      "sid": "24e148e6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "92cd6610",
+      "sid": "307e7a12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0f7fb7e2",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.051Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 26,
+      "gameKey": "dc5382bc",
+      "sid": "41e66962"
+    },
+    "maxGameThreePt": {
+      "v": 8,
+      "gameKey": "dc5382bc",
+      "sid": "41e66962"
+    }
+  },
+  "games": [
+    "04003d4e",
+    "0f975817",
+    "13675bc2",
+    "2b273c8f",
+    "3c9d5006",
+    "44cc4af6",
+    "68cc8f4c",
+    "6d560a2a",
+    "6e356a91",
+    "7d107249",
+    "8c0a7d55",
+    "8d39b0d8",
+    "96668708",
+    "98925a72",
+    "a4427392",
+    "ac3bf3ca",
+    "b863b8d9",
+    "bad44fd0",
+    "da14ce07",
+    "dc5382bc",
+    "e3d52187",
+    "f71d23cc",
+    "ff0da09b"
+  ]
+}

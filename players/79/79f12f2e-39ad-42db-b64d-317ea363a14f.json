@@ -1,1 +1,180 @@
-{"uuid":"79f12f2e-39ad-42db-b64d-317ea363a14f","name":"Charlie Reeves","gender":"Boys","sports":{"Basketball":{"gp":5,"pts":15,"fouls":1,"fg":7,"ft":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":8,"winPct":0.8,"losses":2,"statsChecked":"2026-07-05T14:56:03.620Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"64fa146a","tn":"U12 TIMBERWOLVES STEALERS","gid":"732f85b3","gn":"Saturday U12 Boys Section 08","age":"U12","div":null,"stats":{"gp":5,"fg":7,"pts":15,"wins":4,"ft":1,"fouls":1,"losses":1}},{"tid":"64fa146a","tn":"U12 TIMBERWOLVES STEALERS","gid":"3384c8dd","gn":"Saturday U12 Boys Section 09","age":"U12","div":null,"stats":{"gp":5,"fouls":1,"ft":1,"fg":7,"pts":15,"wins":4,"losses":1}}]}],"updatedAt":"2026-07-04T05:46:00.396Z","teams":[{"tid":"64fa146a","sid":"6c117270","status":"ACTIVE"},{"tid":"71b12a3f","sid":"68279835","status":"COMPLETED"},{"tid":"c66c3b86","sid":"913d1397","status":"COMPLETED"},{"tid":"afba0b38","sid":"df876355","status":"COMPLETED"},{"tid":"1fb378fc","sid":"e54d0c37","status":"COMPLETED"},{"tid":"28e25f2a","sid":"ee5d2724","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:10.931Z","records":{"maxGamePTS":{"v":4,"gameKey":"b61751b0","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["032d87ba","7f0ee636","b61751b0","cfc34bf9","f5a74bb7"]}
+{
+  "uuid": "79f12f2e-39ad-42db-b64d-317ea363a14f",
+  "name": "Charlie Reeves",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 15,
+      "fouls": 1,
+      "fg": 7,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "winPct": 0.8,
+      "losses": 2,
+      "statsChecked": "2026-07-05T14:56:03.620Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "64fa146a",
+          "tn": "U12 TIMBERWOLVES STEALERS",
+          "gid": "732f85b3",
+          "gn": "Saturday U12 Boys Section 08",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fg": 7,
+            "pts": 15,
+            "wins": 4,
+            "ft": 1,
+            "fouls": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "64fa146a",
+          "tn": "U12 TIMBERWOLVES STEALERS",
+          "gid": "3384c8dd",
+          "gn": "Saturday U12 Boys Section 09",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 1,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "71b12a3f",
+          "tn": "U10 TIMBERWOLVES BOOMERS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "c66c3b86",
+          "tn": "U10 TIMBERWOLVES BOOMERS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "afba0b38",
+          "tn": "U10 TIMBERWOLVES BUCKS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "1fb378fc",
+          "tn": "U10 TIMBERWOLVES BUCKS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "28e25f2a",
+          "tn": "U8 TIMBERWOLVES BLASTERS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:00.396Z",
+  "teams": [
+    {
+      "tid": "64fa146a",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "71b12a3f",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c66c3b86",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "afba0b38",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1fb378fc",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "28e25f2a",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.553Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "b61751b0",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "032d87ba",
+    "7f0ee636",
+    "b61751b0",
+    "cfc34bf9",
+    "f5a74bb7"
+  ]
+}

@@ -1,1 +1,350 @@
-{"uuid":"52b37210-6c15-4d0b-b269-570f2aff27d5","gender":null,"sports":{"Basketball":{"gp":45,"pts":105,"fouls":37,"fg":30,"ft":9,"threePt":12,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":15,"maxGameThreePt":3,"wins":78,"losses":48,"draws":2,"winPct":0.61,"statsChecked":"2026-07-06T18:57:09.355Z"}},"seasons":[{"sid":"702b232f","sn":"Winter 2026","club":null,"regs":[{"tid":"a5de829b","tn":"Air Gordon","gid":"db8e1fa8","gn":"Monday Men -Div 5","stats":{"gp":3,"pts":8,"fouls":4,"ft":1,"threePt":1,"losses":2,"fg":2}}]},{"sid":"6f09c8ad","sn":"Summer 2024/25","club":null,"regs":[{"tid":"18c140c0","tn":"Wildcats","gid":"71a051c1","gn":"Wednesday Division 4","stats":{"gp":13,"pts":14,"fouls":12,"fg":3,"ft":5,"threePt":1}},{"tid":"18c140c0","tn":"Wildcats","gid":"ed6a2c8d","gn":"Wednesday Men Grading","stats":{"gp":13,"pts":14,"fouls":12,"fg":3,"ft":5,"threePt":1}}]},{"sid":"5d394863","sn":"Winter 2024","club":null,"regs":[{"tid":"41d77f3b","tn":"Wildcats","gid":"112f0027","gn":"Wednesday Division 5","stats":{"gp":16,"pts":44,"fouls":9,"fg":14,"ft":1,"threePt":5,"finals":1,"wins":18,"losses":7}},{"tid":"41d77f3b","tn":"Wildcats","gid":"540a4c7a","gn":"Wednesday Men Grading","stats":{"gp":16,"pts":44,"fg":14,"finals":1,"wins":18,"losses":7,"ft":1,"threePt":5,"fouls":9}}]},{"sid":"5d394863","sn":"Winter 2024","club":null,"regs":[{"tid":"41d77f3b","tn":"Wildcats","gid":"112f0027","gn":"Wednesday Division 5","stats":{"gp":16,"pts":44,"fouls":9,"fg":14,"ft":1,"threePt":5,"finals":1,"wins":18,"losses":7}},{"tid":"41d77f3b","tn":"Wildcats","gid":"540a4c7a","gn":"Wednesday Men Grading","stats":{"gp":16,"pts":44,"fg":14,"finals":1,"wins":18,"losses":7,"ft":1,"threePt":5,"fouls":9}}]},{"sid":"f64c9c45","sn":"Summer 2023/24","club":null,"regs":[{"tid":"1811890d","tn":"WILDCATS","gid":"49679c2f","gn":"Wednesday Division 5","stats":{"gp":13,"pts":39,"fouls":12,"fg":11,"ft":2,"threePt":5,"wins":3,"losses":9,"draws":1}},{"tid":"1811890d","tn":"WILDCATS","gid":"46dea47e","gn":"Wednesday Men Grading","stats":{"gp":13,"pts":39,"fouls":12,"ft":2,"threePt":5,"wins":3,"losses":9,"draws":1,"fg":11}}]}],"updatedAt":"2026-07-06T18:35:25.277Z","records":{"maxGamePTS":{"v":15,"gameKey":"27f74af9","sid":"5d394863"},"maxGameThreePt":{"v":3,"gameKey":"27f74af9","sid":"5d394863"}},"games":["01441919","09314238","118a8ccf","1645034f","1c404d23","1da7e2c6","20b3cf75","23ee6cfc","27f74af9","2e9818b6","302a5e19","3841cbc5","42c81542","53af77b5","58471353","5d83a1a8","681e22f4","7fe4c351","87516b7b","8e837742","9fd74562","aa3b9900","ad173f79","af068fe8","bbc6904f","c22ae013","c5446621","cb852afc","d62c23ba","de6d7c9e","e8cdb8ca"],"name":"Winter 2026"}
+{
+  "uuid": "52b37210-6c15-4d0b-b269-570f2aff27d5",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 45,
+      "pts": 105,
+      "fouls": 37,
+      "fg": 30,
+      "ft": 9,
+      "threePt": 12,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 15,
+      "maxGameThreePt": 3,
+      "wins": 78,
+      "losses": 48,
+      "draws": 2,
+      "winPct": 0.61,
+      "statsChecked": "2026-07-06T18:57:09.355Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "sn": "Winter 2026",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a5de829b",
+          "tn": "Air Gordon",
+          "gid": "db8e1fa8",
+          "gn": "Monday Men -Div 5",
+          "stats": {
+            "gp": 3,
+            "pts": 8,
+            "fouls": 4,
+            "ft": 1,
+            "threePt": 1,
+            "losses": 2,
+            "fg": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6f09c8ad",
+      "sn": "Summer 2024/25",
+      "club": null,
+      "regs": [
+        {
+          "tid": "18c140c0",
+          "tn": "Wildcats",
+          "gid": "71a051c1",
+          "gn": "Wednesday Division 4",
+          "stats": {
+            "gp": 13,
+            "pts": 14,
+            "fouls": 12,
+            "fg": 3,
+            "ft": 5,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "18c140c0",
+          "tn": "Wildcats",
+          "gid": "ed6a2c8d",
+          "gn": "Wednesday Men Grading",
+          "stats": {
+            "gp": 13,
+            "pts": 14,
+            "fouls": 12,
+            "fg": 3,
+            "ft": 5,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5d394863",
+      "sn": "Winter 2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "41d77f3b",
+          "tn": "Wildcats",
+          "gid": "112f0027",
+          "gn": "Wednesday Division 5",
+          "stats": {
+            "gp": 16,
+            "pts": 44,
+            "fouls": 9,
+            "fg": 14,
+            "ft": 1,
+            "threePt": 5,
+            "finals": 1,
+            "wins": 18,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "41d77f3b",
+          "tn": "Wildcats",
+          "gid": "540a4c7a",
+          "gn": "Wednesday Men Grading",
+          "stats": {
+            "gp": 16,
+            "pts": 44,
+            "fg": 14,
+            "finals": 1,
+            "wins": 18,
+            "losses": 7,
+            "ft": 1,
+            "threePt": 5,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5d394863",
+      "sn": "Winter 2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "41d77f3b",
+          "tn": "Wildcats",
+          "gid": "112f0027",
+          "gn": "Wednesday Division 5",
+          "stats": {
+            "gp": 16,
+            "pts": 44,
+            "fouls": 9,
+            "fg": 14,
+            "ft": 1,
+            "threePt": 5,
+            "finals": 1,
+            "wins": 18,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "41d77f3b",
+          "tn": "Wildcats",
+          "gid": "540a4c7a",
+          "gn": "Wednesday Men Grading",
+          "stats": {
+            "gp": 16,
+            "pts": 44,
+            "fg": 14,
+            "finals": 1,
+            "wins": 18,
+            "losses": 7,
+            "ft": 1,
+            "threePt": 5,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f64c9c45",
+      "sn": "Summer 2023/24",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1811890d",
+          "tn": "WILDCATS",
+          "gid": "49679c2f",
+          "gn": "Wednesday Division 5",
+          "stats": {
+            "gp": 13,
+            "pts": 39,
+            "fouls": 12,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 5,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1811890d",
+          "tn": "WILDCATS",
+          "gid": "46dea47e",
+          "gn": "Wednesday Men Grading",
+          "stats": {
+            "gp": 13,
+            "pts": 39,
+            "fouls": 12,
+            "ft": 2,
+            "threePt": 5,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1,
+            "fg": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f00a8108",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "d085a79a",
+          "tn": "Warriors U20 Boys White",
+          "gid": "402de734",
+          "gn": "Saturday U20 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8e7c4b8e",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "76f996bb",
+          "tn": "Warriors U19 Boys White",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "84079ea9",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "ecd97c0e",
+          "tn": "Warriors U19 Boys White",
+          "gid": "b9d5564e",
+          "gn": "Saturday U19 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "3324e019",
+          "tn": "Keilor U16 Boys 7",
+          "gid": "561ce834",
+          "gn": "U16 Boys VJL 7 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:25.277Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "27f74af9",
+      "sid": "5d394863"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "27f74af9",
+      "sid": "5d394863"
+    }
+  },
+  "games": [
+    "01441919",
+    "09314238",
+    "118a8ccf",
+    "1645034f",
+    "1c404d23",
+    "1da7e2c6",
+    "20b3cf75",
+    "23ee6cfc",
+    "27f74af9",
+    "2e9818b6",
+    "302a5e19",
+    "3841cbc5",
+    "42c81542",
+    "53af77b5",
+    "58471353",
+    "5d83a1a8",
+    "681e22f4",
+    "7fe4c351",
+    "87516b7b",
+    "8e837742",
+    "9fd74562",
+    "aa3b9900",
+    "ad173f79",
+    "af068fe8",
+    "bbc6904f",
+    "c22ae013",
+    "c5446621",
+    "cb852afc",
+    "d62c23ba",
+    "de6d7c9e",
+    "e8cdb8ca"
+  ],
+  "name": "Winter 2026",
+  "teams": [
+    {
+      "tid": "a5de829b",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "18c140c0",
+      "sid": "6f09c8ad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "41d77f3b",
+      "sid": "5d394863",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1811890d",
+      "sid": "f64c9c45",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d085a79a",
+      "sid": "f00a8108",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76f996bb",
+      "sid": "8e7c4b8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ecd97c0e",
+      "sid": "84079ea9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3324e019",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.959Z"
+}

@@ -1,1 +1,239 @@
-{"uuid":"3fd60bf4-db78-4dad-8535-7b44fde77edf","name":"Joshua Key","gender":"Men","sports":{"Basketball":{"gp":25,"pts":65,"fouls":25,"fg":22,"threePt":7,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{},"maxGamePTS":9,"maxGameThreePt":1,"wins":14,"losses":15,"winPct":0.48,"statsChecked":"2026-07-05T15:35:20.739Z"}},"seasons":[{"sid":"408cf044","sn":"Autumn 2025","regs":[{"tid":"260ce8e6","tn":"Boom Bullets","gid":"a39318bd","gn":"Division 7 Sunday Mens","age":null,"div":null,"stats":{"gp":9,"pts":23,"threePt":1,"fg":10,"fouls":9,"finals":1,"wins":8}}]},{"sid":"a11ae827","sn":"Winter 2021","club":"Lightning Basketball Club (Bacchus Marsh)","regs":[{"tid":"44a7415c","tn":"Lightning U19 Boys 1","gid":"392ff611","gn":"Tuesday U19 Boys","age":"U19","div":null,"stats":{"gp":5,"pts":12,"fg":6,"fouls":5,"wins":4,"losses":1}},{"tid":"1bea620a","stats":{"losses":5,"gp":5,"pts":10,"fg":2,"threePt":2,"fouls":3}}]},{"sid":"a11ae827","sn":"Winter 2021","regs":[{"tid":"1bea620a","tn":"Legends","gid":"b26e7e18","gn":"Thursday Open Men","age":"Senior","div":null,"stats":{"gp":5,"pts":10,"threePt":2,"fg":2,"fouls":3,"losses":5}}]},{"sid":"0ac08b26","sn":"Summer 2020/21","regs":[{"tid":"91fbec39","tn":"Legends","gid":"fc1e711c","gn":"Thursday Open Men B Grade","age":"Senior","div":null,"stats":{"gp":6,"pts":20,"threePt":4,"fg":4,"fouls":8,"wins":2,"losses":4}}]}],"updatedAt":"2026-06-01T14:01:07.532Z","teams":[{"tid":"260ce8e6","sid":"408cf044","status":"COMPLETED"},{"tid":"1bea620a","sid":"a11ae827","status":"COMPLETED"},{"tid":"44a7415c","sid":"a11ae827","status":"COMPLETED"},{"tid":"91fbec39","sid":"0ac08b26","status":"COMPLETED"},{"tid":"506082b0","sid":"a9fcd2a0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:21:27.768Z","records":{"maxGamePTS":{"v":9,"gameKey":"3710a427","sid":"408cf044"},"maxGameThreePt":{"v":1,"gameKey":"3710a427","sid":"408cf044"}},"games":["01805086","06ba0a9d","279d2b5f","285a9a5e","3165af5e","3710a427","48e82582","4c510eb0","4f3469b1","505d355a","57ebfca1","6c1a6666","6f43ea02","839f07a6","8e3282ce","97f4d73f","989dc053","ab701398","bb0c1a7b","c4fde863","c8d9f3e6","cbd744fc","d4f42e45","f3979e42","f44e70fd"],"gameTids":{"c4fde863":"260ce8e6","c8d9f3e6":"260ce8e6","06ba0a9d":"260ce8e6","d4f42e45":"260ce8e6","57ebfca1":"260ce8e6","505d355a":"260ce8e6","3710a427":"260ce8e6","01805086":"260ce8e6","8e3282ce":"260ce8e6","97f4d73f":"44a7415c","f44e70fd":"44a7415c","cbd744fc":"44a7415c","bb0c1a7b":"44a7415c","f3979e42":"44a7415c","285a9a5e":"1bea620a","4c510eb0":"1bea620a","6c1a6666":"1bea620a","4f3469b1":"1bea620a","839f07a6":"1bea620a","3165af5e":"91fbec39","ab701398":"91fbec39","279d2b5f":"91fbec39","48e82582":"91fbec39","6f43ea02":"91fbec39","989dc053":"91fbec39"}}
+{
+  "uuid": "3fd60bf4-db78-4dad-8535-7b44fde77edf",
+  "name": "Joshua Key",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 25,
+      "pts": 65,
+      "fouls": 25,
+      "fg": 22,
+      "threePt": 7,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {},
+      "maxGamePTS": 9,
+      "maxGameThreePt": 1,
+      "wins": 14,
+      "losses": 15,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-05T15:35:20.739Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "408cf044",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "260ce8e6",
+          "tn": "Boom Bullets",
+          "gid": "a39318bd",
+          "gn": "Division 7 Sunday Mens",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 23,
+            "threePt": 1,
+            "fg": 10,
+            "fouls": 9,
+            "finals": 1,
+            "wins": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a11ae827",
+      "sn": "Winter 2021",
+      "club": "Lightning Basketball Club (Bacchus Marsh)",
+      "regs": [
+        {
+          "tid": "44a7415c",
+          "tn": "Lightning U19 Boys 1",
+          "gid": "392ff611",
+          "gn": "Tuesday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 5,
+            "wins": 4,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "1bea620a",
+          "stats": {
+            "losses": 5,
+            "gp": 5,
+            "pts": 10,
+            "fg": 2,
+            "threePt": 2,
+            "fouls": 3
+          },
+          "gid": "b26e7e18",
+          "gn": "Thursday Open Men"
+        }
+      ]
+    },
+    {
+      "sid": "a11ae827",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "1bea620a",
+          "tn": "Legends",
+          "gid": "b26e7e18",
+          "gn": "Thursday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "pts": 10,
+            "threePt": 2,
+            "fg": 2,
+            "fouls": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0ac08b26",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "91fbec39",
+          "tn": "Legends",
+          "gid": "fc1e711c",
+          "gn": "Thursday Open Men B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 20,
+            "threePt": 4,
+            "fg": 4,
+            "fouls": 8,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a9fcd2a0",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "506082b0",
+          "tn": "Saints U19.2 Boys",
+          "gid": "3edc920c",
+          "gn": "Tuesday U19 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T14:01:07.532Z",
+  "teams": [
+    {
+      "tid": "260ce8e6",
+      "sid": "408cf044",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44a7415c",
+      "sid": "a11ae827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1bea620a",
+      "sid": "a11ae827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "91fbec39",
+      "sid": "0ac08b26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "506082b0",
+      "sid": "a9fcd2a0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.787Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "3710a427",
+      "sid": "408cf044"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3710a427",
+      "sid": "408cf044"
+    }
+  },
+  "games": [
+    "01805086",
+    "06ba0a9d",
+    "279d2b5f",
+    "285a9a5e",
+    "3165af5e",
+    "3710a427",
+    "48e82582",
+    "4c510eb0",
+    "4f3469b1",
+    "505d355a",
+    "57ebfca1",
+    "6c1a6666",
+    "6f43ea02",
+    "839f07a6",
+    "8e3282ce",
+    "97f4d73f",
+    "989dc053",
+    "ab701398",
+    "bb0c1a7b",
+    "c4fde863",
+    "c8d9f3e6",
+    "cbd744fc",
+    "d4f42e45",
+    "f3979e42",
+    "f44e70fd"
+  ],
+  "gameTids": {
+    "c4fde863": "260ce8e6",
+    "c8d9f3e6": "260ce8e6",
+    "06ba0a9d": "260ce8e6",
+    "d4f42e45": "260ce8e6",
+    "57ebfca1": "260ce8e6",
+    "505d355a": "260ce8e6",
+    "3710a427": "260ce8e6",
+    "01805086": "260ce8e6",
+    "8e3282ce": "260ce8e6",
+    "97f4d73f": "44a7415c",
+    "f44e70fd": "44a7415c",
+    "cbd744fc": "44a7415c",
+    "bb0c1a7b": "44a7415c",
+    "f3979e42": "44a7415c",
+    "285a9a5e": "1bea620a",
+    "4c510eb0": "1bea620a",
+    "6c1a6666": "1bea620a",
+    "4f3469b1": "1bea620a",
+    "839f07a6": "1bea620a",
+    "3165af5e": "91fbec39",
+    "ab701398": "91fbec39",
+    "279d2b5f": "91fbec39",
+    "48e82582": "91fbec39",
+    "6f43ea02": "91fbec39",
+    "989dc053": "91fbec39"
+  }
+}

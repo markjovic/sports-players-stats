@@ -1,1 +1,127 @@
-{"uuid":"8cfead5f-1ac1-4ffa-9480-5d0fa3014acd","gender":null,"sports":{"Basketball":{"gp":14,"pts":13,"fouls":8,"fg":5,"threePt":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":1,"wins":7,"losses":5,"winPct":0.58,"statsChecked":"2026-07-05T16:02:19.277Z"}},"seasons":[{"sid":"7c90a07c","sn":"Summer 2022/23","club":null,"regs":[{"tid":"e902d170","tn":"Local Ladies","gid":"c760d1b5","gn":"Wednesday Women 4 - 2023 Summer","stats":{"gp":12,"pts":13,"fouls":8,"fg":5,"threePt":1,"finals":1,"gfApps":1,"wins":7,"losses":5}}]},{"sid":"8e7cc81d","sn":"Summer 2021/22","club":null,"regs":[{"tid":"f0b67d6e","tn":"Local Ladies","gid":"81b4891b","gn":"Wednesday Women 4 - 2022 Summer","stats":{"gp":2}}]}],"updatedAt":"2026-06-11T23:42:18.675Z","records":{"maxGamePTS":{"v":4,"gameKey":"2a4939d4","sid":"7c90a07c"},"maxGameThreePt":{"v":1,"gameKey":"6bd80b2d","sid":"7c90a07c"}},"games":["0b638b6b","116f0f4d","16fa485a","1dfc089f","2a4939d4","4fc99db4","573f7cc8","6bd80b2d","8070f0ef","aaba3757","c374272a","f49957ae","fc1d1c94","ffb7ec26"],"name":"Summer 2022/23"}
+{
+  "uuid": "8cfead5f-1ac1-4ffa-9480-5d0fa3014acd",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 13,
+      "fouls": 8,
+      "fg": 5,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "wins": 7,
+      "losses": 5,
+      "winPct": 0.58,
+      "statsChecked": "2026-07-05T16:02:19.277Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7c90a07c",
+      "sn": "Summer 2022/23",
+      "club": null,
+      "regs": [
+        {
+          "tid": "e902d170",
+          "tn": "Local Ladies",
+          "gid": "c760d1b5",
+          "gn": "Wednesday Women 4 - 2023 Summer",
+          "stats": {
+            "gp": 12,
+            "pts": 13,
+            "fouls": 8,
+            "fg": 5,
+            "threePt": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e7cc81d",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f0b67d6e",
+          "tn": "Local Ladies",
+          "gid": "81b4891b",
+          "gn": "Wednesday Women 4 - 2022 Summer",
+          "stats": {
+            "gp": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2fe68b4a",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "29ac834e",
+          "tn": "Local Ladies",
+          "gid": "c5ff6112",
+          "gn": "Wednesday Women 4 - 2021 Winter",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:18.675Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "2a4939d4",
+      "sid": "7c90a07c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6bd80b2d",
+      "sid": "7c90a07c"
+    }
+  },
+  "games": [
+    "0b638b6b",
+    "116f0f4d",
+    "16fa485a",
+    "1dfc089f",
+    "2a4939d4",
+    "4fc99db4",
+    "573f7cc8",
+    "6bd80b2d",
+    "8070f0ef",
+    "aaba3757",
+    "c374272a",
+    "f49957ae",
+    "fc1d1c94",
+    "ffb7ec26"
+  ],
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "e902d170",
+      "sid": "7c90a07c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0b67d6e",
+      "sid": "8e7cc81d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "29ac834e",
+      "sid": "2fe68b4a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.671Z"
+}

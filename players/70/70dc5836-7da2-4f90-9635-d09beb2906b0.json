@@ -1,1 +1,170 @@
-{"uuid":"70dc5836-7da2-4f90-9635-d09beb2906b0","name":"Eahrlou Canete","gender":"Men","sports":{"Basketball":{"gp":20,"pts":147,"fouls":39,"fg":52,"ft":19,"threePt":8,"foulOuts":{"e4fda0f9":1,"56bbe16f":2},"maxGamePTS":18,"maxGameThreePt":2,"wins":8,"losses":10,"draws":1,"winPct":0.42,"statsChecked":"2026-07-05T15:23:18.970Z"}},"seasons":[{"sid":"e4fda0f9","sn":"Winter 2026","club":"Phoenix Basketball Club (Ballarat)","regs":[{"tid":"559ab5cf","tn":"Phoenix Renegades","gid":"be947b01","gn":"Friday U19 Boys E","age":"U19","div":null,"stats":{"gp":4,"fouls":13,"ft":10,"fg":19,"threePt":2,"pts":54,"foulOuts":1,"wins":2,"losses":2}},{"tid":"5d4b0e4f","stats":{"losses":1,"gp":3,"pts":22,"fg":5,"ft":3,"threePt":3,"fouls":4,"wins":2}}]},{"sid":"56bbe16f","sn":"Summer 2025/26","club":"Celtic Tigers Basketball Club","regs":[{"tid":"e63acd0b","tn":"Celtic Tigers WSM5","gid":"784e4496","gn":"Wednesday Senior Men 5","age":"Senior","div":null,"stats":{"gp":13,"fouls":22,"ft":6,"fg":28,"threePt":3,"pts":71,"foulOuts":2,"wins":4,"losses":7,"draws":1}}]}],"updatedAt":"2026-06-02T00:39:16.134Z","teams":[{"tid":"5d4b0e4f","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"e63acd0b","sid":"56bbe16f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:48.584Z","records":{"maxGamePTS":{"v":18,"gameKey":"fd62ecc2","sid":"e4fda0f9"},"maxGameThreePt":{"v":2,"gameKey":"a8695d71","sid":"e4fda0f9"}},"games":["194e7759","19831f29","415386eb","417cff88","42a5998d","53dcbd6b","54a111eb","5859cf6a","59ee5a4d","89ae6950","8d1ee3b4","9be10dd2","a58945b9","a8695d71","ae052e8e","e74c90d0","ef56040d","f7c39223","fd62ecc2"],"gameTids":{"59ee5a4d":"5d4b0e4f","ae052e8e":"5d4b0e4f","a8695d71":"5d4b0e4f","53dcbd6b":"559ab5cf","fd62ecc2":"559ab5cf","5859cf6a":"559ab5cf","ef56040d":"559ab5cf","9be10dd2":"e63acd0b","f7c39223":"e63acd0b","194e7759":"e63acd0b","42a5998d":"e63acd0b","e74c90d0":"e63acd0b","89ae6950":"e63acd0b","415386eb":"e63acd0b","19831f29":"e63acd0b","a58945b9":"e63acd0b","417cff88":"e63acd0b","54a111eb":"e63acd0b","8d1ee3b4":"e63acd0b","21f8ced5":"e63acd0b"}}
+{
+  "uuid": "70dc5836-7da2-4f90-9635-d09beb2906b0",
+  "name": "Eahrlou Canete",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 147,
+      "fouls": 39,
+      "fg": 52,
+      "ft": 19,
+      "threePt": 8,
+      "foulOuts": {
+        "e4fda0f9": 1,
+        "56bbe16f": 2
+      },
+      "maxGamePTS": 18,
+      "maxGameThreePt": 2,
+      "wins": 8,
+      "losses": 10,
+      "draws": 1,
+      "winPct": 0.42,
+      "statsChecked": "2026-07-05T15:23:18.970Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Phoenix Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "559ab5cf",
+          "tn": "Phoenix Renegades",
+          "gid": "be947b01",
+          "gn": "Friday U19 Boys E",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 13,
+            "ft": 10,
+            "fg": 19,
+            "threePt": 2,
+            "pts": 54,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "5d4b0e4f",
+          "stats": {
+            "losses": 1,
+            "gp": 3,
+            "pts": 22,
+            "fg": 5,
+            "ft": 3,
+            "threePt": 3,
+            "fouls": 4,
+            "wins": 2
+          },
+          "gid": "a031842b",
+          "gn": "Friday U19 Boys C"
+        }
+      ]
+    },
+    {
+      "sid": "56bbe16f",
+      "sn": "Summer 2025/26",
+      "club": "Celtic Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "e63acd0b",
+          "tn": "Celtic Tigers WSM5",
+          "gid": "784e4496",
+          "gn": "Wednesday Senior Men 5",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 22,
+            "ft": 6,
+            "fg": 28,
+            "threePt": 3,
+            "pts": 71,
+            "foulOuts": 2,
+            "wins": 4,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T00:39:16.134Z",
+  "teams": [
+    {
+      "tid": "559ab5cf",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5d4b0e4f",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e63acd0b",
+      "sid": "56bbe16f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.988Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "fd62ecc2",
+      "sid": "e4fda0f9"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "a8695d71",
+      "sid": "e4fda0f9"
+    }
+  },
+  "games": [
+    "194e7759",
+    "19831f29",
+    "415386eb",
+    "417cff88",
+    "42a5998d",
+    "53dcbd6b",
+    "54a111eb",
+    "5859cf6a",
+    "59ee5a4d",
+    "89ae6950",
+    "8d1ee3b4",
+    "9be10dd2",
+    "a58945b9",
+    "a8695d71",
+    "ae052e8e",
+    "e74c90d0",
+    "ef56040d",
+    "f7c39223",
+    "fd62ecc2"
+  ],
+  "gameTids": {
+    "59ee5a4d": "5d4b0e4f",
+    "ae052e8e": "5d4b0e4f",
+    "a8695d71": "5d4b0e4f",
+    "53dcbd6b": "559ab5cf",
+    "fd62ecc2": "559ab5cf",
+    "5859cf6a": "559ab5cf",
+    "ef56040d": "559ab5cf",
+    "9be10dd2": "e63acd0b",
+    "f7c39223": "e63acd0b",
+    "194e7759": "e63acd0b",
+    "42a5998d": "e63acd0b",
+    "e74c90d0": "e63acd0b",
+    "89ae6950": "e63acd0b",
+    "415386eb": "e63acd0b",
+    "19831f29": "e63acd0b",
+    "a58945b9": "e63acd0b",
+    "417cff88": "e63acd0b",
+    "54a111eb": "e63acd0b",
+    "8d1ee3b4": "e63acd0b",
+    "21f8ced5": "e63acd0b"
+  }
+}

@@ -1,1 +1,253 @@
-{"uuid":"2ded5928-5968-46d3-9b95-3bd1982da141","name":"Julian Cuno","gender":"Men","sports":{"Basketball":{"gp":43,"pts":51,"fouls":66,"fg":21,"ft":3,"threePt":2,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.33,"maxGamePTS":8,"maxGameThreePt":1,"wins":23,"losses":37,"winPct":0.37,"draws":2,"statsChecked":"2026-07-05T16:00:06.187Z"}},"seasons":[{"sid":"88491e39","sn":"Autumn 2023","regs":[{"tid":"e18c6855","tn":"Sharks Hammerheads","gid":"e469f414","gn":"Tuesday Open Men B Grade","age":"Senior","div":null,"stats":{"gp":6,"fouls":11,"ft":1,"fg":4,"pts":9,"losses":6}}]},{"sid":"88fd4210","sn":"Summer 2022/23","regs":[{"tid":"81a2fff3","tn":"RHA","gid":"f0afd6ed","gn":"Men WEDNESDAY Section 6","age":null,"div":null,"stats":{"gp":20,"fouls":39,"ft":2,"fg":7,"threePt":2,"pts":22,"finals":1,"gfApps":1,"gfWins":1,"wins":8,"losses":11,"draws":1}},{"tid":"81a2fff3","tn":"RHA","gid":"5c5ed337","gn":"ZZ Wednesday Unspecified Men 9","age":null,"div":null,"stats":{"gp":20,"fouls":39,"fg":7,"pts":22,"finals":1,"gfApps":1,"gfWins":1,"wins":8,"losses":11,"draws":1,"ft":2,"threePt":2}}]},{"sid":"d3dee716","sn":"Winter 2022","regs":[{"tid":"82608140","tn":"RHA","gid":"6c4a4ac7","gn":"Men WEDNESDAY Section 5","age":null,"div":null,"stats":{"gp":17,"fouls":16,"fg":10,"pts":20,"wins":7,"losses":9}}]}],"updatedAt":"2026-06-02T21:03:36.376Z","teams":[{"tid":"e18c6855","sid":"88491e39","status":"COMPLETED"},{"tid":"81a2fff3","sid":"88fd4210","status":"COMPLETED"},{"tid":"afdc6929","sid":"21cd9648","status":"COMPLETED"},{"tid":"82608140","sid":"d3dee716","status":"COMPLETED"},{"tid":"88121cde","sid":"d4cbf787","status":"COMPLETED"},{"tid":"93ba735d","sid":"d64fcfce","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:10:29.475Z","records":{"maxGamePTS":{"v":8,"gameKey":"ec560184","sid":"d3dee716"},"maxGameThreePt":{"v":1,"gameKey":"6e07e130","sid":"88fd4210"}},"games":["19c12606","1c8e76c9","26fbb2d9","27bb9db1","295fc0ea","33ea28da","3c518a89","3d6e1bf7","42bbc641","4923ecb7","4a9c347a","4c1d6322","5311c527","5b5b846e","63104d48","6e07e130","70cd47e0","72db67a2","7befef0e","7f362f73","8b960da7","8d20ddcc","94a1afbc","9a58bb1f","aac25132","ab1865c5","ae439caa","beca2e49","c8737e11","c96e320d","d1393a65","d85dfbc3","df4fa915","e3497cbd","e3935345","e822359d","e88de4d3","ec560184","ed3002bf","f4e2a3e0","f68babf7","f7dd549a","fd2e69eb"]}
+{
+  "uuid": "2ded5928-5968-46d3-9b95-3bd1982da141",
+  "name": "Julian Cuno",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 51,
+      "fouls": 66,
+      "fg": 21,
+      "ft": 3,
+      "threePt": 2,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 23,
+      "losses": 37,
+      "winPct": 0.37,
+      "draws": 2,
+      "statsChecked": "2026-07-05T16:00:06.187Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "88491e39",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "e18c6855",
+          "tn": "Sharks Hammerheads",
+          "gid": "e469f414",
+          "gn": "Tuesday Open Men B Grade",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88fd4210",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "81a2fff3",
+          "tn": "RHA",
+          "gid": "f0afd6ed",
+          "gn": "Men WEDNESDAY Section 6",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 39,
+            "ft": 2,
+            "fg": 7,
+            "threePt": 2,
+            "pts": 22,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 8,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "81a2fff3",
+          "tn": "RHA",
+          "gid": "5c5ed337",
+          "gn": "ZZ Wednesday Unspecified Men 9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 20,
+            "fouls": 39,
+            "fg": 7,
+            "pts": 22,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "wins": 8,
+            "losses": 11,
+            "draws": 1,
+            "ft": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "82608140",
+          "tn": "RHA",
+          "gid": "6c4a4ac7",
+          "gn": "Men WEDNESDAY Section 5",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 16,
+            "fg": 10,
+            "pts": 20,
+            "wins": 7,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "afdc6929",
+          "tn": "Team 7",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "88121cde",
+          "tn": "Team 7",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "93ba735d",
+          "tn": "Team 7",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T21:03:36.376Z",
+  "teams": [
+    {
+      "tid": "e18c6855",
+      "sid": "88491e39",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "81a2fff3",
+      "sid": "88fd4210",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "82608140",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "afdc6929",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88121cde",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "93ba735d",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.976Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "ec560184",
+      "sid": "d3dee716"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6e07e130",
+      "sid": "88fd4210"
+    }
+  },
+  "games": [
+    "19c12606",
+    "1c8e76c9",
+    "26fbb2d9",
+    "27bb9db1",
+    "295fc0ea",
+    "33ea28da",
+    "3c518a89",
+    "3d6e1bf7",
+    "42bbc641",
+    "4923ecb7",
+    "4a9c347a",
+    "4c1d6322",
+    "5311c527",
+    "5b5b846e",
+    "63104d48",
+    "6e07e130",
+    "70cd47e0",
+    "72db67a2",
+    "7befef0e",
+    "7f362f73",
+    "8b960da7",
+    "8d20ddcc",
+    "94a1afbc",
+    "9a58bb1f",
+    "aac25132",
+    "ab1865c5",
+    "ae439caa",
+    "beca2e49",
+    "c8737e11",
+    "c96e320d",
+    "d1393a65",
+    "d85dfbc3",
+    "df4fa915",
+    "e3497cbd",
+    "e3935345",
+    "e822359d",
+    "e88de4d3",
+    "ec560184",
+    "ed3002bf",
+    "f4e2a3e0",
+    "f68babf7",
+    "f7dd549a",
+    "fd2e69eb"
+  ]
+}

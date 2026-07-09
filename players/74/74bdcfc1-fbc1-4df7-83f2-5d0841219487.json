@@ -1,1 +1,473 @@
-{"uuid":"74bdcfc1-fbc1-4df7-83f2-5d0841219487","name":"Lachlan Johnson","gender":"Boys","sports":{"Basketball":{"gp":84,"pts":214,"fouls":98,"fg":95,"ft":12,"threePt":4,"foulOuts":{},"finals":2,"gfApps":2,"gfWins":1,"finalsPerSeason":0.29,"maxGamePTS":10,"maxGameThreePt":1,"wins":42,"losses":41,"winPct":0.51,"statsChecked":"2026-07-05T14:56:06.093Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Hoop School Basketball Academy","regs":[{"tid":"6a433763","tn":"HS U12 Boys WHITE","gid":"bc98684a","gn":"Saturday U12 Boys A","age":"U12","div":null,"stats":{"gp":6,"fouls":5,"fg":5,"pts":10,"wins":5}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"e16241ea","tn":"Port Thunderbolts","gid":"887f9693","gn":"Wednesday Year 5 Boys A","age":null,"div":null,"stats":{"gp":17,"fouls":33,"ft":3,"fg":19,"pts":41,"wins":6,"losses":11}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"2d5f03ce","tn":"Hoop School Boys U12 White","gid":"033ea155","gn":"Saturday U12 Boys A","age":"U12","div":null,"stats":{"gp":14,"fouls":12,"ft":3,"fg":14,"threePt":2,"pts":37,"finals":1,"gfApps":1,"wins":9,"losses":5,"gfWins":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"9529e978","tn":"Port Thunderbolts","gid":"b904c918","gn":"Friday Year 4 Boys A","age":null,"div":null,"stats":{"gp":14,"fouls":12,"ft":3,"fg":26,"pts":55,"wins":8,"losses":6}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"4784096a","tn":"Hoop School Boys U12 Silver","gid":"eb040a31","gn":"Saturday U12 Boys A/B","age":"U12","div":null,"stats":{"gp":13,"fouls":11,"fg":7,"threePt":2,"pts":20,"wins":2,"losses":11}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"b82a6ee7","tn":"Port Thunderbolts","gid":"93466c02","gn":"Friday MSAC/Bayside Year 4 Boys A","age":null,"div":null,"stats":{"gp":7,"fouls":10,"ft":3,"fg":10,"pts":23,"wins":4,"losses":3}}]},{"sid":"0261a532","sn":"Summer 2024/25","regs":[{"tid":"a4d59686","tn":"Hoop School Boys U12 Black","gid":"be96f7f1","gn":"Saturday U12 Boys B","age":"U12","div":null,"stats":{"gp":13,"fouls":15,"fg":14,"pts":28,"finals":1,"gfApps":1,"wins":8,"losses":5}}]}],"updatedAt":"2026-07-04T05:54:00.607Z","teams":[{"tid":"e16241ea","sid":"ad68db8b","status":"ACTIVE"},{"tid":"6a433763","sid":"e7aed763","status":"ACTIVE"},{"tid":"2d5f03ce","sid":"e78cfce1","status":"COMPLETED"},{"tid":"d0b31c39","sid":"e5a42985","status":"COMPLETED"},{"tid":"9529e978","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"4784096a","sid":"0c4ad170","status":"COMPLETED"},{"tid":"b82a6ee7","sid":"31d05517","status":"COMPLETED"},{"tid":"a4d59686","sid":"0261a532","status":"COMPLETED"},{"tid":"84da1a1f","sid":"8884de2d","status":"COMPLETED"},{"tid":"1f93ecea","sid":"0fef30ca","status":"COMPLETED"},{"tid":"47716063","sid":"09a70808","status":"COMPLETED"},{"tid":"d6218dd9","sid":"e5df46b3","status":"COMPLETED"},{"tid":"ebe1471d","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"fea0b2a4","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:52:01.190Z","records":{"maxGamePTS":{"v":10,"gameKey":"11e8f71a","sid":"1d1b8d1c"},"maxGameThreePt":{"v":1,"gameKey":"5fe2aeb3","sid":"e78cfce1"}},"games":["0142dcd6","0190b6c9","036dd4c9","04854f8f","0ea405ad","11e8f71a","1bbd2ac0","1e23a2ab","2116d6c7","26fa836b","282344bb","299e7b95","2a802dcd","2ac1f626","2cdcdb2c","30ce614c","3bf30ad6","3fb671c5","44be6d8f","44cab823","48f30703","4b9f305d","4ba5e846","4bfc95a0","50d73f89","51d10dab","5922573a","5fe2aeb3","61c2e214","764a5906","7901ed38","7c3f4561","7c9bd825","7d62afe9","7e1ba7bf","8262c571","8351ef0a","86f25518","872efb44","8776d583","8ae259cf","8d7bbae5","92839443","94487f12","966d01b9","9b775f9b","9da63ac9","9dad7e4f","9f31ce6f","9fba0f0a","a4b5cea9","a53c63ee","a9452275","ac852def","b389b22a","b6901992","c1662887","c67b39ed","cb60d263","cc52276d","cf1d5584","d1f5db48","d7514044","dc93e493","de9e72eb","e1132bd1","e2620d94","e4475a1f","e709bafb","e81b5f9d","eb5dc93e","ec10f79b","eef1c958","f001f71a","f0b6095d","f1dd1379","f1fd58d9","f2de8595","f9a33dde","faa8e0f5","fbaa521e","fc108105","ff204d3f"]}
+{
+  "uuid": "74bdcfc1-fbc1-4df7-83f2-5d0841219487",
+  "name": "Lachlan Johnson",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 84,
+      "pts": 214,
+      "fouls": 98,
+      "fg": 95,
+      "ft": 12,
+      "threePt": 4,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 1,
+      "finalsPerSeason": 0.29,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 42,
+      "losses": 41,
+      "winPct": 0.51,
+      "statsChecked": "2026-07-05T14:56:06.093Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Hoop School Basketball Academy",
+      "regs": [
+        {
+          "tid": "6a433763",
+          "tn": "HS U12 Boys WHITE",
+          "gid": "bc98684a",
+          "gn": "Saturday U12 Boys A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "fg": 5,
+            "pts": 10,
+            "wins": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "e16241ea",
+          "tn": "Port Thunderbolts",
+          "gid": "887f9693",
+          "gn": "Wednesday Year 5 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 33,
+            "ft": 3,
+            "fg": 19,
+            "pts": 41,
+            "wins": 6,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "2d5f03ce",
+          "tn": "Hoop School Boys U12 White",
+          "gid": "033ea155",
+          "gn": "Saturday U12 Boys A",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 14,
+            "threePt": 2,
+            "pts": 37,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "9529e978",
+          "tn": "Port Thunderbolts",
+          "gid": "b904c918",
+          "gn": "Friday Year 4 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 26,
+            "pts": 55,
+            "wins": 8,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "4784096a",
+          "tn": "Hoop School Boys U12 Silver",
+          "gid": "eb040a31",
+          "gn": "Saturday U12 Boys A/B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 11,
+            "fg": 7,
+            "threePt": 2,
+            "pts": 20,
+            "wins": 2,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "b82a6ee7",
+          "tn": "Port Thunderbolts",
+          "gid": "93466c02",
+          "gn": "Friday MSAC/Bayside Year 4 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 3,
+            "fg": 10,
+            "pts": 23,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0261a532",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "a4d59686",
+          "tn": "Hoop School Boys U12 Black",
+          "gid": "be96f7f1",
+          "gn": "Saturday U12 Boys B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "fg": 14,
+            "pts": 28,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "44242366",
+          "tn": "Port Thunderbolts",
+          "gid": "fbfcdad0",
+          "gn": "Wednesday Year 5 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5a42985",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "d0b31c39",
+          "tn": "King Turkeys",
+          "gid": "a1cb216c",
+          "gn": "U13 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "84da1a1f",
+          "tn": "Port Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "1f93ecea",
+          "tn": "Port Thunderbolts",
+          "gid": "094069f6",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "47716063",
+          "tn": "Port Thunderbolts",
+          "gid": "897eeacd",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "d6218dd9",
+          "tn": "Port Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "ebe1471d",
+          "tn": "Port Thunderbolts",
+          "gid": "255ee947",
+          "gn": "Friday MSAC/Bayside YR.1 BOYS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "fea0b2a4",
+          "tn": "Port Thunderbolts",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:00.607Z",
+  "teams": [
+    {
+      "tid": "6a433763",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e16241ea",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2d5f03ce",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9529e978",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4784096a",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b82a6ee7",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4d59686",
+      "sid": "0261a532",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44242366",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d0b31c39",
+      "sid": "e5a42985",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "84da1a1f",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f93ecea",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47716063",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d6218dd9",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ebe1471d",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fea0b2a4",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.235Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "11e8f71a",
+      "sid": "1d1b8d1c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5fe2aeb3",
+      "sid": "e78cfce1"
+    }
+  },
+  "games": [
+    "0142dcd6",
+    "0190b6c9",
+    "036dd4c9",
+    "04854f8f",
+    "0ea405ad",
+    "11e8f71a",
+    "1bbd2ac0",
+    "1e23a2ab",
+    "2116d6c7",
+    "26fa836b",
+    "282344bb",
+    "299e7b95",
+    "2a802dcd",
+    "2ac1f626",
+    "2cdcdb2c",
+    "30ce614c",
+    "3bf30ad6",
+    "3fb671c5",
+    "44be6d8f",
+    "44cab823",
+    "48f30703",
+    "4b9f305d",
+    "4ba5e846",
+    "4bfc95a0",
+    "50d73f89",
+    "51d10dab",
+    "5922573a",
+    "5fe2aeb3",
+    "61c2e214",
+    "764a5906",
+    "7901ed38",
+    "7c3f4561",
+    "7c9bd825",
+    "7d62afe9",
+    "7e1ba7bf",
+    "8262c571",
+    "8351ef0a",
+    "86f25518",
+    "872efb44",
+    "8776d583",
+    "8ae259cf",
+    "8d7bbae5",
+    "92839443",
+    "94487f12",
+    "966d01b9",
+    "9b775f9b",
+    "9da63ac9",
+    "9dad7e4f",
+    "9f31ce6f",
+    "9fba0f0a",
+    "a4b5cea9",
+    "a53c63ee",
+    "a9452275",
+    "ac852def",
+    "b389b22a",
+    "b6901992",
+    "c1662887",
+    "c67b39ed",
+    "cb60d263",
+    "cc52276d",
+    "cf1d5584",
+    "d1f5db48",
+    "d7514044",
+    "dc93e493",
+    "de9e72eb",
+    "e1132bd1",
+    "e2620d94",
+    "e4475a1f",
+    "e709bafb",
+    "e81b5f9d",
+    "eb5dc93e",
+    "ec10f79b",
+    "eef1c958",
+    "f001f71a",
+    "f0b6095d",
+    "f1dd1379",
+    "f1fd58d9",
+    "f2de8595",
+    "f9a33dde",
+    "faa8e0f5",
+    "fbaa521e",
+    "fc108105",
+    "ff204d3f"
+  ]
+}

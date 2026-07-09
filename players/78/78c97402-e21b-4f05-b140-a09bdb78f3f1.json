@@ -1,1 +1,103 @@
-{"uuid":"78c97402-e21b-4f05-b140-a09bdb78f3f1","name":"angus Dearden","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":27,"fouls":9,"fg":12,"threePt":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":7,"losses":4,"winPct":0.64,"statsChecked":"2026-07-05T14:28:13.325Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"0212f96d","tn":"Hornsby Ku Ring Gai Spiders U16 Boys 2","gid":"731b640e","gn":"BOYS UNDER 16 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":2,"fg":2,"threePt":1,"pts":7,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"2a5ced6a","stats":{"wins":5,"gp":6,"pts":20,"fg":10,"fouls":7,"losses":1}}]}],"updatedAt":"2026-05-31T01:13:46.483Z","teams":[{"tid":"2a5ced6a","sid":"0869ea69","status":"UPCOMING"},{"tid":"0212f96d","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:53:13.936Z","records":{"maxGamePTS":{"v":6,"gameKey":"5ea1b391","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"c59bc638","sid":"6dd649c0"}},"games":["02f008c2","106b5437","2e74d38f","45928eec","5ea1b391","77ddcbfd","9e438546","c59bc638","d01768bc","fb3e5d3c","fcbdff08"]}
+{
+  "uuid": "78c97402-e21b-4f05-b140-a09bdb78f3f1",
+  "name": "angus Dearden",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 27,
+      "fouls": 9,
+      "fg": 12,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 7,
+      "losses": 4,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-05T14:28:13.325Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "0212f96d",
+          "tn": "Hornsby Ku Ring Gai Spiders U16 Boys 2",
+          "gid": "731b640e",
+          "gn": "BOYS UNDER 16 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "fg": 2,
+            "threePt": 1,
+            "pts": 7,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "2a5ced6a",
+          "stats": {
+            "wins": 5,
+            "gp": 6,
+            "pts": 20,
+            "fg": 10,
+            "fouls": 7,
+            "losses": 1
+          },
+          "gid": "e0a6e2de",
+          "gn": "BOYS UNDER 18 B4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:13:46.483Z",
+  "teams": [
+    {
+      "tid": "0212f96d",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a5ced6a",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.462Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "5ea1b391",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "c59bc638",
+      "sid": "6dd649c0"
+    }
+  },
+  "games": [
+    "02f008c2",
+    "106b5437",
+    "2e74d38f",
+    "45928eec",
+    "5ea1b391",
+    "77ddcbfd",
+    "9e438546",
+    "c59bc638",
+    "d01768bc",
+    "fb3e5d3c",
+    "fcbdff08"
+  ]
+}

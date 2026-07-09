@@ -1,1 +1,93 @@
-{"uuid":"32ca8742-4fea-4890-a6b7-734f19cd088d","gender":null,"sports":{"Basketball":{"gp":7,"pts":32,"fouls":10,"fg":11,"ft":1,"threePt":3,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"losses":7,"winPct":0,"statsChecked":"2026-07-05T16:00:07.317Z"}},"seasons":[{"sid":"b223adc3","sn":"Summer 2023/24","club":null,"regs":[{"tid":"60f8a1dd","tn":"Swoldier Nation","gid":"e2451e7e","gn":"Tuesday Mens Division 2","stats":{"gp":7,"pts":32,"threePt":3,"fg":11,"ft":1,"fouls":10,"losses":7}}]}],"updatedAt":"2026-06-11T23:37:59.485Z","records":{"maxGamePTS":{"v":7,"gameKey":"fc7aaba7","sid":"b223adc3"},"maxGameThreePt":{"v":1,"gameKey":"fc7aaba7","sid":"b223adc3"}},"games":["41b14064","73abd20d","b212ec4a","b5056023","c6e9c53f","d1d8233b","fc7aaba7"],"name":"Summer 2023/24"}
+{
+  "uuid": "32ca8742-4fea-4890-a6b7-734f19cd088d",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 32,
+      "fouls": 10,
+      "fg": 11,
+      "ft": 1,
+      "threePt": 3,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "losses": 7,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:00:07.317Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b223adc3",
+      "sn": "Summer 2023/24",
+      "club": null,
+      "regs": [
+        {
+          "tid": "60f8a1dd",
+          "tn": "Swoldier Nation",
+          "gid": "e2451e7e",
+          "gn": "Tuesday Mens Division 2",
+          "stats": {
+            "gp": 7,
+            "pts": 32,
+            "threePt": 3,
+            "fg": 11,
+            "ft": 1,
+            "fouls": 10,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b4300865",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "506a1d40",
+          "tn": "The Tropics",
+          "gid": "bdc991eb",
+          "gn": "Monday Open Men E GRADE - MSAC",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:59.485Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "fc7aaba7",
+      "sid": "b223adc3"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "fc7aaba7",
+      "sid": "b223adc3"
+    }
+  },
+  "games": [
+    "41b14064",
+    "73abd20d",
+    "b212ec4a",
+    "b5056023",
+    "c6e9c53f",
+    "d1d8233b",
+    "fc7aaba7"
+  ],
+  "name": "Summer 2023/24",
+  "teams": [
+    {
+      "tid": "60f8a1dd",
+      "sid": "b223adc3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "506a1d40",
+      "sid": "b4300865",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.687Z"
+}

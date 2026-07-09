@@ -1,1 +1,138 @@
-{"uuid":"09d84f89-d610-4d6b-9739-b9d37b96c266","name":"Sarah Lawson","gender":"Women","sports":{"Basketball":{"gp":8,"pts":20,"fouls":3,"fg":10,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":2,"losses":1,"winPct":0.67,"statsChecked":"2026-07-05T15:59:01.376Z"}},"seasons":[{"sid":"baa49038","sn":"Spring 2025","regs":[{"tid":"daf894bf","tn":"Senior Women - Purple","gid":"72f434b4","gn":"Tuesday Senior Women","age":"Senior","div":null,"stats":{"gp":3,"fouls":2,"fg":2,"pts":4,"wins":2,"losses":1}}]},{"sid":"382d300f","sn":"Autumn 2025","regs":[{"tid":"316cbb8e","tn":"Senior Women - Pink","gid":"4652cb71","gn":"Tuesday Women’s","age":null,"div":null,"stats":{"gp":1,"fg":2,"pts":4}},{"tid":"1386bbbe","tn":"Senior Women - Purple","gid":"4652cb71","gn":"Tuesday Women’s","age":null,"div":null,"stats":{"gp":4,"fouls":1,"fg":6,"pts":12}}]}],"updatedAt":"2026-06-02T14:04:52.246Z","teams":[{"tid":"a547a296","sid":"baa49038","status":"COMPLETED"},{"tid":"daf894bf","sid":"baa49038","status":"COMPLETED"},{"tid":"316cbb8e","sid":"382d300f","status":"COMPLETED"},{"tid":"1386bbbe","sid":"382d300f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:54:25.715Z","records":{"maxGamePTS":{"v":4,"gameKey":"c875c110","sid":"baa49038"},"maxGameThreePt":{"v":null}},"games":["296601fd","48fdd1e8","53f5bb24","962df05d","c875c110","ca1b061a","e7a407a0","f7827959"],"gameTids":{"e7a407a0":"daf894bf","53f5bb24":"daf894bf","c875c110":"daf894bf","ca1b061a":"316cbb8e","296601fd":"1386bbbe","f7827959":"1386bbbe","962df05d":"1386bbbe","48fdd1e8":"1386bbbe"}}
+{
+  "uuid": "09d84f89-d610-4d6b-9739-b9d37b96c266",
+  "name": "Sarah Lawson",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 20,
+      "fouls": 3,
+      "fg": 10,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 1,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T15:59:01.376Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "baa49038",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "daf894bf",
+          "tn": "Senior Women - Purple",
+          "gid": "72f434b4",
+          "gn": "Tuesday Senior Women",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 4,
+            "wins": 2,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "a547a296",
+          "tn": "Senior Women - Pink",
+          "gid": "72f434b4",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "382d300f",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "316cbb8e",
+          "tn": "Senior Women - Pink",
+          "gid": "4652cb71",
+          "gn": "Tuesday Women’s",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fg": 2,
+            "pts": 4
+          }
+        },
+        {
+          "tid": "1386bbbe",
+          "tn": "Senior Women - Purple",
+          "gid": "4652cb71",
+          "gn": "Tuesday Women’s",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "fg": 6,
+            "pts": 12
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T14:04:52.246Z",
+  "teams": [
+    {
+      "tid": "daf894bf",
+      "sid": "baa49038",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a547a296",
+      "sid": "baa49038",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "316cbb8e",
+      "sid": "382d300f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1386bbbe",
+      "sid": "382d300f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.460Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "c875c110",
+      "sid": "baa49038"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "296601fd",
+    "48fdd1e8",
+    "53f5bb24",
+    "962df05d",
+    "c875c110",
+    "ca1b061a",
+    "e7a407a0",
+    "f7827959"
+  ],
+  "gameTids": {
+    "e7a407a0": "daf894bf",
+    "53f5bb24": "daf894bf",
+    "c875c110": "daf894bf",
+    "ca1b061a": "316cbb8e",
+    "296601fd": "1386bbbe",
+    "f7827959": "1386bbbe",
+    "962df05d": "1386bbbe",
+    "48fdd1e8": "1386bbbe"
+  }
+}

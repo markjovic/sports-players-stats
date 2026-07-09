@@ -1,1 +1,169 @@
-{"uuid":"91e5804a-585c-451d-a675-a7d6556756cf","name":"Logan Huynh","gender":"Boys","sports":{"Basketball":{"gp":34,"pts":42,"fouls":9,"fg":20,"ft":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":26,"losses":23,"winPct":0.53,"statsChecked":"2026-07-05T14:43:31.556Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Parkdale Pacers Basketball Club","regs":[]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Parkdale Pacers Basketball Club","regs":[{"tid":"f43db0db","tn":"Pacers U10 Boys Silver","gid":"603b7b1b","gn":"Thursday U10 Boys C2 Grade","age":"U10","div":null,"stats":{"gp":18,"fouls":9,"ft":2,"fg":11,"pts":24,"wins":9,"losses":8}},{"tid":"f43db0db","tn":"Pacers U10 Boys Silver","gid":"f3c880c2","gn":"Thursday U10 Boys D Grade","age":"U10","div":null,"stats":{"gp":18,"fg":11,"pts":24,"wins":9,"losses":8,"ft":2,"fouls":9}}]},{"sid":"e830df83","sn":"Spring 2025","club":"Parkdale Pacers Basketball Club","regs":[{"tid":"ae769fd3","tn":"Pacers U9 Boys Silver","gid":"ab640cf5","gn":"Friday U9 Boys Modified","age":"U9","div":null,"stats":{"gp":16,"fg":9,"pts":18,"finals":1,"wins":8,"losses":7}}]}],"updatedAt":"2026-07-04T05:40:32.304Z","teams":[{"tid":"f43db0db","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"ae769fd3","sid":"e830df83","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:35.532Z","games":["0412ef51","08fed720","0bf8814a","0c1b2706","2630d701","35d8ea8b","47caf3d4","681f6418","722f5b1f","73380ae9","7504fd9f","78187959","794aac30","85a0512f","87765cb7","88db4328","8a000bd1","9309afe0","9b9b2a84","a1004c8c","a1d2e33d","a28c04ba","a7d5ac53","a82f085d","b2078a5e","b87529bd","c37937fb","ccb13d2b","d3b659cb","dd21065a","e52bfe5b","e6541d06","f5ccb532"],"records":{"maxGamePTS":{"v":4,"gameKey":"c37937fb","sid":"3e7c1a8c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "91e5804a-585c-451d-a675-a7d6556756cf",
+  "name": "Logan Huynh",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 42,
+      "fouls": 9,
+      "fg": 20,
+      "ft": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 26,
+      "losses": 23,
+      "winPct": 0.53,
+      "statsChecked": "2026-07-05T14:43:31.556Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "2d5190b4",
+          "tn": "Pacers U10 Boys Silver",
+          "gid": "f530529b",
+          "gn": "Thursday U10 Boys C2 Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "f43db0db",
+          "tn": "Pacers U10 Boys Silver",
+          "gid": "603b7b1b",
+          "gn": "Thursday U10 Boys C2 Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 9,
+            "ft": 2,
+            "fg": 11,
+            "pts": 24,
+            "wins": 9,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "f43db0db",
+          "tn": "Pacers U10 Boys Silver",
+          "gid": "f3c880c2",
+          "gn": "Thursday U10 Boys D Grade",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fg": 11,
+            "pts": 24,
+            "wins": 9,
+            "losses": 8,
+            "ft": 2,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e830df83",
+      "sn": "Spring 2025",
+      "club": "Parkdale Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "ae769fd3",
+          "tn": "Pacers U9 Boys Silver",
+          "gid": "ab640cf5",
+          "gn": "Friday U9 Boys Modified",
+          "age": "U9",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fg": 9,
+            "pts": 18,
+            "finals": 1,
+            "wins": 8,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:40:32.304Z",
+  "teams": [
+    {
+      "tid": "2d5190b4",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f43db0db",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ae769fd3",
+      "sid": "e830df83",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.810Z",
+  "games": [
+    "0412ef51",
+    "08fed720",
+    "0bf8814a",
+    "0c1b2706",
+    "2630d701",
+    "35d8ea8b",
+    "47caf3d4",
+    "681f6418",
+    "722f5b1f",
+    "73380ae9",
+    "7504fd9f",
+    "78187959",
+    "794aac30",
+    "85a0512f",
+    "87765cb7",
+    "88db4328",
+    "8a000bd1",
+    "9309afe0",
+    "9b9b2a84",
+    "a1004c8c",
+    "a1d2e33d",
+    "a28c04ba",
+    "a7d5ac53",
+    "a82f085d",
+    "b2078a5e",
+    "b87529bd",
+    "c37937fb",
+    "ccb13d2b",
+    "d3b659cb",
+    "dd21065a",
+    "e52bfe5b",
+    "e6541d06",
+    "f5ccb532"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "c37937fb",
+      "sid": "3e7c1a8c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

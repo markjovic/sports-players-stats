@@ -1,1 +1,159 @@
-{"uuid":"6bfc9cb6-fcf7-4970-88f3-10c6d5ade873","name":"Vishnu Suchin","gender":"Boys","sports":{"Basketball":{"gp":16,"pts":54,"fouls":13,"fg":23,"ft":2,"threePt":2,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":1,"wins":6,"losses":12,"draws":2,"winPct":0.3,"statsChecked":"2026-07-05T14:42:09.352Z"}},"seasons":[{"sid":"a339f1cc","sn":"Autumn 2026","regs":[{"tid":"30b3ed12","tn":"Bucket Squad","gid":"042cc632","gn":"U13 Boys Division 1","age":"U13","div":"Division 1","stats":{"gp":4,"fouls":1,"ft":2,"fg":1,"pts":4,"losses":4}}]},{"sid":"1ae60211","sn":"Winter 2026","club":"Bulleen Boomers Basketball Club","regs":[{"tid":"21c15081","tn":"Bulleen U13 Boys 06","gid":"b8209025","gn":"Boys U13 C Grading","age":"U13","div":null,"stats":{"gp":8,"fouls":7,"fg":11,"threePt":2,"pts":28,"wins":3,"losses":2,"draws":1}},{"tid":"21c15081","tn":"Bulleen U13 Boys 06","gid":"60af01cb","gn":"Boys U13 B Grading","age":"U13","div":null,"stats":{"gp":8,"fg":11,"pts":28,"wins":3,"losses":2,"draws":1,"threePt":2,"fouls":7}}]},{"sid":"daca2e92","sn":"Winter 2024","club":"Ringwood Celtics Basketball Club","regs":[{"tid":"76876473","tn":"B10 Ringwood Celtics 5","gid":"4ce5dd1b","gn":"Saturday U10 Boys D/D1","age":"U10","div":"D1","stats":{"gp":4,"fouls":5,"fg":11,"pts":22,"losses":4}}]}],"updatedAt":"2026-06-01T21:27:42.712Z","teams":[{"tid":"21c15081","sid":"1ae60211","status":"ACTIVE"},{"tid":"30b3ed12","sid":"a339f1cc","status":"COMPLETED"},{"tid":"76876473","sid":"daca2e92","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:39:11.181Z","records":{"maxGamePTS":{"v":12,"gameKey":"028798a7","sid":"daca2e92"},"maxGameThreePt":{"v":1,"gameKey":"ad17d132","sid":"1ae60211"}},"games":["028798a7","3b97250d","3e6b62d9","675d6868","a81bb005","cb9d4cd1","d369dce0","d80d17ef","dc82e4c3","dcd07b35","dd70f63c","e1c2105b","e6a57275","f286d8db"]}
+{
+  "uuid": "6bfc9cb6-fcf7-4970-88f3-10c6d5ade873",
+  "name": "Vishnu Suchin",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 54,
+      "fouls": 13,
+      "fg": 23,
+      "ft": 2,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 12,
+      "draws": 2,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T14:42:09.352Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a339f1cc",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "30b3ed12",
+          "tn": "Bucket Squad",
+          "gid": "042cc632",
+          "gn": "U13 Boys Division 1",
+          "age": "U13",
+          "div": "Division 1",
+          "stats": {
+            "gp": 4,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 1,
+            "pts": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Bulleen Boomers Basketball Club",
+      "regs": [
+        {
+          "tid": "21c15081",
+          "tn": "Bulleen U13 Boys 06",
+          "gid": "21ae5d3e",
+          "gn": "Boys U13 BI",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 11,
+            "threePt": 2,
+            "pts": 28,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "21c15081",
+          "tn": "Bulleen U13 Boys 06",
+          "gid": "60af01cb",
+          "gn": "Boys U13 B Grading",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fg": 11,
+            "pts": 28,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1,
+            "threePt": 2,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "daca2e92",
+      "sn": "Winter 2024",
+      "club": "Ringwood Celtics Basketball Club",
+      "regs": [
+        {
+          "tid": "76876473",
+          "tn": "B10 Ringwood Celtics 5",
+          "gid": "4ce5dd1b",
+          "gn": "Saturday U10 Boys D/D1",
+          "age": "U10",
+          "div": "D1",
+          "stats": {
+            "gp": 4,
+            "fouls": 5,
+            "fg": 11,
+            "pts": 22,
+            "losses": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T21:27:42.712Z",
+  "teams": [
+    {
+      "tid": "30b3ed12",
+      "sid": "a339f1cc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "21c15081",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76876473",
+      "sid": "daca2e92",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.670Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "028798a7",
+      "sid": "daca2e92"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ad17d132",
+      "sid": "1ae60211"
+    }
+  },
+  "games": [
+    "028798a7",
+    "3b97250d",
+    "3e6b62d9",
+    "675d6868",
+    "a81bb005",
+    "cb9d4cd1",
+    "d369dce0",
+    "d80d17ef",
+    "dc82e4c3",
+    "dcd07b35",
+    "dd70f63c",
+    "e1c2105b",
+    "e6a57275",
+    "f286d8db"
+  ]
+}

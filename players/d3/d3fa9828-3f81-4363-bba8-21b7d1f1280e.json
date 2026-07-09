@@ -1,1 +1,376 @@
-{"uuid":"d3fa9828-3f81-4363-bba8-21b7d1f1280e","name":"Dylan Hilton","gender":"Men","sports":{"Basketball":{"gp":29,"pts":254,"fouls":39,"fg":89,"ft":25,"threePt":17,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":4,"wins":24,"losses":5,"winPct":0.83,"statsChecked":"2026-07-05T15:51:41.313Z"}},"seasons":[{"sid":"f992967d","sn":"Winter 2026","regs":[{"tid":"62543059","tn":"Baked Goods","gid":"41bc09b6","gn":"Wednesday Men E","age":null,"div":null,"stats":{"gp":10,"fouls":17,"ft":6,"fg":22,"threePt":5,"pts":65,"wins":6,"losses":4}}]},{"sid":"9ec30ce1","sn":"Summer 2025/26","regs":[{"tid":"76b1cea5","tn":"Baked Goods","gid":"ecf9124f","gn":"Wednesday Men F","age":null,"div":null,"stats":{"gp":19,"fouls":22,"ft":19,"fg":67,"threePt":12,"pts":189,"finals":1,"gfApps":1,"wins":18,"losses":1,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:36:21.526Z","teams":[{"tid":"62543059","sid":"f992967d","status":"ACTIVE"},{"tid":"76b1cea5","sid":"9ec30ce1","status":"COMPLETED"},{"tid":"306ad92d","sid":"fab2be4d","status":"COMPLETED"},{"tid":"5c9d8882","sid":"5944effa","status":"COMPLETED"},{"tid":"5cd6e846","sid":"348dbfb8","status":"COMPLETED"},{"tid":"cb5cc0d0","sid":"9358e51a","status":"COMPLETED"},{"tid":"aff67247","sid":"d3d4e181","status":"COMPLETED"},{"tid":"35e83481","sid":"d3d4e181","status":"COMPLETED"},{"tid":"dc49803c","sid":"21cd9648","status":"COMPLETED"},{"tid":"0710dfe3","sid":"21cd9648","status":"COMPLETED"},{"tid":"bea6e237","sid":"d4cbf787","status":"COMPLETED"},{"tid":"52bfdbda","sid":"d4cbf787","status":"COMPLETED"},{"tid":"ee1ec0fe","sid":"d64fcfce","status":"COMPLETED"},{"tid":"ab3a8295","sid":"d64fcfce","status":"COMPLETED"},{"tid":"855e6dbf","sid":"afd26581","status":"COMPLETED"},{"tid":"f159b397","sid":"afd26581","status":"COMPLETED"},{"tid":"aecf4c1e","sid":"17f0da9b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:01.560Z","games":["05816479","0c4a6ff1","1192392d","31caefd0","538e8104","5eaae008","616e78e6","63268e78","6f5b25a2","77fb49bc","88e44085","8ddef608","91bd6097","95d48db3","aa6250ea","c090eea2","c423a75b","c796869e","c8af6044","c90b93d7","d1ae9561","d3873cf4","d732540c","dd8292e6","edef43ea","ee4e1119","ee63d99d","f782b7a8","fc91d018"],"records":{"maxGamePTS":{"v":21,"gameKey":"5eaae008","sid":"9ec30ce1"},"maxGameThreePt":{"v":4,"gameKey":"c423a75b","sid":"9ec30ce1"}}}
+{
+  "uuid": "d3fa9828-3f81-4363-bba8-21b7d1f1280e",
+  "name": "Dylan Hilton",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 29,
+      "pts": 254,
+      "fouls": 39,
+      "fg": 89,
+      "ft": 25,
+      "threePt": 17,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 4,
+      "wins": 24,
+      "losses": 5,
+      "winPct": 0.83,
+      "statsChecked": "2026-07-05T15:51:41.313Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f992967d",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "62543059",
+          "tn": "Baked Goods",
+          "gid": "41bc09b6",
+          "gn": "Wednesday Men E",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 17,
+            "ft": 6,
+            "fg": 22,
+            "threePt": 5,
+            "pts": 65,
+            "wins": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9ec30ce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "76b1cea5",
+          "tn": "Baked Goods",
+          "gid": "ecf9124f",
+          "gn": "Wednesday Men F",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 22,
+            "ft": 19,
+            "fg": 67,
+            "threePt": 12,
+            "pts": 189,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 18,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "306ad92d",
+          "tn": "Vegetablegum",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "5c9d8882",
+          "tn": "Vegetablegum",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "5cd6e846",
+          "tn": "Limes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "cb5cc0d0",
+          "tn": "Limes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "aff67247",
+          "tn": "Limes",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "35e83481",
+          "tn": "Limes 2",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "dc49803c",
+          "tn": "Miami Vice",
+          "gid": "40c8ad51",
+          "gn": "SPRING Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "0710dfe3",
+          "tn": "Miami Vice 2",
+          "gid": "80ac72d6",
+          "gn": "SPRING Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "bea6e237",
+          "tn": "Miami Vice",
+          "gid": "90dddc1b",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "52bfdbda",
+          "tn": "Miami Vice 2",
+          "gid": "aea131fd",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "ee1ec0fe",
+          "tn": "Miami Vice",
+          "gid": "3449a1c8",
+          "gn": "Monday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "ab3a8295",
+          "tn": "Miami Vice 2",
+          "gid": "b9de3e3e",
+          "gn": "Wednesday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "855e6dbf",
+          "tn": "Miami Vice",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "f159b397",
+          "tn": "Miami Vice 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "17f0da9b",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "aecf4c1e",
+          "tn": "Miami Vice",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:36:21.526Z",
+  "teams": [
+    {
+      "tid": "62543059",
+      "sid": "f992967d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76b1cea5",
+      "sid": "9ec30ce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "306ad92d",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c9d8882",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5cd6e846",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cb5cc0d0",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aff67247",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "35e83481",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dc49803c",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0710dfe3",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bea6e237",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52bfdbda",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ee1ec0fe",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ab3a8295",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "855e6dbf",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f159b397",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aecf4c1e",
+      "sid": "17f0da9b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.910Z",
+  "games": [
+    "05816479",
+    "0c4a6ff1",
+    "1192392d",
+    "31caefd0",
+    "538e8104",
+    "5eaae008",
+    "616e78e6",
+    "63268e78",
+    "6f5b25a2",
+    "77fb49bc",
+    "88e44085",
+    "8ddef608",
+    "91bd6097",
+    "95d48db3",
+    "aa6250ea",
+    "c090eea2",
+    "c423a75b",
+    "c796869e",
+    "c8af6044",
+    "c90b93d7",
+    "d1ae9561",
+    "d3873cf4",
+    "d732540c",
+    "dd8292e6",
+    "edef43ea",
+    "ee4e1119",
+    "ee63d99d",
+    "f782b7a8",
+    "fc91d018"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "5eaae008",
+      "sid": "9ec30ce1"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "c423a75b",
+      "sid": "9ec30ce1"
+    }
+  }
+}

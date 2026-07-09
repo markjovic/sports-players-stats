@@ -1,1 +1,88 @@
-{"uuid":"79e23acd-815b-482f-a9f8-5441a154f3a6","name":"Jasmeen Kaur","gender":"Girls","sports":{"Basketball":{"gp":6,"pts":2,"fouls":4,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":6,"winPct":0,"statsChecked":"2026-07-05T15:23:31.339Z"}},"seasons":[{"sid":"803cd270","sn":"Winter 2026","club":"Rupertswood Basketball Club","regs":[{"tid":"7a4ef5ab","tn":"Rupo2KB16","gid":"ddc1a4ad","gn":"U16 Girls Division 3","age":"U16","div":"Division 3","stats":{"gp":6,"fouls":4,"fg":1,"pts":2,"losses":6}}]}],"updatedAt":"2026-07-04T05:46:10.670Z","teams":[{"tid":"7a4ef5ab","sid":"803cd270","status":"ACTIVE"},{"tid":"2bcdd2ba","sid":"753b040b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:06:10.150Z","records":{"maxGamePTS":{"v":2,"gameKey":"b42e966a","sid":"803cd270"},"maxGameThreePt":{"v":null}},"games":["29744ea2","381cd10d","41d62be8","82e758d9","a08b560a","b42e966a"]}
+{
+  "uuid": "79e23acd-815b-482f-a9f8-5441a154f3a6",
+  "name": "Jasmeen Kaur",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 2,
+      "fouls": 4,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 6,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:23:31.339Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "803cd270",
+      "sn": "Winter 2026",
+      "club": "Rupertswood Basketball Club",
+      "regs": [
+        {
+          "tid": "7a4ef5ab",
+          "tn": "Rupo2KB16",
+          "gid": "ddc1a4ad",
+          "gn": "U16 Girls Division 3",
+          "age": "U16",
+          "div": "Division 3",
+          "stats": {
+            "gp": 6,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "753b040b",
+      "sn": "Term 1, 2026",
+      "regs": [
+        {
+          "tid": "2bcdd2ba",
+          "tn": "Sunbury",
+          "gid": "1b506068",
+          "gn": "U14 / U16 Girls Division 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:10.670Z",
+  "teams": [
+    {
+      "tid": "7a4ef5ab",
+      "sid": "803cd270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2bcdd2ba",
+      "sid": "753b040b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.542Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "b42e966a",
+      "sid": "803cd270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "29744ea2",
+    "381cd10d",
+    "41d62be8",
+    "82e758d9",
+    "a08b560a",
+    "b42e966a"
+  ]
+}

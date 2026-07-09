@@ -1,1 +1,134 @@
-{"uuid":"0ad78fe2-0300-4d6f-bf96-d61b01f00162","gender":null,"sports":{"Basketball":{"gp":14,"pts":22,"fouls":8,"fg":11,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"losses":3,"draws":4,"winPct":0.22,"statsChecked":"2026-07-05T16:20:54.383Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"4fc23b91","tn":"Aberfeldie Jets B12.09","gid":"ccd1eb8e","gn":"Saturday U12 Boys C2 Grade","stats":{"gp":9,"pts":16,"fg":8,"fouls":4,"wins":2,"losses":3,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Aberfeldie Jets Basketball Club","regs":[{"tid":"bff8ae21","tn":"Aberfeldie Jets U12 Boys 7","gid":"9e6679a8","gn":"Saturday U12 Boys C Grade","stats":{"gp":5,"fouls":4,"pts":6,"fg":3}},{"tid":"bff8ae21","tn":"Aberfeldie Jets U12 Boys 7","gid":"840b70b0","gn":"Saturday U12 Boys B Grade","stats":{"gp":5,"pts":6,"fg":3,"fouls":4}}]}],"updatedAt":"2026-06-11T23:36:07.431Z","records":{"maxGamePTS":{"v":6,"gameKey":"f7554fc4","sid":"8e4e71fc"},"maxGameThreePt":{"v":null}},"games":["0def179b","1efb517c","7692d010","76d10609","7b8e1e8b","8c3455ae","973d5717","c1cd9a61","da6b90ad","dd37e485","e1287dcc","e2c48be4","f7554fc4","fd9fe353"],"name":"Winter 2021"}
+{
+  "uuid": "0ad78fe2-0300-4d6f-bf96-d61b01f00162",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 22,
+      "fouls": 8,
+      "fg": 11,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 3,
+      "draws": 4,
+      "winPct": 0.22,
+      "statsChecked": "2026-07-05T16:20:54.383Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "4fc23b91",
+          "tn": "Aberfeldie Jets B12.09",
+          "gid": "ccd1eb8e",
+          "gn": "Saturday U12 Boys C2 Grade",
+          "stats": {
+            "gp": 9,
+            "pts": 16,
+            "fg": 8,
+            "fouls": 4,
+            "wins": 2,
+            "losses": 3,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Aberfeldie Jets Basketball Club",
+      "regs": [
+        {
+          "tid": "bff8ae21",
+          "tn": "Aberfeldie Jets U12 Boys 7",
+          "gid": "9e6679a8",
+          "gn": "Saturday U12 Boys C Grade",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "pts": 6,
+            "fg": 3
+          }
+        },
+        {
+          "tid": "bff8ae21",
+          "tn": "Aberfeldie Jets U12 Boys 7",
+          "gid": "840b70b0",
+          "gn": "Saturday U12 Boys B Grade",
+          "stats": {
+            "gp": 5,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "fc44194c",
+          "tn": "Aberfeldie Jets U10 Boys 6",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:07.431Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "f7554fc4",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0def179b",
+    "1efb517c",
+    "7692d010",
+    "76d10609",
+    "7b8e1e8b",
+    "8c3455ae",
+    "973d5717",
+    "c1cd9a61",
+    "da6b90ad",
+    "dd37e485",
+    "e1287dcc",
+    "e2c48be4",
+    "f7554fc4",
+    "fd9fe353"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "4fc23b91",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bff8ae21",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fc44194c",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.525Z"
+}

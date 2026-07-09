@@ -1,1 +1,132 @@
-{"uuid":"90d0fe5b-dc77-485f-a79e-43d6f4eb0142","name":"Maxwell Ellett","gender":"Boys","sports":{"Basketball":{"gp":15,"pts":37,"fouls":15,"fg":16,"ft":5,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":4,"losses":11,"winPct":0.27,"statsChecked":"2026-07-05T14:29:10.023Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"ba320e9f","tn":"Norwood Flames U16 Boys John","gid":"a1ca3942","gn":"BOYS UNDER 16 C1","age":null,"div":"C1","stats":{"gp":5,"fouls":2,"ft":1,"fg":3,"pts":7,"losses":5}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"50b91fd3","tn":"North Adelaide Rockets U14 Boys 5","gid":"7caf1b8c","gn":"BOYS UNDER 14 C1","age":null,"div":"C1","stats":{"gp":5,"fouls":10,"fg":6,"pts":12,"wins":2,"losses":3}}]},{"sid":"0869ea69","regs":[{"tid":"e2e55de3","stats":{"wins":2,"losses":3,"gp":5,"pts":18,"fg":7,"ft":4,"fouls":3}}]}],"updatedAt":"2026-05-31T10:54:49.780Z","teams":[{"tid":"e2e55de3","sid":"0869ea69","status":"UPCOMING"},{"tid":"ba320e9f","sid":"6dd649c0","status":"COMPLETED"},{"tid":"50b91fd3","sid":"8630ad4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:19.009Z","games":["043c4c4a","1bf5b5e4","1defd111","39e31809","4b29ced7","5283394b","732f30f8","7627ed65","93f2a2bd","ab1b6773","e8b63ea7","efd3dbac","f03516f4","f7afb962","ff6bfd5f"],"records":{"maxGamePTS":{"v":5,"gameKey":"f03516f4","sid":"0869ea69"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "90d0fe5b-dc77-485f-a79e-43d6f4eb0142",
+  "name": "Maxwell Ellett",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 37,
+      "fouls": 15,
+      "fg": 16,
+      "ft": 5,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 11,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T14:29:10.023Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "ba320e9f",
+          "tn": "Norwood Flames U16 Boys John",
+          "gid": "a1ca3942",
+          "gn": "BOYS UNDER 16 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 3,
+            "pts": 7,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "50b91fd3",
+          "tn": "North Adelaide Rockets U14 Boys 5",
+          "gid": "7caf1b8c",
+          "gn": "BOYS UNDER 14 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "fouls": 10,
+            "fg": 6,
+            "pts": 12,
+            "wins": 2,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "e2e55de3",
+          "stats": {
+            "wins": 2,
+            "losses": 3,
+            "gp": 5,
+            "pts": 18,
+            "fg": 7,
+            "ft": 4,
+            "fouls": 3
+          },
+          "gid": "d69b8dcc",
+          "gn": "BOYS UNDER 16 B4"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T10:54:49.780Z",
+  "teams": [
+    {
+      "tid": "ba320e9f",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50b91fd3",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e2e55de3",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.766Z",
+  "games": [
+    "043c4c4a",
+    "1bf5b5e4",
+    "1defd111",
+    "39e31809",
+    "4b29ced7",
+    "5283394b",
+    "732f30f8",
+    "7627ed65",
+    "93f2a2bd",
+    "ab1b6773",
+    "e8b63ea7",
+    "efd3dbac",
+    "f03516f4",
+    "f7afb962",
+    "ff6bfd5f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "f03516f4",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

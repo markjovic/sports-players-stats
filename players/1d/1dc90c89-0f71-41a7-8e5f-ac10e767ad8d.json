@@ -1,1 +1,110 @@
-{"uuid":"1dc90c89-0f71-41a7-8e5f-ac10e767ad8d","name":"George Whitford","gender":"Boys","sports":{"Basketball":{"gp":6,"pts":24,"fouls":4,"fg":9,"ft":6,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":3,"winPct":0.5,"losses":3,"statsChecked":"2026-07-05T14:53:54.301Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Malvern Tigers Basketball Club","regs":[{"tid":"8e077cac","tn":"Malvern Tigers U12 Boys Red","gid":"8dd4b233","gn":"Saturday U12 Boys Section 02/03","age":"U12","div":null,"stats":{"gp":6,"pts":24,"fg":9,"ft":6,"fouls":4,"wins":3,"losses":3}}]}],"updatedAt":"2026-05-31T13:59:02.725Z","teams":[{"tid":"8e077cac","sid":"6c117270","status":"ACTIVE"},{"tid":"ad1ad6d5","sid":"7d20ecad","status":"COMPLETED"},{"tid":"9cd23395","sid":"e2637fe8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:04:06.496Z","records":{"maxGamePTS":{"v":6,"gameKey":"5d7d52ab","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["008e69b6","039c575e","35687e9e","5d7d52ab","7686ac13","e72a51ea"]}
+{
+  "uuid": "1dc90c89-0f71-41a7-8e5f-ac10e767ad8d",
+  "name": "George Whitford",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 24,
+      "fouls": 4,
+      "fg": 9,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "winPct": 0.5,
+      "losses": 3,
+      "statsChecked": "2026-07-05T14:53:54.301Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "8e077cac",
+          "tn": "Malvern Tigers U12 Boys Red",
+          "gid": "89e3c1b0",
+          "gn": "Saturday U12 Boys Section 01/02",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 24,
+            "fg": 9,
+            "ft": 6,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "ad1ad6d5",
+          "tn": "Malvern Tigers U10 Boys Blue",
+          "gid": "bdc8c973",
+          "gn": "Saturday U10 Boys Grading Pool 5",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "9cd23395",
+          "tn": "Malvern Tigers U8 Boys Green",
+          "gid": "fd47be43",
+          "gn": "U8 Boys (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:02.725Z",
+  "teams": [
+    {
+      "tid": "8e077cac",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ad1ad6d5",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9cd23395",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.758Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "5d7d52ab",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "008e69b6",
+    "039c575e",
+    "35687e9e",
+    "5d7d52ab",
+    "7686ac13",
+    "e72a51ea"
+  ]
+}

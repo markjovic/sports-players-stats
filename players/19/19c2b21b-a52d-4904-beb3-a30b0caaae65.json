@@ -1,1 +1,121 @@
-{"uuid":"19c2b21b-a52d-4904-beb3-a30b0caaae65","name":"Chris Pritchard","gender":"Men","sports":{"Basketball":{"gp":7,"pts":14,"fouls":4,"fg":4,"ft":3,"threePt":1,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"losses":7,"winPct":0.46,"wins":6,"statsChecked":"2026-07-05T15:21:00.149Z"}},"seasons":[{"sid":"8fe1a354","sn":"Winter 2026","regs":[{"tid":"5e7a862f","tn":"Lakers","gid":"ae8a5a92","gn":"Tuesday O35 Men Section 02","age":null,"div":null,"stats":{"gp":6,"pts":12,"fg":3,"ft":3,"fouls":4,"wins":3,"losses":3,"threePt":1}},{"tid":"5e7a862f","tn":"Lakers","gid":"040192e2","gn":"Tuesday O35 Men Section 01","age":null,"div":null,"stats":{"gp":6,"pts":12,"threePt":1,"fg":3,"ft":3,"fouls":4,"wins":3,"losses":3}}]},{"sid":"e0199b48","sn":"Winter 2025","regs":[{"tid":"8c9619f9","tn":"Lakers (S2)","gid":"cf7930a6","gn":"ZZ GRADING TUESDAY O35 MEN","age":null,"div":null,"stats":{"gp":1,"pts":2,"fg":1,"losses":1}}]}],"updatedAt":"2026-06-01T11:11:34.329Z","teams":[{"tid":"5e7a862f","sid":"8fe1a354","status":"ACTIVE"},{"tid":"8c9619f9","sid":"e0199b48","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:02:22.472Z","records":{"maxGamePTS":{"v":5,"gameKey":"d1680afe","sid":"8fe1a354"},"maxGameThreePt":{"v":1,"gameKey":"d1680afe","sid":"8fe1a354"}},"games":["1633cac5","28334ee0","28a88cb5","6a1c1f6a","c854c73d","d1680afe","f0f05b16"]}
+{
+  "uuid": "19c2b21b-a52d-4904-beb3-a30b0caaae65",
+  "name": "Chris Pritchard",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 14,
+      "fouls": 4,
+      "fg": 4,
+      "ft": 3,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "losses": 7,
+      "winPct": 0.46,
+      "wins": 6,
+      "statsChecked": "2026-07-05T15:21:00.149Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8fe1a354",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "5e7a862f",
+          "tn": "Lakers",
+          "gid": "ae8a5a92",
+          "gn": "Tuesday O35 Men Section 02",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 12,
+            "fg": 3,
+            "ft": 3,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 3,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "5e7a862f",
+          "tn": "Lakers",
+          "gid": "040192e2",
+          "gn": "Tuesday O35 Men Section 01",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 12,
+            "threePt": 1,
+            "fg": 3,
+            "ft": 3,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e0199b48",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "8c9619f9",
+          "tn": "Lakers (S2)",
+          "gid": "cdfd739b",
+          "gn": "TUESDAY O35 MEN",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:11:34.329Z",
+  "teams": [
+    {
+      "tid": "5e7a862f",
+      "sid": "8fe1a354",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c9619f9",
+      "sid": "e0199b48",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.507Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "d1680afe",
+      "sid": "8fe1a354"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "d1680afe",
+      "sid": "8fe1a354"
+    }
+  },
+  "games": [
+    "1633cac5",
+    "28334ee0",
+    "28a88cb5",
+    "6a1c1f6a",
+    "c854c73d",
+    "d1680afe",
+    "f0f05b16"
+  ]
+}

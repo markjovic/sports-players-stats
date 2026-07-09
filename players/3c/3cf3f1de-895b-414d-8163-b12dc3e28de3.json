@@ -1,1 +1,132 @@
-{"uuid":"3cf3f1de-895b-414d-8163-b12dc3e28de3","gender":null,"sports":{"Basketball":{"gp":6,"pts":72,"fouls":8,"fg":23,"ft":2,"threePt":8,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":3,"wins":2,"losses":1,"draws":1,"winPct":0.5,"statsChecked":"2026-07-05T16:12:52.927Z"}},"seasons":[{"sid":"4b655bab","sn":"Winter 2021","club":"Point Cook Flyers Basketball Club","regs":[{"tid":"38b5874d","tn":"PCF U18 Boys Crusaders","gid":"b068f882","gn":"Monday U18 Boys Div 2","stats":{"gp":2,"pts":22,"fouls":4,"fg":9,"ft":1,"threePt":1}}]},{"sid":"dcc45073","sn":"Summer 2020/21","club":"Point Cook Flyers Basketball Club","regs":[{"tid":"63766527","tn":"PCF U18 Boys Crusaders","gid":"487f9bde","gn":"Monday U18 Boys Div 1/2","stats":{"gp":4,"pts":50,"fouls":4,"fg":14,"ft":1,"threePt":7,"wins":2,"losses":1,"draws":1}}]}],"updatedAt":"2026-06-11T23:38:31.258Z","records":{"maxGamePTS":{"v":18,"gameKey":"e97145a3","sid":"dcc45073"},"maxGameThreePt":{"v":3,"gameKey":"5cc76817","sid":"dcc45073"}},"games":["54a16887","5cc76817","7deb5039","e97145a3"],"name":"Winter 2021"}
+{
+  "uuid": "3cf3f1de-895b-414d-8163-b12dc3e28de3",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 72,
+      "fouls": 8,
+      "fg": 23,
+      "ft": 2,
+      "threePt": 8,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": 3,
+      "wins": 2,
+      "losses": 1,
+      "draws": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:12:52.927Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b655bab",
+      "sn": "Winter 2021",
+      "club": "Point Cook Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "38b5874d",
+          "tn": "PCF U18 Boys Crusaders",
+          "gid": "b068f882",
+          "gn": "Monday U18 Boys Div 2",
+          "stats": {
+            "gp": 2,
+            "pts": 22,
+            "fouls": 4,
+            "fg": 9,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "fb7d2c89",
+          "tn": "(RTS) PCF U18 Boys Crusaders",
+          "gid": "668865b0",
+          "gn": "(RTS) Monday U18 Boys Div 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Point Cook Flyers Basketball Club",
+      "regs": [
+        {
+          "tid": "63766527",
+          "tn": "PCF U18 Boys Crusaders",
+          "gid": "487f9bde",
+          "gn": "Monday U18 Boys Div 1/2",
+          "stats": {
+            "gp": 4,
+            "pts": 50,
+            "fouls": 4,
+            "fg": 14,
+            "ft": 1,
+            "threePt": 7,
+            "wins": 2,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d0543eab",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "79846441",
+          "tn": "PCF U16 Boys Hellcats",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:31.258Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "e97145a3",
+      "sid": "dcc45073"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "5cc76817",
+      "sid": "dcc45073"
+    }
+  },
+  "games": [
+    "54a16887",
+    "5cc76817",
+    "7deb5039",
+    "e97145a3"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "38b5874d",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb7d2c89",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "63766527",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79846441",
+      "sid": "d0543eab",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.658Z"
+}

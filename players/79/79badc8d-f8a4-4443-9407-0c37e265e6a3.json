@@ -1,1 +1,240 @@
-{"uuid":"79badc8d-f8a4-4443-9407-0c37e265e6a3","name":"Zakiah Lee","gender":"Girls","sports":{"Basketball":{"gp":54,"pts":272,"fouls":33,"fg":133,"ft":6,"foulOuts":{},"maxGamePTS":17,"maxGameThreePt":null,"wins":12,"losses":25,"winPct":0.32,"statsChecked":"2026-07-05T15:10:23.741Z"}},"seasons":[{"sid":"e4fda0f9","sn":"Winter 2026","club":"Wildcats Basketball Club (Ballarat)","regs":[{"tid":"75d1d173","tn":"Wildcats  U16 G5","gid":"e2e63d1b","gn":"Friday U16 Girls C","age":"U16","div":null,"stats":{"gp":6,"fouls":3,"fg":13,"pts":26,"wins":2,"losses":4}}]},{"sid":"790feeb5","sn":"Summer 2025/26","club":"Wildcats Basketball Club (Ballarat)","regs":[{"tid":"1ffe01ac","tn":"Wildcats  U16 G4","gid":"7dbe147a","gn":"Friday U16 Girls C","age":"U16","div":null,"stats":{"gp":15,"fouls":6,"ft":1,"fg":32,"pts":65,"wins":5,"losses":10}},{"tid":"1ffe01ac","tn":"Wildcats  U16 G4","gid":"ea3494c3","gn":"Friday U16 Girls D","age":"U16","div":null,"stats":{"gp":15,"fg":32,"pts":65,"wins":5,"losses":10,"ft":1,"fouls":6}}]},{"sid":"3eb78b60","sn":"Summer 2024/25","club":"Wildcats Basketball Club (Ballarat)","regs":[{"tid":"b2e45e82","tn":"Wildcats  U16 G6","gid":"587254b5","gn":"Friday U16 Girls D","age":"U16","div":null,"stats":{"gp":14,"fouls":10,"ft":3,"fg":18,"pts":39}}]},{"sid":"e446a23f","sn":"Winter 2024","club":"Wildcats Basketball Club (Ballarat)","regs":[{"tid":"ca348e59","tn":"Wildcats  U14 G5","gid":"230ab3f8","gn":"Saturday U14 Girls E","age":"U14","div":null,"stats":{"gp":14,"fouls":8,"ft":2,"fg":68,"pts":138}},{"tid":"ca348e59","tn":"Wildcats  U14 G5","gid":"516c1373","gn":"Saturday U14 Girls D","age":"U14","div":null,"stats":{"gp":14,"fouls":8,"fg":68,"pts":138,"ft":2}}]},{"sid":"21b7d173","regs":[{"tid":"7e68d894","stats":{"losses":1,"gp":5,"pts":4,"fg":2,"fouls":6}}]}],"updatedAt":"2026-07-04T05:46:10.702Z","teams":[{"tid":"75d1d173","sid":"e4fda0f9","status":"ACTIVE"},{"tid":"7e68d894","sid":"21b7d173","status":"UPCOMING"},{"tid":"1ffe01ac","sid":"790feeb5","status":"COMPLETED"},{"tid":"b2e45e82","sid":"3eb78b60","status":"COMPLETED"},{"tid":"ca348e59","sid":"e446a23f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:43:25.928Z","records":{"maxGamePTS":{"v":17,"gameKey":"06d92875","sid":"e446a23f"},"maxGameThreePt":{"v":null}},"games":["01f943ba","078e2108","0d9053be","1394e412","20bca96f","30f173dd","3125caf0","3885db52","3a9a3518","3ba9c968","4943d4b7","54fa6c75","56e6addc","580aba6e","5c9c679e","5f038b40","6a851942","6e27c1c0","70aab661","72b75b1c","7c5733e2","8bd46113","8ecd94d4","8ed85f92","8fa8c181","a7e6b3da","bca8f475","c055147a","cbd65867","cbf445af","d2407680","d51765d1","eb8ac06a","ee4a3cd1","f775f079","f7b91cc5"]}
+{
+  "uuid": "79badc8d-f8a4-4443-9407-0c37e265e6a3",
+  "name": "Zakiah Lee",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 272,
+      "fouls": 33,
+      "fg": 133,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 12,
+      "losses": 25,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-05T15:10:23.741Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e4fda0f9",
+      "sn": "Winter 2026",
+      "club": "Wildcats Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "75d1d173",
+          "tn": "Wildcats  U16 G5",
+          "gid": "e2e63d1b",
+          "gn": "Friday U16 Girls C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 3,
+            "fg": 13,
+            "pts": 26,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "790feeb5",
+      "sn": "Summer 2025/26",
+      "club": "Wildcats Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "1ffe01ac",
+          "tn": "Wildcats  U16 G4",
+          "gid": "7dbe147a",
+          "gn": "Friday U16 Girls C",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 32,
+            "pts": 65,
+            "wins": 5,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "1ffe01ac",
+          "tn": "Wildcats  U16 G4",
+          "gid": "ea3494c3",
+          "gn": "Friday U16 Girls D",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fg": 32,
+            "pts": 65,
+            "wins": 5,
+            "losses": 10,
+            "ft": 1,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3eb78b60",
+      "sn": "Summer 2024/25",
+      "club": "Wildcats Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "b2e45e82",
+          "tn": "Wildcats  U16 G6",
+          "gid": "587254b5",
+          "gn": "Friday U16 Girls D",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 10,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e446a23f",
+      "sn": "Winter 2024",
+      "club": "Wildcats Basketball Club (Ballarat)",
+      "regs": [
+        {
+          "tid": "ca348e59",
+          "tn": "Wildcats  U14 G5",
+          "gid": "230ab3f8",
+          "gn": "Saturday U14 Girls E",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 8,
+            "ft": 2,
+            "fg": 68,
+            "pts": 138
+          }
+        },
+        {
+          "tid": "ca348e59",
+          "tn": "Wildcats  U14 G5",
+          "gid": "516c1373",
+          "gn": "Saturday U14 Girls D",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 8,
+            "fg": 68,
+            "pts": 138,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21b7d173",
+      "regs": [
+        {
+          "tid": "7e68d894",
+          "stats": {
+            "losses": 1,
+            "gp": 5,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 6
+          },
+          "gid": "f57d915f",
+          "gn": "U16 Girls E Grade"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:46:10.702Z",
+  "teams": [
+    {
+      "tid": "75d1d173",
+      "sid": "e4fda0f9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ffe01ac",
+      "sid": "790feeb5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b2e45e82",
+      "sid": "3eb78b60",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ca348e59",
+      "sid": "e446a23f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7e68d894",
+      "sid": "21b7d173",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.510Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "06d92875",
+      "sid": "e446a23f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01f943ba",
+    "078e2108",
+    "0d9053be",
+    "1394e412",
+    "20bca96f",
+    "30f173dd",
+    "3125caf0",
+    "3885db52",
+    "3a9a3518",
+    "3ba9c968",
+    "4943d4b7",
+    "54fa6c75",
+    "56e6addc",
+    "580aba6e",
+    "5c9c679e",
+    "5f038b40",
+    "6a851942",
+    "6e27c1c0",
+    "70aab661",
+    "72b75b1c",
+    "7c5733e2",
+    "8bd46113",
+    "8ecd94d4",
+    "8ed85f92",
+    "8fa8c181",
+    "a7e6b3da",
+    "bca8f475",
+    "c055147a",
+    "cbd65867",
+    "cbf445af",
+    "d2407680",
+    "d51765d1",
+    "eb8ac06a",
+    "ee4a3cd1",
+    "f775f079",
+    "f7b91cc5"
+  ]
+}

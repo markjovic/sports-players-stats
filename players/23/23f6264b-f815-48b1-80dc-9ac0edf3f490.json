@@ -1,1 +1,237 @@
-{"uuid":"23f6264b-f815-48b1-80dc-9ac0edf3f490","name":"benjamin fei","gender":"Boys","sports":{"Basketball":{"gp":40,"pts":38,"fouls":81,"fg":15,"ft":8,"finals":2,"gfApps":1,"gfWins":1,"finalsPerSeason":0.67,"foulOuts":{"88026885":2,"f373fc05":2},"maxGamePTS":6,"maxGameThreePt":null,"wins":30,"losses":51,"draws":3,"winPct":0.36,"statsChecked":"2026-07-05T14:39:54.068Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"dfe3250f","tn":"Hawthorn U09 Boys 05","gid":"20380c78","gn":"Boys U09 B Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":12,"ft":3,"fg":4,"pts":11,"wins":3,"losses":3}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"21cdf1d8","tn":"Hawthorn U08 Boys 02","gid":"28ab538c","gn":"Boys U08 BB","age":"U08","div":null,"stats":{"gp":16,"fouls":40,"fg":9,"pts":20,"finals":1,"gfApps":1,"foulOuts":2,"wins":12,"losses":3,"ft":2,"gfWins":1}},{"tid":"21cdf1d8","tn":"Hawthorn U08 Boys 02","gid":"18d6f075","gn":"Boys U08 B Grading","age":"U08","div":null,"stats":{"gp":16,"fouls":40,"ft":2,"fg":9,"pts":20,"finals":1,"gfApps":1,"wins":12,"losses":3,"gfWins":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"9dacd886","tn":"Hawthorn U09 Boys 07","gid":"bbc089cb","gn":"Boys U09 CF","age":"U09","div":null,"stats":{"gp":16,"fouls":29,"ft":3,"fg":2,"pts":7,"finals":1,"foulOuts":2,"wins":1,"losses":14,"draws":1}},{"tid":"9dacd886","tn":"Hawthorn U09 Boys 07","gid":"d1b5a80e","gn":"Boys U09 D Grading","age":"U09","div":null,"stats":{"gp":16,"fouls":29,"finals":1,"wins":1,"losses":14,"draws":1,"pts":7,"fg":2,"ft":3}},{"tid":"9dacd886","tn":"Hawthorn U09 Boys 07","gid":"c074709e","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":16,"fouls":29,"ft":3,"pts":7,"finals":1,"wins":1,"losses":14,"draws":1,"fg":2}}]}],"updatedAt":"2026-07-04T05:53:15.681Z","teams":[{"tid":"dfe3250f","sid":"1ae60211","status":"ACTIVE"},{"tid":"21cdf1d8","sid":"88026885","status":"COMPLETED"},{"tid":"9dacd886","sid":"f373fc05","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:06:12.052Z","records":{"maxGamePTS":{"v":6,"gameKey":"330651c2","sid":"88026885"},"maxGameThreePt":{"v":null}},"games":["033b3bdc","12cb043f","16363fd1","1e456f7a","21c3ed2d","227c0ab2","260247e3","330651c2","424b7806","4ba53756","5dbf30cd","66d7bcf1","685442fb","68dee6c5","68fc3e20","6ddc0e07","74021b7c","8b9abeab","8c0fac99","a6e362ea","ab62348d","acf23014","bd9bb47f","be013066","bf2e6161","c50089f2","c74db21d","cec8880f","ceeb50f6","e01171c2","ea50d9e4","eaa53faf","efab0b9e","f0d91ac2","f56c702b","fd58d35f","fd95b7dd","ff1bcf81"]}
+{
+  "uuid": "23f6264b-f815-48b1-80dc-9ac0edf3f490",
+  "name": "benjamin fei",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 38,
+      "fouls": 81,
+      "fg": 15,
+      "ft": 8,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.67,
+      "foulOuts": {
+        "88026885": 2,
+        "f373fc05": 2
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 30,
+      "losses": 51,
+      "draws": 3,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T14:39:54.068Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "dfe3250f",
+          "tn": "Hawthorn U09 Boys 05",
+          "gid": "d450c20e",
+          "gn": "Boys U09 BC",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 4,
+            "pts": 11,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "21cdf1d8",
+          "tn": "Hawthorn U08 Boys 02",
+          "gid": "28ab538c",
+          "gn": "Boys U08 BB",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 40,
+            "fg": 9,
+            "pts": 20,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 2,
+            "wins": 12,
+            "losses": 3,
+            "ft": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "21cdf1d8",
+          "tn": "Hawthorn U08 Boys 02",
+          "gid": "18d6f075",
+          "gn": "Boys U08 B Grading",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 40,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 3,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "9dacd886",
+          "tn": "Hawthorn U09 Boys 07",
+          "gid": "bbc089cb",
+          "gn": "Boys U09 CF",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 29,
+            "ft": 3,
+            "fg": 2,
+            "pts": 7,
+            "finals": 1,
+            "foulOuts": 2,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "9dacd886",
+          "tn": "Hawthorn U09 Boys 07",
+          "gid": "d1b5a80e",
+          "gn": "Boys U09 D Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 29,
+            "finals": 1,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1,
+            "pts": 7,
+            "fg": 2,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "9dacd886",
+          "tn": "Hawthorn U09 Boys 07",
+          "gid": "c074709e",
+          "gn": "Boys U09 C Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 29,
+            "ft": 3,
+            "pts": 7,
+            "finals": 1,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1,
+            "fg": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:53:15.681Z",
+  "teams": [
+    {
+      "tid": "dfe3250f",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "21cdf1d8",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9dacd886",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.191Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "330651c2",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "033b3bdc",
+    "12cb043f",
+    "16363fd1",
+    "1e456f7a",
+    "21c3ed2d",
+    "227c0ab2",
+    "260247e3",
+    "330651c2",
+    "424b7806",
+    "4ba53756",
+    "5dbf30cd",
+    "66d7bcf1",
+    "685442fb",
+    "68dee6c5",
+    "68fc3e20",
+    "6ddc0e07",
+    "74021b7c",
+    "8b9abeab",
+    "8c0fac99",
+    "a6e362ea",
+    "ab62348d",
+    "acf23014",
+    "bd9bb47f",
+    "be013066",
+    "bf2e6161",
+    "c50089f2",
+    "c74db21d",
+    "cec8880f",
+    "ceeb50f6",
+    "e01171c2",
+    "ea50d9e4",
+    "eaa53faf",
+    "efab0b9e",
+    "f0d91ac2",
+    "f56c702b",
+    "fd58d35f",
+    "fd95b7dd",
+    "ff1bcf81"
+  ]
+}

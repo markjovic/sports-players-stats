@@ -1,1 +1,101 @@
-{"uuid":"19e31fb6-3097-46e2-8c29-203b5599a44f","name":"2024","gender":null,"sports":{"Basketball":{"gp":3,"pts":4,"fouls":1,"fg":2,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":3,"winPct":0,"statsChecked":"2026-07-05T15:59:48.975Z"}},"seasons":[{"sid":"5f7e49e4","sn":"2024","club":null,"regs":[{"tid":"b682b064","tn":"Westies Walkers (67)","gid":"3701763e","gn":"Walking Basketball Senior Mixed","stats":{"gp":3,"pts":4,"fg":2,"fouls":1,"finals":1,"losses":3}}]}],"updatedAt":"2026-06-11T23:36:51.822Z","records":{"maxGamePTS":{"v":2,"gameKey":"3bbcaa87","sid":"5f7e49e4"},"maxGameThreePt":{"v":null}},"statsChecked":"2026-06-20","games":["3bbcaa87","9212ff4d","d8240f74"]}
+{
+  "uuid": "19e31fb6-3097-46e2-8c29-203b5599a44f",
+  "name": "2024",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 4,
+      "fouls": 1,
+      "fg": 2,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:59:48.975Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5f7e49e4",
+      "sn": "2024",
+      "club": null,
+      "regs": [
+        {
+          "tid": "b682b064",
+          "tn": "Westies Walkers (67)",
+          "gid": "3701763e",
+          "gn": "Walking Basketball Senior Mixed",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 1,
+            "finals": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5dd05fe",
+      "sn": "Term 1, 2025",
+      "regs": [
+        {
+          "tid": "52842e7e",
+          "tn": "Wyndham 2",
+          "gid": "24469b14",
+          "gn": "Senior Mixed Walking Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "f3e645d2",
+          "tn": "Wyndham Walkers ",
+          "gid": "24469b14",
+          "gn": "Senior Mixed Walking Basketball",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:51.822Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "3bbcaa87",
+      "sid": "5f7e49e4"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "statsChecked": "2026-06-20",
+  "games": [
+    "3bbcaa87",
+    "9212ff4d",
+    "d8240f74"
+  ],
+  "teams": [
+    {
+      "tid": "b682b064",
+      "sid": "5f7e49e4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "52842e7e",
+      "sid": "f5dd05fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f3e645d2",
+      "sid": "f5dd05fe",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.535Z"
+}

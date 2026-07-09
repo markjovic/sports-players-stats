@@ -1,1 +1,82 @@
-{"uuid":"43fc9bbe-3d51-41e8-9ea8-cd6f78229bfa","name":"Blake Cuttriss","gender":"Men","sports":{"Basketball":{"gp":1,"pts":4,"fouls":1,"fg":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":1,"winPct":1,"statsChecked":"2026-07-05T15:35:14.955Z"}},"seasons":[{"sid":"2b567771","sn":"Winter 2024","regs":[{"tid":"809cbce3","tn":"The Jazzery","gid":"4f22708b","gn":"Men’s A Reserve","age":null,"div":null,"stats":{"gp":1,"fouls":1,"fg":2,"pts":4,"wins":1}}]}],"updatedAt":"2026-06-01T18:45:03.661Z","teams":[{"tid":"809cbce3","sid":"2b567771","status":"COMPLETED"},{"tid":"e4e546a3","sid":"d72b67b8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:23:44.470Z","records":{"maxGamePTS":{"v":4,"gameKey":"ca357cfb","sid":"2b567771"},"maxGameThreePt":{"v":null}},"games":["ca357cfb"]}
+{
+  "uuid": "43fc9bbe-3d51-41e8-9ea8-cd6f78229bfa",
+  "name": "Blake Cuttriss",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 4,
+      "fouls": 1,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T15:35:14.955Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2b567771",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "809cbce3",
+          "tn": "The Jazzery",
+          "gid": "4f22708b",
+          "gn": "Men’s A Reserve",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "fg": 2,
+            "pts": 4,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d72b67b8",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "e4e546a3",
+          "tn": "Purple",
+          "gid": "fdc161d7",
+          "gn": "U19 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T18:45:03.661Z",
+  "teams": [
+    {
+      "tid": "809cbce3",
+      "sid": "2b567771",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4e546a3",
+      "sid": "d72b67b8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.052Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "ca357cfb",
+      "sid": "2b567771"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "ca357cfb"
+  ]
+}

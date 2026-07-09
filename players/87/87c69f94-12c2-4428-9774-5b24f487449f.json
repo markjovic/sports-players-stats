@@ -1,1 +1,268 @@
-{"uuid":"87c69f94-12c2-4428-9774-5b24f487449f","name":"Hayden Morris","gender":"Mixed","sports":{"Basketball":{"gp":54,"pts":204,"fouls":101,"fg":96,"ft":12,"foulOuts":{"15908988":1,"bfbe9c11":1},"maxGamePTS":17,"maxGameThreePt":null,"wins":24,"losses":24,"draws":2,"winPct":0.48,"statsChecked":"2026-07-07T18:28:30.263Z"}},"seasons":[{"sid":"15908988","sn":"Winter 2026","club":"Vermont Vultures Basketball Club","regs":[{"tid":"3293f4e4","tn":"B08 Vermont Vultures 2","gid":"dfdaf9e5","gn":"Saturday U8 Mixed Pool 1","age":"U8","div":null,"stats":{"gp":7,"fouls":16,"fg":21,"pts":43,"foulOuts":1,"wins":3,"losses":4,"ft":1}}]},{"sid":"6b0cab9c","sn":"2026","regs":[{"tid":"1adfd401","tn":"Nunawading Dev B10.Blue","gid":"0d19843c","gn":"U10 Boys C1 (Eltham)","age":"U10","div":null,"stats":{"gp":4,"fouls":6,"ft":2,"pts":2,"losses":4}}]},{"sid":"bfbe9c11","sn":"Summer 2025/26","club":"Vermont Vultures Basketball Club","regs":[{"tid":"a8e31986","tn":"B08 Vermont Vultures Grey","gid":"81dfe905","gn":"Saturday U08 Mixed","age":"U08","div":null,"stats":{"gp":17,"fouls":30,"ft":7,"fg":30,"pts":67,"foulOuts":1,"wins":9,"losses":7,"draws":1}}]},{"sid":"52d31d16","sn":"Winter 2025","club":"Vermont Vultures Basketball Club","regs":[{"tid":"b0834a4a","tn":"B08 Vermont Vultures (Black)","gid":"7426d3b6","gn":"Monday U8 Boys C","age":"U8","div":null,"stats":{"gp":17,"fouls":38,"ft":1,"fg":37,"pts":75,"wins":11,"losses":5,"draws":1}}]},{"sid":"0869ea69","regs":[{"tid":"1ca24e74","stats":{"wins":1,"losses":4,"gp":5,"pts":5,"fg":2,"ft":1,"fouls":9}}]},{"sid":"26df4252","regs":[{"tid":"f9a5e0a7","stats":{"gp":4,"pts":12,"fg":6,"fouls":2}},{"tid":"f9a5e0a7","tn":"","gid":"cf0138ea","gn":"U10 Boys Division 5","div":null,"stats":{"gp":4,"pts":12,"fg":6,"fouls":2}}]}],"updatedAt":"2026-07-07T18:06:38.089Z","teams":[{"tid":"3293f4e4","sid":"15908988","status":"ACTIVE"},{"tid":"1ca24e74","sid":"0869ea69","status":"UPCOMING"},{"tid":"a8e31986","sid":"bfbe9c11","status":"COMPLETED"},{"tid":"1adfd401","sid":"6b0cab9c","status":"COMPLETED"},{"tid":"b0834a4a","sid":"52d31d16","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:25:06.942Z","records":{"maxGamePTS":{"v":17,"gameKey":"9e2496ea","sid":"15908988"},"maxGameThreePt":{"v":null}},"games":["036515b6","03db2c1f","0a43fe22","0e5ef318","0e883b38","10c5c028","14c83872","15888916","19d7e7d3","202fa4e8","222214f1","22e8751e","32fbfa52","35feda71","3b3022a9","3c323ec7","49846250","53234bf8","5c2065c8","606dabb9","6dd8d19d","70573d98","7fd51c02","7ff3161e","87c42fed","92879cdd","9be05790","9bf103cd","9e2496ea","b02be7d3","b808f225","b859fbe1","c10512bd","c10dfc87","c4a75b0b","c4d10b2a","c6061b73","cce3b02a","d6f35c14","d83e7d0c","d94d3f12","d98efe4a","dbc8304c","e1b5ecc4","e9dc3e75","ec3f009a","f16f7015","f1d151a9","f53005b8","fb5c921e"]}
+{
+  "uuid": "87c69f94-12c2-4428-9774-5b24f487449f",
+  "name": "Hayden Morris",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 204,
+      "fouls": 101,
+      "fg": 96,
+      "ft": 12,
+      "foulOuts": {
+        "15908988": 1,
+        "bfbe9c11": 1
+      },
+      "maxGamePTS": 17,
+      "maxGameThreePt": null,
+      "wins": 24,
+      "losses": 24,
+      "draws": 2,
+      "winPct": 0.48,
+      "statsChecked": "2026-07-07T18:28:30.263Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "15908988",
+      "sn": "Winter 2026",
+      "club": "Vermont Vultures Basketball Club",
+      "regs": [
+        {
+          "tid": "3293f4e4",
+          "tn": "B08 Vermont Vultures 2",
+          "gid": "dfdaf9e5",
+          "gn": "Saturday U8 Mixed Pool 1",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 16,
+            "fg": 21,
+            "pts": 43,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 4,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6b0cab9c",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "1adfd401",
+          "tn": "Nunawading Dev B10.Blue",
+          "gid": "0d19843c",
+          "gn": "U10 Boys C1 (Eltham)",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "ft": 2,
+            "pts": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfbe9c11",
+      "sn": "Summer 2025/26",
+      "club": "Vermont Vultures Basketball Club",
+      "regs": [
+        {
+          "tid": "a8e31986",
+          "tn": "B08 Vermont Vultures Grey",
+          "gid": "81dfe905",
+          "gn": "Saturday U08 Mixed",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 30,
+            "ft": 7,
+            "fg": 30,
+            "pts": 67,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 7,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "52d31d16",
+      "sn": "Winter 2025",
+      "club": "Vermont Vultures Basketball Club",
+      "regs": [
+        {
+          "tid": "b0834a4a",
+          "tn": "B08 Vermont Vultures (Black)",
+          "gid": "7426d3b6",
+          "gn": "Monday U8 Boys C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 38,
+            "ft": 1,
+            "fg": 37,
+            "pts": 75,
+            "wins": 11,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "1ca24e74",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 9
+          },
+          "gid": "f1fbbd19",
+          "gn": "BOYS UNDER 10 C2"
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "f9a5e0a7",
+          "stats": {
+            "gp": 4,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 2
+          },
+          "gid": "cf0138ea",
+          "gn": "U10 Boys Division 5"
+        },
+        {
+          "tid": "f9a5e0a7",
+          "tn": "",
+          "gid": "cf0138ea",
+          "gn": "U10 Boys Division 5",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:38.089Z",
+  "teams": [
+    {
+      "tid": "3293f4e4",
+      "sid": "15908988",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1adfd401",
+      "sid": "6b0cab9c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8e31986",
+      "sid": "bfbe9c11",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b0834a4a",
+      "sid": "52d31d16",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1ca24e74",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f9a5e0a7",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.444Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "9e2496ea",
+      "sid": "15908988"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "036515b6",
+    "03db2c1f",
+    "0a43fe22",
+    "0e5ef318",
+    "0e883b38",
+    "10c5c028",
+    "14c83872",
+    "15888916",
+    "19d7e7d3",
+    "202fa4e8",
+    "222214f1",
+    "22e8751e",
+    "32fbfa52",
+    "35feda71",
+    "3b3022a9",
+    "3c323ec7",
+    "49846250",
+    "53234bf8",
+    "5c2065c8",
+    "606dabb9",
+    "6dd8d19d",
+    "70573d98",
+    "7fd51c02",
+    "7ff3161e",
+    "87c42fed",
+    "92879cdd",
+    "9be05790",
+    "9bf103cd",
+    "9e2496ea",
+    "b02be7d3",
+    "b808f225",
+    "b859fbe1",
+    "c10512bd",
+    "c10dfc87",
+    "c4a75b0b",
+    "c4d10b2a",
+    "c6061b73",
+    "cce3b02a",
+    "d6f35c14",
+    "d83e7d0c",
+    "d94d3f12",
+    "d98efe4a",
+    "dbc8304c",
+    "e1b5ecc4",
+    "e9dc3e75",
+    "ec3f009a",
+    "f16f7015",
+    "f1d151a9",
+    "f53005b8",
+    "fb5c921e"
+  ]
+}

@@ -1,1 +1,82 @@
-{"uuid":"5be4283e-69db-4459-86d1-db0a9616193f","name":"Ben Clingin","sports":{"Basketball":{"maxGamePTS":7,"maxGameThreePt":1,"foulOuts":{"b399016f":1,"1314c52c":1},"gp":27,"pts":65,"fg":24,"ft":5,"threePt":4,"fouls":50,"statsChecked":"2026-07-09T18:30:39.631Z"}},"seasons":[{"sid":"b399016f","regs":[{"tid":"fe066e83"}]},{"sid":"1314c52c","regs":[{"tid":"13bf0fec"}]},{"sid":"6ddfda40","regs":[{"tid":"00ffa2ad"}]}],"teams":[],"updatedAt":"2026-07-09T18:09:23.820Z","records":{"maxGamePTS":{"v":7,"gameKey":"ce4bc380","sid":"b399016f"},"maxGameThreePt":{"v":1,"gameKey":"ce4bc380","sid":"b399016f"}}}
+{
+  "uuid": "5be4283e-69db-4459-86d1-db0a9616193f",
+  "name": "Ben Clingin",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "b399016f": 1,
+        "1314c52c": 1
+      },
+      "gp": 27,
+      "pts": 65,
+      "fg": 24,
+      "ft": 5,
+      "threePt": 4,
+      "fouls": 50,
+      "statsChecked": "2026-07-09T18:30:39.631Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b399016f",
+      "regs": [
+        {
+          "tid": "fe066e83",
+          "gid": "3af72092",
+          "gn": "Thursday Men C Grade"
+        }
+      ]
+    },
+    {
+      "sid": "1314c52c",
+      "regs": [
+        {
+          "tid": "13bf0fec",
+          "gid": "1e5672f9",
+          "gn": "Thursday Men C Grade"
+        }
+      ]
+    },
+    {
+      "sid": "6ddfda40",
+      "regs": [
+        {
+          "tid": "00ffa2ad"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "fe066e83",
+      "sid": "b399016f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13bf0fec",
+      "sid": "1314c52c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "00ffa2ad",
+      "sid": "6ddfda40",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:23.820Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "ce4bc380",
+      "sid": "b399016f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "ce4bc380",
+      "sid": "b399016f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:11.618Z"
+}

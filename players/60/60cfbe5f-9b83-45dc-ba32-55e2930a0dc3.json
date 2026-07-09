@@ -1,1 +1,335 @@
-{"uuid":"60cfbe5f-9b83-45dc-ba32-55e2930a0dc3","name":"Willow Cairns","gender":"Girls","sports":{"Basketball":{"gp":63,"pts":128,"fouls":41,"fg":61,"ft":6,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":73,"losses":46,"winPct":0.56,"draws":12,"statsChecked":"2026-07-05T14:41:34.214Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Banyule Hawks Basketball Club","regs":[{"tid":"8e8e8943","tn":"Banyule U09 Girls 01","gid":"781b440d","gn":"Girls U09 B Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":8,"fg":4,"pts":8,"wins":3,"losses":3}}]},{"sid":"d868771d","sn":"Autumn 2026","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"5bc1435c","tn":"St Martins U08 Girls 1","gid":"f2612662","gn":"Saturday U08 Girls B","age":"U08","div":null,"stats":{"gp":10,"fouls":6,"ft":3,"fg":18,"pts":39,"wins":9,"losses":1}},{"tid":"5bc1435c","tn":"St Martins U08 Girls 1","gid":"63b81c30","gn":"Saturday U08 Girls Grading Group 1","age":"U08","div":null,"stats":{"gp":10,"fouls":6,"fg":18,"pts":39,"wins":9,"losses":1,"ft":3}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"bd33025a","tn":"St Martins U08 Girls 1","gid":"34bee8b5","gn":"Saturday U08 Girls A","age":"U08","div":null,"stats":{"gp":14,"fouls":8,"ft":2,"fg":9,"pts":20,"wins":6,"losses":7,"draws":1}},{"tid":"bd33025a","tn":"St Martins U08 Girls 1","gid":"4a0ee176","gn":"Saturday U08 Girls Grading Group 1","age":"U08","div":null,"stats":{"gp":14,"fouls":8,"fg":9,"pts":20,"wins":6,"losses":7,"draws":1,"ft":2}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"127b08b2","tn":"St Martins U08 Girls 1","gid":"9bfb9de4","gn":"Saturday U8 Girls B1","age":"U8","div":"B1","stats":{"gp":15,"fouls":11,"fg":21,"pts":43,"wins":8,"losses":5,"draws":2,"ft":1}},{"tid":"127b08b2","tn":"St Martins U08 Girls 1","gid":"14926c5d","gn":"Saturday U8 Girls A","age":"U8","div":null,"stats":{"gp":15,"fouls":11,"ft":1,"fg":21,"pts":43,"wins":8,"losses":5,"draws":2}},{"tid":"127b08b2","tn":"St Martins U08 Girls 1","gid":"cc2658e2","gn":"Saturday U8 Girls C","age":"U8","div":null,"stats":{"gp":15,"fg":21,"pts":43,"wins":8,"losses":5,"draws":2,"ft":1,"fouls":11}}]},{"sid":"fb0c8cb5","sn":"Spring 2024","club":"St Martin of Tours Basketball Club Inc.","regs":[{"tid":"a5306c13","tn":"St Martins U8 Girls 1","gid":"44479848","gn":"Saturday U8 Girls B","age":"U8","div":null,"stats":{"gp":16,"fouls":8,"fg":9,"pts":18,"wins":8,"losses":6,"draws":2}},{"tid":"a5306c13","tn":"St Martins U8 Girls 1","gid":"c34fad44","gn":"Saturday U8 Girls C","age":"U8","div":null,"stats":{"gp":16,"fouls":8,"wins":8,"losses":6,"draws":2,"pts":18,"fg":9}}]}],"updatedAt":"2026-06-01T06:32:29.171Z","teams":[{"tid":"5bc1435c","sid":"d868771d","status":"ACTIVE"},{"tid":"8e8e8943","sid":"1ae60211","status":"ACTIVE"},{"tid":"bd33025a","sid":"f57b7901","status":"COMPLETED"},{"tid":"127b08b2","sid":"868d6996","status":"COMPLETED"},{"tid":"a5306c13","sid":"fb0c8cb5","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:41:45.790Z","records":{"maxGamePTS":{"v":8,"gameKey":"ac104e9d","sid":"d868771d"},"maxGameThreePt":{"v":null}},"games":["017c0c8a","03042565","0492be37","0909665f","0ac2140b","12e25332","1ecfbc95","205c867e","219732db","247592cd","24f774c2","28bfcdf8","3115fcf6","34345c57","36062bb4","3b1e4828","3ba726ff","40ade1e7","47b2ab6c","4911ef43","50778bf2","52d9479b","54d058cb","5fb0c5a4","63b93a7f","645f6bff","71e5d1c7","79a65645","7c175cbb","7c3bde0c","7ec37575","821a2fc7","8ab26969","8f985041","8fe64d58","90aa0141","9ec6cdb6","9efe31db","a1d1bbea","a2fe35df","a7ee416f","ac104e9d","add6a73f","b33e1c16","b427819b","b88303a2","b9e2e25a","c2764f66","c6261b15","c88ef194","c9a08c75","cf9e1a32","d09b4d48","d3d24ef2","d757fe70","d9311322","e2c333fa","ed756617","f00313f0","f3411859","f7b8d516"]}
+{
+  "uuid": "60cfbe5f-9b83-45dc-ba32-55e2930a0dc3",
+  "name": "Willow Cairns",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 63,
+      "pts": 128,
+      "fouls": 41,
+      "fg": 61,
+      "ft": 6,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 73,
+      "losses": 46,
+      "winPct": 0.56,
+      "draws": 12,
+      "statsChecked": "2026-07-05T14:41:34.214Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Banyule Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "8e8e8943",
+          "tn": "Banyule U09 Girls 01",
+          "gid": "8acf7f60",
+          "gn": "Girls U09 B3",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 8,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "5bc1435c",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "f2612662",
+          "gn": "Saturday U08 Girls B",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39,
+            "wins": 9,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "5bc1435c",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "63b81c30",
+          "gn": "Saturday U08 Girls Grading Group 1",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "fg": 18,
+            "pts": 39,
+            "wins": 9,
+            "losses": 1,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "bd33025a",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "34bee8b5",
+          "gn": "Saturday U08 Girls A",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 8,
+            "ft": 2,
+            "fg": 9,
+            "pts": 20,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bd33025a",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "4a0ee176",
+          "gn": "Saturday U08 Girls Grading Group 1",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 8,
+            "fg": 9,
+            "pts": 20,
+            "wins": 6,
+            "losses": 7,
+            "draws": 1,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "127b08b2",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "9bfb9de4",
+          "gn": "Saturday U8 Girls B1",
+          "age": "U8",
+          "div": "B1",
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "fg": 21,
+            "pts": 43,
+            "wins": 8,
+            "losses": 5,
+            "draws": 2,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "127b08b2",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "14926c5d",
+          "gn": "Saturday U8 Girls A",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 21,
+            "pts": 43,
+            "wins": 8,
+            "losses": 5,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "127b08b2",
+          "tn": "St Martins U08 Girls 1",
+          "gid": "cc2658e2",
+          "gn": "Saturday U8 Girls C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fg": 21,
+            "pts": 43,
+            "wins": 8,
+            "losses": 5,
+            "draws": 2,
+            "ft": 1,
+            "fouls": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb0c8cb5",
+      "sn": "Spring 2024",
+      "club": "St Martin of Tours Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "a5306c13",
+          "tn": "St Martins U8 Girls 1",
+          "gid": "44479848",
+          "gn": "Saturday U8 Girls B",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 9,
+            "pts": 18,
+            "wins": 8,
+            "losses": 6,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "a5306c13",
+          "tn": "St Martins U8 Girls 1",
+          "gid": "c34fad44",
+          "gn": "Saturday U8 Girls C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "wins": 8,
+            "losses": 6,
+            "draws": 2,
+            "pts": 18,
+            "fg": 9
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:32:29.171Z",
+  "teams": [
+    {
+      "tid": "8e8e8943",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5bc1435c",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd33025a",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "127b08b2",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a5306c13",
+      "sid": "fb0c8cb5",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.959Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "ac104e9d",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "017c0c8a",
+    "03042565",
+    "0492be37",
+    "0909665f",
+    "0ac2140b",
+    "12e25332",
+    "1ecfbc95",
+    "205c867e",
+    "219732db",
+    "247592cd",
+    "24f774c2",
+    "28bfcdf8",
+    "3115fcf6",
+    "34345c57",
+    "36062bb4",
+    "3b1e4828",
+    "3ba726ff",
+    "40ade1e7",
+    "47b2ab6c",
+    "4911ef43",
+    "50778bf2",
+    "52d9479b",
+    "54d058cb",
+    "5fb0c5a4",
+    "63b93a7f",
+    "645f6bff",
+    "71e5d1c7",
+    "79a65645",
+    "7c175cbb",
+    "7c3bde0c",
+    "7ec37575",
+    "821a2fc7",
+    "8ab26969",
+    "8f985041",
+    "8fe64d58",
+    "90aa0141",
+    "9ec6cdb6",
+    "9efe31db",
+    "a1d1bbea",
+    "a2fe35df",
+    "a7ee416f",
+    "ac104e9d",
+    "add6a73f",
+    "b33e1c16",
+    "b427819b",
+    "b88303a2",
+    "b9e2e25a",
+    "c2764f66",
+    "c6261b15",
+    "c88ef194",
+    "c9a08c75",
+    "cf9e1a32",
+    "d09b4d48",
+    "d3d24ef2",
+    "d757fe70",
+    "d9311322",
+    "e2c333fa",
+    "ed756617",
+    "f00313f0",
+    "f3411859",
+    "f7b8d516"
+  ]
+}

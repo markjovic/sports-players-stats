@@ -1,1 +1,83 @@
-{"uuid":"3eb8f776-18f3-41df-9948-5bc2ab0920b1","name":"Izzy Brooks","gender":"Girls","sports":{"Basketball":{"gp":6,"fouls":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"wins":4,"losses":2,"winPct":0.67,"statsChecked":"2026-07-05T16:13:03.985Z"}},"seasons":[{"sid":"29e937e8","sn":"Summer 2024/25","regs":[{"tid":"9cca9520","tn":"Opals","gid":"3079809d","gn":"Monday Junior Girls","age":"Junior","div":null,"stats":{"gp":6,"fouls":1,"wins":4,"losses":2}}]}],"updatedAt":"2026-06-02T20:00:22.780Z","teams":[{"tid":"9cca9520","sid":"29e937e8","status":"COMPLETED"},{"tid":"744a7a0a","sid":"1aa8cfe6","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:20:46.728Z","games":["17def686","4b262fd9","546be66c","5867a01c","ecae04d2","ef574f07"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "3eb8f776-18f3-41df-9948-5bc2ab0920b1",
+  "name": "Izzy Brooks",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "fouls": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 2,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T16:13:03.985Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "29e937e8",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "9cca9520",
+          "tn": "Opals",
+          "gid": "3079809d",
+          "gn": "Monday Junior Girls",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1aa8cfe6",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "744a7a0a",
+          "tn": "Mini Hoops 1",
+          "gid": "a492ff84",
+          "gn": "Thursday Mini Hoops",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T20:00:22.780Z",
+  "teams": [
+    {
+      "tid": "9cca9520",
+      "sid": "29e937e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "744a7a0a",
+      "sid": "1aa8cfe6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.698Z",
+  "games": [
+    "17def686",
+    "4b262fd9",
+    "546be66c",
+    "5867a01c",
+    "ecae04d2",
+    "ef574f07"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

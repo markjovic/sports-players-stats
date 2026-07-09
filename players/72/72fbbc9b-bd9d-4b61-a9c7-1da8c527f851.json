@@ -1,1 +1,152 @@
-{"uuid":"72fbbc9b-bd9d-4b61-a9c7-1da8c527f851","gender":null,"sports":{"Basketball":{"gp":9,"pts":18,"fouls":6,"fg":7,"ft":4,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":null,"wins":8,"losses":10,"winPct":0.44,"statsChecked":"2026-07-05T16:01:41.469Z"}},"seasons":[{"sid":"bd61c7e1","sn":"Summer 2021/22","club":"Saints Basketball Club (McKinnon)","regs":[{"tid":"e11a28a0","tn":"Classic Saints - Devils","gid":"eb8060bb","gn":"Sunday Open Women DIV 2","stats":{"gp":9,"pts":18,"fouls":6,"fg":7,"ft":4,"finals":1,"gfApps":1,"wins":4,"losses":5}},{"tid":"e11a28a0","tn":"Classic Saints - Devils","gid":"18a75ed9","gn":"Sunday Open Women DIV 1","stats":{"gp":9,"pts":18,"fouls":6,"fg":7,"ft":4,"finals":1,"gfApps":1,"wins":4,"losses":5}}]}],"updatedAt":"2026-06-11T23:41:13.566Z","records":{"maxGamePTS":{"v":7,"gameKey":"1785d1ba","sid":"bd61c7e1"},"maxGameThreePt":{"v":null}},"games":["1785d1ba","395b8118","72159012","c6f1fb5c","d28964ce","d78ca46e","e19921dc","ece20357","ef352c9d"],"name":"Summer 2021/22"}
+{
+  "uuid": "72fbbc9b-bd9d-4b61-a9c7-1da8c527f851",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 18,
+      "fouls": 6,
+      "fg": 7,
+      "ft": 4,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 10,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T16:01:41.469Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "bd61c7e1",
+      "sn": "Summer 2021/22",
+      "club": "Saints Basketball Club (McKinnon)",
+      "regs": [
+        {
+          "tid": "e11a28a0",
+          "tn": "Classic Saints - Devils",
+          "gid": "eb8060bb",
+          "gn": "Sunday Open Women DIV 2",
+          "stats": {
+            "gp": 9,
+            "pts": 18,
+            "fouls": 6,
+            "fg": 7,
+            "ft": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "e11a28a0",
+          "tn": "Classic Saints - Devils",
+          "gid": "18a75ed9",
+          "gn": "Sunday Open Women DIV 1",
+          "stats": {
+            "gp": 9,
+            "pts": 18,
+            "fouls": 6,
+            "fg": 7,
+            "ft": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "22c450d7",
+          "tn": "Shakers",
+          "gid": "548420fd",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "bac594a8",
+          "tn": "Shakers",
+          "gid": "f8f42300",
+          "gn": "Tuesday Senior Women",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "4714197f",
+          "tn": "Shakers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:13.566Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "1785d1ba",
+      "sid": "bd61c7e1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1785d1ba",
+    "395b8118",
+    "72159012",
+    "c6f1fb5c",
+    "d28964ce",
+    "d78ca46e",
+    "e19921dc",
+    "ece20357",
+    "ef352c9d"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "e11a28a0",
+      "sid": "bd61c7e1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "22c450d7",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bac594a8",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4714197f",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.171Z"
+}

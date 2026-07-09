@@ -1,1 +1,117 @@
-{"uuid":"61d97a0f-e55d-46bb-915d-2346fc9e7865","gender":null,"sports":{"Basketball":{"gp":11,"pts":123,"fouls":20,"fg":57,"ft":9,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":1,"foulOuts":{"a62fadf9":1},"maxGamePTS":21,"maxGameThreePt":null,"wins":6,"losses":5,"winPct":0.55,"statsChecked":"2026-07-05T16:13:33.566Z"}},"seasons":[{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"12dca68f","tn":"Collingwood U12 Boys 02","gid":"25c0b0c8","gn":"Boys U12BA South","stats":{"gp":11,"pts":123,"fouls":20,"fg":57,"ft":9,"finals":1,"gfApps":1,"foulOuts":1,"wins":6,"losses":5,"gfWins":1}}]}],"updatedAt":"2026-06-11T23:40:14.412Z","records":{"maxGamePTS":{"v":21,"gameKey":"db8e32e5","sid":"a62fadf9"},"maxGameThreePt":{"v":null}},"games":["136fed10","1e2ee80d","20e53496","2b8dd564","339f00f7","86106304","932150ab","a6c63cdc","bac3d9cc","db8e32e5","fd31af49"],"name":"Summer 2020/21"}
+{
+  "uuid": "61d97a0f-e55d-46bb-915d-2346fc9e7865",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 123,
+      "fouls": 20,
+      "fg": 57,
+      "ft": 9,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 1,
+      "foulOuts": {
+        "a62fadf9": 1
+      },
+      "maxGamePTS": 21,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 5,
+      "winPct": 0.55,
+      "statsChecked": "2026-07-05T16:13:33.566Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "12dca68f",
+          "tn": "Collingwood U12 Boys 02",
+          "gid": "25c0b0c8",
+          "gn": "Boys U12BA South",
+          "stats": {
+            "gp": 11,
+            "pts": 123,
+            "fouls": 20,
+            "fg": 57,
+            "ft": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 6,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "473b8e11",
+          "tn": "Collingwood U12 Boys 1",
+          "gid": "fd46ae61",
+          "gn": "U12 Boys VJL 2 - Pool 2",
+          "stats": {}
+        },
+        {
+          "tid": "a99b2f4e",
+          "tn": "Collingwood U14 Boys 1",
+          "gid": "0529b42e",
+          "gn": "U14 Boys VJL 4 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:14.412Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "db8e32e5",
+      "sid": "a62fadf9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "136fed10",
+    "1e2ee80d",
+    "20e53496",
+    "2b8dd564",
+    "339f00f7",
+    "86106304",
+    "932150ab",
+    "a6c63cdc",
+    "bac3d9cc",
+    "db8e32e5",
+    "fd31af49"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "12dca68f",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "473b8e11",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a99b2f4e",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.030Z"
+}

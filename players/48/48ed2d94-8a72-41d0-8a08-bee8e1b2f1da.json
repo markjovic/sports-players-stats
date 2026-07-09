@@ -1,1 +1,469 @@
-{"uuid":"48ed2d94-8a72-41d0-8a08-bee8e1b2f1da","name":"Arthur Owen","gender":"Boys","sports":{"Basketball":{"gp":91,"pts":494,"fouls":104,"fg":223,"ft":48,"foulOuts":{},"finals":2,"gfApps":2,"gfWins":0,"finalsPerSeason":0.29,"maxGamePTS":16,"maxGameThreePt":null,"wins":50,"losses":73,"draws":1,"winPct":0.4,"statsChecked":"2026-07-07T18:27:12.956Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Hoop School Basketball Academy","regs":[{"tid":"0c021767","tn":"HS U10 Boys GREEN","gid":"b0a67102","gn":"Saturday U12 Boys B/C","age":"U12","div":null,"stats":{"gp":8,"fouls":4,"ft":9,"fg":13,"pts":35,"wins":3,"losses":5}},{"tid":"0c021767","tn":"HS U10 Boys GREEN","gid":"aec6fbe5","gn":"Saturday U12 Boys C","age":"U12","div":null,"stats":{"gp":8,"fouls":4,"ft":9,"fg":13,"pts":35,"wins":3,"losses":5}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"cea3b10d","tn":"Middle Park Lakers ","gid":"ab58e855","gn":"Friday Year 4 Boys A","age":null,"div":null,"stats":{"gp":15,"fouls":16,"ft":5,"fg":36,"pts":77,"wins":11,"losses":3}},{"tid":"cea3b10d","tn":"Middle Park Lakers ","gid":"b5b31405","gn":"Friday Year 4 Boys B","age":null,"div":null,"stats":{"gp":15,"fouls":16,"ft":5,"fg":36,"pts":77,"wins":11,"losses":3}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"25506956","tn":"Hoop School Boys U10 White","gid":"ab0696ef","gn":"Saturday U12 Boys B/C","age":"U12","div":null,"stats":{"gp":16,"fouls":13,"ft":8,"fg":38,"pts":84,"finals":1,"gfApps":1,"wins":7,"losses":9}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"05831e3e","tn":"South Melbourne Park Sharks","gid":"24f85033","gn":"Round Robin Finals","age":null,"div":null,"stats":{"gp":17,"fouls":29,"ft":10,"fg":75,"pts":160,"wins":4,"losses":13}},{"tid":"05831e3e","tn":"South Melbourne Park Sharks","gid":"834db669","gn":"Friday Year 2 Boys A","age":null,"div":null,"stats":{"gp":17,"fouls":29,"ft":10,"fg":75,"pts":160,"wins":4,"losses":13}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"430cd7fa","tn":"Hoop School Boys U10 White","gid":"edcb5f08","gn":"Saturday U12 Boys C","age":"U12","div":null,"stats":{"gp":17,"fouls":17,"ft":2,"fg":11,"pts":24,"wins":1,"losses":15}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"1fbc56b5","tn":"South Melbourne Park Sharks","gid":"f850dd1a","gn":"Friday MSAC/Bayside Year 2 Boys A","age":null,"div":null,"stats":{"gp":8,"fouls":12,"ft":8,"fg":32,"pts":72,"wins":2,"losses":5,"draws":1}}]},{"sid":"0869ea69","regs":[{"tid":"d03e4249","stats":{"wins":4,"losses":2,"finals":1,"gfApps":1,"gp":6,"pts":25,"fg":12,"ft":1,"fouls":7}}]},{"sid":"26df4252","regs":[{"tid":"e144d0d0","stats":{"gp":4,"pts":17,"fg":6,"ft":5,"fouls":6}},{"tid":"e144d0d0","tn":"","gid":"f227445f","gn":"U12 Boys Division 11","div":null,"stats":{"gp":4,"pts":17,"fg":6,"ft":5,"fouls":6}}]}],"updatedAt":"2026-07-07T18:06:03.759Z","teams":[{"tid":"cea3b10d","sid":"ad68db8b","status":"ACTIVE"},{"tid":"0c021767","sid":"e7aed763","status":"ACTIVE"},{"tid":"d03e4249","sid":"0869ea69","status":"UPCOMING"},{"tid":"25506956","sid":"e78cfce1","status":"COMPLETED"},{"tid":"05831e3e","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"430cd7fa","sid":"0c4ad170","status":"COMPLETED"},{"tid":"1fbc56b5","sid":"31d05517","status":"COMPLETED"},{"tid":"12fc3f3b","sid":"8884de2d","status":"COMPLETED"},{"tid":"6047066f","sid":"0fef30ca","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:27:13.774Z","records":{"maxGamePTS":{"v":16,"gameKey":"6ca48d31","sid":"31d05517"},"maxGameThreePt":{"v":null}},"games":["043c05bf","0721831b","08a33bb4","122b08ff","161ea19a","1dd797d6","1e681b33","1ec73483","201b7182","21dc2796","26a8f590","2d5a441e","2df83180","30320111","30acfb7f","3142e9e1","324aa098","32f93287","33cf2b30","35d8d1e1","36215d69","3e5107ea","3e76a674","3ef8606b","3fb5be65","43279cb4","451cb5ab","453728d4","478ff9fc","47b9bf22","47c14687","4a27dd01","4cd1446f","51242d43","53fac7ae","555f4ccb","5cda3439","63d8a43f","63da09f9","64543aa7","6498d8e8","68e3deed","6b35778f","6ca48d31","7166eac9","80db573c","827626e4","86112bc3","8886de50","8ccbb468","926992a2","96d3e846","9afd5306","9cb6f78c","9d6785ce","a1dfd4d1","a5055e63","a5a6e70e","a8a01352","afd1c16c","b29d986c","b9d507bf","bcb32624","bccf8b8a","be7a1fa4","be9cbaac","c7b7b443","c930e496","c982bbac","cb8df7d5","cbd727fd","ccff8200","ce8ee3ac","d6a6529d","d7476b47","d809a878","dd20228e","de66783f","ed73d075","ee4334ed","f062eee8","f215a64a","f45df8f7","f79215ef","f9369664","fe1fe5fc"]}
+{
+  "uuid": "48ed2d94-8a72-41d0-8a08-bee8e1b2f1da",
+  "name": "Arthur Owen",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 91,
+      "pts": 494,
+      "fouls": 104,
+      "fg": 223,
+      "ft": 48,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.29,
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 50,
+      "losses": 73,
+      "draws": 1,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-07T18:27:12.956Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Hoop School Basketball Academy",
+      "regs": [
+        {
+          "tid": "0c021767",
+          "tn": "HS U10 Boys GREEN",
+          "gid": "b0a67102",
+          "gn": "Saturday U12 Boys B/C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 9,
+            "fg": 13,
+            "pts": 35,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "0c021767",
+          "tn": "HS U10 Boys GREEN",
+          "gid": "aec6fbe5",
+          "gn": "Saturday U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 4,
+            "ft": 9,
+            "fg": 13,
+            "pts": 35,
+            "wins": 3,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "cea3b10d",
+          "tn": "Middle Park Lakers ",
+          "gid": "ab58e855",
+          "gn": "Friday Year 4 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 16,
+            "ft": 5,
+            "fg": 36,
+            "pts": 77,
+            "wins": 11,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "cea3b10d",
+          "tn": "Middle Park Lakers ",
+          "gid": "b5b31405",
+          "gn": "Friday Year 4 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 16,
+            "ft": 5,
+            "fg": 36,
+            "pts": 77,
+            "wins": 11,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "25506956",
+          "tn": "Hoop School Boys U10 White",
+          "gid": "ab0696ef",
+          "gn": "Saturday U12 Boys B/C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 13,
+            "ft": 8,
+            "fg": 38,
+            "pts": 84,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "05831e3e",
+          "tn": "South Melbourne Park Sharks",
+          "gid": "834db669",
+          "gn": "Friday Year 2 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 29,
+            "ft": 10,
+            "fg": 75,
+            "pts": 160,
+            "wins": 4,
+            "losses": 13
+          }
+        },
+        {
+          "tid": "05831e3e",
+          "tn": "South Melbourne Park Sharks",
+          "gid": "834db669",
+          "gn": "Friday Year 2 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 29,
+            "ft": 10,
+            "fg": 75,
+            "pts": 160,
+            "wins": 4,
+            "losses": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "430cd7fa",
+          "tn": "Hoop School Boys U10 White",
+          "gid": "edcb5f08",
+          "gn": "Saturday U12 Boys C",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 17,
+            "ft": 2,
+            "fg": 11,
+            "pts": 24,
+            "wins": 1,
+            "losses": 15
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "1fbc56b5",
+          "tn": "South Melbourne Park Sharks",
+          "gid": "f850dd1a",
+          "gn": "Friday MSAC/Bayside Year 2 Boys A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 8,
+            "fg": 32,
+            "pts": 72,
+            "wins": 2,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "d03e4249",
+          "stats": {
+            "wins": 4,
+            "losses": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 6,
+            "pts": 25,
+            "fg": 12,
+            "ft": 1,
+            "fouls": 7
+          },
+          "gid": "f65aaba1",
+          "gn": "BOYS UNDER 10 B1"
+        }
+      ]
+    },
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "e144d0d0",
+          "stats": {
+            "gp": 4,
+            "pts": 17,
+            "fg": 6,
+            "ft": 5,
+            "fouls": 6
+          },
+          "gid": "f227445f",
+          "gn": "U12 Boys Division 11"
+        },
+        {
+          "tid": "e144d0d0",
+          "tn": "",
+          "gid": "f227445f",
+          "gn": "U12 Boys Division 11",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 17,
+            "fg": 6,
+            "ft": 5,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "a0b692a2",
+          "tn": "Middle Park Lakers",
+          "gid": "f4031742",
+          "gn": "Friday Year 4 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "12fc3f3b",
+          "tn": "South Melbourne Park Sharks",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "6047066f",
+          "tn": "South Melbourne Park Sharks",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:03.759Z",
+  "teams": [
+    {
+      "tid": "0c021767",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cea3b10d",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "25506956",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05831e3e",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "430cd7fa",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1fbc56b5",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d03e4249",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e144d0d0",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a0b692a2",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "12fc3f3b",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6047066f",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.333Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "6ca48d31",
+      "sid": "31d05517"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "043c05bf",
+    "0721831b",
+    "08a33bb4",
+    "122b08ff",
+    "161ea19a",
+    "1dd797d6",
+    "1e681b33",
+    "1ec73483",
+    "201b7182",
+    "21dc2796",
+    "26a8f590",
+    "2d5a441e",
+    "2df83180",
+    "30320111",
+    "30acfb7f",
+    "3142e9e1",
+    "324aa098",
+    "32f93287",
+    "33cf2b30",
+    "35d8d1e1",
+    "36215d69",
+    "3e5107ea",
+    "3e76a674",
+    "3ef8606b",
+    "3fb5be65",
+    "43279cb4",
+    "451cb5ab",
+    "453728d4",
+    "478ff9fc",
+    "47b9bf22",
+    "47c14687",
+    "4a27dd01",
+    "4cd1446f",
+    "51242d43",
+    "53fac7ae",
+    "555f4ccb",
+    "5cda3439",
+    "63d8a43f",
+    "63da09f9",
+    "64543aa7",
+    "6498d8e8",
+    "68e3deed",
+    "6b35778f",
+    "6ca48d31",
+    "7166eac9",
+    "80db573c",
+    "827626e4",
+    "86112bc3",
+    "8886de50",
+    "8ccbb468",
+    "926992a2",
+    "96d3e846",
+    "9afd5306",
+    "9cb6f78c",
+    "9d6785ce",
+    "a1dfd4d1",
+    "a5055e63",
+    "a5a6e70e",
+    "a8a01352",
+    "afd1c16c",
+    "b29d986c",
+    "b9d507bf",
+    "bcb32624",
+    "bccf8b8a",
+    "be7a1fa4",
+    "be9cbaac",
+    "c7b7b443",
+    "c930e496",
+    "c982bbac",
+    "cb8df7d5",
+    "cbd727fd",
+    "ccff8200",
+    "ce8ee3ac",
+    "d6a6529d",
+    "d7476b47",
+    "d809a878",
+    "dd20228e",
+    "de66783f",
+    "ed73d075",
+    "ee4334ed",
+    "f062eee8",
+    "f215a64a",
+    "f45df8f7",
+    "f79215ef",
+    "f9369664",
+    "fe1fe5fc"
+  ]
+}

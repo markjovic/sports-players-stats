@@ -1,1 +1,61 @@
-{"uuid":"24ef4e8f-e29b-401e-a074-4a4954daf4f5","name":"Racheli Gabizon","sports":{"Basketball":{"maxGamePTS":null,"maxGameThreePt":null,"foulOuts":{},"gp":1,"fouls":1,"statsChecked":"2026-07-06T19:09:46.653Z"}},"seasons":[{"sid":"297562bc","regs":[{"tid":"01d42ff1"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "24ef4e8f-e29b-401e-a074-4a4954daf4f5",
+  "name": "Racheli Gabizon",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 1,
+      "fouls": 1,
+      "statsChecked": "2026-07-06T19:09:46.653Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "01d42ff1",
+          "gid": "e7b71ce1",
+          "gn": "Tuesday Women Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "5fea991c",
+          "tn": "Maccabi Panthers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "01d42ff1",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5fea991c",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:07.232Z"
+}

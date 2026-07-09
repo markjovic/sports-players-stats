@@ -1,1 +1,66 @@
-{"uuid":"66e1f508-d071-408c-a7b7-58d296c5f8ff","name":"Ryan Strugnell","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":1,"foulOuts":{},"gp":18,"pts":65,"fg":28,"ft":6,"threePt":1,"fouls":26,"statsChecked":"2026-07-09T18:30:59.506Z"}},"seasons":[{"sid":"4b160a26","regs":[{"tid":"39f1f5c2"}]},{"sid":"fb7865be","regs":[{"tid":"5e55300d"}]}],"teams":[],"updatedAt":"2026-07-09T18:09:23.820Z","records":{"maxGamePTS":{"v":12,"gameKey":"e4631f55","sid":"4b160a26"},"maxGameThreePt":{"v":1,"gameKey":"e4631f55","sid":"4b160a26"}}}
+{
+  "uuid": "66e1f508-d071-408c-a7b7-58d296c5f8ff",
+  "name": "Ryan Strugnell",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 18,
+      "pts": 65,
+      "fg": 28,
+      "ft": 6,
+      "threePt": 1,
+      "fouls": 26,
+      "statsChecked": "2026-07-09T18:30:59.506Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4b160a26",
+      "regs": [
+        {
+          "tid": "39f1f5c2",
+          "gid": "15bfdcfa",
+          "gn": "Thursday Open Men G"
+        }
+      ]
+    },
+    {
+      "sid": "fb7865be",
+      "regs": [
+        {
+          "tid": "5e55300d",
+          "gid": "3ff3b655",
+          "gn": "Monday Men A Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "39f1f5c2",
+      "sid": "4b160a26",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5e55300d",
+      "sid": "fb7865be",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:23.820Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "e4631f55",
+      "sid": "4b160a26"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "e4631f55",
+      "sid": "4b160a26"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:12.310Z"
+}

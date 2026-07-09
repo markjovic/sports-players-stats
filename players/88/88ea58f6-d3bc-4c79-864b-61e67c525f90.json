@@ -1,1 +1,259 @@
-{"uuid":"88ea58f6-d3bc-4c79-864b-61e67c525f90","name":"Luka ARBANOVSKI","gender":"Boys","sports":{"Basketball":{"gp":30,"pts":269,"fouls":33,"fg":106,"ft":54,"threePt":1,"foulOuts":{"17120864":1,"367cf946":1},"maxGamePTS":24,"maxGameThreePt":1,"wins":29,"losses":26,"draws":4,"winPct":0.49,"statsChecked":"2026-07-05T15:10:46.857Z"}},"seasons":[{"sid":"367cf946","sn":"Winter 2026","club":"Iramoo Basketball Club","regs":[{"tid":"e8c702d8","tn":"Iramoo Cyclones","gid":"5f1e4948","gn":"Friday U8 Boys Crocs","age":"U8","div":null,"stats":{"gp":9,"fouls":12,"ft":19,"fg":53,"threePt":1,"pts":128,"wins":7,"losses":1,"draws":1}},{"tid":"e8c702d8","tn":"Iramoo Cyclones","gid":"7814d80f","gn":"Friday U8 Boys Dingoes","age":"U8","div":null,"stats":{"gp":9,"fouls":12,"ft":19,"fg":53,"pts":128,"foulOuts":1,"wins":7,"threePt":1,"losses":1,"draws":1}},{"tid":"a036a48a","tn":"Iramoo Storm","gid":"bf0f94b6","gn":"Friday U8 Boys Emus","age":"U8","div":null,"stats":{"gp":1,"fouls":2,"ft":1,"pts":1,"wins":1}},{"tid":"2a0c3391","stats":{"gp":2,"pts":9,"fg":4,"ft":1,"losses":2}},{"tid":"2a0c3391","tn":"","gid":"b9b24b82","gn":"Saturday U10 Boys D1","div":null,"stats":{"gp":2,"pts":9,"fg":4,"ft":1,"losses":2}}]},{"sid":"17120864","sn":"Summer 2025/26","club":"Iramoo Basketball Club","regs":[{"tid":"65c92aff","tn":"Iramoo Cyclones","gid":"8b6616ac","gn":"Friday U8 Boys Emus","age":"U8","div":null,"stats":{"gp":18,"fouls":19,"ft":33,"fg":49,"pts":131,"foulOuts":1,"wins":7,"losses":10,"draws":1}},{"tid":"65c92aff","tn":"Iramoo Cyclones","gid":"4a8ab482","gn":"Friday U8 Boys Boomers","age":"U8","div":null,"stats":{"gp":18,"fouls":19,"ft":33,"fg":49,"pts":131,"wins":7,"losses":10,"draws":1}}]}],"updatedAt":"2026-07-04T05:56:14.691Z","teams":[{"tid":"e8c702d8","sid":"367cf946","status":"ACTIVE"},{"tid":"2a0c3391","sid":"367cf946","status":"ACTIVE"},{"tid":"65c92aff","sid":"17120864","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:25:23.435Z","records":{"maxGamePTS":{"v":24,"gameKey":"49d6d533","sid":"367cf946"},"maxGameThreePt":{"v":1,"gameKey":"49d6d533","sid":"367cf946"}},"games":["16d5239f","1ab0584b","1c9af374","2053fb79","2dee6db8","436753d8","45cc2b45","47d533d6","49d6d533","6805e7b1","69412acd","71f56224","79e4baec","8dcdad34","a05a0bcc","a5307e6e","aa4c5d8b","ab501e52","ade5f4b3","adeb1955","ae69c3b9","c1c312c7","cc9a435d","cfad3280","d2cf93a9","d79d486f","e40f0a87","e43b3219","eb62c389","f223c952"],"gameTids":{"eb62c389":"2a0c3391","2053fb79":"2a0c3391","71f56224":"e8c702d8","c1c312c7":"e8c702d8","ab501e52":"e8c702d8","8dcdad34":"e8c702d8","49d6d533":"e8c702d8","cfad3280":"e8c702d8","e43b3219":"e8c702d8","ade5f4b3":"e8c702d8","1c9af374":"e8c702d8","2dee6db8":"a036a48a","d2cf93a9":"65c92aff","47d533d6":"65c92aff","1ab0584b":"65c92aff","79e4baec":"65c92aff","16d5239f":"65c92aff","d79d486f":"65c92aff","f223c952":"65c92aff","45cc2b45":"65c92aff","6805e7b1":"65c92aff","adeb1955":"65c92aff","a05a0bcc":"65c92aff","ae69c3b9":"65c92aff","cc9a435d":"65c92aff","e40f0a87":"65c92aff","69412acd":"65c92aff","436753d8":"65c92aff","aa4c5d8b":"65c92aff","a5307e6e":"65c92aff"}}
+{
+  "uuid": "88ea58f6-d3bc-4c79-864b-61e67c525f90",
+  "name": "Luka ARBANOVSKI",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 269,
+      "fouls": 33,
+      "fg": 106,
+      "ft": 54,
+      "threePt": 1,
+      "foulOuts": {
+        "17120864": 1,
+        "367cf946": 1
+      },
+      "maxGamePTS": 24,
+      "maxGameThreePt": 1,
+      "wins": 29,
+      "losses": 26,
+      "draws": 4,
+      "winPct": 0.49,
+      "statsChecked": "2026-07-05T15:10:46.857Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "367cf946",
+      "sn": "Winter 2026",
+      "club": "Iramoo Basketball Club",
+      "regs": [
+        {
+          "tid": "e8c702d8",
+          "tn": "Iramoo Cyclones",
+          "gid": "5f1e4948",
+          "gn": "Friday U8 Boys Crocs",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "ft": 19,
+            "fg": 53,
+            "threePt": 1,
+            "pts": 128,
+            "wins": 7,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e8c702d8",
+          "tn": "Iramoo Cyclones",
+          "gid": "7814d80f",
+          "gn": "Friday U8 Boys Dingoes",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "ft": 19,
+            "fg": 53,
+            "pts": 128,
+            "foulOuts": 1,
+            "wins": 7,
+            "threePt": 1,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a036a48a",
+          "tn": "Iramoo Storm",
+          "gid": "bf0f94b6",
+          "gn": "Friday U8 Boys Emus",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "ft": 1,
+            "pts": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "2a0c3391",
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "losses": 2
+          },
+          "gid": "b9b24b82",
+          "gn": "Saturday U10 Boys D1"
+        },
+        {
+          "tid": "2a0c3391",
+          "tn": "",
+          "gid": "b9b24b82",
+          "gn": "Saturday U10 Boys D1",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "17120864",
+      "sn": "Summer 2025/26",
+      "club": "Iramoo Basketball Club",
+      "regs": [
+        {
+          "tid": "65c92aff",
+          "tn": "Iramoo Cyclones",
+          "gid": "8b6616ac",
+          "gn": "Friday U8 Boys Emus",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 19,
+            "ft": 33,
+            "fg": 49,
+            "pts": 131,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "65c92aff",
+          "tn": "Iramoo Cyclones",
+          "gid": "4a8ab482",
+          "gn": "Friday U8 Boys Boomers",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 19,
+            "ft": 33,
+            "fg": 49,
+            "pts": 131,
+            "wins": 7,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:56:14.691Z",
+  "teams": [
+    {
+      "tid": "e8c702d8",
+      "sid": "367cf946",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a036a48a",
+      "sid": "367cf946",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a0c3391",
+      "sid": "367cf946",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "65c92aff",
+      "sid": "17120864",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.562Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "49d6d533",
+      "sid": "367cf946"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "49d6d533",
+      "sid": "367cf946"
+    }
+  },
+  "games": [
+    "16d5239f",
+    "1ab0584b",
+    "1c9af374",
+    "2053fb79",
+    "2dee6db8",
+    "436753d8",
+    "45cc2b45",
+    "47d533d6",
+    "49d6d533",
+    "6805e7b1",
+    "69412acd",
+    "71f56224",
+    "79e4baec",
+    "8dcdad34",
+    "a05a0bcc",
+    "a5307e6e",
+    "aa4c5d8b",
+    "ab501e52",
+    "ade5f4b3",
+    "adeb1955",
+    "ae69c3b9",
+    "c1c312c7",
+    "cc9a435d",
+    "cfad3280",
+    "d2cf93a9",
+    "d79d486f",
+    "e40f0a87",
+    "e43b3219",
+    "eb62c389",
+    "f223c952"
+  ],
+  "gameTids": {
+    "eb62c389": "2a0c3391",
+    "2053fb79": "2a0c3391",
+    "71f56224": "e8c702d8",
+    "c1c312c7": "e8c702d8",
+    "ab501e52": "e8c702d8",
+    "8dcdad34": "e8c702d8",
+    "49d6d533": "e8c702d8",
+    "cfad3280": "e8c702d8",
+    "e43b3219": "e8c702d8",
+    "ade5f4b3": "e8c702d8",
+    "1c9af374": "e8c702d8",
+    "2dee6db8": "a036a48a",
+    "d2cf93a9": "65c92aff",
+    "47d533d6": "65c92aff",
+    "1ab0584b": "65c92aff",
+    "79e4baec": "65c92aff",
+    "16d5239f": "65c92aff",
+    "d79d486f": "65c92aff",
+    "f223c952": "65c92aff",
+    "45cc2b45": "65c92aff",
+    "6805e7b1": "65c92aff",
+    "adeb1955": "65c92aff",
+    "a05a0bcc": "65c92aff",
+    "ae69c3b9": "65c92aff",
+    "cc9a435d": "65c92aff",
+    "e40f0a87": "65c92aff",
+    "69412acd": "65c92aff",
+    "436753d8": "65c92aff",
+    "aa4c5d8b": "65c92aff",
+    "a5307e6e": "65c92aff"
+  }
+}

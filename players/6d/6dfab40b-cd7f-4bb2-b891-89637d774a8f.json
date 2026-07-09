@@ -1,1 +1,291 @@
-{"uuid":"6dfab40b-cd7f-4bb2-b891-89637d774a8f","name":"Luca Escribano","gender":"Boys","sports":{"Basketball":{"gp":35,"pts":254,"fouls":55,"fg":92,"ft":28,"threePt":14,"finals":3,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{"89fdb2be":1},"maxGamePTS":23,"maxGameThreePt":3,"wins":9,"losses":32,"winPct":0.22,"statsChecked":"2026-07-05T14:55:55.524Z"}},"seasons":[{"sid":"148d96eb","sn":"2026","club":"New South Wales","regs":[{"tid":"4c93fd0c","tn":"U15 Boys NSW Metro","gid":"b7f28602","gn":"U15 Boys","age":"U15","div":null,"stats":{"gp":7,"fouls":7,"ft":4,"fg":16,"threePt":5,"pts":51,"wins":5,"losses":2}}]},{"sid":"236e1a46","sn":"2025","club":"Manly Warringah Sea Eagles Basketball Club","regs":[{"tid":"50829944","tn":"Manly Warringah U14 Boys","gid":"7039cde6","gn":"U14 Boys NJC","age":"U14","div":null,"stats":{"gp":6,"fouls":13,"ft":14,"fg":32,"threePt":5,"pts":93,"finals":1,"gfApps":1,"wins":1,"losses":5,"gfWins":1}}]},{"sid":"89fdb2be","sn":"2025","club":"New South Wales","regs":[{"tid":"836a7509","tn":"U14 Boys NSW Metro Blue","gid":"8780cc47","gn":"U14 Boys","age":"U14","div":null,"stats":{"gp":6,"fouls":18,"ft":2,"fg":20,"pts":42,"finals":1,"foulOuts":1,"losses":6}}]},{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"f2806a17","tn":"Manly Warringah Sea Eagles U14 Boys Black","gid":"16278a1d","gn":"BOYS UNDER 14 B1","age":null,"div":"B1","stats":{"gp":5,"fouls":8,"fg":4,"pts":8,"wins":1,"losses":4}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"d56579aa","tn":"Manly Warringah Sea Eagles U12 Boys 1","gid":"ff77dbd4","gn":"BOYS UNDER 12 A","age":null,"div":null,"stats":{"gp":5,"fouls":2,"ft":2,"fg":6,"pts":14,"losses":5}}]},{"sid":"10ee56a5","regs":[{"tid":"d765d8eb","stats":{"wins":1,"losses":5,"finals":1,"gp":6,"pts":46,"fg":14,"ft":6,"threePt":4,"fouls":7}},{"tid":"d765d8eb","tn":"","gid":"a2d537cd","gn":"U16 Boys NJC","div":null,"stats":{"gp":6,"pts":46,"fg":14,"ft":6,"threePt":4,"fouls":7,"wins":1,"losses":5}}]}],"updatedAt":"2026-07-04T05:41:27.109Z","teams":[{"tid":"d765d8eb","sid":"10ee56a5","status":"UPCOMING"},{"tid":"4c93fd0c","sid":"148d96eb","status":"COMPLETED"},{"tid":"50829944","sid":"236e1a46","status":"COMPLETED"},{"tid":"3b10586c","sid":"6dd649c0","status":"COMPLETED"},{"tid":"836a7509","sid":"89fdb2be","status":"COMPLETED"},{"tid":"f2806a17","sid":"8630ad4c","status":"COMPLETED"},{"tid":"d56579aa","sid":"1b51c73f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:39:32.491Z","records":{"maxGamePTS":{"v":23,"gameKey":"db315ba0","sid":"236e1a46"},"maxGameThreePt":{"v":3,"gameKey":"63648343","sid":"10ee56a5"}},"games":["01f4a332","06b0d0e2","0b094bcc","10ded4f5","19fe30d0","1bb5ae6d","32ad9685","3d772831","40814a5a","460bfe32","50a4c644","57c5a760","5f755d47","63648343","64d78b9a","861bb550","8eb5240b","8fe589d5","94d8b15c","9a65caca","9f727802","ab596ddd","acd6a9da","af2a81e2","cb7d0480","cdf5de68","d4f12342","d6e961e3","dab5fd47","db315ba0","e581ce80","e6ea0339","ee2c6b13","f28ef7eb","f63559b5"]}
+{
+  "uuid": "6dfab40b-cd7f-4bb2-b891-89637d774a8f",
+  "name": "Luca Escribano",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 35,
+      "pts": 254,
+      "fouls": 55,
+      "fg": 92,
+      "ft": 28,
+      "threePt": 14,
+      "finals": 3,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {
+        "89fdb2be": 1
+      },
+      "maxGamePTS": 23,
+      "maxGameThreePt": 3,
+      "wins": 9,
+      "losses": 32,
+      "winPct": 0.22,
+      "statsChecked": "2026-07-05T14:55:55.524Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "148d96eb",
+      "sn": "2026",
+      "club": "New South Wales",
+      "regs": [
+        {
+          "tid": "4c93fd0c",
+          "tn": "U15 Boys NSW Metro",
+          "gid": "b7f28602",
+          "gn": "U15 Boys",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "ft": 4,
+            "fg": 16,
+            "threePt": 5,
+            "pts": 51,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "236e1a46",
+      "sn": "2025",
+      "club": "Manly Warringah Sea Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "50829944",
+          "tn": "Manly Warringah U14 Boys",
+          "gid": "7039cde6",
+          "gn": "U14 Boys NJC",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 13,
+            "ft": 14,
+            "fg": 32,
+            "threePt": 5,
+            "pts": 93,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89fdb2be",
+      "sn": "2025",
+      "club": "New South Wales",
+      "regs": [
+        {
+          "tid": "836a7509",
+          "tn": "U14 Boys NSW Metro Blue",
+          "gid": "8780cc47",
+          "gn": "U14 Boys",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 18,
+            "ft": 2,
+            "fg": 20,
+            "pts": 42,
+            "finals": 1,
+            "foulOuts": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "f2806a17",
+          "tn": "Manly Warringah Sea Eagles U14 Boys Black",
+          "gid": "16278a1d",
+          "gn": "BOYS UNDER 14 B1",
+          "age": null,
+          "div": "B1",
+          "stats": {
+            "gp": 5,
+            "fouls": 8,
+            "fg": 4,
+            "pts": 8,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "d56579aa",
+          "tn": "Manly Warringah Sea Eagles U12 Boys 1",
+          "gid": "ff77dbd4",
+          "gn": "BOYS UNDER 12 A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 2,
+            "ft": 2,
+            "fg": 6,
+            "pts": 14,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "d765d8eb",
+          "stats": {
+            "wins": 1,
+            "losses": 5,
+            "finals": 1,
+            "gp": 6,
+            "pts": 46,
+            "fg": 14,
+            "ft": 6,
+            "threePt": 4,
+            "fouls": 7
+          },
+          "gid": "a2d537cd",
+          "gn": "U16 Boys NJC"
+        },
+        {
+          "tid": "d765d8eb",
+          "tn": "",
+          "gid": "a2d537cd",
+          "gn": "U16 Boys NJC",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 46,
+            "fg": 14,
+            "ft": 6,
+            "threePt": 4,
+            "fouls": 7,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "3b10586c",
+          "tn": "ZZZ Manly Warringah Sea Eagles U14 Boys JPL Maroon ***WITHDRAWN - CLASSIC***",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:41:27.109Z",
+  "teams": [
+    {
+      "tid": "4c93fd0c",
+      "sid": "148d96eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "50829944",
+      "sid": "236e1a46",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "836a7509",
+      "sid": "89fdb2be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f2806a17",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d56579aa",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d765d8eb",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3b10586c",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.803Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 23,
+      "gameKey": "db315ba0",
+      "sid": "236e1a46"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "63648343",
+      "sid": "10ee56a5"
+    }
+  },
+  "games": [
+    "01f4a332",
+    "06b0d0e2",
+    "0b094bcc",
+    "10ded4f5",
+    "19fe30d0",
+    "1bb5ae6d",
+    "32ad9685",
+    "3d772831",
+    "40814a5a",
+    "460bfe32",
+    "50a4c644",
+    "57c5a760",
+    "5f755d47",
+    "63648343",
+    "64d78b9a",
+    "861bb550",
+    "8eb5240b",
+    "8fe589d5",
+    "94d8b15c",
+    "9a65caca",
+    "9f727802",
+    "ab596ddd",
+    "acd6a9da",
+    "af2a81e2",
+    "cb7d0480",
+    "cdf5de68",
+    "d4f12342",
+    "d6e961e3",
+    "dab5fd47",
+    "db315ba0",
+    "e581ce80",
+    "e6ea0339",
+    "ee2c6b13",
+    "f28ef7eb",
+    "f63559b5"
+  ]
+}

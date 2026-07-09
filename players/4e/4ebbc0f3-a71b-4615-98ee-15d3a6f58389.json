@@ -1,1 +1,62 @@
-{"uuid":"4ebbc0f3-a71b-4615-98ee-15d3a6f58389","name":"Luke Vella","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":null,"foulOuts":{},"gp":2,"pts":14,"fg":6,"ft":2,"fouls":4,"statsChecked":"2026-07-06T18:57:01.913Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"272680da"},{"tid":"d4a0c574"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","gameTids":{"2b5965d5":"272680da","b087e001":"d4a0c574"},"records":{"maxGamePTS":{"v":12,"gameKey":"b087e001","sid":"c2468a21"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "4ebbc0f3-a71b-4615-98ee-15d3a6f58389",
+  "name": "Luke Vella",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 2,
+      "pts": 14,
+      "fg": 6,
+      "ft": 2,
+      "fouls": 4,
+      "statsChecked": "2026-07-06T18:57:01.913Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "272680da",
+          "gid": "8911889d",
+          "gn": "Thursday Open Men C Grade"
+        },
+        {
+          "tid": "d4a0c574",
+          "gid": "a885c98c",
+          "gn": "Wednesday Open Men Over 35 B"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "272680da",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d4a0c574",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "gameTids": {
+    "2b5965d5": "272680da",
+    "b087e001": "d4a0c574"
+  },
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "b087e001",
+      "sid": "c2468a21"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:10.713Z"
+}

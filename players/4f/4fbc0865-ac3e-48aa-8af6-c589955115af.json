@@ -1,1 +1,83 @@
-{"uuid":"4fbc0865-ac3e-48aa-8af6-c589955115af","gender":null,"sports":{"Basketball":{"gp":1,"pts":7,"fg":2,"threePt":1,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"wins":1,"winPct":1,"statsChecked":"2026-07-05T15:48:30.268Z"}},"seasons":[{"sid":"2e89df33","sn":"Summer 2020/21","club":null,"regs":[{"tid":"007ee732","tn":"LeBrontourage ","gid":"3f064d6f","gn":"Sunday Open Mixed","stats":{"gp":1,"pts":7,"fg":2,"threePt":1,"wins":1}}]}],"updatedAt":"2026-06-11T23:39:26.559Z","records":{"maxGamePTS":{"v":7,"gameKey":"1a689d89","sid":"2e89df33"},"maxGameThreePt":{"v":1,"gameKey":"1a689d89","sid":"2e89df33"}},"games":["1a689d89"],"name":"Summer 2020/21"}
+{
+  "uuid": "4fbc0865-ac3e-48aa-8af6-c589955115af",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "pts": 7,
+      "fg": 2,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 1,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T15:48:30.268Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2e89df33",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "007ee732",
+          "tn": "LeBrontourage ",
+          "gid": "3f064d6f",
+          "gn": "Sunday Open Mixed",
+          "stats": {
+            "gp": 1,
+            "pts": 7,
+            "fg": 2,
+            "threePt": 1,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "bfca9538",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "f252f630",
+          "tn": "LeBrontourage ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:26.559Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "1a689d89",
+      "sid": "2e89df33"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1a689d89",
+      "sid": "2e89df33"
+    }
+  },
+  "games": [
+    "1a689d89"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "007ee732",
+      "sid": "2e89df33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f252f630",
+      "sid": "bfca9538",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.785Z"
+}

@@ -1,1 +1,71 @@
-{"uuid":"1dea3e87-ec78-451e-8619-b710ef64f11e","name":"Billy Dixon","sports":{"Basketball":{"maxGamePTS":5,"maxGameThreePt":1,"foulOuts":{},"gp":4,"pts":7,"fg":2,"threePt":1,"fouls":9,"statsChecked":"2026-07-07T18:26:16.768Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"011de9b2","stats":{"gp":4,"pts":7,"fg":2,"threePt":1,"fouls":9}},{"tid":"011de9b2","tn":"","gid":"6d7fc6ba","gn":"U10 Boys Division 6","div":null,"stats":{"gp":4,"pts":7,"fg":2,"threePt":1,"fouls":9}}]}],"teams":[],"updatedAt":"2026-07-07T18:05:44.785Z","records":{"maxGamePTS":{"v":5,"gameKey":"72b9c9f0","sid":"26df4252"},"maxGameThreePt":{"v":1,"gameKey":"72b9c9f0","sid":"26df4252"}}}
+{
+  "uuid": "1dea3e87-ec78-451e-8619-b710ef64f11e",
+  "name": "Billy Dixon",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 4,
+      "pts": 7,
+      "fg": 2,
+      "threePt": 1,
+      "fouls": 9,
+      "statsChecked": "2026-07-07T18:26:16.768Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "011de9b2",
+          "stats": {
+            "gp": 4,
+            "pts": 7,
+            "fg": 2,
+            "threePt": 1,
+            "fouls": 9
+          },
+          "gid": "6d7fc6ba",
+          "gn": "U10 Boys Division 6"
+        },
+        {
+          "tid": "011de9b2",
+          "tn": "",
+          "gid": "6d7fc6ba",
+          "gn": "U10 Boys Division 6",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 7,
+            "fg": 2,
+            "threePt": 1,
+            "fouls": 9
+          }
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "011de9b2",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:44.785Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "72b9c9f0",
+      "sid": "26df4252"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "72b9c9f0",
+      "sid": "26df4252"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:06.788Z"
+}

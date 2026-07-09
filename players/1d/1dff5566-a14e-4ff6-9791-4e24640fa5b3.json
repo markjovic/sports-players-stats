@@ -1,1 +1,120 @@
-{"uuid":"1dff5566-a14e-4ff6-9791-4e24640fa5b3","name":"Elwood Bird","gender":"Men","sports":{"Basketball":{"gp":11,"pts":229,"fouls":10,"fg":62,"ft":27,"threePt":26,"foulOuts":{},"maxGamePTS":42,"maxGameThreePt":4,"wins":12,"losses":6,"draws":2,"winPct":0.6,"statsChecked":"2026-07-07T18:26:15.562Z"}},"seasons":[{"sid":"b3025a8e","sn":"Winter 2026","regs":[{"tid":"06a6b6b6","tn":"First Point","gid":"2a816cd5","gn":"Tuesday Men G","age":null,"div":null,"stats":{"gp":11,"pts":229,"threePt":26,"fg":62,"ft":27,"fouls":10,"wins":6,"losses":3,"draws":1}},{"tid":"06a6b6b6","tn":"First Point","gid":"eeec4222","gn":"Tuesday Men H","age":null,"div":null,"stats":{"gp":11,"pts":229,"threePt":26,"fg":62,"wins":6,"losses":3,"draws":1,"ft":27,"fouls":10}}]}],"updatedAt":"2026-07-07T18:05:44.766Z","teams":[{"tid":"06a6b6b6","sid":"b3025a8e","status":"ACTIVE"},{"tid":"9334efdf","sid":"76897951","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:04:07.696Z","records":{"maxGamePTS":{"v":42,"gameKey":"7bbd0168","sid":"b3025a8e"},"maxGameThreePt":{"v":4,"gameKey":"7bbd0168","sid":"b3025a8e"}},"games":["0944f286","1666456c","2ddff705","40f677a8","76a0e1e4","7bbd0168","9ef17ce4","b62b9030","d7a80054","e83d3acc"]}
+{
+  "uuid": "1dff5566-a14e-4ff6-9791-4e24640fa5b3",
+  "name": "Elwood Bird",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 229,
+      "fouls": 10,
+      "fg": 62,
+      "ft": 27,
+      "threePt": 26,
+      "foulOuts": {},
+      "maxGamePTS": 42,
+      "maxGameThreePt": 4,
+      "wins": 12,
+      "losses": 6,
+      "draws": 2,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-07T18:26:15.562Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b3025a8e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "06a6b6b6",
+          "tn": "First Point",
+          "gid": "2a816cd5",
+          "gn": "Tuesday Men G",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 229,
+            "threePt": 26,
+            "fg": 62,
+            "ft": 27,
+            "fouls": 10,
+            "wins": 6,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "06a6b6b6",
+          "tn": "First Point",
+          "gid": "eeec4222",
+          "gn": "Tuesday Men H",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "pts": 229,
+            "threePt": 26,
+            "fg": 62,
+            "wins": 6,
+            "losses": 3,
+            "draws": 1,
+            "ft": 27,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "9334efdf",
+          "tn": "Dreamshakers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-07T18:05:44.766Z",
+  "teams": [
+    {
+      "tid": "06a6b6b6",
+      "sid": "b3025a8e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9334efdf",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.806Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 42,
+      "gameKey": "7bbd0168",
+      "sid": "b3025a8e"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "7bbd0168",
+      "sid": "b3025a8e"
+    }
+  },
+  "games": [
+    "0944f286",
+    "1666456c",
+    "2ddff705",
+    "40f677a8",
+    "76a0e1e4",
+    "7bbd0168",
+    "9ef17ce4",
+    "b62b9030",
+    "d7a80054",
+    "e83d3acc"
+  ]
+}

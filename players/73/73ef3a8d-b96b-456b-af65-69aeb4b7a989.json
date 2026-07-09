@@ -1,1 +1,88 @@
-{"uuid":"73ef3a8d-b96b-456b-af65-69aeb4b7a989","gender":null,"sports":{"Basketball":{"gp":6,"pts":8,"fouls":5,"fg":4,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":5,"losses":1,"winPct":0.83,"statsChecked":"2026-07-05T16:14:04.540Z"}},"seasons":[{"sid":"20257744","sn":"Winter 2021","club":null,"regs":[{"tid":"5ca011d0","tn":"Panthers (Wednesday)","gid":"5c8d76b4","gn":"Wednesday Women C2","stats":{"gp":6,"pts":8,"fouls":5,"fg":4,"wins":5,"losses":1}}]}],"updatedAt":"2026-06-11T23:41:13.572Z","records":{"maxGamePTS":{"v":4,"gameKey":"822301c1","sid":"20257744"},"maxGameThreePt":{"v":null}},"games":["3f5be0dc","50dadde5","56892250","822301c1","8a146f91","f89d9fda"],"name":"Winter 2021"}
+{
+  "uuid": "73ef3a8d-b96b-456b-af65-69aeb4b7a989",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 8,
+      "fouls": 5,
+      "fg": 4,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 1,
+      "winPct": 0.83,
+      "statsChecked": "2026-07-05T16:14:04.540Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "20257744",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "5ca011d0",
+          "tn": "Panthers (Wednesday)",
+          "gid": "5c8d76b4",
+          "gn": "Wednesday Women C2",
+          "stats": {
+            "gp": 6,
+            "pts": 8,
+            "fouls": 5,
+            "fg": 4,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "59309e5b",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "464a80de",
+          "tn": "Panthers (WITHDRAWN)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:13.572Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "822301c1",
+      "sid": "20257744"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3f5be0dc",
+    "50dadde5",
+    "56892250",
+    "822301c1",
+    "8a146f91",
+    "f89d9fda"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "5ca011d0",
+      "sid": "20257744",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "464a80de",
+      "sid": "59309e5b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.212Z"
+}

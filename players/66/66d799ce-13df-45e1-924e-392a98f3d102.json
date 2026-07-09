@@ -1,1 +1,347 @@
-{"uuid":"66d799ce-13df-45e1-924e-392a98f3d102","name":"2022","gender":null,"sports":{"Basketball":{"gp":50,"pts":274,"fouls":70,"fg":90,"ft":46,"threePt":16,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":4,"wins":20,"losses":48,"draws":8,"winPct":0.26,"statsChecked":"2026-07-05T16:22:40.963Z"}},"seasons":[{"sid":"a48d8524","sn":"2022","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"5937ddf7","tn":"Blackburn U18 Boys 03","gid":"5a488fa2","gn":"BOYS UNDER 18 B4","stats":{"gp":5,"pts":39,"fouls":9,"fg":15,"ft":3,"threePt":2}}]},{"sid":"b387bcd4","sn":"2022","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"a373db30","tn":"Blackburn U18 Boys 3","gid":"84476659","gn":"18 Boys - VJL6 (P2)","stats":{"gp":22,"pts":160,"fouls":42,"fg":51,"ft":31,"threePt":9,"wins":3,"losses":11,"draws":1}},{"tid":"a373db30","tn":"Blackburn U18 Boys 3","gid":"9fb99e78","gn":"U18B Crossover 2 - VJL","stats":{"gp":22,"pts":160,"fouls":42,"fg":51,"ft":31,"wins":3,"losses":11,"draws":1,"threePt":9}},{"tid":"a373db30","tn":"Blackburn U18 Boys 3","gid":"ab5f59a5","gn":"U18 Boys Grading 2 - GG Pool B","stats":{"gp":22,"pts":160,"fouls":42,"fg":51,"ft":31,"threePt":9,"wins":3,"losses":11,"draws":1}},{"tid":"a373db30","tn":"Blackburn U18 Boys 3","gid":"a83a6fee","gn":"U18 Boys Grading 1 - Pool 6C","stats":{"gp":22,"pts":160,"fouls":42,"fg":51,"ft":31,"wins":3,"losses":11,"draws":1,"threePt":9}}]},{"sid":"532e7f37","sn":"Winter 2021","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"dc0b237d","tn":"Blackburn U17 Boys 02","gid":"3e0cbee5","gn":"Boys U17BE","stats":{"gp":8,"pts":29,"fouls":4,"fg":11,"ft":7,"wins":4,"losses":2,"draws":2}},{"tid":"dc0b237d","tn":"Blackburn U17 Boys 02","gid":"171893f1","gn":"Boys U17 B Grading","stats":{"gp":8,"pts":29,"fouls":4,"fg":11,"ft":7,"wins":4,"losses":2,"draws":2}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Blackburn Vikings Basketball Club","regs":[{"tid":"e640f0f9","tn":"Blackburn U18 Boys 3","gid":"0afbbbe7","gn":"18 Boys - VJL8 (P1)","stats":{"gp":15,"pts":46,"fouls":15,"fg":13,"ft":5,"threePt":5}},{"tid":"e640f0f9","tn":"Blackburn U18 Boys 3","gid":"d4ab83b6","gn":"U18B Crossover 2 - VJL","stats":{"gp":15,"pts":46,"fouls":15,"fg":13,"threePt":5,"ft":5}},{"tid":"e640f0f9","tn":"Blackburn U18 Boys 3","gid":"5f453b1f","gn":"U18B Grading 2 - HH Pool A","stats":{"gp":15,"pts":46,"fouls":15,"fg":13,"ft":5,"threePt":5}},{"tid":"e640f0f9","tn":"Blackburn U18 Boys 3","gid":"964ad25b","gn":"U18B Grading 1 - Pool 7D","stats":{"gp":15,"pts":46,"fouls":15,"fg":13,"threePt":5,"ft":5}}]}],"updatedAt":"2026-06-11T23:40:30.182Z","records":{"maxGamePTS":{"v":20,"gameKey":"2fb67772","sid":"b387bcd4"},"maxGameThreePt":{"v":4,"gameKey":"2fb67772","sid":"b387bcd4"}},"games":["0254cf13","0bc40002","0ca0d13d","12a84883","16c25bb7","21b34360","23dd7ded","2f5b958d","2fb67772","2fc7843e","34c5274b","42d61476","445d6532","48e60753","4ce678c5","559b46a3","5b0741b6","5e8a0e84","5f7550c4","61b18a69","6b2bf43c","6cfc0111","6d7fae2a","6db0810d","75d60c08","761778d2","78a95e92","7b52b874","7cf07a39","803578f0","83385db5","897df330","8c21b640","8ed90c32","9978dd95","9ce730f8","9fb61f24","a1c10107","a255d6ea","b278e378","d075aa54","da4922da","dbc8310d","ea1401db","eb5d50dd","f100fd35","f17b7e20","f4451a0c","f4ce4812","fa282204"]}
+{
+  "uuid": "66d799ce-13df-45e1-924e-392a98f3d102",
+  "name": "2022",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 274,
+      "fouls": 70,
+      "fg": 90,
+      "ft": 46,
+      "threePt": 16,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": 4,
+      "wins": 20,
+      "losses": 48,
+      "draws": 8,
+      "winPct": 0.26,
+      "statsChecked": "2026-07-05T16:22:40.963Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a48d8524",
+      "sn": "2022",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "5937ddf7",
+          "tn": "Blackburn U18 Boys 03",
+          "gid": "5a488fa2",
+          "gn": "BOYS UNDER 18 B4",
+          "stats": {
+            "gp": 5,
+            "pts": 39,
+            "fouls": 9,
+            "fg": 15,
+            "ft": 3,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b387bcd4",
+      "sn": "2022",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "a373db30",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "84476659",
+          "gn": "18 Boys - VJL6 (P2)",
+          "stats": {
+            "gp": 22,
+            "pts": 160,
+            "fouls": 42,
+            "fg": 51,
+            "ft": 31,
+            "threePt": 9,
+            "wins": 3,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a373db30",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "9fb99e78",
+          "gn": "U18B Crossover 2 - VJL",
+          "stats": {
+            "gp": 22,
+            "pts": 160,
+            "fouls": 42,
+            "fg": 51,
+            "ft": 31,
+            "wins": 3,
+            "losses": 11,
+            "draws": 1,
+            "threePt": 9
+          }
+        },
+        {
+          "tid": "a373db30",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "ab5f59a5",
+          "gn": "U18 Boys Grading 2 - GG Pool B",
+          "stats": {
+            "gp": 22,
+            "pts": 160,
+            "fouls": 42,
+            "fg": 51,
+            "ft": 31,
+            "threePt": 9,
+            "wins": 3,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a373db30",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "a83a6fee",
+          "gn": "U18 Boys Grading 1 - Pool 6C",
+          "stats": {
+            "gp": 22,
+            "pts": 160,
+            "fouls": 42,
+            "fg": 51,
+            "ft": 31,
+            "wins": 3,
+            "losses": 11,
+            "draws": 1,
+            "threePt": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "532e7f37",
+      "sn": "Winter 2021",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "dc0b237d",
+          "tn": "Blackburn U17 Boys 02",
+          "gid": "3e0cbee5",
+          "gn": "Boys U17BE",
+          "stats": {
+            "gp": 8,
+            "pts": 29,
+            "fouls": 4,
+            "fg": 11,
+            "ft": 7,
+            "wins": 4,
+            "losses": 2,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "dc0b237d",
+          "tn": "Blackburn U17 Boys 02",
+          "gid": "171893f1",
+          "gn": "Boys U17 B Grading",
+          "stats": {
+            "gp": 8,
+            "pts": 29,
+            "fouls": 4,
+            "fg": 11,
+            "ft": 7,
+            "wins": 4,
+            "losses": 2,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Blackburn Vikings Basketball Club",
+      "regs": [
+        {
+          "tid": "e640f0f9",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "0afbbbe7",
+          "gn": "18 Boys - VJL8 (P1)",
+          "stats": {
+            "gp": 15,
+            "pts": 46,
+            "fouls": 15,
+            "fg": 13,
+            "ft": 5,
+            "threePt": 5
+          }
+        },
+        {
+          "tid": "e640f0f9",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "d4ab83b6",
+          "gn": "U18B Crossover 2 - VJL",
+          "stats": {
+            "gp": 15,
+            "pts": 46,
+            "fouls": 15,
+            "fg": 13,
+            "threePt": 5,
+            "ft": 5
+          }
+        },
+        {
+          "tid": "e640f0f9",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "5f453b1f",
+          "gn": "U18B Grading 2 - HH Pool A",
+          "stats": {
+            "gp": 15,
+            "pts": 46,
+            "fouls": 15,
+            "fg": 13,
+            "ft": 5,
+            "threePt": 5
+          }
+        },
+        {
+          "tid": "e640f0f9",
+          "tn": "Blackburn U18 Boys 3",
+          "gid": "964ad25b",
+          "gn": "U18B Grading 1 - Pool 7D",
+          "stats": {
+            "gp": 15,
+            "pts": 46,
+            "fouls": 15,
+            "fg": 13,
+            "threePt": 5,
+            "ft": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f7e5b50",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "185e0e26",
+          "tn": "Blackburn U18 Boys 03",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "cc35575b",
+          "tn": "Blackburn U16 Boys 4",
+          "gid": "7abc7860",
+          "gn": "U16 Boys VJL 8 - Pool 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:30.182Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "2fb67772",
+      "sid": "b387bcd4"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "2fb67772",
+      "sid": "b387bcd4"
+    }
+  },
+  "games": [
+    "0254cf13",
+    "0bc40002",
+    "0ca0d13d",
+    "12a84883",
+    "16c25bb7",
+    "21b34360",
+    "23dd7ded",
+    "2f5b958d",
+    "2fb67772",
+    "2fc7843e",
+    "34c5274b",
+    "42d61476",
+    "445d6532",
+    "48e60753",
+    "4ce678c5",
+    "559b46a3",
+    "5b0741b6",
+    "5e8a0e84",
+    "5f7550c4",
+    "61b18a69",
+    "6b2bf43c",
+    "6cfc0111",
+    "6d7fae2a",
+    "6db0810d",
+    "75d60c08",
+    "761778d2",
+    "78a95e92",
+    "7b52b874",
+    "7cf07a39",
+    "803578f0",
+    "83385db5",
+    "897df330",
+    "8c21b640",
+    "8ed90c32",
+    "9978dd95",
+    "9ce730f8",
+    "9fb61f24",
+    "a1c10107",
+    "a255d6ea",
+    "b278e378",
+    "d075aa54",
+    "da4922da",
+    "dbc8310d",
+    "ea1401db",
+    "eb5d50dd",
+    "f100fd35",
+    "f17b7e20",
+    "f4451a0c",
+    "f4ce4812",
+    "fa282204"
+  ],
+  "teams": [
+    {
+      "tid": "5937ddf7",
+      "sid": "a48d8524",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a373db30",
+      "sid": "b387bcd4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dc0b237d",
+      "sid": "532e7f37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e640f0f9",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "185e0e26",
+      "sid": "5f7e5b50",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc35575b",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.301Z"
+}

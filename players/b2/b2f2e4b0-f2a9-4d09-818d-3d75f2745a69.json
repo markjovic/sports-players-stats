@@ -1,1 +1,94 @@
-{"uuid":"b2f2e4b0-f2a9-4d09-818d-3d75f2745a69","name":"Evie Stewart","gender":"Girls","sports":{"Basketball":{"gp":9,"pts":10,"fouls":10,"fg":5,"foulOuts":{"ad68db8b":1},"maxGamePTS":6,"maxGameThreePt":null,"wins":3,"losses":6,"winPct":0.33,"statsChecked":"2026-07-05T16:03:00.391Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"1afd68e8","tn":"EPS Bouncing Bunnies","gid":"f090540b","gn":"Friday Year 1 Girls STH","age":null,"div":null,"stats":{"gp":9,"fouls":10,"fg":5,"pts":10,"wins":3,"losses":6}}]}],"updatedAt":"2026-07-04T05:50:50.396Z","teams":[{"tid":"1afd68e8","sid":"ad68db8b","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:37:05.148Z","records":{"maxGamePTS":{"v":6,"gameKey":"6fb2cc06","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["14f09e48","1fe213a0","3148c389","49c5a542","6fb2cc06","8c59d248","a1942459","b11a331a","b44cbf7a"]}
+{
+  "uuid": "b2f2e4b0-f2a9-4d09-818d-3d75f2745a69",
+  "name": "Evie Stewart",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 10,
+      "fouls": 10,
+      "fg": 5,
+      "foulOuts": {
+        "ad68db8b": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 6,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:03:00.391Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "1afd68e8",
+          "tn": "EPS Bouncing Bunnies",
+          "gid": "f090540b",
+          "gn": "Friday Year 1 Girls STH",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 10,
+            "fg": 5,
+            "pts": 10,
+            "wins": 3,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "cf0606cb",
+          "tn": "EPS Bouncing Bunnies",
+          "gid": "c786437d",
+          "gn": "Friday Year 1 Girls B",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:50.396Z",
+  "teams": [
+    {
+      "tid": "1afd68e8",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cf0606cb",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.256Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "6fb2cc06",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "14f09e48",
+    "1fe213a0",
+    "3148c389",
+    "49c5a542",
+    "6fb2cc06",
+    "8c59d248",
+    "a1942459",
+    "b11a331a",
+    "b44cbf7a"
+  ]
+}

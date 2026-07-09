@@ -1,1 +1,141 @@
-{"uuid":"e2e85969-9db0-4330-86fa-9eaec667f2b1","name":"Thomas Williams","gender":"Boys","sports":{"Basketball":{"gp":18,"pts":17,"fouls":9,"fg":8,"ft":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"losses":26,"winPct":0.19,"wins":6,"statsChecked":"2026-07-05T15:51:54.305Z"}},"seasons":[{"sid":"db9c4e8a","sn":"Winter 2026","club":"Balnarring Storm Basketball Club","regs":[{"tid":"37dc3178","tn":"Balnarring Storm U10 Boys Green","gid":"334a4e97","gn":"Bata Industrials - Saturday U10 Boys A","age":"U10","div":null,"stats":{"gp":7,"fouls":5,"ft":1,"fg":8,"pts":17,"losses":5,"wins":2}},{"tid":"37dc3178","tn":"Balnarring Storm U10 Boys Green","gid":"e7dc0ae5","gn":"Bata Industrials - Saturday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":7,"fouls":5,"fg":8,"pts":17,"losses":5,"ft":1,"wins":2}}]},{"sid":"7a1c970f","sn":"Summer 2025/26","club":"Balnarring Storm Basketball Club","regs":[{"tid":"a75686a8","tn":"Balnarring Storm U10 Boys Green","gid":"7b1dbde2","gn":"Bata Industrials - Saturday U10 Boys C","age":"U10","div":null,"stats":{"gp":11,"fouls":4,"wins":1,"losses":8}},{"tid":"a75686a8","tn":"Balnarring Storm U10 Boys Green","gid":"2dc83907","gn":"Bata Industrials - Saturday U10 Boys Grading","age":"U10","div":null,"stats":{"gp":11,"wins":1,"losses":8,"fouls":4}}]}],"updatedAt":"2026-06-02T04:48:26.353Z","teams":[{"tid":"37dc3178","sid":"db9c4e8a","status":"ACTIVE"},{"tid":"a75686a8","sid":"7a1c970f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:50:34.635Z","records":{"maxGamePTS":{"v":6,"gameKey":"ab72d8ad","sid":"db9c4e8a"},"maxGameThreePt":{"v":null}},"games":["01a2dc20","0c2f1166","129ecaa3","29adb861","39439561","5c7895f3","8c972af5","9747c7bd","a08d6927","a15cb804","ab72d8ad","b5e5351a","be0902f0","cf9f741b","dd051bb2","edbc13c8"]}
+{
+  "uuid": "e2e85969-9db0-4330-86fa-9eaec667f2b1",
+  "name": "Thomas Williams",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 17,
+      "fouls": 9,
+      "fg": 8,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "losses": 26,
+      "winPct": 0.19,
+      "wins": 6,
+      "statsChecked": "2026-07-05T15:51:54.305Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "db9c4e8a",
+      "sn": "Winter 2026",
+      "club": "Balnarring Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "37dc3178",
+          "tn": "Balnarring Storm U10 Boys Green",
+          "gid": "781e725d",
+          "gn": "Bata Industrials - Saturday U10 Boys A/B",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 8,
+            "pts": 17,
+            "losses": 5,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "37dc3178",
+          "tn": "Balnarring Storm U10 Boys Green",
+          "gid": "e7dc0ae5",
+          "gn": "Bata Industrials - Saturday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "fg": 8,
+            "pts": 17,
+            "losses": 5,
+            "ft": 1,
+            "wins": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7a1c970f",
+      "sn": "Summer 2025/26",
+      "club": "Balnarring Storm Basketball Club",
+      "regs": [
+        {
+          "tid": "a75686a8",
+          "tn": "Balnarring Storm U10 Boys Green",
+          "gid": "7b1dbde2",
+          "gn": "Bata Industrials - Saturday U10 Boys C",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "a75686a8",
+          "tn": "Balnarring Storm U10 Boys Green",
+          "gid": "2dc83907",
+          "gn": "Bata Industrials - Saturday U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "wins": 1,
+            "losses": 8,
+            "fouls": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T04:48:26.353Z",
+  "teams": [
+    {
+      "tid": "37dc3178",
+      "sid": "db9c4e8a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a75686a8",
+      "sid": "7a1c970f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:17.171Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "ab72d8ad",
+      "sid": "db9c4e8a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "01a2dc20",
+    "0c2f1166",
+    "129ecaa3",
+    "29adb861",
+    "39439561",
+    "5c7895f3",
+    "8c972af5",
+    "9747c7bd",
+    "a08d6927",
+    "a15cb804",
+    "ab72d8ad",
+    "b5e5351a",
+    "be0902f0",
+    "cf9f741b",
+    "dd051bb2",
+    "edbc13c8"
+  ]
+}

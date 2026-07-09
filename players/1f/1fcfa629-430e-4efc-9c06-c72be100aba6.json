@@ -1,1 +1,145 @@
-{"uuid":"1fcfa629-430e-4efc-9c06-c72be100aba6","gender":null,"sports":{"Basketball":{"gp":15,"pts":17,"fouls":19,"fg":5,"ft":1,"threePt":2,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":1,"wins":6,"losses":4,"draws":8,"winPct":0.33,"statsChecked":"2026-07-05T16:12:21.159Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"f13d883b","tn":"CSBD U19 Girls 2","gid":"0be6d31d","gn":"Saturday U19 Girls C1 Grade","stats":{"gp":9,"pts":7,"fg":3,"ft":1,"fouls":9,"wins":3,"losses":2,"draws":4}},{"tid":"f13d883b","tn":"CSBD U19 Girls 2","gid":"2fa3cca2","gn":"Saturday U19 Girls A B Grade","stats":{"gp":9,"fouls":9,"wins":3,"losses":2,"draws":4,"pts":7,"fg":3,"ft":1}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"Caroline Springs Blue Devils Basketball Club","regs":[{"tid":"00981ae4","tn":"CSBD U19 Girls 3","gid":"1682fb13","gn":"Saturday U19 Girls C1 Grade","stats":{"gp":6,"pts":10,"threePt":2,"fg":2,"fouls":10}}]}],"updatedAt":"2026-06-11T23:37:12.931Z","records":{"maxGamePTS":{"v":5,"gameKey":"998a6312","sid":"0912c55f"},"maxGameThreePt":{"v":1,"gameKey":"998a6312","sid":"0912c55f"}},"games":["00c03d61","014d45a2","1d19dc68","2a935e8a","2db7b291","49386c4d","6d6ec666","8f20607f","90c72f1f","998a6312","c1941a94","cd5b7db1","dc468ae7","e20dd065","fdbf934c"],"name":"Winter 2021"}
+{
+  "uuid": "1fcfa629-430e-4efc-9c06-c72be100aba6",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 17,
+      "fouls": 19,
+      "fg": 5,
+      "ft": 1,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 4,
+      "draws": 8,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:12:21.159Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "f13d883b",
+          "tn": "CSBD U19 Girls 2",
+          "gid": "0be6d31d",
+          "gn": "Saturday U19 Girls C1 Grade",
+          "stats": {
+            "gp": 9,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1,
+            "fouls": 9,
+            "wins": 3,
+            "losses": 2,
+            "draws": 4
+          }
+        },
+        {
+          "tid": "f13d883b",
+          "tn": "CSBD U19 Girls 2",
+          "gid": "2fa3cca2",
+          "gn": "Saturday U19 Girls A B Grade",
+          "stats": {
+            "gp": 9,
+            "fouls": 9,
+            "wins": 3,
+            "losses": 2,
+            "draws": 4,
+            "pts": 7,
+            "fg": 3,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "Caroline Springs Blue Devils Basketball Club",
+      "regs": [
+        {
+          "tid": "00981ae4",
+          "tn": "CSBD U19 Girls 3",
+          "gid": "1682fb13",
+          "gn": "Saturday U19 Girls C1 Grade",
+          "stats": {
+            "gp": 6,
+            "pts": 10,
+            "threePt": 2,
+            "fg": 2,
+            "fouls": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "5bd88da5",
+          "tn": "CSBD U16 Girls 4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:12.931Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "998a6312",
+      "sid": "0912c55f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "998a6312",
+      "sid": "0912c55f"
+    }
+  },
+  "games": [
+    "00c03d61",
+    "014d45a2",
+    "1d19dc68",
+    "2a935e8a",
+    "2db7b291",
+    "49386c4d",
+    "6d6ec666",
+    "8f20607f",
+    "90c72f1f",
+    "998a6312",
+    "c1941a94",
+    "cd5b7db1",
+    "dc468ae7",
+    "e20dd065",
+    "fdbf934c"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "f13d883b",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "00981ae4",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5bd88da5",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.920Z"
+}

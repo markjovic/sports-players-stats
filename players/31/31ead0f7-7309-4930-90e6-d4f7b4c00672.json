@@ -1,1 +1,221 @@
-{"uuid":"31ead0f7-7309-4930-90e6-d4f7b4c00672","name":"Ted Trumble","gender":"Boys","sports":{"Basketball":{"gp":39,"pts":299,"fouls":69,"fg":129,"ft":29,"foulOuts":{"ad68db8b":2},"maxGamePTS":21,"maxGameThreePt":null,"wins":31,"losses":6,"draws":2,"winPct":0.79,"statsChecked":"2026-07-05T15:08:14.167Z"}},"seasons":[{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"0a612659","tn":"MGS Mavericks","gid":"23812703","gn":"Friday Year 3 Boys B","age":null,"div":null,"stats":{"gp":17,"pts":172,"fg":76,"ft":20,"fouls":31,"foulOuts":2,"wins":13,"losses":3,"draws":1}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"fe92b0bc","tn":"Ripper Rascals","gid":"ab7b0b36","gn":"Friday Year 2 Boys B","age":null,"div":null,"stats":{"gp":13,"pts":82,"fg":32,"ft":6,"fouls":22,"wins":13}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"53eb8291","tn":"Ripper Rascals","gid":"f49233b2","gn":"Friday MSAC/Bayside Year 2 Boys B","age":null,"div":null,"stats":{"gp":9,"pts":45,"fg":21,"ft":3,"fouls":16,"wins":5,"losses":3,"draws":1}}]}],"updatedAt":"2026-06-02T22:42:51.981Z","teams":[{"tid":"0a612659","sid":"ad68db8b","status":"ACTIVE"},{"tid":"fe92b0bc","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"53eb8291","sid":"31d05517","status":"COMPLETED"},{"tid":"85f6a5c1","sid":"8884de2d","status":"COMPLETED"},{"tid":"96a69014","sid":"0fef30ca","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:11:42.541Z","records":{"maxGamePTS":{"v":21,"gameKey":"c089a004","sid":"ad68db8b"},"maxGameThreePt":{"v":null}},"games":["12d2decf","17b8b9de","19d06b89","1eaaf9c5","23de1fde","280995cf","300cebb3","3ceaaaf3","3dbb5b38","4699f3e0","48cee148","4a68ed76","4ab0b6ae","4df7f1ed","5703253d","5b046d36","5c22395d","5da5a48b","61bc5e85","69ce25cb","7612464a","779ae5de","786e6c01","82ffa240","9d3c26c9","9e036236","a173f991","a4efa988","a749df6c","b4b7b568","c089a004","ce499ed3","cf11918c","d2c32891","d60c3191","e33e96bb","e5acad55","e5b1c2ed","f01b1a1d"]}
+{
+  "uuid": "31ead0f7-7309-4930-90e6-d4f7b4c00672",
+  "name": "Ted Trumble",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 299,
+      "fouls": 69,
+      "fg": 129,
+      "ft": 29,
+      "foulOuts": {
+        "ad68db8b": 2
+      },
+      "maxGamePTS": 21,
+      "maxGameThreePt": null,
+      "wins": 31,
+      "losses": 6,
+      "draws": 2,
+      "winPct": 0.79,
+      "statsChecked": "2026-07-05T15:08:14.167Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "0a612659",
+          "tn": "MGS Mavericks",
+          "gid": "23812703",
+          "gn": "Friday Year 3 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 172,
+            "fg": 76,
+            "ft": 20,
+            "fouls": 31,
+            "foulOuts": 2,
+            "wins": 13,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "fe92b0bc",
+          "tn": "Ripper Rascals",
+          "gid": "ab7b0b36",
+          "gn": "Friday Year 2 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 82,
+            "fg": 32,
+            "ft": 6,
+            "fouls": 22,
+            "wins": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "53eb8291",
+          "tn": "Ripper Rascals",
+          "gid": "f49233b2",
+          "gn": "Friday MSAC/Bayside Year 2 Boys B",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 45,
+            "fg": 21,
+            "ft": 3,
+            "fouls": 16,
+            "wins": 5,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "36c060da",
+          "tn": "MGS Mavericks",
+          "gid": "bee6f7d3",
+          "gn": "Friday Year 3 Boys A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8884de2d",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "85f6a5c1",
+          "tn": "Ripper Rascals",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "96a69014",
+          "tn": "Ripper Rascals",
+          "gid": "7616dc49",
+          "gn": "Friday MSAC/Bayside YR.1 - YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:51.981Z",
+  "teams": [
+    {
+      "tid": "0a612659",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe92b0bc",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53eb8291",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "36c060da",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "85f6a5c1",
+      "sid": "8884de2d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "96a69014",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.586Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "c089a004",
+      "sid": "ad68db8b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "12d2decf",
+    "17b8b9de",
+    "19d06b89",
+    "1eaaf9c5",
+    "23de1fde",
+    "280995cf",
+    "300cebb3",
+    "3ceaaaf3",
+    "3dbb5b38",
+    "4699f3e0",
+    "48cee148",
+    "4a68ed76",
+    "4ab0b6ae",
+    "4df7f1ed",
+    "5703253d",
+    "5b046d36",
+    "5c22395d",
+    "5da5a48b",
+    "61bc5e85",
+    "69ce25cb",
+    "7612464a",
+    "779ae5de",
+    "786e6c01",
+    "82ffa240",
+    "9d3c26c9",
+    "9e036236",
+    "a173f991",
+    "a4efa988",
+    "a749df6c",
+    "b4b7b568",
+    "c089a004",
+    "ce499ed3",
+    "cf11918c",
+    "d2c32891",
+    "d60c3191",
+    "e33e96bb",
+    "e5acad55",
+    "e5b1c2ed",
+    "f01b1a1d"
+  ]
+}

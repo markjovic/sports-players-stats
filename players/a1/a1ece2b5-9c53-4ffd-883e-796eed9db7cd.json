@@ -1,1 +1,195 @@
-{"uuid":"a1ece2b5-9c53-4ffd-883e-796eed9db7cd","name":"Theodore Peacock","gender":"Boys","sports":{"Basketball":{"gp":29,"pts":55,"fouls":15,"fg":15,"ft":25,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":13,"losses":15,"draws":1,"winPct":0.45,"statsChecked":"2026-07-05T15:50:23.153Z"}},"seasons":[{"sid":"cc855f21","sn":"Autumn 2026","regs":[{"tid":"47057528","tn":"Pirates","gid":"b352f6f8","gn":"Friday U10 Boys North","age":"U10","div":null,"stats":{"gp":11,"fouls":5,"ft":10,"fg":4,"pts":18,"wins":5,"losses":5,"draws":1}},{"tid":"170c18da","tn":"Z2C","gid":"b352f6f8","gn":"Friday U10 Boys North","age":"U10","div":null,"stats":{"gp":3,"ft":3,"fg":3,"pts":9,"wins":3}}]},{"sid":"f0c9ba03","sn":"Summer 2025/26","regs":[{"tid":"e46d77bf","tn":"Crunchies","gid":"8ae4df5c","gn":"Thursday U8 Boys","age":"U8","div":null,"stats":{"gp":15,"fouls":10,"ft":12,"fg":8,"pts":28,"wins":5,"losses":10}}]}],"updatedAt":"2026-06-02T05:54:08.556Z","teams":[{"tid":"47057528","sid":"cc855f21","status":"ACTIVE"},{"tid":"e46d77bf","sid":"f0c9ba03","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:31:41.799Z","games":["00b8dbb8","09c25715","0bbc082f","0fe6cc13","1b209bfb","1c791274","25215b6b","281a5f78","2af74c8d","3e1a4efe","41743002","41eacef6","46ad9bc4","50d0707a","6c3d2520","80042b47","80920f93","83875003","9cf54588","b9202c6d","c2d22d67","c42534f3","cd22b272","cd4e0bbc","d2b02598","da366821","f9fe4b5d","fb909c2a","fbd3e506"],"records":{"maxGamePTS":{"v":8,"gameKey":"50d0707a","sid":"f0c9ba03"},"maxGameThreePt":{"v":null}},"gameTids":{"41743002":"e46d77bf","83875003":"47057528","fb909c2a":"47057528","cd22b272":"47057528","0bbc082f":"47057528","c2d22d67":"47057528","80042b47":"47057528","1b209bfb":"47057528","d2b02598":"47057528","9cf54588":"47057528","41eacef6":"47057528","09c25715":"47057528","c42534f3":"170c18da","0fe6cc13":"170c18da","25215b6b":"170c18da","1c791274":"e46d77bf","80920f93":"e46d77bf","00b8dbb8":"e46d77bf","b9202c6d":"e46d77bf","3e1a4efe":"e46d77bf","50d0707a":"e46d77bf","cd4e0bbc":"e46d77bf","da366821":"e46d77bf","46ad9bc4":"e46d77bf","fbd3e506":"e46d77bf","f9fe4b5d":"e46d77bf","281a5f78":"e46d77bf","6c3d2520":"e46d77bf","2af74c8d":"e46d77bf"}}
+{
+  "uuid": "a1ece2b5-9c53-4ffd-883e-796eed9db7cd",
+  "name": "Theodore Peacock",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 29,
+      "pts": 55,
+      "fouls": 15,
+      "fg": 15,
+      "ft": 25,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 13,
+      "losses": 15,
+      "draws": 1,
+      "winPct": 0.45,
+      "statsChecked": "2026-07-05T15:50:23.153Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "cc855f21",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "47057528",
+          "tn": "Pirates",
+          "gid": "b352f6f8",
+          "gn": "Friday U10 Boys North",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "ft": 10,
+            "fg": 4,
+            "pts": 18,
+            "wins": 5,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "170c18da",
+          "tn": "Z2C",
+          "gid": "b352f6f8",
+          "gn": "Friday U10 Boys North",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "ft": 3,
+            "fg": 3,
+            "pts": 9,
+            "wins": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f0c9ba03",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "e46d77bf",
+          "tn": "Crunchies",
+          "gid": "8ae4df5c",
+          "gn": "Thursday U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 10,
+            "ft": 12,
+            "fg": 8,
+            "pts": 28,
+            "wins": 5,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "77b1ba16",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "47e87329",
+          "tn": "Tigers",
+          "gid": "e3a73b60",
+          "gn": "U10 Boys Div 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T05:54:08.556Z",
+  "teams": [
+    {
+      "tid": "47057528",
+      "sid": "cc855f21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "170c18da",
+      "sid": "cc855f21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e46d77bf",
+      "sid": "f0c9ba03",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47e87329",
+      "sid": "77b1ba16",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.459Z",
+  "games": [
+    "00b8dbb8",
+    "09c25715",
+    "0bbc082f",
+    "0fe6cc13",
+    "1b209bfb",
+    "1c791274",
+    "25215b6b",
+    "281a5f78",
+    "2af74c8d",
+    "3e1a4efe",
+    "41743002",
+    "41eacef6",
+    "46ad9bc4",
+    "50d0707a",
+    "6c3d2520",
+    "80042b47",
+    "80920f93",
+    "83875003",
+    "9cf54588",
+    "b9202c6d",
+    "c2d22d67",
+    "c42534f3",
+    "cd22b272",
+    "cd4e0bbc",
+    "d2b02598",
+    "da366821",
+    "f9fe4b5d",
+    "fb909c2a",
+    "fbd3e506"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "50d0707a",
+      "sid": "f0c9ba03"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "gameTids": {
+    "41743002": "e46d77bf",
+    "83875003": "47057528",
+    "fb909c2a": "47057528",
+    "cd22b272": "47057528",
+    "0bbc082f": "47057528",
+    "c2d22d67": "47057528",
+    "80042b47": "47057528",
+    "1b209bfb": "47057528",
+    "d2b02598": "47057528",
+    "9cf54588": "47057528",
+    "41eacef6": "47057528",
+    "09c25715": "47057528",
+    "c42534f3": "170c18da",
+    "0fe6cc13": "170c18da",
+    "25215b6b": "170c18da",
+    "1c791274": "e46d77bf",
+    "80920f93": "e46d77bf",
+    "00b8dbb8": "e46d77bf",
+    "b9202c6d": "e46d77bf",
+    "3e1a4efe": "e46d77bf",
+    "50d0707a": "e46d77bf",
+    "cd4e0bbc": "e46d77bf",
+    "da366821": "e46d77bf",
+    "46ad9bc4": "e46d77bf",
+    "fbd3e506": "e46d77bf",
+    "f9fe4b5d": "e46d77bf",
+    "281a5f78": "e46d77bf",
+    "6c3d2520": "e46d77bf",
+    "2af74c8d": "e46d77bf"
+  }
+}

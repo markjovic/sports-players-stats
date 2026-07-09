@@ -1,1 +1,95 @@
-{"uuid":"17b06a86-54a2-41c2-a420-aa4716827a6b","name":"Jayden Lee","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":23,"fouls":20,"fg":11,"foulOuts":{"1ae60211":2},"maxGamePTS":8,"maxGameThreePt":null,"wins":1,"losses":5,"winPct":0.17,"ft":1,"statsChecked":"2026-07-05T14:53:34.963Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Doncaster Basketball Club","regs":[{"tid":"42c99f74","tn":"Doncaster U11 Boys 06","gid":"19e854ac","gn":"Boys U11 D Grading","age":"U11","div":null,"stats":{"gp":8,"fouls":20,"fg":11,"pts":23,"foulOuts":2,"wins":1,"losses":5,"ft":1}}]}],"updatedAt":"2026-07-04T05:55:20.146Z","teams":[{"tid":"42c99f74","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:00:59.693Z","records":{"maxGamePTS":{"v":8,"gameKey":"567b07be","sid":"1ae60211"},"maxGameThreePt":{"v":null}},"games":["20708fa9","29a22d76","48bca38f","567b07be","a8bf674d","f52fe0a8"]}
+{
+  "uuid": "17b06a86-54a2-41c2-a420-aa4716827a6b",
+  "name": "Jayden Lee",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 23,
+      "fouls": 20,
+      "fg": 11,
+      "foulOuts": {
+        "1ae60211": 2
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "ft": 1,
+      "statsChecked": "2026-07-05T14:53:34.963Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Doncaster Basketball Club",
+      "regs": [
+        {
+          "tid": "42c99f74",
+          "tn": "Doncaster U11 Boys 06",
+          "gid": "30f9dd8a",
+          "gn": "Boys U11 DI",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 20,
+            "fg": 11,
+            "pts": 23,
+            "foulOuts": 2,
+            "wins": 1,
+            "losses": 5,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "98dc2b10",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "3f619e13",
+          "tn": "DG Lightning",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:55:20.146Z",
+  "teams": [
+    {
+      "tid": "42c99f74",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f619e13",
+      "sid": "98dc2b10",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.349Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "567b07be",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "20708fa9",
+    "29a22d76",
+    "48bca38f",
+    "567b07be",
+    "a8bf674d",
+    "f52fe0a8"
+  ]
+}

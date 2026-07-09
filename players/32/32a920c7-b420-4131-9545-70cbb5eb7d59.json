@@ -1,1 +1,343 @@
-{"uuid":"32a920c7-b420-4131-9545-70cbb5eb7d59","name":"Finn Liebrich","gender":"Boys","sports":{"Basketball":{"gp":58,"pts":20,"fouls":29,"fg":9,"ft":2,"foulOuts":{},"finals":3,"gfApps":2,"gfWins":0,"finalsPerSeason":0.75,"maxGamePTS":2,"maxGameThreePt":null,"wins":73,"losses":67,"draws":5,"winPct":0.5,"statsChecked":"2026-07-05T15:08:05.649Z"}},"seasons":[{"sid":"1db57c13","sn":"Spring 2025","regs":[{"tid":"bf0da009","tn":"Mariners - Missiles","gid":"26148a03","gn":"Wednesday 1/2 Boys C/D Grade","age":null,"div":null,"stats":{"gp":16,"pts":6,"fg":3,"fouls":11,"finals":1,"wins":4,"losses":11,"draws":1}},{"tid":"bf0da009","tn":"Mariners - Missiles","gid":"8aa847cb","gn":"Wednesday 1/2 Boys Grading","age":null,"div":null,"stats":{"gp":16,"pts":6,"fg":3,"fouls":11,"finals":1,"wins":4,"losses":11,"draws":1}}]},{"sid":"b789f31a","sn":"Autumn 2025","regs":[{"tid":"2c6b4f76","tn":"Mariners - Missiles","gid":"8d0959d2","gn":"Wednesday 1/2 Boys C/D Grade","age":null,"div":null,"stats":{"gp":15,"pts":11,"fg":5,"ft":1,"fouls":14,"finals":1,"gfApps":1,"wins":8,"losses":6,"draws":1}},{"tid":"2c6b4f76","tn":"Mariners - Missiles","gid":"c84854a8","gn":"Wednesday 1/2 Boys B Grade","age":null,"div":null,"stats":{"gp":15,"pts":11,"fg":5,"fouls":14,"finals":1,"gfApps":1,"wins":8,"losses":6,"draws":1,"ft":1}},{"tid":"2c6b4f76","tn":"Mariners - Missiles","gid":"2b568191","gn":"Wednesday 1/2 Boys Grading","age":null,"div":null,"stats":{"gp":15,"pts":11,"fg":5,"fouls":14,"finals":1,"gfApps":1,"wins":8,"losses":6,"draws":1,"ft":1}}]},{"sid":"2be537dd","sn":"Spring 2024","regs":[{"tid":"3814351c","tn":"Mariners - Rebound Warriors","gid":"7d0d915b","gn":"Wednesday 1/2 Boys C Grade","age":null,"div":null,"stats":{"gp":14,"finals":1,"gfApps":1,"wins":9,"losses":5,"pts":2,"fg":1}},{"tid":"3814351c","tn":"Mariners - Rebound Warriors","gid":"a65cbc3d","gn":"Wednesday 1/2 Boys B Grade","age":null,"div":null,"stats":{"gp":14,"pts":2,"fg":1,"finals":1,"gfApps":1,"wins":9,"losses":5}},{"tid":"3814351c","tn":"Mariners - Rebound Warriors","gid":"12b09010","gn":"Wednesday 1/2 Boys Grading","age":null,"div":null,"stats":{"gp":14,"finals":1,"gfApps":1,"wins":9,"losses":5,"pts":2,"fg":1}}]},{"sid":"8748a697","sn":"Autumn 2024","regs":[{"tid":"57002737","tn":"MARINERS- Rebound Warriors","gid":"8d69ab6b","gn":"Wednesday 1/2 Boys B Grade","age":null,"div":null,"stats":{"gp":13,"fouls":4,"wins":7,"losses":6,"pts":1,"ft":1}},{"tid":"57002737","tn":"MARINERS- Rebound Warriors","gid":"e087542a","gn":"Wednesday 1/2 Boys Grading","age":null,"div":null,"stats":{"gp":13,"pts":1,"ft":1,"wins":7,"losses":6,"fouls":4}}]}],"updatedAt":"2026-05-31T14:09:19.934Z","teams":[{"tid":"bf0da009","sid":"1db57c13","status":"COMPLETED"},{"tid":"2c6b4f76","sid":"b789f31a","status":"COMPLETED"},{"tid":"3814351c","sid":"2be537dd","status":"COMPLETED"},{"tid":"57002737","sid":"8748a697","status":"COMPLETED"},{"tid":"69c0cc49","sid":"1e903651","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:11:52.630Z","records":{"maxGamePTS":{"v":2,"gameKey":"cf7363da","sid":"1db57c13"},"maxGameThreePt":{"v":null}},"games":["06f39cf2","0c78e47a","102239c2","103ab0bf","149e6453","1b9e9b71","1d8411bf","1f1ff079","202a5ce3","26804cc3","3cdcd933","429f8b69","44702f16","4c46f6bd","4e60d002","503b8de4","55741869","5792f2f9","5ea3d528","61cac1d9","61f8b03d","642d1043","6d56d71b","715c9269","73db0bad","7579abfe","76b1d653","7ebb3945","7f71bfb9","7fe26561","81fd19d6","89487af8","8b568db2","8c4d58e7","902bea5a","91fb502a","a75ab8c7","b6135024","ba8adfec","be1fe9a9","c2ae820a","c2e52400","c53e42dc","c5461014","c6081493","ca3b1c83","ca526717","ccb73eb2","cf7363da","d9fcd7db","da2c9c53","eb612316","eec9939e","efacf597","f35acd58","f68073e1","f851b8e6","fd7a4fb8"]}
+{
+  "uuid": "32a920c7-b420-4131-9545-70cbb5eb7d59",
+  "name": "Finn Liebrich",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 58,
+      "pts": 20,
+      "fouls": 29,
+      "fg": 9,
+      "ft": 2,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 0,
+      "finalsPerSeason": 0.75,
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 73,
+      "losses": 67,
+      "draws": 5,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:08:05.649Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1db57c13",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "bf0da009",
+          "tn": "Mariners - Missiles",
+          "gid": "26148a03",
+          "gn": "Wednesday 1/2 Boys C/D Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 11,
+            "finals": 1,
+            "wins": 4,
+            "losses": 11,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "bf0da009",
+          "tn": "Mariners - Missiles",
+          "gid": "8aa847cb",
+          "gn": "Wednesday 1/2 Boys Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 11,
+            "finals": 1,
+            "wins": 4,
+            "losses": 11,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b789f31a",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "2c6b4f76",
+          "tn": "Mariners - Missiles",
+          "gid": "8d0959d2",
+          "gn": "Wednesday 1/2 Boys C/D Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "fouls": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "2c6b4f76",
+          "tn": "Mariners - Missiles",
+          "gid": "c84854a8",
+          "gn": "Wednesday 1/2 Boys B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 11,
+            "fg": 5,
+            "fouls": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "2c6b4f76",
+          "tn": "Mariners - Missiles",
+          "gid": "2b568191",
+          "gn": "Wednesday 1/2 Boys Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "pts": 11,
+            "fg": 5,
+            "fouls": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 8,
+            "losses": 6,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2be537dd",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "3814351c",
+          "tn": "Mariners - Rebound Warriors",
+          "gid": "7d0d915b",
+          "gn": "Wednesday 1/2 Boys C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 5,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "3814351c",
+          "tn": "Mariners - Rebound Warriors",
+          "gid": "a65cbc3d",
+          "gn": "Wednesday 1/2 Boys B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "pts": 2,
+            "fg": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "3814351c",
+          "tn": "Mariners - Rebound Warriors",
+          "gid": "12b09010",
+          "gn": "Wednesday 1/2 Boys Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 5,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8748a697",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "57002737",
+          "tn": "MARINERS- Rebound Warriors",
+          "gid": "8d69ab6b",
+          "gn": "Wednesday 1/2 Boys B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 4,
+            "wins": 7,
+            "losses": 6,
+            "pts": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "57002737",
+          "tn": "MARINERS- Rebound Warriors",
+          "gid": "e087542a",
+          "gn": "Wednesday 1/2 Boys Grading",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 1,
+            "ft": 1,
+            "wins": 7,
+            "losses": 6,
+            "fouls": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e903651",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "69c0cc49",
+          "tn": "St Clements - Mercuri",
+          "gid": "ca0d9023",
+          "gn": "Friday Foundation Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T14:09:19.934Z",
+  "teams": [
+    {
+      "tid": "bf0da009",
+      "sid": "1db57c13",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c6b4f76",
+      "sid": "b789f31a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3814351c",
+      "sid": "2be537dd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "57002737",
+      "sid": "8748a697",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "69c0cc49",
+      "sid": "1e903651",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.639Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "cf7363da",
+      "sid": "1db57c13"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06f39cf2",
+    "0c78e47a",
+    "102239c2",
+    "103ab0bf",
+    "149e6453",
+    "1b9e9b71",
+    "1d8411bf",
+    "1f1ff079",
+    "202a5ce3",
+    "26804cc3",
+    "3cdcd933",
+    "429f8b69",
+    "44702f16",
+    "4c46f6bd",
+    "4e60d002",
+    "503b8de4",
+    "55741869",
+    "5792f2f9",
+    "5ea3d528",
+    "61cac1d9",
+    "61f8b03d",
+    "642d1043",
+    "6d56d71b",
+    "715c9269",
+    "73db0bad",
+    "7579abfe",
+    "76b1d653",
+    "7ebb3945",
+    "7f71bfb9",
+    "7fe26561",
+    "81fd19d6",
+    "89487af8",
+    "8b568db2",
+    "8c4d58e7",
+    "902bea5a",
+    "91fb502a",
+    "a75ab8c7",
+    "b6135024",
+    "ba8adfec",
+    "be1fe9a9",
+    "c2ae820a",
+    "c2e52400",
+    "c53e42dc",
+    "c5461014",
+    "c6081493",
+    "ca3b1c83",
+    "ca526717",
+    "ccb73eb2",
+    "cf7363da",
+    "d9fcd7db",
+    "da2c9c53",
+    "eb612316",
+    "eec9939e",
+    "efacf597",
+    "f35acd58",
+    "f68073e1",
+    "f851b8e6",
+    "fd7a4fb8"
+  ]
+}

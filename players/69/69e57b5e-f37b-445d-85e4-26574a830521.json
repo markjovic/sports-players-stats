@@ -1,1 +1,84 @@
-{"uuid":"69e57b5e-f37b-445d-85e4-26574a830521","gender":null,"sports":{"Basketball":{"gp":4,"pts":13,"fouls":2,"fg":6,"ft":1,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":null,"wins":2,"losses":1,"draws":1,"winPct":0.5,"statsChecked":"2026-07-05T16:01:31.667Z"}},"seasons":[{"sid":"62a70b80","sn":"Summer 2021/22","club":"Generals Basketball Club","regs":[{"tid":"47cda5eb","tn":"Generals U18 Girls Sonics","gid":"b8ded39d","gn":"Tuesday U18 Girls 3","stats":{"gp":4,"pts":13,"fouls":2,"fg":6,"ft":1,"wins":2,"losses":1,"draws":1}}]}],"updatedAt":"2026-06-11T23:40:41.524Z","records":{"maxGamePTS":{"v":13,"gameKey":"15252182","sid":"62a70b80"},"maxGameThreePt":{"v":null}},"games":["15252182","32417246","38ca6398","3dae82b1"],"name":"Summer 2021/22"}
+{
+  "uuid": "69e57b5e-f37b-445d-85e4-26574a830521",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 13,
+      "fouls": 2,
+      "fg": 6,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 1,
+      "draws": 1,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T16:01:31.667Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "62a70b80",
+      "sn": "Summer 2021/22",
+      "club": "Generals Basketball Club",
+      "regs": [
+        {
+          "tid": "47cda5eb",
+          "tn": "Generals U18 Girls Sonics",
+          "gid": "b8ded39d",
+          "gn": "Tuesday U18 Girls 3",
+          "stats": {
+            "gp": 4,
+            "pts": 13,
+            "fouls": 2,
+            "fg": 6,
+            "ft": 1,
+            "wins": 2,
+            "losses": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "ece32079",
+          "tn": "Sonics",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:41.524Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "15252182",
+      "sid": "62a70b80"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "15252182",
+    "32417246",
+    "38ca6398",
+    "3dae82b1"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "47cda5eb",
+      "sid": "62a70b80",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ece32079",
+      "sid": "62a70b80",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.524Z"
+}

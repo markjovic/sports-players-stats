@@ -1,1 +1,449 @@
-{"uuid":"7cb39f55-33f5-44ac-b13b-7e08a958c17d","name":"Hongsong Chen","gender":"Girls","sports":{"Basketball":{"gp":54,"pts":143,"fouls":75,"fg":64,"ft":15,"foulOuts":{"15908988":2},"maxGamePTS":14,"maxGameThreePt":null,"wins":56,"losses":85,"winPct":0.4,"statsChecked":"2026-07-05T14:14:20.157Z"}},"seasons":[{"sid":"15908988","sn":"Winter 2026","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"710d95de","tn":"G17 Nunawading Kangas 5 (PTR)","gid":"5f421381","gn":"Saturday U17 Girls B","age":"U17","div":null,"stats":{"gp":6,"fouls":18,"fg":12,"pts":28,"foulOuts":1,"ft":4,"wins":4,"losses":2}},{"tid":"710d95de","tn":"G17 Nunawading Kangas 5 (PTR)","gid":"4ed6601f","gn":"Saturday U17 Girls A","age":"U17","div":null,"stats":{"gp":6,"fouls":18,"ft":4,"fg":12,"pts":28,"foulOuts":1,"wins":4,"losses":2}}]},{"sid":"d8da6b7a","sn":"2025","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"9db5d5ef","tn":"Hawthorn U16 Girls 3","gid":"415b1650","gn":"U16 Girls Division 5","age":"U16","div":"Division 5","stats":{"gp":4,"fouls":6,"fg":1,"pts":2,"wins":1,"losses":3}}]},{"sid":"2ecfa56c","sn":"2025/26","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"c5de3854","tn":"Hawthorn U16 Girls 3","gid":"43396add","gn":"U16 Girls - VJL6 (P2)","age":"U16","div":null,"stats":{"gp":21,"fouls":23,"ft":2,"fg":8,"pts":18,"wins":7,"losses":14}},{"tid":"c5de3854","tn":"Hawthorn U16 Girls 3","gid":"fe838566","gn":"16 Girls - VJL Crossover","age":null,"div":null,"stats":{"gp":21,"fouls":23,"ft":2,"pts":18,"wins":7,"losses":14,"fg":8}},{"tid":"c5de3854","tn":"Hawthorn U16 Girls 3","gid":"c3b29383","gn":"U16 Girls Grading 2 - HH Pool B","age":"U16","div":null,"stats":{"gp":21,"fouls":23,"fg":8,"pts":18,"wins":7,"losses":14,"ft":2}},{"tid":"c5de3854","tn":"Hawthorn U16 Girls 3","gid":"740f2f92","gn":"16 Girls Grading 1 - Crossover","age":null,"div":null,"stats":{"gp":21,"wins":7,"losses":14,"pts":18,"fg":8,"ft":2,"fouls":23}},{"tid":"c5de3854","tn":"Hawthorn U16 Girls 3","gid":"7afd8db9","gn":"16 Girls Grading 1 - Pool 7C","age":null,"div":null,"stats":{"gp":21,"fouls":23,"fg":8,"pts":18,"wins":7,"losses":14,"ft":2}}]},{"sid":"e2fad5cf","sn":"Summer 2024/25","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"6a1875e1","tn":"G13 Nunawading Kangas 3 (RQ)","gid":"e064b27f","gn":"Saturday U13 Girls BR","age":"U13","div":null,"stats":{"gp":15,"fouls":21,"ft":8,"fg":41,"pts":90,"wins":9,"losses":6}}]},{"sid":"5e155c7d","sn":"Summer 2022/23","club":"Nunawading Kangas Basketball Club","regs":[{"tid":"1f289d72","tn":"G10 Nunawading Kangas 1","gid":"620d0316","gn":"Monday U10 Girls","age":"U10","div":null,"stats":{"gp":3}}]},{"sid":"0869ea69","regs":[{"tid":"d2663fd4","stats":{"wins":3,"losses":2,"gp":5,"pts":5,"fg":2,"ft":1,"fouls":7}}]}],"updatedAt":"2026-07-03T20:37:27.066Z","teams":[{"tid":"c5de3854","sid":"2ecfa56c","status":"ACTIVE"},{"tid":"710d95de","sid":"15908988","status":"ACTIVE"},{"tid":"d2663fd4","sid":"0869ea69","status":"UPCOMING"},{"tid":"07166c38","sid":"68279835","status":"COMPLETED"},{"tid":"9db5d5ef","sid":"d8da6b7a","status":"COMPLETED"},{"tid":"aba5f16c","sid":"913d1397","status":"COMPLETED"},{"tid":"6a1875e1","sid":"e2fad5cf","status":"COMPLETED"},{"tid":"88a2ed83","sid":"df876355","status":"COMPLETED"},{"tid":"79beca62","sid":"e54d0c37","status":"COMPLETED"},{"tid":"a53a959a","sid":"ee5d2724","status":"COMPLETED"},{"tid":"1e554dcc","sid":"7d20ecad","status":"COMPLETED"},{"tid":"1f289d72","sid":"5e155c7d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:44:05.094Z","records":{"maxGamePTS":{"v":14,"gameKey":"c81d84c7","sid":"e2fad5cf"},"maxGameThreePt":{"v":null}},"games":["016e3d19","05d9915e","06cd1f9d","0840ee19","0db688bf","0dd4f8ab","0e28adfd","1075ec19","1913d557","223fe213","2529a20e","2f368579","39e9cd21","3ec0e126","57338fe3","57bb8ed0","5b878bd2","5deecb77","7358cdd5","7cae9637","7d6c7ed8","7de7020b","7fb3f456","805e5a1c","842e7091","845eef6e","874ed376","8d4a89a8","8fcf1ff3","9037baa5","91091f9c","934be58b","95c2a098","982c7a23","994a164d","996cda3f","a043ec37","a0f22a2f","a86041bc","ade2bc6f","b5da8d15","b6d7e663","c2d4da1e","c3d9dd69","c81d84c7","d9f6e7db","e47c8c00","e976a86f","f1f6077d","f8c55e9d","fd6d8772"]}
+{
+  "uuid": "7cb39f55-33f5-44ac-b13b-7e08a958c17d",
+  "name": "Hongsong Chen",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 54,
+      "pts": 143,
+      "fouls": 75,
+      "fg": 64,
+      "ft": 15,
+      "foulOuts": {
+        "15908988": 2
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": null,
+      "wins": 56,
+      "losses": 85,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:14:20.157Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "15908988",
+      "sn": "Winter 2026",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "710d95de",
+          "tn": "G17 Nunawading Kangas 5 (PTR)",
+          "gid": "5f421381",
+          "gn": "Saturday U17 Girls B",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 18,
+            "fg": 12,
+            "pts": 28,
+            "foulOuts": 1,
+            "ft": 4,
+            "wins": 4,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "710d95de",
+          "tn": "G17 Nunawading Kangas 5 (PTR)",
+          "gid": "4ed6601f",
+          "gn": "Saturday U17 Girls A",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 18,
+            "ft": 4,
+            "fg": 12,
+            "pts": 28,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d8da6b7a",
+      "sn": "2025",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "9db5d5ef",
+          "tn": "Hawthorn U16 Girls 3",
+          "gid": "415b1650",
+          "gn": "U16 Girls Division 5",
+          "age": "U16",
+          "div": "Division 5",
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ecfa56c",
+      "sn": "2025/26",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "c5de3854",
+          "tn": "Hawthorn U16 Girls 3",
+          "gid": "43396add",
+          "gn": "U16 Girls - VJL6 (P2)",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 23,
+            "ft": 2,
+            "fg": 8,
+            "pts": 18,
+            "wins": 7,
+            "losses": 14
+          }
+        },
+        {
+          "tid": "c5de3854",
+          "tn": "Hawthorn U16 Girls 3",
+          "gid": "fe838566",
+          "gn": "16 Girls - VJL Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 23,
+            "ft": 2,
+            "pts": 18,
+            "wins": 7,
+            "losses": 14,
+            "fg": 8
+          }
+        },
+        {
+          "tid": "c5de3854",
+          "tn": "Hawthorn U16 Girls 3",
+          "gid": "c3b29383",
+          "gn": "U16 Girls Grading 2 - HH Pool B",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 23,
+            "fg": 8,
+            "pts": 18,
+            "wins": 7,
+            "losses": 14,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "c5de3854",
+          "tn": "Hawthorn U16 Girls 3",
+          "gid": "740f2f92",
+          "gn": "16 Girls Grading 1 - Crossover",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "wins": 7,
+            "losses": 14,
+            "pts": 18,
+            "fg": 8,
+            "ft": 2,
+            "fouls": 23
+          }
+        },
+        {
+          "tid": "c5de3854",
+          "tn": "Hawthorn U16 Girls 3",
+          "gid": "7afd8db9",
+          "gn": "16 Girls Grading 1 - Pool 7C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 21,
+            "fouls": 23,
+            "fg": 8,
+            "pts": 18,
+            "wins": 7,
+            "losses": 14,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e2fad5cf",
+      "sn": "Summer 2024/25",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "6a1875e1",
+          "tn": "G13 Nunawading Kangas 3 (RQ)",
+          "gid": "e064b27f",
+          "gn": "Saturday U13 Girls BR",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 21,
+            "ft": 8,
+            "fg": 41,
+            "pts": 90,
+            "wins": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5e155c7d",
+      "sn": "Summer 2022/23",
+      "club": "Nunawading Kangas Basketball Club",
+      "regs": [
+        {
+          "tid": "1f289d72",
+          "tn": "G10 Nunawading Kangas 1",
+          "gid": "620d0316",
+          "gn": "Monday U10 Girls",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "d2663fd4",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 5,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 7
+          },
+          "gid": "12b4b521",
+          "gn": "GIRLS UNDER 16 C2"
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "07166c38",
+          "tn": "U14 TIMBERWOLVES FLAMES",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "aba5f16c",
+          "tn": "U14 TIMBERWOLVES FLAMES",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "88a2ed83",
+          "tn": "U16 Girls Cherry",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "79beca62",
+          "tn": "U14 Girls Cherry",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "a53a959a",
+          "tn": "U12 Girls Korowa Cherry",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "1e554dcc",
+          "tn": "U12 Girls Korowa Grey",
+          "gid": "84cb0122",
+          "gn": "Saturday U12 Girls Grading Pool 5",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-03T20:37:27.066Z",
+  "teams": [
+    {
+      "tid": "710d95de",
+      "sid": "15908988",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9db5d5ef",
+      "sid": "d8da6b7a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c5de3854",
+      "sid": "2ecfa56c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6a1875e1",
+      "sid": "e2fad5cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1f289d72",
+      "sid": "5e155c7d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d2663fd4",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07166c38",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aba5f16c",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88a2ed83",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79beca62",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a53a959a",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e554dcc",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.689Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "c81d84c7",
+      "sid": "e2fad5cf"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "016e3d19",
+    "05d9915e",
+    "06cd1f9d",
+    "0840ee19",
+    "0db688bf",
+    "0dd4f8ab",
+    "0e28adfd",
+    "1075ec19",
+    "1913d557",
+    "223fe213",
+    "2529a20e",
+    "2f368579",
+    "39e9cd21",
+    "3ec0e126",
+    "57338fe3",
+    "57bb8ed0",
+    "5b878bd2",
+    "5deecb77",
+    "7358cdd5",
+    "7cae9637",
+    "7d6c7ed8",
+    "7de7020b",
+    "7fb3f456",
+    "805e5a1c",
+    "842e7091",
+    "845eef6e",
+    "874ed376",
+    "8d4a89a8",
+    "8fcf1ff3",
+    "9037baa5",
+    "91091f9c",
+    "934be58b",
+    "95c2a098",
+    "982c7a23",
+    "994a164d",
+    "996cda3f",
+    "a043ec37",
+    "a0f22a2f",
+    "a86041bc",
+    "ade2bc6f",
+    "b5da8d15",
+    "b6d7e663",
+    "c2d4da1e",
+    "c3d9dd69",
+    "c81d84c7",
+    "d9f6e7db",
+    "e47c8c00",
+    "e976a86f",
+    "f1f6077d",
+    "f8c55e9d",
+    "fd6d8772"
+  ]
+}

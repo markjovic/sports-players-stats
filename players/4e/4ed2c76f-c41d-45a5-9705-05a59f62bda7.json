@@ -1,1 +1,364 @@
-{"uuid":"4ed2c76f-c41d-45a5-9705-05a59f62bda7","name":"Pia Stewart","gender":"Girls","sports":{"Basketball":{"gp":66,"pts":467,"fouls":70,"fg":226,"ft":15,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.14,"maxGamePTS":16,"maxGameThreePt":null,"wins":5,"losses":13,"draws":1,"winPct":0.26,"statsChecked":"2026-07-05T15:08:54.227Z"}},"seasons":[{"sid":"1eae7c99","sn":"Winter 2023","club":"Brighton Wolves Basketball Club","regs":[{"tid":"1d3c2d27","tn":"Magic Wolves U14 Girls","gid":"dbfbf785","gn":"Sunday U14 Girls 3","age":"U14","div":null,"stats":{"gp":11,"fouls":12,"ft":3,"fg":29,"pts":61,"wins":3,"losses":8}}]},{"sid":"ba7f19b2","sn":"Summer 2022/23","club":"Brighton Wolves Basketball Club","regs":[{"tid":"afba7a49","tn":"Magic Wolves U14 Girls","gid":"8523638e","gn":"Sunday U14 Girls DIV 2","age":"U14","div":"DIV 2","stats":{"gp":8,"fouls":12,"ft":3,"fg":23,"pts":49,"wins":2,"losses":5,"draws":1}}]},{"sid":"f0dbb83e","sn":"Spring 2022","regs":[{"tid":"5459fe3e","tn":"SJA Magic ","gid":"689feb37","gn":"Monday U12 Girls B1 Grade","age":"U12","div":null,"stats":{"gp":16,"fouls":16,"ft":4,"fg":72,"pts":148}}]},{"sid":"5d9e1a5b","sn":"Autumn 2022","regs":[{"tid":"a646147d","tn":"SJA Magic ","gid":"ab4ab7db","gn":"Monday U12 Girls B1","age":"U12","div":"B1","stats":{"gp":13,"fouls":9,"ft":1,"fg":36,"pts":73}},{"tid":"a646147d","tn":"SJA Magic ","gid":"6f8e0872","gn":"Monday U12 Girls B2","age":"U12","div":"B2","stats":{"gp":13,"fg":36,"pts":73,"ft":1,"fouls":9}}]},{"sid":"b795df4b","sn":"Spring 2021","regs":[{"tid":"010d99a5","tn":"SJA Magic ","gid":"425d2036","gn":"Monday U12 Girls B Grade","age":"U12","div":null,"stats":{"gp":5,"fouls":8,"ft":1,"fg":10,"pts":21}}]},{"sid":"cb6167fe","sn":"Autumn 2021","regs":[{"tid":"a3d30b42","tn":"SJA Magic","gid":"8655b953","gn":"Monday U12 Girls C2 Grade","age":"U12","div":null,"stats":{"gp":13,"fouls":13,"fg":56,"pts":115,"finals":1,"gfApps":1,"ft":3}},{"tid":"a3d30b42","tn":"SJA Magic","gid":"5fcf606d","gn":"Monday U12 Girls D1 Grade","age":"U12","div":null,"stats":{"gp":13,"fouls":13,"fg":56,"pts":115,"finals":1,"gfApps":1,"ft":3}},{"tid":"a3d30b42","tn":"SJA Magic","gid":"e0183741","gn":"Monday U12 Girls D2 Grade","age":"U12","div":null,"stats":{"gp":13,"fg":56,"pts":115,"finals":1,"gfApps":1,"ft":3,"fouls":13}}]},{"sid":"cb6167fe","sn":"Autumn 2021","regs":[{"tid":"a3d30b42","tn":"SJA Magic","gid":"8655b953","gn":"Monday U12 Girls C2 Grade","age":"U12","div":null,"stats":{"gp":13,"fouls":13,"ft":3,"fg":56,"pts":115,"finals":1,"gfApps":1}}]}],"updatedAt":"2026-05-31T20:42:14.533Z","teams":[{"tid":"1d3c2d27","sid":"1eae7c99","status":"COMPLETED"},{"tid":"afba7a49","sid":"ba7f19b2","status":"COMPLETED"},{"tid":"5459fe3e","sid":"f0dbb83e","status":"COMPLETED"},{"tid":"a646147d","sid":"5d9e1a5b","status":"COMPLETED"},{"tid":"010d99a5","sid":"b795df4b","status":"COMPLETED"},{"tid":"a3d30b42","sid":"cb6167fe","status":"COMPLETED"},{"tid":"a3d30b42","sid":"cb6167fe","status":"COMPLETED"},{"tid":"47fd0725","sid":"4f7c5b8c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:30:20.193Z","records":{"maxGamePTS":{"v":16,"gameKey":"723f8bb2","sid":"cb6167fe"},"maxGameThreePt":{"v":null}},"games":["015c84b3","06d89776","06dff08d","07cf8e38","08119a8c","0ae2c8dc","0e52f738","10213e06","11ca2b61","13911506","13f9c1f0","15b590d8","1a456bf3","1acce14b","22178917","241f9274","29008f0b","298c470c","30833a75","3256757c","3d902caf","3f80e5be","4320ee06","4337bfd9","4d2a0642","53373e66","538558c8","546c734b","58fe678d","5a050ba8","60b86bfc","64f00dbf","6a00e7b1","6c7a177c","70ae5c3e","71af458e","723f8bb2","79a271e3","7ad4f02e","7e734811","859ba88b","89e4b92e","941c94d2","9923054b","a425dfa9","a5c53280","a8ba1908","a98b9dda","b170b3d8","bcc2e56d","beeafe12","c1312dcf","cc9d4c53","d08ea87c","d7770a08","d99baba4","dacef1ea","daf40008","dcb4af23","e558a4d7","e58fd8f3","e9491e92","f1fc9394","f8d7d7ad","fc8bc78f"]}
+{
+  "uuid": "4ed2c76f-c41d-45a5-9705-05a59f62bda7",
+  "name": "Pia Stewart",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 66,
+      "pts": 467,
+      "fouls": 70,
+      "fg": 226,
+      "ft": 15,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.14,
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 13,
+      "draws": 1,
+      "winPct": 0.26,
+      "statsChecked": "2026-07-05T15:08:54.227Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1eae7c99",
+      "sn": "Winter 2023",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "1d3c2d27",
+          "tn": "Magic Wolves U14 Girls",
+          "gid": "dbfbf785",
+          "gn": "Sunday U14 Girls 3",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 29,
+            "pts": 61,
+            "wins": 3,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ba7f19b2",
+      "sn": "Summer 2022/23",
+      "club": "Brighton Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "afba7a49",
+          "tn": "Magic Wolves U14 Girls",
+          "gid": "8523638e",
+          "gn": "Sunday U14 Girls DIV 2",
+          "age": "U14",
+          "div": "DIV 2",
+          "stats": {
+            "gp": 8,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 23,
+            "pts": 49,
+            "wins": 2,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f0dbb83e",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "5459fe3e",
+          "tn": "SJA Magic ",
+          "gid": "689feb37",
+          "gn": "Monday U12 Girls B1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 16,
+            "ft": 4,
+            "fg": 72,
+            "pts": 148
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5d9e1a5b",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "a646147d",
+          "tn": "SJA Magic ",
+          "gid": "ab4ab7db",
+          "gn": "Monday U12 Girls B1",
+          "age": "U12",
+          "div": "B1",
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 36,
+            "pts": 73
+          }
+        },
+        {
+          "tid": "a646147d",
+          "tn": "SJA Magic ",
+          "gid": "6f8e0872",
+          "gn": "Monday U12 Girls B2",
+          "age": "U12",
+          "div": "B2",
+          "stats": {
+            "gp": 13,
+            "fg": 36,
+            "pts": 73,
+            "ft": 1,
+            "fouls": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b795df4b",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "010d99a5",
+          "tn": "SJA Magic ",
+          "gid": "425d2036",
+          "gn": "Monday U12 Girls B Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 10,
+            "pts": 21
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cb6167fe",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "a3d30b42",
+          "tn": "SJA Magic",
+          "gid": "8655b953",
+          "gn": "Monday U12 Girls C2 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 13,
+            "fg": 56,
+            "pts": 115,
+            "finals": 1,
+            "gfApps": 1,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "a3d30b42",
+          "tn": "SJA Magic",
+          "gid": "5fcf606d",
+          "gn": "Monday U12 Girls D1 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 13,
+            "fg": 56,
+            "pts": 115,
+            "finals": 1,
+            "gfApps": 1,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "a3d30b42",
+          "tn": "SJA Magic",
+          "gid": "e0183741",
+          "gn": "Monday U12 Girls D2 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 56,
+            "pts": 115,
+            "finals": 1,
+            "gfApps": 1,
+            "ft": 3,
+            "fouls": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cb6167fe",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "a3d30b42",
+          "tn": "SJA Magic",
+          "gid": "8655b953",
+          "gn": "Monday U12 Girls C2 Grade",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 56,
+            "pts": 115,
+            "finals": 1,
+            "gfApps": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4f7c5b8c",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "47fd0725",
+          "tn": "SJA Magic ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T20:42:14.533Z",
+  "teams": [
+    {
+      "tid": "1d3c2d27",
+      "sid": "1eae7c99",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "afba7a49",
+      "sid": "ba7f19b2",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5459fe3e",
+      "sid": "f0dbb83e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a646147d",
+      "sid": "5d9e1a5b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "010d99a5",
+      "sid": "b795df4b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a3d30b42",
+      "sid": "cb6167fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "47fd0725",
+      "sid": "4f7c5b8c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.730Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "723f8bb2",
+      "sid": "cb6167fe"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "015c84b3",
+    "06d89776",
+    "06dff08d",
+    "07cf8e38",
+    "08119a8c",
+    "0ae2c8dc",
+    "0e52f738",
+    "10213e06",
+    "11ca2b61",
+    "13911506",
+    "13f9c1f0",
+    "15b590d8",
+    "1a456bf3",
+    "1acce14b",
+    "22178917",
+    "241f9274",
+    "29008f0b",
+    "298c470c",
+    "30833a75",
+    "3256757c",
+    "3d902caf",
+    "3f80e5be",
+    "4320ee06",
+    "4337bfd9",
+    "4d2a0642",
+    "53373e66",
+    "538558c8",
+    "546c734b",
+    "58fe678d",
+    "5a050ba8",
+    "60b86bfc",
+    "64f00dbf",
+    "6a00e7b1",
+    "6c7a177c",
+    "70ae5c3e",
+    "71af458e",
+    "723f8bb2",
+    "79a271e3",
+    "7ad4f02e",
+    "7e734811",
+    "859ba88b",
+    "89e4b92e",
+    "941c94d2",
+    "9923054b",
+    "a425dfa9",
+    "a5c53280",
+    "a8ba1908",
+    "a98b9dda",
+    "b170b3d8",
+    "bcc2e56d",
+    "beeafe12",
+    "c1312dcf",
+    "cc9d4c53",
+    "d08ea87c",
+    "d7770a08",
+    "d99baba4",
+    "dacef1ea",
+    "daf40008",
+    "dcb4af23",
+    "e558a4d7",
+    "e58fd8f3",
+    "e9491e92",
+    "f1fc9394",
+    "f8d7d7ad",
+    "fc8bc78f"
+  ]
+}

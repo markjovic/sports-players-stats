@@ -1,1 +1,216 @@
-{"uuid":"95f7fde7-f138-47a9-bc62-36498e605b3b","name":"Josh Thoonen","gender":"Men","sports":{"Basketball":{"gp":24,"pts":261,"fouls":13,"fg":63,"ft":12,"threePt":41,"foulOuts":{},"maxGamePTS":20,"maxGameThreePt":4,"losses":24,"winPct":0,"statsChecked":"2026-07-09T18:31:43.463Z"}},"seasons":[{"sid":"04854767","sn":"Winter 2026","club":"Dream Team Basketball Club (Casey)","regs":[{"tid":"27526c4a","tn":"Dreamteam United","gid":"318fd787","gn":"Thursday Men B Grade","age":null,"div":null,"stats":{"gp":14,"ft":10,"fg":48,"threePt":25,"pts":181,"fouls":9,"losses":12}},{"tid":"27526c4a","tn":"Dreamteam United","gid":"5c4fd930","gn":"Thursday Men A Grade","age":null,"div":null,"stats":{"gp":14,"fouls":9,"ft":10,"fg":48,"threePt":25,"pts":181,"losses":12}}]},{"sid":"fb7865be","sn":"Summer 2020/21","regs":[{"tid":"ed6b1354","tn":"Kmart Ballers","gid":"a4f2d256","gn":"Tuesday Men C1 Grade","age":null,"div":null,"stats":{"gp":1,"threePt":3,"pts":9}},{"tid":"59103d49","stats":{"gp":9,"pts":71,"fg":15,"ft":2,"threePt":13,"fouls":4}}]},{"sid":"fb7865be","sn":"Summer 2020/21","regs":[{"tid":"59103d49","tn":"The Movs","gid":"cb41f268","gn":"Thursday Men A Grade","age":null,"div":null,"stats":{"gp":9,"fouls":4,"fg":15,"threePt":13,"pts":71,"ft":2}},{"tid":"59103d49","tn":"The Movs","gid":"afbf9d04","gn":"Thursday Men B Grade","age":null,"div":null,"stats":{"gp":9,"ft":2,"fg":15,"threePt":13,"pts":71,"fouls":4}}]}],"updatedAt":"2026-07-09T18:08:51.415Z","teams":[{"tid":"27526c4a","sid":"04854767","status":"ACTIVE"},{"tid":"ed6b1354","sid":"fb7865be","status":"COMPLETED"},{"tid":"59103d49","sid":"fb7865be","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:29:05.909Z","records":{"maxGamePTS":{"v":20,"gameKey":"21ee56e2","sid":"04854767"},"maxGameThreePt":{"v":4,"gameKey":"c5e9b064","sid":"04854767"}},"games":["0c35ea85","0c405a20","0e1fe93c","0f3c34a7","111be674","1eab3a6e","38a69828","39381acd","4ba9393a","4dcbe633","599c766c","8156912d","a006d85e","a1be574b","ae01e275","c5e9b064","cee96399","d0789391","d461fb6d","e00216d5","e121b6fe","ed387c89","ee3a0009"],"gameTids":{"21ee56e2":"27526c4a","0c35ea85":"27526c4a","4dcbe633":"27526c4a","d461fb6d":"27526c4a","0f3c34a7":"27526c4a","38a69828":"27526c4a","599c766c":"27526c4a","a006d85e":"27526c4a","c5e9b064":"27526c4a","4ba9393a":"27526c4a","e00216d5":"27526c4a","ae01e275":"27526c4a","0e1fe93c":"27526c4a","a1be574b":"27526c4a","ee3a0009":"ed6b1354","e121b6fe":"59103d49","111be674":"59103d49","d0789391":"59103d49","0c405a20":"59103d49","1eab3a6e":"59103d49","8156912d":"59103d49","39381acd":"59103d49","ed387c89":"59103d49","cee96399":"59103d49"}}
+{
+  "uuid": "95f7fde7-f138-47a9-bc62-36498e605b3b",
+  "name": "Josh Thoonen",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 24,
+      "pts": 261,
+      "fouls": 13,
+      "fg": 63,
+      "ft": 12,
+      "threePt": 41,
+      "foulOuts": {},
+      "maxGamePTS": 20,
+      "maxGameThreePt": 4,
+      "losses": 24,
+      "winPct": 0,
+      "statsChecked": "2026-07-09T18:31:43.463Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "04854767",
+      "sn": "Winter 2026",
+      "club": "Dream Team Basketball Club (Casey)",
+      "regs": [
+        {
+          "tid": "27526c4a",
+          "tn": "Dreamteam United",
+          "gid": "318fd787",
+          "gn": "Thursday Men B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "ft": 10,
+            "fg": 48,
+            "threePt": 25,
+            "pts": 181,
+            "fouls": 9,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "27526c4a",
+          "tn": "Dreamteam United",
+          "gid": "5c4fd930",
+          "gn": "Thursday Men A Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "ft": 10,
+            "fg": 48,
+            "threePt": 25,
+            "pts": 181,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fb7865be",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "ed6b1354",
+          "tn": "Kmart Ballers",
+          "gid": "d0787be0",
+          "gn": "Tuesday Men C2 Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "threePt": 3,
+            "pts": 9
+          }
+        },
+        {
+          "tid": "59103d49",
+          "stats": {
+            "gp": 9,
+            "pts": 71,
+            "fg": 15,
+            "ft": 2,
+            "threePt": 13,
+            "fouls": 4
+          },
+          "gid": "cb41f268",
+          "gn": "Thursday Men A Grade"
+        }
+      ]
+    },
+    {
+      "sid": "fb7865be",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "59103d49",
+          "tn": "The Movs",
+          "gid": "cb41f268",
+          "gn": "Thursday Men A Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 4,
+            "fg": 15,
+            "threePt": 13,
+            "pts": 71,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "59103d49",
+          "tn": "The Movs",
+          "gid": "afbf9d04",
+          "gn": "Thursday Men B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "ft": 2,
+            "fg": 15,
+            "threePt": 13,
+            "pts": 71,
+            "fouls": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:08:51.415Z",
+  "teams": [
+    {
+      "tid": "27526c4a",
+      "sid": "04854767",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed6b1354",
+      "sid": "fb7865be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "59103d49",
+      "sid": "fb7865be",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.938Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 20,
+      "gameKey": "21ee56e2",
+      "sid": "04854767"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "c5e9b064",
+      "sid": "04854767"
+    }
+  },
+  "games": [
+    "0c35ea85",
+    "0c405a20",
+    "0e1fe93c",
+    "0f3c34a7",
+    "111be674",
+    "1eab3a6e",
+    "38a69828",
+    "39381acd",
+    "4ba9393a",
+    "4dcbe633",
+    "599c766c",
+    "8156912d",
+    "a006d85e",
+    "a1be574b",
+    "ae01e275",
+    "c5e9b064",
+    "cee96399",
+    "d0789391",
+    "d461fb6d",
+    "e00216d5",
+    "e121b6fe",
+    "ed387c89",
+    "ee3a0009"
+  ],
+  "gameTids": {
+    "21ee56e2": "27526c4a",
+    "0c35ea85": "27526c4a",
+    "4dcbe633": "27526c4a",
+    "d461fb6d": "27526c4a",
+    "0f3c34a7": "27526c4a",
+    "38a69828": "27526c4a",
+    "599c766c": "27526c4a",
+    "a006d85e": "27526c4a",
+    "c5e9b064": "27526c4a",
+    "4ba9393a": "27526c4a",
+    "e00216d5": "27526c4a",
+    "ae01e275": "27526c4a",
+    "0e1fe93c": "27526c4a",
+    "a1be574b": "27526c4a",
+    "ee3a0009": "ed6b1354",
+    "e121b6fe": "59103d49",
+    "111be674": "59103d49",
+    "d0789391": "59103d49",
+    "0c405a20": "59103d49",
+    "1eab3a6e": "59103d49",
+    "8156912d": "59103d49",
+    "39381acd": "59103d49",
+    "ed387c89": "59103d49",
+    "cee96399": "59103d49"
+  }
+}

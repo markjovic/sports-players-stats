@@ -1,1 +1,169 @@
-{"uuid":"13d9929f-45e4-4e19-9a68-31a3557197af","name":"Ben Grahame","gender":"Mixed","sports":{"Basketball":{"gp":18,"pts":107,"fouls":13,"fg":41,"ft":7,"threePt":6,"foulOuts":{},"maxGamePTS":12,"maxGameThreePt":3,"wins":6,"losses":11,"winPct":0.35,"statsChecked":"2026-07-05T15:46:17.001Z"}},"seasons":[{"sid":"23270ce4","sn":"Winter 2026","club":"Try Boys Basketball Club","regs":[{"tid":"47bf40a8","tn":"Try Boys AA Black Bears Div 2","gid":"b2e2b144","gn":"All Abilities 1","age":null,"div":null,"stats":{"gp":7,"pts":55,"fg":26,"ft":3,"fouls":4,"wins":1,"losses":5}}]},{"sid":"c36e5626","sn":"Winter 2026","club":"Try Boys Basketball Club","regs":[{"tid":"2f52885f","tn":"Try Boys GRIZZLIES U23 Boys Div 3 (2)","gid":"4702ef61","gn":"(CLUB) Thursday U20/23 Boys 1","age":"U20","div":null,"stats":{"gp":9,"pts":40,"threePt":2,"fg":15,"ft":4,"fouls":8,"wins":4,"losses":5}},{"tid":"60d7fa42","stats":{"gp":1,"pts":3,"threePt":1,"fouls":1,"wins":1}},{"tid":"0becf0c2","stats":{"losses":1,"gp":1,"pts":9,"threePt":3}}]}],"updatedAt":"2026-06-03T03:27:06.350Z","teams":[{"tid":"47bf40a8","sid":"23270ce4","status":"ACTIVE"},{"tid":"2f52885f","sid":"c36e5626","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T11:58:13.886Z","records":{"maxGamePTS":{"v":12,"gameKey":"faa05b35","sid":"23270ce4"},"maxGameThreePt":{"v":3,"gameKey":"130433aa","sid":"c36e5626"}},"games":["130433aa","1f8f0769","21f86e43","414392f0","6986e6d7","6df34941","71681031","7dfbb483","8ef9d9d8","9cfe0a61","aadd767f","c478d6ee","caf657b8","d4c2c57a","d9510219","faa05b35","fcd76c44"],"gameTids":{"71681031":"2f52885f","faa05b35":"47bf40a8","5e522a9c":"47bf40a8","6df34941":"47bf40a8","d9510219":"47bf40a8","21f86e43":"47bf40a8","6986e6d7":"47bf40a8","9cfe0a61":"47bf40a8","130433aa":"0becf0c2","c478d6ee":"2f52885f","414392f0":"2f52885f","d4c2c57a":"2f52885f","8ef9d9d8":"2f52885f","caf657b8":"2f52885f","fcd76c44":"2f52885f","1f8f0769":"2f52885f","aadd767f":"2f52885f","7dfbb483":"60d7fa42"}}
+{
+  "uuid": "13d9929f-45e4-4e19-9a68-31a3557197af",
+  "name": "Ben Grahame",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 18,
+      "pts": 107,
+      "fouls": 13,
+      "fg": 41,
+      "ft": 7,
+      "threePt": 6,
+      "foulOuts": {},
+      "maxGamePTS": 12,
+      "maxGameThreePt": 3,
+      "wins": 6,
+      "losses": 11,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:46:17.001Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "23270ce4",
+      "sn": "Winter 2026",
+      "club": "Try Boys Basketball Club",
+      "regs": [
+        {
+          "tid": "47bf40a8",
+          "tn": "Try Boys AA Black Bears Div 2",
+          "gid": "b2e2b144",
+          "gn": "All Abilities 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 55,
+            "fg": 26,
+            "ft": 3,
+            "fouls": 4,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c36e5626",
+      "sn": "Winter 2026",
+      "club": "Try Boys Basketball Club",
+      "regs": [
+        {
+          "tid": "2f52885f",
+          "tn": "Try Boys GRIZZLIES U23 Boys Div 3 (2)",
+          "gid": "497b0d2e",
+          "gn": "(CLUB) Thursday U20/23 Boys 2",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 40,
+            "threePt": 2,
+            "fg": 15,
+            "ft": 4,
+            "fouls": 8,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "60d7fa42",
+          "stats": {
+            "gp": 1,
+            "pts": 3,
+            "threePt": 1,
+            "fouls": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "0becf0c2",
+          "stats": {
+            "losses": 1,
+            "gp": 1,
+            "pts": 9,
+            "threePt": 3
+          },
+          "gid": "c72eef00",
+          "gn": "(SOCIAL) Thursday Senior Men 2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T03:27:06.350Z",
+  "teams": [
+    {
+      "tid": "47bf40a8",
+      "sid": "23270ce4",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2f52885f",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "60d7fa42",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0becf0c2",
+      "sid": "c36e5626",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.106Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "faa05b35",
+      "sid": "23270ce4"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "130433aa",
+      "sid": "c36e5626"
+    }
+  },
+  "games": [
+    "130433aa",
+    "1f8f0769",
+    "21f86e43",
+    "414392f0",
+    "6986e6d7",
+    "6df34941",
+    "71681031",
+    "7dfbb483",
+    "8ef9d9d8",
+    "9cfe0a61",
+    "aadd767f",
+    "c478d6ee",
+    "caf657b8",
+    "d4c2c57a",
+    "d9510219",
+    "faa05b35",
+    "fcd76c44"
+  ],
+  "gameTids": {
+    "71681031": "2f52885f",
+    "faa05b35": "47bf40a8",
+    "5e522a9c": "47bf40a8",
+    "6df34941": "47bf40a8",
+    "d9510219": "47bf40a8",
+    "21f86e43": "47bf40a8",
+    "6986e6d7": "47bf40a8",
+    "9cfe0a61": "47bf40a8",
+    "130433aa": "0becf0c2",
+    "c478d6ee": "2f52885f",
+    "414392f0": "2f52885f",
+    "d4c2c57a": "2f52885f",
+    "8ef9d9d8": "2f52885f",
+    "caf657b8": "2f52885f",
+    "fcd76c44": "2f52885f",
+    "1f8f0769": "2f52885f",
+    "aadd767f": "2f52885f",
+    "7dfbb483": "60d7fa42"
+  }
+}

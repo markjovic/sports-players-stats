@@ -1,1 +1,114 @@
-{"uuid":"94fa3dab-fe16-4735-a197-248d9aae0ed4","name":"Hany Ezzat","gender":"Men","sports":{"Basketball":{"gp":11,"pts":33,"fouls":21,"fg":10,"ft":1,"threePt":4,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":2,"wins":2,"losses":5,"winPct":0.29,"statsChecked":"2026-07-06T19:11:00.403Z"}},"seasons":[{"sid":"b8849070","sn":"Autumn 2026","regs":[{"tid":"ee33472c","tn":"70s Melbourne Rooftop Ballers","gid":"d203a8a3","gn":"Monday Open Men Premier","age":"Senior","div":null,"stats":{"gp":7,"fouls":10,"ft":1,"fg":6,"threePt":3,"pts":22,"wins":2,"losses":5}}]},{"sid":"ec7d3f73","regs":[{"tid":"de51a650","stats":{"gp":4,"pts":11,"fg":4,"threePt":1,"fouls":11}},{"tid":"de51a650","tn":"","gid":"b889d13a","gn":"Monday Senior Men  Premier 0","div":null,"stats":{"gp":4,"pts":11,"fg":4,"threePt":1,"fouls":11}}]}],"updatedAt":"2026-07-06T18:30:52.544Z","teams":[{"tid":"ee33472c","sid":"b8849070","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:50.153Z","games":["56a0d9ed","a4d7e931","bfb6953c","c492e2c1","e932e53a","f077e675","f1d0571c"],"records":{"maxGamePTS":{"v":10,"gameKey":"f077e675","sid":"b8849070"},"maxGameThreePt":{"v":2,"gameKey":"f077e675","sid":"b8849070"}}}
+{
+  "uuid": "94fa3dab-fe16-4735-a197-248d9aae0ed4",
+  "name": "Hany Ezzat",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 33,
+      "fouls": 21,
+      "fg": 10,
+      "ft": 1,
+      "threePt": 4,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "wins": 2,
+      "losses": 5,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-06T19:11:00.403Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b8849070",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "ee33472c",
+          "tn": "70s Melbourne Rooftop Ballers",
+          "gid": "d203a8a3",
+          "gn": "Monday Open Men Premier",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 1,
+            "fg": 6,
+            "threePt": 3,
+            "pts": 22,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec7d3f73",
+      "regs": [
+        {
+          "tid": "de51a650",
+          "stats": {
+            "gp": 4,
+            "pts": 11,
+            "fg": 4,
+            "threePt": 1,
+            "fouls": 11
+          },
+          "gid": "b889d13a",
+          "gn": "Monday Senior Men  Premier 0"
+        },
+        {
+          "tid": "de51a650",
+          "tn": "",
+          "gid": "b889d13a",
+          "gn": "Monday Senior Men  Premier 0",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 11,
+            "fg": 4,
+            "threePt": 1,
+            "fouls": 11
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:52.544Z",
+  "teams": [
+    {
+      "tid": "ee33472c",
+      "sid": "b8849070",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de51a650",
+      "sid": "ec7d3f73",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.920Z",
+  "games": [
+    "56a0d9ed",
+    "a4d7e931",
+    "bfb6953c",
+    "c492e2c1",
+    "e932e53a",
+    "f077e675",
+    "f1d0571c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "f077e675",
+      "sid": "b8849070"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "f077e675",
+      "sid": "b8849070"
+    }
+  }
+}

@@ -1,1 +1,134 @@
-{"uuid":"71d8e21f-d347-4e65-ad7d-f478cfb7580e","gender":null,"sports":{"Basketball":{"gp":16,"pts":69,"fouls":19,"fg":31,"ft":4,"threePt":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"wins":3,"losses":11,"winPct":0.21,"statsChecked":"2026-07-05T16:14:04.652Z"}},"seasons":[{"sid":"1cb2288a","sn":"Summer 2020/21","club":null,"regs":[{"tid":"4b1f094e","tn":"Mono","gid":"fd29d441","gn":"Wednesday Over 30's Men Division 3","stats":{"gp":2,"pts":4,"fouls":1,"fg":2}}]},{"sid":"e8437d1b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"bf969319","tn":"Prestige worldwide","gid":"c3b978ea","gn":"Monday Open Men D/DRES","stats":{"gp":14,"pts":65,"fouls":18,"fg":29,"ft":4,"threePt":1,"finals":1,"gfApps":1,"wins":3,"losses":11}}]}],"updatedAt":"2026-06-11T23:41:01.746Z","records":{"maxGamePTS":{"v":13,"gameKey":"ae122403","sid":"e8437d1b"},"maxGameThreePt":{"v":1,"gameKey":"c25e02c1","sid":"e8437d1b"}},"games":["16883b79","1bf1af0a","2a4a2f2d","540ccc78","602894f7","6f173a7a","804cbb7e","8295830e","87aa6e33","89f59f1f","ae122403","b930da93","c25e02c1","c409b836","dd1b67d9","e0118040"],"name":"Summer 2020/21"}
+{
+  "uuid": "71d8e21f-d347-4e65-ad7d-f478cfb7580e",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 69,
+      "fouls": 19,
+      "fg": 31,
+      "ft": 4,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 11,
+      "winPct": 0.21,
+      "statsChecked": "2026-07-05T16:14:04.652Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1cb2288a",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "4b1f094e",
+          "tn": "Mono",
+          "gid": "fd29d441",
+          "gn": "Wednesday Over 30's Men Division 3",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "fouls": 1,
+            "fg": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e8437d1b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "bf969319",
+          "tn": "Prestige worldwide",
+          "gid": "c3b978ea",
+          "gn": "Monday Open Men D/DRES",
+          "stats": {
+            "gp": 14,
+            "pts": 65,
+            "fouls": 18,
+            "fg": 29,
+            "ft": 4,
+            "threePt": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b200c0f6",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "fa08b240",
+          "tn": "Prestige worldwide - WITHDRAWN",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:01.746Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "ae122403",
+      "sid": "e8437d1b"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "c25e02c1",
+      "sid": "e8437d1b"
+    }
+  },
+  "games": [
+    "16883b79",
+    "1bf1af0a",
+    "2a4a2f2d",
+    "540ccc78",
+    "602894f7",
+    "6f173a7a",
+    "804cbb7e",
+    "8295830e",
+    "87aa6e33",
+    "89f59f1f",
+    "ae122403",
+    "b930da93",
+    "c25e02c1",
+    "c409b836",
+    "dd1b67d9",
+    "e0118040"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "4b1f094e",
+      "sid": "1cb2288a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf969319",
+      "sid": "e8437d1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fa08b240",
+      "sid": "b200c0f6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.063Z"
+}

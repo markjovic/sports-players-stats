@@ -1,1 +1,310 @@
-{"uuid":"80bcfe90-a257-4d44-b6d3-aa5d6f2eda9e","name":"Ruben McEvoy","gender":"Boys","sports":{"Basketball":{"gp":44,"pts":138,"fouls":35,"fg":44,"ft":50,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":17,"losses":25,"draws":2,"winPct":0.39,"statsChecked":"2026-07-05T15:49:46.240Z"}},"seasons":[{"sid":"f9057863","sn":"Autumn 2026","club":"Wodonga Wolves Basketball Club","regs":[{"tid":"17a60df4","tn":"Wodonga Wolves U10 Boys Navy","gid":"9acf43ed","gn":"U10 Boys","age":"U10","div":null,"stats":{"gp":3,"fouls":2,"fg":1,"pts":2,"wins":1,"losses":1,"draws":1}}]},{"sid":"cc855f21","sn":"Autumn 2026","regs":[{"tid":"b607374e","tn":"Commanders","gid":"b352f6f8","gn":"Friday U10 Boys North","age":"U10","div":null,"stats":{"gp":9,"fouls":5,"ft":12,"fg":11,"pts":34,"wins":4,"losses":5}},{"tid":"0a265072","tn":"Z1C","gid":"b352f6f8","gn":"Friday U10 Boys North","age":"U10","div":null,"stats":{"gp":2,"fouls":2,"ft":1,"fg":3,"pts":7,"losses":2}}]},{"sid":"92efb831","sn":"2026","regs":[{"tid":"32639aab","tn":"Wodonga Wolves U10 Boys Navy","gid":"84b68490","gn":"U10 Boys","age":"U10","div":null,"stats":{"gp":4,"ft":1,"fg":1,"pts":3,"wins":2,"losses":1,"draws":1}}]},{"sid":"f0c9ba03","sn":"Summer 2025/26","regs":[{"tid":"639fd6b6","tn":"Twirls","gid":"8ae4df5c","gn":"Thursday U8 Boys","age":"U8","div":null,"stats":{"gp":15,"fouls":8,"ft":21,"fg":17,"pts":55,"wins":9,"losses":6}}]},{"sid":"21cd70ec","sn":"Autumn 2025","regs":[{"tid":"5b5517ff","tn":"Crunchies","gid":"382b1d9d","gn":"Thursday U8 Boys","age":"U8","div":null,"stats":{"gp":11,"fouls":18,"ft":15,"fg":11,"pts":37,"wins":1,"losses":10}}]}],"updatedAt":"2026-07-04T05:59:40.572Z","teams":[{"tid":"b607374e","sid":"cc855f21","status":"ACTIVE"},{"tid":"17a60df4","sid":"f9057863","status":"COMPLETED"},{"tid":"32639aab","sid":"92efb831","status":"COMPLETED"},{"tid":"639fd6b6","sid":"f0c9ba03","status":"COMPLETED"},{"tid":"5b5517ff","sid":"21cd70ec","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:29.860Z","records":{"maxGamePTS":{"v":10,"gameKey":"dab518c2","sid":"f0c9ba03"},"maxGameThreePt":{"v":null}},"games":["02551f11","0bbc082f","10836a06","1195b728","11f84432","17760791","1d613672","25215b6b","26e385c5","2af74c8d","2f6ded84","3ff36664","42423330","46ad9bc4","4a081e7d","4c367a24","4d6a42b7","4e705d9c","5ae4ab67","6670f2d2","6ccf187a","6dba3b2f","737502ac","7426e45f","76f96ad2","82c4f0be","832d7904","8cbc703b","9465ea22","9902f001","9ae3234f","9cf54588","9e9c75e3","a6db4b36","b030f809","b9202c6d","c6b96aa1","dab518c2","df75dbe7","e0428a73","e929c55b","f64e36ea","f69d5afb","fffe1444"],"gameTids":{"17760791":"5b5517ff","42423330":"639fd6b6","e0428a73":"17a60df4","9465ea22":"17a60df4","4c367a24":"17a60df4","2f6ded84":"b607374e","4a081e7d":"b607374e","0bbc082f":"b607374e","a6db4b36":"b607374e","6dba3b2f":"b607374e","f69d5afb":"b607374e","1195b728":"b607374e","9cf54588":"b607374e","b030f809":"b607374e","c6b96aa1":"0a265072","25215b6b":"0a265072","8cbc703b":"32639aab","9ae3234f":"32639aab","4d6a42b7":"32639aab","4e705d9c":"32639aab","dab518c2":"639fd6b6","e929c55b":"639fd6b6","6670f2d2":"639fd6b6","b9202c6d":"639fd6b6","82c4f0be":"639fd6b6","737502ac":"639fd6b6","f64e36ea":"639fd6b6","26e385c5":"639fd6b6","46ad9bc4":"639fd6b6","832d7904":"639fd6b6","02551f11":"639fd6b6","1d613672":"639fd6b6","2af74c8d":"639fd6b6","7426e45f":"639fd6b6","3ff36664":"5b5517ff","9902f001":"5b5517ff","11f84432":"5b5517ff","5ae4ab67":"5b5517ff","fffe1444":"5b5517ff","10836a06":"5b5517ff","df75dbe7":"5b5517ff","6ccf187a":"5b5517ff","76f96ad2":"5b5517ff","9e9c75e3":"5b5517ff"}}
+{
+  "uuid": "80bcfe90-a257-4d44-b6d3-aa5d6f2eda9e",
+  "name": "Ruben McEvoy",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 44,
+      "pts": 138,
+      "fouls": 35,
+      "fg": 44,
+      "ft": 50,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 17,
+      "losses": 25,
+      "draws": 2,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T15:49:46.240Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f9057863",
+      "sn": "Autumn 2026",
+      "club": "Wodonga Wolves Basketball Club",
+      "regs": [
+        {
+          "tid": "17a60df4",
+          "tn": "Wodonga Wolves U10 Boys Navy",
+          "gid": "9acf43ed",
+          "gn": "U10 Boys",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc855f21",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "b607374e",
+          "tn": "Commanders",
+          "gid": "b352f6f8",
+          "gn": "Friday U10 Boys North",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 5,
+            "ft": 12,
+            "fg": 11,
+            "pts": 34,
+            "wins": 4,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "0a265072",
+          "tn": "Z1C",
+          "gid": "b352f6f8",
+          "gn": "Friday U10 Boys North",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 3,
+            "pts": 7,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "92efb831",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "32639aab",
+          "tn": "Wodonga Wolves U10 Boys Navy",
+          "gid": "84b68490",
+          "gn": "U10 Boys",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "wins": 2,
+            "losses": 1,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f0c9ba03",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "639fd6b6",
+          "tn": "Twirls",
+          "gid": "8ae4df5c",
+          "gn": "Thursday U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "ft": 21,
+            "fg": 17,
+            "pts": 55,
+            "wins": 9,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21cd70ec",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "5b5517ff",
+          "tn": "Crunchies",
+          "gid": "382b1d9d",
+          "gn": "Thursday U8 Boys",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "ft": 15,
+            "fg": 11,
+            "pts": 37,
+            "wins": 1,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "77b1ba16",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "16a48a90",
+          "tn": "Titans",
+          "gid": "e3a73b60",
+          "gn": "U10 Boys Div 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:59:40.572Z",
+  "teams": [
+    {
+      "tid": "17a60df4",
+      "sid": "f9057863",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b607374e",
+      "sid": "cc855f21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a265072",
+      "sid": "cc855f21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "32639aab",
+      "sid": "92efb831",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "639fd6b6",
+      "sid": "f0c9ba03",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5b5517ff",
+      "sid": "21cd70ec",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "16a48a90",
+      "sid": "77b1ba16",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.975Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "dab518c2",
+      "sid": "f0c9ba03"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "02551f11",
+    "0bbc082f",
+    "10836a06",
+    "1195b728",
+    "11f84432",
+    "17760791",
+    "1d613672",
+    "25215b6b",
+    "26e385c5",
+    "2af74c8d",
+    "2f6ded84",
+    "3ff36664",
+    "42423330",
+    "46ad9bc4",
+    "4a081e7d",
+    "4c367a24",
+    "4d6a42b7",
+    "4e705d9c",
+    "5ae4ab67",
+    "6670f2d2",
+    "6ccf187a",
+    "6dba3b2f",
+    "737502ac",
+    "7426e45f",
+    "76f96ad2",
+    "82c4f0be",
+    "832d7904",
+    "8cbc703b",
+    "9465ea22",
+    "9902f001",
+    "9ae3234f",
+    "9cf54588",
+    "9e9c75e3",
+    "a6db4b36",
+    "b030f809",
+    "b9202c6d",
+    "c6b96aa1",
+    "dab518c2",
+    "df75dbe7",
+    "e0428a73",
+    "e929c55b",
+    "f64e36ea",
+    "f69d5afb",
+    "fffe1444"
+  ],
+  "gameTids": {
+    "17760791": "5b5517ff",
+    "42423330": "639fd6b6",
+    "e0428a73": "17a60df4",
+    "9465ea22": "17a60df4",
+    "4c367a24": "17a60df4",
+    "2f6ded84": "b607374e",
+    "4a081e7d": "b607374e",
+    "0bbc082f": "b607374e",
+    "a6db4b36": "b607374e",
+    "6dba3b2f": "b607374e",
+    "f69d5afb": "b607374e",
+    "1195b728": "b607374e",
+    "9cf54588": "b607374e",
+    "b030f809": "b607374e",
+    "c6b96aa1": "0a265072",
+    "25215b6b": "0a265072",
+    "8cbc703b": "32639aab",
+    "9ae3234f": "32639aab",
+    "4d6a42b7": "32639aab",
+    "4e705d9c": "32639aab",
+    "dab518c2": "639fd6b6",
+    "e929c55b": "639fd6b6",
+    "6670f2d2": "639fd6b6",
+    "b9202c6d": "639fd6b6",
+    "82c4f0be": "639fd6b6",
+    "737502ac": "639fd6b6",
+    "f64e36ea": "639fd6b6",
+    "26e385c5": "639fd6b6",
+    "46ad9bc4": "639fd6b6",
+    "832d7904": "639fd6b6",
+    "02551f11": "639fd6b6",
+    "1d613672": "639fd6b6",
+    "2af74c8d": "639fd6b6",
+    "7426e45f": "639fd6b6",
+    "3ff36664": "5b5517ff",
+    "9902f001": "5b5517ff",
+    "11f84432": "5b5517ff",
+    "5ae4ab67": "5b5517ff",
+    "fffe1444": "5b5517ff",
+    "10836a06": "5b5517ff",
+    "df75dbe7": "5b5517ff",
+    "6ccf187a": "5b5517ff",
+    "76f96ad2": "5b5517ff",
+    "9e9c75e3": "5b5517ff"
+  }
+}

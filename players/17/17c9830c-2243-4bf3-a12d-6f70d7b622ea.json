@@ -1,1 +1,362 @@
-{"uuid":"17c9830c-2243-4bf3-a12d-6f70d7b622ea","name":"claudia mifsud","gender":"Girls","sports":{"Basketball":{"gp":42,"pts":143,"fouls":45,"fg":64,"ft":9,"threePt":2,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.2,"foulOuts":{"318be73c":1},"maxGamePTS":12,"maxGameThreePt":1,"wins":13,"losses":4,"winPct":0.76,"statsChecked":"2026-07-05T15:21:08.259Z"}},"seasons":[{"sid":"8da816be","sn":"2023","club":"Whittlesea Pacers Basketball Club","regs":[{"tid":"2d82d188","tn":"Whittlesea U18 Girls 1","gid":"e45ddb38","gn":"U18/20 Girls","age":"U18","div":null,"stats":{"gp":4,"fouls":7,"ft":1,"fg":7,"pts":15,"wins":1,"losses":3}}]},{"sid":"a64ac352","sn":"Spring 2021","club":"Doreen Cougars Basketball Club","regs":[{"tid":"02cbd2b7","tn":"Cougars U17 Girls 1","gid":"f5ac36b2","gn":"Saturday U17 Girls A","age":"U17","div":null,"stats":{"gp":3,"fouls":6,"pts":4,"fg":2}},{"tid":"02cbd2b7","tn":"Cougars U17 Girls 1","gid":"056480b4","gn":"Saturday U17 Girls Grading","age":"U17","div":null,"stats":{"gp":3,"fg":2,"pts":4,"fouls":6}}]},{"sid":"a5dfc5c1","sn":"2021","club":"Whittlesea Pacers Basketball Club","regs":[{"tid":"593dff99","tn":"Whittlesea U18 Girls 1","gid":"9fbba6b0","gn":"18 Girls - VJL5 (P2)","age":null,"div":null,"stats":{"gp":17,"fouls":12,"fg":16,"pts":35,"ft":3}},{"tid":"593dff99","tn":"Whittlesea U18 Girls 1","gid":"252b2662","gn":"U18G Crossover 2 - VJL","age":null,"div":null,"stats":{"gp":17,"fouls":12,"ft":3,"fg":16,"pts":35}},{"tid":"593dff99","tn":"Whittlesea U18 Girls 1","gid":"3b2cf026","gn":"U18G Grading 2 - DD Pool D","age":null,"div":null,"stats":{"gp":17,"fouls":12,"ft":3,"fg":16,"pts":35}},{"tid":"593dff99","tn":"Whittlesea U18 Girls 1","gid":"0800032e","gn":"U18G Crossover 1","age":null,"div":null,"stats":{"gp":17,"fouls":12,"pts":35,"fg":16,"ft":3}},{"tid":"593dff99","tn":"Whittlesea U18 Girls 1","gid":"5437f961","gn":"U18G Grading 1 - Pool 3D","age":null,"div":null,"stats":{"gp":17,"fouls":12,"fg":16,"pts":35,"ft":3}}]},{"sid":"dfa5768f","sn":"Autumn 2021","club":"Doreen Cougars Basketball Club","regs":[{"tid":"c9d9f895","tn":"Doreen Cougars U19 Girls 1","gid":"161cf821","gn":"Saturday 19 & Under A/B Girls","age":null,"div":null,"stats":{"gp":13,"fouls":15,"ft":2,"fg":26,"threePt":1,"pts":57,"finals":1,"gfApps":1,"wins":12,"losses":1,"gfWins":1}}]},{"sid":"318be73c","sn":"Autumn 2020","club":"Mernda Bulls Basketball Club","regs":[{"tid":"942fd51f","tn":"Bulls 16G1","gid":"b15b6b6e","gn":"Saturday U16 Girls A/B Grade","age":"U16","div":null,"stats":{"gp":5,"fouls":5,"ft":3,"fg":13,"threePt":1,"pts":32,"foulOuts":1}}]}],"updatedAt":"2026-06-01T07:08:02.010Z","teams":[{"tid":"2d82d188","sid":"8da816be","status":"COMPLETED"},{"tid":"02cbd2b7","sid":"a64ac352","status":"COMPLETED"},{"tid":"c9d9f895","sid":"dfa5768f","status":"COMPLETED"},{"tid":"593dff99","sid":"a5dfc5c1","status":"COMPLETED"},{"tid":"5c249ee5","sid":"88108ca6","status":"COMPLETED"},{"tid":"d721ebd1","sid":"6385ba12","status":"COMPLETED"},{"tid":"006cdf55","sid":"5ac8c8a1","status":"COMPLETED"},{"tid":"942fd51f","sid":"318be73c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:01:00.889Z","records":{"maxGamePTS":{"v":12,"gameKey":"cc46203c","sid":"318be73c"},"maxGameThreePt":{"v":1,"gameKey":"51b903c5","sid":"dfa5768f"}},"games":["02a998a9","031d027e","0a39c80f","121de8bf","2a64f3cb","2c4bc9b7","31d46033","3c38826e","3f7be0ed","4e32d4aa","51b903c5","5b4e8cea","62cf7dd3","63418b08","6ad833c3","72daf29b","80f10573","885e4b60","8dbcbdc7","8eb0c573","972dc8af","98e3c09c","a7818923","aa2b7928","aacbaea2","acafc529","b75bf5e2","b7a10078","c2e3d679","cbcd9115","cc46203c","cf5f5fb4","d2413688","d9058581","dcb3ab0f","de9bcf76","e7952a14","e8412b43","ea9ce866","f1681032","fada6429","fd40a2bd"]}
+{
+  "uuid": "17c9830c-2243-4bf3-a12d-6f70d7b622ea",
+  "name": "claudia mifsud",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 143,
+      "fouls": 45,
+      "fg": 64,
+      "ft": 9,
+      "threePt": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.2,
+      "foulOuts": {
+        "318be73c": 1
+      },
+      "maxGamePTS": 12,
+      "maxGameThreePt": 1,
+      "wins": 13,
+      "losses": 4,
+      "winPct": 0.76,
+      "statsChecked": "2026-07-05T15:21:08.259Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8da816be",
+      "sn": "2023",
+      "club": "Whittlesea Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "2d82d188",
+          "tn": "Whittlesea U18 Girls 1",
+          "gid": "e45ddb38",
+          "gn": "U18/20 Girls",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a64ac352",
+      "sn": "Spring 2021",
+      "club": "Doreen Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "02cbd2b7",
+          "tn": "Cougars U17 Girls 1",
+          "gid": "f5ac36b2",
+          "gn": "Saturday U17 Girls A",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 6,
+            "pts": 4,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "02cbd2b7",
+          "tn": "Cougars U17 Girls 1",
+          "gid": "056480b4",
+          "gn": "Saturday U17 Girls Grading",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fg": 2,
+            "pts": 4,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a5dfc5c1",
+      "sn": "2021",
+      "club": "Whittlesea Pacers Basketball Club",
+      "regs": [
+        {
+          "tid": "593dff99",
+          "tn": "Whittlesea U18 Girls 1",
+          "gid": "9fbba6b0",
+          "gn": "18 Girls - VJL5 (P2)",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "fg": 16,
+            "pts": 35,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "593dff99",
+          "tn": "Whittlesea U18 Girls 1",
+          "gid": "252b2662",
+          "gn": "U18G Crossover 2 - VJL",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 16,
+            "pts": 35
+          }
+        },
+        {
+          "tid": "593dff99",
+          "tn": "Whittlesea U18 Girls 1",
+          "gid": "3b2cf026",
+          "gn": "U18G Grading 2 - DD Pool D",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 16,
+            "pts": 35
+          }
+        },
+        {
+          "tid": "593dff99",
+          "tn": "Whittlesea U18 Girls 1",
+          "gid": "0800032e",
+          "gn": "U18G Crossover 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "pts": 35,
+            "fg": 16,
+            "ft": 3
+          }
+        },
+        {
+          "tid": "593dff99",
+          "tn": "Whittlesea U18 Girls 1",
+          "gid": "5437f961",
+          "gn": "U18G Grading 1 - Pool 3D",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 12,
+            "fg": 16,
+            "pts": 35,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "dfa5768f",
+      "sn": "Autumn 2021",
+      "club": "Doreen Cougars Basketball Club",
+      "regs": [
+        {
+          "tid": "c9d9f895",
+          "tn": "Doreen Cougars U19 Girls 1",
+          "gid": "161cf821",
+          "gn": "Saturday 19 & Under A/B Girls",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 15,
+            "ft": 2,
+            "fg": 26,
+            "threePt": 1,
+            "pts": 57,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 12,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "318be73c",
+      "sn": "Autumn 2020",
+      "club": "Mernda Bulls Basketball Club",
+      "regs": [
+        {
+          "tid": "942fd51f",
+          "tn": "Bulls 16G1",
+          "gid": "b15b6b6e",
+          "gn": "Saturday U16 Girls A/B Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 5,
+            "ft": 3,
+            "fg": 13,
+            "threePt": 1,
+            "pts": 32,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88108ca6",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "5c249ee5",
+          "tn": "Whittlesea Pacers 18.1 Girls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "6385ba12",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "d721ebd1",
+          "tn": "Whittlesea Pacers 18.1 Girls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "006cdf55",
+          "tn": "Whittlesea U16 Girls 2",
+          "gid": "bc977e4b",
+          "gn": "U16 Girls VJL 6 - Pool 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T07:08:02.010Z",
+  "teams": [
+    {
+      "tid": "2d82d188",
+      "sid": "8da816be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "02cbd2b7",
+      "sid": "a64ac352",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "593dff99",
+      "sid": "a5dfc5c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c9d9f895",
+      "sid": "dfa5768f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "942fd51f",
+      "sid": "318be73c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c249ee5",
+      "sid": "88108ca6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d721ebd1",
+      "sid": "6385ba12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "006cdf55",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.369Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "cc46203c",
+      "sid": "318be73c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "51b903c5",
+      "sid": "dfa5768f"
+    }
+  },
+  "games": [
+    "02a998a9",
+    "031d027e",
+    "0a39c80f",
+    "121de8bf",
+    "2a64f3cb",
+    "2c4bc9b7",
+    "31d46033",
+    "3c38826e",
+    "3f7be0ed",
+    "4e32d4aa",
+    "51b903c5",
+    "5b4e8cea",
+    "62cf7dd3",
+    "63418b08",
+    "6ad833c3",
+    "72daf29b",
+    "80f10573",
+    "885e4b60",
+    "8dbcbdc7",
+    "8eb0c573",
+    "972dc8af",
+    "98e3c09c",
+    "a7818923",
+    "aa2b7928",
+    "aacbaea2",
+    "acafc529",
+    "b75bf5e2",
+    "b7a10078",
+    "c2e3d679",
+    "cbcd9115",
+    "cc46203c",
+    "cf5f5fb4",
+    "d2413688",
+    "d9058581",
+    "dcb3ab0f",
+    "de9bcf76",
+    "e7952a14",
+    "e8412b43",
+    "ea9ce866",
+    "f1681032",
+    "fada6429",
+    "fd40a2bd"
+  ]
+}

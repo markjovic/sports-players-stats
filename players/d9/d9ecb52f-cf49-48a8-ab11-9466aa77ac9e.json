@@ -1,1 +1,131 @@
-{"uuid":"d9ecb52f-cf49-48a8-ab11-9466aa77ac9e","name":"Mia Spiteri","gender":"Girls","sports":{"Basketball":{"gp":11,"pts":10,"fouls":5,"fg":4,"ft":2,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"losses":30,"draws":3,"winPct":0,"statsChecked":"2026-07-05T14:58:51.758Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"43e445b3","tn":"Laurimar Thunder U12 Girls 2","gid":"2650149c","gn":"Saturday U12 Girls D1","age":"U12","div":"D1","stats":{"gp":11,"fouls":5,"ft":2,"fg":4,"pts":10,"losses":10,"draws":1}},{"tid":"43e445b3","tn":"Laurimar Thunder U12 Girls 2","gid":"dace81bf","gn":"Saturday U12 Girls Grading Group 2","age":"U12","div":null,"stats":{"gp":11,"fouls":5,"fg":4,"pts":10,"losses":10,"draws":1,"ft":2}},{"tid":"43e445b3","tn":"Laurimar Thunder U12 Girls 2","gid":"7bfdf93b","gn":"Saturday U12 Girls Grading Group 3","age":"U12","div":null,"stats":{"gp":11,"losses":10,"draws":1,"pts":10,"fg":4,"ft":2,"fouls":5}}]}],"updatedAt":"2026-06-01T06:10:10.202Z","teams":[{"tid":"43e445b3","sid":"d868771d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:48:39.416Z","games":["09df22dd","50759a2c","539bbf57","5b514db2","5dbeb13d","a4057c50","ba3d17d8","c208fdb3","d1ee2b37","d784efc3","e898ef3e"],"records":{"maxGamePTS":{"v":4,"gameKey":"d1ee2b37","sid":"d868771d"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d9ecb52f-cf49-48a8-ab11-9466aa77ac9e",
+  "name": "Mia Spiteri",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 10,
+      "fouls": 5,
+      "fg": 4,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "losses": 30,
+      "draws": 3,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T14:58:51.758Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "43e445b3",
+          "tn": "Laurimar Thunder U12 Girls 2",
+          "gid": "2650149c",
+          "gn": "Saturday U12 Girls D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "ft": 2,
+            "fg": 4,
+            "pts": 10,
+            "losses": 10,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "43e445b3",
+          "tn": "Laurimar Thunder U12 Girls 2",
+          "gid": "dace81bf",
+          "gn": "Saturday U12 Girls Grading Group 2",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 5,
+            "fg": 4,
+            "pts": 10,
+            "losses": 10,
+            "draws": 1,
+            "ft": 2
+          }
+        },
+        {
+          "tid": "43e445b3",
+          "tn": "Laurimar Thunder U12 Girls 2",
+          "gid": "7bfdf93b",
+          "gn": "Saturday U12 Girls Grading Group 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "losses": 10,
+            "draws": 1,
+            "pts": 10,
+            "fg": 4,
+            "ft": 2,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "5e6742b8",
+          "tn": "Laurimar Thunder U12 Girls 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:10:10.202Z",
+  "teams": [
+    {
+      "tid": "43e445b3",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5e6742b8",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.988Z",
+  "games": [
+    "09df22dd",
+    "50759a2c",
+    "539bbf57",
+    "5b514db2",
+    "5dbeb13d",
+    "a4057c50",
+    "ba3d17d8",
+    "c208fdb3",
+    "d1ee2b37",
+    "d784efc3",
+    "e898ef3e"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "d1ee2b37",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

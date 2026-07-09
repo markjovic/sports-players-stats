@@ -1,1 +1,311 @@
-{"uuid":"25dc274a-4d2e-4cea-a651-b9fb6fa8dcf1","name":"Jessica De Gaetano","gender":"Mixed","sports":{"Basketball":{"gp":61,"pts":182,"fouls":70,"fg":83,"ft":4,"threePt":4,"foulOuts":{"1896e282":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":10,"maxGameThreePt":1,"wins":31,"losses":49,"draws":5,"winPct":0.36,"statsChecked":"2026-07-05T16:12:19.920Z"}},"seasons":[{"sid":"1896e282","sn":"Autumn 2026","regs":[{"tid":"dc30efd7","tn":"Vipers","gid":"fec0957d","gn":"Mixed Pool 1","age":null,"div":null,"stats":{"gp":13,"pts":32,"threePt":1,"fg":14,"fouls":26,"foulOuts":1,"wins":4,"losses":8,"draws":1,"ft":1}},{"tid":"dc30efd7","tn":"Vipers","gid":"1c0853f6","gn":"Sunday Open Mixed","age":"Senior","div":null,"stats":{"gp":13,"pts":32,"fg":14,"ft":1,"fouls":26,"wins":4,"losses":8,"draws":1,"threePt":1}}]},{"sid":"f5fba6eb","sn":"Autumn 2023","regs":[{"tid":"3609b7dd","tn":"Vipers","gid":"836ae4c3","gn":"Mixed Pool 1","age":null,"div":null,"stats":{"gp":13,"pts":43,"fg":20,"fouls":7,"wins":3,"draws":1,"losses":8,"threePt":1}},{"tid":"3609b7dd","tn":"Vipers","gid":"f60778a6","gn":"Sunday Open Mixed","age":"Senior","div":null,"stats":{"gp":13,"pts":43,"threePt":1,"fg":20,"fouls":7,"wins":3,"draws":1,"losses":8}}]},{"sid":"0ae2d0f8","sn":"Spring 2022","regs":[{"tid":"df4570f8","tn":"Vipers","gid":"4ee44eb4","gn":"Sunday Open Mixed","age":"Senior","div":null,"stats":{"gp":13,"pts":37,"threePt":1,"fg":17,"fouls":15,"wins":5,"losses":8}}]},{"sid":"2835087f","sn":"Autumn 2022","regs":[{"tid":"9d0fdd0b","tn":"Vipers","gid":"fed9ad80","gn":"Sunday Open Mixed","age":"Senior","div":null,"stats":{"gp":10,"pts":50,"threePt":1,"fg":22,"ft":3,"fouls":16,"finals":1,"wins":6,"losses":3,"draws":1}}]},{"sid":"be330458","sn":"Autumn 2021","regs":[{"tid":"3f1c7147","tn":"Vipers","gid":"34d100d8","gn":"Sunday Open Mixed","age":"Senior","div":null,"stats":{"gp":12,"pts":20,"fg":10,"fouls":6,"wins":6,"losses":6}}]}],"updatedAt":"2026-07-04T05:44:10.991Z","teams":[{"tid":"dc30efd7","sid":"1896e282","status":"ACTIVE"},{"tid":"3609b7dd","sid":"f5fba6eb","status":"COMPLETED"},{"tid":"df4570f8","sid":"0ae2d0f8","status":"COMPLETED"},{"tid":"9d0fdd0b","sid":"2835087f","status":"COMPLETED"},{"tid":"3f1c7147","sid":"be330458","status":"COMPLETED"},{"tid":"45b7a18c","sid":"7612233b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:02.846Z","records":{"maxGamePTS":{"v":10,"gameKey":"7a34f077","sid":"f5fba6eb"},"maxGameThreePt":{"v":1,"gameKey":"84c3f72b","sid":"1896e282"}},"games":["02f70f17","0848f5d8","0967743d","0a71f056","0b0bc79f","10a38a67","14266896","18a101a7","19548490","1a64ed83","20c7f3c2","212fb12c","2256a669","2bdc1835","2cd3bd07","37089c6c","377c6362","3bd3bc98","423bc0b8","47dcc121","54f6c2c8","5cda356e","6b5e2de2","75550d2a","7a34f077","7b88278b","7d6b930e","7e335a07","83398d2d","84c3f72b","86268d1b","8b074cc4","931740a3","9346d8ff","9388adc3","98efddc3","a3e21240","a68dcac4","af7892eb","b12f198f","bc757b72","c56cbcad","cdc9e8e2","cef9efe1","d2f49ac6","d550ea88","dc48443a","e06391a5","e1c12abc","e2669944","e5371b82","e538d9d7","e89e63db","edcbd3e2","ee9a395a","ef3cafcd","f11cf01e","f6ff0269","f8c9dc0a","fb18a224","fc9adf40"]}
+{
+  "uuid": "25dc274a-4d2e-4cea-a651-b9fb6fa8dcf1",
+  "name": "Jessica De Gaetano",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 61,
+      "pts": 182,
+      "fouls": 70,
+      "fg": 83,
+      "ft": 4,
+      "threePt": 4,
+      "foulOuts": {
+        "1896e282": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 31,
+      "losses": 49,
+      "draws": 5,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T16:12:19.920Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1896e282",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "dc30efd7",
+          "tn": "Vipers",
+          "gid": "fec0957d",
+          "gn": "Mixed Pool 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 32,
+            "threePt": 1,
+            "fg": 14,
+            "fouls": 26,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 8,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "dc30efd7",
+          "tn": "Vipers",
+          "gid": "1c0853f6",
+          "gn": "Sunday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 32,
+            "fg": 14,
+            "ft": 1,
+            "fouls": 26,
+            "wins": 4,
+            "losses": 8,
+            "draws": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f5fba6eb",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "3609b7dd",
+          "tn": "Vipers",
+          "gid": "836ae4c3",
+          "gn": "Mixed Pool 1",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 43,
+            "fg": 20,
+            "fouls": 7,
+            "wins": 3,
+            "draws": 1,
+            "losses": 8,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "3609b7dd",
+          "tn": "Vipers",
+          "gid": "f60778a6",
+          "gn": "Sunday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 43,
+            "threePt": 1,
+            "fg": 20,
+            "fouls": 7,
+            "wins": 3,
+            "draws": 1,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0ae2d0f8",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "df4570f8",
+          "tn": "Vipers",
+          "gid": "4ee44eb4",
+          "gn": "Sunday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 37,
+            "threePt": 1,
+            "fg": 17,
+            "fouls": 15,
+            "wins": 5,
+            "losses": 8
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2835087f",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "9d0fdd0b",
+          "tn": "Vipers",
+          "gid": "fed9ad80",
+          "gn": "Sunday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "pts": 50,
+            "threePt": 1,
+            "fg": 22,
+            "ft": 3,
+            "fouls": 16,
+            "finals": 1,
+            "wins": 6,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "be330458",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "3f1c7147",
+          "tn": "Vipers",
+          "gid": "34d100d8",
+          "gn": "Sunday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 20,
+            "fg": 10,
+            "fouls": 6,
+            "wins": 6,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7612233b",
+      "sn": "Autumn 2020",
+      "regs": [
+        {
+          "tid": "45b7a18c",
+          "tn": "Vipers",
+          "gid": "dc90fcf9",
+          "gn": "Sunday Open Mixed A Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:44:10.991Z",
+  "teams": [
+    {
+      "tid": "dc30efd7",
+      "sid": "1896e282",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3609b7dd",
+      "sid": "f5fba6eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "df4570f8",
+      "sid": "0ae2d0f8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d0fdd0b",
+      "sid": "2835087f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f1c7147",
+      "sid": "be330458",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45b7a18c",
+      "sid": "7612233b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.292Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "7a34f077",
+      "sid": "f5fba6eb"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "84c3f72b",
+      "sid": "1896e282"
+    }
+  },
+  "games": [
+    "02f70f17",
+    "0848f5d8",
+    "0967743d",
+    "0a71f056",
+    "0b0bc79f",
+    "10a38a67",
+    "14266896",
+    "18a101a7",
+    "19548490",
+    "1a64ed83",
+    "20c7f3c2",
+    "212fb12c",
+    "2256a669",
+    "2bdc1835",
+    "2cd3bd07",
+    "37089c6c",
+    "377c6362",
+    "3bd3bc98",
+    "423bc0b8",
+    "47dcc121",
+    "54f6c2c8",
+    "5cda356e",
+    "6b5e2de2",
+    "75550d2a",
+    "7a34f077",
+    "7b88278b",
+    "7d6b930e",
+    "7e335a07",
+    "83398d2d",
+    "84c3f72b",
+    "86268d1b",
+    "8b074cc4",
+    "931740a3",
+    "9346d8ff",
+    "9388adc3",
+    "98efddc3",
+    "a3e21240",
+    "a68dcac4",
+    "af7892eb",
+    "b12f198f",
+    "bc757b72",
+    "c56cbcad",
+    "cdc9e8e2",
+    "cef9efe1",
+    "d2f49ac6",
+    "d550ea88",
+    "dc48443a",
+    "e06391a5",
+    "e1c12abc",
+    "e2669944",
+    "e5371b82",
+    "e538d9d7",
+    "e89e63db",
+    "edcbd3e2",
+    "ee9a395a",
+    "ef3cafcd",
+    "f11cf01e",
+    "f6ff0269",
+    "f8c9dc0a",
+    "fb18a224",
+    "fc9adf40"
+  ]
+}

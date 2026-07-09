@@ -1,1 +1,92 @@
-{"uuid":"b2f867eb-b49a-412b-a535-2c12ae9a182e","name":"Stephen Smith","gender":"Mixed","sports":{"Basketball":{"gp":5,"pts":49,"fg":14,"ft":3,"threePt":6,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":2,"wins":1,"losses":4,"winPct":0.2,"statsChecked":"2026-07-05T15:38:10.279Z"}},"seasons":[{"sid":"5980402e","sn":"Term 1, 2026","regs":[{"tid":"0aaade8c","tn":"Power","gid":"100d3fcb","gn":"Play 23 - Season A","age":null,"div":null,"stats":{"gp":5,"ft":3,"fg":14,"threePt":6,"pts":49,"wins":1,"losses":4}}]}],"updatedAt":"2026-07-04T05:50:57.086Z","teams":[{"tid":"0aaade8c","sid":"5980402e","status":"ACTIVE"},{"tid":"24187886","sid":"c79f0745","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:05.174Z","games":["07a21db1","27250788","7b65d6ba","af51cd31","d27084b6"],"records":{"maxGamePTS":{"v":18,"gameKey":"07a21db1","sid":"5980402e"},"maxGameThreePt":{"v":2,"gameKey":"07a21db1","sid":"5980402e"}}}
+{
+  "uuid": "b2f867eb-b49a-412b-a535-2c12ae9a182e",
+  "name": "Stephen Smith",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 49,
+      "fg": 14,
+      "ft": 3,
+      "threePt": 6,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": 2,
+      "wins": 1,
+      "losses": 4,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:38:10.279Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5980402e",
+      "sn": "Term 1, 2026",
+      "regs": [
+        {
+          "tid": "0aaade8c",
+          "tn": "Power",
+          "gid": "100d3fcb",
+          "gn": "Play 23 - Season A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "ft": 3,
+            "fg": 14,
+            "threePt": 6,
+            "pts": 49,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c79f0745",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "24187886",
+          "tn": "Bacchus Marsh",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:57.086Z",
+  "teams": [
+    {
+      "tid": "0aaade8c",
+      "sid": "5980402e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "24187886",
+      "sid": "c79f0745",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.261Z",
+  "games": [
+    "07a21db1",
+    "27250788",
+    "7b65d6ba",
+    "af51cd31",
+    "d27084b6"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "07a21db1",
+      "sid": "5980402e"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "07a21db1",
+      "sid": "5980402e"
+    }
+  }
+}

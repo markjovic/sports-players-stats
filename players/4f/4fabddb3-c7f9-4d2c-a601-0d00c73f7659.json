@@ -1,1 +1,132 @@
-{"uuid":"4fabddb3-c7f9-4d2c-a601-0d00c73f7659","gender":null,"sports":{"Basketball":{"gp":14,"pts":66,"fouls":22,"fg":25,"ft":10,"threePt":2,"foulOuts":{"0912c55f":1},"maxGamePTS":14,"maxGameThreePt":2,"wins":4,"losses":2,"draws":4,"winPct":0.4,"statsChecked":"2026-07-05T15:48:23.620Z"}},"seasons":[{"sid":"8e4e71fc","sn":"Winter 2021","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"bfe5aa25","tn":"STC B16.3","gid":"e72b43e4","gn":"Saturday U16 Boys B 1 2 Grade","stats":{"gp":10,"pts":44,"fouls":15,"fg":16,"ft":6,"threePt":2,"wins":4,"losses":2,"draws":4}}]},{"sid":"0912c55f","sn":"Summer 2020/21","club":"St Christopher's Junior Basketball Club Inc.","regs":[{"tid":"3dbbf699","tn":"STC B16.4","gid":"5f3b653f","gn":"Saturday U16 Boys B Grade","stats":{"gp":4,"pts":22,"fouls":7,"fg":9,"ft":4,"foulOuts":1}}]}],"updatedAt":"2026-06-11T23:39:26.557Z","records":{"maxGamePTS":{"v":14,"gameKey":"a0e98231","sid":"8e4e71fc"},"maxGameThreePt":{"v":2,"gameKey":"a0e98231","sid":"8e4e71fc"}},"games":["0b22f8c5","1f2e143c","3d1839c6","3de44170","6433e2cb","7a667111","7b7d69e6","9bb62501","a0e98231","b7c44207","baa41312","c24d4831","cbf47531","d6f377fe"],"name":"Winter 2021"}
+{
+  "uuid": "4fabddb3-c7f9-4d2c-a601-0d00c73f7659",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 66,
+      "fouls": 22,
+      "fg": 25,
+      "ft": 10,
+      "threePt": 2,
+      "foulOuts": {
+        "0912c55f": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 4,
+      "losses": 2,
+      "draws": 4,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:48:23.620Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8e4e71fc",
+      "sn": "Winter 2021",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "bfe5aa25",
+          "tn": "STC B16.3",
+          "gid": "e72b43e4",
+          "gn": "Saturday U16 Boys B 1 2 Grade",
+          "stats": {
+            "gp": 10,
+            "pts": 44,
+            "fouls": 15,
+            "fg": 16,
+            "ft": 6,
+            "threePt": 2,
+            "wins": 4,
+            "losses": 2,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0912c55f",
+      "sn": "Summer 2020/21",
+      "club": "St Christopher's Junior Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "3dbbf699",
+          "tn": "STC B16.4",
+          "gid": "5f3b653f",
+          "gn": "Saturday U16 Boys B Grade",
+          "stats": {
+            "gp": 4,
+            "pts": 22,
+            "fouls": 7,
+            "fg": 9,
+            "ft": 4,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9357f9bf",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "65d5971a",
+          "tn": "STC B16.5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:26.557Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "a0e98231",
+      "sid": "8e4e71fc"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "a0e98231",
+      "sid": "8e4e71fc"
+    }
+  },
+  "games": [
+    "0b22f8c5",
+    "1f2e143c",
+    "3d1839c6",
+    "3de44170",
+    "6433e2cb",
+    "7a667111",
+    "7b7d69e6",
+    "9bb62501",
+    "a0e98231",
+    "b7c44207",
+    "baa41312",
+    "c24d4831",
+    "cbf47531",
+    "d6f377fe"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "bfe5aa25",
+      "sid": "8e4e71fc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3dbbf699",
+      "sid": "0912c55f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "65d5971a",
+      "sid": "9357f9bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.768Z"
+}

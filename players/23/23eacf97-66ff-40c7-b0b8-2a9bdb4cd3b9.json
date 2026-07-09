@@ -1,1 +1,72 @@
-{"uuid":"23eacf97-66ff-40c7-b0b8-2a9bdb4cd3b9","gender":null,"sports":{"Basketball":{"gp":2,"pts":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":2,"winPct":1,"statsChecked":"2026-07-05T16:12:18.997Z"}},"seasons":[{"sid":"0d21f7c1","sn":"Winter 2021","club":null,"regs":[{"tid":"19c34920","tn":"Thunder","gid":"29d0e0ff","gn":"Friday Open Mixed Division 3","stats":{"gp":2,"pts":2,"wins":2}}]}],"updatedAt":"2026-06-11T23:37:23.058Z","records":{"maxGamePTS":{"v":2,"gameKey":"5b1c25c6","sid":"0d21f7c1"},"maxGameThreePt":{"v":null}},"games":["5b1c25c6","9597c0f3"],"name":"Winter 2021"}
+{
+  "uuid": "23eacf97-66ff-40c7-b0b8-2a9bdb4cd3b9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 2,
+      "pts": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "winPct": 1,
+      "statsChecked": "2026-07-05T16:12:18.997Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0d21f7c1",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "19c34920",
+          "tn": "Thunder",
+          "gid": "29d0e0ff",
+          "gn": "Friday Open Mixed Division 3",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "wins": 2
+          }
+        },
+        {
+          "tid": "3dcc453b",
+          "tn": "Jaeman Active",
+          "gid": "15a75000",
+          "gn": "Friday Open Mixed Division 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:23.058Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "5b1c25c6",
+      "sid": "0d21f7c1"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "5b1c25c6",
+    "9597c0f3"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "19c34920",
+      "sid": "0d21f7c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3dcc453b",
+      "sid": "0d21f7c1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.180Z"
+}

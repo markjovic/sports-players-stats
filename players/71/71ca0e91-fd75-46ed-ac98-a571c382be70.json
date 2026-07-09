@@ -1,1 +1,240 @@
-{"uuid":"71ca0e91-fd75-46ed-ac98-a571c382be70","name":"Mustafa Halwani","gender":"Mixed","sports":{"Basketball":{"gp":31,"pts":126,"fouls":53,"fg":58,"ft":10,"foulOuts":{"ec40087c":2},"maxGamePTS":10,"maxGameThreePt":null,"wins":38,"losses":20,"winPct":0.63,"draws":2,"statsChecked":"2026-07-05T15:49:06.433Z"}},"seasons":[{"sid":"00324933","sn":"Winter 2026","club":"Roxburgh Park Magpies Basketball Club","regs":[{"tid":"4e8c66dc","tn":"U10 Boys Roxy Rookies","gid":"4b70715b","gn":"U10 Boys Division 3","age":"U10","div":"Division 3","stats":{"gp":8,"fouls":14,"pts":11,"fg":5,"ft":1,"wins":3,"losses":5}},{"tid":"4e8c66dc","tn":"U10 Boys Roxy Rookies","gid":"a879389d","gn":"U10 Boys Grading","age":"U10","div":null,"stats":{"gp":8,"fouls":14,"fg":5,"pts":11,"wins":3,"losses":5,"ft":1}},{"tid":"7a30aa2e","tn":"U8 Mixed Roxy Dynamites","gid":"8a043c47","gn":"U8 Mixed YELLOW","age":"U8","div":null,"stats":{"gp":7,"fouls":7,"fg":16,"pts":35,"ft":3,"wins":6,"losses":1}},{"tid":"7a30aa2e","tn":"U8 Mixed Roxy Dynamites","gid":"0fac3ae9","gn":"U8 Mixed Grading","age":"U8","div":null,"stats":{"gp":7,"fouls":7,"fg":16,"pts":35,"wins":6,"losses":1,"ft":3}}]},{"sid":"ec40087c","sn":"Summer 2025/26","club":"Roxburgh Park Magpies Basketball Club","regs":[{"tid":"06b7e944","tn":"U8 Mixed Roxy Dynamites","gid":"dd883a5e","gn":"U8 Mixed GREEN","age":"U8","div":null,"stats":{"gp":16,"fouls":32,"ft":6,"fg":37,"pts":80,"foulOuts":2,"wins":10,"losses":4,"draws":1}},{"tid":"06b7e944","tn":"U8 Mixed Roxy Dynamites","gid":"f95328da","gn":"U8 Mixed Grading","age":"U8","div":null,"stats":{"gp":16,"fouls":32,"fg":37,"pts":80,"wins":10,"losses":4,"draws":1,"ft":6}}]}],"updatedAt":"2026-06-02T01:17:22.402Z","teams":[{"tid":"4e8c66dc","sid":"00324933","status":"ACTIVE"},{"tid":"7a30aa2e","sid":"00324933","status":"ACTIVE"},{"tid":"06b7e944","sid":"ec40087c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:58.278Z","records":{"maxGamePTS":{"v":10,"gameKey":"ddffd588","sid":"ec40087c"},"maxGameThreePt":{"v":null}},"games":["039d6059","0ee6f1a3","0f3cbbea","1a4299c4","1bc7392a","30faca6e","34fc913e","360c61cd","4713e680","53b92b4d","6850b1e1","6efd7db7","7a178094","810127e1","97782168","a5f09420","a66017fe","b52c5789","bcde58ab","c4ec8952","c5299583","c56a79ca","cdc7ed87","d996b23e","ddffd588","e0ac19a2","e5471bb9","e7aaedec","e8f2cac4","ec4e2992","ffa15e04"],"gameTids":{"97782168":"06b7e944","bcde58ab":"4e8c66dc","ec4e2992":"4e8c66dc","cdc7ed87":"4e8c66dc","039d6059":"4e8c66dc","4713e680":"4e8c66dc","e7aaedec":"4e8c66dc","b52c5789":"4e8c66dc","34fc913e":"4e8c66dc","0ee6f1a3":"7a30aa2e","a66017fe":"7a30aa2e","c5299583":"7a30aa2e","1bc7392a":"7a30aa2e","d996b23e":"7a30aa2e","e0ac19a2":"7a30aa2e","360c61cd":"7a30aa2e","c4ec8952":"06b7e944","7a178094":"06b7e944","810127e1":"06b7e944","30faca6e":"06b7e944","ddffd588":"06b7e944","0f3cbbea":"06b7e944","e8f2cac4":"06b7e944","1a4299c4":"06b7e944","ffa15e04":"06b7e944","a5f09420":"06b7e944","e5471bb9":"06b7e944","6850b1e1":"06b7e944","c56a79ca":"06b7e944","53b92b4d":"06b7e944","6efd7db7":"06b7e944"}}
+{
+  "uuid": "71ca0e91-fd75-46ed-ac98-a571c382be70",
+  "name": "Mustafa Halwani",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 126,
+      "fouls": 53,
+      "fg": 58,
+      "ft": 10,
+      "foulOuts": {
+        "ec40087c": 2
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 38,
+      "losses": 20,
+      "winPct": 0.63,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:49:06.433Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "00324933",
+      "sn": "Winter 2026",
+      "club": "Roxburgh Park Magpies Basketball Club",
+      "regs": [
+        {
+          "tid": "4e8c66dc",
+          "tn": "U10 Boys Roxy Rookies",
+          "gid": "4b70715b",
+          "gn": "U10 Boys Division 3",
+          "age": "U10",
+          "div": "Division 3",
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "pts": 11,
+            "fg": 5,
+            "ft": 1,
+            "wins": 3,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "4e8c66dc",
+          "tn": "U10 Boys Roxy Rookies",
+          "gid": "a879389d",
+          "gn": "U10 Boys Grading",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "fg": 5,
+            "pts": 11,
+            "wins": 3,
+            "losses": 5,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "7a30aa2e",
+          "tn": "U8 Mixed Roxy Dynamites",
+          "gid": "01967c92",
+          "gn": "U8 Mixed GREEN",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "fg": 16,
+            "pts": 35,
+            "ft": 3,
+            "wins": 6,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "7a30aa2e",
+          "tn": "U8 Mixed Roxy Dynamites",
+          "gid": "0fac3ae9",
+          "gn": "U8 Mixed Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 7,
+            "fg": 16,
+            "pts": 35,
+            "wins": 6,
+            "losses": 1,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ec40087c",
+      "sn": "Summer 2025/26",
+      "club": "Roxburgh Park Magpies Basketball Club",
+      "regs": [
+        {
+          "tid": "06b7e944",
+          "tn": "U8 Mixed Roxy Dynamites",
+          "gid": "dd883a5e",
+          "gn": "U8 Mixed GREEN",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 32,
+            "ft": 6,
+            "fg": 37,
+            "pts": 80,
+            "foulOuts": 2,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "06b7e944",
+          "tn": "U8 Mixed Roxy Dynamites",
+          "gid": "f95328da",
+          "gn": "U8 Mixed Grading",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 32,
+            "fg": 37,
+            "pts": 80,
+            "wins": 10,
+            "losses": 4,
+            "draws": 1,
+            "ft": 6
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T01:17:22.402Z",
+  "teams": [
+    {
+      "tid": "4e8c66dc",
+      "sid": "00324933",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a30aa2e",
+      "sid": "00324933",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06b7e944",
+      "sid": "ec40087c",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.049Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "ddffd588",
+      "sid": "ec40087c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "039d6059",
+    "0ee6f1a3",
+    "0f3cbbea",
+    "1a4299c4",
+    "1bc7392a",
+    "30faca6e",
+    "34fc913e",
+    "360c61cd",
+    "4713e680",
+    "53b92b4d",
+    "6850b1e1",
+    "6efd7db7",
+    "7a178094",
+    "810127e1",
+    "97782168",
+    "a5f09420",
+    "a66017fe",
+    "b52c5789",
+    "bcde58ab",
+    "c4ec8952",
+    "c5299583",
+    "c56a79ca",
+    "cdc7ed87",
+    "d996b23e",
+    "ddffd588",
+    "e0ac19a2",
+    "e5471bb9",
+    "e7aaedec",
+    "e8f2cac4",
+    "ec4e2992",
+    "ffa15e04"
+  ],
+  "gameTids": {
+    "97782168": "06b7e944",
+    "bcde58ab": "4e8c66dc",
+    "ec4e2992": "4e8c66dc",
+    "cdc7ed87": "4e8c66dc",
+    "039d6059": "4e8c66dc",
+    "4713e680": "4e8c66dc",
+    "e7aaedec": "4e8c66dc",
+    "b52c5789": "4e8c66dc",
+    "34fc913e": "4e8c66dc",
+    "0ee6f1a3": "7a30aa2e",
+    "a66017fe": "7a30aa2e",
+    "c5299583": "7a30aa2e",
+    "1bc7392a": "7a30aa2e",
+    "d996b23e": "7a30aa2e",
+    "e0ac19a2": "7a30aa2e",
+    "360c61cd": "7a30aa2e",
+    "c4ec8952": "06b7e944",
+    "7a178094": "06b7e944",
+    "810127e1": "06b7e944",
+    "30faca6e": "06b7e944",
+    "ddffd588": "06b7e944",
+    "0f3cbbea": "06b7e944",
+    "e8f2cac4": "06b7e944",
+    "1a4299c4": "06b7e944",
+    "ffa15e04": "06b7e944",
+    "a5f09420": "06b7e944",
+    "e5471bb9": "06b7e944",
+    "6850b1e1": "06b7e944",
+    "c56a79ca": "06b7e944",
+    "53b92b4d": "06b7e944",
+    "6efd7db7": "06b7e944"
+  }
+}

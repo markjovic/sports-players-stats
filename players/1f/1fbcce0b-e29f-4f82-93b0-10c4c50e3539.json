@@ -1,1 +1,100 @@
-{"uuid":"1fbcce0b-e29f-4f82-93b0-10c4c50e3539","gender":null,"sports":{"Basketball":{"gp":4,"pts":2,"fouls":3,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":2,"losses":6,"winPct":0.25,"statsChecked":"2026-07-05T16:12:18.393Z"}},"seasons":[{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"b8d8786d","tn":"Collingwood U16 Boys 12","gid":"c8c5d920","gn":"Boys U16DB South","stats":{"gp":4,"pts":2,"fg":1,"fouls":3,"wins":1,"losses":3}},{"tid":"b8d8786d","tn":"Collingwood U16 Boys 12","gid":"745a866c","gn":"U16 Boys C Grading","stats":{"gp":4,"wins":1,"losses":3,"pts":2,"fg":1,"fouls":3}}]}],"updatedAt":"2026-06-11T23:37:12.930Z","records":{"maxGamePTS":{"v":2,"gameKey":"785d76c6","sid":"a62fadf9"},"maxGameThreePt":{"v":null}},"games":["67531959","785d76c6","d20d593e","f6a4a7ff"],"name":"Summer 2020/21"}
+{
+  "uuid": "1fbcce0b-e29f-4f82-93b0-10c4c50e3539",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 4,
+      "pts": 2,
+      "fouls": 3,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 6,
+      "winPct": 0.25,
+      "statsChecked": "2026-07-05T16:12:18.393Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "b8d8786d",
+          "tn": "Collingwood U16 Boys 12",
+          "gid": "c8c5d920",
+          "gn": "Boys U16DB South",
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "wins": 1,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "b8d8786d",
+          "tn": "Collingwood U16 Boys 12",
+          "gid": "745a866c",
+          "gn": "U16 Boys C Grading",
+          "stats": {
+            "gp": 4,
+            "wins": 1,
+            "losses": 3,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "662c2eba",
+          "tn": "Collingwood U16 Boys 5",
+          "gid": "8aac8917",
+          "gn": "U16 Boys VJL 10 - Pool 3",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:12.930Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "785d76c6",
+      "sid": "a62fadf9"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "67531959",
+    "785d76c6",
+    "d20d593e",
+    "f6a4a7ff"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "b8d8786d",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "662c2eba",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.904Z"
+}

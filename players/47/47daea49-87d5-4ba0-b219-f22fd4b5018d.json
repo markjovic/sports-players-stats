@@ -1,1 +1,338 @@
-{"uuid":"47daea49-87d5-4ba0-b219-f22fd4b5018d","name":"Lukas Cameron","gender":"Boys","sports":{"Basketball":{"gp":37,"pts":73,"fouls":27,"fg":35,"ft":3,"foulOuts":{"aaf23d85":1},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.2,"maxGamePTS":10,"maxGameThreePt":null,"losses":24,"winPct":0.29,"wins":10,"statsChecked":"2026-07-05T14:55:03.522Z"}},"seasons":[{"sid":"aaf23d85","sn":"Summer 2023/24","club":"Point Cook Basketball Club","regs":[{"tid":"7aeef2c9","tn":"PCBC U18 Boys Blue","gid":"ffaf89d0","gn":"Tuesday U18 Boys F","age":"U18","div":null,"stats":{"gp":4,"fouls":2,"fg":2,"pts":4,"losses":4}},{"tid":"edd999d6","tn":"PCBC U16 Boys White","gid":"4ad65b3b","gn":"Saturday U16 Boys E","age":"U16","div":null,"stats":{"gp":4,"fouls":7,"fg":11,"pts":22,"foulOuts":1,"losses":4}}]},{"sid":"5ec222ff","sn":"Winter 2023","club":"Point Cook Basketball Club","regs":[{"tid":"186621b9","tn":"PCBC U16 Boys Purple","gid":"6d7d723e","gn":"Saturday U16 Boys E","age":"U16","div":null,"stats":{"gp":10,"fouls":2,"ft":1,"fg":9,"pts":19,"wins":5,"losses":6}}]},{"sid":"b9b96577","sn":"Summer 2022/23","club":"Braybrook 96ers Basketball Club","regs":[{"tid":"c6e491fa","tn":"96ers U14 Boys All Stars","gid":"0621ff0f","gn":"U14 Boys Div 3","age":"U14","div":"Div 3","stats":{"gp":4,"fouls":6,"wins":1,"losses":3,"pts":9,"fg":4,"ft":1}},{"tid":"c6e491fa","tn":"96ers U14 Boys All Stars","gid":"da1439a2","gn":"U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":4,"fouls":6,"ft":1,"fg":4,"pts":9,"wins":1,"losses":3}}]},{"sid":"fbc7e3fe","sn":"Winter 2022","club":"Braybrook 96ers Basketball Club","regs":[{"tid":"dd29ced6","tn":"96ers All Stars","gid":"e6f52181","gn":"U14 Boys Div 3","age":"U14","div":"Div 3","stats":{"gp":5,"fouls":4,"ft":1,"fg":1,"pts":3,"wins":3,"losses":2}}]},{"sid":"7b35a4da","sn":"Summer 2021/22","club":"Footscray Hawks Basketball Club","regs":[{"tid":"5f9060af","tn":"Footscray Hawks U14 Boys Geoff","gid":"4a80be0e","gn":"U14 Boys Div 3 A/B","age":"U14","div":null,"stats":{"gp":10,"fouls":6,"fg":8,"pts":16,"finals":1,"gfApps":1,"losses":1}},{"tid":"5f9060af","tn":"Footscray Hawks U14 Boys Geoff","gid":"e650fa44","gn":"U14 Boys GRADING","age":"U14","div":null,"stats":{"gp":10,"fouls":6,"fg":8,"pts":16,"finals":1,"gfApps":1,"losses":1}}]}],"updatedAt":"2026-05-31T08:23:33.361Z","teams":[{"tid":"98211184","sid":"f3876c94","status":"COMPLETED"},{"tid":"186621b9","sid":"5ec222ff","status":"COMPLETED"},{"tid":"dd29ced6","sid":"fbc7e3fe","status":"COMPLETED"},{"tid":"5f9060af","sid":"7b35a4da","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:26:32.025Z","records":{"maxGamePTS":{"v":10,"gameKey":"379dde85","sid":"aaf23d85"},"maxGameThreePt":{"v":null}},"games":["013f564e","0983d5ba","0c6cd840","1086ccd2","120c2c59","14a33a03","1a04453b","23ae1c8d","2599028e","28c6f51a","2a22c23c","2f946f9d","310b08a2","3467cb7f","379a39f6","379dde85","37ba9bbd","3d1f58d5","6bb475b9","6efa2a11","7192b447","745b5943","7d9280d7","86818d4b","8ad6d21c","8fa7cc9e","9d96ef92","adba58ac","b20463c7","b3a30d3c","b43c5bc9","c532472d","c86ad434","c964f4aa","cf4a500f","d6992ff7","de744689","fab0ba15"],"gameTids":{"9d96ef92":"7aeef2c9","28c6f51a":"7aeef2c9","3d1f58d5":"7aeef2c9","86818d4b":"7aeef2c9","379dde85":"edd999d6","b3a30d3c":"edd999d6","7192b447":"edd999d6","2f946f9d":"edd999d6","14a33a03":"186621b9","cf4a500f":"186621b9","adba58ac":"186621b9","c964f4aa":"186621b9","1a04453b":"186621b9","fab0ba15":"186621b9","6efa2a11":"186621b9","379a39f6":"186621b9","c86ad434":"186621b9","8fa7cc9e":"186621b9","745b5943":"c6e491fa","120c2c59":"c6e491fa","3467cb7f":"c6e491fa","1086ccd2":"c6e491fa","23ae1c8d":"dd29ced6","d6992ff7":"dd29ced6","c532472d":"dd29ced6","b20463c7":"dd29ced6","013f564e":"dd29ced6","2599028e":"5f9060af","6bb475b9":"5f9060af","2a22c23c":"5f9060af","b43c5bc9":"5f9060af","37ba9bbd":"5f9060af","0c6cd840":"5f9060af","7d9280d7":"5f9060af","310b08a2":"5f9060af","0983d5ba":"5f9060af","de744689":"5f9060af"}}
+{
+  "uuid": "47daea49-87d5-4ba0-b219-f22fd4b5018d",
+  "name": "Lukas Cameron",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "pts": 73,
+      "fouls": 27,
+      "fg": 35,
+      "ft": 3,
+      "foulOuts": {
+        "aaf23d85": 1
+      },
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.2,
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "losses": 24,
+      "winPct": 0.29,
+      "wins": 10,
+      "statsChecked": "2026-07-05T14:55:03.522Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aaf23d85",
+      "sn": "Summer 2023/24",
+      "club": "Point Cook Basketball Club",
+      "regs": [
+        {
+          "tid": "7aeef2c9",
+          "tn": "PCBC U18 Boys Blue",
+          "gid": "ffaf89d0",
+          "gn": "Tuesday U18 Boys F",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 2,
+            "fg": 2,
+            "pts": 4,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "edd999d6",
+          "tn": "PCBC U16 Boys White",
+          "gid": "4ad65b3b",
+          "gn": "Saturday U16 Boys E",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 7,
+            "fg": 11,
+            "pts": 22,
+            "foulOuts": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ec222ff",
+      "sn": "Winter 2023",
+      "club": "Point Cook Basketball Club",
+      "regs": [
+        {
+          "tid": "186621b9",
+          "tn": "PCBC U16 Boys Purple",
+          "gid": "6d7d723e",
+          "gn": "Saturday U16 Boys E",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 9,
+            "pts": 19,
+            "wins": 5,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b9b96577",
+      "sn": "Summer 2022/23",
+      "club": "Braybrook 96ers Basketball Club",
+      "regs": [
+        {
+          "tid": "c6e491fa",
+          "tn": "96ers U14 Boys All Stars",
+          "gid": "0621ff0f",
+          "gn": "U14 Boys Div 3",
+          "age": "U14",
+          "div": "Div 3",
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 3,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "c6e491fa",
+          "tn": "96ers U14 Boys All Stars",
+          "gid": "da1439a2",
+          "gn": "U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "wins": 1,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbc7e3fe",
+      "sn": "Winter 2022",
+      "club": "Braybrook 96ers Basketball Club",
+      "regs": [
+        {
+          "tid": "dd29ced6",
+          "tn": "96ers All Stars",
+          "gid": "e6f52181",
+          "gn": "U14 Boys Div 3",
+          "age": "U14",
+          "div": "Div 3",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "ft": 1,
+            "fg": 1,
+            "pts": 3,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7b35a4da",
+      "sn": "Summer 2021/22",
+      "club": "Footscray Hawks Basketball Club",
+      "regs": [
+        {
+          "tid": "5f9060af",
+          "tn": "Footscray Hawks U14 Boys Geoff",
+          "gid": "4a80be0e",
+          "gn": "U14 Boys Div 3 A/B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "5f9060af",
+          "tn": "Footscray Hawks U14 Boys Geoff",
+          "gid": "e650fa44",
+          "gn": "U14 Boys GRADING",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 6,
+            "fg": 8,
+            "pts": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f3876c94",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "98211184",
+          "tn": "CS BlueDevils U16 Boys ABARY",
+          "gid": "41427ca7",
+          "gn": "Saturday U16 Boys G Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T08:23:33.361Z",
+  "teams": [
+    {
+      "tid": "7aeef2c9",
+      "sid": "aaf23d85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "edd999d6",
+      "sid": "aaf23d85",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "186621b9",
+      "sid": "5ec222ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6e491fa",
+      "sid": "b9b96577",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd29ced6",
+      "sid": "fbc7e3fe",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f9060af",
+      "sid": "7b35a4da",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "98211184",
+      "sid": "f3876c94",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.253Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "379dde85",
+      "sid": "aaf23d85"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "013f564e",
+    "0983d5ba",
+    "0c6cd840",
+    "1086ccd2",
+    "120c2c59",
+    "14a33a03",
+    "1a04453b",
+    "23ae1c8d",
+    "2599028e",
+    "28c6f51a",
+    "2a22c23c",
+    "2f946f9d",
+    "310b08a2",
+    "3467cb7f",
+    "379a39f6",
+    "379dde85",
+    "37ba9bbd",
+    "3d1f58d5",
+    "6bb475b9",
+    "6efa2a11",
+    "7192b447",
+    "745b5943",
+    "7d9280d7",
+    "86818d4b",
+    "8ad6d21c",
+    "8fa7cc9e",
+    "9d96ef92",
+    "adba58ac",
+    "b20463c7",
+    "b3a30d3c",
+    "b43c5bc9",
+    "c532472d",
+    "c86ad434",
+    "c964f4aa",
+    "cf4a500f",
+    "d6992ff7",
+    "de744689",
+    "fab0ba15"
+  ],
+  "gameTids": {
+    "9d96ef92": "7aeef2c9",
+    "28c6f51a": "7aeef2c9",
+    "3d1f58d5": "7aeef2c9",
+    "86818d4b": "7aeef2c9",
+    "379dde85": "edd999d6",
+    "b3a30d3c": "edd999d6",
+    "7192b447": "edd999d6",
+    "2f946f9d": "edd999d6",
+    "14a33a03": "186621b9",
+    "cf4a500f": "186621b9",
+    "adba58ac": "186621b9",
+    "c964f4aa": "186621b9",
+    "1a04453b": "186621b9",
+    "fab0ba15": "186621b9",
+    "6efa2a11": "186621b9",
+    "379a39f6": "186621b9",
+    "c86ad434": "186621b9",
+    "8fa7cc9e": "186621b9",
+    "745b5943": "c6e491fa",
+    "120c2c59": "c6e491fa",
+    "3467cb7f": "c6e491fa",
+    "1086ccd2": "c6e491fa",
+    "23ae1c8d": "dd29ced6",
+    "d6992ff7": "dd29ced6",
+    "c532472d": "dd29ced6",
+    "b20463c7": "dd29ced6",
+    "013f564e": "dd29ced6",
+    "2599028e": "5f9060af",
+    "6bb475b9": "5f9060af",
+    "2a22c23c": "5f9060af",
+    "b43c5bc9": "5f9060af",
+    "37ba9bbd": "5f9060af",
+    "0c6cd840": "5f9060af",
+    "7d9280d7": "5f9060af",
+    "310b08a2": "5f9060af",
+    "0983d5ba": "5f9060af",
+    "de744689": "5f9060af"
+  }
+}

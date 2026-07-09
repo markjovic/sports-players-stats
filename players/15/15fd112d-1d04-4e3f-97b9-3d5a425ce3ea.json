@@ -1,1 +1,160 @@
-{"uuid":"15fd112d-1d04-4e3f-97b9-3d5a425ce3ea","name":"Esme Dell","gender":"Girls","sports":{"Basketball":{"gp":8,"pts":14,"fouls":17,"fg":2,"ft":4,"threePt":2,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"wins":6,"losses":16,"winPct":0.27,"statsChecked":"2026-07-05T15:34:19.115Z"}},"seasons":[{"sid":"38ce88ed","sn":"2026","regs":[{"tid":"a5808f2a","tn":"U18 Girls Tas Devils (CP)","gid":"b744d49c","gn":"U18 Girls Cross Pool","age":"U18","div":null,"stats":{"gp":1,"threePt":1,"pts":3,"finals":1,"gfApps":1,"losses":1,"gfWins":1}},{"tid":"672fdcda","stats":{"wins":2,"losses":5,"finals":1,"gfApps":1,"gfWins":1,"gp":7,"pts":11,"fg":2,"ft":4,"threePt":1,"fouls":17}},{"tid":"672fdcda","tn":"","gid":"003512e0","gn":"U18 Girls D1","div":null,"stats":{"gp":7,"pts":11,"fg":2,"ft":4,"threePt":1,"fouls":17,"wins":2,"losses":5}}]},{"sid":"38ce88ed","sn":"2026","club":"TAS (ACJBC)","regs":[{"tid":"672fdcda","tn":"U18 Girls Tas Devils","gid":"003512e0","gn":"U18 Girls D1","age":"U18","div":"D1","stats":{"gp":7,"fouls":17,"ft":4,"fg":2,"threePt":1,"pts":11,"finals":1,"gfApps":1,"wins":2,"losses":5,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:34:34.876Z","teams":[{"tid":"672fdcda","sid":"38ce88ed","status":"COMPLETED"},{"tid":"a5808f2a","sid":"38ce88ed","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:59:37.581Z","records":{"maxGamePTS":{"v":7,"gameKey":"ab510b48","sid":"38ce88ed"},"maxGameThreePt":{"v":1,"gameKey":"5b64952c","sid":"38ce88ed"}},"games":["38c522a9","5778e8bc","5b64952c","6ef866f9","ab510b48","eb65c78a","f2901350","fefdfdd6"],"gameTids":{"5b64952c":"a5808f2a","38c522a9":"672fdcda","5778e8bc":"672fdcda","f2901350":"672fdcda","ab510b48":"672fdcda","fefdfdd6":"672fdcda","eb65c78a":"672fdcda","6ef866f9":"672fdcda"}}
+{
+  "uuid": "15fd112d-1d04-4e3f-97b9-3d5a425ce3ea",
+  "name": "Esme Dell",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 14,
+      "fouls": 17,
+      "fg": 2,
+      "ft": 4,
+      "threePt": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 16,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T15:34:19.115Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "a5808f2a",
+          "tn": "U18 Girls Tas Devils (CP)",
+          "gid": "b744d49c",
+          "gn": "U18 Girls Cross Pool",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "threePt": 1,
+            "pts": 3,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "672fdcda",
+          "stats": {
+            "wins": 2,
+            "losses": 5,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 7,
+            "pts": 11,
+            "fg": 2,
+            "ft": 4,
+            "threePt": 1,
+            "fouls": 17
+          },
+          "gid": "003512e0",
+          "gn": "U18 Girls D1"
+        },
+        {
+          "tid": "672fdcda",
+          "tn": "",
+          "gid": "003512e0",
+          "gn": "U18 Girls D1",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 11,
+            "fg": 2,
+            "ft": 4,
+            "threePt": 1,
+            "fouls": 17,
+            "wins": 2,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "club": "TAS (ACJBC)",
+      "regs": [
+        {
+          "tid": "672fdcda",
+          "tn": "U18 Girls Tas Devils",
+          "gid": "003512e0",
+          "gn": "U18 Girls D1",
+          "age": "U18",
+          "div": "D1",
+          "stats": {
+            "gp": 7,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 2,
+            "threePt": 1,
+            "pts": 11,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:34:34.876Z",
+  "teams": [
+    {
+      "tid": "a5808f2a",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "672fdcda",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.270Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "ab510b48",
+      "sid": "38ce88ed"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5b64952c",
+      "sid": "38ce88ed"
+    }
+  },
+  "games": [
+    "38c522a9",
+    "5778e8bc",
+    "5b64952c",
+    "6ef866f9",
+    "ab510b48",
+    "eb65c78a",
+    "f2901350",
+    "fefdfdd6"
+  ],
+  "gameTids": {
+    "5b64952c": "a5808f2a",
+    "38c522a9": "672fdcda",
+    "5778e8bc": "672fdcda",
+    "f2901350": "672fdcda",
+    "ab510b48": "672fdcda",
+    "fefdfdd6": "672fdcda",
+    "eb65c78a": "672fdcda",
+    "6ef866f9": "672fdcda"
+  }
+}

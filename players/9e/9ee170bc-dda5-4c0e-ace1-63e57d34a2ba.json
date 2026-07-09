@@ -1,1 +1,392 @@
-{"uuid":"9ee170bc-dda5-4c0e-ace1-63e57d34a2ba","name":"Ethan Pulverman","gender":"Boys","sports":{"Basketball":{"gp":52,"pts":128,"fouls":42,"fg":43,"ft":6,"threePt":12,"foulOuts":{},"finals":3,"gfApps":3,"gfWins":2,"finalsPerSeason":0.6,"maxGamePTS":16,"maxGameThreePt":3,"wins":49,"losses":27,"winPct":0.64,"statsChecked":"2026-07-05T14:29:09.694Z"}},"seasons":[{"sid":"aacc7335","sn":"Winter 2026","club":"Titans Junior Basketball Club","regs":[{"tid":"8de61738","tn":"TITANS U16 Boys Bench Warmers","gid":"da64a425","gn":"U16 Boys Grading","age":"U16","div":null,"stats":{"gp":7,"fouls":8,"fg":15,"threePt":9,"pts":58,"wins":4,"losses":1,"ft":1}}]},{"sid":"6fd8e780","sn":"Summer 2025/26","club":"Titans Junior Basketball Club","regs":[{"tid":"7c4510c0","tn":"TITANS U16 Boys Legacy","gid":"fd4f774d","gn":"U16 Boys A","age":"U16","div":null,"stats":{"gp":13,"fouls":9,"fg":5,"threePt":2,"pts":17,"finals":1,"gfApps":1,"wins":5,"losses":7,"ft":1}},{"tid":"7c4510c0","tn":"TITANS U16 Boys Legacy","gid":"bbfc8c77","gn":"U16 Boys Grading","age":"U16","div":null,"stats":{"gp":13,"fouls":9,"ft":1,"fg":5,"threePt":2,"pts":17,"finals":1,"gfApps":1,"wins":5,"losses":7}}]},{"sid":"c9bdcd48","sn":"Winter 2025","club":"Titans Junior Basketball Club","regs":[{"tid":"db303ffe","tn":"TITANS U16 Boys Legacy","gid":"1eb0c146","gn":"U16 Boys B2","age":"U16","div":"B2","stats":{"gp":15,"fouls":18,"fg":8,"pts":19,"finals":1,"gfApps":1,"wins":10,"losses":5,"threePt":1,"gfWins":1}},{"tid":"db303ffe","tn":"TITANS U16 Boys Legacy","gid":"d059b240","gn":"U16 Boys Grading","age":"U16","div":null,"stats":{"gp":15,"fouls":18,"fg":8,"threePt":1,"pts":19,"finals":1,"gfApps":1,"wins":10,"losses":5,"gfWins":1}}]},{"sid":"9c1e219b","sn":"2021/22","club":"Malvern Tigers Basketball Club","regs":[{"tid":"a35b915a","tn":"Malvern Tigers U12 Boys","gid":"6621eebe","gn":"Saturday U12 Boys A/AR","age":"U12","div":null,"stats":{"gp":2,"wins":1,"pts":2,"fg":1}},{"tid":"a35b915a","tn":"Malvern Tigers U12 Boys","gid":"480005e4","gn":"Saturday U10 Boys A**","age":"U10","div":null,"stats":{"gp":2,"fg":1,"pts":2,"wins":1}}]},{"sid":"1603f576","sn":"Summer 2020/21","club":"Malvern Tigers Basketball Club","regs":[{"tid":"293d3560","tn":"Malvern Tigers U10 Boys Black","gid":"11bc53b8","gn":"Saturday U10 Boys A","age":"U10","div":null,"stats":{"gp":15,"fouls":7,"ft":4,"fg":14,"pts":32,"finals":1,"gfApps":1,"wins":13,"losses":2,"gfWins":1}}]}],"updatedAt":"2026-05-31T03:15:24.094Z","teams":[{"tid":"8de61738","sid":"aacc7335","status":"ACTIVE"},{"tid":"7c4510c0","sid":"6fd8e780","status":"COMPLETED"},{"tid":"db303ffe","sid":"c9bdcd48","status":"COMPLETED"},{"tid":"3c421442","sid":"7d20ecad","status":"COMPLETED"},{"tid":"51659bfe","sid":"e2637fe8","status":"COMPLETED"},{"tid":"cbd6137c","sid":"eb0c3879","status":"COMPLETED"},{"tid":"a35b915a","sid":"9c1e219b","status":"COMPLETED"},{"tid":"51d3d3c8","sid":"11f9ba57","status":"COMPLETED"},{"tid":"7d6f8a2a","sid":"00e10ea1","status":"COMPLETED"},{"tid":"293d3560","sid":"1603f576","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:31:03.440Z","records":{"maxGamePTS":{"v":16,"gameKey":"128ee8a1","sid":"aacc7335"},"maxGameThreePt":{"v":3,"gameKey":"9fca4948","sid":"aacc7335"}},"games":["05fe2f0b","0755a6a5","0bfaf5fa","0cb4f14c","0f3b82b6","1886329e","25721727","2b8bb177","3226f9b3","33ceffcf","3b874b6b","3d155fc2","3e5ac282","41e63395","45b7e2fe","47c50060","5684b12f","5d4a3189","5e6d59cc","6101952b","738f7499","7717c93a","821f5892","8381a7e8","86ca2acd","886e31fe","89dcc5fb","8d2cf5a0","99b36ad4","9fca4948","a4a1bb6b","a74412b7","aae91ce4","aef829d7","b234cf92","bc0ed461","bdc6e334","bfe2e232","d1d99d77","d367c3bd","d7f7844a","dc37b141","e19d695c","ed42bc67","edfbaa9b","f236345f","f67767cf","f8ee8a16","fc25ad98","ff64b755"]}
+{
+  "uuid": "9ee170bc-dda5-4c0e-ace1-63e57d34a2ba",
+  "name": "Ethan Pulverman",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 52,
+      "pts": 128,
+      "fouls": 42,
+      "fg": 43,
+      "ft": 6,
+      "threePt": 12,
+      "foulOuts": {},
+      "finals": 3,
+      "gfApps": 3,
+      "gfWins": 2,
+      "finalsPerSeason": 0.6,
+      "maxGamePTS": 16,
+      "maxGameThreePt": 3,
+      "wins": 49,
+      "losses": 27,
+      "winPct": 0.64,
+      "statsChecked": "2026-07-05T14:29:09.694Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "aacc7335",
+      "sn": "Winter 2026",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "8de61738",
+          "tn": "TITANS U16 Boys Bench Warmers",
+          "gid": "abe4a871",
+          "gn": "U16 Boys B1",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 8,
+            "fg": 15,
+            "threePt": 9,
+            "pts": 58,
+            "wins": 4,
+            "losses": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6fd8e780",
+      "sn": "Summer 2025/26",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "7c4510c0",
+          "tn": "TITANS U16 Boys Legacy",
+          "gid": "fd4f774d",
+          "gn": "U16 Boys A",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 17,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 7,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "7c4510c0",
+          "tn": "TITANS U16 Boys Legacy",
+          "gid": "bbfc8c77",
+          "gn": "U16 Boys Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 5,
+            "threePt": 2,
+            "pts": 17,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 5,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c9bdcd48",
+      "sn": "Winter 2025",
+      "club": "Titans Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "db303ffe",
+          "tn": "TITANS U16 Boys Legacy",
+          "gid": "1eb0c146",
+          "gn": "U16 Boys B2",
+          "age": "U16",
+          "div": "B2",
+          "stats": {
+            "gp": 15,
+            "fouls": 18,
+            "fg": 8,
+            "pts": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 5,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "db303ffe",
+          "tn": "TITANS U16 Boys Legacy",
+          "gid": "d059b240",
+          "gn": "U16 Boys Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 18,
+            "fg": 8,
+            "threePt": 1,
+            "pts": 19,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 5,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9c1e219b",
+      "sn": "2021/22",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "a35b915a",
+          "tn": "Malvern Tigers U12 Boys",
+          "gid": "6621eebe",
+          "gn": "Saturday U12 Boys A/AR",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "wins": 1,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "a35b915a",
+          "tn": "Malvern Tigers U12 Boys",
+          "gid": "480005e4",
+          "gn": "Saturday U10 Boys A**",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1603f576",
+      "sn": "Summer 2020/21",
+      "club": "Malvern Tigers Basketball Club",
+      "regs": [
+        {
+          "tid": "293d3560",
+          "tn": "Malvern Tigers U10 Boys Black",
+          "gid": "11bc53b8",
+          "gn": "Saturday U10 Boys A",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 7,
+            "ft": 4,
+            "fg": 14,
+            "pts": 32,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 13,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "3c421442",
+          "tn": "Malvern Tigers U14 Boys Orange",
+          "gid": "2f1f95d6",
+          "gn": "Saturday U14 Boys Grading Pool 4",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "51659bfe",
+          "tn": "Malvern Tigers U12 Boys Green",
+          "gid": "a9b101dd",
+          "gn": "U12 Boys (S22_23) Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "cbd6137c",
+          "tn": "Malvern Tigers U12 Boys Yellow",
+          "gid": "2a4c2bec",
+          "gn": "U12 Boys Division 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "51d3d3c8",
+          "tn": "Malvern Tigers U10 Boys Black",
+          "gid": "23439d43",
+          "gn": "U10 Boys GP1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "00e10ea1",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "7d6f8a2a",
+          "tn": "Malvern Tigers U10 Boys Red",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T03:15:24.094Z",
+  "teams": [
+    {
+      "tid": "8de61738",
+      "sid": "aacc7335",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7c4510c0",
+      "sid": "6fd8e780",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db303ffe",
+      "sid": "c9bdcd48",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a35b915a",
+      "sid": "9c1e219b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "293d3560",
+      "sid": "1603f576",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3c421442",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "51659bfe",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cbd6137c",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "51d3d3c8",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7d6f8a2a",
+      "sid": "00e10ea1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.318Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "128ee8a1",
+      "sid": "aacc7335"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "9fca4948",
+      "sid": "aacc7335"
+    }
+  },
+  "games": [
+    "05fe2f0b",
+    "0755a6a5",
+    "0bfaf5fa",
+    "0cb4f14c",
+    "0f3b82b6",
+    "1886329e",
+    "25721727",
+    "2b8bb177",
+    "3226f9b3",
+    "33ceffcf",
+    "3b874b6b",
+    "3d155fc2",
+    "3e5ac282",
+    "41e63395",
+    "45b7e2fe",
+    "47c50060",
+    "5684b12f",
+    "5d4a3189",
+    "5e6d59cc",
+    "6101952b",
+    "738f7499",
+    "7717c93a",
+    "821f5892",
+    "8381a7e8",
+    "86ca2acd",
+    "886e31fe",
+    "89dcc5fb",
+    "8d2cf5a0",
+    "99b36ad4",
+    "9fca4948",
+    "a4a1bb6b",
+    "a74412b7",
+    "aae91ce4",
+    "aef829d7",
+    "b234cf92",
+    "bc0ed461",
+    "bdc6e334",
+    "bfe2e232",
+    "d1d99d77",
+    "d367c3bd",
+    "d7f7844a",
+    "dc37b141",
+    "e19d695c",
+    "ed42bc67",
+    "edfbaa9b",
+    "f236345f",
+    "f67767cf",
+    "f8ee8a16",
+    "fc25ad98",
+    "ff64b755"
+  ]
+}

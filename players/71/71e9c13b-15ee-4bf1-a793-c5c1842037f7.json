@@ -1,1 +1,284 @@
-{"uuid":"71e9c13b-15ee-4bf1-a793-c5c1842037f7","name":"Zachary Hemaya","gender":"Boys","sports":{"Basketball":{"gp":43,"pts":87,"fouls":100,"fg":41,"ft":2,"threePt":1,"foulOuts":{"f57b7901":1},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"maxGamePTS":10,"maxGameThreePt":1,"wins":70,"losses":40,"winPct":0.62,"draws":3,"statsChecked":"2026-07-05T15:10:13.699Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Rebelz Basketball Club","regs":[{"tid":"516300ff","tn":"Rebelz U14 Boys 4","gid":"fdfa8bd6","gn":"Saturday U14 Boys C3","age":"U14","div":"C3","stats":{"gp":13,"fouls":25,"fg":14,"pts":28,"wins":9,"losses":4}},{"tid":"516300ff","tn":"Rebelz U14 Boys 4","gid":"6f9692df","gn":"Saturday U14 Boys Grading Group 3","age":"U14","div":null,"stats":{"gp":13,"fouls":25,"fg":14,"pts":28,"wins":9,"losses":4}},{"tid":"516300ff","tn":"Rebelz U14 Boys 4","gid":"9cf48cf0","gn":"Saturday U14 Boys Grading Group 4","age":"U14","div":null,"stats":{"gp":13,"fouls":25,"fg":14,"pts":28,"wins":9,"losses":4}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Rebelz Basketball Club","regs":[{"tid":"bace5274","tn":"Rebelz U12 Boys 4","gid":"32a727df","gn":"Saturday U12 Boys D1","age":"U12","div":"D1","stats":{"gp":16,"fouls":39,"ft":2,"fg":15,"threePt":1,"pts":35,"foulOuts":1,"finals":1,"wins":11,"losses":5}},{"tid":"bace5274","tn":"Rebelz U12 Boys 4","gid":"51ca0a72","gn":"Saturday U12 Boys Grading Group 4","age":"U12","div":null,"stats":{"gp":16,"fouls":39,"fg":15,"pts":35,"finals":1,"wins":11,"losses":5,"ft":2,"threePt":1}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Rebelz Basketball Club","regs":[{"tid":"3f3a039c","tn":"Rebelz 12.B4","gid":"f3623b5d","gn":"Saturday U12 Boys D1","age":"U12","div":"D1","stats":{"gp":14,"fouls":36,"fg":12,"pts":24,"wins":7,"losses":6,"draws":1}},{"tid":"3f3a039c","tn":"Rebelz 12.B4","gid":"454d2c8f","gn":"Saturday U12 Boys D2","age":"U12","div":"D2","stats":{"gp":14,"fouls":36,"fg":12,"pts":24,"wins":7,"losses":6,"draws":1}},{"tid":"3f3a039c","tn":"Rebelz 12.B4","gid":"c279c118","gn":"Saturday U12 Boys D3","age":"U12","div":"D3","stats":{"gp":14,"fouls":36,"fg":12,"pts":24,"wins":7,"losses":6,"draws":1}}]}],"updatedAt":"2026-06-01T06:34:09.650Z","teams":[{"tid":"516300ff","sid":"d868771d","status":"ACTIVE"},{"tid":"bace5274","sid":"f57b7901","status":"COMPLETED"},{"tid":"3f3a039c","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:41:01.958Z","records":{"maxGamePTS":{"v":10,"gameKey":"2cb9be7d","sid":"d868771d"},"maxGameThreePt":{"v":1,"gameKey":"630b5d88","sid":"f57b7901"}},"games":["04a8e8d1","120e03b7","13020f7c","1583883c","1cbb7878","202c9af5","2318f3b8","26fe6749","28a2c88c","2cb9be7d","33a557f9","3aef61b0","4f60e14b","56675cea","5d855672","630b5d88","6acfe27b","6ad53046","6af6f1a1","6f8d4aa4","6fe8a2b9","716d29d2","77ca41e9","7e427818","7ec812b8","997085cd","a418fc48","a4dd84d4","aca1402f","b238b20e","b82fddb3","ba6bbca8","bb5d7775","c498a3ba","c4b9b957","c91a88f3","d641f325","d8ce8077","da42991a","dac6390e","e2703cfb","f1bba0d6","f48417ef"]}
+{
+  "uuid": "71e9c13b-15ee-4bf1-a793-c5c1842037f7",
+  "name": "Zachary Hemaya",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 87,
+      "fouls": 100,
+      "fg": 41,
+      "ft": 2,
+      "threePt": 1,
+      "foulOuts": {
+        "f57b7901": 1
+      },
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 70,
+      "losses": 40,
+      "winPct": 0.62,
+      "draws": 3,
+      "statsChecked": "2026-07-05T15:10:13.699Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Rebelz Basketball Club",
+      "regs": [
+        {
+          "tid": "516300ff",
+          "tn": "Rebelz U14 Boys 4",
+          "gid": "fdfa8bd6",
+          "gn": "Saturday U14 Boys C3",
+          "age": "U14",
+          "div": "C3",
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 14,
+            "pts": 28,
+            "wins": 9,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "516300ff",
+          "tn": "Rebelz U14 Boys 4",
+          "gid": "6f9692df",
+          "gn": "Saturday U14 Boys Grading Group 3",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 14,
+            "pts": 28,
+            "wins": 9,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "516300ff",
+          "tn": "Rebelz U14 Boys 4",
+          "gid": "9cf48cf0",
+          "gn": "Saturday U14 Boys Grading Group 4",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 25,
+            "fg": 14,
+            "pts": 28,
+            "wins": 9,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Rebelz Basketball Club",
+      "regs": [
+        {
+          "tid": "bace5274",
+          "tn": "Rebelz U12 Boys 4",
+          "gid": "32a727df",
+          "gn": "Saturday U12 Boys D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 16,
+            "fouls": 39,
+            "ft": 2,
+            "fg": 15,
+            "threePt": 1,
+            "pts": 35,
+            "foulOuts": 1,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "bace5274",
+          "tn": "Rebelz U12 Boys 4",
+          "gid": "51ca0a72",
+          "gn": "Saturday U12 Boys Grading Group 4",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 39,
+            "fg": 15,
+            "pts": 35,
+            "finals": 1,
+            "wins": 11,
+            "losses": 5,
+            "ft": 2,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Rebelz Basketball Club",
+      "regs": [
+        {
+          "tid": "3f3a039c",
+          "tn": "Rebelz 12.B4",
+          "gid": "f3623b5d",
+          "gn": "Saturday U12 Boys D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 14,
+            "fouls": 36,
+            "fg": 12,
+            "pts": 24,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "3f3a039c",
+          "tn": "Rebelz 12.B4",
+          "gid": "454d2c8f",
+          "gn": "Saturday U12 Boys D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 14,
+            "fouls": 36,
+            "fg": 12,
+            "pts": 24,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "3f3a039c",
+          "tn": "Rebelz 12.B4",
+          "gid": "c279c118",
+          "gn": "Saturday U12 Boys D3",
+          "age": "U12",
+          "div": "D3",
+          "stats": {
+            "gp": 14,
+            "fouls": 36,
+            "fg": 12,
+            "pts": 24,
+            "wins": 7,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "e0c949cd",
+          "tn": "Rebelz U14 Boys 4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:34:09.650Z",
+  "teams": [
+    {
+      "tid": "516300ff",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bace5274",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f3a039c",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0c949cd",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.078Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "2cb9be7d",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "630b5d88",
+      "sid": "f57b7901"
+    }
+  },
+  "games": [
+    "04a8e8d1",
+    "120e03b7",
+    "13020f7c",
+    "1583883c",
+    "1cbb7878",
+    "202c9af5",
+    "2318f3b8",
+    "26fe6749",
+    "28a2c88c",
+    "2cb9be7d",
+    "33a557f9",
+    "3aef61b0",
+    "4f60e14b",
+    "56675cea",
+    "5d855672",
+    "630b5d88",
+    "6acfe27b",
+    "6ad53046",
+    "6af6f1a1",
+    "6f8d4aa4",
+    "6fe8a2b9",
+    "716d29d2",
+    "77ca41e9",
+    "7e427818",
+    "7ec812b8",
+    "997085cd",
+    "a418fc48",
+    "a4dd84d4",
+    "aca1402f",
+    "b238b20e",
+    "b82fddb3",
+    "ba6bbca8",
+    "bb5d7775",
+    "c498a3ba",
+    "c4b9b957",
+    "c91a88f3",
+    "d641f325",
+    "d8ce8077",
+    "da42991a",
+    "dac6390e",
+    "e2703cfb",
+    "f1bba0d6",
+    "f48417ef"
+  ]
+}

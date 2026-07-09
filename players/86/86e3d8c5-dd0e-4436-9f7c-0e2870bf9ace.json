@@ -1,1 +1,134 @@
-{"uuid":"86e3d8c5-dd0e-4436-9f7c-0e2870bf9ace","gender":null,"sports":{"Basketball":{"gp":11,"pts":7,"fouls":1,"fg":3,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":7,"losses":9,"winPct":0.44,"statsChecked":"2026-07-05T16:02:16.273Z"}},"seasons":[{"sid":"3b619b6f","sn":"Winter 2021","club":"Edithvale Pelicans Basketball Club","regs":[{"tid":"49349588","tn":"Edithvale Pelicans U12 White Boys","gid":"9b4cc23b","gn":"Monday U12 Boys 1","stats":{"gp":5,"wins":3,"losses":2,"pts":5,"fg":2,"ft":1}},{"tid":"49349588","tn":"Edithvale Pelicans U12 White Boys","gid":"11ab7503","gn":"Monday U12 Boys 2","stats":{"gp":5,"pts":5,"fg":2,"ft":1,"wins":3,"losses":2}}]},{"sid":"b1515564","sn":"Summer 2020/21","club":null,"regs":[{"tid":"05293baa","tn":"Edithvale Pelicans U12 White","gid":"ef629cff","gn":"Monday U12 Boys Div 3","stats":{"gp":6,"pts":2,"fouls":1,"fg":1,"wins":1,"losses":5}}]}],"updatedAt":"2026-06-11T23:42:03.157Z","records":{"maxGamePTS":{"v":2,"gameKey":"06ba0fc9","sid":"3b619b6f"},"maxGameThreePt":{"v":null}},"games":["06ba0fc9","131381d7","380bff8f","3cf08504","41721500","442bc199","45ab75e6","796287aa","c039cc3a","c5423e20","fb2a0ba5"],"name":"Winter 2021"}
+{
+  "uuid": "86e3d8c5-dd0e-4436-9f7c-0e2870bf9ace",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 7,
+      "fouls": 1,
+      "fg": 3,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 9,
+      "winPct": 0.44,
+      "statsChecked": "2026-07-05T16:02:16.273Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3b619b6f",
+      "sn": "Winter 2021",
+      "club": "Edithvale Pelicans Basketball Club",
+      "regs": [
+        {
+          "tid": "49349588",
+          "tn": "Edithvale Pelicans U12 White Boys",
+          "gid": "9b4cc23b",
+          "gn": "Monday U12 Boys 1",
+          "stats": {
+            "gp": 5,
+            "wins": 3,
+            "losses": 2,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "49349588",
+          "tn": "Edithvale Pelicans U12 White Boys",
+          "gid": "11ab7503",
+          "gn": "Monday U12 Boys 2",
+          "stats": {
+            "gp": 5,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b1515564",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "05293baa",
+          "tn": "Edithvale Pelicans U12 White",
+          "gid": "ef629cff",
+          "gn": "Monday U12 Boys Div 3",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fouls": 1,
+            "fg": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a9c2660f",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "e7a5372b",
+          "tn": "Edi Pels U12 Boys White",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:03.157Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "06ba0fc9",
+      "sid": "3b619b6f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "06ba0fc9",
+    "131381d7",
+    "380bff8f",
+    "3cf08504",
+    "41721500",
+    "442bc199",
+    "45ab75e6",
+    "796287aa",
+    "c039cc3a",
+    "c5423e20",
+    "fb2a0ba5"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "49349588",
+      "sid": "3b619b6f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "05293baa",
+      "sid": "b1515564",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7a5372b",
+      "sid": "a9c2660f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.416Z"
+}

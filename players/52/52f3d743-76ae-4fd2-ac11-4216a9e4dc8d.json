@@ -1,1 +1,282 @@
-{"uuid":"52f3d743-76ae-4fd2-ac11-4216a9e4dc8d","name":"Zachary Mann","gender":"Men","sports":{"Basketball":{"gp":51,"pts":187,"fouls":27,"fg":47,"ft":6,"threePt":29,"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":19,"maxGameThreePt":3,"wins":21,"losses":33,"winPct":0.39,"statsChecked":"2026-07-05T15:22:32.043Z"}},"seasons":[{"sid":"71694bd5","sn":"Summer 2023/24","regs":[{"tid":"c9c8f07b","tn":"Flushed Away","gid":"238702f4","gn":"Tuesday Open Men","age":"Senior","div":null,"stats":{"gp":15,"fouls":8,"ft":4,"fg":14,"threePt":12,"pts":68,"finals":1,"wins":10,"losses":5}}]},{"sid":"68238fbf","sn":"Winter 2023","regs":[{"tid":"e5d5b739","tn":"Flushed Away","gid":"c0700fce","gn":"Tuesday Open Men","age":"Senior","div":null,"stats":{"gp":11,"fouls":6,"ft":1,"fg":16,"threePt":9,"pts":60,"finals":1,"wins":5,"losses":6}},{"tid":"5e1746d5","stats":{"wins":3,"losses":11,"finals":1,"gp":14,"pts":30,"fg":10,"ft":1,"threePt":3,"fouls":5}}]},{"sid":"68238fbf","sn":"Winter 2023","regs":[{"tid":"5e1746d5","tn":"Lil TeT","gid":"d29ae87b","gn":"Wednesday Open Mixed","age":"Senior","div":null,"stats":{"gp":14,"fouls":5,"ft":1,"fg":10,"threePt":3,"pts":30,"finals":1,"wins":3,"losses":11}}]},{"sid":"47b51abe","sn":"Summer 2020/21","regs":[{"tid":"a21a4b6e","tn":"The Wiggles","gid":"7d53366c","gn":"Tuesday U23 Men","age":"U23","div":null,"stats":{"gp":11,"fouls":8,"fg":7,"threePt":5,"pts":29}}]}],"updatedAt":"2026-06-01T14:57:02.770Z","teams":[{"tid":"c9c8f07b","sid":"71694bd5","status":"COMPLETED"},{"tid":"e5d5b739","sid":"68238fbf","status":"COMPLETED"},{"tid":"5e1746d5","sid":"68238fbf","status":"COMPLETED"},{"tid":"a21a4b6e","sid":"47b51abe","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:33:08.119Z","records":{"maxGamePTS":{"v":19,"gameKey":"6dbae58c","sid":"68238fbf"},"maxGameThreePt":{"v":3,"gameKey":"edcfe35a","sid":"71694bd5"}},"games":["0595218b","09831c55","0db29158","11c4606b","15c66468","1884c24d","1aad06cf","27fb2781","29ec472e","2f50deaf","3c9d3aad","48ad792d","48bd478e","497459bf","4a353a1b","4ca35cdc","4eaedc0b","573ab7a5","5b3295a8","6202afe3","6b5d3fde","6dbae58c","775892a1","7b722c72","89bc4c9c","8e0860ef","961331c6","97ff5e44","9d161ccb","9e086611","a4a136cc","a4cf3d1b","a7b9d39c","a8175208","a8dfb5a2","ab5c9f51","ac4cc418","b2ed75d6","b384847a","bc6e1870","cc05be21","cc658d88","ce0196b1","d02b492c","d9262b60","d99daa20","dc517a93","e192e435","edcfe35a","f62b7df9","ff0abf26"],"gameTids":{"09831c55":"c9c8f07b","edcfe35a":"c9c8f07b","e192e435":"c9c8f07b","961331c6":"c9c8f07b","a7b9d39c":"c9c8f07b","29ec472e":"c9c8f07b","d02b492c":"c9c8f07b","b2ed75d6":"c9c8f07b","a4cf3d1b":"c9c8f07b","f62b7df9":"c9c8f07b","cc658d88":"c9c8f07b","1884c24d":"c9c8f07b","6202afe3":"c9c8f07b","6b5d3fde":"c9c8f07b","15c66468":"c9c8f07b","48ad792d":"e5d5b739","89bc4c9c":"e5d5b739","a8175208":"e5d5b739","9d161ccb":"e5d5b739","dc517a93":"e5d5b739","775892a1":"e5d5b739","b384847a":"e5d5b739","48bd478e":"e5d5b739","bc6e1870":"e5d5b739","4ca35cdc":"e5d5b739","6dbae58c":"e5d5b739","4a353a1b":"5e1746d5","497459bf":"5e1746d5","573ab7a5":"5e1746d5","7b722c72":"5e1746d5","cc05be21":"5e1746d5","d9262b60":"5e1746d5","97ff5e44":"5e1746d5","2f50deaf":"5e1746d5","0595218b":"5e1746d5","3c9d3aad":"5e1746d5","a8dfb5a2":"5e1746d5","ab5c9f51":"5e1746d5","a4a136cc":"5e1746d5","ff0abf26":"5e1746d5","8e0860ef":"a21a4b6e","d99daa20":"a21a4b6e","ce0196b1":"a21a4b6e","11c4606b":"a21a4b6e","ac4cc418":"a21a4b6e","1aad06cf":"a21a4b6e","5b3295a8":"a21a4b6e","0db29158":"a21a4b6e","27fb2781":"a21a4b6e","9e086611":"a21a4b6e","4eaedc0b":"a21a4b6e"}}
+{
+  "uuid": "52f3d743-76ae-4fd2-ac11-4216a9e4dc8d",
+  "name": "Zachary Mann",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 51,
+      "pts": 187,
+      "fouls": 27,
+      "fg": 47,
+      "ft": 6,
+      "threePt": 29,
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 19,
+      "maxGameThreePt": 3,
+      "wins": 21,
+      "losses": 33,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T15:22:32.043Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "71694bd5",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "c9c8f07b",
+          "tn": "Flushed Away",
+          "gid": "238702f4",
+          "gn": "Tuesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 8,
+            "ft": 4,
+            "fg": 14,
+            "threePt": 12,
+            "pts": 68,
+            "finals": 1,
+            "wins": 10,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68238fbf",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "e5d5b739",
+          "tn": "Flushed Away",
+          "gid": "c0700fce",
+          "gn": "Tuesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 6,
+            "ft": 1,
+            "fg": 16,
+            "threePt": 9,
+            "pts": 60,
+            "finals": 1,
+            "wins": 5,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "5e1746d5",
+          "stats": {
+            "wins": 3,
+            "losses": 11,
+            "finals": 1,
+            "gp": 14,
+            "pts": 30,
+            "fg": 10,
+            "ft": 1,
+            "threePt": 3,
+            "fouls": 5
+          },
+          "gid": "d29ae87b",
+          "gn": "Wednesday Open Mixed"
+        }
+      ]
+    },
+    {
+      "sid": "68238fbf",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "5e1746d5",
+          "tn": "Lil TeT",
+          "gid": "d29ae87b",
+          "gn": "Wednesday Open Mixed",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 5,
+            "ft": 1,
+            "fg": 10,
+            "threePt": 3,
+            "pts": 30,
+            "finals": 1,
+            "wins": 3,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "47b51abe",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "a21a4b6e",
+          "tn": "The Wiggles",
+          "gid": "7d53366c",
+          "gn": "Tuesday U23 Men",
+          "age": "U23",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 8,
+            "fg": 7,
+            "threePt": 5,
+            "pts": 29
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T14:57:02.770Z",
+  "teams": [
+    {
+      "tid": "c9c8f07b",
+      "sid": "71694bd5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e5d5b739",
+      "sid": "68238fbf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5e1746d5",
+      "sid": "68238fbf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a21a4b6e",
+      "sid": "47b51abe",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.014Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "6dbae58c",
+      "sid": "68238fbf"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "edcfe35a",
+      "sid": "71694bd5"
+    }
+  },
+  "games": [
+    "0595218b",
+    "09831c55",
+    "0db29158",
+    "11c4606b",
+    "15c66468",
+    "1884c24d",
+    "1aad06cf",
+    "27fb2781",
+    "29ec472e",
+    "2f50deaf",
+    "3c9d3aad",
+    "48ad792d",
+    "48bd478e",
+    "497459bf",
+    "4a353a1b",
+    "4ca35cdc",
+    "4eaedc0b",
+    "573ab7a5",
+    "5b3295a8",
+    "6202afe3",
+    "6b5d3fde",
+    "6dbae58c",
+    "775892a1",
+    "7b722c72",
+    "89bc4c9c",
+    "8e0860ef",
+    "961331c6",
+    "97ff5e44",
+    "9d161ccb",
+    "9e086611",
+    "a4a136cc",
+    "a4cf3d1b",
+    "a7b9d39c",
+    "a8175208",
+    "a8dfb5a2",
+    "ab5c9f51",
+    "ac4cc418",
+    "b2ed75d6",
+    "b384847a",
+    "bc6e1870",
+    "cc05be21",
+    "cc658d88",
+    "ce0196b1",
+    "d02b492c",
+    "d9262b60",
+    "d99daa20",
+    "dc517a93",
+    "e192e435",
+    "edcfe35a",
+    "f62b7df9",
+    "ff0abf26"
+  ],
+  "gameTids": {
+    "09831c55": "c9c8f07b",
+    "edcfe35a": "c9c8f07b",
+    "e192e435": "c9c8f07b",
+    "961331c6": "c9c8f07b",
+    "a7b9d39c": "c9c8f07b",
+    "29ec472e": "c9c8f07b",
+    "d02b492c": "c9c8f07b",
+    "b2ed75d6": "c9c8f07b",
+    "a4cf3d1b": "c9c8f07b",
+    "f62b7df9": "c9c8f07b",
+    "cc658d88": "c9c8f07b",
+    "1884c24d": "c9c8f07b",
+    "6202afe3": "c9c8f07b",
+    "6b5d3fde": "c9c8f07b",
+    "15c66468": "c9c8f07b",
+    "48ad792d": "e5d5b739",
+    "89bc4c9c": "e5d5b739",
+    "a8175208": "e5d5b739",
+    "9d161ccb": "e5d5b739",
+    "dc517a93": "e5d5b739",
+    "775892a1": "e5d5b739",
+    "b384847a": "e5d5b739",
+    "48bd478e": "e5d5b739",
+    "bc6e1870": "e5d5b739",
+    "4ca35cdc": "e5d5b739",
+    "6dbae58c": "e5d5b739",
+    "4a353a1b": "5e1746d5",
+    "497459bf": "5e1746d5",
+    "573ab7a5": "5e1746d5",
+    "7b722c72": "5e1746d5",
+    "cc05be21": "5e1746d5",
+    "d9262b60": "5e1746d5",
+    "97ff5e44": "5e1746d5",
+    "2f50deaf": "5e1746d5",
+    "0595218b": "5e1746d5",
+    "3c9d3aad": "5e1746d5",
+    "a8dfb5a2": "5e1746d5",
+    "ab5c9f51": "5e1746d5",
+    "a4a136cc": "5e1746d5",
+    "ff0abf26": "5e1746d5",
+    "8e0860ef": "a21a4b6e",
+    "d99daa20": "a21a4b6e",
+    "ce0196b1": "a21a4b6e",
+    "11c4606b": "a21a4b6e",
+    "ac4cc418": "a21a4b6e",
+    "1aad06cf": "a21a4b6e",
+    "5b3295a8": "a21a4b6e",
+    "0db29158": "a21a4b6e",
+    "27fb2781": "a21a4b6e",
+    "9e086611": "a21a4b6e",
+    "4eaedc0b": "a21a4b6e"
+  }
+}

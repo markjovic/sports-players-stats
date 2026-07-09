@@ -1,1 +1,289 @@
-{"uuid":"94f80755-5a37-431c-9a10-b9f27aa36fdc","name":"Ruby Klimek","gender":"Mixed","sports":{"Basketball":{"gp":12,"pts":69,"fouls":4,"fg":24,"ft":1,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":null,"wins":6,"losses":4,"winPct":0.6,"statsChecked":"2026-07-06T18:59:31.894Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"7fa2d418","tn":"Timberwolves KATZ","gid":"273651e1","gn":"Sunday Open Mixed Section 1","age":"Senior","div":null,"stats":{"gp":10,"fouls":4,"ft":1,"fg":18,"pts":57,"wins":6,"losses":4}}]},{"sid":"297562bc","regs":[{"tid":"01723114","stats":{"gp":2,"pts":12,"fg":6}},{"tid":"01723114","tn":"","gid":"4be5ebac","gn":"Sunday Mixed Division 1","div":null,"stats":{"gp":2,"pts":12,"fg":6}}]}],"updatedAt":"2026-07-06T18:30:52.658Z","teams":[{"tid":"7fa2d418","sid":"5593103d","status":"ACTIVE"},{"tid":"cec9ff91","sid":"76897951","status":"COMPLETED"},{"tid":"4548a0ce","sid":"5944effa","status":"COMPLETED"},{"tid":"37a19206","sid":"348dbfb8","status":"COMPLETED"},{"tid":"4b679e6e","sid":"9358e51a","status":"COMPLETED"},{"tid":"cd1eb137","sid":"d3d4e181","status":"COMPLETED"},{"tid":"da0e7f3b","sid":"21cd9648","status":"COMPLETED"},{"tid":"560318fe","sid":"d4cbf787","status":"COMPLETED"},{"tid":"aef7db1d","sid":"d64fcfce","status":"COMPLETED"},{"tid":"65fd6af4","sid":"afd26581","status":"COMPLETED"},{"tid":"3deb26fa","sid":"922f0463","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:50.124Z","records":{"maxGamePTS":{"v":13,"gameKey":"fd768d71","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["028403c4","40f5004d","54fb9341","72730e4e","85d33ed7","b7efe641","d7ab92cf","dff7b9ea","f82ce926","fd768d71"]}
+{
+  "uuid": "94f80755-5a37-431c-9a10-b9f27aa36fdc",
+  "name": "Ruby Klimek",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 69,
+      "fouls": 4,
+      "fg": 24,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 4,
+      "winPct": 0.6,
+      "statsChecked": "2026-07-06T18:59:31.894Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "7fa2d418",
+          "tn": "Timberwolves KATZ",
+          "gid": "273651e1",
+          "gn": "Sunday Open Mixed Section 1",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 4,
+            "ft": 1,
+            "fg": 18,
+            "pts": 57,
+            "wins": 6,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "01723114",
+          "stats": {
+            "gp": 2,
+            "pts": 12,
+            "fg": 6
+          },
+          "gid": "4be5ebac",
+          "gn": "Sunday Mixed Division 1"
+        },
+        {
+          "tid": "01723114",
+          "tn": "",
+          "gid": "4be5ebac",
+          "gn": "Sunday Mixed Division 1",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 12,
+            "fg": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "cec9ff91",
+          "tn": "Timberwolves KATZ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "4548a0ce",
+          "tn": "Timberwolves KATZ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "37a19206",
+          "tn": "Timberwolves KATZ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "4b679e6e",
+          "tn": "Timberwolves KATZ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "cd1eb137",
+          "tn": "Timberwolves KATZ",
+          "gid": "4f25a2f7",
+          "gn": "AUTUMN Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "21cd9648",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "da0e7f3b",
+          "tn": "Timberwolves KATZ",
+          "gid": "e8cfad13",
+          "gn": "SPRING Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d4cbf787",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "560318fe",
+          "tn": "Timberwolves KATZ",
+          "gid": "1375dfd5",
+          "gn": "Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d64fcfce",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "aef7db1d",
+          "tn": "Timberwolves KATZ",
+          "gid": "332b438a",
+          "gn": "Sunday Senior Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "afd26581",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "65fd6af4",
+          "tn": "Timberwolves KATZ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "922f0463",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "3deb26fa",
+          "tn": "Timberwolves KATZ",
+          "gid": "a78747eb",
+          "gn": "Sunday Open Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:30:52.658Z",
+  "teams": [
+    {
+      "tid": "7fa2d418",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "01723114",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cec9ff91",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4548a0ce",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "37a19206",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4b679e6e",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd1eb137",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "da0e7f3b",
+      "sid": "21cd9648",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "560318fe",
+      "sid": "d4cbf787",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aef7db1d",
+      "sid": "d64fcfce",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "65fd6af4",
+      "sid": "afd26581",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3deb26fa",
+      "sid": "922f0463",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.917Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "fd768d71",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "028403c4",
+    "40f5004d",
+    "54fb9341",
+    "72730e4e",
+    "85d33ed7",
+    "b7efe641",
+    "d7ab92cf",
+    "dff7b9ea",
+    "f82ce926",
+    "fd768d71"
+  ]
+}

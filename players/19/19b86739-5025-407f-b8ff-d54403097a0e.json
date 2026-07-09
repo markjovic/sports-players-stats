@@ -1,1 +1,107 @@
-{"uuid":"19b86739-5025-407f-b8ff-d54403097a0e","name":"Zachariah Van Niekerk","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":29,"fouls":21,"fg":13,"ft":3,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"wins":10,"losses":1,"winPct":0.91,"statsChecked":"2026-07-05T14:39:53.275Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"eed091be","tn":"Norwood Flames U12 Boys 4","gid":"cc17d0ce","gn":"BOYS UNDER 12 C3","age":null,"div":"C3","stats":{"gp":5,"pts":17,"fg":7,"ft":3,"fouls":13,"wins":4,"losses":1}}]},{"sid":"0869ea69","regs":[{"tid":"d215154c","stats":{"wins":6,"finals":1,"gfApps":1,"gfWins":1,"gp":6,"pts":12,"fg":6,"fouls":8}}]}],"updatedAt":"2026-05-31T01:02:03.946Z","teams":[{"tid":"d215154c","sid":"0869ea69","status":"UPCOMING"},{"tid":"eed091be","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:02:22.453Z","records":{"maxGamePTS":{"v":6,"gameKey":"b4051975","sid":"0869ea69"},"maxGameThreePt":{"v":null}},"games":["0799b6d3","42bff381","486b8b76","729d6366","a03fcc88","b4051975","cf44114d","d2c4c064","df8e183f","eaf5d5d3","ff521bd4"]}
+{
+  "uuid": "19b86739-5025-407f-b8ff-d54403097a0e",
+  "name": "Zachariah Van Niekerk",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 29,
+      "fouls": 21,
+      "fg": 13,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "wins": 10,
+      "losses": 1,
+      "winPct": 0.91,
+      "statsChecked": "2026-07-05T14:39:53.275Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "eed091be",
+          "tn": "Norwood Flames U12 Boys 4",
+          "gid": "cc17d0ce",
+          "gn": "BOYS UNDER 12 C3",
+          "age": null,
+          "div": "C3",
+          "stats": {
+            "gp": 5,
+            "pts": 17,
+            "fg": 7,
+            "ft": 3,
+            "fouls": 13,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "d215154c",
+          "stats": {
+            "wins": 6,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 6,
+            "pts": 12,
+            "fg": 6,
+            "fouls": 8
+          },
+          "gid": "17e4417e",
+          "gn": "BOYS UNDER 12 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T01:02:03.946Z",
+  "teams": [
+    {
+      "tid": "eed091be",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d215154c",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.499Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "b4051975",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0799b6d3",
+    "42bff381",
+    "486b8b76",
+    "729d6366",
+    "a03fcc88",
+    "b4051975",
+    "cf44114d",
+    "d2c4c064",
+    "df8e183f",
+    "eaf5d5d3",
+    "ff521bd4"
+  ]
+}

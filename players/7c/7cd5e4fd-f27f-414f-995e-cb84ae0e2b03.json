@@ -1,1 +1,62 @@
-{"uuid":"7cd5e4fd-f27f-414f-995e-cb84ae0e2b03","name":"Charlotte Phillips","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":null,"foulOuts":{},"gp":7,"pts":10,"fg":5,"fouls":7,"statsChecked":"2026-07-08T17:53:12.822Z"}},"seasons":[{"sid":"8ca75679","regs":[{"tid":"c0fcc3da"}]},{"sid":"2fe68b4a","regs":[{"tid":"2ae995fc"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":6,"gameKey":"94f52e73","sid":"8ca75679"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "7cd5e4fd-f27f-414f-995e-cb84ae0e2b03",
+  "name": "Charlotte Phillips",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 7,
+      "pts": 10,
+      "fg": 5,
+      "fouls": 7,
+      "statsChecked": "2026-07-08T17:53:12.822Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8ca75679",
+      "regs": [
+        {
+          "tid": "c0fcc3da",
+          "gid": "e6bd0e23",
+          "gn": "Wednesday Open Women Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "2fe68b4a",
+      "regs": [
+        {
+          "tid": "2ae995fc",
+          "gid": "1fff93ea",
+          "gn": "Thursday SBC Premier League Women - 2021 Winter"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "c0fcc3da",
+      "sid": "8ca75679",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2ae995fc",
+      "sid": "2fe68b4a",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "94f52e73",
+      "sid": "8ca75679"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:13.723Z"
+}

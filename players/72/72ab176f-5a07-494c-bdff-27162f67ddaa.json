@@ -1,1 +1,82 @@
-{"uuid":"72ab176f-5a07-494c-bdff-27162f67ddaa","name":"Samuel Vernon-williams","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":5,"foulOuts":{"25aab112":1},"gp":34,"pts":122,"fg":7,"threePt":36,"fouls":33,"statsChecked":"2026-07-06T19:10:39.226Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"1cad07db"}]},{"sid":"25aab112","regs":[{"tid":"99d196fb"}]},{"sid":"83ae36bf","regs":[{"tid":"4f8c62db"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":15,"gameKey":"cdbf8393","sid":"83ae36bf"},"maxGameThreePt":{"v":5,"gameKey":"cdbf8393","sid":"83ae36bf"}}}
+{
+  "uuid": "72ab176f-5a07-494c-bdff-27162f67ddaa",
+  "name": "Samuel Vernon-williams",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 5,
+      "foulOuts": {
+        "25aab112": 1
+      },
+      "gp": 34,
+      "pts": 122,
+      "fg": 7,
+      "threePt": 36,
+      "fouls": 33,
+      "statsChecked": "2026-07-06T19:10:39.226Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "1cad07db",
+          "gid": "a8ca659b",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "25aab112",
+      "regs": [
+        {
+          "tid": "99d196fb",
+          "gid": "e2b875e5",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "83ae36bf",
+      "regs": [
+        {
+          "tid": "4f8c62db",
+          "gid": "d1b8a0ce",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "1cad07db",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "99d196fb",
+      "sid": "25aab112",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4f8c62db",
+      "sid": "83ae36bf",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "cdbf8393",
+      "sid": "83ae36bf"
+    },
+    "maxGameThreePt": {
+      "v": 5,
+      "gameKey": "cdbf8393",
+      "sid": "83ae36bf"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:13.104Z"
+}

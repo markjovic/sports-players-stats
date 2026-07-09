@@ -1,1 +1,86 @@
-{"uuid":"72e2b999-7110-4705-875a-f2a31169888f","name":"Joanna Minoneti","gender":"Girls","sports":{"Basketball":{"gp":5,"pts":10,"fg":5,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":1,"draws":4,"winPct":0.2,"statsChecked":"2026-07-05T15:49:12.962Z"}},"seasons":[{"sid":"e1a7f7de","sn":"Summer 2024/25","regs":[{"tid":"a2db56ad","tn":"OUTCASTS","gid":"49743fc4","gn":"Junior Girls","age":"Junior","div":null,"stats":{"gp":5,"fg":5,"pts":10,"wins":1,"draws":4}}]}],"updatedAt":"2026-06-03T05:00:11.027Z","teams":[{"tid":"3f7e4cb6","sid":"caca55eb","status":"COMPLETED"},{"tid":"a2db56ad","sid":"e1a7f7de","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:51:46.495Z","records":{"maxGamePTS":{"v":6,"gameKey":"2b450909","sid":"e1a7f7de"},"maxGameThreePt":{"v":null}},"games":["0756593b","2b450909","6144ff08","82b944cd","a9873856"]}
+{
+  "uuid": "72e2b999-7110-4705-875a-f2a31169888f",
+  "name": "Joanna Minoneti",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 10,
+      "fg": 5,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "draws": 4,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T15:49:12.962Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e1a7f7de",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "a2db56ad",
+          "tn": "OUTCASTS",
+          "gid": "49743fc4",
+          "gn": "Junior Girls",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1,
+            "draws": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "caca55eb",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "3f7e4cb6",
+          "tn": "JETS",
+          "gid": "127cdaca",
+          "gn": "Junior Girls",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T05:00:11.027Z",
+  "teams": [
+    {
+      "tid": "a2db56ad",
+      "sid": "e1a7f7de",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f7e4cb6",
+      "sid": "caca55eb",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.148Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "2b450909",
+      "sid": "e1a7f7de"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0756593b",
+    "2b450909",
+    "6144ff08",
+    "82b944cd",
+    "a9873856"
+  ]
+}

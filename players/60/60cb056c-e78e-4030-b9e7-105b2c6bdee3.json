@@ -1,1 +1,138 @@
-{"uuid":"60cb056c-e78e-4030-b9e7-105b2c6bdee3","name":"2021","gender":null,"sports":{"Basketball":{"gp":20,"pts":3,"fouls":21,"fg":1,"ft":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":27,"winPct":0.04,"statsChecked":"2026-07-05T16:01:24.613Z"}},"seasons":[{"sid":"9b0b9b64","sn":"2021","club":null,"regs":[{"tid":"26770f9d","tn":"Storm G10","gid":"dc423833","gn":"Girls Under 10","stats":{"gp":6,"pts":3,"fouls":11,"fg":1,"ft":1,"wins":1,"losses":5}}]},{"sid":"d393742b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"f5491657","tn":"Storm","gid":"58546001","gn":"U10 Girls","stats":{"gp":14,"fouls":10,"losses":11}},{"tid":"f5491657","tn":"Storm","gid":"7e381a9c","gn":"Winter 2020 - Girls Under 8","stats":{"gp":14,"fouls":10,"losses":11}}]}],"updatedAt":"2026-06-11T23:40:14.408Z","records":{"maxGamePTS":{"v":2,"gameKey":"f3a655c0","sid":"9b0b9b64"},"maxGameThreePt":{"v":null}},"games":["0bb042c7","0d077e47","3357f40c","3f6a0cec","445a7fea","6517f5b1","67ccc5b6","6b18c1e8","74336782","761b185b","7825e2a0","7dc6257b","842552f0","9ee1938e","9ff2a807","a1338b0d","b3e0c46a","cc2c54fa","ce3c0a93","f3a655c0"]}
+{
+  "uuid": "60cb056c-e78e-4030-b9e7-105b2c6bdee3",
+  "name": "2021",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 3,
+      "fouls": 21,
+      "fg": 1,
+      "ft": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 27,
+      "winPct": 0.04,
+      "statsChecked": "2026-07-05T16:01:24.613Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "9b0b9b64",
+      "sn": "2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "26770f9d",
+          "tn": "Storm G10",
+          "gid": "dc423833",
+          "gn": "Girls Under 10",
+          "stats": {
+            "gp": 6,
+            "pts": 3,
+            "fouls": 11,
+            "fg": 1,
+            "ft": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d393742b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "f5491657",
+          "tn": "Storm",
+          "gid": "58546001",
+          "gn": "U10 Girls",
+          "stats": {
+            "gp": 14,
+            "fouls": 10,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "f5491657",
+          "tn": "Storm",
+          "gid": "7e381a9c",
+          "gn": "Winter 2020 - Girls Under 8",
+          "stats": {
+            "gp": 14,
+            "fouls": 10,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "950cd951",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "b1c8d143",
+          "tn": "Orange",
+          "gid": "c92d9cc6",
+          "gn": "U10 Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:14.408Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f3a655c0",
+      "sid": "9b0b9b64"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0bb042c7",
+    "0d077e47",
+    "3357f40c",
+    "3f6a0cec",
+    "445a7fea",
+    "6517f5b1",
+    "67ccc5b6",
+    "6b18c1e8",
+    "74336782",
+    "761b185b",
+    "7825e2a0",
+    "7dc6257b",
+    "842552f0",
+    "9ee1938e",
+    "9ff2a807",
+    "a1338b0d",
+    "b3e0c46a",
+    "cc2c54fa",
+    "ce3c0a93",
+    "f3a655c0"
+  ],
+  "teams": [
+    {
+      "tid": "26770f9d",
+      "sid": "9b0b9b64",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f5491657",
+      "sid": "d393742b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1c8d143",
+      "sid": "950cd951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.956Z"
+}

@@ -1,1 +1,307 @@
-{"uuid":"3ded6a40-c685-4946-8f14-586b7bf77eb3","name":"Felix Bagnasco","gender":"Boys","sports":{"Basketball":{"gp":39,"pts":23,"fouls":18,"fg":11,"ft":1,"finals":2,"gfApps":2,"gfWins":2,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"wins":38,"losses":11,"draws":3,"winPct":0.73,"statsChecked":"2026-07-05T14:26:29.797Z"}},"seasons":[{"sid":"2ea45b5f","sn":"Summer 2024/25","regs":[{"tid":"b6fab7c3","tn":"B13 Baller Academy 1","gid":"dc444563","gn":"Friday U13 Boys BR","age":"U13","div":null,"stats":{"gp":3,"fouls":1,"wins":2,"losses":1}},{"tid":"b9c727f2","stats":{"wins":4,"gp":4,"pts":2,"fg":1}}]},{"sid":"2ea45b5f","sn":"Summer 2024/25","regs":[{"tid":"b9c727f2","tn":"B13 Baller Academy 2","gid":"8fa3248b","gn":"Friday U13 Boys B","age":"U13","div":null,"stats":{"gp":4,"pts":2,"fg":1,"wins":4}}]},{"sid":"1e974b4f","sn":"Winter 2024","regs":[{"tid":"fd18f3c8","tn":"B12 Baller Academy 1 (P)","gid":"e8a4e722","gn":"Friday U12 Boys D2","age":"U12","div":"D2","stats":{"gp":5,"pts":6,"fg":3,"fouls":8,"finals":1,"gfApps":1,"wins":4,"draws":1,"gfWins":1}}]},{"sid":"b5deb900","sn":"Summer 2022/23","regs":[{"tid":"4432cf3e","tn":"The Wolf Pack","gid":"6515e800","gn":"Thursday U14 Boys Division 6","age":"U14","div":"Division 6","stats":{"gp":13,"pts":6,"fg":3,"fouls":2,"wins":7,"losses":3,"draws":1}},{"tid":"4432cf3e","tn":"The Wolf Pack","gid":"a3188925","gn":"Thursday U14 Boys Grading","age":"U14","div":null,"stats":{"gp":13,"wins":7,"losses":3,"draws":1,"pts":6,"fg":3,"fouls":2}}]},{"sid":"708c0de5","sn":"Winter 2022","regs":[{"tid":"e4e5e8a0","tn":"The Wolf Pack","gid":"1d2ea121","gn":"Wednesday U12 Boys Division 6","age":"U12","div":"Division 6","stats":{"gp":14,"pts":9,"fg":4,"ft":1,"fouls":7,"finals":1,"gfApps":1,"wins":10,"losses":4,"gfWins":1}}]}],"updatedAt":"2026-06-02T03:02:38.982Z","teams":[{"tid":"b6fab7c3","sid":"2ea45b5f","status":"COMPLETED"},{"tid":"b9c727f2","sid":"2ea45b5f","status":"COMPLETED"},{"tid":"fd18f3c8","sid":"1e974b4f","status":"COMPLETED"},{"tid":"4432cf3e","sid":"b5deb900","status":"COMPLETED"},{"tid":"e4e5e8a0","sid":"708c0de5","status":"COMPLETED"},{"tid":"970ef038","sid":"63eb0f22","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:22:46.175Z","records":{"maxGamePTS":{"v":4,"gameKey":"1b865eec","sid":"1e974b4f"},"maxGameThreePt":{"v":null}},"games":["0e145213","199bf2a1","1b865eec","1fd023d1","2495a1b9","268197c9","29bd2968","2b1b635e","2d0e022b","3d8f9f14","529f387e","532a14b0","6446b6cf","65532ee0","6ae16afe","6cef1517","6d74235a","75988de0","819ef69d","822b75ac","88b1a906","8d3a83c7","9d8ac12a","9da0eaa9","a26a69f1","a73a2422","aff85d2b","b6022f00","b94a4c7f","bf50a22e","d4ebe1eb","d56abd62","db6ab937","e7ce22e0","ea9f49a6","eb8307e8","edc0d0aa"],"gameTids":{"2b1b635e":"b6fab7c3","199bf2a1":"b6fab7c3","a73a2422":"b6fab7c3","88b1a906":"b9c727f2","eb8307e8":"b9c727f2","6d74235a":"b9c727f2","aff85d2b":"b9c727f2","75988de0":"fd18f3c8","3d8f9f14":"fd18f3c8","1b865eec":"fd18f3c8","29bd2968":"fd18f3c8","0e145213":"fd18f3c8","9da0eaa9":"4432cf3e","2495a1b9":"4432cf3e","b94a4c7f":"4432cf3e","532a14b0":"4432cf3e","ea9f49a6":"4432cf3e","d56abd62":"4432cf3e","b6022f00":"4432cf3e","8d3a83c7":"4432cf3e","6cef1517":"4432cf3e","d4ebe1eb":"4432cf3e","db6ab937":"4432cf3e","695a805d":"4432cf3e","31e137ed":"4432cf3e","bf50a22e":"e4e5e8a0","268197c9":"e4e5e8a0","e7ce22e0":"e4e5e8a0","1fd023d1":"e4e5e8a0","65532ee0":"e4e5e8a0","2d0e022b":"e4e5e8a0","6ae16afe":"e4e5e8a0","822b75ac":"e4e5e8a0","6446b6cf":"e4e5e8a0","9d8ac12a":"e4e5e8a0","529f387e":"e4e5e8a0","a26a69f1":"e4e5e8a0","819ef69d":"e4e5e8a0","edc0d0aa":"e4e5e8a0"}}
+{
+  "uuid": "3ded6a40-c685-4946-8f14-586b7bf77eb3",
+  "name": "Felix Bagnasco",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 39,
+      "pts": 23,
+      "fouls": 18,
+      "fg": 11,
+      "ft": 1,
+      "finals": 2,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 38,
+      "losses": 11,
+      "draws": 3,
+      "winPct": 0.73,
+      "statsChecked": "2026-07-05T14:26:29.797Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2ea45b5f",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "b6fab7c3",
+          "tn": "B13 Baller Academy 1",
+          "gid": "dc444563",
+          "gn": "Friday U13 Boys BR",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 1,
+            "wins": 2,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "b9c727f2",
+          "stats": {
+            "wins": 4,
+            "gp": 4,
+            "pts": 2,
+            "fg": 1
+          },
+          "gid": "8fa3248b",
+          "gn": "Friday U13 Boys B"
+        }
+      ]
+    },
+    {
+      "sid": "2ea45b5f",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "b9c727f2",
+          "tn": "B13 Baller Academy 2",
+          "gid": "8fa3248b",
+          "gn": "Friday U13 Boys B",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 2,
+            "fg": 1,
+            "wins": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1e974b4f",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "fd18f3c8",
+          "tn": "B12 Baller Academy 1 (P)",
+          "gid": "e8a4e722",
+          "gn": "Friday U12 Boys D2",
+          "age": "U12",
+          "div": "D2",
+          "stats": {
+            "gp": 5,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "draws": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "b5deb900",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "4432cf3e",
+          "tn": "The Wolf Pack",
+          "gid": "6515e800",
+          "gn": "Thursday U14 Boys Division 6",
+          "age": "U14",
+          "div": "Division 6",
+          "stats": {
+            "gp": 13,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 2,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "4432cf3e",
+          "tn": "The Wolf Pack",
+          "gid": "a3188925",
+          "gn": "Thursday U14 Boys Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "wins": 7,
+            "losses": 3,
+            "draws": 1,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "708c0de5",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "e4e5e8a0",
+          "tn": "The Wolf Pack",
+          "gid": "1d2ea121",
+          "gn": "Wednesday U12 Boys Division 6",
+          "age": "U12",
+          "div": "Division 6",
+          "stats": {
+            "gp": 14,
+            "pts": 9,
+            "fg": 4,
+            "ft": 1,
+            "fouls": 7,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 10,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "63eb0f22",
+      "sn": "Spring 2020",
+      "regs": [
+        {
+          "tid": "970ef038",
+          "tn": "SKIPPS Bulls (3657)",
+          "gid": "c0de2b94",
+          "gn": "Friday MSAC/Bayside YR.2 BOYS",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T03:02:38.982Z",
+  "teams": [
+    {
+      "tid": "b6fab7c3",
+      "sid": "2ea45b5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b9c727f2",
+      "sid": "2ea45b5f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd18f3c8",
+      "sid": "1e974b4f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4432cf3e",
+      "sid": "b5deb900",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e4e5e8a0",
+      "sid": "708c0de5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "970ef038",
+      "sid": "63eb0f22",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.678Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "1b865eec",
+      "sid": "1e974b4f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0e145213",
+    "199bf2a1",
+    "1b865eec",
+    "1fd023d1",
+    "2495a1b9",
+    "268197c9",
+    "29bd2968",
+    "2b1b635e",
+    "2d0e022b",
+    "3d8f9f14",
+    "529f387e",
+    "532a14b0",
+    "6446b6cf",
+    "65532ee0",
+    "6ae16afe",
+    "6cef1517",
+    "6d74235a",
+    "75988de0",
+    "819ef69d",
+    "822b75ac",
+    "88b1a906",
+    "8d3a83c7",
+    "9d8ac12a",
+    "9da0eaa9",
+    "a26a69f1",
+    "a73a2422",
+    "aff85d2b",
+    "b6022f00",
+    "b94a4c7f",
+    "bf50a22e",
+    "d4ebe1eb",
+    "d56abd62",
+    "db6ab937",
+    "e7ce22e0",
+    "ea9f49a6",
+    "eb8307e8",
+    "edc0d0aa"
+  ],
+  "gameTids": {
+    "2b1b635e": "b6fab7c3",
+    "199bf2a1": "b6fab7c3",
+    "a73a2422": "b6fab7c3",
+    "88b1a906": "b9c727f2",
+    "eb8307e8": "b9c727f2",
+    "6d74235a": "b9c727f2",
+    "aff85d2b": "b9c727f2",
+    "75988de0": "fd18f3c8",
+    "3d8f9f14": "fd18f3c8",
+    "1b865eec": "fd18f3c8",
+    "29bd2968": "fd18f3c8",
+    "0e145213": "fd18f3c8",
+    "9da0eaa9": "4432cf3e",
+    "2495a1b9": "4432cf3e",
+    "b94a4c7f": "4432cf3e",
+    "532a14b0": "4432cf3e",
+    "ea9f49a6": "4432cf3e",
+    "d56abd62": "4432cf3e",
+    "b6022f00": "4432cf3e",
+    "8d3a83c7": "4432cf3e",
+    "6cef1517": "4432cf3e",
+    "d4ebe1eb": "4432cf3e",
+    "db6ab937": "4432cf3e",
+    "695a805d": "4432cf3e",
+    "31e137ed": "4432cf3e",
+    "bf50a22e": "e4e5e8a0",
+    "268197c9": "e4e5e8a0",
+    "e7ce22e0": "e4e5e8a0",
+    "1fd023d1": "e4e5e8a0",
+    "65532ee0": "e4e5e8a0",
+    "2d0e022b": "e4e5e8a0",
+    "6ae16afe": "e4e5e8a0",
+    "822b75ac": "e4e5e8a0",
+    "6446b6cf": "e4e5e8a0",
+    "9d8ac12a": "e4e5e8a0",
+    "529f387e": "e4e5e8a0",
+    "a26a69f1": "e4e5e8a0",
+    "819ef69d": "e4e5e8a0",
+    "edc0d0aa": "e4e5e8a0"
+  }
+}

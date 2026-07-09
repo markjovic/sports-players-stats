@@ -1,1 +1,256 @@
-{"uuid":"56ca2a6a-0a85-4f05-8040-dd41a263773c","gender":null,"sports":{"Basketball":{"gp":34,"pts":137,"fouls":47,"fg":42,"ft":14,"threePt":13,"foulOuts":{},"maxGamePTS":18,"maxGameThreePt":3,"wins":15,"losses":24,"draws":2,"winPct":0.37,"statsChecked":"2026-07-05T16:13:28.605Z"}},"seasons":[{"sid":"2ad447ff","sn":"Winter 2022","club":null,"regs":[{"tid":"dddb7326","tn":"Deadfox","gid":"49884c49","gn":"Thursday Open Men D Grade","stats":{"gp":16,"pts":53,"fouls":22,"fg":15,"ft":5,"threePt":6,"wins":6,"losses":8,"draws":2}}]},{"sid":"f284a56e","sn":"Summer 2021/22","club":"Melbourne University Basketball Club","regs":[{"tid":"8f2b789b","tn":"Melbourne Uni 6M","gid":"d2ffd5fd","gn":"Sunday Senior Men D Grade(1)","stats":{"gp":7,"pts":29,"fouls":11,"fg":8,"ft":4,"threePt":3,"losses":7}}]},{"sid":"badcb509","sn":"Winter 2021","club":null,"regs":[{"tid":"b6947e8f","tn":"Unknown","gid":"6e1570c5","gn":"Sunday Senior Men E Grade","stats":{"gp":4,"pts":36,"fouls":1,"fg":11,"ft":2,"threePt":4,"wins":3,"losses":1}},{"tid":"ed86dc7e","stats":{"wins":3,"losses":4,"gp":7,"pts":19,"fg":8,"ft":3,"fouls":13}}]},{"sid":"badcb509","sn":"Winter 2021","club":"Melbourne University Basketball Club","regs":[{"tid":"ed86dc7e","tn":"Melbourne Uni 5M","gid":"981cba4f","gn":"Sunday Senior Men D Grade (1)","stats":{"gp":7,"pts":19,"fouls":13,"fg":8,"ft":3,"wins":3,"losses":4}}]}],"updatedAt":"2026-06-11T23:39:45.780Z","records":{"maxGamePTS":{"v":18,"gameKey":"1684cb68","sid":"badcb509"},"maxGameThreePt":{"v":3,"gameKey":"5f39def2","sid":"2ad447ff"}},"games":["0b0481fd","0fc9eccf","111df5a9","1684cb68","17b5b867","19b28bce","1af15b79","3528f2cd","45edb514","4d4f180f","4e1afc64","55a09641","5ba2143e","5f39def2","632eb5a6","6928a0df","73762d5e","73ae2bf3","78db51af","7f786a72","7fe79d41","876235e8","97ca660a","9e1e1388","a825e35d","b6b548b3","c0412cb7","c2193b59","d14a85d6","de39fb34","eb29c153","ee8dbebf","f1dd95d6","fafdc96d"],"name":"Winter 2022","gameTids":{"111df5a9":"dddb7326","b6b548b3":"dddb7326","f1dd95d6":"dddb7326","fafdc96d":"dddb7326","1af15b79":"dddb7326","5f39def2":"dddb7326","c0412cb7":"dddb7326","78db51af":"dddb7326","de39fb34":"dddb7326","eb29c153":"dddb7326","73762d5e":"dddb7326","97ca660a":"dddb7326","19b28bce":"dddb7326","0b0481fd":"dddb7326","55a09641":"dddb7326","4e1afc64":"dddb7326","876235e8":"8f2b789b","632eb5a6":"8f2b789b","9e1e1388":"8f2b789b","d14a85d6":"8f2b789b","a825e35d":"8f2b789b","0fc9eccf":"8f2b789b","45edb514":"8f2b789b","6928a0df":"b6947e8f","1684cb68":"b6947e8f","73ae2bf3":"b6947e8f","4d4f180f":"b6947e8f","17b5b867":"ed86dc7e","5ba2143e":"ed86dc7e","3528f2cd":"ed86dc7e","7f786a72":"ed86dc7e","ee8dbebf":"ed86dc7e","c2193b59":"ed86dc7e","7fe79d41":"ed86dc7e"}}
+{
+  "uuid": "56ca2a6a-0a85-4f05-8040-dd41a263773c",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 137,
+      "fouls": 47,
+      "fg": 42,
+      "ft": 14,
+      "threePt": 13,
+      "foulOuts": {},
+      "maxGamePTS": 18,
+      "maxGameThreePt": 3,
+      "wins": 15,
+      "losses": 24,
+      "draws": 2,
+      "winPct": 0.37,
+      "statsChecked": "2026-07-05T16:13:28.605Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "2ad447ff",
+      "sn": "Winter 2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "dddb7326",
+          "tn": "Deadfox",
+          "gid": "49884c49",
+          "gn": "Thursday Open Men D Grade",
+          "stats": {
+            "gp": 16,
+            "pts": 53,
+            "fouls": 22,
+            "fg": 15,
+            "ft": 5,
+            "threePt": 6,
+            "wins": 6,
+            "losses": 8,
+            "draws": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f284a56e",
+      "sn": "Summer 2021/22",
+      "club": "Melbourne University Basketball Club",
+      "regs": [
+        {
+          "tid": "8f2b789b",
+          "tn": "Melbourne Uni 6M",
+          "gid": "d2ffd5fd",
+          "gn": "Sunday Senior Men D Grade(1)",
+          "stats": {
+            "gp": 7,
+            "pts": 29,
+            "fouls": 11,
+            "fg": 8,
+            "ft": 4,
+            "threePt": 3,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "badcb509",
+      "sn": "Winter 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "b6947e8f",
+          "tn": "Unknown",
+          "gid": "6e1570c5",
+          "gn": "Sunday Senior Men E Grade",
+          "stats": {
+            "gp": 4,
+            "pts": 36,
+            "fouls": 1,
+            "fg": 11,
+            "ft": 2,
+            "threePt": 4,
+            "wins": 3,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "ed86dc7e",
+          "stats": {
+            "wins": 3,
+            "losses": 4,
+            "gp": 7,
+            "pts": 19,
+            "fg": 8,
+            "ft": 3,
+            "fouls": 13
+          },
+          "gid": "981cba4f",
+          "gn": "Sunday Senior Men D Grade (1)"
+        }
+      ]
+    },
+    {
+      "sid": "badcb509",
+      "sn": "Winter 2021",
+      "club": "Melbourne University Basketball Club",
+      "regs": [
+        {
+          "tid": "ed86dc7e",
+          "tn": "Melbourne Uni 5M",
+          "gid": "981cba4f",
+          "gn": "Sunday Senior Men D Grade (1)",
+          "stats": {
+            "gp": 7,
+            "pts": 19,
+            "fouls": 13,
+            "fg": 8,
+            "ft": 3,
+            "wins": 3,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b691159",
+      "sn": "Winter 2021",
+      "regs": [
+        {
+          "tid": "340094f8",
+          "tn": "Melbourne Uni 2M",
+          "gid": "04ca0ded",
+          "gn": "Thursday Open Men C Grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:39:45.780Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "1684cb68",
+      "sid": "badcb509"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "5f39def2",
+      "sid": "2ad447ff"
+    }
+  },
+  "games": [
+    "0b0481fd",
+    "0fc9eccf",
+    "111df5a9",
+    "1684cb68",
+    "17b5b867",
+    "19b28bce",
+    "1af15b79",
+    "3528f2cd",
+    "45edb514",
+    "4d4f180f",
+    "4e1afc64",
+    "55a09641",
+    "5ba2143e",
+    "5f39def2",
+    "632eb5a6",
+    "6928a0df",
+    "73762d5e",
+    "73ae2bf3",
+    "78db51af",
+    "7f786a72",
+    "7fe79d41",
+    "876235e8",
+    "97ca660a",
+    "9e1e1388",
+    "a825e35d",
+    "b6b548b3",
+    "c0412cb7",
+    "c2193b59",
+    "d14a85d6",
+    "de39fb34",
+    "eb29c153",
+    "ee8dbebf",
+    "f1dd95d6",
+    "fafdc96d"
+  ],
+  "name": "Winter 2022",
+  "gameTids": {
+    "111df5a9": "dddb7326",
+    "b6b548b3": "dddb7326",
+    "f1dd95d6": "dddb7326",
+    "fafdc96d": "dddb7326",
+    "1af15b79": "dddb7326",
+    "5f39def2": "dddb7326",
+    "c0412cb7": "dddb7326",
+    "78db51af": "dddb7326",
+    "de39fb34": "dddb7326",
+    "eb29c153": "dddb7326",
+    "73762d5e": "dddb7326",
+    "97ca660a": "dddb7326",
+    "19b28bce": "dddb7326",
+    "0b0481fd": "dddb7326",
+    "55a09641": "dddb7326",
+    "4e1afc64": "dddb7326",
+    "876235e8": "8f2b789b",
+    "632eb5a6": "8f2b789b",
+    "9e1e1388": "8f2b789b",
+    "d14a85d6": "8f2b789b",
+    "a825e35d": "8f2b789b",
+    "0fc9eccf": "8f2b789b",
+    "45edb514": "8f2b789b",
+    "6928a0df": "b6947e8f",
+    "1684cb68": "b6947e8f",
+    "73ae2bf3": "b6947e8f",
+    "4d4f180f": "b6947e8f",
+    "17b5b867": "ed86dc7e",
+    "5ba2143e": "ed86dc7e",
+    "3528f2cd": "ed86dc7e",
+    "7f786a72": "ed86dc7e",
+    "ee8dbebf": "ed86dc7e",
+    "c2193b59": "ed86dc7e",
+    "7fe79d41": "ed86dc7e"
+  },
+  "teams": [
+    {
+      "tid": "dddb7326",
+      "sid": "2ad447ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8f2b789b",
+      "sid": "f284a56e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6947e8f",
+      "sid": "badcb509",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ed86dc7e",
+      "sid": "badcb509",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "340094f8",
+      "sid": "4b691159",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.246Z"
+}

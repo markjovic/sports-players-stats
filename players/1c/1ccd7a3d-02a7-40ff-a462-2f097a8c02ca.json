@@ -1,1 +1,219 @@
-{"uuid":"1ccd7a3d-02a7-40ff-a462-2f097a8c02ca","name":"Natasha Warden","gender":"Women","sports":{"Basketball":{"gp":29,"pts":159,"fouls":10,"fg":63,"ft":9,"threePt":8,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":2,"wins":18,"losses":10,"draws":1,"winPct":0.62,"statsChecked":"2026-07-05T15:59:39.151Z"}},"seasons":[{"sid":"04854767","sn":"Winter 2026","regs":[{"tid":"912a0775","tn":"Retirement","gid":"9f1ce379","gn":"Tuesday Women A Grade","age":null,"div":null,"stats":{"gp":10,"ft":6,"fg":15,"threePt":5,"pts":51,"fouls":5,"wins":7,"losses":3}},{"tid":"912a0775","tn":"Retirement","gid":"e74de0cf","gn":"Tuesday Women B Grade","age":null,"div":null,"stats":{"gp":10,"ft":6,"fg":15,"threePt":5,"pts":51,"wins":7,"losses":3,"fouls":5}}]},{"sid":"f55ccf1c","sn":"Summer 2022/23","regs":[{"tid":"abf0ba8b","tn":"Walkover kings ","gid":"8eb438b0","gn":"Sunday Senior Mixed A/B","age":"Senior","div":null,"stats":{"gp":3,"fouls":2,"fg":12,"pts":24,"wins":1,"losses":2}}]},{"sid":"6298b730","sn":"Winter 2022","regs":[{"tid":"4024d5e0","tn":"Walkover kings ","gid":"5a81b2f4","gn":"Sunday Senior Mixed A/B","age":"Senior","div":null,"stats":{"gp":7,"fouls":2,"ft":1,"fg":21,"pts":43,"wins":3,"losses":2,"draws":1}}]},{"sid":"1094cb2b","sn":"Summer 2021/22","regs":[{"tid":"b778aac1","tn":"Little Creatures","gid":"082c2bce","gn":"Wednesday Open Women A/B","age":"Senior","div":null,"stats":{"gp":9,"fouls":1,"ft":2,"fg":15,"threePt":3,"pts":41}}]}],"updatedAt":"2026-07-04T05:49:32.126Z","teams":[{"tid":"912a0775","sid":"04854767","status":"ACTIVE"},{"tid":"abf0ba8b","sid":"f55ccf1c","status":"COMPLETED"},{"tid":"4024d5e0","sid":"6298b730","status":"COMPLETED"},{"tid":"b778aac1","sid":"1094cb2b","status":"COMPLETED"},{"tid":"42c8c13c","sid":"7f05c882","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:57.342Z","records":{"maxGamePTS":{"v":13,"gameKey":"f215783b","sid":"6298b730"},"maxGameThreePt":{"v":2,"gameKey":"47aa25be","sid":"1094cb2b"}},"games":["0cf2a3de","0d75f0d9","0e9b21b4","28708ca0","2d8e2bdd","2f0cbe56","3636b1d6","3ed55119","427e8171","47aa25be","57afde95","58e501fd","595f7c28","680200d2","71fbef52","797ecbdb","9519b69d","96536fde","9913cfa7","ab0caac7","ae2ad074","b9464d10","bb2b3976","c82f96db","e009bc51","f215783b","f91e5e83","facb3c0e"]}
+{
+  "uuid": "1ccd7a3d-02a7-40ff-a462-2f097a8c02ca",
+  "name": "Natasha Warden",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 29,
+      "pts": 159,
+      "fouls": 10,
+      "fg": 63,
+      "ft": 9,
+      "threePt": 8,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 2,
+      "wins": 18,
+      "losses": 10,
+      "draws": 1,
+      "winPct": 0.62,
+      "statsChecked": "2026-07-05T15:59:39.151Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "04854767",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "912a0775",
+          "tn": "Retirement",
+          "gid": "9f1ce379",
+          "gn": "Tuesday Women A Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "ft": 6,
+            "fg": 15,
+            "threePt": 5,
+            "pts": 51,
+            "fouls": 5,
+            "wins": 7,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "912a0775",
+          "tn": "Retirement",
+          "gid": "e74de0cf",
+          "gn": "Tuesday Women B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "ft": 6,
+            "fg": 15,
+            "threePt": 5,
+            "pts": 51,
+            "wins": 7,
+            "losses": 3,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f55ccf1c",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "abf0ba8b",
+          "tn": "Walkover kings ",
+          "gid": "8eb438b0",
+          "gn": "Sunday Senior Mixed A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 2,
+            "fg": 12,
+            "pts": 24,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6298b730",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "4024d5e0",
+          "tn": "Walkover kings ",
+          "gid": "5a81b2f4",
+          "gn": "Sunday Senior Mixed A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 21,
+            "pts": 43,
+            "wins": 3,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1094cb2b",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "b778aac1",
+          "tn": "Little Creatures",
+          "gid": "082c2bce",
+          "gn": "Wednesday Open Women A/B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 1,
+            "ft": 2,
+            "fg": 15,
+            "threePt": 3,
+            "pts": 41
+          }
+        }
+      ]
+    },
+    {
+      "sid": "7f05c882",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "42c8c13c",
+          "tn": "Walkover kings ",
+          "gid": "2d6c0945",
+          "gn": "Sunday Senior Mixed A/AR",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:49:32.126Z",
+  "teams": [
+    {
+      "tid": "912a0775",
+      "sid": "04854767",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "abf0ba8b",
+      "sid": "f55ccf1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4024d5e0",
+      "sid": "6298b730",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b778aac1",
+      "sid": "1094cb2b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "42c8c13c",
+      "sid": "7f05c882",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.697Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "f215783b",
+      "sid": "6298b730"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "47aa25be",
+      "sid": "1094cb2b"
+    }
+  },
+  "games": [
+    "0cf2a3de",
+    "0d75f0d9",
+    "0e9b21b4",
+    "28708ca0",
+    "2d8e2bdd",
+    "2f0cbe56",
+    "3636b1d6",
+    "3ed55119",
+    "427e8171",
+    "47aa25be",
+    "57afde95",
+    "58e501fd",
+    "595f7c28",
+    "680200d2",
+    "71fbef52",
+    "797ecbdb",
+    "9519b69d",
+    "96536fde",
+    "9913cfa7",
+    "ab0caac7",
+    "ae2ad074",
+    "b9464d10",
+    "bb2b3976",
+    "c82f96db",
+    "e009bc51",
+    "f215783b",
+    "f91e5e83",
+    "facb3c0e"
+  ]
+}

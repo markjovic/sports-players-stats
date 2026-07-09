@@ -1,1 +1,59 @@
-{"uuid":"6eb9e505-1972-48d7-8b3c-e554be5d2940","name":"Grant Bell","sports":{"Basketball":{"maxGamePTS":2,"maxGameThreePt":null,"foulOuts":{},"gp":1,"pts":2,"fg":1,"fouls":1,"statsChecked":"2026-07-08T17:52:43.011Z"}},"seasons":[{"sid":"82f9d173","regs":[{"tid":"dc7738a5"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":2,"gameKey":"5bd94482","sid":"82f9d173"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "6eb9e505-1972-48d7-8b3c-e554be5d2940",
+  "name": "Grant Bell",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 1,
+      "pts": 2,
+      "fg": 1,
+      "fouls": 1,
+      "statsChecked": "2026-07-08T17:52:43.011Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "82f9d173",
+      "regs": [
+        {
+          "tid": "dc7738a5",
+          "gid": "e6a2cede",
+          "gn": "Wednesday Division 1"
+        },
+        {
+          "tid": "45dcf81f",
+          "tn": "Aqua Chich",
+          "gid": "b6a58880",
+          "gn": "Monday Division 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "dc7738a5",
+      "sid": "82f9d173",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45dcf81f",
+      "sid": "82f9d173",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "5bd94482",
+      "sid": "82f9d173"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:12.812Z"
+}

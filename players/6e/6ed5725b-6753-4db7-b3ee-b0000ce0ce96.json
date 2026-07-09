@@ -1,1 +1,79 @@
-{"uuid":"6ed5725b-6753-4db7-b3ee-b0000ce0ce96","gender":null,"sports":{"Basketball":{"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"gp":8,"wins":1,"losses":5,"winPct":0.17,"statsChecked":"2026-07-05T16:01:36.090Z"}},"seasons":[{"sid":"788813cf","regs":[{"tid":"5364eaac","stats":{"wins":1,"losses":5,"gp":6}}]},{"sid":"851957d9","regs":[{"tid":"d599b208","stats":{"gp":2}}]}],"updatedAt":"2026-06-11T23:40:51.610Z","games":["32940b55","401b5957","44b0f98f","5d8b8067","98581c90","a3fdd101","b5fb533a","b8463004"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}},"name":"Winter 2025"}
+{
+  "uuid": "6ed5725b-6753-4db7-b3ee-b0000ce0ce96",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "gp": 8,
+      "wins": 1,
+      "losses": 5,
+      "winPct": 0.17,
+      "statsChecked": "2026-07-05T16:01:36.090Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "788813cf",
+      "regs": [
+        {
+          "tid": "5364eaac",
+          "stats": {
+            "wins": 1,
+            "losses": 5,
+            "gp": 6
+          },
+          "gid": "2ecbbb1f",
+          "gn": "Saturday U14 Girls B"
+        }
+      ]
+    },
+    {
+      "sid": "851957d9",
+      "regs": [
+        {
+          "tid": "d599b208",
+          "stats": {
+            "gp": 2
+          },
+          "gid": "d7d40acf",
+          "gn": "Saturday 15 and Under Girls B Grade"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:51.610Z",
+  "games": [
+    "32940b55",
+    "401b5957",
+    "44b0f98f",
+    "5d8b8067",
+    "98581c90",
+    "a3fdd101",
+    "b5fb533a",
+    "b8463004"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Winter 2025",
+  "teams": [
+    {
+      "tid": "5364eaac",
+      "sid": "788813cf",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d599b208",
+      "sid": "851957d9",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.835Z"
+}

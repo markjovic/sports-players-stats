@@ -1,1 +1,111 @@
-{"uuid":"64cb89d2-5bb2-4083-870f-8e0d404ea784","gender":null,"sports":{"Basketball":{"gp":10,"pts":25,"fouls":13,"fg":11,"threePt":1,"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":1,"wins":6,"losses":14,"winPct":0.3,"statsChecked":"2026-07-05T16:13:49.675Z"}},"seasons":[{"sid":"b7c3491e","sn":"Summer 2021/22","club":"Balwyn Blazers Basketball Club","regs":[{"tid":"ba646aa8","tn":"Balwyn U16 Girls 03","gid":"3cb520eb","gn":"Girls U16B3","stats":{"gp":10,"pts":25,"fouls":13,"fg":11,"threePt":1,"wins":3,"losses":7}},{"tid":"ba646aa8","tn":"Balwyn U16 Girls 03","gid":"43ff4445","gn":"Girls U16 B Grading","stats":{"gp":10,"pts":25,"fouls":13,"fg":11,"wins":3,"losses":7,"threePt":1}}]}],"updatedAt":"2026-06-11T23:40:23.700Z","records":{"maxGamePTS":{"v":4,"gameKey":"76e9755b","sid":"b7c3491e"},"maxGameThreePt":{"v":1,"gameKey":"6aacb51c","sid":"b7c3491e"}},"games":["0ec4a207","2cf6eaff","5e3187e1","6aacb51c","70206ada","76e9755b","bf046245","cb68c9db","cf3e8fd3","e8eddacf"],"name":"Summer 2021/22"}
+{
+  "uuid": "64cb89d2-5bb2-4083-870f-8e0d404ea784",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 25,
+      "fouls": 13,
+      "fg": 11,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": 1,
+      "wins": 6,
+      "losses": 14,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T16:13:49.675Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "b7c3491e",
+      "sn": "Summer 2021/22",
+      "club": "Balwyn Blazers Basketball Club",
+      "regs": [
+        {
+          "tid": "ba646aa8",
+          "tn": "Balwyn U16 Girls 03",
+          "gid": "3cb520eb",
+          "gn": "Girls U16B3",
+          "stats": {
+            "gp": 10,
+            "pts": 25,
+            "fouls": 13,
+            "fg": 11,
+            "threePt": 1,
+            "wins": 3,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "ba646aa8",
+          "tn": "Balwyn U16 Girls 03",
+          "gid": "43ff4445",
+          "gn": "Girls U16 B Grading",
+          "stats": {
+            "gp": 10,
+            "pts": 25,
+            "fouls": 13,
+            "fg": 11,
+            "wins": 3,
+            "losses": 7,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "214e9b81",
+          "tn": "Camberwell U14 Girls 2",
+          "gid": "6449f89f",
+          "gn": "U14 Girls VJL 5 - Pool 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:23.700Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "76e9755b",
+      "sid": "b7c3491e"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "6aacb51c",
+      "sid": "b7c3491e"
+    }
+  },
+  "games": [
+    "0ec4a207",
+    "2cf6eaff",
+    "5e3187e1",
+    "6aacb51c",
+    "70206ada",
+    "76e9755b",
+    "bf046245",
+    "cb68c9db",
+    "cf3e8fd3",
+    "e8eddacf"
+  ],
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "ba646aa8",
+      "sid": "b7c3491e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "214e9b81",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.165Z"
+}

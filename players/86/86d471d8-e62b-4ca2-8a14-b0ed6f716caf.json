@@ -1,1 +1,257 @@
-{"uuid":"86d471d8-e62b-4ca2-8a14-b0ed6f716caf","name":"Stevie Banes-Cadby","gender":"Girls","sports":{"Basketball":{"gp":42,"pts":63,"fouls":40,"fg":28,"ft":7,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":34,"losses":56,"draws":5,"winPct":0.36,"statsChecked":"2026-07-05T15:10:33.803Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Apollo Rockets Basketball Club","regs":[{"tid":"5378daf0","tn":"Apollo U08 Girls 1","gid":"4df8b10b","gn":"Saturday U08 Girls A","age":"U08","div":null,"stats":{"gp":15,"fouls":17,"ft":6,"fg":14,"pts":34,"wins":3,"losses":12}},{"tid":"5378daf0","tn":"Apollo U08 Girls 1","gid":"63b81c30","gn":"Saturday U08 Girls Grading Group 1","age":"U08","div":null,"stats":{"gp":15,"fouls":17,"ft":6,"fg":14,"pts":34,"wins":3,"losses":12}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Apollo Rockets Basketball Club","regs":[{"tid":"44e1a847","tn":"Apollo U08 Girls 2","gid":"2ccaa2e8","gn":"Saturday U08 Girls B1","age":"U08","div":"B1","stats":{"gp":11,"fouls":18,"fg":9,"pts":18,"wins":4,"losses":6,"draws":1}},{"tid":"44e1a847","tn":"Apollo U08 Girls 2","gid":"34bee8b5","gn":"Saturday U08 Girls A","age":"U08","div":null,"stats":{"gp":11,"fouls":18,"wins":4,"losses":6,"draws":1,"pts":18,"fg":9}},{"tid":"44e1a847","tn":"Apollo U08 Girls 2","gid":"4a0ee176","gn":"Saturday U08 Girls Grading Group 1","age":"U08","div":null,"stats":{"gp":11,"fouls":18,"fg":9,"pts":18,"wins":4,"losses":6,"draws":1}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Apollo Rockets Basketball Club","regs":[{"tid":"a1c6573f","tn":"Apollo U08 Girls 3","gid":"73d135cb","gn":"Saturday U8 Girls B2","age":"U8","div":"B2","stats":{"gp":16,"fouls":5,"ft":1,"pts":11,"wins":8,"losses":7,"draws":1,"fg":5}},{"tid":"a1c6573f","tn":"Apollo U08 Girls 3","gid":"cc2658e2","gn":"Saturday U8 Girls C","age":"U8","div":null,"stats":{"gp":16,"fg":5,"pts":11,"wins":8,"losses":7,"draws":1,"ft":1,"fouls":5}}]}],"updatedAt":"2026-07-04T05:34:00.221Z","teams":[{"tid":"5378daf0","sid":"d868771d","status":"ACTIVE"},{"tid":"44e1a847","sid":"f57b7901","status":"COMPLETED"},{"tid":"a1c6573f","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:25:03.803Z","records":{"maxGamePTS":{"v":10,"gameKey":"90ec320f","sid":"d868771d"},"maxGameThreePt":{"v":null}},"games":["046662f3","0a0b5670","15ef0c0a","1fb90d06","2438ceb4","34160d68","39d8c907","42175408","4b2c7d8d","5045196d","58743043","5dcc1cc6","66eb755b","695573d9","6a4459a1","6f719e2d","7c3b1507","82110eae","8c279032","8c6d33df","8c73f965","90ec320f","9ed4b475","9fc98fc0","a6154215","aeb3faf4","b7acf4d2","bf83a740","c0f6dc97","c2de6911","c598ca98","c6397b9b","c9604100","d1ea6303","d344e199","d55c4a2a","d7e9f679","db2c36a5","e68a073d","ebf0f2c1","ed38c0fb","ef15543d"]}
+{
+  "uuid": "86d471d8-e62b-4ca2-8a14-b0ed6f716caf",
+  "name": "Stevie Banes-Cadby",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 63,
+      "fouls": 40,
+      "fg": 28,
+      "ft": 7,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 34,
+      "losses": 56,
+      "draws": 5,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T15:10:33.803Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Apollo Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "5378daf0",
+          "tn": "Apollo U08 Girls 1",
+          "gid": "4df8b10b",
+          "gn": "Saturday U08 Girls A",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 6,
+            "fg": 14,
+            "pts": 34,
+            "wins": 3,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "5378daf0",
+          "tn": "Apollo U08 Girls 1",
+          "gid": "63b81c30",
+          "gn": "Saturday U08 Girls Grading Group 1",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 17,
+            "ft": 6,
+            "fg": 14,
+            "pts": 34,
+            "wins": 3,
+            "losses": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Apollo Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "44e1a847",
+          "tn": "Apollo U08 Girls 2",
+          "gid": "2ccaa2e8",
+          "gn": "Saturday U08 Girls B1",
+          "age": "U08",
+          "div": "B1",
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "fg": 9,
+            "pts": 18,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "44e1a847",
+          "tn": "Apollo U08 Girls 2",
+          "gid": "34bee8b5",
+          "gn": "Saturday U08 Girls A",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1,
+            "pts": 18,
+            "fg": 9
+          }
+        },
+        {
+          "tid": "44e1a847",
+          "tn": "Apollo U08 Girls 2",
+          "gid": "4a0ee176",
+          "gn": "Saturday U08 Girls Grading Group 1",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 18,
+            "fg": 9,
+            "pts": 18,
+            "wins": 4,
+            "losses": 6,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Apollo Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "a1c6573f",
+          "tn": "Apollo U08 Girls 3",
+          "gid": "73d135cb",
+          "gn": "Saturday U8 Girls B2",
+          "age": "U8",
+          "div": "B2",
+          "stats": {
+            "gp": 16,
+            "fouls": 5,
+            "ft": 1,
+            "pts": 11,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "fg": 5
+          }
+        },
+        {
+          "tid": "a1c6573f",
+          "tn": "Apollo U08 Girls 3",
+          "gid": "cc2658e2",
+          "gn": "Saturday U8 Girls C",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fg": 5,
+            "pts": 11,
+            "wins": 8,
+            "losses": 7,
+            "draws": 1,
+            "ft": 1,
+            "fouls": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "6f3e0584",
+          "tn": "Apollo U08 Girls 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:34:00.221Z",
+  "teams": [
+    {
+      "tid": "5378daf0",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "44e1a847",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a1c6573f",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6f3e0584",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.403Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "90ec320f",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "046662f3",
+    "0a0b5670",
+    "15ef0c0a",
+    "1fb90d06",
+    "2438ceb4",
+    "34160d68",
+    "39d8c907",
+    "42175408",
+    "4b2c7d8d",
+    "5045196d",
+    "58743043",
+    "5dcc1cc6",
+    "66eb755b",
+    "695573d9",
+    "6a4459a1",
+    "6f719e2d",
+    "7c3b1507",
+    "82110eae",
+    "8c279032",
+    "8c6d33df",
+    "8c73f965",
+    "90ec320f",
+    "9ed4b475",
+    "9fc98fc0",
+    "a6154215",
+    "aeb3faf4",
+    "b7acf4d2",
+    "bf83a740",
+    "c0f6dc97",
+    "c2de6911",
+    "c598ca98",
+    "c6397b9b",
+    "c9604100",
+    "d1ea6303",
+    "d344e199",
+    "d55c4a2a",
+    "d7e9f679",
+    "db2c36a5",
+    "e68a073d",
+    "ebf0f2c1",
+    "ed38c0fb",
+    "ef15543d"
+  ]
+}

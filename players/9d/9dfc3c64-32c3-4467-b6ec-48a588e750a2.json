@@ -1,1 +1,421 @@
-{"uuid":"9dfc3c64-32c3-4467-b6ec-48a588e750a2","name":"Isabella Miller","gender":"Girls","sports":{"Basketball":{"gp":65,"pts":362,"fouls":66,"fg":175,"ft":12,"foulOuts":{},"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.17,"maxGamePTS":21,"maxGameThreePt":null,"wins":56,"losses":22,"winPct":0.71,"draws":1,"statsChecked":"2026-07-05T14:43:39.877Z"}},"seasons":[{"sid":"e7aed763","sn":"Winter 2026","club":"Hoop School Basketball Academy","regs":[{"tid":"1cc8df9f","tn":"HS U12 Girls GREEN","gid":"bfc0bbe9","gn":"Saturday U14 Girls","age":"U14","div":null,"stats":{"gp":6,"fouls":11,"ft":1,"fg":20,"pts":41,"wins":1,"losses":5}}]},{"sid":"ad68db8b","sn":"Autumn 2026","regs":[{"tid":"aba91c64","tn":"Middle Park United (Purple)","gid":"64dad309","gn":"Tuesday Year 6 Girls A","age":null,"div":null,"stats":{"gp":13,"fouls":11,"fg":28,"pts":56,"wins":7,"losses":6}}]},{"sid":"e78cfce1","sn":"Summer 2025/26","regs":[{"tid":"8b9d4de5","tn":"Hoop School Girls U12 Green","gid":"bed99241","gn":"Saturday U12 Girls A/B","age":"U12","div":null,"stats":{"gp":12,"fouls":10,"ft":3,"fg":43,"pts":89,"finals":1,"wins":12}}]},{"sid":"1d1b8d1c","sn":"Spring 2025","regs":[{"tid":"1472e078","tn":"Middle Park United Purple","gid":"b576a9ad","gn":"Tuesday Year 5 Girls A","age":null,"div":null,"stats":{"gp":13,"fouls":13,"ft":3,"fg":20,"pts":43,"wins":9,"losses":3,"draws":1}}]},{"sid":"0c4ad170","sn":"Winter 2025","regs":[{"tid":"9a0aae35","tn":"Hoop School Girls U12 White","gid":"dda8e476","gn":"Saturday U12 Girls A/B","age":"U12","div":null,"stats":{"gp":14,"fouls":11,"ft":4,"fg":47,"pts":98,"wins":13,"losses":1}},{"tid":"9a0aae35","tn":"Hoop School Girls U12 White","gid":"a2168c69","gn":"Saturday U14 Girls B","age":"U14","div":null,"stats":{"gp":14,"fg":47,"pts":98,"wins":13,"losses":1,"ft":4,"fouls":11}}]},{"sid":"31d05517","sn":"Autumn 2025","regs":[{"tid":"3deeecbe","tn":"AP Angels ","gid":"d860e715","gn":"Friday MSAC/Bayside Year 4 Girls A","age":null,"div":null,"stats":{"gp":7,"fouls":10,"ft":1,"fg":17,"pts":35,"wins":1,"losses":6}}]}],"updatedAt":"2026-06-02T22:42:29.527Z","teams":[{"tid":"aba91c64","sid":"ad68db8b","status":"ACTIVE"},{"tid":"1cc8df9f","sid":"e7aed763","status":"ACTIVE"},{"tid":"8b9d4de5","sid":"e78cfce1","status":"COMPLETED"},{"tid":"9ce9aa79","sid":"e5a42985","status":"COMPLETED"},{"tid":"1472e078","sid":"1d1b8d1c","status":"COMPLETED"},{"tid":"9a0aae35","sid":"0c4ad170","status":"COMPLETED"},{"tid":"3deeecbe","sid":"31d05517","status":"COMPLETED"},{"tid":"6da96844","sid":"0fef30ca","status":"COMPLETED"},{"tid":"dab67d43","sid":"09a70808","status":"COMPLETED"},{"tid":"f62e7dac","sid":"e5df46b3","status":"COMPLETED"},{"tid":"8203c85f","sid":"cf8ebef7","status":"COMPLETED"},{"tid":"72e02a90","sid":"3f4132a1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:58:19.853Z","games":["036d36c9","0b6e4649","123447e5","22b6424f","268e3e64","29bcb3fd","2bf08657","2c9e9a27","35a15d39","3694afef","385d943a","3cdc0d54","3d7d7076","406cfcb9","49b43988","4cd74540","53589c9d","565afdf8","592bcd2b","5d7f7deb","5fe298b7","60cac805","62a4e931","6a2155ec","6e31402d","703a3db1","7069ceba","71c95500","73697d50","7a1bb713","7afbee02","7cb06956","8ac40d19","8d4f3a33","9051f358","937ad79f","947e30e7","9b749c7a","9e816ea0","9f936f32","9fccf1f0","a6b09f6f","a83c3fd3","adbfd968","ae1d7124","aeb33414","b0345011","b0ca1059","b6430e50","c11212e4","c2165bcf","cb75ed90","cc78b12c","cce26a1b","cdce2248","d6bd5fc2","dc8f3ed0","de0dbcd3","e5f61c2e","e7d7ccb9","e8ccf77b","edfcc414","facd056d","fb3a28c8","fb82e2c2"],"records":{"maxGamePTS":{"v":21,"gameKey":"a6b09f6f","sid":"0c4ad170"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "9dfc3c64-32c3-4467-b6ec-48a588e750a2",
+  "name": "Isabella Miller",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 65,
+      "pts": 362,
+      "fouls": 66,
+      "fg": 175,
+      "ft": 12,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.17,
+      "maxGamePTS": 21,
+      "maxGameThreePt": null,
+      "wins": 56,
+      "losses": 22,
+      "winPct": 0.71,
+      "draws": 1,
+      "statsChecked": "2026-07-05T14:43:39.877Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e7aed763",
+      "sn": "Winter 2026",
+      "club": "Hoop School Basketball Academy",
+      "regs": [
+        {
+          "tid": "1cc8df9f",
+          "tn": "HS U12 Girls GREEN",
+          "gid": "bfc0bbe9",
+          "gn": "Saturday U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 11,
+            "ft": 1,
+            "fg": 20,
+            "pts": 41,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad68db8b",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "aba91c64",
+          "tn": "Middle Park United (Purple)",
+          "gid": "64dad309",
+          "gn": "Tuesday Year 6 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 11,
+            "fg": 28,
+            "pts": 56,
+            "wins": 7,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e78cfce1",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "8b9d4de5",
+          "tn": "Hoop School Girls U12 Green",
+          "gid": "bed99241",
+          "gn": "Saturday U12 Girls A/B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 10,
+            "ft": 3,
+            "fg": 43,
+            "pts": 89,
+            "finals": 1,
+            "wins": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1d1b8d1c",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "1472e078",
+          "tn": "Middle Park United Purple",
+          "gid": "b576a9ad",
+          "gn": "Tuesday Year 5 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 13,
+            "ft": 3,
+            "fg": 20,
+            "pts": 43,
+            "wins": 9,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c4ad170",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "9a0aae35",
+          "tn": "Hoop School Girls U12 White",
+          "gid": "dda8e476",
+          "gn": "Saturday U12 Girls A/B",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 11,
+            "ft": 4,
+            "fg": 47,
+            "pts": 98,
+            "wins": 13,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "9a0aae35",
+          "tn": "Hoop School Girls U12 White",
+          "gid": "a2168c69",
+          "gn": "Saturday U14 Girls B",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fg": 47,
+            "pts": 98,
+            "wins": 13,
+            "losses": 1,
+            "ft": 4,
+            "fouls": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "31d05517",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "3deeecbe",
+          "tn": "AP Angels ",
+          "gid": "d860e715",
+          "gn": "Friday MSAC/Bayside Year 4 Girls A",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 10,
+            "ft": 1,
+            "fg": 17,
+            "pts": 35,
+            "wins": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a3d6165a",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "e0a1df53",
+          "tn": "Middle Park United Purple",
+          "gid": "ec3da872",
+          "gn": "Tuesday Year 6 Girls A",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5a42985",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "9ce9aa79",
+          "tn": "U13 Hoops School Green Girls ",
+          "gid": "7c9b3cb9",
+          "gn": "U13 Girls B",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0fef30ca",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "6da96844",
+          "tn": "AP Angels ",
+          "gid": "8e81252b",
+          "gn": "Friday MSAC/Bayside YR.3 - YR.4 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "09a70808",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "dab67d43",
+          "tn": "AP Angels ",
+          "gid": "caee07df",
+          "gn": "Friday MSAC/Bayside YR.2 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5df46b3",
+      "sn": "Term 1, 2023",
+      "regs": [
+        {
+          "tid": "f62e7dac",
+          "tn": "AP Angels ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "cf8ebef7",
+      "sn": "Term 3, 2022",
+      "regs": [
+        {
+          "tid": "8203c85f",
+          "tn": "AP Angels ",
+          "gid": "9effba5c",
+          "gn": "Friday MSAC/Bayside YR.1 GIRLS",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3f4132a1",
+      "sn": "Term 1, 2022",
+      "regs": [
+        {
+          "tid": "72e02a90",
+          "tn": "AP Angels ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T22:42:29.527Z",
+  "teams": [
+    {
+      "tid": "1cc8df9f",
+      "sid": "e7aed763",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aba91c64",
+      "sid": "ad68db8b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8b9d4de5",
+      "sid": "e78cfce1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1472e078",
+      "sid": "1d1b8d1c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a0aae35",
+      "sid": "0c4ad170",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3deeecbe",
+      "sid": "31d05517",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e0a1df53",
+      "sid": "a3d6165a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9ce9aa79",
+      "sid": "e5a42985",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6da96844",
+      "sid": "0fef30ca",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dab67d43",
+      "sid": "09a70808",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f62e7dac",
+      "sid": "e5df46b3",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8203c85f",
+      "sid": "cf8ebef7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "72e02a90",
+      "sid": "3f4132a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.300Z",
+  "games": [
+    "036d36c9",
+    "0b6e4649",
+    "123447e5",
+    "22b6424f",
+    "268e3e64",
+    "29bcb3fd",
+    "2bf08657",
+    "2c9e9a27",
+    "35a15d39",
+    "3694afef",
+    "385d943a",
+    "3cdc0d54",
+    "3d7d7076",
+    "406cfcb9",
+    "49b43988",
+    "4cd74540",
+    "53589c9d",
+    "565afdf8",
+    "592bcd2b",
+    "5d7f7deb",
+    "5fe298b7",
+    "60cac805",
+    "62a4e931",
+    "6a2155ec",
+    "6e31402d",
+    "703a3db1",
+    "7069ceba",
+    "71c95500",
+    "73697d50",
+    "7a1bb713",
+    "7afbee02",
+    "7cb06956",
+    "8ac40d19",
+    "8d4f3a33",
+    "9051f358",
+    "937ad79f",
+    "947e30e7",
+    "9b749c7a",
+    "9e816ea0",
+    "9f936f32",
+    "9fccf1f0",
+    "a6b09f6f",
+    "a83c3fd3",
+    "adbfd968",
+    "ae1d7124",
+    "aeb33414",
+    "b0345011",
+    "b0ca1059",
+    "b6430e50",
+    "c11212e4",
+    "c2165bcf",
+    "cb75ed90",
+    "cc78b12c",
+    "cce26a1b",
+    "cdce2248",
+    "d6bd5fc2",
+    "dc8f3ed0",
+    "de0dbcd3",
+    "e5f61c2e",
+    "e7d7ccb9",
+    "e8ccf77b",
+    "edfcc414",
+    "facd056d",
+    "fb3a28c8",
+    "fb82e2c2"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "a6b09f6f",
+      "sid": "0c4ad170"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

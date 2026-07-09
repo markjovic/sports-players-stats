@@ -1,1 +1,333 @@
-{"uuid":"90ec555e-2731-4c5a-ad54-a170e3f37a76","name":"Myles Greenwood","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":352,"fouls":80,"fg":162,"ft":21,"threePt":1,"foulOuts":{},"finals":2,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":21,"maxGameThreePt":1,"wins":13,"losses":22,"draws":1,"winPct":0.36,"statsChecked":"2026-07-05T15:37:28.907Z"}},"seasons":[{"sid":"93bd2b88","sn":"Summer 2024/25","regs":[{"tid":"f722338a","tn":"SCRIPTS 19B","gid":"56eb804b","gn":"Tuesday U19 Boys","age":"U19","div":null,"stats":{"gp":8,"fouls":19,"ft":6,"fg":38,"pts":82,"finals":1,"wins":4,"losses":4}}]},{"sid":"81d9ae6c","sn":"2023","club":"Kerang Raiders Basketball Club","regs":[{"tid":"76d995d3","tn":"Kerang Raiders U18 Boys","gid":"2cec05ee","gn":"U18 Boys Division 2","age":"U18","div":"Division 2","stats":{"gp":4,"fouls":5,"fg":2,"pts":4}}]},{"sid":"5c4721ff","sn":"Summer 2023/24","regs":[{"tid":"fd39464b","tn":"SCRIPTS","gid":"56357484","gn":"Tuesday U19 Boys","age":"U19","div":null,"stats":{"gp":17,"fouls":32,"ft":9,"fg":74,"threePt":1,"pts":160,"finals":1,"wins":6,"losses":11}},{"tid":"e466a539","tn":"THE GREEN TEAM","gid":"9eb75229","gn":"Wednesday Open Men","age":"Senior","div":null,"stats":{"gp":3,"fouls":6,"ft":2,"fg":13,"pts":28,"finals":1,"losses":2}},{"tid":"1a82a50b","tn":"RAIDERS","gid":"9eb75229","gn":"Wednesday Open Men","age":"Senior","div":null,"stats":{"gp":11,"fouls":9,"fg":11,"pts":22,"finals":1,"wins":3,"losses":5,"draws":1}}]},{"sid":"5232533c","sn":"Summer 2021/22","regs":[{"tid":"896b2768","tn":"SCRIPTS","gid":"8cd939da","gn":"Tuesday U19 Boys","age":"U19","div":null,"stats":{"gp":12,"fouls":9,"ft":4,"fg":24,"pts":56}}]}],"updatedAt":"2026-06-03T09:13:07.877Z","teams":[{"tid":"f722338a","sid":"93bd2b88","status":"COMPLETED"},{"tid":"1a82a50b","sid":"5c4721ff","status":"COMPLETED"},{"tid":"fd39464b","sid":"5c4721ff","status":"COMPLETED"},{"tid":"e466a539","sid":"5c4721ff","status":"COMPLETED"},{"tid":"76d995d3","sid":"81d9ae6c","status":"COMPLETED"},{"tid":"896b2768","sid":"5232533c","status":"COMPLETED"},{"tid":"885f5231","sid":"fe192805","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:28:20.046Z","records":{"maxGamePTS":{"v":21,"gameKey":"d504eb82","sid":"5c4721ff"},"maxGameThreePt":{"v":1,"gameKey":"a6ace551","sid":"5c4721ff"}},"games":["09ff152a","0d2bf363","0ef7bd5b","2602e415","2a18f1fe","2bc45bc3","3201f389","3396fdb9","37b1be6e","3a53fade","3b074856","3de597a2","41a4cb16","41a994b9","449cb93f","4ddd2f17","4e2f3152","50ded9cb","50e0e0f9","5270e823","52b165a5","52f3a28a","5f2a3e4c","60fb4b74","646e0ef4","6586a1b4","66a9371e","6e901339","72020855","763aad6d","7c5376f1","877ccff9","88391f72","8bef7538","90ef3fe2","937dccaf","96f4f27c","97523b14","9c1a038f","a34ee226","a6ace551","abdb29c1","ac3cc8ec","acd4c1bd","aeda11aa","b6cfd449","b872b0ce","c3f5a7fb","c5134f5c","cc8c935d","d1e501a4","d504eb82","ee89c3c7","efe360f7","f0c87fc7"],"gameTids":{"72020855":"fd39464b","7c5376f1":"f722338a","41a994b9":"f722338a","66a9371e":"f722338a","5f2a3e4c":"f722338a","5270e823":"f722338a","8bef7538":"f722338a","3201f389":"f722338a","aeda11aa":"f722338a","50ded9cb":"76d995d3","abdb29c1":"76d995d3","97523b14":"76d995d3","acd4c1bd":"76d995d3","b6cfd449":"fd39464b","2602e415":"fd39464b","3396fdb9":"fd39464b","d504eb82":"fd39464b","b872b0ce":"fd39464b","0d2bf363":"fd39464b","09ff152a":"fd39464b","c5134f5c":"fd39464b","52b165a5":"fd39464b","c3f5a7fb":"fd39464b","a34ee226":"fd39464b","88391f72":"fd39464b","2a18f1fe":"fd39464b","0ef7bd5b":"fd39464b","a6ace551":"fd39464b","cc8c935d":"fd39464b","efe360f7":"e466a539","4ddd2f17":"e466a539","96f4f27c":"e466a539","90ef3fe2":"1a82a50b","6e901339":"1a82a50b","9c1a038f":"1a82a50b","ee89c3c7":"1a82a50b","6586a1b4":"1a82a50b","937dccaf":"1a82a50b","3de597a2":"1a82a50b","449cb93f":"1a82a50b","646e0ef4":"1a82a50b","52f3a28a":"1a82a50b","60fb4b74":"1a82a50b","763aad6d":"896b2768","877ccff9":"896b2768","2bc45bc3":"896b2768","41a4cb16":"896b2768","4e2f3152":"896b2768","d1e501a4":"896b2768","3b074856":"896b2768","3a53fade":"896b2768","ac3cc8ec":"896b2768","50e0e0f9":"896b2768","37b1be6e":"896b2768","f0c87fc7":"896b2768"}}
+{
+  "uuid": "90ec555e-2731-4c5a-ad54-a170e3f37a76",
+  "name": "Myles Greenwood",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 352,
+      "fouls": 80,
+      "fg": 162,
+      "ft": 21,
+      "threePt": 1,
+      "foulOuts": {},
+      "finals": 2,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 21,
+      "maxGameThreePt": 1,
+      "wins": 13,
+      "losses": 22,
+      "draws": 1,
+      "winPct": 0.36,
+      "statsChecked": "2026-07-05T15:37:28.907Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "93bd2b88",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "f722338a",
+          "tn": "SCRIPTS 19B",
+          "gid": "56eb804b",
+          "gn": "Tuesday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 19,
+            "ft": 6,
+            "fg": 38,
+            "pts": 82,
+            "finals": 1,
+            "wins": 4,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "81d9ae6c",
+      "sn": "2023",
+      "club": "Kerang Raiders Basketball Club",
+      "regs": [
+        {
+          "tid": "76d995d3",
+          "tn": "Kerang Raiders U18 Boys",
+          "gid": "2cec05ee",
+          "gn": "U18 Boys Division 2",
+          "age": "U18",
+          "div": "Division 2",
+          "stats": {
+            "gp": 4,
+            "fouls": 5,
+            "fg": 2,
+            "pts": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5c4721ff",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "fd39464b",
+          "tn": "SCRIPTS",
+          "gid": "56357484",
+          "gn": "Tuesday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "fouls": 32,
+            "ft": 9,
+            "fg": 74,
+            "threePt": 1,
+            "pts": 160,
+            "finals": 1,
+            "wins": 6,
+            "losses": 11
+          }
+        },
+        {
+          "tid": "e466a539",
+          "tn": "THE GREEN TEAM",
+          "gid": "9eb75229",
+          "gn": "Wednesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 13,
+            "pts": 28,
+            "finals": 1,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "1a82a50b",
+          "tn": "RAIDERS",
+          "gid": "9eb75229",
+          "gn": "Wednesday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "fg": 11,
+            "pts": 22,
+            "finals": 1,
+            "wins": 3,
+            "losses": 5,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5232533c",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "896b2768",
+          "tn": "SCRIPTS",
+          "gid": "8cd939da",
+          "gn": "Tuesday U19 Boys",
+          "age": "U19",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 9,
+            "ft": 4,
+            "fg": 24,
+            "pts": 56
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fe192805",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "885f5231",
+          "tn": "Rovers",
+          "gid": "409a637d",
+          "gn": "Tuesday U16 Boys",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T09:13:07.877Z",
+  "teams": [
+    {
+      "tid": "f722338a",
+      "sid": "93bd2b88",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "76d995d3",
+      "sid": "81d9ae6c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fd39464b",
+      "sid": "5c4721ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e466a539",
+      "sid": "5c4721ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1a82a50b",
+      "sid": "5c4721ff",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "896b2768",
+      "sid": "5232533c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "885f5231",
+      "sid": "fe192805",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.788Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "d504eb82",
+      "sid": "5c4721ff"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a6ace551",
+      "sid": "5c4721ff"
+    }
+  },
+  "games": [
+    "09ff152a",
+    "0d2bf363",
+    "0ef7bd5b",
+    "2602e415",
+    "2a18f1fe",
+    "2bc45bc3",
+    "3201f389",
+    "3396fdb9",
+    "37b1be6e",
+    "3a53fade",
+    "3b074856",
+    "3de597a2",
+    "41a4cb16",
+    "41a994b9",
+    "449cb93f",
+    "4ddd2f17",
+    "4e2f3152",
+    "50ded9cb",
+    "50e0e0f9",
+    "5270e823",
+    "52b165a5",
+    "52f3a28a",
+    "5f2a3e4c",
+    "60fb4b74",
+    "646e0ef4",
+    "6586a1b4",
+    "66a9371e",
+    "6e901339",
+    "72020855",
+    "763aad6d",
+    "7c5376f1",
+    "877ccff9",
+    "88391f72",
+    "8bef7538",
+    "90ef3fe2",
+    "937dccaf",
+    "96f4f27c",
+    "97523b14",
+    "9c1a038f",
+    "a34ee226",
+    "a6ace551",
+    "abdb29c1",
+    "ac3cc8ec",
+    "acd4c1bd",
+    "aeda11aa",
+    "b6cfd449",
+    "b872b0ce",
+    "c3f5a7fb",
+    "c5134f5c",
+    "cc8c935d",
+    "d1e501a4",
+    "d504eb82",
+    "ee89c3c7",
+    "efe360f7",
+    "f0c87fc7"
+  ],
+  "gameTids": {
+    "72020855": "fd39464b",
+    "7c5376f1": "f722338a",
+    "41a994b9": "f722338a",
+    "66a9371e": "f722338a",
+    "5f2a3e4c": "f722338a",
+    "5270e823": "f722338a",
+    "8bef7538": "f722338a",
+    "3201f389": "f722338a",
+    "aeda11aa": "f722338a",
+    "50ded9cb": "76d995d3",
+    "abdb29c1": "76d995d3",
+    "97523b14": "76d995d3",
+    "acd4c1bd": "76d995d3",
+    "b6cfd449": "fd39464b",
+    "2602e415": "fd39464b",
+    "3396fdb9": "fd39464b",
+    "d504eb82": "fd39464b",
+    "b872b0ce": "fd39464b",
+    "0d2bf363": "fd39464b",
+    "09ff152a": "fd39464b",
+    "c5134f5c": "fd39464b",
+    "52b165a5": "fd39464b",
+    "c3f5a7fb": "fd39464b",
+    "a34ee226": "fd39464b",
+    "88391f72": "fd39464b",
+    "2a18f1fe": "fd39464b",
+    "0ef7bd5b": "fd39464b",
+    "a6ace551": "fd39464b",
+    "cc8c935d": "fd39464b",
+    "efe360f7": "e466a539",
+    "4ddd2f17": "e466a539",
+    "96f4f27c": "e466a539",
+    "90ef3fe2": "1a82a50b",
+    "6e901339": "1a82a50b",
+    "9c1a038f": "1a82a50b",
+    "ee89c3c7": "1a82a50b",
+    "6586a1b4": "1a82a50b",
+    "937dccaf": "1a82a50b",
+    "3de597a2": "1a82a50b",
+    "449cb93f": "1a82a50b",
+    "646e0ef4": "1a82a50b",
+    "52f3a28a": "1a82a50b",
+    "60fb4b74": "1a82a50b",
+    "763aad6d": "896b2768",
+    "877ccff9": "896b2768",
+    "2bc45bc3": "896b2768",
+    "41a4cb16": "896b2768",
+    "4e2f3152": "896b2768",
+    "d1e501a4": "896b2768",
+    "3b074856": "896b2768",
+    "3a53fade": "896b2768",
+    "ac3cc8ec": "896b2768",
+    "50e0e0f9": "896b2768",
+    "37b1be6e": "896b2768",
+    "f0c87fc7": "896b2768"
+  }
+}

@@ -1,1 +1,89 @@
-{"uuid":"73f4dd5e-b7fa-4c53-89a7-7e953923936e","name":"2022","gender":null,"sports":{"Basketball":{"gp":7,"pts":4,"fouls":4,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":4,"losses":3,"winPct":0.57,"statsChecked":"2026-07-05T16:02:02.699Z"}},"seasons":[{"sid":"a31ac251","sn":"2022","club":null,"regs":[{"tid":"c0e8000a","tn":"Purple","gid":"3a68e0ab","gn":"Friday Senior Women","stats":{"gp":7,"pts":4,"fouls":4,"fg":2,"wins":4,"losses":3}}]}],"updatedAt":"2026-06-11T23:41:13.568Z","records":{"maxGamePTS":{"v":2,"gameKey":"4a314273","sid":"a31ac251"},"maxGameThreePt":{"v":null}},"games":["2569eb37","28292c80","47f72216","4a314273","641a5232","b51d310d","d5701209"]}
+{
+  "uuid": "73f4dd5e-b7fa-4c53-89a7-7e953923936e",
+  "name": "2022",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 4,
+      "fouls": 4,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 3,
+      "winPct": 0.57,
+      "statsChecked": "2026-07-05T16:02:02.699Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a31ac251",
+      "sn": "2022",
+      "club": null,
+      "regs": [
+        {
+          "tid": "c0e8000a",
+          "tn": "Purple",
+          "gid": "3a68e0ab",
+          "gn": "Friday Senior Women",
+          "stats": {
+            "gp": 7,
+            "pts": 4,
+            "fouls": 4,
+            "fg": 2,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9948d3ca",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "58a5341c",
+          "tn": "Tigers (Yellow)",
+          "gid": "3bf4f3e4",
+          "gn": "Monday Open Women",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:13.568Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "4a314273",
+      "sid": "a31ac251"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2569eb37",
+    "28292c80",
+    "47f72216",
+    "4a314273",
+    "641a5232",
+    "b51d310d",
+    "d5701209"
+  ],
+  "teams": [
+    {
+      "tid": "c0e8000a",
+      "sid": "a31ac251",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "58a5341c",
+      "sid": "9948d3ca",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.218Z"
+}

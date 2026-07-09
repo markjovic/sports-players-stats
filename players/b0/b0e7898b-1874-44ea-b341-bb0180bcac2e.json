@@ -1,1 +1,346 @@
-{"uuid":"b0e7898b-1874-44ea-b341-bb0180bcac2e","name":"Hugo Pang","gender":"Boys","sports":{"Basketball":{"gp":55,"pts":48,"fouls":40,"fg":14,"ft":2,"threePt":6,"finals":2,"gfApps":1,"gfWins":0,"finalsPerSeason":0.4,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":47,"losses":61,"draws":10,"winPct":0.4,"statsChecked":"2026-07-05T14:29:49.861Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"ed25a525","tn":"Hawthorn U17 Boys 04","gid":"7bcf7b9b","gn":"Boys U17 C Grading","age":"U17","div":null,"stats":{"gp":4,"fouls":6,"fg":1,"pts":2,"wins":1,"losses":2,"draws":1}}]},{"sid":"88026885","sn":"Summer 2025/26","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"851f1fa0","tn":"Hawthorn U16 Boys 06","gid":"5002cf4e","gn":"Boys U16 CE","age":"U16","div":null,"stats":{"gp":12,"fouls":20,"ft":1,"fg":4,"threePt":6,"pts":27,"wins":2,"losses":9,"draws":1}},{"tid":"851f1fa0","tn":"Hawthorn U16 Boys 06","gid":"82e93bf0","gn":"Boys U16 C Grading","age":"U16","div":null,"stats":{"gp":12,"fouls":20,"fg":4,"threePt":6,"pts":27,"wins":2,"losses":9,"draws":1,"ft":1}},{"tid":"851f1fa0","tn":"Hawthorn U16 Boys 06","gid":"80ce3e97","gn":"Boys U16 D Grading","age":"U16","div":null,"stats":{"gp":12,"fouls":20,"fg":4,"threePt":6,"pts":27,"wins":2,"losses":9,"draws":1,"ft":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"195876c5","tn":"Hawthorn U17 Boys 06","gid":"0a42d202","gn":"Boys U17 DE","age":"U17","div":null,"stats":{"gp":13,"fouls":4,"wins":3,"losses":9,"draws":1,"pts":2,"fg":1}},{"tid":"195876c5","tn":"Hawthorn U17 Boys 06","gid":"364cd1c9","gn":"Boys U17 D Grading","age":"U17","div":null,"stats":{"gp":13,"fouls":4,"fg":1,"pts":2,"wins":3,"losses":9,"draws":1}}]},{"sid":"fa446579","sn":"Summer 2024/25","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"e9aef395","tn":"Hawthorn U14 Boys 08","gid":"5929fc5d","gn":"Boys U14 CE (PM)","age":"U14","div":null,"stats":{"gp":11,"fouls":8,"fg":4,"pts":8,"finals":1,"wins":6,"losses":4,"draws":1}},{"tid":"e9aef395","tn":"Hawthorn U14 Boys 08","gid":"ca5a1a57","gn":"Boys U14 C Grading","age":"U14","div":null,"stats":{"gp":11,"fouls":8,"finals":1,"wins":6,"losses":4,"draws":1,"pts":8,"fg":4}}]},{"sid":"8c5855c1","sn":"Winter 2024","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"0246cbd0","tn":"Hawthorn U15 Boys 05","gid":"4621f089","gn":"Boys U15 DD (PM)","age":"U15","div":null,"stats":{"gp":15,"fg":4,"pts":9,"finals":1,"gfApps":1,"wins":11,"losses":3,"draws":1,"ft":1,"fouls":2}},{"tid":"0246cbd0","tn":"Hawthorn U15 Boys 05","gid":"c28b2b9f","gn":"Boys U15 D Grading","age":"U15","div":null,"stats":{"gp":15,"fouls":2,"ft":1,"fg":4,"pts":9,"finals":1,"gfApps":1,"wins":11,"losses":3,"draws":1}}]}],"updatedAt":"2026-06-01T20:42:48.952Z","teams":[{"tid":"ed25a525","sid":"1ae60211","status":"ACTIVE"},{"tid":"851f1fa0","sid":"88026885","status":"COMPLETED"},{"tid":"195876c5","sid":"f373fc05","status":"COMPLETED"},{"tid":"e9aef395","sid":"fa446579","status":"COMPLETED"},{"tid":"0246cbd0","sid":"8c5855c1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:05:39.351Z","records":{"maxGamePTS":{"v":6,"gameKey":"3b74a77d","sid":"fa446579"},"maxGameThreePt":{"v":1,"gameKey":"d15cecc2","sid":"88026885"}},"games":["0136ae9b","0954f8f8","0c478e06","1060b9d1","151f8d24","159a414a","1baa88d7","21b15626","228ea274","243ea7b6","24ab2593","2805b304","3528137b","393c239e","39646751","3b74a77d","3f196a12","45fdd954","46692f34","4d55208f","5639c43c","5793ea3a","57c7919b","5d5ca7c4","5e75e2f2","67957a11","68809980","6f5eacaa","75bf6b3a","7dc2a343","84c8f12f","8691799a","95cc89d5","9c03ce49","a1a8b6e8","a95287a7","ad1f3699","b3cee140","b8cf9ec1","bad246dd","bff8f507","c4033f6a","c7fc2baa","d15cecc2","d882350f","dcc17a94","df699ce5","e35f33d2","e5361d9c","eb8fb32b","ee21c4bc","fb2c0dc9","fba0a074","fe94fc86","ffab7186"]}
+{
+  "uuid": "b0e7898b-1874-44ea-b341-bb0180bcac2e",
+  "name": "Hugo Pang",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 55,
+      "pts": 48,
+      "fouls": 40,
+      "fg": 14,
+      "ft": 2,
+      "threePt": 6,
+      "finals": 2,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.4,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 47,
+      "losses": 61,
+      "draws": 10,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T14:29:49.861Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "ed25a525",
+          "tn": "Hawthorn U17 Boys 04",
+          "gid": "e72560c0",
+          "gn": "Boys U17 CD",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 6,
+            "fg": 1,
+            "pts": 2,
+            "wins": 1,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "851f1fa0",
+          "tn": "Hawthorn U16 Boys 06",
+          "gid": "5002cf4e",
+          "gn": "Boys U16 CE",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 20,
+            "ft": 1,
+            "fg": 4,
+            "threePt": 6,
+            "pts": 27,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "851f1fa0",
+          "tn": "Hawthorn U16 Boys 06",
+          "gid": "82e93bf0",
+          "gn": "Boys U16 C Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 20,
+            "fg": 4,
+            "threePt": 6,
+            "pts": 27,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "851f1fa0",
+          "tn": "Hawthorn U16 Boys 06",
+          "gid": "80ce3e97",
+          "gn": "Boys U16 D Grading",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 20,
+            "fg": 4,
+            "threePt": 6,
+            "pts": 27,
+            "wins": 2,
+            "losses": 9,
+            "draws": 1,
+            "ft": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "195876c5",
+          "tn": "Hawthorn U17 Boys 06",
+          "gid": "0a42d202",
+          "gn": "Boys U17 DE",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 4,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "195876c5",
+          "tn": "Hawthorn U17 Boys 06",
+          "gid": "364cd1c9",
+          "gn": "Boys U17 D Grading",
+          "age": "U17",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 4,
+            "fg": 1,
+            "pts": 2,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fa446579",
+      "sn": "Summer 2024/25",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "e9aef395",
+          "tn": "Hawthorn U14 Boys 08",
+          "gid": "5929fc5d",
+          "gn": "Boys U14 CE (PM)",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 8,
+            "fg": 4,
+            "pts": 8,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "e9aef395",
+          "tn": "Hawthorn U14 Boys 08",
+          "gid": "ca5a1a57",
+          "gn": "Boys U14 C Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 8,
+            "finals": 1,
+            "wins": 6,
+            "losses": 4,
+            "draws": 1,
+            "pts": 8,
+            "fg": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8c5855c1",
+      "sn": "Winter 2024",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "0246cbd0",
+          "tn": "Hawthorn U15 Boys 05",
+          "gid": "4621f089",
+          "gn": "Boys U15 DD (PM)",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1,
+            "ft": 1,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "0246cbd0",
+          "tn": "Hawthorn U15 Boys 05",
+          "gid": "c28b2b9f",
+          "gn": "Boys U15 D Grading",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 2,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:42:48.952Z",
+  "teams": [
+    {
+      "tid": "ed25a525",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "851f1fa0",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "195876c5",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e9aef395",
+      "sid": "fa446579",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0246cbd0",
+      "sid": "8c5855c1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.164Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "3b74a77d",
+      "sid": "fa446579"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "d15cecc2",
+      "sid": "88026885"
+    }
+  },
+  "games": [
+    "0136ae9b",
+    "0954f8f8",
+    "0c478e06",
+    "1060b9d1",
+    "151f8d24",
+    "159a414a",
+    "1baa88d7",
+    "21b15626",
+    "228ea274",
+    "243ea7b6",
+    "24ab2593",
+    "2805b304",
+    "3528137b",
+    "393c239e",
+    "39646751",
+    "3b74a77d",
+    "3f196a12",
+    "45fdd954",
+    "46692f34",
+    "4d55208f",
+    "5639c43c",
+    "5793ea3a",
+    "57c7919b",
+    "5d5ca7c4",
+    "5e75e2f2",
+    "67957a11",
+    "68809980",
+    "6f5eacaa",
+    "75bf6b3a",
+    "7dc2a343",
+    "84c8f12f",
+    "8691799a",
+    "95cc89d5",
+    "9c03ce49",
+    "a1a8b6e8",
+    "a95287a7",
+    "ad1f3699",
+    "b3cee140",
+    "b8cf9ec1",
+    "bad246dd",
+    "bff8f507",
+    "c4033f6a",
+    "c7fc2baa",
+    "d15cecc2",
+    "d882350f",
+    "dcc17a94",
+    "df699ce5",
+    "e35f33d2",
+    "e5361d9c",
+    "eb8fb32b",
+    "ee21c4bc",
+    "fb2c0dc9",
+    "fba0a074",
+    "fe94fc86",
+    "ffab7186"
+  ]
+}

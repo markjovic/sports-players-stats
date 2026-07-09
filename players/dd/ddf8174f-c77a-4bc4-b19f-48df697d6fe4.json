@@ -1,1 +1,230 @@
-{"uuid":"ddf8174f-c77a-4bc4-b19f-48df697d6fe4","name":"Flynn Garreffa","gender":"Mixed","sports":{"Basketball":{"gp":31,"pts":47,"fouls":45,"fg":20,"ft":4,"threePt":1,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{"e1a7f7de":1},"maxGamePTS":7,"maxGameThreePt":1,"wins":12,"losses":14,"draws":5,"winPct":0.39,"statsChecked":"2026-07-05T16:23:55.478Z"}},"seasons":[{"sid":"caca55eb","sn":"Summer 2025/26","regs":[{"tid":"a3e33ac8","tn":"OUTCASTS","gid":"77a3bdfb","gn":"12 & Under Boys","age":null,"div":null,"stats":{"gp":10,"fouls":24,"ft":3,"fg":13,"threePt":1,"pts":32,"wins":7,"losses":3}},{"tid":"9a01728b","tn":"GIANTS","gid":"fcbba03e","gn":"14 & Under Boys","age":null,"div":null,"stats":{"gp":1,"losses":1}}]},{"sid":"e1a7f7de","sn":"Summer 2024/25","regs":[{"tid":"63a076ee","tn":"FALCONS","gid":"b7408924","gn":"U12 Boys","age":"U12","div":null,"stats":{"gp":15,"fouls":21,"ft":1,"fg":7,"pts":15,"finals":1,"foulOuts":1,"wins":5,"losses":10}}]},{"sid":"87866d78","sn":"Summer 2023/24","regs":[{"tid":"080c668e","tn":"HAWKS","gid":"eca7ad37","gn":"Junior Mixed","age":"Junior","div":null,"stats":{"gp":5,"draws":5}}]}],"updatedAt":"2026-07-04T05:54:34.868Z","teams":[{"tid":"a3e33ac8","sid":"caca55eb","status":"COMPLETED"},{"tid":"63a076ee","sid":"e1a7f7de","status":"COMPLETED"},{"tid":"080c668e","sid":"87866d78","status":"COMPLETED"},{"tid":"db2beddb","sid":"9e096645","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:49:22.311Z","games":["007ea261","013c0f76","01eb4f2a","0a1d0c43","0e9d0966","10d9f99a","25070047","35d03d8e","52552f69","554a647c","58802dba","5e369265","5fb1cb2a","6135168e","6298b27c","69ab5a64","71d3d2b3","831502c9","9a95b669","a1092b25","a60acbba","a77fc5e6","b7980364","c9d1eb42","cbaf8c30","dea1e876","e3082cf6","e30f9669","f0f0c690","f1d621ad","f76a8164"],"records":{"maxGamePTS":{"v":7,"gameKey":"831502c9","sid":"caca55eb"},"maxGameThreePt":{"v":1,"gameKey":"831502c9","sid":"caca55eb"}},"gameTids":{"25070047":"63a076ee","831502c9":"a3e33ac8","0e9d0966":"a3e33ac8","f76a8164":"a3e33ac8","71d3d2b3":"a3e33ac8","a60acbba":"a3e33ac8","5e369265":"a3e33ac8","dea1e876":"a3e33ac8","6135168e":"a3e33ac8","0a1d0c43":"a3e33ac8","01eb4f2a":"a3e33ac8","f1d621ad":"9a01728b","10d9f99a":"63a076ee","013c0f76":"63a076ee","5fb1cb2a":"63a076ee","a1092b25":"63a076ee","52552f69":"63a076ee","58802dba":"63a076ee","35d03d8e":"63a076ee","6298b27c":"63a076ee","cbaf8c30":"63a076ee","f0f0c690":"63a076ee","a77fc5e6":"63a076ee","e30f9669":"63a076ee","69ab5a64":"63a076ee","9a95b669":"63a076ee","c9d1eb42":"080c668e","b7980364":"080c668e","007ea261":"080c668e","554a647c":"080c668e","e3082cf6":"080c668e"}}
+{
+  "uuid": "ddf8174f-c77a-4bc4-b19f-48df697d6fe4",
+  "name": "Flynn Garreffa",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 31,
+      "pts": 47,
+      "fouls": 45,
+      "fg": 20,
+      "ft": 4,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {
+        "e1a7f7de": 1
+      },
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 12,
+      "losses": 14,
+      "draws": 5,
+      "winPct": 0.39,
+      "statsChecked": "2026-07-05T16:23:55.478Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "caca55eb",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "a3e33ac8",
+          "tn": "OUTCASTS",
+          "gid": "77a3bdfb",
+          "gn": "12 & Under Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 24,
+            "ft": 3,
+            "fg": 13,
+            "threePt": 1,
+            "pts": 32,
+            "wins": 7,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "9a01728b",
+          "tn": "GIANTS",
+          "gid": "fcbba03e",
+          "gn": "14 & Under Boys",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e1a7f7de",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "63a076ee",
+          "tn": "FALCONS",
+          "gid": "b7408924",
+          "gn": "U12 Boys",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 21,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "finals": 1,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "87866d78",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "080c668e",
+          "tn": "HAWKS",
+          "gid": "eca7ad37",
+          "gn": "Junior Mixed",
+          "age": "Junior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "draws": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "9e096645",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "db2beddb",
+          "tn": "GIANTS",
+          "gid": "222dcd7a",
+          "gn": "Junior Mixed",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:54:34.868Z",
+  "teams": [
+    {
+      "tid": "a3e33ac8",
+      "sid": "caca55eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a01728b",
+      "sid": "caca55eb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "63a076ee",
+      "sid": "e1a7f7de",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "080c668e",
+      "sid": "87866d78",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "db2beddb",
+      "sid": "9e096645",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:17.080Z",
+  "games": [
+    "007ea261",
+    "013c0f76",
+    "01eb4f2a",
+    "0a1d0c43",
+    "0e9d0966",
+    "10d9f99a",
+    "25070047",
+    "35d03d8e",
+    "52552f69",
+    "554a647c",
+    "58802dba",
+    "5e369265",
+    "5fb1cb2a",
+    "6135168e",
+    "6298b27c",
+    "69ab5a64",
+    "71d3d2b3",
+    "831502c9",
+    "9a95b669",
+    "a1092b25",
+    "a60acbba",
+    "a77fc5e6",
+    "b7980364",
+    "c9d1eb42",
+    "cbaf8c30",
+    "dea1e876",
+    "e3082cf6",
+    "e30f9669",
+    "f0f0c690",
+    "f1d621ad",
+    "f76a8164"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "831502c9",
+      "sid": "caca55eb"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "831502c9",
+      "sid": "caca55eb"
+    }
+  },
+  "gameTids": {
+    "25070047": "63a076ee",
+    "831502c9": "a3e33ac8",
+    "0e9d0966": "a3e33ac8",
+    "f76a8164": "a3e33ac8",
+    "71d3d2b3": "a3e33ac8",
+    "a60acbba": "a3e33ac8",
+    "5e369265": "a3e33ac8",
+    "dea1e876": "a3e33ac8",
+    "6135168e": "a3e33ac8",
+    "0a1d0c43": "a3e33ac8",
+    "01eb4f2a": "a3e33ac8",
+    "f1d621ad": "9a01728b",
+    "10d9f99a": "63a076ee",
+    "013c0f76": "63a076ee",
+    "5fb1cb2a": "63a076ee",
+    "a1092b25": "63a076ee",
+    "52552f69": "63a076ee",
+    "58802dba": "63a076ee",
+    "35d03d8e": "63a076ee",
+    "6298b27c": "63a076ee",
+    "cbaf8c30": "63a076ee",
+    "f0f0c690": "63a076ee",
+    "a77fc5e6": "63a076ee",
+    "e30f9669": "63a076ee",
+    "69ab5a64": "63a076ee",
+    "9a95b669": "63a076ee",
+    "c9d1eb42": "080c668e",
+    "b7980364": "080c668e",
+    "007ea261": "080c668e",
+    "554a647c": "080c668e",
+    "e3082cf6": "080c668e"
+  }
+}

@@ -1,1 +1,98 @@
-{"uuid":"cbef2ce8-fd52-4474-a181-841737402ab9","name":"Jeremy Tse","gender":"Men","sports":{"Basketball":{"gp":8,"pts":50,"fouls":8,"fg":10,"threePt":10,"foulOuts":{},"maxGamePTS":16,"maxGameThreePt":4,"wins":3,"losses":3,"winPct":0.5,"statsChecked":"2026-07-05T15:39:08.054Z"}},"seasons":[{"sid":"a88d4358","sn":"Summer 2024/25","regs":[{"tid":"13f7ca25","tn":"Wild EVC","gid":"02434d74","gn":"Tuesday Open Men B","age":"Senior","div":null,"stats":{"gp":6,"fouls":5,"fg":9,"threePt":10,"pts":48,"wins":3,"losses":2}}]},{"sid":"a9f7ee61","regs":[{"tid":"17441d4a","stats":{"gp":2,"pts":2,"fg":1,"fouls":3,"losses":1}}]}],"updatedAt":"2026-06-02T08:19:15.137Z","teams":[{"tid":"17441d4a","sid":"a9f7ee61","status":"ACTIVE"},{"tid":"17441d4a","sid":"a9f7ee61","status":"ACTIVE"},{"tid":"13f7ca25","sid":"a88d4358","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:44:48.099Z","games":["0ec79b16","25c4f742","5fd40f37","6c5669bb","95b72287","d6ca688d","f6ff8d05"],"records":{"maxGamePTS":{"v":16,"gameKey":"0ec79b16","sid":"a88d4358"},"maxGameThreePt":{"v":4,"gameKey":"0ec79b16","sid":"a88d4358"}}}
+{
+  "uuid": "cbef2ce8-fd52-4474-a181-841737402ab9",
+  "name": "Jeremy Tse",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 50,
+      "fouls": 8,
+      "fg": 10,
+      "threePt": 10,
+      "foulOuts": {},
+      "maxGamePTS": 16,
+      "maxGameThreePt": 4,
+      "wins": 3,
+      "losses": 3,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T15:39:08.054Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a88d4358",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "13f7ca25",
+          "tn": "Wild EVC",
+          "gid": "02434d74",
+          "gn": "Tuesday Open Men B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 5,
+            "fg": 9,
+            "threePt": 10,
+            "pts": 48,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a9f7ee61",
+      "regs": [
+        {
+          "tid": "17441d4a",
+          "stats": {
+            "gp": 2,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 3,
+            "losses": 1
+          },
+          "gid": "955a45fd",
+          "gn": "Monday Open Men D GRADE - MSAC"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T08:19:15.137Z",
+  "teams": [
+    {
+      "tid": "13f7ca25",
+      "sid": "a88d4358",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "17441d4a",
+      "sid": "a9f7ee61",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.782Z",
+  "games": [
+    "0ec79b16",
+    "25c4f742",
+    "5fd40f37",
+    "6c5669bb",
+    "95b72287",
+    "d6ca688d",
+    "f6ff8d05"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "0ec79b16",
+      "sid": "a88d4358"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "0ec79b16",
+      "sid": "a88d4358"
+    }
+  }
+}

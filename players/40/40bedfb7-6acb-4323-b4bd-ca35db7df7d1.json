@@ -1,1 +1,247 @@
-{"uuid":"40bedfb7-6acb-4323-b4bd-ca35db7df7d1","name":"Sami Arrif","gender":"Boys","sports":{"Basketball":{"gp":50,"pts":16,"fouls":41,"fg":7,"ft":2,"foulOuts":{"5f63af45":1},"maxGamePTS":4,"maxGameThreePt":null,"wins":30,"losses":52,"draws":4,"winPct":0.35,"statsChecked":"2026-07-05T15:08:58.837Z"}},"seasons":[{"sid":"5f63af45","sn":"Winter 2023","club":"Wantirna Jetbacks Basketball Club Inc.","regs":[{"tid":"894ddb52","tn":"Wantirna U8 Boys 2","gid":"062876b0","gn":"Saturday U8 Boys C - 2023 Winter","age":"U8","div":null,"stats":{"gp":12,"fouls":18,"ft":2,"fg":7,"pts":16,"wins":2,"losses":10}},{"tid":"894ddb52","tn":"Wantirna U8 Boys 2","gid":"93ef48aa","gn":"Saturday U8 Boys B - 2023 Winter","age":"U8","div":null,"stats":{"gp":12,"fouls":18,"fg":7,"pts":16,"foulOuts":1,"wins":2,"losses":10,"ft":2}}]},{"sid":"21d0b58a","sn":"Summer 2022/23","club":"Wantirna Jetbacks Basketball Club Inc.","regs":[{"tid":"a457fa95","tn":"Wantirna U8 Boys 2","gid":"60b3d769","gn":"Saturday U8 Boys B - 2023 Summer","age":"U8","div":null,"stats":{"gp":14,"fouls":9,"wins":4,"losses":10}}]},{"sid":"5504e3ba","sn":"Winter 2022","club":"Wantirna Jetbacks Basketball Club Inc.","regs":[{"tid":"3368a70f","tn":"Wantirna U8 Boys 2","gid":"90e8cb99","gn":"U8 Boys Encouragement Day - 2022 Winter","age":"U8","div":null,"stats":{"gp":13,"fouls":12,"wins":6,"losses":7}},{"tid":"3368a70f","tn":"Wantirna U8 Boys 2","gid":"f3c7fe46","gn":"Saturday U8 Boys C - 2022 Winter","age":"U8","div":null,"stats":{"gp":13,"fouls":12,"wins":6,"losses":7}}]},{"sid":"2358ccd1","sn":"Summer 2021/22","club":"Wantirna Jetbacks Basketball Club Inc.","regs":[{"tid":"d39b947d","tn":"Wantirna U8 Boys 2","gid":"f57a8001","gn":"U8 Boys Encouragement Day - 2022 Summer","age":"U8","div":null,"stats":{"gp":11,"fouls":2,"wins":5,"losses":4,"draws":2}},{"tid":"d39b947d","tn":"Wantirna U8 Boys 2","gid":"b467955b","gn":"Saturday U8 Boys D - 2022 Summer","age":"U8","div":null,"stats":{"gp":11,"fouls":2,"wins":5,"losses":4,"draws":2}}]}],"updatedAt":"2026-05-31T18:48:16.132Z","teams":[{"tid":"894ddb52","sid":"5f63af45","status":"COMPLETED"},{"tid":"a457fa95","sid":"21d0b58a","status":"COMPLETED"},{"tid":"3368a70f","sid":"5504e3ba","status":"COMPLETED"},{"tid":"d39b947d","sid":"2358ccd1","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:22:09.472Z","records":{"maxGamePTS":{"v":4,"gameKey":"62da263b","sid":"5f63af45"},"maxGameThreePt":{"v":null}},"games":["008170dc","011758f9","054ccc6f","0a68bf90","1aa8b266","24324dad","27f5ab60","2940c176","3068fee1","37043adb","47ff1a11","4979584b","54e982e7","55557979","5b982c4e","6226b8a0","62da263b","6f27cf61","7e03d989","807f3ece","844780cb","8684165d","8939f6df","93cfab8b","980c272d","981ce33c","9919bd96","9a56817f","9e0be9fc","a0024ab8","aa2167ac","b0f9ca2b","b2a6eeea","b2ae2b0a","b31f4ac3","bd0a427f","c3f24ad1","c69a2547","ca0822d3","d6708449","d7db2387","d807f79b","ddc8abb7","dede5ba2","ecdfaf26","ed4ed24d","f7c350f6","fa3e0435","fb0296bb","ff61f35d"]}
+{
+  "uuid": "40bedfb7-6acb-4323-b4bd-ca35db7df7d1",
+  "name": "Sami Arrif",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 50,
+      "pts": 16,
+      "fouls": 41,
+      "fg": 7,
+      "ft": 2,
+      "foulOuts": {
+        "5f63af45": 1
+      },
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "wins": 30,
+      "losses": 52,
+      "draws": 4,
+      "winPct": 0.35,
+      "statsChecked": "2026-07-05T15:08:58.837Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5f63af45",
+      "sn": "Winter 2023",
+      "club": "Wantirna Jetbacks Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "894ddb52",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "1a7fbd39",
+          "gn": "Saturday U8 Boys Encouragement Day - 2023 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 18,
+            "ft": 2,
+            "fg": 7,
+            "pts": 16,
+            "wins": 2,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "894ddb52",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "93ef48aa",
+          "gn": "Saturday U8 Boys B - 2023 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 18,
+            "fg": 7,
+            "pts": 16,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 10,
+            "ft": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "21d0b58a",
+      "sn": "Summer 2022/23",
+      "club": "Wantirna Jetbacks Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "a457fa95",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "ab8599d7",
+          "gn": "Saturday U8 Boys Encouragement Day - 2023 Summer",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 9,
+            "wins": 4,
+            "losses": 10
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5504e3ba",
+      "sn": "Winter 2022",
+      "club": "Wantirna Jetbacks Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "3368a70f",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "90e8cb99",
+          "gn": "U8 Boys Encouragement Day - 2022 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "wins": 6,
+            "losses": 7
+          }
+        },
+        {
+          "tid": "3368a70f",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "f3c7fe46",
+          "gn": "Saturday U8 Boys C - 2022 Winter",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 12,
+            "wins": 6,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2358ccd1",
+      "sn": "Summer 2021/22",
+      "club": "Wantirna Jetbacks Basketball Club Inc.",
+      "regs": [
+        {
+          "tid": "d39b947d",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "f57a8001",
+          "gn": "U8 Boys Encouragement Day - 2022 Summer",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 2,
+            "wins": 5,
+            "losses": 4,
+            "draws": 2
+          }
+        },
+        {
+          "tid": "d39b947d",
+          "tn": "Wantirna U8 Boys 2",
+          "gid": "b467955b",
+          "gn": "Saturday U8 Boys D - 2022 Summer",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 2,
+            "wins": 5,
+            "losses": 4,
+            "draws": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T18:48:16.132Z",
+  "teams": [
+    {
+      "tid": "894ddb52",
+      "sid": "5f63af45",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a457fa95",
+      "sid": "21d0b58a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3368a70f",
+      "sid": "5504e3ba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d39b947d",
+      "sid": "2358ccd1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.824Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "62da263b",
+      "sid": "5f63af45"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "008170dc",
+    "011758f9",
+    "054ccc6f",
+    "0a68bf90",
+    "1aa8b266",
+    "24324dad",
+    "27f5ab60",
+    "2940c176",
+    "3068fee1",
+    "37043adb",
+    "47ff1a11",
+    "4979584b",
+    "54e982e7",
+    "55557979",
+    "5b982c4e",
+    "6226b8a0",
+    "62da263b",
+    "6f27cf61",
+    "7e03d989",
+    "807f3ece",
+    "844780cb",
+    "8684165d",
+    "8939f6df",
+    "93cfab8b",
+    "980c272d",
+    "981ce33c",
+    "9919bd96",
+    "9a56817f",
+    "9e0be9fc",
+    "a0024ab8",
+    "aa2167ac",
+    "b0f9ca2b",
+    "b2a6eeea",
+    "b2ae2b0a",
+    "b31f4ac3",
+    "bd0a427f",
+    "c3f24ad1",
+    "c69a2547",
+    "ca0822d3",
+    "d6708449",
+    "d7db2387",
+    "d807f79b",
+    "ddc8abb7",
+    "dede5ba2",
+    "ecdfaf26",
+    "ed4ed24d",
+    "f7c350f6",
+    "fa3e0435",
+    "fb0296bb",
+    "ff61f35d"
+  ]
+}

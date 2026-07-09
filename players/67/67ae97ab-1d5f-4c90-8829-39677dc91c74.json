@@ -1,1 +1,305 @@
-{"uuid":"67ae97ab-1d5f-4c90-8829-39677dc91c74","name":"Rowan Abbott","gender":"Men","sports":{"Basketball":{"gp":16,"pts":22,"fouls":37,"fg":7,"foulOuts":{"5593103d":1},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"losses":8,"winPct":0.2,"ft":4,"statsChecked":"2026-07-06T18:57:50.034Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"616fbb56","tn":"Sonics 5","gid":"6bcec2e7","gn":"Monday Open Men Section 08","age":"Senior","div":null,"stats":{"gp":12,"fouls":27,"fg":5,"pts":14,"foulOuts":1,"wins":2,"losses":8}},{"tid":"e6dac503","stats":{"gp":1,"pts":4,"fg":2,"fouls":3}},{"tid":"b1ec1aef","stats":{"gp":1}}]},{"sid":"297562bc","regs":[{"tid":"6ca2d0c1","stats":{"gp":2,"pts":4,"ft":4,"fouls":7}},{"tid":"6ca2d0c1","tn":"","gid":"f5a07f8a","gn":"Monday Open Men Section 9","div":null,"stats":{"gp":2,"pts":4,"ft":4,"fouls":7}}]}],"updatedAt":"2026-07-06T18:34:07.586Z","teams":[{"tid":"b1ec1aef","sid":"5593103d","status":"ACTIVE"},{"tid":"d9550178","sid":"5593103d","status":"ACTIVE"},{"tid":"616fbb56","sid":"5593103d","status":"ACTIVE"},{"tid":"e6dac503","sid":"5593103d","status":"ACTIVE"},{"tid":"27be889b","sid":"fab2be4d","status":"COMPLETED"},{"tid":"c1d5aa5e","sid":"76897951","status":"COMPLETED"},{"tid":"6184268a","sid":"5944effa","status":"COMPLETED"},{"tid":"896ad178","sid":"348dbfb8","status":"COMPLETED"},{"tid":"4cd994b6","sid":"9358e51a","status":"COMPLETED"},{"tid":"222eb238","sid":"9358e51a","status":"COMPLETED"},{"tid":"8483e9df","sid":"d3d4e181","status":"COMPLETED"},{"tid":"b6975aa0","sid":"d3d4e181","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:46:38.339Z","records":{"maxGamePTS":{"v":6,"gameKey":"98b4b8d4","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["4dd16e37","53052c42","58a96d6e","808ae367","83d9e485","878a7422","87ac0c3f","ba2b9d58","cb52fe60","e60ff19d","f926717d"],"gameTids":{"20d54803":"6ca2d0c1","3f1a25f4":"6ca2d0c1","98b4b8d4":"616fbb56","f926717d":"616fbb56","e60ff19d":"616fbb56","cb52fe60":"616fbb56","ba2b9d58":"616fbb56","53052c42":"616fbb56","4dd16e37":"616fbb56","808ae367":"616fbb56","87ac0c3f":"616fbb56","58a96d6e":"616fbb56","83d9e485":"616fbb56","878a7422":"616fbb56","cab4303d":"e6dac503","24388eaa":"b1ec1aef"}}
+{
+  "uuid": "67ae97ab-1d5f-4c90-8829-39677dc91c74",
+  "name": "Rowan Abbott",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 16,
+      "pts": 22,
+      "fouls": 37,
+      "fg": 7,
+      "foulOuts": {
+        "5593103d": 1
+      },
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 8,
+      "winPct": 0.2,
+      "ft": 4,
+      "statsChecked": "2026-07-06T18:57:50.034Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "616fbb56",
+          "tn": "Sonics 5",
+          "gid": "6bcec2e7",
+          "gn": "Monday Open Men Section 08",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 27,
+            "fg": 5,
+            "pts": 14,
+            "foulOuts": 1,
+            "wins": 2,
+            "losses": 8
+          }
+        },
+        {
+          "tid": "e6dac503",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 3
+          },
+          "gid": "6bcec2e7",
+          "gn": "Monday Open Men Section 08"
+        },
+        {
+          "tid": "b1ec1aef",
+          "stats": {
+            "gp": 1
+          },
+          "gid": "2d576243",
+          "gn": "Wednesday Open Men Section 4"
+        },
+        {
+          "tid": "d9550178",
+          "tn": "Dire wolves",
+          "gid": "36534163",
+          "gn": "Wednesday Open Men Section 2",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "6ca2d0c1",
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "ft": 4,
+            "fouls": 7
+          },
+          "gid": "f5a07f8a",
+          "gn": "Monday Open Men Section 9"
+        },
+        {
+          "tid": "6ca2d0c1",
+          "tn": "",
+          "gid": "f5a07f8a",
+          "gn": "Monday Open Men Section 9",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 4,
+            "ft": 4,
+            "fouls": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "27be889b",
+          "tn": "Sonics 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "c1d5aa5e",
+          "tn": "Sonics 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "6184268a",
+          "tn": "Sonics 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "348dbfb8",
+      "sn": "Autumn 2024",
+      "regs": [
+        {
+          "tid": "896ad178",
+          "tn": "Sonics 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "4cd994b6",
+          "tn": "Sonics 4",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        },
+        {
+          "tid": "222eb238",
+          "tn": "Sonics 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "8483e9df",
+          "tn": "Sonics 4",
+          "gid": "55d5fc06",
+          "gn": "AUTUMN Wednesday Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "b6975aa0",
+          "tn": "Sonics 5",
+          "gid": "8d39c52b",
+          "gn": "AUTUMN Monday Senior Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:34:07.586Z",
+  "teams": [
+    {
+      "tid": "616fbb56",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e6dac503",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b1ec1aef",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d9550178",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6ca2d0c1",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "27be889b",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c1d5aa5e",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6184268a",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "896ad178",
+      "sid": "348dbfb8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4cd994b6",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "222eb238",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8483e9df",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b6975aa0",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.339Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "98b4b8d4",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "4dd16e37",
+    "53052c42",
+    "58a96d6e",
+    "808ae367",
+    "83d9e485",
+    "878a7422",
+    "87ac0c3f",
+    "ba2b9d58",
+    "cb52fe60",
+    "e60ff19d",
+    "f926717d"
+  ],
+  "gameTids": {
+    "20d54803": "6ca2d0c1",
+    "3f1a25f4": "6ca2d0c1",
+    "98b4b8d4": "616fbb56",
+    "f926717d": "616fbb56",
+    "e60ff19d": "616fbb56",
+    "cb52fe60": "616fbb56",
+    "ba2b9d58": "616fbb56",
+    "53052c42": "616fbb56",
+    "4dd16e37": "616fbb56",
+    "808ae367": "616fbb56",
+    "87ac0c3f": "616fbb56",
+    "58a96d6e": "616fbb56",
+    "83d9e485": "616fbb56",
+    "878a7422": "616fbb56",
+    "cab4303d": "e6dac503",
+    "24388eaa": "b1ec1aef"
+  }
+}

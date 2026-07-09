@@ -1,1 +1,145 @@
-{"uuid":"26f07acd-8c6f-4b84-b00a-0de0c0fd8c11","name":"Hugh Teasel","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":22,"fouls":5,"fg":7,"ft":5,"threePt":1,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"wins":3,"losses":7,"winPct":0.3,"statsChecked":"2026-07-05T15:34:20.451Z"}},"seasons":[{"sid":"38ce88ed","sn":"2026","regs":[{"tid":"c8a21581","tn":"U18 Boys NSW Waratahs","gid":"173d059c","gn":"U18 Boys D1","age":"U18","div":"D1","stats":{"gp":7,"fouls":5,"ft":5,"fg":7,"threePt":1,"pts":22,"finals":1,"gfApps":1,"wins":3,"losses":4,"gfWins":1}},{"tid":"0344c841","stats":{"losses":1,"finals":1,"gfApps":1,"gfWins":1,"gp":1}},{"tid":"0344c841","tn":"","gid":"0ce40ebf","gn":"U18 Boys Cross Pool","div":null,"stats":{"gp":1,"losses":1}}]},{"sid":"38ce88ed","sn":"2026","regs":[{"tid":"0344c841","tn":"U18 Boys NSW Waratahs (CP)","gid":"0ce40ebf","gn":"U18 Boys Cross Pool","age":"U18","div":null,"stats":{"gp":1,"finals":1,"gfApps":1,"losses":1,"gfWins":1}}]}],"updatedAt":"2026-07-04T05:50:05.455Z","teams":[{"tid":"c8a21581","sid":"38ce88ed","status":"COMPLETED"},{"tid":"0344c841","sid":"38ce88ed","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:07:12.978Z","records":{"maxGamePTS":{"v":7,"gameKey":"a011fc4c","sid":"38ce88ed"},"maxGameThreePt":{"v":1,"gameKey":"a9ec7719","sid":"38ce88ed"}},"games":["682f76cc","8a96f8a2","8b61c995","a011fc4c","a9ec7719","b3bb319f","c1567b13","e8638e1f"],"gameTids":{"a9ec7719":"c8a21581","8a96f8a2":"c8a21581","8b61c995":"c8a21581","a011fc4c":"c8a21581","e8638e1f":"c8a21581","682f76cc":"c8a21581","b3bb319f":"c8a21581","c1567b13":"0344c841"}}
+{
+  "uuid": "26f07acd-8c6f-4b84-b00a-0de0c0fd8c11",
+  "name": "Hugh Teasel",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 22,
+      "fouls": 5,
+      "fg": 7,
+      "ft": 5,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 3,
+      "losses": 7,
+      "winPct": 0.3,
+      "statsChecked": "2026-07-05T15:34:20.451Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "c8a21581",
+          "tn": "U18 Boys NSW Waratahs",
+          "gid": "173d059c",
+          "gn": "U18 Boys D1",
+          "age": "U18",
+          "div": "D1",
+          "stats": {
+            "gp": 7,
+            "fouls": 5,
+            "ft": 5,
+            "fg": 7,
+            "threePt": 1,
+            "pts": 22,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 4,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "0344c841",
+          "stats": {
+            "losses": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "gfWins": 1,
+            "gp": 1
+          },
+          "gid": "0ce40ebf",
+          "gn": "U18 Boys Cross Pool"
+        },
+        {
+          "tid": "0344c841",
+          "tn": "",
+          "gid": "0ce40ebf",
+          "gn": "U18 Boys Cross Pool",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38ce88ed",
+      "sn": "2026",
+      "regs": [
+        {
+          "tid": "0344c841",
+          "tn": "U18 Boys NSW Waratahs (CP)",
+          "gid": "0ce40ebf",
+          "gn": "U18 Boys Cross Pool",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:50:05.455Z",
+  "teams": [
+    {
+      "tid": "c8a21581",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0344c841",
+      "sid": "38ce88ed",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.369Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "a011fc4c",
+      "sid": "38ce88ed"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "a9ec7719",
+      "sid": "38ce88ed"
+    }
+  },
+  "games": [
+    "682f76cc",
+    "8a96f8a2",
+    "8b61c995",
+    "a011fc4c",
+    "a9ec7719",
+    "b3bb319f",
+    "c1567b13",
+    "e8638e1f"
+  ],
+  "gameTids": {
+    "a9ec7719": "c8a21581",
+    "8a96f8a2": "c8a21581",
+    "8b61c995": "c8a21581",
+    "a011fc4c": "c8a21581",
+    "e8638e1f": "c8a21581",
+    "682f76cc": "c8a21581",
+    "b3bb319f": "c8a21581",
+    "c1567b13": "0344c841"
+  }
+}

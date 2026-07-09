@@ -1,1 +1,138 @@
-{"uuid":"84e01768-f9f4-40d5-8963-8d560a77f7f4","gender":null,"sports":{"Basketball":{"gp":20,"pts":138,"fouls":51,"fg":60,"ft":12,"threePt":2,"foulOuts":{"7c90a07c":1,"afa96e12":1},"maxGamePTS":14,"maxGameThreePt":1,"wins":4,"losses":11,"winPct":0.27,"statsChecked":"2026-07-05T16:14:17.859Z"}},"seasons":[{"sid":"7c90a07c","sn":"Summer 2022/23","club":null,"regs":[{"tid":"1f2b82eb","tn":"Froffies ","gid":"60df9d1c","gn":"Thursday Men 2 - 2023 Summer","stats":{"gp":15,"pts":109,"fouls":38,"fg":47,"ft":12,"threePt":1,"foulOuts":1,"wins":4,"losses":11}}]},{"sid":"afa96e12","sn":"Summer 2020/21","club":null,"regs":[{"tid":"6436f62a","tn":"Froffies ","gid":"b0fb476b","gn":"Thursday SBC Premier League Men","stats":{"gp":5,"pts":29,"fouls":13,"fg":13,"threePt":1,"foulOuts":1}}]}],"updatedAt":"2026-06-11T23:41:52.810Z","records":{"maxGamePTS":{"v":14,"gameKey":"275ecfba","sid":"7c90a07c"},"maxGameThreePt":{"v":1,"gameKey":"275ecfba","sid":"7c90a07c"}},"games":["0fd0d237","1d691f26","212be495","2561619a","275ecfba","2cb1baa5","600548fa","61abb165","6b124544","6b2997a6","70340f90","913f9b95","9f2f7884","a3fc5979","ad37ac31","b14ca421","b46c83cc","c61d6a52","d95cdbd7","f5eb9c82"],"name":"Summer 2022/23"}
+{
+  "uuid": "84e01768-f9f4-40d5-8963-8d560a77f7f4",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 20,
+      "pts": 138,
+      "fouls": 51,
+      "fg": 60,
+      "ft": 12,
+      "threePt": 2,
+      "foulOuts": {
+        "7c90a07c": 1,
+        "afa96e12": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "wins": 4,
+      "losses": 11,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T16:14:17.859Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7c90a07c",
+      "sn": "Summer 2022/23",
+      "club": null,
+      "regs": [
+        {
+          "tid": "1f2b82eb",
+          "tn": "Froffies ",
+          "gid": "60df9d1c",
+          "gn": "Thursday Men 2 - 2023 Summer",
+          "stats": {
+            "gp": 15,
+            "pts": 109,
+            "fouls": 38,
+            "fg": 47,
+            "ft": 12,
+            "threePt": 1,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "afa96e12",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "6436f62a",
+          "tn": "Froffies ",
+          "gid": "b0fb476b",
+          "gn": "Thursday SBC Premier League Men",
+          "stats": {
+            "gp": 5,
+            "pts": 29,
+            "fouls": 13,
+            "fg": 13,
+            "threePt": 1,
+            "foulOuts": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8940cb5d",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "cd4174ab",
+          "tn": "Froffies ",
+          "gid": "fb9f6e18",
+          "gn": "Thursday Men 2 - 2022 Winter",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:41:52.810Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "275ecfba",
+      "sid": "7c90a07c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "275ecfba",
+      "sid": "7c90a07c"
+    }
+  },
+  "games": [
+    "0fd0d237",
+    "1d691f26",
+    "212be495",
+    "2561619a",
+    "275ecfba",
+    "2cb1baa5",
+    "600548fa",
+    "61abb165",
+    "6b124544",
+    "6b2997a6",
+    "70340f90",
+    "913f9b95",
+    "9f2f7884",
+    "a3fc5979",
+    "ad37ac31",
+    "b14ca421",
+    "b46c83cc",
+    "c61d6a52",
+    "d95cdbd7",
+    "f5eb9c82"
+  ],
+  "name": "Summer 2022/23",
+  "teams": [
+    {
+      "tid": "1f2b82eb",
+      "sid": "7c90a07c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6436f62a",
+      "sid": "afa96e12",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd4174ab",
+      "sid": "8940cb5d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.290Z"
+}

@@ -1,1 +1,82 @@
-{"uuid":"62cd3a35-526b-45d6-9f0e-6ef8c5b406bb","name":"donovan sherpa","gender":"Boys","sports":{"Basketball":{"gp":8,"fouls":13,"foulOuts":{"1ae60211":1},"maxGamePTS":null,"maxGameThreePt":null,"wins":8,"losses":4,"winPct":0.67,"statsChecked":"2026-07-05T14:41:43.116Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"f3b1e0b3","tn":"Collingwood U09 Boys 07","gid":"7c23a893","gn":"Boys U09 C Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":13,"wins":4,"losses":2}},{"tid":"f3b1e0b3","tn":"Collingwood U09 Boys 07","gid":"79d9e648","gn":"Boys U09 D Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":13,"wins":4,"losses":2}}]}],"updatedAt":"2026-05-31T02:36:20.975Z","teams":[{"tid":"f3b1e0b3","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T12:42:06.255Z","games":["281af96f","29e502c4","909f23c2","b6bb6b82","c19c5bd2","c4617a3f"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "62cd3a35-526b-45d6-9f0e-6ef8c5b406bb",
+  "name": "donovan sherpa",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "fouls": 13,
+      "foulOuts": {
+        "1ae60211": 1
+      },
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 4,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T14:41:43.116Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "f3b1e0b3",
+          "tn": "Collingwood U09 Boys 07",
+          "gid": "0338342f",
+          "gn": "Boys U09 CG",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 13,
+            "wins": 4,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "f3b1e0b3",
+          "tn": "Collingwood U09 Boys 07",
+          "gid": "79d9e648",
+          "gn": "Boys U09 D Grading",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 13,
+            "wins": 4,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T02:36:20.975Z",
+  "teams": [
+    {
+      "tid": "f3b1e0b3",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.068Z",
+  "games": [
+    "281af96f",
+    "29e502c4",
+    "909f23c2",
+    "b6bb6b82",
+    "c19c5bd2",
+    "c4617a3f"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

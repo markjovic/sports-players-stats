@@ -1,1 +1,125 @@
-{"uuid":"16c1d395-42d6-4e2a-a2e8-e3d6987cfa3e","name":"Delan Perera","gender":"Men","sports":{"Basketball":{"gp":8,"pts":22,"fouls":3,"fg":7,"ft":2,"threePt":2,"foulOuts":{},"maxGamePTS":13,"maxGameThreePt":1,"losses":8,"winPct":0,"statsChecked":"2026-07-05T15:46:58.826Z"}},"seasons":[{"sid":"a8a607b7","sn":"Summer 2023/24","regs":[{"tid":"88e4c48b","tn":"South East Defenders M2","gid":"5b68689d","gn":"Monday Senior Men I","age":"Senior","div":null,"stats":{"gp":7,"pts":18,"threePt":2,"fg":5,"ft":2,"fouls":2,"losses":6}},{"tid":"72aca6ac","stats":{"losses":1,"gp":1,"pts":4,"fg":2,"fouls":1}}]},{"sid":"a8a607b7","sn":"Summer 2023/24","regs":[{"tid":"72aca6ac","tn":"South East Defenders M1","gid":"fb5b0633","gn":"Monday Senior Men G1/G2","age":"Senior","div":"G2","stats":{"gp":1,"pts":4,"fg":2,"fouls":1,"losses":1}}]}],"updatedAt":"2026-06-01T20:09:55.111Z","teams":[{"tid":"72aca6ac","sid":"a8a607b7","status":"COMPLETED"},{"tid":"88e4c48b","sid":"a8a607b7","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:00:49.923Z","records":{"maxGamePTS":{"v":13,"gameKey":"77dd577d","sid":"a8a607b7"},"maxGameThreePt":{"v":1,"gameKey":"2f04b3c0","sid":"a8a607b7"}},"games":["212ff27a","2abe546f","2f04b3c0","470ad385","77dd577d","9bf385b9","9eaf8d2d","a3813691"],"gameTids":{"2f04b3c0":"88e4c48b","9bf385b9":"88e4c48b","a3813691":"88e4c48b","77dd577d":"88e4c48b","470ad385":"88e4c48b","9eaf8d2d":"88e4c48b","212ff27a":"88e4c48b","2abe546f":"72aca6ac"}}
+{
+  "uuid": "16c1d395-42d6-4e2a-a2e8-e3d6987cfa3e",
+  "name": "Delan Perera",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 22,
+      "fouls": 3,
+      "fg": 7,
+      "ft": 2,
+      "threePt": 2,
+      "foulOuts": {},
+      "maxGamePTS": 13,
+      "maxGameThreePt": 1,
+      "losses": 8,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T15:46:58.826Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a8a607b7",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "88e4c48b",
+          "tn": "South East Defenders M2",
+          "gid": "5b68689d",
+          "gn": "Monday Senior Men I",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 18,
+            "threePt": 2,
+            "fg": 5,
+            "ft": 2,
+            "fouls": 2,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "72aca6ac",
+          "stats": {
+            "losses": 1,
+            "gp": 1,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 1
+          },
+          "gid": "5b68689d",
+          "gn": "Monday Senior Men I"
+        }
+      ]
+    },
+    {
+      "sid": "a8a607b7",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "72aca6ac",
+          "tn": "South East Defenders M1",
+          "gid": "fb5b0633",
+          "gn": "Monday Senior Men G1/G2",
+          "age": "Senior",
+          "div": "G2",
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T20:09:55.111Z",
+  "teams": [
+    {
+      "tid": "88e4c48b",
+      "sid": "a8a607b7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "72aca6ac",
+      "sid": "a8a607b7",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.295Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "77dd577d",
+      "sid": "a8a607b7"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "2f04b3c0",
+      "sid": "a8a607b7"
+    }
+  },
+  "games": [
+    "212ff27a",
+    "2abe546f",
+    "2f04b3c0",
+    "470ad385",
+    "77dd577d",
+    "9bf385b9",
+    "9eaf8d2d",
+    "a3813691"
+  ],
+  "gameTids": {
+    "2f04b3c0": "88e4c48b",
+    "9bf385b9": "88e4c48b",
+    "a3813691": "88e4c48b",
+    "77dd577d": "88e4c48b",
+    "470ad385": "88e4c48b",
+    "9eaf8d2d": "88e4c48b",
+    "212ff27a": "88e4c48b",
+    "2abe546f": "72aca6ac"
+  }
+}

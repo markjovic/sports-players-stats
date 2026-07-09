@@ -1,1 +1,295 @@
-{"uuid":"5cb1828c-2b33-471d-a4a5-ce1883718941","name":"Zara Miot","gender":"Girls","sports":{"Basketball":{"gp":43,"pts":101,"fouls":29,"fg":47,"ft":4,"threePt":1,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":1,"wins":26,"losses":98,"winPct":0.21,"draws":2,"statsChecked":"2026-07-05T15:09:23.403Z"}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Mentone Mustangs Basketball Club","regs":[]},{"sid":"3e7c1a8c","sn":"Autumn 2026","club":"Mentone Mustangs Basketball Club","regs":[{"tid":"1027e42a","tn":"Mentone Mustangs U18 Girls SPARKS","gid":"1cac1bf4","gn":"Monday U18 Girls D Grade","age":"U18","div":null,"stats":{"gp":14,"fouls":17,"ft":1,"fg":14,"threePt":1,"pts":32,"wins":4,"losses":10}},{"tid":"1027e42a","tn":"Mentone Mustangs U18 Girls SPARKS","gid":"5acf87d7","gn":"Monday U18 Girls C2 Grade","age":"U18","div":null,"stats":{"gp":14,"fouls":17,"wins":4,"losses":10,"pts":32,"fg":14,"ft":1,"threePt":1}},{"tid":"1027e42a","tn":"Mentone Mustangs U18 Girls SPARKS","gid":"ef5e4ded","gn":"Monday U18 Girls C1 Grade","age":"U18","div":null,"stats":{"gp":14,"fouls":17,"fg":14,"pts":32,"wins":4,"losses":10,"ft":1,"threePt":1}}]},{"sid":"e830df83","sn":"Spring 2025","club":"Mentone Mustangs Basketball Club","regs":[{"tid":"9c84bd76","tn":"Mentone Mustangs U16 Girls SPARKS","gid":"eb897d73","gn":"Wednesday U16 Girls C1 Grade","age":"U16","div":null,"stats":{"gp":16,"fouls":8,"ft":3,"fg":20,"pts":43,"wins":1,"losses":14,"draws":1}},{"tid":"9c84bd76","tn":"Mentone Mustangs U16 Girls SPARKS","gid":"b87b487d","gn":"Wednesday U16 Girls B/B Reserve Grade","age":"U16","div":null,"stats":{"gp":16,"fouls":8,"wins":1,"losses":14,"draws":1,"pts":43,"fg":20,"ft":3}}]},{"sid":"38710f3b","sn":"Autumn 2025","club":"Mentone Mustangs Basketball Club","regs":[{"tid":"f731cf66","tn":"Mentone Mustangs U16 Girls SPARKS","gid":"4c700f69","gn":"Wednesday U16 Girls B Grade","age":"U16","div":null,"stats":{"gp":13,"fouls":4,"fg":13,"pts":26,"wins":3,"losses":10}},{"tid":"f731cf66","tn":"Mentone Mustangs U16 Girls SPARKS","gid":"49b4bbef","gn":"Wednesday U16 Girls C1 Grade","age":"U16","div":null,"stats":{"gp":13,"fouls":4,"fg":13,"pts":26,"wins":3,"losses":10}},{"tid":"f731cf66","tn":"Mentone Mustangs U16 Girls SPARKS","gid":"335a1a42","gn":"Wednesday U16 Girls","age":"U16","div":null,"stats":{"gp":13,"wins":3,"losses":10,"pts":26,"fg":13,"fouls":4}},{"tid":"f731cf66","tn":"Mentone Mustangs U16 Girls SPARKS","gid":"90725f30","gn":"Wednesday U16 Girls C2 Grade","age":"U16","div":null,"stats":{"gp":13,"fg":13,"pts":26,"wins":3,"losses":10,"fouls":4}}]}],"updatedAt":"2026-07-04T06:00:01.502Z","teams":[{"tid":"1027e42a","sid":"3e7c1a8c","status":"ACTIVE"},{"tid":"a7419230","sid":"e2b609ed","status":"UPCOMING"},{"tid":"9c84bd76","sid":"e830df83","status":"COMPLETED"},{"tid":"f731cf66","sid":"38710f3b","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:38:56.150Z","records":{"maxGamePTS":{"v":8,"gameKey":"97711717","sid":"e830df83"},"maxGameThreePt":{"v":1,"gameKey":"4fcd64dc","sid":"3e7c1a8c"}},"games":["08fa78df","0909e343","160b3038","167f349c","1f02a2a2","21c03009","284cdcff","2c1538ef","36464eb5","3bd8b2da","400a1109","4fcd64dc","5ebec9b1","64c2e08c","65735dfb","6ddf434b","71df37e3","72e33695","7b97aa58","8e654496","8fd02db2","97711717","9dd84f06","ab9dfe03","ac8eb4f5","ae029c9a","b0938c05","bd8b2bab","bea1ddda","c25cc85f","c3a7cb86","c696c151","c8e1c853","c95e7c4e","dad5a8f6","db854f79","dfac9f55","e05b516d","e29bcba2","e4994334","e52a8068","ed9e2c23","f6b01fe3"]}
+{
+  "uuid": "5cb1828c-2b33-471d-a4a5-ce1883718941",
+  "name": "Zara Miot",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 101,
+      "fouls": 29,
+      "fg": 47,
+      "ft": 4,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": 1,
+      "wins": 26,
+      "losses": 98,
+      "winPct": 0.21,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:09:23.403Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Mentone Mustangs Basketball Club",
+      "regs": [
+        {
+          "tid": "a7419230",
+          "tn": "Mentone Mustangs U18 Girls SPARKS",
+          "gid": "dd83e299",
+          "gn": "Monday U18 Girls D Grade",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "sn": "Autumn 2026",
+      "club": "Mentone Mustangs Basketball Club",
+      "regs": [
+        {
+          "tid": "1027e42a",
+          "tn": "Mentone Mustangs U18 Girls SPARKS",
+          "gid": "1cac1bf4",
+          "gn": "Monday U18 Girls D Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 17,
+            "ft": 1,
+            "fg": 14,
+            "threePt": 1,
+            "pts": 32,
+            "wins": 4,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "1027e42a",
+          "tn": "Mentone Mustangs U18 Girls SPARKS",
+          "gid": "5acf87d7",
+          "gn": "Monday U18 Girls C2 Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 17,
+            "wins": 4,
+            "losses": 10,
+            "pts": 32,
+            "fg": 14,
+            "ft": 1,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "1027e42a",
+          "tn": "Mentone Mustangs U18 Girls SPARKS",
+          "gid": "ef5e4ded",
+          "gn": "Monday U18 Girls C1 Grade",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 17,
+            "fg": 14,
+            "pts": 32,
+            "wins": 4,
+            "losses": 10,
+            "ft": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e830df83",
+      "sn": "Spring 2025",
+      "club": "Mentone Mustangs Basketball Club",
+      "regs": [
+        {
+          "tid": "9c84bd76",
+          "tn": "Mentone Mustangs U16 Girls SPARKS",
+          "gid": "eb897d73",
+          "gn": "Wednesday U16 Girls C1 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "ft": 3,
+            "fg": 20,
+            "pts": 43,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "9c84bd76",
+          "tn": "Mentone Mustangs U16 Girls SPARKS",
+          "gid": "b87b487d",
+          "gn": "Wednesday U16 Girls B/B Reserve Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1,
+            "pts": 43,
+            "fg": 20,
+            "ft": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "38710f3b",
+      "sn": "Autumn 2025",
+      "club": "Mentone Mustangs Basketball Club",
+      "regs": [
+        {
+          "tid": "f731cf66",
+          "tn": "Mentone Mustangs U16 Girls SPARKS",
+          "gid": "4c700f69",
+          "gn": "Wednesday U16 Girls B Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 4,
+            "fg": 13,
+            "pts": 26,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "f731cf66",
+          "tn": "Mentone Mustangs U16 Girls SPARKS",
+          "gid": "49b4bbef",
+          "gn": "Wednesday U16 Girls C1 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 4,
+            "fg": 13,
+            "pts": 26,
+            "wins": 3,
+            "losses": 10
+          }
+        },
+        {
+          "tid": "f731cf66",
+          "tn": "Mentone Mustangs U16 Girls SPARKS",
+          "gid": "335a1a42",
+          "gn": "Wednesday U16 Girls",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "wins": 3,
+            "losses": 10,
+            "pts": 26,
+            "fg": 13,
+            "fouls": 4
+          }
+        },
+        {
+          "tid": "f731cf66",
+          "tn": "Mentone Mustangs U16 Girls SPARKS",
+          "gid": "90725f30",
+          "gn": "Wednesday U16 Girls C2 Grade",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fg": 13,
+            "pts": 26,
+            "wins": 3,
+            "losses": 10,
+            "fouls": 4
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T06:00:01.502Z",
+  "teams": [
+    {
+      "tid": "a7419230",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1027e42a",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9c84bd76",
+      "sid": "e830df83",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f731cf66",
+      "sid": "38710f3b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.648Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "97711717",
+      "sid": "e830df83"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "4fcd64dc",
+      "sid": "3e7c1a8c"
+    }
+  },
+  "games": [
+    "08fa78df",
+    "0909e343",
+    "160b3038",
+    "167f349c",
+    "1f02a2a2",
+    "21c03009",
+    "284cdcff",
+    "2c1538ef",
+    "36464eb5",
+    "3bd8b2da",
+    "400a1109",
+    "4fcd64dc",
+    "5ebec9b1",
+    "64c2e08c",
+    "65735dfb",
+    "6ddf434b",
+    "71df37e3",
+    "72e33695",
+    "7b97aa58",
+    "8e654496",
+    "8fd02db2",
+    "97711717",
+    "9dd84f06",
+    "ab9dfe03",
+    "ac8eb4f5",
+    "ae029c9a",
+    "b0938c05",
+    "bd8b2bab",
+    "bea1ddda",
+    "c25cc85f",
+    "c3a7cb86",
+    "c696c151",
+    "c8e1c853",
+    "c95e7c4e",
+    "dad5a8f6",
+    "db854f79",
+    "dfac9f55",
+    "e05b516d",
+    "e29bcba2",
+    "e4994334",
+    "e52a8068",
+    "ed9e2c23",
+    "f6b01fe3"
+  ]
+}

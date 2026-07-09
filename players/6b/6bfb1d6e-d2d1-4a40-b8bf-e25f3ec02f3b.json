@@ -1,1 +1,356 @@
-{"uuid":"6bfb1d6e-d2d1-4a40-b8bf-e25f3ec02f3b","name":"Xavier Edmonds","gender":"Mixed","sports":{"Basketball":{"gp":1,"foulOuts":{},"maxGamePTS":null,"maxGameThreePt":null,"draws":1,"winPct":0,"statsChecked":"2026-07-05T16:22:40.548Z"}},"seasons":[{"sid":"7ae43ec8","sn":"Autumn 2023","regs":[{"tid":"25cfe9a2","tn":"Mixed Team 1","gid":"3d4ef723","gn":"Wednesday Unspecified Mixed","age":null,"div":null,"stats":{"gp":1,"draws":1}}]}],"updatedAt":"2026-06-03T06:59:20.253Z","teams":[{"tid":"2466f64b","sid":"0eab54b6","status":"COMPLETED"},{"tid":"9a3ae889","sid":"0eab54b6","status":"COMPLETED"},{"tid":"b3a4c698","sid":"0eab54b6","status":"COMPLETED"},{"tid":"2c934bb4","sid":"0eab54b6","status":"COMPLETED"},{"tid":"b60dfc04","sid":"0eab54b6","status":"COMPLETED"},{"tid":"f0b11923","sid":"0eab54b6","status":"COMPLETED"},{"tid":"dd3a0aa5","sid":"e5fc181f","status":"COMPLETED"},{"tid":"fe24a0ce","sid":"e5fc181f","status":"COMPLETED"},{"tid":"bbfaeeca","sid":"e5fc181f","status":"COMPLETED"},{"tid":"b7d55c53","sid":"e5fc181f","status":"COMPLETED"},{"tid":"b21d495d","sid":"e5fc181f","status":"COMPLETED"},{"tid":"07a562f2","sid":"e5fc181f","status":"COMPLETED"},{"tid":"1d00dadc","sid":"7ae43ec8","status":"COMPLETED"},{"tid":"122444f1","sid":"7ae43ec8","status":"COMPLETED"},{"tid":"25cfe9a2","sid":"7ae43ec8","status":"COMPLETED"},{"tid":"0273ea7c","sid":"7ae43ec8","status":"COMPLETED"},{"tid":"b7d86f00","sid":"7ae43ec8","status":"COMPLETED"},{"tid":"b7c7232e","sid":"7ae43ec8","status":"COMPLETED"},{"tid":"b7446002","sid":"39d78245","status":"COMPLETED"},{"tid":"d918d873","sid":"39d78245","status":"COMPLETED"},{"tid":"5fa4f71d","sid":"39d78245","status":"COMPLETED"},{"tid":"b375c80f","sid":"39d78245","status":"COMPLETED"},{"tid":"7bea24a8","sid":"39d78245","status":"COMPLETED"},{"tid":"9589da8d","sid":"08464028","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:48:26.716Z","games":["5c668d55"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "6bfb1d6e-d2d1-4a40-b8bf-e25f3ec02f3b",
+  "name": "Xavier Edmonds",
+  "gender": "Mixed",
+  "sports": {
+    "Basketball": {
+      "gp": 1,
+      "foulOuts": {},
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "draws": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:22:40.548Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7ae43ec8",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "25cfe9a2",
+          "tn": "Mixed Team 1",
+          "gid": "3d4ef723",
+          "gn": "Wednesday Unspecified Mixed",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "1d00dadc",
+          "tn": "Mens Team 1",
+          "gid": "3d4ef723",
+          "gn": "Wednesday Unspecified Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "122444f1",
+          "tn": "Mens Team 2",
+          "gid": "3d4ef723",
+          "gn": "Wednesday Unspecified Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "0273ea7c",
+          "tn": "Mixed Team 2",
+          "gid": "3d4ef723",
+          "gn": "Wednesday Unspecified Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "b7d86f00",
+          "tn": "Mixed Team 3",
+          "gid": "3d4ef723",
+          "gn": "Wednesday Unspecified Mixed",
+          "stats": {}
+        },
+        {
+          "tid": "b7c7232e",
+          "tn": "Mixed Team 4",
+          "gid": "3d4ef723",
+          "gn": "Wednesday Unspecified Mixed",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "0eab54b6",
+      "sn": "Term 3, 2023",
+      "regs": [
+        {
+          "tid": "2466f64b",
+          "tn": "Men's Team 1",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "9a3ae889",
+          "tn": "Men's Team 2",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b3a4c698",
+          "tn": "Mixed Team 1",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "2c934bb4",
+          "tn": "Mixed Team 2",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b60dfc04",
+          "tn": "Mixed Team 3",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "f0b11923",
+          "tn": "Mixed Team 4",
+          "gid": "7bd46534",
+          "gn": "Unified Basketball",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e5fc181f",
+      "sn": "Term 2, 2023",
+      "regs": [
+        {
+          "tid": "dd3a0aa5",
+          "tn": "Men's Team 1",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "fe24a0ce",
+          "tn": "Men's Team 2",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "bbfaeeca",
+          "tn": "Mixed Team 1",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b7d55c53",
+          "tn": "Mixed Team 2",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b21d495d",
+          "tn": "Mixed Team 3",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "07a562f2",
+          "tn": "Mixed Team 4",
+          "gid": "6e9d86a6",
+          "gn": "Unified Basketball",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "39d78245",
+      "sn": "Spring 2022",
+      "regs": [
+        {
+          "tid": "b7446002",
+          "tn": "Mens Team 1",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "d918d873",
+          "tn": "Mens Team 2",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "5fa4f71d",
+          "tn": "Mixed Team 1",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "b375c80f",
+          "tn": "Mixed Team 3",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        },
+        {
+          "tid": "7bea24a8",
+          "tn": "Mixed Team 4",
+          "gid": "09ff7614",
+          "gn": "Unified Basketball",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "08464028",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "9589da8d",
+          "tn": "Mixed Team 2",
+          "gid": "d154b11d",
+          "gn": "Wednesday Unified Basketball",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T06:59:20.253Z",
+  "teams": [
+    {
+      "tid": "25cfe9a2",
+      "sid": "7ae43ec8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d00dadc",
+      "sid": "7ae43ec8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "122444f1",
+      "sid": "7ae43ec8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0273ea7c",
+      "sid": "7ae43ec8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7d86f00",
+      "sid": "7ae43ec8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7c7232e",
+      "sid": "7ae43ec8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2466f64b",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9a3ae889",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b3a4c698",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2c934bb4",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b60dfc04",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0b11923",
+      "sid": "0eab54b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "dd3a0aa5",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fe24a0ce",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bbfaeeca",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7d55c53",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b21d495d",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "07a562f2",
+      "sid": "e5fc181f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b7446002",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d918d873",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5fa4f71d",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b375c80f",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7bea24a8",
+      "sid": "39d78245",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9589da8d",
+      "sid": "08464028",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.668Z",
+  "games": [
+    "5c668d55"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

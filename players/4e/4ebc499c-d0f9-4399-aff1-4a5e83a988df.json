@@ -1,1 +1,419 @@
-{"uuid":"4ebc499c-d0f9-4399-aff1-4a5e83a988df","name":"Adam Zachariah Kuruvilla","gender":"Men","sports":{"Basketball":{"gp":22,"pts":169,"fouls":30,"fg":42,"ft":20,"threePt":5,"foulOuts":{"5593103d":2},"maxGamePTS":15,"maxGameThreePt":3,"wins":11,"losses":2,"draws":1,"winPct":0.79,"statsChecked":"2026-07-09T18:29:55.797Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"ae32ba09","tn":"Tropics ","gid":"94ebf712","gn":"Thursday Open Men Section 05","age":"Senior","div":null,"stats":{"gp":10,"fouls":18,"ft":12,"fg":19,"pts":103,"foulOuts":2,"threePt":1,"wins":6,"losses":2,"draws":1}}]},{"sid":"6c117270","sn":"Winter 2026","club":"Timberwolves Basketball Club","regs":[{"tid":"8df923b5","tn":"Timberwolves Rizzly Bears U21 Boys","gid":"44bb2fc6","gn":"Sunday U21 Men Section 01","age":"U21","div":null,"stats":{"gp":5,"fouls":3,"ft":2,"fg":11,"threePt":4,"pts":36,"wins":5}}]},{"sid":"df876355","sn":"Summer 2024/25","club":"Timberwolves Basketball Club","regs":[{"tid":"e98e4eab","tn":"U20 TIMBERWOLVES RIZZLY BEARS","gid":"9913a735","gn":"Sunday U20 Mens TEST Section 1","age":"U20","div":null,"stats":{"gp":5,"fouls":9,"ft":1,"fg":6,"pts":13}}]},{"sid":"297562bc","regs":[{"tid":"0ee20298","stats":{"gp":2,"pts":17,"fg":6,"ft":5}},{"tid":"0ee20298","tn":"","gid":"a0a4d1a0","gn":"Thursday Open Men Section 4","div":null,"stats":{"gp":2,"pts":17,"fg":6,"ft":5}}]}],"updatedAt":"2026-07-09T18:07:40.020Z","teams":[{"tid":"ae32ba09","sid":"5593103d","status":"ACTIVE"},{"tid":"8df923b5","sid":"6c117270","status":"ACTIVE"},{"tid":"880465f9","sid":"68279835","status":"COMPLETED"},{"tid":"ecb903fc","sid":"fab2be4d","status":"COMPLETED"},{"tid":"13063a1a","sid":"913d1397","status":"COMPLETED"},{"tid":"51969350","sid":"76897951","status":"COMPLETED"},{"tid":"e98e4eab","sid":"df876355","status":"COMPLETED"},{"tid":"31d69766","sid":"5944effa","status":"COMPLETED"},{"tid":"06584492","sid":"e54d0c37","status":"COMPLETED"},{"tid":"1da27da5","sid":"ee5d2724","status":"COMPLETED"},{"tid":"88a10cf0","sid":"9358e51a","status":"COMPLETED"},{"tid":"2a5059b7","sid":"7d20ecad","status":"COMPLETED"},{"tid":"5c28acd5","sid":"d3d4e181","status":"COMPLETED"},{"tid":"3f2526e0","sid":"e2637fe8","status":"COMPLETED"},{"tid":"0c96da8f","sid":"eb0c3879","status":"COMPLETED"},{"tid":"bf3f0e33","sid":"11f9ba57","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:30:20.047Z","records":{"maxGamePTS":{"v":15,"gameKey":"05d5ad18","sid":"5593103d"},"maxGameThreePt":{"v":3,"gameKey":"7e6dd192","sid":"6c117270"}},"games":["008b80ef","05d5ad18","2d546fb3","422baf2c","5841a60b","7e6dd192","84467ea1","9626b8f3","9acbfd32","a2bab098","a7d7b4cf","b042da47","b5a4d758","b5efb46f","c2062b70","cf5599c1","e8bd5b5b","f3aa9839","f97d8c19"]}
+{
+  "uuid": "4ebc499c-d0f9-4399-aff1-4a5e83a988df",
+  "name": "Adam Zachariah Kuruvilla",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 22,
+      "pts": 169,
+      "fouls": 30,
+      "fg": 42,
+      "ft": 20,
+      "threePt": 5,
+      "foulOuts": {
+        "5593103d": 2
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 3,
+      "wins": 11,
+      "losses": 2,
+      "draws": 1,
+      "winPct": 0.79,
+      "statsChecked": "2026-07-09T18:29:55.797Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "ae32ba09",
+          "tn": "Tropics ",
+          "gid": "94ebf712",
+          "gn": "Thursday Open Men Section 05",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 18,
+            "ft": 12,
+            "fg": 19,
+            "pts": 103,
+            "foulOuts": 2,
+            "threePt": 1,
+            "wins": 6,
+            "losses": 2,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "8df923b5",
+          "tn": "Timberwolves Rizzly Bears U21 Boys",
+          "gid": "44bb2fc6",
+          "gn": "Sunday U21 Men Section 01",
+          "age": "U21",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 3,
+            "ft": 2,
+            "fg": 11,
+            "threePt": 4,
+            "pts": 36,
+            "wins": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "club": "Timberwolves Basketball Club",
+      "regs": [
+        {
+          "tid": "e98e4eab",
+          "tn": "U20 TIMBERWOLVES RIZZLY BEARS",
+          "gid": "9913a735",
+          "gn": "Sunday U20 Mens TEST Section 1",
+          "age": "U20",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 9,
+            "ft": 1,
+            "fg": 6,
+            "pts": 13
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "0ee20298",
+          "stats": {
+            "gp": 2,
+            "pts": 17,
+            "fg": 6,
+            "ft": 5
+          },
+          "gid": "a0a4d1a0",
+          "gn": "Thursday Open Men Section 4"
+        },
+        {
+          "tid": "0ee20298",
+          "tn": "",
+          "gid": "a0a4d1a0",
+          "gn": "Thursday Open Men Section 4",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 17,
+            "fg": 6,
+            "ft": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "880465f9",
+          "tn": "U21 TIMBERWOLVES RIZZLY BEARS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "ecb903fc",
+          "tn": "Tropics ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "13063a1a",
+          "tn": "U20 TIMBERWOLVES RIZZLY BEARS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "51969350",
+          "tn": "Tropics ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "5944effa",
+      "sn": "Spring 2024",
+      "regs": [
+        {
+          "tid": "31d69766",
+          "tn": "Tropics ",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "06584492",
+          "tn": "U18 TIMBERWOLVES HAWKS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "1da27da5",
+          "tn": "U18 TIMBERWOLVES HAWKS",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "9358e51a",
+      "sn": "Spring 2023",
+      "regs": [
+        {
+          "tid": "88a10cf0",
+          "tn": "Tropics",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "2a5059b7",
+          "tn": "U18 TIMBERWOLVES HAWKS",
+          "gid": "cc6076e0",
+          "gn": "Sunday U18 Boys Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "d3d4e181",
+      "sn": "Autumn 2023",
+      "regs": [
+        {
+          "tid": "5c28acd5",
+          "tn": "Tropics ",
+          "gid": "da8c2a9a",
+          "gn": "AUTUMN Thursday Senior Men",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "3f2526e0",
+          "tn": "U16 Timberwolves Hawks",
+          "gid": "1bd2e01d",
+          "gn": "U16 Boys (S22_23) Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "eb0c3879",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "0c96da8f",
+          "tn": "U16 Boys Timberwolves Hawks",
+          "gid": "71f67cc0",
+          "gn": "U16 Boys Division 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "11f9ba57",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "bf3f0e33",
+          "tn": "TIMBERWOLVES HAWKS U16 BOYS",
+          "gid": "72475cc8",
+          "gn": "U16 Boys GP1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:07:40.020Z",
+  "teams": [
+    {
+      "tid": "ae32ba09",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8df923b5",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e98e4eab",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0ee20298",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "880465f9",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ecb903fc",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "13063a1a",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "51969350",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "31d69766",
+      "sid": "5944effa",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "06584492",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1da27da5",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88a10cf0",
+      "sid": "9358e51a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2a5059b7",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5c28acd5",
+      "sid": "d3d4e181",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f2526e0",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0c96da8f",
+      "sid": "eb0c3879",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bf3f0e33",
+      "sid": "11f9ba57",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.713Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "05d5ad18",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "7e6dd192",
+      "sid": "6c117270"
+    }
+  },
+  "games": [
+    "008b80ef",
+    "05d5ad18",
+    "2d546fb3",
+    "422baf2c",
+    "5841a60b",
+    "7e6dd192",
+    "84467ea1",
+    "9626b8f3",
+    "9acbfd32",
+    "a2bab098",
+    "a7d7b4cf",
+    "b042da47",
+    "b5a4d758",
+    "b5efb46f",
+    "c2062b70",
+    "cf5599c1",
+    "e8bd5b5b",
+    "f3aa9839",
+    "f97d8c19"
+  ]
+}

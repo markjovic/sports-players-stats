@@ -1,1 +1,108 @@
-{"uuid":"16cbf6e6-cef6-4a88-b316-fcf5c0774bc5","name":"Louie Vlatko","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":32,"fouls":17,"fg":12,"ft":8,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":7,"winPct":0.64,"losses":4,"statsChecked":"2026-07-05T14:40:01.191Z"}},"seasons":[{"sid":"6dd649c0","sn":"2025","regs":[{"tid":"d7dd9f4a","tn":"Southern Tigers U10 Boys Ian","gid":"b23a50ab","gn":"BOYS UNDER 10 C","age":null,"div":null,"stats":{"gp":6,"pts":23,"fg":9,"ft":5,"fouls":4,"finals":1,"gfApps":1,"wins":6,"gfWins":1}}]},{"sid":"0869ea69","regs":[{"tid":"46c74d68","stats":{"wins":1,"losses":4,"gp":5,"pts":9,"fg":3,"ft":3,"fouls":13}}]}],"updatedAt":"2026-05-31T00:59:16.576Z","teams":[{"tid":"46c74d68","sid":"0869ea69","status":"UPCOMING"},{"tid":"d7dd9f4a","sid":"6dd649c0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:00:49.880Z","records":{"maxGamePTS":{"v":8,"gameKey":"b22cb29a","sid":"6dd649c0"},"maxGameThreePt":{"v":null}},"games":["411ebc05","4cec89cc","5b8f842f","5e0cea4c","6c755dc8","6c8b146a","75189758","82647c26","b22cb29a","bc49467e","e51c95e2"]}
+{
+  "uuid": "16cbf6e6-cef6-4a88-b316-fcf5c0774bc5",
+  "name": "Louie Vlatko",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 32,
+      "fouls": 17,
+      "fg": 12,
+      "ft": 8,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "winPct": 0.64,
+      "losses": 4,
+      "statsChecked": "2026-07-05T14:40:01.191Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6dd649c0",
+      "sn": "2025",
+      "regs": [
+        {
+          "tid": "d7dd9f4a",
+          "tn": "Southern Tigers U10 Boys Ian",
+          "gid": "b23a50ab",
+          "gn": "BOYS UNDER 10 C",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "pts": 23,
+            "fg": 9,
+            "ft": 5,
+            "fouls": 4,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "46c74d68",
+          "stats": {
+            "wins": 1,
+            "losses": 4,
+            "gp": 5,
+            "pts": 9,
+            "fg": 3,
+            "ft": 3,
+            "fouls": 13
+          },
+          "gid": "e66c4180",
+          "gn": "BOYS UNDER 12 B6"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T00:59:16.576Z",
+  "teams": [
+    {
+      "tid": "d7dd9f4a",
+      "sid": "6dd649c0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "46c74d68",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.303Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "b22cb29a",
+      "sid": "6dd649c0"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "411ebc05",
+    "4cec89cc",
+    "5b8f842f",
+    "5e0cea4c",
+    "6c755dc8",
+    "6c8b146a",
+    "75189758",
+    "82647c26",
+    "b22cb29a",
+    "bc49467e",
+    "e51c95e2"
+  ]
+}

@@ -1,1 +1,236 @@
-{"uuid":"a7f10b0d-3a69-42a8-8388-666e43005798","name":"Elijah Sharkey","gender":"Boys","sports":{"Basketball":{"gp":37,"fouls":28,"foulOuts":{"f57b7901":1,"868d6996":1},"maxGamePTS":null,"maxGameThreePt":null,"wins":58,"losses":28,"winPct":0.67,"statsChecked":"2026-07-05T15:11:39.988Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"86f84572","tn":"Laurimar Thunder U08 Boys 2","gid":"acd35f2a","gn":"Saturday U08 Boys B2","age":"U08","div":"B2","stats":{"gp":11,"wins":9,"losses":2,"fouls":2}},{"tid":"86f84572","tn":"Laurimar Thunder U08 Boys 2","gid":"cb944c70","gn":"Saturday U08 Boys Grading Group 2","age":"U08","div":null,"stats":{"gp":11,"fouls":2,"wins":9,"losses":2}},{"tid":"86f84572","tn":"Laurimar Thunder U08 Boys 2","gid":"bb52f85d","gn":"Saturday U08 Boys Grading Group 3","age":"U08","div":null,"stats":{"gp":11,"wins":9,"losses":2,"fouls":2}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"11917845","tn":"Laurimar Thunder U08 Boys 2","gid":"f8d0dddd","gn":"Saturday U08 Boys D2","age":"U08","div":"D2","stats":{"gp":12,"fouls":15,"foulOuts":1,"wins":5,"losses":2}},{"tid":"11917845","tn":"Laurimar Thunder U08 Boys 2","gid":"601f55f7","gn":"Saturday U08 Boys Grading Group 3","age":"U08","div":null,"stats":{"gp":12,"fouls":15,"wins":5,"losses":2}}]},{"sid":"868d6996","sn":"Autumn 2025","club":"Laurimar Thunder Basketball Club","regs":[{"tid":"6cd8b546","tn":"Laurimar Thunder U08 Boys 2","gid":"43af154f","gn":"Saturday U8 Boys C2","age":"U8","div":"C2","stats":{"gp":14,"fouls":11,"foulOuts":1,"wins":7,"losses":6}},{"tid":"6cd8b546","tn":"Laurimar Thunder U08 Boys 2","gid":"9c91bbff","gn":"Saturday U8 Boys C1","age":"U8","div":"C1","stats":{"gp":14,"wins":7,"losses":6,"fouls":11}},{"tid":"6cd8b546","tn":"Laurimar Thunder U08 Boys 2","gid":"db393bc4","gn":"Unspecified - Saturday Boys B2","age":null,"div":"B2","stats":{"gp":14,"wins":7,"losses":6,"fouls":11}}]}],"updatedAt":"2026-06-01T06:32:21.520Z","teams":[{"tid":"86f84572","sid":"d868771d","status":"ACTIVE"},{"tid":"11917845","sid":"f57b7901","status":"COMPLETED"},{"tid":"6cd8b546","sid":"868d6996","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:33:15.649Z","games":["180dbe28","1925166c","1bdabc02","1f1ff480","293b79f5","30a45d15","360f5a3c","52102a4b","5495c7a1","5599c041","5fbfbe18","711b14f2","7918f95e","7fcfea4b","89872a8b","8989cb80","9d19e77a","aad025b3","ae040d63","af274848","b8499ec4","b8d26671","bc953bcc","bf5e715d","ca16fc61","e1f63b16","e387bedb","faef66c4","ff4e80a6","ff853190","ffae0cef"],"records":{"maxGamePTS":{"v":null},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "a7f10b0d-3a69-42a8-8388-666e43005798",
+  "name": "Elijah Sharkey",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 37,
+      "fouls": 28,
+      "foulOuts": {
+        "f57b7901": 1,
+        "868d6996": 1
+      },
+      "maxGamePTS": null,
+      "maxGameThreePt": null,
+      "wins": 58,
+      "losses": 28,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T15:11:39.988Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "86f84572",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "acd35f2a",
+          "gn": "Saturday U08 Boys B2",
+          "age": "U08",
+          "div": "B2",
+          "stats": {
+            "gp": 11,
+            "wins": 9,
+            "losses": 2,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "86f84572",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "cb944c70",
+          "gn": "Saturday U08 Boys Grading Group 2",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 2,
+            "wins": 9,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "86f84572",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "bb52f85d",
+          "gn": "Saturday U08 Boys Grading Group 3",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "wins": 9,
+            "losses": 2,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "11917845",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "f8d0dddd",
+          "gn": "Saturday U08 Boys D2",
+          "age": "U08",
+          "div": "D2",
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "11917845",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "601f55f7",
+          "gn": "Saturday U08 Boys Grading Group 3",
+          "age": "U08",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 15,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "868d6996",
+      "sn": "Autumn 2025",
+      "club": "Laurimar Thunder Basketball Club",
+      "regs": [
+        {
+          "tid": "6cd8b546",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "43af154f",
+          "gn": "Saturday U8 Boys C2",
+          "age": "U8",
+          "div": "C2",
+          "stats": {
+            "gp": 14,
+            "fouls": 11,
+            "foulOuts": 1,
+            "wins": 7,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "6cd8b546",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "9c91bbff",
+          "gn": "Saturday U8 Boys C1",
+          "age": "U8",
+          "div": "C1",
+          "stats": {
+            "gp": 14,
+            "wins": 7,
+            "losses": 6,
+            "fouls": 11
+          }
+        },
+        {
+          "tid": "6cd8b546",
+          "tn": "Laurimar Thunder U08 Boys 2",
+          "gid": "db393bc4",
+          "gn": "Unspecified - Saturday Boys B2",
+          "age": null,
+          "div": "B2",
+          "stats": {
+            "gp": 14,
+            "wins": 7,
+            "losses": 6,
+            "fouls": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "9d1e2bd1",
+          "tn": "Laurimar Thunder U08 Boys 1",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:32:21.520Z",
+  "teams": [
+    {
+      "tid": "86f84572",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11917845",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6cd8b546",
+      "sid": "868d6996",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9d1e2bd1",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.695Z",
+  "games": [
+    "180dbe28",
+    "1925166c",
+    "1bdabc02",
+    "1f1ff480",
+    "293b79f5",
+    "30a45d15",
+    "360f5a3c",
+    "52102a4b",
+    "5495c7a1",
+    "5599c041",
+    "5fbfbe18",
+    "711b14f2",
+    "7918f95e",
+    "7fcfea4b",
+    "89872a8b",
+    "8989cb80",
+    "9d19e77a",
+    "aad025b3",
+    "ae040d63",
+    "af274848",
+    "b8499ec4",
+    "b8d26671",
+    "bc953bcc",
+    "bf5e715d",
+    "ca16fc61",
+    "e1f63b16",
+    "e387bedb",
+    "faef66c4",
+    "ff4e80a6",
+    "ff853190",
+    "ffae0cef"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": null
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

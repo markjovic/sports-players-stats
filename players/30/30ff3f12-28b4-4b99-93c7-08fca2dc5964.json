@@ -1,1 +1,232 @@
-{"uuid":"30ff3f12-28b4-4b99-93c7-08fca2dc5964","gender":null,"sports":{"Basketball":{"gp":30,"pts":40,"fouls":28,"fg":17,"ft":6,"foulOuts":{"3de67f2e":1},"maxGamePTS":8,"maxGameThreePt":null,"wins":6,"losses":15,"draws":1,"winPct":0.27,"statsChecked":"2026-07-05T16:21:35.932Z"}},"seasons":[{"sid":"3de67f2e","sn":"Autumn 2022","club":"Wembley Junior Basketball Club","regs":[{"tid":"c8f4f673","tn":"Wembley U12 Girls Wonders","gid":"61e456ed","gn":"Saturday U12 Girls Division 1-2","stats":{"gp":17,"pts":23,"fouls":17,"fg":9,"ft":5,"foulOuts":1,"wins":5,"losses":12}},{"tid":"976d5f9a","tn":"Wembley U12 Girls Wonders","gid":"ef70bb59","gn":"Saturday U12 Girls Grading Division","stats":{"gp":3,"pts":10,"fouls":6,"fg":5}}]},{"sid":"4b655bab","sn":"Winter 2021","club":"Wembley Junior Basketball Club","regs":[{"tid":"11df3ed7","tn":"Wembley U12 Girls Wonders","gid":"1c35feab","gn":"Saturday U12 Girls Div 2/3","stats":{"gp":5,"fouls":4,"pts":2,"fg":1}},{"tid":"11df3ed7","tn":"Wembley U12 Girls Wonders","gid":"fbfbe9f3","gn":"Saturday U12 Girls Div 2/3 Grading","stats":{"gp":5,"pts":2,"fouls":4,"fg":1}},{"tid":"11df3ed7","tn":"Wembley U12 Girls Wonders","gid":"09ae09bc","gn":"Saturday U12 Girls Div 3","stats":{"gp":5,"fouls":4,"pts":2,"fg":1}}]},{"sid":"dcc45073","sn":"Summer 2020/21","club":"Wembley Junior Basketball Club","regs":[{"tid":"651976e0","tn":"Wembley U12 Girls Wonders","gid":"8dba96e5","gn":"Saturday U12 Girls Div 1/2","stats":{"gp":5,"pts":5,"fouls":1,"fg":2,"ft":1,"wins":1,"losses":3,"draws":1}}]}],"updatedAt":"2026-06-11T23:37:59.476Z","records":{"maxGamePTS":{"v":8,"gameKey":"ea37dae5","sid":"3de67f2e"},"maxGameThreePt":{"v":null}},"games":["0255161a","17c6f62f","30e6bb8e","33ac3108","35141d73","3d86f7fd","3e9c35ab","598cf791","6765d806","6784744e","78a4de03","7aeda244","81f4f466","8b0fb32c","9d13dcf2","a6f6684a","a8811c04","b26452ec","b8a7d923","c5824203","dfe72275","ea37dae5","ea979628","f15e58a9","fe4309b2"],"name":"Autumn 2022","gameTids":{"30e6bb8e":"c8f4f673","3d86f7fd":"c8f4f673","3e9c35ab":"c8f4f673","a8811c04":"c8f4f673","a6f6684a":"c8f4f673","c5824203":"c8f4f673","b8a7d923":"c8f4f673","35141d73":"c8f4f673","598cf791":"c8f4f673","78a4de03":"c8f4f673","9d13dcf2":"c8f4f673","ea979628":"c8f4f673","17c6f62f":"c8f4f673","0255161a":"c8f4f673","6765d806":"c8f4f673","fe4309b2":"c8f4f673","f15e58a9":"c8f4f673","6784744e":"976d5f9a","ea37dae5":"976d5f9a","7aeda244":"976d5f9a","6761c8e6":"11df3ed7","ee1613b9":"11df3ed7","a14db55c":"11df3ed7","81cb1c56":"11df3ed7","736cf140":"11df3ed7","81f4f466":"651976e0","dfe72275":"651976e0","33ac3108":"651976e0","b26452ec":"651976e0","8b0fb32c":"651976e0"}}
+{
+  "uuid": "30ff3f12-28b4-4b99-93c7-08fca2dc5964",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 30,
+      "pts": 40,
+      "fouls": 28,
+      "fg": 17,
+      "ft": 6,
+      "foulOuts": {
+        "3de67f2e": 1
+      },
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 6,
+      "losses": 15,
+      "draws": 1,
+      "winPct": 0.27,
+      "statsChecked": "2026-07-05T16:21:35.932Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "3de67f2e",
+      "sn": "Autumn 2022",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "c8f4f673",
+          "tn": "Wembley U12 Girls Wonders",
+          "gid": "61e456ed",
+          "gn": "Saturday U12 Girls Division 1-2",
+          "stats": {
+            "gp": 17,
+            "pts": 23,
+            "fouls": 17,
+            "fg": 9,
+            "ft": 5,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 12
+          }
+        },
+        {
+          "tid": "976d5f9a",
+          "tn": "Wembley U12 Girls Wonders",
+          "gid": "ef70bb59",
+          "gn": "Saturday U12 Girls Grading Division",
+          "stats": {
+            "gp": 3,
+            "pts": 10,
+            "fouls": 6,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "4b655bab",
+      "sn": "Winter 2021",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "11df3ed7",
+          "tn": "Wembley U12 Girls Wonders",
+          "gid": "1c35feab",
+          "gn": "Saturday U12 Girls Div 2/3",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "11df3ed7",
+          "tn": "Wembley U12 Girls Wonders",
+          "gid": "fbfbe9f3",
+          "gn": "Saturday U12 Girls Div 2/3 Grading",
+          "stats": {
+            "gp": 5,
+            "pts": 2,
+            "fouls": 4,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "11df3ed7",
+          "tn": "Wembley U12 Girls Wonders",
+          "gid": "09ae09bc",
+          "gn": "Saturday U12 Girls Div 3",
+          "stats": {
+            "gp": 5,
+            "fouls": 4,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "68930352",
+          "tn": "(RTS) Wembley U12 Girls Wonders",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "dcc45073",
+      "sn": "Summer 2020/21",
+      "club": "Wembley Junior Basketball Club",
+      "regs": [
+        {
+          "tid": "651976e0",
+          "tn": "Wembley U12 Girls Wonders",
+          "gid": "8dba96e5",
+          "gn": "Saturday U12 Girls Div 1/2",
+          "stats": {
+            "gp": 5,
+            "pts": 5,
+            "fouls": 1,
+            "fg": 2,
+            "ft": 1,
+            "wins": 1,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:59.476Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "ea37dae5",
+      "sid": "3de67f2e"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0255161a",
+    "17c6f62f",
+    "30e6bb8e",
+    "33ac3108",
+    "35141d73",
+    "3d86f7fd",
+    "3e9c35ab",
+    "598cf791",
+    "6765d806",
+    "6784744e",
+    "78a4de03",
+    "7aeda244",
+    "81f4f466",
+    "8b0fb32c",
+    "9d13dcf2",
+    "a6f6684a",
+    "a8811c04",
+    "b26452ec",
+    "b8a7d923",
+    "c5824203",
+    "dfe72275",
+    "ea37dae5",
+    "ea979628",
+    "f15e58a9",
+    "fe4309b2"
+  ],
+  "name": "Autumn 2022",
+  "gameTids": {
+    "30e6bb8e": "c8f4f673",
+    "3d86f7fd": "c8f4f673",
+    "3e9c35ab": "c8f4f673",
+    "a8811c04": "c8f4f673",
+    "a6f6684a": "c8f4f673",
+    "c5824203": "c8f4f673",
+    "b8a7d923": "c8f4f673",
+    "35141d73": "c8f4f673",
+    "598cf791": "c8f4f673",
+    "78a4de03": "c8f4f673",
+    "9d13dcf2": "c8f4f673",
+    "ea979628": "c8f4f673",
+    "17c6f62f": "c8f4f673",
+    "0255161a": "c8f4f673",
+    "6765d806": "c8f4f673",
+    "fe4309b2": "c8f4f673",
+    "f15e58a9": "c8f4f673",
+    "6784744e": "976d5f9a",
+    "ea37dae5": "976d5f9a",
+    "7aeda244": "976d5f9a",
+    "6761c8e6": "11df3ed7",
+    "ee1613b9": "11df3ed7",
+    "a14db55c": "11df3ed7",
+    "81cb1c56": "11df3ed7",
+    "736cf140": "11df3ed7",
+    "81f4f466": "651976e0",
+    "dfe72275": "651976e0",
+    "33ac3108": "651976e0",
+    "b26452ec": "651976e0",
+    "8b0fb32c": "651976e0"
+  },
+  "teams": [
+    {
+      "tid": "c8f4f673",
+      "sid": "3de67f2e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "976d5f9a",
+      "sid": "3de67f2e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "11df3ed7",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "68930352",
+      "sid": "4b655bab",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "651976e0",
+      "sid": "dcc45073",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.483Z"
+}

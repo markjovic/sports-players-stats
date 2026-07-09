@@ -1,1 +1,149 @@
-{"uuid":"1cd0e219-ce64-474c-b031-e07514f202d8","name":"Hung Kha","gender":"Men","sports":{"Basketball":{"gp":14,"pts":15,"fouls":7,"fg":3,"ft":2,"foulOuts":{},"maxGamePTS":5,"maxGameThreePt":null,"wins":9,"losses":3,"winPct":0.75,"statsChecked":"2026-07-06T18:55:18.111Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"d3bda634","tn":"Random Bucket","gid":"94ebf712","gn":"Thursday Open Men Section 05","age":"Senior","div":null,"stats":{"gp":13,"fouls":6,"ft":2,"fg":2,"pts":13,"wins":9,"losses":3}}]},{"sid":"297562bc","regs":[{"tid":"75b64c27","stats":{"gp":1,"pts":2,"fg":1,"fouls":1}},{"tid":"75b64c27","tn":"","gid":"678de19a","gn":"Thursday Open Men Section 5","div":null,"stats":{"gp":1,"pts":2,"fg":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:33:04.156Z","teams":[{"tid":"d3bda634","sid":"5593103d","status":"ACTIVE"},{"tid":"016a1c59","sid":"fab2be4d","status":"COMPLETED"},{"tid":"ef57f917","sid":"76897951","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:03:57.141Z","records":{"maxGamePTS":{"v":5,"gameKey":"ba1f41ab","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["0b9d91dd","63b84c10","6e0902ab","92d1526c","9626b8f3","b1ad397b","b2877573","ba1f41ab","bca33af5","c4f2e4a1","d96915d0","edc6c371"]}
+{
+  "uuid": "1cd0e219-ce64-474c-b031-e07514f202d8",
+  "name": "Hung Kha",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 14,
+      "pts": 15,
+      "fouls": 7,
+      "fg": 3,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 9,
+      "losses": 3,
+      "winPct": 0.75,
+      "statsChecked": "2026-07-06T18:55:18.111Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "d3bda634",
+          "tn": "Random Bucket",
+          "gid": "94ebf712",
+          "gn": "Thursday Open Men Section 05",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 6,
+            "ft": 2,
+            "fg": 2,
+            "pts": 13,
+            "wins": 9,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "regs": [
+        {
+          "tid": "75b64c27",
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1
+          },
+          "gid": "678de19a",
+          "gn": "Thursday Open Men Section 5"
+        },
+        {
+          "tid": "75b64c27",
+          "tn": "",
+          "gid": "678de19a",
+          "gn": "Thursday Open Men Section 5",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 2,
+            "fg": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "016a1c59",
+          "tn": "Random Bucket",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "76897951",
+      "sn": "Autumn 2025",
+      "regs": [
+        {
+          "tid": "ef57f917",
+          "tn": "Random Bucket",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:33:04.156Z",
+  "teams": [
+    {
+      "tid": "d3bda634",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "75b64c27",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "016a1c59",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "ef57f917",
+      "sid": "76897951",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.698Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "ba1f41ab",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0b9d91dd",
+    "63b84c10",
+    "6e0902ab",
+    "92d1526c",
+    "9626b8f3",
+    "b1ad397b",
+    "b2877573",
+    "ba1f41ab",
+    "bca33af5",
+    "c4f2e4a1",
+    "d96915d0",
+    "edc6c371"
+  ]
+}

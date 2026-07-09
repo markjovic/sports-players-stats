@@ -1,1 +1,100 @@
-{"uuid":"44c2b451-430b-4b9e-a24c-a74f3ffb57d5","name":"Lola Richardson","gender":"Girls","sports":{"Basketball":{"gp":11,"pts":44,"fouls":16,"fg":20,"ft":4,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":7,"losses":3,"winPct":0.7,"statsChecked":"2026-07-05T14:54:44.580Z"}},"seasons":[{"sid":"8630ad4c","sn":"2024","regs":[{"tid":"774f2e56","tn":"Central Districts Lions U12 Girls Kerryn","gid":"7e9e5283","gn":"GIRLS UNDER 12 C1","age":null,"div":"C1","stats":{"gp":5,"fouls":7,"fg":14,"pts":28,"wins":4,"losses":1}}]},{"sid":"0869ea69","regs":[{"tid":"4feeb720","stats":{"wins":3,"losses":2,"gp":6,"pts":16,"fg":6,"ft":4,"fouls":9}}]}],"updatedAt":"2026-05-31T10:51:42.032Z","teams":[{"tid":"4feeb720","sid":"0869ea69","status":"UPCOMING"},{"tid":"774f2e56","sid":"8630ad4c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:24:57.064Z","records":{"maxGamePTS":{"v":10,"gameKey":"b15a3888","sid":"8630ad4c"},"maxGameThreePt":{"v":null}},"games":["3ab18bb2","3cfe48b4","48c27679","60a39227","6aa7b888","6b2e7ac7","b15a3888","c41b2469","c8bfd1dd","fbf1fa65"]}
+{
+  "uuid": "44c2b451-430b-4b9e-a24c-a74f3ffb57d5",
+  "name": "Lola Richardson",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 44,
+      "fouls": 16,
+      "fg": 20,
+      "ft": 4,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 7,
+      "losses": 3,
+      "winPct": 0.7,
+      "statsChecked": "2026-07-05T14:54:44.580Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "774f2e56",
+          "tn": "Central Districts Lions U12 Girls Kerryn",
+          "gid": "7e9e5283",
+          "gn": "GIRLS UNDER 12 C1",
+          "age": null,
+          "div": "C1",
+          "stats": {
+            "gp": 5,
+            "fouls": 7,
+            "fg": 14,
+            "pts": 28,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "4feeb720",
+          "stats": {
+            "wins": 3,
+            "losses": 2,
+            "gp": 6,
+            "pts": 16,
+            "fg": 6,
+            "ft": 4,
+            "fouls": 9
+          },
+          "gid": "15fa2d57",
+          "gn": "GIRLS UNDER 14 A"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T10:51:42.032Z",
+  "teams": [
+    {
+      "tid": "774f2e56",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4feeb720",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.059Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "b15a3888",
+      "sid": "8630ad4c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "3ab18bb2",
+    "3cfe48b4",
+    "48c27679",
+    "60a39227",
+    "6aa7b888",
+    "6b2e7ac7",
+    "b15a3888",
+    "c41b2469",
+    "c8bfd1dd",
+    "fbf1fa65"
+  ]
+}

@@ -1,1 +1,83 @@
-{"uuid":"4cdeb7ce-bc92-41cb-8250-60787f0ef70e","name":"Tomas McGay","sports":{"Basketball":{"maxGamePTS":17,"maxGameThreePt":1,"foulOuts":{"880bda3c":7},"gp":34,"pts":170,"fg":68,"ft":13,"threePt":7,"fouls":86,"statsChecked":"2026-07-07T18:27:18.151Z"}},"seasons":[{"sid":"205c1638","regs":[{"tid":"523c80ab"}]},{"sid":"796936f7","regs":[{"tid":"de1f4fb9"}]},{"sid":"880bda3c","regs":[{"tid":"207ac57a"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":17,"gameKey":"2d405a07","sid":"880bda3c"},"maxGameThreePt":{"v":1,"gameKey":"84e1b26f","sid":"796936f7"}}}
+{
+  "uuid": "4cdeb7ce-bc92-41cb-8250-60787f0ef70e",
+  "name": "Tomas McGay",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 17,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "880bda3c": 7
+      },
+      "gp": 34,
+      "pts": 170,
+      "fg": 68,
+      "ft": 13,
+      "threePt": 7,
+      "fouls": 86,
+      "statsChecked": "2026-07-07T18:27:18.151Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "523c80ab",
+          "gid": "b630d145",
+          "gn": "Tuesday Men D1 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "de1f4fb9",
+          "gid": "4f8cfe26",
+          "gn": "Tuesday Men -Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "207ac57a",
+          "gid": "73954faf",
+          "gn": "Tuesday Men -Div 2-3"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "523c80ab",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "de1f4fb9",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "207ac57a",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "2d405a07",
+      "sid": "880bda3c"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "84e1b26f",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:10.576Z"
+}

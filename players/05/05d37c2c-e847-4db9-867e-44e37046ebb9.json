@@ -1,1 +1,132 @@
-{"uuid":"05d37c2c-e847-4db9-867e-44e37046ebb9","gender":null,"sports":{"Basketball":{"gp":13,"pts":80,"fouls":26,"fg":30,"ft":11,"threePt":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":19,"maxGameThreePt":3,"wins":12,"losses":1,"winPct":0.92,"statsChecked":"2026-07-05T16:20:55.855Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Moorabbin Magic Basketball Club","regs":[{"tid":"e6f20aef","tn":"MM U18 Boys Dragons","gid":"ae6cfc5e","gn":"Saturday U18 Boys DIV 5","stats":{"gp":6,"pts":39,"fouls":10,"fg":13,"ft":4,"threePt":3,"wins":5,"losses":1}}]},{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Moorabbin Magic Basketball Club","regs":[{"tid":"83640775","tn":"MM U18 Boys Dragons","gid":"3bded1aa","gn":"Saturday U18 Boys Div 6","stats":{"gp":7,"pts":41,"fouls":16,"fg":17,"ft":7,"finals":1,"wins":7}}]}],"updatedAt":"2026-06-11T23:35:52.413Z","records":{"maxGamePTS":{"v":19,"gameKey":"50a2654a","sid":"0f6dd17f"},"maxGameThreePt":{"v":3,"gameKey":"50a2654a","sid":"0f6dd17f"}},"games":["10aeaaa1","2b0f5d72","2c14c819","2ed8aa45","50a2654a","abbedfe7","b0e44355","b3ae32c2","b699294a","ba508c07","cddea691","fc1ec34f","fe86a3df"],"name":"Winter 2021"}
+{
+  "uuid": "05d37c2c-e847-4db9-867e-44e37046ebb9",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 13,
+      "pts": 80,
+      "fouls": 26,
+      "fg": 30,
+      "ft": 11,
+      "threePt": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 19,
+      "maxGameThreePt": 3,
+      "wins": 12,
+      "losses": 1,
+      "winPct": 0.92,
+      "statsChecked": "2026-07-05T16:20:55.855Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Moorabbin Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "e6f20aef",
+          "tn": "MM U18 Boys Dragons",
+          "gid": "ae6cfc5e",
+          "gn": "Saturday U18 Boys DIV 5",
+          "stats": {
+            "gp": 6,
+            "pts": 39,
+            "fouls": 10,
+            "fg": 13,
+            "ft": 4,
+            "threePt": 3,
+            "wins": 5,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Moorabbin Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "83640775",
+          "tn": "MM U18 Boys Dragons",
+          "gid": "3bded1aa",
+          "gn": "Saturday U18 Boys Div 6",
+          "stats": {
+            "gp": 7,
+            "pts": 41,
+            "fouls": 16,
+            "fg": 17,
+            "ft": 7,
+            "finals": 1,
+            "wins": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6a36400d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "016c231c",
+          "tn": "MM U16 Boys Dragons",
+          "gid": "d8db7838",
+          "gn": "Saturday U16 Boys Div 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:35:52.413Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 19,
+      "gameKey": "50a2654a",
+      "sid": "0f6dd17f"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "50a2654a",
+      "sid": "0f6dd17f"
+    }
+  },
+  "games": [
+    "10aeaaa1",
+    "2b0f5d72",
+    "2c14c819",
+    "2ed8aa45",
+    "50a2654a",
+    "abbedfe7",
+    "b0e44355",
+    "b3ae32c2",
+    "b699294a",
+    "ba508c07",
+    "cddea691",
+    "fc1ec34f",
+    "fe86a3df"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "e6f20aef",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "83640775",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "016c231c",
+      "sid": "6a36400d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.180Z"
+}

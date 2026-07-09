@@ -1,1 +1,129 @@
-{"uuid":"30ac2448-45a8-4086-a771-d1f514d58648","gender":null,"sports":{"Basketball":{"gp":9,"pts":14,"fouls":14,"fg":7,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":2,"losses":8,"winPct":0.2,"statsChecked":"2026-07-05T16:21:33.007Z"}},"seasons":[{"sid":"a62fadf9","sn":"Summer 2020/21","club":"Eltham Wildcats Basketball Club","regs":[{"tid":"ec26ab8b","tn":"Eltham U16 Boys 03","gid":"aead6c28","gn":"Boys U16AR North","stats":{"gp":5,"pts":4,"fouls":7,"fg":2,"wins":1,"losses":4}},{"tid":"ec26ab8b","tn":"Eltham U16 Boys 03","gid":"dcd3c1b0","gn":"U16 Boys A Grading","stats":{"gp":5,"pts":4,"fouls":7,"fg":2,"wins":1,"losses":4}}]},{"sid":"8d446140","sn":"Autumn 2020","club":"Greenhills Amateur Basketball Club","regs":[{"tid":"0fa049fe","tn":"Greenhills Beavers U16 Boys 1","gid":"c131e2d6","gn":"Saturday U16 Boys A Grade","stats":{"gp":4,"pts":10,"fouls":7,"fg":5}}]}],"updatedAt":"2026-06-11T23:37:59.474Z","records":{"maxGamePTS":{"v":8,"gameKey":"ac8dbb5c","sid":"8d446140"},"maxGameThreePt":{"v":null}},"games":["14923246","17ac63fb","4bf7df13","80d1887e","ac8dbb5c","b954a53c","d0fe4c7e","db5b6712","fea54000"],"name":"Summer 2020/21"}
+{
+  "uuid": "30ac2448-45a8-4086-a771-d1f514d58648",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 14,
+      "fouls": 14,
+      "fg": 7,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 8,
+      "winPct": 0.2,
+      "statsChecked": "2026-07-05T16:21:33.007Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a62fadf9",
+      "sn": "Summer 2020/21",
+      "club": "Eltham Wildcats Basketball Club",
+      "regs": [
+        {
+          "tid": "ec26ab8b",
+          "tn": "Eltham U16 Boys 03",
+          "gid": "aead6c28",
+          "gn": "Boys U16AR North",
+          "stats": {
+            "gp": 5,
+            "pts": 4,
+            "fouls": 7,
+            "fg": 2,
+            "wins": 1,
+            "losses": 4
+          }
+        },
+        {
+          "tid": "ec26ab8b",
+          "tn": "Eltham U16 Boys 03",
+          "gid": "dcd3c1b0",
+          "gn": "U16 Boys A Grading",
+          "stats": {
+            "gp": 5,
+            "pts": 4,
+            "fouls": 7,
+            "fg": 2,
+            "wins": 1,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8d446140",
+      "sn": "Autumn 2020",
+      "club": "Greenhills Amateur Basketball Club",
+      "regs": [
+        {
+          "tid": "0fa049fe",
+          "tn": "Greenhills Beavers U16 Boys 1",
+          "gid": "c131e2d6",
+          "gn": "Saturday U16 Boys A Grade",
+          "stats": {
+            "gp": 4,
+            "pts": 10,
+            "fouls": 7,
+            "fg": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5ac8c8a1",
+      "sn": "2020",
+      "regs": [
+        {
+          "tid": "0d9a43f6",
+          "tn": "Diamond Valley U16 Boys 1",
+          "gid": "aa81f739",
+          "gn": "U16 Boys VJL 2",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:59.474Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "ac8dbb5c",
+      "sid": "8d446140"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "14923246",
+    "17ac63fb",
+    "4bf7df13",
+    "80d1887e",
+    "ac8dbb5c",
+    "b954a53c",
+    "d0fe4c7e",
+    "db5b6712",
+    "fea54000"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "ec26ab8b",
+      "sid": "a62fadf9",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0fa049fe",
+      "sid": "8d446140",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0d9a43f6",
+      "sid": "5ac8c8a1",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:08.339Z"
+}

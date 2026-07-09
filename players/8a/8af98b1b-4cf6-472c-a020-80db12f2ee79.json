@@ -1,1 +1,99 @@
-{"uuid":"8af98b1b-4cf6-472c-a020-80db12f2ee79","name":"Michael Cvetanovski","sports":{"Basketball":{"maxGamePTS":22,"maxGameThreePt":4,"foulOuts":{"82f9d173":1,"532a035b":1},"gp":65,"pts":187,"fg":53,"ft":6,"threePt":25,"fouls":90,"statsChecked":"2026-07-08T17:53:37.487Z"}},"seasons":[{"sid":"82f9d173","regs":[{"tid":"7f0c2578"}]},{"sid":"532a035b","regs":[{"tid":"28d5d0a8"}]},{"sid":"bde346e8","regs":[{"tid":"53b05111"}]},{"sid":"6f09c8ad","regs":[{"tid":"6855cd14"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":22,"gameKey":"d54db996","sid":"82f9d173"},"maxGameThreePt":{"v":4,"gameKey":"d54db996","sid":"82f9d173"}}}
+{
+  "uuid": "8af98b1b-4cf6-472c-a020-80db12f2ee79",
+  "name": "Michael Cvetanovski",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 22,
+      "maxGameThreePt": 4,
+      "foulOuts": {
+        "82f9d173": 1,
+        "532a035b": 1
+      },
+      "gp": 65,
+      "pts": 187,
+      "fg": 53,
+      "ft": 6,
+      "threePt": 25,
+      "fouls": 90,
+      "statsChecked": "2026-07-08T17:53:37.487Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "82f9d173",
+      "regs": [
+        {
+          "tid": "7f0c2578",
+          "gid": "c2a8c672",
+          "gn": "Wednesday Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "532a035b",
+      "regs": [
+        {
+          "tid": "28d5d0a8",
+          "gid": "7141c496",
+          "gn": "Wednesday Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "bde346e8",
+      "regs": [
+        {
+          "tid": "53b05111",
+          "gid": "7345f356",
+          "gn": "Wednesday Division 3"
+        }
+      ]
+    },
+    {
+      "sid": "6f09c8ad",
+      "regs": [
+        {
+          "tid": "6855cd14",
+          "gid": "e87dd9c6",
+          "gn": "Wednesday Division 3"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "7f0c2578",
+      "sid": "82f9d173",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "28d5d0a8",
+      "sid": "532a035b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "53b05111",
+      "sid": "bde346e8",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6855cd14",
+      "sid": "6f09c8ad",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 22,
+      "gameKey": "d54db996",
+      "sid": "82f9d173"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "d54db996",
+      "sid": "82f9d173"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:14.651Z"
+}

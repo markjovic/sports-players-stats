@@ -1,1 +1,133 @@
-{"uuid":"1cbb83ec-cfb1-4f8f-82dc-91d78799a0ad","gender":null,"sports":{"Basketball":{"gp":15,"pts":6,"fouls":2,"fg":3,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":8,"losses":18,"winPct":0.31,"statsChecked":"2026-07-05T16:12:16.775Z"}},"seasons":[{"sid":"ffbd9a4a","sn":"Summer 2023/24","club":"Sharks Basketball Club (Geelong)","regs":[{"tid":"839f5785","tn":"U14 Boys Leopard Sharks D8","gid":"9701c7b2","gn":"(CLUB) Monday U14 Boys 8","stats":{"gp":13,"pts":6,"fouls":1,"fg":3,"wins":4,"losses":9}},{"tid":"839f5785","tn":"U14 Boys Leopard Sharks D8","gid":"cd4c5626","gn":"(CLUB) Monday U14 Boys 6","stats":{"gp":13,"wins":4,"losses":9,"pts":6,"fg":3,"fouls":1}}]},{"sid":"d4e380e1","sn":"Winter 2020","club":"~[ARCHIVED] Grovedale Pistons Basketball Club","regs":[{"tid":"e454e6ab","tn":"Pistons U10 Boys SPURS","gid":"e238a412","gn":"Saturday 10 Boys 5","stats":{"gp":2,"fouls":1}}]}],"updatedAt":"2026-06-11T23:37:02.476Z","records":{"maxGamePTS":{"v":2,"gameKey":"c7e9d0de","sid":"ffbd9a4a"},"maxGameThreePt":{"v":null}},"games":["15d74199","191221d5","1cfcfda6","21483f2f","39bc587d","63396c01","6c26c3c0","741b887a","75168b69","783fbaf8","8abe2b70","ab31b50d","ac8cd37b","bfb4725f","c7e9d0de"],"name":"Summer 2023/24"}
+{
+  "uuid": "1cbb83ec-cfb1-4f8f-82dc-91d78799a0ad",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 15,
+      "pts": 6,
+      "fouls": 2,
+      "fg": 3,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 8,
+      "losses": 18,
+      "winPct": 0.31,
+      "statsChecked": "2026-07-05T16:12:16.775Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ffbd9a4a",
+      "sn": "Summer 2023/24",
+      "club": "Sharks Basketball Club (Geelong)",
+      "regs": [
+        {
+          "tid": "839f5785",
+          "tn": "U14 Boys Leopard Sharks D8",
+          "gid": "9701c7b2",
+          "gn": "(CLUB) Monday U14 Boys 8",
+          "stats": {
+            "gp": 13,
+            "pts": 6,
+            "fouls": 1,
+            "fg": 3,
+            "wins": 4,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "839f5785",
+          "tn": "U14 Boys Leopard Sharks D8",
+          "gid": "cd4c5626",
+          "gn": "(CLUB) Monday U14 Boys 6",
+          "stats": {
+            "gp": 13,
+            "wins": 4,
+            "losses": 9,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d4e380e1",
+      "sn": "Winter 2020",
+      "club": "~[ARCHIVED] Grovedale Pistons Basketball Club",
+      "regs": [
+        {
+          "tid": "e454e6ab",
+          "tn": "Pistons U10 Boys SPURS",
+          "gid": "e238a412",
+          "gn": "Saturday 10 Boys 5",
+          "stats": {
+            "gp": 2,
+            "fouls": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0c8a1c35",
+      "sn": "Summer 2020/21",
+      "regs": [
+        {
+          "tid": "70f8ae13",
+          "tn": "YMCA U10 Boys Beavers Division 4",
+          "gid": "94dee374",
+          "gn": "Saturday U10 Boys 4",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:02.476Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "c7e9d0de",
+      "sid": "ffbd9a4a"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "15d74199",
+    "191221d5",
+    "1cfcfda6",
+    "21483f2f",
+    "39bc587d",
+    "63396c01",
+    "6c26c3c0",
+    "741b887a",
+    "75168b69",
+    "783fbaf8",
+    "8abe2b70",
+    "ab31b50d",
+    "ac8cd37b",
+    "bfb4725f",
+    "c7e9d0de"
+  ],
+  "name": "Summer 2023/24",
+  "teams": [
+    {
+      "tid": "839f5785",
+      "sid": "ffbd9a4a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e454e6ab",
+      "sid": "d4e380e1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70f8ae13",
+      "sid": "0c8a1c35",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.684Z"
+}

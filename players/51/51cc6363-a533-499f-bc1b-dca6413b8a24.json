@@ -1,1 +1,69 @@
-{"uuid":"51cc6363-a533-499f-bc1b-dca6413b8a24","name":"Benson Ong","sports":{"Basketball":{"maxGamePTS":17,"maxGameThreePt":3,"foulOuts":{"c2468a21":1,"307cebbc":1},"gp":15,"pts":46,"fg":16,"ft":2,"threePt":4,"fouls":22,"statsChecked":"2026-07-08T17:51:47.491Z"}},"seasons":[{"sid":"c2468a21","regs":[{"tid":"08fb533c"}]},{"sid":"307cebbc","regs":[{"tid":"cd8fb05c"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":17,"gameKey":"846f84c9","sid":"307cebbc"},"maxGameThreePt":{"v":3,"gameKey":"846f84c9","sid":"307cebbc"}}}
+{
+  "uuid": "51cc6363-a533-499f-bc1b-dca6413b8a24",
+  "name": "Benson Ong",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 17,
+      "maxGameThreePt": 3,
+      "foulOuts": {
+        "c2468a21": 1,
+        "307cebbc": 1
+      },
+      "gp": 15,
+      "pts": 46,
+      "fg": 16,
+      "ft": 2,
+      "threePt": 4,
+      "fouls": 22,
+      "statsChecked": "2026-07-08T17:51:47.491Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "08fb533c",
+          "gid": "a885c98c",
+          "gn": "Wednesday Open Men Over 35 B"
+        }
+      ]
+    },
+    {
+      "sid": "307cebbc",
+      "regs": [
+        {
+          "tid": "cd8fb05c",
+          "gid": "4aca39d3",
+          "gn": "Wednesday Open Men Over 35 B"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "08fb533c",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cd8fb05c",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 17,
+      "gameKey": "846f84c9",
+      "sid": "307cebbc"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "846f84c9",
+      "sid": "307cebbc"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:10.918Z"
+}

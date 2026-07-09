@@ -1,1 +1,78 @@
-{"uuid":"5ee9d083-08fd-4d74-a1c6-9db2a1275df9","name":"Erika Chen","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":null,"foulOuts":{},"gp":24,"pts":34,"fg":16,"ft":2,"fouls":29,"statsChecked":"2026-07-06T19:10:21.246Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"7d0363ab"}]},{"sid":"79d2b087","regs":[{"tid":"3cf7a6d9"}]},{"sid":"4b758d19","regs":[{"tid":"b22189b7"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":6,"gameKey":"30c36656","sid":"4b758d19"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "5ee9d083-08fd-4d74-a1c6-9db2a1275df9",
+  "name": "Erika Chen",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 24,
+      "pts": 34,
+      "fg": 16,
+      "ft": 2,
+      "fouls": 29,
+      "statsChecked": "2026-07-06T19:10:21.246Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "7d0363ab",
+          "gid": "41bdd02a",
+          "gn": "U14 Girls Division 4"
+        }
+      ]
+    },
+    {
+      "sid": "79d2b087",
+      "regs": [
+        {
+          "tid": "3cf7a6d9",
+          "gid": "53ccc207",
+          "gn": "Sunday U14 Girls Div  4"
+        }
+      ]
+    },
+    {
+      "sid": "4b758d19",
+      "regs": [
+        {
+          "tid": "b22189b7",
+          "gid": "cb8ebe2e",
+          "gn": "Sunday U14 Girls Div  5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "7d0363ab",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3cf7a6d9",
+      "sid": "79d2b087",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b22189b7",
+      "sid": "4b758d19",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "30c36656",
+      "sid": "4b758d19"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:11.834Z"
+}

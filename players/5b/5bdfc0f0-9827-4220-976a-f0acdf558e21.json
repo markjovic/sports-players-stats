@@ -1,1 +1,388 @@
-{"uuid":"5bdfc0f0-9827-4220-976a-f0acdf558e21","name":"Sean Morkham","gender":"Men","sports":{"Basketball":{"gp":69,"pts":441,"fouls":92,"fg":204,"ft":30,"threePt":1,"foulOuts":{},"maxGamePTS":24,"maxGameThreePt":1,"wins":26,"losses":76,"draws":5,"winPct":0.24,"statsChecked":"2026-07-05T15:48:31.141Z"}},"seasons":[{"sid":"0a007eba","sn":"Summer 2023/24","regs":[{"tid":"cc8ace3a","tn":"LikeMikes","gid":"495e9ff1","gn":"Sunday Men Section 9","age":null,"div":null,"stats":{"gp":7,"fouls":12,"ft":3,"fg":18,"pts":39,"wins":4,"losses":3}},{"tid":"cc8ace3a","tn":"LikeMikes","gid":"4dd03c0a","gn":"ZZZ Sunday Men Grading Pool O","age":null,"div":null,"stats":{"gp":7,"fouls":12,"ft":3,"fg":18,"pts":39,"wins":4,"losses":3}},{"tid":"cc8ace3a","tn":"LikeMikes","gid":"d09319f0","gn":"ZZZ Sunday Men Grading Pool P","age":null,"div":null,"stats":{"gp":7,"ft":3,"fg":18,"pts":39,"wins":4,"losses":3,"fouls":12}}]},{"sid":"ffd608b6","sn":"Winter 2023","regs":[{"tid":"8d880d84","tn":"LikeMikes","gid":"821542ad","gn":"Sunday Men Section 8","age":null,"div":null,"stats":{"gp":9,"fouls":6,"ft":3,"fg":16,"pts":35}},{"tid":"8d880d84","tn":"LikeMikes","gid":"5cf54b8b","gn":"ZZZ Sunday Men Grading Pool I","age":null,"div":null,"stats":{"gp":9,"pts":35,"fg":16,"ft":3,"fouls":6}},{"tid":"8d880d84","tn":"LikeMikes","gid":"90c0f8f1","gn":"ZZZ Sunday Men Grading Pool O","age":null,"div":null,"stats":{"gp":9,"ft":3,"pts":35,"fg":16,"fouls":6}}]},{"sid":"88fd4210","sn":"Summer 2022/23","regs":[{"tid":"d5da73bb","tn":"LikeMikes","gid":"492f5ea6","gn":"Men SUNDAY Section 9","age":null,"div":null,"stats":{"gp":22,"fouls":32,"ft":11,"fg":68,"pts":147,"wins":4,"losses":13,"draws":1}},{"tid":"d5da73bb","tn":"LikeMikes","gid":"8d4bb23a","gn":"Sunday Unspecified Men 9","age":null,"div":null,"stats":{"gp":22,"wins":4,"losses":13,"draws":1,"pts":147,"fg":68,"ft":11,"fouls":32}},{"tid":"d5da73bb","tn":"LikeMikes","gid":"33d40798","gn":"Sunday Unspecified Men 14","age":null,"div":null,"stats":{"gp":22,"fouls":32,"fg":68,"pts":147,"wins":4,"losses":13,"draws":1,"ft":11}}]},{"sid":"d3dee716","sn":"Winter 2022","regs":[{"tid":"3f4080cf","tn":"LikeMikes","gid":"1f7692d8","gn":"Men SUNDAY Section 10","age":null,"div":null,"stats":{"gp":16,"fouls":27,"ft":7,"fg":66,"threePt":1,"pts":142,"wins":1,"losses":14,"draws":1}},{"tid":"3f4080cf","tn":"LikeMikes","gid":"a3e8a4db","gn":"Men SUNDAY Section 9","age":null,"div":null,"stats":{"gp":16,"fouls":27,"ft":7,"fg":66,"pts":142,"wins":1,"losses":14,"draws":1,"threePt":1}}]},{"sid":"6af7f9bb","sn":"Autumn 2021","regs":[{"tid":"c6412ef5","tn":"LikeMikes","gid":"4f1b1031","gn":"Sunday Open Men","age":"Senior","div":null,"stats":{"gp":15,"fouls":15,"ft":6,"fg":36,"pts":78}}]}],"updatedAt":"2026-06-01T13:05:45.267Z","teams":[{"tid":"cc8ace3a","sid":"0a007eba","status":"COMPLETED"},{"tid":"8d880d84","sid":"ffd608b6","status":"COMPLETED"},{"tid":"d5da73bb","sid":"88fd4210","status":"COMPLETED"},{"tid":"3f4080cf","sid":"d3dee716","status":"COMPLETED"},{"tid":"5f63935f","sid":"5840f32d","status":"COMPLETED"},{"tid":"c6412ef5","sid":"6af7f9bb","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:37:12.095Z","records":{"maxGamePTS":{"v":24,"gameKey":"b6d04ddf","sid":"d3dee716"},"maxGameThreePt":{"v":1,"gameKey":"5a9cd49a","sid":"d3dee716"}},"games":["09b9c31b","0a95f899","0b44bfe0","0dee98d5","11bb5599","18a8e02e","18b01d99","191c4fd8","1b17a42e","1dfca53f","20e0470a","258d757f","2a289b13","32a61c27","35a3b43f","3855d882","39a54866","3d600b5e","499e87a4","53fb0e6d","5a9cd49a","5c5765a2","61c7be95","62829cc9","6336502f","66ab5bf5","68713a8d","6ae65608","6b2bc036","6d9bbd21","720d809c","72a93766","7802f412","79ac4ff9","7b080da7","87eeb798","8ea00fc3","8f7dfa43","95e74ab0","98e73414","9ba0766b","9d82f06f","9e2428d3","9f08af72","a34a6f40","afa59933","b603a6da","b664e762","b6d04ddf","b8242c49","b917a5d5","c24ba985","c39bc458","c3b6fe4c","ca0467ff","ca66e541","d770bbdc","d7fa389a","e0c6f75e","e2863a0b","e3389f4c","ea3cd2e4","ea6a8bcf","f38f3387","f68d3e2f","f7a6f9e6","f9f7bced","fa085c2f","ff89fd14"]}
+{
+  "uuid": "5bdfc0f0-9827-4220-976a-f0acdf558e21",
+  "name": "Sean Morkham",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 69,
+      "pts": 441,
+      "fouls": 92,
+      "fg": 204,
+      "ft": 30,
+      "threePt": 1,
+      "foulOuts": {},
+      "maxGamePTS": 24,
+      "maxGameThreePt": 1,
+      "wins": 26,
+      "losses": 76,
+      "draws": 5,
+      "winPct": 0.24,
+      "statsChecked": "2026-07-05T15:48:31.141Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0a007eba",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "cc8ace3a",
+          "tn": "LikeMikes",
+          "gid": "495e9ff1",
+          "gn": "Sunday Men Section 9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "cc8ace3a",
+          "tn": "LikeMikes",
+          "gid": "4dd03c0a",
+          "gn": "ZZZ Sunday Men Grading Pool O",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 12,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39,
+            "wins": 4,
+            "losses": 3
+          }
+        },
+        {
+          "tid": "cc8ace3a",
+          "tn": "LikeMikes",
+          "gid": "d09319f0",
+          "gn": "ZZZ Sunday Men Grading Pool P",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "ft": 3,
+            "fg": 18,
+            "pts": 39,
+            "wins": 4,
+            "losses": 3,
+            "fouls": 12
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ffd608b6",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "8d880d84",
+          "tn": "LikeMikes",
+          "gid": "821542ad",
+          "gn": "Sunday Men Section 8",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 16,
+            "pts": 35
+          }
+        },
+        {
+          "tid": "8d880d84",
+          "tn": "LikeMikes",
+          "gid": "5cf54b8b",
+          "gn": "ZZZ Sunday Men Grading Pool I",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 35,
+            "fg": 16,
+            "ft": 3,
+            "fouls": 6
+          }
+        },
+        {
+          "tid": "8d880d84",
+          "tn": "LikeMikes",
+          "gid": "90c0f8f1",
+          "gn": "ZZZ Sunday Men Grading Pool O",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "ft": 3,
+            "pts": 35,
+            "fg": 16,
+            "fouls": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "88fd4210",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "d5da73bb",
+          "tn": "LikeMikes",
+          "gid": "492f5ea6",
+          "gn": "Men SUNDAY Section 9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 32,
+            "ft": 11,
+            "fg": 68,
+            "pts": 147,
+            "wins": 4,
+            "losses": 13,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "d5da73bb",
+          "tn": "LikeMikes",
+          "gid": "8d4bb23a",
+          "gn": "Sunday Unspecified Men 9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "wins": 4,
+            "losses": 13,
+            "draws": 1,
+            "pts": 147,
+            "fg": 68,
+            "ft": 11,
+            "fouls": 32
+          }
+        },
+        {
+          "tid": "d5da73bb",
+          "tn": "LikeMikes",
+          "gid": "33d40798",
+          "gn": "Sunday Unspecified Men 14",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 22,
+            "fouls": 32,
+            "fg": 68,
+            "pts": 147,
+            "wins": 4,
+            "losses": 13,
+            "draws": 1,
+            "ft": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3dee716",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "3f4080cf",
+          "tn": "LikeMikes",
+          "gid": "1f7692d8",
+          "gn": "Men SUNDAY Section 10",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 27,
+            "ft": 7,
+            "fg": 66,
+            "threePt": 1,
+            "pts": 142,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "3f4080cf",
+          "tn": "LikeMikes",
+          "gid": "a3e8a4db",
+          "gn": "Men SUNDAY Section 9",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 27,
+            "ft": 7,
+            "fg": 66,
+            "pts": 142,
+            "wins": 1,
+            "losses": 14,
+            "draws": 1,
+            "threePt": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6af7f9bb",
+      "sn": "Autumn 2021",
+      "regs": [
+        {
+          "tid": "c6412ef5",
+          "tn": "LikeMikes",
+          "gid": "4f1b1031",
+          "gn": "Sunday Open Men",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 15,
+            "fouls": 15,
+            "ft": 6,
+            "fg": 36,
+            "pts": 78
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5840f32d",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "5f63935f",
+          "tn": "LikeMikes",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T13:05:45.267Z",
+  "teams": [
+    {
+      "tid": "cc8ace3a",
+      "sid": "0a007eba",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d880d84",
+      "sid": "ffd608b6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d5da73bb",
+      "sid": "88fd4210",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f4080cf",
+      "sid": "d3dee716",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "c6412ef5",
+      "sid": "6af7f9bb",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5f63935f",
+      "sid": "5840f32d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.614Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 24,
+      "gameKey": "b6d04ddf",
+      "sid": "d3dee716"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "5a9cd49a",
+      "sid": "d3dee716"
+    }
+  },
+  "games": [
+    "09b9c31b",
+    "0a95f899",
+    "0b44bfe0",
+    "0dee98d5",
+    "11bb5599",
+    "18a8e02e",
+    "18b01d99",
+    "191c4fd8",
+    "1b17a42e",
+    "1dfca53f",
+    "20e0470a",
+    "258d757f",
+    "2a289b13",
+    "32a61c27",
+    "35a3b43f",
+    "3855d882",
+    "39a54866",
+    "3d600b5e",
+    "499e87a4",
+    "53fb0e6d",
+    "5a9cd49a",
+    "5c5765a2",
+    "61c7be95",
+    "62829cc9",
+    "6336502f",
+    "66ab5bf5",
+    "68713a8d",
+    "6ae65608",
+    "6b2bc036",
+    "6d9bbd21",
+    "720d809c",
+    "72a93766",
+    "7802f412",
+    "79ac4ff9",
+    "7b080da7",
+    "87eeb798",
+    "8ea00fc3",
+    "8f7dfa43",
+    "95e74ab0",
+    "98e73414",
+    "9ba0766b",
+    "9d82f06f",
+    "9e2428d3",
+    "9f08af72",
+    "a34a6f40",
+    "afa59933",
+    "b603a6da",
+    "b664e762",
+    "b6d04ddf",
+    "b8242c49",
+    "b917a5d5",
+    "c24ba985",
+    "c39bc458",
+    "c3b6fe4c",
+    "ca0467ff",
+    "ca66e541",
+    "d770bbdc",
+    "d7fa389a",
+    "e0c6f75e",
+    "e2863a0b",
+    "e3389f4c",
+    "ea3cd2e4",
+    "ea6a8bcf",
+    "f38f3387",
+    "f68d3e2f",
+    "f7a6f9e6",
+    "f9f7bced",
+    "fa085c2f",
+    "ff89fd14"
+  ]
+}

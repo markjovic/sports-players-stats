@@ -1,1 +1,215 @@
-{"uuid":"71b458a6-5308-4765-b272-27fd66f08529","name":"Ruby Roche","gender":"Girls","sports":{"Basketball":{"gp":7,"pts":18,"fouls":3,"fg":9,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":4,"losses":10,"winPct":0.29,"statsChecked":"2026-07-05T14:56:06.735Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Solway Basketball Club","regs":[{"tid":"cbcbf4eb","tn":"Solway U12 Girls Owls","gid":"0ff83b89","gn":"Saturday U12 Girls Section 06","age":"U12","div":null,"stats":{"gp":7,"pts":18,"fg":9,"fouls":3,"wins":2,"losses":5}},{"tid":"cbcbf4eb","tn":"Solway U12 Girls Owls","gid":"b071c05e","gn":"Saturday U12 Girls Section 05","age":"U12","div":null,"stats":{"gp":7,"fg":9,"pts":18,"wins":2,"losses":5,"fouls":3}}]}],"updatedAt":"2026-05-31T13:59:34.518Z","teams":[{"tid":"cbcbf4eb","sid":"6c117270","status":"ACTIVE"},{"tid":"a8f8a9da","sid":"68279835","status":"COMPLETED"},{"tid":"90bbcb51","sid":"913d1397","status":"COMPLETED"},{"tid":"1e15f0c6","sid":"df876355","status":"COMPLETED"},{"tid":"1be06c74","sid":"e54d0c37","status":"COMPLETED"},{"tid":"38ced5fa","sid":"ee5d2724","status":"COMPLETED"},{"tid":"aa05c1a9","sid":"7d20ecad","status":"COMPLETED"},{"tid":"9269808a","sid":"e2637fe8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:50:58.303Z","records":{"maxGamePTS":{"v":8,"gameKey":"05002484","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["05002484","1c3928a1","32424c22","35cea551","83ddc3b9","eb3452e1","f0fb56f5"]}
+{
+  "uuid": "71b458a6-5308-4765-b272-27fd66f08529",
+  "name": "Ruby Roche",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 7,
+      "pts": 18,
+      "fouls": 3,
+      "fg": 9,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 10,
+      "winPct": 0.29,
+      "statsChecked": "2026-07-05T14:56:06.735Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Solway Basketball Club",
+      "regs": [
+        {
+          "tid": "cbcbf4eb",
+          "tn": "Solway U12 Girls Owls",
+          "gid": "0ff83b89",
+          "gn": "Saturday U12 Girls Section 06",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 18,
+            "fg": 9,
+            "fouls": 3,
+            "wins": 2,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "cbcbf4eb",
+          "tn": "Solway U12 Girls Owls",
+          "gid": "b071c05e",
+          "gn": "Saturday U12 Girls Section 05",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fg": 9,
+            "pts": 18,
+            "wins": 2,
+            "losses": 5,
+            "fouls": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "a8f8a9da",
+          "tn": "Solway U12 Girls Red Robins",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "913d1397",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "90bbcb51",
+          "tn": "Solway U10 Girls Blizzards",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "df876355",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "1e15f0c6",
+          "tn": "Solway U10 Girls Typhoons",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e54d0c37",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "1be06c74",
+          "tn": "Solway U10 Girls Whirlwinds",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "ee5d2724",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "38ced5fa",
+          "tn": "Solway U10 Girls Whirlwinds",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "7d20ecad",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "aa05c1a9",
+          "tn": "Solway U8 Girls Flames",
+          "gid": "e9188464",
+          "gn": "Saturday U8 Girls Grading Pool 1",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "e2637fe8",
+      "sn": "Summer 2022/23",
+      "regs": [
+        {
+          "tid": "9269808a",
+          "tn": "Solway U8 Girls Emeralds",
+          "gid": "18689d29",
+          "gn": "U8 Girls (S22_23) Division 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:59:34.518Z",
+  "teams": [
+    {
+      "tid": "cbcbf4eb",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a8f8a9da",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "90bbcb51",
+      "sid": "913d1397",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1e15f0c6",
+      "sid": "df876355",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1be06c74",
+      "sid": "e54d0c37",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "38ced5fa",
+      "sid": "ee5d2724",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aa05c1a9",
+      "sid": "7d20ecad",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9269808a",
+      "sid": "e2637fe8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.029Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "05002484",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "05002484",
+    "1c3928a1",
+    "32424c22",
+    "35cea551",
+    "83ddc3b9",
+    "eb3452e1",
+    "f0fb56f5"
+  ]
+}

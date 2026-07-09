@@ -1,1 +1,96 @@
-{"uuid":"4bf7e515-ecd6-4621-bf52-56a514e65b64","name":"Harvey Short","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":33,"fouls":6,"fg":15,"ft":3,"foulOuts":{},"maxGamePTS":8,"maxGameThreePt":null,"wins":4,"losses":3,"winPct":0.5,"draws":1,"statsChecked":"2026-07-05T15:08:58.285Z"}},"seasons":[{"sid":"6c117270","sn":"Winter 2026","club":"Solway Basketball Club","regs":[{"tid":"03715f72","tn":"Solway U8 Boys Broncos","gid":"b577f30a","gn":"Saturday U8 Boys Section 03","age":"U8","div":null,"stats":{"gp":8,"fouls":6,"ft":3,"fg":15,"pts":33,"wins":4,"losses":3,"draws":1}}]}],"updatedAt":"2026-05-31T13:58:17.450Z","teams":[{"tid":"03715f72","sid":"6c117270","status":"ACTIVE"},{"tid":"5e46c9a7","sid":"68279835","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:29:49.784Z","records":{"maxGamePTS":{"v":8,"gameKey":"1fbb33de","sid":"6c117270"},"maxGameThreePt":{"v":null}},"games":["059f0f92","0606ca9c","1fbb33de","466eb6d9","6a92b2e8","6e12e7c6","b29cbaa9","d4ce1383"]}
+{
+  "uuid": "4bf7e515-ecd6-4621-bf52-56a514e65b64",
+  "name": "Harvey Short",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 33,
+      "fouls": 6,
+      "fg": 15,
+      "ft": 3,
+      "foulOuts": {},
+      "maxGamePTS": 8,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 3,
+      "winPct": 0.5,
+      "draws": 1,
+      "statsChecked": "2026-07-05T15:08:58.285Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "6c117270",
+      "sn": "Winter 2026",
+      "club": "Solway Basketball Club",
+      "regs": [
+        {
+          "tid": "03715f72",
+          "tn": "Solway U8 Boys Broncos",
+          "gid": "b577f30a",
+          "gn": "Saturday U8 Boys Section 03",
+          "age": "U8",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 6,
+            "ft": 3,
+            "fg": 15,
+            "pts": 33,
+            "wins": 4,
+            "losses": 3,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "68279835",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "5e46c9a7",
+          "tn": "Solway U8 Boys Broncos",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T13:58:17.450Z",
+  "teams": [
+    {
+      "tid": "03715f72",
+      "sid": "6c117270",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5e46c9a7",
+      "sid": "68279835",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.527Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 8,
+      "gameKey": "1fbb33de",
+      "sid": "6c117270"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "059f0f92",
+    "0606ca9c",
+    "1fbb33de",
+    "466eb6d9",
+    "6a92b2e8",
+    "6e12e7c6",
+    "b29cbaa9",
+    "d4ce1383"
+  ]
+}

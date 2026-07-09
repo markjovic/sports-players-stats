@@ -1,1 +1,93 @@
-{"uuid":"97cdffd3-9fb2-4094-98fc-416f54edb5f3","gender":null,"sports":{"Basketball":{"gp":6,"pts":6,"fouls":1,"fg":3,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":2,"losses":4,"winPct":0.33,"statsChecked":"2026-07-05T16:22:56.709Z"}},"seasons":[{"sid":"a3de628b","sn":"Autumn 2021","club":null,"regs":[{"tid":"6e49142f","tn":"U14 Pink Girls","gid":"730b05dd","gn":"Tuesday U14 Girls","stats":{"gp":6,"pts":6,"fouls":1,"fg":3,"finals":1,"wins":2,"losses":4}}]}],"updatedAt":"2026-06-11T23:42:39.746Z","games":["4d7b01a1","89c459a0","9c50f57c","ddc4bfa6","e2be5276","fa87b436"],"records":{"maxGamePTS":{"v":6,"gameKey":"fa87b436","sid":"a3de628b"},"maxGameThreePt":{"v":null}},"name":"Autumn 2021"}
+{
+  "uuid": "97cdffd3-9fb2-4094-98fc-416f54edb5f3",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 6,
+      "fouls": 1,
+      "fg": 3,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 2,
+      "losses": 4,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:22:56.709Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a3de628b",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "6e49142f",
+          "tn": "U14 Pink Girls",
+          "gid": "730b05dd",
+          "gn": "Tuesday U14 Girls",
+          "stats": {
+            "gp": 6,
+            "pts": 6,
+            "fouls": 1,
+            "fg": 3,
+            "finals": 1,
+            "wins": 2,
+            "losses": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f6b90c77",
+      "sn": "Spring 2021",
+      "regs": [
+        {
+          "tid": "b17b55d3",
+          "tn": "U14G Aqua",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:42:39.746Z",
+  "games": [
+    "4d7b01a1",
+    "89c459a0",
+    "9c50f57c",
+    "ddc4bfa6",
+    "e2be5276",
+    "fa87b436"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "fa87b436",
+      "sid": "a3de628b"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "6e49142f",
+      "sid": "a3de628b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b17b55d3",
+      "sid": "f6b90c77",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:14.995Z"
+}

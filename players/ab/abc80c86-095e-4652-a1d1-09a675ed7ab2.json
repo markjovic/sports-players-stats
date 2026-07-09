@@ -1,1 +1,111 @@
-{"uuid":"abc80c86-095e-4652-a1d1-09a675ed7ab2","name":"JOHN SHELTON","gender":"Men","sports":{"Basketball":{"gp":9,"pts":22,"fouls":15,"fg":10,"ft":2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":5,"losses":2,"winPct":0.71,"statsChecked":"2026-07-06T19:00:21.354Z"}},"seasons":[{"sid":"307cebbc","sn":"Autumn 2026","club":"Old Mentonians Basketball Club","regs":[{"tid":"511c1a21","tn":"OMBC Panthers Open Men Awesomness","gid":"4aca39d3","gn":"Wednesday Open Men Over 35 B","age":"Senior","div":null,"stats":{"gp":8,"fouls":14,"fg":8,"pts":17,"ft":1,"wins":5,"losses":2}}]},{"sid":"c2468a21","regs":[{"tid":"cc7a8bbb","stats":{"gp":1,"pts":5,"fg":2,"ft":1,"fouls":1}},{"tid":"cc7a8bbb","tn":"","gid":"a885c98c","gn":"Wednesday Open Men Over 35 B","div":null,"stats":{"gp":1,"pts":5,"fg":2,"ft":1,"fouls":1}}]}],"updatedAt":"2026-07-06T18:35:36.658Z","teams":[{"tid":"511c1a21","sid":"307cebbc","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:34:32.945Z","records":{"maxGamePTS":{"v":6,"gameKey":"89ffe8af","sid":"307cebbc"},"maxGameThreePt":{"v":null}},"games":["14bb7bdc","8991c98b","89ffe8af","ba3d1ca9","c3eecbac","ea4fb6c5","f4e1b018"]}
+{
+  "uuid": "abc80c86-095e-4652-a1d1-09a675ed7ab2",
+  "name": "JOHN SHELTON",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 22,
+      "fouls": 15,
+      "fg": 10,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 5,
+      "losses": 2,
+      "winPct": 0.71,
+      "statsChecked": "2026-07-06T19:00:21.354Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "307cebbc",
+      "sn": "Autumn 2026",
+      "club": "Old Mentonians Basketball Club",
+      "regs": [
+        {
+          "tid": "511c1a21",
+          "tn": "OMBC Panthers Open Men Awesomness",
+          "gid": "4aca39d3",
+          "gn": "Wednesday Open Men Over 35 B",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 14,
+            "fg": 8,
+            "pts": 17,
+            "ft": 1,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "c2468a21",
+      "regs": [
+        {
+          "tid": "cc7a8bbb",
+          "stats": {
+            "gp": 1,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 1
+          },
+          "gid": "a885c98c",
+          "gn": "Wednesday Open Men Over 35 B"
+        },
+        {
+          "tid": "cc7a8bbb",
+          "tn": "",
+          "gid": "a885c98c",
+          "gn": "Wednesday Open Men Over 35 B",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 5,
+            "fg": 2,
+            "ft": 1,
+            "fouls": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:36.658Z",
+  "teams": [
+    {
+      "tid": "511c1a21",
+      "sid": "307cebbc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cc7a8bbb",
+      "sid": "c2468a21",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.860Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "89ffe8af",
+      "sid": "307cebbc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "14bb7bdc",
+    "8991c98b",
+    "89ffe8af",
+    "ba3d1ca9",
+    "c3eecbac",
+    "ea4fb6c5",
+    "f4e1b018"
+  ]
+}

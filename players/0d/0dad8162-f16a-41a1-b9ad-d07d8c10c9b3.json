@@ -1,1 +1,81 @@
-{"uuid":"0dad8162-f16a-41a1-b9ad-d07d8c10c9b3","name":"Danielle Violato","sports":{"Basketball":{"maxGamePTS":16,"maxGameThreePt":null,"foulOuts":{"796936f7":1,"880bda3c":1},"gp":36,"pts":221,"fg":93,"ft":35,"fouls":77,"statsChecked":"2026-07-07T18:25:45.835Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"d09b593f"}]},{"sid":"796936f7","regs":[{"tid":"4ebed4fe"}]},{"sid":"880bda3c","regs":[{"tid":"bc3cd241"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":16,"gameKey":"b45b8542","sid":"880bda3c"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "0dad8162-f16a-41a1-b9ad-d07d8c10c9b3",
+  "name": "Danielle Violato",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 16,
+      "maxGameThreePt": null,
+      "foulOuts": {
+        "796936f7": 1,
+        "880bda3c": 1
+      },
+      "gp": 36,
+      "pts": 221,
+      "fg": 93,
+      "ft": 35,
+      "fouls": 77,
+      "statsChecked": "2026-07-07T18:25:45.835Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "d09b593f",
+          "gid": "5729abb2",
+          "gn": "Tuesday Women- Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "4ebed4fe",
+          "gid": "d41ef422",
+          "gn": "Tuesday Women- Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "bc3cd241",
+          "gid": "47b7c78c",
+          "gn": "Tuesday Women- Div 3R-4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "d09b593f",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4ebed4fe",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bc3cd241",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 16,
+      "gameKey": "b45b8542",
+      "sid": "880bda3c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:05.697Z"
+}

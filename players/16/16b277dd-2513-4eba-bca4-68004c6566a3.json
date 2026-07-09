@@ -1,1 +1,101 @@
-{"uuid":"16b277dd-2513-4eba-bca4-68004c6566a3","gender":null,"sports":{"Basketball":{"gp":5,"pts":18,"fouls":10,"fg":8,"ft":2,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":null,"wins":4,"losses":1,"winPct":0.8,"statsChecked":"2026-07-05T16:12:00.087Z"}},"seasons":[{"sid":"34d3a03c","sn":"Summer 2020/21","club":null,"regs":[{"tid":"a971fb3d","tn":"Saints Bucks","gid":"8bed2176","gn":"Tuesday Open Men","stats":{"gp":5,"pts":18,"fg":8,"ft":2,"fouls":10,"wins":4,"losses":1}}]}],"updatedAt":"2026-06-11T23:36:44.154Z","records":{"maxGamePTS":{"v":10,"gameKey":"389f503f","sid":"34d3a03c"},"maxGameThreePt":{"v":null}},"games":["389f503f","7645491d","8e44ddb1","e3349de1","f2ee3b05"],"name":"Summer 2020/21"}
+{
+  "uuid": "16b277dd-2513-4eba-bca4-68004c6566a3",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 5,
+      "pts": 18,
+      "fouls": 10,
+      "fg": 8,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 1,
+      "winPct": 0.8,
+      "statsChecked": "2026-07-05T16:12:00.087Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "34d3a03c",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "a971fb3d",
+          "tn": "Saints Bucks",
+          "gid": "8bed2176",
+          "gn": "Tuesday Open Men",
+          "stats": {
+            "gp": 5,
+            "pts": 18,
+            "fg": 8,
+            "ft": 2,
+            "fouls": 10,
+            "wins": 4,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1480aa1b",
+      "sn": "Summer 2019/20",
+      "regs": [
+        {
+          "tid": "484a8d57",
+          "tn": "Misfits",
+          "gid": "8522cada",
+          "gn": "Senior Men",
+          "stats": {}
+        },
+        {
+          "tid": "852e9fe9",
+          "tn": "Senior Men",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:36:44.154Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "389f503f",
+      "sid": "34d3a03c"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "389f503f",
+    "7645491d",
+    "8e44ddb1",
+    "e3349de1",
+    "f2ee3b05"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "a971fb3d",
+      "sid": "34d3a03c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "484a8d57",
+      "sid": "1480aa1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "852e9fe9",
+      "sid": "1480aa1b",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.280Z"
+}

@@ -1,1 +1,297 @@
-{"uuid":"b4cfa00e-b84d-4160-9f93-57591444bdef","name":"Mark Richardson","gender":"Men","sports":{"Basketball":{"gp":43,"pts":148,"fouls":68,"fg":50,"ft":21,"threePt":9,"finals":1,"gfApps":0,"gfWins":0,"finalsPerSeason":0.25,"foulOuts":{"ad1f9276":1},"maxGamePTS":15,"maxGameThreePt":2,"wins":10,"losses":41,"draws":3,"winPct":0.19,"statsChecked":"2026-07-05T15:12:06.662Z"}},"seasons":[{"sid":"fb06d69e","sn":"Winter 2026","regs":[{"tid":"7890bbb3","tn":"Old Men Can't Jump","gid":"a4351366","gn":"Monday Men 13 - 2026 Winter","age":null,"div":null,"stats":{"gp":10,"fouls":16,"ft":15,"fg":42,"threePt":6,"pts":117,"losses":8,"draws":1,"wins":1}},{"tid":"7890bbb3","tn":"Old Men Can't Jump","gid":"4b410db6","gn":"Monday Men 12 - 2026 Winter","age":null,"div":null,"stats":{"gp":10,"fouls":16,"ft":15,"fg":42,"threePt":6,"pts":117,"losses":8,"draws":1,"wins":1}},{"tid":"e7a8950d","stats":{"losses":1,"gp":1,"pts":3,"threePt":1,"fouls":2}}]},{"sid":"fb06d69e","sn":"Winter 2026","regs":[{"tid":"e7a8950d","tn":"Sixth Men","gid":"50cec257","gn":"Monday Men 2 - 2026 Winter","age":null,"div":null,"stats":{"gp":1,"fouls":2,"threePt":1,"pts":3,"losses":1}}]},{"sid":"ad1f9276","sn":"Summer 2025/26","regs":[{"tid":"630b2d06","tn":"Sixth Men","gid":"133bb22c","gn":"Thursday Men 2 - 2026 Summer","age":null,"div":null,"stats":{"gp":18,"fouls":36,"ft":5,"fg":4,"threePt":1,"pts":16,"foulOuts":1,"wins":4,"losses":14}}]},{"sid":"fbb79f9e","sn":"Winter 2025","regs":[{"tid":"39981070","tn":"Ballz Deep","gid":"cbba57cb","gn":"Wednesday Men 6 - 2025 Winter","age":null,"div":null,"stats":{"gp":14,"fouls":14,"ft":1,"fg":4,"threePt":1,"pts":12,"finals":1,"wins":4,"losses":9,"draws":1}}]}],"updatedAt":"2026-06-01T15:00:46.059Z","teams":[{"tid":"7890bbb3","sid":"fb06d69e","status":"ACTIVE"},{"tid":"e7a8950d","sid":"fb06d69e","status":"ACTIVE"},{"tid":"630b2d06","sid":"ad1f9276","status":"COMPLETED"},{"tid":"fb8d3197","sid":"fbb79f9e","status":"COMPLETED"},{"tid":"39981070","sid":"fbb79f9e","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:37:26.267Z","games":["052e5aef","06e7d978","074f8591","0d5ac4a8","11e43d04","1a770619","1b897501","250dffa4","2adc5f41","2d8f448a","36a0c6a7","4034a182","42a7d20b","4499323b","460a6a97","49b23a5a","4c37caa1","4d1c10d8","627a7af7","6ec985fb","712a10ad","7a9feae5","7dfde0bd","849700f3","980430e1","a4973dfc","a644c437","aa4861f1","acf9c104","b14df250","b48f6f7b","b6278520","b7b1c9dd","c7ed8b72","cbee5c6a","da8c2779","ea02e440","ecf46968","eed46b14","f1d81044","f595e28a","f99c2e2e","f99c5813"],"records":{"maxGamePTS":{"v":15,"gameKey":"1a770619","sid":"fb06d69e"},"maxGameThreePt":{"v":2,"gameKey":"1a770619","sid":"fb06d69e"}},"gameTids":{"460a6a97":"7890bbb3","cbee5c6a":"7890bbb3","250dffa4":"7890bbb3","1a770619":"7890bbb3","b6278520":"7890bbb3","980430e1":"7890bbb3","849700f3":"7890bbb3","4499323b":"7890bbb3","b7b1c9dd":"7890bbb3","f99c5813":"7890bbb3","1b897501":"e7a8950d","da8c2779":"630b2d06","7a9feae5":"630b2d06","6ec985fb":"630b2d06","4034a182":"630b2d06","42a7d20b":"630b2d06","ea02e440":"630b2d06","627a7af7":"630b2d06","49b23a5a":"630b2d06","2d8f448a":"630b2d06","f99c2e2e":"630b2d06","b14df250":"630b2d06","f1d81044":"630b2d06","11e43d04":"630b2d06","a644c437":"630b2d06","4c37caa1":"630b2d06","aa4861f1":"630b2d06","052e5aef":"630b2d06","36a0c6a7":"630b2d06","2adc5f41":"39981070","c7ed8b72":"39981070","4d1c10d8":"39981070","7dfde0bd":"39981070","ecf46968":"39981070","eed46b14":"39981070","074f8591":"39981070","0d5ac4a8":"39981070","acf9c104":"39981070","b48f6f7b":"39981070","f595e28a":"39981070","06e7d978":"39981070","712a10ad":"39981070","a4973dfc":"39981070"}}
+{
+  "uuid": "b4cfa00e-b84d-4160-9f93-57591444bdef",
+  "name": "Mark Richardson",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 43,
+      "pts": 148,
+      "fouls": 68,
+      "fg": 50,
+      "ft": 21,
+      "threePt": 9,
+      "finals": 1,
+      "gfApps": 0,
+      "gfWins": 0,
+      "finalsPerSeason": 0.25,
+      "foulOuts": {
+        "ad1f9276": 1
+      },
+      "maxGamePTS": 15,
+      "maxGameThreePt": 2,
+      "wins": 10,
+      "losses": 41,
+      "draws": 3,
+      "winPct": 0.19,
+      "statsChecked": "2026-07-05T15:12:06.662Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "fb06d69e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "7890bbb3",
+          "tn": "Old Men Can't Jump",
+          "gid": "a4351366",
+          "gn": "Monday Men 13 - 2026 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 16,
+            "ft": 15,
+            "fg": 42,
+            "threePt": 6,
+            "pts": 117,
+            "losses": 8,
+            "draws": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "7890bbb3",
+          "tn": "Old Men Can't Jump",
+          "gid": "4b410db6",
+          "gn": "Monday Men 12 - 2026 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 16,
+            "ft": 15,
+            "fg": 42,
+            "threePt": 6,
+            "pts": 117,
+            "losses": 8,
+            "draws": 1,
+            "wins": 1
+          }
+        },
+        {
+          "tid": "e7a8950d",
+          "stats": {
+            "losses": 1,
+            "gp": 1,
+            "pts": 3,
+            "threePt": 1,
+            "fouls": 2
+          },
+          "gid": "148f28f7",
+          "gn": "Monday Men 3 - 2026 Winter"
+        }
+      ]
+    },
+    {
+      "sid": "fb06d69e",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e7a8950d",
+          "tn": "Sixth Men",
+          "gid": "50cec257",
+          "gn": "Monday Men 2 - 2026 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "fouls": 2,
+            "threePt": 1,
+            "pts": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ad1f9276",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "630b2d06",
+          "tn": "Sixth Men",
+          "gid": "133bb22c",
+          "gn": "Thursday Men 2 - 2026 Summer",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 18,
+            "fouls": 36,
+            "ft": 5,
+            "fg": 4,
+            "threePt": 1,
+            "pts": 16,
+            "foulOuts": 1,
+            "wins": 4,
+            "losses": 14
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fbb79f9e",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "39981070",
+          "tn": "Ballz Deep",
+          "gid": "cbba57cb",
+          "gn": "Wednesday Men 6 - 2025 Winter",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 14,
+            "ft": 1,
+            "fg": 4,
+            "threePt": 1,
+            "pts": 12,
+            "finals": 1,
+            "wins": 4,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "fb8d3197",
+          "tn": "Airballers",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:00:46.059Z",
+  "teams": [
+    {
+      "tid": "7890bbb3",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e7a8950d",
+      "sid": "fb06d69e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "630b2d06",
+      "sid": "ad1f9276",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "39981070",
+      "sid": "fbb79f9e",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "fb8d3197",
+      "sid": "fbb79f9e",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.367Z",
+  "games": [
+    "052e5aef",
+    "06e7d978",
+    "074f8591",
+    "0d5ac4a8",
+    "11e43d04",
+    "1a770619",
+    "1b897501",
+    "250dffa4",
+    "2adc5f41",
+    "2d8f448a",
+    "36a0c6a7",
+    "4034a182",
+    "42a7d20b",
+    "4499323b",
+    "460a6a97",
+    "49b23a5a",
+    "4c37caa1",
+    "4d1c10d8",
+    "627a7af7",
+    "6ec985fb",
+    "712a10ad",
+    "7a9feae5",
+    "7dfde0bd",
+    "849700f3",
+    "980430e1",
+    "a4973dfc",
+    "a644c437",
+    "aa4861f1",
+    "acf9c104",
+    "b14df250",
+    "b48f6f7b",
+    "b6278520",
+    "b7b1c9dd",
+    "c7ed8b72",
+    "cbee5c6a",
+    "da8c2779",
+    "ea02e440",
+    "ecf46968",
+    "eed46b14",
+    "f1d81044",
+    "f595e28a",
+    "f99c2e2e",
+    "f99c5813"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "1a770619",
+      "sid": "fb06d69e"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "1a770619",
+      "sid": "fb06d69e"
+    }
+  },
+  "gameTids": {
+    "460a6a97": "7890bbb3",
+    "cbee5c6a": "7890bbb3",
+    "250dffa4": "7890bbb3",
+    "1a770619": "7890bbb3",
+    "b6278520": "7890bbb3",
+    "980430e1": "7890bbb3",
+    "849700f3": "7890bbb3",
+    "4499323b": "7890bbb3",
+    "b7b1c9dd": "7890bbb3",
+    "f99c5813": "7890bbb3",
+    "1b897501": "e7a8950d",
+    "da8c2779": "630b2d06",
+    "7a9feae5": "630b2d06",
+    "6ec985fb": "630b2d06",
+    "4034a182": "630b2d06",
+    "42a7d20b": "630b2d06",
+    "ea02e440": "630b2d06",
+    "627a7af7": "630b2d06",
+    "49b23a5a": "630b2d06",
+    "2d8f448a": "630b2d06",
+    "f99c2e2e": "630b2d06",
+    "b14df250": "630b2d06",
+    "f1d81044": "630b2d06",
+    "11e43d04": "630b2d06",
+    "a644c437": "630b2d06",
+    "4c37caa1": "630b2d06",
+    "aa4861f1": "630b2d06",
+    "052e5aef": "630b2d06",
+    "36a0c6a7": "630b2d06",
+    "2adc5f41": "39981070",
+    "c7ed8b72": "39981070",
+    "4d1c10d8": "39981070",
+    "7dfde0bd": "39981070",
+    "ecf46968": "39981070",
+    "eed46b14": "39981070",
+    "074f8591": "39981070",
+    "0d5ac4a8": "39981070",
+    "acf9c104": "39981070",
+    "b48f6f7b": "39981070",
+    "f595e28a": "39981070",
+    "06e7d978": "39981070",
+    "712a10ad": "39981070",
+    "a4973dfc": "39981070"
+  }
+}

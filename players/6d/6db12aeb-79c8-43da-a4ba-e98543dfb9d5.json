@@ -1,1 +1,127 @@
-{"uuid":"6db12aeb-79c8-43da-a4ba-e98543dfb9d5","gender":null,"sports":{"Basketball":{"gp":12,"pts":2,"fouls":2,"fg":1,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":18,"winPct":0,"statsChecked":"2026-07-05T16:01:37.351Z"}},"seasons":[{"sid":"0f6dd17f","sn":"Winter 2021","club":"Carnegie Basketball Club","regs":[{"tid":"4c1a0daf","tn":"Carnegie Chargers U12 Boys BU12Joaquin","gid":"55ae98ec","gn":"Saturday U12 Boys DIV 3","stats":{"gp":6,"losses":6}}]},{"sid":"cc2b1283","sn":"Summer 2020/21","club":"Carnegie Basketball Club","regs":[{"tid":"e2771689","tn":"Carnegie Chargers U12 Boys BU12 Joaquin","gid":"e19cfc0f","gn":"Saturday U12 Boys Div 2","stats":{"gp":6,"fouls":2,"losses":6,"pts":2,"fg":1}},{"tid":"e2771689","tn":"Carnegie Chargers U12 Boys BU12 Joaquin","gid":"223be968","gn":"Saturday U12 Boys Div 1","stats":{"gp":6,"pts":2,"fg":1,"losses":6,"fouls":2}}]}],"updatedAt":"2026-06-11T23:40:51.606Z","records":{"maxGamePTS":{"v":2,"gameKey":"8f25ad06","sid":"cc2b1283"},"maxGameThreePt":{"v":null}},"games":["1f8c4d76","6ae95059","6eaee260","75d599cf","774a1603","8f25ad06","94a36edb","99c99cb0","ab451c5b","cd6f22ca","e8b59fb9","ed8f2606"],"name":"Winter 2021"}
+{
+  "uuid": "6db12aeb-79c8-43da-a4ba-e98543dfb9d5",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 2,
+      "fouls": 2,
+      "fg": 1,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 18,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:01:37.351Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "0f6dd17f",
+      "sn": "Winter 2021",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "4c1a0daf",
+          "tn": "Carnegie Chargers U12 Boys BU12Joaquin",
+          "gid": "55ae98ec",
+          "gn": "Saturday U12 Boys DIV 3",
+          "stats": {
+            "gp": 6,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "cc2b1283",
+      "sn": "Summer 2020/21",
+      "club": "Carnegie Basketball Club",
+      "regs": [
+        {
+          "tid": "e2771689",
+          "tn": "Carnegie Chargers U12 Boys BU12 Joaquin",
+          "gid": "e19cfc0f",
+          "gn": "Saturday U12 Boys Div 2",
+          "stats": {
+            "gp": 6,
+            "fouls": 2,
+            "losses": 6,
+            "pts": 2,
+            "fg": 1
+          }
+        },
+        {
+          "tid": "e2771689",
+          "tn": "Carnegie Chargers U12 Boys BU12 Joaquin",
+          "gid": "223be968",
+          "gn": "Saturday U12 Boys Div 1",
+          "stats": {
+            "gp": 6,
+            "pts": 2,
+            "fg": 1,
+            "losses": 6,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6a36400d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "43829d51",
+          "tn": "Carnegie Chargers U12 Boys Chargers U126 Terry",
+          "gid": "42510031",
+          "gn": "Saturday U12 Boys Div 8",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:51.606Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "8f25ad06",
+      "sid": "cc2b1283"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1f8c4d76",
+    "6ae95059",
+    "6eaee260",
+    "75d599cf",
+    "774a1603",
+    "8f25ad06",
+    "94a36edb",
+    "99c99cb0",
+    "ab451c5b",
+    "cd6f22ca",
+    "e8b59fb9",
+    "ed8f2606"
+  ],
+  "name": "Winter 2021",
+  "teams": [
+    {
+      "tid": "4c1a0daf",
+      "sid": "0f6dd17f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e2771689",
+      "sid": "cc2b1283",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "43829d51",
+      "sid": "6a36400d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.733Z"
+}

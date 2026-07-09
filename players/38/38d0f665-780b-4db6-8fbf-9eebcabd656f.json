@@ -1,1 +1,114 @@
-{"uuid":"38d0f665-780b-4db6-8fbf-9eebcabd656f","name":"Harry Mills","gender":"Boys","sports":{"Basketball":{"gp":11,"pts":68,"fouls":19,"fg":23,"ft":16,"threePt":2,"finals":1,"gfApps":1,"gfWins":1,"finalsPerSeason":0.5,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":1,"wins":8,"losses":3,"winPct":0.73,"statsChecked":"2026-07-05T15:34:57.155Z"}},"seasons":[{"sid":"ea13a58c","sn":"2025","club":"NSW Country","regs":[{"tid":"75dcbd61","tn":"U16 Boys NSW Kookaburras","gid":"5dec00d0","gn":"U16 Boys D1","age":"U16","div":"D1","stats":{"gp":6,"pts":25,"fg":9,"ft":7,"fouls":8,"finals":1,"gfApps":1,"wins":4,"losses":2,"gfWins":1}}]},{"sid":"0869ea69","regs":[{"tid":"f8737cb5","stats":{"wins":4,"losses":1,"gp":5,"pts":43,"fg":14,"ft":9,"threePt":2,"fouls":11}}]}],"updatedAt":"2026-06-01T15:59:45.347Z","teams":[{"tid":"f8737cb5","sid":"0869ea69","status":"UPCOMING"},{"tid":"75dcbd61","sid":"ea13a58c","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:16:02.483Z","records":{"maxGamePTS":{"v":14,"gameKey":"ffaaeb84","sid":"0869ea69"},"maxGameThreePt":{"v":1,"gameKey":"9c2c04c1","sid":"0869ea69"}},"games":["06e81f7c","39c0a5cc","4afe107f","867ba522","914e5bd4","9c2c04c1","9eeebd62","b6924a19","ebb464e7","f4e164f7","ffaaeb84"]}
+{
+  "uuid": "38d0f665-780b-4db6-8fbf-9eebcabd656f",
+  "name": "Harry Mills",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 11,
+      "pts": 68,
+      "fouls": 19,
+      "fg": 23,
+      "ft": 16,
+      "threePt": 2,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 1,
+      "finalsPerSeason": 0.5,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 3,
+      "winPct": 0.73,
+      "statsChecked": "2026-07-05T15:34:57.155Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ea13a58c",
+      "sn": "2025",
+      "club": "NSW Country",
+      "regs": [
+        {
+          "tid": "75dcbd61",
+          "tn": "U16 Boys NSW Kookaburras",
+          "gid": "5dec00d0",
+          "gn": "U16 Boys D1",
+          "age": "U16",
+          "div": "D1",
+          "stats": {
+            "gp": 6,
+            "pts": 25,
+            "fg": 9,
+            "ft": 7,
+            "fouls": 8,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 2,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "0869ea69",
+      "regs": [
+        {
+          "tid": "f8737cb5",
+          "stats": {
+            "wins": 4,
+            "losses": 1,
+            "gp": 5,
+            "pts": 43,
+            "fg": 14,
+            "ft": 9,
+            "threePt": 2,
+            "fouls": 11
+          },
+          "gid": "b1173614",
+          "gn": "BOYS UNDER 18 B2"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T15:59:45.347Z",
+  "teams": [
+    {
+      "tid": "75dcbd61",
+      "sid": "ea13a58c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f8737cb5",
+      "sid": "0869ea69",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.499Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "ffaaeb84",
+      "sid": "0869ea69"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "9c2c04c1",
+      "sid": "0869ea69"
+    }
+  },
+  "games": [
+    "06e81f7c",
+    "39c0a5cc",
+    "4afe107f",
+    "867ba522",
+    "914e5bd4",
+    "9c2c04c1",
+    "9eeebd62",
+    "b6924a19",
+    "ebb464e7",
+    "f4e164f7",
+    "ffaaeb84"
+  ]
+}

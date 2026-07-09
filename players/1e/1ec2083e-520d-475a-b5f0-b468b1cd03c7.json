@@ -1,1 +1,93 @@
-{"uuid":"1ec2083e-520d-475a-b5f0-b468b1cd03c7","name":"Jobe Szabo","sports":{"Basketball":{"maxGamePTS":12,"maxGameThreePt":null,"foulOuts":{},"gp":47,"pts":59,"fg":21,"ft":17,"fouls":59,"statsChecked":"2026-07-06T18:55:24.100Z"}},"seasons":[{"sid":"d9d6ff18","regs":[{"tid":"d8ff7dab"}]},{"sid":"3ecfff14","regs":[{"tid":"577810db"}]},{"sid":"f5bbd42a","regs":[{"tid":"9592fdb7"}]},{"sid":"94473b5e","regs":[{"tid":"0a51e48e"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":12,"gameKey":"598253ce","sid":"3ecfff14"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "1ec2083e-520d-475a-b5f0-b468b1cd03c7",
+  "name": "Jobe Szabo",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 47,
+      "pts": 59,
+      "fg": 21,
+      "ft": 17,
+      "fouls": 59,
+      "statsChecked": "2026-07-06T18:55:24.100Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d9d6ff18",
+      "regs": [
+        {
+          "tid": "d8ff7dab",
+          "gid": "0089a83b",
+          "gn": "U11 Boys Division 2"
+        }
+      ]
+    },
+    {
+      "sid": "3ecfff14",
+      "regs": [
+        {
+          "tid": "577810db",
+          "gid": "e78129c7",
+          "gn": "Saturday U10 Mixed B"
+        }
+      ]
+    },
+    {
+      "sid": "f5bbd42a",
+      "regs": [
+        {
+          "tid": "9592fdb7",
+          "gid": "3c4de91f",
+          "gn": "Saturday U10 Mixed B2"
+        }
+      ]
+    },
+    {
+      "sid": "94473b5e",
+      "regs": [
+        {
+          "tid": "0a51e48e",
+          "gid": "81a09d95",
+          "gn": "Saturday U10 Mixed B2"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "d8ff7dab",
+      "sid": "d9d6ff18",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "577810db",
+      "sid": "3ecfff14",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9592fdb7",
+      "sid": "f5bbd42a",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0a51e48e",
+      "sid": "94473b5e",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "598253ce",
+      "sid": "3ecfff14"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:06.824Z"
+}

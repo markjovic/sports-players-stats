@@ -1,1 +1,126 @@
-{"uuid":"6bd8b017-90d2-4a20-8902-109eaab677b1","gender":null,"sports":{"Basketball":{"gp":12,"pts":4,"fouls":6,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"losses":1,"winPct":0,"statsChecked":"2026-07-05T16:27:46.221Z"}},"seasons":[{"sid":"dfdc4a33","sn":"Spring 2021","club":null,"regs":[{"tid":"12449b29","tn":"Ivanhoe Grammar Wolves WITHDRAWN","gid":"b77ccbd2","gn":"Tuesday Boys","stats":{"gp":1,"fouls":1,"losses":1}}]},{"sid":"3750388d","sn":"Autumn 2021","club":null,"regs":[{"tid":"84aeb626","tn":"Ivanhoe Grammar Wolves Boys","gid":"0c2cdf63","gn":"Tuesday Boys B grade","stats":{"gp":11,"pts":4,"fouls":5,"fg":2}},{"tid":"84aeb626","tn":"Ivanhoe Grammar Wolves Boys","gid":"f80741f0","gn":"Tuesday Boys C/D grade","stats":{"gp":11,"pts":4,"fouls":5,"fg":2}}]}],"updatedAt":"2026-06-11T23:40:46.305Z","records":{"maxGamePTS":{"v":2,"gameKey":"f6ca1c62","sid":"3750388d"},"maxGameThreePt":{"v":null}},"games":["2ad15b39","38d7a888","39dd9183","464d9ec3","5a8bb3d2","a8194064","aadc865e","cc65092b","db67492c","f6ca1c62","fbeb4098","fc72b4fb"],"name":"Spring 2021"}
+{
+  "uuid": "6bd8b017-90d2-4a20-8902-109eaab677b1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 12,
+      "pts": 4,
+      "fouls": 6,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "losses": 1,
+      "winPct": 0,
+      "statsChecked": "2026-07-05T16:27:46.221Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dfdc4a33",
+      "sn": "Spring 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "12449b29",
+          "tn": "Ivanhoe Grammar Wolves WITHDRAWN",
+          "gid": "b77ccbd2",
+          "gn": "Tuesday Boys",
+          "stats": {
+            "gp": 1,
+            "fouls": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3750388d",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "84aeb626",
+          "tn": "Ivanhoe Grammar Wolves Boys",
+          "gid": "0c2cdf63",
+          "gn": "Tuesday Boys B grade",
+          "stats": {
+            "gp": 11,
+            "pts": 4,
+            "fouls": 5,
+            "fg": 2
+          }
+        },
+        {
+          "tid": "84aeb626",
+          "tn": "Ivanhoe Grammar Wolves Boys",
+          "gid": "f80741f0",
+          "gn": "Tuesday Boys C/D grade",
+          "stats": {
+            "gp": 11,
+            "pts": 4,
+            "fouls": 5,
+            "fg": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "108bd924",
+      "sn": "Autumn 2022",
+      "regs": [
+        {
+          "tid": "e1c54243",
+          "tn": "Ivanhoe Grammar Cobras",
+          "gid": "a01bf39a",
+          "gn": "Monday Boys C grade",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:40:46.305Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "f6ca1c62",
+      "sid": "3750388d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "2ad15b39",
+    "38d7a888",
+    "39dd9183",
+    "464d9ec3",
+    "5a8bb3d2",
+    "a8194064",
+    "aadc865e",
+    "cc65092b",
+    "db67492c",
+    "f6ca1c62",
+    "fbeb4098",
+    "fc72b4fb"
+  ],
+  "name": "Spring 2021",
+  "teams": [
+    {
+      "tid": "12449b29",
+      "sid": "dfdc4a33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "84aeb626",
+      "sid": "3750388d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e1c54243",
+      "sid": "108bd924",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.639Z"
+}

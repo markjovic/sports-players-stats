@@ -1,1 +1,63 @@
-{"uuid":"7cd69d80-8449-4789-af65-26fbec62e81a","name":"Mikaylee Smee","sports":{"Basketball":{"maxGamePTS":2,"maxGameThreePt":null,"foulOuts":{},"gp":3,"pts":2,"fg":1,"statsChecked":"2026-07-07T18:28:14.975Z"}},"seasons":[{"sid":"26df4252","regs":[{"tid":"c51fa733","stats":{"gp":3,"pts":2,"fg":1}},{"tid":"c51fa733","tn":"","gid":"38284ad9","gn":"Senior Women","div":null,"stats":{"gp":3,"pts":2,"fg":1}}]}],"teams":[],"updatedAt":"2026-07-07T18:04:37.434Z","records":{"maxGamePTS":{"v":2,"gameKey":"54c4147a","sid":"26df4252"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "7cd69d80-8449-4789-af65-26fbec62e81a",
+  "name": "Mikaylee Smee",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 3,
+      "pts": 2,
+      "fg": 1,
+      "statsChecked": "2026-07-07T18:28:14.975Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "26df4252",
+      "regs": [
+        {
+          "tid": "c51fa733",
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1
+          },
+          "gid": "38284ad9",
+          "gn": "Senior Women"
+        },
+        {
+          "tid": "c51fa733",
+          "tn": "",
+          "gid": "38284ad9",
+          "gn": "Senior Women",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 2,
+            "fg": 1
+          }
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "c51fa733",
+      "sid": "26df4252",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:04:37.434Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "54c4147a",
+      "sid": "26df4252"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:13.724Z"
+}

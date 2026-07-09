@@ -1,1 +1,171 @@
-{"uuid":"80b4700d-1b06-4690-af9a-ba04033df2f0","name":"Finn Falconer","gender":"Men","sports":{"Basketball":{"gp":33,"pts":52,"fouls":14,"fg":17,"threePt":6,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.33,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":1,"wins":8,"losses":24,"draws":1,"winPct":0.24,"statsChecked":"2026-07-09T18:31:25.834Z"}},"seasons":[{"sid":"f4e486df","sn":"Summer 2025/26","regs":[{"tid":"380430b8","tn":"Pokies Elite","gid":"0afdbd12","gn":"Thursday Senior Men Open Cockatoo","age":"Senior","div":null,"stats":{"gp":13,"fouls":5,"fg":5,"pts":10,"wins":2,"losses":11}}]},{"sid":"ebf91dd0","sn":"Winter 2025","regs":[{"tid":"70233e92","tn":"Pokies Elite","gid":"12024cf2","gn":"Thursday Senior Men Open Cockatoo","age":"Senior","div":null,"stats":{"gp":16,"fouls":8,"fg":9,"threePt":6,"pts":36,"finals":1,"gfApps":1,"wins":6,"losses":9,"draws":1}}]},{"sid":"2ed40819","regs":[{"tid":"f1021b1e","stats":{"gp":4,"pts":6,"fg":3,"fouls":1,"losses":2}},{"tid":"f1021b1e","tn":"","gid":"e6be7e0f","gn":"Thursday Senior Men Open COCKATOO STADIUM","div":null,"stats":{"gp":4,"pts":6,"fg":3,"fouls":1,"losses":2}}]}],"updatedAt":"2026-07-09T18:08:12.377Z","teams":[{"tid":"f1021b1e","sid":"2ed40819","status":"ACTIVE"},{"tid":"380430b8","sid":"f4e486df","status":"COMPLETED"},{"tid":"70233e92","sid":"ebf91dd0","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:08:29.859Z","records":{"maxGamePTS":{"v":6,"gameKey":"9dcb52a9","sid":"ebf91dd0"},"maxGameThreePt":{"v":1,"gameKey":"fc4b1d27","sid":"ebf91dd0"}},"games":["099d91ab","0beabd77","1211ee9c","16640dbf","19e72e41","2996f575","2c50e259","326d75ea","4ad5438f","4bf6e5fd","603dcd13","60447285","682ed569","69d22a84","6e9c6582","716fcaeb","82842f69","95677d54","98b599cf","9cb98f14","9dcb52a9","b27d488d","c37a9aab","c497854d","cdb614f8","d00fd6ad","d4d1ba27","d9dc8f5a","d9def3da","e1c55238","fc4b1d27"]}
+{
+  "uuid": "80b4700d-1b06-4690-af9a-ba04033df2f0",
+  "name": "Finn Falconer",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 33,
+      "pts": 52,
+      "fouls": 14,
+      "fg": 17,
+      "threePt": 6,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.33,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "wins": 8,
+      "losses": 24,
+      "draws": 1,
+      "winPct": 0.24,
+      "statsChecked": "2026-07-09T18:31:25.834Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "f4e486df",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "380430b8",
+          "tn": "Pokies Elite",
+          "gid": "0afdbd12",
+          "gn": "Thursday Senior Men Open Cockatoo",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "fouls": 5,
+            "fg": 5,
+            "pts": 10,
+            "wins": 2,
+            "losses": 11
+          }
+        }
+      ]
+    },
+    {
+      "sid": "ebf91dd0",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "70233e92",
+          "tn": "Pokies Elite",
+          "gid": "12024cf2",
+          "gn": "Thursday Senior Men Open Cockatoo",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 8,
+            "fg": 9,
+            "threePt": 6,
+            "pts": 36,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 9,
+            "draws": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "2ed40819",
+      "regs": [
+        {
+          "tid": "f1021b1e",
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 1,
+            "losses": 2
+          },
+          "gid": "e6be7e0f",
+          "gn": "Thursday Senior Men Open COCKATOO STADIUM"
+        },
+        {
+          "tid": "f1021b1e",
+          "tn": "",
+          "gid": "e6be7e0f",
+          "gn": "Thursday Senior Men Open COCKATOO STADIUM",
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 1,
+            "losses": 2
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:08:12.377Z",
+  "teams": [
+    {
+      "tid": "380430b8",
+      "sid": "f4e486df",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70233e92",
+      "sid": "ebf91dd0",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f1021b1e",
+      "sid": "2ed40819",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:13.967Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "9dcb52a9",
+      "sid": "ebf91dd0"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "fc4b1d27",
+      "sid": "ebf91dd0"
+    }
+  },
+  "games": [
+    "099d91ab",
+    "0beabd77",
+    "1211ee9c",
+    "16640dbf",
+    "19e72e41",
+    "2996f575",
+    "2c50e259",
+    "326d75ea",
+    "4ad5438f",
+    "4bf6e5fd",
+    "603dcd13",
+    "60447285",
+    "682ed569",
+    "69d22a84",
+    "6e9c6582",
+    "716fcaeb",
+    "82842f69",
+    "95677d54",
+    "98b599cf",
+    "9cb98f14",
+    "9dcb52a9",
+    "b27d488d",
+    "c37a9aab",
+    "c497854d",
+    "cdb614f8",
+    "d00fd6ad",
+    "d4d1ba27",
+    "d9dc8f5a",
+    "d9def3da",
+    "e1c55238",
+    "fc4b1d27"
+  ]
+}

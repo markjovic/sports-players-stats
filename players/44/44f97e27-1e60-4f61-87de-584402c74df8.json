@@ -1,1 +1,336 @@
-{"uuid":"44f97e27-1e60-4f61-87de-584402c74df8","name":"Olive Waters","gender":"Girls","sports":{"Basketball":{"gp":42,"pts":417,"fouls":85,"fg":115,"ft":103,"threePt":28,"finals":6,"gfApps":5,"gfWins":2,"finalsPerSeason":0.86,"foulOuts":{},"maxGamePTS":31,"maxGameThreePt":6,"wins":17,"losses":25,"winPct":0.4,"statsChecked":"2026-07-05T15:08:52.995Z"}},"seasons":[{"sid":"236e1a46","sn":"2025","club":"Manly Warringah Sea Eagles Basketball Club","regs":[{"tid":"d2324849","tn":"Manly Warringah U16 Girls","gid":"0156a611","gn":"U16 Girls NJC","age":"U16","div":null,"stats":{"gp":6,"fouls":20,"ft":11,"fg":9,"threePt":8,"pts":53,"finals":1,"gfApps":1,"wins":3,"losses":3,"gfWins":1}}]},{"sid":"89fdb2be","sn":"2025","club":"New South Wales","regs":[{"tid":"8d5e0f53","tn":"U15 Girls NSW Metro","gid":"f639e1dc","gn":"U15 Girls","age":"U15","div":null,"stats":{"gp":7,"fouls":15,"ft":28,"fg":21,"threePt":1,"pts":73,"finals":1,"wins":4,"losses":3}}]},{"sid":"56bad6ef","sn":"2024","club":"Manly Warringah Sea Eagles Basketball Club","regs":[{"tid":"904eda9e","tn":"Manly Warringah U14 Girls","gid":"1d3907a5","gn":"U14 Girls NJC","age":"U14","div":null,"stats":{"gp":6,"fouls":16,"ft":19,"fg":31,"threePt":7,"pts":102,"finals":1,"gfApps":1,"wins":2,"losses":4,"gfWins":1}}]},{"sid":"a8605f30","sn":"2024","club":"New South Wales","regs":[{"tid":"1cb2858e","tn":"U14 Girls NSW Metro White","gid":"ab79ad03","gn":"U14 Girls","age":"U14","div":null,"stats":{"gp":6,"fouls":14,"ft":13,"fg":12,"pts":37,"finals":1,"gfApps":1,"wins":1,"losses":5}}]},{"sid":"1b51c73f","sn":"2023","regs":[{"tid":"d190c6bb","tn":"Manly Warringah Sea Eagles U14 Girls 1","gid":"2820472f","gn":"GIRLS UNDER 14 AR","age":null,"div":null,"stats":{"gp":5,"ft":5,"fg":7,"pts":19,"wins":3,"losses":2}}]},{"sid":"89870d33","sn":"2022","club":"Manly Warringah Sea Eagles Basketball Club","regs":[{"tid":"cfb36486","tn":"Manly Warringah U12 Girls","gid":"14c5d962","gn":"U12 Girls NJC","age":"U12","div":null,"stats":{"gp":6,"fouls":10,"ft":10,"fg":9,"pts":28,"finals":1,"gfApps":1,"losses":6}}]},{"sid":"10ee56a5","regs":[{"tid":"0def7720","stats":{"wins":4,"losses":2,"finals":1,"gfApps":1,"gp":6,"pts":105,"fg":26,"ft":17,"threePt":12,"fouls":10}}]}],"updatedAt":"2026-06-01T11:29:12.667Z","teams":[{"tid":"0def7720","sid":"10ee56a5","status":"UPCOMING"},{"tid":"d2324849","sid":"236e1a46","status":"COMPLETED"},{"tid":"8d5e0f53","sid":"89fdb2be","status":"COMPLETED"},{"tid":"904eda9e","sid":"56bad6ef","status":"COMPLETED"},{"tid":"e27c1b7e","sid":"8630ad4c","status":"COMPLETED"},{"tid":"1cb2858e","sid":"a8605f30","status":"COMPLETED"},{"tid":"d190c6bb","sid":"1b51c73f","status":"COMPLETED"},{"tid":"cfb36486","sid":"89870d33","status":"COMPLETED"},{"tid":"a4248120","sid":"4d3f698f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:25:05.584Z","records":{"maxGamePTS":{"v":31,"gameKey":"87b397b2","sid":"10ee56a5"},"maxGameThreePt":{"v":6,"gameKey":"87b397b2","sid":"10ee56a5"}},"games":["0d1f09ee","1f2c8f13","20ebe5d5","23149990","24e84839","298751a8","29df8d75","2a2d1f78","2ea374c3","3085595f","3899f51f","44638291","458ef540","52a096e0","54cf6c3a","5f674778","5fc0ff78","741e20d0","77dd9e97","7921d4e7","7998b1f7","7afc15a4","7c70e7e0","7e98cca5","809ccb7a","87a63c30","87b397b2","8b7409d7","92d41709","95080e52","9b8f9e29","9e42e8a7","9e453b41","afc9c863","bf5de802","c07524fc","cdd33707","d3f40783","e41a80e7","f3a01e18","faec7cf6","fb11f744"]}
+{
+  "uuid": "44f97e27-1e60-4f61-87de-584402c74df8",
+  "name": "Olive Waters",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 42,
+      "pts": 417,
+      "fouls": 85,
+      "fg": 115,
+      "ft": 103,
+      "threePt": 28,
+      "finals": 6,
+      "gfApps": 5,
+      "gfWins": 2,
+      "finalsPerSeason": 0.86,
+      "foulOuts": {},
+      "maxGamePTS": 31,
+      "maxGameThreePt": 6,
+      "wins": 17,
+      "losses": 25,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:08:52.995Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "236e1a46",
+      "sn": "2025",
+      "club": "Manly Warringah Sea Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "d2324849",
+          "tn": "Manly Warringah U16 Girls",
+          "gid": "0156a611",
+          "gn": "U16 Girls NJC",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 20,
+            "ft": 11,
+            "fg": 9,
+            "threePt": 8,
+            "pts": 53,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 3,
+            "losses": 3,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89fdb2be",
+      "sn": "2025",
+      "club": "New South Wales",
+      "regs": [
+        {
+          "tid": "8d5e0f53",
+          "tn": "U15 Girls NSW Metro",
+          "gid": "f639e1dc",
+          "gn": "U15 Girls",
+          "age": "U15",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 15,
+            "ft": 28,
+            "fg": 21,
+            "threePt": 1,
+            "pts": 73,
+            "finals": 1,
+            "wins": 4,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "56bad6ef",
+      "sn": "2024",
+      "club": "Manly Warringah Sea Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "904eda9e",
+          "tn": "Manly Warringah U14 Girls",
+          "gid": "1d3907a5",
+          "gn": "U14 Girls NJC",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 16,
+            "ft": 19,
+            "fg": 31,
+            "threePt": 7,
+            "pts": 102,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 2,
+            "losses": 4,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "a8605f30",
+      "sn": "2024",
+      "club": "New South Wales",
+      "regs": [
+        {
+          "tid": "1cb2858e",
+          "tn": "U14 Girls NSW Metro White",
+          "gid": "ab79ad03",
+          "gn": "U14 Girls",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 14,
+            "ft": 13,
+            "fg": 12,
+            "pts": 37,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 1,
+            "losses": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1b51c73f",
+      "sn": "2023",
+      "regs": [
+        {
+          "tid": "d190c6bb",
+          "tn": "Manly Warringah Sea Eagles U14 Girls 1",
+          "gid": "2820472f",
+          "gn": "GIRLS UNDER 14 AR",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "ft": 5,
+            "fg": 7,
+            "pts": 19,
+            "wins": 3,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "89870d33",
+      "sn": "2022",
+      "club": "Manly Warringah Sea Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "cfb36486",
+          "tn": "Manly Warringah U12 Girls",
+          "gid": "14c5d962",
+          "gn": "U12 Girls NJC",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 6,
+            "fouls": 10,
+            "ft": 10,
+            "fg": 9,
+            "pts": 28,
+            "finals": 1,
+            "gfApps": 1,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "10ee56a5",
+      "regs": [
+        {
+          "tid": "0def7720",
+          "stats": {
+            "wins": 4,
+            "losses": 2,
+            "finals": 1,
+            "gfApps": 1,
+            "gp": 6,
+            "pts": 105,
+            "fg": 26,
+            "ft": 17,
+            "threePt": 12,
+            "fouls": 10
+          },
+          "gid": "95147a64",
+          "gn": "U16 Girls NJC"
+        }
+      ]
+    },
+    {
+      "sid": "8630ad4c",
+      "sn": "2024",
+      "regs": [
+        {
+          "tid": "e27c1b7e",
+          "tn": "ZZZ ***WITHDRAWN*** Manly Warringah Sea Eagles U14 Girls JPL Naomi [CLASSIC - 17.05.24]",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "4d3f698f",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "a4248120",
+          "tn": "Manly Warringah - 12 Girls",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:29:12.667Z",
+  "teams": [
+    {
+      "tid": "d2324849",
+      "sid": "236e1a46",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8d5e0f53",
+      "sid": "89fdb2be",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "904eda9e",
+      "sid": "56bad6ef",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1cb2858e",
+      "sid": "a8605f30",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d190c6bb",
+      "sid": "1b51c73f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "cfb36486",
+      "sid": "89870d33",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "0def7720",
+      "sid": "10ee56a5",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e27c1b7e",
+      "sid": "8630ad4c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a4248120",
+      "sid": "4d3f698f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.102Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 31,
+      "gameKey": "87b397b2",
+      "sid": "10ee56a5"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "87b397b2",
+      "sid": "10ee56a5"
+    }
+  },
+  "games": [
+    "0d1f09ee",
+    "1f2c8f13",
+    "20ebe5d5",
+    "23149990",
+    "24e84839",
+    "298751a8",
+    "29df8d75",
+    "2a2d1f78",
+    "2ea374c3",
+    "3085595f",
+    "3899f51f",
+    "44638291",
+    "458ef540",
+    "52a096e0",
+    "54cf6c3a",
+    "5f674778",
+    "5fc0ff78",
+    "741e20d0",
+    "77dd9e97",
+    "7921d4e7",
+    "7998b1f7",
+    "7afc15a4",
+    "7c70e7e0",
+    "7e98cca5",
+    "809ccb7a",
+    "87a63c30",
+    "87b397b2",
+    "8b7409d7",
+    "92d41709",
+    "95080e52",
+    "9b8f9e29",
+    "9e42e8a7",
+    "9e453b41",
+    "afc9c863",
+    "bf5de802",
+    "c07524fc",
+    "cdd33707",
+    "d3f40783",
+    "e41a80e7",
+    "f3a01e18",
+    "faec7cf6",
+    "fb11f744"
+  ]
+}

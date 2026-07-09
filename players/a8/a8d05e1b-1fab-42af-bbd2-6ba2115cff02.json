@@ -1,1 +1,122 @@
-{"uuid":"a8d05e1b-1fab-42af-bbd2-6ba2115cff02","name":"Liam Foo","gender":"Men","sports":{"Basketball":{"gp":19,"pts":28,"fouls":20,"fg":3,"ft":2,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":22,"losses":10,"draws":2,"winPct":0.65,"statsChecked":"2026-07-05T14:57:48.172Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"de1e9e56","tn":"Sniper Gang","gid":"36534163","gn":"Wednesday Open Men Section 2","age":"Senior","div":null,"stats":{"gp":19,"fouls":20,"ft":2,"fg":3,"pts":28,"wins":11,"losses":5,"draws":1}},{"tid":"de1e9e56","tn":"Sniper Gang","gid":"9d01aa3e","gn":"Wednesday Open Men Section 3","age":"Senior","div":null,"stats":{"gp":19,"pts":28,"wins":11,"losses":5,"draws":1,"fg":3,"ft":2,"fouls":20}}]}],"updatedAt":"2026-06-01T11:33:13.151Z","teams":[{"tid":"de1e9e56","sid":"5593103d","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:33:18.636Z","records":{"maxGamePTS":{"v":6,"gameKey":"8b2bab65","sid":"5593103d"},"maxGameThreePt":{"v":null}},"games":["1bcb1490","1c6ac2cc","273c29a4","38fa420d","42380b99","44b5143f","4d4d6256","782259a4","843a12e8","8b2bab65","92531491","94ee9784","96f27152","97f7040a","aae89eb8","cd9e847f","eb4ed1b8"]}
+{
+  "uuid": "a8d05e1b-1fab-42af-bbd2-6ba2115cff02",
+  "name": "Liam Foo",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 19,
+      "pts": 28,
+      "fouls": 20,
+      "fg": 3,
+      "ft": 2,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 22,
+      "losses": 10,
+      "draws": 2,
+      "winPct": 0.65,
+      "statsChecked": "2026-07-05T14:57:48.172Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "de1e9e56",
+          "tn": "Sniper Gang",
+          "gid": "36534163",
+          "gn": "Wednesday Open Men Section 2",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "fouls": 20,
+            "ft": 2,
+            "fg": 3,
+            "pts": 28,
+            "wins": 11,
+            "losses": 5,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "de1e9e56",
+          "tn": "Sniper Gang",
+          "gid": "9d01aa3e",
+          "gn": "Wednesday Open Men Section 3",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 19,
+            "pts": 28,
+            "wins": 11,
+            "losses": 5,
+            "draws": 1,
+            "fg": 3,
+            "ft": 2,
+            "fouls": 20
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "3f4b41fc",
+          "tn": "Sniper Gang",
+          "gid": "0c291d05",
+          "gn": "Wednesday Open Men Section 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T11:33:13.151Z",
+  "teams": [
+    {
+      "tid": "de1e9e56",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3f4b41fc",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.707Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "8b2bab65",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "1bcb1490",
+    "1c6ac2cc",
+    "273c29a4",
+    "38fa420d",
+    "42380b99",
+    "44b5143f",
+    "4d4d6256",
+    "782259a4",
+    "843a12e8",
+    "8b2bab65",
+    "92531491",
+    "94ee9784",
+    "96f27152",
+    "97f7040a",
+    "aae89eb8",
+    "cd9e847f",
+    "eb4ed1b8"
+  ]
+}

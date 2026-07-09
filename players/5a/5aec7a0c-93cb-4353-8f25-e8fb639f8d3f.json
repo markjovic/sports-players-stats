@@ -1,1 +1,136 @@
-{"uuid":"5aec7a0c-93cb-4353-8f25-e8fb639f8d3f","name":"Jam Marbani","gender":"Men","sports":{"Basketball":{"gp":10,"pts":41,"fouls":14,"fg":1,"threePt":11,"foulOuts":{},"maxGamePTS":14,"maxGameThreePt":4,"wins":2,"losses":12,"winPct":0.14,"statsChecked":"2026-07-09T18:31:00.863Z"}},"seasons":[{"sid":"5593103d","sn":"Autumn 2026","regs":[{"tid":"7ca43d50","tn":"Ben Cousins","gid":"39248390","gn":"Thursday Open Men Section 04","age":"Senior","div":null,"stats":{"gp":9,"fouls":12,"threePt":9,"pts":35,"fg":1,"wins":1,"losses":6}},{"tid":"7ca43d50","tn":"Ben Cousins","gid":"2446d760","gn":"Thursday Open Men Section 03","age":"Senior","div":null,"stats":{"gp":9,"fouls":12,"pts":35,"wins":1,"losses":6,"fg":1,"threePt":9}}]},{"sid":"297562bc","sn":"Spring 2026","club":"Waverley Basketball Association","regs":[{"tid":"035dae2c","tn":"","gid":"678de19a","gn":"Thursday Open Men Section 5","div":null,"stats":{"gp":1,"pts":6,"threePt":2,"fouls":2}}]}],"updatedAt":"2026-07-09T18:09:17.283Z","teams":[{"tid":"7ca43d50","sid":"5593103d","status":"ACTIVE"},{"tid":"7ca43d50","sid":"5593103d","status":"ACTIVE"},{"tid":"1d2b6bd0","sid":"fab2be4d","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:37:01.706Z","records":{"maxGamePTS":{"v":14,"gameKey":"c7f59585","sid":"5593103d"},"maxGameThreePt":{"v":4,"gameKey":"c7f59585","sid":"5593103d"}},"games":["360df57c","3e65b5e6","8e4419aa","9f1520f6","a3f2e63e","a61cf1ba","becb7cd9"]}
+{
+  "uuid": "5aec7a0c-93cb-4353-8f25-e8fb639f8d3f",
+  "name": "Jam Marbani",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 41,
+      "fouls": 14,
+      "fg": 1,
+      "threePt": 11,
+      "foulOuts": {},
+      "maxGamePTS": 14,
+      "maxGameThreePt": 4,
+      "wins": 2,
+      "losses": 12,
+      "winPct": 0.14,
+      "statsChecked": "2026-07-09T18:31:00.863Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "5593103d",
+      "sn": "Autumn 2026",
+      "regs": [
+        {
+          "tid": "7ca43d50",
+          "tn": "Ben Cousins",
+          "gid": "39248390",
+          "gn": "Thursday Open Men Section 04",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "threePt": 9,
+            "pts": 35,
+            "fg": 1,
+            "wins": 1,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "7ca43d50",
+          "tn": "Ben Cousins",
+          "gid": "2446d760",
+          "gn": "Thursday Open Men Section 03",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 12,
+            "pts": 35,
+            "wins": 1,
+            "losses": 6,
+            "fg": 1,
+            "threePt": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "297562bc",
+      "sn": "Spring 2026",
+      "club": "Waverley Basketball Association",
+      "regs": [
+        {
+          "tid": "035dae2c",
+          "tn": "",
+          "gid": "678de19a",
+          "gn": "Thursday Open Men Section 5",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 6,
+            "threePt": 2,
+            "fouls": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "fab2be4d",
+      "sn": "Spring 2025",
+      "regs": [
+        {
+          "tid": "1d2b6bd0",
+          "tn": "Ben Cousins",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-09T18:09:17.283Z",
+  "teams": [
+    {
+      "tid": "7ca43d50",
+      "sid": "5593103d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "035dae2c",
+      "sid": "297562bc",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1d2b6bd0",
+      "sid": "fab2be4d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:11.558Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "c7f59585",
+      "sid": "5593103d"
+    },
+    "maxGameThreePt": {
+      "v": 4,
+      "gameKey": "c7f59585",
+      "sid": "5593103d"
+    }
+  },
+  "games": [
+    "360df57c",
+    "3e65b5e6",
+    "8e4419aa",
+    "9f1520f6",
+    "a3f2e63e",
+    "a61cf1ba",
+    "becb7cd9"
+  ]
+}

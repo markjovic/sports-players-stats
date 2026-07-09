@@ -1,1 +1,189 @@
-{"uuid":"0bdb1fad-1a3f-4e88-b4e6-3df7334a4219","name":"Summer Moody","gender":"Girls","sports":{"Basketball":{"gp":29,"pts":102,"fouls":24,"fg":44,"ft":14,"foulOuts":{},"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.5,"maxGamePTS":13,"maxGameThreePt":null,"wins":28,"losses":28,"winPct":0.48,"draws":2,"statsChecked":"2026-07-05T15:20:30.583Z"}},"seasons":[{"sid":"d868771d","sn":"Autumn 2026","club":"Apollo Rockets Basketball Club","regs":[{"tid":"b93d2acb","tn":"Apollo U12 Girls 4","gid":"2650149c","gn":"Saturday U12 Girls D1","age":"U12","div":"D1","stats":{"gp":13,"pts":49,"fg":22,"ft":5,"fouls":8,"wins":3,"losses":9,"draws":1}},{"tid":"b93d2acb","tn":"Apollo U12 Girls 4","gid":"7bfdf93b","gn":"Saturday U12 Girls Grading Group 3","age":"U12","div":null,"stats":{"gp":13,"pts":49,"fg":22,"fouls":8,"wins":3,"losses":9,"draws":1,"ft":5}}]},{"sid":"f57b7901","sn":"Spring 2025","club":"Apollo Rockets Basketball Club","regs":[{"tid":"d1b4f27d","tn":"Apollo U10 Girls 2","gid":"81f67a72","gn":"Saturday U10 Girls B2","age":"U10","div":"B2","stats":{"gp":16,"pts":53,"fg":22,"ft":9,"fouls":16,"finals":1,"gfApps":1,"wins":11,"losses":5}},{"tid":"d1b4f27d","tn":"Apollo U10 Girls 2","gid":"8602f943","gn":"Saturday U10 Girls Grading Group 1","age":"U10","div":null,"stats":{"gp":16,"pts":53,"fg":22,"fouls":16,"finals":1,"gfApps":1,"wins":11,"losses":5,"ft":9}}]}],"updatedAt":"2026-06-01T06:22:33.232Z","teams":[{"tid":"b93d2acb","sid":"d868771d","status":"ACTIVE"},{"tid":"d1b4f27d","sid":"f57b7901","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:17.347Z","records":{"maxGamePTS":{"v":13,"gameKey":"26d183cf","sid":"d868771d"},"maxGameThreePt":{"v":null}},"games":["0a2b1522","11621d52","1cfbb908","257ca158","26d183cf","322ddf5e","3459ebbd","349c1d09","5f8becd7","69054f95","73c1df0c","7cd6f69e","935cbb87","95e12456","9bcef175","9d6ca62c","9fe4742b","a00f81c9","a06b24af","a6686e86","a84e15a9","af57a0db","b3c361a5","bb72196b","c178cef5","c9d2b27d","cd48c3a5","ecf6c756","fc36fb10"]}
+{
+  "uuid": "0bdb1fad-1a3f-4e88-b4e6-3df7334a4219",
+  "name": "Summer Moody",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 29,
+      "pts": 102,
+      "fouls": 24,
+      "fg": 44,
+      "ft": 14,
+      "foulOuts": {},
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.5,
+      "maxGamePTS": 13,
+      "maxGameThreePt": null,
+      "wins": 28,
+      "losses": 28,
+      "winPct": 0.48,
+      "draws": 2,
+      "statsChecked": "2026-07-05T15:20:30.583Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d868771d",
+      "sn": "Autumn 2026",
+      "club": "Apollo Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "b93d2acb",
+          "tn": "Apollo U12 Girls 4",
+          "gid": "2650149c",
+          "gn": "Saturday U12 Girls D1",
+          "age": "U12",
+          "div": "D1",
+          "stats": {
+            "gp": 13,
+            "pts": 49,
+            "fg": 22,
+            "ft": 5,
+            "fouls": 8,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "b93d2acb",
+          "tn": "Apollo U12 Girls 4",
+          "gid": "7bfdf93b",
+          "gn": "Saturday U12 Girls Grading Group 3",
+          "age": "U12",
+          "div": null,
+          "stats": {
+            "gp": 13,
+            "pts": 49,
+            "fg": 22,
+            "fouls": 8,
+            "wins": 3,
+            "losses": 9,
+            "draws": 1,
+            "ft": 5
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f57b7901",
+      "sn": "Spring 2025",
+      "club": "Apollo Rockets Basketball Club",
+      "regs": [
+        {
+          "tid": "d1b4f27d",
+          "tn": "Apollo U10 Girls 2",
+          "gid": "81f67a72",
+          "gn": "Saturday U10 Girls B2",
+          "age": "U10",
+          "div": "B2",
+          "stats": {
+            "gp": 16,
+            "pts": 53,
+            "fg": 22,
+            "ft": 9,
+            "fouls": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 5
+          }
+        },
+        {
+          "tid": "d1b4f27d",
+          "tn": "Apollo U10 Girls 2",
+          "gid": "8602f943",
+          "gn": "Saturday U10 Girls Grading Group 1",
+          "age": "U10",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "pts": 53,
+            "fg": 22,
+            "fouls": 16,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 11,
+            "losses": 5,
+            "ft": 9
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1c70d59d",
+      "sn": "Spring 2026",
+      "regs": [
+        {
+          "tid": "e218c029",
+          "tn": "Apollo U12 Girls 2",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-01T06:22:33.232Z",
+  "teams": [
+    {
+      "tid": "b93d2acb",
+      "sid": "d868771d",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d1b4f27d",
+      "sid": "f57b7901",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e218c029",
+      "sid": "1c70d59d",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.568Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 13,
+      "gameKey": "26d183cf",
+      "sid": "d868771d"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "0a2b1522",
+    "11621d52",
+    "1cfbb908",
+    "257ca158",
+    "26d183cf",
+    "322ddf5e",
+    "3459ebbd",
+    "349c1d09",
+    "5f8becd7",
+    "69054f95",
+    "73c1df0c",
+    "7cd6f69e",
+    "935cbb87",
+    "95e12456",
+    "9bcef175",
+    "9d6ca62c",
+    "9fe4742b",
+    "a00f81c9",
+    "a06b24af",
+    "a6686e86",
+    "a84e15a9",
+    "af57a0db",
+    "b3c361a5",
+    "bb72196b",
+    "c178cef5",
+    "c9d2b27d",
+    "cd48c3a5",
+    "ecf6c756",
+    "fc36fb10"
+  ]
+}

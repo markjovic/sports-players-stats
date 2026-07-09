@@ -1,1 +1,77 @@
-{"uuid":"aaedece0-b597-4c4b-85eb-34037dbac4a5","name":"Remy Parker","gender":"Boys","sports":{"Basketball":{"gp":8,"pts":54,"fouls":19,"fg":26,"ft":2,"foulOuts":{"1ae60211":1},"maxGamePTS":12,"maxGameThreePt":null,"wins":3,"losses":3,"winPct":0.5,"statsChecked":"2026-07-05T14:29:41.553Z"}},"seasons":[{"sid":"1ae60211","sn":"Winter 2026","club":"Hawthorn Magic Basketball Club","regs":[{"tid":"988788d2","tn":"Hawthorn U09 Boys 10","gid":"79d9e648","gn":"Boys U09 D Grading","age":"U09","div":null,"stats":{"gp":8,"fouls":19,"ft":2,"fg":26,"pts":54,"foulOuts":1,"wins":3,"losses":3}}]}],"updatedAt":"2026-05-31T02:36:32.459Z","teams":[{"tid":"988788d2","sid":"1ae60211","status":"ACTIVE"}],"teamsUpdatedAt":"2026-06-05T13:34:03.070Z","games":["0e9807e4","1fa0bb86","272c01f0","51668254","67d25510","db00fc0c"],"records":{"maxGamePTS":{"v":12,"gameKey":"db00fc0c","sid":"1ae60211"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "aaedece0-b597-4c4b-85eb-34037dbac4a5",
+  "name": "Remy Parker",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 8,
+      "pts": 54,
+      "fouls": 19,
+      "fg": 26,
+      "ft": 2,
+      "foulOuts": {
+        "1ae60211": 1
+      },
+      "maxGamePTS": 12,
+      "maxGameThreePt": null,
+      "wins": 3,
+      "losses": 3,
+      "winPct": 0.5,
+      "statsChecked": "2026-07-05T14:29:41.553Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "1ae60211",
+      "sn": "Winter 2026",
+      "club": "Hawthorn Magic Basketball Club",
+      "regs": [
+        {
+          "tid": "988788d2",
+          "tn": "Hawthorn U09 Boys 10",
+          "gid": "df7209d7",
+          "gn": "Boys U09 DB",
+          "age": "U09",
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 19,
+            "ft": 2,
+            "fg": 26,
+            "pts": 54,
+            "foulOuts": 1,
+            "wins": 3,
+            "losses": 3
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T02:36:32.459Z",
+  "teams": [
+    {
+      "tid": "988788d2",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:15.837Z",
+  "games": [
+    "0e9807e4",
+    "1fa0bb86",
+    "272c01f0",
+    "51668254",
+    "67d25510",
+    "db00fc0c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 12,
+      "gameKey": "db00fc0c",
+      "sid": "1ae60211"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

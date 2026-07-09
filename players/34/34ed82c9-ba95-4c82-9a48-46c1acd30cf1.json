@@ -1,1 +1,88 @@
-{"uuid":"34ed82c9-ba95-4c82-9a48-46c1acd30cf1","gender":null,"sports":{"Basketball":{"gp":6,"pts":14,"fouls":2,"fg":7,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":1,"foulOuts":{},"maxGamePTS":6,"maxGameThreePt":null,"wins":4,"losses":2,"winPct":0.67,"statsChecked":"2026-07-05T15:47:48.800Z"}},"seasons":[{"sid":"02f949c6","sn":"Summer 2020/21","club":"Alcheringa Saints Basketball Club","regs":[{"tid":"eed4a17c","tn":"SAINTS Clarke","gid":"1fbfa94a","gn":"Under 18 Boys Division 1","stats":{"gp":6,"pts":14,"fouls":2,"fg":7,"finals":1,"gfApps":1,"wins":4,"losses":2}}]}],"updatedAt":"2026-06-11T23:38:08.853Z","records":{"maxGamePTS":{"v":6,"gameKey":"237f17cb","sid":"02f949c6"},"maxGameThreePt":{"v":null}},"games":["10ccfa0c","237f17cb","8fa17c1c","bf3a0f5a","d1f44ff7","d7b186cb"],"name":"Summer 2020/21"}
+{
+  "uuid": "34ed82c9-ba95-4c82-9a48-46c1acd30cf1",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 6,
+      "pts": 14,
+      "fouls": 2,
+      "fg": 7,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 1,
+      "foulOuts": {},
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "wins": 4,
+      "losses": 2,
+      "winPct": 0.67,
+      "statsChecked": "2026-07-05T15:47:48.800Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "02f949c6",
+      "sn": "Summer 2020/21",
+      "club": "Alcheringa Saints Basketball Club",
+      "regs": [
+        {
+          "tid": "eed4a17c",
+          "tn": "SAINTS Clarke",
+          "gid": "1fbfa94a",
+          "gn": "Under 18 Boys Division 1",
+          "stats": {
+            "gp": 6,
+            "pts": 14,
+            "fouls": 2,
+            "fg": 7,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 4,
+            "losses": 2
+          }
+        },
+        {
+          "tid": "64164232",
+          "tn": "SAINTS Men A Men 2",
+          "gid": "327906bf",
+          "gn": "A Men",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:38:08.853Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "237f17cb",
+      "sid": "02f949c6"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "10ccfa0c",
+    "237f17cb",
+    "8fa17c1c",
+    "bf3a0f5a",
+    "d1f44ff7",
+    "d7b186cb"
+  ],
+  "name": "Summer 2020/21",
+  "teams": [
+    {
+      "tid": "eed4a17c",
+      "sid": "02f949c6",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "64164232",
+      "sid": "02f949c6",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:09.073Z"
+}

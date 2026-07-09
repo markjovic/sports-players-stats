@@ -1,1 +1,61 @@
-{"uuid":"4efd61b1-2f0c-4ef2-b32a-4efe75f119b8","name":"Mason Garden","sports":{"Basketball":{"maxGamePTS":1,"maxGameThreePt":null,"foulOuts":{},"gp":9,"pts":1,"ft":1,"statsChecked":"2026-07-08T17:52:05.796Z"}},"seasons":[{"sid":"ab2e3371","regs":[{"tid":"441dc546"}]},{"sid":"d18f9d0c","regs":[{"tid":"b37e3a99"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":1,"gameKey":"e4a267f5","sid":"ab2e3371"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "4efd61b1-2f0c-4ef2-b32a-4efe75f119b8",
+  "name": "Mason Garden",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 1,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 9,
+      "pts": 1,
+      "ft": 1,
+      "statsChecked": "2026-07-08T17:52:05.796Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ab2e3371",
+      "regs": [
+        {
+          "tid": "441dc546",
+          "gid": "b639828b",
+          "gn": "U13 Boys B Grade"
+        }
+      ]
+    },
+    {
+      "sid": "d18f9d0c",
+      "regs": [
+        {
+          "tid": "b37e3a99",
+          "gid": "301c5645",
+          "gn": "Future Cavs D-League - U12 Boys"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "441dc546",
+      "sid": "ab2e3371",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b37e3a99",
+      "sid": "d18f9d0c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 1,
+      "gameKey": "e4a267f5",
+      "sid": "ab2e3371"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:10.767Z"
+}

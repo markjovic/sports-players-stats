@@ -1,1 +1,123 @@
-{"uuid":"2dda85e7-43a3-414f-97c7-eaed63067290","gender":null,"sports":{"Basketball":{"gp":10,"pts":48,"fouls":10,"fg":8,"ft":2,"threePt":10,"foulOuts":{},"maxGamePTS":10,"maxGameThreePt":3,"wins":5,"losses":2,"winPct":0.71,"statsChecked":"2026-07-05T16:12:42.800Z"}},"seasons":[{"sid":"7aaca544","sn":"Autumn 2021","club":null,"regs":[{"tid":"42a89e1c","tn":"Kilsyth U16 Boys 5","gid":"5f6dd259","gn":"U16 Boys C Grade","stats":{"gp":3,"pts":18,"fouls":6,"fg":5,"ft":2,"threePt":2}}]},{"sid":"e8437d1b","sn":"Summer 2020/21","club":null,"regs":[{"tid":"464cdeb7","tn":"SUPERHUMANS","gid":"34aa1634","gn":"Sunday Open Men Section 3","stats":{"gp":7,"pts":30,"fouls":4,"fg":3,"threePt":8,"wins":5,"losses":2}}]}],"updatedAt":"2026-06-11T23:37:51.005Z","records":{"maxGamePTS":{"v":10,"gameKey":"f0df9cef","sid":"7aaca544"},"maxGameThreePt":{"v":3,"gameKey":"b0bb045c","sid":"e8437d1b"}},"games":["127b6af6","22524d3e","35633c66","596d449a","5c1d5edb","8f26f258","9593f4f6","b0bb045c","b29ad32f","f0df9cef"],"name":"Autumn 2021"}
+{
+  "uuid": "2dda85e7-43a3-414f-97c7-eaed63067290",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 10,
+      "pts": 48,
+      "fouls": 10,
+      "fg": 8,
+      "ft": 2,
+      "threePt": 10,
+      "foulOuts": {},
+      "maxGamePTS": 10,
+      "maxGameThreePt": 3,
+      "wins": 5,
+      "losses": 2,
+      "winPct": 0.71,
+      "statsChecked": "2026-07-05T16:12:42.800Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "7aaca544",
+      "sn": "Autumn 2021",
+      "club": null,
+      "regs": [
+        {
+          "tid": "42a89e1c",
+          "tn": "Kilsyth U16 Boys 5",
+          "gid": "5f6dd259",
+          "gn": "U16 Boys C Grade",
+          "stats": {
+            "gp": 3,
+            "pts": 18,
+            "fouls": 6,
+            "fg": 5,
+            "ft": 2,
+            "threePt": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "e8437d1b",
+      "sn": "Summer 2020/21",
+      "club": null,
+      "regs": [
+        {
+          "tid": "464cdeb7",
+          "tn": "SUPERHUMANS",
+          "gid": "34aa1634",
+          "gn": "Sunday Open Men Section 3",
+          "stats": {
+            "gp": 7,
+            "pts": 30,
+            "fouls": 4,
+            "fg": 3,
+            "threePt": 8,
+            "wins": 5,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5f7e5b50",
+      "sn": "2021",
+      "regs": [
+        {
+          "tid": "e9d3a8ed",
+          "tn": "Kilsyth Cobras 5",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:37:51.005Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "f0df9cef",
+      "sid": "7aaca544"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "b0bb045c",
+      "sid": "e8437d1b"
+    }
+  },
+  "games": [
+    "127b6af6",
+    "22524d3e",
+    "35633c66",
+    "596d449a",
+    "5c1d5edb",
+    "8f26f258",
+    "9593f4f6",
+    "b0bb045c",
+    "b29ad32f",
+    "f0df9cef"
+  ],
+  "name": "Autumn 2021",
+  "teams": [
+    {
+      "tid": "42a89e1c",
+      "sid": "7aaca544",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "464cdeb7",
+      "sid": "e8437d1b",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e9d3a8ed",
+      "sid": "5f7e5b50",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:07.945Z"
+}

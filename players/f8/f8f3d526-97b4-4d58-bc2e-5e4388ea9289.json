@@ -1,1 +1,85 @@
-{"uuid":"f8f3d526-97b4-4d58-bc2e-5e4388ea9289","gender":null,"sports":{"Basketball":{"gp":3,"pts":4,"fouls":2,"fg":2,"foulOuts":{},"maxGamePTS":2,"maxGameThreePt":null,"wins":1,"losses":2,"winPct":0.33,"statsChecked":"2026-07-05T16:15:59.746Z"}},"seasons":[{"sid":"a537e827","sn":"Summer 2021/22","club":null,"regs":[{"tid":"bc37946f","tn":"Maroondah Magic (WC)","gid":"f5cfdb0b","gn":"Thursday Wheelchair Mixed","stats":{"gp":3,"pts":4,"fouls":2,"fg":2,"wins":1,"losses":2}}]}],"updatedAt":"2026-06-11T23:46:29.509Z","games":["411ea01f","b01577bd","c71d3fe1"],"records":{"maxGamePTS":{"v":2,"gameKey":"c71d3fe1","sid":"a537e827"},"maxGameThreePt":{"v":null}},"name":"Summer 2021/22"}
+{
+  "uuid": "f8f3d526-97b4-4d58-bc2e-5e4388ea9289",
+  "gender": null,
+  "sports": {
+    "Basketball": {
+      "gp": 3,
+      "pts": 4,
+      "fouls": 2,
+      "fg": 2,
+      "foulOuts": {},
+      "maxGamePTS": 2,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 2,
+      "winPct": 0.33,
+      "statsChecked": "2026-07-05T16:15:59.746Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "a537e827",
+      "sn": "Summer 2021/22",
+      "club": null,
+      "regs": [
+        {
+          "tid": "bc37946f",
+          "tn": "Maroondah Magic (WC)",
+          "gid": "f5cfdb0b",
+          "gn": "Thursday Wheelchair Mixed",
+          "stats": {
+            "gp": 3,
+            "pts": 4,
+            "fouls": 2,
+            "fg": 2,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "8e2a5f72",
+      "sn": "Winter 2022",
+      "regs": [
+        {
+          "tid": "f0acdc03",
+          "tn": "Maroondah Magic (WC)",
+          "gid": null,
+          "gn": null,
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-11T23:46:29.509Z",
+  "games": [
+    "411ea01f",
+    "b01577bd",
+    "c71d3fe1"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 2,
+      "gameKey": "c71d3fe1",
+      "sid": "a537e827"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "name": "Summer 2021/22",
+  "teams": [
+    {
+      "tid": "bc37946f",
+      "sid": "a537e827",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f0acdc03",
+      "sid": "8e2a5f72",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:17.454Z"
+}

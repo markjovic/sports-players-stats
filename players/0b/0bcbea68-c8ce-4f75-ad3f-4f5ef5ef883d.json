@@ -1,1 +1,261 @@
-{"uuid":"0bcbea68-c8ce-4f75-ad3f-4f5ef5ef883d","name":"Callum Stewart","gender":"Boys","sports":{"Basketball":{"gp":34,"pts":108,"fouls":17,"fg":32,"ft":8,"threePt":12,"foulOuts":{},"maxGamePTS":21,"maxGameThreePt":3,"wins":10,"losses":36,"draws":2,"winPct":0.21,"statsChecked":"2026-07-05T15:46:35.696Z"}},"seasons":[{"sid":"09f9b4c1","sn":"Summer 2024/25","club":"Bobcats Basketball Club","regs":[{"tid":"124aebba","tn":"Bobcats U16 Boys Belmont div 5","gid":"71cd72f0","gn":"(CLUB) Monday U16 Boys 8","age":"U16","div":null,"stats":{"gp":9,"pts":63,"threePt":7,"fg":20,"ft":2,"fouls":6,"wins":1,"losses":7,"draws":1}},{"tid":"124aebba","tn":"Bobcats U16 Boys Belmont div 5","gid":"041e718d","gn":"(CLUB) Monday U16 Boys 7","age":"U16","div":null,"stats":{"gp":9,"pts":63,"threePt":7,"fg":20,"ft":2,"fouls":6,"wins":1,"losses":7,"draws":1}},{"tid":"a9859b1b","tn":"Bobcats U18 Boys Stormz Div 4","gid":"3d9524ff","gn":"(CLUB) Wednesday U18 Boys 6","age":"U18","div":null,"stats":{"gp":7,"pts":13,"fg":5,"fouls":2,"wins":1,"losses":5,"threePt":1}},{"tid":"a9859b1b","tn":"Bobcats U18 Boys Stormz Div 4","gid":"021966ca","gn":"(CLUB) Wednesday U18 Boys 5","age":"U18","div":null,"stats":{"gp":7,"pts":13,"threePt":1,"wins":1,"losses":5,"fg":5,"fouls":2}},{"tid":"590cdced","tn":"Bobcats U18 Boys Panthers div 3","gid":"f7b48a3c","gn":"(CLUB) Wednesday U18 Boys 4","age":"U18","div":null,"stats":{"gp":1,"losses":1}}]},{"sid":"8c47a1de","sn":"Winter 2024","club":"Bobcats Basketball Club","regs":[{"tid":"45b2b46c","tn":"Bobcats U16 Boys Panthers","gid":"9a7f3d6d","gn":"(CLUB) Wednesday U16 Boys 4","age":"U16","div":null,"stats":{"gp":17,"pts":32,"threePt":4,"fg":7,"ft":6,"fouls":9,"wins":6,"losses":11}}]}],"updatedAt":"2026-06-02T02:19:07.552Z","teams":[{"tid":"124aebba","sid":"09f9b4c1","status":"COMPLETED"},{"tid":"353e57a3","sid":"09f9b4c1","status":"COMPLETED"},{"tid":"a9859b1b","sid":"09f9b4c1","status":"COMPLETED"},{"tid":"45b2b46c","sid":"8c47a1de","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T11:55:17.696Z","records":{"maxGamePTS":{"v":21,"gameKey":"e80a6535","sid":"09f9b4c1"},"maxGameThreePt":{"v":3,"gameKey":"e80a6535","sid":"09f9b4c1"}},"games":["1a7f3066","1c2a912d","1e46f961","1f3a364c","202dbcb4","2c6d8c3d","337d075b","33a721b2","34846780","51d753e6","52d7a4ec","5390c6ec","553442be","693a9cf4","7ada6a80","7f7db16d","843b9d43","8e1e7c25","939c9b28","942b9eab","96cf3894","9f1ca67b","a9210bf8","b5a69fc1","bc701fa9","c15fbf6c","d0ed970d","e3827381","e3a08316","e6d2f617","e80a6535","ecfd917f","f8022bc1","fa9f3043"],"gameTids":{"34846780":"45b2b46c","693a9cf4":"124aebba","d0ed970d":"124aebba","52d7a4ec":"124aebba","9f1ca67b":"124aebba","fa9f3043":"124aebba","1e46f961":"124aebba","337d075b":"124aebba","e80a6535":"124aebba","ecfd917f":"124aebba","1a7f3066":"a9859b1b","33a721b2":"a9859b1b","96cf3894":"a9859b1b","7ada6a80":"a9859b1b","1f3a364c":"a9859b1b","939c9b28":"a9859b1b","2c6d8c3d":"a9859b1b","e6d2f617":"590cdced","843b9d43":"45b2b46c","b5a69fc1":"45b2b46c","c15fbf6c":"45b2b46c","51d753e6":"45b2b46c","a9210bf8":"45b2b46c","7f7db16d":"45b2b46c","e3a08316":"45b2b46c","553442be":"45b2b46c","942b9eab":"45b2b46c","e3827381":"45b2b46c","5390c6ec":"45b2b46c","8e1e7c25":"45b2b46c","202dbcb4":"45b2b46c","f8022bc1":"45b2b46c","bc701fa9":"45b2b46c","1c2a912d":"45b2b46c"}}
+{
+  "uuid": "0bcbea68-c8ce-4f75-ad3f-4f5ef5ef883d",
+  "name": "Callum Stewart",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 34,
+      "pts": 108,
+      "fouls": 17,
+      "fg": 32,
+      "ft": 8,
+      "threePt": 12,
+      "foulOuts": {},
+      "maxGamePTS": 21,
+      "maxGameThreePt": 3,
+      "wins": 10,
+      "losses": 36,
+      "draws": 2,
+      "winPct": 0.21,
+      "statsChecked": "2026-07-05T15:46:35.696Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "09f9b4c1",
+      "sn": "Summer 2024/25",
+      "club": "Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "124aebba",
+          "tn": "Bobcats U16 Boys Belmont div 5",
+          "gid": "71cd72f0",
+          "gn": "(CLUB) Monday U16 Boys 8",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 63,
+            "threePt": 7,
+            "fg": 20,
+            "ft": 2,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "124aebba",
+          "tn": "Bobcats U16 Boys Belmont div 5",
+          "gid": "041e718d",
+          "gn": "(CLUB) Monday U16 Boys 7",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "pts": 63,
+            "threePt": 7,
+            "fg": 20,
+            "ft": 2,
+            "fouls": 6,
+            "wins": 1,
+            "losses": 7,
+            "draws": 1
+          }
+        },
+        {
+          "tid": "a9859b1b",
+          "tn": "Bobcats U18 Boys Stormz Div 4",
+          "gid": "3d9524ff",
+          "gn": "(CLUB) Wednesday U18 Boys 6",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 13,
+            "fg": 5,
+            "fouls": 2,
+            "wins": 1,
+            "losses": 5,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "a9859b1b",
+          "tn": "Bobcats U18 Boys Stormz Div 4",
+          "gid": "021966ca",
+          "gn": "(CLUB) Wednesday U18 Boys 5",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "pts": 13,
+            "threePt": 1,
+            "wins": 1,
+            "losses": 5,
+            "fg": 5,
+            "fouls": 2
+          }
+        },
+        {
+          "tid": "590cdced",
+          "tn": "Bobcats U18 Boys Panthers div 3",
+          "gid": "f7b48a3c",
+          "gn": "(CLUB) Wednesday U18 Boys 4",
+          "age": "U18",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "losses": 1
+          }
+        },
+        {
+          "tid": "353e57a3",
+          "tn": "Bobcats U16 Boys Snakes Div 3",
+          "gid": "d6944ad7",
+          "gn": "(CLUB) Monday U16 Boys 3",
+          "stats": {}
+        }
+      ]
+    },
+    {
+      "sid": "8c47a1de",
+      "sn": "Winter 2024",
+      "club": "Bobcats Basketball Club",
+      "regs": [
+        {
+          "tid": "45b2b46c",
+          "tn": "Bobcats U16 Boys Panthers",
+          "gid": "9a7f3d6d",
+          "gn": "(CLUB) Wednesday U16 Boys 4",
+          "age": "U16",
+          "div": null,
+          "stats": {
+            "gp": 17,
+            "pts": 32,
+            "threePt": 4,
+            "fg": 7,
+            "ft": 6,
+            "fouls": 9,
+            "wins": 6,
+            "losses": 11
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-02T02:19:07.552Z",
+  "teams": [
+    {
+      "tid": "124aebba",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a9859b1b",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "590cdced",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "353e57a3",
+      "sid": "09f9b4c1",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "45b2b46c",
+      "sid": "8c47a1de",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:05.552Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "e80a6535",
+      "sid": "09f9b4c1"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "e80a6535",
+      "sid": "09f9b4c1"
+    }
+  },
+  "games": [
+    "1a7f3066",
+    "1c2a912d",
+    "1e46f961",
+    "1f3a364c",
+    "202dbcb4",
+    "2c6d8c3d",
+    "337d075b",
+    "33a721b2",
+    "34846780",
+    "51d753e6",
+    "52d7a4ec",
+    "5390c6ec",
+    "553442be",
+    "693a9cf4",
+    "7ada6a80",
+    "7f7db16d",
+    "843b9d43",
+    "8e1e7c25",
+    "939c9b28",
+    "942b9eab",
+    "96cf3894",
+    "9f1ca67b",
+    "a9210bf8",
+    "b5a69fc1",
+    "bc701fa9",
+    "c15fbf6c",
+    "d0ed970d",
+    "e3827381",
+    "e3a08316",
+    "e6d2f617",
+    "e80a6535",
+    "ecfd917f",
+    "f8022bc1",
+    "fa9f3043"
+  ],
+  "gameTids": {
+    "34846780": "45b2b46c",
+    "693a9cf4": "124aebba",
+    "d0ed970d": "124aebba",
+    "52d7a4ec": "124aebba",
+    "9f1ca67b": "124aebba",
+    "fa9f3043": "124aebba",
+    "1e46f961": "124aebba",
+    "337d075b": "124aebba",
+    "e80a6535": "124aebba",
+    "ecfd917f": "124aebba",
+    "1a7f3066": "a9859b1b",
+    "33a721b2": "a9859b1b",
+    "96cf3894": "a9859b1b",
+    "7ada6a80": "a9859b1b",
+    "1f3a364c": "a9859b1b",
+    "939c9b28": "a9859b1b",
+    "2c6d8c3d": "a9859b1b",
+    "e6d2f617": "590cdced",
+    "843b9d43": "45b2b46c",
+    "b5a69fc1": "45b2b46c",
+    "c15fbf6c": "45b2b46c",
+    "51d753e6": "45b2b46c",
+    "a9210bf8": "45b2b46c",
+    "7f7db16d": "45b2b46c",
+    "e3a08316": "45b2b46c",
+    "553442be": "45b2b46c",
+    "942b9eab": "45b2b46c",
+    "e3827381": "45b2b46c",
+    "5390c6ec": "45b2b46c",
+    "8e1e7c25": "45b2b46c",
+    "202dbcb4": "45b2b46c",
+    "f8022bc1": "45b2b46c",
+    "bc701fa9": "45b2b46c",
+    "1c2a912d": "45b2b46c"
+  }
+}

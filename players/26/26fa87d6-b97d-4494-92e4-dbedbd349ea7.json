@@ -1,1 +1,68 @@
-{"uuid":"26fa87d6-b97d-4494-92e4-dbedbd349ea7","name":"Jason Portelli","sports":{"Basketball":{"maxGamePTS":21,"maxGameThreePt":3,"foulOuts":{"880bda3c":2},"gp":17,"pts":105,"fg":33,"ft":3,"threePt":12,"fouls":33,"statsChecked":"2026-07-07T18:26:23.986Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"987fcb7a"}]},{"sid":"880bda3c","regs":[{"tid":"bd06bd91"}]}],"teams":[],"updatedAt":"2026-07-07T18:06:42.506Z","records":{"maxGamePTS":{"v":21,"gameKey":"e2391917","sid":"880bda3c"},"maxGameThreePt":{"v":3,"gameKey":"0a903be8","sid":"880bda3c"}}}
+{
+  "uuid": "26fa87d6-b97d-4494-92e4-dbedbd349ea7",
+  "name": "Jason Portelli",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 21,
+      "maxGameThreePt": 3,
+      "foulOuts": {
+        "880bda3c": 2
+      },
+      "gp": 17,
+      "pts": 105,
+      "fg": 33,
+      "ft": 3,
+      "threePt": 12,
+      "fouls": 33,
+      "statsChecked": "2026-07-07T18:26:23.986Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "987fcb7a",
+          "gid": "025e656d",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "bd06bd91",
+          "gid": "84a09494",
+          "gn": "Tuesday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "987fcb7a",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bd06bd91",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-07T18:06:42.506Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "e2391917",
+      "sid": "880bda3c"
+    },
+    "maxGameThreePt": {
+      "v": 3,
+      "gameKey": "0a903be8",
+      "sid": "880bda3c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:07.377Z"
+}

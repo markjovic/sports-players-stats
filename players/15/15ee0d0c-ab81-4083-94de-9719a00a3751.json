@@ -1,1 +1,332 @@
-{"uuid":"15ee0d0c-ab81-4083-94de-9719a00a3751","name":"Cah'nel TaaNga","gender":"Boys","sports":{"Basketball":{"gp":46,"pts":176,"fouls":53,"fg":71,"ft":28,"threePt":2,"finals":3,"gfApps":2,"gfWins":2,"finalsPerSeason":0.75,"foulOuts":{"f373fc05":1},"maxGamePTS":10,"maxGameThreePt":1,"wins":60,"losses":52,"draws":4,"winPct":0.52,"statsChecked":"2026-07-05T14:39:49.953Z"}},"seasons":[{"sid":"88026885","sn":"Summer 2025/26","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"5e179ede","tn":"Collingwood U14 Boys 10","gid":"5ae20b8a","gn":"Boys U14 DC","age":"U14","div":null,"stats":{"gp":14,"fouls":19,"ft":13,"fg":24,"pts":64,"finals":1,"gfApps":1,"wins":7,"losses":7,"threePt":1,"gfWins":1}},{"tid":"5e179ede","tn":"Collingwood U14 Boys 10","gid":"184f89ef","gn":"Boys U14 D Grading","age":"U14","div":null,"stats":{"gp":14,"fouls":19,"ft":13,"pts":64,"finals":1,"gfApps":1,"wins":7,"losses":7,"fg":24,"threePt":1,"gfWins":1}},{"tid":"5e179ede","tn":"Collingwood U14 Boys 10","gid":"62c5fec6","gn":"Boys U14 C Grading","age":"U14","div":null,"stats":{"gp":14,"fouls":19,"fg":24,"threePt":1,"pts":64,"finals":1,"gfApps":1,"wins":7,"losses":7,"ft":13,"gfWins":1}},{"tid":"5e179ede","tn":"Collingwood U14 Boys 10","gid":"3b2e8408","gn":"Boys U14 B Grading","age":"U14","div":null,"stats":{"gp":14,"fouls":19,"fg":24,"pts":64,"finals":1,"gfApps":1,"wins":7,"losses":7,"ft":13,"threePt":1,"gfWins":1}}]},{"sid":"f373fc05","sn":"Winter 2025","club":"Collingwood All Stars Basketball Club","regs":[{"tid":"5886cb3f","tn":"Collingwood U13 Boys 07","gid":"79a819d8","gn":"Boys U13 CC","age":"U13","div":null,"stats":{"gp":16,"fouls":24,"ft":10,"fg":25,"threePt":1,"pts":63,"finals":1,"gfApps":1,"foulOuts":1,"wins":9,"losses":5,"draws":2,"gfWins":1}},{"tid":"5886cb3f","tn":"Collingwood U13 Boys 07","gid":"e7128dda","gn":"Boys U13 C Grading","age":"U13","div":null,"stats":{"gp":16,"fouls":24,"ft":10,"fg":25,"pts":63,"finals":1,"gfApps":1,"wins":9,"losses":5,"draws":2,"threePt":1,"gfWins":1}}]},{"sid":"3b5042cd","sn":"Summer 2024/25","club":"DSD Basketball Club","regs":[{"tid":"8ff8b378","tn":"DSD  U14 Boys Teal","gid":"477af6cd","gn":"Saturday U14 Boys E1","age":"U14","div":"E1","stats":{"gp":13,"fouls":6,"ft":4,"fg":21,"pts":46,"finals":1,"wins":7,"losses":6}},{"tid":"8ff8b378","tn":"DSD  U14 Boys Teal","gid":"4092a12f","gn":"Saturday U14 Boys D3","age":"U14","div":"D3","stats":{"gp":13,"fouls":6,"fg":21,"pts":46,"finals":1,"wins":7,"losses":6,"ft":4}}]},{"sid":"1ae60211","regs":[{"tid":"4352f87c","stats":{"gp":3,"pts":3,"fg":1,"ft":1,"fouls":4,"losses":1}},{"tid":"4352f87c","tn":"","gid":"c31667b8","gn":"Boys U15 C Grading","div":null,"stats":{"gp":3,"pts":3,"fg":1,"ft":1,"fouls":4,"losses":1}}]}],"updatedAt":"2026-07-04T05:34:10.442Z","teams":[{"tid":"4352f87c","sid":"1ae60211","status":"ACTIVE"},{"tid":"5e179ede","sid":"88026885","status":"COMPLETED"},{"tid":"5886cb3f","sid":"f373fc05","status":"COMPLETED"},{"tid":"8ff8b378","sid":"3b5042cd","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T10:10:57.073Z","records":{"maxGamePTS":{"v":10,"gameKey":"3383e33b","sid":"88026885"},"maxGameThreePt":{"v":1,"gameKey":"54edbb44","sid":"88026885"}},"games":["0402e2ad","04133621","05168738","05825fa9","1c48c529","295536ed","3383e33b","34ddf8be","3562ed56","392f7569","44a5ec64","46331653","4ee298cd","54edbb44","551b2c9e","5b4ede3e","61e608bc","66a9cbf0","6a9225af","6b309c18","6e0a0cdb","8223987e","8a7c33d7","8cb2bdc6","93dcd757","95b57adf","9919c616","9c116f76","9ec502de","9f1786a8","ae4d294a","b01800a6","b15ec61d","bf9ff171","ce864422","d140a506","d71be1b9","d7dae248","df48e28b","e18a57af","e4304cfa","e6f36a0f","f80cbfce","fc458704"]}
+{
+  "uuid": "15ee0d0c-ab81-4083-94de-9719a00a3751",
+  "name": "Cah'nel TaaNga",
+  "gender": "Boys",
+  "sports": {
+    "Basketball": {
+      "gp": 46,
+      "pts": 176,
+      "fouls": 53,
+      "fg": 71,
+      "ft": 28,
+      "threePt": 2,
+      "finals": 3,
+      "gfApps": 2,
+      "gfWins": 2,
+      "finalsPerSeason": 0.75,
+      "foulOuts": {
+        "f373fc05": 1
+      },
+      "maxGamePTS": 10,
+      "maxGameThreePt": 1,
+      "wins": 60,
+      "losses": 52,
+      "draws": 4,
+      "winPct": 0.52,
+      "statsChecked": "2026-07-05T14:39:49.953Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "88026885",
+      "sn": "Summer 2025/26",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "5e179ede",
+          "tn": "Collingwood U14 Boys 10",
+          "gid": "5ae20b8a",
+          "gn": "Boys U14 DC",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "ft": 13,
+            "fg": 24,
+            "pts": 64,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "5e179ede",
+          "tn": "Collingwood U14 Boys 10",
+          "gid": "184f89ef",
+          "gn": "Boys U14 D Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "ft": 13,
+            "pts": 64,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "fg": 24,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "5e179ede",
+          "tn": "Collingwood U14 Boys 10",
+          "gid": "62c5fec6",
+          "gn": "Boys U14 C Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "fg": 24,
+            "threePt": 1,
+            "pts": 64,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "ft": 13,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "5e179ede",
+          "tn": "Collingwood U14 Boys 10",
+          "gid": "3b2e8408",
+          "gn": "Boys U14 B Grading",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 14,
+            "fouls": 19,
+            "fg": 24,
+            "pts": 64,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 7,
+            "losses": 7,
+            "ft": 13,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f373fc05",
+      "sn": "Winter 2025",
+      "club": "Collingwood All Stars Basketball Club",
+      "regs": [
+        {
+          "tid": "5886cb3f",
+          "tn": "Collingwood U13 Boys 07",
+          "gid": "79a819d8",
+          "gn": "Boys U13 CC",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 10,
+            "fg": 25,
+            "threePt": 1,
+            "pts": 63,
+            "finals": 1,
+            "gfApps": 1,
+            "foulOuts": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 2,
+            "gfWins": 1
+          }
+        },
+        {
+          "tid": "5886cb3f",
+          "tn": "Collingwood U13 Boys 07",
+          "gid": "e7128dda",
+          "gn": "Boys U13 C Grading",
+          "age": "U13",
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 24,
+            "ft": 10,
+            "fg": 25,
+            "pts": 63,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 9,
+            "losses": 5,
+            "draws": 2,
+            "threePt": 1,
+            "gfWins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3b5042cd",
+      "sn": "Summer 2024/25",
+      "club": "DSD Basketball Club",
+      "regs": [
+        {
+          "tid": "8ff8b378",
+          "tn": "DSD  U14 Boys Teal",
+          "gid": "477af6cd",
+          "gn": "Saturday U14 Boys E1",
+          "age": "U14",
+          "div": "E1",
+          "stats": {
+            "gp": 13,
+            "fouls": 6,
+            "ft": 4,
+            "fg": 21,
+            "pts": 46,
+            "finals": 1,
+            "wins": 7,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "8ff8b378",
+          "tn": "DSD  U14 Boys Teal",
+          "gid": "4092a12f",
+          "gn": "Saturday U14 Boys D3",
+          "age": "U14",
+          "div": "D3",
+          "stats": {
+            "gp": 13,
+            "fouls": 6,
+            "fg": 21,
+            "pts": 46,
+            "finals": 1,
+            "wins": 7,
+            "losses": 6,
+            "ft": 4
+          }
+        }
+      ]
+    },
+    {
+      "sid": "1ae60211",
+      "regs": [
+        {
+          "tid": "4352f87c",
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 4,
+            "losses": 1
+          },
+          "gid": "593b2b40",
+          "gn": "Boys U15 CD"
+        },
+        {
+          "tid": "4352f87c",
+          "tn": "",
+          "gid": "c31667b8",
+          "gn": "Boys U15 C Grading",
+          "div": null,
+          "stats": {
+            "gp": 3,
+            "pts": 3,
+            "fg": 1,
+            "ft": 1,
+            "fouls": 4,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-04T05:34:10.442Z",
+  "teams": [
+    {
+      "tid": "5e179ede",
+      "sid": "88026885",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "5886cb3f",
+      "sid": "f373fc05",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8ff8b378",
+      "sid": "3b5042cd",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4352f87c",
+      "sid": "1ae60211",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:06.257Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "3383e33b",
+      "sid": "88026885"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "54edbb44",
+      "sid": "88026885"
+    }
+  },
+  "games": [
+    "0402e2ad",
+    "04133621",
+    "05168738",
+    "05825fa9",
+    "1c48c529",
+    "295536ed",
+    "3383e33b",
+    "34ddf8be",
+    "3562ed56",
+    "392f7569",
+    "44a5ec64",
+    "46331653",
+    "4ee298cd",
+    "54edbb44",
+    "551b2c9e",
+    "5b4ede3e",
+    "61e608bc",
+    "66a9cbf0",
+    "6a9225af",
+    "6b309c18",
+    "6e0a0cdb",
+    "8223987e",
+    "8a7c33d7",
+    "8cb2bdc6",
+    "93dcd757",
+    "95b57adf",
+    "9919c616",
+    "9c116f76",
+    "9ec502de",
+    "9f1786a8",
+    "ae4d294a",
+    "b01800a6",
+    "b15ec61d",
+    "bf9ff171",
+    "ce864422",
+    "d140a506",
+    "d71be1b9",
+    "d7dae248",
+    "df48e28b",
+    "e18a57af",
+    "e4304cfa",
+    "e6f36a0f",
+    "f80cbfce",
+    "fc458704"
+  ]
+}

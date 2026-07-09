@@ -1,1 +1,81 @@
-{"uuid":"59e698b5-646f-4195-8260-c3883ab59cc8","name":"Luke Garagozlo","sports":{"Basketball":{"maxGamePTS":15,"maxGameThreePt":2,"foulOuts":{},"gp":29,"pts":176,"fg":55,"ft":6,"threePt":20,"fouls":39,"statsChecked":"2026-07-06T19:10:18.776Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"ba23d9d9"}]},{"sid":"796936f7","regs":[{"tid":"569062c0"}]},{"sid":"880bda3c","regs":[{"tid":"919b373e"}]}],"teams":[],"updatedAt":"2026-07-06T18:35:46.753Z","records":{"maxGamePTS":{"v":15,"gameKey":"4241d43b","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"4241d43b","sid":"796936f7"}}}
+{
+  "uuid": "59e698b5-646f-4195-8260-c3883ab59cc8",
+  "name": "Luke Garagozlo",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 15,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 29,
+      "pts": 176,
+      "fg": 55,
+      "ft": 6,
+      "threePt": 20,
+      "fouls": 39,
+      "statsChecked": "2026-07-06T19:10:18.776Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "ba23d9d9",
+          "gid": "db8e1fa8",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "569062c0",
+          "gid": "5bd3d465",
+          "gn": "Monday Men -Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "919b373e",
+          "gid": "39799369",
+          "gn": "Monday Men -Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "ba23d9d9",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "569062c0",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "919b373e",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-06T18:35:46.753Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 15,
+      "gameKey": "4241d43b",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "4241d43b",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T21:32:11.470Z"
+}

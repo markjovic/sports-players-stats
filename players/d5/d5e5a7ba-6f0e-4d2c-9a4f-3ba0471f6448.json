@@ -1,1 +1,122 @@
-{"uuid":"d5e5a7ba-6f0e-4d2c-9a4f-3ba0471f6448","name":"Tanaya Stone","gender":"Girls","sports":{"Basketball":{"gp":9,"pts":19,"fouls":16,"fg":9,"ft":1,"foulOuts":{"37dc839f":1},"maxGamePTS":5,"maxGameThreePt":null,"wins":1,"losses":15,"winPct":0.06,"statsChecked":"2026-07-05T14:58:38.230Z"}},"seasons":[{"sid":"e6fdd099","sn":"Winter 2023","club":"Eastern Eagles Basketball Club","regs":[{"tid":"c283cf62","tn":"EEBC G44","gid":"5d794551","gn":"Wednesday U14 Girls C","age":"U14","div":null,"stats":{"gp":2,"fg":2,"pts":4,"wins":1,"losses":1}}]},{"sid":"37dc839f","sn":"Winter 2021","club":"Fosters Phantoms Basketball Club","regs":[{"tid":"9821ea06","tn":"Fosters G19","gid":"57191f7b","gn":"Tuesday U11 Girls C","age":"U11","div":null,"stats":{"gp":7,"fouls":16,"fg":7,"pts":15,"foulOuts":1,"losses":7,"ft":1}},{"tid":"9821ea06","tn":"Fosters G19","gid":"33d7c977","gn":"Tuesday U11 Girls B","age":"U11","div":null,"stats":{"gp":7,"fouls":16,"ft":1,"fg":7,"pts":15,"losses":7}}]}],"updatedAt":"2026-05-31T09:37:46.990Z","teams":[{"tid":"c283cf62","sid":"e6fdd099","status":"COMPLETED"},{"tid":"9821ea06","sid":"37dc839f","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T13:47:32.970Z","games":["031b035c","530ea311","696c7d7d","9dd52fff","ab4128b7","b1bf15ce","ccf599be","d3f5323c","f6fc341c"],"records":{"maxGamePTS":{"v":5,"gameKey":"9dd52fff","sid":"37dc839f"},"maxGameThreePt":{"v":null}}}
+{
+  "uuid": "d5e5a7ba-6f0e-4d2c-9a4f-3ba0471f6448",
+  "name": "Tanaya Stone",
+  "gender": "Girls",
+  "sports": {
+    "Basketball": {
+      "gp": 9,
+      "pts": 19,
+      "fouls": 16,
+      "fg": 9,
+      "ft": 1,
+      "foulOuts": {
+        "37dc839f": 1
+      },
+      "maxGamePTS": 5,
+      "maxGameThreePt": null,
+      "wins": 1,
+      "losses": 15,
+      "winPct": 0.06,
+      "statsChecked": "2026-07-05T14:58:38.230Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e6fdd099",
+      "sn": "Winter 2023",
+      "club": "Eastern Eagles Basketball Club",
+      "regs": [
+        {
+          "tid": "c283cf62",
+          "tn": "EEBC G44",
+          "gid": "9ee5cc42",
+          "gn": "Wednesday U14 Girls CRES",
+          "age": "U14",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fg": 2,
+            "pts": 4,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "37dc839f",
+      "sn": "Winter 2021",
+      "club": "Fosters Phantoms Basketball Club",
+      "regs": [
+        {
+          "tid": "9821ea06",
+          "tn": "Fosters G19",
+          "gid": "57191f7b",
+          "gn": "Tuesday U11 Girls C",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 16,
+            "fg": 7,
+            "pts": 15,
+            "foulOuts": 1,
+            "losses": 7,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "9821ea06",
+          "tn": "Fosters G19",
+          "gid": "33d7c977",
+          "gn": "Tuesday U11 Girls B",
+          "age": "U11",
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 16,
+            "ft": 1,
+            "fg": 7,
+            "pts": 15,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-31T09:37:46.990Z",
+  "teams": [
+    {
+      "tid": "c283cf62",
+      "sid": "e6fdd099",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "9821ea06",
+      "sid": "37dc839f",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:16.928Z",
+  "games": [
+    "031b035c",
+    "530ea311",
+    "696c7d7d",
+    "9dd52fff",
+    "ab4128b7",
+    "b1bf15ce",
+    "ccf599be",
+    "d3f5323c",
+    "f6fc341c"
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 5,
+      "gameKey": "9dd52fff",
+      "sid": "37dc839f"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  }
+}

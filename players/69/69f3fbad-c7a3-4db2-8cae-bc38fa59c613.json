@@ -1,1 +1,281 @@
-{"uuid":"69f3fbad-c7a3-4db2-8cae-bc38fa59c613","name":"Luc Wherrett","gender":"Men","sports":{"Basketball":{"gp":40,"pts":193,"fouls":56,"fg":78,"ft":13,"threePt":8,"foulOuts":{"d3df72f7":1},"maxGamePTS":14,"maxGameThreePt":2,"wins":26,"losses":55,"draws":1,"winPct":0.32,"statsChecked":"2026-07-06T18:58:04.979Z"}},"seasons":[{"sid":"d3df72f7","sn":"Winter 2026","regs":[{"tid":"e4e43dc1","tn":"low expectations ","gid":"f48844b1","gn":"Monday Open Men F/FRES","age":"Senior","div":null,"stats":{"gp":12,"fouls":17,"ft":4,"fg":20,"pts":47,"wins":2,"losses":9,"threePt":1}},{"tid":"e4e43dc1","tn":"low expectations ","gid":"2f59f9c4","gn":"Monday Open Men E/ERES","age":"Senior","div":null,"stats":{"gp":12,"fouls":17,"ft":4,"fg":20,"threePt":1,"pts":47,"wins":2,"losses":9}},{"tid":"8c49b754","stats":{"wins":5,"losses":6,"gp":12,"pts":71,"fg":28,"ft":6,"threePt":3,"fouls":22}},{"tid":"e4e43dc1","tn":"","gid":"35d7a290","gn":"Monday Open Men G/GRES","div":null,"stats":{"gp":12,"pts":47,"fg":20,"ft":4,"threePt":1,"fouls":17,"wins":2,"losses":9}},{"tid":"8c49b754","tn":"","gid":"a4d7d0dd","gn":"Sunday Men Section 2","div":null,"stats":{"gp":12,"pts":71,"fg":28,"ft":6,"threePt":3,"fouls":22,"wins":5,"losses":6}}]},{"sid":"d3df72f7","sn":"Winter 2026","regs":[{"tid":"8c49b754","tn":"JERRY","gid":"a4d7d0dd","gn":"Sunday Men Section 2","age":null,"div":null,"stats":{"gp":12,"fouls":22,"ft":6,"fg":28,"threePt":3,"pts":71,"foulOuts":1,"wins":5,"losses":6}}]},{"sid":"559eb7e8","sn":"Summer 2025/26","regs":[{"tid":"b602b278","tn":"JERRY","gid":"d8161754","gn":"Sunday Men Section 3","age":null,"div":null,"stats":{"gp":16,"fouls":17,"ft":3,"fg":30,"threePt":4,"pts":75,"wins":5,"losses":10,"draws":1}}]}],"updatedAt":"2026-07-06T18:31:35.817Z","teams":[{"tid":"8c49b754","sid":"d3df72f7","status":"ACTIVE"},{"tid":"e4e43dc1","sid":"d3df72f7","status":"ACTIVE"},{"tid":"b602b278","sid":"559eb7e8","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:47:04.150Z","records":{"maxGamePTS":{"v":14,"gameKey":"ea22354a","sid":"d3df72f7"},"maxGameThreePt":{"v":2,"gameKey":"ea22354a","sid":"d3df72f7"}},"games":["00acce47","05eb0627","0996684c","0b2d61aa","0cbbe959","0db8955a","0fe0b751","1309cdce","1bf55395","1f085901","2083efda","217ebf6c","2dd33d4a","2ed616f3","305de502","3ffaa16e","47a2d7e6","4b78c735","4dcc750d","7222448a","7e8e3618","7f2b9875","80829340","8276dd9c","92643d45","b9a8ec3e","c138c0e3","ccc91edb","cd396c76","d0dd7a01","d107aef2","d49a7b32","db46b003","de909631","e2a7a845","ea22354a","eeca15f9","feb2d637"],"gameTids":{"80829340":"b602b278","bf41d855":"e4e43dc1","4b78c735":"e4e43dc1","d107aef2":"e4e43dc1","05eb0627":"e4e43dc1","92643d45":"e4e43dc1","1309cdce":"e4e43dc1","0996684c":"e4e43dc1","e2a7a845":"e4e43dc1","00acce47":"e4e43dc1","c138c0e3":"e4e43dc1","8276dd9c":"e4e43dc1","1bf55395":"e4e43dc1","e5dd1e0f":"8c49b754","eeca15f9":"8c49b754","de909631":"8c49b754","0cbbe959":"8c49b754","db46b003":"8c49b754","3ffaa16e":"8c49b754","7222448a":"8c49b754","0fe0b751":"8c49b754","ea22354a":"8c49b754","7f2b9875":"8c49b754","47a2d7e6":"8c49b754","4dcc750d":"8c49b754","2ed616f3":"b602b278","0b2d61aa":"b602b278","1f085901":"b602b278","cd396c76":"b602b278","217ebf6c":"b602b278","feb2d637":"b602b278","ccc91edb":"b602b278","b9a8ec3e":"b602b278","d0dd7a01":"b602b278","0db8955a":"b602b278","2dd33d4a":"b602b278","7e8e3618":"b602b278","d49a7b32":"b602b278","305de502":"b602b278","2083efda":"b602b278"}}
+{
+  "uuid": "69f3fbad-c7a3-4db2-8cae-bc38fa59c613",
+  "name": "Luc Wherrett",
+  "gender": "Men",
+  "sports": {
+    "Basketball": {
+      "gp": 40,
+      "pts": 193,
+      "fouls": 56,
+      "fg": 78,
+      "ft": 13,
+      "threePt": 8,
+      "foulOuts": {
+        "d3df72f7": 1
+      },
+      "maxGamePTS": 14,
+      "maxGameThreePt": 2,
+      "wins": 26,
+      "losses": 55,
+      "draws": 1,
+      "winPct": 0.32,
+      "statsChecked": "2026-07-06T18:58:04.979Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "d3df72f7",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "e4e43dc1",
+          "tn": "low expectations ",
+          "gid": "35d7a290",
+          "gn": "Monday Open Men G/GRES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 20,
+            "pts": 47,
+            "wins": 2,
+            "losses": 9,
+            "threePt": 1
+          }
+        },
+        {
+          "tid": "e4e43dc1",
+          "tn": "low expectations ",
+          "gid": "2f59f9c4",
+          "gn": "Monday Open Men E/ERES",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 17,
+            "ft": 4,
+            "fg": 20,
+            "threePt": 1,
+            "pts": 47,
+            "wins": 2,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "8c49b754",
+          "stats": {
+            "wins": 5,
+            "losses": 6,
+            "gp": 12,
+            "pts": 71,
+            "fg": 28,
+            "ft": 6,
+            "threePt": 3,
+            "fouls": 22
+          },
+          "gid": "a4d7d0dd",
+          "gn": "Sunday Men Section 2"
+        },
+        {
+          "tid": "e4e43dc1",
+          "tn": "",
+          "gid": "35d7a290",
+          "gn": "Monday Open Men G/GRES",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 47,
+            "fg": 20,
+            "ft": 4,
+            "threePt": 1,
+            "fouls": 17,
+            "wins": 2,
+            "losses": 9
+          }
+        },
+        {
+          "tid": "8c49b754",
+          "tn": "",
+          "gid": "a4d7d0dd",
+          "gn": "Sunday Men Section 2",
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "pts": 71,
+            "fg": 28,
+            "ft": 6,
+            "threePt": 3,
+            "fouls": 22,
+            "wins": 5,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d3df72f7",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "8c49b754",
+          "tn": "JERRY",
+          "gid": "a4d7d0dd",
+          "gn": "Sunday Men Section 2",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 12,
+            "fouls": 22,
+            "ft": 6,
+            "fg": 28,
+            "threePt": 3,
+            "pts": 71,
+            "foulOuts": 1,
+            "wins": 5,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "559eb7e8",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "b602b278",
+          "tn": "JERRY",
+          "gid": "d8161754",
+          "gn": "Sunday Men Section 3",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 16,
+            "fouls": 17,
+            "ft": 3,
+            "fg": 30,
+            "threePt": 4,
+            "pts": 75,
+            "wins": 5,
+            "losses": 10,
+            "draws": 1
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-07-06T18:31:35.817Z",
+  "teams": [
+    {
+      "tid": "e4e43dc1",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "8c49b754",
+      "sid": "d3df72f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "b602b278",
+      "sid": "559eb7e8",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:12.536Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 14,
+      "gameKey": "ea22354a",
+      "sid": "d3df72f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "ea22354a",
+      "sid": "d3df72f7"
+    }
+  },
+  "games": [
+    "00acce47",
+    "05eb0627",
+    "0996684c",
+    "0b2d61aa",
+    "0cbbe959",
+    "0db8955a",
+    "0fe0b751",
+    "1309cdce",
+    "1bf55395",
+    "1f085901",
+    "2083efda",
+    "217ebf6c",
+    "2dd33d4a",
+    "2ed616f3",
+    "305de502",
+    "3ffaa16e",
+    "47a2d7e6",
+    "4b78c735",
+    "4dcc750d",
+    "7222448a",
+    "7e8e3618",
+    "7f2b9875",
+    "80829340",
+    "8276dd9c",
+    "92643d45",
+    "b9a8ec3e",
+    "c138c0e3",
+    "ccc91edb",
+    "cd396c76",
+    "d0dd7a01",
+    "d107aef2",
+    "d49a7b32",
+    "db46b003",
+    "de909631",
+    "e2a7a845",
+    "ea22354a",
+    "eeca15f9",
+    "feb2d637"
+  ],
+  "gameTids": {
+    "80829340": "b602b278",
+    "bf41d855": "e4e43dc1",
+    "4b78c735": "e4e43dc1",
+    "d107aef2": "e4e43dc1",
+    "05eb0627": "e4e43dc1",
+    "92643d45": "e4e43dc1",
+    "1309cdce": "e4e43dc1",
+    "0996684c": "e4e43dc1",
+    "e2a7a845": "e4e43dc1",
+    "00acce47": "e4e43dc1",
+    "c138c0e3": "e4e43dc1",
+    "8276dd9c": "e4e43dc1",
+    "1bf55395": "e4e43dc1",
+    "e5dd1e0f": "8c49b754",
+    "eeca15f9": "8c49b754",
+    "de909631": "8c49b754",
+    "0cbbe959": "8c49b754",
+    "db46b003": "8c49b754",
+    "3ffaa16e": "8c49b754",
+    "7222448a": "8c49b754",
+    "0fe0b751": "8c49b754",
+    "ea22354a": "8c49b754",
+    "7f2b9875": "8c49b754",
+    "47a2d7e6": "8c49b754",
+    "4dcc750d": "8c49b754",
+    "2ed616f3": "b602b278",
+    "0b2d61aa": "b602b278",
+    "1f085901": "b602b278",
+    "cd396c76": "b602b278",
+    "217ebf6c": "b602b278",
+    "feb2d637": "b602b278",
+    "ccc91edb": "b602b278",
+    "b9a8ec3e": "b602b278",
+    "d0dd7a01": "b602b278",
+    "0db8955a": "b602b278",
+    "2dd33d4a": "b602b278",
+    "7e8e3618": "b602b278",
+    "d49a7b32": "b602b278",
+    "305de502": "b602b278",
+    "2083efda": "b602b278"
+  }
+}

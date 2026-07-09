@@ -1,1 +1,354 @@
-{"uuid":"44ca2c47-8809-42f7-bf64-22592cf8d1dc","name":"Georgina Evanson","gender":"Women","sports":{"Basketball":{"gp":56,"pts":97,"fouls":50,"fg":46,"ft":2,"threePt":1,"finals":1,"gfApps":1,"gfWins":0,"finalsPerSeason":0.13,"foulOuts":{},"maxGamePTS":7,"maxGameThreePt":1,"wins":29,"losses":43,"winPct":0.4,"statsChecked":"2026-07-05T15:47:53.717Z"}},"seasons":[{"sid":"dbda2023","sn":"Winter 2026","regs":[{"tid":"80ed8422","tn":"Mamasitas","gid":"ff6e831b","gn":"Wednesday Senior Women B/C","age":"Senior","div":null,"stats":{"gp":5,"fouls":6,"fg":5,"pts":10,"wins":1,"losses":2}}]},{"sid":"55b54191","sn":"Summer 2025/26","regs":[{"tid":"adcbb9fb","tn":"Mamasitas","gid":"f11aec53","gn":"Women B Grade","age":null,"div":null,"stats":{"gp":2,"fouls":1,"fg":1,"pts":2,"losses":1}}]},{"sid":"d027552f","sn":"Summer 2025/26","regs":[{"tid":"aca96b3d","tn":"Mamasitas","gid":"e9fa7a2d","gn":"Wednesday Senior Women C","age":"Senior","div":null,"stats":{"gp":11,"fouls":9,"fg":6,"pts":12,"wins":5,"losses":6}},{"tid":"aca96b3d","tn":"Mamasitas","gid":"7673d21d","gn":"Wednesday Senior Women D","age":"Senior","div":null,"stats":{"gp":11,"fouls":9,"fg":6,"pts":12,"wins":5,"losses":6}}]},{"sid":"f91eb820","sn":"Winter 2025","regs":[{"tid":"e09fe7be","tn":"Mamasitas","gid":"577bf9a1","gn":"Women B Grade","age":null,"div":null,"stats":{"gp":10,"fouls":8,"fg":4,"pts":9,"finals":1,"gfApps":1,"wins":6,"losses":3,"ft":1}},{"tid":"e09fe7be","tn":"Mamasitas","gid":"00180932","gn":"Women C Grade","age":null,"div":null,"stats":{"gp":10,"fouls":8,"ft":1,"fg":4,"pts":9,"finals":1,"gfApps":1,"wins":6,"losses":3}}]},{"sid":"6907c563","sn":"Summer 2024/25","regs":[{"tid":"70ee5b35","tn":"Mamasitas","gid":"3790d6ee","gn":"Women C Grade","age":null,"div":null,"stats":{"gp":4,"fouls":3,"fg":4,"pts":8,"wins":3,"losses":1}}]},{"sid":"5153da43","sn":"Winter 2024","regs":[{"tid":"f6b3dce1","tn":"Mamasitas","gid":"b390a7b7","gn":"Women B Grade","age":null,"div":null,"stats":{"gp":8,"fouls":7,"fg":7,"pts":14,"wins":1,"losses":7}}]},{"sid":"27efb575","sn":"Summer 2023/24","regs":[{"tid":"7a85734f","tn":"Mamasitas","gid":"d658e555","gn":"Women B Grade","age":null,"div":null,"stats":{"gp":9,"fouls":7,"ft":1,"fg":13,"pts":27,"wins":2,"losses":7}}]},{"sid":"3226d779","sn":"Winter 2023","regs":[{"tid":"d429fa47","tn":"Mamasitas","gid":"37c0307f","gn":"Women A/B Grade","age":null,"div":null,"stats":{"gp":7,"fouls":9,"fg":6,"threePt":1,"pts":15,"losses":7}}]}],"updatedAt":"2026-06-03T04:26:46.744Z","teams":[{"tid":"80ed8422","sid":"dbda2023","status":"ACTIVE"},{"tid":"adcbb9fb","sid":"55b54191","status":"COMPLETED"},{"tid":"aca96b3d","sid":"d027552f","status":"COMPLETED"},{"tid":"e09fe7be","sid":"f91eb820","status":"COMPLETED"},{"tid":"f6b3dce1","sid":"5153da43","status":"COMPLETED"},{"tid":"7a85734f","sid":"27efb575","status":"COMPLETED"},{"tid":"d429fa47","sid":"3226d779","status":"COMPLETED"}],"teamsUpdatedAt":"2026-06-05T12:24:57.136Z","records":{"maxGamePTS":{"v":7,"gameKey":"944329a4","sid":"3226d779"},"maxGameThreePt":{"v":1,"gameKey":"944329a4","sid":"3226d779"}},"games":["00aa361f","0b257d9d","0e7ad587","118fd6c6","11afe959","14305ab9","1d693a06","1ed06943","1f83e1f6","1fc9e310","2111fed7","2310b383","2da0ffda","31a1f210","3675ee8d","3de37d97","410fe6df","41266059","46c13a9f","4cd79e07","585943c4","617280d0","6254d3d9","6968ab41","6b119cdc","6c3ec472","76f672f5","7c5d423c","7d9f44fe","7eaefbb1","824ef72b","8575beb6","8c0f00ef","927f4403","944329a4","9f12bd18","a228607e","ada92bb9","b04502f2","b6863e1b","b7b02792","c00265a7","c1f02e4f","c2a76401","c66c38b1","c808f646","ca7e975e","d48f580b","dce5c845","e1d1c937","e5873a25","ea8bad96","f251da18","f5a0a9b1"]}
+{
+  "uuid": "44ca2c47-8809-42f7-bf64-22592cf8d1dc",
+  "name": "Georgina Evanson",
+  "gender": "Women",
+  "sports": {
+    "Basketball": {
+      "gp": 56,
+      "pts": 97,
+      "fouls": 50,
+      "fg": 46,
+      "ft": 2,
+      "threePt": 1,
+      "finals": 1,
+      "gfApps": 1,
+      "gfWins": 0,
+      "finalsPerSeason": 0.13,
+      "foulOuts": {},
+      "maxGamePTS": 7,
+      "maxGameThreePt": 1,
+      "wins": 29,
+      "losses": 43,
+      "winPct": 0.4,
+      "statsChecked": "2026-07-05T15:47:53.717Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "dbda2023",
+      "sn": "Winter 2026",
+      "regs": [
+        {
+          "tid": "80ed8422",
+          "tn": "Mamasitas",
+          "gid": "01633bff",
+          "gn": "Wednesday Senior Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 5,
+            "fouls": 6,
+            "fg": 5,
+            "pts": 10,
+            "wins": 1,
+            "losses": 2
+          }
+        }
+      ]
+    },
+    {
+      "sid": "55b54191",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "adcbb9fb",
+          "tn": "Mamasitas",
+          "gid": "f11aec53",
+          "gn": "Women B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "fouls": 1,
+            "fg": 1,
+            "pts": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "d027552f",
+      "sn": "Summer 2025/26",
+      "regs": [
+        {
+          "tid": "aca96b3d",
+          "tn": "Mamasitas",
+          "gid": "e9fa7a2d",
+          "gn": "Wednesday Senior Women C",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "fg": 6,
+            "pts": 12,
+            "wins": 5,
+            "losses": 6
+          }
+        },
+        {
+          "tid": "aca96b3d",
+          "tn": "Mamasitas",
+          "gid": "7673d21d",
+          "gn": "Wednesday Senior Women D",
+          "age": "Senior",
+          "div": null,
+          "stats": {
+            "gp": 11,
+            "fouls": 9,
+            "fg": 6,
+            "pts": 12,
+            "wins": 5,
+            "losses": 6
+          }
+        }
+      ]
+    },
+    {
+      "sid": "f91eb820",
+      "sn": "Winter 2025",
+      "regs": [
+        {
+          "tid": "e09fe7be",
+          "tn": "Mamasitas",
+          "gid": "577bf9a1",
+          "gn": "Women B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 8,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3,
+            "ft": 1
+          }
+        },
+        {
+          "tid": "e09fe7be",
+          "tn": "Mamasitas",
+          "gid": "00180932",
+          "gn": "Women C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 10,
+            "fouls": 8,
+            "ft": 1,
+            "fg": 4,
+            "pts": 9,
+            "finals": 1,
+            "gfApps": 1,
+            "wins": 6,
+            "losses": 3
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6907c563",
+      "sn": "Summer 2024/25",
+      "regs": [
+        {
+          "tid": "70ee5b35",
+          "tn": "Mamasitas",
+          "gid": "3790d6ee",
+          "gn": "Women C Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 4,
+            "fouls": 3,
+            "fg": 4,
+            "pts": 8,
+            "wins": 3,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "5153da43",
+      "sn": "Winter 2024",
+      "regs": [
+        {
+          "tid": "f6b3dce1",
+          "tn": "Mamasitas",
+          "gid": "b390a7b7",
+          "gn": "Women B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 8,
+            "fouls": 7,
+            "fg": 7,
+            "pts": 14,
+            "wins": 1,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "27efb575",
+      "sn": "Summer 2023/24",
+      "regs": [
+        {
+          "tid": "7a85734f",
+          "tn": "Mamasitas",
+          "gid": "d658e555",
+          "gn": "Women B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 9,
+            "fouls": 7,
+            "ft": 1,
+            "fg": 13,
+            "pts": 27,
+            "wins": 2,
+            "losses": 7
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3226d779",
+      "sn": "Winter 2023",
+      "regs": [
+        {
+          "tid": "d429fa47",
+          "tn": "Mamasitas",
+          "gid": "37c0307f",
+          "gn": "Women A/B Grade",
+          "age": null,
+          "div": null,
+          "stats": {
+            "gp": 7,
+            "fouls": 9,
+            "fg": 6,
+            "threePt": 1,
+            "pts": 15,
+            "losses": 7
+          }
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-06-03T04:26:46.744Z",
+  "teams": [
+    {
+      "tid": "80ed8422",
+      "sid": "dbda2023",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "adcbb9fb",
+      "sid": "55b54191",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "aca96b3d",
+      "sid": "d027552f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "e09fe7be",
+      "sid": "f91eb820",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "70ee5b35",
+      "sid": "6907c563",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "f6b3dce1",
+      "sid": "5153da43",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "7a85734f",
+      "sid": "27efb575",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d429fa47",
+      "sid": "3226d779",
+      "status": "ACTIVE"
+    }
+  ],
+  "teamsUpdatedAt": "2026-07-09T21:32:10.069Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 7,
+      "gameKey": "944329a4",
+      "sid": "3226d779"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "944329a4",
+      "sid": "3226d779"
+    }
+  },
+  "games": [
+    "00aa361f",
+    "0b257d9d",
+    "0e7ad587",
+    "118fd6c6",
+    "11afe959",
+    "14305ab9",
+    "1d693a06",
+    "1ed06943",
+    "1f83e1f6",
+    "1fc9e310",
+    "2111fed7",
+    "2310b383",
+    "2da0ffda",
+    "31a1f210",
+    "3675ee8d",
+    "3de37d97",
+    "410fe6df",
+    "41266059",
+    "46c13a9f",
+    "4cd79e07",
+    "585943c4",
+    "617280d0",
+    "6254d3d9",
+    "6968ab41",
+    "6b119cdc",
+    "6c3ec472",
+    "76f672f5",
+    "7c5d423c",
+    "7d9f44fe",
+    "7eaefbb1",
+    "824ef72b",
+    "8575beb6",
+    "8c0f00ef",
+    "927f4403",
+    "944329a4",
+    "9f12bd18",
+    "a228607e",
+    "ada92bb9",
+    "b04502f2",
+    "b6863e1b",
+    "b7b02792",
+    "c00265a7",
+    "c1f02e4f",
+    "c2a76401",
+    "c66c38b1",
+    "c808f646",
+    "ca7e975e",
+    "d48f580b",
+    "dce5c845",
+    "e1d1c937",
+    "e5873a25",
+    "ea8bad96",
+    "f251da18",
+    "f5a0a9b1"
+  ]
+}
