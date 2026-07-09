@@ -54,41 +54,11 @@ env:
   MAX_RUNS: 40
 
 jobs:
-  reset-progress:
-    if: inputs.fresh_start == true
+  generate-shards:
     runs-on: ubuntu-latest
     concurrency:
       group: data-write
       cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 1
-          filter: blob:none
-          sparse-checkout: |
-            data
-          sparse-checkout-cone-mode: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Delete progress file
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ ! -f data/discover-progress.json ]; then
-            echo "No progress file to reset."
-            exit 0
-          fi
-          git rm data/discover-progress.json
-          git commit -m "discover-seasons: fresh_start — reset progress"
-          git fetch origin main
-          git merge -X ours FETCH_HEAD --no-edit
-          git push origin main
-          echo "Progress reset."
-
-  generate-shards:
-    needs: reset-progress
-    if: always()
-    runs-on: ubuntu-latest
     outputs:
       targets: ${{ steps.gen.outputs.targets }}
     steps:
@@ -102,6 +72,23 @@ jobs:
             scripts
           sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Reset progress (fresh_start only)
+        if: inputs.fresh_start == true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ ! -f data/discover-progress.json ]; then
+            echo "No progress file to reset."
+          else
+            git rm data/discover-progress.json
+            git commit -m "discover-seasons: fresh_start — reset progress"
+            git fetch origin main
+            git merge -X ours FETCH_HEAD --no-edit
+            git push origin main
+            echo "Progress reset."
+          fi
+
       - id: gen
         env:
           INPUT_SHARDS: ${{ inputs.shards }}
