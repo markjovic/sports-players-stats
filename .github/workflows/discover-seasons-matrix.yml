@@ -42,6 +42,11 @@ on:
         required: false
         default: false
         type: boolean
+      fresh_start:
+        description: 'Ignore/delete existing progress (re-sweep from scratch). Applies ONLY to the run you dispatch — never propagated to self-triggered continuations.'
+        required: false
+        default: false
+        type: boolean
       run_number:
         description: 'Auto-incremented by self-trigger — do not set manually'
         required: false
@@ -56,7 +61,40 @@ env:
   MAX_RUNS: 40   # safety cap on self-trigger chain length
 
 jobs:
+  reset-progress:
+    if: inputs.fresh_start == true
+    runs-on: ubuntu-latest
+    # Only this job — the rare, deliberately-requested case — pays the lock cost.
+    # generate-shards stays lock-free so every normal run keeps starting instantly.
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            data/discover-progress.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Delete progress file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ ! -f data/discover-progress.json ]; then
+            echo "No progress file to reset."
+            exit 0
+          fi
+          git rm data/discover-progress.json
+          git commit -m "discover-seasons: fresh_start — reset progress"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git push origin main
+          echo "Progress reset."
+
   generate-shards:
+    needs: reset-progress
+    if: always()
     runs-on: ubuntu-latest
     outputs:
       targets: ${{ steps.gen.outputs.targets }}
@@ -89,8 +127,15 @@ jobs:
           # backfill_teams FORCES all_players inside the script (see discover-seasons.js)
           # — mirror that here so cursor/mode tracking never desyncs from what the
           # script actually scans (this was a real bug: mismatched cursor base).
-          all_players = os.environ.get('ALL_PLAYERS') == 'true' or os.environ.get('BACKFILL_TEAMS') == 'true'
-          mode = 'all' if all_players else 'current'
+          # It ALSO gets its own mode key ('all+backfill', not 'all') — a prior plain
+          # all_players discovery pass marks shards done under mode='all', and if
+          # backfill shared that key, this run would see everything already "done"
+          # and skip all 256 shards, backfilling nothing. Same player list either way
+          # (only what happens with the results differs), so this is a resume-state
+          # label fix, not a change to what gets probed.
+          backfill = os.environ.get('BACKFILL_TEAMS') == 'true'
+          all_players = os.environ.get('ALL_PLAYERS') == 'true' or backfill
+          mode = ('all+backfill' if backfill else 'all') if all_players else 'current'
 
           progress = {}
           try:
