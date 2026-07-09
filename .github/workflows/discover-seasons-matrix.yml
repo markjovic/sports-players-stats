@@ -122,31 +122,28 @@ jobs:
           for shard in (toks if toks else [format(i, '02x') for i in range(256)]):
               p = progress.get(shard, {})
               if not (p.get('done') == True and p.get('mode') == mode and not toks):
-                  targets.append({'shard': shard, 'cursor': p.get('cursor', 0)})
+                  targets.append(shard)   # SHARD STRING ONLY — no cursor. Cursors vary on
+                  # resumed runs and a varying numeric substring can collide with a
+                  # registered secret, which makes GitHub redact the whole job output
+                  # (empty → matrix skips). Static hex strings can't collide or vary.
+                  # The map job's script reads each shard's cursor from the progress
+                  # file itself. (Confirmed cause: community discussion #71024.)
           print(f'generate-shards: {len(targets)} targets for mode={mode}')
           out_line = f'targets={json.dumps(targets)}'
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
               fh.write(out_line + '\n')
-          # Read-back: proves EXACTLY what landed in GITHUB_OUTPUT (not just the count
-          # above). If map skips, this log line tells us instantly whether the output
-          # was empty / malformed / truncated vs written-fine-but-not-consumed — the
-          # generate-shards→map boundary is where every prior failure occurred.
-          with open(os.environ['GITHUB_OUTPUT']) as fh:
-              written = fh.read()
-          print(f'generate-shards: wrote {len(out_line)} bytes; targets= present in GITHUB_OUTPUT: {"targets=" in written}')
+          print(f'generate-shards: wrote {len(out_line)} bytes (static shard list)')
           PYEOF
-          echo "=== raw GITHUB_OUTPUT (first 300 chars) ==="
-          head -c 300 "$GITHUB_OUTPUT"; echo ""
 
   map:
     needs: generate-shards
-    if: needs.generate-shards.outputs.targets != '[]'
+    if: fromJson(needs.generate-shards.outputs.targets)[0] != null
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 20
       matrix:
-        target: ${{ fromJson(needs.generate-shards.outputs.targets) }}
+        shard: ${{ fromJson(needs.generate-shards.outputs.targets) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -156,25 +153,25 @@ jobs:
           sparse-checkout: |
             scripts
             data
-            players/${{ matrix.target.shard }}
+            players/${{ matrix.shard }}
           sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
       - name: Matrix position
-        run: echo "shard=${{ matrix.target.shard }} cursor=${{ matrix.target.cursor }} | job ${{ strategy.job-index }} of ${{ strategy.job-total }}"
+        run: echo "shard=${{ matrix.shard }} | job ${{ strategy.job-index }} of ${{ strategy.job-total }}"
       - name: Burst-probe
         run: |
-          ARGS="--shard=${{ matrix.target.shard }} --cursor=${{ matrix.target.cursor }} --out=discover-shard-${{ matrix.target.shard }}.json --concurrency=${{ inputs.concurrency }}"
+          ARGS="--shard=${{ matrix.shard }} --out=discover-shard-${{ matrix.shard }}.json --concurrency=${{ inputs.concurrency }}"
           [ "${{ inputs.all_players }}" == "true" ] && ARGS="$ARGS --all-players"
           [ "${{ inputs.backfill_teams }}" == "true" ] && ARGS="$ARGS --backfill-teams"
           node scripts/discover-seasons.js $ARGS
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: discover-shard-${{ matrix.target.shard }}
-          path: 'discover-shard-${{ matrix.target.shard }}.json'
+          name: discover-shard-${{ matrix.shard }}
+          path: 'discover-shard-${{ matrix.shard }}.json'
           retention-days: 1
           if-no-files-found: ignore
 
