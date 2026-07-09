@@ -1,1 +1,79 @@
-{"uuid":"fd1880f7-12fd-46a5-8182-4db4eb7eba81","name":"Blake Coleman","sports":{"Basketball":{"maxGamePTS":10,"maxGameThreePt":2,"foulOuts":{},"gp":23,"pts":94,"fg":32,"ft":6,"threePt":8,"fouls":34,"statsChecked":"2026-07-08T17:56:21.644Z"}},"seasons":[{"sid":"205c1638","regs":[{"tid":"c45a5eb2"}]},{"sid":"796936f7","regs":[{"tid":"94bb2654"}]},{"sid":"a41e2e17","regs":[{"tid":"d635f5d8"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":10,"gameKey":"7e7122f4","sid":"a41e2e17"},"maxGameThreePt":{"v":2,"gameKey":"7e7122f4","sid":"a41e2e17"}}}
+{
+  "uuid": "fd1880f7-12fd-46a5-8182-4db4eb7eba81",
+  "name": "Blake Coleman",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 10,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 23,
+      "pts": 94,
+      "fg": 32,
+      "ft": 6,
+      "threePt": 8,
+      "fouls": 34,
+      "statsChecked": "2026-07-08T17:56:21.644Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "205c1638",
+      "regs": [
+        {
+          "tid": "c45a5eb2",
+          "gid": "b372ccf2",
+          "gn": "Wednesday Men E3 Grade"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "94bb2654"
+        }
+      ]
+    },
+    {
+      "sid": "a41e2e17",
+      "regs": [
+        {
+          "tid": "d635f5d8",
+          "gid": "ecaed4e7",
+          "gn": "Wednesday Open Men F"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "c45a5eb2",
+      "sid": "205c1638",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "94bb2654",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "d635f5d8",
+      "sid": "a41e2e17",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 10,
+      "gameKey": "7e7122f4",
+      "sid": "a41e2e17"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "7e7122f4",
+      "sid": "a41e2e17"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:58:05.725Z"
+}

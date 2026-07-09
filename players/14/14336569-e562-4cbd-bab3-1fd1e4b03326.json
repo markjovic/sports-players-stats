@@ -1,1 +1,65 @@
-{"uuid":"14336569-e562-4cbd-bab3-1fd1e4b03326","name":"Daniel Potter","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":1,"foulOuts":{},"gp":19,"pts":28,"fg":11,"threePt":2,"fouls":16,"statsChecked":"2026-07-08T17:50:12.436Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"ecad0f0b"}]},{"sid":"880bda3c","regs":[{"tid":"a2de40a8"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":6,"gameKey":"69068db8","sid":"702b232f"},"maxGameThreePt":{"v":1,"gameKey":"3f0c9e2c","sid":"702b232f"}}}
+{
+  "uuid": "14336569-e562-4cbd-bab3-1fd1e4b03326",
+  "name": "Daniel Potter",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": 1,
+      "foulOuts": {},
+      "gp": 19,
+      "pts": 28,
+      "fg": 11,
+      "threePt": 2,
+      "fouls": 16,
+      "statsChecked": "2026-07-08T17:50:12.436Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "ecad0f0b",
+          "gid": "854861a2",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "a2de40a8",
+          "gid": "a6ebcb14",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "ecad0f0b",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "a2de40a8",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "69068db8",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "3f0c9e2c",
+      "sid": "702b232f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:57:58.469Z"
+}

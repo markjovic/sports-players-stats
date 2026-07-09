@@ -1,1 +1,66 @@
-{"uuid":"990ba41d-06e9-489e-9341-a8ff020d7e41","name":"Aaron Tranter","sports":{"Basketball":{"maxGamePTS":21,"maxGameThreePt":2,"foulOuts":{},"gp":21,"pts":152,"fg":50,"ft":10,"threePt":14,"fouls":31,"statsChecked":"2026-07-08T17:53:49.542Z"}},"seasons":[{"sid":"ffba8120","regs":[{"tid":"57cbc1b0"}]},{"sid":"afa96e12","regs":[{"tid":"2166c897"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":21,"gameKey":"0632e9d8","sid":"afa96e12"},"maxGameThreePt":{"v":2,"gameKey":"308b7cd3","sid":"ffba8120"}}}
+{
+  "uuid": "990ba41d-06e9-489e-9341-a8ff020d7e41",
+  "name": "Aaron Tranter",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 21,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 21,
+      "pts": 152,
+      "fg": 50,
+      "ft": 10,
+      "threePt": 14,
+      "fouls": 31,
+      "statsChecked": "2026-07-08T17:53:49.542Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "ffba8120",
+      "regs": [
+        {
+          "tid": "57cbc1b0",
+          "gid": "139fa978",
+          "gn": "Wednesday Senior Men (over 35s) Div 3"
+        }
+      ]
+    },
+    {
+      "sid": "afa96e12",
+      "regs": [
+        {
+          "tid": "2166c897",
+          "gid": "d5749b48",
+          "gn": "Wednesday Men 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "57cbc1b0",
+      "sid": "ffba8120",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2166c897",
+      "sid": "afa96e12",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 21,
+      "gameKey": "0632e9d8",
+      "sid": "afa96e12"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "308b7cd3",
+      "sid": "ffba8120"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:58:01.963Z"
+}

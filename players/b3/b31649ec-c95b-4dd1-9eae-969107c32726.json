@@ -1,1 +1,81 @@
-{"uuid":"b31649ec-c95b-4dd1-9eae-969107c32726","name":"Taylor Hernan","sports":{"Basketball":{"maxGamePTS":9,"maxGameThreePt":2,"foulOuts":{},"gp":22,"pts":57,"fg":20,"ft":2,"threePt":5,"fouls":25,"statsChecked":"2026-07-08T17:54:38.323Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"db04351f"}]},{"sid":"880bda3c","regs":[{"tid":"4a6acc06"}]},{"sid":"25aab112","regs":[{"tid":"6b091c5b"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":9,"gameKey":"5677b828","sid":"702b232f"},"maxGameThreePt":{"v":2,"gameKey":"703ba9d5","sid":"880bda3c"}}}
+{
+  "uuid": "b31649ec-c95b-4dd1-9eae-969107c32726",
+  "name": "Taylor Hernan",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 9,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 22,
+      "pts": 57,
+      "fg": 20,
+      "ft": 2,
+      "threePt": 5,
+      "fouls": 25,
+      "statsChecked": "2026-07-08T17:54:38.323Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "db04351f",
+          "gid": "854861a2",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "4a6acc06",
+          "gid": "a6ebcb14",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "25aab112",
+      "regs": [
+        {
+          "tid": "6b091c5b",
+          "gid": "4ade7d9e",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "db04351f",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4a6acc06",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "6b091c5b",
+      "sid": "25aab112",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 9,
+      "gameKey": "5677b828",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "703ba9d5",
+      "sid": "880bda3c"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:58:02.914Z"
+}

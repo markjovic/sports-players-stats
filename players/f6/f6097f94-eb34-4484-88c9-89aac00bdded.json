@@ -1,1 +1,101 @@
-{"uuid":"f6097f94-eb34-4484-88c9-89aac00bdded","name":"Sam Robb","sports":{"Basketball":{"maxGamePTS":18,"maxGameThreePt":6,"foulOuts":{"fbe5a041":1},"gp":34,"pts":207,"fg":57,"ft":15,"threePt":26,"fouls":57,"statsChecked":"2026-07-08T17:55:57.239Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"d6110059"}]},{"sid":"796936f7","regs":[{"tid":"88f8e4b6"}]},{"sid":"fbe5a041","regs":[{"tid":"1caf23fc"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":18,"gameKey":"f77ed91e","sid":"fbe5a041"},"maxGameThreePt":{"v":6,"gameKey":"f77ed91e","sid":"fbe5a041"}}}
+{
+  "uuid": "f6097f94-eb34-4484-88c9-89aac00bdded",
+  "name": "Sam Robb",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 18,
+      "maxGameThreePt": 6,
+      "foulOuts": {
+        "fbe5a041": 1
+      },
+      "gp": 34,
+      "pts": 207,
+      "fg": 57,
+      "ft": 15,
+      "threePt": 26,
+      "fouls": 57,
+      "statsChecked": "2026-07-08T17:55:57.239Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "d6110059",
+          "gid": "032acf0f",
+          "gn": "Wednesday Men -Div 2"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "88f8e4b6",
+          "gid": "56843e1b",
+          "gn": "Wednesday Men -Div 1"
+        }
+      ]
+    },
+    {
+      "sid": "fbe5a041",
+      "regs": [
+        {
+          "tid": "1caf23fc",
+          "gid": "93c52f30",
+          "gn": "Wednesday Men -Div 1"
+        }
+      ]
+    },
+    {
+      "sid": "a11abfe0",
+      "sn": "Summer 2021/22",
+      "regs": [
+        {
+          "tid": "354f6d46",
+          "tn": "Team Mixtape",
+          "gid": "34d8c2bc",
+          "gn": "Wednesday Senior Men Div 1",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "d6110059",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "88f8e4b6",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "1caf23fc",
+      "sid": "fbe5a041",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "354f6d46",
+      "sid": "a11abfe0",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "f77ed91e",
+      "sid": "fbe5a041"
+    },
+    "maxGameThreePt": {
+      "v": 6,
+      "gameKey": "f77ed91e",
+      "sid": "fbe5a041"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:58:05.406Z"
+}

@@ -1,1 +1,66 @@
-{"uuid":"28298b30-7b1a-48ea-9048-34ace9a7b4c2","name":"Sam Quinn","sports":{"Basketball":{"maxGamePTS":11,"maxGameThreePt":2,"foulOuts":{},"gp":23,"pts":79,"fg":29,"ft":3,"threePt":6,"fouls":27,"statsChecked":"2026-07-08T17:50:34.078Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"dbfff7d8"}]},{"sid":"796936f7","regs":[{"tid":"79956384"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":11,"gameKey":"cf4389ed","sid":"796936f7"},"maxGameThreePt":{"v":2,"gameKey":"1cff6b63","sid":"796936f7"}}}
+{
+  "uuid": "28298b30-7b1a-48ea-9048-34ace9a7b4c2",
+  "name": "Sam Quinn",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 11,
+      "maxGameThreePt": 2,
+      "foulOuts": {},
+      "gp": 23,
+      "pts": 79,
+      "fg": 29,
+      "ft": 3,
+      "threePt": 6,
+      "fouls": 27,
+      "statsChecked": "2026-07-08T17:50:34.078Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "dbfff7d8",
+          "gid": "854861a2",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "79956384",
+          "gid": "617dabe4",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "dbfff7d8",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "79956384",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 11,
+      "gameKey": "cf4389ed",
+      "sid": "796936f7"
+    },
+    "maxGameThreePt": {
+      "v": 2,
+      "gameKey": "1cff6b63",
+      "sid": "796936f7"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:57:58.941Z"
+}

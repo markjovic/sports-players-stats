@@ -1,1 +1,83 @@
-{"uuid":"8302ca42-57b3-47d0-8203-26f53fb8f4ee","name":"Noah Shute","sports":{"Basketball":{"maxGamePTS":18,"maxGameThreePt":1,"foulOuts":{"796936f7":1},"gp":40,"pts":106,"fg":41,"ft":12,"threePt":4,"fouls":71,"statsChecked":"2026-07-08T17:53:24.433Z"}},"seasons":[{"sid":"702b232f","regs":[{"tid":"d752f6bb"}]},{"sid":"796936f7","regs":[{"tid":"2766b4f4"}]},{"sid":"880bda3c","regs":[{"tid":"3a91cfdf"}]}],"teams":[],"updatedAt":"2026-07-08T17:30:25.968Z","records":{"maxGamePTS":{"v":18,"gameKey":"01101144","sid":"702b232f"},"maxGameThreePt":{"v":1,"gameKey":"1a413d98","sid":"702b232f"}}}
+{
+  "uuid": "8302ca42-57b3-47d0-8203-26f53fb8f4ee",
+  "name": "Noah Shute",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 18,
+      "maxGameThreePt": 1,
+      "foulOuts": {
+        "796936f7": 1
+      },
+      "gp": 40,
+      "pts": 106,
+      "fg": 41,
+      "ft": 12,
+      "threePt": 4,
+      "fouls": 71,
+      "statsChecked": "2026-07-08T17:53:24.433Z"
+    }
+  },
+  "seasons": [
+    {
+      "sid": "702b232f",
+      "regs": [
+        {
+          "tid": "d752f6bb",
+          "gid": "7edb93b5",
+          "gn": "Wednesday Men-Div 4"
+        }
+      ]
+    },
+    {
+      "sid": "796936f7",
+      "regs": [
+        {
+          "tid": "2766b4f4",
+          "gid": "617dabe4",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    },
+    {
+      "sid": "880bda3c",
+      "regs": [
+        {
+          "tid": "3a91cfdf",
+          "gid": "59076acc",
+          "gn": "Wednesday Men-Div 5"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "d752f6bb",
+      "sid": "702b232f",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "2766b4f4",
+      "sid": "796936f7",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "3a91cfdf",
+      "sid": "880bda3c",
+      "status": "ACTIVE"
+    }
+  ],
+  "updatedAt": "2026-07-08T17:30:25.968Z",
+  "records": {
+    "maxGamePTS": {
+      "v": 18,
+      "gameKey": "01101144",
+      "sid": "702b232f"
+    },
+    "maxGameThreePt": {
+      "v": 1,
+      "gameKey": "1a413d98",
+      "sid": "702b232f"
+    }
+  },
+  "teamsUpdatedAt": "2026-07-09T01:58:01.270Z"
+}
