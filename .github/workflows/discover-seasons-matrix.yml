@@ -169,12 +169,14 @@ jobs:
           PYEOF
 
   # Diagnostic: confirms GitHub's OWN resolved view of the output matches what
-  # generate-shards' Python printed. If these two ever disagree, the break is
-  # between the step's GITHUB_OUTPUT write and GitHub's output resolution — not in
-  # generate-shards' logic itself. Cheap (one job, no checkout), keeps this
-  # debuggable from logs alone without needing an Actions-UI screenshot next time.
+  # generate-shards' Python printed. Deliberately sequenced AFTER reduce (not
+  # parallel with map) — map and this job both failed to actually run, twice, in
+  # the exact two instances where they became eligible to start simultaneously the
+  # moment generate-shards finished. Running this AFTER instead of alongside map
+  # tests that directly: if it now runs every time, simultaneous-start eligibility
+  # was the real trigger; if it still gets skipped, the cause is unrelated to map.
   verify-targets:
-    needs: generate-shards
+    needs: [generate-shards, reduce]
     runs-on: ubuntu-latest
     steps:
       - name: Echo GitHub's resolved view of the targets output
@@ -209,6 +211,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Report matrix position (decisive evidence, not a guess)
+        run: |
+          echo "This job: shard=${{ matrix.target.shard }} cursor=${{ matrix.target.cursor }}"
+          echo "strategy.job-index=${{ strategy.job-index }}  strategy.job-total=${{ strategy.job-total }}"
 
       - name: Burst-probe shard ${{ matrix.target.shard }} from cursor ${{ matrix.target.cursor }}
         run: |
