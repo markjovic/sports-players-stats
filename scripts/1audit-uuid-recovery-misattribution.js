@@ -181,7 +181,7 @@ function main() {
           counts.fieldsChecked++;
           fileTouched = true;
 
-          // ── Check 1: prefix consistency -- no historical-commit trust needed ──
+          // Check 1: prefix consistency -- no historical-commit trust needed
           const prefixOk = curVal.slice(0, preRecVal.length) === preRecVal;
           if (!prefixOk) {
             counts.prefixInconsistent++;
@@ -191,7 +191,7 @@ function main() {
             if (ontoReal) counts.prefixInconsistentOntoRealPlayer++;
           }
 
-          // ── Check 2: content-match against pre-migration snapshot ──
+          // Check 2: content-match against pre-migration snapshot
           const matches = preMigArr.filter(e => isFullUuid(e?.[key]) && e[key].slice(0, preRecVal.length) === preRecVal);
 
           if (matches.length === 0) {
@@ -202,13 +202,11 @@ function main() {
           } else {
             const distinctValues = [...new Set(matches.map(m => m[key]))];
             if (distinctValues.length > 1) {
-              // Genuinely ambiguous -- different real candidates share this prefix in the old array.
               counts.ambiguousGenuine++;
               if (samples.ambiguousGenuine.length < SAMPLE_CAP) {
                 samples.ambiguousGenuine.push({ sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, candidates: distinctValues });
               }
             } else {
-              // One or more matches, all agreeing on the same value -- not actually ambiguous.
               if (matches.length > 1) counts.ambiguousButAgreeing++;
               const correct = distinctValues[0];
               if (correct === curVal) {
@@ -259,9 +257,9 @@ function main() {
   console.log(`    Ambiguous, candidates GENUINELY DISAGREE     : ${counts.ambiguousGenuine.toLocaleString()}`);
 
   if (counts.prefixInconsistent > 0 && counts.misattributedVsPreMigration === 0) {
-    console.log('\n  ⚠ Check 1 found wrong entries that Check 2 did NOT flag as misattributed.');
-    console.log('    That disagreement points at a problem with the pre-migration commit');
-    console.log('    selection specifically -- Check 1 doesn\'t depend on it and should be trusted first.');
+    console.log('\n  Check 1 found wrong entries that Check 2 did NOT flag as misattributed.');
+    console.log('  That disagreement points at a problem with the pre-migration commit');
+    console.log('  selection specifically -- Check 1 doesn\'t depend on it and should be trusted first.');
   }
 
   const report = {
