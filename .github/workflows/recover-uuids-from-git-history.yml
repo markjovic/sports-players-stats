@@ -1,0 +1,70 @@
+# .github/workflows/recover-uuids-from-git-history.yml
+name: Recover UUIDs From Git History (games/bv only)
+
+# Prerequisite for any attempt to backfill player records for the 81,974
+# players found by diagnose-missing-player-files.js to have no player file
+# at all. Their id is truncated (ambiguous) and their name was already
+# stripped from storage — the only way to even identify who they are is to
+# find the full-length uuid in this file's git history, from before today's
+# truncation rollout. See scripts/recover-uuids-from-git-history.js header
+# for exactly how the historical commit is located (not a date guess — the
+# actual migrate-uuid-truncation commit boundary, per file).
+#
+# fetch-depth is bounded (not a full unshallow clone) since all the relevant
+# commits are from today's session. filter: blob:none keeps this cheap —
+# only the ~2,865 specific historical file versions actually needed get their
+# blobs fetched, not the whole repo's history of blobs.
+#
+# STRONGLY recommended: run with dry_run=true first and read the numbers
+# before running live. This is the first workflow this session that reads
+# deep git history rather than just the current tree.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — counts only, no writes or commits'
+        required: false
+        default: true
+        type: boolean
+      fetch_depth:
+        description: 'How many commits of history to fetch (increase if the report shows many no-migration-commit-in-history results on a shallow repo)'
+        required: false
+        default: '2000'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout (bounded history, sparse — games/, players/indexes/, scripts/, reports/)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.fetch_depth }}
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run recovery
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/recover-uuids-from-git-history.js $ARGS
