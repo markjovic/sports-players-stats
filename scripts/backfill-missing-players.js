@@ -185,17 +185,34 @@ async function refreshProfileSession() {
   profilePromise = (async () => {
     for (let attempt = 1; attempt <= 10; attempt++) {
       if (attempt > 1) await sleep(attempt * 5000);
-      for (const body of COOKIE_QUERIES) {
-        const res = await doFetch(API_URL, {
-          headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-          body:    JSON.stringify(body),
-        });
+      for (const q of COOKIE_QUERIES) {
+        let res;
+        try {
+          res = await doFetch(API_URL, {
+            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
+            body:    JSON.stringify(q),
+          });
+        } catch (err) {
+          console.log(`  [session attempt ${attempt}, ${q.operationName}] request threw: ${err.message}`);
+          continue;
+        }
         const raw = res.rawCookies;
-        if (!raw) continue;
+        if (!raw) {
+          // No visibility into WHY previously -- log enough to tell a WAF
+          // block (HTML page, no set-cookie) apart from a legitimate
+          // GraphQL error apart from a genuinely empty response.
+          let snippet = '';
+          try { snippet = (await res.text()).replace(/\s+/g, ' ').trim().slice(0, 200); } catch (_) {}
+          console.log(`  [session attempt ${attempt}, ${q.operationName}] no set-cookie header. status=${res.status} body="${snippet}"`);
+          continue;
+        }
         const parts = (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0].trim());
         const get = (name) => parts.find(c => c.startsWith(name + '=')) || null;
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-        if (!tier || !session || !sub) continue;
+        if (!tier || !session || !sub) {
+          console.log(`  [session attempt ${attempt}, ${q.operationName}] set-cookie present but missing tier/session/sub. raw="${JSON.stringify(raw).slice(0, 200)}"`);
+          continue;
+        }
         profileCookie  = `${tier}; ${session}; ${sub}`;
         profilePromise = null;
         console.log(`  Profile session refreshed (attempt ${attempt})`);
