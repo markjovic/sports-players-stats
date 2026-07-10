@@ -51,8 +51,7 @@
 // Does not write anything to games/. Report only.
 //
 // Run (workflow only -- needs pre-migration/games/bv/ and
-// pre-recovery/games/bv/ checked out first via `git archive`, see the
-// companion .yml):
+// pre-recovery/games/bv/ checked out first, see the companion .yml):
 //   node scripts/audit-uuid-recovery-misattribution.js
 
 'use strict';
@@ -71,6 +70,21 @@ const REPORT_FILE        = path.join(ROOT, 'reports', 'uuid-recovery-misattribut
 const SAMPLE_CAP         = 50;
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+
+// Direct trace for specific known uuids, regardless of which bucket (if any)
+// the main loop below sorts them into. Added 2026-07-11 because the first
+// full run reported 0 misattributed / 0 no-source-match out of 2,622,579
+// fields checked -- which flatly contradicts the one confirmed real-world
+// bad case (0000ed35-3510-4267-bf4f-db65588b6d99, manually verified against
+// playhq.com to match no real player in its game). That contradiction means
+// either this uuid was never actually touched by recover-uuids-from-git-history.js
+// at all (so the misattribution theory doesn't explain THIS case, whatever
+// else is true about the theory), or something is wrong with the audit's
+// own logic/reference commits. This prints the ground truth for that exact
+// slot directly, in all three snapshots, so that question gets answered
+// with evidence instead of inference from aggregate counts.
+const SPOT_CHECK_UUIDS = new Set(['0000ed35-3510-4267-bf4f-db65588b6d99']);
+const spotCheckResults = [];
 
 // Is `uuid` a REAL, already-known player (has an index entry)? Used to
 // distinguish "misattributed onto a still-unknown/missing profile" (bad, but
@@ -112,7 +126,7 @@ function main() {
 
   for (const [label, dir] of [['pre-migration', PRE_MIGRATION_DIR], ['pre-recovery', PRE_RECOVERY_DIR]]) {
     if (!fs.existsSync(dir)) {
-      console.error(`  FATAL: ${dir} does not exist -- the workflow's ${label} git-archive step must run before this script.`);
+      console.error(`  FATAL: ${dir} does not exist -- the workflow's ${label} checkout step must run before this script.`);
       process.exit(1);
     }
   }
@@ -150,6 +164,26 @@ function main() {
 
         for (let i = 0; i < curArr.length; i++) {
           const curVal = curArr[i]?.[key];
+
+          // Spot-check: run BEFORE any of the gates below, so a known uuid
+          // gets traced even if it turns out to have been skipped entirely
+          // by the main classification logic (that's exactly the case this
+          // is designed to catch).
+          if (curVal && SPOT_CHECK_UUIDS.has(curVal)) {
+            const preRecValRaw = preRecArr[i]?.[key];
+            const wasTruncated = isTruncatedPrefix(preRecValRaw);
+            const preMigMatches = wasTruncated
+              ? preMigArr.filter(e => isFullUuid(e?.[key]) && e[key].slice(0, preRecValRaw.length) === preRecValRaw)
+              : [];
+            spotCheckResults.push({
+              uuid: curVal, sid, gameId, field, index: i,
+              preRecoveryValueAtThisSlot: preRecValRaw ?? '(index did not exist pre-recovery)',
+              wasThisSlotTouchedByRecovery: wasTruncated,
+              preMigrationArrayForThisGame: preMigArr.map(e => e?.[key] ?? null),
+              contentMatchesFound: preMigMatches.map(m => m[key]),
+            });
+          }
+
           if (!isFullUuid(curVal)) continue; // not recovered (or never needed to be)
 
           const preRecVal = preRecArr[i]?.[key];
@@ -197,6 +231,20 @@ function main() {
     if (seasonsScanned % 200 === 0) process.stdout.write(`  ${seasonsScanned}/${sids.length} season files checked\r`);
   }
 
+  console.log('\n' + '='.repeat(60));
+  console.log('  SPOT CHECK -- known uuid trace (see script header for why)');
+  console.log('='.repeat(60));
+  if (spotCheckResults.length === 0) {
+    console.log(`  NOT FOUND anywhere in current games/bv: ${[...SPOT_CHECK_UUIDS].join(', ')}`);
+    console.log('  (If you were expecting this uuid to be present, it may have been');
+    console.log('   removed/changed since, or it lives in a field this script doesn\'t scan.)');
+  } else {
+    for (const r of spotCheckResults) {
+      console.log(JSON.stringify(r, null, 2));
+    }
+  }
+  console.log('='.repeat(60));
+
   console.log(`\n  ${seasonsScanned}/${sids.length} season files checked`);
   console.log(`  Season files touched by recovery : ${filesTouchedByRecovery.toLocaleString()}`);
   console.log(`  Fields checked (touched by recovery): ${counts.fieldsChecked.toLocaleString()}`);
@@ -215,6 +263,7 @@ function main() {
     seasonsScanned, filesTouchedByRecovery,
     counts, misattributionRatePct: Number(pct),
     samples,
+    spotCheckResults,
   };
   fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
   fs.writeFileSync(REPORT_FILE, JSON.stringify(report, null, 2), 'utf8');
