@@ -111,7 +111,7 @@ function buildMigrationCommitMap() {
     hashes = git(`git log --all --format=%H --grep="^migrate-uuid-truncation:"`).trim().split('\n').filter(Boolean);
   } catch (e) {
     console.error('  Failed to list migrate-uuid-truncation commits:', e.message.slice(0, 300));
-    return map;
+    return { map, actualDepthNeeded: null };
   }
   console.log(`  ${hashes.length} migrate-uuid-truncation commits found -- mapping their files to parent commits...`);
   for (const hash of hashes) {
@@ -123,7 +123,25 @@ function buildMigrationCommitMap() {
     for (const f of files) if (!map.has(f)) map.set(f, parent);
   }
   console.log(`  ${map.size} distinct files mapped to a pre-migration commit`);
-  return map;
+
+  // How much fetch-depth did this actually need? `git log --all --grep`
+  // returns newest-first, so the LAST hash found is the oldest migration
+  // commit -- rev-list --count to its parent tells us exactly how far back
+  // from HEAD we had to reach. Answers "was fetch_depth well-calibrated,
+  // wasteful, or nearly insufficient" with a real number instead of a guess.
+  let actualDepthNeeded = null;
+  if (hashes.length > 0) {
+    const oldestHash = hashes[hashes.length - 1];
+    try {
+      const oldestParent = git(`git rev-parse ${oldestHash}^`).trim();
+      actualDepthNeeded = parseInt(git(`git rev-list --count ${oldestParent}..HEAD`).trim(), 10) + 1;
+      console.log(`  Actual depth needed to reach the oldest migration commit's parent: ${actualDepthNeeded} commits`);
+    } catch (e) {
+      console.error('  Could not compute actual depth needed (oldest commit may be outside fetch-depth entirely):', e.message.slice(0, 200));
+    }
+  }
+
+  return { map, actualDepthNeeded };
 }
 
 function readFileAtCommit(commit, sidFilePath) {
@@ -166,7 +184,7 @@ function main() {
   console.log(`  Repo is ${isShallow ? 'SHALLOW' : 'a full clone'} -- if many files report 'no-migration-commit-in-history'`);
   if (isShallow) console.log("  below, increase fetch-depth in the workflow and re-run before trusting that count.");
 
-  const migrationMap = buildMigrationCommitMap();
+  const { map: migrationMap, actualDepthNeeded } = buildMigrationCommitMap();
 
   const allSids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort();
   console.log(`  ${allSids.length} season files to check\n`);
@@ -261,6 +279,7 @@ function main() {
   const report = {
     generatedAt: new Date().toISOString(),
     isShallow,
+    actualDepthNeeded,
     filesChecked, filesWithUnresolved, filesWithHistory, filesModified,
     recovered, stillUnrecoverable, reasonCounts,
     unrecoverableExamples,
@@ -279,6 +298,7 @@ function main() {
   console.log(`  Reason breakdown                : ${JSON.stringify(reasonCounts)}`);
   console.log(`  Elapsed                         : ${Math.round((Date.now() - start) / 1000)}s`);
   console.log(`  Mode                            : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+  console.log(`  Actual depth needed              : ${actualDepthNeeded ?? 'unknown'}${actualDepthNeeded ? ' (compare against the fetch_depth input to see how much margin you had)' : ''}`);
   if (stillUnrecoverable > 0) {
     console.log('\n  Some ids have NO full-length version anywhere in available git history --');
     console.log('  either fetch-depth was insufficient, or the game was created after');
