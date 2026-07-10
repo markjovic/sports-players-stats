@@ -459,7 +459,17 @@ async function processUUID(uuid, stats, idx) {
   // when player.private is currently true — capture that BEFORE overwriting
   // it below). Without the wasPrivate check, a `Player #...` placeholder
   // name would never be replaced once set, even after the profile went public.
-  const wasPrivate = player.private === true;
+  //
+  // wasPrivate ALSO falls back to the pre-flag legacy signal (statsChecked
+  // present + maxGamePTS still null) for players marked private before this
+  // flag existed. Without this fallback, a legacy-private player who jumps
+  // straight to public on their FIRST check after this rollout would not
+  // get their placeholder name replaced until a SECOND check (the first
+  // would only backfill the flag). Read from player.sports.Basketball
+  // directly here, before bk below overwrites maxGamePTS with fresh data.
+  const oldBk       = player.sports.Basketball;
+  const wasPrivate  = player.private === true ||
+    (oldBk.statsChecked !== undefined && oldBk.maxGamePTS === null);
   if (parsed.playerName && (!player.name || wasPrivate)) {
     player.name = parsed.playerName;
   }

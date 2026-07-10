@@ -14,7 +14,11 @@
 //                    profile is confirmed public (see wasPrivate below —
 //                    without it, a private stub going public would keep its
 //                    placeholder name forever, since name is otherwise only
-//                    ever written when previously absent).
+//                    ever written when previously absent. wasPrivate also
+//                    falls back to the legacy signal so a legacy-private
+//                    player going public gets the reveal on the very FIRST
+//                    check after this flag was introduced, not one cycle
+//                    later).
 // If still inaccessible: updates statsChecked timestamp and sets
 //                        private: true, so we know when it was last
 //                        confirmed private. Name is left untouched — if a
@@ -383,7 +387,14 @@ async function main() {
     // without it, `Player #...` would never be replaced once set at all,
     // even after the profile went public (name is otherwise only written
     // when completely absent).
-    const wasPrivate = player.private === true;
+    //
+    // ALSO falls back to the pre-flag legacy signal (statsChecked present +
+    // maxGamePTS still null) for players marked private before this flag
+    // existed, so a legacy-private player going public on their very first
+    // recheck after this rollout gets their name replaced immediately
+    // rather than one cycle later.
+    const wasPrivate = player.private === true ||
+      (bk.statsChecked !== undefined && bk.maxGamePTS === null);
     if (parsed.playerName && (!player.name || wasPrivate)) {
       player.name = parsed.playerName;
     }
