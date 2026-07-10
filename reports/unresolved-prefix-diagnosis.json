@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-10T05:59:34.918Z",
-  "totalFieldsSeen": 2623011,
+  "generatedAt": "2026-07-10T06:26:08.920Z",
+  "totalFieldsSeen": 2622579,
   "totalResolved": 0,
-  "totalFailed": 2623011,
+  "totalFailed": 2622579,
   "shardsWithNoIndexFile": [],
   "buckets": {
     "shard-index-missing": {
@@ -11,73 +11,9 @@
       "topExamples": []
     },
     "known-collision": {
-      "distinctPrefixes": 3,
-      "totalOccurrences": 432,
-      "topExamples": [
-        {
-          "prefix": "ddcbc93f-e",
-          "count": 218,
-          "sample": [
-            {
-              "sid": "05ef4bad",
-              "gameId": "0ab3a93d",
-              "field": "p.id"
-            },
-            {
-              "sid": "05ef4bad",
-              "gameId": "a5f093b0",
-              "field": "p.id"
-            },
-            {
-              "sid": "05ef4bad",
-              "gameId": "8a559362",
-              "field": "p.id"
-            }
-          ]
-        },
-        {
-          "prefix": "b0d1fc12-8",
-          "count": 190,
-          "sample": [
-            {
-              "sid": "0d3fe477",
-              "gameId": "51118b74",
-              "field": "p.id"
-            },
-            {
-              "sid": "0d3fe477",
-              "gameId": "73f12eeb",
-              "field": "p.id"
-            },
-            {
-              "sid": "0d3fe477",
-              "gameId": "c5ca7e6c",
-              "field": "p.id"
-            }
-          ]
-        },
-        {
-          "prefix": "029f01ee-5",
-          "count": 24,
-          "sample": [
-            {
-              "sid": "0552afa9",
-              "gameId": "46330264",
-              "field": "p.id"
-            },
-            {
-              "sid": "0552afa9",
-              "gameId": "9838bec9",
-              "field": "p.id"
-            },
-            {
-              "sid": "0552afa9",
-              "gameId": "335670b7",
-              "field": "p.id"
-            }
-          ]
-        }
-      ]
+      "distinctPrefixes": 0,
+      "totalOccurrences": 0,
+      "topExamples": []
     },
     "not-in-index": {
       "distinctPrefixes": 81981,
