@@ -1,0 +1,53 @@
+# .github/workflows/migrate-uuid-truncation.yml
+name: Migrate UUID Truncation (one-off, games/bv only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — report what would change, write/commit nothing'
+        required: false
+        default: false
+        type: boolean
+      force:
+        description: 'Ignore saved progress and start over from scratch'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    # 2,865 season files / ~2.5GB — resumable via its own progress file +
+    # periodic commits, so a timeout here just means re-running the workflow
+    # picks up where it left off.
+    timeout-minutes: 350
+    steps:
+      - name: Checkout (sparse — only games/ and scripts/ needed)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            games
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run migration
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          node scripts/migrate-uuid-truncation.js $ARGS
