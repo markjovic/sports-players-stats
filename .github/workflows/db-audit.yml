@@ -10,7 +10,12 @@ on:
         default: false
         type: boolean
       no_size:
-        description: 'Skip repo size report (faster)'
+        description: 'Skip repo size report (faster) — mutually exclusive with size_only'
+        required: false
+        default: false
+        type: boolean
+      size_only:
+        description: 'Repo size report only, skip file/data audit — mutually exclusive with no_size'
         required: false
         default: false
         type: boolean
@@ -32,4 +37,5 @@ jobs:
           ARGS=""
           if [ "${{ inputs.verbose }}" = "true" ]; then ARGS="$ARGS --verbose"; fi
           if [ "${{ inputs.no_size }}" = "true" ]; then ARGS="$ARGS --no-size"; fi
+          if [ "${{ inputs.size_only }}" = "true" ]; then ARGS="$ARGS --size-only"; fi
           node scripts/db-audit.js $ARGS
