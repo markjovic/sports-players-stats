@@ -4,36 +4,39 @@ name: Recover UUIDs From Git History (games/bv only)
 # Prerequisite for any attempt to backfill player records for the 81,974
 # players found by diagnose-missing-player-files.js to have no player file
 # at all. Their id is truncated (ambiguous) and their name was already
-# stripped from storage — the only way to even identify who they are is to
-# find the full-length uuid in this file's git history, from before today's
-# truncation rollout. See scripts/recover-uuids-from-git-history.js header
-# for exactly how the historical commit is located (not a date guess — the
-# actual migrate-uuid-truncation commit boundary, per file).
+# stripped from storage -- the only way to identify who they are is whatever
+# full-length uuid existed in games/bv/*.json before today's truncation
+# rollout.
 #
-# fetch-depth is bounded (not a full unshallow clone) since all the relevant
-# commits are from today's session. filter: blob:none keeps this cheap —
-# only the ~2,865 specific historical file versions actually needed get their
-# blobs fetched, not the whole repo's history of blobs.
-#
-# STRONGLY recommended: run with dry_run=true first and read the numbers
-# before running live. This is the first workflow this session that reads
-# deep git history rather than just the current tree.
+# REBUILT 2026-07-10 after three failed attempts at a version that did
+# ~1,200 individual git operations inside the Node script (one history
+# lookup + one content read per file) -- that's what caused every failure
+# (a slow per-file traversal, then two separate SIGTERM kills). None of that
+# was necessary: every file needing recovery shares the exact same reference
+# point, the single commit from right before migrate-uuid-truncation.js ever
+# ran. So this workflow finds that ONE commit ONCE (the "Find pre-migration
+# commit" step below) and checks it out as a second, plain directory
+# (pre-migration/) using the same well-tested actions/checkout mechanism as
+# the main checkout -- no custom git subprocess games, no partial-clone lazy
+# blob accumulation over the course of the run. The Node script then does a
+# pure filesystem diff between the two directories; the only git operations
+# left anywhere are the periodic commit/push of the actual fix.
 
 on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run — counts only, no writes or commits'
+        description: 'Dry run - counts only, no writes or commits'
         required: false
         default: true
         type: boolean
       fetch_depth:
-        description: 'How many commits of history to fetch (increase if the report shows many no-migration-commit-in-history results on a shallow repo)'
+        description: 'How many commits of history to fetch to find the migrate-uuid-truncation commit (measured need was 159 - this is a comfortable margin, not a full unshallow clone)'
         required: false
-        default: '2000'
+        default: '500'
         type: string
       force:
-        description: 'Ignore saved progress and start over from scratch (normally just re-run — it resumes automatically)'
+        description: 'Ignore saved progress and start over from scratch (normally just re-run - it resumes automatically)'
         required: false
         default: false
         type: boolean
@@ -48,19 +51,43 @@ concurrency:
 jobs:
   recover:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 60
     steps:
-      - name: Checkout (bounded history, sparse — games/, players/indexes/, scripts/, reports/)
+      - name: Checkout current main (bounded history)
         uses: actions/checkout@v4
         with:
           fetch-depth: ${{ inputs.fetch_depth }}
-          filter: blob:none
           sparse-checkout: |
             games
             players/indexes
             scripts
             reports
           sparse-checkout-cone-mode: false
+
+      - name: Find pre-migration commit
+        id: find
+        run: |
+          oldest=$(git log --all --grep="^migrate-uuid-truncation:" --format=%H | tail -1)
+          if [ -z "$oldest" ]; then
+            echo "No migrate-uuid-truncation commit found in the fetched history - increase fetch_depth and re-run." >&2
+            exit 1
+          fi
+          parent=$(git rev-parse "$oldest^")
+          depth_used=$(git rev-list --count "$parent"..HEAD)
+          echo "Oldest migrate-uuid-truncation commit: $oldest"
+          echo "Pre-migration commit (its parent):     $parent"
+          echo "Commits between it and HEAD:           $depth_used  (fetch_depth was ${{ inputs.fetch_depth }})"
+          echo "sha=$parent" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout pre-migration games/ snapshot
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.find.outputs.sha }}
+          fetch-depth: 1
+          sparse-checkout: |
+            games
+          sparse-checkout-cone-mode: false
+          path: pre-migration
 
       - name: Setup Node
         uses: actions/setup-node@v4
