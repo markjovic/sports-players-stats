@@ -198,22 +198,27 @@ try {
         }
         const raw = res.rawCookies;
         if (!raw) {
-          // No visibility into WHY previously -- log enough to tell a WAF
-          // block (HTML page, no set-cookie) apart from a legitimate
-          // GraphQL error apart from a genuinely empty response.
-          let snippet = '';
-          try { snippet = (await res.text()).replace(/\s+/g, ' ').trim().slice(0, 200); } catch (_) {}
-          console.log(`  [session attempt ${attempt}, ${q.operationName}] no set-cookie header. status=${res.status} body="${snippet}"`);
-          // CloudFront WAF block (confirmed 2026-07-10 -- this exact HTML
-          // error-page pattern, not a session-recipe bug). Retrying with
-          // short backoffs is pointless once this is confirmed -- the block
-          // window observed in practice outlasts this whole retry loop, and
-          // continuing to hammer it can reset/extend the block timer in most
-          // WAF setups. Fail fast and distinctly instead of grinding through
-          // all remaining attempts.
-          if (res.status === 403 && (snippet.includes('DOCTYPE') || snippet.includes('ERROR'))) {
+          // No visibility into WHY previously -- log the FULL body (not a
+          // truncated guess) so an HTML error page can actually be
+          // identified rather than assumed. A prior version of this
+          // labeled any 403+DOCTYPE+ERROR combo "CloudFront WAF block" from
+          // a 200-char snippet -- that was asserting more than the evidence
+          // showed. Get the real content first, decide after.
+          let fullBody = '';
+          try { fullBody = await res.text(); } catch (_) {}
+          console.log(`  [session attempt ${attempt}, ${q.operationName}] no set-cookie header. status=${res.status}`);
+          console.log(`  ----- full response body (${fullBody.length} chars) -----`);
+          console.log(fullBody);
+          console.log(`  ----- end response body -----`);
+          // Fail fast on ANY non-200/HTML response rather than grinding
+          // through 10 attempts -- still the right call operationally even
+          // without knowing the exact cause, since 9 more identical
+          // attempts burn ~4 minutes for zero new information. But stop
+          // asserting a specific diagnosis (WAF/CloudFront/etc.) until the
+          // full body above has actually been read and confirms it.
+          if (res.status !== 200) {
             profilePromise = null;
-            throw new Error('CloudFront WAF block detected while obtaining profile session -- stop retrying now, wait at least 30-60 minutes before re-running.');
+            throw new Error(`Session request failed with status ${res.status} and no cookies -- see full body logged above. Not retrying further this run.`);
           }
           continue;
         }
@@ -375,14 +380,16 @@ async function fetchProfile(profileID) {
         const res = await doFetch(API_URL, { headers: { ...HEADERS_SPECTATOR, tenant: 'basketball-victoria', 'request-id': crypto.randomUUID() }, body: JSON.stringify(body) });
         const raw = res.rawCookies;
         if (!raw) {
-          // Same CloudFront WAF pattern as refreshProfileSession -- see that
-          // function's comment. Fail fast instead of grinding through all
-          // remaining attempts once confirmed.
-          let snippet = '';
-          try { snippet = (await res.text()).replace(/\s+/g, ' ').trim().slice(0, 200); } catch (_) {}
-          console.log(`  [spectator session attempt ${attempt}] no set-cookie header. status=${res.status} body="${snippet}"`);
-          if (res.status === 403 && (snippet.includes('DOCTYPE') || snippet.includes('ERROR'))) {
-            throw new Error('CloudFront WAF block detected while obtaining spectator session -- stop retrying now, wait at least 30-60 minutes before re-running.');
+          // Same fix as refreshProfileSession -- log the full body, don't
+          // assert a diagnosis from a truncated guess.
+          let fullBody = '';
+          try { fullBody = await res.text(); } catch (_) {}
+          console.log(`  [spectator session attempt ${attempt}] no set-cookie header. status=${res.status}`);
+          console.log(`  ----- full response body (${fullBody.length} chars) -----`);
+          console.log(fullBody);
+          console.log(`  ----- end response body -----`);
+          if (res.status !== 200) {
+            throw new Error(`Spectator session request failed with status ${res.status} and no cookies -- see full body logged above. Not retrying further this run.`);
           }
           continue;
         }
