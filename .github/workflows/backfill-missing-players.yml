@@ -1,0 +1,74 @@
+# .github/workflows/backfill-missing-players.yml
+name: Backfill Missing Players (games/bv-derived, one-off)
+
+# Creates player records for uuids recovered by
+# recover-uuids-from-git-history.js that never had a players/ record at all
+# (no index entry in any shard). For each: probes publicProfileStatistics --
+# public profiles get a full real record, private ones get a stub (private:
+# true, placeholder name) with real stats reconstructed via a per-game
+# spectator re-fetch, since games/bv/*.json never stored per-game stats.
+#
+# Resumable by construction: candidates are recomputed fresh every run by
+# scanning games/bv/*.json for full-length uuids missing from every shard
+# index -- once a uuid is written (and indexed), it drops out of the
+# candidate set on the next run. No separate progress file needed.
+#
+# Deliberately does NOT check out players/<shard>/ -- only players/indexes/
+# (small, name+history only). Every candidate here is by definition NOT YET
+# a player file, so nothing in this script ever reads an existing one.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run - report only, no writes or commits'
+        required: false
+        default: false
+        type: boolean
+      max:
+        description: 'Limit candidates processed this run (leave blank for no limit — useful for a small test run first)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout (sparse — games/, players/indexes/, scripts/, reports/, data/; blob:none filter)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+            reports
+            data
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run backfill
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.max }}" ]; then ARGS="$ARGS --max=${{ inputs.max }}"; fi
+          node scripts/backfill-missing-players.js $ARGS
