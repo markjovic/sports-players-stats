@@ -1,0 +1,997 @@
+{
+  "generatedAt": "2026-07-10T06:12:04.417Z",
+  "distinctPrefixes": 81981,
+  "fileExistsNotIndexed": 7,
+  "noFileAtAll": 81974,
+  "multipleFilesMatch": 0,
+  "samples": {
+    "file-exists-not-indexed": [
+      {
+        "prefix": "2f474b93-6",
+        "count": 5,
+        "matches": [
+          "2f474b93-6e97-45c3-855c-1bfad7b832d4"
+        ],
+        "sample": [
+          {
+            "sid": "1ae60211",
+            "gameId": "31ce9e0e",
+            "field": "p.id"
+          },
+          {
+            "sid": "1ae60211",
+            "gameId": "4a00e583",
+            "field": "p.id"
+          }
+        ]
+      },
+      {
+        "prefix": "5c53cde3-1",
+        "count": 10,
+        "matches": [
+          "5c53cde3-18cd-4d6f-a1b7-e4514e7c5cc6"
+        ],
+        "sample": [
+          {
+            "sid": "dbeeb233",
+            "gameId": "31897923",
+            "field": "p.id"
+          },
+          {
+            "sid": "dbeeb233",
+            "gameId": "41217f15",
+            "field": "p.id"
+          }
+        ]
+      },
+      {
+        "prefix": "de6a0e0b-b",
+        "count": 4,
+        "matches": [
+          "de6a0e0b-b5e5-46a6-8912-65dfa9c329b4"
+        ],
+        "sample": [
+          {
+            "sid": "dbeeb233",
+            "gameId": "9a1cbf5e",
+            "field": "p.id"
+          },
+          {
+            "sid": "dbeeb233",
+            "gameId": "f0b9b3d9",
+            "field": "p.id"
+          }
+        ]
+      },
+      {
+        "prefix": "d6f217f7-2",
+        "count": 8,
+        "matches": [
+          "d6f217f7-26dc-4477-8be2-a2261645d725"
+        ],
+        "sample": [
+          {
+            "sid": "dbeeb233",
+            "gameId": "9a1cbf5e",
+            "field": "p.id"
+          },
+          {
+            "sid": "dbeeb233",
+            "gameId": "f0b9b3d9",
+            "field": "p.id"
+          }
+        ]
+      },
+      {
+        "prefix": "cee867e7-0",
+        "count": 6,
+        "matches": [
+          "cee867e7-034c-4fc9-a3f4-44c1d751b55d"
+        ],
+        "sample": [
+          {
+            "sid": "dbeeb233",
+            "gameId": "9a1cbf5e",
+            "field": "p.id"
+          },
+          {
+            "sid": "dbeeb233",
+            "gameId": "f0b9b3d9",
+            "field": "p.id"
+          }
+        ]
+      },
+      {
+        "prefix": "885feb70-6",
+        "count": 7,
+        "matches": [
+          "885feb70-617e-46c1-875d-031092d0b919"
+        ],
+        "sample": [
+          {
+            "sid": "dbeeb233",
+            "gameId": "0c7880e9",
+            "field": "p.id"
+          },
+          {
+            "sid": "dbeeb233",
+            "gameId": "9fa53443",
+            "field": "p.id"
+          }
+        ]
+      },
+      {
+        "prefix": "e8cba44a-4",
+        "count": 6,
+        "matches": [
+          "e8cba44a-4d8c-4a11-aa9f-a5a7c681bced"
+        ],
+        "sample": [
+          {
+            "sid": "dbeeb233",
+            "gameId": "3d30c539",
+            "field": "p.id"
+          },
+          {
+            "sid": "dbeeb233",
+            "gameId": "7c2024ed",
+            "field": "p.id"
+          }
+        ]
+      }
+    ],
+    "no-file-at-all": [
+      {
+        "prefix": "b64fe076-5",
+        "count": 40,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "237a2b97-6",
+        "count": 26,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "631242a1-a",
+        "count": 92,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "01bbaa0b-1",
+        "count": 75,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "2b7c83b9-c",
+        "count": 32,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "19440471",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "86e23650-7",
+        "count": 14,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "49739550",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "49739550",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "a3c593ba-0",
+        "count": 15,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "49739550",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "49739550",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "31c66346-3",
+        "count": 14,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "49739550",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "49739550",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "477ed1ed-0",
+        "count": 24,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "956eac79-5",
+        "count": 8,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "300e1318-3",
+        "count": 38,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "265b4501-0",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "f8a85ab5-8",
+        "count": 26,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "e6eba116-b",
+        "count": 20,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "8d007749-3",
+        "count": 66,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "b687ded4-8",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "f6328b6f-4",
+        "count": 34,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "54375112",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "1bf410a3-f",
+        "count": 12,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "fd502e26-4",
+        "count": 12,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "b38faf61-3",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "a026ec41-7",
+        "count": 32,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "4ed0c602-4",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "a5bb47dd-d",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "60111610",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "cf7d4633-f",
+        "count": 60,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "fcfda595-4",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "aef36a5b-2",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "f7522241-e",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "958234df-8",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "724d04f4-f",
+        "count": 6,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "4049ea4f-8",
+        "count": 6,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "93cbb8b3-6",
+        "count": 20,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "cc82f7cc-6",
+        "count": 24,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "e9267f54-7",
+        "count": 6,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "e20b1e64-7",
+        "count": 24,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "1e5d1202-3",
+        "count": 28,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "66972377",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "116ceebe-c",
+        "count": 8,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "2513f913-b",
+        "count": 8,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "35ca1999-4",
+        "count": 12,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "d2d41cf9-0",
+        "count": 8,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "65211cc9-5",
+        "count": 20,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "9f485013-4",
+        "count": 8,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "45bc844e-2",
+        "count": 20,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "0d6b418a-7",
+        "count": 20,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "0057d589-7",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "70675012",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "10644c93-a",
+        "count": 10,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "5abbe4ad-c",
+        "count": 30,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "hp.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "878d631c-5",
+        "count": 31,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "e2acbb82-f",
+        "count": 18,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "346d638e-1",
+        "count": 14,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "ap.profileID"
+          }
+        ]
+      },
+      {
+        "prefix": "1764aef6-7",
+        "count": 34,
+        "matches": [],
+        "sample": [
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "p.id"
+          },
+          {
+            "sid": "000a52df",
+            "gameId": "53a2e7a7",
+            "field": "ap.profileID"
+          }
+        ]
+      }
+    ],
+    "multiple-files-match": []
+  }
+}
