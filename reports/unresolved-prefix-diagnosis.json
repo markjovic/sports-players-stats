@@ -1,0 +1,614 @@
+{
+  "generatedAt": "2026-07-10T05:59:34.918Z",
+  "totalFieldsSeen": 2623011,
+  "totalResolved": 0,
+  "totalFailed": 2623011,
+  "shardsWithNoIndexFile": [],
+  "buckets": {
+    "shard-index-missing": {
+      "distinctPrefixes": 0,
+      "totalOccurrences": 0,
+      "topExamples": []
+    },
+    "known-collision": {
+      "distinctPrefixes": 3,
+      "totalOccurrences": 432,
+      "topExamples": [
+        {
+          "prefix": "ddcbc93f-e",
+          "count": 218,
+          "sample": [
+            {
+              "sid": "05ef4bad",
+              "gameId": "0ab3a93d",
+              "field": "p.id"
+            },
+            {
+              "sid": "05ef4bad",
+              "gameId": "a5f093b0",
+              "field": "p.id"
+            },
+            {
+              "sid": "05ef4bad",
+              "gameId": "8a559362",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "b0d1fc12-8",
+          "count": 190,
+          "sample": [
+            {
+              "sid": "0d3fe477",
+              "gameId": "51118b74",
+              "field": "p.id"
+            },
+            {
+              "sid": "0d3fe477",
+              "gameId": "73f12eeb",
+              "field": "p.id"
+            },
+            {
+              "sid": "0d3fe477",
+              "gameId": "c5ca7e6c",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "029f01ee-5",
+          "count": 24,
+          "sample": [
+            {
+              "sid": "0552afa9",
+              "gameId": "46330264",
+              "field": "p.id"
+            },
+            {
+              "sid": "0552afa9",
+              "gameId": "9838bec9",
+              "field": "p.id"
+            },
+            {
+              "sid": "0552afa9",
+              "gameId": "335670b7",
+              "field": "p.id"
+            }
+          ]
+        }
+      ]
+    },
+    "not-in-index": {
+      "distinctPrefixes": 81981,
+      "totalOccurrences": 2622579,
+      "topExamples": [
+        {
+          "prefix": "0524dd85-4",
+          "count": 701,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "44d15da7",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "44d15da7",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "f1f8db75",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "fd19a29d-3",
+          "count": 535,
+          "sample": [
+            {
+              "sid": "016e5bc2",
+              "gameId": "c969ff1e",
+              "field": "p.id"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "c969ff1e",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "567f5cae",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "e1eb5d8a-c",
+          "count": 520,
+          "sample": [
+            {
+              "sid": "25aab112",
+              "gameId": "1c88ece4",
+              "field": "p.id"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "1c88ece4",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "57e2c84d",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "3f709a6d-f",
+          "count": 504,
+          "sample": [
+            {
+              "sid": "0a007eba",
+              "gameId": "5faae241",
+              "field": "p.id"
+            },
+            {
+              "sid": "0a007eba",
+              "gameId": "5faae241",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "0a007eba",
+              "gameId": "07eced40",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "ade91ce7-1",
+          "count": 496,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "16020581",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "16020581",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "30223524",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "411dc429-4",
+          "count": 476,
+          "sample": [
+            {
+              "sid": "016e5bc2",
+              "gameId": "95636767",
+              "field": "p.id"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "95636767",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "df38e8b4",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "7fd1f14b-a",
+          "count": 460,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "f1f8db75",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "f1f8db75",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "9746cf3b",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "7f06e416-a",
+          "count": 451,
+          "sample": [
+            {
+              "sid": "09d640e4",
+              "gameId": "2a928566",
+              "field": "p.id"
+            },
+            {
+              "sid": "09d640e4",
+              "gameId": "2a928566",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "09d640e4",
+              "gameId": "1699c75d",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "b6285ece-c",
+          "count": 442,
+          "sample": [
+            {
+              "sid": "016e5bc2",
+              "gameId": "95636767",
+              "field": "p.id"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "95636767",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "df38e8b4",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "679fd657-1",
+          "count": 433,
+          "sample": [
+            {
+              "sid": "25aab112",
+              "gameId": "43c296f5",
+              "field": "p.id"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "43c296f5",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "6149d33e",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "9b452197-f",
+          "count": 429,
+          "sample": [
+            {
+              "sid": "016e5bc2",
+              "gameId": "1c8d751d",
+              "field": "p.id"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "1c8d751d",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "016e5bc2",
+              "gameId": "fa586d68",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "a5786b64-8",
+          "count": 421,
+          "sample": [
+            {
+              "sid": "0c90dd5d",
+              "gameId": "bf1254b1",
+              "field": "p.id"
+            },
+            {
+              "sid": "0c90dd5d",
+              "gameId": "bf1254b1",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "0c90dd5d",
+              "gameId": "4f7cb48f",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "478e14c3-b",
+          "count": 413,
+          "sample": [
+            {
+              "sid": "09d640e4",
+              "gameId": "6c4ffa2b",
+              "field": "p.id"
+            },
+            {
+              "sid": "09d640e4",
+              "gameId": "6c4ffa2b",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "09d640e4",
+              "gameId": "abde4284",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "df3af358-6",
+          "count": 411,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "3fe11111",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "3fe11111",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "c8062448",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "45371466-4",
+          "count": 410,
+          "sample": [
+            {
+              "sid": "0a007eba",
+              "gameId": "5faae241",
+              "field": "p.id"
+            },
+            {
+              "sid": "0a007eba",
+              "gameId": "5faae241",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "0a007eba",
+              "gameId": "07eced40",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "1e2d04c5-1",
+          "count": 396,
+          "sample": [
+            {
+              "sid": "25aab112",
+              "gameId": "43c296f5",
+              "field": "p.id"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "43c296f5",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "0c29ade9",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "454f1f54-9",
+          "count": 392,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "bbc0499e",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "bbc0499e",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "513d6908",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "439d63bb-a",
+          "count": 392,
+          "sample": [
+            {
+              "sid": "21fa25fc",
+              "gameId": "49169499",
+              "field": "p.id"
+            },
+            {
+              "sid": "21fa25fc",
+              "gameId": "49169499",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "21fa25fc",
+              "gameId": "1c353e8a",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "97471afa-6",
+          "count": 386,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "48723580",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "48723580",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "90303526",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "7eb079fc-6",
+          "count": 386,
+          "sample": [
+            {
+              "sid": "26811ba3",
+              "gameId": "72451760",
+              "field": "p.id"
+            },
+            {
+              "sid": "26811ba3",
+              "gameId": "72451760",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "26811ba3",
+              "gameId": "613ce5e4",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "73bb6eaa-0",
+          "count": 384,
+          "sample": [
+            {
+              "sid": "25aab112",
+              "gameId": "baa7d9f8",
+              "field": "p.id"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "baa7d9f8",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "e957e259",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "6577b5d5-c",
+          "count": 382,
+          "sample": [
+            {
+              "sid": "21fa25fc",
+              "gameId": "56519ed4",
+              "field": "p.id"
+            },
+            {
+              "sid": "21fa25fc",
+              "gameId": "56519ed4",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "21fa25fc",
+              "gameId": "727d969c",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "bd14c46f-e",
+          "count": 380,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "90303526",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "90303526",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "d44f6be5",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "9f69e33b-6",
+          "count": 380,
+          "sample": [
+            {
+              "sid": "01882461",
+              "gameId": "8b193048",
+              "field": "p.id"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "8b193048",
+              "field": "ap.profileID"
+            },
+            {
+              "sid": "01882461",
+              "gameId": "01db2bc4",
+              "field": "p.id"
+            }
+          ]
+        },
+        {
+          "prefix": "515bcb9b-9",
+          "count": 380,
+          "sample": [
+            {
+              "sid": "25aab112",
+              "gameId": "b25e0138",
+              "field": "p.id"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "b25e0138",
+              "field": "hp.profileID"
+            },
+            {
+              "sid": "25aab112",
+              "gameId": "e0617dd6",
+              "field": "p.id"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
