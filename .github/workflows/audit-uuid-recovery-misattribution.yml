@@ -1,0 +1,97 @@
+# .github/workflows/audit-uuid-recovery-misattribution.yml
+name: Audit UUID Recovery Misattribution (read-only)
+
+# Quantifies a suspected correlation bug in recover-uuids-from-git-history.js:
+# it paired current and pre-migration attendee-array entries by INDEX
+# POSITION, which is unsafe for games/bv's p[] field (rewritten wholesale by
+# nightly-crawl.js from live data, so its order can drift over time). Confirmed
+# in practice on 2026-07-11 -- a recovered uuid didn't match any real player
+# in the game it was attributed to.
+#
+# Needs TWO historical snapshots of games/bv, found by commit message and
+# extracted via `git archive` (fast -- one git object read per snapshot,
+# not per-file traversal, which is what caused failures in earlier attempts
+# at similar historical lookups this session):
+#   pre-migration: the commit right before migrate-uuid-truncation.js's own
+#                  commits -- same reference point recover-uuids-from-git-history.js
+#                  used originally.
+#   pre-recovery:  the commit right before recover-uuids-from-git-history.js's
+#                  own commits -- gives back the ORIGINAL truncated prefix at
+#                  each slot, which recovery's own commit overwrote and which
+#                  is otherwise no longer visible anywhere.
+#
+# Read-only. Writes only reports/uuid-recovery-misattribution-audit.json.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout (full history, sparse content -- games/, scripts/, reports/)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: |
+            games
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Locate pre-migration and pre-recovery reference commits
+        run: |
+          set -e
+          echo "Searching for migrate-uuid-truncation.js's first commit..."
+          MIGRATION_FIRST=$(git log --all --reverse --format="%H" --grep="migrate-uuid-truncation" | head -1)
+          if [ -z "$MIGRATION_FIRST" ]; then
+            echo "FATAL: no commit found matching 'migrate-uuid-truncation' in the message."
+            echo "This workflow needs manual adjustment -- find the right commit SHA by hand"
+            echo "(the one right before games/bv ids were first truncated) and hardcode it below."
+            exit 1
+          fi
+          PRE_MIGRATION=$(git rev-parse "${MIGRATION_FIRST}^")
+          echo "migrate-uuid-truncation first commit: $MIGRATION_FIRST"
+          echo "pre-migration reference commit:        $PRE_MIGRATION"
+
+          echo "Searching for recover-uuids-from-git-history.js's first commit..."
+          RECOVERY_FIRST=$(git log --all --reverse --format="%H" --grep="recover-uuids-from-git-history:" | head -1)
+          if [ -z "$RECOVERY_FIRST" ]; then
+            echo "FATAL: no commit found matching 'recover-uuids-from-git-history:' in the message."
+            exit 1
+          fi
+          PRE_RECOVERY=$(git rev-parse "${RECOVERY_FIRST}^")
+          echo "recover-uuids-from-git-history first commit: $RECOVERY_FIRST"
+          echo "pre-recovery reference commit:                $PRE_RECOVERY"
+
+          echo "PRE_MIGRATION=$PRE_MIGRATION" >> "$GITHUB_ENV"
+          echo "PRE_RECOVERY=$PRE_RECOVERY"   >> "$GITHUB_ENV"
+
+      - name: Extract pre-migration and pre-recovery games/bv snapshots
+        run: |
+          set -e
+          mkdir -p pre-migration/games pre-recovery/games
+          echo "Extracting games/bv from pre-migration commit $PRE_MIGRATION ..."
+          git archive "$PRE_MIGRATION" -- games/bv | tar -x -C pre-migration/games
+          echo "Extracting games/bv from pre-recovery commit $PRE_RECOVERY ..."
+          git archive "$PRE_RECOVERY" -- games/bv | tar -x -C pre-recovery/games
+          echo "pre-migration files: $(ls pre-migration/games/bv | wc -l)"
+          echo "pre-recovery files:  $(ls pre-recovery/games/bv | wc -l)"
+
+      - name: Run audit
+        run: node scripts/audit-uuid-recovery-misattribution.js
