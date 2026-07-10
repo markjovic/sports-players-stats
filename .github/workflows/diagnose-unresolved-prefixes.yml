@@ -1,0 +1,44 @@
+# .github/workflows/diagnose-unresolved-prefixes.yml
+name: Diagnose Unresolved UUID Prefixes (read-only)
+
+# Investigates WHY fix-uuid-prefix-length.js reported 2.6M unresolved field
+# occurrences -- far more than the 3 known collisions could explain. Reads
+# games/bv/*.json and players/indexes/ only; writes nothing back to games/.
+# Report is deduped by distinct prefix + capped sample, so it stays small
+# enough to commit (the previous run's raw per-occurrence report was 205MB
+# and got rejected by GitHub's 100MB file limit).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout (sparse — games/, players/indexes/, scripts/, reports/)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run diagnosis
+        run: node scripts/diagnose-unresolved-prefixes.js
