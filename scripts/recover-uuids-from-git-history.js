@@ -56,6 +56,13 @@ function git(cmd) {
   return execSync(cmd, { cwd: ROOT, maxBuffer: 512 * 1024 * 1024 }).toString();
 }
 
+// 2026-07-10, live run: this exact function hit "cannot lock ref
+// 'refs/heads/main': is at X but expected Y" mid-run -- another writer pushed
+// to main in the window between our fetch and our push. The commit/add step
+// only needs to happen once, but fetch+merge+push is now retried up to 4
+// times against a FRESH fetch each attempt, since the previous single-shot
+// version just logged the failure and moved on, silently leaving that batch
+// unpushed until the next periodic commit happened to absorb it.
 function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   try {
@@ -64,12 +71,28 @@ function gitCommit(message, dirs) {
       { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
     execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT });
-    execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-    execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-    console.log(`  Committed: ${message}`);
   } catch (e) {
-    console.error('  git error:', e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300));
+    console.error('  git add/commit error:', e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300));
+    return;
+  }
+
+  const MAX_ATTEMPTS = 4;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
+      console.log(`  Committed: ${message}`);
+      return;
+    } catch (e) {
+      const msg = e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300);
+      if (attempt === MAX_ATTEMPTS) {
+        console.error(`  git push error (gave up after ${MAX_ATTEMPTS} attempts):`, msg);
+        console.error('  Local commit still exists uncommitted-to-remote -- next periodic commit will retry pushing it too.');
+      } else {
+        console.error(`  git push conflict (attempt ${attempt}/${MAX_ATTEMPTS}), retrying:`, msg);
+      }
+    }
   }
 }
 
@@ -106,7 +129,7 @@ function isFullUuid(v) { return typeof v === 'string' && v.length === FULL_LEN; 
 function truncateNew(v) { return v.slice(0, NEW_LEN); }
 
 // shard -> Map<prefix10, fullUuid> from the current index (used to skip
-// anything that's actually resolvable now — this script is only for the
+// anything that's actually resolvable now -- this script is only for the
 // genuinely unresolvable remainder).
 const shardIndexMaps = new Map();
 function loadShardIndex(shard) {
@@ -129,7 +152,7 @@ function alreadyResolvable(id) {
 function main() {
   const start = Date.now();
   console.log('recover-uuids-from-git-history.js');
-  if (DRY_RUN) console.log('  DRY RUN — counts only, no writes or commits');
+  if (DRY_RUN) console.log('  DRY RUN -- counts only, no writes or commits');
   console.log('-'.repeat(60));
 
   let isShallow = false;
@@ -153,7 +176,7 @@ function main() {
     catch { continue; }
 
     // Does this file have ANY field still at OLD_LEN that isn't a known,
-    // currently-resolvable prefix? If not, skip it — nothing to recover here.
+    // currently-resolvable prefix? If not, skip it -- nothing to recover here.
     let needsRecovery = false;
     for (const game of Object.values(gf.games || {})) {
       for (const p of (game.p  || [])) if (p.id        && p.id.length        === OLD_LEN && !alreadyResolvable(p.id))        needsRecovery = true;
@@ -223,7 +246,7 @@ function main() {
   }
 
   if (sinceCommit > 0) {
-    gitCommit(`recover-uuids-from-git-history: complete — ${filesModified} files modified, ${recovered.toLocaleString()} ids recovered`, ['games/']);
+    gitCommit(`recover-uuids-from-git-history: complete -- ${filesModified} files modified, ${recovered.toLocaleString()} ids recovered`, ['games/']);
   }
 
   const report = {
@@ -248,10 +271,10 @@ function main() {
   console.log(`  Elapsed                         : ${Math.round((Date.now() - start) / 1000)}s`);
   console.log(`  Mode                            : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
   if (stillUnrecoverable > 0) {
-    console.log('\n  Some ids have NO full-length version anywhere in available git history —');
+    console.log('\n  Some ids have NO full-length version anywhere in available git history --');
     console.log('  either fetch-depth was insufficient, or the game was created after');
     console.log('  truncation was already live. The only remaining option for those is a');
-    console.log('  fresh re-fetch from PlayHQ\'s live API, which is a separate mechanism.');
+    console.log('  fresh re-fetch from PlayHQ live API, which is a separate mechanism.');
   }
 }
 
