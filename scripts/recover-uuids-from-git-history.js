@@ -1,12 +1,11 @@
 // scripts/recover-uuids-from-git-history.js
 //
-// PREREQUISITE for any API backfill attempt on the 81,974 "no player file
-// at all" players found by diagnose-missing-player-files.js. You cannot
-// query PlayHQ for a player you can't identify -- and the current on-disk
-// data can't identify them: the id is truncated to 10 chars (ambiguous by
-// design), and the `name` field was stripped from hp/ap/p[] storage back in
-// June 2026. The only remaining clue is whatever full-length uuid existed in
-// games/bv/*.json BEFORE today's truncation rollout.
+// PREREQUISITE for any API backfill attempt on players with no player file
+// at all. You cannot query PlayHQ for a player you can't identify -- and the
+// current on-disk data can't identify them: the id is truncated (ambiguous
+// by design), and the `name` field was stripped from hp/ap/p[] storage back
+// in June 2026. The only remaining clue is whatever full-length uuid existed
+// in games/bv/*.json BEFORE today's truncation rollout.
 //
 // ARCHITECTURE (rebuilt 2026-07-10 after three failed attempts at a more
 // "clever" version that did ~1,200 individual git operations -- one history
@@ -26,21 +25,47 @@
 // (a real, separate, much simpler concern: other writers may push to main
 // while this runs, so that step retries on conflict).
 //
+// BUG FOUND AND FIXED 2026-07-10 (second pass, after the "final" version
+// above ran clean and appeared to succeed): recoverField found the real,
+// full-length uuid in the pre-migration snapshot correctly, then immediately
+// TRUNCATED it back to 13 characters before writing it back -- on the
+// assumption that games/bv should always store truncated ids for
+// consistency with the rest of the pipeline. But these players still have
+// no players/indexes/ entry, so truncating just reproduces an equally
+// unresolvable 13-char prefix and throws away the one thing this whole
+// script exists to recover. Confirmed via diagnose-id-field-lengths.js:
+// EVERY id/profileID value in games/bv was length 13, zero were full-length,
+// and the unresolvable count (2,622,579) matched the pre-recovery figure
+// almost exactly -- every run (crashed or "successful") carried this same
+// bug, so all any of them ever did was convert already-broken 10-char
+// prefixes into equally-broken 13-char prefixes. Fixed by writing the real
+// full uuid as-is (no truncation) -- full-length values are already a
+// deliberately-supported case in scripts/lib/uuid-prefix.cjs (isFullUuid
+// short-circuits resolveToFullUuid), so this isn't a special case, it's
+// just using what the rest of the system already expects. Also widened the
+// "needs recovery" check to catch already-damaged 13-char unresolvable
+// fields, not just 10-char ones -- the existing damage is now stored at
+// length 13, and the old OLD_LEN-only check would walk right past it.
+//
 // Run:     node scripts/recover-uuids-from-git-history.js --dry-run
-// Then:    node scripts/recover-uuids-from-git-history.js
+// Then:    node scripts/recover-uuids-from-git-history.js --force
+//          (--force matters this run specifically -- see note above; a
+//          stale progress file from the buggy run must not cause any file
+//          to be skipped before the fixed logic gets a chance to re-check it.
+//          The progress file is deleted on clean completion, so there
+//          likely isn't one left, but pass --force anyway to be certain.)
 // Resume:  just run it again -- progress file picks up where it left off.
-// Force:   node scripts/recover-uuids-from-git-history.js --force
 
 'use strict';
 
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const { resolveToFullUuid, isFullUuid, isTruncatedPrefix } = require('./lib/uuid-prefix.cjs');
 
 const ROOT           = path.join(__dirname, '..');
 const GAMES_DIR       = path.join(ROOT, 'games', 'bv');
 const OLD_GAMES_DIR   = path.join(ROOT, 'pre-migration', 'games', 'bv'); // checked out by the workflow, plain files, no git involved here
-const PLAYERS_IDX     = path.join(ROOT, 'players', 'indexes');
 const DRY_RUN         = process.argv.includes('--dry-run');
 const FORCE           = process.argv.includes('--force');
 const REPORT_FILE     = path.join(ROOT, 'reports', 'git-history-recovery-report.json');
@@ -48,14 +73,8 @@ const PROGRESS_FILE   = path.join(ROOT, 'scripts', '.recover-uuids-from-git-hist
 const COMMIT_EVERY    = 100;
 const GIT_TIMEOUT_MS  = 30000;
 
-const OLD_LEN  = 10;
-const NEW_LEN  = 13;
-const FULL_LEN = 36;
-
 function readJson(p)      { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJson(p, d)  { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
-function isFullUuid(v)    { return typeof v === 'string' && v.length === FULL_LEN; }
-function truncateNew(v)   { return v.slice(0, NEW_LEN); }
 
 // The only git this script does: committing the actual fix. Retries
 // fetch+merge+push against a fresh fetch if another writer pushed to main
@@ -88,41 +107,32 @@ function gitCommit(message, dirs) {
   }
 }
 
-// shard -> Map<prefix10, fullUuid> from the CURRENT player index -- used to
-// skip anything actually resolvable already (this script is only for the
-// genuinely unresolvable remainder).
-const shardIndexMaps = new Map();
-function loadShardIndex(shard) {
-  if (shardIndexMaps.has(shard)) return shardIndexMaps.get(shard);
-  const map = new Map();
-  try {
-    const index = readJson(path.join(PLAYERS_IDX, `${shard}.json`));
-    for (const fullUuid of Object.keys(index)) {
-      if (isFullUuid(fullUuid)) map.set(fullUuid.slice(0, OLD_LEN), fullUuid);
-    }
-  } catch (e) { if (e.code !== 'ENOENT') throw e; }
-  shardIndexMaps.set(shard, map);
-  return map;
-}
-function alreadyResolvable(id) {
-  if (typeof id !== 'string' || id.length !== OLD_LEN) return true;
-  return loadShardIndex(id.slice(0, 2).toLowerCase()).has(id);
+// A field needs recovery if it's currently truncated (either length -- 10
+// from before the TRUNC_LEN fix, or 13 if it was already run through the
+// buggy version of this script) AND doesn't resolve via the current index.
+// Full-length fields are already recovered (or never broke) -- leave alone.
+function needsRecovery(id) {
+  if (!isTruncatedPrefix(id)) return false;
+  return resolveToFullUuid(id, ROOT) === null;
 }
 
 function fileNeedsRecovery(gf) {
   for (const game of Object.values(gf.games || {})) {
-    for (const p of (game.p  || [])) if (p.id        && p.id.length        === OLD_LEN && !alreadyResolvable(p.id))        return true;
-    for (const p of (game.hp || [])) if (p.profileID && p.profileID.length === OLD_LEN && !alreadyResolvable(p.profileID)) return true;
-    for (const p of (game.ap || [])) if (p.profileID && p.profileID.length === OLD_LEN && !alreadyResolvable(p.profileID)) return true;
+    for (const p of (game.p  || [])) if (needsRecovery(p.id))        return true;
+    for (const p of (game.hp || [])) if (needsRecovery(p.profileID)) return true;
+    for (const p of (game.ap || [])) if (needsRecovery(p.profileID)) return true;
   }
   return false;
 }
 
 function recoverField(cur, old, field, stats) {
-  if (typeof cur[field] !== 'string' || cur[field].length !== OLD_LEN) return false;
-  if (alreadyResolvable(cur[field])) return false;
+  if (!needsRecovery(cur[field])) return false;
   if (old && isFullUuid(old[field])) {
-    cur[field] = truncateNew(old[field]);
+    // Write the REAL full uuid, untruncated. There is no index entry to
+    // truncate against yet -- truncating here would just reproduce an
+    // equally unresolvable prefix and destroy the recovered identity
+    // (this was the 2026-07-10 bug -- see header).
+    cur[field] = old[field];
     stats.recovered++;
     return true;
   }
