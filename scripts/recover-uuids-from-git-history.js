@@ -13,24 +13,27 @@
 // nightly-crawl.js writing truncated ids for new games) only started TODAY,
 // as part of this session's uuid-storage migration. So for any game that
 // existed in this repo before today, its pre-migration commit should still
-// show the field at full 36-char length. This script finds that exact
-// commit per season file (the parent of the commit where
-// migrate-uuid-truncation.js first touched that file) and reads the field
-// values from there -- not from any date guess, from the actual identified
-// commit boundary.
+// show the field at full 36-char length.
 //
-// For season files that were NEVER touched by migrate-uuid-truncation.js
-// (i.e. created fresh after truncation was already live), there is no
-// historical full-length version to recover -- these are logged separately,
-// not guessed at. The only way to identify those specific players would be
-// re-fetching the live game from PlayHQ's API directly (a different,
-// separate mechanism from this script).
+// 2026-07-10, second live attempt: the first rewrite (per-file
+// `git log --follow` + one `git log -1` subprocess PER COMMIT in that file's
+// history, just to read its message) died with SIGTERM after an 11-minute
+// silent gap, most likely a compounding slowdown -- every batch this script
+// commits adds MORE history for the NEXT file's per-file walk to traverse,
+// and no git call had a timeout, so a single stuck command could hang
+// forever with zero log output until something external killed the job.
+//
+// Rewritten to find every migrate-uuid-truncation commit ONCE, upfront
+// (a single `git log --all --grep`), then map every file it touched
+// straight to that commit's parent (`git diff-tree` per matching commit,
+// ~29 of them for the original 2,865-file migration, not one per season
+// file). Per-file lookup is now an O(1) map read, not a growing traversal.
+// Every git subprocess call now also has an explicit timeout so a stuck
+// command fails fast and loud instead of hanging silently.
 //
 // READ-ONLY against games/ history, but DOES write recovered full-length
 // ids into the CURRENT games/bv/{sid}.json (truncated to NEW_LEN=13) unless
-// --dry-run is passed. Strongly recommended to run --dry-run FIRST -- this
-// is the first script this session that needs deep git history, and the
-// numbers should be seen before committing to the write pass.
+// --dry-run is passed.
 //
 // Run:     node scripts/recover-uuids-from-git-history.js --dry-run
 // Then:    node scripts/recover-uuids-from-git-history.js
@@ -47,30 +50,28 @@ const PLAYERS_IDX    = path.join(ROOT, 'players', 'indexes');
 const DRY_RUN        = process.argv.includes('--dry-run');
 const REPORT_FILE    = path.join(ROOT, 'reports', 'git-history-recovery-report.json');
 const COMMIT_EVERY   = 100;
+const GIT_TIMEOUT_MS = 30000; // any single git call that hangs this long fails loudly instead of hanging silently
 
 const OLD_LEN  = 10;
 const NEW_LEN  = 13;
 const FULL_LEN = 36;
 
 function git(cmd) {
-  return execSync(cmd, { cwd: ROOT, maxBuffer: 512 * 1024 * 1024 }).toString();
+  return execSync(cmd, { cwd: ROOT, maxBuffer: 512 * 1024 * 1024, timeout: GIT_TIMEOUT_MS }).toString();
 }
 
-// 2026-07-10, live run: this exact function hit "cannot lock ref
+// 2026-07-10, live run: this exact function once hit "cannot lock ref
 // 'refs/heads/main': is at X but expected Y" mid-run -- another writer pushed
-// to main in the window between our fetch and our push. The commit/add step
-// only needs to happen once, but fetch+merge+push is now retried up to 4
-// times against a FRESH fetch each attempt, since the previous single-shot
-// version just logged the failure and moved on, silently leaving that batch
-// unpushed until the next periodic commit happened to absorb it.
+// to main in the window between our fetch and our push. fetch+merge+push is
+// retried up to 4 times against a FRESH fetch each attempt.
 function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   try {
-    execSync(`git add ${dirs.join(' ')}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+    execSync(`git add ${dirs.join(' ')}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024, timeout: GIT_TIMEOUT_MS });
     const staged = execSync('git diff --staged --shortstat',
-      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024, timeout: GIT_TIMEOUT_MS }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
-    execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT });
+    execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS });
   } catch (e) {
     console.error('  git add/commit error:', e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300));
     return;
@@ -79,9 +80,9 @@ function gitCommit(message, dirs) {
   const MAX_ATTEMPTS = 4;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS });
       console.log(`  Committed: ${message}`);
       return;
     } catch (e) {
@@ -96,28 +97,33 @@ function gitCommit(message, dirs) {
   }
 }
 
-// Finds the commit immediately BEFORE migrate-uuid-truncation.js first
-// touched this specific file. Returns null if no such commit exists in the
-// available history (either the file predates our fetch-depth, or it never
-// existed before truncation was already live).
-function findPreMigrationCommit(sidFilePath) {
+// Builds relPath -> parentCommitHash for EVERY file touched by ANY
+// migrate-uuid-truncation commit, in one pass -- not per-file traversal.
+// ~29 commits for the original 2,865-file migration (COMMIT_EVERY=100 there
+// too), each touching ~100 files, so this is roughly 29 `git log --grep`
+// results x (1 diff-tree + 1 rev-parse) = ~60 subprocess calls total,
+// regardless of how large games/'s overall history is or gets during this
+// run.
+function buildMigrationCommitMap() {
+  const map = new Map();
   let hashes;
   try {
-    hashes = git(`git log --follow --format=%H -- "${sidFilePath}"`).trim().split('\n').filter(Boolean);
-  } catch { return { commit: null, reason: 'git-log-failed' }; }
-  if (hashes.length === 0) return { commit: null, reason: 'no-history' };
-
-  for (const hash of hashes) {
-    let msg;
-    try { msg = git(`git log -1 --format=%s ${hash}`).trim(); } catch { continue; }
-    if (msg.startsWith('migrate-uuid-truncation:')) {
-      try {
-        const parent = git(`git rev-parse ${hash}^`).trim();
-        return { commit: parent, reason: 'ok' };
-      } catch { return { commit: null, reason: 'no-parent-in-fetch-depth' }; }
-    }
+    hashes = git(`git log --all --format=%H --grep="^migrate-uuid-truncation:"`).trim().split('\n').filter(Boolean);
+  } catch (e) {
+    console.error('  Failed to list migrate-uuid-truncation commits:', e.message.slice(0, 300));
+    return map;
   }
-  return { commit: null, reason: 'no-migration-commit-in-history' };
+  console.log(`  ${hashes.length} migrate-uuid-truncation commits found -- mapping their files to parent commits...`);
+  for (const hash of hashes) {
+    let files, parent;
+    try { files  = git(`git diff-tree --no-commit-id --name-only -r ${hash}`).trim().split('\n').filter(Boolean); }
+    catch { continue; }
+    try { parent = git(`git rev-parse ${hash}^`).trim(); }
+    catch { continue; }
+    for (const f of files) if (!map.has(f)) map.set(f, parent);
+  }
+  console.log(`  ${map.size} distinct files mapped to a pre-migration commit`);
+  return map;
 }
 
 function readFileAtCommit(commit, sidFilePath) {
@@ -160,6 +166,8 @@ function main() {
   console.log(`  Repo is ${isShallow ? 'SHALLOW' : 'a full clone'} -- if many files report 'no-migration-commit-in-history'`);
   if (isShallow) console.log("  below, increase fetch-depth in the workflow and re-run before trusting that count.");
 
+  const migrationMap = buildMigrationCommitMap();
+
   const allSids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort();
   console.log(`  ${allSids.length} season files to check\n`);
 
@@ -188,7 +196,8 @@ function main() {
     filesWithUnresolved++;
 
     const relPath = `games/bv/${sid}.json`;
-    const { commit, reason } = findPreMigrationCommit(relPath);
+    const commit = migrationMap.get(relPath) || null;
+    const reason = commit ? 'ok' : 'no-migration-commit-in-history';
     reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
 
     if (!commit) {
