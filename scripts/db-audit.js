@@ -4,19 +4,29 @@
 // Replaces: db-audit.js, db-report.js, repo-size.js
 //
 // Usage:
-//   node scripts/db-audit.js              — full audit
-//   node scripts/db-audit.js --no-size    — skip repo size (faster)
-//   node scripts/db-audit.js --verbose    — per-season game breakdown (top 20)
+//   node scripts/db-audit.js              — full audit (file/data audit + repo size)
+//   node scripts/db-audit.js --no-size    — file/data audit only (sections 1-13), skip repo size
+//   node scripts/db-audit.js --size-only  — repo size only (section 14), skip file/data audit
+//   node scripts/db-audit.js --verbose    — per-season game breakdown (top 20); only applies
+//                                            when the file/data audit runs
+//
+// --no-size and --size-only are mutually exclusive — together they'd skip everything.
 
 'use strict';
 
 const fs   = require('fs');
 const path = require('path');
 
-const ROOT    = path.join(__dirname, '..');
-const ARGS    = new Set(process.argv.slice(2));
-const VERBOSE = ARGS.has('--verbose');
-const NO_SIZE = ARGS.has('--no-size');
+const ROOT      = path.join(__dirname, '..');
+const ARGS      = new Set(process.argv.slice(2));
+const VERBOSE   = ARGS.has('--verbose');
+const NO_SIZE   = ARGS.has('--no-size');
+const SIZE_ONLY = ARGS.has('--size-only');
+
+if (NO_SIZE && SIZE_ONLY) {
+  console.error('❌ --no-size and --size-only are mutually exclusive (combined, they skip the entire audit). Pick one, or neither to run both.');
+  process.exit(1);
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -64,7 +74,9 @@ function dirSize(dirPath) {
 console.log('\n📊 Sports Players Stats — DB Audit');
 console.log('═'.repeat(60));
 console.log(`  Generated: ${new Date().toISOString()}`);
+console.log(`  Mode: ${SIZE_ONLY ? 'repo size only' : NO_SIZE ? 'file/data audit only' : 'full (file/data audit + repo size)'}`);
 
+if (!SIZE_ONLY) {
 // ─── 1. sports-index.json ─────────────────────────────────────────────────────
 
 section('1 · sports-index.json');
@@ -723,6 +735,7 @@ console.log('  whitespace, and history all differ). Treat as a lower-bound signa
 console.log('  which directories are worth a truncation migration, not a final size delta.');
 console.log('  A truncation migration would need every consumer that does exact-string');
 console.log('  UUID matching on these fields updated in the same pass — not attempted here.');
+} // end: if (!SIZE_ONLY) — file/data audit (sections 1-13)
 
 // ─── 14. Repo size ────────────────────────────────────────────────────────────
 
