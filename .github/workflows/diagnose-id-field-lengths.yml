@@ -1,0 +1,38 @@
+# .github/workflows/diagnose-id-field-lengths.yml
+name: Diagnose ID Field Lengths (read-only)
+
+# Investigates why backfill-missing-players.js's dry run found ZERO
+# full-length uuids in games/bv, contrary to the ~81,974 expected from
+# recover-uuids-from-git-history.js. Reports a length histogram of every
+# p[].id / hp[].profileID / ap[].profileID value, plus whether any 13-char
+# values fail to resolve via the current player index.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (sparse — games/, players/indexes/, scripts/; blob:none filter)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run diagnosis
+        run: node scripts/diagnose-id-field-lengths.js
