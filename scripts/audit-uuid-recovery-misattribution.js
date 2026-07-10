@@ -42,6 +42,12 @@
 //   4. Compare the correct answer to what's actually on disk now. Mismatch
 //      = confirmed misattribution.
 //
+// ALSO checks, for every confirmed misattribution, whether the WRONG value
+// currently on disk happens to be a REAL, already-indexed player -- that's
+// a worse category than "wrong but points at a nobody": that real person's
+// own file is untouched, but games/bv now falsely claims they played in a
+// game they may have nothing to do with.
+//
 // Does not write anything to games/. Report only.
 //
 // Run (workflow only -- needs pre-migration/games/bv/ and
@@ -58,12 +64,31 @@ const { isFullUuid, isTruncatedPrefix } = require('./lib/uuid-prefix.cjs');
 
 const ROOT              = path.join(__dirname, '..');
 const GAMES_DIR          = path.join(ROOT, 'games', 'bv');
+const INDEX_DIR          = path.join(ROOT, 'players', 'indexes');
 const PRE_MIGRATION_DIR  = path.join(ROOT, 'pre-migration', 'games', 'bv');
 const PRE_RECOVERY_DIR   = path.join(ROOT, 'pre-recovery', 'games', 'bv');
 const REPORT_FILE        = path.join(ROOT, 'reports', 'uuid-recovery-misattribution-audit.json');
 const SAMPLE_CAP         = 50;
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+
+// Is `uuid` a REAL, already-known player (has an index entry)? Used to
+// distinguish "misattributed onto a still-unknown/missing profile" (bad, but
+// contained) from "misattributed onto an existing, identifiable real person"
+// (worse -- that person's own file is untouched, but games/bv now falsely
+// claims they played in a game they may have nothing to do with). Indexes
+// are small (name+history per shard) -- loaded lazily and cached, same
+// pattern as backfill-missing-players.js.
+const indexCache = new Map();
+function isKnownIndexedPlayer(uuid) {
+  const shard = uuid.slice(0, 2).toLowerCase();
+  if (!indexCache.has(shard)) {
+    let data = {};
+    try { data = readJson(path.join(INDEX_DIR, `${shard}.json`)); } catch (_) {}
+    indexCache.set(shard, data);
+  }
+  return !!indexCache.get(shard)[uuid];
+}
 
 function gitCommit(message, dirs) {
   try {
@@ -95,8 +120,11 @@ function main() {
   const sids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort();
   console.log(`  ${sids.length} current season files to check\n`);
 
-  const counts = { correct: 0, misattributed: 0, noSourceMatch: 0, ambiguous: 0, fieldsChecked: 0 };
-  const samples = { misattributed: [], noSourceMatch: [], ambiguous: [] };
+  const counts = {
+    correct: 0, misattributed: 0, noSourceMatch: 0, ambiguous: 0, fieldsChecked: 0,
+    misattributedOntoRealPlayer: 0, // subset of misattributed -- the wrong value is a REAL, known player
+  };
+  const samples = { misattributed: [], misattributedOntoRealPlayer: [], noSourceMatch: [], ambiguous: [] };
   let filesTouchedByRecovery = 0, seasonsScanned = 0;
 
   for (const sid of sids) {
@@ -152,8 +180,12 @@ function main() {
               counts.correct++;
             } else {
               counts.misattributed++;
-              if (samples.misattributed.length < SAMPLE_CAP) {
-                samples.misattributed.push({ sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, shouldBe: correct });
+              const ontoRealPlayer = isKnownIndexedPlayer(curVal);
+              const entry = { sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, shouldBe: correct, currentlyWrittenBelongsToRealIndexedPlayer: ontoRealPlayer };
+              if (samples.misattributed.length < SAMPLE_CAP) samples.misattributed.push(entry);
+              if (ontoRealPlayer) {
+                counts.misattributedOntoRealPlayer++;
+                if (samples.misattributedOntoRealPlayer.length < SAMPLE_CAP) samples.misattributedOntoRealPlayer.push(entry);
               }
             }
           }
@@ -171,6 +203,7 @@ function main() {
   console.log('-'.repeat(60));
   console.log(`  Correct (position happened to align) : ${counts.correct.toLocaleString()}`);
   console.log(`  MISATTRIBUTED (confirmed wrong)       : ${counts.misattributed.toLocaleString()}`);
+  console.log(`    -- of which onto a REAL, known player (phantom appearance on a real person): ${counts.misattributedOntoRealPlayer.toLocaleString()}`);
   console.log(`  No source match in pre-migration      : ${counts.noSourceMatch.toLocaleString()}`);
   console.log(`  Ambiguous (multiple candidates)       : ${counts.ambiguous.toLocaleString()}`);
 
