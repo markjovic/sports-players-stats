@@ -134,7 +134,7 @@ async function main() {
       addEntry(playerName, entry);
 
       // Reversed: "Burdan, Sam" (skip private player stubs)
-      if (!playerName.startsWith('Player #')) {
+      if (!playerName.startsWith('Player #') && !player.private) {
         const parts = playerName.split(/\s+/);
         if (parts.length >= 2) {
           const lastName  = parts[parts.length - 1];
