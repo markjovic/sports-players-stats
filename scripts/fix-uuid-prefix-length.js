@@ -1,7 +1,7 @@
 // scripts/fix-uuid-prefix-length.js
 //
 // ONE-OFF: upgrades existing games/bv/{sid}.json data from the old, flawed
-// 10-char uuid prefix (9 real hex digits / 36 bits — a uuid's first hyphen
+// 10-char uuid prefix (9 real hex digits / 36 bits -- a uuid's first hyphen
 // sits at string index 8, so slice(0,10) captures that hyphen as one of its
 // "10 characters") to the corrected 13-char prefix (12 real hex digits / 48
 // bits). See scripts/lib/uuid-prefix.cjs's header comment for the full math.
@@ -9,9 +9,8 @@
 // Self-contained: does NOT read TRUNC_LEN from scripts/lib/uuid-prefix.cjs.
 // That module's TRUNC_LEN is being changed to the NEW length as part of this
 // same fix, and this script needs to keep resolving the OLD length
-// regardless of what the module currently says — using the shared module
-// here would make this script's behaviour depend on deploy order. OLD_LEN
-// and NEW_LEN below are both hardcoded and explicit, on purpose.
+// regardless of what the module currently says. OLD_LEN and NEW_LEN below
+// are both hardcoded and explicit, on purpose.
 //
 // For every p[].id / hp[].profileID / ap[].profileID field currently at
 // OLD_LEN (10) characters:
@@ -20,22 +19,33 @@
 //      resolver, pinned to OLD_LEN).
 //   2. If resolution is unambiguous: re-truncate the resolved full uuid to
 //      NEW_LEN (13) and write that back.
-//   3. If resolution fails (no match, or a real collision at OLD_LEN): leave
-//      the field UNCHANGED and record it in reports/uuid-prefix-length-unresolved.json.
-//      Never guess which of two real people a field actually belonged to.
+//   3. If resolution fails: leave the field UNCHANGED and record it in the
+//      unresolved report -- never guess which of two real people a field
+//      actually belonged to.
+//
+// 2026-07-10, after first live run: 30,100,994 upgraded / 2,623,011
+// unresolved (~8%) -- far more than the 3 known collisions (see
+// audit-uuid-collisions.js) can explain, and the raw per-occurrence report
+// was 204.97MB, which GitHub rejected outright (100MB file limit), so the
+// unresolved detail from that run was lost. Root cause of the 8% is still
+// being diagnosed (scripts/diagnose-unresolved-prefixes.js) -- separate from
+// this script. This version fixes the report-writing bug regardless of that
+// diagnosis: the unresolved list is now deduped by DISTINCT PREFIX with a
+// capped sample of real occurrences, not one raw record per field
+// occurrence, so it can never again produce an oversized file.
 //
 // Fields already at NEW_LEN or FULL_LEN are left untouched. Idempotent and
-// resumable — same progress-file pattern as migrate-uuid-truncation.js.
+// resumable -- same progress-file pattern as migrate-uuid-truncation.js.
 //
-// IMPORTANT — deploy order (nightly-crawl + weekly-indexes keep running on
+// IMPORTANT -- deploy order (nightly-crawl + weekly-indexes keep running on
 // their own schedule and are NOT paused for this):
 //   1. Run this script FIRST, while scripts/lib/uuid-prefix.cjs on main still
-//      says TRUNC_LEN=10. It does not need the module updated to run — see
+//      says TRUNC_LEN=10. It does not need the module updated to run -- see
 //      "self-contained" above.
 //   2. THEN upload the corrected scripts/lib/uuid-prefix.cjs (TRUNC_LEN=13).
 //      From that point on, nightly-crawl.js and every consumer script write
 //      and expect 13-char prefixes.
-//   3. Run this script ONCE MORE (safe — it's idempotent, already-13-char
+//   3. Run this script ONCE MORE (safe -- it's idempotent, already-13-char
 //      and already-36-char fields are skipped) to mop up anything written at
 //      the old length by a crawl that ran in the gap between steps 1 and 2.
 //   4. Rebuild the three fully-regenerated directories:
@@ -61,6 +71,7 @@ const FORCE           = process.argv.includes('--force');
 const COMMIT_EVERY    = 100; // season files per commit
 const PROGRESS_FILE   = path.join(ROOT, 'scripts', '.fix-uuid-prefix-length-progress.json');
 const UNRESOLVED_FILE = path.join(ROOT, 'reports', 'uuid-prefix-length-unresolved.json');
+const SAMPLE_PER_PREFIX = 5; // cap per distinct prefix -- what blew the report up last time was one record per FIELD OCCURRENCE (2.6M of them), not per distinct prefix
 
 const OLD_LEN  = 10;
 const NEW_LEN  = 13;
@@ -80,13 +91,13 @@ function gitCommit(message, dirs) {
     execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
     execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
     execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-    console.log(`  ✓ Committed: ${message}`);
+    console.log(`  Committed: ${message}`);
   } catch (e) {
     console.error('  git error:', e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300));
   }
 }
 
-// Per-shard OLD_LEN prefix map, built lazily and cached — collision-safe
+// Per-shard OLD_LEN prefix map, built lazily and cached -- collision-safe
 // (a colliding prefix maps to COLLISION and resolves to null), pinned to
 // OLD_LEN regardless of whatever scripts/lib/uuid-prefix.cjs currently says.
 const shardMaps = new Map();
@@ -117,6 +128,17 @@ function resolveOld(id) {
   return (result === COLLISION || result === undefined) ? null : result;
 }
 
+// unresolved: Map<prefix, { count, sample: [{sid,gameId,field}] }> -- deduped
+// by distinct prefix, NOT one record per field occurrence. A single bad
+// prefix can appear in thousands of games; that used to mean thousands of
+// near-identical records in the report.
+function recordUnresolved(unresolved, prefix, sid, gameId, ctx) {
+  if (!unresolved.has(prefix)) unresolved.set(prefix, { count: 0, sample: [] });
+  const entry = unresolved.get(prefix);
+  entry.count++;
+  if (entry.sample.length < SAMPLE_PER_PREFIX) entry.sample.push({ sid, gameId, field: ctx });
+}
+
 // Upgrades one field in place. Returns 'upgraded' | 'unresolved' | 'skipped'.
 function upgradeField(obj, field, sid, gameId, ctx, unresolved) {
   const v = obj[field];
@@ -126,7 +148,7 @@ function upgradeField(obj, field, sid, gameId, ctx, unresolved) {
   if (v.length !== OLD_LEN)  return 'skipped'; // unexpected length — leave alone, don't guess
   const full = resolveOld(v);
   if (!full) {
-    unresolved.push({ sid, gameId, field: ctx, oldValue: v });
+    recordUnresolved(unresolved, v, sid, gameId, ctx);
     return 'unresolved';
   }
   obj[field] = full.slice(0, NEW_LEN);
@@ -136,9 +158,9 @@ function upgradeField(obj, field, sid, gameId, ctx, unresolved) {
 function upgradeGameFile(gf, sid, unresolved) {
   let upgraded = 0;
   for (const [gameId, game] of Object.entries(gf.games || {})) {
-    for (const p of (game.p || []))  if (upgradeField(p, 'id',        sid, gameId, 'p.id',           unresolved) === 'upgraded') upgraded++;
-    for (const p of (game.hp || [])) if (upgradeField(p, 'profileID', sid, gameId, 'hp.profileID',   unresolved) === 'upgraded') upgraded++;
-    for (const p of (game.ap || [])) if (upgradeField(p, 'profileID', sid, gameId, 'ap.profileID',   unresolved) === 'upgraded') upgraded++;
+    for (const p of (game.p || []))  if (upgradeField(p, 'id',        sid, gameId, 'p.id',         unresolved) === 'upgraded') upgraded++;
+    for (const p of (game.hp || [])) if (upgradeField(p, 'profileID', sid, gameId, 'hp.profileID', unresolved) === 'upgraded') upgraded++;
+    for (const p of (game.ap || [])) if (upgradeField(p, 'profileID', sid, gameId, 'ap.profileID', unresolved) === 'upgraded') upgraded++;
   }
   return upgraded;
 }
@@ -146,8 +168,8 @@ function upgradeGameFile(gf, sid, unresolved) {
 function main() {
   const startTime = Date.now();
   console.log('fix-uuid-prefix-length.js — upgrading 10-char prefixes (9 real hex digits) to 13-char (12 real hex digits)');
-  if (DRY_RUN) console.log('  ⚠  DRY RUN — no writes or commits');
-  console.log('─'.repeat(60));
+  if (DRY_RUN) console.log('  DRY RUN — no writes or commits');
+  console.log('-'.repeat(60));
 
   let progress = { doneSids: [] };
   if (FORCE) {
@@ -162,13 +184,13 @@ function main() {
   console.log(`  ${allSids.length} season files | ${doneSids.size} already done | ${pendingSids.length} remaining`);
 
   let filesModified = 0, idsUpgraded = 0, sinceCommit = 0;
-  const unresolved = [];
+  const unresolved = new Map(); // prefix -> { count, sample }
 
   for (const sid of pendingSids) {
     const fpath = path.join(GAMES_DIR, `${sid}.json`);
     let gf;
     try { gf = JSON.parse(fs.readFileSync(fpath, 'utf8')); }
-    catch (e) { console.error(`  ✗ failed to read ${sid}.json: ${e.message}`); doneSids.add(sid); continue; }
+    catch (e) { console.error(`  failed to read ${sid}.json: ${e.message}`); doneSids.add(sid); continue; }
 
     const changed = upgradeGameFile(gf, sid, unresolved);
     if (changed > 0) {
@@ -189,14 +211,15 @@ function main() {
         );
       }
       sinceCommit = 0;
-      console.log(`  ${doneSids.size}/${allSids.length} seasons done — ${filesModified} modified, ${idsUpgraded.toLocaleString()} ids upgraded, ${unresolved.length} unresolved so far`);
+      const unresolvedOccurrences = [...unresolved.values()].reduce((s, v) => s + v.count, 0);
+      console.log(`  ${doneSids.size}/${allSids.length} seasons done — ${filesModified} modified, ${idsUpgraded.toLocaleString()} ids upgraded, ${unresolved.size} distinct unresolved prefixes (${unresolvedOccurrences.toLocaleString()} occurrences) so far`);
     }
   }
 
   if (!DRY_RUN && sinceCommit > 0) {
     writeJson(PROGRESS_FILE, { doneSids: [...doneSids] });
     gitCommit(
-      `fix-uuid-prefix-length: complete — ${filesModified} files modified, ${idsUpgraded.toLocaleString()} ids upgraded, ${unresolved.length} unresolved`,
+      `fix-uuid-prefix-length: complete — ${filesModified} files modified, ${idsUpgraded.toLocaleString()} ids upgraded`,
       ['games/', 'scripts/.fix-uuid-prefix-length-progress.json']
     );
   }
@@ -206,25 +229,39 @@ function main() {
     gitCommit('fix-uuid-prefix-length: remove progress file', ['scripts/.fix-uuid-prefix-length-progress.json']);
   }
 
-  if (!DRY_RUN && unresolved.length > 0) {
-    writeJson(UNRESOLVED_FILE, { generatedAt: new Date().toISOString(), count: unresolved.length, unresolved });
-    gitCommit(`fix-uuid-prefix-length: ${unresolved.length} unresolved entries logged`, ['reports/']);
+  const unresolvedOccurrences = [...unresolved.values()].reduce((s, v) => s + v.count, 0);
+
+  if (!DRY_RUN && unresolved.size > 0) {
+    const entries = [...unresolved.entries()]
+      .map(([prefix, v]) => ({ prefix, count: v.count, sample: v.sample }))
+      .sort((a, b) => b.count - a.count);
+    writeJson(UNRESOLVED_FILE, {
+      generatedAt: new Date().toISOString(),
+      distinctPrefixes: unresolved.size,
+      totalOccurrences: unresolvedOccurrences,
+      entries,
+    });
+    const sizeMB = (fs.statSync(UNRESOLVED_FILE).size / (1024 * 1024)).toFixed(2);
+    console.log(`\n  Unresolved report: reports/uuid-prefix-length-unresolved.json (${sizeMB} MB)`);
+    gitCommit(`fix-uuid-prefix-length: ${unresolved.size} distinct unresolved prefixes logged`, ['reports/']);
   }
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
-  console.log('\n' + '─'.repeat(60));
-  console.log(`  Season files scanned : ${allSids.length}`);
-  console.log(`  Season files modified: ${filesModified}`);
-  console.log(`  Ids upgraded (total) : ${idsUpgraded.toLocaleString()}`);
-  console.log(`  Unresolved           : ${unresolved.length}${unresolved.length ? ' — see reports/uuid-prefix-length-unresolved.json' : ''}`);
-  console.log(`  Elapsed              : ${elapsed}s`);
-  console.log(`  Mode                 : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
-  console.log('─'.repeat(60));
-  if (unresolved.length > 0) {
-    console.log('\n⚠ Unresolved entries were left at the OLD 10-char value, untouched.');
-    console.log('  They need either (a) git-history recovery of the pre-migration full');
-    console.log('  uuid, or (b) contextual resolution (e.g. cross-referencing team rosters).');
-    console.log('  Not attempted automatically here — do not guess with real player data.');
+  console.log('\n' + '-'.repeat(60));
+  console.log(`  Season files scanned      : ${allSids.length}`);
+  console.log(`  Season files modified     : ${filesModified}`);
+  console.log(`  Ids upgraded (total)      : ${idsUpgraded.toLocaleString()}`);
+  console.log(`  Distinct unresolved prefix: ${unresolved.size}`);
+  console.log(`  Unresolved occurrences    : ${unresolvedOccurrences.toLocaleString()}`);
+  console.log(`  Elapsed                   : ${elapsed}s`);
+  console.log(`  Mode                      : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+  console.log('-'.repeat(60));
+  if (unresolved.size > 0) {
+    console.log('\n  Unresolved entries were left at the OLD 10-char value, untouched.');
+    console.log('  See reports/uuid-prefix-length-unresolved.json for the distinct prefixes and samples.');
+    console.log('  If distinctPrefixes is much larger than 3 (the known collision count from');
+    console.log('  audit-uuid-collisions.js), run scripts/diagnose-unresolved-prefixes.js first —');
+    console.log('  something other than collisions is likely at play.');
   }
   console.log('\nNext:');
   console.log('  1. Upload the corrected scripts/lib/uuid-prefix.cjs (TRUNC_LEN=13), if not already done.');
