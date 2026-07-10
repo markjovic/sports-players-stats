@@ -1,0 +1,47 @@
+# .github/workflows/diagnose-missing-player-files.yml
+name: Diagnose Missing Player Files (read-only)
+
+# Checks whether the 81,981 distinct uuid prefixes that don't resolve via
+# players/indexes/ actually have a real players/<shard>/<uuid>.json file
+# (an indexing gap, fixable) or genuinely don't exist anywhere (a harder
+# problem). Deliberately does NOT sparse-checkout players/<shard>/ — those
+# directories hold the actual player JSON blobs (likely several GB across
+# 370k+ files) and this only needs FILENAMES, which it gets via
+# `git ls-tree` instead (see script header). players/indexes/ IS checked
+# out normally since its content is actually needed.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (sparse — games/, players/indexes/, scripts/, reports/; blob:none filter)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run diagnosis
+        run: node scripts/diagnose-missing-player-files.js
