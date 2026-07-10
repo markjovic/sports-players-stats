@@ -32,6 +32,11 @@ on:
         required: false
         default: '2000'
         type: string
+      force:
+        description: 'Ignore saved progress and start over from scratch (normally just re-run — it resumes automatically)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -71,4 +76,5 @@ jobs:
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           node scripts/recover-uuids-from-git-history.js $ARGS
