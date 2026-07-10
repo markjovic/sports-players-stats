@@ -1,12 +1,25 @@
 // scripts/recheck-private-profiles.js
 //
 // Re-checks players previously marked as private/inaccessible.
-// These are identified by: statsChecked present AND maxGamePTS === null.
+// Identified by: player.private === true (explicit flag, added 2026-07-10)
+// OR the legacy signal (statsChecked present AND maxGamePTS === null), for
+// players written before the flag existed. Both are checked — the OR keeps
+// this script working on the existing population without needing a one-off
+// migration pass over 370k+ files just to backfill the flag retroactively.
 //
 // If now accessible: writes full stats (foulOuts, maxGamePTS, maxGameThreePt,
 //                    records, statsChecked) — same as fetch-profile-stats.js.
-// If still inaccessible: updates statsChecked timestamp only, so we know
-//                        when it was last confirmed private.
+//                    Also writes private: false, and replaces a placeholder
+//                    `Player #...` name with the real one now that the
+//                    profile is confirmed public (see wasPrivate below —
+//                    without it, a private stub going public would keep its
+//                    placeholder name forever, since name is otherwise only
+//                    ever written when previously absent).
+// If still inaccessible: updates statsChecked timestamp and sets
+//                        private: true, so we know when it was last
+//                        confirmed private. Name is left untouched — if a
+//                        real name is already on file from before the
+//                        profile went private, we keep showing it.
 //
 // Run monthly. Safe to re-run — only touches private-marked players.
 //
@@ -103,6 +116,7 @@ async function refreshSession() {
 const PROFILE_QUERY = `query ProfileSeasonStatistics($profileID: ID!) {
   publicProfileStatistics(profileID: $profileID) {
     seasonStatistics {
+      name
       statistics {
         season { id }
         teamStatistics {
@@ -135,6 +149,7 @@ function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
 
+  const playerName       = seasonStats[0]?.name || null;
   const foulOuts         = {};
   let maxGamePTS         = null, maxGamePTSKey    = null;
   let maxGameThreePt     = null, maxGameThreePtKey = null;
@@ -167,7 +182,7 @@ function parseProfileStats(data) {
     }
   }
 
-  return { foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey };
+  return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey };
 }
 
 // ─── Git commit ───────────────────────────────────────────────────────────────
@@ -249,7 +264,7 @@ async function main() {
       const checkedAge = (now - new Date(bk.statsChecked).getTime()) / (1000 * 60 * 60 * 24);
 
       // Category A: private-marked, monthly recheck
-      if (bk.maxGamePTS === null && checkedAge >= PRIVATE_DAYS) {
+      if ((player.private === true || bk.maxGamePTS === null) && checkedAge >= PRIVATE_DAYS) {
         toRecheck.push({ uuid: player.uuid, shard, fname, category: 'A' });
         countA++;
         continue;
@@ -312,6 +327,7 @@ async function main() {
         const playerFile = path.join(PLAYERS_DIR, shard, fname);
         const player     = JSON.parse(fs.readFileSync(playerFile, 'utf8'));
         player.sports.Basketball.statsChecked = new Date().toISOString();
+        player.private = true;
         fs.writeFileSync(playerFile, JSON.stringify(player));
       }
       await sleep(REQUEST_DELAY);
@@ -332,6 +348,7 @@ async function main() {
         const playerFile = path.join(PLAYERS_DIR, shard, fname);
         const player     = JSON.parse(fs.readFileSync(playerFile, 'utf8'));
         player.sports.Basketball.statsChecked = new Date().toISOString();
+        player.private = true;
         fs.writeFileSync(playerFile, JSON.stringify(player));
       }
       if (i < 5 || i % 50 === 0)
@@ -348,6 +365,7 @@ async function main() {
         const playerFile = path.join(PLAYERS_DIR, shard, fname);
         const player     = JSON.parse(fs.readFileSync(playerFile, 'utf8'));
         player.sports.Basketball.statsChecked = new Date().toISOString();
+        player.private = true;
         fs.writeFileSync(playerFile, JSON.stringify(player));
       }
       await sleep(REQUEST_DELAY);
@@ -359,6 +377,17 @@ async function main() {
     const playerFile = path.join(PLAYERS_DIR, shard, fname);
     const player     = JSON.parse(fs.readFileSync(playerFile, 'utf8'));
     const bk         = player.sports.Basketball;
+
+    // Replace a placeholder name now that the profile is confirmed public.
+    // wasPrivate must be captured BEFORE player.private is overwritten below —
+    // without it, `Player #...` would never be replaced once set at all,
+    // even after the profile went public (name is otherwise only written
+    // when completely absent).
+    const wasPrivate = player.private === true;
+    if (parsed.playerName && (!player.name || wasPrivate)) {
+      player.name = parsed.playerName;
+    }
+    player.private = false;
 
     bk.foulOuts       = parsed.foulOuts;
     bk.maxGamePTS     = parsed.maxGamePTS;
