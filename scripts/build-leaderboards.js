@@ -33,12 +33,22 @@
 //   node scripts/build-leaderboards.js                 — full rebuild
 //   node scripts/build-leaderboards.js --active-only   — active seasons only (nightly crawl)
 //   node scripts/build-leaderboards.js --dry-run       — no writes, no commits
+//
+// 2026-07-10: uuid values written to all-time entries and season "uuid|tid" map
+// keys are truncated to a 10-char prefix (see scripts/lib/uuid-prefix.cjs) —
+// part of the UUID-storage-footprint reduction. Every player uuid used in this
+// file is now sourced from the player file's own filename (never player.uuid,
+// a body field docs say was stripped in June 2026 — pushAllTime/pushSeason
+// used to silently re-derive it from the body instead of the filename their
+// callers already had on hand; fixed here to match every other pipeline
+// script, which all derive uuid from the filename).
 
 'use strict';
 
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { truncateUuid } from './lib/uuid-prefix.cjs';
 
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -72,11 +82,17 @@ function gitCommit(message, dirs) {
     // by every call site below; using it here (finally) rather than ignoring it.
     const paths = (dirs && dirs.length ? dirs : ['.']).join(' ');
     execSync(`git add ${paths}`, { cwd: ROOT, stdio: 'pipe' });
-    const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+    // --shortstat, not --stat: --stat prints a per-file line and scales with
+    // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
+    // repo this size), --shortstat stays a single small summary line.
+    const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) { console.log('  nothing to commit'); return; }
-    execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+    execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
     execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
+    // class as --stat above) — this one scales with how much has landed on
+    // main since the last fetch, not with what THIS run is committing.
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
     execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ committed: ${message}`);
   } catch (e) {
@@ -174,8 +190,11 @@ function readPlayer(uuid) {
   try { return readJson(p); } catch { return null; }
 }
 
-function pushAllTime(buckets, player) {
-  const uuid     = player.uuid;
+// uuid is always the FULL player uuid, passed in by the caller (derived from
+// the player file's own filename — see the pass 1/pass 2 loops below). Never
+// read player.uuid here; that's a body field, not guaranteed present for
+// every player file, unlike the filename.
+function pushAllTime(buckets, player, uuid) {
   const name     = player.name || `Player #${uuid.slice(0, 10)}`;
   const bball    = player.sports?.Basketball;
   const lastSeason = (player.seasons || []).at(-1);
@@ -200,7 +219,7 @@ function pushAllTime(buckets, player) {
   const gender   = player.gender || '';
   // Age: most recent reg's age group — best single value for a career-spanning player
   const age      = lastReg?.age || '';
-  const base = { uuid, name, club, team, org, sport: 'Basketball', gp: bball.gp,
+  const base = { uuid: truncateUuid(uuid), name, club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
     finals: careerFinals, gfApps: careerGfApps, gfWins: careerGfWins,
@@ -246,8 +265,8 @@ function pushAllTime(buckets, player) {
   }
 }
 
-function pushSeason(players, player, sid) {
-  const uuid   = player.uuid;
+// uuid is always the FULL player uuid — see pushAllTime's comment above.
+function pushSeason(players, player, sid, uuid) {
   const name   = player.name || `Player #${uuid.slice(0, 10)}`;
   const gender = player.gender || null;
   for (const season of (player.seasons || [])) {
@@ -257,7 +276,7 @@ function pushSeason(players, player, sid) {
       const stats = reg.stats || {};
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
-      const id         = `${uuid}|${reg.tid}`;
+      const id         = `${truncateUuid(uuid)}|${reg.tid}`;
       const comp       = tidToComp.get(reg.tid) || '';
       const org        = sidToOrg.get(sid) || '';
       const foulOuts   = stats.foulOuts   ?? 0;
@@ -302,7 +321,7 @@ for (const prefix of prefixDirs) {
     // In active-only mode still scan all players for all-time (career totals need full history)
     let player;
     try { player = readJson(path.join(prefixDir, fname)); } catch { skipped++; continue; }
-    pushAllTime(allTime, player);
+    pushAllTime(allTime, player, uuid);
     playerCount++;
     if (playerCount % 50000 === 0) console.log(`  ${playerCount} players scanned...`);
   }
@@ -385,7 +404,7 @@ for (const sid of seasonIds) {
   for (const uuid of uuids) {
     const player = readPlayer(uuid);
     if (!player) continue;
-    pushSeason(players, player, sid);
+    pushSeason(players, player, sid, uuid);
   }
 
   const out     = { players };

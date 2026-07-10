@@ -23,12 +23,19 @@
 // Run:     node scripts/build-finals-stats.js
 // Dry run: node scripts/build-finals-stats.js --dry-run
 // Resume:  node scripts/build-finals-stats.js  (progress saved every interval)
+//
+// 2026-07-10: g.p[].id and g.hp[]/ap[].profileID may be truncated 10-char
+// uuid prefixes (see scripts/lib/uuid-prefix.cjs) — part of the UUID-storage
+// migration. Both are resolved back to full uuids before being used as
+// finalsMap keys or membership-test sets, since finalsMap is ultimately
+// written out keyed by the FULL uuid (player file lookups need it).
 
 'use strict';
 
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { resolveToFullUuid } from './lib/uuid-prefix.cjs';
 
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -49,9 +56,9 @@ function gitCommit(message, dirs) {
     execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
     const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) return;
-    execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+    execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
     execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
     execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ committed: ${message}`);
   } catch (e) {
@@ -180,11 +187,28 @@ for (const sid of sidsToScan) {
     // p[] has all players but no team — use hp/ap if available, else use game.h/game.a heuristic
     const homeTid = g.h || g.t1 || null;
     const awayTid = g.a || g.t2 || null;
-    const homeUuids = new Set((g.hp || []).map(p => p.profileID).filter(Boolean));
-    const awayUuids = new Set((g.ap || []).map(p => p.profileID).filter(Boolean));
+    // hp/ap.profileID may be a truncated prefix (existing games data rewritten
+    // by the one-off migration) or a full uuid — resolve before using as a
+    // membership-test key, and drop any that can't be resolved.
+    const homeUuids = new Set(
+      (g.hp || [])
+        .map(p => p.profileID)
+        .filter(Boolean)
+        .map(id => resolveToFullUuid(id, ROOT))
+        .filter(Boolean)
+    );
+    const awayUuids = new Set(
+      (g.ap || [])
+        .map(p => p.profileID)
+        .filter(Boolean)
+        .map(id => resolveToFullUuid(id, ROOT))
+        .filter(Boolean)
+    );
 
     for (const pEntry of (g.p || [])) {
-      const uuid = pEntry.id;
+      const rawId = pEntry.id;
+      if (!rawId) continue;
+      const uuid = resolveToFullUuid(rawId, ROOT);
       if (!uuid) continue;
 
       if (!finalsMap.has(uuid)) finalsMap.set(uuid, new Map());

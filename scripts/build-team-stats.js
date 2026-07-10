@@ -11,12 +11,21 @@
 //   node scripts/build-team-stats.js --active-only     # active (unlocked) seasons only
 //   node scripts/build-team-stats.js --dry-run         # no writes or commits
 //   node scripts/build-team-stats.js --season=<id>     # single season
+//
+// 2026-07-10: team-stats/bv/{sid}.json roster keys are truncated to a 10-char
+// uuid prefix (see scripts/lib/uuid-prefix.cjs) — part of the UUID-storage
+// migration. Player uuids sourced from game.hp[]/ap[].profileID may be
+// truncated (existing games/bv/*.json data was rewritten by the one-off
+// migration script) so they're resolved back to a full uuid via
+// resolveToFullUuid() before being used to read a player file; uuids sourced
+// from players/indexes/ (sidTidPlayerMap) are always full-length already.
 
 'use strict';
 
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const { truncateUuid, resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
 
 const ROOT    = path.join(__dirname, '..');
 const ARGS    = Object.fromEntries(
@@ -47,14 +56,14 @@ async function gitCommit(message) {
     catch (_) { return ''; }
   })();
   if (!staged) { return; }
-  try { execSync(`git commit -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
+  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
   catch (_) { return; }
   const MAX = 10;
   for (let attempt = 1; attempt <= MAX; attempt++) {
     try {
-      execSync('git fetch origin main',                   { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                   { stdio: 'pipe', cwd: ROOT });
+      execSync('git fetch origin main',                              { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat',   { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                               { stdio: 'pipe', cwd: ROOT });
       console.log(`  ✓ Committed: ${message}`);
       return;
     } catch (_) {
@@ -66,6 +75,8 @@ async function gitCommit(message) {
 
 // Build sid|tid → [uuid] map from player index history shards.
 // Covers ALL registrations including normal grade players (not just hp/ap hidden games).
+// Uuids here always come from players/indexes/{shard}.json keys, which are
+// full-length — unaffected by the games-file truncation migration.
 function buildSidTidPlayerMap() {
   const map = new Map();
   for (const fname of fs.readdirSync(INDEX_DIR).filter(f => f.endsWith('.json')).sort()) {
@@ -137,15 +148,21 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
     if (club && !teams[tid].meta.club) teams[tid].meta.club = club;
   }
 
-  // Helper — add a player to the team roster
+  // Helper — add a player to the team roster. uuid must always be the FULL
+  // player uuid by the time it reaches here (callers resolve truncated
+  // hp/ap.profileID values first) — readPlayer() needs the full uuid to
+  // build a valid players/{shard}/{uuid}.json path. The roster is keyed by
+  // the truncated 10-char prefix, matching the games/leaderboard/search
+  // truncation everywhere else on disk.
   function addPlayerToRoster(tid, sid, uuid, name) {
     if (!uuid || !teams[tid]) return;
-    if (teams[tid].roster[uuid]) return;  // already added
+    const key = truncateUuid(uuid);
+    if (teams[tid].roster[key]) return;  // already added
 
     const player = readPlayer(uuid);
     const stats  = player ? extractRegStats(player, sid, tid) : null;
 
-    teams[tid].roster[uuid] = {
+    teams[tid].roster[key] = {
       name:    name || (player?.name) || `Player #${uuid.slice(0, 10)}`,
       gp:      stats?.gp      ?? 0,
       pts:     stats?.pts     ?? 0,
@@ -230,12 +247,22 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
       // otherwise we can't tell from p[] alone, so skip team attribution
     }
 
-    // For hidden games, use hp/ap for player attribution
+    // For hidden games, use hp/ap for player attribution. profileID may be a
+    // truncated 10-char prefix (existing data rewritten by the one-off
+    // migration) or a full uuid (data written before the migration) —
+    // resolveToFullUuid() handles both transparently and returns null if a
+    // truncated prefix has no match in the player index (skip in that case).
     for (const p of (game.hp || [])) {
-      if (hid && p.profileID) addPlayerToRoster(hid, sid, p.profileID, p.name || null);
+      if (hid && p.profileID) {
+        const full = resolveToFullUuid(p.profileID, ROOT);
+        if (full) addPlayerToRoster(hid, sid, full, p.name || null);
+      }
     }
     for (const p of (game.ap || [])) {
-      if (aid && p.profileID) addPlayerToRoster(aid, sid, p.profileID, p.name || null);
+      if (aid && p.profileID) {
+        const full = resolveToFullUuid(p.profileID, ROOT);
+        if (full) addPlayerToRoster(aid, sid, full, p.name || null);
+      }
     }
   }
 

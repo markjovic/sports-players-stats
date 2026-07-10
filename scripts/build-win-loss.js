@@ -17,12 +17,19 @@
 // Usage:
 //   node scripts/build-win-loss.js              -- all seasons
 //   node scripts/build-win-loss.js --active-only -- active seasons only
+//
+// 2026-07-10: g.p[].id and g.hp[]/ap[].profileID may be truncated 10-char
+// uuid prefixes (see scripts/lib/uuid-prefix.cjs) — part of the UUID-storage
+// migration. Both are resolved back to full uuids before being used as
+// `records` keys, since Pass 2 looks entries up by the FULL uuid taken from
+// each player file's own filename.
 
 'use strict';
 
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const { resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -59,10 +66,10 @@ function gitCommit(msg) {
     const staged = execSync('git diff --staged --shortstat',
       { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
-    execSync('git fetch origin main',                  { stdio: 'pipe', cwd: ROOT });
-    execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
-    execSync(`git commit -m "${msg}"`,                 { stdio: 'pipe', cwd: ROOT });
-    execSync('git push origin main',                   { stdio: 'pipe', cwd: ROOT });
+    execSync('git fetch origin main',                              { stdio: 'pipe', cwd: ROOT });
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat',   { stdio: 'pipe', cwd: ROOT });
+    execSync(`git commit -q -m "${msg}"`,                          { stdio: 'pipe', cwd: ROOT });
+    execSync('git push origin main',                               { stdio: 'pipe', cwd: ROOT });
     console.log(`  ✓ ${msg}`);
   } catch (e) {
     console.error('  git error:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
@@ -119,7 +126,7 @@ function main() {
   console.log('\n  Pass 1: scanning game files…');
   const records = {}; // uuid → { [sid]: { [tid]: {w,l,d} } }
   let gamesScanned = 0, seasonsScanned = 0;
-  let hpApGames = 0, pFallbackGames = 0, skippedGames = 0;
+  let hpApGames = 0, pFallbackGames = 0, skippedGames = 0, unresolved = 0;
 
   function accumulate(uuid, sid, tid, res) {
     if (!records[uuid])           records[uuid] = {};
@@ -144,14 +151,19 @@ function main() {
       const hasHpAp = (g.hp && g.hp.length > 0) || (g.ap && g.ap.length > 0);
 
       if (hasHpAp) {
-        // hp/ap present — reliable side info
+        // hp/ap present — reliable side info. profileID may be a truncated
+        // prefix (existing games data rewritten by the one-off migration) or
+        // a full uuid — resolve before accumulating.
         hpApGames++;
         for (const { players, tid } of [{ players: g.hp || [], tid: g.h }, { players: g.ap || [], tid: g.a }]) {
           if (!tid || !players.length) continue;
           const res = resultForTeam(g, tid);
           if (!res) continue;
           for (const p of players) {
-            if (p.profileID) accumulate(p.profileID, sid, tid, res);
+            if (!p.profileID) continue;
+            const full = resolveToFullUuid(p.profileID, ROOT);
+            if (!full) { unresolved++; continue; }
+            accumulate(full, sid, tid, res);
           }
         }
       } else if (g.p && g.p.length > 0) {
@@ -159,8 +171,10 @@ function main() {
         // A player's tid must match either g.h or g.a for this game.
         let usedFallback = false;
         for (const p of g.p) {
-          const uuid = p.id;
-          if (!uuid) continue;
+          const rawId = p.id;
+          if (!rawId) continue;
+          const uuid = resolveToFullUuid(rawId, ROOT);
+          if (!uuid) { unresolved++; continue; }
           const sidMap = playerTids.get(uuid);
           if (!sidMap) continue;
           const tids = sidMap.get(sid);
@@ -200,6 +214,7 @@ function main() {
 
   console.log(`\n  Scanned ${seasonsScanned} seasons, ${gamesScanned} games`);
   console.log(`    hp/ap games: ${hpApGames}, g.p[] fallback: ${pFallbackGames}, skipped (no score/players): ${skippedGames}`);
+  if (unresolved > 0) console.log(`    ⚠ ${unresolved} ids could not be resolved to a player (stale/missing index entry)`);
   console.log(`  ${Object.keys(records).length} players with W/L/D data`);
   console.log('\n  Pass 2: writing player files…');
 

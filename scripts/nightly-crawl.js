@@ -31,6 +31,7 @@ const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const { truncateUuid } = require('./lib/uuid-prefix.cjs');
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -357,22 +358,32 @@ async function runPaced(items, worker, { conc, burst, rest, label }) {
 // commitLock prevents concurrent tasks from triggering simultaneous commits
 let commitLock = false;
 
-async function gitCommit(message) {
+// dirs: explicit paths only — never -A. This repo is multi-GB with 370k+
+// player files and 2,800+ game/team-stats files; -A walks the whole index
+// and risks ENOBUFS (confirmed empirically 2026-07-10: a 355k-file operation
+// blew Node's execSync 1MB stdout buffer via git's own default per-file
+// output — the same class of thing -A risks here at similar or larger scale,
+// since it has to diff the ENTIRE working tree, not just what this run touched).
+// --shortstat (not --stat) and --no-stat on merge for the same reason — both
+// print a per-file line/graph by default, --stat and a real merge diffstat
+// scale with file count, --shortstat and --no-stat don't.
+async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  try { execSync('git add -A', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
+  const paths = (dirs && dirs.length ? dirs : ['.']).join(' ');
+  try { execSync(`git add -- ${paths}`, { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
   const staged = (() => {
-    try { return execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
+    try { return execSync('git diff --staged --shortstat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
     catch (_) { return ''; }
   })();
   if (!staged) { return; }  // nothing to commit — silent
-  try { execSync(`git commit -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
+  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
   catch (_) { return; }
   const MAX = 10;
   for (let attempt = 1; attempt <= MAX; attempt++) {
     try {
-      execSync('git fetch origin main',                    { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                   { stdio: 'pipe', cwd: ROOT });
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
       console.log(`  ✓ Committed: ${message}`);
       return;
     } catch (_) {
@@ -384,12 +395,12 @@ async function gitCommit(message) {
 }
 
 // Commit only if not already in progress — safe for concurrent callers
-async function tryPeriodicCommit(message) {
+async function tryPeriodicCommit(message, dirs) {
   if (commitLock) return;
   commitLock = true;
   try {
     const n = flushGameFiles();
-    if (n > 0) await gitCommit(message);
+    if (n > 0) await gitCommit(message, dirs);
   } finally {
     commitLock = false;
   }
@@ -706,7 +717,7 @@ async function main() {
     console.log(`  Reclassified ${reclassified} games as hidden (grade hideScores flipped)`);
     console.log(`  Queued ${reclassifiedSpectator.length} reclassified FINAL games for spectator`);
     const n = flushGameFiles();
-    if (n > 0) await gitCommit(`nightly-crawl: ${reclassified} games reclassified as hidden`);
+    if (n > 0) await gitCommit(`nightly-crawl: ${reclassified} games reclassified as hidden`, ['games/']);
   }
   console.log(`  Hidden grades checked: ${hiddenGrades.length}  Games reclassified: ${reclassified}\n`);
 
@@ -774,7 +785,8 @@ async function main() {
     if (seasonsSinceCommit >= COMMIT_EVERY) {
       seasonsSinceCommit = 0;  // reset immediately before await
       await tryPeriodicCommit(
-        `nightly-crawl: game files (${allNeedsSpectator.length} games queued for spectator so far)`
+        `nightly-crawl: game files (${allNeedsSpectator.length} games queued for spectator so far)`,
+        ['games/']
       );
     }
     return 'ok';
@@ -805,7 +817,8 @@ async function main() {
   const flushedGames = flushGameFiles();
   if (flushedGames > 0 || needsSpectator.length > 0) {
     await gitCommit(
-      `nightly-crawl: ${needsSpectator.length} games queued, ${flushedGames} season files updated`
+      `nightly-crawl: ${needsSpectator.length} games queued, ${flushedGames} season files updated`,
+      ['games/', 'data/forfeit-games.json']
     );
   }
   console.log();
@@ -853,12 +866,18 @@ async function main() {
       });
     }
 
-    // Mark spc:1 and update p[] on the game entry — spc prevents re-processing
+    // Mark spc:1 and update p[] on the game entry — spc prevents re-processing.
+    // p[].id is truncated to a 10-char prefix (2026-07-10 UUID-storage migration)
+    // — this field is only ever an attendee list keyed by id, never resolved
+    // back to a player file from within this script, so it's safe to write
+    // truncated here. playerDeltas above (used for player-file writes) keeps
+    // p.profileID FULL-length throughout — only the on-disk game file field
+    // is shortened.
     const gf = loadGameFile(seasonId);
     if (gf.games[gameId] && !DRY_RUN) {
       if (allPlayers.length > 0) {
         gf.games[gameId].p = allPlayers.map(p => ({
-          id: p.profileID,
+          id: truncateUuid(p.profileID),
           // n omitted — name not needed in p[], profileID is the key
         }));
       }
@@ -875,7 +894,7 @@ async function main() {
   // Flush game spc + p[] updates
   const flushedSpc = flushGameFiles();
   if (flushedSpc > 0) {
-    await gitCommit(`nightly-crawl: spc+p[] written for ${spectatorHits} games`);
+    await gitCommit(`nightly-crawl: spc+p[] written for ${spectatorHits} games`, ['games/']);
   }
   console.log();
 
@@ -983,7 +1002,7 @@ async function main() {
         affectedShards.add(uuid.slice(0, 2));
 
         if (playersSinceCommit >= COMMIT_EVERY_PLAYERS) {
-          await gitCommit(`nightly-crawl: statsChecked cleared (${statsCleared} so far)`);
+          await gitCommit(`nightly-crawl: statsChecked cleared (${statsCleared} so far)`, ['players/']);
           playersSinceCommit = 0;
         }
       } else {
@@ -1059,7 +1078,8 @@ async function main() {
 
   // Final commit — remaining player + stub writes
   await gitCommit(
-    `nightly-crawl: ${statsCleared} statsChecked cleared, ${stubbed} new players stubbed`
+    `nightly-crawl: ${statsCleared} statsChecked cleared, ${stubbed} new players stubbed`,
+    ['players/', 'needs-matrix-shards.json']
   );
 
   // ── Status file ───────────────────────────────────────────────────────────────

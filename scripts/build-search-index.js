@@ -12,12 +12,19 @@
 // Usage:
 //   node scripts/build-search-index.js            # rebuild all shards
 //   node scripts/build-search-index.js --dry-run  # no writes or commits
+//
+// 2026-07-10: entry.id is truncated to a 10-char uuid prefix (see
+// scripts/lib/uuid-prefix.cjs) — part of the UUID-storage migration. The
+// source uuid always comes from players/indexes/{shard}.json keys, which
+// are full-length, so no resolve step is needed here — only truncate at
+// write time.
 
 'use strict';
 
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const { truncateUuid } = require('./lib/uuid-prefix.cjs');
 
 const ROOT       = path.join(__dirname, '..');
 const DRY_RUN    = process.argv.includes('--dry-run');
@@ -31,12 +38,21 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 async function gitCommit(message) {
   if (DRY_RUN) { console.log(`  [dry-run] ${message}`); return; }
   try {
-    execSync('git add -A', { stdio: 'pipe', cwd: ROOT });
-    const staged = execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
+    // Explicit path, never -A — this repo is multi-GB with 370k+ player
+    // files; -A walks the whole index and risks ENOBUFS on a run like this
+    // one that also touches search/.
+    execSync('git add search/', { stdio: 'pipe', cwd: ROOT });
+    // --shortstat, not --stat: --stat prints a per-file line and scales with
+    // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
+    // repo this size), --shortstat stays a single small summary line.
+    const staged = execSync('git diff --staged --shortstat', { stdio: 'pipe', cwd: ROOT }).toString().trim();
     if (!staged) { console.log('  Nothing to commit'); return; }
-    execSync(`git commit -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT });
+    execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT });
     execSync('git fetch origin main', { stdio: 'pipe', cwd: ROOT });
-    execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
+    // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
+    // class as --stat above) — scales with what's landed on main since the
+    // last fetch, not with what this run is committing.
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
     execSync('git push origin main', { stdio: 'pipe', cwd: ROOT });
     console.log(`  ✓ ${message}`);
   } catch (e) { console.error(`  git error: ${e.message}`); }
@@ -112,7 +128,7 @@ async function main() {
         } catch (_) {}
       }
 
-      const entry = { id: uuid, c: c || null, t: t || null };
+      const entry = { id: truncateUuid(uuid), c: c || null, t: t || null };
 
       // Forward: "Sam Burdan"
       addEntry(playerName, entry);

@@ -14,11 +14,18 @@
 // Run:     node scripts/build-player-games.js
 // Dry run: node scripts/build-player-games.js --dry-run
 // Force:   node scripts/build-player-games.js --force
+//
+// 2026-07-10: g.p[].id may be a truncated 10-char uuid prefix (see
+// scripts/lib/uuid-prefix.cjs) — part of the UUID-storage migration. It's
+// resolved back to a full uuid in phase 1 before being used as the
+// playerGames map key, since phase 2 looks entries up by the FULL uuid
+// taken from each player file's own filename.
 
 import fs   from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
+import { resolveToFullUuid } from './lib/uuid-prefix.cjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -35,11 +42,17 @@ function gitCommit(message, dirs) {
   if (DRY_RUN) return;
   try {
     execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
-    const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+    // --shortstat, not --stat: --stat prints a per-file line and scales with
+    // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
+    // repo this size), --shortstat stays a single small summary line.
+    const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
     if (!diff) return;
-    execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+    execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
     execSync('git fetch origin main',                   { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit',  { cwd: ROOT, stdio: 'pipe' });
+    // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
+    // class as --stat above) — scales with what's landed on main since the
+    // last fetch, not with what this run is committing.
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat',  { cwd: ROOT, stdio: 'pipe' });
     execSync('git push', { cwd: ROOT, stdio: 'pipe' });
     console.log(`  ✔ ${message}`);
   } catch (e) {
@@ -63,9 +76,9 @@ console.log('── Phase 1: Scanning game files (always runs, ~1 min) ───
 const gamesDir = path.join(ROOT, 'games', 'bv');
 const sids = fs.readdirSync(gamesDir).filter(f => f.endsWith('.json'));
 
-// Map<uuid, Set<gid>>
+// Map<uuid, Set<gid>> — uuid is always FULL length here (resolved below)
 const playerGames = new Map();
-let totalGames = 0, totalAppearances = 0;
+let totalGames = 0, totalAppearances = 0, unresolved = 0;
 
 for (const fname of sids) {
   let gf;
@@ -74,8 +87,10 @@ for (const fname of sids) {
     if (!g.p?.length) continue;
     totalGames++;
     for (const entry of g.p) {
-      const uuid = entry.id;
-      if (!uuid) continue;
+      const rawId = entry.id;
+      if (!rawId) continue;
+      const uuid = resolveToFullUuid(rawId, ROOT);
+      if (!uuid) { unresolved++; continue; }
       if (!playerGames.has(uuid)) playerGames.set(uuid, new Set());
       playerGames.get(uuid).add(gameId);
       totalAppearances++;
@@ -84,6 +99,7 @@ for (const fname of sids) {
 }
 
 console.log(`  ${sids.length} seasons | ${totalGames.toLocaleString()} games | ${playerGames.size.toLocaleString()} players | ${totalAppearances.toLocaleString()} appearances`);
+if (unresolved > 0) console.log(`  ⚠ ${unresolved.toLocaleString()} p[] entries could not be resolved to a player (stale/missing index entry)`);
 
 // ─── Phase 2: write games field to player files, one prefix at a time ─────────
 console.log('\n── Phase 2: Writing games field to player files ─────────────────────');
@@ -161,6 +177,7 @@ console.log('\n─── Summary ───────────────�
 console.log(`  Seasons scanned      : ${sids.length.toLocaleString()}`);
 console.log(`  Games processed      : ${totalGames.toLocaleString()}`);
 console.log(`  Player appearances   : ${totalAppearances.toLocaleString()}`);
+console.log(`  Unresolved p[] ids   : ${unresolved.toLocaleString()}`);
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
 console.log(`  Player files skipped : ${skipped.toLocaleString()}`);
 console.log(`  Mode                 : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
