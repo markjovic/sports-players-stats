@@ -1,0 +1,64 @@
+# .github/workflows/fix-uuid-prefix-length.yml
+name: Fix UUID Prefix Length (one-off, games/bv only)
+
+# Upgrades existing 10-char uuid prefixes (9 real hex digits) to the
+# corrected 13-char length (12 real hex digits) — see
+# scripts/fix-uuid-prefix-length.js header comment for the full story.
+#
+# Run this TWICE per the deploy-order note in that script: once before
+# uploading the corrected scripts/lib/uuid-prefix.cjs, once after, to mop up
+# anything written at the old length in between (nightly-crawl/weekly-indexes
+# are not paused for this).
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — report what would change, write/commit nothing'
+        required: false
+        default: false
+        type: boolean
+      force:
+        description: 'Ignore saved progress and start over from scratch'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    # Same file count as the original migration (~2,865 season files) —
+    # resumable via its own progress file + periodic commits, so a timeout
+    # here just means re-running the workflow picks up where it left off.
+    timeout-minutes: 350
+    steps:
+      - name: Checkout (sparse — games/, scripts/, players/indexes/, reports/)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            games
+            scripts
+            players/indexes
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run fix
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          node scripts/fix-uuid-prefix-length.js $ARGS

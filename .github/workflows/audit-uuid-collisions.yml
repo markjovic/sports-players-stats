@@ -1,0 +1,42 @@
+# .github/workflows/audit-uuid-collisions.yml
+name: Audit UUID Prefix Collisions (read-only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      len:
+        description: 'Prefix length to audit (10 = old/broken length, 13 = new/fixed length)'
+        required: false
+        default: '10'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (sparse — only players/indexes/ and scripts/ needed)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            players/indexes
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run audit
+        run: node scripts/audit-uuid-collisions.js --len=${{ inputs.len }}
