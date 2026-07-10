@@ -20,11 +20,27 @@
 //   sports.Basketball.maxGameThreePt — number | null
 //   sports.Basketball.statsChecked   — ISO timestamp
 //   seasons[].regs[].stats.gp/pts/fg/ft/threePt/fouls — per-reg totals
+//   private                          — true | false (explicit flag, added 2026-07-10)
 //
 // statsChecked is ONLY written on a real data response.
 // A 403 that persists after a session refresh = truly inaccessible profile.
 // A 403 that resolves after a session refresh = session expiry (retry succeeds).
 // All stats use seenGameKeys dedup — no double-counting across multiple regs.
+//
+// private flag (2026-07-10): previously "private" was inferred only from the
+// `Player #<prefix>` name convention, which is ambiguous (a real player who
+// never scored looks identical in storage to a confirmed-403 profile). This
+// now writes an explicit player.private boolean on every outcome, so the two
+// cases are distinguishable and so private<->public transitions are tracked:
+//   - 403/not-found  -> private = true.  Name is left untouched (if a real
+//     name is already on file from before the profile went private, we keep
+//     showing it — the user's requirement is "we still know their name but
+//     mark them as private", not "forget the name").
+//   - real data ("ok") -> private = false. The name write below was also
+//     fixed to OVERWRITE a placeholder `Player #...` name once a real one is
+//     available (previously `if (parsed.playerName && !player.name)` could
+//     never fire again once a placeholder name existed at all — a private
+//     stub that later went public would keep its placeholder name forever).
 //
 // One git commit after all writes for the shard.
 
@@ -406,6 +422,7 @@ async function processUUID(uuid, stats, idx) {
       if (!player.records) player.records = {};
       player.records.maxGamePTS     = { v: null };
       player.records.maxGameThreePt = { v: null };
+      player.private = true; // explicit flag — name/prior stats left untouched
       writePlayer(uuid, player);
       stats.written++; // counts toward completion — won't be retried
     } catch (err) {
@@ -437,10 +454,16 @@ async function processUUID(uuid, stats, idx) {
   if (!player.sports)            player.sports = {};
   if (!player.sports.Basketball) player.sports.Basketball = {};
 
-  // Write name if missing — permanent maintenance, not just a one-time fix
-  if (parsed.playerName && !player.name) {
+  // Write name if missing, OR replace a placeholder name now that the
+  // profile is confirmed public (a private stub going public is exactly
+  // when player.private is currently true — capture that BEFORE overwriting
+  // it below). Without the wasPrivate check, a `Player #...` placeholder
+  // name would never be replaced once set, even after the profile went public.
+  const wasPrivate = player.private === true;
+  if (parsed.playerName && (!player.name || wasPrivate)) {
     player.name = parsed.playerName;
   }
+  player.private = false; // explicit flag — a successful fetch proves the profile is currently public
 
   const bk = player.sports.Basketball;
   bk.foulOuts       = parsed.foulOuts;
