@@ -15,28 +15,39 @@
 // existed in this repo before today, its pre-migration commit should still
 // show the field at full 36-char length.
 //
-// 2026-07-10, second live attempt: the first rewrite (per-file
-// `git log --follow` + one `git log -1` subprocess PER COMMIT in that file's
-// history, just to read its message) died with SIGTERM after an 11-minute
-// silent gap, most likely a compounding slowdown -- every batch this script
-// commits adds MORE history for the NEXT file's per-file walk to traverse,
-// and no git call had a timeout, so a single stuck command could hang
-// forever with zero log output until something external killed the job.
-//
-// Rewritten to find every migrate-uuid-truncation commit ONCE, upfront
-// (a single `git log --all --grep`), then map every file it touched
-// straight to that commit's parent (`git diff-tree` per matching commit,
-// ~29 of them for the original 2,865-file migration, not one per season
-// file). Per-file lookup is now an O(1) map read, not a growing traversal.
-// Every git subprocess call now also has an explicit timeout so a stuck
-// command fails fast and loud instead of hanging silently.
-//
-// READ-ONLY against games/ history, but DOES write recovered full-length
-// ids into the CURRENT games/bv/{sid}.json (truncated to NEW_LEN=13) unless
-// --dry-run is passed.
+// 2026-07-10, THIRD live attempt, after two SIGTERM (exit 143) failures at
+// roughly the same file count each time:
+//   Attempt 1: per-file `git log --follow` walk, no timeouts -- died after
+//              an 11-min silent gap. Diagnosed (wrongly, on its own, as it
+//              turned out) as the sole cause.
+//   Attempt 2: rewrote to a single upfront migrate-uuid-truncation commit
+//              map (fast -- finished in seconds) + per-call timeouts. Died
+//              again at almost the same file count, immediately, no long
+//              gap this time. That rules out the per-file-walk theory --
+//              the map build was fast and correct both times.
+// Current best explanation (not yet confirmed, hence the instrumentation
+// below rather than another confident rewrite): `git show <historical
+// commit>:<path>` against a `filter: blob:none` partial clone lazily
+// fetches and PERMANENTLY CACHES each historical blob locally. Across
+// ~1,200 files needing recovery, on top of the already-checked-out ~2.5GB
+// games/, that could plausibly exhaust the runner's disk. Rather than
+// guess a third time, this version:
+//   1. Logs disk usage (`df -h` on the checkout mount) at every checkpoint,
+//      so if it dies again there's actual evidence instead of a bare exit
+//      code.
+//   2. Persists a progress file (doneSids), matching the pattern already
+//      used by migrate-uuid-truncation.js and fix-uuid-prefix-length.js --
+//      this script never had one, unlike those, which meant every crash
+//      threw away all the "already scanned, nothing to do" work and forced
+//      a full re-scan from file #1. Resuming now skips already-done files
+//      immediately, no git calls at all for them.
+//   3. Commits every 50 files instead of 100, so less work is lost per
+//      crash and we get disk-usage data points twice as often.
 //
 // Run:     node scripts/recover-uuids-from-git-history.js --dry-run
 // Then:    node scripts/recover-uuids-from-git-history.js
+// Resume:  just run it again -- progress file picks up where it left off.
+// Force:   node scripts/recover-uuids-from-git-history.js --force  (ignore progress, start over)
 
 'use strict';
 
@@ -44,12 +55,14 @@ const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
 
-const ROOT          = path.join(__dirname, '..');
+const ROOT           = path.join(__dirname, '..');
 const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
 const PLAYERS_IDX    = path.join(ROOT, 'players', 'indexes');
 const DRY_RUN        = process.argv.includes('--dry-run');
+const FORCE          = process.argv.includes('--force');
 const REPORT_FILE    = path.join(ROOT, 'reports', 'git-history-recovery-report.json');
-const COMMIT_EVERY   = 100;
+const PROGRESS_FILE  = path.join(ROOT, 'scripts', '.recover-uuids-from-git-history-progress.json');
+const COMMIT_EVERY   = 50;
 const GIT_TIMEOUT_MS = 30000; // any single git call that hangs this long fails loudly instead of hanging silently
 
 const OLD_LEN  = 10;
@@ -58,6 +71,21 @@ const FULL_LEN = 36;
 
 function git(cmd) {
   return execSync(cmd, { cwd: ROOT, maxBuffer: 512 * 1024 * 1024, timeout: GIT_TIMEOUT_MS }).toString();
+}
+
+function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+function writeJson(p, d) { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
+
+// Disk usage snapshot -- the actual evidence this version adds instead of
+// guessing. Logs both the repo checkout and the runner's overall disk.
+function logDiskUsage(label) {
+  try {
+    const repoSize = git(`du -sh "${ROOT}/.git" 2>/dev/null || true`).trim();
+    const dfOut = git(`df -h "${ROOT}" 2>/dev/null || true`).trim().split('\n').slice(-1)[0];
+    console.log(`  [disk @ ${label}] .git size: ${repoSize.split('\t')[0] || 'unknown'} | df: ${dfOut}`);
+  } catch (e) {
+    console.log(`  [disk @ ${label}] could not measure: ${e.message.slice(0, 150)}`);
+  }
 }
 
 // 2026-07-10, live run: this exact function once hit "cannot lock ref
@@ -99,11 +127,6 @@ function gitCommit(message, dirs) {
 
 // Builds relPath -> parentCommitHash for EVERY file touched by ANY
 // migrate-uuid-truncation commit, in one pass -- not per-file traversal.
-// ~29 commits for the original 2,865-file migration (COMMIT_EVERY=100 there
-// too), each touching ~100 files, so this is roughly 29 `git log --grep`
-// results x (1 diff-tree + 1 rev-parse) = ~60 subprocess calls total,
-// regardless of how large games/'s overall history is or gets during this
-// run.
 function buildMigrationCommitMap() {
   const map = new Map();
   let hashes;
@@ -124,11 +147,6 @@ function buildMigrationCommitMap() {
   }
   console.log(`  ${map.size} distinct files mapped to a pre-migration commit`);
 
-  // How much fetch-depth did this actually need? `git log --all --grep`
-  // returns newest-first, so the LAST hash found is the oldest migration
-  // commit -- rev-list --count to its parent tells us exactly how far back
-  // from HEAD we had to reach. Answers "was fetch_depth well-calibrated,
-  // wasteful, or nearly insufficient" with a real number instead of a guess.
   let actualDepthNeeded = null;
   if (hashes.length > 0) {
     const oldestHash = hashes[hashes.length - 1];
@@ -137,7 +155,7 @@ function buildMigrationCommitMap() {
       actualDepthNeeded = parseInt(git(`git rev-list --count ${oldestParent}..HEAD`).trim(), 10) + 1;
       console.log(`  Actual depth needed to reach the oldest migration commit's parent: ${actualDepthNeeded} commits`);
     } catch (e) {
-      console.error('  Could not compute actual depth needed (oldest commit may be outside fetch-depth entirely):', e.message.slice(0, 200));
+      console.error('  Could not compute actual depth needed:', e.message.slice(0, 200));
     }
   }
 
@@ -152,9 +170,6 @@ function readFileAtCommit(commit, sidFilePath) {
 function isFullUuid(v) { return typeof v === 'string' && v.length === FULL_LEN; }
 function truncateNew(v) { return v.slice(0, NEW_LEN); }
 
-// shard -> Map<prefix10, fullUuid> from the current index (used to skip
-// anything that's actually resolvable now -- this script is only for the
-// genuinely unresolvable remainder).
 const shardIndexMaps = new Map();
 function loadShardIndex(shard) {
   if (shardIndexMaps.has(shard)) return shardIndexMaps.get(shard);
@@ -169,7 +184,7 @@ function loadShardIndex(shard) {
   return map;
 }
 function alreadyResolvable(id) {
-  if (typeof id !== 'string' || id.length !== OLD_LEN) return true; // not our concern either way
+  if (typeof id !== 'string' || id.length !== OLD_LEN) return true;
   return loadShardIndex(id.slice(0, 2).toLowerCase()).has(id);
 }
 
@@ -178,6 +193,7 @@ function main() {
   console.log('recover-uuids-from-git-history.js');
   if (DRY_RUN) console.log('  DRY RUN -- counts only, no writes or commits');
   console.log('-'.repeat(60));
+  logDiskUsage('start');
 
   let isShallow = false;
   try { isShallow = git('git rev-parse --is-shallow-repository').trim() === 'true'; } catch {}
@@ -186,23 +202,31 @@ function main() {
 
   const { map: migrationMap, actualDepthNeeded } = buildMigrationCommitMap();
 
+  let progress = { doneSids: [] };
+  if (FORCE) {
+    console.log('  --force: starting fresh\n');
+  } else if (fs.existsSync(PROGRESS_FILE)) {
+    try { progress = readJson(PROGRESS_FILE); console.log(`  Resuming -- ${progress.doneSids.length} season files already done`); }
+    catch {}
+  }
+  const doneSids = new Set(progress.doneSids ?? []);
+
   const allSids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort();
-  console.log(`  ${allSids.length} season files to check\n`);
+  const pendingSids = allSids.filter(s => !doneSids.has(s));
+  console.log(`  ${allSids.length} season files total | ${doneSids.size} already done | ${pendingSids.length} remaining\n`);
 
   let filesChecked = 0, filesWithUnresolved = 0, filesWithHistory = 0, filesModified = 0;
   let recovered = 0, stillUnrecoverable = 0, sinceCommit = 0;
   const reasonCounts = {};
   const unrecoverableExamples = [];
 
-  for (const sid of allSids) {
+  for (const sid of pendingSids) {
     filesChecked++;
     const fpath = path.join(GAMES_DIR, `${sid}.json`);
     let gf;
     try { gf = JSON.parse(fs.readFileSync(fpath, 'utf8')); }
-    catch { continue; }
+    catch { doneSids.add(sid); continue; }
 
-    // Does this file have ANY field still at OLD_LEN that isn't a known,
-    // currently-resolvable prefix? If not, skip it -- nothing to recover here.
     let needsRecovery = false;
     for (const game of Object.values(gf.games || {})) {
       for (const p of (game.p  || [])) if (p.id        && p.id.length        === OLD_LEN && !alreadyResolvable(p.id))        needsRecovery = true;
@@ -210,7 +234,7 @@ function main() {
       for (const p of (game.ap || [])) if (p.profileID && p.profileID.length === OLD_LEN && !alreadyResolvable(p.profileID)) needsRecovery = true;
       if (needsRecovery) break;
     }
-    if (!needsRecovery) continue;
+    if (!needsRecovery) { doneSids.add(sid); continue; }
     filesWithUnresolved++;
 
     const relPath = `games/bv/${sid}.json`;
@@ -221,6 +245,7 @@ function main() {
     if (!commit) {
       stillUnrecoverable++;
       if (unrecoverableExamples.length < 30) unrecoverableExamples.push({ sid, reason });
+      doneSids.add(sid);
       continue;
     }
     filesWithHistory++;
@@ -229,6 +254,7 @@ function main() {
     if (!historical) {
       stillUnrecoverable++;
       if (unrecoverableExamples.length < 30) unrecoverableExamples.push({ sid, reason: 'show-failed' });
+      doneSids.add(sid);
       continue;
     }
 
@@ -264,17 +290,27 @@ function main() {
       sinceCommit++;
     }
 
+    doneSids.add(sid);
+
     if (sinceCommit >= COMMIT_EVERY) {
-      gitCommit(`recover-uuids-from-git-history: ${filesModified} files modified, ${recovered.toLocaleString()} ids recovered so far`, ['games/']);
+      if (!DRY_RUN) writeJson(PROGRESS_FILE, { doneSids: [...doneSids] });
+      gitCommit(`recover-uuids-from-git-history: ${filesModified} files modified, ${recovered.toLocaleString()} ids recovered so far`, ['games/', 'scripts/.recover-uuids-from-git-history-progress.json']);
       sinceCommit = 0;
+      logDiskUsage(`${filesChecked} files checked this run`);
     }
 
-    if (filesChecked % 200 === 0) process.stdout.write(`  ${filesChecked}/${allSids.length} files checked\r`);
+    if (filesChecked % 200 === 0) process.stdout.write(`  ${filesChecked}/${pendingSids.length} files checked this run\r`);
   }
 
-  if (sinceCommit > 0) {
-    gitCommit(`recover-uuids-from-git-history: complete -- ${filesModified} files modified, ${recovered.toLocaleString()} ids recovered`, ['games/']);
+  if (sinceCommit > 0 && !DRY_RUN) writeJson(PROGRESS_FILE, { doneSids: [...doneSids] });
+  gitCommit(`recover-uuids-from-git-history: complete -- ${filesModified} files modified, ${recovered.toLocaleString()} ids recovered`, ['games/', 'scripts/.recover-uuids-from-git-history-progress.json']);
+
+  if (!DRY_RUN && fs.existsSync(PROGRESS_FILE)) {
+    fs.unlinkSync(PROGRESS_FILE);
+    gitCommit('recover-uuids-from-git-history: remove progress file (run complete)', ['scripts/.recover-uuids-from-git-history-progress.json']);
   }
+
+  logDiskUsage('end');
 
   const report = {
     generatedAt: new Date().toISOString(),
@@ -289,16 +325,16 @@ function main() {
   gitCommit('recover-uuids-from-git-history: report committed', ['reports/']);
 
   console.log('\n' + '-'.repeat(60));
-  console.log(`  Season files checked          : ${filesChecked}`);
-  console.log(`  Files with unresolved fields   : ${filesWithUnresolved}`);
-  console.log(`  Files with usable history      : ${filesWithHistory}`);
-  console.log(`  Files modified                 : ${filesModified}`);
-  console.log(`  Ids recovered                  : ${recovered.toLocaleString()}`);
-  console.log(`  Still unrecoverable             : ${stillUnrecoverable.toLocaleString()}`);
-  console.log(`  Reason breakdown                : ${JSON.stringify(reasonCounts)}`);
-  console.log(`  Elapsed                         : ${Math.round((Date.now() - start) / 1000)}s`);
-  console.log(`  Mode                            : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
-  console.log(`  Actual depth needed              : ${actualDepthNeeded ?? 'unknown'}${actualDepthNeeded ? ' (compare against the fetch_depth input to see how much margin you had)' : ''}`);
+  console.log(`  Season files checked this run  : ${filesChecked}`);
+  console.log(`  Files with unresolved fields    : ${filesWithUnresolved}`);
+  console.log(`  Files with usable history       : ${filesWithHistory}`);
+  console.log(`  Files modified                   : ${filesModified}`);
+  console.log(`  Ids recovered                    : ${recovered.toLocaleString()}`);
+  console.log(`  Still unrecoverable              : ${stillUnrecoverable.toLocaleString()}`);
+  console.log(`  Reason breakdown                 : ${JSON.stringify(reasonCounts)}`);
+  console.log(`  Elapsed                          : ${Math.round((Date.now() - start) / 1000)}s`);
+  console.log(`  Mode                             : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+  console.log(`  Actual depth needed               : ${actualDepthNeeded ?? 'unknown'}`);
   if (stillUnrecoverable > 0) {
     console.log('\n  Some ids have NO full-length version anywhere in available git history --');
     console.log('  either fetch-depth was insufficient, or the game was created after');
