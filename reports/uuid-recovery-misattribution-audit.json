@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T23:35:48.614Z",
+  "generatedAt": "2026-07-10T23:55:58.722Z",
   "seasonsScanned": 2866,
   "filesTouchedByRecovery": 1200,
   "counts": {
@@ -617,5 +617,32 @@
         ]
       }
     ]
-  }
+  },
+  "spotCheckResults": [
+    {
+      "uuid": "0000ed35-3510-4267-bf4f-db65588b6d99",
+      "sid": "81545684",
+      "gameId": "a2e4b6c2",
+      "field": "p",
+      "index": 5,
+      "preRecoveryValueAtThisSlot": "0000ed35-3",
+      "wasThisSlotTouchedByRecovery": true,
+      "preMigrationArrayForThisGame": [
+        "1e75e2e6-b76c-4433-8726-7cd727654654",
+        "9c8403ae-23cd-4a79-a852-a495ad0ce7a9",
+        "13bd72ee-53c6-4c4d-926a-af7f7adcf5bf",
+        "5cef4b8c-4a08-4710-9b78-7b3f1e0bcc78",
+        "9e0b342c-5537-4285-ab32-16b30f601196",
+        "0000ed35-3510-4267-bf4f-db65588b6d99",
+        "408c3c6e-67c3-46fb-8d79-0a38ce6c3447",
+        "8cc371a7-7378-4aa8-993c-14b6e326a7ba",
+        "802a7e82-e10a-46c1-805e-c19b816bbf6b",
+        "93dc7ad4-2f88-4386-a1af-753af61a16eb",
+        "5209c985-944e-46c2-a39c-a355500cf5f1"
+      ],
+      "contentMatchesFound": [
+        "0000ed35-3510-4267-bf4f-db65588b6d99"
+      ]
+    }
+  ]
 }
