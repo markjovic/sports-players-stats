@@ -1,0 +1,62 @@
+# .github/workflows/resolve-known-collisions.yml
+name: Resolve Known UUID Collisions (games/bv only)
+
+# Resolves the 3 prefixes audit-uuid-collisions.js (len=10) found to be
+# genuinely ambiguous, using each pair's disjoint season history (verified by
+# hand — see scripts/resolve-known-collisions.js header) rather than guessing
+# or needing full git-history recovery. Requires
+# reports/uuid-collisions-len10.json to already exist (produced by the audit
+# workflow) and players/<shard>/<uuid>.json for each candidate.
+#
+# Only 3 player shards are actually needed (02, b0, dd) — a "collision" by
+# definition means both candidate uuids share the same first-2-char shard, so
+# these are hardcoded here rather than checking out all of players/ (which is
+# large — see repo size notes elsewhere). If audit-uuid-collisions.js is ever
+# re-run and finds a NEW collision in a different shard, add that shard here
+# too before re-running this workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — report only, write/commit nothing'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (sparse — games/, only the 3 affected player shards, scripts/, reports/)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            games
+            players/02
+            players/b0
+            players/dd
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git identity
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+
+      - name: Run resolver
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/resolve-known-collisions.js $ARGS
