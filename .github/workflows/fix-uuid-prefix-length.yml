@@ -27,6 +27,14 @@ on:
 permissions:
   contents: write
 
+# Locks against nightly-crawl, weekly-indexes, and every other one-off script
+# in this migration that also writes games/ — same group name discover-seasons-matrix.yml
+# already uses for this exact purpose. Was missing from this file originally;
+# added after noticing none of the new one-off scripts had it.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
 jobs:
   fix:
     runs-on: ubuntu-latest

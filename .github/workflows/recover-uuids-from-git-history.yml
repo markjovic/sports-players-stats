@@ -36,6 +36,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
 jobs:
   recover:
     runs-on: ubuntu-latest
