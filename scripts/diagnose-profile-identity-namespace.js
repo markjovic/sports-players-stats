@@ -38,10 +38,15 @@
 // is what every prior failure this week was attributed to. This script tests
 // that directly and only that -- it changes nothing.
 //
-// Session-acquisition code below is copied verbatim from
-// backfill-missing-players.js's proven refreshProfileSession()/fetchProfile()
-// -- not reinvented, per this session's own established practice of reusing
-// proven mechanisms rather than guessing at new ones.
+// FIX (this version): the first run of this script (2026-07-11) failed at
+// session acquisition with a bare "status=403, no set-cookie" and nothing
+// else -- because the diagnostic logging that backfill-missing-players.js
+// has (full CDN headers + full response body on failure) was stripped out
+// when this script was copied over. That was a mistake: it meant a session
+// failure here produced strictly less information than the same failure
+// would have produced in backfill-missing-players.js, for no good reason.
+// logDiagnostics() is restored below, verbatim, so a repeat failure is
+// actually diagnosable instead of just "try again and hope".
 
 'use strict';
 
@@ -82,6 +87,24 @@ function doFetch(url, options) {
   });
 }
 
+// Copied verbatim from backfill-missing-players.js -- prints CDN/WAF-
+// identifying headers plus the full response body, so a failure here is
+// actually diagnosable rather than just "no cookie, try again".
+function logDiagnostics(label, res, fullBody) {
+  const h = res.headers || {};
+  console.log(`  ----- ${label}: status=${res.status} -----`);
+  console.log(`    x-cache      : ${h['x-cache'] || '(absent)'}`);
+  console.log(`    via          : ${h['via'] || '(absent)'}`);
+  console.log(`    x-amz-cf-id  : ${h['x-amz-cf-id'] || '(absent)'}`);
+  console.log(`    x-amz-cf-pop : ${h['x-amz-cf-pop'] || '(absent)'}`);
+  console.log(`    server       : ${h['server'] || '(absent)'}`);
+  console.log(`    content-type : ${h['content-type'] || '(absent)'}`);
+  console.log(`    date (hdr)   : ${h['date'] || '(absent)'}`);
+  console.log(`  ----- ${label}: body (${fullBody.length} chars) -----`);
+  console.log(fullBody);
+  console.log(`  ----- ${label}: end -----`);
+}
+
 const API_URL = 'https://api.playhq.com/graphql';
 const HEADERS_BASE = {
   'accept':       '*/*',
@@ -110,8 +133,13 @@ async function refreshProfileSession() {
       }
       const raw = res.rawCookies;
       if (!raw) {
+        let fullBody = '';
+        try { fullBody = await res.text(); } catch (_) {}
         console.log(`  [session attempt ${attempt}, ${q.operationName}] no set-cookie header. status=${res.status}`);
-        if (res.status !== 200) throw new Error(`Session request failed with status ${res.status} and no cookies.`);
+        logDiagnostics(`profile-session attempt ${attempt} (${q.operationName})`, res, fullBody);
+        if (res.status !== 200) {
+          throw new Error(`Session request failed with status ${res.status} and no cookies -- see full body logged above.`);
+        }
         continue;
       }
       const parts = (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0].trim());
@@ -164,6 +192,7 @@ async function queryProfile(profileID) {
   }
   if (res.status === 403) {
     let b = ''; try { b = await res.text(); } catch (_) {}
+    logDiagnostics(`query 403 (profileID=${profileID})`, res, b);
     return { verdict: 'http-403', detail: b.slice(0, 300) };
   }
   if (!res.ok) return { verdict: `http-${res.status}` };
@@ -191,6 +220,10 @@ async function main() {
   console.log('diagnose-profile-identity-namespace.js -- read-only, no writes');
   console.log('Testing publicProfileStatistics(profileID) against api.playhq.com');
   console.log('for both the spectator-namespace and api-namespace uuid of 3 known cases.\n');
+
+  // Acquire the session once, up front, so a failure here is unambiguous
+  // and fully diagnosed before any per-case testing starts.
+  await refreshProfileSession();
 
   for (const [name, spectatorId, apiId] of CASES) {
     console.log('='.repeat(70));
