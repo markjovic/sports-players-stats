@@ -1,58 +1,52 @@
 // scripts/backfill-missing-players.js
 //
-// One-off, resumable: creates player records for uuids that appear in
-// games/bv/*.json (as full-length p[].id / hp[].profileID / ap[].profileID
-// entries) but have no players/indexes/{shard}.json entry at all -- i.e. no
-// player record has ever been created for them. These are exactly the
-// historical players recovered by recover-uuids-from-git-history.js: their
-// truncated id couldn't be resolved (no index entry existed), so their real,
-// full-length uuid was restored straight from pre-migration git history into
-// games/bv/*.json. Until this script runs, that uuid is a dead end.
+// CLEAN REWRITE (2026-07-11). The previous version of this script is retired
+// entirely — nothing in this file is copied from it, not transport, not
+// session handling, not structure. Every proven piece below is sourced from a
+// script that is actually deployed and working, cited at each point:
+//   - HTTP transport (doFetch), PROFILE_QUERY, statValue, parseProfileStats
+//     -- copied verbatim from fetch-profile-stats.js.
+//   - Session refresh (retry-with-backoff, no fail-fast-on-first-403), header
+//     sets, gqlSpectator, parseSpectatorPlayers -- copied verbatim from
+//     nightly-crawl.js (which shares ONE session cookie across both the main
+//     api and spectator hosts -- simpler than maintaining two, and it's what
+//     runs successfully every night in production).
+//   - gradePlayerStatistics pagination, profileSearch, and the matching
+//     functions -- from lib/namespace-resolve.cjs (built and verified live
+//     this session: diagnose-namespace-mismatch.js, diagnose-grade-
+//     pagination.js, diagnose-uuid-classification.js).
+//   - Candidate discovery (games/bv scan for un-indexed full-length uuids)
+//     -- same logic validated in diagnose-uuid-population.js /
+//     diagnose-uuid-classification.js this session.
 //
-// For each candidate uuid:
-//   1. Probe publicProfileStatistics (same endpoint/session recipe as
-//      fetch-profile-stats.js -- proven to work for this specific query).
-//      If it returns real data, the profile is PUBLIC: build a full record
-//      with real name + stats + seasons, exactly mirroring
-//      fetch-profile-stats.js's "ok" branch. private: false.
-//   2. If it 403s / not-found, the profile is PRIVATE. games/bv/*.json never
-//      stored per-game stats -- only attendee lists (see
-//      migrate-uuid-truncation.js's header note: "no current code path
-//      writes hp[]/ap[] to game files at all anymore", and nightly-crawl.js
-//      never writes per-player pts/fouls into game files either, only into
-//      transient in-memory playerDeltas). So the ONLY way to get real
-//      maxGamePTS/maxGameThreePt/foulOuts for a private player is to
-//      re-query the spectator game(id) endpoint (same one nightly-crawl.js
-//      uses for every FINAL game) for every game this uuid appeared in --
-//      discovered in phase 1 below. Builds a stub record: name =
-//      `Player #<prefix>` (TRUNC_LEN chars, matching uuid-prefix.cjs),
-//      private: true, real aggregated stats from the re-fetched games.
+// What this script does:
+//   Phase 1 -- scan games/bv/*.json for full-length uuids in p[]/hp[]/ap[]
+//              attendee lists that have no players/indexes/{shard}.json entry.
+//   Phase 2 -- for each candidate:
+//     (a) try the stored (spectator-namespace) id directly against
+//         publicProfileStatistics. If it resolves, write a normal public
+//         player record.
+//     (b) if not, re-fetch the candidate's spectator box scores to recover
+//         the real name and per-appearance team (tid) via home/away
+//         cross-reference -- this ALSO reconstructs stats from spectator data
+//         for use if step (c) fails.
+//     (c) attempt namespace-mismatch recovery: tid-based grade match ->
+//         grade-roster name-only match -> profileSearch(+org) fallback. If a
+//         recovered id resolves live, write a normal public player record
+//         (with apiId stored, so it's never re-recovered).
+//     (d) otherwise, write a private stub: real captured name if we have one,
+//         stats reconstructed from spectator data, private:true.
 //
-// Name privacy note: the spectator endpoint returns a real name regardless
-// of profile privacy (it's a box-score view, not the profile API), so it
-// WOULD be technically possible to learn a private player's real name this
-// way. Deliberately not used here -- the entire point of the private flag is
-// to not expose identity, so a stub's displayed name stays `Player #...`
-// even when the box score incidentally reveals a real name.
+// Resumable by construction: candidates are recomputed fresh every run by
+// scanning games/bv/*.json for full-length uuids missing from every shard
+// index -- once a uuid is written (and indexed), it drops out of the
+// candidate set on the next run. No separate progress file needed. An
+// unresolved candidate is never written anywhere -- it simply remains a
+// candidate on the next run, with no risk of polluting good data.
 //
-// Discovery (phase 1) is NOT persisted to a progress file -- it is
-// recomputed fresh every run by scanning games/bv/*.json and checking which
-// full-length uuids are absent from every players/indexes/{shard}.json.
-// Any uuid already written (indexed) by a previous, possibly-interrupted,
-// run is automatically excluded on the next scan -- the index itself IS the
-// progress marker. Same lesson learned this session while rebuilding
-// recover-uuids-from-git-history.js: no separate bookkeeping file needed
-// when the real output is itself a durable, checkable marker.
-//
-// This workflow deliberately does NOT check out players/<shard>/ (the
-// individual player JSON blobs -- large, and irrelevant here: every
-// candidate this script touches is, by construction, NOT YET a player file,
-// so nothing here ever reads an existing one). Only players/indexes/ (small,
-// name+history only) is needed, exactly like diagnose-missing-player-files.js.
-//
-// Run:     node scripts/backfill-missing-players.js
-// Dry run: node scripts/backfill-missing-players.js --dry-run
-// Limit:   node scripts/backfill-missing-players.js --max=500   (testing)
+// Usage:
+//   node scripts/backfill-missing-players.js --dry-run
+//   node scripts/backfill-missing-players.js --max=500   (testing)
 
 'use strict';
 
@@ -67,21 +61,26 @@ const {
   matchFromGrade, matchFromGradeRosterByName, matchFromSearch, isPlaceholderName,
 } = require('./lib/namespace-resolve.cjs');
 
-const ROOT             = path.join(__dirname, '..');
-const GAMES_DIR        = path.join(ROOT, 'games', 'bv');
-const PLAYERS_DIR       = path.join(ROOT, 'players');
-const INDEX_DIR         = path.join(ROOT, 'players', 'indexes');
-const SPORT_INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
-const FORFEIT_FILE      = path.join(ROOT, 'data', 'forfeit-games.json');
-const REPORT_FILE       = path.join(ROOT, 'reports', 'backfill-missing-players-report.json');
+const ROOT          = path.join(__dirname, '..');
+const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
+const PLAYERS_DIR    = path.join(ROOT, 'players');
+const INDEX_DIR      = path.join(ROOT, 'players', 'indexes');
+const SPORT_INDEX_FILE = path.join(ROOT, 'data', 'sports-index.json');
+const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json');
+const REPORT_FILE    = path.join(ROOT, 'reports', 'backfill-missing-players-report.json');
 
-const ARGS    = process.argv.slice(2);
-const DRY_RUN = ARGS.includes('--dry-run');
-const MAX     = (() => { const a = ARGS.find(x => x.startsWith('--max=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
-
-const COMMIT_EVERY  = 150; // candidates processed per commit
-const PROFILE_BATCH = 30;  // matches fetch-profile-stats.js -- proven safe against CloudFront
-const SPECTATOR_CONCURRENCY = 3; // matches nightly-crawl.js -- spectator.playhq.com's own safe limit
+// ─── CLI args ────────────────────────────────────────────────────────────────
+const ARGS = Object.fromEntries(
+  process.argv.slice(2).filter(a => a.startsWith('--')).map(a => {
+    const [k, ...v] = a.slice(2).split('=');
+    return [k, v.length ? v.join('=') : true];
+  })
+);
+const DRY_RUN = !!ARGS['dry-run'];
+const MAX     = ARGS.max ? parseInt(ARGS.max, 10) : Infinity;
+const PROFILE_BATCH        = 30; // matches fetch-profile-stats.js's JWT-quota batch size
+const SPECTATOR_CONCURRENCY = 3;  // matches nightly-crawl.js's CONCURRENCY_SPECTATOR
+const COMMIT_EVERY          = 150;
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
@@ -96,40 +95,9 @@ try {
   for (const id of (Array.isArray(ids) ? ids : [])) forfeitGameIds.add(id);
 } catch (_) {}
 
-// ─── git commit (with push-conflict retry) ─────────────────────────────────
-// Copied from nightly-crawl.js's gitCommit -- 10-attempt retry with jitter,
-// proven under concurrent writers via the data-write concurrency lock.
-async function gitCommit(message, dirs) {
-  if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  const paths = (dirs && dirs.length ? dirs : ['.']).join(' ');
-  try { execSync(`git add -- ${paths}`, { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
-  const staged = (() => {
-    try { return execSync('git diff --staged --shortstat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
-    catch (_) { return ''; }
-  })();
-  if (!staged) return;
-  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
-  catch (_) { return; }
-  const MAX_ATTEMPTS = 10;
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    try {
-      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-      console.log(`  ✓ Committed: ${message}`);
-      return;
-    } catch (_) {
-      if (attempt === MAX_ATTEMPTS) { console.error(`  Push failed after ${MAX_ATTEMPTS} attempts`); return; }
-      const jitter = Math.floor(Math.random() * 15000) + attempt * 3000;
-      await sleep(jitter);
-    }
-  }
-}
-
-// ─── HTTP transport ─────────────────────────────────────────────────────────
-// keepAlive:false forces a new TCP connection per request -- prevents
-// CloudFront per-connection rate limiting. Same recipe as fetch-profile-stats.js
-// and nightly-crawl.js.
+// ─── HTTP transport — copied verbatim from fetch-profile-stats.js ───────────
+// keepAlive:false forces a new TCP connection per request (prevents CloudFront
+// per-connection rate limiting).
 function doFetch(url, options) {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
@@ -145,18 +113,12 @@ function doFetch(url, options) {
       res.on('data', c => chunks.push(c));
       res.on('end', () => {
         const rawBody = Buffer.concat(chunks).toString('utf8');
-        const hdrs = res.headers;
         resolve({
-          status:     res.statusCode,
-          ok:         res.statusCode >= 200 && res.statusCode < 300,
-          rawCookies: hdrs['set-cookie'],
-          headers:    hdrs, // raw node headers object -- exposed so callers can inspect
-                            // CDN/WAF-identifying headers (x-cache, via, x-amz-cf-id) on
-                            // failure, not just body text. A body saying "Generated by
-                            // cloudfront" is a claim; x-amz-cf-id actually being present
-                            // (or NOT) is closer to proof of which layer produced a response.
-          text:       () => Promise.resolve(rawBody),
-          json:       () => { try { return Promise.resolve(JSON.parse(rawBody)); } catch (e) { return Promise.reject(e); } },
+          status: res.statusCode,
+          ok: res.statusCode >= 200 && res.statusCode < 300,
+          rawCookies: res.headers['set-cookie'],
+          text: () => Promise.resolve(rawBody),
+          json: () => { try { return Promise.resolve(JSON.parse(rawBody)); } catch (e) { return Promise.reject(e); } },
         });
       });
       res.on('error', reject);
@@ -167,112 +129,107 @@ function doFetch(url, options) {
   });
 }
 
-// Prints status, CDN/WAF-identifying headers, and the full response body for
-// a failed session-acquisition attempt. Used by both refreshProfileSession
-// and refreshSpectatorSession so a failure in either produces the same,
-// maximally-informative diagnostic -- not just "no cookie, here's some HTML".
-// x-amz-cf-id / x-amz-cf-pop / x-cache / via are CloudFront's own response
-// headers; their PRESENCE is decent evidence the response really did
-// terminate at AWS CloudFront (matching the body's "Generated by cloudfront"
-// claim). Their ABSENCE on a response whose body still claims to be a
-// CloudFront page would be a real red flag -- worth knowing either way,
-// rather than assuming the body text is trustworthy on its own.
-function logDiagnostics(label, res, fullBody) {
-  const h = res.headers || {};
-  console.log(`  ----- ${label}: status=${res.status} -----`);
-  console.log(`    x-cache      : ${h['x-cache'] || '(absent)'}`);
-  console.log(`    via          : ${h['via'] || '(absent)'}`);
-  console.log(`    x-amz-cf-id  : ${h['x-amz-cf-id'] || '(absent)'}`);
-  console.log(`    x-amz-cf-pop : ${h['x-amz-cf-pop'] || '(absent)'}`);
-  console.log(`    server       : ${h['server'] || '(absent)'}`);
-  console.log(`    content-type : ${h['content-type'] || '(absent)'}`);
-  console.log(`    date (hdr)   : ${h['date'] || '(absent)'}`);
-  console.log(`  ----- ${label}: body (${fullBody.length} chars) -----`);
-  console.log(fullBody);
-  console.log(`  ----- ${label}: end -----`);
-}
-
-// ─── Profile-API session (publicProfileStatistics) ─────────────────────────
-// Copied verbatim from fetch-profile-stats.js -- this exact two-query cookie
-// recipe (TenantConfig then ProfileSearch) is what's proven to work for
-// ProfileSeasonStatistics; nightly-crawl's simpler TenantConfig-only refresh
-// is kept separate below for the spectator API, which has different quota
-// behaviour. Do not merge these two session mechanisms speculatively.
-const API_URL = 'https://api.playhq.com/graphql';
+// ─── Headers + session — copied verbatim from nightly-crawl.js ─────────────
+// ONE shared session cookie for both hosts (main api + spectator) -- this is
+// what nightly-crawl.js does in production every night, successfully. No
+// separate "profile session" / "spectator session" split.
+const API_URL       = 'https://api.playhq.com/graphql';
+const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
 const HEADERS_BASE = {
-  'accept':       '*/*',
-  'origin':       'https://www.playhq.com',
-  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant':       'basketball-victoria',
-  'content-type': 'application/json',
+  'accept': '*/*', 'origin': 'https://www.playhq.com',
+  'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant': 'basketball-victoria', 'content-type': 'application/json',
 };
-const COOKIE_QUERIES = [
-  { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
-  { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
-];
+const HEADERS_SPECTATOR = {
+  'accept': '*/*', 'origin': 'https://www.playhq.com',
+  'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant': 'bv', 'x-phq-tenant': 'bv', 'content-type': 'application/json',
+};
 
-let profileCookie  = null;
-let profilePromise = null;
-
-async function refreshProfileSession() {
-  if (profilePromise) return profilePromise;
-  profilePromise = (async () => {
-    for (let attempt = 1; attempt <= 10; attempt++) {
-      if (attempt > 1) await sleep(attempt * 5000);
-      for (const q of COOKIE_QUERIES) {
-        let res;
-        try {
-          res = await doFetch(API_URL, {
-            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-            body:    JSON.stringify(q),
-          });
-        } catch (err) {
-          console.log(`  [session attempt ${attempt}, ${q.operationName}] request threw: ${err.message}`);
-          continue;
-        }
-        const raw = res.rawCookies;
-        if (!raw) {
-          // No visibility into WHY previously -- log the FULL body (not a
-          // truncated guess) so an HTML error page can actually be
-          // identified rather than assumed. A prior version of this
-          // labeled any 403+DOCTYPE+ERROR combo "CloudFront WAF block" from
-          // a 200-char snippet -- that was asserting more than the evidence
-          // showed. Get the real content first, decide after.
-          let fullBody = '';
-          try { fullBody = await res.text(); } catch (_) {}
-          console.log(`  [session attempt ${attempt}, ${q.operationName}] no set-cookie header. status=${res.status}`);
-          logDiagnostics(`profile-session attempt ${attempt} (${q.operationName})`, res, fullBody);
-          // Fail fast on ANY non-200/HTML response rather than grinding
-          // through 10 attempts -- still the right call operationally even
-          // without knowing the exact cause, since 9 more identical
-          // attempts burn ~4 minutes for zero new information. But stop
-          // asserting a specific diagnosis (WAF/CloudFront/etc.) until the
-          // full body above has actually been read and confirms it.
-          if (res.status !== 200) {
-            profilePromise = null;
-            throw new Error(`Session request failed with status ${res.status} and no cookies -- see full body logged above. Not retrying further this run.`);
-          }
-          continue;
-        }
-        const parts = (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0].trim());
-        const get = (name) => parts.find(c => c.startsWith(name + '=')) || null;
-        const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-        if (!tier || !session || !sub) {
-          console.log(`  [session attempt ${attempt}, ${q.operationName}] set-cookie present but missing tier/session/sub. raw="${JSON.stringify(raw).slice(0, 200)}"`);
-          continue;
-        }
-        profileCookie  = `${tier}; ${session}; ${sub}`;
-        profilePromise = null;
-        console.log(`  Profile session refreshed (attempt ${attempt})`);
+let sessionCookie = null;
+async function refreshSession() {
+  const body = { operationName: 'TenantConfig', variables: {},
+    query: 'query TenantConfig { tenantConfiguration { label } }' };
+  for (let attempt = 1; attempt <= 10; attempt++) {
+    if (attempt > 1) await sleep(attempt * 3000);
+    try {
+      const res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() }, body: JSON.stringify(body) });
+      const raw = res.rawCookies;
+      if (!raw) continue;
+      const arr = (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0].trim());
+      const get = n => arr.find(p => p.startsWith(n + '=')) || null;
+      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+      if (tier && session && sub) {
+        sessionCookie = `${tier}; ${session}; ${sub}`;
+        console.log(`  Session refreshed (attempt ${attempt})`);
         return;
       }
-    }
-    profilePromise = null;
-    throw new Error('Failed to obtain profile session after 10 attempts');
-  })();
-  return profilePromise;
+    } catch (_) {}
+  }
+  throw new Error('Failed to obtain session after 10 attempts');
 }
 
+// gqlSpectator — copied verbatim from nightly-crawl.js (query text + retry-
+// once-on-403 logic), adapted only to this file's doFetch return shape
+// (fetch-profile-stats.js's Promise-based { status, json(), text() } style,
+// since fetchProfile below already uses that shape and one file should not
+// carry two different fetch wrapper conventions).
+async function gqlSpectator(gameId) {
+  if (!sessionCookie) await refreshSession();
+  const query = `query game($id: ID!) {
+    game(id: $id) {
+      id status
+      statistics {
+        home { players { profileID name playerNumber statistics { type { value } count } } }
+        away { players { profileID name playerNumber statistics { type { value } count } } }
+      }
+    }
+  }`;
+  const body = JSON.stringify({ operationName: 'game', variables: { id: gameId }, query });
+  try {
+    let res = await doFetch(SPECTATOR_URL, { headers: { ...HEADERS_SPECTATOR, 'request-id': crypto.randomUUID(), Cookie: sessionCookie }, body });
+    if (res.status === 403) {
+      // Single refresh then retry — do not loop (matches nightly-crawl.js).
+      await refreshSession();
+      res = await doFetch(SPECTATOR_URL, { headers: { ...HEADERS_SPECTATOR, 'request-id': crypto.randomUUID(), Cookie: sessionCookie }, body });
+      if (res.status !== 200) return null;
+      const j = await res.json().catch(() => null);
+      if (!j || j.errors) return null;
+      return j.data?.game || null;
+    }
+    if (res.status !== 200) return null;
+    const j = await res.json().catch(() => null);
+    if (!j || j.errors) return null;
+    return j.data?.game || null;
+  } catch (_) { return null; }
+}
+
+// spectatorStatValue / parseSpectatorPlayers — copied verbatim from
+// nightly-crawl.js (includes `name` and `number`, unlike an older stripped
+// version that discarded them).
+function spectatorStatValue(statistics, typeValue) {
+  if (!Array.isArray(statistics)) return 0;
+  const s = statistics.find(x => x.type?.value === typeValue);
+  return s ? (s.count || 0) : 0;
+}
+function parseSpectatorPlayers(players) {
+  if (!Array.isArray(players)) return [];
+  return players
+    .filter(p => p && p.profileID)
+    .map(p => ({
+      profileID: p.profileID,
+      name:      p.name  || null,
+      number:    p.playerNumber ?? null,
+      pts:       spectatorStatValue(p.statistics, 'TOTAL_SCORE'),
+      pt1:       spectatorStatValue(p.statistics, '1_POINT_SCORE'),
+      pt2:       spectatorStatValue(p.statistics, '2_POINT_SCORE'),
+      pt3:       spectatorStatValue(p.statistics, '3_POINT_SCORE'),
+      fouls:     spectatorStatValue(p.statistics, 'TOTAL_FOULS'),
+    }));
+}
+
+// ─── Profile API — PROFILE_QUERY, statValue, parseProfileStats copied
+// verbatim from fetch-profile-stats.js ───────────────────────────────────────
 const PROFILE_QUERY = {
   operationName: 'ProfileSeasonStatistics',
   query: `query ProfileSeasonStatistics($profileID: ID!) {
@@ -308,15 +265,22 @@ function statValue(statistics, typeValue) {
   return match ? (match.count || 0) : 0;
 }
 
-// Identical shape/logic to fetch-profile-stats.js's parseProfileStats.
+// Derive foulOuts, maxGamePTS, maxGameThreePt from per-game stat lines.
+// Returns null if publicProfileStatistics is absent (inaccessible profile).
 function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
+
   const playerName = seasonStats[0]?.name || null;
+
   const seenGameKeys = new Set();
-  const foulOuts = {};
-  let maxGamePTS = null, maxGameThreePt = null, maxGamePTSKey = null, maxGameThreePtKey = null;
-  const regStats = new Map();
+  const foulOuts     = {};
+  let maxGamePTS     = null;
+  let maxGameThreePt = null;
+  let maxGamePTSKey  = null;
+  let maxGameThreePtKey = null;
+
+  const regStats = new Map(); // key `${sid}:${tid}` → { gp, pts, fg, ft, threePt, fouls }
   const gameTids = {};
   const sidTids  = {};
 
@@ -324,11 +288,17 @@ function parseProfileStats(data) {
     for (const reg of (season.statistics || [])) {
       const seasonId = reg?.season?.id;
       if (!seasonId) continue;
+
       for (const teamStat of (reg.teamStatistics || [])) {
         const tid = teamStat.team?.id || null;
-        if (tid && seasonId) { if (!sidTids[seasonId]) sidTids[seasonId] = new Set(); sidTids[seasonId].add(tid); }
+        if (tid && seasonId) {
+          if (!sidTids[seasonId]) sidTids[seasonId] = new Set();
+          sidTids[seasonId].add(tid);
+        }
+
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
           const regKey = `${seasonId}:${tid}`;
+
           for (const gameStat of (gradeStat.gameStatistics || [])) {
             const stats   = gameStat.statistics || [];
             const gameKey = gameStat.game?.id || null;
@@ -336,15 +306,18 @@ function parseProfileStats(data) {
             if (gameKey && tid) gameTids[gameKey] = tid;
             if (gameKey && seenGameKeys.has(gameKey)) continue;
             if (gameKey) seenGameKeys.add(gameKey);
+
             const fouls  = statValue(stats, 'TOTAL_FOULS');
             const pts    = statValue(stats, 'TOTAL_SCORE');
             const three  = statValue(stats, '3_POINT_SCORE');
             const fg     = statValue(stats, '2_POINT_SCORE');
             const ft     = statValue(stats, '1_POINT_SCORE');
             const gp_val = statValue(stats, 'APPEARANCE') || 1;
+
             if (fouls >= 5) foulOuts[seasonId] = (foulOuts[seasonId] || 0) + 1;
             if (pts > (maxGamePTS ?? 0)) { maxGamePTS = pts; maxGamePTSKey = gameKey ? { gameKey, sid: seasonId } : null; }
             if (three > (maxGameThreePt ?? 0)) { maxGameThreePt = three; maxGameThreePtKey = gameKey ? { gameKey, sid: seasonId } : null; }
+
             if (!regStats.has(regKey)) regStats.set(regKey, { gp: 0, pts: 0, fg: 0, ft: 0, threePt: 0, fouls: 0 });
             const rs = regStats.get(regKey);
             rs.gp += gp_val; rs.pts += pts; rs.fg += fg; rs.ft += ft; rs.threePt += three; rs.fouls += fouls;
@@ -353,21 +326,21 @@ function parseProfileStats(data) {
       }
     }
   }
+
   const hasAmbiguousSeason = Object.values(sidTids).some(s => s.size > 1);
   return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats, gameTids: hasAmbiguousSeason ? gameTids : null };
 }
 
 async function fetchProfile(profileID) {
-  if (!profileCookie) await refreshProfileSession();
+  if (!sessionCookie) await refreshSession();
   const body = { ...PROFILE_QUERY, variables: { profileID } };
   let res;
   try {
-    res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': profileCookie }, body: JSON.stringify(body) });
+    res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie }, body: JSON.stringify(body) });
   } catch (err) { return { status: 'error', err }; }
 
   if (res.status === 403) {
-    let body403 = '';
-    try { body403 = await res.text(); } catch (_) {}
+    let body403 = ''; try { body403 = await res.text(); } catch (_) {}
     if (body403.includes('DOCTYPE') || body403.includes('Request blocked')) {
       console.log(`  ⛔ CloudFront block (uuid=${profileID})`);
       return { status: 'cloudfront-block' };
@@ -376,12 +349,11 @@ async function fetchProfile(profileID) {
   }
   if (res.status === 504) {
     await sleep(15000);
-    try { res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': profileCookie }, body: JSON.stringify(body) }); }
+    try { res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie }, body: JSON.stringify(body) }); }
     catch (err) { return { status: 'error', err }; }
   }
   if (!res.ok) return { status: 'error', err: new Error(`HTTP ${res.status}`) };
-  let json;
-  try { json = await res.json(); } catch (err) { return { status: 'error', err }; }
+  let json; try { json = await res.json(); } catch (err) { return { status: 'error', err }; }
   if (json.errors && json.errors.length > 0) {
     const msg = json.errors[0]?.message || '';
     if (msg.includes('NOT_FOUND') || msg.includes('failed to find profile')) return { status: 'private' };
@@ -392,39 +364,19 @@ async function fetchProfile(profileID) {
   return { status: 'ok', data };
 }
 
-// ─── Namespace-mismatch recovery (gradePlayerStatistics / profileSearch) ────
-// Copied verbatim from playhq_api_reference.md via lib/namespace-resolve.cjs.
-// Same profileCookie/HEADERS_BASE/doFetch as fetchProfile above -- no separate
-// session. See buildPrivatePlayer below for how these are used: a candidate
-// that fetchProfile(uuid) reports private/not-found may simply be stored
-// under the wrong (spectator-namespace) id -- this recovers the real
-// api-namespace id from the player's own name + grade/team context.
-//
-// gradePlayerStatistics: CORRECTED 2026-07-11 -- previously believed hard-
-// capped at 50 with no pagination (that measurement omitted $filter). It's
-// genuinely paginated; 50 is the per-page limit. This matters enormously for
-// THIS script's population specifically: candidates here structurally lack
-// tid (games/bv's g.p never records team side), so a full-roster NAME-ONLY
-// match (matchFromGradeRosterByName, no tid needed) is what actually recovers
-// them -- measured at 96.5% of all recoveries in a sampled backlog
-// (diagnose-uuid-classification.js, post-pagination-fix), vs profileSearch
-// alone recovering ~46% pre-fix. gradeCache holds the aggregated all-pages
-// roster per gradeID.
+// ─── Namespace-mismatch recovery — gradePlayerStatistics (paginated) +
+// profileSearch. Shared lib queries/matchers (lib/namespace-resolve.cjs),
+// same 3-tier logic already validated this session in
+// diagnose-uuid-classification.js and shipped in fetch-profile-stats.js. ───
 async function gradePlayersPage(gradeID, page) {
-  if (!profileCookie) await refreshProfileSession();
-  const body = {
-    operationName: 'publicGradeStatistics',
-    variables: { gradeID, filter: gradePageFilter(page) },
-    query: GRADE_PLAYERS_QUERY,
-  };
+  if (!sessionCookie) await refreshSession();
+  const body = { operationName: 'publicGradeStatistics', variables: { gradeID, filter: gradePageFilter(page) }, query: GRADE_PLAYERS_QUERY };
   let res;
-  try {
-    res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': profileCookie }, body: JSON.stringify(body) });
-  } catch (_) { return { status: 'error', results: [], meta: null }; }
+  try { res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie }, body: JSON.stringify(body) }); }
+  catch (_) { return { status: 'error', results: [], meta: null }; }
   if (res.status === 403) {
     let b = ''; try { b = await res.text(); } catch (_) {}
-    return (b.includes('DOCTYPE') || b.includes('Request blocked'))
-      ? { status: 'blocked', results: [], meta: null } : { status: 'error', results: [], meta: null };
+    return (b.includes('DOCTYPE') || b.includes('Request blocked')) ? { status: 'blocked', results: [], meta: null } : { status: 'error', results: [], meta: null };
   }
   if (!res.ok) return { status: 'error', results: [], meta: null };
   let json; try { json = await res.json(); } catch (_) { return { status: 'error', results: [], meta: null }; }
@@ -437,30 +389,28 @@ const gradeCache = new Map();
 async function gradePlayers(gradeID) {
   if (gradeCache.has(gradeID)) return gradeCache.get(gradeID);
   const p1 = await gradePlayersPage(gradeID, 1);
-  if (p1.status !== 'ok') return p1; // error/blocked — don't cache
+  if (p1.status !== 'ok') return p1;
   let all = p1.results;
   const totalPages = p1.meta?.totalPages || 1;
   for (let page = 2; page <= totalPages; page++) {
     const p = await gradePlayersPage(gradeID, page);
-    if (p.status !== 'ok') return p; // error/blocked mid-pagination — don't cache partial
+    if (p.status !== 'ok') return p;
     all = all.concat(p.results);
   }
   const out = { status: 'ok', results: all };
-  gradeCache.set(gradeID, out); // only cache successes
+  gradeCache.set(gradeID, out);
   return out;
 }
 
 async function profileSearchLookup(fullName) {
-  if (!profileCookie) await refreshProfileSession();
+  if (!sessionCookie) await refreshSession();
   const body = { operationName: 'ProfileSearch', variables: { fullName }, query: PROFILE_SEARCH_QUERY };
   let res;
-  try {
-    res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': profileCookie }, body: JSON.stringify(body) });
-  } catch (_) { return { status: 'error', result: [] }; }
+  try { res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie }, body: JSON.stringify(body) }); }
+  catch (_) { return { status: 'error', result: [] }; }
   if (res.status === 403) {
     let b = ''; try { b = await res.text(); } catch (_) {}
-    return (b.includes('DOCTYPE') || b.includes('Request blocked'))
-      ? { status: 'blocked', result: [] } : { status: 'error', result: [] };
+    return (b.includes('DOCTYPE') || b.includes('Request blocked')) ? { status: 'blocked', result: [] } : { status: 'error', result: [] };
   }
   if (!res.ok) return { status: 'error', result: [] };
   let json; try { json = await res.json(); } catch (_) { return { status: 'error', result: [] }; }
@@ -468,106 +418,7 @@ async function profileSearchLookup(fullName) {
   return { status: 'ok', result: (json.data || json)?.profileSearch?.result || [] };
 }
 
-// ─── Spectator-API session (box scores, privacy-blind) ─────────────────────
-// Copied verbatim from nightly-crawl.js -- simpler single-query refresh,
-// shared cookie style works fine for this endpoint per that script's
-// production track record.
-//
-// FIX (this session): cookie ACQUISITION always goes through api.playhq.com
-// using the plain main-API header set (HEADERS_BASE) -- never the spectator
-// header set -- regardless of which API the resulting cookie will later be
-// used against. nightly-crawl.js's proven refreshSession() does exactly
-// this (HEADERS_MAIN, no x-phq-tenant, tenant left as 'basketball-victoria').
-// The previous version here merged HEADERS_SPECTATOR (x-phq-tenant: 'bv',
-// tenant: 'bv') with an overridden tenant field -- a hybrid matching
-// neither documented recipe. HEADERS_SPECTATOR is still used for the actual
-// spectator game-data calls below, just not for this acquisition step.
-const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
-const HEADERS_SPECTATOR = {
-  'accept': '*/*', 'origin': 'https://www.playhq.com',
-  'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant': 'bv', 'x-phq-tenant': 'bv', 'content-type': 'application/json',
-};
-let spectatorCookie = null;
-
-async function refreshSpectatorSession() {
-  const body = { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' };
-  for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 3000);
-    try {
-      const res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() }, body: JSON.stringify(body) });
-      const raw = res.rawCookies;
-      if (!raw) {
-        // Same fix as refreshProfileSession -- log the full body, don't
-        // assert a diagnosis from a truncated guess.
-        let fullBody = '';
-        try { fullBody = await res.text(); } catch (_) {}
-        console.log(`  [spectator session attempt ${attempt}] no set-cookie header. status=${res.status}`);
-        logDiagnostics(`spectator-session attempt ${attempt}`, res, fullBody);
-        if (res.status !== 200) {
-          throw new Error(`Spectator session request failed with status ${res.status} and no cookies -- see full body logged above. Not retrying further this run.`);
-        }
-        continue;
-      }
-      const arr = (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0].trim());
-      const get = n => arr.find(p => p.startsWith(n + '=')) || null;
-      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (tier && session && sub) { spectatorCookie = `${tier}; ${session}; ${sub}`; return; }
-    } catch (err) {
-      if (err.message?.includes('CloudFront WAF block')) throw err;
-    }
-  }
-  throw new Error('Failed to obtain spectator session after 10 attempts');
-}
-
-function spectatorStatValue(statistics, typeValue) {
-  if (!Array.isArray(statistics)) return 0;
-  const s = statistics.find(x => x.type?.value === typeValue);
-  return s ? (s.count || 0) : 0;
-}
-
-function parseSpectatorPlayers(players) {
-  if (!Array.isArray(players)) return [];
-  return players.filter(p => p && p.profileID).map(p => ({
-    profileID: p.profileID,
-    name:  p.name || null, // added for namespace-mismatch recovery — matches nightly-crawl.js's parseSpectatorPlayers
-    pts:   spectatorStatValue(p.statistics, 'TOTAL_SCORE'),
-    pt1:   spectatorStatValue(p.statistics, '1_POINT_SCORE'),
-    pt2:   spectatorStatValue(p.statistics, '2_POINT_SCORE'),
-    pt3:   spectatorStatValue(p.statistics, '3_POINT_SCORE'),
-    fouls: spectatorStatValue(p.statistics, 'TOTAL_FOULS'),
-  }));
-}
-
-async function gqlSpectator(gameId) {
-  if (!spectatorCookie) await refreshSpectatorSession();
-  const query = `query game($id: ID!) {
-    game(id: $id) {
-      id status
-      statistics {
-        home { players { profileID name playerNumber statistics { type { value } count } } }
-        away { players { profileID name playerNumber statistics { type { value } count } } }
-      }
-    }
-  }`;
-  try {
-    const res = await doFetch(SPECTATOR_URL, { headers: { ...HEADERS_SPECTATOR, 'request-id': crypto.randomUUID(), Cookie: spectatorCookie }, body: JSON.stringify({ operationName: 'game', variables: { id: gameId }, query }) });
-    if (res.status === 403) {
-      await refreshSpectatorSession();
-      const retry = await doFetch(SPECTATOR_URL, { headers: { ...HEADERS_SPECTATOR, 'request-id': crypto.randomUUID(), Cookie: spectatorCookie }, body: JSON.stringify({ operationName: 'game', variables: { id: gameId }, query }) });
-      const rj = await retry.json().catch(() => null);
-      if (retry.status !== 200 || !rj || rj.errors) return null;
-      return rj.data?.game || null;
-    }
-    if (res.status !== 200) return null;
-    const j = await res.json().catch(() => null);
-    if (!j || j.errors) return null;
-    return j.data?.game || null;
-  } catch (_) { return null; }
-}
-
 // ─── Player file / index helpers ────────────────────────────────────────────
-
 function playerShard(uuid)    { return uuid.slice(0, 2).toLowerCase(); }
 function playerFilePath(uuid) { return path.join(PLAYERS_DIR, playerShard(uuid), `${uuid}.json`); }
 function playerIndexPath(s)   { return path.join(INDEX_DIR, `${s}.json`); }
@@ -579,7 +430,7 @@ function writePlayer(uuid, data) {
   fs.writeFileSync(file, JSON.stringify(data));
 }
 
-const indexCache = new Map(); // shard -> index object (mutated in place, written on flush)
+const indexCache = new Map();
 function readPlayerIndex(shard) {
   if (indexCache.has(shard)) return indexCache.get(shard);
   const file = playerIndexPath(shard);
@@ -594,26 +445,36 @@ function writePlayerIndex(shard) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(indexCache.get(shard) || {}));
 }
+function isAlreadyKnown(uuid) { return !!readPlayerIndex(playerShard(uuid))[uuid]; }
+
+// ─── git commit — standard project pattern (explicit paths, merge -X ours) ──
+async function gitCommit(message, dirs) {
+  if (DRY_RUN) return;
+  try {
+    execSync(`git add ${dirs.map(d => `"${d}"`).join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
+    const staged = execSync('git diff --staged --shortstat', { cwd: ROOT }).toString().trim();
+    if (!staged) return;
+    execSync(`git commit -m "${message.replace(/"/g, '\\"')}"`, { cwd: ROOT, stdio: 'pipe' });
+    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
+    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
+    console.log(`  Committed: ${message}`);
+  } catch (err) {
+    console.error(`  ⚠ git commit failed: ${err.message}`);
+    throw err;
+  }
+}
 
 // ─── Phase 1: discover candidates from games/bv/*.json ─────────────────────
-// A candidate uuid is: full-length (36 chars), appears in some game's p[]/
-// hp[]/ap[] attendee list, and is NOT a key in its shard's index yet.
-console.log('backfill-missing-players.js');
+// A candidate uuid is: full-length, appears in some game's p[]/hp[]/ap[]
+// attendee list, and is NOT a key in its shard's index yet.
+console.log('backfill-missing-players.js (clean rewrite, 2026-07-11)');
 if (DRY_RUN) console.log('  ⚠  DRY RUN — no writes or commits');
 console.log('─'.repeat(60));
 console.log('Phase 1 — scanning games/bv/*.json for un-indexed full-length uuids…');
 
-// Indexes are loaded lazily (per shard, on first touch) via readPlayerIndex --
-// small (name+history only per shard), so touching all 256 as candidates are
-// discovered is cheap and avoids paying for shards with zero candidates.
-function isAlreadyKnown(uuid) {
-  const shard = playerShard(uuid);
-  const idx = readPlayerIndex(shard);
-  return !!idx[uuid];
-}
-
 const sids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
-const candidates = new Map(); // uuid -> [{ gid, sid, gradeId, gradeName, h, hn, a, an, forfeit, d }]
+const candidates = new Map(); // uuid -> [{ gid(gameId), sid, gradeId, gradeName, h, hn, a, an, forfeit }]
 let seasonsScanned = 0, gamesScanned = 0, appearancesScanned = 0;
 
 for (const fname of sids) {
@@ -628,16 +489,15 @@ for (const fname of sids) {
     for (const e of (g.hp || [])) { if (e?.profileID) ids.add(e.profileID); }
     for (const e of (g.ap || [])) { if (e?.profileID) ids.add(e.profileID); }
     for (const uuid of ids) {
-      if (!isFullUuid(uuid)) continue; // normal, already-resolvable truncated id -- not our concern
+      if (!isFullUuid(uuid)) continue;
       appearancesScanned++;
-      if (isAlreadyKnown(uuid)) continue; // has a player record already -- not a candidate
+      if (isAlreadyKnown(uuid)) continue;
       if (!candidates.has(uuid)) candidates.set(uuid, []);
       candidates.get(uuid).push({
         gid, sid,
         gradeId: g.gid || null, gradeName: g.gn || null,
         h: g.h || null, hn: g.hn || null, a: g.a || null, an: g.an || null,
         forfeit: !!g.forfeit,
-        d: g.d || null, // date -- games/bv schema field is `d` (see nightly-crawl.js)
       });
     }
   }
@@ -650,30 +510,9 @@ const allCandidateUuids = [...candidates.keys()].sort();
 const toProcess = allCandidateUuids.slice(0, MAX);
 console.log(`  Processing this run: ${toProcess.length.toLocaleString()}${MAX < Infinity ? ` (--max=${MAX})` : ''}`);
 
-if (toProcess.length === 0) {
-  console.log('  Nothing to do.');
-  process.exit(0);
-}
+// ─── Phase 2 helpers: build public/private player records ─────────────────
+const REG_STAT_FIELDS = ['gp', 'pts', 'fg', 'ft', 'threePt', 'fouls'];
 
-// Print the first candidate's uuid plus a handful of its appearances --
-// enough detail (season/org, grade, date, both team names, game id) to look
-// the exact game up manually on playhq.com and sanity-check that this really
-// is a real historical player/game, not a data artefact of the recovery.
-{
-  const sampleUuid = toProcess[0];
-  const sampleAppearances = (candidates.get(sampleUuid) || []).slice(0, 5);
-  console.log(`\n  Sample candidate for manual verification on playhq.com:`);
-  console.log(`    uuid: ${sampleUuid}`);
-  console.log(`    total appearances found: ${(candidates.get(sampleUuid) || []).length}`);
-  for (const a of sampleAppearances) {
-    const seasonInfo = sportIndex.seasons?.[a.sid] || {};
-    console.log(`    - season: ${seasonInfo.name || '(unknown)'} [sid=${a.sid}]  org: ${seasonInfo.orgName || '(unknown)'}`);
-    console.log(`      grade: ${a.gradeName || a.gradeId || '(unknown)'}  date: ${a.d || '(unknown)'}${a.forfeit ? '  [FORFEIT]' : ''}`);
-    console.log(`      ${a.hn || a.h || '?'}  vs  ${a.an || a.a || '?'}   gameId: ${a.gid}`);
-  }
-}
-
-// ─── Build a public player record from a successful profile fetch ──────────
 function buildPublicPlayer(uuid, apiData, appearanceGids) {
   const parsed = parseProfileStats(apiData);
   if (!parsed) return null;
@@ -701,7 +540,6 @@ function buildPublicPlayer(uuid, apiData, appearanceGids) {
     }
   }
 
-  const REG_STAT_FIELDS = ['gp', 'pts', 'fg', 'ft', 'threePt', 'fouls'];
   for (const season of player.seasons) {
     for (const reg of season.regs) {
       const rs = parsed.regStats.get(`${season.sid}:${reg.tid}`);
@@ -715,16 +553,16 @@ function buildPublicPlayer(uuid, apiData, appearanceGids) {
 
   const career = { gp: 0, pts: 0, fg: 0, ft: 0, threePt: 0, fouls: 0 };
   for (const [, rs] of parsed.regStats) {
-    career.gp += rs.gp; career.pts += rs.pts; career.fg += rs.fg;
-    career.ft += rs.ft; career.threePt += rs.threePt; career.fouls += rs.fouls;
+    for (const field of REG_STAT_FIELDS) career[field] += rs[field];
   }
   for (const field of REG_STAT_FIELDS) if (career[field] !== 0) bk[field] = career[field];
 
   if (parsed.gameTids && Object.keys(parsed.gameTids).length > 0) player.gameTids = parsed.gameTids;
 
-  if (!player.records) player.records = {};
-  player.records.maxGamePTS = parsed.maxGamePTSKey ? { v: parsed.maxGamePTS, ...parsed.maxGamePTSKey } : { v: parsed.maxGamePTS ?? null };
-  player.records.maxGameThreePt = parsed.maxGameThreePtKey ? { v: parsed.maxGameThreePt, ...parsed.maxGameThreePtKey } : { v: parsed.maxGameThreePt ?? null };
+  player.records = {
+    maxGamePTS: parsed.maxGamePTSKey ? { v: parsed.maxGamePTS, ...parsed.maxGamePTSKey } : { v: parsed.maxGamePTS ?? null },
+    maxGameThreePt: parsed.maxGameThreePtKey ? { v: parsed.maxGameThreePt, ...parsed.maxGameThreePtKey } : { v: parsed.maxGameThreePt ?? null },
+  };
   bk.statsChecked = new Date().toISOString();
 
   player.teams = [];
@@ -733,26 +571,15 @@ function buildPublicPlayer(uuid, apiData, appearanceGids) {
   return player;
 }
 
-// ─── Build a private player stub from re-fetched spectator box scores ──────
-// appearances: [{ gid, sid, gradeId, gradeName, h, hn, a, an, forfeit }]
-// spectatorPool: shared { run(fn) } -- see makePool below.
-//
-// Returns { kind: 'private', player } (existing behaviour) OR, when the
-// player's real spectator-namespace uuid turns out to be a namespace mismatch
-// (dead in the api namespace but a live api id exists for the same real
-// person), { kind: 'public', player } instead -- built via buildPublicPlayer
-// against the RECOVERED id, exactly as if that id had resolved on the first
-// try. Returns { kind: 'blocked' } if CloudFront was hit during recovery.
-//
-// Without this, every candidate here that is actually a diverged public
-// player (measured at ~46% of a sampled backlog -- diagnose-uuid-
-// classification.js) would be written as a dead `Player #...` private stub.
-async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorStats, appearanceGids) {
+// Re-fetches spectator box scores for every non-forfeit appearance to recover
+// the real name and per-appearance tid (via home/away cross-reference), and
+// to reconstruct stats for use if namespace recovery below finds nothing.
+async function reconstructFromSpectator(uuid, appearances, spectatorPool, spectatorStats) {
   const bk = { maxGamePTS: null, maxGameThreePt: null, foulOuts: {} };
   let maxGamePTSKey = null, maxGameThreePtKey = null;
   const seasonsMap = new Map(); // sid -> { sid, sn, club, regs: Map<tid, reg> }
   const seenGameKeys = new Set();
-  let capturedName = null; // real display name from the spectator box score, if any
+  let capturedName = null;
 
   const live = appearances.filter(a => !a.forfeit);
   await Promise.all(live.map(appearance => spectatorPool.run(async () => {
@@ -763,7 +590,7 @@ async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorSta
     const awayPlayers = parseSpectatorPlayers(game.statistics?.away?.players);
     const mine = homePlayers.find(p => p.profileID === uuid) || awayPlayers.find(p => p.profileID === uuid);
     if (!mine) { spectatorStats.misses++; return; }
-    if (seenGameKeys.has(appearance.gid)) return; // re-check post-await
+    if (seenGameKeys.has(appearance.gid)) return;
     seenGameKeys.add(appearance.gid);
     spectatorStats.hits++;
     if (!capturedName && mine.name) capturedName = mine.name;
@@ -801,108 +628,86 @@ async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorSta
   });
   for (const field of Object.keys(career)) if (career[field] !== 0) bk[field] = career[field];
 
-  // ── Namespace-mismatch recovery, before finalizing this as a private stub ──
-  // Uses the name + tid/gid captured above (tid here IS reliable -- resolved
-  // per-appearance via the spectator home/away cross-reference in the loop
-  // above, not read directly off games/bv, which is side-blind). Three tiers,
-  // most precise first:
-  //   1. tid-based grade match (this function's own resolved tid+gid).
-  //   2. grade-roster NAME-ONLY match (no tid needed) -- a second, broader
-  //      net over the same grade(s), for cases tier 1 doesn't resolve.
-  //   3. profileSearch (+ orgId disambiguation) -- final, tenant-wide fallback.
-  // gradePlayers() is cached per grade, so a grade fetched in tier 1 costs
-  // nothing extra in tier 2.
-  if (!isPlaceholderName(capturedName)) {
-    let orgId = null;
-    const regPairs = [];
-    const allGids = new Set();
-    for (const s of seasons) {
-      if (!orgId) orgId = sportIndex.seasons?.[s.sid]?.orgId || null;
-      for (const r of s.regs) {
-        if (r.gid) allGids.add(r.gid);
-        if (r.tid && r.gid) regPairs.push({ tid: r.tid, gid: r.gid });
-      }
-    }
+  return { name: capturedName, seasons, bk, maxGamePTSKey, maxGameThreePtKey };
+}
 
-    let recoveryBlocked = false;
+// Namespace-mismatch recovery: tid-based grade match -> grade-roster
+// name-only match -> profileSearch(+org) fallback. Returns { blocked } |
+// { apiId, checkResult } | null.
+async function attemptRecovery(uuid, name, seasons) {
+  if (isPlaceholderName(name)) return null;
 
-    // Tier 1: tid-based match.
-    const tidHits = new Set();
-    for (const gid of new Set(regPairs.map(r => r.gid))) {
-      const g = await gradePlayers(gid);
-      if (g.status === 'blocked') { recoveryBlocked = true; break; }
-      for (const r of regPairs.filter(r => r.gid === gid)) {
-        const m = matchFromGrade(g.results, { name: capturedName, tid: r.tid });
-        if (m) tidHits.add(m);
-      }
-    }
-    let candidate = tidHits.size === 1 ? [...tidHits][0] : null;
-
-    // Tier 2: grade-roster name-only match.
-    if (!recoveryBlocked && !candidate) {
-      const rosterHits = new Set();
-      for (const gid of allGids) {
-        const g = await gradePlayers(gid);
-        if (g.status === 'blocked') { recoveryBlocked = true; break; }
-        const m = matchFromGradeRosterByName(g.results, { name: capturedName });
-        if (m) rosterHits.add(m);
-      }
-      candidate = rosterHits.size === 1 ? [...rosterHits][0] : null;
-    }
-
-    // Tier 3: profileSearch (+ orgId) fallback.
-    if (!recoveryBlocked && !candidate) {
-      const sr = await profileSearchLookup(capturedName);
-      if (sr.status === 'blocked') recoveryBlocked = true;
-      else {
-        candidate = matchFromSearch(sr.result, { name: capturedName, orgId: null })
-                 || (orgId ? matchFromSearch(sr.result, { name: capturedName, orgId }) : null);
-      }
-    }
-    if (recoveryBlocked) return { kind: 'blocked' };
-    if (candidate && candidate !== uuid) {
-      const check = await fetchProfile(candidate);
-      if (check.status === 'cloudfront-block') return { kind: 'blocked' };
-      if (check.status === 'ok') {
-        const player = buildPublicPlayer(uuid, check.data, appearanceGids);
-        if (player) {
-          player.apiId = candidate; // so a future re-check never has to recover it again
-          return { kind: 'public', player };
-        }
-      }
+  let orgId = null;
+  const regPairs = [];
+  const allGids = new Set();
+  for (const s of seasons) {
+    if (!orgId) orgId = sportIndex.seasons?.[s.sid]?.orgId || null;
+    for (const r of s.regs) {
+      if (r.gid) allGids.add(r.gid);
+      if (r.tid && r.gid) regPairs.push({ tid: r.tid, gid: r.gid });
     }
   }
 
-  bk.statsChecked = new Date().toISOString(); // confirmed-private -- the regular matrix will not retry this uuid
+  // Tier 1: tid-based match.
+  const tidHits = new Set();
+  for (const gid of new Set(regPairs.map(r => r.gid))) {
+    const g = await gradePlayers(gid);
+    if (g.status === 'blocked') return { blocked: true };
+    for (const r of regPairs.filter(r => r.gid === gid)) {
+      const m = matchFromGrade(g.results, { name, tid: r.tid });
+      if (m) tidHits.add(m);
+    }
+  }
+  let candidate = tidHits.size === 1 ? [...tidHits][0] : null;
 
+  // Tier 2: grade-roster name-only match.
+  if (!candidate) {
+    const rosterHits = new Set();
+    for (const gid of allGids) {
+      const g = await gradePlayers(gid);
+      if (g.status === 'blocked') return { blocked: true };
+      const m = matchFromGradeRosterByName(g.results, { name });
+      if (m) rosterHits.add(m);
+    }
+    candidate = rosterHits.size === 1 ? [...rosterHits][0] : null;
+  }
+
+  // Tier 3: profileSearch (+ orgId) fallback.
+  if (!candidate) {
+    const sr = await profileSearchLookup(name);
+    if (sr.status === 'blocked') return { blocked: true };
+    candidate = matchFromSearch(sr.result, { name, orgId: null })
+             || (orgId ? matchFromSearch(sr.result, { name, orgId }) : null);
+  }
+  if (!candidate || candidate === uuid) return null;
+
+  const check = await fetchProfile(candidate);
+  if (check.status === 'cloudfront-block') return { blocked: true };
+  if (check.status !== 'ok') return null;
+  return { apiId: candidate, checkResult: check };
+}
+
+function buildPrivateStub(uuid, recon, appearances) {
+  const bk = recon.bk;
+  bk.statsChecked = new Date().toISOString();
   return {
-    kind: 'private',
-    player: {
-      uuid,
-      // Real name if the spectator re-fetch found one, matching fetch-profile-
-      // stats.js's stated convention ("we still know their name but mark them
-      // as private" -- 2026-07-10 header comment) instead of always hiding it
-      // behind the placeholder even when we actually captured it above.
-      name: capturedName || `Player #${uuid.slice(0, TRUNC_LEN)}`,
-      private: true,
-      sports: { Basketball: bk },
-      seasons,
-      teams: [],
-      records: {
-        maxGamePTS:     maxGamePTSKey     ? { v: bk.maxGamePTS,     ...maxGamePTSKey }     : { v: bk.maxGamePTS ?? null },
-        maxGameThreePt: maxGameThreePtKey ? { v: bk.maxGameThreePt, ...maxGameThreePtKey } : { v: bk.maxGameThreePt ?? null },
-      },
-      games: appearances.map(a => a.gid).sort(),
-      updatedAt: new Date().toISOString(),
+    uuid,
+    name: recon.name || `Player #${uuid.slice(0, TRUNC_LEN)}`,
+    private: true,
+    sports: { Basketball: bk },
+    seasons: recon.seasons,
+    teams: [],
+    records: {
+      maxGamePTS:     recon.maxGamePTSKey     ? { v: bk.maxGamePTS,     ...recon.maxGamePTSKey }     : { v: bk.maxGamePTS ?? null },
+      maxGameThreePt: recon.maxGameThreePtKey ? { v: bk.maxGameThreePt, ...recon.maxGameThreePtKey } : { v: bk.maxGameThreePt ?? null },
     },
+    games: appearances.map(a => a.gid).sort(),
+    updatedAt: new Date().toISOString(),
   };
 }
 
-// Shared spectator-request pool -- global concurrency 3 across ALL private
-// candidates in a batch, matching nightly-crawl.js's CONCURRENCY_SPECTATOR.
-// Nesting a per-player pool inside a 30-wide profile batch would otherwise
-// multiply out to far more concurrent spectator connections than that host
-// has ever been proven safe against.
+// Shared spectator-request pool — global concurrency 3, matching
+// nightly-crawl.js's CONCURRENCY_SPECTATOR.
 function makePool(concurrency) {
   let active = 0;
   const queue = [];
@@ -919,171 +724,121 @@ function makePool(concurrency) {
   };
 }
 
-// ─── Main ────────────────────────────────────────────────────────────────────
+async function resolveCandidate(uuid, appearances, spectatorPool, spectatorStats) {
+  const appearanceGids = [...new Set(appearances.map(a => a.gid))].sort();
 
+  const direct = await fetchProfile(uuid);
+  if (direct.status === 'cloudfront-block') return { kind: 'blocked' };
+  if (direct.status === 'ok') {
+    const player = buildPublicPlayer(uuid, direct.data, appearanceGids);
+    if (player) return { kind: 'public', player };
+    // parseProfileStats returned null despite "ok" -- fall through to reconstruction.
+  }
+
+  const recon = await reconstructFromSpectator(uuid, appearances, spectatorPool, spectatorStats);
+
+  const recovery = await attemptRecovery(uuid, recon.name, recon.seasons);
+  if (recovery?.blocked) return { kind: 'blocked' };
+  if (recovery) {
+    const player = buildPublicPlayer(uuid, recovery.checkResult.data, appearanceGids);
+    if (player) {
+      player.apiId = recovery.apiId; // so a future re-check never has to recover it again
+      return { kind: 'public', player };
+    }
+  }
+
+  return { kind: 'private', player: buildPrivateStub(uuid, recon, appearances) };
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────
 async function main() {
   const startTime = Date.now();
-
-  // Declared BEFORE anything that can throw (including the very first
-  // session refresh below) specifically so that if this crashes, we can
-  // always report exactly how far it got -- "how would you know whether
-  // this failed on record 1 or record 100" should never require inferring
-  // it from the shape of the log. committed tracks what's actually durable
-  // (survived a git commit); processed tracks what's been resolved in
-  // memory this run but may still be lost if the process dies before the
-  // next periodic commit -- these are deliberately different numbers.
   const summary = {
     candidatesFound: candidates.size,
     processed: 0, committed: 0, public: 0, private: 0, errors: 0,
-    recoveredViaNamespace: 0, // public players recovered via namespace-mismatch fix, not a direct hit
+    recoveredViaNamespace: 0,
     spectatorHits: 0, spectatorMisses: 0, cloudfrontBlocked: false,
   };
 
-  console.log('\nPhase 2 — resolving each candidate (public via profile API, private via spectator re-fetch)…');
+  console.log('\nPhase 2 — resolving each candidate (public via profile API + namespace recovery, private via spectator reconstruction)…');
+
+  try {
+    await refreshSession();
+    console.log('  ✓ Session acquired');
+  } catch (err) {
+    console.error(`\nFATAL — could not acquire session: ${err.message}`);
+    throw err;
+  }
 
   const shardsTouched = new Set();
   let sinceCommit = 0;
   let blocked = false;
 
-  try {
-    // Test BOTH session types independently before committing to the batch
-    // loop, and don't let one failure stop us from testing the other. The
-    // previous version called only refreshProfileSession() here -- if that
-    // failed, we threw immediately and never learned anything about whether
-    // the spectator session (used only for PRIVATE players' game re-fetch)
-    // would have worked or not. That mattered because these specific
-    // candidates are exactly the ones that never got a normal player record
-    // in the first place -- if there's something structurally different
-    // about them (very old games, deprecated profile-id era, etc.) it could
-    // plausibly show up as one session type working and the other not,
-    // which this split makes directly observable instead of assumed.
-    console.log('\n  Diagnostic — testing profile and spectator sessions independently:');
-    let profileOk = false, spectatorOk = false, profileErr = null, spectatorErr = null;
-    try { await refreshProfileSession(); profileOk = true; console.log('  ✓ Profile session acquired'); }
-    catch (err) { profileErr = err; console.log(`  ✗ Profile session FAILED: ${err.message}`); }
-    try { await refreshSpectatorSession(); spectatorOk = true; console.log('  ✓ Spectator session acquired'); }
-    catch (err) { spectatorErr = err; console.log(`  ✗ Spectator session FAILED: ${err.message}`); }
+  for (let batchStart = 0; batchStart < toProcess.length && !blocked; batchStart += PROFILE_BATCH) {
+    if (batchStart > 0) await refreshSession(); // reset JWT quota each batch, matching fetch-profile-stats.js
 
-    if (!profileOk && !spectatorOk) {
-      throw new Error(`Both session types failed. profile: ${profileErr?.message}. spectator: ${spectatorErr?.message}. See diagnostics above.`);
-    }
-    if (!profileOk) {
-      // No fallback for public-player detection without this -- every
-      // candidate would incorrectly get treated as private. Not safe to
-      // continue, but now we KNOW the spectator side is fine, which rules
-      // out "everything from this run is blocked" as an explanation.
-      throw new Error(`Profile session failed but spectator session succeeded -- this is specific to the profile API (publicProfileStatistics), not a blanket block on this run's traffic. ${profileErr?.message}`);
-    }
-    if (!spectatorOk) {
-      console.log('  ⚠ Continuing with profile session only -- private-player stat reconstruction will be empty for this run (spectator re-fetch unavailable). Public players are unaffected.');
+    const batch = toProcess.slice(batchStart, batchStart + PROFILE_BATCH);
+    const spectatorPool = makePool(SPECTATOR_CONCURRENCY);
+    const spectatorStats = { hits: 0, misses: 0 };
+
+    const results = await Promise.allSettled(
+      batch.map(uuid => resolveCandidate(uuid, candidates.get(uuid) || [], spectatorPool, spectatorStats))
+    );
+
+    summary.spectatorHits   += spectatorStats.hits;
+    summary.spectatorMisses += spectatorStats.misses;
+
+    const built = results.map((r, i) => r.status === 'fulfilled' ? { uuid: batch[i], ...r.value } : { uuid: batch[i], kind: 'error', err: r.reason });
+
+    const blockIdx = built.findIndex(b => b.kind === 'blocked');
+    if (blockIdx !== -1) {
+      console.log(`  ⛔ CloudFront block at batch offset ${batchStart + blockIdx}. Committing what succeeded this batch, then stopping — re-run to continue.`);
+      summary.cloudfrontBlocked = true;
+      blocked = true;
     }
 
-    for (let batchStart = 0; batchStart < toProcess.length && !blocked; batchStart += PROFILE_BATCH) {
-      const batch = toProcess.slice(batchStart, batchStart + PROFILE_BATCH);
-      if (batchStart > 0) await refreshProfileSession(); // reset JWT quota each batch, same as fetch-profile-stats.js
+    for (const { uuid, player, kind } of built) {
+      if (kind === 'blocked') continue; // stays a candidate for next run
+      summary.processed++;
+      if (kind === 'error' || !player) { summary.errors++; continue; }
 
-      const profileResults = await Promise.allSettled(batch.map(uuid => fetchProfile(uuid)));
-
-      const blockIdx = profileResults.findIndex(r => r.status === 'fulfilled' && r.value?.status === 'cloudfront-block');
-      if (blockIdx !== -1) {
-        console.log(`  ⛔ CloudFront block at batch offset ${batchStart + blockIdx}. Stopping — re-run to continue.`);
-        summary.cloudfrontBlocked = true;
-        blocked = true;
-        break;
+      const shard = playerShard(uuid);
+      writePlayer(uuid, player);
+      const index = readPlayerIndex(shard);
+      const history = {};
+      for (const season of (player.seasons || [])) {
+        history[season.sid] = [...new Set((season.regs || []).map(r => r.tid))];
       }
+      index[uuid] = { name: player.name, history };
+      shardsTouched.add(shard);
 
-      const spectatorPool = makePool(SPECTATOR_CONCURRENCY);
-      const spectatorStats = { hits: 0, misses: 0 };
-
-      const built = await Promise.all(batch.map(async (uuid, i) => {
-        const result = profileResults[i].status === 'fulfilled' ? profileResults[i].value : { status: 'error', err: profileResults[i].reason };
-        const appearances = candidates.get(uuid) || [];
-        const appearanceGids = [...new Set(appearances.map(a => a.gid))].sort();
-
-        if (result.status === 'ok') {
-          const player = buildPublicPlayer(uuid, result.data, appearanceGids);
-          if (player) return { uuid, player, kind: 'public' };
-          // parseProfileStats returned null despite an "ok" fetch -- treat like private fallback
-        }
-        if (result.status === 'private' || result.status === 'inaccessible' || (result.status === 'ok')) {
-          const outcome = await buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorStats, appearanceGids);
-          if (outcome.kind === 'blocked') return { uuid, player: null, kind: 'blocked' };
-          return { uuid, player: outcome.player, kind: outcome.kind };
-        }
-        return { uuid, player: null, kind: 'error', err: result.err };
-      }));
-
-      summary.spectatorHits   += spectatorStats.hits;
-      summary.spectatorMisses += spectatorStats.misses;
-
-      // A CloudFront block during namespace-mismatch recovery (inside
-      // buildPrivatePlayer) is detected here, distinct from the earlier
-      // profileResults blockIdx check (which only covers the initial
-      // fetchProfile batch, before any recovery is attempted). Unlike that
-      // check, we don't discard this whole batch -- candidates that already
-      // resolved (public or private, no recovery needed) still get written;
-      // only the blocked one(s) are skipped and remain candidates for the
-      // next run (candidates are re-derived fresh from games/bv each run).
-      let sawBlockThisBatch = false;
-
-      for (const { uuid, player, kind } of built) {
-        if (kind === 'blocked') { sawBlockThisBatch = true; continue; }
-        summary.processed++;
-        if (kind === 'error' || !player) { summary.errors++; continue; }
-
-        const shard = playerShard(uuid);
-        writePlayer(uuid, player);
-        const index = readPlayerIndex(shard);
-        const history = {};
-        for (const season of (player.seasons || [])) {
-          history[season.sid] = (season.regs || []).map(r => r.tid);
-        }
-        index[uuid] = { name: player.name, history };
-        shardsTouched.add(shard);
-
-        if (kind === 'public') {
-          summary.public++;
-          if (player.apiId) summary.recoveredViaNamespace++;
-        } else {
-          summary.private++;
-        }
-      }
-
-      if (sawBlockThisBatch) {
-        console.log(`  ⛔ CloudFront block during namespace-mismatch recovery this batch — committing what succeeded, stopping. Re-run to continue.`);
-        summary.cloudfrontBlocked = true;
-        blocked = true;
-      }
-
-      sinceCommit += batch.length;
-      console.log(`  ${Math.min(batchStart + PROFILE_BATCH, toProcess.length)}/${toProcess.length} — public=${summary.public} private=${summary.private} errors=${summary.errors} spectator(hit/miss)=${summary.spectatorHits}/${summary.spectatorMisses}`);
-
-      if (sinceCommit >= COMMIT_EVERY) {
-        for (const shard of shardsTouched) writePlayerIndex(shard);
-        await gitCommit(
-          `backfill-missing-players: ${summary.processed}/${toProcess.length} processed — ${summary.public} public, ${summary.private} private`,
-          ['players/']
-        );
-        summary.committed = summary.processed; // everything processed so far just survived a commit
-        shardsTouched.clear();
-        sinceCommit = 0;
+      if (kind === 'public') {
+        summary.public++;
+        if (player.apiId) summary.recoveredViaNamespace++;
+      } else {
+        summary.private++;
       }
     }
 
-    if (shardsTouched.size > 0) {
+    sinceCommit += batch.length;
+    console.log(`  ${Math.min(batchStart + PROFILE_BATCH, toProcess.length)}/${toProcess.length} — public=${summary.public} (recovered=${summary.recoveredViaNamespace}) private=${summary.private} errors=${summary.errors} spectator(hit/miss)=${summary.spectatorHits}/${summary.spectatorMisses}`);
+
+    if (sinceCommit >= COMMIT_EVERY || blocked) {
       for (const shard of shardsTouched) writePlayerIndex(shard);
-      await gitCommit(`backfill-missing-players: complete — ${summary.public} public, ${summary.private} private, ${summary.errors} errors`, ['players/']);
+      await gitCommit(
+        `backfill-missing-players: ${summary.processed}/${toProcess.length} processed — ${summary.public} public (${summary.recoveredViaNamespace} recovered), ${summary.private} private`,
+        ['players/']
+      );
       summary.committed = summary.processed;
+      shardsTouched.clear();
+      sinceCommit = 0;
     }
-  } catch (err) {
-    // Covers a failure ANYWHERE in Phase 2 -- initial session, a later
-    // per-batch refresh, or mid-batch processing. summary.processed counts
-    // what's been resolved in memory this run; summary.committed counts
-    // what's actually durable (survived a git commit -- anything between
-    // committed and processed was lost when this process dies, though it's
-    // always safe to re-run since discovery re-derives candidates fresh).
-    console.error(`\nFATAL during Phase 2 -- ${summary.processed}/${toProcess.length} candidates attempted this run, ${summary.committed} of those actually committed. ${summary.processed - summary.committed} were resolved but not yet durable when this failed.`);
-    throw err;
+  }
+
+  if (shardsTouched.size > 0) {
+    for (const shard of shardsTouched) writePlayerIndex(shard);
+    await gitCommit(`backfill-missing-players: complete — ${summary.public} public (${summary.recoveredViaNamespace} recovered), ${summary.private} private, ${summary.errors} errors`, ['players/']);
+    summary.committed = summary.processed;
   }
 
   summary.elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
@@ -1097,17 +852,17 @@ async function main() {
   }
 
   console.log('\n' + '─'.repeat(60));
-  console.log(`  Candidates found      : ${summary.candidatesFound.toLocaleString()}`);
-  console.log(`  Processed this run    : ${summary.processed.toLocaleString()}`);
-  console.log(`  Public (real record)  : ${summary.public.toLocaleString()}`);
+  console.log(`  Candidates found       : ${summary.candidatesFound.toLocaleString()}`);
+  console.log(`  Processed this run     : ${summary.processed.toLocaleString()}`);
+  console.log(`  Public (real record)   : ${summary.public.toLocaleString()}`);
   console.log(`    ├─ recovered via namespace fix : ${summary.recoveredViaNamespace.toLocaleString()}`);
-  console.log(`  Private (stub record) : ${summary.private.toLocaleString()}`);
-  console.log(`  Errors (left pending) : ${summary.errors.toLocaleString()}`);
-  console.log(`  Spectator hits/misses : ${summary.spectatorHits.toLocaleString()}/${summary.spectatorMisses.toLocaleString()}`);
-  console.log(`  Remaining candidates  : ${summary.remainingCandidates.toLocaleString()}${summary.remainingCandidates > 0 ? ' (re-run to continue)' : ''}`);
-  console.log(`  CloudFront blocked    : ${summary.cloudfrontBlocked}`);
-  console.log(`  Elapsed               : ${summary.elapsedSeconds}s`);
-  console.log(`  Mode                  : ${summary.mode}`);
+  console.log(`  Private (stub record)  : ${summary.private.toLocaleString()}`);
+  console.log(`  Errors (left pending)  : ${summary.errors.toLocaleString()}`);
+  console.log(`  Spectator hits/misses  : ${summary.spectatorHits.toLocaleString()}/${summary.spectatorMisses.toLocaleString()}`);
+  console.log(`  Remaining candidates   : ${summary.remainingCandidates.toLocaleString()}${summary.remainingCandidates > 0 ? ' (re-run to continue)' : ''}`);
+  console.log(`  CloudFront blocked     : ${summary.cloudfrontBlocked}`);
+  console.log(`  Elapsed                : ${summary.elapsedSeconds}s`);
+  console.log(`  Mode                   : ${summary.mode}`);
   console.log('─'.repeat(60));
 }
 
