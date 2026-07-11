@@ -22,81 +22,189 @@
 // diverged this way gets a false "private"/"not found" result -- unrelated
 // to any actual privacy setting or CloudFront block.
 //
-// FIX (this version): the first two runs of this script called
-// api.playhq.com directly from the GitHub Actions runner and hit a genuine
-// CloudFront WAF block (confirmed via full CDN headers -- x-amz-cf-id,
-// x-amz-cf-pop, via: cloudfront.net -- not just body text) before a single
-// test query could run. Rather than keep fighting GitHub Actions' IP
-// reputation, this version routes through the project's existing Cloudflare
-// Worker (solitary-snowflake-cb3e.insanoflash.workers.dev), which already
-// gets its PlayHQ session from Cloudflare's own network and is already
-// tenant-aware. All cookie/session logic is gone from this script entirely
-// -- it just calls the Worker's GET /profile/{profileID}?tenant=bv route
-// (added alongside this script) and prints the raw upstream status/body for
-// each of the 6 known ids. No CloudFront-vs-GitHub-Actions IP question left
-// to fight on this script's side at all.
+// FIX (this version): the previous version tried to route through
+// solitary-snowflake-cb3e.insanoflash.workers.dev, which is the wrong
+// worker -- that one only proxies box scores/spectator data. The actual
+// dedicated profile proxy is playhq-profile-proxy.insanoflake.workers.dev
+// (source supplied by Mark), which is a pure passthrough: it requires an
+// ALREADY-OBTAINED cookie in its request body (POST {cookie, graphql}) plus
+// an X-Proxy-Secret header matching the PLAYHQ_PROXY_SECRET GitHub Actions
+// secret, and forwards to api.playhq.com from Cloudflare's own egress IP.
+// It does NOT do cookie acquisition itself -- that step still happens
+// directly against api.playhq.com from this runner, same as every other
+// script in this project. Only the actual publicProfileStatistics call
+// (the one with the documented strict ~50-calls/window rate limit) is
+// routed through Cloudflare's IP; cookie acquisition is unchanged.
+//
+// Session-acquisition code copied verbatim from backfill-missing-players.js
+// (proven, not reinvented), including full CDN-header/body diagnostics on
+// failure.
 
 'use strict';
 
-const https = require('https');
+const https  = require('https');
+const crypto = require('crypto');
 
-const WORKER_HOST = 'solitary-snowflake-cb3e.insanoflash.workers.dev';
+function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
-function get(path) {
-  return new Promise((resolve, reject) => {
+function doFetch(url, options) {
+  return new Promise(function (resolve, reject) {
+    const parsed = new URL(url);
+    const body = options.body || '';
     const req = https.request({
-      hostname: WORKER_HOST,
-      path,
-      method: 'GET',
-      headers: { 'accept': 'application/json' },
-    }, (res) => {
+      hostname: parsed.hostname,
+      path: parsed.pathname + parsed.search,
+      method: options.method || 'POST',
+      headers: Object.assign({}, options.headers, { 'content-length': Buffer.byteLength(body) }),
+      agent: new https.Agent({ keepAlive: false }),
+    }, function (res) {
       const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        const raw = Buffer.concat(chunks).toString('utf8');
-        let json = null;
-        try { json = JSON.parse(raw); } catch (_) {}
-        resolve({ status: res.statusCode, raw, json });
+      res.on('data', function (c) { chunks.push(c); });
+      res.on('end', function () {
+        const rawBody = Buffer.concat(chunks).toString('utf8');
+        resolve({
+          status: res.statusCode,
+          ok: res.statusCode >= 200 && res.statusCode < 300,
+          rawCookies: res.headers['set-cookie'],
+          headers: res.headers,
+          text: function () { return Promise.resolve(rawBody); },
+          json: function () { try { return Promise.resolve(JSON.parse(rawBody)); } catch (e) { return Promise.reject(e); } },
+        });
       });
       res.on('error', reject);
     });
     req.on('error', reject);
+    req.write(body);
     req.end();
   });
 }
 
-async function queryProfile(profileID) {
-  const path = '/profile/' + encodeURIComponent(profileID) + '?tenant=bv';
+function logDiagnostics(label, res, fullBody) {
+  const h = res.headers || {};
+  console.log('  ----- ' + label + ': status=' + res.status + ' -----');
+  console.log('    x-cache      : ' + (h['x-cache'] || '(absent)'));
+  console.log('    via          : ' + (h['via'] || '(absent)'));
+  console.log('    x-amz-cf-id  : ' + (h['x-amz-cf-id'] || '(absent)'));
+  console.log('    x-amz-cf-pop : ' + (h['x-amz-cf-pop'] || '(absent)'));
+  console.log('    server       : ' + (h['server'] || '(absent)'));
+  console.log('    content-type : ' + (h['content-type'] || '(absent)'));
+  console.log('  ----- ' + label + ': body (' + fullBody.length + ' chars) -----');
+  console.log(fullBody);
+  console.log('  ----- ' + label + ': end -----');
+}
+
+const API_URL = 'https://api.playhq.com/graphql';
+const HEADERS_BASE = {
+  'accept':       '*/*',
+  'origin':       'https://www.playhq.com',
+  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant':       'basketball-victoria',
+  'content-type': 'application/json',
+};
+const COOKIE_QUERIES = [
+  { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
+  { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+];
+
+let profileCookie = null;
+
+async function refreshProfileSession() {
+  for (let attempt = 1; attempt <= 10; attempt++) {
+    if (attempt > 1) await sleep(attempt * 5000);
+    for (const q of COOKIE_QUERIES) {
+      let res;
+      try {
+        res = await doFetch(API_URL, { headers: Object.assign({}, HEADERS_BASE, { 'request-id': crypto.randomUUID() }), body: JSON.stringify(q) });
+      } catch (err) {
+        console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] request threw: ' + err.message);
+        continue;
+      }
+      const raw = res.rawCookies;
+      if (!raw) {
+        let fullBody = '';
+        try { fullBody = await res.text(); } catch (_) {}
+        console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] no set-cookie header. status=' + res.status);
+        logDiagnostics('profile-session attempt ' + attempt + ' (' + q.operationName + ')', res, fullBody);
+        if (res.status !== 200) {
+          throw new Error('Session request failed with status ' + res.status + ' and no cookies -- see full body logged above.');
+        }
+        continue;
+      }
+      const parts = (Array.isArray(raw) ? raw : [raw]).map(function (c) { return c.split(';')[0].trim(); });
+      const get = function (name) { return parts.find(function (c) { return c.startsWith(name + '='); }) || null; };
+      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+      if (!tier || !session || !sub) {
+        console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] set-cookie present but missing tier/session/sub.');
+        continue;
+      }
+      profileCookie = tier + '; ' + session + '; ' + sub;
+      console.log('  Profile session refreshed (attempt ' + attempt + ')');
+      return;
+    }
+  }
+  throw new Error('Failed to obtain profile session after 10 attempts');
+}
+
+const PROFILE_QUERY = {
+  operationName: 'ProfileSeasonStatistics',
+  query: 'query ProfileSeasonStatistics($profileID: ID!) {\n' +
+    '  publicProfileStatistics(profileID: $profileID) {\n' +
+    '    seasonStatistics {\n' +
+    '      name\n' +
+    '      statistics {\n' +
+    '        season { id }\n' +
+    '        teamStatistics {\n' +
+    '          gradeStatistics {\n' +
+    '            gameStatistics { game { id } }\n' +
+    '          }\n' +
+    '        }\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}',
+};
+
+const PROXY_HOST = 'playhq-profile-proxy.insanoflake.workers.dev';
+const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
+
+async function queryProfileViaProxy(profileID) {
+  if (!PROXY_SECRET) {
+    return { verdict: 'missing-proxy-secret', detail: 'PLAYHQ_PROXY_SECRET env var not set' };
+  }
+  if (!profileCookie) await refreshProfileSession();
+
+  const body = JSON.stringify({
+    cookie: profileCookie,
+    graphql: Object.assign({}, PROFILE_QUERY, { variables: { profileID: profileID } }),
+  });
+
   let res;
   try {
-    res = await get(path);
+    res = await doFetch('https://' + PROXY_HOST + '/', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'X-Proxy-Secret': PROXY_SECRET },
+      body: body,
+    });
   } catch (err) {
-    return { verdict: 'worker-request-error', detail: err.message };
+    return { verdict: 'proxy-request-error', detail: err.message };
   }
+
+  if (res.status === 401) return { verdict: 'proxy-unauthorized', detail: 'X-Proxy-Secret did not match worker env' };
   if (res.status !== 200) {
-    return { verdict: 'worker-http-' + res.status, detail: (res.raw || '').slice(0, 300) };
+    let b = ''; try { b = await res.text(); } catch (_) {}
+    return { verdict: 'proxy-http-' + res.status, detail: b.slice(0, 300) };
   }
-  if (!res.json) {
-    return { verdict: 'worker-bad-json', detail: (res.raw || '').slice(0, 300) };
+
+  let json;
+  try { json = await res.json(); } catch (err) { return { verdict: 'proxy-bad-json', detail: err.message }; }
+
+  if (json.errors && json.errors.length) {
+    return { verdict: 'upstream-graphql-error', detail: json.errors[0].message || JSON.stringify(json.errors) };
   }
-  if (res.json.error) {
-    return { verdict: 'worker-error', detail: res.json.error };
-  }
-  const upstreamStatus = res.json.upstreamStatus;
-  let upstreamJson = null;
-  try { upstreamJson = JSON.parse(res.json.upstreamBody); } catch (_) {}
-  if (upstreamStatus !== 200) {
-    return { verdict: 'upstream-http-' + upstreamStatus, detail: (res.json.upstreamBody || '').slice(0, 300) };
-  }
-  if (upstreamJson && upstreamJson.errors && upstreamJson.errors.length) {
-    return { verdict: 'upstream-graphql-error', detail: upstreamJson.errors[0].message || JSON.stringify(upstreamJson.errors) };
-  }
-  const stats = upstreamJson && upstreamJson.data && upstreamJson.data.publicProfileStatistics;
+  const stats = json.data && json.data.publicProfileStatistics;
   if (!stats) return { verdict: 'upstream-null-publicProfileStatistics' };
   const seasonList = stats.seasonStatistics || [];
-  const seasonCount = seasonList.length;
-  const nameReturned = (seasonList[0] && seasonList[0].name) || null;
-  return { verdict: 'ok', seasonCount: seasonCount, nameReturned: nameReturned };
+  return { verdict: 'ok', seasonCount: seasonList.length, nameReturned: (seasonList[0] && seasonList[0].name) || null };
 }
 
 // [label, spectatorNamespaceId, apiNamespaceId] -- both ids for the same
@@ -107,30 +215,26 @@ const CASES = [
   ['Jack Delaney',   '0000ed35-3510-4267-bf4f-db65588b6d99', '1cf5a2ba-98c0-43d6-b1dd-9c3dbb2251c5'],
 ];
 
-function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
-
 async function main() {
   console.log('diagnose-profile-identity-namespace.js -- read-only, no writes');
-  console.log('Routing all PlayHQ calls through ' + WORKER_HOST + ' -- no direct calls');
-  console.log('from this runner to api.playhq.com at all.\n');
+  console.log('Cookie acquisition: direct to api.playhq.com (unchanged, proven mechanism).');
+  console.log('Profile query: routed through ' + PROXY_HOST + ' (Cloudflare egress IP).\n');
 
   for (const caseEntry of CASES) {
-    const name = caseEntry[0];
-    const spectatorId = caseEntry[1];
-    const apiId = caseEntry[2];
+    const name = caseEntry[0], spectatorId = caseEntry[1], apiId = caseEntry[2];
 
     console.log('='.repeat(70));
     console.log('  ' + name);
     console.log('='.repeat(70));
 
     console.log('  [spectator-namespace] ' + spectatorId);
-    const rSpec = await queryProfile(spectatorId);
+    const rSpec = await queryProfileViaProxy(spectatorId);
     console.log('    ' + JSON.stringify(rSpec));
 
-    await sleep(500);
+    await sleep(1000);
 
     console.log('  [api-namespace]       ' + apiId);
-    const rApi = await queryProfile(apiId);
+    const rApi = await queryProfileViaProxy(apiId);
     console.log('    ' + JSON.stringify(rApi));
 
     console.log();
@@ -145,7 +249,7 @@ async function main() {
       console.log('  >>> Unexpected: spectator-namespace succeeded but api-namespace did not.\n');
     }
 
-    await sleep(500);
+    await sleep(1000);
   }
 
   console.log('Done.');
