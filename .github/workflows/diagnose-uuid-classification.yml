@@ -1,0 +1,52 @@
+# .github/workflows/diagnose-uuid-classification.yml
+name: Diagnose UUID Classification (sampled, read-only)
+
+# READ-ONLY. Rebuilds the un-indexed candidate pool from games/bv (same
+# extraction as diagnose-uuid-population.js), takes a deterministic random
+# sample, and classifies each uuid as already-public / diverged-recoverable /
+# genuinely-private / unrecoverable-noname via publicProfileStatistics +
+# gradePlayerStatistics/profileSearch recovery. No writes, no commits, no lock.
+#
+# Checkout mirrors backfill-missing-players.yml (games, players/indexes,
+# scripts) with blob:none filter — same sparse pattern already proven to work
+# at this repo's size. Session/query code is copied verbatim from
+# diagnose-namespace-mismatch.js, which already passed its own known-case gate.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Number of un-indexed uuids to sample and classify'
+        required: false
+        default: '300'
+        type: string
+      seed:
+        description: 'RNG seed (same seed = same sample, for reproducibility)'
+        required: false
+        default: '1'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout (sparse — games, players/indexes, scripts; blob:none filter)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Run classification (read-only)
+        run: |
+          node scripts/diagnose-uuid-classification.js \
+            --sample=${{ inputs.sample }} \
+            --seed=${{ inputs.seed }}
