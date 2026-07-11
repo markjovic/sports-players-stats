@@ -43,6 +43,7 @@ jobs:
             games
             players/indexes
             scripts
+            data/sports-index.json
           sparse-checkout-cone-mode: false
 
       - name: Run classification (read-only)
