@@ -22,15 +22,17 @@
 // diverged this way gets a false "private"/"not found" result -- unrelated
 // to any actual privacy setting or CloudFront block.
 //
-// FIX (this version): previous versions threw and killed the whole process
-// on the first failed session-acquisition attempt, which meant one bad
-// request meant zero results for all 6 test ids. This version never throws
-// out of refreshProfileSession or queryProfileViaProxy -- a failed session
-// attempt is logged (full CDN headers + body, same as before) and retried
-// up to 10 times with backoff; if it still doesn't get a cookie, that case
-// gets a clear 'no-session-cookie' verdict and the script moves on to the
-// next id/case instead of stopping. Every one of the 6 cases gets a result
-// printed regardless of what happens with any of the others.
+// FIX (this version): previous versions either threw and killed the whole
+// process on the first failed session-acquisition attempt, or retried up to
+// 10 times with backoff before giving up (wasted time waiting through
+// backoff delays just to see a result). This version tries session
+// acquisition EXACTLY ONCE -- each of the two COOKIE_QUERIES entries gets a
+// single attempt, no retry loop, no backoff sleep. If neither gets a
+// cookie, that's logged (full CDN headers + body, same as before) and the
+// case gets a clear 'no-session-cookie' verdict immediately -- the script
+// moves straight on to the next id/case instead of waiting or stopping.
+// Every one of the 6 cases gets a result printed regardless of what
+// happens with any of the others.
 //
 // Profile query itself still routes through the project's existing
 // playhq-profile-proxy Cloudflare Worker (POST {cookie, graphql} +
@@ -106,41 +108,39 @@ const COOKIE_QUERIES = [
 
 let profileCookie = null;
 
-// Never throws. Returns true if a cookie was obtained, false otherwise --
-// all failures (network errors, non-200 responses, missing cookie parts)
-// are logged and retried; only exhausting all attempts ends the function.
+// Never throws. Returns true if a cookie was obtained, false otherwise.
+// Tries each of the two COOKIE_QUERIES entries EXACTLY ONCE -- no retry
+// loop, no backoff sleep. A failure is logged (full CDN headers + body)
+// and the function moves straight to the next query, then gives up.
 async function refreshProfileSession() {
-  for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 3000);
-    for (const q of COOKIE_QUERIES) {
-      let res;
-      try {
-        res = await doFetch(API_URL, { headers: Object.assign({}, HEADERS_BASE, { 'request-id': crypto.randomUUID() }), body: JSON.stringify(q) });
-      } catch (err) {
-        console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] request threw: ' + err.message);
-        continue;
-      }
-      const raw = res.rawCookies;
-      if (!raw) {
-        let fullBody = '';
-        try { fullBody = await res.text(); } catch (_) {}
-        console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] no set-cookie header. status=' + res.status);
-        logDiagnostics('profile-session attempt ' + attempt + ' (' + q.operationName + ')', res, fullBody);
-        continue; // no throw -- just try the next query/attempt
-      }
-      const parts = (Array.isArray(raw) ? raw : [raw]).map(function (c) { return c.split(';')[0].trim(); });
-      const get = function (name) { return parts.find(function (c) { return c.startsWith(name + '='); }) || null; };
-      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (!tier || !session || !sub) {
-        console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] set-cookie present but missing tier/session/sub.');
-        continue;
-      }
-      profileCookie = tier + '; ' + session + '; ' + sub;
-      console.log('  Profile session refreshed (attempt ' + attempt + ')');
-      return true;
+  for (const q of COOKIE_QUERIES) {
+    let res;
+    try {
+      res = await doFetch(API_URL, { headers: Object.assign({}, HEADERS_BASE, { 'request-id': crypto.randomUUID() }), body: JSON.stringify(q) });
+    } catch (err) {
+      console.log('  [session, ' + q.operationName + '] request threw: ' + err.message);
+      continue;
     }
+    const raw = res.rawCookies;
+    if (!raw) {
+      let fullBody = '';
+      try { fullBody = await res.text(); } catch (_) {}
+      console.log('  [session, ' + q.operationName + '] no set-cookie header. status=' + res.status);
+      logDiagnostics('profile-session (' + q.operationName + ')', res, fullBody);
+      continue; // no throw -- just try the next query
+    }
+    const parts = (Array.isArray(raw) ? raw : [raw]).map(function (c) { return c.split(';')[0].trim(); });
+    const get = function (name) { return parts.find(function (c) { return c.startsWith(name + '='); }) || null; };
+    const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+    if (!tier || !session || !sub) {
+      console.log('  [session, ' + q.operationName + '] set-cookie present but missing tier/session/sub.');
+      continue;
+    }
+    profileCookie = tier + '; ' + session + '; ' + sub;
+    console.log('  Profile session refreshed (' + q.operationName + ')');
+    return true;
   }
-  console.log('  Could not obtain a profile session after 10 attempts -- continuing without one.');
+  console.log('  Could not obtain a profile session (tried each query once) -- continuing without one.');
   return false;
 }
 
@@ -174,7 +174,7 @@ async function queryProfileViaProxy(profileID) {
   if (!profileCookie) {
     const ok = await refreshProfileSession();
     if (!ok || !profileCookie) {
-      return { verdict: 'no-session-cookie', detail: 'refreshProfileSession did not obtain a cookie after 10 attempts' };
+      return { verdict: 'no-session-cookie', detail: 'refreshProfileSession did not obtain a cookie (tried each query once)' };
     }
   }
 
