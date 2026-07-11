@@ -22,17 +22,15 @@
 // diverged this way gets a false "private"/"not found" result -- unrelated
 // to any actual privacy setting or CloudFront block.
 //
-// FIX (this version): previous versions either threw and killed the whole
-// process on the first failed session-acquisition attempt, or retried up to
-// 10 times with backoff before giving up (wasted time waiting through
-// backoff delays just to see a result). This version tries session
-// acquisition EXACTLY ONCE -- each of the two COOKIE_QUERIES entries gets a
-// single attempt, no retry loop, no backoff sleep. If neither gets a
-// cookie, that's logged (full CDN headers + body, same as before) and the
-// case gets a clear 'no-session-cookie' verdict immediately -- the script
-// moves straight on to the next id/case instead of waiting or stopping.
-// Every one of the 6 cases gets a result printed regardless of what
-// happens with any of the others.
+// Session acquisition (TenantConfig/ProfileSearch, HEADERS_BASE) is
+// byte-identical to nightly-crawl.js's refreshSession() -- confirmed via a
+// live side-by-side test in nightly-crawl.yml: same job, same runner, same
+// call, succeeded first try. The repeated CloudFront blocks seen earlier
+// were IP/runner-specific bad luck, not a malformed request -- which is why
+// this script tries session acquisition EXACTLY ONCE per query (no retry
+// loop, no backoff) and relies on the workflow's parallel-attempt matrix
+// (independent runners/IPs) to get a clean draw, rather than retrying on a
+// single bad IP.
 //
 // Profile query itself still routes through the project's existing
 // playhq-profile-proxy Cloudflare Worker (POST {cookie, graphql} +
@@ -144,23 +142,37 @@ async function refreshProfileSession() {
   return false;
 }
 
+// Copied verbatim from fetch-profile-stats.js PROFILE_QUERY (lines 158-185)
+// -- do not simplify or rewrite this from scratch. A "minimal" version of
+// this query is exactly the kind of thing that breaks silently against
+// PlayHQ's schema (per project rule: never hand-write a PlayHQ query).
 const PROFILE_QUERY = {
   operationName: 'ProfileSeasonStatistics',
-  query: 'query ProfileSeasonStatistics($profileID: ID!) {\n' +
-    '  publicProfileStatistics(profileID: $profileID) {\n' +
-    '    seasonStatistics {\n' +
-    '      name\n' +
-    '      statistics {\n' +
-    '        season { id }\n' +
-    '        teamStatistics {\n' +
-    '          gradeStatistics {\n' +
-    '            gameStatistics { game { id } }\n' +
-    '          }\n' +
-    '        }\n' +
-    '      }\n' +
-    '    }\n' +
-    '  }\n' +
-    '}',
+  query: `query ProfileSeasonStatistics($profileID: ID!) {
+  publicProfileStatistics(profileID: $profileID) {
+    seasonStatistics {
+      name
+      statistics {
+        season { id }
+        teamStatistics {
+          team { ... on DiscoverTeam { id name } }
+          gradeStatistics {
+            grade { id name }
+            gameStatistics {
+              game {
+                id
+                round { name number isFinalsRound abbreviatedName }
+                home { ... on DiscoverTeam { id name } }
+                away { ... on DiscoverTeam { id name } }
+              }
+              statistics { count details { value } }
+            }
+          }
+        }
+      }
+    }
+  }
+}`,
 };
 
 const PROXY_HOST = 'playhq-profile-proxy.insanoflake.workers.dev';
