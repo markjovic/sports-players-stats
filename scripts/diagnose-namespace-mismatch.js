@@ -390,28 +390,46 @@ async function runKnownCases() {
   }
 }
 
-// ─── JOB 2: scope estimate over sampled private players ──────────────────────────
+// A record we previously classified as inaccessible. The explicit player.private
+// flag is recent (2026-07-10 per fetch-profile-stats.js) and only written when a
+// player is re-processed and hits NOT_FOUND, so the large legacy backlog does NOT
+// carry it. We therefore ALSO match the legacy fingerprint that fetch-profile-stats.js
+// leaves on its private/NOT_FOUND branch: statsChecked written, career gp/pts absent
+// (stat fields are deleted when zero), maxGamePTS null. Excluded by construction:
+//   - unprocessed stubs (no statsChecked) — that's "unchecked", not "inaccessible";
+//   - public players who merely never scored — they still have a career gp > 0.
+function looksInaccessible(player) {
+  if (player && player.private === true) return true;
+  const bk = (player && player.sports && player.sports.Basketball) || {};
+  const statsChecked = bk.statsChecked !== undefined;
+  const noCareer     = !bk.gp && !bk.pts;
+  const noMax        = bk.maxGamePTS === null || bk.maxGamePTS === undefined;
+  return statsChecked && noCareer && noMax;
+}
+
+// ─── JOB 2: scope estimate over sampled inaccessible-looking players ─────────────
 async function runScopeScan() {
-  console.log('\n══ JOB 2 — scope estimate over private:true players ═════════════');
-  console.log(`  Sample shards: ${SAMPLE_SHARDS.join(', ')}   max private probed/shard: ${MAX_PER_SHARD}`);
+  console.log('\n══ JOB 2 — scope estimate over inaccessible-looking players ═════');
+  console.log(`  Sample shards: ${SAMPLE_SHARDS.join(', ')}   max candidates probed/shard: ${MAX_PER_SHARD}`);
+  console.log('  (candidate = player.private===true OR legacy inaccessible fingerprint)');
   await refreshApiSession();
 
-  const tally = { probed: 0, grade: 0, search: 0, gradeAmbiguous: 0, none: 0, noName: 0, noGradeContext: 0, recoveredButDead: 0, blocked: 0 };
+  const tally = { filesScanned: 0, candidates: 0, probed: 0, grade: 0, search: 0, gradeAmbiguous: 0, none: 0, noName: 0, noGradeContext: 0, recoveredButDead: 0, blocked: 0 };
 
   for (const shard of SAMPLE_SHARDS) {
     const dir = path.join(PLAYERS_DIR, shard);
     let files = [];
     try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch (_) { console.log(`  shard ${shard}: directory not present, skipping.`); continue; }
-    let probedThisShard = 0, privateSeen = 0;
+    let probedThisShard = 0, candThisShard = 0;
     for (const f of files) {
-      if (probedThisShard >= MAX_PER_SHARD) break;
+      tally.filesScanned++;
+      if (probedThisShard >= MAX_PER_SHARD) continue; // cap probing but keep counting files
       let player; try { player = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (_) { continue; }
-      if (player.private !== true) continue;
-      privateSeen++;
+      if (!looksInaccessible(player)) continue;
+      candThisShard++; tally.candidates++;
       const uuid = f.replace(/\.json$/, '');
       const { regs, orgId } = regsFromPlayer(player);
-      const hasGradeCtx = regs.some(r => r.gid && r.tid);
-      if (!hasGradeCtx) tally.noGradeContext++;
+      if (!regs.some(r => r.gid && r.tid)) tally.noGradeContext++;
 
       const res = await resolveApiId({ name: player.name, regs, orgId });
       probedThisShard++; tally.probed++;
@@ -419,8 +437,7 @@ async function runScopeScan() {
       if (res.via === 'blocked') { tally.blocked++; console.log('  ⛔ CloudFront block during scan — stopping scope scan early.'); printScope(tally); return; }
       if (res.via === 'no-name') { tally.noName++; continue; }
       if (res.via === 'grade-ambiguous') { tally.gradeAmbiguous++; continue; }
-      if (!res.apiId) { tally.none++; continue; }
-      if (res.apiId === uuid) { tally.none++; continue; } // not actually diverged
+      if (!res.apiId || res.apiId === uuid) { tally.none++; continue; } // no match, or not actually diverged
 
       // Verify the recovered id actually resolves before counting it recoverable.
       const check = await publicProfileStatistics(res.apiId);
@@ -428,7 +445,7 @@ async function runScopeScan() {
       else if (check.status === 'blocked') { tally.blocked++; console.log('  ⛔ CloudFront block during verify — stopping.'); printScope(tally); return; }
       else { tally.recoveredButDead++; }
     }
-    console.log(`  shard ${shard}: ${privateSeen} private seen, ${probedThisShard} probed`);
+    console.log(`  shard ${shard}: ${files.length} files, ${candThisShard} inaccessible-looking, ${probedThisShard} probed`);
   }
   printScope(tally);
 }
@@ -436,18 +453,21 @@ async function runScopeScan() {
 function printScope(t) {
   const recoverable = t.grade + t.search;
   console.log('\n  ── scope result ─────────────────────────────');
-  console.log(`    private players probed        : ${t.probed}`);
-  console.log(`    recoverable via gradePlayers  : ${t.grade}`);
-  console.log(`    recoverable via profileSearch : ${t.search}`);
-  console.log(`    RECOVERABLE (total)           : ${recoverable}  (${t.probed ? Math.round(recoverable / t.probed * 100) : 0}% of probed)`);
-  console.log(`    genuinely private / no match  : ${t.none}`);
-  console.log(`    ambiguous grade match (bailed): ${t.gradeAmbiguous}`);
-  console.log(`    placeholder name (unmatchable): ${t.noName}`);
-  console.log(`    had NO grade context on file  : ${t.noGradeContext}`);
-  console.log(`    recovered id itself was dead  : ${t.recoveredButDead}`);
-  console.log(`    cloudfront blocks             : ${t.blocked}`);
+  console.log(`    player files scanned            : ${t.filesScanned}`);
+  console.log(`    inaccessible-looking candidates : ${t.candidates}`);
+  console.log(`    candidates probed               : ${t.probed}`);
+  console.log(`    recoverable via gradePlayers    : ${t.grade}`);
+  console.log(`    recoverable via profileSearch   : ${t.search}`);
+  console.log(`    RECOVERABLE (total)             : ${recoverable}  (${t.probed ? Math.round(recoverable / t.probed * 100) : 0}% of probed)`);
+  console.log(`    genuinely private / no match    : ${t.none}`);
+  console.log(`    ambiguous grade match (bailed)  : ${t.gradeAmbiguous}`);
+  console.log(`    placeholder name (unmatchable)  : ${t.noName}`);
+  console.log(`    had NO grade context on file    : ${t.noGradeContext}`);
+  console.log(`    recovered id itself was dead    : ${t.recoveredButDead}`);
+  console.log(`    cloudfront blocks               : ${t.blocked}`);
   console.log('  ─────────────────────────────────────────────');
-  console.log('  NOTE: extrapolate RECOVERABLE% across ~all private players to size a full re-pass.');
+  console.log('  NOTE: RECOVERABLE across sampled shards, extrapolated x(256/sample), sizes the re-pass.');
+  console.log('  noName + noGradeContext together tell us how much of the backlog this method CANNOT reach.');
 }
 
 // ─── main ───────────────────────────────────────────────────────────────────
