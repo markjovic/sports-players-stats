@@ -1,0 +1,67 @@
+# .github/workflows/diagnose-namespace-mismatch.yml
+name: Diagnose Namespace Mismatch (read-only)
+
+# Phase 0 of the phantom-UUID fix. READ-ONLY: validates the recovery mechanism on
+# the 3 known diverged players and estimates how many current private:true players
+# are actually namespace-diverged. Writes nothing, commits nothing, holds no lock.
+#
+# The job is deliberately shaped like fetch-profile-stats-matrix.yml's `fetch`
+# job — the one proven to acquire PlayHQ sessions in this repo — and in particular
+# it has NO actions/setup-node step, since the only standalone diagnostic workflow
+# that ever failed CloudFront 100% differed from the proven job by adding exactly
+# that step. If this still 403s, fold the same script into fetch-profile-stats.js
+# behind a --diagnose flag so it runs inside that job verbatim.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample_shards:
+        description: 'Comma-separated shards to scan for private players (e.g. 00,01,02)'
+        required: false
+        default: '00,01'
+        type: string
+      max_per_shard:
+        description: 'Max private players probed per shard (keeps the run bounded)'
+        required: false
+        default: '50'
+        type: string
+      known_only:
+        description: 'Run only the 3 known-case validation, skip the scope scan'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            data
+            players/indexes
+            games/bv/81545684.json
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Expand sparse checkout to the sample player shards
+        run: |
+          dirs=""
+          for s in $(echo "${{ inputs.sample_shards }}" | tr ',' ' '); do
+            dirs="$dirs players/$s"
+          done
+          echo "Adding shard dirs:$dirs"
+          git sparse-checkout set --no-cone scripts data players/indexes games/bv/81545684.json $dirs
+
+      - name: Run diagnostic (read-only)
+        run: |
+          ARGS="--sample-shards=${{ inputs.sample_shards }} --max-per-shard=${{ inputs.max_per_shard }}"
+          if [ "${{ inputs.known_only }}" = "true" ]; then ARGS="$ARGS --known-only"; fi
+          node scripts/diagnose-namespace-mismatch.js $ARGS
