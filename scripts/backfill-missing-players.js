@@ -77,6 +77,11 @@ const ARGS = Object.fromEntries(
   })
 );
 const DRY_RUN = !!ARGS['dry-run'];
+// --no-commit: write player files + indexes to disk but do NOT git commit/push.
+// Used by matrix resolve jobs -- each writes its bucket's files, the shared
+// apply-and-commit job packages every bucket's diff into a single commit
+// (mirrors fetch-profile-stats-matrix.yml, which never commits per-shard).
+const NO_COMMIT = !!ARGS['no-commit'];
 const MAX     = ARGS.max ? parseInt(ARGS.max, 10) : Infinity;
 const PROFILE_BATCH        = 30; // matches fetch-profile-stats.js's JWT-quota batch size
 const SPECTATOR_CONCURRENCY = 3;  // matches nightly-crawl.js's CONCURRENCY_SPECTATOR
@@ -462,7 +467,7 @@ function isAlreadyKnown(uuid) { return !!readPlayerIndex(playerShard(uuid))[uuid
 
 // ─── git commit — standard project pattern (explicit paths, merge -X ours) ──
 async function gitCommit(message, dirs) {
-  if (DRY_RUN) return;
+  if (DRY_RUN || NO_COMMIT) return;
   try {
     execSync(`git add ${dirs.map(d => `"${d}"`).join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
     const staged = execSync('git diff --staged --shortstat', { cwd: ROOT }).toString().trim();
@@ -478,46 +483,88 @@ async function gitCommit(message, dirs) {
   }
 }
 
-// ─── Phase 1: discover candidates from games/bv/*.json ─────────────────────
+// ─── Phase 1: discover candidates ──────────────────────────────────────────
+// Two sources, selected by args:
+//   (default)          -- scan games/bv/*.json directly (standalone / small
+//                         --max test runs).
+//   --candidates-file= -- load a pre-computed { uuid: [appearances] } bucket
+//                         written by backfill-generate-candidates.js. Used by
+//                         the sharded matrix workflow so games/bv is scanned
+//                         ONCE (in the generate job) instead of 256 times.
+// --bucket=<2hex>      -- keep only uuids whose first 2 chars match (matrix
+//                         shard). Applied in EITHER source, so each resolve
+//                         job owns a disjoint set of player-index shards --
+//                         exactly like fetch-profile-stats-matrix.yml, which
+//                         is what makes the commit-aggregation conflict-free.
+//
 // A candidate uuid is: full-length, appears in some game's p[]/hp[]/ap[]
-// attendee list, and is NOT a key in its shard's index yet.
+// attendee list, and is NOT a key in its shard's index yet. The candidates
+// map value is the uuid's appearance list (game contexts) -- the resolve
+// phase needs only this, never the games/bv files themselves, because
+// spectator box scores are fetched live by gameId.
+const CANDIDATES_FILE = ARGS['candidates-file'] ? String(ARGS['candidates-file']) : null;
+const BUCKET          = ARGS['bucket'] ? String(ARGS['bucket']).toLowerCase() : null;
+
+function bucketOf(uuid) { return uuid.slice(0, 2).toLowerCase(); }
+
+function discoverFromGamesScan() {
+  const sids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
+  const map = new Map(); // uuid -> [{ gid, sid, gradeId, gradeName, h, hn, a, an, forfeit }]
+  let seasonsScanned = 0, gamesScanned = 0, appearancesScanned = 0;
+
+  for (const fname of sids) {
+    let gf;
+    try { gf = readJson(path.join(GAMES_DIR, fname)); } catch { continue; }
+    const sid = fname.replace('.json', '');
+    seasonsScanned++;
+    for (const [gid, g] of Object.entries(gf.games || {})) {
+      gamesScanned++;
+      const ids = new Set();
+      for (const e of (g.p  || [])) { if (e?.id)        ids.add(e.id); }
+      for (const e of (g.hp || [])) { if (e?.profileID) ids.add(e.profileID); }
+      for (const e of (g.ap || [])) { if (e?.profileID) ids.add(e.profileID); }
+      for (const uuid of ids) {
+        if (!isFullUuid(uuid)) continue;
+        if (BUCKET && bucketOf(uuid) !== BUCKET) continue;
+        appearancesScanned++;
+        if (isAlreadyKnown(uuid)) continue;
+        if (!map.has(uuid)) map.set(uuid, []);
+        map.get(uuid).push({
+          gid, sid,
+          gradeId: g.gid || null, gradeName: g.gn || null,
+          h: g.h || null, hn: g.hn || null, a: g.a || null, an: g.an || null,
+          forfeit: !!g.forfeit,
+        });
+      }
+    }
+  }
+  console.log(`  ${seasonsScanned} season files | ${gamesScanned.toLocaleString()} games | ${appearancesScanned.toLocaleString()} full-uuid appearances scanned`);
+  return map;
+}
+
+function discoverFromCandidatesFile(file) {
+  const raw = readJson(file); // { uuid: [appearances] }
+  const map = new Map();
+  for (const [uuid, appearances] of Object.entries(raw)) {
+    if (!isFullUuid(uuid)) continue;
+    if (BUCKET && bucketOf(uuid) !== BUCKET) continue;
+    // Re-check the index: a prior dispatch may have resolved this uuid since
+    // the bucket file was generated. Keeps re-runs idempotent.
+    if (isAlreadyKnown(uuid)) continue;
+    map.set(uuid, Array.isArray(appearances) ? appearances : []);
+  }
+  console.log(`  Loaded ${Object.keys(raw).length.toLocaleString()} candidates from ${path.basename(file)}${BUCKET ? ` (bucket ${BUCKET})` : ''}`);
+  return map;
+}
+
 console.log('backfill-missing-players.js (clean rewrite, 2026-07-11)');
 if (DRY_RUN) console.log('  ⚠  DRY RUN — no writes or commits');
 console.log('─'.repeat(60));
-console.log('Phase 1 — scanning games/bv/*.json for un-indexed full-length uuids…');
+console.log(`Phase 1 — discovering candidates (${CANDIDATES_FILE ? `from ${path.basename(CANDIDATES_FILE)}` : 'scanning games/bv'})…`);
 
-const sids = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
-const candidates = new Map(); // uuid -> [{ gid(gameId), sid, gradeId, gradeName, h, hn, a, an, forfeit }]
-let seasonsScanned = 0, gamesScanned = 0, appearancesScanned = 0;
+const candidates = CANDIDATES_FILE ? discoverFromCandidatesFile(CANDIDATES_FILE) : discoverFromGamesScan();
 
-for (const fname of sids) {
-  let gf;
-  try { gf = readJson(path.join(GAMES_DIR, fname)); } catch { continue; }
-  const sid = fname.replace('.json', '');
-  seasonsScanned++;
-  for (const [gid, g] of Object.entries(gf.games || {})) {
-    gamesScanned++;
-    const ids = new Set();
-    for (const e of (g.p  || [])) { if (e?.id)        ids.add(e.id); }
-    for (const e of (g.hp || [])) { if (e?.profileID) ids.add(e.profileID); }
-    for (const e of (g.ap || [])) { if (e?.profileID) ids.add(e.profileID); }
-    for (const uuid of ids) {
-      if (!isFullUuid(uuid)) continue;
-      appearancesScanned++;
-      if (isAlreadyKnown(uuid)) continue;
-      if (!candidates.has(uuid)) candidates.set(uuid, []);
-      candidates.get(uuid).push({
-        gid, sid,
-        gradeId: g.gid || null, gradeName: g.gn || null,
-        h: g.h || null, hn: g.hn || null, a: g.a || null, an: g.an || null,
-        forfeit: !!g.forfeit,
-      });
-    }
-  }
-}
-
-console.log(`  ${seasonsScanned} season files | ${gamesScanned.toLocaleString()} games | ${appearancesScanned.toLocaleString()} full-uuid appearances scanned`);
-console.log(`  Candidates found (no index entry yet): ${candidates.size.toLocaleString()}`);
+console.log(`  Candidates to process${BUCKET ? ` (bucket ${BUCKET})` : ''}: ${candidates.size.toLocaleString()}`);
 
 const allCandidateUuids = [...candidates.keys()].sort();
 const toProcess = allCandidateUuids.slice(0, MAX);
