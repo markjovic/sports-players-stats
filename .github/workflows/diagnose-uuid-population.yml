@@ -1,0 +1,45 @@
+# .github/workflows/diagnose-uuid-population.yml
+name: Diagnose UUID Population (count-only, read-only)
+
+# Whole-repo, NO API, NO writes. Counts full-length uuids in games/bv attendee
+# lists and splits them into indexed-real / indexed-placeholder / un-indexed, to
+# size the candidate pool (expected ≈ 86k) before any sampled api classification.
+# Checkout mirrors backfill-missing-players.yml (games + players/indexes + scripts).
+# No session is acquired, so the CloudFront-fingerprint concern does not apply and
+# actions/setup-node is fine here.
+
+on:
+  workflow_dispatch:
+    inputs:
+      samples:
+        description: 'How many sample un-indexed uuids to print for manual spot-check'
+        required: false
+        default: '15'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (sparse — games, players/indexes, scripts; blob:none filter)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run count (read-only)
+        run: node scripts/diagnose-uuid-population.js --samples=${{ inputs.samples }}
