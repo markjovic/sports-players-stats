@@ -1,0 +1,47 @@
+# .github/workflows/diagnose-profile-identity-namespace.yml
+name: Diagnose Profile Identity Namespace Mismatch (read-only)
+
+# Tests a specific hypothesis raised 2026-07-11: PlayHQ's api.playhq.com and
+# spectator.playhq.com endpoints can disagree on which uuid identifies the
+# same real player (confirmed directly for 3 of 13 players in one sampled
+# game -- William Mallen, Charlie Raynor, Jack Delaney). Our own capture
+# (nightly-crawl.js / backfill-missing-players.js's spectator fetch) only
+# ever sees spectator.playhq.com's profileID, but the separate profile-stats
+# backfill in both scripts queries api.playhq.com's publicProfileStatistics
+# using that same spectator-namespace uuid as the argument. If that query
+# only recognizes its own namespace, every player whose ids have diverged
+# this way would get a false "private"/"not found" result -- unrelated to
+# any actual privacy setting or CloudFront block, which is what every such
+# failure this week was attributed to.
+#
+# This workflow runs a small, read-only script that queries
+# publicProfileStatistics for BOTH known ids of the 3 already-confirmed
+# mismatched players and prints the raw result for each, so the theory can
+# be confirmed or ruled out directly rather than argued about. No writes,
+# no git commits, no changes to games/ or players/ -- console output only.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run diagnostic
+        run: node scripts/diagnose-profile-identity-namespace.js
