@@ -388,13 +388,28 @@ async function classifyOne(uuid, appr) {
 async function main() {
   await refreshApiSession();
   const tally = {};
+  const viaTally = { grade: 0, search: 0 };
+  // Was a grade attempt even possible (had gradeId+tid), and did it fail before
+  // falling to search? Distinguishes "grade wasn't tried" from "grade tried, missed".
+  const gradeAttemptTally = { attempted: 0, hit: 0, missedThenSearchHit: 0, noGradeContext: 0 };
   const examples = { 'diverged-recoverable': [], 'genuinely-private': [], 'already-public': [], 'unrecoverable-noname': [] };
   let done = 0;
 
   for (const uuid of sample) {
     const appr = pool.get(uuid);
+    const hadGradeContext = !!(appr.gradeId && appr.tid);
     const res = await classifyOne(uuid, appr);
     tally[res.class] = (tally[res.class] || 0) + 1;
+    if (res.class === 'diverged-recoverable') {
+      viaTally[res.via] = (viaTally[res.via] || 0) + 1;
+      if (hadGradeContext) {
+        gradeAttemptTally.attempted++;
+        if (res.via === 'grade') gradeAttemptTally.hit++;
+        else gradeAttemptTally.missedThenSearchHit++;
+      } else {
+        gradeAttemptTally.noGradeContext++;
+      }
+    }
     if (examples[res.class] && examples[res.class].length < 5) {
       examples[res.class].push({ uuid, ...res });
     }
@@ -414,6 +429,18 @@ async function main() {
   }
   const projected = pool.size && done ? Math.round((tally['diverged-recoverable'] || 0) / done * pool.size) : 0;
   console.log(`\n  Projected diverged-recoverable across full pool (${pool.size.toLocaleString()}): ~${projected.toLocaleString()}`);
+
+  const recTotal = (tally['diverged-recoverable'] || 0);
+  console.log(`\n  ── recovery path breakdown (of ${recTotal} diverged-recoverable) ──`);
+  console.log(`    via gradePlayerStatistics : ${viaTally.grade}  (${recTotal ? (viaTally.grade / recTotal * 100).toFixed(1) : '0.0'}%)`);
+  console.log(`    via profileSearch         : ${viaTally.search}  (${recTotal ? (viaTally.search / recTotal * 100).toFixed(1) : '0.0'}%)`);
+  console.log(`\n  ── grade-attempt detail (only for recoverable candidates that HAD gradeId+tid) ──`);
+  console.log(`    had grade context, attempted gradePlayerStatistics : ${gradeAttemptTally.attempted}`);
+  console.log(`      ├─ grade match hit directly                     : ${gradeAttemptTally.hit}`);
+  console.log(`      └─ grade missed, search recovered it instead    : ${gradeAttemptTally.missedThenSearchHit}`);
+  console.log(`    no grade context at all (search was the only path): ${gradeAttemptTally.noGradeContext}`);
+  console.log('  NOTE: a "grade missed" case usually means the player was outside the 50-cap');
+  console.log('        (gradePlayerStatistics returns only the highest-appearance players).');
 
   for (const k of Object.keys(examples)) {
     if (!examples[k].length) continue;
