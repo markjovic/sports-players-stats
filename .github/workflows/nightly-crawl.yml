@@ -59,15 +59,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      # TEMPORARY -- delete this step once the session-acquisition test has
-      # given an answer. Runs the exact same TenantConfig call nightly-crawl.js
-      # is about to make itself, moments before it does, on this same runner --
-      # to test whether the identical block hit by diagnose-profile-identity-namespace.js
-      # is a structural GitHub-Actions-IP problem or specific to that script.
-      - name: Throwaway session probe (temporary diagnostic)
-        continue-on-error: true
-        run: node scripts/probe-session-throwaway.js
-
       - name: Run nightly crawl
         run: |
           ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
