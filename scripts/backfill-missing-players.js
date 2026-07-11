@@ -62,6 +62,10 @@ const crypto       = require('crypto');
 const https        = require('https');
 const { execSync } = require('child_process');
 const { isFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
+const {
+  GRADE_PLAYERS_QUERY, gradePageFilter, PROFILE_SEARCH_QUERY,
+  matchFromGrade, matchFromGradeRosterByName, matchFromSearch, isPlaceholderName,
+} = require('./lib/namespace-resolve.cjs');
 
 const ROOT             = path.join(__dirname, '..');
 const GAMES_DIR        = path.join(ROOT, 'games', 'bv');
@@ -388,6 +392,82 @@ async function fetchProfile(profileID) {
   return { status: 'ok', data };
 }
 
+// ─── Namespace-mismatch recovery (gradePlayerStatistics / profileSearch) ────
+// Copied verbatim from playhq_api_reference.md via lib/namespace-resolve.cjs.
+// Same profileCookie/HEADERS_BASE/doFetch as fetchProfile above -- no separate
+// session. See buildPrivatePlayer below for how these are used: a candidate
+// that fetchProfile(uuid) reports private/not-found may simply be stored
+// under the wrong (spectator-namespace) id -- this recovers the real
+// api-namespace id from the player's own name + grade/team context.
+//
+// gradePlayerStatistics: CORRECTED 2026-07-11 -- previously believed hard-
+// capped at 50 with no pagination (that measurement omitted $filter). It's
+// genuinely paginated; 50 is the per-page limit. This matters enormously for
+// THIS script's population specifically: candidates here structurally lack
+// tid (games/bv's g.p never records team side), so a full-roster NAME-ONLY
+// match (matchFromGradeRosterByName, no tid needed) is what actually recovers
+// them -- measured at 96.5% of all recoveries in a sampled backlog
+// (diagnose-uuid-classification.js, post-pagination-fix), vs profileSearch
+// alone recovering ~46% pre-fix. gradeCache holds the aggregated all-pages
+// roster per gradeID.
+async function gradePlayersPage(gradeID, page) {
+  if (!profileCookie) await refreshProfileSession();
+  const body = {
+    operationName: 'publicGradeStatistics',
+    variables: { gradeID, filter: gradePageFilter(page) },
+    query: GRADE_PLAYERS_QUERY,
+  };
+  let res;
+  try {
+    res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': profileCookie }, body: JSON.stringify(body) });
+  } catch (_) { return { status: 'error', results: [], meta: null }; }
+  if (res.status === 403) {
+    let b = ''; try { b = await res.text(); } catch (_) {}
+    return (b.includes('DOCTYPE') || b.includes('Request blocked'))
+      ? { status: 'blocked', results: [], meta: null } : { status: 'error', results: [], meta: null };
+  }
+  if (!res.ok) return { status: 'error', results: [], meta: null };
+  let json; try { json = await res.json(); } catch (_) { return { status: 'error', results: [], meta: null }; }
+  if (json.errors && json.errors.length) return { status: 'error', results: [], meta: null };
+  const data = (json.data || json)?.gradePlayerStatistics;
+  return { status: 'ok', results: data?.results || [], meta: data?.meta || null };
+}
+
+const gradeCache = new Map();
+async function gradePlayers(gradeID) {
+  if (gradeCache.has(gradeID)) return gradeCache.get(gradeID);
+  const p1 = await gradePlayersPage(gradeID, 1);
+  if (p1.status !== 'ok') return p1; // error/blocked — don't cache
+  let all = p1.results;
+  const totalPages = p1.meta?.totalPages || 1;
+  for (let page = 2; page <= totalPages; page++) {
+    const p = await gradePlayersPage(gradeID, page);
+    if (p.status !== 'ok') return p; // error/blocked mid-pagination — don't cache partial
+    all = all.concat(p.results);
+  }
+  const out = { status: 'ok', results: all };
+  gradeCache.set(gradeID, out); // only cache successes
+  return out;
+}
+
+async function profileSearchLookup(fullName) {
+  if (!profileCookie) await refreshProfileSession();
+  const body = { operationName: 'ProfileSearch', variables: { fullName }, query: PROFILE_SEARCH_QUERY };
+  let res;
+  try {
+    res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': profileCookie }, body: JSON.stringify(body) });
+  } catch (_) { return { status: 'error', result: [] }; }
+  if (res.status === 403) {
+    let b = ''; try { b = await res.text(); } catch (_) {}
+    return (b.includes('DOCTYPE') || b.includes('Request blocked'))
+      ? { status: 'blocked', result: [] } : { status: 'error', result: [] };
+  }
+  if (!res.ok) return { status: 'error', result: [] };
+  let json; try { json = await res.json(); } catch (_) { return { status: 'error', result: [] }; }
+  if (json.errors && json.errors.length) return { status: 'error', result: [] };
+  return { status: 'ok', result: (json.data || json)?.profileSearch?.result || [] };
+}
+
 // ─── Spectator-API session (box scores, privacy-blind) ─────────────────────
 // Copied verbatim from nightly-crawl.js -- simpler single-query refresh,
 // shared cookie style works fine for this endpoint per that script's
@@ -450,6 +530,7 @@ function parseSpectatorPlayers(players) {
   if (!Array.isArray(players)) return [];
   return players.filter(p => p && p.profileID).map(p => ({
     profileID: p.profileID,
+    name:  p.name || null, // added for namespace-mismatch recovery — matches nightly-crawl.js's parseSpectatorPlayers
     pts:   spectatorStatValue(p.statistics, 'TOTAL_SCORE'),
     pt1:   spectatorStatValue(p.statistics, '1_POINT_SCORE'),
     pt2:   spectatorStatValue(p.statistics, '2_POINT_SCORE'),
@@ -655,11 +736,23 @@ function buildPublicPlayer(uuid, apiData, appearanceGids) {
 // ─── Build a private player stub from re-fetched spectator box scores ──────
 // appearances: [{ gid, sid, gradeId, gradeName, h, hn, a, an, forfeit }]
 // spectatorPool: shared { run(fn) } -- see makePool below.
-async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorStats) {
+//
+// Returns { kind: 'private', player } (existing behaviour) OR, when the
+// player's real spectator-namespace uuid turns out to be a namespace mismatch
+// (dead in the api namespace but a live api id exists for the same real
+// person), { kind: 'public', player } instead -- built via buildPublicPlayer
+// against the RECOVERED id, exactly as if that id had resolved on the first
+// try. Returns { kind: 'blocked' } if CloudFront was hit during recovery.
+//
+// Without this, every candidate here that is actually a diverged public
+// player (measured at ~46% of a sampled backlog -- diagnose-uuid-
+// classification.js) would be written as a dead `Player #...` private stub.
+async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorStats, appearanceGids) {
   const bk = { maxGamePTS: null, maxGameThreePt: null, foulOuts: {} };
   let maxGamePTSKey = null, maxGameThreePtKey = null;
   const seasonsMap = new Map(); // sid -> { sid, sn, club, regs: Map<tid, reg> }
   const seenGameKeys = new Set();
+  let capturedName = null; // real display name from the spectator box score, if any
 
   const live = appearances.filter(a => !a.forfeit);
   await Promise.all(live.map(appearance => spectatorPool.run(async () => {
@@ -673,6 +766,7 @@ async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorSta
     if (seenGameKeys.has(appearance.gid)) return; // re-check post-await
     seenGameKeys.add(appearance.gid);
     spectatorStats.hits++;
+    if (!capturedName && mine.name) capturedName = mine.name;
 
     const isHome = homePlayers.some(p => p.profileID === uuid);
     const tid = isHome ? appearance.h  : appearance.a;
@@ -707,21 +801,100 @@ async function buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorSta
   });
   for (const field of Object.keys(career)) if (career[field] !== 0) bk[field] = career[field];
 
+  // ── Namespace-mismatch recovery, before finalizing this as a private stub ──
+  // Uses the name + tid/gid captured above (tid here IS reliable -- resolved
+  // per-appearance via the spectator home/away cross-reference in the loop
+  // above, not read directly off games/bv, which is side-blind). Three tiers,
+  // most precise first:
+  //   1. tid-based grade match (this function's own resolved tid+gid).
+  //   2. grade-roster NAME-ONLY match (no tid needed) -- a second, broader
+  //      net over the same grade(s), for cases tier 1 doesn't resolve.
+  //   3. profileSearch (+ orgId disambiguation) -- final, tenant-wide fallback.
+  // gradePlayers() is cached per grade, so a grade fetched in tier 1 costs
+  // nothing extra in tier 2.
+  if (!isPlaceholderName(capturedName)) {
+    let orgId = null;
+    const regPairs = [];
+    const allGids = new Set();
+    for (const s of seasons) {
+      if (!orgId) orgId = sportIndex.seasons?.[s.sid]?.orgId || null;
+      for (const r of s.regs) {
+        if (r.gid) allGids.add(r.gid);
+        if (r.tid && r.gid) regPairs.push({ tid: r.tid, gid: r.gid });
+      }
+    }
+
+    let recoveryBlocked = false;
+
+    // Tier 1: tid-based match.
+    const tidHits = new Set();
+    for (const gid of new Set(regPairs.map(r => r.gid))) {
+      const g = await gradePlayers(gid);
+      if (g.status === 'blocked') { recoveryBlocked = true; break; }
+      for (const r of regPairs.filter(r => r.gid === gid)) {
+        const m = matchFromGrade(g.results, { name: capturedName, tid: r.tid });
+        if (m) tidHits.add(m);
+      }
+    }
+    let candidate = tidHits.size === 1 ? [...tidHits][0] : null;
+
+    // Tier 2: grade-roster name-only match.
+    if (!recoveryBlocked && !candidate) {
+      const rosterHits = new Set();
+      for (const gid of allGids) {
+        const g = await gradePlayers(gid);
+        if (g.status === 'blocked') { recoveryBlocked = true; break; }
+        const m = matchFromGradeRosterByName(g.results, { name: capturedName });
+        if (m) rosterHits.add(m);
+      }
+      candidate = rosterHits.size === 1 ? [...rosterHits][0] : null;
+    }
+
+    // Tier 3: profileSearch (+ orgId) fallback.
+    if (!recoveryBlocked && !candidate) {
+      const sr = await profileSearchLookup(capturedName);
+      if (sr.status === 'blocked') recoveryBlocked = true;
+      else {
+        candidate = matchFromSearch(sr.result, { name: capturedName, orgId: null })
+                 || (orgId ? matchFromSearch(sr.result, { name: capturedName, orgId }) : null);
+      }
+    }
+    if (recoveryBlocked) return { kind: 'blocked' };
+    if (candidate && candidate !== uuid) {
+      const check = await fetchProfile(candidate);
+      if (check.status === 'cloudfront-block') return { kind: 'blocked' };
+      if (check.status === 'ok') {
+        const player = buildPublicPlayer(uuid, check.data, appearanceGids);
+        if (player) {
+          player.apiId = candidate; // so a future re-check never has to recover it again
+          return { kind: 'public', player };
+        }
+      }
+    }
+  }
+
   bk.statsChecked = new Date().toISOString(); // confirmed-private -- the regular matrix will not retry this uuid
 
   return {
-    uuid,
-    name: `Player #${uuid.slice(0, TRUNC_LEN)}`,
-    private: true,
-    sports: { Basketball: bk },
-    seasons,
-    teams: [],
-    records: {
-      maxGamePTS:     maxGamePTSKey     ? { v: bk.maxGamePTS,     ...maxGamePTSKey }     : { v: bk.maxGamePTS ?? null },
-      maxGameThreePt: maxGameThreePtKey ? { v: bk.maxGameThreePt, ...maxGameThreePtKey } : { v: bk.maxGameThreePt ?? null },
+    kind: 'private',
+    player: {
+      uuid,
+      // Real name if the spectator re-fetch found one, matching fetch-profile-
+      // stats.js's stated convention ("we still know their name but mark them
+      // as private" -- 2026-07-10 header comment) instead of always hiding it
+      // behind the placeholder even when we actually captured it above.
+      name: capturedName || `Player #${uuid.slice(0, TRUNC_LEN)}`,
+      private: true,
+      sports: { Basketball: bk },
+      seasons,
+      teams: [],
+      records: {
+        maxGamePTS:     maxGamePTSKey     ? { v: bk.maxGamePTS,     ...maxGamePTSKey }     : { v: bk.maxGamePTS ?? null },
+        maxGameThreePt: maxGameThreePtKey ? { v: bk.maxGameThreePt, ...maxGameThreePtKey } : { v: bk.maxGameThreePt ?? null },
+      },
+      games: appearances.map(a => a.gid).sort(),
+      updatedAt: new Date().toISOString(),
     },
-    games: appearances.map(a => a.gid).sort(),
-    updatedAt: new Date().toISOString(),
   };
 }
 
@@ -762,6 +935,7 @@ async function main() {
   const summary = {
     candidatesFound: candidates.size,
     processed: 0, committed: 0, public: 0, private: 0, errors: 0,
+    recoveredViaNamespace: 0, // public players recovered via namespace-mismatch fix, not a direct hit
     spectatorHits: 0, spectatorMisses: 0, cloudfrontBlocked: false,
   };
 
@@ -832,8 +1006,9 @@ async function main() {
           // parseProfileStats returned null despite an "ok" fetch -- treat like private fallback
         }
         if (result.status === 'private' || result.status === 'inaccessible' || (result.status === 'ok')) {
-          const player = await buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorStats);
-          return { uuid, player, kind: 'private' };
+          const outcome = await buildPrivatePlayer(uuid, appearances, spectatorPool, spectatorStats, appearanceGids);
+          if (outcome.kind === 'blocked') return { uuid, player: null, kind: 'blocked' };
+          return { uuid, player: outcome.player, kind: outcome.kind };
         }
         return { uuid, player: null, kind: 'error', err: result.err };
       }));
@@ -841,7 +1016,18 @@ async function main() {
       summary.spectatorHits   += spectatorStats.hits;
       summary.spectatorMisses += spectatorStats.misses;
 
+      // A CloudFront block during namespace-mismatch recovery (inside
+      // buildPrivatePlayer) is detected here, distinct from the earlier
+      // profileResults blockIdx check (which only covers the initial
+      // fetchProfile batch, before any recovery is attempted). Unlike that
+      // check, we don't discard this whole batch -- candidates that already
+      // resolved (public or private, no recovery needed) still get written;
+      // only the blocked one(s) are skipped and remain candidates for the
+      // next run (candidates are re-derived fresh from games/bv each run).
+      let sawBlockThisBatch = false;
+
       for (const { uuid, player, kind } of built) {
+        if (kind === 'blocked') { sawBlockThisBatch = true; continue; }
         summary.processed++;
         if (kind === 'error' || !player) { summary.errors++; continue; }
 
@@ -855,7 +1041,18 @@ async function main() {
         index[uuid] = { name: player.name, history };
         shardsTouched.add(shard);
 
-        if (kind === 'public') summary.public++; else summary.private++;
+        if (kind === 'public') {
+          summary.public++;
+          if (player.apiId) summary.recoveredViaNamespace++;
+        } else {
+          summary.private++;
+        }
+      }
+
+      if (sawBlockThisBatch) {
+        console.log(`  ⛔ CloudFront block during namespace-mismatch recovery this batch — committing what succeeded, stopping. Re-run to continue.`);
+        summary.cloudfrontBlocked = true;
+        blocked = true;
       }
 
       sinceCommit += batch.length;
@@ -903,6 +1100,7 @@ async function main() {
   console.log(`  Candidates found      : ${summary.candidatesFound.toLocaleString()}`);
   console.log(`  Processed this run    : ${summary.processed.toLocaleString()}`);
   console.log(`  Public (real record)  : ${summary.public.toLocaleString()}`);
+  console.log(`    ├─ recovered via namespace fix : ${summary.recoveredViaNamespace.toLocaleString()}`);
   console.log(`  Private (stub record) : ${summary.private.toLocaleString()}`);
   console.log(`  Errors (left pending) : ${summary.errors.toLocaleString()}`);
   console.log(`  Spectator hits/misses : ${summary.spectatorHits.toLocaleString()}/${summary.spectatorMisses.toLocaleString()}`);

@@ -926,7 +926,7 @@ async function main() {
     for (const { uuid, name, deltas } of entries) {
       if (!index[uuid]) {
         // New player — defer to Phase 4 for stubbing
-        genuinelyNew.set(uuid, name || `Player #${uuid.slice(0, 13)}`);
+        genuinelyNew.set(uuid, name || `Player #${uuid.slice(0, 10)}`);
         continue;
       }
 
@@ -1051,22 +1051,48 @@ async function main() {
       // Compute initial stats from the deltas we already collected
       const deltas = playerDeltas.get(uuid)?.deltas || [];
       const bk     = { maxGamePTS: 0, maxGameThreePt: 0, foulOuts: {} };
-      for (const { seasonId, pts, pt3, fouls } of deltas) {
+
+      // Build seasons/regs from the SAME deltas, using the SAME construction
+      // as the existing-player path above (Phase 3 cont., L945-986). Previously
+      // new stubs got `seasons: []` — no tid/gid at all — which meant a
+      // namespace-mismatch recovery attempt (fetch-profile-stats.js) had
+      // nothing to give gradePlayerStatistics for a brand-new player. This
+      // also means Phase 3-cont's "New player -> defer to Phase 4" path no
+      // longer silently loses that first night's season/team/history data.
+      const seasons = [];
+      for (const d of deltas) {
+        const { seasonId, pts, pt3, fouls, playerTid, gradeId, gradeName } = d;
         if (pts > bk.maxGamePTS)     bk.maxGamePTS     = pts;
         if (pt3 > bk.maxGameThreePt) bk.maxGameThreePt = pt3;
         if (fouls >= 5) bk.foulOuts[seasonId] = (bk.foulOuts[seasonId] || 0) + 1;
+
+        if (!seasonId || !playerTid || !gradeId) continue;
+        let season = seasons.find(s => s.sid === seasonId);
+        if (!season) {
+          const si = sportIndex.seasons?.[seasonId];
+          season = { sid: seasonId, sn: si?.name || seasonId, club: si?.orgName || '', regs: [] };
+          seasons.push(season);
+        }
+        if (!season.regs.some(r => r.tid === playerTid && r.gid === gradeId)) {
+          season.regs.push({ tid: playerTid, tn: '', gid: gradeId, gn: gradeName || '', div: null, stats: {} });
+        }
       }
 
       const stub = {
         uuid, name,
         sports:    { Basketball: bk },
-        seasons:   [],
+        seasons,
         teams:     [],
         updatedAt: now,
       };
       writePlayer(uuid, stub);
 
-      index[uuid]    = { name, history: {} };
+      // History — same shape as the existing-player path (season -> unique tids).
+      const history = {};
+      for (const season of seasons) {
+        history[season.sid] = [...new Set(season.regs.map(r => r.tid))];
+      }
+      index[uuid]    = { name, history };
       indexChanged   = true;
       stubbed++;
     }
