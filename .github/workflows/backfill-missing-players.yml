@@ -1,21 +1,26 @@
 # .github/workflows/backfill-missing-players.yml
 name: Backfill Missing Players (games/bv-derived, one-off)
 
-# Creates player records for uuids recovered by
-# recover-uuids-from-git-history.js that never had a players/ record at all
-# (no index entry in any shard). For each: probes publicProfileStatistics --
-# public profiles get a full real record, private ones get a stub (private:
-# true, placeholder name) with real stats reconstructed via a per-game
-# spectator re-fetch, since games/bv/*.json never stored per-game stats.
+# Creates player records for full-length uuids in games/bv attendee lists that
+# have no players/indexes/ entry in any shard. For each: probes
+# publicProfileStatistics directly; on failure, reconstructs name+tid from a
+# spectator re-fetch and attempts namespace-mismatch recovery (grade-tid ->
+# grade-roster name-only -> profileSearch). Recovered ids get a full real
+# record (apiId stored); genuinely-private ones get a stub (private:true, real
+# captured name if available) with stats reconstructed from spectator data.
 #
 # Resumable by construction: candidates are recomputed fresh every run by
 # scanning games/bv/*.json for full-length uuids missing from every shard
-# index -- once a uuid is written (and indexed), it drops out of the
-# candidate set on the next run. No separate progress file needed.
+# index -- once a uuid is written (and indexed), it drops out of the candidate
+# set on the next run. No separate progress file needed.
 #
-# Deliberately does NOT check out players/<shard>/ -- only players/indexes/
-# (small, name+history only). Every candidate here is by definition NOT YET
-# a player file, so nothing in this script ever reads an existing one.
+# NO actions/setup-node STEP. This is deliberate and load-bearing: adding
+# setup-node@v4 changes the runner's outbound network fingerprint and makes
+# CloudFront's WAF 403 every request (session acquisition included), which
+# reliably kills the run at "Failed to obtain session after 10 attempts". The
+# ubuntu-latest runner already ships a recent Node, and every working
+# diagnostic / the proven fetch-profile-stats matrix job in this repo invokes
+# `node` directly with no setup-node step. Do NOT re-add setup-node.
 
 on:
   workflow_dispatch:
@@ -55,11 +60,6 @@ jobs:
             reports
             data
           sparse-checkout-cone-mode: false
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: Configure git identity
         run: |
