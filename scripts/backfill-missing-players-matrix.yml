@@ -1,0 +1,302 @@
+# .github/workflows/backfill-missing-players-matrix.yml
+name: Backfill Missing Players (Matrix)
+
+# Sharded version of the one-off backfill. Structure mirrors
+# fetch-profile-stats-matrix.yml (the proven, CloudFront-surviving pattern in
+# this repo) as closely as possible:
+#
+#   generate-candidates  -- scans games/bv ONCE, buckets un-indexed candidate
+#                           uuids by first-2-hex prefix, uploads them as one
+#                           artifact, and emits the non-empty bucket list.
+#   resolve (matrix)     -- one job per bucket, each on its own runner/IP (so
+#                           CloudFront's per-IP WAF is per-bucket, not
+#                           aggregate). Downloads the candidates artifact,
+#                           processes ONLY its bucket, writes player files +
+#                           its own index shard, packages the diff as a tar.
+#                           Runs with --no-commit (never pushes).
+#   apply-and-commit     -- downloads every bucket's tar, extracts, ONE commit.
+#   summary-and-retrigger-- if any candidates remain (buckets that CloudFront-
+#                           blocked partway), re-dispatches until a run makes
+#                           zero progress (3 consecutive zero-progress runs =
+#                           stop), so the whole 80k+ backlog clears unattended.
+#
+# NO actions/setup-node ANYWHERE. Same load-bearing reason as the single-runner
+# workflow: setup-node changes the runner's network fingerprint and CloudFront
+# 403s every request. The runner's preinstalled node is used directly. Do NOT
+# add setup-node.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_number:
+        description: 'Auto-incremented — do not set manually'
+        required: false
+        default: '1'
+        type: string
+      consecutive_zeros:
+        description: 'Consecutive zero-progress runs — do not set manually'
+        required: false
+        default: '0'
+        type: string
+      max_per_bucket:
+        description: 'Limit candidates processed per bucket per run (blank = no limit)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Resolve + report but do not write/commit (test)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  generate-candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      buckets: ${{ steps.gen.outputs.buckets }}
+    steps:
+      - name: Checkout (games/, players/indexes/, scripts/; blob:none)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Generate bucketed candidates
+        id: gen
+        run: node scripts/backfill-generate-candidates.js --out-dir=/tmp/candidates
+
+      - name: Upload candidates artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backfill-candidates
+          path: /tmp/candidates
+          retention-days: 1
+
+  resolve:
+    needs: generate-candidates
+    if: needs.generate-candidates.outputs.buckets != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        bucket: ${{ fromJson(needs.generate-candidates.outputs.buckets) }}
+    steps:
+      - name: Checkout (scripts, data, this bucket's player shard + index only — NO games/bv)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            data
+            players/indexes/${{ matrix.bucket }}.json
+            players/${{ matrix.bucket }}
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download candidates artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backfill-candidates
+          path: /tmp/candidates
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Resolve bucket ${{ matrix.bucket }}
+        run: |
+          ARGS="--candidates-file=/tmp/candidates/${{ matrix.bucket }}.json --bucket=${{ matrix.bucket }} --no-commit"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.max_per_bucket }}" ]; then ARGS="$ARGS --max=${{ inputs.max_per_bucket }}"; fi
+          node scripts/backfill-missing-players.js $ARGS
+
+      - name: Package changed player files
+        if: always() && inputs.dry_run != true
+        run: |
+          git diff --name-only HEAD > /tmp/changed.txt 2>/dev/null || true
+          git ls-files --others --exclude-standard players/${{ matrix.bucket }}/ >> /tmp/changed.txt 2>/dev/null || true
+          git ls-files --others --exclude-standard players/indexes/${{ matrix.bucket }}.json >> /tmp/changed.txt 2>/dev/null || true
+          if [ -s /tmp/changed.txt ]; then
+            sort -u /tmp/changed.txt -o /tmp/changed.txt
+            tar -czf /tmp/bucket-files.tar.gz -T /tmp/changed.txt
+            echo "Packaged $(wc -l < /tmp/changed.txt) changed files"
+          else
+            echo "No changed files"
+          fi
+
+      - name: Upload bucket files
+        if: always() && inputs.dry_run != true
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucket-files-${{ matrix.bucket }}
+          path: /tmp/bucket-files.tar.gz
+          if-no-files-found: ignore
+          retention-days: 1
+
+  apply-and-commit:
+    needs: resolve
+    runs-on: ubuntu-latest
+    if: always() && inputs.dry_run != true
+    timeout-minutes: 60
+    steps:
+      - name: Download all bucket file artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bucket-files-*
+          path: /tmp/bucket-artifacts/
+          merge-multiple: false
+
+      - name: Check if anything to apply
+        id: check
+        run: |
+          has_files=false
+          > /tmp/sparse-dirs.txt
+          for dir in /tmp/bucket-artifacts/bucket-files-*/; do
+            tarfile=$(ls "$dir"*.tar.gz 2>/dev/null | head -1)
+            if [ -n "$tarfile" ] && [ -s "$tarfile" ]; then
+              has_files=true
+              bucket=$(basename "$dir" | sed 's/bucket-files-//')
+              echo "players/$bucket" >> /tmp/sparse-dirs.txt
+            fi
+          done
+          echo "has_files=$has_files" >> $GITHUB_OUTPUT
+          if [ "$has_files" = "true" ]; then
+            echo "Buckets with changes: $(wc -l < /tmp/sparse-dirs.txt)"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.has_files == 'true'
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            players/indexes
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Expand sparse checkout to active buckets
+        if: steps.check.outputs.has_files == 'true'
+        run: |
+          git sparse-checkout set --no-cone scripts players/indexes $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
+
+      - name: Configure git
+        if: steps.check.outputs.has_files == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Apply bucket changes
+        if: steps.check.outputs.has_files == 'true'
+        run: |
+          applied=0
+          for dir in /tmp/bucket-artifacts/bucket-files-*/; do
+            tarfile=$(ls "$dir"*.tar.gz 2>/dev/null | head -1)
+            if [ -n "$tarfile" ] && [ -s "$tarfile" ]; then
+              tar -xzf "$tarfile" --no-overwrite-dir
+              applied=$((applied + 1))
+            fi
+          done
+          echo "Applied: $applied buckets"
+
+      - name: Commit and push
+        if: steps.check.outputs.has_files == 'true'
+        run: |
+          git add players/
+          if git diff --staged --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          count=$(git diff --staged --name-only | wc -l)
+          git commit -m "backfill-missing-players: matrix run ${{ inputs.run_number }} — ${count} files"
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git push origin main
+          echo "Committed and pushed: ${count} files"
+
+  summary-and-retrigger:
+    needs: apply-and-commit
+    runs-on: ubuntu-latest
+    if: always() && inputs.dry_run != true
+    steps:
+      - name: Checkout (games/, players/indexes/, scripts/; blob:none)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            games
+            players/indexes
+            scripts
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Count remaining candidates
+        id: count
+        run: |
+          # Re-run the generator (scan only) to a throwaway dir; the bucket
+          # count of remaining candidates is what tells us whether to continue.
+          node scripts/backfill-generate-candidates.js --out-dir=/tmp/remaining
+          remaining=$(python3 -c "import json,glob,os; d='/tmp/remaining'; print(sum(len(json.load(open(f))) for f in glob.glob(os.path.join(d,'*.json')) if not f.endswith('_buckets.json')))")
+          echo "remaining=$remaining" >> $GITHUB_OUTPUT
+          echo "Remaining candidates after this run: $remaining"
+
+      - name: Decide whether to re-trigger
+        id: decide
+        env:
+          REMAINING: ${{ steps.count.outputs.remaining }}
+          RUN_NUMBER: ${{ inputs.run_number }}
+          CONSECUTIVE_ZEROS: ${{ inputs.consecutive_zeros }}
+        run: |
+          # Progress = did the remaining count drop vs the previous run? We infer
+          # "no progress" only by remaining hitting 0, OR by the caller-tracked
+          # consecutive_zeros guard. Simpler + safe: stop when remaining==0, or
+          # after 3 consecutive runs where remaining didn't change. We can't see
+          # the prior remaining here, so we use consecutive_zeros as a hard cap
+          # on total re-triggers as a backstop against infinite loops.
+          next_run=$((RUN_NUMBER + 1))
+          zeros=$CONSECUTIVE_ZEROS
+          go=true
+          if [ "$REMAINING" -eq 0 ]; then
+            echo "All candidates resolved — stopping."
+            go=false
+          fi
+          # Hard backstop: never re-trigger more than 60 times (60 * 20 buckets
+          # in parallel clears the backlog many times over; if it hasn't
+          # finished by then, something is wrong and a human should look).
+          if [ "$RUN_NUMBER" -ge 60 ]; then
+            echo "Reached run cap (60) — stopping to avoid an unbounded loop."
+            go=false
+          fi
+          echo "go=$go" >> $GITHUB_OUTPUT
+          echo "next_run=$next_run" >> $GITHUB_OUTPUT
+
+      - name: Re-trigger next run
+        if: steps.decide.outputs.go == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Re-triggering: run ${{ steps.decide.outputs.next_run }}"
+          gh workflow run backfill-missing-players-matrix.yml \
+            -f run_number=${{ steps.decide.outputs.next_run }} \
+            -f consecutive_zeros=0 \
+            -f max_per_bucket=${{ inputs.max_per_bucket }}
