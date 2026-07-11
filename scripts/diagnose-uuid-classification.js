@@ -39,8 +39,8 @@ const crypto = require('crypto');
 const https  = require('https');
 const { isFullUuid } = require('./lib/uuid-prefix.cjs');
 const {
-  GRADE_PLAYERS_QUERY, PROFILE_SEARCH_QUERY,
-  matchFromGrade, matchFromSearch, isPlaceholderName,
+  GRADE_PLAYERS_QUERY, gradePageFilter, PROFILE_SEARCH_QUERY,
+  matchFromGrade, matchFromGradeRosterByName, matchFromSearch, isPlaceholderName,
 } = require('./lib/namespace-resolve.cjs');
 
 const ROOT      = path.join(__dirname, '..');
@@ -281,27 +281,48 @@ async function publicProfileStatistics(profileID) {
 }
 
 // gradePlayerStatistics, cached per gradeId (many candidates share a grade).
+// Fetches ONE page of gradePlayerStatistics.
+async function gradePlayersPage(gradeID, page) {
+  if (!apiCookie) await refreshApiSession();
+  const body = {
+    operationName: 'publicGradeStatistics',
+    variables: { gradeID, filter: gradePageFilter(page) },
+    query: GRADE_PLAYERS_QUERY,
+  };
+  let res;
+  try { res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': apiCookie }, body: JSON.stringify(body) }); }
+  catch (_) { return { status: 'error', results: [], meta: null }; }
+  if (res.status === 403) {
+    let b = ''; try { b = await res.text(); } catch (_) {}
+    return (b.includes('DOCTYPE') || b.includes('Request blocked'))
+      ? { status: 'blocked', results: [], meta: null } : { status: 'error', results: [], meta: null };
+  }
+  if (!res.ok) return { status: 'error', results: [], meta: null };
+  let json; try { json = await res.json(); } catch (_) { return { status: 'error', results: [], meta: null }; }
+  if (json.errors && json.errors.length) return { status: 'error', results: [], meta: null };
+  const data = (json.data || json)?.gradePlayerStatistics;
+  return { status: 'ok', results: data?.results || [], meta: data?.meta || null };
+}
+
+// Fetches and aggregates ALL pages of gradePlayerStatistics for a grade
+// (corrected 2026-07-11 — see namespace-resolve.cjs header comment: this field
+// is paginated via filter.pagination, confirmed live in
+// diagnose-grade-pagination.js; 50 is the per-page limit, not a total cap).
+// Cached per gradeID — many candidates in this backlog share a grade.
 const gradeCache = new Map();
 async function gradePlayers(gradeID) {
   if (gradeCache.has(gradeID)) return gradeCache.get(gradeID);
-  if (!apiCookie) await refreshApiSession();
-  const body = { operationName: 'GradePlayerStatistics', variables: { gradeID }, query: GRADE_PLAYERS_QUERY };
-  let res;
-  try { res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': apiCookie }, body: JSON.stringify(body) }); }
-  catch (_) { return { status: 'error', results: [] }; }
-  let out;
-  if (res.status === 403) {
-    let b = ''; try { b = await res.text(); } catch (_) {}
-    out = (b.includes('DOCTYPE') || b.includes('Request blocked')) ? { status: 'blocked', results: [] } : { status: 'error', results: [] };
-  } else if (!res.ok) {
-    out = { status: 'error', results: [] };
-  } else {
-    let json; try { json = await res.json(); } catch (_) { json = null; }
-    out = (json && !(json.errors && json.errors.length))
-      ? { status: 'ok', results: (json.data || json)?.gradePlayerStatistics?.results || [] }
-      : { status: 'error', results: [] };
+  const p1 = await gradePlayersPage(gradeID, 1);
+  if (p1.status !== 'ok') return p1; // error/blocked — don't cache
+  let all = p1.results;
+  const totalPages = p1.meta?.totalPages || 1;
+  for (let page = 2; page <= totalPages; page++) {
+    const p = await gradePlayersPage(gradeID, page);
+    if (p.status !== 'ok') return p; // error/blocked mid-pagination — don't cache partial
+    all = all.concat(p.results);
   }
-  if (out.status === 'ok') gradeCache.set(gradeID, out); // only cache successes
+  const out = { status: 'ok', results: all, totalPages, totalRecords: p1.meta?.totalRecords ?? all.length };
+  gradeCache.set(gradeID, out); // only cache successes
   return out;
 }
 
@@ -372,12 +393,30 @@ async function classifyOne(uuid, appr) {
   if (isPlaceholderName(name)) return { class: 'unrecoverable-noname' };
 
   let apiId = null, via = null;
+
+  // Tier 1: grade-scoped, tid-based match (the matrix's population — real
+  // regs with tid). Structurally never fires for THIS backlog (games/bv's
+  // g.p never records team side — see diagnose-uuid-population.js), but kept
+  // for correctness / future-proofing if that ever changes.
   if (appr.gradeId && appr.tid) {
     const g = await gradePlayers(appr.gradeId);
     if (g.status === 'blocked') return { class: 'blocked' };
     const m = matchFromGrade(g.results, { name, tid: appr.tid });
-    if (m) { apiId = m; via = 'grade'; }
+    if (m) { apiId = m; via = 'grade-tid'; }
   }
+
+  // Tier 2 (NEW, 2026-07-11 pagination correction): grade-scoped, NAME-ONLY
+  // match across the FULL paginated roster (tens of players per grade) — no
+  // tid needed. Much tighter search space than a tenant-wide profileSearch,
+  // so tried first. gradePlayers() is cached per gradeID so this doesn't cost
+  // a second API round-trip when Tier 1 already fetched the same grade.
+  if (!apiId && appr.gradeId) {
+    const g = await gradePlayers(appr.gradeId);
+    if (g.status === 'blocked') return { class: 'blocked' };
+    const m = matchFromGradeRosterByName(g.results, { name });
+    if (m) { apiId = m; via = 'grade-roster'; }
+  }
+
   if (!apiId) {
     const sr = await profileSearchLookup(name);
     if (sr.status === 'blocked') return { class: 'blocked' };
@@ -403,26 +442,32 @@ async function classifyOne(uuid, appr) {
 async function main() {
   await refreshApiSession();
   const tally = {};
-  const viaTally = { grade: 0, search: 0, 'search-org': 0 };
-  // Was a grade attempt even possible (had gradeId+tid), and did it fail before
-  // falling to search? Distinguishes "grade wasn't tried" from "grade tried, missed".
-  const gradeAttemptTally = { attempted: 0, hit: 0, missedThenSearchHit: 0, noGradeContext: 0 };
+  const viaTally = { 'grade-tid': 0, 'grade-roster': 0, search: 0, 'search-org': 0 };
+  // hadGradeId: was a grade attempt even possible at all (gradeId present)?
+  // Under the pagination correction, tid is NOT required to attempt the
+  // grade-roster tier — only gradeId is. hadTid tracked separately since
+  // that's what gates the (now largely redundant, kept for future-proofing)
+  // tid-based tier.
+  const gradeAttemptTally = { hadGradeId: 0, hadTid: 0, rosterHit: 0, tidHit: 0, gradeMissedThenSearchHit: 0, noGradeIdAtAll: 0 };
   const examples = { 'diverged-recoverable': [], 'genuinely-private': [], 'already-public': [], 'unrecoverable-noname': [] };
   let done = 0;
 
   for (const uuid of sample) {
     const appr = pool.get(uuid);
-    const hadGradeContext = !!(appr.gradeId && appr.tid);
+    const hadGradeId = !!appr.gradeId;
+    const hadTid = !!(appr.gradeId && appr.tid);
     const res = await classifyOne(uuid, appr);
     tally[res.class] = (tally[res.class] || 0) + 1;
     if (res.class === 'diverged-recoverable') {
       viaTally[res.via] = (viaTally[res.via] || 0) + 1;
-      if (hadGradeContext) {
-        gradeAttemptTally.attempted++;
-        if (res.via === 'grade') gradeAttemptTally.hit++;
-        else gradeAttemptTally.missedThenSearchHit++;
+      if (hadGradeId) {
+        gradeAttemptTally.hadGradeId++;
+        if (hadTid) gradeAttemptTally.hadTid++;
+        if (res.via === 'grade-tid') gradeAttemptTally.tidHit++;
+        else if (res.via === 'grade-roster') gradeAttemptTally.rosterHit++;
+        else gradeAttemptTally.gradeMissedThenSearchHit++; // had gradeId, grade tiers still missed, search caught it
       } else {
-        gradeAttemptTally.noGradeContext++;
+        gradeAttemptTally.noGradeIdAtAll++;
       }
     }
     if (examples[res.class] && examples[res.class].length < 5) {
@@ -447,19 +492,20 @@ async function main() {
 
   const recTotal = (tally['diverged-recoverable'] || 0);
   console.log(`\n  ── recovery path breakdown (of ${recTotal} diverged-recoverable) ──`);
-  console.log(`    via gradePlayerStatistics       : ${viaTally.grade}  (${recTotal ? (viaTally.grade / recTotal * 100).toFixed(1) : '0.0'}%)`);
-  console.log(`    via profileSearch (no collision): ${viaTally.search}  (${recTotal ? (viaTally.search / recTotal * 100).toFixed(1) : '0.0'}%)`);
-  console.log(`    via profileSearch + orgId        : ${viaTally['search-org']}  (${recTotal ? (viaTally['search-org'] / recTotal * 100).toFixed(1) : '0.0'}%)  <- ONLY recovered because org disambiguated a name collision`);
-  console.log(`\n  NOTE: "via profileSearch + orgId" is the direct measure of the undercount from the`);
-  console.log(`        previous run (which passed orgId:null always). It shows how many additional`);
-  console.log(`        players move from "genuinely-private" to "diverged-recoverable" with org context.`);
-  console.log(`\n  ── grade-attempt detail (only for recoverable candidates that HAD gradeId+tid) ──`);
-  console.log(`    had grade context, attempted gradePlayerStatistics : ${gradeAttemptTally.attempted}`);
-  console.log(`      ├─ grade match hit directly                     : ${gradeAttemptTally.hit}`);
-  console.log(`      └─ grade missed, search recovered it instead    : ${gradeAttemptTally.missedThenSearchHit}`);
-  console.log(`    no grade context at all (search was the only path): ${gradeAttemptTally.noGradeContext}`);
-  console.log('  NOTE: a "grade missed" case usually means the player was outside the 50-cap');
-  console.log('        (gradePlayerStatistics returns only the highest-appearance players).');
+  console.log(`    via grade, tid-based match       : ${viaTally['grade-tid']}  (${recTotal ? (viaTally['grade-tid'] / recTotal * 100).toFixed(1) : '0.0'}%)  <- never fires for this backlog (no tid in games/bv), kept for the matrix's population`);
+  console.log(`    via grade, NAME-ONLY roster match: ${viaTally['grade-roster']}  (${recTotal ? (viaTally['grade-roster'] / recTotal * 100).toFixed(1) : '0.0'}%)  <- NEW (2026-07-11 pagination correction)`);
+  console.log(`    via profileSearch (no collision) : ${viaTally.search}  (${recTotal ? (viaTally.search / recTotal * 100).toFixed(1) : '0.0'}%)`);
+  console.log(`    via profileSearch + orgId        : ${viaTally['search-org']}  (${recTotal ? (viaTally['search-org'] / recTotal * 100).toFixed(1) : '0.0'}%)  <- only recovered because org disambiguated a name collision`);
+  console.log(`\n  ── grade-attempt detail ──`);
+  console.log(`    had gradeId at all (roster tier attempted) : ${gradeAttemptTally.hadGradeId}`);
+  console.log(`      ├─ recovered via grade-roster name match  : ${gradeAttemptTally.rosterHit}`);
+  console.log(`      ├─ recovered via grade tid match          : ${gradeAttemptTally.tidHit}`);
+  console.log(`      └─ grade tiers missed, search recovered it: ${gradeAttemptTally.gradeMissedThenSearchHit}`);
+  console.log(`    had tid too (tid-based tier attempted)     : ${gradeAttemptTally.hadTid}`);
+  console.log(`    no gradeId at all (search was the only path): ${gradeAttemptTally.noGradeIdAtAll}`);
+  console.log('  NOTE: "grade tiers missed" now means the name genuinely isn\'t on the roster');
+  console.log('        under gradePlayerStatistics (deleted/hidden profile, etc.) — NOT a 50-cap');
+  console.log('        artifact, since every page is now fetched and aggregated before matching.');
 
   for (const k of Object.keys(examples)) {
     if (!examples[k].length) continue;
