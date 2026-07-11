@@ -22,23 +22,21 @@
 // diverged this way gets a false "private"/"not found" result -- unrelated
 // to any actual privacy setting or CloudFront block.
 //
-// FIX (this version): the previous version tried to route through
-// solitary-snowflake-cb3e.insanoflash.workers.dev, which is the wrong
-// worker -- that one only proxies box scores/spectator data. The actual
-// dedicated profile proxy is playhq-profile-proxy.insanoflake.workers.dev
-// (source supplied by Mark), which is a pure passthrough: it requires an
-// ALREADY-OBTAINED cookie in its request body (POST {cookie, graphql}) plus
-// an X-Proxy-Secret header matching the PLAYHQ_PROXY_SECRET GitHub Actions
-// secret, and forwards to api.playhq.com from Cloudflare's own egress IP.
-// It does NOT do cookie acquisition itself -- that step still happens
-// directly against api.playhq.com from this runner, same as every other
-// script in this project. Only the actual publicProfileStatistics call
-// (the one with the documented strict ~50-calls/window rate limit) is
-// routed through Cloudflare's IP; cookie acquisition is unchanged.
+// FIX (this version): previous versions threw and killed the whole process
+// on the first failed session-acquisition attempt, which meant one bad
+// request meant zero results for all 6 test ids. This version never throws
+// out of refreshProfileSession or queryProfileViaProxy -- a failed session
+// attempt is logged (full CDN headers + body, same as before) and retried
+// up to 10 times with backoff; if it still doesn't get a cookie, that case
+// gets a clear 'no-session-cookie' verdict and the script moves on to the
+// next id/case instead of stopping. Every one of the 6 cases gets a result
+// printed regardless of what happens with any of the others.
 //
-// Session-acquisition code copied verbatim from backfill-missing-players.js
-// (proven, not reinvented), including full CDN-header/body diagnostics on
-// failure.
+// Profile query itself still routes through the project's existing
+// playhq-profile-proxy Cloudflare Worker (POST {cookie, graphql} +
+// X-Proxy-Secret, from the PLAYHQ_PROXY_SECRET repo secret). Cookie
+// acquisition is still direct to api.playhq.com -- that worker requires a
+// cookie to already exist, it cannot obtain one itself.
 
 'use strict';
 
@@ -108,9 +106,12 @@ const COOKIE_QUERIES = [
 
 let profileCookie = null;
 
+// Never throws. Returns true if a cookie was obtained, false otherwise --
+// all failures (network errors, non-200 responses, missing cookie parts)
+// are logged and retried; only exhausting all attempts ends the function.
 async function refreshProfileSession() {
   for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 5000);
+    if (attempt > 1) await sleep(attempt * 3000);
     for (const q of COOKIE_QUERIES) {
       let res;
       try {
@@ -125,10 +126,7 @@ async function refreshProfileSession() {
         try { fullBody = await res.text(); } catch (_) {}
         console.log('  [session attempt ' + attempt + ', ' + q.operationName + '] no set-cookie header. status=' + res.status);
         logDiagnostics('profile-session attempt ' + attempt + ' (' + q.operationName + ')', res, fullBody);
-        if (res.status !== 200) {
-          throw new Error('Session request failed with status ' + res.status + ' and no cookies -- see full body logged above.');
-        }
-        continue;
+        continue; // no throw -- just try the next query/attempt
       }
       const parts = (Array.isArray(raw) ? raw : [raw]).map(function (c) { return c.split(';')[0].trim(); });
       const get = function (name) { return parts.find(function (c) { return c.startsWith(name + '='); }) || null; };
@@ -139,10 +137,11 @@ async function refreshProfileSession() {
       }
       profileCookie = tier + '; ' + session + '; ' + sub;
       console.log('  Profile session refreshed (attempt ' + attempt + ')');
-      return;
+      return true;
     }
   }
-  throw new Error('Failed to obtain profile session after 10 attempts');
+  console.log('  Could not obtain a profile session after 10 attempts -- continuing without one.');
+  return false;
 }
 
 const PROFILE_QUERY = {
@@ -167,11 +166,17 @@ const PROFILE_QUERY = {
 const PROXY_HOST = 'playhq-profile-proxy.insanoflake.workers.dev';
 const PROXY_SECRET = process.env.PLAYHQ_PROXY_SECRET;
 
+// Never throws -- every failure path returns a verdict object.
 async function queryProfileViaProxy(profileID) {
   if (!PROXY_SECRET) {
     return { verdict: 'missing-proxy-secret', detail: 'PLAYHQ_PROXY_SECRET env var not set' };
   }
-  if (!profileCookie) await refreshProfileSession();
+  if (!profileCookie) {
+    const ok = await refreshProfileSession();
+    if (!ok || !profileCookie) {
+      return { verdict: 'no-session-cookie', detail: 'refreshProfileSession did not obtain a cookie after 10 attempts' };
+    }
+  }
 
   const body = JSON.stringify({
     cookie: profileCookie,
@@ -217,7 +222,8 @@ const CASES = [
 
 async function main() {
   console.log('diagnose-profile-identity-namespace.js -- read-only, no writes');
-  console.log('Cookie acquisition: direct to api.playhq.com (unchanged, proven mechanism).');
+  console.log('Cookie acquisition: direct to api.playhq.com. Never throws -- failures are');
+  console.log('logged and the script moves on to the next id/case regardless.');
   console.log('Profile query: routed through ' + PROXY_HOST + ' (Cloudflare egress IP).\n');
 
   for (const caseEntry of CASES) {
@@ -228,13 +234,17 @@ async function main() {
     console.log('='.repeat(70));
 
     console.log('  [spectator-namespace] ' + spectatorId);
-    const rSpec = await queryProfileViaProxy(spectatorId);
+    let rSpec;
+    try { rSpec = await queryProfileViaProxy(spectatorId); }
+    catch (err) { rSpec = { verdict: 'unexpected-exception', detail: err.message }; }
     console.log('    ' + JSON.stringify(rSpec));
 
     await sleep(1000);
 
     console.log('  [api-namespace]       ' + apiId);
-    const rApi = await queryProfileViaProxy(apiId);
+    let rApi;
+    try { rApi = await queryProfileViaProxy(apiId); }
+    catch (err) { rApi = { verdict: 'unexpected-exception', detail: err.message }; }
     console.log('    ' + JSON.stringify(rApi));
 
     console.log();
@@ -252,7 +262,7 @@ async function main() {
     await sleep(1000);
   }
 
-  console.log('Done.');
+  console.log('Done. (This script never throws mid-run -- every case above ran regardless of earlier failures.)');
 }
 
-main().catch(function (err) { console.error('FATAL:', err); process.exit(1); });
+main().catch(function (err) { console.error('Unexpected top-level error (should not happen -- please report):', err); });
