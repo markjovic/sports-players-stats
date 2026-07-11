@@ -10,12 +10,11 @@ name: Diagnose Profile Identity Namespace Mismatch (read-only)
 # own namespace, players whose ids have diverged get a false "private"/"not
 # found" result -- unrelated to any real privacy setting.
 #
-# This calls the project's existing Cloudflare Worker
-# (solitary-snowflake-cb3e.insanoflash.workers.dev/profile/{id}?tenant=bv)
-# rather than api.playhq.com directly -- the Worker gets its PlayHQ session
-# from Cloudflare's own network, so this workflow never fights GitHub
-# Actions' IP reputation against PlayHQ's CloudFront WAF at all. No matrix/
-# parallel-attempt workaround needed for that reason.
+# Cookie acquisition is direct to api.playhq.com (unchanged, proven
+# mechanism -- this is not where the documented strict rate limit applies).
+# The actual publicProfileStatistics call is routed through the project's
+# existing playhq-profile-proxy Cloudflare Worker, using Cloudflare's own
+# egress IP, authenticated via the PLAYHQ_PROXY_SECRET repo secret.
 #
 # No writes, no git commits, no changes to games/ or players/ -- console
 # output only.
@@ -44,4 +43,6 @@ jobs:
           node-version: 20
 
       - name: Run diagnostic
+        env:
+          PLAYHQ_PROXY_SECRET: ${{ secrets.PLAYHQ_PROXY_SECRET }}
         run: node scripts/diagnose-profile-identity-namespace.js
