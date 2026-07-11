@@ -88,6 +88,26 @@ jobs:
           echo "PRE_MIGRATION=$PRE_MIGRATION" >> "$GITHUB_ENV"
           echo "PRE_RECOVERY=$PRE_RECOVERY"   >> "$GITHUB_ENV"
 
+      - name: List every commit touching games/ between the two reference points (for manual verification)
+        run: |
+          # This step exists purely so the commit selection above can be checked
+          # by eye instead of trusted. recover-uuids-from-git-history.js's own
+          # header comments mention three earlier, abandoned attempts (including
+          # runs killed by SIGTERM) before the version whose commits the grep
+          # above matches. If any of those earlier attempts made partial commits
+          # under a different message, they would sit between PRE_MIGRATION and
+          # PRE_RECOVERY undetected by the grep -- this lists everything in that
+          # range so that possibility can be ruled in or out directly, rather
+          # than assumed away.
+          echo "All commits touching games/ from PRE_MIGRATION to PRE_RECOVERY (inclusive):"
+          echo "-------------------------------------------------------------------------"
+          git log --reverse --format="%H  %ad  %s" --date=iso-strict "${PRE_MIGRATION}..${PRE_RECOVERY}" -- games/ | nl
+          echo ""
+          echo "Commit counts by message prefix (first 40 chars) in that range -- anything"
+          echo "other than the two expected script names below is worth a manual look:"
+          echo "-------------------------------------------------------------------------"
+          git log --format="%s" "${PRE_MIGRATION}..${PRE_RECOVERY}" -- games/ | cut -c1-40 | sort | uniq -c | sort -rn
+
       - name: Checkout pre-migration snapshot (games/bv only, pinned SHA)
         uses: actions/checkout@v4
         with:
