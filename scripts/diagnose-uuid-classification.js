@@ -46,6 +46,7 @@ const {
 const ROOT      = path.join(__dirname, '..');
 const GAMES_DIR = path.join(ROOT, 'games', 'bv');
 const INDEX_DIR = path.join(ROOT, 'players', 'indexes');
+const SPORT_INDEX_FILE = path.join(ROOT, 'data', 'sports-index.json');
 
 const ARGS = Object.fromEntries(
   process.argv.slice(2).filter(a => a.startsWith('--')).map(a => {
@@ -62,6 +63,12 @@ const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function playerShard(uuid) { return uuid.slice(0, 2).toLowerCase(); }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// sports-index.json — { seasons: { [sid]: { orgId, ... } } } — same access
+// pattern as backfill-missing-players.js L588/686 (sportIndex.seasons?.[sid]).
+let sportIndex = { seasons: {} };
+try { sportIndex = readJson(SPORT_INDEX_FILE); } catch (_) {}
+function orgIdForSid(sid) { return sportIndex.seasons?.[sid]?.orgId || null; }
 
 // Deterministic PRNG (mulberry32) so --seed makes the sample reproducible.
 function mulberry32(a) {
@@ -374,8 +381,16 @@ async function classifyOne(uuid, appr) {
   if (!apiId) {
     const sr = await profileSearchLookup(name);
     if (sr.status === 'blocked') return { class: 'blocked' };
-    const m = matchFromSearch(sr.result, { name, orgId: null });
-    if (m) { apiId = m; via = 'search'; }
+    let m = matchFromSearch(sr.result, { name, orgId: null });
+    let tag = 'search';
+    if (!m) {
+      const orgId = orgIdForSid(appr.sid);
+      if (orgId) {
+        m = matchFromSearch(sr.result, { name, orgId });
+        if (m) tag = 'search-org'; // only recovered once org disambiguated a name collision
+      }
+    }
+    if (m) { apiId = m; via = tag; }
   }
   if (!apiId || apiId === uuid) return { class: 'genuinely-private', name };
 
@@ -388,7 +403,7 @@ async function classifyOne(uuid, appr) {
 async function main() {
   await refreshApiSession();
   const tally = {};
-  const viaTally = { grade: 0, search: 0 };
+  const viaTally = { grade: 0, search: 0, 'search-org': 0 };
   // Was a grade attempt even possible (had gradeId+tid), and did it fail before
   // falling to search? Distinguishes "grade wasn't tried" from "grade tried, missed".
   const gradeAttemptTally = { attempted: 0, hit: 0, missedThenSearchHit: 0, noGradeContext: 0 };
@@ -432,8 +447,12 @@ async function main() {
 
   const recTotal = (tally['diverged-recoverable'] || 0);
   console.log(`\n  ── recovery path breakdown (of ${recTotal} diverged-recoverable) ──`);
-  console.log(`    via gradePlayerStatistics : ${viaTally.grade}  (${recTotal ? (viaTally.grade / recTotal * 100).toFixed(1) : '0.0'}%)`);
-  console.log(`    via profileSearch         : ${viaTally.search}  (${recTotal ? (viaTally.search / recTotal * 100).toFixed(1) : '0.0'}%)`);
+  console.log(`    via gradePlayerStatistics       : ${viaTally.grade}  (${recTotal ? (viaTally.grade / recTotal * 100).toFixed(1) : '0.0'}%)`);
+  console.log(`    via profileSearch (no collision): ${viaTally.search}  (${recTotal ? (viaTally.search / recTotal * 100).toFixed(1) : '0.0'}%)`);
+  console.log(`    via profileSearch + orgId        : ${viaTally['search-org']}  (${recTotal ? (viaTally['search-org'] / recTotal * 100).toFixed(1) : '0.0'}%)  <- ONLY recovered because org disambiguated a name collision`);
+  console.log(`\n  NOTE: "via profileSearch + orgId" is the direct measure of the undercount from the`);
+  console.log(`        previous run (which passed orgId:null always). It shows how many additional`);
+  console.log(`        players move from "genuinely-private" to "diverged-recoverable" with org context.`);
   console.log(`\n  ── grade-attempt detail (only for recoverable candidates that HAD gradeId+tid) ──`);
   console.log(`    had grade context, attempted gradePlayerStatistics : ${gradeAttemptTally.attempted}`);
   console.log(`      ├─ grade match hit directly                     : ${gradeAttemptTally.hit}`);
