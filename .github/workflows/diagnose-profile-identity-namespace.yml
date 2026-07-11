@@ -1,24 +1,24 @@
 # .github/workflows/diagnose-profile-identity-namespace.yml
 name: Diagnose Profile Identity Namespace Mismatch (read-only)
 
-# Tests a specific hypothesis raised 2026-07-11: PlayHQ's api.playhq.com and
-# spectator.playhq.com endpoints can disagree on which uuid identifies the
-# same real player (confirmed directly for 3 of 13 players in one sampled
-# game -- William Mallen, Charlie Raynor, Jack Delaney). Our own capture
-# (nightly-crawl.js / backfill-missing-players.js's spectator fetch) only
-# ever sees spectator.playhq.com's profileID, but the separate profile-stats
-# backfill in both scripts queries api.playhq.com's publicProfileStatistics
-# using that same spectator-namespace uuid as the argument. If that query
-# only recognizes its own namespace, every player whose ids have diverged
-# this way would get a false "private"/"not found" result -- unrelated to
-# any actual privacy setting or CloudFront block, which is what every such
-# failure this week was attributed to.
+# Tests whether api.playhq.com and spectator.playhq.com can disagree on
+# which uuid identifies the same real player (confirmed directly for 3 of 13
+# players in one sampled game -- William Mallen, Charlie Raynor, Jack
+# Delaney). Our own capture only ever sees spectator.playhq.com's profileID;
+# the separate profile-stats backfill queries api.playhq.com's
+# publicProfileStatistics using that same uuid. If that only recognizes its
+# own namespace, players whose ids have diverged get a false "private"/"not
+# found" result -- unrelated to any real privacy setting.
 #
-# This workflow runs a small, read-only script that queries
-# publicProfileStatistics for BOTH known ids of the 3 already-confirmed
-# mismatched players and prints the raw result for each, so the theory can
-# be confirmed or ruled out directly rather than argued about. No writes,
-# no git commits, no changes to games/ or players/ -- console output only.
+# This calls the project's existing Cloudflare Worker
+# (solitary-snowflake-cb3e.insanoflash.workers.dev/profile/{id}?tenant=bv)
+# rather than api.playhq.com directly -- the Worker gets its PlayHQ session
+# from Cloudflare's own network, so this workflow never fights GitHub
+# Actions' IP reputation against PlayHQ's CloudFront WAF at all. No matrix/
+# parallel-attempt workaround needed for that reason.
+#
+# No writes, no git commits, no changes to games/ or players/ -- console
+# output only.
 
 on:
   workflow_dispatch: {}
@@ -29,7 +29,7 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
