@@ -15,44 +15,43 @@
 // never rewritten since before the migration, so their array order can't
 // have drifted. It is NOT safe for p[] -- nightly-crawl.js overwrites that
 // array wholesale from a fresh spectator-API call every time it processes a
-// FINAL game (`gf.games[gameId].p = allPlayers.map(...)`), and nothing
-// guarantees the spectator API returns players in the same order across two
-// different calls separated by months. If the order drifted even once
-// between the pre-migration snapshot and now, position-based pairing
-// silently attributes the WRONG historical uuid to the current slot.
+// FINAL game, and nothing guarantees the spectator API returns players in
+// the same order across two different calls separated by months.
 //
 // CONFIRMED IN PRACTICE 2026-07-11: Mark manually checked
 // 0000ed35-3510-4267-bf4f-db65588b6d99 (recovered into a p[] slot) against
 // the real game on playhq.com and it matches NONE of the actual players in
-// that game -- exactly the symptom this bug predicts.
+// that game -- exactly the symptom this bug predicts. A first audit run
+// reported 0 misattributed out of 2,622,579 fields checked, which flatly
+// contradicts that confirmed case -- so a SPOT_CHECK trace was added to
+// find out directly whether that exact slot was even touched by recovery.
 //
-// THIS SCRIPT re-validates every field the recovery script touched using a
-// CONTENT-based check instead of trusting the position:
-//   1. pre-recovery snapshot (the commit right before
-//      recover-uuids-from-git-history.js's own commits) gives us back the
-//      ORIGINAL truncated prefix that was stored at that slot before
-//      recovery ran -- the one piece of information recovery's own commit
-//      overwrote and that we can otherwise no longer see.
-//   2. pre-migration snapshot (same reference commit the original recovery
-//      script used) gives us the full candidate uuids to search.
-//   3. For each touched field, search ALL entries in the pre-migration
-//      array (not just index i) for the one whose truncated form matches
-//      the original prefix from (1). That's the correct answer, independent
-//      of array order.
-//   4. Compare the correct answer to what's actually on disk now. Mismatch
-//      = confirmed misattribution.
+// TWO INDEPENDENT CHECKS, deliberately kept separate because they rely on
+// different assumptions:
 //
-// ALSO checks, for every confirmed misattribution, whether the WRONG value
-// currently on disk happens to be a REAL, already-indexed player -- that's
-// a worse category than "wrong but points at a nobody": that real person's
-// own file is untouched, but games/bv now falsely claims they played in a
-// game they may have nothing to do with.
+//   1. PREFIX CONSISTENCY (no historical-commit-selection assumptions at
+//      all -- just current vs. the immediately-prior value). The new full
+//      uuid recoverField wrote should, if it's the right person, still
+//      start with the exact truncated prefix that was there before it ran
+//      (a truncated id IS just the first N characters of the full one).
+//      recoverField never checked this -- it wrote old[field] with no
+//      verification against what it was replacing. If curVal's own prefix
+//      doesn't match the original truncated value, that's unambiguous,
+//      self-contained proof of a wrong substitution -- it doesn't depend on
+//      which "pre-migration" commit got picked, only on the immediately
+//      preceding value, which is a much smaller trust surface.
+//
+//   2. CONTENT-MATCH AGAINST PRE-MIGRATION (everything the previous version
+//      of this script did): search the pre-migration array for the entry
+//      whose truncated form matches the original prefix, and compare that
+//      to what's on disk now. This is needed to find out WHO a wrong entry
+//      SHOULD be (a prefix alone can't identify anyone) -- but it depends
+//      on correctly having identified the true pre-migration commit, which
+//      is exactly the part under question. Kept as its own bucket, not
+//      blended with check 1, so a problem with commit selection shows up as
+//      a disagreement between the two checks rather than being invisible.
 //
 // Does not write anything to games/. Report only.
-//
-// Run (workflow only -- needs pre-migration/games/bv/ and
-// pre-recovery/games/bv/ checked out first, see the companion .yml):
-//   node scripts/audit-uuid-recovery-misattribution.js
 
 'use strict';
 
@@ -72,27 +71,10 @@ const SAMPLE_CAP         = 50;
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 
 // Direct trace for specific known uuids, regardless of which bucket (if any)
-// the main loop below sorts them into. Added 2026-07-11 because the first
-// full run reported 0 misattributed / 0 no-source-match out of 2,622,579
-// fields checked -- which flatly contradicts the one confirmed real-world
-// bad case (0000ed35-3510-4267-bf4f-db65588b6d99, manually verified against
-// playhq.com to match no real player in its game). That contradiction means
-// either this uuid was never actually touched by recover-uuids-from-git-history.js
-// at all (so the misattribution theory doesn't explain THIS case, whatever
-// else is true about the theory), or something is wrong with the audit's
-// own logic/reference commits. This prints the ground truth for that exact
-// slot directly, in all three snapshots, so that question gets answered
-// with evidence instead of inference from aggregate counts.
+// the main loop sorts them into. See header for why this exists.
 const SPOT_CHECK_UUIDS = new Set(['0000ed35-3510-4267-bf4f-db65588b6d99']);
 const spotCheckResults = [];
 
-// Is `uuid` a REAL, already-known player (has an index entry)? Used to
-// distinguish "misattributed onto a still-unknown/missing profile" (bad, but
-// contained) from "misattributed onto an existing, identifiable real person"
-// (worse -- that person's own file is untouched, but games/bv now falsely
-// claims they played in a game they may have nothing to do with). Indexes
-// are small (name+history per shard) -- loaded lazily and cached, same
-// pattern as backfill-missing-players.js.
 const indexCache = new Map();
 function isKnownIndexedPlayer(uuid) {
   const shard = uuid.slice(0, 2).toLowerCase();
@@ -135,10 +117,20 @@ function main() {
   console.log(`  ${sids.length} current season files to check\n`);
 
   const counts = {
-    correct: 0, misattributed: 0, noSourceMatch: 0, ambiguous: 0, fieldsChecked: 0,
-    misattributedOntoRealPlayer: 0, // subset of misattributed -- the wrong value is a REAL, known player
+    fieldsChecked: 0,
+    prefixInconsistent: 0,        // check 1 -- self-contained, no commit-selection trust needed
+    prefixInconsistentOntoRealPlayer: 0,
+    correctVsPreMigration: 0,     // check 2 -- depends on pre-migration commit selection
+    misattributedVsPreMigration: 0,
+    misattributedOntoRealPlayer: 0,
+    noSourceMatch: 0,
+    ambiguousGenuine: 0,          // multiple DIFFERENT candidate values
+    ambiguousButAgreeing: 0,      // multiple matches, all the same value -- not really ambiguous
   };
-  const samples = { misattributed: [], misattributedOntoRealPlayer: [], noSourceMatch: [], ambiguous: [] };
+  const samples = {
+    prefixInconsistent: [], misattributedVsPreMigration: [], misattributedOntoRealPlayer: [],
+    noSourceMatch: [], ambiguousGenuine: [],
+  };
   let filesTouchedByRecovery = 0, seasonsScanned = 0;
 
   for (const sid of sids) {
@@ -147,7 +139,7 @@ function main() {
     try { cur = readJson(path.join(GAMES_DIR, `${sid}.json`)); } catch { continue; }
     try { preRec = readJson(path.join(PRE_RECOVERY_DIR, `${sid}.json`)); } catch { preRec = null; }
     try { preMig = readJson(path.join(PRE_MIGRATION_DIR, `${sid}.json`)); } catch { preMig = null; }
-    if (!preRec) continue; // file didn't exist pre-recovery at all -- recovery can't have touched anything in it
+    if (!preRec) continue;
 
     let fileTouched = false;
 
@@ -165,10 +157,6 @@ function main() {
         for (let i = 0; i < curArr.length; i++) {
           const curVal = curArr[i]?.[key];
 
-          // Spot-check: run BEFORE any of the gates below, so a known uuid
-          // gets traced even if it turns out to have been skipped entirely
-          // by the main classification logic (that's exactly the case this
-          // is designed to catch).
           if (curVal && SPOT_CHECK_UUIDS.has(curVal)) {
             const preRecValRaw = preRecArr[i]?.[key];
             const wasTruncated = isTruncatedPrefix(preRecValRaw);
@@ -179,23 +167,31 @@ function main() {
               uuid: curVal, sid, gameId, field, index: i,
               preRecoveryValueAtThisSlot: preRecValRaw ?? '(index did not exist pre-recovery)',
               wasThisSlotTouchedByRecovery: wasTruncated,
+              prefixConsistent: wasTruncated ? (curVal.slice(0, preRecValRaw.length) === preRecValRaw) : null,
               preMigrationArrayForThisGame: preMigArr.map(e => e?.[key] ?? null),
               contentMatchesFound: preMigMatches.map(m => m[key]),
             });
           }
 
-          if (!isFullUuid(curVal)) continue; // not recovered (or never needed to be)
+          if (!isFullUuid(curVal)) continue;
 
           const preRecVal = preRecArr[i]?.[key];
-          if (!isTruncatedPrefix(preRecVal)) continue; // this exact slot wasn't touched by recovery
+          if (!isTruncatedPrefix(preRecVal)) continue;
 
-          // This field WAS touched by recover-uuids-from-git-history.js.
-          // Re-derive the correct answer by CONTENT, not position: search
-          // every entry in the pre-migration array for the one whose
-          // truncated form equals the ORIGINAL prefix that was here before
-          // recovery overwrote it.
           counts.fieldsChecked++;
           fileTouched = true;
+
+          // Check 1: prefix consistency -- no historical-commit trust needed
+          const prefixOk = curVal.slice(0, preRecVal.length) === preRecVal;
+          if (!prefixOk) {
+            counts.prefixInconsistent++;
+            const ontoReal = isKnownIndexedPlayer(curVal);
+            const entry = { sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, currentlyWrittenBelongsToRealIndexedPlayer: ontoReal };
+            if (samples.prefixInconsistent.length < SAMPLE_CAP) samples.prefixInconsistent.push(entry);
+            if (ontoReal) counts.prefixInconsistentOntoRealPlayer++;
+          }
+
+          // Check 2: content-match against pre-migration snapshot
           const matches = preMigArr.filter(e => isFullUuid(e?.[key]) && e[key].slice(0, preRecVal.length) === preRecVal);
 
           if (matches.length === 0) {
@@ -203,23 +199,27 @@ function main() {
             if (samples.noSourceMatch.length < SAMPLE_CAP) {
               samples.noSourceMatch.push({ sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal });
             }
-          } else if (matches.length > 1) {
-            counts.ambiguous++;
-            if (samples.ambiguous.length < SAMPLE_CAP) {
-              samples.ambiguous.push({ sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, candidates: matches.map(m => m[key]) });
-            }
           } else {
-            const correct = matches[0][key];
-            if (correct === curVal) {
-              counts.correct++;
+            const distinctValues = [...new Set(matches.map(m => m[key]))];
+            if (distinctValues.length > 1) {
+              counts.ambiguousGenuine++;
+              if (samples.ambiguousGenuine.length < SAMPLE_CAP) {
+                samples.ambiguousGenuine.push({ sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, candidates: distinctValues });
+              }
             } else {
-              counts.misattributed++;
-              const ontoRealPlayer = isKnownIndexedPlayer(curVal);
-              const entry = { sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, shouldBe: correct, currentlyWrittenBelongsToRealIndexedPlayer: ontoRealPlayer };
-              if (samples.misattributed.length < SAMPLE_CAP) samples.misattributed.push(entry);
-              if (ontoRealPlayer) {
-                counts.misattributedOntoRealPlayer++;
-                if (samples.misattributedOntoRealPlayer.length < SAMPLE_CAP) samples.misattributedOntoRealPlayer.push(entry);
+              if (matches.length > 1) counts.ambiguousButAgreeing++;
+              const correct = distinctValues[0];
+              if (correct === curVal) {
+                counts.correctVsPreMigration++;
+              } else {
+                counts.misattributedVsPreMigration++;
+                const ontoReal = isKnownIndexedPlayer(curVal);
+                const entry = { sid, gameId, field, index: i, originalPrefix: preRecVal, currentlyWritten: curVal, shouldBe: correct, currentlyWrittenBelongsToRealIndexedPlayer: ontoReal };
+                if (samples.misattributedVsPreMigration.length < SAMPLE_CAP) samples.misattributedVsPreMigration.push(entry);
+                if (ontoReal) {
+                  counts.misattributedOntoRealPlayer++;
+                  if (samples.misattributedOntoRealPlayer.length < SAMPLE_CAP) samples.misattributedOntoRealPlayer.push(entry);
+                }
               }
             }
           }
@@ -232,16 +232,12 @@ function main() {
   }
 
   console.log('\n' + '='.repeat(60));
-  console.log('  SPOT CHECK -- known uuid trace (see script header for why)');
+  console.log('  SPOT CHECK -- known uuid trace');
   console.log('='.repeat(60));
   if (spotCheckResults.length === 0) {
     console.log(`  NOT FOUND anywhere in current games/bv: ${[...SPOT_CHECK_UUIDS].join(', ')}`);
-    console.log('  (If you were expecting this uuid to be present, it may have been');
-    console.log('   removed/changed since, or it lives in a field this script doesn\'t scan.)');
   } else {
-    for (const r of spotCheckResults) {
-      console.log(JSON.stringify(r, null, 2));
-    }
+    for (const r of spotCheckResults) console.log(JSON.stringify(r, null, 2));
   }
   console.log('='.repeat(60));
 
@@ -249,21 +245,27 @@ function main() {
   console.log(`  Season files touched by recovery : ${filesTouchedByRecovery.toLocaleString()}`);
   console.log(`  Fields checked (touched by recovery): ${counts.fieldsChecked.toLocaleString()}`);
   console.log('-'.repeat(60));
-  console.log(`  Correct (position happened to align) : ${counts.correct.toLocaleString()}`);
-  console.log(`  MISATTRIBUTED (confirmed wrong)       : ${counts.misattributed.toLocaleString()}`);
-  console.log(`    -- of which onto a REAL, known player (phantom appearance on a real person): ${counts.misattributedOntoRealPlayer.toLocaleString()}`);
-  console.log(`  No source match in pre-migration      : ${counts.noSourceMatch.toLocaleString()}`);
-  console.log(`  Ambiguous (multiple candidates)       : ${counts.ambiguous.toLocaleString()}`);
+  console.log('  CHECK 1 -- prefix consistency (no commit-selection trust needed):');
+  console.log(`    Prefix INCONSISTENT (definitely wrong)      : ${counts.prefixInconsistent.toLocaleString()}`);
+  console.log(`      -- of which onto a REAL, known player     : ${counts.prefixInconsistentOntoRealPlayer.toLocaleString()}`);
+  console.log('  CHECK 2 -- content-match against pre-migration snapshot:');
+  console.log(`    Correct                                     : ${counts.correctVsPreMigration.toLocaleString()}`);
+  console.log(`    MISATTRIBUTED (confirmed wrong)              : ${counts.misattributedVsPreMigration.toLocaleString()}`);
+  console.log(`      -- of which onto a REAL, known player      : ${counts.misattributedOntoRealPlayer.toLocaleString()}`);
+  console.log(`    No source match in pre-migration             : ${counts.noSourceMatch.toLocaleString()}`);
+  console.log(`    Ambiguous, candidates AGREE (not really ambiguous): ${counts.ambiguousButAgreeing.toLocaleString()}`);
+  console.log(`    Ambiguous, candidates GENUINELY DISAGREE     : ${counts.ambiguousGenuine.toLocaleString()}`);
 
-  const pct = counts.fieldsChecked > 0 ? (counts.misattributed / counts.fieldsChecked * 100).toFixed(2) : '0.00';
-  console.log(`\n  Misattribution rate: ${pct}% of everything recover-uuids-from-git-history.js touched`);
+  if (counts.prefixInconsistent > 0 && counts.misattributedVsPreMigration === 0) {
+    console.log('\n  Check 1 found wrong entries that Check 2 did NOT flag as misattributed.');
+    console.log('  That disagreement points at a problem with the pre-migration commit');
+    console.log('  selection specifically -- Check 1 doesn\'t depend on it and should be trusted first.');
+  }
 
   const report = {
     generatedAt: new Date().toISOString(),
     seasonsScanned, filesTouchedByRecovery,
-    counts, misattributionRatePct: Number(pct),
-    samples,
-    spotCheckResults,
+    counts, samples, spotCheckResults,
   };
   fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
   fs.writeFileSync(REPORT_FILE, JSON.stringify(report, null, 2), 'utf8');
