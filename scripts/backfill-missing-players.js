@@ -146,25 +146,38 @@ const HEADERS_SPECTATOR = {
   'tenant': 'bv', 'x-phq-tenant': 'bv', 'content-type': 'application/json',
 };
 
+// Session warm-up — copied verbatim from the diagnostics proven live this
+// session (diagnose-uuid-classification.js). The two-query list is load-
+// bearing: on some CloudFront POPs a bare TenantConfig POST is WAF-blocked
+// (403, no set-cookie), but the ProfileSearch(fullName:'a') POST from the same
+// loop still returns cookies. An earlier version of this file sent only
+// TenantConfig and died with "Failed to obtain session after 10 attempts" on
+// exactly those POPs -- the fallback query is what fixes it. Do NOT reduce
+// this back to a single query.
+const COOKIE_QUERIES = [
+  { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
+  { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+];
+
 let sessionCookie = null;
 async function refreshSession() {
-  const body = { operationName: 'TenantConfig', variables: {},
-    query: 'query TenantConfig { tenantConfiguration { label } }' };
   for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 3000);
-    try {
-      const res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() }, body: JSON.stringify(body) });
+    if (attempt > 1) await sleep(attempt * 5000);
+    for (const body of COOKIE_QUERIES) {
+      let res;
+      try {
+        res = await doFetch(API_URL, { headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() }, body: JSON.stringify(body) });
+      } catch (_) { continue; }
       const raw = res.rawCookies;
       if (!raw) continue;
       const arr = (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0].trim());
       const get = n => arr.find(p => p.startsWith(n + '=')) || null;
       const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (tier && session && sub) {
-        sessionCookie = `${tier}; ${session}; ${sub}`;
-        console.log(`  Session refreshed (attempt ${attempt})`);
-        return;
-      }
-    } catch (_) {}
+      if (!tier || !session || !sub) continue;
+      sessionCookie = `${tier}; ${session}; ${sub}`;
+      console.log(`  Session refreshed (attempt ${attempt})`);
+      return;
+    }
   }
   throw new Error('Failed to obtain session after 10 attempts');
 }
