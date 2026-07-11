@@ -86,6 +86,8 @@ jobs:
           fetch-depth: 1
           sparse-checkout: |
             scripts/fetch-profile-stats.js
+            scripts/lib
+            data/sports-index.json
             players/indexes/${{ matrix.shard }}.json
             players/${{ matrix.shard }}
           sparse-checkout-cone-mode: false
