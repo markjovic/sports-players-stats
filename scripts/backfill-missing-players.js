@@ -77,6 +77,16 @@ const ARGS = Object.fromEntries(
   })
 );
 const DRY_RUN = !!ARGS['dry-run'];
+// --count-collisions: read-only measurement. Loads EVERY player index shard
+// into one global Set, then for each recovered apiId reports whether that id
+// already exists as an indexed player (a duplicate-identity collision: the
+// same real person already recorded under a different spectator id) or
+// collides with another recovered candidate in this same run. Changes NOTHING
+// about what gets written -- purely observational, to size whether alias
+// handling is worth building. Only accurate when ALL index shards are present
+// on disk (i.e. the single-runner workflow, which checks out all of
+// players/indexes -- NOT a per-bucket matrix job, which sees only one shard).
+const COUNT_COLLISIONS = !!ARGS['count-collisions'];
 // --no-commit: write player files + indexes to disk but do NOT git commit/push.
 // Used by matrix resolve jobs -- each writes its bucket's files, the shared
 // apply-and-commit job packages every bucket's diff into a single commit
@@ -457,6 +467,22 @@ function readPlayerIndex(shard) {
   indexCache.set(shard, data);
   return data;
 }
+
+// Read-only: every uuid across ALL index shards present on disk. Used only by
+// --count-collisions. In the single-runner workflow all 256 shards are checked
+// out, so this is the complete set of already-known players.
+function loadAllKnownUuids() {
+  const known = new Set();
+  let files = [];
+  try { files = fs.readdirSync(INDEX_DIR).filter(f => f.endsWith('.json')); } catch (_) {}
+  for (const f of files) {
+    try {
+      const idx = readJson(path.join(INDEX_DIR, f));
+      for (const uuid of Object.keys(idx)) known.add(uuid);
+    } catch (_) {}
+  }
+  return known;
+}
 function writePlayerIndex(shard) {
   if (DRY_RUN) return;
   const file = playerIndexPath(shard);
@@ -567,8 +593,42 @@ const candidates = CANDIDATES_FILE ? discoverFromCandidatesFile(CANDIDATES_FILE)
 console.log(`  Candidates to process${BUCKET ? ` (bucket ${BUCKET})` : ''}: ${candidates.size.toLocaleString()}`);
 
 const allCandidateUuids = [...candidates.keys()].sort();
-const toProcess = allCandidateUuids.slice(0, MAX);
-console.log(`  Processing this run: ${toProcess.length.toLocaleString()}${MAX < Infinity ? ` (--max=${MAX})` : ''}`);
+
+// --sample=N : take a REPRESENTATIVE random subset of N candidates, via a
+// deterministic shuffle (fixed seed unless --seed given). For measurement runs
+// (e.g. --count-collisions), where a sorted-prefix slice could bias the result
+// if these profile ids carry any ordering structure. --max, by contrast, takes
+// the sorted-prefix first-N: correct for the real resumable run, where order
+// doesn't matter (a blocked/unprocessed candidate simply reappears next run).
+// Do not combine --sample with a real (non-dry) run: sampling would leave a
+// random scatter of gaps rather than clearing a contiguous prefix.
+const SAMPLE = ARGS.sample ? parseInt(ARGS.sample, 10) : null;
+const SEED   = ARGS.seed ? parseInt(ARGS.seed, 10) : 1;
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+let toProcess;
+if (SAMPLE != null) {
+  const shuffled = [...allCandidateUuids];
+  const rng = mulberry32(SEED);
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  toProcess = shuffled.slice(0, SAMPLE);
+  console.log(`  Processing this run: ${toProcess.length.toLocaleString()} (--sample=${SAMPLE}, seed=${SEED} — representative random subset)`);
+  if (!DRY_RUN) console.log('  ⚠  --sample on a LIVE run leaves scattered gaps rather than a clean prefix — intended for measurement (--dry-run) only.');
+} else {
+  toProcess = allCandidateUuids.slice(0, MAX);
+  console.log(`  Processing this run: ${toProcess.length.toLocaleString()}${MAX < Infinity ? ` (--max=${MAX})` : ''}`);
+}
 
 // ─── Phase 2 helpers: build public/private player records ─────────────────
 const REG_STAT_FIELDS = ['gp', 'pts', 'fg', 'ft', 'threePt', 'fouls'];
@@ -820,6 +880,18 @@ async function main() {
     spectatorHits: 0, spectatorMisses: 0, cloudfrontBlocked: false,
   };
 
+  // Collision measurement (read-only, --count-collisions only). Observational:
+  // does NOT change what gets written.
+  let knownUuids = null;
+  const seenApiIds = new Map(); // apiId -> first candidate uuid that recovered to it (intra-run dup detection)
+  const collisionExamples = [];
+  if (COUNT_COLLISIONS) {
+    summary.collisionApiIdAlreadyIndexed = 0; // recovered apiId already exists as a player elsewhere in the repo
+    summary.collisionApiIdDupThisRun     = 0; // two candidates this run recovered to the SAME apiId
+    knownUuids = loadAllKnownUuids();
+    console.log(`  [collision measurement] loaded ${knownUuids.size.toLocaleString()} already-indexed uuids across all shards`);
+  }
+
   console.log('\nPhase 2 — resolving each candidate (public via profile API + namespace recovery, private via spectator reconstruction)…');
 
   try {
@@ -874,7 +946,21 @@ async function main() {
 
       if (kind === 'public') {
         summary.public++;
-        if (player.apiId) summary.recoveredViaNamespace++;
+        if (player.apiId) {
+          summary.recoveredViaNamespace++;
+          if (COUNT_COLLISIONS) {
+            if (knownUuids.has(player.apiId)) {
+              summary.collisionApiIdAlreadyIndexed++;
+              if (collisionExamples.length < 10) collisionExamples.push({ type: 'already-indexed', spectatorUuid: uuid, apiId: player.apiId, name: player.name });
+            }
+            if (seenApiIds.has(player.apiId)) {
+              summary.collisionApiIdDupThisRun++;
+              if (collisionExamples.length < 10) collisionExamples.push({ type: 'dup-this-run', spectatorUuid: uuid, apiId: player.apiId, alsoFrom: seenApiIds.get(player.apiId), name: player.name });
+            } else {
+              seenApiIds.set(player.apiId, uuid);
+            }
+          }
+        }
       } else {
         summary.private++;
       }
@@ -916,6 +1002,19 @@ async function main() {
   console.log(`  Processed this run     : ${summary.processed.toLocaleString()}`);
   console.log(`  Public (real record)   : ${summary.public.toLocaleString()}`);
   console.log(`    ├─ recovered via namespace fix : ${summary.recoveredViaNamespace.toLocaleString()}`);
+  if (COUNT_COLLISIONS) {
+    console.log(`    ├─ [collision] recovered apiId ALREADY indexed elsewhere : ${summary.collisionApiIdAlreadyIndexed.toLocaleString()}  <- would create a duplicate-identity record`);
+    console.log(`    └─ [collision] two candidates this run → same apiId      : ${summary.collisionApiIdDupThisRun.toLocaleString()}`);
+    if (collisionExamples.length) {
+      console.log('    collision examples:');
+      for (const e of collisionExamples) {
+        console.log(`      [${e.type}] spectator=${e.spectatorUuid.slice(0, 10)} apiId=${e.apiId.slice(0, 10)}${e.alsoFrom ? ` alsoFrom=${e.alsoFrom.slice(0, 10)}` : ''} name="${e.name}"`);
+      }
+    }
+    const recTotal = summary.recoveredViaNamespace || 1;
+    const pct = (summary.collisionApiIdAlreadyIndexed / recTotal * 100).toFixed(1);
+    console.log(`    collision rate among recoveries: ${pct}%  (of ${summary.recoveredViaNamespace} recovered this run)`);
+  }
   console.log(`  Private (stub record)  : ${summary.private.toLocaleString()}`);
   console.log(`  Errors (left pending)  : ${summary.errors.toLocaleString()}`);
   console.log(`  Spectator hits/misses  : ${summary.spectatorHits.toLocaleString()}/${summary.spectatorMisses.toLocaleString()}`);
