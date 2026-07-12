@@ -64,7 +64,7 @@ jobs:
     outputs:
       buckets: ${{ steps.gen.outputs.buckets }}
     steps:
-      - name: Checkout (games/, players/indexes/, scripts/; blob:none)
+      - name: Checkout (games/, players/indexes/, scripts/, collisions report; blob:none)
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -73,6 +73,7 @@ jobs:
             games
             players/indexes
             scripts
+            reports/backfill-collisions
           sparse-checkout-cone-mode: false
 
       - name: Generate bucketed candidates
@@ -97,7 +98,7 @@ jobs:
       matrix:
         bucket: ${{ fromJson(needs.generate-candidates.outputs.buckets) }}
     steps:
-      - name: Checkout (scripts, data, this bucket's player shard + index only — NO games/bv)
+      - name: Checkout (scripts, data, ALL indexes, collisions report, this bucket's player shard — NO games/bv)
         uses: actions/checkout@v4
         with:
           ref: main
@@ -105,7 +106,8 @@ jobs:
           sparse-checkout: |
             scripts
             data
-            players/indexes/${{ matrix.bucket }}.json
+            players/indexes
+            reports/backfill-collisions
             players/${{ matrix.bucket }}
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -124,16 +126,17 @@ jobs:
       - name: Resolve bucket ${{ matrix.bucket }}
         run: |
           ARGS="--candidates-file=/tmp/candidates/${{ matrix.bucket }}.json --bucket=${{ matrix.bucket }} --no-commit"
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run --count-collisions"; fi
           if [ -n "${{ inputs.max_per_bucket }}" ]; then ARGS="$ARGS --max=${{ inputs.max_per_bucket }}"; fi
           node scripts/backfill-missing-players.js $ARGS
 
-      - name: Package changed player files
+      - name: Package changed files (player shard + this bucket's index + collisions shard)
         if: always() && inputs.dry_run != true
         run: |
           git diff --name-only HEAD > /tmp/changed.txt 2>/dev/null || true
           git ls-files --others --exclude-standard players/${{ matrix.bucket }}/ >> /tmp/changed.txt 2>/dev/null || true
           git ls-files --others --exclude-standard players/indexes/${{ matrix.bucket }}.json >> /tmp/changed.txt 2>/dev/null || true
+          git ls-files --others --exclude-standard reports/backfill-collisions/${{ matrix.bucket }}.json >> /tmp/changed.txt 2>/dev/null || true
           if [ -s /tmp/changed.txt ]; then
             sort -u /tmp/changed.txt -o /tmp/changed.txt
             tar -czf /tmp/bucket-files.tar.gz -T /tmp/changed.txt
@@ -190,13 +193,14 @@ jobs:
           sparse-checkout: |
             scripts
             players/indexes
+            reports/backfill-collisions
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Expand sparse checkout to active buckets
         if: steps.check.outputs.has_files == 'true'
         run: |
-          git sparse-checkout set --no-cone scripts players/indexes $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
+          git sparse-checkout set --no-cone scripts players/indexes reports/backfill-collisions $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
 
       - name: Configure git
         if: steps.check.outputs.has_files == 'true'
@@ -220,7 +224,7 @@ jobs:
       - name: Commit and push
         if: steps.check.outputs.has_files == 'true'
         run: |
-          git add players/
+          git add players/ reports/backfill-collisions/
           if git diff --staged --quiet; then
             echo "Nothing to commit."
             exit 0
@@ -237,7 +241,7 @@ jobs:
     runs-on: ubuntu-latest
     if: always() && inputs.dry_run != true
     steps:
-      - name: Checkout (games/, players/indexes/, scripts/; blob:none)
+      - name: Checkout (games/, players/indexes/, scripts/, collisions report; blob:none)
         uses: actions/checkout@v4
         with:
           ref: main
@@ -247,6 +251,7 @@ jobs:
             games
             players/indexes
             scripts
+            reports/backfill-collisions
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
