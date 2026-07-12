@@ -38,6 +38,7 @@ const { isFullUuid } = require('./lib/uuid-prefix.cjs');
 const ROOT      = path.join(__dirname, '..');
 const GAMES_DIR = path.join(ROOT, 'games', 'bv');
 const INDEX_DIR = path.join(ROOT, 'players', 'indexes');
+const COLLISIONS_DIR = path.join(ROOT, 'reports', 'backfill-collisions');
 
 const ARGS = Object.fromEntries(
   process.argv.slice(2).filter(a => a.startsWith('--')).map(a => {
@@ -62,6 +63,21 @@ function readPlayerIndex(shard) {
 }
 function isAlreadyKnown(uuid) { return !!readPlayerIndex(bucketOf(uuid))[uuid]; }
 
+// Collision-shard lookups (same sharded layout backfill-missing-players.js
+// writes). A recorded collision is an alias of an already-indexed player and
+// must be excluded from candidates -- otherwise the matrix's retrigger loop
+// would keep re-emitting these ~93% aliases forever and never terminate.
+const collisionsCache = new Map();
+function readCollisionsShard(shard) {
+  if (collisionsCache.has(shard)) return collisionsCache.get(shard);
+  const file = path.join(COLLISIONS_DIR, `${shard}.json`);
+  let data = {};
+  if (fs.existsSync(file)) { try { data = readJson(file); } catch (_) { data = {}; } }
+  collisionsCache.set(shard, data);
+  return data;
+}
+function isKnownCollision(uuid) { return !!readCollisionsShard(bucketOf(uuid))[uuid]; }
+
 console.log('backfill-generate-candidates.js');
 console.log('─'.repeat(60));
 console.log(`Scanning games/bv once, bucketing candidates by uuid prefix → ${OUT_DIR}`);
@@ -85,6 +101,7 @@ for (const fname of sids) {
       if (!isFullUuid(uuid)) continue;
       appearancesScanned++;
       if (isAlreadyKnown(uuid)) continue;
+      if (isKnownCollision(uuid)) continue; // alias of an existing player, already recorded — not a candidate
       const b = bucketOf(uuid);
       if (!buckets.has(b)) buckets.set(b, {});
       const bucket = buckets.get(b);

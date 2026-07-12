@@ -68,6 +68,12 @@ const INDEX_DIR      = path.join(ROOT, 'players', 'indexes');
 const SPORT_INDEX_FILE = path.join(ROOT, 'data', 'sports-index.json');
 const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json');
 const REPORT_FILE    = path.join(ROOT, 'reports', 'backfill-missing-players-report.json');
+// Collision report, sharded by uuid prefix like players/indexes (so matrix
+// bucket jobs never contend on one file): reports/backfill-collisions/{bucket}.json
+// = { spectatorUuid: { apiId, name } }. A spectator uuid recorded here is a
+// confirmed alias of an already-indexed player -- excluded from future
+// candidate scans AND available as the raw mapping for a later alias/link fix.
+const COLLISIONS_DIR = path.join(ROOT, 'reports', 'backfill-collisions');
 
 // ─── CLI args ────────────────────────────────────────────────────────────────
 const ARGS = Object.fromEntries(
@@ -468,9 +474,11 @@ function readPlayerIndex(shard) {
   return data;
 }
 
-// Read-only: every uuid across ALL index shards present on disk. Used only by
-// --count-collisions. In the single-runner workflow all 256 shards are checked
-// out, so this is the complete set of already-known players.
+// Every uuid across ALL index shards present on disk. Used BOTH by the
+// collision-skip guard (resolveCandidate) and by --count-collisions. Requires
+// all shards present: the single-runner workflow checks out all of
+// players/indexes, and the matrix resolve job now does too (needed so the
+// skip guard can see an apiId living in any other shard).
 function loadAllKnownUuids() {
   const known = new Set();
   let files = [];
@@ -490,6 +498,37 @@ function writePlayerIndex(shard) {
   fs.writeFileSync(file, JSON.stringify(indexCache.get(shard) || {}));
 }
 function isAlreadyKnown(uuid) { return !!readPlayerIndex(playerShard(uuid))[uuid]; }
+
+// ─── Collision report shards (spectator uuid -> already-indexed apiId) ──────
+const collisionsCache = new Map();
+function collisionsShardPath(shard) { return path.join(COLLISIONS_DIR, `${shard}.json`); }
+function readCollisionsShard(shard) {
+  if (collisionsCache.has(shard)) return collisionsCache.get(shard);
+  const file = collisionsShardPath(shard);
+  let data = {};
+  if (fs.existsSync(file)) { try { data = readJson(file); } catch (_) { data = {}; } }
+  collisionsCache.set(shard, data);
+  return data;
+}
+function isKnownCollision(uuid) { return !!readCollisionsShard(playerShard(uuid))[uuid]; }
+function recordCollision(uuid, apiId, name) {
+  const shard = playerShard(uuid);
+  const data = readCollisionsShard(shard);
+  data[uuid] = { apiId, name: name || null };
+  collisionsCache.set(shard, data);
+}
+function writeCollisionsShard(shard) {
+  if (DRY_RUN) return;
+  const file = collisionsShardPath(shard);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(collisionsCache.get(shard) || {}));
+}
+
+// Loaded ONCE at module scope so resolveCandidate's collision-skip guard
+// always has it (a real run must skip collisions, not just a measurement run).
+// Requires all index shards present -- true for the single-runner workflow and
+// for the matrix resolve job (which now checks out all of players/indexes).
+const knownUuids = loadAllKnownUuids();
 
 // ─── git commit — standard project pattern (explicit paths, merge -X ours) ──
 async function gitCommit(message, dirs) {
@@ -554,6 +593,7 @@ function discoverFromGamesScan() {
         if (BUCKET && bucketOf(uuid) !== BUCKET) continue;
         appearancesScanned++;
         if (isAlreadyKnown(uuid)) continue;
+        if (isKnownCollision(uuid)) continue; // already recorded as an alias of an existing player -- don't re-recover
         if (!map.has(uuid)) map.set(uuid, []);
         map.get(uuid).push({
           gid, sid,
@@ -577,6 +617,7 @@ function discoverFromCandidatesFile(file) {
     // Re-check the index: a prior dispatch may have resolved this uuid since
     // the bucket file was generated. Keeps re-runs idempotent.
     if (isAlreadyKnown(uuid)) continue;
+    if (isKnownCollision(uuid)) continue; // already recorded as an alias of an existing player
     map.set(uuid, Array.isArray(appearances) ? appearances : []);
   }
   console.log(`  Loaded ${Object.keys(raw).length.toLocaleString()} candidates from ${path.basename(file)}${BUCKET ? ` (bucket ${BUCKET})` : ''}`);
@@ -860,6 +901,18 @@ async function resolveCandidate(uuid, appearances, spectatorPool, spectatorStats
   const recovery = await attemptRecovery(uuid, recon.name, recon.seasons);
   if (recovery?.blocked) return { kind: 'blocked' };
   if (recovery) {
+    // COLLISION GUARD: if the recovered apiId is already a player in the repo,
+    // this candidate is a spectator-namespace ALIAS of an existing record --
+    // NOT a missing player. Creating a record under the spectator uuid would
+    // duplicate that person (~93% of recoveries, measured 2026-07-11). Skip
+    // the write; record the spectator->apiId mapping so (a) it's reported and
+    // (b) Phase 1 excludes it on future runs instead of re-recovering it
+    // forever. This is the "skip + report" decision; turning these mappings
+    // into real game->player links (alias index or games rewrite) is a
+    // separate, deliberate piece of work.
+    if (knownUuids && knownUuids.has(recovery.apiId)) {
+      return { kind: 'collision', apiId: recovery.apiId, name: recon.name || null };
+    }
     const player = buildPublicPlayer(uuid, recovery.checkResult.data, appearanceGids);
     if (player) {
       player.apiId = recovery.apiId; // so a future re-check never has to recover it again
@@ -880,17 +933,15 @@ async function main() {
     spectatorHits: 0, spectatorMisses: 0, cloudfrontBlocked: false,
   };
 
-  // Collision measurement (read-only, --count-collisions only). Observational:
-  // does NOT change what gets written.
-  let knownUuids = null;
+  // Collision tracking. Collisions are now SKIPPED (not written) in
+  // resolveCandidate, so we count the 'collision' kind directly here on every
+  // run -- not just under --count-collisions. knownUuids is loaded at module
+  // scope. --count-collisions now only controls the extra example logging.
   const seenApiIds = new Map(); // apiId -> first candidate uuid that recovered to it (intra-run dup detection)
   const collisionExamples = [];
-  if (COUNT_COLLISIONS) {
-    summary.collisionApiIdAlreadyIndexed = 0; // recovered apiId already exists as a player elsewhere in the repo
-    summary.collisionApiIdDupThisRun     = 0; // two candidates this run recovered to the SAME apiId
-    knownUuids = loadAllKnownUuids();
-    console.log(`  [collision measurement] loaded ${knownUuids.size.toLocaleString()} already-indexed uuids across all shards`);
-  }
+  summary.skippedCollisions   = 0; // recovered apiId already indexed elsewhere -> alias of existing player, skipped
+  summary.collisionDupThisRun = 0; // two candidates this run recovered to the SAME apiId
+  console.log(`  Loaded ${knownUuids.size.toLocaleString()} already-indexed uuids (collision-skip guard)`);
 
   console.log('\nPhase 2 — resolving each candidate (public via profile API + namespace recovery, private via spectator reconstruction)…');
 
@@ -929,9 +980,26 @@ async function main() {
       blocked = true;
     }
 
-    for (const { uuid, player, kind } of built) {
+    for (const { uuid, player, kind, apiId, name } of built) {
       if (kind === 'blocked') continue; // stays a candidate for next run
       summary.processed++;
+
+      if (kind === 'collision') {
+        // Recovered apiId already exists as a player -> alias of an existing
+        // record, NOT a missing player. Do NOT write a duplicate. Record the
+        // spectator->apiId mapping (persisted + reported), so Phase 1 excludes
+        // it next run and the mapping is available for a later alias/link fix.
+        summary.skippedCollisions++;
+        recordCollision(uuid, apiId, name);
+        shardsTouched.add(playerShard(uuid));
+        if (seenApiIds.has(apiId)) summary.collisionDupThisRun++;
+        else seenApiIds.set(apiId, uuid);
+        if (COUNT_COLLISIONS && collisionExamples.length < 10) {
+          collisionExamples.push({ spectatorUuid: uuid, apiId, name });
+        }
+        continue;
+      }
+
       if (kind === 'error' || !player) { summary.errors++; continue; }
 
       const shard = playerShard(uuid);
@@ -946,21 +1014,7 @@ async function main() {
 
       if (kind === 'public') {
         summary.public++;
-        if (player.apiId) {
-          summary.recoveredViaNamespace++;
-          if (COUNT_COLLISIONS) {
-            if (knownUuids.has(player.apiId)) {
-              summary.collisionApiIdAlreadyIndexed++;
-              if (collisionExamples.length < 10) collisionExamples.push({ type: 'already-indexed', spectatorUuid: uuid, apiId: player.apiId, name: player.name });
-            }
-            if (seenApiIds.has(player.apiId)) {
-              summary.collisionApiIdDupThisRun++;
-              if (collisionExamples.length < 10) collisionExamples.push({ type: 'dup-this-run', spectatorUuid: uuid, apiId: player.apiId, alsoFrom: seenApiIds.get(player.apiId), name: player.name });
-            } else {
-              seenApiIds.set(player.apiId, uuid);
-            }
-          }
-        }
+        if (player.apiId) summary.recoveredViaNamespace++; // recovered AND genuinely new (apiId not already indexed)
       } else {
         summary.private++;
       }
@@ -970,10 +1024,10 @@ async function main() {
     console.log(`  ${Math.min(batchStart + PROFILE_BATCH, toProcess.length)}/${toProcess.length} — public=${summary.public} (recovered=${summary.recoveredViaNamespace}) private=${summary.private} errors=${summary.errors} spectator(hit/miss)=${summary.spectatorHits}/${summary.spectatorMisses}`);
 
     if (sinceCommit >= COMMIT_EVERY || blocked) {
-      for (const shard of shardsTouched) writePlayerIndex(shard);
+      for (const shard of shardsTouched) { writePlayerIndex(shard); writeCollisionsShard(shard); }
       await gitCommit(
-        `backfill-missing-players: ${summary.processed}/${toProcess.length} processed — ${summary.public} public (${summary.recoveredViaNamespace} recovered), ${summary.private} private`,
-        ['players/']
+        `backfill-missing-players: ${summary.processed}/${toProcess.length} processed — ${summary.public} public (${summary.recoveredViaNamespace} recovered), ${summary.private} private, ${summary.skippedCollisions} collisions skipped`,
+        ['players/', 'reports/backfill-collisions/']
       );
       summary.committed = summary.processed;
       shardsTouched.clear();
@@ -982,8 +1036,8 @@ async function main() {
   }
 
   if (shardsTouched.size > 0) {
-    for (const shard of shardsTouched) writePlayerIndex(shard);
-    await gitCommit(`backfill-missing-players: complete — ${summary.public} public (${summary.recoveredViaNamespace} recovered), ${summary.private} private, ${summary.errors} errors`, ['players/']);
+    for (const shard of shardsTouched) { writePlayerIndex(shard); writeCollisionsShard(shard); }
+    await gitCommit(`backfill-missing-players: complete — ${summary.public} public (${summary.recoveredViaNamespace} recovered), ${summary.private} private, ${summary.skippedCollisions} collisions skipped, ${summary.errors} errors`, ['players/', 'reports/backfill-collisions/']);
     summary.committed = summary.processed;
   }
 
@@ -1001,21 +1055,23 @@ async function main() {
   console.log(`  Candidates found       : ${summary.candidatesFound.toLocaleString()}`);
   console.log(`  Processed this run     : ${summary.processed.toLocaleString()}`);
   console.log(`  Public (real record)   : ${summary.public.toLocaleString()}`);
-  console.log(`    ├─ recovered via namespace fix : ${summary.recoveredViaNamespace.toLocaleString()}`);
-  if (COUNT_COLLISIONS) {
-    console.log(`    ├─ [collision] recovered apiId ALREADY indexed elsewhere : ${summary.collisionApiIdAlreadyIndexed.toLocaleString()}  <- would create a duplicate-identity record`);
-    console.log(`    └─ [collision] two candidates this run → same apiId      : ${summary.collisionApiIdDupThisRun.toLocaleString()}`);
-    if (collisionExamples.length) {
-      console.log('    collision examples:');
-      for (const e of collisionExamples) {
-        console.log(`      [${e.type}] spectator=${e.spectatorUuid.slice(0, 10)} apiId=${e.apiId.slice(0, 10)}${e.alsoFrom ? ` alsoFrom=${e.alsoFrom.slice(0, 10)}` : ''} name="${e.name}"`);
-      }
-    }
-    const recTotal = summary.recoveredViaNamespace || 1;
-    const pct = (summary.collisionApiIdAlreadyIndexed / recTotal * 100).toFixed(1);
-    console.log(`    collision rate among recoveries: ${pct}%  (of ${summary.recoveredViaNamespace} recovered this run)`);
-  }
+  console.log(`    └─ genuinely new via namespace recovery (apiId NOT already indexed) : ${summary.recoveredViaNamespace.toLocaleString()}`);
   console.log(`  Private (stub record)  : ${summary.private.toLocaleString()}`);
+  console.log(`  Collisions SKIPPED     : ${summary.skippedCollisions.toLocaleString()}  (recovered apiId already indexed → alias of existing player, recorded to reports/backfill-collisions, not written)`);
+  console.log(`    └─ intra-run dup apiIds : ${summary.collisionDupThisRun.toLocaleString()}`);
+  {
+    const recoveryTotal = summary.recoveredViaNamespace + summary.skippedCollisions;
+    if (recoveryTotal > 0) {
+      const pct = (summary.skippedCollisions / recoveryTotal * 100).toFixed(1);
+      console.log(`    └─ collision rate among all recoveries: ${pct}%  (${summary.skippedCollisions}/${recoveryTotal})`);
+    }
+  }
+  if (COUNT_COLLISIONS && collisionExamples.length) {
+    console.log('    collision examples:');
+    for (const e of collisionExamples) {
+      console.log(`      spectator=${e.spectatorUuid.slice(0, TRUNC_LEN)} apiId=${e.apiId.slice(0, TRUNC_LEN)} name="${e.name || ''}"`);
+    }
+  }
   console.log(`  Errors (left pending)  : ${summary.errors.toLocaleString()}`);
   console.log(`  Spectator hits/misses  : ${summary.spectatorHits.toLocaleString()}/${summary.spectatorMisses.toLocaleString()}`);
   console.log(`  Remaining candidates   : ${summary.remainingCandidates.toLocaleString()}${summary.remainingCandidates > 0 ? ' (re-run to continue)' : ''}`);
