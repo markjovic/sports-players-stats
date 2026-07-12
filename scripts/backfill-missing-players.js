@@ -898,33 +898,81 @@ function makePool(concurrency) {
   };
 }
 
+// Cheap recovery-context probe. High-appearance players (e.g. 176 games)
+// self-block CloudFront if we fetch every box score up front. But recovery only
+// needs the player's NAME plus grade/season context — and the grade ids (gid),
+// season ids (sid) and home/away team ids are ALREADY in the `appearances`
+// array from the games/bv scan. So we only need enough spectator calls to learn
+// the name (usually the first), NOT one per appearance. This fetches box scores
+// one at a time (cap PROBE_CAP), stops as soon as it has the name, and builds
+// the minimal `seasons` structure attemptRecovery expects from `appearances`
+// (attaching a real tid for the probed game(s), null otherwise — tiers 2/3
+// don't need tid, tier 1 uses it where known).
+const PROBE_CAP = 8;
+async function probeNameFromSpectator(uuid, appearances, spectatorPool, spectatorStats) {
+  const live = appearances.filter(a => !a.forfeit);
+  let name = null;
+  const probedTid = new Map(); // gameId -> tid learned from that box score
+
+  for (let i = 0; i < live.length && i < PROBE_CAP && !name; i++) {
+    const appearance = live[i];
+    const game = await spectatorPool.run(() => gqlSpectator(appearance.gid));
+    if (!game?.statistics) { spectatorStats.misses++; continue; }
+    const homePlayers = parseSpectatorPlayers(game.statistics?.home?.players);
+    const awayPlayers = parseSpectatorPlayers(game.statistics?.away?.players);
+    const mine = homePlayers.find(p => p.profileID === uuid) || awayPlayers.find(p => p.profileID === uuid);
+    if (!mine) { spectatorStats.misses++; continue; }
+    spectatorStats.hits++;
+    if (mine.name) name = mine.name;
+    const isHome = homePlayers.some(p => p.profileID === uuid);
+    const tid = isHome ? appearance.h : appearance.a;
+    if (tid) probedTid.set(appearance.gid, tid);
+  }
+
+  // Build minimal recovery context from games/bv appearances (no extra fetches).
+  const seasonsMap = new Map(); // sid -> { sid, regs: [{ tid, gid }] }
+  for (const a of appearances) {
+    if (!seasonsMap.has(a.sid)) seasonsMap.set(a.sid, { sid: a.sid, regs: [] });
+    const s = seasonsMap.get(a.sid);
+    const tid = probedTid.get(a.gid) || null; // real tid only for probed game(s)
+    if (a.gradeId && !s.regs.find(r => r.gid === a.gradeId && r.tid === tid)) {
+      s.regs.push({ tid, gid: a.gradeId });
+    }
+  }
+  return { name, seasons: [...seasonsMap.values()] };
+}
+
 async function resolveCandidate(uuid, appearances, spectatorPool, spectatorStats) {
   const appearanceGids = [...new Set(appearances.map(a => a.gid))].sort();
 
+  // 1. Direct api hit on the stored (spectator) id. If it resolves, no
+  //    spectator calls at all.
   const direct = await fetchProfile(uuid);
   if (direct.status === 'cloudfront-block') return { kind: 'blocked' };
   if (direct.status === 'ok') {
     const player = buildPublicPlayer(uuid, direct.data, appearanceGids);
     if (player) return { kind: 'public', player };
-    // parseProfileStats returned null despite "ok" -- fall through to reconstruction.
+    // parseProfileStats returned null despite "ok" -- fall through.
   }
 
-  const recon = await reconstructFromSpectator(uuid, appearances, spectatorPool, spectatorStats);
+  // 2. CHEAP probe: fetch as few box scores as needed to learn the name (+ a
+  //    tid or two), with grade/season context taken from `appearances`. This
+  //    is what lets high-appearance players (e.g. 176 games) be RECOVERED
+  //    without firing 176 spectator calls up front (which self-blocks
+  //    CloudFront). The expensive full sweep is deferred to step 4, and only
+  //    happens if recovery fails and we must build a private stub.
+  const probe = await probeNameFromSpectator(uuid, appearances, spectatorPool, spectatorStats);
 
-  const recovery = await attemptRecovery(uuid, recon.name, recon.seasons);
+  // 3. Attempt namespace recovery using the probed name + grade context.
+  const recovery = await attemptRecovery(uuid, probe.name, probe.seasons);
   if (recovery?.blocked) return { kind: 'blocked' };
   if (recovery) {
-    // COLLISION GUARD: if the recovered apiId is already a player in the repo,
-    // this candidate is a spectator-namespace ALIAS of an existing record --
-    // NOT a missing player. Creating a record under the spectator uuid would
-    // duplicate that person (~93% of recoveries, measured 2026-07-11). Skip
-    // the write; record the spectator->apiId mapping so (a) it's reported and
-    // (b) Phase 1 excludes it on future runs instead of re-recovering it
-    // forever. This is the "skip + report" decision; turning these mappings
-    // into real game->player links (alias index or games rewrite) is a
-    // separate, deliberate piece of work.
+    // COLLISION GUARD: recovered apiId already a player => spectator-namespace
+    // ALIAS of an existing record, NOT a missing player. Skip the write (would
+    // duplicate the person, ~93% of recoveries), record the mapping so Phase 1
+    // excludes it next run and it's available for the later alias/link fix.
     if (knownUuids && knownUuids.has(recovery.apiId)) {
-      return { kind: 'collision', apiId: recovery.apiId, name: recon.name || null };
+      return { kind: 'collision', apiId: recovery.apiId, name: probe.name || null };
     }
     const player = buildPublicPlayer(uuid, recovery.checkResult.data, appearanceGids);
     if (player) {
@@ -933,6 +981,10 @@ async function resolveCandidate(uuid, appearances, spectatorPool, spectatorStats
     }
   }
 
+  // 4. Not public, not recovered => private. NOW do the full spectator sweep to
+  //    reconstruct stats for the private stub. This is the only path that pays
+  //    the per-appearance cost, and only for genuinely-private players.
+  const recon = await reconstructFromSpectator(uuid, appearances, spectatorPool, spectatorStats);
   return { kind: 'private', player: buildPrivateStub(uuid, recon, appearances) };
 }
 
