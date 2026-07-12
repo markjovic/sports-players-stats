@@ -79,6 +79,7 @@ let maxCount = 0, maxApi = null;
 let apiIdsWithMultiple = 0;
 let nameMismatches = 0;
 const multiExamples = [];
+const mismatchCases = []; // EVERY apiId whose spectator ids carry >1 distinct name
 
 for (const [apiId, e] of byApi) {
   const n = e.spectatorIds.size;
@@ -87,9 +88,14 @@ for (const [apiId, e] of byApi) {
   if (n >= 2) {
     apiIdsWithMultiple++;
     // If the same apiId's spectator ids carry DIFFERENT names, that's a flag —
-    // either PlayHQ name drift, or a mis-match (two different people wrongly
-    // reconciled to one apiId). Worth surfacing.
-    if (e.names.size > 1) nameMismatches++;
+    // either PlayHQ name drift (spelling/nickname), or a mis-reconciliation
+    // (two different people wrongly folded onto one apiId). The latter is the
+    // one dangerous case for the migration's alias-folding, so surface ALL of
+    // them in full, not just within the capped examples.
+    if (e.names.size > 1) {
+      nameMismatches++;
+      mismatchCases.push({ apiId, count: n, names: [...e.names], spectatorIds: [...e.spectatorIds] });
+    }
     if (multiExamples.length < MAX_EXAMPLES) {
       multiExamples.push({
         apiId,
@@ -132,6 +138,15 @@ if (multiExamples.length) {
   for (const ex of multiExamples) {
     console.log(`    apiId=${ex.apiId.slice(0, 13)}  ×${ex.count} spectator ids  name(s)=${ex.names.map(n => `"${n}"`).join(', ')}`);
     for (const s of ex.spectatorIds) console.log(`        ← ${s}`);
+  }
+}
+if (mismatchCases.length) {
+  console.log('\n  ⚠ NAME-MISMATCH CASES (same apiId, >1 distinct name) — INSPECT before migration:');
+  console.log('    (benign = spelling/nickname/name-correction; dangerous = two different people');
+  console.log('     folded onto one apiId, which would merge unrelated stats in the alias step)');
+  for (const m of mismatchCases) {
+    console.log(`    apiId=${m.apiId}  ×${m.count}  names=${m.names.map(n => `"${n}"`).join(' | ')}`);
+    for (const s of m.spectatorIds) console.log(`        ← ${s}`);
   }
 }
 console.log('\nDone (nothing was written).');
