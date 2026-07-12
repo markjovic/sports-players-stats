@@ -1,0 +1,40 @@
+# .github/workflows/backfill-collision-stats.yml
+name: Backfill Collision Stats (read-only)
+
+# READ-ONLY aggregation of reports/backfill-collisions/*.json: measures how
+# many distinct spectator ids map to each api id (i.e. can one player have
+# multiple valid spectator ids). Pure local file read — no API, no network,
+# no writes, no lock. Safe to run any time, including mid-backfill-run; re-run
+# as more collisions accumulate.
+#
+# No actions/setup-node needed (preinstalled node is used), and there's no
+# network call here at all, so CloudFront is irrelevant.
+
+on:
+  workflow_dispatch:
+    inputs:
+      examples:
+        description: 'How many multi-spectator-id examples to print'
+        required: false
+        default: '15'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout (scripts + collision report only)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            reports/backfill-collisions
+          sparse-checkout-cone-mode: false
+
+      - name: Aggregate collision stats
+        run: node scripts/backfill-collision-stats.js --examples=${{ inputs.examples }}
