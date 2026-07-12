@@ -58,14 +58,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 350
     steps:
-      - name: Checkout (sparse — games/, players/indexes/, scripts/, reports/, data/; blob:none filter)
+      - name: Checkout (sparse — games/, full players/, scripts/, reports/, data/; blob:none filter)
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
           filter: blob:none
           sparse-checkout: |
             games
-            players/indexes
+            players
             scripts
             reports
             data
