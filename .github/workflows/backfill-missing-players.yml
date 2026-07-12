@@ -40,6 +40,11 @@ on:
         required: false
         default: ''
         type: string
+      seed:
+        description: 'Measurement only: RNG seed for --sample. Vary this (1,2,3…) across dry runs to accumulate independent random samples.'
+        required: false
+        default: '1'
+        type: string
 
 permissions:
   contents: write
@@ -76,7 +81,7 @@ jobs:
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run --count-collisions"; fi
           if [ -n "${{ inputs.sample }}" ]; then
-            ARGS="$ARGS --sample=${{ inputs.sample }}"
+            ARGS="$ARGS --sample=${{ inputs.sample }} --seed=${{ inputs.seed }}"
           elif [ -n "${{ inputs.max }}" ]; then
             ARGS="$ARGS --max=${{ inputs.max }}"
           fi
