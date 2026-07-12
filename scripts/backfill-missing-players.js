@@ -181,7 +181,20 @@ const COOKIE_QUERIES = [
 ];
 
 let sessionCookie = null;
-async function refreshSession() {
+let refreshPromise = null; // promise-lock: concurrent callers await ONE refresh
+
+// Concurrency guard. Without this, a batch of candidates that all hit a
+// stale/403 session at once each call refreshSession() independently, firing
+// N cookie-warm-up bursts at CloudFront simultaneously -> instant WAF block
+// (observed: 22 "Session refreshed" in a row then a block at offset 0). The
+// lock collapses those N calls into one shared refresh.
+function refreshSession() {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = doRefreshSession().finally(() => { refreshPromise = null; });
+  return refreshPromise;
+}
+
+async function doRefreshSession() {
   for (let attempt = 1; attempt <= 10; attempt++) {
     if (attempt > 1) await sleep(attempt * 5000);
     for (const body of COOKIE_QUERIES) {
