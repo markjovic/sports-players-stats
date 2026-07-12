@@ -35,6 +35,11 @@ on:
         required: false
         default: ''
         type: string
+      sample:
+        description: 'Measurement only: process a REPRESENTATIVE random N (use with dry_run for an accurate collision rate). Overrides max when set.'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -69,6 +74,10 @@ jobs:
       - name: Run backfill
         run: |
           ARGS=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ -n "${{ inputs.max }}" ]; then ARGS="$ARGS --max=${{ inputs.max }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run --count-collisions"; fi
+          if [ -n "${{ inputs.sample }}" ]; then
+            ARGS="$ARGS --sample=${{ inputs.sample }}"
+          elif [ -n "${{ inputs.max }}" ]; then
+            ARGS="$ARGS --max=${{ inputs.max }}"
+          fi
           node scripts/backfill-missing-players.js $ARGS
