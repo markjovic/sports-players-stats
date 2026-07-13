@@ -37,6 +37,7 @@ jobs:
           sparse-checkout: |
             scripts
             players
+            data
           sparse-checkout-cone-mode: false
 
       - name: Count season-name records
