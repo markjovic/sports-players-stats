@@ -1,0 +1,54 @@
+# .github/workflows/report-alias-index.yml
+#
+# Read-only report over the ALREADY-BUILT alias index. No rebuild, no matrix —
+# checks out only players/aliases/ (~24 MB), tallies it, writes the report to the
+# run Summary panel, and (optionally) commits reports/alias-index-report.json.
+# Runs in ~1 minute. NO actions/setup-node.
+
+name: Alias index report (no rebuild)
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_report:
+        description: "Commit reports/alias-index-report.json (uncheck for Summary-panel only)"
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts
+            players/aliases
+            reports/alias-index-report.json
+
+      - name: Compute report (Summary panel + reports/alias-index-report.json)
+        run: node scripts/report-alias-index.js
+
+      - name: Commit report
+        if: ${{ github.event.inputs.commit_report != 'false' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/alias-index-report.json
+          if git diff --cached --shortstat | grep -q .; then
+            git commit -m "report-alias-index: aggregate over built alias shards"
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git merge -X ours FETCH_HEAD --no-edit || true
+              if git push origin HEAD:main; then break; fi
+              sleep $((attempt * 5))
+            done
+          else
+            echo "Report unchanged."
+          fi
