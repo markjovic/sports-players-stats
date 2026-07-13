@@ -1,0 +1,165 @@
+# .github/workflows/repair-season-names-matrix.yml
+name: Repair Season-Name Records (Matrix)
+
+# Fixes player records whose name is a season name (the parseProfileStats bug).
+# Mirrors backfill-missing-players-matrix.yml: generate contaminated-uuid
+# buckets → repair matrix (one runner/IP per bucket, --no-commit) → aggregate
+# all bucket diffs into ONE commit → summary + retrigger until 0 remaining.
+#
+# NO actions/setup-node anywhere (it changes the runner's outbound fingerprint
+# and CloudFront 403s every request). Preinstalled node is used.
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_per_bucket:
+        description: 'Cap records processed per bucket per run (blank = no cap)'
+        required: false
+        default: ''
+        type: string
+      gentle:
+        description: 'Gentle mode: serial + paced calls per bucket (for the stubborn high-appearance tail)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  generate-candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      buckets: ${{ steps.gen.outputs.buckets }}
+      remaining: ${{ steps.gen.outputs.remaining }}
+    steps:
+      - name: Checkout (scripts + player indexes + data)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            players/indexes
+            data
+          sparse-checkout-cone-mode: false
+      - name: Generate contaminated-uuid buckets
+        id: gen
+        run: node scripts/repair-generate-candidates.js --out=/tmp/repair
+      - name: Upload buckets
+        uses: actions/upload-artifact@v4
+        with:
+          name: repair-buckets
+          path: /tmp/repair
+          retention-days: 1
+
+  repair:
+    needs: generate-candidates
+    if: ${{ needs.generate-candidates.outputs.remaining != '0' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        bucket: ${{ fromJson(needs.generate-candidates.outputs.buckets) }}
+    steps:
+      - name: Checkout (scripts + data + this bucket's index shard + player shard)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data
+            players/indexes/${{ matrix.bucket }}.json
+            players/${{ matrix.bucket }}
+          sparse-checkout-cone-mode: false
+      - name: Download buckets
+        uses: actions/download-artifact@v4
+        with:
+          name: repair-buckets
+          path: /tmp/repair
+      - name: Repair names in bucket (no commit — aggregated later)
+        run: |
+          ARGS="--candidates-file=/tmp/repair/${{ matrix.bucket }}.json --bucket=${{ matrix.bucket }} --no-commit"
+          if [ -n "${{ inputs.max_per_bucket }}" ]; then ARGS="$ARGS --max=${{ inputs.max_per_bucket }}"; fi
+          if [ "${{ inputs.gentle }}" = "true" ]; then ARGS="$ARGS --gentle"; fi
+          node scripts/repair-season-names.js $ARGS
+      - name: Tar this bucket's changes
+        run: |
+          mkdir -p /tmp/out
+          tar -czf /tmp/out/${{ matrix.bucket }}.tgz \
+            players/${{ matrix.bucket }} players/indexes/${{ matrix.bucket }}.json 2>/dev/null || true
+      - name: Upload bucket changes
+        uses: actions/upload-artifact@v4
+        with:
+          name: repair-changes-${{ matrix.bucket }}
+          path: /tmp/out
+          retention-days: 1
+
+  apply-and-commit:
+    needs: repair
+    if: ${{ !cancelled() && needs.repair.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (full players/ so any shard can be written)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            players
+          sparse-checkout-cone-mode: false
+      - name: Download all bucket changes
+        uses: actions/download-artifact@v4
+        with:
+          pattern: repair-changes-*
+          path: /tmp/changes
+          merge-multiple: true
+      - name: Unpack and commit
+        run: |
+          shopt -s nullglob
+          for t in /tmp/changes/*.tgz; do tar -xzf "$t"; done
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add players/
+          if [ -z "$(git diff --cached --shortstat)" ]; then echo "no changes"; exit 0; fi
+          git commit -m "repair-season-names: aggregated name repairs" --quiet
+          git fetch origin --quiet
+          git merge -X ours origin/main --no-edit --quiet || true
+          git push --quiet
+
+  summary-and-retrigger:
+    needs: [generate-candidates, apply-and-commit]
+    if: ${{ !cancelled() && inputs.gentle != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout (scripts + player indexes + data)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            players/indexes
+            data
+          sparse-checkout-cone-mode: false
+      - name: Count remaining
+        id: count
+        run: node scripts/repair-generate-candidates.js --out=/tmp/check
+      - name: Retrigger if work remains and under run cap
+        if: ${{ steps.count.outputs.remaining != '0' && github.run_number < 60 }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Remaining: ${{ steps.count.outputs.remaining }} — retriggering"
+          gh workflow run repair-season-names-matrix.yml \
+            ${{ inputs.max_per_bucket != '' && format('-f max_per_bucket={0}', inputs.max_per_bucket) || '' }}
