@@ -1,35 +1,58 @@
 # .github/workflows/build-alias-index-matrix.yml
 #
-# Step 3a of the api-canonical migration. Fans out over 256 spectator-prefix
-# buckets, each shard writes players/aliases/{bucket}.json from its own
-# players/{bucket}/ + reports/backfill-collisions/{bucket}.json, uploads it as an
-# artifact, and a single reduce job commits them all in ONE push.
+# Step 3a of the api-canonical migration. Builds players/aliases/{bucket}.json
+# (spectator-id -> api-id lookup) from each bucket's own players/{bucket}/ +
+# reports/backfill-collisions/{bucket}.json. Shards write files and upload them
+# as artifacts; a single reduce job commits them in ONE push (256 concurrent
+# pushes to main would storm — one reduce commit avoids it).
 #
-# Shards→reduce (NOT per-shard push) deliberately: 256 concurrent pushes to main
-# would storm. One reduce commit avoids it — this matches the proven
-# discover-seasons matrix shape.
+# NO actions/setup-node anywhere (repo-wide rule; this job makes no API calls
+# but the rule is kept uniform).
 #
-# NO actions/setup-node anywhere — it changes the runner's outbound fingerprint.
-# (This job makes no API calls, but the rule is kept uniform across the repo.)
+# Run modes (Actions -> Run workflow):
+#   - Bucket blank + Dry run off  -> full build, all 256 buckets, committed.
+#   - Bucket = "3a" + Dry run on   -> build ONLY bucket 3a, print it to the log,
+#                                     commit NOTHING. Use this to eyeball first.
+#   - Bucket = "3a" + Dry run off  -> build + commit only bucket 3a.
 
-name: build-alias-index (matrix)
+name: Build alias index (migration 3a)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      bucket:
+        description: "Single bucket to build, e.g. 3a. Leave blank to build all 256."
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run: build + print the shard to the log, commit nothing."
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
 
+concurrency:
+  group: build-alias-index
+  cancel-in-progress: false
+
 jobs:
   generate-shards:
-    # true root job — no needs, no if. (Matrix pattern rule.)
+    # True root job — no needs, no if.
     runs-on: ubuntu-latest
     outputs:
       buckets: ${{ steps.gen.outputs.buckets }}
     steps:
       - id: gen
+        env:
+          BUCKET: ${{ github.event.inputs.bucket }}
         run: |
-          arr=$(python3 -c "import json;print(json.dumps(['%02x'%i for i in range(256)]))")
+          if [ -n "$BUCKET" ]; then
+            arr=$(python3 -c "import json,os;print(json.dumps([os.environ['BUCKET'].strip().lower()]))")
+          else
+            arr=$(python3 -c "import json;print(json.dumps(['%02x'%i for i in range(256)]))")
+          fi
           echo "buckets=$arr" >> "$GITHUB_OUTPUT"
 
   build:
@@ -38,7 +61,7 @@ jobs:
     timeout-minutes: 20
     strategy:
       fail-fast: false
-      max-parallel: 32   # reduce disk/IO contention, not a WAF measure (no API here)
+      max-parallel: 32   # limit disk/IO contention, not a WAF measure (no API here)
       matrix:
         bucket: ${{ fromJson(needs.generate-shards.outputs.buckets) }}
     steps:
@@ -49,17 +72,30 @@ jobs:
             scripts
             players/${{ matrix.bucket }}
             reports/backfill-collisions/${{ matrix.bucket }}.json
+
       - name: Build alias shard (no commit — reduce commits)
         run: node scripts/build-alias-index.js --bucket ${{ matrix.bucket }} --no-commit
+
+      - name: Print shard to log (single-bucket runs)
+        if: ${{ github.event.inputs.bucket != '' }}
+        run: |
+          f="players/aliases/${{ matrix.bucket }}.json"
+          echo "===== $f ====="
+          if [ -f "$f" ]; then
+            head -c 4000 "$f"; echo
+            echo "... (showing up to 4000 chars; $(wc -c < "$f") bytes total)"
+          else
+            echo "no shard produced for ${{ matrix.bucket }}"
+          fi
+
       - name: Collect shard outputs
         run: |
           mkdir -p out/aliases out/conflicts
-          if [ -f "players/aliases/${{ matrix.bucket }}.json" ]; then
-            cp "players/aliases/${{ matrix.bucket }}.json" "out/aliases/${{ matrix.bucket }}.json"
-          fi
-          if [ -f "reports/alias-conflicts/${{ matrix.bucket }}.json" ]; then
-            cp "reports/alias-conflicts/${{ matrix.bucket }}.json" "out/conflicts/${{ matrix.bucket }}.json"
-          fi
+          [ -f "players/aliases/${{ matrix.bucket }}.json" ] && \
+            cp "players/aliases/${{ matrix.bucket }}.json" "out/aliases/${{ matrix.bucket }}.json" || true
+          [ -f "reports/alias-conflicts/${{ matrix.bucket }}.json" ] && \
+            cp "reports/alias-conflicts/${{ matrix.bucket }}.json" "out/conflicts/${{ matrix.bucket }}.json" || true
+
       - uses: actions/upload-artifact@v4
         with:
           name: alias-${{ matrix.bucket }}
@@ -69,7 +105,8 @@ jobs:
 
   reduce:
     needs: build
-    if: ${{ !cancelled() }}   # commit whatever shards succeeded; don't lose them to one failure
+    # Commit whatever shards succeeded; skip entirely on a dry run.
+    if: ${{ !cancelled() && github.event.inputs.dry_run != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -78,16 +115,19 @@ jobs:
           sparse-checkout: |
             players/aliases
             reports/alias-conflicts
+
       - uses: actions/download-artifact@v4
         with:
           pattern: alias-*
           path: dl
           merge-multiple: true
+
       - name: Stage alias + conflict shards
         run: |
           mkdir -p players/aliases reports/alias-conflicts
-          if [ -d dl/aliases ]; then cp dl/aliases/*.json players/aliases/ 2>/dev/null || true; fi
-          if [ -d dl/conflicts ]; then cp dl/conflicts/*.json reports/alias-conflicts/ 2>/dev/null || true; fi
+          [ -d dl/aliases ]   && cp dl/aliases/*.json   players/aliases/        2>/dev/null || true
+          [ -d dl/conflicts ] && cp dl/conflicts/*.json reports/alias-conflicts/ 2>/dev/null || true
+
       - name: Commit (explicit paths, merge -X ours, single push)
         run: |
           git config user.name  "github-actions[bot]"
