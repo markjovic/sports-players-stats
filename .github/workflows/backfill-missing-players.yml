@@ -45,6 +45,11 @@ on:
         required: false
         default: '1'
         type: string
+      gentle:
+        description: 'Gentle mode: process one at a time with paced calls (slow, for the stubborn high-appearance tail that blocks at offset 0)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -80,6 +85,7 @@ jobs:
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run --count-collisions"; fi
+          if [ "${{ inputs.gentle }}" = "true" ]; then ARGS="$ARGS --gentle"; fi
           if [ -n "${{ inputs.sample }}" ]; then
             ARGS="$ARGS --sample=${{ inputs.sample }} --seed=${{ inputs.seed }}"
           elif [ -n "${{ inputs.max }}" ]; then
