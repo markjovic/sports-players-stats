@@ -1,0 +1,106 @@
+# .github/workflows/build-alias-index-matrix.yml
+#
+# Step 3a of the api-canonical migration. Fans out over 256 spectator-prefix
+# buckets, each shard writes players/aliases/{bucket}.json from its own
+# players/{bucket}/ + reports/backfill-collisions/{bucket}.json, uploads it as an
+# artifact, and a single reduce job commits them all in ONE push.
+#
+# Shards→reduce (NOT per-shard push) deliberately: 256 concurrent pushes to main
+# would storm. One reduce commit avoids it — this matches the proven
+# discover-seasons matrix shape.
+#
+# NO actions/setup-node anywhere — it changes the runner's outbound fingerprint.
+# (This job makes no API calls, but the rule is kept uniform across the repo.)
+
+name: build-alias-index (matrix)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generate-shards:
+    # true root job — no needs, no if. (Matrix pattern rule.)
+    runs-on: ubuntu-latest
+    outputs:
+      buckets: ${{ steps.gen.outputs.buckets }}
+    steps:
+      - id: gen
+        run: |
+          arr=$(python3 -c "import json;print(json.dumps(['%02x'%i for i in range(256)]))")
+          echo "buckets=$arr" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 32   # reduce disk/IO contention, not a WAF measure (no API here)
+      matrix:
+        bucket: ${{ fromJson(needs.generate-shards.outputs.buckets) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts
+            players/${{ matrix.bucket }}
+            reports/backfill-collisions/${{ matrix.bucket }}.json
+      - name: Build alias shard (no commit — reduce commits)
+        run: node scripts/build-alias-index.js --bucket ${{ matrix.bucket }} --no-commit
+      - name: Collect shard outputs
+        run: |
+          mkdir -p out/aliases out/conflicts
+          if [ -f "players/aliases/${{ matrix.bucket }}.json" ]; then
+            cp "players/aliases/${{ matrix.bucket }}.json" "out/aliases/${{ matrix.bucket }}.json"
+          fi
+          if [ -f "reports/alias-conflicts/${{ matrix.bucket }}.json" ]; then
+            cp "reports/alias-conflicts/${{ matrix.bucket }}.json" "out/conflicts/${{ matrix.bucket }}.json"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alias-${{ matrix.bucket }}
+          path: out
+          if-no-files-found: ignore
+          retention-days: 1
+
+  reduce:
+    needs: build
+    if: ${{ !cancelled() }}   # commit whatever shards succeeded; don't lose them to one failure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            players/aliases
+            reports/alias-conflicts
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: alias-*
+          path: dl
+          merge-multiple: true
+      - name: Stage alias + conflict shards
+        run: |
+          mkdir -p players/aliases reports/alias-conflicts
+          if [ -d dl/aliases ]; then cp dl/aliases/*.json players/aliases/ 2>/dev/null || true; fi
+          if [ -d dl/conflicts ]; then cp dl/conflicts/*.json reports/alias-conflicts/ 2>/dev/null || true; fi
+      - name: Commit (explicit paths, merge -X ours, single push)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add players/aliases reports/alias-conflicts
+          if git diff --cached --shortstat | grep -q .; then
+            git commit -m "build-alias-index: alias shards + conflict reports"
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git merge -X ours FETCH_HEAD --no-edit || true
+              if git push origin HEAD:main; then break; fi
+              sleep $((attempt * 5))
+            done
+          else
+            echo "No alias changes to commit."
+          fi
