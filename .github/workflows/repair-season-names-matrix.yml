@@ -25,6 +25,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # required for `gh workflow run` (workflow_dispatch) in the retrigger
 
 concurrency:
   group: data-write
@@ -105,7 +106,12 @@ jobs:
 
   apply-and-commit:
     needs: repair
-    if: ${{ !cancelled() && needs.repair.result == 'success' }}
+    # Commit if the repair matrix RAN, regardless of whether some buckets failed
+    # (a CloudFront-blocked bucket exits nonzero → repair.result='failure', but
+    # the buckets that DID repair uploaded their changes and must be committed).
+    # `!cancelled()` runs on success OR failure; the git-diff check below no-ops
+    # cleanly if nothing was actually produced.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
