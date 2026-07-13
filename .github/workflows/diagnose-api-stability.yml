@@ -1,0 +1,40 @@
+# .github/workflows/diagnose-api-stability.yml
+name: Diagnose API Stability (read-only)
+
+# READ-ONLY probe: reads players/indexes/*.json and finds records that are
+# near-certainly the same person (same name + shared season/team roster slot),
+# i.e. how much same-person duplication exists in the indexed data — the upper
+# bound on api-id instability. Pure local file read: no API, no network, no
+# writes, no lock. Safe to run any time; best AFTER the backfill completes.
+#
+# No actions/setup-node (preinstalled node is used); there is no network call
+# here at all, so CloudFront is irrelevant.
+
+on:
+  workflow_dispatch:
+    inputs:
+      examples:
+        description: 'How many same-person duplicate examples to print'
+        required: false
+        default: '20'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout (scripts + player indexes only)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            players/indexes
+          sparse-checkout-cone-mode: false
+
+      - name: Run api-stability probe
+        run: node scripts/diagnose-api-stability.js --examples=${{ inputs.examples }}
