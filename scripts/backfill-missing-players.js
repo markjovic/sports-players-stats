@@ -99,8 +99,16 @@ const COUNT_COLLISIONS = !!ARGS['count-collisions'];
 // (mirrors fetch-profile-stats-matrix.yml, which never commits per-shard).
 const NO_COMMIT = !!ARGS['no-commit'];
 const MAX     = ARGS.max ? parseInt(ARGS.max, 10) : Infinity;
-const PROFILE_BATCH        = 30; // matches fetch-profile-stats.js's JWT-quota batch size
-const SPECTATOR_CONCURRENCY = 3;  // matches nightly-crawl.js's CONCURRENCY_SPECTATOR
+// --gentle: for the stubborn high-appearance tail. Some players are in so many
+// grades that recovery's grade-roster fan-out (many paginated grade fetches),
+// especially with several candidates resolving concurrently, bursts CloudFront
+// and blocks at offset 0 before anything resolves. Gentle mode processes ONE
+// candidate at a time and paces every HTTP call, trading speed for not
+// tripping the WAF. Intended for the last handful only, not the main backlog.
+const GENTLE = !!ARGS['gentle'];
+const PACE_MS = GENTLE ? (ARGS.pace ? parseInt(ARGS.pace, 10) : 1200) : 0;
+const PROFILE_BATCH        = GENTLE ? 1 : 30; // 30 matches fetch-profile-stats.js's JWT-quota batch
+const SPECTATOR_CONCURRENCY = GENTLE ? 1 : 3;  // 3 matches nightly-crawl.js's CONCURRENCY_SPECTATOR
 const COMMIT_EVERY          = 150;
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -119,7 +127,17 @@ try {
 // ─── HTTP transport — copied verbatim from fetch-profile-stats.js ───────────
 // keepAlive:false forces a new TCP connection per request (prevents CloudFront
 // per-connection rate limiting).
+// In --gentle mode, calls are serialized through a single chain and each is
+// preceded by a PACE_MS delay, so no burst of requests hits CloudFront at once.
+let paceChain = Promise.resolve();
 function doFetch(url, options) {
+  if (!PACE_MS) return doFetchRaw(url, options);
+  const run = paceChain.then(async () => { await sleep(PACE_MS); return doFetchRaw(url, options); });
+  paceChain = run.then(() => undefined, () => undefined); // keep the chain alive regardless of outcome
+  return run;
+}
+
+function doFetchRaw(url, options) {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
     const body   = options.body || '';
