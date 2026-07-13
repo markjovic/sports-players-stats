@@ -54,6 +54,22 @@ const MAX_EXAMPLES = ARGS.examples ? parseInt(ARGS.examples, 10) : 20;
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function normName(s) { return String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim(); }
 
+// Records whose `name` is actually a SEASON name (the known parseProfileStats
+// bug: seasonStatistics[0].name is the season, not the player) must be excluded
+// — they falsely cluster as one "person" because they all share the same
+// season/team slots. The artifacts are season-word + YEAR ("winter 2023",
+// "summer 2024/25", "term 3 2024"). Requiring a year avoids eating REAL names
+// like "Winter Smith" / "Summer Jones" (a bare season word alone must NOT be
+// filtered). Also match a standalone year, and obvious grade tokens.
+const YEAR = /(19|20)\d\d(\/\d\d)?/;
+const SEASON_WORD = /\b(summer|winter|spring|autumn|fall|term|season)\b/i;
+function isSeasonName(nm) {
+  if (SEASON_WORD.test(nm) && YEAR.test(nm)) return true;       // "winter 2023", "term 3 2024"
+  if (/^(19|20)\d\d(\/\d\d)?$/.test(nm)) return true;           // bare "2023" / "2024/25"
+  if (/^(u\d+|under\s*\d+|div(ision)?\b|grade\b|round\b)/i.test(nm) && YEAR.test(nm)) return true;
+  return false;
+}
+
 console.log('diagnose-api-stability.js  (READ-ONLY — no API, no network, no writes)');
 console.log('─'.repeat(64));
 
@@ -64,6 +80,7 @@ catch (e) { console.error(`Cannot read ${INDEX_DIR}: ${e.message}`); process.exi
 // name -> [ { key, history } ]
 const byName = new Map();
 let totalRecords = 0;
+let seasonNameArtifacts = 0;
 
 for (const f of shardFiles) {
   let idx;
@@ -72,6 +89,7 @@ for (const f of shardFiles) {
     totalRecords++;
     const nm = normName(rec && rec.name);
     if (!nm) continue; // no name → can't name-match (placeholder / private without real name)
+    if (isSeasonName(nm)) { seasonNameArtifacts++; continue; } // parseProfileStats season-name bug — not a real name
     if (!byName.has(nm)) byName.set(nm, []);
     byName.get(nm).push({ key, history: (rec && rec.history) || {} });
   }
@@ -79,7 +97,8 @@ for (const f of shardFiles) {
 
 console.log(`  Index shards read        : ${shardFiles.length}`);
 console.log(`  Total indexed records    : ${totalRecords.toLocaleString()}`);
-console.log(`  Distinct (normalised) names : ${byName.size.toLocaleString()}`);
+console.log(`  Season-name artifacts excluded : ${seasonNameArtifacts.toLocaleString()}  (records whose name is a season, per the parseProfileStats bug — not real names)`);
+console.log(`  Distinct (real) names    : ${byName.size.toLocaleString()}`);
 
 // For each name group, find records sharing a (sid,tid) roster slot.
 // Build (sid|tid) -> Set(keys); any slot with >1 key => those keys are the
