@@ -705,12 +705,19 @@ if (SAMPLE != null) {
 // ─── Phase 2 helpers: build public/private player records ─────────────────
 const REG_STAT_FIELDS = ['gp', 'pts', 'fg', 'ft', 'threePt', 'fouls'];
 
-function buildPublicPlayer(uuid, apiData, appearanceGids) {
+function buildPublicPlayer(uuid, apiData, appearanceGids, realName) {
   const parsed = parseProfileStats(apiData);
   if (!parsed) return null;
 
   const player = { uuid, private: false };
-  player.name = parsed.playerName || `Player #${uuid.slice(0, TRUNC_LEN)}`;
+  // NAME: the profile API query has NO player-name field — its only `name` is
+  // seasonStatistics[].name, which is the SEASON name (e.g. "Winter 2023"),
+  // NOT the player. Using it as the player name is the bug that wrote season
+  // names into records. The real name comes ONLY from the spectator box score
+  // (passed in as realName). If we don't have one (e.g. a direct-hit path that
+  // never fetched spectator data), fall back to the placeholder — never to the
+  // season-name field.
+  player.name = (realName && !isPlaceholderName(realName)) ? realName : `Player #${uuid.slice(0, TRUNC_LEN)}`;
   player.sports = { Basketball: {} };
   const bk = player.sports.Basketball;
   bk.foulOuts = parsed.foulOuts;
@@ -963,25 +970,24 @@ async function probeNameFromSpectator(uuid, appearances, spectatorPool, spectato
 async function resolveCandidate(uuid, appearances, spectatorPool, spectatorStats) {
   const appearanceGids = [...new Set(appearances.map(a => a.gid))].sort();
 
-  // 1. Direct api hit on the stored (spectator) id. If it resolves, no
-  //    spectator calls at all.
+  // 0. CHEAP name probe FIRST. The profile API returns no player name (its only
+  //    name field is the season), so the spectator box score is the ONLY source
+  //    of the real name. Every public record — direct-hit OR recovered — needs
+  //    it, so probe up front (≤ PROBE_CAP calls, stops at first name). This also
+  //    supplies the grade context recovery needs. Without this, direct-hit
+  //    players were written with a season name (the bug).
+  const probe = await probeNameFromSpectator(uuid, appearances, spectatorPool, spectatorStats);
+
+  // 1. Direct api hit on the stored (spectator) id.
   const direct = await fetchProfile(uuid);
   if (direct.status === 'cloudfront-block') return { kind: 'blocked' };
   if (direct.status === 'ok') {
-    const player = buildPublicPlayer(uuid, direct.data, appearanceGids);
+    const player = buildPublicPlayer(uuid, direct.data, appearanceGids, probe.name);
     if (player) return { kind: 'public', player };
     // parseProfileStats returned null despite "ok" -- fall through.
   }
 
-  // 2. CHEAP probe: fetch as few box scores as needed to learn the name (+ a
-  //    tid or two), with grade/season context taken from `appearances`. This
-  //    is what lets high-appearance players (e.g. 176 games) be RECOVERED
-  //    without firing 176 spectator calls up front (which self-blocks
-  //    CloudFront). The expensive full sweep is deferred to step 4, and only
-  //    happens if recovery fails and we must build a private stub.
-  const probe = await probeNameFromSpectator(uuid, appearances, spectatorPool, spectatorStats);
-
-  // 3. Attempt namespace recovery using the probed name + grade context.
+  // 2. Attempt namespace recovery using the probed name + grade context.
   const recovery = await attemptRecovery(uuid, probe.name, probe.seasons);
   if (recovery?.blocked) return { kind: 'blocked' };
   if (recovery) {
@@ -992,7 +998,7 @@ async function resolveCandidate(uuid, appearances, spectatorPool, spectatorStats
     if (knownUuids && knownUuids.has(recovery.apiId)) {
       return { kind: 'collision', apiId: recovery.apiId, name: probe.name || null };
     }
-    const player = buildPublicPlayer(uuid, recovery.checkResult.data, appearanceGids);
+    const player = buildPublicPlayer(uuid, recovery.checkResult.data, appearanceGids, probe.name);
     if (player) {
       player.apiId = recovery.apiId; // so a future re-check never has to recover it again
       return { kind: 'public', player };
