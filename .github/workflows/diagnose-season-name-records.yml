@@ -1,0 +1,43 @@
+# .github/workflows/diagnose-season-name-records.yml
+name: Diagnose Season-Name Records (read-only)
+
+# READ-ONLY count of player records whose name is actually a season name (the
+# parseProfileStats bug). Reports total + backfill-era vs pre-backfill split
+# (from each flagged record's player-file updatedAt). No API, no network, no
+# writes. Checks out the FULL players/ tree because provenance needs the player
+# files (heavy checkout — several minutes — but a one-off count).
+
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff:
+        description: 'Backfill-era cutoff date (YYYY-MM-DD). updatedAt on/after this = backfill-era.'
+        required: false
+        default: '2026-07-11'
+        type: string
+      examples:
+        description: 'How many example records to print'
+        required: false
+        default: '20'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (scripts + full players/ tree; blob:none)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            players
+          sparse-checkout-cone-mode: false
+
+      - name: Count season-name records
+        run: node scripts/diagnose-season-name-records.js --cutoff=${{ inputs.cutoff }} --examples=${{ inputs.examples }}
