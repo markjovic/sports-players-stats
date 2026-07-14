@@ -1,0 +1,77 @@
+# .github/workflows/rekey-enrich-matrix.yml
+#
+# 3b-1: additively add spectatorIds[] to player files already keyed by their api
+# id. Diverged-new files are skipped (3b-2 relocates them). Matrix by api prefix;
+# each shard commits its own players/{bucket}/ (merge -X ours handles the race).
+# NO actions/setup-node.
+#
+# Run first with Bucket = "3a" + Dry run on to see how many files WOULD change,
+# then Bucket blank + Dry run off for the full pass.
+
+name: Rekey enrich spectatorIds (migration 3b-1)
+
+on:
+  workflow_dispatch:
+    inputs:
+      bucket:
+        description: "Single api-prefix bucket, e.g. 3a. Leave blank to run all 256."
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run: count what would change, no writes/commits."
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rekey-enrich
+  cancel-in-progress: false
+
+jobs:
+  generate-shards:
+    runs-on: ubuntu-latest
+    outputs:
+      buckets: ${{ steps.gen.outputs.buckets }}
+    steps:
+      - id: gen
+        env:
+          BUCKET: ${{ github.event.inputs.bucket }}
+        run: |
+          if [ -n "$BUCKET" ]; then
+            arr=$(python3 -c "import json,os;print(json.dumps([os.environ['BUCKET'].strip().lower()]))")
+          else
+            arr=$(python3 -c "import json;print(json.dumps(['%02x'%i for i in range(256)]))")
+          fi
+          echo "buckets=$arr" >> "$GITHUB_OUTPUT"
+
+  enrich:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 8   # per-shard commits to main — limit push contention
+      matrix:
+        bucket: ${{ fromJson(needs.generate-shards.outputs.buckets) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts
+            players/${{ matrix.bucket }}
+            players/alias-inverse/${{ matrix.bucket }}.json
+
+      - name: git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Enrich bucket
+        run: |
+          FLAGS="--bucket ${{ matrix.bucket }}"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then FLAGS="$FLAGS --dry-run"; fi
+          node scripts/rekey-enrich.js $FLAGS
