@@ -39,22 +39,29 @@ for (const a of HEX) for (const b of HEX) ALL_BUCKETS.push(a + b);
 function git(a) { return execFileSync('git', a, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// One commit, one push. Single committer, so only light retry is needed —
-// just enough to survive the nightly crawl pushing at the same moment.
+// One commit, one push. Copies the proven fetch-profile-stats jitter, PLUS a
+// `git merge --abort` cleanup each attempt — yours doesn't need it (its shards
+// touch disjoint dirs so merges never conflict); this one can touch files another
+// pusher also changed, so a merge can stick and must be cleared before retrying.
 async function commit(paths, message) {
   if (NO_COMMIT || !paths.length) return;
   git(['add', ...paths]);                          // explicit paths, never -A
   if (!git(['diff', '--cached', '--shortstat']).trim()) { process.stderr.write('nothing staged\n'); return; }
   git(['commit', '-m', message]);                  // single-line
-  for (let attempt = 1; attempt <= 10; attempt++) {
+
+  const MAX = 15;
+  for (let attempt = 1; attempt <= MAX; attempt++) {
     try {
+      try { git(['merge', '--abort']); } catch (_) { /* no merge in progress */ }
       git(['fetch', 'origin', 'main']);
-      git(['merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit']); // never rebase
+      git(['merge', '-X', 'ours', '--no-edit', 'origin/main']); // never rebase
       git(['push', 'origin', 'HEAD:main']);
       return;
     } catch (err) {
-      if (attempt === 10) { process.stderr.write(`push failed after 10 attempts: ${err.message}\n`); process.exit(1); }
-      await sleep(attempt * 4000);
+      try { git(['merge', '--abort']); } catch (_) { /* leave a clean tree for the next attempt */ }
+      if (attempt === MAX) { process.stderr.write(`push failed after ${MAX} attempts: ${err.message}\n`); process.exit(1); }
+      const jitter = Math.floor(Math.random() * 15000) + attempt * 3000; // 3–30s, increasing
+      await sleep(jitter);
     }
   }
 }
