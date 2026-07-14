@@ -1,17 +1,18 @@
 // scripts/rekey-enrich.js
 //
 // 3b-1 of the api-canonical migration. ADDITIVE ONLY: adds spectatorIds[] to
-// player files that are ALREADY keyed by their api id. Never renames, moves, or
-// deletes anything. Files that are diverged-new (a top-level apiId that differs
-// from the filename) are SKIPPED here — 3b-2 (relocate/merge) handles those.
+// player files already keyed by their api id. Diverged-new files (top-level
+// apiId != filename) are SKIPPED — 3b-2 relocates those.
 //
-// Idempotent: re-running only rewrites a file whose spectatorIds actually change.
-// Matrix-sharded by api prefix: reads players/{bucket}/ + players/alias-inverse/{bucket}.json.
+// SINGLE JOB: processes all 256 buckets in one process and commits ONCE at the
+// end. No matrix, no per-shard pushes, no concurrent-push contention. Idempotent
+// (re-running only rewrites a file whose spectatorIds actually change), so it
+// safely resumes a partial earlier run.
 //
 // Usage:
-//   node scripts/rekey-enrich.js --bucket 3a               # one bucket, commit
-//   node scripts/rekey-enrich.js --bucket 3a --dry-run     # count only, no writes/commits
-//   node scripts/rekey-enrich.js --bucket 3a --no-commit   # write files, don't commit
+//   node scripts/rekey-enrich.js                # all buckets, one commit
+//   node scripts/rekey-enrich.js --dry-run      # count what would change, no writes/commit
+//   node scripts/rekey-enrich.js --bucket 3a    # a single bucket (testing)
 
 'use strict';
 
@@ -23,98 +24,101 @@ const { TRUNC_LEN, isFullUuid } = require('./lib/uuid-prefix.cjs');
 const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const INVERSE_DIR = path.join(ROOT, 'players', 'alias-inverse');
-const COUNTS_DIR = path.join(ROOT, 'reports', 'rekey-enrich-counts'); // per-shard counts, aggregated by the reduce job (not committed by shards)
 
 const argv = process.argv.slice(2);
 const has = f => argv.includes(f);
 const val = (f, d) => { const i = argv.indexOf(f); return i >= 0 && argv[i + 1] ? argv[i + 1] : d; };
 const DRY = has('--dry-run');
 const NO_COMMIT = has('--no-commit') || DRY;
-const BUCKET = val('--bucket', null);
+const ONE = val('--bucket', null);
 
-if (!BUCKET) { process.stderr.write('need --bucket XX\n'); process.exit(1); }
-const bucket = BUCKET.toLowerCase();
+const HEX = '0123456789abcdef';
+const ALL_BUCKETS = [];
+for (const a of HEX) for (const b of HEX) ALL_BUCKETS.push(a + b);
 
 function git(a) { return execFileSync('git', a, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// Push-with-retry copied from the proven fetch-profile-stats.js pattern.
-// PURE random jitter (not linear/exponential) — backoff synchronises concurrent
-// retries and worsens contention. Each shard writes a disjoint players/{bucket}/,
-// so merge -X ours is always conflict-free; the only failure mode is push races.
+// One commit, one push. Single committer, so only light retry is needed —
+// just enough to survive the nightly crawl pushing at the same moment.
 async function commit(paths, message) {
   if (NO_COMMIT || !paths.length) return;
-  git(['add', ...paths]);                       // explicit paths, never -A
-  if (!git(['diff', '--cached', '--shortstat']).trim()) return;
-  git(['commit', '-m', message]);               // single-line
-
-  const MAX_PUSH_ATTEMPTS = 60;
-  for (let attempt = 1; attempt <= MAX_PUSH_ATTEMPTS; attempt++) {
+  git(['add', ...paths]);                          // explicit paths, never -A
+  if (!git(['diff', '--cached', '--shortstat']).trim()) { process.stderr.write('nothing staged\n'); return; }
+  git(['commit', '-m', message]);                  // single-line
+  for (let attempt = 1; attempt <= 10; attempt++) {
     try {
       git(['fetch', 'origin', 'main']);
       git(['merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit']); // never rebase
       git(['push', 'origin', 'HEAD:main']);
       return;
     } catch (err) {
-      if (attempt === MAX_PUSH_ATTEMPTS) {
-        process.stderr.write(`push failed after ${MAX_PUSH_ATTEMPTS} attempts: ${err.message}\n`);
-        process.exit(1);                          // fail loud so this bucket gets re-run
-      }
-      const jitter = Math.floor(Math.random() * 90000) + 1000; // 1–91s, pure random
-      process.stderr.write(`push conflict (attempt ${attempt}/${MAX_PUSH_ATTEMPTS}) — retry in ${Math.round(jitter / 1000)}s\n`);
-      await sleep(jitter);
+      if (attempt === 10) { process.stderr.write(`push failed after 10 attempts: ${err.message}\n`); process.exit(1); }
+      await sleep(attempt * 4000);
     }
   }
 }
 
-async function main() {
+function enrichBucket(bucket, totals) {
   const shardDir = path.join(PLAYERS_DIR, bucket);
-  if (!fs.existsSync(shardDir)) { process.stderr.write(`no players/${bucket}/ — nothing to do\n`); return; }
+  if (!fs.existsSync(shardDir)) return false;
 
   const invFile = path.join(INVERSE_DIR, bucket + '.json');
   const inverse = fs.existsSync(invFile) ? JSON.parse(fs.readFileSync(invFile, 'utf8')) : {};
 
-  let scanned = 0, changed = 0, unchanged = 0, skippedDiverged = 0, skippedNonUuid = 0;
-  const changedPaths = [];
-
+  let touched = false;
   for (const fname of fs.readdirSync(shardDir)) {
     if (!fname.endsWith('.json')) continue;
     const uuid = fname.slice(0, -5);
-    if (!isFullUuid(uuid)) { skippedNonUuid++; continue; }
-    scanned++;
+    if (!isFullUuid(uuid)) { totals.skippedNonUuid++; continue; }
+    totals.scanned++;
 
     const fpath = path.join(shardDir, fname);
     const player = JSON.parse(fs.readFileSync(fpath, 'utf8'));
 
-    // diverged-new: this file is keyed by a spectator id, its api id is elsewhere.
-    // Leave it for 3b-2; enriching it here would be wrong (wrong key).
-    if (player.apiId && player.apiId !== uuid) { skippedDiverged++; continue; }
+    // diverged-new: keyed by a spectator id; its api id is elsewhere. 3b-2 handles it.
+    if (player.apiId && player.apiId !== uuid) { totals.skippedDiverged++; continue; }
 
     const spectators = (inverse[uuid] ? inverse[uuid].slice() : [uuid.slice(0, TRUNC_LEN)]).sort();
     const current = Array.isArray(player.spectatorIds) ? player.spectatorIds.slice().sort() : null;
     if (current && current.length === spectators.length && current.every((v, i) => v === spectators[i])) {
-      unchanged++; continue;                      // idempotent no-op
+      totals.unchanged++; continue;                // idempotent no-op
     }
 
     player.spectatorIds = spectators;
     if (!DRY) fs.writeFileSync(fpath, JSON.stringify(player));
-    changedPaths.push(fpath);
-    changed++;
+    totals.changed++;
+    touched = true;
+  }
+  return touched;
+}
+
+async function main() {
+  const buckets = ONE ? [ONE.toLowerCase()] : ALL_BUCKETS;
+  const totals = { scanned: 0, changed: 0, unchanged: 0, skippedDiverged: 0, skippedNonUuid: 0 };
+  const changedDirs = [];
+
+  for (const bucket of buckets) {
+    if (enrichBucket(bucket, totals)) changedDirs.push(path.join(PLAYERS_DIR, bucket));
   }
 
-  if (changedPaths.length && !NO_COMMIT) {
-    await commit([shardDir], `rekey-enrich: spectatorIds for ${changed} players in ${bucket}`);
+  await commit(changedDirs, `rekey-enrich: spectatorIds for ${totals.changed} players (3b-1)`);
+
+  const md = [
+    `## rekey-enrich — overall report${DRY ? ' (dry run — no writes)' : ''}`,
+    '',
+    '| metric | value |',
+    '|---|---|',
+    `| buckets processed | ${buckets.length} |`,
+    `| player files scanned | ${totals.scanned} |`,
+    `| enriched (spectatorIds set) | ${totals.changed} |`,
+    `| already correct (no-op) | ${totals.unchanged} |`,
+    `| skipped: diverged-new (3b-2 handles) | ${totals.skippedDiverged} |`,
+  ];
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md.join('\n') + '\n'); } catch (e) { /* non-fatal */ }
   }
-
-  // Emit this shard's counts for the reduce job to aggregate into ONE summary.
-  // Always written (even on dry runs) and NOT committed by the shard.
-  fs.mkdirSync(COUNTS_DIR, { recursive: true });
-  fs.writeFileSync(
-    path.join(COUNTS_DIR, bucket + '.json'),
-    JSON.stringify({ bucket, scanned, changed, unchanged, skippedDiverged, skippedNonUuid })
-  );
-
-  process.stderr.write(`\nDONE ${bucket}. scanned=${scanned} changed=${changed} noop=${unchanged} divergedSkipped=${skippedDiverged}${DRY ? ' (dry-run)' : ''}\n`);
+  process.stderr.write(`\nDONE. scanned=${totals.scanned} changed=${totals.changed} noop=${totals.unchanged} divergedSkipped=${totals.skippedDiverged}${DRY ? ' (dry-run)' : ''}\n`);
 }
 
 main().catch(e => { process.stderr.write(String((e && e.stack) || e) + '\n'); process.exit(1); });
