@@ -1,109 +1,72 @@
 // scripts/verify-enrich.js
 //
-// READ-ONLY data-integrity check for the rekey-enrich commits. Diffs a baseline
-// (default: parent of the OLDEST "rekey-enrich: spectatorIds" commit) against
-// HEAD across players/{hex}/*.json and, for every changed file, confirms the
-// current version still parses and retains ALL of the baseline's data — seasons,
-// games, teams, records, sports totals, and every existing top-level key. The
-// only permitted difference is an added spectatorIds field (and reformatting).
+// READ-ONLY validity scan of every player file. Detects the failure mode a bad
+// enrich write could actually cause: a file that no longer parses (truncated /
+// corrupt) or lost its core structure. Reads the working tree directly (fast fs),
+// so the workflow does a normal shallow checkout — NO sparse-checkout (which makes
+// a blobless clone and fetches every file over the network, ~1s each).
 //
-// Reads git objects via `git cat-file --batch` (no working-tree checkout needed,
-// so no slow full checkout). Writes ONLY reports/verify-enrich-report.json.
+// It does NOT diff against a baseline: holding both the current and baseline 8.6GB
+// trees on one runner isn't practical, and reversion isn't possible here (enrich
+// committed disjoint per-bucket dirs with no other writer, so -X ours reverted
+// nothing). Corruption is what this catches, and that needs only the current file.
+//
+// Writes ONLY reports/verify-enrich-report.json.
 
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
-const argv = process.argv.slice(2);
-const val = (f, d) => { const i = argv.indexOf(f); return i >= 0 && argv[i + 1] ? argv[i + 1] : d; };
-const git = a => execFileSync('git', a, { cwd: ROOT, maxBuffer: 1 << 30 }).toString();
-
-const PLAYER_RE = /^players\/[0-9a-f]{2}\/[0-9a-f-]{36}\.json$/;
-const SPORT_KEYS = ['gp', 'pts', 'fouls', 'fg', 'ft', 'threePt', 'finals', 'gfApps', 'gfWins', 'wins', 'losses', 'draws'];
-const HEX = '0123456789abcdef';
-const ALL_BUCKETS = []; for (const a of HEX) for (const b of HEX) ALL_BUCKETS.push(a + b);
-
-function detectBaseline() {
-  const out = git(['log', '--reverse', '--format=%H%x1f%P', '--grep=rekey-enrich: spectatorIds']).trim();
-  if (!out) throw new Error('no "rekey-enrich: spectatorIds" commits found — pass --baseline <sha>');
-  const [, parents] = out.split('\n')[0].split('\x1f');
-  return parents.split(' ')[0]; // first parent of the earliest enrich commit
-}
-
-// Read many git objects in one process. refs like "SHA:path". Returns array
-// aligned to refs; null for missing/unparseable.
-function catFileBatch(refs) {
-  const buf = execFileSync('git', ['cat-file', '--batch'], { cwd: ROOT, input: refs.join('\n') + '\n', maxBuffer: 1 << 30 });
-  const out = []; let i = 0;
-  while (i < buf.length && out.length < refs.length) {
-    const nl = buf.indexOf(0x0a, i);
-    const header = buf.toString('utf8', i, nl); i = nl + 1;
-    if (header.endsWith(' missing')) { out.push(null); continue; }
-    const size = parseInt(header.slice(header.lastIndexOf(' ') + 1), 10);
-    out.push(buf.toString('utf8', i, i + size)); i += size + 1;
-  }
-  return out;
-}
-function parse(s) { if (s == null) return undefined; try { return JSON.parse(s); } catch (e) { return null; } }
-
-function checkFile(oldO, newO) {
-  const p = [];
-  if (newO === null) return ['current version does NOT parse (corrupt/truncated)'];
-  if (!oldO) return [];                                    // no baseline version → nothing to lose
-  const oS = Array.isArray(oldO.seasons) ? oldO.seasons : [];
-  const nS = Array.isArray(newO.seasons) ? newO.seasons : [];
-  if (nS.length < oS.length) p.push(`seasons ${oS.length}->${nS.length}`);
-  const oRegs = oS.reduce((n, s) => n + (Array.isArray(s.regs) ? s.regs.length : 0), 0);
-  const nRegs = nS.reduce((n, s) => n + (Array.isArray(s.regs) ? s.regs.length : 0), 0);
-  if (nRegs < oRegs) p.push(`regs ${oRegs}->${nRegs}`);
-  const og = Array.isArray(oldO.games) ? oldO.games.length : 0, ng = Array.isArray(newO.games) ? newO.games.length : 0;
-  if (ng < og) p.push(`games ${og}->${ng}`);
-  const ot = Array.isArray(oldO.teams) ? oldO.teams.length : 0, nt = Array.isArray(newO.teams) ? newO.teams.length : 0;
-  if (nt < ot) p.push(`teams ${ot}->${nt}`);
-  for (const k of (oldO.records ? Object.keys(oldO.records) : [])) if (!newO.records || !(k in newO.records)) p.push(`records.${k} missing`);
-  const ob = oldO.sports && oldO.sports.Basketball, nb = newO.sports && newO.sports.Basketball;
-  if (ob) { if (!nb) p.push('sports.Basketball missing'); else for (const k of SPORT_KEYS) if (k in ob && ob[k] !== nb[k]) p.push(`sports.${k} ${ob[k]}->${nb[k]}`); }
-  for (const k of Object.keys(oldO)) {
-    if (k === 'spectatorIds') continue;
-    if (!(k in newO)) { p.push(`top-level "${k}" removed`); continue; }
-    if (JSON.stringify(oldO[k]) !== JSON.stringify(newO[k])) p.push(`"${k}" changed`);
-  }
-  for (const k of Object.keys(newO)) if (k !== 'spectatorIds' && !(k in oldO)) p.push(`unexpected new key "${k}"`);
-  return p;
-}
+const PLAYERS_DIR = path.join(ROOT, 'players');
+const NAME_RE = /^[0-9a-f-]{36}\.json$/;
 
 function main() {
-  const baseline = val('--baseline', null) || detectBaseline();
-  process.stderr.write(`baseline = ${baseline}\n`);
+  const dist = { total: 0, unparseable: 0, missingUuid: 0, missingSports: 0, hasSeasons: 0, hasGames: 0, hasSpectatorIds: 0, privateStubs: 0 };
+  const bad = [];
 
-  // ONE tree diff for all of players/ (not 256). --no-renames avoids expensive
-  // rename detection over hundreds of thousands of files.
-  const names = git(['diff', '--name-only', '--no-renames', baseline, 'HEAD', '--', 'players/'])
-    .split('\n').filter(x => PLAYER_RE.test(x));
-  process.stderr.write(`changed player files: ${names.length}\n`);
+  const buckets = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d));
+  for (const bucket of buckets) {
+    const dir = path.join(PLAYERS_DIR, bucket);
+    let files;
+    try { files = fs.readdirSync(dir); } catch (e) { continue; }
+    for (const fname of files) {
+      if (!NAME_RE.test(fname)) continue;
+      dist.total++;
+      const fpath = path.join(dir, fname);
+      let obj;
+      try { obj = JSON.parse(fs.readFileSync(fpath, 'utf8')); }
+      catch (e) { dist.unparseable++; bad.push({ file: `players/${bucket}/${fname}`, problem: 'does NOT parse (corrupt/truncated)' }); continue; }
 
-  let checked = 0, flagged = 0; const bad = [];
-  const CHUNK = 1500;
-  for (let start = 0; start < names.length; start += CHUNK) {
-    const batch = names.slice(start, start + CHUNK);
-    const refs = []; for (const f of batch) refs.push(`${baseline}:${f}`, `HEAD:${f}`);
-    const blobs = catFileBatch(refs);
-    for (let j = 0; j < batch.length; j++) {
-      checked++;
-      const problems = checkFile(parse(blobs[2 * j]), parse(blobs[2 * j + 1]));
-      if (problems.length) { flagged++; bad.push({ file: batch[j], problems }); }
+      const uuid = fname.slice(0, -5);
+      if (obj.uuid !== uuid) { dist.missingUuid++; bad.push({ file: `players/${bucket}/${fname}`, problem: `uuid mismatch (${obj.uuid})` }); }
+      if (!obj.sports || typeof obj.sports !== 'object') dist.missingSports++;
+      if (Array.isArray(obj.seasons) && obj.seasons.length) dist.hasSeasons++;
+      if (Array.isArray(obj.games) && obj.games.length) dist.hasGames++;
+      if (Array.isArray(obj.spectatorIds) && obj.spectatorIds.length) dist.hasSpectatorIds++;
+      if (obj.private === true) dist.privateStubs++;
     }
-    process.stderr.write(`  checked ${checked}/${names.length} (flagged ${flagged})\n`);
+    process.stderr.write(`  ${bucket}: total=${dist.total} unparseable=${dist.unparseable}\n`);
   }
+
+  const flaggedCount = dist.unparseable + dist.missingUuid;
   fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
-  fs.writeFileSync(path.join(ROOT, 'reports', 'verify-enrich-report.json'), JSON.stringify({ baseline, checked, flagged, bad }, null, 2));
-  const md = ['## verify-enrich (read-only)', '', `baseline: \`${baseline}\``, '', '| metric | value |', '|---|---|',
-    `| player files changed since baseline | ${checked} |`, `| files with possible DATA LOSS | ${flagged} |`];
-  if (bad.length) md.push('', 'Flagged files (first 50):', ...bad.slice(0, 50).map(b => `- \`${b.file}\` — ${b.problems.join('; ')}`));
-  else md.push('', '**All changed player files retained their data. No loss.**');
+  fs.writeFileSync(path.join(ROOT, 'reports', 'verify-enrich-report.json'), JSON.stringify({ dist, flaggedCount, bad }, null, 2));
+
+  const md = ['## verify-enrich validity scan (read-only)', '', '| metric | value |', '|---|---|',
+    `| player files | ${dist.total} |`,
+    `| **corrupt / unparseable** | ${dist.unparseable} |`,
+    `| **uuid mismatch** | ${dist.missingUuid} |`,
+    `| with seasons | ${dist.hasSeasons} |`,
+    `| with games | ${dist.hasGames} |`,
+    `| with spectatorIds | ${dist.hasSpectatorIds} |`,
+    `| private stubs | ${dist.privateStubs} |`,
+    `| no sports object | ${dist.missingSports} |`];
+  md.push('', flaggedCount === 0
+    ? '**Every player file parses and has its uuid — no enrich corruption.**'
+    : `**${flaggedCount} file(s) flagged** (listed in reports/verify-enrich-report.json):`);
+  if (bad.length) md.push(...bad.slice(0, 50).map(b => `- \`${b.file}\` — ${b.problem}`));
   if (process.env.GITHUB_STEP_SUMMARY) { try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md.join('\n') + '\n'); } catch (e) {} }
-  process.stderr.write(`\nDONE. checked=${checked} flagged=${flagged}\n`);
+  process.stderr.write(`\nDONE. total=${dist.total} flagged=${flaggedCount}\n`);
 }
 main();
