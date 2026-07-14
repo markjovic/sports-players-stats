@@ -1,0 +1,47 @@
+# .github/workflows/rekey-enrich.yml
+#
+# 3b-1: add spectatorIds[] to api-keyed player files. SINGLE JOB — full checkout,
+# enrich every bucket in one process, ONE commit, ONE push. No matrix, no
+# per-shard pushes. Replaces the old rekey-enrich-matrix.yml (delete that one).
+# Idempotent, so it resumes a partial earlier run. NO actions/setup-node.
+
+name: Rekey enrich spectatorIds (migration 3b-1)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: count what would change, no writes/commit."
+        type: boolean
+        required: false
+        default: false
+      bucket:
+        description: "Optional single bucket for testing, e.g. 3a. Leave blank for all."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rekey-enrich
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4   # full checkout (single job pays it once)
+
+      - name: git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Enrich (all buckets, one commit)
+        run: |
+          FLAGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then FLAGS="$FLAGS --dry-run"; fi
+          if [ -n "${{ github.event.inputs.bucket }}" ]; then FLAGS="$FLAGS --bucket ${{ github.event.inputs.bucket }}"; fi
+          node scripts/rekey-enrich.js $FLAGS
