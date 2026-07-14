@@ -36,22 +36,38 @@ if (!BUCKET) { process.stderr.write('need --bucket XX\n'); process.exit(1); }
 const bucket = BUCKET.toLowerCase();
 
 function git(a) { return execFileSync('git', a, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
-function commit(paths, message) {
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Push-with-retry copied from the proven fetch-profile-stats.js pattern.
+// PURE random jitter (not linear/exponential) — backoff synchronises concurrent
+// retries and worsens contention. Each shard writes a disjoint players/{bucket}/,
+// so merge -X ours is always conflict-free; the only failure mode is push races.
+async function commit(paths, message) {
   if (NO_COMMIT || !paths.length) return;
   git(['add', ...paths]);                       // explicit paths, never -A
   if (!git(['diff', '--cached', '--shortstat']).trim()) return;
   git(['commit', '-m', message]);               // single-line
-  for (let attempt = 1; attempt <= 5; attempt++) {
+
+  const MAX_PUSH_ATTEMPTS = 60;
+  for (let attempt = 1; attempt <= MAX_PUSH_ATTEMPTS; attempt++) {
     try {
       git(['fetch', 'origin', 'main']);
       git(['merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit']); // never rebase
       git(['push', 'origin', 'HEAD:main']);
       return;
-    } catch (e) { if (attempt === 5) throw e; }
+    } catch (err) {
+      if (attempt === MAX_PUSH_ATTEMPTS) {
+        process.stderr.write(`push failed after ${MAX_PUSH_ATTEMPTS} attempts: ${err.message}\n`);
+        process.exit(1);                          // fail loud so this bucket gets re-run
+      }
+      const jitter = Math.floor(Math.random() * 90000) + 1000; // 1–91s, pure random
+      process.stderr.write(`push conflict (attempt ${attempt}/${MAX_PUSH_ATTEMPTS}) — retry in ${Math.round(jitter / 1000)}s\n`);
+      await sleep(jitter);
+    }
   }
 }
 
-function main() {
+async function main() {
   const shardDir = path.join(PLAYERS_DIR, bucket);
   if (!fs.existsSync(shardDir)) { process.stderr.write(`no players/${bucket}/ — nothing to do\n`); return; }
 
@@ -87,7 +103,7 @@ function main() {
   }
 
   if (changedPaths.length && !NO_COMMIT) {
-    commit([shardDir], `rekey-enrich: spectatorIds for ${changed} players in ${bucket}`);
+    await commit([shardDir], `rekey-enrich: spectatorIds for ${changed} players in ${bucket}`);
   }
 
   // Emit this shard's counts for the reduce job to aggregate into ONE summary.
@@ -101,4 +117,4 @@ function main() {
   process.stderr.write(`\nDONE ${bucket}. scanned=${scanned} changed=${changed} noop=${unchanged} divergedSkipped=${skippedDiverged}${DRY ? ' (dry-run)' : ''}\n`);
 }
 
-main();
+main().catch(e => { process.stderr.write(String((e && e.stack) || e) + '\n'); process.exit(1); });
