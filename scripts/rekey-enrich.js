@@ -23,6 +23,7 @@ const { TRUNC_LEN, isFullUuid } = require('./lib/uuid-prefix.cjs');
 const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const INVERSE_DIR = path.join(ROOT, 'players', 'alias-inverse');
+const COUNTS_DIR = path.join(ROOT, 'reports', 'rekey-enrich-counts'); // per-shard counts, aggregated by the reduce job (not committed by shards)
 
 const argv = process.argv.slice(2);
 const has = f => argv.includes(f);
@@ -89,19 +90,14 @@ function main() {
     commit([shardDir], `rekey-enrich: spectatorIds for ${changed} players in ${bucket}`);
   }
 
-  const md = [
-    `## rekey-enrich bucket ${bucket}${DRY ? ' (dry run — no writes)' : ''}`,
-    '',
-    '| metric | value |',
-    '|---|---|',
-    `| player files scanned | ${scanned} |`,
-    `| enriched (spectatorIds set) | ${changed} |`,
-    `| already correct (no-op) | ${unchanged} |`,
-    `| skipped: diverged-new (3b-2 handles) | ${skippedDiverged} |`,
-  ];
-  if (process.env.GITHUB_STEP_SUMMARY) {
-    try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md.join('\n') + '\n'); } catch (e) { /* non-fatal */ }
-  }
+  // Emit this shard's counts for the reduce job to aggregate into ONE summary.
+  // Always written (even on dry runs) and NOT committed by the shard.
+  fs.mkdirSync(COUNTS_DIR, { recursive: true });
+  fs.writeFileSync(
+    path.join(COUNTS_DIR, bucket + '.json'),
+    JSON.stringify({ bucket, scanned, changed, unchanged, skippedDiverged, skippedNonUuid })
+  );
+
   process.stderr.write(`\nDONE ${bucket}. scanned=${scanned} changed=${changed} noop=${unchanged} divergedSkipped=${skippedDiverged}${DRY ? ' (dry-run)' : ''}\n`);
 }
 
