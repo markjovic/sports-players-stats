@@ -1,0 +1,90 @@
+# .github/workflows/rekey-plan-matrix.yml
+#
+# 3b-2 PLAN (READ-ONLY). Scans every player file (matrix by bucket) and a single
+# reduce job groups them by api id to produce reports/rekey-merges.json — the
+# relocate/merge plan + the merge AUDIT (flagged mismatches first). Changes NO
+# player files; only writes the audit report. Review this before running APPLY.
+# NO actions/setup-node.
+
+name: Rekey plan + merge audit (migration 3b-2, read-only)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rekey-plan
+  cancel-in-progress: false
+
+jobs:
+  generate-shards:
+    runs-on: ubuntu-latest
+    outputs:
+      buckets: ${{ steps.gen.outputs.buckets }}
+    steps:
+      - id: gen
+        run: |
+          arr=$(python3 -c "import json;print(json.dumps(['%02x'%i for i in range(256)]))")
+          echo "buckets=$arr" >> "$GITHUB_OUTPUT"
+
+  scan:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 32
+      matrix:
+        bucket: ${{ fromJson(needs.generate-shards.outputs.buckets) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts
+            players/${{ matrix.bucket }}
+      - name: Scan bucket (read-only)
+        run: node scripts/rekey-plan.js --scan --bucket ${{ matrix.bucket }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: planscan-${{ matrix.bucket }}
+          path: reports/rekey-plan-scan/${{ matrix.bucket }}.json
+          if-no-files-found: ignore
+          retention-days: 1
+
+  plan:
+    needs: scan
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts
+            reports/rekey-merges.json
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: planscan-*
+          path: reports/rekey-plan-scan
+          merge-multiple: true
+      - name: Build plan + audit
+        run: node scripts/rekey-plan.js --plan
+      - name: Commit audit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/rekey-merges.json
+          if git diff --cached --shortstat | grep -q .; then
+            git commit -m "rekey-plan: relocate/merge plan + merge audit"
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git merge -X ours FETCH_HEAD --no-edit || true
+              if git push origin HEAD:main; then break; fi
+              sleep $((attempt * 5))
+            done
+          else
+            echo "Audit unchanged."
+          fi
