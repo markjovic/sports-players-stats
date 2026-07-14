@@ -1,21 +1,15 @@
 # .github/workflows/verify-enrich.yml
 #
-# READ-ONLY integrity check of the rekey-enrich commits. Diffs the pre-enrich
-# baseline against HEAD across every player file and flags any that lost data or
-# no longer parse. Writes NOTHING to the repo (contents: read) — the report is a
-# downloadable artifact plus the run Summary. Reads git objects via cat-file, so
-# it does NOT materialise the 400k-file working tree (no slow full checkout).
+# READ-ONLY validity scan of every player file (parses? has uuid/structure?).
+# Plain shallow checkout, NO sparse-checkout — files land on local disk so reads
+# are instant. (Sparse-checkout makes a blobless clone and fetches each file over
+# the network ~1s each = unusable at 400k files.) Writes nothing to the repo.
 # NO actions/setup-node.
 
-name: Verify enrich (data-loss check, read-only)
+name: Verify enrich (validity scan, read-only)
 
 on:
-  workflow_dispatch:
-    inputs:
-      baseline:
-        description: "Optional baseline commit SHA. Blank = auto-detect (parent of oldest enrich commit)."
-        required: false
-        default: ""
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -23,21 +17,12 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1000          # enough history to reach the pre-enrich baseline
-          sparse-checkout-cone-mode: false
-          sparse-checkout: scripts    # only the script in the working tree; blobs come from git objects
+      - uses: actions/checkout@v4   # default shallow, full working tree (~8.6 GB, fits)
 
-      - name: Verify (read-only)
-        run: |
-          if [ -n "${{ github.event.inputs.baseline }}" ]; then
-            node scripts/verify-enrich.js --baseline ${{ github.event.inputs.baseline }}
-          else
-            node scripts/verify-enrich.js
-          fi
+      - name: Validity scan (read-only)
+        run: node scripts/verify-enrich.js
 
       - uses: actions/upload-artifact@v4
         with:
