@@ -77,18 +77,25 @@ function checkFile(oldO, newO) {
 function main() {
   const baseline = val('--baseline', null) || detectBaseline();
   process.stderr.write(`baseline = ${baseline}\n`);
+
+  // ONE tree diff for all of players/ (not 256). --no-renames avoids expensive
+  // rename detection over hundreds of thousands of files.
+  const names = git(['diff', '--name-only', '--no-renames', baseline, 'HEAD', '--', 'players/'])
+    .split('\n').filter(x => PLAYER_RE.test(x));
+  process.stderr.write(`changed player files: ${names.length}\n`);
+
   let checked = 0, flagged = 0; const bad = [];
-  for (const bucket of ALL_BUCKETS) {
-    const names = git(['diff', '--name-only', baseline, 'HEAD', '--', `players/${bucket}/`])
-      .trim().split('\n').filter(x => PLAYER_RE.test(x));
-    if (!names.length) continue;
-    const refs = []; for (const f of names) { refs.push(`${baseline}:${f}`, `HEAD:${f}`); }
+  const CHUNK = 1500;
+  for (let start = 0; start < names.length; start += CHUNK) {
+    const batch = names.slice(start, start + CHUNK);
+    const refs = []; for (const f of batch) refs.push(`${baseline}:${f}`, `HEAD:${f}`);
     const blobs = catFileBatch(refs);
-    for (let j = 0; j < names.length; j++) {
+    for (let j = 0; j < batch.length; j++) {
       checked++;
       const problems = checkFile(parse(blobs[2 * j]), parse(blobs[2 * j + 1]));
-      if (problems.length) { flagged++; bad.push({ file: names[j], problems }); }
+      if (problems.length) { flagged++; bad.push({ file: batch[j], problems }); }
     }
+    process.stderr.write(`  checked ${checked}/${names.length} (flagged ${flagged})\n`);
   }
   fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
   fs.writeFileSync(path.join(ROOT, 'reports', 'verify-enrich-report.json'), JSON.stringify({ baseline, checked, flagged, bad }, null, 2));
