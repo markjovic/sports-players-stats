@@ -41,6 +41,7 @@ const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const INDEX_DIR = path.join(ROOT, 'players', 'indexes');
 const OUT_REPORT = path.join(ROOT, 'reports', 'rebuild-player-index.json');
+const APPLY_LOG = path.join(ROOT, 'reports', 'rekey-apply-log.json');
 
 const DRY = process.argv.includes('--dry-run');
 
@@ -69,6 +70,25 @@ function main() {
   }
   log(`old index loaded: ${oldShards} shards, ${oldIndex.size} entries`);
 
+  // Old-key mapping for the re-keyed people, from the reviewed 3b-2 apply log:
+  // apiId -> [oldKey, ...] with the merge KEEPER first (its old entry is the
+  // authoritative field source). Required so fresh entries can carry the
+  // enriched fields (gender etc.) that exist ONLY in the index.
+  const oldKeysByApiId = new Map();
+  if (fs.existsSync(APPLY_LOG)) {
+    const applyLog = readJson(APPLY_LOG);
+    for (const e of (applyLog.entries || [])) {
+      if (e.action === 'merge') {
+        oldKeysByApiId.set(e.apiId, [e.keeper, ...(e.dropped || [])].filter(k => k !== e.apiId));
+      } else if (e.action === 'promote') {
+        oldKeysByApiId.set(e.apiId, [e.oldKey]);
+      }
+    }
+    log(`apply log loaded: old-key mapping for ${oldKeysByApiId.size} re-keyed people`);
+  } else {
+    log('WARNING: reports/rekey-apply-log.json not found — fresh entries cannot carry enriched fields');
+  }
+
   // Field census of the old index — surface anything beyond {name, history}.
   const extraFieldCounts = {};
   let entriesWithExtras = 0;
@@ -87,7 +107,7 @@ function main() {
   const newShards = new Map(); // bucket -> { uuid: entry }
   for (const b of ALL_BUCKETS) newShards.set(b, {});
 
-  let files = 0, carried = 0, fresh = 0, apiIdFieldSeen = 0, nameFallbacks = 0;
+  let files = 0, carried = 0, fresh = 0, freshCarried = 0, freshBare = 0, apiIdFieldSeen = 0, nameFallbacks = 0;
 
   for (const bucket of ALL_BUCKETS) {
     const dir = path.join(PLAYERS_DIR, bucket);
@@ -119,8 +139,28 @@ function main() {
         nameFallbacks++;
       }
 
-      out[uuid] = old ? { ...old, name, history } : { name, history };
-      if (old) carried++; else fresh++;
+      if (old) {
+        out[uuid] = { ...old, name, history };
+        carried++;
+      } else {
+        // Re-keyed person: carry enriched fields from their old keeper entry.
+        let base = null;
+        for (const oldKey of (oldKeysByApiId.get(uuid) || [])) {
+          const oe = oldIndex.get(oldKey);
+          if (oe) { base = oe; break; } // keeper first; first hit wins
+        }
+        if (base) {
+          const entry = { ...base, name, history };
+          // an entry-internal uuid field must not point at a deleted old key
+          if ('uuid' in base) entry.uuid = uuid;
+          out[uuid] = entry;
+          freshCarried++;
+        } else {
+          out[uuid] = { name, history };
+          freshBare++;
+        }
+        fresh++;
+      }
 
       if (files % 50000 === 0) log(`derived ${files} entries`);
     }
@@ -163,6 +203,8 @@ function main() {
     oldEntries: oldIndex.size,
     carriedSameKey: carried,
     freshEntries: fresh,
+    freshWithCarriedFields: freshCarried,
+    freshBare,
     droppedOldKeys: dropped,
     droppedSample,
     nameFallbacks,
@@ -185,6 +227,8 @@ function main() {
   L.push(`| old index entries | ${oldIndex.size} |`);
   L.push(`| carried (same key, fields preserved) | ${carried} |`);
   L.push(`| fresh entries (re-keyed people) | ${fresh} |`);
+  L.push(`| — fresh with fields carried from old keeper entry | ${freshCarried} |`);
+  L.push(`| — fresh with NO old entry found (bare) | ${freshBare} |`);
   L.push(`| dropped old keys (dead: deleted files) | ${dropped} |`);
   L.push(`| name fallbacks (file had no name) | ${nameFallbacks} |`);
   L.push(`| old entries with fields beyond name/history | ${entriesWithExtras} |`);
@@ -193,7 +237,7 @@ function main() {
     L.push('| field | entries |');
     L.push('| --- | --- |');
     for (const [k, n] of Object.entries(extraFieldCounts)) L.push(`| ${k} | ${n} |`);
-    L.push('', '_Fields above survive for carried entries but are LOST on the fresh (re-keyed) ones. If any field matters, stop and tell Claude._');
+    L.push('', '_Fields above survive on carried entries AND on fresh entries via old-keeper carry-over; only the `fresh bare` count above loses them._');
   } else {
     L.push('', '_No fields beyond name/history anywhere in the old index — carry-over risk is nil._');
   }
