@@ -1,0 +1,80 @@
+# .github/workflows/repair-aliases.yml
+name: Repair alias index (migration 3b-2 pre-step)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run = preview the repair plan only (no writes, no commit). apply = write fixed aliases, regenerate the inverse, re-verify, and commit."
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-aliases
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      # Plain depth-1 checkout (working tree only) — same fast path as reconcile.
+      - name: Checkout (working tree only)
+        uses: actions/checkout@v4
+
+      # Consumes reports/reconcile-people.json. Writes fixed players/aliases/* only
+      # (or nothing, in dry-run). No git here — the commit step below does it once.
+      - name: Repair aliases
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "apply" ]; then
+            node scripts/repair-aliases.js
+          else
+            node scripts/repair-aliases.js --dry-run
+          fi
+
+      # Regenerate the whole inverse from the corrected aliases (3b-0 script, verbatim).
+      - name: Regenerate alias-inverse
+        if: ${{ github.event.inputs.mode == 'apply' }}
+        run: node scripts/build-alias-inverse.js
+
+      # Re-verify: overwrites reports/reconcile-people.json with post-fix state.
+      # Success = onlyInFiles 0 AND onlyInInverse 0. Note: "B reproduces baseline
+      # 411,117" will now be FALSE by design — the baseline was the undercount, so
+      # B correctly rises to 411,313 and matches A.
+      - name: Re-verify (reconcile)
+        if: ${{ github.event.inputs.mode == 'apply' }}
+        run: node scripts/reconcile-people.js
+
+      # One committer, one commit. Explicit paths, never -A. Proven push pattern:
+      # 60 attempts, random 1-91s jitter, merge --abort cleanup, merge -X ours.
+      - name: Commit (push-with-retry)
+        if: ${{ github.event.inputs.mode == 'apply' }}
+        run: |
+          set -uo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add players/aliases players/alias-inverse reports/alias-repair.json reports/reconcile-people.json
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+            exit 0
+          fi
+          git commit -m "repair-aliases: add missing identities + fix diverged stale entry (3b-2 pre-step)"
+          for i in $(seq 1 60); do
+            git merge --abort 2>/dev/null || true
+            if git fetch origin "$GITHUB_REF_NAME" \
+              && git merge -X ours "origin/$GITHUB_REF_NAME" -m "merge before repair-aliases push" \
+              && git push origin "HEAD:$GITHUB_REF_NAME"; then
+              echo "pushed on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed, retrying"
+            sleep $(( (RANDOM % 91) + 1 ))
+          done
+          echo "push failed after 60 attempts"
+          exit 1
