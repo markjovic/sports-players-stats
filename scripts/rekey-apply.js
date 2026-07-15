@@ -512,6 +512,7 @@ function readPlayer(uuid) {
   return JSON.parse(fs.readFileSync(playerPath(uuid), 'utf8'));
 }
 function writePlayer(uuid, player) {
+  fs.mkdirSync(path.dirname(playerPath(uuid)), { recursive: true });
   fs.writeFileSync(playerPath(uuid), JSON.stringify(player), 'utf8');
 }
 function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
@@ -538,6 +539,25 @@ function unionScaffold(target, source) {
           if (tr[k] === undefined) tr[k] = clone(r[k]);
         }
       }
+    }
+  }
+  // games[]: flat array of short game ids from the spectator crawl — the fetch
+  // NEVER rebuilds this (finishOk doesn't touch it), so a drop's entries exist
+  // nowhere else. Union as opaque strings, sorted (verified schema: Amy Crauford
+  // keeper 20 ids / drop 2 ids, disjoint).
+  if (Array.isArray(source.games) && source.games.length) {
+    const g = new Set(Array.isArray(target.games) ? target.games : []);
+    for (const id of source.games) g.add(id);
+    target.games = [...g].sort();
+  }
+  // teams[]: union with value-level dedup (observed empty in production samples,
+  // but never silently discard a drop's entries)
+  if (Array.isArray(source.teams) && source.teams.length) {
+    if (!Array.isArray(target.teams)) target.teams = [];
+    const seen = new Set(target.teams.map(t => JSON.stringify(t)));
+    for (const t of source.teams) {
+      const k = JSON.stringify(t);
+      if (!seen.has(k)) { seen.add(k); target.teams.push(t); }
     }
   }
   // gameTids: union (a fresh fetch rebuilds this wholesale; only matters on fallback)
