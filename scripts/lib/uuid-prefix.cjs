@@ -49,6 +49,24 @@
 // input length so old, not-yet-upgraded values still resolve correctly
 // wherever they aren't ambiguous.
 //
+// 2026-07-15 -- api-canonical migration (3b-3): resolution is now ALIAS-AWARE.
+// Post-migration every player file is keyed by its api id, but game files
+// store the SPECTATOR ids the crawl observed -- for ~9.5% of players (the
+// "diverged"), those differ. players/aliases/{2hex}.json maps
+// spectatorIdTrunc13 -> full apiId for EVERY player (identity entries for
+// the non-diverged, redirects for the diverged). Resolution order:
+//   truncated id : players/indexes match (post-3b-3 keys ARE api ids; hits
+//                  directly for the ~90% whose spectator id == api id, and
+//                  for any player newer than the alias index) -> on miss or
+//                  collision, players/aliases lookup -> full apiId.
+//   full id      : if an alias entry REDIRECTS this id to a different api id,
+//                  return that; otherwise return the input unchanged (identity
+//                  aliases and unknown/brand-new ids both pass through --
+//                  preserving the original "full ids pass through" contract).
+// Alias prefix maps use the same per-(shard,length) build-once cache and the
+// same COLLISION sentinel as the index maps (LEGACY 10-char inputs match
+// alias keys by prefix, with ambiguity -> null).
+//
 // Usage (CJS):  const { resolveToFullUuid, truncateUuid } = require('./lib/uuid-prefix.cjs');
 // Usage (ESM):  import { resolveToFullUuid, truncateUuid } from './lib/uuid-prefix.cjs';
 
@@ -128,15 +146,65 @@ function loadShardPrefixMap(shard, root, len) {
   return map;
 }
 
+// (shard, length) -> Map<prefix, apiId | COLLISION> built from
+// players/aliases/{shard}.json (keys are spectatorIdTrunc13, values full api
+// ids). For len === TRUNC_LEN the alias key IS the prefix; for
+// LEGACY_TRUNC_LEN the alias key is sliced down, with the same collision
+// handling as the index maps. Cached identically.
+const aliasPrefixMaps = new Map();
+
+function loadAliasPrefixMap(shard, root, len) {
+  const key = `${shard}:${len}`;
+  if (aliasPrefixMaps.has(key)) return aliasPrefixMaps.get(key);
+  const map = new Map();
+  const aliasPath = path.join(root, 'players', 'aliases', `${shard}.json`);
+  try {
+    const raw = fs.readFileSync(aliasPath, 'utf8');
+    const aliases = JSON.parse(raw);
+    for (const [specTrunc, apiId] of Object.entries(aliases)) {
+      if (!isFullUuid(apiId)) continue; // defensive -- alias values are always full api ids
+      const prefix = len >= specTrunc.length ? specTrunc : specTrunc.slice(0, len);
+      const existing = map.get(prefix);
+      if (existing === COLLISION) continue;
+      if (existing !== undefined && existing !== apiId) {
+        // Two alias keys share this (legacy-length) prefix and point at
+        // different people -- ambiguous, same treatment as index collisions.
+        console.error(
+          `WARNING uuid-prefix: ALIAS COLLISION in shard ${shard} (length ${len}) -- prefix "${prefix}" matches both ${existing} and ${apiId}. ` +
+          `Unresolvable via this prefix length (treated as not-found).`
+        );
+        map.set(prefix, COLLISION);
+        continue;
+      }
+      map.set(prefix, apiId);
+    }
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
+  aliasPrefixMaps.set(key, map);
+  return map;
+}
+
 // Resolves any id read from games/leaderboard/team-stats/search back to the
-// full uuid needed to read players/{shard}/{uuid}.json. Full-length ids pass
-// through unchanged. Accepts both TRUNC_LEN (current) and LEGACY_TRUNC_LEN
-// (pre-upgrade) inputs -- see the round-2 note at the top of this file.
+// full uuid needed to read players/{shard}/{uuid}.json.
 //
-// Returns null (never throws) when a prefix has no unambiguous match in the
-// shard index -- callers MUST handle this as a real, expected case.
+// Truncated ids: players/indexes first (direct hit for everyone whose
+// spectator id == api id, and for players newer than the alias index), then
+// players/aliases (diverged spectator id -> api id). Returns null (never
+// throws) when neither yields an unambiguous match -- callers MUST handle
+// this as a real, expected case.
+//
+// Full ids: if an alias entry redirects this id to a DIFFERENT api id
+// (diverged spectator id), the api id is returned; otherwise the input is
+// returned unchanged -- identity aliases, unknown ids, and brand-new players
+// all pass through, preserving the original contract.
 function resolveToFullUuid(id, root) {
-  if (isFullUuid(id)) return id;
+  if (isFullUuid(id)) {
+    const aliasMap = loadAliasPrefixMap(id.slice(0, 2).toLowerCase(), root, TRUNC_LEN);
+    const redirected = aliasMap.get(id.slice(0, TRUNC_LEN));
+    if (typeof redirected === 'string' && redirected !== id) return redirected;
+    return id;
+  }
   if (!isTruncatedPrefix(id)) {
     throw new Error(
       `resolveToFullUuid: unexpected id length -- "${id}" is ${id == null ? 'n/a' : id.length} chars, expected ${LEGACY_TRUNC_LEN}, ${TRUNC_LEN}, or ${FULL_LEN}`
@@ -145,8 +213,13 @@ function resolveToFullUuid(id, root) {
   const shard = id.slice(0, 2).toLowerCase();
   const map = loadShardPrefixMap(shard, root, id.length);
   const result = map.get(id);
-  if (result === COLLISION || result === undefined) return null;
-  return result;
+  if (typeof result === 'string') return result;
+  // Index miss or collision: fall through to the alias layer -- covers
+  // diverged spectator ids whose player file now lives at the api id.
+  const aliasMap = loadAliasPrefixMap(shard, root, id.length);
+  const aliased = aliasMap.get(id);
+  if (typeof aliased === 'string') return aliased;
+  return null;
 }
 
 // Returns every collision found so far across all (shard, length) pairs
