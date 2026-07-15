@@ -16,9 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      # Sparse checkout — reads ONLY reports/rekey-merges.json and writes back into
-      # reports/. Never touches players/, so the 8.6 GB tree is not materialized.
-      - name: Checkout (sparse: scripts + reports)
+      - name: Checkout sparse (scripts, reports)
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
@@ -28,8 +26,6 @@ jobs:
       - name: Classify
         run: node scripts/classify-flagged-merges.js
 
-      # One small report, one commit. Explicit path, never -A. Proven push pattern
-      # (60 attempts, random 1-91s jitter, merge --abort cleanup, merge -X ours).
       - name: Commit report (push-with-retry)
         run: |
           set -uo pipefail
