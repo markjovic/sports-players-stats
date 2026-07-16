@@ -31,7 +31,28 @@ const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
-const { truncateUuid } = require('./lib/uuid-prefix.cjs');
+const { truncateUuid, resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
+
+// ─── Identity alias for brand-new players (api-canonical, 2026-07-16) ─────────
+// Every player file key must have an alias entry (trunc13(key) -> key), or the
+// index gap the 3b-2 repair closed re-opens with every stub. Written at stub
+// time; the matrix's recovery later REPLACES it with a redirect if the player
+// turns out diverged. Format matches build-alias-index.js: sorted, minified.
+// Covered by gitCommit(['players/']) — players/aliases sits under players/.
+function writeAliasIdentity(uuid) {
+  const bucket = uuid.slice(0, 2).toLowerCase();
+  const aliasPath = path.join(ROOT, 'players', 'aliases', `${bucket}.json`);
+  let map = {};
+  try { map = JSON.parse(fs.readFileSync(aliasPath, 'utf8')); }
+  catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const key = uuid.slice(0, TRUNC_LEN);
+  if (map[key] !== undefined) return; // never clobber an existing (possibly redirect) entry
+  map[key] = uuid;
+  const sorted = {};
+  for (const k of Object.keys(map).sort()) sorted[k] = map[k];
+  fs.mkdirSync(path.dirname(aliasPath), { recursive: true });
+  fs.writeFileSync(aliasPath, JSON.stringify(sorted));
+}
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -898,6 +919,30 @@ async function main() {
   }
   console.log();
 
+  // ── api-canonical resolution (2026-07-16) ─────────────────────────────────────
+  // p.profileID is a SPECTATOR-namespace id; player files and the index are
+  // keyed by api id post-migration. Re-key playerDeltas through the
+  // alias-aware resolver ONCE here — everything downstream (byShard, index
+  // lookups, genuinelyNew, Phase 4 delta lookups) then operates on canonical
+  // ids. Unknown full ids pass through unchanged (genuinely new players get
+  // stubbed under their observed id; the matrix's recovery discovers and
+  // persists the real api id later). Two observed ids resolving to the same
+  // person have their deltas concatenated, never summed.
+  {
+    const canonicalDeltas = new Map();
+    let redirected = 0;
+    for (const [origId, info] of playerDeltas) {
+      const key = resolveToFullUuid(origId, ROOT); // full ids never resolve to null
+      if (key !== origId) redirected++;
+      const existing = canonicalDeltas.get(key);
+      if (existing) existing.deltas.push(...info.deltas);
+      else canonicalDeltas.set(key, info);
+    }
+    playerDeltas.clear();
+    for (const [k, v] of canonicalDeltas) playerDeltas.set(k, v);
+    if (redirected > 0) console.log(`  Alias-resolved ${redirected} spectator id(s) to canonical api ids`);
+  }
+
   // ── Phase 3 cont.: Clear statsChecked for all players in tonight's games ───────
   // All player stat computation is owned by the matrix (fetch-profile-stats.js).
   // Nightly's only job here is to clear statsChecked for players who appeared in
@@ -1083,9 +1128,11 @@ async function main() {
         sports:    { Basketball: bk },
         seasons,
         teams:     [],
+        spectatorIds: [uuid.slice(0, TRUNC_LEN)],
         updatedAt: now,
       };
       writePlayer(uuid, stub);
+      writeAliasIdentity(uuid);
 
       // History — same shape as the existing-player path (season -> unique tids).
       const history = {};
