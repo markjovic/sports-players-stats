@@ -1,0 +1,79 @@
+# .github/workflows/probe-setup-node-fingerprint.yml
+#
+# CONTROLLED EXPERIMENT for the setup-node rule. Two jobs, identical except ONE
+# has an actions/setup-node step and the other does not. Both run the exact
+# proven PlayHQ session probe (scripts/probe-setup-node-fingerprint.js) and
+# report status + whether a session cookie came back.
+#
+# Read the two jobs' VERDICT lines side by side:
+#   without-setup-node = SESSION_OK  AND  with-setup-node = BLOCKED_403
+#     → rule CONFIRMED. setup-node is the cause. Keep it off all fetch workflows,
+#       and the three noncompliant ones (discover-seasons-matrix, discover-seasons,
+#       backfill-player-names) are genuinely at risk — fix them.
+#   BOTH = SESSION_OK
+#     → rule is OVER-BROAD. setup-node is harmless on this runner/POP. Leave the
+#       three working workflows alone; soften the claude_context rule to
+#       "don't ADD setup-node to a fetch workflow, but existing working ones are fine."
+#   BOTH = BLOCKED_403
+#     → setup-node is NOT the variable (IP reputation / header / POP issue).
+#       Investigate separately; do not attribute to setup-node.
+#
+# Run it a FEW times (CloudFront behaviour is POP- and time-dependent — a single
+# run is N=1 and proves little). The workflow is cheap (~4 requests per job).
+# NOTHING is written to the repo; sparse checkout of just the probe script.
+
+name: Probe setup-node fingerprint (controlled test, read-only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      repeats:
+        description: 'How many back-to-back probe rounds per job (N=1 proves little; try 3-5)'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  without-setup-node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: scripts/probe-setup-node-fingerprint.js
+          sparse-checkout-cone-mode: false
+      # DELIBERATELY NO actions/setup-node — uses the runner's preinstalled node.
+      - name: Probe (no setup-node) × N
+        env:
+          PROBE_LABEL: without-setup-node
+        run: |
+          for i in $(seq 1 ${{ inputs.repeats }}); do
+            echo "===== round $i ====="
+            node scripts/probe-setup-node-fingerprint.js || true
+          done
+
+  with-setup-node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: scripts/probe-setup-node-fingerprint.js
+          sparse-checkout-cone-mode: false
+      # THE ONLY DIFFERENCE: this job installs node via setup-node.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Probe (with setup-node) × N
+        env:
+          PROBE_LABEL: with-setup-node
+        run: |
+          for i in $(seq 1 ${{ inputs.repeats }}); do
+            echo "===== round $i ====="
+            node scripts/probe-setup-node-fingerprint.js || true
+          done

@@ -18,6 +18,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write   # fold-backstop job uses `gh workflow run`
 
 jobs:
   team-stats:
@@ -78,3 +79,25 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Build win-loss records (full)
         run: node scripts/build-win-loss.js
+
+  fold-diverged:
+    # Backstop for the fold. The fetch-profile-stats matrix triggers the fold at
+    # the tail of each cycle that drains to `stuck`, but that chain is a series of
+    # separate dispatches — a single failed dispatch skips the fold for that cycle.
+    # This weekly trigger sweeps up any diverged players that were missed. The fold
+    # is idempotent (only touches apiId-bearing files), so a redundant run is a no-op.
+    # Gated behind the three player-writing jobs so it never races them on player
+    # files / the index (they share the workflow's data-write concurrency group, but
+    # within one workflow run jobs are otherwise parallel — `needs` serialises it).
+    needs: [team-stats, player-games, win-loss]
+    if: ${{ !cancelled() && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger fold of diverged players (apply)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          gh workflow run fold-diverged-players.yml \
+            --repo "${{ github.repository }}" \
+            --field "mode=apply"
