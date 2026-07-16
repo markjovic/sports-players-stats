@@ -1,0 +1,52 @@
+# .github/workflows/probe-stattrack-shapes.yml
+name: Probe StatTrack Shapes (read-only)
+
+# Read-only diagnostic for the StatTrack (#5) rebuild. Reads the live on-disk
+# data and reports the private-flag/id-length/alias/index/search shapes and the
+# game->player divergence rate. Writes NOTHING to the repo (no commit); the
+# report is uploaded as an artifact and also printed to this run's log.
+#
+# Full working-tree checkout (like db-audit) because the probe samples players/
+# and does existsSync lookups across games/bv + players/. History is shallow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      player_scan_cap:
+        description: "Max player files to sample, spread across shard dirs (default 8000)"
+        required: false
+        default: "8000"
+      game_file_sample:
+        description: "How many games/bv season files to sample for the divergence check (default 8)"
+        required: false
+        default: "8"
+      games_per_file:
+        description: "Max games sampled per season file (default 400)"
+        required: false
+        default: "400"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout (full tree, shallow history)
+        uses: actions/checkout@v4
+
+      - name: Run probe
+        run: >-
+          node scripts/probe-stattrack-shapes.cjs
+          --player-scan-cap=${{ inputs.player_scan_cap }}
+          --game-file-sample=${{ inputs.game_file_sample }}
+          --games-per-file=${{ inputs.games_per_file }}
+
+      - name: Upload report artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: stattrack-shape-probe
+          path: stattrack-shape-probe.json
+          if-no-files-found: warn
