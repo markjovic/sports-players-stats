@@ -61,18 +61,41 @@ function resultForTeam(g, tid) {
 // ─── Git ──────────────────────────────────────────────────────────────────────
 
 function gitCommit(msg) {
+  // 2026-07-16: rewritten after a full run's pushes all failed with "local
+  // changes would be overwritten by merge". The old order was add -> fetch ->
+  // MERGE -> commit: git refuses to merge over uncommitted changes when the
+  // incoming commits touch the same files (they did — the profile-stats
+  // matrix pushes player files concurrently). Correct order, matching every
+  // sibling script: COMMIT FIRST, then fetch/merge/push with the proven
+  // retry pattern (60 attempts, random 1-91s jitter, merge --abort cleanup,
+  // merge -X ours). Never silently swallow a total push failure again —
+  // throw after 60 so the job goes red instead of discarding hours of work.
   try {
     execSync('git add players/', { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
     const staged = execSync('git diff --staged --shortstat',
       { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
     if (!staged) { console.log('  Nothing to commit.'); return; }
-    execSync('git fetch origin main',                              { stdio: 'pipe', cwd: ROOT });
-    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat',   { stdio: 'pipe', cwd: ROOT });
-    execSync(`git commit -q -m "${msg}"`,                          { stdio: 'pipe', cwd: ROOT });
-    execSync('git push origin main',                               { stdio: 'pipe', cwd: ROOT });
-    console.log(`  ✓ ${msg}`);
+    execSync(`git commit -q -m "${msg}"`, { stdio: 'pipe', cwd: ROOT });
   } catch (e) {
-    console.error('  git error:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+    console.error('  git error (stage/commit):', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+    return;
+  }
+  for (let attempt = 1; attempt <= 60; attempt++) {
+    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+    try {
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
+      console.log(`  ✓ ${msg}`);
+      return;
+    } catch (e) {
+      if (attempt === 60) {
+        console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+        throw e;
+      }
+      const s = 1 + Math.floor(Math.random() * 91);
+      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT });
+    }
   }
 }
 
