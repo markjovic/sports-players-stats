@@ -200,7 +200,16 @@ function loadAliasPrefixMap(shard, root, len) {
 // all pass through, preserving the original contract.
 function resolveToFullUuid(id, root) {
   if (isFullUuid(id)) {
-    const aliasMap = loadAliasPrefixMap(id.slice(0, 2).toLowerCase(), root, TRUNC_LEN);
+    const shard = id.slice(0, 2).toLowerCase();
+    // SELF WINS (2026-07-16): trunc-13 cross-namespace collisions are real
+    // (first specimen: alias key 3f4d9e22-0166 vs api id 3f4d9e22-0166-4bf9…;
+    // expected ~0.36 at 453k ids, so one existing is on-model). A full id that
+    // IS a known player must never be redirected to someone else who happens
+    // to share its 13-char prefix — check the index for the exact id first,
+    // and only consult alias redirects on a miss.
+    const idx = loadShardPrefixMap(shard, root, TRUNC_LEN);
+    if (idx.get(id.slice(0, TRUNC_LEN)) === id) return id;
+    const aliasMap = loadAliasPrefixMap(shard, root, TRUNC_LEN);
     const redirected = aliasMap.get(id.slice(0, TRUNC_LEN));
     if (typeof redirected === 'string' && redirected !== id) return redirected;
     return id;
