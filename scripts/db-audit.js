@@ -151,6 +151,15 @@ let regsWithFinals = 0, regsWithGfApps = 0, regsWithGfWins = 0;
 
 let playersWithSeasons = 0;
 
+// api-canonical migration invariants (2026-07-16) — see section 3b
+const fileKeys = new Set();          // every player-file key (filename uuid)
+let withApiIdField = 0;              // OLD STRUCTURE: apiId field = not yet folded
+const apiIdSample = [];
+let uuidFieldMismatch = 0;           // uuid field != filename — hard violation
+const uuidMismatchSample = [];
+let withSpectatorIds = 0;
+let privateTrue = 0;
+
 const shardDirs = fs.existsSync(playersDir)
   ? fs.readdirSync(playersDir).filter(d => /^[0-9a-f]{2}$/.test(d))
   : [];
@@ -210,6 +219,20 @@ for (const shard of shardDirs) {
     } else {
       noSportsField++;
     }
+    // api-canonical invariants
+    const fileKey = f.slice(0, -5);
+    fileKeys.add(fileKey);
+    if (typeof p.apiId === 'string' && p.apiId) {
+      withApiIdField++;
+      if (apiIdSample.length < 10) apiIdSample.push(`${shard}/${fileKey} -> ${p.apiId}`);
+    }
+    if (typeof p.uuid === 'string' && p.uuid !== fileKey) {
+      uuidFieldMismatch++;
+      if (uuidMismatchSample.length < 10) uuidMismatchSample.push(`${shard}/${fileKey} has uuid=${p.uuid}`);
+    }
+    if (Array.isArray(p.spectatorIds) && p.spectatorIds.length) withSpectatorIds++;
+    if (p.private === true) privateTrue++;
+
     if (p.records !== undefined) withRecords++;
     if (p.teams && p.teams.length > 0) withTeams++;
     if (p.games && p.games.length > 0) withGames++;
@@ -298,6 +321,100 @@ row('  No statsChecked',                  fmt(processed - withStatsChecked),  pc
 row('  No sports field at all',           fmt(noSportsField),                 pct(noSportsField, processed));
 row('  Has teams[] (non-empty)',           fmt(withTeams),                     pct(withTeams, processed));
 row('  Has games[] (non-empty)',           fmt(withGames),                     pct(withGames, processed));
+
+// ─── 3b. api-canonical migration invariants (2026-07-16) ─────────────────────
+// The 3b-2/3b-3 migration established: one file per person, keyed by api id,
+// NO apiId fields; players/aliases maps every spectator id (identity or
+// redirect) to its api id; players/indexes keyed 1:1 with files. New
+// divergences legitimately pass through an apiId-field state between matrix
+// recovery and the fold — so apiId>0 is "pending fold", not corruption, and
+// must EQUAL the dangling-alias-target count (same players, two views).
+
+section('3b · api-canonical migration invariants');
+
+row('Files with apiId field (old structure)', fmt(withApiIdField),
+  withApiIdField === 0 ? '✅ invariant holds' : '⚠️  pending fold — verify fold triggers');
+for (const s of apiIdSample) console.log(`      ${s}`);
+row('uuid field ≠ filename',                fmt(uuidFieldMismatch), uuidFieldMismatch === 0 ? '✅' : '❌ HARD VIOLATION');
+for (const s of uuidMismatchSample) console.log(`      ${s}`);
+row('Files with spectatorIds[]',            fmt(withSpectatorIds),  pct(withSpectatorIds, processed));
+row('private: true',                        fmt(privateTrue),       pct(privateTrue, processed));
+
+// aliases: 256 shards, identity/redirect split, dangling-target scan
+const aliasDir = path.join(ROOT, 'players', 'aliases');
+let aliasShards = 0, aliasEntries = 0, aliasIdentity = 0, aliasRedirect = 0;
+let aliasDangling = 0, aliasBadValue = 0;
+const danglingSample = [];
+if (fs.existsSync(aliasDir)) {
+  for (const f of fs.readdirSync(aliasDir).filter(f => /^[0-9a-f]{2}\.json$/.test(f))) {
+    const m = readJSON(path.join(aliasDir, f));
+    if (!m) continue;
+    aliasShards++;
+    for (const [k, v] of Object.entries(m)) {
+      aliasEntries++;
+      if (typeof v !== 'string' || v.length !== 36) { aliasBadValue++; continue; }
+      if (v.slice(0, k.length) === k) aliasIdentity++; else aliasRedirect++;
+      if (!fileKeys.has(v)) {
+        aliasDangling++;
+        if (danglingSample.length < 10) danglingSample.push(`${k} -> ${v}`);
+      }
+    }
+  }
+}
+row('Alias shard files',        fmt(aliasShards),  aliasShards === 256 ? '✅' : '❌ expected 256');
+row('Alias entries',            fmt(aliasEntries));
+row('  identity',               fmt(aliasIdentity), pct(aliasIdentity, aliasEntries));
+row('  redirect (diverged)',    fmt(aliasRedirect), pct(aliasRedirect, aliasEntries));
+row('  bad values',             fmt(aliasBadValue), aliasBadValue === 0 ? '✅' : '❌');
+row('  dangling targets (no file)', fmt(aliasDangling),
+  aliasDangling === withApiIdField ? `✅ equals apiId-field count (pending fold)` : `❌ MUST equal apiId-field count (${fmt(withApiIdField)})`);
+for (const s of danglingSample) console.log(`      ${s}`);
+
+// alias-inverse: migration artifact — regenerated manually, goes stale by design
+const invDir = path.join(ROOT, 'players', 'alias-inverse');
+let invShards = 0, invApiIds = 0;
+if (fs.existsSync(invDir)) {
+  for (const f of fs.readdirSync(invDir).filter(f => /^[0-9a-f]{2}\.json$/.test(f))) {
+    const m = readJSON(path.join(invDir, f));
+    if (!m) continue;
+    invShards++;
+    invApiIds += Object.keys(m).length;
+  }
+  row('alias-inverse api ids', fmt(invApiIds),
+    `ℹ️  migration artifact — regenerated manually, expected to lag files (${fmt(detailCount)}) as players are added`);
+} else {
+  row('alias-inverse/', '❌ MISSING');
+}
+
+// index <-> files: both-way set equality (keys, not just counts)
+let idxKeysNotFiles = 0, filesNotIdx = 0, idxKeysTotal = 0;
+const idxOrphanSample = [], fileOrphanSample = [];
+if (fs.existsSync(indexDir)) {
+  const seen = new Set();
+  for (const f of fs.readdirSync(indexDir).filter(f => /^[0-9a-f]{2}\.json$/.test(f))) {
+    const m = readJSON(path.join(indexDir, f));
+    if (!m) continue;
+    for (const k of Object.keys(m)) {
+      idxKeysTotal++;
+      seen.add(k);
+      if (!fileKeys.has(k)) {
+        idxKeysNotFiles++;
+        if (idxOrphanSample.length < 10) idxOrphanSample.push(k);
+      }
+    }
+  }
+  for (const k of fileKeys) {
+    if (!seen.has(k)) {
+      filesNotIdx++;
+      if (fileOrphanSample.length < 10) fileOrphanSample.push(k);
+    }
+  }
+}
+row('Index keys total',                 fmt(idxKeysTotal), idxKeysTotal === detailCount ? '✅ equals detail files' : '⚠️');
+row('  index keys with NO file',        fmt(idxKeysNotFiles), idxKeysNotFiles === 0 ? '✅' : '❌');
+for (const s of idxOrphanSample) console.log(`      ${s}`);
+row('  files with NO index entry',      fmt(filesNotIdx),     filesNotIdx === 0 ? '✅' : '❌');
+for (const s of fileOrphanSample) console.log(`      ${s}`);
 
 // ─── 4. games/bv/{seasonId}.json ─────────────────────────────────────────────
 
@@ -659,6 +776,7 @@ const miscFiles = [
   ['records/all-time.json',      null,  true],
   ['needs-matrix-shards.json',   null,  false],
   ['matrix-force-pending.json',  null,  false],  // should not exist
+  ['reports/rekey-apply-cache.json', null, false],  // 3b-2 migration checkpoint — delete when convenient
 ];
 for (const [f, expected, shouldExist] of miscFiles) {
   const p = path.join(ROOT, f);
@@ -699,10 +817,16 @@ console.log('');
 // Genuinely structural checks — things that SHOULD be constant regardless of
 // DB growth, unlike the counts above. Sections 2 and 3 already flag shard-count
 // mismatches (should always be 256); this just re-confirms both agree.
-const structuralOk = indexFiles === 256 && shardDirs.length === 256;
+const structuralOk = indexFiles === 256 && shardDirs.length === 256
+  && uuidFieldMismatch === 0 && idxKeysNotFiles === 0 && filesNotIdx === 0
+  && aliasShards === 256 && aliasBadValue === 0
+  && aliasDangling === withApiIdField;
 console.log(structuralOk
-  ? '  ✅ Structural invariants OK (256 index shards, 256 player-detail shard dirs).'
-  : '  ⚠️  Structural invariant mismatch — see sections 2 and 3 above.');
+  ? '  ✅ Structural invariants OK (256+256 shards, uuid==filename, index<->files 1:1, aliases consistent).'
+  : '  ⚠️  Structural invariant mismatch — see sections 2, 3 and 3b above.');
+if (withApiIdField > 0) {
+  console.log(`  ⚠️  ${fmt(withApiIdField)} file(s) pending fold (apiId field present) — normal between matrix recovery and fold; investigate if it persists across cycles.`);
+}
 
 // ─── 13. UUID storage footprint ───────────────────────────────────────────────
 // Measures every place a FULL 36-char UUID is stored as a repeated data value
