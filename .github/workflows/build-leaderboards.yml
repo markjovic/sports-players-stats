@@ -50,11 +50,3 @@ jobs:
           else
             node scripts/build-leaderboards.js
           fi
-
-      - name: Final push (safety net)
-        if: always()
-        run: |
-          git add leaderboard/ || true
-          git diff --staged --quiet || git commit -m "build-leaderboards: safety-net final commit"
-          git pull --rebase=false --no-edit -X ours || true
-          git push || true

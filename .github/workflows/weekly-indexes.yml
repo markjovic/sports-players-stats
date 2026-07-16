@@ -59,13 +59,6 @@ jobs:
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/build-player-games.js $ARGS
-      - name: Final push (safety net)
-        if: always()
-        run: |
-          git add players/ scripts/.build-player-games-progress.json || true
-          git diff --staged --quiet || git commit -m "build-player-games: safety-net final commit"
-          git pull --rebase=false --no-edit -X ours || true
-          git push || true
 
   win-loss:
     runs-on: ubuntu-latest

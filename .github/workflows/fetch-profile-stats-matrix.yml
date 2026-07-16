@@ -207,7 +207,7 @@ jobs:
       - name: Commit and push
         if: steps.check.outputs.has_files == 'true'
         run: |
-          git add -A
+          git add players/ scripts/
           if git diff --staged --quiet; then
             echo "Nothing to commit."
             exit 0

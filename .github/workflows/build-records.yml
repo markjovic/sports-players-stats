@@ -43,11 +43,3 @@ jobs:
           else
             node scripts/build-records.js
           fi
-
-      - name: Final push (safety net)
-        if: always()
-        run: |
-          git add records/ scripts/.records-progress.json || true
-          git diff --staged --quiet || git commit -m "build-records: safety-net final commit"
-          git pull --rebase=false --no-edit -X ours || true
-          git push || true

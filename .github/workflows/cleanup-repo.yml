@@ -1,8 +1,35 @@
 # .github/workflows/cleanup-repo.yml
 name: Cleanup Repo
 
+# EXTENDED 2026-07-16: added the api-canonical migration-era scripts/workflows/reports
+# that the full file audit (REPO_MANIFEST.md) confirmed complete, plus the scripts/-level
+# orphaned progress dotfiles the original manifest missed. Added a DRY-RUN mode that lists
+# every deletion and commits NOTHING — run that first and eyeball the list before a live run.
+#
+# ORDERING SAFETY (see REPO_MANIFEST.md §6): a few deletions are gated on ordering and are
+# therefore split into a SECOND list (STAGE 2) that only runs when explicitly enabled:
+#   - build-alias-index.js MUST be deleted BEFORE (or with) reports/backfill-collisions/ —
+#     never leave build-alias-index runnable without its only redirect source, and never
+#     run `build-alias-index --all` post-migration (it would emit zero redirects).
+#   - fix-uuid-prefix-length.js should only be deleted AFTER diagnose-id-field-lengths.js
+#     confirms zero 10-char ids remain.
+#   - cleanup-dead-artifacts.js must be RUN ONCE (to clear team-lookup/) before it is deleted;
+#     deleting it here is fine only if team-lookup/ is already gone.
+# STAGE 2 is opt-in via the `include_gated` input so these can't be deleted by accident.
+
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — list every deletion, commit NOTHING (run this FIRST)'
+        required: false
+        default: true
+        type: boolean
+      include_gated:
+        description: 'STAGE 2: also delete ordering-gated files (build-alias-index, fix-uuid-prefix-length, cleanup-dead-artifacts, backfill-collisions/). Only after their gates are cleared — see header.'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -13,7 +40,7 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout (sparse — scripts and workflows only, no blobs)
+      - name: Checkout (sparse — scripts, workflows, reports, root, no blobs)
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.WORKFLOW_PAT }}
@@ -22,35 +49,45 @@ jobs:
           sparse-checkout: |
             scripts
             .github/workflows
+            reports
+            players/aliases
+            players/alias-inverse
             /*.json
             /*.md
             /*.html
           sparse-checkout-cone-mode: false
 
-      - name: Delete stale files and commit
+      - name: Delete stale files
         env:
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
+          DRY_RUN: ${{ inputs.dry_run }}
+          INCLUDE_GATED: ${{ inputs.include_gated }}
         run: |
           set -e
 
-          # Pull latest before making any changes
-          git fetch origin main
-          git merge -X ours FETCH_HEAD --no-edit
+          if [ "$DRY_RUN" != "true" ]; then
+            # Only touch the remote when we intend to write. COMMIT-before-MERGE order
+            # is not needed here (deletions are staged then committed), but we still
+            # sync first so the push is fast-forwardable.
+            git fetch origin main
+            git merge -X ours FETCH_HEAD --no-edit --no-stat
+          fi
 
-          # ── Scripts to delete ────────────────────────────────────────────────
+          # ────────────────────────────────────────────────────────────────────
+          # STAGE 1 — always deleted (no ordering constraints)
+          # ────────────────────────────────────────────────────────────────────
+
+          # ── Original manifest: pre-migration one-offs (kept verbatim) ────────
           SCRIPTS=(
-            # migration (complete)
             scripts/migrate-phase1.js
             scripts/migrate-phase2.js
             scripts/migrate-phase3.js
             scripts/migrate-player-index.js
             scripts/migrate-team-lookup.js
             scripts/migrate-games.sh
-
-            # one-time complete
             scripts/normalise-game-structure.js
             scripts/augment-game-grades.js
             scripts/augment-team-index.js
@@ -79,16 +116,12 @@ jobs:
             scripts/fix-regraded-teamstats.js
             scripts/build-forfeit-index.js
             scripts/audit-sample.js
-
-            # superseded by nightly-crawl / fetch-profile-stats
             scripts/classify-games.js
             scripts/discover-fixtures.js
             scripts/fetch-player-profiles.js
             scripts/build-foulout-stats.js
             scripts/fetch-playhq.js
             scripts/fetch-leaderboard-records.js
-
-            # probes (one-time)
             scripts/probe-api-schema.js
             scripts/probe-games.js
             scripts/probe-lineup.js
@@ -96,12 +129,8 @@ jobs:
             scripts/probe-team-members.js
             scripts/explore-playhq-auth.js
             scripts/fetch-lineup-auth.js
-
-            # superseded by db-audit
             scripts/db-report.js
             scripts/repo-size.js
-
-            # one-time diagnostics
             scripts/find-missing-game-data.js
             scripts/find-missing-team-players.js
             scripts/find-season-players.js
@@ -116,38 +145,70 @@ jobs:
             scripts/inspect-failed-games.js
             scripts/inspect-game-schema.js
             scripts/inspect-game-sizes.js
-
-            # test scripts paired with deleted code
             scripts/test-failed-uuids.js
-
-            # consolidated into diagnose.js
             scripts/inspect-player-file.js
             scripts/inspect-hidden-reclassified.js
             scripts/diagnose-player-stats.js
             scripts/find-game-id.js
-
-            # consolidated into test-api.js
             scripts/test-grade-concurrency.js
             scripts/test-profile-query.js
             scripts/test-discover-game.js
             scripts/test-schema-fields.js
             scripts/test-gps-count.js
+            scripts/search-team-stats.js
+
+            # ── ADDED 2026-07-16: api-canonical migration (complete & verified) ──
+            scripts/rekey-apply.js
+            scripts/rekey-enrich.js
+            scripts/rekey-plan.js
+            scripts/reconcile-people.js
+            scripts/repair-aliases.js
+            scripts/repair-generate-candidates.js
+            scripts/repair-season-names.js
+            scripts/classify-flagged-merges.js
+            scripts/build-alias-inverse.js
+            scripts/backfill-generate-candidates.js
+            scripts/backfill-collision-stats.js
+            scripts/backfill-player-records.js
+            scripts/backfill-player-names.js
+            scripts/backfill-hidden-boxscores.js
+            scripts/resolve-known-collisions.js
+            scripts/audit-uuid-recovery-misattribution.js
+            scripts/recover-uuids-from-git-history.js
+            scripts/strip-redundant-fields.js
+            scripts/migrate-data-dir.js
+            scripts/migrate-uuid-truncation.js
+            scripts/fix-foulouts-type.js
+            scripts/fix-player-names.js
+            scripts/fix-corrupt-player-names.js
+            scripts/reorganise-repo.js
+
+            # ── ADDED 2026-07-16: concluded diagnostics ──────────────────────────
+            scripts/diagnose-unresolved-prefixes.js
+            scripts/diagnose-redundancy.js
+            scripts/diagnose-namespace-mismatch.js
+            scripts/diagnose-profile-identity-namespace.js
+            scripts/diagnose-grade-pagination.js
+            scripts/diagnose-missing-player-files.js
+            scripts/diagnose-ambiguous-fresh.js
+            scripts/diagnose-api-stability.js
+            scripts/diagnose-uuid-classification.js
+            scripts/diagnose-uuid-population.js
+            scripts/diagnose-season-name-records.js
+            scripts/diagnose-win-loss.js
+            scripts/diagnose-win-loss-ambiguous.js
+            scripts/diagnose-win-loss-skipped.js
+            scripts/hold-check.js
           )
 
-          # ── Workflows to delete ───────────────────────────────────────────────
           WORKFLOWS=(
-            # superseded by db-audit.yml
             .github/workflows/db-report.yml
             .github/workflows/repo-size.yml
-
-            # one-time complete
             .github/workflows/backfill-spectator.yml
             .github/workflows/fix-null-records.yml
             .github/workflows/full-reset.yml
             .github/workflows/backfill.yml
             .github/workflows/reorganise-repo.yml
-
-            # paired with deleted scripts
             .github/workflows/migrate-phase1.yml
             .github/workflows/migrate-phase2.yml
             .github/workflows/migrate-phase3.yml
@@ -212,25 +273,63 @@ jobs:
             .github/workflows/generate-spec2.yml
             .github/workflows/test-failed-uuids.yml
             .github/workflows/test-proxy.yml
-
-            # consolidated into diagnose.yml
             .github/workflows/inspect-player-file.yml
             .github/workflows/inspect-hidden-reclassified.yml
             .github/workflows/diagnose-player-stats.yml
             .github/workflows/find-game-id.yml
-
-            # consolidated into test-api.yml
             .github/workflows/test-grade-concurrency.yml
             .github/workflows/test-profile-query.yml
             .github/workflows/test-discover-game.yml
             .github/workflows/test-schema-fields.yml
             .github/workflows/test-gps-count.yml
 
-            # NOTE: add-player.yml is NOT deleted — it was rewritten to use the
-            # current pipeline (matrix trigger) instead of the retired fetch-playhq.js
+            # ── ADDED 2026-07-16: api-canonical migration workflows ──────────────
+            .github/workflows/rekey-apply.yml
+            .github/workflows/rekey-enrich.yml
+            .github/workflows/rekey-plan-matrix.yml
+            .github/workflows/reconcile-people.yml
+            .github/workflows/repair-aliases.yml
+            .github/workflows/repair-season-names-matrix.yml
+            .github/workflows/classify-flagged-merges.yml
+            .github/workflows/build-alias-inverse.yml
+            .github/workflows/backfill-missing-players-matrix.yml
+            .github/workflows/backfill-generate-candidates.yml
+            .github/workflows/backfill-collision-stats.yml
+            .github/workflows/backfill-player-records.yml
+            .github/workflows/backfill-player-names.yml
+            .github/workflows/backfill-hidden-boxscores.yml
+            .github/workflows/resolve-known-collisions.yml
+            .github/workflows/audit-uuid-recovery-misattribution.yml
+            .github/workflows/recover-uuids-from-git-history.yml
+            .github/workflows/strip-redundant-fields.yml
+            .github/workflows/migrate-data-dir.yml
+            .github/workflows/migrate-uuid-truncation.yml
+            .github/workflows/fix-foulouts-type.yml
+            .github/workflows/fix-player-names.yml
+            .github/workflows/fix-corrupt-player-names.yml
+            .github/workflows/fix-flag-collision.yml
+            .github/workflows/commit-cleared-names.yml
+            .github/workflows/find-team-players.yml
+
+            # ── ADDED 2026-07-16: concluded-diagnostic workflows ─────────────────
+            .github/workflows/diagnose-unresolved-prefixes.yml
+            .github/workflows/diagnose-redundancy.yml
+            .github/workflows/diagnose-namespace-mismatch.yml
+            .github/workflows/diagnose-profile-identity-namespace.yml
+            .github/workflows/diagnose-grade-pagination.yml
+            .github/workflows/diagnose-missing-player-files.yml
+            .github/workflows/diagnose-ambiguous-fresh.yml
+            .github/workflows/diagnose-api-stability.yml
+            .github/workflows/diagnose-uuid-classification.yml
+            .github/workflows/diagnose-uuid-population.yml
+            .github/workflows/diagnose-season-name-records.yml
+            .github/workflows/diagnose-win-loss.yml
+            .github/workflows/diagnose-win-loss-ambiguous.yml
+            .github/workflows/diagnose-win-loss-skipped.yml
+            .github/workflows/diagnose-season-grades.yml
+            .github/workflows/hold-check.yml
           )
 
-          # ── Root JSON files to delete ─────────────────────────────────────────
           ROOT_FILES=(
             backfill-progress.json
             backfill-venue-progress.json
@@ -252,8 +351,6 @@ jobs:
             run-summary.json
             matrix-force-pending.json
             stattrack-pwa-spec.md
-
-            # dotfile progress files
             .augment-game-grades-progress.json
             .augment-venue-progress.json
             .backfill-jersey-progress.json
@@ -264,58 +361,143 @@ jobs:
             .reaudit-phase3-progress.json
             .rebuild-player-stats-progress.json
             .failed-uuids.json
+            seasons-discovered.json
+            seasons-skipped.json
+            seasons-invalid.json
+            discover-reduce-manifest.json
+
+            # ── ADDED 2026-07-16: scripts/-level orphaned progress dotfiles the
+            #    original manifest missed (owner scripts deleted above). db-audit
+            #    §11b flags exactly these. Safe: owner gone → not mid-run.
+            scripts/.augment-game-grades-progress.json
+            scripts/.augment-venue-progress.json
+            scripts/.backfill-jersey-progress.json
+            scripts/.fetch-player-profiles-progress.json
+            scripts/.reaudit-grade-map.json
+            scripts/.reaudit-phase2-progress.json
+            scripts/.reaudit-phase3-progress.json
+            scripts/.rebuild-player-stats-progress.json
+            scripts/.failed-uuids.json
+            scripts/.backfill-player-records-progress.json
+            scripts/.backfill-names-progress.json
+            scripts/.backfill-hidden-boxscores-progress.json
           )
 
-          # ── Directories to delete ─────────────────────────────────────────────
+          # ── ADDED 2026-07-16: migration report artifacts (findings preserved in
+          #    REPO_MANIFEST.md; the raw reports are no longer needed) ───────────
+          REPORT_FILES=(
+            reports/rekey-merges.json
+            reports/reconcile-people.json
+            reports/alias-repair.json
+            reports/alias-conflicts.json
+            reports/rekey-flagged-classified.json
+            reports/alias-index-report.json
+            reports/uuid-recovery-misattribution-audit.json
+            reports/backfill-missing-players-report.json
+            reports/missing-player-files-diagnosis.json
+          )
+
           DIRS=(
             explore-results
             roster-results
+            team-lookup            # dead layer-1 dir (ensure cleanup-dead-artifacts ran, or it's already empty)
           )
 
-          # ── Loose HTML files ──────────────────────────────────────────────────
           HTML_FILES=(
             probe-rest-api.html
             probe-lineup.html
             lineup-result.html
           )
 
-          echo "=== Staging deletions ==="
+          # ── STAGE 2 — ordering-gated (only with include_gated=true) ───────────
+          # See header. build-alias-index + backfill-collisions/ + alias-inverse/
+          # go together; fix-uuid-prefix-length after its diagnose gate; and
+          # cleanup-dead-artifacts only after it has run once.
+          GATED_SCRIPTS=(
+            scripts/build-alias-index.js
+            scripts/fix-uuid-prefix-length.js
+            scripts/cleanup-dead-artifacts.js
+          )
+          GATED_WORKFLOWS=(
+            .github/workflows/build-alias-index-matrix.yml
+            .github/workflows/fix-uuid-prefix-length.yml
+            .github/workflows/cleanup-dead-artifacts.yml
+          )
+          GATED_DIRS=(
+            reports/backfill-collisions
+            players/alias-inverse
+          )
 
-          deleted=0
-          skipped=0
+          # ────────────────────────────────────────────────────────────────────
+          echo "=== $([ "$DRY_RUN" = "true" ] && echo "DRY RUN — nothing will be committed" || echo "LIVE RUN") ==="
+          echo ""
 
-          for f in "${SCRIPTS[@]}" "${WORKFLOWS[@]}" "${ROOT_FILES[@]}" "${HTML_FILES[@]}"; do
+          deleted=0; skipped=0
+
+          remove_file() {
+            local f="$1"
             if [ -f "$f" ]; then
-              git rm --ignore-unmatch -f "$f"
-              echo "  rm: $f"
+              if [ "$DRY_RUN" = "true" ]; then echo "  would rm: $f"; else git rm --ignore-unmatch -f "$f" >/dev/null; echo "  rm: $f"; fi
               deleted=$((deleted+1))
             else
-              echo "  skip (not found): $f"
-              skipped=$((skipped+1))
+              echo "  skip (absent): $f"; skipped=$((skipped+1))
             fi
-          done
-
-          for d in "${DIRS[@]}"; do
+          }
+          remove_dir() {
+            local d="$1"
             if [ -d "$d" ]; then
-              git rm --ignore-unmatch -rf "$d"
-              echo "  rm -r: $d"
+              if [ "$DRY_RUN" = "true" ]; then echo "  would rm -r: $d"; else git rm --ignore-unmatch -rf "$d" >/dev/null; echo "  rm -r: $d"; fi
               deleted=$((deleted+1))
             else
-              echo "  skip (not found): $d"
-              skipped=$((skipped+1))
+              echo "  skip (absent): $d"; skipped=$((skipped+1))
             fi
-          done
+          }
+
+          echo "── STAGE 1: scripts ──"
+          for f in "${SCRIPTS[@]}";    do remove_file "$f"; done
+          echo "── STAGE 1: workflows ──"
+          for f in "${WORKFLOWS[@]}";  do remove_file "$f"; done
+          echo "── STAGE 1: root files ──"
+          for f in "${ROOT_FILES[@]}"; do remove_file "$f"; done
+          echo "── STAGE 1: report files ──"
+          for f in "${REPORT_FILES[@]}"; do remove_file "$f"; done
+          echo "── STAGE 1: html files ──"
+          for f in "${HTML_FILES[@]}"; do remove_file "$f"; done
+          echo "── STAGE 1: directories ──"
+          for d in "${DIRS[@]}";       do remove_dir "$d"; done
+
+          if [ "$INCLUDE_GATED" = "true" ]; then
+            echo "── STAGE 2 (gated): scripts ──"
+            for f in "${GATED_SCRIPTS[@]}";   do remove_file "$f"; done
+            echo "── STAGE 2 (gated): workflows ──"
+            for f in "${GATED_WORKFLOWS[@]}"; do remove_file "$f"; done
+            echo "── STAGE 2 (gated): directories ──"
+            for d in "${GATED_DIRS[@]}";      do remove_dir "$d"; done
+          else
+            echo "── STAGE 2 skipped (include_gated=false). build-alias-index.js,"
+            echo "   fix-uuid-prefix-length.js, cleanup-dead-artifacts.js, reports/backfill-collisions/,"
+            echo "   players/alias-inverse/ NOT touched. Enable include_gated once their gates are cleared."
+          fi
 
           echo ""
           echo "=== Summary ==="
-          echo "  Deleted: $deleted"
-          echo "  Skipped (already absent): $skipped"
+          echo "  To delete: $deleted   Already absent: $skipped"
 
-          # Only commit if there's something staged
+          if [ "$DRY_RUN" = "true" ]; then
+            echo ""
+            echo "DRY RUN complete — no changes staged, nothing committed."
+            echo "Re-run with dry_run=false to apply STAGE 1 (and include_gated=true for STAGE 2)."
+            exit 0
+          fi
+
           if git diff --cached --quiet; then
-            echo "Nothing to commit — all files already absent."
+            echo "Nothing to commit — all listed files already absent."
           else
-            git commit -m "chore: delete obsolete scripts, workflows, and root files"
-            git push origin main
-            echo "Committed and pushed."
+            git commit -m "chore: delete obsolete + migration-era scripts, workflows, reports, orphaned progress files"
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git merge -X ours FETCH_HEAD --no-edit --no-stat || true
+              if git push origin main; then echo "Committed and pushed."; break; fi
+              sleep $((attempt * 5))
+            done
           fi

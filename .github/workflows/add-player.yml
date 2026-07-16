@@ -182,10 +182,10 @@ jobs:
 
       - name: Commit stub
         run: |
-          git stash
-          git fetch origin main
-          git merge -X ours FETCH_HEAD
-          git stash pop
+          # No git stash. House order: stage explicit paths, COMMIT first, THEN
+          # fetch + merge -X ours (never git pull), then push. Committing before
+          # the merge means the merge is HEAD-vs-remote, so a concurrent push to
+          # a different shard can't wedge it over uncommitted changes.
           git add "players/indexes/${{ steps.shard.outputs.prefix }}.json" \
                   "players/${{ steps.shard.outputs.prefix }}/${{ inputs.uuid }}.json" \
                   2>/dev/null || true
@@ -193,7 +193,12 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "add-player: stub ${{ inputs.uuid }}"
-            git push origin main
+            for attempt in 1 2 3 4 5; do
+              git fetch origin main
+              git merge -X ours FETCH_HEAD --no-edit --no-stat || true
+              if git push origin main; then echo "pushed on attempt $attempt"; break; fi
+              sleep $((attempt * 5))
+            done
           fi
 
       - name: Trigger matrix for this shard
