@@ -89,6 +89,7 @@ jobs:
             scripts/lib
             data/sports-index.json
             players/indexes/${{ matrix.shard }}.json
+            players/aliases/${{ matrix.shard }}.json
             players/${{ matrix.shard }}
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -174,8 +175,12 @@ jobs:
 
       - name: Expand sparse checkout to active shards
         if: steps.check.outputs.has_files == 'true'
+        # players/aliases is included because shard jobs may write alias
+        # discoveries there; it must be in the sparse set BEFORE the tars are
+        # extracted (skip-worktree would otherwise make git add ignore them,
+        # and expanding afterwards would overwrite the extracted files).
         run: |
-          git sparse-checkout set --no-cone scripts $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
+          git sparse-checkout set --no-cone scripts players/aliases $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
 
       - name: Configure git
         if: steps.check.outputs.has_files == 'true'
