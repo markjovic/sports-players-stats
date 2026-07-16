@@ -1,0 +1,44 @@
+# .github/workflows/fold-diverged-players.yml
+name: Fold diverged players (api-canonical maintenance)
+
+on:
+  # No schedule: the fetch-profile-stats matrix triggers this with mode=apply
+  # every time a cycle completes, which sweeps ALL pending diverged files
+  # (idempotent) — including stragglers from any earlier failed cycle. A cron
+  # would only duplicate that. Manual dispatch remains for intervention.
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, single commit. Normally triggered automatically by matrix completion with mode=apply."
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  fold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      # Full depth-1 checkout - reads every player file and may write into any
+      # of the 256 shards plus index shards. No network calls, no setup-node.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      # Manual dispatch defaults to dry-run for safe inspection; the matrix
+      # trigger passes mode=apply explicitly.
+      - name: Run fold
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "apply" ]; then
+            node scripts/fold-diverged-players.js
+          else
+            node scripts/fold-diverged-players.js --dry-run
+          fi
