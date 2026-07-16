@@ -1,0 +1,28 @@
+# .github/workflows/redirect-exposure.yml
+name: Redirect exposure (diagnostic, read-only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      all_seasons:
+        description: 'Scan ALL seasons instead of active-only (slower, ~2.3M games)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  exposure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      - name: Run exposure scan
+        run: |
+          ARGS=""
+          if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="--all-seasons"; fi
+          node scripts/redirect-exposure.js $ARGS
