@@ -55,6 +55,7 @@ const {
   GRADE_PLAYERS_QUERY, gradePageFilter, PROFILE_SEARCH_QUERY,
   matchFromGrade, matchFromGradeRosterByName, matchFromSearch, isPlaceholderName,
 } = require('./lib/namespace-resolve.cjs');
+const { TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -560,6 +561,29 @@ function writePlayer(uuid, player) {
   fs.writeFileSync(playerPath(uuid), JSON.stringify(player), 'utf8');
 }
 
+// ─── Alias persistence on divergence discovery (api-canonical, 2026-07-16) ────
+// When recovery finds that a spectator-keyed player's real api id differs, the
+// discovery MUST be persisted to players/aliases/{bucket}.json or the shared
+// resolver (uuid-prefix.cjs) and StatTrack stay blind to it. Bucket == this
+// job's --shard (spectator prefix), so concurrent matrix jobs never write the
+// same alias file. Write format matches build-alias-index.js exactly: sorted
+// keys, minified. The workflow's sparse-checkout must include this path — see
+// fetch-profile-stats-matrix.yml.
+function recordAliasDiscovery(spectatorUuid, apiId) {
+  const bucket = spectatorUuid.slice(0, 2).toLowerCase();
+  const aliasPath = path.join(ROOT, 'players', 'aliases', `${bucket}.json`);
+  let map = {};
+  try { map = JSON.parse(fs.readFileSync(aliasPath, 'utf8')); }
+  catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const key = String(spectatorUuid).slice(0, TRUNC_LEN);
+  if (map[key] === apiId) return; // already recorded
+  map[key] = apiId;
+  const sorted = {};
+  for (const k of Object.keys(map).sort()) sorted[k] = map[k];
+  fs.mkdirSync(path.dirname(aliasPath), { recursive: true });
+  fs.writeFileSync(aliasPath, JSON.stringify(sorted));
+}
+
 // ─── Process one UUID ─────────────────────────────────────────────────────────
 
 async function processUUID(uuid, stats, idx) {
@@ -601,7 +625,15 @@ async function processUUID(uuid, stats, idx) {
       if (recovered && recovered.blocked) return { status: 'cloudfront-block' };
       if (recovered) {
         player.apiId = recovered.apiId;
-        console.log(`${prefix} ⟳ ${short} recovered apiId -> ${recovered.apiId.slice(0, 8)}`);
+        // Persist the discovery: alias entry (resolver/StatTrack) + spectatorIds
+        // on the player (source of truth for any future alias rebuild — player
+        // files no longer carry apiId after a fold promotes them).
+        recordAliasDiscovery(uuid, recovered.apiId);
+        const spec = new Set(Array.isArray(player.spectatorIds) ? player.spectatorIds : []);
+        spec.add(String(uuid).slice(0, TRUNC_LEN));
+        spec.add(String(recovered.apiId).slice(0, TRUNC_LEN));
+        player.spectatorIds = [...spec].sort();
+        console.log(`${prefix} ⟳ ${short} recovered apiId -> ${recovered.apiId.slice(0, 8)} (alias recorded)`);
         return finishOk(uuid, player, recovered.result, stats, prefix, short);
       }
     }
