@@ -117,7 +117,6 @@ jobs:
             scripts/build-forfeit-index.js
             scripts/audit-sample.js
             scripts/classify-games.js
-            scripts/discover-fixtures.js
             scripts/fetch-player-profiles.js
             scripts/build-foulout-stats.js
             scripts/fetch-playhq.js
@@ -242,7 +241,6 @@ jobs:
             .github/workflows/build-forfeit-index.yml
             .github/workflows/audit-sample.yml
             .github/workflows/classify-games.yml
-            .github/workflows/discover-fixtures.yml
             .github/workflows/fetch-player-profiles.yml
             .github/workflows/build-foulout-stats.yml
             .github/workflows/fetch-playhq.yml
@@ -336,7 +334,6 @@ jobs:
             backfill-hidden-progress.json
             backfill-missing-players-progress.json
             classify-games-progress.json
-            discover-fixtures-progress.json
             patch-fixtures-progress.json
             migrate-phase1-progress.json
             migrate-phase2-progress.json
