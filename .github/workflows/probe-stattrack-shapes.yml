@@ -38,7 +38,7 @@ jobs:
 
       - name: Run probe
         run: >-
-          node scripts/probe-stattrack-shapes.cjs
+          node scripts/probe-stattrack-shapes.js
           --player-scan-cap=${{ inputs.player_scan_cap }}
           --game-file-sample=${{ inputs.game_file_sample }}
           --games-per-file=${{ inputs.games_per_file }}
