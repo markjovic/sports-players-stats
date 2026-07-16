@@ -792,6 +792,67 @@ for (const [f, expected, shouldExist] of miscFiles) {
   row(f, fmt(count) + ' entries', note);
 }
 
+// ─── 11b. Repo hygiene (added 2026-07-16) ─────────────────────────────────────
+// SELF-CLEANUP RULE: any script writing a progress/checkpoint file must delete
+// it on successful completion. A dotfile-json at rest in scripts/ is therefore
+// either a run in progress, a script that failed to self-clean, or an ORPHAN
+// whose owning script was deleted. All are flagged; orphans by name-match.
+// reports/ policy: a small permanent keep-list (migration record); everything
+// else is a completed investigation's output and should leave with its script.
+
+section('11b · Repo hygiene');
+
+// scripts/ dotfile-json scan — orphan = no scripts/<stem>.js for .<stem>-progress.json
+{
+  const scriptsDir = path.join(ROOT, 'scripts');
+  const jsSet = new Set(fs.readdirSync(scriptsDir).filter(f => f.endsWith('.js')).map(f => f.slice(0, -3)));
+  const dotJsons = fs.readdirSync(scriptsDir).filter(f => f.startsWith('.') && f.endsWith('.json'));
+  if (dotJsons.length === 0) {
+    row('scripts/ dotfile-json files', '✅ none', 'all owners self-cleaned');
+  } else {
+    for (const f of dotJsons) {
+      const stem = f.replace(/^\./, '').replace(/-progress\.json$/, '').replace(/\.json$/, '');
+      const owner = jsSet.has(stem) ? stem + '.js' : null;
+      const ageDays = Math.floor((Date.now() - fs.statSync(path.join(scriptsDir, f)).mtimeMs) / 86400000);
+      row(`scripts/${f}`, `${ageDays}d old`,
+        owner ? `⚠️  owner ${owner} exists — mid-run, or failed to self-clean`
+              : '❌ ORPHAN — owning script deleted; safe to remove');
+    }
+  }
+}
+
+// reports/ keep-list policy
+{
+  const reportsDir = path.join(ROOT, 'reports');
+  const KEEP = new Set([
+    'rekey-apply-log.json',        // permanent migration record; rebuild-player-index depends on it
+    'rekey-merges.json',           // the reviewed 3b-2 plan
+    'rebuild-player-index.json',
+    'rekey-enrich-report.json',
+    'rekey-flagged-classified.json',
+    'fold-diverged.json',          // live, regenerated each fold
+  ]);
+  if (fs.existsSync(reportsDir)) {
+    let kept = 0, review = 0;
+    for (const f of fs.readdirSync(reportsDir)) {
+      const p = path.join(reportsDir, f);
+      const isDir = fs.statSync(p).isDirectory();
+      if (!isDir && KEEP.has(f)) { kept++; continue; }
+      review++;
+      const ageDays = Math.floor((Date.now() - fs.statSync(p).mtimeMs) / 86400000);
+      row(`reports/${f}${isDir ? '/' : ''}`, `${ageDays}d old`, '⚠️  not on keep-list — delete with its script');
+    }
+    row('reports/ keep-list files present', fmt(kept), kept === KEEP.size - (fs.existsSync(path.join(reportsDir,'fold-diverged.json')) ? 0 : 1) ? '✅' : 'ℹ️');
+  }
+}
+
+// repo-root stray scripts — .js belongs in scripts/
+{
+  const rootJs = fs.readdirSync(ROOT).filter(f => f.endsWith('.js'));
+  if (rootJs.length === 0) row('root-level .js files', '✅ none');
+  else for (const f of rootJs) row(`ROOT/${f}`, '⚠️  exists', 'scripts belong in scripts/ — delete or move');
+}
+
 // ─── 12. Summary ───────────────────────────────────────────────────────────────
 
 section('12 · Summary (current counts — not baselined)');
