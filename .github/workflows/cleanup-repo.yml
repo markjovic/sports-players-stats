@@ -57,6 +57,29 @@ jobs:
             /*.html
           sparse-checkout-cone-mode: false
 
+      # SAFETY: before deleting anything on a LIVE run, push a permanent tag at the
+      # current commit so the exact pre-cleanup state is recoverable with one click
+      # (GitHub UI → tag → "Browse files" / restore). Skipped in dry-run (a preview
+      # must not create tags). Idempotent: if the tag already exists (e.g. a prior
+      # live run today), it is reused, not recreated — the workflow does not fail.
+      - name: Tag pre-cleanup state (live runs only)
+        if: ${{ inputs.dry_run != true }}
+        env:
+          TAG: pre-cleanup-${{ github.run_id }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "Tag $TAG already exists — reusing it."
+          else
+            git tag -a "$TAG" -m "State immediately before cleanup-repo deletion run"
+            git push origin "refs/tags/$TAG"
+            echo "Tagged pre-cleanup state as: $TAG"
+          fi
+          echo "TO RECOVER ANY DELETED FILE LATER:"
+          echo "  GitHub → Code → the tag dropdown → select $TAG → open the file → Raw → copy,"
+          echo "  or restore-deleted-file.yml with the path (it reads from history)."
+
       - name: Delete stale files
         env:
           GIT_AUTHOR_NAME: github-actions[bot]
