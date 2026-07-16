@@ -2,12 +2,10 @@
 name: Probe StatTrack Shapes (read-only)
 
 # Read-only diagnostic for the StatTrack (#5) rebuild. Reads the live on-disk
-# data and reports the private-flag/id-length/alias/index/search shapes and the
-# game->player divergence rate. Writes NOTHING to the repo (no commit); the
-# report is uploaded as an artifact and also printed to this run's log.
-#
-# Full working-tree checkout (like db-audit) because the probe samples players/
-# and does existsSync lookups across games/bv + players/. History is shallow.
+# data and reports the private-flag/id-length/alias/index/search shapes, the
+# game->player divergence rate, and the spectatorIds-completeness fork. Writes
+# NOTHING to the repo (no commit); the report is uploaded as an artifact and
+# also printed to this run's log. Full working-tree checkout; shallow history.
 
 on:
   workflow_dispatch:
@@ -37,11 +35,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run probe
-        run: >-
-          node scripts/probe-stattrack-shapes.js
-          --player-scan-cap=${{ inputs.player_scan_cap }}
-          --game-file-sample=${{ inputs.game_file_sample }}
-          --games-per-file=${{ inputs.games_per_file }}
+        run: |
+          # Script is scripts/probe-stattrack-shapes.js. Tolerate a stale .cjs
+          # deployment so a filename mismatch cannot fail the run.
+          if [ -f scripts/probe-stattrack-shapes.js ]; then
+            SCRIPT=scripts/probe-stattrack-shapes.js
+          elif [ -f scripts/probe-stattrack-shapes.cjs ]; then
+            SCRIPT=scripts/probe-stattrack-shapes.cjs
+          else
+            echo "::error::probe script not found at scripts/probe-stattrack-shapes.{js,cjs}"
+            exit 1
+          fi
+          echo "Running $SCRIPT"
+          node "$SCRIPT" \
+            --player-scan-cap=${{ inputs.player_scan_cap }} \
+            --game-file-sample=${{ inputs.game_file_sample }} \
+            --games-per-file=${{ inputs.games_per_file }}
 
       - name: Upload report artifact
         if: ${{ !cancelled() }}
