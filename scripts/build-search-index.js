@@ -117,15 +117,20 @@ async function main() {
       const playerName = (indexEntry.name || '').trim();
       if (!playerName) continue;
 
-      // Read player detail file for club/team
+      // Read player detail file for club/team. `player` is hoisted to this
+      // scope because the reversed-name guard below needs player.private —
+      // 2026-07-16: it was previously declared const INSIDE this try block,
+      // making the guard a guaranteed ReferenceError on the first
+      // non-placeholder player (the bug that broke every run for days).
       let c = null, t = null;
+      let player = null;
       const playerFile = path.join(PLAYER_DIR, prefix, `${uuid}.json`);
       if (fs.existsSync(playerFile)) {
         try {
-          const player = JSON.parse(fs.readFileSync(playerFile, 'utf8'));
+          player = JSON.parse(fs.readFileSync(playerFile, 'utf8'));
           const ct = extractClubTeam(player);
           c = ct.c; t = ct.t;
-        } catch (_) {}
+        } catch (_) { player = null; }
       }
 
       const entry = { id: truncateUuid(uuid), c: c || null, t: t || null };
@@ -133,8 +138,9 @@ async function main() {
       // Forward: "Sam Burdan"
       addEntry(playerName, entry);
 
-      // Reversed: "Burdan, Sam" (skip private player stubs)
-      if (!playerName.startsWith('Player #') && !player.private) {
+      // Reversed: "Burdan, Sam" (skip private player stubs). player may be
+      // null (missing/unparseable detail file) — treat that as not-private.
+      if (!playerName.startsWith('Player #') && !(player && player.private === true)) {
         const parts = playerName.split(/\s+/);
         if (parts.length >= 2) {
           const lastName  = parts[parts.length - 1];
