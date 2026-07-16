@@ -368,6 +368,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
+      - name: Trigger fold of diverged players
+        if: steps.next.outputs.status == 'stuck'
+        run: |
+          gh workflow run fold-diverged-players.yml             --repo "${{ github.repository }}"             --field "mode=apply"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
       - name: Max runs reached
         if: steps.next.outputs.status == 'max_runs'
         run: |
