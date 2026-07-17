@@ -215,8 +215,13 @@ function parseProfileStats(data) {
   const seasonStats = data?.publicProfileStatistics?.seasonStatistics;
   if (!seasonStats) return null;
 
-  // Player display name from first seasonStatistics entry
-  const playerName = seasonStats[0]?.name || null;
+  // NO player name is available from publicProfileStatistics. seasonStatistics[].name
+  // is the SEASON label ("Autumn 2021", "Summer 2022/23"), NOT the person — reading
+  // [0].name here wrote season strings into player.name for every player who reached
+  // finishOk without a prior name (40,034 files; see repair-season-names.js). The real
+  // name only comes from the spectator side (nightly-crawl.js Phase 3 rosters). Never
+  // derive a name from this call again.
+  const playerName = null;
 
   const seenGameKeys = new Set();  // deduplicate games appearing in multiple registrations
   const foulOuts     = {};
@@ -691,19 +696,14 @@ function finishOk(uuid, player, result, stats, prefix, short) {
   if (!player.sports)            player.sports = {};
   if (!player.sports.Basketball) player.sports.Basketball = {};
 
-  // Write name if missing, OR replace a placeholder name now that the
-  // profile is confirmed public (a private stub going public is exactly
-  // when player.private is currently true — capture that BEFORE overwriting
-  // it below). Without the wasPrivate check, a `Player #...` placeholder
-  // name would never be replaced once set, even after the profile went public.
-  //
-  // wasPrivate ALSO falls back to the pre-flag legacy signal (statsChecked
-  // present + maxGamePTS still null) for players marked private before this
-  // flag existed. Without this fallback, a legacy-private player who jumps
-  // straight to public on their FIRST check after this rollout would not
-  // get their placeholder name replaced until a SECOND check (the first
-  // would only backfill the flag). Read from player.sports.Basketball
-  // directly here, before bk below overwrites maxGamePTS with fresh data.
+  // Name write: INERT BY DESIGN. parsed.playerName is now always null (see
+  // parseProfileStats — publicProfileStatistics carries no player name, only
+  // season labels). The guard below therefore never fires, so this call can no
+  // longer write a name at all — correct, because the only name it could ever
+  // have supplied was a season string. Real names / placeholder replacement now
+  // come exclusively from the spectator side (nightly-crawl.js Phase 3, and the
+  // one-off repair-season-names.js). The wasPrivate signal is retained only so
+  // the guard's shape is unchanged if a real name source is ever wired in here.
   const oldBk       = player.sports.Basketball;
   const wasPrivate  = player.private === true ||
     (oldBk.statsChecked !== undefined && oldBk.maxGamePTS === null);
