@@ -318,6 +318,37 @@ function parseProfileStats(data) {
 const REFRESH_EVERY  = 30;  // refresh session every 30 requests — PlayHQ enforces a per-session quota on ProfileSeasonStatistics
 let requestCount = 0;
 
+// ─── Real name via publicProfile (ACCOUNT tenant) ─────────────────────────
+// The authoritative id->name lookup publicProfileStatistics can't give. Uses the
+// ACCOUNT tenant (cross-sport identity), not basketball-victoria, so it resolves
+// spectator-keyed ids too. Request shape mirrors fetchProfile (doFetch + HEADERS_BASE
+// + session), with tenant overridden. Returns a trimmed name, or null (not found /
+// hidden / transient) — on null the caller keeps the existing name and retries later.
+const normName = s => String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
+const PUBLIC_PROFILE_QUERY = {
+  operationName: 'publicProfile',
+  query: 'query publicProfile($profileID: ID!) { publicProfile(profileID: $profileID) { id firstName lastName __typename } }',
+};
+async function fetchPublicProfileName(profileID) {
+  if (!sessionCookie) await refreshSession();
+  const mkHeaders = () => ({ ...HEADERS_BASE, 'tenant': 'account', 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie });
+  const body = JSON.stringify({ ...PUBLIC_PROFILE_QUERY, variables: { profileID } });
+  const readName = async res => {
+    if (!res || res.status !== 200) return null;
+    let j = null; try { j = await res.json(); } catch (_) { return null; }
+    if (!j || j.errors) return null;
+    const pr = j.data && j.data.publicProfile;
+    if (!pr) return null;
+    const nm = `${pr.firstName || ''} ${pr.lastName || ''}`.trim();
+    return nm || null;
+  };
+  try {
+    let res = await doFetch(API_URL, { method: 'POST', headers: mkHeaders(), body });
+    if (res.status === 403) { await refreshSession(); res = await doFetch(API_URL, { method: 'POST', headers: mkHeaders(), body }); }
+    return await readName(res);
+  } catch (_) { return null; }
+}
+
 async function fetchProfile(profileID) {
   if (!sessionCookie) await refreshSession();
 
@@ -685,7 +716,7 @@ async function processUUID(uuid, stats, idx) {
 // its own verified "ok" result against the recovered apiId) can reuse the
 // exact same write logic as a direct hit — no behavioural difference between
 // a player who resolved on the first try and one recovered via apiId.
-function finishOk(uuid, player, result, stats, prefix, short) {
+async function finishOk(uuid, player, result, stats, prefix, short) {
   const parsed = parseProfileStats(result.data);
   if (!parsed) {
     stats.inaccessible++;
@@ -696,20 +727,17 @@ function finishOk(uuid, player, result, stats, prefix, short) {
   if (!player.sports)            player.sports = {};
   if (!player.sports.Basketball) player.sports.Basketball = {};
 
-  // Name write: INERT BY DESIGN. parsed.playerName is now always null (see
-  // parseProfileStats — publicProfileStatistics carries no player name, only
-  // season labels). The guard below therefore never fires, so this call can no
-  // longer write a name at all — correct, because the only name it could ever
-  // have supplied was a season string. Real names / placeholder replacement now
-  // come exclusively from the spectator side (nightly-crawl.js Phase 3, and the
-  // one-off repair-season-names.js). The wasPrivate signal is retained only so
-  // the guard's shape is unchanged if a real name source is ever wired in here.
-  const oldBk       = player.sports.Basketball;
-  const wasPrivate  = player.private === true ||
-    (oldBk.statsChecked !== undefined && oldBk.maxGamePTS === null);
-  if (parsed.playerName && (!player.name || wasPrivate)) {
-    player.name = parsed.playerName;
+  // Real name — the authoritative source. publicProfileStatistics carries none, so
+  // fetch it directly from publicProfile (account tenant) when the stored name is
+  // missing, a placeholder, or a season string left by the old parseProfileStats bug.
+  // An established real name is left alone — no extra fetch for players who have one.
+  const curName      = player.name;
+  const contaminated = !!curName && (player.seasons || []).some(sn => normName(sn.sn) === normName(curName));
+  if (!curName || isPlaceholderName(curName) || contaminated) {
+    const realName = await fetchPublicProfileName(uuid);
+    if (realName) player.name = realName;
   }
+
   player.private = false; // explicit flag — a successful fetch proves the profile is currently public
 
   const bk = player.sports.Basketball;
