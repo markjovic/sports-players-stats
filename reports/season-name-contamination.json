@@ -1,0 +1,884 @@
+{
+  "generatedAt": "2026-07-17T02:38:43.782Z",
+  "playerFilesScanned": 411576,
+  "contaminated": 40034,
+  "breakdown": {
+    "recoverableFromGames": 40034,
+    "notRecoverable": 0,
+    "alsoPrivate": 0,
+    "hasStatsChecked": 40033
+  },
+  "placeholderAlready": 97,
+  "distinctSeasonStringsUsedAsNames": 53,
+  "topSeasonStrings": [
+    {
+      "seasonString": "Summer 2022/23",
+      "count": 7299
+    },
+    {
+      "seasonString": "Summer 2021/22",
+      "count": 5806
+    },
+    {
+      "seasonString": "Winter 2022",
+      "count": 5712
+    },
+    {
+      "seasonString": "Winter 2021",
+      "count": 5661
+    },
+    {
+      "seasonString": "Summer 2020/21",
+      "count": 3043
+    },
+    {
+      "seasonString": "Spring 2022",
+      "count": 1336
+    },
+    {
+      "seasonString": "Autumn 2022",
+      "count": 1174
+    },
+    {
+      "seasonString": "2022",
+      "count": 1124
+    },
+    {
+      "seasonString": "Spring 2021",
+      "count": 1084
+    },
+    {
+      "seasonString": "Summer 2023/24",
+      "count": 893
+    },
+    {
+      "seasonString": "Winter 2026",
+      "count": 891
+    },
+    {
+      "seasonString": "Autumn 2021",
+      "count": 756
+    },
+    {
+      "seasonString": "Summer 2025/26",
+      "count": 702
+    },
+    {
+      "seasonString": "Summer 2024/25",
+      "count": 635
+    },
+    {
+      "seasonString": "2021/22",
+      "count": 404
+    },
+    {
+      "seasonString": "Winter 2023",
+      "count": 387
+    },
+    {
+      "seasonString": "2021",
+      "count": 371
+    },
+    {
+      "seasonString": "Winter 2024",
+      "count": 277
+    },
+    {
+      "seasonString": "Winter 2025",
+      "count": 257
+    },
+    {
+      "seasonString": "Term 4, 2025",
+      "count": 250
+    },
+    {
+      "seasonString": "Autumn 2026",
+      "count": 204
+    },
+    {
+      "seasonString": "Autumn 2023",
+      "count": 203
+    },
+    {
+      "seasonString": "Autumn 2020",
+      "count": 192
+    },
+    {
+      "seasonString": "2023",
+      "count": 153
+    },
+    {
+      "seasonString": "Spring 2023",
+      "count": 143
+    },
+    {
+      "seasonString": "Winter 2020",
+      "count": 141
+    },
+    {
+      "seasonString": "2026",
+      "count": 109
+    },
+    {
+      "seasonString": "2024",
+      "count": 99
+    },
+    {
+      "seasonString": "Spring 2025",
+      "count": 87
+    },
+    {
+      "seasonString": "Autumn 2024",
+      "count": 81
+    },
+    {
+      "seasonString": "Term 4, 2024",
+      "count": 74
+    },
+    {
+      "seasonString": "Term 1, 2021",
+      "count": 67
+    },
+    {
+      "seasonString": "Spring 2024",
+      "count": 66
+    },
+    {
+      "seasonString": "Autumn 2025",
+      "count": 61
+    },
+    {
+      "seasonString": "2025",
+      "count": 49
+    },
+    {
+      "seasonString": "Term 4, 2023",
+      "count": 48
+    },
+    {
+      "seasonString": "Term 1, 2022",
+      "count": 38
+    },
+    {
+      "seasonString": "Term 1, 2026",
+      "count": 32
+    },
+    {
+      "seasonString": "Term 1, 2024",
+      "count": 26
+    },
+    {
+      "seasonString": "Term 1, 2025",
+      "count": 26
+    }
+  ],
+  "sample": [
+    {
+      "uuid": "0000a5ea-2e49-496f-8bad-a7b70582918e",
+      "name": "Autumn 2023",
+      "seasonNames": [
+        "Autumn 2023",
+        "2022"
+      ],
+      "games": 16,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:08.307Z",
+      "updatedAt": "2026-06-11T23:35:42.385Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0001c52e-4ca6-4a12-9cac-abfceaee3ada",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021"
+      ],
+      "games": 20,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.977Z",
+      "updatedAt": "2026-06-11T23:35:42.392Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00040ec0-4327-4565-a23c-6b85914c1522",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Winter 2022",
+        "2022",
+        "Summer 2021/22"
+      ],
+      "games": 70,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.948Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0004fe45-0a92-473d-a95b-a5557a85ebb5",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Autumn 2021",
+        "Autumn 2020"
+      ],
+      "games": 31,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:46.048Z",
+      "updatedAt": "2026-06-11T23:35:42.392Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00060af6-947d-4834-a25d-60dd162c746a",
+      "name": "Spring 2022",
+      "seasonNames": [
+        "Spring 2022",
+        "Autumn 2022",
+        "Spring 2021",
+        "Autumn 2021",
+        "Autumn 2020"
+      ],
+      "games": 39,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.531Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00068c1e-2fd5-423b-8d3a-2e0b7b5918dc",
+      "name": "Winter 2023",
+      "seasonNames": [
+        "Winter 2023",
+        "Summer 2022/23",
+        "Winter 2022",
+        "2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "2021",
+        "Summer 2020/21",
+        "2020"
+      ],
+      "games": 49,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.954Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0006b664-bf33-4efd-aa0f-ffc2e79c306b",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 17,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.961Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0007b7c0-9fd9-433e-8a61-6261e99a206d",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022"
+      ],
+      "games": 8,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.940Z",
+      "updatedAt": "2026-06-11T23:35:42.392Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0008f9e5-7ddd-4ad3-840f-0b0b40a3fc83",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23"
+      ],
+      "games": 9,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.937Z",
+      "updatedAt": "2026-06-11T23:35:42.389Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "000cbeb1-9c78-4402-a113-4d09ee977563",
+      "name": "2021",
+      "seasonNames": [
+        "2021",
+        "Winter 2021",
+        "Winter 2020"
+      ],
+      "games": 13,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.603Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "000d2d9e-fa82-47a3-8eb8-cb305f3f9c51",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "2021",
+        "Summer 2020/21",
+        "2020"
+      ],
+      "games": 30,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.774Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "000eaf6f-c1c3-4ac4-b171-2a16fc89aed4",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "2022",
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Autumn 2021",
+        "2021",
+        "Summer 2020/21",
+        "2020"
+      ],
+      "games": 98,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:39.383Z",
+      "updatedAt": "2026-06-11T23:35:42.387Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00107e46-94f9-475b-9fcc-96e0c515c400",
+      "name": "Winter 2023",
+      "seasonNames": [
+        "Winter 2023",
+        "Summer 2022/23",
+        "Winter 2022"
+      ],
+      "games": 20,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.713Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00152306-8b4d-49bb-8869-6182ee5d413d",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 60,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:39.635Z",
+      "updatedAt": "2026-06-11T23:35:42.385Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0018e23e-cfe9-4277-83d7-fe4aee88531a",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Autumn 2021",
+        "2021",
+        "Summer 2020/21",
+        "2020"
+      ],
+      "games": 76,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:39.712Z",
+      "updatedAt": "2026-06-11T23:35:42.387Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00193370-7e9d-43d5-a134-ada276c2b314",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 10,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.894Z",
+      "updatedAt": "2026-06-11T23:35:42.392Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0019d493-4fdb-4aed-a256-9d96c26b723b",
+      "name": "Term 4, 2025",
+      "seasonNames": [
+        "Term 4, 2025",
+        "Term 4, 2024",
+        "Summer 2023/24",
+        "Summer 2022/23",
+        "Summer 2021/22"
+      ],
+      "games": 54,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:09.038Z",
+      "updatedAt": "2026-06-11T23:35:42.384Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001b55b3-e97b-4e5a-912a-2bd3a1f2c712",
+      "name": "Autumn 2024",
+      "seasonNames": [
+        "Autumn 2024"
+      ],
+      "games": 10,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:08.329Z",
+      "updatedAt": "2026-06-11T23:35:42.385Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001b69a2-7f33-4fed-8ed9-6d8e6862ea8d",
+      "name": "Spring 2021",
+      "seasonNames": [
+        "Spring 2021",
+        "Autumn 2021"
+      ],
+      "games": 14,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:46.005Z",
+      "updatedAt": "2026-06-11T23:35:42.392Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001b82a4-4639-496b-af94-8307a36141fd",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "2021",
+        "Summer 2020/21",
+        "Winter 2020",
+        "2020"
+      ],
+      "games": 45,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.552Z",
+      "updatedAt": "2026-06-11T23:35:42.389Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001cc8ef-749e-45a4-afe3-674f7c34cf14",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23"
+      ],
+      "games": 17,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.292Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001cd171-5497-40c4-b512-478c8e19d36a",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23"
+      ],
+      "games": 14,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.582Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001e0a23-7e93-4327-8e94-b315d83fda7b",
+      "name": "Summer 2021/22",
+      "seasonNames": [
+        "Summer 2021/22"
+      ],
+      "games": 6,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.895Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001e4356-7d5a-4b0c-849f-e39f0ec71ef3",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021"
+      ],
+      "games": 2,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.860Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001e7d46-0b0f-4e1c-a31b-d85a0679aa12",
+      "name": "Autumn 2022",
+      "seasonNames": [
+        "Autumn 2022"
+      ],
+      "games": 3,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.244Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "001f4126-998a-455e-82f6-7b831d2777d9",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 42,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:44.325Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "002033c0-834f-4c7a-96f6-bffee123bf9e",
+      "name": "Winter 2024",
+      "seasonNames": [
+        "Winter 2024",
+        "Summer 2022/23"
+      ],
+      "games": 30,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:38.986Z",
+      "updatedAt": "2026-06-11T23:35:42.386Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0021571f-941c-4bc4-bc50-41c9544ae658",
+      "name": "Summer 2021/22",
+      "seasonNames": [
+        "Summer 2021/22"
+      ],
+      "games": 13,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.566Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0022e16d-aac5-413e-877a-dd6bee8c811c",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 13,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:46.323Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0023ab18-a639-49b9-8f2d-2d83e20046b8",
+      "name": "Autumn 2022",
+      "seasonNames": [
+        "Autumn 2022",
+        "Spring 2022"
+      ],
+      "games": 6,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.225Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "002434c6-ac82-4357-b2cd-8c2d6be8bdd8",
+      "name": "Autumn 2021",
+      "seasonNames": [
+        "Autumn 2021",
+        "Term 1, 2021",
+        "Autumn 2020"
+      ],
+      "games": 16,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.567Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0026572f-054f-4c5a-9b8b-5e875eca068c",
+      "name": "Autumn 2022",
+      "seasonNames": [
+        "Autumn 2022"
+      ],
+      "games": 12,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.954Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0026b0c0-655f-4b0f-a759-bbe40d8f2156",
+      "name": "Summer 2020/21",
+      "seasonNames": [
+        "Summer 2020/21"
+      ],
+      "games": 3,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:38.674Z",
+      "updatedAt": "2026-06-11T23:35:42.387Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "002a727c-ecd1-4c56-8256-fde431dce33e",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 46,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.617Z",
+      "updatedAt": "2026-06-11T23:35:42.389Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "002c5039-4a68-48f7-ac20-6b68bfae0bfb",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Winter 2022",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 35,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.861Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "002effbb-e806-44ab-92cb-8253b74ad830",
+      "name": "Summer 2021/22",
+      "seasonNames": [
+        "Summer 2021/22",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 28,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:39.373Z",
+      "updatedAt": "2026-06-11T23:35:42.386Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00336eeb-2fdd-4f04-9108-e17d10361180",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 16,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.562Z",
+      "updatedAt": "2026-06-11T23:35:42.390Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0036fd31-2edb-4499-a9ab-e5453fa467a9",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "Summer 2020/21",
+        "Winter 2020"
+      ],
+      "games": 17,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.575Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003717a6-44d9-4c15-81e4-51d820305e7a",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Winter 2022",
+        "2021/22",
+        "Summer 2020/21",
+        "2025"
+      ],
+      "games": 41,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.631Z",
+      "updatedAt": "2026-06-11T23:35:42.388Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003879ab-90e2-45e1-b4eb-3fc8c0b23cd2",
+      "name": "Winter 2024",
+      "seasonNames": [
+        "Winter 2024",
+        "Summer 2023/24",
+        "Autumn 2023",
+        "Spring 2022",
+        "Autumn 2022",
+        "Spring 2021"
+      ],
+      "games": 32,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:08.874Z",
+      "updatedAt": "2026-06-11T23:35:42.385Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0038b06c-3696-446d-aea0-c9cd0aacf93b",
+      "name": "Summer 2021/22",
+      "seasonNames": [
+        "Summer 2021/22"
+      ],
+      "games": 1,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.828Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0039fec9-34c4-4dd1-b7cf-6be0fa8bb6f6",
+      "name": "Winter 2026",
+      "seasonNames": [
+        "Winter 2026",
+        "Term 1, 2026"
+      ],
+      "games": 9,
+      "private": false,
+      "statsChecked": "2026-07-16T03:06:46.543Z",
+      "updatedAt": "2026-07-16T02:51:47.919Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003a47b2-750c-45b8-866a-dde9cf00a2d1",
+      "name": "Summer 2020/21",
+      "seasonNames": [
+        "Summer 2020/21"
+      ],
+      "games": 3,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:11.981Z",
+      "updatedAt": "2026-06-11T23:35:42.386Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003b667f-272d-41b5-8043-6092bd2244e6",
+      "name": "Summer 2022/23",
+      "seasonNames": [
+        "Summer 2022/23",
+        "Summer 2021/22",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 47,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:08.881Z",
+      "updatedAt": "2026-06-11T23:35:42.385Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003c6a4d-fa54-4002-802f-32d19280313c",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022",
+        "Summer 2021/22"
+      ],
+      "games": 21,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:43.492Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003d6de1-2073-45b3-a761-57225f6b3ce2",
+      "name": "Summer 2021/22",
+      "seasonNames": [
+        "Summer 2021/22",
+        "Winter 2021",
+        "Summer 2020/21"
+      ],
+      "games": 29,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.862Z",
+      "updatedAt": "2026-06-11T23:35:42.389Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003de57b-52e8-4305-941c-bd3b14de0fb3",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "Summer 2020/21",
+        "Winter 2020"
+      ],
+      "games": 16,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:41.903Z",
+      "updatedAt": "2026-06-11T23:35:42.389Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "003f6c82-208e-4910-9387-865109e46b96",
+      "name": "Autumn 2026",
+      "seasonNames": [
+        "Autumn 2026",
+        "Autumn 2025",
+        "Spring 2024",
+        "Autumn 2024",
+        "Spring 2023",
+        "Spring 2026"
+      ],
+      "games": 49,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:08.864Z",
+      "updatedAt": "2026-07-04T05:54:48.735Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "00405b63-27f7-4927-9b33-e1cb4b902dd4",
+      "name": "Winter 2022",
+      "seasonNames": [
+        "Winter 2022"
+      ],
+      "games": 7,
+      "private": false,
+      "statsChecked": "2026-07-05T16:26:45.839Z",
+      "updatedAt": "2026-06-11T23:35:42.391Z",
+      "hasApiId": false
+    },
+    {
+      "uuid": "0040b0a8-7016-4590-8509-b841bfb9bba8",
+      "name": "Winter 2021",
+      "seasonNames": [
+        "Winter 2021",
+        "Summer 2020/21",
+        "Autumn 2021"
+      ],
+      "games": 14,
+      "private": false,
+      "statsChecked": "2026-07-05T16:21:11.996Z",
+      "updatedAt": "2026-06-11T23:35:42.386Z",
+      "hasApiId": false
+    }
+  ]
+}
