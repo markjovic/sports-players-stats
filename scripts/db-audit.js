@@ -16,6 +16,9 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { TRUNC_LEN }         = require('./lib/uuid-prefix.cjs');
+const { isPlaceholderName } = require('./lib/namespace-resolve.cjs');
+const normName = s => String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
 
 const ROOT      = path.join(__dirname, '..');
 const ARGS      = new Set(process.argv.slice(2));
@@ -160,6 +163,11 @@ const uuidMismatchSample = [];
 let withSpectatorIds = 0;
 let privateTrue = 0;
 
+// player-name quality (publicProfile population + season-name contamination, 2026-07-17)
+let nameReal = 0, namePlaceholder = 0, nameMissing = 0;
+let seasonNameContaminated = 0; const contaminatedSample = [];
+let privateWithRealName = 0, privateWithPlaceholder = 0;
+
 const shardDirs = fs.existsSync(playersDir)
   ? fs.readdirSync(playersDir).filter(d => /^[0-9a-f]{2}$/.test(d))
   : [];
@@ -233,6 +241,19 @@ for (const shard of shardDirs) {
     if (Array.isArray(p.spectatorIds) && p.spectatorIds.length) withSpectatorIds++;
     if (p.private === true) privateTrue++;
 
+    // Name quality: real vs placeholder (publicProfile population), and season-name
+    // contamination = a non-placeholder name equal to one of the player's own season
+    // labels (the old parseProfileStats bug; drains to 0 via repair-season-names.js).
+    const nm   = p.name;
+    const nmPh = isPlaceholderName(nm);
+    if (!nm) nameMissing++;
+    if (nmPh) namePlaceholder++; else nameReal++;
+    if (!nmPh && (p.seasons || []).some(s => normName(s.sn) === normName(nm))) {
+      seasonNameContaminated++;
+      if (contaminatedSample.length < 10) contaminatedSample.push(`${shard}/${fileKey} name="${nm}"`);
+    }
+    if (p.private === true) { if (nmPh) privateWithPlaceholder++; else privateWithRealName++; }
+
     if (p.records !== undefined) withRecords++;
     if (p.teams && p.teams.length > 0) withTeams++;
     if (p.games && p.games.length > 0) withGames++;
@@ -299,7 +320,6 @@ row('  finals  [nightly+build-finals]',   fmt(regsWithFinals),         pct(regsW
 row('  gfApps  [nightly+build-finals]',   fmt(regsWithGfApps),         pct(regsWithGfApps, regsTotal));
 row('  gfWins  [nightly+build-finals]',   fmt(regsWithGfWins),         pct(regsWithGfWins, regsTotal));
 console.log('  (regs without finals/gfApps/gfWins = player never appeared in a finals game that season — expected)');
-row('  gfWins  [nightly+build-finals]',   fmt(regsWithGfWins),         pct(regsWithGfWins, regsTotal));
 
 console.log('\n  ── Finals stats (build-finals-stats.js) ──');
 row('  finals present',            fmt(withFinals),          pct(withFinals, processed));
@@ -329,6 +349,18 @@ row('  Has games[] (non-empty)',           fmt(withGames),                     p
 // divergences legitimately pass through an apiId-field state between matrix
 // recovery and the fold — so apiId>0 is "pending fold", not corruption, and
 // must EQUAL the dangling-alias-target count (same players, two views).
+
+console.log('\n  ── Player names (publicProfile population + season-name contamination) ──');
+row('  Real name present',        fmt(nameReal),        pct(nameReal, processed));
+row('  Placeholder / missing',    fmt(namePlaceholder), pct(namePlaceholder, processed));
+row('    of which name absent',   fmt(nameMissing),     pct(nameMissing, processed));
+row('  Season-name contaminated', fmt(seasonNameContaminated),
+  seasonNameContaminated === 0 ? '✅ none' : '❌ name == own season label — run repair-season-names.js');
+for (const s of contaminatedSample) console.log('      ' + s);
+if (privateTrue > 0) {
+  row('  private w/ real name',   fmt(privateWithRealName),    pct(privateWithRealName, privateTrue));
+  row('  private w/ placeholder', fmt(privateWithPlaceholder), pct(privateWithPlaceholder, privateTrue));
+}
 
 section('3b · api-canonical migration invariants');
 
@@ -433,10 +465,9 @@ const seasonBreakdown = [];
 
 // UUID footprint — counts every full-length UUID string instance in p[]/hp[]/ap[]
 // and what it would cost at a truncated length instead (same precedent already
-// used for private-profile display names: 10-char prefix, zero collisions
-// confirmed at 369k players).
+// used for private-profile display names). The canonical truncation is now
+// 13 chars (uuid-prefix.cjs TRUNC_LEN); a full-length id here is a remnant.
 let uuidInstancesGames = 0, uuidBytesGamesFull = 0;
-const TRUNC_LEN = 10;
 
 const activeSids = sportsIndex
   ? new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id))
@@ -893,11 +924,11 @@ if (withApiIdField > 0) {
 // Measures every place a FULL 36-char UUID is stored as a repeated data value
 // (not a filename/directory — players/{shard}/{uuid}.json already encodes it
 // for free, and player.uuid is already stripped from the file body, June 2026).
-// Compares against the cost at a 10-char prefix — the same precedent already in
-// production for private-profile display names (zero collisions confirmed at
-// 369k players). This is a measurement only; no migration is applied here.
+// The 13-char truncation (uuid-prefix.cjs TRUNC_LEN) is already applied to these
+// sources, so counts below are REMAINING full-length (36-char) instances and
+// should trend to ~0. This is a measurement only; no migration is applied here.
 
-section('13 · UUID storage footprint (full-length vs 10-char-prefix)');
+section('13 · UUID storage footprint (remaining full-length instances vs 13-char truncation)');
 const uuidSources = [
   ['games/ (p[].id, hp[]/ap[].profileID)', uuidInstancesGames, uuidBytesGamesFull],
   ['leaderboard/ (uuid, uuid|tid keys/ids)', uuidInstancesLb,    uuidBytesLbFull],
