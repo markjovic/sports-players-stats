@@ -1,0 +1,46 @@
+# .github/workflows/scan-season-name-contamination.yml
+name: Scan season-name contamination (read-only)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: season-name-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      # Plain full checkout — the scan reads every player file off local disk
+      # (proven fast at ~412k by verify-enrich). No setup-node: not needed and
+      # this repo's convention keeps it off runner jobs unless required.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run scan (read-only over player files)
+        run: node scripts/scan-season-name-contamination.js
+
+      - name: Commit report
+        run: |
+          set -e
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add reports/season-name-contamination.json
+          if git diff --cached --shortstat | grep -q .; then
+            git commit -m "scan: season-name contamination report"
+            for i in $(seq 1 60); do
+              git merge --abort 2>/dev/null || true
+              if git fetch origin main && git merge -X ours FETCH_HEAD --no-edit --no-stat && git push origin HEAD:main; then
+                echo "pushed on attempt $i"; break
+              fi
+              [ "$i" = "60" ] && { echo "push failed after 60 attempts"; exit 1; }
+              sleep $((1 + RANDOM % 91))
+            done
+          else
+            echo "no report change to commit"
+          fi
