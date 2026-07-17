@@ -62,6 +62,10 @@ const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
 
 const CONCURRENCY_SPECTATOR = 3;    // verbatim from nightly-crawl.js
 const COMMIT_EVERY          = 200;  // commit players + progress every N resolved
+const MAX_DEFER             = 4;    // unreachable passes before accepting a placeholder, so a
+                                    // genuinely dead profile+games converges instead of looping
+const PUBLIC_PROFILE_QUERY  =
+  'query publicProfile($profileID: ID!) { publicProfile(profileID: $profileID) { id firstName lastName __typename } }';
 
 const HEX = '0123456789abcdef';
 const ALL_BUCKETS = [];
@@ -197,6 +201,33 @@ function parseSpectatorPlayers(players) {
     .map(p => ({ profileID: p.profileID, name: p.name || null }));
 }
 
+// Direct id -> name via publicProfile (api.playhq.com, ACCOUNT tenant).
+// Primary path: one call per player, returns the real name regardless of whether
+// they ever recorded stats -- so it also covers players the game-roster scan can't
+// (no stat line -> absent from every statistics roster). tenant MUST be 'account'
+// (cross-sport identity): publicProfileStatistics under the basketball tenant
+// NOT_FOUNDs spectator-keyed ids, but publicProfile under 'account' resolves them.
+// Request shape copied from a live capture. Returns { name, reached }; reached=false
+// is a transient failure (403-after-refresh / error) the caller DEFERS, never freezes.
+async function gqlPublicProfile(profileID) {
+  if (!sessionCookie) await refreshSession();
+  const headers = () => ({ ...HEADERS_MAIN, 'tenant': 'account', 'Cookie': sessionCookie });
+  const body = { operationName: 'publicProfile', variables: { profileID }, query: PUBLIC_PROFILE_QUERY };
+  const readName = res => {
+    if (!res || res.status !== 200 || !res.body || res.body.errors) return undefined; // not a clean answer
+    const pr = res.body.data && res.body.data.publicProfile;
+    if (!pr) return null;                                    // reached, but no such public profile
+    const nm = `${pr.firstName || ''} ${pr.lastName || ''}`.trim();
+    return nm || null;                                       // reached; real name, or reached-but-empty
+  };
+  try {
+    let res = await doFetch(API_URL, body, headers());
+    if (res.status === 403) { await refreshSession(); res = await doFetch(API_URL, body, headers()); }
+    const val = readName(res);
+    return (val === undefined) ? { name: null, reached: false } : { name: val, reached: true };
+  } catch (_) { return { name: null, reached: false }; }
+}
+
 // ─── Concurrency pool — verbatim from nightly-crawl.js ──────────────────────────
 async function runPool(tasks, concurrency) {
   let i = 0;
@@ -318,8 +349,13 @@ async function main() {
 
   // Resume state
   let done = new Set();
-  try { done = new Set(JSON.parse(fs.readFileSync(PROGRESS, 'utf8')).done || []); } catch (_) {}
-  if (done.size) log(`resuming: ${done.size} already processed`);
+  let attempts = new Map();   // uuid -> unreachable-pass count (persisted; drives MAX_DEFER convergence)
+  try {
+    const prog = JSON.parse(fs.readFileSync(PROGRESS, 'utf8'));
+    done = new Set(prog.done || []);
+    for (const [k, v] of Object.entries(prog.attempts || {})) attempts.set(k, v);
+  } catch (_) {}
+  if (done.size || attempts.size) log(`resuming: ${done.size} processed, ${attempts.size} deferred`);
 
   log('detecting contaminated player files…');
   const all = findContaminated();
@@ -332,121 +368,138 @@ async function main() {
   await refreshSession();
 
   const stats = {
-    resolvedReal: 0, placeholder: 0, processed: 0,
-    // placeholder-reason breakdown
-    phUnreachable: 0,   // every one of the player's games failed to fetch
-    phNotInRoster: 0,   // games fetched OK, but uuid never appeared in any roster (namespace/matching miss)
-    phNameless: 0,      // uuid found in a roster, but its name was null on PlayHQ
-    phNoGames: 0,       // player file had an empty games[] (shouldn't happen — scan said all have games)
+    resolvedReal: 0, viaProfile: 0, viaGame: 0,
+    placeholder: 0, deferred: 0, processed: 0,
+    // placeholder-reason breakdown (only when the answer was DEFINITIVE this run)
+    phNotInRoster: 0,   // profile had no name AND uuid not in any reachable roster
+    phNameless: 0,      // profile had no name AND uuid in a roster but nameless
+    phNoGames: 0,       // profile had no name AND file has no games[]
+    phExhausted: 0,     // never reachable after MAX_DEFER passes -> placeholdered to converge
   };
-  const phSamples = { unreachable: [], notInRoster: [], nameless: [] };
+  const phSamples = { notInRoster: [], nameless: [], exhausted: [] };
   let sinceCommit = 0;
 
-  async function processOne(item) {
-    const { uuid, games, seasonNorms } = item;
-    let realName    = null;
-    let anyReachable = false;   // did at least one game fetch succeed?
-    let foundInRoster = false;  // did uuid appear in any reachable roster?
-
-    for (const gameId of games) {
-      const roster = await rosterForGame(gameId);
-      if (!roster) continue;                 // unreachable game — try next
-      anyReachable = true;
-      if (!roster.has(uuid)) continue;       // reachable, but this player not on this game's sheet
-      foundInRoster = true;
-      const candidate = roster.get(uuid);    // name (may be null)
-      if (!candidate) continue;
-      const normCand = normName(candidate);
-      if (!normCand || seasonNorms.has(normCand)) continue; // never re-write a season string
-      realName = candidate;
-      break;
-    }
-
-    const player = readPlayer(uuid);
-    if (!player) { done.add(uuid); return; }  // vanished — skip, mark done
-
-    let reason = null;
-    if (!realName) {
-      if (games.length === 0)      reason = 'noGames';
-      else if (!anyReachable)      reason = 'unreachable';
-      else if (!foundInRoster)     reason = 'notInRoster';
-      else                         reason = 'nameless'; // in a roster but no usable name
-    }
-
-    const newName = realName || placeholderFor(uuid);
+  function saveProgress() {
+    if (DRY_RUN) return;
+    fs.mkdirSync(path.dirname(PROGRESS), { recursive: true });
+    fs.writeFileSync(PROGRESS, JSON.stringify({ done: [...done], attempts: Object.fromEntries(attempts) }));
+  }
+  async function commitCheckpoint(final) {
+    saveProgress();
+    await gitCommit(
+      `repair-season-names: ${stats.resolvedReal} real (${stats.viaProfile} prof/${stats.viaGame} game), `
+      + `${stats.placeholder} placeholder, ${stats.deferred} deferred${final ? ' (final)' : ' running'}`,
+      ['players/', 'reports/season-name-repair-progress.json']
+    );
+  }
+  // Write a resolved name (real or placeholder) to the player file + index.
+  function applyName(uuid, player, newName) {
     player.name = newName;
     player.updatedAt = new Date().toISOString();
     writePlayer(uuid, player);
-
     const shard = playerShard(uuid);
     const idx = readPlayerIndex(shard);
     if (idx[uuid]) { idx[uuid].name = newName; writePlayerIndex(shard, idx); }
+  }
+  async function tick() { sinceCommit++; if (sinceCommit >= COMMIT_EVERY) { sinceCommit = 0; await commitCheckpoint(false); } }
+
+  async function processOne(item) {
+    const { uuid, games, seasonNorms } = item;
+    const usable = cand => {
+      if (!cand) return null;
+      const nc = normName(cand);
+      return (!nc || seasonNorms.has(nc)) ? null : cand;   // never accept a season string
+    };
+
+    // 1) Direct profile lookup -- the primary, stat-independent path.
+    let realName = null, via = null;
+    const prof = await gqlPublicProfile(uuid);
+    if (prof.name) { const u = usable(prof.name); if (u) { realName = u; via = 'profile'; } }
+
+    // 2) Fallback: spectator game rosters, only if the profile gave no usable name.
+    let anyUnreachableGame = false, foundInRoster = false;
+    if (!realName) {
+      for (const gameId of games) {
+        const roster = await rosterForGame(gameId);
+        if (!roster) { anyUnreachableGame = true; continue; }  // unreachable game
+        if (!roster.has(uuid)) continue;                       // reachable, player absent
+        foundInRoster = true;
+        const u = usable(roster.get(uuid));
+        if (u) { realName = u; via = 'game'; break; }
+      }
+    }
+
+    const player = readPlayer(uuid);
+    if (!player) { done.add(uuid); attempts.delete(uuid); return; }  // file vanished
 
     if (realName) {
+      applyName(uuid, player, realName);
       stats.resolvedReal++;
-    } else {
-      stats.placeholder++;
-      if (reason === 'noGames')     stats.phNoGames++;
-      if (reason === 'unreachable') { stats.phUnreachable++; if (phSamples.unreachable.length < 15) phSamples.unreachable.push(uuid); }
-      if (reason === 'notInRoster') { stats.phNotInRoster++; if (phSamples.notInRoster.length < 15) phSamples.notInRoster.push({ uuid, games: games.slice(0, 5) }); }
-      if (reason === 'nameless')    { stats.phNameless++;   if (phSamples.nameless.length < 15) phSamples.nameless.push(uuid); }
+      if (via === 'profile') stats.viaProfile++; else stats.viaGame++;
+      done.add(uuid); attempts.delete(uuid); stats.processed++;
+      await tick();
+      return;
     }
-    stats.processed++;
-    done.add(uuid);
-    sinceCommit++;
 
-    if (sinceCommit >= COMMIT_EVERY) {
-      sinceCommit = 0;
-      if (!DRY_RUN) {
-        fs.mkdirSync(path.dirname(PROGRESS), { recursive: true });
-        fs.writeFileSync(PROGRESS, JSON.stringify({ done: [...done] }));
-      }
-      await gitCommit(
-        `repair-season-names: ${stats.resolvedReal} real, ${stats.placeholder} placeholder (unreach=${stats.phUnreachable} notInRoster=${stats.phNotInRoster} nameless=${stats.phNameless}) running`,
-        ['players/', 'reports/season-name-repair-progress.json']
-      );
+    // No name found. Only placeholder on a DEFINITIVE answer (profile reached AND
+    // no fallback game was unreachable this run). Otherwise DEFER -- leave the file
+    // untouched, don't mark done, and let a later pass retry -- so a transient
+    // failure is never frozen as a permanent placeholder.
+    const definitive = prof.reached && !anyUnreachableGame;
+    if (!definitive) {
+      const n = (attempts.get(uuid) || 0) + 1;
+      attempts.set(uuid, n);
+      if (n < MAX_DEFER) { stats.deferred++; await tick(); return; }
+      applyName(uuid, player, placeholderFor(uuid));           // exhausted -> converge
+      stats.placeholder++; stats.phExhausted++;
+      if (phSamples.exhausted.length < 15) phSamples.exhausted.push(uuid);
+      done.add(uuid); attempts.delete(uuid); stats.processed++;
+      await tick();
+      return;
     }
+
+    applyName(uuid, player, placeholderFor(uuid));             // definitive no-name
+    stats.placeholder++;
+    if (games.length === 0)  { stats.phNoGames++; }
+    else if (!foundInRoster) { stats.phNotInRoster++; if (phSamples.notInRoster.length < 15) phSamples.notInRoster.push({ uuid, games: games.slice(0, 5) }); }
+    else                     { stats.phNameless++;   if (phSamples.nameless.length < 15) phSamples.nameless.push(uuid); }
+    done.add(uuid); attempts.delete(uuid); stats.processed++;
+    await tick();
   }
 
-  // Spectator pool at width 3 (verbatim concurrency).
+  // Pool at width 3 (publicProfile is the primary call now; game roster is fallback).
   const tasks = todo.map(item => () => processOne(item));
   await runPool(tasks, CONCURRENCY_SPECTATOR);
 
-  // Final checkpoint + commit
-  if (!DRY_RUN) {
-    fs.mkdirSync(path.dirname(PROGRESS), { recursive: true });
-    fs.writeFileSync(PROGRESS, JSON.stringify({ done: [...done] }));
-  }
-  await gitCommit(
-    `repair-season-names: ${stats.resolvedReal} real names, ${stats.placeholder} placeholders (final ${stats.processed})`,
-    ['players/', 'reports/season-name-repair-progress.json']
-  );
+  await commitCheckpoint(true);
 
   const remaining = all.length - done.size;
   console.log('─'.repeat(60));
   console.log(`  Processed this run:  ${stats.processed}`);
-  console.log(`  Real names restored: ${stats.resolvedReal}`);
+  console.log(`  Real names restored: ${stats.resolvedReal}  (profile ${stats.viaProfile}, game ${stats.viaGame})`);
   console.log(`  Placeholders set:    ${stats.placeholder}`);
-  console.log(`    — unreachable games: ${stats.phUnreachable}`);
-  console.log(`    — not in any roster: ${stats.phNotInRoster}  ⚠️ recoverable-name risk if high`);
+  console.log(`    — not in any roster: ${stats.phNotInRoster}`);
   console.log(`    — in roster, nameless: ${stats.phNameless}`);
   console.log(`    — no games[] on file:  ${stats.phNoGames}`);
+  console.log(`    — exhausted (unreachable ${MAX_DEFER}x): ${stats.phExhausted}`);
+  console.log(`  Deferred (retry next run): ${stats.deferred}`);
   console.log(`  Unique games fetched: ${gameRosterCache.size}`);
   console.log(`  Remaining overall:   ${remaining}`);
 
-  // Always write a report (dry-run included) so the breakdown + samples persist.
   const report = {
     generatedAt: new Date().toISOString(),
     dryRun: DRY_RUN,
     processedThisRun: stats.processed,
     resolvedReal: stats.resolvedReal,
+    resolvedVia: { profile: stats.viaProfile, game: stats.viaGame },
     placeholder: stats.placeholder,
     placeholderReasons: {
-      unreachable: stats.phUnreachable,
       notInRoster: stats.phNotInRoster,
       nameless: stats.phNameless,
       noGames: stats.phNoGames,
+      exhausted: stats.phExhausted,
     },
+    deferred: stats.deferred,
     uniqueGamesFetched: gameRosterCache.size,
     remainingOverall: remaining,
     samples: phSamples,
@@ -459,19 +512,19 @@ async function main() {
   const summary = `## repair-season-names${DRY_RUN ? ' (DRY RUN)' : ''}\n\n`
     + `| metric | value |\n| --- | --- |\n`
     + `| processed this run | ${stats.processed} |\n`
-    + `| real names restored | ${stats.resolvedReal} |\n`
+    + `| real names restored | ${stats.resolvedReal} (profile ${stats.viaProfile}, game ${stats.viaGame}) |\n`
     + `| placeholders | ${stats.placeholder} |\n`
-    + `| — unreachable games | ${stats.phUnreachable} |\n`
-    + `| — not in any roster (miss risk) | ${stats.phNotInRoster} |\n`
+    + `| — not in any roster | ${stats.phNotInRoster} |\n`
     + `| — in roster, nameless | ${stats.phNameless} |\n`
     + `| — no games[] on file | ${stats.phNoGames} |\n`
+    + `| — exhausted (unreachable ${MAX_DEFER}x) | ${stats.phExhausted} |\n`
+    + `| deferred (retry next run) | ${stats.deferred} |\n`
     + `| unique games fetched | ${gameRosterCache.size} |\n`
     + `| remaining overall | ${remaining} |\n`;
   if (process.env.GITHUB_STEP_SUMMARY) {
     try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary); } catch (_) {}
   }
   try { fs.writeFileSync(path.join(ROOT, '.repair-season-names-status.json'), JSON.stringify({ remaining })); } catch (_) {}
-  log(`DONE. processed=${stats.processed} real=${stats.resolvedReal} placeholder=${stats.placeholder} (unreach=${stats.phUnreachable} notInRoster=${stats.phNotInRoster} nameless=${stats.phNameless}) remaining=${remaining}`);
+  log(`DONE. processed=${stats.processed} real=${stats.resolvedReal}(prof ${stats.viaProfile}) placeholder=${stats.placeholder} deferred=${stats.deferred} remaining=${remaining}`);
 }
-
 main().catch(e => { console.error('FATAL:', e.message, '\n', e.stack); process.exit(1); });
