@@ -1,0 +1,78 @@
+# .github/workflows/salvage-spectator-names.yml
+name: Salvage spectator names (one-time)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — reconcile resolves but writes/commits nothing'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write          # same lock as nightly-crawl so they never write players/ at once
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  # Recompute the 15 targets' unique games and emit the shard index list.
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      shards_json: ${{ steps.plan.outputs.shards_json }}
+      nshards:     ${{ steps.plan.outputs.nshards }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - id: plan
+        run: node scripts/salvage-spectator-names.js --plan
+
+  # One runner per batch of 25 games — fresh session each, well inside the
+  # spectator per-session quota. No setup-node (this hits spectator.playhq.com;
+  # setup-node changes the outbound fingerprint -> CloudFront 403s). Shards do
+  # ZERO git — each just uploads its result artifact for reconcile to aggregate.
+  shard:
+    needs: plan
+    if: ${{ needs.plan.outputs.nshards != '0' && needs.plan.outputs.nshards != '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards_json) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Fetch batch
+        run: node scripts/salvage-spectator-names.js --shard=${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: name-salvage-shard-${{ matrix.shard }}
+          path: name-salvage-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  # Aggregate every shard artifact, apply real names, and only confirm a
+  # placeholder for a player whose every game was reached. One commit.
+  reconcile:
+    needs: shard
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Configure git
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Download shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: name-salvage-shard-*
+          merge-multiple: true          # land all files at the repo root
+      - name: Reconcile
+        run: |
+          ARGS="--reconcile"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/salvage-spectator-names.js $ARGS
