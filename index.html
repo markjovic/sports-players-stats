@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.58</span>
+      <span class="rail-ver">Beta 0.59</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -488,6 +488,60 @@ function tokenMatch(str,query){
   return query.toLowerCase().split(/\s+/).filter(Boolean).every(t=>sl.includes(t));
 }
 
+/* ── api-canonical id resolution + privacy (StatTrack #5) ── */
+const TRUNC_LEN = 13;
+function t13(id){ return String(id==null?'':id).slice(0, TRUNC_LEN); }
+function isPlaceholderName(name){ return !name || /^player\s*#/i.test(String(name).trim()); }
+function displayName(rec, id){
+  const nm = (rec && typeof rec==='object') ? rec.name : rec;
+  return isPlaceholderName(nm) ? ('Player #'+t13(id||(rec&&rec.uuid)||'')) : nm;
+}
+function isPrivate(rec){ return !!(rec && rec.private===true); }
+function privBadge(rec){ return isPrivate(rec) ? ' <span style="display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;font-size:0.6rem;font-weight:700;letter-spacing:.04em;background:#333;color:#bbb;vertical-align:middle">PRIVATE</span>' : ''; }
+// Match a game-side id (trunc13 or full/diverged) to a LOADED player — no fetch.
+const _idsetCache = new WeakMap();
+function playerIdSet(player){
+  if(!player) return new Set();
+  let s=_idsetCache.get(player); if(s) return s;
+  s=new Set(); const add=v=>{ if(v){ s.add(String(v)); s.add(t13(v)); } };
+  add(player.uuid); (player.spectatorIds||[]).forEach(add);
+  _idsetCache.set(player,s); return s;
+}
+function gameIdMatchesPlayer(gameId, player){
+  if(gameId==null||!player) return false;
+  const ks=playerIdSet(player), s=String(gameId);
+  return ks.has(s)||ks.has(t13(s));
+}
+function matchP(gameId, uuid){ return gameIdMatchesPlayer(gameId, S.players[uuid]||{uuid:uuid}); }
+// Resolve any game-side id to a canonical full uuid via the alias index
+// (spectator/trunc13 -> api). self-wins: a full id with no alias entry stays itself.
+const _aliasShard={}, _resolved={};
+async function fetchAliasShard(pfx){
+  if(pfx in _aliasShard) return _aliasShard[pfx];
+  _aliasShard[pfx]=await gj(BASE+'/players/aliases/'+pfx+'.json');
+  return _aliasShard[pfx];
+}
+async function resolveGameId(gameId){
+  const raw=String(gameId||''); if(!raw) return null;
+  if(raw in _resolved) return _resolved[raw];
+  const key=t13(raw);
+  const shard=await fetchAliasShard(key.slice(0,2));
+  const out = (shard && shard[key]) ? shard[key] : (raw.length===36 ? raw : null);
+  _resolved[raw]=out; return out;
+}
+// Canonicalise a game-side id to a full uuid: opposing-team roster first (no
+// fetch, since the player is in that roster under their full uuid), then alias.
+async function canonGameId(pid, rosterKeys){
+  if(!pid) return null;
+  const k=t13(pid);
+  for(const uu of rosterKeys){ if(t13(uu)===k) return uu; }
+  return await resolveGameId(pid);
+}
+async function openGameId(gameId){
+  const uuid = await resolveGameId(gameId);
+  loadPlayer(uuid||gameId); // loadPlayer shows a graceful placeholder if the file 404s
+}
+
 function renderMode(g){
   if(g.bye)return'bye';if(g.forfeit)return'forfeit';if(g.cancelled)return'cancelled';if(g.abandoned)return'abandoned';
   if(g.hidden){return g.hp?.length?'hidden-full':'hidden-partial';}
@@ -508,10 +562,10 @@ function resLetter(a,b){
   return a>b?'W':a<b?'L':'D';
 }
 function storedPts(g,uuid){
-  return[...(g.hp||[]),...(g.ap||[])].find(p=>p.profileID===uuid)?.pts??null;
+  return[...(g.hp||[]),...(g.ap||[])].find(p=>matchP(p.profileID,uuid))?.pts??null;
 }
 function storedStats(g,uuid){
-  return[...(g.hp||[]),...(g.ap||[])].find(p=>p.profileID===uuid)||null;
+  return[...(g.hp||[]),...(g.ap||[])].find(p=>matchP(p.profileID,uuid))||null;
 }
 function statCell(v,l,last,color){
   return`<div style="flex:1;text-align:center;padding:6px 4px;${last?'':'border-right:1px solid #2e2e2e;'}min-width:0;overflow:hidden"><div style="font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:${color||'#fff'};display:block;white-space:nowrap;overflow:hidden">${v}</div><div style="font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px">${l}</div></div>`;
@@ -762,7 +816,7 @@ async function loadPlayer(uuid){
   if(!S.players[uuid]){const d=await gj(BASE+'/players/'+uuid.slice(0,2)+'/'+uuid+'.json');if(d)S.players[uuid]=d;}
   const p=S.players[uuid];
   if(!p){
-    ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button><div><div class="vtitle">Player #${esc(uuid.slice(0,10))}</div><div class="vsub">No data available</div></div></div><div class="empty">No additional data for this player.</div>`;
+    ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button><div><div class="vtitle">Player #${esc(t13(uuid))}</div><div class="vsub">No data available</div></div></div><div class="empty">No additional data for this player.</div>`;
     return;
   }
   renderPlayer(p);
@@ -859,9 +913,9 @@ function renderPlayer(p){
   let h='';
   h+=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button>
     <div class="avi">${esc(inits(p.name))}</div>
-    <div style="flex:1;min-width:0"><div class="vtitle">${esc(p.name||'Player #'+uuid.slice(0,10))}</div>
+    <div style="flex:1;min-width:0"><div class="vtitle">${esc(displayName(p,uuid))}${privBadge(p)}</div>
     <div class="vsub">${esc([p.gender,club].filter(Boolean).join(' \u00b7 '))}</div>
-    <a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener" style="display:inline-flex;margin:4px 0 0;padding:3px 8px;font-size:0.72rem">View on PlayHQ \u2197</a>
+    ${isPrivate(p)?'':`<a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener" style="display:inline-flex;margin:4px 0 0;padding:3px 8px;font-size:0.72rem">View on PlayHQ \u2197</a>`}
     </div></div>`;
   h+=`<div class="cstats">
     <div class="cstat"><div class="csv">${gp}</div><div class="csl">GP</div></div>
@@ -953,7 +1007,7 @@ async function toggleGames(hdr){
   if(!S.games[sid]){const d=await gj(BASE+'/games/bv/'+sid+'.json');S.games[sid]=d||{games:{}};}
   const all=S.games[sid]?.games||{};
   const pg=Object.entries(all)
-    .filter(([,g])=>(g.h===tid||g.a===tid)&&(g.p||[]).some(p=>p.id===uuid))
+    .filter(([,g])=>(g.h===tid||g.a===tid)&&(g.p||[]).some(p=>matchP(p.id,uuid)))
     .sort(([,a],[,b])=>(b.d||'').localeCompare(a.d||''));
   if(!pg.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
   const allRegGradeNames=regs.map(r=>r.gn||r.tn||'').filter(Boolean);
@@ -986,7 +1040,7 @@ async function toggleGames(hdr){
       const el2=document.getElementById('gstats-'+gid);
       if(!el2||!bs)return;
       const allP=[...(bs.h||[]),...(bs.a||[])];
-      const mine=allP.find(p=>p.profileID===uuid);
+      const mine=allP.find(p=>matchP(p.profileID,uuid));
       if(mine)el2.innerHTML=buildGameStatRow(g,gameCtx(g,tid),mine);
     });
   });
@@ -1402,7 +1456,7 @@ function renderSheet(g,gid,sid,con){
   const uuid=S.playerUuid;
   // Determine which side the player is on
   let mine=null;
-  if(uuid&&g.h){if((g.hp||[]).some(p=>p.profileID===uuid)||(S.games[sid]?.games?.[gid]?.h===S.teamId))mine='h';}
+  if(uuid&&g.h){if((g.hp||[]).some(p=>matchP(p.profileID,uuid))||(S.games[sid]?.games?.[gid]?.h===S.teamId))mine='h';}
   // Simple side detection: check if player's teamId matches
   const myTeamId=S.playerUuid?getPlayerTeamForGame(g,uuid,S.players[uuid]):null;
   const t1mine=myTeamId&&(myTeamId===t1id||mine==='h');
@@ -1469,8 +1523,8 @@ function renderSheet(g,gid,sid,con){
 
 function getPlayerTeamForGame(g,uuid,player){
   // Check stored box score sides first — most reliable
-  if(g.hp?.some(p=>p.profileID===uuid))return g.h||g.t1||null;
-  if(g.ap?.some(p=>p.profileID===uuid))return g.a||g.t2||null;
+  if(g.hp?.some(p=>matchP(p.profileID,uuid)))return g.h||g.t1||null;
+  if(g.ap?.some(p=>matchP(p.profileID,uuid)))return g.a||g.t2||null;
   // Use gameTids map from player file if available (ambiguous players)
   if(player?.gameTids&&g.id&&player.gameTids[g.id])return player.gameTids[g.id];
   return null;
@@ -1486,7 +1540,7 @@ function renderQtrs(hq,aq){
 }
 
 function prow(p,highlight,sid){
-  const click=p.profileID?`onclick="closeSheet();loadPlayer('${esc(p.profileID)}')"`:'' ;
+  const click=p.profileID?`onclick="closeSheet();openGameId('${esc(p.profileID)}')"`:'' ;
   return`<tr class="${highlight?'me':''}" ${click} ${click?'style="cursor:pointer"':''}>
     <td>${esc(String(p.number??''))}</td><td>${esc(p.name)}</td>
     <td>${p.pts??0}</td><td>${p.pt2??0}</td><td>${p.pt3??0}</td><td>${p.pt1??0}</td><td>${p.fouls??0}</td></tr>`;
@@ -1499,8 +1553,8 @@ function renderBoxHtml(hp,ap,t1n,t2n,t1id,t2id,sid,highlightUuid){
     ?`<div class="bteam" onclick="closeSheet();loadTeam('${esc(tid)}','${esc(sid)}')">${esc(n||'Home')} \u2192</div>`
     :`<div class="bteam">${esc(n||'Home')}</div>`;
   let h='<div class="bsec">';
-  if(hp.length)h+=th(t1n,t1id)+`<table class="btbl">${BTHEAD}<tbody>${hp.map(p=>prow(p,p.profileID===highlightUuid,sid)).join('')}</tbody></table>`;
-  if(ap.length)h+=th(t2n,t2id)+`<table class="btbl" style="margin-top:4px">${BTHEAD}<tbody>${ap.map(p=>prow(p,p.profileID===highlightUuid,sid)).join('')}</tbody></table>`;
+  if(hp.length)h+=th(t1n,t1id)+`<table class="btbl">${BTHEAD}<tbody>${hp.map(p=>prow(p,matchP(p.profileID,highlightUuid),sid)).join('')}</tbody></table>`;
+  if(ap.length)h+=th(t2n,t2id)+`<table class="btbl" style="margin-top:4px">${BTHEAD}<tbody>${ap.map(p=>prow(p,matchP(p.profileID,highlightUuid),sid)).join('')}</tbody></table>`;
   return h+'</div>';
 }
 
@@ -1530,11 +1584,11 @@ function applyBox(bs,g,gid,con){
   // Update game row stats if visible
   if(uuid){
     const allP=[...(bs.h||[]),...(bs.a||[])];
-    const mine=allP.find(p=>p.profileID===uuid);
+    const mine=allP.find(p=>matchP(p.profileID,uuid));
     if(mine){
       const statsEl=document.getElementById('gstats-'+gid);
       if(statsEl){
-        const onH=(bs.h||[]).some(p=>p.profileID===uuid);
+        const onH=(bs.h||[]).some(p=>matchP(p.profileID,uuid));
         const myT=onH?(g.h||g.t1||''):(g.a||g.t2||'');
         statsEl.innerHTML=buildGameStatRow(g,gameCtx(g,myT),mine);
       }
@@ -1753,7 +1807,7 @@ function getPlayerGameStats(g, uuid) {
   // Returns {pts, fg, ft, tp, fouls} for a player from box score data if available
   const sides = [g.hp||[], g.ap||[]];
   for (const side of sides) {
-    const p = side.find(p => p.profileID === uuid);
+    const p = side.find(p => matchP(p.profileID, uuid));
     if (p) return { pts: p.pts??'', fouls: p.fouls??'' };
   }
   return null;
@@ -1834,8 +1888,8 @@ function toggleTeamOppDetail(row, result, myUuid) {
             return;
           }
           const allP = [...(bs.h||[]), ...(bs.a||[])];
-          const myBs  = allP.find(p => p.profileID === myUuid);
-          const oppBs = allP.find(p => p.profileID === oppUuid);
+          const myBs  = allP.find(p => matchP(p.profileID, myUuid));
+          const oppBs = allP.find(p => matchP(p.profileID, oppUuid));
           const myS2  = myBs  ? `${myBs.pts??''}pts ${myBs.fouls??''}f`  : '';
           const oppS2 = oppBs ? `${oppBs.pts??''}pts ${oppBs.fouls??''}f` : '';
           const sp = document.getElementById(statsSpanId);
@@ -2039,7 +2093,7 @@ function renderLB(allEntries,data){
       const dispVal=S.lbStat==='winPct'?e.v+'%':typeof e.v==='number'?e.v.toLocaleString('en-AU',{maximumFractionDigits:1}):e.v;
       return`<div class="lb-row" data-uuid="${esc(e.uuid)}">
         <div class="lb-rank">${i+1}</div>
-        <div><div class="lb-name">${esc(e.name||'Player #'+e.uuid.slice(0,10))}</div><div class="lb-club">${esc(sub)}</div></div>
+        <div><div class="lb-name">${esc(displayName(e,e.uuid))}</div><div class="lb-club">${esc(sub)}</div></div>
         <div>${gpInfo}<div class="lb-val">${dispVal}</div></div>
       </div>`;
     }).join('');
@@ -2103,8 +2157,8 @@ function buildGameRow(gid, sid, g, myUuid2, oppUuid2) {
     if (!sp) return;
     if (!bs) { sp.textContent = ''; return; }
     const allP2 = [...(bs.h||[]), ...(bs.a||[])];
-    const myBs2  = allP2.find(p => p.profileID === myUuid2);
-    const oppBs2 = allP2.find(p => p.profileID === oppUuid2);
+    const myBs2  = allP2.find(p => matchP(p.profileID, myUuid2));
+    const oppBs2 = allP2.find(p => matchP(p.profileID, oppUuid2));
     const myS3  = myBs2  ? `${myBs2.pts??''}pts ${myBs2.fouls??''}f` : '';
     const oppS3 = oppBs2 ? `${oppBs2.pts??''}pts ${oppBs2.fouls??''}f` : '';
     sp.textContent = `${myS3?`Me: ${myS3}`:''}${myS3&&oppS3?' \u00b7 ':''}${oppS3?`Them: ${oppS3}`:''}`;
@@ -2148,33 +2202,34 @@ async function buildOppStats(uuid, btn) {
       // Determine which side the player is on — skip game if we can't tell
       const isHome = g.h === myTid;
       const isAway = g.a === myTid;
-      if (!isHome && !isAway) continue; // myTid doesn't match either side — skip
+      if (!isHome && !isAway) continue;
+      const otherTid = isHome ? g.a : g.h;
+      const td = S.teamStats[sid] || {};
+      const oppRosterKeys = Object.keys(td[otherTid]?.roster || {});
+      const myRosterKeys  = Object.keys(td[myTid]?.roster    || {});
+      const oppRosterSet  = new Set(oppRosterKeys);
       const oppSide = isHome ? (g.ap || []) : (g.hp || []);
-      const mySide  = isHome ? (g.hp || []) : (g.ap || []);
-      let oppUuids;
+
+      // Collect opponents as CANONICAL full uuids. Game-side ids are mostly
+      // trunc13 (of the player's own uuid) and won't equal the full-uuid roster
+      // keys, so match on the 13-char prefix; fall back to the alias index for
+      // diverged spectator ids not present in the roster.
+      let oppUuids = [];
       if (oppSide.length) {
-        // hp/ap present — reliable side information
-        oppUuids = oppSide.map(p => p.profileID).filter(Boolean);
+        for (const bp of oppSide) {
+          const cu = await canonGameId(bp.profileID, oppRosterKeys);
+          if (cu) oppUuids.push(cu);
+        }
       } else if (g.p?.length) {
-        // No hp/ap — use g.p with team-stats rosters to determine sides.
-        // Team-stats[sid][tid].roster is a map of uuid→stats for each registered player.
-        const otherTid = isHome ? g.a : g.h;
-        const td = S.teamStats[sid] || {};
-        const myRosterSet  = new Set(Object.keys(td[myTid]?.roster  || {}));
-        const oppRosterSet = new Set(Object.keys(td[otherTid]?.roster || {}));
-        oppUuids = [];
         for (const entry of g.p) {
           const pid = typeof entry === 'string' ? entry : entry.id;
-          if (!pid || pid === uuid) continue;
-          if (oppRosterSet.has(pid))  { oppUuids.push(pid); continue; }
-          // If not in either known roster, fall back to cached player file
-          if (myRosterSet.has(pid))   continue; // confirmed teammate
-          const cached = S.players[pid];
-          if (cached) {
-            const pidTid = getTidForSeason(cached, sid);
-            if (pidTid === otherTid) oppUuids.push(pid);
-          }
-          // truly unknown — exclude
+          if (!pid || gameIdMatchesPlayer(pid, player)) continue; // skip self
+          const k = t13(pid);
+          if (myRosterKeys.some(uu => t13(uu) === k)) continue;   // teammate
+          const oppKey = oppRosterKeys.find(uu => t13(uu) === k);
+          if (oppKey) { oppUuids.push(oppKey); continue; }
+          const r = await resolveGameId(pid);                     // diverged / unknown
+          if (r && oppRosterSet.has(r)) oppUuids.push(r);
         }
       } else {
         continue;
