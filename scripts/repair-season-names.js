@@ -42,6 +42,7 @@ const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const { TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -77,7 +78,7 @@ function normName(s) {
 function isPlaceholderName(name) {
   return !name || /^player\s*#/i.test(String(name).trim());
 }
-function placeholderFor(uuid) { return `Player #${uuid.slice(0, 10)}`; }
+function placeholderFor(uuid) { return `Player #${uuid.slice(0, TRUNC_LEN)}`; }
 
 // ─── HTTP — verbatim from nightly-crawl.js ──────────────────────────────────────
 function doFetch(url, bodyObj, headers) {

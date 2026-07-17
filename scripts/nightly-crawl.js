@@ -971,7 +971,7 @@ async function main() {
     for (const { uuid, name, deltas } of entries) {
       if (!index[uuid]) {
         // New player — defer to Phase 4 for stubbing
-        genuinelyNew.set(uuid, name || `Player #${uuid.slice(0, 10)}`);
+        genuinelyNew.set(uuid, name || `Player #${uuid.slice(0, TRUNC_LEN)}`);
         continue;
       }
 
