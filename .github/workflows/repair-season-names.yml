@@ -1,0 +1,74 @@
+# .github/workflows/repair-season-names.yml
+name: Repair season-name contamination
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — resolve names but write/commit nothing'
+        required: false
+        default: false
+        type: boolean
+      max:
+        description: 'Cap players processed this run (blank = all)'
+        required: false
+        type: string
+
+concurrency:
+  group: data-write        # same lock as nightly-crawl so they never write players/ at once
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write           # for the self-retrigger below
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    outputs:
+      remaining: ${{ steps.run.outputs.remaining }}
+    steps:
+      # Full checkout — the repair scans every player file and re-fetches
+      # spectator rosters. No setup-node: this job hits spectator.playhq.com,
+      # and the project rule keeps setup-node off any PlayHQ-fetching workflow
+      # (it changes the outbound fingerprint -> CloudFront 403s).
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Run repair
+        id: run
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.max }}" ]; then ARGS="$ARGS --max=${{ inputs.max }}"; fi
+          node scripts/repair-season-names.js $ARGS
+          if [ -f .repair-season-names-status.json ]; then
+            rem=$(node -e "console.log(require('./.repair-season-names-status.json').remaining || 0)")
+          else
+            rem=0
+          fi
+          echo "remaining=$rem" >> "$GITHUB_OUTPUT"
+          echo "Remaining after run: $rem"
+
+  # If the single job timed out before draining all 40,034 (progress is
+  # committed every 200, so a resume loses nothing), re-dispatch to continue.
+  retrigger:
+    needs: repair
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() && inputs.dry_run != true && needs.repair.outputs.remaining != '0' && needs.repair.outputs.remaining != '' }}
+    steps:
+      - name: Re-dispatch to continue
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          echo "↺ ${{ needs.repair.outputs.remaining }} remaining — re-dispatching."
+          gh workflow run repair-season-names.yml --repo "${{ github.repository }}"
