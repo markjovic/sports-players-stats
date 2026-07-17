@@ -119,28 +119,40 @@ const HEADERS_SPECTATOR = {
   'tenant': 'bv', 'x-phq-tenant': 'bv', 'content-type': 'application/json',
 };
 
-let sessionCookie = null;
+let sessionCookie  = null;
+let sessionPromise = null;   // promise-lock: concurrent workers wait on one in-flight refresh
 
+// Promise-locked refresh (the documented pattern, as in fetch-profile-stats.js).
+// Without this, the 3 spectator workers each fire their own refresh on a 403 and
+// stampede — the storm of "Session refreshed" lines the first dry-run showed.
 async function refreshSession() {
-  const body = { operationName: 'TenantConfig', variables: {},
-    query: 'query TenantConfig { tenantConfiguration { label } }' };
-  for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 3000);
+  if (sessionPromise) return sessionPromise;
+  sessionPromise = (async () => {
+    const body = { operationName: 'TenantConfig', variables: {},
+      query: 'query TenantConfig { tenantConfiguration { label } }' };
     try {
-      const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
-      if (!rawCookies) continue;
-      const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
-        .map(c => c.split(';')[0].trim());
-      const get = n => arr.find(p => p.startsWith(n + '=')) || null;
-      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (tier && session && sub) {
-        sessionCookie = `${tier}; ${session}; ${sub}`;
-        console.log(`  Session refreshed (attempt ${attempt})`);
-        return;
+      for (let attempt = 1; attempt <= 10; attempt++) {
+        if (attempt > 1) await sleep(attempt * 3000);
+        try {
+          const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
+          if (!rawCookies) continue;
+          const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
+            .map(c => c.split(';')[0].trim());
+          const get = n => arr.find(p => p.startsWith(n + '=')) || null;
+          const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+          if (tier && session && sub) {
+            sessionCookie = `${tier}; ${session}; ${sub}`;
+            console.log(`  Session refreshed (attempt ${attempt})`);
+            return;
+          }
+        } catch (_) {}
       }
-    } catch (_) {}
-  }
-  throw new Error('Failed to obtain session after 10 attempts');
+      throw new Error('Failed to obtain session after 10 attempts');
+    } finally {
+      sessionPromise = null;
+    }
+  })();
+  return sessionPromise;
 }
 
 // ─── Spectator game fetch — verbatim from nightly-crawl.js ───────────────────────
@@ -276,7 +288,10 @@ function findContaminated() {
   return out;
 }
 
-// game(id) roster cache: gameId -> Map<profileID,name> | null (unreachable)
+// game(id) roster cache: gameId -> Map<profileID,name> | null (unreachable).
+// A reachable game with an empty/na roster still returns a Map (possibly with
+// entries whose name was null) so callers can tell "couldn't fetch" from
+// "fetched but this player isn't here / has no name".
 const gameRosterCache = new Map();
 async function rosterForGame(gameId) {
   if (gameRosterCache.has(gameId)) return gameRosterCache.get(gameId);
@@ -285,8 +300,10 @@ async function rosterForGame(gameId) {
   if (game && game.statistics) {
     map = new Map();
     for (const side of ['home', 'away']) {
+      // Store EVERY roster profileID, mapping to its name (possibly null) so we
+      // can distinguish "player not in this game" from "in game but nameless".
       for (const pl of parseSpectatorPlayers(game.statistics?.[side]?.players)) {
-        if (pl.profileID && pl.name) map.set(pl.profileID, pl.name);
+        if (pl.profileID) map.set(pl.profileID, pl.name || null);
       }
     }
   }
@@ -313,18 +330,30 @@ async function main() {
 
   await refreshSession();
 
-  const stats = { resolvedReal: 0, placeholder: 0, processed: 0 };
+  const stats = {
+    resolvedReal: 0, placeholder: 0, processed: 0,
+    // placeholder-reason breakdown
+    phUnreachable: 0,   // every one of the player's games failed to fetch
+    phNotInRoster: 0,   // games fetched OK, but uuid never appeared in any roster (namespace/matching miss)
+    phNameless: 0,      // uuid found in a roster, but its name was null on PlayHQ
+    phNoGames: 0,       // player file had an empty games[] (shouldn't happen — scan said all have games)
+  };
+  const phSamples = { unreachable: [], notInRoster: [], nameless: [] };
   let sinceCommit = 0;
 
   async function processOne(item) {
     const { uuid, games, seasonNorms } = item;
-    let realName = null;
+    let realName    = null;
+    let anyReachable = false;   // did at least one game fetch succeed?
+    let foundInRoster = false;  // did uuid appear in any reachable roster?
 
-    // Try each of the player's games until one roster yields a real, non-season name.
     for (const gameId of games) {
       const roster = await rosterForGame(gameId);
-      if (!roster) continue;                       // game unreachable — try next
-      const candidate = roster.get(uuid);          // match: roster full profileID === file key
+      if (!roster) continue;                 // unreachable game — try next
+      anyReachable = true;
+      if (!roster.has(uuid)) continue;       // reachable, but this player not on this game's sheet
+      foundInRoster = true;
+      const candidate = roster.get(uuid);    // name (may be null)
       if (!candidate) continue;
       const normCand = normName(candidate);
       if (!normCand || seasonNorms.has(normCand)) continue; // never re-write a season string
@@ -333,19 +362,34 @@ async function main() {
     }
 
     const player = readPlayer(uuid);
-    if (!player) { done.add(uuid); return; }        // vanished — skip, mark done
+    if (!player) { done.add(uuid); return; }  // vanished — skip, mark done
+
+    let reason = null;
+    if (!realName) {
+      if (games.length === 0)      reason = 'noGames';
+      else if (!anyReachable)      reason = 'unreachable';
+      else if (!foundInRoster)     reason = 'notInRoster';
+      else                         reason = 'nameless'; // in a roster but no usable name
+    }
 
     const newName = realName || placeholderFor(uuid);
     player.name = newName;
     player.updatedAt = new Date().toISOString();
     writePlayer(uuid, player);
 
-    // Keep the index name in step (same field nightly maintains).
     const shard = playerShard(uuid);
     const idx = readPlayerIndex(shard);
     if (idx[uuid]) { idx[uuid].name = newName; writePlayerIndex(shard, idx); }
 
-    if (realName) stats.resolvedReal++; else stats.placeholder++;
+    if (realName) {
+      stats.resolvedReal++;
+    } else {
+      stats.placeholder++;
+      if (reason === 'noGames')     stats.phNoGames++;
+      if (reason === 'unreachable') { stats.phUnreachable++; if (phSamples.unreachable.length < 15) phSamples.unreachable.push(uuid); }
+      if (reason === 'notInRoster') { stats.phNotInRoster++; if (phSamples.notInRoster.length < 15) phSamples.notInRoster.push({ uuid, games: games.slice(0, 5) }); }
+      if (reason === 'nameless')    { stats.phNameless++;   if (phSamples.nameless.length < 15) phSamples.nameless.push(uuid); }
+    }
     stats.processed++;
     done.add(uuid);
     sinceCommit++;
@@ -357,7 +401,7 @@ async function main() {
         fs.writeFileSync(PROGRESS, JSON.stringify({ done: [...done] }));
       }
       await gitCommit(
-        `repair-season-names: ${stats.resolvedReal} real names, ${stats.placeholder} placeholders (running)`,
+        `repair-season-names: ${stats.resolvedReal} real, ${stats.placeholder} placeholder (unreach=${stats.phUnreachable} notInRoster=${stats.phNotInRoster} nameless=${stats.phNameless}) running`,
         ['players/', 'reports/season-name-repair-progress.json']
       );
     }
@@ -382,21 +426,51 @@ async function main() {
   console.log(`  Processed this run:  ${stats.processed}`);
   console.log(`  Real names restored: ${stats.resolvedReal}`);
   console.log(`  Placeholders set:    ${stats.placeholder}`);
-  console.log(`  Unique games cached: ${gameRosterCache.size}`);
+  console.log(`    — unreachable games: ${stats.phUnreachable}`);
+  console.log(`    — not in any roster: ${stats.phNotInRoster}  ⚠️ recoverable-name risk if high`);
+  console.log(`    — in roster, nameless: ${stats.phNameless}`);
+  console.log(`    — no games[] on file:  ${stats.phNoGames}`);
+  console.log(`  Unique games fetched: ${gameRosterCache.size}`);
   console.log(`  Remaining overall:   ${remaining}`);
-  const summary = `## repair-season-names\n\n`
+
+  // Always write a report (dry-run included) so the breakdown + samples persist.
+  const report = {
+    generatedAt: new Date().toISOString(),
+    dryRun: DRY_RUN,
+    processedThisRun: stats.processed,
+    resolvedReal: stats.resolvedReal,
+    placeholder: stats.placeholder,
+    placeholderReasons: {
+      unreachable: stats.phUnreachable,
+      notInRoster: stats.phNotInRoster,
+      nameless: stats.phNameless,
+      noGames: stats.phNoGames,
+    },
+    uniqueGamesFetched: gameRosterCache.size,
+    remainingOverall: remaining,
+    samples: phSamples,
+  };
+  try {
+    fs.mkdirSync(path.dirname(PROGRESS), { recursive: true });
+    fs.writeFileSync(path.join(ROOT, 'reports', 'season-name-repair-report.json'), JSON.stringify(report, null, 2));
+  } catch (_) {}
+
+  const summary = `## repair-season-names${DRY_RUN ? ' (DRY RUN)' : ''}\n\n`
     + `| metric | value |\n| --- | --- |\n`
     + `| processed this run | ${stats.processed} |\n`
     + `| real names restored | ${stats.resolvedReal} |\n`
-    + `| placeholders set | ${stats.placeholder} |\n`
+    + `| placeholders | ${stats.placeholder} |\n`
+    + `| — unreachable games | ${stats.phUnreachable} |\n`
+    + `| — not in any roster (miss risk) | ${stats.phNotInRoster} |\n`
+    + `| — in roster, nameless | ${stats.phNameless} |\n`
+    + `| — no games[] on file | ${stats.phNoGames} |\n`
     + `| unique games fetched | ${gameRosterCache.size} |\n`
     + `| remaining overall | ${remaining} |\n`;
   if (process.env.GITHUB_STEP_SUMMARY) {
     try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary); } catch (_) {}
   }
-  // Signal completion for the workflow's optional self-retrigger.
   try { fs.writeFileSync(path.join(ROOT, '.repair-season-names-status.json'), JSON.stringify({ remaining })); } catch (_) {}
-  log(`DONE. processed=${stats.processed} real=${stats.resolvedReal} placeholder=${stats.placeholder} remaining=${remaining}`);
+  log(`DONE. processed=${stats.processed} real=${stats.resolvedReal} placeholder=${stats.placeholder} (unreach=${stats.phUnreachable} notInRoster=${stats.phNotInRoster} nameless=${stats.phNameless}) remaining=${remaining}`);
 }
 
 main().catch(e => { console.error('FATAL:', e.message, '\n', e.stack); process.exit(1); });
