@@ -35,7 +35,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isFullUuid } = require('./lib/uuid-prefix.cjs');
+const { isFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -135,7 +135,7 @@ function main() {
       const old = oldIndex.get(uuid);
       let name = p.name;
       if (!name) {
-        name = (old && old.name) || `Player #${uuid.slice(0, 10)}`;
+        name = (old && old.name) || `Player #${uuid.slice(0, TRUNC_LEN)}`;
         nameFallbacks++;
       }
 
