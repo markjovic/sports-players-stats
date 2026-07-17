@@ -27,6 +27,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 1 }
+      - name: Debug checkout
+        run: |
+          echo "ref=$GITHUB_REF  sha=$GITHUB_SHA"
+          echo "pwd=$(pwd)"
+          echo "--- scripts/ (salvage) ---"
+          ls -la scripts/ | grep -i salvage || echo "NO salvage file in scripts/"
+          echo "--- git tracks it? ---"
+          git ls-files scripts/salvage-spectator-names.js || true
+          echo "--- git log for the path ---"
+          git log --oneline -3 -- scripts/salvage-spectator-names.js || echo "no history for path"
       - id: plan
         run: node scripts/salvage-spectator-names.js --plan
 
