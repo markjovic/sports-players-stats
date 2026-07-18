@@ -44,6 +44,7 @@ const TENANT_FULL   = { bv: 'basketball-victoria', afl: 'afl' }[TENANT] || TENAN
 const CONCURRENCY   = parseInt(ARGS.concurrency || '20', 10);
 const TARGET_SEASON = ARGS.season      || null;
 const ALL_SEASONS   = !!ARGS['all-seasons'];
+const DRY_RUN       = !!ARGS['dry-run'];   // resolve everything, write/commit nothing
 
 const API_URL     = 'https://api.playhq.com/graphql';
 const GAMES_DIR   = path.join(ROOT, 'games', TENANT);
@@ -249,6 +250,7 @@ function storeVenue(venue, court) {
 }
 
 function flushVenueShards() {
+  if (DRY_RUN) return 0;
   if (!fs.existsSync(VENUE_DIR)) fs.mkdirSync(VENUE_DIR, { recursive: true });
   let count = 0;
   for (const prefix of _dirtyVenues) {
@@ -273,6 +275,7 @@ function loadGameFile(seasonId) {
 }
 
 function flushGameFiles() {
+  if (DRY_RUN) return 0;
   let count = 0;
   for (const [seasonId, sg] of Object.entries(_gameFileCache)) {
     fs.writeFileSync(path.join(GAMES_DIR, `${seasonId}.json`), JSON.stringify(sg));
@@ -291,28 +294,44 @@ function loadProgress() {
 }
 
 function saveProgress(done) {
+  if (DRY_RUN) return;
   fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ done: [...done], savedAt: new Date().toISOString() }));
 }
 
 function clearProgress() {
+  if (DRY_RUN) return;
   try { fs.unlinkSync(PROGRESS_FILE); } catch (e) {}
 }
 
 // ─── Git ──────────────────────────────────────────────────────────────────────
 
 function gitCommitPush(message) {
+  if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
+  // Explicit paths (never -A). --shortstat (never --stat — ENOBUFS on big diffs).
   try {
-    // Add and commit all current writes first, then pull, then push
-    // Never stash — concurrent writes to same shards cause merge conflicts on pop
-    execSync('git add games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json zero-team-seasons.json 2>/dev/null || true', { stdio: 'pipe', shell: true });
-    const diff = execSync('git diff --staged --stat', { stdio: 'pipe' }).toString().trim();
-    if (!diff) { console.log('  (no changes to commit)'); return; }
-    execSync(`git commit -m "${message}"`, { stdio: 'pipe' });
-    execSync('git pull --rebase=false --no-edit -X ours', { stdio: 'pipe' });
-    execSync('git push', { stdio: 'pipe' });
-    console.log('  ✓ Committed and pushed');
-  } catch (e) {
-    console.warn(`  ⚠ Git push failed: ${e.message}`);
+    execSync('git add -- games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json zero-team-seasons.json', { stdio: 'pipe' });
+  } catch (e) {}
+  let staged = '';
+  try { staged = execSync('git diff --staged --shortstat', { stdio: 'pipe' }).toString().trim(); } catch (e) {}
+  if (!staged) { console.log('  (no changes to commit)'); return; }
+  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe' }); }
+  catch (e) { console.warn(`  ⚠ commit failed: ${e.message}`); return; }
+  // Proven contention-safe push: fetch + merge -X ours (never rebase), 60 attempts,
+  // pure 1–91s random jitter, merge --abort before each retry.
+  const MAX_ATTEMPTS = 60;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      try { execSync('git merge --abort', { stdio: 'pipe' }); } catch (_) {}
+      execSync('git fetch origin main',                            { stdio: 'pipe' });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe' });
+      execSync('git push origin main',                             { stdio: 'pipe' });
+      console.log('  ✓ Committed and pushed');
+      return;
+    } catch (e) {
+      if (attempt === MAX_ATTEMPTS) { console.warn(`  ⚠ push failed after ${MAX_ATTEMPTS} attempts: ${e.message}`); return; }
+      const waitSec = 1 + Math.floor(Math.random() * 91);
+      try { execSync(`sleep ${waitSec}`, { stdio: 'pipe' }); } catch (_) {}
+    }
   }
 }
 
@@ -413,7 +432,7 @@ async function main() {
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
-  console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}\n`);
+  console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}${DRY_RUN ? '   [DRY RUN — no writes/commits]' : ''}\n`);
 
   if (!fs.existsSync(INDEX_FILE)) { console.error('sports-index.json not found'); process.exit(1); }
 
@@ -498,7 +517,7 @@ async function main() {
     if (sinceLastCommit >= 10) {
       const gf = flushGameFiles();
       const vf = flushVenueShards();
-      try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {}
+      if (!DRY_RUN) { try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {} }
       console.log(`\n  💾 Flushed ${gf} game files, ${vf} venue shards — committing...`);
       gitCommitPush(`Fixture discovery: ${seasonsProcessed} seasons, +${totalAdded} games`);
       sinceLastCommit = 0;
@@ -508,7 +527,7 @@ async function main() {
   // Final flush
   const gf = flushGameFiles();
   const vf = flushVenueShards();
-  try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {}
+  if (!DRY_RUN) { try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {} }
 
   console.log(`\n✅ Done`);
   console.log(`  Seasons:       ${seasonsProcessed}`);
@@ -517,7 +536,7 @@ async function main() {
   console.log(`  Updated:       ${totalUpdated.toLocaleString()}`);
   console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no ladder data — saved to zero-team-seasons.json)`);
 
-  if (zeroTeamSeasons.length > 0) {
+  if (zeroTeamSeasons.length > 0 && !DRY_RUN) {
     fs.writeFileSync(path.join(ROOT, 'zero-team-seasons.json'), JSON.stringify(zeroTeamSeasons, null, 2));
   }
 
