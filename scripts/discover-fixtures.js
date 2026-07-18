@@ -45,6 +45,7 @@ const CONCURRENCY   = parseInt(ARGS.concurrency || '20', 10);
 const TARGET_SEASON = ARGS.season      || null;
 const ALL_SEASONS   = !!ARGS['all-seasons'];
 const DRY_RUN       = !!ARGS['dry-run'];   // resolve everything, write/commit nothing
+const CURRENT_ONLY  = !!ARGS['current-only']; // skip finished seasons (weekly mode)
 
 const API_URL     = 'https://api.playhq.com/graphql';
 const GAMES_DIR   = path.join(ROOT, 'games', TENANT);
@@ -395,7 +396,6 @@ async function processTeam(teamId, seasonId) {
 
   for (const round of rounds) {
     const roundName    = round.name;
-    const isFinalsRound = round.isFinalsRound;
     const roundOrgName  = round.grade?.season?.competition?.organisation?.name || orgName;
     const roundCompName = round.grade?.season?.competition?.name || compName;
     const roundSeasonName = round.grade?.season?.name || sName;
@@ -405,6 +405,13 @@ async function processTeam(teamId, seasonId) {
       if (!game?.id) continue;
 
       const existing  = sg.games[game.id];
+      // A game with a recorded score (or FINAL/forfeit) is history: nightly-crawl
+      // captured its as-played teams/venue/time alongside the score, so a later
+      // PlayHQ edit must NOT rewrite it. Only manage unplayed fixtures (and games
+      // not yet on file). This is also what keeps team-id swaps and archival
+      // "ZZ - … - W" renames off completed games.
+      if (existing && (existing.hs !== undefined || existing.as !== undefined
+                       || existing.st === 'FINAL' || existing.forfeit === true)) continue;
       const homeScore = parseScore(game.result?.home?.statistics);
       const awayScore = parseScore(game.result?.away?.statistics);
       const status    = game.status?.value || null;
@@ -419,7 +426,9 @@ async function processTeam(teamId, seasonId) {
 
       const entry = {
         d:   date,
-        rn:  isFinalsRound ? `Finals — ${roundName}` : roundName,
+        rn:  roundName,   // BARE round name — matches nightly-crawl (line 570) and
+                          // isFinal(rn) detection; a "Finals — " prefix here diverged
+                          // from stored data and churned every finals game.
         h:   game.home?.id   || existing?.h   || null,
         hn:  game.home?.name || existing?.hn  || null,
         a:   game.away?.id   || existing?.a   || null,
@@ -485,6 +494,24 @@ async function main() {
     if (targets.length === 0) targets = [{ id: TARGET_SEASON, grades: [] }];
   } else if (!ALL_SEASONS) {
     targets = seasons.filter(s => s.locked === false);
+  }
+
+  if (CURRENT_ONLY && !TARGET_SEASON) {
+    // Weekly mode: skip seasons that are clearly finished — no local game dated
+    // within the last GRACE_DAYS and none in the future. New/empty seasons (no
+    // local games yet) are kept so their fixtures still get discovered. Makes the
+    // weekly run scale with current activity instead of all history — no fetch for
+    // the seasons it skips.
+    const GRACE_DAYS = 21;
+    const cutoff = new Date(Date.now() - GRACE_DAYS * 86400000).toISOString().slice(0, 10);
+    const before = targets.length;
+    targets = targets.filter(s => {
+      const sg = loadGameFile(s.id);
+      const dates = Object.values(sg.games || {}).map(g => g && g.d).filter(Boolean);
+      if (dates.length === 0) return true;                        // never fetched -> keep
+      return dates.reduce((a, b) => (a > b ? a : b)) >= cutoff;   // has recent/future game
+    });
+    console.log(`--current-only: ${targets.length} active of ${before} seasons (skipped ${before - targets.length} finished)`);
   }
 
   console.log(`Seasons to process: ${targets.length}`);
