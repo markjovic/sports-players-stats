@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      current_only:
+        description: 'Skip finished seasons (fast — weekly mode)'
+        required: false
+        default: false
+        type: boolean
       concurrency:
         description: 'Team fetches in parallel (blank = 20)'
         required: false
@@ -55,6 +60,7 @@ jobs:
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ];     then ARGS="$ARGS --dry-run"; fi
           if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="$ARGS --all-seasons"; fi
+          if [ "${{ inputs.current_only }}" = "true" ]; then ARGS="$ARGS --current-only"; fi
           if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           node scripts/discover-fixtures.js $ARGS
