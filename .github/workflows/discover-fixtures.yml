@@ -1,0 +1,60 @@
+# .github/workflows/discover-fixtures.yml
+name: Discover fixtures
+
+# On-demand full-fixture discovery. nightly-crawl only fetches the current +
+# previous rounds, so future fixtures are never ingested by it; this pulls the
+# WHOLE round list (incl. future games) for active seasons via discoverTeamFixture.
+# Dispatch with dry_run first if you want to see what it would do.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — resolve fixtures but write/commit nothing'
+        required: false
+        default: false
+        type: boolean
+      season:
+        description: 'Single season id (blank = all active locked:false seasons)'
+        required: false
+        type: string
+      all_seasons:
+        description: 'Include completed (locked) seasons too'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'Team fetches in parallel (blank = 20)'
+        required: false
+        type: string
+
+concurrency:
+  group: data-write          # same lock as nightly-crawl / weekly-indexes — never write games/ at once
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  discover-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # NO setup-node — this job fetches api.playhq.com (discoverTeamFixture);
+      # setup-node changes the runner's outbound fingerprint and causes CloudFront 403s.
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Discover fixtures
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ];     then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="$ARGS --all-seasons"; fi
+          if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
+          node scripts/discover-fixtures.js $ARGS

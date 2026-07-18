@@ -21,7 +21,36 @@ permissions:
   actions: write   # fold-backstop job uses `gh workflow run`
 
 jobs:
+  discover-fixtures:
+    # Fetches the FULL round list — including FUTURE fixtures — for active seasons
+    # via discoverTeamFixture. nightly-crawl only fetches the current + previous
+    # rounds, so without this nothing ever ingests future fixtures and StatTrack can
+    # only show ~1-2 weeks ahead. Runs FIRST (the build jobs below `needs` it) so
+    # this run's indexes build on the refreshed game data. discover-fixtures.js now
+    # uses the proven fetch + merge -X ours + 60-attempt push, so it's safe under
+    # contention too.
+    # NO setup-node — this job fetches api.playhq.com; setup-node changes the
+    # runner's outbound fingerprint and causes CloudFront 403s.
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Discover fixtures (active seasons — full round list incl. future)
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/discover-fixtures.js $ARGS
+
   team-stats:
+    needs: [discover-fixtures]
+    if: ${{ !cancelled() }}   # build even if fixture discovery failed — indexes fall back to existing games
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -40,6 +69,8 @@ jobs:
           node scripts/build-team-stats.js $ARGS
 
   player-games:
+    needs: [discover-fixtures]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -62,6 +93,8 @@ jobs:
           node scripts/build-player-games.js $ARGS
 
   win-loss:
+    needs: [discover-fixtures]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
