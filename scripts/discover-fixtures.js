@@ -264,6 +264,7 @@ function flushVenueShards() {
 // ─── Game file helpers ────────────────────────────────────────────────────────
 
 const _gameFileCache = {};
+const _dirtySeasons  = new Set();   // only season files with a real change get written
 
 function loadGameFile(seasonId) {
   if (_gameFileCache[seasonId]) return _gameFileCache[seasonId];
@@ -277,10 +278,13 @@ function loadGameFile(seasonId) {
 function flushGameFiles() {
   if (DRY_RUN) return 0;
   let count = 0;
-  for (const [seasonId, sg] of Object.entries(_gameFileCache)) {
+  for (const seasonId of _dirtySeasons) {
+    const sg = _gameFileCache[seasonId];
+    if (!sg) continue;
     fs.writeFileSync(path.join(GAMES_DIR, `${seasonId}.json`), JSON.stringify(sg));
     count++;
   }
+  _dirtySeasons.clear();
   return count;
 }
 
@@ -335,11 +339,33 @@ function gitCommitPush(message) {
   }
 }
 
+// ─── Change detection ─────────────────────────────────────────────────────────
+// Fields this script owns on a game object. A game is only rewritten (and only
+// counted/logged as "updated") when one of these actually changes — everything
+// else on the object (nightly-crawl's player roster `p`, the `spc` flag, etc.) is
+// preserved by merging rather than replacing.
+const TRACKED = ['d', 'rn', 'h', 'hn', 'a', 'an', 'hs', 'as', 'vid', 'vn', 'ct', 't', 'st'];
+
+function diffEntry(existing, entry) {
+  const changes = [];
+  for (const k of TRACKED) {
+    const o = existing[k], n = entry[k];
+    if (o !== n) changes.push([k, o, n]);
+  }
+  return changes;
+}
+
+function fmtVal(v) {
+  if (v === undefined || v === null) return '∅';
+  const s = String(v);
+  return s.length > 24 ? s.slice(0, 24) + '…' : s;
+}
+
 // ─── Process a single team's fixtures ────────────────────────────────────────
 
 async function processTeam(teamId, seasonId) {
   const data = await gql('TeamFixture', Q_TEAM_FIXTURE, { teamID: teamId });
-  if (!data?.discoverTeamFixture) return { added: 0, updated: 0 };
+  if (!data?.discoverTeamFixture) return { added: 0, updated: 0, updates: [] };
 
   const team     = data.discoverTeam;
   const rounds   = data.discoverTeamFixture;
@@ -365,7 +391,7 @@ async function processTeam(teamId, seasonId) {
   } catch (e) {}
 
   const sg = loadGameFile(effectiveSeasonId);
-  let added = 0, updated = 0;
+  let added = 0, updated = 0; const updates = [];
 
   for (const round of rounds) {
     const roundName    = round.name;
@@ -405,11 +431,25 @@ async function processTeam(teamId, seasonId) {
         ...(court?.name ? { ct:  court.name }  : existing?.ct  ? { ct:  existing.ct  } : {}),
         ...(time        ? { t:   time }         : existing?.t   ? { t:   existing.t   } : {}),
         // url omitted — PlayHQ game URL not used in StatTrack
-        ...(status      ? { st: status }        : {}),
+        ...(status      ? { st: status }        : existing?.st ? { st: existing.st } : {}),
       };
 
-      if (!existing) { sg.games[game.id] = entry; added++; }
-      else           { sg.games[game.id] = entry; updated++; }
+      if (!existing) {
+        sg.games[game.id] = entry;
+        added++;
+        _dirtySeasons.add(effectiveSeasonId);
+      } else {
+        // Only touch the game when a fixture field actually changed, and MERGE over
+        // the existing object so nightly-crawl's player roster (`p`) and `spc` flag
+        // (and anything else on it) survive — a blind replace would wipe them.
+        const changes = diffEntry(existing, entry);
+        if (changes.length) {
+          sg.games[game.id] = { ...existing, ...entry };
+          updated++;
+          _dirtySeasons.add(effectiveSeasonId);
+          updates.push({ gid: game.id, changes });
+        }
+      }
 
       // Also store team logo in team-lookup
       try {
@@ -423,7 +463,7 @@ async function processTeam(teamId, seasonId) {
     }
   }
 
-  return { added, updated };
+  return { added, updated, updates };
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -495,18 +535,22 @@ async function main() {
     console.log(`  Teams: ${teamIds.size}`);
 
     const teamArr = [...teamIds];
-    let seasonAdded = 0, seasonUpdated = 0;
+    let seasonAdded = 0, seasonUpdated = 0; const seasonUpdates = [];
 
     for (let i = 0; i < teamArr.length; i += CONCURRENCY) {
       const batch = teamArr.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(tid => processTeam(tid, seasonId)));
-      for (const r of results) { seasonAdded += r.added; seasonUpdated += r.updated; }
+      for (const r of results) { seasonAdded += r.added; seasonUpdated += r.updated; if (r.updates.length) seasonUpdates.push(...r.updates); }
       totalTeams += batch.length;
       process.stdout.write(`  ${Math.min(i + CONCURRENCY, teamArr.length)}/${teamArr.length} teams (${seasonAdded} new, ${seasonUpdated} updated)\r`);
       if (i + CONCURRENCY < teamArr.length) await delay(100);
     }
 
     console.log(`  ✓ ${seasonAdded} new games, ${seasonUpdated} updated`);
+    // Record exactly what changed (game id + field old→new) — an audit trail, not just a count.
+    for (const u of seasonUpdates) {
+      console.log(`    ↻ ${u.gid}  ${u.changes.map(([f, o, n]) => `${f} ${fmtVal(o)}→${fmtVal(n)}`).join(', ')}`);
+    }
     totalAdded   += seasonAdded;
     totalUpdated += seasonUpdated;
     seasonsProcessed++;
