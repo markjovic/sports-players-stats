@@ -175,20 +175,35 @@ function gitCommitPush(paths, message) {
   for (let i = 0; i < paths.length; i += 500) git(['add', '--', ...paths.slice(i, i + 500)]);
   const staged = git(['diff', '--cached', '--shortstat']).trim(); // never --stat
   if (!staged) { log('nothing staged, skip commit'); return; }
-  git(['-c', 'user.name=github-actions[bot]', '-c', 'user.email=github-actions[bot]@users.noreply.github.com',
-       'commit', '-m', message]);
+  const IDENT = ['-c', 'user.name=github-actions[bot]',
+                 '-c', 'user.email=github-actions[bot]@users.noreply.github.com'];
+  git([...IDENT, 'commit', '-m', message]);
+  // Only genuine contention is retried: a rejected push (remote advanced) or a
+  // transient fetch. A merge failure — bad identity, a real conflict — is NOT a
+  // push race, so it fails fast instead of being masked behind 60 retries (which
+  // is exactly what a missing committer identity did: 60 attempts / 47 minutes).
   for (let attempt = 1; attempt <= 60; attempt++) {
     try { git(['merge', '--abort']); } catch (_) { /* none in progress */ }
     try {
       git(['fetch', 'origin', 'main']);
-      git(['merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit']);
+    } catch (e) {
+      if (attempt === 60) throw e;
+      const s = 1 + Math.floor(Math.random() * 91);
+      log(`fetch failed (attempt ${attempt}), retrying in ${s}s`);
+      execFileSync('sleep', [String(s)]);
+      continue;
+    }
+    // Merge creates a merge commit, so it carries the identity inline too. A
+    // failure here is fatal — retrying can't fix a config or content problem.
+    git([...IDENT, 'merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit']);
+    try {
       git(['push', 'origin', 'HEAD:main']);
       log(`pushed on attempt ${attempt}`);
       return;
     } catch (e) {
       if (attempt === 60) throw e;
       const s = 1 + Math.floor(Math.random() * 91);
-      log(`push attempt ${attempt} failed, retrying in ${s}s`);
+      log(`push attempt ${attempt} rejected (remote advanced), re-syncing in ${s}s`);
       execFileSync('sleep', [String(s)]);
     }
   }
