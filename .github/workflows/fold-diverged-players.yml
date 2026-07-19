@@ -33,6 +33,11 @@ jobs:
       - name: Checkout working tree
         uses: actions/checkout@v4
 
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       # Manual dispatch defaults to dry-run for safe inspection; the matrix
       # trigger passes mode=apply explicitly.
       - name: Run fold
