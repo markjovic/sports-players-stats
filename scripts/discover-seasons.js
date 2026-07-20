@@ -137,17 +137,41 @@ async function refreshSession() {
     for (let attempt = 1; attempt <= 10; attempt++) {
       if (attempt > 1) await sleep(attempt * 5000);
       for (const body of COOKIE_QUERIES) {
-        const res = await doFetch(API_URL, {
-          method: 'POST',
-          headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-          body: JSON.stringify(body),
-        });
+        let res;
+        try {
+          res = await doFetch(API_URL, {
+            method: 'POST',
+            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
+            body: JSON.stringify(body),
+          });
+        } catch (err) {
+          // INSTRUMENTATION ONLY: log then rethrow — identical control flow to before
+          // (an unhandled doFetch rejection always aborted the refresh immediately).
+          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: fetch threw ${err.code || ''} ${err.message}`);
+          throw err;
+        }
         const raw = res.headers.get('set-cookie');
-        if (!raw) continue;
+        if (!raw) {
+          // INSTRUMENTATION: this silent `continue` is where the 2026-07 shard failures
+          // were vanishing — every response in a failed refresh landed here with no
+          // status/body recorded. Log both so a CloudFront block page, an application
+          // error, and a cookie-scheme change are distinguishable in the run log.
+          let b = ''; try { b = await res.text(); } catch {}
+          const sniff = b.includes('Request blocked') ? `CLOUDFRONT-BLOCK (${b.length}b HTML)`
+                      : b.includes('DOCTYPE')         ? `HTML page (${b.length}b): ${b.slice(0, 80)}`
+                      : (b.slice(0, 120) || '(empty body)');
+          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
+          continue;
+        }
         const parts = raw.split(',').map(c => c.trim().split(';')[0]);
         const get = (name) => parts.find(c => c.startsWith(name + '=')) || null;
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-        if (!tier || !session || !sub) continue;
+        if (!tier || !session || !sub) {
+          // INSTRUMENTATION: set-cookie arrived but not the three phq_* names we need
+          // — if PlayHQ renamed/restructured its session cookies, this line is the proof.
+          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, set-cookie PRESENT but missing phq_tier/phq_session/phq_sub — names seen: ${parts.map(c => c.split('=')[0]).join(', ')}`);
+          continue;
+        }
         sessionCookie = `${tier}; ${session}; ${sub}`;
         sessionAt = Date.now();
         sessionPromise = null;
@@ -156,7 +180,7 @@ async function refreshSession() {
       }
     }
     sessionPromise = null;
-    throw new Error('Failed to obtain session cookie after 10 attempts');
+    throw new Error('Failed to obtain session cookie after 10 attempts — see per-attempt ⚠ lines above for HTTP status and body');
   })();
   return sessionPromise;
 }
@@ -351,10 +375,14 @@ async function burstRun(items, concurrency, worker) {
     }));
     const anyBlocked = results.some(res => res.status === 'fulfilled' && res.value.r.kind === 'blocked');
     if (anyBlocked) return { completed, wallHit: true };
-    for (const res of results) {
+    results.forEach((res, i) => {
       if (res.status === 'fulfilled') worker(res.value.item, res.value.r);
-      else console.log(`  ⚠ unexpected rejection probing ${res.reason?.item || '?'}`);
-    }
+      // Promise.allSettled preserves input order, so batch[i] is the item whose probe
+      // rejected. Print the REASON — the old line read `reason.item`, which never
+      // exists on an Error, so every real failure logged as a bare `?` with the
+      // actual error discarded (this is exactly how the 2026-07 session failures hid).
+      else console.log(`  ⚠ unexpected rejection probing ${batch[i]}: ${res.reason?.message || res.reason}`);
+    });
     completed = start + batch.length;
   }
   return { completed, wallHit: false };
