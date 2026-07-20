@@ -1,0 +1,84 @@
+# .github/workflows/deploy-pages.yml
+name: Deploy Pages
+
+# Publishes the data store to GitHub Pages via the Actions deploy path (NOT
+# branch auto-build). Once Settings → Pages → Source is set to "GitHub Actions",
+# pushes to main no longer trigger a Pages build — only this workflow does — so
+# the nightly/matrix push storm stops superseding builds. StatTrack reads its
+# data from https://markjovic.github.io/sports-players-stats, so this must run
+# after the data changes.
+#
+#   workflow_run     — fires when a data pipeline finishes, so publishing is the
+#                      last step of the existing scheduled work (no separate cron
+#                      that could fire mid-pipeline). The listed workflows are the
+#                      TERMINAL ones:
+#                        - "Weekly Indexes"  — end of the weekly run.
+#                        - the three nightly derived-data builds fired by the
+#                          matrix on completion (leaderboards / search / records).
+#                      NOT the matrix itself (it retriggers ~150×) and NOT the
+#                      mid-pipeline builds (team-stats/win-loss finish earlier).
+#   workflow_dispatch — manual publish for ad-hoc changes; also lets any workflow
+#                      trigger it via: gh workflow run deploy-pages.yml
+#
+# workflow_run matches each workflow's `name:` field (NOT its filename). The four
+# names below were confirmed against the Actions run list on 2026-07-19.
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Weekly Indexes"                              # weekly-indexes.yml
+      - "Build Leaderboards (Full)"                   # build-leaderboards.yml
+      - "Build Search Index"                          # build-search-index.yml
+      - "Build Single-Game Records"                   # build-records.yml
+      - "Fold diverged players (api-canonical maintenance)"  # fold-diverged-players.yml
+    types: [completed]
+
+# Standard Pages permissions for the Actions deploy path.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# The three nightly builds finish within minutes of each other, each firing a
+# workflow_run. cancel-in-progress collapses them: each new trigger cancels the
+# prior in-flight deploy and starts fresh, so exactly one deploy runs, capturing
+# all three builds' output. (A cancelled deploy is harmless — the previous live
+# deployment stays until a new one succeeds.)
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    # Skip if the triggering pipeline failed — don't publish half-built data.
+    # (Manual dispatch always runs.)
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Drop metadata that shouldn't be served and would bloat the artifact.
+      # (The Actions deploy path serves the artifact as-is — no Jekyll — so JSON
+      # data files and any underscore-prefixed dirs are published verbatim.)
+      - name: Strip non-served files
+        run: rm -rf .git .github
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
