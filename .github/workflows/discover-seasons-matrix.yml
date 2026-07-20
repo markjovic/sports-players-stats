@@ -6,6 +6,17 @@ name: Discover Seasons (Matrix)
 # checkout, != '[]' gate) is kept EXACTLY as that working version — it is not the
 # place to experiment. Added on top: fresh_start progress reset, a data-write lock
 # on the single writer, and the delta-based roster backfill.
+#
+# NO actions/setup-node ANYWHERE in this file — both map and reduce fetch PlayHQ
+# (map: publicProfileTeams probes; reduce: discoverSeason grade-resolve), and
+# setup-node changes the runner's outbound fingerprint so CloudFront 403-blocks
+# every request INCLUDING session acquisition. Confirmed 2026-07-20: instrumented
+# shard 00 got "HTTP 403 CLOUDFRONT-BLOCK (919b HTML)" on session attempt 1 from a
+# fresh runner WITH setup-node, while nightly-crawl (no setup-node) refreshed its
+# session on attempt 1 the same day. This workflow ran WITH setup-node until
+# ~2026-07-09 — that stopped working around 2026-07-10 (runner image or WAF rule
+# change); do not re-add it on the strength of that old inconsistency. Use the
+# runner's preinstalled node, exactly as nightly-crawl.yml does.
 
 on:
   workflow_dispatch:
@@ -194,9 +205,9 @@ jobs:
             players/${{ matrix.shard }}
           sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      # setup-node REMOVED 2026-07-20 — this job fetches PlayHQ; setup-node's
+      # fingerprint change caused CloudFront 403 on every request from ~2026-07-10
+      # (proven via instrumented session logging on shard 00). Preinstalled node only.
       - name: Matrix position
         run: echo "shard=${{ matrix.shard }} | job ${{ strategy.job-index }} of ${{ strategy.job-total }}"
       - name: Burst-probe
@@ -266,9 +277,9 @@ jobs:
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      # setup-node REMOVED 2026-07-20 — reduce ALSO fetches PlayHQ (discoverSeason
+      # grade-resolve + grade-refresh in applyDiscoveries), so the fingerprint rule
+      # applies here identically. Preinstalled node only.
 
       - name: Configure git
         run: |
