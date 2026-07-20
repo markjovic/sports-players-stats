@@ -1,0 +1,73 @@
+# .github/workflows/discover-seasons.yml
+name: Discover Seasons (detection)
+
+on:
+  # No schedule: the sharded matrix (discover-seasons-matrix.yml) is the production
+  # path. This standalone remains for manual/adhoc use (--uuid seed, diagnostics) —
+  # its whole-population sweep runs on ONE IP and walls at scale, so don't schedule it.
+  workflow_dispatch:
+    inputs:
+      uuid:
+        description: 'Manual escape hatch: probe a single player UUID to seed discovery'
+        required: false
+        default: ''
+        type: string
+      full:
+        description: 'Probe every current-season player (no early stop)'
+        required: false
+        default: false
+        type: boolean
+      limit:
+        description: 'Probe at most N players (cheap test run; blank = no cap)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Report only — no writes or commit'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'AIMD concurrency cap (default 25; self-tunes down on the WAF wall)'
+        required: false
+        default: '25'
+        type: string
+
+# Shares the data-write group so it can never run while nightly-crawl or
+# weekly-indexes are writing player files or the index (avoids -X ours clobber).
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # NO actions/setup-node — this job fetches PlayHQ, and setup-node's fingerprint
+      # change makes CloudFront 403-block every request including session acquisition
+      # (proven 2026-07-20 on the instrumented matrix shard 00; same-day nightly-crawl
+      # without setup-node worked). Preinstalled node only.
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run discovery
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.uuid }}" ]; then ARGS="$ARGS --uuid=${{ inputs.uuid }}"; fi
+          if [ "${{ inputs.full }}" = "true" ]; then ARGS="$ARGS --full"; fi
+          if [ -n "${{ inputs.limit }}" ]; then ARGS="$ARGS --limit=${{ inputs.limit }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.concurrency }}" ]; then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
+          node scripts/discover-seasons.js $ARGS
