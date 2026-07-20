@@ -201,7 +201,17 @@ function gitCommitPush(paths, message) {
       log(`pushed on attempt ${attempt}`);
       return;
     } catch (e) {
-      if (attempt === 60) throw e;
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
+      // A non-fast-forward / rejected push is genuine contention — retry. Anything
+      // else (auth, branch protection, size, hook rejection) is NOT fixed by
+      // retrying, so print the real git error and fail fast instead of masking it
+      // behind 60 identical "push attempt failed" lines.
+      const contention = /non-fast-forward|fetch first|\[rejected\]|failed to push some refs|cannot lock ref/i.test(detail);
+      if (!contention) {
+        log(`push failed — NOT contention, failing fast. git said:\n${detail}`);
+        throw e;
+      }
+      if (attempt === 60) { log(`push still rejected after 60 attempts. git said:\n${detail}`); throw e; }
       const s = 1 + Math.floor(Math.random() * 91);
       log(`push attempt ${attempt} rejected (remote advanced), re-syncing in ${s}s`);
       execFileSync('sleep', [String(s)]);
