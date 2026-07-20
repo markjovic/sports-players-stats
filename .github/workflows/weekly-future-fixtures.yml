@@ -1,0 +1,93 @@
+# .github/workflows/weekly-future-fixtures.yml
+name: Weekly Future Fixtures
+
+# Weekly sweep of ALL future rounds — fixtures for rounds after each grade's
+# current round, plus first-unsettled rounds for grades with no current round.
+# The nightly only ever fetches current + N previous rounds, so upcoming fixtures
+# beyond the current round never landed without this job (root cause of "future
+# fixtures not showing up", found + fixed 2026-07-20). Single-writer rule holds:
+# this is nightly-crawl.js itself with --rounds-forward=all, not a second writer
+# of games/bv/.
+#
+# Shape copied from nightly-crawl.yml's crawl job: plain full checkout,
+# data-write concurrency lock, Configure git, timeout 300. NO actions/setup-node —
+# this job fetches PlayHQ, and setup-node's fingerprint change CloudFront-blocks
+# every request (re-proven 2026-07-20 on the discover matrix; the rule is per JOB —
+# nightly-crawl.yml's win-loss job carries setup-node harmlessly because
+# build-win-loss.js makes no PlayHQ calls).
+#
+# Deliberately OMITTED from the nightly's shape (decisions, not oversights):
+#   - downstream jobs (team-stats / venue / matrix trigger): the next nightly's
+#     downstream chain surfaces the new fixtures within 24h (decided 2026-07-20)
+#   - self-retrigger on games_remaining: a paced-pool bail just leaves the tail
+#     for next week's sweep — acceptable for fixtures
+#   - permissions actions:write: this workflow dispatches nothing
+#
+# Accepted side effect: in forward mode Phases 3/4 no-op (future rounds have no
+# FINAL games), so the script's final commit stages a DELETION of
+# needs-matrix-shards.json when present. Harmless — that file is only read by
+# nightly-crawl.yml within the same run that writes it, and the next nightly
+# recreates it.
+
+on:
+  schedule:
+    - cron: '0 0 * * 6'   # Saturday 10:00 AEST (UTC+10) — well clear of the 15:00 UTC nightly
+  workflow_dispatch:
+    inputs:
+      rounds_forward:
+        description: "Rounds forward: 'all' or a number (default all)"
+        required: false
+        default: 'all'
+        type: string
+      rounds_back:
+        description: 'Rounds to look back (default 1 = current round only)'
+        required: false
+        default: '1'
+        type: string
+      season:
+        description: 'Single season ID (leave blank for all active)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run — no writes or commits'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  future-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run future-fixtures sweep
+        run: |
+          ARGS="--rounds-forward=${{ inputs.rounds_forward || 'all' }} --rounds-back=${{ inputs.rounds_back || '1' }}"
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/nightly-crawl.js $ARGS
+
+      - name: Read status
+        if: always()
+        run: |
+          if [ -f .nightly-status.json ]; then
+            node -e "const s=require('./.nightly-status.json'); console.log('Remaining:', s.gamesRemaining||0, ' Completed:', s.completed)"
+          else
+            echo "No status file written."
+          fi
