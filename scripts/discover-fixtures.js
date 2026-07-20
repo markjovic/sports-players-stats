@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-// discover-fixtures.js
+// scripts/discover-fixtures.js
 /**
  * Discovers fixtures for all teams using discoverTeamFixture — which works for
  * ALL seasons (including historical), returns all rounds in one call per team,
@@ -313,12 +312,22 @@ function clearProgress() {
 function gitCommitPush(message) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   // Explicit paths (never -A). --shortstat (never --stat — ENOBUFS on big diffs).
-  try {
-    execSync('git add -- games/ venue-lookup/ team-lookup/ discover-fixtures-progress.json zero-team-seasons.json', { stdio: 'pipe' });
-  } catch (e) {}
+  // Each path gets its OWN `git add`: git add is ATOMIC across pathspecs — if any
+  // single pathspec matches nothing (absent AND untracked, e.g. team-lookup/ when
+  // team-lookup-utils isn't installed, or zero-team-seasons.json before its first
+  // write), git exits 128 and stages NOTHING, including valid games/ changes.
+  // The old combined add + swallowed catch silently discarded ENTIRE RUNS this way
+  // (2026-07-19: 30,426 fetched games, zero committed, job green). Per-path, a
+  // non-matching pathspec skips only itself.
+  const STAGE_PATHS = ['games/', 'venue-lookup/', 'team-lookup/', 'discover-fixtures-progress.json', 'zero-team-seasons.json'];
+  for (const p of STAGE_PATHS) {
+    try { execSync(`git add -- ${p}`, { stdio: 'pipe' }); }
+    catch (e) { /* pathspec matched nothing — nothing to stage for this path */ }
+  }
   let staged = '';
   try { staged = execSync('git diff --staged --shortstat', { stdio: 'pipe' }).toString().trim(); } catch (e) {}
   if (!staged) { console.log('  (no changes to commit)'); return; }
+  console.log(`  staging: ${staged}`);
   try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe' }); }
   catch (e) { console.warn(`  ⚠ commit failed: ${e.message}`); return; }
   // Proven contention-safe push: fetch + merge -X ours (never rebase), 60 attempts,
