@@ -17,6 +17,10 @@ on:
         required: false
         default: '50'
         type: string
+      baseline_ref:
+        description: 'Commit sha of the PRE-rebuild all-time.json (use the "build-finals-stats: remove progress file" commit). Blank = working tree (only valid before the chained leaderboards rebuild).'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -32,4 +36,7 @@ jobs:
           fetch-depth: 1
 
       - name: Run verification
-        run: node scripts/verify-finals-preservation.js --limit=${{ inputs.limit || '50' }}
+        run: |
+          ARGS="--limit=${{ inputs.limit || '50' }}"
+          if [ -n "${{ inputs.baseline_ref }}" ]; then ARGS="$ARGS --baseline-ref=${{ inputs.baseline_ref }}"; fi
+          node scripts/verify-finals-preservation.js $ARGS
