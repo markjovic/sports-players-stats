@@ -58,7 +58,7 @@ jobs:
   chain-leaderboards:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ inputs.chain_leaderboards == 'true' }}
+    if: ${{ inputs.chain_leaderboards == true || inputs.chain_leaderboards == 'true' }}
     steps:
       - name: Dispatch Build Leaderboards (active-only)
         env:

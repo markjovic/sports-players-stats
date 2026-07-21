@@ -78,7 +78,7 @@ jobs:
   chain-stats:
     needs: discover-fixtures
     runs-on: ubuntu-latest
-    if: ${{ inputs.chain_stats == 'true' }}
+    if: ${{ inputs.chain_stats == true || inputs.chain_stats == 'true' }}
     steps:
       - name: Dispatch Build Finals Stats (active-only, chained)
         env:
