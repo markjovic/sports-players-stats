@@ -888,7 +888,8 @@ async function main() {
     }
 
     // Mark spc:1 and update p[] on the game entry — spc prevents re-processing.
-    // p[].id is truncated to a 10-char prefix (2026-07-10 UUID-storage migration)
+    // p[].id is truncated to a 13-char prefix (uuid-prefix.cjs TRUNC_LEN; the
+    // original 2026-07-10 UUID-storage migration used 10, later widened to 13)
     // — this field is only ever an attendee list keyed by id, never resolved
     // back to a player file from within this script, so it's safe to write
     // truncated here. playerDeltas above (used for player-file writes) keeps
