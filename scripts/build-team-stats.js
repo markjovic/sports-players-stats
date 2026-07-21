@@ -12,9 +12,12 @@
 //   node scripts/build-team-stats.js --dry-run         # no writes or commits
 //   node scripts/build-team-stats.js --season=<id>     # single season
 //
-// 2026-07-10: team-stats/bv/{sid}.json roster keys are truncated to a 10-char
-// uuid prefix (see scripts/lib/uuid-prefix.cjs) — part of the UUID-storage
-// migration. Player uuids sourced from game.hp[]/ap[].profileID may be
+// 2026-07-10: team-stats/bv/{sid}.json roster keys are truncated to a
+// TRUNC_LEN (13) char uuid prefix (see scripts/lib/uuid-prefix.cjs) — part of
+// the UUID-storage migration. (Comments previously said 10-char; the runtime
+// always used truncateUuid(), so keys were already TRUNC_LEN — only the
+// placeholder label hardcoded 10. Both corrected 2026-07-21.) Player uuids
+// sourced from game.hp[]/ap[].profileID may be
 // truncated (existing games/bv/*.json data was rewritten by the one-off
 // migration script) so they're resolved back to a full uuid via
 // resolveToFullUuid() before being used to read a player file; uuids sourced
@@ -25,7 +28,7 @@
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
-const { truncateUuid, resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
+const { truncateUuid, resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
 const ROOT    = path.join(__dirname, '..');
 const ARGS    = Object.fromEntries(
@@ -152,7 +155,7 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
   // player uuid by the time it reaches here (callers resolve truncated
   // hp/ap.profileID values first) — readPlayer() needs the full uuid to
   // build a valid players/{shard}/{uuid}.json path. The roster is keyed by
-  // the truncated 10-char prefix, matching the games/leaderboard/search
+  // the truncated TRUNC_LEN (13) prefix, matching the games/leaderboard/search
   // truncation everywhere else on disk.
   function addPlayerToRoster(tid, sid, uuid, name) {
     if (!uuid || !teams[tid]) return;
@@ -163,7 +166,7 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
     const stats  = player ? extractRegStats(player, sid, tid) : null;
 
     teams[tid].roster[key] = {
-      name:    name || (player?.name) || `Player #${uuid.slice(0, 10)}`,
+      name:    name || (player?.name) || `Player #${uuid.slice(0, TRUNC_LEN)}`,
       gp:      stats?.gp      ?? 0,
       pts:     stats?.pts     ?? 0,
       fg:      stats?.fg      ?? 0,
@@ -248,7 +251,7 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
     }
 
     // For hidden games, use hp/ap for player attribution. profileID may be a
-    // truncated 10-char prefix (existing data rewritten by the one-off
+    // truncated prefix (existing data rewritten by the one-off
     // migration) or a full uuid (data written before the migration) —
     // resolveToFullUuid() handles both transparently and returns null if a
     // truncated prefix has no match in the player index (skip in that case).
