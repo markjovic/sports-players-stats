@@ -18,25 +18,45 @@
 //
 // Read-only: no writes, no commits, no API calls.
 //
-// Usage: node scripts/verify-finals-preservation.js [--limit=50]
+// Usage: node scripts/verify-finals-preservation.js [--limit=50] [--baseline-ref=<sha>]
 
 'use strict';
 
 const fs   = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
 
 const ROOT  = path.join(__dirname, '..');
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? Math.max(1, parseInt(limitArg.split('=')[1], 10) || 50) : 50;
+const refArg = process.argv.find(a => a.startsWith('--baseline-ref='));
+const BASELINE_REF = refArg ? refArg.split('=')[1] : null;
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 
 console.log(`\nverify-finals-preservation  (top ${LIMIT} per category)`);
 console.log('─'.repeat(68));
 
-// Baseline: pre-run all-time.json
-const allTime = readJson(path.join(ROOT, 'leaderboard', 'all-time.json'));
+// Baseline: the PRE-finals-run all-time.json. If the chained leaderboards
+// rebuild has already overwritten the working-tree copy, pass --baseline-ref=
+// <sha of any commit BEFORE that rebuild's first all-time commit — the
+// "build-finals-stats: remove progress file" commit is a natural anchor> and
+// the baseline is read from git history instead (works on the shallow Actions
+// checkout: the specific sha is fetched first).
+let allTime;
+if (BASELINE_REF) {
+  console.log(`  Baseline from git ref ${BASELINE_REF}`);
+  try { execSync(`git fetch --depth=1 origin ${BASELINE_REF}`, { cwd: ROOT, stdio: 'pipe' }); }
+  catch (_) { /* ref may already be local */ }
+  allTime = JSON.parse(
+    execSync(`git show ${BASELINE_REF}:leaderboard/all-time.json`,
+      { cwd: ROOT, stdio: 'pipe', maxBuffer: 512 * 1024 * 1024 }).toString()
+  );
+} else {
+  console.log('  Baseline from working tree (only valid BEFORE the chained leaderboards rebuild)');
+  allTime = readJson(path.join(ROOT, 'leaderboard', 'all-time.json'));
+}
 
 // Locked-season set
 const sportsIndex = readJson(path.join(ROOT, 'data', 'sports-index.json'));
