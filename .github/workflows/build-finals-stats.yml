@@ -10,9 +10,19 @@ on:
         required: false
         default: false
         type: boolean
+      chain_leaderboards:
+        description: 'On success, dispatch Build Leaderboards (active-only) — set by the weekly fixtures chain'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write          # writes players/ — same lock as every player-file writer
+  cancel-in-progress: false
 
 permissions:
   contents: write
+  actions: write             # chain-leaderboards job dispatches build-leaderboards.yml
 
 jobs:
   build:
@@ -41,3 +51,19 @@ jobs:
           ARGS=""
           if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
           node scripts/build-finals-stats.js $ARGS
+
+  # Weekly chain link (2026-07-21, §C7): fixtures sweep → finals → leaderboards.
+  # Default success-gating on `needs: build` means a failed or cancelled finals
+  # run never triggers a leaderboards rebuild from bad/partial data.
+  chain-leaderboards:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ inputs.chain_leaderboards == 'true' }}
+    steps:
+      - name: Dispatch Build Leaderboards (active-only)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          gh workflow run build-leaderboards.yml \
+            --repo "${{ github.repository }}" \
+            --field "active_only=true"

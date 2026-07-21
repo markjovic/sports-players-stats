@@ -1,13 +1,14 @@
 # .github/workflows/build-leaderboards.yml
 #
-# Full leaderboard rebuild — all 369k players, all seasons.
-# Run manually after major crawls or schema changes.
-#
-# For nightly active-season updates, the nightly crawl workflow calls:
-#   node scripts/build-leaderboards.js --active-only
-# as its final step (not this workflow).
+# Leaderboard rebuild. Default (no inputs): full — all players, all seasons;
+# run manually after major crawls or schema changes. With active_only: active
+# seasons only — dispatched weekly by Build Finals Stats' chain-leaderboards
+# job (fixtures sweep → finals → leaderboards, Tuesdays early AM AEST).
+# (A previous header here claimed the nightly crawl called --active-only as
+# its final step — it never did; the script was dispatch-only until the
+# weekly chain was wired 2026-07-21.)
 
-name: Build Leaderboards (Full)
+name: Build Leaderboards
 
 on:
   workflow_dispatch:
@@ -16,6 +17,11 @@ on:
         description: 'Force full rebuild (ignore resume progress). Default: resume.'
         required: false
         default: 'false'
+        type: boolean
+      active_only:
+        description: 'Only process active (unlocked) seasons'
+        required: false
+        default: false
         type: boolean
 
 permissions:
@@ -43,10 +49,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Run build-leaderboards (full)
+      - name: Run build-leaderboards
         run: |
-          if [ "${{ inputs.force }}" = "true" ]; then
-            node scripts/build-leaderboards.js --force
-          else
-            node scripts/build-leaderboards.js
-          fi
+          ARGS=""
+          if [ "${{ inputs.force }}" = "true" ];       then ARGS="$ARGS --force"; fi
+          if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
+          node scripts/build-leaderboards.js $ARGS

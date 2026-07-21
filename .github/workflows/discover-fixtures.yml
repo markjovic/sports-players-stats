@@ -32,6 +32,11 @@ on:
         description: 'Team fetches in parallel (blank = 20)'
         required: false
         type: string
+      chain_stats:
+        description: 'On success, dispatch Build Finals Stats (active-only) which chains Build Leaderboards — set by the weekly nightly-crawl dispatch'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: data-write          # same lock as nightly-crawl / weekly-indexes — never write games/ at once
@@ -39,6 +44,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write             # chain-stats job dispatches build-finals-stats.yml
 
 jobs:
   discover-fixtures:
@@ -64,3 +70,21 @@ jobs:
           if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           node scripts/discover-fixtures.js $ARGS
+
+  # Weekly chain link (2026-07-21, §C7): fixtures sweep → finals → leaderboards.
+  # Only fires when the weekly nightly-crawl dispatch passes chain_stats=true —
+  # manual/historical fixture runs never trigger stat rebuilds. Default
+  # success-gating on `needs:` means a failed sweep never chains.
+  chain-stats:
+    needs: discover-fixtures
+    runs-on: ubuntu-latest
+    if: ${{ inputs.chain_stats == 'true' }}
+    steps:
+      - name: Dispatch Build Finals Stats (active-only, chained)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          gh workflow run build-finals-stats.yml \
+            --repo "${{ github.repository }}" \
+            --field "active_only=true" \
+            --field "chain_leaderboards=true"

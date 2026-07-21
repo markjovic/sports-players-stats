@@ -260,7 +260,10 @@ jobs:
     # they can never write games/ concurrently. Known accepted coupling (shared
     # with Sunday discovery): if the chain halts on zero progress or never
     # drains, the week's sweep is skipped — re-dispatch discover-fixtures
-    # manually with current_only=true if that happens.
+    # manually with current_only=true (+ chain_stats=true) if that happens.
+    # chain_stats=true makes the sweep's terminal job dispatch Build Finals
+    # Stats (active-only), which in turn dispatches Build Leaderboards
+    # (active-only) — the full §C7 weekly chain (2026-07-21).
     if: |
       always() &&
       inputs.dry_run != 'true' &&
@@ -275,10 +278,11 @@ jobs:
             echo "Not Monday (dow=$dow) — skipping weekly future-fixtures sweep."
             exit 0
           fi
-          echo "Monday UTC — triggering discover-fixtures (current-only weekly sweep)."
+          echo "Monday UTC — triggering discover-fixtures (current-only weekly sweep + stats chain)."
           gh workflow run discover-fixtures.yml \
             --repo "${{ github.repository }}" \
-            --field "current_only=true"
+            --field "current_only=true" \
+            --field "chain_stats=true"
 
   retrigger:
     needs: crawl
