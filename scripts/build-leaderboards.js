@@ -31,7 +31,7 @@
 //
 // Modes:
 //   node scripts/build-leaderboards.js                 — full rebuild
-//   node scripts/build-leaderboards.js --active-only   — active seasons only (nightly crawl)
+//   node scripts/build-leaderboards.js --active-only   — active seasons only (weekly chain)
 //   node scripts/build-leaderboards.js --dry-run       — no writes, no commits
 //
 // 2026-07-10: uuid values written to all-time entries and season "uuid|tid" map
@@ -57,6 +57,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT            = path.join(__dirname, '..');
 const DRY_RUN         = process.argv.includes('--dry-run');
 const ACTIVE_ONLY     = process.argv.includes('--active-only');
+const MODE            = ACTIVE_ONLY ? 'active' : 'full';
 const FORCE_FULL      = process.argv.includes('--force'); // ignore progress file, full rebuild
 const ALL_TIME_LIMIT  = 2000;
 
@@ -76,27 +77,52 @@ function writeJson(p, data) {
 }
 
 function gitCommit(message, dirs) {
+  // Staging: PER-PATH adds — `git add` is ATOMIC across pathspecs, so one
+  // combined add with any unmatched pathspec stages NOTHING (this exact bug
+  // silently discarded a whole discover-fixtures run, 2026-07-19). Per-path,
+  // a miss skips only itself and is logged. --shortstat (never --stat: --stat
+  // prints per-file lines and scales with file count — real ENOBUFS risk on a
+  // repo this size, confirmed 2026-07-10) is printed so the log proves what
+  // was staged. COMMIT FIRST, then fetch/merge/push with the proven retry
+  // pattern copied from build-win-loss.js (60 attempts, random 1-91s jitter,
+  // merge --abort cleanup, merge -X ours --no-stat — merge's default diffstat
+  // is the same ENOBUFS class, scaling with what landed on main since the
+  // fetch). THROW on total push failure — a red job beats silently discarded
+  // work.
+  if (!dirs || !dirs.length) { console.error('  gitCommit: no paths given — refusing blanket add'); return; }
   try {
-    // Explicit paths only — never -A. This repo is multi-GB with 370k+ player
-    // files; -A walks the whole index and risks ENOBUFS. dirs is always passed
-    // by every call site below; using it here (finally) rather than ignoring it.
-    const paths = (dirs && dirs.length ? dirs : ['.']).join(' ');
-    execSync(`git add ${paths}`, { cwd: ROOT, stdio: 'pipe' });
-    // --shortstat, not --stat: --stat prints a per-file line and scales with
-    // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
-    // repo this size), --shortstat stays a single small summary line.
-    const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
-    if (!diff) { console.log('  nothing to commit'); return; }
-    execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-    // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
-    // class as --stat above) — this one scales with how much has landed on
-    // main since the last fetch, not with what THIS run is committing.
-    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
-    console.log(`  ✔ committed: ${message}`);
+    for (const dir of dirs) {
+      try {
+        execSync(`git add ${dir}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+      } catch (e) {
+        console.error(`  staging miss (skipped): ${dir} — ${e.stderr?.toString().slice(0, 120) || e.message.slice(0, 120)}`);
+      }
+    }
+    const staged = execSync('git diff --staged --shortstat',
+      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+    if (!staged) { console.log('  nothing to commit'); return; }
+    console.log(`  staging: ${staged}`);
+    execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT });
   } catch (e) {
-    console.error(`  ✗ git error: ${e.message}`);
+    console.error('  git error (stage/commit):', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+    return;
+  }
+  for (let attempt = 1; attempt <= 60; attempt++) {
+    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+    try {
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
+      console.log(`  ✔ committed: ${message}`);
+      return;
+    } catch (e) {
+      if (attempt === 60) {
+        console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+        throw e;
+      }
+      const s = 1 + Math.floor(Math.random() * 91);
+      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT });
+    }
   }
 }
 
@@ -380,13 +406,18 @@ console.log(`  ${sidToUuids.size} seasons found across index shards`);
 const seasonIds = [...(targetSids || new Set(Object.keys(readJson(path.join(ROOT, 'data', 'sports-index.json')).seasons)))];
 console.log(`  ${seasonIds.length} season files to process`);
 
-// Load pass 2 progress — resume from last committed point
+// Load pass 2 progress — resume from last committed point. MODE-KEYED: progress
+// from a full run must not gate an active-only run's writes or vice versa.
 let doneSids = new Set();
 if (FORCE_FULL && fs.existsSync(PASS2_PROGRESS)) {
   if (!DRY_RUN) fs.unlinkSync(PASS2_PROGRESS);
   console.log('  --force: progress file cleared, full rebuild');
 } else if (fs.existsSync(PASS2_PROGRESS)) {
-  try { doneSids = new Set((readJson(PASS2_PROGRESS).done || [])); } catch {}
+  try {
+    const loaded = readJson(PASS2_PROGRESS);
+    if ((loaded.mode || 'full') === MODE) doneSids = new Set(loaded.done || []);
+    else console.log(`  Progress file is from a '${loaded.mode || 'full'}' run — discarding (this run is '${MODE}')`);
+  } catch {}
   if (doneSids.size > 0) console.log(`  Resuming — ${doneSids.size} season files already done`);
 }
 
@@ -418,7 +449,7 @@ for (const sid of seasonIds) {
 
   if (sinceLastCommit >= COMMIT_INTERVAL) {
     if (!DRY_RUN) {
-      writeJson(PASS2_PROGRESS, { done: [...doneSids] });
+      writeJson(PASS2_PROGRESS, { mode: MODE, done: [...doneSids] });
       gitCommit(
         `build-leaderboards: pass 2 — ${seasonFilesWritten} season files written`,
         ['leaderboard/season/', 'scripts/.build-leaderboards-progress.json']
@@ -429,9 +460,12 @@ for (const sid of seasonIds) {
   }
 }
 
-if (!DRY_RUN && sinceLastCommit > 0) {
-  writeJson(PASS2_PROGRESS, { done: [...doneSids] });
-}
+// Pass 2 completed — delete the progress file (progress files delete on SUCCESS
+// only; the mid-run commits above preserve it for resume after a timeout/kill).
+// Pre-fix, this file was never deleted, so a completed run left every sid
+// marked done and each subsequent run silently no-op'd unless --force was
+// passed — fatal for a recurring active-only chain from its second run on.
+if (!DRY_RUN && fs.existsSync(PASS2_PROGRESS)) fs.unlinkSync(PASS2_PROGRESS);
 
 // ─── commit ──────────────────────────────────────────────────────────────────
 

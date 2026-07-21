@@ -20,9 +20,15 @@
 // After this runs, rebuild leaderboards:
 //   node scripts/build-leaderboards.js --force
 //
-// Run:     node scripts/build-finals-stats.js
-// Dry run: node scripts/build-finals-stats.js --dry-run
-// Resume:  node scripts/build-finals-stats.js  (progress saved every interval)
+// Run:         node scripts/build-finals-stats.js
+// Active only: node scripts/build-finals-stats.js --active-only
+//              (unlocked seasons scan-authoritative; locked seasons' regs are
+//               NEVER modified and their existing flags are preserved in the
+//               career totals — see Phase 2)
+// Dry run:     node scripts/build-finals-stats.js --dry-run
+// Resume:      node scripts/build-finals-stats.js  (progress saved every interval;
+//              progress is MODE-KEYED — a full-run progress file is discarded by
+//              an active-only run and vice versa)
 //
 // 2026-07-10: g.p[].id and g.hp[]/ap[].profileID may be truncated 10-char
 // uuid prefixes (see scripts/lib/uuid-prefix.cjs) — part of the UUID-storage
@@ -44,6 +50,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT             = path.join(__dirname, '..');
 const DRY_RUN          = process.argv.includes('--dry-run');
 const ACTIVE_ONLY      = process.argv.includes('--active-only');
+const MODE             = ACTIVE_ONLY ? 'active' : 'full';
 const GAME_COMMIT_INTERVAL   = 200;
 const PLAYER_COMMIT_INTERVAL = 2000;
 const PROGRESS_FILE = path.join(ROOT, 'scripts', '.finals-progress.json');
@@ -52,17 +59,48 @@ function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 
 function gitCommit(message, dirs) {
+  // Staging: PER-PATH adds — `git add` is ATOMIC across pathspecs, so one
+  // combined add with any unmatched pathspec stages NOTHING (this exact bug
+  // silently discarded a whole discover-fixtures run, 2026-07-19). Per-path,
+  // a miss skips only itself and is logged. Staged shortstat is printed so
+  // the log proves what was staged. COMMIT FIRST, then fetch/merge/push with
+  // the proven retry pattern copied from build-win-loss.js (60 attempts,
+  // random 1-91s jitter, merge --abort cleanup, merge -X ours). THROW on
+  // total push failure — a red job beats silently discarded work.
+  if (!dirs || !dirs.length) { console.error('  gitCommit: no paths given — refusing blanket add'); return; }
   try {
-    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
-    const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
-    if (!diff) return;
-    execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
-    console.log(`  ✔ committed: ${message}`);
+    for (const dir of dirs) {
+      try {
+        execSync(`git add ${dir}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+      } catch (e) {
+        console.error(`  staging miss (skipped): ${dir} — ${e.stderr?.toString().slice(0, 120) || e.message.slice(0, 120)}`);
+      }
+    }
+    const staged = execSync('git diff --staged --shortstat',
+      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+    if (!staged) { console.log('  nothing to commit'); return; }
+    console.log(`  staging: ${staged}`);
+    execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT });
   } catch (e) {
-    console.error(`  ✗ git error: ${e.message}`);
+    console.error('  git error (stage/commit):', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+    return;
+  }
+  for (let attempt = 1; attempt <= 60; attempt++) {
+    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+    try {
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
+      console.log(`  ✔ committed: ${message}`);
+      return;
+    } catch (e) {
+      if (attempt === 60) {
+        console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+        throw e;
+      }
+      const s = 1 + Math.floor(Math.random() * 91);
+      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT });
+    }
   }
 }
 
@@ -101,7 +139,8 @@ for (const prefix of prefixes2) {
     }
     if (sidMap.size > 0) playerTids.set(uuid, sidMap);
     preCount++;
-    if (preCount % 50000 === 0) process.stdout.write(`  Pre-pass: ${preCount} players…`);
+    if (preCount % 50000 === 0) process.stdout.write(`  Pre-pass: ${preCount} players…
+`);
   }
 }
 console.log(`  Pre-pass complete: ${preCount} players, ${playerTids.size} with season data`);
@@ -119,10 +158,17 @@ const sids = fs.readdirSync(gamesDir)
   .map(f => f.replace('.json', ''))
   .sort();
 
-// Load progress
-let progress = { scannedSids: [], finalsMap: {} };
+// Load progress — MODE-KEYED: an active-only run must never resume a full run's
+// progress (its finalsMap would carry locked-season data into active-only Phase 2
+// semantics) and vice versa (a full run resuming active-only progress would treat
+// locked seasons as scanned when they never were).
+let progress = { mode: MODE, scannedSids: [], finalsMap: {} };
 if (fs.existsSync(PROGRESS_FILE)) {
-  try { progress = readJson(PROGRESS_FILE); } catch {}
+  try {
+    const loaded = readJson(PROGRESS_FILE);
+    if ((loaded.mode || 'full') === MODE) progress = loaded;
+    else console.log(`  Progress file is from a '${loaded.mode || 'full'}' run — discarding (this run is '${MODE}')`);
+  } catch {}
 }
 const scannedSids = new Set(progress.scannedSids || []);
 
@@ -154,6 +200,11 @@ if (ACTIVE_ONLY) {
 
 const sidsToScan = candidateSids.filter(s => !scannedSids.has(s));
 console.log(`  ${sids.length} total seasons, ${candidateSids.length} in scope, ${scannedSids.size} already scanned, ${sidsToScan.length} remaining`);
+
+// Scanned scope for Phase 2: in active-only mode, ONLY these seasons are
+// scan-authoritative — every other season's regs must be left untouched and
+// their existing flags preserved. null = full mode, everything in scope.
+const scopeSet = ACTIVE_ONLY ? new Set(candidateSids) : null;
 
 for (const sid of sidsToScan) {
   // Load game file
@@ -249,7 +300,7 @@ for (const sid of sidsToScan) {
     if (!DRY_RUN) {
       const flat = {};
       for (const [uuid, smap] of finalsMap) flat[uuid] = Object.fromEntries(smap);
-      writeJson(PROGRESS_FILE, { scannedSids: [...scannedSids], finalsMap: flat, totalFinalsGames, totalGFGames });
+      writeJson(PROGRESS_FILE, { mode: MODE, scannedSids: [...scannedSids], finalsMap: flat, totalFinalsGames, totalGFGames });
       gitCommit(
         `build-finals-stats: ${scannedSids.size}/${sids.length} seasons scanned, ${finalsMap.size} players with finals data`,
         ['scripts/.finals-progress.json']
@@ -264,7 +315,7 @@ for (const sid of sidsToScan) {
 if (!DRY_RUN) {
   const flat = {};
   for (const [uuid, smap] of finalsMap) flat[uuid] = Object.fromEntries(smap);
-  writeJson(PROGRESS_FILE, { scannedSids: [...scannedSids], finalsMap: flat, totalFinalsGames, totalGFGames, scanComplete: true });
+  writeJson(PROGRESS_FILE, { mode: MODE, scannedSids: [...scannedSids], finalsMap: flat, totalFinalsGames, totalGFGames, scanComplete: true });
 }
 
 console.log(`\n  Scan complete:`);
@@ -291,7 +342,13 @@ for (const [uuid, sidMap] of finalsMap) {
 
   let modified = false;
 
-  // Career totals
+  // Career totals — the scan is authoritative ONLY for in-scope seasons.
+  // In active-only mode, out-of-scope (locked) seasons contribute their
+  // EXISTING reg.stats flags; recomputing career values from the active-only
+  // finalsMap alone would overwrite e.g. a 12-career-finals veteran with
+  // finals=1 (the pre-2026-07-21 bug — never shipped live, fixed before its
+  // first --active-only run). Pattern mirrors build-win-loss.js active-only
+  // Pass 2: locked seasons untouched, their contribution preserved.
   let careerFinals = 0, careerGfApps = 0, careerGfWins = 0;
   // Count seasons the player has registrations in — every season entry means they played.
   // Do NOT use r.stats.gp here: that field is stale and may be 0 even when the player played,
@@ -303,6 +360,25 @@ for (const [uuid, sidMap] of finalsMap) {
     if (acc.finals > 0)  { careerFinals++;  seasonsWithFinals++; }
     if (acc.gfApps > 0)    careerGfApps++;
     if (acc.gfWins > 0)    careerGfWins++;
+  }
+  if (scopeSet) {
+    // Active-only: fold in the preserved flags of every out-of-scope season.
+    const counted = new Set();
+    for (const season of (player.seasons || [])) {
+      const sid = season.sid;
+      if (scopeSet.has(sid) || sidMap.has(sid) || counted.has(sid)) continue;
+      counted.add(sid);
+      let exFinals = 0, exGfApps = 0, exGfWins = 0;
+      for (const reg of (season.regs || [])) {
+        const st = reg.stats || {};
+        if (st.finals > 0) exFinals = 1;
+        if (st.gfApps > 0) exGfApps = 1;
+        if (st.gfWins > 0) exGfWins = 1;
+      }
+      if (exFinals) { careerFinals++; seasonsWithFinals++; }
+      if (exGfApps)   careerGfApps++;
+      if (exGfWins)   careerGfWins++;
+    }
   }
 
   // finalsPerSeason = fraction of seasons where player appeared in finals (max 1 per season)
@@ -318,9 +394,12 @@ for (const [uuid, sidMap] of finalsMap) {
   if ((bball.gfWins          ?? -1) !== careerGfWins)      { bball.gfWins          = careerGfWins;      modified = true; }
   if ((bball.finalsPerSeason ?? -1) !== finalsPerSeason)   { bball.finalsPerSeason = finalsPerSeason;   modified = true; }
 
-  // Per-reg: write season-level counts to every reg in that season
+  // Per-reg: write season-level counts to every reg in that season.
+  // In active-only mode, out-of-scope seasons are SKIPPED entirely — the
+  // `?? zeros` fallback below would otherwise DELETE their preserved flags.
   for (const season of (player.seasons || [])) {
     const sid = season.sid;
+    if (scopeSet && !scopeSet.has(sid)) continue;
     const acc = sidMap.get(sid) ?? { finals: 0, gfApps: 0, gfWins: 0 };
     for (const reg of (season.regs || [])) {
       if (!reg.stats) reg.stats = {};
