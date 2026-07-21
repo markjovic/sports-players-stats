@@ -219,10 +219,13 @@ jobs:
     # (games_remaining == 0), so it never runs mid-crawl. Discovery's reduce carries
     # concurrency group data-write, so it also can't write sports-index.json while this
     # crawl workflow (same group) still holds the lock — it queues until we finish.
-    # Gated to Sundays: a full sweep is ~1.5-2h and ~200k PlayHQ calls for near-zero
-    # ongoing yield, so weekly is plenty. To run it every terminal night instead,
-    # delete the `dow` check below. all_players stays false here — the one-time
-    # historical backlog pass is a manual dispatch with all_players=true.
+    # Gated to Sundays: weekly is plenty. backfill_teams=true (2026-07-20 decision):
+    # the sweep runs in all+backfill mode — probes ALL ~411k players (backfill implies
+    # all_players inside the matrix) and captures pre-game team allocations as roster
+    # deltas, since publicProfileTeams returns UPCOMING registrations before any game
+    # is played. This is roughly DOUBLE the old current-mode sweep (~411k vs ~220k
+    # calls) across the matrix retrigger chain. To run it every terminal night
+    # instead, delete the `dow` check below.
     if: |
       always() &&
       inputs.dry_run != 'true' &&
@@ -237,11 +240,45 @@ jobs:
             echo "Not Sunday (dow=$dow) — skipping weekly season discovery."
             exit 0
           fi
-          echo "Sunday — triggering discover-seasons-matrix."
+          echo "Sunday — triggering discover-seasons-matrix (all+backfill: seasons + pre-game rosters)."
           gh workflow run discover-seasons-matrix.yml \
             --repo "${{ github.repository }}" \
-            --field "all_players=false" \
+            --field "backfill_teams=true" \
             --field "concurrency=25"
+
+  discover-fixtures-weekly:
+    needs: crawl
+    runs-on: ubuntu-latest
+    # Weekly future-fixtures sweep (2026-07-21 decision, §B5): dispatch
+    # discover-fixtures.yml in --current-only mode (~25k team calls / ~24 min;
+    # skips seasons with no game in 21 days) once a week, chained off the crawl's
+    # terminal state exactly like the Sunday discovery job above. Gated to
+    # Mondays UTC: the Mon 15:00 UTC nightly = Tue 01:00 AEST, so the sweep lands
+    # Tuesday early morning AEST. current_only is passed EXPLICITLY — the
+    # dispatched workflow's input default is false. The dispatched run carries
+    # the data-write lock and this run has finished by the time it starts, so
+    # they can never write games/ concurrently. Known accepted coupling (shared
+    # with Sunday discovery): if the chain halts on zero progress or never
+    # drains, the week's sweep is skipped — re-dispatch discover-fixtures
+    # manually with current_only=true if that happens.
+    if: |
+      always() &&
+      inputs.dry_run != 'true' &&
+      needs.crawl.outputs.games_remaining == '0'
+    steps:
+      - name: Trigger weekly future-fixtures sweep (Mondays UTC)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          dow=$(date -u +%u)   # 1=Mon … 7=Sun
+          if [ "$dow" != "1" ]; then
+            echo "Not Monday (dow=$dow) — skipping weekly future-fixtures sweep."
+            exit 0
+          fi
+          echo "Monday UTC — triggering discover-fixtures (current-only weekly sweep)."
+          gh workflow run discover-fixtures.yml \
+            --repo "${{ github.repository }}" \
+            --field "current_only=true"
 
   retrigger:
     needs: crawl
