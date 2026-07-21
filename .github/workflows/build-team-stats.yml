@@ -19,6 +19,15 @@ on:
         default: false
         type: boolean
 
+# Serialize against nightly-crawl / weekly-indexes / discover reduce: team-stats/
+# was previously written under the data-write lock only when built inside
+# nightly-crawl.yml — this standalone had no lock, so the matrix-terminal dispatch
+# (added 2026-07-21) could have raced the nightly's own team-stats job on the
+# same files. cancel-in-progress stays false: queued, never killed.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

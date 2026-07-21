@@ -135,7 +135,11 @@ jobs:
   apply-and-commit:
     needs: fetch
     runs-on: ubuntu-latest
-    if: always()
+    # !cancelled() (not always()): still runs when shards FAIL — apply-and-commit
+    # must never be gated on shard success — but a deliberate run-cancel now
+    # actually stops the chain instead of applying + retriggering anyway
+    # (stop-button bug, same class as the backfill matrix fix; audited 2026-07-21).
+    if: ${{ !cancelled() }}
     timeout-minutes: 60
     steps:
       - name: Download all shard file artifacts
@@ -222,7 +226,9 @@ jobs:
   summary-and-retrigger:
     needs: apply-and-commit
     runs-on: ubuntu-latest
-    if: always()
+    # !cancelled() for the same reason as apply-and-commit — cancelling the run
+    # must halt the self-trigger chain.
+    if: ${{ !cancelled() }}
     steps:
       - name: Download all shard summaries
         uses: actions/download-artifact@v4
@@ -372,6 +378,21 @@ jobs:
         if: steps.next.outputs.status == 'stuck'
         run: |
           gh workflow run fold-diverged-players.yml             --repo "${{ github.repository }}"             --field "mode=apply"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+
+      - name: Trigger team-stats rebuild
+        if: steps.next.outputs.status == 'stuck'
+        # Rebuild team-stats AFTER the matrix drains: roster stat lines are
+        # sourced from player reg stats (players/{xx}/*.json seasons[].regs[].stats),
+        # which this matrix writes. The nightly's own team-stats job runs BEFORE
+        # the matrix is even triggered, so it can never see tonight's stats —
+        # without this, the roster tab lagged the player view by a full day
+        # (2026-07-21 roster-lag fix). active_only keeps it to unlocked seasons.
+        run: |
+          gh workflow run build-team-stats.yml \
+            --repo "${{ github.repository }}" \
+            --field "active_only=true"
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
 
