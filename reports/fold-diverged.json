@@ -1,16 +1,26 @@
 {
-  "generatedAt": "2026-07-21T18:17:17.121Z",
+  "generatedAt": "2026-07-23T18:24:10.086Z",
   "dryRun": false,
-  "filesScanned": 412764,
-  "folded": 1,
-  "promotes": 1,
+  "filesScanned": 412937,
+  "folded": 3,
+  "promotes": 3,
   "merges": 0,
-  "indexShardsTouched": 2,
+  "indexShardsTouched": 6,
   "entries": [
     {
-      "apiId": "8b7a5166-b161-48e3-bbdc-a1f08f84a6a9",
+      "apiId": "3697fd08-595e-4780-bf1c-332d94590c10",
       "action": "promote",
-      "oldKey": "70518a02-adf9-4c66-acb4-50b44eda38f5"
+      "oldKey": "484bf21e-2258-40df-ab7c-d6f700c2b930"
+    },
+    {
+      "apiId": "41321c46-1b9f-4768-a603-33e5c6f91e32",
+      "action": "promote",
+      "oldKey": "d348edd5-382d-40d8-bb6a-0d7e1c75511b"
+    },
+    {
+      "apiId": "4bf244a6-f9b2-4057-a628-13fc672fec6d",
+      "action": "promote",
+      "oldKey": "e7637c1a-19ad-42a4-afd7-dd24d2dc76f1"
     }
   ]
 }
