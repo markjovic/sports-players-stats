@@ -1,1 +1,78 @@
-{"uuid":"7fd022c4-4d45-42fa-8903-9823ce0a0f35","private":false,"name":"James Hall","sports":{"Basketball":{"foulOuts":{},"maxGamePTS":4,"maxGameThreePt":null,"gp":2,"pts":6,"fg":3,"statsChecked":"2026-07-13T18:32:37.285Z","wins":2,"losses":2,"winPct":0.5}},"seasons":[{"sid":"4bb925dc","regs":[{"tid":"72410f4c","stats":{"gp":2,"pts":6,"fg":3,"wins":1,"losses":1}},{"tid":"72410f4c","tn":"","gid":"1edfcfba","gn":"Men's E","div":null,"stats":{"gp":2,"pts":6,"fg":3,"wins":1,"losses":1}}]}],"records":{"maxGamePTS":{"v":4,"gameKey":"c5818209","sid":"4bb925dc"},"maxGameThreePt":{"v":null}},"teams":[],"games":["c5818209","d0d742d9"],"updatedAt":"2026-07-13T18:10:31.085Z","spectatorIds":["7fd022c4-4d45"]}
+{
+  "uuid": "7fd022c4-4d45-42fa-8903-9823ce0a0f35",
+  "private": false,
+  "name": "James Hall",
+  "sports": {
+    "Basketball": {
+      "foulOuts": {},
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "gp": 2,
+      "pts": 6,
+      "fg": 3,
+      "statsChecked": "2026-07-13T18:32:37.285Z",
+      "wins": 2,
+      "losses": 2,
+      "winPct": 0.5
+    }
+  },
+  "seasons": [
+    {
+      "sid": "4bb925dc",
+      "regs": [
+        {
+          "tid": "72410f4c",
+          "stats": {
+            "gp": 2,
+            "pts": 6,
+            "fg": 3,
+            "wins": 1,
+            "losses": 1
+          },
+          "gid": "1edfcfba",
+          "gn": "Men's E"
+        },
+        {
+          "tid": "72410f4c",
+          "tn": "",
+          "gid": "1edfcfba",
+          "gn": "Men's E",
+          "div": null,
+          "stats": {
+            "gp": 2,
+            "pts": 6,
+            "fg": 3,
+            "wins": 1,
+            "losses": 1
+          }
+        }
+      ]
+    }
+  ],
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "c5818209",
+      "sid": "4bb925dc"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "teams": [
+    {
+      "tid": "72410f4c",
+      "sid": "4bb925dc",
+      "status": "ACTIVE"
+    }
+  ],
+  "games": [
+    "c5818209",
+    "d0d742d9"
+  ],
+  "updatedAt": "2026-07-13T18:10:31.085Z",
+  "spectatorIds": [
+    "7fd022c4-4d45"
+  ],
+  "teamsUpdatedAt": "2026-07-26T18:20:18.337Z"
+}
