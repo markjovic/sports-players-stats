@@ -1,1 +1,84 @@
-{"uuid":"f078ac7a-643b-4099-abf0-40180b7200c0","name":"Evan Chen","sports":{"Basketball":{"maxGamePTS":4,"maxGameThreePt":null,"foulOuts":{},"gp":1,"pts":4,"fg":2,"fouls":2,"losses":1,"winPct":0}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Southern Basketball Association","regs":[{"tid":"69b55b0d","tn":"","gid":"c89e8fb8","gn":"Sunday U20 Boys C Grade","div":null,"stats":{"gp":1,"pts":4,"fg":2,"fouls":2,"losses":1}}]}],"teams":[],"spectatorIds":["f078ac7a-643b"],"updatedAt":"2026-07-26T17:00:26.691Z","private":false,"records":{"maxGamePTS":{"v":4,"gameKey":"39535d7c","sid":"e2b609ed"},"maxGameThreePt":{"v":null}},"games":["39535d7c"]}
+{
+  "uuid": "f078ac7a-643b-4099-abf0-40180b7200c0",
+  "name": "Evan Chen",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 4,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 1,
+      "pts": 4,
+      "fg": 2,
+      "fouls": 2,
+      "losses": 1,
+      "winPct": 0
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Southern Basketball Association",
+      "regs": [
+        {
+          "tid": "69b55b0d",
+          "tn": "",
+          "gid": "c89e8fb8",
+          "gn": "Sunday U20 Boys C Grade",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 4,
+            "fg": 2,
+            "fouls": 2,
+            "losses": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "6a36400d",
+      "sn": "Winter 2020",
+      "regs": [
+        {
+          "tid": "4c4ed581",
+          "tn": "U14 Boys Legendary Warriors",
+          "gid": "3fa1f9f1",
+          "gn": "Saturday U14 Boys Div 9",
+          "stats": {}
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "69b55b0d",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "4c4ed581",
+      "sid": "6a36400d",
+      "status": "ACTIVE"
+    }
+  ],
+  "spectatorIds": [
+    "f078ac7a-643b"
+  ],
+  "updatedAt": "2026-07-26T17:00:26.691Z",
+  "private": false,
+  "records": {
+    "maxGamePTS": {
+      "v": 4,
+      "gameKey": "39535d7c",
+      "sid": "e2b609ed"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "39535d7c"
+  ],
+  "teamsUpdatedAt": "2026-07-26T17:32:26.866Z"
+}

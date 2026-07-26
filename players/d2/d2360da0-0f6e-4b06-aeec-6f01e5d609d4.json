@@ -1,1 +1,83 @@
-{"uuid":"d2360da0-0f6e-4b06-aeec-6f01e5d609d4","name":"Sebastian Wojciechowicz","sports":{"Basketball":{"maxGamePTS":6,"maxGameThreePt":null,"foulOuts":{},"gp":15,"pts":8,"fg":4,"fouls":22,"statsChecked":"2026-07-20T17:58:08.958Z","wins":1,"winPct":1}},"seasons":[{"sid":"e2b609ed","sn":"Spring 2026","club":"Southern Basketball Association","regs":[{"tid":"0c2e0646","tn":"","gid":"a6cb27df","gn":"Monday U8 Boys Modified B Grade","div":null,"stats":{"gp":1,"pts":6,"fg":3,"fouls":2,"wins":1}}]},{"sid":"3e7c1a8c","regs":[{"tid":"bae6c02a","stats":{}}]}],"teams":[],"spectatorIds":["d2360da0-0f6e"],"updatedAt":"2026-07-20T17:33:04.913Z","private":false,"records":{"maxGamePTS":{"v":6,"gameKey":"8b8283ca","sid":"e2b609ed"},"maxGameThreePt":{"v":null}},"games":["8b8283ca"]}
+{
+  "uuid": "d2360da0-0f6e-4b06-aeec-6f01e5d609d4",
+  "name": "Sebastian Wojciechowicz",
+  "sports": {
+    "Basketball": {
+      "maxGamePTS": 6,
+      "maxGameThreePt": null,
+      "foulOuts": {},
+      "gp": 15,
+      "pts": 8,
+      "fg": 4,
+      "fouls": 22,
+      "statsChecked": "2026-07-20T17:58:08.958Z",
+      "wins": 1,
+      "winPct": 1
+    }
+  },
+  "seasons": [
+    {
+      "sid": "e2b609ed",
+      "sn": "Spring 2026",
+      "club": "Southern Basketball Association",
+      "regs": [
+        {
+          "tid": "0c2e0646",
+          "tn": "",
+          "gid": "a11585cb",
+          "gn": "Monday U8 Boys Modified A Grade",
+          "div": null,
+          "stats": {
+            "gp": 1,
+            "pts": 6,
+            "fg": 3,
+            "fouls": 2,
+            "wins": 1
+          }
+        }
+      ]
+    },
+    {
+      "sid": "3e7c1a8c",
+      "regs": [
+        {
+          "tid": "bae6c02a",
+          "stats": {},
+          "gid": "fc0b152b",
+          "gn": "Monday U8 Boys Modified A/B Grade"
+        }
+      ]
+    }
+  ],
+  "teams": [
+    {
+      "tid": "0c2e0646",
+      "sid": "e2b609ed",
+      "status": "ACTIVE"
+    },
+    {
+      "tid": "bae6c02a",
+      "sid": "3e7c1a8c",
+      "status": "ACTIVE"
+    }
+  ],
+  "spectatorIds": [
+    "d2360da0-0f6e"
+  ],
+  "updatedAt": "2026-07-20T17:33:04.913Z",
+  "private": false,
+  "records": {
+    "maxGamePTS": {
+      "v": 6,
+      "gameKey": "8b8283ca",
+      "sid": "e2b609ed"
+    },
+    "maxGameThreePt": {
+      "v": null
+    }
+  },
+  "games": [
+    "8b8283ca"
+  ],
+  "teamsUpdatedAt": "2026-07-26T17:32:24.068Z"
+}
