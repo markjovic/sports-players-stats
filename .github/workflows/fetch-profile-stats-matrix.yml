@@ -14,6 +14,11 @@ on:
         required: false
         default: '0'
         type: string
+      consecutive_apply_failures:
+        description: 'Consecutive runs whose apply-and-commit failed — do not set manually'
+        required: false
+        default: '0'
+        type: string
       shards:
         description: 'JSON array of specific shards to run (e.g. ["00","1a","ff"]). Empty = all 256.'
         required: false
@@ -32,7 +37,11 @@ permissions:
 jobs:
   clear-stats-checked:
     runs-on: ubuntu-latest
-    if: inputs.force == true
+    # Boolean-input JOB gate: a UI dispatch sends a real boolean, a chained
+    # `gh workflow run --field force=true` sends the STRING 'true'. A bare
+    # `== true` skips the job for the string form; a bare `== 'true'` skips it
+    # for the boolean form. Both comparisons, always (2026-07-21 directive).
+    if: ${{ inputs.force == true || inputs.force == 'true' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -183,8 +192,36 @@ jobs:
         # discoveries there; it must be in the sparse set BEFORE the tars are
         # extracted (skip-worktree would otherwise make git add ignore them,
         # and expanding afterwards would overwrite the extracted files).
+        #
+        # RETRIED: this is a blobless clone, so `sparse-checkout set` triggers a
+        # promisor object fetch over the network. That fetch was reset by the
+        # remote on 2026-07-26 ("curl 56 Recv failure" / "fatal: early EOF" /
+        # "could not fetch ... from promisor remote"), which killed apply-and-commit
+        # and silently discarded a whole run's shard writes. The command is
+        # idempotent, so re-running it after a transient reset is safe.
         run: |
-          git sparse-checkout set --no-cone scripts players/aliases $(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
+          dirs=$(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
+          attempts=6
+          ok=false
+          for i in $(seq 1 $attempts); do
+            if git sparse-checkout set --no-cone scripts players/aliases $dirs; then
+              echo "  ✓ sparse-checkout expanded (attempt $i)"
+              ok=true
+              break
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 15 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … sparse-checkout/promisor fetch failed — retry $((i+1))/$attempts in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          if [ "$ok" != "true" ]; then
+            echo "✗ sparse-checkout failed after $attempts attempts — nothing applied this run."
+            echo "  Shard writes are NOT lost data: the player files were never touched on main,"
+            echo "  so those players still lack statsChecked and are re-fetched next run."
+            exit 1
+          fi
 
       - name: Configure git
         if: steps.check.outputs.has_files == 'true'
@@ -210,17 +247,67 @@ jobs:
 
       - name: Commit and push
         if: steps.check.outputs.has_files == 'true'
+        # PER-PATH `git add` (never one combined add): a single
+        # `git add players/ scripts/` is ATOMIC — one unmatched pathspec and
+        # NOTHING stages, which is exactly how the 2026-07-19 discover-fixtures
+        # run threw away 30,426 games while staying green.
+        #
+        # PUSH RETRY: this repo has concurrent committers (nightly chain, weekly
+        # indexes, discover-fixtures, build-* jobs). A one-shot push loses the
+        # race and, previously, just failed the job after the work was already
+        # committed locally. House pattern (§7.1): commit-first, then 60 attempts
+        # of merge --abort / fetch / `merge -X ours --no-stat` / push with pure
+        # random 1-91s jitter, and THROW if all are exhausted.
         run: |
-          git add players/ scripts/
+          git add -- players/
+          git add -- scripts/ || echo "  (no scripts/ pathspec to stage)"
+
           if git diff --staged --quiet; then
             echo "Nothing to commit."
             exit 0
           fi
+
           count=$(git diff --staged --name-only | wc -l)
+          echo "staging:"
+          git diff --staged --shortstat
+
           git commit -m "fetch-profile-stats: matrix run ${{ inputs.run_number }} — ${count} files updated"
-          git fetch origin main
-          git merge -X ours FETCH_HEAD --no-edit
-          git push origin main
+
+          pushed=false
+          for attempt in $(seq 1 60); do
+            # Cleanup first: a previous attempt may have left a merge in progress.
+            git merge --abort 2>/dev/null || true
+
+            # fetch/merge failures must fall through to the next attempt rather
+            # than kill the step — run steps are `bash -e`, so an unguarded
+            # transient fetch reset here would abort with the commit unpushed.
+            if ! git fetch origin main; then
+              delay=$(( (RANDOM % 91) + 1 ))
+              echo "  … fetch failed — retry $((attempt+1))/60 in ${delay}s"
+              sleep "$delay"
+              continue
+            fi
+            if ! git merge -X ours FETCH_HEAD --no-edit --no-stat; then
+              git merge --abort 2>/dev/null || true
+              delay=$(( (RANDOM % 91) + 1 ))
+              echo "  … merge failed — retry $((attempt+1))/60 in ${delay}s"
+              sleep "$delay"
+              continue
+            fi
+            if git push origin main; then
+              echo "  ✓ pushed on attempt ${attempt}"
+              pushed=true
+              break
+            fi
+            delay=$(( (RANDOM % 91) + 1 ))
+            echo "  … push rejected — retry $((attempt+1))/60 in ${delay}s"
+            sleep "$delay"
+          done
+
+          if [ "$pushed" != "true" ]; then
+            echo "✗ push failed after 60 attempts."
+            exit 1
+          fi
           echo "Committed and pushed: ${count} files"
 
   summary-and-retrigger:
@@ -229,7 +316,51 @@ jobs:
     # !cancelled() for the same reason as apply-and-commit — cancelling the run
     # must halt the self-trigger chain.
     if: ${{ !cancelled() }}
+    env:
+      GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      GH_REPO: ${{ github.repository }}
     steps:
+      - name: Install dispatch retry helper
+        # Every chain link in this workflow is a single `gh workflow run` API
+        # call. On 2026-07-27 one of them returned HTTP 500 and the matrix chain
+        # simply stopped — no retrigger, no terminal, no build-team-stats, so the
+        # roster data silently went stale. A chain-critical network call is never
+        # one-shot (same rule as the push retry).
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Download all shard summaries
         uses: actions/download-artifact@v4
         with:
@@ -263,14 +394,18 @@ jobs:
           print('')
           print('══════════════════════════════════════════════════')
           print(f'  Run ${{ inputs.run_number }}/150  |  consecutive zero-progress runs: ${{ inputs.consecutive_zeros }}')
+          print(f'  apply-and-commit: ${{ needs.apply-and-commit.result }}  |  consecutive apply failures: ${{ inputs.consecutive_apply_failures }}')
           print('══════════════════════════════════════════════════')
           print(f'  Shards processed:          {len(files)}/256')
           print(f'  Outstanding at run start:  {outstanding_at_start:,}')
-          print(f'  Written this run:          {written:,}')
+          print(f'  Shard writes reported:     {written:,}')
           print(f'  Private profiles marked:   {inaccessible:,}')
           print(f'  Errors:                    {errors:,}')
           print(f'  Shards blocked mid-run:    {blocked}')
           print('══════════════════════════════════════════════════')
+          print('  NOTE: "shard writes reported" is what the shards WROTE TO DISK.')
+          print('  It is progress only if apply-and-commit succeeded — the commit')
+          print('  history is the proof of persistence, not this number.')
 
           if inaccessible > 0:
             print('  Shards with private profiles:')
@@ -288,46 +423,116 @@ jobs:
 
       - name: Determine next action
         id: next
+        env:
+          APPLY_RESULT: ${{ needs.apply-and-commit.result }}
+          RUN_NUMBER: ${{ inputs.run_number }}
+          CONSEC_ZEROS: ${{ inputs.consecutive_zeros }}
+          CONSEC_APPLY_FAILS: ${{ inputs.consecutive_apply_failures }}
+          WRITTEN: ${{ steps.aggregate.outputs.written }}
         run: |
-          run_number=${{ inputs.run_number }}
-          consecutive_zeros=${{ inputs.consecutive_zeros }}
-          written=${{ steps.aggregate.outputs.written }}
+          run_number=${RUN_NUMBER:-1}
+          consecutive_zeros=${CONSEC_ZEROS:-0}
+          apply_fails=${CONSEC_APPLY_FAILS:-0}
+          written=${WRITTEN:-0}
 
-          if [ "$run_number" -ge 150 ]; then
+          # Carried forward unchanged unless a branch below changes them.
+          new_zeros="$consecutive_zeros"
+          new_apply_fails=0
+
+          if [ "$APPLY_RESULT" != "success" ]; then
+            # PERSISTENCE GATE: shard summaries are written by the shard jobs, so
+            # `written` can be large while apply-and-commit failed and NOTHING was
+            # committed. Counting that as progress (and resetting consecutive_zeros)
+            # is how a failed run previously reported a healthy sweep.
+            new_apply_fails=$(( apply_fails + 1 ))
+            echo "⚠️  PERSISTENCE FAILURE — apply-and-commit = ${APPLY_RESULT}"
+            echo "    ${written} shard writes were NOT committed."
+            echo "    Those players still lack statsChecked, so they are re-fetched next run."
+            echo "    consecutive_zeros carried through unchanged at ${consecutive_zeros}"
+            echo "    consecutive apply failures: ${new_apply_fails}"
+            if [ "$new_apply_fails" -ge 3 ]; then
+              echo "status=apply_stuck" >> $GITHUB_OUTPUT
+            elif [ "$run_number" -ge 150 ]; then
+              echo "status=max_runs" >> $GITHUB_OUTPUT
+            else
+              echo "status=retrigger" >> $GITHUB_OUTPUT
+            fi
+          elif [ "$run_number" -ge 150 ]; then
             echo "status=max_runs" >> $GITHUB_OUTPUT
           elif [ "$written" = "0" ]; then
-            new_zeros=$((consecutive_zeros + 1))
-            echo "new_consecutive_zeros=$new_zeros" >> $GITHUB_OUTPUT
+            new_zeros=$(( consecutive_zeros + 1 ))
             if [ "$new_zeros" -ge 3 ]; then
               echo "status=stuck" >> $GITHUB_OUTPUT
             else
               echo "status=retrigger" >> $GITHUB_OUTPUT
             fi
           else
+            new_zeros=0
             echo "status=retrigger" >> $GITHUB_OUTPUT
-            echo "new_consecutive_zeros=0" >> $GITHUB_OUTPUT
           fi
+
+          echo "new_consecutive_zeros=$new_zeros" >> $GITHUB_OUTPUT
+          echo "new_consecutive_apply_failures=$new_apply_fails" >> $GITHUB_OUTPUT
 
       - name: Trigger next run
         if: steps.next.outputs.status == 'retrigger'
         env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
           NEXT_RUN: ${{ inputs.run_number }}
           NEXT_ZEROS: ${{ steps.next.outputs.new_consecutive_zeros }}
+          NEXT_APPLY_FAILS: ${{ steps.next.outputs.new_consecutive_apply_failures }}
           # Set from the expression so the JSON string keeps its quotes — passing it
           # inline in the shell line would let the shell strip the embedded quotes.
-          NEXT_SHARDS: ${{ inputs.force == true && '[]' || inputs.shards }}
+          # Both boolean comparisons: a chained dispatch sends force as a STRING.
+          NEXT_SHARDS: ${{ (inputs.force == true || inputs.force == 'true') && '[]' || inputs.shards }}
         run: |
           next_run=$(( NEXT_RUN + 1 ))
-          gh workflow run fetch-profile-stats-matrix.yml \
-            --repo "${{ github.repository }}" \
+          /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
             --field "run_number=${next_run}" \
             --field "consecutive_zeros=${NEXT_ZEROS}" \
+            --field "consecutive_apply_failures=${NEXT_APPLY_FAILS}" \
             --field "force=false" \
             --field "shards=${NEXT_SHARDS}"
 
+      # ── Terminal fan-out ────────────────────────────────────────────────────
+      # Each dispatch is gated `!cancelled() && status == stuck` rather than the
+      # bare status check: these five are INDEPENDENT of each other, and with
+      # plain step ordering a failure in the first one skipped the remaining four
+      # — including build-team-stats, the roster-freshness link. Any that throws
+      # still turns the job red.
+
+      - name: Trigger leaderboards rebuild
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        run: |
+          /tmp/gh-dispatch.sh build-leaderboards.yml --field "force=false"
+
+      - name: Trigger search index rebuild
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        run: |
+          /tmp/gh-dispatch.sh build-search-index.yml
+
+      - name: Trigger records rebuild
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        run: |
+          /tmp/gh-dispatch.sh build-records.yml
+
+      - name: Trigger fold of diverged players
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        run: |
+          /tmp/gh-dispatch.sh fold-diverged-players.yml --field "mode=apply"
+
+      - name: Trigger team-stats rebuild
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        # Rebuild team-stats AFTER the matrix drains: roster stat lines are
+        # sourced from player reg stats (players/{xx}/*.json seasons[].regs[].stats),
+        # which this matrix writes. The nightly's own team-stats job runs BEFORE
+        # the matrix is even triggered, so it can never see tonight's stats —
+        # without this, the roster tab lagged the player view by a full day
+        # (2026-07-21 roster-lag fix). active_only keeps it to unlocked seasons.
+        run: |
+          /tmp/gh-dispatch.sh build-team-stats.yml --field "active_only=true"
+
       - name: Checkout repo for cleanup
-        if: steps.next.outputs.status == 'stuck'
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
         uses: actions/checkout@v4
         with:
           ref: main
@@ -335,6 +540,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete matrix-force-pending.json
+        # Deliberately NOT !cancelled(): this step depends on the checkout above
+        # succeeding, unlike the independent dispatches.
         if: steps.next.outputs.status == 'stuck'
         run: |
           if [ ! -f matrix-force-pending.json ]; then
@@ -343,58 +550,62 @@ jobs:
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git merge -X ours FETCH_HEAD --no-edit
+
+          # git rm stages the deletion itself — a follow-up `git add` on the now
+          # non-existent pathspec would error and fail the step.
           git rm -f matrix-force-pending.json
           git commit -m "matrix: delete matrix-force-pending.json"
-          git push origin main
+
+          pushed=false
+          for attempt in $(seq 1 60); do
+            git merge --abort 2>/dev/null || true
+            if ! git fetch origin main; then
+              delay=$(( (RANDOM % 91) + 1 ))
+              echo "  … fetch failed — retry $((attempt+1))/60 in ${delay}s"
+              sleep "$delay"
+              continue
+            fi
+            if ! git merge -X ours FETCH_HEAD --no-edit --no-stat; then
+              git merge --abort 2>/dev/null || true
+              delay=$(( (RANDOM % 91) + 1 ))
+              echo "  … merge failed — retry $((attempt+1))/60 in ${delay}s"
+              sleep "$delay"
+              continue
+            fi
+            if git push origin main; then
+              echo "  ✓ pushed on attempt ${attempt}"
+              pushed=true
+              break
+            fi
+            delay=$(( (RANDOM % 91) + 1 ))
+            echo "  … push rejected — retry $((attempt+1))/60 in ${delay}s"
+            sleep "$delay"
+          done
+
+          if [ "$pushed" != "true" ]; then
+            echo "✗ push failed after 60 attempts."
+            exit 1
+          fi
 
       - name: All done
-        if: steps.next.outputs.status == 'stuck'
+        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
         run: echo "✅ Matrix complete — 3 consecutive runs with 0 written. All players processed."
 
-      - name: Trigger leaderboards rebuild
-        if: steps.next.outputs.status == 'stuck'
+      - name: Halted on repeated persistence failures
+        if: steps.next.outputs.status == 'apply_stuck'
         run: |
-          gh workflow run build-leaderboards.yml             --repo "${{ github.repository }}"             --field "force=false"
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-
-      - name: Trigger search index rebuild
-        if: steps.next.outputs.status == 'stuck'
-        run: |
-          gh workflow run build-search-index.yml             --repo "${{ github.repository }}"
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-
-      - name: Trigger records rebuild
-        if: steps.next.outputs.status == 'stuck'
-        run: |
-          gh workflow run build-records.yml             --repo "${{ github.repository }}"
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-
-      - name: Trigger fold of diverged players
-        if: steps.next.outputs.status == 'stuck'
-        run: |
-          gh workflow run fold-diverged-players.yml             --repo "${{ github.repository }}"             --field "mode=apply"
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-
-      - name: Trigger team-stats rebuild
-        if: steps.next.outputs.status == 'stuck'
-        # Rebuild team-stats AFTER the matrix drains: roster stat lines are
-        # sourced from player reg stats (players/{xx}/*.json seasons[].regs[].stats),
-        # which this matrix writes. The nightly's own team-stats job runs BEFORE
-        # the matrix is even triggered, so it can never see tonight's stats —
-        # without this, the roster tab lagged the player view by a full day
-        # (2026-07-21 roster-lag fix). active_only keeps it to unlocked seasons.
-        run: |
-          gh workflow run build-team-stats.yml \
-            --repo "${{ github.repository }}" \
-            --field "active_only=true"
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          echo "🛑 HALTED — 3 consecutive runs where apply-and-commit did not succeed."
+          echo ""
+          echo "   The chain is NOT being retriggered, and the terminal fan-out"
+          echo "   (team-stats / leaderboards / search / records / fold) has NOT fired,"
+          echo "   because nothing was persisted to commit history."
+          echo ""
+          echo "   No data is lost: the affected players were never written on main, so"
+          echo "   they still lack statsChecked and will be re-fetched. Read the"
+          echo "   apply-and-commit logs of the last three runs, fix the cause, then"
+          echo "   re-dispatch with run_number = this run + 1, the same"
+          echo "   consecutive_zeros, and consecutive_apply_failures = 0."
+          exit 1
 
       - name: Max runs reached
         if: steps.next.outputs.status == 'max_runs'

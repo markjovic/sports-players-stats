@@ -1,0 +1,71 @@
+# .github/workflows/check-roster-freshness.yml
+name: Check roster freshness (A3)
+
+# READ-ONLY diagnostic. contents: read — this workflow cannot commit, and no
+# data-write concurrency lock is needed. Deliberately NO actions/setup-node:
+# nothing here touches api.playhq.com, and the runner's stock node is fine.
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Game date to check, YYYY-MM-DD (blank = last night, Melbourne time)'
+        required: false
+        default: ''
+        type: string
+      season:
+        description: 'Season id to check (blank = seasons with games/bv commits in the window)'
+        required: false
+        default: ''
+        type: string
+      since:
+        description: 'Commit-history window used to find last night’s seasons'
+        required: false
+        default: '40 hours ago'
+        type: string
+      history_depth:
+        description: 'Commits of history to fetch (must cover the window above and a matrix-run commit)'
+        required: false
+        default: '800'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # Blobless clone with bounded history: the script finds last night's
+      # seasons from `git log -- games/bv` (commit metadata only, no blobs), then
+      # sparse-expands to the handful of files it actually needs. A full
+      # checkout of this repo costs ~140 minutes; this costs a couple of minutes.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: ${{ inputs.history_depth }}
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data/sports-index.json
+            players/indexes
+            players/aliases
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check roster freshness
+        env:
+          IN_DATE:   ${{ inputs.date }}
+          IN_SEASON: ${{ inputs.season }}
+          IN_SINCE:  ${{ inputs.since }}
+        run: |
+          ARGS=()
+          [ -n "$IN_DATE" ]   && ARGS+=("--date=$IN_DATE")
+          [ -n "$IN_SEASON" ] && ARGS+=("--season=$IN_SEASON")
+          [ -n "$IN_SINCE" ]  && ARGS+=("--since=$IN_SINCE")
+          # Array, not a string: --since is multi-word ("40 hours ago") and an
+          # unquoted $ARGS would word-split it into --since=40 / hours / ago,
+          # leaving the script with a silently wrong window.
+          echo "ARGS=${ARGS[*]}"
+          node scripts/check-roster-freshness.js "${ARGS[@]}"
