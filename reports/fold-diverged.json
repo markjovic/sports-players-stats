@@ -1,31 +1,27 @@
 {
-  "generatedAt": "2026-07-26T18:33:45.695Z",
+  "generatedAt": "2026-07-28T18:33:47.798Z",
   "dryRun": false,
-  "filesScanned": 413321,
-  "folded": 4,
-  "promotes": 4,
-  "merges": 0,
-  "indexShardsTouched": 8,
+  "filesScanned": 413517,
+  "folded": 3,
+  "promotes": 2,
+  "merges": 1,
+  "indexShardsTouched": 6,
   "entries": [
     {
-      "apiId": "533797c4-07e1-4b9f-b4ca-f8cd72bcd165",
-      "action": "promote",
-      "oldKey": "115d190d-fbf6-497b-8ba2-dbfb285db1da"
+      "apiId": "183527fd-4af4-4ede-a00a-0f358ccb13e5",
+      "action": "merge",
+      "oldKey": "2df99808-9838-4c11-a7cb-834b5ebc92cd",
+      "keeper": "2df99808-9838-4c11-a7cb-834b5ebc92cd"
     },
     {
-      "apiId": "96d21b79-ad6d-4614-9448-4ba42555fd2f",
+      "apiId": "52383f77-4821-4d59-991f-2c9e3a15cdd3",
       "action": "promote",
-      "oldKey": "39f2da5f-29a2-4db6-9192-eb515ff46fc1"
+      "oldKey": "3498889b-3be7-41a1-873d-65eb0ffb5119"
     },
     {
-      "apiId": "4c40cdd4-0424-4a6c-a0af-5fb3436eb38d",
+      "apiId": "33e2ed5a-4ef3-4dd5-b46e-542e0450b74b",
       "action": "promote",
-      "oldKey": "5c3559b2-250f-4eec-ae1c-adef46792611"
-    },
-    {
-      "apiId": "6d7e452f-6e14-40c4-b3d9-fb28c0c239d9",
-      "action": "promote",
-      "oldKey": "b441f3ad-0b4a-4311-9995-e9a65a5d1161"
+      "oldKey": "e5e3bcdf-37bc-4812-8901-83523e502446"
     }
   ]
 }
