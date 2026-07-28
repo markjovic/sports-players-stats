@@ -49,29 +49,53 @@ const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json');
 
 const COMMIT_EVERY = 50;
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-async function gitCommit(message) {
+function gitCommit(message, dirs) {
+  // House pattern, copied from build-finals-stats.js / build-win-loss.js.
+  // 2026-07-28: replaced this script's own 10-attempt/linear-backoff version —
+  // the last remaining outlier (OUTSTANDING_TASKS §A6). The old one ALSO
+  // swallowed a total push failure (console.error + return), so a run could
+  // print "complete — N files" and go green having pushed nothing. THROW now:
+  // a red job beats silently discarded work.
+  // Staging: PER-PATH adds — `git add` is ATOMIC across pathspecs, so one
+  // combined add with any unmatched pathspec stages NOTHING (this exact bug
+  // silently discarded a whole discover-fixtures run, 2026-07-19). Staged
+  // shortstat is printed so the log proves what was staged. COMMIT FIRST, then
+  // fetch/merge/push with 60 attempts, random 1-91s jitter, merge --abort
+  // cleanup, merge -X ours --no-stat.
+  if (!dirs || !dirs.length) { console.error('  gitCommit: no paths given — refusing blanket add'); return; }
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  try { execSync('git add team-stats/', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
-  const staged = (() => {
-    try { return execSync('git diff --staged --shortstat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
-    catch (_) { return ''; }
-  })();
-  if (!staged) { return; }
-  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
-  catch (_) { return; }
-  const MAX = 10;
-  for (let attempt = 1; attempt <= MAX; attempt++) {
+  try {
+    for (const dir of dirs) {
+      try {
+        execSync(`git add ${dir}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+      } catch (e) {
+        console.error(`  staging miss (skipped): ${dir} — ${e.stderr?.toString().slice(0, 120) || e.message.slice(0, 120)}`);
+      }
+    }
+    const staged = execSync('git diff --staged --shortstat',
+      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+    if (!staged) { console.log('  nothing to commit'); return; }
+    console.log(`  staging: ${staged}`);
+    execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT });
+  } catch (e) {
+    console.error('  git error (stage/commit):', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+    return;
+  }
+  for (let attempt = 1; attempt <= 60; attempt++) {
+    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
     try {
-      execSync('git fetch origin main',                              { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat',   { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                               { stdio: 'pipe', cwd: ROOT });
-      console.log(`  ✓ Committed: ${message}`);
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
+      console.log(`  ✔ committed: ${message}`);
       return;
-    } catch (_) {
-      if (attempt === MAX) { console.error(`  Push failed after ${MAX} attempts`); return; }
-      await sleep(Math.floor(Math.random() * 15000) + attempt * 3000);
+    } catch (e) {
+      if (attempt === 60) {
+        console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+        throw e;
+      }
+      const s = 1 + Math.floor(Math.random() * 91);
+      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT });
     }
   }
 }
@@ -243,12 +267,11 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
       }
     }
 
-    // Add players from p[] to roster
-    for (const p of (game.p || [])) {
-      if (!p.id) continue;
-      // Determine which team this player is on — use hp/ap if available,
-      // otherwise we can't tell from p[] alone, so skip team attribution
-    }
+    // NOTE: game.p[] is deliberately NOT used for roster attribution — it
+    // carries no side info, so a p[] entry cannot be assigned to a team here.
+    // Rosters come from hp[]/ap[] below plus the player index (sidTidPlayerMap).
+    // (A dead loop that iterated p[] and did nothing was removed 2026-07-28 —
+    // OUTSTANDING_TASKS §A6.)
 
     // For hidden games, use hp/ap for player attribution. profileID may be a
     // truncated prefix (existing data rewritten by the one-off
@@ -338,13 +361,13 @@ async function main() {
       process.stdout.write(`  ${processed}/${seasons.length} seasons  ${written} written\r`);
 
     if (sinceCommit >= COMMIT_EVERY) {
-      await gitCommit(`build-team-stats: ${written} files written (${processed}/${seasons.length} seasons)`);
+      gitCommit(`build-team-stats: ${written} files written (${processed}/${seasons.length} seasons)`, ['team-stats/']);
       sinceCommit = 0;
     }
   }
 
   console.log(`\n  ${processed}/${seasons.length} seasons processed  ${written} files written`);
-  await gitCommit(`build-team-stats: complete — ${written} files for ${processed} seasons`);
+  gitCommit(`build-team-stats: complete — ${written} files for ${processed} seasons`, ['team-stats/']);
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
   console.log('─'.repeat(50));
