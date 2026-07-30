@@ -415,7 +415,10 @@ if (fs.existsSync(invDir)) {
   row('alias-inverse api ids', fmt(invApiIds),
     `ℹ️  migration artifact — regenerated manually, expected to lag files (${fmt(detailCount)}) as players are added`);
 } else {
-  row('alias-inverse/', '❌ MISSING');
+  // 2026-07-30: was '❌ MISSING'. players/alias-inverse/ was DELIBERATELY deleted in
+  // cleanup fe8eedb — the forward alias map (players/aliases/) is the live structure
+  // and is audited above. Absence is the expected state, not a fault.
+  row('alias-inverse/', 'ℹ️  absent', 'deliberately removed in cleanup fe8eedb — expected');
 }
 
 // index <-> files: both-way set equality (keys, not just counts)
@@ -695,7 +698,12 @@ if (fs.existsSync(lbSeasonDir)) {
   }
   row('season/{seasonId}.json files', fmt(lbSeasonFiles));
   row('  Schema: players map',   schemaCheckedPlayersMap ? '✅' : '❌');
-  row('  Schema: {id,v} arrays', schemaCheckedIdvArrays  ? '✅' : '❌');
+  // 2026-07-30: this assertion was INVERTED. The 2026-07-09 restructure replaced the
+  // per-category {id,v} arrays with the `players` map (the change that removed ~922 MB
+  // and left leaderboard/ with zero full-length UUIDs — see section 13). Their absence
+  // is the goal; their PRESENCE would mean a file predates the restructure.
+  row('  Schema: {id,v} arrays', schemaCheckedIdvArrays ? '⚠️  legacy arrays present' : '✅ none (removed 2026-07-09)',
+    schemaCheckedIdvArrays ? 'pre-restructure file — should have been migrated' : '');
 }
 
 // ─── 7. team-stats files ──────────────────────────────────────────────────────
@@ -805,20 +813,32 @@ section('11 · Misc files');
 const miscFiles = [
   ['data/forfeit-games.json',    null,  true],  // count grows over time — not baselined (moved under data/ June 2026)
   ['records/all-time.json',      null,  true],
-  ['needs-matrix-shards.json',   null,  false],
+  // 2026-07-30: was `false` ("should be deleted") — WRONG, and it was the last
+  // surviving copy of a claim already retracted in three docs. nightly-crawl.yml's
+  // status step reads this file's LENGTH for stats_rechecks; deleting it makes
+  // recheck counts read 0. It is a live working file, so neither presence nor
+  // absence is a fault. `null` = informational, no expectation either way.
+  // A retracted claim living in code is invisible to every doc grep — which is
+  // exactly why this one outlived its own correction.
+  ['needs-matrix-shards.json',   null,  null],
   ['matrix-force-pending.json',  null,  false],  // should not exist
   ['reports/rekey-apply-cache.json', null, false],  // 3b-2 migration checkpoint — delete when convenient
 ];
 for (const [f, expected, shouldExist] of miscFiles) {
   const p = path.join(ROOT, f);
   if (!fs.existsSync(p)) {
-    if (shouldExist === false) row(f, '✅ absent', '');
-    else row(f, '❌ MISSING');
+    if (shouldExist === false)     row(f, '✅ absent', '');
+    else if (shouldExist === null) row(f, 'ℹ️  absent', 'live working file — absent is normal between cycles');
+    else                           row(f, '❌ MISSING');
     continue;
   }
   if (shouldExist === false) { row(f, '⚠️  exists', 'should be deleted'); continue; }
   const data = readJSON(p);
   const count = Array.isArray(data) ? data.length : (data ? Object.keys(data).length : '?');
+  if (shouldExist === null) {
+    row(f, fmt(count) + ' entries', 'ℹ️  live working file — NOT residue, do not delete');
+    continue;
+  }
   const note  = expected != null ? (count === expected ? `✅ expected ${fmt(expected)}` : `⚠️  expected ${fmt(expected)}`) : '';
   row(f, fmt(count) + ' entries', note);
 }
