@@ -29,6 +29,11 @@ on:
         required: false
         default: false
         type: boolean
+      recheck_private:
+        description: 'Also re-offer players already marked private (cheap alternative to a full re-fetch)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -41,7 +46,27 @@ jobs:
     # `gh workflow run --field force=true` sends the STRING 'true'. A bare
     # `== true` skips the job for the string form; a bare `== 'true'` skips it
     # for the boolean form. Both comparisons, always (2026-07-21 directive).
-    if: ${{ inputs.force == true || inputs.force == 'true' }}
+    #
+    # 2026-07-30: ALSO gated on `shards` being empty. clear-stats-checked.js takes no
+    # shard argument (see the run step below) — it strips statsChecked from ALL ~413k
+    # player files. Before this gate, dispatching force=true with shards=["e6"] wiped
+    # statsChecked repo-wide and the retrigger then re-fetched the entire database:
+    # a "targeted" run silently became a full re-sweep. Targeted forced re-fetch is now
+    # done in-process via --force on the shard step instead.
+    # The string/boolean pair is deliberate (directive 13); the shards comparison covers
+    # the default ('[]') and empty. An unrecognised form (e.g. '[ ]') falls through to
+    # TARGETED and skips the clear — i.e. it fails toward doing LESS, never toward an
+    # unrequested 413k wipe.
+    #
+    # 2026-07-30 (SECOND attempt). The first attempt wrote this as a `>-` folded
+    # scalar split across two lines with the continuation INDENTED FURTHER. YAML
+    # folds only equally-indented lines, so the newline was PRESERVED, GitHub
+    # received a multi-line `if`, failed to parse it as an expression, and fell
+    # back to treating it as a non-empty literal string — which is TRUTHY. The job
+    # ran unconditionally and wiped statsChecked from 413,364 files on a dispatch
+    # that targeted one shard. `yaml.safe_load` accepted it; valid YAML is not a
+    # valid GitHub expression. KEEP THIS ON ONE LINE.
+    if: ${{ (inputs.force == true || inputs.force == 'true') && (inputs.shards == '' || inputs.shards == '[]') }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -52,8 +77,28 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+      # Independent bash guard. The job-level `if` above is the first line of
+      # defence, but it failed silently once already, so the destructive command no
+      # longer depends on GitHub expression semantics alone. This runs in bash,
+      # where behaviour is testable, and refuses the repo-wide clear whenever the
+      # dispatch named specific shards. Unrecognised input falls through to
+      # TARGETED (refuse), never to CLEAR.
       - name: Clear statsChecked from all player files
-        run: node scripts/clear-stats-checked.js
+        env:
+          INPUT_SHARDS: ${{ inputs.shards }}
+        run: |
+          shards="$(printf '%s' "${INPUT_SHARDS:-}" | tr -d '[:space:]')"
+          if [ -n "$shards" ] && [ "$shards" != "[]" ]; then
+            echo "REFUSING: dispatch targeted specific shards (shards=$shards)."
+            echo "clear-stats-checked.js takes no shard argument — it would strip"
+            echo "statsChecked from ALL ~413k player files, and the retrigger would"
+            echo "then re-sweep the entire database."
+            echo "Per-shard forced re-fetch is done in-process via --force on the"
+            echo "shard step instead. Nothing cleared."
+            exit 0
+          fi
+          echo "Untargeted dispatch (shards='${shards}') — repo-wide clear is intended."
+          node scripts/clear-stats-checked.js
 
   generate-shards:
     runs-on: ubuntu-latest
@@ -109,8 +154,26 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Fetch shard ${{ matrix.shard }}
+        env:
+          # Boolean input in a BASH context: a UI dispatch sends a real boolean and a
+          # chained `gh workflow run --field` sends a string, so both forms are tested
+          # in the expression and the shell only ever sees 'true' or ''. (Bash string
+          # compares are a different context from job-level `if:` gates — this is the
+          # expression side, so directive 13 applies here too.)
+          RECHECK_PRIVATE: ${{ (inputs.recheck_private == true || inputs.recheck_private == 'true') && 'true' || '' }}
+          # 2026-07-30: the script has always had a --force flag (L77) and the matrix
+          # never passed it — repo-level force was implemented ONLY by the repo-wide
+          # clear-stats-checked job, so there was no way to re-fetch one shard. Passing
+          # it here makes targeted forced re-fetch possible: force=true + shards=["e6"]
+          # now re-fetches ~1,615 players in that shard and touches nothing else.
+          # force=true + shards=[] is unchanged (repo-wide clear, then every shard).
+          FORCE_FETCH: ${{ (inputs.force == true || inputs.force == 'true') && 'true' || '' }}
         run: |
-          node scripts/fetch-profile-stats.js --shard=${{ matrix.shard }}
+          ARGS=(--shard=${{ matrix.shard }})
+          [ -n "$RECHECK_PRIVATE" ] && ARGS+=(--recheck-private)
+          [ -n "$FORCE_FETCH" ] && ARGS+=(--force)
+          echo "ARGS=${ARGS[*]}"
+          node scripts/fetch-profile-stats.js "${ARGS[@]}"
 
       - name: Package changed player files
         if: always()
@@ -375,7 +438,7 @@ jobs:
           import json, os, glob
 
           files = glob.glob('summaries/*.json')
-          total = already_done = written = inaccessible = errors = blocked = 0
+          total = already_done = written = inaccessible = unchanged = errors = blocked = 0
 
           for f in files:
             try:
@@ -384,6 +447,7 @@ jobs:
               already_done += d.get('already_done', 0)
               written      += d.get('written', 0)
               inaccessible += d.get('inaccessible', 0)
+              unchanged    += d.get('unchanged', 0)
               errors       += d.get('errors', 0)
               if d.get('blocked'): blocked += 1
             except Exception as e:
@@ -399,22 +463,41 @@ jobs:
           print(f'  Shards processed:          {len(files)}/256')
           print(f'  Outstanding at run start:  {outstanding_at_start:,}')
           print(f'  Shard writes reported:     {written:,}')
-          print(f'  Private profiles marked:   {inaccessible:,}')
+          print(f'  Not obtainable (marked):   {inaccessible:,}   (subset of writes above)')
+          print(f'  Still withheld (no write): {unchanged:,}')
           print(f'  Errors:                    {errors:,}')
           print(f'  Shards blocked mid-run:    {blocked}')
           print('══════════════════════════════════════════════════')
           print('  NOTE: "shard writes reported" is what the shards WROTE TO DISK.')
           print('  It is progress only if apply-and-commit succeeded — the commit')
           print('  history is the proof of persistence, not this number.')
+          print('')
+          print('  "Still withheld" = already-marked withheld players re-offered by a')
+          print('  --recheck-private sweep that needed no write (dirty-check). During')
+          print('  such a sweep "writes" is a TRANSITION count: a player who came back')
+          print('  public writes real stats, one who stayed withheld writes nothing. So')
+          print('  0 written means "no further private -> public transitions", the')
+          print('  correct terminal for a re-check. WITHOUT the dirty-check these')
+          print('  players rewrote statsChecked every run, so written never reached 0,')
+          print('  consecutive_zeros never incremented, and the chain ran to the 150-run')
+          print('  cap and exited RED with the terminal fan-out never firing.')
+          print('')
+          print('  "Not obtainable" = withheld profiles (application-403, NOT_FOUND,')
+          print('  or a 200 with a null stats object) that were marked done with')
+          print('  statsChecked, after namespace recovery was attempted and failed.')
+          print('  These are a SUBSET of the writes above, not a separate population —')
+          print('  do not add the two together. Before 2026-07-29 the label read')
+          print('  "Private profiles marked", which described only the 403 half and')
+          print('  wrongly implied the rest were left untouched and retryable.')
 
           if inaccessible > 0:
-            print('  Shards with private profiles:')
+            print('  Shards with not-obtainable profiles:')
             for f in sorted(files):
               try:
                 d = json.load(open(f))
                 if d.get('inaccessible', 0) > 0:
                   shard = d.get('shard', '??')
-                  print(f'    shard={shard}  inaccessible={d["inaccessible"]}')
+                  print(f'    shard={shard}  not_obtainable={d["inaccessible"]}')
               except: pass
 
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
@@ -484,6 +567,12 @@ jobs:
           # inline in the shell line would let the shell strip the embedded quotes.
           # Both boolean comparisons: a chained dispatch sends force as a STRING.
           NEXT_SHARDS: ${{ (inputs.force == true || inputs.force == 'true') && '[]' || inputs.shards }}
+          # MUST be carried forward: a --recheck-private sweep spans many chained runs,
+          # and dropping the flag on the retrigger would silently narrow run 2 onward
+          # back to never-fetched players only. `force` is deliberately NOT carried
+          # (the clear-stats-checked job must run once, not every run) — recheck_private
+          # has no such one-shot side effect, so it propagates.
+          NEXT_RECHECK: ${{ (inputs.recheck_private == true || inputs.recheck_private == 'true') && 'true' || 'false' }}
         run: |
           next_run=$(( NEXT_RUN + 1 ))
           /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
@@ -491,6 +580,7 @@ jobs:
             --field "consecutive_zeros=${NEXT_ZEROS}" \
             --field "consecutive_apply_failures=${NEXT_APPLY_FAILS}" \
             --field "force=false" \
+            --field "recheck_private=${NEXT_RECHECK}" \
             --field "shards=${NEXT_SHARDS}"
 
       # ── Terminal fan-out ────────────────────────────────────────────────────
@@ -589,6 +679,16 @@ jobs:
 
       - name: All done
         if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        # "All players processed" is now accurate. Every terminal outcome writes
+        # statsChecked — real data via finishOk, withheld profiles via
+        # markNotObtainable — so 0 written across 3 runs means nothing is left to
+        # do, not merely that nothing could be done.
+        #
+        # Before 2026-07-29 this message was FALSE whenever a sweep ended on the
+        # 200-with-null-stats class: those players wrote nothing, so they read as
+        # zero-progress while still lacking statsChecked (211 of them on
+        # 2026-07-28). Anything still outstanding now shows up as Errors or as a
+        # blocked shard, both of which keep the chain going.
         run: echo "✅ Matrix complete — 3 consecutive runs with 0 written. All players processed."
 
       - name: Halted on repeated persistence failures
