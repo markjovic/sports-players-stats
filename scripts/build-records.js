@@ -3,17 +3,26 @@
 // Builds all-time single-game records across two phases:
 //
 // Phase 1 — game file scan (no API, covers ALL 2.2M games):
-//   teamPTS       — most points scored by one team in a single game
+//   teamPTS         — most points scored by one team in a single game
 //   highestCombined — highest combined score (both teams)
 //   largestMargin   — largest winning margin
 //   closestGame     — closest non-draw game by min/max score ratio
-//   teamThreePt   — most 3-pointers by one team (box-score limited, noted)
+//   teamThreePt     — most 3-pointers by one team (box-score limited, noted)
 //   Also builds gameId → {d,hs,as,hn,an,sid} lookup for phase 2
 //
-// Phase 2 — publicProfileStatistics API fetch (covers all public players
-//            in ALL their games, not limited to stored box scores):
+// Phase 2 — player single-game records (LOCAL — no API calls):
 //   playerPTS     — most points in a single game by one player
 //   playerThreePt — most 3-pointers in a single game by one player
+//   Sourced from leaderboard/all-time.json (maxGamePTS / maxGameThreePt) plus
+//   each player's own `records` field; game context comes from the phase-1
+//   gameLookup. Run build-leaderboards.js first or these two stay empty.
+//
+//   2026-07-30: this header previously described phase 2 as a
+//   `publicProfileStatistics` API fetch. It never was — the implemented phase 2
+//   has always been entirely local. The unused HEADERS_API const and the unused
+//   delay() helper that supported that fiction have been removed, and the
+//   duplicated phase-2 banner collapsed to one. This script makes NO network
+//   calls, which is why its workflow may carry actions/setup-node safely.
 //
 // Output: records/all-time.json
 // Each category is an array of up to TOP_N entries, ranked.
@@ -37,25 +46,81 @@ const DRY_RUN          = process.argv.includes('--dry-run');
 const FORCE            = process.argv.includes('--force');
 const TOP_N            = 50;
 const GAME_COMMIT_INTERVAL   = 200;
+const PUSH_ATTEMPTS    = 60;
 const PROGRESS_FILE    = path.join(ROOT, 'scripts', '.records-progress.json');
 const OUT_FILE         = path.join(ROOT, 'records', 'all-time.json');
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d, null, 2), 'utf8'); }
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-function gitCommit(message, dirs) {
-  try {
-    execSync('git add -A', { cwd: ROOT, stdio: 'pipe' });
-    const diff = execSync('git diff --staged --stat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
-    if (!diff) return;
-    execSync(`git commit -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
-    console.log(`  ✔ committed: ${message}`);
-  } catch (e) {
-    console.error(`  ✗ git error: ${e.message}`);
+// ─── House git pattern ────────────────────────────────────────────────────────
+// Stage per-path → print the staged shortstat → COMMIT FIRST → fetch/merge -X
+// ours/push with a 60-attempt random-jitter retry → THROW when exhausted.
+//
+// `paths` is now HONOURED. The previous version accepted a `dirs` argument and
+// silently ignored it, hardcoding the two paths instead — the same "argument
+// that does nothing" pattern found live in discover-seasons.js and
+// build-leaderboards.js on 2026-07-09.
+//
+// Per-path staging: `git add` is ATOMIC across pathspecs. One combined
+// `git add -- a b c` where ANY pathspec matches nothing (absent AND untracked)
+// exits 128 and stages NOTHING — including the valid paths beside it. Staging
+// each path in its own try/catch means a miss skips only itself.
+//
+// THROW on exhausted push: the old version caught every git failure, printed one
+// stderr line and returned, so a lost push discarded that commit's work while the
+// job stayed green. A red job beats silently discarded work.
+function gitCommit(message, paths) {
+  if (DRY_RUN) return;
+
+  let staged = 0;
+  for (const p of paths) {
+    try {
+      execSync(`git add -- ${p}`, { cwd: ROOT, stdio: 'pipe' });
+      staged++;
+    } catch (e) {
+      // Absent AND untracked (or ignored) — skip this path only.
+      console.log(`  · not staged: ${p} — ${e.message.split('\n')[0]}`);
+    }
+  }
+  if (!staged) {
+    console.log(`  · nothing staged, skipping commit: ${message}`);
+    return;
+  }
+
+  // --shortstat, never --stat: --stat prints a per-file line and scales with
+  // file count (ENOBUFS risk on a repo this size).
+  const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+  if (!diff) {
+    // Legitimate: a derived file that is already correct is rewritten
+    // byte-identically and therefore has nothing to commit.
+    console.log(`  · no changes to commit: ${message}`);
+    return;
+  }
+  console.log(`  staging: ${diff}`);
+
+  // COMMIT BEFORE MERGE — merging over uncommitted changes fails outright when
+  // concurrent pushes touch the same files.
+  execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+
+  for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
+    // Clear any wedged MERGE_HEAD before each attempt; a no-op when not mid-merge.
+    try { execSync('git merge --abort', { cwd: ROOT, stdio: 'pipe' }); } catch {}
+    try {
+      execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
+      execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
+      console.log(`  ✔ ${message}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
+      return;
+    } catch (e) {
+      if (attempt === PUSH_ATTEMPTS) {
+        throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${e.message.split('\n')[0]}`);
+      }
+      // Pure random jitter, not linear/exponential — decorrelates concurrent writers.
+      const wait = 1 + Math.floor(Math.random() * 91);
+      console.log(`  … push attempt ${attempt} failed, retrying in ${wait}s`);
+      try { execSync(`sleep ${wait}`, { stdio: 'pipe' }); } catch {}
+    }
   }
 }
 
@@ -75,8 +140,8 @@ function rankArray(arr, sortKey = 'v') {
 }
 
 const EMPTY_RECORDS = () => ({
-  playerPTS:       [],  // phase 2 — API
-  playerThreePt:   [],  // phase 2 — API
+  playerPTS:       [],  // phase 2 — local (leaderboard + player files)
+  playerThreePt:   [],  // phase 2 — local (leaderboard + player files)
   teamPTS:         [],  // phase 1 — all games
   teamThreePt:     [],  // phase 1 — box scores only (noted in output)
   highestCombined: [],  // phase 1 — all games
@@ -213,17 +278,6 @@ for (const sid of sidsToScan) {
 
 console.log(`  Phase 1 complete: ${gamesChecked} games checked, ${boxScoreGames} with box scores`);
 
-// ─── Phase 2: publicProfileStatistics for player records ─────────────────────
-
-console.log('\n── Phase 2: Player records via API (all public players, all games) ──');
-
-const HEADERS_API = {
-  'accept': '*/*', 'origin': 'https://www.playhq.com',
-  'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant': 'basketball-victoria', 'content-type': 'application/json',
-};
-
-
 // ─── Phase 2: player single-game records (local — no API calls) ───────────────
 // Sources leaderboard/all-time.json maxGamePTS / maxGameThreePt entries,
 // then reads player.records for the gameKey to look up game context.
@@ -280,8 +334,6 @@ if (!lbData) {
     console.log(`  ${recCat}: ${records[recCat].length} entries`);
   }
 }
-
-
 
 // Assign ranks and write final output
 for (const key of Object.keys(records)) {

@@ -15,11 +15,17 @@
 // Dry run: node scripts/build-player-games.js --dry-run
 // Force:   node scripts/build-player-games.js --force
 //
-// 2026-07-10: g.p[].id may be a truncated 10-char uuid prefix (see
-// scripts/lib/uuid-prefix.cjs) — part of the UUID-storage migration. It's
-// resolved back to a full uuid in phase 1 before being used as the
-// playerGames map key, since phase 2 looks entries up by the FULL uuid
-// taken from each player file's own filename.
+// g.p[].id is stored TRUNCATED at TRUNC_LEN = 13 (see scripts/lib/uuid-prefix.cjs).
+// It is resolved back to a full uuid in phase 1 before being used as the
+// playerGames map key, since phase 2 looks entries up by the FULL uuid taken
+// from each player file's own filename. resolveToFullUuid is alias-aware
+// (players/indexes first, players/aliases fallback at trunc-13 and the legacy
+// 10-char length, self-wins on full ids).
+//   2026-07-30: this comment previously said "truncated 10-char uuid prefix".
+//   10 chars is only 9 real hex digits (the first hyphen sits at index 8) = 36
+//   bits ≈ 63% birthday-collision probability at ~370k players, which is exactly
+//   why TRUNC_LEN was moved to 13. The 10-char path survives only as the
+//   resolver's legacy fallback.
 
 import fs   from 'fs';
 import path from 'path';
@@ -33,30 +39,83 @@ const ROOT = path.join(__dirname, '..');
 const DRY_RUN         = process.argv.includes('--dry-run');
 const FORCE           = process.argv.includes('--force');
 const COMMIT_INTERVAL = 8;    // commit every N prefix dirs written (8 × ~1450 players = ~11,600 per commit)
+const PUSH_ATTEMPTS   = 60;
 const PROGRESS_FILE   = path.join(ROOT, 'scripts', '.build-player-games-progress.json');
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 
-function gitCommit(message, dirs) {
+// ─── House git pattern ────────────────────────────────────────────────────────
+// Stage per-path → print the staged shortstat → COMMIT FIRST → fetch/merge -X
+// ours/push with a 60-attempt random-jitter retry → THROW when exhausted.
+//
+// Per-path staging: `git add` is ATOMIC across pathspecs. One combined
+// `git add a b` where ANY pathspec matches nothing (absent AND untracked) exits
+// 128 and stages NOTHING — including the valid paths beside it. That is the
+// shape that discarded a whole 28-minute discover-fixtures run (30,426 games,
+// 2026-07-19). Staging each path in its own try/catch means a miss skips only
+// itself, and the printed shortstat proves what actually staged.
+//
+// THROW on exhausted push: the old version caught every git failure, printed one
+// stderr line and returned, so a lost push under contention discarded that
+// commit's ~11,600 player files while the job stayed green. This script writes
+// players/ — the most contended path in the repo — so it needs the same retry
+// the other player-file writers use. A red job beats silently discarded work.
+function gitCommit(message, paths) {
   if (DRY_RUN) return;
-  try {
-    execSync(`git add ${dirs.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
-    // --shortstat, not --stat: --stat prints a per-file line and scales with
-    // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
-    // repo this size), --shortstat stays a single small summary line.
-    const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
-    if (!diff) return;
-    execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git fetch origin main',                   { cwd: ROOT, stdio: 'pipe' });
-    // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
-    // class as --stat above) — scales with what's landed on main since the
-    // last fetch, not with what this run is committing.
-    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat',  { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
-    console.log(`  ✔ ${message}`);
-  } catch (e) {
-    console.error(`  ✗ git: ${e.message.split('\n')[0]}`);
+
+  let staged = 0;
+  for (const p of paths) {
+    try {
+      execSync(`git add -- ${p}`, { cwd: ROOT, stdio: 'pipe' });
+      staged++;
+    } catch (e) {
+      // Absent AND untracked (or ignored) — skip this path only.
+      console.log(`  · not staged: ${p} — ${e.message.split('\n')[0]}`);
+    }
+  }
+  if (!staged) {
+    console.log(`  · nothing staged, skipping commit: ${message}`);
+    return;
+  }
+
+  // --shortstat, not --stat: --stat prints a per-file line and scales with
+  // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
+  // repo this size), --shortstat stays a single small summary line.
+  const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+  if (!diff) {
+    // Legitimate: a player file already carrying the correct games[] is
+    // rewritten byte-identically and therefore has nothing to commit.
+    console.log(`  · no changes to commit: ${message}`);
+    return;
+  }
+  console.log(`  staging: ${diff}`);
+
+  // COMMIT BEFORE MERGE — merging over uncommitted changes fails outright when
+  // concurrent pushes touch the same files.
+  execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+
+  for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
+    // Clear any wedged MERGE_HEAD before each attempt; a no-op when not mid-merge.
+    try { execSync('git merge --abort', { cwd: ROOT, stdio: 'pipe' }); } catch {}
+    try {
+      execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+      // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
+      // class as --stat above) — scales with what's landed on main since the
+      // last fetch, not with what this run is committing.
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
+      execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
+      console.log(`  ✔ ${message}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
+      return;
+    } catch (e) {
+      if (attempt === PUSH_ATTEMPTS) {
+        throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${e.message.split('\n')[0]}`);
+      }
+      // Pure random jitter, not linear/exponential — decorrelates concurrent writers.
+      const wait = 1 + Math.floor(Math.random() * 91);
+      console.log(`  … push attempt ${attempt} failed, retrying in ${wait}s`);
+      try { execSync(`sleep ${wait}`, { stdio: 'pipe' }); } catch {}
+    }
   }
 }
 
