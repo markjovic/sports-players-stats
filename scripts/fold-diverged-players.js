@@ -22,8 +22,19 @@
 //                     stats NEVER summed; old file deleted.
 //   index          -> entry moved old key -> api id, enriched fields carried,
 //                     entry-internal uuid re-pointed, histories unioned.
-// Aliases need nothing here — the redirect was written at discovery
-// (fetch-profile-stats.js recordAliasDiscovery).
+// Aliases DO need work here. 2026-07-30: the comment that used to sit here said
+// "aliases need nothing — the redirect was written at discovery". That is true for
+// exactly ONE alias per folded player (trunc(oldKey) -> apiId, written by
+// fetch-profile-stats.js recordAliasDiscovery) and FALSE for every OTHER alias
+// entry whose VALUE is that old key. A player can carry several spectatorIds, each
+// with its own alias entry aimed at the same file. This job deletes that file on
+// BOTH paths (promote and merge), so those other aliases are left pointing at
+// nothing. The 2026-07-30 fold of 2,263 players left 268 such dangling aliases
+// (16 -> 284); of the ten sampled, 10/10 were files this script had deleted, split
+// 6 promotes / 4 merges — so it was never merge-specific.
+// An alias entry is { <13-char spectator id>: <36-char full uuid> } living in the
+// shard named by the first two hex chars of its KEY. Repointing rewrites only the
+// VALUE, so no entry ever changes shard.
 //
 // Idempotent: a second run finds zero apiId fields and exits 0. Ends with a
 // full re-scan asserting exactly that before committing. Single commit,
@@ -32,6 +43,11 @@
 // Usage:
 //   node scripts/fold-diverged-players.js            # fold + commit
 //   node scripts/fold-diverged-players.js --dry-run  # report only
+//   node scripts/fold-diverged-players.js --repoint-only
+//       Repair ONLY the alias values orphaned by a PREVIOUS fold, using the
+//       oldKey -> apiId pairs in reports/fold-diverged.json. No player files are
+//       read or written. Needed because the fold is idempotent — after it has run
+//       there is nothing left to detect, so a corrected script cannot self-heal.
 // Env: FOLD_NO_GIT=1 disables git (local testing only).
 
 'use strict';
@@ -45,9 +61,15 @@ const { isPlaceholderName } = require('./lib/namespace-resolve.cjs');
 const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const INDEX_DIR = path.join(ROOT, 'players', 'indexes');
+const ALIAS_DIR = path.join(ROOT, 'players', 'aliases');
 const OUT_REPORT = path.join(ROOT, 'reports', 'fold-diverged.json');
 
 const DRY = process.argv.includes('--dry-run');
+// --repoint-only: skip the fold entirely and just repair alias values using the
+// oldKey -> apiId pairs recorded in reports/fold-diverged.json. Needed because the
+// fold is idempotent: once it has run, a corrected script finds zero apiId fields
+// and will never revisit the aliases the earlier run orphaned.
+const REPOINT_ONLY = process.argv.includes('--repoint-only');
 const NO_GIT = process.env.FOLD_NO_GIT === '1';
 
 const HEX = '0123456789abcdef';
@@ -166,6 +188,72 @@ function moveIndexEntry(oldKey, apiId) {
   }
 }
 
+// ─── Alias repoint ────────────────────────────────────────────────────────────
+// Follow a chain in case one run's apiId is another entry's oldKey. Capped and
+// cycle-guarded; the pre-pass already rejects apiId === key, so chains are short.
+function resolveThroughMap(target, map) {
+  let cur = target;
+  const seen = new Set();
+  for (let i = 0; i < 10 && map[cur] !== undefined; i++) {
+    if (seen.has(cur)) break;
+    seen.add(cur);
+    cur = map[cur];
+  }
+  return cur;
+}
+
+// Rewrite every alias VALUE that points at a file this run deleted.
+// Key order is preserved rather than re-sorted: the only intended diff is the
+// changed values, and re-sorting would rewrite shards that need no change.
+function repointAliases(map) {
+  const written = [];
+  let entries = 0, repointed = 0, shardsTouched = 0;
+  for (const bucket of ALL_BUCKETS) {
+    const p = path.join(ALIAS_DIR, `${bucket}.json`);
+    let m;
+    try { m = readJson(p); }
+    catch (e) { if (e.code === 'ENOENT') continue; throw e; }
+    let dirty = false;
+    for (const [k, v] of Object.entries(m)) {
+      entries++;
+      if (typeof v !== 'string' || map[v] === undefined) continue;
+      const nv = resolveThroughMap(v, map);
+      if (nv === v) continue;
+      m[k] = nv;
+      dirty = true;
+      repointed++;
+    }
+    if (dirty) {
+      shardsTouched++;
+      if (!DRY) { fs.writeFileSync(p, JSON.stringify(m)); written.push(p); }
+    }
+  }
+  log(`aliases: ${entries} entries scanned, ${repointed} repointed across ${shardsTouched} shard(s)`);
+  return { written, entries, repointed, shardsTouched };
+}
+
+// Post-check input. `map` scopes blame: a dangling target this run created is a
+// bug and must block the commit; one that predates the run is reported only.
+function scanDanglingAliases(map) {
+  let total = 0, dangling = 0, mine = 0;
+  const samples = [];
+  for (const bucket of ALL_BUCKETS) {
+    const p = path.join(ALIAS_DIR, `${bucket}.json`);
+    let m;
+    try { m = readJson(p); }
+    catch (e) { if (e.code === 'ENOENT') continue; throw e; }
+    for (const [k, v] of Object.entries(m)) {
+      if (typeof v !== 'string' || v.length !== 36) continue;
+      total++;
+      if (fs.existsSync(playerPath(v))) continue;
+      dangling++;
+      if (map && map[v] !== undefined) mine++;
+      if (samples.length < 20) samples.push(`${k} -> ${v}`);
+    }
+  }
+  return { total, dangling, mine, samples };
+}
+
 // ─── Git — in-script single commit, proven push pattern ───────────────────────
 function git(args) {
   return execFileSync('git', args, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString();
@@ -242,8 +330,39 @@ function scanDiverged() {
   return { diverged, files };
 }
 
+// Repair-only path for aliases orphaned by an EARLIER fold. Reads the pairs from
+// reports/fold-diverged.json — the fold itself is idempotent, so once it has run
+// there is no other record of which files it deleted.
+function repointOnlyMode() {
+  let report;
+  try { report = readJson(OUT_REPORT); }
+  catch (e) {
+    throw new Error(`--repoint-only needs ${OUT_REPORT}, which records the oldKey -> apiId pairs of a previous fold. Could not read it: ${e.message}`);
+  }
+  const map = {};
+  for (const e of (report.entries || [])) {
+    if (e && typeof e.oldKey === 'string' && typeof e.apiId === 'string') map[e.oldKey] = e.apiId;
+  }
+  log(`repoint-only: ${Object.keys(map).length} oldKey -> apiId pair(s) from ${report.generatedAt || 'unknown date'}`);
+  if (!Object.keys(map).length) { log('report contains no entries — nothing to repoint.'); return; }
+
+  const before = scanDanglingAliases(map);
+  log(`before: ${before.dangling} dangling of ${before.total} alias values (${before.mine} attributable to that fold)`);
+
+  const r = repointAliases(map);
+
+  const after = scanDanglingAliases(map);
+  log(`after:  ${after.dangling} dangling (${after.mine} still attributable — these are NOT in the report and need separate diagnosis)`);
+  for (const smp of after.samples.slice(0, 10)) log(`  still dangling: ${smp}`);
+
+  if (DRY) { log('DRY RUN — nothing written.'); return; }
+  gitCommitPush(r.written, `fold-diverged: repoint ${r.repointed} alias values orphaned by an earlier fold`);
+  log('repoint-only complete.');
+}
+
 function main() {
-  log(`fold-diverged-players ${DRY ? '(DRY RUN)' : ''}`);
+  log(`fold-diverged-players ${DRY ? '(DRY RUN)' : ''}${REPOINT_ONLY ? ' (REPOINT-ONLY)' : ''}`);
+  if (REPOINT_ONLY) { repointOnlyMode(); return; }
   const { diverged, files } = scanDiverged();
 
   if (diverged.length === 0) {
@@ -317,11 +436,28 @@ function main() {
   let indexPaths = [];
   if (!DRY) indexPaths = flushIndexShards();
 
-  // Post-check: invariant must now hold.
+  // Repoint aliases whose value is a file this run just deleted. Runs for BOTH
+  // promotes and merges — every folded oldKey has had its file removed.
+  const foldMap = {};
+  for (const e of entries) foldMap[e.oldKey] = e.apiId;
+  const alias = repointAliases(foldMap);
+
+  // Post-check: both invariants must hold.
   if (!DRY) {
     const recheck = scanDiverged();
     if (recheck.diverged.length !== 0) {
       throw new Error(`post-check failed: ${recheck.diverged.length} apiId field(s) remain — NOT committing`);
+    }
+    // The old post-check asserted apiId-count only, so it PASSED on the run that
+    // orphaned 268 aliases. Blame is scoped: a dangling target this run created
+    // blocks the commit; one that predates the run is reported and allowed.
+    const dang = scanDanglingAliases(foldMap);
+    if (dang.mine !== 0) {
+      for (const smp of dang.samples.slice(0, 10)) log(`DANGLING: ${smp}`);
+      throw new Error(`post-check failed: ${dang.mine} alias value(s) still point at files this run deleted — NOT committing`);
+    }
+    if (dang.dangling !== 0) {
+      log(`NOTE: ${dang.dangling} pre-existing dangling alias value(s) remain — not caused by this run, not blocking. Run with --repoint-only against an older report, or diagnose separately.`);
     }
   }
 
@@ -332,6 +468,9 @@ function main() {
     folded: diverged.length,
     promotes, merges,
     indexShardsTouched: indexPaths.length,
+    aliasEntriesScanned: alias.entries,
+    aliasValuesRepointed: alias.repointed,
+    aliasShardsTouched: alias.shardsTouched,
     entries,
   };
   if (!DRY) {
@@ -348,6 +487,8 @@ function main() {
     `| promotes | ${promotes} |`,
     `| merges | ${merges} |`,
     `| index shards touched | ${indexPaths.length} |`,
+    `| alias values repointed | ${alias.repointed} |`,
+    `| alias shards touched | ${alias.shardsTouched} |`,
     `| post-check: zero apiId fields | ${!DRY} |`,
   ].join('\n') + '\n';
   console.log(md);
@@ -356,7 +497,7 @@ function main() {
   }
 
   gitCommitPush(
-    [...written, ...deleted, ...indexPaths, OUT_REPORT],
+    [...written, ...deleted, ...indexPaths, ...alias.written, OUT_REPORT],
     `fold-diverged: ${promotes} promoted, ${merges} merged to api ids`
   );
   log('fold complete.');
