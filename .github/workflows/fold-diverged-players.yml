@@ -9,11 +9,12 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, single commit. Normally triggered automatically by matrix completion with mode=apply."
+        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, repoint orphaned aliases, single commit. repoint-only = do NOT fold; repair just the alias values orphaned by a PREVIOUS fold, using the oldKey -> apiId pairs in reports/fold-diverged.json. Normally triggered automatically by matrix completion with mode=apply."
         type: choice
         options:
           - dry-run
           - apply
+          - repoint-only
         default: dry-run
 
 permissions:
@@ -40,10 +41,14 @@ jobs:
 
       # Manual dispatch defaults to dry-run for safe inspection; the matrix
       # trigger passes mode=apply explicitly.
+      # repoint-only exists because the fold is IDEMPOTENT: once it has run there
+      # are zero apiId fields left, so a corrected script can never revisit the
+      # aliases an earlier run orphaned. It reads reports/fold-diverged.json, which
+      # is the only surviving record of which files that run deleted.
       - name: Run fold
         run: |
-          if [ "${{ github.event.inputs.mode }}" = "apply" ]; then
-            node scripts/fold-diverged-players.js
-          else
-            node scripts/fold-diverged-players.js --dry-run
-          fi
+          case "${{ github.event.inputs.mode }}" in
+            apply)        node scripts/fold-diverged-players.js ;;
+            repoint-only) node scripts/fold-diverged-players.js --repoint-only ;;
+            *)            node scripts/fold-diverged-players.js --dry-run ;;
+          esac
