@@ -7,6 +7,9 @@
 // Usage:
 //   node scripts/fetch-profile-stats.js --shard=3a
 //   node scripts/fetch-profile-stats.js --shard=3a --force
+//   node scripts/fetch-profile-stats.js --shard=3a --recheck-private   # re-offer
+//       players already marked private:true (see RECHECK_PRIVATE below) without
+//       the cost of a repo-wide --force.
 //
 // Writes to each players/{shard}/{uuid}.json:
 //   sports.Basketball.gp             — career games played
@@ -22,7 +25,14 @@
 //   seasons[].regs[].stats.gp/pts/fg/ft/threePt/fouls — per-reg totals
 //   private                          — true | false (explicit flag, added 2026-07-10)
 //
-// statsChecked is ONLY written on a real data response.
+// statsChecked is written on EVERY terminal outcome — a real data response OR a
+// confirmed not-obtainable profile (see markNotObtainable). It is NOT written for
+// transient outcomes (network/GraphQL error, CloudFront block), so those players
+// stay retryable. This header previously claimed "ONLY written on a real data
+// response", which was false: the application-403 path has always written it
+// (2026-07-29 — the claim also propagated into OUTSTANDING_TASKS §F and
+// REPO_MANIFEST §6.9/§6.10, which described 403 as non-persisting).
+//
 // A 403 that persists after a session refresh = truly inaccessible profile.
 // A 403 that resolves after a session refresh = session expiry (retry succeeds).
 // All stats use seenGameKeys dedup — no double-counting across multiple regs.
@@ -32,7 +42,8 @@
 // never scored looks identical in storage to a confirmed-403 profile). This
 // now writes an explicit player.private boolean on every outcome, so the two
 // cases are distinguishable and so private<->public transitions are tracked:
-//   - 403/not-found  -> private = true.  Name is left untouched (if a real
+//   - withheld (403 / not-found / 200-with-null-stats-object, all via
+//     markNotObtainable) -> private = true.  Name is left untouched (if a real
 //     name is already on file from before the profile went private, we keep
 //     showing it — the user's requirement is "we still know their name but
 //     mark them as private", not "forget the name").
@@ -64,10 +75,19 @@ const ROOT = path.join(__dirname, '..');
 const args  = process.argv.slice(2);
 const SHARD = (args.find(a => a.startsWith('--shard=')) || '').replace('--shard=', '').toLowerCase().trim();
 const FORCE = args.includes('--force');
+// --recheck-private re-offers players already marked private:true even though they
+// carry statsChecked, WITHOUT the cost of a repo-wide --force (411k files). Withheld
+// juniors go public between seasons, and statsChecked would otherwise make
+// markNotObtainable permanent in practice — reversible only in principle.
+// A re-check that comes back still-withheld simply re-marks (non-destructively, see
+// markNotObtainable) and costs one write; one that comes back public writes real
+// stats and clears private via finishOk, which already sets private = false on
+// every successful fetch. Intended cadence: season boundaries.
+const RECHECK_PRIVATE = args.includes('--recheck-private');
 const MAX   = (() => { const a = args.find(a => a.startsWith('--max=')); return a ? parseInt(a.split('=')[1]) : Infinity; })();
 
 if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
-  console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force]');
+  console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force] [--recheck-private]');
   process.exit(1);
 }
 
@@ -218,9 +238,14 @@ function parseProfileStats(data) {
   // NO player name is available from publicProfileStatistics. seasonStatistics[].name
   // is the SEASON label ("Autumn 2021", "Summer 2022/23"), NOT the person — reading
   // [0].name here wrote season strings into player.name for every player who reached
-  // finishOk without a prior name (40,034 files; see repair-season-names.js). The real
-  // name only comes from the spectator side (nightly-crawl.js Phase 3 rosters). Never
+  // finishOk without a prior name (40,034 files; see repair-season-names.js). Never
   // derive a name from this call again.
+  //
+  // Real names come from two places, neither of them this query:
+  //   1. publicProfile on the ACCOUNT tenant — fetchPublicProfileName() below. The
+  //      canonical id->name lookup; see playhq_api_reference.md -> publicProfile.
+  //   2. The spectator side (nightly-crawl.js Phase 3 rosters).
+  // This comment previously named only (2), predating fetchPublicProfileName().
   const playerName = null;
 
   const seenGameKeys = new Set();  // deduplicate games appearing in multiple registrations
@@ -329,24 +354,50 @@ const PUBLIC_PROFILE_QUERY = {
   operationName: 'publicProfile',
   query: 'query publicProfile($profileID: ID!) { publicProfile(profileID: $profileID) { id firstName lastName __typename } }',
 };
+// 2026-07-30: every null return below was previously indistinguishable — no status,
+// no reason, no counter. That is why a name-repair that has been failing on the same
+// player since 2026-06-27 was invisible for a month: the caller's `if (realName)`
+// guard silently keeps the bad name, and statsChecked is written regardless, so the
+// player is never re-queued. `lastFailReason` is set on every null path so the caller
+// can log WHY (instrumentation before theory — a status code and a body snippet beat
+// a hypothesis). Returns a trimmed name, or null.
+let lastPublicProfileFail = null;
 async function fetchPublicProfileName(profileID) {
+  lastPublicProfileFail = null;
   if (!sessionCookie) await refreshSession();
   const mkHeaders = () => ({ ...HEADERS_BASE, 'tenant': 'account', 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie });
   const body = JSON.stringify({ ...PUBLIC_PROFILE_QUERY, variables: { profileID } });
   const readName = async res => {
-    if (!res || res.status !== 200) return null;
-    let j = null; try { j = await res.json(); } catch (_) { return null; }
-    if (!j || j.errors) return null;
+    if (!res) { lastPublicProfileFail = 'no response'; return null; }
+    if (res.status !== 200) {
+      let snip = '';
+      try { snip = (await res.text()).replace(/\s+/g, ' ').trim().slice(0, 200); } catch (_) {}
+      lastPublicProfileFail = `HTTP ${res.status}${snip ? ` — ${snip}` : ''}`;
+      return null;
+    }
+    let j = null; try { j = await res.json(); } catch (_) { lastPublicProfileFail = 'unparseable JSON'; return null; }
+    if (!j) { lastPublicProfileFail = 'empty body'; return null; }
+    if (j.errors) {
+      lastPublicProfileFail = `graphql: ${String(j.errors[0] && j.errors[0].message).slice(0, 160)}`;
+      return null;
+    }
     const pr = j.data && j.data.publicProfile;
-    if (!pr) return null;
+    // 200 + data.publicProfile === null is the interesting case: the id is simply
+    // not resolvable on the ACCOUNT tenant. A folded player is keyed by its api id,
+    // which may not be the account/spectator identity this endpoint expects.
+    if (!pr) { lastPublicProfileFail = 'publicProfile null (id not on account tenant)'; return null; }
     const nm = `${pr.firstName || ''} ${pr.lastName || ''}`.trim();
-    return nm || null;
+    if (!nm) { lastPublicProfileFail = 'profile found but no first/last name'; return null; }
+    return nm;
   };
   try {
     let res = await doFetch(API_URL, { method: 'POST', headers: mkHeaders(), body });
     if (res.status === 403) { await refreshSession(); res = await doFetch(API_URL, { method: 'POST', headers: mkHeaders(), body }); }
     return await readName(res);
-  } catch (_) { return null; }
+  } catch (e) {
+    lastPublicProfileFail = `exception: ${String(e && e.message).slice(0, 160)}`;
+    return null;
+  }
 }
 
 async function fetchProfile(profileID) {
@@ -438,7 +489,8 @@ async function fetchProfile(profileID) {
 // playhq_api_reference.md via lib/namespace-resolve.cjs.
 //
 // gradePlayerStatistics: cheap (cached per grade — many players share a grade)
-// but hard-capped at 50 highest-appearance players, and only usable when the
+// and genuinely paginated (see the CORRECTED note below — this line previously
+// asserted a hard cap of 50, contradicting it). Only usable when the
 // player has a real tid+gid on a reg (true for existing players and, since the
 // nightly-crawl.js Phase 4 fix, for brand-new stubs too — but NOT for players
 // whose only regs predate that fix). profileSearch (+ orgId disambiguation) is
@@ -620,6 +672,122 @@ function recordAliasDiscovery(spectatorUuid, apiId) {
   fs.writeFileSync(aliasPath, JSON.stringify(sorted));
 }
 
+// ─── Terminal write for a profile whose stats cannot be obtained ─────────────
+// Single write path for BOTH not-obtainable statuses, which until 2026-07-29 were
+// handled oppositely:
+//
+//   'private'      — application-403, or GraphQL NOT_FOUND. Always wrote statsChecked.
+//   'inaccessible' — HTTP 200 with publicProfileStatistics === null. Wrote NOTHING,
+//                    so those players carried no statsChecked and were re-fetched on
+//                    EVERY run, forever. `remaining` could never reach 0, and because
+//                    they produce no write the matrix's consecutive-zeros rule read
+//                    that as a completed sweep (211 players in the 2026-07-28 run).
+//
+// Both are the server deliberately withholding data, neither is an error, and neither
+// resolves on its own — so both are terminal and both are marked done. Recovery is
+// still attempted first in processUUID: a stored spectator-keyed id can be dead in the
+// api namespace for a live player (~46% of a sampled backlog), and marking without
+// attempting recovery would freeze exactly the players the recovery tiers exist for.
+//
+// private = true is set for both. The null test here is `!publicProfileStatistics`
+// (the whole object absent), NOT an empty seasonStatistics array — a registered player
+// who never played returns `seasonStatistics: []`, which is truthy and flows through
+// finishOk normally. So a null object is the API withholding, not "no games".
+// This state is sticky: statsChecked means only a --force sweep re-checks it, exactly
+// as for application-403 players today. To keep the flag conservative instead, drop the
+// `player.private = true` line below and these players fall back to name-pattern
+// inference in StatTrack.
+//
+// Counters: inaccessible is a REPORTING SUBSET of written (both increment here), so
+// `remaining` must subtract written and errors only — never both written and
+// inaccessible, which double-counted every 403 player before this change.
+function markNotObtainable(uuid, player, stats, prefix, short, reason) {
+  try {
+    if (!player.sports)            player.sports = {};
+    if (!player.sports.Basketball) player.sports.Basketball = {};
+    const bk = player.sports.Basketball;
+
+    // DIRTY-CHECK (2026-07-29) — without this, --recheck-private CANNOT TERMINATE.
+    // statsChecked used to be rewritten unconditionally, so a re-offered player who
+    // was still withheld got a fresh timestamp and nothing else. That is a modified
+    // file: packaged, committed, and counted as written. written > 0 resets
+    // consecutive_zeros to 0 on every run, recheck_private propagates to the next
+    // run, run 2 re-offers the identical population and writes fresh timestamps
+    // again — so the chain runs to run_number >= 150, exits max_runs RED, and the
+    // terminal fan-out (leaderboards / search-index / records / fold / team-stats)
+    // is gated on status == 'stuck' and therefore NEVER FIRES. The cost scales with
+    // the private population but the non-termination does not: it happens at any N.
+    //
+    // Skipping the no-op write also fixes the SEMANTICS rather than just papering
+    // over the loop. During a re-check sweep `written` becomes a TRANSITION count:
+    // a player who came back public writes real stats via finishOk (which sets
+    // private = false, so the flag self-repairs), and a player who stayed withheld
+    // writes nothing. "3 consecutive runs with 0 written" then means "no further
+    // private -> public transitions found", which is the correct terminal condition
+    // for a re-check instead of an accident of timestamp churn.
+    //
+    // Cost: statsChecked goes stale on players that stay withheld. Functionally
+    // harmless — its only job is the eligibility gate in main(), and a
+    // stale-but-present value gates identically. Deliberately NOT adding a
+    // privateCheckedAt field: bytes across a large population for no functional gain.
+    const alreadyMarked = !!bk.statsChecked && player.private === true;
+    const needsInit =
+      bk.foulOuts       === undefined ||
+      bk.maxGamePTS     === undefined ||
+      bk.maxGameThreePt === undefined ||
+      !player.records                 ||
+      player.records.maxGamePTS     === undefined ||
+      player.records.maxGameThreePt === undefined;
+
+    if (alreadyMarked && !needsInit) {
+      // Nothing to change on disk. Counted separately: NOT written (no write
+      // happened), NOT inaccessible (that counter means "newly marked", and must
+      // stay a strict subset of written), NOT an error, and NOT remaining (this
+      // player WAS reached and needs nothing).
+      stats.unchanged++;
+      console.log(`${prefix} · ${short} still ${reason} (no change)`);
+      return;
+    }
+
+    // NON-DESTRUCTIVE (2026-07-29). These five fields are INITIALISED when absent
+    // and PRESERVED when already populated. A withheld response must never erase
+    // data a previous public fetch captured — claude_context: "withheld/junior data
+    // must never be overwritten by an empty API response".
+    //
+    // Reachable, so not theoretical: statsChecked normally shields an
+    // already-fetched player, but `force` is an input on this very workflow and
+    // clear-stats-checked.js strips statsChecked repo-wide. On that sweep a player
+    // who was public in an earlier season and is withheld today comes back through
+    // here — and the unguarded version nulled their captured maxGamePTS, foulOuts
+    // and records. The withheld state is real and worth recording; the loss of a
+    // prior capture is not, and it is silent.
+    //
+    // Same rule for --recheck-private sweeps, which deliberately re-offer this
+    // exact population.
+    if (bk.foulOuts       === undefined) bk.foulOuts       = {};
+    if (bk.maxGamePTS     === undefined) bk.maxGamePTS     = null;
+    if (bk.maxGameThreePt === undefined) bk.maxGameThreePt = null;
+    bk.statsChecked = new Date().toISOString();
+
+    if (!player.records) player.records = {};
+    if (player.records.maxGamePTS     === undefined) player.records.maxGamePTS     = { v: null };
+    if (player.records.maxGameThreePt === undefined) player.records.maxGameThreePt = { v: null };
+
+    // Always current, never inferred: a withheld response is proof of the CURRENT
+    // state even when prior captured stats are retained above.
+    player.private = true; // explicit flag — name and any prior capture left intact
+    writePlayer(uuid, player);
+    stats.inaccessible++;
+    stats.written++;
+    console.log(`${prefix} — ${short} ${reason} (marked done)`);
+  } catch (err) {
+    // Write failed: no statsChecked on disk, so the player stays retryable. Counted
+    // as an error, never as written — otherwise remaining would over-report progress.
+    stats.errors++;
+    console.log(`${prefix} ✗ ${short} could not write not-obtainable marker: ${err.message}`);
+  }
+}
+
 // ─── Process one UUID ─────────────────────────────────────────────────────────
 
 async function processUUID(uuid, stats, idx) {
@@ -641,21 +809,17 @@ async function processUUID(uuid, stats, idx) {
   const queryId = player.apiId || uuid;
   const result = await fetchProfile(queryId);
 
-  if (result.status === 'inaccessible') {
-    // Should not normally reach here — kept as safety fallback
-    stats.inaccessible++;
-    console.log(`${prefix} — ${short} inaccessible`);
-    return;
-  }
-
-  if (result.status === 'private') {
-    // Before accepting "private": the STORED id (spectator-namespace) can be
-    // dead in the api namespace even for a real, live, public player — see
-    // diagnose-namespace-mismatch.js (validated live on 3 known cases) and
-    // diagnose-uuid-classification.js (~46% of a sampled backlog). Only
-    // attempt recovery if we're not ALREADY querying a previously-recovered
-    // apiId — if that itself now comes back private, the player is genuinely
-    // gone and we don't re-attempt recovery indefinitely.
+  if (result.status === 'private' || result.status === 'inaccessible') {
+    // Before accepting either status as terminal: the STORED id (spectator-
+    // namespace) can be dead in the api namespace even for a real, live, public
+    // player — see diagnose-namespace-mismatch.js (validated live on 3 known
+    // cases) and diagnose-uuid-classification.js (~46% of a sampled backlog).
+    // Extended 2026-07-29 to cover 'inaccessible' too: a 200-with-null-object is
+    // just as consistent with a namespace mismatch as a 403, and this class was
+    // previously marked terminal-but-unwritten without ever being offered to the
+    // recovery tiers. Only attempt recovery if we're not ALREADY querying a
+    // previously-recovered apiId — if that itself now comes back withheld, the
+    // player is genuinely gone and we don't re-attempt recovery indefinitely.
     if (!player.apiId) {
       const recovered = await attemptNamespaceRecovery(uuid, player);
       if (recovered && recovered.blocked) return { status: 'cloudfront-block' };
@@ -674,26 +838,12 @@ async function processUUID(uuid, stats, idx) {
       }
     }
 
-    // Genuine private/deleted profile (or recovery found nothing) — write
-    // statsChecked so we never retry.
-    stats.inaccessible++;
-    try {
-      if (!player.sports)            player.sports = {};
-      if (!player.sports.Basketball) player.sports.Basketball = {};
-      player.sports.Basketball.foulOuts       = {};
-      player.sports.Basketball.maxGamePTS     = null;
-      player.sports.Basketball.maxGameThreePt = null;
-      player.sports.Basketball.statsChecked   = new Date().toISOString();
-      if (!player.records) player.records = {};
-      player.records.maxGamePTS     = { v: null };
-      player.records.maxGameThreePt = { v: null };
-      player.private = true; // explicit flag — name/prior stats left untouched
-      writePlayer(uuid, player);
-      stats.written++; // counts toward completion — won't be retried
-    } catch (err) {
-      console.log(`${prefix} ✗ ${short} could not write private marker: ${err.message}`);
-    }
-    console.log(`${prefix} — ${short} private profile (marked done)`);
+    // Withheld profile (or recovery found nothing) — write statsChecked so we
+    // never retry. Reason distinguishes the two statuses in the log.
+    markNotObtainable(
+      uuid, player, stats, prefix, short,
+      result.status === 'private' ? 'private profile' : 'no stats object returned',
+    );
     return;
   }
 
@@ -719,8 +869,10 @@ async function processUUID(uuid, stats, idx) {
 async function finishOk(uuid, player, result, stats, prefix, short) {
   const parsed = parseProfileStats(result.data);
   if (!parsed) {
-    stats.inaccessible++;
-    console.log(`${prefix} — ${short} no profile data`);
+    // Same withheld class as status 'inaccessible' (seasonStatistics absent on an
+    // otherwise-ok response). Previously wrote nothing, so these players were
+    // re-fetched every run forever — see markNotObtainable.
+    markNotObtainable(uuid, player, stats, prefix, short, 'no profile data');
     return;
   }
 
@@ -734,8 +886,26 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
   const curName      = player.name;
   const contaminated = !!curName && (player.seasons || []).some(sn => normName(sn.sn) === normName(curName));
   if (!curName || isPlaceholderName(curName) || contaminated) {
-    const realName = await fetchPublicProfileName(uuid);
-    if (realName) player.name = realName;
+    // Use the SAME id the stats fetch used (queryId = player.apiId || uuid, L783).
+    // player.apiId is assigned before the recovery path calls finishOk, so this
+    // mirrors it on both paths. Previously this always passed the file uuid, even
+    // when recovery had just PROVEN that id dead in the api namespace and handed
+    // back a working apiId.
+    const nameId   = player.apiId || uuid;
+    const realName = await fetchPublicProfileName(nameId);
+    if (realName) {
+      player.name = realName;
+      if (contaminated) {
+        stats.nameHealed++;
+        console.log(`${prefix} ✎ ${short} name repaired: "${curName}" -> "${realName}"`);
+      }
+    } else if (contaminated) {
+      // The repair fired and FAILED. This is the case that went unseen for a month.
+      // statsChecked is still written below, so this player will not be re-queued —
+      // it needs a full sweep or a targeted re-run to be retried at all.
+      stats.nameHealFailed++;
+      console.log(`${prefix} ⚠ ${short} name STILL contaminated ("${curName}") — publicProfile(${String(nameId).slice(0, 8)}) gave nothing: ${lastPublicProfileFail || 'unknown'}`);
+    }
   }
 
   player.private = false; // explicit flag — a successful fetch proves the profile is currently public
@@ -842,6 +1012,28 @@ async function runPool(tasks, concurrency) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// Players this run never REACHED — the "re-run shard to continue" figure for a
+// CloudFront-blocked shard. Not the same as "players still lacking statsChecked":
+// an errored player was reached and will be retried next run, but is not remaining.
+//
+// Subtracts written, errors and unchanged. `inaccessible` is a reporting subset of
+// `written` (markNotObtainable increments both when it writes), so the old
+//   toFetch - written - inaccessible - errors
+// double-subtracted every withheld player. That is why a shard finishing on 211
+// unwritten players reported remaining = 0 while none of them had statsChecked —
+// the Math.max(0, …) floor hid the negative rather than the miscount.
+//
+// `unchanged` (2026-07-29) is the dirty-check population: already-marked withheld
+// players re-offered by --recheck-private that needed no write. They WERE reached,
+// so leaving them in remaining would report `remaining = N` on every run of a
+// re-check sweep and contradict this field's definition.
+//
+// A CloudFront-blocked shard stops mid-list; its unprocessed players are neither
+// written, errored nor unchanged, so they correctly fall into remaining.
+function remainingCount(stats) {
+  return Math.max(0, stats.toFetch - stats.written - stats.errors - stats.unchanged);
+}
+
 // doFetch: wraps https.request with keepAlive:false to force a new TCP connection
 // per request. This prevents CloudFront per-connection rate limiting.
 function doFetch(url, options) {
@@ -889,7 +1081,7 @@ function doFetch(url, options) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log(`\nfetch-profile-stats  shard=${SHARD}  force=${FORCE}`);
+  console.log(`\nfetch-profile-stats  shard=${SHARD}  force=${FORCE}  recheck-private=${RECHECK_PRIVATE}`);
   console.log('─'.repeat(50));
 
   const indexPath = path.join(ROOT, 'players', 'indexes', `${SHARD}.json`);
@@ -901,12 +1093,17 @@ async function main() {
   const uuids = Object.keys(index);
   console.log(`  UUIDs in shard: ${uuids.length}`);
 
+  let recheckable = 0;
   const allToFetch = FORCE
     ? uuids
     : uuids.filter(uuid => {
         try {
           const p = readPlayer(uuid);
-          return !p?.sports?.Basketball?.statsChecked;
+          if (!p?.sports?.Basketball?.statsChecked) return true;
+          // statsChecked present. Normally done — unless this is a private
+          // re-check sweep and the player is one of the withheld population.
+          if (RECHECK_PRIVATE && p.private === true) { recheckable++; return true; }
+          return false;
         } catch { return true; }
       });
   const toFetch = allToFetch.slice(0, MAX);
@@ -916,11 +1113,15 @@ async function main() {
     toFetch:      toFetch.length,
     written:      0,
     inaccessible: 0,
+    unchanged:    0,
     skipped:      uuids.length - toFetch.length,
     errors:       0,
+    nameHealed:     0,  // contaminated name successfully replaced with a real one
+    nameHealFailed: 0,  // contaminated name detected but publicProfile gave nothing
   };
 
   console.log(`  Already done (statsChecked present): ${stats.skipped}`);
+  if (RECHECK_PRIVATE) console.log(`  Re-offered (private:true, statsChecked present): ${recheckable}`);
   console.log(`  To fetch: ${stats.toFetch}`);
 
   if (stats.toFetch === 0) {
@@ -937,7 +1138,7 @@ async function main() {
     const summaryPath = path.join(ROOT, `shard-summary-${SHARD}.json`);
     fs.writeFileSync(summaryPath, JSON.stringify({
       shard: SHARD, total: 0, already_done: 0, written: 0,
-      inaccessible: 0, errors: 1, remaining: 0, blocked: false,
+      inaccessible: 0, unchanged: 0, errors: 1, remaining: 0, blocked: false,
     }));
     process.exit(0);
   }
@@ -979,25 +1180,31 @@ async function main() {
 
   console.log('\n' + '─'.repeat(50));
   console.log(`  Written:       ${stats.written}`);
-  console.log(`  Inaccessible:  ${stats.inaccessible}  (files untouched)`);
+  console.log(`  Not obtainable: ${stats.inaccessible}  (newly marked — subset of Written)`);
+  console.log(`  Still withheld: ${stats.unchanged}  (already marked, nothing to write)`);
   console.log(`  Skipped:       ${stats.skipped}`);
   console.log(`  Errors:        ${stats.errors}`);
+  if (stats.nameHealed || stats.nameHealFailed) {
+    console.log(`  Name repairs:  ${stats.nameHealed} fixed, ${stats.nameHealFailed} STILL contaminated`);
+  }
   if (stats.blocked) {
-    const remaining = stats.toFetch - stats.written - stats.inaccessible - stats.errors;
-    console.log(`  Remaining:     ~${remaining} (re-run shard to continue)`);
+    console.log(`  Remaining:     ~${remainingCount(stats)} (re-run shard to continue)`);
   }
 
   // Write shard summary for matrix aggregation
   const summaryPath = path.join(ROOT, `shard-summary-${SHARD}.json`);
-  const remaining = stats.toFetch - stats.written - stats.inaccessible - stats.errors;
+  const remaining = remainingCount(stats);
   fs.writeFileSync(summaryPath, JSON.stringify({
     shard:        SHARD,
     total:        stats.total,
     already_done: stats.skipped,
     written:      stats.written,
     inaccessible: stats.inaccessible,
+    unchanged:    stats.unchanged,
     errors:       stats.errors,
-    remaining:    Math.max(0, remaining),
+    name_healed:      stats.nameHealed,
+    name_heal_failed: stats.nameHealFailed,
+    remaining:    remaining,
     blocked:      stats.blocked || false,
   }));
   // No git operations — changed files are packaged and pushed by the aggregator job
