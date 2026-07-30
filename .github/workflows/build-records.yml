@@ -8,7 +8,12 @@ on:
       force:
         description: 'Force full re-scan (ignore resume progress)'
         required: false
-        default: 'false'
+        # 2026-07-30: was `default: 'false'` — a STRING default on a `type: boolean`
+        # input. Harmless here (the only consumer is a bash `=` compare, where the
+        # value renders as a string either way), but it is the same type-mismatch
+        # family as the job-level gate bug of 2026-07-21, so it is corrected rather
+        # than left as a trap for whoever next adds an expression-context gate.
+        default: false
         type: boolean
 
 permissions:
@@ -26,6 +31,10 @@ jobs:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # setup-node is safe in THIS job: build-records.js makes no network calls
+      # at all (the unused HEADERS_API const that implied otherwise was removed
+      # 2026-07-30). The no-setup-node rule applies only to jobs that fetch
+      # api.playhq.com.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
