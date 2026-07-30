@@ -146,15 +146,41 @@ async function refreshSession() {
   // If a refresh is already in flight, wait for it rather than firing another
   if (sessionPromise) return sessionPromise;
 
+  // 2026-07-30 — TWO bugs fixed here, both exposed by a 413k forced sweep:
+  //
+  // (1) A socket-level failure ESCAPED the 10-attempt loop entirely. The retry
+  //     loop only ever retried the "response arrived but carried no usable
+  //     cookies" case (`continue`). An exception from doFetch — ECONNRESET,
+  //     socket hang up, DNS — propagated out of BOTH for-loops, rejected the
+  //     promise and killed the shard with `FATAL: read ECONNRESET`. A normal
+  //     nightly refreshes a handful of times; a forced sweep refreshes every 28
+  //     batches across 256 shards, so a rare reset became near-certain somewhere.
+  //     Network errors are now caught per request and treated as a failed
+  //     attempt, so all 10 attempts are actually used.
+  //
+  // (2) `sessionPromise` was NOT cleared on the throw path — the assignment at
+  //     the end of the loop was skipped when doFetch threw, leaving a REJECTED
+  //     promise cached in the lock. Every later refreshSession() would return
+  //     that same rejected promise from the `if (sessionPromise)` fast path, so
+  //     the shard could never recover even if the caller retried. Now cleared in
+  //     a `.finally()`, which runs on success, throw AND rejection.
   sessionPromise = (async () => {
+    let lastErr = null;
     for (let attempt = 1; attempt <= 10; attempt++) {
       if (attempt > 1) await sleep(attempt * 5000);
       for (const body of COOKIE_QUERIES) {
-        const res = await doFetch(API_URL, {
-          method:  'POST',
-          headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-          body:    JSON.stringify(body),
-        });
+        let res;
+        try {
+          res = await doFetch(API_URL, {
+            method:  'POST',
+            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
+            body:    JSON.stringify(body),
+          });
+        } catch (err) {
+          lastErr = err;
+          console.log(`  … session refresh attempt ${attempt} network error: ${err.code || err.message} — retrying`);
+          continue;
+        }
         const raw = res.headers.get('set-cookie');
         if (!raw) continue;
         // Extract each named cookie value, then reassemble in the exact order
@@ -170,14 +196,14 @@ async function refreshSession() {
         const sub     = get('phq_sub');
         if (!tier || !session || !sub) continue;
         sessionCookie = `${tier}; ${session}; ${sub}`;
-        sessionPromise = null;
+        // NOTE: the exact string "Session refreshed (attempt N)" is used as
+        // verification evidence in OUTSTANDING §A — do not reword it.
         console.log(`  Session refreshed (attempt ${attempt})`);
         return;
       }
     }
-    sessionPromise = null;
-    throw new Error('Failed to obtain session cookie after 10 attempts');
-  })();
+    throw new Error(`Failed to obtain session cookie after 10 attempts${lastErr ? ` (last network error: ${lastErr.code || lastErr.message})` : ''}`);
+  })().finally(() => { sessionPromise = null; });
 
   return sessionPromise;
 }
