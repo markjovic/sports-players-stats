@@ -35,7 +35,12 @@
 //   node scripts/build-leaderboards.js --dry-run       — no writes, no commits
 //
 // 2026-07-10: uuid values written to all-time entries and season "uuid|tid" map
-// keys are truncated to a 10-char prefix (see scripts/lib/uuid-prefix.cjs) —
+// keys are truncated via truncateUuid() — TRUNC_LEN, currently 13 (see
+// scripts/lib/uuid-prefix.cjs). Comment corrected 2026-07-31: it said "10-char
+// prefix", which was the REJECTED length (10 chars is only 9 hex digits — the
+// first hyphen sits at index 8 — so ~36 bits and ~63% birthday-collision odds at
+// ~370k players). The CODE was always right: L248/L305 call truncateUuid(), and
+// every alias key in production is 13 chars. Only this comment was wrong —
 // part of the UUID-storage-footprint reduction. Every player uuid used in this
 // file is now sourced from the player file's own filename (never player.uuid,
 // a body field docs say was stripped in June 2026 — pushAllTime/pushSeason
@@ -221,7 +226,12 @@ function readPlayer(uuid) {
 // read player.uuid here; that's a body field, not guaranteed present for
 // every player file, unlike the filename.
 function pushAllTime(buckets, player, uuid) {
-  const name     = player.name || `Player #${uuid.slice(0, 10)}`;
+  // 2026-07-31: was `uuid.slice(0, 10)` — a hardcoded truncation in a placeholder
+  // minter, which the house rule forbids: every minter must use TRUNC_LEN so the
+  // same player gets the SAME placeholder name from every script. With a hardcoded
+  // 10 here and TRUNC_LEN 13 elsewhere, a player's placeholder name flipped between
+  // two forms depending on which script wrote last, dirtying the file every run.
+  const name     = player.name || `Player #${truncateUuid(uuid)}`;
   const bball    = player.sports?.Basketball;
   const lastSeason = (player.seasons || []).at(-1);
   const club     = lastSeason?.club || null;
@@ -293,7 +303,8 @@ function pushAllTime(buckets, player, uuid) {
 
 // uuid is always the FULL player uuid — see pushAllTime's comment above.
 function pushSeason(players, player, sid, uuid) {
-  const name   = player.name || `Player #${uuid.slice(0, 10)}`;
+  // See L224 — same hardcoded-truncation fix.
+  const name   = player.name || `Player #${truncateUuid(uuid)}`;
   const gender = player.gender || null;
   for (const season of (player.seasons || [])) {
     if (season.sid !== sid) continue;
