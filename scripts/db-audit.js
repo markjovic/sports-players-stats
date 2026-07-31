@@ -16,7 +16,6 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { TRUNC_LEN }         = require('./lib/uuid-prefix.cjs');
 const { isPlaceholderName } = require('./lib/namespace-resolve.cjs');
 const normName = s => String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
 
@@ -423,7 +422,13 @@ row('  identity',               fmt(aliasIdentity), pct(aliasIdentity, aliasEntr
 row('  redirect (diverged)',    fmt(aliasRedirect), pct(aliasRedirect, aliasEntries));
 row('  bad values',             fmt(aliasBadValue), aliasBadValue === 0 ? '✅' : '❌');
 row('  dangling targets (no file)', fmt(aliasDangling),
-  aliasDangling === withApiIdField ? `✅ equals apiId-field count (pending fold)` : `❌ MUST equal apiId-field count (${fmt(withApiIdField)})`);
+  // 2026-07-31: the failure hint used to say only "pending fold". Since 07-30 we know
+  // a second cause: the fold DELETES a merged-away player file and, until it was fixed,
+  // left every other alias pointing at that file dangling (284 of them). Both causes
+  // named so the next reader does not assume the first.
+  aliasDangling === withApiIdField
+    ? `✅ equals apiId-field count`
+    : `❌ MUST equal apiId-field count (${fmt(withApiIdField)}) — either a fold is pending, or a fold deleted files without repointing aliases (run fold-diverged-players.yml mode=repoint-only)`);
 for (const s of danglingSample) console.log(`      ${s}`);
 
 // alias-inverse: migration artifact — regenerated manually, goes stale by design
@@ -492,9 +497,6 @@ const seasonBreakdown = [];
 
 // UUID footprint — counts every full-length UUID string instance in p[]/hp[]/ap[]
 // and what it would cost at a truncated length instead (same precedent already
-// used for private-profile display names). The canonical truncation is now
-// 13 chars (uuid-prefix.cjs TRUNC_LEN); a full-length id here is a remnant.
-let uuidInstancesGames = 0, uuidBytesGamesFull = 0;
 
 const activeSids = sportsIndex
   ? new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id))
@@ -529,18 +531,6 @@ if (fs.existsSync(gamesDir)) {
       if (g.legacy && (g.hidden || g.profileOnly || g.forfeit || g.bye)) flagCollisions++;
       if (['LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(g.st || '')) inProgress++;
       if (g.hs === null) nullScore++;
-
-      // UUID footprint: p[].id, hp[].profileID, ap[].profileID
-      for (const uuidField of [
-        ...(g.p  || []).map(x => x && x.id),
-        ...(g.hp || []).map(x => x && x.profileID),
-        ...(g.ap || []).map(x => x && x.profileID),
-      ]) {
-        if (typeof uuidField === 'string' && uuidField.length > TRUNC_LEN) {
-          uuidInstancesGames++;
-          uuidBytesGamesFull += Buffer.byteLength(uuidField, 'utf8');
-        }
-      }
 
       // Finals detection from round name
       const rn = (g.rn || '').toLowerCase();
@@ -626,7 +616,6 @@ const searchDir = path.join(ROOT, 'search', 'players');
 let searchFiles = 0, searchKeys = 0;
 let searchValuesAreArrays = true, searchHasBothFormats = false;
 let fnSeen = false, snSeen = false;
-let uuidInstancesSearch = 0, uuidBytesSearchFull = 0;
 
 if (fs.existsSync(searchDir)) {
   const files = fs.readdirSync(searchDir).filter(f => f.endsWith('.json'));
@@ -637,14 +626,6 @@ if (fs.existsSync(searchDir)) {
     if (!data) continue;
     const keys = Object.keys(data);
     searchKeys += keys.length;
-    for (const v of Object.values(data)) {
-      for (const entry of (Array.isArray(v) ? v : [])) {
-        if (entry && typeof entry.id === 'string' && entry.id.length > TRUNC_LEN) {
-          uuidInstancesSearch++;
-          uuidBytesSearchFull += Buffer.byteLength(entry.id, 'utf8');
-        }
-      }
-    }
     if (i % step === 0) {
       for (const [k, v] of Object.entries(data)) {
         if (!Array.isArray(v)) searchValuesAreArrays = false;
@@ -667,7 +648,6 @@ section('6 · leaderboard/');
 const lbDir     = path.join(ROOT, 'leaderboard');
 const lbAllTime = readJSON(path.join(lbDir, 'all-time.json'));
 row('all-time.json', lbAllTime ? '✅ present' : '❌ MISSING');
-let uuidInstancesLb = 0, uuidBytesLbFull = 0;
 if (lbAllTime) {
   const cats = Object.keys(lbAllTime);
   row('  Categories', cats.length, cats.join(', '));
@@ -679,12 +659,6 @@ if (lbAllTime) {
       row(`  ${cat}`, fmt(entries), badEntries.length > 0 ? `❌ ${badEntries.length} entries > 1` : '✅ all ≤ 1');
     } else {
       row(`  ${cat}`, fmt(entries));
-    }
-    for (const e of (lbAllTime[cat] || [])) {
-      if (e && typeof e.uuid === 'string' && e.uuid.length > TRUNC_LEN) {
-        uuidInstancesLb++;
-        uuidBytesLbFull += Buffer.byteLength(e.uuid, 'utf8');
-      }
     }
   }
 }
@@ -698,26 +672,9 @@ if (fs.existsSync(lbSeasonDir)) {
     const data = readJSON(path.join(lbSeasonDir, f));
     if (!data) continue;
     if (!schemaCheckedPlayersMap && typeof data.players === 'object' && !Array.isArray(data.players)) schemaCheckedPlayersMap = true;
-    // players map keys are "uuid|tid" — the uuid portion is full-length
-    for (const key of Object.keys(data.players || {})) {
-      const uuidPart = key.split('|')[0];
-      if (uuidPart && uuidPart.length > TRUNC_LEN) {
-        uuidInstancesLb++;
-        uuidBytesLbFull += Buffer.byteLength(uuidPart, 'utf8');
-      }
-    }
     for (const [k, v] of Object.entries(data)) {
       if (k === 'players' || !Array.isArray(v)) continue;
       if (v[0]?.id !== undefined) schemaCheckedIdvArrays = true;
-      for (const e of v) {
-        if (e && typeof e.id === 'string') {
-          const uuidPart = e.id.split('|')[0];
-          if (uuidPart.length > TRUNC_LEN) {
-            uuidInstancesLb++;
-            uuidBytesLbFull += Buffer.byteLength(uuidPart, 'utf8');
-          }
-        }
-      }
     }
   }
   row('season/{seasonId}.json files', fmt(lbSeasonFiles));
@@ -753,24 +710,6 @@ row('Teams sampled (first 20 files)',     fmt(tsTeams));
 if (tsTeams > 0) {
   row('  With non-empty roster',          fmt(tsWithRoster),   pct(tsWithRoster, tsTeams));
   row('  With fixtures',                  fmt(tsWithFixtures), pct(tsWithFixtures, tsTeams));
-}
-
-// Full scan (all files, not just the 20-file sample above) for accurate UUID byte
-// tallying — roster is keyed by full player UUID.
-let uuidInstancesTs = 0, uuidBytesTsFull = 0;
-if (fs.existsSync(tsDir)) {
-  for (const f of fs.readdirSync(tsDir).filter(f => f.endsWith('.json'))) {
-    const data = readJSON(path.join(tsDir, f));
-    if (!data) continue;
-    for (const team of Object.values(data)) {
-      for (const uuid of Object.keys(team.roster || {})) {
-        if (uuid.length > TRUNC_LEN) {
-          uuidInstancesTs++;
-          uuidBytesTsFull += Buffer.byteLength(uuid, 'utf8');
-        }
-      }
-    }
-  }
 }
 
 // ─── 8. venue-lookup ─────────────────────────────────────────────────────────
@@ -931,7 +870,14 @@ section('11b · Repo hygiene');
       const ageDays = Math.floor((Date.now() - fs.statSync(p).mtimeMs) / 86400000);
       row(`reports/${f}${isDir ? '/' : ''}`, `${ageDays}d old`, '⚠️  not on keep-list — delete with its script');
     }
-    row('reports/ keep-list files present', fmt(kept), kept === KEEP.size - (fs.existsSync(path.join(reportsDir,'fold-diverged.json')) ? 0 : 1) ? '✅' : 'ℹ️');
+    // 2026-07-31: the old condition was `kept === KEEP.size - (fold-diverged ? 0 : 1)`,
+    // which assumed every keep-list entry always exists on disk. Once the list grew to
+    // 10 and only 8 were present it could never show ✅ — an unreachable success state
+    // is just noise. Now it names WHICH are absent, which is the actionable part
+    // (e.g. rebuild-player-index depends on rekey-apply-log.json being there).
+    const missingKeep = [...KEEP].filter(f => !fs.existsSync(path.join(reportsDir, f)));
+    row('reports/ keep-list files present', `${kept}/${KEEP.size}`,
+      missingKeep.length ? `ℹ️  absent: ${missingKeep.join(', ')}` : '✅ all present');
   }
 }
 
@@ -982,33 +928,15 @@ if (withApiIdField > 0) {
 // Measures every place a FULL 36-char UUID is stored as a repeated data value
 // (not a filename/directory — players/{shard}/{uuid}.json already encodes it
 // for free, and player.uuid is already stripped from the file body, June 2026).
-// The 13-char truncation (uuid-prefix.cjs TRUNC_LEN) is already applied to these
-// sources, so counts below are REMAINING full-length (36-char) instances and
-// should trend to ~0. This is a measurement only; no migration is applied here.
+// §13 (UUID storage footprint) REMOVED 2026-07-31. It measured how much space a
+// full-length -> 13-char UUID migration would save. That question is CLOSED: the
+// final measurement was 57.61 MB on a 6.13 GB repo (0.9%), with leaderboard/ holding
+// ZERO full-length UUIDs — so the migration was rejected as not worth touching every
+// exact-string consumer. See OUTSTANDING §D7 and REPO_MANIFEST §6.11 for the number.
+// Removing it also deleted a full extra scan of team-stats/ (2,896 files, 916 MB)
+// that existed only for the byte tally, plus per-item counting in the games, search
+// and leaderboard loops.
 
-section('13 · UUID storage footprint (remaining full-length instances vs 13-char truncation)');
-const uuidSources = [
-  ['games/ (p[].id, hp[]/ap[].profileID)', uuidInstancesGames, uuidBytesGamesFull],
-  ['leaderboard/ (uuid, uuid|tid keys/ids)', uuidInstancesLb,    uuidBytesLbFull],
-  ['team-stats/ (roster keys)',              uuidInstancesTs,    uuidBytesTsFull],
-  ['search/ (id field)',                     uuidInstancesSearch, uuidBytesSearchFull],
-];
-let grandInstances = 0, grandBytesFull = 0;
-for (const [label, instances, bytesFull] of uuidSources) {
-  const bytesTrunc = instances * TRUNC_LEN;
-  const savings = bytesFull - bytesTrunc;
-  grandInstances += instances;
-  grandBytesFull += bytesFull;
-  row(label, fmt(instances) + ' instances', `${fmtBytes(bytesFull)} → ${fmtBytes(bytesTrunc)} if truncated (saves ${fmtBytes(savings)})`);
-}
-console.log('');
-const grandBytesTrunc = grandInstances * TRUNC_LEN;
-row('TOTAL', fmt(grandInstances) + ' instances', `${fmtBytes(grandBytesFull)} → ${fmtBytes(grandBytesTrunc)} (saves ${fmtBytes(grandBytesFull - grandBytesTrunc)})`);
-console.log('  Note: this is JSON-content bytes, not repo-on-disk bytes (git compression,');
-console.log('  whitespace, and history all differ). Treat as a lower-bound signal for');
-console.log('  which directories are worth a truncation migration, not a final size delta.');
-console.log('  A truncation migration would need every consumer that does exact-string');
-console.log('  UUID matching on these fields updated in the same pass — not attempted here.');
 } // end: if (!SIZE_ONLY) — file/data audit (sections 1-13)
 
 // ─── 14. Repo size ────────────────────────────────────────────────────────────
