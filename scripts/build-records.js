@@ -38,6 +38,14 @@ import path from 'path';
 import { execSync } from 'child_process';
 
 import { fileURLToPath } from 'url';
+// 2026-07-31: leaderboard/all-time.json stores TRUNCATED ids — build-leaderboards.js
+// L248 writes `uuid: truncateUuid(uuid)` (TRUNC_LEN = 13). Player FILES are keyed by
+// the FULL uuid, so building a path straight from the leaderboard id could never
+// resolve: the live run reported 100 of 100 entries as "no player file", not a
+// partial failure. db-audit §13 had already measured this — "leaderboard/ … 0
+// instances" of full-length uuids — the number just was not connected to this code.
+// resolveToFullUuid is the same alias-aware resolver build-player-games.js uses.
+import { resolveToFullUuid } from './lib/uuid-prefix.cjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
@@ -297,7 +305,7 @@ if (!lbData) {
   // records/all-time.json. There are four distinct ways to land there and the old code
   // could not tell them apart. Counting each instead of theorising (instrumentation
   // before theory): one run now names the cause.
-  const diag = { noPlayerFile: 0, noRecordsEntry: 0, noGameKey: 0, gameKeyNotInLookup: 0, ok: 0 };
+  const diag = { unresolvableId: 0, noPlayerFile: 0, noRecordsEntry: 0, noGameKey: 0, gameKeyNotInLookup: 0, ok: 0 };
   const missSample = [];
   for (const [lbCat, recCat] of [['maxGamePTS', 'playerPTS'], ['maxGameThreePt', 'playerThreePt']]) {
     const entries = (lbData[lbCat] || []).slice(0, TOP_N * 2); // take extra in case some have no gameKey
@@ -306,23 +314,35 @@ if (!lbData) {
     for (const entry of entries) {
       if (records[recCat].length >= TOP_N) break;
 
-      const uuid       = entry.uuid;
-      const playerFile = path.join(ROOT, 'players', uuid.slice(0, 2), `${uuid}.json`);
-      let rec = null, fileOk = false;
-      try {
-        const p = readJson(playerFile);
-        fileOk = true;
-        rec = p.records?.[lbCat] || null;
-      } catch {}
+      // entry.uuid is TRUNCATED. Resolve to the full uuid for the file lookup, but
+      // keep publishing the truncated form below — that is what this file has always
+      // emitted and what its consumers expect. This changes the lookup only.
+      const rawId      = entry.uuid;
+      const fullUuid   = resolveToFullUuid(rawId, ROOT);
+      let rec = null, fileOk = false, resolved = !!fullUuid;
+      if (fullUuid) {
+        const playerFile = path.join(ROOT, 'players', fullUuid.slice(0, 2), `${fullUuid}.json`);
+        try {
+          const p = readJson(playerFile);
+          fileOk = true;
+          rec = p.records?.[lbCat] || null;
+        } catch {}
+      }
+      const uuid = rawId;
       // A leaderboard uuid with no player file is worth flagging loudly: the fold
       // deletes merged-away files, so a leaderboard built BEFORE a fold can carry
       // uuids that no longer resolve.
-      if (!fileOk) {
+      if (!resolved) {
+        // The truncated id is in no index and no alias shard — a genuinely unknown
+        // player, distinct from "resolved but the file is gone".
+        diag.unresolvableId++;
+        if (missSample.length < 10) missSample.push(`${lbCat} ${rawId} — id resolves to no player`);
+      } else if (!fileOk) {
         diag.noPlayerFile++;
-        if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — no player file`);
+        if (missSample.length < 10) missSample.push(`${lbCat} ${rawId} -> ${fullUuid.slice(0, 8)} — resolved but file missing`);
       } else if (!rec) {
         diag.noRecordsEntry++;
-        if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — file has no records.${lbCat}`);
+        if (missSample.length < 10) missSample.push(`${lbCat} ${rawId} — file has no records.${lbCat}`);
       }
 
       const v       = rec?.v ?? entry.v;
@@ -332,10 +352,10 @@ if (!lbData) {
       if (fileOk && rec) {
         if (!gameKey) {
           diag.noGameKey++;
-          if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — records.${lbCat} has no gameKey`);
+          if (missSample.length < 10) missSample.push(`${lbCat} ${rawId} — records.${lbCat} has no gameKey`);
         } else if (!info) {
           diag.gameKeyNotInLookup++;
-          if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — gameKey ${gameKey} not in gameLookup (${lookupCount} games)`);
+          if (missSample.length < 10) missSample.push(`${lbCat} ${rawId} — gameKey ${gameKey} not in gameLookup (${lookupCount} games)`);
         } else {
           diag.ok++;
         }
@@ -363,9 +383,9 @@ if (!lbData) {
     console.log(`  ${recCat}: ${records[recCat].length} entries`);
   }
 
-  const blank = diag.noPlayerFile + diag.noRecordsEntry + diag.noGameKey + diag.gameKeyNotInLookup;
+  const blank = diag.unresolvableId + diag.noPlayerFile + diag.noRecordsEntry + diag.noGameKey + diag.gameKeyNotInLookup;
   console.log(`  Game context: ${diag.ok} resolved, ${blank} blank` +
-    (blank ? ` (no player file ${diag.noPlayerFile}, no records entry ${diag.noRecordsEntry}, no gameKey ${diag.noGameKey}, gameKey not in lookup ${diag.gameKeyNotInLookup})` : ''));
+    (blank ? ` (unresolvable id ${diag.unresolvableId}, no player file ${diag.noPlayerFile}, no records entry ${diag.noRecordsEntry}, no gameKey ${diag.noGameKey}, gameKey not in lookup ${diag.gameKeyNotInLookup})` : ''));
   for (const m of missSample) console.log(`    · ${m}`);
 }
 
