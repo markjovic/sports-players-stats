@@ -292,6 +292,13 @@ if (!lbData) {
   console.log('  leaderboard/all-time.json not found — skipping playerPTS/playerThreePt');
   console.log('  Run build-leaderboards.js first.');
 } else {
+  // 2026-07-31: the live run printed `Player PTS: 101 — Michael Celent ()` — an empty
+  // date, meaning `info` was null, meaning date/vs/score are ALL blank in the published
+  // records/all-time.json. There are four distinct ways to land there and the old code
+  // could not tell them apart. Counting each instead of theorising (instrumentation
+  // before theory): one run now names the cause.
+  const diag = { noPlayerFile: 0, noRecordsEntry: 0, noGameKey: 0, gameKeyNotInLookup: 0, ok: 0 };
+  const missSample = [];
   for (const [lbCat, recCat] of [['maxGamePTS', 'playerPTS'], ['maxGameThreePt', 'playerThreePt']]) {
     const entries = (lbData[lbCat] || []).slice(0, TOP_N * 2); // take extra in case some have no gameKey
     console.log(`  ${lbCat}: ${entries.length} leaderboard entries to process`);
@@ -301,16 +308,38 @@ if (!lbData) {
 
       const uuid       = entry.uuid;
       const playerFile = path.join(ROOT, 'players', uuid.slice(0, 2), `${uuid}.json`);
-      let rec = null;
+      let rec = null, fileOk = false;
       try {
         const p = readJson(playerFile);
+        fileOk = true;
         rec = p.records?.[lbCat] || null;
       } catch {}
+      // A leaderboard uuid with no player file is worth flagging loudly: the fold
+      // deletes merged-away files, so a leaderboard built BEFORE a fold can carry
+      // uuids that no longer resolve.
+      if (!fileOk) {
+        diag.noPlayerFile++;
+        if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — no player file`);
+      } else if (!rec) {
+        diag.noRecordsEntry++;
+        if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — file has no records.${lbCat}`);
+      }
 
       const v       = rec?.v ?? entry.v;
       const gameKey = rec?.gameKey || null;
       const sid     = rec?.sid    || null;
       const info    = gameKey ? gameLookup.get(gameKey) : null;
+      if (fileOk && rec) {
+        if (!gameKey) {
+          diag.noGameKey++;
+          if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — records.${lbCat} has no gameKey`);
+        } else if (!info) {
+          diag.gameKeyNotInLookup++;
+          if (missSample.length < 10) missSample.push(`${lbCat} ${uuid.slice(0, 8)} — gameKey ${gameKey} not in gameLookup (${lookupCount} games)`);
+        } else {
+          diag.ok++;
+        }
+      }
 
       // Determine opponent from gameLookup if we have the gameKey
       let vs = '', score = '', date = '';
@@ -333,6 +362,11 @@ if (!lbData) {
 
     console.log(`  ${recCat}: ${records[recCat].length} entries`);
   }
+
+  const blank = diag.noPlayerFile + diag.noRecordsEntry + diag.noGameKey + diag.gameKeyNotInLookup;
+  console.log(`  Game context: ${diag.ok} resolved, ${blank} blank` +
+    (blank ? ` (no player file ${diag.noPlayerFile}, no records entry ${diag.noRecordsEntry}, no gameKey ${diag.noGameKey}, gameKey not in lookup ${diag.gameKeyNotInLookup})` : ''));
+  for (const m of missSample) console.log(`    · ${m}`);
 }
 
 // Assign ranks and write final output

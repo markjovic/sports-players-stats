@@ -166,6 +166,10 @@ let privateTrue = 0;
 // player-name quality (publicProfile population + season-name contamination, 2026-07-17)
 let nameReal = 0, namePlaceholder = 0, nameMissing = 0;
 let seasonNameContaminated = 0; const contaminatedSample = [];
+// §B3 name-heal counters — declared HERE with their siblings, not at the reporting
+// site: the scan loop below increments them, and a `let` declared after that loop is
+// in the temporal dead zone when the loop runs. `node --check` does NOT catch that.
+let nameHealGaveUp = 0, nameHealInFlight = 0; const nameHealSample = [];
 let privateWithRealName = 0, privateWithPlaceholder = 0;
 
 const shardDirs = fs.existsSync(playersDir)
@@ -253,6 +257,21 @@ for (const shard of shardDirs) {
       if (contaminatedSample.length < 10) contaminatedSample.push(`${shard}/${fileKey} name="${nm}"`);
     }
     if (p.private === true) { if (nmPh) privateWithPlaceholder++; else privateWithRealName++; }
+
+    // OUTSTANDING §B3: fetch-profile-stats.js persists player.nameHealAttempts when
+    // its publicProfile name lookup fails, and gives up at NAME_HEAL_MAX_ATTEMPTS (3).
+    // Without this row a growing pool of given-up players is invisible — which is
+    // exactly how the 34-day "Winter 2026" contamination survived: nothing counted it.
+    // in-flight = will be retried next run; gave-up = needs force=true to retry.
+    const nha = Number(p.nameHealAttempts) || 0;
+    if (nha > 0) {
+      if (nha >= 3) {
+        nameHealGaveUp++;
+        if (nameHealSample.length < 10) nameHealSample.push(`${shard}/${fileKey} attempts=${nha} name=${nm ? `"${nm}"` : '(absent)'}`);
+      } else {
+        nameHealInFlight++;
+      }
+    }
 
     if (p.records !== undefined) withRecords++;
     if (p.teams && p.teams.length > 0) withTeams++;
@@ -357,6 +376,11 @@ row('    of which name absent',   fmt(nameMissing),     pct(nameMissing, process
 row('  Season-name contaminated', fmt(seasonNameContaminated),
   seasonNameContaminated === 0 ? '✅ none' : '❌ name == own season label — run repair-season-names.js');
 for (const s of contaminatedSample) console.log('      ' + s);
+row('  Name-heal retries in flight', fmt(nameHealInFlight),
+  nameHealInFlight === 0 ? '✅ none' : 'ℹ️  will retry on the next matrix run');
+row('  Name-heal GAVE UP (>=3)',     fmt(nameHealGaveUp),
+  nameHealGaveUp === 0 ? '✅ none' : '⚠️  no further attempts — re-dispatch matrix with force=true to retry');
+for (const s of nameHealSample) console.log('      ' + s);
 if (privateTrue > 0) {
   row('  private w/ real name',   fmt(privateWithRealName),    pct(privateWithRealName, privateTrue));
   row('  private w/ placeholder', fmt(privateWithPlaceholder), pct(privateWithPlaceholder, privateTrue));
