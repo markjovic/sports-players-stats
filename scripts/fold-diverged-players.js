@@ -330,33 +330,93 @@ function scanDiverged() {
   return { diverged, files };
 }
 
-// Repair-only path for aliases orphaned by an EARLIER fold. Reads the pairs from
-// reports/fold-diverged.json — the fold itself is idempotent, so once it has run
-// there is no other record of which files it deleted.
+// Repair-only path for aliases orphaned by an EARLIER fold.
+//
+// 2026-07-31: this originally read reports/fold-diverged.json for the
+// oldKey -> apiId pairs. That FAILED in production: OUT_REPORT is a single path
+// rewritten by every run, so a later 1-player fold had already overwritten the
+// 2,263-entry report from the run that caused the damage. The map loaded with one
+// pair, matched nothing, and repointed zero of 284.
+//
+// It no longer needs the report. The mapping is recoverable from the player files
+// themselves: the fold unions BOTH records' spectatorIds into the survivor (and
+// adds trunc(oldKey) explicitly), so the file that absorbed a deleted one still
+// claims the deleted file's spectator ids. For a dangling alias K -> V, the right
+// target is therefore the player file whose spectatorIds contains K. trunc(V) is
+// the fallback, since the fold always adds it.
+// Ambiguity is never guessed: if two files claim the same id, it is reported.
+function buildSpectatorMap() {
+  const m = new Map();
+  const ambiguous = new Set();
+  let files = 0;
+  for (const bucket of ALL_BUCKETS) {
+    const dir = path.join(PLAYERS_DIR, bucket);
+    if (!fs.existsSync(dir)) continue;
+    for (const f of fs.readdirSync(dir)) {
+      if (!f.endsWith('.json')) continue;
+      const key = f.slice(0, -5);
+      if (!isFullUuid(key)) continue;
+      files++;
+      let p;
+      try { p = readJson(path.join(dir, f)); } catch (_) { continue; }
+      const ids = new Set(Array.isArray(p.spectatorIds) ? p.spectatorIds : []);
+      ids.add(trunc(key));
+      for (const id of ids) {
+        const prev = m.get(id);
+        if (prev !== undefined && prev !== key) ambiguous.add(id);
+        else m.set(id, key);
+      }
+      if (files % 100000 === 0) log(`spectator map: scanned ${files} files`);
+    }
+  }
+  log(`spectator map: ${files} files, ${m.size} ids, ${ambiguous.size} ambiguous`);
+  return { map: m, ambiguous };
+}
+
 function repointOnlyMode() {
-  let report;
-  try { report = readJson(OUT_REPORT); }
-  catch (e) {
-    throw new Error(`--repoint-only needs ${OUT_REPORT}, which records the oldKey -> apiId pairs of a previous fold. Could not read it: ${e.message}`);
+  const { map: specMap, ambiguous } = buildSpectatorMap();
+
+  const written = [];
+  let entries = 0, dangling = 0, repointed = 0, shardsTouched = 0, unresolved = 0;
+  const unresolvedSamples = [];
+
+  for (const bucket of ALL_BUCKETS) {
+    const ap = path.join(ALIAS_DIR, `${bucket}.json`);
+    let m;
+    try { m = readJson(ap); }
+    catch (e) { if (e.code === 'ENOENT') continue; throw e; }
+    let dirty = false;
+    for (const [k, v] of Object.entries(m)) {
+      entries++;
+      if (typeof v !== 'string' || v.length !== 36) continue;
+      if (fs.existsSync(playerPath(v))) continue;
+      dangling++;
+      let target = null;
+      if (!ambiguous.has(k)) target = specMap.get(k) || null;
+      if (!target) {
+        const tv = trunc(v);
+        if (!ambiguous.has(tv)) target = specMap.get(tv) || null;
+      }
+      if (!target || !fs.existsSync(playerPath(target))) {
+        unresolved++;
+        if (unresolvedSamples.length < 20) unresolvedSamples.push(`${k} -> ${v}`);
+        continue;
+      }
+      m[k] = target;
+      dirty = true;
+      repointed++;
+    }
+    if (dirty) {
+      shardsTouched++;
+      if (!DRY) { fs.writeFileSync(ap, JSON.stringify(m)); written.push(ap); }
+    }
   }
-  const map = {};
-  for (const e of (report.entries || [])) {
-    if (e && typeof e.oldKey === 'string' && typeof e.apiId === 'string') map[e.oldKey] = e.apiId;
-  }
-  log(`repoint-only: ${Object.keys(map).length} oldKey -> apiId pair(s) from ${report.generatedAt || 'unknown date'}`);
-  if (!Object.keys(map).length) { log('report contains no entries — nothing to repoint.'); return; }
 
-  const before = scanDanglingAliases(map);
-  log(`before: ${before.dangling} dangling of ${before.total} alias values (${before.mine} attributable to that fold)`);
-
-  const r = repointAliases(map);
-
-  const after = scanDanglingAliases(map);
-  log(`after:  ${after.dangling} dangling (${after.mine} still attributable — these are NOT in the report and need separate diagnosis)`);
-  for (const smp of after.samples.slice(0, 10)) log(`  still dangling: ${smp}`);
-
+  log(`aliases: ${entries} scanned, ${dangling} dangling, ${repointed} repointed across ${shardsTouched} shard(s), ${unresolved} unresolvable`);
+  for (const smp of unresolvedSamples.slice(0, 10)) log(`  UNRESOLVED: ${smp}`);
   if (DRY) { log('DRY RUN — nothing written.'); return; }
-  gitCommitPush(r.written, `fold-diverged: repoint ${r.repointed} alias values orphaned by an earlier fold`);
+  if (!repointed) { log('nothing to repoint.'); return; }
+  gitCommitPush(written, `fold-diverged: repoint ${repointed} alias values orphaned by an earlier fold`);
   log('repoint-only complete.');
 }
 
