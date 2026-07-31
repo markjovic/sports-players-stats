@@ -906,6 +906,20 @@ section('11b · Repo hygiene');
     'rekey-enrich-report.json',
     'rekey-flagged-classified.json',
     'fold-diverged.json',          // live, regenerated each fold
+    // Added 2026-07-31. These are EVIDENCE, not leftovers — each is the only
+    // surviving record of a measurement or incident this project still cites.
+    // Flagging them every run trains you to skim §11b, which is how a real
+    // warning gets missed.
+    'uuid-collisions-len10.json',      // the measurement behind TRUNC_LEN = 13
+                                       // (10 chars = 9 hex digits, ~36 bits,
+                                       // ~63% collision odds at ~370k players).
+                                       // Delete it and the justification for the
+                                       // current truncation length becomes folklore.
+    'git-history-recovery-report.json',// record of the 30,426-game recovery
+    'season-name-contamination.json',  // the 40,034-file contamination baseline;
+                                       // still cited, and the "0 contaminated"
+                                       // re-scan that superseded it was WRONG
+    'unresolved-prefix-diagnosis.json',// resolver diagnostics, same class
   ]);
   if (fs.existsSync(reportsDir)) {
     let kept = 0, review = 0;
