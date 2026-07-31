@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.59</span>
+      <span class="rail-ver">Beta 0.62</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -513,21 +513,65 @@ function gameIdMatchesPlayer(gameId, player){
   return ks.has(s)||ks.has(t13(s));
 }
 function matchP(gameId, uuid){ return gameIdMatchesPlayer(gameId, S.players[uuid]||{uuid:uuid}); }
-// Resolve any game-side id to a canonical full uuid via the alias index
-// (spectator/trunc13 -> api). self-wins: a full id with no alias entry stays itself.
-const _aliasShard={}, _resolved={};
-async function fetchAliasShard(pfx){
-  if(pfx in _aliasShard) return _aliasShard[pfx];
-  _aliasShard[pfx]=await gj(BASE+'/players/aliases/'+pfx+'.json');
-  return _aliasShard[pfx];
+// Faithful browser port of scripts/lib/uuid-prefix.cjs resolveToFullUuid:
+// resolve any stored id (trunc13 / legacy10 / full) from search / leaderboard /
+// team-stats / games back to the full canonical player uuid.
+//   truncated id : players/indexes match first (keys ARE api ids, so this hits
+//                  for everyone incl. diverged-and-folded) -> alias fallback for
+//                  a spectator trunc that redirects to an api id -> else null.
+//   full id      : index self-check (self wins) -> alias redirect -> else passthrough.
+// Two intentional browser deviations from the CJS source: fetch (gj) replaces
+// readFileSync (gj returns null on a missing/failed shard = the source's ENOENT
+// tolerance), and an unexpected length returns null instead of throwing so the UI
+// degrades to the placeholder rather than crashing.
+const LEGACY_TRUNC_LEN = 10, FULL_LEN = 36;
+const COLLISION = Symbol('uuid-prefix-collision');
+const _idxMaps = {}, _aliasMaps = {};
+function isFullUuid(id){ return typeof id==='string' && id.length===FULL_LEN; }
+function isTruncatedPrefix(id){ return typeof id==='string' && (id.length===TRUNC_LEN || id.length===LEGACY_TRUNC_LEN); }
+async function loadShardPrefixMap(shard, len){
+  const k=shard+':'+len; if(k in _idxMaps) return _idxMaps[k];
+  const map=new Map(); const index=await gj(BASE+'/players/indexes/'+shard+'.json');
+  if(index) for(const full of Object.keys(index)){
+    if(full.length!==FULL_LEN) continue;
+    const p=full.slice(0,len); const ex=map.get(p);
+    if(ex===COLLISION) continue;
+    if(ex!==undefined && ex!==full){ map.set(p,COLLISION); continue; }
+    map.set(p,full);
+  }
+  _idxMaps[k]=map; return map;
 }
-async function resolveGameId(gameId){
-  const raw=String(gameId||''); if(!raw) return null;
-  if(raw in _resolved) return _resolved[raw];
-  const key=t13(raw);
-  const shard=await fetchAliasShard(key.slice(0,2));
-  const out = (shard && shard[key]) ? shard[key] : (raw.length===36 ? raw : null);
-  _resolved[raw]=out; return out;
+async function loadAliasPrefixMap(shard, len){
+  const k=shard+':'+len; if(k in _aliasMaps) return _aliasMaps[k];
+  const map=new Map(); const aliases=await gj(BASE+'/players/aliases/'+shard+'.json');
+  if(aliases) for(const spec in aliases){
+    const apiId=aliases[spec]; if(!isFullUuid(apiId)) continue;
+    const p = len>=spec.length ? spec : spec.slice(0,len); const ex=map.get(p);
+    if(ex===COLLISION) continue;
+    if(ex!==undefined && ex!==apiId){ map.set(p,COLLISION); continue; }
+    map.set(p,apiId);
+  }
+  _aliasMaps[k]=map; return map;
+}
+async function resolveToFullUuid(id){
+  if(isFullUuid(id)){
+    const shard=id.slice(0,2).toLowerCase();
+    const idx=await loadShardPrefixMap(shard,TRUNC_LEN);
+    if(idx.get(id.slice(0,TRUNC_LEN))===id) return id;            // self wins
+    const am=await loadAliasPrefixMap(shard,TRUNC_LEN);
+    const red=am.get(id.slice(0,TRUNC_LEN));
+    if(typeof red==='string' && red!==id) return red;
+    return id;
+  }
+  if(!isTruncatedPrefix(id)) return null;
+  const shard=id.slice(0,2).toLowerCase();
+  const idx=await loadShardPrefixMap(shard,id.length);
+  const r=idx.get(id);
+  if(typeof r==='string') return r;
+  const am=await loadAliasPrefixMap(shard,id.length);
+  const a=am.get(id);
+  if(typeof a==='string') return a;
+  return null;
 }
 // Canonicalise a game-side id to a full uuid: opposing-team roster first (no
 // fetch, since the player is in that roster under their full uuid), then alias.
@@ -535,17 +579,28 @@ async function canonGameId(pid, rosterKeys){
   if(!pid) return null;
   const k=t13(pid);
   for(const uu of rosterKeys){ if(t13(uu)===k) return uu; }
-  return await resolveGameId(pid);
+  return await resolveToFullUuid(pid);
 }
 async function openGameId(gameId){
-  const uuid = await resolveGameId(gameId);
+  const uuid = await resolveToFullUuid(gameId);
   loadPlayer(uuid||gameId); // loadPlayer shows a graceful placeholder if the file 404s
 }
 
 function renderMode(g){
   if(g.bye)return'bye';if(g.forfeit)return'forfeit';if(g.cancelled)return'cancelled';if(g.abandoned)return'abandoned';
   if(g.hidden){return g.hp?.length?'hidden-full':'hidden-partial';}
-  if(g.profileOnly)return'profileOnly';if(g.legacy)return'legacy';
+  if(g.profileOnly)return'profileOnly';
+  // legacy only wins when there is genuinely NO score. Corrected 2026-07-31:
+  // this used to be an unguarded `if(g.legacy)return'legacy'` ABOVE the score
+  // test, so a legacy game holding a real scoreline rendered as
+  // 'HISTORICAL RECORD - Data unavailable'. That was not an edge case: 3,120 of
+  // the 3,262 games carrying the flag hold a score, because the flag is stale
+  // (its classifier was removed in the 2026-07-16 cleanup, and every fixture
+  // write since has merged over the entry without clearing it). The data-side
+  // repair is scripts/repair-legacy-flags.js; this guard is the client-side
+  // complement and stays correct whichever runs first. The ~142 genuinely
+  // scoreless ones still render 'legacy', which is the honest answer for them.
+  if(g.legacy && typeof g.hs!=='number')return'legacy';
   if(typeof g.hs==='number')return'normal';return'unknown';
 }
 function gameCtx(g,tid){
@@ -813,8 +868,13 @@ async function loadPlayer(uuid){
   showV('view-player');
   const ve=el('view-player');ve.innerHTML='<div class="load-row">Loading\u2026</div>';
   S.playerUuid=uuid;
-  if(!S.players[uuid]){const d=await gj(BASE+'/players/'+uuid.slice(0,2)+'/'+uuid+'.json');if(d)S.players[uuid]=d;}
-  const p=S.players[uuid];
+  let key=uuid;
+  if(!S.players[key]){
+    let d=await gj(BASE+'/players/'+key.slice(0,2)+'/'+key+'.json');
+    if(!d){ const r=await resolveToFullUuid(uuid); if(r&&r!==key){ key=r; d=S.players[key]||await gj(BASE+'/players/'+key.slice(0,2)+'/'+key+'.json'); } }
+    if(d)S.players[key]=d;
+  }
+  const p=S.players[key]||S.players[uuid];
   if(!p){
     ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button><div><div class="vtitle">Player #${esc(t13(uuid))}</div><div class="vsub">No data available</div></div></div><div class="empty">No additional data for this player.</div>`;
     return;
@@ -1652,8 +1712,9 @@ async function openOpp(oppTid,sid,fromUuid){
 }
 async function loadPlayerFile(uuid){
   if(S.players[uuid])return S.players[uuid];
-  const d=await gj(BASE+'/players/'+uuid.slice(0,2)+'/'+uuid+'.json');
-  if(d)S.players[uuid]=d;
+  let key=uuid, d=await gj(BASE+'/players/'+key.slice(0,2)+'/'+key+'.json');
+  if(!d){ const r=await resolveToFullUuid(uuid); if(r&&r!==key){ key=r; d=S.players[key]||await gj(BASE+'/players/'+key.slice(0,2)+'/'+key+'.json'); } }
+  if(d){ S.players[key]=d; if(key!==uuid) S.players[uuid]=d; }
   return d||null;
 }
 function getTidForSeason(player,sid){
@@ -2228,7 +2289,7 @@ async function buildOppStats(uuid, btn) {
           if (myRosterKeys.some(uu => t13(uu) === k)) continue;   // teammate
           const oppKey = oppRosterKeys.find(uu => t13(uu) === k);
           if (oppKey) { oppUuids.push(oppKey); continue; }
-          const r = await resolveGameId(pid);                     // diverged / unknown
+          const r = await resolveToFullUuid(pid);                     // diverged / unknown
           if (r && oppRosterSet.has(r)) oppUuids.push(r);
         }
       } else {
