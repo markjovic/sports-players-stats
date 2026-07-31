@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, repoint orphaned aliases, single commit. repoint-only = do NOT fold; repair just the alias values orphaned by a PREVIOUS fold, using the oldKey -> apiId pairs in reports/fold-diverged.json. Normally triggered automatically by matrix completion with mode=apply."
+        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, repoint orphaned aliases, single commit. repoint-only = do NOT fold; repair just the alias values orphaned by a PREVIOUS fold, reconstructing the mapping from the player files themselves (each file's spectatorIds[]) — it needs no report and no extra input. Normally triggered automatically by matrix completion with mode=apply."
         type: choice
         options:
           - dry-run
@@ -43,8 +43,14 @@ jobs:
       # trigger passes mode=apply explicitly.
       # repoint-only exists because the fold is IDEMPOTENT: once it has run there
       # are zero apiId fields left, so a corrected script can never revisit the
-      # aliases an earlier run orphaned. It reads reports/fold-diverged.json, which
-      # is the only surviving record of which files that run deleted.
+      # aliases an earlier run orphaned.
+      # It reconstructs the mapping from the PLAYER FILES (buildSpectatorMap), not
+      # from reports/fold-diverged.json.
+      # ⚠️ Corrected 2026-07-31: this comment and the input description above both
+      # said it read reports/fold-diverged.json. That was true of the ORIGINAL
+      # implementation and false after the T6 rewrite. reports/fold-diverged.json is
+      # a single path overwritten by every run — trusting it is what made the
+      # 2026-07-30 repair fix 0 of 284 dangling aliases. It is now advisory only.
       - name: Run fold
         run: |
           case "${{ github.event.inputs.mode }}" in
