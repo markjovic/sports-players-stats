@@ -44,10 +44,19 @@
 //   node scripts/fold-diverged-players.js            # fold + commit
 //   node scripts/fold-diverged-players.js --dry-run  # report only
 //   node scripts/fold-diverged-players.js --repoint-only
-//       Repair ONLY the alias values orphaned by a PREVIOUS fold, using the
-//       oldKey -> apiId pairs in reports/fold-diverged.json. No player files are
-//       read or written. Needed because the fold is idempotent — after it has run
-//       there is nothing left to detect, so a corrected script cannot self-heal.
+//       Repair ONLY the alias values orphaned by a PREVIOUS fold. Needed because
+//       the fold is idempotent — after it has run there is nothing left to detect,
+//       so a corrected script cannot self-heal.
+//       It reconstructs the mapping from the PLAYER FILES (buildSpectatorMap:
+//       every file's spectatorIds[] plus trunc of its own key), NOT from
+//       reports/fold-diverged.json. It therefore READS every player file and
+//       WRITES only alias shards.
+//       ⚠️ Corrected 2026-07-31: this block previously said repoint-only used the
+//       oldKey -> apiId pairs in reports/fold-diverged.json and that no player
+//       files were read. Both were untrue from the T6 rewrite onward — see
+//       repointOnlyMode() / buildSpectatorMap() below, whose own comments say so.
+//       The usage block was simply never updated to match the code 300 lines down:
+//       the N-1 stale-doc pattern occurring inside a SINGLE file.
 // Env: FOLD_NO_GIT=1 disables git (local testing only).
 
 'use strict';
@@ -62,6 +71,14 @@ const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const INDEX_DIR = path.join(ROOT, 'players', 'indexes');
 const ALIAS_DIR = path.join(ROOT, 'players', 'aliases');
+// ⚠️ ADVISORY ONLY — write-only from this script's point of view, deliberately.
+// It is a SINGLE path overwritten by every run, so a 1-player fold destroys the
+// record of a 2,263-player one. That is not hypothetical: it happened 2026-07-30,
+// and the repair that trusted this file then fixed 0 of 284 dangling aliases
+// (claude_context.md trap T6). Nothing in this script reads it, and nothing else
+// should build a repair, check or audit on it. To learn what a past fold did,
+// reconstruct from the data (see repointOnlyMode / buildSpectatorMap) or read the
+// commit history. Kept only as a human-readable record of the run that just ran.
 const OUT_REPORT = path.join(ROOT, 'reports', 'fold-diverged.json');
 
 const DRY = process.argv.includes('--dry-run');
@@ -260,9 +277,35 @@ function git(args) {
 }
 function gitCommitPush(paths, message) {
   if (NO_GIT || DRY) return;
-  for (let i = 0; i < paths.length; i += 500) git(['add', '--', ...paths.slice(i, i + 500)]);
+  // Per-path add (house rule / directive 9). `git add` is ATOMIC across pathspecs:
+  // one unmatched path in a batch stages NOTHING for that entire batch. The old
+  // form batched 500 per call, so a single bad path could discard up to 499 good
+  // ones — and because git() throws on a non-zero exit, it would have aborted a
+  // fold that had already completed every write. Staged individually, a miss skips
+  // only itself and is REPORTED rather than swallowed (the empty-catch version of
+  // this same hazard silently discarded a 30,426-game discover-fixtures run).
+  // Cost: one git invocation per path — a 2,263-player fold stages ~5k paths, a
+  // few minutes inside the workflow's 120-minute timeout.
+  let addFailures = 0;
+  const addFailedSamples = [];
+  for (const p of paths) {
+    try {
+      git(['add', '--', p]);
+    } catch (e) {
+      addFailures++;
+      if (addFailedSamples.length < 10) {
+        const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
+        addFailedSamples.push(`${p}: ${detail}`);
+      }
+    }
+  }
+  if (addFailures) {
+    log(`WARNING: ${addFailures} of ${paths.length} path(s) failed to stage`);
+    for (const s of addFailedSamples) log(`  ADD FAILED: ${s}`);
+  }
   const staged = git(['diff', '--cached', '--shortstat']).trim(); // never --stat
   if (!staged) { log('nothing staged, skip commit'); return; }
+  log(`staging: ${staged}`); // directive 9: prove in the log what was actually staged
   const IDENT = ['-c', 'user.name=github-actions[bot]',
                  '-c', 'user.email=github-actions[bot]@users.noreply.github.com'];
   git([...IDENT, 'commit', '-m', message]);
@@ -517,11 +560,12 @@ function main() {
       throw new Error(`post-check failed: ${dang.mine} alias value(s) still point at files this run deleted — NOT committing`);
     }
     if (dang.dangling !== 0) {
-      log(`NOTE: ${dang.dangling} pre-existing dangling alias value(s) remain — not caused by this run, not blocking. Run with --repoint-only against an older report, or diagnose separately.`);
+      log(`NOTE: ${dang.dangling} pre-existing dangling alias value(s) remain — not caused by this run, not blocking. To repair them, dispatch this workflow with mode=repoint-only: it reconstructs the mapping from the player files themselves and needs no report and no arguments. (This line previously said "run with --repoint-only against an older report" — there is no report to run against, and following that advice would have repaired nothing.)`);
     }
   }
 
   const report = {
+    advisory: 'ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.',
     generatedAt: new Date().toISOString(),
     dryRun: DRY,
     filesScanned: files,
