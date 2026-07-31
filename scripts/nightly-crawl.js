@@ -30,7 +30,7 @@ const https        = require('https');
 const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const { truncateUuid, resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
 // ─── Identity alias for brand-new players (api-canonical, 2026-07-16) ─────────
@@ -390,29 +390,107 @@ let commitLock = false;
 // scale with file count, --shortstat and --no-stat don't.
 async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  const paths = (dirs && dirs.length ? dirs : ['.']).join(' ');
-  try { execSync(`git add -- ${paths}`, { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
-  const staged = (() => {
-    try { return execSync('git diff --staged --shortstat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
-    catch (_) { return ''; }
-  })();
-  if (!staged) { return; }  // nothing to commit — silent
-  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
-  catch (_) { return; }
-  const MAX = 10;
-  for (let attempt = 1; attempt <= MAX; attempt++) {
-    try {
-      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-      console.log(`  ✓ Committed: ${message}`);
-      return;
-    } catch (_) {
-      if (attempt === MAX) { console.error(`  Push failed after ${MAX} attempts`); return; }
-      const jitter = Math.floor(Math.random() * 15000) + attempt * 3000;
-      await sleep(jitter);
+  const paths = (dirs && dirs.length ? dirs : ['.']);
+
+  // ── Per-path add (directive 9) ──────────────────────────────────────────────
+  // `git add` is ATOMIC across pathspecs: one unmatched path in a combined add
+  // stages NOTHING, exits 128, and the empty `catch (_) {}` this replaces then
+  // hid it — leaving "nothing to commit" as the only visible symptom. That is
+  // exactly how discover-fixtures.js discarded 30,426 fetched games on a GREEN
+  // run (2026-07-19). Staged individually, a miss skips only itself and is
+  // reported loudly.
+  let addFailures = 0;
+  for (const p of paths) {
+    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT }); }
+    catch (e) {
+      addFailures++;
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
+      console.error(`  ⚠ git add failed for "${p}": ${detail}`);
     }
   }
+
+  const staged = (() => {
+    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
+    catch (_) { return ''; }
+  })();
+
+  if (!staged) {
+    // Previously a bare silent `return`. Now: nothing staged AFTER a staging
+    // failure is not a clean no-op, it is the silent-loss signature — refuse to
+    // treat it as success. Nothing staged with every add clean is genuinely
+    // nothing to do, and says so instead of vanishing.
+    if (addFailures) {
+      throw new Error(`gitCommit: nothing staged and ${addFailures} path(s) failed to stage — refusing to report this as a clean no-op ("${message}")`);
+    }
+    console.log(`  (no changes to commit: ${message})`);
+    return;
+  }
+  console.log(`  staging: ${staged}`);   // directive 9: prove what was staged
+
+  // Identity passed inline on commit AND merge: a missing committer identity
+  // otherwise surfaces only as a merge failure, and burns the whole retry budget
+  // on a config problem no amount of retrying can fix.
+  const IDENT = ['-c', 'user.name=github-actions[bot]',
+                 '-c', 'user.email=github-actions[bot]@users.noreply.github.com'];
+
+  // execFileSync with an argument array — the message is no longer interpolated
+  // into a shell string, so the `"` -> `'` escaping hack is gone with it.
+  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT }); }
+  catch (e) {
+    const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
+    throw new Error(`gitCommit: commit failed for "${message}" — ${detail}`);
+  }
+
+  // ── Push with retry (house pattern, copied from fold-diverged-players.js) ────
+  // 60 attempts, pure random 1-91s jitter, `merge --abort` before each attempt,
+  // and THROW on total failure. The previous 10-attempt loop ended in
+  // `console.error` + `return`, so a run could push NOTHING and still go green —
+  // the same defect closed on build-team-stats.js on 2026-07-29, which REPO_MANIFEST
+  // §6.9/§6.10 called "the remaining"/"the last" 10-attempt outlier. It was not:
+  // this file had it too.
+  // Only genuine contention is retried. A non-contention push failure (auth,
+  // branch protection, size, hook rejection) is not fixed by waiting, so it fails
+  // fast with git's real error rather than being buried under 60 identical lines.
+  // NOTE: async sleep, not a blocking one — gitCommit is awaited from inside the
+  // Phase 2 paced pool, and blocking here would stall sibling fetch workers.
+  const MAX = 60;
+  for (let attempt = 1; attempt <= MAX; attempt++) {
+    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+
+    try {
+      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT });
+    } catch (e) {
+      if (attempt === MAX) throw e;
+      const s = 1 + Math.floor(Math.random() * 91);
+      console.log(`  fetch failed (attempt ${attempt}/${MAX}), retrying in ${s}s`);
+      await sleep(s * 1000);
+      continue;
+    }
+
+    // A merge failure is a config or content problem, not a race — fatal.
+    execFileSync('git', [...IDENT, 'merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT });
+
+    try {
+      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT });
+      console.log(`  ✓ Committed: ${message} (pushed on attempt ${attempt})`);
+      return;
+    } catch (e) {
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
+      const contention = /non-fast-forward|fetch first|\[rejected\]|failed to push some refs|cannot lock ref/i.test(detail);
+      if (!contention) {
+        console.error(`  push failed — NOT contention, failing fast. git said:\n${detail}`);
+        throw e;
+      }
+      if (attempt === MAX) {
+        console.error(`  push still rejected after ${MAX} attempts. git said:\n${detail}`);
+        throw e;
+      }
+      const s = 1 + Math.floor(Math.random() * 91);
+      console.log(`  push attempt ${attempt}/${MAX} rejected (remote advanced), re-syncing in ${s}s`);
+      await sleep(s * 1000);
+    }
+  }
+  throw new Error(`gitCommit: exhausted ${MAX} push attempts for "${message}"`);
 }
 
 // Commit only if not already in progress — safe for concurrent callers
