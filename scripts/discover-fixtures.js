@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // scripts/discover-fixtures.js
 /**
  * Discovers fixtures for all teams using discoverTeamFixture — which works for
@@ -27,7 +28,7 @@
 const fs           = require('fs');
 const path         = require('path');
 const crypto       = require('crypto');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -311,42 +312,117 @@ function clearProgress() {
 
 function gitCommitPush(message) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  // Explicit paths (never -A). --shortstat (never --stat — ENOBUFS on big diffs).
-  // Each path gets its OWN `git add`: git add is ATOMIC across pathspecs — if any
-  // single pathspec matches nothing (absent AND untracked, e.g. team-lookup/ when
-  // team-lookup-utils isn't installed, or zero-team-seasons.json before its first
-  // write), git exits 128 and stages NOTHING, including valid games/ changes.
-  // The old combined add + swallowed catch silently discarded ENTIRE RUNS this way
-  // (2026-07-19: 30,426 fetched games, zero committed, job green). Per-path, a
-  // non-matching pathspec skips only itself.
-  const STAGE_PATHS = ['games/', 'venue-lookup/', 'team-lookup/', 'discover-fixtures-progress.json', 'zero-team-seasons.json'];
-  for (const p of STAGE_PATHS) {
-    try { execSync(`git add -- ${p}`, { stdio: 'pipe' }); }
-    catch (e) { /* pathspec matched nothing — nothing to stage for this path */ }
-  }
-  let staged = '';
-  try { staged = execSync('git diff --staged --shortstat', { stdio: 'pipe' }).toString().trim(); } catch (e) {}
-  if (!staged) { console.log('  (no changes to commit)'); return; }
-  console.log(`  staging: ${staged}`);
-  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe' }); }
-  catch (e) { console.warn(`  ⚠ commit failed: ${e.message}`); return; }
-  // Proven contention-safe push: fetch + merge -X ours (never rebase), 60 attempts,
-  // pure 1–91s random jitter, merge --abort before each retry.
-  const MAX_ATTEMPTS = 60;
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    try {
-      try { execSync('git merge --abort', { stdio: 'pipe' }); } catch (_) {}
-      execSync('git fetch origin main',                            { stdio: 'pipe' });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe' });
-      execSync('git push origin main',                             { stdio: 'pipe' });
-      console.log('  ✓ Committed and pushed');
-      return;
-    } catch (e) {
-      if (attempt === MAX_ATTEMPTS) { console.warn(`  ⚠ push failed after ${MAX_ATTEMPTS} attempts: ${e.message}`); return; }
-      const waitSec = 1 + Math.floor(Math.random() * 91);
-      try { execSync(`sleep ${waitSec}`, { stdio: 'pipe' }); } catch (_) {}
+
+  // ── Per-path add (directive 9) ────────────────────────────────────────────
+  // `git add` is ATOMIC across pathspecs. The previous form passed all five in
+  // ONE call wrapped in an empty catch, so a single non-matching pathspec exited
+  // 128, staged NOTHING, and the catch swallowed it — every commit then printed
+  // "(no changes to commit)" while a full run's work sat unstaged. That is the
+  // 2026-07-19 failure exactly: 30,426 games fetched across 25,448 teams in 28
+  // minutes, ZERO committed, job green.
+  //
+  // REPO_MANIFEST §2.2 and §6.8 record this as fixed on 2026-07-21. It was not
+  // fixed in the deployed file — verified 2026-07-31 by reading it and by
+  // reproducing the failure with this exact pathspec list.
+  //
+  // `team-lookup/` is retained in the list because team-lookup-utils still
+  // writes it, but it is precisely the pathspec that made this dangerous:
+  // README L186 recommends DELETING that directory, and under the old combined
+  // add that deletion would have silently broken every commit this script makes.
+  // Per-path, its absence now skips only itself.
+  const PATHS = [
+    'games/',
+    'venue-lookup/',
+    'team-lookup/',
+    'discover-fixtures-progress.json',
+    'zero-team-seasons.json',
+  ];
+  let addFailures = 0;
+  for (const p of PATHS) {
+    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT }); }
+    catch (e) {
+      addFailures++;
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
+      console.error(`  ⚠ git add skipped "${p}": ${detail}`);
     }
   }
+
+  let staged = '';
+  try { staged = execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
+  catch (e) {}
+
+  if (!staged) {
+    // Nothing staged AFTER a staging failure is the silent-loss signature, not a
+    // clean no-op — refuse to report it as success. All adds clean and nothing
+    // staged is genuinely nothing to do.
+    if (addFailures) {
+      throw new Error(`gitCommitPush: nothing staged and ${addFailures} path(s) failed to stage — refusing to report a clean no-op ("${message}")`);
+    }
+    console.log('  (no changes to commit)');
+    return;
+  }
+  console.log(`  staging: ${staged}`);   // directive 9: prove what was staged
+
+  // Identity inline on commit AND merge: a missing committer identity otherwise
+  // surfaces only as a merge failure and burns the whole retry budget on a
+  // config problem retrying cannot fix.
+  const IDENT = ['-c', 'user.name=github-actions[bot]',
+                 '-c', 'user.email=github-actions[bot]@users.noreply.github.com'];
+
+  // execFileSync with an argument array — the message is no longer interpolated
+  // into a shell string, so the `"` -> `'` escaping hack is gone with it.
+  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT }); }
+  catch (e) {
+    const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
+    throw new Error(`gitCommitPush: commit failed for "${message}" — ${detail}`);
+  }
+
+  // ── Push with retry (house pattern) ───────────────────────────────────────
+  // 60 attempts, pure random 1-91s jitter, `merge --abort` before each attempt,
+  // THROW on total failure. The previous loop ended in `console.warn` + `return`,
+  // so a run could push NOTHING and still exit 0 — the same swallow closed on
+  // build-team-stats.js (2026-07-29) and on nightly-crawl.js (2026-07-31).
+  // Only genuine contention is retried; anything else (auth, branch protection,
+  // hook rejection) fails fast with git's real error instead of being buried
+  // under 60 identical lines.
+  const MAX_ATTEMPTS = 60;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+
+    try {
+      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT });
+    } catch (e) {
+      if (attempt === MAX_ATTEMPTS) throw e;
+      const waitSec = 1 + Math.floor(Math.random() * 91);
+      console.log(`  fetch failed (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${waitSec}s`);
+      try { execFileSync('sleep', [String(waitSec)], { stdio: 'pipe' }); } catch (_) {}
+      continue;
+    }
+
+    // A merge failure is a config or content problem, not a race — fatal.
+    execFileSync('git', [...IDENT, 'merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT });
+
+    try {
+      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT });
+      console.log(`  ✓ Committed and pushed (attempt ${attempt})`);
+      return;
+    } catch (e) {
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
+      const contention = /non-fast-forward|fetch first|\[rejected\]|failed to push some refs|cannot lock ref/i.test(detail);
+      if (!contention) {
+        console.error(`  push failed — NOT contention, failing fast. git said:\n${detail}`);
+        throw e;
+      }
+      if (attempt === MAX_ATTEMPTS) {
+        console.error(`  push still rejected after ${MAX_ATTEMPTS} attempts. git said:\n${detail}`);
+        throw e;
+      }
+      const waitSec = 1 + Math.floor(Math.random() * 91);
+      console.log(`  push attempt ${attempt}/${MAX_ATTEMPTS} rejected (remote advanced), re-syncing in ${waitSec}s`);
+      try { execFileSync('sleep', [String(waitSec)], { stdio: 'pipe' }); } catch (_) {}
+    }
+  }
+  throw new Error(`gitCommitPush: exhausted ${MAX_ATTEMPTS} push attempts for "${message}"`);
 }
 
 // ─── Change detection ─────────────────────────────────────────────────────────
