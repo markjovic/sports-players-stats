@@ -159,7 +159,26 @@ jobs:
       - run: node scripts/build-venue-indexes.js
 
   profile-stats-matrix:
-    needs: [crawl, team-stats]
+    # 2026-07-31: `win-loss` added to needs. It was [crawl, team-stats] only, and
+    # win-loss also hangs off crawl — so the two ran in PARALLEL and the matrix was
+    # dispatched as soon as team-stats finished, while build-win-loss.js could still
+    # be writing player files for up to another 120 minutes.
+    #
+    # The dispatched matrix is a SEPARATE workflow run with no data-write lock, so it
+    # started immediately and its apply-and-commit wrote players/ concurrently with
+    # win-loss. Both push; `merge -X ours` keeps whichever lands second and silently
+    # discards the other's version of any file they both touched. That is the win-loss
+    # race that already cost data, and this workflow's own data-write lock cannot stop
+    # it — the lock only covers runs IN the group, and the matrix run is not.
+    #
+    # Ordering, not locking: putting a concurrency group on the matrix's
+    # apply-and-commit would make it queue behind this workflow (which holds
+    # data-write for its whole run, up to 300+ min) and stall the chain. `needs` costs
+    # nothing and removes the overlap entirely.
+    #
+    # `always()` below is preserved deliberately: a FAILED win-loss must not skip the
+    # matrix, only a still-RUNNING one should delay it.
+    needs: [crawl, team-stats, win-loss]
     runs-on: ubuntu-latest
     if: |
       always() &&
