@@ -331,6 +331,14 @@ console.log(`  ${finalsMap.size} player files to update`);
 const playersDir = path.join(ROOT, 'players');
 let playersUpdated = 0;
 let playersSkipped = 0;
+// Declared HERE, with their siblings and BEFORE the player loop that increments
+// them. A `let` declared after the loop is in the temporal dead zone when the loop
+// runs, and `node --check` does NOT catch it (hit exactly that in db-audit.js
+// on 2026-07-31).
+// sidsNotInSeasons: player appeared in a scanned game for a season absent from their
+// own seasons[] — the data gap that used to push finalsPerSeason above 1.
+let sidsNotInSeasons = 0;
+let invariantBreaks  = 0;
 sinceLastCommit = 0;
 
 for (const [uuid, sidMap] of finalsMap) {
@@ -350,14 +358,30 @@ for (const [uuid, sidMap] of finalsMap) {
   // first --active-only run). Pattern mirrors build-win-loss.js active-only
   // Pass 2: locked seasons untouched, their contribution preserved.
   let careerFinals = 0, careerGfApps = 0, careerGfWins = 0;
-  // Count seasons the player has registrations in — every season entry means they played.
-  // Do NOT use r.stats.gp here: that field is stale and may be 0 even when the player played,
-  // which causes seasonsWithGames < seasonsWithFinals and finalsPerSeason > 1.
-  const seasonsWithGames = (player.seasons || []).filter(s => (s.regs || []).length > 0).length;
+  // 2026-07-31: finalsPerSeason could still exceed 1 (1 player live). The earlier fix
+  // here swapped `r.stats.gp > 0` for `regs.length > 0` in the denominator, which
+  // addressed stale gp but NOT the actual cause: the numerator is built from sidMap,
+  // which comes from the GAME SCAN, while the denominator came only from
+  // player.seasons. A sid can be in sidMap and absent from the denominator when the
+  // player appeared in a finals game for a season that is missing from their own
+  // seasons[], or present there with an empty regs[]. Numerator counts it, denominator
+  // does not, ratio > 1.
+  //
+  // Fixed by construction rather than by clamping: both sides are now SETS of sids,
+  // and every sid added to the finals set is added to the played set at the same time.
+  // The numerator is therefore a subset of the denominator and the ratio CANNOT exceed
+  // 1 — a clamp would have hidden the underlying data gap instead of surfacing it.
+  const playedSids = new Set();
+  for (const s of (player.seasons || [])) {
+    if ((s.regs || []).length > 0) playedSids.add(s.sid);
+  }
+  const finalsSids = new Set();
 
-  let seasonsWithFinals = 0;
-  for (const acc of sidMap.values()) {
-    if (acc.finals > 0)  { careerFinals++;  seasonsWithFinals++; }
+  for (const [sid, acc] of sidMap.entries()) {
+    // Appearing in a scanned game IS proof the player played that season, whatever
+    // player.seasons says. Counted here so it can never be missing from the denominator.
+    if (!playedSids.has(sid)) { playedSids.add(sid); sidsNotInSeasons++; }
+    if (acc.finals > 0)  { careerFinals++;  finalsSids.add(sid); }
     if (acc.gfApps > 0)    careerGfApps++;
     if (acc.gfWins > 0)    careerGfWins++;
   }
@@ -375,16 +399,25 @@ for (const [uuid, sidMap] of finalsMap) {
         if (st.gfApps > 0) exGfApps = 1;
         if (st.gfWins > 0) exGfWins = 1;
       }
-      if (exFinals) { careerFinals++; seasonsWithFinals++; }
+      if (exFinals) { careerFinals++; finalsSids.add(sid); playedSids.add(sid); }
       if (exGfApps)   careerGfApps++;
       if (exGfWins)   careerGfWins++;
     }
   }
 
   // finalsPerSeason = fraction of seasons where player appeared in finals (max 1 per season)
+  const seasonsWithGames  = playedSids.size;
+  const seasonsWithFinals = finalsSids.size;
   const finalsPerSeason = seasonsWithGames > 0
     ? Math.round((seasonsWithFinals / seasonsWithGames) * 100) / 100
     : 0;
+  // Belt and braces: finalsSids is a subset of playedSids by construction, so this is
+  // unreachable. If it ever fires, the invariant has been broken by a later edit —
+  // report it loudly rather than writing a value db-audit will flag as impossible.
+  if (finalsPerSeason > 1) {
+    console.warn(`  ⚠ INVARIANT BROKEN ${uuid}: finalsPerSeason=${finalsPerSeason} (${seasonsWithFinals}/${seasonsWithGames}) — numerator is not a subset of denominator`);
+    invariantBreaks++;
+  }
 
   if (!player.sports)            player.sports = {};
   if (!player.sports.Basketball) player.sports.Basketball = {};
@@ -449,6 +482,8 @@ console.log(`  Finals games found          : ${totalFinalsGames}`);
 console.log(`  Grand Finals found          : ${totalGFGames}`);
 console.log(`  Players with finals data    : ${finalsMap.size}`);
 console.log(`  Player files updated        : ${playersUpdated}`);
+console.log(`  Seasons played per game scan but absent from player.seasons[] : ${sidsNotInSeasons}`);
+if (invariantBreaks > 0) console.log(`  ⚠ finalsPerSeason invariant broken : ${invariantBreaks}`);
 console.log(`  Player files skipped        : ${playersSkipped}`);
 console.log(`  Mode                        : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
 console.log('\nNext step: node scripts/build-leaderboards.js --force');
