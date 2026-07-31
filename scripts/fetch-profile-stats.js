@@ -75,6 +75,9 @@ const ROOT = path.join(__dirname, '..');
 const args  = process.argv.slice(2);
 const SHARD = (args.find(a => a.startsWith('--shard=')) || '').replace('--shard=', '').toLowerCase().trim();
 const FORCE = args.includes('--force');
+// OUTSTANDING §B3: cap on name-heal attempts before giving up on a player. The
+// counter is persisted as player.nameHealAttempts and reset on success or --force.
+const NAME_HEAL_MAX_ATTEMPTS = 3;
 // --recheck-private re-offers players already marked private:true even though they
 // carry statsChecked, WITHOUT the cost of a repo-wide --force (411k files). Withheld
 // juniors go public between seasons, and statsChecked would otherwise make
@@ -909,28 +912,63 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
   // fetch it directly from publicProfile (account tenant) when the stored name is
   // missing, a placeholder, or a season string left by the old parseProfileStats bug.
   // An established real name is left alone — no extra fetch for players who have one.
+  // ─── Name heal, with BOUNDED RETRY (OUTSTANDING §B3, decided 2026-07-31) ─────
+  // The problem this solves: statsChecked is written whether the heal succeeded or
+  // not, and no scheduled run ever re-reads a player carrying statsChecked. So a
+  // single TRANSIENT failure was PERMANENT — one bad second on 2026-06-27 left a
+  // player named "Winter 2026" for 34 days, found only by a full-repo audit.
+  //
+  // Option (a) of three: a persisted attempt counter. Retries transients, caps
+  // permanents. Withholding statsChecked instead (option b) would have re-fetched a
+  // genuinely unresolvable id every run forever — the exact anti-pattern
+  // markNotObtainable exists to kill.
+  //
+  // Reset rules matter as much as the cap:
+  //   - success        -> counter DELETED (a later regression gets a fresh 3)
+  //   - --force        -> counter DELETED before trying (an explicit human retry
+  //                       must not be silently refused by an old give-up)
+  //   - gave up        -> counter left at MAX, no fetch, counted in the summary
+  // A stale counter on a player whose name is fine is inert: the heal only fires
+  // for missing / placeholder / contaminated names. It is deliberately NOT cleared
+  // in that case, because deleting the field would dirty the file and cause a write
+  // on every run for no benefit.
   const curName      = player.name;
   const contaminated = !!curName && (player.seasons || []).some(sn => normName(sn.sn) === normName(curName));
   if (!curName || isPlaceholderName(curName) || contaminated) {
-    // Use the SAME id the stats fetch used (queryId = player.apiId || uuid, L783).
-    // player.apiId is assigned before the recovery path calls finishOk, so this
-    // mirrors it on both paths. Previously this always passed the file uuid, even
-    // when recovery had just PROVEN that id dead in the api namespace and handed
-    // back a working apiId.
-    const nameId   = player.apiId || uuid;
-    const realName = await fetchPublicProfileName(nameId);
-    if (realName) {
-      player.name = realName;
-      if (contaminated) {
-        stats.nameHealed++;
-        console.log(`${prefix} ✎ ${short} name repaired: "${curName}" -> "${realName}"`);
+    if (FORCE && player.nameHealAttempts !== undefined) delete player.nameHealAttempts;
+    const attempts = Number(player.nameHealAttempts) || 0;
+
+    if (attempts >= NAME_HEAL_MAX_ATTEMPTS) {
+      stats.nameHealGaveUp++;
+      console.log(`${prefix} ⊘ ${short} name heal GAVE UP after ${attempts} attempts — name left as ${curName ? `"${curName}"` : '(absent)'}. Re-dispatch with force=true to retry.`);
+    } else {
+      // Use the SAME id the stats fetch used (queryId = player.apiId || uuid, L783).
+      // player.apiId is assigned before the recovery path calls finishOk, so this
+      // mirrors it on both paths. Previously this always passed the file uuid, even
+      // when recovery had just PROVEN that id dead in the api namespace and handed
+      // back a working apiId.
+      const nameId   = player.apiId || uuid;
+      const realName = await fetchPublicProfileName(nameId);
+      if (realName) {
+        player.name = realName;
+        if (player.nameHealAttempts !== undefined) delete player.nameHealAttempts;
+        if (contaminated) {
+          stats.nameHealed++;
+          console.log(`${prefix} ✎ ${short} name repaired: "${curName}" -> "${realName}"`);
+        }
+      } else {
+        // Persist the attempt so the NEXT run retries rather than writing this
+        // player off. This is the whole point of §B3 — the counter is what makes a
+        // transient failure survivable.
+        player.nameHealAttempts = attempts + 1;
+        stats.nameHealFailed++;
+        const detail = `publicProfile(${String(nameId).slice(0, 8)}) gave nothing: ${lastPublicProfileFail || 'unknown'}`;
+        if (contaminated) {
+          console.log(`${prefix} ⚠ ${short} name STILL contaminated ("${curName}") — attempt ${attempts + 1}/${NAME_HEAL_MAX_ATTEMPTS} — ${detail}`);
+        } else {
+          console.log(`${prefix} · ${short} name unresolved — attempt ${attempts + 1}/${NAME_HEAL_MAX_ATTEMPTS} — ${detail}`);
+        }
       }
-    } else if (contaminated) {
-      // The repair fired and FAILED. This is the case that went unseen for a month.
-      // statsChecked is still written below, so this player will not be re-queued —
-      // it needs a full sweep or a targeted re-run to be retried at all.
-      stats.nameHealFailed++;
-      console.log(`${prefix} ⚠ ${short} name STILL contaminated ("${curName}") — publicProfile(${String(nameId).slice(0, 8)}) gave nothing: ${lastPublicProfileFail || 'unknown'}`);
     }
   }
 
@@ -1143,7 +1181,8 @@ async function main() {
     skipped:      uuids.length - toFetch.length,
     errors:       0,
     nameHealed:     0,  // contaminated name successfully replaced with a real one
-    nameHealFailed: 0,  // contaminated name detected but publicProfile gave nothing
+    nameHealFailed: 0,  // heal attempted, publicProfile gave nothing (counter incremented)
+    nameHealGaveUp: 0,  // attempts hit NAME_HEAL_MAX_ATTEMPTS — no fetch made
   };
 
   console.log(`  Already done (statsChecked present): ${stats.skipped}`);
@@ -1210,8 +1249,8 @@ async function main() {
   console.log(`  Still withheld: ${stats.unchanged}  (already marked, nothing to write)`);
   console.log(`  Skipped:       ${stats.skipped}`);
   console.log(`  Errors:        ${stats.errors}`);
-  if (stats.nameHealed || stats.nameHealFailed) {
-    console.log(`  Name repairs:  ${stats.nameHealed} fixed, ${stats.nameHealFailed} STILL contaminated`);
+  if (stats.nameHealed || stats.nameHealFailed || stats.nameHealGaveUp) {
+    console.log(`  Name repairs:  ${stats.nameHealed} fixed, ${stats.nameHealFailed} retryable (attempt persisted), ${stats.nameHealGaveUp} gave up after ${NAME_HEAL_MAX_ATTEMPTS}`);
   }
   if (stats.blocked) {
     console.log(`  Remaining:     ~${remainingCount(stats)} (re-run shard to continue)`);
@@ -1228,8 +1267,9 @@ async function main() {
     inaccessible: stats.inaccessible,
     unchanged:    stats.unchanged,
     errors:       stats.errors,
-    name_healed:      stats.nameHealed,
-    name_heal_failed: stats.nameHealFailed,
+    name_healed:        stats.nameHealed,
+    name_heal_failed:   stats.nameHealFailed,
+    name_heal_gave_up:  stats.nameHealGaveUp,
     remaining:    remaining,
     blocked:      stats.blocked || false,
   }));
