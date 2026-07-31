@@ -1,0 +1,89 @@
+# .github/workflows/repair-legacy-flags.yml
+name: Repair stale legacy flags (one-off)
+
+# Removes `legacy: true` from games that carry a score. See the header of
+# scripts/repair-legacy-flags.js for the full finding and the safety argument.
+#
+# Short version: 3,262 games carry legacy; 3,120 of them hold a score, which
+# contradicts the flag's meaning ("no further data obtainable"). Nothing writes
+# the flag any more — the classifier was removed in the 2026-07-16 cleanup and a
+# full grep of scripts/ + .github/workflows/ on 2026-07-31 found only reads — so
+# the population is frozen and this is a genuine one-off.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run = scan and report, write nothing (START HERE). apply = delete the stale flag from scored games, verify, single commit."
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+      season:
+        description: "Optional single season id — rehearse on one season before a full apply. Leave blank for all."
+        type: string
+        required: false
+        default: ""
+      limit:
+        description: "Optional cap on the number of repairs (rehearsal). Leave blank for no cap. NOTE: a capped or single-season run SKIPS the full post-check, because survivors are expected."
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+# Writes games/bv — shares the lock with every other game/player-file writer so
+# it can never race the nightly or a matrix apply.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # Plain full checkout: this reads every file in games/bv (2,896 season
+      # files, 2.3M games) and rewrites a subset in place. Never sparse-checkout
+      # a job that must read many files. No actions/setup-node — nothing here
+      # touches the PlayHQ API, and the rule is absolute for jobs that do.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Guard in bash, not only in a GitHub expression (trap T3): an unrecognised
+      # mode must mean "refuse", never "proceed". T1 is why every condition here
+      # is a plain single-line bash test rather than a folded YAML expression.
+      - name: Run repair
+        env:
+          MODE:   ${{ inputs.mode }}
+          SEASON: ${{ inputs.season }}
+          LIMIT:  ${{ inputs.limit }}
+        run: |
+          set -euo pipefail
+          ARGS=""
+          case "$MODE" in
+            dry-run) ARGS="--dry-run" ;;
+            apply)   ARGS="" ;;
+            *) echo "::error::unrecognised mode '$MODE' — refusing to run"; exit 1 ;;
+          esac
+          if [ -n "$SEASON" ]; then
+            case "$SEASON" in
+              *[!0-9a-fA-F]*) echo "::error::season '$SEASON' is not a hex id — refusing"; exit 1 ;;
+              *) ARGS="$ARGS --season=$SEASON" ;;
+            esac
+          fi
+          if [ -n "$LIMIT" ]; then
+            case "$LIMIT" in
+              ''|*[!0-9]*) echo "::error::limit '$LIMIT' is not a number — refusing"; exit 1 ;;
+              *) ARGS="$ARGS --limit=$LIMIT" ;;
+            esac
+          fi
+          echo "resolved ARGS: $ARGS"
+          node scripts/repair-legacy-flags.js $ARGS
