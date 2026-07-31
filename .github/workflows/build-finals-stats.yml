@@ -60,10 +60,56 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ inputs.chain_leaderboards == true || inputs.chain_leaderboards == 'true' }}
     steps:
+      # 2026-07-31: was a BARE `gh workflow run`. House rule (claude_context): every
+      # dispatch site uses the retry helper, because a one-shot chain-critical API
+      # call is how the matrix chain silently stopped on 2026-07-27 (HTTP 500 — no
+      # retrigger, no terminal, roster data quietly stale). This link is the weekly
+      # fixtures -> finals -> leaderboards chain, so a lost dispatch here means the
+      # leaderboards never rebuild and the run still shows green.
+      # Helper copied VERBATIM from fetch-profile-stats-matrix.yml — not retyped.
+      - name: Install dispatch retry helper
+        # Every chain link in this workflow is a single `gh workflow run` API
+        # call. On 2026-07-27 one of them returned HTTP 500 and the matrix chain
+        # simply stopped — no retrigger, no terminal, no build-team-stats, so the
+        # roster data silently went stale. A chain-critical network call is never
+        # one-shot (same rule as the push retry).
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Dispatch Build Leaderboards (active-only)
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-        run: |
-          gh workflow run build-leaderboards.yml \
-            --repo "${{ github.repository }}" \
-            --field "active_only=true"
+          GH_REPO:  ${{ github.repository }}
+        run: /tmp/gh-dispatch.sh build-leaderboards.yml --field "active_only=true"
