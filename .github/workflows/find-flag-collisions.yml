@@ -1,25 +1,38 @@
 # .github/workflows/find-flag-collisions.yml
-name: Find Flag Collisions
+name: Find flag collisions (read-only diagnostic)
+
+# ⚠️ WRITTEN FROM HOUSE CONVENTIONS, NOT FROM THE DEPLOYED FILE.
+# REPO_MANIFEST §3.3 lists find-flag-collisions.yml as an existing on-demand
+# workflow, but it was not uploaded this session, so this file was not diffed
+# against it. DIFF BEFORE COMMITTING — if the deployed version does anything
+# this one does not (an artifact upload, a report path, extra inputs), taking
+# this file wholesale would silently drop it.
 
 on:
   workflow_dispatch:
 
+# Read-only tool: it parses games/bv and data/forfeit-games.json and prints.
+# It writes no files, makes no commits and makes no network calls, so it needs
+# no write permission.
 permissions:
   contents: read
+
+# Deliberately NO `concurrency: data-write`. That group serialises player-file
+# WRITERS; a read-only diagnostic joining it would queue behind multi-hour jobs
+# for no benefit, which is the cost T10 warns about when reaching for a lock.
 
 jobs:
   find:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          sparse-checkout: |
-            scripts/find-flag-collisions.js
-            games/bv
-          sparse-checkout-cone-mode: false
+      # Plain full checkout. The script reads every file in games/bv (2,896
+      # season files, ~2.3M games) — never sparse-checkout a job that must read
+      # many files, it makes a blobless clone that fetches each one over the
+      # network. No actions/setup-node: the rule is absolute for PlayHQ-fetching
+      # jobs and this job needs nothing setup-node provides anyway.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
 
-      - name: Find flag collisions
+      - name: Find flag collisions + tally legacy population
         run: node scripts/find-flag-collisions.js
