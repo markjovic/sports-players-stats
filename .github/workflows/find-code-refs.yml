@@ -1,0 +1,108 @@
+# .github/workflows/find-code-refs.yml
+name: Find code references (grep — GitHub search substitute)
+
+# WHY THIS EXISTS
+# GitHub code search refuses to index markjovic/sports-players-stats:
+#   "markjovic/sports-players-stats cannot be searched because it is too large"
+# (6.13 GB, confirmed 2026-07-31). A search that cannot run returns "0 files",
+# which reads exactly like "no matches" — so the UI actively invites a false
+# negative. This workflow is the replacement: a real grep, run on a runner,
+# over the code directories only.
+#
+# SCOPE IS DELIBERATELY NARROW. It greps scripts/ and .github/workflows/ ONLY.
+# It must never be pointed at games/ (2.3M games), players/ (411k files) or
+# leaderboard/ — that is a multi-GB scan for a question about code.
+#
+# Read-only: no writes, no commits, no network.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pattern:
+        description: "Text or regex to search for in scripts/ and .github/workflows/. Examples: legacy | profileOnly | statsChecked | git add -A"
+        type: string
+        required: true
+        default: "legacy"
+      context:
+        description: "Lines of context to show around each match (0-10)."
+        type: string
+        required: false
+        default: "2"
+
+permissions:
+  contents: read
+
+# Deliberately NOT in the data-write concurrency group: this is read-only, and
+# joining that group would queue a 30-second grep behind multi-hour writers.
+
+jobs:
+  grep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Plain full checkout, fetch-depth 1 (~7 minutes on this repo). Sparse
+      # checkout would be faster but reintroduces the promisor/blobless failure
+      # class that §B2 deleted rather than mitigated on 2026-07-31, and this tool
+      # exists precisely to give trustworthy answers — a flaky checkout that
+      # silently yields fewer files would recreate the false-negative problem it
+      # was built to solve. No setup-node: nothing here needs it.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      - name: Grep scripts/ and .github/workflows/
+        env:
+          PATTERN: ${{ inputs.pattern }}
+          CONTEXT: ${{ inputs.context }}
+        run: |
+          set -uo pipefail
+          # Validate context is a small integer; anything else means 2. Fails
+          # toward doing less, never toward an unbounded dump.
+          case "$CONTEXT" in
+            ''|*[!0-9]*) CTX=2 ;;
+            *) CTX=$CONTEXT; [ "$CTX" -gt 10 ] && CTX=2 ;;
+          esac
+
+          if [ -z "$PATTERN" ]; then
+            echo "::error::pattern is empty — refusing to grep for nothing"
+            exit 1
+          fi
+
+          echo "Pattern : $PATTERN"
+          echo "Context : $CTX line(s)"
+          echo "Scope   : scripts/ .github/workflows/"
+          echo "----------------------------------------------------------------"
+
+          # -n line numbers, -I skip binary, -E extended regex, -r recursive.
+          # `|| true` so "no matches" (grep exit 1) is a RESULT, not a job failure.
+          MATCHES=$(grep -rnIE -C "$CTX" -- "$PATTERN" scripts/ .github/workflows/ 2>/dev/null || true)
+
+          if [ -z "$MATCHES" ]; then
+            echo "NO MATCHES in scripts/ or .github/workflows/."
+            echo ""
+            echo "Note: this is a real grep over a real checkout, so this result"
+            echo "IS meaningful — unlike GitHub code search, which returns"
+            echo "'0 files' for this repo because it refuses to index it."
+            echo "It does NOT cover deleted files: something removed in an"
+            echo "earlier cleanup will not appear here. Check git history for that."
+          else
+            echo "$MATCHES"
+          fi
+
+          echo "----------------------------------------------------------------"
+          echo "FILE SUMMARY (match counts, no context):"
+          grep -rncIE -- "$PATTERN" scripts/ .github/workflows/ 2>/dev/null \
+            | awk -F: '$NF > 0 { printf "  %-55s %s\n", $1, $NF }' \
+            | sort -k2 -nr || echo "  (none)"
+
+          # Step summary so the result is on the run page, not only in the log.
+          {
+            echo '## find-code-refs'
+            echo ''
+            echo "**Pattern:** \`$PATTERN\` — **scope:** \`scripts/\` \`.github/workflows/\`"
+            echo ''
+            echo '```'
+            grep -rncIE -- "$PATTERN" scripts/ .github/workflows/ 2>/dev/null \
+              | awk -F: '$NF > 0 { printf "%-55s %s\n", $1, $NF }' \
+              | sort -k2 -nr || echo "(no matches)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
