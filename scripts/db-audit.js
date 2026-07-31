@@ -492,11 +492,14 @@ let gamesWithScore = 0, gamesWithVenue = 0, gamesWithP = 0;
 let gamesFinalsRound = 0, gamesGrandFinal = 0;
 let stFinal = 0, stUpcoming = 0, stPostponed = 0, stOther = 0, stNone = 0;
 let nullScore = 0, flagCollisions = 0, inProgress = 0;
+// legacy + score: the flag says "pre-history, nothing further obtainable", so a
+// legacy game holding a score contradicts itself. Added 2026-07-31 after a
+// measurement found 3,120 of 3,262 legacy games carrying one — invisible to
+// every prior audit because flagCollisions only ever tested legacy against other
+// FLAGS, never against DATA.
+let legacyScored = 0;
 const otherStatuses = {};
 const seasonBreakdown = [];
-
-// UUID footprint — counts every full-length UUID string instance in p[]/hp[]/ap[]
-// and what it would cost at a truncated length instead (same precedent already
 
 const activeSids = sportsIndex
   ? new Set(Object.values(sportsIndex.seasons || {}).filter(s => !s.locked).map(s => s.id))
@@ -529,6 +532,11 @@ if (fs.existsSync(gamesDir)) {
       if (g.vid)  gamesWithVenue++;
       if (g.p && g.p.length > 0) gamesWithP++;
       if (g.legacy && (g.hidden || g.profileOnly || g.forfeit || g.bye)) flagCollisions++;
+      // Same family as the line above, but tested against DATA rather than other
+      // flags. hs/as are supplied by discoverFixtureByRound / discoverTeamFixture,
+      // so their presence proves a fixture query answered for this game — which
+      // is exactly what `legacy` asserts did not happen.
+      if (g.legacy && (typeof g.hs === 'number' || typeof g.as === 'number')) legacyScored++;
       if (['LIVE','PRE_GAME','IN_PROGRESS','PENDING'].includes(g.st || '')) inProgress++;
       if (g.hs === null) nullScore++;
 
@@ -599,7 +607,13 @@ row('  Has p[] player list', fmt(gamesWithP),      pct(gamesWithP, totalGames));
 row('  noProfile flag',      fmt(gamesNoProfile),  pct(gamesNoProfile, totalGames));
 row('  noVenue flag',        fmt(gamesNoVenue),    pct(gamesNoVenue, totalGames));
 row('  nullScore',           fmt(nullScore),        pct(nullScore, totalGames));
-if (flagCollisions > 0) row('  ⚠️  Flag collisions', fmt(flagCollisions), 'legacy + another flag');
+// Both legacy invariants report ALWAYS, not only when non-zero. A check that can
+// only ever print a failure is indistinguishable from a check that is not running
+// — the same defect that left the keep-list ✅ unreachable until 2026-07-31.
+row('  ⚠️  Flag collisions', fmt(flagCollisions),
+  flagCollisions === 0 ? '✅ none' : 'legacy + another flag — run find-flag-collisions.yml');
+row('  ⚠️  legacy + score', fmt(legacyScored),
+  legacyScored === 0 ? '✅ none' : 'flag claims no data obtainable, yet a score is stored — run repair-legacy-flags.yml');
 
 if (VERBOSE && seasonBreakdown.length > 0) {
   console.log('\n  ── Per-season breakdown (top 20 by game count) ──');
