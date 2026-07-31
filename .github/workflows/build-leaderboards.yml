@@ -16,7 +16,13 @@ on:
       force:
         description: 'Force full rebuild (ignore resume progress). Default: resume.'
         required: false
-        default: 'false'
+        # 2026-07-31: was "'false'" — a STRING default on a \`type: boolean\` input.
+        # Harmless here (the only consumer is a bash \`=\` compare, where it renders as
+        # a string either way), but it is the same type-mismatch family as the gate
+        # bugs of 07-21 and 07-30, so it is corrected rather than left as a trap for
+        # whoever next adds an expression-context gate. Same fix already applied to
+        # build-records.yml.
+        default: false
         type: boolean
       active_only:
         description: 'Only process active (unlocked) seasons'

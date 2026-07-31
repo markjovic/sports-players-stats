@@ -237,54 +237,47 @@ jobs:
           echo "has_files=$has_files" >> $GITHUB_OUTPUT
           echo "Has files to apply: $has_files"
           if [ "$has_files" = "true" ]; then
-            echo "Sparse checkout: $(wc -l < /tmp/sparse-dirs.txt) shard dirs"
+            # Label corrected 2026-07-31: this job no longer sparse-checks-out
+            # (§B2). The COUNT is kept deliberately — it is the per-run measure of
+            # how many shards actually produced writes, which is the number that
+            # distinguishes "draining normally" from "throttle-bound tail", and it
+            # was missing when that question came up on 2026-07-30.
+            echo "Shards with writes to apply: $(wc -l < /tmp/sparse-dirs.txt)"
           fi
 
+      # 2026-07-31 (OUTSTANDING §B2): PLAIN FULL CHECKOUT — was a blobless sparse
+      # checkout of `scripts` followed by a `git sparse-checkout set` expansion.
+      #
+      # Why it changed. actions/checkout applies `filter=blob:none` whenever
+      # sparse-checkout is set, so expanding the sparse set performed a PROMISOR
+      # OBJECT FETCH over the network. The remote reset that fetch on 2026-07-26
+      # ("curl 56 Recv failure" / "fatal: early EOF"), killing this job and silently
+      # discarding a whole run's shard writes. A 6-attempt retry was added on 07-29;
+      # this removes the failure mode instead of retrying it.
+      #
+      # The number that justified the old design was wrong. A full checkout of this
+      # repo was believed to take ~140 minutes; MEASURED 2026-07-30 it is 5m 04s
+      # (db-audit run). The ~140 figure existed only in session memory, in no doc.
+      #
+      # It also deletes a second hazard: under sparse checkout, paths outside the
+      # set carry skip-worktree, which is why players/aliases HAD to enter the sparse
+      # set before the tars were extracted or `git add` would silently ignore those
+      # files. A full checkout has no skip-worktree anywhere, so that ordering trap
+      # stops existing.
+      #
+      # Cost: ~5 min per run, and ~4 GB of games/ + leaderboard/ + team-stats/ +
+      # venue-lookup/ that this job never reads. Accepted — on a FULL sweep the old
+      # expansion covered all 256 shard dirs (~1.84 GB) as ~414k individual blobs
+      # over promisor, which is the slower path per byte anyway, and
+      # claude_context.md L175 already forbids sparse-checkout for any job that must
+      # read many player files. The 256 SHARD jobs keep sparse-checkout — they
+      # genuinely need ~1/256th of the tree.
       - uses: actions/checkout@v4
         if: steps.check.outputs.has_files == 'true'
         with:
           ref: main
           fetch-depth: 1
-          sparse-checkout: scripts
-          sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Expand sparse checkout to active shards
-        if: steps.check.outputs.has_files == 'true'
-        # players/aliases is included because shard jobs may write alias
-        # discoveries there; it must be in the sparse set BEFORE the tars are
-        # extracted (skip-worktree would otherwise make git add ignore them,
-        # and expanding afterwards would overwrite the extracted files).
-        #
-        # RETRIED: this is a blobless clone, so `sparse-checkout set` triggers a
-        # promisor object fetch over the network. That fetch was reset by the
-        # remote on 2026-07-26 ("curl 56 Recv failure" / "fatal: early EOF" /
-        # "could not fetch ... from promisor remote"), which killed apply-and-commit
-        # and silently discarded a whole run's shard writes. The command is
-        # idempotent, so re-running it after a transient reset is safe.
-        run: |
-          dirs=$(cat /tmp/sparse-dirs.txt | tr '\n' ' ')
-          attempts=6
-          ok=false
-          for i in $(seq 1 $attempts); do
-            if git sparse-checkout set --no-cone scripts players/aliases $dirs; then
-              echo "  ✓ sparse-checkout expanded (attempt $i)"
-              ok=true
-              break
-            fi
-            if [ "$i" -lt "$attempts" ]; then
-              delay=$(( i * 15 ))
-              [ "$delay" -gt 90 ] && delay=90
-              echo "  … sparse-checkout/promisor fetch failed — retry $((i+1))/$attempts in ${delay}s"
-              sleep "$delay"
-            fi
-          done
-          if [ "$ok" != "true" ]; then
-            echo "✗ sparse-checkout failed after $attempts attempts — nothing applied this run."
-            echo "  Shard writes are NOT lost data: the player files were never touched on main,"
-            echo "  so those players still lack statsChecked and are re-fetched next run."
-            exit 1
-          fi
 
       - name: Configure git
         if: steps.check.outputs.has_files == 'true'
@@ -433,6 +426,11 @@ jobs:
 
       - name: Aggregate and report
         id: aggregate
+        env:
+          # Passed via env, not interpolated into the python source: inputs.shards is
+          # a JSON string and splicing it into code is how quoting bugs become
+          # execution bugs.
+          INPUT_SHARDS: ${{ inputs.shards }}
         run: |
           python3 - << 'PYEOF'
           import json, os, glob
@@ -500,8 +498,53 @@ jobs:
                   print(f'    shard={shard}  not_obtainable={d["inaccessible"]}')
               except: pass
 
+          # ── T9: narrow the NEXT run to shards that still have work ───────────
+          # Previously the retrigger forwarded inputs.shards VERBATIM, so an
+          # untargeted dispatch (shards=[]) span all 256 jobs on EVERY retrigger
+          # forever. On 2026-07-30 that meant ~250 idle jobs per run for ~37 runs.
+          # The narrowing was always meant to live in the CALLER (the nightly passes
+          # a targeted list from needs-matrix-shards.json) — nothing carried it
+          # forward once a chain started.
+          #
+          # THE TRAP: an empty shards value means ALL 256 to generate-shards, not
+          # "none". So if the narrowed list comes back empty we must NOT emit '[]' —
+          # that would fan out to 256 on the terminal run, the exact opposite of the
+          # intent. Empty falls back to forwarding inputs.shards unchanged, which is
+          # the pre-T9 behaviour and safe.
+          carry, seen = [], set()
+          for f in files:
+            try:
+              d = json.load(open(f))
+            except Exception:
+              continue
+            sh = d.get('shard')
+            if not sh: continue
+            seen.add(sh)
+            # blocked shards have work left even when `remaining` looks small
+            if d.get('remaining', 0) > 0 or d.get('blocked'):
+              carry.append(sh)
+
+          # A shard that RAN but produced no summary crashed — its state is unknown,
+          # so it must be retried rather than silently dropped.
+          raw = (os.environ.get('INPUT_SHARDS') or '').strip()
+          try:
+            requested = json.loads(raw) if raw else []
+          except Exception:
+            requested = []
+          expected = requested if requested else ['%02x' % i for i in range(256)]
+          for sh in expected:
+            if sh not in seen:
+              carry.append(sh)
+
+          carry = sorted(set(carry))
+          next_shards = json.dumps(carry, separators=(',', ':')) if carry else raw
+          print('')
+          print(f'  Next run targets: {len(carry)} shard(s) with work outstanding'
+                + ('' if carry else ' — none; forwarding the original shards value unchanged'))
+
           with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
             fh.write(f'written={written}\n')
+            fh.write(f'next_shards={next_shards}\n')
           PYEOF
 
       - name: Determine next action
@@ -566,7 +609,11 @@ jobs:
           # Set from the expression so the JSON string keeps its quotes — passing it
           # inline in the shell line would let the shell strip the embedded quotes.
           # Both boolean comparisons: a chained dispatch sends force as a STRING.
-          NEXT_SHARDS: ${{ (inputs.force == true || inputs.force == 'true') && '[]' || inputs.shards }}
+          # force still forces '[]' — that is a deliberate FULL-COVERAGE guarantee
+          # after a forced run (clear-stats-checked wipes statsChecked repo-wide, so
+          # every shard genuinely has work). Narrowing applies only to normal runs.
+          # Single line: see claude_context §T1.
+          NEXT_SHARDS: ${{ (inputs.force == true || inputs.force == 'true') && '[]' || steps.aggregate.outputs.next_shards }}
           # MUST be carried forward: a --recheck-private sweep spans many chained runs,
           # and dropping the flag on the retrigger would silently narrow run 2 onward
           # back to never-fetched players only. `force` is deliberately NOT carried
