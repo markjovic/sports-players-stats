@@ -108,6 +108,11 @@ let totalSeasons = 0, seasonsEmptyRegs = 0;
 let totalRegs = 0, regsNoGid = 0, regsNoTid = 0;
 let seasonsWithDupTid = 0, dupRegPairs = 0;
 let dupExact = 0, dupRegrade = 0, dupNullGid = 0;
+// For the EXACT (tid,gid) duplicates only: are the copies carrying the same stats?
+// This is what decides whether dedup is mechanical or lossy. Identical stats -> pick
+// either. Divergent stats -> one is stale and choosing wrong silently loses data.
+let dupExactStatsIdentical = 0, dupExactStatsDiffer = 0, dupExactOneEmpty = 0;
+const dupStatsDifferSamples = [];
 const dupSamples = [], noGidSamples = [], dupExactSamples = [], dupNullGidSamples = [];
 
 const shards = fs.readdirSync(PLAYERS_DIR)
@@ -170,6 +175,38 @@ for (const shard of shards) {
           dupExact += realGids.length - distinctReal;
           if (dupExactSamples.length < MAX_SAMPLES) {
             dupExactSamples.push(`${uuid} sid=${sid} tid=${tid} x${n} gids=[${realGids.join(', ')}]`);
+          }
+          // Compare stats within each repeated (tid,gid) group.
+          const byGid = new Map();
+          for (const r of sameTid) {
+            if (r.gid === undefined || r.gid === null) continue;
+            if (!byGid.has(r.gid)) byGid.set(r.gid, []);
+            byGid.get(r.gid).push(r);
+          }
+          for (const [g, group] of byGid) {
+            if (group.length < 2) continue;
+            const norm = r => {
+              const st = r.stats || {};
+              // Zero-valued keys are stripped on write, so {} and {pts:0} are the
+              // same record — compare on non-zero entries only, sorted for stability.
+              return JSON.stringify(Object.entries(st)
+                .filter(([, v]) => v !== 0 && v !== null && v !== undefined)
+                .sort(([a], [b]) => a < b ? -1 : 1));
+            };
+            const sigs = group.map(norm);
+            const nonEmpty = sigs.filter(x => x !== '[]');
+            const distinct = new Set(sigs).size;
+            if (distinct === 1) {
+              dupExactStatsIdentical += group.length - 1;
+            } else if (nonEmpty.length <= 1) {
+              // One copy holds the stats, the rest are empty shells — safe to drop the shells.
+              dupExactOneEmpty += group.length - 1;
+            } else {
+              dupExactStatsDiffer += group.length - 1;
+              if (dupStatsDifferSamples.length < MAX_SAMPLES) {
+                dupStatsDifferSamples.push(`${uuid} sid=${sid} tid=${tid} gid=${g} -> ${sigs.join('  VS  ')}`);
+              }
+            }
           }
         } else {
           dupRegrade += n - 1;
@@ -269,7 +306,16 @@ L.push('       publicProfileTeams returns grade=NULL for COMPLETED season regist
 for (const s of dupNullGidSamples) L.push(`       ${s}`);
 L.push('');
 L.push(`  c) EXACT — same (tid, gid) twice   : ${dupExact}${pctRegs(dupExact)}   ${dupExact ? '❌ genuine duplicate' : '✅ none'}`);
-for (const s of dupExactSamples) L.push(`       ${s}`);
+for (const s of dupExactSamples.slice(0, 5)) L.push(`       ${s}`);
+if (dupExact) {
+  L.push('');
+  L.push('     Do the copies carry the SAME stats? This decides whether dedup is safe.');
+  L.push(`       identical stats        : ${dupExactStatsIdentical}   ✅ dedup is mechanical, keep either`);
+  L.push(`       one copy empty         : ${dupExactOneEmpty}   ✅ keep the populated one, drop the shell`);
+  L.push(`       DIVERGENT stats        : ${dupExactStatsDiffer}   ${dupExactStatsDiffer ? '❌ one copy is stale — a blind dedup LOSES DATA' : '✅ none'}`);
+  L.push('       (zero-valued stats keys are stripped on write, so {} and {pts:0} compare equal)');
+  for (const s of dupStatsDifferSamples) L.push(`       ${s}`);
+}
 
 L.push('');
 L.push('Q2 — REGS MISSING `gid`');
