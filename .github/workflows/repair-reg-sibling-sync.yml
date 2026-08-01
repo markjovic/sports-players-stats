@@ -1,0 +1,79 @@
+# .github/workflows/repair-reg-sibling-sync.yml
+name: Repair reg sibling stats sync (one-off)
+
+# Makes regs sharing a (season, team) hold identical stats. See the script header
+# for why they SHOULD be identical (both writers key on sid+tid and write the same
+# per-team totals to every sibling) and why 465 core + 168,765 cosmetic groups
+# drifted anyway (staleness, not a keying bug).
+#
+# Merge rule is per-key MAX, which is idempotent and cannot lose a value: season
+# totals only grow, so the larger copy is the more complete one. The run ABORTS if
+# any value would decrease.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run = scan and report, write nothing (START HERE). apply = sync siblings, batched commits."
+        type: choice
+        options: [dry-run, apply]
+        default: dry-run
+      scope:
+        description: "all = sync every drifted sibling group. core-only = only groups differing in a leaderboard-visible field (gp pts fg ft threePt fouls wins losses draws), leaving foulOuts-only drift alone."
+        type: choice
+        options: [all, core-only]
+        default: all
+      shard:
+        description: "Optional single 2-hex shard (e.g. 0a) to rehearse on. Blank = all 256."
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      # Plain full checkout: reads and rewrites player files across all 256 shards.
+      # No actions/setup-node - nothing here touches the PlayHQ API.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Guard in bash, not only in a GitHub expression (trap T3).
+      - name: Run repair
+        env:
+          MODE:  ${{ inputs.mode }}
+          SCOPE: ${{ inputs.scope }}
+          SHARD: ${{ inputs.shard }}
+        run: |
+          set -euo pipefail
+          case "$MODE" in
+            dry-run) ARGS="--dry-run" ;;
+            apply)   ARGS="" ;;
+            *) echo "::error::unrecognised mode '$MODE' - refusing to run"; exit 1 ;;
+          esac
+          case "$SCOPE" in
+            all)       : ;;
+            core-only) ARGS="$ARGS --core-only" ;;
+            *) echo "::error::unrecognised scope '$SCOPE' - refusing to run"; exit 1 ;;
+          esac
+          if [ -n "$SHARD" ]; then
+            case "$SHARD" in
+              [0-9a-f][0-9a-f]) ARGS="$ARGS --shard=$SHARD" ;;
+              *) echo "::error::shard '$SHARD' is not two lowercase hex digits - refusing"; exit 1 ;;
+            esac
+          fi
+          echo "resolved ARGS: $ARGS"
+          node --max-old-space-size=6144 scripts/repair-reg-sibling-sync.js $ARGS
