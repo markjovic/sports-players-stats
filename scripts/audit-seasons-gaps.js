@@ -118,6 +118,14 @@ const dupStatsDifferSamples = [];
 // are suggestive, not measured — this counts every group so the merge rule can be
 // justified rather than assumed.
 const differKeyHisto = new Map();
+// REGRADE groups: do the copies hold SPLIT stats (5 games in grade A, 10 in B) or
+// DUPLICATED team totals (both saying 15)? This is the question OUTSTANDING §1.1
+// hangs on. build-leaderboards.js now keys season rows on `uuid|tid|gid`, so a
+// regraded team yields TWO rows. Correct if the stats are split; if they are
+// duplicated totals it produces two identical rows per player and the key change
+// must be reverted. 1,300,376 regs are regrades, so this is not a corner case.
+let regradeSplit = 0, regradeIdenticalTotals = 0, regradePartlyEmpty = 0;
+const regradeSplitSamples = [], regradeIdenticalSamples = [];
 let differOnlyByAbsence = 0, differByValue = 0;
 const differByValueSamples = [];
 const dupSamples = [], noGidSamples = [], dupExactSamples = [], dupNullGidSamples = [];
@@ -250,6 +258,29 @@ for (const shard of shards) {
           if (dupSamples.length < MAX_SAMPLES) {
             dupSamples.push(`${uuid} sid=${sid} tid=${tid} x${n} gids=[${realGids.join(', ')}]  (distinct grades — expected)`);
           }
+          // §1.1: split vs duplicated totals.
+          const sig = r => {
+            const st = r.stats || {};
+            return JSON.stringify(Object.entries(st)
+              .filter(([, v]) => v !== 0 && v !== null && v !== undefined)
+              .sort(([a], [b]) => a < b ? -1 : 1));
+          };
+          const sigs = sameTid.map(sig);
+          const nonEmpty = sigs.filter(x => x !== '[]');
+          if (nonEmpty.length <= 1) {
+            // Only one grade carries stats — no double-count risk either way.
+            regradePartlyEmpty++;
+          } else if (new Set(nonEmpty).size === 1) {
+            regradeIdenticalTotals++;
+            if (regradeIdenticalSamples.length < MAX_SAMPLES) {
+              regradeIdenticalSamples.push(`${uuid} sid=${sid} tid=${tid} gids=[${realGids.join(', ')}] BOTH=${nonEmpty[0]}`);
+            }
+          } else {
+            regradeSplit++;
+            if (regradeSplitSamples.length < MAX_SAMPLES) {
+              regradeSplitSamples.push(`${uuid} sid=${sid} tid=${tid} gids=[${realGids.join(', ')}] -> ${sigs.join('  VS  ')}`);
+            }
+          }
         }
       }
       if (dupHere) { seasonsWithDupTid++; dupRegPairs += dupHere; }
@@ -335,6 +366,17 @@ L.push(`  total tid repeats                 : ${dupRegPairs}${pctRegs(dupRegPair
 L.push('');
 L.push(`  a) REGRADE — distinct real grades  : ${dupRegrade}${pctRegs(dupRegrade)}   ✅ expected, correct data`);
 for (const s of dupSamples.slice(0, 5)) L.push(`       ${s}`);
+L.push('');
+L.push('     §1.1 — do REGRADE copies hold SPLIT stats or DUPLICATED team totals?');
+L.push('     build-leaderboards.js now keys season rows on uuid|tid|gid, so a regraded team');
+L.push('     yields TWO rows. SPLIT = correct, the key change recovered data that the old');
+L.push('     uuid|tid key was silently overwriting. DUPLICATED = two identical rows per');
+L.push('     player, and the key change must be REVERTED.');
+L.push(`       SPLIT (different stats per grade)   : ${regradeSplit}   ${regradeSplit ? '✅ key change is CORRECT' : ''}`);
+L.push(`       DUPLICATED (identical totals)       : ${regradeIdenticalTotals}   ${regradeIdenticalTotals ? '❌ REVERT the key change' : '✅ none'}`);
+L.push(`       only one grade carries stats        : ${regradePartlyEmpty}   (no risk either way)`);
+for (const s of regradeSplitSamples.slice(0, 5)) L.push(`         SPLIT      ${s}`);
+for (const s of regradeIdenticalSamples.slice(0, 5)) L.push(`         DUPLICATED ${s}`);
 L.push('');
 L.push(`  b) NULL-GID — >=1 reg has no grade : ${dupNullGid}${pctRegs(dupNullGid)}   ${dupNullGid ? '❌ THE MECHANISM' : '✅ none'}`);
 L.push('       nightly matches `r.tid === playerTid && r.gid === gradeId`, so a reg carrying');

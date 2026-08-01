@@ -399,13 +399,15 @@ async function gitCommit(message, dirs) {
   // exactly how discover-fixtures.js discarded 30,426 fetched games on a GREEN
   // run (2026-07-19). Staged individually, a miss skips only itself and is
   // reported loudly.
-  let addFailures = 0;
+  let addFailures = 0, hardAddFailures = 0;
   for (const p of paths) {
     try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT }); }
     catch (e) {
       addFailures++;
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
-      console.error(`  ⚠ git add failed for "${p}": ${detail}`);
+      // "did not match any files" on a per-path add is benign — see the note below.
+      if (!/did not match any files/i.test(detail)) hardAddFailures++;
+      console.error(`  ⚠ git add ${/did not match any files/i.test(detail) ? 'skipped' : 'FAILED'} for "${p}": ${detail}`);
     }
   }
 
@@ -415,12 +417,24 @@ async function gitCommit(message, dirs) {
   })();
 
   if (!staged) {
-    // Previously a bare silent `return`. Now: nothing staged AFTER a staging
-    // failure is not a clean no-op, it is the silent-loss signature — refuse to
-    // treat it as success. Nothing staged with every add clean is genuinely
-    // nothing to do, and says so instead of vanishing.
+    // Previously a bare silent `return`. Nothing staged AFTER a staging failure is
+    // the silent-loss signature, so it must not be reported as a clean no-op.
+    //
+    // But be PRECISE about which failure. With per-path adds, a pathspec that
+    // "did not match any files" is provably harmless: it staged nothing AND, unlike
+    // the old combined add, took nothing else down with it. That is the ordinary
+    // case for an optional path — e.g. needs-matrix-shards.json, which this script
+    // deletes when there are no affected shards, and which a forward-mode run
+    // (--rounds-forward) legitimately never recreates. Throwing on that would fail
+    // a run that did exactly what it should.
+    // Any OTHER add error — permissions, a locked index, corruption — is NOT
+    // harmless and still throws.
+    if (hardAddFailures) {
+      throw new Error(`gitCommit: nothing staged and ${hardAddFailures} path(s) failed to stage for a reason other than "did not match any files" — refusing to report this as a clean no-op ("${message}")`);
+    }
     if (addFailures) {
-      throw new Error(`gitCommit: nothing staged and ${addFailures} path(s) failed to stage — refusing to report this as a clean no-op ("${message}")`);
+      console.log(`  (no changes to commit: ${message}) — ${addFailures} optional path(s) absent, which is not an error here`);
+      return;
     }
     console.log(`  (no changes to commit: ${message})`);
     return;
