@@ -125,6 +125,8 @@ const differKeyHisto = new Map();
 // duplicated totals it produces two identical rows per player and the key change
 // must be reverted. 1,300,376 regs are regrades, so this is not a corner case.
 let regradeSplit = 0, regradeIdenticalTotals = 0, regradePartlyEmpty = 0;
+let regradeSplitCore = 0;
+const regradeDiffKeyHisto = new Map();
 const regradeSplitSamples = [], regradeIdenticalSamples = [];
 let differOnlyByAbsence = 0, differByValue = 0;
 const differByValueSamples = [];
@@ -277,8 +279,29 @@ for (const shard of shards) {
             }
           } else {
             regradeSplit++;
+            // WHICH keys differ. v5 reported only SPLIT vs DUPLICATED, and the answer
+            // was misread: every "SPLIT" sample turned out to differ ONLY in foulOuts,
+            // i.e. duplicated totals with a counter landing on one copy — not split
+            // stats at all. A count without the differing keys is not an answer.
+            const maps = sameTid.map(r => {
+              const m = new Map();
+              for (const [k, v] of Object.entries(r.stats || {})) if (v !== 0 && v !== null && v !== undefined) m.set(k, v);
+              return m;
+            });
+            const dk = [];
+            for (const k of new Set(maps.flatMap(m => [...m.keys()]))) {
+              const vals = maps.map(m => m.get(k));
+              const present = vals.filter(v => v !== undefined);
+              if (present.length !== vals.length || new Set(present).size > 1) dk.push(k);
+            }
+            const ksig = dk.sort().join('+') || '(none)';
+            regradeDiffKeyHisto.set(ksig, (regradeDiffKeyHisto.get(ksig) || 0) + 1);
+            // Core box-score fields. If ONLY counters like foulOuts differ, the totals
+            // are duplicated and a per-grade leaderboard key is wrong.
+            const CORE = ['gp','pts','fg','ft','threePt','fouls','wins','losses','draws'];
+            if (dk.some(k => CORE.includes(k))) regradeSplitCore++;
             if (regradeSplitSamples.length < MAX_SAMPLES) {
-              regradeSplitSamples.push(`${uuid} sid=${sid} tid=${tid} gids=[${realGids.join(', ')}] -> ${sigs.join('  VS  ')}`);
+              regradeSplitSamples.push(`${uuid} sid=${sid} tid=${tid} keys=[${dk.join(', ')}] gids=[${realGids.join(', ')}]`);
             }
           }
         }
@@ -367,14 +390,22 @@ L.push('');
 L.push(`  a) REGRADE — distinct real grades  : ${dupRegrade}${pctRegs(dupRegrade)}   ✅ expected, correct data`);
 for (const s of dupSamples.slice(0, 5)) L.push(`       ${s}`);
 L.push('');
-L.push('     §1.1 — do REGRADE copies hold SPLIT stats or DUPLICATED team totals?');
-L.push('     build-leaderboards.js now keys season rows on uuid|tid|gid, so a regraded team');
-L.push('     yields TWO rows. SPLIT = correct, the key change recovered data that the old');
-L.push('     uuid|tid key was silently overwriting. DUPLICATED = two identical rows per');
-L.push('     player, and the key change must be REVERTED.');
-L.push(`       SPLIT (different stats per grade)   : ${regradeSplit}   ${regradeSplit ? '✅ key change is CORRECT' : ''}`);
-L.push(`       DUPLICATED (identical totals)       : ${regradeIdenticalTotals}   ${regradeIdenticalTotals ? '❌ REVERT the key change' : '✅ none'}`);
+L.push('     REGRADE copies: SPLIT stats per grade, or DUPLICATED team totals?');
+L.push('     SETTLED 2026-08-01: DUPLICATED. The API reports per-TEAM season totals and');
+L.push('     repeats them on every grade registration. build-leaderboards.js was briefly');
+L.push('     keyed on uuid|tid|gid on the assumption of split stats; that produced two');
+L.push('     identical rows per player and was REVERTED to uuid|tid. Watch the CORE line:');
+L.push('     if it is ~0 the totals are duplicated and a per-grade key stays wrong.');
+L.push(`       byte-identical across grades        : ${regradeIdenticalTotals}`);
+L.push(`       differ in >=1 key                   : ${regradeSplit}`);
+L.push(`         ...of which differ in a CORE box-score field : ${regradeSplitCore}`);
+L.push(`         (core = gp pts fg ft threePt fouls wins losses draws. If this is ~0 the`);
+L.push(`          totals are DUPLICATED per grade and a per-grade leaderboard key is WRONG.)`);
 L.push(`       only one grade carries stats        : ${regradePartlyEmpty}   (no risk either way)`);
+L.push('       WHICH KEYS DIFFER across regrade groups:');
+for (const [k, n] of [...regradeDiffKeyHisto.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)) {
+  L.push(`         ${String(n).padStart(8)}  ${k}`);
+}
 for (const s of regradeSplitSamples.slice(0, 5)) L.push(`         SPLIT      ${s}`);
 for (const s of regradeIdenticalSamples.slice(0, 5)) L.push(`         DUPLICATED ${s}`);
 L.push('');

@@ -313,13 +313,22 @@ function pushSeason(players, player, sid, uuid) {
       const stats = reg.stats || {};
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
-      // 2026-08-01 (decision A): a reg IS a (team, grade) registration, so the key
-      // must include the grade. It was `uuid|tid`, and L340 ASSIGNS rather than
-      // accumulates — so for a regraded team the second reg silently overwrote the
-      // first and one grade's stats never reached the season leaderboard. 1,296,352
-      // regs share a tid with a sibling, across 929,597 seasons.
-      // Safe for StatTrack: it reads `id.split('|')[0]`, unaffected by a third segment.
-      const id         = `${truncateUuid(uuid)}|${reg.tid}|${reg.gid || ''}`;
+      // ⚠️ REVERTED 2026-08-01. This was briefly `${truncateUuid(uuid)}|${reg.tid}|${reg.gid || ''}`
+      // on the reasoning that, since a reg is a (team, grade) registration (decision A),
+      // a regraded team should produce one season row per grade — and that the old
+      // uuid|tid key was silently dropping one of them, because L340 ASSIGNS.
+      //
+      // MEASURED AFTERWARDS, and the reasoning was wrong: regrade regs hold the SAME
+      // team-season totals on every grade. Of ~913,000 regrade groups, the copies are
+      // byte-identical apart from `foulOuts`, which lands on whichever copy the
+      // foul-out writer matched first. gp/pts/fg/ft/threePt/fouls/wins/losses agree
+      // across grades in every sample.
+      //
+      // So the API reports per-TEAM season totals and repeats them on each grade
+      // registration. Keying by grade therefore produces TWO leaderboard rows with
+      // identical stats for one player, and the ASSIGN it replaced was not losing
+      // anything — both copies said the same thing. uuid|tid is correct.
+      const id         = `${truncateUuid(uuid)}|${reg.tid}`;
       const comp       = tidToComp.get(reg.tid) || '';
       const org        = sidToOrg.get(sid) || '';
       const foulOuts   = stats.foulOuts   ?? 0;
