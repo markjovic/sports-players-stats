@@ -65,6 +65,58 @@ const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
 const INDEX_FILE_REL = 'data/sports-index.json';
 const PROGRESS_FILE = path.join(ROOT, 'data', 'discover-progress.json');   // per-shard cursor/done (matrix resume state)
 const PROGRESS_FILE_REL = 'data/discover-progress.json';
+// ─── Reg upsert (DECISION A, 2026-08-01) ──────────────────────────────────────
+// A reg IS a (team, grade) registration, so BOTH fields are the key. Three writers
+// previously disagreed and the data reflected all three:
+//   nightly-crawl.js  L1011  matches (tid AND gid) -> appends when grade differs
+//   fetch-profile-stats.js L1039  matches (tid)    -> skips
+//   discover-seasons.js (here)   matched (tid)     -> MUTATED gid in place
+// That mutation was the exact-duplicate generator: rewriting one reg's grade could
+// make it collide with a sibling the nightly had already appended, producing two
+// regs sharing (tid, gid) — 27,666 of them, which neither other writer can create
+// because both check and skip. It also fought the nightly in a loop: this script
+// collapsed a regrade to one reg with the latest grade, the nightly met a game in
+// the older grade, found no (tid,gid) match, and appended it straight back.
+//
+// Rules:
+//   - match on (tid, gid); never overwrite one REAL grade with a different one
+//   - a reg whose grade was never published IS the same registration seen before
+//     the grade existed — COMPLETE it rather than adding a second row
+//   - when the API gives no grade, never add a less-informative row beside one that
+//     already names a grade (publicProfileTeams returns grade=NULL for COMPLETED
+//     registrations — the source of 110,232 null-gid regs)
+// Returns true when the player file was actually changed.
+function upsertReg(seasonObj, { tid, tn, gid, gn }) {
+  if (!tid) return false;
+  const newGid = gid || null;
+  if (!seasonObj.regs) seasonObj.regs = [];
+  const regs = seasonObj.regs;
+
+  const exact = regs.find(r => r.tid === tid && (r.gid || null) === newGid);
+  if (exact) {
+    let changed = false;
+    if (tn && !exact.tn) { exact.tn = tn; changed = true; }
+    if (gn && !exact.gn) { exact.gn = gn; changed = true; }
+    return changed;
+  }
+
+  if (newGid) {
+    const incomplete = regs.find(r => r.tid === tid && !r.gid);
+    if (incomplete) {
+      incomplete.gid = newGid;
+      if (gn) incomplete.gn = gn;
+      if (tn && !incomplete.tn) incomplete.tn = tn;
+      return true;
+    }
+    regs.push({ tid, tn: tn || '', gid: newGid, gn: gn || null, stats: {} });
+    return true;
+  }
+
+  if (regs.some(r => r.tid === tid)) return false;
+  regs.push({ tid, tn: tn || '', gid: null, gn: null, stats: {} });
+  return true;
+}
+
 const PLAYERS_DIR = path.join(ROOT, 'players');
 
 // TEAM_LOOKUP_DIR disabled — team-lookup/ files are not consumed by any downstream script.
@@ -631,18 +683,15 @@ async function main() {
       for (const d of deltas) {
         let seasonObj = player.seasons.find(s => s.sid === d.sid);
         if (!seasonObj) { seasonObj = { sid: d.sid, sn: d.sn, regs: [] }; player.seasons.push(seasonObj); }
-        const hasTeam = seasonObj.regs.find(r => r.tid === d.tid);
-        if (!hasTeam) {
-          seasonObj.regs.push({ tid: d.tid, tn: d.tn, gid: d.gid, gn: d.gn, stats: {} });
-          fileModified = true;
-        } else if (d.gid && hasTeam.gid !== d.gid) {
-          hasTeam.gid = d.gid; hasTeam.gn = d.gn;
-          fileModified = true;
-        }
+        if (upsertReg(seasonObj, { tid: d.tid, tn: d.tn, gid: d.gid, gn: d.gn })) fileModified = true;
       }
       if (fileModified) {
         syncTeams(player);
-        if (!DRY_RUN) fs.writeFileSync(filePath, JSON.stringify(player, null, 2));
+        // Minified — house rule. Was `null, 2`: this script pretty-printed every player
+        // file it touched while nightly-crawl L497 and fetch-profile-stats L678 write
+        // minified, so a player touched by both flipped format every cycle and was
+        // rewritten in FULL each time even when no field changed.
+        if (!DRY_RUN) fs.writeFileSync(filePath, JSON.stringify(player));
         playersWritten++;
         touchedPlayerDirs.add(`players/${uuid.substring(0, 2)}`);
       }
@@ -959,20 +1008,13 @@ async function main() {
             seasonObj = { sid: se.id, sn: se.name, regs: [] };
             localPlayer.seasons.push(seasonObj);
           }
-          const hasTeam = seasonObj.regs.find(r => r.tid === tm.id);
-          if (!hasTeam) {
-            seasonObj.regs.push({
-              tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null, stats: {} 
-            });
+          const before = seasonObj.regs.length;
+          if (upsertReg(seasonObj, { tid: tm.id, tn: tm.name, gid: reg.grade?.id || null, gn: reg.grade?.name || null })) {
             fileModified = true;
-            console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
-          } else {
-            const newGid = reg.grade?.id || null;
-            if (newGid && hasTeam.gid !== newGid) {
-              hasTeam.gid = newGid;
-              hasTeam.gn = reg.grade?.name || null;
-              fileModified = true;
-              console.log(`   🆙 Updated grade for ${localPlayer.name || uuid} in ${tm.name} to ${reg.grade?.name}`);
+            if (seasonObj.regs.length > before) {
+              console.log(`   ➕ Added ${localPlayer.name || uuid} to ${tm.name} (${se.name})`);
+            } else {
+              console.log(`   🆙 Completed reg for ${localPlayer.name || uuid} in ${tm.name} (${se.name})`);
             }
           }
         }
@@ -986,7 +1028,8 @@ async function main() {
         const absolutePath = path.join(targetDir, `${uuid}.json`);
 
         if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-        fs.writeFileSync(absolutePath, JSON.stringify(localPlayer, null, 2));
+        // Minified — house rule (see the note at the other player write above).
+        fs.writeFileSync(absolutePath, JSON.stringify(localPlayer));
         playersWritten++;
         touchedPlayerDirsStandalone.add(`players/${uuid.substring(0, 2)}`);
       }
