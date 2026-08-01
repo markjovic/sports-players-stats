@@ -64,6 +64,9 @@ const ARGS = Object.fromEntries(
 const DRY    = !!ARGS['dry-run'];
 const SHARD  = ARGS.shard || null;
 const NO_GIT = process.env.REPAIR_NO_GIT === '1';
+// Flush a commit once this many changed files have accumulated. ~3k keeps each
+// staging call fast while bounding what a cancellation can cost.
+const COMMIT_EVERY = parseInt(ARGS['commit-every'], 10) || 3000;
 
 function log(m) { console.log(`[dup-regs] ${m}`); }
 
@@ -111,13 +114,35 @@ function mergeGroup(group) {
 function git(a) { return execFileSync('git', a, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
 function gitCommitPush(paths, message) {
   if (NO_GIT || DRY) return;
+  // ── Staging ────────────────────────────────────────────────────────────────
+  // NOT per-path. Directive 9 exists so one unmatched pathspec cannot silently
+  // discard the rest, and per-path is right at the scales it was written for (the
+  // fold stages ~5k paths, the nightly a few hundred). This script stages ~24,500,
+  // and git rewrites its ENTIRE index on every invocation — an index covering
+  // 527,900 files, roughly 40 MB. 24,534 adds is ~2 TB of index I/O and does not
+  // finish: it burned the 120-minute timeout on 2026-08-01 AFTER completing every
+  // merge and write, and the run was cancelled with nothing committed.
+  //
+  // `--pathspec-from-file` is ONE invocation and still fully explicit — never `-A`.
+  // It is atomic like any multi-pathspec add, so if it fails we fall back to
+  // per-path to ISOLATE the offender and report it, which preserves the rule's
+  // intent (a miss skips only itself, loudly) without paying it 24,000 times.
   let addFailures = 0;
-  for (const p of paths) {
-    try { git(['add', '--', p]); }
-    catch (e) {
-      addFailures++;
-      console.error(`  git add failed for "${p}": ${((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0]}`);
+  const listFile = path.join(ROOT, '.repair-dup-regs-paths.tmp');
+  try {
+    fs.writeFileSync(listFile, paths.join('\n') + '\n');
+    git(['add', '--pathspec-from-file', listFile]);
+  } catch (e) {
+    console.error(`  batch add failed (${((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0]}) — falling back to per-path to isolate`);
+    for (const p of paths) {
+      try { git(['add', '--', p]); }
+      catch (e2) {
+        addFailures++;
+        console.error(`  git add failed for "${p}": ${((e2.stderr && e2.stderr.toString()) || e2.message || '').trim().split('\n')[0]}`);
+      }
     }
+  } finally {
+    try { fs.unlinkSync(listFile); } catch {}
   }
   const staged = (() => { try { return git(['diff', '--cached', '--shortstat']).trim(); } catch { return ''; } })();
   if (!staged) {
@@ -247,6 +272,16 @@ function main() {
       }
     }
     log(`  shard ${shard} done (${playersChanged} players changed so far)`);
+
+    // Commit periodically. The 2026-08-01 run completed every merge and write and
+    // then died in staging at the 120-minute timeout, losing ALL of it — the exact
+    // "in-memory progress is lost on cancel" failure the house rule warns about.
+    // Committing per batch of shards means a cancellation costs at most one batch,
+    // and the script is idempotent so a re-run simply finishes the job.
+    if (!DRY && written.length >= COMMIT_EVERY) {
+      gitCommitPush(written.slice(), `repair-duplicate-regs: partial — ${written.length} players (through shard ${shard})`);
+      written.length = 0;
+    }
   }
 
   const L = [];
@@ -273,7 +308,7 @@ function main() {
   }
 
   if (DRY) { log('DRY RUN — nothing written.'); return; }
-  if (!written.length) { log('no files changed — nothing to commit.'); return; }
+  if (!written.length) { log('no residual files to commit (periodic commits already pushed everything).'); return; }
   gitCommitPush(written, `repair-duplicate-regs: merged ${groupsMerged} duplicate (tid,gid) groups, removed ${regsRemoved} regs across ${playersChanged} players`);
   log('complete.');
 }
