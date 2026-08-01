@@ -33,7 +33,7 @@ concurrency:
 jobs:
   repair:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 330
     steps:
       # Plain full checkout: reads and rewrites player files across all 256 shards.
       # No actions/setup-node - nothing here touches the PlayHQ API.
