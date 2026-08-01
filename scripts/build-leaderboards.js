@@ -313,7 +313,13 @@ function pushSeason(players, player, sid, uuid) {
       const stats = reg.stats || {};
       const gp    = stats.gp;
       if (typeof gp !== 'number' || gp < 1) continue;
-      const id         = `${truncateUuid(uuid)}|${reg.tid}`;
+      // 2026-08-01 (decision A): a reg IS a (team, grade) registration, so the key
+      // must include the grade. It was `uuid|tid`, and L340 ASSIGNS rather than
+      // accumulates — so for a regraded team the second reg silently overwrote the
+      // first and one grade's stats never reached the season leaderboard. 1,296,352
+      // regs share a tid with a sibling, across 929,597 seasons.
+      // Safe for StatTrack: it reads `id.split('|')[0]`, unaffected by a third segment.
+      const id         = `${truncateUuid(uuid)}|${reg.tid}|${reg.gid || ''}`;
       const comp       = tidToComp.get(reg.tid) || '';
       const org        = sidToOrg.get(sid) || '';
       const foulOuts   = stats.foulOuts   ?? 0;
