@@ -1,6 +1,17 @@
 # .github/workflows/nightly-crawl.yml
 name: Nightly Crawl
 
+# `dry_run` input REMOVED 2026-08-01, deliberately — do not re-add it without reading this.
+# It was declared `type: boolean` and gated eight jobs with `if: ${{ inputs.dry_run != 'true' }}`.
+# GitHub coerces mismatched types to numbers for comparison: true->1, false->0, and the STRING
+# 'true'->NaN. Nothing equals NaN, so `!=` was ALWAYS true and every gated job ran regardless —
+# a "dry run" still wrote team-stats, win-loss, team-index, venue-lookup and venue-indexes, and
+# dispatched the matrix. Only the bash guard inside the crawl step worked, because bash renders
+# the boolean as the string `true`. Removing the input changed NO runtime behaviour; the jobs
+# already always ran. It removed a switch that lied.
+# If a dry run is ever wanted again: gate in BASH, or use the robust form
+# `inputs.x == true || inputs.x == 'true'` (claude_context, boolean-input rule / trap T3).
+
 on:
   schedule:
     - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
@@ -15,11 +26,6 @@ on:
         description: 'Single season ID (leave blank for all active)'
         required: false
         type: string
-      dry_run:
-        description: 'Dry run — no writes or commits'
-        required: false
-        default: false
-        type: boolean
       force_recheck:
         description: 'Ignore round-complete markers and re-fetch every round'
         required: false
@@ -63,7 +69,6 @@ jobs:
         run: |
           ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           if [ "${{ inputs.force_recheck }}" = "true" ]; then ARGS="$ARGS --force-recheck"; fi
           node scripts/nightly-crawl.js $ARGS
 
@@ -111,7 +116,6 @@ jobs:
     needs: crawl
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    if: ${{ inputs.dry_run != 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -127,7 +131,6 @@ jobs:
     needs: crawl
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ inputs.dry_run != 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -146,7 +149,6 @@ jobs:
     needs: venue-lookup
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    if: ${{ inputs.dry_run != 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -182,7 +184,6 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       always() &&
-      inputs.dry_run != 'true' &&
       (needs.crawl.outputs.new_players != '0' || needs.crawl.outputs.stats_rechecks != '0')
     steps:
       - uses: actions/checkout@v4
@@ -214,7 +215,6 @@ jobs:
     needs: crawl
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    if: ${{ inputs.dry_run != 'true' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -247,7 +247,6 @@ jobs:
     # instead, delete the `dow` check below.
     if: |
       always() &&
-      inputs.dry_run != 'true' &&
       needs.crawl.outputs.games_remaining == '0'
     steps:
       - name: Trigger season discovery matrix (weekly, Sundays)
@@ -285,7 +284,6 @@ jobs:
     # (active-only) — the full §C7 weekly chain (2026-07-21).
     if: |
       always() &&
-      inputs.dry_run != 'true' &&
       needs.crawl.outputs.games_remaining == '0'
     steps:
       - name: Trigger weekly future-fixtures sweep (Mondays UTC)
@@ -308,7 +306,6 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       always() &&
-      inputs.dry_run != 'true' &&
       needs.crawl.outputs.games_remaining != '0' &&
       needs.crawl.outputs.games_remaining != ''
     steps:

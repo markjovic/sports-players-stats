@@ -1,0 +1,55 @@
+# .github/workflows/audit-seasons-gaps.yml
+name: Audit seasons[] gaps + duplicate regs (read-only)
+
+# Diagnostic for OUTSTANDING_TASKS §2.2. See the header of
+# scripts/audit-seasons-gaps.js for the full reasoning.
+#
+# Q1: are the two reg writers producing DUPLICATE regs? nightly-crawl.js matches
+#     on (tid AND gid); fetch-profile-stats.js writes {tid} only, so nightly cannot
+#     see a matrix-created reg and may push a second one for the same team.
+# Q2: how many regs lack gid.
+# Q3: the real size of the seasons[] gap across ALL games — build-finals-stats.js
+#     reported 218, but it scans FINALS ONLY (5.2% of games) and conflates
+#     "sid absent" with "sid present, regs[] empty" in one counter.
+#
+# Read-only: no writes, no commits, no network. Nothing here can change data.
+
+on:
+  workflow_dispatch:
+    inputs:
+      samples:
+        description: "How many example rows to print per finding (default 20, max 200)."
+        type: string
+        required: false
+        default: "20"
+
+permissions:
+  contents: read
+
+# Deliberately NOT in the data-write group — read-only, and joining it would queue
+# this behind multi-hour writers for no benefit.
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      # Plain full checkout. This reads every player file (411,964) AND every game
+      # file (2,896 / 2.3M games), so sparse-checkout is exactly wrong here — it
+      # would fetch each blob over the network on access. No actions/setup-node:
+      # nothing here touches the PlayHQ API.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      - name: Audit seasons[] gaps and duplicate regs
+        env:
+          SAMPLES: ${{ inputs.samples }}
+        run: |
+          set -euo pipefail
+          # Validate in bash, not only in a GitHub expression (trap T3).
+          case "${SAMPLES:-}" in
+            ''|*[!0-9]*) N=20 ;;
+            *) N="$SAMPLES" ;;
+          esac
+          echo "samples=$N"
+          node --max-old-space-size=6144 scripts/audit-seasons-gaps.js --samples="$N"
