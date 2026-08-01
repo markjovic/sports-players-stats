@@ -113,6 +113,13 @@ let dupExact = 0, dupRegrade = 0, dupNullGid = 0;
 // either. Divergent stats -> one is stale and choosing wrong silently loses data.
 let dupExactStatsIdentical = 0, dupExactStatsDiffer = 0, dupExactOneEmpty = 0;
 const dupStatsDifferSamples = [];
+// Which stat keys actually differ across an EXACT-duplicate group, over ALL of them.
+// The 20 printed samples all differed only in `foulOuts`, but samples ordered by uuid
+// are suggestive, not measured — this counts every group so the merge rule can be
+// justified rather than assumed.
+const differKeyHisto = new Map();
+let differOnlyByAbsence = 0, differByValue = 0;
+const differByValueSamples = [];
 const dupSamples = [], noGidSamples = [], dupExactSamples = [], dupNullGidSamples = [];
 
 const shards = fs.readdirSync(PLAYERS_DIR)
@@ -205,6 +212,36 @@ for (const shard of shards) {
               dupExactStatsDiffer += group.length - 1;
               if (dupStatsDifferSamples.length < MAX_SAMPLES) {
                 dupStatsDifferSamples.push(`${uuid} sid=${sid} tid=${tid} gid=${g} -> ${sigs.join('  VS  ')}`);
+              }
+              // Classify the disagreement key by key.
+              const maps = group.map(r => {
+                const m = new Map();
+                for (const [k, v] of Object.entries(r.stats || {})) if (v !== 0 && v !== null && v !== undefined) m.set(k, v);
+                return m;
+              });
+              const allKeys = new Set(maps.flatMap(m => [...m.keys()]));
+              const diffKeys = [];
+              let byValue = false;
+              for (const k of allKeys) {
+                const vals = maps.map(m => m.get(k));
+                const present = vals.filter(v => v !== undefined);
+                const distinctPresent = new Set(present).size;
+                if (present.length !== vals.length || distinctPresent > 1) {
+                  diffKeys.push(k);
+                  // A key that is PRESENT on every copy with different values is a real
+                  // conflict; a key merely missing from some copies is not.
+                  if (present.length === vals.length && distinctPresent > 1) byValue = true;
+                }
+              }
+              const sig = diffKeys.sort().join('+') || '(none)';
+              differKeyHisto.set(sig, (differKeyHisto.get(sig) || 0) + 1);
+              if (byValue) {
+                differByValue++;
+                if (differByValueSamples.length < MAX_SAMPLES) {
+                  differByValueSamples.push(`${uuid} sid=${sid} tid=${tid} gid=${g} keys=[${diffKeys.join(', ')}] -> ${sigs.join('  VS  ')}`);
+                }
+              } else {
+                differOnlyByAbsence++;
               }
             }
           }
@@ -314,7 +351,18 @@ if (dupExact) {
   L.push(`       one copy empty         : ${dupExactOneEmpty}   ✅ keep the populated one, drop the shell`);
   L.push(`       DIVERGENT stats        : ${dupExactStatsDiffer}   ${dupExactStatsDiffer ? '❌ one copy is stale — a blind dedup LOSES DATA' : '✅ none'}`);
   L.push('       (zero-valued stats keys are stripped on write, so {} and {pts:0} compare equal)');
-  for (const s of dupStatsDifferSamples) L.push(`       ${s}`);
+  if (dupExactStatsDiffer) {
+    L.push('');
+    L.push('     WHICH KEYS DISAGREE (all divergent groups, not a sample):');
+    for (const [sig, n] of [...differKeyHisto.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15)) {
+      L.push(`       ${String(n).padStart(6)}  ${sig}`);
+    }
+    L.push('');
+    L.push(`       groups differing ONLY by a key being ABSENT : ${differOnlyByAbsence}   ✅ merge by max per key is LOSSLESS`);
+    L.push(`       groups where a shared key has DIFFERENT values : ${differByValue}   ${differByValue ? '❌ a real conflict — max() would pick a winner' : '✅ none'}`);
+    for (const s of differByValueSamples) L.push(`       ${s}`);
+  }
+  for (const s of dupStatsDifferSamples.slice(0, 5)) L.push(`       ${s}`);
 }
 
 L.push('');
