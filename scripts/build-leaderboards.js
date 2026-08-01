@@ -278,12 +278,32 @@ function pushAllTime(buckets, player, uuid) {
   if (typeof bball.wins    === 'number' && bball.wins > 0)    buckets.wins   .push({ ...base, v: bball.wins });
   if (typeof bball.losses  === 'number' && bball.losses > 0)  buckets.losses .push({ ...base, v: bball.losses });
   if (typeof bball.draws   === 'number' && bball.draws > 0)   buckets.draws  .push({ ...base, v: bball.draws });
-  // winPct only meaningful with sufficient games — require at least 10 GP
-  if (typeof bball.winPct  === 'number' && bball.gp >= 10)    buckets.winPct .push({ ...base, v: Math.round(bball.winPct * 100) });
-  // lossPct — same 10 GP minimum
-  if (typeof bball.losses  === 'number' && bball.gp >= 10) {
-    const total = (bball.wins || 0) + (bball.losses || 0) + (bball.draws || 0);
-    if (total > 0) buckets.lossPct.push({ ...base, v: Math.round((bball.losses / total) * 100) });
+  // ── winPct / lossPct: `gp` here means DECIDED games, not career games ────────
+  // These two categories are the only ones that MIX SOURCES. wins/losses/draws are
+  // counted by build-win-loss.js from games/bv — games we actually hold. `bball.gp`
+  // is PlayHQ's appearance count, which includes games we have no result for.
+  //
+  // So a player with 50 career GP but only 10 games we hold, all won, was showing
+  // as 100% while carrying gp:50 — and the browser's minimum-games filter reads
+  // `e.gp`, so they survived a "min 50 games" filter on the strength of 10 results.
+  // A player who genuinely went 20-0 across 20 known games ranked no better.
+  //
+  // The percentage itself is NOT touched: 10 wins from 10 decided games IS 100%.
+  // What changes is the denominator the FILTER sees. Overriding `gp` to the decided
+  // count means the 10-of-50 player only appears at min<=10, and the 20-of-20
+  // player appears all the way to min<=20 — which is the ranking that reflects how
+  // much we actually know. It also makes the displayed GP honest: the number beside
+  // the percentage is now the number the percentage was computed from.
+  //
+  // Every other category keeps career gp, deliberately. ppg/threePtPG/foulsPG take
+  // their numerators from the SAME PlayHQ source as gp, so numerator and denominator
+  // describe the same population and there is nothing to correct.
+  const decided = (bball.wins || 0) + (bball.losses || 0) + (bball.draws || 0);
+  if (typeof bball.winPct === 'number' && decided >= 10) {
+    buckets.winPct.push({ ...base, gp: decided, v: Math.round(bball.winPct * 100) });
+  }
+  if (typeof bball.losses === 'number' && decided >= 10) {
+    buckets.lossPct.push({ ...base, gp: decided, v: Math.round((bball.losses / decided) * 100) });
   }
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
