@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.63</span>
+      <span class="rail-ver">Beta 0.64</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -2027,15 +2027,18 @@ function statValueForPlayer(m,stat){
     case 'wins':      return (m.wins||0)>0?m.wins:null;
     case 'losses':    return (m.losses||0)>0?m.losses:null;
     case 'draws':     return (m.draws||0)>0?m.draws:null;
+    // winPct/lossPct gate on DECIDED games (w+l+d), not PlayHQ's gp. gp counts
+    // appearances including games we hold no result for, so a 10-of-50 player
+    // all-wins passed a gp>=10 gate on games that never entered the maths.
     case 'winPct': {
-      if(gp<10)return null;
       const total=(m.wins||0)+(m.losses||0)+(m.draws||0);
-      return total>0?Math.round((m.wins/total)*100):null;
+      if(total<10)return null;
+      return Math.round((m.wins||0)/total*100);
     }
     case 'lossPct': {
-      if(gp<10)return null;
       const total=(m.wins||0)+(m.losses||0)+(m.draws||0);
-      return total>0?Math.round((m.losses/total)*100):null;
+      if(total<10)return null;
+      return Math.round((m.losses||0)/total*100);
     }
     default: return null;
   }
@@ -2058,7 +2061,11 @@ function seasonEntriesForStat(playersMap,stat){
     if(v===null)continue;
     out.push({uuid,name:m.n||null,club:m.club||null,team:m.team||'',
            org:m.org||'',comp:m.comp||'',grade:m.grade||'',
-           age:m.age||'',gender:m.gender||'',gp:m.gp||0,
+           age:m.age||'',gender:m.gender||'',
+           // For winPct/lossPct the minimum-games filter (and the displayed GP)
+           // must be the DECIDED games the percentage was computed from, not
+           // PlayHQ's appearance count. Every other stat keeps career gp.
+           gp:(stat==='winPct'||stat==='lossPct')?((m.wins||0)+(m.losses||0)+(m.draws||0)):(m.gp||0),
            foulOuts:m.foulOuts||0,foulOutsPG:m.foulOutsPG||0,
            threePtPG:m.threePtPG||0,foulsPG:m.foulsPG||0,
            finals:m.finals||0,gfApps:m.gfApps||0,gfWins:m.gfWins||0,
