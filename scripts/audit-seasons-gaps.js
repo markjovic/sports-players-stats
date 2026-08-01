@@ -6,15 +6,25 @@
 // fetch-profile-stats.js were read end to end (2026-08-01).
 //
 // ── Q1. Are regs being DUPLICATED? ───────────────────────────────────────────
-// The two writers create regs in different SHAPES:
-//   nightly-crawl.js  L1014: { tid, tn, gid, gn, div, stats }
-//   fetch-profile-stats.js L1040: { tid }                     <- no gid
-// and nightly's duplicate check is:
+// ⚠️ v1 of this check (2026-08-01) keyed duplicates on `tid` ALONE and reported
+// 1,330,231 "surplus" regs (32% of all regs). THAT NUMBER WAS MEANINGLESS. Every
+// sample it printed was two FULL-shape regs both carrying gid — same team, same
+// season, DIFFERENT grade. That is REGRADING, which BV does routinely with juniors,
+// and two regs is the correct representation of it. A reg is a (team, grade)
+// registration, so the key is (tid, gid) — exactly what nightly matches on.
+//
+// v2 separates the three cases properly:
+//   dupExact       same (tid, gid) twice          -> a GENUINE duplicate
+//   dupRegrade     same tid, different real gids  -> EXPECTED, not a defect
+//   dupNullGid     same tid, >=1 reg with gid null/absent -> the real MECHANISM
+//
+// dupNullGid is the one that matters. nightly's check is
 //   season.regs.some(r => r.tid === playerTid && r.gid === gradeId)
-// Against a matrix-created reg, r.gid is undefined, the test fails, and nightly
-// pushes a SECOND reg for the same team. Matrix-first-then-nightly duplicates;
-// nightly-first does not, because the matrix matches on tid alone (L1039).
-// If this is real, regs[] is inflated and anything counting regs over-counts.
+// so a reg carrying `gid: null` can NEVER satisfy it: nightly cannot see that reg
+// and pushes a second one for the same team. Q2 below found 110,232 regs with a
+// null/absent gid, and `publicProfileTeams` is documented to return grade=NULL for
+// COMPLETED season registrations — a writer doing `gid: grade?.id ?? null` produces
+// exactly this shape.
 //
 // ── Q2. How many regs lack `gid`? ────────────────────────────────────────────
 // Directly measures the writer split above, and settles a documentation
@@ -97,7 +107,8 @@ let players = 0, unreadablePlayers = 0;
 let totalSeasons = 0, seasonsEmptyRegs = 0;
 let totalRegs = 0, regsNoGid = 0, regsNoTid = 0;
 let seasonsWithDupTid = 0, dupRegPairs = 0;
-const dupSamples = [], noGidSamples = [];
+let dupExact = 0, dupRegrade = 0, dupNullGid = 0;
+const dupSamples = [], noGidSamples = [], dupExactSamples = [], dupNullGidSamples = [];
 
 const shards = fs.readdirSync(PLAYERS_DIR)
   .filter(d => /^[0-9a-f]{2}$/.test(d))
@@ -140,12 +151,30 @@ for (const shard of shards) {
       }
       let dupHere = 0;
       for (const [tid, n] of seenTids) {
-        if (n > 1) {
-          dupHere += n - 1;
+        if (n <= 1) continue;
+        dupHere += n - 1;
+        const sameTid = regs.filter(r => r && r.tid === tid);
+
+        // Classify by GRADE, which is what actually makes a reg distinct.
+        const gids = sameTid.map(r => (r.gid === undefined || r.gid === null) ? null : r.gid);
+        const realGids = gids.filter(g => g !== null);
+        const nullCount = gids.length - realGids.length;
+        const distinctReal = new Set(realGids).size;
+
+        if (nullCount > 0 && gids.length > 1) {
+          dupNullGid += n - 1;
+          if (dupNullGidSamples.length < MAX_SAMPLES) {
+            dupNullGidSamples.push(`${uuid} sid=${sid} tid=${tid} x${n} gids=[${gids.map(g => g === null ? 'NULL' : g).join(', ')}]`);
+          }
+        } else if (distinctReal < realGids.length) {
+          dupExact += realGids.length - distinctReal;
+          if (dupExactSamples.length < MAX_SAMPLES) {
+            dupExactSamples.push(`${uuid} sid=${sid} tid=${tid} x${n} gids=[${realGids.join(', ')}]`);
+          }
+        } else {
+          dupRegrade += n - 1;
           if (dupSamples.length < MAX_SAMPLES) {
-            const shapes = regs.filter(r => r && r.tid === tid)
-              .map(r => `{${Object.keys(r).join(',')}}`).join(' + ');
-            dupSamples.push(`${uuid} sid=${sid} tid=${tid} x${n}  ${shapes}`);
+            dupSamples.push(`${uuid} sid=${sid} tid=${tid} x${n} gids=[${realGids.join(', ')}]  (distinct grades — expected)`);
           }
         }
       }
@@ -223,14 +252,24 @@ if (unreadablePlayers || unreadableGames) L.push(`  unreadable: ${unreadablePlay
 L.push(`  player refs in games: ${playerRefs}   unresolvable ids: ${unresolvable}`);
 
 L.push('');
-L.push('Q1 — DUPLICATE REGS (two regs sharing a tid within one season)');
-L.push(`  seasons containing a duplicate : ${seasonsWithDupTid}`);
-L.push(`  surplus regs                   : ${dupRegPairs}${pctRegs(dupRegPairs)}`);
-L.push(dupRegPairs === 0
-  ? '  ✅ none — the shape mismatch between the two writers is NOT producing duplicates.'
-  : '  ❌ nightly matches on (tid AND gid); the matrix writes {tid} only, so nightly cannot see');
-if (dupRegPairs > 0) L.push('     a matrix-created reg and pushes a second one for the same team.');
-for (const s of dupSamples) L.push(`       ${s}`);
+L.push('Q1 — REGS SHARING A tid WITHIN ONE SEASON, split by GRADE');
+L.push('  A reg is a (team, grade) registration, so sharing a tid is only a DEFECT when the');
+L.push('  grades do not distinguish them. v1 of this check keyed on tid alone and called all');
+L.push('  1,330,231 of these "surplus" — that was wrong, and most of them are regrading.');
+L.push(`  seasons containing any tid repeat : ${seasonsWithDupTid}`);
+L.push(`  total tid repeats                 : ${dupRegPairs}${pctRegs(dupRegPairs)}`);
+L.push('');
+L.push(`  a) REGRADE — distinct real grades  : ${dupRegrade}${pctRegs(dupRegrade)}   ✅ expected, correct data`);
+for (const s of dupSamples.slice(0, 5)) L.push(`       ${s}`);
+L.push('');
+L.push(`  b) NULL-GID — >=1 reg has no grade : ${dupNullGid}${pctRegs(dupNullGid)}   ${dupNullGid ? '❌ THE MECHANISM' : '✅ none'}`);
+L.push('       nightly matches `r.tid === playerTid && r.gid === gradeId`, so a reg carrying');
+L.push('       gid:null can never match and nightly pushes a second one for the same team.');
+L.push('       publicProfileTeams returns grade=NULL for COMPLETED season registrations.');
+for (const s of dupNullGidSamples) L.push(`       ${s}`);
+L.push('');
+L.push(`  c) EXACT — same (tid, gid) twice   : ${dupExact}${pctRegs(dupExact)}   ${dupExact ? '❌ genuine duplicate' : '✅ none'}`);
+for (const s of dupExactSamples) L.push(`       ${s}`);
 
 L.push('');
 L.push('Q2 — REGS MISSING `gid`');
