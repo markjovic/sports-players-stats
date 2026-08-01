@@ -1,7 +1,32 @@
 # .github/workflows/weekly-future-fixtures.yml
-name: Weekly Future Fixtures
+name: Future Fixtures (manual — full round-forward sweep)
 
-# Weekly sweep of ALL future rounds — fixtures for rounds after each grade's
+# ⚠️ MANUAL ONLY. The `schedule:` cron was REMOVED 2026-08-01. Read this before running it.
+#
+# This workflow was recorded as RETIRED and never deleted, so its cron kept firing every
+# Saturday 00:00 UTC (= Sat 10:00 AEST) for weeks with nobody aware of it. OUTSTANDING_TASKS
+# §B5: "Future-fixtures decision: chained into the nightly, NOT a standalone cron …
+# `weekly-future-fixtures.yml` retired unrun". REPO_MANIFEST calls it "the delivered-but-unrun
+# weekly-future-fixtures.yml". Both were wrong — it was running weekly the whole time.
+#
+# WHAT REPLACED IT (and what you should normally use): the `discover-fixtures-weekly` job inside
+# nightly-crawl.yml, terminal-gated on games_remaining == 0, Mondays UTC (= Tue 02:00 AEST),
+# dispatching discover-fixtures.yml with current_only=true + chain_stats=true. That is the
+# CHEAPER PROVEN path: ~25k team calls / ~24 min, and it also feeds venue-lookup.
+#
+# WHY THIS ONE LOST: round-based via nightly-crawl --rounds-forward=all is 60–90k calls, and it
+# rests on the still-UNVERIFIED assumption that discoverGrade.rounds lists future rounds. It was
+# never the recommended path; it was kept as a fallback and then forgotten.
+#
+# WHEN TO ACTUALLY RUN IT: when the Monday chain has been skipped (a crawl that did not drain
+# leaves games_remaining != 0 and the sweep is silently skipped), or when future fixtures are
+# demonstrably missing after discover-fixtures has run. Prefer re-dispatching discover-fixtures.yml
+# with current_only=true first — this is the heavier hammer.
+#
+# It takes the data-write lock and can hold it for up to 300 minutes, so do not start it shortly
+# before 15:00 UTC or the nightly queues behind it.
+#
+# Sweep of ALL future rounds — fixtures for rounds after each grade's
 # current round, plus first-unsettled rounds for grades with no current round.
 # The nightly only ever fetches current + N previous rounds, so upcoming fixtures
 # beyond the current round never landed without this job (root cause of "future
@@ -30,8 +55,7 @@ name: Weekly Future Fixtures
 # recreates it.
 
 on:
-  schedule:
-    - cron: '0 0 * * 6'   # Saturday 10:00 AEST (UTC+10) — well clear of the 15:00 UTC nightly
+  # No schedule. Removed 2026-08-01 — see the header. Manual dispatch only.
   workflow_dispatch:
     inputs:
       rounds_forward:
