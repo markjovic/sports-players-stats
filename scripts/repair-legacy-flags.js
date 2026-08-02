@@ -42,9 +42,22 @@
 // ── What it does, exactly ────────────────────────────────────────────────────
 // For every game with legacy === true:
 //   carries a score (hs or as is a number)  -> DELETE the legacy key
-//   no score                                -> LEAVE IT ALONE
-// The ~142 scoreless ones are the only games for which the flag is unfalsified;
-// for them "no further data obtainable" is still the honest answer.
+//   st === 'UPCOMING'                       -> DELETE the legacy key   (2026-08-02)
+//   neither                                 -> LEAVE IT ALONE
+//
+// ── Why UPCOMING was added (2026-08-02, closes §2.1) ─────────────────────────
+// Part 4 of find-flag-collisions.js split the 142 survivors of the 08-01 run:
+// 139 sat in ACTIVE seasons and every sample was st=UPCOMING with a future date
+// (out to 2026-08-19) — the old classifier had probed FUTURE FIXTURES, got
+// nothing (correctly; they hadn't been played), and stamped them "pre-history,
+// nothing further obtainable". A game sitting in a future fixture falsifies the
+// flag as directly as a score does — different evidence, same conclusion. Left
+// alone, each one becomes a fresh `legacy + score` violation as it is played
+// (applyRoundFixtures preserves flags — T11), drip-feeding the audit red for a
+// month, and StatTrack 0.62 renders them "Data unavailable" TODAY (its guard is
+// legacy && no score, and an upcoming game has no score).
+// The remaining 3 (2021x2, 2023x1, all FINAL, scoreless, LOCKED seasons) are the
+// flag's entire legitimate population and are KEPT — deliberately.
 //
 // It deletes the key rather than setting it false: flag-present-means-true is
 // the schema, and a stripped field must not be re-added as `false`.
@@ -100,6 +113,13 @@ function yearOf(d) {
 
 function hasScore(g) {
   return typeof g.hs === 'number' || typeof g.as === 'number';
+}
+
+// Either falsifies "pre-history, nothing further obtainable": a score proves
+// step 1 answered; UPCOMING proves the game hasn't happened yet. Strict equality
+// on the stored status string — an absent or unknown st clears nothing.
+function flagFalsified(g) {
+  return hasScore(g) || g.st === 'UPCOMING';
 }
 
 // The ONLY permitted mutation. Returns the list of keys that actually changed,
@@ -207,7 +227,7 @@ function main() {
       legacyTotal++;
       const year = yearOf(g.d);
 
-      if (!hasScore(g)) {
+      if (!flagFalsified(g)) {
         kept++;
         keptByYear.set(year, (keptByYear.get(year) || 0) + 1);
         continue;
@@ -228,7 +248,8 @@ function main() {
       fileChanged++;
       clearedByYear.set(year, (clearedByYear.get(year) || 0) + 1);
       if (samples.length < 10) {
-        samples.push(`${gameId} (season ${fname.replace('.json','')}) ${g.d ?? '?'} ${g.hs ?? '?'}-${g.as ?? '?'}${g.forfeit ? ' [forfeit]' : ''}`);
+        const why = hasScore(g) ? `${g.hs ?? '?'}-${g.as ?? '?'}` : `st=${g.st}`;
+        samples.push(`${gameId} (season ${fname.replace('.json','')}) ${g.d ?? '?'} ${why}${g.forfeit ? ' [forfeit]' : ''}`);
       }
     }
 
@@ -255,11 +276,11 @@ function main() {
     for (const fname of files) {
       const gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, fname), 'utf8'));
       for (const g of Object.values(gf.games || {})) {
-        if (g.legacy === true && hasScore(g)) postRemaining++;
+        if (g.legacy === true && flagFalsified(g)) postRemaining++;
       }
     }
     if (postRemaining !== 0) {
-      throw new Error(`post-check FAILED: ${postRemaining} legacy+score game(s) remain after the repair — NOT committing`);
+      throw new Error(`post-check FAILED: ${postRemaining} legacy game(s) with a score or UPCOMING status remain after the repair — NOT committing`);
     }
   }
 
@@ -268,15 +289,15 @@ function main() {
   L.push('');
   L.push(`games scanned            : ${scanned}`);
   L.push(`carrying legacy:true     : ${legacyTotal}`);
-  L.push(`legacy CLEARED (scored)  : ${cleared}`);
-  L.push(`legacy KEPT (no score)   : ${kept}`);
+  L.push(`legacy CLEARED (scored or UPCOMING) : ${cleared}`);
+  L.push(`legacy KEPT (unfalsified) : ${kept}`);
   L.push(`season files changed     : ${filesChanged}`);
   if (hitLimit) L.push(`⚠ stopped early at --limit=${LIMIT} — this is a partial run`);
-  if (postRemaining !== null) L.push(`post-check legacy+score remaining : ${postRemaining} (must be 0)`);
+  if (postRemaining !== null) L.push(`post-check falsified-flag remaining : ${postRemaining} (must be 0)`);
   L.push('');
   L.push('cleared by year:');
   for (const y of [...clearedByYear.keys()].sort()) L.push(`    ${y.padEnd(9)} ${clearedByYear.get(y)}`);
-  L.push('kept by year (flag unfalsified — no score, so "nothing obtainable" still stands):');
+  L.push('kept by year (flag unfalsified — no score AND not upcoming, so "nothing obtainable" still stands):');
   for (const y of [...keptByYear.keys()].sort()) L.push(`    ${y.padEnd(9)} ${keptByYear.get(y)}`);
   if (samples.length) {
     L.push('');
@@ -293,7 +314,7 @@ function main() {
   if (DRY) { log('DRY RUN — nothing written.'); return; }
   if (!written.length) { log('no files changed — nothing to commit.'); return; }
 
-  gitCommitPush(written, `repair-legacy-flags: cleared stale legacy from ${cleared} scored games across ${filesChanged} season files`);
+  gitCommitPush(written, `repair-legacy-flags: cleared stale legacy from ${cleared} scored/upcoming games across ${filesChanged} season files`);
   log('complete.');
 }
 
