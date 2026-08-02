@@ -25,12 +25,12 @@ for two weeks. Re-run `db-audit.js` and update the stamp, or the same thing happ
 | Search shards | 641 files / name-prefix keyed |
 | Repo size | 6.13 GB / 527,900 files |
 | Structural invariants | ✅ OK (256+256 shards, uuid==filename, index↔files 1:1, aliases consistent) |
-| StatTrack | **Beta 0.63** live at `markjovic.github.io/stattrack` — and MIRRORED at the repo-root `index.html`, which Pages also serves; both were committed 2026-07-31 and must be updated in the same pass or the mirror serves a stale app. On the api-canonical contract (`player.private` boolean, alias-aware resolver, `TRUNC_LEN = 13`) — **all three VERIFIED against the deployed file 2026-07-31**, not just claimed. 0.62 fixed `renderMode`, which tested `legacy` above the score check and so rendered 3,120 scored games as "Data unavailable". **0.63 fixes `seasonEntriesForStat`, whose guard required the leaderboard key's first segment to be >=32 chars while `build-leaderboards.js` writes a 13-char prefix — every SEASON leaderboard had been rendering EMPTY, silently. all-time was unaffected.** Runtime dependency: Pages must serve `players/indexes/` AND `players/aliases/`. |
+| StatTrack | **Beta 0.64** live at `markjovic.github.io/stattrack` — and MIRRORED at the repo-root `index.html`, which Pages also serves; both were committed 2026-07-31 and must be updated in the same pass or the mirror serves a stale app. On the api-canonical contract (`player.private` boolean, alias-aware resolver, `TRUNC_LEN = 13`) — **all three VERIFIED against the deployed file 2026-07-31**, not just claimed. 0.62 fixed `renderMode`, which tested `legacy` above the score check and so rendered 3,120 scored games as "Data unavailable". **0.63 fixes `seasonEntriesForStat`, whose guard required the leaderboard key's first segment to be >=32 chars while `build-leaderboards.js` writes a 13-char prefix — every SEASON leaderboard had been rendering EMPTY, silently. all-time was unaffected.** Runtime dependency: Pages must serve `players/indexes/` AND `players/aliases/`. |
 | Nightly crawl | Active — cron 01:00 AEST daily |
 | `discover-seasons-matrix.yml` | Active, self-triggering — season discovery + roster backfill (fixed 2026-07-09) |
 | Namespace backfill | ✅ COMPLETE (2026-07-12/13) — ~81,806 un-indexed spectator ids → 0; ~40,330 collision mappings recorded to `reports/backfill-collisions/` as the migration seed (that directory has since been DELETED — cleanup 2026-07-16; the live inverse is `players/aliases/`) |
 | Season-name contamination | ⚠️ **NOT FULLY REPAIRED (corrected 2026-07-30).** 40,034 files were fixed and the WRITE bug is dead (`parseProfileStats` no longer derives names). But the "0 contaminated of 411,576" re-scan was wrong: one file carried a season label from 2026-06-27 until 2026-07-30 (34 days), re-written by a matrix run immediately AFTER the repair deleted it. **That file is now repaired** (targeted forced re-fetch). Blast radius 1 of 37,241 queued — the write bug is dead and the self-heal works; the 2026-07-26 failure was TRANSIENT. ⚠️ **Open defect:** a transient heal failure is made PERMANENT because `statsChecked` is written regardless, so no scheduled run ever retries it. See OUTSTANDING_TASKS §C14 / §B3. |
-| `legacy` game flags | ⚠️ **3,262 stale, repair built 2026-07-31, not yet run.** 3,120 of them carry a score, which contradicts the flag; zero are dated 2020 or earlier. Nothing writes the flag any more (classifier removed in the 2026-07-16 cleanup), so the population is frozen. No stats impact — no build script filters on it — but StatTrack renders `legacy` before checking for a score. See OUTSTANDING_TASKS §2.1. |
+| `legacy` game flags | ✅ **REPAIRED 2026-08-01 — 3,114 cleared, 142 kept (all genuinely scoreless), post-check 0, db-audit `legacy + score ✅ none`.** Historic problem: 3,120 of them carry a score, which contradicts the flag; zero are dated 2020 or earlier. Nothing writes the flag any more (classifier removed in the 2026-07-16 cleanup), so the population is frozen. No stats impact — no build script filters on it — but StatTrack renders `legacy` before checking for a score. See OUTSTANDING_TASKS §2.1. |
 | Code search | ❌ **UNAVAILABLE.** GitHub refuses to index this repo: *"markjovic/sports-players-stats cannot be searched because it is too large"* (2026-07-31, 6.13 GB). A search that cannot run returns "0 files", which reads like "no matches". Use `find-code-refs.yml` instead. First CONFIRMED cost of repo size. |
 | api-canonical migration | ✅ **COMPLETE AND LIVE (2026-07-15/16).** Every player file is keyed by api id; `players/aliases/` is live (452,958+ entries, ~9.5% redirects); the resolver, the nightly and the matrix are all alias-aware; the event-driven fold restores the invariant after every matrix cycle. **The "target shape" below IS the current shape.** |
 | Repo size | **6.18 GB / 529,498 files** (2026-07-30 audit; was 6.03 GB on 07-16) — materially below the ~8.6–9.18 GB previously recorded here. The old "BLOCKS publishing" claim was based on the larger figure and is **unverified at 6.03 GB — re-verify before driving further shrink work** (OUTSTANDING_TASKS §D8). |
@@ -274,7 +274,7 @@ Game flags:
   the terminal state of a classification probe that **no longer exists** (removed in the 2026-07-16
   cleanup; verified 2026-07-31 by grepping all of `scripts/`). Stale flags are being cleared by
   `repair-legacy-flags.js` for the scored games; the ~142 scoreless ones keep it, being the only
-  cases where the original meaning is unfalsified. See OUTSTANDING_TASKS §2.1.
+  cases where the original meaning is unfalsified. Repaired 2026-08-01 — see OUTSTANDING_TASKS §4.
 
 **Unverified — do not assume:** whether `p[]` (attendee list, no side info) is fully redundant with `hp[]+ap[]` combined for games with `spc:1`. Flagged 2026-07-09 as a real potential redundancy in this directory (games/ is the #2 largest at 2.50 GB) but not confirmed against real files — check before building anything on this assumption.
 
@@ -442,6 +442,7 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 | `db-audit.js` | CJS | Full database audit + repo size breakdown. **2026-07-31: gained the `legacy + score` invariant** — the prior flag-collision check only ever compared `legacy` against other FLAGS, never against DATA, which is why a 3,120-game contradiction was invisible to every run. Both legacy rows now report unconditionally so a clean state is reachable. | On demand |
 | `find-flag-collisions.js` | CJS | Read-only. Flag collisions, legacy population by year, and a full legacy profile (forfeit-index membership, score presence, `fo` validity, `fo`-vs-scoreline disagreement) | On demand |
 | `audit-seasons-gaps.js` | CJS | Read-only. Duplicate regs split by grade (regrade / null-gid / exact), regs missing `gid`, and the `seasons[]` gap across ALL games with an active/locked split | On demand |
+| `repair-reg-sibling-sync.js` | CJS | One-off: makes regs sharing a (season, team) hold identical stats (per-key MAX, idempotent, aborts on any decrease) | Once |
 | `repair-duplicate-regs.js` | CJS | One-off: merges regs duplicating the same `(tid, gid)`. Max-per-key; refuses groups where a shared key holds different values on every copy. Leaves regrades and null-`gid` regs alone | Once |
 | `repair-legacy-flags.js` | CJS | One-off: deletes stale `legacy` from games carrying a score, leaves scoreless ones. Per-game key-diff guard, per-file count guard, full post-check | Once |
 | *(no script)* `find-code-refs.yml` | — | Dispatchable grep over `scripts/` + `.github/workflows/` — the replacement for GitHub code search, which cannot index this repo | On demand |
@@ -472,7 +473,7 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
    path that no code performs. Neither writer of `games/bv` (`nightly-crawl.js`, `discover-fixtures.js`)
    calls `discoverGame` to classify; a game that fails everything today simply gets no flag. Kept here
    as the rule that WOULD apply if the probe is rebuilt — do not read it as a description of current
-   behaviour. See OUTSTANDING_TASKS §2.3.
+   behaviour. See OUTSTANDING_TASKS §2.1.
 6. **Never `git pull --rebase`** — always `git fetch origin main` + `git merge -X ours FETCH_HEAD`.
 7. **Progress files** — commit at every interval, not just at end.
 8. **Multi-sport integrity** — when AFL added, preserve other sports' seasons in `fetch-profile-stats.js`.
@@ -528,8 +529,8 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 - **Code search is unavailable for this repo** (see the state table). `find-code-refs.yml` replaces it.
   Any process that says "grep across all files" — including this project's own cross-document fact
   rule — now has to go through that workflow.
-- **3,262 stale `legacy` flags**, repair built and waiting. OUTSTANDING_TASKS §2.1.
-- **The three-step classification probe is documented as mandatory and does not exist.** OUTSTANDING §2.3.
+- **3,262 stale `legacy` flags** — REPAIRED 2026-08-01 (3,114 cleared, 142 kept). OUTSTANDING_TASKS §4.
+- **The three-step classification probe is documented as mandatory and does not exist.** OUTSTANDING §2.1.
 - **`gitCommit` violations fixed in `nightly-crawl.js` and `discover-fixtures.js`** — combined `git add`
   in an empty catch, and a swallowed total push failure, in both. `REPO_MANIFEST` §6.9/§6.10 had
   recorded `build-team-stats.js` as "the last"/"the remaining" 10-attempt outlier; it was neither.
