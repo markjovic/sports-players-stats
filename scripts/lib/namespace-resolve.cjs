@@ -60,11 +60,27 @@ const PROFILE_SEARCH_QUERY = `query ProfileSearch($fullName: String!) {
   }
 }`;
 
-// Normalise a display name for comparison: lowercase, collapse internal
-// whitespace, trim. Applied identically to the spectator `name` and to
-// firstName + ' ' + lastName from the api side.
+// Normalise a display name for comparison. v2 (2026-08-02): NFKC + curly->
+// straight quote fold + dash-family fold + accent strip, THEN the original
+// lowercase/collapse/trim. Applied identically to the spectator `name` and to
+// firstName + ' ' + lastName from the api side. Rationale: the July namespace
+// audit's 43 benign name-mismatches were exactly quote/hyphen/spacing variants
+// — same person, different bytes. Looser matching is fail-safe here: every
+// matcher below returns null on >1 distinct hit, so a fold that ever merged
+// two real kids produces a non-recovery, never a mis-reconciliation.
+// ONE-PASS INVARIANT: five verbatim copies exist (fetch-profile-stats,
+// repair-season-names, salvage-spectator-names, scan-season-name-contamination,
+// db-audit). Touch this, touch all six — find-code-refs pattern 'normName'.
 function normName(s) {
-  return String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
+  return String(s == null ? '' : s)
+    .normalize('NFKC')
+    .replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'")   // curly/low/prime apostrophes -> '
+    .replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"')          // curly double quotes -> "
+    .replace(/[\u2010-\u2015\u2212]/g, '-')                     // hyphen family + minus -> -
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')           // strip combining accents
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 // A stub whose name is the `Player #<prefix>` placeholder carries no real name
