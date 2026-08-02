@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.64</span>
+      <span class="rail-ver">Beta 0.65</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -632,7 +632,11 @@ function statRow(items,expandable,spacer){
   const sp=spacer?'<div style="flex:1;min-width:0"></div>':'';
   return`<div ${oc}style="${cs}display:flex;flex-direction:row;border-top:1px solid #2e2e2e">${sp}${items.map(([v,l,c],i)=>statCell(v,l,i===items.length-1,c)).join('')}</div>`;
 }
-function buildGameStatRow(g,ctx,ps){
+// pad=true appends an empty trailing column so game rows align under a season
+// header that carries the W/L cell (8 columns); without it 7 cells stretch
+// under 8 and every column drifts. Border-left matches .sstat so the grid
+// line runs continuously down the card.
+function buildGameStatRow(g,ctx,ps,pad){
   const sc=(ctx.myS!=null&&ctx.oppS!=null)?`${ctx.myS}\u2013${ctx.oppS}`:'\u2014';
   const res=resLetter(ctx.myS,ctx.oppS);
   const rc=res==='W'?'#4caf50':res==='L'?'#f44336':res==='D'?'#ff9800':'#555';
@@ -643,7 +647,7 @@ function buildGameStatRow(g,ctx,ps){
     [ps!=null?(ps.pts??0):dot,'PTS',null],[fg,'FG',null],
     [ps!=null?(ps.pt1??0):dot,'FT',null],[ps!=null?(ps.pt3??0):dot,'3PT',null],
     [ps!=null?(ps.fouls??0):dot,'F',null]];
-  return cells.map(([v,l,c],i)=>statCell(v,l,i===cells.length-1,c)).join('');
+  return cells.map(([v,l,c],i)=>statCell(v,l,i===cells.length-1,c)).join('')+(pad?'<div style="flex:1;min-width:0;border-left:1px solid #2e2e2e"></div>':'');
 }
 function renderMiniStats(p){
   if(!p)return'';
@@ -666,7 +670,14 @@ function sortSeasonsDesc(arr){
   return[...arr].sort((a,b)=>{
     const ya=snYear(a.sn||''),yb=snYear(b.sn||'');
     if(yb!==ya)return yb-ya;
-    const ord={Autumn:3,Winter:2,Summer:1,Spring:1};
+    // 2026-08-02: rank by COMP START DATE within the shared end-year, i.e. the
+    // date of the comp's first round, approximated from the season name (the
+    // only start signal available client-side — no per-season date index exists).
+    // AEST chronology: Summer 2025/26 tips off ~Oct 2025 (earliest — note snYear
+    // files it under its END year), Autumn ~Feb, Winter ~Apr, Spring ~Sep. The
+    // old map {Autumn:3,Winter:2,Summer:1,Spring:1} ranked completed Autumn
+    // above a running Winter and pinned brand-new Spring to the bottom.
+    const ord={Spring:4,Winter:3,Autumn:2,Summer:1};
     const ka=Object.keys(ord).find(k=>a.sn?.startsWith(k))||'';
     const kb=Object.keys(ord).find(k=>b.sn?.startsWith(k))||'';
     return(ord[kb]||0)-(ord[ka]||0);
@@ -984,7 +995,7 @@ function renderPlayer(p){
     <div class="cstat"><div class="csv">${tp}</div><div class="csl">3PT</div></div>
     <div class="cstat"><div class="csv">${fouls}</div><div class="csl">F</div></div>${foulOuts>0?`
     <div class="cstat"><div class="csv">${foulOuts}</div><div class="csl">FO</div></div>`:''}${careerW||careerL?`
-    <div class="cstat"><div class="csv" style="font-size:0.75rem;display:flex;gap:3px">${careerW?`<span style="color:var(--win)">${careerW}W</span>`:''}${careerL?`<span style="color:var(--loss)">${careerL}L</span>`:''}${careerD?`<span style="color:var(--draw)">${careerD}D</span>`:''}</div><div class="csl">${winPct??''}</div></div>`:''}${finals>0?`
+    <div class="cstat"><div class="csv" style="font-size:0.75rem;display:flex;gap:4px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${careerW?`<span style="color:var(--win)">${careerW}W</span>`:''}${careerL?`<span style="color:var(--loss)">${careerL}L</span>`:''}${careerD?`<span style="color:var(--draw)">${careerD}D</span>`:''}</div><div class="csl">${winPct??''}</div></div>`:''}${finals>0?`
     <div class="cstat"><div class="csv">${finals}</div><div class="csl">Finals</div></div>`:''}${gfApps>0?`
     <div class="cstat"><div class="csv">${gfApps}</div><div class="csl">GF</div></div>`:''}${gfWins>0?`
     <div class="cstat"><div class="csv">${gfWins}</div><div class="csl">GFW</div></div>`:''}${finalsPS!==null?`
@@ -1037,7 +1048,7 @@ function renderPlayer(p){
             </div>
           </div>
         </div>
-        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[st.gp||0,'GP',null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${regW||regL?`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:2px">${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}</div><div class="ssl">${regWinPct??''}</div></div>`:''}</div>
+        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[st.gp||0,'GP',null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${regW||regL?`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:3px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}</div><div class="ssl">${regWinPct??''}</div></div>`:''}</div>
       </div>
       <div class="sc-games" id="${esc(cid)}-g"></div>
     </div>`;
@@ -1071,6 +1082,12 @@ async function toggleGames(hdr){
     .sort(([,a],[,b])=>(b.d||'').localeCompare(a.d||''));
   if(!pg.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
   const allRegGradeNames=regs.map(r=>r.gn||r.tn||'').filter(Boolean);
+  // Mirror of the header's W/L-cell condition (regW||regL from regs[0].stats):
+  // when the header renders 8 columns, every game row pads to 8.
+  const _hs=regs[0]?.stats;const padWld=!!((_hs?.wins)||(_hs?.losses));
+  // Stamped on the container because applyBox ALSO rewrites #gstats-{gid} rows
+  // (box-score refresh) from outside this scope — it reads the stamp back.
+  if(padWld)ge.dataset.pad='1';
   const rows=pg.map(([gid,g])=>{
     const ctx=gameCtx(g,tid);
     const res=resLetter(ctx.myS,ctx.oppS);
@@ -1087,7 +1104,7 @@ async function toggleGames(hdr){
           <div class="g-opp">${gradeTag}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
           <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}</div>
         </div>
-        <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored)}</div>
+        <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored,padWld)}</div>
       </div>
     </div>`;
   }).join('');
@@ -1101,7 +1118,7 @@ async function toggleGames(hdr){
       if(!el2||!bs)return;
       const allP=[...(bs.h||[]),...(bs.a||[])];
       const mine=allP.find(p=>matchP(p.profileID,uuid));
-      if(mine)el2.innerHTML=buildGameStatRow(g,gameCtx(g,tid),mine);
+      if(mine)el2.innerHTML=buildGameStatRow(g,gameCtx(g,tid),mine,padWld);
     });
   });
 }
@@ -1650,13 +1667,49 @@ function applyBox(bs,g,gid,con){
       if(statsEl){
         const onH=(bs.h||[]).some(p=>matchP(p.profileID,uuid));
         const myT=onH?(g.h||g.t1||''):(g.a||g.t2||'');
-        statsEl.innerHTML=buildGameStatRow(g,gameCtx(g,myT),mine);
+        const pad=!!statsEl.closest('.sc-games')?.dataset.pad;
+        statsEl.innerHTML=buildGameStatRow(g,gameCtx(g,myT),mine,pad);
       }
     }
   }
 }
 
 /* ── Opposition ── */
+// Season head-to-head vs a team, from data already fetched when the view
+// opens: both teams' fixtures live in team-stats/{sid} (each entry carries
+// gameId + result FROM THAT TEAM'S PERSPECTIVE — the same fields that draw the
+// team page's Fixtures tab), and the player's own games[] is in his cached
+// file. Meetings = gameIds present in BOTH teams' fixture lists; the result is
+// read off MY team's entry. played = meetings restricted to games[] (he was on
+// court). Zero fetches; per-season tid, so no cross-season name-merging.
+function seasonH2H(td,myTids,oppTid,myGameSet){
+  const oppIds=new Set((td?.[oppTid]?.fixtures||[]).map(f=>f.gameId).filter(Boolean));
+  if(!oppIds.size)return null;
+  const team={w:0,l:0,d:0,n:0},played={w:0,l:0,d:0,n:0};
+  for(const mt of myTids){
+    if(mt===oppTid)continue;
+    for(const f of(td?.[mt]?.fixtures||[])){
+      if(!f.gameId||!oppIds.has(f.gameId))continue;
+      const r=f.result;
+      if(r!=='W'&&r!=='L'&&r!=='D')continue;   // upcoming/unscored meetings don't count
+      team.n++;team[r.toLowerCase()]++;
+      if(myGameSet.has(f.gameId)){played.n++;played[r.toLowerCase()]++;}
+    }
+  }
+  return team.n?{team,played}:null;
+}
+function h2hLine(h){
+  if(!h)return'';
+  const f=(r)=>[r.w?`<span style="color:var(--win)">${r.w}W</span>`:'',r.l?`<span style="color:var(--loss)">${r.l}L</span>`:'',r.d?`<span style="color:var(--draw)">${r.d}D</span>`:''].filter(Boolean).join(' ');
+  const p=h.played,tm=h.team;
+  let inner;
+  if(p.n){
+    inner=`This season: ${f(p)} <span style="color:var(--text3)">(${p.n} meeting${p.n>1?'s':''} played`+(tm.n>p.n?`; team ${f(tm)} overall`:'')+`)</span>`;
+  }else{
+    inner=`This season: <span style="color:var(--text3)">didn't play in the ${tm.n} meeting${tm.n>1?'s':''} — team went</span> ${f(tm)}`;
+  }
+  return`<div class="oh2h" style="padding:8px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums">${inner}</div>`;
+}
 async function openOpp(oppTid,sid,fromUuid){
   navigate('opp',{oppTid,sid,fromUuid});
   showV('view-opp');
@@ -1675,7 +1728,8 @@ async function openOpp(oppTid,sid,fromUuid){
   const mySeasonName=(myPlayer?.seasons||[]).find(sn=>sn.sid===sid)?.sn||'';
   // Render shell immediately
   const backBtn=`<button class="vback" onclick="history.back()">←</button>`;
-  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myPlayer?.name||'Player')} vs ${esc(oppTeamName)}</div><div class="vsub">${esc(mySeasonName)}</div></div></div><div id="opp-roster"></div>`;
+  const h2h=seasonH2H(td,getTidsForSeason(myPlayer,sid),oppTid,myGames);
+  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myPlayer?.name||'Player')} vs ${esc(oppTeamName)}</div><div class="vsub">${esc(mySeasonName)}</div></div></div>${h2hLine(h2h)}<div id="opp-roster"></div>`;
   // Load all opposing player files in parallel
   const oppPlayers=await Promise.all(oppRoster.map(uuid=>loadPlayerFile(uuid)));
   const oppMap={};
