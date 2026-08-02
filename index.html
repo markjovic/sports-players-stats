@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.65</span>
+      <span class="rail-ver">Beta 0.66</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1222,13 +1222,16 @@ function renderTeam(td,tid,sid){
   h+=`</div><div id="f${tesc}" class="tpane">`;
   if(!fixtures.length){h+='<div class="empty">No fixture data</div>';}
   else{
+    const priors=fixturePriors(td,tid);
     h+=fixtures.map(f=>{
       const res=f.result;
       const fc=finalClass(f.rn);
       const resH=res?`<div class="g-res r${res}">${res}</div>`:`<div class="g-res rU">\u2014</div>`;
+      const pr=priors.get(f.gameId);
+      const prH=pr&&pr.n?`<div class="fh2h" style="font-size:0.62rem;color:var(--text3);font-variant-numeric:tabular-nums;white-space:nowrap">vs this team this season: ${wldChips(pr)}</div>`:'';
       return`<div class="frow${fc?' '+fc:''}" data-gid="${esc(f.gameId)}" data-sid="${esc(sid)}"${f.result?' data-result="'+esc(f.result)+'"':''} >
         <div><div class="frn">${esc(f.rn||'')}</div></div>
-        <div><div class="fopp">${esc(f.oppName||'\u2014')}</div><div class="fdt">${esc(fmtD(f.date||''))}</div></div>
+        <div><div class="fopp">${esc(f.oppName||'\u2014')}</div><div class="fdt">${esc(fmtD(f.date||''))}</div>${prH}</div>
         <div class="fsc">${esc(f.score||'')}</div>${resH}</div>`;
     }).join('');
   }
@@ -1710,6 +1713,48 @@ function h2hLine(h){
   }
   return`<div class="oh2h" style="padding:8px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums">${inner}</div>`;
 }
+// gameId -> [tids] across every team's fixtures in the season. The fixtures
+// tab needs the OPPONENT'S IDENTITY per row, and fixture entries carry only
+// oppName — a display string two teams can share — so the join is by gameId
+// (each game appears in exactly two teams' fixture lists), never by name.
+function gameTidMap(td){
+  const m=new Map();
+  for(const[tid,team]of Object.entries(td||{})){
+    for(const f of(team?.fixtures||[])){
+      if(!f.gameId)continue;
+      if(!m.has(f.gameId))m.set(f.gameId,[]);
+      m.get(f.gameId).push(tid);
+    }
+  }
+  return m;
+}
+// Per fixture row: this team's record in COMPLETED meetings against the same
+// opponent STRICTLY BEFORE this fixture's date (falls back to excluding only
+// the row itself when dates are absent). 'Prior' rather than season-to-date so
+// a played row never counts itself in its own context line.
+function fixturePriors(td,myTid){
+  const gm=gameTidMap(td);
+  const mine=(td?.[myTid]?.fixtures||[]).filter(f=>f.gameId);
+  const oppOf=f=>(gm.get(f.gameId)||[]).find(x=>x!==myTid)||null;
+  const out=new Map();
+  for(const f of mine){
+    const opp=oppOf(f);
+    if(!opp)continue;
+    const p={w:0,l:0,d:0,n:0};
+    for(const g of mine){
+      if(g.gameId===f.gameId||oppOf(g)!==opp)continue;
+      const r=g.result;
+      if(r!=='W'&&r!=='L'&&r!=='D')continue;
+      if(f.date&&g.date&&!(g.date<f.date))continue;   // strictly earlier when dated
+      p.n++;p[r.toLowerCase()]++;
+    }
+    out.set(f.gameId,p);
+  }
+  return out;
+}
+function wldChips(r){
+  return[r.w?`<span style="color:var(--win)">${r.w}W</span>`:'',r.l?`<span style="color:var(--loss)">${r.l}L</span>`:'',r.d?`<span style="color:var(--draw)">${r.d}D</span>`:''].filter(Boolean).join(' ');
+}
 async function openOpp(oppTid,sid,fromUuid){
   navigate('opp',{oppTid,sid,fromUuid});
   showV('view-opp');
@@ -1858,7 +1903,13 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
   const oppRoster=Object.keys(oppTeam?.roster||{});
   const backBtn=`<button class="vback" onclick="history.back()">←</button>`;
   const subtitle=isUpcoming?'Upcoming':'Previous meetings';
-  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myName)} vs ${esc(oppName)}</div><div class="vsub">${esc(subtitle)}</div></div></div><div id="opp-roster"></div>`;
+  // Team-level season head-to-head — same fixture-intersection as the player
+  // view, team-scoped (empty played-set). Explicitly labelled per 2026-08-02:
+  // this is results vs THIS team THIS season, nothing broader exists to show.
+  const th2h=seasonH2H(td,new Set([myTid]),oppTid,new Set());
+  const th2hH=th2h?`<div class="oh2h" style="padding:8px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums">${esc(myName)} vs this team this season: ${wldChips(th2h.team)} <span style="color:var(--text3)">(${th2h.team.n} meeting${th2h.team.n>1?'s':''})</span></div>`
+    :`<div class="oh2h" style="padding:8px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);color:var(--text3)">No completed meetings between these teams this season</div>`;
+  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myName)} vs ${esc(oppName)}</div><div class="vsub">${esc(subtitle)}</div></div></div>${th2hH}<div id="opp-roster"></div>`;
   // Load all player files for both rosters
   const allUuids=[...new Set([...myRoster,...oppRoster])];
   await Promise.all(allUuids.map(uuid=>loadPlayerFile(uuid)));
