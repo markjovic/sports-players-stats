@@ -1,0 +1,63 @@
+# .github/workflows/repair-forfeit-score.yml
+name: Repair forfeit score (one game)
+
+# OUTSTANDING §2.2 — ba9d21fe's scoreline (10-0 HOME) contradicts its verified
+# fo (AWAY won by forfeit; probed live 2026-08-02: AWAY_TEAM_WON_BY_FORFEIT).
+# This rewrites hs/as to the corpus convention (winner 20, loser 0) derived from
+# the record's OWN fo — the winner cannot be supplied as an input, so the tool
+# cannot be pointed at a game and told the wrong side. Refuses non-forfeits and
+# unusable fo; idempotent; per-game key diff + count guard + disk post-check
+# before any commit. DRY-RUN IS THE DEFAULT.
+
+on:
+  workflow_dispatch:
+    inputs:
+      game:
+        description: 'Game id to repair'
+        required: false
+        default: 'ba9d21fe'
+        type: string
+      season:
+        description: 'Season id holding the game'
+        required: false
+        default: '68f8c050'
+        type: string
+      apply:
+        description: 'Actually write and commit (default: dry run)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write          # writes games/bv — same lock as every games writer
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Full checkout: the commit path merges against main, and the file being
+      # rewritten is one of 2,896 in games/bv — no PlayHQ fetch here, but no
+      # setup-node either (the preinstalled node is all this needs).
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Repair forfeit score
+        run: |
+          ARGS="--game=${{ inputs.game }} --season=${{ inputs.season }}"
+          # Boolean input in bash context: renders as the string 'true'/'false'
+          # (directive 13 — this is the context where a plain compare works).
+          # apply != 'true' -> dry run. Fails toward doing LESS.
+          if [ "${{ inputs.apply }}" != "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/repair-forfeit-score.js $ARGS
