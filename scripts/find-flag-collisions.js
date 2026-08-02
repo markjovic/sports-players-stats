@@ -6,6 +6,9 @@
 //          flag (hidden, profileOnly, forfeit, bye, cancelled, abandoned).
 // Part 2 — LEGACY POPULATION BY YEAR.
 // Part 3 — LEGACY POPULATION PROFILE: what those games actually contain.
+// Part 4 — SURVIVOR SPLIT (2026-08-02): of the games still carrying legacy after
+//          the 2026-08-01 repair, how many sit in ACTIVE seasons vs LOCKED ones,
+//          plus a month histogram for 2026.
 //
 // ── Why Part 3 exists (2026-07-31) ───────────────────────────────────────────
 // Part 1 found 49 collisions, ALL of them legacy+forfeit, and the extended
@@ -30,6 +33,30 @@
 // count is large, the 49 are a symptom of something with a 3,000-row blast
 // radius and repairing them alone would be fixing N-1.
 //
+// ── Why Part 4 exists (OUTSTANDING_TASKS §2.5) ───────────────────────────────
+// The 2026-08-01 repair cleared 3,114 legacy flags from scored games and KEPT
+// 142 scoreless ones, where "nothing further obtainable" is still unfalsified.
+// Those 142 are not one population, and which one a game is in decides whether
+// §2.1 needs a rebuilt classifier at all:
+//
+//   ACTIVE season -> nightly fixture passes still reach it. It will fill in a
+//                    score and then trip the new `legacy + score` invariant.
+//                    TEMPORARY, and self-announcing.
+//   LOCKED season -> nightly-crawl.js skips locked seasons and the classifier is
+//                    gone, so nothing will ever touch it again. PERMANENT — and
+//                    the only games where `legacy` is arguably correct forever.
+//
+// The month histogram tests the "time-to-fill" reading directly: 139 of the 142
+// are dated 2026, and if they cluster just before the 2026-07-16 cleanup that is
+// near-decisive for "these are simply young", not "these are genuinely dead".
+//
+// ⚠️ The two live scripts DISAGREE about a season with no `locked` field:
+// nightly-crawl.js L757 uses `s.locked === false` (strict — no field means NOT
+// active, so the crawl skips it) while db-audit.js L91 uses `!s.locked` (no field
+// means active). Part 4 therefore reports that case as its OWN bucket rather than
+// folding it into either, because the two readings imply opposite conclusions
+// about whether the game is reachable.
+//
 // Usage: node scripts/find-flag-collisions.js
 
 'use strict';
@@ -42,7 +69,14 @@ const GAMES_DIR     = path.join(ROOT, 'games', 'bv');
 // data/ prefix: all root JSON lives under data/ (README "CRITICAL" note).
 const FORFEIT_INDEX = path.join(ROOT, 'data', 'forfeit-games.json');
 
+const SPORTS_INDEX   = path.join(ROOT, 'data', 'sports-index.json');
+
 const COLLIDING_FLAGS = ['hidden', 'profileOnly', 'forfeit', 'bye', 'cancelled', 'abandoned'];
+
+// The 2026-07-16 cleanup that removed the classifier. Games dated after this can
+// not have been stamped by it, so a survivor later than this is inherited state,
+// never a fresh classification.
+const CLASSIFIER_REMOVED = '2026-07-16';
 
 // ─── forfeit index ────────────────────────────────────────────────────────────
 // A missing index is itself a finding, reported loudly rather than silently
@@ -61,7 +95,42 @@ try {
   console.log(`⚠️  forfeit index NOT LOADED (${e.message}). Every inForfeitIndex result below is MEANINGLESS — fix this before reading them.`);
 }
 
+// ─── season lock state ────────────────────────────────────────────────────────
+// Same loud-failure discipline as the forfeit index: a missing or unreadable
+// index would make every season read as "unknown", and Part 4 would then be a
+// table of zeros that looks like a finding.
+const lockBySid = new Map();
+let sportsIndexOk = false;
+try {
+  const raw = JSON.parse(fs.readFileSync(SPORTS_INDEX, 'utf8'));
+  const seasons = raw.seasons || {};
+  // Accept both addressing forms rather than assuming one: the object KEY and the
+  // entry's own `.id`. db-audit.js and build-leaderboards.js both reach these via
+  // Object.values(...).id, so `.id` is the form that is actually exercised.
+  for (const [key, s] of Object.entries(seasons)) {
+    if (!s || typeof s !== 'object') continue;
+    const state = s.locked === true ? 'locked' : s.locked === false ? 'active' : 'no-locked-field';
+    if (s.id) lockBySid.set(s.id, state);
+    if (key)  lockBySid.set(key, state);
+  }
+  sportsIndexOk = lockBySid.size > 0;
+  console.log(`sports-index: ${lockBySid.size} season keys loaded from data/sports-index.json`);
+} catch (e) {
+  console.log(`⚠️  sports-index NOT LOADED (${e.message}). PART 4 IS MEANINGLESS — every season will read as not-in-index.`);
+}
+
+function lockStateOf(sid) {
+  return lockBySid.get(sid) || 'not-in-index';
+}
+
 // Never `new Date()` for date parsing — split YYYY-MM-DD (house rule).
+function monthOf(d) {
+  if (typeof d !== 'string') return 'no-date';
+  const p = d.split('-');
+  if (p.length < 3 || !/^\d{4}$/.test(p[0]) || !/^\d{2}$/.test(p[1])) return 'no-date';
+  return `${p[0]}-${p[1]}`;
+}
+
 function yearOf(d) {
   if (typeof d !== 'string') return 'no-date';
   const parts = d.split('-');
@@ -108,6 +177,11 @@ const leg = {
 const scoredNoFlagSamples = [];
 const foDisagreeSamples = [];
 
+// Part 4 — the post-repair survivors (legacy AND no score).
+const survivorsByLock  = new Map();   // 'active' | 'locked' | 'no-locked-field' | 'not-in-index'
+const survivorsByMonth = new Map();   // 'YYYY-MM' -> count, survivors only
+const survivorSamples  = new Map();   // lock state -> up to 5 sample lines
+
 // Part 1 — collision aggregates.
 const agg = {
   notInForfeitIndex: 0,
@@ -141,6 +215,21 @@ for (const fname of fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).s
     if (inIdx)                leg.inForfeitIndex++;
     if (foWhere !== 'ABSENT') leg.withFo++;
     if (others.length)        leg.withAnyOtherFlag++;
+    if (!hasScores) {
+      // SURVIVOR: still carries legacy after the 2026-08-01 repair. These are the
+      // 142 §2.5 is about — the flag is unfalsified for them, so the question is
+      // whether anything can ever falsify it.
+      const lock = lockStateOf(sid);
+      survivorsByLock.set(lock, (survivorsByLock.get(lock) || 0) + 1);
+      const mth = monthOf(g.d);
+      survivorsByMonth.set(mth, (survivorsByMonth.get(mth) || 0) + 1);
+      if (!survivorSamples.has(lock)) survivorSamples.set(lock, []);
+      const bucket = survivorSamples.get(lock);
+      if (bucket.length < 5) {
+        bucket.push(`${gameId} (season ${sid}) ${g.d ?? '?'} rn=${g.rn ?? '?'} st=${g.st ?? '?'} spc=${g.spc ?? '-'}`);
+      }
+    }
+
     if (hasScores) {
       leg.withScore++;
       legacyScoredByYear.set(year, (legacyScoredByYear.get(year) || 0) + 1);
@@ -232,6 +321,41 @@ for (const s of scoredNoFlagSamples) L.push(`       ${s}`);
 L.push('');
 L.push(`  fo disagreeing with the scoreline     : ${leg.foDisagreesWithScore}`);
 for (const s of foDisagreeSamples) L.push(`       ${s}`);
+
+L.push('');
+L.push('PART 4 — SURVIVOR SPLIT (games still carrying legacy AND holding no score)');
+if (!sportsIndexOk) {
+  L.push('  ⚠️ sports-index NOT LOADED — every line below is meaningless. Fix that first.');
+}
+const survivorTotal = [...survivorsByLock.values()].reduce((a, b) => a + b, 0);
+L.push(`  total survivors: ${survivorTotal}`);
+L.push('');
+L.push('  by season lock state:');
+for (const state of ['active', 'locked', 'no-locked-field', 'not-in-index']) {
+  const n = survivorsByLock.get(state) || 0;
+  const note = {
+    'active':          'nightly fixture passes still reach these — TEMPORARY, they will fill in and trip `legacy + score`',
+    'locked':          'crawl skips locked seasons and the classifier is gone — PERMANENT, nothing will ever touch these',
+    'no-locked-field': '⚠️ nightly (locked === false) treats these as NOT active; db-audit (!locked) treats them as active',
+    'not-in-index':    '⚠️ season file exists in games/bv but the season is absent from sports-index.json',
+  }[state];
+  L.push(`    ${state.padEnd(16)} ${String(n).padStart(5)}   ${note}`);
+  for (const s of (survivorSamples.get(state) || [])) L.push(`        ${s}`);
+}
+L.push('');
+L.push('  by month (survivors only). The classifier was removed ' + CLASSIFIER_REMOVED + ':');
+L.push('  clustering in the months BEFORE that date supports "these are simply young and');
+L.push('  will fill in"; a flat spread across earlier years does not.');
+for (const m of [...survivorsByMonth.keys()].sort()) {
+  const n = survivorsByMonth.get(m);
+  const mark = (m === CLASSIFIER_REMOVED.slice(0, 7)) ? '   <- classifier removed this month' : '';
+  L.push(`    ${m.padEnd(9)} ${String(n).padStart(5)}${mark}`);
+}
+L.push('');
+L.push('  READING IT: survivors concentrated in ACTIVE seasons means §2.1 needs no');
+L.push('  classifier — the flag clears itself as scores arrive. Concentrated in LOCKED');
+L.push('  seasons means the opposite: nothing will ever revisit them, and "accept no-flag');
+L.push('  as the terminal state" is a decision about permanently wrong data, not a delay.');
 
 // Sanity: Part 3's second-flag count must equal Part 1's collision count. If
 // these ever diverge, the two code paths have drifted and BOTH are suspect.
