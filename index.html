@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.66</span>
+      <span class="rail-ver">Beta 0.68</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -484,8 +484,15 @@ function avg(p,g){return g?(p/g).toFixed(1):'—';}
 function inits(n){if(!n)return'?';const p=n.split(' ').filter(Boolean);return p.length>=2?(p[0][0]+p[p.length-1][0]).toUpperCase():n.slice(0,2).toUpperCase();}
 function mkDate(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dy=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${dy}`;}
 function tokenMatch(str,query){
-  const sl=str.toLowerCase();
-  return query.toLowerCase().split(/\s+/).filter(Boolean).every(t=>sl.includes(t));
+  // normName v2 fold (2026-08-02), applied to BOTH operands at compare time —
+  // curly/straight quotes, dash family, accents. Self-contained: keys and query
+  // are folded here together, so no index rebuild is required. Deliberately NOT
+  // applied to search-shard SELECTION (the q.slice(0,2) site) — shard placement
+  // is decided by build-search-index.js at build time, and folding only the
+  // query side would break lookups for accented first letters.
+  const fold=x=>x.normalize('NFKC').replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g,"'").replace(/[\u201C\u201D\u201E\u201F\u2033]/g,'"').replace(/[\u2010-\u2015\u2212]/g,'-').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const sl=fold(str);
+  return fold(query).split(/\s+/).filter(Boolean).every(t=>sl.includes(t));
 }
 
 /* ── api-canonical id resolution + privacy (StatTrack #5) ── */
@@ -861,7 +868,14 @@ async function searchPlayers(q){
   re.style.display='';
   if(q.length<2){re.innerHTML='';return;}
   re.innerHTML='<div class="ri-empty">Searching\u2026</div>';
-  const sh=q.slice(0,2).toLowerCase();
+  // Shard selection v2 (2026-08-02) — EXACT mirror of build-search-index.js
+  // shardKey: fold accents to base letters, strip non a-z, first 2 chars,
+  // legacy '_' fallback preserved byte-for-byte. The old raw slice fetched
+  // shards that never existed ("álvarez" -> 'ál.json', "o'b" -> "o'.json"),
+  // so accented and apostrophe-second-char queries found nothing. Requires the
+  // v2-rebuilt index — deploy AFTER build-search-index has run.
+  const _fold=q.normalize('NFKC').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]/g,'');
+  const sh=_fold.length>=2?_fold.slice(0,2):(_fold+'_').slice(0,2);
   if(!S.shards[sh]){const d=await gj(BASE+'/search/players/'+sh+'.json');S.shards[sh]=d||{};}
   const hits=[];const seen=new Set();
   for(const[k,arr]of Object.entries(S.shards[sh])){
