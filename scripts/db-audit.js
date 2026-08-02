@@ -17,7 +17,10 @@
 const fs   = require('fs');
 const path = require('path');
 const { isPlaceholderName } = require('./lib/namespace-resolve.cjs');
-const normName = s => String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
+// normName v2 (2026-08-02) — matches lib/namespace-resolve.cjs EXACTLY (NFKC +
+// quote/dash fold + accent strip). All six copies repo-wide changed in ONE pass;
+// if you touch this, touch them all — find-code-refs pattern 'normName'.
+const normName = s => String(s == null ? '' : s).normalize('NFKC').replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'").replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"').replace(/[\u2010-\u2015\u2212]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 
 const ROOT      = path.join(__dirname, '..');
 const ARGS      = new Set(process.argv.slice(2));

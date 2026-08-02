@@ -378,7 +378,8 @@ let requestCount = 0;
 // spectator-keyed ids too. Request shape mirrors fetchProfile (doFetch + HEADERS_BASE
 // + session), with tenant overridden. Returns a trimmed name, or null (not found /
 // hidden / transient) — on null the caller keeps the existing name and retries later.
-const normName = s => String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
+// normName v2 (2026-08-02) — matches lib/namespace-resolve.cjs EXACTLY. Six copies repo-wide; one pass.
+const normName = s => String(s == null ? '' : s).normalize('NFKC').replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'").replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"').replace(/[\u2010-\u2015\u2212]/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 const PUBLIC_PROFILE_QUERY = {
   operationName: 'publicProfile',
   query: 'query publicProfile($profileID: ID!) { publicProfile(profileID: $profileID) { id firstName lastName __typename } }',

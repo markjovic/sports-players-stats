@@ -42,9 +42,17 @@ for (const a of HEX) for (const b of HEX) ALL_BUCKETS.push(a + b);
 
 function log(msg) { console.log(`[scan] ${new Date().toISOString()} ${msg}`); }
 
-// Verbatim from lib/namespace-resolve.cjs (current simple version).
+// Verbatim from lib/namespace-resolve.cjs (v2, 2026-08-02 — NFKC + quote/dash fold + accent strip).
 function normName(s) {
-  return String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim();
+  return String(s == null ? '' : s)
+    .normalize('NFKC')
+    .replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'")   // curly/low/prime apostrophes -> '
+    .replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"')          // curly double quotes -> "
+    .replace(/[\u2010-\u2015\u2212]/g, '-')                     // hyphen family + minus -> -
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')           // strip combining accents
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 // Verbatim from lib/namespace-resolve.cjs.
 function isPlaceholderName(name) {

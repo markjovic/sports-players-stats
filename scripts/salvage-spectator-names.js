@@ -75,8 +75,18 @@ function shardFile(n) { return path.join(ROOT, `name-salvage-shard-${n}.json`); 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function log(msg)  { console.log(`[salvage] ${new Date().toISOString()} ${msg}`); }
 
-// normName / isPlaceholderName / placeholderFor — verbatim from repair-season-names.js
-function normName(s) { return String(s == null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim(); }
+// normName / isPlaceholderName / placeholderFor — verbatim from repair-season-names.js (normName v2, 2026-08-02)
+function normName(s) {
+  return String(s == null ? '' : s)
+    .normalize('NFKC')
+    .replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'")   // curly/low/prime apostrophes -> '
+    .replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"')          // curly double quotes -> "
+    .replace(/[\u2010-\u2015\u2212]/g, '-')                     // hyphen family + minus -> -
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')           // strip combining accents
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 function isPlaceholderName(name) { return !name || /^player\s*#/i.test(String(name).trim()); }
 function placeholderFor(uuid) { return `Player #${uuid.slice(0, TRUNC_LEN)}`; }
 

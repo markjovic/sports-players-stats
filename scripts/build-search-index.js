@@ -2,9 +2,16 @@
 //
 // Rebuilds search/players/{prefix}.json shards from player index + detail files.
 //
-// Sharding: first 2 characters of the ENTRY KEY (player name, lowercase).
-// e.g. "Sam Burdan" → shard "sa", "Burdan, Sam" → shard "bu"
-// This matches how StatTrack fetches search results.
+// Sharding v2 (2026-08-02): FOLD accents to base letters (normName-v2-style
+// NFKC + NFD strip), THEN strip remaining non a-z, THEN take the first 2 chars.
+// e.g. "Sam Burdan" -> "sa", "Burdan, Sam" -> "bu", "Álvarez" -> "al",
+// "O'Brien" -> "ob". The old rule DELETED accented characters instead of
+// folding them ("Álvarez" -> "lv"), while the client sliced the raw query
+// ("álvarez" -> shard "ál", a file that never existed) — so accented names
+// were unfindable by ANY query. StatTrack 0.68's searchPlayers applies this
+// exact fold+strip to the query; the two must stay identical.
+// DEPLOY ORDER: run this rebuild BEFORE committing the 0.68 client — with the
+// new index, even the old client's raw "al" slice finds Álvarez.
 //
 // Each shard: { "Name": [{ id, c, t }, ...], "Last, First": [...] }
 // where c = most recent club, t = most recent team name.
@@ -72,9 +79,14 @@ function extractClubTeam(player) {
   return { c: null, t: null };
 }
 
-// Name → shard key: first 2 chars of name, lowercase, letters only fallback to '__'
+// Name -> shard key v2: fold accents to base letters, then letters-only,
+// first 2 chars, '_'-padded fallback. MUST match StatTrack searchPlayers.
 function shardKey(name) {
-  const clean = name.toLowerCase().replace(/[^a-z]/g, '');
+  const folded = String(name)
+    .normalize('NFKC')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+  const clean = folded.replace(/[^a-z]/g, '');
   return clean.length >= 2 ? clean.slice(0, 2) : (clean + '_').slice(0, 2);
 }
 
@@ -167,16 +179,16 @@ async function main() {
     }
   }
 
-  // Remove any stale UUID-prefix shard files that don't correspond to name prefixes
-  // (leftover from the previous incorrect build-search-index.js run)
-  const hexPattern = /^[0-9a-f]{2}\.json$/;
+  // Remove ANY shard file this rebuild didn't produce. Generalized 2026-08-02
+  // from the old hex-only cleanup: the shardKey v2 fold MOVES keys between
+  // shards (Álvarez: lv -> al), and a source shard left unrewritten would keep
+  // serving its stale pre-fold contents forever. A full rebuild owns the whole
+  // directory, so absence from `shards` is the definition of stale.
   let staleRemoved = 0;
   if (!DRY_RUN) {
     for (const file of fs.readdirSync(SEARCH_DIR)) {
-      if (!hexPattern.test(file)) continue;
-      const prefix = file.replace('.json', '');
-      // If this shard file doesn't have any entries in our new name-based map, it's stale
-      if (!shards.has(prefix)) {
+      if (!file.endsWith('.json')) continue;
+      if (!shards.has(file.replace('.json', ''))) {
         fs.unlinkSync(path.join(SEARCH_DIR, file));
         staleRemoved++;
       }
@@ -185,7 +197,7 @@ async function main() {
 
   console.log(`  Name-based shards written: ${shards.size}`);
   console.log(`  Total search keys: ${totalKeys}`);
-  if (staleRemoved > 0) console.log(`  Stale UUID-prefix files removed: ${staleRemoved}`);
+  if (staleRemoved > 0) console.log(`  Stale shard files removed: ${staleRemoved}`);
 
   await gitCommit(
     `build-search-index: ${totalPlayers} players, ${shards.size} shards, ${totalKeys} keys`
