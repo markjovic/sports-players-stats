@@ -80,11 +80,54 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ inputs.chain_stats == true || inputs.chain_stats == 'true' }}
     steps:
+      - name: Install dispatch retry helper
+        # 2026-08-02: was a BARE `gh workflow run`. This is the SECOND HOP of the
+        # weekly chain (nightly -> discover-fixtures -> finals -> leaderboards), so a
+        # single HTTP 500 here lands the fixtures and silently skips both stat
+        # rebuilds for the week, with this run still green. OUTSTANDING §2.6 counted
+        # only the four sites in nightly-crawl.yml; fixing those alone would have
+        # left this one — the same chain, one hop downstream.
+        # Helper copied VERBATIM from fetch-profile-stats-matrix.yml.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Dispatch Build Finals Stats (active-only, chained)
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
         run: |
-          gh workflow run build-finals-stats.yml \
-            --repo "${{ github.repository }}" \
+          /tmp/gh-dispatch.sh build-finals-stats.yml \
             --field "active_only=true" \
             --field "chain_leaderboards=true"

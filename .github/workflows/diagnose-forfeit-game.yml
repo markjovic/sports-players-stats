@@ -1,0 +1,46 @@
+# .github/workflows/diagnose-forfeit-game.yml
+name: Diagnose forfeit game (read-only probe)
+
+# OUTSTANDING §2.2 — one game (ba9d21fe defaults) whose fo (forfeit WINNER id)
+# names the away team while the scoreline says 10-0 to home. This probes
+# discoverGame and prints a verdict on which half is stale; the repair is a
+# separate human decision. The script writes nothing and commits nothing.
+
+on:
+  workflow_dispatch:
+    inputs:
+      game:
+        description: 'Game id to probe'
+        required: false
+        default: 'ba9d21fe'
+        type: string
+      season:
+        description: 'Season id holding the game'
+        required: false
+        default: '68f8c050'
+        type: string
+
+# Read-only: no contents:write, and deliberately NO data-write concurrency —
+# a diagnostic queued behind multi-hour writers helps nobody (T10 cost).
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # NO actions/setup-node — this job fetches api.playhq.com and setup-node's
+      # fingerprint change CloudFront-blocks every request (absolute per-JOB rule).
+      # Sparse checkout is fine here: the script reads exactly ONE season file,
+      # not many (the never-sparse rule is about jobs reading thousands of files).
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/diagnose-forfeit-game.js
+            games/bv/${{ inputs.season }}.json
+          sparse-checkout-cone-mode: false
+
+      - name: Probe discoverGame and compare to stored record
+        run: node scripts/diagnose-forfeit-game.js --game=${{ inputs.game }} --season=${{ inputs.season }}

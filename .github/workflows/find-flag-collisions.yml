@@ -1,12 +1,13 @@
 # .github/workflows/find-flag-collisions.yml
 name: Find flag collisions (read-only diagnostic)
 
-# ⚠️ WRITTEN FROM HOUSE CONVENTIONS, NOT FROM THE DEPLOYED FILE.
-# REPO_MANIFEST §3.3 lists find-flag-collisions.yml as an existing on-demand
-# workflow, but it was not uploaded this session, so this file was not diffed
-# against it. DIFF BEFORE COMMITTING — if the deployed version does anything
-# this one does not (an artifact upload, a report path, extra inputs), taking
-# this file wholesale would silently drop it.
+# ✅ BANNER RETIRED 2026-08-02. It read "WRITTEN FROM HOUSE CONVENTIONS, NOT FROM
+# THE DEPLOYED FILE — DIFF BEFORE COMMITTING", which was true when written and
+# false the moment the deployed file was read. It has now been read: the deployed
+# version is this one, with no artifact upload, no report path and no extra inputs.
+# The warning is removed rather than left standing, because a caveat that has been
+# discharged and not cleared is the same trap as a fix recorded but never shipped
+# (T12) — it sends the next reader looking for a difference that does not exist.
 
 on:
   workflow_dispatch:

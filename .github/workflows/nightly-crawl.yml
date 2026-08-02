@@ -190,26 +190,73 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Trigger targeted matrix shards
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
         run: |
           new_players="${{ needs.crawl.outputs.new_players }}"
           rechecks="${{ needs.crawl.outputs.stats_rechecks }}"
           echo "New players: $new_players  |  Stat rechecks: $rechecks"
 
-          shards_arg=""
+          # Built as an ARRAY. The old form interpolated $shards_arg unquoted, so any
+          # whitespace inside the JSON would word-split it; the helper takes "$@" and
+          # an array preserves each --field as one argument. For a well-formed
+          # needs-matrix-shards.json the dispatched value is byte-identical to before.
+          args=( --field "run_number=1" --field "consecutive_zeros=0" )
           if [ -f "needs-matrix-shards.json" ]; then
-            shards=$(cat needs-matrix-shards.json)
+            shards="$(tr -d '[:space:]' < needs-matrix-shards.json)"
             echo "Targeted shards: $shards"
-            shards_arg="--field shards=$shards"
+            args+=( --field "shards=$shards" )
           fi
+          # No file => no shards field => the matrix's own default '[]' => all 256.
+          # Unchanged: the old code passed an empty $shards_arg in that case.
 
-          gh workflow run fetch-profile-stats-matrix.yml \
-            --repo "${{ github.repository }}" \
-            --field "run_number=1" \
-            --field "consecutive_zeros=0" \
-            $shards_arg
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml "${args[@]}"
 
   win-loss:
     needs: crawl
@@ -249,9 +296,54 @@ jobs:
       always() &&
       needs.crawl.outputs.games_remaining == '0'
     steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Trigger season discovery matrix (weekly, Sundays)
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
         run: |
           dow=$(date -u +%u)   # 1=Mon … 7=Sun
           if [ "$dow" != "7" ]; then
@@ -259,8 +351,7 @@ jobs:
             exit 0
           fi
           echo "Sunday — triggering discover-seasons-matrix (all+backfill: seasons + pre-game rosters)."
-          gh workflow run discover-seasons-matrix.yml \
-            --repo "${{ github.repository }}" \
+          /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
             --field "backfill_teams=true" \
             --field "concurrency=25"
 
@@ -286,9 +377,54 @@ jobs:
       always() &&
       needs.crawl.outputs.games_remaining == '0'
     steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Trigger weekly future-fixtures sweep (Mondays UTC)
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
         run: |
           dow=$(date -u +%u)   # 1=Mon … 7=Sun
           if [ "$dow" != "1" ]; then
@@ -296,8 +432,7 @@ jobs:
             exit 0
           fi
           echo "Monday UTC — triggering discover-fixtures (current-only weekly sweep + stats chain)."
-          gh workflow run discover-fixtures.yml \
-            --repo "${{ github.repository }}" \
+          /tmp/gh-dispatch.sh discover-fixtures.yml \
             --field "current_only=true" \
             --field "chain_stats=true"
 
@@ -309,6 +444,50 @@ jobs:
       needs.crawl.outputs.games_remaining != '0' &&
       needs.crawl.outputs.games_remaining != ''
     steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Check consecutive zeros and retrigger
         run: |
           remaining=${{ needs.crawl.outputs.games_remaining }}
@@ -320,9 +499,9 @@ jobs:
             exit 1
           fi
           echo "↺ $remaining games remaining — re-triggering (consecutive zeros: $new_zeros)"
-          gh workflow run nightly-crawl.yml \
-            --repo "${{ github.repository }}" \
+          /tmp/gh-dispatch.sh nightly-crawl.yml \
             --field "rounds_back=${{ inputs.rounds_back || '2' }}" \
             --field "consecutive_zeros=${new_zeros}"
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
