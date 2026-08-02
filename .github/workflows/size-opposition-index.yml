@@ -1,0 +1,34 @@
+# .github/workflows/size-opposition-index.yml
+name: Size opposition index (read-only sizer)
+
+# Measures the proposed player->opposing-team career W/L/D index BEFORE it is
+# built: exact (player, oppTid) pair count, real serialized bytes from sample
+# shards in the exact proposed shape, and peak RSS (the builder's memory
+# feasibility). Precedent for measuring first: the UUID truncation migration,
+# estimated ~1.78 GB, measured 57.61 MB — 27x wrong. The script writes nothing.
+
+on:
+  workflow_dispatch:
+
+# Read-only. Deliberately NO data-write concurrency (T10 cost): it reads while
+# writers write, and a mid-run inconsistency shifts a tally by a hair on a
+# SIZING measurement — irrelevant at decision granularity.
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      # Plain full checkout — this reads every player file and every game file
+      # (never sparse-checkout a job that must read many files). No setup-node:
+      # nothing here needs it and the preinstalled node is the house default.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+
+      - name: Measure
+        # 12 GB heap: the pessimistic pair estimate (~33M) at ~45 B/entry is
+        # ~1.5 GB of Map, well inside this; if it still OOMs, that NUMBER is the
+        # finding — the builder as designed does not fit a runner.
+        run: node --max-old-space-size=12288 scripts/size-opposition-index.js
