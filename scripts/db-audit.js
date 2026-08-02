@@ -821,6 +821,14 @@ for (const [f, expected, shouldExist] of miscFiles) {
 }
 
 // ─── 11b. Repo hygiene (added 2026-07-16) ─────────────────────────────────────
+// FILE AGES REMOVED 2026-08-02 (OUTSTANDING §2.4). `git checkout` sets mtime to
+// checkout time, so on a CI runner EVERY file is always "0d old" — the column
+// only ever meant something on a persistent working tree, which is nowhere any
+// more. The doc's alternative (git log -1 --format=%ct -- <path>) is no better
+// here: db-audit.yml checks out fetch-depth:1, so git sees ONE commit and every
+// file would report the same age — the same lie with a different constant.
+// Replaced with file SIZE, which statSync reports truthfully regardless of how
+// the tree arrived, and which is the actionable number for residue anyway.
 // SELF-CLEANUP RULE: any script writing a progress/checkpoint file must delete
 // it on successful completion. A dotfile-json at rest in scripts/ is therefore
 // either a run in progress, a script that failed to self-clean, or an ORPHAN
@@ -829,6 +837,12 @@ for (const [f, expected, shouldExist] of miscFiles) {
 // else is a completed investigation's output and should leave with its script.
 
 section('11b · Repo hygiene');
+
+function humanSize(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
 
 // scripts/ dotfile-json scan — orphan = no scripts/<stem>.js for .<stem>-progress.json
 {
@@ -841,8 +855,8 @@ section('11b · Repo hygiene');
     for (const f of dotJsons) {
       const stem = f.replace(/^\./, '').replace(/-progress\.json$/, '').replace(/\.json$/, '');
       const owner = jsSet.has(stem) ? stem + '.js' : null;
-      const ageDays = Math.floor((Date.now() - fs.statSync(path.join(scriptsDir, f)).mtimeMs) / 86400000);
-      row(`scripts/${f}`, `${ageDays}d old`,
+      const size = fs.statSync(path.join(scriptsDir, f)).size;
+      row(`scripts/${f}`, humanSize(size),
         owner ? `⚠️  owner ${owner} exists — mid-run, or failed to self-clean`
               : '❌ ORPHAN — owning script deleted; safe to remove');
     }
@@ -881,8 +895,10 @@ section('11b · Repo hygiene');
       const isDir = fs.statSync(p).isDirectory();
       if (!isDir && KEEP.has(f)) { kept++; continue; }
       review++;
-      const ageDays = Math.floor((Date.now() - fs.statSync(p).mtimeMs) / 86400000);
-      row(`reports/${f}${isDir ? '/' : ''}`, `${ageDays}d old`, '⚠️  not on keep-list — delete with its script');
+      // Directories get an entry-count instead of a byte size — a dir's own
+      // statSync size is filesystem noise, not content.
+      const label = isDir ? `${fs.readdirSync(p).length} entries` : humanSize(fs.statSync(p).size);
+      row(`reports/${f}${isDir ? '/' : ''}`, label, '⚠️  not on keep-list — delete with its script');
     }
     // 2026-07-31: the old condition was `kept === KEEP.size - (fold-diverged ? 0 : 1)`,
     // which assumed every keep-list entry always exists on disk. Once the list grew to
