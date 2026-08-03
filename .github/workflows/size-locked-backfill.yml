@@ -1,0 +1,48 @@
+# .github/workflows/size-locked-backfill.yml
+name: Size Locked-Season Backfill (read-only)
+
+# OUTSTANDING §2.2 Phase 0 — data-side sizing for the historical/locked-season game-data
+# backfill. Enumerates target seasons (locked, not removed, no games/bv file), counts the
+# teams reachable through players/indexes history, and projects discoverTeamFixture call
+# volume and wall time. READ-ONLY: no git writes, no data-write lock needed, no API calls
+# (so the setup-node rule does not apply — preinstalled node is used regardless).
+#
+# Sparse checkout is correct here (the ~1/256th-class exception): the script reads only
+# data/sports-index.json + the 256 players/indexes shards + scripts/. Game-file PRESENCE
+# is read via `git ls-tree` against tree objects, which a blobless clone has locally —
+# games/bv is never materialised.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data
+            players/indexes
+          sparse-checkout-cone-mode: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run sizing
+        run: node scripts/size-locked-backfill.js
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-locked-backfill-report
+          path: /tmp/size-locked-backfill-report.json
+          retention-days: 7
+          if-no-files-found: warn
