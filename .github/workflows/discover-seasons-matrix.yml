@@ -2,10 +2,20 @@
 name: Discover Seasons (Matrix)
 
 # Rebuilt from the proven-working base that fanned out 256 map jobs. The matrix
-# output mechanism (object array via steps.gen.outputs.targets, cone-mode sparse
-# checkout, != '[]' gate) is kept EXACTLY as that working version — it is not the
-# place to experiment. Added on top: fresh_start progress reset, a data-write lock
-# on the single writer, and the delta-based roster backfill.
+# output mechanism (bare shard strings via steps.gen.outputs.targets, Python
+# printing ONLY the JSON array to stdout, bash writing $GITHUB_OUTPUT, no custom
+# if: on map) matches the reference self-triggering matrix
+# (fetch-profile-stats-matrix.yml) — it is not the place to experiment. Added on
+# top: fresh_start progress reset, a data-write lock on the single writer, and
+# the delta-based roster backfill.
+#
+# 2026-08-03: debug scaffolding stripped (gen-step VERBOSE block + the
+# verify-output job — the 2026-07-09 fan-out diagnosis they existed for is long
+# closed); self-retrigger converted from a bare one-shot `gh workflow run` to the
+# /tmp/gh-dispatch.sh retry helper, the sixth and last bare chain dispatch in the
+# repo (OUTSTANDING §2.6); reduce + retrigger gates moved always() ->
+# !cancelled() (stop-button rule, same fix the stats matrix received 2026-07-21);
+# retrigger's dry_run comparison fixed to the robust boolean form (directive 13).
 #
 # NO actions/setup-node ANYWHERE in this file — both map and reduce fetch PlayHQ
 # (map: publicProfileTeams probes; reduce: discoverSeason grade-resolve), and
@@ -131,59 +141,6 @@ jobs:
           # BASH writes the job output (matches the working fetch-profile-stats matrix).
           echo "targets=$targets" >> $GITHUB_OUTPUT
 
-          echo "=== VERBOSE: raw \$targets shell variable ==="
-          echo "byte length: ${#targets}"
-          echo "first 60 chars: ${targets:0:60}"
-          echo "last 60 chars:  ${targets: -60}"
-          echo "--- hexdump of first 40 bytes (catches invisible/CRLF/BOM issues) ---"
-          printf '%s' "$targets" | head -c 40 | od -An -tx1
-          echo "--- hexdump of last 40 bytes ---"
-          printf '%s' "$targets" | tail -c 40 | od -An -tx1
-          echo "=== VERBOSE: raw \$GITHUB_OUTPUT file, targets= line only ==="
-          grep '^targets=' "$GITHUB_OUTPUT" | head -c 300
-          echo ""
-          echo "byte length of that line: $(grep '^targets=' "$GITHUB_OUTPUT" | wc -c)"
-          echo "=== VERBOSE: re-parse the GITHUB_OUTPUT line exactly as GitHub would need to ==="
-          python3 -c "
-          import sys
-          line = open('$GITHUB_OUTPUT').read()
-          for l in line.splitlines():
-              if l.startswith('targets='):
-                  val = l[len('targets='):]
-                  import json
-                  try:
-                      parsed = json.loads(val)
-                      print(f'  re-parsed OK: {len(parsed)} elements, first={parsed[0] if parsed else None!r}, last={parsed[-1] if parsed else None!r}')
-                  except Exception as e:
-                      print(f'  RE-PARSE FAILED: {e}')
-                      print(f'  value repr (first 200 chars): {val[:200]!r}')
-          "
-          echo "=== END VERBOSE ==="
-
-  # Independent of map entirely — runs unconditionally, so if map STILL doesn't
-  # fan out after removing the redundant if:, this proves definitively whether
-  # GitHub's own resolution of the output (not bash's, not Python's) is empty.
-  verify-output:
-    needs: generate-shards
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo GitHub's own resolved view of the output
-        env:
-          TARGETS: ${{ needs.generate-shards.outputs.targets }}
-        run: |
-          echo "GitHub-resolved byte length: ${#TARGETS}"
-          echo "First 100 chars: ${TARGETS:0:100}"
-          echo "$TARGETS" | python3 -c "
-          import sys, json
-          raw = sys.stdin.read()
-          print(f'raw repr (first 150 chars): {raw[:150]!r}')
-          try:
-              parsed = json.loads(raw)
-              print(f'Parsed OK: {len(parsed)} elements')
-          except Exception as e:
-              print(f'PARSE FAILED: {e}')
-          "
-
   map:
     needs: generate-shards
     runs-on: ubuntu-latest
@@ -226,7 +183,12 @@ jobs:
 
   reduce:
     needs: [generate-shards, map]
-    if: always()
+    # !cancelled() (not always()): still runs when shards FAIL — the aggregator
+    # must never be gated on shard success — but cancelling the run now actually
+    # stops the chain instead of applying + retriggering anyway (stop-button
+    # rule; the same fix fetch-profile-stats-matrix.yml received 2026-07-21 —
+    # this file was never audited for it until 2026-08-03).
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     outputs:
@@ -299,12 +261,62 @@ jobs:
 
   retrigger:
     needs: reduce
-    if: always() && inputs.dry_run != 'true' && needs.reduce.outputs.undone_shards != '[]' && needs.reduce.outputs.undone_shards != ''
+    # !cancelled() (not always()): cancelling a run must actually stop the
+    # self-trigger chain (stop-button rule). The dry_run comparison tests BOTH
+    # boolean forms (directive 13): a UI dispatch sends a real boolean, a chained
+    # dispatch sends the STRING 'true'; the old `inputs.dry_run != 'true'`
+    # coerced a real boolean to NaN — never equal — so the gate could not block a
+    # dry-run's retrigger. KEEP THIS ON ONE LINE (claude_context T1).
+    if: ${{ !cancelled() && !(inputs.dry_run == true || inputs.dry_run == 'true') && needs.reduce.outputs.undone_shards != '[]' && needs.reduce.outputs.undone_shards != '' }}
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      GH_REPO: ${{ github.repository }}
     steps:
+      - name: Install dispatch retry helper
+        # This self-retrigger was the last chain-critical `gh workflow run` in
+        # the repo still made as a bare one-shot API call (conversion deferred to
+        # this scaffolding-strip pass — OUTSTANDING §2.6). One HTTP 500 on a
+        # one-shot dispatch is exactly how the stats matrix chain silently
+        # stopped on 2026-07-27; the push-retry rule applies to every network
+        # call the chain depends on (§7.1). Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml and asserted byte-identical at install.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
       - name: Re-trigger for remaining shards (fresh runners)
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
         run: |
           run_number=${{ inputs.run_number }}
           if [ "$run_number" -ge "$MAX_RUNS" ]; then
@@ -316,8 +328,7 @@ jobs:
           # Do NOT pass the undone shard list back — generate-shards recomputes it from
           # the committed progress file itself (identical to how run 1 computes it),
           # skipping shards already marked done for this mode.
-          gh workflow run discover-seasons-matrix.yml \
-            --repo "${{ github.repository }}" \
+          /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
             --field "all_players=${{ inputs.all_players }}" \
             --field "backfill_teams=${{ inputs.backfill_teams }}" \
             --field "concurrency=${{ inputs.concurrency }}" \
