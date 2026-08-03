@@ -1,0 +1,48 @@
+# .github/workflows/size-locked-resweep.yml
+name: Size Locked Re-sweep (read-only)
+
+# OUTSTANDING §2.2 sizing v2 (post-pivot): measures the locked-season re-sweep from the
+# game files themselves — call volume (grade probes + team fixtures over played ∪ regs
+# teams), regs-only teams (the direct missing-games signal), no-rn and pending re-measures,
+# and a parse-health sweep of every locked game file. READ-ONLY: no git writes, no API
+# calls, preinstalled node.
+#
+# games/bv IS materialised here (unlike sizing v1) — the script reads every locked
+# season's file. Cone checkout pulls the directory in one pack; expect the checkout step
+# to move ~2.5 GB.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data
+            players/indexes
+            games/bv
+          sparse-checkout-cone-mode: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run sizing v2
+        run: node scripts/size-locked-resweep.js
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-locked-resweep-report
+          path: /tmp/size-locked-resweep-report.json
+          retention-days: 7
+          if-no-files-found: warn
