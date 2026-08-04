@@ -103,6 +103,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure git
@@ -119,6 +126,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure git
@@ -134,6 +148,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure git
@@ -152,6 +173,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure git
@@ -188,6 +216,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dispatch retry helper
@@ -265,6 +300,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Node
