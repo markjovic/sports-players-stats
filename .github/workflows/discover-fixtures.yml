@@ -28,6 +28,11 @@ on:
         required: false
         default: false
         type: boolean
+      locked_resweep:
+        description: '§2.2 historical re-sweep: every locked && !removed season (exclusive with season / all_seasons / current_only)'
+        required: false
+        default: false
+        type: boolean
       concurrency:
         description: 'Team fetches in parallel (blank = 20)'
         required: false
@@ -67,6 +72,7 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ];     then ARGS="$ARGS --dry-run"; fi
           if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="$ARGS --all-seasons"; fi
           if [ "${{ inputs.current_only }}" = "true" ]; then ARGS="$ARGS --current-only"; fi
+          if [ "${{ inputs.locked_resweep }}" = "true" ]; then ARGS="$ARGS --locked-resweep"; fi
           if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           node scripts/discover-fixtures.js $ARGS

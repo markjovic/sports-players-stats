@@ -18,6 +18,11 @@ on:
         required: false
         default: false
         type: boolean
+      chain_fold:
+        description: 'On success, dispatch Fold diverged players (mode=apply) — set by the matrix terminal'
+        required: false
+        default: false
+        type: boolean
 
 # Serialize against nightly-crawl / weekly-indexes / discover reduce: team-stats/
 # was previously written under the data-write lock only when built inside
@@ -30,6 +35,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write             # chain-fold job dispatches fold-diverged-players.yml
 
 jobs:
   build:
@@ -51,3 +57,62 @@ jobs:
           if [ -n "${{ inputs.season }}" ];             then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ "${{ inputs.dry_run }}" = "true" ];      then ARGS="$ARGS --dry-run"; fi
           node scripts/build-team-stats.js $ARGS
+
+  # Weekly/nightly chain link (2026-08-04): matrix terminal -> team-stats -> fold.
+  # Fold shares team-stats' data-write lock; dispatching both from the terminal
+  # fan-out made team-stats evict Fold from the single pending-queue slot every
+  # night something held the lock. Chained here, Fold is dispatched only when
+  # team-stats FINISHES. Default success-gating on `needs:` means a failed build
+  # never chains; manual team-stats runs leave chain_fold unticked and chain
+  # nothing. Both boolean forms per directive 13 (chained dispatches send the
+  # STRING 'true'). Single line: see claude_context T1.
+  chain-fold:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ inputs.chain_fold == true || inputs.chain_fold == 'true' }}
+    env:
+      GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      GH_REPO:  ${{ github.repository }}
+    steps:
+      - name: Install dispatch retry helper
+        # Copied VERBATIM from fetch-profile-stats-matrix.yml — asserted
+        # byte-identical (1,452 bytes) at build. A lost dispatch is a broken
+        # chain, and a broken chain must show red.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Dispatch Fold diverged players (mode=apply, chained)
+        run: |
+          /tmp/gh-dispatch.sh fold-diverged-players.yml --field "mode=apply"

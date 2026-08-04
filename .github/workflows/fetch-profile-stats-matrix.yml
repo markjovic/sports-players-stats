@@ -632,10 +632,21 @@ jobs:
 
       # ── Terminal fan-out ────────────────────────────────────────────────────
       # Each dispatch is gated `!cancelled() && status == stuck` rather than the
-      # bare status check: these five are INDEPENDENT of each other, and with
-      # plain step ordering a failure in the first one skipped the remaining four
+      # bare status check: these four are INDEPENDENT of each other, and with
+      # plain step ordering a failure in the first one skipped the remaining ones
       # — including build-team-stats, the roster-freshness link. Any that throws
       # still turns the job red.
+      #
+      # Fold is NOT dispatched here any more (2026-08-04). The `data-write` queue
+      # holds ONE pending run and a new arrival CANCELS the previous waiter —
+      # cancel-in-progress:false protects only the RUNNING slot. Dispatching Fold
+      # and team-stats in the same fan-out second while anything held the lock
+      # (nightly, Sunday backfill, Monday fixtures sweep) meant team-stats evicted
+      # Fold deterministically — 2/2 nights after the 2026-08-02 dispatch
+      # hardening made every racer show up reliably (found by Mark). Ordering
+      # over locking: team-stats now dispatches Fold when it FINISHES
+      # (chain_fold=true below), so Fold arrives while the lock is settling
+      # instead of gambling for the one pending slot at the worst moment.
 
       - name: Trigger leaderboards rebuild
         if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
@@ -652,11 +663,6 @@ jobs:
         run: |
           /tmp/gh-dispatch.sh build-records.yml
 
-      - name: Trigger fold of diverged players
-        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
-        run: |
-          /tmp/gh-dispatch.sh fold-diverged-players.yml --field "mode=apply"
-
       - name: Trigger team-stats rebuild
         if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
         # Rebuild team-stats AFTER the matrix drains: roster stat lines are
@@ -665,8 +671,10 @@ jobs:
         # the matrix is even triggered, so it can never see tonight's stats —
         # without this, the roster tab lagged the player view by a full day
         # (2026-07-21 roster-lag fix). active_only keeps it to unlocked seasons.
+        # chain_fold=true: team-stats dispatches fold-diverged-players.yml on
+        # completion — see the fan-out comment above for why Fold left this list.
         run: |
-          /tmp/gh-dispatch.sh build-team-stats.yml --field "active_only=true"
+          /tmp/gh-dispatch.sh build-team-stats.yml --field "active_only=true" --field "chain_fold=true"
 
       - name: Checkout repo for cleanup
         if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
@@ -744,7 +752,7 @@ jobs:
           echo "🛑 HALTED — 3 consecutive runs where apply-and-commit did not succeed."
           echo ""
           echo "   The chain is NOT being retriggered, and the terminal fan-out"
-          echo "   (team-stats / leaderboards / search / records / fold) has NOT fired,"
+          echo "   (team-stats→fold / leaderboards / search / records) has NOT fired,"
           echo "   because nothing was persisted to commit history."
           echo ""
           echo "   No data is lost: the affected players were never written on main, so"
