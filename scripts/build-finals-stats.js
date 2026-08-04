@@ -36,8 +36,15 @@
 //               NEVER modified and their existing flags are preserved in the
 //               career totals — see Phase 2)
 // Dry run:     node scripts/build-finals-stats.js --dry-run
-// Resume:      node scripts/build-finals-stats.js  (progress saved every interval;
-//              progress is MODE-KEYED — a full-run progress file is discarded by
+// Resume:      NONE — Phase 1 always scans from zero (2026-08-05). The old committed
+//              progress file serialised the ENTIRE finalsMap and scaled with finals
+//              data: the v2 fields pushed it to 110MB, past GitHub's HARD 100MB cap,
+//              killing a full run mid-flight. The commit-your-progress rule protects
+//              API BUDGET on fetch jobs; this is pure local compute — a lost scan
+//              costs a ~1h re-scan, nothing else — so it follows the
+//              build-player-games pattern: the map lives in memory, full stop.
+//              (Historical note — the removed mechanism was MODE-KEYED so a full-run
+//              file was discarded by
 //              an active-only run and vice versa)
 //
 // 2026-07-10: g.p[].id and g.hp[]/ap[].profileID may be truncated 10-char
@@ -104,6 +111,14 @@ function gitCommit(message, dirs) {
       console.log(`  ✔ committed: ${message}`);
       return;
     } catch (e) {
+      // PERMANENT rejections: retrying cannot succeed. A pre-receive hook declining an
+      // oversized file is the git equivalent of an HTTP 4xx — fail fast so the real
+      // error is the FIRST thing in the log, not the 60th. (2026-08-05: a 110MB
+      // progress file burned all 60 attempts and buried the cause.)
+      const errText = (e.stderr?.toString() || '') + (e.message || '');
+      if (/exceeds GitHub's file size limit|GH001|Large files detected/i.test(errText)) {
+        throw new Error(`push permanently rejected (oversized file) — not retrying: ${errText.split('\n').find(l => /exceeds|GH001/.test(l))?.trim() || errText.slice(0, 200)}`);
+      }
       if (attempt === 60) {
         console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
         throw e;
@@ -168,31 +183,17 @@ const sids = fs.readdirSync(gamesDir)
   .map(f => f.replace('.json', ''))
   .sort();
 
-// Load progress — MODE-KEYED: an active-only run must never resume a full run's
-// progress (its finalsMap would carry locked-season data into active-only Phase 2
-// semantics) and vice versa (a full run resuming active-only progress would treat
-// locked seasons as scanned when they never were).
-let progress = { mode: MODE, scannedSids: [], finalsMap: {} };
-if (fs.existsSync(PROGRESS_FILE)) {
-  try {
-    const loaded = readJson(PROGRESS_FILE);
-    if ((loaded.mode || 'full') === MODE) progress = loaded;
-    else console.log(`  Progress file is from a '${loaded.mode || 'full'}' run — discarding (this run is '${MODE}')`);
-  } catch {}
-}
-const scannedSids = new Set(progress.scannedSids || []);
-
-// Restore finalsMap from progress
-// Storage format: { uuid: { sid: { finals, gfApps, gfWins } } }
+// No persisted progress (see header). One-time hygiene: if a committed progress file
+// from the old mechanism is still on disk, remove it and stage the deletion so the
+// repo sheds the near-100MB blob at the next Phase 2 commit.
+const scannedSids = new Set();
 const finalsMap = new Map();
-for (const [uuid, smap] of Object.entries(progress.finalsMap || {})) {
-  const inner = new Map();
-  for (const [sid, v] of Object.entries(smap)) inner.set(sid, { fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0, ...v });
-  finalsMap.set(uuid, inner);
+if (fs.existsSync(PROGRESS_FILE)) {
+  try { fs.unlinkSync(PROGRESS_FILE); console.log('  Removed legacy committed progress file (deletion staged with the next commit)'); } catch {}
 }
 
-let totalFinalsGames = progress.totalFinalsGames || 0;
-let totalGFGames     = progress.totalGFGames     || 0;
+let totalFinalsGames = 0;
+let totalGFGames     = 0;
 let sinceLastCommit  = 0;
 
 // In active-only mode restrict to unlocked seasons
@@ -345,25 +346,9 @@ for (const sid of sidsToScan) {
   sinceLastCommit++;
 
   if (sinceLastCommit >= GAME_COMMIT_INTERVAL) {
-    if (!DRY_RUN) {
-      const flat = {};
-      for (const [uuid, smap] of finalsMap) flat[uuid] = Object.fromEntries(smap);
-      writeJson(PROGRESS_FILE, { mode: MODE, scannedSids: [...scannedSids], finalsMap: flat, totalFinalsGames, totalGFGames });
-      gitCommit(
-        `build-finals-stats: ${scannedSids.size}/${sids.length} seasons scanned, ${finalsMap.size} players with finals data`,
-        ['scripts/.finals-progress.json']
-      );
-    }
     sinceLastCommit = 0;
     console.log(`  ${scannedSids.size}/${sids.length} seasons — ${finalsMap.size} players, ${totalFinalsGames} finals games`);
   }
-}
-
-// Final progress save
-if (!DRY_RUN) {
-  const flat = {};
-  for (const [uuid, smap] of finalsMap) flat[uuid] = Object.fromEntries(smap);
-  writeJson(PROGRESS_FILE, { mode: MODE, scannedSids: [...scannedSids], finalsMap: flat, totalFinalsGames, totalGFGames, scanComplete: true });
 }
 
 console.log(`\n  Scan complete:`);
@@ -562,10 +547,13 @@ if (!DRY_RUN && sinceLastCommit > 0) {
   );
 }
 
-// Clean up progress file
-if (!DRY_RUN && fs.existsSync(PROGRESS_FILE)) {
-  fs.unlinkSync(PROGRESS_FILE);
-  gitCommit('build-finals-stats: remove progress file', ['scripts/.finals-progress.json']);
+// Stage the legacy progress file's DELETION. The file is unlinked at startup (Phase 1),
+// so existsSync() is already false here — the old `if (existsSync)` guard would never
+// fire and the near-100MB blob would stay on main forever. `git add` on a deleted
+// TRACKED path stages the deletion; gitCommit no-ops cleanly when nothing is staged.
+if (!DRY_RUN) {
+  gitCommit('build-finals-stats: remove committed progress file (110MB, exceeded GitHub limit)',
+    ['scripts/.finals-progress.json']);
 }
 
 console.log('\n─── Summary ─────────────────────────────────────────────────────────');
