@@ -1,0 +1,41 @@
+# .github/workflows/size-missing-gids.yml
+name: Size Missing Gids (read-only)
+
+# §2.2 Phase 4(b) sizing — the grading/hidden residue. Enumerates every game id present
+# in player.games[] arrays but absent from games/bv: the exact per-gid target set for the
+# spectator-route rescue, with zero API calls. Also correlates against the 1,002
+# zero-team seasons to confirm (or deny) the grading-rounds hypothesis.
+#
+# FULL checkout required — games[] lives in the ~412k player DETAIL files, not the index
+# shards. Full checkout of this repo measures ~7 minutes on a runner (documented; do NOT
+# "optimise" to sparse/blobless — promisor fetches on 412k files are the slow path).
+# READ-ONLY: no git writes, no API calls, preinstalled node.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run missing-gid scan
+        run: node scripts/size-missing-gids.js
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-missing-gids-report
+          path: /tmp/size-missing-gids-report.json
+          retention-days: 7
+          if-no-files-found: warn
