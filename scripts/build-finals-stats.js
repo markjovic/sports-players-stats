@@ -187,7 +187,7 @@ const scannedSids = new Set(progress.scannedSids || []);
 const finalsMap = new Map();
 for (const [uuid, smap] of Object.entries(progress.finalsMap || {})) {
   const inner = new Map();
-  for (const [sid, v] of Object.entries(smap)) inner.set(sid, { fgp: 0, fpts: 0, f3pt: 0, ff: 0, ...v });
+  for (const [sid, v] of Object.entries(smap)) inner.set(sid, { fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0, ...v });
   finalsMap.set(uuid, inner);
 }
 
@@ -274,7 +274,7 @@ for (const sid of sidsToScan) {
     for (const uuid of attendees) {
       if (!finalsMap.has(uuid)) finalsMap.set(uuid, new Map());
       const sidMap = finalsMap.get(uuid);
-      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0 });
+      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0 });
       const acc = sidMap.get(sid);
 
       acc.finals = 1;
@@ -282,11 +282,38 @@ for (const sid of sidsToScan) {
       // deflates finals PPG), matching the forfeit-games treatment everywhere else.
       if (!g.forfeit) {
         acc.fgp = (acc.fgp || 0) + 1;
+        // Box lines are NOT persisted for normal games (spc:1 = fetched live via the
+        // Worker; measured 2026-08-05: 10 of 6,501 games in a live season file carry
+        // hp/ap — hidden-game reconstructions only). bgp counts the games where a box
+        // line EXISTS, and it is the denominator for finals scoring rates: pts over
+        // fgp would slander every player whose finals aren't boxed. The one-off
+        // spectator backfill of finals games raises bgp; until then most players
+        // render "—" for the scoring cells, never zeros.
         const box = homeEntries.get(uuid) || awayEntries.get(uuid);
         if (box) {
+          acc.bgp  = (acc.bgp || 0) + 1;
           acc.fpts += box.pts   || 0;
           acc.f3pt += box.pt3   || 0;
           acc.ff   += box.fouls || 0;
+        }
+        // Finals W/L/D — computable TODAY for every scored finals game: side from the
+        // box entry when present, else the pre-pass reg map (same attribution the GF
+        // logic below has always used).
+        if (g.hs !== undefined && g.as !== undefined && g.hs !== null && g.as !== null) {
+          let side = null;
+          if (homeEntries.has(uuid)) side = 'h';
+          else if (awayEntries.has(uuid)) side = 'a';
+          else {
+            const tids = playerTids.get(uuid)?.get(sid);
+            if (tids) {
+              if (homeTid && tids.has(homeTid)) side = 'h';
+              else if (awayTid && tids.has(awayTid)) side = 'a';
+            }
+          }
+          if (side) {
+            const my = side === 'h' ? g.hs : g.as, opp = side === 'h' ? g.as : g.hs;
+            if (my > opp) acc.fw++; else if (my < opp) acc.fl++; else acc.fd++;
+          }
         }
       }
       if (gf_flag) {
@@ -379,7 +406,7 @@ for (const [uuid, sidMap] of finalsMap) {
   // first --active-only run). Pattern mirrors build-win-loss.js active-only
   // Pass 2: locked seasons untouched, their contribution preserved.
   let careerFinals = 0, careerGfApps = 0, careerGfWins = 0;
-  const cPerf = { gp: 0, pts: 0, threePt: 0, fouls: 0 };   // career finals performance
+  const cPerf = { gp: 0, pts: 0, threePt: 0, fouls: 0, wins: 0, losses: 0, draws: 0, boxedGp: 0 };   // career finals performance
   // 2026-07-31: finalsPerSeason could still exceed 1 (1 player live). The earlier fix
   // here swapped `r.stats.gp > 0` for `regs.length > 0` in the denominator, which
   // addressed stale gp but NOT the actual cause: the numerator is built from sidMap,
@@ -410,6 +437,10 @@ for (const [uuid, sidMap] of finalsMap) {
     cPerf.pts     += acc.fpts || 0;
     cPerf.threePt += acc.f3pt || 0;
     cPerf.fouls   += acc.ff   || 0;
+    cPerf.wins    += acc.fw   || 0;
+    cPerf.losses  += acc.fl   || 0;
+    cPerf.draws   += acc.fd   || 0;
+    cPerf.boxedGp += acc.bgp  || 0;
   }
   if (scopeSet) {
     // Active-only: fold in the preserved flags of every out-of-scope season.
@@ -435,6 +466,10 @@ for (const [uuid, sidMap] of finalsMap) {
         cPerf.pts     += exPerf.pts || 0;
         cPerf.threePt += exPerf.tp  || 0;
         cPerf.fouls   += exPerf.f   || 0;
+        cPerf.wins    += exPerf.w   || 0;
+        cPerf.losses  += exPerf.l   || 0;
+        cPerf.draws   += exPerf.d   || 0;
+        cPerf.boxedGp += exPerf.bg  || 0;
       }
     }
   }
@@ -464,8 +499,10 @@ for (const [uuid, sidMap] of finalsMap) {
   // stale. Field-wise compare so an unchanged block does not mark the file modified.
   if (cPerf.gp > 0) {
     const ex = bball.finalsStats;
-    if (!ex || ex.gp !== cPerf.gp || ex.pts !== cPerf.pts || ex.threePt !== cPerf.threePt || ex.fouls !== cPerf.fouls) {
-      bball.finalsStats = { gp: cPerf.gp, pts: cPerf.pts, threePt: cPerf.threePt, fouls: cPerf.fouls };
+    if (!ex || ex.gp !== cPerf.gp || ex.pts !== cPerf.pts || ex.threePt !== cPerf.threePt || ex.fouls !== cPerf.fouls
+        || ex.wins !== cPerf.wins || ex.losses !== cPerf.losses || ex.draws !== cPerf.draws || ex.boxedGp !== cPerf.boxedGp) {
+      bball.finalsStats = { gp: cPerf.gp, boxedGp: cPerf.boxedGp, pts: cPerf.pts, threePt: cPerf.threePt,
+        fouls: cPerf.fouls, wins: cPerf.wins, losses: cPerf.losses, draws: cPerf.draws };
       modified = true;
     }
   } else if (bball.finalsStats !== undefined) { delete bball.finalsStats; modified = true; }
@@ -489,9 +526,11 @@ for (const [uuid, sidMap] of finalsMap) {
       // Per-season finals box totals (compact keys) — same write-every-sibling,
       // omit-when-zero semantics as the flags above.
       if ((acc.fgp || 0) > 0) {
-        const nf = { gp: acc.fgp, pts: acc.fpts || 0, tp: acc.f3pt || 0, f: acc.ff || 0 };
+        const nf = { gp: acc.fgp, bg: acc.bgp || 0, pts: acc.fpts || 0, tp: acc.f3pt || 0, f: acc.ff || 0,
+                     w: acc.fw || 0, l: acc.fl || 0, d: acc.fd || 0 };
         const ex = reg.stats.fstats;
-        if (!ex || ex.gp !== nf.gp || ex.pts !== nf.pts || ex.tp !== nf.tp || ex.f !== nf.f) {
+        if (!ex || ex.gp !== nf.gp || ex.bg !== nf.bg || ex.pts !== nf.pts || ex.tp !== nf.tp || ex.f !== nf.f
+            || ex.w !== nf.w || ex.l !== nf.l || ex.d !== nf.d) {
           reg.stats.fstats = nf; modified = true;
         }
       } else if (reg.stats.fstats !== undefined) { delete reg.stats.fstats; modified = true; }
