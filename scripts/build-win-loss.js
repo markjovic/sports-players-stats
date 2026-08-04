@@ -18,6 +18,17 @@
 //   node scripts/build-win-loss.js              -- all seasons
 //   node scripts/build-win-loss.js --active-only -- active seasons only
 //
+// 2026-08-04: CAREER totals deduped per (season, tid). records[] is keyed per
+// (sid, tid), but both career loops iterated per REG — a regraded player's two
+// same-tid sibling regs added the same season's record TWICE (85W/70L on a
+// 99-GP player whose true record is 51W/47L/1D). Full mode now accumulates once
+// per unique tid per season; active-only applies each (sid,tid) delta once,
+// reading the old values from the first sibling (siblings carry identical
+// stored values by design). Per-reg stat writes are unchanged — every sibling
+// still receives the same values, which StatTrack dedupes (0.69, per-stat max).
+// A FULL run is required once after this ships: stored career totals carry the
+// doubled contributions and active-only deltas cannot repair them.
+//
 // 2026-07-10: g.p[].id and g.hp[]/ap[].profileID may be truncated 10-char
 // uuid prefixes (see scripts/lib/uuid-prefix.cjs) — part of the UUID-storage
 // migration. Both are resolved back to full uuids before being used as
@@ -268,15 +279,20 @@ function main() {
 
         for (const season of (player.seasons || [])) {
           if (!activeSids.has(season.sid)) continue;
+          const seenTids = new Set();   // career delta ONCE per (sid, tid) — sibling regs share a tid
           for (const reg of (season.regs || [])) {
             const rec = playerRecords?.[season.sid]?.[reg.tid] || { w: 0, l: 0, d: 0 };
             const oldW = reg.stats?.wins  || 0;
             const oldL = reg.stats?.losses || 0;
             const oldD = reg.stats?.draws  || 0;
-            // Apply delta to career totals
-            careerW += rec.w - oldW;
-            careerL += rec.l - oldL;
-            careerD += rec.d - oldD;
+            // Apply delta to career totals — once per tid. Siblings store identical
+            // values (written below), so the first sibling's old values are the pair's.
+            if (reg.tid && !seenTids.has(reg.tid)) {
+              seenTids.add(reg.tid);
+              careerW += rec.w - oldW;
+              careerL += rec.l - oldL;
+              careerD += rec.d - oldD;
+            }
             // Clamp to zero (should never go negative, but guard against stale data)
             careerW = Math.max(0, careerW);
             careerL = Math.max(0, careerL);
@@ -310,11 +326,15 @@ function main() {
         let careerW = 0, careerL = 0, careerD = 0;
 
         for (const season of (player.seasons || [])) {
+          const seenTids = new Set();   // career ONCE per (sid, tid) — sibling regs share a tid
           for (const reg of (season.regs || [])) {
             const rec = playerRecords?.[season.sid]?.[reg.tid] || { w: 0, l: 0, d: 0 };
-            careerW += rec.w;
-            careerL += rec.l;
-            careerD += rec.d;
+            if (reg.tid && !seenTids.has(reg.tid)) {
+              seenTids.add(reg.tid);
+              careerW += rec.w;
+              careerL += rec.l;
+              careerD += rec.d;
+            }
             if (!reg.stats) reg.stats = {};
             if ((reg.stats.wins || 0) !== rec.w || (reg.stats.losses || 0) !== rec.l || (reg.stats.draws || 0) !== rec.d) {
               if (rec.w) reg.stats.wins = rec.w; else delete reg.stats.wins;

@@ -19,8 +19,20 @@
  * Usage:
  *   node discover-fixtures.js                       # active seasons only (locked: false)
  *   node discover-fixtures.js --all-seasons         # all seasons including completed
- *   node discover-fixtures.js --season=<id>         # single season
+ *   node discover-fixtures.js --locked-resweep      # locked && !removed — §2.2 historical re-sweep
+ *   node discover-fixtures.js --current-only        # weekly mode: skip finished seasons
+ *   node discover-fixtures.js --season=<id>         # single season (no progress file)
  *   node discover-fixtures.js --concurrency=20      # team fetches in parallel
+ *
+ * 2026-08-03 hardening (§2.2 Phase 0 findings):
+ *   - Progress file is MODE-KEYED BY FILENAME (discover-fixtures-progress-{mode}.json) so a
+ *     weekly --current-only run can never resume over — or clear — a cancelled historical
+ *     sweep's checkpoint. The old unkeyed file is removed on the next successful run.
+ *   - loadGameFile THROWS when an existing season file fails to parse (matches nightly-crawl);
+ *     the old {games:{}} fallback would have rewritten a corrupt file as fixture-only data.
+ *   - A season where EVERY enumeration call returned null is TRANSIENT (API failure, WAF
+ *     block), not zero-team: it is retried in a second pass, and anything still failing turns
+ *     the run red AFTER committing — never silently recorded as done-with-no-teams.
  */
 
 'use strict';
@@ -46,6 +58,17 @@ const TARGET_SEASON = ARGS.season      || null;
 const ALL_SEASONS   = !!ARGS['all-seasons'];
 const DRY_RUN       = !!ARGS['dry-run'];   // resolve everything, write/commit nothing
 const CURRENT_ONLY  = !!ARGS['current-only']; // skip finished seasons (weekly mode)
+const LOCKED_RESWEEP = !!ARGS['locked-resweep']; // §2.2: locked && !removed historical re-sweep
+
+if (LOCKED_RESWEEP && (ALL_SEASONS || CURRENT_ONLY || TARGET_SEASON)) {
+  console.error('--locked-resweep is exclusive with --all-seasons / --current-only / --season');
+  process.exit(1);
+}
+
+// Progress-file mode key: every distinct target-selection gets its own file.
+const MODE = TARGET_SEASON ? 'single'
+  : LOCKED_RESWEEP ? 'locked-resweep'
+  : (ALL_SEASONS ? 'all' : 'active') + (CURRENT_ONLY ? '-current' : '');
 
 const API_URL     = 'https://api.playhq.com/graphql';
 const GAMES_DIR   = path.join(ROOT, 'games', TENANT);
@@ -271,8 +294,12 @@ function loadGameFile(seasonId) {
   if (_gameFileCache[seasonId]) return _gameFileCache[seasonId];
   if (!fs.existsSync(GAMES_DIR)) fs.mkdirSync(GAMES_DIR, { recursive: true });
   const f = path.join(GAMES_DIR, `${seasonId}.json`);
-  try { _gameFileCache[seasonId] = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : { games: {} }; }
-  catch (e) { _gameFileCache[seasonId] = { games: {} }; }
+  if (!fs.existsSync(f)) { _gameFileCache[seasonId] = { games: {} }; return _gameFileCache[seasonId]; }
+  // An EXISTING file that fails to parse THROWS (matches nightly-crawl's guard). The old
+  // {games:{}} fallback meant one corrupt file would be silently rewritten as fixture-only
+  // data — losing p[]/spc/hidden games. 2026-08-02 sizing measured 0 parse failures live.
+  try { _gameFileCache[seasonId] = JSON.parse(fs.readFileSync(f, 'utf8')); }
+  catch (e) { throw new Error(`loadGameFile: ${seasonId}.json exists but failed to parse (${e.message}) — refusing the empty fallback`); }
   return _gameFileCache[seasonId];
 }
 
@@ -289,7 +316,10 @@ function flushGameFiles() {
   return count;
 }
 
-const PROGRESS_FILE = path.join(ROOT, 'discover-fixtures-progress.json');
+// Mode-keyed BY FILENAME: the hazard was not just cross-mode resume but cross-mode DELETION —
+// a weekly run's clearProgress() would have destroyed a cancelled historical sweep's checkpoint.
+const PROGRESS_FILE        = path.join(ROOT, `discover-fixtures-progress-${MODE}.json`);
+const LEGACY_PROGRESS_FILE = path.join(ROOT, 'discover-fixtures-progress.json'); // pre-2026-08-03 unkeyed
 
 function loadProgress() {
   try {
@@ -299,13 +329,14 @@ function loadProgress() {
 }
 
 function saveProgress(done) {
-  if (DRY_RUN) return;
-  fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ done: [...done], savedAt: new Date().toISOString() }));
+  if (DRY_RUN || TARGET_SEASON) return;   // single-season runs keep no checkpoint
+  fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ mode: MODE, done: [...done], savedAt: new Date().toISOString() }));
 }
 
 function clearProgress() {
-  if (DRY_RUN) return;
+  if (DRY_RUN || TARGET_SEASON) return;
   try { fs.unlinkSync(PROGRESS_FILE); } catch (e) {}
+  try { fs.unlinkSync(LEGACY_PROGRESS_FILE); } catch (e) {}   // one-time cleanup of the unkeyed file
 }
 
 // ─── Git ──────────────────────────────────────────────────────────────────────
@@ -334,16 +365,22 @@ function gitCommitPush(message) {
     'games/',
     'venue-lookup/',
     'team-lookup/',
-    'discover-fixtures-progress.json',
+    path.basename(PROGRESS_FILE),          // mode-keyed checkpoint
+    'discover-fixtures-progress.json',     // legacy unkeyed name — stages its one-time deletion
     'zero-team-seasons.json',
   ];
+  // A pathspec that matches nothing is BENIGN here (team-lookup/ is gone; the progress and
+  // zero-team files only exist sometimes) — git says "did not match any files" and that must
+  // not count toward the silent-loss guard below, or a clean no-op with optional paths absent
+  // would throw. Anything else from `git add` is a real staging failure and does count.
   let addFailures = 0;
   for (const p of PATHS) {
     try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT }); }
     catch (e) {
-      addFailures++;
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
-      console.error(`  ⚠ git add skipped "${p}": ${detail}`);
+      if (/did not match any file/i.test(detail)) continue;   // benign-absent, not a failure
+      addFailures++;
+      console.error(`  ⚠ git add FAILED "${p}": ${detail}`);
     }
   }
 
@@ -566,7 +603,7 @@ async function main() {
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
-  console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}${DRY_RUN ? '   [DRY RUN — no writes/commits]' : ''}\n`);
+  console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : LOCKED_RESWEEP ? 'locked re-sweep (locked && !removed)' : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}${CURRENT_ONLY ? ' [current-only]' : ''}${DRY_RUN ? '   [DRY RUN — no writes/commits]' : ''}  progress-key: ${MODE}\n`);
 
   if (!fs.existsSync(INDEX_FILE)) { console.error('sports-index.json not found'); process.exit(1); }
 
@@ -577,6 +614,10 @@ async function main() {
   if (TARGET_SEASON) {
     targets = seasons.filter(s => s.id === TARGET_SEASON);
     if (targets.length === 0) targets = [{ id: TARGET_SEASON, grades: [] }];
+  } else if (LOCKED_RESWEEP) {
+    // §2.2: every locked, non-removed season. removed:true stubs are unfetchable by design
+    // (bare --all-seasons would waste probes on all 274 of them and pollute zero-team).
+    targets = seasons.filter(s => s.locked === true && s.removed !== true);
   } else if (!ALL_SEASONS) {
     targets = seasons.filter(s => s.locked === false);
   }
@@ -611,16 +652,23 @@ async function main() {
   let sinceLastCommit = 0;
   const zeroTeamSeasons = [];
 
-  for (const season of remaining) {
+  // Sweep one season. Returns 'ok' | 'zero-team' | 'transient'.
+  // TRANSIENT means every enumeration call for the season returned null — that is an API
+  // failure (WAF block, network), NOT a season with no ladder, and it must never be marked
+  // done: the old behaviour recorded such seasons as done-zero-team, permanently for the run.
+  async function sweepSeason(season, tag) {
     const seasonId = season.id;
-    const grades   = season.grades || [];
+    const grades   = (season.grades || []).slice();   // never mutate the index object
+    let probeCalls = 0, probeNulls = 0;
 
     if (grades.length === 0) {
+      probeCalls++;
       const data = await gql('DiscoverSeason', `query DiscoverSeason($id: String!) { discoverSeason(seasonID: $id) { id name grades { id name } } }`, { id: seasonId });
+      if (!data) probeNulls++;
       if (data?.discoverSeason?.grades) grades.push(...data.discoverSeason.grades);
     }
 
-    console.log(`\n📅 [${seasonsProcessed + 1}/${remaining.length}] ${season.fullName || season.name || seasonId} — ${seasonId} (${grades.length} grades)`);
+    console.log(`\n📅 ${tag} ${season.fullName || season.name || seasonId} — ${seasonId} (${grades.length} grades)`);
 
     // Collect all unique team IDs across all grades in this season — parallelised
     const teamIds = new Set();
@@ -628,6 +676,8 @@ async function main() {
       const batch = grades.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(g => gql('DiscoverGrade', Q_GRADE_TEAMS, { id: g.id })));
       for (const data of results) {
+        probeCalls++;
+        if (!data) { probeNulls++; continue; }
         for (const pool of (data?.discoverGrade?.ladder || [])) {
           for (const s of (pool.standings || [])) {
             if (s.team?.id) teamIds.add(s.team.id);
@@ -637,12 +687,13 @@ async function main() {
     }
 
     if (teamIds.size === 0) {
+      if (probeCalls > 0 && probeNulls === probeCalls) {
+        console.log(`  Teams: 0 ⚠ every enumeration call (${probeCalls}) returned null — TRANSIENT, not marking done`);
+        return 'transient';
+      }
       console.log(`  Teams: 0 ⚠ no ladder data — season ID: ${seasonId}`);
       zeroTeamSeasons.push({ id: seasonId, name: season.fullName || season.name, grades: grades.length });
-      doneSeasonsSet.add(seasonId);
-      saveProgress(doneSeasonsSet);
-      seasonsProcessed++;
-      continue;
+      return 'zero-team';
     }
     console.log(`  Teams: ${teamIds.size}`);
 
@@ -665,19 +716,49 @@ async function main() {
     }
     totalAdded   += seasonAdded;
     totalUpdated += seasonUpdated;
-    seasonsProcessed++;
-    sinceLastCommit++;
-    doneSeasonsSet.add(seasonId);
-    saveProgress(doneSeasonsSet);
+    return 'ok';
+  }
 
-    if (sinceLastCommit >= 10) {
-      const gf = flushGameFiles();
-      const vf = flushVenueShards();
-      if (!DRY_RUN) { try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {} }
-      console.log(`\n  💾 Flushed ${gf} game files, ${vf} venue shards — committing...`);
-      gitCommitPush(`Fixture discovery: ${seasonsProcessed} seasons, +${totalAdded} games`);
-      sinceLastCommit = 0;
+  // One pass over a season list; returns the transient leftovers.
+  async function runPass(list, label) {
+    const leftover = [];
+    let n = 0;
+    for (const season of list) {
+      n++;
+      const status = await sweepSeason(season, `[${label} ${n}/${list.length}]`);
+      if (status === 'transient') { leftover.push(season); continue; }
+      seasonsProcessed++;
+      sinceLastCommit++;
+      doneSeasonsSet.add(season.id);
+      saveProgress(doneSeasonsSet);
+
+      if (sinceLastCommit >= 10) {
+        const gf = flushGameFiles();
+        const vf = flushVenueShards();
+        if (!DRY_RUN) { try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {} }
+        console.log(`\n  💾 Flushed ${gf} game files, ${vf} venue shards — committing...`);
+        gitCommitPush(`Fixture discovery: ${seasonsProcessed} seasons, +${totalAdded} games`);
+        sinceLastCommit = 0;
+      }
     }
+    return leftover;
+  }
+
+  let stillTransient = await runPass(remaining, 'main');
+  if (stillTransient.length) {
+    console.log(`\n↻ Retry pass — ${stillTransient.length} transient season(s)`);
+    stillTransient = await runPass(stillTransient, 'retry');
+  }
+  if (stillTransient.length) {
+    // Survived a full retry pass: mark done so the progress lifecycle stays intact (weekly
+    // runs must still clear at end), but do NOT record as zero-team, and turn the run RED
+    // after the final commit so it is investigated rather than trusted.
+    console.log(`\n⚠ ${stillTransient.length} season(s) still returned null on every call after retry — marking done, NOT recording as zero-team:`);
+    for (const s of stillTransient) {
+      console.log(`    ${s.id}  ${s.fullName || s.name || ''}`);
+      doneSeasonsSet.add(s.id);
+    }
+    saveProgress(doneSeasonsSet);
   }
 
   // Final flush
@@ -691,6 +772,7 @@ async function main() {
   console.log(`  Added:         ${totalAdded.toLocaleString()}`);
   console.log(`  Updated:       ${totalUpdated.toLocaleString()}`);
   console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no ladder data — saved to zero-team-seasons.json)`);
+  console.log(`  Transient:     ${stillTransient.length} (null on every call, survived retry — run goes RED)`);
 
   if (zeroTeamSeasons.length > 0 && !DRY_RUN) {
     fs.writeFileSync(path.join(ROOT, 'zero-team-seasons.json'), JSON.stringify(zeroTeamSeasons, null, 2));
@@ -698,6 +780,11 @@ async function main() {
 
   clearProgress();
   gitCommitPush(`Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`);
+
+  if (stillTransient.length) {
+    console.error(`\n✗ ${stillTransient.length} season(s) unreachable on every attempt — failing the run (work above is committed).`);
+    process.exit(1);
+  }
 }
 
 main().catch(e => { console.error('\nFatal:', e.message); process.exit(1); });

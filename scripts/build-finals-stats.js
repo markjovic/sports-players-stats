@@ -15,7 +15,17 @@
 //
 // Writes results to:
 //   - player files: reg.stats.{finals, gfApps, gfWins}
+//   - player files: reg.stats.fstats = {gp, pts, tp, f}   (per-SEASON finals box totals)
 //   - player files: player.sports.Basketball.{finals, gfApps, gfWins, finalsPerSeason}
+//   - player files: player.sports.Basketball.finalsStats = {gp, pts, threePt, fouls}
+//
+// 2026-08-04 — FINALS PERFORMANCE BLOCK. The finals/gfApps/gfWins flags say a player
+// WAS THERE; finalsStats says how they PLAYED: gp counts finals games appeared in
+// (forfeits excluded, matching fetch-profile-stats and build-leaderboards), and
+// pts/threePt/fouls sum the hp/ap box lines for those games. StatTrack renders the
+// career-vs-finals comparison from it (0.70). Same pass also widened appearance
+// counting from g.p[] alone to g.p[] UNION hp/ap — a player with a box-score line in
+// a finals game undeniably appeared in it, and p[] has missed players before.
 //
 // After this runs, rebuild leaderboards:
 //   node scripts/build-leaderboards.js --force
@@ -177,7 +187,7 @@ const scannedSids = new Set(progress.scannedSids || []);
 const finalsMap = new Map();
 for (const [uuid, smap] of Object.entries(progress.finalsMap || {})) {
   const inner = new Map();
-  for (const [sid, v] of Object.entries(smap)) inner.set(sid, { ...v });
+  for (const [sid, v] of Object.entries(smap)) inner.set(sid, { fgp: 0, fpts: 0, f3pt: 0, ff: 0, ...v });
   finalsMap.set(uuid, inner);
 }
 
@@ -240,41 +250,52 @@ for (const sid of sidsToScan) {
     const awayTid = g.a || g.t2 || null;
     // hp/ap.profileID may be a truncated prefix (existing games data rewritten
     // by the one-off migration) or a full uuid — resolve before using as a
-    // membership-test key, and drop any that can't be resolved.
-    const homeUuids = new Set(
-      (g.hp || [])
-        .map(p => p.profileID)
-        .filter(Boolean)
-        .map(id => resolveToFullUuid(id, ROOT))
-        .filter(Boolean)
-    );
-    const awayUuids = new Set(
-      (g.ap || [])
-        .map(p => p.profileID)
-        .filter(Boolean)
-        .map(id => resolveToFullUuid(id, ROOT))
-        .filter(Boolean)
-    );
-
+    // membership-test key, and drop any that can't be resolved. Maps (not Sets):
+    // the box entry itself feeds the finals performance accumulation below.
+    const homeEntries = new Map();
+    for (const p of (g.hp || [])) {
+      const u = p.profileID && resolveToFullUuid(p.profileID, ROOT);
+      if (u) homeEntries.set(u, p);
+    }
+    const awayEntries = new Map();
+    for (const p of (g.ap || [])) {
+      const u = p.profileID && resolveToFullUuid(p.profileID, ROOT);
+      if (u) awayEntries.set(u, p);
+    }
+    // Appearance basis: g.p[] UNION hp/ap. A box-score line is proof of appearance
+    // even when p[] missed the player.
+    const attendees = new Set([...homeEntries.keys(), ...awayEntries.keys()]);
     for (const pEntry of (g.p || [])) {
-      const rawId = pEntry.id;
-      if (!rawId) continue;
-      const uuid = resolveToFullUuid(rawId, ROOT);
-      if (!uuid) continue;
+      if (!pEntry.id) continue;
+      const u = resolveToFullUuid(pEntry.id, ROOT);
+      if (u) attendees.add(u);
+    }
 
+    for (const uuid of attendees) {
       if (!finalsMap.has(uuid)) finalsMap.set(uuid, new Map());
       const sidMap = finalsMap.get(uuid);
-      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0 });
+      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0 });
       const acc = sidMap.get(sid);
 
       acc.finals = 1;
+      // Finals performance: forfeits excluded (no game was played — counting one
+      // deflates finals PPG), matching the forfeit-games treatment everywhere else.
+      if (!g.forfeit) {
+        acc.fgp = (acc.fgp || 0) + 1;
+        const box = homeEntries.get(uuid) || awayEntries.get(uuid);
+        if (box) {
+          acc.fpts += box.pts   || 0;
+          acc.f3pt += box.pt3   || 0;
+          acc.ff   += box.fouls || 0;
+        }
+      }
       if (gf_flag) {
         acc.gfApps = 1;
         // Determine team: prefer hp/ap, then pre-pass map for g.p[] games
         let playerTid = null;
-        if (homeUuids.has(uuid)) {
+        if (homeEntries.has(uuid)) {
           playerTid = homeTid;
-        } else if (awayUuids.has(uuid)) {
+        } else if (awayEntries.has(uuid)) {
           playerTid = awayTid;
         } else {
           // g.p[] only — use pre-pass uuid→sid→tids map
@@ -358,6 +379,7 @@ for (const [uuid, sidMap] of finalsMap) {
   // first --active-only run). Pattern mirrors build-win-loss.js active-only
   // Pass 2: locked seasons untouched, their contribution preserved.
   let careerFinals = 0, careerGfApps = 0, careerGfWins = 0;
+  const cPerf = { gp: 0, pts: 0, threePt: 0, fouls: 0 };   // career finals performance
   // 2026-07-31: finalsPerSeason could still exceed 1 (1 player live). The earlier fix
   // here swapped `r.stats.gp > 0` for `regs.length > 0` in the denominator, which
   // addressed stale gp but NOT the actual cause: the numerator is built from sidMap,
@@ -384,6 +406,10 @@ for (const [uuid, sidMap] of finalsMap) {
     if (acc.finals > 0)  { careerFinals++;  finalsSids.add(sid); }
     if (acc.gfApps > 0)    careerGfApps++;
     if (acc.gfWins > 0)    careerGfWins++;
+    cPerf.gp      += acc.fgp  || 0;
+    cPerf.pts     += acc.fpts || 0;
+    cPerf.threePt += acc.f3pt || 0;
+    cPerf.fouls   += acc.ff   || 0;
   }
   if (scopeSet) {
     // Active-only: fold in the preserved flags of every out-of-scope season.
@@ -392,16 +418,24 @@ for (const [uuid, sidMap] of finalsMap) {
       const sid = season.sid;
       if (scopeSet.has(sid) || sidMap.has(sid) || counted.has(sid)) continue;
       counted.add(sid);
-      let exFinals = 0, exGfApps = 0, exGfWins = 0;
+      let exFinals = 0, exGfApps = 0, exGfWins = 0, exPerf = null;
       for (const reg of (season.regs || [])) {
         const st = reg.stats || {};
         if (st.finals > 0) exFinals = 1;
         if (st.gfApps > 0) exGfApps = 1;
         if (st.gfWins > 0) exGfWins = 1;
+        // Siblings carry identical fstats blocks — take the first one present.
+        if (!exPerf && st.fstats && st.fstats.gp > 0) exPerf = st.fstats;
       }
       if (exFinals) { careerFinals++; finalsSids.add(sid); playedSids.add(sid); }
       if (exGfApps)   careerGfApps++;
       if (exGfWins)   careerGfWins++;
+      if (exPerf) {
+        cPerf.gp      += exPerf.gp  || 0;
+        cPerf.pts     += exPerf.pts || 0;
+        cPerf.threePt += exPerf.tp  || 0;
+        cPerf.fouls   += exPerf.f   || 0;
+      }
     }
   }
 
@@ -426,6 +460,15 @@ for (const [uuid, sidMap] of finalsMap) {
   if ((bball.gfApps          ?? -1) !== careerGfApps)      { bball.gfApps          = careerGfApps;      modified = true; }
   if ((bball.gfWins          ?? -1) !== careerGfWins)      { bball.gfWins          = careerGfWins;      modified = true; }
   if ((bball.finalsPerSeason ?? -1) !== finalsPerSeason)   { bball.finalsPerSeason = finalsPerSeason;   modified = true; }
+  // finalsStats: written when the player has any non-forfeit finals game; deleted when
+  // stale. Field-wise compare so an unchanged block does not mark the file modified.
+  if (cPerf.gp > 0) {
+    const ex = bball.finalsStats;
+    if (!ex || ex.gp !== cPerf.gp || ex.pts !== cPerf.pts || ex.threePt !== cPerf.threePt || ex.fouls !== cPerf.fouls) {
+      bball.finalsStats = { gp: cPerf.gp, pts: cPerf.pts, threePt: cPerf.threePt, fouls: cPerf.fouls };
+      modified = true;
+    }
+  } else if (bball.finalsStats !== undefined) { delete bball.finalsStats; modified = true; }
 
   // Per-reg: write season-level counts to every reg in that season.
   // In active-only mode, out-of-scope seasons are SKIPPED entirely — the
@@ -443,6 +486,15 @@ for (const [uuid, sidMap] of finalsMap) {
       else if (reg.stats.gfApps  !== undefined) { delete reg.stats.gfApps;  modified = true; }
       if (acc.gfWins > 0)  { if ((reg.stats.gfWins ?? 0) !== acc.gfWins)  { reg.stats.gfWins  = acc.gfWins;  modified = true; } }
       else if (reg.stats.gfWins  !== undefined) { delete reg.stats.gfWins;  modified = true; }
+      // Per-season finals box totals (compact keys) — same write-every-sibling,
+      // omit-when-zero semantics as the flags above.
+      if ((acc.fgp || 0) > 0) {
+        const nf = { gp: acc.fgp, pts: acc.fpts || 0, tp: acc.f3pt || 0, f: acc.ff || 0 };
+        const ex = reg.stats.fstats;
+        if (!ex || ex.gp !== nf.gp || ex.pts !== nf.pts || ex.tp !== nf.tp || ex.f !== nf.f) {
+          reg.stats.fstats = nf; modified = true;
+        }
+      } else if (reg.stats.fstats !== undefined) { delete reg.stats.fstats; modified = true; }
     }
   }
 
