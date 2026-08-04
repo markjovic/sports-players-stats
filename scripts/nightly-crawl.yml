@@ -1,0 +1,549 @@
+# .github/workflows/nightly-crawl.yml
+name: Nightly Crawl
+
+# `dry_run` input REMOVED 2026-08-01, deliberately — do not re-add it without reading this.
+# It was declared `type: boolean` and gated eight jobs with `if: ${{ inputs.dry_run != 'true' }}`.
+# GitHub coerces mismatched types to numbers for comparison: true->1, false->0, and the STRING
+# 'true'->NaN. Nothing equals NaN, so `!=` was ALWAYS true and every gated job ran regardless —
+# a "dry run" still wrote team-stats, win-loss, team-index, venue-lookup and venue-indexes, and
+# dispatched the matrix. Only the bash guard inside the crawl step worked, because bash renders
+# the boolean as the string `true`. Removing the input changed NO runtime behaviour; the jobs
+# already always ran. It removed a switch that lied.
+# If a dry run is ever wanted again: gate in BASH, or use the robust form
+# `inputs.x == true || inputs.x == 'true'` (claude_context, boolean-input rule / trap T3).
+
+on:
+  schedule:
+    - cron: '0 15 * * *'   # 01:00 AEST (UTC+10) daily
+  workflow_dispatch:
+    inputs:
+      rounds_back:
+        description: 'Rounds to look back (default 2; use 4-6 for backfill)'
+        required: false
+        default: '2'
+        type: string
+      season:
+        description: 'Single season ID (leave blank for all active)'
+        required: false
+        type: string
+      force_recheck:
+        description: 'Ignore round-complete markers and re-fetch every round'
+        required: false
+        default: false
+        type: boolean
+      consecutive_zeros:
+        description: 'Consecutive zero-progress runs — do not set manually'
+        required: false
+        default: '0'
+        type: string
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    outputs:
+      games_remaining: ${{ steps.status.outputs.games_remaining }}
+      games_processed: ${{ steps.status.outputs.games_processed }}
+      new_players:     ${{ steps.status.outputs.new_players }}
+      stats_rechecks:  ${{ steps.status.outputs.stats_rechecks }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run nightly crawl
+        run: |
+          ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ "${{ inputs.force_recheck }}" = "true" ]; then ARGS="$ARGS --force-recheck"; fi
+          node scripts/nightly-crawl.js $ARGS
+
+      - name: Read status
+        id: status
+        if: always()
+        run: |
+          if [ -f .nightly-status.json ]; then
+            remaining=$(node -e "console.log(require('./.nightly-status.json').gamesRemaining || 0)")
+            processed=$(node -e "console.log(require('./.nightly-status.json').gamesProcessed || 0)")
+            stubbed=$(node -e "console.log(require('./.nightly-status.json').stubbed || 0)")
+          else
+            remaining=0
+            processed=0
+            stubbed=0
+          fi
+          echo "games_remaining=$remaining" >> $GITHUB_OUTPUT
+          echo "games_processed=$processed" >> $GITHUB_OUTPUT
+          echo "new_players=$stubbed" >> $GITHUB_OUTPUT
+          if [ -f "needs-matrix-shards.json" ]; then
+            rechecks=$(node -e "console.log(JSON.parse(require('fs').readFileSync('needs-matrix-shards.json')).length)")
+          else
+            rechecks=0
+          fi
+          echo "stats_rechecks=$rechecks" >> $GITHUB_OUTPUT
+          echo "Remaining: $remaining  Processed: $processed  New players: $stubbed  Rechecks: $rechecks"
+
+  team-stats:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build team stats (active seasons)
+        run: node scripts/build-team-stats.js --active-only
+
+  team-index:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/update-team-index.js
+
+  venue-lookup:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: |
+          ARGS=""
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          node scripts/update-venue-lookup.js $ARGS
+
+  venue-indexes:
+    needs: venue-lookup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-venue-indexes.js
+
+  profile-stats-matrix:
+    # 2026-07-31: `win-loss` added to needs. It was [crawl, team-stats] only, and
+    # win-loss also hangs off crawl — so the two ran in PARALLEL and the matrix was
+    # dispatched as soon as team-stats finished, while build-win-loss.js could still
+    # be writing player files for up to another 120 minutes.
+    #
+    # The dispatched matrix is a SEPARATE workflow run with no data-write lock, so it
+    # started immediately and its apply-and-commit wrote players/ concurrently with
+    # win-loss. Both push; `merge -X ours` keeps whichever lands second and silently
+    # discards the other's version of any file they both touched. That is the win-loss
+    # race that already cost data, and this workflow's own data-write lock cannot stop
+    # it — the lock only covers runs IN the group, and the matrix run is not.
+    #
+    # Ordering, not locking: putting a concurrency group on the matrix's
+    # apply-and-commit would make it queue behind this workflow (which holds
+    # data-write for its whole run, up to 300+ min) and stall the chain. `needs` costs
+    # nothing and removes the overlap entirely.
+    #
+    # `always()` below is preserved deliberately: a FAILED win-loss must not skip the
+    # matrix, only a still-RUNNING one should delay it.
+    needs: [crawl, team-stats, win-loss]
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      (needs.crawl.outputs.new_players != '0' || needs.crawl.outputs.stats_rechecks != '0')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Trigger targeted matrix shards
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          new_players="${{ needs.crawl.outputs.new_players }}"
+          rechecks="${{ needs.crawl.outputs.stats_rechecks }}"
+          echo "New players: $new_players  |  Stat rechecks: $rechecks"
+
+          # Built as an ARRAY. The old form interpolated $shards_arg unquoted, so any
+          # whitespace inside the JSON would word-split it; the helper takes "$@" and
+          # an array preserves each --field as one argument. For a well-formed
+          # needs-matrix-shards.json the dispatched value is byte-identical to before.
+          args=( --field "run_number=1" --field "consecutive_zeros=0" )
+          if [ -f "needs-matrix-shards.json" ]; then
+            shards="$(tr -d '[:space:]' < needs-matrix-shards.json)"
+            echo "Targeted shards: $shards"
+            args+=( --field "shards=$shards" )
+          fi
+          # No file => no shards field => the matrix's own default '[]' => all 256.
+          # Unchanged: the old code passed an empty $shards_arg in that case.
+
+          /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml "${args[@]}"
+
+  win-loss:
+    needs: crawl
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (2026-08-04, trap T21). Without it, checkout
+          # uses github.sha — the tree AS OF THE RUN TRIGGER, frozen before the
+          # crawl wrote anything. Every consumer job in this workflow was computing
+          # against YESTERDAY'S games, every night, since the job split: the
+          # one-game W/L lag Mark found was this. ref: main fetches main as of
+          # THIS JOB'S start, i.e. including the crawl's pushes.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build win-loss records (active seasons)
+        run: node scripts/build-win-loss.js --active-only
+
+  discover-seasons:
+    needs: crawl
+    runs-on: ubuntu-latest
+    # Fire the sharded season-discovery matrix AFTER the crawl fully drains
+    # (games_remaining == 0), so it never runs mid-crawl. Discovery's reduce carries
+    # concurrency group data-write, so it also can't write sports-index.json while this
+    # crawl workflow (same group) still holds the lock — it queues until we finish.
+    # Gated to Sundays: weekly is plenty. backfill_teams=true (2026-07-20 decision):
+    # the sweep runs in all+backfill mode — probes ALL ~411k players (backfill implies
+    # all_players inside the matrix) and captures pre-game team allocations as roster
+    # deltas, since publicProfileTeams returns UPCOMING registrations before any game
+    # is played. This is roughly DOUBLE the old current-mode sweep (~411k vs ~220k
+    # calls) across the matrix retrigger chain. To run it every terminal night
+    # instead, delete the `dow` check below.
+    if: |
+      always() &&
+      needs.crawl.outputs.games_remaining == '0'
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Trigger season discovery matrix (weekly, Sundays)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          dow=$(date -u +%u)   # 1=Mon … 7=Sun
+          if [ "$dow" != "7" ]; then
+            echo "Not Sunday (dow=$dow) — skipping weekly season discovery."
+            exit 0
+          fi
+          echo "Sunday — triggering discover-seasons-matrix (all+backfill: seasons + pre-game rosters)."
+          /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
+            --field "backfill_teams=true" \
+            --field "concurrency=25"
+
+  discover-fixtures-weekly:
+    needs: crawl
+    runs-on: ubuntu-latest
+    # Weekly future-fixtures sweep (2026-07-21 decision, §B5): dispatch
+    # discover-fixtures.yml in --current-only mode (~25k team calls / ~24 min;
+    # skips seasons with no game in 21 days) once a week, chained off the crawl's
+    # terminal state exactly like the Sunday discovery job above. Gated to
+    # Mondays UTC: the Mon 15:00 UTC nightly = Tue 01:00 AEST, so the sweep lands
+    # Tuesday early morning AEST. current_only is passed EXPLICITLY — the
+    # dispatched workflow's input default is false. The dispatched run carries
+    # the data-write lock and this run has finished by the time it starts, so
+    # they can never write games/ concurrently. Known accepted coupling (shared
+    # with Sunday discovery): if the chain halts on zero progress or never
+    # drains, the week's sweep is skipped — re-dispatch discover-fixtures
+    # manually with current_only=true (+ chain_stats=true) if that happens.
+    # chain_stats=true makes the sweep's terminal job dispatch Build Finals
+    # Stats (active-only), which in turn dispatches Build Leaderboards
+    # (active-only) — the full §C7 weekly chain (2026-07-21).
+    if: |
+      always() &&
+      needs.crawl.outputs.games_remaining == '0'
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Trigger weekly future-fixtures sweep (Mondays UTC)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          dow=$(date -u +%u)   # 1=Mon … 7=Sun
+          if [ "$dow" != "1" ]; then
+            echo "Not Monday (dow=$dow) — skipping weekly future-fixtures sweep."
+            exit 0
+          fi
+          echo "Monday UTC — triggering discover-fixtures (current-only weekly sweep + stats chain)."
+          /tmp/gh-dispatch.sh discover-fixtures.yml \
+            --field "current_only=true" \
+            --field "chain_stats=true"
+
+  retrigger:
+    needs: crawl
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.crawl.outputs.games_remaining != '0' &&
+      needs.crawl.outputs.games_remaining != ''
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Check consecutive zeros and retrigger
+        run: |
+          remaining=${{ needs.crawl.outputs.games_remaining }}
+          processed=${{ needs.crawl.outputs.games_processed }}
+          zeros=${{ inputs.consecutive_zeros || '0' }}
+          if [ "$processed" = "0" ]; then new_zeros=$((zeros + 1)); else new_zeros=0; fi
+          if [ "$new_zeros" -ge 3 ]; then
+            echo "🛑 Zero progress for 3 consecutive runs with $remaining games remaining."
+            exit 1
+          fi
+          echo "↺ $remaining games remaining — re-triggering (consecutive zeros: $new_zeros)"
+          /tmp/gh-dispatch.sh nightly-crawl.yml \
+            --field "rounds_back=${{ inputs.rounds_back || '2' }}" \
+            --field "consecutive_zeros=${new_zeros}"
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
