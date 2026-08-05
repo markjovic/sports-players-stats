@@ -169,7 +169,14 @@ jobs:
   venue-indexes:
     needs: venue-lookup
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 -> 45 (2026-08-05). This job does a FULL checkout (~7 min on this repo) and
+    # then rescans every games/bv season file to rebuild season-venue-index. The
+    # locked-season re-sweep added 23,264 games, which pushed the total past 15 min:
+    # the 08-05 nightly finished ALL its writes (536 dates.json, 2,083 date-venue
+    # files, 2,049 seasons) and was then killed at the timeout BEFORE committing, so
+    # the whole job's work was discarded. "Error: The operation was canceled." with no
+    # other explanation is a timeout, not a concurrency cancellation.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
