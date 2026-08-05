@@ -1,0 +1,39 @@
+# .github/workflows/probe-missing-games.yml
+name: Probe Missing Games (read-only diagnostic)
+
+# Proves whether hidden/grading games can be reconstructed from data the nightly profile
+# fetch ALREADY receives. Fetches a handful of profiles and lists, for every game absent
+# from games/bv, the round / home / away / player-stat line that came back with it.
+#
+# NO actions/setup-node — this job fetches api.playhq.com and setup-node changes the
+# runner's outbound fingerprint, causing CloudFront 403s on every request.
+# Full checkout: needs every games/bv file to know which gids we hold. READ-ONLY.
+
+on:
+  workflow_dispatch:
+    inputs:
+      uuids:
+        description: 'Comma-separated player uuids (use the appearance-gap report samples)'
+        required: true
+        type: string
+      limit:
+        description: 'Max missing games to print in full'
+        required: false
+        default: '40'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Probe
+        run: node scripts/probe-missing-games.js --uuids=${{ inputs.uuids }} --limit=${{ inputs.limit }}
