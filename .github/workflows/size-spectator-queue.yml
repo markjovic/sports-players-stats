@@ -1,0 +1,43 @@
+# .github/workflows/size-spectator-queue.yml
+name: Size Spectator Queue (read-only)
+
+# Direct count (not an estimate) of games we already hold that have a score but no
+# player list — split by whether the spectator phase has ever asked (spc). This is the
+# exact work queue for filling p[]/box data, and it separates the re-sweep's
+# fixture-only games from genuinely undiscoverable hidden rounds.
+# Reads games/bv only — sparse checkout is correct here. READ-ONLY, no API calls.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            data
+            games/bv
+          sparse-checkout-cone-mode: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run spectator-queue scan
+        run: node scripts/size-spectator-queue.js
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-spectator-queue-report
+          path: /tmp/size-spectator-queue-report.json
+          retention-days: 7
+          if-no-files-found: warn
