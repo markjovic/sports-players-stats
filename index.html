@@ -322,7 +322,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.68</span>
+      <span class="rail-ver">Beta 0.73</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -981,6 +981,58 @@ function renderGradeSnapshot(seasons){
   return h+'</div>';
 }
 
+// Finals row (StatTrack 0.72). ONE row under the career strip, COLUMN-ALIGNED with
+// it: .cstat is flex:1, so alignment is purely a matter of equal cell counts in the
+// same order. The career strip's optional cells (FO, record, Finals, GF, GFW, F/Ssn)
+// are mirrored here — finals record under the career record, empty placeholder cells
+// under columns with no finals equivalent. The caller passes which optional cells the
+// strip rendered; change one, change both.
+// Gate: renders ONLY when finalsStats.gp > 0 (pipeline also deletes the block at 0,
+// so all-forfeit-finals players show nothing). Scoring cells render "\u2014" when no
+// box lines exist (boxedGp === 0) — never zeros; PPG divides by boxedGp.
+function renderFinalsPanel(cs,cols){
+  const f=cs.finalsStats;
+  if(!f||!(f.gp>0))return'';
+  cols=cols||{};
+  const bg=f.boxedGp||0;
+  const box=(v)=>bg>0?v:'\u2014';
+  const ppg=bg>0?(f.pts/bg).toFixed(1):'\u2014';
+  const cell=(v,l,id)=>`<div class="cstat"><div class="csv"${id?` id="${id}"`:''}>${v}</div><div class="csl">${l}</div></div>`;
+  const blank='<div class="cstat"></div>';
+  const rec=(f.wins||f.losses||f.draws)?`${f.wins?`<span style="color:var(--win)">${f.wins}W</span>`:''}${f.losses?`<span style="color:var(--loss)">${f.losses}L</span>`:''}${f.draws?`<span style="color:var(--draw)">${f.draws}D</span>`:''}`:'\u2014';
+  const recCell=`<div class="cstat"><div class="csv" style="font-size:0.75rem;display:flex;gap:4px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${rec}</div><div class="csl">${(f.wins+f.losses)>0?Math.round(100*f.wins/(f.wins+f.losses))+'%':''}</div></div>`;
+  const partial=bg>0&&bg<f.gp?`scoring from ${bg} of ${f.gp} finals with box scores`:'';
+  return `<div class="sec-lbl" style="margin-top:2px">Finals</div><div class="cstats">
+    ${cell(f.gp,'GP')}${cell(box(f.pts),'PTS','fsv-pts')}${cell(ppg,'PPG','fsv-ppg')}${cell(box(f.threePt||0),'3PT','fsv-3pt')}${cell(box(f.fouls||0),'F','fsv-f')}${cols.fo?blank:''}${cols.rec?recCell:''}${cols.fin?blank:''}${cols.gf?blank:''}${cols.gfw?blank:''}${cols.fssn?blank:''}
+  </div><div id="fs-note" style="padding:2px 2px 0;font-size:0.62rem;color:var(--text3)">${partial}</div>`;
+}
+
+// Finals SCORING is hydrated at runtime, not stored. Box lines live in the spectator
+// API (proxied by the Worker) and are only persisted for hidden-game reconstructions —
+// 10 of 6,501 games in a live season file. build-finals-stats writes the finals GIDS
+// onto the player; this fetches exactly those games (5-ish per player, cached in
+// S.boxes and shared with the game sheet) and sums the player's own lines. Same
+// zero-data-cost pattern as the 0.65/0.66 opposition views.
+async function hydrateFinals(uuid,f){
+  const gids=f&&f.gids;
+  if(!gids||!gids.length)return;
+  const note=document.getElementById('fs-note');
+  if(note&&!(f.boxedGp>0))note.textContent='loading finals box scores\u2026';
+  const boxes=await Promise.all(gids.map(g=>fetchBox(g)));
+  if(S.playerUuid!==uuid)return;                       // navigated away mid-fetch
+  let n=0,pts=0,tp=0,fl=0;
+  for(const bs of boxes){
+    if(!bs)continue;
+    const mine=[...(bs.h||[]),...(bs.a||[])].find(x=>matchP(x.profileID,uuid));
+    if(!mine)continue;
+    n++;pts+=mine.pts||0;tp+=mine.pt3||0;fl+=mine.fouls||0;
+  }
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  if(!n){if(note)note.textContent='no box scores available for these finals';return;}
+  set('fsv-pts',pts);set('fsv-ppg',(pts/n).toFixed(1));set('fsv-3pt',tp);set('fsv-f',fl);
+  if(note)note.textContent=n<gids.length?`scoring from ${n} of ${gids.length} finals with box scores`:'';
+}
+
 function renderPlayer(p){
   const ve=el('view-player');
   const uuid=p.uuid;
@@ -1015,6 +1067,7 @@ function renderPlayer(p){
     <div class="cstat"><div class="csv">${gfWins}</div><div class="csl">GFW</div></div>`:''}${finalsPS!==null?`
     <div class="cstat"><div class="csv">${finalsPS.toFixed(2)}</div><div class="csl">F/Ssn</div></div>`:''}
   </div>`;
+  h+=renderFinalsPanel(cs,{fo:foulOuts>0,rec:!!(careerW||careerL),fin:finals>0,gf:gfApps>0,gfw:gfWins>0,fssn:finalsPS!==null});
   if(upcoming.length){
     h+=`<div class="upsec"><div class="uplbl">\u26a1 Upcoming</div>`;
     for(const t of upcoming){
@@ -1025,16 +1078,22 @@ function renderPlayer(p){
   }
   h+='<div class="slist"><div class="sec-lbl">Season history</div>';
   groups.forEach(({sn,tid,regs},gi)=>{
-    // Use last reg as team link target (most stable); sum ALL regs for stats
+    // Use last reg as team link target (most stable).
     const primary=regs[regs.length-1];
+    // Sibling regs sharing a tid carry IDENTICAL season-cumulative stat blocks (the
+    // pipeline's sibling sync keeps them in step), so SUMMING them doubles every stat
+    // for regraded players (B→BRES etc: gp 13 rendered as 26). Take the per-stat MAX
+    // across the group — identity for single regs and for synced siblings, and the
+    // documented correct resolution for any sibling the sync hasn't reached (same rule
+    // the W/L/D block below has always applied via regs[0]). Do NOT change back to a sum.
     const st=regs.reduce((a,r)=>{const s=r.stats||{};return{
-      gp:(a.gp||0)+(s.gp||0),pts:(a.pts||0)+(s.pts||0),
-      fg:(a.fg||0)+(s.fg||0),ft:(a.ft||0)+(s.ft||0),
-      threePt:(a.threePt||0)+(s.threePt||0),fouls:(a.fouls||0)+(s.fouls||0),
-      foulOuts:(a.foulOuts||0)+(s.foulOuts??0),
-      finals:(a.finals||0)+(s.finals??0),
-      gfApps:(a.gfApps||0)+(s.gfApps??0),
-      gfWins:(a.gfWins||0)+(s.gfWins??0)
+      gp:Math.max(a.gp||0,s.gp||0),pts:Math.max(a.pts||0,s.pts||0),
+      fg:Math.max(a.fg||0,s.fg||0),ft:Math.max(a.ft||0,s.ft||0),
+      threePt:Math.max(a.threePt||0,s.threePt||0),fouls:Math.max(a.fouls||0,s.fouls||0),
+      foulOuts:Math.max(a.foulOuts||0,s.foulOuts??0),
+      finals:Math.max(a.finals||0,s.finals??0),
+      gfApps:Math.max(a.gfApps||0,s.gfApps??0),
+      gfWins:Math.max(a.gfWins||0,s.gfWins??0)
     };},{});
     // All grade names joined — no assumption about order
     const allGrades=abbreviateGrades([...new Set(regs.map(r=>r.gn||r.tn||'?'))]);
@@ -1073,6 +1132,7 @@ function renderPlayer(p){
   ve.innerHTML=h;
   // Store groups on element for toggleGames
   ve._groups=groups;
+  if(cs.finalsStats)hydrateFinals(uuid,cs.finalsStats);
 }
 
 async function toggleGames(hdr){
