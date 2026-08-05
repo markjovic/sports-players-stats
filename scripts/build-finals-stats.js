@@ -223,7 +223,9 @@ for (const sid of sidsToScan) {
   try { gf = readJson(path.join(gamesDir, `${sid}.json`)); } catch { scannedSids.add(sid); continue; }
 
   // Check if this season has any finals at all before loading team-stats
-  const finalsGames = Object.values(gf.games || {}).filter(g => isFinal(g.rn));
+  // entries(), not values(): the GID is the whole point of the 2026-08-05 change —
+  // StatTrack fetches finals box scores per-gid from the Worker at runtime.
+  const finalsGames = Object.entries(gf.games || {}).filter(([, g]) => isFinal(g.rn));
   if (finalsGames.length === 0) { scannedSids.add(sid); continue; }
 
   // Resolve uuid→tid from the game entry itself (h/a team IDs)
@@ -231,7 +233,7 @@ for (const sid of sidsToScan) {
   // uuidToTid built per-game for GF win determination
   const uuidToTid = new Map();
 
-  for (const g of finalsGames) {
+  for (const [gid, g] of finalsGames) {
     const gf_flag = isGrandFinal(g.rn);
     if (gf_flag) totalGFGames++;
     totalFinalsGames++;
@@ -275,7 +277,7 @@ for (const sid of sidsToScan) {
     for (const uuid of attendees) {
       if (!finalsMap.has(uuid)) finalsMap.set(uuid, new Map());
       const sidMap = finalsMap.get(uuid);
-      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0 });
+      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0, gids: [] });
       const acc = sidMap.get(sid);
 
       acc.finals = 1;
@@ -283,6 +285,12 @@ for (const sid of sidsToScan) {
       // deflates finals PPG), matching the forfeit-games treatment everywhere else.
       if (!g.forfeit) {
         acc.fgp = (acc.fgp || 0) + 1;
+        // The gid list is what makes finals SCORING possible at all. Box lines are not
+        // stored in the repo (spc:1 games fetch them live from the Worker), so the
+        // server cannot sum them — but with the gids on the player file StatTrack can
+        // fetch exactly this player's finals box scores on demand and aggregate
+        // client-side. Same pattern as the 0.65/0.66 opposition views: zero data cost.
+        if (acc.gids.length < 60) acc.gids.push(gid);   // cap: pathological careers
         // Box lines are NOT persisted for normal games (spc:1 = fetched live via the
         // Worker; measured 2026-08-05: 10 of 6,501 games in a live season file carry
         // hp/ap — hidden-game reconstructions only). bgp counts the games where a box
@@ -392,6 +400,7 @@ for (const [uuid, sidMap] of finalsMap) {
   // Pass 2: locked seasons untouched, their contribution preserved.
   let careerFinals = 0, careerGfApps = 0, careerGfWins = 0;
   const cPerf = { gp: 0, pts: 0, threePt: 0, fouls: 0, wins: 0, losses: 0, draws: 0, boxedGp: 0 };   // career finals performance
+  const cGids = [];   // every finals gid across the career — StatTrack hydrates from these
   // 2026-07-31: finalsPerSeason could still exceed 1 (1 player live). The earlier fix
   // here swapped `r.stats.gp > 0` for `regs.length > 0` in the denominator, which
   // addressed stale gp but NOT the actual cause: the numerator is built from sidMap,
@@ -426,6 +435,7 @@ for (const [uuid, sidMap] of finalsMap) {
     cPerf.losses  += acc.fl   || 0;
     cPerf.draws   += acc.fd   || 0;
     cPerf.boxedGp += acc.bgp  || 0;
+    for (const g of (acc.gids || [])) if (!cGids.includes(g)) cGids.push(g);
   }
   if (scopeSet) {
     // Active-only: fold in the preserved flags of every out-of-scope season.
@@ -455,6 +465,7 @@ for (const [uuid, sidMap] of finalsMap) {
         cPerf.losses  += exPerf.l   || 0;
         cPerf.draws   += exPerf.d   || 0;
         cPerf.boxedGp += exPerf.bg  || 0;
+        for (const g of (exPerf.g || [])) if (!cGids.includes(g)) cGids.push(g);
       }
     }
   }
@@ -484,10 +495,12 @@ for (const [uuid, sidMap] of finalsMap) {
   // stale. Field-wise compare so an unchanged block does not mark the file modified.
   if (cPerf.gp > 0) {
     const ex = bball.finalsStats;
+    const gidsSame = ex && Array.isArray(ex.gids) && ex.gids.length === cGids.length && ex.gids.every((g, i) => g === cGids[i]);
     if (!ex || ex.gp !== cPerf.gp || ex.pts !== cPerf.pts || ex.threePt !== cPerf.threePt || ex.fouls !== cPerf.fouls
-        || ex.wins !== cPerf.wins || ex.losses !== cPerf.losses || ex.draws !== cPerf.draws || ex.boxedGp !== cPerf.boxedGp) {
+        || ex.wins !== cPerf.wins || ex.losses !== cPerf.losses || ex.draws !== cPerf.draws || ex.boxedGp !== cPerf.boxedGp
+        || !gidsSame) {
       bball.finalsStats = { gp: cPerf.gp, boxedGp: cPerf.boxedGp, pts: cPerf.pts, threePt: cPerf.threePt,
-        fouls: cPerf.fouls, wins: cPerf.wins, losses: cPerf.losses, draws: cPerf.draws };
+        fouls: cPerf.fouls, wins: cPerf.wins, losses: cPerf.losses, draws: cPerf.draws, gids: cGids };
       modified = true;
     }
   } else if (bball.finalsStats !== undefined) { delete bball.finalsStats; modified = true; }
@@ -512,10 +525,11 @@ for (const [uuid, sidMap] of finalsMap) {
       // omit-when-zero semantics as the flags above.
       if ((acc.fgp || 0) > 0) {
         const nf = { gp: acc.fgp, bg: acc.bgp || 0, pts: acc.fpts || 0, tp: acc.f3pt || 0, f: acc.ff || 0,
-                     w: acc.fw || 0, l: acc.fl || 0, d: acc.fd || 0 };
+                     w: acc.fw || 0, l: acc.fl || 0, d: acc.fd || 0, g: acc.gids || [] };
         const ex = reg.stats.fstats;
+        const gSame = ex && Array.isArray(ex.g) && ex.g.length === nf.g.length && ex.g.every((x, i) => x === nf.g[i]);
         if (!ex || ex.gp !== nf.gp || ex.bg !== nf.bg || ex.pts !== nf.pts || ex.tp !== nf.tp || ex.f !== nf.f
-            || ex.w !== nf.w || ex.l !== nf.l || ex.d !== nf.d) {
+            || ex.w !== nf.w || ex.l !== nf.l || ex.d !== nf.d || !gSame) {
           reg.stats.fstats = nf; modified = true;
         }
       } else if (reg.stats.fstats !== undefined) { delete reg.stats.fstats; modified = true; }
