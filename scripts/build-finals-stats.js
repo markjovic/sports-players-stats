@@ -194,6 +194,8 @@ if (fs.existsSync(PROGRESS_FILE)) {
 
 let totalFinalsGames = 0;
 let totalGFGames     = 0;
+let attributedTid    = 0;   // finals appearances attributed to a specific team
+let undeterminedTid  = 0;   // ...and those that could not be (the '?' bucket)
 let sinceLastCommit  = 0;
 
 // In active-only mode restrict to unlocked seasons
@@ -275,10 +277,38 @@ for (const sid of sidsToScan) {
     }
 
     for (const uuid of attendees) {
+      // WHICH TEAM did this player play THIS final for? Determined ONCE and reused for
+      // the accumulator key, the W/L side and the GF-win check.
+      //
+      // 2026-08-05 — the accumulator used to be keyed per SID, and Phase 2 wrote those
+      // flags to EVERY reg in the season. A player who reached finals with one team was
+      // therefore medalled on every team row they held that season (found by Mark).
+      // Keying per (sid, tid) makes the flag belong to the team that actually played the
+      // final. hp/ap membership is authoritative; the pre-pass reg map is the fallback;
+      // genuine ambiguity (player registered to BOTH sides, or neither) yields null and
+      // lands in the '?' bucket, which Phase 2 still merges into every reg for that
+      // season — the old behaviour, now confined to the cases that need it and COUNTED
+      // in the summary so its frequency is visible instead of assumed.
+      let side = null;
+      if (homeEntries.has(uuid)) side = 'h';
+      else if (awayEntries.has(uuid)) side = 'a';
+      else {
+        const tids = playerTids.get(uuid)?.get(sid);
+        if (tids) {
+          const inHome = homeTid && tids.has(homeTid);
+          const inAway = awayTid && tids.has(awayTid);
+          if (inHome && !inAway) side = 'h';
+          else if (inAway && !inHome) side = 'a';
+        }
+      }
+      const pTid = side === 'h' ? homeTid : side === 'a' ? awayTid : null;
+      if (pTid) attributedTid++; else undeterminedTid++;
+      const key = `${sid}|${pTid || '?'}`;
+
       if (!finalsMap.has(uuid)) finalsMap.set(uuid, new Map());
       const sidMap = finalsMap.get(uuid);
-      if (!sidMap.has(sid)) sidMap.set(sid, { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0, gids: [] });
-      const acc = sidMap.get(sid);
+      if (!sidMap.has(key)) sidMap.set(key, { sid, tid: pTid, finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0, gids: [] });
+      const acc = sidMap.get(key);
 
       acc.finals = 1;
       // Finals performance: forfeits excluded (no game was played — counting one
@@ -309,16 +339,6 @@ for (const sid of sidsToScan) {
         // box entry when present, else the pre-pass reg map (same attribution the GF
         // logic below has always used).
         if (g.hs !== undefined && g.as !== undefined && g.hs !== null && g.as !== null) {
-          let side = null;
-          if (homeEntries.has(uuid)) side = 'h';
-          else if (awayEntries.has(uuid)) side = 'a';
-          else {
-            const tids = playerTids.get(uuid)?.get(sid);
-            if (tids) {
-              if (homeTid && tids.has(homeTid)) side = 'h';
-              else if (awayTid && tids.has(awayTid)) side = 'a';
-            }
-          }
           if (side) {
             const my = side === 'h' ? g.hs : g.as, opp = side === 'h' ? g.as : g.hs;
             if (my > opp) acc.fw++; else if (my < opp) acc.fl++; else acc.fd++;
@@ -327,25 +347,8 @@ for (const sid of sidsToScan) {
       }
       if (gf_flag) {
         acc.gfApps = 1;
-        // Determine team: prefer hp/ap, then pre-pass map for g.p[] games
-        let playerTid = null;
-        if (homeEntries.has(uuid)) {
-          playerTid = homeTid;
-        } else if (awayEntries.has(uuid)) {
-          playerTid = awayTid;
-        } else {
-          // g.p[] only — use pre-pass uuid→sid→tids map
-          const sidTids = playerTids.get(uuid)?.get(sid);
-          if (sidTids) {
-            const inHome = homeTid && sidTids.has(homeTid);
-            const inAway = awayTid && sidTids.has(awayTid);
-            if (inHome && !inAway) playerTid = homeTid;
-            else if (inAway && !inHome) playerTid = awayTid;
-          }
-        }
-        if (playerTid && winnerTid && playerTid === winnerTid) {
-          acc.gfWins = 1;
-        }
+        // pTid is the same determination this block used to make inline.
+        if (pTid && winnerTid && pTid === winnerTid) acc.gfWins = 1;
       }
     }
   }
@@ -420,11 +423,16 @@ for (const [uuid, sidMap] of finalsMap) {
   }
   const finalsSids = new Set();
 
-  for (const [sid, acc] of sidMap.entries()) {
+  // Buckets are keyed `sid|tid` since 2026-08-05, so the season id comes from the
+  // bucket itself. careerFinals is set from finalsSids.size AFTER both loops — counting
+  // buckets would report 2 finals for one season in which a player made finals with two
+  // teams, changing the meaning of bball.finals from "seasons" to "team-seasons".
+  for (const acc of sidMap.values()) {
+    const sid = acc.sid;
     // Appearing in a scanned game IS proof the player played that season, whatever
     // player.seasons says. Counted here so it can never be missing from the denominator.
     if (!playedSids.has(sid)) { playedSids.add(sid); sidsNotInSeasons++; }
-    if (acc.finals > 0)  { careerFinals++;  finalsSids.add(sid); }
+    if (acc.finals > 0)  finalsSids.add(sid);
     if (acc.gfApps > 0)    careerGfApps++;
     if (acc.gfWins > 0)    careerGfWins++;
     cPerf.gp      += acc.fgp  || 0;
@@ -440,9 +448,12 @@ for (const [uuid, sidMap] of finalsMap) {
   if (scopeSet) {
     // Active-only: fold in the preserved flags of every out-of-scope season.
     const counted = new Set();
+    const scannedBucketSids = new Set();
+    for (const acc of sidMap.values()) scannedBucketSids.add(acc.sid);
     for (const season of (player.seasons || [])) {
       const sid = season.sid;
-      if (scopeSet.has(sid) || sidMap.has(sid) || counted.has(sid)) continue;
+      // sidMap is keyed `sid|tid`, so membership is tested against the bucket sids.
+      if (scopeSet.has(sid) || scannedBucketSids.has(sid) || counted.has(sid)) continue;
       counted.add(sid);
       let exFinals = 0, exGfApps = 0, exGfWins = 0, exPerf = null;
       for (const reg of (season.regs || [])) {
@@ -453,7 +464,7 @@ for (const [uuid, sidMap] of finalsMap) {
         // Siblings carry identical fstats blocks — take the first one present.
         if (!exPerf && st.fstats && st.fstats.gp > 0) exPerf = st.fstats;
       }
-      if (exFinals) { careerFinals++; finalsSids.add(sid); playedSids.add(sid); }
+      if (exFinals) { finalsSids.add(sid); playedSids.add(sid); }   // careerFinals = finalsSids.size below
       if (exGfApps)   careerGfApps++;
       if (exGfWins)   careerGfWins++;
       if (exPerf) {
@@ -471,6 +482,8 @@ for (const [uuid, sidMap] of finalsMap) {
   }
 
   // finalsPerSeason = fraction of seasons where player appeared in finals (max 1 per season)
+  // Seasons, not team-seasons (see the career loop comment).
+  careerFinals = finalsSids.size;
   const seasonsWithGames  = playedSids.size;
   const seasonsWithFinals = finalsSids.size;
   const finalsPerSeason = seasonsWithGames > 0
@@ -505,14 +518,32 @@ for (const [uuid, sidMap] of finalsMap) {
     }
   } else if (bball.finalsStats !== undefined) { delete bball.finalsStats; modified = true; }
 
-  // Per-reg: write season-level counts to every reg in that season.
-  // In active-only mode, out-of-scope seasons are SKIPPED entirely — the
-  // `?? zeros` fallback below would otherwise DELETE their preserved flags.
+  // Per-reg: write each TEAM's own finals data to that team's regs (2026-08-05).
+  // Lookup is `sid|tid`, merged with the season's '?' bucket — appearances whose team
+  // could not be determined keep the old write-to-every-reg behaviour rather than being
+  // dropped. Sibling regs sharing a tid still receive identical values (by design; T20).
+  // In active-only mode, out-of-scope seasons are SKIPPED entirely — the `?? zeros`
+  // fallback below would otherwise DELETE their preserved flags.
+  const ZERO_ACC = { finals: 0, gfApps: 0, gfWins: 0, fgp: 0, fpts: 0, f3pt: 0, ff: 0, fw: 0, fl: 0, fd: 0, bgp: 0, gids: [] };
+  const mergeAcc = (a, b) => {
+    if (!a) return b; if (!b) return a;
+    return {
+      finals: Math.max(a.finals || 0, b.finals || 0),
+      gfApps: Math.max(a.gfApps || 0, b.gfApps || 0),
+      gfWins: Math.max(a.gfWins || 0, b.gfWins || 0),
+      fgp: (a.fgp || 0) + (b.fgp || 0), fpts: (a.fpts || 0) + (b.fpts || 0),
+      f3pt: (a.f3pt || 0) + (b.f3pt || 0), ff: (a.ff || 0) + (b.ff || 0),
+      fw: (a.fw || 0) + (b.fw || 0), fl: (a.fl || 0) + (b.fl || 0), fd: (a.fd || 0) + (b.fd || 0),
+      bgp: (a.bgp || 0) + (b.bgp || 0),
+      gids: [...new Set([...(a.gids || []), ...(b.gids || [])])],
+    };
+  };
   for (const season of (player.seasons || [])) {
     const sid = season.sid;
     if (scopeSet && !scopeSet.has(sid)) continue;
-    const acc = sidMap.get(sid) ?? { finals: 0, gfApps: 0, gfWins: 0 };
+    const unknownAcc = sidMap.get(`${sid}|?`) || null;
     for (const reg of (season.regs || [])) {
+      const acc = mergeAcc(sidMap.get(`${sid}|${reg.tid}`) || null, unknownAcc) || ZERO_ACC;
       if (!reg.stats) reg.stats = {};
       // Only write non-zero values — omit zeros to save space
       if (acc.finals > 0)  { if ((reg.stats.finals ?? 0) !== acc.finals)  { reg.stats.finals  = acc.finals;  modified = true; } }
@@ -576,6 +607,8 @@ console.log(`  Grand Finals found          : ${totalGFGames}`);
 console.log(`  Players with finals data    : ${finalsMap.size}`);
 console.log(`  Player files updated        : ${playersUpdated}`);
 console.log(`  Seasons played per game scan but absent from player.seasons[] : ${sidsNotInSeasons}`);
+console.log(`  Finals appearances attributed to a team                       : ${attributedTid}`);
+console.log(`  ...team UNDETERMINABLE (merged into every reg for the season)  : ${undeterminedTid}`);
 if (invariantBreaks > 0) console.log(`  ⚠ finalsPerSeason invariant broken : ${invariantBreaks}`);
 console.log(`  Player files skipped        : ${playersSkipped}`);
 console.log(`  Mode                        : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
