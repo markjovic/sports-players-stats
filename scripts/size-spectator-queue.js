@@ -35,8 +35,16 @@ function main() {
   const ztPath = path.join(ROOT, 'zero-team-seasons.json');
   if (fs.existsSync(ztPath)) zeroTeamSids = new Set(JSON.parse(fs.readFileSync(ztPath, 'utf8')).map((z) => z.id));
 
-  let total = 0, scored = 0, forfeits = 0, withP = 0;
-  let queueable = 0, processedEmpty = 0, unscored = 0;
+  // 2026-08-06: the first version counted only games with NO player list, so it missed
+  // the bigger group — games that HAVE a partial list but were never spectator-processed
+  // (spc unset). The probe found exactly those: rosters of 8-21 players, spc=0, and real
+  // players missing from them. The fetch queue is every scored game with spc unset,
+  // whether its list is empty or partial.
+  let total = 0, scored = 0, forfeits = 0, unscored = 0;
+  let doneComplete = 0;      // spc set, has a list — nothing to do
+  let processedEmpty = 0;    // spc set, no list — asked already, nothing came back
+  let neverEmpty = 0;        // spc unset, no list
+  let neverPartial = 0;      // spc unset, has a partial list  <-- the group that was missed
   const perSeason = new Map();
   const sample = [];
 
@@ -53,13 +61,16 @@ function main() {
       const hasScore = g.hs !== undefined && g.hs !== null && g.as !== undefined && g.as !== null;
       if (!hasScore) { unscored++; continue; }                    // future/unplayed
       scored++; s++;
-      const hasPlayers = (g.p && g.p.length > 0) || (g.hp && g.hp.length > 0) || (g.ap && g.ap.length > 0);
-      if (hasPlayers) { withP++; continue; }
-      if (g.spc) { processedEmpty++; pe++; }                      // asked already, nothing there
-      else {
-        queueable++; q++;
-        if (sample.length < 12) sample.push({ gid, sid, d: g.d || null, rn: g.rn || null, hs: g.hs, as: g.as });
+      const nPlayers = ((g.p && g.p.length) || 0) + ((g.hp && g.hp.length) || 0) + ((g.ap && g.ap.length) || 0);
+      if (g.spc) {
+        if (nPlayers > 0) doneComplete++; else { processedEmpty++; pe++; }
+        continue;
       }
+      // spc unset — the spectator step never ran on this game. Queue it whether its
+      // player list is empty or partial.
+      q++;
+      if (nPlayers > 0) neverPartial++; else neverEmpty++;
+      if (sample.length < 12) sample.push({ gid, sid, d: g.d || null, rn: g.rn || null, hs: g.hs, as: g.as, players: nPlayers });
     }
     if (q > 0 || pe > 0) {
       perSeason.set(sid, {
@@ -70,6 +81,8 @@ function main() {
     }
   }
 
+  const queueable = neverEmpty + neverPartial;
+  const withP     = doneComplete + neverPartial;
   const rows = [...perSeason.values()].sort((a, b) => b.queueable - a.queueable);
   const qLocked = rows.filter((r) => r.locked).reduce((n, r) => n + r.queueable, 0);
   const qActive = rows.filter((r) => !r.locked).reduce((n, r) => n + r.queueable, 0);
@@ -83,9 +96,12 @@ function main() {
   line('  forfeits (nothing to fetch)', forfeits.toLocaleString());
   line('  unscored / future', unscored.toLocaleString());
   line('  scored', scored.toLocaleString());
-  line('    with a player list already', withP.toLocaleString());
+  line('    with a player list (complete or partial)', withP.toLocaleString());
   console.log('────────────────────────────────────────────────────────────');
-  line('QUEUEABLE (scored, no players, spc unset)', queueable.toLocaleString());
+  line('Spectator step already run (spc set), has list', doneComplete.toLocaleString());
+  line('QUEUEABLE — spectator step NEVER run (spc unset)', queueable.toLocaleString());
+  line('  of those, currently NO player list', neverEmpty.toLocaleString());
+  line('  of those, a PARTIAL list (players missing)', neverPartial.toLocaleString());
   line('  in ACTIVE seasons', qActive.toLocaleString());
   line('  in LOCKED seasons', qLocked.toLocaleString());
   line('  in zero-team seasons', qZT.toLocaleString());
@@ -95,7 +111,7 @@ function main() {
   console.log('    (already asked; re-fetching returns nothing — exclude from the queue)');
   console.log('────────────────────────────────────────────────────────────');
   console.log('  SAMPLES — 12 queueable games:');
-  for (const s of sample) console.log(`    ${s.gid}  ${s.sid}  ${s.d || '?'}  ${s.hs}-${s.as}  ${s.rn || ''}`);
+  for (const s of sample) console.log(`    ${s.gid}  ${s.sid}  ${s.d || '?'}  ${s.hs}-${s.as}  players=${s.players}  ${s.rn || ''}`);
   console.log('  SAMPLES — 10 seasons by queueable games:');
   for (const r of rows.slice(0, 10)) {
     console.log(`    ${r.sid}  q=${String(r.queueable).padStart(6)}  empty=${String(r.processedEmpty).padStart(6)}  of ${String(r.scored).padStart(6)} scored  locked=${r.locked} zt=${r.zeroTeam}  ${r.name} — ${r.org}`);
@@ -105,7 +121,8 @@ function main() {
 
   fs.writeFileSync(REPORT, JSON.stringify({
     generatedAt: new Date().toISOString(),
-    totals: { total, forfeits, unscored, scored, withP, queueable, processedEmpty, qActive, qLocked, qZT },
+    totals: { total, forfeits, unscored, scored, withP, queueable, processedEmpty,
+      doneComplete, neverEmpty, neverPartial, qActive, qLocked, qZT },
     seasons: rows, sample,
   }, null, 2));
   console.log(`  Report written: ${REPORT}`);
