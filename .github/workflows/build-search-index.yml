@@ -10,6 +10,18 @@ on:
         default: false
         type: boolean
 
+# Serialize against nightly-crawl / weekly-indexes / the discover reduce (2026-08-06).
+# This workflow writes to the repo but held NO lock, so when the matrix terminal fanned
+# it out it rewrote main underneath the still-running nightly: nightly-crawl's
+# venue-indexes job finished its own work in 20 SECONDS and then spent 40 MINUTES stuck
+# in fetch/merge/push against a repo three lockless writers were rewriting, until the
+# job timeout killed it. The paths never conflicted — push contention on a 6 GB repo is
+# path-agnostic, every push must merge the others' commits. cancel-in-progress stays
+# false: queued, never killed.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
