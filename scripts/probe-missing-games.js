@@ -265,11 +265,38 @@ async function main() {
   // Per-player local appearance set = that player's OWN games[] array (built from p[]).
   // Classifying against BOTH sets separates the three populations that the aggregate
   // appearance-gap number conflates.
-  const playerGamesOf = (uuid) => {
+  const playerFileOf = (uuid) => {
     const p = path.join(ROOT, 'players', uuid.slice(0, 2), `${uuid}.json`);
-    try { const j = JSON.parse(fs.readFileSync(p, 'utf8')); return new Set(Array.isArray(j.games) ? j.games : []); }
-    catch { return null; }
+    try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
   };
+  const playerGamesOf = (uuid) => {
+    const j = playerFileOf(uuid);
+    return j ? new Set(Array.isArray(j.games) ? j.games : []) : null;
+  };
+  // p[] stores TRUNCATED ids. A player can be present in p[] under a spectator-namespace
+  // id that does not resolve to their api-canonical uuid — in which case they are already
+  // recorded and the fix is ALIAS RESOLUTION (what fold-diverged-players does), not
+  // appending a duplicate entry. Load the game and classify which of the two it is.
+  const gameIndex = new Map();   // sid -> parsed season file (lazy)
+  const inspectP = (sid, gid, uuid, specIds) => {
+    if (!gameIndex.has(sid)) {
+      try { gameIndex.set(sid, JSON.parse(fs.readFileSync(path.join(gamesDir, `${sid}.json`), 'utf8'))); }
+      catch { gameIndex.set(sid, null); }
+    }
+    const sg = gameIndex.get(sid);
+    const g  = sg && sg.games ? sg.games[gid] : null;
+    if (!g) return { verdict: 'game-not-in-that-season-file' };
+    const ids = new Set([...(g.p || []).map(x => x.id).filter(Boolean),
+                         ...(g.hp || []).map(x => x.profileID).filter(Boolean),
+                         ...(g.ap || []).map(x => x.profileID).filter(Boolean)]);
+    const pref = uuid.slice(0, 13);
+    if (ids.has(pref)) return { verdict: 'PRESENT-canonical', n: ids.size };
+    for (const s of specIds) if (ids.has(s)) return { verdict: 'PRESENT-as-alias', alias: s, n: ids.size };
+    const pref10 = uuid.slice(0, 10);
+    for (const id of ids) if (id.startsWith(pref10)) return { verdict: 'PRESENT-legacy-10char', alias: id, n: ids.size };
+    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0 };
+  };
+  const pVerdicts = new Map();
 
   let totalGames = 0, totalMissing = 0, totalNotInP = 0, totalOk = 0, shown = 0;
   const missingBySeason = new Map();
@@ -281,9 +308,11 @@ async function main() {
     if (r.status !== 'ok') { console.log(`  status=${r.status} — skipping`); continue; }
     const seasonStats = r.data?.publicProfileStatistics?.seasonStatistics || [];
     if (!seasonStats.length) { console.log('  no seasonStatistics'); continue; }
-    const localGids = playerGamesOf(uuid);
+    const pf = playerFileOf(uuid);
+    const localGids = pf ? new Set(Array.isArray(pf.games) ? pf.games : []) : null;
+    const specIds = new Set(Array.isArray(pf?.spectatorIds) ? pf.spectatorIds : []);
     if (!localGids) console.log('  ⚠ player file not readable — p[] classification unavailable');
-    else console.log(`  local games[] entries: ${localGids.size}`);
+    else console.log(`  local games[] entries: ${localGids.size}  spectatorIds: ${[...specIds].join(',') || 'none'}`);
 
     for (const season of seasonStats) {
       for (const reg of (season.statistics || [])) {
@@ -307,7 +336,9 @@ async function main() {
                 notInPBySeason.set(sid, (notInPBySeason.get(sid) || 0) + 1);
                 if (shown >= LIMIT) continue;
                 shown++;
-                console.log(`  NOT-IN-P[] ${gid}  sid=${sid}${seasons[sid] ? ` (${seasons[sid].name || ''})` : ''}  round=${gs.game?.round?.name ?? '?'}  tid=${tid}`);
+                const insp = inspectP(sid, gid, uuid, specIds);
+                pVerdicts.set(insp.verdict, (pVerdicts.get(insp.verdict) || 0) + 1);
+                console.log(`  NOT-IN-P[] ${gid}  sid=${sid}  round=${gs.game?.round?.name ?? '?'}  tid=${tid}  → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''} [p+hp+ap=${insp.n ?? '?'}${insp.spc !== undefined ? `, spc=${insp.spc}` : ''}]`);
                 continue;
               }
               totalMissing++;
@@ -344,6 +375,12 @@ async function main() {
     const s = seasons[sid];
     console.log(`    ${sid}  ${String(n).padStart(4)}  ${s ? (s.name || '') + ' — ' + (s.orgName || '') : 'NOT IN sports-index'}`);
   }
+  console.log('  p[] gap breakdown — THE decisive split:');
+  for (const [v, n] of [...pVerdicts.entries()].sort((a,b)=>b[1]-a[1])) {
+    console.log(`    ${v.padEnd(32,'.')} ${String(n).padStart(6)}`);
+  }
+  console.log('    PRESENT-* = already in the roster under another id → ALIAS/FOLD problem,');
+  console.log('    do NOT append. GENUINELY-ABSENT = the roster really lacks them.');
   console.log('  Top seasons by p[] gaps:');
   for (const [sid, n] of [...notInPBySeason.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10)) {
     const s = seasons[sid];
