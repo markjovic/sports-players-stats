@@ -262,8 +262,18 @@ async function main() {
     catch { return {}; }
   })();
 
-  let totalGames = 0, totalMissing = 0, shown = 0;
+  // Per-player local appearance set = that player's OWN games[] array (built from p[]).
+  // Classifying against BOTH sets separates the three populations that the aggregate
+  // appearance-gap number conflates.
+  const playerGamesOf = (uuid) => {
+    const p = path.join(ROOT, 'players', uuid.slice(0, 2), `${uuid}.json`);
+    try { const j = JSON.parse(fs.readFileSync(p, 'utf8')); return new Set(Array.isArray(j.games) ? j.games : []); }
+    catch { return null; }
+  };
+
+  let totalGames = 0, totalMissing = 0, totalNotInP = 0, totalOk = 0, shown = 0;
   const missingBySeason = new Map();
+  const notInPBySeason  = new Map();
 
   for (const uuid of UUIDS) {
     console.log(`\n══ ${uuid} ══`);
@@ -271,6 +281,9 @@ async function main() {
     if (r.status !== 'ok') { console.log(`  status=${r.status} — skipping`); continue; }
     const seasonStats = r.data?.publicProfileStatistics?.seasonStatistics || [];
     if (!seasonStats.length) { console.log('  no seasonStatistics'); continue; }
+    const localGids = playerGamesOf(uuid);
+    if (!localGids) console.log('  ⚠ player file not readable — p[] classification unavailable');
+    else console.log(`  local games[] entries: ${localGids.size}`);
 
     for (const season of seasonStats) {
       for (const reg of (season.statistics || [])) {
@@ -283,10 +296,22 @@ async function main() {
             for (const gs of (gradeStat.gameStatistics || [])) {
               totalGames++;
               const gid = gs.game?.id || null;
-              if (!gid || have.has(gid)) continue;
+              if (!gid) continue;
+              const gameHeld  = have.has(gid);
+              const inPlayerP = localGids ? localGids.has(gid) : true;
+              if (gameHeld && inPlayerP) { totalOk++; continue; }
+              if (gameHeld) {
+                // We HOLD the game — the player is simply absent from its p[].
+                // Fixable by appending to p[]; no game synthesis needed.
+                totalNotInP++;
+                notInPBySeason.set(sid, (notInPBySeason.get(sid) || 0) + 1);
+                if (shown >= LIMIT) continue;
+                shown++;
+                console.log(`  NOT-IN-P[] ${gid}  sid=${sid}${seasons[sid] ? ` (${seasons[sid].name || ''})` : ''}  round=${gs.game?.round?.name ?? '?'}  tid=${tid}`);
+                continue;
+              }
               totalMissing++;
-              const key = sid;
-              missingBySeason.set(key, (missingBySeason.get(key) || 0) + 1);
+              missingBySeason.set(sid, (missingBySeason.get(sid) || 0) + 1);
               if (shown >= LIMIT) continue;
               shown++;
               const g = gs.game;
@@ -309,10 +334,18 @@ async function main() {
   console.log('\n════════════════════════════════════════════════════════════');
   console.log(`  Profiles probed          : ${UUIDS.length}`);
   console.log(`  gameStatistics entries   : ${totalGames.toLocaleString()}`);
-  console.log(`  ABSENT from games/bv     : ${totalMissing.toLocaleString()}`);
-  console.log(`  seasons holding them     : ${missingBySeason.size}`);
+  console.log(`  already correct          : ${totalOk.toLocaleString()}`);
+  console.log(`  GAME ABSENT from games/bv: ${totalMissing.toLocaleString()}  (needs game synthesis)`);
+  console.log(`  PLAYER absent from p[]   : ${totalNotInP.toLocaleString()}  (game held — just append to p[])`);
+  console.log(`  seasons w/ absent games  : ${missingBySeason.size}`);
+  console.log(`  seasons w/ p[] gaps      : ${notInPBySeason.size}`);
   console.log('  Top seasons by missing games:');
   for (const [sid, n] of [...missingBySeason.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10)) {
+    const s = seasons[sid];
+    console.log(`    ${sid}  ${String(n).padStart(4)}  ${s ? (s.name || '') + ' — ' + (s.orgName || '') : 'NOT IN sports-index'}`);
+  }
+  console.log('  Top seasons by p[] gaps:');
+  for (const [sid, n] of [...notInPBySeason.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10)) {
     const s = seasons[sid];
     console.log(`    ${sid}  ${String(n).padStart(4)}  ${s ? (s.name || '') + ' — ' + (s.orgName || '') : 'NOT IN sports-index'}`);
   }
