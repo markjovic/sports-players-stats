@@ -1,0 +1,62 @@
+# .github/workflows/spectator-backfill.yml
+name: Spectator Backfill
+
+# Runs the nightly's spectator step over the games it never reached — locked seasons
+# and tournament comps whose player lists were never completed (probe-missing-games,
+# 2026-08-06: 100/100 sampled missing appearances were spc-unset games we already
+# hold). Progress is the data itself: spc:1 per game, committed every 2,000 games.
+# Resume by re-dispatching — the scan skips spc-set games.
+#
+# NO actions/setup-node: this job fetches playhq.com and setup-node changes the
+# runner's outbound fingerprint, causing CloudFront 403s (absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_games:
+        description: 'Max games to fetch this run (re-dispatch to continue)'
+        required: false
+        default: '100000'
+        type: string
+      season:
+        description: 'Restrict to one season id (optional)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Scan and report the queue only — no API calls, no writes'
+        required: false
+        default: false
+        type: boolean
+
+# Writes games/ and players/ — must hold the write lock (trap T25: push contention
+# on a 6 GB repo is path-agnostic; every repo-writing workflow queues here).
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run spectator backfill
+        run: |
+          ARGS="--max-games=${{ inputs.max_games }}"
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/spectator-backfill.js $ARGS
