@@ -8,32 +8,36 @@ Player-centric database for PlayHQ basketball competitions. Builds a searchable 
 
 > **Updated 2026-07-29.** Counts are the 2026-07-16 audit unless noted. This file was materially out of date until then — it still described the api-canonical migration as unbuilt eleven days after it shipped. If a statement here conflicts with `REPO_MANIFEST.md` or `claude_context.md`, those two are authoritative and this file is the one to fix.
 
-**Counts below are from the 2026-07-31 06:49 UTC audit.** Date-stamped deliberately: this table
-previously carried 2026-07-16 figures with no date on it, so it read as current and quietly rotted
-for two weeks. Re-run `db-audit.js` and update the stamp, or the same thing happens again.
+**Counts below are from the 2026-08-02 06:07 UTC audit** (search-shard figures are from the
+shardKey-v2 rebuild later that same day). Date-stamped deliberately: this table previously carried
+2026-07-16 figures with no date on it, so it read as current and quietly rotted for two weeks.
+Re-run `db-audit.js` and update the stamp, or the same thing happens again.
 
 | Metric | Value |
 |--------|-------|
-| Seasons (sports-index.json) | 3,227 (579 active, 2,648 locked) |
-| Player index entries | 411,964 |
-| Player detail files | 411,964 | (1:1 with index entries, both ways — 0 orphans either direction)
-| Total games (games/bv/) | 2,311,527 across 2,896 season files |
-| Team-stats files | 2,896 |
+| Seasons (sports-index.json) | 3,227 (579 active / 2,648 locked at the 07-31 audit) |
+| Player index entries | 412,100 |
+| Player detail files | 412,100 | (1:1 with index entries, both ways — 0 orphans either direction)
+| Total games (games/bv/) | 2,314,197 across 2,898 season files |
+| Team-stats files | 2,898 |
 | Leaderboard season files | 2,853 |
-| Forfeit games | 26,419 |
+| Forfeit games | 26,470 |
 | Unique venues | 536 |
-| Search shards | 641 files / name-prefix keyed |
+| Search shards | 506 files / 724,407 keys (post 08-02 shardKey-v2 rebuild — was 641 incl. 135 two-month-stale orphans, since deleted) |
 | Repo size | 6.13 GB / 527,900 files |
 | Structural invariants | ✅ OK (256+256 shards, uuid==filename, index↔files 1:1, aliases consistent) |
-| StatTrack | **Beta 0.64** live at `markjovic.github.io/stattrack` — and MIRRORED at the repo-root `index.html`, which Pages also serves; both were committed 2026-07-31 and must be updated in the same pass or the mirror serves a stale app. On the api-canonical contract (`player.private` boolean, alias-aware resolver, `TRUNC_LEN = 13`) — **all three VERIFIED against the deployed file 2026-07-31**, not just claimed. 0.62 fixed `renderMode`, which tested `legacy` above the score check and so rendered 3,120 scored games as "Data unavailable". **0.63 fixes `seasonEntriesForStat`, whose guard required the leaderboard key's first segment to be >=32 chars while `build-leaderboards.js` writes a 13-char prefix — every SEASON leaderboard had been rendering EMPTY, silently. all-time was unaffected.** Runtime dependency: Pages must serve `players/indexes/` AND `players/aliases/`. |
+| StatTrack | **Beta 0.68** live at `markjovic.github.io/stattrack` — and MIRRORED at the repo-root `index.html`, which Pages also serves; update both in the same pass (Mark maintains both copies). On the api-canonical contract (`player.private` boolean, alias-aware resolver, `TRUNC_LEN = 13`) — all three VERIFIED against the deployed file 2026-07-31. Recent releases: 0.62 renderMode legacy-vs-score; 0.63 season-leaderboard key guard; 0.64 winPct/lossPct decided-games denominator; 0.65/0.66 opposition h2h + prior lines; 0.67 normName v2; 0.68 search shardKey v2; **0.69 season-row regrade dedupe (per-stat MAX across same-tid siblings — never sum, T20); 0.70 Finals panel; 0.71 single-row layout (no Career repeat, "—" not fake zeros); 0.72 column-aligned with the career strip (`.cstat` is `flex:1`, so alignment IS cell-count parity — the finals row mirrors the strip's conditional cells with blanks); 0.73 client-side finals box-score hydration via `fetchBox(gid)` from the stored `finalsStats.gids` — zero storage cost, the 0.65/0.66 opposition pattern**. Runtime dependency: Pages must serve `players/indexes/` AND `players/aliases/`. **No open StatTrack work items (closed 2026-08-03).** |
 | Nightly crawl | Active — cron 01:00 AEST daily |
 | `discover-seasons-matrix.yml` | Active, self-triggering — season discovery + roster backfill (fixed 2026-07-09) |
 | Namespace backfill | ✅ COMPLETE (2026-07-12/13) — ~81,806 un-indexed spectator ids → 0; ~40,330 collision mappings recorded to `reports/backfill-collisions/` as the migration seed (that directory has since been DELETED — cleanup 2026-07-16; the live inverse is `players/aliases/`) |
-| Season-name contamination | ⚠️ **NOT FULLY REPAIRED (corrected 2026-07-30).** 40,034 files were fixed and the WRITE bug is dead (`parseProfileStats` no longer derives names). But the "0 contaminated of 411,576" re-scan was wrong: one file carried a season label from 2026-06-27 until 2026-07-30 (34 days), re-written by a matrix run immediately AFTER the repair deleted it. **That file is now repaired** (targeted forced re-fetch). Blast radius 1 of 37,241 queued — the write bug is dead and the self-heal works; the 2026-07-26 failure was TRANSIENT. ⚠️ **Open defect:** a transient heal failure is made PERMANENT because `statsChecked` is written regardless, so no scheduled run ever retries it. See OUTSTANDING_TASKS §C14 / §B3. |
-| `legacy` game flags | ✅ **REPAIRED 2026-08-01 — 3,114 cleared, 142 kept (all genuinely scoreless), post-check 0, db-audit `legacy + score ✅ none`.** Historic problem: 3,120 of them carry a score, which contradicts the flag; zero are dated 2020 or earlier. Nothing writes the flag any more (classifier removed in the 2026-07-16 cleanup), so the population is frozen. No stats impact — no build script filters on it — but StatTrack renders `legacy` before checking for a score. See OUTSTANDING_TASKS §2.1. |
+| Season-name contamination | ✅ **RESOLVED (2026-07-30/31).** 40,034 files repaired; the write bug is dead (`parseProfileStats` no longer derives names); the one straggler (a 34-day carrier re-written after the repair) was fixed by targeted forced re-fetch, and the defect that made a transient heal failure permanent is CLOSED — bounded name-heal retry (`nameHealAttempts`, cap 3, reset on success/`--force`), with db-audit in-flight/gave-up rows. Audit reads 0 contaminated. |
+| `legacy` game flags | ✅ **FINAL STATE (2026-08-02): population is exactly 3, permanently** — all genuinely scoreless locked-season FINALs. 08-01 cleared 3,114 scored games; 08-02 cleared the remaining 139, which were `st=UPCOMING` future fixtures the dead classifier had mis-stamped (lifetime accuracy 3/3,262 = 0.09%; no rebuild — no-flag is the terminal state). Nothing writes the flag; db-audit holds `legacy + score ✅ none` as a standing invariant. |
 | Code search | ❌ **UNAVAILABLE.** GitHub refuses to index this repo: *"markjovic/sports-players-stats cannot be searched because it is too large"* (2026-07-31, 6.13 GB). A search that cannot run returns "0 files", which reads like "no matches". Use `find-code-refs.yml` instead. First CONFIRMED cost of repo size. |
 | api-canonical migration | ✅ **COMPLETE AND LIVE (2026-07-15/16).** Every player file is keyed by api id; `players/aliases/` is live (452,958+ entries, ~9.5% redirects); the resolver, the nightly and the matrix are all alias-aware; the event-driven fold restores the invariant after every matrix cycle. **The "target shape" below IS the current shape.** |
-| Repo size | **6.18 GB / 529,498 files** (2026-07-30 audit; was 6.03 GB on 07-16) — materially below the ~8.6–9.18 GB previously recorded here. The old "BLOCKS publishing" claim was based on the larger figure and is **unverified at 6.03 GB — re-verify before driving further shrink work** (OUTSTANDING_TASKS §D8). |
+| Career W/L | ✅ **REPAIRED 2026-08-05** — full `build-win-loss` run updated 244,736 players; the per-reg regrade double-count (T20) is fixed in both modes. Verified live: a 99-GP specimen went from 85W/70L to 51W/48L/1D, W+L+D now equalling GP. |
+| Finals performance | ✅ **LIVE 2026-08-05.** Career `finalsStats{gp,boxedGp,pts,threePt,fouls,wins,losses,draws,gids}` + per-reg `fstats`. Finals W/L is complete; finals SCORING is hydrated client-side by StatTrack 0.73 from the Worker using the stored `gids` (box lines are not persisted — ~0.15% of games carry them), so unboxed finals render "—" rather than zeros. ⚠️ **Finals FLAGS are attributed per SEASON, not per team** — a player who reached finals with one team is medalled on every team row that season (OUTSTANDING §2.4, fix pending). |
+| Publishing lag | ⚠️ **A commit is not a publication.** Pages deploys only when the Deploy Pages action runs, and it is chained to the SCHEDULED nightly — NOT to manually dispatched rebuilds. Dispatch Deploy Pages after any manual rebuild, or StatTrack keeps serving the last published snapshot (this produced three phantom bug hunts on 2026-08-05 — trap T23). |
+| Publishing | ✅ **CLOSED 2026-08-03 (Mark): repo size does NOT block publishing.** The old "BLOCKS publishing" claim (§D8) is retired — Pages serves the repo fine at 6.13 GB. The ONE confirmed cost of size remains code search (row above). Size is no longer a forcing constraint on any planned work. |
 
 **The identity layer (was missing from this file entirely):** a game carries only a truncated
 spectator id, so every game→player lookup goes through `players/aliases/{spectatorPrefix}.json`
@@ -42,7 +46,15 @@ shards are its rebuildable inverse; `fold-diverged-players.js` restores the inva
 matrix cycle, and `fetch-profile-stats.js` records new alias discoveries as it finds them. Nothing
 that resolves a player id may skip the alias step.
 
-**Known gap:** seasons discovered via `discover-seasons-matrix.yml`'s backfill mode get metadata + player registrations, but historical/locked seasons never get actual game data fetched — `nightly-crawl.js` (the only writer of `games/bv/`) explicitly skips locked seasons. This is why the season count above has grown well ahead of the games/team-stats/leaderboard file counts, and will keep doing so until a dedicated historical-game backfill is built. Not yet built.
+**Known gap — PREMISE CORRECTED 2026-08-03/04:** the old claim here (locked seasons never get
+game data; the gap grows every sweep) was WRONG in the way that mattered: the season-vs-game-file
+arithmetic never subtracted the 274 `removed:true` stubs, and sizing v1 measured the "file-less
+locked" set as EMPTY (the other 65 file-less seasons are new ACTIVE seasons the weekly sweep
+covers). The REAL residual is incomplete-locked data — 836 seasons with registered-but-gameless
+teams, 15 no-`rn` seasons, ~2.3k pending COVID-era games — being closed by the **locked re-sweep
+(RUNNING 2026-08-04; OUTSTANDING §2.2)**: all 2,374 locked seasons re-fetched via
+discoverTeamFixture, frozen scores untouched. Known residue: no-LADDER comps (tournaments,
+one-grade juniors) are unreachable by ladder enumeration and get a Phase-4 rescue pass.
 
 ---
 
@@ -161,32 +173,32 @@ Matrix downstream (on matrix completion):
 ```
 sports-players-stats/
 ├── data/                              ← Root JSON files
-│   ├── sports-index.json              # All season metadata (3,202 seasons)
+│   ├── sports-index.json              # All season metadata (3,227 seasons)
 │   ├── team-index.json                # Team search index by year/season name
-│   ├── venue-index.json               # 532 venue entries [{id, n}]
+│   ├── venue-index.json               # 536 venue entries [{id, n}]
 │   ├── season-venue-index.json        # { seasonId: [venueId, ...] }
-│   ├── forfeit-games.json             # Sorted array of forfeit game IDs (25,436+)
+│   ├── forfeit-games.json             # Sorted array of forfeit game IDs (26,470)
 │   ├── discover-progress.json         # Per-shard cursor/done state for discover-seasons-matrix.yml
 │   ├── seasons-discovered.json        # Seasons found during discovery
 │   ├── seasons-skipped.json           # Seasons skipped (wrong tenant etc.)
 │   └── seasons-invalid.json           # Invalid season IDs
-├── games/bv/{seasonId}.json           # All games per season (2,896 files, 2,311,527 games)
+├── games/bv/{seasonId}.json           # All games per season (2,898 files, 2,314,197 games)
 ├── players/
 │   ├── indexes/{00-ff}.json           # 256 player index shards
-│   └── {00-ff}/{uuid}.json            # 411,964 player detail files, keyed by API ID
-├── team-stats/bv/{seasonId}.json      # Team rosters + fixtures (2,870 files)
+│   └── {00-ff}/{uuid}.json            # 412,100 player detail files, keyed by API ID
+├── team-stats/bv/{seasonId}.json      # Team rosters + fixtures (2,898 files)
 ├── leaderboard/
 │   ├── all-time.json                  # 20 categories, 2,000 entries each (top-N heap, unchanged)
 │   └── season/{seasonId}.json        # players map ONLY — no per-category arrays (restructured 2026-07-09)
-├── search/players/{xx}.json           # 630 name-prefix search shards
+├── search/players/{xx}.json           # 506 name-prefix search shards (shardKey v2, 2026-08-02)
 ├── venue-lookup/
 │   ├── {venueId}/dates.json           # Sorted list of dates with games at venue
 │   └── {venueId}/{YYYY-MM-DD}.json   # Games at venue on that date
 ├── date-venue-index/{YYYY-MM-DD}.json # All venues with games on a date
 ├── records/all-time.json             # Single-game records
 ├── (removed) reports/backfill-collisions/  # DELETED in the 2026-07-16 cleanup — it was the migration seed; the live inverse is players/aliases/
-├── team-lookup/                       # ⚠️ NO CONSUMER FOUND — deletion candidate, not yet removed (154.58 MB, 355k files)
-├── discover-reduce-manifest.json      # ⚠️ DEAD — abandoned pipeline artifact, zero consumer, not yet removed (50.99 MB)
+├── (removed) team-lookup/             # GONE — provably absent from the current tree (527,900 total files cannot contain a 355k-file directory beside 412k player files); the old "not yet removed" note here was stale (corrected 2026-08-03)
+├── discover-reduce-manifest.json      # ⚠️ DEAD — zero consumer (50.99 MB, one file). Presence UNVERIFIED as of 2026-08-03 — check the tree; delete via web UI if still there
 ├── needs-matrix-shards.json           # Written nightly and READ by nightly-crawl.yml's status step (counts length → stats_rechecks). DO NOT DELETE — rechecks would report 0. (Corrects an earlier 'dead file' claim; see REPO_MANIFEST §4.2.)
 ├── scripts/                          # All pipeline scripts
 └── .github/workflows/               # All GitHub Actions workflows
@@ -267,16 +279,14 @@ Game flags:
 - `bye: true` — bye round
 - `hidden: true` — hidden grade (admin-hidden)
 - `profileOnly: true` — found only via profile API (step 3)
-- `legacy: true` — ⚠️ **DOES NOT MEAN WHAT THIS LINE USED TO SAY. Corrected 2026-07-31.** It was
-  documented as "pre-history game, no further data obtainable". Measured against the live corpus:
-  3,262 games carry it, **3,120 (95.6%) hold a score**, and **ZERO are dated 2020 or earlier** — it
-  peaks in the current year. It has never once marked a pre-history game. What it actually marks is
-  the terminal state of a classification probe that **no longer exists** (removed in the 2026-07-16
-  cleanup; verified 2026-07-31 by grepping all of `scripts/`). Stale flags are being cleared by
-  `repair-legacy-flags.js` for the scored games; the ~142 scoreless ones keep it, being the only
-  cases where the original meaning is unfalsified. Repaired 2026-08-01 — see OUTSTANDING_TASKS §4.
+- `legacy: true` — **population is exactly 3, permanently (final state 2026-08-02).** Historically
+  this marked the terminal state of a classification probe that no longer exists (removed in the
+  2026-07-16 cleanup); its lifetime record was 3,262 games stamped, 3 correct. The 3,114 scored
+  carriers were cleared 08-01 and the 139 `st=UPCOMING` future fixtures 08-02; the 3 survivors are
+  genuinely scoreless locked-season FINALs where the original meaning is unfalsified. Nothing
+  writes the flag; db-audit holds `legacy + score` as a standing invariant. See OUTSTANDING §4.
 
-**Unverified — do not assume:** whether `p[]` (attendee list, no side info) is fully redundant with `hp[]+ap[]` combined for games with `spc:1`. Flagged 2026-07-09 as a real potential redundancy in this directory (games/ is the #2 largest at 2.50 GB) but not confirmed against real files — check before building anything on this assumption.
+**Unverified — do not assume:** whether `p[]` (attendee list, no side info) is fully redundant with `hp[]+ap[]` combined for games with `spc:1`. Flagged 2026-07-09, still unconfirmed against real files (`verify-p-redundancy.js` exists as the tool and has not been run to a verdict). No longer size-motivated (publishing closed 2026-08-03) — verify only if a consumer decision ever depends on it.
 
 ### players/{00-ff}/{uuid}.json (excerpt)
 
@@ -429,13 +439,13 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 | `update-venue-lookup.js` | CJS | Adds venue day files from FINAL+UPCOMING+POSTPONED games | Nightly downstream |
 | `build-venue-indexes.js` | CJS | Rebuilds dates.json + date-venue-index from venue-lookup | Nightly downstream |
 | `build-win-loss.js` | CJS | Computes W/L/D from game files, writes to player files | Nightly delta / weekly full |
-| `build-player-games.js` | CJS | Rebuilds player.games[] arrays | Weekly |
-| `build-finals-stats.js` | **ESM** | Finals/GF stats from game files (pre-pass for side resolution) | Manual after finals |
-| `build-leaderboards.js` | **ESM** | Full leaderboard rebuild — 20 all-time categories (heap-based top-2000), season files now `{players}`-only (restructured 2026-07-09) | Manual / matrix downstream. **Run `--force` once before deploying the new StatTrack HTML.** |
+| `build-player-games.js` | **ESM** | Rebuilds player.games[] arrays | Weekly |
+| `build-finals-stats.js` | **ESM** | Finals/GF stats from game files (pre-pass for side resolution); `--active-only` scope-safe | Weekly Monday chain (`active_only`) / manual full |
+| `build-leaderboards.js` | **ESM** | Full leaderboard rebuild — 20 all-time categories (heap-based top-2000), season files `{players}`-only (restructured 2026-07-09) | Weekly Monday chain (`active_only`) / matrix downstream / manual `--force` full. (The one-time pre-StatTrack-0.61 `--force` this row used to mandate is long DONE.) |
 | ~~`build-foulout-stats.js`~~ | — | **DELETED 2026-07-16** — foulOuts now written by `fetch-profile-stats.js` | — |
 | `build-search-index.js` | CJS | Player name search shards | Manual / matrix downstream |
-| `build-records.js` | CJS | Single-game records (team + player) | Manual / matrix downstream |
-| `discover-fixtures.js` | CJS | Backfills fixtures for teams in ALREADY-KNOWN seasons (does NOT discover new seasons — that's `discover-seasons.js`) | Manual |
+| `build-records.js` | **ESM** | Single-game records (team + player) | Manual / matrix downstream |
+| `discover-fixtures.js` | CJS | Full-fixture tool via `discoverTeamFixture` (ALL rounds incl. future; works for historical seasons): `--current-only` weekly future-fixtures mode; `--all-seasons`/`--season` historical backfill — the designated tool for OUTSTANDING §2.2. Does NOT discover new seasons (that's `discover-seasons.js`) | Weekly Monday chain (`current_only`) / manual backfill |
 | `clear-stats-checked.js` | CJS | Clears statsChecked (bulk or fix-corrupt-names mode) | Manual |
 | `recheck-private-profiles.js` | CJS | Re-probes private/stale active-season players | Monthly |
 | `recheck-forfeit-games.js` | CJS | Verifies forfeit-games.json | Annual |
@@ -447,18 +457,14 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 | `repair-legacy-flags.js` | CJS | One-off: deletes stale `legacy` from games carrying a score, leaves scoreless ones. Per-game key-diff guard, per-file count guard, full post-check | Once |
 | *(no script)* `find-code-refs.yml` | — | Dispatchable grep over `scripts/` + `.github/workflows/` — the replacement for GitHub code search, which cannot index this repo | On demand |
 | `lib/namespace-resolve.cjs` | CJS | Shared spectator→api recovery lib — paginated `gradePlayerStatistics`, `matchFromGrade`/`matchFromGradeRosterByName`/`matchFromSearch`, `isPlaceholderName` | Library |
-| `backfill-missing-players.js` | CJS | Backfill un-indexed spectator ids — clean rewrite: probe-name-FIRST, `buildPublicPlayer(...,realName)`, collision SKIP+record, `--sample`/`--seed`/`--count-collisions`/`--no-commit`/`--candidates-file`/`--bucket`/`--max`/`--dry-run`/`--gentle`(+`--pace`) | Done (backfill complete) |
-| `backfill-generate-candidates.js` | CJS | Scan-once collision-aware bucketer for the backfill matrix | With backfill |
-| `backfill-collision-stats.js` | CJS | Read-only cross-shard spectator-multiplicity tally; prints all name-mismatch cases in full | On demand |
-| `diagnose-api-stability.js` | CJS | Read-only, local, no-API same-person duplicate detector (name + shared (sid,tid)); EXCLUDES season-name artifacts | On demand |
-| `diagnose-season-name-records.js` | CJS | Read-only season-name contamination counter — ground-truth match vs known season names, backfill-era vs pre-backfill provenance | On demand |
-| `repair-season-names.js` | CJS | Sharded name-repair — re-probe each record's own `games[]` for the real spectator name, rewrite `player.name` + index name; idempotent, `--gentle` | Run pending |
-| `repair-generate-candidates.js` | CJS | Fast index+sports-index bucketer for the repair matrix (no games scan) | With repair |
+| *(deleted cluster)* `backfill-*`, `diagnose-api-stability.js`, `diagnose-season-name-records.js` | — | Migration/backfill one-offs and concluded diagnostics — **DELETED in the 2026-07-16 cleanup (`fe8eedb`)**, recoverable from git history at `1faecc5`; findings preserved in REPO_MANIFEST §6.7. This table listed them as live for weeks after | Gone |
+| `repair-season-names.js` | CJS | Sharded name-repair — RAN TO COMPLETION 2026-07-13 (36,080 files committed, three independent confirmations); since RETIRED (REPO_MANIFEST §6.7). The "Run pending" this row carried for three weeks was stale | Done |
 | `diagnose.js` | CJS | Player/game/hidden diagnostics (multiple modes) | On demand |
 | `test-api.js` | CJS | API diagnostics (concurrency/profile/game/schema/gps modes) | On demand |
 | `diagnose-nightly-health.js` | CJS | Pipeline health check via GitHub API | On demand |
-| `strip-redundant-fields.js` | CJS | One-off: strip redundant fields from player/game files | One-off (done) |
-| `migrate-data-dir.js` | CJS | One-off: moved root JSON to data/ | One-off (done) |
+| *(deleted)* `strip-redundant-fields.js`, `migrate-data-dir.js` | — | Completed one-offs, deleted in the cleanup | Gone |
+
+**This table is a summary, not the inventory — `REPO_MANIFEST.md` §2 (generated from a full read of every script) is authoritative.** When this table and the manifest disagree, the manifest wins and this table is what gets fixed.
 
 ---
 
@@ -497,12 +503,12 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 
 ## Known issues and outstanding work
 
-### This session's chain (namespace / migration track)
-1. Verify the backfill tail reached 0 remaining (`backfill-generate-candidates.js` → `Remaining candidates: 0`).
-2. **Run `repair-season-names-matrix.yml`** (redeploy first — two plumbing fixes landed 2026-07-13) to fix the 35,824 season-name records. Watch `Remaining contaminated` → 0; Gentle mode for the tail. Must finish before any api-canonical re-key.
-3. Fix the backfill matrix stop-button (`always()` → `!cancelled()`) + audit other matrices — before any matrix re-run.
-4. ~~Build the api-canonical migration~~ — **DONE 2026-07-15/16 and live.** The one part that did NOT ship with it: `normName()` NFKC/quote normalisation, still open as OUTSTANDING_TASKS §C3 (it must land everywhere a name is compared in a single pass, or comparisons diverge).
-5. StatTrack changes (alias-index resolution, `private` boolean, TRUNC_LEN=13) — deploy alongside migrated data.
+### This session's chain (namespace / migration track) — ALL CLOSED (annotated 2026-08-03; this list was written 2026-07-09 and every item completed long ago)
+1. ✅ Backfill tail verified — 0 remaining (2026-07-12/13).
+2. ✅ `repair-season-names-matrix.yml` ran to completion 2026-07-13 — 36,080 files, three independent confirmations. Scripts since retired.
+3. ✅ Stop-button audits done: backfill matrix (07-13), stats matrix (07-21), and the LAST holdout, `discover-seasons-matrix.yml`, on 2026-08-03.
+4. ✅ api-canonical migration DONE 2026-07-15/16 and live. `normName()` NFKC closed 2026-08-02 (all seven sites in one pass).
+5. ✅ StatTrack on the api-canonical contract since 0.61 (verified against the deployed file 2026-07-31).
 
 ### Immediately actionable — ⚠️ MOSTLY ALREADY DONE (corrected 2026-07-29)
 
@@ -512,18 +518,14 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 > this section as pending work would have you re-run a full leaderboard rebuild and re-deploy a
 > client that is already deployed.
 
-1. ⚠️ **UNVERIFIED — check the tree before acting.** Delete `discover-reduce-manifest.json`
-   (50.99 MB, dead artifact) and `team-lookup/` (154.58 MB, 355k files, no consumer found anywhere
-   in StatTrack). REPO_MANIFEST §6.4 says no outstanding deletions remain after cleanup `fe8eedb`,
-   but neither path is named in that cleanup manifest and `claude_context.md` still lists both as
-   available. Confirm they exist before deleting, and confirm nothing reads them.
-2. ~~Run `build-leaderboards.js --force` into the new `{players}`-only season schema before
-   deploying the new StatTrack HTML~~ — **DONE.** The restructure shipped and StatTrack 0.61 runs
-   on it.
-3. ~~Deploy updated `index.html` to `markjovic/stattrack`, only after #2~~ — **DONE**, Beta 0.61 is
-   live (`player.private` boolean, `players/aliases/` fetch, `TRUNC_LEN = 13`).
-4. Re-run `db-audit.js` — still worth doing, and it is the measurement the truncation estimate
-   below actually needs.
+1. **RESOLVED IN PART 2026-08-03.** `team-lookup/` is GONE — provable from the current tree's
+   arithmetic (527,900 total files cannot contain a 355k-file directory beside 412k player files);
+   the deletion evidently happened and this item tracked it as pending for weeks.
+   `discover-reduce-manifest.json` (50.99 MB, one file, zero consumer) remains UNVERIFIED — check
+   the tree; if present, a web-UI delete closes it.
+2. ~~Run `build-leaderboards.js --force`~~ — **DONE** (StatTrack 0.61 era).
+3. ~~Deploy updated `index.html`~~ — **DONE**, and five further releases have shipped since (0.68 current).
+4. ~~Re-run `db-audit.js`~~ — **DONE, repeatedly** — it runs routinely (latest 2026-08-02 06:07) and the truncation question it was to measure is CLOSED (57.61 MB, rejected).
 
 ### Found 2026-07-31
 - **Code search is unavailable for this repo** (see the state table). `find-code-refs.yml` replaces it.
@@ -537,24 +539,20 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 
 ### Scoped, real work not yet started
 - ~~UUID truncation across `games/`, `leaderboard/`, `team-stats/`, `search/`~~ — **CLOSED 2026-07-30: MEASURED AND REJECTED.** The real saving is **57.61 MB** on a 6.13 GB repo (0.9%), with `leaderboard/` holding ZERO full-length UUIDs. Every prior figure (~1.78 GB, ~1.57 GB) was an estimate derived from another estimate, wrong by ~27×. Not worth a migration that must update every exact-string-matching consumer in one pass. `db-audit.js` §13, which produced the measurement, was REMOVED 2026-07-31 — it also carried a full extra scan of `team-stats/` (916 MB) that existed only for the byte tally.
-- Historical/locked-season game-data backfill — closes the gap described at the top of this file. Needs its own scoping session, real API volume.
-- Verify `g.p[]` vs `hp[]+ap[]` redundancy in `games/bv/` before assuming it.
+- ~~Historical/locked-season game-data backfill~~ — **DONE in two stages: the locked re-sweep (2026-08-04, +23,264 games) and the spectator backfill (2026-08-06, rosters for 7,844 of the 23,772 roster-less games; 1,095 new players).** Accepted residue, measured and deliberately left: 15,928 games spectator has no data for (paper-scored era), a ~2.7% appearance gap concentrated in partial rosters that predate the spc flag (rewriting 2.03M working rosters was rejected), and 9 games recoverable from profiles (OUTSTANDING §2.1).
+- Verify `g.p[]` vs `hp[]+ap[]` redundancy in `games/bv/` before assuming it (`verify-p-redundancy.js` exists, never run to a verdict; no longer size-motivated).
 - ~~`needs-matrix-shards.json` — confirmed to have zero consumer currently~~ — **RETRACTED 2026-07-29.** It IS read: `nightly-crawl.yml`'s status step counts its length to report `stats_rechecks`. Deleting it makes recheck counts read 0. See REPO_MANIFEST §4.2.
 
 ### Long-standing
-- GitHub Pages deploy trigger — currently triggers on every push; move to explicit dispatch.
-- History squash before AFL expansion.
-- R2 hosting before AFL expansion.
-- Season-lock writer + verify (end-of-crawl; no competing writer currently).
-- Unlock the 489 provably-incomplete locked seasons — after lock-writer exists.
+- ~~GitHub Pages deploy trigger — currently triggers on every push; move to explicit dispatch.~~ **DONE (confirmed by Mark 2026-08-03): Pages no longer deploys on push — an explicit Deploy Pages action is chained in the scheduled runs.**
+- ~~History squash before AFL expansion.~~ ~~R2 hosting before AFL expansion.~~ **RE-FRAMED 2026-08-03:** publishing is verified fine at current size (state table), so neither is a prerequisite for anything. Both remain OPTIONAL pre-AFL choices (squash for clone/runner speed; R2 only if a future constraint appears) — decide at AFL time, not before.
+- ~~Season-lock writer + verify~~ / ~~Unlock the 489 provably-incomplete locked seasons~~ / ~~Tournament-gap fix~~ / ~~68 no-`rn` seasons (84,515 games)~~ — **FOLDED INTO OUTSTANDING §2.2 (2026-08-03).** The backfill path fetches locked seasons DIRECTLY via `discoverTeamFixture`, so the July lock-writer→unlock→re-crawl plan is likely obsolete; all four populations are re-measured at §2.2 Phase 4 and only what the sweep leaves behind survives as work.
 - Roster-fill: BUILT and working (via `discover-seasons-matrix.yml` backfill mode).
-- `build-opposition-index.js` — weekly pre-built per-player opponent W/L/D.
-- Tournament-gap fix — round-list-driven detection.
-- 68 no-`rn` seasons (84,515 games) — markers untrustworthy, cause not investigated.
+- ~~`build-opposition-index.js` — weekly pre-built per-player opponent W/L/D.~~ **RETIRED 2026-08-02 on measurement** (16.2M pairs / 1,001.4 MB projected for a per-season-tid unit that doesn't support the career framing); everything the feature was for shipped client-side at zero data cost in StatTrack 0.65/0.66. `size-opposition-index.js` kept as the proof. Re-open only if a cross-season team identity ever exists.
 
 ### Future
-- AFL expansion — separate game repo, shared player layer.
-- Full opponent history tab in StatTrack (needs opposition index).
+- AFL expansion — separate game repo, shared player layer. (Size is no longer a forcing constraint; the hard prerequisite is the multi-sport merge guard in `fetchPlayerProfile` — see OUTSTANDING §3.)
+- ~~Full opponent history tab in StatTrack (needs opposition index)~~ — **SUPERSEDED**: the index is retired (above) and the opposition views shipped client-side (openOpp wired to game-row opponent taps — verified from the deployed file 2026-08-02 — plus 0.65/0.66 h2h and prior lines). No open StatTrack work.
 
 ---
 
@@ -565,6 +563,6 @@ Both first-name-last-name and last-name-first-name formats stored. Values are ar
 | Nightly 01:00 AEST | nightly-crawl.js → team-stats, venue-lookup, win-loss (active-only), matrix trigger |
 | Weekly Sunday | build-player-games.js, build-win-loss.js full |
 | Monthly 1st | recheck-private-profiles.js |
-| After each finals series | build-finals-stats.js, build-leaderboards.js --force |
+| Weekly Monday (chained off the nightly) | discover-fixtures --current-only → build-finals-stats --active-only → build-leaderboards --active-only |
 | Annually | recheck-forfeit-games.js |
 | On demand | discover-seasons-matrix.yml (season discovery + roster backfill) |
