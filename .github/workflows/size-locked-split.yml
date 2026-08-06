@@ -1,7 +1,8 @@
 # .github/workflows/size-locked-split.yml
 # READ-ONLY diagnostic for the active/locked Pages split (OUTSTANDING §2.1, design approved 2026-08-06).
 # Measures gzip-9 compressed size of games/bv, team-stats/bv and leaderboard/season split by the
-# locked flag in data/sports-index.json. Writes nothing, commits nothing, dispatches nothing.
+# locked flag in data/sports-index.json (.seasons OBJECT keyed by season id — verified against the
+# live file 2026-08-07). Writes nothing, commits nothing, dispatches nothing.
 name: Size Locked Split
 
 on:
@@ -32,43 +33,29 @@ jobs:
           const ROOT = process.env.SCAN_ROOT || '.';
           const DIRS = ['games/bv', 'team-stats/bv', 'leaderboard/season'];
           const REFERENCE = { 'games/bv': 260, 'team-stats/bv': 159, 'leaderboard/season': 126 }; // MB, 2026-08-06 size-pages-artifact table
-          const UUID_ANY = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 
           function fail(msg) { console.error('ABORT: ' + msg); process.exit(1); }
 
-          // ---- Load sports-index and locate the season list without guessing silently ----
+          // ---- Load sports-index. Exact structure per the live file: top-level object with a
+          // .seasons OBJECT keyed by season id, each value a season object carrying id + locked. ----
           const indexPath = path.join(ROOT, 'data/sports-index.json');
           if (!fs.existsSync(indexPath)) fail('data/sports-index.json not found');
           const rawIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-
-          function looksLikeSeason(x) { return x && typeof x === 'object' && typeof x.id === 'string'; }
-          let seasons = null, shape = '';
-          if (Array.isArray(rawIndex) && rawIndex.every(looksLikeSeason)) {
-            seasons = rawIndex; shape = 'top-level array';
-          } else if (rawIndex && typeof rawIndex === 'object') {
-            if (Array.isArray(rawIndex.seasons) && rawIndex.seasons.every(looksLikeSeason)) {
-              seasons = rawIndex.seasons; shape = '.seasons array';
-            } else {
-              for (const [k, v] of Object.entries(rawIndex)) {
-                if (Array.isArray(v) && v.length && v.every(looksLikeSeason)) { seasons = v; shape = '.' + k + ' array'; break; }
-              }
-              if (!seasons) {
-                const vals = Object.values(rawIndex);
-                if (vals.length && vals.every(looksLikeSeason)) { seasons = vals; shape = 'object keyed by id'; }
-              }
-            }
-          }
-          if (!seasons) fail('could not locate the season list inside data/sports-index.json — structure not recognised, refusing to guess');
-          console.log('sports-index season list detected as: ' + shape + ' (' + seasons.length + ' seasons)');
+          if (!rawIndex || typeof rawIndex !== 'object' || Array.isArray(rawIndex)) fail('top level of sports-index.json is not an object');
+          const seasonsObj = rawIndex.seasons;
+          if (!seasonsObj || typeof seasonsObj !== 'object' || Array.isArray(seasonsObj)) fail('.seasons is not an object keyed by season id');
 
           const bySid = new Map();
           let idxLocked = 0, idxActive = 0, idxNoField = 0;
-          for (const s of seasons) {
-            bySid.set(s.id, s);
+          for (const [sid, s] of Object.entries(seasonsObj)) {
+            if (!s || typeof s !== 'object') fail('season entry ' + sid + ' is not an object');
+            bySid.set(sid, s);
+            if (s.id && s.id !== sid) bySid.set(s.id, s); // defensive; key is the authority
             if (s.locked === true) idxLocked++;
             else if (s.locked === false) idxActive++;
             else idxNoField++;
           }
+          console.log('sports-index: .seasons object keyed by id, ' + Object.keys(seasonsObj).length + ' seasons');
           console.log('index counts: locked=' + idxLocked + ' active(locked:false)=' + idxActive + ' no-locked-field=' + idxNoField);
           console.log('');
 
@@ -81,10 +68,20 @@ jobs:
             }
           }
 
+          // A file belongs to a season if its basename (minus .json) is an index key, or —
+          // for any nested layout — a directory segment of its path under the scanned dir is.
+          function sidForFile(relPath) {
+            const parts = relPath.split(path.sep);
+            const base = parts[parts.length - 1].replace(/\.json$/i, '');
+            if (bySid.has(base)) return base;
+            for (let i = 0; i < parts.length - 1; i++) if (bySid.has(parts[i])) return parts[i];
+            return null;
+          }
+
           const BUCKETS = ['locked', 'active', 'not-in-index', 'unmatched'];
           function newTally() {
             const t = {};
-            for (const b of BUCKETS) t[b] = { files: 0, raw: 0, gz: 0 };
+            for (const b of BUCKETS) t[b] = { files: 0, raw: 0, gz: 0, samples: [] };
             return t;
           }
           const mb = (n) => (n / 1048576).toFixed(1);
@@ -101,14 +98,14 @@ jobs:
             for (const f of walk(abs)) {
               fileCount++;
               const rel = path.relative(abs, f);
-              const m = rel.match(UUID_ANY);
+              const isJson = /\.json$/i.test(rel);
+              const sid = isJson ? sidForFile(rel) : null;
               let bucket;
-              if (!m) bucket = 'unmatched';
+              if (!isJson) bucket = 'unmatched';
+              else if (!sid) bucket = 'not-in-index';
               else {
-                const sid = m[0].toLowerCase();
-                const season = bySid.get(sid) || bySid.get(m[0]);
-                if (!season) bucket = 'not-in-index';
-                else if (season.locked === true) bucket = 'locked';
+                const season = bySid.get(sid);
+                if (season.locked === true) bucket = 'locked';
                 else {
                   bucket = 'active';
                   if (season.locked !== false) noFieldSidsWithFiles.add(sid);
@@ -116,8 +113,10 @@ jobs:
               }
               const buf = fs.readFileSync(f);
               const gz = zlib.gzipSync(buf, { level: 9 }).length;
-              tally[bucket].files++; tally[bucket].raw += buf.length; tally[bucket].gz += gz;
-              grand[bucket].files++; grand[bucket].raw += buf.length; grand[bucket].gz += gz;
+              for (const t of [tally, grand]) {
+                t[bucket].files++; t[bucket].raw += buf.length; t[bucket].gz += gz;
+                if ((bucket === 'not-in-index' || bucket === 'unmatched') && t[bucket].samples.length < 5) t[bucket].samples.push(rel);
+              }
             }
             if (fileCount === 0) fail(dir + ' contains zero files');
             perDir[dir] = tally;
@@ -132,6 +131,7 @@ jobs:
             for (const b of BUCKETS) {
               if (t[b].files === 0 && (b === 'not-in-index' || b === 'unmatched')) continue;
               console.log('  ' + b.padEnd(13) + t[b].files.toString().padStart(6) + ' files  raw ' + mb(t[b].raw).padStart(9) + ' MB  gz ' + mb(t[b].gz).padStart(8) + ' MB');
+              if (t[b].samples.length) console.log('    samples: ' + t[b].samples.join(', '));
             }
             const lockedPct = totalGz ? (100 * t.locked.gz / totalGz).toFixed(1) : '0.0';
             console.log('  TOTAL        ' + totalFiles.toString().padStart(6) + ' files  gz ' + mb(totalGz).padStart(8) + ' MB   locked share ' + lockedPct + '%');
@@ -145,8 +145,8 @@ jobs:
           console.log('== SPLIT PROJECTION (three directories combined) ==');
           console.log('  would graduate to ARCHIVE (locked):        gz ' + mb(archiveGz) + ' MB  (' + grand.locked.files + ' files)');
           console.log('  would stay on ACTIVE (active seasons):     gz ' + mb(grand.active.gz) + ' MB  (' + grand.active.files + ' files)');
-          if (grand['not-in-index'].files) console.log('  stays on ACTIVE — sid NOT IN INDEX:        gz ' + mb(grand['not-in-index'].gz) + ' MB  (' + grand['not-in-index'].files + ' files) ⚠ investigate');
-          if (grand.unmatched.files) console.log('  stays on ACTIVE — no uuid in filename:     gz ' + mb(grand.unmatched.gz) + ' MB  (' + grand.unmatched.files + ' files) ⚠ investigate');
+          if (grand['not-in-index'].files) console.log('  stays on ACTIVE — sid NOT IN INDEX:        gz ' + mb(grand['not-in-index'].gz) + ' MB  (' + grand['not-in-index'].files + ' files) ⚠ investigate — samples: ' + grand['not-in-index'].samples.join(', '));
+          if (grand.unmatched.files) console.log('  stays on ACTIVE — not a .json file:        gz ' + mb(grand.unmatched.gz) + ' MB  (' + grand.unmatched.files + ' files) ⚠ investigate — samples: ' + grand.unmatched.samples.join(', '));
           console.log('  locked share overall: ' + (allGz ? (100 * archiveGz / allGz).toFixed(1) : '0.0') + '%');
           if (noFieldSidsWithFiles.size) {
             console.log('  ⚠ seasons WITH FILES whose index entry has NO locked field (counted as active): ' + noFieldSidsWithFiles.size);
