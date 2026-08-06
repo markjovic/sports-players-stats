@@ -474,16 +474,23 @@ function writePlayerIndex(shard, data) {
 
 
 // ─── Backfill queue (local scan — replaces Phase 1/2) ─────────────────────────
-// Queue rule mirrors the nightly's two queueing sites: applyRoundFixtures takes
-// status === 'FINAL' && !spc && !forfeit; the Phase 1b reclassified-hidden path adds
-// !legacy. One widening, reported separately: a game with BOTH scores but no st at
-// all (older writers) is also queued — spectator either answers or it stays a miss.
-// Hidden games carry t1/t2 instead of h/a; both shapes are handled, as Phase 1b does.
+// QUEUE = games with NO player list at all. Nothing else. (Corrected 2026-08-06,
+// Mark: the first version queued every spc-unset game — 2,050,204 — but ~2.03M of
+// those carry partial lists written before the spc flag existed and are doing their
+// job. Rewriting them wholesale to chase a ~2.7% appearance gap is exactly the
+// churn-for-marginal-data trade this project rejects; per-game data that the normal
+// path already serves is not re-fetched. spc's absence does NOT mean unprocessed on
+// old games.) Empty-list games contribute nothing to any player's games[]/W-L/finals
+// today, so fetching them is new data, not churn: the re-sweep's fixture-only locked
+// games and the tournament comps. Remaining rules mirror the nightly's queueing
+// sites (status FINAL, !spc, !forfeit, !legacy); a game with BOTH scores but no st
+// (older writers) is also taken, reported separately. Hidden games carry t1/t2
+// instead of h/a; both shapes are handled, as Phase 1b does.
 function buildBackfillQueue(sportIndex) {
   const queue = [];
   const tallies = {
     files: 0, games: 0, spcSet: 0, forfeit: 0, otherTerminal: 0, notFinal: 0,
-    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, queuedPartialList: 0,
+    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0,
     queuedLocked: 0, queuedActive: 0,
   };
   const perSeason = new Map();
@@ -504,9 +511,10 @@ function buildBackfillQueue(sportIndex) {
       const finalSt    = g.st === 'FINAL';
       const scoreNoSt  = g.st == null && g.hs != null && g.as != null;
       if (!finalSt && !scoreNoSt)               { tallies.notFinal++;      continue; }
-      if (finalSt) tallies.queuedFinalSt++; else tallies.queuedScoreNoSt++;
       const nPlayers = ((g.p && g.p.length) || 0) + ((g.hp && g.hp.length) || 0) + ((g.ap && g.ap.length) || 0);
-      if (nPlayers > 0) tallies.queuedPartialList++; else tallies.queuedEmptyList++;
+      if (nPlayers > 0) { tallies.partialListLeftAlone++; continue; }   // has a roster — NOT our business
+      if (finalSt) tallies.queuedFinalSt++; else tallies.queuedScoreNoSt++;
+      tallies.queuedEmptyList++;
       if (locked) tallies.queuedLocked++; else tallies.queuedActive++;
       perSeason.set(sid, (perSeason.get(sid) || 0) + 1);
       queue.push({
@@ -559,11 +567,10 @@ async function main() {
   line('  already spectator-processed (spc set)', tallies.spcSet);
   line('  forfeits / byes / cancelled / abandoned', tallies.forfeit + tallies.otherTerminal);
   line('  not FINAL and unscored (future etc.)', tallies.notFinal);
-  line('QUEUE — spectator step never run', queue.length);
+  line('  with a player list already (LEFT ALONE)', tallies.partialListLeftAlone);
+  line('QUEUE — no player list at all', queue.length);
   line('  with st=FINAL', tallies.queuedFinalSt);
   line('  scored but no st field (older writers)', tallies.queuedScoreNoSt);
-  line('  currently NO player list', tallies.queuedEmptyList);
-  line('  currently a PARTIAL player list', tallies.queuedPartialList);
   line('  in LOCKED seasons', tallies.queuedLocked);
   line('  in ACTIVE seasons', tallies.queuedActive);
   console.log('  Top seasons by queued games:');
