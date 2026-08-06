@@ -65,11 +65,33 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Drop metadata that shouldn't be served and would bloat the artifact.
-      # (The Actions deploy path serves the artifact as-is — no Jekyll — so JSON
-      # data files and any underscore-prefixed dirs are published verbatim.)
+      # Drop everything StatTrack never fetches. The keep/strip split was derived
+      # 2026-08-06 by grepping the deployed app for every BASE-relative fetch path:
+      # SERVED (must stay): players/ games/ team-stats/ leaderboard/ search/
+      #   venue-lookup/ date-venue-index/ records/ data/ and root JSON files.
+      # NEVER FETCHED (stripped): scripts/ reports/ explore-results/
+      #   roster-results/ and the markdown docs.
+      # Total recovery ≈ 600 KB compressed — measured against a failure margin of
+      # ~973 KB (last success 1,210,614,006 bytes; first failure 1,211,586,679),
+      # so this is a bridge measured in DAYS of nightly growth, not a fix. The
+      # real headroom comes from the split-origin work (OUTSTANDING §2.1).
       - name: Strip non-served files
-        run: rm -rf .git .github
+        run: |
+          rm -rf .git .github scripts reports explore-results roster-results
+          # data/ split (2026-08-06): StatTrack fetches exactly four files here —
+          # sports-index, venue-index, team-index, season-venue-index. The other
+          # four are pipeline bookkeeping read from the repo checkout by scripts,
+          # never over HTTP; stripping them from the ARTIFACT touches nothing.
+          rm -f data/forfeit-games.json data/seasons-discovered.json \
+                data/seasons-invalid.json data/seasons-skipped.json
+          # Root bookkeeping, same category: written by the pipeline, read from the
+          # checkout, never fetched by StatTrack. zero-team-seasons is stripped at
+          # both paths — root (where the re-sweep wrongly wrote it) and data/ (its
+          # correct home after the rename), so this line survives the move.
+          rm -f zero-team-seasons.json needs-matrix-shards.json data/zero-team-seasons.json
+          find . -maxdepth 1 -name '*.md' -delete
+          echo "Artifact contents after strip:"
+          du -sh */ | sort -rh
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
