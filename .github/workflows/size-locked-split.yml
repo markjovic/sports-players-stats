@@ -1,0 +1,157 @@
+# .github/workflows/size-locked-split.yml
+# READ-ONLY diagnostic for the active/locked Pages split (OUTSTANDING §2.1, design approved 2026-08-06).
+# Measures gzip-9 compressed size of games/bv, team-stats/bv and leaderboard/season split by the
+# locked flag in data/sports-index.json. Writes nothing, commits nothing, dispatches nothing.
+name: Size Locked Split
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (full)
+        uses: actions/checkout@v4
+
+      - name: Measure locked vs active compressed size
+        run: |
+          cat > /tmp/size-locked-split.cjs << 'SCRIPT_EOF'
+          // One-off read-only diagnostic. Lives embedded in .github/workflows/size-locked-split.yml
+          // Measures compressed (gzip -9) size of games/bv, team-stats/bv, leaderboard/season,
+          // split by the locked flag in data/sports-index.json.
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+          const zlib = require('zlib');
+
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const DIRS = ['games/bv', 'team-stats/bv', 'leaderboard/season'];
+          const REFERENCE = { 'games/bv': 260, 'team-stats/bv': 159, 'leaderboard/season': 126 }; // MB, 2026-08-06 size-pages-artifact table
+          const UUID_ANY = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+          function fail(msg) { console.error('ABORT: ' + msg); process.exit(1); }
+
+          // ---- Load sports-index and locate the season list without guessing silently ----
+          const indexPath = path.join(ROOT, 'data/sports-index.json');
+          if (!fs.existsSync(indexPath)) fail('data/sports-index.json not found');
+          const rawIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+
+          function looksLikeSeason(x) { return x && typeof x === 'object' && typeof x.id === 'string'; }
+          let seasons = null, shape = '';
+          if (Array.isArray(rawIndex) && rawIndex.every(looksLikeSeason)) {
+            seasons = rawIndex; shape = 'top-level array';
+          } else if (rawIndex && typeof rawIndex === 'object') {
+            if (Array.isArray(rawIndex.seasons) && rawIndex.seasons.every(looksLikeSeason)) {
+              seasons = rawIndex.seasons; shape = '.seasons array';
+            } else {
+              for (const [k, v] of Object.entries(rawIndex)) {
+                if (Array.isArray(v) && v.length && v.every(looksLikeSeason)) { seasons = v; shape = '.' + k + ' array'; break; }
+              }
+              if (!seasons) {
+                const vals = Object.values(rawIndex);
+                if (vals.length && vals.every(looksLikeSeason)) { seasons = vals; shape = 'object keyed by id'; }
+              }
+            }
+          }
+          if (!seasons) fail('could not locate the season list inside data/sports-index.json — structure not recognised, refusing to guess');
+          console.log('sports-index season list detected as: ' + shape + ' (' + seasons.length + ' seasons)');
+
+          const bySid = new Map();
+          let idxLocked = 0, idxActive = 0, idxNoField = 0;
+          for (const s of seasons) {
+            bySid.set(s.id, s);
+            if (s.locked === true) idxLocked++;
+            else if (s.locked === false) idxActive++;
+            else idxNoField++;
+          }
+          console.log('index counts: locked=' + idxLocked + ' active(locked:false)=' + idxActive + ' no-locked-field=' + idxNoField);
+          console.log('');
+
+          // ---- Walk the three directories, classify every file, sum raw + gzip-9 bytes ----
+          function* walk(dir) {
+            for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+              const p = path.join(dir, e.name);
+              if (e.isDirectory()) yield* walk(p);
+              else if (e.isFile()) yield p;
+            }
+          }
+
+          const BUCKETS = ['locked', 'active', 'not-in-index', 'unmatched'];
+          function newTally() {
+            const t = {};
+            for (const b of BUCKETS) t[b] = { files: 0, raw: 0, gz: 0 };
+            return t;
+          }
+          const mb = (n) => (n / 1048576).toFixed(1);
+
+          const perDir = {};
+          const grand = newTally();
+          const noFieldSidsWithFiles = new Set();
+
+          for (const dir of DIRS) {
+            const abs = path.join(ROOT, dir);
+            if (!fs.existsSync(abs)) fail(dir + ' does not exist in the checkout');
+            const tally = newTally();
+            let fileCount = 0;
+            for (const f of walk(abs)) {
+              fileCount++;
+              const rel = path.relative(abs, f);
+              const m = rel.match(UUID_ANY);
+              let bucket;
+              if (!m) bucket = 'unmatched';
+              else {
+                const sid = m[0].toLowerCase();
+                const season = bySid.get(sid) || bySid.get(m[0]);
+                if (!season) bucket = 'not-in-index';
+                else if (season.locked === true) bucket = 'locked';
+                else {
+                  bucket = 'active';
+                  if (season.locked !== false) noFieldSidsWithFiles.add(sid);
+                }
+              }
+              const buf = fs.readFileSync(f);
+              const gz = zlib.gzipSync(buf, { level: 9 }).length;
+              tally[bucket].files++; tally[bucket].raw += buf.length; tally[bucket].gz += gz;
+              grand[bucket].files++; grand[bucket].raw += buf.length; grand[bucket].gz += gz;
+            }
+            if (fileCount === 0) fail(dir + ' contains zero files');
+            perDir[dir] = tally;
+          }
+
+          // ---- Report ----
+          for (const dir of DIRS) {
+            const t = perDir[dir];
+            const totalGz = BUCKETS.reduce((a, b) => a + t[b].gz, 0);
+            const totalFiles = BUCKETS.reduce((a, b) => a + t[b].files, 0);
+            console.log('== ' + dir + ' ==');
+            for (const b of BUCKETS) {
+              if (t[b].files === 0 && (b === 'not-in-index' || b === 'unmatched')) continue;
+              console.log('  ' + b.padEnd(13) + t[b].files.toString().padStart(6) + ' files  raw ' + mb(t[b].raw).padStart(9) + ' MB  gz ' + mb(t[b].gz).padStart(8) + ' MB');
+            }
+            const lockedPct = totalGz ? (100 * t.locked.gz / totalGz).toFixed(1) : '0.0';
+            console.log('  TOTAL        ' + totalFiles.toString().padStart(6) + ' files  gz ' + mb(totalGz).padStart(8) + ' MB   locked share ' + lockedPct + '%');
+            console.log('  reference (2026-08-06 size-pages-artifact): ~' + REFERENCE[dir] + ' MB compressed — a large mismatch means the compression method differs; the RATIO above is still valid');
+            console.log('');
+          }
+
+          const archiveGz = grand.locked.gz;
+          const stayGz = grand.active.gz + grand['not-in-index'].gz + grand.unmatched.gz;
+          const allGz = archiveGz + stayGz;
+          console.log('== SPLIT PROJECTION (three directories combined) ==');
+          console.log('  would graduate to ARCHIVE (locked):        gz ' + mb(archiveGz) + ' MB  (' + grand.locked.files + ' files)');
+          console.log('  would stay on ACTIVE (active seasons):     gz ' + mb(grand.active.gz) + ' MB  (' + grand.active.files + ' files)');
+          if (grand['not-in-index'].files) console.log('  stays on ACTIVE — sid NOT IN INDEX:        gz ' + mb(grand['not-in-index'].gz) + ' MB  (' + grand['not-in-index'].files + ' files) ⚠ investigate');
+          if (grand.unmatched.files) console.log('  stays on ACTIVE — no uuid in filename:     gz ' + mb(grand.unmatched.gz) + ' MB  (' + grand.unmatched.files + ' files) ⚠ investigate');
+          console.log('  locked share overall: ' + (allGz ? (100 * archiveGz / allGz).toFixed(1) : '0.0') + '%');
+          if (noFieldSidsWithFiles.size) {
+            console.log('  ⚠ seasons WITH FILES whose index entry has NO locked field (counted as active): ' + noFieldSidsWithFiles.size);
+          } else {
+            console.log('  seasons with files lacking a locked field: 0 (expected)');
+          }
+          SCRIPT_EOF
+          node /tmp/size-locked-split.cjs
