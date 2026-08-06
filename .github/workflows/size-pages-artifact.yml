@@ -1,0 +1,59 @@
+# .github/workflows/size-pages-artifact.yml
+name: Size Pages Artifact (read-only)
+
+# The Pages deployment artifact hit 1.21 GB against GitHub's 1 GB limit and deploys
+# now fail consistently (2026-08-06, three in a row after months of the warning being
+# tolerated). This prints what the bundle is made of: per top-level directory, the
+# raw size, the COMPRESSED size (what actually counts against the limit — the Pages
+# artifact is a tar), and file counts. That map decides what gets excluded from the
+# upload or moved off Pages. READ-ONLY: no writes, no commits, no artifact upload.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Measure per-directory raw and compressed sizes
+        run: |
+          set -uo pipefail
+          echo "════════════════════════════════════════════════════════════"
+          echo "  Pages artifact composition — raw vs COMPRESSED (the limit)"
+          echo "════════════════════════════════════════════════════════════"
+          printf "  %-24s %12s %14s %10s\n" "DIRECTORY" "RAW" "COMPRESSED" "FILES"
+          total_raw=0; total_gz=0
+          for d in */ ; do
+            d="${d%/}"
+            [ "$d" = ".git" ] && continue
+            raw=$(du -sb "$d" | cut -f1)
+            gz=$(tar cf - "$d" 2>/dev/null | gzip -6 | wc -c)
+            files=$(find "$d" -type f | wc -l)
+            total_raw=$((total_raw + raw)); total_gz=$((total_gz + gz))
+            printf "  %-24s %12s %14s %10s\n" "$d" \
+              "$(numfmt --to=iec "$raw")" "$(numfmt --to=iec "$gz")" "$files"
+          done
+          # loose top-level files
+          loose_raw=$(find . -maxdepth 1 -type f -printf '%s\n' | awk '{s+=$1} END {print s+0}')
+          loose_gz=$(find . -maxdepth 1 -type f -print0 | tar cf - --null -T - 2>/dev/null | gzip -6 | wc -c)
+          total_raw=$((total_raw + loose_raw)); total_gz=$((total_gz + loose_gz))
+          printf "  %-24s %12s %14s\n" "(top-level files)" \
+            "$(numfmt --to=iec "$loose_raw")" "$(numfmt --to=iec "$loose_gz")"
+          echo "────────────────────────────────────────────────────────────"
+          printf "  %-24s %12s %14s\n" "TOTAL" \
+            "$(numfmt --to=iec "$total_raw")" "$(numfmt --to=iec "$total_gz")"
+          echo "  Limit: 1 GiB compressed. Over by: $(numfmt --to=iec $((total_gz - 1073741824)) 2>/dev/null || echo 'n/a')"
+          echo "════════════════════════════════════════════════════════════"
+          echo "  Ten largest single files (raw):"
+          find . -path ./.git -prune -o -type f -printf '%s %p\n' | sort -rn | head -10 \
+            | while read -r sz p; do printf "    %10s  %s\n" "$(numfmt --to=iec "$sz")" "$p"; done
