@@ -1,0 +1,142 @@
+# .github/workflows/rebuild-chain.yml
+name: Rebuild Chain (one-off, post-backfill)
+
+# ONE-OFF sequencer for the 2026-08-06 post-backfill rebuild. Dispatches each build
+# workflow, WAITS for it to finish, then dispatches the next:
+#   build-player-games -> build-win-loss (full) -> build-finals-stats (full)
+#   -> build-search-index -> build-leaderboards (force) -> Deploy Pages
+#
+# Why dispatch-and-wait instead of dispatching all six at once: they all share the
+# data-write concurrency group, whose pending queue holds ONE run — a new arrival
+# CANCELS the waiter (trap T19, the Fold eviction). Firing six at once loses four.
+# This job holds NO lock itself; only the workers do.
+#
+# If any step's run fails, the chain STOPS RED and nothing after it is dispatched.
+# To resume after fixing the cause, re-dispatch with "Start at" set to the failed
+# step — everything before it is not re-run.
+#
+# Each dispatch uses the house retry helper (verbatim from nightly-crawl.yml):
+# transient failures retried with backoff, HTTP 4xx fails fast, exhaustion throws.
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_at:
+        description: 'Start at this step (earlier steps are skipped)'
+        required: false
+        default: 'player-games'
+        type: choice
+        options:
+          - player-games
+          - win-loss
+          - finals
+          - search
+          - leaderboards
+          - deploy
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Install dispatch retry helper
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+
+      - name: Run the chain
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          set -uo pipefail
+
+          # Dispatch a workflow, find the run the dispatch created, and wait for it.
+          # The run is identified as "newest run id that differs from the newest id
+          # BEFORE the dispatch" — polling starts immediately and allows 5 minutes
+          # for the run to appear. Completion is polled every 60s (the default 3s
+          # would exhaust the API rate limit over a multi-hour watch).
+          run_step() {
+            wf="$1"; shift
+            echo "── ${wf} ──────────────────────────────────────"
+            before=$(gh run list --workflow "$wf" --repo "$GH_REPO" --limit 1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+            /tmp/gh-dispatch.sh "$wf" "$@"
+            new=""
+            for i in $(seq 1 60); do
+              sleep 5
+              new=$(gh run list --workflow "$wf" --repo "$GH_REPO" --limit 1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+              if [ -n "$new" ] && [ "$new" != "$before" ]; then break; fi
+              new=""
+            done
+            if [ -z "$new" ]; then
+              echo "  ✗ ${wf}: dispatched but no new run appeared within 5 minutes"
+              exit 1
+            fi
+            echo "  waiting on ${wf} run ${new} (may be queued behind the data-write lock)"
+            mins=0
+            while :; do
+              sleep 60
+              mins=$((mins + 1))
+              st=$(gh run view "$new" --repo "$GH_REPO" --json status,conclusion -q '.status + ":" + (.conclusion // "")' 2>/dev/null || echo "poll-error:")
+              case "$st" in
+                completed:success)
+                  echo "  ✓ ${wf} succeeded after ~${mins}m"
+                  return 0 ;;
+                completed:*)
+                  echo "  ✗ ${wf} finished as '${st#completed:}' — STOPPING THE CHAIN."
+                  echo "    Fix the cause, then re-dispatch this workflow with 'Start at' set to the failed step."
+                  exit 1 ;;
+                *)
+                  if [ $((mins % 10)) -eq 0 ]; then echo "  … ${wf} still ${st%%:*} after ${mins}m"; fi ;;
+              esac
+            done
+          }
+
+          S="${{ inputs.start_at }}"
+          started=false
+          at() { if [ "$started" = true ] || [ "$S" = "$1" ]; then started=true; return 0; fi
+                 echo "── skipping $1 (start_at=${S})"; return 1; }
+
+          at player-games && run_step build-player-games.yml
+          at win-loss     && run_step build-win-loss.yml
+          at finals       && run_step build-finals-stats.yml
+          at search       && run_step build-search-index.yml
+          at leaderboards && run_step build-leaderboards.yml --field force=true
+          at deploy       && run_step "Deploy Pages"
+
+          echo "──────────────────────────────────────────────"
+          echo "Chain complete: player-games → win-loss → finals → search → leaderboards → Deploy Pages"
