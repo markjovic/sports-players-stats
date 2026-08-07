@@ -40,6 +40,7 @@
 //   node scripts/spectator-backfill.js --dry-run          # scan + report the queue, nothing else
 //   node scripts/spectator-backfill.js                    # fetch up to --max-games (default 100000)
 //   node scripts/spectator-backfill.js --season=<sid>     # one season only
+//   node scripts/spectator-backfill.js --locked-only       # locked seasons only (sweep-order safety)
 //   node scripts/spectator-backfill.js --include-partial   # ALSO re-fetch partial-roster games
 //                                                          # (the 2026-08-07 completion re-sweep)
 
@@ -81,6 +82,13 @@ const MAX_GAMES     = ARGS['max-games'] ? Math.max(1, parseInt(ARGS['max-games']
 // measured source of 757k missing appearances across 102,609 players. Default
 // remains the 08-06 behaviour.
 const INCLUDE_PARTIAL = !!ARGS['include-partial'];
+// 2026-08-07 (--locked-only): restrict the sweep to LOCKED seasons. Active-season
+// boxes can still be completing after FINAL (7da945a8 lagged months), and spc:1
+// makes a game permanently invisible to every re-query path — sweeping an active
+// season can freeze a fresh partial forever. Locked boxes are as complete as they
+// will ever get: sweep them first; a final unrestricted pass catches the rest
+// once those seasons settle.
+const LOCKED_ONLY = !!ARGS['locked-only'];
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -512,6 +520,7 @@ function buildBackfillQueue(sportIndex) {
     let gf;
     try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, fname), 'utf8')); } catch { continue; }
     const locked = !!(sportIndex.seasons?.[sid]?.locked);
+    if (LOCKED_ONLY && !locked) continue;
     for (const [gameId, g] of Object.entries(gf.games || {})) {
       if (!g) continue;
       tallies.games++;
