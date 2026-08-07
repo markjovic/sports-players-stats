@@ -36,6 +36,9 @@ const ARGS = Object.fromEntries(
 const DRY_RUN       = !!ARGS['dry-run'];
 const TARGET_SEASON = ARGS.season || null;
 const DO_UNLOCK     = !!ARGS['unlock'];   // reopen locked seasons proven incomplete (opt-in)
+                                          // ALSO clears archivedAt (active/locked split, 2026-08-07):
+                                          // both routing flags move in ONE write = ONE commit, so no
+                                          // flag state can strand a season off both Pages origins
 const INDEX_FILE    = path.join(ROOT, 'data', 'sports-index.json');
 
 // Sentinel: older than any grace window, so the live crawl skips these at once.
@@ -156,11 +159,17 @@ if (fs.existsSync(INDEX_FILE)) {
     console.log(`  Locked seasons proven incomplete: ${candidates.length}`);
     for (const se of candidates.slice(0, 20)) console.log(`    ${se.id}  ${se.name || se.fullName || ''}`);
     if (DO_UNLOCK && !DRY_RUN && candidates.length) {
-      for (const se of candidates) { se.locked = false; delete se.lockedAt; }
+      // archivedAt cleared in the SAME write as locked (split invariant): the next
+      // Deploy Pages puts the season back on the active artifact and routes
+      // StatTrack back to active; the archive drops its now-stale copy at its
+      // next weekly rebuild (union rule) — every intermediate state stays served.
+      for (const se of candidates) { se.locked = false; delete se.lockedAt; delete se.archivedAt; }
       const m = raw.match(/\n( +)"/);                    // preserve existing indentation
       const indent = m ? m[1].length : 0;
       fs.writeFileSync(INDEX_FILE, JSON.stringify(idx, null, indent));
-      console.log(`  \u2714 Reopened ${candidates.length} season(s) in sports-index.json`);
+      console.log(`  \u2714 Reopened ${candidates.length} season(s) in sports-index.json (locked, lockedAt AND archivedAt cleared)`);
+      console.log('  ⚠ T23: dispatch Deploy Pages after this commit lands — the unlock only takes');
+      console.log('    visible effect (season back on the active artifact + routing) when Pages redeploys.');
     } else if (candidates.length) {
       console.log('  (report only — pass --unlock to reopen; first reconcile with whatever sets `locked`, or it may re-lock them)');
     }
