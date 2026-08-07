@@ -1,0 +1,37 @@
+# .github/workflows/probe-player.yml
+name: Probe Player
+
+# READ-ONLY single-player deep reconciliation (built 2026-08-07 on Mark's ask):
+# fetch one player's full profile from the mobile API — the endpoint the app
+# renders from, which can serve profiles the website's statistics view errors
+# on — and print the complete ours-vs-theirs picture: every API game credit
+# classified (ok / roster-gap / alias-case / game-absent), per-season rollup,
+# and what a targeted repair could recover. No writes, no git, no lock.
+#
+# The uuid is in the profile page URL (playhq.com/.../profile/<uuid>) or in
+# StatTrack's player link.
+#
+# NO setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      uuid:
+        description: 'Player uuid (from the profile URL or StatTrack)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe
+        run: node scripts/probe-player.js --uuid="${{ inputs.uuid }}"
