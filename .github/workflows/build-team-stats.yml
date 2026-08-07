@@ -76,7 +76,7 @@ jobs:
     steps:
       - name: Install dispatch retry helper
         # Copied VERBATIM from fetch-profile-stats-matrix.yml — asserted
-        # byte-identical (1,452 bytes) at build. A lost dispatch is a broken
+        # byte-identical (1,046 bytes) at build. A lost dispatch is a broken
         # chain, and a broken chain must show red.
         run: |
           cat > /tmp/gh-dispatch.sh << 'SH'
