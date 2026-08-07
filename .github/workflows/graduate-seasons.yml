@@ -1,0 +1,465 @@
+# .github/workflows/graduate-seasons.yml
+# Season graduation for the active/locked Pages split (design approved 2026-08-07).
+# THE single authority for graduation candidacy, including the grace period:
+# grace_days below is the central variable (default 28) — no other file carries it.
+#
+# Sequence (ordering guarantee: a season's routing flag only ever flips AFTER the
+# season is observed live on the archive, so "index says archive but archive lacks
+# it" is unreachable; every failure lands on the safe side — season keeps serving
+# from active and is retried on the next nightly dispatch):
+#   1. select candidates: locked, no archivedAt, past grace, files present
+#   2. dispatch Deploy Archive Pages in the archive repo (ARCHIVE_DISPATCH_PAT)
+#      and poll it to completion
+#   3. probe each candidate's file on the archive origin until actually SERVED
+#   4. flip archivedAt on VERIFIED seasons only (job-level data-write lock —
+#      deliberately NOT workflow-level: this run spends ~40 min waiting on the
+#      archive deploy, and the data-write queue holds one pending slot where a
+#      new arrival cancels the waiter; the lock is held only for the commit)
+#   5. dispatch Deploy Pages (the flags are committed FIRST, so any deploy that
+#      runs after — ours or a fan-out-triggered one that cancels ours in the
+#      `pages` group — strips correctly; the dispatch just makes it prompt)
+#   6. status job goes RED if any candidate failed verification (partial success
+#      still flips the verified ones — one bad season doesn't hold the cohort)
+#
+# Dispatched UNCONDITIONALLY by the nightly at terminal drain; a night with no
+# candidates exits green in minutes. Manual dispatch can override grace_days for
+# one run without editing this file.
+# NO setup-node in any job (house rule): the runner's preinstalled node is used
+# and nothing here touches api.playhq.com.
+name: Graduate Seasons
+
+on:
+  workflow_dispatch:
+    inputs:
+      grace_days:
+        description: 'Days a season must have been locked before it graduates (central grace variable; default 28)'
+        required: false
+        default: '28'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: graduate-seasons
+  cancel-in-progress: false
+
+env:
+  ARCHIVE_REPO: markjovic/sports-players-stats-archive
+  ARCHIVE_BASE: https://markjovic.github.io/sports-players-stats-archive
+
+jobs:
+  select-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      candidate_count: ${{ steps.select.outputs.candidate_count }}
+      verified:        ${{ steps.probe.outputs.verified }}
+      verified_count:  ${{ steps.probe.outputs.verified_count }}
+      failed_count:    ${{ steps.probe.outputs.failed_count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Select candidates
+        id: select
+        env:
+          GRACE_DAYS: ${{ inputs.grace_days || '28' }}
+        run: |
+          cat > /tmp/select-candidates.cjs << 'SCRIPT_EOF'
+          // Candidate selection for season graduation. Lives embedded in
+          // .github/workflows/graduate-seasons.yml — THE single authority for candidacy,
+          // including the grace period (GRACE_DAYS env, dispatch input, default 28).
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const GRACE_DAYS = Number(process.env.GRACE_DAYS || '28');
+          const OUT = process.env.CANDIDATES_OUT || '/tmp/candidates.json';
+          const DIRS = ['games/bv', 'team-stats/bv', 'leaderboard/season'];
+
+          function fail(msg) { console.error('ABORT: ' + msg); process.exit(1); }
+          if (!Number.isFinite(GRACE_DAYS) || GRACE_DAYS < 0) fail('GRACE_DAYS is not a non-negative number: ' + process.env.GRACE_DAYS);
+
+          const indexPath = path.join(ROOT, 'data/sports-index.json');
+          if (!fs.existsSync(indexPath)) fail('data/sports-index.json not found');
+          const rawIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+          if (!rawIndex || typeof rawIndex !== 'object' || Array.isArray(rawIndex)) fail('top level of sports-index.json is not an object');
+          const seasonsObj = rawIndex.seasons;
+          if (!seasonsObj || typeof seasonsObj !== 'object' || Array.isArray(seasonsObj)) fail('.seasons is not an object keyed by season id');
+
+          const now = Date.now();
+          const graceMs = GRACE_DAYS * 86400000;
+          let locked = 0, alreadyArchived = 0, inGrace = 0, noFiles = 0;
+          const candidates = [];
+          const inGraceSamples = [], noFilesSamples = [];
+
+          for (const [sid, s] of Object.entries(seasonsObj)) {
+            if (!s || typeof s !== 'object') fail('season entry ' + sid + ' is not an object');
+            if (s.locked !== true) continue;
+            locked++;
+            if (s.archivedAt) { alreadyArchived++; continue; }
+            if (s.lockedAt) {
+              const t = Date.parse(s.lockedAt);
+              if (!Number.isFinite(t)) fail('season ' + sid + ' has unparseable lockedAt: ' + s.lockedAt);
+              if (now - t < graceMs) {
+                inGrace++;
+                if (inGraceSamples.length < 5) inGraceSamples.push(sid + ' (locked ' + s.lockedAt + ')');
+                continue;
+              }
+            } // no lockedAt = locked before the field existed = old enough
+            let probe = null;
+            for (const dir of DIRS) {
+              const p = path.join(ROOT, dir, sid + '.json');
+              if (fs.existsSync(p)) { probe = dir + '/' + sid + '.json'; break; }
+            }
+            if (!probe) {
+              noFiles++;
+              if (noFilesSamples.length < 5) noFilesSamples.push(sid);
+              continue;
+            }
+            candidates.push({ sid, probe });
+          }
+
+          fs.writeFileSync(OUT, JSON.stringify(candidates));
+          console.log('locked seasons:               ' + locked);
+          console.log('  already archived:           ' + alreadyArchived);
+          console.log('  within ' + GRACE_DAYS + '-day grace:        ' + inGrace + (inGraceSamples.length ? '   samples: ' + inGraceSamples.join(', ') : ''));
+          console.log('  locked but no files:        ' + noFiles + (noFilesSamples.length ? '   samples: ' + noFilesSamples.join(', ') : ''));
+          console.log('  CANDIDATES to graduate:     ' + candidates.length);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT || '/dev/null', 'candidate_count=' + candidates.length + '\n');
+          SCRIPT_EOF
+          CANDIDATES_OUT=/tmp/candidates.json node /tmp/select-candidates.cjs
+
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch archive deploy and wait for it
+        if: steps.select.outputs.candidate_count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.ARCHIVE_DISPATCH_PAT }}
+          GH_REPO:  ${{ env.ARCHIVE_REPO }}
+        run: |
+          set -uo pipefail
+          # ISO timestamps compare lexicographically; 10s skew margin for clock drift
+          dispatch_iso=$(date -u -d '-10 seconds' +%Y-%m-%dT%H:%M:%SZ)
+          /tmp/gh-dispatch.sh deploy-archive-pages.yml
+          run_id=""
+          for i in $(seq 1 20); do
+            sleep 15
+            run_id=$(gh run list --repo "$GH_REPO" --workflow deploy-archive-pages.yml \
+              --limit 5 --json databaseId,createdAt \
+              --jq '.[] | select(.createdAt >= "'"$dispatch_iso"'") | .databaseId' 2>/dev/null | head -1) || true
+            if [ -n "$run_id" ]; then break; fi
+            echo "  … archive run not visible yet (attempt $i/20)"
+          done
+          if [ -z "$run_id" ]; then
+            echo "✗ could not locate the dispatched archive run"
+            exit 1
+          fi
+          echo "watching archive run: https://github.com/$GH_REPO/actions/runs/$run_id"
+          for i in $(seq 1 120); do
+            status=$(gh run view "$run_id" --repo "$GH_REPO" --json status --jq .status 2>/dev/null) || status=""
+            if [ "$status" = "completed" ]; then
+              conclusion=$(gh run view "$run_id" --repo "$GH_REPO" --json conclusion --jq .conclusion)
+              echo "archive deploy completed: $conclusion"
+              if [ "$conclusion" != "success" ]; then
+                exit 1
+              fi
+              exit 0
+            fi
+            if [ "$i" -ge 120 ]; then
+              echo "✗ archive deploy did not complete within 60 minutes"
+              exit 1
+            fi
+            sleep 30
+          done
+
+      - name: Probe candidates on the archive
+        id: probe
+        env:
+          ARCHIVE_BASE: ${{ env.ARCHIVE_BASE }}
+        run: |
+          cat > /tmp/probe-archive.cjs << 'SCRIPT_EOF'
+          // Live verification for season graduation. Lives embedded in
+          // .github/workflows/graduate-seasons.yml. For each candidate, HEAD-fetches its
+          // probe path on the archive origin until it is actually SERVED (T23: a deploy
+          // that reported success is not the same as the file being live). Partitions
+          // candidates into verified/failed; only verified seasons get archivedAt.
+          'use strict';
+          const fs = require('fs');
+
+          const BASE = (process.env.ARCHIVE_BASE || '').replace(/\/+$/, '');
+          const IN = process.env.CANDIDATES_IN || '/tmp/candidates.json';
+          const ROUNDS = Number(process.env.PROBE_ROUNDS || '12');
+          const ROUND_DELAY_S = Number(process.env.PROBE_ROUND_DELAY_S || '30');
+          const CONCURRENCY = 20;
+
+          function fail(msg) { console.error('ABORT: ' + msg); process.exit(1); }
+          if (!BASE) fail('ARCHIVE_BASE not set');
+          const candidates = JSON.parse(fs.readFileSync(IN, 'utf8'));
+          if (!Array.isArray(candidates)) fail('candidates file is not an array');
+
+          const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+          async function head(url) {
+            try {
+              const res = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+              return res.ok;
+            } catch (e) {
+              return false;
+            }
+          }
+
+          (async () => {
+            if (candidates.length === 0) {
+              const out = process.env.GITHUB_OUTPUT || '/dev/null';
+              fs.appendFileSync(out, 'verified=[]\nverified_count=0\nfailed_count=0\n');
+              console.log('no candidates — nothing to probe (normal night)');
+              return;
+            }
+            let pending = candidates.slice();
+            const verified = [];
+            for (let round = 1; round <= ROUNDS && pending.length; round++) {
+              if (round > 1) await sleep(ROUND_DELAY_S * 1000);
+              const stillFailing = [];
+              for (let i = 0; i < pending.length; i += CONCURRENCY) {
+                const batch = pending.slice(i, i + CONCURRENCY);
+                const results = await Promise.all(batch.map(c => head(BASE + '/' + c.probe)));
+                results.forEach((ok, j) => (ok ? verified : stillFailing).push(batch[j]));
+              }
+              console.log('round ' + round + '/' + ROUNDS + ': verified ' + verified.length + '/' + candidates.length + ', still failing ' + stillFailing.length);
+              pending = stillFailing;
+            }
+            const out = process.env.GITHUB_OUTPUT || '/dev/null';
+            fs.appendFileSync(out, 'verified=' + JSON.stringify(verified.map(c => c.sid)) + '\n');
+            fs.appendFileSync(out, 'verified_count=' + verified.length + '\n');
+            fs.appendFileSync(out, 'failed_count=' + pending.length + '\n');
+            if (pending.length) {
+              console.log('');
+              console.log('FAILED VERIFICATION (' + pending.length + ') — these seasons keep serving from ACTIVE and are retried next night:');
+              for (const c of pending) console.log('  ' + c.sid + '  ' + BASE + '/' + c.probe);
+            } else {
+              console.log('all candidates verified live on the archive');
+            }
+          })();
+          SCRIPT_EOF
+          CANDIDATES_IN=/tmp/candidates.json node /tmp/probe-archive.cjs
+
+  flip-and-publish:
+    needs: select-and-verify
+    # Both guards: probe always writes explicit counts, but an upstream step
+    # failure can still surface as an empty output — empty must not pass a
+    # bare != '0' check (expression-trap family, claude_context T3).
+    if: needs.select-and-verify.outputs.verified_count != '' && needs.select-and-verify.outputs.verified_count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set archivedAt on verified seasons
+        env:
+          VERIFIED_SIDS: ${{ needs.select-and-verify.outputs.verified }}
+        run: |
+          cat > /tmp/flip-archived.cjs << 'SCRIPT_EOF'
+          // Flag flip for season graduation. Lives embedded in
+          // .github/workflows/graduate-seasons.yml. Sets archivedAt (ISO timestamp) on
+          // every VERIFIED season — archivedAt is a statement of verified fact: the
+          // probe saw the season served on the archive before this runs. Writes
+          // sports-index minified (house rule: JSON.stringify, no indent). Idempotent.
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+
+          const ROOT = process.env.SCAN_ROOT || '.';
+          function fail(msg) { console.error('ABORT: ' + msg); process.exit(1); }
+
+          const verified = JSON.parse(process.env.VERIFIED_SIDS || '[]');
+          if (!Array.isArray(verified)) fail('VERIFIED_SIDS is not a JSON array');
+          if (verified.length === 0) fail('VERIFIED_SIDS is empty — this job should not have run');
+
+          const indexPath = path.join(ROOT, 'data/sports-index.json');
+          if (!fs.existsSync(indexPath)) fail('data/sports-index.json not found');
+          const rawIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+          if (!rawIndex || typeof rawIndex !== 'object' || Array.isArray(rawIndex)) fail('top level of sports-index.json is not an object');
+          const seasonsObj = rawIndex.seasons;
+          if (!seasonsObj || typeof seasonsObj !== 'object' || Array.isArray(seasonsObj)) fail('.seasons is not an object keyed by season id');
+
+          const now = new Date().toISOString();
+          let flipped = 0, alreadySet = 0, unknown = 0;
+          for (const sid of verified) {
+            const s = seasonsObj[sid];
+            if (!s) { unknown++; console.log('  ⚠ verified sid not in index (skipped): ' + sid); continue; }
+            if (s.archivedAt) { alreadySet++; continue; }
+            s.archivedAt = now;
+            flipped++;
+          }
+          fs.writeFileSync(indexPath, JSON.stringify(rawIndex));
+          console.log('archivedAt set on ' + flipped + ' seasons (' + now + '); already set: ' + alreadySet + '; unknown sids: ' + unknown);
+          if (unknown > 0) fail('verified sids missing from the index — investigate before trusting this run');
+          SCRIPT_EOF
+          node /tmp/flip-archived.cjs
+
+      # One committer, one commit. Explicit paths, never -A. Proven push pattern
+      # copied from repair-aliases.yml: 60 attempts, random 1-91s jitter,
+      # merge --abort cleanup, merge -X ours.
+      - name: Commit (push-with-retry)
+        run: |
+          set -uo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/sports-index.json
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+            exit 0
+          fi
+          git commit -m "graduate-seasons: set archivedAt on verified seasons"
+          for i in $(seq 1 60); do
+            git merge --abort 2>/dev/null || true
+            if git fetch origin "$GITHUB_REF_NAME" \
+              && git merge -X ours "origin/$GITHUB_REF_NAME" -m "merge before graduate-seasons push" \
+              && git push origin "HEAD:$GITHUB_REF_NAME"; then
+              echo "pushed on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed, retrying"
+            sleep $(( (RANDOM % 91) + 1 ))
+          done
+          echo "push failed after 60 attempts"
+          exit 1
+
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch Deploy Pages
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          /tmp/gh-dispatch.sh deploy-pages.yml
+
+  status:
+    needs: [select-and-verify, flip-and-publish]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Graduation status
+        env:
+          SELECT_RESULT: ${{ needs.select-and-verify.result }}
+          FLIP_RESULT:   ${{ needs.flip-and-publish.result }}
+          CANDIDATES:    ${{ needs.select-and-verify.outputs.candidate_count }}
+          VERIFIED:      ${{ needs.select-and-verify.outputs.verified_count }}
+          FAILED:        ${{ needs.select-and-verify.outputs.failed_count }}
+        run: |
+          echo "select-and-verify: $SELECT_RESULT | candidates: ${CANDIDATES:-?} | verified: ${VERIFIED:-?} | failed probes: ${FAILED:-?}"
+          echo "flip-and-publish:  $FLIP_RESULT"
+          red=0
+          if [ "$SELECT_RESULT" != "success" ]; then
+            echo "🛑 selection/verification job did not succeed"
+            red=1
+          fi
+          if [ -n "${FAILED:-}" ] && [ "$FAILED" != "0" ]; then
+            echo "🛑 $FAILED candidate(s) FAILED live verification — flags NOT flipped for them;"
+            echo "   they keep serving from ACTIVE and are retried on the next nightly dispatch."
+            echo "   Failing season ids and probed URLs are listed in the probe step's log."
+            red=1
+          fi
+          if [ -n "${VERIFIED:-}" ] && [ "$VERIFIED" != "0" ] && [ "$FLIP_RESULT" != "success" ]; then
+            echo "🛑 seasons verified but the flag flip/publish job result is: $FLIP_RESULT"
+            red=1
+          fi
+          if [ "$red" = "1" ]; then
+            exit 1
+          fi
+          echo "✅ graduation clean"

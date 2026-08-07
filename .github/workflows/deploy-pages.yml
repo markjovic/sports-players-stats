@@ -19,6 +19,8 @@ name: Deploy Pages
 #                      mid-pipeline builds (team-stats/win-loss finish earlier).
 #   workflow_dispatch — manual publish for ad-hoc changes; also lets any workflow
 #                      trigger it via: gh workflow run deploy-pages.yml
+#                      (graduate-seasons.yml dispatches it after flipping
+#                      archivedAt flags — active/locked split, 2026-08-07)
 #
 # workflow_run matches each workflow's `name:` field (NOT its filename). The four
 # names below were confirmed against the Actions run list on 2026-07-19.
@@ -92,6 +94,84 @@ jobs:
           find . -maxdepth 1 -name '*.md' -delete
           echo "Artifact contents after strip:"
           du -sh */ | sort -rh
+
+      # Active/locked split (2026-08-07): drop every per-season file whose season
+      # is verified LIVE on the archive origin — archivedAt in sports-index is set
+      # only by graduate-seasons.yml, and only AFTER probing the season's file on
+      # the archive, so nothing stripped here is ever unserved. ~440 MB leaves
+      # this artifact once the first graduation lands. Zero archived seasons =
+      # no-op (normal until then); structural failures ABORT the deploy — a wrong
+      # artifact must not publish silently.
+      - name: Strip archived seasons (active/locked split)
+        run: |
+          cat > /tmp/strip-archived.cjs << 'SCRIPT_EOF'
+          // Active-artifact strip for the active/locked Pages split. Lives embedded in
+          // .github/workflows/deploy-pages.yml. Deletes from the artifact tree every
+          // per-season file (games/bv, team-stats/bv, leaderboard/season) whose season
+          // carries archivedAt in data/sports-index.json — those seasons are verified
+          // live on the archive origin, which is the only writer of that flag. Zero
+          // archived seasons is the normal state until the first graduation: continue.
+          // Structural failures abort — a wrong artifact must not publish silently.
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const DIRS = ['games/bv', 'team-stats/bv', 'leaderboard/season'];
+          function fail(msg) { console.error('ABORT: ' + msg); process.exit(1); }
+
+          const indexPath = path.join(ROOT, 'data/sports-index.json');
+          if (!fs.existsSync(indexPath)) fail('data/sports-index.json not found — cannot decide the strip');
+          const rawIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+          if (!rawIndex || typeof rawIndex !== 'object' || Array.isArray(rawIndex)) fail('top level of sports-index.json is not an object');
+          const seasonsObj = rawIndex.seasons;
+          if (!seasonsObj || typeof seasonsObj !== 'object' || Array.isArray(seasonsObj)) fail('.seasons is not an object keyed by season id');
+
+          const archived = new Set();
+          for (const [sid, s] of Object.entries(seasonsObj)) {
+            if (s && typeof s === 'object' && s.archivedAt) archived.add(sid);
+          }
+          console.log('seasons with archivedAt: ' + archived.size);
+          if (archived.size === 0) {
+            console.log('nothing to strip — artifact unchanged (normal until the first graduation)');
+            process.exit(0);
+          }
+
+          function* walk(dir) {
+            for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+              const p = path.join(dir, e.name);
+              if (e.isDirectory()) yield* walk(p);
+              else if (e.isFile()) yield p;
+            }
+          }
+          function sidForFile(relPath) {
+            const parts = relPath.split(path.sep);
+            const base = parts[parts.length - 1].replace(/\.json$/i, '');
+            if (seasonsObj[base]) return base;
+            for (let i = 0; i < parts.length - 1; i++) if (seasonsObj[parts[i]]) return parts[i];
+            return null;
+          }
+
+          let deleted = 0, deletedBytes = 0, kept = 0;
+          const samples = [];
+          for (const dir of DIRS) {
+            const abs = path.join(ROOT, dir);
+            if (!fs.existsSync(abs)) fail(dir + ' does not exist in the artifact tree');
+            for (const f of walk(abs)) {
+              const sid = /\.json$/i.test(f) ? sidForFile(path.relative(abs, f)) : null;
+              if (sid && archived.has(sid)) {
+                deletedBytes += fs.statSync(f).size;
+                fs.unlinkSync(f);
+                deleted++;
+                if (samples.length < 3) samples.push(dir + '/' + path.relative(abs, f));
+              } else kept++;
+            }
+          }
+          console.log('stripped ' + deleted + ' archived-season files (' + (deletedBytes / 1048576).toFixed(1) + ' MiB raw) across ' + archived.size + ' seasons; kept ' + kept + ' files');
+          if (samples.length) console.log('  samples: ' + samples.join(', '));
+          if (deleted === 0) console.log('  ⚠ archivedAt seasons exist but no files matched — worth a look, not fatal (files may already be absent)');
+          SCRIPT_EOF
+          node /tmp/strip-archived.cjs
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

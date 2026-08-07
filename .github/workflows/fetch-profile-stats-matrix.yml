@@ -630,51 +630,23 @@ jobs:
             --field "recheck_private=${NEXT_RECHECK}" \
             --field "shards=${NEXT_SHARDS}"
 
-      # ── Terminal fan-out ────────────────────────────────────────────────────
-      # Each dispatch is gated `!cancelled() && status == stuck` rather than the
-      # bare status check: these four are INDEPENDENT of each other, and with
-      # plain step ordering a failure in the first one skipped the remaining ones
-      # — including build-team-stats, the roster-freshness link. Any that throws
-      # still turns the job red.
-      #
-      # Fold is NOT dispatched here any more (2026-08-04). The `data-write` queue
-      # holds ONE pending run and a new arrival CANCELS the previous waiter —
-      # cancel-in-progress:false protects only the RUNNING slot. Dispatching Fold
-      # and team-stats in the same fan-out second while anything held the lock
-      # (nightly, Sunday backfill, Monday fixtures sweep) meant team-stats evicted
-      # Fold deterministically — 2/2 nights after the 2026-08-02 dispatch
-      # hardening made every racer show up reliably (found by Mark). Ordering
-      # over locking: team-stats now dispatches Fold when it FINISHES
-      # (chain_fold=true below), so Fold arrives while the lock is settling
-      # instead of gambling for the one pending slot at the worst moment.
+      # ── Terminal: dispatch the post-drain chain ────────────────────────────
+      # Was a FOUR-dispatch fan-out (leaderboards / search / records / team-stats,
+      # with team-stats chaining fold). Once those workflows gained the data-write
+      # lock (2026-08-06), the burst met GitHub's ONE-WAITER rule: each new arrival
+      # evicts the previous waiter, so only the last-dispatched survived and
+      # leaderboards/search/records effectively stopped running (trap T19,
+      # self-inflicted by the lock fix). Replaced 2026-08-07 by ONE dispatch of
+      # post-drain-chain.yml, which runs the same builds as sequential jobs under a
+      # single workflow-level data-write acquisition — no waiters, nothing to evict.
+      # The chain also owns the team-stats -> fold ordering (2026-08-04) and ends by
+      # dispatching Deploy Pages. Roster-lag rationale unchanged: the chain's
+      # team-stats runs AFTER the matrix drains, so rosters see tonight's stats.
 
-      - name: Trigger leaderboards rebuild
+      - name: Trigger post-drain chain
         if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
         run: |
-          /tmp/gh-dispatch.sh build-leaderboards.yml --field "force=false"
-
-      - name: Trigger search index rebuild
-        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
-        run: |
-          /tmp/gh-dispatch.sh build-search-index.yml
-
-      - name: Trigger records rebuild
-        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
-        run: |
-          /tmp/gh-dispatch.sh build-records.yml
-
-      - name: Trigger team-stats rebuild
-        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
-        # Rebuild team-stats AFTER the matrix drains: roster stat lines are
-        # sourced from player reg stats (players/{xx}/*.json seasons[].regs[].stats),
-        # which this matrix writes. The nightly's own team-stats job runs BEFORE
-        # the matrix is even triggered, so it can never see tonight's stats —
-        # without this, the roster tab lagged the player view by a full day
-        # (2026-07-21 roster-lag fix). active_only keeps it to unlocked seasons.
-        # chain_fold=true: team-stats dispatches fold-diverged-players.yml on
-        # completion — see the fan-out comment above for why Fold left this list.
-        run: |
-          /tmp/gh-dispatch.sh build-team-stats.yml --field "active_only=true" --field "chain_fold=true"
+          /tmp/gh-dispatch.sh post-drain-chain.yml
 
       - name: Checkout repo for cleanup
         if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}

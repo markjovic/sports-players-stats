@@ -1,0 +1,263 @@
+# .github/workflows/post-drain-chain.yml
+name: Post-Drain Chain
+
+# The nightly derived-data builds, SEQUENTIAL, in rebuild-chain.yml's proven shape:
+# one workflow, jobs chained with `needs`, the data-write lock held at WORKFLOW level
+# for the whole chain (T25: the chain queues behind a running nightly instead of
+# colliding, and nothing rewrites main between links).
+#
+# WHY THIS EXISTS (2026-08-07): the matrix terminal used to fan out FOUR dispatches
+# (team-stats / leaderboards / search / records) in one burst. Once those workflows
+# gained the data-write lock (2026-08-06), the burst met GitHub's ONE-WAITER rule —
+# each new arrival evicts the previous waiter ("Canceling since a higher priority
+# waiting request for data-write exists") — so only the last-dispatched survived and
+# leaderboards/search/records effectively stopped running (trap T19, self-inflicted).
+# As jobs under ONE lock acquisition there are no waiters to evict.
+#
+#   team-stats (active) ─┬─> venue-indexes -> search -> records -> leaderboards -> deploy
+#                        └─> dispatch fold (fire-and-forget: fold queues behind THIS
+#                            chain's lock as the lone waiter and runs when the chain
+#                            releases — the exact "arrives while the lock is settling"
+#                            ordering built on 2026-08-04, now with no eviction rivals.
+#                            Fold's completion fires its own Deploy Pages via the
+#                            existing workflow_run trigger.)
+#
+# venue-indexes moved here FROM nightly-crawl.yml: post-drain by construction, so the
+# matrix-storm push contention that forced its 240-minute backstop is gone — the
+# backstop is kept anyway (the push-retry loop's own bound is ~3h worst case, and the
+# loop must terminate the job, never the clock).
+#
+# Invocations are copied from the live workflows/jobs they replace, NOT inferred:
+#   team-stats:   nightly-crawl.yml team-stats job        -> build-team-stats.js --active-only
+#   fold:         build-team-stats.yml chain-fold job     -> dispatch fold-diverged-players.yml mode=apply
+#   venue-indexes: nightly-crawl.yml venue-indexes job    -> build-venue-indexes.js
+#   search:       rebuild-chain.yml (ran green 2026-08-06) -> build-search-index.js
+#   records:      build-records.yml, force unset          -> build-records.js        (bare = resume)
+#   leaderboards: build-leaderboards.yml, force=false     -> build-leaderboards.js   (bare = resume,
+#                 full scope — NOT --active-only; that flag belongs to the WEEKLY finals chain only)
+#
+# Dispatched from two places, one definition:
+#   - the matrix terminal at drain (status == stuck), replacing the old four-way burst
+#   - nightly-crawl.yml directly, on nights the matrix was NOT triggered (no new
+#     players, no rechecks) — those nights previously ran NO post-drain builds and
+#     fired NO Deploy Pages trigger at all, so the crawl's data sat unpublished.
+#
+# Every job checks out `ref: main`, not github.sha (trap T21). Gates are single-line
+# (trap T1), full-ancestry (a failure two steps up shows as the parent SKIPPED, not
+# failed). A failed job stops the chain; resume by re-dispatching with start_at.
+# No setup-node anywhere: nothing here fetches PlayHQ, and rebuild-chain proved the
+# ESM builders green on the runner's default node.
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_at:
+        description: 'Start at this step (earlier steps are skipped)'
+        required: false
+        default: 'team-stats'
+        type: choice
+        options:
+          - team-stats
+          - venue-indexes
+          - search
+          - records
+          - leaderboards
+          - deploy
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  team-stats:
+    if: ${{ inputs.start_at == 'team-stats' || inputs.start_at == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-team-stats.js --active-only
+
+  dispatch-fold:
+    # Fire-and-forget: fold carries its own data-write lock and queues behind THIS
+    # chain until it releases. success-gated like build-team-stats.yml's chain-fold
+    # job; skipped on resumes (start_at past team-stats), matching the old coupling
+    # where only a real team-stats run chained fold.
+    needs: [team-stats]
+    if: ${{ !cancelled() && needs.team-stats.result == 'success' && (inputs.start_at == 'team-stats' || inputs.start_at == '') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch Fold diverged players (mode=apply, chained)
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          /tmp/gh-dispatch.sh fold-diverged-players.yml --field "mode=apply"
+
+  venue-indexes:
+    needs: [team-stats]
+    # 240-minute backstop carried over from nightly-crawl.yml (2026-08-07 sizing): the
+    # work takes seconds; the budget belongs to the push-retry loop (60 attempts x up
+    # to 91s jitter + fetch/merge/push cycles ~ 3h worst case). The loop terminates
+    # this job — success, or red with the real push error — never the clock. Post-drain
+    # under the chain lock the contention that motivated it is largely gone anyway.
+    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && (inputs.start_at == 'team-stats' || inputs.start_at == 'venue-indexes' || inputs.start_at == '') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-venue-indexes.js
+
+  search:
+    needs: [team-stats, venue-indexes]
+    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && inputs.start_at != 'records' && inputs.start_at != 'leaderboards' && inputs.start_at != 'deploy' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-search-index.js
+
+  records:
+    needs: [team-stats, venue-indexes, search]
+    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && inputs.start_at != 'leaderboards' && inputs.start_at != 'deploy' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-records.js
+
+  leaderboards:
+    needs: [team-stats, venue-indexes, search, records]
+    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && inputs.start_at != 'deploy' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-leaderboards.js
+
+  deploy:
+    needs: [team-stats, venue-indexes, search, records, leaderboards]
+    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && needs.leaderboards.result != 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch Deploy Pages
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: /tmp/gh-dispatch.sh "Deploy Pages"
