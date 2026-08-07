@@ -1,0 +1,59 @@
+# .github/workflows/size-resweep.yml
+# READ-ONLY: sizes the spectator re-sweep target (FINAL games carrying a partial
+# pre-spc roster — p[] present, no spc). One dispatch, numbers before machinery.
+name: Size Resweep
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure re-sweep target
+        run: |
+          cat > /tmp/size-resweep.cjs << 'SCRIPT_EOF'
+          // Read-only: sizes the spectator re-sweep target — FINAL games with a partial
+          // pre-spc roster (p[] present, no spc, not forfeit/legacy/hidden-dead). Lives
+          // embedded in .github/workflows/size-resweep.yml.
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const dir = path.join(ROOT, 'games', 'bv');
+          if (!fs.existsSync(dir)) { console.error('ABORT: games/bv missing'); process.exit(1); }
+
+          let games = 0, target = 0, noP = 0, spc = 0, other = 0;
+          let targetPIds = 0;
+          const byYear = new Map();
+          for (const f of fs.readdirSync(dir)) {
+            if (!f.endsWith('.json')) continue;
+            let sg; try { sg = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
+            for (const g of Object.values(sg.games || {})) {
+              games++;
+              if (g.st !== 'FINAL' || g.forfeit || g.legacy) { other++; continue; }
+              if (g.spc) { spc++; continue; }
+              const n = Array.isArray(g.p) ? g.p.length : 0;
+              if (n === 0) { noP++; continue; }        // the (settled) unrecoverable roster-less residue
+              target++; targetPIds += n;
+              const y = (g.d || '????').slice(0, 4);
+              byYear.set(y, (byYear.get(y) || 0) + 1);
+            }
+          }
+          console.log('games scanned                          : ' + games.toLocaleString());
+          console.log('  FINAL with spc (already box-captured): ' + spc.toLocaleString());
+          console.log('  FINAL roster-less, no spc (settled unrecoverable residue): ' + noP.toLocaleString());
+          console.log('  non-FINAL / forfeit / legacy         : ' + other.toLocaleString());
+          console.log('');
+          console.log('RE-SWEEP TARGET (FINAL, partial pre-spc p[], no spc): ' + target.toLocaleString() + ' games');
+          console.log('  current p[] entries across them      : ' + targetPIds.toLocaleString() + ' (avg ' + (target ? (targetPIds/target).toFixed(1) : 0) + '/game)');
+          console.log('  by year:');
+          for (const [y, n] of [...byYear.entries()].sort()) console.log('    ' + y + '  ' + n.toLocaleString());
+          console.log('  cost: one spectator query per game (backfill pacing applies).');
+          SCRIPT_EOF
+          node /tmp/size-resweep.cjs
