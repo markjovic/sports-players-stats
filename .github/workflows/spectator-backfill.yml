@@ -11,6 +11,13 @@ name: Spectator Backfill
 # runner's outbound fingerprint, causing CloudFront 403s (absolute rule).
 
 on:
+  schedule:
+    # Weekly permanent tail (2026-08-07): post-campaign, sweeps the games that aged
+    # past the 30-day guard since last week — the nightly's spectator misses and any
+    # deferred stragglers — so the pre-spc stranding can never rebuild. Sat 10:00 UTC
+    # = 20:00 AEST Saturday: clear of the nightly (15:00 UTC) and done before the
+    # archive's weekly deploy (18:00 UTC Sat) ships the results.
+    - cron: '0 10 * * 6'
   workflow_dispatch:
     inputs:
       max_games:
@@ -28,10 +35,15 @@ on:
         required: false
         default: false
         type: boolean
-      locked_only:
-        description: 'Restrict to LOCKED seasons (sweep-order safety: spc freezes a box forever, and active-season boxes can still be completing — sweep locked first, active last once settled)'
+      min_age_days:
+        description: 'Skip games younger than this many days (spc freezes a box forever and fresh boxes may still be completing; the deferred tail self-drains on later dispatches). 0 disables.'
         required: false
-        default: true
+        default: '30'
+        type: string
+      locked_only:
+        description: 'Optional extra restriction to LOCKED seasons only'
+        required: false
+        default: false
         type: boolean
       include_partial:
         description: 'ALSO re-fetch games carrying a PARTIAL roster (2026-08-07 completion re-sweep: partial pre-spc lists proven to be incomplete captures of since-completed boxes). Default off = 2026-08-06 behaviour.'
@@ -68,7 +80,14 @@ jobs:
         run: |
           ARGS="--max-games=${{ inputs.max_games }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
-          if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ "${{ inputs.include_partial }}" = "true" ] || [ "${{ inputs.include_partial }}" = "True" ]; then ARGS="$ARGS --include-partial"; fi
-          if [ "${{ inputs.locked_only }}" = "true" ] || [ "${{ inputs.locked_only }}" = "True" ]; then ARGS="$ARGS --locked-only"; fi
+          # Scheduled runs get NO input values (workflow_dispatch defaults do not
+          # apply to cron triggers) — set the weekly tail's arguments explicitly.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ARGS="$ARGS --include-partial --min-age-days=30"
+          else
+            if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
+            if [ "${{ inputs.include_partial }}" = "true" ] || [ "${{ inputs.include_partial }}" = "True" ]; then ARGS="$ARGS --include-partial"; fi
+            if [ "${{ inputs.locked_only }}" = "true" ] || [ "${{ inputs.locked_only }}" = "True" ]; then ARGS="$ARGS --locked-only"; fi
+            if [ -n "${{ inputs.min_age_days }}" ]; then ARGS="$ARGS --min-age-days=${{ inputs.min_age_days }}"; fi
+          fi
           node scripts/spectator-backfill.js $ARGS
