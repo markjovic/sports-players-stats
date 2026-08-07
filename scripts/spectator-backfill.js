@@ -40,6 +40,8 @@
 //   node scripts/spectator-backfill.js --dry-run          # scan + report the queue, nothing else
 //   node scripts/spectator-backfill.js                    # fetch up to --max-games (default 100000)
 //   node scripts/spectator-backfill.js --season=<sid>     # one season only
+//   node scripts/spectator-backfill.js --include-partial   # ALSO re-fetch partial-roster games
+//                                                          # (the 2026-08-07 completion re-sweep)
 
 'use strict';
 
@@ -71,6 +73,14 @@ const ARGS = Object.fromEntries(
 const DRY_RUN       = !!ARGS['dry-run'];
 const TARGET_SEASON = ARGS.season || null;
 const MAX_GAMES     = ARGS['max-games'] ? Math.max(1, parseInt(ARGS['max-games'], 10)) : 100000;
+// 2026-08-07 (--include-partial): widens the queue to games that ALREADY carry a
+// partial roster. This deliberately reverses the 2026-08-06 correction below FOR
+// OPTED-IN RUNS ONLY, because its premise fell: 7da945a8 proved (stored p[] a
+// strict 12-of-19 subset of the spectator box, verified) that partial lists are
+// INCOMPLETE captures of boxes that completed after the round settled — the
+// measured source of 757k missing appearances across 102,609 players. Default
+// remains the 08-06 behaviour.
+const INCLUDE_PARTIAL = !!ARGS['include-partial'];
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -490,7 +500,7 @@ function buildBackfillQueue(sportIndex) {
   const queue = [];
   const tallies = {
     files: 0, games: 0, spcSet: 0, forfeit: 0, otherTerminal: 0, notFinal: 0,
-    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0,
+    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0,
     queuedLocked: 0, queuedActive: 0,
   };
   const perSeason = new Map();
@@ -512,9 +522,10 @@ function buildBackfillQueue(sportIndex) {
       const scoreNoSt  = g.st == null && g.hs != null && g.as != null;
       if (!finalSt && !scoreNoSt)               { tallies.notFinal++;      continue; }
       const nPlayers = ((g.p && g.p.length) || 0) + ((g.hp && g.hp.length) || 0) + ((g.ap && g.ap.length) || 0);
-      if (nPlayers > 0) { tallies.partialListLeftAlone++; continue; }   // has a roster — NOT our business
+      if (nPlayers > 0 && !INCLUDE_PARTIAL) { tallies.partialListLeftAlone++; continue; }   // has a roster — NOT our business (default)
+      if (nPlayers > 0) tallies.queuedPartialList++;
       if (finalSt) tallies.queuedFinalSt++; else tallies.queuedScoreNoSt++;
-      tallies.queuedEmptyList++;
+      if (nPlayers === 0) tallies.queuedEmptyList++;
       if (locked) tallies.queuedLocked++; else tallies.queuedActive++;
       perSeason.set(sid, (perSeason.get(sid) || 0) + 1);
       queue.push({
@@ -568,7 +579,8 @@ async function main() {
   line('  forfeits / byes / cancelled / abandoned', tallies.forfeit + tallies.otherTerminal);
   line('  not FINAL and unscored (future etc.)', tallies.notFinal);
   line('  with a player list already (LEFT ALONE)', tallies.partialListLeftAlone);
-  line('QUEUE — no player list at all', queue.length);
+  if (INCLUDE_PARTIAL) line('  QUEUED with partial list (--include-partial)', tallies.queuedPartialList);
+  line(INCLUDE_PARTIAL ? 'QUEUE — empty-list + partial-list' : 'QUEUE — no player list at all', queue.length);
   line('  with st=FINAL', tallies.queuedFinalSt);
   line('  scored but no st field (older writers)', tallies.queuedScoreNoSt);
   line('  in LOCKED seasons', tallies.queuedLocked);
@@ -644,11 +656,20 @@ async function main() {
     // is shortened.
     const gf = loadGameFile(seasonId);
     if (gf.games[gameId] && !DRY_RUN) {
+      // DEVIATION from the nightly's verbatim block (2026-08-07, --include-partial
+      // era): p[] is replaced only when the fetched id SET differs from what is
+      // stored — a widened sweep would otherwise rewrite ~2M entries whose only
+      // change is element order, pure churn. spc:1 is ALWAYS set (that is the
+      // progress record). All other entry fields are preserved untouched.
       if (allPlayers.length > 0) {
-        gf.games[gameId].p = allPlayers.map(p => ({
+        const fresh = allPlayers.map(p => ({
           id: truncateUuid(p.profileID),
           // n omitted — name not needed in p[], profileID is the key
         }));
+        const oldSet = new Set((gf.games[gameId].p || []).map(x => x.id));
+        const newSet = new Set(fresh.map(x => x.id));
+        const same = oldSet.size === newSet.size && [...newSet].every(x => oldSet.has(x));
+        if (!same) gf.games[gameId].p = fresh;
       }
       gf.games[gameId].spc = 1;
       markGameDirty(seasonId);
