@@ -1,0 +1,122 @@
+# .github/workflows/repair-players-batch.yml
+name: Repair Players Batch
+
+# Batched roster repair for the appearance-gap backlog (staged plan, 2026-08-07):
+# recomputes the per-player gap ranking offline at run start, then repairs every
+# player at or above min_gap through the proven per-game path — appends gated by
+# the alias inspection (GENUINELY-ABSENT only). Staging = successive dispatches
+# with descending min_gap (100, then 50, then 20). Long-running with mid-run
+# commits (progress file committed at every interval), so this workflow HOLDS the
+# data-write lock for its whole run (~60-90 min at min_gap=100) — dispatch in
+# daytime, clear of the nightly, and expect the post-drain chain to queue behind
+# it if they overlap. Resume = re-dispatch: done/dead players are skipped and the
+# ranking is recomputed, so a cancelled run loses nothing past its last commit.
+#
+# Locked-season writes: the tail dispatches Deploy Archive Pages on apply (split
+# invariant). Player-side data (games[], W/L, aggregates) rebuilds downstream on
+# the next post-drain chain.
+#
+# NO setup-node (this job fetches api.playhq.com — absolute rule). No git config
+# step: the script's gitCommit (verbatim from nightly-crawl.js) passes identity
+# inline.
+
+on:
+  workflow_dispatch:
+    inputs:
+      min_gap:
+        description: 'Repair every player whose gap (career gp minus games[]) is at least this'
+        required: false
+        default: '100'
+        type: string
+      max_players:
+        description: 'Safety cap on players processed this run (0 = no cap)'
+        required: false
+        default: '0'
+        type: string
+      mode:
+        description: 'dry-run = rank, fetch each target profile, and report exactly what apply would append (no writes, no commits). apply = repair, commit as it goes, redeploy archive.'
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Repair batch
+        run: |
+          ARGS="--min-gap=${{ inputs.min_gap }}"
+          if [ "${{ inputs.max_players }}" != "0" ] && [ -n "${{ inputs.max_players }}" ]; then
+            ARGS="$ARGS --max-players=${{ inputs.max_players }}"
+          fi
+          if [ "${{ inputs.mode }}" = "apply" ]; then
+            node scripts/repair-players-batch.js $ARGS --apply
+          else
+            node scripts/repair-players-batch.js $ARGS
+          fi
+
+      - name: Install dispatch retry helper
+        if: ${{ inputs.mode == 'apply' }}
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch Deploy Archive Pages (locked-season writes — split invariant)
+        if: ${{ inputs.mode == 'apply' }}
+        env:
+          GH_TOKEN: ${{ secrets.ARCHIVE_DISPATCH_PAT }}
+          GH_REPO:  markjovic/sports-players-stats-archive
+        run: /tmp/gh-dispatch.sh deploy-archive-pages.yml
