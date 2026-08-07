@@ -40,7 +40,10 @@
 //   node scripts/spectator-backfill.js --dry-run          # scan + report the queue, nothing else
 //   node scripts/spectator-backfill.js                    # fetch up to --max-games (default 100000)
 //   node scripts/spectator-backfill.js --season=<sid>     # one season only
-//   node scripts/spectator-backfill.js --locked-only       # locked seasons only (sweep-order safety)
+//   node scripts/spectator-backfill.js --min-age-days=30   # (DEFAULT) skip games younger than 30
+//                                                          # days — the fresh tail self-drains later;
+//                                                          # =0 disables the guard entirely
+//   node scripts/spectator-backfill.js --locked-only       # optional extra restriction to locked seasons
 //   node scripts/spectator-backfill.js --include-partial   # ALSO re-fetch partial-roster games
 //                                                          # (the 2026-08-07 completion re-sweep)
 
@@ -89,6 +92,25 @@ const INCLUDE_PARTIAL = !!ARGS['include-partial'];
 // will ever get: sweep them first; a final unrestricted pass catches the rest
 // once those seasons settle.
 const LOCKED_ONLY = !!ARGS['locked-only'];
+// 2026-08-07 (--heal-dangling): collect the debt of the CANCELLED 700k run
+// (run 3, timed out at ~306k games): its games committed p[] progressively but
+// its player phase never ran, leaving truncated p[] ids with NO player behind
+// them — and spc hides those games from every normal queue. This mode inverts
+// the eligibility test: FINAL games WITH spc whose p[] contains an id that
+// resolveToFullUuid cannot resolve (null = unknown to index AND aliases). The
+// spectator re-fetch restores the full profileIDs and names, and the (now
+// incremental) player phase stubs them. Self-limiting: once stubbed, the ids
+// resolve and the game drops out of this queue.
+const HEAL_DANGLING = !!ARGS['heal-dangling'];
+// 2026-08-07 (--min-age-days, superseding locked-only as the DEFAULT safety):
+// the spc-freeze risk is a FRESHNESS property, not a lock property — only games
+// whose boxes may still be completing are endangered, i.e. the last few weeks.
+// Guarding by lock status deferred months of settled current-season data for up
+// to a year; guarding by age fixes everything old NOW and defers only the fresh
+// tail, which self-drains as games age past the threshold on later dispatches.
+// Games with no date are treated as old (they long predate any completion window).
+const MIN_AGE_DAYS = ARGS['min-age-days'] !== undefined ? Math.max(0, parseInt(ARGS['min-age-days'], 10) || 0) : 30;
+const MIN_AGE_CUTOFF = MIN_AGE_DAYS > 0 ? new Date(Date.now() - MIN_AGE_DAYS * 86400000).toISOString().slice(0, 10) : null;
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -98,7 +120,7 @@ const INDEX_DIR     = path.join(ROOT, 'players', 'indexes');
 const INDEX_FILE    = path.join(ROOT, 'data', 'sports-index.json');
 
 const CONCURRENCY_SPECTATOR = 3;       // unchanged (spectator.playhq.com)
-const COMMIT_EVERY_GAMES    = 2000;    // flush + commit spc/p[] progress every N games
+const COMMIT_EVERY_GAMES    = Math.max(1, parseInt(process.env.SB_COMMIT_EVERY || '', 10) || 2000);    // flush + commit spc/p[] progress every N games (env override exists for crash-consistency testing only)
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
@@ -508,7 +530,7 @@ function buildBackfillQueue(sportIndex) {
   const queue = [];
   const tallies = {
     files: 0, games: 0, spcSet: 0, forfeit: 0, otherTerminal: 0, notFinal: 0,
-    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0,
+    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0, tooRecent: 0, queuedDangling: 0, danglingIds: 0,
     queuedLocked: 0, queuedActive: 0,
   };
   const perSeason = new Map();
@@ -524,9 +546,35 @@ function buildBackfillQueue(sportIndex) {
     for (const [gameId, g] of Object.entries(gf.games || {})) {
       if (!g) continue;
       tallies.games++;
+      if (HEAL_DANGLING) {
+        if (g.st !== 'FINAL' || !g.spc) continue;
+        const pIds = Array.isArray(g.p) ? g.p : [];
+        let dangling = false;
+        for (const x of pIds) {
+          if (x?.id && resolveToFullUuid(x.id, ROOT) === null) { dangling = true; tallies.danglingIds++; }
+        }
+        if (!dangling) continue;
+        tallies.queuedDangling++;
+        if (locked) tallies.queuedLocked++; else tallies.queuedActive++;
+        perSeason.set(sid, (perSeason.get(sid) || 0) + 1);
+        queue.push({
+          gameId,
+          seasonId:  sid,
+          rn:        g.rn  || null,
+          gradeId:   g.gid || null,
+          gradeName: g.gn  || null,
+          homeTid:   g.h  || g.t1 || null,
+          awayTid:   g.a  || g.t2 || null,
+          homeScore: g.hs ?? null,
+          awayScore: g.as ?? null,
+        });
+        continue;
+      }
       if (g.spc)                                { tallies.spcSet++;        continue; }
       if (g.forfeit)                            { tallies.forfeit++;       continue; }
       if (g.bye || g.cancelled || g.abandoned || g.legacy) { tallies.otherTerminal++; continue; }
+      // ISO dates compare lexicographically; absent d = old (pre-dates any window)
+      if (MIN_AGE_CUTOFF && g.d && g.d > MIN_AGE_CUTOFF) { tallies.tooRecent++; continue; }
       const finalSt    = g.st === 'FINAL';
       const scoreNoSt  = g.st == null && g.hs != null && g.as != null;
       if (!finalSt && !scoreNoSt)               { tallies.notFinal++;      continue; }
@@ -588,6 +636,8 @@ async function main() {
   line('  forfeits / byes / cancelled / abandoned', tallies.forfeit + tallies.otherTerminal);
   line('  not FINAL and unscored (future etc.)', tallies.notFinal);
   line('  with a player list already (LEFT ALONE)', tallies.partialListLeftAlone);
+  if (MIN_AGE_CUTOFF) line(`  deferred, younger than ${MIN_AGE_DAYS} days (box may still be completing)`, tallies.tooRecent);
+  if (HEAL_DANGLING) { line('  HEAL: spc games with dangling p[] ids', tallies.queuedDangling); line('  HEAL: dangling id occurrences', tallies.danglingIds); }
   if (INCLUDE_PARTIAL) line('  QUEUED with partial list (--include-partial)', tallies.queuedPartialList);
   line(INCLUDE_PARTIAL ? 'QUEUE — empty-list + partial-list' : 'QUEUE — no player list at all', queue.length);
   line('  with st=FINAL', tallies.queuedFinalSt);
@@ -617,6 +667,15 @@ async function main() {
   // ── Spectator fetch — nightly-crawl.js Phase 3, verbatim ─────────────────────
   console.log(`Spectator box scores (${needsSpectator.length} games)…`);
   const playerDeltas = new Map();
+  let totalStubbed = 0;
+  // Incremental player phase (see the crash-consistency note below): no-op on an
+  // empty window, otherwise resolve → detect-new → stub for THIS window's deltas.
+  let playersSeenWindows = 0;   // summed per window; a player spanning windows counts once per window
+  const applyPlayerPhase = async (deltas, sportIndex) => {
+    if (deltas.size === 0) return;
+    playersSeenWindows += deltas.size;
+    await applyPlayerPhaseImpl(deltas, sportIndex);
+  };
   let spectatorHits = 0, spectatorMiss = 0, p3Done = 0;
 
   const p3Tasks = needsSpectator.map(({ gameId, seasonId, rn, gradeId, gradeName, homeTid, awayTid, homeScore, awayScore }) => async () => {
@@ -694,7 +753,8 @@ async function main() {
     sinceCommit++;
     if (sinceCommit >= COMMIT_EVERY_GAMES) {
       sinceCommit = 0;
-      await tryPeriodicCommit(`spectator-backfill: progress ${p3Done}/${needsSpectator.length} (${spectatorHits} hits)`, ['games/']);
+      await applyPlayerPhase(playerDeltas, sportIndex);   // stubs THIS window's new players
+      await tryPeriodicCommit(`spectator-backfill: progress ${p3Done}/${needsSpectator.length} (${spectatorHits} hits, ${totalStubbed} stubbed)`, ['games/', 'players/']);
       evictCleanSeasons();
     }
   });
@@ -702,7 +762,6 @@ async function main() {
   await runPool(wrappedTasks, CONCURRENCY_SPECTATOR);
   console.log(`  ${needsSpectator.length}/${needsSpectator.length} done`
             + `  hits: ${spectatorHits}  misses: ${spectatorMiss}`);
-  console.log(`  Players with deltas: ${playerDeltas.size}`);
 
   const flushedSpc = flushGameFiles();
   if (flushedSpc > 0) {
@@ -710,7 +769,20 @@ async function main() {
   }
   console.log();
 
+  // ── Player phase, INCREMENTAL (2026-08-07 crash-consistency fix) ─────────────
+  // Run 3 (max-games=700000) hit the 350-min timeout at ~306k games: its game
+  // writes were durable (committed per window) but this phase — previously a
+  // single end-of-run pass — died with ~306k games' worth of deltas in memory,
+  // stranding never-stubbed players behind spc. "A timeout costs at most one
+  // window" was only true for HALF the writes. Now the same pipeline runs per
+  // commit window (stubs are cheap: ~84 per 2,000 games in run 1), the window
+  // commit carries games/ AND players/ together, and the delta map is cleared —
+  // which also fixes the multi-million-entry memory profile of large runs.
+  // The pipeline below is otherwise the nightly-crawl.js verbatim lineage.
+  await applyPlayerPhase(playerDeltas, sportIndex);
+
   // ── api-canonical resolution — nightly-crawl.js, verbatim ────────────────────
+  async function applyPlayerPhaseImpl(playerDeltas, sportIndex) {
   {
     const canonicalDeltas = new Map();
     let redirected = 0;
@@ -815,9 +887,14 @@ async function main() {
   }
   console.log(`  Stubbed: ${stubbed}`);
   console.log();
+  totalStubbed += stubbed;
+  playerDeltas.clear();
+  }
 
+  // terminal commit: the final partial window's games were flushed above; this
+  // carries its stubs (windows mid-run committed theirs inside the loop).
   await gitCommit(
-    `spectator-backfill: ${spectatorHits} games filled, ${stubbed} new players stubbed`,
+    `spectator-backfill: ${spectatorHits} games filled, ${totalStubbed} new players stubbed (this run)`,
     ['players/']
   );
 
@@ -826,8 +903,8 @@ async function main() {
   console.log('─'.repeat(50));
   console.log(`  Queue total:       ${queue.length}  (this run: ${needsSpectator.length})`);
   console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
-  console.log(`  Players seen:      ${playerDeltas.size}`);
-  console.log(`  New players:       ${stubbed}`);
+  console.log(`  Players seen:      ${playersSeenWindows} (summed per commit window)`);
+  console.log(`  New players:       ${totalStubbed}`);
   console.log(`  Remaining (approx): ${queue.length - spectatorHits} — misses stay queued until spectator answers`);
   console.log(`  Elapsed:           ${elapsed}s`);
   console.log('─'.repeat(50));
