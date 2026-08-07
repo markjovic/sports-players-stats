@@ -28,6 +28,11 @@ on:
         required: false
         default: false
         type: boolean
+      include_partial:
+        description: 'ALSO re-fetch games carrying a PARTIAL roster (2026-08-07 completion re-sweep: partial pre-spc lists proven to be incomplete captures of since-completed boxes). Default off = 2026-08-06 behaviour.'
+        required: false
+        default: false
+        type: boolean
 
 # Writes games/ and players/ — must hold the write lock (trap T25: push contention
 # on a 6 GB repo is path-agnostic; every repo-writing workflow queues here).
@@ -59,4 +64,5 @@ jobs:
           ARGS="--max-games=${{ inputs.max_games }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.include_partial }}" = "true" ] || [ "${{ inputs.include_partial }}" = "True" ]; then ARGS="$ARGS --include-partial"; fi
           node scripts/spectator-backfill.js $ARGS
