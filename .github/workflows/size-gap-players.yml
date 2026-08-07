@@ -1,0 +1,100 @@
+# .github/workflows/size-gap-players.yml
+# READ-ONLY: per-player appearance-gap distribution, entirely offline (zero API
+# calls). Answers "how many players are affected and how badly": for every player,
+# gap = profile-derived career gp minus roster-derived games[] length — the same
+# arithmetic that reproduces Nate Parker's measured 463 from his own file. Writes
+# nothing, commits nothing, dispatches nothing. Re-run at intervals to measure
+# whether the gap is GROWING (2026 seasons are already producing new ones).
+name: Size Gap Players
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout (full)
+        uses: actions/checkout@v4
+
+      - name: Measure per-player appearance-gap distribution
+        run: |
+          cat > /tmp/size-gap-players.cjs << 'SCRIPT_EOF'
+          // Read-only offline scan: per-player appearance-gap distribution. Lives embedded
+          // in .github/workflows/size-gap-players.yml. Zero API calls: for every player,
+          // gap = profile-derived career gp (sports.*.gp, written by fetch-profile-stats)
+          // minus roster-derived games[] length (built from games/bv p[] by
+          // build-player-games). Cross-checks its own total against the known 775,703
+          // appearance-gap figure (2026-08-06) — a large mismatch means the methods
+          // measure different things and says so.
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const REFERENCE_TOTAL = 775703;
+          function fail(m){ console.error('ABORT: ' + m); process.exit(1); }
+
+          const playersDir = path.join(ROOT, 'players');
+          if (!fs.existsSync(playersDir)) fail('players/ not found');
+
+          const BUCKETS = [[1,1],[2,5],[6,20],[21,50],[51,100],[101,Infinity]];
+          const bucketCounts = new Array(BUCKETS.length).fill(0);
+          let scanned = 0, unreadable = 0, noGp = 0, zeroGap = 0, negGap = 0, negGapSum = 0;
+          let affected = 0, gapSum = 0;
+          const top = [];   // keep worst 20 {gap, name, uuid}
+
+          const shards = fs.readdirSync(playersDir).filter(d => /^[0-9a-f]{2}$/.test(d));
+          for (const shard of shards) {
+            const dir = path.join(playersDir, shard);
+            for (const f of fs.readdirSync(dir)) {
+              if (!f.endsWith('.json')) continue;
+              scanned++;
+              let p;
+              try { p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { unreadable++; continue; }
+              let gp = 0, hasGp = false;
+              for (const s of Object.values(p.sports || {})) {
+                if (s && typeof s.gp === 'number') { gp += s.gp; hasGp = true; }
+              }
+              if (!hasGp) { noGp++; continue; }   // never profile-fetched (or private) — unmeasurable this way
+              const games = Array.isArray(p.games) ? p.games.length : 0;
+              const gap = gp - games;
+              if (gap === 0) { zeroGap++; continue; }
+              if (gap < 0) { negGap++; negGapSum += -gap; continue; }   // roster ahead of a stale profile fetch
+              affected++; gapSum += gap;
+              for (let i = 0; i < BUCKETS.length; i++) {
+                if (gap >= BUCKETS[i][0] && gap <= BUCKETS[i][1]) { bucketCounts[i]++; break; }
+              }
+              if (top.length < 20 || gap > top[top.length-1].gap) {
+                top.push({ gap, name: p.name || '?', uuid: f.replace(/\.json$/,''), gp, games });
+                top.sort((a,b) => b.gap - a.gap);
+                if (top.length > 20) top.pop();
+              }
+            }
+          }
+
+          const pct = (a,b) => b ? (100*a/b).toFixed(1) : '0.0';
+          console.log('players scanned            : ' + scanned.toLocaleString());
+          console.log('  unreadable               : ' + unreadable.toLocaleString());
+          console.log('  no profile gp (unmeasurable this way — never fetched / private): ' + noGp.toLocaleString());
+          console.log('  gap = 0 (fully captured) : ' + zeroGap.toLocaleString());
+          console.log('  gap < 0 (roster ahead of stale profile fetch): ' + negGap.toLocaleString() + '  (sum ' + negGapSum.toLocaleString() + ')');
+          console.log('');
+          console.log('PLAYERS WITH A POSITIVE GAP: ' + affected.toLocaleString() + '  (' + pct(affected, scanned) + '% of scanned)');
+          console.log('  total missing appearances: ' + gapSum.toLocaleString());
+          console.log('  reference (size-appearance-gaps, 2026-08-06): ' + REFERENCE_TOTAL.toLocaleString() +
+                      ' — a large mismatch means the two methods measure different things');
+          console.log('  distribution:');
+          for (let i = 0; i < BUCKETS.length; i++) {
+            const [a,b] = BUCKETS[i];
+            const label = b === Infinity ? (a + '+') : (a === b ? String(a) : a + '-' + b);
+            console.log('    gap ' + label.padEnd(8) + bucketCounts[i].toLocaleString().padStart(10) + ' players');
+          }
+          console.log('  worst 20 (repair-player candidates):');
+          for (const t of top) console.log('    ' + String(t.gap).padStart(5) + '  ' + t.uuid + '  gp=' + t.gp + ' games=' + t.games + '  ' + JSON.stringify(t.name));
+          SCRIPT_EOF
+          node /tmp/size-gap-players.cjs
