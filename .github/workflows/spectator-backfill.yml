@@ -28,6 +28,11 @@ on:
         required: false
         default: false
         type: boolean
+      locked_only:
+        description: 'Restrict to LOCKED seasons (sweep-order safety: spc freezes a box forever, and active-season boxes can still be completing — sweep locked first, active last once settled)'
+        required: false
+        default: true
+        type: boolean
       include_partial:
         description: 'ALSO re-fetch games carrying a PARTIAL roster (2026-08-07 completion re-sweep: partial pre-spc lists proven to be incomplete captures of since-completed boxes). Default off = 2026-08-06 behaviour.'
         required: false
@@ -65,4 +70,5 @@ jobs:
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
           if [ "${{ inputs.include_partial }}" = "true" ] || [ "${{ inputs.include_partial }}" = "True" ]; then ARGS="$ARGS --include-partial"; fi
+          if [ "${{ inputs.locked_only }}" = "true" ] || [ "${{ inputs.locked_only }}" = "True" ]; then ARGS="$ARGS --locked-only"; fi
           node scripts/spectator-backfill.js $ARGS
