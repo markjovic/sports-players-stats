@@ -207,6 +207,70 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - run: node scripts/build-leaderboards.js
 
+  dispatch-graduation:
+    # 2026-08-07 (§2.7): graduation's dispatch point moved HERE from nightly-crawl.yml.
+    # The chain is the last data-write holder of the night; dispatching graduation from
+    # its tail means the flip job's lock request always arrives AFTER the chain has
+    # released — graduate-seasons was the only data-write waiter left outside the chain,
+    # and now nothing shares a waiting queue with anything. Graduation stays
+    # UNCONDITIONAL (candidacy incl. the 28-day grace is decided in graduate-seasons.yml
+    # alone); a failed chain night skips it and the next night self-heals — grace makes
+    # timing a non-issue. Ancestry gate matches deploy: don't chain new work off a
+    # broken night.
+    needs: [team-stats, venue-indexes, search, records, leaderboards]
+    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && needs.leaderboards.result != 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch Graduate Seasons
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: /tmp/gh-dispatch.sh graduate-seasons.yml
+
   deploy:
     needs: [team-stats, venue-indexes, search, records, leaderboards]
     if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && needs.leaderboards.result != 'failure' }}

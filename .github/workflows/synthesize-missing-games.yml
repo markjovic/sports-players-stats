@@ -1,0 +1,142 @@
+# .github/workflows/synthesize-missing-games.yml
+name: Synthesize Missing Games
+
+# One-off (re-runnable) for OUTSTANDING §2.2: write profileOnly game entries for the
+# 9 games proven absent from games/bv (probe-missing-games, 2026-08-06 — Warrnambool
+# Term 1 2022 ×6, Warragul 2022 ×2, Warrnambool Summer 2021/22 ×1). The uuids input
+# takes the SAME value as the probe run's uuids input — copy it from that run's page
+# in the Actions UI. Idempotent: a re-run synthesizes nothing new and only appends a
+# player to an existing profileOnly entry if a new uuid proves membership.
+#
+# These seasons are LOCKED and ARCHIVED: on apply, the tail dispatches Deploy Archive
+# Pages (split invariant — writers of locked-season files trigger the archive
+# redeploy; the weekly cron is the backstop). The active site is unaffected (these
+# seasons are stripped from its artifact); player-side derived data rebuilds via the
+# normal builders on the next post-drain chain.
+#
+# NO setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      uuids:
+        description: 'Comma-separated player uuids — same value as the probe run''s uuids input'
+        required: true
+        type: string
+      mode:
+        description: 'dry-run = report only (no writes, no commit). apply = write entries, commit, redeploy archive.'
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  synthesize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Synthesize
+        run: |
+          if [ "${{ inputs.mode }}" = "apply" ]; then
+            node scripts/synthesize-missing-games.js --uuids="${{ inputs.uuids }}" --apply
+          else
+            node scripts/synthesize-missing-games.js --uuids="${{ inputs.uuids }}"
+          fi
+
+      # One committer, one commit. Explicit paths, never -A. Proven push pattern
+      # copied from repair-aliases.yml: 60 attempts, random 1-91s jitter,
+      # merge --abort cleanup, merge -X ours.
+      - name: Commit (push-with-retry)
+        if: ${{ inputs.mode == 'apply' }}
+        run: |
+          set -uo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add games/bv
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+            exit 0
+          fi
+          git commit -m "synthesize-missing-games: profileOnly entries for the 9 profile-proven games (OUTSTANDING 2.2)"
+          for i in $(seq 1 60); do
+            git merge --abort 2>/dev/null || true
+            if git fetch origin "$GITHUB_REF_NAME" \
+              && git merge -X ours "origin/$GITHUB_REF_NAME" -m "merge before synthesize-missing-games push" \
+              && git push origin "HEAD:$GITHUB_REF_NAME"; then
+              echo "pushed on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed, retrying"
+            sleep $(( (RANDOM % 91) + 1 ))
+          done
+          echo "push failed after 60 attempts"
+          exit 1
+
+      - name: Install dispatch retry helper
+        if: ${{ inputs.mode == 'apply' }}
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
+        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
+        # terminal, no build-team-stats — so rosters silently went stale repo-wide
+        # while every player file was correct. The four dispatches in this file are
+        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
+        # and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        # /tmp is per-job, so each dispatching job installs its own copy.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+      - name: Dispatch Deploy Archive Pages (locked-season write — split invariant)
+        if: ${{ inputs.mode == 'apply' }}
+        env:
+          GH_TOKEN: ${{ secrets.ARCHIVE_DISPATCH_PAT }}
+          GH_REPO:  markjovic/sports-players-stats-archive
+        run: /tmp/gh-dispatch.sh deploy-archive-pages.yml
