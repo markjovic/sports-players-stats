@@ -40,6 +40,11 @@ on:
         required: false
         default: '30'
         type: string
+      heal_dangling:
+        description: 'HEAL MODE: re-fetch spc-set games whose p[] contains ids no player resolves to (the cancelled run-3 debt) and stub their players. Self-limiting; combinable with nothing else needed.'
+        required: false
+        default: false
+        type: boolean
       locked_only:
         description: 'Optional extra restriction to LOCKED seasons only'
         required: false
@@ -89,5 +94,6 @@ jobs:
             if [ "${{ inputs.include_partial }}" = "true" ] || [ "${{ inputs.include_partial }}" = "True" ]; then ARGS="$ARGS --include-partial"; fi
             if [ "${{ inputs.locked_only }}" = "true" ] || [ "${{ inputs.locked_only }}" = "True" ]; then ARGS="$ARGS --locked-only"; fi
             if [ -n "${{ inputs.min_age_days }}" ]; then ARGS="$ARGS --min-age-days=${{ inputs.min_age_days }}"; fi
+            if [ "${{ inputs.heal_dangling }}" = "true" ] || [ "${{ inputs.heal_dangling }}" = "True" ]; then ARGS="$ARGS --heal-dangling"; fi
           fi
           node scripts/spectator-backfill.js $ARGS
