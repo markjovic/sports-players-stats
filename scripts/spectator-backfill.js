@@ -102,6 +102,11 @@ const LOCKED_ONLY = !!ARGS['locked-only'];
 // incremental) player phase stubs them. Self-limiting: once stubbed, the ids
 // resolve and the game drops out of this queue.
 const HEAL_DANGLING = !!ARGS['heal-dangling'];
+// Misses are retried on later runs up to this many attempts, then retired from
+// the queue (see the miss-marker note in the fetch loop). Override per dispatch
+// with --miss-attempts=N; =0 disables retirement (retry forever, pre-marker
+// behaviour).
+const MISS_ATTEMPT_LIMIT = ARGS['miss-attempts'] !== undefined ? Math.max(0, parseInt(ARGS['miss-attempts'], 10) || 0) : 3;
 // 2026-08-07 (--min-age-days, superseding locked-only as the DEFAULT safety):
 // the spc-freeze risk is a FRESHNESS property, not a lock property — only games
 // whose boxes may still be completing are endangered, i.e. the last few weeks.
@@ -530,7 +535,7 @@ function buildBackfillQueue(sportIndex) {
   const queue = [];
   const tallies = {
     files: 0, games: 0, spcSet: 0, forfeit: 0, otherTerminal: 0, notFinal: 0,
-    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0, tooRecent: 0, queuedDangling: 0, danglingIds: 0,
+    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0, tooRecent: 0, queuedDangling: 0, danglingIds: 0, retiredMisses: 0,
     queuedLocked: 0, queuedActive: 0,
   };
   const perSeason = new Map();
@@ -573,6 +578,7 @@ function buildBackfillQueue(sportIndex) {
       if (g.spc)                                { tallies.spcSet++;        continue; }
       if (g.forfeit)                            { tallies.forfeit++;       continue; }
       if (g.bye || g.cancelled || g.abandoned || g.legacy) { tallies.otherTerminal++; continue; }
+      if (MISS_ATTEMPT_LIMIT > 0 && (g.spcm || 0) >= MISS_ATTEMPT_LIMIT) { tallies.retiredMisses++; continue; }
       // ISO dates compare lexicographically; absent d = old (pre-dates any window)
       if (MIN_AGE_CUTOFF && g.d && g.d > MIN_AGE_CUTOFF) { tallies.tooRecent++; continue; }
       const finalSt    = g.st === 'FINAL';
@@ -637,6 +643,7 @@ async function main() {
   line('  not FINAL and unscored (future etc.)', tallies.notFinal);
   line('  with a player list already (LEFT ALONE)', tallies.partialListLeftAlone);
   if (MIN_AGE_CUTOFF) line(`  deferred, younger than ${MIN_AGE_DAYS} days (box may still be completing)`, tallies.tooRecent);
+  if (MISS_ATTEMPT_LIMIT > 0) line(`  retired misses (${MISS_ATTEMPT_LIMIT}+ failed attempts)`, tallies.retiredMisses);
   if (HEAL_DANGLING) { line('  HEAL: spc games with dangling p[] ids', tallies.queuedDangling); line('  HEAL: dangling id occurrences', tallies.danglingIds); }
   if (INCLUDE_PARTIAL) line('  QUEUED with partial list (--include-partial)', tallies.queuedPartialList);
   line(INCLUDE_PARTIAL ? 'QUEUE — empty-list + partial-list' : 'QUEUE — no player list at all', queue.length);
@@ -686,6 +693,20 @@ async function main() {
 
     if (!game?.statistics) {
       spectatorMiss++;
+      // 2026-08-07 miss-marker: misses used to write NOTHING, so every future run
+      // re-asked every accumulated miss at its head (the queue is season-sorted) —
+      // by run 4 that head-tax was ~2h of re-queries per run and growing. spcm
+      // counts attempts durably; at MISS_ATTEMPT_LIMIT the queue retires the game
+      // (distinct from spc: retired-miss ≠ box-captured; a heal or a deliberate
+      // reset can always revisit). Occasional late-appearing data still gets its
+      // chances: the limit is per-game attempts, not a one-strike ban.
+      if (!DRY_RUN) {
+        const gfm = loadGameFile(seasonId);
+        if (gfm.games[gameId]) {
+          gfm.games[gameId].spcm = (gfm.games[gameId].spcm || 0) + 1;
+          markGameDirty(seasonId);
+        }
+      }
       return;
     }
     spectatorHits++;
@@ -740,6 +761,7 @@ async function main() {
         if (!same) gf.games[gameId].p = fresh;
       }
       gf.games[gameId].spc = 1;
+      if (gf.games[gameId].spcm !== undefined) delete gf.games[gameId].spcm;
       markGameDirty(seasonId);
     }
   });
