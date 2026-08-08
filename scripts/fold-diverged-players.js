@@ -62,6 +62,7 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');            // 2026-08-08: batched git-add list file
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { TRUNC_LEN, isFullUuid } = require('./lib/uuid-prefix.cjs');
@@ -286,19 +287,41 @@ function gitCommitPush(paths, message) {
   // this same hazard silently discarded a 30,426-game discover-fixtures run).
   // Cost: one git invocation per path — a 2,263-player fold stages ~5k paths, a
   // few minutes inside the workflow's 120-minute timeout.
+  // ⚠️ 2026-08-08: the per-path loop below was replaced by BATCHED staging with a
+  // per-path fallback. A 13,675-player fold stages ~27,600 paths; one `git add`
+  // process per path against this repo's ~537k-file (~50 MB) index costs ~250 ms
+  // each — the 2026-08-08 run spent 1h54m in this loop and was killed by the
+  // 120-minute timeout with every write complete and NOTHING committed (the
+  // 'staging:' line never printed). Per-path `git add` has a scale ceiling.
+  // The safety property that motivated per-path is preserved exactly: `git add`
+  // is ATOMIC across pathspecs, so a batch containing one unmatched path stages
+  // NOTHING for that batch — therefore a failing batch is retried PER PATH, which
+  // isolates the offender, skips only itself, and reports it. Common case: ~28
+  // git invocations instead of ~27,600.
   let addFailures = 0;
   const addFailedSamples = [];
-  for (const p of paths) {
+  const noteFailure = (p, e) => {
+    addFailures++;
+    if (addFailedSamples.length < 10) {
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
+      addFailedSamples.push(`${p}: ${detail}`);
+    }
+  };
+  const ADD_BATCH = 1000;
+  const listFile = path.join(os.tmpdir(), `fold-add-${process.pid}.txt`);
+  for (let i = 0; i < paths.length; i += ADD_BATCH) {
+    const batch = paths.slice(i, i + ADD_BATCH);
     try {
-      git(['add', '--', p]);
-    } catch (e) {
-      addFailures++;
-      if (addFailedSamples.length < 10) {
-        const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
-        addFailedSamples.push(`${p}: ${detail}`);
+      fs.writeFileSync(listFile, batch.join('\n') + '\n');
+      git(['add', '--pathspec-from-file', listFile, '--']);
+    } catch (_) {
+      // Atomic failure: nothing in this batch staged. Isolate per path.
+      for (const p of batch) {
+        try { git(['add', '--', p]); } catch (e2) { noteFailure(p, e2); }
       }
     }
   }
+  try { fs.unlinkSync(listFile); } catch (_) { /* best effort */ }
   if (addFailures) {
     log(`WARNING: ${addFailures} of ${paths.length} path(s) failed to stage`);
     for (const s of addFailedSamples) log(`  ADD FAILED: ${s}`);
