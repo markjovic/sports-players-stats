@@ -103,10 +103,13 @@ const LOCKED_ONLY = !!ARGS['locked-only'];
 // resolve and the game drops out of this queue.
 const HEAL_DANGLING = !!ARGS['heal-dangling'];
 // Misses are retried on later runs up to this many attempts, then retired from
-// the queue (see the miss-marker note in the fetch loop). Override per dispatch
-// with --miss-attempts=N; =0 disables retirement (retry forever, pre-marker
-// behaviour).
-const MISS_ATTEMPT_LIMIT = ARGS['miss-attempts'] !== undefined ? Math.max(0, parseInt(ARGS['miss-attempts'], 10) || 0) : 3;
+// the queue (see the miss-marker note in the fetch loop). DEFAULT 1 — measured
+// on 2026-08-07: 77,397 re-asks of prior misses converted 2 hits (0.003%);
+// misses are dead eras, not flaky responses, so second chances buy nothing.
+// The retirement is reversible (spcm, never spc): --miss-attempts=0 disables
+// the gate entirely and re-asks everything, and any higher N re-admits games
+// below it, if a route to that data ever appears.
+const MISS_ATTEMPT_LIMIT = ARGS['miss-attempts'] !== undefined ? Math.max(0, parseInt(ARGS['miss-attempts'], 10) || 0) : 1;
 // 2026-08-07 (--min-age-days, superseding locked-only as the DEFAULT safety):
 // the spc-freeze risk is a FRESHNESS property, not a lock property — only games
 // whose boxes may still be completing are endangered, i.e. the last few weeks.
