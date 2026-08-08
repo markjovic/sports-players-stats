@@ -27,6 +27,12 @@ concurrency:
 jobs:
   fold:
     runs-on: ubuntu-latest
+    # 2026-08-08: the 120 minutes was never the problem — a 13,675-player fold did
+    # all its work in 82 SECONDS and then spent 1h54m staging ~27,600 paths one
+    # `git add` process at a time (~250 ms each against this repo's ~50 MB index),
+    # dying at the timeout with nothing committed. Staging is now batched with a
+    # per-path fallback (script), so the git phase is well under a minute. The
+    # generous timeout stays as headroom for push contention, not for staging.
     timeout-minutes: 120
     steps:
       # Full depth-1 checkout - reads every player file and may write into any
