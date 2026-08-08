@@ -11,13 +11,18 @@ name: Spectator Backfill
 # runner's outbound fingerprint, causing CloudFront 403s (absolute rule).
 
 on:
-  schedule:
-    # Weekly permanent tail (2026-08-07): post-campaign, sweeps the games that aged
-    # past the 30-day guard since last week — the nightly's spectator misses and any
-    # deferred stragglers — so the pre-spc stranding can never rebuild. Sat 10:00 UTC
-    # = 20:00 AEST Saturday: clear of the nightly (15:00 UTC) and done before the
-    # archive's weekly deploy (18:00 UTC Sat) ships the results.
-    - cron: '0 10 * * 6'
+  # Weekly permanent tail (2026-08-07): post-campaign, sweeps the games that aged
+  # past the 30-day guard since last week — the nightly's spectator misses and any
+  # deferred stragglers — so the pre-spc stranding can never rebuild. Sat 10:00 UTC
+  # = 20:00 AEST Saturday: clear of the nightly (15:00 UTC) and done before the
+  # archive's weekly deploy (18:00 UTC Sat) ships the results.
+  #
+  # ⛔ DISABLED UNTIL THE CAMPAIGN DRAINS (2026-08-08): a scheduled run and a manual
+  # campaign dispatch would share the one-slot data-write pending queue and evict
+  # each other (the T19 pattern). UNCOMMENT the two lines below at campaign end —
+  # it is on the endgame checklist.
+  # schedule:
+  #   - cron: '0 10 * * 6'
   workflow_dispatch:
     inputs:
       max_games:
@@ -41,9 +46,9 @@ on:
         default: '30'
         type: string
       miss_attempts:
-        description: 'Retire a game from the queue after this many failed spectator attempts (durable spcm counter; a later hit clears it). 0 = retry forever.'
+        description: 'Retire a game from the queue after this many failed spectator attempts (durable spcm counter; a later hit clears it). Default 1 — measured retry conversion is 0.003%. 0 = retry forever.'
         required: false
-        default: '3'
+        default: '1'
         type: string
       heal_dangling:
         description: 'HEAL MODE: re-fetch spc-set games whose p[] contains ids no player resolves to (the cancelled run-3 debt) and stub their players. Self-limiting; combinable with nothing else needed.'
