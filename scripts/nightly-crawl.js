@@ -388,6 +388,17 @@ let commitLock = false;
 // --shortstat (not --stat) and --no-stat on merge for the same reason — both
 // print a per-file line/graph by default, --stat and a real merge diffstat
 // scale with file count, --shortstat and --no-stat don't.
+// 2026-08-09: execFileSync's DEFAULT maxBuffer is 1 MB and exceeding it SIGTERMs
+// the child MID-OPERATION. fold-diverged-players died exactly this way on a
+// 25,593-file commit: `git merge` emitted 1,051,036 bytes of per-file
+// "Auto-merging …" lines against the 1,048,576-byte default, Node killed git
+// during the merge, and a commit that had already been made was never pushed.
+// The nightly is exposed the same way whenever it merges a remote that has
+// advanced by a large commit (a fold, a sweep, a weekly rebuild). Every git
+// call here scales its output with the number of changed files, so all seven
+// get the larger buffer; `-q` on the merge suppresses the per-file lines at
+// source. Reproduced at the exact failing size before this change was made.
+const GIT_MAXBUF = 512 * 1024 * 1024;
 async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   const paths = (dirs && dirs.length ? dirs : ['.']);
@@ -401,7 +412,7 @@ async function gitCommit(message, dirs) {
   // reported loudly.
   let addFailures = 0, hardAddFailures = 0;
   for (const p of paths) {
-    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT }); }
+    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
     catch (e) {
       addFailures++;
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
@@ -412,7 +423,7 @@ async function gitCommit(message, dirs) {
   }
 
   const staged = (() => {
-    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
+    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }).toString().trim(); }
     catch (_) { return ''; }
   })();
 
@@ -449,7 +460,7 @@ async function gitCommit(message, dirs) {
 
   // execFileSync with an argument array — the message is no longer interpolated
   // into a shell string, so the `"` -> `'` escaping hack is gone with it.
-  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT }); }
+  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
   catch (e) {
     const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
     throw new Error(`gitCommit: commit failed for "${message}" — ${detail}`);
@@ -469,10 +480,10 @@ async function gitCommit(message, dirs) {
   // Phase 2 paced pool, and blocking here would stall sibling fetch workers.
   const MAX = 60;
   for (let attempt = 1; attempt <= MAX; attempt++) {
-    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); } catch (_) { /* none in progress */ }
 
     try {
-      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT });
+      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
     } catch (e) {
       if (attempt === MAX) throw e;
       const s = 1 + Math.floor(Math.random() * 91);
@@ -482,10 +493,10 @@ async function gitCommit(message, dirs) {
     }
 
     // A merge failure is a config or content problem, not a race — fatal.
-    execFileSync('git', [...IDENT, 'merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT });
+    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
 
     try {
-      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT });
+      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
       console.log(`  ✓ Committed: ${message} (pushed on attempt ${attempt})`);
       return;
     } catch (e) {
