@@ -273,8 +273,16 @@ function scanDanglingAliases(map) {
 }
 
 // ─── Git — in-script single commit, proven push pattern ───────────────────────
+// maxBuffer: execFileSync's DEFAULT IS 1 MB, and exceeding it SIGTERMs the child
+// mid-operation. 2026-08-09: a 5,727-player fold's `git merge` printed 1,051,036
+// bytes of per-file "Auto-merging …" lines (11,259 files) — Node killed git
+// during the merge, the run crashed, and an already-made commit was never
+// pushed. `-q` on the merge below suppresses those lines at the source; this
+// buffer is the belt to that braces, since ANY git output here scales with the
+// number of changed files.
+const GIT_MAXBUF = 512 * 1024 * 1024;
 function git(args) {
-  return execFileSync('git', args, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString();
+  return execFileSync('git', args, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: GIT_MAXBUF }).toString();
 }
 function gitCommitPush(paths, message) {
   if (NO_GIT || DRY) return;
@@ -349,7 +357,9 @@ function gitCommitPush(paths, message) {
     }
     // Merge creates a merge commit, so it carries the identity inline too. A
     // failure here is fatal — retrying can't fix a config or content problem.
-    git([...IDENT, 'merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit']);
+    // -q + --no-stat: without them git prints one "Auto-merging <path>" line per
+    // file, which is what overflowed the 1 MB default buffer on 2026-08-09.
+    git([...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat']);
     try {
       git(['push', 'origin', 'HEAD:main']);
       log(`pushed on attempt ${attempt}`);
