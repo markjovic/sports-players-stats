@@ -42,6 +42,18 @@ permissions:
 jobs:
   clear-stats-checked:
     runs-on: ubuntu-latest
+    # 2026-08-10 (T25): this workflow held NO concurrency at any level while
+    # three of its jobs write and push to the repo — the only repo writer in
+    # the system outside the data-write group. It survived on the 60-attempt
+    # push-retry alone, which is not safety: that retry merges with `-X ours`,
+    # so a genuine simultaneous edit to the same player file is resolved by
+    # silently discarding the other writer's version. The lock goes on the
+    # WRITING JOBS ONLY, never at workflow level — the fetch fan-out runs 20
+    # shards for a long time and writes nothing, so locking the whole workflow
+    # would hold data-write for the entire sweep and starve everything else.
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     # Boolean-input JOB gate: a UI dispatch sends a real boolean, a chained
     # `gh workflow run --field force=true` sends the STRING 'true'. A bare
     # `== true` skips the job for the string form; a bare `== 'true'` skips it
@@ -207,6 +219,18 @@ jobs:
   apply-and-commit:
     needs: fetch
     runs-on: ubuntu-latest
+    # 2026-08-10 (T25): this workflow held NO concurrency at any level while
+    # three of its jobs write and push to the repo — the only repo writer in
+    # the system outside the data-write group. It survived on the 60-attempt
+    # push-retry alone, which is not safety: that retry merges with `-X ours`,
+    # so a genuine simultaneous edit to the same player file is resolved by
+    # silently discarding the other writer's version. The lock goes on the
+    # WRITING JOBS ONLY, never at workflow level — the fetch fan-out runs 20
+    # shards for a long time and writes nothing, so locking the whole workflow
+    # would hold data-write for the entire sweep and starve everything else.
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     # !cancelled() (not always()): still runs when shards FAIL — apply-and-commit
     # must never be gated on shard success — but a deliberate run-cancel now
     # actually stops the chain instead of applying + retriggering anyway
@@ -369,6 +393,18 @@ jobs:
   summary-and-retrigger:
     needs: apply-and-commit
     runs-on: ubuntu-latest
+    # 2026-08-10 (T25): this workflow held NO concurrency at any level while
+    # three of its jobs write and push to the repo — the only repo writer in
+    # the system outside the data-write group. It survived on the 60-attempt
+    # push-retry alone, which is not safety: that retry merges with `-X ours`,
+    # so a genuine simultaneous edit to the same player file is resolved by
+    # silently discarding the other writer's version. The lock goes on the
+    # WRITING JOBS ONLY, never at workflow level — the fetch fan-out runs 20
+    # shards for a long time and writes nothing, so locking the whole workflow
+    # would hold data-write for the entire sweep and starve everything else.
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     # !cancelled() for the same reason as apply-and-commit — cancelling the run
     # must halt the self-trigger chain.
     if: ${{ !cancelled() }}
