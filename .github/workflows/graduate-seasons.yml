@@ -429,6 +429,13 @@ jobs:
         run: |
           /tmp/gh-dispatch.sh deploy-pages.yml
 
+  # NOTE 2026-08-10: a chain-discovery job briefly lived here, dispatching the
+  # weekly discovery sweeps from this workflow's tail. Superseded the same day —
+  # both sweeps now run on their own weekly crons (discover-seasons-matrix.yml
+  # Sun 20:00 UTC, discover-fixtures.yml Mon 20:00 UTC), which removes the
+  # collision without making discovery depend on four upstream dispatches all
+  # firing.
+
   status:
     needs: [select-and-verify, flip-and-publish]
     if: always()

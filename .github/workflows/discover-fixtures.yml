@@ -7,6 +7,20 @@ name: Discover fixtures
 # Dispatch with dry_run first if you want to see what it would do.
 
 on:
+  # Weekly schedule added 2026-08-10, replacing the dispatch from nightly-crawl's
+  # terminal fan-out (which fired this at the same instant as post-drain-chain —
+  # three claimants on a group that holds ONE pending run, so the third arrival
+  # cancelled the waiter). 20:00 UTC Monday = 06:00 AEST Tuesday: the overnight
+  # cascade has finished, and discover-seasons had its own clear window the day
+  # before.
+  #
+  # ⚠️ SCHEDULED RUNS RECEIVE NO INPUTS — workflow_dispatch defaults do NOT apply
+  # to cron. The step below therefore sets the weekly arguments explicitly when
+  # github.event_name is 'schedule' (current_only), and the chain-stats gate
+  # treats a scheduled run as chain_stats=true. Without that this would silently
+  # run a FULL sweep of every active season and skip the stats chain.
+  schedule:
+    - cron: '0 20 * * 1'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -69,6 +83,13 @@ jobs:
       - name: Discover fixtures
         run: |
           ARGS=""
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # Weekly cron: same arguments the nightly used to pass.
+            ARGS="--current-only"
+            echo "Scheduled weekly sweep — args: $ARGS"
+            node scripts/discover-fixtures.js $ARGS
+            exit 0
+          fi
           if [ "${{ inputs.dry_run }}" = "true" ];     then ARGS="$ARGS --dry-run"; fi
           if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="$ARGS --all-seasons"; fi
           if [ "${{ inputs.current_only }}" = "true" ]; then ARGS="$ARGS --current-only"; fi
@@ -84,7 +105,7 @@ jobs:
   chain-stats:
     needs: discover-fixtures
     runs-on: ubuntu-latest
-    if: ${{ inputs.chain_stats == true || inputs.chain_stats == 'true' }}
+    if: ${{ github.event_name == 'schedule' || inputs.chain_stats == true || inputs.chain_stats == 'true' }}
     steps:
       - name: Install dispatch retry helper
         # 2026-08-02: was a BARE `gh workflow run`. This is the SECOND HOP of the

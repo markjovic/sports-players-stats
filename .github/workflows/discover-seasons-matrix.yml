@@ -29,6 +29,24 @@ name: Discover Seasons (Matrix)
 # runner's preinstalled node, exactly as nightly-crawl.yml does.
 
 on:
+  # Weekly schedule added 2026-08-10. Previously dispatched from the nightly's
+  # terminal fan-out, at the same instant as post-drain-chain — three claimants
+  # on a group that holds ONE pending run, so the third arrival cancelled the
+  # waiter (2026-08-09: 51 minutes queued, two re-attempts). A cron of its own,
+  # well clear of the overnight cascade, removes the collision AND the fragility
+  # of hanging four dispatches deep off the nightly: nothing upstream can skip
+  # a week. 20:00 UTC Sunday = 06:00 AEST Monday — the cascade finishes ~04:30
+  # AEST, and the next nightly is ~19 hours away, which this sweep needs because
+  # it self-retriggers up to MAX_RUNS times.
+  #
+  # ⚠️ SCHEDULED RUNS RECEIVE NO INPUTS. workflow_dispatch defaults do NOT apply
+  # to cron, so every input below is read through an explicit fallback at each
+  # use site (`inputs.x || <default>`), and backfill_teams resolves to true on a
+  # schedule trigger — that is what makes the weekly sweep 'all+backfill' rather
+  # than silently degrading to 'current' mode. The retrigger passes the RESOLVED
+  # values on, so run 2 onward is a normal dispatch that behaves identically.
+  schedule:
+    - cron: '0 20 * * 0'
   workflow_dispatch:
     inputs:
       shards:
@@ -75,11 +93,55 @@ env:
   MAX_RUNS: 40
 
 jobs:
-  generate-shards:
+  # ── fresh_start reset, split out 2026-08-10 ────────────────────────────────
+  # This is the ONLY write generate-shards ever made, and it happens on manual
+  # dispatch only. Holding data-write for the whole of generate-shards meant a
+  # normal run claimed the lock TWICE (here and again in reduce) while writing
+  # nothing here — and with MAX_RUNS=40 self-retriggers that is up to eighty
+  # lock arrivals per weekly sweep. Since GitHub cancels the pending run in a
+  # group whenever a new one arrives, those no-op claims were evicting real
+  # waiters (2026-08-09: Discover Seasons queued 51 minutes behind the chain).
+  # The reset keeps the lock; the read-only shard selection no longer needs it.
+  fresh-start-reset:
+    if: ${{ inputs.fresh_start == true || inputs.fresh_start == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     concurrency:
       group: data-write
       cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            data
+            scripts
+          sparse-checkout-cone-mode: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Reset progress
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ ! -f data/discover-progress.json ]; then
+            echo "No progress file to reset."
+          else
+            git rm data/discover-progress.json
+            git commit -m "discover-seasons: fresh_start — reset progress"
+            git fetch origin main
+            git merge -q -X ours FETCH_HEAD --no-edit --no-stat
+            git push origin main
+            echo "Progress reset."
+          fi
+
+  # READ-ONLY: reads data/discover-progress.json and emits the shard list. No
+  # data-write lock — it writes nothing (see fresh-start-reset above).
+  generate-shards:
+    needs: fresh-start-reset
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     outputs:
       targets: ${{ steps.gen.outputs.targets }}
     steps:
@@ -94,27 +156,11 @@ jobs:
           sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Reset progress (fresh_start only)
-        if: inputs.fresh_start == true
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ ! -f data/discover-progress.json ]; then
-            echo "No progress file to reset."
-          else
-            git rm data/discover-progress.json
-            git commit -m "discover-seasons: fresh_start — reset progress"
-            git fetch origin main
-            git merge -X ours FETCH_HEAD --no-edit
-            git push origin main
-            echo "Progress reset."
-          fi
-
       - id: gen
         env:
-          INPUT_SHARDS: ${{ inputs.shards }}
-          ALL_PLAYERS: ${{ inputs.all_players }}
-          BACKFILL_TEAMS: ${{ inputs.backfill_teams }}
+          INPUT_SHARDS: ${{ inputs.shards || '[]' }}
+          ALL_PLAYERS: ${{ inputs.all_players || false }}
+          BACKFILL_TEAMS: ${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}
         run: |
           targets=$(python3 - << 'PYEOF'
           import json, os, re, sys
@@ -169,9 +215,9 @@ jobs:
         run: echo "shard=${{ matrix.shard }} | job ${{ strategy.job-index }} of ${{ strategy.job-total }}"
       - name: Burst-probe
         run: |
-          ARGS="--shard=${{ matrix.shard }} --out=discover-shard-${{ matrix.shard }}.json --concurrency=${{ inputs.concurrency }}"
-          [ "${{ inputs.all_players }}" == "true" ] && ARGS="$ARGS --all-players"
-          [ "${{ inputs.backfill_teams }}" == "true" ] && ARGS="$ARGS --backfill-teams"
+          ARGS="--shard=${{ matrix.shard }} --out=discover-shard-${{ matrix.shard }}.json --concurrency=${{ inputs.concurrency || '25' }}"
+          [ "${{ inputs.all_players || false }}" == "true" ] && ARGS="$ARGS --all-players"
+          [ "${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}" == "true" ] && ARGS="$ARGS --backfill-teams"
           node scripts/discover-seasons.js $ARGS
       - uses: actions/upload-artifact@v4
         if: always()
@@ -251,8 +297,8 @@ jobs:
       - name: Merge, resolve grades, apply roster deltas, write + commit
         id: reduce
         run: |
-          ARGS="--reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency }}"
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          ARGS="--reduce --in=/tmp/discoveries --concurrency=${{ inputs.concurrency || '25' }}"
+          if [ "${{ inputs.dry_run || false }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/discover-seasons.js $ARGS | tee /tmp/reduce.log
           undone=$(grep -o 'UNDONE_SHARDS_JSON=.*' /tmp/reduce.log | sed 's/UNDONE_SHARDS_JSON=//')
           if [ -z "$undone" ]; then undone='[]'; fi
@@ -318,7 +364,7 @@ jobs:
 
       - name: Re-trigger for remaining shards (fresh runners)
         run: |
-          run_number=${{ inputs.run_number }}
+          run_number=${{ inputs.run_number || '1' }}
           if [ "$run_number" -ge "$MAX_RUNS" ]; then
             echo "Reached $MAX_RUNS-run cap. Re-trigger manually to continue (progress saved)."
             exit 0
@@ -329,8 +375,8 @@ jobs:
           # the committed progress file itself (identical to how run 1 computes it),
           # skipping shards already marked done for this mode.
           /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
-            --field "all_players=${{ inputs.all_players }}" \
-            --field "backfill_teams=${{ inputs.backfill_teams }}" \
-            --field "concurrency=${{ inputs.concurrency }}" \
-            --field "dry_run=${{ inputs.dry_run }}" \
+            --field "all_players=${{ inputs.all_players || false }}" \
+            --field "backfill_teams=${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}" \
+            --field "concurrency=${{ inputs.concurrency || '25' }}" \
+            --field "dry_run=${{ inputs.dry_run || false }}" \
             --field "run_number=${next_run}"
