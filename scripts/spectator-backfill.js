@@ -45,6 +45,9 @@
 //                                                          # =0 disables the guard entirely
 //   node scripts/spectator-backfill.js --locked-only       # optional extra restriction to locked seasons
 //   node scripts/spectator-backfill.js --include-partial   # ALSO re-fetch partial-roster games
+//   node scripts/spectator-backfill.js --retry-covered=95  # one-off: re-admit retired misses in
+//                                                          # seasons >=95% captured (transport
+//                                                          # failures, not empty boxes)
 //                                                          # (the 2026-08-07 completion re-sweep)
 
 'use strict';
@@ -110,6 +113,15 @@ const HEAL_DANGLING = !!ARGS['heal-dangling'];
 // the gate entirely and re-asks everything, and any higher N re-admits games
 // below it, if a route to that data ever appears.
 const MISS_ATTEMPT_LIMIT = ARGS['miss-attempts'] !== undefined ? Math.max(0, parseInt(ARGS['miss-attempts'], 10) || 0) : 1;
+// 2026-08-10 (--retry-covered=N): put ALREADY-RETIRED misses back in the queue for
+// seasons whose capture rate is at least N%. Nothing stored says WHY a given miss
+// failed, so the only available signal is the one the spot-check used: a season
+// that scored electronically all year should not lose scattered games, whereas a
+// season at 0% coverage never had box scores at all. Measured 2026-08-10: 951
+// seasons above 95% held 18,727 retired misses, and 3 of 4 sampled had full box
+// scores live on playhq.com. Use WITH the classification fix in gqlSpectator — on
+// its own this would simply re-retire them.
+const RETRY_COVERED = ARGS['retry-covered'] !== undefined ? Math.max(1, parseInt(ARGS['retry-covered'], 10) || 95) : 0;
 // 2026-08-07 (--min-age-days, superseding locked-only as the DEFAULT safety):
 // the spc-freeze risk is a FRESHNESS property, not a lock property — only games
 // whose boxes may still be completing are endangered, i.e. the last few weeks.
@@ -226,6 +238,22 @@ async function refreshSession() {
 
 // ─── Spectator query — nightly-crawl.js, verbatim ─────────────────────────────
 
+// 2026-08-10: returns a CLASSIFIED outcome, never a bare null. Previously every
+// failure mode collapsed to null, so a 403 that survived its retry, a 429, a 502
+// and a dropped connection were indistinguishable from "this game genuinely has
+// no box score" — and with --miss-attempts=1 one bad moment retired a game
+// FOREVER. Proven by spot-check 2026-08-10: of four retired misses in seasons
+// with >95% capture, THREE had full box scores on playhq.com. Contract:
+//   { ok:true,  game }                    → fetched; caller decides empty vs not
+//   { ok:false, permanent:true }          → 404, or a 200 whose game is null:
+//                                           not on the spectator endpoint at all.
+//                                           Counts toward retirement.
+//   { ok:false, permanent:false }         → 403-after-retry / 429 / 5xx / GraphQL
+//                                           error / network fault. TRANSPORT, not
+//                                           data: must NEVER count toward
+//                                           retirement, or the weekly cron will
+//                                           quietly delete games from the queue
+//                                           on every bad network minute.
 async function gqlSpectator(gameId) {
   if (!sessionCookie) await refreshSession();
   const query = `query game($id: ID!) {
@@ -251,12 +279,17 @@ async function gqlSpectator(gameId) {
         { operationName: 'game', variables: { id: gameId }, query },
         { ...HEADERS_SPECTATOR, 'Cookie': sessionCookie }
       );
-      if (retry.status !== 200 || retry.body.errors) return null;
-      return retry.body.data?.game || null;
+      if (retry.status === 404) return { ok: false, permanent: true, why: '404' };
+      if (retry.status !== 200 || retry.body.errors) return { ok: false, permanent: false, why: '403-retry-' + retry.status };
+      const g403 = retry.body.data?.game;
+      return g403 ? { ok: true, game: g403 } : { ok: false, permanent: true, why: 'no-game' };
     }
-    if (status !== 200 || body.errors) return null;
-    return body.data?.game || null;
-  } catch (_) { return null; }
+    if (status === 404) return { ok: false, permanent: true, why: '404' };
+    if (status !== 200) return { ok: false, permanent: false, why: 'http-' + status };
+    if (body.errors)    return { ok: false, permanent: false, why: 'graphql-error' };
+    const g = body.data?.game;
+    return g ? { ok: true, game: g } : { ok: false, permanent: true, why: 'no-game' };
+  } catch (e) { return { ok: false, permanent: false, why: 'network-' + (e.code || e.message || 'err') }; }
 }
 
 // ─── Stat parsing — nightly-crawl.js, verbatim ────────────────────────────────
@@ -546,7 +579,7 @@ function buildBackfillQueue(sportIndex) {
   const queue = [];
   const tallies = {
     files: 0, games: 0, spcSet: 0, forfeit: 0, otherTerminal: 0, notFinal: 0,
-    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0, tooRecent: 0, queuedDangling: 0, danglingIds: 0, retiredMisses: 0,
+    queuedFinalSt: 0, queuedScoreNoSt: 0, queuedEmptyList: 0, partialListLeftAlone: 0, queuedPartialList: 0, tooRecent: 0, queuedDangling: 0, danglingIds: 0, retiredMisses: 0, retryCovered: 0, retryCoveredSeasons: 0,
     queuedLocked: 0, queuedActive: 0,
   };
   const perSeason = new Map();
@@ -559,6 +592,19 @@ function buildBackfillQueue(sportIndex) {
     try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, fname), 'utf8')); } catch { continue; }
     const locked = !!(sportIndex.seasons?.[sid]?.locked);
     if (LOCKED_ONLY && !locked) continue;
+    // Per-season capture rate, computed from THIS file only (no extra pass), used
+    // solely by --retry-covered to decide whether this season's retirements are
+    // trustworthy.
+    let seasonCovered = false;
+    if (RETRY_COVERED > 0) {
+      let capt = 0, missed = 0;
+      for (const g2 of Object.values(gf.games || {})) {
+        if (!g2 || g2.st !== 'FINAL' || g2.forfeit || g2.bye || g2.cancelled || g2.abandoned || g2.legacy) continue;
+        if (g2.spc) capt++; else if (g2.spcm) missed++;
+      }
+      const tot = capt + missed;
+      if (tot > 0 && (100 * capt / tot) >= RETRY_COVERED) { seasonCovered = true; tallies.retryCoveredSeasons++; }
+    }
     for (const [gameId, g] of Object.entries(gf.games || {})) {
       if (!g) continue;
       tallies.games++;
@@ -589,7 +635,12 @@ function buildBackfillQueue(sportIndex) {
       if (g.spc)                                { tallies.spcSet++;        continue; }
       if (g.forfeit)                            { tallies.forfeit++;       continue; }
       if (g.bye || g.cancelled || g.abandoned || g.legacy) { tallies.otherTerminal++; continue; }
-      if (MISS_ATTEMPT_LIMIT > 0 && (g.spcm || 0) >= MISS_ATTEMPT_LIMIT) { tallies.retiredMisses++; continue; }
+      if (MISS_ATTEMPT_LIMIT > 0 && (g.spcm || 0) >= MISS_ATTEMPT_LIMIT) {
+        // profileOnly games have no real spectator record and can never succeed —
+        // never re-admit them, whatever their season's coverage looks like.
+        if (seasonCovered && !g.profileOnly) { tallies.retryCovered++; }
+        else { tallies.retiredMisses++; continue; }
+      }
       // ISO dates compare lexicographically; absent d = old (pre-dates any window)
       if (MIN_AGE_CUTOFF && g.d && g.d > MIN_AGE_CUTOFF) { tallies.tooRecent++; continue; }
       const finalSt    = g.st === 'FINAL';
@@ -655,6 +706,10 @@ async function main() {
   line('  with a player list already (LEFT ALONE)', tallies.partialListLeftAlone);
   if (MIN_AGE_CUTOFF) line(`  deferred, younger than ${MIN_AGE_DAYS} days (box may still be completing)`, tallies.tooRecent);
   if (MISS_ATTEMPT_LIMIT > 0) line(`  retired misses (${MISS_ATTEMPT_LIMIT}+ failed attempts)`, tallies.retiredMisses);
+  if (RETRY_COVERED > 0) {
+    line(`  RE-ADMITTED retired misses (seasons >= ${RETRY_COVERED}% captured)`, tallies.retryCovered);
+    line(`    ...across seasons`, tallies.retryCoveredSeasons);
+  }
   if (HEAL_DANGLING) { line('  HEAL: spc games with dangling p[] ids', tallies.queuedDangling); line('  HEAL: dangling id occurrences', tallies.danglingIds); }
   if (INCLUDE_PARTIAL) line('  QUEUED with partial list (--include-partial)', tallies.queuedPartialList);
   line(INCLUDE_PARTIAL ? 'QUEUE — empty-list + partial-list' : 'QUEUE — no player list at all', queue.length);
@@ -694,13 +749,25 @@ async function main() {
     playersSeenWindows += deltas.size;
     await applyPlayerPhaseImpl(deltas, sportIndex);
   };
-  let spectatorHits = 0, spectatorMiss = 0, p3Done = 0;
+  let spectatorHits = 0, spectatorMiss = 0, p3Done = 0, transientFail = 0;
+  const transientWhy = new Map();
 
   const p3Tasks = needsSpectator.map(({ gameId, seasonId, rn, gradeId, gradeName, homeTid, awayTid, homeScore, awayScore }) => async () => {
-    const game = await gqlSpectator(gameId);
+    const res = await gqlSpectator(gameId);
     p3Done++;
     if (p3Done % 50 === 0 || p3Done === needsSpectator.length)
-      process.stdout.write(`  ${p3Done}/${needsSpectator.length}  hits: ${spectatorHits}  misses: ${spectatorMiss}\r`);
+      process.stdout.write(`  ${p3Done}/${needsSpectator.length}  hits: ${spectatorHits}  misses: ${spectatorMiss}  transient: ${transientFail}\r`);
+
+    // TRANSPORT FAILURE — not a data fact. Leave the game exactly as it was: no
+    // spc, no spcm increment, still queued for a later run. Counted in-memory
+    // only (no per-game write) so a bad network minute leaves no trace in the
+    // data at all.
+    if (res && res.ok === false && res.permanent === false) {
+      transientFail++;
+      transientWhy.set(res.why, (transientWhy.get(res.why) || 0) + 1);
+      return;
+    }
+    const game = res && res.ok ? res.game : null;
 
     if (!game?.statistics) {
       spectatorMiss++;
@@ -936,6 +1003,10 @@ async function main() {
   console.log('─'.repeat(50));
   console.log(`  Queue total:       ${queue.length}  (this run: ${needsSpectator.length})`);
   console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
+  console.log(`  Transport failures: ${transientFail} — NOT counted as misses, nothing written, still queued`);
+  if (transientWhy.size) {
+    for (const [why, n] of [...transientWhy.entries()].sort((a, b) => b[1] - a[1])) console.log(`      ${why}: ${n}`);
+  }
   console.log(`  Players seen:      ${playersSeenWindows} (summed per commit window)`);
   console.log(`  New players:       ${totalStubbed}`);
   console.log(`  Remaining (approx): ${queue.length - spectatorHits} — misses stay queued until spectator answers`);
