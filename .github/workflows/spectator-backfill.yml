@@ -17,12 +17,12 @@ on:
   # = 20:00 AEST Saturday: clear of the nightly (15:00 UTC) and done before the
   # archive's weekly deploy (18:00 UTC Sat) ships the results.
   #
-  # ⛔ DISABLED UNTIL THE CAMPAIGN DRAINS (2026-08-08): a scheduled run and a manual
-  # campaign dispatch would share the one-slot data-write pending queue and evict
-  # each other (the T19 pattern). UNCOMMENT the two lines below at campaign end —
-  # it is on the endgame checklist.
-  # schedule:
-  #   - cron: '0 10 * * 6'
+  # RE-ENABLED 2026-08-10: the re-sweep campaign is drained (2,026,441 games swept),
+  # so a scheduled run no longer competes with manual campaign dispatches. Its
+  # weekly queue from here is small — games that aged past the 30-day guard since
+  # last Saturday, plus any the nightly's spectator step missed.
+  schedule:
+    - cron: '0 10 * * 6'
   workflow_dispatch:
     inputs:
       max_games:
