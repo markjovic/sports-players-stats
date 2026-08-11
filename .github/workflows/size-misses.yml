@@ -1,0 +1,116 @@
+# .github/workflows/size-misses.yml
+# READ-ONLY: anatomy of the spectator misses (games carrying spcm with no spc).
+# Zero API calls. gqlSpectator returns null for EVERY failure mode — genuinely
+# empty box, 403, 404, 429, 5xx, GraphQL error, network fault — so a stored miss
+# cannot say which it was. This separates them by CLUSTERING: dead eras miss whole
+# seasons; transient failures scatter inside well-covered seasons. The
+# covered-season offenders are the ones to spot-check (URLs printed).
+name: Size Misses
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Analyse spectator misses
+        run: |
+          cat > /tmp/size-misses.cjs << 'SCRIPT_EOF'
+          // Read-only, offline, zero API calls: anatomy of the spectator misses.
+          // A miss is recorded as spcm (attempt counter) with no spc. gqlSpectator returns
+          // null for EVERY failure mode — genuinely-empty box, 403, 404, 429, 5xx, GraphQL
+          // error, network fault — so the stored miss cannot say which it was. This tool
+          // separates them by CLUSTERING instead: a dead era misses whole seasons; a
+          // transient failure scatters inside seasons that are otherwise well covered.
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const gamesDir = path.join(ROOT, 'games', 'bv');
+          if (!fs.existsSync(gamesDir)) { console.error('ABORT: games/bv missing'); process.exit(1); }
+
+          let idx = {};
+          try { idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8')).seasons || {}; } catch (_) {}
+
+          const seasons = [];              // {sid,name,org,final,spc,miss,attempts,samples[],years:Set}
+          const byYear = new Map();        // year -> {spc, miss}
+          let totFinal = 0, totSpc = 0, totMiss = 0, totProfileOnly = 0;
+          const attemptHist = new Map();
+
+          for (const f of fs.readdirSync(gamesDir)) {
+            if (!f.endsWith('.json')) continue;
+            const sid = path.basename(f, '.json');
+            let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch { continue; }
+            const rec = { sid, name: (idx[sid] && idx[sid].name) || '?', org: (idx[sid] && idx[sid].orgName) || '?',
+                          final: 0, spc: 0, miss: 0, samples: [] };
+            for (const [gid, g] of Object.entries(sg.games || {})) {
+              if (!g || g.st !== 'FINAL') continue;
+              if (g.forfeit || g.bye || g.cancelled || g.abandoned || g.legacy) continue;
+              rec.final++; totFinal++;
+              const y = (g.d || '????').slice(0, 4);
+              if (!byYear.has(y)) byYear.set(y, { spc: 0, miss: 0 });
+              if (g.spc) { rec.spc++; totSpc++; byYear.get(y).spc++; continue; }
+              const m = g.spcm || 0;
+              if (m > 0) {
+                rec.miss++; totMiss++; byYear.get(y).miss++;
+                attemptHist.set(m, (attemptHist.get(m) || 0) + 1);
+                if (g.profileOnly) totProfileOnly++;
+                if (rec.samples.length < 3) rec.samples.push(gid);
+              }
+            }
+            if (rec.final > 0 && rec.miss > 0) seasons.push(rec);
+          }
+
+          const pct = (a, b) => b ? (100 * a / b) : 0;
+          console.log('FINAL games considered      : ' + totFinal.toLocaleString());
+          console.log('  box captured (spc)        : ' + totSpc.toLocaleString() + '  (' + pct(totSpc, totFinal).toFixed(1) + '%)');
+          console.log('  MISSED (spcm, no spc)     : ' + totMiss.toLocaleString() + '  (' + pct(totMiss, totFinal).toFixed(1) + '%)');
+          console.log('  of those, profileOnly games we synthesized ourselves (no real spectator record — expected to miss): ' + totProfileOnly.toLocaleString());
+          console.log('  attempts histogram        : ' + [...attemptHist.entries()].sort().map(([k, v]) => k + 'x:' + v.toLocaleString()).join('  '));
+
+          console.log('\nBY YEAR (spc coverage of FINAL games):');
+          for (const [y, v] of [...byYear.entries()].sort()) {
+            const t = v.spc + v.miss;
+            if (!t) continue;
+            console.log('  ' + y + '  captured ' + String(v.spc).padStart(8) + '  missed ' + String(v.miss).padStart(7) + '   coverage ' + pct(v.spc, t).toFixed(1) + '%');
+          }
+
+          // THE DIAGNOSTIC: where do misses sit relative to their season's own coverage?
+          const dead = [], mixed = [], covered = [];
+          for (const s of seasons) {
+            const cov = pct(s.spc, s.spc + s.miss);
+            (cov < 5 ? dead : cov > 95 ? covered : mixed).push(Object.assign(s, { cov }));
+          }
+          const sum = (arr, k) => arr.reduce((a, x) => a + x[k], 0);
+          console.log('\nMISS CLUSTERING — the diagnostic:');
+          console.log('  DEAD seasons   (<5% of FINAL games ever captured): ' + dead.length.toLocaleString() + ' seasons, ' + sum(dead, 'miss').toLocaleString() + ' misses');
+          console.log('    → consistent with no electronic scoring for that competition/era. Expected.');
+          console.log('  MIXED seasons  (5-95% captured)                  : ' + mixed.length.toLocaleString() + ' seasons, ' + sum(mixed, 'miss').toLocaleString() + ' misses');
+          console.log('    → partial rollout, or per-grade differences. Plausible either way.');
+          console.log('  COVERED seasons (>95% captured, yet some missed)  : ' + covered.length.toLocaleString() + ' seasons, ' + sum(covered, 'miss').toLocaleString() + ' misses');
+          console.log('    → ⚠ SUSPICIOUS. A season that scored electronically all year should not');
+          console.log('      lose scattered games. These are the likely transient failures (403/429/5xx/');
+          console.log('      network) that spcm cannot distinguish from a genuine empty box.');
+
+          const show = (label, arr, n) => {
+            if (!arr.length) return;
+            console.log('\n' + label);
+            for (const s of arr.sort((a, b) => b.miss - a.miss).slice(0, n)) {
+              console.log('  ' + s.sid + '  missed ' + String(s.miss).padStart(6) + ' of ' + String(s.final).padStart(6) +
+                          '  coverage ' + s.cov.toFixed(1).padStart(5) + '%  ' + s.name + ' — ' + s.org);
+              for (const g of s.samples) console.log('        https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/' + g);
+            }
+          };
+          show('TOP COVERED-SEASON OFFENDERS (check these first — spot-check the URLs):', covered, 15);
+          show('TOP MIXED SEASONS:', mixed, 5);
+          show('TOP DEAD SEASONS (expected — sanity-check one or two):', dead, 5);
+          console.log('\nSpot-check method: open a URL above. Player statistics shown on the page = the box');
+          console.log('EXISTS and we failed to fetch it (transient). No player statistics = genuine empty.');
+          SCRIPT_EOF
+          node /tmp/size-misses.cjs
