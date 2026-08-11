@@ -286,7 +286,21 @@ async function gqlSpectator(gameId) {
     }
     if (status === 404) return { ok: false, permanent: true, why: '404' };
     if (status !== 200) return { ok: false, permanent: false, why: 'http-' + status };
-    if (body.errors)    return { ok: false, permanent: false, why: 'graphql-error' };
+    if (body.errors) {
+      // 2026-08-11: log WHAT the error says. The first version returned a bare
+      // 'graphql-error', and a 200-game probe of re-admitted misses came back
+      // 200/200 with that label — which distinguishes nothing. The message and
+      // extensions.code separate a permanent NOT_FOUND (the endpoint cannot serve
+      // this game id at all — retirement was CORRECT) from an auth/permission or
+      // throttle error (genuinely transient). Sampled id shapes suggest the former:
+      // the missed games' ids are overwhelmingly all-numeric, i.e. a legacy id
+      // format, while captured games' ids are hex.
+      const e0 = body.errors[0] || {};
+      const code = (e0.extensions && (e0.extensions.code || e0.extensions.errorType)) || '';
+      const msg  = String(e0.message || '').slice(0, 80);
+      const perm = /NOT_FOUND|NOT FOUND|does not exist|no such|invalid.*id|BAD_USER_INPUT/i.test(code + ' ' + msg);
+      return { ok: false, permanent: perm, why: 'graphql:' + (code || 'nocode') + ':' + (msg || 'nomsg') };
+    }
     const g = body.data?.game;
     return g ? { ok: true, game: g } : { ok: false, permanent: true, why: 'no-game' };
   } catch (e) { return { ok: false, permanent: false, why: 'network-' + (e.code || e.message || 'err') }; }
