@@ -708,7 +708,7 @@ function evictCleanSeasons() {
 
 async function main() {
   const t0 = Date.now();
-  console.log('spectator-backfill.js');
+  console.log('discover-game-backfill.js  (canonical record — api.playhq.com gameView)');
   if (TARGET_SEASON) console.log(`  season:    ${TARGET_SEASON}`);
   console.log(`  max-games: ${MAX_GAMES}`);
   if (DRY_RUN) console.log('  ⚠  DRY RUN — scan and report only: no API calls, no writes, no commits');
@@ -717,21 +717,20 @@ async function main() {
   if (!fs.existsSync(INDEX_FILE)) { console.error('sports-index.json not found'); process.exit(1); }
   const sportIndex = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
 
-  console.log('Scanning games/bv for never-spectator-processed games…');
+  console.log('Scanning games/bv for games the LIVE-SCORING service could not serve…');
   const { queue, tallies, perSeason } = buildBackfillQueue(sportIndex);
   const line = (l, v) => console.log(`  ${l.padEnd(48, '.')} ${v.toLocaleString()}`);
   line('Season files scanned', tallies.files);
   line('Games on file', tallies.games);
-  line('  already spectator-processed (spc set)', tallies.spcSet);
+  line('  already captured from the live service (spc)', tallies.spcSet);
+  line('  already captured from the canonical record (dg)', tallies.dgSet);
   line('  forfeits / byes / cancelled / abandoned', tallies.forfeit + tallies.otherTerminal);
-  line('  not FINAL and unscored (future etc.)', tallies.notFinal);
-  line('  with a player list already (LEFT ALONE)', tallies.partialListLeftAlone);
-  if (MIN_AGE_CUTOFF) line(`  deferred, younger than ${MIN_AGE_DAYS} days (box may still be completing)`, tallies.tooRecent);
-  if (HEAL_DANGLING) { line('  HEAL: spc games with dangling p[] ids', tallies.queuedDangling); line('  HEAL: dangling id occurrences', tallies.danglingIds); }
-  if (INCLUDE_PARTIAL) line('  QUEUED with partial list (--include-partial)', tallies.queuedPartialList);
-  line(INCLUDE_PARTIAL ? 'QUEUE — empty-list + partial-list' : 'QUEUE — no player list at all', queue.length);
-  line('  with st=FINAL', tallies.queuedFinalSt);
-  line('  scored but no st field (older writers)', tallies.queuedScoreNoSt);
+  line('  profileOnly (no real game anywhere — not our business)', tallies.profileOnly);
+  line('  never asked of the live service (no spcm — leave to the sweep)', tallies.notTried);
+  line('  not FINAL', tallies.notFinal);
+  line('  already retired here (dgm at the attempt limit)', tallies.retiredMisses);
+  if (MIN_AGE_CUTOFF) line(`  deferred, younger than ${MIN_AGE_DAYS} days`, tallies.tooRecent);
+  line('QUEUE — live service could not serve these', queue.length);
   line('  in LOCKED seasons', tallies.queuedLocked);
   line('  in ACTIVE seasons', tallies.queuedActive);
   console.log('  Top seasons by queued games:');
@@ -755,7 +754,7 @@ async function main() {
   await refreshSession();
 
   // ── Spectator fetch — nightly-crawl.js Phase 3, verbatim ─────────────────────
-  console.log(`Spectator box scores (${needsSpectator.length} games)…`);
+  console.log(`Fetching canonical game records (${needsSpectator.length} games)…`);
   const playerDeltas = new Map();
   let totalStubbed = 0;
   // Incremental player phase (see the crash-consistency note below): no-op on an
@@ -1024,7 +1023,7 @@ async function main() {
   const elapsed = Math.round((Date.now() - t0) / 1000);
   console.log('─'.repeat(50));
   console.log(`  Queue total:       ${queue.length}  (this run: ${needsSpectator.length})`);
-  console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
+  console.log(`  Rosters captured:  ${spectatorHits}  permanently unavailable: ${spectatorMiss}`);
   console.log(`  Transport failures: ${transientFail} — NOT counted as misses, nothing written, still queued`);
   console.log(`  Players skipped (fill-in / anonymous, no profile id): ${skippedNoProfile}`);
   if (transientWhy.size) {
