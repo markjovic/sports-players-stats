@@ -50,6 +50,11 @@ on:
         required: false
         default: '1'
         type: string
+      retry_covered:
+        description: 'One-off recovery: re-admit ALREADY-RETIRED misses in seasons captured at least this % (e.g. 95). Blank/0 = off. Only meaningful WITH the 2026-08-10 failure-classification fix — 3 of 4 sampled retired misses in >95% seasons had full box scores live on playhq.com.'
+        required: false
+        default: ''
+        type: string
       heal_dangling:
         description: 'HEAL MODE: re-fetch spc-set games whose p[] contains ids no player resolves to (the cancelled run-3 debt) and stub their players. Self-limiting; combinable with nothing else needed.'
         required: false
@@ -106,5 +111,6 @@ jobs:
             if [ -n "${{ inputs.min_age_days }}" ]; then ARGS="$ARGS --min-age-days=${{ inputs.min_age_days }}"; fi
             if [ "${{ inputs.heal_dangling }}" = "true" ] || [ "${{ inputs.heal_dangling }}" = "True" ]; then ARGS="$ARGS --heal-dangling"; fi
             if [ -n "${{ inputs.miss_attempts }}" ]; then ARGS="$ARGS --miss-attempts=${{ inputs.miss_attempts }}"; fi
+            if [ -n "${{ inputs.retry_covered }}" ] && [ "${{ inputs.retry_covered }}" != "0" ]; then ARGS="$ARGS --retry-covered=${{ inputs.retry_covered }}"; fi
           fi
           node scripts/spectator-backfill.js $ARGS
