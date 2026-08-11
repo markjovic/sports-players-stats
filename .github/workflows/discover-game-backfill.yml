@@ -28,9 +28,9 @@ on:
         default: ''
         type: string
       concurrency:
-        description: 'Parallel gameView requests. Deliberately modest — the nightly crawl shares this endpoint.'
+        description: 'Parallel gameView requests. MEASURED 2026-08-11: 5 = 200/200 clean in 52s; 25 = sustained 403 wall after ~140 games. Leave at 5 — the nightly crawl shares this endpoint.'
         required: false
-        default: '25'
+        default: '5'
         type: string
       min_age_days:
         description: 'Skip games younger than this many days'
