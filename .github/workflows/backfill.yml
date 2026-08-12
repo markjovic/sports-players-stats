@@ -1,0 +1,94 @@
+# .github/workflows/backfill.yml
+#
+# Phase A historic backfill — results and ladders for completed seasons.
+# storage_ingestion_design.md §6.1.
+#
+# season "all" does every RETIRED season for one organisation, oldest first, with
+# a wait between each. Each season is saved before the next starts, so a block
+# part-way through leaves the earlier seasons written. It is idempotent, so a
+# re-run after a failure is safe and skips what is already done.
+#
+# Actions jobs are capped at six hours. At roughly 26 minutes a season plus the
+# delay, four seasons is comfortable and anything much larger is not.
+#
+# BEFORE THE FIRST REAL RUN: set dry_run to true. It resolves the season from the
+# manifest, prints what it would fetch, and stops without calling PlayHQ.
+#
+# Phase A writes data only. Nothing changes on the dashboard: index.html fetches
+# an organisation's archive only when that organisation has no live season, and
+# all five in scope have an ACTIVE 2026 season.
+
+name: Backfill (Phase A — results)
+
+on:
+  workflow_dispatch:
+    inputs:
+      org:
+        description: '8-character organisation code (383836bb EFNL, 4f9a099e YJFL, 4c8b472e WFNL, 1cf85e52 SEJ, 0f20da4f SER)'
+        required: true
+        type: string
+      season:
+        description: 'Season name, e.g. 2025. Use "all" for every retired season of that organisation.'
+        required: true
+        default: '2025'
+        type: string
+      phase:
+        description: 'Phase. B is not implemented.'
+        required: false
+        default: 'A'
+        type: choice
+        options: ['A']
+      dry_run:
+        description: 'Resolve and report only — no PlayHQ calls, no writes'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+      season_delay:
+        description: 'Minutes to wait between seasons. Only used when season is "all".'
+        required: false
+        default: '5'
+        type: string
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Backfill
+        id: backfill
+        env:
+          BACKFILL_ORG: ${{ github.event.inputs.org }}
+          BACKFILL_SEASON: ${{ github.event.inputs.season }}
+          BACKFILL_PHASE: ${{ github.event.inputs.phase }}
+          BACKFILL_DRY_RUN: ${{ github.event.inputs.dry_run }}
+          BACKFILL_SEASON_DELAY_MIN: ${{ github.event.inputs.season_delay }}
+        run: |
+          set +e
+          node scripts/backfill.js
+          CODE=$?
+          echo "exit_code=$CODE" >> $GITHUB_OUTPUT
+          set -e
+          # 0 = changed, 2 = no change. Anything else is a real failure and must
+          # fail the job. The older fetch workflows treat exit 1 as green with no
+          # commit, which is how a silent degradation hides in a long run.
+          if [ "$CODE" != "0" ] && [ "$CODE" != "2" ]; then
+            echo "backfill.js exited $CODE — failing the job"
+            exit "$CODE"
+          fi
+
+      - name: Commit
+        if: steps.backfill.outputs.exit_code == '0'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # data/ only. Naming root-level data.json, grades.json or clubs.json in
+          # the pathspec fails with exit 128 — they were moved into data/.
+          git add -A data/
+          git diff --staged --quiet || git commit -m "backfill: ${{ github.event.inputs.org }} ${{ github.event.inputs.season }} (run #${{ github.run_number }})"
+          git pull --rebase -X theirs
+          git push
