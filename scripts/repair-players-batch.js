@@ -379,17 +379,6 @@ async function gitCommit(message, dirs) {
 }
 
 
-function buildStatLine(uuid13, st) {
-  return {
-    profileID: uuid13,
-    pts:   statValue(st, 'TOTAL_SCORE'),
-    pt1:   statValue(st, '1_POINT_SCORE'),
-    pt2:   statValue(st, '2_POINT_SCORE'),
-    pt3:   statValue(st, '3_POINT_SCORE'),
-    fouls: statValue(st, 'TOTAL_FOULS'),
-  };
-}
-
 function loadProgress() {
   try { return JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); }
   catch { return { done: {}, dead: {} }; }
@@ -466,6 +455,16 @@ async function main() {
   const dirtySids = new Set();
   let doneCount = 0, totalAppends = 0, totalAlias = 0, totalAbsent = 0, totalDead = 0, sinceCommit = 0;
 
+  // 2026-08-11 (OOM fix): inspectP's gameIndex caches every season file it parses
+  // and NOTHING evicted them, so a run spanning hundreds of seasons accumulated
+  // most of games/bv in the heap — a 468-player dry run died at the 4 GB limit
+  // after ~90 players. The commit window is the natural eviction point: by then
+  // every touched season has been written (apply) or is irrelevant (dry-run), so
+  // the cache can be dropped wholesale. Memory is now bounded by ONE window's
+  // worth of seasons instead of the whole run. Cost is re-parsing a season if a
+  // later window touches it again, which is cheap next to running out of memory.
+  const evictSeasonCache = () => { gameIndex.clear(); };
+
   const flushAndCommit = async (label) => {
     if (DRY_RUN) { dirtySids.clear(); return; }
     for (const sid of dirtySids) {
@@ -505,9 +504,17 @@ async function main() {
               const entry = gameIndex.get(heldSid).games[gameId];
               const g = gs.game;
               const side = g.home?.id === tid ? 'HOME' : g.away?.id === tid ? 'AWAY' : null;
+              // ROSTER ONLY — bare {id}, no stat line (2026-08-10). Writing a
+              // hp[]/ap[] entry for a single appended player into a REAL crawled game
+              // produces a FRAGMENT that reads as a box score: one scorer, everyone
+              // else apparently absent. Completing them all is ~25M stat lines /
+              // ~1.9 GB — larger than the dataset and past the Pages ceiling — and
+              // stored stats go stale when scorers amend them, while the Worker always
+              // serves the current version. House rule: p[] is bare {id}; box scores
+              // are Worker-on-demand, never pre-stored; profileOnly (hidden) games are
+              // the sole exception and belong to synthesize-missing-games. The
+              // appearance is the thing that was missing, and p[] carries it.
               entry.p = entry.p || []; entry.p.push({ id: uuid13 });
-              if (side === 'HOME') { entry.hp = entry.hp || []; entry.hp.push(buildStatLine(uuid13, gs.statistics)); }
-              else if (side === 'AWAY') { entry.ap = entry.ap || []; entry.ap.push(buildStatLine(uuid13, gs.statistics)); }
               dirtySids.add(heldSid);
               appended++; pts += statValue(gs.statistics, 'TOTAL_SCORE');
             }
@@ -520,6 +527,7 @@ async function main() {
     console.log(`  ✓ ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts), alias-skipped=${alias}, game-absent=${absent}`);
     if (sinceCommit >= COMMIT_EVERY) {
       await flushAndCommit(`repair-players-batch: ${doneCount}/${targets.length} players, ${totalAppends} appends so far (min-gap=${MIN_GAP})`);
+      evictSeasonCache();
       sinceCommit = 0;
     }
     await sleep(1000);
