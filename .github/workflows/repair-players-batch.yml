@@ -65,9 +65,9 @@ jobs:
             ARGS="$ARGS --max-players=${{ inputs.max_players }}"
           fi
           if [ "${{ inputs.mode }}" = "apply" ]; then
-            node scripts/repair-players-batch.js $ARGS --apply
+            node --max-old-space-size=8192 scripts/repair-players-batch.js $ARGS --apply
           else
-            node scripts/repair-players-batch.js $ARGS
+            node --max-old-space-size=8192 scripts/repair-players-batch.js $ARGS
           fi
 
       - name: Install dispatch retry helper
