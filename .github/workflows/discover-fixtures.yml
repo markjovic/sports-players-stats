@@ -48,7 +48,7 @@ on:
         default: false
         type: boolean
       concurrency:
-        description: 'Team fetches in parallel (blank = 20)'
+        description: 'Team fetches in parallel (blank = 20). 2026-08-13: a manual run at 40 froze indefinitely — the cause was two silent-hang bugs in the script gql() (no request timeout, uncapped 429 retry loop), both now fixed. There is still no measured evidence that 40 is safe on this endpoint, so leave blank unless deliberately probing.'
         required: false
         type: string
       chain_stats:
