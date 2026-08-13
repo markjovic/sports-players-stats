@@ -48,7 +48,7 @@ on:
         default: false
         type: boolean
       concurrency:
-        description: 'Team fetches in parallel (blank = 20). 2026-08-13: a manual run at 40 froze indefinitely — the cause was two silent-hang bugs in the script gql() (no request timeout, uncapped 429 retry loop), both now fixed. There is still no measured evidence that 40 is safe on this endpoint, so leave blank unless deliberately probing.'
+        description: 'Team fetches in parallel. The weekly cron runs at 40, which is the PROVEN working value on this endpoint (2026-08-13). Blank = the script default of 20. The 2026-08-13 freeze was NOT concurrency — it was two silent-hang bugs in gql() (no request timeout, uncapped 429 retry loop), both since fixed.'
         required: false
         type: string
       chain_stats:
