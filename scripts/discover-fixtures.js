@@ -120,6 +120,26 @@ async function getSession() {
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// 2026-08-13 — TWO SILENT-HANG BUGS FIXED HERE. The weekly run froze after
+// "Teams: 594" and produced no further output at all, for over five minutes,
+// until it was cancelled.
+//
+// (1) NO TIMEOUT. Node's fetch waits FOREVER for a response that never arrives.
+//     The caller batches teams with `await Promise.all(batch.map(processTeam))`,
+//     so ONE stalled socket blocks its whole batch, and therefore the entire run,
+//     silently and permanently. Every request now carries an explicit timeout and
+//     a stalled request becomes an ordinary retryable failure.
+// (2) THE 429 BRANCH LOOPED FOREVER. `if (res.status === 429) { delay; continue; }`
+//     never incremented `attempts`, so sustained rate limiting spun at ten seconds
+//     a turn with no output and no exit — the same symptom as a hang, and
+//     impossible to tell apart from one in the log. 429s are now counted and give
+//     up like any other failure.
+//
+// Both fixes are visible by design: every retry PRINTS. A silent stall is what
+// cost this run, so the tool must now say what it is waiting for.
+const GQL_TIMEOUT_MS  = 30000;   // per request
+const GQL_MAX_ATTEMPTS = 4;      // total tries per call, including the first
+
 async function gql(operationName, query, variables) {
   const cookie = await getSession();
   let attempts = 0;
@@ -129,14 +149,40 @@ async function gql(operationName, query, variables) {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
         body:    JSON.stringify({ operationName, variables, query }),
+        signal:  AbortSignal.timeout(GQL_TIMEOUT_MS),
       });
-      if (res.status === 429) { await delay(10000); continue; }
-      if (!res.ok) { if (attempts++ < 2) { await delay(5000); continue; } return null; }
+      if (res.status === 429) {
+        if (++attempts >= GQL_MAX_ATTEMPTS) {
+          console.log(`  ⚠ ${operationName}: rate limited (429) ${attempts}x — giving up on this call`);
+          return null;
+        }
+        const wait = 10000 * attempts;
+        console.log(`  … ${operationName}: 429 rate limited, waiting ${wait / 1000}s (attempt ${attempts}/${GQL_MAX_ATTEMPTS})`);
+        await delay(wait);
+        continue;
+      }
+      if (!res.ok) {
+        if (++attempts < GQL_MAX_ATTEMPTS) {
+          console.log(`  … ${operationName}: HTTP ${res.status}, retry ${attempts}/${GQL_MAX_ATTEMPTS} in 5s`);
+          await delay(5000);
+          continue;
+        }
+        console.log(`  ⚠ ${operationName}: HTTP ${res.status} after ${attempts} attempts — giving up on this call`);
+        return null;
+      }
       const json = await res.json();
       if (json.errors) return null;
       return json.data;
     } catch (e) {
-      if (attempts++ < 2) { await delay(3000); continue; }
+      const why = (e && (e.name === 'TimeoutError' || e.name === 'AbortError'))
+        ? `no response in ${GQL_TIMEOUT_MS / 1000}s`
+        : (e && (e.code || e.message)) || 'network error';
+      if (++attempts < GQL_MAX_ATTEMPTS) {
+        console.log(`  … ${operationName}: ${why}, retry ${attempts}/${GQL_MAX_ATTEMPTS} in 3s`);
+        await delay(3000);
+        continue;
+      }
+      console.log(`  ⚠ ${operationName}: ${why} after ${attempts} attempts — giving up on this call`);
       return null;
     }
   }
