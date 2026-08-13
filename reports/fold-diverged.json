@@ -1,92 +1,20 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-08-12T18:59:57.423Z",
+  "generatedAt": "2026-08-13T18:44:28.944Z",
   "dryRun": false,
-  "filesScanned": 420941,
-  "folded": 13,
+  "filesScanned": 420948,
+  "folded": 1,
   "promotes": 1,
-  "merges": 12,
-  "indexShardsTouched": 17,
-  "aliasEntriesScanned": 497608,
-  "aliasValuesRepointed": 2,
-  "aliasShardsTouched": 2,
+  "merges": 0,
+  "indexShardsTouched": 2,
+  "aliasEntriesScanned": 497627,
+  "aliasValuesRepointed": 1,
+  "aliasShardsTouched": 1,
   "entries": [
     {
-      "apiId": "a503ce05-e9fa-419b-908a-fbedf99391be",
-      "action": "merge",
-      "oldKey": "0b7da9b3-bb20-4232-b11d-9718feacdcb9",
-      "keeper": "a503ce05-e9fa-419b-908a-fbedf99391be"
-    },
-    {
-      "apiId": "7ee6e5bf-b1d8-47dd-8b30-3f593a175d62",
+      "apiId": "5dc0be1b-2060-4640-bb02-f3042428107c",
       "action": "promote",
-      "oldKey": "9c4ae9e7-6aa0-4fa6-af78-4c4c4e729451"
-    },
-    {
-      "apiId": "f3131123-3931-49f8-a1c2-e812456a2ca3",
-      "action": "merge",
-      "oldKey": "f0124482-c29b-4467-aa79-ff57ed9cf744",
-      "keeper": "f3131123-3931-49f8-a1c2-e812456a2ca3"
-    },
-    {
-      "apiId": "be36310c-251c-4173-b47b-a25eb5f7b9f4",
-      "action": "merge",
-      "oldKey": "f0197f48-bee6-4256-a835-f913dee8642e",
-      "keeper": "be36310c-251c-4173-b47b-a25eb5f7b9f4"
-    },
-    {
-      "apiId": "1d7ca95d-9fd5-48e3-ac87-0345cf3f4d83",
-      "action": "merge",
-      "oldKey": "f039bb4e-c3ff-4802-a2ed-bc2cfb3f4e12",
-      "keeper": "1d7ca95d-9fd5-48e3-ac87-0345cf3f4d83"
-    },
-    {
-      "apiId": "29c9b007-28a5-4088-bd63-8270a256749d",
-      "action": "merge",
-      "oldKey": "f0414d1c-b0b3-4a20-9c93-17171b32cbb6",
-      "keeper": "29c9b007-28a5-4088-bd63-8270a256749d"
-    },
-    {
-      "apiId": "c73c2e2b-1e21-421f-b76c-d2eafd26bd84",
-      "action": "merge",
-      "oldKey": "f051066e-78bf-4137-bc17-b881c043651a",
-      "keeper": "c73c2e2b-1e21-421f-b76c-d2eafd26bd84"
-    },
-    {
-      "apiId": "6190f6dd-9b5a-4c33-bdbc-b2ed2bba95d2",
-      "action": "merge",
-      "oldKey": "f055ee70-8322-4625-bfa3-c3894f6b82f4",
-      "keeper": "6190f6dd-9b5a-4c33-bdbc-b2ed2bba95d2"
-    },
-    {
-      "apiId": "77315ead-59e4-427b-9ab0-020c68c3c045",
-      "action": "merge",
-      "oldKey": "f07cec76-dcac-4027-8493-ab6f94aaf813",
-      "keeper": "77315ead-59e4-427b-9ab0-020c68c3c045"
-    },
-    {
-      "apiId": "5c16b930-954b-46a0-af2c-69fe454bdd31",
-      "action": "merge",
-      "oldKey": "f07ded34-ac87-41d1-9e5f-68f5915e3fff",
-      "keeper": "5c16b930-954b-46a0-af2c-69fe454bdd31"
-    },
-    {
-      "apiId": "e9d9b062-5fb5-4741-aceb-a1940e359c24",
-      "action": "merge",
-      "oldKey": "f0c278d3-84e0-44ed-bb82-8ab347900256",
-      "keeper": "e9d9b062-5fb5-4741-aceb-a1940e359c24"
-    },
-    {
-      "apiId": "c58aa8ad-edf3-4020-a273-6f08e7cad096",
-      "action": "merge",
-      "oldKey": "f0e0a3aa-9a3f-42c2-93e1-8a8e076b9dd7",
-      "keeper": "c58aa8ad-edf3-4020-a273-6f08e7cad096"
-    },
-    {
-      "apiId": "48d12a34-198d-454e-a315-e4f930e1c61c",
-      "action": "merge",
-      "oldKey": "f6bb1772-c86b-4e25-bbe2-1acb00f53a39",
-      "keeper": "f6bb1772-c86b-4e25-bbe2-1acb00f53a39"
+      "oldKey": "b3adb0c3-8ef7-4803-b773-c3fd1d09e7aa"
     }
   ]
 }
