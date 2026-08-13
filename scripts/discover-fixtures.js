@@ -137,6 +137,11 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 //
 // Both fixes are visible by design: every retry PRINTS. A silent stall is what
 // cost this run, so the tool must now say what it is waiting for.
+//
+// NOT the cause: concurrency. The weekly cron runs at 40 and that is the proven
+// working value on this endpoint — a single stalled socket freezes a batch of any
+// size, so batch width was never the problem. (Recorded because I twice argued
+// otherwise from my own assumptions instead of the run log.)
 const GQL_TIMEOUT_MS  = 30000;   // per request
 const GQL_MAX_ATTEMPTS = 4;      // total tries per call, including the first
 
