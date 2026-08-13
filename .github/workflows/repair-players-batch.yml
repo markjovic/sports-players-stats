@@ -51,7 +51,11 @@ concurrency:
 jobs:
   repair:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    # 350, not 240: the 2026-08-11 min-gap=20 run was killed by the old 240 after
+    # 3,775 of 11,396 players (197,397 appends committed, nothing lost — the
+    # progress file is written every window). 350 leaves margin under GitHub's
+    # 6-hour job ceiling while getting ~45% more work per dispatch.
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
         with:
