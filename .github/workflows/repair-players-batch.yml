@@ -24,6 +24,15 @@ name: Repair Players Batch
 # of shallow ones, so whether the appendable share holds as gaps get shallower is
 # the thing to look at before deciding how far down to keep going.
 #
+# 2026-08-14, after the min-gap=20 run: 2,537 players took a full dispatch at one
+# profile per second, which puts the 6-19 band (18,447) at six dispatches and
+# everything below it (~94,000) at thirty-plus. fetch_concurrency parallelises the
+# PROFILE FETCHES ONLY — classification, the p[] append and every write stay
+# strictly serial in worklist order, because the season cache is simultaneously the
+# read cache and the write buffer. Start at 8. It halves itself on any transport
+# failure in a chunk and recovers one step after two clean chunks, so a rate limit
+# throttles the run instead of failing it.
+#
 # Run uncapped and resume: max_players stays 0, and a dispatch that hits the
 # timeout is simply re-dispatched — settled players are skipped and the ranking is
 # recomputed from scratch, so nothing is repeated and nothing is lost past the last
@@ -46,6 +55,11 @@ on:
         description: 'Safety cap on players processed this run (0 = no cap)'
         required: false
         default: '0'
+        type: string
+      fetch_concurrency:
+        description: 'Profile fetches in flight at once (1-25). Only the NETWORK is parallel; classification and every write stay serial. Backs off automatically on transport failures.'
+        required: false
+        default: '8'
         type: string
       retry_dead:
         description: 'Re-admit players retired on a TRANSPORT failure (CloudFront block, socket error, 5xx). They were never refused by PlayHQ.'
@@ -99,6 +113,9 @@ jobs:
           # illustrate the point: GitHub evaluates expressions ANYWHERE in a run
           # block, a '#' hides nothing from it, and an empty one is a parse error
           # that rejects the whole workflow file.)
+          if [ -n "${{ inputs.fetch_concurrency }}" ]; then
+            ARGS="$ARGS --concurrency=${{ inputs.fetch_concurrency }}"
+          fi
           if [ "${{ inputs.retry_dead }}" = "yes" ]; then
             ARGS="$ARGS --retry-dead"
           fi
