@@ -65,6 +65,9 @@ const MIN_GAP = Number((args.find(a => a.startsWith('--min-gap=')) || '').replac
 const MAX_PLAYERS = Number((args.find(a => a.startsWith('--max-players=')) || '').replace('--max-players=', '') || '0');
 const APPLY = args.includes('--apply');
 const RETRY_DEAD = args.includes('--retry-dead');
+// Profile fetches only. Classification, appends and every write stay strictly
+// serial — see the chunk loop for why.
+const CONCURRENCY = Math.max(1, Math.min(25, Number((args.find(a => a.startsWith('--concurrency=')) || '').split('=')[1]) || 1));
 const DRY_RUN = !APPLY;   // gitCommit (verbatim) keys on DRY_RUN
 const TRUNC_LEN = 13;
 const COMMIT_EVERY = 25;
@@ -411,12 +414,19 @@ function loadProgress() {
 // player. That is the same defect corrected in gqlSpectator on 2026-08-11, where
 // a bare null for 403/429/5xx/network made a single bad moment retire a game for
 // good: classify the outcome, never collapse a failure into an answer.
-// Permanent (recorded, never retried): private, notfound, gql-error, http-4xx.
+// Permanent (recorded, never retried): private, notfound, gql-error, and 4xx
+// OTHER than 429.
 // Transport (nothing recorded, retried on the next dispatch): cloudfront-block,
-// socket errors, bad-json, http-5xx.
+// socket errors, bad-json, http-5xx and http-429.
+//
+// 2026-08-14, second pass — 429 was on the wrong side of that line. It is the
+// endpoint saying "too fast", which is the most transient answer there is, and
+// with the fetch loop now running several profiles at once it is the status most
+// likely to appear. Classifying it as permanent would have retired players for
+// the sole reason that we asked quickly.
 const TRANSPORT_STATUS = new Set(['cloudfront-block', 'error', 'bad-json']);
 function isTransportStatus(status) {
-  return TRANSPORT_STATUS.has(status) || /^http-5\d\d$/.test(status || '');
+  return TRANSPORT_STATUS.has(status) || /^http-(429|5\d\d)$/.test(status || '');
 }
 
 // ── Campaign rollup, recomputed from the progress file ─────────────────────────
@@ -449,12 +459,24 @@ function summarise(progress, heading) {
   }
   const deadBy = new Map();
 
+  // Pre-breakdown entries get their OWN row rather than contributing players and
+  // sum-gap to a band whose bucket columns exclude them. The first cut counted
+  // them in two columns and left them out of the other nine, so the table read as
+  // though 422,948 games of gap had produced 1,021 appends — Mark caught it, and
+  // he was right: a row that mixes two schemas in different columns is not a
+  // summary of anything.
+  const oldRow = { players: 0, gap: 0, appended: 0 };
   for (const [, rec] of Object.entries(progress.done || {})) {
     if (!rec || typeof rec !== 'object') continue;
+    if (rec.v !== 2) {
+      oldRow.players++;
+      oldRow.gap += Number(rec.gap) || 0;
+      oldRow.appended += Number(rec.appended) || 0;
+      continue;
+    }
     const r = rows.get(bandOf(Number(rec.gap) || 0));
     r.players++;
     r.gap += Number(rec.gap) || 0;
-    if (rec.v !== 2) { r.old++; r.oldAppended += Number(rec.appended) || 0; continue; }
     for (const b of BUCKETS) r[b] += Number(rec[b]) || 0;
   }
   for (const [, rec] of Object.entries(progress.dead || {})) {
@@ -477,14 +499,17 @@ function summarise(progress, heading) {
     const r = rows.get(k);
     if (!r.players && !r.dead) continue;
     console.log([k, ...cols.map(c => n(r[c]))].map((v, i) => String(v).padStart(W[i])).join(''));
-    for (const c of [...cols, 'old', 'oldAppended']) tot[c] = (tot[c] || 0) + (r[c] || 0);
+    for (const c of cols) tot[c] = (tot[c] || 0) + (r[c] || 0);
   }
   console.log(['TOTAL', ...cols.map(c => n(tot[c]))].map((v, i) => String(v).padStart(W[i])).join(''));
-
-  if (tot.old) {
-    console.log(`  note: ${n(tot.old)} of those players were settled BEFORE this breakdown existed — ` +
-                `${n(tot.oldAppended)} appends, no per-bucket detail. Counted in "players" and "sum gap" ` +
-                `only, deliberately left out of every bucket column above so the shares below are not a blend of two schemas.`);
+  if (oldRow.players) {
+    const dash = () => '—';
+    console.log(['pre-8/14', n(oldRow.players), n(oldRow.gap), n(oldRow.appended),
+                 dash(), dash(), dash(), dash(), dash(), dash(), dash(), dash(), dash()]
+                .map((v, i) => String(v).padStart(W[i])).join(''));
+    console.log(`  pre-8/14 = settled before the per-credit breakdown existed: players, gap and appends are known, ` +
+                `the nine bucket columns are not. Shown as its own row, never folded into a band, and excluded from the shares below.`);
+    console.log(`  campaign appends including that row: ${n(tot.appended + oldRow.appended)}`);
   }
   if (deadBy.size) {
     console.log(`  dead profiles by status: ${[...deadBy.entries()].sort((a, b) => b[1] - a[1]).map(([k2, v]) => `${k2} ${n(v)}`).join(' · ')}`);
@@ -630,6 +655,7 @@ async function main() {
   // the log with them.
   const SAMPLE_CAP = 15;
   const samples = { aliasGap: [], uncap: [], neither: [] };
+  const deadMsgs = new Map();   // first-error message -> count, for the end block
   const keep = (k, line) => { if (samples[k].length < SAMPLE_CAP) samples[k].push(line); };
 
   // Where the appends are LANDING. A roster that is already a full twelve to
@@ -675,11 +701,27 @@ async function main() {
     await gitCommit(label, ['games/bv', 'reports/repair-batch-progress.json']);
   };
 
-  for (const t of targets) {
-    const specIds = new Set(t.specIds);
-    const uuid13 = t.uuid.slice(0, TRUNC_LEN);
-    const heldGids = loadGamesSet(t.uuid);
-
+  // ── FETCH IS CONCURRENT, EVERYTHING ELSE IS NOT ─────────────────────────────
+  // The 2026-08-14 min-gap=20 run took a whole dispatch to do 2,537 players at one
+  // profile per second. The 6-19 band is 18,447 players and everything below it is
+  // ~94,000: at that cadence, thirty-plus dispatches. So the FETCH is parallelised
+  // and nothing else is.
+  //
+  // Classification, the p[] append, dirtySids, the progress record and every
+  // counter stay strictly serial, in worklist order, exactly as before. That is
+  // not caution for its own sake: gameIndex is both the read cache and the write
+  // buffer, two players in the same season mutate the same parsed object, and the
+  // whole point of the season cache is that a second append SEES the first. Node
+  // being single-threaded does not save code that awaits in the middle of a
+  // read-modify-write. Parallelising the network is worth roughly an order of
+  // magnitude; parallelising the writes would be worth nothing and would risk
+  // everything.
+  //
+  // Chunked rather than a sliding window, deliberately: a chunk boundary is a
+  // natural place to read the error rate and adjust, the memory ceiling is
+  // obvious (one chunk of profiles in flight), and there is no queue to reason
+  // about. Some throughput is left on the table and the design fits in the head.
+  const fetchWithRetry = async (t) => {
     // Up to three attempts on a transport failure before giving up on this
     // player for this dispatch. Nothing is recorded either way — an unrecorded
     // player is simply picked up again next time.
@@ -690,7 +732,26 @@ async function main() {
       await sleep(wait * 1000);
       r = await fetchProfile(t.uuid);
     }
+    return r;
+  };
+
+  let conc = CONCURRENCY;
+  let cleanChunks = 0, stopRun = false;
+  console.log(`  fetch concurrency: ${conc} (backs off on transport failures, recovers after two clean chunks)`);
+
+  for (let cursor = 0; cursor < targets.length && !stopRun; ) {
+    const chunk = targets.slice(cursor, cursor + conc);
+    cursor += chunk.length;
+    const fetched = await Promise.all(chunk.map(async (t) => ({ t, r: await fetchWithRetry(t) })));
+    let chunkTransport = 0;
+
+  for (const { t, r } of fetched) {
+    const specIds = new Set(t.specIds);
+    const uuid13 = t.uuid.slice(0, TRUNC_LEN);
+    const heldGids = loadGamesSet(t.uuid);
+
     if (r.status !== 'ok' && isTransportStatus(r.status)) {
+      chunkTransport++;
       skippedTransport++; consecutiveTransport++;
       console.log(`  ~ ${t.uuid} "${t.name}" gap=${t.gap} — ${r.status}; NOT recorded dead, will be retried on the next dispatch`);
       // Five in a row is the endpoint refusing us, not five unlucky players.
@@ -699,18 +760,27 @@ async function main() {
       // commit what exists, let the next dispatch resume.
       if (consecutiveTransport >= 5) {
         console.log(`\n  ✗ ${consecutiveTransport} players in a row failed on transport — stopping cleanly rather than burning the queue.`);
+        stopRun = true;
         break;
       }
-      await sleep(1000);
       continue;
     }
     consecutiveTransport = 0;
 
     if (r.status !== 'ok') {
-      progress.dead[t.uuid] = { v: 2, status: r.status, gap: t.gap };
+      // Store WHY, not just that. 155 players sat in this file as bare
+      // "gql-error" with no way to tell a permanent refusal from a server
+      // hiccup — a counter with no example again (T15). The message is already
+      // in the response; it was simply never written down. Truncated, because
+      // this file is committed on every window.
+      const msg = Array.isArray(r.errors) && r.errors.length
+        ? String(r.errors[0]?.message || '').slice(0, 200)
+        : undefined;
+      progress.dead[t.uuid] = { v: 2, status: r.status, gap: t.gap, ...(msg ? { msg } : {}) };
       totalDead++; sinceCommit++;
-      console.log(`  ✗ ${t.uuid} "${t.name}" gap=${t.gap} — API status=${r.status}, recorded dead (permanent)`);
-      await sleep(1000);
+      if (msg && deadMsgs.size < 40 && !deadMsgs.has(msg)) deadMsgs.set(msg, 0);
+      if (msg && deadMsgs.has(msg)) deadMsgs.set(msg, deadMsgs.get(msg) + 1);
+      console.log(`  ✗ ${t.uuid} "${t.name}" gap=${t.gap} — API status=${r.status}, recorded dead (permanent)${msg ? ` — ${msg}` : ''}`);
       continue;
     }
 
@@ -822,6 +892,22 @@ async function main() {
       summarise(progress, `after ${doneCount} players this run`);
       sinceCommit = 0;
     }
+  }
+
+    // Back off on any transport failure in the chunk and recover slowly. Same
+    // shape as the documented main-endpoint policy — reduce hard, recover gently
+    // — rather than a second scheme invented here.
+    if (chunkTransport) {
+      cleanChunks = 0;
+      const was = conc;
+      conc = Math.max(1, Math.floor(conc * 0.6));
+      if (conc !== was) console.log(`  … ${chunkTransport} transport failure(s) in that chunk — concurrency ${was} → ${conc}, pausing 30s`);
+      await sleep(30000);
+    } else if (conc < CONCURRENCY && ++cleanChunks >= 2) {
+      conc = Math.min(CONCURRENCY, conc + 1);
+      cleanChunks = 0;
+      console.log(`  … two clean chunks — concurrency back up to ${conc}`);
+    }
     await sleep(1000);
   }
 
@@ -840,7 +926,10 @@ async function main() {
   for (const x of samples.uncap) console.log(`       ${x}`);
   console.log(`  game-absent              : ${run.absent}   ← synthesize-missing-games territory`);
   console.log(`  odd (unparseable season) : ${run.odd}`);
-  console.log(`  dead profiles            : ${totalDead}   ← PlayHQ answered permanently (private/notfound); recorded, never retried`);
+  console.log(`  dead profiles            : ${totalDead}   ← PlayHQ answered permanently; recorded, never retried`);
+  for (const [m, c] of [...deadMsgs.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15)) {
+    console.log(`       ${String(c).padStart(6)} × ${m}`);
+  }
   console.log(`  skipped on transport     : ${skippedTransport}   ← NOT recorded; retried on the next dispatch`);
 
   if (run.appended) {
