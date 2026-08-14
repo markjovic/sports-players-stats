@@ -26,10 +26,30 @@
 // (active players, current + future) is a separate design; THIS tool exists
 // because that change can never reach players the matrix will never fetch again.
 //
+// 2026-08-14 — THIS TOOL IS ALSO THE MEASUREMENT (OUTSTANDING §2.18). Every game
+// credit the API returns is now classified into one of eight buckets rather than
+// three, the result is stored per player in the progress file, and the campaign
+// rollup is recomputed FROM THAT FILE and printed at every commit window — so a
+// timeout costs the run's log and never the measurement. The buckets that matter
+// for "how far can appending get us" are:
+//   appended  — genuinely absent from a captured roster; appended here
+//   self      — already in p[] under their own id AND in their games[]: correct
+//   lag       — already in p[] under their own id but NOT in games[] yet; this
+//               resolves itself on the next build-player-games run, no action
+//   aliasOk   — in p[] under an alias that games[] already resolved: correct
+//   aliasGap  — in p[] under an alias that games[] did NOT resolve: REAL fold /
+//               alias backlog, the number the fold has to close
+//   uncap     — genuinely absent but the roster is EMPTY: needs a capture sweep
+//   absent    — the game is not in games/bv at all
+//   odd       — the season file would not parse; a fault, not a finding
+// Split by gap band, so whether the ratio holds as gaps get shallower is visible
+// rather than assumed. Deep gaps are NOT a random sample of shallow ones.
+//
 // Usage:
 //   node scripts/repair-players-batch.js --min-gap=100            # DRY RUN
 //   node scripts/repair-players-batch.js --min-gap=100 --apply
-//   optional: --max-players=N  (safety cap per run)
+//   optional: --max-players=N   (safety cap per run; 0 / omitted = no cap)
+//   optional: --retry-dead      (re-admit players retired on a TRANSPORT failure)
 
 'use strict';
 
@@ -44,6 +64,7 @@ const args = process.argv.slice(2);
 const MIN_GAP = Number((args.find(a => a.startsWith('--min-gap=')) || '').replace('--min-gap=', '') || '100');
 const MAX_PLAYERS = Number((args.find(a => a.startsWith('--max-players=')) || '').replace('--max-players=', '') || '0');
 const APPLY = args.includes('--apply');
+const RETRY_DEAD = args.includes('--retry-dead');
 const DRY_RUN = !APPLY;   // gitCommit (verbatim) keys on DRY_RUN
 const TRUNC_LEN = 13;
 const COMMIT_EVERY = 25;
@@ -384,9 +405,133 @@ function loadProgress() {
   catch { return { done: {}, dead: {} }; }
 }
 
+// ── A TRANSPORT FAILURE IS NOT A DEAD PROFILE ──────────────────────────────────
+// Until 2026-08-14 every non-ok status was written to progress.dead and never
+// retried, so ONE CloudFront block permanently retired a perfectly recoverable
+// player. That is the same defect corrected in gqlSpectator on 2026-08-11, where
+// a bare null for 403/429/5xx/network made a single bad moment retire a game for
+// good: classify the outcome, never collapse a failure into an answer.
+// Permanent (recorded, never retried): private, notfound, gql-error, http-4xx.
+// Transport (nothing recorded, retried on the next dispatch): cloudfront-block,
+// socket errors, bad-json, http-5xx.
+const TRANSPORT_STATUS = new Set(['cloudfront-block', 'error', 'bad-json']);
+function isTransportStatus(status) {
+  return TRANSPORT_STATUS.has(status) || /^http-5\d\d$/.test(status || '');
+}
+
+// ── Campaign rollup, recomputed from the progress file ─────────────────────────
+// The progress file is the single durable record (T14: one writer, one key), so
+// there is no second report file to reconcile with it and no way for the two to
+// disagree. Entries written before this breakdown existed carry no `v` and are
+// reported separately rather than blended in — their `alias` field counted a
+// different population, and mixing two populations into one number is exactly
+// what made the 1,330,231-surplus-regs figure meaningless (T15).
+const BANDS = [
+  { key: '1-5',    lo: 1,   hi: 5   },
+  { key: '6-20',   lo: 6,   hi: 20  },
+  { key: '21-50',  lo: 21,  hi: 50  },
+  { key: '51-100', lo: 51,  hi: 100 },
+  { key: '101+',   lo: 101, hi: Infinity },
+];
+function bandOf(gap) {
+  for (const b of BANDS) if (gap >= b.lo && gap <= b.hi) return b.key;
+  return 'other';
+}
+const BUCKETS = ['appended', 'self', 'lag', 'aliasOk', 'aliasGap', 'legacy', 'uncap', 'absent', 'odd'];
+
+function summarise(progress, heading) {
+  const keys = [...BANDS.map(b => b.key), 'other'];
+  const rows = new Map();
+  for (const k of keys) {
+    const r = { players: 0, gap: 0, old: 0, oldAppended: 0, dead: 0 };
+    for (const b of BUCKETS) r[b] = 0;
+    rows.set(k, r);
+  }
+  const deadBy = new Map();
+
+  for (const [, rec] of Object.entries(progress.done || {})) {
+    if (!rec || typeof rec !== 'object') continue;
+    const r = rows.get(bandOf(Number(rec.gap) || 0));
+    r.players++;
+    r.gap += Number(rec.gap) || 0;
+    if (rec.v !== 2) { r.old++; r.oldAppended += Number(rec.appended) || 0; continue; }
+    for (const b of BUCKETS) r[b] += Number(rec[b]) || 0;
+  }
+  for (const [, rec] of Object.entries(progress.dead || {})) {
+    const status = typeof rec === 'string' ? rec : (rec && rec.status) || '?';
+    const gap = (rec && typeof rec === 'object' && Number(rec.gap)) || 0;
+    rows.get(gap ? bandOf(gap) : 'other').dead++;
+    deadBy.set(status, (deadBy.get(status) || 0) + 1);
+  }
+
+  const n = (v) => Number(v || 0).toLocaleString();
+  const cols = ['players', 'gap', 'appended', 'self', 'lag', 'aliasOk', 'aliasGap', 'legacy', 'uncap', 'absent', 'odd', 'dead'];
+  const head = ['band', 'players', 'sum gap', 'appended', 'self', 'lag', 'aliasOk', 'aliasGap', 'legacy', 'uncapt', 'absent', 'odd', 'dead'];
+  const W = [8, 9, 11, 11, 9, 8, 9, 9, 8, 8, 10, 7, 7];
+
+  console.log(`\n── campaign to date — ${heading} ──`);
+  console.log(head.map((h, i) => h.padStart(W[i])).join(''));
+  const tot = { players: 0, gap: 0, old: 0, oldAppended: 0, dead: 0 };
+  for (const b of BUCKETS) tot[b] = 0;
+  for (const k of keys) {
+    const r = rows.get(k);
+    if (!r.players && !r.dead) continue;
+    console.log([k, ...cols.map(c => n(r[c]))].map((v, i) => String(v).padStart(W[i])).join(''));
+    for (const c of [...cols, 'old', 'oldAppended']) tot[c] = (tot[c] || 0) + (r[c] || 0);
+  }
+  console.log(['TOTAL', ...cols.map(c => n(tot[c]))].map((v, i) => String(v).padStart(W[i])).join(''));
+
+  if (tot.old) {
+    console.log(`  note: ${n(tot.old)} of those players were settled BEFORE this breakdown existed — ` +
+                `${n(tot.oldAppended)} appends, no per-bucket detail. Counted in "players" and "sum gap" ` +
+                `only, deliberately left out of every bucket column above so the shares below are not a blend of two schemas.`);
+  }
+  if (deadBy.size) {
+    console.log(`  dead profiles by status: ${[...deadBy.entries()].sort((a, b) => b[1] - a[1]).map(([k2, v]) => `${k2} ${n(v)}`).join(' · ')}`);
+  }
+
+  console.log(`\n  share of ACTIONABLE credits (appended + aliasGap + uncapt + absent + odd) — the ratio the route-to-zero decision rests on:`);
+  let any = false;
+  for (const k of keys) {
+    const r = rows.get(k);
+    const denom = r.appended + r.aliasGap + r.uncap + r.absent + r.odd;
+    if (!denom) continue;
+    any = true;
+    const pc = (v) => `${((v / denom) * 100).toFixed(1)}%`;
+    console.log(`    ${k.padEnd(8)} n=${String(n(denom)).padStart(9)}   ` +
+                `appendable ${pc(r.appended).padStart(6)} · alias-blocked ${pc(r.aliasGap).padStart(6)} · ` +
+                `uncaptured ${pc(r.uncap).padStart(6)} · game-absent ${pc(r.absent).padStart(6)} · odd ${pc(r.odd).padStart(6)}`);
+  }
+  if (!any) console.log('    (no v2 entries yet — run with --apply to start recording the breakdown)');
+  console.log(`  already correct, no action needed: self ${n(tot.self)} (in games[]) · aliasOk ${n(tot.aliasOk)} (alias already resolved)`);
+  console.log(`  pending the next build-player-games run: lag ${n(tot.lag)}`);
+}
+
 async function main() {
   console.log(`repair-players-batch ${APPLY ? '[APPLY]' : '[dry-run]'} — min-gap=${MIN_GAP}${MAX_PLAYERS ? ` max-players=${MAX_PLAYERS}` : ''}`);
   const progress = loadProgress();
+
+  // Re-admit anyone retired on a TRANSPORT failure by the pre-2026-08-14
+  // behaviour, where every non-ok status went to progress.dead and was never
+  // retried. Those players are recoverable and were written off by a CloudFront
+  // block or a socket error, not by an answer from PlayHQ. Only persists on
+  // --apply, because dry-run never writes the progress file.
+  if (RETRY_DEAD) {
+    let readmitted = 0;
+    const sample = [];
+    for (const [uuid, rec] of Object.entries(progress.dead || {})) {
+      const status = typeof rec === 'string' ? rec : (rec && rec.status) || '';
+      if (!isTransportStatus(status)) continue;
+      delete progress.dead[uuid];
+      readmitted++;
+      if (sample.length < 10) sample.push(`${uuid} (${status})`);
+    }
+    console.log(`  --retry-dead: re-admitted ${readmitted.toLocaleString()} player(s) previously retired on a transport failure`);
+    for (const x of sample) console.log(`      e.g. ${x}`);
+    if (!APPLY) console.log('      (dry-run — the re-admission is not written back to the progress file)');
+  }
+
+  summarise(progress, 'state at run start');
 
   // ── Offline ranking pass ─────────────────────────────────────────────────────
   const playersDir = path.join(ROOT, 'players');
@@ -430,6 +575,21 @@ async function main() {
   // id that does not resolve to their api-canonical uuid — in which case they are already
   // recorded and the fix is ALIAS RESOLUTION (what fold-diverged-players does), not
   // appending a duplicate entry. Load the game and classify which of the two it is.
+  //
+  // 2026-08-14 (OUTSTANDING §2.16) — "present under their OWN id" now returns
+  // SELF-PRESENT, where it used to return PRESENT-canonical. The RENAME is the
+  // fix, not a cosmetic change: probe-player bucketed verdicts with
+  // `verdict.startsWith('PRESENT')`, so a game this family of tools had appended
+  // on an earlier pass came back on the next pass counted as an alias/fold case.
+  // A verdict that does not begin with "PRESENT" cannot be swept up by that test
+  // here or in anything written later. (Correction to the note in OUTSTANDING
+  // §2.16: only probe-player ever did this. repair-player.js counted it as `ok`
+  // and repair-players-batch.js skipped it before its alias counter, so the
+  // batch's alias figures were never inflated by it — which is why they are being
+  // measured rather than explained away.)
+  // NOTE: this block is therefore NO LONGER byte-identical to the copy in
+  // probe-missing-games.js, which still uses the old verdict name. Deliberate,
+  // and recorded here so the divergence is not later mistaken for drift.
   const gameIndex = new Map();   // sid -> parsed season file (lazy)
   const inspectP = (sid, gid, uuid, specIds) => {
     if (!gameIndex.has(sid)) {
@@ -443,18 +603,56 @@ async function main() {
                          ...(g.hp || []).map(x => x.profileID).filter(Boolean),
                          ...(g.ap || []).map(x => x.profileID).filter(Boolean)]);
     const pref = uuid.slice(0, 13);
-    if (ids.has(pref)) return { verdict: 'PRESENT-canonical', n: ids.size };
+    if (ids.has(pref)) return { verdict: 'SELF-PRESENT', n: ids.size };
     for (const s of specIds) if (ids.has(s)) return { verdict: 'PRESENT-as-alias', alias: s, n: ids.size };
     const pref10 = uuid.slice(0, 10);
     for (const id of ids) if (id.startsWith(pref10)) return { verdict: 'PRESENT-legacy-10char', alias: id, n: ids.size };
-    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0 };
+    // dg carried alongside spc so an append can report WHICH capture path built
+    // the roster it is being added to — a roster with neither flag was written by
+    // a previous repair, not by a sweep (OUTSTANDING §2.15).
+    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0, dg: g.dg || 0 };
   };
 
   // gameIndex (populated by inspectP) doubles as the write cache: the append
   // mutates the same parsed object the verdict was read from.
   const dirtySids = new Set();
-  let uncaptured = 0;
-  let doneCount = 0, totalAppends = 0, totalAlias = 0, totalAbsent = 0, totalDead = 0, sinceCommit = 0;
+
+  // The DURABLE record is the progress file, one entry per player; the campaign
+  // figures are recomputed from it at every commit window (see summarise). The
+  // counters below are this RUN only, and exist so the log shows what this
+  // dispatch did as distinct from what the campaign has done.
+  let doneCount = 0, totalAppends = 0, totalDead = 0, sinceCommit = 0;
+  let skippedTransport = 0, consecutiveTransport = 0;
+  const run = { appended: 0, self: 0, lag: 0, aliasOk: 0, aliasGap: 0, legacy: 0, uncap: 0, absent: 0, odd: 0 };
+
+  // Every counter prints examples beside it (T15): a number nobody can spot-check
+  // is a number nobody can catch being wrong. Capped so a long run cannot fill
+  // the log with them.
+  const SAMPLE_CAP = 15;
+  const samples = { aliasGap: [], uncap: [], neither: [] };
+  const keep = (k, line) => { if (samples[k].length < SAMPLE_CAP) samples[k].push(line); };
+
+  // Where the appends are LANDING. A roster that is already a full twelve to
+  // nineteen and still missing a credited player is a different story from a
+  // roster of four — the first is consistent with the player being present under
+  // an id we cannot see, the second with the proven partial-capture mechanism
+  // (game 7da945a8: a stored 12 of a live 19). And a roster carrying NEITHER
+  // capture flag was built by an earlier repair rather than by a sweep, which is
+  // the population OUTSTANDING §2.15 is about. Both are free to record here.
+  const rosterHist = { '1-4': 0, '5-8': 0, '9-11': 0, '12-14': 0, '15+': 0 };
+  const provenance = { spc: 0, dg: 0, both: 0, neither: 0 };
+  const rosterBucket = (n2) => n2 <= 4 ? '1-4' : n2 <= 8 ? '5-8' : n2 <= 11 ? '9-11' : n2 <= 14 ? '12-14' : '15+';
+
+  // One small read per player, not a map held across the run: at min-gap=1 the
+  // worklist is ~115,000 players and holding every games[] would be millions of
+  // strings in the heap — the shape of the OOM fixed below, rebuilt in a new
+  // place. Read it when the player comes up, drop it when they are done.
+  const loadGamesSet = (uuid) => {
+    try {
+      const p = JSON.parse(fs.readFileSync(path.join(playersDir, uuid.slice(0, 2), `${uuid}.json`), 'utf8'));
+      return new Set(Array.isArray(p.games) ? p.games : []);
+    } catch { return new Set(); }
+  };
 
   // 2026-08-11 (OOM fix): inspectP's gameIndex caches every season file it parses
   // and NOTHING evicted them, so a run spanning hundreds of seasons accumulated
@@ -480,15 +678,43 @@ async function main() {
   for (const t of targets) {
     const specIds = new Set(t.specIds);
     const uuid13 = t.uuid.slice(0, TRUNC_LEN);
-    const r = await fetchProfile(t.uuid);
-    if (r.status !== 'ok') {
-      progress.dead[t.uuid] = r.status;
-      totalDead++;
-      console.log(`  ✗ ${t.uuid} "${t.name}" gap=${t.gap} — API status=${r.status}, recorded dead`);
+    const heldGids = loadGamesSet(t.uuid);
+
+    // Up to three attempts on a transport failure before giving up on this
+    // player for this dispatch. Nothing is recorded either way — an unrecorded
+    // player is simply picked up again next time.
+    let r = await fetchProfile(t.uuid);
+    for (let tries = 1; tries < 3 && r.status !== 'ok' && isTransportStatus(r.status); tries++) {
+      const wait = tries * 30;
+      console.log(`  … ${t.uuid} transport failure (${r.status}) — attempt ${tries + 1}/3 in ${wait}s`);
+      await sleep(wait * 1000);
+      r = await fetchProfile(t.uuid);
+    }
+    if (r.status !== 'ok' && isTransportStatus(r.status)) {
+      skippedTransport++; consecutiveTransport++;
+      console.log(`  ~ ${t.uuid} "${t.name}" gap=${t.gap} — ${r.status}; NOT recorded dead, will be retried on the next dispatch`);
+      // Five in a row is the endpoint refusing us, not five unlucky players.
+      // Carrying on would march through the remaining queue producing nothing
+      // and, worse, would make the run LOOK like it had processed them. Stop,
+      // commit what exists, let the next dispatch resume.
+      if (consecutiveTransport >= 5) {
+        console.log(`\n  ✗ ${consecutiveTransport} players in a row failed on transport — stopping cleanly rather than burning the queue.`);
+        break;
+      }
       await sleep(1000);
       continue;
     }
-    let appended = 0, alias = 0, absent = 0, pts = 0;
+    consecutiveTransport = 0;
+
+    if (r.status !== 'ok') {
+      progress.dead[t.uuid] = { v: 2, status: r.status, gap: t.gap };
+      totalDead++; sinceCommit++;
+      console.log(`  ✗ ${t.uuid} "${t.name}" gap=${t.gap} — API status=${r.status}, recorded dead (permanent)`);
+      await sleep(1000);
+      continue;
+    }
+
+    let appended = 0, self = 0, lag = 0, aliasOk = 0, aliasGap = 0, legacy = 0, uncap = 0, absent = 0, odd = 0, pts = 0;
     for (const season of (r.data?.publicProfileStatistics?.seasonStatistics || [])) {
       for (const reg of (season.statistics || [])) {
         for (const teamStat of (reg.teamStatistics || [])) {
@@ -500,8 +726,41 @@ async function main() {
               const heldSid = gidToSid.get(gameId) || null;
               if (!heldSid) { absent++; continue; }
               const insp = inspectP(heldSid, gameId, t.uuid, specIds);
-              if (insp.verdict === 'PRESENT-canonical') continue;
-              if (insp.verdict !== 'GENUINELY-ABSENT') { alias++; continue; }
+
+              // Already in the roster under their own id. Whether that credit is
+              // still missing from their games[] is the difference between "done"
+              // and "waiting on the weekly rebuild", and it is the only clean
+              // measurement of that lag we have.
+              if (insp.verdict === 'SELF-PRESENT') {
+                if (heldGids.has(gameId)) self++; else lag++;
+                continue;
+              }
+
+              // In the roster under a DIFFERENT id. If games[] already holds the
+              // game, the alias index resolved it and there is nothing to fix. If
+              // it does not, the alias is unregistered and this is genuine fold
+              // work — appending here would create a second identity in the same
+              // roster, which is why it is never touched either way.
+              if (insp.verdict === 'PRESENT-as-alias' || insp.verdict === 'PRESENT-legacy-10char') {
+                if (insp.verdict === 'PRESENT-legacy-10char') legacy++;
+                if (heldGids.has(gameId)) { aliasOk++; }
+                else {
+                  aliasGap++;
+                  keep('aliasGap', `${gameId} sid=${heldSid} player=${t.uuid} → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''}`);
+                }
+                continue;
+              }
+
+              // Anything that is not one of the four real verdicts means the
+              // season file did not parse. That is a fault to look at, not a
+              // finding about the data, so it gets its own bucket instead of
+              // being folded into the alias number as it used to be.
+              if (insp.verdict !== 'GENUINELY-ABSENT') {
+                odd++;
+                keep('aliasGap', `${gameId} sid=${heldSid} → ${insp.verdict} (ODD — season file unreadable?)`);
+                continue;
+              }
+
               // 2026-08-13 — DO NOT APPEND TO AN UNCAPTURED GAME. An empty p[] is not
               // a roster with a gap in it; it is a game no sweep has ever captured
               // (no spc, no dg). Appending one player there manufactures a roster of
@@ -514,7 +773,12 @@ async function main() {
               // than absence, because absence makes a consumer go and fetch it.
               // These games need a CAPTURE (spectator or discoverGame sweep), not a
               // repair, so they are counted and skipped here.
-              if (!insp.n) { uncaptured++; continue; }
+              if (!insp.n) {
+                uncap++;
+                keep('uncap', `${gameId} sid=${heldSid} (empty roster — needs a capture sweep)`);
+                continue;
+              }
+
               const entry = gameIndex.get(heldSid).games[gameId];
               const g = gs.game;
               const side = g.home?.id === tid ? 'HOME' : g.away?.id === tid ? 'AWAY' : null;
@@ -531,17 +795,31 @@ async function main() {
               entry.p = entry.p || []; entry.p.push({ id: uuid13 });
               dirtySids.add(heldSid);
               appended++; pts += statValue(gs.statistics, 'TOTAL_SCORE');
+
+              // Roster size is read BEFORE this append (inspectP built the set on
+              // entry), but a second append into the SAME game later in the run
+              // sees the grown roster — the cache is the write buffer. Reading
+              // these numbers as exact per-game sizes would therefore be wrong;
+              // they are a shape, not a census.
+              rosterHist[rosterBucket(insp.n)]++;
+              const key = insp.spc && insp.dg ? 'both' : insp.spc ? 'spc' : insp.dg ? 'dg' : 'neither';
+              provenance[key]++;
+              if (key === 'neither') keep('neither', `${gameId} sid=${heldSid} roster=${insp.n} (no spc, no dg — repair-written roster)`);
             }
           }
         }
       }
     }
-    progress.done[t.uuid] = { gap: t.gap, appended, alias, absent, pts };
-    doneCount++; totalAppends += appended; totalAlias += alias; totalAbsent += absent; sinceCommit++;
-    console.log(`  ✓ ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts), alias-skipped=${alias}, game-absent=${absent}`);
+
+    progress.done[t.uuid] = { v: 2, gap: t.gap, appended, self, lag, aliasOk, aliasGap, legacy, uncap, absent, odd, pts };
+    doneCount++; totalAppends += appended; sinceCommit++;
+    run.appended += appended; run.self += self; run.lag += lag; run.aliasOk += aliasOk;
+    run.aliasGap += aliasGap; run.legacy += legacy; run.uncap += uncap; run.absent += absent; run.odd += odd;
+    console.log(`  ✓ ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts) · correct: self=${self} aliasOk=${aliasOk} · pending rebuild: lag=${lag} · blocked: aliasGap=${aliasGap} uncapt=${uncap} absent=${absent} odd=${odd}`);
     if (sinceCommit >= COMMIT_EVERY) {
       await flushAndCommit(`repair-players-batch: ${doneCount}/${targets.length} players, ${totalAppends} appends so far (min-gap=${MIN_GAP})`);
       evictSeasonCache();
+      summarise(progress, `after ${doneCount} players this run`);
       sinceCommit = 0;
     }
     await sleep(1000);
@@ -550,12 +828,33 @@ async function main() {
   await flushAndCommit(`repair-players-batch: COMPLETE ${doneCount}/${targets.length} players, ${totalAppends} appends (min-gap=${MIN_GAP})`);
 
   console.log('\n════════════════════════════════════════════════════');
-  console.log(`  players processed : ${doneCount}${APPLY ? '' : ' (dry-run — nothing written or committed)'}`);
-  console.log(`  appends           : ${totalAppends}`);
-  console.log(`  alias-skipped     : ${totalAlias}   ← fold problems, never touched`);
-  console.log(`  uncaptured games skipped : ${uncaptured}   ← EMPTY roster: needs a sweep, not a repair`);
-  console.log(`  game-absent       : ${totalAbsent}   ← synthesize-missing-games territory`);
-  console.log(`  dead profiles     : ${totalDead}   ← API refused; recorded, never retried`);
+  console.log(`  THIS RUN${APPLY ? '' : ' (dry-run — nothing written or committed)'}`);
+  console.log(`  players processed        : ${doneCount} of ${targets.length} selected`);
+  console.log(`  appends                  : ${run.appended}`);
+  console.log(`  already correct          : self=${run.self} (own id, in games[]) · aliasOk=${run.aliasOk} (alias already resolved)`);
+  console.log(`  pending weekly rebuild   : lag=${run.lag}   ← own id in the roster, not yet in games[]; build-player-games closes these`);
+  console.log(`  alias-blocked            : ${run.aliasGap}   ← in the roster under an UNRESOLVED id: fold work, never appended`);
+  console.log(`     of which legacy-10char: ${run.legacy}`);
+  for (const x of samples.aliasGap) console.log(`       ${x}`);
+  console.log(`  uncaptured games skipped : ${run.uncap}   ← EMPTY roster: needs a sweep, not a repair`);
+  for (const x of samples.uncap) console.log(`       ${x}`);
+  console.log(`  game-absent              : ${run.absent}   ← synthesize-missing-games territory`);
+  console.log(`  odd (unparseable season) : ${run.odd}`);
+  console.log(`  dead profiles            : ${totalDead}   ← PlayHQ answered permanently (private/notfound); recorded, never retried`);
+  console.log(`  skipped on transport     : ${skippedTransport}   ← NOT recorded; retried on the next dispatch`);
+
+  if (run.appended) {
+    console.log(`\n  where the appends landed (roster size BEFORE the append — a shape, not a census):`);
+    for (const k of ['1-4', '5-8', '9-11', '12-14', '15+']) {
+      const v = rosterHist[k];
+      console.log(`    roster ${k.padEnd(6)} ${String(v).padStart(9)}  ${((v / run.appended) * 100).toFixed(1)}%`);
+    }
+    console.log(`  capture provenance of those games: spc ${provenance.spc} · dg ${provenance.dg} · both ${provenance.both} · NEITHER ${provenance.neither}`);
+    console.log(`    "neither" means the roster came from an earlier repair, not from a sweep (OUTSTANDING §2.15):`);
+    for (const x of samples.neither) console.log(`       ${x}`);
+  }
+
+  summarise(progress, 'end of run');
 }
 
 main().catch(e => { console.error('FATAL:', e.message); process.exit(1); });

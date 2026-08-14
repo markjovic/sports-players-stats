@@ -5,12 +5,31 @@
 // teams from — the website's statistics view can error on profiles the API still
 // serves) and print the COMPLETE picture, no display limit:
 //   - every game the API credits them with, classified:
-//       OK            — we hold the game and they are in its roster
-//       NOT-IN-P[]    — we hold the game, roster lacks them (with the alias
-//                       verdict: PRESENT-as-alias / PRESENT-legacy-10char are
-//                       fold problems, NOT append targets)
+//       OK            — they are in the roster under their own id AND the game
+//                       is in their games[]: nothing to do
+//       LAG           — they are in the roster under their own id but the game
+//                       is NOT in games[] yet: the next build-player-games run
+//                       closes this, no tool needed
+//       ALIAS-OK      — they are in the roster under an alias that games[]
+//                       already resolved: nothing to do
+//       ALIAS-GAP     — in the roster under an UNRESOLVED id: genuine fold work,
+//                       and appending would create a second identity
+//       NOT-IN-P[]    — we hold the game and the roster genuinely lacks them:
+//                       this is what a repair can append
+//       UNCAPTURED    — we hold the game and its roster is EMPTY: no sweep has
+//                       ever captured it, so it needs a CAPTURE, not a repair.
+//                       Counted apart from NOT-IN-P[] so the recovery estimate
+//                       below matches what repair-players-batch would actually
+//                       do — the batch has skipped these since 2026-08-13
 //       GAME-ABSENT   — the game is not in games/bv at all
 //     each with round, teams, side, and their personal stat line
+//
+// 2026-08-14 (OUTSTANDING §2.16): OK used to be decided by games[] alone, and
+// anything else that came back PRESENT — INCLUDING the player being there under
+// their OWN id — was printed as an alias/fold case. So every game a repair had
+// appended on an earlier pass was reported back as a fold problem on the next
+// run. Own-id presence is now its own verdict, and the games[] test only decides
+// between OK and LAG.
 //   - per-season rollup: API games vs our games[] entries for them
 //   - a closing summary of what a targeted repair could recover
 //
@@ -264,6 +283,21 @@ async function main() {
   // id that does not resolve to their api-canonical uuid — in which case they are already
   // recorded and the fix is ALIAS RESOLUTION (what fold-diverged-players does), not
   // appending a duplicate entry. Load the game and classify which of the two it is.
+  //
+  // 2026-08-14 (OUTSTANDING §2.16) — "present under their OWN id" now returns
+  // SELF-PRESENT, where it used to return PRESENT-canonical. The RENAME is the
+  // fix, not a cosmetic change: probe-player bucketed verdicts with
+  // `verdict.startsWith('PRESENT')`, so a game this family of tools had appended
+  // on an earlier pass came back on the next pass counted as an alias/fold case.
+  // A verdict that does not begin with "PRESENT" cannot be swept up by that test
+  // here or in anything written later. (Correction to the note in OUTSTANDING
+  // §2.16: only probe-player ever did this. repair-player.js counted it as `ok`
+  // and repair-players-batch.js skipped it before its alias counter, so the
+  // batch's alias figures were never inflated by it — which is why they are being
+  // measured rather than explained away.)
+  // NOTE: this block is therefore NO LONGER byte-identical to the copy in
+  // probe-missing-games.js, which still uses the old verdict name. Deliberate,
+  // and recorded here so the divergence is not later mistaken for drift.
   const gameIndex = new Map();   // sid -> parsed season file (lazy)
   const inspectP = (sid, gid, uuid, specIds) => {
     if (!gameIndex.has(sid)) {
@@ -277,11 +311,14 @@ async function main() {
                          ...(g.hp || []).map(x => x.profileID).filter(Boolean),
                          ...(g.ap || []).map(x => x.profileID).filter(Boolean)]);
     const pref = uuid.slice(0, 13);
-    if (ids.has(pref)) return { verdict: 'PRESENT-canonical', n: ids.size };
+    if (ids.has(pref)) return { verdict: 'SELF-PRESENT', n: ids.size };
     for (const s of specIds) if (ids.has(s)) return { verdict: 'PRESENT-as-alias', alias: s, n: ids.size };
     const pref10 = uuid.slice(0, 10);
     for (const id of ids) if (id.startsWith(pref10)) return { verdict: 'PRESENT-legacy-10char', alias: id, n: ids.size };
-    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0 };
+    // dg carried alongside spc so an append can report WHICH capture path built
+    // the roster it is being added to — a roster with neither flag was written by
+    // a previous repair, not by a sweep (OUTSTANDING §2.15).
+    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0, dg: g.dg || 0 };
   };
 
   const r = await fetchProfile(UUID);
@@ -292,7 +329,7 @@ async function main() {
   const seasonStats = r.data?.publicProfileStatistics?.seasonStatistics || [];
   if (!seasonStats.length) { console.log('\n  API returned OK but no seasonStatistics — nothing to reconcile.'); return; }
 
-  let ok = 0, gaps = 0, aliasCases = 0, absent = 0, noSide = 0;
+  let ok = 0, lag = 0, aliasOk = 0, aliasGap = 0, gaps = 0, uncap = 0, absent = 0, odd = 0, noSide = 0;
   let recoverPts = 0, recoverApps = 0;
   const perSeason = [];
 
@@ -306,7 +343,7 @@ async function main() {
         const tName = teamStat.team?.name || '?';
         for (const gradeStat of (teamStat.gradeStatistics || [])) {
           const rows = [];
-          let sOk = 0, sGap = 0, sAlias = 0, sAbsent = 0;
+          let sOk = 0, sLag = 0, sAliasOk = 0, sAliasGap = 0, sGap = 0, sUncap = 0, sAbsent = 0, sOdd = 0;
           for (const gs of (gradeStat.gameStatistics || [])) {
             const gameId = gs.game?.id || null;
             if (!gameId) continue;
@@ -317,17 +354,44 @@ async function main() {
             const line = `pts=${statValue(st,'TOTAL_SCORE')} 1pt=${statValue(st,'1_POINT_SCORE')} 2pt=${statValue(st,'2_POINT_SCORE')} 3pt=${statValue(st,'3_POINT_SCORE')} fouls=${statValue(st,'TOTAL_FOULS')} app=${statValue(st,'APPEARANCE')}`;
             const vs = `${g.home?.name ?? '?'} vs ${g.away?.name ?? '?'}`;
             const heldSid = gidToSid.get(gameId) || null;
-            if (heldSid && localGids.has(gameId)) { ok++; sOk++; continue; }
             if (heldSid) {
               const insp = inspectP(heldSid, gameId, UUID, specIds);
-              if (insp.verdict === 'GENUINELY-ABSENT') {
+              const inGames = localGids.has(gameId);
+              if (insp.verdict === 'SELF-PRESENT') {
+                // Present under their own id. games[] then decides whether this
+                // is finished or simply waiting for the weekly rebuild — the two
+                // need different answers and used to be the same number.
+                if (inGames) { ok++; sOk++; }
+                else {
+                  lag++; sLag++;
+                  rows.push(`    LAG         ${gameId}  ${g.round?.name ?? '?'}  ${vs}  — in the roster under their own id, not yet in games[]; build-player-games closes this`);
+                }
+              } else if (insp.verdict === 'PRESENT-as-alias' || insp.verdict === 'PRESENT-legacy-10char') {
+                // Present under a different id. If games[] holds the game the
+                // alias index already resolved it and nothing is wrong; if not,
+                // the alias is unregistered and this is real fold work. Either
+                // way it is never an append target — a second id for the same
+                // person in one roster is a duplicate, not a repair.
+                if (inGames) {
+                  aliasOk++; sAliasOk++;
+                  rows.push(`    ALIAS-OK    ${gameId}  ${g.round?.name ?? '?'}  → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''} — already resolved into games[], nothing to do`);
+                } else {
+                  aliasGap++; sAliasGap++;
+                  rows.push(`    ALIAS-GAP   ${gameId}  ${g.round?.name ?? '?'}  → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''} — UNRESOLVED: fold work, NOT an append target`);
+                }
+              } else if (insp.verdict === 'GENUINELY-ABSENT' && !insp.n) {
+                // An empty p[] is not a roster with a gap in it — it is a game no
+                // sweep has captured. repair-players-batch skips these, so
+                // counting them as recoverable here would promise appends that
+                // will never happen.
+                uncap++; sUncap++;
+                rows.push(`    UNCAPTURED  ${gameId}  ${g.round?.name ?? '?'}  ${vs}  — EMPTY roster (spc=${insp.spc}, dg=${insp.dg}): needs a CAPTURE sweep, not a repair`);
+              } else if (insp.verdict === 'GENUINELY-ABSENT') {
                 gaps++; sGap++;
                 recoverPts += statValue(st,'TOTAL_SCORE'); recoverApps += statValue(st,'APPEARANCE') || 1;
-                rows.push(`    NOT-IN-P[]  ${gameId}  ${g.round?.name ?? '?'}  ${vs}  side=${side}  ${line}  [roster n=${insp.n}, spc=${insp.spc}]`);
-              } else if (insp.verdict.startsWith('PRESENT')) {
-                aliasCases++; sAlias++;
-                rows.push(`    ALIAS-CASE  ${gameId}  ${g.round?.name ?? '?'}  → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''} — fold problem, NOT an append target`);
+                rows.push(`    NOT-IN-P[]  ${gameId}  ${g.round?.name ?? '?'}  ${vs}  side=${side}  ${line}  [roster n=${insp.n}, spc=${insp.spc}, dg=${insp.dg}]`);
               } else {
+                odd++; sOdd++;
                 rows.push(`    ODD         ${gameId}  → ${insp.verdict}`);
               }
               continue;
@@ -335,11 +399,11 @@ async function main() {
             absent++; sAbsent++;
             rows.push(`    GAME-ABSENT ${gameId}  ${g.round?.name ?? '?'}  ${vs}  side=${side}  ${line}  (synthesis territory — OUTSTANDING §2.2 tool)`);
           }
-          const total = sOk + sGap + sAlias + sAbsent;
+          const total = sOk + sLag + sAliasOk + sAliasGap + sGap + sUncap + sAbsent + sOdd;
           if (total === 0) continue;
-          perSeason.push({ sid, sName, tName, grade: gradeStat.grade?.name || '?', total, sOk, sGap, sAlias, sAbsent });
+          perSeason.push({ sid, sName, tName, grade: gradeStat.grade?.name || '?', total, sOk, sLag, sAliasOk, sAliasGap, sGap, sUncap, sAbsent, sOdd });
           console.log(`\n── ${sName} | ${tName} | ${gradeStat.grade?.name || '?'} (sid=${sid}) ──`);
-          console.log(`    API games=${total}  ok=${sOk}  roster-gaps=${sGap}  alias-cases=${sAlias}  game-absent=${sAbsent}`);
+          console.log(`    API games=${total}  ok=${sOk}  lag=${sLag}  alias-ok=${sAliasOk}  alias-gap=${sAliasGap}  roster-gaps=${sGap}  uncaptured=${sUncap}  game-absent=${sAbsent}  odd=${sOdd}`);
           for (const row of rows) console.log(row);
         }
       }
@@ -347,11 +411,15 @@ async function main() {
   }
 
   console.log('\n════════════════════════════════════════════════════');
-  console.log(`  API game credits      : ${ok + gaps + aliasCases + absent}`);
-  console.log(`  already correct       : ${ok}`);
+  console.log(`  API game credits      : ${ok + lag + aliasOk + aliasGap + gaps + uncap + absent + odd}`);
+  console.log(`  already correct       : ${ok}   ← own id in the roster, and in games[]`);
+  console.log(`  alias already resolved: ${aliasOk}   ← another id in the roster, but games[] has the game: nothing to do`);
+  console.log(`  waiting on the rebuild: ${lag}   ← own id in the roster, not yet in games[]; build-player-games closes these`);
   console.log(`  roster gaps (append)  : ${gaps}   ← genuinely absent from held games' p[]`);
-  console.log(`  alias cases (fold)    : ${aliasCases}   ← already present under another id; appending would DUPLICATE`);
+  console.log(`  alias gaps (FOLD)     : ${aliasGap}   ← present under an UNRESOLVED id; appending would DUPLICATE`);
+  console.log(`  uncaptured games      : ${uncap}   ← EMPTY roster; needs a capture sweep, and a repair will skip them`);
   console.log(`  games absent entirely : ${absent}   ← synthesis territory`);
+  if (odd) console.log(`  ⚠ unreadable seasons  : ${odd}   ← a fault to look at, not a finding about the data`);
   if (noSide) console.log(`  ⚠ side unresolved     : ${noSide}`);
   console.log(`  a targeted repair for THIS player would recover ~${recoverApps} appearances / ${recoverPts} pts`);
   console.log(`  (read-only run — nothing was written)`);

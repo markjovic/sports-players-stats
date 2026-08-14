@@ -21,6 +21,16 @@
 // (asserted byte-identical at build). This is deliberately PER-PLAYER: the
 // 2026-08-06 decision against bulk-rewriting 2M working rosters stands.
 //
+// 2026-08-14 (OUTSTANDING §2.16): "present under their own id" is now the
+// SELF-PRESENT verdict, and the report splits it — and alias presence — by
+// whether the game is already in the player's games[]. Four outcomes that used
+// to be two: correct (own id, in games[]); waiting on the next
+// build-player-games run (own id, not in games[]); alias already resolved (other
+// id, in games[]); and real fold work (other id, NOT in games[]). Only the last
+// of those is a problem, and none of the four is ever an append target. The
+// buckets are identical to repair-players-batch's, deliberately: a single-player
+// run and a batch run must never disagree about the same player.
+//
 // Usage:
 //   node scripts/repair-player.js --uuid=<uuid>            # DRY RUN (default)
 //   node scripts/repair-player.js --uuid=<uuid> --apply    # write files
@@ -263,12 +273,31 @@ async function main() {
   };
   const pf = playerFileOf(UUID);
   const specIds = new Set(Array.isArray(pf?.spectatorIds) ? pf.spectatorIds : []);
-  console.log(`  our player file : ${pf ? `"${pf.name || '?'}"${pf.private === true ? ' [PRIVATE]' : ''}, spectatorIds=${[...specIds].join(',') || 'none'}` : 'NOT FOUND'}`);
+  // games[] is what decides whether a presence in the roster has actually reached
+  // the player's record yet. It is rebuilt weekly, so a recent append shows up
+  // here as "not in games[]" for a few days — which is information, not a fault.
+  const localGids = new Set(Array.isArray(pf?.games) ? pf.games : []);
+  console.log(`  our player file : ${pf ? `"${pf.name || '?'}"${pf.private === true ? ' [PRIVATE]' : ''}, games[]=${localGids.size}, spectatorIds=${[...specIds].join(',') || 'none'}` : 'NOT FOUND'}`);
 
   // p[] stores TRUNCATED ids. A player can be present in p[] under a spectator-namespace
   // id that does not resolve to their api-canonical uuid — in which case they are already
   // recorded and the fix is ALIAS RESOLUTION (what fold-diverged-players does), not
   // appending a duplicate entry. Load the game and classify which of the two it is.
+  //
+  // 2026-08-14 (OUTSTANDING §2.16) — "present under their OWN id" now returns
+  // SELF-PRESENT, where it used to return PRESENT-canonical. The RENAME is the
+  // fix, not a cosmetic change: probe-player bucketed verdicts with
+  // `verdict.startsWith('PRESENT')`, so a game this family of tools had appended
+  // on an earlier pass came back on the next pass counted as an alias/fold case.
+  // A verdict that does not begin with "PRESENT" cannot be swept up by that test
+  // here or in anything written later. (Correction to the note in OUTSTANDING
+  // §2.16: only probe-player ever did this. repair-player.js counted it as `ok`
+  // and repair-players-batch.js skipped it before its alias counter, so the
+  // batch's alias figures were never inflated by it — which is why they are being
+  // measured rather than explained away.)
+  // NOTE: this block is therefore NO LONGER byte-identical to the copy in
+  // probe-missing-games.js, which still uses the old verdict name. Deliberate,
+  // and recorded here so the divergence is not later mistaken for drift.
   const gameIndex = new Map();   // sid -> parsed season file (lazy)
   const inspectP = (sid, gid, uuid, specIds) => {
     if (!gameIndex.has(sid)) {
@@ -282,11 +311,14 @@ async function main() {
                          ...(g.hp || []).map(x => x.profileID).filter(Boolean),
                          ...(g.ap || []).map(x => x.profileID).filter(Boolean)]);
     const pref = uuid.slice(0, 13);
-    if (ids.has(pref)) return { verdict: 'PRESENT-canonical', n: ids.size };
+    if (ids.has(pref)) return { verdict: 'SELF-PRESENT', n: ids.size };
     for (const s of specIds) if (ids.has(s)) return { verdict: 'PRESENT-as-alias', alias: s, n: ids.size };
     const pref10 = uuid.slice(0, 10);
     for (const id of ids) if (id.startsWith(pref10)) return { verdict: 'PRESENT-legacy-10char', alias: id, n: ids.size };
-    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0 };
+    // dg carried alongside spc so an append can report WHICH capture path built
+    // the roster it is being added to — a roster with neither flag was written by
+    // a previous repair, not by a sweep (OUTSTANDING §2.15).
+    return { verdict: 'GENUINELY-ABSENT', n: ids.size, spc: g.spc || 0, dg: g.dg || 0 };
   };
 
   const r = await fetchProfile(UUID);
@@ -300,7 +332,7 @@ async function main() {
   // mutates the same object the verdict was read from — and so a season file is
   // parsed once. inspectP populated gameIndex above; we reuse it directly.
   const changedSids = new Set();
-  const appended = [], aliasSkipped = [], absent = [], noSide = [];
+  const appended = [], aliasSkipped = [], aliasResolved = [], lagged = [], absent = [], noSide = [];
   let uncaptured = 0;
   let ok = 0, recoverPts = 0;
 
@@ -317,12 +349,19 @@ async function main() {
             const heldSid = gidToSid.get(gameId) || null;
             if (!heldSid) { absent.push(`${gameId} sid=${sid} ${gs.game?.round?.name ?? '?'}`); continue; }
             const insp = inspectP(heldSid, gameId, UUID, specIds);
-            if (insp.verdict === 'PRESENT-canonical') { ok++; continue; }
-            if (insp.verdict.startsWith('PRESENT')) {
-              aliasSkipped.push(`${gameId} sid=${heldSid} → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''}`);
+            const inGames = localGids.has(gameId);
+            if (insp.verdict === 'SELF-PRESENT') {
+              if (inGames) ok++;
+              else lagged.push(`${gameId} sid=${heldSid}  — own id in the roster, not yet in games[]`);
               continue;
             }
-            if (insp.verdict !== 'GENUINELY-ABSENT') { aliasSkipped.push(`${gameId} sid=${heldSid} → ${insp.verdict} (not touched)`); continue; }
+            if (insp.verdict === 'PRESENT-as-alias' || insp.verdict === 'PRESENT-legacy-10char') {
+              const line = `${gameId} sid=${heldSid} → ${insp.verdict}${insp.alias ? ` (${insp.alias})` : ''}`;
+              if (inGames) aliasResolved.push(line);
+              else aliasSkipped.push(line);
+              continue;
+            }
+            if (insp.verdict !== 'GENUINELY-ABSENT') { aliasSkipped.push(`${gameId} sid=${heldSid} → ${insp.verdict} (unreadable season file — a fault, not a finding)`); continue; }
             // 2026-08-13 — DO NOT APPEND TO AN UNCAPTURED GAME. An empty p[] is not
             // a roster with a gap in it; it is a game no sweep has ever captured
             // (no spc, no dg). Appending one player there manufactures a roster of
@@ -376,10 +415,14 @@ async function main() {
   }
 
   console.log('\n════════════════════════════════════════════════════');
-  console.log(`  already correct        : ${ok}`);
+  console.log(`  already correct        : ${ok}   ← own id in the roster, and in games[]`);
+  console.log(`  alias already resolved : ${aliasResolved.length}   ← another id in the roster, but games[] has the game: nothing to do`);
+  for (const a of aliasResolved) console.log(`    ${a}`);
+  console.log(`  waiting on the rebuild : ${lagged.length}   ← build-player-games closes these; no tool needed`);
+  for (const a of lagged) console.log(`    ${a}`);
   console.log(`  APPENDED to p[] (${APPLY ? 'written' : 'dry-run'}) : ${appended.length}  (${recoverPts} pts of scoring now attributable — the stat lines stay Worker-on-demand, nothing is stored)`);
   for (const a of appended) console.log(`    ${a}`);
-  console.log(`  alias/other cases SKIPPED (fold problems, never touched): ${aliasSkipped.length}`);
+  console.log(`  alias gaps SKIPPED (UNRESOLVED id — real fold work, never touched): ${aliasSkipped.length}`);
   for (const a of aliasSkipped) console.log(`    ${a}`);
   console.log(`  uncaptured games skipped (EMPTY roster — needs a sweep, not a repair): ${uncaptured}`);
   console.log(`  games absent from games/bv (synthesize-missing-games territory): ${absent.length}`);
