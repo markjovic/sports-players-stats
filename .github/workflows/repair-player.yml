@@ -8,6 +8,13 @@ name: Repair Player
 # Player first: its report is exactly what apply will do. Deliberately per-player;
 # the 2026-08-06 decision against bulk roster rewrites stands.
 #
+# 2026-08-14 (OUTSTANDING §2.16): the report now splits presence four ways —
+# correct (own id, in games[]), waiting on the next build-player-games run (own
+# id, not in games[]), alias already resolved (other id, in games[]), and real
+# fold work (other id, NOT in games[]). Only the last is a problem, none of the
+# four is ever appended, and the buckets match repair-players-batch exactly so a
+# single-player run and a batch run cannot disagree about the same player.
+#
 # Most targets are locked seasons: on apply, the tail dispatches Deploy Archive
 # Pages (split invariant). Active-season writes publish with tonight's chain, and
 # games[]/W-L/aggregates rebuild downstream on the next post-drain chain.

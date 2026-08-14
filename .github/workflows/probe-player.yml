@@ -5,8 +5,20 @@ name: Probe Player
 # fetch one player's full profile from the mobile API — the endpoint the app
 # renders from, which can serve profiles the website's statistics view errors
 # on — and print the complete ours-vs-theirs picture: every API game credit
-# classified (ok / roster-gap / alias-case / game-absent), per-season rollup,
-# and what a targeted repair could recover. No writes, no git, no lock.
+# classified, per-season rollup, and what a targeted repair could recover.
+# No writes, no git, no lock.
+#
+# 2026-08-14 (OUTSTANDING §2.16) — the classification was corrected. "Present in
+# the roster under their OWN id" used to be reported as an alias/fold case, so
+# every game a repair had appended on an earlier pass came back counted as a fold
+# problem on the next run. Six verdicts now, and only two of them are work:
+#   ok / alias-ok — already correct, nothing to do
+#   lag           — in the roster, not yet in games[]; the weekly rebuild fixes it
+#   roster-gap    — a repair can append this
+#   alias-gap     — present under an UNRESOLVED id: fold work, never an append
+#   uncaptured    — EMPTY roster: needs a capture sweep, and a repair will skip it
+# The recovery estimate counts roster-gaps only, so it now matches what
+# repair-players-batch would actually do rather than overstating it.
 #
 # The uuid is in the profile page URL (playhq.com/.../profile/<uuid>) or in
 # StatTrack's player link.

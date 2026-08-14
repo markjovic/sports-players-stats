@@ -16,6 +16,20 @@ name: Repair Players Batch
 # invariant). Player-side data (games[], W/L, aggregates) rebuilds downstream on
 # the next post-drain chain.
 #
+# 2026-08-14 — this run is ALSO the measurement for OUTSTANDING §2.18. Every game
+# credit is classified into eight buckets, stored per player in the progress file,
+# and the campaign rollup is recomputed from that file and printed at every commit
+# window — so a timeout costs this run's log and never the measurement. Read the
+# per-band share table at the bottom of the log: deep gaps are not a random sample
+# of shallow ones, so whether the appendable share holds as gaps get shallower is
+# the thing to look at before deciding how far down to keep going.
+#
+# Run uncapped and resume: max_players stays 0, and a dispatch that hits the
+# timeout is simply re-dispatched — settled players are skipped and the ranking is
+# recomputed from scratch, so nothing is repeated and nothing is lost past the last
+# commit. A run that hits five consecutive transport failures stops itself cleanly
+# rather than marching through the queue producing nothing.
+#
 # NO setup-node (this job fetches api.playhq.com — absolute rule). No git config
 # step: the script's gitCommit (verbatim from nightly-crawl.js) passes identity
 # inline.
@@ -33,6 +47,14 @@ on:
         required: false
         default: '0'
         type: string
+      retry_dead:
+        description: 'Re-admit players retired on a TRANSPORT failure (CloudFront block, socket error, 5xx). They were never refused by PlayHQ.'
+        required: false
+        type: choice
+        options:
+          - 'no'
+          - 'yes'
+        default: 'no'
       mode:
         description: 'dry-run = rank, fetch each target profile, and report exactly what apply would append (no writes, no commits). apply = repair, commit as it goes, redeploy archive.'
         type: choice
@@ -67,6 +89,14 @@ jobs:
           ARGS="--min-gap=${{ inputs.min_gap }}"
           if [ "${{ inputs.max_players }}" != "0" ] && [ -n "${{ inputs.max_players }}" ]; then
             ARGS="$ARGS --max-players=${{ inputs.max_players }}"
+          fi
+          # Bash comparison, not a job-level expression: an empty value (which is
+          # all a non-dispatch trigger would ever supply) reads as "no" and adds
+          # nothing. Directive 13 — the boolean-input coercion trap lives in
+          # ${{ }} EXPRESSION context; here the value is interpolated into a shell
+          # string, which is a different context and behaves as written.
+          if [ "${{ inputs.retry_dead }}" = "yes" ]; then
+            ARGS="$ARGS --retry-dead"
           fi
           if [ "${{ inputs.mode }}" = "apply" ]; then
             node --max-old-space-size=8192 scripts/repair-players-batch.js $ARGS --apply
