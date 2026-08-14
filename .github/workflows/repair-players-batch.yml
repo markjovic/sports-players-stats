@@ -93,8 +93,12 @@ jobs:
           # Bash comparison, not a job-level expression: an empty value (which is
           # all a non-dispatch trigger would ever supply) reads as "no" and adds
           # nothing. Directive 13 — the boolean-input coercion trap lives in
-          # ${{ }} EXPRESSION context; here the value is interpolated into a shell
-          # string, which is a different context and behaves as written.
+          # job-level EXPRESSION context; here the value is interpolated into a
+          # shell string, which is a different context and behaves as written.
+          # (Do NOT write an empty dollar-brace-brace pair in this comment to
+          # illustrate the point: GitHub evaluates expressions ANYWHERE in a run
+          # block, a '#' hides nothing from it, and an empty one is a parse error
+          # that rejects the whole workflow file.)
           if [ "${{ inputs.retry_dead }}" = "yes" ]; then
             ARGS="$ARGS --retry-dead"
           fi
