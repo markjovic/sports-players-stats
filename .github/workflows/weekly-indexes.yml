@@ -69,8 +69,18 @@ jobs:
           node scripts/build-team-stats.js $ARGS
 
   player-games:
-    needs: [discover-fixtures]
-    if: ${{ !cancelled() }}
+    # 2026-08-13 — MOVED LAST, and this is the bug that cost 2026-08-13 entirely.
+    # build-player-games derives players' games[] ENTIRELY from p[] in games/bv, so
+    # it must run after everything that writes games/bv has finished. It previously
+    # ran in PARALLEL with discover-fixtures' 360-minute window and with the other
+    # two player-file writers, checking out its own snapshot at job start. Result:
+    # it derived from a partial view and reported 9,353 files updated, while the very
+    # same script run standalone afterwards updated 13,046 and correctly filled in a
+    # player who had 473 roster entries and a games[] of 30. Nothing was broken in
+    # the script, the resolver, the alias index or the game data — only the ordering.
+    # Anything added here that writes games/bv must be placed BEFORE this job.
+    needs: [team-stats, win-loss]
+    if: ${{ !cancelled() && needs.team-stats.result != 'cancelled' && needs.win-loss.result != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -78,10 +88,10 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      # NO actions/setup-node — repo-wide rule. Neither of these scripts fetches
+      # PlayHQ so it was harmless here, but it is one edit away from causing the
+      # CloudFront 403s documented for every other job, and the runner's
+      # preinstalled Node is what the rest of the pipeline uses.
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
@@ -93,8 +103,14 @@ jobs:
           node scripts/build-player-games.js $ARGS
 
   win-loss:
-    needs: [discover-fixtures]
-    if: ${{ !cancelled() }}
+    # 2026-08-13: serialised behind team-stats. These jobs all WRITE player files and
+    # all check out INDEPENDENTLY, and the workflow-level data-write group serialises
+    # this workflow against OTHER workflows — not its own jobs against each other
+    # (see the fold-diverged comment below, which says exactly that). Run in parallel
+    # they each pushed with `merge -X ours`, i.e. "on conflict keep my copy", which is
+    # a lost-update path, not merely a staleness one.
+    needs: [team-stats]
+    if: ${{ !cancelled() && needs.team-stats.result != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -102,10 +118,10 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      # NO actions/setup-node — repo-wide rule. Neither of these scripts fetches
+      # PlayHQ so it was harmless here, but it is one edit away from causing the
+      # CloudFront 403s documented for every other job, and the runner's
+      # preinstalled Node is what the rest of the pipeline uses.
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
@@ -122,7 +138,7 @@ jobs:
     # Gated behind the three player-writing jobs so it never races them on player
     # files / the index (they share the workflow's data-write concurrency group, but
     # within one workflow run jobs are otherwise parallel — `needs` serialises it).
-    needs: [team-stats, player-games, win-loss]
+    needs: [player-games]   # 2026-08-13: player-games is now last in the chain, so this alone gates on all three
     if: ${{ !cancelled() && inputs.dry_run != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
