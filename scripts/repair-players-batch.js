@@ -453,6 +453,7 @@ async function main() {
   // gameIndex (populated by inspectP) doubles as the write cache: the append
   // mutates the same parsed object the verdict was read from.
   const dirtySids = new Set();
+  let uncaptured = 0;
   let doneCount = 0, totalAppends = 0, totalAlias = 0, totalAbsent = 0, totalDead = 0, sinceCommit = 0;
 
   // 2026-08-11 (OOM fix): inspectP's gameIndex caches every season file it parses
@@ -501,6 +502,19 @@ async function main() {
               const insp = inspectP(heldSid, gameId, t.uuid, specIds);
               if (insp.verdict === 'PRESENT-canonical') continue;
               if (insp.verdict !== 'GENUINELY-ABSENT') { alias++; continue; }
+              // 2026-08-13 — DO NOT APPEND TO AN UNCAPTURED GAME. An empty p[] is not
+              // a roster with a gap in it; it is a game no sweep has ever captured
+              // (no spc, no dg). Appending one player there manufactures a roster of
+              // ONE, which every consumer — team stats, leaderboards, opposition
+              // lookup, StatTrack — reads as the full team. Proven on 43199a27
+              // (2026-08-04, Berwick College White): the batch left it with exactly
+              // two ids, both of them its own top-ranked repair targets, in a game
+              // that should hold a dozen. Same failure class as the hp/ap fragment
+              // caught on 2026-08-11: a fragment that LOOKS like real data is worse
+              // than absence, because absence makes a consumer go and fetch it.
+              // These games need a CAPTURE (spectator or discoverGame sweep), not a
+              // repair, so they are counted and skipped here.
+              if (!insp.n) { uncaptured++; continue; }
               const entry = gameIndex.get(heldSid).games[gameId];
               const g = gs.game;
               const side = g.home?.id === tid ? 'HOME' : g.away?.id === tid ? 'AWAY' : null;
@@ -539,6 +553,7 @@ async function main() {
   console.log(`  players processed : ${doneCount}${APPLY ? '' : ' (dry-run — nothing written or committed)'}`);
   console.log(`  appends           : ${totalAppends}`);
   console.log(`  alias-skipped     : ${totalAlias}   ← fold problems, never touched`);
+  console.log(`  uncaptured games skipped : ${uncaptured}   ← EMPTY roster: needs a sweep, not a repair`);
   console.log(`  game-absent       : ${totalAbsent}   ← synthesize-missing-games territory`);
   console.log(`  dead profiles     : ${totalDead}   ← API refused; recorded, never retried`);
 }

@@ -2,8 +2,9 @@
 //
 // Per-player TARGETED roster repair (built 2026-08-07, from probe-player's proven
 // route). For ONE player: fetch their profile, and for every game the API credits
-// them with that we HOLD but whose roster lacks them, append them — id into p[],
-// stat line into hp/ap by side — ONLY when the alias inspection says
+// them with that we HOLD but whose roster lacks them, append them to the roster —
+// a bare {id} in p[], NO stat line (see the long note at the write site) — ONLY
+// when the alias inspection says
 // GENUINELY-ABSENT. PRESENT-as-alias / PRESENT-legacy-10char are fold problems:
 // appending would create a duplicate identity, so they are listed and NEVER
 // touched (the guard probe-missing-games proved decisive). Games absent from
@@ -240,17 +241,6 @@ function statValue(stats, type) {
   return 0;
 }
 
-function buildStatLine(uuid13, st) {
-  return {
-    profileID: uuid13,
-    pts:   statValue(st, 'TOTAL_SCORE'),
-    pt1:   statValue(st, '1_POINT_SCORE'),
-    pt2:   statValue(st, '2_POINT_SCORE'),
-    pt3:   statValue(st, '3_POINT_SCORE'),
-    fouls: statValue(st, 'TOTAL_FOULS'),
-  };
-}
-
 async function main() {
   console.log(`repair-player ${APPLY ? '[APPLY]' : '[dry-run]'} — ${UUID}`);
   const uuid13 = UUID.slice(0, TRUNC_LEN);
@@ -311,6 +301,7 @@ async function main() {
   // parsed once. inspectP populated gameIndex above; we reuse it directly.
   const changedSids = new Set();
   const appended = [], aliasSkipped = [], absent = [], noSide = [];
+  let uncaptured = 0;
   let ok = 0, recoverPts = 0;
 
   for (const season of seasonStats) {
@@ -332,14 +323,42 @@ async function main() {
               continue;
             }
             if (insp.verdict !== 'GENUINELY-ABSENT') { aliasSkipped.push(`${gameId} sid=${heldSid} → ${insp.verdict} (not touched)`); continue; }
+            // 2026-08-13 — DO NOT APPEND TO AN UNCAPTURED GAME. An empty p[] is not
+            // a roster with a gap in it; it is a game no sweep has ever captured
+            // (no spc, no dg). Appending one player there manufactures a roster of
+            // ONE, which every consumer — team stats, leaderboards, opposition
+            // lookup, StatTrack — reads as the full team. Proven on 43199a27
+            // (2026-08-04, Berwick College White): the batch left it with exactly
+            // two ids, both of them its own top-ranked repair targets, in a game
+            // that should hold a dozen. Same failure class as the hp/ap fragment
+            // caught on 2026-08-11: a fragment that LOOKS like real data is worse
+            // than absence, because absence makes a consumer go and fetch it.
+            // These games need a CAPTURE (spectator or discoverGame sweep), not a
+            // repair, so they are counted and skipped here.
+            if (!insp.n) { uncaptured++; continue; }
             const sg = gameIndex.get(heldSid);
             const entry = sg.games[gameId];
             const g = gs.game;
             const side = g.home?.id === tid ? 'HOME' : g.away?.id === tid ? 'AWAY' : null;
+            // ROSTER ONLY — bare {id}, no stat line. 2026-08-10: this tool used to
+            // also push a hp[]/ap[] entry for the player. That is wrong for a REAL
+            // crawled game, for three reasons. (1) It writes a FRAGMENT that looks
+            // like a box score: a game where 13 played would carry a stats array of
+            // ONE, so any consumer renders one scorer and twelve no-shows —
+            // misleading data is worse than absent data, because absent data makes
+            // the consumer fetch the real thing. (2) Completing it is unaffordable:
+            // ~25M stat lines across captured games is ~1.9 GB, larger than the whole
+            // dataset and straight through the Pages ceiling. (3) Stored stats go
+            // stale — scorers amend box scores, and the Worker always serves the
+            // amended version while a copy freezes the day we fetched it.
+            // House rule (claude_context, "Data-structure gotchas"): p[] entries are
+            // bare {id}; box scores are Worker-on-demand and never pre-stored. The
+            // ONLY exception is profileOnly (hidden) games, where no real game exists
+            // for the Worker to serve — that is synthesize-missing-games' business,
+            // not this tool's. The APPEARANCE is what was missing here, and p[] is
+            // what carries it into games[], W/L and the player's season lists.
             entry.p = entry.p || []; entry.p.push({ id: uuid13 });
-            if (side === 'HOME') { entry.hp = entry.hp || []; entry.hp.push(buildStatLine(uuid13, gs.statistics)); }
-            else if (side === 'AWAY') { entry.ap = entry.ap || []; entry.ap.push(buildStatLine(uuid13, gs.statistics)); }
-            else noSide.push(gameId);
+            if (side !== 'HOME' && side !== 'AWAY') noSide.push(gameId);
             changedSids.add(heldSid);
             recoverPts += statValue(gs.statistics, 'TOTAL_SCORE');
             appended.push(`${gameId} sid=${heldSid}  ${g.round?.name ?? '?'}  ${g.home?.name ?? '?'} vs ${g.away?.name ?? '?'}  side=${side || '?? (p[] only)'}  pts=${statValue(gs.statistics,'TOTAL_SCORE')}`);
@@ -358,13 +377,14 @@ async function main() {
 
   console.log('\n════════════════════════════════════════════════════');
   console.log(`  already correct        : ${ok}`);
-  console.log(`  APPENDED (${APPLY ? 'written' : 'dry-run'})    : ${appended.length}  recovering ${recoverPts} pts`);
+  console.log(`  APPENDED to p[] (${APPLY ? 'written' : 'dry-run'}) : ${appended.length}  (${recoverPts} pts of scoring now attributable — the stat lines stay Worker-on-demand, nothing is stored)`);
   for (const a of appended) console.log(`    ${a}`);
   console.log(`  alias/other cases SKIPPED (fold problems, never touched): ${aliasSkipped.length}`);
   for (const a of aliasSkipped) console.log(`    ${a}`);
+  console.log(`  uncaptured games skipped (EMPTY roster — needs a sweep, not a repair): ${uncaptured}`);
   console.log(`  games absent from games/bv (synthesize-missing-games territory): ${absent.length}`);
   for (const a of absent) console.log(`    ${a}`);
-  if (noSide.length) console.log(`  ⚠ side unresolved (p[] appended, no stat line): ${noSide.length} — ${noSide.join('; ')}`);
+  if (noSide.length) console.log(`  note: side (home/away) unresolved for ${noSide.length} game(s) — irrelevant now that only p[] is written: ${noSide.join('; ')}`);
   console.log(`  season files ${APPLY ? 'written' : 'to write'}: ${written}`);
 }
 
