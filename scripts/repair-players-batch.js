@@ -581,6 +581,25 @@ async function main() {
   worklist.sort((a, b) => b.gap - a.gap);
   const targets = MAX_PLAYERS > 0 ? worklist.slice(0, MAX_PLAYERS) : worklist;
   console.log(`  players at gap>=${MIN_GAP} not yet settled: ${worklist.length}${MAX_PLAYERS ? ` (capped to ${targets.length})` : ''}`);
+
+  // What is actually DUE this dispatch, by band and by size of the hole. The
+  // worklist is recomputed from the CURRENT games[] every run, so this number
+  // drops between dispatches as build-player-games catches up with appends
+  // already made — which is why it can come out far below the population figure
+  // the band was sized at. Print the breakdown rather than one total, so a
+  // surprising number can be understood on sight instead of guessed at.
+  {
+    const due = new Map();
+    let dueGap = 0;
+    for (const t of targets) {
+      const k = bandOf(t.gap);
+      due.set(k, (due.get(k) || 0) + 1);
+      dueGap += t.gap;
+    }
+    const order = [...BANDS.map(b => b.key), 'other'].filter(k => due.has(k));
+    console.log(`  DUE THIS RUN: ${targets.length.toLocaleString()} players, ${dueGap.toLocaleString()} games of gap between them`);
+    console.log(`    by band: ${order.map(k => `${k} ${due.get(k).toLocaleString()}`).join(' · ')}`);
+  }
   if (!targets.length) { console.log('  nothing to do'); return; }
 
   // ── gid -> sid map (once) ────────────────────────────────────────────────────
@@ -647,6 +666,20 @@ async function main() {
   // counters below are this RUN only, and exist so the log shows what this
   // dispatch did as distinct from what the campaign has done.
   let doneCount = 0, totalAppends = 0, totalDead = 0, sinceCommit = 0;
+  // `seen` counts every player the run has REACHED, whatever the outcome —
+  // repaired, retired, or skipped on transport. doneCount counts only the ones
+  // that produced a breakdown, so it is the wrong thing to show as progress: a
+  // run full of dead profiles would look stalled.
+  let seen = 0;
+  const TOTAL = targets.length;
+  const PAD = String(TOTAL).length;
+  const START_MS = Date.now();
+  const prog = () => `[${String(seen).padStart(PAD)}/${TOTAL}]`;
+  const hms = (secs) => {
+    if (!isFinite(secs) || secs < 0) return '?';
+    const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
+    return h ? `${h}h ${m}m` : `${m}m ${Math.floor(secs % 60)}s`;
+  };
   let skippedTransport = 0, consecutiveTransport = 0;
   const run = { appended: 0, self: 0, lag: 0, aliasOk: 0, aliasGap: 0, legacy: 0, uncap: 0, absent: 0, odd: 0 };
 
@@ -746,6 +779,7 @@ async function main() {
     let chunkTransport = 0;
 
   for (const { t, r } of fetched) {
+    seen++;
     const specIds = new Set(t.specIds);
     const uuid13 = t.uuid.slice(0, TRUNC_LEN);
     const heldGids = loadGamesSet(t.uuid);
@@ -753,7 +787,7 @@ async function main() {
     if (r.status !== 'ok' && isTransportStatus(r.status)) {
       chunkTransport++;
       skippedTransport++; consecutiveTransport++;
-      console.log(`  ~ ${t.uuid} "${t.name}" gap=${t.gap} — ${r.status}; NOT recorded dead, will be retried on the next dispatch`);
+      console.log(`  ~ ${prog()} ${t.uuid} "${t.name}" gap=${t.gap} — ${r.status}; NOT recorded dead, will be retried on the next dispatch`);
       // Five in a row is the endpoint refusing us, not five unlucky players.
       // Carrying on would march through the remaining queue producing nothing
       // and, worse, would make the run LOOK like it had processed them. Stop,
@@ -780,7 +814,7 @@ async function main() {
       totalDead++; sinceCommit++;
       if (msg && deadMsgs.size < 40 && !deadMsgs.has(msg)) deadMsgs.set(msg, 0);
       if (msg && deadMsgs.has(msg)) deadMsgs.set(msg, deadMsgs.get(msg) + 1);
-      console.log(`  ✗ ${t.uuid} "${t.name}" gap=${t.gap} — API status=${r.status}, recorded dead (permanent)${msg ? ` — ${msg}` : ''}`);
+      console.log(`  ✗ ${prog()} ${t.uuid} "${t.name}" gap=${t.gap} — API status=${r.status}, recorded dead (permanent)${msg ? ` — ${msg}` : ''}`);
       continue;
     }
 
@@ -885,10 +919,17 @@ async function main() {
     doneCount++; totalAppends += appended; sinceCommit++;
     run.appended += appended; run.self += self; run.lag += lag; run.aliasOk += aliasOk;
     run.aliasGap += aliasGap; run.legacy += legacy; run.uncap += uncap; run.absent += absent; run.odd += odd;
-    console.log(`  ✓ ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts) · correct: self=${self} aliasOk=${aliasOk} · pending rebuild: lag=${lag} · blocked: aliasGap=${aliasGap} uncapt=${uncap} absent=${absent} odd=${odd}`);
+    console.log(`  ✓ ${prog()} ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts) · correct: self=${self} aliasOk=${aliasOk} · pending rebuild: lag=${lag} · blocked: aliasGap=${aliasGap} uncapt=${uncap} absent=${absent} odd=${odd}`);
     if (sinceCommit >= COMMIT_EVERY) {
       await flushAndCommit(`repair-players-batch: ${doneCount}/${targets.length} players, ${totalAppends} appends so far (min-gap=${MIN_GAP})`);
       evictSeasonCache();
+      const elapsed = (Date.now() - START_MS) / 1000;
+      const perMin = seen / (elapsed / 60);
+      const left = perMin > 0 ? ((TOTAL - seen) / perMin) * 60 : Infinity;
+      const pct = ((seen / TOTAL) * 100).toFixed(1);
+      // An estimate from the run's own average, not a promise: players differ
+      // enormously in how many games they carry, and the concurrency moves.
+      console.log(`  PROGRESS ${prog()}  ${pct}%  ·  elapsed ${hms(elapsed)}  ·  ${perMin.toFixed(1)} players/min  ·  ~${hms(left)} left at this average  ·  concurrency ${conc}`);
       summarise(progress, `after ${doneCount} players this run`);
       sinceCommit = 0;
     }
@@ -915,7 +956,9 @@ async function main() {
 
   console.log('\n════════════════════════════════════════════════════');
   console.log(`  THIS RUN${APPLY ? '' : ' (dry-run — nothing written or committed)'}`);
+  console.log(`  players reached          : ${seen} of ${TOTAL} selected${seen < TOTAL ? `  ← ${TOTAL - seen} NOT reached; re-dispatch to resume` : '  ← complete'}`);
   console.log(`  players processed        : ${doneCount} of ${targets.length} selected`);
+  console.log(`  elapsed                  : ${hms((Date.now() - START_MS) / 1000)} at ${(seen / (((Date.now() - START_MS) / 1000) / 60)).toFixed(1)} players/min`);
   console.log(`  appends                  : ${run.appended}`);
   console.log(`  already correct          : self=${run.self} (own id, in games[]) · aliasOk=${run.aliasOk} (alias already resolved)`);
   console.log(`  pending weekly rebuild   : lag=${run.lag}   ← own id in the roster, not yet in games[]; build-player-games closes these`);
