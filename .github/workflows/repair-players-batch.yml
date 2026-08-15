@@ -33,6 +33,14 @@ name: Repair Players Batch
 # failure in a chunk and recovers one step after two clean chunks, so a rate limit
 # throttles the run instead of failing it.
 #
+# Progress in the log: the run prints DUE THIS RUN with a band breakdown before it
+# starts, a [n/total] counter on every player line whatever the outcome, and a
+# PROGRESS line at each commit window with percentage, elapsed, players/min and an
+# estimate of the time left. The due figure is recomputed from the CURRENT games[]
+# every dispatch, so it drops as build-player-games catches up with appends already
+# made — a number well below the band's population usually means the last run's
+# work has landed, not that players went missing.
+#
 # Run uncapped and resume: max_players stays 0, and a dispatch that hits the
 # timeout is simply re-dispatched — settled players are skipped and the ranking is
 # recomputed from scratch, so nothing is repeated and nothing is lost past the last
