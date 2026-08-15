@@ -33,6 +33,13 @@ name: Repair Players Batch
 # failure in a chunk and recovers one step after two clean chunks, so a rate limit
 # throttles the run instead of failing it.
 #
+# 2026-08-14, third pass — the HTTP request had no timeout. A socket that opened
+# and then went silent never fired 'error' and never fired 'end', so the promise
+# never settled and the run sat at 5,752 of 10,000 until it was killed. There are
+# now two timers on every request (45s idle, 180s absolute) and a timeout is
+# TRANSPORT: retried three times, then left unrecorded for the next dispatch.
+# Worst case a stuck chunk costs about ten minutes instead of the whole dispatch.
+#
 # Progress in the log: the run prints DUE THIS RUN with a band breakdown before it
 # starts, a [n/total] counter on every player line whatever the outcome, and a
 # PROGRESS line at each commit window with percentage, elapsed, players/min and an
