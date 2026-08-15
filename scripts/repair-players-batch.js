@@ -198,18 +198,47 @@ const PROFILE_QUERY = {
 }`,
 };
 
+// 2026-08-14 — THIS FUNCTION HAD NO TIMEOUT, AND THAT HUNG A RUN FOR GOOD.
+// `req.on('error')` catches a socket that FAILS. It does not catch a socket that
+// opens and then goes silent — which is what a CloudFront throttle or a dropped
+// connection looks like from here. No 'error', no 'end', so the promise never
+// settled, and Node sets no default timeout on https.request. The min-gap=1 run
+// stopped dead at 5,752 of 10,000 and sat there until it was killed.
+//
+// Sequential code had the same hole; running eight fetches in one Promise.all
+// only made it eight times more likely to be hit, because ONE silent socket
+// stalls the whole chunk and therefore the whole run.
+//
+// Two timers, because they catch different failures. IDLE fires when the socket
+// goes quiet for 45s — the throttle case. HARD is an absolute ceiling on the
+// whole request, for a response that dribbles bytes slowly enough to keep
+// resetting the idle timer but never finishes. Both destroy the request, which
+// raises 'error' and rejects, and `finish` guarantees the promise settles
+// exactly once no matter which path gets there first.
+const IDLE_TIMEOUT_MS = 45 * 1000;
+const HARD_TIMEOUT_MS = 180 * 1000;
+
 // doFetch: wraps https.request with keepAlive:false to force a new TCP connection
 // per request. This prevents CloudFront per-connection rate limiting.
 function doFetch(url, options) {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
     const body   = options.body || '';
+    let settled = false;
+    let hardTimer = null;
+    const finish = (fn, v) => {
+      if (settled) return;
+      settled = true;
+      if (hardTimer) clearTimeout(hardTimer);
+      fn(v);
+    };
     const req = https.request({
       hostname: parsed.hostname,
       path:     parsed.pathname + parsed.search,
       method:   options.method || 'GET',
       headers:  { ...options.headers, 'content-length': Buffer.byteLength(body) },
       agent:    new https.Agent({ keepAlive: false }),
+      timeout:  IDLE_TIMEOUT_MS,
     }, (res) => {
       const chunks = [];
       res.on('data', c => chunks.push(c));
@@ -226,7 +255,7 @@ function doFetch(url, options) {
             return Array.isArray(val) ? val.join(', ') : val;
           },
         };
-        resolve({
+        finish(resolve, {
           status:  res.statusCode,
           ok:      res.statusCode >= 200 && res.statusCode < 300,
           headers,
@@ -234,9 +263,20 @@ function doFetch(url, options) {
           json:    () => Promise.resolve(JSON.parse(rawBody)),
         });
       });
-      res.on('error', reject);
+      res.on('error', (e) => finish(reject, e));
     });
-    req.on('error', reject);
+    req.on('timeout', () => {
+      const e = new Error(`request idle for ${IDLE_TIMEOUT_MS / 1000}s`);
+      e.code = 'ETIMEDOUT';
+      req.destroy(e);
+    });
+    req.on('error', (e) => finish(reject, e));
+    hardTimer = setTimeout(() => {
+      const e = new Error(`request exceeded ${HARD_TIMEOUT_MS / 1000}s`);
+      e.code = 'ETIMEDOUT';
+      try { req.destroy(e); } catch (_) { /* already gone */ }
+      finish(reject, e);
+    }, HARD_TIMEOUT_MS);
     req.write(body);
     req.end();
   });
@@ -253,7 +293,12 @@ async function fetchProfile(profileID) {
       headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
       body: JSON.stringify(body),
     });
-  } catch (err) { return { status: 'error', err }; }
+  } catch (err) {
+    // A timeout gets its own status so the log says "this request never came
+    // back" rather than the catch-all "error". Both are transport, both are
+    // retried, but only one of them tells you the endpoint went quiet on you.
+    return { status: err && err.code === 'ETIMEDOUT' ? 'timeout' : 'error', err };
+  }
   if (res.status === 403) {
     let b = ''; try { b = await res.text(); } catch {}
     if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { status: 'cloudfront-block' };
@@ -424,7 +469,7 @@ function loadProgress() {
 // with the fetch loop now running several profiles at once it is the status most
 // likely to appear. Classifying it as permanent would have retired players for
 // the sole reason that we asked quickly.
-const TRANSPORT_STATUS = new Set(['cloudfront-block', 'error', 'bad-json']);
+const TRANSPORT_STATUS = new Set(['cloudfront-block', 'error', 'bad-json', 'timeout']);
 function isTransportStatus(status) {
   return TRANSPORT_STATUS.has(status) || /^http-(429|5\d\d)$/.test(status || '');
 }
