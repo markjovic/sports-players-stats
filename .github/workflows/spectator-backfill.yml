@@ -7,6 +7,20 @@ name: Spectator Backfill
 # hold). Progress is the data itself: spc:1 per game, committed every 2,000 games.
 # Resume by re-dispatching — the scan skips spc-set games.
 #
+# 2026-08-14 (OUTSTANDING §2.12) — THE RECURRING PATH FOR PAPER-SCORED GAMES.
+# On the weekly run this now dispatches Discover Game Backfill when it finishes.
+# That is not a convenience, it is the only correct arrangement: that tool selects
+# on `spcm > 0` (its own line 679, with the comment "so this never races ahead of
+# the spectator sweep"), meaning it can ONLY see games THIS sweep has already asked
+# for and been refused. A standalone weekly cron for it would fire against whatever
+# the previous week happened to leave and would find nothing if it ran first.
+# Chaining also captures a paper-scored game the SAME Saturday spectator retires
+# it, instead of the following one.
+#
+# Two weekly runs, one trigger — not two crons competing for data-write, which is
+# the 2026-08-10 problem. The dispatched run enters the group while this one is
+# still in it and starts when this one ends.
+#
 # NO actions/setup-node: this job fetches playhq.com and setup-node changes the
 # runner's outbound fingerprint, causing CloudFront 403s (absolute rule).
 
@@ -65,6 +79,14 @@ on:
         required: false
         default: false
         type: boolean
+      chain_discover:
+        description: 'On finish, dispatch Discover Game Backfill (the canonical-record pass over what spectator just retired). The weekly cron always does this; set yes to chain a manual run too.'
+        required: false
+        type: choice
+        options:
+          - 'no'
+          - 'yes'
+        default: 'no'
       include_partial:
         description: 'ALSO re-fetch games carrying a PARTIAL roster (2026-08-07 completion re-sweep: partial pre-spc lists proven to be incomplete captures of since-completed boxes). Default off = 2026-08-06 behaviour.'
         required: false
@@ -79,6 +101,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write             # the tail dispatches discover-game-backfill.yml
 
 jobs:
   backfill:
@@ -114,3 +137,64 @@ jobs:
             if [ -n "${{ inputs.retry_covered }}" ] && [ "${{ inputs.retry_covered }}" != "0" ]; then ARGS="$ARGS --retry-covered=${{ inputs.retry_covered }}"; fi
           fi
           node scripts/spectator-backfill.js $ARGS
+
+      # ── Chain: canonical-record pass over what this sweep just retired ─────────
+      # Cron supplies NO inputs (T27), so the schedule case is matched on
+      # github.event_name and never on an input value.
+      - name: Install dispatch retry helper
+        if: ${{ github.event_name == 'schedule' || inputs.chain_discover == 'yes' }}
+        # A chain-critical `gh workflow run` is never one-shot (directive 14). This
+        # one is WEEKLY, so a single lost HTTP 500 costs a full week of paper-scored
+        # games and the run still shows green. Helper copied VERBATIM from
+        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Dispatch Discover Game Backfill (canonical record)
+        if: ${{ github.event_name == 'schedule' || inputs.chain_discover == 'yes' }}
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        # Field names taken from discover-game-backfill.yml as written, not from
+        # memory: a wrong name is an HTTP 422, which the helper fails FAST on, and
+        # that is a silently broken chain every Saturday. Values are the measured
+        # ones — concurrency 5 (25 hit a sustained 403 wall after ~140 games) and
+        # the same 30-day guard this sweep uses.
+        run: |
+          /tmp/gh-dispatch.sh discover-game-backfill.yml \
+            --field "max_games=50000" \
+            --field "concurrency=5" \
+            --field "min_age_days=30" \
+            --field "dry_run=false" 
