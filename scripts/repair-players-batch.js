@@ -342,6 +342,80 @@ const GIT_MAXBUF = 512 * 1024 * 1024;
 // execFileSync throw, which the push-retry loop already handles — the attempt
 // simply fails and is retried, instead of the run stopping dead with no output.
 const GIT_TIMEOUT_MS = 10 * 60 * 1000;
+
+// ── GIT AUTH, ESTABLISHED BY US RATHER THAN ASSUMED ────────────────────────────
+// 2026-08-16: a run died at player 4,184 with
+//   fatal: could not read Username for 'https://github.com'
+// after ~167 successful pushes in the same job. The credential actions/checkout
+// persists had stopped working partway through. WHY IS NOT ESTABLISHED — and
+// three freezes today were each diagnosed by naming a plausible mechanism, two of
+// which were wrong. So this does not theorise: it sets the credential itself at
+// run start and sets it again on any auth failure, which makes the cause
+// irrelevant. Same mechanism actions/checkout uses (an http.extraheader carrying
+// basic auth), so it replaces like with like rather than introducing a new scheme.
+//
+// The header VALUE is never logged, and never appears in a git error message,
+// which is why this is preferred over putting the token in the remote URL.
+const PUSH_TOKEN = process.env.GH_PUSH_TOKEN || '';
+// Reports the SHAPE of the local git credential state — key names, remote host,
+// header length — and never a value. Called at run start and again on any auth
+// failure, so "the credential was there and then it wasn't" becomes something
+// visible in the log with a timestamp on it, rather than two people reasoning
+// about which of GitHub or this script moved it.
+//
+// The specific question this exists to answer, from the 2026-08-16 failure: was
+// the extraheader actions/checkout persists PRESENT at run start and MISSING at
+// the point of failure (something removed it mid-job), or absent all along (the
+// push worked on something else entirely until it didn't)?
+function reportGitAuthState(when) {
+  const line = (label, value) => console.log(`  git-auth[${when}] ${label}: ${value}`);
+  try {
+    const names = execFileSync('git', ['config', '--local', '--name-only', '--list'],
+                               { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS })
+      .toString().split('\n').map(x => x.trim()).filter(Boolean);
+    const http = names.filter(n => /^(http|credential|url)\./i.test(n));
+    line('http/credential keys', http.length ? http.join(' · ') : 'NONE');
+  } catch (e) {
+    line('config list failed', String(e.stderr || e.message).slice(0, 120));
+  }
+  // Length only. A present-but-truncated header and a missing one look different,
+  // and neither reveals the credential.
+  try {
+    const v = execFileSync('git', ['config', '--local', '--get', 'http.https://github.com/.extraheader'],
+                           { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS })
+      .toString().trim();
+    line('extraheader', `present, ${v.length} chars, starts "${v.slice(0, 21)}"`);
+  } catch (_) {
+    line('extraheader', 'ABSENT');
+  }
+  try {
+    const url = execFileSync('git', ['remote', 'get-url', 'origin'],
+                             { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS })
+      .toString().trim();
+    // A token embedded in the remote URL would appear here, so strip userinfo.
+    line('origin', url.replace(/\/\/[^@/]*@/, '//<redacted>@'));
+  } catch (e) {
+    line('origin', `unavailable: ${String(e.stderr || e.message).slice(0, 80)}`);
+  }
+}
+
+function armGitAuth(reason) {
+  if (!PUSH_TOKEN) {
+    console.error(`  git auth NOT armed (${reason}): GH_PUSH_TOKEN is not set in the environment`);
+    return false;
+  }
+  const basic = Buffer.from(`x-access-token:${PUSH_TOKEN}`).toString('base64');
+  try {
+    execFileSync('git', ['config', '--local', 'http.https://github.com/.extraheader',
+                         `AUTHORIZATION: basic ${basic}`],
+                 { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
+    console.log(`  git auth armed (${reason})`);
+    return true;
+  } catch (e) {
+    console.error(`  git auth arm FAILED (${reason}): ${String(e.stderr || e.message).slice(0, 200)}`);
+    return false;
+  }
+}
 async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   const paths = (dirs && dirs.length ? dirs : ['.']);
@@ -444,6 +518,16 @@ async function gitCommit(message, dirs) {
       return;
     } catch (e) {
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
+      // An auth failure is not contention and not permanent either — it is a
+      // credential that needs re-establishing. Re-arm and retry rather than
+      // killing a run that has hours of work behind it.
+      const authFail = /could not read Username|Authentication failed|invalid username or password|HTTP 403|remote: Write access/i.test(detail);
+      if (authFail && attempt < MAX) {
+        console.error(`  push failed on AUTH (attempt ${attempt}/${MAX}) — re-arming the credential and retrying. git said:\n${detail}`);
+        reportGitAuthState('at-failure');
+        armGitAuth('push auth failure');
+        continue;
+      }
       const contention = /non-fast-forward|fetch first|\[rejected\]|failed to push some refs|cannot lock ref/i.test(detail);
       if (!contention) {
         console.error(`  push failed — NOT contention, failing fast. git said:\n${detail}`);
@@ -614,6 +698,13 @@ async function main() {
     for (const x of sample) console.log(`      e.g. ${x}`);
     if (!APPLY) console.log('      (dry-run — the re-admission is not written back to the progress file)');
   }
+
+  // State BEFORE we touch anything, so what checkout left behind is on the record
+  // separately from what this script then does.
+  reportGitAuthState('run-start');
+  // Arm before the first commit window, not after the first failure.
+  armGitAuth('run start');
+  reportGitAuthState('after-arming');
 
   summarise(progress, 'state at run start');
 
