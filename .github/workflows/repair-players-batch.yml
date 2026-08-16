@@ -49,6 +49,13 @@ name: Repair Players Batch
 # is an unmissable RUN COMPLETE / STOPPED EARLY banner; and log_every cuts the
 # per-player lines so that banner is not buried under thousands of rows.
 #
+# 2026-08-16 — a run died at player 4,184 with "could not read Username for
+# 'https://github.com'" after ~167 successful pushes in the same job. Cause not
+# established. The script now arms the push credential at run start and re-arms it
+# on any auth-classified push failure, retrying instead of failing fast, which
+# makes the cause irrelevant rather than guessed at. Requires GH_PUSH_TOKEN in the
+# step env, set below.
+#
 # Progress in the log: the run prints DUE THIS RUN with a band breakdown before it
 # starts, a [n/total] counter on every player line whatever the outcome, and a
 # PROGRESS line at each commit window with percentage, elapsed, players/min and an
@@ -128,6 +135,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Repair batch
+        env:
+          # The script establishes the push credential itself and re-establishes
+          # it on an auth failure. On 2026-08-16 the credential actions/checkout
+          # persists stopped working ~167 pushes into a run and killed it at
+          # player 4,184. Never echoed — the script writes it into an
+          # http.extraheader and logs only that it armed, never the value.
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ARGS="--min-gap=${{ inputs.min_gap }}"
           if [ "${{ inputs.max_players }}" != "0" ] && [ -n "${{ inputs.max_players }}" ]; then
