@@ -40,6 +40,15 @@ name: Repair Players Batch
 # TRANSPORT: retried three times, then left unrecorded for the next dispatch.
 # Worst case a stuck chunk costs about ten minutes instead of the whole dispatch.
 #
+# 2026-08-14, fourth pass — A FINISHED RUN LOOKED EXACTLY LIKE A HUNG ONE. The
+# 8,000-player run printed its final commit and its whole end block, then the
+# process did not exit, so the job stayed open and was cancelled on the assumption
+# it had frozen. Nothing was lost, but there was no way to know that at the time.
+# Three fixes: the process now exits explicitly (and prints what was still holding
+# the event loop open, rather than a fifth theory about it); the last thing printed
+# is an unmissable RUN COMPLETE / STOPPED EARLY banner; and log_every cuts the
+# per-player lines so that banner is not buried under thousands of rows.
+#
 # Progress in the log: the run prints DUE THIS RUN with a band breakdown before it
 # starts, a [n/total] counter on every player line whatever the outcome, and a
 # PROGRESS line at each commit window with percentage, elapsed, players/min and an
@@ -75,6 +84,11 @@ on:
         description: 'Profile fetches in flight at once (1-25). Only the NETWORK is parallel; classification and every write stay serial. Backs off automatically on transport failures.'
         required: false
         default: '8'
+        type: string
+      log_every:
+        description: 'Print a player line every N players (dead profiles and transport skips always print). 1 = every player, as before.'
+        required: false
+        default: '100'
         type: string
       retry_dead:
         description: 'Re-admit players retired on a TRANSPORT failure (CloudFront block, socket error, 5xx). They were never refused by PlayHQ.'
@@ -130,6 +144,9 @@ jobs:
           # that rejects the whole workflow file.)
           if [ -n "${{ inputs.fetch_concurrency }}" ]; then
             ARGS="$ARGS --concurrency=${{ inputs.fetch_concurrency }}"
+          fi
+          if [ -n "${{ inputs.log_every }}" ]; then
+            ARGS="$ARGS --log-every=${{ inputs.log_every }}"
           fi
           if [ "${{ inputs.retry_dead }}" = "yes" ]; then
             ARGS="$ARGS --retry-dead"
