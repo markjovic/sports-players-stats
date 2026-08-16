@@ -65,6 +65,12 @@ const MIN_GAP = Number((args.find(a => a.startsWith('--min-gap=')) || '').replac
 const MAX_PLAYERS = Number((args.find(a => a.startsWith('--max-players=')) || '').replace('--max-players=', '') || '0');
 const APPLY = args.includes('--apply');
 const RETRY_DEAD = args.includes('--retry-dead');
+// Per-player lines every N players instead of every player. A 10,000-player run
+// wrote 10,000 player lines plus a full campaign table every 25, which buried the
+// one thing that mattered — whether the run had finished. Dead profiles and
+// transport skips are ALWAYS printed whatever this is set to: they are rare, and
+// they are the lines you would actually go looking for.
+const LOG_EVERY = Math.max(1, Number((args.find(a => a.startsWith('--log-every=')) || '').split('=')[1]) || 100);
 // Profile fetches only. Classification, appends and every write stay strictly
 // serial — see the chunk loop for why.
 const CONCURRENCY = Math.max(1, Math.min(25, Number((args.find(a => a.startsWith('--concurrency=')) || '').split('=')[1]) || 1));
@@ -328,6 +334,14 @@ function statValue(stats, type) {
 // with the number of changed files, so all of them get the larger buffer; `-q`
 // on the merge suppresses the per-file lines at the source.
 const GIT_MAXBUF = 512 * 1024 * 1024;
+
+// 2026-08-14 — the git calls had maxBuffer but NO timeout. execFileSync is
+// SYNCHRONOUS: it blocks the Node process, event loop included, so the 45s/180s
+// guards on doFetch cannot fire while the process is parked inside git. `fetch`
+// and `push` talk to the network against a 6 GB repo. A timeout makes
+// execFileSync throw, which the push-retry loop already handles — the attempt
+// simply fails and is retried, instead of the run stopping dead with no output.
+const GIT_TIMEOUT_MS = 10 * 60 * 1000;
 async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   const paths = (dirs && dirs.length ? dirs : ['.']);
@@ -341,7 +355,7 @@ async function gitCommit(message, dirs) {
   // reported loudly.
   let addFailures = 0, hardAddFailures = 0;
   for (const p of paths) {
-    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
+    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }); }
     catch (e) {
       addFailures++;
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
@@ -352,7 +366,7 @@ async function gitCommit(message, dirs) {
   }
 
   const staged = (() => {
-    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }).toString().trim(); }
+    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }).toString().trim(); }
     catch (_) { return ''; }
   })();
 
@@ -389,7 +403,7 @@ async function gitCommit(message, dirs) {
 
   // execFileSync with an argument array — the message is no longer interpolated
   // into a shell string, so the `"` -> `'` escaping hack is gone with it.
-  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
+  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }); }
   catch (e) {
     const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
     throw new Error(`gitCommit: commit failed for "${message}" — ${detail}`);
@@ -409,10 +423,10 @@ async function gitCommit(message, dirs) {
   // Phase 2 paced pool, and blocking here would stall sibling fetch workers.
   const MAX = 60;
   for (let attempt = 1; attempt <= MAX; attempt++) {
-    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); } catch (_) { /* none in progress */ }
+    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }); } catch (_) { /* none in progress */ }
 
     try {
-      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
     } catch (e) {
       if (attempt === MAX) throw e;
       const s = 1 + Math.floor(Math.random() * 91);
@@ -422,10 +436,10 @@ async function gitCommit(message, dirs) {
     }
 
     // A merge failure is a config or content problem, not a race — fatal.
-    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
 
     try {
-      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
       console.log(`  ✓ Committed: ${message} (pushed on attempt ${attempt})`);
       return;
     } catch (e) {
@@ -776,6 +790,9 @@ async function main() {
     fs.mkdirSync(path.dirname(PROGRESS_FILE), { recursive: true });
     fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
     dirtySids.clear();
+    // Announce the phase BEFORE blocking in git, so a freeze inside a commit is
+    // distinguishable from a slow player instead of looking identical to one.
+    console.log(`  … committing (${label})`);
     await gitCommit(label, ['games/bv', 'reports/repair-batch-progress.json']);
   };
 
@@ -816,6 +833,9 @@ async function main() {
   let conc = CONCURRENCY;
   let cleanChunks = 0, stopRun = false;
   console.log(`  fetch concurrency: ${conc} (backs off on transport failures, recovers after two clean chunks)`);
+  // The log states which guards are compiled in, so "is the fix actually
+  // deployed?" is answered by reading the run instead of trusting a commit (T12).
+  console.log(`  guards: http idle ${IDLE_TIMEOUT_MS / 1000}s · http hard ${HARD_TIMEOUT_MS / 1000}s · git ${GIT_TIMEOUT_MS / 1000}s`);
 
   for (let cursor = 0; cursor < targets.length && !stopRun; ) {
     const chunk = targets.slice(cursor, cursor + conc);
@@ -964,7 +984,7 @@ async function main() {
     doneCount++; totalAppends += appended; sinceCommit++;
     run.appended += appended; run.self += self; run.lag += lag; run.aliasOk += aliasOk;
     run.aliasGap += aliasGap; run.legacy += legacy; run.uncap += uncap; run.absent += absent; run.odd += odd;
-    console.log(`  ✓ ${prog()} ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts) · correct: self=${self} aliasOk=${aliasOk} · pending rebuild: lag=${lag} · blocked: aliasGap=${aliasGap} uncapt=${uncap} absent=${absent} odd=${odd}`);
+    if (seen % LOG_EVERY === 0 || seen === TOTAL) console.log(`  ✓ ${prog()} ${t.uuid} "${t.name}" gap=${t.gap} → appended=${appended} (${pts} pts) · correct: self=${self} aliasOk=${aliasOk} · pending rebuild: lag=${lag} · blocked: aliasGap=${aliasGap} uncapt=${uncap} absent=${absent} odd=${odd}`);
     if (sinceCommit >= COMMIT_EVERY) {
       await flushAndCommit(`repair-players-batch: ${doneCount}/${targets.length} players, ${totalAppends} appends so far (min-gap=${MIN_GAP})`);
       evictSeasonCache();
@@ -974,8 +994,11 @@ async function main() {
       const pct = ((seen / TOTAL) * 100).toFixed(1);
       // An estimate from the run's own average, not a promise: players differ
       // enormously in how many games they carry, and the concurrency moves.
-      console.log(`  PROGRESS ${prog()}  ${pct}%  ·  elapsed ${hms(elapsed)}  ·  ${perMin.toFixed(1)} players/min  ·  ~${hms(left)} left at this average  ·  concurrency ${conc}`);
-      summarise(progress, `after ${doneCount} players this run`);
+      console.log(`  PROGRESS ${prog()}  ${pct}%  ·  elapsed ${hms(elapsed)}  ·  ${perMin.toFixed(1)} players/min  ·  ~${hms(left)} left at this average  ·  concurrency ${conc}  ·  ${(TOTAL - seen).toLocaleString()} left this run`);
+      // The campaign table used to print here too — every 25 players. It is a
+      // cumulative figure that barely moves in one window, so it added a screen
+      // of output per window and hid the progress line inside it. It prints at
+      // run start and run end, where it is actually read.
       sinceCommit = 0;
     }
   }
@@ -1032,6 +1055,61 @@ async function main() {
   }
 
   summarise(progress, 'end of run');
+
+  // ── TERMINAL MARKER ─────────────────────────────────────────────────────────
+  // A run that finished looked identical to a run that was still going, so a
+  // completed dispatch was cancelled on the assumption it had hung. This is the
+  // line to look for, and it is the last thing printed before the process exits.
+  const complete = seen >= TOTAL;
+  console.log('\n' + '═'.repeat(64));
+  console.log(`  RUN ${complete ? 'COMPLETE' : 'STOPPED EARLY'} — ${seen}/${TOTAL} players reached, ${totalAppends.toLocaleString()} appends`);
+  console.log(`  ${complete ? 'Nothing further to do for this dispatch.' : `${TOTAL - seen} not reached — re-dispatch to resume.`}`);
+  console.log(`  Everything above is committed and pushed. Safe to close.`);
+  console.log('═'.repeat(64));
 }
 
-main().catch(e => { console.error('FATAL:', e.message); process.exit(1); });
+// 2026-08-14 — THE RUN FINISHED AND THE PROCESS DID NOT EXIT.
+// The 8,000-player run printed its final commit, its whole end block and the
+// campaign table, then sat there until it was cancelled — and GitHub reported it
+// as still running for as long as it did. main() had returned; something was
+// still holding the event loop open. Node will not exit while a socket or timer
+// is pending, however finished the work is.
+//
+// So: say what is still open, THEN leave. The dump is not decoration — three
+// separate freezes have now been diagnosed by guessing, and two of those guesses
+// were wrong (the HTTP timeouts could not have helped here, and neither could the
+// git ones). One line of evidence in the log beats a fourth theory.
+//
+// The 500 ms pause before exiting is deliberate: stdout is a PIPE under Actions,
+// where writes are asynchronous, and process.exit() would truncate the very
+// output this is here to produce.
+function activeHandleSummary() {
+  try {
+    const handles = (process._getActiveHandles && process._getActiveHandles()) || [];
+    const requests = (process._getActiveRequests && process._getActiveRequests()) || [];
+    const byType = new Map();
+    for (const h of handles) {
+      const t = (h && h.constructor && h.constructor.name) || typeof h;
+      byType.set(t, (byType.get(t) || 0) + 1);
+    }
+    const parts = [...byType.entries()].map(([t, c]) => `${t} ${c}`).join(' · ') || 'none';
+    return `handles: ${parts} · pending requests: ${requests.length}`;
+  } catch (e) {
+    return `handle inspection unavailable (${e.message})`;
+  }
+}
+
+main()
+  .then(async () => {
+    // stdin and the Actions stdout/stderr pipes are always present and are not
+    // the culprit; anything else listed here is what kept the run alive.
+    console.log(`\n  exiting — ${activeHandleSummary()}`);
+    await new Promise(r => setTimeout(r, 500));
+    process.exit(0);
+  })
+  .catch(async (e) => {
+    console.error('FATAL:', e.message);
+    console.error(`  at exit — ${activeHandleSummary()}`);
+    await new Promise(r => setTimeout(r, 500));
+    process.exit(1);
+  });
