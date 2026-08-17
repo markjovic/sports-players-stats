@@ -1,0 +1,210 @@
+# .github/workflows/size-repair-rosters.yml
+# READ-ONLY, offline, zero API calls: games carrying a roster (p[] non-empty) with
+# NEITHER spc NOR dg — OUTSTANDING §2.15. No lock, safe to run beside anything.
+#
+# WHY THIS IS NOT JUST A COUNT. §2.15 was written as "count games carrying a
+# repair-written roster", on the assumption that no capture flag means a repair
+# wrote it. The 2026-08-14 to 08-16 repair runs made that assumption doubtful:
+# 45.8%, then 43.5%, then 42.6% of all appends landed in flagless games, and the
+# samples were CONCENTRATED — fourteen of fifteen in one season (a5dfc5c1), then
+# eleven of fifteen in another (8940cb5d), carrying rosters of 17 to 20. A roster
+# of 20 is a full two-team complement. Repairs append ONE player at a time to
+# players who happen to have a gap; they do not produce complete rosters, and they
+# do not produce them clustered in one season. That is the signature of a capture
+# made before the spc/dg flags existed.
+#
+# THE DISCRIMINATOR IS spcm, AND IT IS DECISIVE:
+#   flagless + spcm > 0  → spectator was ASKED and FAILED, so anything in p[] was
+#                          put there afterwards. Repair-written.
+#   flagless + no spcm   → never asked, yet it holds a roster. Something wrote that
+#                          roster before the flags were introduced. Pre-flag capture.
+# Whole seasons falling one way or the other is the confirmation; a season whose
+# games are almost all flagless is an era, not an accident.
+#
+# The recommendation at the end follows the split rather than being asserted:
+# pre-flag captures are real data and must be LEFT ALONE (and arguably back-filled
+# with a flag); repair-written rosters are the 43199a27 problem and are the ones
+# worth stripping or sweeping.
+name: Size Repair Rosters
+
+on:
+  workflow_dispatch:
+    inputs:
+      top:
+        description: 'How many seasons to list in each category'
+        required: false
+        default: '15'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Analyse flagless rosters
+        env:
+          TOP: ${{ inputs.top }}
+        run: |
+          cat > /tmp/size-repair-rosters.cjs << 'SCRIPT_EOF'
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const TOP = Number(process.env.TOP || 15);
+          const gamesDir = path.join(ROOT, 'games', 'bv');
+          if (!fs.existsSync(gamesDir)) { console.error('ABORT: games/bv missing'); process.exit(1); }
+
+          let idx = {};
+          try { idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8')).seasons || {}; } catch (e) {}
+
+          let totGames = 0, totWithRoster = 0, totSpc = 0, totDg = 0, totBoth = 0, totFlagless = 0;
+          let flaglessTried = 0, flaglessNeverTried = 0;      // the discriminator
+          let apsTried = 0, apsNeverTried = 0;                // appearances sitting in each
+          const sizeTried = new Map(), sizeNeverTried = new Map();
+          const byYearFlagless = new Map();
+          const seasons = [];
+
+          const bump = (m, k) => m.set(k, (m.get(k) || 0) + 1);
+          const sizeBucket = (x) => x <= 2 ? '1-2' : x <= 4 ? '3-4' : x <= 8 ? '5-8' : x <= 11 ? '9-11' : x <= 14 ? '12-14' : x <= 19 ? '15-19' : '20+';
+
+          for (const f of fs.readdirSync(gamesDir)) {
+            if (!f.endsWith('.json')) continue;
+            const sid = path.basename(f, '.json');
+            let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
+            const rec = { sid: sid,
+                          name: (idx[sid] && idx[sid].name) || '?',
+                          org: (idx[sid] && idx[sid].orgName) || '?',
+                          locked: !!(idx[sid] && idx[sid].locked),
+                          games: 0, withRoster: 0, spc: 0, dg: 0, flagless: 0,
+                          tried: 0, neverTried: 0, aps: 0, samplesTried: [], samplesNever: [] };
+
+            for (const gid of Object.keys(sg.games || {})) {
+              const g = sg.games[gid];
+              if (!g) continue;
+              rec.games++; totGames++;
+              const roster = Array.isArray(g.p) ? g.p.length : 0;
+              if (!roster) continue;
+              rec.withRoster++; totWithRoster++;
+              const hasSpc = !!g.spc, hasDg = !!g.dg;
+              if (hasSpc && hasDg) { totBoth++; rec.spc++; continue; }
+              if (hasSpc) { totSpc++; rec.spc++; continue; }
+              if (hasDg) { totDg++; rec.dg++; continue; }
+
+              // Flagless and holding a roster: the population §2.15 is about.
+              totFlagless++; rec.flagless++; rec.aps += roster;
+              const y = (g.d || '????').slice(0, 4);
+              if (!byYearFlagless.has(y)) byYearFlagless.set(y, { tried: 0, never: 0 });
+
+              if ((g.spcm || 0) > 0) {
+                flaglessTried++; apsTried += roster; rec.tried++;
+                bump(sizeTried, sizeBucket(roster));
+                byYearFlagless.get(y).tried++;
+                if (rec.samplesTried.length < 3) rec.samplesTried.push(gid + ' (roster ' + roster + ', spcm ' + g.spcm + ')');
+              } else {
+                flaglessNeverTried++; apsNeverTried += roster; rec.neverTried++;
+                bump(sizeNeverTried, sizeBucket(roster));
+                byYearFlagless.get(y).never++;
+                if (rec.samplesNever.length < 3) rec.samplesNever.push(gid + ' (roster ' + roster + ')');
+              }
+            }
+            if (rec.flagless > 0) seasons.push(rec);
+          }
+
+          const n = (x) => Number(x || 0).toLocaleString();
+          const pct = (a, b) => b ? (100 * a / b).toFixed(1) : '0.0';
+
+          console.log('GAMES IN games/bv                    : ' + n(totGames));
+          console.log('  holding a roster (p[] non-empty)   : ' + n(totWithRoster) + '  (' + pct(totWithRoster, totGames) + '% of all games)');
+          console.log('    flagged spc (live-scoring)       : ' + n(totSpc));
+          console.log('    flagged dg (canonical record)    : ' + n(totDg));
+          console.log('    flagged both                     : ' + n(totBoth));
+          console.log('    NO FLAG — the §2.15 population   : ' + n(totFlagless) + '  (' + pct(totFlagless, totWithRoster) + '% of games holding a roster)');
+
+          console.log('');
+          console.log('THE DISCRIMINATOR — was spectator ever asked about these games?');
+          console.log('  spcm SET, so asked and refused  : ' + n(flaglessTried) + ' games, ' + n(apsTried) + ' appearances  (' + pct(flaglessTried, totFlagless) + '%)');
+          console.log('    → spectator failed, yet a roster exists. It was written AFTERWARDS: REPAIR-WRITTEN.');
+          console.log('  spcm UNSET, so never asked      : ' + n(flaglessNeverTried) + ' games, ' + n(apsNeverTried) + ' appearances  (' + pct(flaglessNeverTried, totFlagless) + '%)');
+          console.log('    → never asked, yet holds a roster. Written before the flags existed: PRE-FLAG CAPTURE.');
+
+          const showSizes = (label, m) => {
+            const order = ['1-2', '3-4', '5-8', '9-11', '12-14', '15-19', '20+'];
+            const tot = order.reduce((a, k) => a + (m.get(k) || 0), 0);
+            console.log('  ' + label + ':');
+            for (const k of order) {
+              const v = m.get(k) || 0;
+              if (!v) continue;
+              console.log('    roster ' + k.padEnd(6) + n(v).padStart(9) + '  ' + pct(v, tot).padStart(5) + '%');
+            }
+          };
+          console.log('');
+          console.log('ROSTER SIZES — a repair adds ONE player at a time to whoever had a gap, so a');
+          console.log('repair-written roster should be SMALL and ragged. A full two-team complement');
+          console.log('(15-20) means something captured the whole game at once.');
+          showSizes('asked and refused (expected small)', sizeTried);
+          showSizes('never asked (expected full)', sizeNeverTried);
+
+          console.log('');
+          console.log('BY YEAR:');
+          const years = [...byYearFlagless.entries()].sort();
+          for (const e of years) {
+            const y = e[0], v = e[1];
+            if (!(v.tried + v.never)) continue;
+            console.log('  ' + y + '  repair-written ' + n(v.tried).padStart(8) + '   pre-flag ' + n(v.never).padStart(8));
+          }
+
+          // Season-level confirmation. A whole season one way is an era; a scatter
+          // inside an otherwise-captured season is individual repairs.
+          const preflagSeasons = seasons.filter((s) => s.neverTried > s.tried);
+          const repairSeasons  = seasons.filter((s) => s.tried >= s.neverTried);
+          const sum = (arr, k) => arr.reduce((a, x) => a + x[k], 0);
+          console.log('');
+          console.log('BY SEASON:');
+          console.log('  seasons holding any flagless roster       : ' + n(seasons.length));
+          console.log('  mostly PRE-FLAG (never asked)             : ' + n(preflagSeasons.length) + ' seasons, ' + n(sum(preflagSeasons, 'flagless')) + ' games, ' + n(sum(preflagSeasons, 'aps')) + ' appearances');
+          console.log('  mostly REPAIR-WRITTEN (asked and refused) : ' + n(repairSeasons.length) + ' seasons, ' + n(sum(repairSeasons, 'flagless')) + ' games, ' + n(sum(repairSeasons, 'aps')) + ' appearances');
+
+          const show = (label, arr, key, sampleKey) => {
+            if (!arr.length) return;
+            console.log('');
+            console.log(label);
+            for (const s of arr.sort((a, b) => b[key] - a[key]).slice(0, TOP)) {
+              console.log('  ' + s.sid + '  flagless ' + String(s.flagless).padStart(6) + ' of ' + String(s.games).padStart(6) +
+                          ' games  (repair ' + s.tried + ' / pre-flag ' + s.neverTried + ')  ' +
+                          (s.locked ? '[locked] ' : '[active] ') + s.name + ' — ' + s.org);
+              for (const g of s[sampleKey]) console.log('        https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/' + g.split(' ')[0] + '   ' + g.slice(g.indexOf(' ') + 1));
+            }
+          };
+          show('TOP PRE-FLAG SEASONS (leave these alone — spot-check one or two):', preflagSeasons, 'neverTried', 'samplesNever');
+          show('TOP REPAIR-WRITTEN SEASONS (these are the §2.15 question):', repairSeasons, 'tried', 'samplesTried');
+
+          console.log('');
+          console.log('RECOMMENDATION — follows the split above, and is only as good as it:');
+          if (flaglessNeverTried > flaglessTried * 2) {
+            console.log('  The flagless population is dominated by games spectator was NEVER ASKED about.');
+            console.log('  Those rosters predate the flags and are REAL DATA. Do NOT strip them: stripping');
+            console.log('  would delete genuine captures and hand the appearance gap back. The useful');
+            console.log('  follow-up is to BACK-FILL a provenance flag so they stop reading as anomalies,');
+            console.log('  and to treat only the spcm-set subset (' + n(flaglessTried) + ' games) as repair-written.');
+          } else if (flaglessTried > flaglessNeverTried * 2) {
+            console.log('  The flagless population is dominated by games spectator ASKED ABOUT AND FAILED,');
+            console.log('  so their rosters were written by repairs. This is the 43199a27 problem at scale:');
+            console.log('  a partial roster that every consumer reads as the full team. SWEEPING is better');
+            console.log('  than stripping — a discoverGame pass over these games replaces a fragment with a');
+            console.log('  real roster, where stripping just returns them to the appearance gap.');
+          } else {
+            console.log('  The two populations are of comparable size, so a single action is wrong for one');
+            console.log('  of them. Handle them separately: sweep the ' + n(flaglessTried) + ' spcm-set games via');
+            console.log('  discoverGame, and back-fill a flag on the ' + n(flaglessNeverTried) + ' never-asked games rather');
+            console.log('  than touching their rosters.');
+          }
+          console.log('');
+          console.log('Spot-check method: open a URL above. A full box score with players named means the');
+          console.log('roster is real. A game centre showing far more players than our roster holds means');
+          console.log('it is a fragment.');
+          SCRIPT_EOF
+          node --max-old-space-size=8192 /tmp/size-repair-rosters.cjs

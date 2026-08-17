@@ -1,9 +1,30 @@
 # .github/workflows/size-negative-gap.yml
 # READ-ONLY, offline: players whose games[] exceeds the appearances PlayHQ's own
-# profile credits them with. Separates the candidate causes — fill-ins (expected,
-# a labelling question), stale profile fetches (harmless), alias over-merges (a
-# DATA BUG) and our own profileOnly synthesis — and prints game-centre URLs for
-# manual verification. Zero API calls, no lock, safe any time.
+# profile credits them with. Zero API calls, no lock, safe any time.
+#
+# 2026-08-16 rewrite (OUTSTANDING §2.17). Three faults in the first version:
+#
+#   1. IT COULD NOT TELL A PRIVATE PROFILE FROM A WRONG ONE. A private profile
+#      answers OK with no seasonStatistics, so its credited gp is near zero while
+#      its roster appearances are perfectly real. Every one of those players was
+#      being counted as an anomaly. Private players are now a SEPARATE population,
+#      reported in full and excluded from the anomaly figures — mixing the two is
+#      what makes a headline number mean nothing (T15).
+#
+#   2. THE dg-SHARE CONCLUSION WAS PRINTED REGARDLESS OF THE MEASUREMENT. The line
+#      said a dg share above ~6% supports the fill-in theory — true as a
+#      conditional, but printed whatever the number was, so a measured 5.1% read as
+#      support for a theory it refutes. The baseline is now COMPUTED from the data
+#      rather than carried as "~6%", and the verdict states which way the evidence
+#      actually points.
+#
+#   3. THE OVER-MERGE FLAG GUESSED AT FIELD NAMES. It read r.sid || r.id and
+#      counted repeats. A player can legitimately register twice in one season for
+#      two different teams, so a repeat is not by itself a bug — and nobody has
+#      confirmed what a registration object actually looks like. It now REPORTS the
+#      keys it finds and separates same-season-same-team repeats (a real duplicate)
+#      from same-season-different-team ones (ordinary), rather than asserting a rule
+#      over a shape it has not seen.
 name: Size Negative Gap
 
 on:
@@ -31,27 +52,31 @@ jobs:
           cat > /tmp/size-negative-gap.cjs << 'SCRIPT_EOF'
           // Read-only, offline, zero API calls: anatomy of players whose games[] exceeds the
           // appearance count PlayHQ's own profile credits them with ("negative gap").
-          // Measured 2026-08-11: 26,115 players / 181,802 appearances, up from 18,538 /
-          // 38,694 before the canonical-record sweep — a 4.7x jump that points at fill-in
-          // players, but does not PROVE it. Candidate causes this tool separates:
-          //   (a) fill-ins: PlayHQ does not credit a fill-in appearance to the player's
+          //
+          // Candidate causes this tool separates:
+          //   (a) PRIVATE profile: answers OK with no seasonStatistics, so credited gp is
+          //       near zero while the roster appearances are real. NOT an anomaly. Reported
+          //       separately and excluded from every anomaly figure below.
+          //   (b) fill-ins: PlayHQ does not credit a fill-in appearance to the player's
           //       career profile, but they physically played and the box score names them.
-          //       Expect their excess games to be concentrated in dg-captured (paper-scored)
-          //       games.
-          //   (b) stale profile: the player's profile was fetched before recent games. Expect
-          //       small excess, recent seasons, and spc-captured games.
-          //   (c) alias over-merge: two people folded into one record. Expect large excess
-          //       AND overlapping/duplicate season registrations — a DATA BUG, not a display
-          //       question.
-          //   (d) our own profileOnly synthesis.
+          //       If real, their excess games concentrate in dg-captured (paper-scored)
+          //       games ABOVE the baseline dg share of all games, which is computed here.
+          //   (c) stale profile: fetched before recent games. Small excess, recent seasons.
+          //   (d) alias over-merge: two people folded into one record. Large excess AND
+          //       genuinely duplicate registrations — a DATA BUG, not a display question.
+          //   (e) our own profileOnly synthesis.
           'use strict';
           const fs = require('fs');
           const path = require('path');
           const ROOT = process.env.SCAN_ROOT || '.';
           const TOP = Number(process.env.TOP || 25);
 
-          // gid -> provenance
+          // ── Provenance of every game, and the BASELINE dg share ──────────────────────
+          // The baseline is measured, not remembered. Comparing the affected players' dg
+          // share against a number carried in a comment is how a stale figure becomes a
+          // conclusion.
           const prov = new Map();
+          let allDg = 0, allSpc = 0, allPo = 0, allNone = 0, allGames = 0;
           const gamesDir = path.join(ROOT, 'games', 'bv');
           for (const f of fs.readdirSync(gamesDir)) {
             if (!f.endsWith('.json')) continue;
@@ -59,14 +84,26 @@ jobs:
             const sid = path.basename(f, '.json');
             for (const [gid, g] of Object.entries(sg.games || {})) {
               if (!g) continue;
-              prov.set(gid, { sid, dg: !!g.dg, spc: !!g.spc, po: !!g.profileOnly, d: g.d || '' });
+              const rec = { sid: sid, dg: !!g.dg, spc: !!g.spc, po: !!g.profileOnly, d: g.d || '' };
+              prov.set(gid, rec);
+              allGames++;
+              if (rec.po) allPo++;
+              else if (rec.dg) allDg++;
+              else if (rec.spc) allSpc++;
+              else allNone++;
             }
           }
+          const baselineDgPct = allGames ? (100 * allDg / allGames) : 0;
 
-          const rows = [];
+          // ── Scan players ─────────────────────────────────────────────────────────────
+          const rows = [];            // anomalies (NOT private)
+          const privateRows = [];     // private profiles, reported apart
           let totalExcess = 0, players = 0;
+          let privatePlayers = 0, privateExcess = 0;
           const buckets = [[1,1],[2,5],[6,20],[21,100],[101,Infinity]];
           const bcount = new Array(buckets.length).fill(0);
+          const regKeyCounts = new Map();   // what a registration object actually looks like
+          let regSampleShown = null;
 
           const playersDir = path.join(ROOT, 'players');
           for (const shard of fs.readdirSync(playersDir).filter(d => /^[0-9a-f]{2}$/.test(d))) {
@@ -80,8 +117,7 @@ jobs:
               const gl = Array.isArray(p.games) ? p.games : [];
               const excess = gl.length - gp;
               if (excess <= 0) continue;
-              players++; totalExcess += excess;
-              for (let i = 0; i < buckets.length; i++) if (excess >= buckets[i][0] && excess <= buckets[i][1]) { bcount[i]++; break; }
+
               let dg = 0, spc = 0, po = 0, unknown = 0;
               const dgSamples = [];
               for (const gid of gl) {
@@ -92,43 +128,132 @@ jobs:
                 else if (pr.spc) spc++;
                 else unknown++;
               }
+
+              // Registration shape: record the KEYS present rather than assume them.
               const regs = Array.isArray(p.seasons) ? p.seasons : Object.values(p.seasons || {});
-              const sids = regs.map(r => r && (r.sid || r.id)).filter(Boolean);
-              const dupSeasons = sids.length - new Set(sids).size;
-              rows.push({ uuid: f.replace(/\.json$/,''), name: p.name || '?', gp, games: gl.length, excess,
-                          dg, spc, po, unknown, regs: sids.length, dupSeasons, dgSamples });
+              for (const r of regs) {
+                if (!r || typeof r !== 'object') continue;
+                for (const k of Object.keys(r)) regKeyCounts.set(k, (regKeyCounts.get(k) || 0) + 1);
+                if (!regSampleShown) regSampleShown = Object.keys(r).sort().join(', ');
+              }
+              // Same season twice is only suspicious if it is also the same TEAM. Two
+              // registrations in one season for different teams is ordinary — a player
+              // in two competitions, or a club and a rep side.
+              const pairSeen = new Map();
+              let dupSameTeam = 0, dupDiffTeam = 0;
+              for (const r of regs) {
+                if (!r || typeof r !== 'object') continue;
+                const sid = r.sid || r.id || r.seasonId || null;
+                if (!sid) continue;
+                const tid = r.tid || r.teamId || (r.team && (r.team.id || r.team)) || null;
+                const key = sid + '|' + (tid === null ? 'NO-TEAM-FIELD' : tid);
+                pairSeen.set(key, (pairSeen.get(key) || 0) + 1);
+              }
+              const sidCounts = new Map();
+              for (const key of pairSeen.keys()) {
+                const sid = key.split('|')[0];
+                sidCounts.set(sid, (sidCounts.get(sid) || 0) + 1);
+              }
+              for (const [key, n] of pairSeen) if (n > 1) dupSameTeam += (n - 1);
+              for (const [, n] of sidCounts) if (n > 1) dupDiffTeam += (n - 1);
+
+              const row = { uuid: f.replace(/\.json$/, ''), name: p.name || '?', gp: gp, games: gl.length,
+                            excess: excess, dg: dg, spc: spc, po: po, unknown: unknown,
+                            regs: regs.length, dupSameTeam: dupSameTeam, dupDiffTeam: dupDiffTeam,
+                            dgSamples: dgSamples };
+
+              if (p.private === true) { privatePlayers++; privateExcess += excess; privateRows.push(row); continue; }
+
+              players++; totalExcess += excess;
+              for (let i = 0; i < buckets.length; i++) if (excess >= buckets[i][0] && excess <= buckets[i][1]) { bcount[i]++; break; }
+              rows.push(row);
             }
           }
 
-          const pct = (a,b) => b ? (100*a/b).toFixed(1) : '0.0';
-          console.log('PLAYERS WITH MORE GAMES THAN PLAYHQ CREDITS: ' + players.toLocaleString());
-          console.log('  total excess appearances : ' + totalExcess.toLocaleString());
+          const pct = (a, b) => b ? (100 * a / b).toFixed(1) : '0.0';
+          const n = (x) => Number(x || 0).toLocaleString();
+
+          console.log('== POPULATION 1: PRIVATE PROFILES (expected, NOT an anomaly) ==');
+          console.log('  players                  : ' + n(privatePlayers));
+          console.log('  excess appearances        : ' + n(privateExcess));
+          console.log('  A private profile answers OK with no seasonStatistics, so PlayHQ credits it');
+          console.log('  almost nothing while its roster appearances are real. These are excluded from');
+          console.log('  every figure below. Before this rewrite they were counted as anomalies.');
+
+          console.log('');
+          console.log('== POPULATION 2: NOT PRIVATE — the actual anomaly ==');
+          console.log('  players                  : ' + n(players));
+          console.log('  total excess appearances : ' + n(totalExcess));
           console.log('  distribution:');
           for (let i = 0; i < buckets.length; i++) {
-            const [a,b] = buckets[i];
-            console.log('    excess ' + (b===Infinity?a+'+':a===b?String(a):a+'-'+b).padEnd(8) + bcount[i].toLocaleString().padStart(9) + ' players');
+            const a = buckets[i][0], b = buckets[i][1];
+            console.log('    excess ' + (b === Infinity ? a + '+' : a === b ? String(a) : a + '-' + b).padEnd(8) + n(bcount[i]).padStart(9) + ' players');
           }
-          const sum = k => rows.reduce((a,r) => a + r[k], 0);
-          console.log('\nWHERE THEIR GAMES CAME FROM (all affected players, all their games):');
-          const tot = sum('dg') + sum('spc') + sum('po') + sum('unknown');
-          console.log('  canonical record (dg, paper-scored) : ' + sum('dg').toLocaleString() + '  (' + pct(sum('dg'), tot) + '%)');
-          console.log('  live-scoring service (spc)          : ' + sum('spc').toLocaleString() + '  (' + pct(sum('spc'), tot) + '%)');
-          console.log('  profileOnly (our synthesis)         : ' + sum('po').toLocaleString());
-          console.log('  no provenance flag                  : ' + sum('unknown').toLocaleString());
-          console.log('  → a dg share far above its ~6% share of all games supports the FILL-IN theory.');
-          const overmerge = rows.filter(r => r.dupSeasons > 0);
-          console.log('\n⚠ POSSIBLE ALIAS OVER-MERGE (duplicate season registrations — a DATA BUG if real): '
-                      + overmerge.length.toLocaleString() + ' players');
-          for (const r of overmerge.sort((a,b)=>b.excess-a.excess).slice(0,5))
-            console.log('    ' + r.uuid + '  excess ' + r.excess + '  dupSeasons ' + r.dupSeasons + '  ' + JSON.stringify(r.name));
 
-          console.log('\nTOP ' + TOP + ' BY EXCESS — open the URLs and check whether the player is listed as a FILL-IN:');
-          for (const r of rows.sort((a,b)=>b.excess-a.excess).slice(0, TOP)) {
+          const sum = (k) => rows.reduce((acc, r) => acc + r[k], 0);
+          const tot = sum('dg') + sum('spc') + sum('po') + sum('unknown');
+          const affectedDgPct = tot ? (100 * sum('dg') / tot) : 0;
+          console.log('');
+          console.log('WHERE THEIR GAMES CAME FROM (non-private affected players, all their games):');
+          console.log('  canonical record (dg, paper-scored) : ' + n(sum('dg')) + '  (' + pct(sum('dg'), tot) + '%)');
+          console.log('  live-scoring service (spc)          : ' + n(sum('spc')) + '  (' + pct(sum('spc'), tot) + '%)');
+          console.log('  profileOnly (our synthesis)         : ' + n(sum('po')));
+          console.log('  no provenance flag                  : ' + n(sum('unknown')));
+          console.log('');
+          console.log('  BASELINE, measured from all ' + n(allGames) + ' games in games/bv:');
+          console.log('    dg ' + baselineDgPct.toFixed(1) + '%  ·  spc ' + pct(allSpc, allGames) + '%  ·  profileOnly ' + pct(allPo, allGames) + '%  ·  no flag ' + pct(allNone, allGames) + '%');
+          console.log('');
+          // The verdict follows the measurement. It is not printed as a standing claim.
+          const ratio = baselineDgPct > 0 ? (affectedDgPct / baselineDgPct) : 0;
+          console.log('  VERDICT — affected players draw ' + affectedDgPct.toFixed(1) + '% of their games from the canonical');
+          console.log('  record against a baseline of ' + baselineDgPct.toFixed(1) + '% across all games (ratio ' + ratio.toFixed(2) + 'x).');
+          if (affectedDgPct >= baselineDgPct * 1.5) {
+            console.log('  → dg is OVER-REPRESENTED. Consistent with the FILL-IN theory: paper-scored games');
+            console.log('    name players PlayHQ never credits. Spot-check the URLs below to confirm.');
+          } else if (affectedDgPct <= baselineDgPct * 0.67) {
+            console.log('  → dg is UNDER-represented. This ARGUES AGAINST the fill-in theory.');
+          } else {
+            console.log('  → dg is in line with the baseline, so it carries NO signal either way. The');
+            console.log('    fill-in theory is NOT supported by this measurement. Whatever is causing the');
+            console.log('    excess is not specific to paper-scored games, and another explanation is needed.');
+          }
+
+          console.log('');
+          console.log('REGISTRATION SHAPE (what a seasons[] entry actually contains, across affected players):');
+          const keys = [...regKeyCounts.entries()].sort((a, b) => b[1] - a[1]);
+          console.log('  keys seen: ' + (keys.length ? keys.map((kv) => kv[0] + ' (' + n(kv[1]) + ')').join(' · ') : 'NONE — seasons[] is empty or not an array of objects'));
+          console.log('  first entry key set: ' + (regSampleShown || 'n/a'));
+          console.log('  If no team-like key appears above, the same-team test below is meaningless and');
+          console.log('  says so rather than pretending otherwise.');
+
+          const sameTeam = rows.filter((r) => r.dupSameTeam > 0);
+          const diffTeam = rows.filter((r) => r.dupSameTeam === 0 && r.dupDiffTeam > 0);
+          console.log('');
+          console.log('DUPLICATE REGISTRATIONS:');
+          console.log('  same season AND same team (a real duplicate — possible alias over-merge): ' + n(sameTeam.length) + ' players');
+          console.log('  same season, DIFFERENT team (ordinary — two comps, or club plus rep side): ' + n(diffTeam.length) + ' players');
+          console.log('  → only the first group is a candidate DATA BUG. The first version counted both');
+          console.log('    together, which is where the 2,741 figure came from.');
+          for (const r of sameTeam.sort((a, b) => b.excess - a.excess).slice(0, 10)) {
+            console.log('    ' + r.uuid + '  excess ' + r.excess + '  dupSameTeam ' + r.dupSameTeam + '  regs ' + r.regs + '  ' + JSON.stringify(r.name));
+          }
+
+          console.log('');
+          console.log('TOP ' + TOP + ' BY EXCESS (non-private) — open the URLs and check for a FILL-IN marking:');
+          for (const r of rows.sort((a, b) => b.excess - a.excess).slice(0, TOP)) {
             console.log('  ' + String(r.excess).padStart(5) + '  ' + r.uuid + '  gp=' + r.gp + ' games=' + r.games +
                         '  [dg=' + r.dg + ' spc=' + r.spc + ' po=' + r.po + ']  ' + JSON.stringify(r.name));
             for (const g of r.dgSamples) console.log('           https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/' + g);
           }
-          console.log('\nMethod: open a game above, find the player in the box score. PlayHQ marks fill-in');
+
+          console.log('');
+          console.log('TOP 10 PRIVATE PROFILES BY EXCESS (for reference only — these are expected):');
+          for (const r of privateRows.sort((a, b) => b.excess - a.excess).slice(0, 10)) {
+            console.log('  ' + String(r.excess).padStart(5) + '  ' + r.uuid + '  gp=' + r.gp + ' games=' + r.games + '  ' + JSON.stringify(r.name));
+          }
+
+          console.log('');
+          console.log('Method: open a game above and find the player in the box score. PlayHQ marks fill-in');
           console.log('players distinctly; if they are shown as a fill-in, the excess is EXPECTED and the');
           console.log('question is how to label it. If they are a normal listed player, something else is wrong.');
           SCRIPT_EOF
