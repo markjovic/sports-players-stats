@@ -1,51 +1,35 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-08-16T18:02:48.542Z",
+  "generatedAt": "2026-08-17T18:15:09.866Z",
   "dryRun": false,
-  "filesScanned": 421209,
-  "folded": 7,
-  "promotes": 6,
-  "merges": 1,
-  "indexShardsTouched": 14,
-  "aliasEntriesScanned": 497888,
-  "aliasValuesRepointed": 13,
-  "aliasShardsTouched": 13,
+  "filesScanned": 421268,
+  "folded": 4,
+  "promotes": 4,
+  "merges": 0,
+  "indexShardsTouched": 8,
+  "aliasEntriesScanned": 497948,
+  "aliasValuesRepointed": 4,
+  "aliasShardsTouched": 4,
   "entries": [
     {
-      "apiId": "213c150b-11f1-4f8f-b59a-41610940cec6",
+      "apiId": "307a662e-e382-46b4-b9ba-2570e3d0c788",
       "action": "promote",
-      "oldKey": "28943819-8286-426e-914c-97ceadc9e270"
+      "oldKey": "0e9ff9fd-6bf3-47a9-b4a0-a25b690c1c0a"
     },
     {
-      "apiId": "66594e6c-4198-4510-9988-976c3ff7dc56",
+      "apiId": "bc5a5407-ae43-47d0-bf73-f33cd9fe8dfc",
       "action": "promote",
-      "oldKey": "46e968cf-f492-4da6-bc2b-33d231d42fd0"
+      "oldKey": "608ea119-644d-455d-bf33-84dfb9c9f6f4"
     },
     {
-      "apiId": "019ecbfb-8044-4ccd-98e7-6a1035213028",
+      "apiId": "6ee69d96-23ba-4aae-8dbb-a0b7da349a76",
       "action": "promote",
-      "oldKey": "6af2d3fa-23a7-4301-8361-9576978953ee"
+      "oldKey": "6dfc0459-011d-4827-8b68-895c3ac39288"
     },
     {
-      "apiId": "7408c585-d152-4fc7-a254-fae969c1a60f",
+      "apiId": "799e5428-c53c-4450-b606-f47e0e165f59",
       "action": "promote",
-      "oldKey": "7fa8a1f1-c811-4a6f-ba67-2531992aa339"
-    },
-    {
-      "apiId": "9a82a312-534e-46b8-91b2-5384329d7083",
-      "action": "merge",
-      "oldKey": "83fb0b76-9e63-49e3-b1ec-215006403423",
-      "keeper": "9a82a312-534e-46b8-91b2-5384329d7083"
-    },
-    {
-      "apiId": "2c8be55b-507c-4f22-ab64-8c116c09d1fb",
-      "action": "promote",
-      "oldKey": "8fbcc6f7-10b2-495b-a602-ed2b900380fb"
-    },
-    {
-      "apiId": "a0257b7b-8d05-4725-8e0f-68456d59f1cc",
-      "action": "promote",
-      "oldKey": "ce0af456-2137-404c-a077-121904462bac"
+      "oldKey": "f1d7ee59-497a-4026-b630-3ca7e8e45a7c"
     }
   ]
 }
