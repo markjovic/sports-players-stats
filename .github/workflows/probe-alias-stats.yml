@@ -1,0 +1,65 @@
+# .github/workflows/probe-alias-stats.yml
+name: Probe Alias Stats
+
+# READ-ONLY (2026-08-16). No writes, no commits, no data-write lock — safe to run
+# beside anything, including a repair or a nightly.
+#
+# THE QUESTION. fetch-profile-stats.js line 839 reads
+# `const queryId = player.apiId || uuid;` — one identity, ever. A player's
+# spectatorIds are never fetched. Lara Hansen (api 2cd399a3) holds 368 games in
+# our record, her api profile credits 15, and her alias 33125d97 — already listed
+# in her own spectatorIds — credits 357. If that pattern is common then the career
+# totals are understated across the dataset, which inflates size-negative-gap's
+# 26,834-player anomaly and understates the gap the repair campaign ranked on.
+#
+# IT COMPARES GAME-ID SETS, NEVER TOTALS. 15 + 357 = 372 against 368 held: four
+# unaccounted for, and summing would double-count any game both identities credit.
+# The probe reports the union, the overlap, and the credits only the alias has.
+#
+# HOW IT GETS A FULL ALIAS ID. spectatorIds are stored truncated at 13 characters
+# and PlayHQ needs a full uuid, so the full id is recovered via profileSearch on
+# the player's name — but a result is only accepted when its first 13 characters
+# EQUAL a stored alias. The comparison is on id, not name; the name only narrows
+# the search. Aliases search cannot find are counted and reported, so the answer
+# is stated as a floor rather than a total.
+#
+# Small and slow on purpose: this shares api.playhq.com with the nightly crawl.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'How many alias-carrying players to probe (each costs 2+ API calls)'
+        required: false
+        default: '400'
+        type: string
+      concurrency:
+        description: 'Players in flight at once. Keep low — this endpoint is shared with the nightly crawl.'
+        required: false
+        default: '4'
+        type: string
+      seed:
+        description: 'Sampling seed. The same seed probes the SAME players, so two runs can be compared rather than merely re-rolled.'
+        required: false
+        default: '20260816'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe alias stats
+        run: |
+          ARGS="--sample=${{ inputs.sample }} --concurrency=${{ inputs.concurrency }}"
+          if [ -n "${{ inputs.seed }}" ]; then ARGS="$ARGS --seed=${{ inputs.seed }}"; fi
+          node --max-old-space-size=8192 scripts/probe-alias-stats.js $ARGS
