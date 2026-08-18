@@ -54,6 +54,10 @@ const num = (flag, dflt) => {
 const SAMPLE      = num('sample', 400);
 const CONCURRENCY = Math.max(1, Math.min(8, num('concurrency', 4)));
 const SEED        = num('seed', 20260816);
+// Named players, comma-separated. Run the KNOWN-TRUE case first and confirm the
+// tool reproduces it before believing anything a sample says. The first run lost
+// 318 of 400 players to unrecorded failures and still printed a percentage.
+const ONLY = (args.find(x => x.startsWith('--uuid=')) || '').split('=')[1] || '';
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
@@ -68,7 +72,31 @@ function mulberry32(a) {
   };
 }
 
+// Counted HERE, not in the copied stack — the stack carries no counter, which is
+// why the first run reported 82 requests after making roughly 480.
 let requestCount = 0;
+
+// Every failure is tallied BY STATUS with examples. A bare failure count cannot
+// tell a private profile from a CloudFront block, and those mean opposite things:
+// one is an answer about that player, the other means we were throttled and the
+// sample is void.
+const tally = new Map();
+const tallyEx = new Map();
+function note(key, example) {
+  tally.set(key, (tally.get(key) || 0) + 1);
+  if (!tallyEx.has(key)) tallyEx.set(key, []);
+  const arr = tallyEx.get(key);
+  if (arr.length < 5 && example) arr.push(example);
+}
+function showTally(heading) {
+  console.log('  ' + heading);
+  const rows = [...tally.entries()].sort((a, b) => b[1] - a[1]);
+  if (!rows.length) { console.log('    (none)'); return; }
+  for (const [k, v] of rows) {
+    console.log('    ' + String(v).padStart(6) + '  ' + k);
+    for (const ex of (tallyEx.get(k) || [])) console.log('             e.g. ' + ex);
+  }
+}
 
 const API_URL = 'https://api.playhq.com/graphql';
 let sessionCookie = null;
@@ -374,24 +402,47 @@ async function main() {
   console.log('  carrying a non-self alias       : ' + withAlias.toLocaleString() + '  (' + (100 * withAlias / (scanned || 1)).toFixed(1) + '%)');
   if (!candidates.length) { console.log('  nothing to sample'); return; }
 
+  if (ONLY) {
+    const want = new Set(ONLY.split(',').map(x => x.trim()).filter(Boolean));
+    const picked = candidates.filter(c => want.has(c.uuid));
+    for (const m of [...want].filter(u => !picked.some(c => c.uuid === u))) {
+      console.log('  ⚠ --uuid ' + m + ' is not in players/ or carries no non-self alias');
+    }
+    if (!picked.length) { console.log('  nothing to probe'); return; }
+    console.log('  --uuid mode: probing ' + picked.length + ' named player(s)\n');
+    await run(picked);
+    return;
+  }
+
   const rnd = mulberry32(SEED);
   const pool = candidates.slice();
   for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
   const targets = pool.slice(0, SAMPLE);
   console.log('  sampled                         : ' + targets.length.toLocaleString() + '\n');
+  await run(targets);
+}
 
+async function run(targets) {
   const rows = [];
   let aliasResolved = 0, aliasUnresolved = 0, searchFailed = 0, canonFailed = 0;
 
   for (let i = 0; i < targets.length; i += CONCURRENCY) {
     const chunk = targets.slice(i, i + CONCURRENCY);
     const done = await Promise.all(chunk.map(async (t) => {
+      requestCount++;
       const canon = await fetchProfile(t.canonical);
-      if (canon.status !== 'ok') return { t, err: 'canonical ' + canon.status };
+      if (canon.status !== 'ok') {
+        note('canonical fetch: ' + canon.status, t.canonical + ' ' + JSON.stringify(t.name));
+        return { t, err: 'canonical ' + canon.status };
+      }
       const canonGids = creditedGids(canon.data);
 
+      requestCount++;
       const sr = await profileSearchLookup(t.name);
-      if (sr.status !== 'ok') return { t, canonGids, err: 'search ' + sr.status };
+      if (sr.status !== 'ok') {
+        note('profileSearch: ' + sr.status, JSON.stringify(t.name));
+        return { t, canonGids, err: 'search ' + sr.status };
+      }
 
       // EXACT prefix match against a stored alias. The name only narrowed the
       // search; it never decides identity.
@@ -403,10 +454,20 @@ async function main() {
         if (wanted.has(id.slice(0, TRUNC_LEN))) found.push(id);
       }
 
+      // WHY a match failed is exactly what we could not see last time. Record
+      // what the search returned against what we were looking for.
+      if (!found.length) {
+        note('alias not matched (search returned ' + (sr.result.length === 0 ? 'NOTHING' : sr.result.length + ' profiles') + ')',
+             JSON.stringify(t.name) + ' wanted[' + [...wanted].join(',') + '] got[' +
+             sr.result.slice(0, 6).map(r => String(r && r.id).slice(0, TRUNC_LEN)).join(',') + ']');
+      }
+
       const aliasGids = new Set();
       const aliasStatus = [];
       for (const id of found) {
+        requestCount++;
         const res = await fetchProfile(id);
+        if (res.status !== 'ok') note('alias fetch: ' + res.status, id);
         aliasStatus.push(id.slice(0, TRUNC_LEN) + ':' + res.status);
         if (res.status !== 'ok') continue;
         for (const g of creditedGids(res.data)) aliasGids.add(g);
@@ -441,6 +502,19 @@ async function main() {
   console.log('  alias ids NOT found by search   : ' + n(aliasUnresolved) + '   ← unmeasured; the real figure is at least what follows');
   console.log('  canonical fetch failed          : ' + n(canonFailed));
   console.log('  profileSearch failed            : ' + n(searchFailed));
+  console.log('');
+  showTally('WHY THINGS FAILED (a bare count cannot tell a private profile from a block):');
+
+  // Refuse to state a share when most of the sample never returned. The first
+  // run printed "0.0% explained" on 78 of 400 players having fetched no alias.
+  const coverage = rows.length / (targets.length || 1);
+  if (coverage < 0.5 || aliasResolved === 0) {
+    console.log('');
+    console.log('  ⚠ THIS RUN DOES NOT ANSWER THE QUESTION.');
+    console.log('    probed ' + n(rows.length) + ' of ' + n(targets.length) + ' (' + (100 * coverage).toFixed(0) + '%), aliases fetched: ' + n(aliasResolved) + '.');
+    console.log('    Read the failure table above and fix the cause first — a share computed over a');
+    console.log('    collapsed sample is not a measurement.');
+  }
   console.log('');
   console.log('  players whose ALIAS credits games the canonical does not: ' + n(withExtra.length) +
               '  (' + (100 * withExtra.length / (rows.length || 1)).toFixed(1) + '% of probed)');
