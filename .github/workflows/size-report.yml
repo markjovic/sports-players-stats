@@ -9,10 +9,24 @@
 #
 # Sections (input `sections`, comma-separated, or "all"):
 #   misses         — anatomy of spectator misses, with the DEAD/MIXED/COVERED
-#                    clustering diagnostic
-#   negative-gap   — players holding MORE games than PlayHQ credits, private
-#                    profiles separated, plus the excess-of-1 test below
-#   repair-rosters — games holding a roster with no capture flag
+#                    clustering diagnostic          (was size-misses.yml)
+#   resweep        — FINAL games carrying a partial pre-spc roster
+#                                                   (was size-resweep.yml)
+#   rosters        — games holding a roster with no capture flag
+#                                                   (was size-repair-rosters.yml)
+#   gaps           — the appearance gap in BOTH directions from one player scan
+#                    (was size-gap-players.yml AND size-negative-gap.yml)
+#
+# WHY "gaps" IS ONE SECTION AND NOT TWO. size-gap-players measured gp minus games,
+# size-negative-gap measured games minus gp. Same two numbers, same scan, same
+# players, reported by two tools that could disagree and had no way to notice.
+# They are one section now, reporting both directions off one pass.
+#
+# ALSO DROPPED: size-gap-players carried REFERENCE_TOTAL = 775703 hardcoded and
+# printed it as "reference (size-appearance-gaps, 2026-08-06)". The repair campaign
+# has since made 812,554 appends, so that constant now disagrees with reality by
+# more than the thing it was meant to validate. A fixed baseline in a measuring
+# tool becomes a lie on a schedule; the figure is stated as history or not at all.
 #
 # THE EXCESS-OF-1 TEST, AND WHY IT HAS A CONTROL GROUP. size-negative-gap reports
 # 26,834 players holding more games than credited — but 22,387 of them are over by
@@ -35,7 +49,7 @@ on:
   workflow_dispatch:
     inputs:
       sections:
-        description: 'Which sections to run: all, or a comma-separated list of misses,negative-gap,repair-rosters'
+        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps'
         required: false
         default: 'all'
         type: string
@@ -56,6 +70,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Size report
+        # set -o pipefail is not optional here: the node output is piped through tee
+        # so it can be published twice, and without pipefail a failing scan exits 0
+        # because tee succeeded — a green run over an empty report.
+        shell: bash
         env:
           SECTIONS: ${{ inputs.sections }}
           TOP: ${{ inputs.top }}
@@ -67,10 +85,13 @@ jobs:
           const ROOT = process.env.SCAN_ROOT || '.';
           const TOP = Number(process.env.TOP || 15);
           const rawSections = String(process.env.SECTIONS || 'all').toLowerCase().trim();
-          const ALL = ['misses', 'negative-gap', 'repair-rosters'];
-          const WANT = new Set(rawSections === 'all' || rawSections === ''
+          const ALL = ['misses', 'resweep', 'rosters', 'gaps'];
+          // Old names still work — three of these tools were dispatched by name for
+          // weeks and a rename should not silently run nothing.
+          const ALIAS = { 'negative-gap': 'gaps', 'gap-players': 'gaps', 'repair-rosters': 'rosters' };
+          const WANT = new Set((rawSections === 'all' || rawSections === ''
             ? ALL
-            : rawSections.split(',').map(s => s.trim()).filter(Boolean));
+            : rawSections.split(',').map(s => s.trim()).filter(Boolean)).map(s => ALIAS[s] || s));
           for (const s of WANT) if (!ALL.includes(s)) console.log('  ⚠ unknown section "' + s + '" — ignored. Known: ' + ALL.join(', '));
           const want = (s) => WANT.has(s);
           const n = (x) => Number(x || 0).toLocaleString();
@@ -112,6 +133,9 @@ jobs:
           const byYearMiss = new Map();
           let mFinal = 0, mSpc = 0, mMiss = 0, mProfileOnly = 0;
           const attemptHist = new Map();
+          // resweep: FINAL games with a partial pre-spc roster — p[] present, no spc.
+          let swGames = 0, swTarget = 0, swNoP = 0, swSpc = 0, swOther = 0, swIds = 0;
+          const swByYear = new Map();
           let rTotRoster = 0, rSpc = 0, rDg = 0, rBoth = 0, rFlagless = 0;
           let rTried = 0, rNever = 0, rApsTried = 0, rApsNever = 0;
           const rSizeTried = new Map(), rSizeNever = new Map();
@@ -169,8 +193,21 @@ jobs:
                 }
               }
 
-              // ── repair-rosters ──
-              if (want('repair-rosters') && roster) {
+              // ── resweep ──
+              if (want('resweep')) {
+                swGames++;
+                if (g.st !== 'FINAL' || (fl & (F_FORFEIT | F_LEGACY))) swOther++;
+                else if (fl & F_SPC) swSpc++;
+                else if (!roster) swNoP++;
+                else {
+                  swTarget++; swIds += roster;
+                  const y = (g.d || '????').slice(0, 4);
+                  swByYear.set(y, (swByYear.get(y) || 0) + 1);
+                }
+              }
+
+              // ── rosters ──
+              if (want('rosters') && roster) {
                 rTotRoster++;
                 if ((fl & F_SPC) && (fl & F_DG)) { rBoth++; continue; }
                 if (fl & F_SPC) { rSpc++; continue; }
@@ -190,7 +227,7 @@ jobs:
               }
             }
             if (want('misses') && mRec.final > 0 && mRec.miss > 0) missSeasons.push(mRec);
-            if (want('repair-rosters') && rRec.flagless > 0) rSeasons.push(rRec);
+            if (want('rosters') && rRec.flagless > 0) rSeasons.push(rRec);
           }
           console.log('  ' + n(totGames) + ' games indexed\n');
           const baselineDgPct = totGames ? (100 * allDg / totGames) : 0;
@@ -233,7 +270,21 @@ jobs:
           }
 
           // ══ SECTION: repair-rosters ═══════════════════════════════════════════════
-          if (want('repair-rosters')) {
+          if (want('resweep')) {
+            console.log('══ RE-SWEEP TARGET ═══════════════════════════════════════════════════');
+            console.log('  games scanned                                  : ' + n(swGames));
+            console.log('    FINAL with spc (already box-captured)        : ' + n(swSpc));
+            console.log('    FINAL roster-less, no spc                    : ' + n(swNoP));
+            console.log('    non-FINAL / forfeit / legacy                 : ' + n(swOther));
+            console.log('  TARGET — FINAL, partial pre-spc p[], no spc    : ' + n(swTarget) + ' games');
+            console.log('    p[] entries across them                      : ' + n(swIds) + '  (avg ' + (swTarget ? (swIds / swTarget).toFixed(1) : 0) + '/game)');
+            console.log('    by year:');
+            for (const e of [...swByYear.entries()].sort()) console.log('      ' + e[0] + '  ' + n(e[1]));
+            console.log('    cost: one spectator query per game (backfill pacing applies).');
+            console.log('');
+          }
+
+          if (want('rosters')) {
             console.log('══ ROSTERS WITH NO CAPTURE FLAG ══════════════════════════════════════');
             console.log('  games holding a roster    : ' + n(rTotRoster));
             console.log('    flagged spc             : ' + n(rSpc));
@@ -276,9 +327,18 @@ jobs:
           }
 
           // ══ SECTION: negative-gap ═════════════════════════════════════════════════
-          if (want('negative-gap')) {
-            console.log('══ PLAYERS HOLDING MORE GAMES THAN PLAYHQ CREDITS ════════════════════');
+          if (want('gaps')) {
+            console.log('══ THE APPEARANCE GAP, BOTH DIRECTIONS ═══════════════════════════════');
+            console.log('  gap = credited (sports.*.gp, from the profile) minus held (games[], from');
+            console.log('  rosters). Positive = appearances we cannot name. Negative = we hold more than');
+            console.log('  PlayHQ credits. One scan, both directions, so the two cannot disagree.');
+            console.log('');
             const rows = [], privateRows = [];
+            // Positive direction (was size-gap-players.yml)
+            const POSB = [[1, 1], [2, 5], [6, 20], [21, 50], [51, 100], [101, Infinity]];
+            const posCount = new Array(POSB.length).fill(0);
+            let scanned = 0, unreadable = 0, noGp = 0, zeroGap = 0, posPlayers = 0, posSum = 0;
+            const posTop = [];
             let players = 0, totalExcess = 0, privatePlayers = 0, privateExcess = 0;
             const buckets = [[1, 1], [2, 5], [6, 20], [21, 100], [101, Infinity]];
             const bcount = new Array(buckets.length).fill(0);
@@ -296,12 +356,26 @@ jobs:
               const dir = path.join(playersDir, shard);
               for (const f of fs.readdirSync(dir)) {
                 if (!f.endsWith('.json')) continue;
-                let p; try { p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
+                scanned++;
+                let p; try { p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { unreadable++; continue; }
                 let gp = 0, has = false;
                 for (const s of Object.values(p.sports || {})) if (s && typeof s.gp === 'number') { gp += s.gp; has = true; }
-                if (!has) continue;
+                if (!has) { noGp++; continue; }   // never profile-fetched, or private with no stats
                 const gl = Array.isArray(p.games) ? p.games : [];
                 const excess = gl.length - gp;
+                const uuid = f.replace(/\.json$/, '');
+
+                // Positive direction: appearances PlayHQ credits that we cannot name.
+                if (excess < 0) {
+                  const gap = -excess;
+                  posPlayers++; posSum += gap;
+                  for (let i = 0; i < POSB.length; i++) if (gap >= POSB[i][0] && gap <= POSB[i][1]) { posCount[i]++; break; }
+                  if (posTop.length < 20 || gap > posTop[posTop.length - 1].gap) {
+                    posTop.push({ gap: gap, uuid: uuid, name: p.name || '?', gp: gp, games: gl.length, priv: p.private === true });
+                    posTop.sort((a, b) => b.gap - a.gap);
+                    if (posTop.length > 20) posTop.pop();
+                  }
+                } else if (excess === 0) { zeroGap++; }
 
                 let unc = 0, dg = 0, spc = 0, po = 0, unknown = 0;
                 const dgSamples = [];
@@ -322,7 +396,7 @@ jobs:
                 g.players++; g.games += gl.length; g.uncountable += unc;
                 if (unc > 0) g.withUncountable++;
 
-                const row = { uuid: f.replace(/\.json$/, ''), name: p.name || '?', gp: gp, games: gl.length,
+                const row = { uuid: uuid, name: p.name || '?', gp: gp, games: gl.length,
                               excess: excess, dg: dg, spc: spc, po: po, unc: unc, unknown: unknown, dgSamples: dgSamples };
                 if (p.private === true) { privatePlayers++; privateExcess += excess; privateRows.push(row); continue; }
                 players++; totalExcess += excess;
@@ -331,6 +405,21 @@ jobs:
               }
             }
 
+            console.log('  ── POSITIVE GAP: appearances credited but not held ──');
+            console.log('    players scanned                : ' + n(scanned));
+            console.log('      unreadable                   : ' + n(unreadable));
+            console.log('      no profile gp (unmeasurable) : ' + n(noGp));
+            console.log('      gap = 0 (fully captured)     : ' + n(zeroGap));
+            console.log('    PLAYERS WITH A POSITIVE GAP    : ' + n(posPlayers) + '  (' + pct(posPlayers, scanned) + '% of scanned)');
+            console.log('    total missing appearances      : ' + n(posSum));
+            for (let i = 0; i < POSB.length; i++) {
+              const a = POSB[i][0], b = POSB[i][1];
+              console.log('      gap ' + (b === Infinity ? a + '+' : a === b ? String(a) : a + '-' + b).padEnd(8) + n(posCount[i]).padStart(10) + ' players');
+            }
+            console.log('    worst 20:');
+            for (const t of posTop) console.log('      ' + String(t.gap).padStart(5) + '  ' + t.uuid + '  gp=' + t.gp + ' games=' + t.games + (t.priv ? ' [PRIVATE]' : '') + '  ' + JSON.stringify(t.name));
+            console.log('');
+            console.log('  ── NEGATIVE GAP: held but not credited ──');
             console.log('  PRIVATE PROFILES (expected, excluded below): ' + n(privatePlayers) + ' players, ' + n(privateExcess) + ' excess appearances');
             console.log('  NOT PRIVATE — the anomaly                 : ' + n(players) + ' players, ' + n(totalExcess) + ' excess appearances');
             for (let i = 0; i < buckets.length; i++) {
@@ -392,4 +481,45 @@ jobs:
 
           console.log('── done ──');
           SCRIPT_EOF
-          node --max-old-space-size=8192 /tmp/size-report.cjs
+          set -uo pipefail
+          node --max-old-space-size=8192 /tmp/size-report.cjs 2>&1 | tee /tmp/size-report.txt
+
+      # Both outputs run on `always()` so a scan that dies partway still publishes
+      # what it produced. A truncated report you can read beats a green tick and
+      # nothing to look at.
+      - name: Publish to the run summary
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          if [ ! -s /tmp/size-report.txt ]; then
+            echo '## Size Report — no output produced' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          BYTES=$(wc -c < /tmp/size-report.txt)
+          {
+            echo '## Size Report'
+            echo ''
+            echo "Sections: \`${SECTIONS:-all}\` · $(date -u '+%Y-%m-%d %H:%M UTC') · ${BYTES} bytes"
+            echo ''
+            echo '```text'
+            # GitHub caps a step summary at 1 MiB and silently drops the whole thing
+            # if it is exceeded, so cut at 900 KB and SAY SO rather than losing it.
+            head -c 900000 /tmp/size-report.txt
+            echo '```'
+            if [ "$BYTES" -gt 900000 ]; then
+              echo ''
+              echo "> Truncated at 900 KB for the summary page. The full ${BYTES}-byte report is in the **size-report** artifact below."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          SECTIONS: ${{ inputs.sections }}
+
+      - name: Upload the full report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-report
+          path: /tmp/size-report.txt
+          retention-days: 30
+          if-no-files-found: warn
