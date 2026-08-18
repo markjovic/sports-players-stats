@@ -431,7 +431,11 @@ jobs:
             const tot = sum('dg') + sum('spc') + sum('po') + sum('unknown');
             const affectedDgPct = tot ? (100 * sum('dg') / tot) : 0;
             console.log('\n  PROVENANCE OF THEIR GAMES vs the baseline across all games:');
-            console.log('    affected: dg ' + pct(sum('dg'), tot) + '%  ·  spc ' + pct(sum('spc'), tot) + '%  ·  profileOnly ' + n(sum('po')) + '  ·  no flag ' + n(sum('unknown')));
+            // Both rows in the same units. The first version printed percentages for
+            // dg/spc and RAW COUNTS for profileOnly/no-flag on the affected line, against
+            // percentages on the baseline line — two rows that looked comparable and were
+            // not.
+            console.log('    affected: dg ' + pct(sum('dg'), tot) + '%  ·  spc ' + pct(sum('spc'), tot) + '%  ·  profileOnly ' + pct(sum('po'), tot) + '%  ·  no flag ' + pct(sum('unknown'), tot) + '%   (' + n(tot) + ' games)');
             console.log('    baseline: dg ' + baselineDgPct.toFixed(1) + '%  ·  spc ' + pct(allSpc, totGames) + '%  ·  profileOnly ' + pct(allPo, totGames) + '%  ·  no flag ' + pct(allNone, totGames) + '%');
             if (baselineDgPct === 0) console.log('    → no dg-captured games in this dataset at all: the comparison says nothing.');
             else if (affectedDgPct >= baselineDgPct * 1.5) console.log('    → dg OVER-represented: consistent with the FILL-IN theory.');
@@ -442,30 +446,43 @@ jobs:
             console.log('\n  DO THEY HOLD GAMES PLAYHQ WOULD NOT COUNT?');
             console.log('  "Uncountable" = forfeit, bye, cancelled, abandoned, legacy, not-FINAL, or one');
             console.log('  of our own profileOnly synthetic games.');
+            // NORMALISED BY GAMES HELD, because the raw rate is confounded. A player
+            // with 200 games holds more forfeits than one with 20 AND is likelier to be
+            // off by one, so "% holding at least one" rises with squad size whether or
+            // not the flag has anything to do with the excess. Per 100 games held is the
+            // comparison that controls for it.
             const line = (label, o) => {
               if (!o.players) return;
+              const per100 = o.games ? (100 * o.uncountable / o.games) : 0;
               console.log('    ' + label.padEnd(13) + n(o.players).padStart(9) + ' players  ·  ' +
-                          pct(o.withUncountable, o.players).padStart(5) + '% hold at least one  ·  ' +
-                          (o.uncountable / o.players).toFixed(2).padStart(6) + ' per player on average');
+                          (o.games / o.players).toFixed(1).padStart(7) + ' games held each  ·  ' +
+                          (o.uncountable / o.players).toFixed(2).padStart(6) + ' uncountable each  ·  ' +
+                          per100.toFixed(2).padStart(6) + ' per 100 games  ·  ' +
+                          pct(o.withUncountable, o.players).padStart(5) + '% hold at least one');
             };
             line('CONTROL', ctrl);
             for (const k of ['excess 1', 'excess 2-5', 'excess 6-20', 'excess 21+']) line(k, grp.get(k));
-            const c = ctrl.players ? (100 * ctrl.withUncountable / ctrl.players) : 0;
+            // NO AUTOMATIC VERDICT. Twice this tool stated a conclusion more confidently
+            // than the data supported — once calling a zero baseline "over-represented",
+            // once calling a confounded 59.3%-vs-44.7% "partial". The numbers below are
+            // the ones that decide it; the reading is left to whoever is looking.
             const e1 = grp.get('excess 1');
-            const e1p = e1.players ? (100 * e1.withUncountable / e1.players) : 0;
+            const ctrlPer100 = ctrl.games ? (100 * ctrl.uncountable / ctrl.games) : 0;
+            const e1Per100 = e1.games ? (100 * e1.uncountable / e1.games) : 0;
+            const e1Each = e1.players ? (e1.uncountable / e1.players) : 0;
             console.log('');
-            if (e1.players && e1p >= c + 20) {
-              console.log('    → EXPLAINS IT. Players over by exactly one hold an uncountable game far more');
-              console.log('      often than players with no excess (' + e1p.toFixed(1) + '% vs ' + c.toFixed(1) + '%). The excess is a counting-rule');
-              console.log('      difference, not a data fault, and the headline figure should exclude them.');
-            } else if (e1.players && Math.abs(e1p - c) < 10) {
-              console.log('    → EXPLAINS NOTHING. Affected and unaffected players hold uncountable games at');
-              console.log('      about the same rate (' + e1p.toFixed(1) + '% vs ' + c.toFixed(1) + '%), so the flags are not the cause and the');
-              console.log('      correlation would have been spurious. Look elsewhere.');
-            } else {
-              console.log('    → PARTIAL / UNCLEAR: ' + e1p.toFixed(1) + '% of the excess-1 group against ' + c.toFixed(1) + '% of the control.');
-              console.log('      Not a clean separation; treat as suggestive only.');
-            }
+            console.log('    HOW TO READ IT — two questions, both answered above:');
+            console.log('');
+            console.log('    1. Is the RATE actually different once squad size is controlled for?');
+            console.log('       control ' + ctrlPer100.toFixed(2) + ' uncountable per 100 games held · excess-1 ' + e1Per100.toFixed(2) + ' per 100.');
+            console.log('       If those are close, any difference in the raw "% hold at least one" column');
+            console.log('       is games-held confounding and nothing more.');
+            console.log('');
+            console.log('    2. Does the QUANTITY match the excess it is supposed to explain?');
+            console.log('       excess-1 players are over by 1 and hold ' + e1Each.toFixed(2) + ' uncountable games each.');
+            console.log('       If the flag caused the excess, those two numbers would agree. The control');
+            console.log('       group holds ' + (ctrl.players ? (ctrl.uncountable / ctrl.players).toFixed(2) : '0') + ' each and is over by NOTHING, which is the same point');
+            console.log('       from the other side: PlayHQ evidently counts these games.');
 
             console.log('\n  TOP ' + TOP + ' BY EXCESS (non-private):');
             for (const r of rows.sort((a, b) => b.excess - a.excess).slice(0, TOP)) {
