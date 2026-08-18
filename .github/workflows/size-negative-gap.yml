@@ -75,6 +75,26 @@ jobs:
           // The baseline is measured, not remembered. Comparing the affected players' dg
           // share against a number carried in a comment is how a stale figure becomes a
           // conclusion.
+          let idx = {};
+          try { idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8')).seasons || {}; } catch (e) {}
+
+          // ── Game-centre URLs ─────────────────────────────────────────────────────────
+          // VERIFIED 2026-08-16 against a live page. The three path segments after /org/
+          // are the org SLUG, the org ID and the SEASON ID. Every size-* tool had been
+          // printing the literal "a/a/a" in those slots, so EVERY spot-check link these
+          // tools have ever produced was dead — which is why "spot-check the URLs" stayed
+          // on the list for weeks. Nobody could.
+          const slugify = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          const gameUrl = (sid, gid) => {
+            const meta = idx[sid];
+            if (!meta || !meta.orgId || !meta.orgName) {
+              // Say so rather than emit another dead link. A URL that cannot be built is
+              // information; a URL that looks right and 404s is worse than none.
+              return '(no orgId/orgName in sports-index for season ' + sid + ' — game ' + gid + ')';
+            }
+            return 'https://www.playhq.com/basketball-victoria/org/' + slugify(meta.orgName) + '/' + meta.orgId + '/' + sid + '/game-centre/' + gid;
+          };
+
           const prov = new Map();
           let allDg = 0, allSpc = 0, allPo = 0, allNone = 0, allGames = 0;
           const gamesDir = path.join(ROOT, 'games', 'bv');
@@ -243,7 +263,7 @@ jobs:
           for (const r of rows.sort((a, b) => b.excess - a.excess).slice(0, TOP)) {
             console.log('  ' + String(r.excess).padStart(5) + '  ' + r.uuid + '  gp=' + r.gp + ' games=' + r.games +
                         '  [dg=' + r.dg + ' spc=' + r.spc + ' po=' + r.po + ']  ' + JSON.stringify(r.name));
-            for (const g of r.dgSamples) console.log('           https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/' + g);
+            for (const g of r.dgSamples) { const pr = prov.get(g); console.log('           ' + (pr ? gameUrl(pr.sid, g) : '(game ' + g + ' not found in games/bv)')); }
           }
 
           console.log('');

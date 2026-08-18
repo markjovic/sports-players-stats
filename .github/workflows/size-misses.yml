@@ -38,6 +38,23 @@ jobs:
           let idx = {};
           try { idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8')).seasons || {}; } catch (_) {}
 
+          // ── Game-centre URLs ─────────────────────────────────────────────────────────
+          // VERIFIED 2026-08-16 against a live page. The three path segments after /org/
+          // are the org SLUG, the org ID and the SEASON ID. Every size-* tool had been
+          // printing the literal "a/a/a" in those slots, so EVERY spot-check link these
+          // tools have ever produced was dead — which is why "spot-check the URLs" stayed
+          // on the list for weeks. Nobody could.
+          const slugify = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          const gameUrl = (sid, gid) => {
+            const meta = idx[sid];
+            if (!meta || !meta.orgId || !meta.orgName) {
+              // Say so rather than emit another dead link. A URL that cannot be built is
+              // information; a URL that looks right and 404s is worse than none.
+              return '(no orgId/orgName in sports-index for season ' + sid + ' — game ' + gid + ')';
+            }
+            return 'https://www.playhq.com/basketball-victoria/org/' + slugify(meta.orgName) + '/' + meta.orgId + '/' + sid + '/game-centre/' + gid;
+          };
+
           const seasons = [];              // {sid,name,org,final,spc,miss,attempts,samples[],years:Set}
           const byYear = new Map();        // year -> {spc, miss}
           let totFinal = 0, totSpc = 0, totMiss = 0, totProfileOnly = 0;
@@ -104,7 +121,7 @@ jobs:
             for (const s of arr.sort((a, b) => b.miss - a.miss).slice(0, n)) {
               console.log('  ' + s.sid + '  missed ' + String(s.miss).padStart(6) + ' of ' + String(s.final).padStart(6) +
                           '  coverage ' + s.cov.toFixed(1).padStart(5) + '%  ' + s.name + ' — ' + s.org);
-              for (const g of s.samples) console.log('        https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/' + g);
+              for (const g of s.samples) console.log('        ' + gameUrl(s.sid, g));
             }
           };
           show('TOP COVERED-SEASON OFFENDERS (check these first — spot-check the URLs):', covered, 15);

@@ -61,6 +61,23 @@ jobs:
           let idx = {};
           try { idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8')).seasons || {}; } catch (e) {}
 
+          // ── Game-centre URLs ─────────────────────────────────────────────────────────
+          // VERIFIED 2026-08-16 against a live page. The three path segments after /org/
+          // are the org SLUG, the org ID and the SEASON ID. Every size-* tool had been
+          // printing the literal "a/a/a" in those slots, so EVERY spot-check link these
+          // tools have ever produced was dead — which is why "spot-check the URLs" stayed
+          // on the list for weeks. Nobody could.
+          const slugify = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          const gameUrl = (sid, gid) => {
+            const meta = idx[sid];
+            if (!meta || !meta.orgId || !meta.orgName) {
+              // Say so rather than emit another dead link. A URL that cannot be built is
+              // information; a URL that looks right and 404s is worse than none.
+              return '(no orgId/orgName in sports-index for season ' + sid + ' — game ' + gid + ')';
+            }
+            return 'https://www.playhq.com/basketball-victoria/org/' + slugify(meta.orgName) + '/' + meta.orgId + '/' + sid + '/game-centre/' + gid;
+          };
+
           let totGames = 0, totWithRoster = 0, totSpc = 0, totDg = 0, totBoth = 0, totFlagless = 0;
           let flaglessTried = 0, flaglessNeverTried = 0;      // the discriminator
           let apsTried = 0, apsNeverTried = 0;                // appearances sitting in each
@@ -176,7 +193,7 @@ jobs:
               console.log('  ' + s.sid + '  flagless ' + String(s.flagless).padStart(6) + ' of ' + String(s.games).padStart(6) +
                           ' games  (repair ' + s.tried + ' / pre-flag ' + s.neverTried + ')  ' +
                           (s.locked ? '[locked] ' : '[active] ') + s.name + ' — ' + s.org);
-              for (const g of s[sampleKey]) console.log('        https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/' + g.split(' ')[0] + '   ' + g.slice(g.indexOf(' ') + 1));
+              for (const g of s[sampleKey]) console.log('        ' + gameUrl(s.sid, g.split(' ')[0]) + '   ' + g.slice(g.indexOf(' ') + 1));
             }
           };
           show('TOP PRE-FLAG SEASONS (leave these alone — spot-check one or two):', preflagSeasons, 'neverTried', 'samplesNever');
