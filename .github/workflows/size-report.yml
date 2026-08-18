@@ -16,6 +16,33 @@
 #                                                   (was size-repair-rosters.yml)
 #   gaps           — the appearance gap in BOTH directions from one player scan
 #                    (was size-gap-players.yml AND size-negative-gap.yml)
+#   consolidation  — DOES EACH APPEARANCE BELONG TO THE PLAYER IT IS ON?
+#
+# WHY consolidation EXISTS (2026-08-18). Everything else here COUNTS games. None of
+# it checks that a game in a player's games[] is a game that player actually
+# played. Three explanations for the 26,834 over-counted players have now been
+# ruled out by measurement — fill-ins (dg at 5.2% against a 5.7% baseline), split
+# identities (393 probed, 73.3% exact), and uncountable game types (6.37 per 100
+# games against a control of 7.71, i.e. LOWER once squad size is controlled for) —
+# and every one of those tested a count rather than an attribution.
+#
+# The check is simple and needs no API: every game record carries the two team ids
+# (h, a), and every player carries their registrations (teams[].tid, and
+# seasons[].regs[].tid). If a player holds an appearance in a game where they were
+# registered to NEITHER side, that appearance is not theirs. Appearances arrive via
+# resolveToFullUuid, so a wrong alias mapping shows up here as a cluster of
+# appearances for one unregistered team — which is exactly the shape that would
+# produce an over-count that scales with squad size.
+#
+# It tests the other direction too: a team the player IS registered to, whose games
+# we hold, in which they never appear. That is an under-count with a named cause
+# instead of a number.
+#
+# WHAT IT CANNOT SAY. Registrations come from the profile fetch, so a player never
+# fetched, or private, or fetched before a late transfer, has an incomplete
+# registration list — and a "foreign" appearance for them may be perfectly real.
+# The report states how many players it could and could not audit, and the rate
+# for players with a FULL-looking registration list is the one to read.
 #
 # WHY "gaps" IS ONE SECTION AND NOT TWO. size-gap-players measured gp minus games,
 # size-negative-gap measured games minus gp. Same two numbers, same scan, same
@@ -49,7 +76,7 @@ on:
   workflow_dispatch:
     inputs:
       sections:
-        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps'
+        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps,consolidation'
         required: false
         default: 'all'
         type: string
@@ -85,7 +112,7 @@ jobs:
           const ROOT = process.env.SCAN_ROOT || '.';
           const TOP = Number(process.env.TOP || 15);
           const rawSections = String(process.env.SECTIONS || 'all').toLowerCase().trim();
-          const ALL = ['misses', 'resweep', 'rosters', 'gaps'];
+          const ALL = ['misses', 'resweep', 'rosters', 'gaps', 'consolidation'];
           // Old names still work — three of these tools were dispatched by name for
           // weeks and a rename should not silently run nothing.
           const ALIAS = { 'negative-gap': 'gaps', 'gap-players': 'gaps', 'repair-rosters': 'rosters' };
@@ -123,6 +150,17 @@ jobs:
           const sidIdx = new Map();
           const gameFlags = new Map();   // gid -> flags
           const gameSid   = new Map();   // gid -> index into sidList
+          // Team ids interned to integers: 2.35M games x 2 ids as strings is a lot of
+          // heap for what is really a few hundred thousand distinct teams.
+          const tidList = [], tidIdx = new Map();
+          const internTid = (t) => {
+            if (!t) return -1;
+            let i = tidIdx.get(t);
+            if (i === undefined) { i = tidList.length; tidList.push(t); tidIdx.set(t, i); }
+            return i;
+          };
+          const gameH = new Map();       // gid -> tid index (home)
+          const gameA = new Map();       // gid -> tid index (away)
 
           // ── ONE PASS over games/bv ────────────────────────────────────────────────
           const gamesDir = path.join(ROOT, 'games', 'bv');
@@ -176,6 +214,10 @@ jobs:
               if (roster) fl |= F_ROSTER;
               gameFlags.set(gid, fl);
               gameSid.set(gid, si);
+              if (want('consolidation')) {
+                gameH.set(gid, internTid(g.h));
+                gameA.set(gid, internTid(g.a));
+              }
 
               if (fl & F_PO) allPo++; else if (fl & F_DG) allDg++; else if (fl & F_SPC) allSpc++; else allNone++;
 
@@ -493,6 +535,123 @@ jobs:
                 console.log('             ' + (si === undefined ? '(game ' + g + ' not in games/bv)' : gameUrl(sidList[si], g)));
               }
             }
+            console.log('');
+          }
+
+          // ══ SECTION: consolidation ═══════════════════════════════════════════════
+          if (want('consolidation')) {
+            console.log('══ DOES EACH APPEARANCE BELONG TO THE PLAYER IT IS ON? ═══════════════');
+            const playersDir2 = path.join(ROOT, 'players');
+            let audited = 0, skippedNoRegs = 0, skippedNoGames = 0, privateAudited = 0;
+            let apsChecked = 0, apsOk = 0, apsForeign = 0, apsUnknownGame = 0;
+            let playersAllOk = 0, playersAnyForeign = 0;
+            const foreignBuckets = new Map();   // count of foreign appearances -> players
+            const worst = [];
+            // Cross-tab against the gap direction: if foreign appearances cause the
+            // over-count, they should concentrate in players who HOLD MORE than credited.
+            const xtab = new Map();
+            for (const k of ['over-counted', 'exact', 'under-counted', 'no gp']) xtab.set(k, { players: 0, aps: 0, foreign: 0 });
+            let regTeamsChecked = 0, regTeamsUnseen = 0;
+
+            for (const shard of fs.readdirSync(playersDir2).filter(d => /^[0-9a-f]{2}$/.test(d))) {
+              const dir = path.join(playersDir2, shard);
+              for (const f of fs.readdirSync(dir)) {
+                if (!f.endsWith('.json')) continue;
+                let p; try { p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
+                const gl = Array.isArray(p.games) ? p.games : [];
+                if (!gl.length) { skippedNoGames++; continue; }
+
+                // Registrations from BOTH places they are recorded.
+                const regTids = new Set();
+                for (const t of (Array.isArray(p.teams) ? p.teams : [])) if (t && t.tid) regTids.add(t.tid);
+                for (const se of (Array.isArray(p.seasons) ? p.seasons : [])) {
+                  for (const r of (Array.isArray(se.regs) ? se.regs : [])) if (r && r.tid) regTids.add(r.tid);
+                }
+                if (!regTids.size) { skippedNoRegs++; continue; }
+                audited++;
+                if (p.private === true) privateAudited++;
+
+                let ok = 0, foreign = 0, unknown = 0;
+                const seenTeams = new Set();
+                const foreignSamples = [];
+                for (const gid of gl) {
+                  const hi = gameH.get(gid), ai = gameA.get(gid);
+                  if (hi === undefined) { unknown++; continue; }
+                  const h = hi >= 0 ? tidList[hi] : null;
+                  const a = ai >= 0 ? tidList[ai] : null;
+                  const mine = (h && regTids.has(h)) ? h : (a && regTids.has(a)) ? a : null;
+                  if (mine) { ok++; seenTeams.add(mine); }
+                  else {
+                    foreign++;
+                    if (foreignSamples.length < 3) foreignSamples.push(gid);
+                  }
+                }
+                apsChecked += ok + foreign; apsOk += ok; apsForeign += foreign; apsUnknownGame += unknown;
+                if (foreign) {
+                  playersAnyForeign++;
+                  bump(foreignBuckets, foreign <= 1 ? '1' : foreign <= 5 ? '2-5' : foreign <= 20 ? '6-20' : foreign <= 100 ? '21-100' : '101+');
+                  if (worst.length < 25 || foreign > worst[worst.length - 1].foreign) {
+                    worst.push({ uuid: f.replace(/\.json$/, ''), name: p.name || '?', foreign: foreign, ok: ok,
+                                 games: gl.length, priv: p.private === true, samples: foreignSamples });
+                    worst.sort((x, y) => y.foreign - x.foreign);
+                    if (worst.length > 25) worst.pop();
+                  }
+                } else playersAllOk++;
+
+                // Registered teams we hold games for, in which the player never appears.
+                for (const t of regTids) { regTeamsChecked++; if (!seenTeams.has(t)) regTeamsUnseen++; }
+
+                let gp = 0, has = false;
+                for (const sp of Object.values(p.sports || {})) if (sp && typeof sp.gp === 'number') { gp += sp.gp; has = true; }
+                const key = !has ? 'no gp' : gl.length > gp ? 'over-counted' : gl.length < gp ? 'under-counted' : 'exact';
+                const x = xtab.get(key);
+                x.players++; x.aps += ok + foreign; x.foreign += foreign;
+              }
+            }
+
+            console.log('  players audited                 : ' + n(audited) + (privateAudited ? '  (' + n(privateAudited) + ' of them private)' : ''));
+            console.log('    skipped, no games[]           : ' + n(skippedNoGames));
+            console.log('    skipped, NO registrations     : ' + n(skippedNoRegs) + '   ← cannot be audited; never profile-fetched, or fetched with none');
+            console.log('  appearances checked             : ' + n(apsChecked));
+            console.log('    player registered to one side : ' + n(apsOk) + '  (' + pct(apsOk, apsChecked) + '%)');
+            console.log('    registered to NEITHER side    : ' + n(apsForeign) + '  (' + pct(apsForeign, apsChecked) + '%)  ← not theirs, unless the registration list is incomplete');
+            console.log('    game not in games/bv          : ' + n(apsUnknownGame) + '   ← cannot be checked either way');
+            console.log('  players with zero foreign       : ' + n(playersAllOk) + '  (' + pct(playersAllOk, audited) + '%)');
+            console.log('  players with at least one       : ' + n(playersAnyForeign) + '  (' + pct(playersAnyForeign, audited) + '%)');
+            for (const k of ['1', '2-5', '6-20', '21-100', '101+']) {
+              const v = foreignBuckets.get(k) || 0;
+              if (v) console.log('      ' + k.padEnd(8) + n(v).padStart(9) + ' players');
+            }
+            console.log('  registrations whose team never appears in their games[]: ' + n(regTeamsUnseen) + ' of ' + n(regTeamsChecked) +
+                        '  (' + pct(regTeamsUnseen, regTeamsChecked) + '%)   ← the UNDER-count direction');
+
+            console.log('');
+            console.log('  CROSS-TAB — if foreign appearances cause the over-count, they concentrate here:');
+            for (const k of ['over-counted', 'exact', 'under-counted', 'no gp']) {
+              const x = xtab.get(k);
+              if (!x.players) continue;
+              console.log('    ' + k.padEnd(14) + n(x.players).padStart(9) + ' players  ·  ' +
+                          pct(x.foreign, x.aps).padStart(6) + '% of their appearances are foreign  ·  ' +
+                          (x.foreign / x.players).toFixed(2).padStart(7) + ' foreign each');
+            }
+            console.log('    Read the FIRST column against the others. A materially higher foreign rate for');
+            console.log('    over-counted players is the consolidation fault; a flat rate across all rows');
+            console.log('    means attribution is sound and the over-count is something else.');
+
+            console.log('');
+            console.log('  WORST 25 BY FOREIGN APPEARANCES:');
+            for (const w of worst) {
+              console.log('    ' + String(w.foreign).padStart(6) + ' of ' + String(w.games).padStart(6) + '  ' + w.uuid +
+                          (w.priv ? ' [PRIVATE]' : '') + '  ' + JSON.stringify(w.name));
+              for (const g of w.samples) {
+                const si2 = gameSid.get(g);
+                console.log('             ' + (si2 === undefined ? '(game ' + g + ' not in games/bv)' : gameUrl(sidList[si2], g)));
+              }
+            }
+            console.log('');
+            console.log('  Spot-check: open a URL above and look at both team lists. If the player is not');
+            console.log('  named in either, the appearance is wrongly attributed. If they ARE named, then');
+            console.log('  their registration list is incomplete and the FOREIGN figure is an over-estimate.');
             console.log('');
           }
 
