@@ -1,0 +1,395 @@
+# .github/workflows/size-report.yml
+# READ-ONLY, offline, zero API calls. No writes, no lock, safe beside anything.
+#
+# ONE CHECKOUT, ONE SCAN, MANY SECTIONS (2026-08-16). size-misses,
+# size-negative-gap and size-repair-rosters each walked all 2,350,696 games in
+# games/bv separately — three checkouts and three full scans to answer three
+# questions about the same data. This walks it ONCE and feeds every section from
+# the same pass. The checkout saving is real; the scan saving is bigger.
+#
+# Sections (input `sections`, comma-separated, or "all"):
+#   misses         — anatomy of spectator misses, with the DEAD/MIXED/COVERED
+#                    clustering diagnostic
+#   negative-gap   — players holding MORE games than PlayHQ credits, private
+#                    profiles separated, plus the excess-of-1 test below
+#   repair-rosters — games holding a roster with no capture flag
+#
+# THE EXCESS-OF-1 TEST, AND WHY IT HAS A CONTROL GROUP. size-negative-gap reports
+# 26,834 players holding more games than credited — but 22,387 of them are over by
+# exactly ONE, and only 397 by more than five. A probe of 393 alias-carrying
+# players on 2026-08-16 found 73.3% exactly equal and just 5 over by more than
+# five, which ruled OUT split identities as the cause of a population that size.
+# A single-game discrepancy repeated 22,387 times looks far more like a systematic
+# counting-rule difference — a forfeit, a bye, an abandoned game, or one of our own
+# profileOnly synthetic games — than 22,387 separate identity problems.
+#
+# So this measures how often affected players hold such a game, AND measures the
+# same thing for players with NO excess at all. Without that control the finding is
+# worthless: if unaffected players carry forfeits at the same rate, the flag
+# explains nothing and the correlation is spurious. The control is the test.
+#
+# NO actions/setup-node needed (no API calls), and none is present.
+name: Size Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      sections:
+        description: 'Which sections to run: all, or a comma-separated list of misses,negative-gap,repair-rosters'
+        required: false
+        default: 'all'
+        type: string
+      top:
+        description: 'How many rows to list in each ranked table'
+        required: false
+        default: '15'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Size report
+        env:
+          SECTIONS: ${{ inputs.sections }}
+          TOP: ${{ inputs.top }}
+        run: |
+          cat > /tmp/size-report.cjs << 'SCRIPT_EOF'
+          'use strict';
+          const fs = require('fs');
+          const path = require('path');
+          const ROOT = process.env.SCAN_ROOT || '.';
+          const TOP = Number(process.env.TOP || 15);
+          const rawSections = String(process.env.SECTIONS || 'all').toLowerCase().trim();
+          const ALL = ['misses', 'negative-gap', 'repair-rosters'];
+          const WANT = new Set(rawSections === 'all' || rawSections === ''
+            ? ALL
+            : rawSections.split(',').map(s => s.trim()).filter(Boolean));
+          for (const s of WANT) if (!ALL.includes(s)) console.log('  ⚠ unknown section "' + s + '" — ignored. Known: ' + ALL.join(', '));
+          const want = (s) => WANT.has(s);
+          const n = (x) => Number(x || 0).toLocaleString();
+          const pct = (a, b) => b ? (100 * a / b).toFixed(1) : '0.0';
+
+          let idx = {};
+          try { idx = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'sports-index.json'), 'utf8')).seasons || {}; } catch (e) {}
+
+          // ── Game-centre URLs ───────────────────────────────────────────────────────
+          // VERIFIED 2026-08-16 against a live page: the segments after /org/ are the
+          // org SLUG, the org ID and the SEASON ID. Every size-* tool previously printed
+          // the literal "a/a/a" there, so every spot-check link they ever produced was
+          // dead — which is why "spot-check the URLs" stayed on the list for weeks.
+          const slugify = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          const gameUrl = (sid, gid) => {
+            const meta = idx[sid];
+            if (!meta || !meta.orgId || !meta.orgName) return '(no orgId/orgName in sports-index for season ' + sid + ' — game ' + gid + ')';
+            return 'https://www.playhq.com/basketball-victoria/org/' + slugify(meta.orgName) + '/' + meta.orgId + '/' + sid + '/game-centre/' + gid;
+          };
+
+          // ── Flags packed into one integer per game ─────────────────────────────────
+          // 2.35M games, so a bitmask plus a season INDEX rather than an object and a
+          // string per game. Same information, a fraction of the heap.
+          const F_SPC = 1, F_DG = 2, F_PO = 4, F_FORFEIT = 8, F_BYE = 16,
+                F_CANCELLED = 32, F_ABANDONED = 64, F_LEGACY = 128, F_NOTFINAL = 256, F_ROSTER = 512;
+          const UNCOUNTABLE = F_FORFEIT | F_BYE | F_CANCELLED | F_ABANDONED | F_LEGACY | F_NOTFINAL | F_PO;
+
+          const sidList = [];
+          const sidIdx = new Map();
+          const gameFlags = new Map();   // gid -> flags
+          const gameSid   = new Map();   // gid -> index into sidList
+
+          // ── ONE PASS over games/bv ────────────────────────────────────────────────
+          const gamesDir = path.join(ROOT, 'games', 'bv');
+          if (!fs.existsSync(gamesDir)) { console.error('ABORT: games/bv missing'); process.exit(1); }
+
+          let totGames = 0, allSpc = 0, allDg = 0, allPo = 0, allNone = 0;
+          const missSeasons = [];
+          const byYearMiss = new Map();
+          let mFinal = 0, mSpc = 0, mMiss = 0, mProfileOnly = 0;
+          const attemptHist = new Map();
+          let rTotRoster = 0, rSpc = 0, rDg = 0, rBoth = 0, rFlagless = 0;
+          let rTried = 0, rNever = 0, rApsTried = 0, rApsNever = 0;
+          const rSizeTried = new Map(), rSizeNever = new Map();
+          const rByYear = new Map();
+          const rSeasons = [];
+          const bump = (m, k) => m.set(k, (m.get(k) || 0) + 1);
+          const sizeBucket = (x) => x <= 2 ? '1-2' : x <= 4 ? '3-4' : x <= 8 ? '5-8' : x <= 11 ? '9-11' : x <= 14 ? '12-14' : x <= 19 ? '15-19' : '20+';
+
+          console.log('── Scanning games/bv once for every section ──────────────────────────');
+          for (const f of fs.readdirSync(gamesDir)) {
+            if (!f.endsWith('.json')) continue;
+            const sid = path.basename(f, '.json');
+            let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
+            if (!sidIdx.has(sid)) { sidIdx.set(sid, sidList.length); sidList.push(sid); }
+            const si = sidIdx.get(sid);
+            const meta = idx[sid] || {};
+
+            const mRec = { sid: sid, name: meta.name || '?', org: meta.orgName || '?', final: 0, spc: 0, miss: 0, samples: [] };
+            const rRec = { sid: sid, name: meta.name || '?', org: meta.orgName || '?', locked: !!meta.locked,
+                           games: 0, flagless: 0, tried: 0, neverTried: 0, aps: 0, samplesTried: [], samplesNever: [] };
+
+            for (const gid of Object.keys(sg.games || {})) {
+              const g = sg.games[gid];
+              if (!g) continue;
+              totGames++; rRec.games++;
+              const roster = Array.isArray(g.p) ? g.p.length : 0;
+
+              let fl = 0;
+              if (g.spc) fl |= F_SPC;
+              if (g.dg) fl |= F_DG;
+              if (g.profileOnly) fl |= F_PO;
+              if (g.forfeit) fl |= F_FORFEIT;
+              if (g.bye) fl |= F_BYE;
+              if (g.cancelled) fl |= F_CANCELLED;
+              if (g.abandoned) fl |= F_ABANDONED;
+              if (g.legacy) fl |= F_LEGACY;
+              if (g.st !== 'FINAL') fl |= F_NOTFINAL;
+              if (roster) fl |= F_ROSTER;
+              gameFlags.set(gid, fl);
+              gameSid.set(gid, si);
+
+              if (fl & F_PO) allPo++; else if (fl & F_DG) allDg++; else if (fl & F_SPC) allSpc++; else allNone++;
+
+              // ── misses ──
+              if (want('misses') && g.st === 'FINAL' && !(fl & (F_FORFEIT | F_BYE | F_CANCELLED | F_ABANDONED | F_LEGACY))) {
+                mRec.final++; mFinal++;
+                const y = (g.d || '????').slice(0, 4);
+                if (!byYearMiss.has(y)) byYearMiss.set(y, { spc: 0, miss: 0 });
+                if (fl & F_SPC) { mRec.spc++; mSpc++; byYearMiss.get(y).spc++; }
+                else if ((g.spcm || 0) > 0) {
+                  mRec.miss++; mMiss++; byYearMiss.get(y).miss++;
+                  bump(attemptHist, g.spcm);
+                  if (fl & F_PO) mProfileOnly++;
+                  if (mRec.samples.length < 3) mRec.samples.push(gid);
+                }
+              }
+
+              // ── repair-rosters ──
+              if (want('repair-rosters') && roster) {
+                rTotRoster++;
+                if ((fl & F_SPC) && (fl & F_DG)) { rBoth++; continue; }
+                if (fl & F_SPC) { rSpc++; continue; }
+                if (fl & F_DG) { rDg++; continue; }
+                rFlagless++; rRec.flagless++; rRec.aps += roster;
+                const y = (g.d || '????').slice(0, 4);
+                if (!rByYear.has(y)) rByYear.set(y, { tried: 0, never: 0 });
+                if ((g.spcm || 0) > 0) {
+                  rTried++; rApsTried += roster; rRec.tried++; bump(rSizeTried, sizeBucket(roster));
+                  rByYear.get(y).tried++;
+                  if (rRec.samplesTried.length < 3) rRec.samplesTried.push(gid + '|roster ' + roster + ', spcm ' + g.spcm);
+                } else {
+                  rNever++; rApsNever += roster; rRec.neverTried++; bump(rSizeNever, sizeBucket(roster));
+                  rByYear.get(y).never++;
+                  if (rRec.samplesNever.length < 3) rRec.samplesNever.push(gid + '|roster ' + roster);
+                }
+              }
+            }
+            if (want('misses') && mRec.final > 0 && mRec.miss > 0) missSeasons.push(mRec);
+            if (want('repair-rosters') && rRec.flagless > 0) rSeasons.push(rRec);
+          }
+          console.log('  ' + n(totGames) + ' games indexed\n');
+          const baselineDgPct = totGames ? (100 * allDg / totGames) : 0;
+
+          // ══ SECTION: misses ═══════════════════════════════════════════════════════
+          if (want('misses')) {
+            console.log('══ SPECTATOR MISSES ══════════════════════════════════════════════════');
+            console.log('  FINAL games considered  : ' + n(mFinal));
+            console.log('    box captured (spc)    : ' + n(mSpc) + '  (' + pct(mSpc, mFinal) + '%)');
+            console.log('    MISSED (spcm, no spc) : ' + n(mMiss) + '  (' + pct(mMiss, mFinal) + '%)');
+            console.log('    of those, profileOnly games we synthesised ourselves: ' + n(mProfileOnly));
+            console.log('    attempts histogram    : ' + [...attemptHist.entries()].sort().map(e => e[0] + 'x:' + n(e[1])).join('  '));
+            console.log('\n  BY YEAR (spc coverage of FINAL games):');
+            for (const e of [...byYearMiss.entries()].sort()) {
+              const t = e[1].spc + e[1].miss;
+              if (!t) continue;
+              console.log('    ' + e[0] + '  captured ' + String(e[1].spc).padStart(8) + '  missed ' + String(e[1].miss).padStart(7) + '   coverage ' + pct(e[1].spc, t) + '%');
+            }
+            const dead = [], mixed = [], covered = [];
+            for (const s of missSeasons) {
+              const cov = 100 * s.spc / (s.spc + s.miss);
+              (cov < 5 ? dead : cov > 95 ? covered : mixed).push(Object.assign(s, { cov: cov }));
+            }
+            const sum = (a, k) => a.reduce((x, y) => x + y[k], 0);
+            console.log('\n  MISS CLUSTERING — the diagnostic:');
+            console.log('    DEAD    (<5% ever captured) : ' + n(dead.length) + ' seasons, ' + n(sum(dead, 'miss')) + ' misses  → no electronic scoring that era. Expected.');
+            console.log('    MIXED   (5-95%)             : ' + n(mixed.length) + ' seasons, ' + n(sum(mixed, 'miss')) + ' misses  → partial rollout or per-grade differences.');
+            console.log('    COVERED (>95%, yet missed)  : ' + n(covered.length) + ' seasons, ' + n(sum(covered, 'miss')) + ' misses  → ⚠ SUSPICIOUS; likely transient failures.');
+            const show = (label, arr) => {
+              if (!arr.length) return;
+              console.log('\n  ' + label);
+              for (const s of arr.sort((a, b) => b.miss - a.miss).slice(0, TOP)) {
+                console.log('    ' + s.sid + '  missed ' + String(s.miss).padStart(6) + ' of ' + String(s.final).padStart(6) + '  coverage ' + s.cov.toFixed(1).padStart(5) + '%  ' + s.name + ' — ' + s.org);
+                for (const g of s.samples) console.log('          ' + gameUrl(s.sid, g));
+              }
+            };
+            show('TOP COVERED-SEASON OFFENDERS (check these first):', covered);
+            show('TOP DEAD SEASONS (expected — sanity-check one or two):', dead);
+            console.log('');
+          }
+
+          // ══ SECTION: repair-rosters ═══════════════════════════════════════════════
+          if (want('repair-rosters')) {
+            console.log('══ ROSTERS WITH NO CAPTURE FLAG ══════════════════════════════════════');
+            console.log('  games holding a roster    : ' + n(rTotRoster));
+            console.log('    flagged spc             : ' + n(rSpc));
+            console.log('    flagged dg              : ' + n(rDg));
+            console.log('    flagged both            : ' + n(rBoth));
+            console.log('    NO FLAG                 : ' + n(rFlagless) + '  (' + pct(rFlagless, rTotRoster) + '% of games holding a roster)');
+            console.log('\n  Was spectator ever asked about these games?');
+            console.log('    spcm SET, asked and refused : ' + n(rTried) + ' games, ' + n(rApsTried) + ' appearances  (' + pct(rTried, rFlagless) + '%)');
+            console.log('    spcm UNSET, never asked     : ' + n(rNever) + ' games, ' + n(rApsNever) + ' appearances  (' + pct(rNever, rFlagless) + '%)');
+            console.log('');
+            console.log('  ⚠ READ THIS BEFORE THE NUMBERS. The first version of this tool labelled the');
+            console.log('    spcm-set group "REPAIR-WRITTEN" on the reasoning that a roster present after');
+            console.log('    spectator failed must have been written afterwards. THAT WAS WRONG, and the');
+            console.log('    arithmetic disproves it: the entire repair campaign made 812,554 appends');
+            console.log('    across all games ever, while that group alone holds ' + n(rApsTried) + ' appearances.');
+            console.log('    spcm records THAT spectator failed, never WHEN — a roster captured years');
+            console.log('    earlier by another path looks identical. Treat both groups as pre-flag');
+            console.log('    captures unless something else says otherwise, and do NOT strip either.');
+            const showSizes = (label, m) => {
+              const order = ['1-2', '3-4', '5-8', '9-11', '12-14', '15-19', '20+'];
+              const t = order.reduce((a, k) => a + (m.get(k) || 0), 0);
+              console.log('    ' + label + ':');
+              for (const k of order) { const v = m.get(k) || 0; if (v) console.log('      roster ' + k.padEnd(6) + n(v).padStart(9) + '  ' + pct(v, t).padStart(5) + '%'); }
+            };
+            console.log('\n  ROSTER SIZES (a full two-team complement is 15-20):');
+            showSizes('spcm set', rSizeTried);
+            showSizes('spcm unset', rSizeNever);
+            console.log('\n  BY YEAR:');
+            for (const e of [...rByYear.entries()].sort()) console.log('    ' + e[0] + '  spcm-set ' + n(e[1].tried).padStart(8) + '   never-asked ' + n(e[1].never).padStart(8));
+            console.log('\n  TOP SEASONS BY FLAGLESS GAMES:');
+            for (const s of rSeasons.sort((a, b) => b.flagless - a.flagless).slice(0, TOP)) {
+              console.log('    ' + s.sid + '  flagless ' + String(s.flagless).padStart(6) + ' of ' + String(s.games).padStart(6) +
+                          '  (spcm-set ' + s.tried + ' / never-asked ' + s.neverTried + ')  ' + (s.locked ? '[locked] ' : '[active] ') + s.name + ' — ' + s.org);
+              for (const g of s.samplesTried.concat(s.samplesNever).slice(0, 2)) {
+                const parts = g.split('|');
+                console.log('          ' + gameUrl(s.sid, parts[0]) + '   ' + parts[1]);
+              }
+            }
+            console.log('');
+          }
+
+          // ══ SECTION: negative-gap ═════════════════════════════════════════════════
+          if (want('negative-gap')) {
+            console.log('══ PLAYERS HOLDING MORE GAMES THAN PLAYHQ CREDITS ════════════════════');
+            const rows = [], privateRows = [];
+            let players = 0, totalExcess = 0, privatePlayers = 0, privateExcess = 0;
+            const buckets = [[1, 1], [2, 5], [6, 20], [21, 100], [101, Infinity]];
+            const bcount = new Array(buckets.length).fill(0);
+
+            // Control group: players whose held games EXACTLY match their credited
+            // total. If they carry uncountable games at the same rate as the affected,
+            // the flag explains nothing.
+            const ctrl = { players: 0, withUncountable: 0, uncountable: 0, games: 0 };
+            const grp = new Map();   // bucket key -> same shape
+            const grpKey = (e) => e === 1 ? 'excess 1' : e <= 5 ? 'excess 2-5' : e <= 20 ? 'excess 6-20' : 'excess 21+';
+            for (const k of ['excess 1', 'excess 2-5', 'excess 6-20', 'excess 21+']) grp.set(k, { players: 0, withUncountable: 0, uncountable: 0, games: 0 });
+
+            const playersDir = path.join(ROOT, 'players');
+            for (const shard of fs.readdirSync(playersDir).filter(d => /^[0-9a-f]{2}$/.test(d))) {
+              const dir = path.join(playersDir, shard);
+              for (const f of fs.readdirSync(dir)) {
+                if (!f.endsWith('.json')) continue;
+                let p; try { p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
+                let gp = 0, has = false;
+                for (const s of Object.values(p.sports || {})) if (s && typeof s.gp === 'number') { gp += s.gp; has = true; }
+                if (!has) continue;
+                const gl = Array.isArray(p.games) ? p.games : [];
+                const excess = gl.length - gp;
+
+                let unc = 0, dg = 0, spc = 0, po = 0, unknown = 0;
+                const dgSamples = [];
+                for (const gid of gl) {
+                  const fl = gameFlags.get(gid);
+                  if (fl === undefined) { unknown++; continue; }
+                  if (fl & UNCOUNTABLE) unc++;
+                  if (fl & F_PO) po++; else if (fl & F_DG) { dg++; if (dgSamples.length < 3) dgSamples.push(gid); }
+                  else if (fl & F_SPC) spc++; else unknown++;
+                }
+
+                if (excess <= 0) {
+                  ctrl.players++; ctrl.games += gl.length; ctrl.uncountable += unc;
+                  if (unc > 0) ctrl.withUncountable++;
+                  continue;
+                }
+                const g = grp.get(grpKey(excess));
+                g.players++; g.games += gl.length; g.uncountable += unc;
+                if (unc > 0) g.withUncountable++;
+
+                const row = { uuid: f.replace(/\.json$/, ''), name: p.name || '?', gp: gp, games: gl.length,
+                              excess: excess, dg: dg, spc: spc, po: po, unc: unc, unknown: unknown, dgSamples: dgSamples };
+                if (p.private === true) { privatePlayers++; privateExcess += excess; privateRows.push(row); continue; }
+                players++; totalExcess += excess;
+                for (let i = 0; i < buckets.length; i++) if (excess >= buckets[i][0] && excess <= buckets[i][1]) { bcount[i]++; break; }
+                rows.push(row);
+              }
+            }
+
+            console.log('  PRIVATE PROFILES (expected, excluded below): ' + n(privatePlayers) + ' players, ' + n(privateExcess) + ' excess appearances');
+            console.log('  NOT PRIVATE — the anomaly                 : ' + n(players) + ' players, ' + n(totalExcess) + ' excess appearances');
+            for (let i = 0; i < buckets.length; i++) {
+              const a = buckets[i][0], b = buckets[i][1];
+              console.log('    excess ' + (b === Infinity ? a + '+' : a === b ? String(a) : a + '-' + b).padEnd(8) + n(bcount[i]).padStart(9) + ' players');
+            }
+
+            const sum = (k) => rows.reduce((acc, r) => acc + r[k], 0);
+            const tot = sum('dg') + sum('spc') + sum('po') + sum('unknown');
+            const affectedDgPct = tot ? (100 * sum('dg') / tot) : 0;
+            console.log('\n  PROVENANCE OF THEIR GAMES vs the baseline across all games:');
+            console.log('    affected: dg ' + pct(sum('dg'), tot) + '%  ·  spc ' + pct(sum('spc'), tot) + '%  ·  profileOnly ' + n(sum('po')) + '  ·  no flag ' + n(sum('unknown')));
+            console.log('    baseline: dg ' + baselineDgPct.toFixed(1) + '%  ·  spc ' + pct(allSpc, totGames) + '%  ·  profileOnly ' + pct(allPo, totGames) + '%  ·  no flag ' + pct(allNone, totGames) + '%');
+            if (baselineDgPct === 0) console.log('    → no dg-captured games in this dataset at all: the comparison says nothing.');
+            else if (affectedDgPct >= baselineDgPct * 1.5) console.log('    → dg OVER-represented: consistent with the FILL-IN theory.');
+            else if (affectedDgPct <= baselineDgPct * 0.67) console.log('    → dg UNDER-represented: argues AGAINST the fill-in theory.');
+            else console.log('    → dg in line with baseline: NO signal either way. The fill-in theory is not supported.');
+
+            // ── THE EXCESS-OF-1 TEST ────────────────────────────────────────────────
+            console.log('\n  DO THEY HOLD GAMES PLAYHQ WOULD NOT COUNT?');
+            console.log('  "Uncountable" = forfeit, bye, cancelled, abandoned, legacy, not-FINAL, or one');
+            console.log('  of our own profileOnly synthetic games.');
+            const line = (label, o) => {
+              if (!o.players) return;
+              console.log('    ' + label.padEnd(13) + n(o.players).padStart(9) + ' players  ·  ' +
+                          pct(o.withUncountable, o.players).padStart(5) + '% hold at least one  ·  ' +
+                          (o.uncountable / o.players).toFixed(2).padStart(6) + ' per player on average');
+            };
+            line('CONTROL', ctrl);
+            for (const k of ['excess 1', 'excess 2-5', 'excess 6-20', 'excess 21+']) line(k, grp.get(k));
+            const c = ctrl.players ? (100 * ctrl.withUncountable / ctrl.players) : 0;
+            const e1 = grp.get('excess 1');
+            const e1p = e1.players ? (100 * e1.withUncountable / e1.players) : 0;
+            console.log('');
+            if (e1.players && e1p >= c + 20) {
+              console.log('    → EXPLAINS IT. Players over by exactly one hold an uncountable game far more');
+              console.log('      often than players with no excess (' + e1p.toFixed(1) + '% vs ' + c.toFixed(1) + '%). The excess is a counting-rule');
+              console.log('      difference, not a data fault, and the headline figure should exclude them.');
+            } else if (e1.players && Math.abs(e1p - c) < 10) {
+              console.log('    → EXPLAINS NOTHING. Affected and unaffected players hold uncountable games at');
+              console.log('      about the same rate (' + e1p.toFixed(1) + '% vs ' + c.toFixed(1) + '%), so the flags are not the cause and the');
+              console.log('      correlation would have been spurious. Look elsewhere.');
+            } else {
+              console.log('    → PARTIAL / UNCLEAR: ' + e1p.toFixed(1) + '% of the excess-1 group against ' + c.toFixed(1) + '% of the control.');
+              console.log('      Not a clean separation; treat as suggestive only.');
+            }
+
+            console.log('\n  TOP ' + TOP + ' BY EXCESS (non-private):');
+            for (const r of rows.sort((a, b) => b.excess - a.excess).slice(0, TOP)) {
+              console.log('    ' + String(r.excess).padStart(5) + '  ' + r.uuid + '  gp=' + r.gp + ' games=' + r.games +
+                          '  [dg=' + r.dg + ' spc=' + r.spc + ' po=' + r.po + ' uncountable=' + r.unc + ']  ' + JSON.stringify(r.name));
+              for (const g of r.dgSamples) {
+                const si = gameSid.get(g);
+                console.log('             ' + (si === undefined ? '(game ' + g + ' not in games/bv)' : gameUrl(sidList[si], g)));
+              }
+            }
+            console.log('');
+          }
+
+          console.log('── done ──');
+          SCRIPT_EOF
+          node --max-old-space-size=8192 /tmp/size-report.cjs
