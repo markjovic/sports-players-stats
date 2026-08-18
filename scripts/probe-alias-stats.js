@@ -21,12 +21,26 @@
 // compares GAME-ID SETS and never sums totals: summing double-counts any game
 // both identities credit, and the union is exact.
 //
-// THE OBSTACLE, AND WHY IT IS NOT A NAME MATCH. spectatorIds are stored
-// TRUNCATED at 13 chars ("33125d97-2f97"), and PlayHQ needs a full uuid. So the
-// full id is recovered via profileSearch on the player's name — but a returned
-// profile is only accepted when its first 13 chars EQUAL a stored alias. That is
-// an exact id comparison; the name only narrows the search space. Two people
-// sharing a name cannot be conflated by it.
+// 2026-08-16, SECOND PASS — THE ALIAS HALF WAS REMOVED, AND WHY.
+// The first run tried to recover a full alias uuid via profileSearch on the
+// player's name. It resolved 0 of 120, and the diagnostics showed the reason is
+// structural, not tuning: EVERY profile the search returned was the player's own
+// CANONICAL id ("Emily Shillabeer" wanted 397ece5f-0666, got 3dc5a365-554a —
+// her own file). profileSearch indexes the API namespace only; spectator ids are
+// not in it. And uuid-prefix.cjs settles the other route — players/aliases maps
+// spectatorIdTrunc13 -> full apiId, so the repo stores the alias at 13 chars and
+// nowhere at full length. There is no offline route to a full alias id.
+//
+// So this probe no longer chases aliases. It measures the ONE thing that needs no
+// alias and answers the question underneath: does the CANONICAL profile's credit
+// count match the games we hold? Of the 78 players the first run did reach, it
+// matched almost exactly — 269/269, 346/346, 265/265, 251/251 — which is evidence
+// AGAINST a dataset-wide split, and makes Lara Hansen an outlier rather than a
+// pattern. This run tests that properly instead of on a collapsed sample.
+//
+// It also halves the request rate. profileSearch was the second call per player,
+// and 78 successes followed by 320 consecutive CloudFront blocks is a burst
+// ceiling. One call per player, concurrency 2, and a real pause between chunks.
 //
 // Usage:
 //   node scripts/probe-alias-stats.js                       # 400 players
@@ -52,7 +66,10 @@ const num = (flag, dflt) => {
   return Number.isFinite(v) && v > 0 ? v : dflt;
 };
 const SAMPLE      = num('sample', 400);
-const CONCURRENCY = Math.max(1, Math.min(8, num('concurrency', 4)));
+// Capped at 4, not 8: the first run walled at 78 players. One call each now, but
+// the ceiling looked like a burst limit rather than a per-request one.
+const CONCURRENCY = Math.max(1, Math.min(4, num('concurrency', 2)));
+const PAUSE_MS    = num('pause', 1500);
 const SEED        = num('seed', 20260816);
 // Named players, comma-separated. Run the KNOWN-TRUE case first and confirm the
 // tool reproduces it before believing anything a sample says. The first run lost
@@ -437,43 +454,9 @@ async function run(targets) {
       }
       const canonGids = creditedGids(canon.data);
 
-      requestCount++;
-      const sr = await profileSearchLookup(t.name);
-      if (sr.status !== 'ok') {
-        note('profileSearch: ' + sr.status, JSON.stringify(t.name));
-        return { t, canonGids, err: 'search ' + sr.status };
-      }
-
-      // EXACT prefix match against a stored alias. The name only narrowed the
-      // search; it never decides identity.
-      const wanted = new Set(t.aliases);
-      const found = [];
-      for (const r of sr.result) {
-        const id = r && r.id;
-        if (!id) continue;
-        if (wanted.has(id.slice(0, TRUNC_LEN))) found.push(id);
-      }
-
-      // WHY a match failed is exactly what we could not see last time. Record
-      // what the search returned against what we were looking for.
-      if (!found.length) {
-        note('alias not matched (search returned ' + (sr.result.length === 0 ? 'NOTHING' : sr.result.length + ' profiles') + ')',
-             JSON.stringify(t.name) + ' wanted[' + [...wanted].join(',') + '] got[' +
-             sr.result.slice(0, 6).map(r => String(r && r.id).slice(0, TRUNC_LEN)).join(',') + ']');
-      }
-
-      const aliasGids = new Set();
-      const aliasStatus = [];
-      for (const id of found) {
-        requestCount++;
-        const res = await fetchProfile(id);
-        if (res.status !== 'ok') note('alias fetch: ' + res.status, id);
-        aliasStatus.push(id.slice(0, TRUNC_LEN) + ':' + res.status);
-        if (res.status !== 'ok') continue;
-        for (const g of creditedGids(res.data)) aliasGids.add(g);
-        await sleep(200);
-      }
-      return { t, canonGids, aliasGids, foundCount: found.length, wantedCount: wanted.size, aliasStatus };
+      // No profileSearch, no alias fetch. Both are removed, not skipped — see the
+      // header. What remains is one call per player and an exact comparison.
+      return { t, canonGids, aliasGids: new Set(), foundCount: 0, wantedCount: t.aliases.length, aliasStatus: [] };
     }));
 
     for (const d of done) {
@@ -487,7 +470,7 @@ async function run(targets) {
       rows.push({ ...d.t, canon: d.canonGids.size, alias: d.aliasGids.size,
                   extra, overlap, union: union.size, aliasStatus: d.aliasStatus });
     }
-    await sleep(500);
+    await sleep(PAUSE_MS);
   }
 
   // ── Report ────────────────────────────────────────────────────────────────
@@ -498,46 +481,48 @@ async function run(targets) {
 
   console.log('\n════════════════════════════════════════════════');
   console.log('  players probed                  : ' + n(rows.length));
-  console.log('  alias ids resolved to a full id : ' + n(aliasResolved));
-  console.log('  alias ids NOT found by search   : ' + n(aliasUnresolved) + '   ← unmeasured; the real figure is at least what follows');
   console.log('  canonical fetch failed          : ' + n(canonFailed));
-  console.log('  profileSearch failed            : ' + n(searchFailed));
+  // Aliases are no longer fetched (see header), so the alias counters that used
+  // to print here are gone rather than left showing zero. A zero beside a thing
+  // nobody measured reads as a finding.
+  console.log('  alias ids carried by these players (NOT fetched): ' + n(rows.reduce((a, r) => a + r.aliases.length, 0)));
   console.log('');
   showTally('WHY THINGS FAILED (a bare count cannot tell a private profile from a block):');
 
   // Refuse to state a share when most of the sample never returned. The first
   // run printed "0.0% explained" on 78 of 400 players having fetched no alias.
   const coverage = rows.length / (targets.length || 1);
-  if (coverage < 0.5 || aliasResolved === 0) {
+  if (coverage < 0.5) {
     console.log('');
     console.log('  ⚠ THIS RUN DOES NOT ANSWER THE QUESTION.');
-    console.log('    probed ' + n(rows.length) + ' of ' + n(targets.length) + ' (' + (100 * coverage).toFixed(0) + '%), aliases fetched: ' + n(aliasResolved) + '.');
+    console.log('    probed ' + n(rows.length) + ' of ' + n(targets.length) + ' (' + (100 * coverage).toFixed(0) + '%).');
     console.log('    Read the failure table above and fix the cause first — a share computed over a');
     console.log('    collapsed sample is not a measurement.');
   }
   console.log('');
-  console.log('  players whose ALIAS credits games the canonical does not: ' + n(withExtra.length) +
-              '  (' + (100 * withExtra.length / (rows.length || 1)).toFixed(1) + '% of probed)');
-  console.log('  uncounted credits found         : ' + n(totExtra));
-  console.log('  credits BOTH identities carry   : ' + n(totOverlap) + '   ← exactly what summing the two totals would double-count');
-
-  // Does the union explain the negative gap? This is the point of the probe.
-  const before = rows.reduce((a, r) => a + Math.max(0, r.held - r.canon), 0);
-  const after  = rows.reduce((a, r) => a + Math.max(0, r.held - r.union), 0);
+  // THE MEASUREMENT. held is what our rosters say; canon is what PlayHQ credits
+  // the canonical profile with. Equal means there is nothing to explain for that
+  // player, whatever aliases they carry.
+  const equal  = rows.filter(r => r.held === r.canon).length;
+  const short  = rows.filter(r => r.held <  r.canon);   // we are missing appearances
+  const excess = rows.filter(r => r.held >  r.canon);   // we hold more than credited
+  const bigExcess = excess.filter(r => (r.held - r.canon) > 5);
   console.log('');
-  console.log('  DOES THE UNION EXPLAIN THE "MORE GAMES THAN CREDITED" ANOMALY?');
-  console.log('    excess measured against the CANONICAL profile only : ' + n(before));
-  console.log('    excess measured against the UNION of identities    : ' + n(after));
-  if (before > 0) console.log('    → ' + (100 * (before - after) / before).toFixed(1) + '% of the excess in this sample is explained by uncounted alias credits.');
-
-  console.log('\n  WORST 25 BY UNCOUNTED CREDITS:');
-  for (const r of rows.sort((a, b) => b.extra - a.extra).slice(0, 25)) {
-    console.log('    +' + String(r.extra).padStart(5) + '  ' + r.uuid + '  held=' + r.held +
-                ' canon=' + r.canon + ' alias=' + r.alias + ' union=' + r.union + ' overlap=' + r.overlap +
-                (r.priv ? ' [PRIVATE]' : '') + '  ' + JSON.stringify(r.name));
-    if (r.aliasStatus.length) console.log('           alias fetches: ' + r.aliasStatus.join(' · '));
+  console.log('  HELD GAMES vs WHAT THE CANONICAL PROFILE CREDITS:');
+  console.log('    exactly equal                 : ' + n(equal) + '  (' + (100 * equal / (rows.length || 1)).toFixed(1) + '%)');
+  console.log('    we hold FEWER than credited   : ' + n(short.length) + '   ← ordinary appearance gap');
+  console.log('    we hold MORE than credited    : ' + n(excess.length) + '   ← the size-negative-gap population');
+  console.log('      of those, by more than 5    : ' + n(bigExcess.length) + '   ← a Lara-shaped split would land here');
+  for (const r of bigExcess.sort((a, b) => (b.held - b.canon) - (a.held - a.canon)).slice(0, 15)) {
+    console.log('        +' + String(r.held - r.canon).padStart(5) + '  ' + r.uuid + '  held=' + r.held + ' canon=' + r.canon +
+                ' aliases=' + r.aliases.length + (r.priv ? ' [PRIVATE]' : '') + '  ' + JSON.stringify(r.name));
   }
-  console.log('\n  requests made: ' + requestCount);
+  console.log('');
+  console.log('    If "exactly equal" dominates, alias-split career totals are NOT a dataset-wide');
+  console.log('    problem and size-negative-gap needs a different explanation. If the big-excess');
+  console.log('    group is large, a live spectator box-score fetch to recover full alias ids');
+  console.log('    becomes worth building.');
+  console.log('\n  requests made: ' + requestCount + '  (one per player probed)');
 }
 
 main()
