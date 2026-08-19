@@ -76,7 +76,7 @@ on:
   workflow_dispatch:
     inputs:
       sections:
-        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps,consolidation'
+        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps,consolidation,collisions'
         required: false
         default: 'all'
         type: string
@@ -112,7 +112,7 @@ jobs:
           const ROOT = process.env.SCAN_ROOT || '.';
           const TOP = Number(process.env.TOP || 15);
           const rawSections = String(process.env.SECTIONS || 'all').toLowerCase().trim();
-          const ALL = ['misses', 'resweep', 'rosters', 'gaps', 'consolidation'];
+          const ALL = ['misses', 'resweep', 'rosters', 'gaps', 'consolidation', 'collisions'];
           // Old names still work — three of these tools were dispatched by name for
           // weeks and a rename should not silently run nothing.
           const ALIAS = { 'negative-gap': 'gaps', 'gap-players': 'gaps', 'repair-rosters': 'rosters' };
@@ -824,6 +824,80 @@ jobs:
             console.log('    named in a team list        → their registration list is incomplete; false positive.');
             console.log('    shown as "Fill-in"          → a real appearance for a team they never joined; expected.');
             console.log('    not present at all          → genuine mis-attribution. THIS is the one that matters.');
+            console.log('');
+          }
+
+          // ══ SECTION: collisions ═════════════════════════════════════════════════
+          // DO TWO PLAYERS SHARE A TRUNCATED ID?
+          //
+          // Roster entries store the player id truncated to TRUNC_LEN = 13 characters.
+          // Every appearance is resolved back to a full uuid through that prefix. If two
+          // people share one, EVERY appearance of both collapses onto whichever record
+          // the resolver picks — and the loser gets none.
+          //
+          // That is the exact shape the consolidation section found on 2026-08-18: one
+          // player holding games across four or five unrelated seasons and several age
+          // groups within one association, concentrated in particular associations, and
+          // 1,115,014 of 1,115,172 wrong appearances arriving through the spectator path
+          // (the oldest and largest capture route) rather than through the repair
+          // campaign, which contributed 127.
+          //
+          // The 10-character form was abandoned for exactly this reason — the note in
+          // build-player-games.js puts it at roughly 63% collision probability across
+          // ~370k players — and 13 was chosen as the replacement. Whether 13 is ENOUGH at
+          // 421,268 players appears never to have been measured. This measures it.
+          //
+          // Zero API calls, one pass over players/, no games scan needed.
+          if (want('collisions')) {
+            console.log('══ DO TWO PLAYERS SHARE A TRUNCATED ID? ══════════════════════════════');
+            const TRUNC = 13;
+            const byPrefix = new Map();   // 13-char prefix -> [full uuids]
+            let total = 0;
+            const playersDir3 = path.join(ROOT, 'players');
+            for (const shard of fs.readdirSync(playersDir3).filter(d => /^[0-9a-f]{2}$/.test(d))) {
+              for (const f of fs.readdirSync(path.join(playersDir3, shard))) {
+                if (!f.endsWith('.json')) continue;
+                const uuid = f.replace(/\.json$/, '');
+                total++;
+                const pre = uuid.slice(0, TRUNC);
+                const arr = byPrefix.get(pre);
+                if (arr) arr.push(uuid); else byPrefix.set(pre, [uuid]);
+              }
+            }
+            const clashes = [];
+            let clashedPlayers = 0;
+            for (const [pre, arr] of byPrefix) if (arr.length > 1) { clashes.push([pre, arr]); clashedPlayers += arr.length; }
+
+            // The birthday expectation for this many ids over this key space, so the
+            // observed figure has something to be judged against rather than just being
+            // a number. 13 chars of a uuid is 12 hex digits (the 9th char is a hyphen).
+            const space = Math.pow(16, 12);
+            const expected = (total * (total - 1)) / (2 * space);
+            console.log('  player files                    : ' + n(total));
+            console.log('  distinct 13-char prefixes       : ' + n(byPrefix.size));
+            console.log('  prefixes shared by 2+ players   : ' + n(clashes.length));
+            console.log('  players caught in a collision   : ' + n(clashedPlayers) + '  (' + pct(clashedPlayers, total) + '%)');
+            console.log('  expected by chance at this size : ' + expected.toFixed(2) + ' colliding pairs');
+            console.log('');
+            if (!clashes.length) {
+              console.log('  → NO COLLISIONS. Truncation at 13 is not the cause of mis-attributed');
+              console.log('    appearances, and the spectator capture path has to be wrong some other way.');
+            } else {
+              console.log('  → COLLISIONS EXIST. Every appearance of both players in a colliding pair');
+              console.log('    resolves to ONE record: one player receives games they never played, the');
+              console.log('    other is missing their own. That is the over-count and the under-count from');
+              console.log('    a single cause, and it is unfixable by any repair that appends more rows.');
+              console.log('');
+              console.log('  COLLIDING PREFIXES (up to ' + TOP + '):');
+              for (const [pre, arr] of clashes.slice(0, TOP)) {
+                console.log('    ' + pre + '  ->  ' + arr.join('  '));
+              }
+              if (clashes.length > TOP) console.log('    ... and ' + n(clashes.length - TOP) + ' more');
+            }
+            console.log('');
+            console.log('  Note: this counts collisions between player FILES. Ids seen only in rosters —');
+            console.log('  spectator-namespace ids that never became a file — are not counted here and');
+            console.log('  could collide too, so this is a FLOOR on the problem, not a ceiling.');
             console.log('');
           }
 
