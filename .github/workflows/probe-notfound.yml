@@ -1,0 +1,54 @@
+# .github/workflows/probe-notfound.yml
+name: Probe Not Found
+
+# READ-ONLY. No writes, no commits, no data-write lock. OUTSTANDING §2.19.
+#
+# On 2026-08-18, 25 of 100 publicProfileTeams calls returned
+# `5 NOT_FOUND: failed to find profile`, and more returned FEWER teams than the
+# player file holds — several returning zero for players with real registrations.
+# The repair campaign separately retired 637 players on the identical message.
+#
+# This asks each player TWICE — publicProfileStatistics and publicProfileTeams —
+# and samples a CONTROL group of players with no unregistered-team appearances.
+# Three things fall out that a single-endpoint probe cannot see:
+#   · NOT_FOUND on both     → the profile is gone.
+#   · NOT_FOUND on teams only → the profile exists and that endpoint is unreliable
+#     for it, so stored registrations are NOT invalidated by its silence.
+#   · control at the same rate → 25% is the background rate and says nothing about
+#     the unregistered-appearance population.
+# It also reports the offline SHAPE of the failing players (private, no gp, never
+# stats-checked, carries apiId, statsChecked age) in case they share one.
+#
+# Two API calls per player per group, paced ~0.9s apart.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Players per group — affected and control are sampled separately (2 API calls each)'
+        required: false
+        default: '60'
+        type: string
+      seed:
+        description: 'Sampling seed — the same seed probes the SAME players'
+        required: false
+        default: '20260819'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe NOT_FOUND population
+        run: |
+          node --max-old-space-size=8192 scripts/probe-notfound.js --sample=${{ inputs.sample }} --seed=${{ inputs.seed }}
