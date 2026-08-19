@@ -48,6 +48,20 @@ const SAMPLE = num('sample', 60);
 const SEED   = num('seed', 20260818);
 const ONLY   = (args.find(x => x.startsWith('--uuid=')) || '').split('=')[1] || '';
 
+// The endpoints the copied block calls. Both are defined ABOVE the extraction
+// point in spectator-backfill.js, so the copy did not bring them — and because
+// refreshSession wraps its attempt in `catch (_) {}`, an undefined API_URL threw
+// silently ten times and reported "Failed to obtain session after 10 attempts".
+// A misleading error, not a missing endpoint.
+const API_URL       = 'https://api.playhq.com/graphql';
+const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
+
+// Defined HERE, not inherited. It lives ABOVE the block copied out of
+// spectator-backfill.js, so the copy did not bring it — and the first test harness
+// happened to define its own, which hid the fault instead of exposing it. A stub
+// that supplies a missing dependency tests the stub, not the file.
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
 function mulberry32(a) {
   return function () {
     a |= 0; a = (a + 0x6D2B79F5) | 0;
