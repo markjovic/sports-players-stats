@@ -565,6 +565,30 @@ jobs:
             let audited = 0, skippedNoRegs = 0, skippedNoGames = 0, privateAudited = 0;
             let apsChecked = 0, apsOk = 0, apsForeign = 0, apsUnknownGame = 0;
             let apsInSeason = 0, apsNoSeason = 0, playersInSeasonForeign = 0;
+            // ── DID THE REPAIR CAMPAIGN WRITE WRONG APPEARANCES? ───────────────────
+            // The question that matters more than any other here. The campaign appended
+            // ~812,554 roster entries between 2026-08-14 and 08-18, and it recorded every
+            // player it touched in reports/repair-batch-progress.json. It only ever
+            // appended when PlayHQ's own profile listed that game for that player — never
+            // by name, never inferred — so a wrong append means either PlayHQ credited a
+            // game the player did not play, or a game id resolved to the wrong game.
+            //
+            // Comparing TOUCHED players against UNTOUCHED ones is the test. If the
+            // campaign introduced errors, its players carry a materially higher rate. If
+            // the rates match, the wrong appearances predate it and it is not the source.
+            // This cannot be settled by reasoning about the code — it appended what a
+            // profile told it to, and whether that was right is a fact about the data.
+            let repairTouched = null;
+            try {
+              const prog = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'repair-batch-progress.json'), 'utf8'));
+              repairTouched = new Set(Object.keys(prog.done || {}));
+              console.log('  repair-campaign progress file: ' + n(repairTouched.size) + ' players processed by it');
+            } catch (e) {
+              console.log('  repair-campaign progress file: NOT FOUND (' + String(e.message).slice(0, 60) + ') — the touched/untouched split below will be empty');
+            }
+            const camp = new Map();
+            for (const k of ['touched by repair', 'never touched']) camp.set(k, { players: 0, aps: 0, foreign: 0, inSeason: 0 });
+
             const provForeign = new Map();   // capture path -> wrong appearances written through it
             const provAll = new Map();       // the same paths across ALL checked appearances, as the baseline
             const vPriv = { players: 0, aps: 0, foreign: 0, inSeason: 0, noSeason: 0 };
@@ -653,6 +677,10 @@ jobs:
                 }
                 apsChecked += ok + foreign; apsOk += ok; apsForeign += foreign; apsUnknownGame += unknown;
                 apsInSeason += fInSeason; apsNoSeason += fNoSeason;
+                if (repairTouched) {
+                  const c = camp.get(repairTouched.has(f.replace(/\.json$/, '')) ? 'touched by repair' : 'never touched');
+                  c.players++; c.aps += ok + foreign; c.foreign += foreign; c.inSeason += fInSeason;
+                }
                 const vis = p.private === true ? vPriv : vPub;
                 vis.players++; vis.aps += ok + foreign; vis.foreign += foreign; vis.inSeason += fInSeason; vis.noSeason += fNoSeason;
                 if (fInSeason) playersInSeasonForeign++;
@@ -717,6 +745,29 @@ jobs:
             vis('public', vPub);
             vis('private', vPriv);
             console.log('    players with at least one MEASURABLE foreign appearance: ' + n(playersInSeasonForeign) + '  (' + pct(playersInSeasonForeign, audited) + '% of audited)');
+            if (repairTouched) {
+              console.log('  DID THE REPAIR CAMPAIGN WRITE WRONG APPEARANCES?');
+              const t = camp.get('touched by repair'), u = camp.get('never touched');
+              for (const [label, c] of [['touched by repair', t], ['never touched', u]]) {
+                if (!c.players) continue;
+                console.log('    ' + label.padEnd(19) + n(c.players).padStart(9) + ' players  ·  ' +
+                            (c.aps / c.players).toFixed(1).padStart(7) + ' appearances each  ·  ' +
+                            pct(c.inSeason, c.aps).padStart(6) + '% wrong  ·  ' +
+                            (c.inSeason / c.players).toFixed(2).padStart(7) + ' wrong each');
+              }
+              const tp = t.aps ? (100 * t.inSeason / t.aps) : 0;
+              const up = u.aps ? (100 * u.inSeason / u.aps) : 0;
+              console.log('');
+              console.log('    Touched ' + tp.toFixed(2) + '% against untouched ' + up.toFixed(2) + '%' +
+                          (up > 0 ? '  (ratio ' + (tp / up).toFixed(2) + ')' : ''));
+              console.log('    Close rates mean the wrong appearances PREDATE the campaign and it is not the');
+              console.log('    source. A materially higher touched rate means it wrote them, and the appends');
+              console.log('    are recoverable — every one is logged per player in the progress file.');
+              console.log('    NOTE: the campaign targeted players who ALREADY had a gap, so its players are');
+              console.log('    not a random sample. Read the ratio as a signal, not a proof, and confirm');
+              console.log('    against the capture-path table below.');
+              console.log('');
+            }
             console.log('  WHICH CAPTURE PATH WROTE THE WRONG APPEARANCES?');
             console.log('  Share of measurable-foreign appearances by path, against that path\'s share of');
             console.log('  ALL checked appearances. A path over-represented here is where the fault lives.');
