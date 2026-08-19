@@ -300,64 +300,59 @@ async function fetchProfile(profileID) {
 }
 
 
-// ─── publicProfileTeams — query copied from playhq_api_reference.md ───────────
-// Two variable typings. playhq_api_reference.md records that discoverSeason needs
-// String! rather than ID! "for basketball-victoria tenant", and the first run of
-// this probe got HTTP 400 on 100 of 100 with ID!. Rather than guess which is
-// right, try one, and on a 400 try the other and REMEMBER which worked — the
-// answer then comes from the endpoint instead of from me.
-const PROFILE_TEAMS_QUERY_ID = `query PublicProfileTeams($profileID: ID!) {
+// ─── publicProfileTeams ───────────────────────────────────────────────────────
+// SHAPE TAKEN FROM playhq_api_reference.md, INLINE FRAGMENT INCLUDED. The block
+// at line 539 of that file omits it and is wrong; the SEVEN other DiscoverTeam
+// sites in the same document (lines 214, 271, 321, 343, 432, 441) all use
+// `... on DiscoverTeam { ... }`, because DiscoverTeam is a union member. Copying
+// the block without checking it against the working examples produced
+//   Cannot query field "teams" on type "DiscoverTeam". Did you mean "name"?
+// on 100 of 100 players, and my "maybe it's String!" fallback then added a SECOND
+// error on top of the real one. ID! was right the whole time.
+//
+// AND THE CAVEAT AT LINE 643, which decides what this probe can conclude:
+//   "publicProfileTeams grade for COMPLETED seasons — Returns NULL (grade only
+//    present for the player's CURRENT rego)"
+// So grade is requested but never relied on. Team id and season id are what the
+// comparison needs, and those are present for completed seasons.
+const PROFILE_TEAMS_QUERY = `query PublicProfileTeams($profileID: ID!) {
   publicProfileTeams(profileID: $profileID) {
-    teams {
-      status { value }
-      team {
-        id name
-        season { id name startDate endDate status { name value } competition { id name } }
-        grade { id name }
-        organisation { id name }
-      }
+    ... on DiscoverTeam {
+      id
+      name
+      season { id name competition { id name } }
+      organisation { id name }
     }
   }
 }`;
-const PROFILE_TEAMS_QUERY_STR = PROFILE_TEAMS_QUERY_ID.replace('$profileID: ID!', '$profileID: String!');
-let workingQuery = null;   // set once one of them succeeds
 
 async function fetchProfileTeams(profileID) {
   if (!sessionCookie) await refreshSession();
-  const variants = workingQuery
-    ? [workingQuery]
-    : [['ID!', PROFILE_TEAMS_QUERY_ID], ['String!', PROFILE_TEAMS_QUERY_STR]];
-  let lastDetail = '';
-  for (const v of variants) {
-    const [label, query] = v;
-    let res;
-    try {
-      res = await doFetch(API_URL, {
-        method: 'POST',
-        headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-        body: JSON.stringify({ operationName: 'PublicProfileTeams', variables: { profileID }, query: query }),
-      });
-    } catch (err) { return { status: 'error', detail: String(err.message).slice(0, 200) }; }
-    if (res.status === 403) return { status: 'private' };
-    if (res.status === 404) return { status: 'notfound' };
-    if (!res.ok) {
-      // PRINT WHAT THE ENDPOINT SAID. The first version returned a bare
-      // 'http-400' for all 100 players, which named the status and hid the cause.
-      let txt = '';
-      try { txt = (await res.text()).slice(0, 300); } catch (e) { txt = '(body unreadable)'; }
-      lastDetail = label + ' -> HTTP ' + res.status + ': ' + txt.replace(/\s+/g, ' ');
-      continue;
-    }
-    let json;
-    try { json = await res.json(); } catch (err) { lastDetail = label + ' -> bad-json'; continue; }
-    if (json.errors && json.errors.length) {
-      lastDetail = label + ' -> gql: ' + String(json.errors[0].message || '').slice(0, 200);
-      continue;
-    }
-    if (!workingQuery) { workingQuery = v; console.log('  variable type that works: ' + label); }
-    return { status: 'ok', teams: ((json.data || json)?.publicProfileTeams?.teams) || [] };
+  let res;
+  try {
+    res = await doFetch(API_URL, {
+      method: 'POST',
+      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
+      body: JSON.stringify({ operationName: 'PublicProfileTeams', variables: { profileID }, query: PROFILE_TEAMS_QUERY }),
+    });
+  } catch (err) { return { status: 'error', detail: String(err.message).slice(0, 200) }; }
+  if (res.status === 403) return { status: 'private' };
+  if (res.status === 404) return { status: 'notfound' };
+  if (!res.ok) {
+    let txt = '';
+    try { txt = (await res.text()).slice(0, 300); } catch (e) { txt = '(body unreadable)'; }
+    return { status: 'http-' + res.status, detail: txt.replace(/\s+/g, ' ') };
   }
-  return { status: 'failed', detail: lastDetail };
+  let json;
+  try { json = await res.json(); } catch (err) { return { status: 'bad-json' }; }
+  if (json.errors && json.errors.length) {
+    return { status: 'gql-error', detail: String(json.errors[0].message || '').slice(0, 200) };
+  }
+  // The field returns the team list DIRECTLY — no `teams` wrapper. That wrapper
+  // is what the reference block got wrong.
+  const raw = (json.data || json)?.publicProfileTeams;
+  const arr = Array.isArray(raw) ? raw : [];
+  return { status: 'ok', teams: arr };
 }
 
 async function main() {
@@ -437,7 +432,7 @@ async function main() {
     }
     ok++;
     const live = new Set();
-    for (const t of r.teams) { const id = t && t.team && t.team.id; if (id) live.add(String(id).slice(0, 8)); }
+    for (const t of r.teams) { const id = t && t.id; if (id) live.add(String(id).slice(0, 8)); }
     // Stored team ids are 8-char; publicProfileTeams returns full uuids.
     const storedShort = new Set([...c.stored].map(x => String(x).slice(0, 8)));
     const extra = [...live].filter(x => !storedShort.has(x));
