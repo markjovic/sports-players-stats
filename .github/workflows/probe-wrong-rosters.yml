@@ -1,0 +1,58 @@
+# .github/workflows/probe-wrong-rosters.yml
+name: Probe Wrong Rosters
+
+# READ-ONLY. No writes, no commits, no data-write lock.
+#
+# 970,068 appearances sit in games where the stored roster holds the player's OWN
+# 13-char id and the player was registered to NEITHER team — no alias resolution
+# involved. A further 145,049 arrived via an alias id (9,091 distinct aliases,
+# one in eight of the wrong total, a SECOND fault and not noise). 1,115,014 of
+# 1,115,172 came through the spc path. And PlayHQ's own box score for one of them
+# names twelve players, none of them the player we credit.
+#
+# This asks spectator.playhq.com for those exact games again and compares the live
+# roster against the stored one. Overlap is the discriminator: near-zero means we
+# stored a DIFFERENT game's roster against this id (a capture or indexing fault);
+# high overlap means PlayHQ served us this and has since changed it.
+#
+# Paced at ~1 request per 1.2s against a service the nightly also uses. Keep the
+# sample small; 60 games is enough to tell two hypotheses apart.
+#
+# NO actions/setup-node (this job fetches playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'How many wrongly-held games to re-fetch (one spectator request each)'
+        required: false
+        default: '60'
+        type: string
+      seed:
+        description: 'Sampling seed — the same seed probes the SAME games, so runs can be compared'
+        required: false
+        default: '20260818'
+        type: string
+      uuid:
+        description: 'Optional: restrict to ONE player uuid (e.g. d28335b0-475a-482a-80f9-2c07066f3b4f, Max Thomson)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe wrong rosters
+        run: |
+          ARGS="--sample=${{ inputs.sample }} --seed=${{ inputs.seed }}"
+          if [ -n "${{ inputs.uuid }}" ]; then ARGS="$ARGS --uuid=${{ inputs.uuid }}"; fi
+          node --max-old-space-size=8192 scripts/probe-wrong-rosters.js $ARGS
