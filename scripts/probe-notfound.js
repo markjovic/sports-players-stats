@@ -363,14 +363,21 @@ async function main() {
       const uuid = f.replace(/\.json$/, '');
       let p; try { p = JSON.parse(fs.readFileSync(path.join(playersDir, shard, f), 'utf8')); } catch (e) { continue; }
       const tids = new Set();
-      for (const x of (Array.isArray(p.teams) ? p.teams : [])) if (x && x.tid) tids.add(x.tid);
+      const sidOfTid = new Map();     // team -> the season we hold it under
+      const ourSids = new Set();
+      for (const x of (Array.isArray(p.teams) ? p.teams : [])) {
+        if (x && x.tid) { tids.add(x.tid); if (x.sid) { sidOfTid.set(x.tid, x.sid); ourSids.add(x.sid); } }
+      }
       for (const se of (Array.isArray(p.seasons) ? p.seasons : [])) {
-        for (const r of (Array.isArray(se.regs) ? se.regs : [])) if (r && r.tid) tids.add(r.tid);
+        if (se && se.sid) ourSids.add(se.sid);
+        for (const r of (Array.isArray(se.regs) ? se.regs : [])) {
+          if (r && r.tid) { tids.add(r.tid); if (se.sid) sidOfTid.set(r.tid, se.sid); }
+        }
       }
       if (!tids.size) continue;
       const bk = (p.sports && (p.sports.Basketball || p.sports.basketball)) || {};
       info.set(uuid, {
-        uuid: uuid, name: p.name || '?', tids: tids,
+        uuid: uuid, name: p.name || '?', tids: tids, sidOfTid: sidOfTid, ourSids: ourSids,
         games: Array.isArray(p.games) ? p.games : [],
         priv: p.private === true,
         hasGp: typeof bk.gp === 'number',
@@ -383,26 +390,33 @@ async function main() {
 
   const gamesDir = path.join(ROOT, 'games', 'bv');
   const gt = new Map();
+  const gsid = new Map();     // gid -> season, so a missing registration can be
+                              // matched against the season its appearances sit in
   const wanted = new Set();
   for (const [, v] of info) for (const g of v.games) wanted.add(g);
   for (const f of fs.readdirSync(gamesDir)) {
     if (!f.endsWith('.json')) continue;
+    const sid = path.basename(f, '.json');
     let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
     for (const gid of Object.keys(sg.games || {})) {
       if (!wanted.has(gid)) continue;
       const g = sg.games[gid];
       gt.set(gid, [g.h || null, g.a || null]);
+      gsid.set(gid, sid);
     }
   }
 
   const affected = [], control = [];
   for (const [, v] of info) {
     let bad = 0;
+    v.badSids = new Set();
     for (const gid of v.games) {
       const t = gt.get(gid);
       if (!t) continue;
       if ((t[0] && v.tids.has(t[0])) || (t[1] && v.tids.has(t[1]))) continue;
       bad++;
+      const sid = gsid.get(gid);
+      if (sid) v.badSids.add(sid);
     }
     (bad > 0 ? affected : control).push(v);
   }
@@ -418,7 +432,9 @@ async function main() {
   const groups = [['affected', pick(affected)], ['control', pick(control)]];
 
   const res = new Map();
-  for (const [label] of groups) res.set(label, { n: 0, statusPairs: new Map(), notfoundBoth: 0, notfoundTeamsOnly: 0, bothOk: 0, fewer: 0, rows: [] });
+  for (const [label] of groups) res.set(label, { n: 0, statusPairs: new Map(), notfoundBoth: 0, notfoundTeamsOnly: 0,
+    bothOk: 0, fewer: 0, rows: [], missingTidTotal: 0, missingSidTotal: 0, missingSidInBad: 0,
+    allInBad: 0, someInBad: 0, noneInBad: 0, examples: [] });
 
   for (const [label, targets] of groups) {
     console.log('\n── ' + label + ' (' + targets.length + ') ──');
@@ -436,7 +452,37 @@ async function main() {
       else if (tm.status === 'NOT_FOUND' && st.status === 'ok') R.notfoundTeamsOnly++;
       if (st.status === 'ok' && tm.status === 'ok') {
         R.bothOk++;
-        if (tm.teams.length < v.regs) R.fewer++;
+        // WHICH registrations are missing, not just how many. Counting sizes told
+        // us 46.9% against 10.0% and nothing about what it means. Two candidates
+        // with opposite conclusions: if the seasons PlayHQ omits are exactly the
+        // ones the unregistered appearances sit in, the story is coherent and the
+        // registrations are being dropped. If they are unrelated seasons, then
+        // publicProfileTeams is simply incomplete for completed seasons — the
+        // reference already records grade returning NULL there — and it cannot be
+        // used for this at all.
+        const liveTids = new Set(tm.teams.map(t => t && t.id).filter(Boolean).map(x => String(x).slice(0, 8)));
+        const missingTids = [...v.tids].filter(t => !liveTids.has(String(t).slice(0, 8)));
+        const missingSids = new Set(missingTids.map(t => v.sidOfTid.get(t)).filter(Boolean));
+        const liveSids = new Set(tm.teams.map(t => t && t.season && t.season.id).filter(Boolean).map(x => String(x).slice(0, 8)));
+        if (missingTids.length) {
+          R.fewer++;
+          R.missingTidTotal += missingTids.length;
+          // Do the omitted registrations coincide with the seasons the player's
+          // unregistered appearances are in?
+          let overlap = 0;
+          for (const sid of missingSids) if (v.badSids.has(sid)) overlap++;
+          R.missingSidTotal += missingSids.size;
+          R.missingSidInBad += overlap;
+          if (missingSids.size && overlap === missingSids.size) R.allInBad++;
+          else if (overlap) R.someInBad++;
+          else R.noneInBad++;
+          if (R.examples.length < 12) {
+            R.examples.push('    ' + v.uuid + '  ' + JSON.stringify(v.name) +
+              '  we hold ' + v.tids.size + ' regs, PlayHQ returns ' + tm.teams.length +
+              '  · omitted seasons ' + missingSids.size + ', of which ' + overlap + ' carry the unregistered appearances' +
+              '  · PlayHQ season count ' + liveSids.size + ' vs ours ' + v.ourSids.size);
+          }
+        }
       }
       if (st.status === 'NOT_FOUND' || tm.status === 'NOT_FOUND') {
         R.rows.push(v);
@@ -458,6 +504,15 @@ async function main() {
     console.log('    NOT_FOUND on teams ONLY      : ' + R.notfoundTeamsOnly + '  (' + pc(R.notfoundTeamsOnly, R.n) + '%)   ← profile exists, endpoint refuses');
     console.log('    both answered                : ' + R.bothOk + '  (' + pc(R.bothOk, R.n) + '%)');
     console.log('      of those, teams returned FEWER than we store: ' + R.fewer + '  (' + pc(R.fewer, R.bothOk) + '%)');
+    if (R.fewer) {
+      console.log('        registrations omitted by PlayHQ : ' + R.missingTidTotal + '  across ' + R.missingSidTotal + ' seasons');
+      console.log('        omitted seasons that carry the unregistered appearances: ' + R.missingSidInBad +
+                  '  (' + pc(R.missingSidInBad, R.missingSidTotal) + '% of omitted seasons)');
+      console.log('        players whose omissions are ALL in those seasons: ' + R.allInBad +
+                  ' · SOME ' + R.someInBad + ' · NONE ' + R.noneInBad);
+      console.log('        examples:');
+      for (const e of R.examples) console.log(e);
+    }
     console.log('    outcome pairs:');
     for (const [k, c] of [...R.statusPairs.entries()].sort((a, b) => b[1] - a[1])) console.log('      ' + String(c).padStart(4) + '  ' + k);
     const rows = R.rows;
