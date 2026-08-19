@@ -291,6 +291,11 @@ async function main() {
 
   let fetched = 0, failed = 0, storedIdPresentLive = 0, absentLive = 0;
   let sumOverlap = 0, zeroOverlap = 0, highOverlap = 0;
+  let sumStoredOnly = 0, sumLiveOnly = 0;
+  let dirStoredOnly = 0, dirLiveOnly = 0, dirBoth = 0, dirExact = 0;
+  let liveEmpty = 0;
+  const liveEmptyIds = [];
+  const absentIds = [];
   const byWhy = new Map();
 
   for (const c of targets) {
@@ -315,18 +320,52 @@ async function main() {
     const stored = new Set(c.g.p);
     let inter = 0;
     for (const id of stored) if (live.has(id)) inter++;
+    // The SET DIFFERENCE, not just the size. Counting alone left the direction
+    // unexplained and I filled the gap with invention. Both documented mechanisms
+    // are directional and this distinguishes them:
+    //   stored-only  → we hold a player the live box does not list. This is the
+    //                  APPEARANCE GAP being closed: spc froze a partially-entered
+    //                  box (specimen 7da945a8, 12 stored of a live 19) and the
+    //                  repair appended what the profile API credits. EXPECTED.
+    //   live-only    → the live box lists someone we never captured. That is an
+    //                  UNCLOSED partial, and it is new work.
+    const storedOnly = [...stored].filter(id => !live.has(id));
+    const liveOnly   = [...live].filter(id => !stored.has(id));
+    // A game with an EMPTY live box is excluded from the direction table and from
+    // the absent list. Spectator never held it — every id we have looks
+    // "stored-only" and the player looks "absent", which is an artefact of asking
+    // the wrong service, not a difference between two rosters.
+    if (live.size > 0) {
+      sumStoredOnly += storedOnly.length;
+      sumLiveOnly   += liveOnly.length;
+      if (storedOnly.length && !liveOnly.length) dirStoredOnly++;
+      else if (liveOnly.length && !storedOnly.length) dirLiveOnly++;
+      else if (liveOnly.length && storedOnly.length) dirBoth++;
+      else dirExact++;
+    }
     const overlap = stored.size ? (100 * inter / stored.size) : 0;
     sumOverlap += overlap;
     if (overlap === 0) zeroOverlap++;
     if (overlap >= 80) highOverlap++;
     const present = live.has(c.via);
-    if (present) storedIdPresentLive++; else absentLive++;
+    if (present) storedIdPresentLive++;
+    else if (live.size > 0) { absentLive++; if (absentIds.length < 30) absentIds.push(c.gid + ' (' + (c.byOwn ? 'own-id' : 'alias') + ' ' + c.via + ')'); }
+    // An EMPTY live box is not a discrepancy — spectator is the live-scoring
+    // service and paper-scored games are not on it at all. That is the entire
+    // reason discover-game-backfill exists. Counted apart so it stops dragging
+    // the overlap average down and reading as a fault.
+    if (live.size === 0) { liveEmpty++; if (liveEmptyIds.length < 30) liveEmptyIds.push(c.gid); }
 
-    console.log('  ' + (present ? '·' : '⚠') + ' ' + c.gid + '  ' + (c.byOwn ? 'own-id' : 'alias ') +
+    const tag = live.size === 0 ? 'LIVE BOX EMPTY — paper-scored / not on spectator'
+              : !present ? 'the id is NOT in the live roster'
+              : liveOnly.length ? 'live has ' + liveOnly.length + ' we never captured — UNCLOSED partial'
+              : storedOnly.length ? 'we hold ' + storedOnly.length + ' the live box omits — appearance gap already closed'
+              : 'identical';
+    console.log('  ' + (live.size === 0 ? '○' : present ? '·' : '⚠') + ' ' + c.gid + '  ' + (c.byOwn ? 'own-id' : 'alias ') +
                 '  stored ' + String(stored.size).padStart(3) + '  live ' + String(live.size).padStart(3) +
-                '  overlap ' + overlap.toFixed(0).padStart(3) + '%  ' +
-                (present ? 'the id IS in the live roster' : 'the id is NOT in the live roster') +
-                '  [' + (c.g.spc ? 'spc' : '') + (c.g.dg ? 'dg' : '') + ']');
+                '  overlap ' + overlap.toFixed(0).padStart(3) + '%  ' + tag);
+    if (liveOnly.length) console.log('        live-only ids we do NOT hold: ' + liveOnly.slice(0, 12).join(' '));
+    if (storedOnly.length && live.size) console.log('        stored-only ids the live box omits: ' + storedOnly.slice(0, 12).join(' '));
     await sleep(1200);
   }
 
@@ -336,19 +375,37 @@ async function main() {
   for (const [w, c] of [...byWhy.entries()].sort((a, b) => b[1] - a[1])) console.log('      ' + String(c).padStart(4) + '  ' + w);
   if (!fetched) { console.log('  nothing fetched — cannot conclude'); return; }
   console.log('  the stored id IS live         : ' + storedIdPresentLive + '  (' + pc(storedIdPresentLive, fetched) + '%)');
-  console.log('  the stored id is NOT live     : ' + absentLive + '  (' + pc(absentLive, fetched) + '%)');
-  console.log('  mean roster overlap           : ' + (sumOverlap / fetched).toFixed(1) + '%');
+  console.log('  the stored id is NOT live     : ' + absentLive + '   ← non-empty boxes only; see the list below');
+  const withBox = fetched - liveEmpty;
+  console.log('  live box EMPTY (paper-scored) : ' + liveEmpty + '  (' + pc(liveEmpty, fetched) + '%)   ← not a discrepancy; spectator does not hold these');
+  for (const g of liveEmptyIds) console.log('      ' + g);
+  console.log('  mean roster overlap (all)     : ' + (sumOverlap / fetched).toFixed(1) + '%');
   console.log('    games with ZERO overlap     : ' + zeroOverlap + '  (' + pc(zeroOverlap, fetched) + '%)');
   console.log('    games with 80%+ overlap     : ' + highOverlap + '  (' + pc(highOverlap, fetched) + '%)');
   console.log('');
+  console.log('');
+  console.log('  WHERE THE ROSTERS DIFFER (games with a live box only, n=' + withBox + '):');
+  console.log('    identical                   : ' + dirExact + '  (' + pc(dirExact, withBox) + '%)');
+  console.log('    we hold MORE than live       : ' + dirStoredOnly + '  (' + pc(dirStoredOnly, withBox) + '%)  · ' + sumStoredOnly + ' ids   ← EXPECTED: the appearance gap, already closed');
+  console.log('    live has MORE than we hold   : ' + dirLiveOnly + '  (' + pc(dirLiveOnly, withBox) + '%)  · ' + sumLiveOnly + ' ids   ← UNCLOSED partial: still to capture');
+  console.log('    differ in BOTH directions    : ' + dirBoth + '  (' + pc(dirBoth, withBox) + '%)');
+  console.log('');
+  if (absentIds.length) {
+    console.log('  GAMES WHERE THE PLAYER IS ABSENT FROM A NON-EMPTY LIVE BOX — the only shape that');
+    console.log('  is unexplained by either documented mechanism:');
+    for (const g of absentIds) console.log('      ' + g);
+    console.log('');
+  }
   console.log('  HOW TO READ IT:');
-  console.log('    Low overlap  → we stored a DIFFERENT GAME\'s roster against this id. A capture');
-  console.log('                   or indexing fault, and the stored rosters belong somewhere else.');
-  console.log('    High overlap + the id NOT live → PlayHQ served us this roster and has since');
-  console.log('                   changed it, OR it serves a different set to the API than to the');
-  console.log('                   website. Ours would then be a stale but once-true record.');
-  console.log('    High overlap + the id IS live → the spectator endpoint still returns this player');
-  console.log('                   for this game, and the registration data is what is wrong.');
+  console.log('    Two of the three differences below are the DOCUMENTED mechanisms, not faults:');
+  console.log('      · an empty live box = a paper-scored game, which spectator has never held;');
+  console.log('        the canonical record is the only source and discover-game-backfill is it.');
+  console.log('      · we hold more than the live box = spc froze a partially-entered box and the');
+  console.log('        repair appended what the profile credits (specimen 7da945a8: 12 of a live 19).');
+  console.log('    The two that ARE work:');
+  console.log('      · live holds ids we never captured — an UNCLOSED partial, still to sweep.');
+  console.log('      · the player absent from a NON-EMPTY live box — listed above; neither mechanism');
+  console.log('        explains it, and it is the only shape worth investigating further.');
 }
 
 main()
