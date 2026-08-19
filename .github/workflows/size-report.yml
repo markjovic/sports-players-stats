@@ -133,10 +133,21 @@ jobs:
           // the literal "a/a/a" there, so every spot-check link they ever produced was
           // dead — which is why "spot-check the URLs" stayed on the list for weeks.
           const slugify = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          // CORRECTED 2026-08-18. The fourth segment is the GRADE SLUG, not the season
+          // id: a real working URL is
+          //   /org/altona-bay-basketball-association/7872909d/saturday-u16-girls-div-1/game-centre/32559ae8
+          // The season id in that slot gives a dead link. I tested the pattern by loading
+          // the SEASON page (/org/<slug>/<orgId>/<sid>), which does resolve, and wrongly
+          // took that as confirmation of the game path — a different URL shape. The grade
+          // name is carried on each game record as `gn`, so it comes from the game, not
+          // from sports-index.
+          const gradeSlug = new Map();   // gid -> slugified grade name
           const gameUrl = (sid, gid) => {
             const meta = idx[sid];
+            const gs = gradeSlug.get(gid);
             if (!meta || !meta.orgId || !meta.orgName) return '(no orgId/orgName in sports-index for season ' + sid + ' — game ' + gid + ')';
-            return 'https://www.playhq.com/basketball-victoria/org/' + slugify(meta.orgName) + '/' + meta.orgId + '/' + sid + '/game-centre/' + gid;
+            if (!gs) return '(no grade name stored on game ' + gid + ' — cannot build a URL)';
+            return 'https://www.playhq.com/basketball-victoria/org/' + slugify(meta.orgName) + '/' + meta.orgId + '/' + gs + '/game-centre/' + gid;
           };
 
           // ── Flags packed into one integer per game ─────────────────────────────────
@@ -214,6 +225,7 @@ jobs:
               if (roster) fl |= F_ROSTER;
               gameFlags.set(gid, fl);
               gameSid.set(gid, si);
+              if (g.gn) gradeSlug.set(gid, slugify(g.gn));
               if (want('consolidation')) {
                 gameH.set(gid, internTid(g.h));
                 gameA.set(gid, internTid(g.a));
