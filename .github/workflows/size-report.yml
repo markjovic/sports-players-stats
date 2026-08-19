@@ -544,13 +544,16 @@ jobs:
             const playersDir2 = path.join(ROOT, 'players');
             let audited = 0, skippedNoRegs = 0, skippedNoGames = 0, privateAudited = 0;
             let apsChecked = 0, apsOk = 0, apsForeign = 0, apsUnknownGame = 0;
+            let apsInSeason = 0, apsNoSeason = 0, playersInSeasonForeign = 0;
+            const vPriv = { players: 0, aps: 0, foreign: 0, inSeason: 0, noSeason: 0 };
+            const vPub  = { players: 0, aps: 0, foreign: 0, inSeason: 0, noSeason: 0 };
             let playersAllOk = 0, playersAnyForeign = 0;
             const foreignBuckets = new Map();   // count of foreign appearances -> players
             const worst = [];
             // Cross-tab against the gap direction: if foreign appearances cause the
             // over-count, they should concentrate in players who HOLD MORE than credited.
             const xtab = new Map();
-            for (const k of ['over-counted', 'exact', 'under-counted', 'no gp']) xtab.set(k, { players: 0, aps: 0, foreign: 0 });
+            for (const k of ['over-counted', 'exact', 'under-counted', 'no gp']) xtab.set(k, { players: 0, aps: 0, foreign: 0, inSeason: 0 });
             let regTeamsChecked = 0, regTeamsUnseen = 0;
 
             for (const shard of fs.readdirSync(playersDir2).filter(d => /^[0-9a-f]{2}$/.test(d))) {
@@ -561,10 +564,17 @@ jobs:
                 const gl = Array.isArray(p.games) ? p.games : [];
                 if (!gl.length) { skippedNoGames++; continue; }
 
-                // Registrations from BOTH places they are recorded.
+                // Registrations from BOTH places they are recorded, and the SEASONS
+                // those registrations cover — the season set is what makes the foreign
+                // count readable (see the three-way split below).
                 const regTids = new Set();
-                for (const t of (Array.isArray(p.teams) ? p.teams : [])) if (t && t.tid) regTids.add(t.tid);
+                const regSids = new Set();
+                for (const t of (Array.isArray(p.teams) ? p.teams : [])) {
+                  if (t && t.tid) regTids.add(t.tid);
+                  if (t && t.sid) regSids.add(t.sid);
+                }
                 for (const se of (Array.isArray(p.seasons) ? p.seasons : [])) {
+                  if (se && se.sid) regSids.add(se.sid);
                   for (const r of (Array.isArray(se.regs) ? se.regs : [])) if (r && r.tid) regTids.add(r.tid);
                 }
                 if (!regTids.size) { skippedNoRegs++; continue; }
@@ -572,6 +582,18 @@ jobs:
                 if (p.private === true) privateAudited++;
 
                 let ok = 0, foreign = 0, unknown = 0;
+                // THE THREE-WAY SPLIT. A raw foreign count conflates two things that mean
+                // opposite amounts:
+                //   inSeason  — we HAVE this player's registrations for that season and
+                //               they match neither side. Either a genuine mis-attribution
+                //               or a FILL-IN, which PlayHQ labels in the box score and
+                //               which is a real appearance for a team you never joined.
+                //   noSeason  — we hold NO registration for that season at all, so the
+                //               list is incomplete there and the appearance says nothing.
+                // The `no gp` row of the first cross-tab is 52.1% foreign purely because
+                // nobody ever fetched its registrations. That is the false-positive rate
+                // this split exists to strip out.
+                let fInSeason = 0, fNoSeason = 0;
                 const seenTeams = new Set();
                 const foreignSamples = [];
                 for (const gid of gl) {
@@ -583,17 +605,27 @@ jobs:
                   if (mine) { ok++; seenTeams.add(mine); }
                   else {
                     foreign++;
-                    if (foreignSamples.length < 3) foreignSamples.push(gid);
+                    const gsi = gameSid.get(gid);
+                    const gsid = gsi === undefined ? null : sidList[gsi];
+                    if (gsid && regSids.has(gsid)) { fInSeason++; if (foreignSamples.length < 3) foreignSamples.push(gid); }
+                    else fNoSeason++;
                   }
                 }
                 apsChecked += ok + foreign; apsOk += ok; apsForeign += foreign; apsUnknownGame += unknown;
+                apsInSeason += fInSeason; apsNoSeason += fNoSeason;
+                const vis = p.private === true ? vPriv : vPub;
+                vis.players++; vis.aps += ok + foreign; vis.foreign += foreign; vis.inSeason += fInSeason; vis.noSeason += fNoSeason;
+                if (fInSeason) playersInSeasonForeign++;
                 if (foreign) {
                   playersAnyForeign++;
                   bump(foreignBuckets, foreign <= 1 ? '1' : foreign <= 5 ? '2-5' : foreign <= 20 ? '6-20' : foreign <= 100 ? '21-100' : '101+');
-                  if (worst.length < 25 || foreign > worst[worst.length - 1].foreign) {
+                  // Ranked by the MEASURABLE kind, not the raw count: the players worth
+                  // eyeballing are the ones whose registrations we actually hold.
+                  if (worst.length < 25 || fInSeason > worst[worst.length - 1].inSeason) {
                     worst.push({ uuid: f.replace(/\.json$/, ''), name: p.name || '?', foreign: foreign, ok: ok,
+                                 inSeason: fInSeason, noSeason: fNoSeason,
                                  games: gl.length, priv: p.private === true, samples: foreignSamples });
-                    worst.sort((x, y) => y.foreign - x.foreign);
+                    worst.sort((x, y) => y.inSeason - x.inSeason);
                     if (worst.length > 25) worst.pop();
                   }
                 } else playersAllOk++;
@@ -605,7 +637,7 @@ jobs:
                 for (const sp of Object.values(p.sports || {})) if (sp && typeof sp.gp === 'number') { gp += sp.gp; has = true; }
                 const key = !has ? 'no gp' : gl.length > gp ? 'over-counted' : gl.length < gp ? 'under-counted' : 'exact';
                 const x = xtab.get(key);
-                x.players++; x.aps += ok + foreign; x.foreign += foreign;
+                x.players++; x.aps += ok + foreign; x.foreign += foreign; x.inSeason += fInSeason;
               }
             }
 
@@ -614,7 +646,19 @@ jobs:
             console.log('    skipped, NO registrations     : ' + n(skippedNoRegs) + '   ← cannot be audited; never profile-fetched, or fetched with none');
             console.log('  appearances checked             : ' + n(apsChecked));
             console.log('    player registered to one side : ' + n(apsOk) + '  (' + pct(apsOk, apsChecked) + '%)');
-            console.log('    registered to NEITHER side    : ' + n(apsForeign) + '  (' + pct(apsForeign, apsChecked) + '%)  ← not theirs, unless the registration list is incomplete');
+            console.log('    registered to NEITHER side    : ' + n(apsForeign) + '  (' + pct(apsForeign, apsChecked) + '%)');
+            console.log('      ├ we HOLD their regs for that season : ' + n(apsInSeason) + '  (' + pct(apsInSeason, apsChecked) + '% of all appearances)  ← MEASURABLE');
+            console.log('      └ no registration for that season    : ' + n(apsNoSeason) + '  (' + pct(apsNoSeason, apsChecked) + '%)  ← list incomplete there; says nothing');
+            console.log('');
+            console.log('    ⚠ EVEN THE MEASURABLE FIGURE IS NOT ALL ERROR. PlayHQ box scores carry a');
+            console.log('      "Fill-in" row: a player turning out for a team they never registered with.');
+            console.log('      That is a REAL appearance which this test must call foreign, because the');
+            console.log('      registration genuinely does not exist. Confirmed by eye on 2026-08-18 —');
+            console.log('      Sean Wright (191 of 197 foreign, not private) is absent from both team lists');
+            console.log('      on his sampled games, and those box scores show "Fill-in" and "Private');
+            console.log('      player" rows. So treat the measurable figure as an UPPER BOUND on');
+            console.log('      mis-attribution, not as a count of it.');
+            console.log('');
             console.log('    game not in games/bv          : ' + n(apsUnknownGame) + '   ← cannot be checked either way');
             console.log('  players with zero foreign       : ' + n(playersAllOk) + '  (' + pct(playersAllOk, audited) + '%)');
             console.log('  players with at least one       : ' + n(playersAnyForeign) + '  (' + pct(playersAnyForeign, audited) + '%)');
@@ -622,6 +666,17 @@ jobs:
               const v = foreignBuckets.get(k) || 0;
               if (v) console.log('      ' + k.padEnd(8) + n(v).padStart(9) + ' players');
             }
+            console.log('  BY PROFILE VISIBILITY (private profiles drove the first run\'s tail):');
+            const vis = (label, v) => {
+              if (!v.players) return;
+              console.log('    ' + label.padEnd(9) + n(v.players).padStart(9) + ' players  ·  ' +
+                          pct(v.foreign, v.aps).padStart(6) + '% foreign  ·  ' +
+                          pct(v.inSeason, v.aps).padStart(6) + '% measurable-foreign  ·  ' +
+                          pct(v.noSeason, v.aps).padStart(6) + '% unmeasurable');
+            };
+            vis('public', vPub);
+            vis('private', vPriv);
+            console.log('    players with at least one MEASURABLE foreign appearance: ' + n(playersInSeasonForeign) + '  (' + pct(playersInSeasonForeign, audited) + '% of audited)');
             console.log('  registrations whose team never appears in their games[]: ' + n(regTeamsUnseen) + ' of ' + n(regTeamsChecked) +
                         '  (' + pct(regTeamsUnseen, regTeamsChecked) + '%)   ← the UNDER-count direction');
 
@@ -631,17 +686,21 @@ jobs:
               const x = xtab.get(k);
               if (!x.players) continue;
               console.log('    ' + k.padEnd(14) + n(x.players).padStart(9) + ' players  ·  ' +
-                          pct(x.foreign, x.aps).padStart(6) + '% of their appearances are foreign  ·  ' +
-                          (x.foreign / x.players).toFixed(2).padStart(7) + ' foreign each');
+                          pct(x.foreign, x.aps).padStart(6) + '% foreign  ·  ' +
+                          pct(x.inSeason, x.aps).padStart(6) + '% MEASURABLE-foreign  ·  ' +
+                          (x.inSeason / x.players).toFixed(2).padStart(7) + ' measurable each');
             }
-            console.log('    Read the FIRST column against the others. A materially higher foreign rate for');
-            console.log('    over-counted players is the consolidation fault; a flat rate across all rows');
-            console.log('    means attribution is sound and the over-count is something else.');
+            console.log('    Read the MEASURABLE column, not the raw one — the raw column is dominated by');
+            console.log('    players whose registrations were never fetched (the "no gp" row was 52.1%');
+            console.log('    foreign on 2026-08-18 for exactly that reason). And compare the last column');
+            console.log('    against how far over-counted players actually are: if they carry several times');
+            console.log('    more measurable-foreign appearances than their excess, foreign attribution');
+            console.log('    cannot be what is causing the excess.');
 
             console.log('');
-            console.log('  WORST 25 BY FOREIGN APPEARANCES:');
+            console.log('  WORST 25 BY MEASURABLE-FOREIGN APPEARANCES (registrations held for that season):');
             for (const w of worst) {
-              console.log('    ' + String(w.foreign).padStart(6) + ' of ' + String(w.games).padStart(6) + '  ' + w.uuid +
+              console.log('    ' + String(w.inSeason).padStart(6) + ' measurable (' + String(w.foreign).padStart(6) + ' foreign of ' + String(w.games).padStart(6) + ')  ' + w.uuid +
                           (w.priv ? ' [PRIVATE]' : '') + '  ' + JSON.stringify(w.name));
               for (const g of w.samples) {
                 const si2 = gameSid.get(g);
@@ -649,9 +708,11 @@ jobs:
               }
             }
             console.log('');
-            console.log('  Spot-check: open a URL above and look at both team lists. If the player is not');
-            console.log('  named in either, the appearance is wrongly attributed. If they ARE named, then');
-            console.log('  their registration list is incomplete and the FOREIGN figure is an over-estimate.');
+            console.log('  Spot-check: open a URL above and look at both team lists. Three outcomes, and');
+            console.log('  they mean different things:');
+            console.log('    named in a team list        → their registration list is incomplete; false positive.');
+            console.log('    shown as "Fill-in"          → a real appearance for a team they never joined; expected.');
+            console.log('    not present at all          → genuine mis-attribution. THIS is the one that matters.');
             console.log('');
           }
 
