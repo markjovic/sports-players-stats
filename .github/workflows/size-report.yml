@@ -589,6 +589,9 @@ jobs:
             const camp = new Map();
             for (const k of ['touched by repair', 'never touched']) camp.set(k, { players: 0, aps: 0, foreign: 0, inSeason: 0 });
 
+            // gid -> the players who wrongly hold it, for the third pass below. Capped
+            // per game so a pathological roster cannot blow the heap.
+            const wrongPairs = new Map();
             const provForeign = new Map();   // capture path -> wrong appearances written through it
             const provAll = new Map();       // the same paths across ALL checked appearances, as the baseline
             const vPriv = { players: 0, aps: 0, foreign: 0, inSeason: 0, noSeason: 0 };
@@ -667,6 +670,9 @@ jobs:
                     if (gsid && regSids.has(gsid)) {
                       fInSeason++;
                       if (foreignSamples.length < 3) foreignSamples.push(gid);
+                      let ow = wrongPairs.get(gid);
+                      if (!ow) { ow = []; wrongPairs.set(gid, ow); }
+                      if (ow.length < 40) ow.push(f.replace(/\.json$/, ''));
                       const gfl = gameFlags.get(gid) || 0;
                       const key = (gfl & F_SPC) && (gfl & F_DG) ? 'both' : (gfl & F_SPC) ? 'spc (live-scoring)'
                                 : (gfl & F_DG) ? 'dg (canonical record)' : 'NEITHER flag';
@@ -819,6 +825,84 @@ jobs:
               }
             }
             console.log('');
+            // ── WHICH ID DELIVERED THE WRONG APPEARANCE? ──────────────────────────
+            // The last question left. Truncation collisions are ruled out (0 across
+            // 421,290 files), so an appearance landing on the wrong player arrived one of
+            // two ways:
+            //   OWN ID    — the roster literally contains that player's own 13-char
+            //               prefix. Nothing resolved it wrongly; the capture wrote them
+            //               into a game they were not in.
+            //   ALIAS     — the roster contains a spectator id which players/aliases maps
+            //               to this player. If that mapping is wrong, every appearance
+            //               under that id lands on the wrong person — which is exactly
+            //               the observed shape: a scatter across unrelated seasons and
+            //               grades, arriving through spc because spectator ids are what
+            //               the spectator path writes.
+            // Those two have completely different fixes, so the split is the finding.
+            //
+            // Done as a THIRD pass, over only the games already known to be wrong, so the
+            // cost is bounded by the fault rather than by the dataset.
+            {
+              console.log('  WHICH ID DELIVERED THE WRONG APPEARANCE?');
+              const aliasMap = new Map();   // 13-char id -> full uuid it resolves to
+              let aliasEntries = 0, aliasCross = 0;
+              const aliasDir = path.join(ROOT, 'players', 'aliases');
+              try {
+                for (const f of fs.readdirSync(aliasDir)) {
+                  if (!f.endsWith('.json')) continue;
+                  const sh = JSON.parse(fs.readFileSync(path.join(aliasDir, f), 'utf8'));
+                  for (const k of Object.keys(sh)) {
+                    aliasEntries++;
+                    const v = sh[k];
+                    if (typeof v !== 'string') continue;
+                    aliasMap.set(k, v);
+                    if (v.slice(0, 13) !== k) aliasCross++;
+                  }
+                }
+              } catch (e) {
+                console.log('    players/aliases unreadable (' + String(e.message).slice(0, 60) + ') — cannot split');
+              }
+              console.log('    alias entries loaded            : ' + n(aliasEntries) + '  (' + n(aliasCross) + ' map a spectator id to a DIFFERENT player)');
+
+              if (aliasMap.size && wrongPairs.size) {
+                // Second read of games/bv, restricted to games already known to be wrong.
+                let byOwn = 0, byAlias = 0, byNothing = 0;
+                const perAlias = new Map();   // alias id -> wrong appearances it delivered
+                for (const f of fs.readdirSync(gamesDir)) {
+                  if (!f.endsWith('.json')) continue;
+                  let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
+                  for (const gid of Object.keys(sg.games || {})) {
+                    const owners = wrongPairs.get(gid);
+                    if (!owners) continue;
+                    const g = sg.games[gid];
+                    const ids = (Array.isArray(g.p) ? g.p : []).map(x => x && x.id).filter(Boolean);
+                    for (const uuid of owners) {
+                      const own = uuid.slice(0, 13);
+                      if (ids.includes(own)) { byOwn++; continue; }
+                      let found = null;
+                      for (const id of ids) { const t = aliasMap.get(id); if (t === uuid) { found = id; break; } }
+                      if (found) { byAlias++; bump(perAlias, found); }
+                      else byNothing++;
+                    }
+                  }
+                }
+                const tot2 = byOwn + byAlias + byNothing;
+                console.log('    wrong appearances re-checked   : ' + n(tot2));
+                console.log('      roster held their OWN id     : ' + n(byOwn) + '  (' + pct(byOwn, tot2) + '%)  ← capture wrote them into a game they were not in');
+                console.log('      roster held an ALIAS id      : ' + n(byAlias) + '  (' + pct(byAlias, tot2) + '%)  ← players/aliases points that id at this player');
+                console.log('      neither, cannot explain      : ' + n(byNothing) + '  (' + pct(byNothing, tot2) + '%)  ← the appearance has no source in the roster at all');
+                if (perAlias.size) {
+                  const top = [...perAlias.entries()].sort((a, b) => b[1] - a[1]);
+                  console.log('    distinct alias ids responsible : ' + n(perAlias.size));
+                  console.log('    worst 15 (a few ids carrying many wrong appearances = a few bad mappings):');
+                  for (const [id, c] of top.slice(0, 15)) console.log('      ' + id + '  ->  ' + (aliasMap.get(id) || '?') + '   ' + n(c) + ' wrong appearances');
+                }
+              } else if (!wrongPairs.size) {
+                console.log('    no wrong appearances recorded to re-check');
+              }
+              console.log('');
+            }
+
             console.log('  Spot-check: open a URL above and look at both team lists. Three outcomes, and');
             console.log('  they mean different things:');
             console.log('    named in a team list        → their registration list is incomplete; false positive.');
