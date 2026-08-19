@@ -301,7 +301,12 @@ async function fetchProfile(profileID) {
 
 
 // ─── publicProfileTeams — query copied from playhq_api_reference.md ───────────
-const PROFILE_TEAMS_QUERY = `query PublicProfileTeams($profileID: ID!) {
+// Two variable typings. playhq_api_reference.md records that discoverSeason needs
+// String! rather than ID! "for basketball-victoria tenant", and the first run of
+// this probe got HTTP 400 on 100 of 100 with ID!. Rather than guess which is
+// right, try one, and on a 400 try the other and REMEMBER which worked — the
+// answer then comes from the endpoint instead of from me.
+const PROFILE_TEAMS_QUERY_ID = `query PublicProfileTeams($profileID: ID!) {
   publicProfileTeams(profileID: $profileID) {
     teams {
       status { value }
@@ -314,24 +319,45 @@ const PROFILE_TEAMS_QUERY = `query PublicProfileTeams($profileID: ID!) {
     }
   }
 }`;
+const PROFILE_TEAMS_QUERY_STR = PROFILE_TEAMS_QUERY_ID.replace('$profileID: ID!', '$profileID: String!');
+let workingQuery = null;   // set once one of them succeeds
 
 async function fetchProfileTeams(profileID) {
   if (!sessionCookie) await refreshSession();
-  let res;
-  try {
-    res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify({ operationName: 'PublicProfileTeams', variables: { profileID }, query: PROFILE_TEAMS_QUERY }),
-    });
-  } catch (err) { return { status: 'error', err }; }
-  if (res.status === 403) return { status: 'private' };
-  if (res.status === 404) return { status: 'notfound' };
-  if (!res.ok) return { status: 'http-' + res.status };
-  let json;
-  try { json = await res.json(); } catch (err) { return { status: 'bad-json' }; }
-  if (json.errors && json.errors.length) return { status: 'gql-error', errors: json.errors };
-  return { status: 'ok', teams: ((json.data || json)?.publicProfileTeams?.teams) || [] };
+  const variants = workingQuery
+    ? [workingQuery]
+    : [['ID!', PROFILE_TEAMS_QUERY_ID], ['String!', PROFILE_TEAMS_QUERY_STR]];
+  let lastDetail = '';
+  for (const v of variants) {
+    const [label, query] = v;
+    let res;
+    try {
+      res = await doFetch(API_URL, {
+        method: 'POST',
+        headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
+        body: JSON.stringify({ operationName: 'PublicProfileTeams', variables: { profileID }, query: query }),
+      });
+    } catch (err) { return { status: 'error', detail: String(err.message).slice(0, 200) }; }
+    if (res.status === 403) return { status: 'private' };
+    if (res.status === 404) return { status: 'notfound' };
+    if (!res.ok) {
+      // PRINT WHAT THE ENDPOINT SAID. The first version returned a bare
+      // 'http-400' for all 100 players, which named the status and hid the cause.
+      let txt = '';
+      try { txt = (await res.text()).slice(0, 300); } catch (e) { txt = '(body unreadable)'; }
+      lastDetail = label + ' -> HTTP ' + res.status + ': ' + txt.replace(/\s+/g, ' ');
+      continue;
+    }
+    let json;
+    try { json = await res.json(); } catch (err) { lastDetail = label + ' -> bad-json'; continue; }
+    if (json.errors && json.errors.length) {
+      lastDetail = label + ' -> gql: ' + String(json.errors[0].message || '').slice(0, 200);
+      continue;
+    }
+    if (!workingQuery) { workingQuery = v; console.log('  variable type that works: ' + label); }
+    return { status: 'ok', teams: ((json.data || json)?.publicProfileTeams?.teams) || [] };
+  }
+  return { status: 'failed', detail: lastDetail };
 }
 
 async function main() {
@@ -404,8 +430,8 @@ async function main() {
     const r = await fetchProfileTeams(c.uuid);
     if (r.status !== 'ok') {
       failed++;
-      byStatus.set(r.status, (byStatus.get(r.status) || 0) + 1);
-      console.log('  ✗ ' + c.uuid + '  ' + r.status);
+      byStatus.set(r.status + (r.detail ? ' — ' + r.detail : ''), (byStatus.get(r.status + (r.detail ? ' — ' + r.detail : '')) || 0) + 1);
+      console.log('  ✗ ' + c.uuid + '  ' + r.status + (r.detail ? '  ' + r.detail : ''));
       await sleep(1200);
       continue;
     }
