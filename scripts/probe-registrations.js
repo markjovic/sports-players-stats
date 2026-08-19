@@ -336,7 +336,16 @@ async function fetchProfileTeams(profileID) {
       body: JSON.stringify({ operationName: 'PublicProfileTeams', variables: { profileID }, query: PROFILE_TEAMS_QUERY }),
     });
   } catch (err) { return { status: 'error', detail: String(err.message).slice(0, 200) }; }
-  if (res.status === 403) return { status: 'private' };
+  if (res.status === 403) {
+    // A CloudFront hard-block is a 403 with an HTML body and is DISTINCT from an
+    // application 403 (playhq_api_reference.md, and fetch-profile-stats.js L458).
+    // Returning 'private' for both would have recorded a throttle as a fact about
+    // the player and quietly corrupted the count.
+    let b = '';
+    try { b = await res.text(); } catch (e) { b = ''; }
+    if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { status: 'cloudfront-block' };
+    return { status: 'private' };
+  }
   if (res.status === 404) return { status: 'notfound' };
   if (!res.ok) {
     let txt = '';
@@ -361,12 +370,21 @@ async function main() {
   // Players and their stored registrations.
   const playersDir = path.join(ROOT, 'players');
   const regsOf = new Map(), heldOf = new Map(), nameOf = new Map();
+  let usedApiId = 0;
+  const queryIdOf = new Map();   // player uuid -> the id to ASK PlayHQ about
   for (const shard of fs.readdirSync(playersDir).filter(x => /^[0-9a-f]{2}$/.test(x))) {
     for (const f of fs.readdirSync(path.join(playersDir, shard))) {
       if (!f.endsWith('.json')) continue;
       const uuid = f.replace(/\.json$/, '');
       if (ONLY && uuid !== ONLY) continue;
       let p; try { p = JSON.parse(fs.readFileSync(path.join(playersDir, shard, f), 'utf8')); } catch (e) { continue; }
+      // publicProfileTeams expects an API-NAMESPACE id. Feeding it a
+      // spectator-namespace id returns 200 with null data, which would read as
+      // "no registrations" and score every one of this player's appearances as
+      // unexplained. fetch-profile-stats.js L839 uses `player.apiId || uuid`;
+      // same rule here.
+      queryIdOf.set(uuid, p.apiId || uuid);
+      if (p.apiId && p.apiId !== uuid) usedApiId++;
       const t = new Set();
       for (const x of (Array.isArray(p.teams) ? p.teams : [])) if (x && x.tid) t.add(x.tid);
       for (const se of (Array.isArray(p.seasons) ? p.seasons : [])) {
@@ -407,6 +425,7 @@ async function main() {
     }
     if (missing.size) cand.push({ uuid: uuid, name: nameOf.get(uuid), stored: t, missing: missing });
   }
+  console.log('  players carrying a distinct apiId (queried on that): ' + usedApiId.toLocaleString());
   console.log('  players with unregistered-team appearances: ' + cand.length.toLocaleString());
   if (!cand.length) { console.log('  nothing to probe'); return; }
 
@@ -422,7 +441,7 @@ async function main() {
   const byStatus = new Map();
 
   for (const c of targets) {
-    const r = await fetchProfileTeams(c.uuid);
+    const r = await fetchProfileTeams(queryIdOf.get(c.uuid) || c.uuid);
     if (r.status !== 'ok') {
       failed++;
       byStatus.set(r.status + (r.detail ? ' — ' + r.detail : ''), (byStatus.get(r.status + (r.detail ? ' — ' + r.detail : '')) || 0) + 1);
