@@ -59,6 +59,11 @@ const ALL_SEASONS   = !!ARGS['all-seasons'];
 const DRY_RUN       = !!ARGS['dry-run'];   // resolve everything, write/commit nothing
 const CURRENT_ONLY  = !!ARGS['current-only']; // skip finished seasons (weekly mode)
 const LOCKED_RESWEEP = !!ARGS['locked-resweep']; // §2.2: locked && !removed historical re-sweep
+// discoverTeams is ON by default: it is the only route that reaches an
+// all-grading season, and it costs ONE request per season against dozens of
+// per-grade ladder calls. --no-season-teams restores the pre-2026-08-19 behaviour
+// if it ever needs to be isolated.
+const USE_SEASON_TEAMS = !ARGS['no-season-teams'];
 
 if (LOCKED_RESWEEP && (ALL_SEASONS || CURRENT_ONLY || TARGET_SEASON)) {
   console.error('--locked-resweep is exclusive with --all-seasons / --current-only / --season');
@@ -203,6 +208,35 @@ query DiscoverGrade($id: ID!) {
       pool { name }
       standings { team { id name } }
     }
+  }
+}`;
+
+// ─── discoverTeams: teams WITHOUT going through a ladder ─────────────────────
+// Added 2026-08-19. The ladder route below cannot see a season whose grades are
+// all GRADING grades: a grading grade returns `ladder: []` (not an error — it is
+// not a competition), so the season enumerates zero teams and no fixture is ever
+// fetched for it. Seven seasons were in that state, six of them ACTIVE, including
+// EDJBA Winter 2026 which holds 55 grading grades against 263 live ones.
+//
+// MEASURED ON THIS TENANT 2026-08-19 (probe-discover-teams), not assumed from the
+// junior-footy-dashboard import it came from:
+//   1ae60211 EDJBA        → 2,093 teams, 263 grades, 22 orgs
+//   aacc7335 Camberwell   →   672 teams,  82 grades, 14 orgs
+//   7ccb2e98 Altona (ctl) →   385 teams,  51 grades, 20 orgs
+// `ID!` is the correct variable type here — note that is the OPPOSITE of
+// discoverSeason on the same tenant, which needs String!.
+//
+// ⚠️ IT IS NOT A STRICT SUPERSET OF THE LADDER ROUTE. Camberwell returned 13 of
+// the 16 grades our held games use. So this is UNIONED with the ladder result and
+// never replaces it — dropping the old path would lose those three grades.
+//
+// ⚠️ `grade` CAN BE NULL on a returned team (EDJBA's first team: z101, U7, no
+// grade). Anything reading team.grade.id must tolerate that.
+const Q_SEASON_TEAMS = `
+query discoverTeamsBySeason($seasonId: ID!) {
+  discoverTeams(filter: {seasonID: $seasonId}) {
+    id
+    grade { id name }
   }
 }`;
 
@@ -702,6 +736,7 @@ async function main() {
   let totalAdded = 0, totalUpdated = 0, totalTeams = 0, seasonsProcessed = 0;
   let sinceLastCommit = 0;
   const zeroTeamSeasons = [];
+  const staleGradeSeasons = [];
 
   // Sweep one season. Returns 'ok' | 'zero-team' | 'transient'.
   // TRANSIENT means every enumeration call for the season returned null — that is an API
@@ -723,6 +758,25 @@ async function main() {
 
     // Collect all unique team IDs across all grades in this season — parallelised
     const teamIds = new Set();
+
+    // ROUTE A — one call, no ladder. Runs FIRST because it is one request against
+    // dozens, and because it is the only route that works for an all-grading
+    // season. Its result is unioned with the ladder sweep below, never substituted
+    // for it: Camberwell returned 13 of the 16 grades our games actually use.
+    let viaSeason = 0;
+    const gradesFromTeams = new Map();
+    if (USE_SEASON_TEAMS) {
+      probeCalls++;
+      const dt = await gql('discoverTeamsBySeason', Q_SEASON_TEAMS, { seasonId: seasonId });
+      if (!dt) probeNulls++;
+      for (const t of (dt?.discoverTeams || [])) {
+        if (t?.id) { teamIds.add(t.id); viaSeason++; }
+        // grade is NULL for some teams — record only when present.
+        if (t?.grade?.id) gradesFromTeams.set(t.grade.id, t.grade.name || '?');
+      }
+      if (viaSeason) console.log(`  discoverTeams: ${viaSeason} teams, ${gradesFromTeams.size} grades (no ladder needed)`);
+    }
+
     for (let i = 0; i < grades.length; i += CONCURRENCY) {
       const batch = grades.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(g => gql('DiscoverGrade', Q_GRADE_TEAMS, { id: g.id })));
@@ -737,16 +791,31 @@ async function main() {
       }
     }
 
+    // Grades this season really has, learned for free from the team list. The
+    // index is written once at season creation (discover-seasons.js L526) and only
+    // refreshed for seasons sitting at grades:[] (L542), so a season captured
+    // mid-grading keeps grading grades forever. Reporting the difference here means
+    // the staleness is visible in the run that is affected by it.
+    if (gradesFromTeams.size) {
+      const known = new Set(grades.map(g => String(g && g.id)));
+      const unseen = [...gradesFromTeams.keys()].filter(g => !known.has(String(g)));
+      if (unseen.length) {
+        console.log(`  ⚠ sports-index holds ${grades.length} grades for this season; discoverTeams reports ${gradesFromTeams.size} (${unseen.length} the index lacks)`);
+        staleGradeSeasons.push({ id: seasonId, name: season.fullName || season.name,
+                                 indexGrades: grades.length, liveGrades: gradesFromTeams.size, missing: unseen.length });
+      }
+    }
+
     if (teamIds.size === 0) {
       if (probeCalls > 0 && probeNulls === probeCalls) {
         console.log(`  Teams: 0 ⚠ every enumeration call (${probeCalls}) returned null — TRANSIENT, not marking done`);
         return 'transient';
       }
-      console.log(`  Teams: 0 ⚠ no ladder data — season ID: ${seasonId}`);
+      console.log(`  Teams: 0 ⚠ no teams from EITHER route (ladder + discoverTeams) — season ID: ${seasonId}`);
       zeroTeamSeasons.push({ id: seasonId, name: season.fullName || season.name, grades: grades.length });
       return 'zero-team';
     }
-    console.log(`  Teams: ${teamIds.size}`);
+    console.log(`  Teams: ${teamIds.size}${viaSeason ? ` (${viaSeason} via discoverTeams, ${teamIds.size - viaSeason} more from ladders)` : ''}`);
 
     const teamArr = [...teamIds];
     let seasonAdded = 0, seasonUpdated = 0; const seasonUpdates = [];
@@ -822,7 +891,16 @@ async function main() {
   console.log(`  Teams:         ${totalTeams.toLocaleString()}`);
   console.log(`  Added:         ${totalAdded.toLocaleString()}`);
   console.log(`  Updated:       ${totalUpdated.toLocaleString()}`);
-  console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no ladder data — saved to zero-team-seasons.json)`);
+  console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no teams from either route — saved to zero-team-seasons.json)`);
+  if (staleGradeSeasons.length) {
+    console.log(`  Stale grades:  ${staleGradeSeasons.length} season(s) where sports-index holds fewer grades than discoverTeams reports`);
+    for (const s of staleGradeSeasons.slice(0, 15)) {
+      console.log(`      ${s.id}  index ${s.indexGrades} → live ${s.liveGrades} (${s.missing} missing)  ${s.name}`);
+    }
+    console.log('      Harmless for THIS sweep — a team returns its whole fixture regardless of grade —');
+    console.log('      but discover-seasons.js will not correct the index by itself (L542 only refreshes');
+    console.log('      seasons at grades:[]).');
+  }
   console.log(`  Transient:     ${stillTransient.length} (null on every call, survived retry — run goes RED)`);
 
   if (zeroTeamSeasons.length > 0 && !DRY_RUN) {
