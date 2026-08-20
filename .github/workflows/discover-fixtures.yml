@@ -5,6 +5,30 @@ name: Discover fixtures
 # previous rounds, so future fixtures are never ingested by it; this pulls the
 # WHOLE round list (incl. future games) for active seasons via discoverTeamFixture.
 # Dispatch with dry_run first if you want to see what it would do.
+#
+# 2026-08-19 — TEAMS ARE NOW RESOLVED BY TWO ROUTES, UNIONED.
+# The ladder route alone cannot see a season whose stored grades are all GRADING
+# grades: a grading grade returns `ladder: []` (not an error — it is not a
+# competition), so the season enumerated ZERO teams and no fixture was ever
+# fetched. Seven seasons were in that state, six of them ACTIVE:
+#   1ae60211 EDJBA Winter 2026 · aacc7335 Camberwell CBL Winter 2026
+#   1c70d59d Diamond Valley Spring 2026 · 83a38877 Eltham Spring 2026
+#   98dc2b10 BTBC Spring 2026 · e0f9dedc Respect Sports Spring 2026
+#   9358e51a Waverley Spring 2023 [locked]
+#
+# `discoverTeams(filter:{seasonID})` returns a season's teams without a ladder.
+# MEASURED on this tenant before use: EDJBA 2,093 teams / 263 grades, Camberwell
+# 672 / 82, control season 385 / 51. One request per season against dozens of
+# per-grade calls.
+#
+# It is UNIONED with the ladder sweep, never substituted for it — Camberwell
+# returned 13 of the 16 grades our held games use, so it is not a strict superset.
+# `--no-season-teams` restores the old behaviour if it ever needs isolating.
+#
+# The run also reports seasons where sports-index holds fewer grades than
+# discoverTeams sees. That is harmless for the sweep itself (a team returns its
+# whole fixture regardless of grade) but discover-seasons.js will not correct it —
+# its grade-refresh only re-reads seasons sitting at grades:[].
 
 on:
   # Weekly schedule added 2026-08-10, replacing the dispatch from nightly-crawl's
@@ -51,6 +75,11 @@ on:
         description: 'Team fetches in parallel. The weekly cron runs at 40, which is the PROVEN working value on this endpoint (2026-08-13). Blank = the script default of 20. The 2026-08-13 freeze was NOT concurrency — it was two silent-hang bugs in gql() (no request timeout, uncapped 429 retry loop), both since fixed.'
         required: false
         type: string
+      no_season_teams:
+        description: 'Disable the discoverTeams route and use ladders only (pre-2026-08-19 behaviour). Leave off.'
+        required: false
+        default: false
+        type: boolean
       chain_stats:
         description: 'On success, dispatch Build Finals Stats (active-only) which chains Build Leaderboards — set by the weekly nightly-crawl dispatch'
         required: false
@@ -94,6 +123,7 @@ jobs:
           if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="$ARGS --all-seasons"; fi
           if [ "${{ inputs.current_only }}" = "true" ]; then ARGS="$ARGS --current-only"; fi
           if [ "${{ inputs.locked_resweep }}" = "true" ]; then ARGS="$ARGS --locked-resweep"; fi
+          if [ "${{ inputs.no_season_teams }}" = "true" ]; then ARGS="$ARGS --no-season-teams"; fi
           if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           node scripts/discover-fixtures.js $ARGS
