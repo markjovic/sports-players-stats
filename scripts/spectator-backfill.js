@@ -368,6 +368,15 @@ let commitLock = false;
 // with the number of changed files, so all of them get the larger buffer; `-q`
 // on the merge suppresses the per-file lines at the source.
 const GIT_MAXBUF = 512 * 1024 * 1024;
+// ── EVERY git CALL NEEDS A TIMEOUT ───────────────────────────────────────────
+// 2026-08-20 audit, after build-player-games hung with no output. execSync and
+// execFileSync are SYNCHRONOUS: they block the whole Node process, event loop
+// included, so nothing can time them out from outside. `git fetch` and `git push`
+// talk to the network against a 6 GB repo; without a timeout a stalled connection
+// hangs the job until the workflow ceiling kills it, with NO output and NO retry.
+// A timeout makes the call THROW, which the push-retry loop below already handles.
+const GIT_TIMEOUT_MS = 10 * 60 * 1000;
+
 async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   const paths = (dirs && dirs.length ? dirs : ['.']);
@@ -381,7 +390,7 @@ async function gitCommit(message, dirs) {
   // reported loudly.
   let addFailures = 0, hardAddFailures = 0;
   for (const p of paths) {
-    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
+    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }); }
     catch (e) {
       addFailures++;
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
@@ -392,7 +401,7 @@ async function gitCommit(message, dirs) {
   }
 
   const staged = (() => {
-    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }).toString().trim(); }
+    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }).toString().trim(); }
     catch (_) { return ''; }
   })();
 
@@ -429,7 +438,7 @@ async function gitCommit(message, dirs) {
 
   // execFileSync with an argument array — the message is no longer interpolated
   // into a shell string, so the `"` -> `'` escaping hack is gone with it.
-  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
+  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }); }
   catch (e) {
     const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
     throw new Error(`gitCommit: commit failed for "${message}" — ${detail}`);
@@ -449,10 +458,10 @@ async function gitCommit(message, dirs) {
   // Phase 2 paced pool, and blocking here would stall sibling fetch workers.
   const MAX = 60;
   for (let attempt = 1; attempt <= MAX; attempt++) {
-    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); } catch (_) { /* none in progress */ }
+    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS }); } catch (_) { /* none in progress */ }
 
     try {
-      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
     } catch (e) {
       if (attempt === MAX) throw e;
       const s = 1 + Math.floor(Math.random() * 91);
@@ -462,10 +471,10 @@ async function gitCommit(message, dirs) {
     }
 
     // A merge failure is a config or content problem, not a race — fatal.
-    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
 
     try {
-      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT_MS });
       console.log(`  ✓ Committed: ${message} (pushed on attempt ${attempt})`);
       return;
     } catch (e) {

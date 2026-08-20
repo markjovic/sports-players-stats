@@ -440,25 +440,75 @@ async function burstRun(items, concurrency, worker) {
   return { completed, wallHit: false };
 }
 
+// ── git: rewritten to the house pattern 2026-08-20 ───────────────────────────
+// The previous version had four faults, found in the exec-call audit:
+//
+//   1. COMBINED `git add a b c`. git add is ATOMIC across pathspecs — ONE
+//      unmatched path exits 128 and stages NOTHING, including the valid paths
+//      beside it. That is the 2026-07-19 failure exactly: 30,426 games fetched,
+//      zero committed, job green. Now per-path with a benign-absent exemption.
+//   2. NO PUSH RETRY. A single contended push lost the run's work. This repo has
+//      many writers on one branch; every other writer here retries with jitter.
+//   3. COMMIT AFTER MERGE. Merging over uncommitted changes fails outright when
+//      concurrent pushes touch the same files. Commit first.
+//   4. `catch` PRINTED AND RETURNED. A lost push left the job GREEN with the work
+//      discarded — silently. It now THROWS when attempts are exhausted: a broken
+//      write must show red.
+//
+// Plus the timeout the audit was looking for: execSync is SYNCHRONOUS, so a
+// stalled fetch or push blocks the whole process with no output and no retry.
+const GIT_TIMEOUT_MS = 10 * 60 * 1000;
+const GIT_MAXBUF     = 512 * 1024 * 1024;
+const GIT_OPTS       = { cwd: ROOT, stdio: 'pipe', timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF };
+const PUSH_ATTEMPTS  = 60;
+
 function gitCommit(msg, paths = []) {
   if (DRY_RUN) return;
   const uniquePaths = [...new Set(paths)].filter(Boolean);
   if (!uniquePaths.length) { console.log('  Nothing to commit (no paths given).'); return; }
-  try {
-    // Explicit paths only — NEVER -A. This repo is ~8.6GB / 369k+ files; `-A` walks
-    // the whole index and risks ENOBUFS, exactly what the project's own git
-    // conventions exist to prevent. git add on an unchanged tracked path is a
-    // harmless no-op, so always including index/progress here is safe.
-    execSync(`git add ${uniquePaths.join(' ')}`, { cwd: ROOT, stdio: 'pipe' });
-    const staged = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
-    if (!staged) { console.log('  Nothing to commit.'); return; }
-    execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-    execSync('git merge -X ours FETCH_HEAD --no-edit', { cwd: ROOT, stdio: 'pipe' });
-    execSync(`git commit -m "${msg}"`, { cwd: ROOT, stdio: 'pipe' });
-    execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
-    console.log(`  ✔ ${msg}`);
-  } catch (e) {
-    console.error('  ✗ git:', (e.stderr?.toString() || e.message).slice(0, 200));
+
+  // Per-path add. NEVER -A: this repo is ~8.6GB / 369k+ files and -A walks the
+  // whole index. A path that matches nothing is benign here (index/progress files
+  // may legitimately be absent); anything else is a real staging failure.
+  let addFailures = 0;
+  for (const p of uniquePaths) {
+    try { execSync(`git add -- ${p}`, GIT_OPTS); }
+    catch (e) {
+      const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
+      if (/did not match any file/i.test(detail)) continue;
+      addFailures++;
+      console.error(`  ⚠ git add FAILED "${p}": ${detail}`);
+    }
+  }
+
+  const staged = execSync('git diff --staged --shortstat', GIT_OPTS).toString().trim();
+  if (!staged) {
+    if (addFailures) throw new Error(`gitCommit: nothing staged and ${addFailures} path(s) failed to stage — refusing to report a clean no-op ("${msg}")`);
+    console.log('  Nothing to commit.');
+    return;
+  }
+  console.log(`  staging: ${staged}`);
+
+  // COMMIT BEFORE MERGE.
+  execSync(`git commit -q -m "${msg}"`, GIT_OPTS);
+
+  for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
+    try { execSync('git merge --abort', GIT_OPTS); } catch (_) { /* none in progress */ }
+    try {
+      process.stdout.write(`  … fetch/merge/push (attempt ${attempt})\n`);
+      execSync('git fetch origin main', GIT_OPTS);
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT_OPTS);
+      execSync('git push origin main', GIT_OPTS);
+      console.log(`  ✔ ${msg}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
+      return;
+    } catch (e) {
+      if (attempt === PUSH_ATTEMPTS) {
+        throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${((e.stderr && e.stderr.toString()) || e.message).split('\n')[0]}`);
+      }
+      const wait = 1 + Math.floor(Math.random() * 91);   // pure jitter, decorrelates writers
+      console.log(`  … push attempt ${attempt} failed, retrying in ${wait}s`);
+      try { execSync(`sleep ${wait}`, { stdio: 'pipe', timeout: (wait + 30) * 1000 }); } catch (_) {}
+    }
   }
 }
 
