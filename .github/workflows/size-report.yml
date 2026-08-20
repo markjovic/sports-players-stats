@@ -994,82 +994,101 @@ jobs:
           }
 
           // ══ SECTION: grades ═════════════════════════════════════════════════════
-          // ARE THE STORED GRADE LISTS STALE? Entirely offline, zero API calls.
+          // CAN A SEASON'S TEAMS BE ENUMERATED AT ALL? Entirely offline, zero API calls.
           //
-          // Confirmed on one season 2026-08-19: EDJBA Winter 2026 (1ae60211) holds 55
-          // grades in sports-index, ALL of them named "* Grading", while discoverSeason
-          // returns 263 — the real competition grades. The season was captured during its
-          // pre-season grading phase and never re-read. A grading grade carries no ladder
-          // (it is not a competition), so `discover-fixtures` — which resolves teams from
-          // `discoverGrade.ladder` — got zero teams and logged "no ladder data" for the
-          // whole season, every week, indefinitely.
+          // ⚠️ THIS SECTION REPLACED A BADLY FRAMED ONE ON 2026-08-19, AND THE MISTAKE IS
+          // WORTH KEEPING. The first version counted seasons whose stored grade list is
+          // missing grade ids that our own held games reference, and reported 36% of
+          // seasons "provably stale" with 562,956 games affected. Both numbers were
+          // correct and the conclusion was worthless: those games ARE ON DISK. They
+          // arrived because discover-fixtures resolves teams from a ladder and then calls
+          // discoverTeamFixture PER TEAM, which returns that team's ENTIRE fixture
+          // regardless of grade. One team found in one indexed grade brings back every
+          // game it played, including games in grades the index never knew about. A short
+          // grade list is a bookkeeping inaccuracy, not data loss — and the very output
+          // that showed the staleness also showed the games present.
           //
-          // TWO OFFLINE SIGNALS, and the second is proof rather than suspicion:
-          //   1. Every stored grade is named "* Grading". Suggestive: the index was
-          //      written during the grading phase.
-          //   2. GAMES WE ALREADY HOLD reference a grade id the index does NOT list.
-          //      That cannot be anything but a stale list — the game is on disk, so the
-          //      grade demonstrably exists, and the index has never heard of it.
-          // Signal 2 needs no network and no assumption about naming.
+          // WHAT ACTUALLY COSTS DATA is narrower: a season where the indexed grades yield
+          // NO TEAMS, because then nothing is enumerated and no fixture is ever fetched.
+          // That is the EDJBA Winter 2026 case (1ae60211): all 55 indexed grades are
+          // "* Grading" grades, a grading grade returns `ladder: []` because it is not a
+          // competition, so the sweep found zero teams and logged "no ladder data" every
+          // week. The 263 real competition grades have never been in the index.
+          //
+          // OFFLINE PROXY, and its limits are stated rather than assumed: if NONE of a
+          // season's indexed grades appears among the grades its held games actually use,
+          // then nothing we hold came through the indexed path. That is the signature of a
+          // season whose enumeration route is dead. It cannot see a season where the route
+          // is dead AND we hold nothing at all — for those the "* Grading" count is the
+          // only offline signal, and EDJBA is exactly that case.
           if (want('grades')) {
-            console.log('══ ARE THE STORED GRADE LISTS STALE? ═════════════════════════════════');
-            let seasonsWithIdx = 0, allGrading = 0, someGrading = 0, noGrades = 0;
-            let seasonsWithUnknown = 0, unknownGradeIds = 0, gamesUnderUnknown = 0;
-            const rows = [];
+            console.log('══ CAN A SEASON\'S TEAMS BE ENUMERATED? ═══════════════════════════════');
+            let seasonsWithIdx = 0, noGrades = 0, allGrading = 0, someGrading = 0;
+            let deadRoute = 0, deadRouteGames = 0, partial = 0, fine = 0, noGamesHeld = 0;
+            const dead = [], grading = [];
             for (const [sid, meta] of Object.entries(idx)) {
-              const gs = Array.isArray(meta && meta.grades) ? meta.grades : [];
               seasonsWithIdx++;
-              if (!gs.length) { noGrades++; }
+              const gs = Array.isArray(meta && meta.grades) ? meta.grades : [];
               const names = gs.map(g => String((g && g.name) || ''));
               const gradingN = names.filter(n => /grading/i.test(n)).length;
-              if (gs.length && gradingN === gs.length) allGrading++;
+              const isAllGrading = gs.length > 0 && gradingN === gs.length;
+              if (isAllGrading) { allGrading++; grading.push({ sid: sid, meta: meta, gs: gs.length }); }
               else if (gradingN) someGrading++;
+              if (!gs.length) { noGrades++; continue; }
 
               const used = seasonGradeUse.get(sid);
-              if (!used) continue;
+              if (!used || !used.size) { noGamesHeld++; continue; }
               const known = new Set(gs.map(g => String((g && g.id) || '')).filter(Boolean));
-              let unk = 0, unkGames = 0;
-              for (const [gradeId, n] of used) {
-                if (known.has(gradeId)) continue;
-                unk++; unkGames += n;
+              let matched = 0, gamesUnderMatched = 0, totalGames = 0;
+              for (const [gradeId, nGames] of used) {
+                totalGames += nGames;
+                if (known.has(gradeId)) { matched++; gamesUnderMatched += nGames; }
               }
-              if (unk) {
-                seasonsWithUnknown++; unknownGradeIds += unk; gamesUnderUnknown += unkGames;
-                rows.push({ sid: sid, unk: unk, unkGames: unkGames, held: gs.length, used: used.size,
-                            allGrading: gs.length > 0 && gradingN === gs.length,
-                            locked: !!meta.locked,
+              if (matched === 0) {
+                deadRoute++; deadRouteGames += totalGames;
+                dead.push({ sid: sid, held: gs.length, used: used.size, games: totalGames,
+                            allGrading: isAllGrading, locked: !!meta.locked,
                             name: meta.fullName || meta.name || '?', org: meta.orgName || '?' });
+              } else if (matched < used.size) partial++;
+              else fine++;
+            }
+
+            console.log('  seasons in sports-index                    : ' + n(seasonsWithIdx));
+            console.log('    no grade list stored                     : ' + n(noGrades));
+            console.log('    grade list stored but we hold no games    : ' + n(noGamesHeld));
+            console.log('');
+            console.log('  OF SEASONS WE HOLD GAMES FOR — does the indexed grade list reach them?');
+            console.log('    at least one indexed grade is in use      : ' + n(fine + partial) + '   ← enumeration route WORKS');
+            console.log('      of those, index covers only some grades : ' + n(partial) + '   ← harmless: a team found in ONE grade returns its whole fixture');
+            console.log('    NO indexed grade is in use                : ' + n(deadRoute) + '  (' + pct(deadRoute, fine + partial + deadRoute) + '%)  ← nothing we hold came through the indexed path');
+            console.log('      games in those seasons                  : ' + n(deadRouteGames) + '   (arrived by other routes)');
+            console.log('');
+            console.log('  SEASONS WHOSE INDEXED GRADES ARE ALL "* Grading": ' + n(allGrading));
+            console.log('    A grading grade returns ladder:[] — not an error, it is not a competition.');
+            console.log('    These enumerate ZERO teams, so discover-fixtures fetches no fixtures for');
+            console.log('    them at all. This is the EDJBA Winter 2026 shape and it is the real fault.');
+            for (const g of grading.slice(0, TOP)) {
+              console.log('      ' + g.sid + '  ' + g.gs + ' grades, all grading' +
+                          (g.meta.locked ? ' [locked]' : ' [active]') + '  ' +
+                          (g.meta.fullName || g.meta.name || '?') + ' — ' + (g.meta.orgName || '?'));
+            }
+            if (dead.length) {
+              console.log('');
+              console.log('  SEASONS WHERE NO INDEXED GRADE IS IN USE (worst by games held):');
+              for (const d of dead.sort((a, b) => b.games - a.games).slice(0, TOP)) {
+                console.log('    ' + d.sid + '  index ' + String(d.held).padStart(4) + ' grades, games use ' +
+                            String(d.used).padStart(4) + ', overlap 0  · ' + n(d.games) + ' games held' +
+                            (d.allGrading ? ' [all grading]' : '') + (d.locked ? ' [locked]' : ' [active]') +
+                            '  ' + d.name + ' — ' + d.org);
               }
             }
-            console.log('  seasons in sports-index                : ' + n(seasonsWithIdx));
-            console.log('    holding NO grade list                : ' + n(noGrades));
-            console.log('    every stored grade named "* Grading" : ' + n(allGrading) + '   ← captured mid-grading, never re-read');
-            console.log('    some grading grades stored           : ' + n(someGrading));
             console.log('');
-            console.log('  PROOF OF STALENESS — games on disk under a grade the index does not list:');
-            console.log('    seasons affected                     : ' + n(seasonsWithUnknown) + '  (' + pct(seasonsWithUnknown, seasonsWithIdx) + '% of indexed seasons)');
-            console.log('    grade ids missing from the index      : ' + n(unknownGradeIds));
-            console.log('    games already held under them         : ' + n(gamesUnderUnknown));
-            console.log('');
-            console.log('  WORST SEASONS (by grade ids the index is missing):');
-            for (const r of rows.sort((a, b) => b.unk - a.unk).slice(0, TOP)) {
-              console.log('    ' + r.sid + '  index holds ' + String(r.held).padStart(4) + ' grades, games use ' + String(r.used).padStart(4) +
-                          ', MISSING ' + String(r.unk).padStart(4) + ' (' + n(r.unkGames) + ' games)' +
-                          (r.allGrading ? '  [all stored are GRADING]' : '') + (r.locked ? ' [locked]' : ' [active]') +
-                          '  ' + r.name + ' — ' + r.org);
-            }
-            console.log('');
-            console.log('  A season listed above is one where discover-fixtures resolves teams from grade');
-            console.log('  ids that are incomplete or wrong, so its sweeps under-collect indefinitely. The');
-            console.log('  fix is to re-read discoverSeason for those seasons and merge the grade list —');
-            console.log('  it returns the CURRENT grades, and returning more than the index holds is the');
-            console.log('  recovery route, not an error.');
-            console.log('');
-            console.log('  NOTE ON WHAT THIS CANNOT SEE: a season whose grades are stale but for which we');
-            console.log('  hold NO games under the missing grades shows up here only via the "* Grading"');
-            console.log('  count. EDJBA is exactly that case — 55 grading grades stored, 263 live, and the');
-            console.log('  games we do hold came through other routes. So treat the grading count as the');
-            console.log('  floor and the unknown-grade count as the proven minimum.');
+            console.log('  WHAT TO DO WITH THIS: the "* Grading" list is the actionable one — those');
+            console.log('  seasons cannot enumerate teams and never will until their grade list is');
+            console.log('  re-read. discover-seasons.js only refreshes grades for seasons at grades:[]');
+            console.log('  (L542), so a season that had grades at creation is never revisited. The');
+            console.log('  import from junior-footy-dashboard suggests discoverTeams(filter:{seasonID})');
+            console.log('  as a route that bypasses ladders entirely — UNTESTED on this tenant.');
             console.log('');
           }
 
