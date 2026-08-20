@@ -1,0 +1,53 @@
+# .github/workflows/probe-discover-teams.yml
+name: Probe Discover Teams
+
+# READ-ONLY. No writes, no commits, no data-write lock. A handful of API calls.
+#
+# THE FAULT IT IS TESTING A FIX FOR. discover-fixtures resolves a season's teams
+# from `discoverGrade.ladder`, and a GRADING grade returns `ladder: []` — not an
+# error, grading rounds are not a competition. A season whose indexed grades are
+# ALL grading grades therefore enumerates zero teams and never has a fixture
+# fetched. Measured offline 2026-08-19: exactly 7 seasons, 6 of them ACTIVE —
+#   1ae60211 EDJBA Winter 2026 (55 grading grades, 263 live)
+#   aacc7335 Camberwell CBL Winter 2026
+#   1c70d59d Diamond Valley Junior Domestic Spring 2026
+#   83a38877 Eltham Senior Domestic Spring 2026
+#   98dc2b10 BTBC Junior Community League Spring 2026
+#   e0f9dedc Respect Sports Open Spring 2026
+#   9358e51a Waverley Senior Domestic Spring 2023 [locked]
+#
+# The junior-footy-dashboard import records discoverTeams(filter:{seasonID}) as
+# returning every team in a season WITHOUT a ladder. If that holds here the
+# grading problem stops mattering. It is recorded as UNTESTED on this tenant, and
+# the reference also has discoverOrganisation working on `afl` while returning
+# null here — so cross-tenant behaviour is not assumed, it is measured.
+#
+# Defaults probe the two Winter 2026 offenders plus a control season known to
+# enumerate normally.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: 'Comma-separated season ids. Default: two broken seasons plus a working control.'
+        required: false
+        default: '1ae60211,aacc7335,7ccb2e98'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe discoverTeams
+        run: |
+          node --max-old-space-size=8192 scripts/probe-discover-teams.js --seasons=${{ inputs.seasons }}
