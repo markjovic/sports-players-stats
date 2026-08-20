@@ -78,7 +78,13 @@ const ARGS = Object.fromEntries(
 );
 
 const DRY_RUN       = !!ARGS['dry-run'];
-const TARGET_SEASON = ARGS.season || null;
+// COMMA-SEPARATED (2026-08-19). One season per dispatch meant seven checkouts of
+// a 6 GB repo — roughly 50 minutes of clone before any work — to sweep the seven
+// seasons the grading-grade fault had left empty. A list costs one.
+// Single-value `--season=<sid>` still works: it is a list of one.
+const TARGET_SEASONS = String(ARGS.season || '')
+  .split(',').map(x => x.trim()).filter(Boolean);
+const TARGET_SEASON_SET = TARGET_SEASONS.length ? new Set(TARGET_SEASONS) : null;
 const MAX_GAMES     = ARGS['max-games'] ? Math.max(1, parseInt(ARGS['max-games'], 10)) : 100000;
 // 2026-08-07 (--include-partial): widens the queue to games that ALREADY carry a
 // partial roster. This deliberately reverses the 2026-08-06 correction below FOR
@@ -600,7 +606,7 @@ function buildBackfillQueue(sportIndex) {
   const files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort();
   for (const fname of files) {
     const sid = fname.replace('.json', '');
-    if (TARGET_SEASON && sid !== TARGET_SEASON) continue;
+    if (TARGET_SEASON_SET && !TARGET_SEASON_SET.has(sid)) continue;
     tallies.files++;
     let gf;
     try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, fname), 'utf8')); } catch { continue; }
@@ -701,7 +707,13 @@ function evictCleanSeasons() {
 async function main() {
   const t0 = Date.now();
   console.log('spectator-backfill.js');
-  if (TARGET_SEASON) console.log(`  season:    ${TARGET_SEASON}`);
+  if (TARGET_SEASON_SET) {
+    console.log(`  seasons:   ${TARGET_SEASONS.length} — ${TARGET_SEASONS.join(', ')}`);
+    // Say which requested ids have no season file at all. A typo in a list of
+    // seven is otherwise invisible: the run just sweeps six and reports success.
+    const missing = TARGET_SEASONS.filter(x => !fs.existsSync(path.join(GAMES_DIR, `${x}.json`)));
+    if (missing.length) console.log(`  ⚠ no games/bv file for: ${missing.join(', ')} — nothing will be swept for these`);
+  }
   console.log(`  max-games: ${MAX_GAMES}`);
   if (DRY_RUN) console.log('  ⚠  DRY RUN — scan and report only: no API calls, no writes, no commits');
   console.log('─'.repeat(50));
