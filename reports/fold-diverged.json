@@ -1,50 +1,26 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-08-20T09:03:28.710Z",
+  "generatedAt": "2026-08-20T20:49:07.904Z",
   "dryRun": false,
-  "filesScanned": 421428,
-  "folded": 6,
+  "filesScanned": 421544,
+  "folded": 2,
   "promotes": 1,
-  "merges": 5,
-  "indexShardsTouched": 11,
-  "aliasEntriesScanned": 498108,
-  "aliasValuesRepointed": 0,
-  "aliasShardsTouched": 0,
+  "merges": 1,
+  "indexShardsTouched": 4,
+  "aliasEntriesScanned": 498229,
+  "aliasValuesRepointed": 3,
+  "aliasShardsTouched": 3,
   "entries": [
     {
-      "apiId": "21a2523e-5466-44fe-a70e-71ee161a8474",
+      "apiId": "004ceb9c-3f15-4e5f-8105-6d52496fcc47",
       "action": "merge",
-      "oldKey": "57cbba6b-2d97-408a-ae31-b3e0e0eb8ce4",
-      "keeper": "21a2523e-5466-44fe-a70e-71ee161a8474"
+      "oldKey": "330901a2-2873-401f-9a90-dd2b4e2e43e6",
+      "keeper": "004ceb9c-3f15-4e5f-8105-6d52496fcc47"
     },
     {
-      "apiId": "2fb32b1e-51d3-4c48-8cfb-dc71d24385aa",
-      "action": "merge",
-      "oldKey": "5aa7a967-5d64-463e-b85c-a1a4de3fc319",
-      "keeper": "2fb32b1e-51d3-4c48-8cfb-dc71d24385aa"
-    },
-    {
-      "apiId": "6b43b17f-108e-416b-9f80-b17c47d33cd7",
-      "action": "merge",
-      "oldKey": "6b8ad9c2-b4fe-4a41-864d-8f710aa8120e",
-      "keeper": "6b43b17f-108e-416b-9f80-b17c47d33cd7"
-    },
-    {
-      "apiId": "7ad84b3e-09ba-4893-b68f-3735103dc65a",
-      "action": "merge",
-      "oldKey": "6f8d075f-662c-4319-b884-34092b866304",
-      "keeper": "7ad84b3e-09ba-4893-b68f-3735103dc65a"
-    },
-    {
-      "apiId": "6adb6c75-ce3f-499c-9ae6-ce1cdc2d39d9",
+      "apiId": "5a0f1755-0dac-4da0-a99b-a514bd4e8545",
       "action": "promote",
-      "oldKey": "b6d7d7e5-d332-44d4-9aa7-fde927144532"
-    },
-    {
-      "apiId": "c685a1e2-1483-48d4-87d3-ac1e456f7717",
-      "action": "merge",
-      "oldKey": "f5da686e-7124-40d5-b861-b505ade32210",
-      "keeper": "c685a1e2-1483-48d4-87d3-ac1e456f7717"
+      "oldKey": "9593f147-ed2f-4514-912a-80dea7bb59cb"
     }
   ]
 }
