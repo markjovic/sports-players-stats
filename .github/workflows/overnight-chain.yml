@@ -1,0 +1,196 @@
+# .github/workflows/overnight-chain.yml
+name: Overnight Chain
+
+# ONE DISPATCH, FIVE STEPS, IN THE ONLY ORDER THAT WORKS. Built 2026-08-20 so the
+# sequence can be started and left.
+#
+# WHY THE ORDER IS NOT NEGOTIABLE — each step consumes what the previous produced:
+#   1. spectator-backfill   captures rosters for games that have none, and MARKS
+#                           paper-scored games with spcm (fixed 2026-08-20: the
+#                           "not electronically scored" message was being read as a
+#                           transport failure, so nothing was written and step 2
+#                           could never see them — it reported "Queue empty").
+#   2. discover-game-backfill  takes exactly those spcm-marked games to the
+#                           canonical record. Selects on `spcm > 0`, so it is
+#                           USELESS before step 1 and complete after it.
+#   3. build-player-games   turns rosters into player appearances. Nothing before
+#                           this changes a single player's games[].
+#   4. repair-players-batch ranks players by their GAP, which is only accurate once
+#                           step 3 has run. Running it earlier ranks on stale data.
+#   5. locked-season probe  read-only, last, because it answers a question for
+#                           tomorrow rather than feeding anything tonight.
+#
+# JOBS, NOT DISPATCHES. Each step is a job in THIS run, not a `gh workflow run`.
+# GitHub holds only ONE pending run per concurrency group, so a chain built from
+# dispatches can silently displace its own next link — the 2026-08-10 failure.
+# Sequential jobs share this run's single claim on the lock and cannot race.
+#
+# `if: ${{ !cancelled() }}` on every step after the first: a step that FAILS should
+# not stop the rest (a timed-out sweep still leaves work worth building on), but
+# cancelling the run should stop everything. `always()` would keep going after you
+# hit cancel; `success()` would abandon everything on one bad push.
+#
+# NO actions/setup-node in any job — several fetch playhq.com and setup-node
+# changes the runner's outbound fingerprint, causing CloudFront 403s (absolute
+# rule, applied uniformly here so no job can drift).
+
+on:
+  workflow_dispatch:
+    inputs:
+      min_age_days:
+        description: 'spectator-backfill: skip games younger than this. 7 suits in-progress seasons; 30 is the weekly default.'
+        required: false
+        default: '7'
+        type: string
+      min_gap:
+        description: 'repair-players-batch: only players short by at least this many games. 20 = the deep-gap tail (~2,300 players).'
+        required: false
+        default: '20'
+        type: string
+      fetch_concurrency:
+        description: 'repair-players-batch: profile fetches in flight. 8 is proven; it backs off on transport failures.'
+        required: false
+        default: '8'
+        type: string
+      skip_repair:
+        description: 'Stop after build-player-games. Use if you want the gap measured before anything is repaired.'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+# ONE claim on the lock for the whole chain. cancel-in-progress false: never kill a
+# half-written sweep.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  # ── 1 ───────────────────────────────────────────────────────────────────────
+  spectator:
+    name: 1. Spectator backfill (capture rosters, mark paper-scored)
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Spectator backfill
+        run: |
+          node --max-old-space-size=8192 scripts/spectator-backfill.js \
+            --max-games=100000 --min-age-days=${{ inputs.min_age_days }}
+
+  # ── 2 ───────────────────────────────────────────────────────────────────────
+  canonical:
+    name: 2. Discover game backfill (canonical record for paper-scored)
+    needs: spectator
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Discover game backfill
+        run: |
+          node --max-old-space-size=8192 scripts/discover-game-backfill.js \
+            --max-games=50000 --concurrency=5 --min-age-days=30
+
+  # ── 3 ───────────────────────────────────────────────────────────────────────
+  playergames:
+    name: 3. Build player games (rosters → appearances)
+    needs: canonical
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build player games
+        run: node --max-old-space-size=8192 scripts/build-player-games.js
+
+  # ── 4 ───────────────────────────────────────────────────────────────────────
+  repair:
+    name: 4. Repair players batch (close the deep-gap tail)
+    needs: playergames
+    if: ${{ !cancelled() && inputs.skip_repair != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repair players batch
+        env:
+          # The script arms its own push credential and re-arms on an auth failure
+          # (2026-08-16: the persisted one stopped working ~167 pushes into a run).
+          # Never echoed — it is written into an http.extraheader.
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node --max-old-space-size=8192 scripts/repair-players-batch.js \
+            --min-gap=${{ inputs.min_gap }} \
+            --concurrency=${{ inputs.fetch_concurrency }} \
+            --log-every=100 \
+            --retry-dead \
+            --apply
+
+  # ── 5 ───────────────────────────────────────────────────────────────────────
+  # READ-ONLY. Answers the open question of whether the enumeration gap that cost
+  # 9,557 games in active seasons also exists in the ~2,300 LOCKED ones. Dry run,
+  # so it writes nothing and can be read over breakfast.
+  locked-probe:
+    name: 5. Locked-season enumeration probe (READ-ONLY, dry run)
+    needs: playergames
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locked re-sweep, dry run
+        run: |
+          node --max-old-space-size=8192 scripts/discover-fixtures.js \
+            --locked-resweep --dry-run --concurrency=20
+
+  # ── tail ────────────────────────────────────────────────────────────────────
+  # Locked seasons may have been written above, and the archive origin serves them.
+  # Runs even if an earlier step failed, because a PARTIAL locked-season write still
+  # leaves the archive stale — that is exactly when the redeploy matters.
+  archive:
+    name: 6. Redeploy archive pages
+    needs: [repair, locked-probe]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14).
+        # Fails FAST on HTTP 4xx (bad input, missing workflow, bad token) because
+        # retrying those buries the real error; THROWS when attempts are exhausted.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 )); [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+
+      - name: Dispatch Deploy Archive Pages
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO: ${{ github.repository }}
+        run: /tmp/gh-dispatch.sh deploy-archive-pages.yml
