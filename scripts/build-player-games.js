@@ -61,13 +61,34 @@ function writeJson(p, d) { fs.writeFileSync(p, JSON.stringify(d), 'utf8'); }
 // commit's ~11,600 player files while the job stayed green. This script writes
 // players/ — the most contended path in the repo — so it needs the same retry
 // the other player-file writers use. A red job beats silently discarded work.
+// ── EVERY git CALL NEEDS A TIMEOUT AND A maxBuffer ───────────────────────────
+// 2026-08-20: a run hung after printing `staging: 1353 files changed` and never
+// produced another line. That message is emitted between `git diff --staged` and
+// `git commit`, so it was stuck inside one of the git commands below — and NOT in
+// the retry loop, which would have printed `push attempt N failed`.
+//
+// execSync is SYNCHRONOUS: it blocks the whole Node process, event loop included,
+// so nothing can time it out from the outside. `git fetch` and `git push` talk to
+// the network against a 6 GB repo. Without a timeout a stalled connection hangs
+// the job until the workflow ceiling kills it, with no output and no retry.
+//
+// A timeout makes execSync THROW, which the push-retry loop already handles: the
+// attempt fails and is retried with jitter. Same fix applied to
+// repair-players-batch.js on 2026-08-14 for the identical reason.
+//
+// maxBuffer too: the default is 1 MB and git output across 421k files can exceed
+// it. Not the cause here, but the same class of silent failure and free to close.
+const GIT_TIMEOUT_MS = 10 * 60 * 1000;
+const GIT_MAXBUF     = 512 * 1024 * 1024;
+const GIT_OPTS       = { cwd: ROOT, stdio: 'pipe', timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF };
+
 function gitCommit(message, paths) {
   if (DRY_RUN) return;
 
   let staged = 0;
   for (const p of paths) {
     try {
-      execSync(`git add -- ${p}`, { cwd: ROOT, stdio: 'pipe' });
+      execSync(`git add -- ${p}`, GIT_OPTS);
       staged++;
     } catch (e) {
       // Absent AND untracked (or ignored) — skip this path only.
@@ -82,7 +103,7 @@ function gitCommit(message, paths) {
   // --shortstat, not --stat: --stat prints a per-file line and scales with
   // file count (confirmed empirically 2026-07-10 — real ENOBUFS risk on a
   // repo this size), --shortstat stays a single small summary line.
-  const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+  const diff = execSync('git diff --staged --shortstat', GIT_OPTS).toString().trim();
   if (!diff) {
     // Legitimate: a player file already carrying the correct games[] is
     // rewritten byte-identically and therefore has nothing to commit.
@@ -93,18 +114,19 @@ function gitCommit(message, paths) {
 
   // COMMIT BEFORE MERGE — merging over uncommitted changes fails outright when
   // concurrent pushes touch the same files.
-  execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+  execSync(`git commit -q -m "${message}"`, GIT_OPTS);
 
   for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
     // Clear any wedged MERGE_HEAD before each attempt; a no-op when not mid-merge.
-    try { execSync('git merge --abort', { cwd: ROOT, stdio: 'pipe' }); } catch {}
+    try { execSync('git merge --abort', GIT_OPTS); } catch {}
     try {
-      execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
+      process.stdout.write(`  … fetch/merge/push (attempt ${attempt})\n`);
+      execSync('git fetch origin main', GIT_OPTS);
       // --no-stat: git merge prints a full diffstat by default (same ENOBUFS
       // class as --stat above) — scales with what's landed on main since the
       // last fetch, not with what this run is committing.
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
-      execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT_OPTS);
+      execSync('git push origin main', GIT_OPTS);
       console.log(`  ✔ ${message}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
       return;
     } catch (e) {
@@ -114,7 +136,8 @@ function gitCommit(message, paths) {
       // Pure random jitter, not linear/exponential — decorrelates concurrent writers.
       const wait = 1 + Math.floor(Math.random() * 91);
       console.log(`  … push attempt ${attempt} failed, retrying in ${wait}s`);
-      try { execSync(`sleep ${wait}`, { stdio: 'pipe' }); } catch {}
+      // Deliberately not GIT_OPTS: this is the backoff, not a git call.
+      try { execSync(`sleep ${wait}`, { stdio: 'pipe', timeout: (wait + 30) * 1000 }); } catch {}
     }
   }
 }
