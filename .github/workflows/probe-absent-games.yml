@@ -1,0 +1,56 @@
+# .github/workflows/probe-absent-games.yml
+name: Probe Absent Games
+
+# READ-ONLY. No writes, no commits, no data-write lock.
+#
+# THE LAST REAL GAP. 133,459 appearances remain missing across 51,846 players.
+# ~121,852 of those credits are for games NOT IN games/bv AT ALL and ~39,061 are
+# held games with an empty roster. No repair tool can touch either — the first
+# needs discovery, the second a capture sweep.
+#
+# Nothing has measured WHY the absent games are absent. size-missing-gids was
+# retired as tautological (T24), and synthesize-missing-games last ran 2026-08-07
+# finding 9, before the campaign surfaced this population.
+#
+# This asks PlayHQ what it credits a sample of gap-carrying players with, keeps
+# the games we do not hold, and splits them three ways:
+#   · season not in sports-index      → discover-seasons is missing competitions
+#   · season known, no games/bv file  → discover-fixtures never ran for it
+#   · season known and held           → a fixture gap: rounds or grades missing
+# Each has a different fix, and the split decides which tool to point at it. Top
+# seasons are listed with how many games we already hold, so a season missing 3 of
+# 8,000 reads differently from one missing 300 of 40.
+#
+# One API call per player, paced ~1.1s.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Players with a positive gap to probe (one API call each)'
+        required: false
+        default: '60'
+        type: string
+      seed:
+        description: 'Sampling seed — the same seed probes the SAME players'
+        required: false
+        default: '20260819'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe absent games
+        run: |
+          node --max-old-space-size=8192 scripts/probe-absent-games.js --sample=${{ inputs.sample }} --seed=${{ inputs.seed }}
