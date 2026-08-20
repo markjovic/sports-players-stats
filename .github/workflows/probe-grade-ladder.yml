@@ -1,0 +1,62 @@
+# .github/workflows/probe-grade-ladder.yml
+name: Probe Grade Ladder
+
+# READ-ONLY. No writes, no commits, no data-write lock. Two or three API calls.
+#
+# WHY. discover-fixtures resolves a season's teams from discoverGrade.ladder. On
+# 2026-08-19 it reported "Teams: 0 — no ladder data" for EDJBA Winter 2026
+# (1ae60211) across all 55 grades, and 2 teams across 16 grades for Camberwell
+# (aacc7335) — yet the ladder is visibly on PlayHQ:
+#   .../edjba-winter-2026/boys-u13-ar/cce1a7da/ladder  (13 rounds played)
+#
+# It logged `zero-team`, NOT `transient` — its own code reserves that for
+# every-call-null — so the calls SUCCEEDED and returned no ladder. Two candidates
+# with different fixes:
+#   A. sports-index holds grade ids that are not PlayHQ's. discoverGrade then
+#      answers about nothing, and the fault is in discover-seasons.
+#   B. the ladder field genuinely returns empty for these seasons — a query or
+#      schema problem in discover-fixtures.
+#
+# The probe queries a KNOWN-GOOD grade id whose ladder is live, asks
+# discoverSeason for the real grade list, diffs it against sports-index, and
+# queries the ids discover-fixtures actually used — printing the RAW response for
+# each. Both queries are copied verbatim from discover-fixtures.js, including
+# discoverSeason's `String!` (the tenant caveat), so this reproduces what that
+# script sends rather than something better.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Season id to diagnose'
+        required: false
+        default: '1ae60211'
+        type: string
+      grade:
+        description: 'A grade id whose ladder is visibly live on playhq.com (the control)'
+        required: false
+        default: 'cce1a7da'
+        type: string
+      grades:
+        description: 'How many sports-index grades to query for comparison'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe grade ladder
+        run: |
+          node scripts/probe-grade-ladder.js --season=${{ inputs.season }} --grade=${{ inputs.grade }} --grades=${{ inputs.grades }}
