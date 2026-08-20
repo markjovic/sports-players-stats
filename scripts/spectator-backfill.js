@@ -304,7 +304,23 @@ async function gqlSpectator(gameId) {
       const e0 = body.errors[0] || {};
       const code = (e0.extensions && (e0.extensions.code || e0.extensions.errorType)) || '';
       const msg  = String(e0.message || '').slice(0, 80);
-      const perm = /NOT_FOUND|NOT FOUND|does not exist|no such|invalid.*id|BAD_USER_INPUT/i.test(code + ' ' + msg);
+      // 2026-08-20: THE PATTERN MISSED PLAYHQ'S ACTUAL WORDING AND CREATED A
+      // PERMANENT LIMBO. The live message is
+      //   "game could not be found or was not electronically scored"
+      // with NO extensions.code at all (logged as `graphql:nocode:`). None of the
+      // patterns above match "could not be found", so `permanent` came back FALSE
+      // and the game was classed a TRANSPORT failure — nothing written, no spcm.
+      //
+      // That is the worst possible outcome, because the two paper-scored routes are
+      // wired in series: spectator-backfill re-queues the game on every run for
+      // ever, and discover-game-backfill selects on `spcm > 0` so it can NEVER see
+      // it. On 2026-08-20 a full sweep produced 2,935 games in exactly that state
+      // and the chained canonical-record run reported "Queue empty — nothing to do".
+      //
+      // "was not electronically scored" is a DATA FACT, not a network condition:
+      // the box was kept on paper and the live-scoring service will never have it.
+      // It belongs to the canonical record, and marking spcm is what hands it over.
+      const perm = /NOT_FOUND|NOT FOUND|does not exist|no such|invalid.*id|BAD_USER_INPUT|could not be found|not electronically scored/i.test(code + ' ' + msg);
       return { ok: false, permanent: perm, why: 'graphql:' + (code || 'nocode') + ':' + (msg || 'nomsg') };
     }
     const g = body.data?.game;
