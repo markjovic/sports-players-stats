@@ -76,7 +76,7 @@ on:
   workflow_dispatch:
     inputs:
       sections:
-        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps,consolidation,collisions'
+        description: 'Which sections to run: all, or a comma-separated list of misses,resweep,rosters,gaps,consolidation,collisions,grades'
         required: false
         default: 'all'
         type: string
@@ -112,7 +112,7 @@ jobs:
           const ROOT = process.env.SCAN_ROOT || '.';
           const TOP = Number(process.env.TOP || 15);
           const rawSections = String(process.env.SECTIONS || 'all').toLowerCase().trim();
-          const ALL = ['misses', 'resweep', 'rosters', 'gaps', 'consolidation', 'collisions'];
+          const ALL = ['misses', 'resweep', 'rosters', 'gaps', 'consolidation', 'collisions', 'grades'];
           // Old names still work — three of these tools were dispatched by name for
           // weeks and a rename should not silently run nothing.
           const ALIAS = { 'negative-gap': 'gaps', 'gap-players': 'gaps', 'repair-rosters': 'rosters' };
@@ -180,6 +180,9 @@ jobs:
           };
           const gameH = new Map();       // gid -> tid index (home)
           const gameA = new Map();       // gid -> tid index (away)
+          // Grade id referenced by each game, per season — the offline proof of a
+          // stale grade list (see the `grades` section).
+          const seasonGradeUse = new Map();   // sid -> Map(gradeId -> games)
 
           // ── ONE PASS over games/bv ────────────────────────────────────────────────
           const gamesDir = path.join(ROOT, 'games', 'bv');
@@ -234,6 +237,11 @@ jobs:
               gameFlags.set(gid, fl);
               gameSid.set(gid, si);
               if (g.gn) gradeSlug.set(gid, slugify(g.gn));
+              if (want('grades') && g.gid) {
+                let m = seasonGradeUse.get(sid);
+                if (!m) { m = new Map(); seasonGradeUse.set(sid, m); }
+                m.set(g.gid, (m.get(g.gid) || 0) + 1);
+              }
               if (want('consolidation')) {
                 gameH.set(gid, internTid(g.h));
                 gameA.set(gid, internTid(g.a));
@@ -982,6 +990,86 @@ jobs:
             console.log('  Note: this counts collisions between player FILES. Ids seen only in rosters —');
             console.log('  spectator-namespace ids that never became a file — are not counted here and');
             console.log('  could collide too, so this is a FLOOR on the problem, not a ceiling.');
+            console.log('');
+          }
+
+          // ══ SECTION: grades ═════════════════════════════════════════════════════
+          // ARE THE STORED GRADE LISTS STALE? Entirely offline, zero API calls.
+          //
+          // Confirmed on one season 2026-08-19: EDJBA Winter 2026 (1ae60211) holds 55
+          // grades in sports-index, ALL of them named "* Grading", while discoverSeason
+          // returns 263 — the real competition grades. The season was captured during its
+          // pre-season grading phase and never re-read. A grading grade carries no ladder
+          // (it is not a competition), so `discover-fixtures` — which resolves teams from
+          // `discoverGrade.ladder` — got zero teams and logged "no ladder data" for the
+          // whole season, every week, indefinitely.
+          //
+          // TWO OFFLINE SIGNALS, and the second is proof rather than suspicion:
+          //   1. Every stored grade is named "* Grading". Suggestive: the index was
+          //      written during the grading phase.
+          //   2. GAMES WE ALREADY HOLD reference a grade id the index does NOT list.
+          //      That cannot be anything but a stale list — the game is on disk, so the
+          //      grade demonstrably exists, and the index has never heard of it.
+          // Signal 2 needs no network and no assumption about naming.
+          if (want('grades')) {
+            console.log('══ ARE THE STORED GRADE LISTS STALE? ═════════════════════════════════');
+            let seasonsWithIdx = 0, allGrading = 0, someGrading = 0, noGrades = 0;
+            let seasonsWithUnknown = 0, unknownGradeIds = 0, gamesUnderUnknown = 0;
+            const rows = [];
+            for (const [sid, meta] of Object.entries(idx)) {
+              const gs = Array.isArray(meta && meta.grades) ? meta.grades : [];
+              seasonsWithIdx++;
+              if (!gs.length) { noGrades++; }
+              const names = gs.map(g => String((g && g.name) || ''));
+              const gradingN = names.filter(n => /grading/i.test(n)).length;
+              if (gs.length && gradingN === gs.length) allGrading++;
+              else if (gradingN) someGrading++;
+
+              const used = seasonGradeUse.get(sid);
+              if (!used) continue;
+              const known = new Set(gs.map(g => String((g && g.id) || '')).filter(Boolean));
+              let unk = 0, unkGames = 0;
+              for (const [gradeId, n] of used) {
+                if (known.has(gradeId)) continue;
+                unk++; unkGames += n;
+              }
+              if (unk) {
+                seasonsWithUnknown++; unknownGradeIds += unk; gamesUnderUnknown += unkGames;
+                rows.push({ sid: sid, unk: unk, unkGames: unkGames, held: gs.length, used: used.size,
+                            allGrading: gs.length > 0 && gradingN === gs.length,
+                            locked: !!meta.locked,
+                            name: meta.fullName || meta.name || '?', org: meta.orgName || '?' });
+              }
+            }
+            console.log('  seasons in sports-index                : ' + n(seasonsWithIdx));
+            console.log('    holding NO grade list                : ' + n(noGrades));
+            console.log('    every stored grade named "* Grading" : ' + n(allGrading) + '   ← captured mid-grading, never re-read');
+            console.log('    some grading grades stored           : ' + n(someGrading));
+            console.log('');
+            console.log('  PROOF OF STALENESS — games on disk under a grade the index does not list:');
+            console.log('    seasons affected                     : ' + n(seasonsWithUnknown) + '  (' + pct(seasonsWithUnknown, seasonsWithIdx) + '% of indexed seasons)');
+            console.log('    grade ids missing from the index      : ' + n(unknownGradeIds));
+            console.log('    games already held under them         : ' + n(gamesUnderUnknown));
+            console.log('');
+            console.log('  WORST SEASONS (by grade ids the index is missing):');
+            for (const r of rows.sort((a, b) => b.unk - a.unk).slice(0, TOP)) {
+              console.log('    ' + r.sid + '  index holds ' + String(r.held).padStart(4) + ' grades, games use ' + String(r.used).padStart(4) +
+                          ', MISSING ' + String(r.unk).padStart(4) + ' (' + n(r.unkGames) + ' games)' +
+                          (r.allGrading ? '  [all stored are GRADING]' : '') + (r.locked ? ' [locked]' : ' [active]') +
+                          '  ' + r.name + ' — ' + r.org);
+            }
+            console.log('');
+            console.log('  A season listed above is one where discover-fixtures resolves teams from grade');
+            console.log('  ids that are incomplete or wrong, so its sweeps under-collect indefinitely. The');
+            console.log('  fix is to re-read discoverSeason for those seasons and merge the grade list —');
+            console.log('  it returns the CURRENT grades, and returning more than the index holds is the');
+            console.log('  recovery route, not an error.');
+            console.log('');
+            console.log('  NOTE ON WHAT THIS CANNOT SEE: a season whose grades are stale but for which we');
+            console.log('  hold NO games under the missing grades shows up here only via the "* Grading"');
+            console.log('  count. EDJBA is exactly that case — 55 grading grades stored, 263 live, and the');
+            console.log('  games we do hold came through other routes. So treat the grading count as the');
+            console.log('  floor and the unknown-grade count as the proven minimum.');
             console.log('');
           }
 
