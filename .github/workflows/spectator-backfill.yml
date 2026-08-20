@@ -21,6 +21,11 @@ name: Spectator Backfill
 # the 2026-08-10 problem. The dispatched run enters the group while this one is
 # still in it and starts when this one ends.
 #
+# 2026-08-19 — `season` NOW TAKES A COMMA-SEPARATED LIST. One season per dispatch
+# meant seven checkouts of a 6 GB repo, roughly 50 minutes of clone before any work,
+# to sweep the seven seasons the grading-grade fault had left with no fixtures. A
+# list costs one checkout and one scan. `--season=<sid>` alone still works.
+#
 # NO actions/setup-node: this job fetches playhq.com and setup-node changes the
 # runner's outbound fingerprint, causing CloudFront 403s (absolute rule).
 
@@ -45,7 +50,7 @@ on:
         default: '100000'
         type: string
       season:
-        description: 'Restrict to one season id (optional)'
+        description: 'Restrict to these season ids — comma-separated, no spaces (e.g. 1ae60211,aacc7335). Blank = every season.'
         required: false
         default: ''
         type: string
@@ -55,7 +60,7 @@ on:
         default: false
         type: boolean
       min_age_days:
-        description: 'Skip games younger than this many days (spc freezes a box forever and fresh boxes may still be completing; the deferred tail self-drains on later dispatches). 0 disables.'
+        description: 'Skip games younger than this many days. The 30 default is right for the weekly tail but SKIPS A CURRENT SEASON almost entirely — use 7 when sweeping newly-discovered games in an in-progress season. spc freezes a box forever, so 0 risks freezing one still being entered.'
         required: false
         default: '30'
         type: string
