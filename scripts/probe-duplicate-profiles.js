@@ -397,12 +397,49 @@ async function main() {
   if (oneResolves.length) {
     console.log('  ══ ACTIONABLE: one side is not a PlayHQ profile ══════════════════');
     console.log('  KEEP the resolving uuid; the other file holds appearances that belong to it.');
+    // DEFENSIVE, because the 2026-08-21 run printed "Jack Brown (155 shared games)"
+    // with NO keep/drop lines under it. A silent gap in a list someone is going to
+    // ACT on is worse than a loud one: resolve each side once, say plainly when a
+    // side is missing, and never let a hole look like a formatting quirk.
+    let printGaps = 0;
     for (const x of oneResolves.slice(0, 40)) {
-      console.log('    ' + JSON.stringify(meta.get(x.keep).name) + '  (' + x.shared + ' shared games)');
-      console.log('      KEEP : ' + x.keep + '  games=' + meta.get(x.keep).games + ' gp=' + (meta.get(x.keep).gp ?? '—'));
-      console.log('      DROP : ' + x.drop + '  games=' + meta.get(x.drop).games + ' gp=' + (meta.get(x.drop).gp ?? '—'));
+      const k = meta.get(x.keep), d = meta.get(x.drop);
+      const label = (k && k.name) || (d && d.name) || '(name unavailable)';
+      console.log('    ' + JSON.stringify(label) + '  (' + x.shared + ' shared games)');
+      if (k) console.log('      KEEP : ' + x.keep + '  games=' + k.games + ' gp=' + (k.gp ?? '—'));
+      else { console.log('      KEEP : ' + x.keep + '  ⚠ NO PLAYER RECORD LOADED FOR THIS UUID'); printGaps++; }
+      if (d) console.log('      DROP : ' + x.drop + '  games=' + d.games + ' gp=' + (d.gp ?? '—'));
+      else { console.log('      DROP : ' + x.drop + '  ⚠ NO PLAYER RECORD LOADED FOR THIS UUID'); printGaps++; }
     }
-    if (oneResolves.length > 40) console.log('    … and ' + (oneResolves.length - 40) + ' more');
+    if (oneResolves.length > 40) console.log('    … and ' + (oneResolves.length - 40) + ' more — the FULL list is in the file below, not truncated');
+    if (printGaps) console.log('    ⚠ ' + printGaps + ' side(s) had no loaded player record — investigate before acting on this list');
+
+    // THE LIST MUST NOT ONLY EXIST AS LOG TEXT. The next step (writing aliases so a
+    // phantom's appearances move to the real profile before its file is removed)
+    // needs this as input, and parsing it back out of a truncated Actions log is
+    // how a wrong uuid gets acted on. Written as data, every pair, no cap.
+    try {
+      const outPath = path.join(ROOT, 'reports', 'duplicate-profile-pairs.json');
+      const payload = {
+        generated: new Date().toISOString(),
+        probed: done,
+        classification: Object.fromEntries(buckets),
+        actionable: oneResolves.map(x => ({
+          keep: x.keep, drop: x.drop, shared: x.shared,
+          keepName: (meta.get(x.keep) || {}).name || null,
+          dropName: (meta.get(x.drop) || {}).name || null,
+          keepGames: (meta.get(x.keep) || {}).games ?? null,
+          dropGames: (meta.get(x.drop) || {}).games ?? null,
+        })),
+      };
+      fs.mkdirSync(path.dirname(outPath), { recursive: true });
+      fs.writeFileSync(outPath, JSON.stringify(payload, null, 1));
+      console.log('');
+      console.log('  FULL LIST WRITTEN: reports/duplicate-profile-pairs.json (' + oneResolves.length + ' actionable pairs)');
+      console.log('  READ-ONLY as far as player data goes — this is a report, nothing in players/ or games/ is touched.');
+    } catch (e) {
+      console.log('  ⚠ could not write reports/duplicate-profile-pairs.json: ' + e.message);
+    }
   }
   console.log('');
   console.log('  HOW TO READ IT:');
