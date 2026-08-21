@@ -44,6 +44,11 @@ on:
         required: false
         default: '20260821'
         type: string
+      pace:
+        description: 'Milliseconds between calls. 700 cost 834 pairs to CloudFront on the first full run; 1500 is the floor. Raise if the wall is still hit.'
+        required: false
+        default: '1500'
+        type: string
 
 permissions:
   contents: read
@@ -59,8 +64,49 @@ jobs:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # The previous run wrote reports/duplicate-profile-pairs.json into the runner
+      # and the runner was destroyed — an hour of calls with nothing to show. This
+      # workflow has `contents: read` and commits nothing, so the OUTPUT MUST BE AN
+      # ARTIFACT or it does not exist.
+      - name: Restore previous verdict cache
+        uses: actions/download-artifact@v4
+        continue-on-error: true          # first run has nothing to restore
+        with:
+          name: duplicate-profile-verdicts
+          path: /tmp/cache
+
       - name: Probe duplicate profiles
         run: |
           ARGS="--sample=${{ inputs.sample }} --seed=${{ inputs.seed }}"
           if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all"; fi
+          ARGS="$ARGS --pace=${{ inputs.pace }}"
+          # Reload the verdict cache from the previous run's artifact, if there was
+          # one. Without this a re-dispatch re-asks the 4,677 profiles that already
+          # answered — an hour of calls to learn nothing new.
+          mkdir -p reports
+          if [ -f /tmp/cache/duplicate-profile-verdicts.json ]; then
+            cp /tmp/cache/duplicate-profile-verdicts.json reports/
+            echo "  restored verdict cache from the previous run"
+          fi
           node --max-old-space-size=8192 scripts/probe-duplicate-profiles.js $ARGS
+
+      - name: Upload the pair list and verdict cache
+        if: always()          # a timed-out run still has partial results worth keeping
+        uses: actions/upload-artifact@v4
+        with:
+          name: duplicate-profile-pairs
+          path: |
+            reports/duplicate-profile-pairs.json
+            reports/duplicate-profile-verdicts.json
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Upload verdict cache for the next run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: duplicate-profile-verdicts
+          path: reports/duplicate-profile-verdicts.json
+          retention-days: 30
+          overwrite: true
+          if-no-files-found: warn

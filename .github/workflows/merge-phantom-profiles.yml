@@ -1,0 +1,83 @@
+# .github/workflows/merge-phantom-profiles.yml
+name: Merge Phantom Profiles
+
+# WRITES. Takes the data-write lock. DRY RUN BY DEFAULT.
+#
+# WHAT IT FIXES. 2,895 pairs of player files hold the same games. The API probe
+# confirmed that in 1,924 of them one uuid is a real PlayHQ profile and the other
+# is not served at all — a phantom. They exist because spectator-backfill's stub
+# decision read "not in players/aliases" as "is canonical" and manufactured a
+# player file for whichever id it met first. Fixed at source 2026-08-21; this
+# clears what it already created.
+#
+# Tahlia Parker is the worked example: 20b2df06… resolves on PlayHQ, f806d1b6…
+# returns "problem getting the profile", and 378 of their 385 shared games carry
+# BOTH ids in the same p[] — one human counted twice everywhere.
+#
+# ORDER MATTERS AND IS NOT NEGOTIABLE:
+#   1. Alias every id that resolves to the phantom onto the REAL uuid.
+#   2. ONLY THEN remove the phantom file.
+# Deleting first would STRIP the appearances rather than move them — p[] holds the
+# id, and with no alias nothing maps it anywhere. If the job dies between the two,
+# the aliases are already correct and the orphan file is harmless.
+#
+# It never touches games/bv. The rosters keep both ids; the alias decides who they
+# resolve to. Reversible by editing the alias table back.
+#
+# REFUSES to act on: a pair the probe did not classify one-resolves-one-notfound, a
+# phantom whose ids already redirect somewhere else (someone else's decision), or a
+# pair whose KEEP file is missing.
+#
+# REQUIRES reports/duplicate-profile-pairs.json — the artifact from
+# probe-duplicate-profiles, committed to the repo first.
+#
+# AFTER --apply: run build-player-games, or games[] still reflects the old
+# resolution.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run reports exactly what apply would do and writes nothing. Read it before applying.'
+        required: false
+        default: 'dry-run'
+        type: choice
+        options: [dry-run, apply]
+      max:
+        description: 'Cap the number of pairs handled this run. 0 = all. Start small on the first apply.'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge phantom profiles
+        run: |
+          ARGS=""
+          if [ "${{ inputs.max }}" != "0" ] && [ -n "${{ inputs.max }}" ]; then ARGS="--max=${{ inputs.max }}"; fi
+          if [ "${{ inputs.mode }}" = "apply" ]; then
+            node --max-old-space-size=8192 scripts/merge-phantom-profiles.js $ARGS --apply
+          else
+            node --max-old-space-size=8192 scripts/merge-phantom-profiles.js $ARGS
+          fi
