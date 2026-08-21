@@ -1,0 +1,50 @@
+# .github/workflows/size-duplicate-profiles.yml
+name: Size Duplicate Profiles
+
+# READ-ONLY, offline, zero API calls. No writes, no commits, no data-write lock.
+#
+# WHY. On 2026-08-21 two StatTrack pages were opened side by side:
+#   Tahlia Parker  gp=389  games=1    Kilsyth Basketball
+#   Tahlia Parker  gp=388  games=386  Mt Lilydale Lakers (MLBC)
+# One person, TWO PlayHQ api ids, nothing linking them. Lara Hansen is the same
+# shape, and playhq_api_reference.md already records "api id believed unique but
+# untested" as a live risk.
+#
+# THIS IS NOT A GAP, AND REPAIRING IT MAKES IT WORSE. probe-player reports these as
+# plain "roster gaps" — the id genuinely absent from the team sheet — but the
+# person's OTHER identity IS in it. Appending puts two ids for one human in the
+# same roster, build-player-games resolves each to a different player record, and
+# the game lands in BOTH games[] arrays: a duplicated appearance in every
+# downstream count. The repair campaign's --retry-open was re-admitting exactly
+# these players.
+#
+# Measures three things: the SHAPE (credit without appearances), the PAIRING (same
+# name, one holds the appearances, corroborated by shared season/club or not), and
+# the DAMAGE (how many such identities the campaign has already appended to).
+#
+# Name matching is a HEURISTIC and the report says so — common names collide, and
+# name-only matches are counted separately from corroborated ones.
+
+on:
+  workflow_dispatch:
+    inputs:
+      top:
+        description: 'How many pairs to list, worst first'
+        required: false
+        default: '40'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Measure duplicate profiles
+        env:
+          TOP: ${{ inputs.top }}
+        run: node --max-old-space-size=8192 scripts/size-duplicate-profiles.js
