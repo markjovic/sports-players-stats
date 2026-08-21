@@ -1023,23 +1023,52 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
   // Write missing seasons and regs from API response.
   // Covers players whose profile stats came from the API but nightly crawl
   // never saw them in a spectator game (so player.seasons was never written).
+  // ⚠ THIS BLOCK USED TO WRITE `{ tid }` AND NOTHING ELSE — fixed 2026-08-21.
+  //
+  // The query above already asks for `seasonStatistics.name`, `team { id name }`
+  // and `grade { id name }`. Every one of them was fetched, parsed and thrown away,
+  // so a season written by this back-fill carried a season id and a team id and no
+  // words at all. StatTrack renders those rows as "." and "?" because there is
+  // nothing to render.
+  //
+  // Tahlia Parker (20b2df06-37f4-48a9-8477-1f6185bc7533) is the case that exposed
+  // it: 30 seasons, ONE with names — the one the nightly crawl happened to see in a
+  // spectator game — and 29 blank ones from this path. PlayHQ's own website shows
+  // teams and grades for all 389 of her games, so the data was never missing; we
+  // discarded it at the point of writing.
+  //
+  // NEVER OVERWRITE what the crawl wrote. The crawl sees the game and has the club
+  // and the team's display name; this response has the season and grade names. Fill
+  // only what is ABSENT, so a richer existing record is never degraded by a later
+  // stats fetch.
   if (!player.seasons) player.seasons = [];
   for (const season of (result.data.publicProfileStatistics?.seasonStatistics || [])) {
+    const seasonName = season?.name || null;         // e.g. "Winter 2026"
     for (const reg of (season.statistics || [])) {
       const sid = reg?.season?.id;
       if (!sid) continue;
       for (const teamStat of (reg.teamStatistics || [])) {
         const tid = teamStat.team?.id;
         if (!tid) continue;
+        const teamName = teamStat.team?.name || null;
+        // A team can appear in several grades in one season (regrading). Join the
+        // names rather than picking one, and never invent an order.
+        const gradeNames = [...new Set((teamStat.gradeStatistics || [])
+          .map(g => g?.grade?.name).filter(Boolean))];
+        const gradeIds = [...new Set((teamStat.gradeStatistics || [])
+          .map(g => g?.grade?.id).filter(Boolean))];
         let existingSeason = player.seasons.find(s => s.sid === sid);
         if (!existingSeason) {
           existingSeason = { sid, regs: [] };
           player.seasons.push(existingSeason);
         }
+        if (!existingSeason.sn && seasonName) existingSeason.sn = seasonName;
         if (!existingSeason.regs) existingSeason.regs = [];
-        if (!existingSeason.regs.find(r => r.tid === tid)) {
-          existingSeason.regs.push({ tid });
-        }
+        let r = existingSeason.regs.find(x => x.tid === tid);
+        if (!r) { r = { tid }; existingSeason.regs.push(r); }
+        if (!r.tn && teamName) r.tn = teamName;
+        if (!r.gn && gradeNames.length) r.gn = gradeNames.join(' / ');
+        if (!r.gid && gradeIds.length === 1) r.gid = gradeIds[0];
       }
     }
   }
