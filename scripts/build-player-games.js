@@ -201,6 +201,7 @@ console.log(`  ${allPrefixes.length} prefix dirs | ${donePrefixes.size} already 
 
 let updated = 0, skipped = 0, sinceCommit = 0;
 let totalUnreg = 0, playersWithUnreg = 0, totalUnmeasurable = 0;
+let unregWritten = 0, playersUnregWritten = 0;   // this run's delta, reported separately
 
 for (const prefix of pendingPrefixes) {
   const prefixDir = path.join(playersDir, prefix);
@@ -279,7 +280,17 @@ for (const prefix of pendingPrefixes) {
         unreg.push(`${gid}|${gsid}|${h ?? a ?? ''}`);
       }
     }
+    // ⚠ COUNT HERE, OUTSIDE THE WRITE BRANCH, FOR ALL THREE.
+    // On 2026-08-21 totalUnreg was incremented inside the write branch while
+    // totalUnmeasurable was incremented here, so the summary printed a DELTA
+    // (8,436 across 483 players — only the files that run happened to change)
+    // beside a TOTAL (137,382, every player), as though they were comparable.
+    // The data was correct; the report was not. A run that rewrites nothing must
+    // still report the true repo-wide figures, or the log is only readable on the
+    // one run that happens to touch everything.
     totalUnmeasurable += unmeasurable;
+    totalUnreg += unreg.length;
+    if (unreg.length) playersWithUnreg++;
     const existingU = player.u;
 
     // Skip only when BOTH fields already match — a player whose games[] is
@@ -301,8 +312,8 @@ for (const prefix of pendingPrefixes) {
 
     if (unreg.length > 0) player.u = unreg;
     else delete player.u;
-    totalUnreg += unreg.length;
-    if (unreg.length) playersWithUnreg++;
+    unregWritten += unreg.length;
+    if (unreg.length) playersUnregWritten++;
 
     if (!DRY_RUN) writeJson(playerPath, player);
     updated++;
@@ -342,7 +353,8 @@ console.log(`  Seasons scanned      : ${sids.length.toLocaleString()}`);
 console.log(`  Games processed      : ${totalGames.toLocaleString()}`);
 console.log(`  Player appearances   : ${totalAppearances.toLocaleString()}`);
 console.log(`  Unresolved p[] ids   : ${unresolved.toLocaleString()}`);
-console.log(`  Unregistered (u)     : ${totalUnreg.toLocaleString()} appearances across ${playersWithUnreg.toLocaleString()} players`);
+console.log(`  Unregistered (u)     : ${totalUnreg.toLocaleString()} appearances across ${playersWithUnreg.toLocaleString()} players  [repo total, not this run's delta]`);
+console.log(`    of which newly written this run: ${unregWritten.toLocaleString()} across ${playersUnregWritten.toLocaleString()} player file(s)`);
 console.log(`  Not emitted (unknown): ${totalUnmeasurable.toLocaleString()} appearances in seasons we hold NO registration for — cannot be called unregistered`);
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
 console.log(`  Player files skipped : ${skipped.toLocaleString()}`);
