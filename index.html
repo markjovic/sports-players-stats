@@ -76,6 +76,14 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .avi{width:44px;height:44px;border-radius:50%;background:var(--elevated);border:2px solid var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:700;color:var(--accent);flex-shrink:0}
 
 .cstats{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto}
+/* Recorded-appearance bar (2026-08-21). Sits UNDER .cstats, separated by a dashed
+   rule so it reads as a second source rather than another PlayHQ column. Accent
+   colour marks it as ours; PlayHQ's row stays full-brightness above it. */
+.recbar{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;
+  padding:7px 12px 9px;background:var(--surface);border-top:1px dashed var(--border)}
+.recbar-l{font-size:0.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.recbar-v{font-size:0.92rem;color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.recbar-n{font-size:0.66rem;color:var(--text2)}
 .cstat{flex:1;min-width:56px;padding:11px 6px;text-align:center;border-right:1px solid var(--border)}
 .cstat:last-child{border-right:none}
 .csv{font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
@@ -93,6 +101,8 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .sc-hdr:hover,.sc-hdr.open{background:#333}
 .sc-info{flex:1;min-width:0;padding:7px 12px 6px}
 .sc-name{font-size:0.83rem;font-weight:600}
+.sc-name-locked{color:var(--text2)}
+.sc-lock-pill{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;font-size:0.58rem;font-weight:700;letter-spacing:.04em;background:#333;color:#999;vertical-align:middle}
 .sc-grade{font-size:0.73rem;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:3px}
 .sc-grade:hover{opacity:0.8}
 .sc-regrade{font-size:0.68rem;color:var(--text3);margin-left:4px}
@@ -322,7 +332,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.73</span>
+      <span class="rail-ver">Beta 0.74</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -442,6 +452,22 @@ const S = {
 /* ── Helpers ── */
 async function gj(url){
   try{ const r=await fetch(url); return r.ok?await r.json():null; }catch{return null;}
+}
+/* Active/locked split (v0.74): per-season files (games/bv, team-stats/bv,
+   leaderboard/season) live on TWO Pages origins. archivedAt in sports-index is
+   set by graduate-seasons.yml only AFTER the season was probed LIVE on the
+   archive, so routing by it is safe. seasonBase is the single choke point for
+   any future origin sharding. sgj retries a miss ONCE on the other origin
+   (covers a stale index in a long-lived tab, in both directions). */
+const ARCH = 'https://markjovic.github.io/sports-players-stats-archive';
+function seasonBase(sid){
+  return (S.idx?.seasons?.[sid]?.archivedAt) ? ARCH : BASE;
+}
+async function sgj(dir,sid){
+  const primary=seasonBase(sid);
+  const d=await gj(primary+'/'+dir+'/'+sid+'.json');
+  if(d!==null)return d;
+  return gj((primary===ARCH?BASE:ARCH)+'/'+dir+'/'+sid+'.json');
 }
 const el = id => document.getElementById(id);
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
@@ -857,7 +883,7 @@ function recEntry(e,rank,cat){
   return`<div class="rec-entry" ${click}><div class="rec-rank">${rank}</div><div class="rec-val">${val}</div><div><div class="rec-detail">${detail}</div><div class="rec-sub">${sub}</div></div></div>`;
 }
 async function openRecordGame(sid,gameKey){
-  if(!S.games[sid])S.games[sid]=await gj(BASE+'/games/bv/'+sid+'.json');
+  if(!S.games[sid])S.games[sid]=await sgj('games/bv',sid);
   const g=S.games[sid]?.[gameKey];
   if(g)openGame(gameKey,g,null,sid);
 }
@@ -1054,12 +1080,18 @@ function renderPlayer(p){
     <div class="vsub">${esc([p.gender,club].filter(Boolean).join(' \u00b7 '))}</div>
     ${isPrivate(p)?'':`<a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener" style="display:inline-flex;margin:4px 0 0;padding:3px 8px;font-size:0.72rem">View on PlayHQ \u2197</a>`}
     </div></div>`;
+  // A PRIVATE profile publishes no statistics, so every OFFICIAL cell shows an em
+  // dash rather than 0 (decision 2026-08-21). A zero is a claim that they played
+  // none and scored none; a dash says PlayHQ publishes nothing. 3,140 players
+  // currently read as though they never played. The recorded-appearance line below
+  // is then the only figure they carry, which is the point of showing it.
+  const OFF=v=>isPrivate(p)?'\u2014':v;
   h+=`<div class="cstats">
-    <div class="cstat"><div class="csv">${gp}</div><div class="csl">GP</div></div>
-    <div class="cstat"><div class="csv">${pts}</div><div class="csl">PTS</div></div>
-    <div class="cstat"><div class="csv">${avg(pts,gp)}</div><div class="csl">PPG</div></div>
-    <div class="cstat"><div class="csv">${tp}</div><div class="csl">3PT</div></div>
-    <div class="cstat"><div class="csv">${fouls}</div><div class="csl">F</div></div>${foulOuts>0?`
+    <div class="cstat"><div class="csv">${OFF(gp)}</div><div class="csl">GP</div></div>
+    <div class="cstat"><div class="csv">${OFF(pts)}</div><div class="csl">PTS</div></div>
+    <div class="cstat"><div class="csv">${OFF(avg(pts,gp))}</div><div class="csl">PPG</div></div>
+    <div class="cstat"><div class="csv">${OFF(tp)}</div><div class="csl">3PT</div></div>
+    <div class="cstat"><div class="csv">${OFF(fouls)}</div><div class="csl">F</div></div>${foulOuts>0?`
     <div class="cstat"><div class="csv">${foulOuts}</div><div class="csl">FO</div></div>`:''}${careerW||careerL?`
     <div class="cstat"><div class="csv" style="font-size:0.75rem;display:flex;gap:4px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${careerW?`<span style="color:var(--win)">${careerW}W</span>`:''}${careerL?`<span style="color:var(--loss)">${careerL}L</span>`:''}${careerD?`<span style="color:var(--draw)">${careerD}D</span>`:''}</div><div class="csl">${winPct??''}</div></div>`:''}${finals>0?`
     <div class="cstat"><div class="csv">${finals}</div><div class="csl">Finals</div></div>`:''}${gfApps>0?`
@@ -1067,6 +1099,34 @@ function renderPlayer(p){
     <div class="cstat"><div class="csv">${gfWins}</div><div class="csl">GFW</div></div>`:''}${finalsPS!==null?`
     <div class="cstat"><div class="csv">${finalsPS.toFixed(2)}</div><div class="csl">F/Ssn</div></div>`:''}
   </div>`;
+  // ── OFFICIAL vs RECORDED (design decision 2026-08-21) ──────────────────────
+  // Two independent numbers live on every player and nothing reconciled them:
+  //   cs.gp      PlayHQ's credited career total (summed from reg.stats.gp)
+  //   p.games[]  appearances built from p[] team sheets
+  // For 39,834 non-private players games[] is LARGER, by 82,424 appearances. The
+  // rosters were verified against PlayHQ's own API on 2026-08-18 and
+  // publicProfileTeams confirms no registration exists for those teams, so both
+  // numbers are right — a fill-in plays a real game for a team they never joined.
+  //
+  // PlayHQ stays canonical: its row above is unmodified and no leaderboard changes
+  // source. This line sits BESIDE it. It is free — games[].length is already loaded
+  // — and exact, which is why only APPEARANCES appear here. Recorded SCORING needs
+  // every box score fetched through the Worker, so it belongs on the season card
+  // where a fetch already happens.
+  //
+  // Private profiles: cstats renders \u2014 for every official stat rather than 0,
+  // because a zero claims they played none while a dash says PlayHQ publishes
+  // nothing. This line is then the only figure they have.
+  const recApps=Array.isArray(p.games)?p.games.length:0;
+  if(recApps||isPrivate(p)){
+    const uncredited=recApps-gp;
+    h+=`<div class="recbar">
+      <span class="recbar-l">Recorded appearances</span>
+      <span class="recbar-v">${recApps}</span>${(!isPrivate(p)&&uncredited>0)?`
+      <span class="recbar-n">\u00b7 ${uncredited} not credited by PlayHQ</span>`:''}${isPrivate(p)?`
+      <span class="recbar-n">\u00b7 from published team sheets</span>`:''}
+    </div>`;
+  }
   h+=renderFinalsPanel(cs,{fo:foulOuts>0,rec:!!(careerW||careerL),fin:finals>0,gf:gfApps>0,gfw:gfWins>0,fssn:finalsPS!==null});
   if(upcoming.length){
     h+=`<div class="upsec"><div class="uplbl">\u26a1 Upcoming</div>`;
@@ -1110,13 +1170,16 @@ function renderPlayer(p){
     // Medal keys off this season's reg stats ONLY. A career fallback here painted the
     // GF-winner medal on every season a winner ever played. Per-reg data is authoritative.
     const medal=st.gfWins>0?' \ud83e\udd47':st.gfApps>0?' \ud83e\udd48':st.finals>0?' \ud83e\udd49':'';
+    // Locked marker keys on locked ONLY — never archivedAt: where a season is
+    // SERVED from must stay invisible in the interface.
+    const sLocked=S.idx?.seasons?.[sn.sid]?.locked===true;
     h+=`<div class="sc">
       <div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
         <div class="sc-info" class="sc-info">
           <div style="display:flex;align-items:flex-start;gap:5px">
             <span class="chev" style="flex-shrink:0;margin-top:3px">\u25b6</span>
             <div style="min-width:0">
-              <div class="sc-name">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}${medal}</div>
+              <div class="sc-name${sLocked?' sc-name-locked':''}">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}${medal}${sLocked?' <span class="sc-lock-pill">LOCKED</span>':''}</div>
               <div>${teamLink}</div>
             </div>
           </div>
@@ -1149,7 +1212,7 @@ async function toggleGames(hdr){
   const sid=sn.sid;
   const uuid=S.playerUuid;
   ge.innerHTML='<div class="load-row">Loading games\u2026</div>';
-  if(!S.games[sid]){const d=await gj(BASE+'/games/bv/'+sid+'.json');S.games[sid]=d||{games:{}};}
+  if(!S.games[sid]){const d=await sgj('games/bv',sid);S.games[sid]=d||{games:{}};}
   const all=S.games[sid]?.games||{};
   const pg=Object.entries(all)
     .filter(([,g])=>(g.h===tid||g.a===tid)&&(g.p||[]).some(p=>matchP(p.id,uuid)))
@@ -1211,7 +1274,7 @@ function buildSeasonPicker(){
     return parseInt(yb)-parseInt(ya);
   });
   const sel=el('q-sn');
-  sel.innerHTML='<option value="">Select season\u2026</option>'+sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' \u25cf':''}</option>`).join('');
+  sel.innerHTML='<option value="">Select season\u2026</option>'+sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' \u25cf':' \ud83d\udd12'}</option>`).join('');
 }
 async function loadTeamIdx(){if(!S.teamIdx){S.teamIdx=await gj(BASE+'/data/team-index.json')||{};}}
 async function searchTeams(q){
@@ -1236,7 +1299,7 @@ async function loadTeam(tid,sid){
   showV('view-team');
   const ve=el('view-team');ve.innerHTML='<div class="load-row">Loading\u2026</div>';
   S.teamId=tid;S.teamSid=sid;
-  if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
+  if(!S.teamStats[sid]){const d=await sgj('team-stats/bv',sid);S.teamStats[sid]=d||{};}
   const td=S.teamStats[sid]?.[tid];
   if(!td){ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button><div><div class="vtitle">Team not found</div></div></div>`;return;}
   renderTeam(td,tid,sid);
@@ -1317,7 +1380,7 @@ function renderTeam(td,tid,sid){
     if(r.dataset.result){openSheet(gid2,sid2);return;}
     // Upcoming — open team opp view; need team IDs from game file
     (async()=>{
-      if(!S.games[sid2]){const d=await gj(BASE+'/games/bv/'+sid2+'.json');S.games[sid2]=d||{games:{}};}
+      if(!S.games[sid2]){const d=await sgj('games/bv',sid2);S.games[sid2]=d||{games:{}};}
       const g2=S.games[sid2]?.games?.[gid2];
       if(g2&&g2.h&&g2.a){openTeamOpp(g2.h,g2.a,sid2,true);}
       else if(g2){openSheet(gid2,sid2);}
@@ -1347,7 +1410,7 @@ async function buildVenueSeasonPicker(){
     return parseInt(yb)-parseInt(ya);
   });
   const sel=el('q-vsn');
-  sel.innerHTML='<option value="">All seasons</option>'+sorted.map(s=>`<option value="${esc(JSON.stringify(s.sids))}">${esc(s.name)}${s.active?' \u25cf':''}</option>`).join('');
+  sel.innerHTML='<option value="">All seasons</option>'+sorted.map(s=>`<option value="${esc(JSON.stringify(s.sids))}">${esc(s.name)}${s.active?' \u25cf':' \ud83d\udd12'}</option>`).join('');
 }
 async function onVenueSeasonChange(){
   const val=el('q-vsn').value;
@@ -1568,7 +1631,7 @@ async function openSheet(gid,sid){
   const ov=el('sov'),sb=el('sh-body'),tt=el('sh-title');
   sb.innerHTML='<div class="load-row">Loading\u2026</div>';
   ov.classList.add('open');
-  if(!S.games[sid]){const d=await gj(BASE+'/games/bv/'+sid+'.json');S.games[sid]=d||{games:{}};}
+  if(!S.games[sid]){const d=await sgj('games/bv',sid);S.games[sid]=d||{games:{}};}
   const g=S.games[sid]?.games?.[gid];
   if(!g){sb.innerHTML='<div class="load-row">Game not found.</div>';return;}
   tt.textContent=g.rn||'Game';
@@ -1835,7 +1898,7 @@ async function openOpp(oppTid,sid,fromUuid){
   const ve=el('view-opp');
   ve.innerHTML='<div class="load-row">Loading…</div>';
   // Load opposing team roster
-  if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
+  if(!S.teamStats[sid]){const d=await sgj('team-stats/bv',sid);S.teamStats[sid]=d||{};}
   const td=S.teamStats[sid];
   const oppTeam=td?.[oppTid];
   const oppRoster=Object.keys(oppTeam?.roster||{});
@@ -1922,7 +1985,7 @@ async function resolveOppGames(r,myGameSet){
     const sids=[...new Set((myPlayer?.seasons||[]).map(sn=>sn.sid).filter(Boolean))];
     for(const sid of sids){
       if(!unmapped.length)break;
-      if(!S.games[sid])S.games[sid]=await gj(BASE+'/games/bv/'+sid+'.json')||{games:{}};
+      if(!S.games[sid])S.games[sid]=await sgj('games/bv',sid)||{games:{}};
       for(const gid of Object.keys(S.games[sid]?.games||{})){
         if(unmapped.includes(gid))gidSid[gid]=sid;
       }
@@ -1969,7 +2032,7 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
   showV('view-opp');
   const ve=el('view-opp');
   ve.innerHTML='<div class="load-row">Loading…</div>';
-  if(!S.teamStats[sid]){const d=await gj(BASE+'/team-stats/bv/'+sid+'.json');S.teamStats[sid]=d||{};}
+  if(!S.teamStats[sid]){const d=await sgj('team-stats/bv',sid);S.teamStats[sid]=d||{};}
   const td=S.teamStats[sid];
   const myTeam=td?.[myTid];const oppTeam=td?.[oppTid];
   const myName=myTeam?.meta?.name||'Team A';const oppName=oppTeam?.meta?.name||'Team B';
@@ -2167,7 +2230,7 @@ async function buildLBSeasonPicker(){
   });
   const sel=el('lb-season');
   sel.innerHTML='<option value="all">All-time</option>'+
-    sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' •':''}</option>`).join('');
+    sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' •':' \ud83d\udd12'}</option>`).join('');
 }
 
 function switchLBStat(stat){
@@ -2267,7 +2330,7 @@ async function loadLB(){
     if(!S.lbRaw)S.lbRaw={};
     const parts=await Promise.all(sids.map(async sid=>{
       if(!S.lbRaw[sid]){
-        const raw=await gj(BASE+'/leaderboard/season/'+sid+'.json');
+        const raw=await sgj('leaderboard/season',sid);
         S.lbRaw[sid]=(raw&&raw.players)||{};
       }
       // Compute per-sid first, then concatenate below — NOT a merge-by-id
@@ -2430,8 +2493,8 @@ async function buildOppStats(uuid, btn) {
   // Load all season game files and team-stats (needed to classify g.p[] players by side)
   const sids = [...new Set((player.seasons || []).map(s => s.sid).filter(Boolean))];
   for (const sid of sids) {
-    if (!S.games[sid])     S.games[sid]     = await gj(BASE + '/games/bv/' + sid + '.json')     || { games: {} };
-    if (!S.teamStats[sid]) S.teamStats[sid]  = await gj(BASE + '/team-stats/bv/' + sid + '.json') || {};
+    if (!S.games[sid])     S.games[sid]     = await sgj('games/bv', sid)     || { games: {} };
+    if (!S.teamStats[sid]) S.teamStats[sid]  = await sgj('team-stats/bv', sid) || {};
   }
 
   // For each game the player was in, tally opponents and results
