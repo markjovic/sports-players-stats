@@ -260,6 +260,61 @@ async function refreshSession() {
 //                                           retirement, or the weekly cron will
 //                                           quietly delete games from the queue
 //                                           on every bad network minute.
+// ── IS THIS ID AN API PROFILE? ───────────────────────────────────────────────
+// The stub decision below used to be: resolveToFullUuid() returned the id
+// unchanged, therefore the id is canonical, therefore create a player file for it.
+// That is a lookup in players/aliases, and ABSENCE FROM A TABLE IS NOT EVIDENCE OF
+// ANYTHING. Since the alias builders (build-alias-index.js, build-alias-inverse.js)
+// were deleted as migration-era tools, the only thing that writes new aliases is
+// fetch-profile-stats.js — so discovery routinely runs ahead of aliasing, and every
+// spectator id that arrived first became a player file.
+//
+// Measured 2026-08-21: 2,895 pairs of same-named player files, 122,866 duplicated
+// appearances. Tahlia Parker is the worked example — 378 of her 385 shared games
+// carry BOTH `20b2df06-37f4` (her real api profile) and `f806d1b6-f87f` (a spectator
+// id that got stubbed) in the same p[]. PlayHQ serves the first and returns
+// "There was a problem getting the profile" for the second.
+//
+// The design was always one file per API-CANONICAL uuid, with spectator ids
+// recorded on it so their appearances resolve to the right person. This restores
+// that: ASK PlayHQ before manufacturing a person. One call per genuinely-new id
+// (115 in the 2026-08-20 sweep), and only for ids never seen before.
+const PROFILE_EXISTS_QUERY = `query ProfileSeasonStatistics($profileID: ID!) {
+  publicProfileStatistics(profileID: $profileID) { seasonStatistics { name } }
+}`;
+
+// 'api' | 'not-api' | 'unknown'. `unknown` is a TRANSPORT outcome and must never be
+// treated as either answer — on unknown the id is deferred, not stubbed and not
+// aliased, so a throttle can never invent or discard a player.
+async function isApiProfile(uuid) {
+  if (!sessionCookie) await refreshSession();
+  let res;
+  try {
+    res = await doFetch(API_URL,
+      { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: PROFILE_EXISTS_QUERY },
+      { ...HEADERS_MAIN, 'Cookie': sessionCookie });
+  } catch (e) { return 'unknown'; }
+  // doFetch returns `body` ALREADY PARSED (null when the response is not JSON) and
+  // the unparsed text as `rawText` — read both from the right field.
+  const raw = res.rawText || '';
+  if (res.status === 403) {
+    // A private profile EXISTS — it just withholds statistics. Treat as api, or
+    // every private player would be refused a file. CloudFront blocks are HTML.
+    if (/DOCTYPE|Request blocked/i.test(raw)) return 'unknown';
+    return 'api';
+  }
+  if (res.status === 404) return 'not-api';
+  if (res.status < 200 || res.status >= 300) return 'unknown';
+  const j = res.body;
+  if (!j) return 'unknown';
+  if (j.errors && j.errors.length) {
+    const m = String(j.errors[0].message || '');
+    if (/NOT_FOUND|failed to find profile/i.test(m)) return 'not-api';
+    return 'unknown';
+  }
+  return (j.data && j.data.publicProfileStatistics !== undefined) ? 'api' : 'not-api';
+}
+
 async function gqlSpectator(gameId) {
   if (!sessionCookie) await refreshSession();
   const query = `query game($id: ID!) {
@@ -964,6 +1019,51 @@ async function main() {
       }
     }
   }
+
+  // ── VERIFY BEFORE MANUFACTURING A PERSON ─────────────────────────────────────
+  // Every id here is one the alias table does not know. That is NOT the same as it
+  // being an api-canonical profile, and treating the two as equivalent is what
+  // produced 2,895 duplicate player files. Ask PlayHQ, once per id.
+  //
+  //   api      → a real profile. Stub it, exactly as before.
+  //   not-api  → a SPECTATOR id. Never gets a file. Its appearances belong to some
+  //              api profile we cannot name yet, so it is recorded for the alias
+  //              work rather than silently dropped.
+  //   unknown  → transport. DEFER: no file, no alias, no record of a decision. It
+  //              returns as genuinely-new on the next run and is asked again. A
+  //              throttle must never invent a player NOR discard one.
+  const verified = new Map();          // uuid -> name, confirmed api profiles only
+  const notApi = [];                   // spectator ids that must not become files
+  let deferred = 0;
+  if (genuinelyNew.size) {
+    console.log(`Verifying ${genuinelyNew.size} new id(s) against the profile API…`);
+    for (const [uuid, name] of genuinelyNew) {
+      const verdict = await isApiProfile(uuid);
+      if (verdict === 'api') verified.set(uuid, name);
+      else if (verdict === 'not-api') notApi.push({ uuid, name });
+      else deferred++;
+      await sleep(250);                // one call per NEW player only — 115 in the 2026-08-20 sweep
+    }
+    console.log(`  confirmed api profiles : ${verified.size}`);
+    console.log(`  NOT api profiles       : ${notApi.length}   ← spectator ids; no file written`);
+    if (deferred) console.log(`  deferred (transport)   : ${deferred}   ← asked again next run`);
+    for (const x of notApi.slice(0, 10)) console.log(`      not-api: ${x.uuid} ${JSON.stringify(x.name)}`);
+    if (notApi.length > 10) console.log(`      … and ${notApi.length - 10} more`);
+    // Recorded so the alias work has a worklist. A report, never a player file.
+    if (notApi.length) {
+      try {
+        const p = path.join(ROOT, 'reports', 'unaliased-spectator-ids.json');
+        let prev = {};
+        try { prev = JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) {}
+        for (const x of notApi) prev[x.uuid] = { name: x.name, seen: new Date().toISOString() };
+        fs.mkdirSync(path.dirname(p), { recursive: true });
+        fs.writeFileSync(p, JSON.stringify(prev, null, 1));
+        console.log(`  recorded in reports/unaliased-spectator-ids.json (${Object.keys(prev).length} total)`);
+      } catch (e) { console.log(`  ⚠ could not record unaliased ids: ${e.message}`); }
+    }
+  }
+  genuinelyNew.clear();
+  for (const [k, v] of verified) genuinelyNew.set(k, v);
 
   // ── New player stubs — nightly-crawl.js Phase 4, verbatim ────────────────────
   console.log(`New player stubs (${genuinelyNew.size})…`);
