@@ -38,11 +38,6 @@ on:
         required: false
         default: '8'
         type: string
-      concurrency:
-        description: 'Profile fetches in flight. The script DEFAULTS TO 1 and this input did not exist before 2026-08-21, so every run so far crawled at ~27 players/min — a 29,538-player run projected 17 HOURS. 8 is the proven value and it backs off on transport failures. Capped at 25.'
-        required: false
-        default: '8'
-        type: string
       retry_open:
         description: 'Re-admit players marked done whose gap is STILL open. "done" has only ever meant PROCESSED — a player short 190 games was excluded for ever. Leave ON.'
         required: false
