@@ -76,6 +76,22 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        # Matched to spectator-backfill.yml: an explicit ref, a shallow fetch, and
+        # a token so the push credential is persisted. A bare checkout is what made
+        # repair-players-batch arm its own credential on 2026-08-16.
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        # Copied from spectator-backfill.yml / discover-fixtures.yml. Omitting this
+        # cost a run on 2026-08-20: build-player-games reached 8/256 prefixes and
+        # died on `Author identity unknown` — a job-level setting no script carries
+        # for itself, and one I did not carry over when building this chain.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Spectator backfill
         run: |
           node --max-old-space-size=8192 scripts/spectator-backfill.js \
@@ -90,6 +106,22 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        # Matched to spectator-backfill.yml: an explicit ref, a shallow fetch, and
+        # a token so the push credential is persisted. A bare checkout is what made
+        # repair-players-batch arm its own credential on 2026-08-16.
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        # Copied from spectator-backfill.yml / discover-fixtures.yml. Omitting this
+        # cost a run on 2026-08-20: build-player-games reached 8/256 prefixes and
+        # died on `Author identity unknown` — a job-level setting no script carries
+        # for itself, and one I did not carry over when building this chain.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Discover game backfill
         run: |
           node --max-old-space-size=8192 scripts/discover-game-backfill.js \
@@ -104,6 +136,22 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        # Matched to spectator-backfill.yml: an explicit ref, a shallow fetch, and
+        # a token so the push credential is persisted. A bare checkout is what made
+        # repair-players-batch arm its own credential on 2026-08-16.
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        # Copied from spectator-backfill.yml / discover-fixtures.yml. Omitting this
+        # cost a run on 2026-08-20: build-player-games reached 8/256 prefixes and
+        # died on `Author identity unknown` — a job-level setting no script carries
+        # for itself, and one I did not carry over when building this chain.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Build player games
         run: node --max-old-space-size=8192 scripts/build-player-games.js
 
@@ -116,6 +164,22 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        # Matched to spectator-backfill.yml: an explicit ref, a shallow fetch, and
+        # a token so the push credential is persisted. A bare checkout is what made
+        # repair-players-batch arm its own credential on 2026-08-16.
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        # Copied from spectator-backfill.yml / discover-fixtures.yml. Omitting this
+        # cost a run on 2026-08-20: build-player-games reached 8/256 prefixes and
+        # died on `Author identity unknown` — a job-level setting no script carries
+        # for itself, and one I did not carry over when building this chain.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Repair players batch
         env:
           # The script arms its own push credential and re-arms on an auth failure
@@ -142,6 +206,22 @@ jobs:
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        # Matched to spectator-backfill.yml: an explicit ref, a shallow fetch, and
+        # a token so the push credential is persisted. A bare checkout is what made
+        # repair-players-batch arm its own credential on 2026-08-16.
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        # Copied from spectator-backfill.yml / discover-fixtures.yml. Omitting this
+        # cost a run on 2026-08-20: build-player-games reached 8/256 prefixes and
+        # died on `Author identity unknown` — a job-level setting no script carries
+        # for itself, and one I did not carry over when building this chain.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Locked re-sweep, dry run
         run: |
           node --max-old-space-size=8192 scripts/discover-fixtures.js \
@@ -192,5 +272,8 @@ jobs:
       - name: Dispatch Deploy Archive Pages
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
-          GH_REPO: ${{ github.repository }}
+          # THE ARCHIVE IS A SEPARATE REPO. `github.repository` is the data repo and
+          # deploy-archive-pages.yml does not exist there — it returned HTTP 404 on
+          # 2026-08-20. Hardcoded exactly as repair-players-batch.yml does it.
+          GH_REPO: markjovic/sports-players-stats-archive
         run: /tmp/gh-dispatch.sh deploy-archive-pages.yml
